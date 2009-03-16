@@ -37,7 +37,7 @@ $_charsets = $_charsetHandler->charsets;
 if(!empty($_charsets) && is_array($_charsets)) {
 	foreach($_charsets as $k =>$v) {
 		if(isset($v['charset']) && $v['charset']!='') {
-			$whiteList[] = $v['charset'];
+			$whiteList[] = strtolower($v['charset']);
 		}
 	}
 }
@@ -47,7 +47,7 @@ if(isset($_REQUEST["we_cmd"][15])) {
 		$_REQUEST["we_cmd"][15] = $defaultCharset;
 	}
 	else {
-		if (!in_array($_REQUEST["we_cmd"][15], $whiteList)) {
+		if (!in_array(strtolower($_REQUEST["we_cmd"][15]), $whiteList)) {
 			exit();
 		}
 	}
