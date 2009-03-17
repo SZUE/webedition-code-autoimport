@@ -455,15 +455,15 @@ if (isset($_POST["checkLogin"]) && !count($_COOKIE)) {
 
 	</tr>
 	<tr>
-		<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;"><img src="/webEdition/images/login/left	.jpg" width="260" height="296" /></td>
+		<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;"><img src="/webEdition/images/pixel.gif" width="260" height="296" /></td>
 
 		<td valign="bottom" style="width:260px;height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;"><img src="/webEdition/images/login/bottom_r.jpg" width="260" height="296" /></td>
 
 	</tr>
-	<tr style="height:100px;">
-		<td style="width:260px;"><img src="/webEdition/images/login/bottom_l2.jpg" width="260" height="100" /></td>
-		<td style="background-image:url(/webEdition/images/login/bottom.jpg);height:100px;"><img src="/webEdition/images/login/bottom_l.jpg" width="184" height="100" /></td>
-		<td style="width:260px;"><img src="/webEdition/images/login/bottom_r2.jpg" width="260" height="100" /></td>
+	<tr style="height:10px;">
+		<td style="width:260px;"></td>
+		<td style="background-image:url(/webEdition/images/login/bottom.jpg);height:10px;"><img src="/webEdition/images/login/bottom_l.jpg" width="184" height="10" /></td>
+		<td style="width:260px;"><img src="/webEdition/images/login/bottom_r2.jpg" width="260" height="10" /></td>
 	</tr>
 
 </table>';
