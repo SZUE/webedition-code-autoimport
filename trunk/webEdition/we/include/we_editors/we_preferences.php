@@ -573,6 +573,7 @@ function get_value($settingvalue) {
 
         case "use_jupload":
         	if (!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar')) {
+        		$_SESSION['prefs']['use_jupload'] = 0;
         		return 0;
         	}
 			if(isset($_SESSION['prefs']['use_jupload'])) {
