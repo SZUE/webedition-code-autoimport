@@ -117,7 +117,7 @@ $l_banner["error_height_empty"] = "Täytä kenttä 'Korkeus'!";
 $l_banner["error_getscript_empty"] = "Täytä kenttä 'Lataa skripti'!";
 $l_banner["error_clickscript_empty"] = "Täytä kenttä 'Klikkaus skripti'!";
 $l_banner["required"] = "Pakolliset kentät";
-$l_banner["error_ac_field"] = "ERROR: Invalid entries in marked fields!"; // TRANSLATE
+$l_banner["error_ac_field"] = "VIRHE: Virheellistä sisältöä merkityissä kentissä!";
 
-$l_banner["no_group_in_group"] = "Banneriryhmää ei voida tallenttaa itseensä!";
+$l_banner["no_group_in_group"] = "Banneriryhmää ei voida tallentaa itseensä!";
 ?>

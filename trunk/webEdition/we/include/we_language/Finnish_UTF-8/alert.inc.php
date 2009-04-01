@@ -30,7 +30,7 @@ if (!isset($l_backup)) {
 	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
 }
 
-$l_alert["notice"] = "Notice";
+$l_alert["notice"] = "Huomautus";
 $l_alert["warning"] = "Varoitus";
 $l_alert["error"] = "Virhe";
 
@@ -47,7 +47,7 @@ $l_alert["folder"]["not_im_ws"] = "Hakemisto ei sijaitse työtilassasi!";
 $l_alert[TEMPLATES_TABLE]["not_im_ws"] = "Sivupohja ei sijaitse työtilassasi!";
 $l_alert["delete_recipient"] = "Haluatko varmasti poistaa valitut sähköpostiosoitteet?";
 $l_alert["recipient_exists"] = "Sähköpostiosoite on jo olemassa!";
-$l_alert["input_name"] = "Anna uusi kategorian nimi!";
+$l_alert["input_name"] = "Uusi sähköpostiosoite";
 $l_alert['input_file_name'] = "Anna tiedostonimi.";
 $l_alert["max_name_recipient"] = "Sähköpostiosoitteen pituus voi olla maksimissaan 255 merkkiä pitkä!";
 $l_alert["not_entered_recipient"] = "Sähköpostiosoitetta ei ole annettu!";
@@ -64,7 +64,7 @@ $l_alert["doctype_hochkomma"] = "Virheellinen nimi! Ei sallitut merkit ovat ' (h
 $l_alert["thumbnail_hochkomma"] = "Virheellinen nimi! Virheellisiä merkkejä ovat ' (heittomerkki) and , (pilkku)!";
 $l_alert["can_not_open_file"] = "Tiedostoa %s ei voida avata!";
 $l_alert["no_perms_title"] = "Pääsy estetty!";
-$l_alert["no_perms_action"] = "You don't have the permission to perform this action."; // TRANSLATE
+$l_alert["no_perms_action"] = "Sinulla ei ole oikeuksia suorittaa tätä toimintoa.";
 $l_alert["access_denied"] = "Pääsy estetty!";
 $l_alert["no_perms"] = "Ota yhteyttä omistajaan (%s) tai järjestelmänvalvojaan<br>jos tarvitset oikeuksia!";
 $l_alert["temporaere_no_access"] = "Ei pääsyä!";
@@ -85,8 +85,8 @@ $l_alert["delete_nok_error"] = "Tiedostoa '%s' ei voitu poistaa.";
 $l_alert["delete_nok_file"] = "Tiedostoa '%s' ei voitu poistaa.\\nTiedosto on voitu kirjoitussuojata. ";
 $l_alert["delete_nok_folder"] = "Hakemistoa '%s' ei voitu poistaa.\\nHakemisto on voitu kirjoitussuojata.";
 $l_alert["delete_nok_noexist"] = "Tiedostoa '%s' ei ole olemassa!";
-$l_alert["noResourceTitle"] = "No Item!"; // TRANSLATE
-$l_alert["noResource"] = "The document or directory does not exist!"; // TRANSLATE
+$l_alert["noResourceTitle"] = "Kohdetta ei löydy!";
+$l_alert["noResource"] = "Tiedosto tai hakemisto ei ole olemassa!";
 $l_alert["move_exit_open_docs_question"] = "Ennen kuin dokumentteja voi siitää, ne täytyy sulkea. Kaikki tallentamattomat muutokset menetetään sulkemisen yhteydessä. Seuraavat dokumentit suljetaan:\\n\\n";
 $l_alert["move_exit_open_docs_continue"] = 'Jatka?';
 $l_alert["move"] = "Siirrä valitut?\\nHaluatko jatkaa?";
@@ -124,11 +124,11 @@ if( defined("OBJECT_FILES_TABLE") ){
 	$l_alert["exit_doc_question_".OBJECT_FILES_TABLE] = "Objektia on muutettu.<br>Haluatko tallentaa muutokset?";
 }
 $l_alert["deleteTempl_notok_used"] = "Yksi tai useampi sivupohja on käytössä ja niitä ei voida poistaa!";
-$l_alert["deleteClass_notok_used"] = "One or more of the classes are in use and could not be deleted!"; // TRANSLATE
+$l_alert["deleteClass_notok_used"] = "Yksi tai useampi luokka on käytössä ja niitä ei voida poistaa!";
 $l_alert["delete_notok"] = "Virhe poistettaessa!";
 $l_alert["nothing_to_save"] = "Ei tallennettavaa!";
 $l_alert["nothing_to_publish"] = "Julkaisutoiminto on toistaiseksi poistettu käytöstä!";
-$l_alert["we_filename_notValid"] = "Invalid filename\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)";
+$l_alert["we_filename_notValid"] = "Virheellinen tiedoston nimi!\\nSallitut merkit ovat alfa-numeerisia (isot ja pienet kirjaimet), alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)";
 $l_alert["empty_image_to_save"] = "Valittu kuva on tyhjä.\\n Jatketaanko?";
 $l_alert["path_exists"] = "Tiedostoa tai dokumenttia %s ei voitu tallentaa koska samanniminen dokumentti on kohteessa!";
 $l_alert["folder_not_empty"] = "Yksi tai useampi hakemisto ei ole täysin tyhjä joten poistaminen ei onnistunut! Poista tiedostot käsin.\\nSeuraavat tiedostot on poistettava käsin:\\n%s";
@@ -138,7 +138,7 @@ $l_alert["import_we_dirs"] = "Yrität tuoda webEdition hakemistosta!\\nHakemisto
 $l_alert["wrong_file"]["image/*"] = "Valitsemasi tiedosto ei ole kuva!";
 $l_alert["wrong_file"]["application/x-shockwave-flash"] = "Valitsemasi tiedosto ei ole Flash -tiedosto!";
 $l_alert["wrong_file"]["video/quicktime"] = "Valitsemasi tiedosto ei ole Quicktime -tiedosto!";
-$l_alert["wrong_file"]["text/css"] = "The file could not be stored. Either it is not a CSS file or your disk space is exhausted!"; // TRANSLATE
+$l_alert["wrong_file"]["text/css"] = "Tiedostoa ei saatu tallennettua. Joko se ei ole CSS-tiedosto tai levytila on loppu!";
 $l_alert["no_file_selected"] = "Tuontitiedostoa ei ole valittu!";
 $l_alert["browser_crashed"] = "Ikkunaa ei voitu avata koska selaimessa tapahtui virhe! Tallenna työt ja käynnistä selain uudelleen.";
 $l_alert["copy_folders_no_id"] = "Tallenna nykyinen hakemisto ensin!";
@@ -173,16 +173,20 @@ $l_alert['field_int_contains_incorrect_length'] = "Kenttätyypin \'Kokonaisluku\
 $l_alert['field_int_value_to_height'] = "Kenttätyypin \'Kokonaisluku\' maksimiarvo on 2147483647.";
 
 
-$l_alert["we_filename_notValid"] = "Virheellinen tiedoston nimi\\nSallitut merkit ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)";
+$l_alert["we_filename_notValid"] = "Virheellinen tiedoston nimi\\nSallitut merkit ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)"; // CHECK
 
-$l_alert["login_denied_for_user"] = "The user cannot login. The user access is disabled."; // TRANSLATE
-$l_alert["no_perm_to_delete_single_document"] = "You have not the needed permissions to delete the active document."; // TRANSLATE
+$l_alert['error_fields_value_not_valid'] = 'Invalid entries in input fields!';
+$l_alert['discard_changed_data'] = 'Tallentamattomat muutokset menetetään, haluatko jatkaa ?';
 
-$l_confim["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?"; // TRANSLATE
-$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? "; // TRANSLATE
+$l_alert["login_denied_for_user"] = "Kirjautuminen epäonnistui. Käyttäjäkirjautuminen ei ole käytössä";
+$l_alert["no_perm_to_delete_single_document"] = "Sinulla ei ole tarvittavia oikeuksia dokumentin poistoon.";
 
-$l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:"; // TRANSLATE
-$l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s'; // TRANSLATE
-$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; // TRANSLATE 
-$l_alert['discard_changed_data'] = 'There are unsaved changes that will be discarded. Are you sure?'; // TRANSLATE
+$l_confim["applyWeDocumentCustomerFiltersDocument"] = "Tiedosto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä dokumentissa?";
+$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "Hakemisto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä hakemistossa ja kaikissa sen alihakemistoissa? ";
+
+$l_alert['field_in_tab_notvalid_pre'] = "Asetuksia ei voitu tallentaa, koska seuraavat kentät sisältävät virheellisiä arvoja:";
+$l_alert['field_in_tab_notvalid'] = ' - kenttä %s välilehdellä %s';
+$l_alert['field_in_tab_notvalid_post'] = 'Korjaa kentät ennen asetusten tallennusta.';
+$l_alert['discard_changed_data'] = 'Tallentamattomat tiedot menetetään, haluatko jatkaa ?';
+
 ?>

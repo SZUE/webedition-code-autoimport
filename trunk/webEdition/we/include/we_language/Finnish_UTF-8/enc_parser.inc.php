@@ -25,7 +25,7 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_parser"]["delete"] = "Delete"; // TRANSLATE
+$GLOBALS["l_parser"]["delete"] = "Poista";
 $GLOBALS["l_parser"]["wrong_type"] = "Arvo \"tyyppi\" on virheellinen!";
 $GLOBALS["l_parser"]["error_in_template"] = "Sivupohjavirhe!";
 $GLOBALS["l_parser"]["start_endtag_missing"] = "Yksi tai useampi <code>&lt;we:%s&gt;</code> tagi puuttuu!";
@@ -47,6 +47,7 @@ $GLOBALS["l_parser"]["setVar_lv_not_in_lv"] = "Tagi <code>&lt;we:setVar from=\"l
 $GLOBALS["l_parser"]["checkForm_jsIncludePath_not_found"] = "Tagin <code>&lt;we:checkForm&gt;</code> määre jsIncludePath annettiin numerona (ID). Mutta järjestelmässä ei ole dokumenttia kyseisellä ID:llä!";
 $GLOBALS["l_parser"]["checkForm_password"] = "Tagin <code>&lt;we:checkForm&gt;</code> määre password on oltava kolmeosainen, eroteltuna pilkuilla!";
 $GLOBALS["l_parser"]["missing_createShop"] = "Tagia <code>&lt;we:%s&gt;</code> voidaan käyttää vain tagin <code>&lt;we:createShop&gt; jälkeen</code>.";
-$GLOBALS["l_parser"]["multi_object_name_missing_error"] = "Error: The object field &quot;%s, specified in the attribute &quot;name&quot;, does not exist!"; // TRANSLATE
-$GLOBALS["l_parser"]["template_recursion_error"] = "Error: Too much recursion!"; // TRANSLATE
+$GLOBALS["l_parser"]["multi_object_name_missing_error"] = "Error: The object field &quot;%s, specified in the attribute &quot;name&quot;, does not exist!";
+$GLOBALS["l_parser"]["multi_object_name_missing_error"] = "Virhe: Objektin kenttä &quot;%s, joka on määreessä &quot;name&quot;, ei ole olemassa!";
+$GLOBALS["l_parser"]["template_recursion_error"] = "Virhe: Liian paljon rekursiota!";
 ?>

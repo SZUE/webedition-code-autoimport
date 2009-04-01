@@ -41,7 +41,7 @@ $l_eplugin["lan_default_for"] = "Vakio";
 
 $l_eplugin["lan_editor_name"] = "Editorin nimi";
 $l_eplugin["lan_path"] = "Polku";
-$l_eplugin["lan_args"] = "Arguments"; // TRANSLATE
+$l_eplugin["lan_args"] = "Muuttujat";
 $l_eplugin["lan_contenttypes"] = "Sisältötyypit";
 $l_eplugin["lan_defaultfor_label"] = "Vakioeditori";
 $l_eplugin["lan_del_button"] = "Poista";

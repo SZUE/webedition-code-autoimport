@@ -139,8 +139,8 @@ $l_customer["default_date_type"] = "Päiväyksen oletusmuotoilu";
 $l_customer["custom_date_format"] = "Mukautettu päiväyksen muotoilu";
 $l_customer["default_sort_view"] = "Oletus järjestysnäkymä";
 
-$l_customer["unix_ts"] = "Unix timestamp"; // TRANSLATE
-$l_customer["mysql_ts"] = "MySQL timestamp"; // TRANSLATE
+$l_customer["unix_ts"] = "Unix timestamp";
+$l_customer["mysql_ts"] = "MySQL timestamp";
 $l_customer["start_year"] = "Aloitus vuosi";
 
 $l_customer["settings_saved"] = "Asetukset on tallennettu.";
@@ -177,7 +177,7 @@ $l_customer["file_format"] = "Tiedostomuoto";
 $l_customer["export_to"] = "Vie kohteeseen";
 
 $l_customer["export_to_server"] = "Palvelin";
-$l_customer["export_to_ftp"] = "FTP"; // TRANSLATE
+$l_customer["export_to_ftp"] = "FTP";
 $l_customer["export_to_local"] = "Paikallinen";
 
 $l_customer["ftp_host"] = "Isäntänimi";
@@ -187,8 +187,8 @@ $l_customer["ftp_password"] = "Salasana";
 $l_customer["filename"] = "Tiedostonimi";
 $l_customer["path"] = "Polku";
 
-$l_customer["xml_format"] = "XML"; // TRANSLATE
-$l_customer["csv_format"] = "CSV"; // TRANSLATE
+$l_customer["xml_format"] = "XML";
+$l_customer["csv_format"] = "CSV";
 
 $l_customer["csv_delimiter"] = "Erotin";
 $l_customer["csv_enclose"] = "Suljin";
@@ -299,8 +299,8 @@ $l_customer["we_fieldname_notValid"] = "Virheellinen kentän nimi!\\nSallitut me
 $l_customer["orderTab"] = 'Tämän asiakkaan tilaukset';
 $l_customer['default_order'] = 'esiasetettu tilaus';
 
-$l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
-$l_customer["one_customer"] = "Customer"; // TRANSLATE
+$l_customer["connected_with_customer"] = "Yhdistettu asiakkaaseen";
+$l_customer["one_customer"] = "Asiakas";
 
 
 ?>

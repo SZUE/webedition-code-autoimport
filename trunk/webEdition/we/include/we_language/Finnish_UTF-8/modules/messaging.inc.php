@@ -46,7 +46,7 @@ $l_messaging['type_message'] = "Viesti";
 $l_messaging['userid_not_found'] = "Käyttäjä ID:tä ei löytynyt";
 $l_messaging['username_not_found'] = 'Käyttäjänimeä ei löytynyt';
 
-$l_messaging["save_changed_folder"] = "Folder has been changed.\\nDo you want to save your changes?"; // TRANSLATE
+$l_messaging["save_changed_folder"] = "Hakemistoa on muutettu.\\nHaluatko tallentaa muutokset?";
 
 $l_messaging['no_inbox_folder'] = 'Ei tulevat viestit -kansiota.';
 $l_messaging['no_done_folder'] = '"Tehty" -kansiota ei ole määritetty käyttäjälle"';
@@ -79,7 +79,7 @@ $l_messaging['folder_change_failed'] = 'Kansion ominaisuuksien muuttaminen ei on
 $l_messaging['mail_not_sent'] = 'Sähköpostia ei lähetetty!';
 
 $l_messaging['from'] = 'Lähettäjä';
-$l_messaging['to'] = 'To'; // TRANSLATE
+$l_messaging['to'] = 'To';
 $l_messaging['reject_to'] = 'Evätty';
 $l_messaging['recipient'] = 'Vastaanottaja';
 $l_messaging['recipients'] = 'Vastaanottajat';

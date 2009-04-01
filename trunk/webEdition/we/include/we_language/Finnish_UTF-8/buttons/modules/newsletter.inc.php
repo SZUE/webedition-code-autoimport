@@ -31,11 +31,11 @@ $l_button["send"]["value"] = "Lähetä";
 $l_button["send"]["alt"] = "Lähetä uutiskirje ...";
 $l_button["send"]["width"] = 100;
 
-$l_button["new_newsletter"]["value"] = "New newsletter";
+$l_button["new_newsletter"]["value"] = "Uusi uutiskirje";
 $l_button["new_newsletter"]["alt"] = "Luo uusi uutiskirje ...";
 $l_button["new_newsletter"]["width"] = 150;
 
-$l_button["new_newsletter_group"]["value"] = "New group";
+$l_button["new_newsletter_group"]["value"] = "Uusi ryhmä";
 $l_button["new_newsletter_group"]["alt"] = "Luo uusi ryhmä ...";
 $l_button["new_newsletter_group"]["width"] = 150;
 ?>

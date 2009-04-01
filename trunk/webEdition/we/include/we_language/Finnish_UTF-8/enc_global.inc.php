@@ -22,7 +22,7 @@
 
 
 /**
- * Language file: enc_global.inc.php
+ * Language file: enc_global.inc.php 
  * Provides language strings.
  * Language: English
  */

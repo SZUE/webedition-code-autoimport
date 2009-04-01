@@ -113,7 +113,7 @@ $l_workflow["delete_task"] = "Poista rinnakkaisvaihe.";
 
 $l_workflow["save_question"] = "Kaikki työnkulkuun määritellyt dokumentit poistetaan työnkulusta.\\nOletko varma että haluat jatkaa?";
 $l_workflow["nothing_to_save"] = "Ei mitään tallennettavaa!";
-$l_workflow["save_changed_workflow"] = "Workflow has been changed.\\nDo you want to save your changes?"; // TRANSLATE
+$l_workflow["save_changed_workflow"] = "Workflow on muuttunut.\\nHaluatko tallentaa muutokset?";
 
 $l_workflow["delete_question"] = "Kaikki työnkulun tiedot poistetaan!\\nOletko varma että haluat jatkaa?";
 $l_workflow["nothing_to_delete"] = "Ei mitään poistettavaa!";

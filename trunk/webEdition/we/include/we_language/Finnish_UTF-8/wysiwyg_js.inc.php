@@ -41,7 +41,7 @@ $GLOBALS["l_wysiwyg"]["edit_image"] = "Muokkaa kuvaa";
 $GLOBALS["l_wysiwyg"]["inserthorizontalrule"] = "Lisää vaakaviiva";
 $GLOBALS["l_wysiwyg"]["insertspecialchar"] = "Lisää erikoismerkki";
 $GLOBALS["l_wysiwyg"]["insert_table"] = "Lisää taulukko";
-$GLOBALS["l_wysiwyg"]["edit_table"] = "Edit table"; // TRANSLATE
+$GLOBALS["l_wysiwyg"]["edit_table"] = "Muokkaa taulua";
 $GLOBALS["l_wysiwyg"]["edit_cell"] = "Muokkaa solua";
 $GLOBALS["l_wysiwyg"]["undo"] = "Peruuta";
 $GLOBALS["l_wysiwyg"]["redo"] = "Tee uudelleen";
@@ -71,6 +71,6 @@ $GLOBALS["l_wysiwyg"]["css_style2"] = "CSS tyyli";
 
 $GLOBALS["l_wysiwyg"]["removeformat_warning"] = "Tämä toiminto poistaa muotoilun koko tekstikentästä! Haluatko jatkaa?";
 
-$GLOBALS["l_wysiwyg"]["fontsize"] = "Font size"; // TRANSLATE
+$GLOBALS["l_wysiwyg"]["fontsize"] = "Fontin koko";
 
 ?>

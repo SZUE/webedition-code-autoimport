@@ -51,7 +51,7 @@ $l_prefs["tab_ui"] = "Käyttäjärajapinta";
 $l_prefs["tab_glossary"] = "Sanasto";
 $l_prefs["tab_extensions"] = "Tiedoston pääte";
 $l_prefs["tab_editor"] = 'Editori';
-$l_prefs["tab_formmail"] = 'Formmail'; // TRANSLATE
+$l_prefs["tab_formmail"] = 'Formmail';
 $l_prefs["formmail_recipients"] = 'Formmail -vastaanottajat';
 $l_prefs["tab_proxy"] = 'Proxy -palvelin';
 $l_prefs["tab_advanced"] = 'Lisäasetukset';
@@ -61,7 +61,7 @@ $l_prefs["tab_cockpit"] = 'Pika-aloitus';
 $l_prefs["tab_cache"] = 'Välimuisti';
 $l_prefs["tab_language"] = 'Kielet';
 $l_prefs["tab_modules"] = 'Moduulit';
-$l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
+$l_prefs["tab_versions"] = 'Versiointi';
 
 /*****************************************************************************
  * USER INTERFACE
@@ -72,7 +72,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 
 	$l_prefs["choose_language"] = "Kieli";
-	$l_prefs["language_notice"] = "The language change will only take effect everywhere after restarting webEdition."; // TRANSLATE
+	$l_prefs["language_notice"] = "Kielenmuutos tulee voimaan webEditionin uudelleenkäynnistyksen jälkeen.";
 
 	/**
 	 * SEEM
@@ -267,14 +267,14 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["formmailSpan"] = "Aikavälillä";
 	$l_prefs["formmailTrials"] = "Pyyntöjä sallittu";
 	$l_prefs["blockFor"] = "Estä ajaksi";
-	$l_prefs["formmailViaWeDoc"] = "Call formmail via webEdition-Dokument."; // TRANSLATE
+	$l_prefs["formmailViaWeDoc"] = "Call formmail via webEdition-Dokument.";
 	$l_prefs["never"] = "ei koskaan";
 	$l_prefs["1_day"] = "1 päivä";
 	$l_prefs["more_days"] = "%s päivää";
 	$l_prefs["1_week"] = "1 viikko";
 	$l_prefs["more_weeks"] = "%s viikkoa";
-	$l_prefs["1_year"] = "1 year"; // TRANSLATE
-	$l_prefs["more_years"] = "%s years"; // TRANSLATE
+	$l_prefs["1_year"] = "1 vuosi";
+	$l_prefs["more_years"] = "%s vuotta";
 	$l_prefs["1_minute"] = "1 minuutti";
 	$l_prefs["more_minutes"] = "%s minuuttia";
 	$l_prefs["1_hour"] = "1 tunti";
@@ -333,8 +333,8 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 
 	$l_prefs["db_connect"] = "Tietokannan<br>yhteystyyppi";
-	$l_prefs["db_set_charset"] = "Connection charset"; // TRANSLATE
-	
+	$l_prefs["db_set_charset"] = "Yhteyden merkistö";
+
 	/**
 	 * HTTP AUTHENTICATION
 	 */
@@ -350,13 +350,13 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["thumbnail_dir"] = "Esikatselukuvien hakemisto";
 
 	$l_prefs["pagelogger_dir"] = "pageLogger hakemisto";
-	
+
 	/**
-	 * HOOKS
+	 * HOOKS //TRANS
 	 */
-	$l_prefs["hooks"] = "Hooks"; // TRANSLATE //TRANSLATE
-	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
-	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; 
+	$l_prefs["hooks"] = "\"Koukut\"";
+	$l_prefs["hooks_information"] = "\"Koukkujen\" käyttö mahdollistaa mielivaltaisen PHP-koodin suorittamisen webEditionissa tallennuksen, julkaisun, julkaisun poiston sekä minkä tahansa sisältötyypin poiston yhteydessä.<br />
+	Lisää tietoa löytyy Online-dokumentaatiosta.<br /><br />Salli koukkujen käyttö?"; 
 
 /*****************************************************************************
  * ERROR HANDLING
@@ -499,53 +499,53 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
  * Email settings
  *****************************************************************************/
 	
-	$l_prefs["mailer_information"] = "Säädä lähettääkö webEdition sähköpostit PNP:n mail()-funktiolla vai erillisellä SMTP-palvelimella.<br /><br />SMTP-palvelinta käytettäessä, viestien spämmiksi tulkitsemisen riski laskee.";
+	$l_prefs["mailer_information"] = "Säädä lähettääkö webEdition sähköpostit PHP:n mail()-funktiolla vai erillisellä SMTP-palvelimella.<br /><br />SMTP-palvelinta käytettäessä, viestien spämmiksi tulkitsemisen riski laskee.";
 	
 	$l_prefs["mailer_type"] = "Mailerin tyyppi";
 	$l_prefs["mailer_php"] = "Käytä php mail() funktiota";
 	$l_prefs["mailer_smtp"] = "Käytä SMTP palvelinta";
-	$l_prefs["email"] = "E-Mail"; // TRANSLATE
-	$l_prefs["tab_email"] = "E-Mail"; // TRANSLATE
+	$l_prefs["email"] = "E-Mail";
+	$l_prefs["tab_email"] = "E-Mail";
 	$l_prefs["smtp_auth"] = "Autentikaatio";
 	$l_prefs["smtp_server"] = "SMTP palvelin";
 	$l_prefs["smtp_port"] = "SMTP portti";
 	$l_prefs["smtp_username"] = "Käyttäjätunnus";
 	$l_prefs["smtp_password"] = "Salasana";
 	$l_prefs["smtp_halo"] = "SMTP helo";
-	$l_prefs["smtp_timeout"] = "SMTP timeout"; // TRANSLATE
-	
+	$l_prefs["smtp_timeout"] = "SMTP aikakatkaisu";
+
 /*****************************************************************************
  * Versions settings
  *****************************************************************************/
 
-	$l_prefs["versioning"] = "Versioning"; // TRANSLATE
-	$l_prefs["version_all"] = "all"; // TRANSLATE
-	$l_prefs["versioning_activate_text"] = "Activate versioning for some or all content types."; // TRANSLATE
-	$l_prefs["versioning_time_text"] = "If you specify a time period, only versions are saved which are created in this time until today. Older versions will be deleted."; // TRANSLATE
-	$l_prefs["versioning_time"] = "Time period"; // TRANSLATE
-	$l_prefs["versioning_anzahl_text"] = "Number of versions which will be created for each document or object."; // TRANSLATE
-	$l_prefs["versioning_anzahl"] = "Number"; // TRANSLATE
-	$l_prefs["versioning_wizard_text"] = "Open the Version-Wizard to delete or reset versions."; // TRANSLATE
-	$l_prefs["versioning_wizard"] = "Open Versions-Wizard"; // TRANSLATE
-	$l_prefs["ContentType"] = "Content Type"; // TRANSLATE
-	$l_prefs["versioning_create_text"] = "Determine which actions provoke new versions. Either if you publish or if you save, unpublish, delete or import files, too."; // TRANSLATE
-	$l_prefs["versioning_create"] = "Create Version"; // TRANSLATE
-	$l_prefs["versions_create_publishing"] = "only when publishing"; // TRANSLATE
-	$l_prefs["versions_create_always"] = "always"; // TRANSLATE
+	$l_prefs["versioning"] = "Versiointi";
+	$l_prefs["version_all"] = "kaikki";
+	$l_prefs["versioning_activate_text"] = "Valitse mille sisältötyypeille versiointi aktivoidaan.";
+	$l_prefs["versioning_time_text"] = "Määrittelemällä aikajakson voit valita mistä vanhemmat versiot poistetaan automaattisesti.";
+	$l_prefs["versioning_time"] = "Aikajakso";
+	$l_prefs["versioning_anzahl_text"] = "Luotavien versioiden määrä jokaisesta dokumentista tai objektista.";
+	$l_prefs["versioning_anzahl"] = "Numero";
+	$l_prefs["versioning_wizard_text"] = "Poista tai palauta versioita avaamalla Versio-Velho.";
+	$l_prefs["versioning_wizard"] = "Avaa Versio-Velho";
+	$l_prefs["ContentType"] = "Sisältötyyppi";
+	$l_prefs["versioning_create_text"] = "Määrittele mitkä tapahtumat luovat uusia versioita. Joko ainoastaan julkaistaessa tai myös tallentaessa, poistaessa, poistaessa julkaisusta sekä tuonnissa.";
+	$l_prefs["versioning_create"] = "Luo Versio";
+	$l_prefs["versions_create_publishing"] = "vain julkaistaessa";
+	$l_prefs["versions_create_always"] = "aina";
 	
-	$l_prefs['use_jeditor'] = "Use"; // TRANSLATE
-	$l_prefs["editor_font_colors"] = 'Specify font colors'; // TRANSLATE
-	$l_prefs["editor_normal_font_color"] = 'Default'; // TRANSLATE
-	$l_prefs["editor_we_tag_font_color"] = 'webEdition tags'; // TRANSLATE
-	$l_prefs["editor_we_attribute_font_color"] = 'webEdition attributes'; // TRANSLATE
-	$l_prefs["editor_html_tag_font_color"] = 'HTML tags'; // TRANSLATE
-	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes'; // TRANSLATE
-	$l_prefs["editor_pi_tag_font_color"] = 'PHP code'; // TRANSLATE
-	$l_prefs["editor_comment_font_color"] = 'Comments'; // TRANSLATE
-	$l_prefs["jeditor"] = 'Java source editor'; // TRANSLATE
+	$l_prefs['use_jeditor'] = "Käytä";
+	$l_prefs["editor_font_colors"] = 'Määrittele fontin värit';
+	$l_prefs["editor_normal_font_color"] = 'Oletus';
+	$l_prefs["editor_we_tag_font_color"] = 'webEdition tagit';
+	$l_prefs["editor_we_attribute_font_color"] = 'webEdition määreet';
+	$l_prefs["editor_html_tag_font_color"] = 'HTML tagit';
+	$l_prefs["editor_html_attribute_font_color"] = 'HTML määreet';
+	$l_prefs["editor_pi_tag_font_color"] = 'PHP koodi';
+	$l_prefs["editor_comment_font_color"] = 'Kommentit';
+	$l_prefs["jeditor"] = 'Java koodieditori';
 	
 	
-	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
+	$l_prefs["juplod_not_installed"] = 'JUpload ei ole asennettu!';
 	
 
 ?>

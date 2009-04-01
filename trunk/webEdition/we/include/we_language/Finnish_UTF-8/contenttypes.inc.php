@@ -26,6 +26,7 @@
  * Provides language strings.
  * Language: English
  */
+
 $GLOBALS['l_contentTypes']["all_Types"] = "Kaikki kentät";
 $GLOBALS['l_contentTypes']["text/xml"] = "XML -tiedosto";
 $GLOBALS['l_contentTypes']["text/html"] = "HTML -sivu";

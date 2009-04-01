@@ -33,12 +33,12 @@ $l_button['new_voting']['value'] = 'Uusi äänestys';
 $l_button['new_voting']['alt']   = 'Luo uusi äänestys ...';
 $l_button['new_voting']['width'] = 150;
 
-$l_button['new_voting_group']['value'] = 'New group';
+$l_button['new_voting_group']['value'] = 'Uusi ryhmä';
 $l_button['new_voting_group']['alt']   = 'Luo uusi ryhmä ...';
 $l_button['new_voting_group']['width'] = 150;
 
-$l_button['reset_score']['value'] = 'Reset scores';
-$l_button['reset_score']['alt']   = 'Nollaa tulokset ...';
+$l_button['reset_score']['value'] = 'Tyhjennä tulokset';
+$l_button['reset_score']['alt']   = 'Tyhjennä äänestyksen tulokset ...';
 $l_button['reset_score']['width'] = 100;
 
 ?>

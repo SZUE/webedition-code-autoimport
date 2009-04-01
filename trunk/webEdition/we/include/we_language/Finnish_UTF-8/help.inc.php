@@ -29,4 +29,5 @@
 $l_help["help_not_available_title"] = "Ohje ei ole saatavilla";
 $l_help["help_not_available_text"] = "Online ohjetta ei ole saatavilla";
 $l_help["help_not_available_again"] = "Yritä myöhemmin uudelleen.";
+
 ?>

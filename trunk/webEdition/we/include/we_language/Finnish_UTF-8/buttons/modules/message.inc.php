@@ -31,19 +31,19 @@ $l_button["search"]["value"] = "Etsi";
 $l_button["search"]["alt"] = "Etsi ...";
 $l_button["search"]["width"] = 100;
 
-$l_button["advanced"]["value"] = "Advanced";
+$l_button["advanced"]["value"] = "Tarkempi haku";
 $l_button["advanced"]["alt"] = "Tarkemmat hakuehdot ...";
-$l_button["advanced"]["width"] = 100;
+$l_button["advanced"]["width"] = 130;
 
-$l_button["reset_search"]["value"] = "Reset";
+$l_button["reset_search"]["value"] = "Nollaa";
 $l_button["reset_search"]["alt"] = "Tyhjennä hakusyöte ...";
 $l_button["reset_search"]["width"] = 100;
 
-$l_button["save_address"]["value"] = "Save address";
+$l_button["save_address"]["value"] = "Tallenna osoite";
 $l_button["save_address"]["alt"] = "Tallenna osoite ...";
 $l_button["save_address"]["width"] = 120;
 
-$l_button["select_user"]["value"] = "Select user";
+$l_button["select_user"]["value"] = "Käyttäjä";
 $l_button["select_user"]["alt"] = "Valitse käyttäjä ...";
 $l_button["select_user"]["width"] = 120;
 

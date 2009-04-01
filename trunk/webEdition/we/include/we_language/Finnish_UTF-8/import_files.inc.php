@@ -28,7 +28,7 @@
  */
 $GLOBALS["l_import_files"]["destination_dir"] = "Kohdehakemisto";
 $GLOBALS["l_import_files"]["file"] = "Tiedosto";
-$GLOBALS["l_import_files"]["sameName_expl"] = "Jos samanniminen tiedosto on olemassa, webEdition?";
+$GLOBALS["l_import_files"]["sameName_expl"] = "Jos samanniminen tiedosto on jo olemassa, mitä haluaisit webEditionin tekevän?";
 $GLOBALS["l_import_files"]["sameName_overwrite"] = "Korvaa samannimisen tiedoston";
 $GLOBALS["l_import_files"]["sameName_rename"] = "Uudelleennimeää uuden tiedoston";
 $GLOBALS["l_import_files"]["sameName_nothing"] = "Ei tuo tiedostoa";
@@ -64,7 +64,7 @@ $GLOBALS["l_import_files"]["add_description_nogdlib"] = "GD -kirjasto pitää ol
 $GLOBALS["l_import_files"]["noFiles"] = "Lähdehakemistossa ei ole tuontiehtojen mukaisia tiedostoja!";
 $GLOBALS["l_import_files"]["emptyDir"] = "Lähdehakemisto on tyhjä!";
 
-$GLOBALS["l_import_files"]["metadata"] = "Meta data"; // TRANSLATE
-$GLOBALS["l_import_files"]["import_metadata"] = "Import meta data from file"; // TRANSLATE
+$GLOBALS["l_import_files"]["metadata"] = "Metatiedot";
+$GLOBALS["l_import_files"]["import_metadata"] = "Tuo metatiedot tiedostosta";
 
 ?>

@@ -89,7 +89,7 @@ $l_we_editor["text/css"]["we_filename_notValid"] = $l_we_editor["text/webedition
 $l_we_editor["text/css"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["text/css"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
-$l_we_editor["text/js"]["response_save_ok"] = "The JavaScript '%s' has been successfully saved!";
+$l_we_editor["text/js"]["response_save_ok"] = "JavaScript '%s' tallennettu!";
 $l_we_editor["text/js"]["response_publish_ok"] = "JavaScript -tiedosto '%s' on julkaistu!";
 $l_we_editor["text/js"]["response_unpublish_ok"] = "JavaScript -tiedosto '%s' on poistettu julkaisusta!";
 $l_we_editor["text/js"]["response_save_notok"] = "Virhe tallennettaessa JavaScript -tiedostoa '%s'!";
@@ -99,7 +99,7 @@ $l_we_editor["text/js"]["we_filename_notValid"] = $l_we_editor["text/webedition"
 $l_we_editor["text/js"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["text/js"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
-$l_we_editor["text/plain"]["response_save_ok"] = "The text file '%s' has been successfully saved!";
+$l_we_editor["text/plain"]["response_save_ok"] = "Tekstitiedosto '%s' tallennettu!";
 $l_we_editor["text/plain"]["response_publish_ok"] = "Tekstitiedosto '%s' on julkaistu!";
 $l_we_editor["text/plain"]["response_unpublish_ok"] = "Tekstitiedosto '%s' on poistettu julkaisusta!";
 $l_we_editor["text/plain"]["response_save_notok"] = "Virhe tallennettaessa tekstitiedostoa '%s'!";
@@ -109,7 +109,7 @@ $l_we_editor["text/plain"]["we_filename_notValid"] = $l_we_editor["text/webediti
 $l_we_editor["text/plain"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["text/plain"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
-$l_we_editor["text/xml"]["response_save_ok"] = "The XML file '%s' has been successfully saved!";
+$l_we_editor["text/xml"]["response_save_ok"] = "XML -tiedosto '%s' onnistuneesti tallennettu!";
 $l_we_editor["text/xml"]["response_publish_ok"] = "XML -tiedosto '%s' onnistuneesti julkaistu!";
 $l_we_editor["text/xml"]["response_unpublish_ok"] = "XML -tiedosto '%s' onnistuneesti poistettu julkaisusta!";
 $l_we_editor["text/xml"]["response_save_notok"] = "Virhe tallentaessa XML -tiedostoa '%s'!";
@@ -119,7 +119,7 @@ $l_we_editor["text/xml"]["we_filename_notValid"] = $l_we_editor["text/webedition
 $l_we_editor["text/xml"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["text/xml"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
-$l_we_editor["folder"]["response_save_ok"] = "The directory '%s' has been successfully saved!";
+$l_we_editor["folder"]["response_save_ok"] = "Hakemisto '%s' on tallennettu!";
 $l_we_editor["folder"]["response_publish_ok"] = "Hakemisto '%s' on julkaistu!";
 $l_we_editor["folder"]["response_unpublish_ok"] = "Hakemisto '%s' on poistettu julkaisusta!";
 $l_we_editor["folder"]["response_save_notok"] = "Virhe hakemiston '%s' tallennuksessa!";
@@ -139,7 +139,7 @@ $l_we_editor["image/*"]["we_filename_notValid"] = $l_we_editor["text/webedition"
 $l_we_editor["image/*"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["image/*"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
-$l_we_editor["application/*"]["response_save_ok"] = "The document '%s' has been successfully saved!";
+$l_we_editor["application/*"]["response_save_ok"] = "Dokumentti '%s' tallennettu!";
 $l_we_editor["application/*"]["response_publish_ok"] = "Dokumentti '%s' on julkaistu!";
 $l_we_editor["application/*"]["response_unpublish_ok"] = "Dokumentti '%s' on poistettu julkaisusta!";
 $l_we_editor["application/*"]["response_save_notok"] = "Virhe tallennettaessa dokumenttia '%s'!";
@@ -161,7 +161,7 @@ $l_we_editor["application/x-shockwave-flash"]["we_filename_notValid"] = $l_we_ed
 $l_we_editor["application/x-shockwave-flash"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["application/x-shockwave-flash"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
-$l_we_editor["video/quicktime"]["response_save_ok"] = "The Quicktime movie '%s' has been successfully saved!";
+$l_we_editor["video/quicktime"]["response_save_ok"] = "Quicktime -tiedosto '%s' on tallennettu!";
 $l_we_editor["video/quicktime"]["response_publish_ok"] = "Quicktime -tiedosto '%s' on julkaistu!";
 $l_we_editor["video/quicktime"]["response_unpublish_ok"] = "Quicktime -tiedosto '%s' on poistettu julkaisusta!";
 $l_we_editor["video/quicktime"]["response_save_notok"] = "Virhe tallennettaessa Quicktime -tiedostoa '%s'!";

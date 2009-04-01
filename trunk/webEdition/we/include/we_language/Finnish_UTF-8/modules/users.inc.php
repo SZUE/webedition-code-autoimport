@@ -87,7 +87,7 @@ $l_users["fax_pre"] = "Suuntanumero faksille";
 $l_users["telephone"] = "Puhelin";
 $l_users["fax"] = "Faksi";
 $l_users["mobile"] = "Matkapuhelin";
-$l_users["email"] = "E-Mail"; // TRANSLATE
+$l_users["email"] = "Sähköposti";
 $l_users["general_data"] = "Yleistiedot";
 $l_users["workspace_documents"] = "Työtilan dokumentit";
 $l_users["workspace_templates"] = "Työtilan sivupohjat";
@@ -107,9 +107,9 @@ $l_users["gelöscht"] = "poistettu";
 $l_users["ohne"] = "ilman";
 $l_users["user"] = "Käyttäjä";
 $l_users["usertyp"] = "Käyttäjätyyppi";
-$l_users["search"] = "Suche"; // TRANSLATE
-$l_users["search_result"] = "Ergebnis"; // TRANSLATE
-$l_users["search_for"] = "Suche nach"; // TRANSLATE
+$l_users["search"] = "haku";
+$l_users["search_results"] = "Hakutulos";
+$l_users["search_for"] = "Hae";
 $l_users["inherit"] = "Peri oikeudet käyttäjäryhmältä.";
 $l_users["inherit_ws"] = "Peri dokumenttien työtilat käyttäjäryhmältä.";
 $l_users["inherit_wst"] = "Peri sivupohjien työtilat käyttäjäryhmältä.";
@@ -130,8 +130,8 @@ $l_users["inherit_wsnl"] = "Peri uutiskirjeiden työtilat käyttäjäryhmältä"
 $l_users["delete_user_same"] = "Et voi poistaa omaa käyttäjätiliäsi.";
 $l_users["delete_group_user_same"] = "Et voi poistaa omaa käyttäjäryhmääsi";
 
-$l_users["login_denied"] = "Login denied"; // TRANSLATE
-$l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!"; // TRANSLATE
-$l_users["noGroupError"] = "Error: Invalid entry in field group!"; // TRANSLATE
+$l_users["login_denied"] = "Pääsy kielletty";
+$l_users["workspaceFieldError"] = "VIRHE: Virheellinen työtilamerkintä!";
+$l_users["noGroupError"] = "Virhe: Virheellinen merkintä ryhmän kentässä!";
 
 ?>

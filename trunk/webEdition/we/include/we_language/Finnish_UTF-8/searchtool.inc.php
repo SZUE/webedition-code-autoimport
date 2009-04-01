@@ -19,158 +19,158 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$GLOBALS['l_weSearch']['save_group_ok'] = 'The group has been succesfully saved'; // TRANSLATE
-$GLOBALS['l_weSearch']['save_ok'] = 'The entry has been succesfully saved.'; // TRANSLATE
-$GLOBALS['l_weSearch']['save_group_failed'] = 'The group could not be saved.'; // TRANSLATE
-$GLOBALS['l_weSearch']['save_failed'] = 'The entry could not be saved.'; // TRANSLATE
-$l_weSearch['weSearch'] = 'Search'; // TRANSLATE
-$GLOBALS['l_weSearch']['weSearch'] = 'Search'; // TRANSLATE
+$GLOBALS['l_weSearch']['save_group_ok'] = 'Ryhmä tallennettu onnistuneesti';
+$GLOBALS['l_weSearch']['save_ok'] = 'Kohde tallennettu onnistuneesti.';
+$GLOBALS['l_weSearch']['save_group_failed'] = 'Ryhmää ei voitu tallentaa.';
+$GLOBALS['l_weSearch']['save_failed'] = 'Kohdetta ei voitu tallentaa.';
+$l_weSearch['weSearch'] = 'Haku';
+$GLOBALS['l_weSearch']['weSearch'] = 'Hae';
 $GLOBALS['l_weSearch']['perm_group_title'] = $GLOBALS['l_weSearch']['weSearch'];
 $l_weSearch['perm_group_title'] = $GLOBALS['l_weSearch']['weSearch'];
 
-$GLOBALS['l_weSearch']['suchen'] = 'Search';
+$GLOBALS['l_weSearch']['suchen'] = 'Hae';
 
-$l_weSearch["permission_titles"]["NEW_SUCHE"] = "The user is allowed to create new items in the search"; // TRANSLATE
-$l_weSearch["permission_titles"]["DELETE_SUCHE"] = "The user is allowed to delete items from the search"; // TRANSLATE
-$l_weSearch["permission_titles"]["EDIT_SUCHE"] = "The user is allowed to edit items in the search"; // TRANSLATE
+$l_weSearch["permission_titles"]["NEW_SUCHE"] = "Käyttäjä voi lisätä uusia hakukohteita";
+$l_weSearch["permission_titles"]["DELETE_SUCHE"] = "Käyttäjä voi poistaa hakukohteita";
+$l_weSearch["permission_titles"]["EDIT_SUCHE"] = "Käyttäjä voi muokata hakukohteita";
 
 
-$l_weSearch["import_tool_weSearch_data"] = "Restore " . $GLOBALS['l_weSearch']['weSearch'] . " data"; // TRANSLATE
-$l_weSearch["export_tool_weSearch_data"] = "Save " . $GLOBALS['l_weSearch']['weSearch'] . " data"; // TRANSLATE
+$l_weSearch["import_tool_weSearch_data"] = "Palauta " . $GLOBALS['l_weSearch']['weSearch'] . " tieto";
+$l_weSearch["export_tool_weSearch_data"] = "Tallenna " . $GLOBALS['l_weSearch']['weSearch'] . " tieto";
 
 
 //Tree
-$GLOBALS['l_weSearch']['vordefinierteSuchanfragen'] = 'predefined searches'; // TRANSLATE
-$GLOBALS['l_weSearch']['dokumente'] = 'documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['objekte'] = 'objects'; // TRANSLATE
-$GLOBALS['l_weSearch']['unveroeffentlicheDokumente'] = 'unpublished documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['statischeDokumente'] = 'static documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['dynamischeDokumente'] = 'dynamic documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['unveroeffentlicheObjekte'] = 'unpublished objects'; // TRANSLATE
-$GLOBALS['l_weSearch']['eigeneSuchanfragen'] = 'own searches'; // TRANSLATE
-$GLOBALS['l_weSearch']['versionen'] = 'versions'; // TRANSLATE
-$GLOBALS['l_weSearch']['geloeschteDokumente'] = 'deleted documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['geloeschteObjekte'] = 'deleted objects'; // TRANSLATE
+$GLOBALS['l_weSearch']['vordefinierteSuchanfragen'] = 'esimääritellyt haut';
+$GLOBALS['l_weSearch']['dokumente'] = 'dokumentit';
+$GLOBALS['l_weSearch']['objekte'] = 'objektit';
+$GLOBALS['l_weSearch']['unveroeffentlicheDokumente'] = 'julkaisemattomat dokumentit';
+$GLOBALS['l_weSearch']['statischeDokumente'] = 'staattiset dokumentit';
+$GLOBALS['l_weSearch']['dynamischeDokumente'] = 'dynaamiset dokumentit';
+$GLOBALS['l_weSearch']['unveroeffentlicheObjekte'] = 'julkaisemattomat objektit';
+$GLOBALS['l_weSearch']['eigeneSuchanfragen'] = 'omat haut';
+$GLOBALS['l_weSearch']['versionen'] = 'versiot';
+$GLOBALS['l_weSearch']['geloeschteDokumente'] = 'poistetut dokumentit';
+$GLOBALS['l_weSearch']['geloeschteObjekte'] = 'poistetut objektit';
 
 //Navigation
-$GLOBALS['l_weSearch']['menu_suche'] = 'Search'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_info'] = 'Info'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_help'] = 'Help'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_new'] = 'New Search'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_save'] = 'Save'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_delete'] = 'Delete'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_exit'] = 'Close'; // TRANSLATE
-$GLOBALS['l_weSearch']['forDocuments'] = 'For Documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['forTemplates'] = 'For Templates'; // TRANSLATE
-$GLOBALS['l_weSearch']['forObjects'] = 'For Objects'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_new_group'] = 'New Group'; // TRANSLATE
-$GLOBALS['l_weSearch']['menu_advSearch'] = 'Advanced Search'; // TRANSLATE
+$GLOBALS['l_weSearch']['menu_suche'] = 'Haku';
+$GLOBALS['l_weSearch']['menu_info'] = 'Info';
+$GLOBALS['l_weSearch']['menu_help'] = 'Ohje';
+$GLOBALS['l_weSearch']['menu_new'] = 'Uusi Haku';
+$GLOBALS['l_weSearch']['menu_save'] = 'Tallenna';
+$GLOBALS['l_weSearch']['menu_delete'] = 'Poista';
+$GLOBALS['l_weSearch']['menu_exit'] = 'Sulje';
+$GLOBALS['l_weSearch']['forDocuments'] = 'Dokumenteille';
+$GLOBALS['l_weSearch']['forTemplates'] = 'Sivupohjille';
+$GLOBALS['l_weSearch']['forObjects'] = 'Objekteille';
+$GLOBALS['l_weSearch']['menu_new_group'] = 'Uusi Ryhmä';
+$GLOBALS['l_weSearch']['menu_advSearch'] = 'Kehittynyt Haku';
 
 //Tabs
-$GLOBALS['l_weSearch']['documents'] = 'Documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['templates'] = 'Templates'; // TRANSLATE
-$GLOBALS['l_weSearch']['advSearch'] = 'Advanced Search'; // TRANSLATE
-$GLOBALS['l_weSearch']['properties'] = 'Properties'; // TRANSLATE
+$GLOBALS['l_weSearch']['documents'] = 'Dokumentit';
+$GLOBALS['l_weSearch']['templates'] = 'Sivupohjat';
+$GLOBALS['l_weSearch']['advSearch'] = 'Kehittynyt Haku';
+$GLOBALS['l_weSearch']['properties'] = 'Ominaisuudet';
 
-$GLOBALS['l_weSearch']['objects'] = 'Objects'; // TRANSLATE
-$GLOBALS['l_weSearch']['classes'] = 'Classes'; // TRANSLATE
+$GLOBALS['l_weSearch']['objects'] = 'Objektit';
+$GLOBALS['l_weSearch']['classes'] = 'Luokat';
 
 //Top
-$GLOBALS['l_weSearch']['topDir'] = 'Folder'; // TRANSLATE
-$GLOBALS['l_weSearch']['topSuche'] = 'Search'; // TRANSLATE
+$GLOBALS['l_weSearch']['topDir'] = 'Hakemisto';
+$GLOBALS['l_weSearch']['topSuche'] = 'Haku';
 
 //Content
-$GLOBALS['l_weSearch']['general'] = 'General'; // TRANSLATE
-$GLOBALS['l_weSearch']['suchenIn'] = "Search in"; // TRANSLATE
-$GLOBALS['l_weSearch']['text'] = 'Text'; // TRANSLATE
-$GLOBALS['l_weSearch']['anzeigen'] = 'Show'; // TRANSLATE
-$GLOBALS['l_weSearch']['dir'] = 'Folder'; // TRANSLATE
-$GLOBALS['l_weSearch']['optionen'] = 'Options'; // TRANSLATE
+$GLOBALS['l_weSearch']['general'] = 'Yleinen';
+$GLOBALS['l_weSearch']['suchenIn'] = "Hae kohteesta";
+$GLOBALS['l_weSearch']['text'] = 'Teksti';
+$GLOBALS['l_weSearch']['anzeigen'] = 'Näytä';
+$GLOBALS['l_weSearch']['dir'] = 'Hakemisto';
+$GLOBALS['l_weSearch']['optionen'] = 'Vaihtoehdot';
 
 //Fields
-$GLOBALS['l_weSearch']['allFields'] = 'all fields'; // TRANSLATE
-$GLOBALS['l_weSearch']['ID'] = 'ID of entry'; // TRANSLATE
-$GLOBALS['l_weSearch']['Text'] = 'Name of entry'; // TRANSLATE
-$GLOBALS['l_weSearch']['Path'] = 'Path of entry'; // TRANSLATE
-$GLOBALS['l_weSearch']['ParentIDDoc'] = 'parent entry documents'; // TRANSLATE
-$GLOBALS['l_weSearch']['ParentIDTmpl'] = 'parent entry templates'; // TRANSLATE
-$GLOBALS['l_weSearch']['ParentIDObj'] = 'parent entry objects'; // TRANSLATE
-$GLOBALS['l_weSearch']['temp_template_id'] = 'Template'; // TRANSLATE
-$GLOBALS['l_weSearch']['MasterTemplateID'] = 'Mastertemplate'; // TRANSLATE
-$GLOBALS['l_weSearch']['ContentType'] = 'Type of content'; // TRANSLATE
-$GLOBALS['l_weSearch']['temp_doc_type'] = 'Document-type'; // TRANSLATE
-$GLOBALS['l_weSearch']['temp_category'] = 'Category'; // TRANSLATE
-$GLOBALS['l_weSearch']['CreatorID'] = 'ID of owner'; // TRANSLATE
-$GLOBALS['l_weSearch']['CreatorName'] = 'Name of owner'; // TRANSLATE
-$GLOBALS['l_weSearch']['WebUserID'] = 'ID of webuser'; // TRANSLATE
-$GLOBALS['l_weSearch']['WebUserName'] = 'Name of webuser'; // TRANSLATE
-$GLOBALS['l_weSearch']['Status'] = 'Status'; // TRANSLATE
-$GLOBALS['l_weSearch']['Speicherart'] = 'Save type'; // TRANSLATE
-$GLOBALS['l_weSearch']['Published'] = 'Date of publishing'; // TRANSLATE
-$GLOBALS['l_weSearch']['CreationDate'] = 'Date of creation'; // TRANSLATE
-$GLOBALS['l_weSearch']['ModDate'] = 'Date of modification'; // TRANSLATE
+$GLOBALS['l_weSearch']['allFields'] = 'kaikki kentät';
+$GLOBALS['l_weSearch']['ID'] = 'kohteen ID-numero';
+$GLOBALS['l_weSearch']['Text'] = 'Kohteen nimi';
+$GLOBALS['l_weSearch']['Path'] = 'Kohteen polku';
+$GLOBALS['l_weSearch']['ParentIDDoc'] = 'kohteen isäntädokumentit';
+$GLOBALS['l_weSearch']['ParentIDTmpl'] = 'kohteen isäntäsivupohjat';
+$GLOBALS['l_weSearch']['ParentIDObj'] = 'kohteen isäntäobjektit';
+$GLOBALS['l_weSearch']['temp_template_id'] = 'Sivupohja';
+$GLOBALS['l_weSearch']['MasterTemplateID'] = 'Pääsivupohja';
+$GLOBALS['l_weSearch']['ContentType'] = 'Sisällön tyyppi';
+$GLOBALS['l_weSearch']['temp_doc_type'] = 'Dokumenttityyppi';
+$GLOBALS['l_weSearch']['temp_category'] = 'Kategoria';
+$GLOBALS['l_weSearch']['CreatorID'] = 'Omistajan ID-numero';
+$GLOBALS['l_weSearch']['CreatorName'] = 'Omistajan nimi';
+$GLOBALS['l_weSearch']['WebUserID'] = 'Web-käyttäjän ID-numero';
+$GLOBALS['l_weSearch']['WebUserName'] = 'Web-käyttäjän nimi';
+$GLOBALS['l_weSearch']['Status'] = 'Tila';
+$GLOBALS['l_weSearch']['Speicherart'] = 'Tallennustyyppi';
+$GLOBALS['l_weSearch']['Published'] = 'Julkaisupäivämäärä';
+$GLOBALS['l_weSearch']['CreationDate'] = 'Luontipäivämäärä';
+$GLOBALS['l_weSearch']['ModDate'] = 'Muokkauspäivämäärä';
 
-$GLOBALS['l_weSearch']['CONTAIN'] = 'contains'; // TRANSLATE
-$GLOBALS['l_weSearch']['IS'] = 'equal (=)'; // TRANSLATE
-$GLOBALS['l_weSearch']['START'] = 'starts with'; // TRANSLATE
-$GLOBALS['l_weSearch']['END'] = 'ends with'; // TRANSLATE
-$GLOBALS['l_weSearch']['<'] = 'less then (<)'; // TRANSLATE
-$GLOBALS['l_weSearch']['<='] = 'less equal (<=)'; // TRANSLATE
-$GLOBALS['l_weSearch']['>='] = 'greater equal (>=)'; // TRANSLATE
-$GLOBALS['l_weSearch']['>'] = 'greater then (>)'; // TRANSLATE
+$GLOBALS['l_weSearch']['CONTAIN'] = 'sisältää';
+$GLOBALS['l_weSearch']['IS'] = 'yhtä kuin (=)';
+$GLOBALS['l_weSearch']['START'] = 'alkaa';
+$GLOBALS['l_weSearch']['END'] = 'loppuu';
+$GLOBALS['l_weSearch']['<'] = 'vähemmän kuin (<)';
+$GLOBALS['l_weSearch']['<='] = 'vähemmän tai yhtä paljon kuin (<=)';
+$GLOBALS['l_weSearch']['>='] = 'enemmän tai yhtä paljon kuin (>=)';
+$GLOBALS['l_weSearch']['>'] = 'enemmän kuin (>)';
 
-$GLOBALS['l_weSearch']['jeder'] = 'show all'; // TRANSLATE
-$GLOBALS['l_weSearch']['geparkt'] = 'unpublished'; // TRANSLATE
-$GLOBALS['l_weSearch']['veroeffentlicht'] = 'published'; // TRANSLATE
-$GLOBALS['l_weSearch']['geaendert'] = 'modified'; // TRANSLATE
-$GLOBALS['l_weSearch']['veroeff_geaendert'] = 'published and modified'; // TRANSLATE
-$GLOBALS['l_weSearch']['geparkt_geaendert'] = 'unpublished and modified'; // TRANSLATE
-$GLOBALS['l_weSearch']['dynamisch'] = 'dynamic'; // TRANSLATE
-$GLOBALS['l_weSearch']['statisch'] = 'static'; // TRANSLATE
-$GLOBALS['l_weSearch']['deleted'] = 'deleted'; // TRANSLATE
+$GLOBALS['l_weSearch']['jeder'] = 'näytä kaikkia';
+$GLOBALS['l_weSearch']['geparkt'] = 'julkaisematon';
+$GLOBALS['l_weSearch']['veroeffentlicht'] = 'julkaistu';
+$GLOBALS['l_weSearch']['geaendert'] = 'muokattu';
+$GLOBALS['l_weSearch']['veroeff_geaendert'] = 'julkaistu ja muokattu';
+$GLOBALS['l_weSearch']['geparkt_geaendert'] = 'poistettu julkaisusta ja muokattu';
+$GLOBALS['l_weSearch']['dynamisch'] = 'dynaaminen';
+$GLOBALS['l_weSearch']['statisch'] = 'staattinen';
+$GLOBALS['l_weSearch']['deleted'] = 'poistettu';
 
 
-$GLOBALS['l_weSearch']['onlyTitle'] = "In Title"; // TRANSLATE
-$GLOBALS['l_weSearch']['onlyFilename'] = "In Filename"; // TRANSLATE
-$GLOBALS['l_weSearch']['Content'] = "In complete Content"; // TRANSLATE
+$GLOBALS['l_weSearch']['onlyTitle'] = "Otsikossa";
+$GLOBALS['l_weSearch']['onlyFilename'] = "Tiedostonimessä";
+$GLOBALS['l_weSearch']['Content'] = "Koko sisällössä";
 
 
 //result columns
-$GLOBALS['l_weSearch']['dateiname'] = "Filename"; // TRANSLATE
-$GLOBALS['l_weSearch']['seitentitel'] = "Title"; // TRANSLATE
-$GLOBALS['l_weSearch']['created'] = "Created"; // TRANSLATE
-$GLOBALS['l_weSearch']['modified'] = "Modified"; // TRANSLATE
+$GLOBALS['l_weSearch']['dateiname'] = "Tiedostonimi";
+$GLOBALS['l_weSearch']['seitentitel'] = "Otsikko";
+$GLOBALS['l_weSearch']['created'] = "Luotu";
+$GLOBALS['l_weSearch']['modified'] = "Muokattu";
 
 
 //messages
-$GLOBALS['l_weSearch']['predefinedSearchmodify'] = "It is not possible to safe predefined searches!"; // TRANSLATE
-$GLOBALS['l_weSearch']['predefinedSearchdelete'] = "It is not possible to delete predefined searches!"; // TRANSLATE
-$GLOBALS['l_weSearch']['nameForSearch'] = "Choose a name for your search:"; // TRANSLATE
-$GLOBALS['l_weSearch']["no_hochkomma"] = "Invalid name! Invalid character are ' (apostrophe) or \" (quote)!"; // TRANSLATE
-$GLOBALS['l_weSearch']['confirmDel'] = 'Delete entry.\\nAre you sure?'; // TRANSLATE
-$GLOBALS['l_weSearch']['nameTooLong'] = 'In the name there are allowed at most 30 characters!'; // TRANSLATE
-$GLOBALS['l_weSearch']['nothingCheckedAdv'] = 'Nothing is checked to search for!'; // TRANSLATE
-$GLOBALS['l_weSearch']['nothingCheckedTmplDoc'] = 'Nothing is checked to search for!'; // TRANSLATE
-$GLOBALS['l_weSearch']['noTempTableRightsSearch'] = 'In order to use the search it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.'; // TRANSLATE
-$GLOBALS['l_weSearch']['noTempTableRightsDoclist'] = 'In order to show all included documents it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.'; // TRANSLATE
+$GLOBALS['l_weSearch']['predefinedSearchmodify'] = "Esimääriteltyjä hakuja ei ole mahdollista tallentaa!";
+$GLOBALS['l_weSearch']['predefinedSearchdelete'] = "Esimääriteltyjä hakuja ei ole mahdollista poistaa!";
+$GLOBALS['l_weSearch']['nameForSearch'] = "Valitse nimi haullesi:";
+$GLOBALS['l_weSearch']["no_hochkomma"] = "Virheellinen nimi! Ei tuettuja merkkejä ovat ' (heittomerkki) tai \" (lainaus)!";
+$GLOBALS['l_weSearch']['confirmDel'] = 'Poista kohde.\\nOletko varma?';
+$GLOBALS['l_weSearch']['nameTooLong'] = 'Nimessä voi olla korkeintaan 30 merkkiä!';
+$GLOBALS['l_weSearch']['nothingCheckedAdv'] = 'Mitään ei ole valittuna haettavaksi!';
+$GLOBALS['l_weSearch']['nothingCheckedTmplDoc'] = 'Mitään ei ole valittuna haettavaksi!';
+$GLOBALS['l_weSearch']['noTempTableRightsSearch'] = 'Haun käyttämiseksi tarvitaan oikeudet luoda väliaikaistaulu tai poistaa tauluja. Sinulla ei ole näitä MySQL-oikeuksia.';
+$GLOBALS['l_weSearch']['noTempTableRightsDoclist'] = 'Kaikkien sisällytettyjen dokumenttien näyttämiseksi tarvitaan oikeudet luoda väliaikaistaulu tai poistaa tauluja. Sinulla ei ole näitä MySQL-oikeuksia.';
 
-$GLOBALS['l_weSearch']["date_format"] = 'd.m.Y'; // TRANSLATE
+$GLOBALS['l_weSearch']["date_format"] = 'd.m.Y';
 
-$GLOBALS['l_weSearch']['eintraege_pro_seite'] = 'View'; // TRANSLATE
-$GLOBALS['l_weSearch']["no_template"] = "-"; // TRANSLATE
-$GLOBALS['l_weSearch']["creator"] 	= "owner"; // TRANSLATE
-$GLOBALS['l_weSearch']["nobody"] 		= "nobody"; // TRANSLATE
-$GLOBALS['l_weSearch']["template"] 	= "template"; // TRANSLATE
-$GLOBALS['l_weSearch']["metafelder"] = "Metafields (max. 6)"; // TRANSLATE
+$GLOBALS['l_weSearch']['eintraege_pro_seite'] = 'Katso';
+$GLOBALS['l_weSearch']["no_template"] = "-";
+$GLOBALS['l_weSearch']["creator"] 	= "omistaja";
+$GLOBALS['l_weSearch']["nobody"] 		= "ei kukaan";
+$GLOBALS['l_weSearch']["template"] 	= "sivupohja";
+$GLOBALS['l_weSearch']["metafelder"] = "Metakentät (max. 6)";
 
-$GLOBALS['l_weSearch']['dateityp'] = 'File Type'; // TRANSLATE
-$GLOBALS['l_weSearch']['groesse'] = 'Size'; // TRANSLATE
-$GLOBALS['l_weSearch']['aufloesung'] = 'Resolution'; // TRANSLATE
-$GLOBALS['l_weSearch']['beschreibung'] = 'Description'; // TRANSLATE
-$GLOBALS['l_weSearch']['idDiv'] = 'ID'; // TRANSLATE
+$GLOBALS['l_weSearch']['dateityp'] = 'Tiedostotyyppi';
+$GLOBALS['l_weSearch']['groesse'] = 'Koko';
+$GLOBALS['l_weSearch']['aufloesung'] = 'Resoluutio';
+$GLOBALS['l_weSearch']['beschreibung'] = 'Kuvaus';
+$GLOBALS['l_weSearch']['idDiv'] = 'ID';
 
-$GLOBALS['l_weSearch']['publish_docs'] = 'Do you want to publish the market documents?'; // TRANSLATE
-$GLOBALS['l_weSearch']['notChecked'] = 'No documents are selected.'; // TRANSLATE
-$GLOBALS['l_weSearch']['publishOK'] = 'Documents were published.'; // TRANSLATE
+$GLOBALS['l_weSearch']['publish_docs'] = 'Haluatko julkaista valitut dokumentit?';
+$GLOBALS['l_weSearch']['notChecked'] = 'Ei valittuja dokumentteja.';
+$GLOBALS['l_weSearch']['publishOK'] = 'Dokumentit on julkaistu.';
 
 ?>

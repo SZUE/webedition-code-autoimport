@@ -27,7 +27,7 @@
  */
 
 $l_navigation = array();
-$l_navigation['no_perms'] = 'You do not have the permission to select this option.';
+$l_navigation['no_perms'] = 'Sinulla ei ole oikeutta valita tätä vaihtoehtoa.';
 $l_navigation['delete_alert'] = 'Poistetaan tämänhetkinen linkki/hakemisto.\\n Oletko varma?';
 $l_navigation['nothing_to_delete'] = 'Linkkiä ei voida poistaa!';
 $l_navigation['nothing_to_save'] = 'Linkkiä ei voida tallentaa!';
@@ -55,7 +55,7 @@ $l_navigation['navigation'] = 'Navigaatio';
 $l_navigation['group'] = 'Kansio';
 $l_navigation['name'] = 'Nimi';
 $l_navigation['newFolder'] = 'Uusi kansio';
-$l_navigation['display'] = 'Display'; // TRANSLATE
+$l_navigation['display'] = 'Näyttö';
 $l_navigation['save_group_ok'] = 'Kansio tallennettiin.';
 $l_navigation['save_ok'] = 'Navigaatio tallennettiin.';
 
@@ -63,7 +63,7 @@ $l_navigation['path_nok'] = 'Polku ei ole kelvollinen!';
 $l_navigation['name_empty'] = 'Nimi ei saa olla tyhjä!';
 $l_navigation['name_exists'] = 'Nimi on jo käytössä!';
 $l_navigation['wrongtext'] = 'Nimi ei ole kelvollinen!\\nKelvollisia merkkejä ovat kirjaimet välillä a ja z (isot ja pienet), numerot, alaviiva (_), viiva (-), piste (.), tyhjä merkki ( ) (välilyönti) ja @-merkki.';
-$l_navigation['wrongTitleField'] = 'The navigation folder could not be saved, because the given title field doesn\'t  exist. Please correct the title field on the "content" tab and save again.'; // TRANSLATE
+$l_navigation['wrongTitleField'] = 'Navigaatiokansiota ei voida tallentaa, koska annettua otsikkokenttää ei ole luotu. Korjaa otsikkokenttä "sisältö" välilehdeltä ja tallenna uudelleen.';
 $l_navigation['folder_path_exists'] = 'Tämän niminen merkintä/kansio on jo olemassa.';
 $l_navigation['navigation_deleted'] = 'Linkki/Kansio poistettiin onnistuneesti.';
 $l_navigation['group_deleted'] = 'Kansio poistetiin onnistuneesti.';
@@ -199,9 +199,9 @@ $l_navigation['filter'] = 'Määrittele suodatus';
 $l_navigation['and'] = 'ja';
 $l_navigation['or'] = 'tai';
 $l_navigation['selected_customers'] = 'Vain valituilla asiakkailla pääsy';
-$l_navigation['useDocumentFilter'] = 'Use filter settings of document/object'; // TRANSLATE
-$l_navigation['reset_customer_filter'] = 'Reset all customer filters'; // TRANSLATE
-$l_navigation['reset_customerfilter_done_message'] = 'The cusomer filters were successfully reset!'; // TRANSLATE
-$l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters'; // TRANSLATE
+$l_navigation['useDocumentFilter'] = 'Käytä dokumentin/objektin suodatusasetuksia';
+$l_navigation['reset_customer_filter'] = 'Tyhjennä kaikki käyttäjäsuodattimet';
+$l_navigation['reset_customerfilter_done_message'] = 'Käyttäjäsuodattimet tyhjennetty onnistuneesti!';
+$l_navigation['reset_customerfilter_question'] = 'Haluatko varmasti tyhjentää kaikki käyttäjäsuodattimet';
 
 ?>

@@ -31,7 +31,7 @@ $l_button["new_banner"]["value"] = "Uusi banneri";
 $l_button["new_banner"]["alt"]   = "Luo uusi banneri";
 $l_button["new_banner"]["width"] = 150;
 
-$l_button["new_bannergroup"]["value"] = "New banner group";
+$l_button["new_bannergroup"]["value"] = "Uusi banneriryhmä";
 $l_button["new_bannergroup"]["alt"]   = "Luo uusi banneriryhmä";
 $l_button["new_bannergroup"]["width"] = 150;
 ?>

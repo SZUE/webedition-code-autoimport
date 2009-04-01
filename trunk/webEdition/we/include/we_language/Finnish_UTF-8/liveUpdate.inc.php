@@ -22,7 +22,7 @@
 
 $l_liveUpdate['tabs']['register'] = 'Rekisteröinti';
 $l_liveUpdate['tabs']['update'] = 'Päivitä';
-$l_liveUpdate['tabs']['upgrade'] = 'Update webEdition 5'; // TRANSLATE
+$l_liveUpdate['tabs']['upgrade'] = 'Päivitä webEdition 5';
 $l_liveUpdate['tabs']['modules'] = 'Moduulit';
 $l_liveUpdate['tabs']['updatelog'] = 'Loki';
 $l_liveUpdate['tabs']['languages'] = 'Kielet';
@@ -37,13 +37,13 @@ $l_liveUpdate['register']['description'] = 'rekisteröi webEdition ja löydä se
 $l_liveUpdate['update']['headline'] = 'Etsi uutta versiota';
 $l_liveUpdate['update']['actualVersion'] = 'Nykyinen versio';
 $l_liveUpdate['update']['lastUpdate'] = 'Edellinen asennus';
-$l_liveUpdate['update']['neverUpdated'] = '-'; // TRANSLATE
+$l_liveUpdate['update']['neverUpdated'] = '-';
 $l_liveUpdate['update']['lookForUpdate'] = 'Etsi päivitystä';
 
 
-$l_liveUpdate['upgrade']['headline'] = 'Update to webEdition 5'; // TRANSLATE
-$l_liveUpdate['upgrade']['actualVersion'] = 'Running version'; // TRANSLATE
-$l_liveUpdate['upgrade']['lookForUpdate'] = 'Install webEdition 5'; // TRANSLATE
+$l_liveUpdate['upgrade']['headline'] = 'Päivitä versioon webEdition 5';
+$l_liveUpdate['upgrade']['actualVersion'] = 'Nykyinen versio';
+$l_liveUpdate['upgrade']['lookForUpdate'] = 'Asenna webEdition 5';
 
 
 $l_liveUpdate['modules']['headline'] = 'Moduulien asennus';
@@ -66,21 +66,21 @@ $l_liveUpdate['connect']['headline'] = 'Tarkista yhteys päivityspalvelimeen';
 $l_liveUpdate['connect']['description'] = 'Jos päivityksessä on ongelmia, voit täällä testata onko yhteyden luonti päivityspalvelimeen mahdollista.';
 $l_liveUpdate['connect']['connectionSuccess'] = 'Yhteys päivityspalvelimeen saatiin muodostettua.';
 $l_liveUpdate['connect']['connectionSuccessError'] = 'Yhteys päivityspalvelimeen saatiin luotua mutta päivityspalvelimella tapahtui virhe.<br />';
-$l_liveUpdate['connect']['connectionError'] = 'Tällä hetkellä yhteyttä päivityspalvelimeen ei saada muodostettua.';
-$l_liveUpdate['connect']['connectionErrorJs'] = 'Yhteyden muodostaminen päivityspalvelimeen ei ole mahdollista.';
-$l_liveUpdate['connect']["connectionInfo"] = "Connection informations"; // TRANSLATE
-$l_liveUpdate['connect']["availableConnectionTypes"] = "Available connection types"; // TRANSLATE
-$l_liveUpdate['connect']["connectionType"] = "Used connection type"; // TRANSLATE
-$l_liveUpdate['connect']["proxyHost"] = "Proxy host"; // TRANSLATE
-$l_liveUpdate['connect']["proxyPort"] = "Proxy port"; // TRANSLATE
-$l_liveUpdate['connect']["hostName"] = "Hostname"; // TRANSLATE
-$l_liveUpdate['connect']["addressResolution"] = "Address resolution"; // TRANSLATE
-$l_liveUpdate['connect']["updateServer"] = "Update server"; // TRANSLATE
-$l_liveUpdate['connect']["ipResolutionTest"] = "IP resolution test"; // TRANSLATE
-$l_liveUpdate['connect']["dnsResolutionTest"] = "DNS resolution test"; // TRANSLATE
-$l_liveUpdate['connect']["succeeded"] = "succeeded"; // TRANSLATE
-$l_liveUpdate['connect']["failed"] = "failed"; // TRANSLATE
-$l_liveUpdate['connect']["ipAddresses"] = "IP address(es)"; // TRANSLATE
+$l_liveUpdate['connect']['connectionError'] = 'Tällä hetkellä yhteyttä päivityspalvelimeen ei saada muodostettua';
+$l_liveUpdate['connect']['connectionErrorJs'] = 'Yhteyden muodostaminen päivityspalvelimeen ei ole mahdollista';
+$l_liveUpdate['connect']["connectionInfo"] = "Yhteystiedot";
+$l_liveUpdate['connect']["availableConnectionTypes"] = "Saatavilla olevat yhteystyypit";
+$l_liveUpdate['connect']["connectionType"] = "Käytetty yhteystyyppi";
+$l_liveUpdate['connect']["proxyHost"] = "Proxy isäntä";
+$l_liveUpdate['connect']["proxyPort"] = "Proxy portti";
+$l_liveUpdate['connect']["hostName"] = "Isäntänimi";
+$l_liveUpdate['connect']["addressResolution"] = "Osoitteen selvitys";
+$l_liveUpdate['connect']["updateServer"] = "Päivitä palvelin";
+$l_liveUpdate['connect']["ipResolutionTest"] = "IP-osoitteen selvitystesti";
+$l_liveUpdate['connect']["dnsResolutionTest"] = "DNS selvitystesti";
+$l_liveUpdate['connect']["succeeded"] = "Onnistui";
+$l_liveUpdate['connect']["failed"] = "Epäonnistui";
+$l_liveUpdate['connect']["ipAddresses"] = "IP osoite(es)";
 
 
 $l_liveUpdate['state']['headline'] = 'Viesti päivityspalvelimelta';
@@ -99,6 +99,6 @@ $l_liveUpdate['updatelog']['noEntriesMatchFilter'] = 'Suodatuksen ehtoihin sopiv
 $l_liveUpdate['updatelog']['legendMessages'] = 'Viesti';
 $l_liveUpdate['updatelog']['legendNotices'] = 'Huomautukset';
 $l_liveUpdate['updatelog']['legendErrors'] = 'Virheet';
-$l_liveUpdate['updatelog']['confirmDelete'] = 'Do you really want to delete all selected entries?'
+$l_liveUpdate['updatelog']['confirmDelete'] = 'Haluatko varmasti poistaa valitut kohteet?'
 
 ?>

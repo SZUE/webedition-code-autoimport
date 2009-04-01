@@ -27,21 +27,21 @@
  */
 
 $_sysinfo['we_version'] = 'webEdition versio';
-$_sysinfo['server_name'] = 'Server name'; // TRANSLATE
-$_sysinfo['port'] ='Port' ;
+$_sysinfo['server_name'] = 'Server name';
+$_sysinfo['port'] ='Portti' ;
 $_sysinfo['protocol'] = 'Protokolla';
 $_sysinfo['installation_folder'] = 'Asennushakemisto';
-$_sysinfo['we_max_upload_size'] = 'Max. upload file size'; // TRANSLATE
+$_sysinfo['we_max_upload_size'] = 'Maksimi lähetettävän tiedoston koko';
 $_sysinfo['php_version'] = 'PHP versio';
 $_sysinfo['mysql_version'] = 'MySql versio';
 $_sysinfo['more_info'] = 'lisätietoja';
 $_sysinfo['back'] = 'paluu';
 $_sysinfo['sysinfo'] = 'Järjestelmätiedot';
 
-$_sysinfo['connection_types'] = 'Update connection types'; // TRANSLATE
-$_sysinfo['gdlib'] = 'GDlib Support'; // TRANSLATE
-$_sysinfo['mbstring'] = 'Multibyte String Functions'; // TRANSLATE
-$_sysinfo['version'] = 'Version'; // TRANSLATE
-$_sysinfo['available'] = 'available'; // TRANSLATE
+$_sysinfo['connection_types'] = 'Päivitä yhteystyypit';
+$_sysinfo['gdlib'] = 'GDlib tuki';
+$_sysinfo['mbstring'] = 'Multibyte String funktiot';
+$_sysinfo['version'] = 'Versio';
+$_sysinfo['available'] = 'saatavilla';
 
 ?>

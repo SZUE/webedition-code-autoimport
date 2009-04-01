@@ -46,4 +46,5 @@ $l_linklist_edit["internal_link"] = "Sisäinen linkki";
 $l_linklist_edit["external_link"] = "Ulkoinen linkki";
 $l_linklist_edit["text"] = "Teksti";
 $l_linklist_edit["new_link"] = "Uusi linkki";
+
 ?>

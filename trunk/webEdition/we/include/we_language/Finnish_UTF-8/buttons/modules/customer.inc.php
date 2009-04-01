@@ -28,6 +28,6 @@
  */
 
 $l_button["new_customer"]["value"] = "Uusi asiakas";
-$l_button["new_customer"]["alt"] = "Uusi asiakas ...";
+$l_button["new_customer"]["alt"] = "Luo uusi asiakas ...";
 $l_button["new_customer"]["width"] = 150;
 ?>

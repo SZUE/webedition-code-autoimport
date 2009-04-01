@@ -21,9 +21,9 @@
  */
 
 
-$l_perm["versions"]["perm_group_title"] = "Versioning"; // TRANSLATE
+$l_perm["versions"]["perm_group_title"] = "Versiointi";
 
-$l_perm["versions"]["SEE_VERSIONS"] = "The user is allowed to see versions."; // TRANSLATE
-$l_perm["versions"]["RESET_VERSIONS"] = "The user is allowed to reset versions."; // TRANSLATE
+$l_perm["versions"]["SEE_VERSIONS"] = "Käyttäjä voi nähdä versioita.";
+$l_perm["versions"]["RESET_VERSIONS"] = "Käyttäjä voi poistaa versioita.";
 
 ?>

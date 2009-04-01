@@ -34,7 +34,8 @@ $l_backup["settings"] = "Palauta asetukset";
 $l_backup["rebuild"] = "Automaattinen uudelleenrakennus";
 $l_backup["select_upload_file"] = "Läheta tuotava tiedosto työasemalta";
 $l_backup["select_server_file"] = "Valitse tuotava varmistustiedosto tältä listalta.";
-$l_backup["charset_warning"] = "If you encounter problems when restoring a backup, please ensure that the target system uses the same character set as the source system. This applies both to the character set of the database (collation) as well as for the character set of the user interface language!"; // TRANSLATE
+$l_backup["charset_warning"] = "Mikäli varmuuskopion palautuksessa ilmenee ongelmia, tarkista että kohdejärjestelmä käyttää samaa merkistöä kuin lähdejärjestelmä. Tämä koskee tietokannan sekä käyttöliittymän kielimerkistöä!";
+
 $l_backup["finished_success"] = "Varmistuksen palautus on suoritettu onnistuneesti.";
 $l_backup["finished_fail"] = "Varmistuksen palautus ei onnistunut.";
 $l_backup["question_taketime"] = "Vienti saattaa viedä aikaa.";
@@ -147,9 +148,9 @@ $l_backup["import_options"] = "Valitse palautettava tieto.";
 $l_backup["extern_exp"] = "Valittu toiminto voi kestää ja johtaa järjestelmäkohtaisiin virhetilanteisiin.";
 $l_backup["unselect_dep2"] = "Olet poistanut valinnan '%s'. Seuraavat toiminnot on automaattisesti poistettu valinnasta.";
 $l_backup["unselect_dep3"] = "Tämä toiminto voidaan uudelleenvalita.";
-$l_backup["gzip"] = "gzip"; // TRANSLATE
-$l_backup["zip"] = "zip"; // TRANSLATE
-$l_backup["bzip"] = "bzip"; // TRANSLATE
+$l_backup["gzip"] = "gzip";
+$l_backup["zip"] = "zip";
+$l_backup["bzip"] = "bzip";
 $l_backup["none"] = "ei mitään";
 $l_backup["cannot_split_file"] = "Tiedostoa '%s' ei voitu valmistella palautusta varten!";
 $l_backup["cannot_split_file_ziped"] = "Tiedoston on pakattu ei tuetulla pakkaustyypilla.";
@@ -172,16 +173,16 @@ $l_backup["import_configuration_data"]="Palauta asetukset";
 $l_backup["import_export_data"] = "Palauta viety tieto";
 $l_backup["export_export_data"] = "Tallenna viety tieto";
 
-$l_backup["export_versions_data"] = "Save version data"; // TRANSLATE
-$l_backup["export_versions_binarys_data"] = "Save Version-Binary-Files"; // TRANSLATE
-$l_backup["import_versions_data"] = "Restore version data"; // TRANSLATE
-$l_backup["import_versions_binarys_data"] = "Restore Version-Binary-Files"; // TRANSLATE
+$l_backup["export_versions_data"] = "Tallenna version tiedot";
+$l_backup["export_versions_binarys_data"] = "Tallenna version binääritiedostot";
+$l_backup["import_versions_data"] = "Palauta version tiedot";
+$l_backup["import_versions_binarys_data"] = "Palauta version binääritiedostot";
 
-$l_backup["export_versions_dep"] = "You have selected the option 'Save version data'. The version data need the documents, objects and version-binary-files and because of that, 'Save documents and templates', 'Save object and classes' and 'Save Version-Binary-Files' has been automatically selected."; // TRANSLATE
-$l_backup["import_versions_dep"] = "You have selected the option 'Restore version data'. The version data need the documents data, object data an version-binary-files and because of that, 'Restore documents and templates', 'Restore objects and classes and 'Restore Version-Binary-Files' has been automatically selected."; // TRANSLATE
+$l_backup["export_versions_dep"] = "Olet valinnut 'Tallenna version tiedot'. Version tiedot tarvitsevat mukaan dokumentit, objektit ja version binääritiedostot, jonka takia 'Kaikki dokumentit ja sivupohjat', 'Objektit ja luokat tietokanta/objektimoduulista' ja 'Binääritiedot' valitaan mukaan automaattisesti.";
+$l_backup["import_versions_dep"] = "Olet valinnut 'Palauta version tiedot'. Version tiedot tarvitsevat mukaan dokumentit, objektit ja version binääritiedostot, jonka takia 'Kaikki dokumentit ja sivupohjat', 'Objektit ja luokat tietokanta/objektimoduulista' ja 'Binääritiedot' valitaan mukaan automaattisesti.";
 
-$l_backup["export_versions_binarys_dep"] = "You have selected the option 'Save Version-Binary-Files'. The Version-Binary-Files need the documents, objects and version data and because of that, 'Save documents and templates', 'Save object and classes' and 'Save version data' has been automatically selected."; // TRANSLATE
-$l_backup["import_versions_binarys_dep"] = "You have selected the option 'Restore Version-Binary-Files'. The Version-Binary-Files need the documents data, object data an version data and because of that, 'Restore documents and templates', 'Restore objects and classes and 'Restore version data' has been automatically selected."; // TRANSLATE
+$l_backup["export_versions_binarys_dep"] = "Olet valinnut 'Tallenna version binääritiedostot'. Version binääritiedostot tarvitsevat mukaan dokumentit, objektit ja version tiedot, jonka takia 'Kaikki dokumentit ja sivupohjat', 'Objektit ja luokat tietokanta/objektimoduulista' ja 'Tallenna version tiedot' valitaan mukaan automaattisesti.";
+$l_backup["import_versions_binarys_dep"] = "Olet valinnut 'Palauta version binääritiedostot'. Version binääritiedostot tarvitsevat mukaan dokumentit, objektit ja version tiedot, jonka takia 'Kaikki dokumentit ja sivupohjat', 'Objektit ja luokat tietokanta/objektimoduulista' ja 'Tallenna version tiedot' valitaan mukaan automaattisesti.";
 
 $l_backup["del_backup_confirm"] = "Haluatko poistaa valitun varmuuskopiotiedoston?";
 $l_backup["name_notok"] = "Tiedoston nimi ei ole sallittu!";
@@ -202,10 +203,10 @@ $l_backup['schedule_info'] = 'Ajastustiedot ajastusmoduulista.';
 $l_backup['settings_info'] = 'webEdition -järjestelmän asetukset.';
 $l_backup['temporary_info'] = 'Tiedot julkaisemittomista dokumenteista ja objekteista.';
 $l_backup['export_info'] = 'Tiedot vientimoduulista.';
-$l_backup['glossary_info'] = 'Data from the glossary.'; // TRANSLATE
-$l_backup['versions_info'] = 'Data from Versioning.'; // TRANSLATE
-$l_backup['versions_binarys_info'] = 'This option could take some time and memory because the folder /webEdition/we/versions/ could be very large. It is recommended to save this folder manually.'; // TRANSLATE
+$l_backup['glossary_info'] = 'Sanastosta tullut data';
 
+$l_backup['versions_info'] = 'Version tiedot.';
+$l_backup['versions_binarys_info'] = 'Tämä valinta voi viedä jonkin verran aikaa ja muistia, riippuen hakemiston /webEdition/we/versions/ koosta. On suositeltavaa tallentaa tuo hakemisto manuaalisesti.';
 
 $l_backup["import_voting_data"] = "Palauta äänestyksen data";
 $l_backup["export_voting_data"] = "Tallenna äänestyksen data";
@@ -229,8 +230,8 @@ $l_backup['file_missing'] = 'Varmuuskopiotiedosto puuttuu';
 $l_backup['recover_option'] = 'Tuontioptiot';
 
 $l_backup['no_resource'] = 'Fatal Error: Varmistuksen loppuunviemiseksi ei ole tarpeeksi resursseja!';
-$l_backup['error_compressing_backup'] = 'An error occured while compressing the backup, so the backup could not be finished!'; // TRANSLATE
-$l_backup['error_timeout'] = 'An timeout occured while creating the backup, so the backup could not be finished!'; // TRANSLATE
+$l_backup['error_compressing_backup'] = 'Varmuuskopioiden pakkauksessa ilmeni virhe, joten varmuuskopiointia ei voitu suorittaa!';
+$l_backup['error_timeout'] = 'Varmuuskopioinnin aikatkaisu. Varmuuskopiointia ei voitu suorittaa loppuun!';
 
 $l_backup["export_spellchecker_data"] = "Tallenna oikeinkirjoituksen tarkastajan data";
 $l_backup["import_spellchecker_data"] = "Palaute oikeinkirjoituksen tarkastajan data";
@@ -239,8 +240,8 @@ $l_backup['spellchecker_info'] = 'Oikeikirjoituksen tarkastuksen tiedot: asetuks
 $l_backup["import_banner_data"] = "Palauta banneritiedot";
 $l_backup["export_banner_data"] = "Tallenna banneritiedot";
 
-$l_backup["export_glossary_data"] = "Save glossary data"; // TRANSLATE
-$l_backup["import_glossary_data"] = "Restore glossary data"; // TRANSLATE
+$l_backup["export_glossary_data"] = "Tallenna sanaston tiedot";
+$l_backup["import_glossary_data"] = "Palauta sanaston tiedot";
 
 $l_backup["protect"] = "Suojaa varmuuskopiotiedosto";
 $l_backup["protect_txt"] = "Varmuuskopiotiedosto suojataan ulkopuolisten lataamiselta erillisellä php koodilla. Suojaus vaatii lisää levytilaa varmuuskopion tuonnissa!";
@@ -248,9 +249,9 @@ $l_backup["protect_txt"] = "Varmuuskopiotiedosto suojataan ulkopuolisten lataami
 $l_backup["recover_backup_unsaved_changes"] = "Avoinna olevissa tiedostoissa on tallentamattomia muutoksia. Ole hyvä ja tarkista nämä ennen jatkamista.";
 $l_backup["file_not_readable"] = "Varmuuskopiotiedosto ei ole luettavissa. Ole hyvä ja tarkista tiedosto-oikeudet.";
 
-$l_backup["tools_import_desc"] = "Here you can restore webEdition tools data. Please select the desired tools from the list."; // TRANSLATE
-$l_backup["tools_export_desc"] = "Here you can save webEdition tools data. Please select the desired tools from the list."; // TRANSLATE
+$l_backup["tools_import_desc"] = "Täältä voit palauttaa webEditionin työkalutiedot. Valitse haluamasi työkalut listalta.";
+$l_backup["tools_export_desc"] = "Täällä voit tallentaa webEditionin työkalutiedot. Valitse haluamasi työkalut listalta.";
 
-$l_backup['ftp_hint'] = "Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!"; // TRANSLATE
+$l_backup['ftp_hint'] = "Huomio! Jos varmuuskopiotiedosto on pakattu, käytä lataukseen FTP-asetuksista binäärimuotoa! ASCII-muotoinen lataus hajottaa tiedoston, jonka jälkeen sitä ei voi palauttaa!";
 
 ?>

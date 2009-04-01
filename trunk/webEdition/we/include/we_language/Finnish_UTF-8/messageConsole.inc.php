@@ -20,10 +20,10 @@
  */
 
 // for bar in menu!
-$GLOBALS["l_messageConsole"]["iconBar"]["notice"]  = "New notice"; // TRANSLATE
-$GLOBALS["l_messageConsole"]["iconBar"]["warning"] = "New warning"; // TRANSLATE
-$GLOBALS["l_messageConsole"]["iconBar"]["error"]   = "New error"; // TRANSLATE
+$GLOBALS["l_messageConsole"]["iconBar"]["notice"]  = "Uusi ilmoitus";
+$GLOBALS["l_messageConsole"]["iconBar"]["warning"] = "Uusi varoitus";
+$GLOBALS["l_messageConsole"]["iconBar"]["error"]   = "Uusi virhe";
 
 // message window
-$l_messageConsole["headline"] = "Message window"; // TRANSLATE
+$l_messageConsole["headline"] = "Viesti-ikkuna";
 ?>

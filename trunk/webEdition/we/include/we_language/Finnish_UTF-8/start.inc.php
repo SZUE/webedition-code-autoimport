@@ -37,11 +37,11 @@ $l_start["solution_more"] = "Jos webEdition -järjestelmä on käytössä omalla
 $l_start["cannot_start_we"] = "webEdition -järjestelmää ei voida käynnistää.";
 $l_start["browser_not_supported"] = "Selainversiosi ei ole tuettu webEdition -järjestelmässä!";
 $l_start["browser_supported"] = "webEdition -järjestelmä on tuettu seuraavissa selaimissa:";
-$l_start["browser_ie"] = "Internet Explorer"; // TRANSLATE
+$l_start["browser_ie"] = "Internet Explorer";
 $l_start["browser_ie_version"] = "alkaen versiosta 5.5";
-$l_start["browser_firefox"] = "Firefox"; // TRANSLATE
+$l_start["browser_firefox"] = "Firefox";
 $l_start["browser_firefox_version"] = "alkaen versiosta 1.0";
-$l_start["browser_safari"] = "Safari"; // TRANSLATE
+$l_start["browser_safari"] = "Safari";
 $l_start["browser_safari_version"] = "alkaen versiosta 1.1";
 $l_start["ignore_browser"] = "Jos haluat kirjautua webEdition -järjestelmään siitä huolimatta, paina tästä ...";
 ?>

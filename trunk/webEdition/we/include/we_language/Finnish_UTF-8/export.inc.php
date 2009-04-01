@@ -29,10 +29,10 @@
 $l_export["save_changed_export"] = "Valitse on muokattu.\\nHaluatko tallentaa muutokset?";
 $l_export["auto_selection"] = "Automaattinen valinta";
 $l_export["txt_auto_selection"] = "Vie dokumentteja ja objekteja automaattisesti riippuen dokumentin tyypistä ja luokasta.";
-$l_export["txt_auto_selection_csv"] = "Vie objekteja automaattisesti riippuen luokasta.";
+$l_export["txt_auto_selection_csv"] = "Vie objekteja automaattisesti niiden luokan perusteella.";
 $l_export["manual_selection"] = "Manuaalinen valinta";
 $l_export["txt_manual_selection"] = "Vie manuaalisesti valinta.";
-$l_export["txt_manual_selection_csv"] = "Vie manuaalisesti valinta.";
+$l_export["txt_manual_selection_csv"] = "Vie valitut objektit manuaalisesti.";
 $l_export["element"] = "Elementin valinta";
 $l_export["documents"] = "Dokumentit";
 $l_export["objects"] = "Objektit";
@@ -61,8 +61,8 @@ $l_export["classname"] = "Objektit luokan perusteella";
 $l_export["dir"] = "Hakemisto";
 $l_export["categories"] = "Kategoriat";
 $l_export["wizard_title"] = "Vientivelho";
-$l_export["xml_format"] = "XML"; // TRANSLATE
-$l_export["csv_format"] = "CSV"; // TRANSLATE
+$l_export["xml_format"] = "XML";
+$l_export["csv_format"] = "CSV";
 $l_export["csv_delimiter"] = "Erotin";
 $l_export["csv_enclose"] = "Sulkeva merkki";
 $l_export["csv_escape"] = "\"Escape\" -merkki";
@@ -176,6 +176,6 @@ $l_export['weNavigationRule'] = 'Navigointisääntö';
 $l_export['weThumbnail'] = 'Pikkukuvat';
 $l_export['handle_thumbnails'] = 'Pikkukuvat';
 
-$l_export['navigation_hint'] = 'To export the navigation entries, the template on which the navigation is displayed has also to be exported!';
+$l_export['navigation_hint'] = 'Dokumenttityypit, kategoriat ja navigaatio viedään valitsemiesi dokumenttien ja sivupohjien perusteella. Navigaation vienti tarvitsee siis sivupohjan viennin dokumentin mukana, jossa navigaatiota on käytetty.';
 
 ?>

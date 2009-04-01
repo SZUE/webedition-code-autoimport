@@ -28,13 +28,13 @@
 
 $l_glossary = array();
 
-$l_glossary["save_changed_glossary"] = "This entry has been changed.\\nDo you want to save your changes?";
+$l_glossary["save_changed_glossary"] = "Merkintä on muokattu.\\nHaluatko tallentaa muutokset?";
 $l_glossary['glossary_check_not_avalaible'] = "Sanastotarkastus ei ole vielä saatavilla.";
 
 $l_glossary['please_choose'] = "valitse";
 $l_glossary['not_identified_words'] = "Seuraavia sanoja ei tunnistettu:";
 $l_glossary['not_found'] = "tunnistamattomat sanat";
-$l_glossary['announced_word'] = "written out";
+$l_glossary['announced_word'] = "kirjoitusasu";
 $l_glossary['not_known_words'] = "tunnistamattomat sanat";
 $l_glossary['not_known_word'] = "tunnistamaton";
 $l_glossary['to_exceptionlist'] = "poikkeuslistalla";
@@ -74,7 +74,7 @@ $l_glossary['menu_new'] = 'Uusi';
 $l_glossary['menu_save'] = 'Tallenna';
 $l_glossary['menu_delete'] = 'Poista';
 $l_glossary['menu_exit'] = 'Poistu';
-$l_glossary['menu_info'] = 'Info'; // TRANSLATE
+$l_glossary['menu_info'] = 'Info';
 $l_glossary['menu_options'] = 'Valinnat';
 $l_glossary['menu_settings'] = 'Asetukset';
 $l_glossary['menu_dictionaries'] = 'Sanastot';
@@ -95,7 +95,7 @@ $l_glossary['suggestions'] = "Ehdotukset";
 $l_glossary['corrected'] = "korjattu";
 $l_glossary['link_url'] = "Linkin URL";
 $l_glossary['link_mode'] = "Linkkityyppi";
-$l_glossary['language'] = "Language";
+$l_glossary['language'] = "Kieli";
 $l_glossary['search'] = "Etsi";
 $l_glossary['view'] = "Näkymä";
 $l_glossary['show_only_visible_items'] = "Näytä vain aktiiviset";
@@ -145,7 +145,7 @@ $l_glossary['link_language'] = 'Linkki';
 $l_glossary['href_language'] = 'linkitetty dokumentti';
 $l_glossary['keyboard'] = 'Näppäimistö';
 $l_glossary['accesskey'] = 'Pikanäppäin';
-$l_glossary['tabindex'] = 'Tabindex'; // TRANSLATE
+$l_glossary['tabindex'] = 'Tabindex';
 $l_glossary['relation'] = 'Relaatio';
 $l_glossary['link_attribute'] = 'Linkin attribuutti';
 $l_glossary['popup'] = 'Popup ikkuna';
@@ -163,8 +163,8 @@ $l_glossary['popup_location'] = 'Sijainti';
 $l_glossary['popup_toolbar'] = 'Työkalupalkki';
 
 $l_glossary['linkprops_desc'] = 'Täällä voit vaihtaa linkin lisäasetuksia.';
-$l_glossary['text_notValid'] = "Invalid text entry.\\nInvalid characters are $, | and \\\\."; // TRANSLATE
-$l_glossary['title_notValid'] = "Invalid title entry.\\nInvalid characters are $, | and \\\\."; // TRANSLATE
+$l_glossary['text_notValid'] = "Virheellinen tekstimerkintä.\\nEi tuettuja merkkejä ovat $, | ja \\\\.";
+$l_glossary['title_notValid'] = "Virheellinen otsikkomerkintä.\\nEi tuettuja merkkejä ovat $, | ja \\\\.";
 
 $l_glossary['enable_replacement'] = 'Aktivoi automaattinen sanastokorvaus';
 $l_glossary['enabe_dictionary_check'] = 'Aktivoi sanastotarkastus kun dokumentteja/objekteja julkaistaan';

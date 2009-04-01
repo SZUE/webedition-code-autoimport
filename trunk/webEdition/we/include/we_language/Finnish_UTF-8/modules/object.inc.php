@@ -52,7 +52,7 @@ $l_object["textarea_field"] = "Iso tekstikenttä";
 $l_object["img_field"] = "Kuva";
 $l_object["binary_field"] = "Binääridokumentti";
 $l_object["link_field"] = "Linkki";
-$l_object["href_field"] = "Href"; // TRANSLATE
+$l_object["href_field"] = "Href";
 $l_object["shopVat_field"] = "ALV kenttä";
 
 $l_object["we_new_doc_after_save"] = "Uusi objekti tallentamisen jälkeen";
@@ -83,5 +83,5 @@ $l_object["generated_template_for_objectFile"] = "Vastaavaa sivupohjaa ei löyty
 
 $l_object["no_workspace_defined"] = "Objektille ei ole määritetty työtilaa. Voit määrittää erityistyötilan tämän luokan objekteille.";
 
-$l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
+$l_object["use_thumbnail_preview"] = "Esikatselukuvat objekteissa";
 ?>
