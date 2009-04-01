@@ -55,8 +55,7 @@ class weHook{
 			$param = $this->_param;
 			$appName = $this->_appName;
 			
-			if($action!='') {
-				$hookFile = $this->getHookFiles($action, $appName);
+			if($action!='' && is_array($param)) {
 
 				if($appName!='') {
 					$functionName = 'weCustomHook_'.$appName.'_'.$action;
@@ -64,6 +63,8 @@ class weHook{
 				else {
 					$functionName = 'weCustomHook_'.$action;
 				}
+				
+				$hookFile = $this->getHookFile($action, $appName);
 
 				include_once($hookFile);
 					
@@ -75,14 +76,14 @@ class weHook{
 	}
 	
 	/**
-	 * get all custom hook files
+	 * get custom hook file
 	 * 
 	 * @param string $action 
 	 * @param string $appName 
 	 * 
-	 * return array
+	 * return string
 	 */
-	function getHookFiles($action, $appName) {
+	function getHookFile($action, $appName) {
 		
 		$hookFile = '';
 
