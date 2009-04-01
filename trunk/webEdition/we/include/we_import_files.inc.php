@@ -646,13 +646,13 @@ class we_import_files
 				array(
 					"headline" => '', "html" => $formhtml, "space" => 0
 				));
-		
+
 		$content = we_htmlElement::htmlDiv(
 				array(
 					"id" => "forms", "style" => "display:block"
 				), 
 				
-				(getPref('use_jupload') ? we_htmlElement::htmlForm(array(
+				(getPref('use_jupload') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar') ? we_htmlElement::htmlForm(array(
 					"name" => "JUploadForm"
 				), "") : "") . we_htmlElement::htmlForm(
 						array(
