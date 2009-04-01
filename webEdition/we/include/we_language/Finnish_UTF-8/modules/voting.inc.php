@@ -21,9 +21,9 @@
  */
 
 $l_voting = array();
-$l_voting['no_perms'] = 'You do not have permission to use this option.';
+$l_voting['no_perms'] = 'Sinulla ei ole oikeutta käyttää tätä toimintoa.';
 $l_voting['delete_alert'] = 'Poista valittu äänestys/ryhmä.\\n Oletko varma?';
-$l_voting['result_delete_alert'] = 'Delete the current voting results.\\nAre you sure?'; // TRANSLATE
+$l_voting['result_delete_alert'] = 'Valittu äänestys poistetaan.\\nOletko varma?';
 $l_voting['nothing_to_delete'] = 'Ei mitään poistettavaa!';
 $l_voting['nothing_to_save'] = 'Ei mitään tallennettavaa';
 $l_voting['we_filename_notValid'] = 'Väärä käyttäjänimi!\\nSallitut merkit ovat alfa-numeeriset, isot ja pienet kirjaimet , sekä ala- ja väliviiva,piste ja välilyönti (a-z, A-Z, 0-9, _, -, ., )';
@@ -110,7 +110,7 @@ $l_voting["csv_export"] = "Tiedosto '%s' on tallennettu.";
 
 $l_voting['fallback'] = '"Fallback" IP menetelmä';
 $l_voting['save_user_agent'] = 'Tallenna/Vertaa user-agentin tietoja';
-$l_voting["save_changed_voting"] = "Voting has been changed.\\nDo you want to save your changes?"; // TRANSLATE
+$l_voting["save_changed_voting"] = "Äänestystä on muutettu.\\nHaluatko tallentaa muutokset?";
 $l_voting['voting_log'] = 'Protokolla äänestys';
 $l_voting['forbid_ip'] = 'Pidätä seuraavat IP osoitteet';
 $l_voting['until'] = 'kunnes';
@@ -118,8 +118,8 @@ $l_voting['options'] = 'Valinnat';
 $l_voting['control'] = 'Kontrolli';
 $l_voting['data_deleted_info'] = 'Tiedot on poistettu!';
 $l_voting['time'] = 'Aika';
-$l_voting['ip'] = 'IP'; // TRANSLATE
-$l_voting['user_agent'] = 'User-agent'; // TRANSLATE
+$l_voting['ip'] = 'IP';
+$l_voting['user_agent'] = 'User-agent';
 $l_voting['cookie'] = 'Eväste';
 $l_voting['delete_ipdata_question'] = 'Oletko varma että haluat poistaa kaikki tallennetut IP-tiedot?';
 $l_voting['delete_log_question'] = 'Haluatko poistaa kaikki äänestyksen logitiedot?';
@@ -133,10 +133,10 @@ $l_voting['log_error_blackip'] = 'Virhe: pidätetty IP';
 $l_voting['log_is_empty'] = 'Loki on tyhjä!';
 $l_voting['enabled'] = 'Aktivoitu';
 $l_voting['disabled'] = 'Passivoitu';
-$l_voting['log_fallback'] = 'Fallback'; // TRANSLATE
+$l_voting['log_fallback'] = 'Varmistus';
 
 $l_voting['new_ip_add'] = 'Syötä uusi IP osoite!';
 $l_voting['not_valid_ip'] = 'Annettu IP ei ole validi';
-$l_voting['not_active'] = 'The entered datum is in the past!'; // TRANSLATE
+$l_voting['not_active'] = 'Annettu päiväys on jo mennyt!';
 
 ?>

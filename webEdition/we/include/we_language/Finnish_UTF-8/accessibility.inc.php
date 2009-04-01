@@ -54,7 +54,7 @@ $l_validation['adjust_service'] = 'Muuta validointipalvelua';
 $l_validation['art_custom'] = 'Räätälöidyt palvelut';
 $l_validation['art_default'] = 'Esimääritetyt palvelut';
 
-$l_validation['category_xhtml'] = '(X)HTML'; // TRANSLATE
+$l_validation['category_xhtml'] = '(X)HTML';
 $l_validation['category_links'] = 'Linkit';
 $l_validation['category_css'] = 'CSS -tyylitiedostot';
 $l_validation['category_accessibility'] = 'Käytettävyys';

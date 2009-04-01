@@ -112,8 +112,8 @@ $l_javaMenu["new"] = "Uusi";
 	// close
 $l_javaMenu["close_single_document"] = "Sulje dokumentti";
 $l_javaMenu["close_all_documents"] = "Sulje kaikki dokumentit";
-$l_javaMenu["close_all_but_active_document"] = "Close inactive documents"; // TRANSLATE
-$l_javaMenu["delete_active_document"] = "Delete active document"; // TRANSLATE
+$l_javaMenu["close_all_but_active_document"] = "Sulje kaikki ei-aktiiviset dokumentit";
+$l_javaMenu["delete_active_document"] = "Poista aktiivinen dokumentti";
 
 
 
@@ -186,7 +186,7 @@ $l_javaMenu["quit"] = "Poistu";
 			$l_javaMenu["unpublished"] = "julkaisematon";
 			$l_javaMenu["my_documents"] = "Omat dokumentit";
 			$l_javaMenu["notepad"] = "Muistio";
-			$l_javaMenu["pagelogger"] = "pageLogger"; // TRANSLATE
+			$l_javaMenu["pagelogger"] = "pageLogger";
 
 			###############################################
 			### SubMenu Cockpit/Standard Einstellungen ####
@@ -211,7 +211,7 @@ $l_javaMenu["edit"] = "Muokkaa";
 $l_javaMenu["document_types"] = "Dokumenttityypit";
 $l_javaMenu["categories"] = "Kategoriat";
 $l_javaMenu["thumbnails"] = "Esikatselukuvat";
-$l_javaMenu["metadata"] = "Metadata fields"; // TRANSLATE
+$l_javaMenu["metadata"] = "Metatietokentät";
 $l_javaMenu["navigation"] = "Navigaatio";
 $l_javaMenu["change_username"] = "Vaihda käyttäjänimeä";
 $l_javaMenu["change_password"] = "Vaihda salasanaa";
@@ -220,9 +220,9 @@ $l_javaMenu["formmail_recipients"] = "Formmail vastaanottajat";
 $l_javaMenu["proxy_server"] = "Proxy-palvelin";
 $l_javaMenu["unpublished_pages"] = "Julkaisemattomat sivut";
 $l_javaMenu["preferences"] = "Asetukset";
-$l_javaMenu["versioning"] = "Version-Wizard"; // TRANSLATE
-$l_javaMenu["versioning_log"] = "Version-Log"; // TRANSLATE
-$l_javaMenu["econda"] = "Econda"; // TRANSLATE
+$l_javaMenu["versioning"] = "Versio-Velho";
+$l_javaMenu["versioning_log"] = "Versiologi";
+$l_javaMenu["econda"] = "Econda";
 
 ##################################
 ###### End Menu Bearbeiten #######
@@ -251,10 +251,10 @@ $l_javaMenu["inactive_extras"] = "Toimettomat extrat";
 
 $l_javaMenu["help"] = "Ohje";
 $l_javaMenu["onlinehelp"] = "Online ohje";
-$l_javaMenu["webEdition_online"] = "webEdition online"; // TRANSLATE
+$l_javaMenu["webEdition_online"] = "webEdition online";
 $l_javaMenu["sidebar"] = "Sivupalkki";
 $l_javaMenu["update"] = "Päivitä";
-$l_javaMenu["upgrade"] = "Update webEdition 5"; // TRANSLATE
+$l_javaMenu["upgrade"] = "Päivitä webEdition 5:n";
 $l_javaMenu["register"] = "Rekisteröi";
 $l_javaMenu["info"] = "Tietoja";
 

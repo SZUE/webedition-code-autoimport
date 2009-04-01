@@ -35,5 +35,5 @@ $l_javaMenu["shop"]["shop_edit"] = "Muokkaa";
 		$l_javaMenu["shop"]["delete_order"] = "Poista tilaus";
 
 $l_javaMenu["shop"]["menu_help"]   = "Ohje";
-$l_javaMenu["shop"]["menu_info"]   = "Info"; // TRANSLATE
+$l_javaMenu["shop"]["menu_info"]   = "Info";
 ?>

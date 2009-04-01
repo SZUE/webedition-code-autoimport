@@ -26,12 +26,12 @@
  * Provides language strings.
  * Language: English
  */
-$l_weSelectorSuggest["no_template"] = "The indicated template does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_document"] = "The indicated document does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_folder"]   = "The indicated directory does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_class"]    = "The indicated class does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_object"]   = "The indicated object does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_image"]    = "The indicated image does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_result"]   = "Your request did not render a result."; // TRANSLATE
+$l_weSelectorSuggest["no_template"] = "Valittua sivupohjaa ei ole olemassa.";
+$l_weSelectorSuggest["no_document"] = "Valittua tiedostoa ei ole olemassa.";
+$l_weSelectorSuggest["no_folder"]   = "Valittua hakemistoa ei ole olemassa.";
+$l_weSelectorSuggest["no_class"]    = "Valittua luokkaa ei ole olemassa.";
+$l_weSelectorSuggest["no_object"]   = "Valittua objektia ei ole olemassa.";
+$l_weSelectorSuggest["no_image"]    = "Valittua kuvaa ei ole olemassa.";
+$l_weSelectorSuggest["no_result"]   = "Pyyntösi ei tuottanut tuloksia.";
 
 ?>

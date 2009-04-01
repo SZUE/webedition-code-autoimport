@@ -96,7 +96,7 @@ $GLOBALS["l_wysiwyg"]["edit_stylesheet"] = "Muokkaa tyylitiedostoa";
  * THE REST
  *****************************************************************************/
 
-$GLOBALS["l_wysiwyg"]["url"] = "URL"; // TRANSLATE
+$GLOBALS["l_wysiwyg"]["url"] = "URL";
 $GLOBALS["l_wysiwyg"]["image_url"] = "Kuvan URL";
 $GLOBALS["l_wysiwyg"]["width"] = "Leveys";
 $GLOBALS["l_wysiwyg"]["height"] = "Korkeus";

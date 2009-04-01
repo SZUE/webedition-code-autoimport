@@ -25,24 +25,24 @@
 // ---> Template
 //
 
-$lang["Template"]["headline"] = "First Steps Wizard"; // TRANSLATE
-$lang["Template"]["title"] = "First Steps Wizard"; // TRANSLATE
-$lang["Template"]["autocontinue"] = "You will be redirected in % seconds."; // TRANSLATE
+$lang["Template"]["headline"] = "Aloitusvelho";
+$lang["Template"]["title"] = "Aloitusvelho";
+$lang["Template"]["autocontinue"] = "Uudelleenohjataan % sekunnin kuluessa.";
 
 
 //
 // ---> Buttons
 //
 
-$lang["Buttons"]["next"] = "next"; // TRANSLATE
-$lang["Buttons"]["back"] = "back"; // TRANSLATE
+$lang["Buttons"]["next"] = "seuraava";
+$lang["Buttons"]["back"] = "takaisin";
 
 
 //
 // ---> Wizards
 //
 
-$lang["Wizard"]["DetailWizard"]["title"] = ""; // TRANSLATE 
+$lang["Wizard"]["DetailWizard"]["title"] = ""; 
 
 
 //
@@ -50,33 +50,27 @@ $lang["Wizard"]["DetailWizard"]["title"] = ""; // TRANSLATE
 //
 
 // Startscreen
-$lang["Step"]["Startscreen"]["title"] = "Welcome"; // TRANSLATE 
-$lang["Step"]["Startscreen"]["headline"] = "Welcome"; // TRANSLATE 
-$lang["Step"]["Startscreen"]["content"] = "Welcome to the First Steps Wizard for extensions. You can enhance webEdition with further extensions in the following steps. <br /><br />The import of these functional units will take place in line with the installation of your layout with the First Steps Wizard.<br /><br />The available imports consist of several single files: Templates, documents, examples or images.<br /><br />Visit our website (<a href=\"http://www.living-e.de/en/\" target=\"_blank\" class=\"defaultfont\">http://www.living-e.de/en</a>) regularly to see if new extensions are available.<br /><br />Are you missing the webEdition demo pages? No problem: download the demo pages for free as a backup from our web site: <a href=\"http://demo.en.webedition.info/\" target=\"_blank\" class=\"defaultfont\">http://demo.en.webedition.info</a><br />The import works by selecting File->Backup->Restore Backup..."; // TRANSLATE 
-$lang["Step"]["Startscreen"]["description"] = "With version 5 of webEdition, the Export Module is contained in the basic version. With it, you may export functional units, e.g. a guestbook and make them available to other users.<br /><br />A lot of former modules have been integrated into webEdition 5: Voting, Banner, User Management etc...<br /><br />You can go back to the previous page or go to the next page with the buttons \\\"back\\\" and \\\"next\\\"."; // TRANSLATE 
-$lang["Step"]["Startscreen"]["no_connection"] = "A connection to the template server could not be established."; // TRANSLATE 
-$lang["Step"]["Startscreen"]["error"] = "Error"; // TRANSLATE 
+$lang["Step"]["Startscreen"]["title"] = "Tervetuloa"; 
+$lang["Step"]["Startscreen"]["headline"] = "Tervetuloa"; 
+$lang["Step"]["Startscreen"]["content"] = "Tervetuloa laajennosten Aloitusvelhoon.<br /><br />Laajennosten tuonti tapahtuu linjassa uuden ulkoasun luonnin kanssa Aloitusvelhon avulla.<br /><br />Tuonti sisältää useampia tiedostoja: Sivupohjia, tiedostoja, esimerkkejä tai kuvia.<br /><br />Sivuiltamme (<a href=\"http://www.living-e.de/en/\" target=\"_blank\" class=\"defaultfont\">http://www.living-e.de/en</a>) löydät mitä kaikkia laajennoksia on saatavilla.<br /><br />Sivuiltamme löydät myös esimerkkisivut: a href=\"http://demo.en.webedition.info/\" target=\"_blank\" class=\"defaultfont\">http://demo.en.webedition.info</a><br />Esimerkkisivujen tuonti onnistuu Varmuuskopion palautus -toiminnolla: Tiedosto -> Varmuuskopio -> Palauta varmuuskopio...";
+$lang["Step"]["Startscreen"]["description"] = "webDition 5 -versiosta lähtien vientimoduuli tulee perusversion mukana. Sen avulla voit viedä toimivia kokonaisuuksia, kuten esim. vieraskirjan, ja tarjota sitä käytettäväksi muille.<br /><br />Paljon muitakin moduuleja on integroitu webEditioniin: Äänestysmoduuli, Banneri/Statistiikkamoduuli, Käyttäjänhallinta jne...<br /><br />Voit palata takaisin edelliselle sivulle tai siirtyä seuraavalla valitsemalla \\\"takaisin\\\" ja \\\"seuraava\\\".";
+$lang["Step"]["Startscreen"]["no_connection"] = "Sivupohjapalvelimeen ei saatu yhteyttä."; 
+$lang["Step"]["Startscreen"]["error"] = "Virhe"; 
 
 
 // ChooseDesign
-$lang["Step"]["ChooseDesign"]["title"] = "Choose extension"; // TRANSLATE 
-$lang["Step"]["ChooseDesign"]["headline"] = "Choose extension"; // TRANSLATE 
-$lang["Step"]["ChooseDesign"]["content"] = ""; // TRANSLATE 
-$lang["Step"]["ChooseDesign"]["description"] = "Please choose one of the available extensions here.<br /><br />The extensions displayed may be used without cost and may be altered to meet your demands.<br /><br />You may repeat this procedure at any time to add further extensions.<br /><br />Select \\\"preview\\\" to have an extension enlarged.<br /><br />The webEdition Team will continue to publish further extensions in the future. Just open the First Steps Wizard again and be surprised.<br /><br />Templates and documents will be installed during the installation, on which the selected extension is based<br /><br />You may create accessible websites that can be read by screenreaders and handhelds."; // TRANSLATE 
-$lang["Step"]["ChooseDesign"]["no_import"] = "You have not selected an extension."; // TRANSLATE 
+$lang["Step"]["ChooseDesign"]["title"] = "Valitse laajennos"; 
+$lang["Step"]["ChooseDesign"]["headline"] = "Valitse laajennos"; 
+$lang["Step"]["ChooseDesign"]["content"] = ""; 
+$lang["Step"]["ChooseDesign"]["description"] = "Valitse täältä yksi laajennosvaihtoehto.<br /><br />Näkyvillä olevia laajennoksia voi käyttää ja muokata vapaasti ilman maksuja.<br /><br />Toistamalla tämän toiminnon voit myös lisätä uusia laajennoksia milloin vain.<br /><br />Valitsemalla \\\"esikatselu\\\" saat kuvan suuremmaksi.<br /><br />webEdition-ryhmä tulee julkaisemaan uusia laajennoksia tulevaisuudessa. Avaamalla Aloitusvelhon voit tarkistaa, onko uusia saatavilla.<br /><br />Asennuksen aikana luodaan sivupohjia ja tiedostoja, joihon kaikkien laajennosten toiminta perustuu.<br /><br />webEditionilla voit luoda sivuja, joita pääsee lukemaan myös esimerkiksi matkapuhelimilla ja kämmentietokoneilla.";
+$lang["Step"]["ChooseDesign"]["no_import"] = "Et ole valinnut laajennosta."; 
 
 
 // DetermineFiles
-$lang["Step"]["DetermineFiles"]["title"] = "Downloading necessary files."; // TRANSLATE 
-$lang["Step"]["DetermineFiles"]["headline"] = "Downloading necessary files."; // TRANSLATE 
-$lang["Step"]["DetermineFiles"]["content"] = "The files for the selected extension will be transferred from our server to your server and will be imported in webEdition. The files consist of templates, CSS-styles and layout specific files like pictures and images. You may create demo pages at a later point.<br /><br />The downloaded files will be displayed in the webEdition file tree after the successful import.<br /><br />There are tabs to the left of the file tree, that allow you to switch between documents and templates. Documents and templates have their respective file trees and contain different files.<br /><br />If you have already downloaded a layout and installed it with the wizard, it will be replaced with the new layout! If you wish to keep the old layout, you will need to move the corresponding files to another folder.<br /><br />The following folders will be created in the webEdition document file tree:<br />&nbsp; // TRANSLATE&nbsp; // TRANSLATE&nbsp; // TRANSLATE{seleceted extension}/{extension}<br /><br />The following folders will be created in the webEdition template file tree:<br />&nbsp; // TRANSLATE&nbsp; // TRANSLATE&nbsp; // TRANSLATE/living-e/{extension}<br /><br />To add further extensions, please restart the First Steps Wizard after successful import at File > New > webEdition page > Other"; // CHECK
-// changed from: "The files for the selected extension will be transferred from our server to your server and will be imported in webEdition. The files consist of templates, CSS-styles and layout specific files like pictures and images. You may create demo pages at a later point.<br /><br />The downloaded files will be displayed in the webEdition file tree after the successful import.<br /><br />There are tabs to the left of the file tree, that allow you to switch between documents and templates. Documents and templates have their respective file trees and contain different files.<br /><br />If you have already downloaded a layout and installed it with the wizard, it will be replaced with the new layout! If you wish to keep the old layout, you will need to move the corresponding files to another folder.<br /><br />The following folders will be created in the webEdition document file tree:<br />&nbsp; // TRANSLATE&nbsp; // TRANSLATE&nbsp; // TRANSLATE{seleceted extension}/{extension}<br /><br />The following folders will be created in the webEdition template file tree:<br />&nbsp; // TRANSLATE&nbsp; // TRANSLATE&nbsp; // TRANSLATE/living-e/{extension}<br /><br />To add further extensions, please restart the First Steps Wizard after successful import at File > New > webEdition page > Other"
-// changed to  : "The files for the selected extension will be transferred from our server to your server and will be imported in webEdition. The files consist of templates, CSS-styles and layout specific files like pictures and images. You may create demo pages at a later point.<br /><br />The downloaded files will be displayed in the webEdition file tree after the successful import.<br /><br />There are tabs to the left of the file tree, that allow you to switch between documents and templates. Documents and templates have their respective file trees and contain different files.<br /><br />If you have already downloaded a layout and installed it with the wizard, it will be replaced with the new layout! If you wish to keep the old layout, you will need to move the corresponding files to another folder.<br /><br />The following folders will be created in the webEdition document file tree:<br />&nbsp; &nbsp; &nbsp; {seleceted extension}/{extension}<br /><br />The following folders will be created in the webEdition template file tree:<br />&nbsp; &nbsp; &nbsp; /living-e/{extension}<br /><br />To add further extensions, please restart the First Steps Wizard after successful import at File > New > webEdition page > Other"
- 
-$lang["Step"]["DetermineFiles"]["description"] = "Depending on the size and number of files and the internet connection speed, the download may take some time.<br /><br />The WCMS webEdition strictly separates content from design. That way a consistent layout of the website can be assured.<br /><br />The layouts are downloaded from our server; // TRANSLATE during this no personal data is gathered or saved.<br /><br />Editable areas are marked with so-called  &lt; // TRANSLATEwe:tags&gt; // TRANSLATE in webEdition. Currently, there are about 200 of them!<br /><br />You may edit your webEdition  templates in your HTML-Editor with the Editor Plugin."; // CHECK
-// changed from: "Depending on the size and number of files and the internet connection speed, the download may take some time.<br /><br />The WCMS webEdition strictly separates content from design. That way a consistent layout of the website can be assured.<br /><br />The layouts are downloaded from our server; // TRANSLATE during this no personal data is gathered or saved.<br /><br />Editable areas are marked with so-called  &lt; // TRANSLATEwe:tags&gt; // TRANSLATE in webEdition. Currently, there are about 200 of them!<br /><br />You may edit your webEdition  templates in your HTML-Editor with the Editor Plugin."
-// changed to  : "Depending on the size and number of files and the internet connection speed, the download may take some time.<br /><br />The WCMS webEdition strictly separates content from design. That way a consistent layout of the website can be assured.<br /><br />The layouts are downloaded from our server;  during this no personal data is gathered or saved.<br /><br />Editable areas are marked with so-called  &lt; we:tags&gt;  in webEdition. Currently, there are about 200 of them!<br /><br />You may edit your webEdition  templates in your HTML-Editor with the Editor Plugin."
- 
+$lang["Step"]["DetermineFiles"]["title"] = "Ladataan tarvittavat tiedostot."; 
+$lang["Step"]["DetermineFiles"]["headline"] = "Ladataan tarvittavat tiedostot."; 
+$lang["Step"]["DetermineFiles"]["content"] = "Valitun laajennoksen tiedostot ladataan palvelimeltamme ja tuodaan webEditioniin. Tiedostoihin kuuluu sivupohjia, CSS-tyylejä sekä ulkoasuun liittyvät tiedostoja, kuten kuvia. Voit luoda mallisivuja myöhemmin.<br /><br />Haetut tiedostot näytetään webEditionin hakemistopuussa onnistuneen tuonnin jälkeen.<br /><br />Hakemistorakenteen vasemmalta puolelta löytyvät välilehdet, joista voit vaihtaa tiedosto- tai sivupohjanäkymään. Tiedostoilla ja sivupohjilla on omat hakemistopuunsa ja sisältävät eri tiedostot.<br /><br />Aiemmin haetut ulkoasut korvataan uudemmalla! Jos haluat säilyttää entisen ulkoasun, siirrä niiden tiedostot uuteen hakemistoon.<br /><br />Jos haluat lisätä muita laajennoksia, käynnistä tuonnin jälkeen ensin Aloitusvelho uudelleen valitsemalla Tiedosto -> Uusi -> webEdition sivu -> Muu tiedosto";
+$lang["Step"]["DetermineFiles"]["description"] = "Lataus voi kestää jonkin aikaa, riippuen tiedostojen koosta, määrästä sekä internet-yhteyden nopeudesta.<br /><br />webEdition erottelee tiukasti sisällön ulkoasusta, jonka avulla taataan sivuston yhtenäinen ulkoasu.<br /><br />Ulkoasut ladataan palvelimeltamme. Latauksen aikana mitään henkilökohtaisia tietoja ei koota tai tallenneta.<br /><br />Muokattavat alueet on merkitty webEditionissa ns. &lt;we:tageilla&gt;. Tällä hetkellä niitä on n. 200!<br /><br />Voit muokata sivupohjia omalla HTML-editorillasi Editori-laajennoksen avulla.";
 
 // DownloadFiles
 $lang["Step"]["DownloadFiles"]["title"] = $lang["Step"]["DetermineFiles"]["title"]; 
@@ -91,26 +85,26 @@ $lang["Step"]["PostDownloadFiles"]["content"] = $lang["Step"]["DetermineFiles"][
 $lang["Step"]["PostDownloadFiles"]["description"] = $lang["Step"]["DetermineFiles"]["description"]; 
 
 // ImportOptions
-$lang["Step"]["ImportOptions"]["title"] = "Settings"; 
-$lang["Step"]["ImportOptions"]["headline"] = "Settings"; // TRANSLATE 
-$lang["Step"]["ImportOptions"]["content"] = "You may select here, which master template should be used for your import. If you have already imported a layout with the First Steps Wizard, the appropriate template should be preselected. Of course, you may also use one of your own templates.<br /><br />Activate \"Create documents\" to create webEdition pages with the new extensions in your selected folder immediately, which you may edit according to your demands.<br /><br />Activate \"Add navigation entries\" to reach the new documents via your navigation with the corresponding entry."; // TRANSLATE 
-$lang["Step"]["ImportOptions"]["description"] = "A <b>master template</b> is the <b>main template</b> for webEdition pages. You can define constant elements, that should be the same on all your pages, like the logo, navigation and so on, in the master template. This way the consistency of your webpage is  ensured.<br /><br />If you create a new template you may select a master template which it should be based on. This way, the base structure is created in a matter of seconds.<br /><br />You can edit your <b>navigation</b> comfortably with the navigation tool. It is located in Extra > Navigation...<br /><br />If you do not select the option \\\"Create documents\\\", only the templates will be imported. You can then create the documents yourself and select the corresponding template in the Properties view."; // TRANSLATE 
-$lang["Step"]["ImportOptions"]["choose_mastertemplate"] = "Which master template should the templates be based on:"; // TRANSLATE 
-$lang["Step"]["ImportOptions"]["labelUseDocuments"] = "Yes, create documents"; // TRANSLATE 
-$lang["Step"]["ImportOptions"]["choose_document_path"] = "Please select a folder in which the documents should be created:"; // TRANSLATE 
-$lang["Step"]["ImportOptions"]["labelUseNavigation"] = "Yes, add navigation entries"; // TRANSLATE 
-$lang["Step"]["ImportOptions"]["choose_navigation_path"] = "Please select a folder in which the navigation entries should be created:"; // TRANSLATE 
+$lang["Step"]["ImportOptions"]["title"] = "Asetukset"; 
+$lang["Step"]["ImportOptions"]["headline"] = "Asetukset"; 
+$lang["Step"]["ImportOptions"]["content"] = "Tässä voit valita mitä pääsivupohjaa käytetään tuontiin. Jos olet jo aiemmin hakenut ulkoasun Aloitusvelhon avulla, oikea sivupohja pitäisi olla valittuna automaattisesti. Voit tietysti käyttää myös omia sivupohjia.<br /><br />Valitse \"Luo tiedostoja\", jos haluat luoda valitsemaasi hakemistoon uuden laajennoksen webEdition-sivuja jo valmiiksi.<br /><br />Valitse \"Lisää navigaatiolinkit\", jos haluat päästä uusiin dokumentteihin heti navigaation kautta.";
+$lang["Step"]["ImportOptions"]["description"] = "<b>Pääsivupohja</b> on pääpohja kaikille webEdition-sivuille. Siellä voit määritellä pääelementit, jotka säilyvät samoina kaikilla sivuilla, kuten logo, banneri, navigaatio jne. Näin varmistat parhaiten sivuston yhtenäisyyden.<br /><br />Uuden sivupohjan luonnissa voit määritellä sille Pääsivupohjan, johon uusi perustuu. Tämä nopeuttaa huomattavasti perusrakenteen luontia.<br /><br />Voit muokata navigaatiota navigaatiotyökalun avulla: Extrat -> Navigaatio...<br /><br />Jos et valinnut \"Luo tiedostoja\" -vaihtoehtoa, vain sivupohjat tuodaan. Voit lisätä tiedostoja myöhemmin ja valita oikean sivupohjan Ominaisuudet-välilehden kautta.";
+$lang["Step"]["ImportOptions"]["choose_mastertemplate"] = "Mihin Pääsivupohjaan sivupohjat tulevat perustumaan:"; 
+$lang["Step"]["ImportOptions"]["labelUseDocuments"] = "Luo tiedostoja"; 
+$lang["Step"]["ImportOptions"]["choose_document_path"] = "Valitse hakemisto johon tiedostot luodaan:"; 
+$lang["Step"]["ImportOptions"]["labelUseNavigation"] = "Lisää navigaatiolinkit"; 
+$lang["Step"]["ImportOptions"]["choose_navigation_path"] = "Valitse hakemisto johon navigaatiolinkit luodaan:"; 
 
 // ImportFiles
-$lang["Step"]["ImportFiles"]["title"] = "Prepare necessary files"; // TRANSLATE 
-$lang["Step"]["ImportFiles"]["headline"] = "Prepare necessary files"; // TRANSLATE 
-$lang["Step"]["ImportFiles"]["content"] = "The files for your new extension have been transferred to your server. In this step, they will be imported in webEdition. Within the import, contents will be written into the database and the folders and files will be created in the webEdition interface.<br /><br />Depending on character and number of files, the import may take some time. The progress is displayed below.<br /><br />If you chose the corresponding settings on the last screen, the new documents are already embedded in your navigation and can be reached on your website.<br /><br />Before any changes to any webEdition page appear on the website, you will need to save and publish the document!<br /><br />With the new multi tabs you may open several webEdition documents and templates. This enables you to switch quickly between a document and its template, to view the changes in the sourcecode at once.<br /><br />Documents and templates have multiple tabs at the upper end, with which you may switch between different displays. Documents can be validated or more information about templates can be displayed."; // TRANSLATE 
-$lang["Step"]["ImportFiles"]["description"] = "Do you know the seeMode? In this simplified display you navigate in webEdition like on the done webpage. Just activate the seeMode radiobutton at the login.<br /><br />You can cut or scale imported images directly in webEdition. Simply choose the file in the edit view.<br /><br />The new Editor Plugin can link file formats like .doc or .jpg to the original application: Start the editor, edit the file, save - done!<br /><br />You can\'t find the correct we:tag? You can find the Tag Wizard in the edit view of the templates: all tags are include therein with a short explanation!"; // TRANSLATE 
+$lang["Step"]["ImportFiles"]["title"] = "Valmistele tarvittavat tiedostot"; 
+$lang["Step"]["ImportFiles"]["headline"] = "Valmistele tarvittavat tiedostot"; 
+$lang["Step"]["ImportFiles"]["content"] = "Uusien laajennosten tiedostot on ladattu palvelimelle ja tässä kohtaa tiedostot tuodaan webEditioniin. Tuonnin aikana tiedostot kirjoitetaan tietokantaan ja webEditioniin luodaan hakemistorakenteet.<br /><br />Tuonti voi kestää jonkin aikaa, riippuen tiedostomäärästä. Alla näkyy toiminnon eteneminen.<br /><br />Mikäli valitsit tämän vaihtoehdon aiemmassa vaiheessa, uudet sivut lisätään automaattisesti navigaatioon ja niihin pääsee suoraan sivustolta.<br /><br />Ennenkuin mitään muutoksia näkyy sivustolla, sinun tulee julkaista tiedostot!<br /><br />Välilehtien avulla voit avata webEditioniin useampia tiedostoja tai sivupohjia kerrallaan auki. Tämän avulla voit vaihtaa nopeasti eri sivujen välillä tai tarkistaa sivupohjamuutokset heti varsinaisella sivulla.<br /><br />Tiedostoilla ja sivupohjilla on myös omat välilehtensä, joiden kautta näytetään eri tietoja, kuten milloin sivua on viimeksi muokattu yms.";
+$lang["Step"]["ImportFiles"]["description"] = "Oletko tutustunut helppokäyttötilaan? Tämän yksinkertaistetun näkymän avulla voit navigoida sivustolla kuten se ulospäin näkyy. Helppokäyttötilan saa päälle klikkaamalla seeMode-valinnan päälle kirjautumisikkunasta.<br /><br />Voit leikata tai skaalata kuvia suoraan webEditionista valitsemalla kuvan auki hakemistopuusta. Uusi Editori-laajennos osaa linkittää eri tiedostotyyppejä, kuten .doc ja .jpg, suoraan alkuperäiseen ohjelmaan: Avaa editori, muokkaa tiedostoa ja tallenna - Valmis!<br /><br />Oikean we:tagin löytämisessä auttaa jokaisesta sivupohjasta löytyvä Tagivelho, jossa on lueteltu kaikki käytettävät tagit lyhyellä kuvauksella.";
 
 // Finish
-$lang["Step"]["Finish"]["title"] = "Layout has been created"; // TRANSLATE 
-$lang["Step"]["Finish"]["headline"] = "The Layout has been created..."; // TRANSLATE 
-$lang["Step"]["Finish"]["content"] = "Congratulations, the layout has been imported successfully!<br />Before you get started, you can perform a rebuild:<br />A rebuild is required after the import of detail templates."; // TRANSLATE 
-$lang["Step"]["Finish"]["description"] = "Any webEdition page can be displayed in the Sidebar: Whether online help or an overview of all shop articles - use the new possibilities.<br /><br />You can change the webEdition Cockpit to your liking: In Cockpit > Add Widget you can add further widgets to the cockpit.<br /><br />Do you backup your website regularly? It is real easy with webEdition: File > Backup > Create Backup...<br /><br />What is a <b>Rebuild</b>? webEdition creates web pages based on templates. If you change the template of a static webEdition page, that page has to be \\\"rebuilt\\\" and saved!"; // TRANSLATE 
-$lang["Step"]["Finish"]["content_2"] = "You can display the further possibilities for your new import in the new Sidebar. You can navigate directly to new documents or further extensions!<br /><br />Have fun with the WCMS webEdition. If you wish to stay informed about the newest developments, subscribe to our newsletter at<br /><a href=\"http://www.living-e.de/en/Newsletter/\" target=\"blank\" class=\"defaultfont\">http://www.living-e.de/en/Newsletter</a><br /><br />If you have any questions, please refer to our support<br /><a href=\"http://support.living-e.de/en/webedition/\" class=\"defaultfont\" target=\"_blank\">http://support.living-e.de/en/webedition</a>"; // TRANSLATE 
+$lang["Step"]["Finish"]["title"] = "Ulkoasu on luotu"; 
+$lang["Step"]["Finish"]["headline"] = "Ulkoasu on luotu..."; 
+$lang["Step"]["Finish"]["content"] = "Uusi ulkosu on nyt tuotu onnistuneesti!<br />Ennen muita muokkauksia kannattaa vielä suorittaa kaikkien tiedostojen täydellinen uudelleenrakennus valitsemalla Tiedosto -> Rakenna uudelleen.";
+$lang["Step"]["Finish"]["description"] = "Sivupalkissa voidaan näyttää mikä tahansa webEdition-sivu: Esimerki Online-ohje tai yleiskuvaus kaikista verkkokaupan myytävistä kohteista.<br /><br />webEditionin Ohjausnäkymään voi lisätä uusia vimpaimia valitsemalla Aloitus -> Uusi vimpain.<br /><br />Sivuston varmuuskopiointi on tehty helpoksi: Tiedosto -> Varmuuskopioi -> Luo varmuuskopio...<br /><br />Mitä on uudelleenrakennus? webEdition luo sivuja sivupohjien perusteella. Jos muutat staattisen sivun sivupohjaa, tiedosto täytyy rakentaa uudelleen ennenkuin muutokset näkyvät ulospäin.";
+$lang["Step"]["Finish"]["content_2"] = "Sivupalkissa voit näyttää muita mahdollisuuksia uudelle sivustollesi. Voit navigoida suoraan uusiin tiedostoihin tai lisälaajennoksiin!<br /><br />Pidä hauskaa webEditionin parissa!";
 ?>

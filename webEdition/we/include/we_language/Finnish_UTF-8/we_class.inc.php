@@ -83,7 +83,7 @@ $l_we_class["attribs"] = "Määreet";
 $l_we_class["intern"] = "Sisäinen";
 $l_we_class["extern"] = "Ulkoinen";
 $l_we_class["linkType"] = "Linkin tyyppi";
-$l_we_class["href"] = "Href"; // TRANSLATE
+$l_we_class["href"] = "Href";
 $l_we_class["target"] = "Kohde";
 $l_we_class["hyperlink"] = "Hyperlinkki";
 $l_we_class["nolink"] = "Ei linkkiä";
@@ -132,7 +132,7 @@ $l_we_class["hidden"] = "Piilotettu";
 $l_we_class["workspacesFromClass"] = "Peri työtilat luokalta";
 $l_we_class["image"] = "Kuva";
 $l_we_class["thumbnails"] = "Esikatselukuvat";
-$l_we_class["metadata"] = "Metadata"; // TRANSLATE
+$l_we_class["metadata"] = "Metatieto";
 $l_we_class["edit_show"] = "Näytä kuvan ominaisuudet";
 $l_we_class["edit_hide"] = "Piilota kuvan ominaisuudet";
 $l_we_class["resize"] = "Muuta kokoa";
@@ -156,7 +156,7 @@ $l_we_class["rotate90r"] = "Käännä 90&deg; cw";
 $l_we_class["change_compression"] = "Muuta pakkausta";
 $l_we_class["upload"] = "Lataa";
 $l_we_class["type_not_supported_hint"] = "Palvelimelle asennettu GD-kirjasto ei tue %s kuvatyyppiä! Muunna kuvaformaatti yhteensopivaan muotoon!";
-$l_we_class["CSS"] = "CSS"; // TRANSLATE
+$l_we_class["CSS"] = "CSS";
 $l_we_class['we_del_workspace_error'] = "Työtilaa ei voitu poistaa koska se on luokan objektien käytössä!";
 $l_we_class["master_template"] = "Pääsivupohja";
 $l_we_class["same_master_template"] = "Valittu pääsivupohja ei voi olla identtinen nykyisen sivupohjan kassa.!";
@@ -174,6 +174,6 @@ $l_we_class["saveFirstMessage"] = "Sinun on tallennettava muutokset ennen tämä
 
 $l_we_class["image_edit_null_not_allowed"] = "Kentissä leveys ja korkeus vain nollaa suuremmat arvot ovat sallittuja!";
 
-$l_we_class['doctype_changed_question'] = "Should the default values for the document type be applied for this document?"; // TRANSLATE
-$l_we_class['availableAfterSave'] = "The feature is only available after saving the entry."; // TRANSLATE
+$l_we_class['doctype_changed_question'] = "Asetetaanko tämän dokumenttityypin oletusarvot tähän dokumenttiin?";
+$l_we_class['availableAfterSave'] = "Toiminnallisuus on saatavilla vasta tallentamisen jälkeen.";
 ?>

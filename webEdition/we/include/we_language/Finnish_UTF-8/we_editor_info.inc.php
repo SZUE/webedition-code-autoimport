@@ -56,9 +56,9 @@ $l_we_editor_info["objectFile"] = "Objekti";
 $l_we_editor_info["video/quicktime"] = "Quicktime -tiedosto";
 $l_we_editor_info["image_size"] = "Kuvan koko";
 
-$l_we_editor_info["mysql_date_format"] = '%d.%m.%Y - %H:%i'; // TRANSLATE
-$l_we_editor_info["mysql_date_only_format"] = '%d.%m.%Y'; // TRANSLATE
-$l_we_editor_info["mysql_time_only_format"] = '%H:%i'; // TRANSLATE
+$l_we_editor_info["mysql_date_format"] = '%d.%m.%Y - %H:%i';
+$l_we_editor_info["mysql_date_only_format"] = '%d.%m.%Y';
+$l_we_editor_info["mysql_time_only_format"] = '%H:%i';
 
 $l_we_editor_info["revert_publish_question"] = 'Oletko varma että haluat palauttaa julkaistun version? Kaikki edellisen julkaisun jälkeen tekemäsi muutokset menetetään prosessin aikana.';
 ?>

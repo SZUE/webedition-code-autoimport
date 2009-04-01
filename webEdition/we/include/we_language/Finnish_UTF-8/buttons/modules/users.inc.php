@@ -31,19 +31,19 @@ $l_button["create_user"]["value"] = "Uusi käyttäjä";
 $l_button["create_user"]["alt"] = "Lisää uusi käyttäjä";
 $l_button["create_user"]["width"] = 150;
 
-$l_button["create_group"]["value"] = "New group";
+$l_button["create_group"]["value"] = "Uusi ryhmä";
 $l_button["create_group"]["alt"] = "Uusi ryhmä";
 $l_button["create_group"]["width"] = 150;
 
-$l_button["create_alias"]["value"] = "New alias";
+$l_button["create_alias"]["value"] = "Uusi alias";
 $l_button["create_alias"]["alt"] = "Luo uusi alias";
 $l_button["create_alias"]["width"] = 150;
 
-$l_button["uncheckall"]["value"] = "Deselect all";
-$l_button["uncheckall"]["alt"]   = "Kumoa valinnat";
+$l_button["uncheckall"]["value"] = "Kumoa valinnat";
+$l_button["uncheckall"]["alt"]   = "Kumoa kaikki valinnat";
 $l_button["uncheckall"]["width"] = 150;
 
-$l_button["checkall"]["value"] = "Select all";
+$l_button["checkall"]["value"] = "Valitse kaikki";
 $l_button["checkall"]["alt"]   = "Valitse kaikki";
 $l_button["checkall"]["width"] = 150;
 

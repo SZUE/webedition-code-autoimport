@@ -32,7 +32,7 @@ $l_we_javaMenu["users"]["user_management"] = "Käyttäjähallinta";
 
 //	These entries are for the java-menu of the modules
 $l_javaMenu["users"]["menu_user"] = "Käyttäjä"; 
-$l_javaMenu["users"]["menu_alias"] = "Alias"; // TRANSLATE 
+$l_javaMenu["users"]["menu_alias"] = "Alias";
 $l_javaMenu["users"]["menu_new"] = "Uusi"; 
 $l_javaMenu["users"]["menu_save"] = "Tallenna"; 
 $l_javaMenu["users"]["menu_delete"] = "Poista"; 

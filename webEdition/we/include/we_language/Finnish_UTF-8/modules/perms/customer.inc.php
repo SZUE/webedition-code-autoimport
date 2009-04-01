@@ -34,6 +34,6 @@ $l_perm['customer']['DELETE_CUSTOMER'] = 'Käyttäjä voi poistaa asiakkaita.';
 $l_perm['customer']['EDIT_CUSTOMER'] = 'Käyttäjä voi muokata asiakkaita.';
 $l_perm['customer']['SHOW_CUSTOMER_ADMIN'] = 'Käyttäjä voi muokata asiakkaan kenttiä.';
 $l_perm['customer']['CUSTOMER_PASSWORD_VISIBLE'] = 'Käyttäjä voi nähdä asiakkaiden salasanat.';
-$l_perm['customer']['CAN_EDIT_CUSTOMERFILTER'] = 'The user is allowed to edit the customer filter.'; // TRANSLATE
-$l_perm['customer']['CAN_CHANGE_DOCS_CUSTOMER'] = 'The user is allowed to assign customers to documents and objects.'; // TRANSLATE
+$l_perm['customer']['CAN_EDIT_CUSTOMERFILTER'] = 'Käyttäjä voi muokata asiakassuodattimia.';
+$l_perm['customer']['CAN_CHANGE_DOCS_CUSTOMER'] = 'Käyttäjä voi lisätä asiakkaita dokumentteihin ja objekteihin.';
 ?>

@@ -55,13 +55,13 @@ $GLOBALS["l_rebuild"]["savingDocument"] = "Tallennetaan tiedostoa: ";
 $GLOBALS["l_rebuild"]["navigation"] = "Navigaatio";
 $GLOBALS["l_rebuild"]["rebuild_navigation"] = "Uudelleenrakennus - Navigaatio";
 $GLOBALS["l_rebuild"]["txt_rebuild_navigation"] = "Täällä voit uudelleenrakentaa navigaatiovälimuistin.";
-$GLOBALS["l_rebuild"]["rebuildStaticAfterNaviCheck"] = 'Rebuild static documents afterwards.'; // TRANSLATE
-$GLOBALS["l_rebuild"]["rebuildStaticAfterNaviHint"] = 'For static navigation entries a rebuild of the corresponding documents is necessary, in addition.'; // TRANSLATE
-$GLOBALS["l_rebuild"]["metadata"] = 'Meta data fields'; // TRANSLATE
-$GLOBALS["l_rebuild"]["txt_rebuild_metadata"] = 'To import the meta data of your images subsequently, choose this option.'; // TRANSLATE  // TRANSLATE
-$GLOBALS["l_rebuild"]["rebuild_metadata"] = 'Rebuild - meta data fields'; // TRANSLATE
-$GLOBALS["l_rebuild"]["onlyEmpty"] = 'Import only empty meta data fields'; // TRANSLATE
-$GLOBALS["l_rebuild"]["expl_rebuild_metadata"] = 'Select the meta data fields you want to import. To import only fields which already have no content, select the option "Import only empty meta data fields".'; // TRANSLATE // TRANSLATE
-$GLOBALS["l_rebuild"]["noFieldsChecked"] = "Al least one meta data field must be selected!"; // TRANSLATE // TRANSLATE
+$GLOBALS["l_rebuild"]["rebuildStaticAfterNaviCheck"] = 'Käännä staattiset dokumentit uudelleen jälkikäteen.';
+$GLOBALS["l_rebuild"]["rebuildStaticAfterNaviHint"] = 'Staattisen navigaation vastaaville dokumenteille uudelleen kääntö on välttämätöntä.';
+$GLOBALS["l_rebuild"]["metadata"] = 'Metatiedon kentät';
+$GLOBALS["l_rebuild"]["txt_rebuild_metadata"] = 'Valitse tämä, jos haluat tuoda myös kuvien metatiedon.';
+$GLOBALS["l_rebuild"]["rebuild_metadata"] = 'Rakenna uudelleen metatiedot';
+$GLOBALS["l_rebuild"]["onlyEmpty"] = 'Tuo vain tyhjät metatietokentät';
+$GLOBALS["l_rebuild"]["expl_rebuild_metadata"] = 'Valitse metatietokentät, jotka haluat tuoda. Valitse "Tuo vain tyhjät metatietokentät", jos haluat tuoda kenttiä joissa ei ole sisältöä.';
+$GLOBALS["l_rebuild"]["noFieldsChecked"] = "Vähintään yksi metatietokenttä täytyy olla valittuna!";
 
 ?>

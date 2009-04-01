@@ -33,7 +33,7 @@ $l_button["new_export"]["value"] = "Uusi vientitiedosto";
 $l_button["new_export"]["alt"]   = "Tee uusi vientitiedosto ...";
 $l_button["new_export"]["width"] = 150;
 
-$l_button["new_export_group"]["value"] = "New group";
+$l_button["new_export_group"]["value"] = "Uusi ryhmä";
 $l_button["new_export_group"]["alt"]   = "Tee uusi ryhmä ...";
 $l_button["new_export_group"]["width"] = 150;
 

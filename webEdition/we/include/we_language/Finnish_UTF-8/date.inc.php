@@ -26,7 +26,7 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_dayShort"][0] = "Su"; // TRANSLATE
+$GLOBALS["l_dayShort"][0] = "Su";
 $GLOBALS["l_dayShort"][1] = "Ma";
 $GLOBALS["l_dayShort"][2] = "Ti";
 $GLOBALS["l_dayShort"][3] = "Ke";

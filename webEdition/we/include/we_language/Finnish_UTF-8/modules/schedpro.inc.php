@@ -62,5 +62,5 @@ $GLOBALS["l_schedpro"]["dirctory"] = "Hakemisto";
 $GLOBALS["l_schedpro"]["active"] = "Aktiivinen";
 $GLOBALS["l_schedpro"]["doctypeAll"] = "Käytä oletusarvoja";
 
-$GLOBALS["l_schedpro"]["descriptiontext"] = "Lisätäksesi tehtävän ajastusmoduuliin, klikkaa plus painiketta.";
+$GLOBALS["l_schedpro"]["descriptiontext"] = "Klikkaa plus painiketta, jos haluat lisätä tehtävän ajastusmoduuliin.";
 ?>

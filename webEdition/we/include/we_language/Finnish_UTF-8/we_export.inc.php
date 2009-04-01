@@ -24,7 +24,7 @@
 /**
  * Language file: we_export.inc.php
  * Provides language strings.
- * Language: English
+ * Language: Finnish
  */
 $l_export['title'] = 'Vientivelho';
 $l_export['selection_type'] = 'Määritä valinta';

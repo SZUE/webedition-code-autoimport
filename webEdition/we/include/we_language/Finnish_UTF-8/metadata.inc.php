@@ -24,64 +24,64 @@
 /**
  * Language file: metadata.inc.php
  * Provides language strings.
- * Language: English
+ * Language: Finnish
  */
 
 /*****************************************************************************
  * DOCUMENT TAB
  *****************************************************************************/
 
-$l_metadata["filesize"] = "File size"; // TRANSLATE
-$l_metadata["supported_types"] = "Meta data formats"; // TRANSLATE
-$l_metadata["none"] = "none"; // TRANSLATE
-$l_metadata["filetype"] = "File type"; // TRANSLATE
+$l_metadata["filesize"] = "Tiedostokoko";
+$l_metadata["supported_types"] = "Metatieto formaatit";
+$l_metadata["none"] = "ei mitään";
+$l_metadata["filetype"] = "Tiedostotyyppi";
 
 /*****************************************************************************
  * METADATA FIELD MAPPING
  *****************************************************************************/
 
-$l_metadata["headline"] = "Meta data fields"; // TRANSLATE
-$l_metadata["tagname"] = "Field name"; // TRANSLATE
-$l_metadata["type"] = "Type"; // TRANSLATE
-$l_metadata["dummy"] = "dummy"; // TRANSLATE
+$l_metadata["headline"] = "Metatieto kentät";
+$l_metadata["tagname"] = "Kentän nimi";
+$l_metadata["type"] = "Tyyppi";
+$l_metadata["dummy"] = "esimerkki";
 
-$l_metadata["save"] = "Saving meta data fields, one moment ..."; // TRANSLATE
-$l_metadata["save_wait"] = "Saving settings"; // TRANSLATE
+$l_metadata["save"] = "Metatietoja tallennetaan, odota pieni hetki...";
+$l_metadata["save_wait"] = "Tallennetaan asetuksia";
 
-$l_metadata["saved"] = "Meta data fields have been saved successfully."; // TRANSLATE
-$l_metadata["saved_successfully"] = "Meta data fields saved"; // TRANSLATE
+$l_metadata["saved"] = "Metatietokentät tallennettu.";
+$l_metadata["saved_successfully"] = "Metatietokentät tallennettu";
 
-$l_metadata["properties"] = "Properties"; // TRANSLATE
+$l_metadata["properties"] = "Ominaisuudet";
 
-$l_metadata["fields_hint"] = "Define additional fields for meta data. Attached data(Exit, IPTC) to the original file, may be migrated automatically during the import. Add one or more fields that are to be imported in the entry field &quot;import from&quot; in the format &quot;[type]/[fieldname]&quot;. Example: &quot;exif/copyright,iptc/copyright&quot;. Multiple fields may be entered separated by comma. The import will search all specified fields up to the first field filled with data."; // TRANSLATE
-$l_metadata["import_from"] = "Import from"; // TRANSLATE
-$l_metadata["fields"] = "Fields"; // TRANSLATE
-$l_metadata['add'] = "add"; // TRANSLATE
+$l_metadata["fields_hint"] = "Määrittele lisäkenttiä metatiedolle. Liitetty data saatetaan automaattisesti muuttaa tuonnin yhteydessä. Lisää syöttökenttään yksi tai useampi kenttä jotka tuodaan &quot;import from&quot; formaattiin &quot;[tyyppi]/[kenttänimi]&quot;. Esimerkiksi &quot;exif/copyright,iptc/copyright&quot;. Useita kenttiä voidaan laittaa erottamalla ne pilkulla. Tuonti etsii kaikki määritellyt kentät kaikista kentistä joissa on jotain dataa.";
+$l_metadata["import_from"] = "Tuo kohteesta";
+$l_metadata["fields"] = "Kentät";
+$l_metadata['add'] = "lisää";
 
 /*****************************************************************************
  * UPLOAD
  *****************************************************************************/
 
-$l_metadata["import_metadata_at_upload"] = "Import meta data from file"; // TRANSLATE
+$l_metadata["import_metadata_at_upload"] = "Tuo metatieto tiedostosta";
 
 /*****************************************************************************
  * ERROR MESSAGES
  *****************************************************************************/
 
-$l_metadata['error_meta_field_empty_msg'] = "The fieldname at line %s1 can not be empty!"; // TRANSLATE
-$l_metadata['meta_field_wrong_chars_messsage'] = "The fieldname '%s1' is not valid! Valid characters are alpha-numeric, capital and small (a-z, A-Z, 0-9) and underscore."; // TRANSLATE
-$l_metadata['meta_field_wrong_name_messsage'] = "The fieldname '%s1' is not valid! It is used internaly from webEdition! Following names are invalid and can not be used: %s2"; // TRANSLATE
+$l_metadata['error_meta_field_empty_msg'] = "Kentän nimi rivillä %s1 ei voi olla tyhjä!";
+$l_metadata['meta_field_wrong_chars_messsage'] = "Kentän nimi '%s1' on virheellinen! Sallitut kirjaimet ovat (a-z, A-Z, 0-9) ja alaviiva.";
+$l_metadata['meta_field_wrong_name_messsage'] = "Kentän nimi '%s1' on virheellinen! Se on sisäisesti webEditionin käytössä! Seuraavat nimet ovat virheellisiä, eikä voida käyttää: %s2";
 
 
 /*****************************************************************************
  * INFO TAB
  *****************************************************************************/
 
-$l_metadata['info_exif_data'] = "Exif data"; // TRANSLATE
-$l_metadata['info_iptc_data'] = "IPTC data"; // TRANSLATE
-$l_metadata['no_exif_data'] = "No Exif data available"; // TRANSLATE
-$l_metadata['no_iptc_data'] = "No IPTC data available"; // TRANSLATE
-$l_metadata['no_exif_installed'] = "The PHP Exif extension is not installed!"; // TRANSLATE
-$l_metadata['no_metadata_supported'] = "webEdition does not support metadata formats for this kind of document."; // TRANSLATE
+$l_metadata['info_exif_data'] = "Exif data";
+$l_metadata['info_iptc_data'] = "IPTC data";
+$l_metadata['no_exif_data'] = "Ei Exif dataa saatavilla";
+$l_metadata['no_iptc_data'] = "Ei IPTC dataa saatavilla";
+$l_metadata['no_exif_installed'] = "PHP Exif -lisäosaa ei asennettu!";
+$l_metadata['no_metadata_supported'] = "webEdition ei tue metadata formaatteja tämänkaltaisissa dokumenteissa.";
 
 ?>

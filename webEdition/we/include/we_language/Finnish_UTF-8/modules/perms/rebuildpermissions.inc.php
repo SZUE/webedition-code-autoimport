@@ -36,5 +36,5 @@ $l_perm["rebuildpermissions"]["REBUILD_OBJECTS"] = "Käyttäjällä on oikeus ra
 $l_perm["rebuildpermissions"]["REBUILD_INDEX"] = "Käyttäjällä on oikeus rakentaa uudelleen indeksitaulukko";
 $l_perm["rebuildpermissions"]["REBUILD_THUMBS"] = "Käyttäjällä on oikeus rakentaa uudelleen esikatselukuvat";
 $l_perm["rebuildpermissions"]["REBUILD_NAVIGATION"] = "Käyttäjällä on oikeus rakentaa uudelleen navigaatio";
-$l_perm["rebuildpermissions"]["REBUILD_META"] = "The user is allowed to rebuild the meta data fields"; // TRANSLATE
+$l_perm["rebuildpermissions"]["REBUILD_META"] = "Käyttäjällä on oikeus rakentaa uudelleen metatietokentät";
 ?>

@@ -77,7 +77,7 @@ $l_thumbnails["saved_successfully"] = "Asetukset tallennettu";
 	$l_thumbnails["ratio"] = "Säilytä kuvasuhde";
 	$l_thumbnails["maximize"] = "Maksimoi koko jos tarvetta";
 	$l_thumbnails["interlace"] = "Limitys (interlace) Kyllä / Ei";
-	$l_thumbnails["quality"] = "Quality"; // TRANSLATE
+	$l_thumbnails["quality"] = "Laatu";
 
 	/**
 	 * FORMAT
