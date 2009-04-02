@@ -73,7 +73,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 */
 
 	$l_prefs["choose_language"] = "Sprache";
-	$l_prefs["language_notice"] = "Die Sprachumstellung wird erst nach einem Neustart des webEdition an allen Stellen durchgeführt.";
+	$l_prefs["language_notice"] = "Die Sprachumstellung wird erst nach einem Neustart von webEdition an allen Stellen durchgeführt.";
 
 	/**
 	 * SEEM
