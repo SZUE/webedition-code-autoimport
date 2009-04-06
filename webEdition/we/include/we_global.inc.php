@@ -3219,8 +3219,9 @@ function unhtmlentities($string)
  */
 function makeRelativePath($docpath, $linkpath)
 {
-	$parentPath = dirname($docpath);
+	$parentPath = $docpath;
 	$newLinkPath = "";
+
 	while ($parentPath != substr($linkpath, 0, strlen($parentPath))) {
 		$parentPath = dirname($parentPath);
 		$newLinkPath .= "../";
