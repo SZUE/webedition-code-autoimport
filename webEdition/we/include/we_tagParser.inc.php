@@ -1165,6 +1165,7 @@ EOF;
 		if ($desc == "false") {
 			$desc = "";
 		}
+		$predefinedSQL = we_getTagAttributeTagParser("predefinedSQL", $arr, "");
 		$offset = we_getTagAttributeTagParser("offset", $arr);
 		$workspaceID = we_getTagAttributeTagParser("workspaceID", $arr);
 		$workspaceID = $workspaceID ? $workspaceID : we_getTagAttributeTagParser("workspaceid", $arr, "");
@@ -1196,7 +1197,7 @@ EOF;
 		$subfolders = (strlen($workspaceID) && $subfolders) ? "true" : "false";
 		
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
-		
+
 		$php = '<?php
 
 
@@ -1221,6 +1222,7 @@ $we_lv_weekstart = isset($_REQUEST["we_lv_weekstart_' . $name . '"]) ? $_REQUEST
 if($we_lv_cats == "we_doc"){
 	$we_lv_cats = we_getCatsFromDoc($we_doc,",",true,$DB_WE);
 }
+$we_predefinedSQL = "' . $predefinedSQL . '";
 $we_offset = "' . $offset . '";
 $we_offset = $we_offset ? abs($we_offset) : 0;
 $we_rows = ' . $rows . ';
@@ -1258,10 +1260,10 @@ $GLOBALS["weEconda"]["HTML"] .= \'<a name="emos_name" title="search" rel="\'.$GL
 				if ($type == "object") {
 					if (defined("OBJECT_TABLE")) {
 						$foo = attributFehltError($arr, "classid", "listview");
-						if ($foo)
+						if ($foo && $predefinedSQL=="")
 							return str_replace($tag, $foo, $code);
 						$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
-$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '");
+$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL);
 ';
 					}
 				
