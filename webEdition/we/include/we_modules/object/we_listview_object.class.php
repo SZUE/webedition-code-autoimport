@@ -129,9 +129,11 @@ class we_listview_object extends listviewBase {
 		if($sqlParts["tables"] || $we_predefinedSQL!=""){
 			
 				if($we_predefinedSQL!="") {
-					$q = $we_predefinedSQL.(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+					$q = $we_predefinedSQL;
 					$this->DB_WE->query($q);
 					$this->anz_all = $this->DB_WE->num_rows();
+					$q = $we_predefinedSQL.(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+					
 				}
 				else {
 					$_idTail = $this->getIdQuery($_obxTable . ".ID");
