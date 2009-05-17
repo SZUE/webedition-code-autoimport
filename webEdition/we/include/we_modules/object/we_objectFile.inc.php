@@ -722,6 +722,7 @@ class we_objectFile extends we_document
 			case "date":
 				return $this->getElement($name);
 			case "float":
+				return strlen($this->getElement($name)) ?  $this->getElement($name) :  "";
 			case "int":
 				return strlen($this->getElement($name)) ?  abs($this->getElement($name)) :  "";
 			case "meta":
@@ -1278,7 +1279,7 @@ class we_objectFile extends we_document
 	}
 	function getFloatFieldHTML($name,$attribs,$editable=true,$variant=false){
 		if($editable){
-			$content = $this->htmlTextInput("we_".$this->Name."_float[$name]",40,strlen($this->getElement($name)) ?  abs($this->getElement($name)) :  "",$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
+			$content = $this->htmlTextInput("we_".$this->Name."_float[$name]",40,strlen($this->getElement($name)) ?  $this->getElement($name) :  "",$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
 
 			if ($variant) {
 				return $content;
@@ -1286,7 +1287,7 @@ class we_objectFile extends we_document
 
 			return '<span class="weObjectPreviewHeadline"><b>'.$name.($this->DefArray["float_".$name]["required"] ? "*" : "")."</b></span>" . ( isset($this->DefArray["float_".$name]['editdescription']) && $this->DefArray["float_".$name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["float_".$name]['editdescription'] . '</div>' : '<br />' ) .$content;
 		}else{
-			$content = strlen($this->getElement($name)) ?  abs($this->getElement($name)) :  "";
+			$content = strlen($this->getElement($name)) ?  $this->getElement($name) :  "";
 			return $this->getPreviewView($name,$content);
 		}
 	}
@@ -1913,7 +1914,7 @@ class we_objectFile extends we_document
 		}
 		if(strlen($v)){
 			if($type=="float") $v= str_replace(",",".",$v);
-			if($type=="float" || $type=="int") $v = abs($v);
+			if($type=="int") $v = abs($v);
 			if($type=="int") $v=floor($v);
 		}
 		if($type == "text" || $type=="input"){
