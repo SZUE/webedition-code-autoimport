@@ -7049,7 +7049,7 @@ function we_tag_checkForm($attribs, $content)
 	
 	} else {
 		$jsEventHandler = '
-    <script type="text/javascript" src="' . JS_DIR . '/external/weCheckForm.js"></script>
+    <script type="text/javascript" src="' . JS_DIR . 'external/weCheckForm.js"></script>
     ';
 	}
 	
