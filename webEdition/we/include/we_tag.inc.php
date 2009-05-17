@@ -4553,7 +4553,7 @@ function we_tag_img($attribs, $content)
 	if ($we_editmode && !$showimage) {
 		$out = '';
 	} elseif (!$id) {
-		$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="">';
+		if($GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';}
 	} else {
 		$out = $GLOBALS["we_doc"]->getField($attribs, "img");
 	}
