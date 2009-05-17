@@ -625,8 +625,13 @@
 
             //  <a href="(Ziele)(?Parameter)" ...> Ziele und Parameter eines Links ermitteln.
             //  $pattern = "/<(a".$trenner."[^>]+href".$trenner."[=\"|=\'|=\\\\|=]*".$trenner.")([^\'\">\040? ]*)([^\"\' \040\\\\]*)(".$trenner."[^>]*)>/sie";
+			// der pattern ist aber nicht mit neuem PCRE kompatibel, da = nicht excaped wird, sollte sein -Armin Schulz
+            //  $pattern = "/<(a".$trenner."[^>]+href".$trenner."[\=\"|\=\'|\=\\\\|\=]*".$trenner.")([^\'\">\040? ]*)([^\"\' \040\\\\]*)(".$trenner."[^>]*)>/sie";
+
             //  Now no more mistake, when href=\" ... \" ...
-            $pattern = "/<(a".$trenner."[^>]+href".$trenner."[=\"|=\'|=|=\\\\]*".$trenner.")([^\'\">\040? \\\]*)([^\"\' \040\\\\>]*)(".$trenner."[^>]*)>/sie";
+            // Auch dieser pattern excaped das = nicht richtig, entsprechend ersetzt durch Armin Schulz
+            // $pattern = "/<(a".$trenner."[^>]+href".$trenner."[=\"|=\'|=|=\\\\]*".$trenner.")([^\'\">\040? \\\]*)([^\"\' \040\\\\>]*)(".$trenner."[^>]*)>/sie";
+            $pattern = "/<(a".$trenner."[^>]+href".$trenner."[\=\"|\=\'|\=|\=\\\\]*".$trenner.")([^\'\">\040? \\\]*)([^\"\' \040\\\\>]*)(".$trenner."[^>]*)>/sie";
 
             preg_match_all($pattern, $code, $allLinks);
             //ERROR_LOG2($allLinks);

@@ -552,7 +552,7 @@ class we_template extends we_document
 						if($tagname=='select') {
 							$spacer = "[\040|\n|\t|\r]*";
 							$selregs = array();
-							if (eregi('(<we:select [^name]*name'.$spacer.'[=\"|=\'|=\\\\|=]*'.$spacer . $att['name'] . '[\'\"]*[^>]*>)(.*)<'.$spacer.'/'.$spacer.'we:select'.$spacer.'>',$templateCode,$selregs)) {
+							if (eregi('(<we:select [^name]*name'.$spacer.'[\=\"|\=\'|\=\\\\|\=]*'.$spacer . $att['name'] . '[\'\"]*[^>]*>)(.*)<'.$spacer.'/'.$spacer.'we:select'.$spacer.'>',$templateCode,$selregs)) {
 								$out[$name]['content'] = $selregs[2];
 							}
 						}

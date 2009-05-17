@@ -122,12 +122,12 @@
 			$this->tmpl_patterns[] = "/<(we:field".$spacer."[^>]*[\040|\n|\t|\r]+tid".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			
 			// search for navigation
-			$this->navigation_patterns[] = "/<(we:navigation[^>]*[\040|\n|\t|\r]+id".$spacer."[=\"|=\'|=\\\\|=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
-			$this->navigation_patterns[] = "/<(we:navigation[^>]*[\040|\n|\t|\r]+parentid".$spacer."[=\"|=\'|=\\\\|=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->navigation_patterns[] = "/<(we:navigation[^>]*[\040|\n|\t|\r]+id".$spacer."[\=\"|\=\'|\=\\\\|\=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->navigation_patterns[] = "/<(we:navigation[^>]*[\040|\n|\t|\r]+parentid".$spacer."[\=\"|\=\'|\=\\\\|\=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			
 			// search for thumbnails
-			$this->thumbnail_patterns[] = "/<(we:img[^>]*[\040|\n|\t|\r]+thumbnail".$spacer."[=\"|=\'|=\\\\|=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
-			$this->thumbnail_patterns[] = "/<(we:field[^>]*[\040|\n|\t|\r]+thumbnail".$spacer."[=\"|=\'|=\\\\|=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->thumbnail_patterns[] = "/<(we:img[^>]*[\040|\n|\t|\r]+thumbnail".$spacer."[\=\"|\=\'|\=\\\\|\=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->thumbnail_patterns[] = "/<(we:field[^>]*[\040|\n|\t|\r]+thumbnail".$spacer."[\=\"|\=\'|\=\\\\|\=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			
 			// some special patterns
 			$this->special_patterns[] = "/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";

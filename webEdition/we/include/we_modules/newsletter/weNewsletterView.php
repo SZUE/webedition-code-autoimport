@@ -2294,8 +2294,8 @@ class weNewsletterView {
 								$content .= getHTTP($url["host"],(isset($url["path"]) ? $url["path"] : ""),"",defined("HTTP_USERNAME") ? HTTP_USERNAME : "",defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "");
 
 								$trenner = "[\040|\n|\t|\r]*";
-								$patterns[] ="/<(img".$trenner."[^>]+src".$trenner."[=\"|=\'|=\\\\|=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
-								$patterns[] ="/<(link".$trenner."[^>]+href".$trenner."[=\"|=\'|=\\\\|=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
+								$patterns[] ="/<(img".$trenner."[^>]+src".$trenner."[\=\"|\=\'|\=\\\\|\=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
+								$patterns[] ="/<(link".$trenner."[^>]+href".$trenner."[\=\"|\=\'|\=\\\\|\=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
 								$match=array();
 								$inlines=array();
 
@@ -2840,10 +2840,10 @@ class weNewsletterView {
 	function cacheInlines(&$buffer){
 
 		$trenner = "[\040|\n|\t|\r]*";
-		$patterns[] ="/<(img".$trenner."[^>]+src".$trenner."[=\"|=\'|=\\\\|=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
-		$patterns[] ="/<(body".$trenner."[^>]+background".$trenner."[=\"|=\'|=\\\\|=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
-		$patterns[] ="/<(table".$trenner."[^>]+background".$trenner."[=\"|=\'|=\\\\|=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
-		$patterns[] ="/<(td".$trenner."[^>]+background".$trenner."[=\"|=\'|=\\\\|=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
+		$patterns[] ="/<(img".$trenner."[^>]+src".$trenner."[\=\"|\=\'|\=\\\\|\=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
+		$patterns[] ="/<(body".$trenner."[^>]+background".$trenner."[\=\"|\=\'|\=\\\\|\=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
+		$patterns[] ="/<(table".$trenner."[^>]+background".$trenner."[\=\"|\=\'|\=\\\\|\=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
+		$patterns[] ="/<(td".$trenner."[^>]+background".$trenner."[\=\"|\=\'|\=\\\\|\=]*".$trenner.")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(".$trenner."[^>]*)>/sie";
 		$patterns[] ="/background".$trenner.":".$trenner."([^url]*url".$trenner."\([\"|\'|\\\\])?(.[^\)|^\"|^\'|^\\\\]+)([\"|\'|\\\\])?/sie";
 		$patterns[] ="/background-image".$trenner.":".$trenner."([^url]*url".$trenner."\([\"|\'|\\\\])?(.[^\)|^\"|^\'|^\\\\]+)([\"|\'|\\\\])?/sie";
 
