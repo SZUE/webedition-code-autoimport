@@ -54,7 +54,7 @@ $we_button = new we_button();
 if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 
 
-	$_REQUEST['classID'] = isset($_REQUEST['classID']) ? abs($_REQUEST['classID']) : '';
+	$_REQUEST['classID'] = isset($_REQUEST['classID']) ? trim($_REQUEST['classID']) : '';
 
 	// check if field exists
 	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"';
