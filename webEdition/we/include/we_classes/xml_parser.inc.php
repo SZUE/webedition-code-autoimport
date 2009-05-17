@@ -2579,10 +2579,7 @@ class XML_Parser {
 	 * @see        characterDataHandler(), evaluate()
 	 */
 	function replaceEntities($str) {
-		// The list of entities to be replaced.
-		$entities = array('&'=>'&amp;', '<'=>'&lt;', '>'=>'&gt;', "'"=>'&apos;',
-			'"'=>'&quot;');
-		return strtr($str, $entities);
+		return htmlspecialchars($str, ENT_QUOTES);
 	}
 
 	/**

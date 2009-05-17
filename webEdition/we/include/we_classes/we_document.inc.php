@@ -1107,7 +1107,6 @@ class we_document extends we_root {
 				if($_htmlspecialchars && (!$_wysiwyg)) {
 					$retval = eregi_replace('<br([^>]*)>','#we##br\1#we##',$retval);
 					$retval = htmlspecialchars($retval, ENT_QUOTES);
-					$retval = str_replace('&#039;', '&apos;', $retval);
 					$retval = eregi_replace('#we##br([^#]*)#we##','<br\1>',$retval);
 				}
 
