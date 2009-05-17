@@ -164,22 +164,22 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 		if ($doubleoptin && (!isset($_REQUEST["confirmID"]))) { // Direkte ANmeldung mit doubleoptin => zuerst confirmmail verschicken.
 			$confirmID = md5 (uniqid (rand()));
 			$lists = "";
-			$emailExistsInAllOfTheLists = true;
+			$emailExistsInOneOfTheLists = false;
 			if($customer) {
 				$__query = "SELECT * FROM " . CUSTOMER_TABLE . " WHERE " . $_customerFieldPrefs['customer_email_field'] . "='" . mysql_real_escape_string($f["subscribe_mail"]) . "'";
 				$db = new DB_WE();
 				$db->query($__query);
-				if(!$db->next_record()) {
-					$emailExistsInAllOfTheLists = false;
+				if($db->next_record()) {
+					$emailExistsInOneOfTheLists = true;
 				}
 				foreach ($abos as $cAbo) {
 					$dbAbo = $db->f($cAbo);
-					if(empty($dbAbo)) $emailExistsInAllOfTheLists = false;
+					if(!empty($dbAbo)) $emailExistsInOneOfTheLists = true;
 					$lists .= $cAbo . ",";
 				}
 			} else {
 				foreach($paths as $p){
-					if($emailExistsInAllOfTheLists){
+					if(!$emailExistsInOneOfTheLists){
 						$realPath = (substr($p,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $p) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $p);
 						if(@file_exists($realPath)){
 							$fh=@fopen($realPath,"rb");
@@ -189,8 +189,8 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 									while(!feof($fh)) $file.=fread($fh,filesize($realPath));
 								}
 								fclose($fh);
-								if(!(eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file))){
-									$emailExistsInAllOfTheLists = false; // E-Mail does not exists in one of the lists
+								if(eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file)){
+									$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
 								}
 							} else {
 								$GLOBALS["WE_WRITENEWSLETTER_STATUS"]= WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR
@@ -198,13 +198,13 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 								return;
 							}
 						}else{
-							$emailExistsInAllOfTheLists = false; // List does not exists, so email can't also exists
+							$emailExistsInOneOfTheLists = false; // List does not exists, so email can't also exists
 						}
 					}
 					$lists .= $p.","; 
 				}
 			}
-			if($emailExistsInAllOfTheLists){
+			if($emailExistsInOneOfTheLists){
 				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_EXISTS;
 				return;
 			}
