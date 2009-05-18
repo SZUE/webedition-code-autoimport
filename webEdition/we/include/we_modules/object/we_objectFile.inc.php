@@ -1837,7 +1837,7 @@ class we_objectFile extends we_document
 
 		if (isset($foo["DefaultTitle"]) && $foo["DefaultTitle"] && strpos($foo["DefaultTitle"], '_')) {
 			list($f,$t) = explode("_", $foo["DefaultTitle"]);
-			if ($f !== '' && isset($d) && $d !== '') {
+			if ($f !== '' && isset($t) && $t !== '') {
 				$elem = $this->geFieldValue($t, $f);
 				$this->setElement("Title", $elem);
 			}
@@ -1852,9 +1852,9 @@ class we_objectFile extends we_document
 		}
 
 		if (isset($foo["DefaultKeywords"]) && $foo["DefaultKeywords"]) {
-			list($f,$d) = explode("_", $foo["DefaultKeywords"]);
-			if ($f !== '' && $d !== '') {
-				$elem = $this->geFieldValue($d, $f);
+			list($f,$k) = explode("_", $foo["DefaultKeywords"]);
+			if ($f !== '' && $k !== '') {
+				$elem = $this->geFieldValue($k, $f);
 				$this->setElement("Keywords", $elem);
 			}	
 		}
