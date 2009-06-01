@@ -1420,13 +1420,14 @@ function we_tag_category($attribs, $content)
 	$field = we_getTagAttribute("field", $attribs, "");
 	$id = abs(we_getTagAttribute("id", $attribs));
 	$separator = we_getTagAttribute("separator", $attribs, "/");
+	$onlyindir = we_getTagAttribute("onlyindir", $attribs, "");
 	
 	// end initialize possible Attributes
 	if ($id) {
 		$category = str_replace(
 				"\\,", 
 				",", 
-				we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field));
+				we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir));
 		return str_replace("/", $separator, $category);
 	}
 	
@@ -1448,7 +1449,7 @@ function we_tag_category($attribs, $content)
 		$category = $catIDs ? str_replace(
 				"\\,", 
 				",", 
-				we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field)) : "";
+				we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir)) : "";
 		return str_replace("/", $separator, $category);
 	
 	} else {
@@ -1456,7 +1457,7 @@ function we_tag_category($attribs, $content)
 		$category = str_replace(
 				"\\,", 
 				",", 
-				we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field));
+				we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir));
 		return str_replace("/", $separator, $category);
 	}
 }
@@ -5758,6 +5759,7 @@ function we_tag_sendMail($attribs, $content)
 		$mimetype = we_getTagAttribute("mimetype",$attribs);
 		$subject = we_getTagAttribute("subject",$attribs);
 		$charset = we_getTagAttribute("charset",$attribs,"UTF-8");
+		$includeimages = we_getTagAttribute("includeimages",$attribs,false);
 
 		if (!empty($id)) {
 			
@@ -5777,7 +5779,7 @@ function we_tag_sendMail($attribs, $content)
 					$we_recipient[] = $to[$l];
 		    	}
 			}
-		    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply);
+		    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages);
 		    $phpmail->setCharSet($charset);
 			if ($mimetype != "text/html") {
 				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));

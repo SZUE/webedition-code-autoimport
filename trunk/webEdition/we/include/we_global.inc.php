@@ -489,7 +489,7 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	return getHtmlTag('select', $attribs, $content, true);
 }
 
-function we_getCatsFromDoc($doc, $tokken = ",", $showpath = false, $db = "", $rootdir = "/", $catfield = "")
+function we_getCatsFromDoc($doc, $tokken = ",", $showpath = false, $db = "", $rootdir = "/", $catfield = "", $onlyindir='')
 {
 	return we_getCatsFromIDs(
 			(isset($doc->Category) ? $doc->Category : ""), 
@@ -497,10 +497,11 @@ function we_getCatsFromDoc($doc, $tokken = ",", $showpath = false, $db = "", $ro
 			$showpath, 
 			$db, 
 			$rootdir, 
-			$catfield);
+			$catfield,
+			$onlyindir);
 }
 
-function we_getCatsFromIDs($catIDs, $tokken = ",", $showpath = false, $db = "", $rootdir = "/", $catfield = "")
+function we_getCatsFromIDs($catIDs, $tokken = ",", $showpath = false, $db = "", $rootdir = "/", $catfield = "", $onlyindir='')
 {
 	if (!$db)
 		$db = new DB_WE();
@@ -523,14 +524,37 @@ function we_getCatsFromIDs($catIDs, $tokken = ",", $showpath = false, $db = "", 
 			if ($field == "Title" || $field == "Description") {
 				if ($GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]]["Catfields"]) {
 					$_arr = unserialize($GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]]["Catfields"]);
-					array_push(
+					if(empty($onlyindir)){
+						array_push(
 							$cats, 
 							($field == "Description") ? parseInternalLinks($_arr["default"][$field], 0) : $_arr["default"][$field]);
-				} else {
-					array_push($cats, "");
+					} else {
+						$pos = strpos($GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]]["Path"], $onlyindir);
+						if( ($pos !== false) AND ($pos == 0)) {
+							array_push(
+								$cats, 
+								($field == "Description") ? parseInternalLinks($_arr["default"][$field], 0) : $_arr["default"][$field]);						
+						}					
+					}
+				} else { 
+					if(empty($onlyindir)){
+						array_push($cats, "");
+					} else {
+						$pos = strpos($GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]]["Path"], $onlyindir);
+						if( ($pos !== false) AND ($pos == 0)) {
+							array_push($cats, "");
+						}
+					}					
 				}
-			} else {
-				array_push($cats, $GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]][$field]);
+			} else { 
+				if(empty($onlyindir)){
+					array_push($cats, $GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]][$field]);
+				} else {
+					$pos = strpos($GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]]["Path"], $onlyindir);
+					if( ($pos !== false) AND ($pos == 0)) {
+						array_push($cats, $GLOBALS["WE_CATEGORY_CACHE"][$foo[$i]][$field]);
+					}
+				}
 			}
 		}
 		if (($showpath || $catfield == "Path") && strlen($rootdir)) {
