@@ -3881,6 +3881,10 @@ function we_tag_ifNotTop($attribs, $content)
 {
 	return !we_tag_ifTop($attribs, $content);
 }
+function we_tag_ifNotTemplate($attribs, $content)
+{
+	return !we_tag_ifTemplate($attribs, $content);
+}
 
 function we_tag_ifNotVar($attribs, $content)
 {
