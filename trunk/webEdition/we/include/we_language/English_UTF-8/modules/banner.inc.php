@@ -111,7 +111,7 @@ $l_banner["pageurl"] = "URL of page";
 $l_banner["bannercode_copy"] = "Copy the following code to your HTML page";
 
 $l_banner["error_tagname_empty"] = "Please fill out the 'Banner name' field!";
-$l_banner["error_page_empty"] = "Please fill out the 'URL of Page' field!";
+$l_banner["error_page_empty"] = "Please fill out the 'URL of page' field!";
 $l_banner["error_width_empty"] = "Please fill out the 'Width' field!";
 $l_banner["error_height_empty"] = "Please fill out the 'Height' field!";
 $l_banner["error_getscript_empty"] = "Please fill out the 'Get script' field!";

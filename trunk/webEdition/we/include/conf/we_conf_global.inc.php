@@ -77,7 +77,7 @@ define("WE_ERROR_MAIL", 0);
 
 
 // E-Mail address to which to mail errors
-define("WE_ERROR_MAIL_ADDRESS", "mail@somedomain.com");
+define("WE_ERROR_MAIL_ADDRESS", "mail@example.com");
 
 
 // Number of entries per batch
