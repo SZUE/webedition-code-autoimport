@@ -38,7 +38,7 @@ $l_shop["user_deleted"] = "Der Benutzer '%s' wurde erfolgreich gelöscht!";
 $l_shop["nothing_to_delete"] = "Zum dauerhaften Entfernen einer Bestellung öffnen Sie zunächst eine existierende!";
 $l_shop["delete_last_user"] = "Zur Verwaltung wird mindestens ein Administrator benötigt.\\nSie können den  Administrator nicht löschen.";
 $l_shop["modify_last_admin"] = "Zur Verwaltung wird mindestens ein Administrator benötigt.\\nSie können die Rechte des Administrators nicht ändern.";
-$l_shop["no_order_there"] = "Hinweis: Um einen Artikel hinzuzufügen, öffnen Sie bitte zunächst eine existierende Bestellung!";
+$l_shop["no_order_there"] = "Um einen Artikel hinzuzufügen, öffnen Sie bitte zunächst eine existierende Bestellung!";
 
 $l_shop["user_data"] = "Benutzerdaten";
 $l_shop["first_name"] = "Vorname";
