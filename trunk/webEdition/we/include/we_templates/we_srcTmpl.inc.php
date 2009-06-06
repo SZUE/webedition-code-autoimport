@@ -258,7 +258,7 @@ if($we_editmode) {
 
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();"><?php //' ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //' ?>
 		<form name="we_form" method="post" onsubmit="return false;"><?php $we_doc->pHiddenTrans(); ?>
 <?php }
 
@@ -550,7 +550,7 @@ array_push($parts,array("headline"=>"","html"=>$maineditor,"space"=>0));
 				Tastencode = Ereignis.keyCode;
 				}
 				if (Tastencode==13) edit_wetag(document.getElementById("tagSelection").value);
-				return false;
+				//return false;
 			}
 		</script>
 		<table id="wizardTable" style="width: 700px;" class="defaultfont" border="0" cellpadding="0" cellspacing="0">
