@@ -364,5 +364,17 @@ $l_we_tag['writeVoting']['description'] = "Tagi tallentaa äänestyksen tietokan
 $l_we_tag['xmlfeed']['description'] = "Tagi lataa xml sisällön annetusta url-osoitteesta";
 $l_we_tag['xmlnode']['description'] = "Tagi tulostaa xml-elementin annetusta syötteestä tai url-osoitteesta.";
 $l_we_tag['xmlnode']['defaultvalue'] = ""; 
+$l_we_tag['ifbannerexists']['description'] = "Executes the enclosed code only, if the banner module is not deaktivated (settings dialog)."; // TRANSLATE
+$l_we_tag['ifbannerexists']['defaultvalue'] = "";
+$l_we_tag['ifcustomerexists']['description'] = "Executes the enclosed code only, if the customer module is not deaktivated (settings dialog)."; // TRANSLATE
+$l_we_tag['ifcustomerexists']['defaultvalue'] = "";
+$l_we_tag['ifnewsletterexists']['description'] = "Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog)."; // TRANSLATE
+$l_we_tag['ifnewsletterexists']['defaultvalue'] = "";
+$l_we_tag['ifobjektexists']['description'] = "Executes the enclosed code only, if the object module is not deaktivated (settings dialog)."; // TRANSLATE
+$l_we_tag['ifobjektexists']['defaultvalue'] = "";
+$l_we_tag['ifshopexists']['description'] = "Executes the enclosed code only, if the shop module is not deaktivated (settings dialog)."; // TRANSLATE
+$l_we_tag['ifshopexists']['defaultvalue'] = "";
+$l_we_tag['ifvotingexists']['description'] = "Executes the enclosed code only, if the voting module is not deaktivated (settings dialog)."; // TRANSLATE
+$l_we_tag['ifvotingexists']['defaultvalue'] = "";
 
 ?>

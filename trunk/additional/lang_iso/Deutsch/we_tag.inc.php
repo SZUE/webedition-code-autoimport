@@ -364,5 +364,16 @@ $l_we_tag['writeVoting']['description'] = "Dieses Tag schreibt ein Voting in die
 $l_we_tag['xmlfeed']['description'] = "Das we:xmlfeed Tag l&auml;dt den XML-Inhalt von der eingegebenen URL.";
 $l_we_tag['xmlnode']['description'] = "Das we:xmlnode Tag erzeugt ein XML-Element aus einem vorgegebenen XML-Feed oder URL.";
 $l_we_tag['xmlnode']['defaultvalue'] = "";
+$l_we_tag['ifbannerexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Banner-Modul nicht deaktiviert wurde (Einstellungsdialog).";
+$l_we_tag['ifbannerexists']['defaultvalue'] = "";
+$l_we_tag['ifcustomerexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Kundenverwaltungs-Modul nicht deaktiviert wurde (Einstellungsdialog).";
+$l_we_tag['ifcustomerexists']['defaultvalue'] = "";
+$l_we_tag['ifnewsletterexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Newsletter-Modul nicht deaktiviert wurde (Einstellungsdialog).";
+$l_we_tag['ifnewsletterexists']['defaultvalue'] = "";
+$l_we_tag['ifobjektexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Objekt/DB-Modul nicht deaktiviert wurde (Einstellungsdialog).";
+$l_we_tag['ifobjektexists']['defaultvalue'] = "";
+$l_we_tag['ifshopexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Shop-Modul nicht deaktiviert wurde (Einstellungsdialog).";
+$l_we_tag['ifshopexists']['defaultvalue'] = "";
+$l_we_tag['ifvotingexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Voting-Modul nicht deaktiviert wurde (Einstellungsdialog).";
 
 ?>
