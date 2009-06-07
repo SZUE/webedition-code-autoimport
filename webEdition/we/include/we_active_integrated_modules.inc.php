@@ -10,4 +10,11 @@ $_we_active_integrated_modules[] = "voting";
 $_we_active_integrated_modules[] = "spellchecker";
 $_we_active_integrated_modules[] = "glossary";
 
+$_we_active_integrated_modules[] = "customer";
+$_we_active_integrated_modules[] = "shop";
+$_we_active_integrated_modules[] = "object";
+$_we_active_integrated_modules[] = "messaging";
+$_we_active_integrated_modules[] = "workflow";
+$_we_active_integrated_modules[] = "newsletter";
+
 ?>

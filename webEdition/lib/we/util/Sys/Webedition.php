@@ -107,6 +107,21 @@ class we_util_Sys_Webedition extends we_util_Sys
 		if(!in_array($property,$_we_available_modules)) {
 			return -1;
 		}
+
+		// integrated modules (free of charge, can be deactivated in webEdition preferences):
+		// users, schedule, editor, banner, export, voting, spellchecker, glossary
+		try {
+			include_once $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_active_integrated_modules.inc.php";
+		} catch (Exception $e) {
+			throw new we_util_sys_Exception('could not read module information from we_active_integrated_modules.inc.php.');
+			return -1;
+		}
+		
+		if (in_array($property,$_we_active_integrated_modules)) {
+			return 1;
+		} else {
+			return 0;
+		}
 		
 		// modules previously available only with costs (always active):
 		// busers, customer, shop, object, messaging, workflow, newsletter
@@ -121,21 +136,6 @@ class we_util_Sys_Webedition extends we_util_Sys
 		}
 		if (in_array($property,$_we_installed_modules) || in_array($module,$_pro_modules)) {
 			return 1;
-		}
-		
-		// integrated modules (free of charge, can be deactivated in webEdition preferences):
-		// users, schedule, editor, banner, export, voting, spellchecker, glossary
-		try {
-			include_once $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_active_integrated_modules.inc.php";
-		} catch (Exception $e) {
-			throw new we_util_sys_Exception('could not read module information from we_active_integrated_modules.inc.php.');
-			return -1;
-		}
-		
-		if (in_array($property,$_we_active_integrated_modules)) {
-			return 1;
-		} else {
-			return 0;
 		}
 		
 	}
