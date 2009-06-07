@@ -46,8 +46,8 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_global.inc.
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_util.inc.php");
 
 //	Insert all config files for all modules.
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_installed_modules.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_installed_modules.inc.php");
 
 // use the following arrays:
 // we_available_modules - modules and informations about integrated and none integrated modules

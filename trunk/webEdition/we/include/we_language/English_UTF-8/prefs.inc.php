@@ -491,7 +491,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition.";
+	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition.<br /><br />For some modules, you have to restart webEdition to aktivate <br /><br />";
 	
 	$l_prefs["module_activation"]["headline"] = "Module activation";
 

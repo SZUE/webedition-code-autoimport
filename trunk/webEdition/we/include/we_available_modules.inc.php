@@ -45,7 +45,7 @@ $_we_available_modules["customer"] = array(
 		"text_short" => $l_javaMenu["module_information"]["customer"]["text_short"], 
 		"notInstalled" => $l_javaMenu["module_information"]["customer"]["not_installed"], 
 		"inModuleMenu" => true, 
-		"integrated" => false, 
+		"integrated" => true, 
 		"hasSettings" => true
 );
 
@@ -69,7 +69,7 @@ $_we_available_modules["shop"] = array(
 		"notInstalled" => $l_javaMenu["module_information"]["shop"]["not_installed"], 
 		"perm" => "NEW_SHOP_ARTICLE || DELETE_SHOP_ARTICLE || EDIT_SHOP_ORDER || DELETE_SHOP_ORDER || EDIT_SHOP_PREFS || ADMINISTRATOR", 
 		"inModuleMenu" => true, 
-		"integrated" => false, 
+		"integrated" => true, 
 		"hasSettings" => true
 );
 
@@ -93,7 +93,7 @@ $_we_available_modules["object"] = array(
 		"text_short" => $l_javaMenu["module_information"]["object"]["text_short"], 
 		"notInstalled" => $l_javaMenu["module_information"]["object"]["not_installed"], 
 		"inModuleMenu" => false, 
-		"integrated" => false, 
+		"integrated" => true, 
 		"hasSettings" => false
 );
 
@@ -104,7 +104,7 @@ $_we_available_modules["messaging"] = array(
 		"text_short" => $l_javaMenu["module_information"]["messaging"]["text_short"], 
 		"notInstalled" => $l_javaMenu["module_information"]["messaging"]["not_installed"], 
 		"inModuleMenu" => true, 
-		"integrated" => false, 
+		"integrated" => true, 
 		"hasSettings" => true
 );
 
@@ -116,7 +116,7 @@ $_we_available_modules["workflow"] = array(
 		"notInstalled" => $l_javaMenu["module_information"]["workflow"]["not_installed"], 
 		"perm" => "NEW_WORKFLOW || DELETE_WORKFLOW || EDIT_WORKFLOW || EMPTY_LOG || ADMINISTRATOR", 
 		"inModuleMenu" => true, 
-		"integrated" => false, 
+		"integrated" => true, 
 		"hasSettings" => false
 );
 
@@ -128,7 +128,7 @@ $_we_available_modules["newsletter"] = array(
 		"notInstalled" => $l_javaMenu["module_information"]["newsletter"]["not_installed"], 
 		"perm" => "NEW_NEWSLETTER || DELETE_NEWSLETTER || EDIT_NEWSLETTER || SEND_NEWSLETTER || SEND_TEST_EMAIL || ADMINISTRATOR", 
 		"inModuleMenu" => true, 
-		"integrated" => false, 
+		"integrated" => true, 
 		"hasSettings" => true
 );
 
