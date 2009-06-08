@@ -2644,6 +2644,7 @@ function we_tag_flashmovie($attribs, $content)
 	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
 	$id = $id ? $id : we_getTagAttribute("id", $attribs);
 	$fname = 'we_' . $GLOBALS["we_doc"]->Name . '_img[' . $name . '#bdid]';
+	$wmode = we_getTagAttribute("wmode", $attribs, "window");
 	$startid = we_getTagAttribute("startid", $attribs, "");
 	$parentid = we_getTagAttribute("parentid", $attribs, "0");
 	$showcontrol = we_getTagAttribute("showcontrol", $attribs, "true", true, true);

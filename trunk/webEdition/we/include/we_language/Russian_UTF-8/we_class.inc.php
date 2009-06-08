@@ -73,6 +73,7 @@ $l_we_class["salign"] = "Расположение Flash ролика";
 $l_we_class["play"] = "Воспроизведение (Play)";
 $l_we_class["loop"] = "Повтор (Loop)";
 $l_we_class["scale"] = "Масштаб";
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Цвет заднего фона";
 $l_we_class["response_save_noperms_to_create_folders"] = "Документ не был сохранен, так как у Вас нет соответствующих полномочий для создания директорий (%s)!";
 $l_we_class["file_on_liveserver"]="Файл уже существует";

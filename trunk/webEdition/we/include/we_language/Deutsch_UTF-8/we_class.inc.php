@@ -75,6 +75,7 @@ $l_we_class["quality"] = "Qualität";
 $l_we_class["salign"] = "Flash Ausrichtung";
 $l_we_class["play"] = "Abspielen";
 $l_we_class["loop"] = "Wiederholen";
+$l_we_class["wmode"] = "Window Mode";
 $l_we_class["scale"] = "Skalieren";
 $l_we_class["bgcolor"] = "Hintergrundfarbe";
 $l_we_class["response_save_noperms_to_create_folders"] = "Das Dokument konnte nicht gespeichert werden, da Sie nicht die notwendigen Rechte besitzen, um neue Verzeichnisse (%s) anzulegen!";

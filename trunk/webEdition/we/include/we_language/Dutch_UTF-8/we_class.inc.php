@@ -75,6 +75,7 @@ $l_we_class["salign"] = "Geschaalde uitlijning";
 $l_we_class["play"] = "Speel af";
 $l_we_class["loop"] = "Herhaal";
 $l_we_class["scale"] = "Schaal";
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Achtergrond kleur";
 $l_we_class["response_save_noperms_to_create_folders"] = "Het document kon niet bewaard worden omdat u niet de juist rechten heeft om mappen aan te maken (%s)!";
 $l_we_class["file_on_liveserver"]="Bestand bestaat al";
