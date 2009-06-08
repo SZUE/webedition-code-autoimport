@@ -115,7 +115,7 @@ class we_flashDocument extends we_binaryDocument
 			if($xml){      //  XHTML-Version
 
 			    $allowedAtts = $this->ObjectParamNames;
-			    $filter = array("alt");
+			    $filter = array("alt",'parentid','startid');
 
                 while(list($k,$v) = $this->nextElement("attrib")){
 
@@ -132,7 +132,7 @@ class we_flashDocument extends we_binaryDocument
 
 			} else {                                     //  Normal-Version - with embed-tag
 
-                $filter = array("type","alt");
+                $filter = array("type","alt",'parentid','startid');
 
                 $allowedAtts = $this->ObjectParamNames;
 
