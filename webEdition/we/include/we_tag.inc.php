@@ -5567,12 +5567,14 @@ function we_tag_quicktime($attribs, $content)
 	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
 	$id = $id ? $id : we_getTagAttribute("id", $attribs);
 	$fname = 'we_' . $GLOBALS["we_doc"]->Name . '_img[' . $name . '#bdid]';
+	$startid = we_getTagAttribute("startid", $attribs, "");
+	$parentid = we_getTagAttribute("parentid", $attribs, "0");
 	
 	$showcontrol = we_getTagAttribute("showcontrol", $attribs, "true", true, true);
 	$showquicktime = we_getTagAttribute("showquicktime", $attribs, "true", true, true);
 	
 	$attribs = removeAttribs($attribs, array(
-		'showcontrol', 'showquicktime'
+		'showcontrol', 'showquicktime', 'startid', 'parentid'
 	));
 	
 	if ($we_editmode && !$showquicktime) {
@@ -5586,7 +5588,7 @@ function we_tag_quicktime($attribs, $content)
 		$we_button = new we_button();
 		$quicktime_button = $we_button->create_button(
 				"image:btn_edit_quicktime", 
-				"javascript:we_cmd('openDocselector','" . $id . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "', 0, 'video/quicktime', " . (we_hasPerm(
+				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "',". $parentid . ", 'video/quicktime', " . (we_hasPerm(
 						"CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", 
 				true);
 		$clear_button = $we_button->create_button(
