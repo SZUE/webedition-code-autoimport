@@ -75,6 +75,7 @@ $l_we_class["salign"] = "Alignement de Flash ";
 $l_we_class["play"] = "Jouer";
 $l_we_class["loop"] = "Répéter";
 $l_we_class["scale"] = "Graduer";
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Couleur pour l'arrière plan";
 $l_we_class["response_save_noperms_to_create_folders"] = "Le document n'a pas pu être enregistré, parc que vous n'avez pas les droits nécéssaires pour créer des nouveaux répertoires (%s)!";
 $l_we_class["file_on_liveserver"]="Ce fichier existe déjà!";

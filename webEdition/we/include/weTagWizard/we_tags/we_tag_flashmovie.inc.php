@@ -9,6 +9,7 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 $GLOBALS['weTagWizard']['attribute']['id145_name'] = new weTagData_textAttribute('145', 'name', true, '');
 $GLOBALS['weTagWizard']['attribute']['id146_width'] = new weTagData_textAttribute('146', 'width', false, '');
 $GLOBALS['weTagWizard']['attribute']['id147_height'] = new weTagData_textAttribute('147', 'height', false, '');
+$GLOBALS['weTagWizard']['attribute']['id824_wmode'] = new weTagData_selectAttribute('824', 'wmode', array(new weTagDataOption('window', false, ''), new weTagDataOption('opaque', false, ''),new weTagDataOption('transparent', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id148_alt'] = new weTagData_textAttribute('148', 'alt', false, '');
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id820_startid'] = new weTagData_selectorAttribute('820', 'startid',FILE_TABLE, 'folder', false, ''); }
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id821_parentid'] = new weTagData_selectorAttribute('821', 'parentid',FILE_TABLE, 'folder', false, ''); }

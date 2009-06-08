@@ -75,6 +75,7 @@ $l_we_class["salign"] = "Skaalattu paikka";
 $l_we_class["play"] = "Soita";
 $l_we_class["loop"] = "Toisto";
 $l_we_class["scale"] = "Skaalaa";
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Taustan väri";
 $l_we_class["response_save_noperms_to_create_folders"] = "Dokumenttia ei voitu tallentaa koska sinulla ei ole tarvittavia oikeuksia luoda hakemistoja (%s)!";
 $l_we_class["file_on_liveserver"]="Tiedosto on jo olemassa";

@@ -75,6 +75,7 @@ $l_we_class["salign"] = "Wyrównanie animacji Flash";
 $l_we_class["play"] = "Odtwórz";
 $l_we_class["loop"] = "Powtórz";
 $l_we_class["scale"] = "Skaluj";
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Kolor tła";
 $l_we_class["response_save_noperms_to_create_folders"] = "Nie można zapisać dokumentu, ponieważ nie masz wystarczających uprawnień, żeby utworzyć nowe katalogi (%s) !";
 $l_we_class["file_on_liveserver"]="Ten plik już istnieje !";

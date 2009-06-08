@@ -236,6 +236,17 @@ class we_flashDocument extends we_binaryDocument
 		<td>'.getPixel(18,2).'</td>
 		<td>'.$this->formSelectElement2(155,"loop",array(""=>$l_global["true"],"false"=>$l_global["false"]),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"") .'</td>
 	</tr>
+	<tr valign="top">
+		<td colspan="5">'.getPixel(2,5).'</td>
+	</tr>
+	<tr valign="top">
+		<td>'.$this->formSelectElement2(155,"wmode",array(""=>"","window"=>"window","opaque"=>"opaque","transparent"=>"transparent"),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>'.getPixel(18,2).'</td>
+		<td>'.'</td>
+		<td>'.getPixel(18,2).'</td>
+		<td>'.'</td>
+	</tr>
+
 </table>
 ';
 		return $content;
@@ -271,6 +282,7 @@ class we_flashDocument extends we_binaryDocument
 		$_align = $this->getElement("align");
 		$_salign = $this->getElement("salign");
 		$_loop = $this->getElement("loop");
+		$_wmode = $this->getElement("wmode");
 
 		$this->setElement("width", 150, "attrib");
 		$this->setElement("height", 100, "attrib");
@@ -284,6 +296,7 @@ class we_flashDocument extends we_binaryDocument
 		$this->setElement("align", "", "attrib");
 		$this->setElement("salign", "", "attrib");
 		$this->setElement("loop", "", "attrib");
+		$this->setElement("wmode", "window", "attrib");	
 		$html = $this->getHtml(true);
 		$this->setElement("width", $_width, "attrib");
 		$this->setElement("height", $_height, "attrib");
@@ -297,6 +310,8 @@ class we_flashDocument extends we_binaryDocument
 		$this->setElement("align", $_align, "attrib");
 		$this->setElement("salign", $_salign, "attrib");
 		$this->setElement("loop", $_loop, "attrib");
+		$this->setElement("wmode", $_wmode, "attrib");
+
 		return $html;
 	}
 
