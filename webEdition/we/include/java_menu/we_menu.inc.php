@@ -513,7 +513,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 	$z = 100;
 
 	// order all modules
-	$buyableModules = weModuleInfo::getNoneIntegratedModules();
+	$buyableModules = weModuleInfo::getAllModules();
 	weModuleInfo::orderModuleArray($buyableModules);
 
 	$userHasAllModules = true;
@@ -561,7 +561,8 @@ $we_menu["3000000"]["parent"] = "0000000";
 	}else{
 		$userHasAllModules = false;
 	}
-
+    /*
+	// No need for that any more
 	if ( defined('BIG_USER_MODULE') ) {
 
 		$m = $_we_available_modules['users'];
@@ -575,7 +576,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 		$we_menu["3010002"]["parent"] = "3000000"; // separator
 
 	}
-
+	*/
 	foreach($_we_available_modules as $key=>$val) {
 		if($val["integrated"]) {
 			$moduleList .= $key . "|";
@@ -593,6 +594,8 @@ $we_menu["3000000"]["parent"] = "0000000";
 		//$we_menu["3030000"]["parent"] = "3000000"; // separator
 	}
 
+    /*
+	// No need for that any more
 	// Modules > not installed modules
 	if(!$userHasAllModules){
 		$we_menu["3040000"]["text"] = $l_javaMenu["not_installed_modules"] . "...";
@@ -603,6 +606,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 
 		$we_menu["3050000"]["parent"] = "3000000"; // separator
 	}
+	*/
 
 	/* bugfix WE-550
 	// Modules > moduleinstallation
@@ -618,6 +622,8 @@ $we_menu["3000000"]["parent"] = "0000000";
 $we_menu["4000000"]["text"] = $l_javaMenu["extras"];
 $we_menu["4000000"]["parent"] = "0000000";
 $we_menu["4000000"]["enabled"] = "1";
+    /*
+	// No need for that any more
 
 	// Extras > Integrated Modules
 	$_activeIntModules = weModuleInfo::getIntegratedModules(true);
@@ -640,7 +646,8 @@ $we_menu["4000000"]["enabled"] = "1";
 
 		$we_menu["4010000"]["parent"] = "4000000"; // separator
 	}
-
+	*/
+	
 	// Extras > Inactive Extras
 /*
 	$_inactiveIntModules = weModuleInfo::getIntegratedModules(false);

@@ -21,6 +21,24 @@ class weModuleInfo {
 	}
 
 	/**
+	 * returns hash with All modules
+	 *
+	 * @return hash
+	 */
+	function getAllModules() {
+		global $_we_available_modules;
+
+		$retArr = array();
+
+		foreach ($_we_available_modules as $key => $modInfo) {
+				$retArr[$key] = $modInfo;
+		}
+		
+		return $retArr;
+	}
+
+
+	/**
 	 * returns hash with all buyable modules
 	 *
 	 * @return hash
