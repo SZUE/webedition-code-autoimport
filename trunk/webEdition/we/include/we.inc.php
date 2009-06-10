@@ -38,9 +38,6 @@ if ($_memlimit < 32) {
 @ini_set("file_uploads", "1");
 @ini_set("session.use_trans_sid", "0");
 
-// BUGFIX WE_LANGUAGE security issue
-$GLOBALS["WE_LANGUAGE"] ='';
-
 // Activate the webEdition error handler
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
 we_error_handler();
