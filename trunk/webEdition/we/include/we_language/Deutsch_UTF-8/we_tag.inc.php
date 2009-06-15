@@ -376,5 +376,12 @@ $l_we_tag['ifshopexists']['description'] = "F&uuml;hrt den eingeschlossenen Code
 $l_we_tag['ifshopexists']['defaultvalue'] = "";
 $l_we_tag['ifvotingexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Voting-Modul nicht deaktiviert wurde (Einstellungsdialog).";
 $l_we_tag['ifvotingexists']['defaultvalue'] = "";
-
+$l_we_tag['ifNotHasShopVariants']['description'] = "Mit &lt;we:ifNotHasShopVariants&gt; kann ein Inhalt bedingt nur dann angezeigt werden, wenn ein Dokument, Objekt KEINE Varianten enth&auml;lt. Damit kann bspw. kontrolliert werden, ob eine &lt;we:listview type=\"shopVariant\"&gt; &uuml;berhaupt angezeigt werden soll bzw. was alternativ angezeigt werden soll.";
+$l_we_tag['ifNotHasShopVariants']['defaultvalue'] = "";
+$l_we_tag['ifNotHasChildren']['description'] = "Innerhalb des we:repeat Tags kann mit &lt;we:ifNotHasChildren&gt; abgefragt werden, ob der aktuelle Kategorie-Ordner Kategorien enth&auml;lt bzw. die Kategorie Kinder hat.";
+$l_we_tag['ifNotHasChildren']['defaultvalue'] = "";
+$l_we_tag['ifNotHasCurrentEntry']['description'] = "Mit we:ifNotHasCurrentEntry kann innerhalb eines we:navigationEntry type=\"folder\" Inhalt nur dann ausgegeben werden, wenn der auszugebende Navigationsordner NICHT den aktiven Eintrag besitzt.";
+$l_we_tag['ifNotHasCurrentEntry']['defaultvalue'] = "";
+$l_we_tag['ifNotHasEntries']['description'] = "Mit we:ifNotHasEntries kann innerhalb eines we:navigationEntry Inhalt nur ausgegeben werden, wenn der auszugebende Navigationseintrag KEINE Eintr&auml;ge besitzt";
+$l_we_tag['ifNotHasEntries']['defaultvalue'] = "";
 ?>
