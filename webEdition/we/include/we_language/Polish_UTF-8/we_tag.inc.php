@@ -364,4 +364,13 @@ $l_we_tag['ifshopexists']['defaultvalue'] = "";
 $l_we_tag['ifvotingexists']['description'] = "Executes the enclosed code only, if the voting module is not deaktivated (settings dialog)."; // TRANSLATE
 $l_we_tag['ifvotingexists']['defaultvalue'] = "";
 
+$l_we_tag['ifNotHasChildren']['description'] = "Within the &lt;we:repeat&gt; tag &lt;we:ifNotHasChildren&gt; is used to query if a category(folder) has child categories."; // TRANSLATE
+$l_we_tag['ifNotHasChildren']['defaultvalue'] = "";
+$l_we_tag['ifNotHasCurrentEntry']['description'] = "we:ifNotHasCurrentEntry can be used within we:navigationEntry type=\"folder\" to show some content, only if the navigation folder does not contain the activ entry"; // TRANSLATE
+$l_we_tag['ifNotHasCurrentEntry']['defaultvalue'] = "";
+$l_we_tag['ifNotHasEntries']['description'] = "we:ifNotHasEntries can be used within we:navigationEntry to show content only, if the navigation entry does not contain entries."; // TRANSLATE
+$l_we_tag['ifNotHasEntries']['defaultvalue'] = "";
+$l_we_tag['ifNotHasShopVariants']['description'] = "The tag we:ifHasShopVariants can display content depending on the existance of variants in an object or document. With this, it can be controlled whether a &lt;we:listview type=\"shopVariant\"&gt; should be displayed at all or some alternative."; // TRANSLATE
+$l_we_tag['ifNotHasShopVariants']['defaultvalue'] = "";
+
 ?>
