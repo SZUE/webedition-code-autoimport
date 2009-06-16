@@ -6746,7 +6746,7 @@ function we_tag_var($attribs, $content)
 				$vatId = $GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME);
 				return weShopVats::getVatRateForSite($vatId);
 			}
-		
+		case 'link' : return $doc->getField($attribs, $type, false);break; // bugfix #3634
 		default :
 			$normVal = $doc->getField($attribs, $type, true);
 			// bugfix 7557
