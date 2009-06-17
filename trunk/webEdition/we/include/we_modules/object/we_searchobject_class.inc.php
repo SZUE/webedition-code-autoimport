@@ -64,10 +64,11 @@ class objectsearch extends we_search {
 
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && !eregi("^multiobject", $tableInfo[$i]["name"]) && !eregi("^object", $tableInfo[$i]["name"])) {
-				if(ereg('^(.*)_(.*)$',$tableInfo[$i]["name"],$regs)) {
+				$regs=explode('_',$tableInfo[$i]["name"],2); 
+				if(count($regs)==2) {//if(ereg('^(.*)_(.*)$',$tableInfo[$i]["name"],$regs)) {
 					$opts .= '<option value="'.$tableInfo[$i]["name"].'" '
 					      .(($select==$tableInfo[$i]["name"])?"selected":"").'>'
-					      . $regs[2] .'</option>'."\n";
+					      . $regs[1] .'</option>'."\n";
 				}
 				$all .= $tableInfo[$i]["name"].",";
 			}
