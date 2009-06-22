@@ -89,8 +89,8 @@ class we_listview_multiobject extends listviewBase {
 		$temp = $data['objects'];
 		$empty = array_keys($temp, "");
 		$objects = array();
-		foreach($temp as $val) {
-			if(!in_array($val, $empty)) {
+		foreach($temp as $key => $val) {
+			if(!in_array($key, $empty)) {
 				array_push($objects, $val);
 			}
 		}
