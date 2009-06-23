@@ -617,7 +617,7 @@ class we_import_files
 					'localeLanguage' => 'de', 
 					'realTimeResponse' => 'false', 
 					//'completeURL'=>'javascript:top.imgimportcontent.uploadFinished();'
-					'completeURL' => 'we_cmd.php?we_cmd[0]=import_files&step=3'
+					'completeURL' => 'we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3' // original: 'completeURL' => 'we_cmd.php?we_cmd[0]=import_files&step=3' ersetzt wegen #Bug 3723 durch die Lösung von unten für den MAC
 			)
 			;
 			
