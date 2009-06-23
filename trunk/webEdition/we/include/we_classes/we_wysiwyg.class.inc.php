@@ -295,7 +295,7 @@ class we_wysiwyg{
 
 				-->
 				</script>' .
-				'<script language="JavaScript" type="text/javascript" src="' . JS_DIR . '/we_showMessage.js"></script>'
+				'<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>'
 				.
 					($GLOBALS["SAFARI_WYSIWYG"]
 						? '<script language="JavaScript" type="text/javascript" src="/webEdition/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
