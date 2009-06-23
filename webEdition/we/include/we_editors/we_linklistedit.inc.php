@@ -348,7 +348,7 @@ htmlTop($l_linklist_edit["edit_link"]);
 $yuiSuggest =& weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "/keyListener.js"));
+print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 ?>
 <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script language="JavaScript" type="text/javascript">
@@ -890,7 +890,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "/keyListener.js"));
 
 
 		?>
-		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
+		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onSubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>">
 			<?php
 				if (isset($ll) && $ll) {
