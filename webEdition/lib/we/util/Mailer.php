@@ -115,7 +115,28 @@ class we_util_Mailer extends PHPMailer
 		
 		$this->setClassVars(array('Subject' => $subject, 'Sender' => $_sender['email'], 'From' => $_sender['email'], 'FromName' => $_sender['name'], 'isEmbedImages' => $isEmbedImages, 'CharSet' => "UTF-8"));
 	}
-
+	public function setCC($toCC){
+		if (is_array($toCC) && count($toCC) > 0) {
+			foreach ($toCC as $_toCC) {
+				$_toCC = $this->parseEmailUser($_toCC);
+				$this->AddCC($_toCC['email'], $_toCC['name']);
+			}
+		} else if ($toCC != "") {
+			$_toCC = $this->parseEmailUser($toCC);
+			$this->AddCC($_toCC['email'], $_toCC['name']);
+		}	
+	}
+	public function setBCC($toBCC){
+		if (is_array($toBCC) && count($toBCC) > 0) {
+			foreach ($toBCC as $_toBCC) {
+				$_toBCC = $this->parseEmailUser($_toBCC);
+				$this->AddBCC($_toBCC['email'], $_toBCC['name']);
+			}
+		} else if ($toBCC != "") {
+			$_toBCC = $this->parseEmailUser($toBCC);
+			$this->AddBCC($_toBCC['email'], $_toBCC['name']);
+		}	
+	}
 	public function parseEmailUser($user)
 	{
 		if (preg_match("/<(.)*>/", $user, $_user)) {
@@ -153,6 +174,7 @@ class we_util_Mailer extends PHPMailer
 	{
 		if ($this->isEmbedImages) {
 			preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
+			$images[2] = array_unique ($images[2]); //entfernt doppelte Bildereinfügungen #3725
 			foreach ($images[2] as $i => $url) {
 				// only images that from the own server will be embeded
 				if (preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['HTTP_HOST'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)) {
