@@ -5768,6 +5768,8 @@ function we_tag_sendMail($attribs, $content)
 		$from = we_getTagAttribute("from",$attribs);
 		$reply = we_getTagAttribute("reply",$attribs);
 		$recipient = we_getTagAttribute("recipient",$attribs);
+		$recipientCC = we_getTagAttribute("recipientCC",$attribs);
+		$recipientBCC = we_getTagAttribute("recipientBCC",$attribs);
 		$mimetype = we_getTagAttribute("mimetype",$attribs);
 		$subject = we_getTagAttribute("subject",$attribs);
 		$charset = we_getTagAttribute("charset",$attribs,"UTF-8");
@@ -5791,7 +5793,39 @@ function we_tag_sendMail($attribs, $content)
 					$we_recipient[] = $to[$l];
 		    	}
 			}
-		    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages);
+
+			$toCC = explode(",",$recipientCC);
+		    $we_recipientCC = array();
+			for ($l=0;$l < sizeof($toCC);$l++) {
+
+		    	if (!eregi("@",$toCC[$l])) {
+		    		if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && eregi("@",$_SESSION["webuser"][$toCC[$l]])) { //wenn man registireten Usern was senden moechte
+		    			$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
+		    		} else if(isset($_REQUEST[$toCC[$l]]) && eregi("@",$_REQUEST[$toCC[$l]])) {	//email to friend test
+		    			$we_recipientCC[] = $_REQUEST[$toCC[$l]];
+		    		}
+		    	} else {
+					$we_recipientCC[] = $toCC[$l];
+		    	}
+			}
+			$toBCC = explode(",",$recipientBCC);
+		    $we_recipientBCC = array();
+			for ($l=0;$l < sizeof($toBCC);$l++) {
+
+		    	if (!eregi("@",$toBCC[$l])) {
+		    		if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && eregi("@",$_SESSION["webuser"][$toBCC[$l]])) { //wenn man registireten Usern was senden moechte
+		    			$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
+		    		} else if(isset($_REQUEST[$toBCC[$l]]) && eregi("@",$_REQUEST[$toBCC[$l]])) {	//email to friend test
+		    			$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
+		    		}
+		    	} else {
+					$we_recipientBCC[] = $toBCC[$l];
+		    	}
+			}			
+		    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages); //includeimages wird - aus mir nicht verstaendlichen Gruenden - auf einigen Systemen NICHT richtig übernommen: A. Schulz
+			if($includeimages) {$phpmail->setIsEmbedImages(true);}
+			if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
+			if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
 		    $phpmail->setCharSet($charset);
 			if ($mimetype != "text/html") {
 				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
