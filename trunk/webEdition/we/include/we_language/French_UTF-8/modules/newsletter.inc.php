@@ -223,6 +223,7 @@ $l_newsletter["mail_failed"] = "L'E-Mail '%s' ne peut pas être envoyé. Une rai
 $l_newsletter["reject_save_malformed"] = "Ne pas enregister la lettere, si une adresse-E-Mail est invalide.";;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
 $l_newsletter["use_https_refer"] = "Utiliser HTTPS pour les références";
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
 $l_newsletter["we_filename_notValid"] = "Le nom saisi n'est pas valide!\\nErlaubte Zeichen sind Buchstaben von a bis z (Gross- oder Kleinschreibung) , Zahlen, Unterstrich (_), Minus (-), Punkt (.) und Leerzeichen ( ).";
 $l_newsletter["send_wait"] = "Attente jusque'au prochain<br>processus d'envoi (dans ms)";
 $l_newsletter["send_images"] = "Joindre les images à l'E-Mail comme attaché";

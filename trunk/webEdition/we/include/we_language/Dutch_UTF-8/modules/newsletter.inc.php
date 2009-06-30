@@ -224,6 +224,7 @@ $l_newsletter["mail_failed"] = " E-mail '%s' kan niet verstuurt worden. Een moge
 $l_newsletter["reject_save_malformed"] = "Bewaar de nieuwsbrief niet als het adres misvormd is.";;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
 $l_newsletter["use_https_refer"] = "Gebruik HTTPS voor referentie";
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
 $l_newsletter["we_filename_notValid"] = "Ongeldige naam!\\nGeldige karakters zijn alfa-numeriek, boven- en onderkast, eveneens als de underscore, koppelteken, punt en witruimte (a-z, A-Z, 0-9, _, -, ., )";
 $l_newsletter["send_wait"] = "Wachttijd to volgende keer laden (ms)";
 $l_newsletter["send_images"] = "Verzend afbeeldingen";

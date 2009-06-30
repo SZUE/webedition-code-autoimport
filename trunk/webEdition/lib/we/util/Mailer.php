@@ -44,6 +44,15 @@ class we_util_Mailer extends PHPMailer
 	protected $basedir = '';
 
 	/**
+	 * Flag for using <base href
+	 *
+	 * @var Bool
+	 */
+	protected $isUseBaseHref = true;
+
+
+
+	/**
 	 * Enter description here...
 	 *
 	 * @var unknown_type
@@ -208,9 +217,11 @@ class we_util_Mailer extends PHPMailer
 			}
 		}
 		$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'],"/"),"",$_SERVER['SERVER_PROTOCOL']));
-		
-		if ($this->ContentType == 'text/html' && !strpos($this->Body,"<base")) {
-			$this->Body = str_replace("</head>","<base href='".($protocol==""?"":$protocol."://").$_SERVER['HTTP_HOST']."' />\n</head>",$this->Body);
+
+		if($isUseBaseHref) {//Bug #3735
+			if ($this->ContentType == 'text/html' && !strpos($this->Body,"<base")) { 
+				$this->Body = str_replace("</head>","<base href='".($protocol==""?"":$protocol."://").$_SERVER['HTTP_HOST']."' />\n</head>",$this->Body);
+			}
 		}
 		
 		if ((!isset($this->AltBody) || $this->AltBody == "") && $this->ContentType == 'text/html') {
@@ -296,6 +307,11 @@ class we_util_Mailer extends PHPMailer
 	public function setIsEmbedImages($val = false)
 	{
 		$this->isEmbedImages = $val;
+	}
+
+	public function setIsUseBaseHref($val = true)
+	{
+		$this->isUseBaseHref = $val;
 	}
 
 	public function setBody($val)
