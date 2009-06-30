@@ -224,6 +224,7 @@ $l_newsletter["mail_failed"] = "Die E-Mail '%s' kann nicht gesendet werden. Mög
 $l_newsletter["reject_save_malformed"] = "Newsletter nicht speichern, falls die E-Mail-Adresse ungültig ist.";
 $l_newsletter["rfc_email_check"] = "Prüfung nach RFC 3696.<br>ACHTUNG: Diese Prüfung kann unter Umständen den Server erheblich verlangsamen";
 $l_newsletter["use_https_refer"] = "Benutze HTTPS für Verweise";
+$l_newsletter["use_base_href"] = "Benutze &lt;base href=... im Head";
 $l_newsletter["we_filename_notValid"] = "Der eingegebene Name ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.) und Leerzeichen ( ).";
 $l_newsletter["send_wait"] = "Wartezeit bis zum nächsten<br>Sendevorgang (in ms)";
 $l_newsletter["send_images"] = "Bilder als Anhang zur E-Mail hinzufügen";

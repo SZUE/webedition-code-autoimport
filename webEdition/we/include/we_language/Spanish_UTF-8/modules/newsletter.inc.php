@@ -223,6 +223,7 @@ $l_newsletter["mail_failed"] = "El E-Mail '%s' no puede enviarse. ¡Una posible 
 $l_newsletter["reject_save_malformed"] = "No salvar el boletín informativo si la dirección de E-Mail es inválida.";;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
 $l_newsletter["use_https_refer"] = "Use HTTPS para la referencia";
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
 $l_newsletter["we_filename_notValid"] = "El nombre entrado no es válido!\\nLos carácteres permitidos son alpha-númericos, mayúsculas y minúsculas, subrayado (_), guión (-), punto (.) y espacios ()(a-z, A-Z, 0-9, _, -, ., ).";
 $l_newsletter["send_wait"] = "Esperar un periodo para la próxima carga (en ms)";
 $l_newsletter["send_images"] = "Enviar imágenes";

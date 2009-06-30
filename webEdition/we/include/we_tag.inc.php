@@ -5774,7 +5774,12 @@ function we_tag_sendMail($attribs, $content)
 		$subject = we_getTagAttribute("subject",$attribs);
 		$charset = we_getTagAttribute("charset",$attribs,"UTF-8");
 		$includeimages = we_getTagAttribute("includeimages",$attribs,false);
-
+		$useBaseHref = we_getTagAttribute("useBaseHref",$attribs,false);
+		$useFormmailLog = we_getTagAttribute("useFormmailLog",$attribs,false);
+		$useFormmailBlock = we_getTagAttribute("useFormmailBlock",$attribs,false);
+		if($useFormmailBlock) {$useFormmailLog=true;}
+		$_blocked = false;
+		
 		if (!empty($id)) {
 			
 			$codes = we_getDocumentByID($id);
@@ -5821,19 +5826,80 @@ function we_tag_sendMail($attribs, $content)
 		    	} else {
 					$we_recipientBCC[] = $toBCC[$l];
 		    	}
-			}			
-		    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages); //includeimages wird - aus mir nicht verstaendlichen Gruenden - auf einigen Systemen NICHT richtig übernommen: A. Schulz
-			if($includeimages) {$phpmail->setIsEmbedImages(true);}
-			if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
-			if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
-		    $phpmail->setCharSet($charset);
-			if ($mimetype != "text/html") {
-				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
-			} else {
-				$phpmail->addHTMLPart($codes);
 			}
-		    $phpmail->buildMessage();
-		    $phpmail->Send();
+			
+			if ($useFormmailLog) {
+				$_ip = $_SERVER['REMOTE_ADDR'];
+				$_now = time();
+
+				// insert into log
+				$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_LOG_TABLE . " (ip, unixTime) VALUES('".mysql_real_escape_string($_ip)."', " . abs($_now) . ")" );
+				if (defined("FORMMAIL_EMPTYLOG") && (FORMMAIL_EMPTYLOG > -1)) {
+					$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime < " . abs($_now - FORMMAIL_EMPTYLOG));
+				}
+
+				if ($useFormmailBlock) {
+
+					$_num = 0;
+					$_trials = (defined("FORMMAIL_TRIALS") ? FORMMAIL_TRIALS : 3);
+					$_blocktime = (defined("FORMMAIL_BLOCKTIME") ? FORMMAIL_BLOCKTIME : 86400); 
+
+					// first delete all entries from blocktable which are older then now - blocktime
+					$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE blockedUntil != -1 AND blockedUntil < " . abs($_now));
+
+					// check if ip is allready blocked
+					if (f("SELECT id FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . mysql_real_escape_string($_ip) . "'","id",$GLOBALS["DB_WE"])) {
+						$_blocked = true;
+					} else {
+
+						// ip is not blocked, so see if we need to block it
+						$GLOBALS["DB_WE"]->query("SELECT * FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime > " . abs($_now - FORMMAIL_SPAN) . " AND ip='". mysql_real_escape_string($_ip) . "'");
+						if ($GLOBALS["DB_WE"]->next_record()) {
+							$_num = $GLOBALS["DB_WE"]->num_rows();
+							if ($_num > $_trials) {
+								$_blocked = true;
+								// cleanup
+								$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . mysql_real_escape_string($_ip) . "'" );
+								// insert in block table
+								$blockedUntil = ($_blocktime == -1) ? -1 : abs($_now + $_blocktime);
+								$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".mysql_real_escape_string($_ip)."', " . $blockedUntil . ")" );
+							}
+						}
+					}
+				}
+
+
+			}
+			if ($_blocked) {
+				$headline = "Fehler / Error";
+				$content =		$GLOBALS["l_global"]["formmailerror"].getHtmlTag("br")	.	"&#8226; "."Email dispatch blocked / Email Versand blockiert!";
+				$css = array('media' => 'screen','rel'	=> 'stylesheet','type'	=> 'text/css','href'	=> WEBEDITION_DIR."css/global.php?WE_LANGUAGE=".$GLOBALS["WE_LANGUAGE"]	);
+
+				print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
+				print htmlTop();
+				print getHtmlTag("link", $css);
+				print "</head>";
+				print getHtmlTag("body", array("class"=>"weEditorBody"), "", false, true);
+				print htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content),$headline);
+				print "</body></html>";
+
+				exit;					
+			}
+			if(!$_blocked) {			
+			    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages); //includeimages wird - aus mir nicht verstaendlichen Gruenden - auf einigen Systemen NICHT richtig übernommen: A. Schulz
+				if($includeimages) {$phpmail->setIsEmbedImages(true);}
+				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
+				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
+				if($useBaseHref){$phpmail->setIsUseBaseHref($useBaseHref);}
+			    $phpmail->setCharSet($charset);
+				if ($mimetype != "text/html") {
+					$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
+				} else {
+					$phpmail->addHTMLPart($codes);
+				}
+			    $phpmail->buildMessage();
+			    $phpmail->Send();
+			}
 		}
 	}
 	return;

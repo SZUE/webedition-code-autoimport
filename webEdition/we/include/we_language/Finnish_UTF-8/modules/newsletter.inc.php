@@ -224,6 +224,7 @@ $l_newsletter["mail_failed"] = " E-mail '%s' lähetys ei onnistu. Syynä tähän
 $l_newsletter["reject_save_malformed"] = "Älä tallenna uutiskirjettä jos osoite on väärän muotoinen.";;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server.";
 $l_newsletter["use_https_refer"] = "Käytä viittauksissa HTTPS-protokollaa";
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
 $l_newsletter["we_filename_notValid"] = "Virheellinen nimi!\\nSallitut kirjaimet ovat, Isot ja pienet kirjaimet, alleviivaus, tavuviiva, piste and väliylönti (a-z, A-Z, 0-9, _, -, ., )";
 $l_newsletter["send_wait"] = "Latauksen odotusaika (ms)";
 $l_newsletter["send_images"] = "Lähetä kuvia";

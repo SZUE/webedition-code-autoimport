@@ -221,6 +221,7 @@ $l_newsletter["mail_failed"] = "Wiadomość '%s' nie może zostać wysłana. Mo�
 $l_newsletter["reject_save_malformed"] = "Nie zapisuj newslettera w przypadku, gdy adres e-mail jest nieprawidłowy.";;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server.";
 $l_newsletter["use_https_refer"] = "Użyj HTTPS do odniesień";
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
 $l_newsletter["we_filename_notValid"] = "Wpisana nazwa jest nieprawidłowa!\\nDozwolone znaki to litery od a do z (wielkie lub małe) , cyfry, znak podkreślenia (_), minus (-), kropka (.) i spacja ( ).";
 $l_newsletter["send_wait"] = "Czas oczekiwania do następnego procesu wysyłania<br> (w ms)";
 $l_newsletter["send_images"] = "Dodaj obrazki jako załączniki do e-maila";
