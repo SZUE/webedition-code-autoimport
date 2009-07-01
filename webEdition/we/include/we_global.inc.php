@@ -3023,7 +3023,11 @@ function getHtmlTag($element, $attribs = array(), $content = "", $forceEndTag = 
 	$_tag = "<$element";
 	
 	foreach ($attribs as $k => $v) {
-		$_tag .= ' ' . str_replace('pass_', '', $k) . "=\"$v\"";
+		if($k=='link_attribute'){// Bug #3741
+			$_tag .= ' '.$v; 
+		} else{
+			$_tag .= ' ' . str_replace('pass_', '', $k) . "=\"$v\"";
+		}
 	}
 	if ($content != "" || $forceEndTag) { //	use endtag
 		$_tag .= ">$content</$element>";
