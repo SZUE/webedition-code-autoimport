@@ -325,6 +325,8 @@ class weNavigationItem
 			$code = '';
 			$_fields = makeArrayFromCSV($attribs['attributes']);
 			unset($attribs['attributes']);
+			$_link_attribute = $_fields['link_attribute'];
+			//unset($_fields['link_attribute']);
 			foreach ($_fields as $_field) {
 				switch ($_field) {
 					case 'link' :
@@ -338,7 +340,7 @@ class weNavigationItem
 								'accesskey', 
 								'tabindex', 
 								'rel', 
-								'rev'
+								'rev','link_attribute'
 						);
 						foreach ($useFields as $field) {
 							if (isset($this->$field) && $this->$field != '') {
@@ -348,11 +350,15 @@ class weNavigationItem
 									$attribs[$field] = $this->$field;
 								}
 								//$attribs[$field] = $this->$field;
+								
 							} else 
 								if (isset($this->attributes[$field]) && $this->attributes[$field] != '') {
 									//$attribs[$field] = $this->attributes[$field];
-									$attribs[$field] = htmlspecialchars(
-											$this->attributes[$field]);
+									if ($field=='link_attribute') { // Bug #3741
+										$attribs[$field] = $this->attributes[$field];
+									} else {
+										$attribs[$field] = htmlspecialchars($this->attributes[$field]);
+									}
 								}
 						}
 						
