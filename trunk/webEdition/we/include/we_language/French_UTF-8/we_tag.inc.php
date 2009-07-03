@@ -382,5 +382,8 @@ $l_we_tag['ifNotHasEntries']['description'] = "we:ifNotHasEntries can be used wi
 $l_we_tag['ifNotHasEntries']['defaultvalue'] = "";
 $l_we_tag['ifNotHasShopVariants']['description'] = "The tag we:ifHasShopVariants can display content depending on the existance of variants in an object or document. With this, it can be controlled whether a &lt;we:listview type=\"shopVariant\"&gt; should be displayed at all or some alternative."; // TRANSLATE
 $l_we_tag['ifNotHasShopVariants']['defaultvalue'] = "";
-
+$l_we_tag['ifPageLanguage']['description'] = "The tag we:ifPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages"; // TRANSLATE
+$l_we_tag['ifPageLanguage']['defaultvalue'] = "";
+$l_we_tag['ifNotPageLanguage']['description'] = "The tag we:ifNotPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";// TRANSLATE
+$l_we_tag['ifNotPageLanguage']['defaultvalue'] = "";
 ?>
