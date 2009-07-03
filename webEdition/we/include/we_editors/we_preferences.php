@@ -4127,7 +4127,7 @@ function setColorChooserDisabled(id, disabled) {
 			$_html = "";
 
 			foreach ($_modInfos as $_modKey => $_modInfo) {
-
+				if(!isset($_modInfo["alwaysActive"])) $_modInfo["alwaysActive"] = null;
 				$_html .= we_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || in_array($_modKey, $GLOBALS["_we_active_modules"]), "active_integrated_modules[$_modKey]", $_modInfo["text"], false, "defaultfont", "", $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"active_integrated_modules[$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
 
 			}
