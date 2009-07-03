@@ -384,4 +384,10 @@ $l_we_tag['ifNotHasCurrentEntry']['description'] = "Mit we:ifNotHasCurrentEntry 
 $l_we_tag['ifNotHasCurrentEntry']['defaultvalue'] = "";
 $l_we_tag['ifNotHasEntries']['description'] = "Mit we:ifNotHasEntries kann innerhalb eines we:navigationEntry Inhalt nur ausgegeben werden, wenn der auszugebende Navigationseintrag KEINE Eintr&auml;ge besitzt";
 $l_we_tag['ifNotHasEntries']['defaultvalue'] = "";
+$l_we_tag['ifPageLanguage']['description'] = "Mit we:ifPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei k&ouml;nnen mehrere Werte durch Komma separiert angegeben werden (oder-Verkn&uuml;pfung). Die m&ouml;glichen Werte ergeben sich aus dem Einstellungsdialog, Tab 'Sprachen'.";
+$l_we_tag['ifPageLanguage']['defaultvalue'] = "";
+$l_we_tag['ifNotPageLanguage']['description'] = "Mit we:ifNotPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei k&ouml;nnen mehrere Werte durch Komma separiert angegeben werden (oder-Verkn&uuml;pfung). Die m&ouml;glichen Werte ergeben sich aus dem Einstellungsdialog, Tab 'Sprachen'.";
+$l_we_tag['ifNotPageLanguage']['defaultvalue'] = "";
+
+
 ?>

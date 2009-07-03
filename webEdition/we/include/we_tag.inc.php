@@ -3943,6 +3943,24 @@ function we_tag_ifNotWritten($attribs, $content)
 	return isset($GLOBALS["we_" . $type . "_write_ok"]) && ($GLOBALS["we_" . $type . "_write_ok"] == false);
 }
 
+function we_tag_ifPageLanguage($attribs, $content)
+{
+	$foo = attributFehltError($attribs, "match", "ifPageLanguage", true);
+	if ($foo) {
+		print($foo);
+		return "";
+	}
+	
+	$match = we_getTagAttribute("match", $attribs);
+	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$doc = we_getDocForTag($docAttr);
+	$matchArray = makeArrayFromCSV($match);
+	foreach ($matchArray as $match) {
+		if ($doc->Language ==$match) {return true;}
+	}
+	return false;
+}
+
 function we_tag_ifPosition($attribs, $content)
 {
 	global $lv;
@@ -4169,6 +4187,11 @@ function we_tag_ifPosition($attribs, $content)
 		}
 	}
 	return false;
+}
+
+function we_tag_ifNotPageLanguage($attribs, $content)
+{
+	return !we_tag_ifPageLanguage($attribs, $content);
 }
 
 function we_tag_ifNotPosition($attribs, $content)
