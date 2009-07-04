@@ -37,6 +37,8 @@ $_sysinfo['mysql_version'] = 'MySql versie';
 $_sysinfo['more_info'] = 'meer info';
 $_sysinfo['back'] = 'terug';
 $_sysinfo['sysinfo'] = 'Systeem informatie';
+$_sysinfo['zendframework_version'] = 'Zend Framework Version';
+$_sysinfo["register_globals warning"] = 'WARNUNG: register_globals can be a serious security risk for your system so we strongly recommend to turn off this feature!';
 
 $_sysinfo['connection_types'] = 'Bijwerken connectie types';
 $_sysinfo['gdlib'] = 'GDlib ondersteuning';
