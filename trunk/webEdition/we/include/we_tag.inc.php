@@ -3943,24 +3943,6 @@ function we_tag_ifNotWritten($attribs, $content)
 	return isset($GLOBALS["we_" . $type . "_write_ok"]) && ($GLOBALS["we_" . $type . "_write_ok"] == false);
 }
 
-function we_tag_ifPageLanguage($attribs, $content)
-{
-	$foo = attributFehltError($attribs, "match", "ifPageLanguage", true);
-	if ($foo) {
-		print($foo);
-		return "";
-	}
-	
-	$match = we_getTagAttribute("match", $attribs);
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
-	$doc = we_getDocForTag($docAttr);
-	$matchArray = makeArrayFromCSV($match);
-	foreach ($matchArray as $match) {
-		if ($doc->Language ==$match) {return true;}
-	}
-	return false;
-}
-
 function we_tag_ifPosition($attribs, $content)
 {
 	global $lv;
@@ -4189,10 +4171,7 @@ function we_tag_ifPosition($attribs, $content)
 	return false;
 }
 
-function we_tag_ifNotPageLanguage($attribs, $content)
-{
-	return !we_tag_ifPageLanguage($attribs, $content);
-}
+
 
 function we_tag_ifNotPosition($attribs, $content)
 {
@@ -5805,7 +5784,6 @@ function we_tag_sendMail($attribs, $content)
 		
 		if (!empty($id)) {
 			
-			$codes = we_getDocumentByID($id);
 		    $to = explode(",",$recipient);
 
 		    $we_recipient = array();
@@ -5908,7 +5886,13 @@ function we_tag_sendMail($attribs, $content)
 
 				exit;					
 			}
-			if(!$_blocked) {			
+			if(!$_blocked) {
+				if (!isset($_SESSION)) {
+					@session_start();
+				}
+				$_SESSION['WE_SendMail']=true;	
+				$codes = we_getDocumentByID($id);
+				unset($_SESSION['WE_SendMail']);			
 			    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages); //includeimages wird - aus mir nicht verstaendlichen Gruenden - auf einigen Systemen NICHT richtig übernommen: A. Schulz
 				if($includeimages) {$phpmail->setIsEmbedImages(true);}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}

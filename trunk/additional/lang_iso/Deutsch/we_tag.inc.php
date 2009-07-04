@@ -387,5 +387,9 @@ $l_we_tag['ifPageLanguage']['description'] = "Mit we:ifPageLanguage kann auf die
 $l_we_tag['ifPageLanguage']['defaultvalue'] = "";
 $l_we_tag['ifNotPageLanguage']['description'] = "Mit we:ifNotPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei k&ouml;nnen mehrere Werte durch Komma separiert angegeben werden (oder-Verkn&uuml;pfung). Die m&ouml;glichen Werte ergeben sich aus dem Einstellungsdialog, Tab 'Sprachen'.";
 $l_we_tag['ifNotPageLanguage']['defaultvalue'] = "";
+$l_we_tag['ifSendMail']['description'] = "Pr&uuml;ft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden";
+$l_we_tag['ifSendMail']['defaultvalue'] = "";
+$l_we_tag['ifNotSendMail']['description'] = "Pr&uuml;ft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden";
+$l_we_tag['ifNotSendMail']['defaultvalue'] = "";
 
 ?>
