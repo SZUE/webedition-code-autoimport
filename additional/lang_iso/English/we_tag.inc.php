@@ -389,5 +389,9 @@ $l_we_tag['ifPageLanguage']['description'] = "The tag we:ifPageLanguage tests on
 $l_we_tag['ifPageLanguage']['defaultvalue'] = "";
 $l_we_tag['ifNotPageLanguage']['description'] = "The tag we:ifNotPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";
 $l_we_tag['ifNotPageLanguage']['defaultvalue'] = "";
+$l_we_tag['ifSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page";
+$l_we_tag['ifSendMail']['defaultvalue'] = "";
+$l_we_tag['ifNotSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page";
+$l_we_tag['ifNotSendMail']['defaultvalue'] = "";
 
 ?>
