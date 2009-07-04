@@ -37,6 +37,8 @@ $_sysinfo['mysql_version'] = 'MySql versio';
 $_sysinfo['more_info'] = 'lisätietoja';
 $_sysinfo['back'] = 'paluu';
 $_sysinfo['sysinfo'] = 'Järjestelmätiedot';
+$_sysinfo['zendframework_version'] = 'Zend Framework versio';
+$_sysinfo["register_globals warning"] = 'WARNUNG: register_globals can be a serious security risk for your system so we strongly recommend to turn off this feature!';
 
 $_sysinfo['connection_types'] = 'Päivitä yhteystyypit';
 $_sysinfo['gdlib'] = 'GDlib tuki';
