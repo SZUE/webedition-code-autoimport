@@ -28,9 +28,10 @@
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sysinfo.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/Zend/Version.php");
+		
 
-
-		function getInfoTable($_infoArr) {
+		function getInfoTable($_infoArr,$name) {
 			
 			$_table = new we_htmlTable(array("width" => "500", "style" => "width: 500px;", "spellspacing"=>"2"), 1, 2);	
 			$_i = 0;
@@ -42,14 +43,23 @@
 				} else {
 					$_style =  "background: #D4DBFA;";
 				}
+				
 				$_table->addRow(1);
-				$_table->setRow($_i,array("class"=>"defaultfont","style" =>$_style));
+				$_table->setRow($_i,array("class"=>"defaultfont","style" => $_style."height:20px;"));
 				$_table->setCol($_i,0,array("style" => "width: 200px; height: 20px;font-weight: bold; padding-left: 10px;"),$_k);		
 				$_table->setCol($_i,1,array("style" => "width: 250px; height: 20px; padding-left: 10px;"),parseValue($_k,$_v));		
 				$_i++;
 				
+				// highlight some values:
+				if($name == "PHP") {
+					if($_i == 3) {
+						$_table->setColAttributes(2,1,array("style" => "border:1px solid red;"));
+					}
+					if($_i == 8)
+						$_table->setColAttributes(7,1,array("style" => "border:1px solid grey;"));
+				}
+				
 			}
-			
 			return $_table->getHtmlCode();
 		}
 		
@@ -93,7 +103,13 @@
 			return $_connectionTypes;
 		}
 		
-
+		function getWarning($message, $value) {
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+		}
+		function getInfo($message, $value) {
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+		}
+		
 		$_install_dir = $_SERVER['DOCUMENT_ROOT']. WEBEDITION_DIR;
 		
 		if(strlen($_install_dir)>35){
@@ -125,13 +141,15 @@
 				$_sysinfo['we_max_upload_size'] => getUploadMaxFilesize()
 			),
 
-			'PHP' => array(
+			'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 				$_sysinfo['php_version'] => phpversion(),
+				$_sysinfo['zendframework_version'] => Zend_Version::VERSION,
+				'register_globals' => (ini_get('register_globals') == "1") ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : ini_get('register_globals'),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),
 				'allow_url_fopen' => ini_get('allow_url_fopen'),
 				'open_basedir' => ini_get('open_basedir'),
-				'safe_mode' => ini_get('safe_mode'),
+				'safe_mode' => (ini_get('safe_mode') == "1") ? getInfo($_sysinfo["safe_mode warning"],ini_get('safe_mode')) : ini_get('safe_mode'),
 				'safe_mode_exec_dir' => ini_get('safe_mode_exec_dir'),
 				'safe_mode_gid' => ini_get('safe_mode_gid'),
 				'safe_mode_include_dir' => ini_get('safe_mode_include_dir'),
@@ -173,7 +191,7 @@
 			foreach ($_info as $_k=>$_v) {
 				$_parts[] = array(
 					'headline'=> $_k,
-					'html'=> getInfoTable($_v),
+					'html'=> getInfoTable($_v, strip_tags($_k)),
 					'space'=>$_space_size
 			);
 		}
@@ -216,11 +234,11 @@
 
 </head>
 
-<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
+<body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 <div id="info" style="display: block;">
 <?php		
 		print we_multiIconBox::getJS();
-		print we_multiIconBox::getHTML('',800, $_parts,30,$buttons,-1,'','',false);
+		print we_multiIconBox::getHTML('',700, $_parts,30,$buttons,-1,'','',false, "", "", 620, "auto");
 		
 ?>
 </div>
