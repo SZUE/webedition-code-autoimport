@@ -129,7 +129,7 @@ if( defined("OBJECT_TABLE") ){
 $l_alert["deleteTempl_notok_used"] = "Die Aktion konnte nicht ausgeführt werden, da eine oder mehrere zu löschende Vorlagen schon benutzt werden!";
 $l_alert["deleteClass_notok_used"] = "Die Aktion konnte nicht ausgeführt werden, da eine oder mehrere zu löschende Klassen schon benutzt werden!";
 $l_alert["delete_notok"] = "Es gab einen Fehler beim Löschen!";
-$l_alert["nothing_to_save"] = "Die Speicherfunktion ist im Moment nicht durchführbar!";
+$l_alert["nothing_to_save"] = "Ein Speichern ist im Moment nicht möglich!!";
 $l_alert["nothing_to_publish"] = "Ein Veröffentlichen ist im Moment nicht möglich!";
 $l_alert["we_filename_notValid"] = "Der eingegebene Dateiname ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).";
 $l_alert["empty_image_to_save"] = "Gewählte Grafik ist leer.\\nTrotzdem weitermachen?";
