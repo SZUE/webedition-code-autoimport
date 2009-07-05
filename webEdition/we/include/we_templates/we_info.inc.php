@@ -51,7 +51,7 @@ $_actRow = 0;
 //	First row with background
 $_table->setCol($_actRow++,0, array(	"colspan" => 3,
 							"width"   => $_widthTotal,
-							"height"  => 110), getPixel($_widthTotal,110,0));
+							"height"  => 110), '<a href="http://www.webedition.de" target="_blank" alt="www.webedition.de" title="www.webedition.de">'.getPixel($_widthTotal,110,0).'</a>');
 
 $_table->addRow(2);
 //	spaceholder
