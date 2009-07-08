@@ -171,4 +171,7 @@ $GLOBALS["l_global"]["unlocking_document"] = "дать доступ к доку�
 $GLOBALS["l_global"]["variant_field"] = "Поле варианта";
 $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following link, if you are not redirected within the next 30 seconds "; // TRANSLATE
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition login"; // TRANSLATE
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
+$GLOBALS["l_global"]["credits_translators"] = "Translations";
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
 ?>

@@ -175,4 +175,7 @@ $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following l
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition login"; // TRANSLATE
 $GLOBALS["l_global"]["untitled"] = "Untitled"; // TRANSLATE
 $GLOBALS["l_global"]["no_document_opened"] = "There is no document opened!"; // TRANSLATE
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
+$GLOBALS["l_global"]["credits_translators"] = "Translations";
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
 ?>
