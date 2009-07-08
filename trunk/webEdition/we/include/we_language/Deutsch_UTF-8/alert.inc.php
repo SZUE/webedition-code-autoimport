@@ -159,7 +159,7 @@ $l_alert['delete_single']['return_to_start'] = 'Die Datei wurde erfolgreich gel�
 $l_alert['move_single']['return_to_start'] = 'Die Datei wurde erfolgreich verschoben.\\nZurück zum seeMode Startdokument.';
 $l_alert['move_single']['no_delete'] = 'Die Datei konnte nicht verschoben werden.';
 $l_alert['cockpit_not_activated'] = 'Die Aktion konnte nicht ausgeführt werden, da das Cockpit nicht aktiviert ist.';
-$l_alert['cockpit_reset_settings'] = 'Sollen die aktuellen Cockpit Einstellungen geslöscht werden und die Standard-Einstellungen wiederhergestellt werden?';
+$l_alert['cockpit_reset_settings'] = 'Sollen die aktuellen Cockpit-Einstellungen gelöscht und die Standard-Einstellungen wiederhergestellt werden?';
 $l_alert['save_error_fields_value_not_valid'] = 'Die markierten Felder enthalten keine gültigen Werte.\\nBitte tragen Sie gültige Werte ein.';
 
 $l_alert['eplugin_exit_doc'] = "Die Verbindung zwischen webEdition und dem externen Editor wird beim Schließen des Dokuments getrennt und die Inhalte werden nicht mehr synchronisiert.\\nMöchten Sie das Dokument schließen?";
