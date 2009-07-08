@@ -175,4 +175,7 @@ $GLOBALS["l_global"]["redirect_to_login_failed"] = "Klikkaa seuraavaa linkkiä j
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition kirjautumisnimi";
 $GLOBALS["l_global"]["untitled"] = "Nimetön";
 $GLOBALS["l_global"]["no_document_opened"] = "Dokumenttia ei ole avoinna!";
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
+$GLOBALS["l_global"]["credits_translators"] = "Translations";
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
 ?>
