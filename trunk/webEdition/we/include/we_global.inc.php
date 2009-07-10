@@ -3291,9 +3291,9 @@ function we_writeLanguageConfig($default, $available = array())
 	foreach ($available as $Locale) {
 		$temp = explode("_", $Locale);
 		if (sizeof($temp) == 1) {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'],\n";
+			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] ".$temp[0].",\n";
 		} else {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . \$GLOBALS['l_countries']['" . $temp[1] . "'] . \")\",\n";
+			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . \$GLOBALS['l_countries']['" . $temp[1] . "'] . \") ".$temp[0]."_".$temp[1]."\",\n";
 		}
 	
 	}

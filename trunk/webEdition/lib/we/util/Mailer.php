@@ -57,7 +57,7 @@ class we_util_Mailer extends PHPMailer
 	 *
 	 * @var unknown_type
 	 */
-	protected $embedImages = array('gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf');
+	protected $embedImages = array('gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf','GIF', 'JPG', 'JPEG', 'JPE', 'BMP', 'PNG', 'TIF', 'TIFF');
 
 	/**
 	 * Enter description here...
@@ -122,7 +122,7 @@ class we_util_Mailer extends PHPMailer
 		
 		$_sender = $this->parseEmailUser($sender);
 		
-		$this->setClassVars(array('Subject' => $subject, 'Sender' => $_sender['email'], 'From' => $_sender['email'], 'FromName' => $_sender['name'], 'isEmbedImages' => $isEmbedImages, 'CharSet' => "UTF-8"));
+		$this->setClassVars(array('Subject' => $subject, 'Sender' => $_sender['email'], 'From' => $_sender['email'], 'FromName' => $_sender['name'], 'isEmbedImages' => $isEmbedImages, 'CharSet' => "UTF-8", 'isUseBaseHref' => true));
 	}
 	public function setCC($toCC){
 		if (is_array($toCC) && count($toCC) > 0) {
@@ -218,7 +218,7 @@ class we_util_Mailer extends PHPMailer
 		}
 		$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'],"/"),"",$_SERVER['SERVER_PROTOCOL']));
 
-		if($isUseBaseHref) {//Bug #3735
+		if($this->isUseBaseHref) {//Bug #3735
 			if ($this->ContentType == 'text/html' && !strpos($this->Body,"<base")) { 
 				$this->Body = str_replace("</head>","<base href='".($protocol==""?"":$protocol."://").$_SERVER['HTTP_HOST']."' />\n</head>",$this->Body);
 			}
