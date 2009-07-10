@@ -701,7 +701,7 @@ function we_cmd() {
 			new jsWindow(url,"doctypes",-1,-1,800,670,true,true,true);
 			break;
 		case "info":
-			new jsWindow(url,"info",-1,-1,432,380,true,false,true);
+			new jsWindow(url,"info",-1,-1,432,340,true,false,true);
 			break;
 		case "webEdition_online":
 			new jsWindow("http://www.living-e.com/webEdition/","webEditionOnline",-1,-1,960,700,true,true,true,true);
