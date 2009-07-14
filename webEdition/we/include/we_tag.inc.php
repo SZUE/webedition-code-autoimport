@@ -5775,10 +5775,10 @@ function we_tag_sendMail($attribs, $content)
 		$mimetype = we_getTagAttribute("mimetype",$attribs);
 		$subject = we_getTagAttribute("subject",$attribs);
 		$charset = we_getTagAttribute("charset",$attribs,"UTF-8");
-		$includeimages = we_getTagAttribute("includeimages",$attribs,false);
-		$useBaseHref = we_getTagAttribute("useBaseHref",$attribs,false);
-		$useFormmailLog = we_getTagAttribute("useFormmailLog",$attribs,false);
-		$useFormmailBlock = we_getTagAttribute("useFormmailBlock",$attribs,false);
+		$includeimages = we_getTagAttribute("includeimages",$attribs,false,true);
+		$useBaseHref = we_getTagAttribute("useBaseHref",$attribs,true,true,true);
+		$useFormmailLog = we_getTagAttribute("useFormmailLog",$attribs,false,true);
+		$useFormmailBlock = we_getTagAttribute("useFormmailBlock",$attribs,false,true);
 		if($useFormmailBlock) {$useFormmailLog=true;}
 		$_blocked = false;
 		
@@ -5894,10 +5894,10 @@ function we_tag_sendMail($attribs, $content)
 				$codes = we_getDocumentByID($id);
 				unset($_SESSION['WE_SendMail']);			
 			    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages); //includeimages wird - aus mir nicht verstaendlichen Gruenden - auf einigen Systemen NICHT richtig übernommen: A. Schulz
-				if($includeimages) {$phpmail->setIsEmbedImages(true);}
+				if(isset($includeimages)) {$phpmail->setIsEmbedImages($includeimages);}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
 				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
-				if($useBaseHref){$phpmail->setIsUseBaseHref($useBaseHref);}
+				if(isset($useBaseHref)){$phpmail->setIsUseBaseHref($useBaseHref);}
 			    $phpmail->setCharSet($charset);
 				if ($mimetype != "text/html") {
 					$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
