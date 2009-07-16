@@ -556,6 +556,20 @@ class we_folder extends we_root
 	}
 
 	/**
+	 * Beseitigt #Bug 3705: sorgt dafür, das auch leere Dokumentenordner bei einem REbuild angelegt werden
+	 */
+	function we_rewrite(){
+		if(parent::we_rewrite()){
+			if($this->Table == FILE_TABLE){
+				$this->we_save(1);
+			} else {return true;}
+		
+		} else {
+			return false;
+		};
+	}
+
+	/**
 	 * @desc	the function modifies document EditPageNrs set
 	 */
 	function checkTabs(){
