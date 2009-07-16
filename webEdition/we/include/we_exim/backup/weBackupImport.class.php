@@ -110,7 +110,13 @@
 							if(weContentProvider::needCoding($classname,$name)){
 								$object->$name = weContentProvider::decode($parser->getNodeData());
 							} else {
-								$object->$name = $parser->getNodeData();
+								//$object->$name = $parser->getNodeData();//original mit Bug #3412
+								if($charset=="UTF-8"){// Fix Bug #3412
+									$object->$name = utf8_encode($parser->getNodeData());
+								} else {
+									$object->$name = $parser->getNodeData();
+								}
+								
 							}
 							if(isset($object->persistent_slots) && !in_array($name,$object->persistent_slots)) {
 								$object->persistent_slots[]=$name;
