@@ -66,7 +66,7 @@ class we_listview_multiobject extends listviewBase {
 	 * @param	string        $categoryids
 	 *
 	 */
-	function we_listview_multiobject($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off'){
+	function we_listview_multiobject($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off',$docID=0){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 		if(isset($GLOBALS['we_lv_array']) && sizeof($GLOBALS['we_lv_array']) > 1) {
@@ -103,6 +103,7 @@ class we_listview_multiobject extends listviewBase {
 		$this->condition = $condition;
 		$this->seeMode   = $seeMode;	//	edit objects in seeMode
 		$this->searchable = $searchable;
+		$this->docID = $docID; //Bug #3720
 		$this->Record    = array();
 
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
