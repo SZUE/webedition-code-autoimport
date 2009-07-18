@@ -6816,20 +6816,23 @@ function we_tag_var($attribs, $content)
 	$docAttr = we_getTagAttribute("doc", $attribs);
 	$name = we_getTagAttribute("name", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
+    $htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true); // #3771
 	
 	$doc = we_getDocForTag($docAttr, false);
 	
 	switch ($type) {
 		case "session" :
-			return $_SESSION[$name];
+		    $return = (isset($_SESSION[$name])) ? $_SESSION[$name] : "";
+		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
+			return $return;
 		case "request" :
-			return removePHP(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
+			$return = removePHP(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
+		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
+			return $return;
 		case "global" :
-			if (isset($GLOBALS[$name])) {
-				return $GLOBALS[$name];
-			} else {
-				return "";
-			}
+		    $return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : "";
+		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
+			return $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
 			if (isset($data['objects']) && sizeof($data['objects']) > 0) {
