@@ -26,7 +26,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 class we_multiIconBox{
 
 	function we_multiIconBox(){
-		exit( "This is a static class, it doesn't make sence to call the cunstructor of this class!");
+		exit( "This is a static class, it doesn't make sense to call the constructor of this class!");
 	}
 
    /**
