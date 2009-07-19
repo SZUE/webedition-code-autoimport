@@ -135,6 +135,13 @@ function step_requirements() {
 	}
 
 	$output .= "</ul><b>Additional requirements:</b><ul style=\"list-style-position:outside;\">";
+	if(ini_get('safe_mode')) {
+		$output.=tpl_warning("PHP Safe Mode is active.<br />webEdition may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Sode</a>, yet we do not recommend it and cannot guarantee that all features of webEdition will work properly.");
+	}
+	if(ini_get('register_globals')) {
+		$output.=tpl_warning("register_globals is active!<br />This may cause <b>severe security problems</b> so we recommend to disable this \"feature\". See <a href=\"http://www.php.net/manual/en/security.globals.php\" target=\"_blank\">php.net/manual</a> for more informations.");
+	}
+	
 	if(!is_callable("curl_getinfo")) {
 		$output.=tpl_warning("curl support is not available.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate, the First Steps Wizard or the application installer.");
 	} else {
