@@ -8,8 +8,7 @@
  * - phpinfo	show phpinfo() instead of the setup screen
  * example:		http://yourdomain/setup.php?debug
  * 				http://yourdomain/setup.php?phpinfo
- * (c) 2000-2009 by Living-E AG
- * @version 6.0.0.5
+ * @version 6.0.0.6
  */
 
 // some utility features:
@@ -836,14 +835,6 @@ ob_end_clean();
 							<tr>
 								<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
 								<td width="402" class="small">Version: <?php echo WE_VERSION ?></td>
-								<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
-							</tr>
-							<tr>
-								<td width="432" colspan="3"><img src="/webEdition/images/pixel.gif" width="432" height="10" border="0"></td>
-							</tr>
-							<tr>
-								<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="5" border="0"></td>
-								<td width="402" class="small">&copy; 2000-2009 Living-e AG. All rights reserved</td>
 								<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
 							</tr>
 							<tr>
