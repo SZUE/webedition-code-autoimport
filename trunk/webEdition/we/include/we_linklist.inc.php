@@ -125,6 +125,7 @@ class we_linklist
 		$rev = $this->getRev($nr);
 		$params = $this->getParams($nr);
 		$title = $this->getTitle($nr);
+		$text = $this->getText($nr);  // #3636
 		$jswinAttribs = $this->getJsWinAttribs($nr);
 		$js = "var we_winOpts = '';";
 		
@@ -138,6 +139,7 @@ class we_linklist
 		$lattribs['hreflang'] = $hreflang;
 		$lattribs['rel'] = $rel;
 		$lattribs['rev'] = $rev;
+		$lattribs['text'] = $text; // #3636
 		
 		$lattribs = removeEmptyAttribs($lattribs, array());
 		
