@@ -1,3 +1,5 @@
+webEdition Version 6.0.0.6
+
 SYSTEM REQUIREMENTS
 
 PHP 5.2 or newer
