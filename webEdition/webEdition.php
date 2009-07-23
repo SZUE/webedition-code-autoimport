@@ -704,7 +704,7 @@ function we_cmd() {
 			new jsWindow(url,"info",-1,-1,432,340,true,false,true);
 			break;
 		case "webEdition_online":
-			new jsWindow("http://www.living-e.com/webEdition/","webEditionOnline",-1,-1,960,700,true,true,true,true);
+			new jsWindow("http://www.webedition.de/","webEditionOnline",-1,-1,960,700,true,true,true,true);
 			break;
 		case "snippet_shop":
 			alert("Es gibt noch keine URL für die Snippets Seite");
