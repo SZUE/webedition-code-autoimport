@@ -85,12 +85,11 @@ class we_listview extends listviewBase {
 		$this->defaultCondition=$condition;
 		$this->condition = $condition;
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+		
+		$cond_where = ""; // #3763
 		if($this->condition!=""){
-			$condition_sql=$this->makeConditionSql($this->condition);
-			if(!empty($condition_sql)) $cond_where=" AND (".$condition_sql.")";
-		}
-		else{
-			$cond_where="";
+			$condition_sql=$this->makeConditionSql($this->condition);			
+			if(!empty($condition_sql)) $cond_where .= " AND (".$condition_sql.")";
 		}
 
 		if(eregi(" desc",$this->order)){
