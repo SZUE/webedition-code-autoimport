@@ -27,6 +27,7 @@
  * Language: English
  */
 $l_taged["description"] = "Description";
+$l_taged['tagreference_linktext'] = "to the tag reference";
 $l_taged["required"] = "All fields which are marked with * have to be filled!";
 $l_taged['fill_required_fields'] = "The following required fields need to be filled.";
 $l_taged['type_attribute'] = "Type - Attribute";

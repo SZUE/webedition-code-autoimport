@@ -27,6 +27,7 @@
  * Language: Deutsch
  */
 $l_taged['description'] = "Beschreibung";
+$l_taged['tagreference_linktext'] = "zur Tagreferenz";
 $l_taged['required'] = "Alle Felder, welche mit * markiert sind, müssen ausgefüllt sein!";
 $l_taged['fill_required_fields'] = "Die folgenden Pflichtfelder müssen ausgefüllt werden";
 $l_taged['type_attribute'] = "Typ - Attribut";

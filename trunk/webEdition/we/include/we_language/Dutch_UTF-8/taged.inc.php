@@ -27,6 +27,7 @@
  * Language: English
  */
 $l_taged["description"] = "Omschrijving";
+$l_taged['tagreference_linktext'] = "to the tag reference";// TRANSLATE
 $l_taged["required"] = "Alle velden gemarkeerd met een * zijn verplicht!";
 $l_taged['fill_required_fields'] = "De volgende vereiste velden moeten ingevuld worden.";
 $l_taged['type_attribute'] = "Type - Attribuut";
