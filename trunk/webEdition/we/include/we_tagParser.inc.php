@@ -1766,6 +1766,11 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 		$charset = we_getTagAttributeTagParser("charset", $arr);
 		$xml = we_getTagAttributeTagParser("xml", $arr);
 		$formname = we_getTagAttributeTagParser("name", $arr, "we_global_form");
+		if (array_key_exists ('nameid', $arr)) { // Bug #3153
+			$formname = we_getTagAttributeTagParser("nameid", $arr, "we_global_form");
+			$arr['pass_id'] = we_getTagAttributeTagParser("nameid", $arr);
+			unset($arr['nameid']);
+		}
 		$onrecipienterror = we_getTagAttributeTagParser("onrecipienterror", $arr);
 		$forcefrom = we_getTagAttributeTagParser("forcefrom", $arr, "", false);
 		$captchaname = we_getTagAttributeTagParser("captchaname", $arr);
