@@ -27,6 +27,7 @@
  * Language: English
  */
 $l_taged["description"] = "Kuvaus";
+$l_taged['tagreference_linktext'] = "to the tag reference";// TRANSLATE
 $l_taged["required"] = "Kaikki kentät jotka on merkitty merkillä * täytyy täyttää!";
 $l_taged['fill_required_fields'] = "Seuraavat vaaditut kentät on täytettävä.";
 $l_taged['type_attribute'] = "Tyyppi - Attribuutti";
