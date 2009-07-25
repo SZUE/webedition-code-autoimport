@@ -132,6 +132,27 @@ function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $ch
 	return decodetmlSpecialChars($out);
 }
 
+// Entwickelt für #Bug 3386, wobei nicht die id, sondern die anderen Attribute dynamisiert wurden
+function we_getTagAttributeForParsingLater($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false)
+{
+	$value = isset($attribs[$name]) ? $attribs[$name] : "";
+	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
+		$value = '<?php echo isset($GLOBALS["'.$regs[1].'"]) ? $GLOBALS["'.$regs[1].'"] : "'.$default.'";'. '?'.'>';
+	}
+	$out = "";
+	if ($isFlag) {
+		if ($checkForFalse) {
+			$out = ($value == "false" || $value == "off" || $value == "0") ? false : true;
+		} else {
+			$out = ($value == "true" || $value == "on" || $value == $name || $value == "1") ? true : false;
+		}
+	} else {
+		$out = strlen($value) ? $value : $default;
+	}
+	return decodetmlSpecialChars($out);
+}
+	
+
 function we_getIndexFileIDs($db)
 {
 	$db->query(

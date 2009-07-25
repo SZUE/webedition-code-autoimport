@@ -1733,13 +1733,13 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 
 	##########################################################################################
 	##########################################################################################
-	
+
 
 	function parseFormTag($tag, $code, $attribs = "")
 	{
 		eval('$arr = array(' . $attribs . ');');
 		
-		$method = we_getTagAttributeTagParser("method", $arr, "post");
+		$method = we_getTagAttributeForParsingLater("method", $arr, "post");
 		$id = we_getTagAttributeTagParser("id", $arr);
 		$action = we_getTagAttributeTagParser("action", $arr);
 		$classid = we_getTagAttributeTagParser("classid", $arr);
@@ -1765,18 +1765,18 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 		$from = we_getTagAttributeTagParser("from", $arr);
 		$charset = we_getTagAttributeTagParser("charset", $arr);
 		$xml = we_getTagAttributeTagParser("xml", $arr);
-		$formname = we_getTagAttributeTagParser("name", $arr, "we_global_form");
+		$formname = we_getTagAttributeForParsingLater("name", $arr, "we_global_form");
 		if (array_key_exists ('nameid', $arr)) { // Bug #3153
-			$formname = we_getTagAttributeTagParser("nameid", $arr, "we_global_form");
-			$arr['pass_id'] = we_getTagAttributeTagParser("nameid", $arr);
+			$formname = we_getTagAttributeForParsingLater("nameid", $arr, "we_global_form");
+			$arr['pass_id'] = we_getTagAttributeForParsingLater("nameid", $arr);
 			unset($arr['nameid']);
 		}
 		$onrecipienterror = we_getTagAttributeTagParser("onrecipienterror", $arr);
 		$forcefrom = we_getTagAttributeTagParser("forcefrom", $arr, "", false);
 		$captchaname = we_getTagAttributeTagParser("captchaname", $arr);
 		$oncaptchaerror = we_getTagAttributeTagParser("oncaptchaerror", $arr);
-		$enctype = we_getTagAttributeTagParser("enctype", $arr);
-		
+		$enctype = we_getTagAttributeForParsingLater("enctype", $arr);
+		$target = we_getTagAttributeForParsingLater("target", $arr);
 		$formAttribs = removeAttribs(
 				$arr, 
 				array(
@@ -1886,7 +1886,9 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				if ($enctype) {
 					$formAttribs['enctype'] = $enctype;
 				}
-				
+				if ($target) {
+					$formAttribs['target'] = $target;
+				}
 				if ($classid || $doctype) {
 					$php .= '<?php $GLOBALS["WE_FORM"] = "' . $formname . '"; ?>';
 					$php .= '<?php
@@ -1949,7 +1951,13 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 					$postconfirm = '';
 					$preconfirm = '';
 				}
-				
+				if ($enctype) {
+					$formAttribs['enctype'] = $enctype;
+				}
+				if ($target) {
+					$formAttribs['target'] = $target;
+				}
+
 				$formAttribs['name'] = $formname;
 				$formAttribs['onsubmit'] = $onsubmit;
 				/*				$formAttribs['action'] = '<?php print WEBEDITION_DIR ?>we_formmail.php';  */
@@ -2135,7 +2143,12 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 				        <?php endif ?>';
 				break;
 			default :
-				
+				if ($enctype) {
+					$formAttribs['enctype'] = $enctype;
+				}
+				if ($target) {
+					$formAttribs['target'] = $target;
+				}
 				$formAttribs['name'] = $formname;
 				$formAttribs['onsubmit'] = $onsubmit;
 				$formAttribs['action'] = '<?php print $GLOBALS["we_form_action"]; ?>';
