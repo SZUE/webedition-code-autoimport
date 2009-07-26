@@ -122,6 +122,13 @@ if ((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploade
 			$we_doc->importMetaData();
 		}
 	}
+	if ($we_ContentType == "application/x-shockwave-flash") {
+		$we_size = $we_doc->getimagesize($tempName);
+		$we_doc->setElement("width",$we_size[0],"attrib");
+		$we_doc->setElement("height",$we_size[1],"attrib");
+		$we_doc->setElement("origwidth",$we_size[0]);
+		$we_doc->setElement("origheight",$we_size[1]);
+	}
 
 	$we_doc->setElement("filesize",$_FILES['we_uploadedFile']["size"],"attrib");
 	if(isset($_REQUEST["img_title"])){
@@ -223,7 +230,7 @@ endif ?>
 //-->
 </script>
 </head>
-<body class="weDialogBody" onload="self.focus();" ><center>
+<body class="weDialogBody" onLoad="self.focus();" ><center>
 <form method="post" enctype="multipart/form-data">
    <input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>">
    <input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>">

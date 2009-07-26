@@ -619,8 +619,8 @@ class we_imageDocument extends we_binaryDocument {
 		$_content = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 5);
 
 		// Row 1
-		$_content->setCol(0, 0, null, $this->formInput2(155, "width",  10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(0, 2, null, $this->formInput2(155, "height", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(0, 0, null, $this->formInputInfo2(155, "width",  10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"',"origwidth"));
+		$_content->setCol(0, 2, null, $this->formInputInfo2(155, "height", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"',"origheight"));
 		$_content->setCol(0, 4, null, $this->formInput2(155, "border", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
 		$_content->setCol(0, 1, null, getPixel(18, 1));

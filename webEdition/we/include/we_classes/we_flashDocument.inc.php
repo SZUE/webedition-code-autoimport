@@ -23,6 +23,9 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_binaryDocument.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+
+
 /*  a class for handling flashDocuments. */
 class we_flashDocument extends we_binaryDocument
 {
@@ -200,9 +203,9 @@ class we_flashDocument extends we_binaryDocument
 		global $l_we_class,$l_global;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
-		<td>'.$this->formInput2(155,"width",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>'.$this->formInputInfo2(155,"width",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"","origwidth").'</td>
 		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formInput2(155,"height",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>'.$this->formInputInfo2(155,"height",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"","origheight").'</td>
 		<td>'.getPixel(18,2).'</td>
 		<td>'.$this->formSelectElement2(155,"scale",array(""=>"","showall"=>$l_global["showall"],"noborder"=>$l_global["noborder"],"exactfit"=>$l_global["exactfit"]),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
@@ -283,6 +286,8 @@ class we_flashDocument extends we_binaryDocument
 		$_salign = $this->getElement("salign");
 		$_loop = $this->getElement("loop");
 		$_wmode = $this->getElement("wmode");
+		$_origwidth = $this->getElement("origwidth");
+		$_origheight = $this->getElement("origheight");
 
 		$this->setElement("width", 150, "attrib");
 		$this->setElement("height", 100, "attrib");
@@ -296,7 +301,10 @@ class we_flashDocument extends we_binaryDocument
 		$this->setElement("align", "", "attrib");
 		$this->setElement("salign", "", "attrib");
 		$this->setElement("loop", "", "attrib");
-		$this->setElement("wmode", "window", "attrib");	
+		$this->setElement("wmode", "window", "attrib");
+		$this->setElement("origwidth", "", "attrib");
+		$this->setElement("origheight", "", "attrib");
+	
 		$html = $this->getHtml(true);
 		$this->setElement("width", $_width, "attrib");
 		$this->setElement("height", $_height, "attrib");
@@ -311,9 +319,96 @@ class we_flashDocument extends we_binaryDocument
 		$this->setElement("salign", $_salign, "attrib");
 		$this->setElement("loop", $_loop, "attrib");
 		$this->setElement("wmode", $_wmode, "attrib");
+		$this->setElement("origwidth", $_origwidth, "attrib");
+		$this->setElement("origheight", $_origheight, "attrib");
 
 		return $html;
 	}
+
+	/**
+	* function will determine the size of any GIF, JPG, PNG.
+	* This function uses the php Function with the same name.
+	* But the php function doesn't work with some images created from some apps.
+	* So this function uses the gd lib if nothing is returned from the php function
+	*
+	* @static
+	* @public
+	* @return array
+	* @param $filename complete path of the image
+	*/
+	function getimagesize($filename){
+		$arr = @getimagesize($filename);
+
+		if(isset($arr) && is_array($arr) && (count($arr) >= 4)  && $arr[0] && $arr[1]){
+			return $arr;
+		}else{
+			if(we_image_edit::gd_version()){
+				return we_image_edit::getimagesize($filename);
+			}
+			return $arr;
+		}
+	}
+
+
+	/**
+	* saves the data of the document
+	*
+	* @return boolean
+	* @param boolean $resave
+	*/
+	function we_save($resave = 0) {
+
+		// get original width and height of the image
+		$arr = $this->getOrigSize(true, true);
+		$origw = $this->getElement("origwidth");
+		$this->setElement("origwidth",isset($arr[0]) ? $arr[0] : 0);
+		$this->setElement("origheight",isset($arr[1]) ? $arr[1] : 0);
+		//if ($origw != $this->getElement("origwidth")){$this->DocChanged = true;}
+		if($this->getElement("width") =="") {$this->setElement("width",$this->getElement("origwidth"));}
+		if($this->getElement("height")=="") {$this->setElement("height",$this->getElement("origheight"));}
+
+		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
+		if (parent::we_save($resave)) {
+			if($docChanged){
+				$this->DocChanged=true;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	function we_rewrite() {
+		parent::we_rewrite();
+		$this->we_save();
+	}
+
+
+	/**
+	* Calculates the original image size of the image.
+	* Returns an array like the PHP function getimagesize().
+	* If the array is empty the image is not uploaded or an error occured
+	*
+	* @param boolean $calculateNew
+	* @return array
+	*/
+	function getOrigSize($calculateNew = false, $useOldPath = false){
+		$arr = array(0,0,0,"");
+		if(!$this->DocChanged && $this->ID){
+			if($this->getElement("origwidth") && $this->getElement("origheight") && ($calculateNew == false)){
+				return array($this->getElement("origwidth"),$this->getElement("origheight"),0,"");
+			}else{
+				// we have to calculate the path, because maybe the document was renamed
+				$path = $this->getParentPath() . "/" . $this->Filename . $this->Extension;
+				return $this->getimagesize($_SERVER["DOCUMENT_ROOT"]. (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
+			}
+		} else if(isset($this->elements["data"]["dat"]) && $this->elements["data"]["dat"]){
+			$arr = $this->getimagesize($this->elements["data"]["dat"]);
+		}
+		return $arr;
+	}
+
 
 }
 
