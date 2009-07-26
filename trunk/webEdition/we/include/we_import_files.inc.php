@@ -969,6 +969,15 @@ class we_import_files
 					$we_doc->setElement("origheight", $we_size[1]);
 				}
 			}
+			if ($we_ContentType == "application/x-shockwave-flash") {
+				$we_size = $we_doc->getimagesize($tempName);
+				if (is_array($we_size) && count($we_size) >= 2) {
+					$we_doc->setElement("width", $we_size[0], "attrib");
+					$we_doc->setElement("height", $we_size[1], "attrib");
+					$we_doc->setElement("origwidth", $we_size[0]);
+					$we_doc->setElement("origheight", $we_size[1]);
+				}
+			}
 			$we_doc->setElement("type", $ct, "attrib");
 			$fh = @fopen($tempName, "rb");
 			if($_FILES['we_File']["size"]<=0) {

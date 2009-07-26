@@ -78,7 +78,13 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 			$we_doc->setElement("origwidth",$we_size[0]);
 			$we_doc->setElement("origheight",$we_size[1]);
 		}
-
+		if ($we_doc->ContentType == "application/x-shockwave-flash") {
+			$we_size = $we_doc->getimagesize($we_File);
+			$we_doc->setElement("width",$we_size[0],"attrib");
+			$we_doc->setElement("height",$we_size[1],"attrib");
+			$we_doc->setElement("origwidth",$we_size[0]);
+			$we_doc->setElement("origheight",$we_size[1]);
+		}
 		$we_doc->Extension = (strpos($_FILES["we_File"]["name"],".") > 0) ? eregi_replace('^.+(\..+)$',"\\1",$_FILES["we_File"]["name"]) : "";
 		$we_doc->Text = $we_doc->Filename.$we_doc->Extension;
 		$we_doc->Path = $we_doc->getPath();
@@ -137,7 +143,7 @@ $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("uploa
 </script>
 </head>
 
-<body class="weDialogBody" onload="self.focus();">
+<body class="weDialogBody" onLoad="self.focus();">
 	<center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>">

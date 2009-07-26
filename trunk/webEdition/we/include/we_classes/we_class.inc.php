@@ -336,6 +336,13 @@ class we_class
 		return $this->formInputField($type,$name,(isset($l_we_class[$name]) ? $l_we_class[$name] : $name),$size,$width,"",$attribs);
 	}
 
+	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element*/
+	function formInputInfo2($width="",$name,$size=25,$type="txt",$attribs="",$infoname){
+		global $l_we_class;
+		$info=$this->getElement($infoname);
+		$infotext = " (".(isset($l_we_class[$infoname]) ? $l_we_class[$infoname] : $infoname) .": ".$info.")";
+		return $this->formInputField($type,$name,(isset($l_we_class[$name]) ? $l_we_class[$name] : $name).$infotext,$size,$width,"",$attribs);
+	}
 
 
 
