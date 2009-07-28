@@ -1,8 +1,6 @@
 webEdition CMS Copyright and Licensing
 --------------------------------------
 
-webEdition CMS is copyright (c) 2000-2008 by Living-e AG, Karlsruhe, Germany.
-
 webEdition CMS is distributed under the GPL 3 license, which can be found in the
 webEdition/licenses/webEditionCMS/License.txt file.
 
@@ -13,9 +11,9 @@ which remain licensed under their respective licenses.
 webEdition SDK
 --------------
 
-All content which is stored in the directory webEdition/lib is copyright (c) 2008 by
-Living-e AG, Karlsruhe, Germany and is licensed under the LGPL 3. See the contents
-of the webEdition/licenses/webEditionSDK directory for more information.
+All content which is stored in the directory webEdition/lib is distributed under 
+the Lesser General Public License (LGPL) 3 license, which can be found in the file 
+webEdition/licenses/webEditionSDK/License.txt
 
 Third party software
 --------------------
@@ -56,9 +54,8 @@ BSD-Style License.
 webEdition CMS uses the SMTP PHP class by Chris Ryan which is available under
 the Lesser General Public License (LGPL)
 
-webEdition CMS uses the webEdition SDK by Living-e (http://www.living-e.de). 
-The webEdition SDK is Copyright (c) 2008 by Living-e AG, Karlsruhe, Germany 
-and made available under the Lesser General Public License (LGPL)
+webEdition CMS uses the webEdition SDK which is available under the Lesser 
+General Public License (LGPL)
 
 webEdition CMS uses parts of the Yahoo! User Interface Library (YUI) by Yahoo! Inc. 
 YUI is Copyright (c) 2008 by Yahoo! Inc. and made available under the BSD  License.

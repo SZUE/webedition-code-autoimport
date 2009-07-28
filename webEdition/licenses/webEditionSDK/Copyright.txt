@@ -1,8 +1,6 @@
 webEdition SDK Copyright and Licensing
 --------------------------------------
 
-webEdition SDK is copyright (c) 2008 by Living-e AG, Karlsruhe, Germany.
-
 webEdition SDK is distributed under the LGPL 3 license, which can be found in the
 webEdition/licenses/webEditionSDK/License.txt file.
 
