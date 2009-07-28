@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -29,7 +30,11 @@ if (!isset($l_backup)) {
 	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
 }
 
-$l_alert["noRightsToDelete"] = "\\'%s\\' cannot be deleted! You do not have permission to perform this action!";
+$l_alert["notice"] = "Notice";
+$l_alert["warning"] = "Warning"; // TRANSLATE
+$l_alert["error"] = "Error"; // TRANSLATE
+
+$l_alert["noRightsToDelete"] = "\\'%s\\' cannot be deleted! You do not have permission to perform this action!"; // TRANSLATE
 $l_alert["noRightsToMove"] = "\\'%s\\' cannot be moved! You do not have permission to perform this action!"; // TRANSLATE
 $l_alert[FILE_TABLE]["in_wf_warning"] = "Перед передачей данного документа в поток, его нужно сохранить!\\nСохранить документ?";
 if( defined("OBJECT_FILES_TABLE") ){
@@ -71,21 +76,26 @@ $l_alert["login_failed_security"] = "Старт системы webEdition отм
 $l_alert["perms_no_permissions"] = "У Вас нет разрешения на эту операцию!";
 $l_alert["no_image"] = "Выбранный Вами файл не относится к графике!";
 $l_alert["delete_ok"] = "Файлы или директории успешно удалены!";
+$l_alert["delete_cache_ok"] = "Cache successfully deleted!"; // TRANSLATE
 $l_alert["nothing_to_delete"] = "Ничего не выделено для удаления!";
 $l_alert["delete"] = "Удалить выбранные данные.\\nВы уверены?";
+$l_alert["delete_cache"] = "Delete cache for the selected entries?\\nDo you want to continue?"; // TRANSLATE
 $l_alert["delete_folder"] = "Удалить выбранную директорию?\\nВнимание: при удалении директории все ее содержимое (документы и поддиректории) будут автоматически удалены!";
 $l_alert["delete_nok_error"] = "Файл '%s' не может быть удален.";
 $l_alert["delete_nok_file"] = "Файл '%s' не может быть удален.\\nВероятно, он защищен.";
 $l_alert["delete_nok_folder"] = "Директория '%s' не может быть удалена.\\nВероятно, она защищена.";
 $l_alert["delete_nok_noexist"] = "Файл '%s' не существует!";
-$l_alert["noResourceTitle"] = "No Item!";
-$l_alert["noResource"] = "The document or directory does not exist!";
+$l_alert["noResourceTitle"] = "No Item!"; // TRANSLATE
+$l_alert["noResource"] = "The document or directory does not exist!"; // TRANSLATE
+$l_alert["move_exit_open_docs_question"] = "Before moving all %s must be closed.\\nIf you continue, the following %s will be closed, unsaved changes will not be saved.\\n\\n"; // TRANSLATE
+$l_alert["move_exit_open_docs_continue"] = 'Continue?'; // TRANSLATE
 $l_alert["move"] = "Move selected entries?\\nDo you want to continue?"; // TRANSLATE
 $l_alert["move_ok"] = "Files successfully moved!"; // TRANSLATE
 $l_alert["move_duplicate"] = "There are files with the same name in the target directory!\\nThe files cannot be moved."; // TRANSLATE
 $l_alert["move_nofolder"] = "The selected files cannot be moved.\\nIt isn't possible to move directories."; // TRANSLATE
 $l_alert["move_onlysametype"] = "The selected objects cannnot be moved.\\nObjects can only be moved in there own classdirectory."; // TRANSLATE
 $l_alert["move_no_dir"] = "Please choose a target directory!"; // TRANSLATE
+$l_alert["document_move_warning"] = "After moving documents it is  necessary to do a rebuild.<br />Would you like to do this now?"; // TRANSLATE
 $l_alert["nothing_to_move"] = "There is nothing marked to move!"; // TRANSLATE
 $l_alert["move_of_files_failed"] = "One or more files couldn't moved! Please move these files manually.\\nThe following files are affected:\\n%s"; // TRANSLATE
 $l_alert["template_save_warning"] = "This template is used by %s published documents. Should they be resaved? Attention: This procedure may take some time if you have many documents!"; // TRANSLATE
@@ -106,6 +116,7 @@ $l_alert["we_backup_import_upload_err"] = "Ошибка при загрузке 
 $l_alert["rebuild_nodocs"] = "Не существует документов, соответствующих выбранным критериям.";
 $l_alert["we_name_not_allowed"] = "Имена 'we' и 'webEdition' зарезервированы для использования самой системой и не могут употребляться для других целей!";
 $l_alert["we_filename_empty"] = "Не введено имя для этого документа или директории!";
+$l_alert["exit_multi_doc_question"] = "Several open documents contain unsaved changes. If you continue all unsaved changes are discarded. Do you want to continue and discard all modifications?"; // TRANSLATE
 $l_alert["exit_doc_question_".FILE_TABLE] = "Данный документ, по-видимому, был изменен. Сохранить Ваши изменения? <BR>";
 $l_alert["exit_doc_question_".TEMPLATES_TABLE] = "Данный шаблон, по-видимому, был изменен. Сохранить Ваши изменения?";
 if( defined("OBJECT_FILES_TABLE") ){
@@ -113,9 +124,11 @@ if( defined("OBJECT_FILES_TABLE") ){
 	$l_alert["exit_doc_question_".OBJECT_FILES_TABLE] = "Данный объект, по-видимому, был изменен. Сохранить Ваши изменения?";
 }
 $l_alert["deleteTempl_notok_used"] = "Один или несколько шаблонов находятся в обработке и не могут быть удалены!";
+$l_alert["deleteClass_notok_used"] = "One or more of the classes are in use and could not be deleted!"; // TRANSLATE
 $l_alert["delete_notok"] = "Ошибка при удалении!";
 $l_alert["nothing_to_save"] = "Функция сохранения в данный момент не действует!";
-$l_alert["we_filename_notValid"] = "Недопустимое имя файла\\nДопустимые символы латинского алфавита от а до z, большие и малые, цифры, нижняя черта _, дефис -, точка . (a-z, A-Z, 0-9, _, -, .).";
+$l_alert["nothing_to_publish"] = "The publish function is disabled at the moment!"; // TRANSLATE
+$l_alert["we_filename_notValid"] = "Invalid filename\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)";
 $l_alert["empty_image_to_save"] = "Выбранное графическое изображение отсутствует.\\n Продолжить?";
 $l_alert["path_exists"] = "Данный файл или документ %s не сохранен, так как другой документ уже существует в том же месте!";
 $l_alert["folder_not_empty"] = "В связи с тем, что одна или несколько директорий не полностью очищены от содержимого, их нельзя было полностью удалить! Удалите следующие файлы вручную: \\n%s";
@@ -136,13 +149,40 @@ $l_alert['navigation']['last_document'] = 'You edit the last document.'; // TRAN
 $l_alert['navigation']['first_document'] = 'Вы редактируете первый документ.';
 $l_alert['navigation']['doc_not_found'] = 'Could not find matching document.'; // TRANSLATE
 $l_alert['navigation']['no_entry'] = 'No entry found in history.'; // TRANSLATE
+$l_alert['navigation']['no_open_document'] = 'There is no open document.'; // TRANSLATE
 $l_alert['delete_single']['confirm_delete'] = 'Удалить данный документ?';
 $l_alert['delete_single']['no_delete'] = 'This document could not be deleted.'; // TRANSLATE
 $l_alert['delete_single']['return_to_start'] = 'Документ успешно удален.\\nНазад к главному документу режима супер (seeMode).';
 $l_alert['move_single']['return_to_start'] = 'The document was moved. \\nBack to seeMode startdocument.'; // TRANSLATE
 $l_alert['move_single']['no_delete'] = 'This document could not be moved'; // TRANSLATE
-$l_alert['cockpit_not_activated'] = 'The action could not be performed because the cockpit is not activated.'; //TRANSLATE
-$l_alert['cockpit_reset_settings'] = 'Are you sure to delete the current Cockpit settings and reset the default settings?'; //TRANSLATE
-$l_alert['no_cockpit_mode'] = 'Please, switch to the cockpit to add a new widget.'; // TRANSLATE
-$l_alert['error_fields_value_not_valid'] = 'Invalid entries in input fields!';
+$l_alert['cockpit_not_activated'] = 'The action could not be performed because the cockpit is not activated.'; // TRANSLATE
+$l_alert['cockpit_reset_settings'] = 'Are you sure to delete the current Cockpit settings and reset the default settings?'; // TRANSLATE
+$l_alert['save_error_fields_value_not_valid'] = 'The highlighted fields contain invalid data.\\nPlease enter valid data.'; // TRANSLATE
+
+$l_alert['eplugin_exit_doc'] = "The document has been edited with extern editor. The connection between webEdition and extern editor will be closed and the content will not be synchronized anymore.\\nDo you want to close the document?"; // TRANSLATE
+
+$l_alert['delete_workspace_user'] = "The directory %s could not be deleted! It is defined as workspace for the following users or groups:\\n%s"; // TRANSLATE
+$l_alert['delete_workspace_user_r'] = "The directory %s could not be deleted! Within the directory there are other directories which are defined as workspace for the following users or groups:\\n%s"; // TRANSLATE
+$l_alert['delete_workspace_object'] = "The directory %s could not be deleted! It is defined as workspace for the following objects:\\n%s"; // TRANSLATE
+$l_alert['delete_workspace_object_r'] = "The directory %s could not be deleted! Within the directory there are other directories which are defined as workspace in the following objects:\\n%s"; // TRANSLATE
+
+
+$l_alert['field_contains_incorrect_chars'] = "A field (of the type %s) contains invalid characters."; // TRANSLATE
+$l_alert['field_input_contains_incorrect_length'] = "The maximum length of a field of the type \'Text input\' is 255 characters. If you need more characters, use a field of the type \'Textarea\'."; // TRANSLATE
+$l_alert['field_int_contains_incorrect_length'] = "The maximum length of a field of the type \'Integer\' is 10 characters."; // TRANSLATE
+$l_alert['field_int_value_to_height'] = "The maximum value of a field of the type \'Integer\' is 2147483647."; // TRANSLATE
+
+
+$l_alert["we_filename_notValid"] = "Недопустимое имя файла\\nДопустимые символы латинского алфавита от а до z, большие и малые, цифры, нижняя черта _, дефис -, точка . (a-z, A-Z, 0-9, _, -, .).";
+
+$l_alert["login_denied_for_user"] = "The user cannot login. The user access is disabled."; // TRANSLATE
+$l_alert["no_perm_to_delete_single_document"] = "You have not the needed permissions to delete the active document."; // TRANSLATE
+
+$l_confim["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?"; // TRANSLATE
+$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? "; // TRANSLATE
+
+$l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:"; // TRANSLATE
+$l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s'; // TRANSLATE
+$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; // TRANSLATE 
+$l_alert['discard_changed_data'] = 'There are unsaved changes that will be discarded. Are you sure?'; // TRANSLATE
 ?>

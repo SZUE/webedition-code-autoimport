@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -76,6 +77,7 @@ $l_thumbnails["saved_successfully"] = "Настройки сохранены";
 	$l_thumbnails["ratio"] = "Сохранить пропорции";
 	$l_thumbnails["maximize"] = "Увеличить по потребности";
 	$l_thumbnails["interlace"] = "Interlace Yes / No"; // TRANSLATE
+	$l_thumbnails["quality"] = "Quality"; // TRANSLATE
 
 	/**
 	 * FORMAT

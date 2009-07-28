@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -47,16 +48,20 @@ $l_prefs["saved_successfully"] = "Настройки сохранены";
  *****************************************************************************/
 
 $l_prefs["tab_ui"] = "Пользовательский интерфейс";
+$l_prefs["tab_glossary"] = "Glossary"; // TRANSLATE
 $l_prefs["tab_extensions"] = "Расширения файлов";
 $l_prefs["tab_editor"] = 'Редактор';
-$l_prefs["tab_formmail"] = 'Formmail';
+$l_prefs["tab_formmail"] = 'Formmail'; // TRANSLATE
 $l_prefs["formmail_recipients"] = 'Получатели Formmail';
 $l_prefs["tab_proxy"] = 'Proxy-сервер';
 $l_prefs["tab_advanced"] = 'Специальные настройки';
 $l_prefs["tab_system"] = 'Система';
 $l_prefs["tab_error_handling"] = 'Ошибки';
 $l_prefs["tab_cockpit"] = 'Cockpit'; // TRANSLATE
+$l_prefs["tab_cache"] = 'Cache'; // TRANSLATE
+$l_prefs["tab_language"] = 'Languages'; // TRANSLATE
 $l_prefs["tab_modules"] = 'Модули';
+$l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 
 /*****************************************************************************
  * USER INTERFACE
@@ -67,7 +72,7 @@ $l_prefs["tab_modules"] = 'Модули';
 	 */
 
 	$l_prefs["choose_language"] = "Язык";
-	$l_prefs["language_notice"] = "The language change will only take effect everywhere after restarting webEdition.";
+	$l_prefs["language_notice"] = "The language change will only take effect everywhere after restarting webEdition."; // TRANSLATE
 
 	/**
 	 * SEEM
@@ -75,7 +80,21 @@ $l_prefs["tab_modules"] = 'Модули';
 	$l_prefs["seem"] = "Суперлегкий режим";
 	$l_prefs["seem_deactivate"] = "Деактивировать режим";
 	$l_prefs["seem_startdocument"] = "Стартовый документ режима";
+	$l_prefs["seem_start_type_document"] = "Document"; // TRANSLATE
+	$l_prefs["seem_start_type_object"] = "Object"; // TRANSLATE
+	$l_prefs["seem_start_type_cockpit"] = "Cockpit"; // TRANSLATE
 	$l_prefs["question_change_to_seem_start"] = "Перейти к выбранному документу?";
+
+
+	/**
+	 * Sidebar
+	 */
+	$l_prefs["sidebar"] = "Sidebar"; // TRANSLATE
+	$l_prefs["sidebar_deactivate"] = "deactivate"; // TRANSLATE
+	$l_prefs["sidebar_show_on_startup"] = "show on startup"; // TRANSLATE
+	$l_prefs["sidebar_width"] = "Width in pixel"; // TRANSLATE
+	$l_prefs["sidebar_document"] = "Document"; // TRANSLATE
+
 
 	/**
 	 * WINDOW DIMENSION
@@ -103,12 +122,21 @@ $l_prefs["tab_modules"] = 'Модули';
 	/**
 	 * FILE EXTENSIONS
 	 */
-
+	$l_prefs["extensions_information"] = "Set the default file extensions for static and dynamic pages here."; // TRANSLATE
+	
 	$l_prefs["we_extensions"] = "Расширения webEdition";
 	$l_prefs["static"] = "Статические страницы";
 	$l_prefs["dynamic"] = "Динамические страницы";
 	$l_prefs["html_extensions"] = "Расширения HTML";
 	$l_prefs["html"] = "Страницы HTML";
+	
+/*****************************************************************************
+ * Glossary
+ *****************************************************************************/
+
+	$l_prefs["glossary_publishing"] = "Check before publishing"; // TRANSLATE
+	$l_prefs["force_glossary_check"] = "Force glossary check"; // TRANSLATE
+	$l_prefs["force_glossary_action"] = "Force action"; // TRANSLATE
 
 /*****************************************************************************
  * COCKPIT
@@ -119,6 +147,64 @@ $l_prefs["tab_modules"] = 'Модули';
 	 */
 
 	$l_prefs["cockpit_amount_columns"] = "Columns in the cockpit "; // TRANSLATE
+
+
+/*****************************************************************************
+ * CACHING
+ *****************************************************************************/
+
+	/**
+	 * Cache Type
+	 */
+	$l_prefs["cache_information"] = "Set the preset values of the fields \"Caching Type\" and \"Cache lifetime in seconds\" for new templates here.<br /><br />Please note that these setting are only the presets of the fields."; // TRANSLATE
+	$l_prefs["cache_navigation_information"] = "Enter the defaults for the &lt;we:navigation&gt; tag here. This value can be overwritten by the attribute \"cachelifetime\" of the &lt;we:navigation&gt; tag."; // TRANSLATE
+	
+	$l_prefs["cache_presettings"] = "Presetting"; // TRANSLATE
+	$l_prefs["cache_type"] = "Caching Type"; // TRANSLATE
+	$l_prefs["cache_type_none"] = "Caching deactivated"; // TRANSLATE
+	$l_prefs["cache_type_full"] = "Full cache"; // TRANSLATE
+	$l_prefs["cache_type_document"] = "Document cache"; // TRANSLATE
+	$l_prefs["cache_type_wetag"] = "we:Tag cache"; // TRANSLATE
+
+	/**
+	 * Cache Life Time
+	 */
+	$l_prefs["cache_lifetime"] = "Cache lifetime in seconds"; // TRANSLATE
+
+	$l_prefs['cache_lifetimes'] = array();
+	$l_prefs['cache_lifetimes'][0] = "";
+	$l_prefs['cache_lifetimes'][60] = "1 minute"; // TRANSLATE
+	$l_prefs['cache_lifetimes'][300] = "5 minutes"; // TRANSLATE
+	$l_prefs['cache_lifetimes'][600] = "10 minutes"; // TRANSLATE
+	$l_prefs['cache_lifetimes'][1800] = "30 minutes"; // TRANSLATE
+	$l_prefs['cache_lifetimes'][3600] = "1 hour"; // TRANSLATE
+	$l_prefs['cache_lifetimes'][21600] = "6 hours"; // TRANSLATE
+	$l_prefs['cache_lifetimes'][43200] = "12 hours"; // TRANSLATE
+	$l_prefs['cache_lifetimes'][86400] = "1 day"; // TRANSLATE
+
+	$l_prefs['delete_cache_after'] = 'Clear cache after'; // TRANSLATE
+	$l_prefs['delete_cache_add'] = 'adding a new entry'; // TRANSLATE
+	$l_prefs['delete_cache_edit'] = 'changing a entry'; // TRANSLATE
+	$l_prefs['delete_cache_delete'] = 'deleting a entry'; // TRANSLATE
+	$l_prefs['cache_navigation'] = 'Default setting'; // TRANSLATE
+	$l_prefs['default_cache_lifetime'] = 'Default cache lifetime'; // TRANSLATE
+
+
+/*****************************************************************************
+ * LOCALES // LANGUAGES
+ *****************************************************************************/
+
+	/**
+	 * Languages
+	 */
+	$l_prefs["locale_information"] = "Add all languages for which you would provide a web page.<br /><br />This preference will be used for the glossary check and the spellchecking."; // TRANSLATE
+
+	$l_prefs["locale_languages"] = "Language"; // TRANSLATE
+	$l_prefs["locale_countries"] = "Country"; // TRANSLATE
+	$l_prefs["locale_add"] = "Add language"; // TRANSLATE
+	$l_prefs['cannot_delete_default_language'] = "The default language cannot be deleted."; // TRANSLATE
+	$l_prefs["language_already_exists"] = "This language already exists"; // TRANSLATE
+	$l_prefs["add_dictionary_question"] = "Would you like to upload the dictionary for this language?"; // TRANSLATE
 
 /*****************************************************************************
  * EDITOR
@@ -143,7 +229,9 @@ $l_prefs["tab_modules"] = 'Модули';
 	/**
 	 * TEMPLATE EDITOR
 	 */
-
+	
+	$l_prefs["editor_information"] = "Specify font and size which should be used for the editing of templates, CSS- and Java Script files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types."; // TRANSLATE
+	
 	$l_prefs["editor_font"] = 'Шрифт в редакторе';
 	$l_prefs["editor_fontname"] = 'Название шрифта';
 	$l_prefs["editor_fontsize"] = 'Размер шрифта';
@@ -179,16 +267,23 @@ $l_prefs["tab_modules"] = 'Модули';
 	$l_prefs["formmailSpan"] = "Within the span of time"; // TRANSLATE
 	$l_prefs["formmailTrials"] = "Requests allowed"; // TRANSLATE
 	$l_prefs["blockFor"] = "Block for"; // TRANSLATE
+	$l_prefs["formmailViaWeDoc"] = "Call formmail via webEdition-Dokument."; // TRANSLATE
 	$l_prefs["never"] = "never"; // TRANSLATE
 	$l_prefs["1_day"] = "1 day"; // TRANSLATE
 	$l_prefs["more_days"] = "%s days"; // TRANSLATE
 	$l_prefs["1_week"] = "1 week"; // TRANSLATE
 	$l_prefs["more_weeks"] = "%s weeks"; // TRANSLATE
+	$l_prefs["1_year"] = "1 year"; // TRANSLATE
+	$l_prefs["more_years"] = "%s years"; // TRANSLATE
 	$l_prefs["1_minute"] = "1 minute"; // TRANSLATE
 	$l_prefs["more_minutes"] = "%s minutes"; // TRANSLATE
 	$l_prefs["1_hour"] = "1 hour"; // TRANSLATE
 	$l_prefs["more_hours"] = "%s hours"; // TRANSLATE
 	$l_prefs["ever"] = "always"; // TRANSLATE
+
+
+
+
 
 /*****************************************************************************
  * PROXY SERVER
@@ -198,6 +293,8 @@ $l_prefs["tab_modules"] = 'Модули';
 	 * PROXY SERVER
 	 */
 
+	$l_prefs["proxy_information"] = "Specify your Proxy settings for your server here, if your server uses a proxy for the connection with the Internet."; // TRANSLATE
+	
 	$l_prefs["useproxy"] = "Для онлайн обновления<br>использовать proxy-сервер";
 	$l_prefs["proxyaddr"] = "Адрес";
 	$l_prefs["proxyport"] = "Порт";
@@ -257,9 +354,9 @@ $l_prefs["tab_modules"] = 'Модули';
 	/**
 	 * HOOKS
 	 */
-	$l_prefs["hooks"] = "Hooks"; //TRANSLATE
+	$l_prefs["hooks"] = "Hooks"; // TRANSLATE //TRANSLATE
 	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
-	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; //TRANSLATE
+	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; 
 
 /*****************************************************************************
  * ERROR HANDLING
@@ -267,6 +364,14 @@ $l_prefs["tab_modules"] = 'Модули';
 
 
 	$l_prefs['error_no_object_found'] = 'Errorpage for not existing objects'; // TRANSLATE
+
+	/**
+	 * TEMPLATE TAG CHECK
+	 */
+
+	$l_prefs["templates"] = "Templates"; // TRANSLATE
+	$l_prefs["disable_template_tag_check"] = "Deactivate check for missing,<br />closing we:tags"; // TRANSLATE
+
 	/**
 	 * ERROR HANDLER
 	 */
@@ -408,36 +513,39 @@ $l_prefs["tab_modules"] = 'Модули';
 	$l_prefs["smtp_password"] = "Password"; // TRANSLATE
 	$l_prefs["smtp_halo"] = "SMTP halo"; // TRANSLATE
 	$l_prefs["smtp_timeout"] = "SMTP timeout"; // TRANSLATE
-
+	
 /*****************************************************************************
  * Versions settings
  *****************************************************************************/
 
-	$l_prefs["versioning"] = "Versioning"; //TRANSLATE
-	$l_prefs["version_all"] = "all"; //TRANSLATE
-	$l_prefs["versioning_activate_text"] = "Activate versioning for some or all content types."; //TRANSLATE
-	$l_prefs["versioning_time_text"] = "If you specify a time period, only versions are saved which are created in this time until today. Older versions will be deleted."; //TRANSLATE
-	$l_prefs["versioning_time"] = "Time period"; //TRANSLATE
-	$l_prefs["versioning_anzahl_text"] = "Number of versions which will be created for each document or object."; //TRANSLATE
-	$l_prefs["versioning_anzahl"] = "Number"; //TRANSLATE
-	$l_prefs["versioning_wizard_text"] = "Open the Version-Wizard to delete or reset versions."; //TRANSLATE
-	$l_prefs["versioning_wizard"] = "Open Versions-Wizard"; //TRANSLATE
-	$l_prefs["ContentType"] = "Content Type"; //TRANSLATE
-	$l_prefs["versioning_create_text"] = "Determine which actions provoke new versions. Either if you publish or if you save, unpublish, delete or import files, too."; //TRANSLATE
-	$l_prefs["versioning_create"] = "Create Version"; //TRANSLATE
-	$l_prefs["versions_create_publishing"] = "only when publishing"; //TRANSLATE
-	$l_prefs["versions_create_always"] = "always"; //TRANSLATE
-
-	$l_prefs['use_jeditor'] = "Use"; //TRANSLATE
-	$l_prefs["editor_font_colors"] = 'Specify font colors'; //TRANSLATE
-	$l_prefs["editor_normal_font_color"] = 'Default'; //TRANSLATE
-	$l_prefs["editor_we_tag_font_color"] = 'webEdition tags'; //TRANSLATE
-	$l_prefs["editor_we_attribute_font_color"] = 'webEdition attributes'; //TRANSLATE
-	$l_prefs["editor_html_tag_font_color"] = 'HTML tags'; //TRANSLATE
-	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes'; //TRANSLATE
-	$l_prefs["editor_pi_tag_font_color"] = 'PHP code'; //TRANSLATE
-	$l_prefs["editor_comment_font_color"] = 'Comments'; //TRANSLATE
-	$l_prefs["jeditor"] = 'Java source editor'; //TRANSLATE
+	$l_prefs["versioning"] = "Versioning"; // TRANSLATE
+	$l_prefs["version_all"] = "all"; // TRANSLATE
+	$l_prefs["versioning_activate_text"] = "Activate versioning for some or all content types."; // TRANSLATE
+	$l_prefs["versioning_time_text"] = "If you specify a time period, only versions are saved which are created in this time until today. Older versions will be deleted."; // TRANSLATE
+	$l_prefs["versioning_time"] = "Time period"; // TRANSLATE
+	$l_prefs["versioning_anzahl_text"] = "Number of versions which will be created for each document or object."; // TRANSLATE
+	$l_prefs["versioning_anzahl"] = "Number"; // TRANSLATE
+	$l_prefs["versioning_wizard_text"] = "Open the Version-Wizard to delete or reset versions."; // TRANSLATE
+	$l_prefs["versioning_wizard"] = "Open Versions-Wizard"; // TRANSLATE
+	$l_prefs["ContentType"] = "Content Type"; // TRANSLATE
+	$l_prefs["versioning_create_text"] = "Determine which actions provoke new versions. Either if you publish or if you save, unpublish, delete or import files, too."; // TRANSLATE
+	$l_prefs["versioning_create"] = "Create Version"; // TRANSLATE
+	$l_prefs["versions_create_publishing"] = "only when publishing"; // TRANSLATE
+	$l_prefs["versions_create_always"] = "always"; // TRANSLATE
 	
-	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; //TRANSLATE
+	$l_prefs['use_jeditor'] = "Use"; // TRANSLATE
+	$l_prefs["editor_font_colors"] = 'Specify font colors'; // TRANSLATE
+	$l_prefs["editor_normal_font_color"] = 'Default'; // TRANSLATE
+	$l_prefs["editor_we_tag_font_color"] = 'webEdition tags'; // TRANSLATE
+	$l_prefs["editor_we_attribute_font_color"] = 'webEdition attributes'; // TRANSLATE
+	$l_prefs["editor_html_tag_font_color"] = 'HTML tags'; // TRANSLATE
+	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes'; // TRANSLATE
+	$l_prefs["editor_pi_tag_font_color"] = 'PHP code'; // TRANSLATE
+	$l_prefs["editor_comment_font_color"] = 'Comments'; // TRANSLATE
+	$l_prefs["jeditor"] = 'Java source editor'; // TRANSLATE
+	
+	
+	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
+	
+
 ?>

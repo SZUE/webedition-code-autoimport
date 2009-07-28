@@ -16,9 +16,9 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 
 /**
  * Language file: module_information.inc.php
@@ -30,7 +30,6 @@ $l_javaMenu["module_information"]["users"]["text"] = "Управление по�
 $l_javaMenu["module_information"]["users"]["text_short"] = "Пользователь";
 $l_javaMenu["module_information"]["users"]["not_installed"] = "Вы не установили модуль webEdition «Управление пользователями». Модуль «Управление пользователями» позволяет делегировать администраторам и редакторам различные полномочия в системе webEdition, а также распределять рабочие пространства.<br> Модуль и более подробную информацию о нем Вы найдете здесь: %s";
 
-
 $l_javaMenu["module_information"]["customer"]["text"] = "Управление клиентами";
 $l_javaMenu["module_information"]["customer"]["text_short"] = "Клиент";
 $l_javaMenu["module_information"]["customer"]["not_installed"] = "Вы не установили модуль webEdition «Управление клиентами». Модуль «Управление клиентами» открывает доступ к закрытым областям веб-страницы уполномоченным Вами лицам.<br> Модуль и более подробную информацию о нем Вы найдете здесь: %s";
@@ -38,7 +37,6 @@ $l_javaMenu["module_information"]["customer"]["not_installed"] = "Вы не ус
 $l_javaMenu["module_information"]["schedule"]["text"] = "Планировщик";
 $l_javaMenu["module_information"]["schedule"]["text_short"] = "Планировщик";
 $l_javaMenu["module_information"]["schedule"]["not_installed"] = "Вы не установили модуль webEdition «Планировщик». Данный модуль задает сроки публикации/снятия материала с публикации.<br> Модуль и более подробную информацию о нем Вы найдете здесь: %s";
-$l_javaMenu["module_information"]["schedule"]["info"] = "Модуль «Планировщик» интегрирован в систему webEdition.<br><br>Вы найдете его в пункте меню «Документы».";
 
 $l_javaMenu["module_information"]["shop"]["text"] = "Интернет-магазин";
 $l_javaMenu["module_information"]["shop"]["text_short"] = "Интернет-магазин";
@@ -55,7 +53,6 @@ $l_javaMenu["module_information"]["object"]["not_installed"] = "Вы не уст
 $l_javaMenu["module_information"]["messaging"]["text"] = "Задачи/сообщения";
 $l_javaMenu["module_information"]["messaging"]["text_short"] = "Сообщения";
 $l_javaMenu["module_information"]["messaging"]["not_installed"] = "Вы не установили модуль webEdition «Задачи/сообщения».<br> Модуль и более подробную информацию о нем Вы найдете здесь: %s";
-
 
 $l_javaMenu["module_information"]["workflow"]["text"] = "Электронный документооборот";
 $l_javaMenu["module_information"]["workflow"]["text_short"] = "Электронный документооборот";
@@ -77,9 +74,12 @@ $l_javaMenu["module_information"]["voting"]["text"] = "Модуль голосо
 $l_javaMenu["module_information"]["voting"]["text_short"] = "Голосование";
 $l_javaMenu["module_information"]["voting"]["not_installed"] = "Вы не установили модуль webEdition «Модуль голосования». Модуль и более подробную информацию о нем Вы найдете здесь: %s";
 
+$l_javaMenu["module_information"]["glossary"]["text"] = "Glossary"; // TRANSLATE
+$l_javaMenu["module_information"]["glossary"]["text_short"] = "Glossary"; // TRANSLATE
+$l_javaMenu["module_information"]["glossary"]["not_installed"] = "Sorry, but you have not yet installed the webEdition Glossary Module. You will find the Glossary itself and more information under: %s"; // TRANSLATE
+
 $l_javaMenu["module_information"]["spellchecker"]["text"] = "Spell Checker"; // TRANSLATE
 $l_javaMenu["module_information"]["spellchecker"]["text_short"] = "Spell Checker"; // TRANSLATE
-$l_javaMenu["module_information"]["spellchecker"]["not_installed"] = "Sorry, but you have not yet installed the webEdition Spellchecker. You will find the module itself and more information under: %s"; // TRANSLATE
-
+$l_javaMenu["module_information"]["spellchecker"]["not_installed"] = "Sorry, but you have not yet installed the webEdition Spellchecker. You will find the module itself and more information under: %s";
 
 ?>

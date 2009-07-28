@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -28,4 +29,5 @@
 $GLOBALS["l_tags"]["int_href"] = "Внутренняя";
 $GLOBALS["l_tags"]["ext_href"] = "Внешняя";
 $GLOBALS["l_tags"]["include_file"] = "Select file for we:include"; // TRANSLATE
+$GLOBALS["l_tags"]["open_sidebar"] = "Open sidebar"; // TRANSLATE
 ?>

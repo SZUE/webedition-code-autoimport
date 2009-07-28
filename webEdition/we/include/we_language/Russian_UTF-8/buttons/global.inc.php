@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -60,7 +61,7 @@ $l_button["new_directory"]["value"] = "New directory";
 $l_button["new_directory"]["alt"] = "Создать директорию";
 $l_button["new_directory"]["width"] = 200;
 
-$l_button["unpublished_pages"]["value"] = "Unpublished pages";
+$l_button["unpublished_pages"]["value"] = "Unpublished documents";
 $l_button["unpublished_pages"]["alt"] = "Обзор неопубликованных страниц";
 $l_button["unpublished_pages"]["width"] = 200;
 
@@ -81,7 +82,7 @@ $l_button["quit_delete"]["width"] = 175;
  *****************************************************************************/
 
 $l_button["quit_move"]["value"] = "Finish move mode";
-$l_button["quit_move"]["alt"] = "Finish move mode"; // TRANSLATE
+$l_button["quit_move"]["alt"] = "Finish move mode";
 $l_button["quit_move"]["width"] = 175;
 
 /*****************************************************************************
@@ -89,7 +90,7 @@ $l_button["quit_move"]["width"] = 175;
  *****************************************************************************/
 
 $l_button["ok"]["value"] = "OK";
-$l_button["ok"]["alt"]   = "Okay"; // TRANSLATE
+$l_button["ok"]["alt"]   = "Okay";
 $l_button["ok"]["width"] = 100;
 
 $l_button["cancel"]["value"] = "Cancel";
@@ -97,23 +98,35 @@ $l_button["cancel"]["alt"] = "Отменить";
 $l_button["cancel"]["width"] = 100;
 
 $l_button["yes"]["value"] = "Yes";
-$l_button["yes"]["alt"]   = "Yes"; // TRANSLATE
+$l_button["yes"]["alt"]   = "Yes";
 $l_button["yes"]["width"] = 100;
 
 $l_button["no"]["value"] = "No";
-$l_button["no"]["alt"]   = "No"; // TRANSLATE
+$l_button["no"]["alt"]   = "No";
 $l_button["no"]["width"] = 100;
 
 $l_button["save"]["value"] = "Save";
 $l_button["save"]["alt"] = "Сохранить";
 $l_button["save"]["width"] = 100;
 
+$l_button["publish"]["value"] = "Publish";
+$l_button["publish"]["alt"]   = "Save and publish the document"; // TRANSLATE
+$l_button["publish"]["width"] = 100;
+
 $l_button["delete"]["value"] = "Delete";
 $l_button["delete"]["alt"] = "Удалить";
 $l_button["delete"]["width"] = 100;
 
+$l_button["go"]["value"] = "Execute now";
+$l_button["go"]["alt"]   = ""; // TRANSLATE
+$l_button["go"]["width"] = 120;
+
+$l_button["openVersionWizard"]["value"] = "Versions-Wizard";
+$l_button["openVersionWizard"]["alt"]   = "Versions-Wizard"; // TRANSLATE
+$l_button["openVersionWizard"]["width"] = 120;
+
 $l_button["next"]["value"] = "Next";
-$l_button["next"]["alt"]   = "Next"; // TRANSLATE
+$l_button["next"]["alt"]   = "Next";
 $l_button["next"]["width"] = 100;
 
 $l_button["back"]["value"] = "Back";
@@ -121,8 +134,16 @@ $l_button["back"]["alt"] = "Назад";
 $l_button["back"]["width"] = 100;
 
 $l_button["open"]["value"] = "Open";
-$l_button["open"]["alt"] = "Open"; // TRANSLATE
+$l_button["open"]["alt"] = "Open";
 $l_button["open"]["width"] = 100;
+
+$l_button["default"]["value"] = "Default";
+$l_button["default"]["alt"] = ""; // TRANSLATE
+$l_button["default"]["width"] = 100;
+
+$l_button["reset"]["value"] = "Reset";
+$l_button["reset"]["alt"] = ""; // TRANSLATE
+$l_button["reset"]["width"] = 100;
 
 /*****************************************************************************
  * SAVING, PUBLISHING, ETC.
@@ -267,13 +288,14 @@ $l_button["res_1300"]["value"] = "1300x650";
 $l_button["res_1300"]["alt"]   = "Установить 1300x650";
 $l_button["res_1300"]["width"] = 100;
 
-$l_button["install_plugin"]["value"] = "Install PlugIn";
-$l_button["install_plugin"]["alt"]   = "инсталлировать Mozilla ActiveX PlugIn";
-$l_button["install_plugin"]["width"] = 140;
 
-$l_button["install_editor_plugin"]["value"] = "Editor PlugIn";
-$l_button["install_editor_plugin"]["alt"]   = "Инсталлировать редактор-плагин webEdition";
-$l_button["install_editor_plugin"]["width"] = 140;
+/*****************************************************************************
+ * Rebuild
+ *****************************************************************************/
+
+$l_button["rebuild"]["value"] = "Rebuild";
+$l_button["rebuild"]["alt"]   = "Start rebuild"; // TRANSLATE
+$l_button["rebuild"]["width"] = 100;
 
 /*****************************************************************************
  * UPDATE
@@ -288,7 +310,7 @@ $l_button["register"]["alt"]   = "Зарегистрировать";
 $l_button["register"]["width"] = 100;
 
 $l_button["backup"]["value"] = "Backup";
-$l_button["backup"]["alt"]   = "Backup"; // TRANSLATE
+$l_button["backup"]["alt"]   = "Backup";
 $l_button["backup"]["width"] = 100;
 
 $l_button["search"]["value"] = "Search";
@@ -333,13 +355,19 @@ $l_button["new_folder"]["width"] = 200;
 /*****************************************************************************
  * Logbuch Formmail
  *****************************************************************************/
-$l_button["clear_log"]["value"] = "Clear logbook"; // TRANSLATE
-$l_button["clear_log"]["alt"] = "Clear logbook"; // TRANSLATE
+$l_button["clear_log"]["value"] = "Clear logbook";
+$l_button["clear_log"]["alt"] = "Clear logbook";
 $l_button["clear_log"]["width"] = 120;
 
 $l_button["logbook"]["value"] = "Logbook";
 $l_button["logbook"]["alt"]   = "Журнал записей";
 $l_button["logbook"]["width"] = 100;
 
+/*****************************************************************************
+ * Info
+ *****************************************************************************/
+$l_button["revert_published"]["value"] = "Restore published version";
+$l_button["revert_published"]["alt"] = "Discard changes and restore published version."; // TRANSLATE
+$l_button["revert_published"]["width"] = 220;
 
 ?>

@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -36,4 +37,6 @@ $l_perm["object"]["MOVE_OBJECTFILE"] = "The user is allowed to move objects."; /
 $l_perm["object"]["CAN_SEE_OBJECTS"] = "Право на просмотр классов";
 $l_perm["object"]["NEW_OBJECT"] = "Право на создание классов";
 $l_perm["object"]["DELETE_OBJECT"] = "Право на удаление классов";
+$l_perm["object"]["CAN_SELECT_OTHER_USERS_OBJECTS"] = "The user is allowed to select objects outside of his workspace."; // TRANSLATE
+
 ?>

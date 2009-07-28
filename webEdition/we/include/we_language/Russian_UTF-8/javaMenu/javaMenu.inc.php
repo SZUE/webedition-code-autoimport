@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -23,7 +24,7 @@
 /**
  * Language file: javaMenu.inc.php
  * Provides language strings.
- * Language: Russian
+ * Language: English
  */
 
 /**
@@ -58,6 +59,7 @@ $l_javaMenu["new"] = "Новый";
 		$l_javaMenu["flash_movie"] = "Flash Movie"; // TRANSLATE
 		$l_javaMenu["quicktime_movie"] = "Quicktime Movie"; // TRANSLATE
 		$l_javaMenu["text_plain"] = "Plain Text Document"; // TRANSLATE
+		$l_javaMenu["text_xml"] = "XML Document"; // TRANSLATE
 		$l_javaMenu["javascript"] = "Javascript"; // TRANSLATE
 		$l_javaMenu["css_stylesheet"] = "CSS таблица стилей";
 		$l_javaMenu["other_files"] = "Другие файлы";
@@ -68,7 +70,6 @@ $l_javaMenu["new"] = "Новый";
 		#####################################################
 
 	$l_javaMenu["template"] = "Шаблон";
-	$l_javaMenu["directory"] = "Директория";
 
 		##################################
 		## SubMenu Datei/Neu/Verzeichnis #
@@ -80,6 +81,15 @@ $l_javaMenu["new"] = "Новый";
 		#################################################
 		######## End Submenu Datei/Neu/Verzeichnis  #####
 		#################################################
+
+	$l_javaMenu["directory"] = "Директория";
+	$l_javaMenu["wizards"] = "Wizards"; // TRANSLATE
+
+		##################################
+		## SubMenu Datei/Neu/Wizards #####
+		##################################
+
+		$l_javaMenu["first_steps_wizard"] = "First Steps Wizard"; // TRANSLATE
 
 
 	############################################
@@ -99,11 +109,20 @@ $l_javaMenu["new"] = "Новый";
 	###### End SubMenu Datei/Open ####
 	##################################
 
+	// close
+$l_javaMenu["close_single_document"] = "Close Document"; // TRANSLATE
+$l_javaMenu["close_all_documents"] = "Close all Documents"; // TRANSLATE
+$l_javaMenu["close_all_but_active_document"] = "Close inactive documents"; // TRANSLATE
+$l_javaMenu["delete_active_document"] = "Delete active document"; // TRANSLATE
+
+
+
 $l_javaMenu["save"] = "Сохранить";
+$l_javaMenu["publish"] = "Publish"; // TRANSLATE
 $l_javaMenu["delete"] = "Удалить";
 
 	##################################
-	##### SubMenu Datei/Lцschen ######
+	##### SubMenu Datei/L�schen ######
 	##################################
 
 	$l_javaMenu["documents"] = "Документы";
@@ -161,10 +180,10 @@ $l_javaMenu["quit"] = "Завершить работу";
 
 			$l_javaMenu["shortcuts"] = "Shortcuts"; // TRANSLATE
 			$l_javaMenu["rss_reader"] = "RSS Reader"; // TRANSLATE
-			$l_javaMenu["last_modified"] = "last modified"; // TRANSLATE
+			$l_javaMenu["last_modified"] = "last modified";
 			$l_javaMenu["todo_messaging"] = "ToDo/Messaging"; // TRANSLATE
 			$l_javaMenu["users_online"] = "Users Online"; // TRANSLATE
-			$l_javaMenu["unpublished"] = "unpublished"; // TRANSLATE
+			$l_javaMenu["unpublished"] = "unpublished";
 			$l_javaMenu["my_documents"] = "My documents"; // TRANSLATE
 			$l_javaMenu["notepad"] = "Notepad"; // TRANSLATE
 			$l_javaMenu["pagelogger"] = "pageLogger"; // TRANSLATE
@@ -192,16 +211,18 @@ $l_javaMenu["edit"] = "Опции";
 $l_javaMenu["document_types"] = "Типы документов";
 $l_javaMenu["categories"] = "Категории";
 $l_javaMenu["thumbnails"] = "Иконки";
+$l_javaMenu["metadata"] = "Metadata fields"; // TRANSLATE
 $l_javaMenu["navigation"] = "Navigation"; // TRANSLATE
 $l_javaMenu["change_username"] = "Изменить имя пользователя";
 $l_javaMenu["change_password"] = "Изменить пароль";
-$l_javaMenu["econda"] = "Econda";
 
 $l_javaMenu["formmail_recipients"] = "Получатели Formmail";
 $l_javaMenu["proxy_server"] = "Proxy-сервер";
 $l_javaMenu["unpublished_pages"] = "Неопубликованные страницы";
 $l_javaMenu["preferences"] = "Настройки";
-
+$l_javaMenu["versioning"] = "Version-Wizard"; // TRANSLATE
+$l_javaMenu["versioning_log"] = "Version-Log"; // TRANSLATE
+$l_javaMenu["econda"] = "Econda"; // TRANSLATE
 
 ##################################
 ###### End Menu Bearbeiten #######
@@ -214,10 +235,13 @@ $l_javaMenu["preferences"] = "Настройки";
 
 $l_javaMenu["modules"] = "Модули";
 $l_javaMenu["module_installation"] = "Инсталляция модуля";
+
 //	The content is generated dynamically
+$l_javaMenu["extras"] = "Extras"; // TRANSLATE
+$l_javaMenu["inactive_extras"] = "Inactive Extras"; // TRANSLATE
 
 
-##################################
+#################################
 ###### End Menu Module ###########
 ##################################
 
@@ -227,6 +251,8 @@ $l_javaMenu["module_installation"] = "Инсталляция модуля";
 
 $l_javaMenu["help"] = "Помощь";
 $l_javaMenu["onlinehelp"] = "Online help"; // TRANSLATE
+$l_javaMenu["webEdition_online"] = "webEdition online"; // TRANSLATE
+$l_javaMenu["sidebar"] = "Sidebar"; // TRANSLATE
 $l_javaMenu["update"] = "Обновить";
 $l_javaMenu["upgrade"] = "Update webEdition 5"; // TRANSLATE
 $l_javaMenu["register"] = "Зарегистрировать";
@@ -236,6 +262,7 @@ $l_javaMenu["info"] = "Справка";
 ######### Navigation back - forward - home #############
 ########################################################
 
+$l_javaMenu["close"]   = "Close"; // TRANSLATE
 $l_javaMenu["home"]   = "на главную";
 $l_javaMenu["back"]   = "назад";
 $l_javaMenu["next"]   = "вперед";
@@ -244,5 +271,8 @@ $l_javaMenu["reload"] = "перезапуск";
 $l_javaMenu["not_installed_modules"] = "Неустановленные модули";
 
 $l_javaMenu["search"] = "Search"; // TRANSLATE
+
+$l_javaMenu["common"] = "Common"; // TRANSLATE
+$l_javaMenu["sysinfo"] = "System information"; // TRANSLATE
 
 ?>

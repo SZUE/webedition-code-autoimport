@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -45,6 +46,7 @@ $GLOBALS["l_global"]["email_ban"] = "Вы не уполномочены испо
 $GLOBALS["l_global"]["email_recipient_invalid"] = "Адрес получателя введен неверно!";
 $GLOBALS["l_global"]["email_no_recipient"] = "Адреса получателя не существует!";
 $GLOBALS["l_global"]["email_invalid"] = "Ваш электронный <b>адрес</b> недействителен!";
+$GLOBALS["l_global"]["captcha_invalid"] = "The entered security code is wrong!"; // TRANSLATE
 $GLOBALS["l_global"]["question"] = "Вопрос";
 $GLOBALS["l_global"]["warning"] = "Внимание";
 $GLOBALS["l_global"]["we_alert"] = "Данная функция не входит в демо-версию системы webEdition!";
@@ -69,6 +71,7 @@ $GLOBALS["l_global"]["save_mainTable"] = "Пересохранить главн�
 $GLOBALS["l_global"]["add_workspace"] = "Добавить рабочее пространство";
 $GLOBALS["l_global"]["folder_not_editable"] = "Данная директория не может быть выбрана!";
 $GLOBALS["l_global"]["modules"] = "Модули";
+$GLOBALS["l_global"]["modules_and_tools"] = "Modules and Tools"; // TRANSLATE
 $GLOBALS["l_global"]["center"] = "Центровка";
 $GLOBALS["l_global"]["jswin"] = "Окно Popup";
 $GLOBALS["l_global"]["open"] = "Открыть";
@@ -83,22 +86,22 @@ $GLOBALS["l_global"]["location"] = "Location"; // TRANSLATE
 $GLOBALS["l_global"]["title"] = "Титул/звание";
 $GLOBALS["l_global"]["description"] = "Описание";
 $GLOBALS["l_global"]["required_field"] = "Обязательное к заполнению поле";
-$GLOBALS["l_global"]["from"] = "из"; 
+$GLOBALS["l_global"]["from"] = "из";
 $GLOBALS["l_global"]["to"] = "до";
 $GLOBALS["l_global"]["search"]="Поиск";
 $GLOBALS["l_global"]["in"]="в";
 $GLOBALS["l_global"]["we_rebuild_at_save"] = "Перестроить (rebuild)";
 $GLOBALS["l_global"]["we_publish_at_save"] = "После сохранения опубликовать";
 $GLOBALS["l_global"]["we_new_doc_after_save"] = "New Document after saving"; // TRANSLATE
-$GLOBALS["l_global"]["we_new_folder_after_save"] = "New folder after saving";
-$GLOBALS["l_global"]["we_new_entry_after_save"] = "New entry after saving";
+$GLOBALS["l_global"]["we_new_folder_after_save"] = "New folder after saving"; // TRANSLATE
+$GLOBALS["l_global"]["we_new_entry_after_save"] = "New entry after saving"; // TRANSLATE
 $GLOBALS["l_global"]["wrapcheck"] = "Обрыв строки (Wrapping)";
 $GLOBALS["l_global"]["static_docs"] = "Статические документы";
 $GLOBALS["l_global"]["save_templates_before"] = "Предварительно пересохранить шаблоны";
 $GLOBALS["l_global"]["specify_docs"] = "Документы со следующими критериями:";
 $GLOBALS["l_global"]["object_docs"] = "Все объекты";
 $GLOBALS["l_global"]["all_docs"] = "Все документы";
-$GLOBALS["l_global"]["ask_for_editor"] = "Предварительно запросить редактор";             
+$GLOBALS["l_global"]["ask_for_editor"] = "Предварительно запросить редактор";
 $GLOBALS["l_global"]["cockpit"] = "Cockpit"; // TRANSLATE
 $GLOBALS["l_global"]["introduction"] = "Введение";
 $GLOBALS["l_global"]["doctypes"] = "Типы документов";
@@ -170,7 +173,9 @@ $GLOBALS["l_global"]["unlocking_document"] = "дать доступ к доку�
 $GLOBALS["l_global"]["variant_field"] = "Поле варианта";
 $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following link, if you are not redirected within the next 30 seconds "; // TRANSLATE
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition login"; // TRANSLATE
-$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
-$GLOBALS["l_global"]["credits_translators"] = "Translations";
-$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
+$GLOBALS["l_global"]["untitled"] = "Untitled"; // TRANSLATE
+$GLOBALS["l_global"]["no_document_opened"] = "There is no document opened!"; // TRANSLATE
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team"; // TRANSLATE
+$GLOBALS["l_global"]["credits_translators"] = "Translations"; // TRANSLATE
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to"; // TRANSLATE
 ?>

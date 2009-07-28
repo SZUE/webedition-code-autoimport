@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -34,4 +35,5 @@ $l_javaMenu["shop"]["shop_edit"] = "Редактировать";
 		$l_javaMenu["shop"]["delete_order"] = "Удалить заказ";
 
 $l_javaMenu["shop"]["menu_help"]   = "Справка";
+$l_javaMenu["shop"]["menu_info"]   = "Info"; // TRANSLATE
 ?>

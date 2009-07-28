@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -37,10 +38,6 @@ $l_button["decline"]["width"] = 100;
 $l_button["forward"]["value"] = "Forward";
 $l_button["forward"]["alt"]   = ""; // TRANSLATE
 $l_button["forward"]["width"] = 100;
-
-$l_button["publish"]["value"] = "Publish";
-$l_button["publish"]["alt"]   = ""; // TRANSLATE
-$l_button["publish"]["width"] = 100;
 
 $l_button["new_workflow"]["value"] = "New workflow";
 $l_button["new_workflow"]["alt"]   = "Создать поток";

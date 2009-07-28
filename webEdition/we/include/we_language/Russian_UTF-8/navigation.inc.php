@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -36,7 +37,7 @@ $l_navigation['we_filename_notValid'] = 'The username is not correct!\\nAlphanum
 $l_navigation['menu_new'] = 'New'; // TRANSLATE
 $l_navigation['menu_save'] = 'Save'; // TRANSLATE
 $l_navigation['menu_delete'] = 'Delete'; // TRANSLATE
-$l_navigation['menu_exit'] = 'Quit'; // TRANSLATE
+$l_navigation['menu_exit'] = 'Quit';
 
 $l_navigation['menu_options'] = 'Options'; // TRANSLATE
 $l_navigation['menu_generate'] = 'Generate source code'; // TRANSLATE
@@ -54,6 +55,7 @@ $l_navigation['navigation'] = 'Navigation'; // TRANSLATE
 $l_navigation['group'] = 'Folder'; // TRANSLATE
 $l_navigation['name'] = 'Name'; // TRANSLATE
 $l_navigation['newFolder'] = 'New folder'; // TRANSLATE
+$l_navigation['display'] = 'Display'; // TRANSLATE
 $l_navigation['save_group_ok'] = 'The folder was saved.'; // TRANSLATE
 $l_navigation['save_ok'] = 'The navigation was saved.'; // TRANSLATE
 
@@ -61,7 +63,7 @@ $l_navigation['path_nok'] = 'The path is not correct!'; // TRANSLATE
 $l_navigation['name_empty'] = 'The name may not be empty!'; // TRANSLATE
 $l_navigation['name_exists'] = 'The name already exists!'; // TRANSLATE
 $l_navigation['wrongtext'] = 'The name is not valid!\\nValid characters are are letters from a to z (upper case or lower case), figures, low line (_), deficit (-), dot (.), blank characters ( ) and at symbols (@). '; // TRANSLATE
-$l_navigation['wrongTitleField'] = 'The navigation folder could not be saved, because the given title field doesn\'t  exist. Please correct the title field on the "content" tab and save again.'; // TRANSLATE
+$l_navigation['wrongTitleField'] = 'The navigation folder could not be saved, because the given title field doesn\'t  exist. Please correct the title field on the "content" tab and save again.';
 $l_navigation['folder_path_exists'] = 'A entry/foder with this name exists allredy.'; // TRANSLATE
 $l_navigation['navigation_deleted'] = 'The entry/folder was deleted successfully.'; // TRANSLATE
 $l_navigation['group_deleted'] = 'The folder was deleted successfully.'; // TRANSLATE
@@ -136,7 +138,7 @@ $l_navigation['rules']['rule_class'] = "Of class"; // TRANSLATE
 $l_navigation['rules']['rule_workspace'] = "Workspace"; // TRANSLATE
 $l_navigation['rules']['invalid_name'] = "The name may consist only of letter, figures, hyphen and unterscore"; // TRANSLATE
 $l_navigation['rules']['name_exists'] = "The name \"%s\" already exists, please enter another name."; // TRANSLATE
-$l_navigation['rules']['saved_successful'] = "The entry: \"%s\" was saved."; // TRANSLATE
+$l_navigation['rules']['saved_successful'] = "The entry: \"%s\" was saved.";
 
 $l_navigation['exit_doc_question'] = 'It seems, as if you have changed the navigation.<br>Do you want to save your changes?'; // TRANSLATE
 $l_navigation['add_navigation'] = 'Add navigation'; // TRANSLATE
@@ -188,5 +190,18 @@ $l_navigation['icon_title'] = 'Title'; // TRANSLATE
 
 $l_navigation['linkprops_desc'] = 'Here you can define the additional link properties. In dynamic items only link target and popup window properties will be applied.'; // TRANSLATE
 $l_navigation['charset_desc'] = 'The selected charset will be applyed on the current folder and all folder entries.'; // TRANSLATE
+
+
+$l_navigation['customers'] = 'Customer filter'; // TRANSLATE
+$l_navigation['limit_access'] = 'Define customer access level'; // TRANSLATE
+$l_navigation['customer_access'] = 'All customers can access the item'; // TRANSLATE
+$l_navigation['filter'] = 'Define filter'; // TRANSLATE
+$l_navigation['and'] = 'and'; // TRANSLATE
+$l_navigation['or'] = 'or'; // TRANSLATE
+$l_navigation['selected_customers'] = 'Only folowing customers can access the item'; // TRANSLATE
+$l_navigation['useDocumentFilter'] = 'Use filter settings of document/object'; // TRANSLATE
+$l_navigation['reset_customer_filter'] = 'Reset all customer filters'; // TRANSLATE
+$l_navigation['reset_customerfilter_done_message'] = 'The cusomer filters were successfully reset!'; // TRANSLATE
+$l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters'; // TRANSLATE
 
 ?>

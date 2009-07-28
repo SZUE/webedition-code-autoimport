@@ -16,12 +16,14 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
 $l_voting = array();
 $l_voting['no_perms'] = 'You do not have permission to use this option.';
 $l_voting['delete_alert'] = 'Удалить текущее голосование/группу.\\n Вы уверены?';
+$l_voting['result_delete_alert'] = 'Delete the current voting results.\\nAre you sure?'; // TRANSLATE
 $l_voting['nothing_to_delete'] = 'Нет предмета удаления!';
 $l_voting['nothing_to_save'] = 'Нет предмета сохранения';
 $l_voting['we_filename_notValid'] = 'Недействительное имя пользователя!\\nДействительными символами являются большие и малые буквы латинского алфавита, цифры, нижняя черта, тире, точка и пробел (a-z, A-Z, 0-9, _, -, ., )';
@@ -108,6 +110,7 @@ $l_voting["csv_export"] = "Файл '%s' сохранён";
 
 $l_voting['fallback'] = 'Метод Fallback IP';
 $l_voting['save_user_agent'] = 'Сохранить/сравнить данные пользователя-агента';
+$l_voting["save_changed_voting"] = "Voting has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_voting['voting_log'] = 'Вести протокол голосования';
 $l_voting['forbid_ip'] = 'Заблокировать следующие адреса IP';
 $l_voting['until'] = 'до';
@@ -134,4 +137,6 @@ $l_voting['log_fallback'] = 'Fallback'; // TRANSLATE
 
 $l_voting['new_ip_add'] = 'Введите, пожалуйста, новый адрес IP!';
 $l_voting['not_valid_ip'] = 'Адрес IP недействителен!';
+$l_voting['not_active'] = 'The entered datum is in the past!'; // TRANSLATE
+
 ?>

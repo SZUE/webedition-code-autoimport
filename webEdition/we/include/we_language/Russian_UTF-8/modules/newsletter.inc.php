@@ -16,15 +16,16 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 
 /**
  * Language file: newsletter.inc.php
  * Provides language strings.
  * Language: English
  */
+$l_newsletter["save_changed_newsletter"] = "Newsletter has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_newsletter["Enter_Path"] = "Введите путь, который начинается с DOCUMENT_ROOT!";
 $l_newsletter["title_or_salutation"] = "Английский титул/степень (не обращение)";
 $l_newsletter["global_mailing_list"] = "Список адресов рассылки по умолчанию (файл CSV)";
@@ -78,6 +79,7 @@ $l_newsletter["block_url"] = "URL"; // TRANSLATE
 $l_newsletter["use_default"] = "Использовать шаблон по умолчанию";
 $l_newsletter["subject"] = "Тема";
 $l_newsletter["delete_question"] = "Удалить текущий лист рассылки?";
+$l_newsletter["delete_group_question"] = "Do you want to delete the current group?"; // TRANSLATE
 $l_newsletter["delete_ok"] = "Лист рассылки удален";
 $l_newsletter["delete_nok"] = "ОШИБКА: лист рассылки не был удален!";
 $l_newsletter["test_email"] = "Пробное письмо";
@@ -126,6 +128,7 @@ $l_newsletter["log_sending"] = "Вносить запись в журнал пр
 $l_newsletter["default_sender"] = "Отправитель по умолчанию";
 $l_newsletter["default_reply"] = "Обратный адрес по умолчанию";
 $l_newsletter["default_htmlmail"] = "Формат письма HTML по умолчанию";
+$l_newsletter["isEmbedImages"] = "Embed images"; // TRANSLATE
 $l_newsletter["ask_to_preserve"] = "Предыдущая кампания по рассылке листа рассылки окончательно не завершена!<br>В случае, если Вы сейчас сохраните данный лист рассылки, Вы не сможете завершить предыдущую кампанию по рассылке!<br>Продолжить?";
 $l_newsletter["log_save_newsletter"] = "Лист рассылки сохранен";
 $l_newsletter["log_start_send"] = "Начать кампанию по рассылке";
@@ -219,9 +222,9 @@ $l_newsletter["path_not_valid"] = "The path is not valid"; // TRANSLATE
 $l_newsletter["no_subject"] = "The subject field is empty. Do you really want to send the newsletter?"; // TRANSLATE
 $l_newsletter["mail_failed"] = " E-mail '%s' cannot be sent. A possible cause is an incorrect server configuration."; // TRANSLATE
 $l_newsletter["reject_save_malformed"] = "Do not save newsletter if address is malformed."; // TRANSLATE;
-$l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server.";
+$l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
 $l_newsletter["use_https_refer"] = "Use HTTPS for reference"; // TRANSLATE
-$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE 
 $l_newsletter["we_filename_notValid"] = "Введенное имя недействительно!\\nДопустимыми символами являются буквы от a до z (большие и малые), числа, нижняя черта (_), тире (-), точка (.) и пробел ( ).";
 $l_newsletter["send_wait"] = "Wait period to next load (ms)"; // TRANSLATE
 $l_newsletter["send_images"] = "Send images"; // TRANSLATE
@@ -234,14 +237,20 @@ $l_newsletter["retry"] = "повторить";
 
 $l_newsletter["charset"]= "Кодировка символов";
 $l_newsletter["additional_clp"] = "Additional reply address (option -f)"; // TRANSLATE
+$l_newsletter["html_preview"]= "show HTML preview"; // TRANSLATE
+$l_newsletter["status"]= "Status"; // TRANSLATE
+$l_newsletter["statusAll"]= "all entries"; // TRANSLATE
+$l_newsletter["statusInvalid"]= "invalid entries"; // TRANSLATE
+$l_newsletter["invalid_email"]= "The email is not valid."; // TRANSLATE
 $l_newsletter["blockFieldError"]= "Invalid value in Block %s, Field %s!";
 
-$l_newsletter["operator"]['startWith']= "starts with";
-$l_newsletter["operator"]['endsWith']= "ends with";
-$l_newsletter["operator"]['contains']= "contains";
-$l_newsletter["logic"]['and']= "and";
-$l_newsletter["logic"]['or']= "or";
+$l_newsletter["operator"]['startWith']= "starts with"; // TRANSLATE
+$l_newsletter["operator"]['endsWith']= "ends with"; // TRANSLATE
+$l_newsletter["operator"]['contains']= "contains"; // TRANSLATE
+$l_newsletter["logic"]['and']= "and"; // TRANSLATE
+$l_newsletter["logic"]['or']= "or"; // TRANSLATE
+$l_newsletter["no_newsletter_selected"]= "No newsletter selected. Please open the newsletter first."; // TRANSLATE
 
-$l_newsletter["default"]["female"] = "Mrs.";
-$l_newsletter["default"]["male"] = "Mr.";
+$l_newsletter["default"]["female"] = "Mrs."; // TRANSLATE
+$l_newsletter["default"]["male"] = "Mr."; // TRANSLATE
 ?>

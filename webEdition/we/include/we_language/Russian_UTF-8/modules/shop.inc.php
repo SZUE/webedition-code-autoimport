@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -85,6 +86,7 @@ $l_shop["jsanzahl"] = "Введите, пожалуйста, количеств�
 
 $l_shop["geloscht"] = "Запись успешно удалена";
 $l_shop["loscht"] = "Запись удалена";
+$l_shop["orderDoesNotExist"] = "This order does not exist any more."; // TRANSLATE
 
 $l_shop["selectYear"] = "Выбрать год";
 $l_shop["selectMonth"] = "Выбрать месяц";
@@ -106,7 +108,7 @@ $l_shop["datumeingabe"] = "Дата вводится в следующем фо�
 $l_shop["order_data"] = "Данные о<br>заказе и пользователе";
 $l_shop["ordered_articles"] = "Заказанные товары";
 $l_shop["order_comments"] = "Дополнительные данные по заказу";
-
+$l_shop["order_view"] = "Order summary"; // TRANSLATE
 $l_shop["bestelldatum"] = "Дата заказа:";
 $l_shop["jsdatum"] = "Введите, пожалуйста, дату";
 $l_shop["unbearb"] = "Не обработано:";
@@ -207,7 +209,8 @@ $l_shop["fieldCity"] = "Город";
 $l_shop["fieldEmail"] = "Email";
 $l_shop["SelectAll"]= "все";
 $l_shop["plzh"] = "wildcard"; // TRANSLATE
-$l_shop["lastOrder"] = "Last order - Nr.: %s, %s"; // TRANSLATE
+$l_shop["lastOrder"] = "Last order - Nr.: %s, %s";
+$l_shop["orderNo"] = "No.: %s vom %s"; // TRANSLATE
 $l_shop["sl"] = "-"; // TRANSLATE
 $l_shop["treeYear"] = "год";
 
@@ -303,4 +306,8 @@ $l_shop['field_empty_js_alert'] = 'Fieldname must not be empty'; // TRANSLATE
 
 $l_shop['edit_article_variants'] = 'Edit shop article variants'; // TRANSLATE
 $l_shop['new_entry'] = 'New entry'; // TRANSLATE
+
+$l_paypal['head_title']    = 'Processing Payment'; // TRANSLATE
+$l_paypal['redirect_auto'] = 'Please wait while your payment is processed. You will be redirected to PayPal shortly.'; // TRANSLATE
+$l_paypal['redirect_man']  = 'If you are not automatically redirected within the next 5 seconds, please click the "PayPal" button.'; // TRANSLATE
 ?>

@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -31,6 +32,8 @@ $GLOBALS["l_copyFolder"]["copyFolder"] = "Копировать директор�
 $GLOBALS["l_copyFolder"]["rewrite"] = "Переписать: %s";
 $GLOBALS["l_copyFolder"]["copy_success"] = "Копирование успешно завершено!";
 $GLOBALS["l_copyFolder"]["create_new_templates"] = "Создать шаблоны";
+$GLOBALS["l_copyFolder"]["create_new_masterTemplates"] = "Create new master templates"; // TRANSLATE
+$GLOBALS["l_copyFolder"]["create_new_includedTemplates"] = "Create new included templates"; // TRANSLATE
 $GLOBALS["l_copyFolder"]["destdir"] = "Generate new templates in"; // TRANSLATE
 $GLOBALS["l_copyFolder"]["correctTemplate"] = "Исправить шаблон:  %s";
 $GLOBALS["l_copyFolder"]["create_new_doctypes"] = "Создать типы документов";

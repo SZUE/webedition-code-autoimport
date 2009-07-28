@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -227,5 +228,5 @@ $l_import['weThumbnail'] = 'Thumbnail'; // TRANSLATE
 $l_import['import_thumbnails'] = 'Import thumbnails'; // TRANSLATE
 $l_import['rebuild'] = 'Rebuild'; // TRANSLATE
 $l_import['rebuild_txt'] = 'Automatic rebuild'; // TRANSLATE
-$l_import['finished_success'] = 'The import of the data has finished successfully.'; // TRANSLATE
+$l_import['finished_success'] = 'The import of the data has finished successfully.';
 ?>

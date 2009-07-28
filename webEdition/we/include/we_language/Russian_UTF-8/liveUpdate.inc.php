@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -29,8 +30,8 @@ $l_liveUpdate['tabs']['connect'] = 'Test connection'; // TRANSLATE
 $l_liveUpdate['tabs']['nextVersion'] = 'Next version'; // TRANSLATE
 
 
-$l_liveUpdate['register']['headline'] = 'register webEdition'; // TRANSLATE
-$l_liveUpdate['register']['description'] = 'register webEdition and discover its complete functionality.'; // TRANSLATE
+$l_liveUpdate['register']['headline'] = 'register webEdition';
+$l_liveUpdate['register']['description'] = 'register webEdition and discover its complete functionality.';
 
 
 $l_liveUpdate['update']['headline'] = 'Look for new version'; // TRANSLATE
@@ -65,8 +66,8 @@ $l_liveUpdate['connect']['headline'] = 'Check connection to update server'; // T
 $l_liveUpdate['connect']['description'] = 'If there are problems running the update, you can test here, if it is possible to open a connection to the webEdition update server.'; // TRANSLATE
 $l_liveUpdate['connect']['connectionSuccess'] = 'A connection to the update server could be established.'; // TRANSLATE
 $l_liveUpdate['connect']['connectionSuccessError'] = 'A connection to the update server could be established, but there was an error on the server.<br />'; // TRANSLATE
-$l_liveUpdate['connect']['connectionError'] = 'It is not possible to connect to the update server at the moment'; // TRANSLATE
-$l_liveUpdate['connect']['connectionErrorJs'] = 'It is not possible to establish a connection to the update server'; // TRANSLATE
+$l_liveUpdate['connect']['connectionError'] = 'It is not possible to connect to the update server at the moment';
+$l_liveUpdate['connect']['connectionErrorJs'] = 'It is not possible to establish a connection to the update server';
 $l_liveUpdate['connect']["connectionInfo"] = "Connection informations"; // TRANSLATE
 $l_liveUpdate['connect']["availableConnectionTypes"] = "Available connection types"; // TRANSLATE
 $l_liveUpdate['connect']["connectionType"] = "Used connection type"; // TRANSLATE

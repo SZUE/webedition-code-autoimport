@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -26,6 +27,7 @@
  * Language: English
  */
 
+$l_banner["save_changed_banner"] = "The Banner has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_banner["wrongtext"] = "Имя недействительно! Недопустимые символы: /  \\  % ' \"";
 $l_banner["newbannergroup"] = "Новая группа баннеров";
 $l_banner["newbanner"] = "Новый баннер";
@@ -115,7 +117,7 @@ $l_banner["error_height_empty"] = "Заполните, пожалуйста, п�
 $l_banner["error_getscript_empty"] = "Заполните, пожалуйста, поле 'Get Script'!";
 $l_banner["error_clickscript_empty"] = "Заполните, пожалуйста, поле 'Click Script'!";
 $l_banner["required"] = "обязательные к заполнению поля";
-$l_banner["error_ac_field"] = "ERROR: Invalid entries in marked fields!";
+$l_banner["error_ac_field"] = "ERROR: Invalid entries in marked fields!"; // TRANSLATE
 
 $l_banner["no_group_in_group"] = "Группа баннеров не сохраняется в своей группе!";
 ?>

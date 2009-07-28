@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -24,6 +25,7 @@
  * Provides language strings.
  * Language: English
  */
+$GLOBALS["l_parser"]["delete"] = "Delete"; // TRANSLATE
 $GLOBALS["l_parser"]["wrong_type"] = "Значение &quot;type&quot; недопустимо!";
 $GLOBALS["l_parser"]["error_in_template"] = "Ошибка шаблона";
 $GLOBALS["l_parser"]["start_endtag_missing"] = "Для одного из тегов <code>&lt;we:%s&gt;</code> не задан начальный или конечный тег!";
@@ -32,6 +34,8 @@ $GLOBALS["l_parser"]["else_start"] = "Для тега <code>&lt;we:else/&gt;</co
 $GLOBALS["l_parser"]["else_end"] = "Для тега <code>&lt;we:else/&gt;</code> не задан конечный тег <code>&lt;we:if...&gt;</code>!";
 $GLOBALS["l_parser"]["attrib_missing"] = "Атрибут '%s' тега <code>&lt;we:%s&gt;</code> не должен быть незаполненным!";
 $GLOBALS["l_parser"]["attrib_missing2"] = "Атрибут '%s' тега <code>&lt;we:%s&gt;</code> не должен отсутствовать!";
+$GLOBALS["l_parser"]["missing_open_tag"] = "<code>&lt;%s&gt;</code>: The opening tag is missing."; // TRANSLATE
+$GLOBALS["l_parser"]["missing_close_tag"] = "<code>&lt;%s&gt;</code>: The closing tag is missing."; // TRANSLATE
 $GLOBALS["l_parser"]["name_empty"] = "Имя тега <code>&lt;we:%s&gt;</code> не заполнено!";
 $GLOBALS["l_parser"]["invalid_chars"] =  "Имя тега <code>&lt;we:%s&gt;</code> содержит недопустимые символы. Допустимыми символами являются буквы латинского алфавита, цифры, символы: '-' и '_'!";
 $GLOBALS["l_parser"]["name_to_long"] =  "Имя тега <code>&lt;we:%s&gt;</code> слишком длинное! Имя не должно превышать 255 символов!";
@@ -43,4 +47,6 @@ $GLOBALS["l_parser"]["setVar_lv_not_in_lv"] = "Тег <code>&lt;we:setVar from=\
 $GLOBALS["l_parser"]["checkForm_jsIncludePath_not_found"] = "Атрибут jsIncludePath тега  <code>&lt;we:checkForm&gt;</code> задан в виде порядкового номера (ID). Документа с таким порядковым номером не существует!";
 $GLOBALS["l_parser"]["checkForm_password"] = "Пароль атрибута тега <code>&lt;we:checkForm&gt;</code> должен состоять из 3 знаков, разделенных запятыми!";
 $GLOBALS["l_parser"]["missing_createShop"] = "The tag <code>&lt;we:%s&gt;</code> can only be used after<code>&lt;we:createShop&gt;</code>."; // TRANSLATE
+$GLOBALS["l_parser"]["multi_object_name_missing_error"] = "Error: The object field &quot;%s, specified in the attribute &quot;name&quot;, does not exist!"; // TRANSLATE
+$GLOBALS["l_parser"]["template_recursion_error"] = "Error: Too much recursion!"; // TRANSLATE
 ?>

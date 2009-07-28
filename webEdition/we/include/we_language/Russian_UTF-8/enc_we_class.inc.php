@@ -16,11 +16,13 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
 $l_we_class["properties"] = "Свойства";
 $l_we_class["path"] = "Путь";
+$l_we_class["adoptToAllInferiorDocuments"] = "adopt for all inferior documents"; // TRANSLATE
 $l_we_class["filename"] = "Имя файла";
 $l_we_class["extension"] = "Расширение";
 $l_we_class["dir"] = "Директория";
@@ -36,7 +38,7 @@ $l_we_class["template"] = "Шаблон";
 $l_we_class["no_template"] = "Без шаблона";
 $l_we_class["IsDynamic"] = "Создать динамическую страницу";
 $l_we_class["IsSearchable"] = "Разрешить поиск?";
-$l_we_class["InGlossar"] = "Not allowed for automatic glossary replacement"; //TRANSLATE
+$l_we_class["InGlossar"] = "Not allowed for automatic glossary replacement"; // TRANSLATE //TRANSLATE
 $l_we_class["metainfo"] = "Мета-теги";
 $l_we_class["Title"] = "Название";
 $l_we_class["Keywords"] = "Ключевые слова";
@@ -58,4 +60,7 @@ $l_we_class["showTagwizard"] = "Показать Мастер тегов";
 $l_we_class["hideTagwizard"] = "Спрятать Мастер тегов";
 $l_we_class["variant_fields"] = "Поля";
 $l_we_class["variant_info"] = "Следующие поля могут относиться к разным вариантам. Выберите поля с разными вариантами.";
+$l_we_class["webUser"] = "Customer"; // TRANSLATE
+$l_we_class["docList"] = "Content"; // TRANSLATE
+$l_we_class["version"] = "Versions"; // TRANSLATE
 ?>
