@@ -53,11 +53,11 @@ $GLOBALS['__WE_CMS_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/cms';
 // add __WE_LIB_PATH__ and __WE_APP_PATH__ to the include_path
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . $GLOBALS['__WE_LIB_PATH__'] . PATH_SEPARATOR . $GLOBALS['__WE_APP_PATH__']);
 
-// include Zend_Loader, which is needed by the autoload function
-require_once('Zend/Loader.php');
+// include Zend_Autoloader  #3815
+require_once('Zend/Loader/Autoloader.php');
 
-Zend_Loader::registerAutoload();
-Zend_Loader::loadClass('Zend_Controller_Front');
+$loader = Zend_Loader_Autoloader::getInstance(); #3815
+$loader->setFallbackAutoloader(true); #3815
 
 // include configuration file of webEdition
 include_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
