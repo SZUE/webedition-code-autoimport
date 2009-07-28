@@ -37,7 +37,7 @@ $_path = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
 $_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
 
-$_cmd = 'opener.we_cmd("add_navi",' . $_id . ',document.we_form.Text.value,dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);';
+$_cmd = 'opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);';
 
 $_navi = new weNavigation($_id);
 

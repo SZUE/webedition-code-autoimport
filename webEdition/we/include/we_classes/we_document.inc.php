@@ -409,6 +409,7 @@ class we_document extends we_root {
 	}
 
 	function addNavi($id,$text,$parentid,$ordn) {
+		$text = urldecode($text);
 		if($this->ID) {
 			require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
