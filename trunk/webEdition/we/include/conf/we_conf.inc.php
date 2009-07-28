@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -104,7 +103,7 @@ define("DB_COLLATION","");
  *****************************************************************************/
 
 // Name of licensee
-define("WE_LIZENZ","living-e AG");
+define("WE_LIZENZ","GPL");
 
 // Path to the templates directory
 define("TEMPLATE_DIR",$_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/templates");

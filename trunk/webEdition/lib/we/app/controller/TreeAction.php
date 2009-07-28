@@ -16,7 +16,6 @@
  * @category   we
  * @package    we_app
  * @subpackage we_app_controller
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -31,7 +30,6 @@ Zend_Loader::loadClass('Zend_Controller_Action');
  * @category   we
  * @package    we_app
  * @subpackage we_app_controller
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_controller_TreeAction extends Zend_Controller_Action

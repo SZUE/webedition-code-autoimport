@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -587,7 +586,7 @@ $contentDiff .= '</table>';
 	
 	
 
-	htmlTop("webEdition (c) living-e AG - " .$GLOBALS['l_versions']['versioning']);
+	htmlTop("webEdition - " .$GLOBALS['l_versions']['versioning']);
 	
 	print STYLESHEET;
 	

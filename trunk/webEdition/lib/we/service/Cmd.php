@@ -17,7 +17,6 @@
  *
  * @category   we
  * @package    we_service
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -26,7 +25,6 @@
  * 
  * @category   we
  * @package    we_service
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_service_Cmd extends we_service_AbstractService

@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_toolfactory
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -27,7 +26,6 @@ require_once 'Zend/Controller/Action.php';
  * 
  * @category   webEdition
  * @package    webEdition_toolfactory
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class HomeController extends Zend_Controller_Action

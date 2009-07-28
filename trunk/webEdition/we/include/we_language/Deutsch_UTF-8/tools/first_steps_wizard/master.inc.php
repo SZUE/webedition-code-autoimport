@@ -16,7 +16,6 @@
  *
  * @category   webEdition
  * @package    webEdition_language
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -99,6 +98,6 @@ $lang["Step"]["Finish"]["headline"] = "Das Layout wurde angelegt...";
 $lang["Step"]["Finish"]["content"] = "Herzlichen Glückwunsch, das Layout wurde erfolgreich importiert!<br /><br />Bevor Sie loslegen, können Sie noch einen Rebuild durchführen:";
 $lang["Step"]["Finish"]["description"] = "In der Sidebar können beliebige webEdition-Seiten angezeigt werden: Ob Onlinehilfe oder eine Übersicht aller Shopartikel - nutzen Sie die neuen Möglichkeiten.<br /><br />Sie können das webEdition Cockpit nach Ihren Vorstellungen anpassen: über Cockpit > Widget hinzufügen können Sie weitere Widgets anzeigen lassen.<br /><br />Erstellen Sie regelmäßig  Backups Ihrer Webseite? Mit webEdition ist das ganz einfach: Datei > Backup > Backup erstellen...<br /><br />Was ist eigentlich ein <b>Rebuild</b>? webEdition erstellt Webseiten basierend auf Vorlagen. Sollten Sie die Vorlage einer statischen webEdition-Seite verändern, so muß diese neu \\\"gebaut\\\" und abgespeichert werden!";
 
-$lang["Step"]["Finish"]["content_2"] = "Sollten Sie bereits früher ein Layout importiert haben, so müssen Sie auf jeden Fall einen Rebuild durchführen!<br /><br />In der neuen Sidebar können Sie sich die weiteren Möglichkeiten für Ihre neue Webseite anzeigen lassen. Sie gelangen dort direkt zu neuen Textdokumenten oder weiteren Funktionen, die Sie für die Seite nachinstallieren können!<br /><br />Wir wünschen Ihnen mit dem WCMS webEdition viel Spaß. Wenn Sie immer über die neuesten Entwicklungen informiert werden möchten, abonnieren Sie doch unseren Newsletter unter <a href=\"http://www.living-e.de/de/newsletter/\" target=\"_blank\" class=\"defaultfont\">http://www.living-e.de/de/newsletter</a><br /><br />Bei Fragen wenden Sie sich bitte an unseren Support unter <a href=\"http://support.living-e.de/de/webedition/\" target=\"_blank\" class=\"defaultfont\">http://support.living-e.de/de/webedition</a>";
+$lang["Step"]["Finish"]["content_2"] = "Sollten Sie bereits früher ein Layout importiert haben, so müssen Sie auf jeden Fall einen Rebuild durchführen!<br /><br />In der neuen Sidebar können Sie sich die weiteren Möglichkeiten für Ihre neue Webseite anzeigen lassen. Sie gelangen dort direkt zu neuen Textdokumenten oder weiteren Funktionen, die Sie für die Seite nachinstallieren können!<br /><br />Wir wünschen Ihnen mit dem WCMS webEdition viel Spaß. Wenn Sie immer über die neuesten Entwicklungen informiert werden möchten, abonnieren Sie doch unseren Newsletter unter <a href=\"http://www.webedition.de/de/newsletter/\" target=\"_blank\" class=\"defaultfont\">http://www.webedition.de/de/newsletter</a><br /><br />Bei Fragen wenden Sie sich bitte an unseren Support unter <a href=\"http://support.webedition.de/de/webedition/\" target=\"_blank\" class=\"defaultfont\">http://support.webedition.de/de/webedition</a>";
 
 ?>

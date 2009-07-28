@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_app
  * @subpackage we_app_Installer
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -34,7 +33,6 @@ Zend_Loader::loadClass('we_app_Installer');
  * @category   we
  * @package    we_app
  * @subpackage we_app_Installer
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Installer_Local extends we_app_Installer

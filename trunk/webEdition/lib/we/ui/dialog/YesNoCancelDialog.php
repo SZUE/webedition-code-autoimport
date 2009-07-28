@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_dialog
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -33,7 +32,6 @@ Zend_Loader::loadClass('we_ui_layout_Dialog');
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_dialog
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog

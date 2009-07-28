@@ -16,7 +16,6 @@
  *
  * @category   we
  * @package    we_core
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -32,7 +31,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weH
  * 
  * @category   we
  * @package    we_core
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_core_AbstractModel extends we_core_AbstractObject

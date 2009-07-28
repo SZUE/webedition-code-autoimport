@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_toolfactory
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -24,7 +23,6 @@
  * 
  * @category   app
  * @package    app_service
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class toolfactory_service_Cmd extends we_app_service_AbstractCmd

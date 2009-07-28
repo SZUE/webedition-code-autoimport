@@ -16,7 +16,6 @@
  *
  * @category   we
  * @package    we_app
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -37,7 +36,6 @@ Zend_Loader::loadClass('we_app_Installer');
  * 
  * @category   we
  * @package    we_app
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  * @internal   all default properties of an applications are to be read from webEdition/lib/we/app/defaults/manifest.xml
  */

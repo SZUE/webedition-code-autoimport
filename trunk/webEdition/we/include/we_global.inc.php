@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -3337,7 +3336,6 @@ function we_writeLanguageConfig($default, $available = array())
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 	

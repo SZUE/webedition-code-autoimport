@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_abstract
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -32,7 +31,6 @@ Zend_Loader::loadClass('we_core_AbstractObject');
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_abstract
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject

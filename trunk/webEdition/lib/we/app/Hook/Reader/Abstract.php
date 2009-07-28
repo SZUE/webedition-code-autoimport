@@ -16,7 +16,6 @@
  *
  * @category   we
  * @package    we_app
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -30,7 +29,6 @@ Zend_Loader::loadClass('Zend_Log');
  * 
  * @category   we
  * @package    we_app
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_app_Hook_Reader_Abstract

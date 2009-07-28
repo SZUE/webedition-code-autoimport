@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -32,7 +31,6 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
@@ -48,7 +46,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	 *
 	 * @var string
 	 */
-	protected $_title = 'webEdition (c) 2008 living-e AG (http://www.living-e.com)';
+	protected $_title = 'webEdition (http://www.webedition.de)';
 
 	/**
 	 * array that holds internal css code to include into page

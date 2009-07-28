@@ -14,9 +14,10 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
+ * @abstract This class executes commands and provides views depending on requesting client.
+ * 
  * @category   webEdition
  * @package    webEdition_rpc
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -24,14 +25,6 @@ require_once("base/rpcCmd.class.php");
 require_once("base/rpcResponse.class.php");
 require_once("base/rpcView.class.php");
 require_once("base/rpcJsonView.class.php");
-
-/**
-* This class executes commands and provides views depending on requesting client.
-*
-* @package RPC
-* @author Slavko Tomcic
-* @copyright living-e AG
-*/
 
 
 define('RPC_STATUS_OK',0);

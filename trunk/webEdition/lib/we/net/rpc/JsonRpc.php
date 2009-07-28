@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_net
  * @subpackage we_net_rpc
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 

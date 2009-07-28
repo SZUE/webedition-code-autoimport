@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -85,8 +84,6 @@ $aPrefs['sct'] = array(
 		'dlgHeight' => 435, 
 		'isResizable' => 1
 );
-// http://www.living-e.de/de/pressezentrum/pr-mitteilungen/rss2.xml
-// aHR0cDovL3d3dy5saXZpbmctZS5kZS9kZS9wcmVzc2V6ZW50cnVtL3ByLW1pdHRlaWx1bmdlbi9yc3MyLnhtbA==
 // http://www.webedition.de/de/Presse/Pressemeldungen/rss2.xml
 // aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=
 $aPrefs['rss'] = array(

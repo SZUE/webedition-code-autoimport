@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_app
  * @subpackage we_app_Hook
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -28,7 +27,6 @@ require_once 'Zend/Exception.php';
  * @category   we
  * @package    we_app
  * @subpackage we_app_Hook
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Hook_Exception extends Zend_Exception
