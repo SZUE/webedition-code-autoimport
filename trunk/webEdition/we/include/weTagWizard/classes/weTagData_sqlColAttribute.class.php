@@ -48,6 +48,7 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 		// get options from choosen table
 		$items = array();
 		$tableInfo = $DB_WE->metadata($this->Table);
+		sort($tableInfo); // #3490
 		
 		for ($i = 0; $i < sizeof($tableInfo); $i++) {
 			
