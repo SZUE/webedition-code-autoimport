@@ -560,7 +560,7 @@ function step_installation() {
 	global $errors;
 	$output = "<b>Installation of database tables:</b><br /><br />";
 	// read and parse database dump:
-	if(!is_readable("./database.sql") && !is_readable("./sql_dumps/dump/complete.sql")) {
+	if(!is_readable("./database.sql") && !is_readable("./additional/sqldumps/dump/complete.sql")) {
 		$output .= tpl_error("Could not read database dump file.");
 		$errors = true;
 		return $output;
@@ -568,7 +568,7 @@ function step_installation() {
 	if(is_readable("./database.sql")) {
 		$dbdata = file_get_contents("./database.sql");
 	} else {
-		$dbdata = file_get_contents("./sql_dumps/dump/complete.sql");
+		$dbdata = file_get_contents("./additional/sqldumps/dump/complete.sql");
 	}
 	$dbdata = str_replace("`","",$dbdata);
 	$dbqueries = explode("/* query separator */",$dbdata);
