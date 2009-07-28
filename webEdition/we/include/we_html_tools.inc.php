@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -727,12 +726,12 @@ function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchan
 	return $retVal;
 }
 
-function htmlTop($title = "webEdition (c) living-e AG", $charset = "")
+function htmlTop($title = "webEdition", $charset = "")
 {
 	print getHtmlTop($title, $charset);
 }
 
-function getHtmlTop($title = "webEdition (c) living-e AG", $charset = "", $useMessageBox = true)
+function getHtmlTop($title = "webEdition", $charset = "", $useMessageBox = true)
 {
 	
 	$_title = we_htmlElement::htmlTitle($title);

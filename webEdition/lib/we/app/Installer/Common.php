@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_app
  * @subpackage we_app_Installer
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -36,7 +35,6 @@ include_once('Zend/Db.php');
  * @category   we
  * @package    we_app
  * @subpackage we_app_Installer
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Installer_Common

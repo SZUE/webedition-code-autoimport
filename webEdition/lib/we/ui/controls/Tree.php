@@ -18,7 +18,6 @@
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -33,7 +32,6 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_Tree extends we_ui_abstract_AbstractElement

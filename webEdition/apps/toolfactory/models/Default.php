@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_toolfactory
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -28,7 +27,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weH
  * 
  * @category   app
  * @package    app_models
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class toolfactory_models_Default extends we_app_Model

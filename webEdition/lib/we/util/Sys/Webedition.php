@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -39,7 +38,6 @@ Zend_Loader::loadClass('we_util_Sys_Exception');
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_util_Sys_Webedition extends we_util_Sys

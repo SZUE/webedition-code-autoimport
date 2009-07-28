@@ -3,13 +3,13 @@
 <manifest>
 	
 	<creator>
-		<company>living-e AG</company>
+		<company>webEdition project</company>
 		<name>webEdition</name>
 		<address>Amalienstraße 81-87, 76133 Karlsruhe</address>
         <country>DE</country>
 		<phone>+49 721 20188-10</phone>
 		<fax>+49 721 20188-99</fax>
-		<email>vertrieb@living-e.de</email>
+		<email>info@webedition.de</email>
 		<www>http://www.webedition.de</www>
 		<year>2008</year>
 	</creator>

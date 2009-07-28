@@ -14,7 +14,6 @@
  * webEdition/licenses/webEditionSDK/License.txt
  *
  * @category   we
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */ 
 
@@ -28,7 +27,6 @@ Zend_Loader::loadClass('Zend_Exception');
  * class for exceptions
  * 
  * @category   we
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_Exception extends Zend_Exception

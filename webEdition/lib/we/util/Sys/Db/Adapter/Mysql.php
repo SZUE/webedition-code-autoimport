@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -37,7 +36,6 @@ require_once 'Zend/Db/Adapter/Abstract.php';
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_util_Sys_Db_Mysql extends we_util_Sys_Db implements we_util_Sys_Db_Interface

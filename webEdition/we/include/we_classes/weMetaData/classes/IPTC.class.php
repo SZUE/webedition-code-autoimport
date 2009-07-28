@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -58,7 +57,6 @@ $GLOBALS['____weMetaData_IPTC_usedFields'] = array(
 /**
  * @abstract implementation class of metadata reader for IPTC data
  * @author Alexander Lindenstruth
- * @copyright Copyright (c) 2000 - 2007, living-e AG
  * @since 5.1.0.0 - 27.09.2007
  * @uses IPTC PEAR_IPTC Package for reading IPTC data. See link below for more information
  * @link http://pear.php.net/package/Image_IPTC/ PEAR IPTC Package

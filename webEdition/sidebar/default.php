@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -24,7 +23,7 @@ protect();
 ?><html>
 
 <head>
-	<title>webEdition (c) living-e AG</title>
+	<title>webEdition</title>
 	<meta http-equiv="expires" content="0">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">

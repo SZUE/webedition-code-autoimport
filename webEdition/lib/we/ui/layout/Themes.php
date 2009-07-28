@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -35,7 +34,6 @@ if (!defined('WE_THEME_NAME')) {
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_Themes

@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_language
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $GLOBALS['l_we_tag_groups']['input_tags'] = 'Input we:tags';

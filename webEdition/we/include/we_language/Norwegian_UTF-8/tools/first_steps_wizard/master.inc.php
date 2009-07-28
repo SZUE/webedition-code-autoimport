@@ -16,7 +16,6 @@
  *
  * @category   webEdition
  * @package    webEdition_language
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -96,6 +95,6 @@ $lang["Step"]["Finish"]["title"] = "Layout has been created"; // TRANSLATE
 $lang["Step"]["Finish"]["headline"] = "The Layout has been created..."; // TRANSLATE
 $lang["Step"]["Finish"]["content"] = "Congratulations, the layout has been imported successfully!<br />Before you get started, you can perform a rebuild:<br />A rebuild is required after the import of detail templates."; // TRANSLATE
 $lang["Step"]["Finish"]["description"] = "Any webEdition page can be displayed in the Sidebar: Whether online help or an overview of all shop articles - use the new possibilities.<br /><br />You can change the webEdition Cockpit to your liking: In Cockpit > Add Widget you can add further widgets to the cockpit.<br /><br />Do you backup your website regularly? It is real easy with webEdition: File > Backup > Create Backup...<br /><br />What is a <b>Rebuild</b>? webEdition creates web pages based on templates. If you change the template of a static webEdition page, that page has to be \\\"rebuilt\\\" and saved!"; // TRANSLATE
-$lang["Step"]["Finish"]["content_2"] = "If have imported a layout before, you will be required to perform a rebuild! You can display the further possibilities for your new import in the new Sidebar. You can navigate directly to new documents or further extensions!<br /><br />Have fun with the WCMS webEdition. If you wish to stay informed about the newest developments, subscribe to our newsletter at<br /><a href=\"http://www.living-e.de/en/Newsletter/\" target=\"blank\" class=\"defaultfont\">http://www.living-e.de/en/Newsletter/</a><br /><br />If you have any questions, please refer to our support<br /><a href=\"http://support.living-e.de/en/webedition/\" class=\"defaultfont\" target=\"_blank\">http://support.living-e.de/en/webedition</a>"; // TRANSLATE
+$lang["Step"]["Finish"]["content_2"] = "If have imported a layout before, you will be required to perform a rebuild! You can display the further possibilities for your new import in the new Sidebar. You can navigate directly to new documents or further extensions!<br /><br />Have fun with the WCMS webEdition. If you wish to stay informed about the newest developments, subscribe to our newsletter at<br /><a href=\"http://www.webedition.de/en/Newsletter/\" target=\"blank\" class=\"defaultfont\">http://www.webedition.de/en/Newsletter/</a><br /><br />If you have any questions, please refer to our support<br /><a href=\"http://support.webedition.de/en/webedition/\" class=\"defaultfont\" target=\"_blank\">http://support.webedition.de/en/webedition</a>"; // TRANSLATE
 
 ?>

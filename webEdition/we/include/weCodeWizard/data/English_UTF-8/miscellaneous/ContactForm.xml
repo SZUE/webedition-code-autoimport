@@ -4,13 +4,13 @@
 	<title>Contact form</title>
 	<shortdesc>Use this source code to create a contact form.</shortdesc>
 	<prolog>
-		<author>living-e AG</author>
+		<author>webEdition project</author>
 	</prolog>
 	<body>
 		<p>
 			<codeblock>
 				<![CDATA[
-<we:form type="formmail" recipient="spam@living-e.de" from="spam@living-e.de" required="Title,FirstName,LastName,email,Message" order="Title,FirstName,LastName,Street,Number,ZipCode,City,Phone,email,Message" subject="Contact form from the website" onerror="ID" onsuccess="ID" onmailerror="ID" xml="true">
+<we:form type="formmail" recipient="spam@webedition.invalid" from="spam@webedition.invalid" required="Title,FirstName,LastName,email,Message" order="Title,FirstName,LastName,Street,Number,ZipCode,City,Phone,email,Message" subject="Contact form from the website" onerror="ID" onsuccess="ID" onmailerror="ID" xml="true">
   <p>
     All fields marked with * are mandatory.
   </p>

@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_base
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -55,7 +54,6 @@ $GLOBALS['____weMetaData_Exif_usedFields'] = array(
 /**
  * @abstract implementation class of metadata reader for Exif data
  * @author Alexander Lindenstruth
- * @copyright Copyright (c) 2000 - 2007, living-e AG
  * @since 5.1.0.0 - 27.09.2007
  * @uses exif php exif functions, see link below for more information
  * @link http://de.php.net/manual/de/ref.exif.php reference manual for php exif functions

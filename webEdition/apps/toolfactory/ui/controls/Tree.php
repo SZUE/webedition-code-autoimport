@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_toolfactory
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -30,7 +29,6 @@ Zend_Loader::loadClass('we_ui_controls_Tree');
  * @category   toolfactory
  * @package    toolfactory_ui
  * @subpackage toolfactory_ui_controls
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class toolfactory_ui_controls_Tree extends we_ui_controls_Tree

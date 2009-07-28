@@ -16,7 +16,6 @@
  *
  * @category   webEdition
  * @package    webEdition_language
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -102,6 +101,6 @@ $lang["Step"]["Finish"]["title"] = "Ontwerp is aangemaakt";
 $lang["Step"]["Finish"]["headline"] = "Het ontwerp is aangemaakt..."; 
 $lang["Step"]["Finish"]["content"] = "Gefeliciteerd, het ontwerp is succescol geïmporteerd!<br />Voordat u begint, kunt u de website herbouwen:<br />Herbouwen is nodig na het importeren van detail sjablonen."; 
 $lang["Step"]["Finish"]["description"] = "Elke webEdition page kan getoond worden in de zijbalk: bijvoorbeeld alle nieuwsberichten.<br /><br />U kunt de Cockpit invullen naar uw wensen: Via Cockpit > Voeg Widget toe kunt u widgets toevoegen aan de cockpit.<br /><br />Maakt u regelmatig een backup van uw website? Dit gaat heel eenvoudig via: Bestand > Backup > Maak Backup aan...<br /><br />Wat is heropbouwen van de pagina? webEdition maakt webpagina's aan gebasseerd op sjablonen. Wanneer u het sjabloon van een statische webEdition pagina wijzigt, moet deze opnieuw opgebouwd en bewaard worden!"; 
-$lang["Step"]["Finish"]["content_2"] = "U kunt de overige mogelijkheden ontdekken in de zijbalk. U kunt direct navigeren naar nieuwe documenten of andere ontwerpen!<br /><br />Veel plezier met webEdition. Als u op de hoogte gehouden wilt worden over de nieuwste ontwikkelingen, kunt u zich inschrijven op onze nieuwsbrief door op de volgende link te klikken <br /><a href=\"http://www.living-e.de/en/newsletter/\" target=\"blank\" class=\"defaultfont\">http://www.living-e.de/en/newsletter</a><br /><br />Indien u vragen heeft, kunt u contact opnemen met onze support afdeling via<br /><a href=\"http://support.living-e.de/en/webedition/\" class=\"defaultfont\" target=\"_blank\">http://support.living-e.de/en/webedition</a>"; 
+$lang["Step"]["Finish"]["content_2"] = "U kunt de overige mogelijkheden ontdekken in de zijbalk. U kunt direct navigeren naar nieuwe documenten of andere ontwerpen!<br /><br />Veel plezier met webEdition. Als u op de hoogte gehouden wilt worden over de nieuwste ontwikkelingen, kunt u zich inschrijven op onze nieuwsbrief door op de volgende link te klikken <br /><a href=\"http://www.webedition.de/en/newsletter/\" target=\"blank\" class=\"defaultfont\">http://www.webedition.de/en/newsletter</a><br /><br />Indien u vragen heeft, kunt u contact opnemen met onze support afdeling via<br /><a href=\"http://support.webedition.de/en/webedition/\" class=\"defaultfont\" target=\"_blank\">http://support.webedition.de/en/webedition</a>"; 
 
 ?>

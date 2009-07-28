@@ -17,7 +17,6 @@
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -54,7 +53,6 @@ include_once 'webEdition/lib/we/util/Sys.php';
  * @category   we
  * @package    we_util
  * @subpackage we_util_sys
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 

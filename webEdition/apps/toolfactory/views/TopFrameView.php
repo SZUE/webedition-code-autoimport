@@ -15,7 +15,6 @@
  *
  * @category   webEdition
  * @package    webEdition_toolfactory
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -29,7 +28,6 @@ Zend_Loader::loadClass('we_app_TopFrameView');
  * 
  * @category   app
  * @package    app_views
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class toolfactory_views_TopFrameView extends we_app_TopFrameView {

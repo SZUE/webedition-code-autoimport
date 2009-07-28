@@ -16,7 +16,6 @@
  *
  * @category   webEdition
  * @package    webEdition_language
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -52,7 +51,7 @@ $lang["Wizard"]["DetailWizard"]["title"] = "";
 // Startscreen
 $lang["Step"]["Startscreen"]["title"] = "Tervetuloa"; 
 $lang["Step"]["Startscreen"]["headline"] = "Tervetuloa"; 
-$lang["Step"]["Startscreen"]["content"] = "Tervetuloa laajennosten Aloitusvelhoon.<br /><br />Laajennosten tuonti tapahtuu linjassa uuden ulkoasun luonnin kanssa Aloitusvelhon avulla.<br /><br />Tuonti sisältää useampia tiedostoja: Sivupohjia, tiedostoja, esimerkkejä tai kuvia.<br /><br />Sivuiltamme (<a href=\"http://www.living-e.de/en/\" target=\"_blank\" class=\"defaultfont\">http://www.living-e.de/en</a>) löydät mitä kaikkia laajennoksia on saatavilla.<br /><br />Sivuiltamme löydät myös esimerkkisivut: a href=\"http://demo.en.webedition.info/\" target=\"_blank\" class=\"defaultfont\">http://demo.en.webedition.info</a><br />Esimerkkisivujen tuonti onnistuu Varmuuskopion palautus -toiminnolla: Tiedosto -> Varmuuskopio -> Palauta varmuuskopio...";
+$lang["Step"]["Startscreen"]["content"] = "Tervetuloa laajennosten Aloitusvelhoon.<br /><br />Laajennosten tuonti tapahtuu linjassa uuden ulkoasun luonnin kanssa Aloitusvelhon avulla.<br /><br />Tuonti sisältää useampia tiedostoja: Sivupohjia, tiedostoja, esimerkkejä tai kuvia.<br /><br />Sivuiltamme (<a href=\"http://www.webedition.de/en/\" target=\"_blank\" class=\"defaultfont\">http://www.webedition.de/en</a>) löydät mitä kaikkia laajennoksia on saatavilla.<br /><br />Sivuiltamme löydät myös esimerkkisivut: a href=\"http://demo.en.webedition.info/\" target=\"_blank\" class=\"defaultfont\">http://demo.en.webedition.info</a><br />Esimerkkisivujen tuonti onnistuu Varmuuskopion palautus -toiminnolla: Tiedosto -> Varmuuskopio -> Palauta varmuuskopio...";
 $lang["Step"]["Startscreen"]["description"] = "webDition 5 -versiosta lähtien vientimoduuli tulee perusversion mukana. Sen avulla voit viedä toimivia kokonaisuuksia, kuten esim. vieraskirjan, ja tarjota sitä käytettäväksi muille.<br /><br />Paljon muitakin moduuleja on integroitu webEditioniin: Äänestysmoduuli, Banneri/Statistiikkamoduuli, Käyttäjänhallinta jne...<br /><br />Voit palata takaisin edelliselle sivulle tai siirtyä seuraavalla valitsemalla \\\"takaisin\\\" ja \\\"seuraava\\\".";
 $lang["Step"]["Startscreen"]["no_connection"] = "Sivupohjapalvelimeen ei saatu yhteyttä."; 
 $lang["Step"]["Startscreen"]["error"] = "Virhe"; 
