@@ -11,7 +11,6 @@
  * http://www.gnu.org/copyleft/gpl.html.
  * A copy is found in the textfile license.txt
  *
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -143,7 +142,7 @@ public class Editor extends JApplet
 				url = protocol + "://" + SERVER_NAME + "/webEdition/editor/getAllTags" + php_ext;
 			}
 		} else {
-			url = "http://wetrunk.holeg.hq.living-e.zz/webEdition/editor/getAllTags.php";
+			url = "http://localhost/webEdition/editor/getAllTags.php";
 		}
 		tags = getFromServer(url, "tag");
 		
