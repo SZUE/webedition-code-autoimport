@@ -15,6 +15,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -37,12 +38,12 @@ $l_we_tag['block']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['calculate']['description'] = "The we:calculate tag allows all possible mathematical operations in PHP like *, /, +, -,(), sqrt..etc."; // TRANSLATE
 $l_we_tag['calculate']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['captcha']['description'] = "This tag generates an image with a random code. "; // TRANSLATE
-$l_we_tag['category']['description'] = "The we:category tag is replaced by the category ( or categories ) that was / were allocated to the document in the Properties view. If several categories have been allocated, they must be delimited using commas. If you wish to use another delimiter, you must specify it using the \"tokken\" attribute. Example: tokken = \" \" ( In this case, a space is being used to delimit categories )."; // TRANSLATE
+$l_we_tag['category']['description'] = "The we:category tag is replaced by the category ( or categories ) that was / were allocated to the document in the Properties view. If several categories have been allocated, they must be delimited using commas. If you wish to use another delimiter, you must specify it using the \"tokken\" attribute. Example: tokken = \" \" ( In this case, a space is being used to delimit categories ).";
 $l_we_tag['categorySelect']['description'] = "This tag is used to insert a drop-down (&lt;select&gt;) menu into a webEdition document. Use this tag to select a category. By placing an end tag immediatly after the start tag, you will cause the drop-down menu to contain all categories currently defined in webEdition."; // TRANSLATE
 $l_we_tag['categorySelect']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['charset']['description'] = "The we:charset tag generates a meta tag which determines the used charset for the page. \"ISO-8859-1\" is usually used for English Web pages. This tag must be placed within the meta tag of the HTML page."; // TRANSLATE
 $l_we_tag['charset']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['checkForm']['description'] = "The we:checkForm tag validates the entries of a form with JavaScript.&lt;br /&gt;The combination of the parameters 'match' and 'type' determine the 'name' or the 'id' of the form to check.&lt;br /&gt;'mandatory' and 'email' contain a commaseperated list of mandatory or e-mail fields. In 'password' it is possible to insert 2 names of fields and a minimum length of inserted passwords.&lt;br /&gt;With 'onError' you can choose the name of an individual JavaScript-function which is called in case of an error. This function will get an array with the names of missing mandatory and email fields and a flag, if the password was correct. If 'onError' is not set or the function does not exist, the default value is displayed in an alert-box."; // TRANSLATE
+$l_we_tag['checkForm']['description'] = "The we:checkForm tag validates the entries of a form with JavaScript.&lt;br /&gt;The combination of the parameters 'match' and 'type' determine the 'name' or the 'id' of the form to check.&lt;br /&gt;'mandatory' and 'email' contain a commaseperated list of mandatory or e-mail fields. In 'password' it is possible to insert 2 names of fields and a minimum length of inserted passwords.&lt;br /&gt;With 'onError' you can choose the name of an individual JavaScript-function which is called in case of an error. This function will get an array with the names of missing mandatory and email fields and a flag, if the password was correct. If 'onError' is not set or the function does not exist, the default value is displayed in an alert-box.";
 $l_we_tag['checkForm']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['colorChooser']['description'] = "The we:colorChooser tag creates an input field for choosing a color value."; // TRANSLATE
 $l_we_tag['condition']['description'] = "This tag is used together with &lt;we:conditionAdd&gt; to dynamically add a condition to the attribute \"condition\" in a &lt;we:listview type=\"object\"&gt;. Conditions may be interlaced."; // TRANSLATE
@@ -55,6 +56,8 @@ $l_we_tag['controlElement']['description'] = "The tag we:controlElement can mani
 $l_we_tag['cookie']['description'] = "This tag is required with the Voting Module and sets a cookie, which denies more than one vote for a user. The tag needs to be placed at the very start of the template. There must not be any breaks or spaces in front of this tag."; // TRANSLATE
 $l_we_tag['createShop']['description'] = "The we:createShop tag is needed on every page that is supposed to contain shop data."; // TRANSLATE
 $l_we_tag['css']['description'] = "The css tag creates an HTML tag that references an internal webEdition CSS style sheet that has the ID listed below. You can define style sheets in a separate file."; // TRANSLATE
+$l_we_tag['customer']['description'] = ""; // TRANSLATE
+$l_we_tag['customer']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['date']['description'] = "The we:date tag displays the current date on the page as specified by the format string. If the document is static, the type should be set to &quot;js&quot;, so that the date is generated using JavaScript."; // TRANSLATE
 $l_we_tag['dateSelect']['description'] = "The we:dateSelect tag displays a select field for dates, which can be used together with the we:processDateSelect tag to read the date value into a variable as a UNIX time stamp."; // TRANSLATE
 $l_we_tag['delete']['description'] = "This tag is used to delete webEdition documents accessed via &lt;we:a edit=\"document\" delete=\"true\"&gt; or &lt;we:a edit=\"object\" delete=\"true\"&gt;."; // TRANSLATE
@@ -69,6 +72,7 @@ $l_we_tag['flashmovie']['description'] = "The we:flashmovie tag allows you to in
 $l_we_tag['form']['description'] = "The we:form tag is used to search and mail forms. It works in the same fashion as the normal HTML form tag, but allows the parser to insert additional hidden fields."; // TRANSLATE
 $l_we_tag['form']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['formfield']['description'] = "This tag is used to generate fields in a front end form."; // TRANSLATE
+$l_we_tag['formmail']['description'] = "With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br />If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha."; // TRANSLATE
 $l_we_tag['hidden']['description'] = "The we:hidden tag creates a hidden input tag holding the value of the global PHP variable with the same name. Use this tag if you want to forward incoming variables."; // TRANSLATE
 $l_we_tag['hidePages']['description'] = "The we:hidePages tag allows to disable some modes of a document. You can use this tag i.e. , to restrict access to the properity page of a document. In this case, it is not possible to park this document any more."; // TRANSLATE
 $l_we_tag['href']['description'] = "The we:href tag creates a URL that can be entered in edit mode."; // TRANSLATE
@@ -144,6 +148,8 @@ $l_we_tag['ifNotCaptcha']['description'] = "Content enclosed by this tag is only
 $l_we_tag['ifNotCaptcha']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotDeleted']['description'] = "Content enclosed by this tag is only displayed if a webEdition document or object could not be deleted by &lt;we:delete/&gt;"; // TRANSLATE
 $l_we_tag['ifNotDeleted']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifNotDoctype']['description'] = ""; // TRANSLATE
+$l_we_tag['ifNotDoctype']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotEditmode']['description'] = "Content enclosed by this tag is not displayed in edit mode."; // TRANSLATE
 $l_we_tag['ifNotEditmode']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotEmpty']['description'] = "The we:ifNotEmpty tag ensures that everything located between the start tag and the end tag is only displayed if the field having the same name as entered under \"match\" is not empty. The type of field must be specified in the attribute \"type\", if it is a \"img\", \"flashmovie\" or \"href\" field."; // TRANSLATE
@@ -158,7 +164,7 @@ $l_we_tag['ifNotHtmlMail']['description'] = "Content enclosed by this tag is onl
 $l_we_tag['ifNotHtmlMail']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotNew']['description'] = "Content enclosed by this tag is only displayed in an old webEdition document or object."; // TRANSLATE
 $l_we_tag['ifNotNew']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['ifNotObject']['description'] = "The enclosed content is only displayed if the entry within &lt;we:listview type=\"search\"&gt; is not an object.&lt;br /&gt;"; // TRANSLATE
+$l_we_tag['ifNotObject']['description'] = "The enclosed content is only displayed if the entry within &lt;we:listview type=\"search\"&gt; is not an object.&lt;br /&gt;";
 $l_we_tag['ifNotObject']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotPosition']['description'] = "The tag we:ifNotPosition allows to define an action which will NOT be done at a certain position of a block, a listview, a linklist or a listdir.  The parameter \"position\" can handle versatile values to control the first, last, all even, all odd or a specific position (1,2,3, ...). Is \"type= block or linklist\" it is necessary to specify the name (reference) of the related block/linklist."; // TRANSLATE
 $l_we_tag['ifNotPosition']['defaultvalue'] = ""; // TRANSLATE
@@ -172,8 +178,12 @@ $l_we_tag['ifNotSeeMode']['description'] = "This tag is used to display the encl
 $l_we_tag['ifNotSeeMode']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotSelf']['description'] = "The we:ifNotSelf tag ensures that everything located between the start tag and the end tag will not be displayed if the document has one of the ID's entered in the tag. If the tag is not located within we:linklist or we:listdir tags, \"id\" is a required field!"; // TRANSLATE
 $l_we_tag['ifNotSelf']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifNotSidebar']['description'] = ""; // TRANSLATE
+$l_we_tag['ifNotSidebar']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotSubscribe']['description'] = "Content enclosed by this tag is only displayed if a subscription was not successful. This tag should appear in a template (for subscribing to newsletters) after &lt;we:addDelNewsletterEmail&gt;."; // TRANSLATE
 $l_we_tag['ifNotSubscribe']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifNotTemplate']['description'] = "Show enclosed content only if the current document is not based on the given template.<br /><br />You'll find further information in the reference of the tag we:ifTemplate."; // TRANSLATE
+$l_we_tag['ifNotTemplate']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotTop']['description'] = "The enclosed content is only displayed if this tag is located in an included document."; // TRANSLATE
 $l_we_tag['ifNotTop']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotUnsubscribe']['description'] = "Content enclosed by this tag is only displayed if an unsubscribe request does not work as it should. This tag must appear in the template (for unsubscription) after a &lt;we:addDellnewsletterEmail&gt;."; // TRANSLATE
@@ -214,8 +224,12 @@ $l_we_tag['ifShopPayVat']['description'] = "The enclosed content is only display
 $l_we_tag['ifShopPayVat']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifShopVat']['description'] = "we:ifShopVat checks the VAT of the actual article (document/ shopping cart). The parameter Id allows to check the article\"s VAT with for the inserted Id."; // TRANSLATE
 $l_we_tag['ifShopVat']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifSidebar']['description'] = ""; // TRANSLATE
+$l_we_tag['ifSidebar']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifSubscribe']['description'] = "Content enclosed by this tag is only displayed if a subscription to the newsletter was successful. It must be used in a subscription template after a &lt;we:addDelnewsletterEmail&gt; tag."; // TRANSLATE
 $l_we_tag['ifSubscribe']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifTemplate']['description'] = ""; // TRANSLATE
+$l_we_tag['ifTemplate']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifTop']['description'] = "The enclosed content is only displayed if this tag is not located in an included document."; // TRANSLATE
 $l_we_tag['ifTop']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifUnsubscribe']['description'] = "Content enclosed by this tag is only displayed if unsubscription of the newsletter was successful. It must be used in a subscription template after a &lt;we:addDellnewsletterEmail&gt; tag."; // TRANSLATE
@@ -240,7 +254,7 @@ $l_we_tag['ifWebEdition']['description'] = "Content enclosed by this tag is only
 $l_we_tag['ifWebEdition']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifWorkspace']['description'] = "Checks, whether the document is located in the workspace specified in \"path\"."; // TRANSLATE
 $l_we_tag['ifWorkspace']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['ifWritten']['description'] = "Content enclosed by this tag is only available if the write process of  a webEdition document or object was successful. See &lt;we:write&gt;."; // TRANSLATE
+$l_we_tag['ifWritten']['description'] = "Content enclosed by this tag is only available if the write process of  a webEdition document or object was successful. See &lt;we:write&gt;.";
 $l_we_tag['ifWritten']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['img']['description'] = "The we:img tag is required to insert an image in the content of the page. In edit mode, you can see an edit button. Clicking on the button will launch a file manager, which allows you to select an image that has been uploaded to or set up in webEdition. If the attributes \"width\", \"height\", \"border\", \"hspace\", \"vspace\", \"alt\", or \"align\" are set up, these attributes will be used for the image. Otherwise, the settings made for the image are in force. If the attribute ID is set up, the image will be used with this ID if no other image has been selected. The attribut showimage allows to hide the image itself in edit-mode, only the controlbuttons are shown then. With showinputs the input fields for alt and title can be deactivated."; // TRANSLATE
 $l_we_tag['include']['description'] = "This tag allows you to include a webEdition document or a HTML page in the template. This is particularly useful for navigation features or for sections that are the same on every template. If you work with the we:include tag, you do not need to change the navigation system in all the templates, changing it in the document you want to include will suffice. Afterwards, you only have to execute a \"rebuild\" and all the pages will be changed automatically. If all your pages are dynamic, you do not need to perform the \"rebuild\". Instead of the we:include tag, the page with the ID listed below will be inserted. With the attribute \"gethttp\" you can define whether the page should be transferred via HTTP or not.The attribute seem determines whether the document is editable in seeMode or not. This attribute only works when the document is included with the id."; // TRANSLATE
@@ -256,13 +270,21 @@ $l_we_tag['list']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['listdir']['description'] = "The we:listdir tag creates a new list displaying all files in the same directory. In the attribute \"field\" you can specify the field which is to be displayed. If the field is empty or does not exist, the name of the file is displayed. Directories are examined regarding index files; if there is an index file, it will be displayed. Which field should be used to display directories can be specified in the attribute \"dirfield\". If the field is empty or does not exist, the entry of \"field\" respective to the name of the file is used. If the attribute \"id\" is set up, the files of the directory with the indicated ID are displayed."; // TRANSLATE
 $l_we_tag['listdir']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['listview']['description'] = "The we:listview tag is the start tag and end tag of lists that are generated automatically (summary news pages etc.)."; // TRANSLATE
-$l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;\n\n&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;\n&lt;br /&gt;\n&lt;/we:repeat&gt;"; // TRANSLATE
+$l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;
+
+&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;
+&lt;br /&gt;
+&lt;/we:repeat&gt;";
 $l_we_tag['listviewEnd']['description'] = "This tag displays the number of the last entry of the current &lt;we:listview&gt; page."; // TRANSLATE
 $l_we_tag['listviewPageNr']['description'] = "This tag returns the number of the current page of a &lt;we:listview&gt;."; // TRANSLATE
 $l_we_tag['listviewPages']['description'] = "This tag returns the number of pages of a &lt;we:listview&gt;."; // TRANSLATE
 $l_we_tag['listviewRows']['description'] = "This tag returns the number of entries found in a &lt;we:listview&gt;."; // TRANSLATE
 $l_we_tag['listviewStart']['description'] = "This tag displays the number of the first entry of the current &lt;we:listview&gt; page."; // TRANSLATE
 $l_we_tag['makeMail']['description'] = "This tag must be in the first line of every template in order to generate a webEdition document that is to be sent by &lt;we:sendMail/&gt;."; // TRANSLATE
+$l_we_tag['master']['description'] = ""; // TRANSLATE
+$l_we_tag['master']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['metadata']['description'] = ""; // TRANSLATE
+$l_we_tag['metadata']['defaultvalue'] = "&lt;we:field name=\"NameOfField\" /&gt;"; // TRANSLATE
 $l_we_tag['navigation']['description'] = "we:navigation is used to initialise a navigation made with the  navigation-tool."; // TRANSLATE
 $l_we_tag['navigationEntries']['description'] = "Within we:navigationEntry type=\"folder\" this tag serves as a place holder for all entries of a folder of the navigation."; // TRANSLATE
 $l_we_tag['navigationEntry']['description'] = "With we:navigationEntry the look of an entry can be controlled within the navigation. With the attributes \"type\", \"level\", \"current\" and \"position\" single elements of various levels can be specifically picked and displayed."; // TRANSLATE
@@ -271,10 +293,13 @@ $l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is use
 $l_we_tag['navigationWrite']['description'] = ""; // TRANSLATE
 $l_we_tag['newsletterConfirmLink']['description'] = "This tag is used to generate the double opt-in confirmation link."; // TRANSLATE
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Confirm newsletter"; // TRANSLATE
+$l_we_tag['newsletterField']['description'] = ""; // TRANSLATE
 $l_we_tag['newsletterSalutation']['description'] = "This tag is used to display salutation fields."; // TRANSLATE
 $l_we_tag['newsletterUnsubscribeLink']['description'] = "Creates a link to unsubscribe from a newsletter list. This tag can only be used in mail templates!"; // TRANSLATE
 $l_we_tag['next']['description'] = "Creates the HTML link tag that references the next page within listviews. The tag links any content found between the start tag and the end tag."; // TRANSLATE
 $l_we_tag['next']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['noCache']['description'] = "PHP-Code enclosed by this tag will be executed each time the cached document will be requested (Exception: Full-Cache)"; // TRANSLATE
+$l_we_tag['noCache']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['object']['description'] = "The we:object tag is used to display objects. The fields of an object can be displayed with we:field tags within the start tag and end tag. If just the attribute \"name\" for an object is set or has a value, the object selector will be displayed in the edit mode and the editor has the option to select all objects from all classes. If in addition the attribute \"classid\" has a value, the selection in the object selector will be reduced to all objects related to the class definded in \"classid\". With the attribute \"id\" you can define a preselection of a specific object defined by \"classid\" and \"id\". The attribute \"triggerid\" is used to display dynamic documents in a static object listview."; // TRANSLATE
 $l_we_tag['object']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['pagelogger']['description'] = "The we:pagelogger tag generates, depending on the selected \"type\" attribute, the necessary capture code for pageLogger or the fileserver- respectively the download-code."; // TRANSLATE
@@ -300,17 +325,21 @@ $l_we_tag['saferpay']['description'] = "we:saferpay implements an interface to t
 $l_we_tag['saveRegisteredUser']['description'] = "This tag saves all customer data entered by session fields."; // TRANSLATE
 $l_we_tag['search']['description'] = "The we:search tag creates an input box or a text box that is intended to be used for search queries. The search field has the internal name \"we_search\". When the search form is submitted, the PHP variable \"we_search\" on the receiving web page will be filled with the content from the input box."; // TRANSLATE
 $l_we_tag['select']['description'] = "The we:select tag creates a select box for entry in edit mode. If \"1\" has been specified as size (size= \"1\" ), the select box appears as a pop-up menu. It behaves exactly as an HTML select tag does. Between the start tag and the end-tag, entries are determined by normal HTML option tags."; // TRANSLATE
-$l_we_tag['select']['defaultvalue'] = "&lt;option&gt;#1&lt;/option&gt;\n&lt;option&gt;#2&lt;/option&gt;\n&lt;option&gt;#3&lt;/option&gt;"; // TRANSLATE
+$l_we_tag['select']['defaultvalue'] = "&lt;option&gt;#1&lt;/option&gt;
+&lt;option&gt;#2&lt;/option&gt;
+&lt;option&gt;#3&lt;/option&gt;";
 $l_we_tag['sendMail']['description'] = "This tag sends a webEdition page as an E-mail to the addresses which are defined in the attribute \"recipient\"."; // TRANSLATE
 $l_we_tag['sessionField']['description'] = "The we:sessionField tag creates an HTML input, select or text area tag. It is used for any input in session fields (e. g. Userdata, etc.)."; // TRANSLATE
 $l_we_tag['sessionLogout']['description'] = "The we:sessionLogout tag creates an HTML link tag referring to an internal webEdition document with the ID mentioned in the webEdition Tag Wizard. If this webEdition document has a we:sessionStart tag and holds the attribute \"dynamic\", the active session will be cleared and closed. No data will be saved."; // TRANSLATE
 $l_we_tag['sessionLogout']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['sessionStart']['description'] = "This tag is used to start a session or to continue an existing one. This tag is required in templates that generate the following pages: Pages which are protected in some form by the Customer Mangement Module, Shop pages and pages which support front end input.&lt;br /&gt;This tag MUST be the first tag on the first line of the template!"; // TRANSLATE
+$l_we_tag['sessionStart']['description'] = "This tag is used to start a session or to continue an existing one. This tag is required in templates that generate the following pages: Pages which are protected in some form by the Customer Mangement Module, Shop pages and pages which support front end input.&lt;br /&gt;This tag MUST be the first tag on the first line of the template!";
 $l_we_tag['setVar']['description'] = "This tag is used to set the values of various types of varibles."; // TRANSLATE
 $l_we_tag['shipping']['description'] = "In regard to the purchase we:shipping is used to determine shipping costs. These costs are based on the value of the shopping cart, the land of origin of the registered user and the shipping cost rules editable in the Shop Module. The parameter \"sum\" contains the name of a sum calculated with we:sum. The parameter \"type\" is used to determine either the net, gros as well as the amount of the VAT contained in the shipping costs."; // TRANSLATE
 $l_we_tag['shopField']['description'] = "This tag saves various input fields directly from an article or in the shopping cart (order). The administrator can define some values from which the customer can choose or enter an own value. It is therefore possible to map many article variants in a simple way."; // TRANSLATE
 $l_we_tag['shopVat']['description'] = "This tag is used to determine the VAT for an article. To adminstrate different VAT rates use the Shop Module. A given Id directly prints the VAT-Rate for this article."; // TRANSLATE
 $l_we_tag['showShopItemNumber']['description'] = "The we:showShopItemNumber tag shows the amount of specified items in the basket."; // TRANSLATE
+$l_we_tag['sidebar']['description'] = ""; // TRANSLATE
+$l_we_tag['sidebar']['defaultvalue'] = "Open sidebar"; // TRANSLATE
 $l_we_tag['subscribe']['description'] = "This tag is used to add a single line input field to a webEdition document so that a user wanting to subscribe to a newsletter can enter his or her E-mail address."; // TRANSLATE
 $l_we_tag['sum']['description'] = "The we:sum tag sums up all figures in a list."; // TRANSLATE
 $l_we_tag['target']['description'] = "This tag is used to generate the link target from within &lt;we:linklist&gt;."; // TRANSLATE
@@ -331,38 +360,38 @@ $l_we_tag['votingList']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['votingSelect']['description'] = "Use this tag to generate a dropdown-menu; (&lt;select&gt;) to select voting."; // TRANSLATE
 $l_we_tag['write']['description'] = "This tag stores a document/object generated by &lt;we:form type=\"document/object&gt;"; // TRANSLATE
 $l_we_tag['writeShopData']['description'] = "The we:writeShopData tag writes all current shopping cart data into the database."; // TRANSLATE
-$l_we_tag['writeVoting']['description'] = "This tag writes a voting into the database. If the attribute \"id\" is defined, only the voting with the respective id will be saved."; // TRANSLATE
+$l_we_tag['writeVoting']['description'] = "This tag writes a voting into the database. If the attribute \"id\" is defined, only the voting with the respective id will be saved.";
 $l_we_tag['xmlfeed']['description'] = "The tag loads xml content from the given url"; // TRANSLATE
 $l_we_tag['xmlnode']['description'] = "The tag prints a xml element from the given feed or url."; // TRANSLATE
 $l_we_tag['xmlnode']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['ifbannerexists']['description'] = "Executes the enclosed code only, if the banner module is not deaktivated (settings dialog)."; // TRANSLATE
-$l_we_tag['ifbannerexists']['defaultvalue'] = "";
-$l_we_tag['ifcustomerexists']['description'] = "Executes the enclosed code only, if the customer module is not deaktivated (settings dialog)."; // TRANSLATE
-$l_we_tag['ifcustomerexists']['defaultvalue'] = "";
-$l_we_tag['ifnewsletterexists']['description'] = "Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog)."; // TRANSLATE
-$l_we_tag['ifnewsletterexists']['defaultvalue'] = "";
-$l_we_tag['ifobjektexists']['description'] = "Executes the enclosed code only, if the object module is not deaktivated (settings dialog)."; // TRANSLATE
-$l_we_tag['ifobjektexists']['defaultvalue'] = "";
-$l_we_tag['ifshopexists']['description'] = "Executes the enclosed code only, if the shop module is not deaktivated (settings dialog)."; // TRANSLATE
-$l_we_tag['ifshopexists']['defaultvalue'] = "";
-$l_we_tag['ifvotingexists']['description'] = "Executes the enclosed code only, if the voting module is not deaktivated (settings dialog)."; // TRANSLATE
-$l_we_tag['ifvotingexists']['defaultvalue'] = "";
+$l_we_tag['ifbannerexists']['description'] = "Executes the enclosed code only, if the banner module is not deaktivated (settings dialog)."; // TRANSLATE 
+$l_we_tag['ifbannerexists']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifcustomerexists']['description'] = "Executes the enclosed code only, if the customer module is not deaktivated (settings dialog)."; // TRANSLATE 
+$l_we_tag['ifcustomerexists']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifnewsletterexists']['description'] = "Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog)."; // TRANSLATE 
+$l_we_tag['ifnewsletterexists']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifobjektexists']['description'] = "Executes the enclosed code only, if the object module is not deaktivated (settings dialog)."; // TRANSLATE 
+$l_we_tag['ifobjektexists']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifshopexists']['description'] = "Executes the enclosed code only, if the shop module is not deaktivated (settings dialog)."; // TRANSLATE 
+$l_we_tag['ifshopexists']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifvotingexists']['description'] = "Executes the enclosed code only, if the voting module is not deaktivated (settings dialog)."; // TRANSLATE 
+$l_we_tag['ifvotingexists']['defaultvalue'] = ""; // TRANSLATE
 
 $l_we_tag['ifNotHasChildren']['description'] = "Within the &lt;we:repeat&gt; tag &lt;we:ifNotHasChildren&gt; is used to query if a category(folder) has child categories."; // TRANSLATE
-$l_we_tag['ifNotHasChildren']['defaultvalue'] = "";
+$l_we_tag['ifNotHasChildren']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotHasCurrentEntry']['description'] = "we:ifNotHasCurrentEntry can be used within we:navigationEntry type=\"folder\" to show some content, only if the navigation folder does not contain the activ entry"; // TRANSLATE
-$l_we_tag['ifNotHasCurrentEntry']['defaultvalue'] = "";
+$l_we_tag['ifNotHasCurrentEntry']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotHasEntries']['description'] = "we:ifNotHasEntries can be used within we:navigationEntry to show content only, if the navigation entry does not contain entries."; // TRANSLATE
-$l_we_tag['ifNotHasEntries']['defaultvalue'] = "";
+$l_we_tag['ifNotHasEntries']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotHasShopVariants']['description'] = "The tag we:ifHasShopVariants can display content depending on the existance of variants in an object or document. With this, it can be controlled whether a &lt;we:listview type=\"shopVariant\"&gt; should be displayed at all or some alternative."; // TRANSLATE
-$l_we_tag['ifNotHasShopVariants']['defaultvalue'] = "";
+$l_we_tag['ifNotHasShopVariants']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifPageLanguage']['description'] = "The tag we:ifPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages"; // TRANSLATE
-$l_we_tag['ifPageLanguage']['defaultvalue'] = "";
-$l_we_tag['ifNotPageLanguage']['description'] = "The tag we:ifNotPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";// TRANSLATE
-$l_we_tag['ifNotPageLanguage']['defaultvalue'] = "";
+$l_we_tag['ifPageLanguage']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifNotPageLanguage']['description'] = "The tag we:ifNotPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages"; // TRANSLATE
+$l_we_tag['ifNotPageLanguage']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page"; // TRANSLATE
-$l_we_tag['ifSendMail']['defaultvalue'] = "";
+$l_we_tag['ifSendMail']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page"; // TRANSLATE
-$l_we_tag['ifNotSendMail']['defaultvalue'] = "";
+$l_we_tag['ifNotSendMail']['defaultvalue'] = ""; // TRANSLATE
 
 ?>

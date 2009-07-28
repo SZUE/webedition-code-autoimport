@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -36,16 +37,22 @@ $l_fileselector["open"] = "Открыть";
 $l_fileselector["close"] = "Закрыть";
 $l_fileselector["lookin"] = "Искать в";
 $l_fileselector["type"] = "Тип файла";
+$l_fileselector["title"] = "Title"; // TRANSLATE
 $l_fileselector["filename"] = "Имя файла";
 $l_fileselector["groupname"] = "Имя группы";
+$l_fileselector["folders"] = "Verzeichnisse";
+$l_fileselector["files"] = "Dateien";
 $l_fileselector["name"] = "Имя";
 $l_fileselector["foldername"] = "Директория";
+$l_fileselector["folders"] = "Directories"; // TRANSLATE
+$l_fileselector["files"] = "Files"; // TRANSLATE
 $l_fileselector["up_folder"] = "Вышестоящая директория";
 $l_fileselector["delete_entry"] = "Удалить введенные данные";
 $l_fileselector["new_cat"] = "Создать новую категорию";
 $l_fileselector["new_folder"] = "Создать новую директорию";
 $l_fileselector["new_folder_name"] = "Новая директория";
 $l_fileselector["new_cat_name"] = "Новая категория";
+$l_fileselector["created"] = "Date of creation"; // TRANSLATE
 $l_fileselector["modified"] = "Дата последнего изменения";
 $l_fileselector["root_folder"] = "Корневой каталог";
 $l_fileselector["ok"] = "Ok"; // TRANSLATE
@@ -68,4 +75,5 @@ $l_fileselector["overwriteImg"] = "Переписать";
 $l_fileselector["renameImg"] = "Переименовать";
 $l_fileselector["can_not_overwrite_we_file"] = "Файл системы webEdition не может быть переписан!";
 $l_fileselector["filesize"] = "Размер файла";
+$l_fileselector["image_not_uploaded"] = "No image has been uploaded."; // TRANSLATE
 ?>

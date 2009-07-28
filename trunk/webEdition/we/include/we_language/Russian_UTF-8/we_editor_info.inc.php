@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -43,6 +44,7 @@ $l_we_editor_info["text/webedition"] = "Документ webEdition";
 $l_we_editor_info["application/x-shockwave-flash"] = "Анимация Flash movie";
 $l_we_editor_info["text/css"] = "Стилевая таблица CSS";
 $l_we_editor_info["text/js"] = "Документ Javascript";
+$l_we_editor_info["text/xml"] = "XML document"; // TRANSLATE
 $l_we_editor_info["text/php"] = "Документ PHP";
 $l_we_editor_info["image/*"] = "Изображение";
 $l_we_editor_info["file_size"] = "Размер файла";
@@ -57,4 +59,6 @@ $l_we_editor_info["image_size"] = "Размер изображения";
 $l_we_editor_info["mysql_date_format"] = '%d.%m.%Y - %H:%i'; // TRANSLATE
 $l_we_editor_info["mysql_date_only_format"] = '%d.%m.%Y'; // TRANSLATE
 $l_we_editor_info["mysql_time_only_format"] = '%H:%i'; // TRANSLATE
+
+$l_we_editor_info["revert_publish_question"] = 'Are you sure you would like to restore the published version? All your changes since the most recent publication will be lost in the process.'; // TRANSLATE
 ?>

@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -34,6 +35,7 @@ $GLOBALS["l_import_files"]["sameName_nothing"] = "Не импортироват�
 $GLOBALS["l_import_files"]["sameName_headline"] = "Что делать в случае,<br> если файл уже существует?";
 $GLOBALS["l_import_files"]["step1"] = "Импорт локальных файлов - шаг 1 из 2";
 $GLOBALS["l_import_files"]["step2"] = "Импорт локальных файлов - шаг 2 из 2";
+$GLOBALS["l_import_files"]["step3"] = "Import local files - Step 3 of 3"; // TRANSLATE
 $GLOBALS["l_import_files"]["import_expl"] = "Нажатием на кнопку, находящуюся рядом с окном ввода, можно выбрать файл на жестком диске. После выбора появляется новое окно ввода, в котором можно выбрать следующий файл. Примите во внимание то, что в связи с ограничениями PHP и MySQL максимальный размер файла составляет %s.";
 $GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP and MySQL!<br><br>Click on \"Next\", to start the import.";
 
@@ -58,4 +60,11 @@ $GLOBALS["l_import_files"]["make_thumbs"] = "Создать<br>иконки";
 $GLOBALS["l_import_files"]["image_options_open"] = "Показывать функции графики";
 $GLOBALS["l_import_files"]["image_options_close"] = "Скрыть функции графики";
 $GLOBALS["l_import_files"]["add_description_nogdlib"] = "Для корректной работы функций графики на Вашем сервере должна быть установлена GD Library!";
+
+$GLOBALS["l_import_files"]["noFiles"] = "No files exist in the specified source directory which correspond with the given import settings!"; // TRANSLATE
+$GLOBALS["l_import_files"]["emptyDir"] = "The source directory is empty!"; // TRANSLATE
+
+$GLOBALS["l_import_files"]["metadata"] = "Meta data"; // TRANSLATE
+$GLOBALS["l_import_files"]["import_metadata"] = "Import meta data from file"; // TRANSLATE
+
 ?>

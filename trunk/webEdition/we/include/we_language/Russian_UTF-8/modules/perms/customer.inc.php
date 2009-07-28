@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -33,4 +34,6 @@ $l_perm['customer']['DELETE_CUSTOMER'] = 'Право удаления клиен
 $l_perm['customer']['EDIT_CUSTOMER'] = 'Право редактирования данных существующих клиентов';
 $l_perm['customer']['SHOW_CUSTOMER_ADMIN'] = 'Право редактирования полей данных клиентов';
 $l_perm['customer']['CUSTOMER_PASSWORD_VISIBLE'] = 'The user is allowed to see the passwords of the customers.'; // TRANSLATE
+$l_perm['customer']['CAN_EDIT_CUSTOMERFILTER'] = 'The user is allowed to edit the customer filter.'; // TRANSLATE
+$l_perm['customer']['CAN_CHANGE_DOCS_CUSTOMER'] = 'The user is allowed to assign customers to documents and objects.'; // TRANSLATE
 ?>

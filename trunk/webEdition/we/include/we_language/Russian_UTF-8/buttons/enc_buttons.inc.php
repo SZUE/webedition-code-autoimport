@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -65,4 +66,7 @@ $l_button["btn_function_view"]["alt"] = "Вид";
 
 $l_button["btn_select_image"]["alt"] = "Выбрать графику";
 $l_button["btn_help"]["alt"] = "Помощь";
+
+$l_button["btn_open_sidebar"]["alt"] = "Open sidebar"; // TRANSLATE
+
 ?>

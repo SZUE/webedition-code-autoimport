@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -34,4 +35,6 @@ $l_perm["rebuildpermissions"]["REBUILD_FILTERD"] = "Пользователь у�
 $l_perm["rebuildpermissions"]["REBUILD_OBJECTS"] = "Пользователь уполномочен перестраивать объекты";
 $l_perm["rebuildpermissions"]["REBUILD_INDEX"] = "Пользователь уполномочен перестраивать таблицу индексов";
 $l_perm["rebuildpermissions"]["REBUILD_THUMBS"] = "Пользователь уполномочен перестраивать иконки";
+$l_perm["rebuildpermissions"]["REBUILD_NAVIGATION"] = "The user is allowed to rebuild the navigation"; // TRANSLATE
+$l_perm["rebuildpermissions"]["REBUILD_META"] = "The user is allowed to rebuild the meta data fields"; // TRANSLATE
 ?>

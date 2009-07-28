@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -30,11 +31,13 @@ $l_we_class["ChangePark"] = "Данный атрибут можно измени
 $l_we_class["fieldusers"] = "Пользователи";
 $l_we_class["other"] = "Другие";
 $l_we_class["use_object"] = "Использовать объект";
+$l_we_class["language"] = "Language"; // TRANSLATE
 $l_we_class["users"] = "Владельцы по умолчанию";
 $l_we_class["copytext/css"] = "Копировать таблицу стилей CSS";
 $l_we_class["copytext/js"] = "Копировать Javascript";
 $l_we_class["copytext/html"] = "Копировать страницу HTML";
 $l_we_class["copytext/plain"] = "Копировать текстовую страницу";
+$l_we_class["copytext/xml"] = "Copy XML document"; // TRANSLATE
 $l_we_class["copyTemplate"] = "Копировать шаблон";
 $l_we_class["copyFolder"] = "Копировать директорию";
 $l_we_class["copy_owners_expl"] = "Выберите директорию, чье содержимое должно быть скопировано в текущую директорию.";
@@ -47,8 +50,6 @@ $l_we_class["response_save_notok"] = "Ошибка при сохранении �
 $l_we_class["response_path_exists"] = "Невозможно сохранить документ или директорию %s, так как это местоположение уже занято другим документом или директорией!";
 $l_we_class["width"] = "Ширина";
 $l_we_class["height"] = "Высота";
-$l_we_class["origwidth"] = "o.W.";// TRANSLATE
-$l_we_class["origheight"] = "o.H.";// TRANSLATE
 $l_we_class["width_tmp"] = "Ширина";
 $l_we_class["height_tmp"] = "Высота";
 $l_we_class["percent_width_tmp"] = "Ширина в %";
@@ -74,7 +75,7 @@ $l_we_class["salign"] = "Расположение Flash ролика";
 $l_we_class["play"] = "Воспроизведение (Play)";
 $l_we_class["loop"] = "Повтор (Loop)";
 $l_we_class["scale"] = "Масштаб";
-$l_we_class["wmode"] = "Window mode"; // TRANSLATE
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE 
 $l_we_class["bgcolor"] = "Цвет заднего фона";
 $l_we_class["response_save_noperms_to_create_folders"] = "Документ не был сохранен, так как у Вас нет соответствующих полномочий для создания директорий (%s)!";
 $l_we_class["file_on_liveserver"]="Файл уже существует";
@@ -109,6 +110,7 @@ $l_we_class["no_perms"] = 'Вы не уполномочены на провед�
 $l_we_class["workspaces"] = "Рабочие пространства";
 $l_we_class["extraWorkspaces"] = "Дополнительные рабочие пространства";
 $l_we_class["edit"] = "Редактировать";
+$l_we_class["edit_image"] = "Image editing"; // TRANSLATE
 $l_we_class["workspace"] = "Рабочее пространство";
 $l_we_class["information"] = "Справка";
 $l_we_class["previeweditmode"] = "Preview Editmode"; // TRANSLATE
@@ -131,6 +133,7 @@ $l_we_class["hidden"] = "Скрыто";
 $l_we_class["workspacesFromClass"] = "Перенять от класса";
 $l_we_class["image"] = "Изображение";
 $l_we_class["thumbnails"] = "Иконки";
+$l_we_class["metadata"] = "Metadata"; // TRANSLATE
 $l_we_class["edit_show"] = "Показывать опции изображений";
 $l_we_class["edit_hide"] = "Скрыть опции изображений";
 $l_we_class["resize"] = "Изменить размер";
@@ -160,4 +163,18 @@ $l_we_class["master_template"] = "Master template"; // TRANSLATE
 $l_we_class["same_master_template"] = "The selected master template cannot be identical with the current template!"; // TRANSLATE
 $l_we_class["documents"] = "Documents"; // TRANSLATE
 $l_we_class["no_documents"] = "No document based on this template"; // TRANSLATE
+
+$l_we_class["grant_language"] = "Change language"; // TRANSLATE
+$l_we_class["grant_language_expl"] = "Change the language of all files and directories which reside in the current directory to the setting above."; // TRANSLATE
+$l_we_class["grant_language_ok"] = "Language have been successfully changed!"; // TRANSLATE
+$l_we_class["grant_language_notok"] = "There was an error while changing the language!"; // TRANSLATE
+$l_we_class["notValidFolder"] = "The directory chosen is invalid!"; // TRANSLATE
+
+
+$l_we_class["saveFirstMessage"] = "You need to save your changes before executing this command."; // TRANSLATE
+
+$l_we_class["image_edit_null_not_allowed"] = "In the fields Width and Height only numbers greater than 0 are allowed!"; // TRANSLATE
+
+$l_we_class['doctype_changed_question'] = "Should the default values for the document type be applied for this document?"; // TRANSLATE
+$l_we_class['availableAfterSave'] = "The feature is only available after saving the entry."; // TRANSLATE
 ?>

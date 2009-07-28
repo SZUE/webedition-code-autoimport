@@ -15,6 +15,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -92,7 +93,7 @@ $GLOBALS['l_versions'] = array(
 	'notactiv'						=> 'deactivated',
 	'yes'							=> 'yes',
 	'no'							=> 'no',
-	'contentElementsMod'			=> 'Modification in content',
+	'contentElementsMod'			=> 'Modification in Content',
 	'schedulerMod'					=> 'Modification in Scheduler',
 	'customerMod'					=> 'Modification in Customerfilter',
 	'noMods'						=> 'No modifications.',

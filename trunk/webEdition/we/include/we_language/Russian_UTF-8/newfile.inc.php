@@ -16,9 +16,9 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 
 /**
  * Language file: newfile.inc.php
@@ -30,9 +30,10 @@ $l_newFile["import_File_from_hd_title"] = "Импортировать файл �
 $l_newFile["title_delete"] = "Удалить";
 $l_newFile["title_deleteBox"] = "Удалить";
 $l_newFile["delete_text"] = "Выберите, пожалуйста, слева в меню дерева-просмотрщика данные для удаления и нажмите 'OK'. <br> Важное примечание: при удалении директории автоматически удаляются все данные этой директории!";
+$l_newFile["delete_text_cache"] = "To delete the cache of an entry, please mark the referring check box in the tree menu and click 'OK'."; // TRANSLATE
 $l_newFile["title_move"] = "Move"; // TRANSLATE
 $l_newFile["title_moveBox"] = "Move"; // TRANSLATE
-$l_newFile["move_text"] = "To move an entry, please mark the referring check box in the tree on the left, then select the target directory and click 'OK'."; // TRANSLATE
+$l_newFile["move_text"] = "To move an entry, please mark the referring check box in the tree on the left, then select the target directory and click 'OK'.";
 $l_newFile["root_dir"] = "Корневой каталог";
 $l_newFile["file_exist"] = "File exists!"; // TRANSLATE
 $l_newFile["file_exist_question"] = "Do you want to overwrite the file or save it with a different name?"; // TRANSLATE

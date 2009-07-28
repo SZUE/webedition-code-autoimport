@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -34,9 +35,9 @@ $l_button["advanced"]["value"] = "Advanced";
 $l_button["advanced"]["alt"] = "Настройки расширенного поиска";
 $l_button["advanced"]["width"] = 100;
 
-$l_button["reset"]["value"] = "Reset";
-$l_button["reset"]["alt"] = "Вернуть поиск в исходное положение";
-$l_button["reset"]["width"] = 100;
+$l_button["reset_search"]["value"] = "Reset";
+$l_button["reset_search"]["alt"] = "Reset search input ..."; // TRANSLATE
+$l_button["reset_search"]["width"] = 100;
 
 $l_button["save_address"]["value"] = "Save address";
 $l_button["save_address"]["alt"] = "Сохранить адрес";

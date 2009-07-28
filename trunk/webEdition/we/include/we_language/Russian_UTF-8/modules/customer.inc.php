@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -36,6 +37,7 @@ $l_customer["menu_help"] = "Помощь";
 
 $l_customer["menu_admin"] = "Администрация";
 
+$l_customer["save_changed_customer"] = "Customer has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_customer["customer_saved_ok"] = "Пользователь '%s' успешно сохранен";
 $l_customer["customer_saved_nok"] = "Пользователь '%s' не может быть сохранен";
 $l_customer["nothing_to_save"] = "Нет предмета сохранения";
@@ -296,4 +298,9 @@ $l_customer["we_fieldname_notValid"] = "Введенное имя поля не�
 
 $l_customer["orderTab"] = 'Заказ клиента';
 $l_customer['default_order'] = 'Заданный порядок';
+
+$l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
+$l_customer["one_customer"] = "Customer"; // TRANSLATE
+
+
 ?>

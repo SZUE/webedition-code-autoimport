@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -48,7 +49,7 @@ $l_messaging['username_not_found'] = 'Имя пользователя не на�
 $l_messaging["save_changed_folder"] = "Folder has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 
 $l_messaging['no_inbox_folder'] = 'Отсутствует папка входящих сообщений';
-$l_messaging['no_done_folder'] = 'Для данного пользователя не задана папка "Выполнено"'; 
+$l_messaging['no_done_folder'] = 'Для данного пользователя не задана папка "Выполнено"';
 $l_messaging['no_reject_folder'] = 'Для данного пользователя не задана папка "Отклонено"';
 $l_messaging['folder_settings'] = 'Настройки папок';
 $l_messaging['new_folder'] = 'Новая папка';
@@ -157,7 +158,7 @@ $l_messaging['folders_created'] = 'Папка создана';
 $l_messaging['deltext'] = 'Слева в дереве-просмотрщике отметьте документы для удаления и подтвердите, нажав на &quot;ok&quot;';
 
 $l_messaging['sel_rcpts'] = 'Выбрать получателей';
-$l_messaging['err_delete_folders'] = 'Ошибка при удалении папок'; 
+$l_messaging['err_delete_folders'] = 'Ошибка при удалении папок';
 
 $l_messaging['launch_todo'] = 'Переключиться в систему задач';
 $l_messaging['launch_msg'] = 'Запустить систему сообщений';

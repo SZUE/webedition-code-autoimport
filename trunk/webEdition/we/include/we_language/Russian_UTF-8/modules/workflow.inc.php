@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -112,6 +113,7 @@ $l_workflow["delete_task"] = "Delete parallel step."; // TRANSLATE
 
 $l_workflow["save_question"] = "All documents that are in the workflow will be removed from it.\\nAre you sure that you want to do this?"; // TRANSLATE
 $l_workflow["nothing_to_save"] = "Nothing to save!"; // TRANSLATE
+$l_workflow["save_changed_workflow"] = "Workflow has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 
 $l_workflow["delete_question"] = "All workflow data will be deleated!\\nAre you sure that you want to do this?"; // TRANSLATE
 $l_workflow["nothing_to_delete"] = "Nothing to delete!"; // TRANSLATE

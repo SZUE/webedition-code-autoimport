@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -30,5 +31,5 @@
 //	for each language. This is neccessary, because we then use an alternate charset...
 //	The key represents the folder name - the value will be shown in the select-menu
 
-$_language["translation"]["Russian_UTF-8"] = "русский (UTF-8)"; // TRANSLATE
+$_language["translation"]["Russian_UTF-8"] = "Russian (UTF-8)"; // TRANSLATE
 ?>

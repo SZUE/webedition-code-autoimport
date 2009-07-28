@@ -16,9 +16,9 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 
 /**
  * Language file: start.inc.php
@@ -37,13 +37,13 @@ $l_start["solution_more"] = "В случае, если Вы пользуетес
 $l_start["cannot_start_we"] = "Невозможно запустить webEdition";
 $l_start["browser_not_supported"] = "Ваш браузер не поддерживается системой webEdition!";
 $l_start["browser_supported"] = "Система webEdition поддерживает следующие браузеры:";
-$l_start["browser_ie"] = "Internet Explorer";
+$l_start["browser_ie"] = "Internet Explorer"; // TRANSLATE
 $l_start["browser_ie_version"] = "Начиная с 5.5 версии";
-$l_start["browser_firefox"] = "Firefox";
+$l_start["browser_firefox"] = "Firefox"; // TRANSLATE
 $l_start["browser_firefox_version"] = "Начиная с 1.0 версии";
-$l_start["browser_safari"] = "Safari";
+$l_start["browser_safari"] = "Safari"; // TRANSLATE
 $l_start["browser_safari_version"] = "Начиная с 1.1 версии";
 $l_start["ignore_browser"] = "Если Вы все же хотите запустить систему webEdition, нажмите здесь ...";
-$l_start["no_db_connection"] = "The database connection can not be established."; //TRANSLATE
-$l_start["cookies_disabled"] = "Cookies are deactivated."; //TRANSLATE
+$l_start["no_db_connection"] = "The database connection can not be established."; // TRANSLATE
+$l_start["cookies_disabled"] = "Cookies are deactivated."; // TRANSLATE
 ?>
