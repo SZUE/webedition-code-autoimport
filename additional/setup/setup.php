@@ -23,7 +23,6 @@
  * 				http://yourdomain/setup.php?phpinfo
  *
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- * @version 6.0.0.6
  */
 
 // some utility features:
