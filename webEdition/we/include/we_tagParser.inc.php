@@ -656,6 +656,13 @@ class we_tagParser
 										'\1\2' . $postName . '\3', 
 										$code);
 							}
+						} elseif ($tagname == 'var') {  // #3558
+							if (isset($arr['type']) && in_array($arr['type'], array("global", "session", "request", "property"))) {
+								$code = preg_replace(
+										'/("name"=>")(.*)' . $postName . '(")/i', 
+										'\1\2\3', 
+										$code);
+							}	
 						} else {
 							$code = preg_replace(
 									'/("namefrom"=>")(' . (isset($arr["namefrom"]) ? $arr["namefrom"] : "") . ')(")/i', 
