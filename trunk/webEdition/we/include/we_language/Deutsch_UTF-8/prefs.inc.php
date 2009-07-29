@@ -75,6 +75,12 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs["language_notice"] = "Die Sprachumstellung wird erst nach einem Neustart von webEdition an allen Stellen durchgeführt.";
 
 	/**
+	 * CHARSET
+	 */
+
+	$l_prefs["default_charset"] = "Standard-Charset";
+
+	/**
 	 * SEEM
 	 */
 	$l_prefs["seem"] = "seeMode";

@@ -150,6 +150,9 @@ class weNavigation extends weModelBase
 		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/conf/we_navigationSettings.inc.php');
 		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
 		$this->previewCode = $this->defaultPreviewCode;
+		if(defined('DEFAULT_CHARSET')) {
+			$this->Charset = DEFAULT_CHARSET;
+		}
 	}
 
 	function load($id = '0')

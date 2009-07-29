@@ -74,6 +74,13 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["language_notice"] = "The language change will only take effect everywhere after restarting webEdition."; // TRANSLATE
 
 	/**
+	 * CHARSET
+	 */
+
+	$l_prefs["default_charset"] = "standard charset"; // TRANSLATE
+
+
+	/**
 	 * SEEM
 	 */
 	$l_prefs["seem"] = "seeMode"; // TRANSLATE

@@ -235,5 +235,7 @@ define("FORMMAIL_VIAWEDOC", 0);
 // Flag if new NAV- entries added from Dokument should be items or folders
 define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "0");
 
+// Default Charset
+define("DEFAULT_CHARSET", "UTF-8");
 
 ?>

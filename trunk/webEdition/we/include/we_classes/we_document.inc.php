@@ -455,10 +455,14 @@ class we_document extends we_root {
 				if ($charset !='') {
 					$_naviItem->Charset = $charset;
 				} else {
-					if(strpos($GLOBALS['[WE_LANGUAGE]'],'UTF')!== false ){
-						$_naviItem->Charset ='UTF-8';
+					if(defined('DEFAULT_CHARSET')) {
+						$_naviItem->Charset = DEFAULT_CHARSET;
 					} else {
-						$_naviItem->Charset ='ISO-8859-1';
+						if(strpos($GLOBALS['[WE_LANGUAGE]'],'UTF')!== false ){
+							$_naviItem->Charset ='UTF-8';
+						} else {
+							$_naviItem->Charset ='ISO-8859-1';
+						}
 					}
 				}
  
