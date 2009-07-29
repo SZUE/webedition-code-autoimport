@@ -66,6 +66,9 @@ class we_template extends we_document
         $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
         $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
 		array_push($this->persistent_slots,"MasterTemplateID","IncludedTemplates","CacheType","CacheLifeTime", "TagWizardCode", "TagWizardSelection");
+		if(defined('DEFAULT_CHARSET')) {
+			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		}
     }
 
     function copyDoc($id){

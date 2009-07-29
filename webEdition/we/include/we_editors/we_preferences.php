@@ -139,6 +139,9 @@ $global_config[] = array('define("DEFAULT_HTML_EXT",', '// Default html extensio
 //naviagtion stuff
 $global_config[] = array('define("NAVIGATION_ENTRIES_FROM_DOCUMENT",', '// Flag if new NAV- entries added from Dokument should be items or folders' . "\n" . 'define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "item");');
 
+//default charset
+$global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
+
 
 /*****************************************************************************
  * FUNCTIONS
@@ -471,6 +474,15 @@ function get_value($settingvalue) {
 		case "navigation_entries_from_document":
 			return defined("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? NAVIGATION_ENTRIES_FROM_DOCUMENT : 'item';
 			break;
+
+		/*********************************************************************
+		 * DEFAULT CHARSET	
+		 *********************************************************************/
+
+		case "default_charset":
+			return defined("DEFAULT_CHARSET") ? DEFAULT_CHARSET : 'UTF-8';
+			break;
+
 
 		/*********************************************************************
 		 * PHP ON OFF
@@ -1412,6 +1424,19 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+
+			/*****************************************************************
+			 * DEFAULT CHARSET
+			 *****************************************************************/
+
+			case '$_REQUEST["default_charset"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "DEFAULT_CHARSET", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+
 
 			/*****************************************************************
 			 * SAFARI WYSIWYG
@@ -2630,6 +2655,25 @@ function build_dialog($selected_setting = "ui") {
 			  	// Build dialog
 			  	array_push($_settings, array("headline" =>$l_prefs["choose_language"], "html" => $_languages, "space" => 200));
 			}
+
+			/*****************************************************************
+			 * DEFAULT CHARSET
+			 *****************************************************************/
+		 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
+			$_charsetHandler = new charsetHandler();
+			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
+			if (strpos($GLOBALS['WE_LANGUAGE']) !== false){$charset="UTF-8";} else {$charset="ISO-8859-1";}
+			$GLOBALS['weDefaultCharset'] = get_value("default_charset");
+			$_defaultCharset = htmlTextInput('DefaultCharset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
+			$_defaultCharsetChooser = htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false,"onChange=\"document.forms[0].elements['DefaultCharset'].value=this.options[this.selectedIndex].value;document.forms[0].elements['DefaultCharset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont",false);
+				$default_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
+
+				array_push($_settings, array(
+									'headline' => $l_prefs['default_charset'],
+									'space' => 200,
+									'html' => $GLOBALS['l_prefs']["default_charset"] . "<br />" .$default_Charset)
+				);
+
 
 
 			/*****************************************************************

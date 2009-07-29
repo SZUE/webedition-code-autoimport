@@ -74,6 +74,12 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["language_notice"] = "Kielenmuutos tulee voimaan webEditionin uudelleenkäynnistyksen jälkeen.";
 
 	/**
+	 * CHARSET
+	 */
+
+	$l_prefs["default_charset"] = "standard charset"; // TRANSLATE
+
+	/**
 	 * SEEM
 	 */
 	$l_prefs["seem"] = "Helppokäyttötila";

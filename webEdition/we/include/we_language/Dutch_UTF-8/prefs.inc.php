@@ -74,6 +74,12 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["language_notice"] = "Het wisselen van taal wordt pas zichtbaar na het opnieuw inloggen in webEdition.";
 
 	/**
+	 * CHARSET
+	 */
+
+	$l_prefs["default_charset"] = "standard charset"; // TRANSLATE
+
+	/**
 	 * SEEM
 	 */
 	$l_prefs["seem"] = "seeModus";

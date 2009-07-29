@@ -75,6 +75,12 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["language_notice"] = "The language change will only take effect everywhere after restarting webEdition.";
 
 	/**
+	 * CHARSET
+	 */
+
+	$l_prefs["default_charset"] = "standard charset";
+
+	/**
 	 * SEEM
 	 */
 	$l_prefs["seem"] = "seeMode";

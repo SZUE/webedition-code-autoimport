@@ -50,6 +50,9 @@ class we_textDocument extends we_document
 	function we_textDocument(){
 		$this->we_document();
 		array_push($this->EditPageNrs, WE_EDITPAGE_VERSIONS);
+		if(defined('DEFAULT_CHARSET')) {
+			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		}
 	}
 
 	################################################

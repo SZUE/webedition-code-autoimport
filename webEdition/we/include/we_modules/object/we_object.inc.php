@@ -78,6 +78,10 @@ class we_object extends we_document
         $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
         $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
 		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultDesc","CSS","CacheType","CacheLifeTime");
+		if(defined('DEFAULT_CHARSET')) {
+			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		}
+
 	}
 
 
