@@ -328,6 +328,11 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 $l_prefs["showinputs_default"] = "Tagin &lt;we:img&gt; oletusarvo määreelle <br><em>showinputs</em>";
 
 	/**
+	 * NAVIGATION
+	 */
+	 $l_prefs["navigation_entries_from_document"] = "Create new nav-entries from the document as"; // TRANSLATE
+
+	/**
 	 * DATABASE
 	 */
 

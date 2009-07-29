@@ -408,7 +408,7 @@ class we_document extends we_root {
 	}
 
 	function addNavi($id,$text,$parentid,$ordn) {
-		$text = urldecode($text);
+		$text = urldecode($text); //Bug #3769
 		if($this->ID) {
 			require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
@@ -447,8 +447,25 @@ class we_document extends we_root {
 			$_naviItem->LinkID = $this->ID;
 			$_naviItem->Text = $text;
 			$_naviItem->Path = $_new_path;
-			$_naviItem->Selection = 'static';
-			$_naviItem->SelectionType = 'docLink';
+			if (defined('NAVIGATION_ENTRIES_FROM_DOCUMENT') && NAVIGATION_ENTRIES_FROM_DOCUMENT==0) {
+				$_naviItem->Selection = 'nodynamic';
+				$_naviItem->SelectionType = 'docType';
+				$_naviItem->IsFolder = 1;
+				$charset = $_naviItem->findCharset($_naviItem->ParentID);
+				if ($charset !='') {
+					$_naviItem->Charset = $charset;
+				} else {
+					if(strpos($GLOBALS['[WE_LANGUAGE]'],'UTF')!== false ){
+						$_naviItem->Charset ='UTF-8';
+					} else {
+						$_naviItem->Charset ='ISO-8859-1';
+					}
+				}
+ 
+			} else {
+				$_naviItem->Selection = 'static';
+				$_naviItem->SelectionType = 'docLink';
+			}
 
 			$_naviItem->save();
 			$_naviItem->setOrdn($_ord);
@@ -468,7 +485,7 @@ class we_document extends we_root {
 	}
 
 	function delNavi($path) {
-
+		$path = urldecode($path); //Bug #3816
 		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		if(in_array($path,$navis)){

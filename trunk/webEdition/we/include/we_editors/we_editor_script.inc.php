@@ -372,7 +372,7 @@ function we_cmd(){
 			if(!confirm("<?php print $l_navigation['del_question']?>")) break;
 		default:
 			for(var i = 0; i < arguments.length; i++){
-				args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+				args += 'encodeURIComponent(arguments['+i+'])' + ((i < (arguments.length-1)) ? ',' : '');
 			}
 			eval('parent.we_cmd('+args+')');
 	}

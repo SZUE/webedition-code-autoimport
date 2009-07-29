@@ -328,6 +328,11 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 $l_prefs["showinputs_default"] = "Default value for the<br><em>showinputs</em> attribute in<br>&lt;we:img&gt;";
 
 	/**
+	 * NAVIGATION
+	 */
+	 $l_prefs["navigation_entries_from_document"] = "Create new nav-entries from the document as";
+
+	/**
 	 * DATABASE
 	 */
 
