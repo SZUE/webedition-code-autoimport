@@ -232,5 +232,8 @@ define("DEFAULT_HTML_EXT", ".html");
 // Flag if formmail should be send only via a webEdition document
 define("FORMMAIL_VIAWEDOC", 0);
 
+// Flag if new NAV- entries added from Dokument should be items or folders
+define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "0");
+
 
 ?>

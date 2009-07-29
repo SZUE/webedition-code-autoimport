@@ -328,6 +328,11 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 $l_prefs["showinputs_default"] = "Valor por defecto para el atributo<br><em>showinputs</em> en<br>&lt;we:img&gt;";
 
 	/**
+	 * NAVIGATION
+	 */
+	 $l_prefs["navigation_entries_from_document"] = "Create new nav-entries from the document as"; // TRANSLATE
+
+	/**
 	 * DATABASE
 	 */
 

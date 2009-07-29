@@ -136,6 +136,10 @@ $global_config[] = array('define("DEFAULT_STATIC_EXT",', '// Default static exte
 $global_config[] = array('define("DEFAULT_DYNAMIC_EXT",', '// Default dynamic extension' . "\n" . 'define("DEFAULT_DYNAMIC_EXT", ".php");');
 $global_config[] = array('define("DEFAULT_HTML_EXT",', '// Default html extension' . "\n" . 'define("DEFAULT_HTML_EXT", ".html");');
 
+//naviagtion stuff
+$global_config[] = array('define("NAVIGATION_ENTRIES_FROM_DOCUMENT",', '// Flag if new NAV- entries added from Dokument should be items or folders' . "\n" . 'define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "item");');
+
+
 /*****************************************************************************
  * FUNCTIONS
  *****************************************************************************/
@@ -269,7 +273,7 @@ function get_value($settingvalue) {
 			break;
 
 		/*********************************************************************
-		 * CACHING
+		 * LANGUAGE
 		 *********************************************************************/
 
 		case "locale_locales":
@@ -458,6 +462,14 @@ function get_value($settingvalue) {
 
 		case "inlineedit_default":
 			return defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true;
+			break;
+
+		/*********************************************************************
+		 * NAVIGATION
+		 *********************************************************************/
+
+		case "navigation_entries_from_document":
+			return defined("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? NAVIGATION_ENTRIES_FROM_DOCUMENT : 'item';
 			break;
 
 		/*********************************************************************
@@ -1390,6 +1402,18 @@ $_we_active_integrated_modules = array();
 				break;
 
 			/*****************************************************************
+			 * NAVIGATION
+			 *****************************************************************/
+
+			case '$_REQUEST["navigation_entries_from_document"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_ENTRIES_FROM_DOCUMENT", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+
+			/*****************************************************************
 			 * SAFARI WYSIWYG
 			 *****************************************************************/
 
@@ -2268,6 +2292,7 @@ function save_all_values() {
         $_update_prefs = remember_value(isset($_REQUEST["we_tracker_dir"]) ? $_REQUEST["we_tracker_dir"] : null, '$_REQUEST["we_tracker_dir"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, '$_REQUEST["execute_hooks"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_entries_from_document"]) ? $_REQUEST["navigation_entries_from_document"] : null, '$_REQUEST["navigation_entries_from_document"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
@@ -4344,6 +4369,28 @@ function setColorChooserDisabled(id, disabled) {
 
 
 				array_push($_settings, array("headline" => $l_prefs["we_doctype_workspace_behavior"], "html" => $_we_doctype_workspace_behavior_table, "space" => 200));
+			}
+
+			/**
+			 * inlineedit setting
+			 */
+
+			// Build dialog if user has permission
+			if (we_hasPerm("ADMINISTRATOR")) {
+				// Build select box
+				$_php_setting = new we_htmlSelect(array("name" => "navigation_entries_from_document","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "folder" : "item");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("navigation_entries_from_document")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("navigation_entries_from_document")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+
+				array_push($_settings, array("headline" => $l_prefs["navigation_entries_from_document"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 			}
 
 
