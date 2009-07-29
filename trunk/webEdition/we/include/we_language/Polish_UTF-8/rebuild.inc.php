@@ -56,5 +56,11 @@ $GLOBALS["l_rebuild"]["rebuild_navigation"] = "Rebuild - Navigation"; // TRANSLA
 $GLOBALS["l_rebuild"]["txt_rebuild_navigation"] = "Here you can rewrite the navigation cache."; // TRANSLATE
 $GLOBALS["l_rebuild"]["rebuildStaticAfterNaviCheck"] = 'Rebuild static documents afterwards.'; // TRANSLATE
 $GLOBALS["l_rebuild"]["rebuildStaticAfterNaviHint"] = 'For static navigation entries a rebuild of the corresponding documents is necessary, in addition.'; // TRANSLATE
+$GLOBALS["l_rebuild"]["metadata"] = 'Meta data fields'; // TRANSLATE
+$GLOBALS["l_rebuild"]["txt_rebuild_metadata"] = 'To import the meta data of your images subsequently, choose this option.'; // TRANSLATE  // TRANSLATE
+$GLOBALS["l_rebuild"]["rebuild_metadata"] = 'Rebuild - meta data fields'; // TRANSLATE
+$GLOBALS["l_rebuild"]["onlyEmpty"] = 'Import only empty meta data fields'; // TRANSLATE
+$GLOBALS["l_rebuild"]["expl_rebuild_metadata"] = 'Select the meta data fields you want to import. To import only fields which already have no content, select the option "Import only empty meta data fields".'; // TRANSLATE // TRANSLATE
+$GLOBALS["l_rebuild"]["noFieldsChecked"] = "Al least one meta data field must be selected!"; // TRANSLATE // TRANSLATE
 
 ?>

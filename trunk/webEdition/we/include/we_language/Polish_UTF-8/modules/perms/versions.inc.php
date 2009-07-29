@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -18,6 +19,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$l_multiEditor["no_editor_left"] = "There is no more free Editor-Window. Close an open editor, please."; // TRANSLATE
-$l_multiEditor["eplugin_exit_doc"] = "If you continue, all documents will be removed from the Editor-Plugin.\\nExternal modifications will not be applied to webEdition anymore."; // TRANSLATE
+
+$l_perm["versions"]["perm_group_title"] = "Versioning"; // TRANSLATE
+
+$l_perm["versions"]["SEE_VERSIONS"] = "The user is allowed to see versions."; // TRANSLATE
+$l_perm["versions"]["RESET_VERSIONS"] = "The user is allowed to reset versions."; // TRANSLATE
+
 ?>

@@ -32,7 +32,7 @@
  */
  
 //	This is for the charset of webEdition itself.
-$_language["charset"] = "UTF-8";
+$_language["charset"] = "UTF-8"; // TRANSLATE
 
 $_charset["error"]["no_charset_tag"] = "Brak znacznika we:charset w szablonie";
 $_charset["error"]["no_charset_available"] = "--Brak--";

@@ -26,6 +26,7 @@
  * Language: English
  */
 
+$l_banner["save_changed_banner"] = "The Banner has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_banner["wrongtext"] = "Podana nazwa jest nieprawidłowa! W nazwie nie mogą być stosowane następujące znaki: /  \\\\  % ' \\\"";
 $l_banner["newbannergroup"] = "Nowa grupa banerów ";
 $l_banner["newbanner"] = "Nowy baner";
@@ -115,7 +116,7 @@ $l_banner["error_height_empty"] = "Wypełnij pole 'Wysokość'!";
 $l_banner["error_getscript_empty"] = "Wypełnij pole 'Get Script'!";
 $l_banner["error_clickscript_empty"] = "Wypełnij pole 'Click Script'!";
 $l_banner["required"] = "wymagane pola";
-$l_banner["error_ac_field"] = "ERROR: Invalid entries in marked fields!";
+$l_banner["error_ac_field"] = "ERROR: Invalid entries in marked fields!"; // TRANSLATE
 
 $l_banner["no_group_in_group"] = "Nie można zapisać grupy banerów w samej sobie!";
 ?>

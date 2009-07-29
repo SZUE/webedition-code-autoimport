@@ -43,6 +43,6 @@ $l_start["browser_firefox_version"] = "od wersji 1.0";
 $l_start["browser_safari"] = "Safari"; // TRANSLATE
 $l_start["browser_safari_version"] = "od wersji 1.1";
 $l_start["ignore_browser"] = "Jeżeli pomimo to chcesz uruchomić webEdition kliknij tutaj ...";
-$l_start["no_db_connection"] = "The database connection can not be established."; //TRANSLATE
-$l_start["cookies_disabled"] = "Cookies are deactivated."; //TRANSLATE
+$l_start["no_db_connection"] = "The database connection can not be established."; // TRANSLATE
+$l_start["cookies_disabled"] = "Cookies are deactivated."; // TRANSLATE
 ?>

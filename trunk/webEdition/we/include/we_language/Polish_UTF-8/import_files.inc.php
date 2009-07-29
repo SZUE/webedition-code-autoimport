@@ -63,4 +63,7 @@ $GLOBALS["l_import_files"]["add_description_nogdlib"] = "Aby działały funkcje 
 $GLOBALS["l_import_files"]["noFiles"] = "No files exist in the specified source directory which correspond with the given import settings!"; // TRANSLATE
 $GLOBALS["l_import_files"]["emptyDir"] = "The source directory is empty!"; // TRANSLATE
 
+$GLOBALS["l_import_files"]["metadata"] = "Meta data"; // TRANSLATE
+$GLOBALS["l_import_files"]["import_metadata"] = "Import meta data from file"; // TRANSLATE
+
 ?>

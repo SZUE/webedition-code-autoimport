@@ -60,7 +60,7 @@ $l_button["new_directory"]["value"] = "New directory";
 $l_button["new_directory"]["alt"] = "Tworzy nowy katalog";
 $l_button["new_directory"]["width"] = 200;
 
-$l_button["unpublished_pages"]["value"] = "Unpublished pages";
+$l_button["unpublished_pages"]["value"] = "Unpublished documents";
 $l_button["unpublished_pages"]["alt"] = "Przegląd nieopublikowanych stron";
 $l_button["unpublished_pages"]["width"] = 200;
 
@@ -81,7 +81,7 @@ $l_button["quit_delete"]["width"] = 175;
  *****************************************************************************/
 
 $l_button["quit_move"]["value"] = "Finish move mode";
-$l_button["quit_move"]["alt"] = "Finish move mode"; // TRANSLATE
+$l_button["quit_move"]["alt"] = "Finish move mode";
 $l_button["quit_move"]["width"] = 175;
 
 /*****************************************************************************
@@ -93,7 +93,7 @@ $l_button["ok"]["alt"]   = "OK";
 $l_button["ok"]["width"] = 100;
 
 $l_button["cancel"]["value"] = "Cancel";
-$l_button["cancel"]["alt"] = "Cancel"; // TRANSLATE
+$l_button["cancel"]["alt"] = "Cancel";
 $l_button["cancel"]["width"] = 100;
 
 $l_button["yes"]["value"] = "Yes";
@@ -105,16 +105,24 @@ $l_button["no"]["alt"]   = "Nie";
 $l_button["no"]["width"] = 100;
 
 $l_button["save"]["value"] = "Save";
-$l_button["save"]["alt"] = "Save"; // TRANSLATE
+$l_button["save"]["alt"] = "Save";
 $l_button["save"]["width"] = 100;
 
 $l_button["publish"]["value"] = "Publish";
-$l_button["publish"]["alt"]   = "Save and publish"; // TRANSLATE
+$l_button["publish"]["alt"]   = "Save and publish";
 $l_button["publish"]["width"] = 100;
 
 $l_button["delete"]["value"] = "Delete";
-$l_button["delete"]["alt"] = "Delete"; // TRANSLATE
+$l_button["delete"]["alt"] = "Delete";
 $l_button["delete"]["width"] = 100;
+
+$l_button["go"]["value"] = "Execute now";
+$l_button["go"]["alt"]   = ""; // TRANSLATE
+$l_button["go"]["width"] = 120;
+
+$l_button["openVersionWizard"]["value"] = "Versions-Wizard";
+$l_button["openVersionWizard"]["alt"]   = "Versions-Wizard"; // TRANSLATE
+$l_button["openVersionWizard"]["width"] = 120;
 
 $l_button["next"]["value"] = "Next";
 $l_button["next"]["alt"]   = "Dalej";
@@ -125,15 +133,15 @@ $l_button["back"]["alt"] = "Wstecz";
 $l_button["back"]["width"] = 100;
 
 $l_button["open"]["value"] = "Open";
-$l_button["open"]["alt"] = "Open"; // TRANSLATE
+$l_button["open"]["alt"] = "Open";
 $l_button["open"]["width"] = 100;
 
 $l_button["default"]["value"] = "Default";
-$l_button["default"]["alt"] = "Default"; // TRANSLATE
+$l_button["default"]["alt"] = "Default";
 $l_button["default"]["width"] = 100;
 
 $l_button["reset"]["value"] = "Reset";
-$l_button["reset"]["alt"] = "Reset search input ..."; // TRANSLATE
+$l_button["reset"]["alt"] = "Reset search input ...";
 $l_button["reset"]["width"] = 100;
 
 /*****************************************************************************
@@ -279,20 +287,13 @@ $l_button["res_1300"]["value"] = "1300x650";
 $l_button["res_1300"]["alt"]   = "Ustawia 1300x650";
 $l_button["res_1300"]["width"] = 100;
 
-$l_button["install_plugin"]["value"] = "Install PlugIn";
-$l_button["install_plugin"]["alt"]   = "Instaluje rozszerzenie Mozilla ActiveX PlugIn";
-$l_button["install_plugin"]["width"] = 140;
-
-$l_button["install_editor_plugin"]["value"] = "Editor PlugIn";
-$l_button["install_editor_plugin"]["alt"]   = "Instaluje rozszerzenia edytora webEdition";
-$l_button["install_editor_plugin"]["width"] = 140;
 
 /*****************************************************************************
  * Rebuild
  *****************************************************************************/
 
 $l_button["rebuild"]["value"] = "Rebuild";
-$l_button["rebuild"]["alt"]   = "Start rebuild..."; // TRANSLATE
+$l_button["rebuild"]["alt"]   = "Start rebuild...";
 $l_button["rebuild"]["width"] = 100;
 
 /*****************************************************************************
@@ -354,7 +355,7 @@ $l_button["new_folder"]["width"] = 200;
  * Logbuch Formmail
  *****************************************************************************/
 $l_button["clear_log"]["value"] = "Clear logbook";
-$l_button["clear_log"]["alt"] = "Clear logbook"; // TRANSLATE
+$l_button["clear_log"]["alt"] = "Clear logbook";
 $l_button["clear_log"]["width"] = 120;
 
 $l_button["logbook"]["value"] = "Logbook";

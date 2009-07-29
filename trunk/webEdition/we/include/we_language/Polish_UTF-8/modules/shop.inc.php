@@ -107,7 +107,7 @@ $l_shop["datumeingabe"] = "Musisz podać datę w formacie dd.mm.yy.";
 $l_shop["order_data"] = "Dane zamówienia i <br />klienta";
 $l_shop["ordered_articles"] = "Zamówione artykuły";
 $l_shop["order_comments"] = "Dalsze dane do tego zamówienia";
-
+$l_shop["order_view"] = "Order summary"; // TRANSLATE
 $l_shop["bestelldatum"] = "Data zamówienia:";
 $l_shop["jsdatum"] = "Wpisz datę";
 $l_shop["unbearb"] = "nieedytowany";
@@ -208,7 +208,8 @@ $l_shop["fieldCity"] = "Miejscowość";
 $l_shop["fieldEmail"] = "E-mail"; // TRANSLATE
 $l_shop["SelectAll"]= "Wszystkie";
 $l_shop["plzh"] = "Rezerwacja";
-$l_shop["lastOrder"] = "Last order - Nr.: %s, %s"; // TRANSLATE
+$l_shop["lastOrder"] = "Last order - Nr.: %s, %s";
+$l_shop["orderNo"] = "No.: %s vom %s"; // TRANSLATE
 $l_shop["sl"] = "-"; // TRANSLATE
 $l_shop["treeYear"] = "Rok";
 

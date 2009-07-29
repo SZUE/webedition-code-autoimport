@@ -81,4 +81,6 @@ $l_object["behaviour_no"] = "Nie wyďż˝wietla siďż˝ obiektu, jeďż˝eli ni
 $l_object["generated_template_for_objectFile"] = "Nie znaleziono pasujďż˝cego szablonu.";
 
 $l_object["no_workspace_defined"] = "Temu obiektowi nie przyporzďż˝dkowano jeszcze obszaru roboczego. Jeďż˝eli chcesz przyporzďż˝dkowaďż˝ obiektowi specjalne obszary robocze, musisz wybraďż˝ je w klasie obiektu.";
+
+$l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
 ?>

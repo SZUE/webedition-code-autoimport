@@ -36,6 +36,7 @@ $l_customer["menu_help"] = "Pomoc";
 
 $l_customer["menu_admin"] = "Administracja";
 
+$l_customer["save_changed_customer"] = "Customer has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_customer["customer_saved_ok"] = "Zapisano dane klienta '%s'";
 $l_customer["customer_saved_nok"] = "Nie udało się zapisac danych klienta '%s'!";
 $l_customer["nothing_to_save"] = "Brak danych do zapisania!";
@@ -296,4 +297,9 @@ $l_customer["we_fieldname_notValid"] = "Podana nazwa pola jest nieprawidłowa!\\
 
 $l_customer["orderTab"] = 'Orders of this customer'; // TRANSLATE
 $l_customer['default_order'] = 'Zadany porządek';
+
+$l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
+$l_customer["one_customer"] = "Customer"; // TRANSLATE
+
+
 ?>

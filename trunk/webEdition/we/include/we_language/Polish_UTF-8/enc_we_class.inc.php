@@ -37,7 +37,7 @@ $l_we_class["template"] = "Szablon";
 $l_we_class["no_template"] = "Bez szablonu";
 $l_we_class["IsDynamic"] = "Strona dynamicznie generowana";
 $l_we_class["IsSearchable"] = "Jest przeszukiwalny?";
-$l_we_class["InGlossar"] = "Not allowed for automatic glossary replacement"; //TRANSLATE
+$l_we_class["InGlossar"] = "Not allowed for automatic glossary replacement"; // TRANSLATE //TRANSLATE
 $l_we_class["metainfo"] = "Meta-Info";
 $l_we_class["Title"] = "Tytuł";
 $l_we_class["Keywords"] = "Słowa kluczowe";
@@ -59,4 +59,7 @@ $l_we_class["showTagwizard"] = "Pokaż Tagwizard";
 $l_we_class["hideTagwizard"] = "Wyświetl Tagwizard";
 $l_we_class["variant_fields"] = "Pola";
 $l_we_class["variant_info"] = "Następujące pola w dokumencie są do wyboru w szablonie. Proszę określić, które to mają być pola.";
+$l_we_class["webUser"] = "Customer"; // TRANSLATE
+$l_we_class["docList"] = "Content"; // TRANSLATE
+$l_we_class["version"] = "Versions"; // TRANSLATE
 ?>

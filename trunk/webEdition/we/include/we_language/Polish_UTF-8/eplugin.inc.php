@@ -40,6 +40,7 @@ $l_eplugin["lan_default_for"] = "Default for"; // TRANSLATE
 
 $l_eplugin["lan_editor_name"] = "Editor name"; // TRANSLATE
 $l_eplugin["lan_path"] = "Path"; // TRANSLATE
+$l_eplugin["lan_args"] = "Arguments"; // TRANSLATE
 $l_eplugin["lan_contenttypes"] = "Content Types"; // TRANSLATE
 $l_eplugin["lan_defaultfor_label"] = "Default editor for"; // TRANSLATE
 $l_eplugin["lan_del_button"] = "Delete"; // TRANSLATE
