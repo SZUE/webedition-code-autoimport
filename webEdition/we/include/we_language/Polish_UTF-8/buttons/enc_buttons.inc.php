@@ -67,4 +67,5 @@ $l_button["btn_select_image"]["alt"] = "Wybierz grafikę";
 $l_button["btn_help"]["alt"] = "Pomoc";
 
 $l_button["btn_open_sidebar"]["alt"] = "Open sidebar"; // TRANSLATE
+
 ?>

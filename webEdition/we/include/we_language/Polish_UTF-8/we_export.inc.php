@@ -23,7 +23,7 @@
 /**
  * Language file: we_export.inc.php
  * Provides language strings.
- * Language: Polski
+ * Language: English
  */
 $l_export['title'] = 'Eksport Wizard';
 $l_export['selection_type'] = 'Zatwierdź wybór elementów';

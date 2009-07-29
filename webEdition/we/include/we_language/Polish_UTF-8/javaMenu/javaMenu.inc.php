@@ -23,7 +23,7 @@
 /**
  * Language file: javaMenu.inc.php
  * Provides language strings.
- * Language: Polish
+ * Language: English
  */
 
 /**
@@ -111,6 +111,8 @@ $l_javaMenu["new"] = "Nowy";
 	// close
 $l_javaMenu["close_single_document"] = "Close Document"; // TRANSLATE
 $l_javaMenu["close_all_documents"] = "Close all Documents"; // TRANSLATE
+$l_javaMenu["close_all_but_active_document"] = "Close inactive documents"; // TRANSLATE
+$l_javaMenu["delete_active_document"] = "Delete active document"; // TRANSLATE
 
 
 
@@ -177,10 +179,10 @@ $l_javaMenu["quit"] = "Zakończ";
 
 			$l_javaMenu["shortcuts"] = "Shortcuts"; // TRANSLATE
 			$l_javaMenu["rss_reader"] = "RSS Reader"; // TRANSLATE
-			$l_javaMenu["last_modified"] = "last modified"; // TRANSLATE
+			$l_javaMenu["last_modified"] = "last modified";
 			$l_javaMenu["todo_messaging"] = "ToDo/Messaging"; // TRANSLATE
 			$l_javaMenu["users_online"] = "Users Online"; // TRANSLATE
-			$l_javaMenu["unpublished"] = "unpublished"; // TRANSLATE
+			$l_javaMenu["unpublished"] = "unpublished";
 			$l_javaMenu["my_documents"] = "My documents"; // TRANSLATE
 			$l_javaMenu["notepad"] = "Notepad"; // TRANSLATE
 			$l_javaMenu["pagelogger"] = "pageLogger"; // TRANSLATE
@@ -208,16 +210,18 @@ $l_javaMenu["edit"] = "Opcje";
 $l_javaMenu["document_types"] = "Typy dokumentów";
 $l_javaMenu["categories"] = "Kategorie";
 $l_javaMenu["thumbnails"] = "Podgląd miniatury";
+$l_javaMenu["metadata"] = "Metadata fields"; // TRANSLATE
 $l_javaMenu["navigation"] = "Navigation"; // TRANSLATE
 $l_javaMenu["change_username"] = "Zmień nazwę użytkownika";
 $l_javaMenu["change_password"] = "Zmień hasło";
-$l_javaMenu["econda"] = "Econda";
 
 $l_javaMenu["formmail_recipients"] = "Formmail-Odbiorca";
 $l_javaMenu["proxy_server"] = "Serwer Proxy";
 $l_javaMenu["unpublished_pages"] = "Nieopublikowane strony";
 $l_javaMenu["preferences"] = "Ustawienia";
-
+$l_javaMenu["versioning"] = "Version-Wizard"; // TRANSLATE
+$l_javaMenu["versioning_log"] = "Version-Log"; // TRANSLATE
+$l_javaMenu["econda"] = "Econda"; // TRANSLATE
 
 ##################################
 ###### End Menu Bearbeiten #######

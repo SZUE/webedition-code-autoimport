@@ -25,10 +25,13 @@
  * Provides language strings.
  * Language: English
  */
+$l_export["save_changed_export"] = "Export has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_export["auto_selection"] = "Automatic selection"; // TRANSLATE
 $l_export["txt_auto_selection"] = "Eksportuje automatycznie - wg typu lub klasy dokumentu - wybrane dokumenty lub obiekty.";
+$l_export["txt_auto_selection_csv"] = "Exports objects automatically according to their class."; // TRANSLATE
 $l_export["manual_selection"] = "Wybór ręczny";
 $l_export["txt_manual_selection"] = "Eksportuje ręcznie wybrane dokumenty lub obiekty";
+$l_export["txt_manual_selection_csv"] = "Exports manually selected objects."; // TRANSLATE
 $l_export["element"] = "Wybór elementów";
 $l_export["documents"] = "Dokumenty";
 $l_export["objects"] = "Obiekty";
@@ -104,9 +107,9 @@ $l_export['handle_object_includes'] = 'Export included objects'; // TRANSLATE
 $l_export['handle_classes_options'] = 'Classes'; // TRANSLATE
 $l_export['handle_class_defs'] = 'Default value'; // TRANSLATE
 $l_export['handle_object_embeds'] = 'Export embedded objects'; // TRANSLATE
-$l_export['handle_doctype_options'] = 'Doctypes/<br>Categorys/<br>Navigation'; // TRANSLATE
+$l_export['handle_doctype_options'] = 'Doctypes/<br>Categorys/<br>Navigation';
 $l_export['handle_doctypes'] = 'Doctypes'; // TRANSLATE
-$l_export['handle_categorys'] = 'Categorys'; // TRANSLATE
+$l_export['handle_categorys'] = 'Categorys';
 $l_export['export_depth'] = 'Export depth'; // TRANSLATE
 $l_export['to_level'] = 'to level'; // TRANSLATE
 $l_export['select_export'] ='To export an entry, please mark the referring check box in the tree. Important note: All marked items from all branches will be exported and if you export a directory all documents in this directory will be exported as well!'; // TRANSLATE
@@ -171,4 +174,7 @@ $l_export['weNavigation'] = 'Navigation'; // TRANSLATE
 $l_export['weNavigationRule'] = 'Navigation rule'; // TRANSLATE
 $l_export['weThumbnail'] = 'Thumbnails'; // TRANSLATE
 $l_export['handle_thumbnails'] = 'Thumbnails'; // TRANSLATE
+
+$l_export['navigation_hint'] = 'Document types, categories and the navigation are exported depending on your select documents and templates. The export of the navigation therefore requires the export of a template with a document based on it in which the navigation is used.'; // TRANSLATE
+
 ?>

@@ -84,9 +84,9 @@ $l_alert["delete_nok_error"] = "Nie można usunąć pliku '%s'.";
 $l_alert["delete_nok_file"] = "Nie można usunąć pliku '%s'.\\nMożliwe, że plik jest chroniony przed zapisem.";
 $l_alert["delete_nok_folder"] = "Nie można usunąć katalogu '%s'.\\nMożliwe, że katalog jest chroniony przed zapisem.";
 $l_alert["delete_nok_noexist"] = "Plik '%s' nie istnieje!";
-$l_alert["noResourceTitle"] = "No Item!";
-$l_alert["noResource"] = "The document or directory does not exist!";
-$l_alert["move_exit_open_docs_question"] = "Before documents of a table can be moved, all documents of this table must be closed. All not saved changes will be lost during this process. The following document will be closed:\\n\\n"; // TRANSLATE
+$l_alert["noResourceTitle"] = "No Item!"; // TRANSLATE
+$l_alert["noResource"] = "The document or directory does not exist!"; // TRANSLATE
+$l_alert["move_exit_open_docs_question"] = "Before documents of a table can be moved, all documents of this table must be closed. All not saved changes will be lost during this process. The following document will be closed:\\n\\n";
 $l_alert["move_exit_open_docs_continue"] = 'Continue?'; // TRANSLATE
 $l_alert["move"] = "Move selected entries?\\nDo you want to continue?"; // TRANSLATE
 $l_alert["move_ok"] = "Files successfully moved!"; // TRANSLATE
@@ -123,6 +123,7 @@ if( defined("OBJECT_FILES_TABLE") ){
 	$l_alert["exit_doc_question_".OBJECT_FILES_TABLE] = "Obiekt został zmieniony.<br>Zapisać zmiany?";
 }
 $l_alert["deleteTempl_notok_used"] = "Nie można wykonać operacji, ponieważ przynajmniej jeden z szablonów, które mają być usunięte, jest używany!";
+$l_alert["deleteClass_notok_used"] = "One or more of the classes are in use and could not be deleted!"; // TRANSLATE
 $l_alert["delete_notok"] = "Wystąpił błąd przy usuwaniu!";
 $l_alert["nothing_to_save"] = "Nie można wykonać w tej chwili operacji zapisu!";
 $l_alert["nothing_to_publish"] = "The publish function is disabled at the moment!"; // TRANSLATE
@@ -172,10 +173,16 @@ $l_alert['field_int_contains_incorrect_length'] = "The maximum length of a field
 $l_alert['field_int_value_to_height'] = "The maximum value of a field of the type \'Integer\' is 2147483647."; // TRANSLATE
 
 
-$l_alert["we_filename_notValid"] = "Wprowadzona nazwa pliku jest nieprawidłowa!\\nDopuszczalne znaki to litery od a do z (wielkie i małe) , cyfry, znak podkreślenia (_), minus (-) oraz kropka (.)."; // CHECK
-// changed from: "Invalid filename\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)"
-// changed to  : "Invalid file name\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)"
-$l_alert['error_fields_value_not_valid'] = 'Invalid entries in input fields!';
+$l_alert["we_filename_notValid"] = "Wprowadzona nazwa pliku jest nieprawidłowa!\\nDopuszczalne znaki to litery od a do z (wielkie i małe) , cyfry, znak podkreślenia (_), minus (-) oraz kropka (.).";
 
+$l_alert["login_denied_for_user"] = "The user cannot login. The user access is disabled."; // TRANSLATE
+$l_alert["no_perm_to_delete_single_document"] = "You have not the needed permissions to delete the active document."; // TRANSLATE
 
+$l_confim["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?"; // TRANSLATE
+$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? "; // TRANSLATE
+
+$l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:"; // TRANSLATE
+$l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s'; // TRANSLATE
+$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; // TRANSLATE 
+$l_alert['discard_changed_data'] = 'There are unsaved changes that will be discarded. Are you sure?'; // TRANSLATE
 ?>

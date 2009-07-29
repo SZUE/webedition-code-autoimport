@@ -24,6 +24,7 @@
  * Provides language strings.
  * Language: English
  */
+$l_newsletter["save_changed_newsletter"] = "Newsletter has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_newsletter["Enter_Path"] = "Please enter a path beginning with the DOCUMENT_ROOT!"; // TRANSLATE
 $l_newsletter["title_or_salutation"] = "Angielski format zwrotu (bez tytułu)";
 $l_newsletter["global_mailing_list"] = "Standardowa lista mailingowa (Plik CSV)";
@@ -77,6 +78,7 @@ $l_newsletter["block_url"] = "URL"; // TRANSLATE
 $l_newsletter["use_default"] = "Użyj standardowego szablonu";
 $l_newsletter["subject"] = "Temat";
 $l_newsletter["delete_question"] = "Czy chcesz usunąć aktualny newsletter?";
+$l_newsletter["delete_group_question"] = "Do you want to delete the current group?"; // TRANSLATE
 $l_newsletter["delete_ok"] = "Newsletter został usunięty.";
 $l_newsletter["delete_nok"] = "BŁĄD: Nie usunięto newslettera";
 $l_newsletter["test_email"] = "Wiadomość testowa";
@@ -125,6 +127,7 @@ $l_newsletter["log_sending"] = "Sporządź wpis do logu, jeżeli wysłano e-mail
 $l_newsletter["default_sender"] = "Standardowy nadawca";
 $l_newsletter["default_reply"] = "Standardowy adres zwrotny";
 $l_newsletter["default_htmlmail"] = "Das Standardowym formatem wiadomosci w-mail jest HTML";
+$l_newsletter["isEmbedImages"] = "Embed images"; // TRANSLATE
 $l_newsletter["ask_to_preserve"] = "Ostatnia kampania newsletterowa nie została jeszcze całkowicie ukończona!<br>Jeżeli teraz zapiszesz newslettera,nie możesz kontynuować ostatniej kampanii!<br>Czy chcesz kontynować?";
 $l_newsletter["log_save_newsletter"] = "Newsletter został zapisany.";
 $l_newsletter["log_start_send"] = "Rozpocznij kampanię newsletterową.";
@@ -218,9 +221,9 @@ $l_newsletter["path_not_valid"] = "Nieprawidłowa ścieżka";
 $l_newsletter["no_subject"] = "Nie podano tematu. Czy wiadomośc ma zostać mimo to wysłana?";
 $l_newsletter["mail_failed"] = "Wiadomość '%s' nie może zostać wysłana. Możliwa przyczyna to błędna konfiguracja serwera!";
 $l_newsletter["reject_save_malformed"] = "Nie zapisuj newslettera w przypadku, gdy adres e-mail jest nieprawidłowy.";;
-$l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server.";
+$l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
 $l_newsletter["use_https_refer"] = "Użyj HTTPS do odniesień";
-$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE 
 $l_newsletter["we_filename_notValid"] = "Wpisana nazwa jest nieprawidłowa!\\nDozwolone znaki to litery od a do z (wielkie lub małe) , cyfry, znak podkreślenia (_), minus (-), kropka (.) i spacja ( ).";
 $l_newsletter["send_wait"] = "Czas oczekiwania do następnego procesu wysyłania<br> (w ms)";
 $l_newsletter["send_images"] = "Dodaj obrazki jako załączniki do e-maila";
@@ -234,14 +237,19 @@ $l_newsletter["retry"] = "Powtórz";
 $l_newsletter["charset"]= "Kodowanie znaków";
 $l_newsletter["additional_clp"] = "Additional reply address (option -f)"; // TRANSLATE
 $l_newsletter["html_preview"]= "show HTML preview"; // TRANSLATE
-$l_newsletter["blockFieldError"]= "ERROR: 'Invalid value in Block %s, Field %s!";
+$l_newsletter["status"]= "Status"; // TRANSLATE
+$l_newsletter["statusAll"]= "all entries"; // TRANSLATE
+$l_newsletter["statusInvalid"]= "invalid entries"; // TRANSLATE
+$l_newsletter["invalid_email"]= "The email is not valid."; // TRANSLATE
+$l_newsletter["blockFieldError"]= "ERROR: 'Invalid value in Block %s, Field %s!"; // TRANSLATE
 
-$l_newsletter["operator"]['startWith']= "starts with";
-$l_newsletter["operator"]['endsWith']= "ends with";
-$l_newsletter["operator"]['contains']= "contains";
-$l_newsletter["logic"]['and']= "and";
-$l_newsletter["logic"]['or']= "or";
+$l_newsletter["operator"]['startWith']= "starts with"; // TRANSLATE
+$l_newsletter["operator"]['endsWith']= "ends with"; // TRANSLATE
+$l_newsletter["operator"]['contains']= "contains"; // TRANSLATE
+$l_newsletter["logic"]['and']= "and"; // TRANSLATE
+$l_newsletter["logic"]['or']= "or"; // TRANSLATE
+$l_newsletter["no_newsletter_selected"]= "No newsletter selected. Please open the newsletter first."; // TRANSLATE
 
-$l_newsletter["default"]["female"] = "Mrs.";
-$l_newsletter["default"]["male"] = "Mr.";
+$l_newsletter["default"]["female"] = "Mrs."; // TRANSLATE
+$l_newsletter["default"]["male"] = "Mr."; // TRANSLATE
 ?>

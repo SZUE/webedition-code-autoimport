@@ -22,9 +22,10 @@
 /**
 * Language file: cockpit.inc.php
 * Provides language strings.
-* Language: Polish
+* Language: English
 */
 
+$l_cockpit['cockpit'] = 'Cockpit'; // TRANSLATE
 $l_cockpit['reduce_size'] = 'Reduce size'; // TRANSLATE
 $l_cockpit['increase_size'] = 'Increase size'; // TRANSLATE
 $l_cockpit['close'] = 'Close'; // TRANSLATE
@@ -185,8 +186,8 @@ $l_cockpit['graph_visitors_today'] = 'Graph visitors today'; // TRANSLATE
 $l_cockpit['graph_impressions_today'] = 'Graph impressions today'; // TRANSLATE
 $l_cockpit['domain'] = 'Domain'; // TRANSLATE
 $l_cockpit['until_befor_from'] = 'The specified end date lies before the start date. Please, correct the date for the validity of the note.'; // TRANSLATE
-$l_cockpit['date_empty'] = 'Please enter the validity date!';
+$l_cockpit['date_empty'] = 'Please enter the validity date!'; // TRANSLATE
 $l_cockpit['title_empty'] = 'Please enter the title!'; // TRANSLATE
-$l_cockpit['notepad_defaultTitle_DO_NOT_TOUCH'] = 'Miscellaneous';
-
+$l_cockpit['notepad_defaultTitle_DO_NOT_TOUCH'] = 'Miscellaneous'; // TRANSLATE
+$l_cockpit['no_type_selected'] = 'The widget settings could not be saved, because there is no type selected. Select at least one type to display.'; // TRANSLATE
 ?>

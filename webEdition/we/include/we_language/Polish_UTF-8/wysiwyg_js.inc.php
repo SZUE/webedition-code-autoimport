@@ -40,7 +40,8 @@ $GLOBALS["l_wysiwyg"]["edit_image"] = "Edit image"; // TRANSLATE
 $GLOBALS["l_wysiwyg"]["inserthorizontalrule"] = "Insert horizontal rule"; // TRANSLATE
 $GLOBALS["l_wysiwyg"]["insertspecialchar"] = "Insert special character"; // TRANSLATE
 $GLOBALS["l_wysiwyg"]["insert_table"] = "Insert table"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["edit_cell"] = "Zelle bearbeiten"; // TRANSLATE
+$GLOBALS["l_wysiwyg"]["edit_table"] = "Edit table"; // TRANSLATE
+$GLOBALS["l_wysiwyg"]["edit_cell"] = "Zelle bearbeiten";
 $GLOBALS["l_wysiwyg"]["undo"] = "Undo"; // TRANSLATE
 $GLOBALS["l_wysiwyg"]["redo"] = "Redo"; // TRANSLATE
 $GLOBALS["l_wysiwyg"]["nothing_selected"] = "There is nothing selected!"; // TRANSLATE
@@ -68,5 +69,7 @@ $GLOBALS["l_wysiwyg"]["fontname2"] = "Font name"; // TRANSLATE
 $GLOBALS["l_wysiwyg"]["css_style2"] = "CSS style"; // TRANSLATE
 
 $GLOBALS["l_wysiwyg"]["removeformat_warning"] = "This functions will remove the formating of the whole text field! Do you really want to continue?"; // TRANSLATE
+
+$GLOBALS["l_wysiwyg"]["fontsize"] = "Font size"; // TRANSLATE
 
 ?>

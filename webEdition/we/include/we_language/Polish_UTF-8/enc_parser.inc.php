@@ -24,6 +24,7 @@
  * Provides language strings.
  * Language: English
  */
+$GLOBALS["l_parser"]["delete"] = "Delete"; // TRANSLATE
 $GLOBALS["l_parser"]["wrong_type"] = "Wartość \"type\" jest niedozwolona!";
 $GLOBALS["l_parser"]["error_in_template"] = "Błąd w szablonie";
 $GLOBALS["l_parser"]["start_endtag_missing"] = "W <code>&lt;we:%s&gt;</code> brakuje tagu początkowego albo końcowego!";
@@ -45,4 +46,6 @@ $GLOBALS["l_parser"]["setVar_lv_not_in_lv"] = "Tag <code>&lt;we:setVar from=\"li
 $GLOBALS["l_parser"]["checkForm_jsIncludePath_not_found"] = "Atrybut jsIncludePath tagu <code>&lt;we:checkForm&gt;</code> został podany jako liczba (ID). Dokument z tym ID nie mógł jednak zostać znaleziony!";
 $GLOBALS["l_parser"]["checkForm_password"] = "Atrubut password tagu <code>&lt;we:checkForm&gt;</code> wymaga 3 oddzielonych przecinkami wartości!";
 $GLOBALS["l_parser"]["missing_createShop"] = "The tag <code>&lt;we:%s&gt;</code> can only be used after<code>&lt;we:createShop&gt;</code>."; // TRANSLATE
+$GLOBALS["l_parser"]["multi_object_name_missing_error"] = "Error: The object field &quot;%s, specified in the attribute &quot;name&quot;, does not exist!"; // TRANSLATE
+$GLOBALS["l_parser"]["template_recursion_error"] = "Error: Too much recursion!"; // TRANSLATE
 ?>

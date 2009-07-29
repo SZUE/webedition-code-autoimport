@@ -36,7 +36,7 @@ $l_navigation['we_filename_notValid'] = 'The username is not correct!\\nAlphanum
 $l_navigation['menu_new'] = 'New'; // TRANSLATE
 $l_navigation['menu_save'] = 'Save'; // TRANSLATE
 $l_navigation['menu_delete'] = 'Delete'; // TRANSLATE
-$l_navigation['menu_exit'] = 'Quit'; // TRANSLATE
+$l_navigation['menu_exit'] = 'Quit';
 
 $l_navigation['menu_options'] = 'Options'; // TRANSLATE
 $l_navigation['menu_generate'] = 'Generate source code'; // TRANSLATE
@@ -54,6 +54,7 @@ $l_navigation['navigation'] = 'Navigation'; // TRANSLATE
 $l_navigation['group'] = 'Folder'; // TRANSLATE
 $l_navigation['name'] = 'Name'; // TRANSLATE
 $l_navigation['newFolder'] = 'New folder'; // TRANSLATE
+$l_navigation['display'] = 'Display'; // TRANSLATE
 $l_navigation['save_group_ok'] = 'The folder was saved.'; // TRANSLATE
 $l_navigation['save_ok'] = 'The navigation was saved.'; // TRANSLATE
 
@@ -190,12 +191,16 @@ $l_navigation['linkprops_desc'] = 'Here you can define the additional link prope
 $l_navigation['charset_desc'] = 'The selected charset will be applyed on the current folder and all folder entries.'; // TRANSLATE
 
 
-$l_navigation['customers'] = 'Customers'; // TRANSLATE
+$l_navigation['customers'] = 'Customers';
 $l_navigation['limit_access'] = 'Define customer access level'; // TRANSLATE
 $l_navigation['customer_access'] = 'All customers can access the item'; // TRANSLATE
 $l_navigation['filter'] = 'Define filter'; // TRANSLATE
 $l_navigation['and'] = 'and'; // TRANSLATE
 $l_navigation['or'] = 'or'; // TRANSLATE
 $l_navigation['selected_customers'] = 'Only folowing customers can access the item'; // TRANSLATE
+$l_navigation['useDocumentFilter'] = 'Use filter settings of document/object'; // TRANSLATE
+$l_navigation['reset_customer_filter'] = 'Reset all customer filters'; // TRANSLATE
+$l_navigation['reset_customerfilter_done_message'] = 'The cusomer filters were successfully reset!'; // TRANSLATE
+$l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters'; // TRANSLATE
 
 ?>

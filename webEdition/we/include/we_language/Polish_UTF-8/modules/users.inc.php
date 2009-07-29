@@ -106,7 +106,9 @@ $l_users["gelöscht"] = "Usunięto";
 $l_users["ohne"] = "Brak";
 $l_users["user"] = "Użytkownik";
 $l_users["usertyp"] = "Typ użytkownika";
-$l_users["serach_results"] = "Wyniki wyszukiwania";
+$l_users["search"] = "Suche"; // TRANSLATE
+$l_users["search_result"] = "Ergebnis"; // TRANSLATE
+$l_users["search_for"] = "Suche nach"; // TRANSLATE
 $l_users["inherit"] = "Przejęcie uprawnień grupy nadrzędnej";
 $l_users["inherit_ws"] = "Przejęcie obszaru roboczego grupy nadrzędnej";
 $l_users["inherit_wst"] = "Przejęcie obszaru roboczego szablonów z grupy nadrzędnej";
@@ -126,7 +128,9 @@ $l_users["inherit_wsnl"] = "Inherit newsletter workspaces from parent group"; //
 
 $l_users["delete_user_same"] = "Sie können nicht Ihr eigenes Konto löschen."; // TRANSLATE
 $l_users["delete_group_user_same"] = "Sie können nicht Ihre eigene Gruppe löschen."; // TRANSLATE
-$l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!";
-$l_users["noGroupError"] = "Error: Invalid entry in field group!";
+
+$l_users["login_denied"] = "Login denied"; // TRANSLATE
+$l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!"; // TRANSLATE
+$l_users["noGroupError"] = "Error: Invalid entry in field group!"; // TRANSLATE
 
 ?>

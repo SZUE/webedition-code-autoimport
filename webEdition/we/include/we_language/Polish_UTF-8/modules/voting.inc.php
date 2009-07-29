@@ -22,6 +22,7 @@
 $l_voting = array();
 $l_voting['no_perms'] = 'You do not have permission to use this option.';
 $l_voting['delete_alert'] = 'Usuń aktualną ankietę/grupę.\\n Jesteś pewien?';
+$l_voting['result_delete_alert'] = 'Delete the current voting results.\\nAre you sure?'; // TRANSLATE
 $l_voting['nothing_to_delete'] = 'Brak obiektu do usunięcia!';
 $l_voting['nothing_to_save'] = 'Brak obiektu do zapamiętania';
 $l_voting['we_filename_notValid'] = 'Nieprawidłowa nazwa użytkownika!\\nDopuszczalne są znaki alfanumeryczne, wielkie i małe litery oraz znak podkreślenia, myślnik, kropka i spacja (a-z, A-Z, 0-9, _, -, ., )';
@@ -108,6 +109,7 @@ $l_voting["csv_export"] = "Plik '%s' został zapisany.";
 
 $l_voting['fallback'] = 'Metoda Fallback IP';
 $l_voting['save_user_agent'] = 'Zapisz/porównaj dane programu użytkownika';
+$l_voting["save_changed_voting"] = "Voting has been changed.\\nDo you want to save your changes?"; // TRANSLATE
 $l_voting['voting_log'] = 'Protokołuj głosowanie w logu';
 $l_voting['forbid_ip'] = 'Zablokuj kolejny adres IP';
 $l_voting['until'] = 'do';
@@ -134,4 +136,6 @@ $l_voting['log_fallback'] = 'Fallback'; // TRANSLATE
 
 $l_voting['new_ip_add'] = 'Proszę podać nowy adres IP!';
 $l_voting['not_valid_ip'] = 'Nieprawidłowy adres IP';
+$l_voting['not_active'] = 'The entered datum is in the past!'; // TRANSLATE
+
 ?>

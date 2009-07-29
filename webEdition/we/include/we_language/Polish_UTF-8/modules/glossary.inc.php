@@ -27,7 +27,8 @@
 
 $l_glossary = array();
 
-$l_glossary['glossary_check_not_avalaible'] = "The glossary check is not available for this Content Type.";
+$l_glossary["save_changed_glossary"] = "This entry has been changed.\\nDo you want to save your changes?";
+$l_glossary['glossary_check_not_avalaible'] = "The glossary check is not available for this Content Type."; // TRANSLATE
 
 $l_glossary['please_choose'] = "please choose"; // TRANSLATE
 $l_glossary['not_identified_words'] = "The following words could not be identified:"; // TRANSLATE
@@ -48,8 +49,8 @@ $l_glossary['hint_exception'] = "The following entries will be excluded during t
 $l_glossary['show_extended_linkoptions'] = "show advanced link options"; // TRANSLATE
 $l_glossary['hide_extended_linkoptions'] = "hide advanced link options"; // TRANSLATE
 
-$l_glossary['check_successful'] = "The glossary check was succesful."; // TRANSLATE
-$l_glossary['check_successful_and_publish'] = "The glossary check was succesful.<br />The document could now be published."; // TRANSLATE
+$l_glossary['check_successful'] = "The glossary check was succesful.";
+$l_glossary['check_successful_and_publish'] = "The glossary check was succesful.<br />The document could now be published.";
 $l_glossary['glossary_check'] = "Glossary check"; // TRANSLATE
 $l_glossary['checking'] = "processing the glossary check..."; // TRANSLATE
 $l_glossary['download'] = "Loading dictionaries..."; // TRANSLATE
@@ -71,7 +72,7 @@ $l_glossary['publish_when_saved'] = "Activate after saving"; // TRANSLATE
 $l_glossary['menu_new'] = 'New'; // TRANSLATE
 $l_glossary['menu_save'] = 'Save'; // TRANSLATE
 $l_glossary['menu_delete'] = 'Delete'; // TRANSLATE
-$l_glossary['menu_exit'] = 'Exit'; // TRANSLATE
+$l_glossary['menu_exit'] = 'Exit';
 $l_glossary['menu_info'] = 'Info'; // TRANSLATE
 $l_glossary['menu_options'] = 'Options'; // TRANSLATE
 $l_glossary['menu_settings'] = 'Preferences'; // TRANSLATE

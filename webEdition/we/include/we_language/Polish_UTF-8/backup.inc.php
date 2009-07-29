@@ -171,6 +171,17 @@ $l_backup["import_configuration_data"]="Przywróć konfigurację";
 $l_backup["import_export_data"] = "Przywróć dane do eksportu";
 $l_backup["export_export_data"] = "Zabezpiecz dane do eksportu";
 
+$l_backup["export_versions_data"] = "Save version data"; // TRANSLATE
+$l_backup["export_versions_binarys_data"] = "Save Version-Binary-Files"; // TRANSLATE
+$l_backup["import_versions_data"] = "Restore version data"; // TRANSLATE
+$l_backup["import_versions_binarys_data"] = "Restore Version-Binary-Files"; // TRANSLATE
+
+$l_backup["export_versions_dep"] = "You have selected the option 'Save version data'. The version data need the documents, objects and version-binary-files and because of that, 'Save documents and templates', 'Save object and classes' and 'Save Version-Binary-Files' has been automatically selected."; // TRANSLATE
+$l_backup["import_versions_dep"] = "You have selected the option 'Restore version data'. The version data need the documents data, object data an version-binary-files and because of that, 'Restore documents and templates', 'Restore objects and classes and 'Restore Version-Binary-Files' has been automatically selected."; // TRANSLATE
+
+$l_backup["export_versions_binarys_dep"] = "You have selected the option 'Save Version-Binary-Files'. The Version-Binary-Files need the documents, objects and version data and because of that, 'Save documents and templates', 'Save object and classes' and 'Save version data' has been automatically selected."; // TRANSLATE
+$l_backup["import_versions_binarys_dep"] = "You have selected the option 'Restore Version-Binary-Files'. The Version-Binary-Files need the documents data, object data an version data and because of that, 'Restore documents and templates', 'Restore objects and classes and 'Restore version data' has been automatically selected."; // TRANSLATE
+
 $l_backup["del_backup_confirm"] = "Czy chcesz usunąć wybrany plik kopi bezpieczeństwa?";
 $l_backup["name_notok"] = "Nazwa pliku jest nieprawidłowa!";
 $l_backup["backup_deleted"] = "Plik kopii zapasowej %s został usunięty";
@@ -190,6 +201,10 @@ $l_backup['schedule_info'] = 'Działania sterowane czasem z modułu Harmonogram'
 $l_backup['settings_info'] = 'Ustawienia programu webEdition.';
 $l_backup['temporary_info'] = 'Nie opublikowane jeszcze dokumenty i obiekty ewentualnie jeszcze nie opublikowane zmiany';
 $l_backup['export_info'] = 'Dane z modułu eksportu';
+$l_backup['glossary_info'] = 'Data from the glossary.'; // TRANSLATE
+$l_backup['versions_info'] = 'Data from Versioning.'; // TRANSLATE
+$l_backup['versions_binarys_info'] = 'This option could take some time and memory because the folder /webEdition/we/versions/ could be very large. It is recommended to save this folder manually.'; // TRANSLATE
+
 
 $l_backup["import_voting_data"] = "Przywróć dane Voting";
 $l_backup["export_voting_data"] = "Zabezpiecz dane Voting";
@@ -223,9 +238,18 @@ $l_backup['spellchecker_info'] = 'Data for spellchecker: settings, general and p
 $l_backup["import_banner_data"] = "Przywróć dane Bannerów";
 $l_backup["export_banner_data"] = "Zabezpiecz dane Bannerów";
 
+$l_backup["export_glossary_data"] = "Save glossary data"; // TRANSLATE
+$l_backup["import_glossary_data"] = "Restore glossary data"; // TRANSLATE
+
 $l_backup["protect"] = "Protect backup file"; // TRANSLATE
-$l_backup["protect_txt"] = "The backup file will be protected from unprivileged download with additional php code. This protection requieres additional disk space for import!"; // TRANSLATE
+$l_backup["protect_txt"] = "The backup file will be protected from unprivileged download with additional php code. This protection requieres additional disk space for import!";
 
 $l_backup["recover_backup_unsaved_changes"] = "Some open files have unsaved changes. Please check these before you continue."; // TRANSLATE
 $l_backup["file_not_readable"] = "The backup file is not readable. Please check the file permissions."; // TRANSLATE
+
+$l_backup["tools_import_desc"] = "Here you can restore webEdition tools data. Please select the desired tools from the list."; // TRANSLATE
+$l_backup["tools_export_desc"] = "Here you can save webEdition tools data. Please select the desired tools from the list."; // TRANSLATE
+
+$l_backup['ftp_hint'] = "Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!"; // TRANSLATE
+
 ?>
