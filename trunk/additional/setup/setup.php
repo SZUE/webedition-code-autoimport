@@ -48,6 +48,13 @@ include_once './webEdition/lib/we/core/autoload.php';
 if(isset($_REQUEST["debug"]) && !isset($_SESSION["debug"])) $_SESSION["debug"] = true;
 if(isset($_REQUEST["debugoff"]) && isset($_SESSION["debug"])) unset($_SESSION["debug"]);
 
+//remove slashes if magic_quotes_gpc is on
+if(get_magic_quotes_gpc()) {
+	foreach($_REQUEST as $k=>$v) {
+		if(!is_array($v))$_REQUEST[$k] = stripslashes($v);
+	}
+}
+
 // html code for additional html header tags: 
 $header = "";
 // boolean for error state (for disabling the next button if any errors occured)
@@ -344,31 +351,42 @@ function step_databasecheck() {
 		$output .= tpl_error("Please enter the host name of your MySQL database server.");
 		$errors = true;
 	} else if(isset($_REQUEST["db_host"])) {
-		$_SESSION["db_host"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_host"]))));
+		//$_SESSION["db_host"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_host"]))));
+		$_SESSION["db_host"] = $_REQUEST["db_host"];
 	}
 	if((!isset($_SESSION["db_database"]) || empty($_SESSION["db_database"])) && (!isset($_REQUEST["db_database"]) || empty($_REQUEST["db_database"]))) {
 		$output .= tpl_error("Please enter the database name to be used by webEdition. This database does not need to exist yet, if the specified database user has the permission to create databases.");
 		$errors = true;
 	} else if(isset($_REQUEST["db_database"])) {
-		$_SESSION["db_database"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_database"]))));
+		//$_SESSION["db_database"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_database"]))));
+		$_SESSION["db_database"] = $_REQUEST["db_database"];
 	}
+	/*
 	if(isset($_REQUEST["db_tableprefix"])) {
 		$_SESSION["db_tableprefix"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_tableprefix"]))));
 	} else if(!isset($_SESSION["db_tableprefix"])) {
 		$_SESSION["db_tableprefix"] = '';
 	}
+	*/
+	if(isset($_REQUEST["db_tableprefix"]) && preg_match('/^[a-z0-9_-]{0,}$/i', $_REQUEST["db_tableprefix"])) {
+		$_SESSION["db_tableprefix"] = $_REQUEST["db_tableprefix"];
+ 	} else if(!isset($_SESSION["db_tableprefix"])) {
+ 		$_SESSION["db_tableprefix"] = '';
+ 	}
 	
 	if((!isset($_SESSION["db_username"]) || empty($_SESSION["db_username"])) && (!isset($_REQUEST["db_username"]) || empty($_REQUEST["db_username"]))) {
 		$output .= tpl_error("Please enter the username for accessing your MySQL database server.");
 		$errors = true;
 	} else if(isset($_REQUEST["db_username"])) {
-		$_SESSION["db_username"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_username"]))));
+		//$_SESSION["db_username"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_username"]))));
+		$_SESSION["db_username"] = $_REQUEST["db_username"];
 	}
 	if(!isset($_SESSION["db_password"]) && !isset($_REQUEST["db_password"])) {
 		$output .= tpl_error("Please enter the password for accessing your MySQL database server.");
 		$errors = true;
 	} else if(isset($_REQUEST["db_password"])) {
-		$_SESSION["db_password"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_password"]))));
+		//$_SESSION["db_password"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["db_password"]))));
+		$_SESSION["db_password"] = $_REQUEST["db_password"];
 		if(empty($_REQUEST["db_password"])) {
 			$output .= tpl_warning("No password entered. Are you sure?");
 		}
@@ -529,17 +547,17 @@ function step_summary() {
 	}
 	// webEdition settings:
 	$output .= '<fieldset><legend>webEdition:</legend><table class="small" style="width:100%; table-layout:fixed;">';
-	$output .= '<tr><td style="width:100px;">Language:</td><td>'.(isset($_SESSION["we_language_translation"]) ? $_SESSION["we_language_translation"] : ' - ').'</td></tr>';
-	$output .= '<tr><td>webEdition Code:</td><td>'.(isset($_SESSION["we_language"]) ? $_SESSION["we_language"] : ' - ').'</td></tr>';
+	$output .= '<tr><td style="width:100px;">Language:</td><td>'.(isset($_SESSION["we_language_translation"]) ? htmlentities($_SESSION["we_language_translation"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>webEdition Code:</td><td>'.(isset($_SESSION["we_language"]) ? htmlentities($_SESSION["we_language"]) : ' - ').'</td></tr>';
 	$output .= '</table></fieldset><br />';
 	
 	// database settings:
 	$output .= '<fieldset><legend>Database server:</legend><table class="small" style="width:100%; table-layout:fixed;">';
-	$output .= '<tr><td style="width:100px;">Server name:</td><td>'.(isset($_SESSION["db_host"]) ? $_SESSION["db_host"] : ' - ').'</td></tr>';
-	$output .= '<tr><td>Database name:</td><td>'.(isset($_SESSION["db_database"]) ? $_SESSION["db_database"] : ' - ').'</td></tr>';
-	$output .= '<tr><td>Table prefix:</td><td>'.(isset($_SESSION["db_tableprefix"]) ? $_SESSION["db_tableprefix"] : ' - ').'</td></tr>';
-	$output .= '<tr><td>Username:</td><td>'.(isset($_SESSION["db_username"]) ? $_SESSION["db_username"] : ' - ').'</td></tr>';
-	$output .= '<tr><td>Password:</td><td>'.(isset($_SESSION["db_password"]) ? $_SESSION["db_password"] : ' - ').'</td></tr>';
+	$output .= '<tr><td style="width:100px;">Server name:</td><td>'.(isset($_SESSION["db_host"]) ? htmlentities($_SESSION["db_host"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>Database name:</td><td>'.(isset($_SESSION["db_database"]) ? htmlentities($_SESSION["db_database"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>Table prefix:</td><td>'.(isset($_SESSION["db_tableprefix"]) ? htmlentities($_SESSION["db_tableprefix"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>Username:</td><td>'.(isset($_SESSION["db_username"]) ? htmlentities($_SESSION["db_username"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>Password:</td><td>'.(isset($_SESSION["db_password"]) ? htmlentities($_SESSION["db_password"]) : ' - ').'</td></tr>';
 	$output .= '</table></fieldset>';
 	if(
 		!isset($_SESSION["db_host"]) || 
@@ -630,7 +648,7 @@ function step_installation() {
 	
 	//$output .= "<li><i>under construction ...</i></li>";
 	// set the language of the default user 
-	if(!@mysql_query('UPDATE '.$_SESSION["db_tableprefix"].'tblPrefs set Language = "'.$_SESSION["we_language"].'" where userID="1"',$conn)) {
+	if(!@mysql_query('UPDATE '.$_SESSION["db_tableprefix"].'tblPrefs set Language = "'.mysql_real_escape_string($_SESSION["we_language"]).'" where userID="1"',$conn)) {
 		$output .= tpl_warning("Could not change the default user's language settings. Message from server: ".mysql_error());
 		print("<pre>".$dbquery."</pre><hr />");
 		$queryErrors = true;
@@ -647,16 +665,23 @@ function step_installation() {
 		$we_config = file_get_contents('./webEdition/we/include/conf/we_conf.inc.php');
 		//$we_config = str_replace('define("WE_LANGUAGE","English_UTF-8");','define("WE_LANGUAGE","'.$_SESSION["we_language"].'");',$we_config);
 		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\s*)+("\);)/i','$1'.$_SESSION["we_language"].'$3',$we_config);
-		str_replace('define("TBL_PREFIX","");','define("TBL_PREFIX","'.$_SESSION["db_tableprefix"].'"',$we_config);
+		//str_replace('define("TBL_PREFIX","");','define("TBL_PREFIX","'.$_SESSION["db_tableprefix"].'"',$we_config);
 		if(strstr($_SESSION["we_language"],"UTF-8")) {
-			$we_config = preg_replace('/(define\("DB_CHARSET",")(\w*)("\);)/i','$1UTF-8$3',$we_config);
+			//$we_config = preg_replace('/(define\("DB_CHARSET",")(\w*)("\);)/i','$1UTF-8$3',$we_config);
+			$we_config = preg_replace('/(define\("DB_CHARSET",")(\w*)("\);)/i','${1}UTF-8${3}',$we_config);
 		}
-		$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','$1'.$_SESSION["db_host"].'$3',$we_config);
-		$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','$1'.$_SESSION["db_database"].'$3',$we_config);
-		$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','$1'.$_SESSION["db_username"].'$3',$we_config);
-		$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','$1'.$_SESSION["db_password"].'$3',$we_config);
-		$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','$1'.$_SESSION["db_tableprefix"].'$3',$we_config);
-		$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','$1'.$_SESSION["we_language"].'$5',$we_config);
+		//$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','$1'.$_SESSION["db_host"].'$3',$we_config);
+		//$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','$1'.$_SESSION["db_database"].'$3',$we_config);
+		//$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','$1'.$_SESSION["db_username"].'$3',$we_config);
+		//$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','$1'.$_SESSION["db_password"].'$3',$we_config);
+		//$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','$1'.$_SESSION["db_tableprefix"].'$3',$we_config);
+		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','$1'.$_SESSION["we_language"].'$5',$we_config);
+		$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_host"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_database"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_username"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_password"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_tableprefix"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_language"]).'${5}',$we_config);
 		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_language"]);
 		$output .= tpl_ok("Saved database configuration.");
 		if(!file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config)) {
