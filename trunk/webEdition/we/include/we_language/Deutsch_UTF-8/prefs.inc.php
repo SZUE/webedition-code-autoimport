@@ -212,6 +212,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs["locale_add"] = "Sprache hinzufügen";
 	$l_prefs['cannot_delete_default_language'] = "Die Standardsprache kann nicht gelöscht werden.";
 	$l_prefs["language_already_exists"] = "Diese Sprache wurde bereits angelegt.";
+	$l_prefs["language_country_missing"] = "Bitte wählen Sie auch ein Land aus";
 	$l_prefs["add_dictionary_question"] = "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?";
 
 

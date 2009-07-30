@@ -209,6 +209,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["locale_add"] = "Voeg taal toe";
 	$l_prefs['cannot_delete_default_language'] = "De standaard taal kon niet verwijderd worden.";
 	$l_prefs["language_already_exists"] = "Deze taal bestaat al";
+	$l_prefs["language_country_missing"] = "Please select also a country"; // TRANSLATE
 	$l_prefs["add_dictionary_question"] = "Wilt u het woordenboek voor deze taal uploaden?";
 
 /*****************************************************************************
