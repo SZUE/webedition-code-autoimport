@@ -3274,27 +3274,31 @@ function build_dialog($selected_setting = "ui") {
 		if(found == true) {
 			" . we_message_reporting::getShowMessageCall($GLOBALS['l_prefs']["language_already_exists"], WE_MESSAGE_ERROR) . "
 		} else {
+			if (CountryValue == \"\") {
+				" . we_message_reporting::getShowMessageCall($GLOBALS['l_prefs']["language_country_missing"], WE_MESSAGE_ERROR) . "
+			} else {
 
-			var option = new Option(LocaleText, LocaleValue, false, false);
-			document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = option
+				var option = new Option(LocaleText, LocaleValue, false, false);
+				document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = option
 
-			if(document.getElementById('locale_temp_locales').options.length == 1) {
-				setDefaultLocale(LocaleValue);
-			}
+				if(document.getElementById('locale_temp_locales').options.length == 1) {
+					setDefaultLocale(LocaleValue);
+				}
 ";
 
 				if(defined("SPELLCHECKER")) {
 					$preJs .= "
 
-			// W�rterbuch hinzuf�gen
-			if(confirm('{$GLOBALS['l_prefs']["add_dictionary_question"]}')) {
-				top.opener.top.we_cmd('edit_spellchecker_ifthere');
-			}
+				// W�rterbuch hinzuf�gen
+				if(confirm('{$GLOBALS['l_prefs']["add_dictionary_question"]}')) {
+					top.opener.top.we_cmd('edit_spellchecker_ifthere');
+				}
 ";
 				}
 
 				$preJs .= "
 
+			}
 		}
 		resetLocales();
 

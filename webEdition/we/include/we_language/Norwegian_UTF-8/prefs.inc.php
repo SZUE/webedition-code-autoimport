@@ -211,6 +211,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["locale_add"] = "Add language";
 	$l_prefs['cannot_delete_default_language'] = "The default language cannot be deleted.";
 	$l_prefs["language_already_exists"] = "This language already exists";
+	$l_prefs["language_country_missing"] = "Please select also a country"; // TRANSLATE
 	$l_prefs["add_dictionary_question"] = "Would you like to upload the dictionary for this language?";
 
 /*****************************************************************************

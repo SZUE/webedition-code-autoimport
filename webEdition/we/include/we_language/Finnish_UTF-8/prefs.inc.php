@@ -209,6 +209,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["locale_add"] = "Lisää kieli";
 	$l_prefs['cannot_delete_default_language'] = "Oletuskieltä ei voi poistaa.";
 	$l_prefs["language_already_exists"] = "Tämä kieli on jo olemassa";
+	$l_prefs["language_country_missing"] = "Please select also a country"; // TRANSLATE
 	$l_prefs["add_dictionary_question"] = "Haluatko päivittää sanaston tälle kielelle?";
 
 /*****************************************************************************
