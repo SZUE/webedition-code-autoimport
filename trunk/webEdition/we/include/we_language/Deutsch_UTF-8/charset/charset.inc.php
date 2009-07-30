@@ -39,7 +39,7 @@ $_charset["error"]["no_charset_available"] = "--Ohne--";
 
 $_charset["titles"]["west_european"]     = "Westeurop&auml;isch";		// ISO-8859-1
 $_charset["titles"]["central_european"]  = "Mitteleurop&auml;isch";	// ISO-8859-2
-$_charset["titles"]["south_european"]    = "S&uml;deurop&amul;isch";		// ISO-8859-3
+$_charset["titles"]["south_european"]    = "S&uuml;deurop&auml;isch";		// ISO-8859-3
 $_charset["titles"]["north_european"]    = "Nordeurop&auml;isch";		// ISO-8859-4
 $_charset["titles"]["cyrillic"]          = "Kyrillisch";			// ISO-8859-5
 $_charset["titles"]["arabic"]            = "Arabisch";			// ISO-8859-6
