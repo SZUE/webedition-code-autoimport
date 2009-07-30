@@ -167,7 +167,7 @@ function remember_value($settingvalue, $settingname) {
 				break;
 
 			case '$_REQUEST["Interlace"]':
-				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Interlace = '" . abs . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
+				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Interlace = '" . abs($settingvalue) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
 				break;
 
