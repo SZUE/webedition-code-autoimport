@@ -36,6 +36,8 @@ class we_search_listview extends listviewBase {
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
 	var $ClassName = "we_search_listview";
 	var $customerFilterType = 'off';
+	var $languages = ""; //string of Languages, separated by ,
+	
 	/**
 	 * we_search_listview()
 	 * @desc    constructor of class
@@ -55,10 +57,26 @@ class we_search_listview extends listviewBase {
 	 *
 	 */
 
-	function we_search_listview($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off'){
+	function we_search_listview($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off',$languages=''){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 		$this->customerFilterType = $customerFilterType;
+		
+		$this->languages = $languages;
+		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		if ($this->languages !=''){
+			$where_lang = ' AND (';
+			$langArray = makeArrayFromCSV($this->languages);
+			$where_lang .= INDEX_TABLE.".Language = '".$langArray[0]."' ";
+			for ($i = 1; $i < count($langArray); $i++) {
+    			$where_lang .= "OR ".INDEX_TABLE.".Language = '".$langArray[$i]."' ";
+			}
+
+			$where_lang .= ' ) ';
+		} else {
+			$where_lang = '';
+		}
+
 
 		// correct order
 		$orderArr = array();
@@ -195,10 +213,10 @@ class we_search_listview extends listviewBase {
 		$this->anz_all = $this->DB_WE->num_rows();
 
 		if($this->order == "random()"){
-			$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path, RAND() as RANDOM FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $weDocumentCustomerFilter_tail ORDER BY RANDOM".(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
+			$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path, RAND() as RANDOM FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY RANDOM".(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
 
 		}else{
-			$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path, $ranking as ranking FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $weDocumentCustomerFilter_tail ORDER BY ranking".($this->order ? (",".$this->order) : "").(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
+			$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path, $ranking as ranking FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking".($this->order ? (",".$this->order) : "").(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
 
 		}
 		$this->DB_WE->query($q);

@@ -40,8 +40,9 @@ class we_listview_object extends listviewBase {
 	var $customerFilterType = 'off';
 	var $customers = "";
 	var $we_predefinedSQL = "";
+	var $languages = ""; //string of Languages, separated by ,
 
-	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL=""){
+	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="",$languages=''){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
@@ -50,6 +51,8 @@ class we_listview_object extends listviewBase {
 		$this->classID   = $classID;
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
+		$this->languages = $languages;
+		
 		$this->seeMode   = $seeMode;	//	edit objects in seeMode
 		$this->searchable = $searchable;
 		$this->docID = $docID;
@@ -57,8 +60,23 @@ class we_listview_object extends listviewBase {
 		$this->customerArray = array();
 
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+
 
 		$_obxTable = OBJECT_X_TABLE.$this->classID;
+		
+		if ($this->languages !=''){
+			$where_lang = ' AND (';
+			$langArray = makeArrayFromCSV($this->languages);
+			$where_lang .= $_obxTable.".OF_Language = '".$langArray[0]."' ";
+			for ($i = 1; $i < count($langArray); $i++) {
+    			$where_lang .= "OR ".$_obxTable.".OF_Language = '".$langArray[$i]."' ";
+			}
+
+			$where_lang .= ' ) ';
+		} else {
+			$where_lang = '';
+		}
 
 		if($this->desc && (!eregi(".+ desc$",$this->order))){
 			$this->order .= " DESC";
@@ -159,7 +177,7 @@ class we_listview_object extends listviewBase {
 							}
 						}
 					}
-					$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE ".($this->searchable ? " ". $_obxTable . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . $_obxTable.".OF_ID != 0 ".($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$ws_tail.$weDocumentCustomerFilter_tail.$webUserID_tail.$_idTail.$sqlParts['groupBy'].$sqlParts["order"].(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+					$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE ".($this->searchable ? " ". $_obxTable . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . $_obxTable.".OF_ID != 0 ".$where_lang.($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$ws_tail.$weDocumentCustomerFilter_tail.$webUserID_tail.$_idTail.$sqlParts['groupBy'].$sqlParts["order"].(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
 				}
 
 				$this->DB_WE->query($q);
@@ -284,7 +302,7 @@ class we_listview_object extends listviewBase {
 			}
 		}
 
-		$f = OBJECT_X_TABLE . $classID . ".ID as ID," . OBJECT_X_TABLE . $classID . ".OF_Templates as OF_Templates," . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . ($this->customers ? OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," : "");
+		$f = OBJECT_X_TABLE . $classID . ".ID as ID," . OBJECT_X_TABLE . $classID . ".OF_Templates as OF_Templates," . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . ($this->customers ? OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," : "") . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language,";
 		foreach($matrix as $n=>$p){
 			$n2 = $n;
 			if(substr($n,0,10) =="we_object_"){

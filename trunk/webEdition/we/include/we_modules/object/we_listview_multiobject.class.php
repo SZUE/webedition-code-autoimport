@@ -41,6 +41,7 @@ class we_listview_multiobject extends listviewBase {
 	var $searchable = true;
 	var $Record = array();
 	var $customerFilterType = 'off';
+	var $languages = ""; //string of Languages, separated by ,
 
 	/**
 	 * we_listview_multiobject()
@@ -65,7 +66,7 @@ class we_listview_multiobject extends listviewBase {
 	 * @param	string        $categoryids
 	 *
 	 */
-	function we_listview_multiobject($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off',$docID=0){
+	function we_listview_multiobject($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off',$docID=0,$languages=''){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 		if(isset($GLOBALS['we_lv_array']) && sizeof($GLOBALS['we_lv_array']) > 1) {
@@ -100,12 +101,33 @@ class we_listview_multiobject extends listviewBase {
 
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
+		$this->languages = $languages;
+		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+
+		$_obxTable = OBJECT_X_TABLE.$this->classID;
+		
+		if ($this->languages !=''){
+			$where_lang = ' AND (';
+			$langArray = makeArrayFromCSV($this->languages);
+			$where_lang .= $_obxTable.".OF_Language = '".$langArray[0]."' ";
+			for ($i = 1; $i < count($langArray); $i++) {
+    			$where_lang .= "OR ".$_obxTable.".OF_Language = '".$langArray[$i]."' ";
+			}
+
+			$where_lang .= ' ) ';
+		} else {
+			$where_lang = '';
+		}
+		
 		$this->seeMode   = $seeMode;	//	edit objects in seeMode
 		$this->searchable = $searchable;
 		$this->docID = $docID; //Bug #3720
 		$this->Record    = array();
 
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+
+
 
 		if($this->desc && (!eregi(".+ desc$",$this->order))){
 			$this->order .= " DESC";
@@ -179,7 +201,9 @@ class we_listview_multiobject extends listviewBase {
 
 			}
 
-			$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE  ". OBJECT_X_TABLE . $this->classID . ".OF_ID IN (".implode(",", $this->objects).") AND ".($this->searchable ? " ". OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . OBJECT_X_TABLE . $this->classID.".OF_ID != 0 ".($join ? " AND ($join) " : "").$cat_tail.$weDocumentCustomerFilter_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$sqlParts['groupBy'].$sqlParts["order"].(($rows > 0 && $this->order != "") ? (" limit ".$this->start.",".$this->rows) : "");
+			$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE  ". OBJECT_X_TABLE . $this->classID . ".OF_ID IN (".implode(",", $this->objects).") AND ".($this->searchable ? " ". OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail.$where_lang." AND " . OBJECT_X_TABLE . $this->classID.".OF_ID != 0 ".($join ? " AND ($join) " : "").$cat_tail.$weDocumentCustomerFilter_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$sqlParts['groupBy'].$sqlParts["order"].(($rows > 0 && $this->order != "") ? (" limit ".$this->start.",".$this->rows) : "");
+			
+			
 			$this->DB_WE->query($q);
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
@@ -293,7 +317,7 @@ class we_listview_multiobject extends listviewBase {
 			}
 		}
 
-		$f = OBJECT_X_TABLE . $classID . ".ID as ID," . OBJECT_X_TABLE . $classID . ".OF_Templates as OF_Templates," . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text,";
+		$f = OBJECT_X_TABLE . $classID . ".ID as ID," . OBJECT_X_TABLE . $classID . ".OF_Templates as OF_Templates," . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text,".OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language,";
 		foreach($matrix as $n=>$p){
 			$n2 = $n;
 			if(substr($n,0,10) =="we_object_"){

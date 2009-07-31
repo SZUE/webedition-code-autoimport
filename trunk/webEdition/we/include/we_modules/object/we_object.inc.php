@@ -163,6 +163,7 @@ class we_object extends we_document
 			$q .= " OF_IsSearchable tinyint(1) NOT NULL default '1',";
 			$q .= " OF_Charset VARCHAR(64) NOT NULL,";
 			$q .= " OF_WebUserID BIGINT NOT NULL,";
+			$q .= " OF_Language VARCHAR(5) default 'NULL',";
 			// Letzter Eintrag darf nicht mit einem Leerzeichen enden, letztes Zeichen mu� ein , sein!!!
 
 			$indexe = "";
