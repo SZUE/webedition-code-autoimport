@@ -39,6 +39,7 @@ class we_listview extends listviewBase {
  	var $customerFilterType = 'off'; // shall we control customer-filter?
 	var $subfolders = true; // regard subfolders
 	var $customers = "";
+	var $languages = ""; //string of Languages, separated by ,
 
 	/**
 	 * we_listview()
@@ -65,7 +66,7 @@ class we_listview extends listviewBase {
 	 * @param string $categoryids
 	 * @return we_listview
 	 */
-	function we_listview($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $docType="", $cats="", $catOr=false, $casesensitive=false, $workspaceID="0", $contentTypes="", $cols="",$searchable=true,$condition="",$calendar="",$datefield="",$date="",$weekstart="",$categoryids='', $customerFilterType='off', $subfolders=true, $customers="", $id=""){
+	function we_listview($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $docType="", $cats="", $catOr=false, $casesensitive=false, $workspaceID="0", $contentTypes="", $cols="",$searchable=true,$condition="",$calendar="",$datefield="",$date="",$weekstart="",$categoryids='', $customerFilterType='off', $subfolders=true, $customers="", $id="",$languages=''){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
@@ -89,6 +90,22 @@ class we_listview extends listviewBase {
 		if($this->condition!=""){
 			$condition_sql=$this->makeConditionSql($this->condition);			
 			if(!empty($condition_sql)) $cond_where .= " AND (".$condition_sql.")";
+		}
+		
+		$this->languages = $languages;
+		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		
+		if ($this->languages !=''){
+			$where_lang = ' AND (';
+			$langArray = makeArrayFromCSV($this->languages);
+			$where_lang .= FILE_TABLE.".Language = '".$langArray[0]."' ";
+			for ($i = 1; $i < count($langArray); $i++) {
+    			$where_lang .= "OR ".FILE_TABLE.".Language = '".$langArray[$i]."' ";
+			}
+
+			$where_lang .= ' ) ';
+		} else {
+			$where_lang = '';
 		}
 
 		if(eregi(" desc",$this->order)){
@@ -219,9 +236,9 @@ class we_listview extends listviewBase {
 			}
 
 			if($this->order == "random()"){
-				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM".(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
+				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM".(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
 			}else{
-				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, $ranking as ranking $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring.(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
+				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, $ranking as ranking $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring.(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
 			}
 		}else{
 
@@ -242,10 +259,10 @@ class we_listview extends listviewBase {
 				}
 			}
 			if($this->order == "random()"){
-				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM".(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
+				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM".(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
 
 			}else{
-				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring.(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
+				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring.(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
 
 			}
 		}
@@ -280,15 +297,15 @@ class we_listview extends listviewBase {
 		}
 		if($this->search){
 			if($this->order == "random()"){
-				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM";
+				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM";
 			}else{
-				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, $ranking as ranking FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring;
+				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, $ranking as ranking FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring;
 			}
 		}else{
 			if($this->order == "random()"){
-				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM";
+				$q = "SELECT " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where."GROUP BY ID ORDER BY RANDOM";
 			}else{
-				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring;
+				$q = "SELECT distinct " . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE ".($this->searchable ? " ". FILE_TABLE . ".IsSearchable=1" : "1")." $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . substr(FILE_TABLE, strlen(TBL_PREFIX)) . "'".(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . ".DocType='".$dt."'") : "").$sql_tail.$calendar_where." ".$orderstring;
 			}
 		}
 
