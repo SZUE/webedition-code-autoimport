@@ -43,7 +43,14 @@ class weTagData_linkAttribute extends weTagDataAttribute
 		return '
 					<table class="attribute">
 					<tr>
-						<td class="attributeName defaultfont"><a href="http://' . $this->Value . '" target="TagRef">'.$GLOBALS['l_taged']['tagreference_linktext'].'</a></td>
+						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' . we_htmlElement::htmlSpan(
+				array(
+					
+						'name' => $this->Name, 
+						'id' => $this->getIdName(), 
+						'value' => $this->Value, 
+						'class' => 'defaultfont'
+				),'<a href="http://' . $this->Value . '" target="TagRef">'.$GLOBALS['l_taged']['tagreference_linktext'].'</a>') . '</td>
 					</tr>
 					</table>';
 	}
