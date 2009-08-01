@@ -245,7 +245,7 @@ class we_folder extends we_root
 				if($this->ID==$pid){
 					return true;
 				}
-				$pid = f("SELECT ParentID FROM ".FILE_TABLE."  WHERE ID='".abs($pid)."'", "ParentID",$db);
+				$pid = f("SELECT ParentID FROM ".$this->Table."  WHERE ID='".abs($pid)."'", "ParentID",$db);
 			}
 		}
 		return false;
@@ -283,10 +283,10 @@ class we_folder extends we_root
 
 		// Change language of published documents first
 		$query = "UPDATE " . mysql_real_escape_string($this->Table) . " SET Language = '" . mysql_real_escape_string($this->Language) . "' WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		
 		if(!$DB_WE->query($query)) {
 			return false;
 		}
-
 		// Change Language of unpublished documents
 		$query = "SELECT ID FROM " . mysql_real_escape_string($this->Table) . " WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
 
@@ -320,6 +320,24 @@ class we_folder extends we_root
 
 			}
 		}
+		
+		// Sprache auch bei den einzelnen Objekten aendern
+		if($this->Table == OBJECT_FILES_TABLE){
+			// Klasse feststellen
+			$ClassPathArray = explode('/',$this->Path);
+			$ClassPath = '/'.$ClassPathArray[1];
+			$q = "SELECT ID FROM ".OBJECT_TABLE." WHERE Path = '$ClassPath' ";
+			$cid = $pid = f($q, "ID",$DB_WE);
+			$_obxTable = OBJECT_X_TABLE.$cid;
+			
+			$query = "UPDATE " . mysql_real_escape_string($_obxTable) . " SET OF_Language = '" . mysql_real_escape_string($this->Language) . "' WHERE OF_Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' ";
+			
+			if(!$DB_WE->query($query)) {
+				return false;
+			}
+			
+		}
+		
 		return true;
 
 	}
