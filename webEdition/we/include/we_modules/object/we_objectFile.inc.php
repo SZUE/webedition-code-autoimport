@@ -1877,15 +1877,20 @@ class we_objectFile extends we_document
 		foreach($ws2 as $w){
 			array_push($ws,$w);
 		}
-
 		$ws = array_unique($ws);
+		$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".mysql_real_escape_string($this->Category)."',".$this->TableID.",'".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Text)."','".mysql_real_escape_string($this->Language)."')";
+
+		if (empty($ws)) {
+			if($this->DB_WE->query($q)) return true;
+		}
+
 		foreach($ws as $w){
 			$wsPath = id_to_path($w,FILE_TABLE,$this->DB_WE);
 			if( (strlen($wsPath) > 0) || ($w == "0") ){
 				if($w == "0"){
 					$wsPath = "/";
 				}
-				if(!$this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".mysql_real_escape_string($this->Category)."',".$this->TableID.",'".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Text)."','".mysql_real_escape_string($this->Language)."')")) return false;
+				if(!$this->DB_WE->query($q)) return false;
 			}
 		}
 		return true;
