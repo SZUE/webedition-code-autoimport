@@ -255,6 +255,8 @@ $l_shop['shipping']['prices_are_net'] = 'Los precios son netos';
 $l_shop['shipping']['insert_packaging'] = 'Tasas existentes';
 $l_shop['shipping']['payment_provider'] = 'Proveedor de pagos';
 $l_shop['shipping']['revenue_view'] = 'Artículos- / Ingresos';
+$l_shop['shipping']['name'] = 'Name'; // TRANSLATE
+$l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Campos clientes<br />(Módulo Cliente)";
 $l_shop['preferences']['orderCustomerFields'] = 'Campos clientes<br />(orden)';

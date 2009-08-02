@@ -300,7 +300,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 	array_push(
 		$parts,
 		array(
-			'headline' => 'Name',
+			'headline' => $l_shop['shipping']['name'],
 			'space' => 150,
 			'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . hidden('weShippingId', $weShipping->id),
 			'noline' => 1
@@ -310,7 +310,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 	array_push(
 		$parts,
 		array(
-			'headline' => 'L�nder',
+			'headline' => $l_shop['shipping']['countries'],
 			'space' => 150,
 			'html' => we_class::htmlTextArea('weShipping_countries', 4, 20, implode("\n", $weShipping->countries)),
 			'noline' => 1

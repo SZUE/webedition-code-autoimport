@@ -256,6 +256,8 @@ $l_shop['shipping']['prices_are_net'] = 'Prices are net';
 $l_shop['shipping']['insert_packaging'] = 'Existing rates';
 $l_shop['shipping']['payment_provider'] = 'Payment Provider';
 $l_shop['shipping']['revenue_view'] = 'Articles- / Revenues';
+$l_shop['shipping']['name'] = 'Name'; // TRANSLATE
+$l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Customer fields<br />(Customer Module)";
 $l_shop['preferences']['orderCustomerFields'] = 'Customer fields<br />(Order)';

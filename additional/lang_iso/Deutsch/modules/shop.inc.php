@@ -256,6 +256,8 @@ $l_shop['shipping']['prices_are_net'] = 'Preise sind Nettoangaben';
 $l_shop['shipping']['insert_packaging'] = 'Eingetragene Versandkosten';
 $l_shop['shipping']['payment_provider'] = 'Payment Provider';
 $l_shop['shipping']['revenue_view'] = 'Artikel- / Umsatzübersicht';
+$l_shop['shipping']['name'] = 'Name';
+$l_shop['shipping']['countries'] = 'Länder';
 
 
 $l_shop['preferences']['customerFields'] = "Kundenfelder<br />(Kundenverwaltung)";

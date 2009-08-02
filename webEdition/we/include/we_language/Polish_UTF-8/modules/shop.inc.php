@@ -255,6 +255,8 @@ $l_shop['shipping']['prices_are_net'] = 'Podane ceny są cenami netto';
 $l_shop['shipping']['insert_packaging'] = 'Dodane koszty wysyłki';
 $l_shop['shipping']['payment_provider'] = 'Realizator płatności';
 $l_shop['shipping']['revenue_view'] = 'Przegląd artykułu / obrotów';
+$l_shop['shipping']['name'] = 'Name'; // TRANSLATE
+$l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Pola klienta<br />(Zarządzanie klientami)";
 $l_shop['preferences']['orderCustomerFields'] = 'Pola klienta<br />(Zamówienie)';
