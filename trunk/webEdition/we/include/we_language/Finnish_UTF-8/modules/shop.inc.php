@@ -255,6 +255,8 @@ $l_shop['shipping']['prices_are_net'] = 'Hinnat ovat nettohintoja';
 $l_shop['shipping']['insert_packaging'] = 'Voimassaolevat käsittely- ja lähetyshinnat';
 $l_shop['shipping']['payment_provider'] = 'Maksupalvelun tarjoaja';
 $l_shop['shipping']['revenue_view'] = 'Tuotenimikkeet- / Tulot';
+$l_shop['shipping']['name'] = 'Name'; // TRANSLATE
+$l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Asiakaskentät<br />(Asiakashallintamoduuli)";
 $l_shop['preferences']['orderCustomerFields'] = 'Asiakaskentät<br />(Tilaus)';

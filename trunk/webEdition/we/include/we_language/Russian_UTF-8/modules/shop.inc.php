@@ -256,6 +256,8 @@ $l_shop['shipping']['prices_are_net'] = 'Цены нетто';
 $l_shop['shipping']['insert_packaging'] = 'Расходы на доставку';
 $l_shop['shipping']['payment_provider'] = 'Payment Provider'; // TRANSLATE
 $l_shop['shipping']['revenue_view'] = 'Товары /выручка';
+$l_shop['shipping']['name'] = 'Name'; // TRANSLATE
+$l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Поля клиентов<br />(модуль управления клиентами)";
 $l_shop['preferences']['orderCustomerFields'] = 'Поля клиентов<br />(заказ)';

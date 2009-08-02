@@ -255,6 +255,8 @@ $l_shop['shipping']['prices_are_net'] = 'Prijzen zijn netto';
 $l_shop['shipping']['insert_packaging'] = 'Bestaande waardes';
 $l_shop['shipping']['payment_provider'] = 'Betalings aanbieder';
 $l_shop['shipping']['revenue_view'] = 'Artikelen- / Inkomsten';
+$l_shop['shipping']['name'] = 'Name'; // TRANSLATE
+$l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Klant velden<br />(Klanten Module)";
 $l_shop['preferences']['orderCustomerFields'] = 'Klant velden<br />(Bestelling)';

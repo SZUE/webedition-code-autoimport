@@ -413,8 +413,8 @@ function hidden($name, $value, $attribs = null)
 		foreach ($attribs as $key => $val) {
 			$attribute .= $key . '="' . $val . '" ';
 		}
-	}
-	return '<input type="hidden" value="' . $value . '" name="' . $name . '" ' . $attribute . '>';
+	} if(defined('XHTML_DEFAULT') &&  XHTML_DEFAULT) {$tagende = '/>';} else {$tagende = '>';}
+	return '<input type="hidden" value="' . $value . '" name="' . $name . '" ' . $attribute . $tagende;
 }
 
 function we_getDayPos($format)
