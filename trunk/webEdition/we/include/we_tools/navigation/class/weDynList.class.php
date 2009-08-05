@@ -165,7 +165,7 @@ class weDynList
 				$_select, 
 				$classid, 
 				id_to_path($dirid, OBJECT_FILES_TABLE), 
-				$categories, 
+				makeArrayFromCSV($categories), 
 				'AND', 
 				array(), 
 				$_order, 
