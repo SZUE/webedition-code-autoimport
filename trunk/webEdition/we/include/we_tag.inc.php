@@ -703,7 +703,12 @@ function we_isFieldNotEmpty($attribs)
 				return false;
 			}
 		
-		case "object" :
+		case "object" : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
+			$objectdb= new DB_WE();
+			$objectid= f("SELECT ID FROM ".OBJECT_TABLE. " WHERE Text='".$match."'", 'ID', $objectdb); 
+			$objectdb->close();
+			return $GLOBALS["lv"]->f("we_object_".$objectid);
+		case "checkbox" :
 		case "binary" :
 		case "img" :
 		case "flashmovie" :
