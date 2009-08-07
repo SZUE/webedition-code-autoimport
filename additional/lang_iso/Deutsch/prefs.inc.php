@@ -346,6 +346,8 @@ $l_prefs["tab_versions"] = 'Versionierung';
 
 	$l_prefs["db_connect"] = "Art der Datenbank-<br>verbindungen";
 	$l_prefs["db_set_charset"] = "Verbindungszeichensatz";
+	$l_prefs["db_set_charset_information"] = "Der Verbindungszeichensatz wird für die Kommunikation zwischen webEdition und Datenbank genutzt.<br/>Ist kein Wert gesetzt, so wird der Standard-Verbindungszeichensatz von PHP verwendet.<br/>Im Ideal sollten webEdition Spache (z.B. Deutsch_UTF-8), Kollation der Datenbank (z.B. utf8_general_ci), Verbindungszeichensatz (z.B. utf8) und die Einstellung externer Tools wie phpMyAdmin (z.B. utf-8) übereinstimmen, damit mit diesen externen Tools ein Editieren von Datenbankwerten möglich ist.";
+	$l_prefs["db_set_charset_warning"] = "Der Verbindungszeichensatz sollte nur bei einer frischen Installation von webEdition (ohne Daten in der Datenbank) ein- bzw. umgestellt werden, da sonst alle nicht ASCII-Zeichen falsch interpretiert und gegebenenfalls zerstört werden.";
 
 	/**
 	 * HTTP AUTHENTICATION

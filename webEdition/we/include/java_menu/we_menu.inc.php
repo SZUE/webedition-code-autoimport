@@ -518,7 +518,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 	$userHasAllModules = true;
 	$moduleList = "schedpro|";
 
-	if (sizeof($_we_installed_modules) > 0) {
+	if (sizeof($_we_active_modules) > 0) {
 
 		foreach ($buyableModules as $m) {
 
@@ -535,7 +535,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 				$we_menu[$menNr]["perm"] = isset($m["perm"]) ? $m["perm"] : "";
 				$we_menu[$menNr]["enabled"] = "1";
 				$z++;
-			} else if(in_array($m["name"],$_we_installed_modules)) {
+			} else if(in_array($m["name"],$_we_active_modules)) {
 				$moduleList .= $m["name"] . "|" ;
 			}
 			if (!weModuleInfo::isModuleInstalled($m["name"])) {
@@ -820,7 +820,7 @@ if(we_hasPerm("ADMINISTRATOR")) {
 
 	$userHasAllModules = true;
 
-	if (sizeof($_we_installed_modules) > 0) {
+	if (sizeof($_we_active_modules) > 0) {
 
 		foreach ($buyableModules as $m) {
 
