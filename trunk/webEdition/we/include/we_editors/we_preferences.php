@@ -4504,6 +4504,9 @@ function setColorChooserDisabled(id, disabled) {
 				array_push($_settings, array("headline" => $l_prefs["db_connect"], "html" => $_db_connect->getHtmlCode(), "space" => 200, "noline" => 1));
 				
 				// Build db charset select box
+				$html_db_charset_information = htmlAlertAttentionBox($l_prefs["db_set_charset_information"], 2, 240, false)."<br/>";
+				$html_db_charset_warning = htmlAlertAttentionBox($l_prefs["db_set_charset_warning"], 1, 240, false)."<br/>";
+
 				$_db_set_charset = new we_htmlSelect(array("name" => "db_set_charset", "class" => "weSelect"));
 				
 				$GLOBALS['DB_WE']->query("SHOW CHARACTER SET");
@@ -4522,7 +4525,7 @@ function setColorChooserDisabled(id, disabled) {
 				}
 				
 				
-				array_push($_settings, array("headline" => $l_prefs['db_set_charset'], "html" => $_db_set_charset->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => $l_prefs['db_set_charset'], "html" => $html_db_charset_information.$_db_set_charset->getHtmlCode().$html_db_charset_warning, "space" => 200));
 
 				$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
 				

@@ -346,6 +346,9 @@ $l_prefs["tab_versions"] = 'Versioning';
 
 	$l_prefs["db_connect"] = "Type of database<br>connections";
 	$l_prefs["db_set_charset"] = "Connection charset";
+	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.";
+	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed.";
+
 	
 	/**
 	 * HTTP AUTHENTICATION
