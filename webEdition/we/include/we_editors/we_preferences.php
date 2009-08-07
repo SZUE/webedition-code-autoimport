@@ -2250,6 +2250,13 @@ function save_all_values() {
 		we_writeLanguageConfig($_REQUEST['locale_default'], explode(",", $_REQUEST['locale_locales']));
 
 	}
+	/*************************************************************************
+	 * DEFAULT_CHARSET
+	 *************************************************************************/
+
+	$_update_prefs = remember_value(isset($_REQUEST["default_charset"]) ? $_REQUEST["default_charset"] : null, '$_REQUEST["default_charset"]') || $_update_prefs;
+
+
 
 	/*************************************************************************
 	 * FILE EXTENSIONS
@@ -2664,8 +2671,8 @@ function build_dialog($selected_setting = "ui") {
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 			if (strpos($GLOBALS['WE_LANGUAGE'],'UTF') !== false){$charset="UTF-8";} else {$charset="ISO-8859-1";}
 			$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-			$_defaultCharset = htmlTextInput('DefaultCharset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
-			$_defaultCharsetChooser = htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false,"onChange=\"document.forms[0].elements['DefaultCharset'].value=this.options[this.selectedIndex].value;document.forms[0].elements['DefaultCharset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont",false);
+			$_defaultCharset = htmlTextInput('default_charset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
+			$_defaultCharsetChooser = htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false,"onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont",false);
 				$default_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
 				array_push($_settings, array(
