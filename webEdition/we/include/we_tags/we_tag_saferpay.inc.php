@@ -46,6 +46,10 @@ function we_tag_saferpay($attribs) {
 	$shopname = we_getTagAttribute("shopname",$attribs);
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = we_getTagAttribute("pricename",$attribs);
+	$shipping = we_getTagAttribute("shipping",$attribs);
+	$shippingIsNet = we_getTagAttribute("shippingIsNet",$attribs);
+	$shippingVatRate = we_getTagAttribute("shippingVatRate",$attribs);
+	$languagecode = we_getTagAttribute("languagecode",$attribs);
 
 	$onsuccess = we_getTagAttribute("onsuccess",$attribs);
 	$onfailure = we_getTagAttribute("onfailure",$attribs);
@@ -106,8 +110,12 @@ function we_tag_saferpay($attribs) {
         $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'payment_details'");
 		$DB_WE->next_record();
 		$formField = explode("|",$DB_WE->f("strFelder"));
-		if( isset($formField[8])){  // determine the language
-			$langID = $formField[8];
+		if($languagecode==''){
+			if( isset($formField[8])){  // determine the language
+				$langID = $formField[8];
+			}
+		} else {
+			$langID = $languagecode;
 		}
 		if( isset($formField[9])){  // determine the Notify-Email 
 			$accountID = $formField[9];
@@ -197,11 +205,21 @@ function we_tag_saferpay($attribs) {
 		    } else {
 			 $customer = false;
 		    }
-			$cartField[WE_SHOP_SHIPPING] = array(
-				'costs'   => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
-				'isNet'   => $weShippingControl->isNet,
-				'vatRate' => $weShippingControl->vatRate
-			    );   
+			if ($shipping==''){ 
+				$cartField[WE_SHOP_SHIPPING] = array(
+					'costs'   => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
+					'isNet'   => $weShippingControl->isNet,
+					'vatRate' => $weShippingControl->vatRate
+			    );
+			} else { 
+				$cartField[WE_SHOP_SHIPPING] = array(
+					'costs'   => $shipping,
+					'isNet'   => $shippingIsNet,
+					'vatRate' => $shippingVatRate
+			    );
+				
+			}
+
 			        
 			        $shippingCosts = $cartField[WE_SHOP_SHIPPING]['costs'];
 		        	$isNet = $cartField[WE_SHOP_SHIPPING]['isNet'];
