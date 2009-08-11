@@ -48,8 +48,12 @@ function we_tag_paypal($attribs) {
 	$shopname = we_getTagAttribute("shopname",$attribs);
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = we_getTagAttribute("pricename",$attribs);
-
-
+	
+	$countrycode = we_getTagAttribute("countrycode",$attribs);
+	$languagecode = we_getTagAttribute("languagecode",$attribs);
+	$shipping = we_getTagAttribute("shipping",$attribs);
+	$shippingIsNet = we_getTagAttribute("shippingIsNet",$attribs);
+	$shippingVatRate = we_getTagAttribute("shippingVatRate",$attribs);
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
@@ -202,14 +206,14 @@ switch ($_GET['action']) {
       $p->add_field('cancel_return', $this_script.'?action=cancel');
       $p->add_field('notify_url', $this_script.'?action=ipn');
       $p->add_field('currency_code', $currency);
-      $p->add_field('lc', $lc);
+      if ($languagecode=='') {$p->add_field('lc', $lc);} else {$p->add_field('lc', $languagecode);}
            // get user details
       $p->add_field('first_name', $sendForename);
       $p->add_field('last_name', $sendSurname);
       $p->add_field('address1', $sendStreet);
       $p->add_field('zip', $sendZip);
       $p->add_field('city', $sendCity);
-      $p->add_field('country', $lc);
+      if ($countrycode=='') {$p->add_field('country', $lc);} else {$p->add_field('country', $countrycode);}
       
       if (isset($sSendEmail) && we_check_email($sSendEmail)) {
 		$p->add_field('email', $sSendEmail);
@@ -265,12 +269,21 @@ switch ($_GET['action']) {
 		    } else {
 			 $customer = false;
 		    }
-			$cartField[WE_SHOP_SHIPPING] = array(
-				'costs'   => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
-				'isNet'   => $weShippingControl->isNet,
-				'vatRate' => $weShippingControl->vatRate
+			
+			if ($shipping==''){ 
+				$cartField[WE_SHOP_SHIPPING] = array(
+					'costs'   => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
+					'isNet'   => $weShippingControl->isNet,
+					'vatRate' => $weShippingControl->vatRate
 			    );
-
+			} else { 
+				$cartField[WE_SHOP_SHIPPING] = array(
+					'costs'   => $shipping,
+					'isNet'   => $shippingIsNet,
+					'vatRate' => $shippingVatRate
+			    );
+				
+			}
 			        $shippingCosts = $cartField[WE_SHOP_SHIPPING]['costs'];
 		        	$isNet = $cartField[WE_SHOP_SHIPPING]['isNet'];
 		        	$vatRate = $cartField[WE_SHOP_SHIPPING]['vatRate'];

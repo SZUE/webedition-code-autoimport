@@ -44,6 +44,10 @@ function we_tag_writeShopData($attribs) {
 	$shopname = we_getTagAttribute("shopname",$attribs);
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = we_getTagAttribute("pricename",$attribs);
+	$shipping = we_getTagAttribute("shipping",$attribs);
+	$shippingIsNet = we_getTagAttribute("shippingIsNet",$attribs);
+	$shippingVatRate = we_getTagAttribute("shippingVatRate",$attribs);
+
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
@@ -161,11 +165,20 @@ emosBasketPageArray[$articleCount][7]='NULL';
 			require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 			$weShippingControl = weShippingControl::getShippingControl();
 
+			if ($shipping==''){ 
 			$cartField[WE_SHOP_SHIPPING] = array(
 				'costs'   => $weShippingControl->getShippingCostByOrderValue($totPrice, $_customer),
 				'isNet'   => $weShippingControl->isNet,
 				'vatRate' => $weShippingControl->vatRate
 			);
+			} else { 
+				$cartField[WE_SHOP_SHIPPING] = array(
+					'costs'   => $shipping,
+					'isNet'   => $shippingIsNet,
+					'vatRate' => $shippingVatRate
+			    );
+				
+			}
 
 			if ($useVat) {
 				$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used

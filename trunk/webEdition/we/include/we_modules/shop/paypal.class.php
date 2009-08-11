@@ -143,7 +143,7 @@ class paypal_class {
 		}
 		
 		echo "<center><br/><br/>".$l_paypal['redirect_man']."<br/><br/>\n";
-		echo "<input type=\"submit\"â value=\"PayPal\"></center>\n";
+		echo "<input type=\"submit\" value=\"PayPal\"></center>\n";
 		
 		echo "</form>\n";
 		echo "</body></html>\n";
