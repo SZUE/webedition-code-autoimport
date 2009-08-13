@@ -311,6 +311,6 @@ $l_shop['edit_article_variants'] = 'Artikel Varianten bearbeiten';
 $l_shop['new_entry'] = 'Neuer Eintrag';
 
 $l_paypal['head_title']    = 'Verarbeitung der Zahlung';
-$l_paypal['redirect_auto'] = 'Bitte warten Sie, Ihre Zahlung wird verabeitet und Sie werden zur PayPal weitergeleitet.';
-$l_paypal['redirect_man']  = 'Wenn Sie innerhalb von 5 Sekunden nicht automatisch weitergeleitet werden klicken Sie auf den Button "PayPal"';
+$l_paypal['redirect_auto'] = 'Bitte warten Sie, Ihre Zahlung wird verarbeitet und Sie werden zu PayPal weitergeleitet.';
+$l_paypal['redirect_man']  = 'Wenn Sie innerhalb von 5 Sekunden nicht automatisch weitergeleitet werden, klicken Sie auf den Button "PayPal"';
 ?>
