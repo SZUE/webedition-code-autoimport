@@ -44,7 +44,6 @@ function we_tag_paypal($attribs) {
 		$foo = attributFehltError($attribs,"shopname","PayPal");
 	if($foo)
 		return $foo;
-
 	$shopname = we_getTagAttribute("shopname",$attribs);
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = we_getTagAttribute("pricename",$attribs);
@@ -54,6 +53,10 @@ function we_tag_paypal($attribs) {
 	$shipping = we_getTagAttribute("shipping",$attribs);
 	$shippingIsNet = we_getTagAttribute("shippingIsNet",$attribs);
 	$shippingVatRate = we_getTagAttribute("shippingVatRate",$attribs);
+	$messageRedirectAuto = we_getTagAttribute("messageRedirectAuto",$attribs);
+
+	$messageRedirectMan = we_getTagAttribute("messageRedirectMan",$attribs);
+		$formTagOnly = we_getTagAttribute("formTagOnly",$attribs,'false', true);
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
@@ -314,7 +317,7 @@ switch ($_GET['action']) {
 
 	// exit;
  
-    	$p->submit_paypal_post(); // submit the fields to paypal
+    	$p->submit_paypal_post($formTagOnly,$messageRedirectAuto,$messageRedirectMan); // submit the fields to paypal
       break;
 
    case 'success':      // Order was successful...

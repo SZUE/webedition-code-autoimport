@@ -13,4 +13,8 @@ $GLOBALS['weTagWizard']['attribute']['id836_languagecode'] = new weTagData_textA
 $GLOBALS['weTagWizard']['attribute']['id837_shipping'] = new weTagData_textAttribute('837', 'shipping', false, '');
 $GLOBALS['weTagWizard']['attribute']['id838_shippingIsNet'] = new weTagData_textAttribute('838', 'shippingIsNet', false, '');
 $GLOBALS['weTagWizard']['attribute']['id839_shippingVatRate'] = new weTagData_textAttribute('839', 'shippingVatRate', false, '');
+$GLOBALS['weTagWizard']['attribute']['id840_formTagOnly'] = new weTagData_selectAttribute('840', 'formTagOnly', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id841_messageRedirectAuto'] = new weTagData_textAttribute('841', 'messageRedirectAuto', false, '');
+$GLOBALS['weTagWizard']['attribute']['id842_messageRedirectMan'] = new weTagData_textAttribute('842', 'messageRedirectMan', false, '');
+
 ?>
