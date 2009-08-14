@@ -247,7 +247,7 @@ class weMetaData {
 		}
 
 		if(array_key_exists(strtolower($this->filetype),$this->dataTypeMapping)) {
-			$this->datatype = $this->dataTypeMapping[$this->filetype];
+			$this->datatype = $this->dataTypeMapping[strtolower($this->filetype)];
 			$this->_valid = true;
 		} else {
 			$this->_valid = false;
