@@ -82,7 +82,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 		break;
 	case "newDocType":
 		if ($_REQUEST["we_cmd"][1]) {
-			$we_doc->DocType=$_REQUEST["we_cmd"][1];
+			$we_doc->DocType= urldecode($_REQUEST["we_cmd"][1]);
 			$we_doc->we_save();
 		}
 		break;
@@ -236,7 +236,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 	function we_cmd() {
 		var args = "";
-		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURIComponent(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 		switch (arguments[0]) {
 			case "openDocselector":
 			case "openDirselector":
@@ -281,7 +281,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 						if (top.opener.top.header) {
 							top.opener.top.header.location.reload();
 						}
-						self.location = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]="+escape(name);
+						self.location = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]="+encodeURIComponent(name);
 					}
 				}
 				break;
@@ -340,8 +340,8 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 ?>
 </head>
 
-<body class="weDialogBody" style="overflow:hidden;" onUnload="doUnload()" onload="self.focus();">
-	<form name="we_form" method="post" onsubmit="return false">
+<body class="weDialogBody" style="overflow:hidden;" onUnload="doUnload()" onLoad="self.focus();">
+	<form name="we_form" method="post" onSubmit="return false">
 	<?php $we_doc->pHiddenTrans(); ?>
 		<center>
 <?php
