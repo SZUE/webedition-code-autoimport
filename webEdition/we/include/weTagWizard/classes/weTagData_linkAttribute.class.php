@@ -48,7 +48,7 @@ class weTagData_linkAttribute extends weTagDataAttribute
 					
 						'name' => $this->Name, 
 						'id' => $this->getIdName(), 
-						'value' => $this->Value, 
+						'value' => '', 
 						'class' => 'defaultfont'
 				),'<a href="http://' . $this->Value . '" target="TagRef">'.$GLOBALS['l_taged']['tagreference_linktext'].'</a>') . '</td>
 					</tr>
