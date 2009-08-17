@@ -43,7 +43,7 @@
 			$data = weFile::load($chunk_file);
 			$this->xmlBrowser = new weXMLParser();
 			$this->xmlBrowser->parse($data);
-			unset($data);
+			unset($data); 
 			$this->xmlBrowser->normalize();
 
 			if($this->xmlBrowser->getChildren(0,$node_set)){
@@ -400,6 +400,8 @@
 								else if($noddata=="we_thumbnail"){
 									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/we_thumbnail.class.php");
 									$object=new $noddata();
+								}
+								else if($noddata=="we_class_folder"){ //Bug 3857 sonderbehandlung hinzugefügt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
 								}
 								else{
 									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$noddata.".inc.php");
