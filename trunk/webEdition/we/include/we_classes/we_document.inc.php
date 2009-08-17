@@ -1066,7 +1066,7 @@ class we_document extends we_root {
 					    if($only == "content"){
 					        return we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars);
 					    } else {
-					        return $link[$only];
+					        return isset($link[$only]) ? $link[$only] : "";  // #3636
 					    }
 					} else {
 
