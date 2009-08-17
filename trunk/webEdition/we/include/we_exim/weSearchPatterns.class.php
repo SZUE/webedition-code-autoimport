@@ -47,13 +47,16 @@
 				'addDelNewsletterEmail' => array('id','mailid'),
 				'css' => 'id',
 				'a' => 'id',
-				'form' => array('id','onsuccess','onerror','onmailerror'),
+				'form' => array('id','onsuccess','onerror','onmailerror','onrecipienterror'),
 				'icon' => 'id',
-				'img' => 'id',
+				'img' => array('id','startid','parentid'),
+				'flashmovie' => array('startid','parentid'),
+				'quicktime' => array('startid','parentid'),
 				'js' => 'id',
 				'linkToSeeMode' => 'id',
 				'url' => 'id',
 				'ifSelf' => 'id',
+				'object' => 'triggerid',
 				'listview' => array('id','triggerid','workspaceID'),
 				'sessionLogout' => 'id',
 				'field' => 'id'
@@ -85,6 +88,7 @@
 			// search for classes			
 			$_pats = array(
 				'form' => 'classid',
+				'object' => 'classid',
 				'listview' => 'classid'
 			);					
 			foreach($_pats as $tag=>$attribut) {
@@ -109,7 +113,8 @@
 		
 			// handle templates			
 			$_tmpl_pats = array(
-				'ifTemplate' => 'id'
+				'ifTemplate' => 'id',
+				'ifNotTemplate' => 'id'
 			);
 			
 			foreach($_tmpl_pats as $tag=>$attribut) {
