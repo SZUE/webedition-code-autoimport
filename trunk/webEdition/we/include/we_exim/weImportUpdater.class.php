@@ -357,6 +357,7 @@
 				if(defined('OBJECT_TABLE')) {
 					$this->updateSource($this->Patterns->obj_patterns["id"],$source,'ID',OBJECT_FILES_TABLE);
 					$this->updateSource($this->Patterns->doc_patterns["path"],$source,'Path',OBJECT_FILES_TABLE);
+					$this->updateSource($this->Patterns->class_patterns,$source,'ID',OBJECT_TABLE);
 				}
 				
 				$this->updateSource($this->Patterns->navigation_patterns,$source,'ID',NAVIGATION_TABLE);

@@ -65,25 +65,25 @@
 			foreach($_pats as $tag=>$attribut) {
 				if(is_array($attribut)) {
 					foreach($attribut as $attrib) {
-						$this->doc_patterns["id"][] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attrib.$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+						$this->doc_patterns["id"][] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attrib.$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 					}
 				} else {
-					$this->doc_patterns["id"][] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attribut.$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+					$this->doc_patterns["id"][] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attribut.$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 				}
 			}
 			
-			$this->doc_patterns["id"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."=".$spacer."[\"|\'|\\\\]+document[\"|\']+".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
-			$this->doc_patterns["id"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]+".$spacer."type".$spacer."=".$spacer."[\"|\'|\\\\]+document[\"|\']+".$spacer."[^>]*)>/sie";
+			$this->doc_patterns["id"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."\=".$spacer."[\"|\'|\\\\]+document[\"|\']+".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->doc_patterns["id"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]+".$spacer."type".$spacer."\=".$spacer."[\"|\'|\\\\]+document[\"|\']+".$spacer."[^>]*)>/sie";
 			
-			$this->doc_patterns["id"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)[^>]*>/sie";
+			$this->doc_patterns["id"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)[^>]*>/sie";
 						
 			// serach for documents after path
-			$this->doc_patterns["path"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+path".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->doc_patterns["path"][] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+path".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			
 			//search for objects
-			$this->obj_patterns["id"][] ="/<(we:object".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
-			$this->obj_patterns["id"][] ="/<(we:form".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."=".$spacer."[\"|\'|\\\\]+object[\"|\']+".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";			
-			$this->obj_patterns["id"][] ="/<(we:form".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."=".$spacer."[\"|\'|\\\\]+object[\"|\']+".$spacer."[^>]*)>/sie";
+			$this->obj_patterns["id"][] ="/<(we:object".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->obj_patterns["id"][] ="/<(we:form".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."\=".$spacer."[\"|\'|\\\\]+object[\"|\']+".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";			
+			$this->obj_patterns["id"][] ="/<(we:form".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."\=".$spacer."[\"|\'|\\\\]+object[\"|\']+".$spacer."[^>]*)>/sie";
 
 			// search for classes			
 			$_pats = array(
@@ -92,7 +92,7 @@
 				'listview' => 'classid'
 			);					
 			foreach($_pats as $tag=>$attribut) {
-				$this->class_patterns[] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attribut.$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+				$this->class_patterns[] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attribut.$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			}
 			
 			// search for external files
@@ -104,12 +104,12 @@
 				'td' => 'background'
 			);					
 			foreach($_pats as $tag=>$attribut) {
-				$this->ext_patterns[] ="/<(".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$tag.$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";				
+				$this->ext_patterns[] ="/<(".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$tag.$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";				
 			}
 			
 			// search wysiwyg textareas
-			$this->wysiwyg_patterns["doc"][] = "/([src|href]+".$spacer."=".$spacer."\"document:)([0-9]+)(\")/sie";
-			$this->wysiwyg_patterns["obj"][] = "/(href".$spacer."=".$spacer."\"object:)([0-9]+)(\")/sie";
+			$this->wysiwyg_patterns["doc"][] = "/([src|href]+".$spacer."\=".$spacer."\"document:)([0-9]+)(\")/sie";
+			$this->wysiwyg_patterns["obj"][] = "/(href".$spacer."\=".$spacer."\"object:)([0-9]+)(\")/sie";
 		
 			// handle templates			
 			$_tmpl_pats = array(
@@ -118,12 +118,12 @@
 			);
 			
 			foreach($_tmpl_pats as $tag=>$attribut) {
-				$this->tmpl_patterns[] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attribut.$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+				$this->tmpl_patterns[] = "/<(we:".$tag.$spacer."[^>]*[\040|\n|\t|\r]+".$attribut.$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			}
 			
-			$this->tmpl_patterns[] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."=".$spacer."[\"|\'|\\\\]+template[\"|\']+".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
-			$this->tmpl_patterns[] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]+".$spacer."type".$spacer."=".$spacer."[\"|\'|\\\\]+template[\"|\']+".$spacer."[^>]*)>/sie";
-			$this->tmpl_patterns[] = "/<(we:field".$spacer."[^>]*[\040|\n|\t|\r]+tid".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->tmpl_patterns[] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+type".$spacer."\=".$spacer."[\"|\'|\\\\]+template[\"|\']+".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->tmpl_patterns[] ="/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]+".$spacer."type".$spacer."\=".$spacer."[\"|\'|\\\\]+template[\"|\']+".$spacer."[^>]*)>/sie";
+			$this->tmpl_patterns[] = "/<(we:field".$spacer."[^>]*[\040|\n|\t|\r]+tid".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			
 			// search for navigation
 			$this->navigation_patterns[] = "/<(we:navigation[^>]*[\040|\n|\t|\r]+id".$spacer."[\=\"|\=\'|\=\\\\|\=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
@@ -134,7 +134,7 @@
 			$this->thumbnail_patterns[] = "/<(we:field[^>]*[\040|\n|\t|\r]+thumbnail".$spacer."[\=\"|\=\'|\=\\\\|\=]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			
 			// some special patterns
-			$this->special_patterns[] = "/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
+			$this->special_patterns[] = "/<(we:include".$spacer."[^>]*[\040|\n|\t|\r]+id".$spacer."\=".$spacer."[\"|\'|\\\\]*".$spacer.")([^\'\">\040? \\\]*)(".$spacer."[^>]*)>/sie";
 			
 		}
 		
