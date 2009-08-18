@@ -42,7 +42,7 @@
 
 			$data = weFile::load($chunk_file);
 			$this->xmlBrowser = new weXMLParser();
-			$this->xmlBrowser->parse($data);
+			$this->xmlBrowser->parse($data,$_SESSION['weXMLimportCharset']);
 			unset($data); 
 			$this->xmlBrowser->normalize();
 
@@ -518,7 +518,7 @@
 			}
 
 			$encoding = XML_Parser::getEncoding('',$head);
-
+$_SESSION['weXMLimportCharset']=$encoding;
 			$header=weXMLExIm::getHeader($encoding);
 			$footer=weXMLExIm::getFooter();
 
