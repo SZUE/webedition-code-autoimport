@@ -4511,8 +4511,8 @@ function setColorChooserDisabled(id, disabled) {
 				array_push($_settings, array("headline" => $l_prefs["db_connect"], "html" => $_db_connect->getHtmlCode(), "space" => 200, "noline" => 1));
 				
 				// Build db charset select box
-				$html_db_charset_information = htmlAlertAttentionBox($l_prefs["db_set_charset_information"], 2, 240, false)."<br/>";
-				$html_db_charset_warning = htmlAlertAttentionBox($l_prefs["db_set_charset_warning"], 1, 240, false)."<br/>";
+				$html_db_charset_information = htmlAlertAttentionBox($l_prefs["db_set_charset_information"], 2, 240, false,40)."<br/>";
+				$html_db_charset_warning = htmlAlertAttentionBox($l_prefs["db_set_charset_warning"], 1, 240, false,40)."<br/>";
 
 				$_db_set_charset = new we_htmlSelect(array("name" => "db_set_charset", "class" => "weSelect"));
 				
