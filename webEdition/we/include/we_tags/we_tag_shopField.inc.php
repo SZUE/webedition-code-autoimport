@@ -118,6 +118,7 @@ function we_tag_shopField($attribs,$content) {
 		break;
 		
 		case 'radio':
+			if ($checked && $savedVal==''){$atts['checked'] = 'checked';} 
 			return we_getInputRadioField($fieldname,$savedVal,$value,$atts);
 		break;
 		
