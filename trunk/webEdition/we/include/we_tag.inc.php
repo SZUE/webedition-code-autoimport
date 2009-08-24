@@ -4486,7 +4486,10 @@ function we_tag_ifWorkspace($attribs, $content)
 	
 	if (!$required_path) {
 		$required_path = id_to_path($id);
+	}
 	
+	if (!$required_path) {
+		return false;
 	}
 	
 	if (substr($required_path, 0, 1) != '/') {
