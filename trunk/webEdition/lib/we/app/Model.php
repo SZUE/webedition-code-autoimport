@@ -146,7 +146,7 @@ class we_app_Model extends we_core_AbstractModel
 	 * @param string $path
 	 * @return void
 	 */
-	public public function setPath($path = '')
+	public function setPath($path = '')
 	{
 		if ($path === '') {
 			$path = we_util_Path::id2Path($this->ParentID, $this->_table) . '/' . $this->Text;
