@@ -263,7 +263,7 @@ class we_net_rpc_JsonRpc {
 		}
 
 		/* See if the result of the function was actually an error */
-		if (get_class($output) == "we_net_rpc_JsonRpcError") {
+		if (is_object($output) && get_class($output) == "we_net_rpc_JsonRpcError") {
 			/* Yup, it was.  Return the error */
 			return $error->getError();
 			/* never gets here */
