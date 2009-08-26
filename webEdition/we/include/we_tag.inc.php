@@ -3539,7 +3539,7 @@ function we_tag_ifDoctype($attribs, $content)
 	}
 	$matchArr = makeArrayFromCSV($match);
 	
-	if (isset($doctype)) {
+	if (isset($doctype) && $doctype != false) {
 		foreach ($matchArr as $match) {
 			$matchID = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='".mysql_real_escape_string($match)."'", "ID", new DB_WE());
 			if ($matchID == $doctype) {
