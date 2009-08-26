@@ -82,6 +82,10 @@
 			"handle_navigation"=>0,
 			"navigation_path"=>0,
 			"handle_thumbnails"=>0,
+			
+			"change_encoding"=>0,
+			"xml_encoding"=>'',
+			"target_encoding"=>'',
 			"rebuild"=>1
 		);
 

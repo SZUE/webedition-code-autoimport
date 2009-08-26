@@ -159,21 +159,34 @@
 				return false;
 
 		}
-
-		function needCdata($classname,$prop){
-			$encoded=array(
-				"we_element"=>array("Dat"),
-				"we_object"=>array("DefaultText","DefaultValues"),
-				"weTableItem"=>array("Text","BText"),
-				"we_category"=>array("Catfields")
+		function noEncodingChange($classname,$prop,$wedocClass,$objectname){
+		    
+			$nocoding=array(
+				"we_object"=>array("DefaultText","DefaultValues","SerializedArray"),
+				"weBinary"=>array("Data")
 			);
-		
-			if($classname=="weTableItem") return true;
-			if(isset($encoded[$classname]))
-				return in_array($prop,$encoded[$classname]);
-			else
+			$nocoding2=array(
+				"we_element"=>array("Dat","dat")
+			);
+			$nocodingDocClasses=array(
+				"we_imageDocument",
+				"we_flashDocument",
+				"we_quicktimeDocument"
+				
+			);
+			if(isset($nocoding[$classname])) {
+				return in_array($prop,$nocoding[$classname]);
+			} else { 
+				if( in_array($wedocClass[0],$nocodingDocClasses) && $objectname=="data") {
+					if(isset($nocoding2[$classname])) {
+						return in_array($prop,$nocoding2[$classname]);
+					} return false;
+				} else 
 				return false;
+			}
 		}
+
+		
 
 		function needSerialize(&$object,$classname,$prop){
 			if($prop=="schedArr") return true;

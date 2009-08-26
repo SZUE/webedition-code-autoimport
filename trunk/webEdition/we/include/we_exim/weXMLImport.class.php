@@ -21,7 +21,7 @@
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExIm.class.php');
 
 	class weXMLImport extends weXMLExIm{
-
+		var $nodehierarchy=array();
 
 		function weXMLImport() {
 			$this->RefTable = new RefTable();
@@ -42,7 +42,8 @@
 
 			$data = weFile::load($chunk_file);
 			$this->xmlBrowser = new weXMLParser();
-			$this->xmlBrowser->parse($data,$_SESSION['weXMLimportCharset']);
+//			$this->xmlBrowser->parse($data,$_SESSION['weXMLimportCharset']); Original , änderung für Zeichensatz Wandlung
+			$this->xmlBrowser->parse($data,$this->options['xml_encoding']);
 			unset($data); 
 			$this->xmlBrowser->normalize();
 
@@ -50,6 +51,7 @@
 
 				foreach ($node_set as $node){
 					$this->xmlBrowser->seek($node);
+
 
 					if($this->handleTag($this->xmlBrowser->getNodeName($node))){
 
@@ -348,7 +350,7 @@
 			$object = '';
 			$node_props = array();
 
-
+			
 
 			if($this->xmlBrowser->getChildren($node_id,$node_props)) {
 
@@ -356,7 +358,7 @@
 						$this->xmlBrowser->seek($node);
 						$nodname=$this->xmlBrowser->getNodeName();
 						$noddata=$this->xmlBrowser->getNodeData();
-
+						
 						if($nodname=="we:info"){
 							$this->importNodeSet($node);
 						}
@@ -373,7 +375,7 @@
 						}
 						else{
 							if($nodname=="ClassName"){
-
+								array_push($this->nodehierarchy,$noddata);
 								if($noddata=="we_object"){
 									if(defined("OBJECT_TABLE")) {
 										include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectEx.inc.php");
@@ -410,6 +412,7 @@
 							}
 							$node_data[$nodname]=$noddata;
 						}
+						
 				}
 			}
 
@@ -428,13 +431,60 @@
 					} else if(weContentProvider::needSerialize($object,$object->ClassName,$k)){
 						$v=unserialize($v);
 					}
-					if($v!=$object->$k) $object->$k=$v;
+					if(!weContentProvider::noEncodingChange($object->ClassName,$k, $this->nodehierarchy, $object->Name)) {
+						$v= $this->changeEncoding($v);
+					}
+					
+					if($v!=$object->$k) $object->$k= $v;
 				}
 			}
 
 			return $object;
 		}
 
+		function isSerialized($str) {
+		    return ($str == serialize(false) || @unserialize($str) !== false);
+		}
+
+		function changeEncoding($value){
+			if($this->options['change_encoding']) {
+				if ($this->options['target_encoding'] !='' && $this->options['xml_encoding'] !='' && $this->options['target_encoding'] != $this->options['xml_encoding']) {
+
+					if ($value==$this->options['xml_encoding']) {
+						return $this->options['target_encoding'];
+					} else { 
+						if ($this->isSerialized($value)) {
+							$usv= unserialize($value);
+							if(is_array($usv)) {
+								foreach ($usv as &$av) {
+									if($this->options['xml_encoding']== 'ISO-8859-1') {
+							   			$av = utf8_encode($av);
+									} else {
+										$av = utf8_decode($av);
+									}
+								}	   
+							   $sv= serialize($usv);
+							   return $sv;
+							} else {
+								return  $value ;
+							}
+						} else {
+							if($this->options['xml_encoding']== 'ISO-8859-1') {
+					   			return utf8_encode($value);
+							} else {
+								return utf8_decode($value);
+							}
+						}
+					}
+
+				} else	{
+					return $value;
+				}
+			} else {
+				return $value;
+			}
+		}
+		
 		function refreshOwners(&$object){
 			if(isset($object->CreatorID) && ($this->options['handle_owners'] || $this->options['owners_overwrite'])){
 				$userid=$object->CreatorID;

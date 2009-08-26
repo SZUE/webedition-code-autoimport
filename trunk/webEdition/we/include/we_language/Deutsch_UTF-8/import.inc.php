@@ -233,5 +233,10 @@ $l_import['import_thumbnails'] = 'Miniaturansichten importieren';
 $l_import['rebuild'] = 'Rebuild';
 $l_import['rebuild_txt'] = 'Automatischer Rebuild';
 $l_import['finished_success'] = 'Der Import der Daten wurde erfolgreich beendet.';
-
+$l_import['encoding_headline'] = 'Zeichensatz';
+$l_import['encoding_noway'] = 'Konvertierung nur möglich zwischen ISO-8859-1 und UTF-8 <br/>und bei gesetztem Standardzeichensatz (Einstellungsdialog)';
+$l_import['encoding_change'] = "Ändern, von '";
+$l_import['encoding_XML'] = '';
+$l_import['encoding_to'] = "' (XML-Datei) zu '";
+$l_import['encoding_default'] = "' (Standard)";
 ?>

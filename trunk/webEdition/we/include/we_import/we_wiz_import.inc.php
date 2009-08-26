@@ -742,6 +742,26 @@ class we_wizard_import extends we_wizard {
 				"space" => 120)
 			);
 
+
+			$xml_encoding = XML_Parser::getEncoding($_import_file);
+			if(defined ('DEFAULT_CHARSET') && DEFAULT_CHARSET!='' && (DEFAULT_CHARSET=='ISO-8859-1' || DEFAULT_CHARSET=='UTF-8' ) && ($xml_encoding=='ISO-8859-1' || $xml_encoding=='UTF-8' ) ) {
+			
+				array_push($parts, array(
+					'headline' => $l_import['encoding_headline'],
+					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', $l_import['encoding_change'].$l_import['encoding_XML'].$xml_encoding.$l_import['encoding_to'].(defined ('DEFAULT_CHARSET')? DEFAULT_CHARSET :'-'  ). $l_import['encoding_default']).'<input type="hidden" name="v[import_XMLencoding]" value="'.$xml_encoding.'" /><input type="hidden" name="v[import_TARGETencoding]" value="'.DEFAULT_CHARSET.'" />',
+				'space' => 120)
+			);
+			
+			} else {
+				array_push($parts, array(
+					'headline' => $l_import['encoding_headline'],
+					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', $l_import['encoding_noway'],false,"defaultfont",'',true),
+					'space' => 120)
+				);			
+			}
+
+
+
 			array_push($parts, array(
 				'headline' => $l_import['handle_file_options'],
 				'html' => we_forms::checkboxWithHidden((isset($v['import_binarys']) && $v['import_binarys']) ? true : false, 'v[import_binarys]', $l_import['import_files']),

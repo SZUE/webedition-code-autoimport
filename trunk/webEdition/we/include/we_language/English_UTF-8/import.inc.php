@@ -228,4 +228,12 @@ $l_import['import_thumbnails'] = 'Import thumbnails';
 $l_import['rebuild'] = 'Rebuild';
 $l_import['rebuild_txt'] = 'Automatic rebuild';
 $l_import['finished_success'] = 'The import of the data was successful.';
+
+$l_import['encoding_headline'] = 'Charset';
+$l_import['encoding_noway'] = 'A conversion  is only possible between ISO-8859-1 and UTF-8 <br/>and with a set default charset (settings dialog)';
+$l_import['encoding_change'] = "Change, from '";
+$l_import['encoding_XML'] = '';
+$l_import['encoding_to'] = "' (XML file) to '";
+$l_import['encoding_default'] = "' (standard)";
+
 ?>
