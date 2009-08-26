@@ -228,4 +228,12 @@ $l_import['import_thumbnails'] = 'Importeer thumbnails';
 $l_import['rebuild'] = 'Herbouw';
 $l_import['rebuild_txt'] = 'Automatisch herbouwen';
 $l_import['finished_success'] = 'Het importeren van de gegevens is succesvol afgerond.';
+
+$l_import['encoding_headline'] = 'Charset'; // TRANSLATE
+$l_import['encoding_noway'] = 'A conversion  is only possible between ISO-8859-1 and UTF-8 <br/>and with a set default charset (settings dialog)'; // TRANSLATE
+$l_import['encoding_change'] = "Change, from '"; // TRANSLATE
+$l_import['encoding_XML'] = ''; // TRANSLATE
+$l_import['encoding_to'] = "' (XML file) to '"; // TRANSLATE
+$l_import['encoding_default'] = "' (standard)"; // TRANSLATE
+
 ?>

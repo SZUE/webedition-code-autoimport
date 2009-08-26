@@ -508,6 +508,9 @@ HTS;
 									"handle_navigation"=>$v["import_navigation"],
 									"navigation_path"=>$v["navigation_dir_id"],
 									"handle_thumbnails"=>$v["import_thumbnails"],
+									"change_encoding"=>$v["import_ChangeEncoding"],
+									"xml_encoding"=>$v["import_XMLencoding"],
+									"target_encoding"=>$v["import_TARGETencoding"],
 									"rebuild"=>$v["rebuild"]
 							));
 
@@ -609,9 +612,11 @@ HTS;
 									"handle_navigation"=>$v["import_navigation"],
 									"navigation_path"=>$v["navigation_dir_id"],
 									"handle_thumbnails"=>$v["import_thumbnails"],
+									"change_encoding"=>$v["import_ChangeEncoding"],
+									"xml_encoding"=>$v["import_XMLencoding"],
+									"target_encoding"=>$v["import_TARGETencoding"],
 									"rebuild"=>$v["rebuild"]
 								));
-
 								$imported = $xmlExIm->import($chunk);
 								$xmlExIm->savePerserves();
 								if($imported){
