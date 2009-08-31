@@ -3579,18 +3579,31 @@ function we_tag_ifSeeMode($attribs, $content)
 function we_tag_ifTemplate($attribs, $content)
 {
 	$id = we_getTagAttribute("id", $attribs);
+	$parentid = we_getTagAttribute("parentid", $attribs);
 	$path = we_getTagAttribute("path", $attribs);
 	
 	if (isset($GLOBALS['we_doc']->TemplateID) && $id !== "") {
 		$idArray = makeArrayFromCSV($id);
 		return in_array($GLOBALS['we_doc']->TemplateID, $idArray);
 	} else {
-		if ($path === "") {
-			return true;
-		}
-		if (isset($GLOBALS['we_doc']->TemplatePath)) {
-			$pathReg = "|^" . str_replace("\\*", ".*", preg_quote($path, "|")) . "\$|";
-			return preg_match($pathReg, $GLOBALS['we_doc']->TemplatePath);
+		if ($parentid !== "") {
+			$TempPath = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/templates";
+			if (isset($GLOBALS['we_doc']->TemplatePath)) { // in documents
+				$curTempPath = $GLOBALS['we_doc']->TemplatePath;
+				$curTempPath = str_replace($TempPath,'',$curTempPath);
+			} else { // in templates
+				$curTempPath = $GLOBALS['we_doc']->Path;
+			}
+			$row = getHash("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($parentid)."", new DB_WE());
+			if (strpos($curTempPath,$row['Path']) !== false && strpos($curTempPath,$row['Path'])==0) { return true; } else {return false;}
+		} else {
+			if ($path === "") {
+				return true;
+			}
+			if (isset($GLOBALS['we_doc']->TemplatePath)) {
+				$pathReg = "|^" . str_replace("\\*", ".*", preg_quote($path, "|")) . "\$|";
+				return preg_match($pathReg, $GLOBALS['we_doc']->TemplatePath);
+			}
 		}
 	}
 	return false;
