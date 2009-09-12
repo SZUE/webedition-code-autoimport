@@ -240,6 +240,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	
 	$l_prefs["editor_information"] = "Specify font and size which should be used for the editing of templates, CSS- and Java Script files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types."; // TRANSLATE
 	
+	$l_prefs["editor_mode"] = 'редактор';
 	$l_prefs["editor_font"] = 'Шрифт в редакторе';
 	$l_prefs["editor_fontname"] = 'Название шрифта';
 	$l_prefs["editor_fontsize"] = 'Размер шрифта';

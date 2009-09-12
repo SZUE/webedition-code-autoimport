@@ -218,7 +218,7 @@ class we_user {
 		$this->Name = "user_".md5(uniqid(rand()));
 		array_push($this->persistent_slots,"ID","Type","ParentID","Salutation","First","Second","Address","HouseNo","City","PLZ","State","Country","Tel_preselection","Telephone","Fax","Fax_preselection","Handy","Email","username","passwd","clearpasswd", "Text","Path","Permissions","ParentPerms","Description","Alias","Icon","IsFolder","Ping","workSpace","workSpaceDef","workSpaceTmp","workSpaceNav","workSpaceNwl","workSpaceObj","ParentWs","ParentWst","ParentWsn","ParentWso","ParentWsnl","altID", "LoginDenied", "UseSalt");
 
-		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","seem_start_file","seem_start_type","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload");
+		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","seem_start_file","seem_start_type","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
 
 		$this->DB_WE = new DB_WE;
 
@@ -242,8 +242,8 @@ class we_user {
 			$this->workspaces_defaults[NEWSLETTER_TABLE]=array();
 		}
 
-		$this->Preferences['use_jupload'] = f("SELECT MAX(use_jupload) as mju FROM " . PREFS_TABLE . ";",'mju',$this->DB_WE);
-
+		$this->Preferences['use_jupload'] = f("SELECT MAX(use_jupload) as mju FROM " . PREFS_TABLE . ";",'mju',$this->DB_WE); //WTF?!?
+		
 		foreach($this->preference_slots as $key => $val) {
 			$value = null;
 			$this->Preferences[$val]	= $value;
@@ -469,6 +469,7 @@ class we_user {
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight');
 
+		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize');
@@ -697,7 +698,6 @@ function mapPermissions() {
 				$this->Preferences[$fieldName] = $this->DB_WE->f($fieldName);
 			}
 		}
-
 	}
 
 	#--------------------------------------------------------------------------#
@@ -763,7 +763,8 @@ function mapPermissions() {
 					.	"cockpit_amount_columns,"
 					.	"cockpit_amount_last_documents,"
 					.	"cockpit_rss_feed_url,"
-					.	"use_jupload"
+					.	"use_jupload,"
+					.	"editorMode"
 					.	") VALUES ("
 					.	abs($this->ID).", "
 					.	"'0', "
@@ -791,7 +792,8 @@ function mapPermissions() {
 					.	"'".$this->Preferences['cockpit_amount_columns']."',"
 					.	"'".$this->Preferences['cockpit_amount_last_documents']."',"
 					.	"'".$this->Preferences['cockpit_rss_feed_url']."',"
-					.	"'".$this->Preferences['use_jupload']."'"
+					.	"'".$this->Preferences['use_jupload']."',"
+					.	"'".$this->Preferences['editorMode']."'"
 					.	")";
 			$this->DB_WE->query($q);
 		}
@@ -911,6 +913,11 @@ function mapPermissions() {
 					if ($_SESSION["prefs"]["sizeOpt"] == 1) {
 						$_SESSION["prefs"]["weHeight"] = $settingvalue;
 					}
+					break;
+
+
+				case 'editorMode':
+					$_SESSION["prefs"]["editorMode"] = $settingvalue;
 					break;
 
 
@@ -2723,6 +2730,16 @@ function mapPermissions() {
 		/*********************************************************************
 		 * TEMPLATE EDITOR
 		 *********************************************************************/
+		 
+			/**
+			 * Editor Mode
+			 */
+			$_template_editor_mode = new we_htmlSelect(array("class" => "weSelect", "name" => $this->Name."_Preference_editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+			$_template_editor_mode->addOption('textarea', 'Textarea');
+			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
+			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
+			$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
+			array_push($_settings, array("headline" => $GLOBALS['l_prefs']["editor_mode"], "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
 
 		$_template_fonts = array("Courier New", "Courier", "mono", "Verdana", "Arial", "Helvetica", "sans-serif", "none");
 		$_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);

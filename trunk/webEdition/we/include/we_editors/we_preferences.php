@@ -38,11 +38,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModuleInfo.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/prefs.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/languages.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/countries.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/alert.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/prefs.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/languages.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/countries.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/contenttypes.inc.php");
 
 /*****************************************************************************
  * INITIALIZATION
@@ -300,6 +300,10 @@ function get_value($settingvalue) {
 		/*********************************************************************
 		 * TEMPLATE EDITOR
 		 *********************************************************************/
+
+		case "editor_mode":
+			return $_SESSION["prefs"]["editorMode"];
+			break;
 
 		case "editor_font_name":
 			return $_SESSION["prefs"]["editorFontname"];
@@ -601,14 +605,6 @@ function get_value($settingvalue) {
         	}
 			if(isset($_SESSION['prefs']['use_jupload'])) {
 				return $_SESSION["prefs"]['use_jupload'];
-			} else {
-				return 1;
-			}
-			break;
-
-		case "use_jeditor":
-			if(isset($_SESSION['prefs']['use_jeditor'])) {
-				return $_SESSION["prefs"]['use_jeditor'];
 			} else {
 				return 1;
 			}
@@ -945,6 +941,11 @@ function remember_value($settingvalue, $settingname) {
 			 * TEMPLATE EDITOR
 			 *****************************************************************/
 
+			case '$_REQUEST["editorMode"]':
+				$_SESSION["prefs"]["editorMode"]=$settingvalue;
+				$_update_prefs = true;
+				break;
+				
 			case '$_REQUEST["editorFont"]':
 				if ($settingvalue == 0) {
 					$_SESSION["prefs"]["editorFontname"] = "none";
@@ -1712,19 +1713,14 @@ $_we_active_integrated_modules = array();
 				$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET use_jupload="' . abs($settingvalue) . '";');
 				$_update_prefs = true;
 				break;
+
 			/*****************************************************************
-			 * JUPLOAD
+			 * JAVA EDITOR COLORS
 			 *****************************************************************/
-			case '$_REQUEST["use_jeditor"]':
-				$_SESSION["prefs"]["use_jeditor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-				
 			case '$_REQUEST["specify_jeditor_colors"]':
 				$_SESSION["prefs"]["specify_jeditor_colors"] = $settingvalue;
 				$_update_prefs = true;
 				break;
-				
 
 			/*****************************************************************
 			 * EMAIL
@@ -2272,6 +2268,7 @@ function save_all_values() {
 	/*************************************************************************
 	 * TEMPLATE EDITOR
 	 *************************************************************************/
+	$_update_prefs = remember_value(isset($_REQUEST["editorMode"]) ? $_REQUEST["editorMode"] : null, '$_REQUEST["editorMode"]') || $_update_prefs;
 	$_update_prefs = remember_value(isset($_REQUEST["editorFont"]) ? $_REQUEST["editorFont"] : null, '$_REQUEST["editorFont"]') || $_update_prefs;
 	$_update_prefs = remember_value(isset($_REQUEST["editorFontname"]) ? $_REQUEST["editorFontname"] : null, '$_REQUEST["editorFontname"]') || $_update_prefs;
 	$_update_prefs = remember_value(isset($_REQUEST["editorFontsize"]) ? $_REQUEST["editorFontsize"] : null, '$_REQUEST["editorFontsize"]') || $_update_prefs;
@@ -2402,9 +2399,11 @@ function save_all_values() {
 	 * JUPLOAD
 	*************************************************************************/
 	$_update_prefs = remember_value(isset($_REQUEST['use_jupload']) ? $_REQUEST['use_jupload'] : null, '$_REQUEST["use_jupload"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['use_jeditor']) ? $_REQUEST['use_jeditor'] : null, '$_REQUEST["use_jeditor"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['specify_jeditor_colors']) ? $_REQUEST['specify_jeditor_colors'] : null, '$_REQUEST["specify_jeditor_colors"]') || $_update_prefs;
 
+	/*************************************************************************
+	 * JAVA EDITOR COLORS
+	*************************************************************************/
+	$_update_prefs = remember_value(isset($_REQUEST['specify_jeditor_colors']) ? $_REQUEST['specify_jeditor_colors'] : null, '$_REQUEST["specify_jeditor_colors"]') || $_update_prefs;
 
 	/*************************************************************************
 	 * EMAIL
@@ -3195,7 +3194,7 @@ function build_dialog($selected_setting = "ui") {
 				 * Default Settings Cache for we:navigation
 				 *****************************************************************/
 
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/cache.inc.php");
 
 				$configFile = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 				if(!file_exists($configFile) || !is_file($configFile)) {
@@ -3657,6 +3656,44 @@ function setColorChooserDisabled(id, disabled) {
 	td.firstChild.style.cursor = disabled ? "default" : "pointer";
 	document.getElementById("label_"+id).style.color=disabled ? "gray" : "";
 }
+
+function displayEditorOptions(editor) {
+	switch(editor) {
+		case "java":
+			document.getElementById("settings_editor_predefined_div_2").style.display="none";
+			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
+			document.getElementById("settings_editor_predefined_div_3").style.display="block";
+			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="block";
+			setJavaEditorDisabled(false);
+			break;
+		case "CodeMirror":
+		case "textarea":
+		default:
+			document.getElementById("settings_editor_predefined_div_2").style.display="block";
+			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
+			document.getElementById("settings_editor_predefined_div_3").style.display="none";
+			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="none";
+			setJavaEditorDisabled(true);
+			break;
+	}
+}
+
+function initEditorMode() {
+	displayEditorOptions(document.getElementsByName("editorMode")[0].options[document.getElementsByName("editorMode")[0].options.selectedIndex].value);
+}
+
+if(window.onload) {
+	var previousOnload = window.onload;
+	window.onload = function(e) {
+		previousOnload(e);
+		initEditorMode();
+	};
+}
+else {
+	window.onload = function(e) {
+		initEditorMode();
+	};
+}
 			
 			</script>';
 			
@@ -3668,7 +3705,17 @@ function setColorChooserDisabled(id, disabled) {
 
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
-			
+			/**
+			 * Editor Mode
+			 */
+
+			$_template_editor_mode = new we_htmlSelect(array("class" => "weSelect", "name" => "editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+			$_template_editor_mode->addOption('textarea', 'Textarea');
+			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
+			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
+			$_template_editor_mode->selectOption(get_value("editor_mode"));
+			array_push($_settings, array("headline" => $l_prefs["editor_mode"], "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
+
 			/**
 			 * Editor font settings
 			 */
@@ -3695,7 +3742,7 @@ function setColorChooserDisabled(id, disabled) {
 
 			$_template_editor_font_select_box = new we_htmlSelect(array("class" => "weSelect", "name" => "editorFontname",  "size" => "1", "style" => "width: 135px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled")));
 
-			$_colorsDisabled = get_value('specify_jeditor_colors') == 0  ||  get_value('use_jeditor') == 0;
+			$_colorsDisabled = get_value('specify_jeditor_colors') == 0  ||  (get_value('editor_mode')!='java');
 			
 			$_template_editor_fontcolor_selector = getColorInput("editorFontcolor",get_value("editor_font_color"), $_colorsDisabled);
 			$_template_editor_we_tag_fontcolor_selector = getColorInput("editorWeTagFontcolor",get_value("editor_we_tag_font_color"), $_colorsDisabled);
@@ -3748,15 +3795,9 @@ function setColorChooserDisabled(id, disabled) {
 		<td'.$_attr.'>' . $l_prefs["editor_fontsize"] . '</td><td>' . $_template_editor_font_sizes_select_box->getHtmlCode() . '</td>
 	</tr>
 </table>';
-			
-			$_useJEditor = get_value('use_jeditor');
-		
-			$_template_editor_use_jeditor_checkbox = we_forms::checkboxWithHidden($_useJEditor, "use_jeditor", $l_prefs['use_jeditor'],false, "defaultfont","setJavaEditorDisabled(!this.checked);");
-			
-			$_template_editor_font_color_checkbox = we_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "specify_jeditor_colors", $l_prefs["editor_font_colors"],false,"defaultfont","setEditorColorsDisabled(!this.checked);",!$_useJEditor);
 
-			
-			
+			$_template_editor_font_color_checkbox = we_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "specify_jeditor_colors", $l_prefs["editor_font_colors"],false,"defaultfont","setEditorColorsDisabled(!this.checked);",!(get_value('editor_mode')=='java'));
+
 			$_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0 0 50px;" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="label_editorFontcolor" '.($_colorsDisabled ? $_attr_dis : $_attr).'>' . $l_prefs["editor_normal_font_color"] . '</td><td>' . $_template_editor_fontcolor_selector . '</td>
@@ -3780,14 +3821,10 @@ function setColorChooserDisabled(id, disabled) {
 		<td id="label_editorCommentFontcolor"'.($_colorsDisabled ? $_attr_dis : $_attr).'>' . $l_prefs["editor_comment_font_color"] . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td>
 	</tr>
 </table>';
-			
+
 			// Build dialog
 			array_push($_settings, array("headline" => $l_prefs["editor_font"], "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table , "space" => 150));
-			
-			array_push($_settings, array("headline" => $l_prefs["jeditor"], "html" => $_template_editor_use_jeditor_checkbox . '<div style="height:10px"></div>' . $_template_editor_font_color_checkbox . $_template_editor_font_color_table, "space" => 150));
-			
-			//array_push($_settings, array('headline' => $l_prefs['use_jeditor'], 'html' => htmlSelect('use_jeditor',array($l_prefs["no"],$l_prefs["yes"]),1,get_value('use_jeditor')), "space" => 200));
-			
+			array_push($_settings, array("headline" => $l_prefs["jeditor"], "html" => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, "space" => 150));
 
 			/**
 			 * BUILD FINAL DIALOG
@@ -4593,7 +4630,7 @@ function setColorChooserDisabled(id, disabled) {
 
 			    } else {                                 //  gd lib ist nicht installiert
 
-			        include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
+			        include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/thumbnails.inc.php");
 			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "#", true, 100, 22,'','', true) : "";
 				    $_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125,'0','',true);
                     $_thumbnail_dir = $we_button->create_button_table(array($_inp,$_but)) . '<br/>' . $l_thumbnails["add_description_nogdlib"];

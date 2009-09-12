@@ -238,6 +238,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	
 	$l_prefs["editor_information"] = "Määritä fonttikoko jota haluat käyttää sivupohjien, CSS-tiedostojen ja JavaScript-tiedostojen muokkaamiseen webEditionissa.<br /><br />Asetusta käytetään kaikille yllämainituille tiedostotyypeille.";
 	
+	$l_prefs["editor_mode"] = 'Editori';
 	$l_prefs["editor_font"] = 'Editorin kirjasin';
 	$l_prefs["editor_fontname"] = 'Kirjasimen nimi';
 	$l_prefs["editor_fontsize"] = 'Koko';
