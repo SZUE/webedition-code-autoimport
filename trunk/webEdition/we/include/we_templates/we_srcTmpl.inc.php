@@ -558,6 +558,8 @@ array_push($parts,array("headline"=>"","html"=>$maineditor,"space"=>0));
 			function insertAtStart(tagText) {
 				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtStart) != "undefined") {
 					document.weEditorApplet.insertAtStart(tagText);
+				} else if(window.editor && window.editor.frame) {
+					window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
 				} else {
 				 	document.we_form["we_' . $we_doc->Name . '_txt[data]"].value = tagText + "\n" + document.we_form["we_' . $we_doc->Name . '_txt[data]"].value;
 				}
@@ -567,6 +569,8 @@ array_push($parts,array("headline"=>"","html"=>$maineditor,"space"=>0));
 			function insertAtEnd(tagText) {
 				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtEnd) != "undefined") {
 					document.weEditorApplet.insertAtEnd(tagText);
+				} else if(window.editor && window.editor.frame) {
+					window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
 				} else {
 					document.we_form["we_' . $we_doc->Name . '_txt[data]"].value += "\n" + tagText;
 				}
@@ -578,6 +582,8 @@ array_push($parts,array("headline"=>"","html"=>$maineditor,"space"=>0));
 			
 				if (document.weEditorApplet && typeof(document.weEditorApplet.replaceSelection) != "undefined") {
 					document.weEditorApplet.replaceSelection(tagText);
+				} else if(window.editor && window.editor.frame) {
+					window.editor.replaceSelection(tagText);
 				} else {
 			
 					var weForm = document.we_form["we_' . $we_doc->Name . '_txt[data]"];
