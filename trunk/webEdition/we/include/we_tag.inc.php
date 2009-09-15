@@ -3435,6 +3435,11 @@ function we_tag_ifCat($attribs, $content)
 	return false;
 }
 
+function we_tag_ifNotCat($attribs, $content)
+{
+	return !we_tag_ifCat($attribs, $content);
+}
+
 function we_tag_ifHasChildren($attribs, $content)
 {
 	
