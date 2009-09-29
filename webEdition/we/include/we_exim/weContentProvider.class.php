@@ -186,6 +186,20 @@
 			}
 		}
 
+		function needCdata($classname,$prop){
+			$encoded=array(
+				"we_element"=>array("Dat"),
+				"we_object"=>array("DefaultText","DefaultValues"),
+				"weTableItem"=>array("Text","BText"),
+				"we_category"=>array("Catfields")
+			);
+		
+			if($classname=="weTableItem") return true;
+			if(isset($encoded[$classname]))
+				return in_array($prop,$encoded[$classname]);
+			else
+				return false;
+		}
 		
 
 		function needSerialize(&$object,$classname,$prop){
