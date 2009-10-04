@@ -396,6 +396,11 @@ if($we_editmode) {
 								},
 								initCallback: function() {
 									window.setTimeout(function(){
+										if ( document.addEventListener ) {
+											editor.frame.contentWindow.document.addEventListener( "keydown", top.dealWithKeyboardShortCut, true );
+										} else if ( document.attachEvent ) {
+											editor.frame.contentWindow.document.attachEvent( "onkeydown", top.dealWithKeyboardShortCut );
+										}
 										editor.focus();
 										editor.frame.style.border="1px solid gray";
 										editor.frame.contentWindow.document.getElementsByTagName("body")[0].style.fontSize=document.getElementById("editarea").style.fontSize;
@@ -409,7 +414,6 @@ if($we_editmode) {
 					';
 				}
 			}
-
         }
         
         $maineditor .=	'</td>
