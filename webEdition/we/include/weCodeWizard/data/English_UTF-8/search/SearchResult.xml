@@ -26,7 +26,7 @@
         <p>
           Page: <we:listviewPageNr /> of <we:listviewPages /> |
           Hits: <we:listviewStart /> to <we:listviewEnd />
-          <we:ifBack> | <we:back>back</strong></we:back></we:ifBack>
+          <we:ifBack> | <we:back>back</we:back></we:ifBack>
           <we:ifNext> | <we:next>next</we:next></we:ifNext>
         </p>
         <hr />
@@ -45,7 +45,7 @@
         <p>
           Page: <we:listviewPageNr /> of <we:listviewPages /> |
           Hits: <we:listviewStart /> to <we:listviewEnd />
-          <we:ifBack> | <we:back>back</strong></we:back></we:ifBack>
+          <we:ifBack> | <we:back>back</we:back></we:ifBack>
           <we:ifNext> | <we:next>next</we:next></we:ifNext>
         </p>
       </we:ifFound>

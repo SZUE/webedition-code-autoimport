@@ -26,7 +26,7 @@
         <p>
           Seite: <we:listviewPageNr /> von <we:listviewPages /> |
           Treffer: <we:listviewStart /> bis <we:listviewEnd />
-          <we:ifBack> | <we:back>zurück</strong></we:back></we:ifBack>
+          <we:ifBack> | <we:back>zurück</we:back></we:ifBack>
           <we:ifNext> | <we:next>weiter</we:next></we:ifNext>
         </p>
         <hr />
@@ -45,7 +45,7 @@
         <p>
           Seite: <we:listviewPageNr /> von <we:listviewPages /> |
           Treffer: <we:listviewStart /> bis <we:listviewEnd />
-          <we:ifBack> | <we:back>zurück</strong></we:back></we:ifBack>
+          <we:ifBack> | <we:back>zurück</we:back></we:ifBack>
           <we:ifNext> | <we:next>weiter</we:next></we:ifNext>
         </p>
       </we:ifFound>
