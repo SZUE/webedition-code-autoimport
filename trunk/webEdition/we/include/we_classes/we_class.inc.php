@@ -145,11 +145,11 @@ class we_class
 			$trashbut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['".$Path_elem_Name."'].value='';_EditorFrame.setEditorIsHot(true);");
 			if(($directory && $file) || $file){
 				$but      = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-					$we_button->create_button("select", "javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'opener.opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')"):
+					$we_button->create_button("select", "javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')"):
 					"";
 			}else{
 				$but      = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-					$we_button->create_button("select", "javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','folder',document.forms[0].elements['$Path_elem_Name'].value,'opener.opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')"):
+					$we_button->create_button("select", "javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','folder',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')"):
 					"";
 			}
 
