@@ -54,6 +54,7 @@ class weWorkflowView extends weWorkflowBase{
 		$this->hiddens[]="Type";
 		$this->hiddens[]="Status";
 		$this->hiddens[]="Folders";
+		$this->hiddens[]="ObjectFileFolders";
 		$this->hiddens[]="Categories";
 		$this->hiddens[]="ObjCategories";
         	$this->hiddens[]="DocType";
@@ -79,6 +80,7 @@ class weWorkflowView extends weWorkflowBase{
 		$out.=$this->htmlHidden($this->uid."_Type",$this->workflowDef->Type);
 		$out.=$this->htmlHidden($this->uid."_FolderPath",$this->workflowDef->FolderPath);
 		$out.=$this->htmlHidden($this->uid."_Folders",$this->workflowDef->Folders);
+		$out.=$this->htmlHidden($this->uid."_ObjectFileFolders",$this->workflowDef->ObjectFileFolders);
 		$out.=$this->htmlHidden($this->uid."_DocType",$this->workflowDef->DocType);
 		$out.=$this->htmlHidden($this->uid."_Categories",$this->workflowDef->Categories);
 		$out.=$this->htmlHidden($this->uid."_ObjCategories",$this->workflowDef->ObjCategories);
@@ -92,6 +94,7 @@ class weWorkflowView extends weWorkflowBase{
 		$out.=$this->htmlHidden("wcat","0");
 		$out.=$this->htmlHidden("wocat","0");
 		$out.=$this->htmlHidden("wfolder","0");
+		$out.=$this->htmlHidden("woffolder","0");
 		$out.=$this->htmlHidden("wobject","0");
 
         	$counter=0;
@@ -218,6 +221,8 @@ class weWorkflowView extends weWorkflowBase{
 			$vals[] = $this->getObjectHTML();
 			$vals[] = getPixel(2,10);
 			$vals[] = $this->getObjCategoryHTML();
+			$vals[] = getPixel(2,10);
+			$vals[] = $this->getObjectFileFoldersHTML();
 			$out   .= $this->getTypeTableHTML(	we_forms::radiobutton(WE_WORKFLOW_OBJECT, ($this->workflowDef->Type==WE_WORKFLOW_OBJECT ? "1" : "0"), $this->uid."_Type", $l_workflow["type_object"],true,"defaultfont",'onclick=top.content.setHot();'),
 											$vals,25);
 		}
@@ -299,6 +304,25 @@ class weWorkflowView extends weWorkflowBase{
 		$cats = new MultiDirChooser(495,$this->workflowDef->Objects,"del_object", $we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",OBJECT_TABLE,"defaultfont","","top.content.setHot();");
 
 		return htmlFormElementTable($cats->get(),$l_workflow["classes"]);
+
+	}
+
+	function getObjectFileFoldersHTML(){
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		global $l_workflow;
+
+		$we_button = new we_button();
+
+		$delallbut="";
+		$addbut="";
+
+
+		$delallbut = $we_button->create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_object_file_folders');");
+		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs);','','','',true)");
+
+		$dirs = new MultiDirChooser(495,$this->workflowDef->ObjectFileFolders,"del_object_file_folder",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",OBJECT_FILES_TABLE,"defaultfont","","top.content.setHot();");
+
+		return htmlFormElementTable($dirs->get(),$l_workflow["dirs"]);
 
 	}
 
@@ -684,6 +708,13 @@ class weWorkflowView extends weWorkflowBase{
 						document.we_form.wfolder.value=arguments[1];
 						submitForm();
 						break;
+					case "add_object_file_folder":
+					case "del_object_file_folder":
+					case "del_all_object_file_folders":
+						document.we_form.wcmd.value=arguments[0];
+						document.we_form.woffolder.value=arguments[1];
+						submitForm();
+						break;
 					case "add_object":
 					case "del_object":
 					case "del_all_objects":
@@ -807,6 +838,13 @@ class weWorkflowView extends weWorkflowBase{
 
 				ret=false;
 				if(document.we_form.<?php print $this->uid?>_Folders.value=="" && document.we_form.<?php print $this->uid?>_Type.value==1) ret=true;
+				if(ret){
+					<?php print we_message_reporting::getShowMessageCall($l_workflow["folders_empty"], WE_MESSAGE_ERROR); ?>
+					return false;
+				}
+
+				ret=false;
+				if(document.we_form.<?php print $this->uid?>_ObjectFileFolders.value=="" && document.we_form.<?php print $this->uid?>_Type.value==2) ret=true;
 				if(ret){
 					<?php print we_message_reporting::getShowMessageCall($l_workflow["folders_empty"], WE_MESSAGE_ERROR); ?>
 					return false;
@@ -939,6 +977,31 @@ class weWorkflowView extends weWorkflowBase{
 			break;
 			case "del_all_folders":
 				$this->workflowDef->Folders="";
+			break;
+			case "add_object_file_folder":
+				$arr=makeArrayFromCSV($this->workflowDef->ObjectFileFolders);
+				if(isset($_REQUEST["woffolder"])){
+					$ids = makeArrayFromCSV($_REQUEST["woffolder"]);
+					foreach($ids as $id){
+						if(strlen($id) && (!in_array($id,$arr))) {
+							array_push($arr,$id);
+						}
+					}
+					$this->workflowDef->ObjectFileFolders=makeCSVFromArray($arr,true);
+				}
+				break;
+			case "del_object_file_folder":
+				$arr=array();
+				$arr=makeArrayFromCSV($this->workflowDef->ObjectFileFolders);
+				if(isset($_REQUEST["woffolder"])){
+					foreach($arr as $k=>$v){
+						if($v==$_REQUEST["woffolder"]) array_splice($arr,$k,1);
+					}
+					$this->workflowDef->ObjectFileFolders=makeCSVFromArray($arr,true);
+				}
+			break;
+			case "del_all_object_file_folders":
+				$this->workflowDef->ObjectFileFolders="";
 			break;
 			case "add_object":
 				$arr=array();

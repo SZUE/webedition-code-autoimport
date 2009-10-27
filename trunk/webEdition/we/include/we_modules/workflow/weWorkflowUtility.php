@@ -138,8 +138,8 @@
 			Functions tries to find workflow for defined
 			objects parametars and returns new document object
 		*/
-		function getWorkflowDocumentForObject($object, $categories=""){
-			$workflowID=weWorkflow::getObjectWorkflow($object,$categories);
+		function getWorkflowDocumentForObject($object, $categories="", $folderID=0){
+			$workflowID=weWorkflow::getObjectWorkflow($object,$categories,$folderID);
 			$newDoc=new weWorkflowDocument();
 			$newDoc->workflowID=$workflowID;
 			$newDoc->steps=weWorkflowDocumentStep::__createAllSteps($workflowID);

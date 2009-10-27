@@ -48,6 +48,7 @@ class weWorkflow extends weWorkflowBase{
 	var $DocType;
 	var $Objects;
 	var $Categories;
+	var $ObjectFileFolders;
 	var $ObjCategories;
 	var $Status=0;
 
@@ -79,6 +80,7 @@ class weWorkflow extends weWorkflowBase{
 		$this->persistents[]="Type";
 		$this->persistents[]="DocType";
 		$this->persistents[]="Folders";
+		$this->persistents[]="ObjectFileFolders";
 		$this->persistents[]="Objects";
 		$this->persistents[]="Categories";
 		$this->persistents[]="ObjCategories";
@@ -89,6 +91,7 @@ class weWorkflow extends weWorkflowBase{
 		$this->Text = $l_workflow["new_workflow"];
 		$this->Type = WE_WORKFLOW_FOLDER;
 		$this->Folders = ",0,";
+		$this->ObjectFileFolders = ",0,";
 		$this->FolderPath = "";
 		$this->DocType = 0;
 		$this->Objects = "";
@@ -346,13 +349,20 @@ class weWorkflow extends weWorkflowBase{
 	/**
 	* Get workflow for object
 	*/
-	function getObjectWorkflow($object,$categories=""){
+	function getObjectWorkflow($object,$categories="",$folderID=0){
 		$db = new DB_WE;
 		$workflowID = 0;
 		
 		$wfIDs = array();
 
-		$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE Objects LIKE '%,".mysql_real_escape_string($object).",%' AND Type=".WE_WORKFLOW_OBJECT." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+		$tail = "";
+		
+		if ($folderID != 0)
+		{
+			$tail = " AND ObjectFileFolders LIKE '%,".abs($folderID).",%'";
+		}
+
+		$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE Objects LIKE '%,".mysql_real_escape_string($object).",%' AND Type=".WE_WORKFLOW_OBJECT." AND Status=".WE_WORKFLOW_STATE_ACTIVE.$tail);
 		while ($db->next_record()){
 			if(isset($wfIDs[$db->f("ID")])){
 				$wfIDs[$db->f("ID")]++;
