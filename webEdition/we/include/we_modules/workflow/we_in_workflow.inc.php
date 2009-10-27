@@ -83,7 +83,7 @@ if($cmd == "ok"){
 					$wfDoc = weWorkflowUtility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID);
 				}
 				else {
-					$wfDoc = weWorkflowUtility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category);
+					$wfDoc = weWorkflowUtility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category, $we_doc->ParentID);
 				}
 				$wfID=$wfDoc->workflowID;
 			?>
