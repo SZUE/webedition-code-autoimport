@@ -22,7 +22,7 @@
 $tagName = $_REQUEST['we_cmd'][1];
 $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
 // Feature 3800, zum abschalten die nächste Zeile auskommentieren
-if(strpos($GLOBALS["WE_LANGUAGE"],'Deutsch') !== false) {$GLOBALS['TagRefURL']="docu.webedition.de/de/webedition/tag-reference/";} else {$GLOBALS['TagRefURL']="docu.webedition.de/en/webedition/tag-reference/";}
+if(strpos($GLOBALS["WE_LANGUAGE"],'Deutsch') !== false) {$GLOBALS['TagRefURL']="documentation.webedition.de/de/webedition/tag-reference/";} else {$GLOBALS['TagRefURL']="documentation.webedition.de/en/webedition/tag-reference/";}
 $GLOBALS['TagRefURLName'] = strtolower($tagName);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/taged.inc.php");
