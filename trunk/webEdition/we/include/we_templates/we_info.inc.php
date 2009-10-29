@@ -79,7 +79,7 @@ $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 //	5th credits
 $_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,5));
 $_table->setCol($_actRow,1,array(	"width" => $_middlePart,
-							"class" => "small"), $_credits);
+							"class" => "defaultfont small"), $_credits);
 $_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
 
 //	6th row
