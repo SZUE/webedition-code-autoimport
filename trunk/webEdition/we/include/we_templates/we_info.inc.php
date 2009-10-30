@@ -43,7 +43,7 @@ $_credits = "<br />"
 			."Tatjana Hermann, Joni Eskelinen, Kari Vatanen, Antti Kurtelius, Jasper van den Ham, Jorg Tiemens, Philip Moore"
 			."<br/><br/>"
 			."<b>".$l_global["credits_thanks"].":</b><br/>"
-			."<a href=\"http://florian.mertin.de\" target=\"_blank\">Florian Mertin</a>, Slavko Tomcic, Andreas Frey, Bj&ouml;rn B&ouml;ttle, Elad Messing, Herbert Hohn, Stefan Oberrecht, Christoph L&uuml;tjen, Axel Regnet, Severin Kurpiers, Michael Scheurer, Florian Wittke, Oliver Krahnen, Jochen Nees, Angela D&uuml;rrmann, Jessica Holzapfel, Rebecca Dreher"
+			."Florian Mertin, Slavko Tomcic, Andreas Frey, Bj&ouml;rn B&ouml;ttle, Elad Messing, Herbert Hohn, Stefan Oberrecht, Christoph L&uuml;tjen, Axel Regnet, Severin Kurpiers, Michael Scheurer, Florian Wittke, Oliver Krahnen, Jochen Nees, Angela D&uuml;rrmann, Jessica Holzapfel, Rebecca Dreher"
 			."";
 
 $_table = new we_htmlTable( array(	"border"      => 0,
