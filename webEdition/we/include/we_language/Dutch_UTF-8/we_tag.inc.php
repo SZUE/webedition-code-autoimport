@@ -32,12 +32,12 @@ $l_we_tag['back']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['banner']['description'] = "Gebruik de we:banner tag om een banner in te voegen vanuit de Banner/Statistieken Module.";
 $l_we_tag['bannerSelect']['description'] = "Deze tag toont een uitklap menu (&lt;select&gt;), voor het selecteren van banners. Als de Klanten Beheer Module is geïnstalleerd en het attribuut klant heeft als waarde ja, dan worden alleen banners van de ingelogde klant getoond.";
 $l_we_tag['bannerSum']['description'] = "De we:bannerSum tag toont het aantal getoonde, bezochte banners of het aantal bezoeken. De tag werkt alleen binnen een listview met type=&quot;banner&quot;";
-$l_we_tag['block']['description'] = "De we:block tag geeft de mogelijkheid om uitbreidbare blokken/lijsten aan te maken. Alles binnen de start en eind tag wordt herhaald ( elke HTML en bijna alle we:tags ), wanneer u op de plus knop drukt in de edit modus.";
+$l_we_tag['block']['description'] = "De we:block tag geeft de mogelijkheid om uitbreidbare blokken/lijsten aan te maken. Alles binnen de start en eind tag wordt herhaald (elke HTML en bijna alle we:tags), wanneer u op de plus knop drukt in de edit modus.";
 $l_we_tag['block']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['calculate']['description'] = "De we:calculate tag staat allerlei soorten wiskundige berekeningen toe.(*, /, +, -,(), sqrt.....)";
 $l_we_tag['calculate']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['captcha']['description'] = "Deze tag genereert een afbeelding met een random code. ";
-$l_we_tag['category']['description'] = "De we:category tag wordt vervangen door de categorie ( of categorieën ) die is / zijn toegekend aan het document in de eigenschappen venster. Als er meer categorieën zijn toegekend, gebruik dan een komma als scheidingsteken. Als u gebruik wenst te maken van een ander scheidingsteken, dan moet u die specificeren door middel van het 'tokken' attribuut. Bijvoorbeeld: tokken='&nbsp;' (in dit geval wordt er een spatie gebruikt om categorieën te scheiden).";
+$l_we_tag['category']['description'] = "De we:category tag wordt vervangen door de categorie (of categorieën) die is / zijn toegekend aan het document in de eigenschappen venster. Als er meer categorieën zijn toegekend, gebruik dan een komma als scheidingsteken. Als u gebruik wenst te maken van een ander scheidingsteken, dan moet u die specificeren door middel van het 'tokken' attribuut. Bijvoorbeeld: tokken='&nbsp;' (in dit geval wordt er een spatie gebruikt om categorieën te scheiden).";
 $l_we_tag['categorySelect']['description'] = "Deze tag wordt gebruik om een uitklapmenu (&lt;select&gt;) in een webEdition document in te voegen. Gebruik deze tag om een categorie te selecteren. Door de eind tag direct achter de begin tag te plaatsen, zal het uitklapmenu alle, in webEdition gedefinieerde, categorieën bevatten.";
 $l_we_tag['categorySelect']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['charset']['description'] = "De we_charset tag genereert een meta tag die de karakterset voor de pagina bepaald. 'ISO-8859-1' is gebruikelijk voor Nederlandse webpagina's. Deze tag moet binnen de meta tag van de HTML pagina worden geplaatst.";
@@ -82,7 +82,7 @@ $l_we_tag['ifCaptcha']['description'] = "Content omsloten door deze tag wordt al
 $l_we_tag['ifCaptcha']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifCat']['description'] = "De we:ifCat tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als één of meer van de onder 'categories' ingevoerde categorieën de document categorieën zijn.";
 $l_we_tag['ifCat']['defaultvalue'] = "";
-$l_we_tag['ifNotCat']['description'] = "The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under \"categories\" are none of the document\"s categories."; // TRANSLATE
+$l_we_tag['ifNotCat']['description'] = "The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under \"categories\" are none of the document's categories."; // TRANSLATE
 $l_we_tag['ifNotCat']['defaultvalue'] = "";
 $l_we_tag['ifClient']['description'] = "De we:ifClient tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als de client (browser) zich meet met de gevestigde standaards. Deze tag werkt alleen met dynamisch bewaarde pagina's!";
 $l_we_tag['ifClient']['defaultvalue'] = ""; // TRANSLATE
