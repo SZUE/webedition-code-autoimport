@@ -1858,7 +1858,7 @@ function path_to_id($path, $table = FILE_TABLE)
 	if ($path == "/") {
 		return 0;
 	}
-	return abs(f("SELECT ID FROM $table WHERE Path='".mysql_real_escape_string($path)."'", "ID", $db));
+	return abs(f("SELECT DISTINCT ID FROM $table WHERE Path='".mysql_real_escape_string($path)."' LIMIT 1", "ID", $db));
 }
 
 function weConvertToIds($paths, $table)
