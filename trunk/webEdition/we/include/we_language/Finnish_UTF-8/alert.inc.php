@@ -102,6 +102,7 @@ $l_alert["template_save_warning1"] = "Tämä sivupohja on käytössä yhdellä j
 $l_alert["template_save_warning2"] = "Tämä sivupohja on käytössä muilla sivupohjilla tai dokumenteilla, tallennetaanko ne uudelleen?";
 $l_alert["thumbnail_exists"] = "Esikatselukuva on jo olemassa!";
 $l_alert["thumbnail_not_exists"] = "Esikatselukuvaa ei ole olemassa!";
+$l_alert["thumbnail_empty"] = "You must enter a name for the new thumbnail!"; // TRANSLATE
 $l_alert["doctype_exists"] = "Dokumenttityyppi on jo olemassa!";
 $l_alert["doctype_empty"] = "Sinun on annettava nimi dokumenttityypille!";
 $l_alert["delete_cat"] = "Haluatko varmasti poistaa valitun kategorian?";

@@ -102,6 +102,7 @@ $l_alert["template_save_warning1"] = "Dit sjabloon wordt gebruikt door één gep
 $l_alert["template_save_warning2"] = "Dit sjabloon wordt gebruikt door andere sjablonen en documenten, moeten deze opnieuw bewaard worden?";
 $l_alert["thumbnail_exists"] = 'Deze thumbnail bestaat al!';
 $l_alert["thumbnail_not_exists"] = 'Deze thumbnail bestaat niet!';
+$l_alert["thumbnail_empty"] = "You must enter a name for the new thumbnail!"; // TRANSLATE
 $l_alert["doctype_exists"] = "Dit document type bestaat al!";
 $l_alert["doctype_empty"] = "U moet een naam invoeren voor het nieuwe document type!";
 $l_alert["delete_cat"] = "Weet u zeker dat u de geselecteerde categorie wilt verwijderen?";
