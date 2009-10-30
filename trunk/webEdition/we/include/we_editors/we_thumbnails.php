@@ -358,7 +358,7 @@ function build_dialog($selected_setting = "ui") {
 							if (name.indexOf(\"'\") != -1 || name.indexOf(\",\") != -1) {
 								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_hochkomma"], WE_MESSAGE_ERROR) . "
 							} else if (name == '') {
-								" . we_message_reporting::getShowMessageCall($l_alert["doctype_empty"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_empty"], WE_MESSAGE_ERROR) . "
 							} else if (in_array(thumbnail_names, name)) {
 								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_exists"], WE_MESSAGE_ERROR) . "
 							} else {
