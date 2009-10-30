@@ -102,6 +102,7 @@ $l_alert["template_save_warning1"] = "This template is used by one published doc
 $l_alert["template_save_warning2"] = "This template is used by other templates and documents, should they be resaved?"; // TRANSLATE
 $l_alert["thumbnail_exists"] = "Cette imagette existe déjà!";
 $l_alert["thumbnail_not_exists"] = "Cette imagette n'existe pas!";
+$l_alert["thumbnail_empty"] = "You must enter a name for the new thumbnail!"; // TRANSLATE
 $l_alert["doctype_exists"] = "Ce type-de-document existe déjà!";
 $l_alert["doctype_empty"] = "Vous n'avez pas encore saisi un nom!";
 $l_alert["delete_cat"] = "Voulez-vous vraiment supprimez la catégories séléctionée?";

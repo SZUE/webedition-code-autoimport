@@ -98,6 +98,7 @@ $l_alert["template_save_warning1"] = "Diese Vorlage wird von einem veröffentlic
 $l_alert["template_save_warning2"] = "Diese Vorlage wird von anderen Vorlagen und Dokumenten benutzt. Sollen diese neu gespeichert werden?";
 $l_alert["thumbnail_exists"] = "Diese Miniaturansicht ist bereits vorhanden!";
 $l_alert["thumbnail_not_exists"] = "Diese Miniaturansicht ist nicht vorhanden!";
+$l_alert["thumbnail_empty"] = "Sie haben noch keinen Namen für die Miniaturansicht eingegeben!";
 $l_alert["doctype_exists"] = "Dieser Dokument-Typ ist bereits vorhanden!";
 $l_alert["doctype_empty"] = "Sie haben noch keinen Namen eingegeben!";
 $l_alert["delete_cat"] = "Möchten Sie die ausgewählte Kategorie wirklich löschen?";
