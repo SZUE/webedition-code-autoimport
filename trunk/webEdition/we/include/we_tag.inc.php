@@ -3599,8 +3599,8 @@ function we_tag_ifTemplate($attribs, $content)
 			} else { // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
-			$row = getHash("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($parentid)."", new DB_WE());
-			if (strpos($curTempPath,$row['Path']) !== false && strpos($curTempPath,$row['Path'])==0) { return true; } else {return false;}
+			$row = getHash("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($parentid)." LIMIT 1", new DB_WE());
+			if (isset($row['Path']) && strpos($curTempPath,$row['Path']) !== false && strpos($curTempPath,$row['Path'])==0) { return true; } else {return false;}
 		} else {
 			if ($path === "") {
 				return true;
