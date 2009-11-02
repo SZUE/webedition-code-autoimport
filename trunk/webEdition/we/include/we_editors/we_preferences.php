@@ -2671,13 +2671,13 @@ function build_dialog($selected_setting = "ui") {
 			if (strpos($GLOBALS['WE_LANGUAGE'],'UTF') !== false){$charset="UTF-8";} else {$charset="ISO-8859-1";}
 			$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 			$_defaultCharset = htmlTextInput('default_charset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
-			$_defaultCharsetChooser = htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false,"onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont",false);
+			$_defaultCharsetChooser = htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false,"onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont",false);
 				$default_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
 				array_push($_settings, array(
 									'headline' => $l_prefs['default_charset'],
 									'space' => 200,
-									'html' => $GLOBALS['l_prefs']["default_charset"] . "<br />" .$default_Charset)
+									'html' => $default_Charset)
 				);
 
 
