@@ -77,7 +77,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 * CHARSET
 	 */
 
-	$l_prefs["default_charset"] = "standard charset"; // TRANSLATE
+	$l_prefs["default_charset"] = "Standard charset"; // TRANSLATE
 
 	/**
 	 * SEEM

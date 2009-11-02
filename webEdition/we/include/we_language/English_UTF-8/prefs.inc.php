@@ -77,7 +77,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 * CHARSET
 	 */
 
-	$l_prefs["default_charset"] = "standard charset";
+	$l_prefs["default_charset"] = "Standard charset";
 
 
 	/**
