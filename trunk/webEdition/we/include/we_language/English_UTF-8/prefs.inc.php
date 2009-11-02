@@ -453,7 +453,7 @@ $l_prefs["tab_versions"] = 'Versioning';
  *****************************************************************************/
 	$l_prefs['validation']='Validation';
 	$l_prefs['xhtml_default'] = 'Default value for the attribute <em>xml</em> in we:Tags';
-	$l_prefs['xhtml_debug_explanation'] = 'The XHTML debugging will support your development of a xhtml valid web-site. The output of every we:Tag will be checked for validity and misplaced attribs can be displayed or removed. Please note: This action can take some time. Therefore you should only activate xhtml debugging during the development of your web-site.';
+	$l_prefs['xhtml_debug_explanation'] = 'The XHTML debugging will support your development of a xhtml valid web-site. The output of every we:Tag will be checked for validity and misplaced attributes can be displayed or removed. Please note: This action can take some time. Therefore you should only activate xhtml debugging during the development of your web-site.';
 	$l_prefs['xhtml_debug_headline'] = 'XHTML debugging';
 	$l_prefs['xhtml_debug_html'] = 'Activate XHTML debugging';
 	$l_prefs['xhtml_remove_wrong'] = 'Remove invalid attributes';
