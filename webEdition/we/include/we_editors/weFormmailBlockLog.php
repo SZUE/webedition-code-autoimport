@@ -128,7 +128,7 @@
 			$script = '<script type="text/javascript">
 
 function clearLog() {
-	if (confirm("'.addslashes($l_prefs['logboockEmptyQuestion']).'")) {
+	if (confirm("'.addslashes($l_prefs['clear_log_question']).'")) {
 		document.location="'.$_SERVER['PHP_SELF'].'?clearlog=1";
 	}
 }
