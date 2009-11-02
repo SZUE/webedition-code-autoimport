@@ -436,14 +436,6 @@ CREATE TABLE tblOrders (
   PRIMARY KEY  (IntID)
 ) TYPE=MyISAM;
 /* query separator */
-CREATE TABLE tblPasswd (
-  passwd varchar(32) NOT NULL default '',
-  username varchar(128) NOT NULL default ''
-) TYPE=MyISAM;
-/* query separator */
-INSERT INTO tblPasswd VALUES ('21232f297a57a5a743894a0e4a801fc3','admin');
-
-/* query separator */
 CREATE TABLE tblPrefs (
   userID bigint(20) NOT NULL default '0',
   FileFilter int(11) NOT NULL default '0',
