@@ -254,7 +254,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 * FORMMAIL RECIPIENTS
 	 */
 
-	$l_prefs["formmail_information"] = "Please enter all E-Mail addresses, which should receive forms sent by the formmail function (&lt;we:form type=\"formmail\" ..&gt;).<br><br>If you do not enter an E-Mail address, you cannot send forms using the formmail function!";
+	$l_prefs["formmail_information"] = "Please enter all email addresses, which should receive forms sent by the formmail function (&lt;we:form type=\"formmail\" ..&gt;).<br><br>If you do not enter an email address, you cannot send forms using the formmail function!";
 
 	$l_prefs["formmail_log"] = "Formmail log";
 	$l_prefs['log_is_empty'] = "The log is empty!";
