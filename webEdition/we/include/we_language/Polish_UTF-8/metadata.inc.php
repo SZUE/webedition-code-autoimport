@@ -52,7 +52,7 @@ $l_metadata["saved_successfully"] = "Meta data fields saved"; // TRANSLATE
 
 $l_metadata["properties"] = "Properties"; // TRANSLATE
 
-$l_metadata["fields_hint"] = "Define additional fields for meta data. Attached data(Exit, IPTC) to the original file, may be migrated automatically during the import. Add one or more fields that are to be imported in the entry field &quot;import from&quot; in the format &quot;[type]/[fieldname]&quot;. Example: &quot;exif/copyright,iptc/copyright&quot;. Multiple fields may be entered separated by comma. The import will search all specified fields up to the first field filled with data."; // TRANSLATE
+$l_metadata["fields_hint"] = "Define additional fields for meta data. Attached data (Exit, IPTC) to the original file, may be migrated automatically during the import. Add one or more fields that are to be imported in the entry field &quot;import from&quot; in the format &quot;[type]/[fieldname]&quot;. Example: &quot;exif/copyright,iptc/copyright&quot;. Multiple fields may be entered separated by comma. The import will search all specified fields up to the first field filled with data."; // TRANSLATE
 $l_metadata["import_from"] = "Import from"; // TRANSLATE
 $l_metadata["fields"] = "Fields"; // TRANSLATE
 $l_metadata['add'] = "add"; // TRANSLATE
