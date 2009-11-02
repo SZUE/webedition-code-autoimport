@@ -6,6 +6,5 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
 
 if(defined("TEMPLATES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id793_id'] = new weTagData_selectorAttribute('793', 'id',TEMPLATES_TABLE, '', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id794_path'] = new weTagData_textAttribute('794', 'path', false, '');
-if(defined("TEMPLATES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id840_parentid'] = new weTagData_textAttribute('840', 'parentid', false, '');; }
-
+if(defined("TEMPLATES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id840_parentid'] = new weTagData_selectorAttribute('840', 'parentid',TEMPLATES_TABLE, 'folder', false, ''); }
 ?>
