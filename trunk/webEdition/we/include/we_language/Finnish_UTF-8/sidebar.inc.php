@@ -38,7 +38,7 @@ $l_sidebar["default"][0]["text"] = 'webEdition on nyt asennettu mutta toistaisek
 
 $l_sidebar["default"][1] = array();
 $l_sidebar["default"][1]["headline"] = 'Manuaalit';
-$l_sidebar["default"][1]["text"] = 'täältä löydät tietoa webEditionin toiminnasta ja rakenteesta';
+$l_sidebar["default"][1]["text"] = 'Täältä löydät tietoa webEditionin toiminnasta ja rakenteesta';
 $l_sidebar["default"][1]["link"] = 'http://www.webedition.de/en/Documentation/index.php';
 $l_sidebar["default"][1]["icon"] = 'documentation.gif';
 
