@@ -559,8 +559,5 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["editor_comment_font_color"] = 'Comments'; // TRANSLATE
 	$l_prefs["jeditor"] = 'Java source editor'; // TRANSLATE
 	
-	
 	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
-	
-
 ?>
