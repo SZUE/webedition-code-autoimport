@@ -272,8 +272,7 @@ $l_we_tag['listdir']['description'] = "we:listdir -tagi luo listan joka näyttä
 $l_we_tag['listdir']['defaultvalue'] = ""; 
 $l_we_tag['listview']['description'] = "we:listview -tagilla luodaan listoja jotka generoidaan automaattisesti.";
 $l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;
-
-&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;
+&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"true\"/&gt;
 &lt;br /&gt;
 &lt;/we:repeat&gt;";
 $l_we_tag['listviewEnd']['description'] = "Tämä tagi näyttää viimeisen rivin joka on we:listview:llä.";

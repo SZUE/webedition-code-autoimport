@@ -272,8 +272,7 @@ $l_we_tag['listdir']['description'] = "Mit dem we:listdir-Tag kann man eine List
 $l_we_tag['listdir']['defaultvalue'] = "";
 $l_we_tag['listview']['description'] = "Das we:listview-Tag ist das Start- und Endtag von automatisch generierten Listen. (&Uuml;bersichtsseiten von News, usw.).";
 $l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;
-
-&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;
+&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"true\"/&gt;
 &lt;br /&gt;
 &lt;/we:repeat&gt;";
 $l_we_tag['listviewEnd']['description'] = "Dieses Tag gibt die Nummer des letzten Eintrags der aktuellen Seite einer &lt;we:listview&gt; aus.";

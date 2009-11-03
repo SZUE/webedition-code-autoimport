@@ -272,8 +272,7 @@ $l_we_tag['listdir']['description'] = "De we:listdir tag creëert  een nieuwe li
 $l_we_tag['listdir']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['listview']['description'] = "De we:listview tag is de begin tag en de eind tag van automatisch gegenereerde lijsten (nieuwspagina overzichten etc.).";
 $l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;
-
-&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;
+&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"true\"/&gt;
 &lt;br /&gt;
 &lt;/we:repeat&gt;";
 $l_we_tag['listviewEnd']['description'] = "Deze tag toont het nummer van de laatste invoer van de huidige &lt;we:listview&gt; pagina.";
