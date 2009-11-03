@@ -1,4 +1,4 @@
-webEdition Version 6.0.0.6
+webEdition Version 6.0.0.7
 
 webEdition is a web content management system licensed under the GPL
 For system requirements, installation and upgrade details, see the files INSTALL and the informations available on our website
