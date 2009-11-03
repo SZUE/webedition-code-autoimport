@@ -240,7 +240,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 * TEMPLATE EDITOR
 	 */
 
-	$l_prefs["editor_information"] = "Geben Sie hier Schriftart und Größe an, die für die Bearbeitung der Vorlagen, CSS- und Java Script-Dateien innerhalb von webEdition verwendet werden soll.<br /><br />Diese Einstellungen werden für den Texteditor der obengenannten Dateitypen verwendet.";
+	$l_prefs["editor_information"] = "Geben Sie hier Schriftart und Größe an, die für die Bearbeitung der Vorlagen, CSS- und JavaScript-Dateien innerhalb von webEdition verwendet werden soll.<br /><br />Diese Einstellungen werden für den Texteditor der obengenannten Dateitypen verwendet.";
 
 	$l_prefs["editor_mode"] = 'Editor';
 	$l_prefs["editor_font"] = 'Schrift im Editor';
