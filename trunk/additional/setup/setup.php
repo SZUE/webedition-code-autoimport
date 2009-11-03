@@ -715,7 +715,7 @@ function step_finish() {
 	$output .= "Please don't forget to remove this script (setup.php) in order to prevent damage to your website by misuse.<br /><br />";
 	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
 	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
-	you can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
+	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
 	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
 	return $output;
 }
