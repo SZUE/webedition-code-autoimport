@@ -250,6 +250,12 @@ $l_javaMenu["inactive_extras"] = "Inactieve extra's";
 
 $l_javaMenu["help"] = "Help"; // TRANSLATE
 $l_javaMenu["onlinehelp"] = "Online help"; // TRANSLATE
+$l_javaMenu["onlinehelp_documentation"] = "Online documentatie";
+$l_javaMenu["onlinehelp_forum"] = "webEdition forums";
+$l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker";
+$l_javaMenu["onlinehelp_tagreference"] = "Tag referentie";
+$l_javaMenu["onlinehelp_demo"] = "Demo pagina’s";
+$l_javaMenu["onlinehelp_changelog"] = "Versie geschiedenis";
 $l_javaMenu["webEdition_online"] = "webEdition online"; // TRANSLATE
 $l_javaMenu["sidebar"] = "Zijbalk";
 $l_javaMenu["update"] = "Bijwerken";

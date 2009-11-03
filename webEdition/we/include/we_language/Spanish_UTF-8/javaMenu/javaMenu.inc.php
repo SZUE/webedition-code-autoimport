@@ -251,11 +251,12 @@ $l_javaMenu["inactive_extras"] = "Inactive Extras"; // TRANSLATE
 
 $l_javaMenu["help"] = "Ayuda";
 $l_javaMenu["onlinehelp"] = "Ayuda en línea";
-$l_javaMenu["onlinehelp_documentation"] = "Online documentation";
-$l_javaMenu["onlinehelp_forum"] = "webEdition forums";
+$l_javaMenu["onlinehelp_documentation"] = "Documentación en línea";
+$l_javaMenu["onlinehelp_forum"] = "webEdition Forum";
 $l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker";
-$l_javaMenu["onlinehelp_tagreference"] = "Tag reference";
-$l_javaMenu["onlinehelp_demo"] = "Online demo";
+$l_javaMenu["onlinehelp_tagreference"] = "Referencias de rótulos";
+$l_javaMenu["onlinehelp_demo"] = "Páginas Demo";
+$l_javaMenu["onlinehelp_changelog"] = "Versión historia";
 $l_javaMenu["webEdition_online"] = "webEdition online"; // TRANSLATE
 $l_javaMenu["sidebar"] = "Sidebar"; // TRANSLATE
 $l_javaMenu["update"] = "Actualizar";

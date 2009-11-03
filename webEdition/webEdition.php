@@ -760,6 +760,48 @@ function we_cmd() {
 				new jsWindow(url,"help_no_available",-1,-1,380,140,true,false,true);
 			<?php endif?>
 			break;
+		case "help_documentation":
+			<?php
+			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
+				echo 'new jsWindow("http://documentation.webedition.de/de/","help_documentation",-1,-1,960,700,true,true,true,true);';
+			}  else {
+				echo 'new jsWindow("http://documentation.webedition.de/en/","help_documentation",-1,-1,960,700,true,true,true,true);';			
+			}
+			?>
+			break;
+		case "help_forum":
+			new jsWindow("http://forum.webedition.de","help_forum",-1,-1,960,700,true,true,true,true);
+			break;
+		case "help_bugtracker":
+			new jsWindow("http://qa.webedition.de/tracker/","help_bugtracker",-1,-1,960,700,true,true,true,true);
+			break;
+		case "help_tagreference":
+			<?php
+			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
+				echo 'new jsWindow("http://documentation.webedition.de/de/webedition/tag-reference/","help_tagreference",-1,-1,960,700,true,true,true,true);';
+			}  else {
+				echo 'new jsWindow("http://documentation.webedition.de/en/webedition/tag-reference/","help_tagreference",-1,-1,960,700,true,true,true,true);';			
+			}
+			?>
+			break;
+		case "help_demo":
+			<?php
+			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
+				echo 'new jsWindow("http://demo.webedition.de/de/","help_demo",-1,-1,960,700,true,true,true,true);';
+			}  else {
+				echo 'new jsWindow("http://demo.webedition.de/en/","help_demo",-1,-1,960,700,true,true,true,true);';			
+			}
+			?>
+			break;
+		case "help_changelog":
+			<?php
+			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
+				echo 'new jsWindow("http://documentation.webedition.de/de/webedition/change-log/start","help_changelog",-1,-1,960,700,true,true,true,true);';
+			}  else {
+				echo 'new jsWindow("http://documentation.webedition.de/en/webedition/change-log/start","help_changelog",-1,-1,960,700,true,true,true,true);';			
+			}
+			?>
+			break;
 		case "help_isp":
 			<?php
 			if(defined("ISP_VERSION") && ISP_VERSION){
