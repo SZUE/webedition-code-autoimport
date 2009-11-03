@@ -272,8 +272,7 @@ $l_we_tag['listdir']['description'] = "The we:listdir tag creates a new list dis
 $l_we_tag['listdir']['defaultvalue'] = "";
 $l_we_tag['listview']['description'] = "The we:listview tag is the start tag and end tag of lists that are generated automatically (summary news pages etc.).";
 $l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;
-
-&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;
+&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"true\"/&gt;
 &lt;br /&gt;
 &lt;/we:repeat&gt;";
 $l_we_tag['listviewEnd']['description'] = "This tag displays the number of the last entry of the current &lt;we:listview&gt; page.";
