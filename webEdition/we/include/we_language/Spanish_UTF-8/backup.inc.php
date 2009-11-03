@@ -233,7 +233,7 @@ $l_backup['error_timeout'] = 'An timeout occured while creating the backup, so t
 
 $l_backup["export_spellchecker_data"] = "Save spellchecker data"; // TRANSLATE
 $l_backup["import_spellchecker_data"] = "Restore spellchecker data"; // TRANSLATE
-$l_backup['spellchecker_info'] = 'Data for spellchecker: settings, general and personal dictionaries'; // TRANSLATE
+$l_backup['spellchecker_info'] = 'Data for spellchecker: settings, general and personal dictionaries.'; // TRANSLATE
 
 $l_backup["import_banner_data"] = "Restaurar data de la pancarta";
 $l_backup["export_banner_data"] = "Salvar data de la pancarta";

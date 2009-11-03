@@ -194,10 +194,10 @@ $l_backup['user_info'] = 'User and accounts data from  the user module.';
 $l_backup['customer_info'] = 'Customers and accounts data from the customer module.';
 $l_backup['shop_info'] = 'Orders data from the shop module.';
 $l_backup['workflow_info'] = 'Data from the workflow module.';
-$l_backup['todo_info'] = 'Messages and todos from the todo-/messaging module.';
+$l_backup['todo_info'] = 'Messages and tasks from the tasks/messaging module.';
 $l_backup['newsletter_info'] = 'Data from newsletter module.';
 $l_backup['banner_info'] = 'Banner and statistics from the banner module.';
-$l_backup['schedule_info'] = 'Scheduler data from Scheduler module .';
+$l_backup['schedule_info'] = 'Scheduler data from scheduler module.';
 $l_backup['settings_info'] = 'webEdition application settings.';
 $l_backup['temporary_info'] = 'Data from unpublished documents and objects.';
 $l_backup['export_info'] = 'Data from the export module.';
@@ -233,7 +233,7 @@ $l_backup['error_timeout'] = 'An timeout occured while creating the backup, so t
 
 $l_backup["export_spellchecker_data"] = "Save spellchecker data";
 $l_backup["import_spellchecker_data"] = "Restore spellchecker data";
-$l_backup['spellchecker_info'] = 'Data for spellchecker: settings, general and personal dictionaries';
+$l_backup['spellchecker_info'] = 'Data for spellchecker: settings, general and personal dictionaries.';
 
 $l_backup["import_banner_data"] = "Restore banner data";
 $l_backup["export_banner_data"] = "Save banner data";

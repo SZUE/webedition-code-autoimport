@@ -197,7 +197,7 @@ $l_backup['workflow_info'] = 'Gegevens vanuit de Workflow module.';
 $l_backup['todo_info'] = 'Taken en berichten vanuit de Taak-/Berichten module.';
 $l_backup['newsletter_info'] = 'Gegevens vanuit de Nieuwsbrief module.';
 $l_backup['banner_info'] = 'Banner en statistieken vanuit de Banner module.';
-$l_backup['schedule_info'] = 'Planner data vanuit de Planner module .';
+$l_backup['schedule_info'] = 'Planner data vanuit de Planner module.';
 $l_backup['settings_info'] = 'webEdition applicatie instellingen.';
 $l_backup['temporary_info'] = 'Gegevens vanuit ongepubliceerde documenten en objecten.';
 $l_backup['export_info'] = 'Gegevens vanuit de Export module.';
@@ -233,7 +233,7 @@ $l_backup['error_timeout'] = 'Er is een timeout opgetreden tijdens het aanmaken 
 
 $l_backup["export_spellchecker_data"] = "Bewaar gegevens spellingscontrole";
 $l_backup["import_spellchecker_data"] = "Herstel gegevens spellingscontrole";
-$l_backup['spellchecker_info'] = 'Gegevens voor spellingscontrole: instellingen, algemene en persoonlijke woordenboeken';
+$l_backup['spellchecker_info'] = 'Gegevens voor spellingscontrole: instellingen, algemene en persoonlijke woordenboeken.';
 
 $l_backup["import_banner_data"] = "Herstel banner data";
 $l_backup["export_banner_data"] = "Bewaar banner data";
