@@ -16,7 +16,6 @@
  *
  * @category   webEdition
  * @package    webEdition_language
- * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -251,6 +250,11 @@ $l_javaMenu["inactive_extras"] = "Inactive Extras"; // TRANSLATE
 
 $l_javaMenu["help"] = "Помощь";
 $l_javaMenu["onlinehelp"] = "Online help"; // TRANSLATE
+$l_javaMenu["onlinehelp_documentation"] = "Online documentation";
+$l_javaMenu["onlinehelp_forum"] = "webEdition forums";
+$l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker";
+$l_javaMenu["onlinehelp_tagreference"] = "Tag reference";
+$l_javaMenu["onlinehelp_demo"] = "Online demo";
 $l_javaMenu["webEdition_online"] = "webEdition online"; // TRANSLATE
 $l_javaMenu["sidebar"] = "Sidebar"; // TRANSLATE
 $l_javaMenu["update"] = "Обновить";

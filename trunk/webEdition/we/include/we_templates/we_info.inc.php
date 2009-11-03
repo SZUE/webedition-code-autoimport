@@ -87,12 +87,6 @@ $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 							"colspan" => 3), getPixel($_widthTotal,10));
 
 //	7th copyright
-/*
-$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,5));
-$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
-							"class" => "small"), "&copy; 2000-2009 Living-e AG. " . $l_global["all_rights_reserved"]);
-$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
-*/
 
 //	8th row
 $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
