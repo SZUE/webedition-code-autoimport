@@ -700,7 +700,7 @@ function we_cmd() {
 			new jsWindow(url,"doctypes",-1,-1,800,670,true,true,true);
 			break;
 		case "info":
-			new jsWindow(url,"info",-1,-1,432,340,true,false,true);
+			new jsWindow(url,"info",-1,-1,432,360,true,false,true);
 			break;
 		case "webEdition_online":
 			new jsWindow("http://www.webedition.de/","webEditionOnline",-1,-1,960,700,true,true,true,true);

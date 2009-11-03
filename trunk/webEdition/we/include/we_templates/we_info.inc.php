@@ -57,12 +57,12 @@ $_actRow = 0;
 //	First row with background
 $_table->setCol($_actRow++,0, array(	"colspan" => 3,
 							"width"   => $_widthTotal,
-							"height"  => 110), '<a href="http://www.webedition.de" target="_blank" alt="www.webedition.de" title="www.webedition.de">'.getPixel($_widthTotal,110,0).'</a>');
+							"height"  => 110), '<a href="http://www.webedition.de" target="_blank" alt="www.webedition.de" title="www.webedition.de">'.getPixel($_widthTotal,110,0).'</a><br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
 
 $_table->addRow(2);
 //	spaceholder
 $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
-							"colspan" => 3), getPixel($_widthTotal,15));
+							"colspan" => 3), getPixel($_widthTotal,25));
 
 //	3rd Version
 $_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,1));
