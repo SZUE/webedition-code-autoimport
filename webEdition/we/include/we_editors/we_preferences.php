@@ -3048,6 +3048,8 @@ function build_dialog($selected_setting = "ui") {
 					$_file_tree_count->selectOption($_tree_count);
 				}
 
+				$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
+				array_push($_settings, array('headline' => $l_prefs['use_jupload'], 'html' => htmlSelect('use_jupload',array($l_prefs["no"],$l_prefs["yes"]),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.$l_prefs['juplod_not_installed'].')</span>' : ""), "space" => 200));
 				array_push($_settings, array("headline" => $l_prefs["tree_title"], "html" => htmlAlertAttentionBox($l_prefs["tree_count_description"],2,200)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
 			 }
 
@@ -4571,10 +4573,8 @@ else {
 				
 				array_push($_settings, array("headline" => $l_prefs['db_set_charset'], "html" => $html_db_charset_information.$_db_set_charset->getHtmlCode().$html_db_charset_warning, "space" => 200));
 
-				$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
-				
-				
-				array_push($_settings, array('headline' => $l_prefs['use_jupload'], 'html' => htmlSelect('use_jupload',array($l_prefs["no"],$l_prefs["yes"]),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.$l_prefs['juplod_not_installed'].')</span>' : ""), "space" => 200));
+				//$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
+				//array_push($_settings, array('headline' => $l_prefs['use_jupload'], 'html' => htmlSelect('use_jupload',array($l_prefs["no"],$l_prefs["yes"]),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.$l_prefs['juplod_not_installed'].')</span>' : ""), "space" => 200));
 
 				// Generate needed JS
 				$_needed_JavaScript .= "
