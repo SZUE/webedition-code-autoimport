@@ -234,7 +234,7 @@ $l_backup['error_timeout'] = 'Varmuuskopioinnin aikatkaisu. Varmuuskopiointia ei
 
 $l_backup["export_spellchecker_data"] = "Tallenna oikeinkirjoituksen tarkastajan data";
 $l_backup["import_spellchecker_data"] = "Palaute oikeinkirjoituksen tarkastajan data";
-$l_backup['spellchecker_info'] = 'Oikeikirjoituksen tarkastuksen tiedot: asetukset, yleiset- ja henkilökohtaiset sanastot';
+$l_backup['spellchecker_info'] = 'Oikeikirjoituksen tarkastuksen tiedot: asetukset, yleiset- ja henkilökohtaiset sanastot.';
 
 $l_backup["import_banner_data"] = "Palauta banneritiedot";
 $l_backup["export_banner_data"] = "Tallenna banneritiedot";

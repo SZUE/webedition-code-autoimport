@@ -197,7 +197,7 @@ $l_backup['workflow_info'] = 'Données du module gestion de flux.';
 $l_backup['todo_info'] = 'Messages et tâches du module tâches/messageries.';
 $l_backup['newsletter_info'] = 'Données du module lettre d\'info.';
 $l_backup['banner_info'] = 'Données du module de banière/statistique.';
-$l_backup['schedule_info'] = 'Données du module Ordonnanceur .';
+$l_backup['schedule_info'] = 'Données du module Ordonnanceur.';
 $l_backup['settings_info'] = 'Préférences du logiciel webEdition.';
 $l_backup['temporary_info'] = 'Données des document et objects non publié.';
 $l_backup['export_info'] = 'Données du modul d\'export.';
@@ -232,7 +232,7 @@ $l_backup['error_timeout'] = 'An timeout occured while creating the backup, so t
 
 $l_backup["export_spellchecker_data"] = "Save spellchecker data"; // TRANSLATE
 $l_backup["import_spellchecker_data"] = "Restore spellchecker data"; // TRANSLATE
-$l_backup['spellchecker_info'] = 'Data for spellchecker: settings, general and personal dictionaries'; // TRANSLATE
+$l_backup['spellchecker_info'] = 'Data for spellchecker: settings, general and personal dictionaries.'; // TRANSLATE
 
 $l_backup["import_banner_data"] = "Restauer les données de bannière";
 $l_backup["export_banner_data"] = "Sauvegarder les données de bannière";
