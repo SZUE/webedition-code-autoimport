@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * webEdition CMS
@@ -121,7 +121,7 @@ $l_javaMenu["publish"] = "Publish"; // TRANSLATE
 $l_javaMenu["delete"] = "Удалить";
 
 	##################################
-	##### SubMenu Datei/L�schen ######
+	##### SubMenu Datei/L�schen ######
 	##################################
 
 	$l_javaMenu["documents"] = "Документы";
@@ -250,11 +250,12 @@ $l_javaMenu["inactive_extras"] = "Inactive Extras"; // TRANSLATE
 
 $l_javaMenu["help"] = "Помощь";
 $l_javaMenu["onlinehelp"] = "Online help"; // TRANSLATE
-$l_javaMenu["onlinehelp_documentation"] = "Online documentation";
+$l_javaMenu["onlinehelp_documentation"] = "онлайн документация";
 $l_javaMenu["onlinehelp_forum"] = "webEdition forums";
 $l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker";
-$l_javaMenu["onlinehelp_tagreference"] = "Tag reference";
-$l_javaMenu["onlinehelp_demo"] = "Online demo";
+$l_javaMenu["onlinehelp_tagreference"] = "Список тэгов";
+$l_javaMenu["onlinehelp_demo"] = "Демосайты";
+$l_javaMenu["onlinehelp_changelog"] = "История версий";
 $l_javaMenu["webEdition_online"] = "webEdition online"; // TRANSLATE
 $l_javaMenu["sidebar"] = "Sidebar"; // TRANSLATE
 $l_javaMenu["update"] = "Обновить";

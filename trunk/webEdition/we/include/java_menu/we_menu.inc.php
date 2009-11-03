@@ -846,11 +846,57 @@ $we_menu["5000000"]["text"] = $l_javaMenu["help"];
 $we_menu["5000000"]["parent"] = "0000000";
 $we_menu["5000000"]["enabled"] = "1";
 
-	$we_menu["5010000"]["text"] = $l_javaMenu["onlinehelp"] . "...";
+	$we_menu["5010000"]["text"] = $l_javaMenu["onlinehelp"];
 	$we_menu["5010000"]["parent"] = "5000000";
-	$we_menu["5010000"]["cmd"] = "help";
-    $we_menu["5010000"]["perm"] = "";
+	//$we_menu["5010000"]["cmd"] = "help";
+    //$we_menu["5010000"]["perm"] = "";
 	$we_menu["5010000"]["enabled"] = "1";
+	
+	$we_menu["5010001"]["text"] = $l_javaMenu["onlinehelp"] . "...";
+	$we_menu["5010001"]["parent"] = "5010000";
+	$we_menu["5010001"]["cmd"] = "help";
+    $we_menu["5010001"]["perm"] = "";
+	$we_menu["5010001"]["enabled"] = "1";
+
+	$we_menu["5010002"]["parent"] = "5010000"; // separator
+	
+	$we_menu["5010003"]["text"] = $l_javaMenu["onlinehelp_documentation"] . "...";
+	$we_menu["5010003"]["parent"] = "5010000";
+	$we_menu["5010003"]["cmd"] = "help_documentation";
+    $we_menu["5010003"]["perm"] = "";
+	$we_menu["5010003"]["enabled"] = "1";
+
+	$we_menu["5010004"]["text"] = $l_javaMenu["onlinehelp_tagreference"] . "...";
+	$we_menu["5010004"]["parent"] = "5010000";
+	$we_menu["5010004"]["cmd"] = "help_tagreference";
+    $we_menu["5010004"]["perm"] = "";
+	$we_menu["5010004"]["enabled"] = "1";
+
+	$we_menu["5010005"]["text"] = $l_javaMenu["onlinehelp_forum"] . "...";
+	$we_menu["5010005"]["parent"] = "5010000";
+	$we_menu["5010005"]["cmd"] = "help_forum";
+    $we_menu["5010005"]["perm"] = "";
+	$we_menu["5010005"]["enabled"] = "1";
+
+	$we_menu["5010006"]["text"] = $l_javaMenu["onlinehelp_bugtracker"] . "...";
+	$we_menu["5010006"]["parent"] = "5010000";
+	$we_menu["5010006"]["cmd"] = "help_bugtracker";
+    $we_menu["5010006"]["perm"] = "";
+	$we_menu["5010006"]["enabled"] = "1";
+
+	$we_menu["5010007"]["text"] = $l_javaMenu["onlinehelp_demo"] . "...";
+	$we_menu["5010007"]["parent"] = "5010000";
+	$we_menu["5010007"]["cmd"] = "help_demo";
+    $we_menu["5010007"]["perm"] = "";
+	$we_menu["5010007"]["enabled"] = "1";
+	
+	$we_menu["5010008"]["parent"] = "5010000"; // separator
+	
+	$we_menu["5010009"]["text"] = $l_javaMenu["onlinehelp_changelog"] . "...";
+	$we_menu["5010009"]["parent"] = "5010000";
+	$we_menu["5010009"]["cmd"] = "help_changelog";
+    $we_menu["5010009"]["perm"] = "";
+	$we_menu["5010009"]["enabled"] = "1";
 
 	if(!defined("SIDEBAR_DISABLED") || SIDEBAR_DISABLED == 0) {
 		$we_menu["5015000"]["text"] = $l_javaMenu["sidebar"] . "...";

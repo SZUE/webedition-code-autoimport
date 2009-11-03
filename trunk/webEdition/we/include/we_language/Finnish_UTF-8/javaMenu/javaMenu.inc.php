@@ -250,6 +250,12 @@ $l_javaMenu["inactive_extras"] = "Toimettomat extrat";
 
 $l_javaMenu["help"] = "Ohje";
 $l_javaMenu["onlinehelp"] = "Online ohje";
+$l_javaMenu["onlinehelp_documentation"] = "Onlinedokumentaatio";
+$l_javaMenu["onlinehelp_forum"] = "Keskustelufoorumi";
+$l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker";
+$l_javaMenu["onlinehelp_tagreference"] = "Tagi hakemisto";
+$l_javaMenu["onlinehelp_demo"] = "Demosivut";
+$l_javaMenu["onlinehelp_changelog"] = "Versiohistoria";
 $l_javaMenu["webEdition_online"] = "webEdition online";
 $l_javaMenu["sidebar"] = "Sivupalkki";
 $l_javaMenu["update"] = "Päivitä";

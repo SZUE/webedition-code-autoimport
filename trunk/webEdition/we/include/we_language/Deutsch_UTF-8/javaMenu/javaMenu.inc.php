@@ -255,6 +255,12 @@ $l_javaMenu["inactive_extras"] = "Inaktive Extras";
 
 $l_javaMenu["help"] = "Hilfe";
 $l_javaMenu["onlinehelp"] = "Online-Hilfe";
+$l_javaMenu["onlinehelp_documentation"] = "Online-Dokumentation";
+$l_javaMenu["onlinehelp_forum"] = "webEdition Forum";
+$l_javaMenu["onlinehelp_bugtracker"] = "Bugtracker";
+$l_javaMenu["onlinehelp_tagreference"] = "Tagreferenz";
+$l_javaMenu["onlinehelp_demo"] = "Online-Demo";
+$l_javaMenu["onlinehelp_changelog"] = "Versionshistorie";
 $l_javaMenu["webEdition_online"] = "webEdition im Internet";
 $l_javaMenu["sidebar"] = "Sidebar";
 $l_javaMenu["update"] = "Update";

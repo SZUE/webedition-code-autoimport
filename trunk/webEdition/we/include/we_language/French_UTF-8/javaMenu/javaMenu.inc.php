@@ -251,6 +251,12 @@ $l_javaMenu["inactive_extras"] = "Inactive Extras"; // TRANSLATE
 
 $l_javaMenu["help"] = "Aide";
 $l_javaMenu["onlinehelp"] = "Aide en ligne";
+$l_javaMenu["onlinehelp_documentation"] = "Documentation en ligne";
+$l_javaMenu["onlinehelp_forum"] = "webEdition forums";
+$l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker";
+$l_javaMenu["onlinehelp_tagreference"] = "Reference d'étiquete";
+$l_javaMenu["onlinehelp_demo"] = "Online demo";
+$l_javaMenu["onlinehelp_changelog"] = "Version histoire";
 $l_javaMenu["webEdition_online"] = "webEdition online"; // TRANSLATE
 $l_javaMenu["sidebar"] = "Sidebar"; // TRANSLATE
 $l_javaMenu["update"] = "Mise à jour";
