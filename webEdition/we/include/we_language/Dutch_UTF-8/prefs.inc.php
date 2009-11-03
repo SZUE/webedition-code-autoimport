@@ -236,7 +236,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 * TEMPLATE EDITOR
 	 */
 	
-	$l_prefs["editor_information"] = "Specificeer lettertype en grootte die gebruikt moet worden bij het wijzigen van sjablonen, CSS- en Java Script bestanden binnen webEdition.<br /><br />Deze instellingen worden gebruikt voor de tekst editor van de bovengenoemde bestands types.";
+	$l_prefs["editor_information"] = "Specificeer lettertype en grootte die gebruikt moet worden bij het wijzigen van sjablonen, CSS- en JavaScript bestanden binnen webEdition.<br /><br />Deze instellingen worden gebruikt voor de tekst editor van de bovengenoemde bestands types.";
 	
 	$l_prefs["editor_mode"] = 'Editor';
 	$l_prefs["editor_font"] = 'Lettertype in editor';
