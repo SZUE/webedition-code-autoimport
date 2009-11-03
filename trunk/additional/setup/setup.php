@@ -826,6 +826,9 @@ ob_end_clean();
 	<meta http-equiv="imagetoolbar" content="no">
 	<meta name="generator" content="webEdition Version <?php echo WE_VERSION ?>">
 	<style type="text/css">
+	body, div, div.small, table, td, font, li, form {
+		font-size:8pt;
+	}
 	fieldset {
 		border:1px solid #888;
 	}
@@ -843,6 +846,12 @@ ob_end_clean();
 		font-size:9pt;
 		font-weight:normal;
 		border-bottom:1px solid #333;
+	}
+	a {
+		color:#000000;
+	}
+	a:visited {
+		color:#000000;
 	}
 	</style>
 	<link href="/webEdition/css/global.php?WE_LANGUAGE=English_UTF-8" rel="styleSheet" type="text/css">
@@ -870,7 +879,7 @@ ob_end_clean();
 							</tr>
 							<tr>
 								<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
-								<td width="402" class="small">
+								<td width="402">
 								<?php 
 								echo $stepTitle;
 								echo $output; 
