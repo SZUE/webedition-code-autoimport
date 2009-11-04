@@ -369,10 +369,13 @@ function we_cmd(){
 		// it must be the last command
 		case "delete_navi":
 			<?php include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');?>
+			for(var i = 0; i < arguments.length; i++){arguments[i]=encodeURIComponent(arguments[i]);}
 			if(!confirm("<?php print $l_navigation['del_question']?>")) break;
 		default:
 			for(var i = 0; i < arguments.length; i++){
-				args += 'encodeURIComponent(arguments['+i+'])' + ((i < (arguments.length-1)) ? ',' : '');
+				
+				args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+			
 			}
 			eval('parent.we_cmd('+args+')');
 	}
