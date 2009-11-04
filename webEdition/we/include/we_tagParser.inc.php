@@ -1177,7 +1177,7 @@ EOF;
 		$workspaceID = we_getTagAttributeTagParser("workspaceID", $arr);
 		$workspaceID = $workspaceID ? $workspaceID : we_getTagAttributeTagParser("workspaceid", $arr, "");
 		
-        $languages = we_getTagAttributeTagParser("Languages", $arr,'');
+        $languages = we_getTagAttributeTagParser("languages", $arr,'');
         
 		$triggerid = we_getTagAttributeTagParser("triggerid", $arr, "0");
 		$docid = we_getTagAttributeTagParser("docid", $arr, "0");
