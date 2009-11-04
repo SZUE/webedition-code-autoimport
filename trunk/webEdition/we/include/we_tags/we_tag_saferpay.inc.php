@@ -47,8 +47,8 @@ function we_tag_saferpay($attribs) {
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = we_getTagAttribute("pricename",$attribs);
 	$shipping = we_getTagAttribute("shipping",$attribs);
-	$shippingIsNet = we_getTagAttribute("shippingIsNet",$attribs);
-	$shippingVatRate = we_getTagAttribute("shippingVatRate",$attribs);
+	$shippingIsNet = we_getTagAttribute("shippingisnet",$attribs);
+	$shippingVatRate = we_getTagAttribute("shippingvatrate",$attribs);
 	$languagecode = we_getTagAttribute("languagecode",$attribs);
 
 	$onsuccess = we_getTagAttribute("onsuccess",$attribs);

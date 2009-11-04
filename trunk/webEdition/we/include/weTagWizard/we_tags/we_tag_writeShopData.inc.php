@@ -8,7 +8,7 @@ $GLOBALS['weTagWizard']['attribute']['id618_shopname'] = new weTagData_textAttri
 $GLOBALS['weTagWizard']['attribute']['id619_pricename'] = new weTagData_textAttribute('619', 'pricename', true, '');
 $GLOBALS['weTagWizard']['attribute']['id620_netprices'] = new weTagData_selectAttribute('620', 'netprices', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id837_shipping'] = new weTagData_textAttribute('837', 'shipping', false, '');
-$GLOBALS['weTagWizard']['attribute']['id838_shippingIsNet'] = new weTagData_textAttribute('838', 'shippingIsNet', false, '');
-$GLOBALS['weTagWizard']['attribute']['id839_shippingVatRate'] = new weTagData_textAttribute('839', 'shippingVatRate', false, '');
+$GLOBALS['weTagWizard']['attribute']['id838_shippingisnet'] = new weTagData_textAttribute('838', 'shippingisnet', false, '');
+$GLOBALS['weTagWizard']['attribute']['id839_shippingvatrate'] = new weTagData_textAttribute('839', 'shippingvatrate', false, '');
 
 ?>

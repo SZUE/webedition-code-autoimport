@@ -12,8 +12,8 @@ $GLOBALS['weTagWizard']['attribute']['id433_usevat'] = new weTagData_selectAttri
 
 $GLOBALS['weTagWizard']['attribute']['id836_languagecode'] = new weTagData_textAttribute('836', 'languagecode', false, '');
 $GLOBALS['weTagWizard']['attribute']['id837_shipping'] = new weTagData_textAttribute('837', 'shipping', false, '');
-$GLOBALS['weTagWizard']['attribute']['id838_shippingIsNet'] = new weTagData_textAttribute('838', 'shippingIsNet', false, '');
-$GLOBALS['weTagWizard']['attribute']['id839_shippingVatRate'] = new weTagData_textAttribute('839', 'shippingVatRate', false, '');
+$GLOBALS['weTagWizard']['attribute']['id838_shippingisnet'] = new weTagData_textAttribute('838', 'shippingisnet', false, '');
+$GLOBALS['weTagWizard']['attribute']['id839_shippingvatrate'] = new weTagData_textAttribute('839', 'shippingvatrate', false, '');
 
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id434_onsuccess'] = new weTagData_selectorAttribute('434', 'onsuccess',FILE_TABLE, 'text/webedition', false, ''); }
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id435_onfailure'] = new weTagData_selectorAttribute('435', 'onfailure',FILE_TABLE, 'text/webedition', false, ''); }
