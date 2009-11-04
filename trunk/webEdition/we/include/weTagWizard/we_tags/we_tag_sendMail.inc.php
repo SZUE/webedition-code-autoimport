@@ -14,7 +14,7 @@ $GLOBALS['weTagWizard']['attribute']['id456_reply'] = new weTagData_textAttribut
 $GLOBALS['weTagWizard']['attribute']['id457_mimetype'] = new weTagData_selectAttribute('457', 'mimetype', array(new weTagDataOption('text/plain', false, ''), new weTagDataOption('text/html', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id458_charset'] = new weTagData_textAttribute('458', 'charset', false, '');
 $GLOBALS['weTagWizard']['attribute']['id814_includeimages'] = new weTagData_selectAttribute('814', 'includeimages', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id827_useBaseHref'] = new weTagData_selectAttribute('827', 'useBaseHref', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id828_useFormmailLog'] = new weTagData_selectAttribute('828', 'useFormmailLog', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id829_useFormmailBlock'] = new weTagData_selectAttribute('829', 'useFormmailBlock', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id827_usebasehref'] = new weTagData_selectAttribute('827', 'usebasehref', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id828_useformmaillog'] = new weTagData_selectAttribute('828', 'useformmaillog', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id829_useformmailblock'] = new weTagData_selectAttribute('829', 'useformmailblock', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 ?>
