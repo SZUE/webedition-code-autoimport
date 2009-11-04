@@ -51,12 +51,12 @@ function we_tag_paypal($attribs) {
 	$countrycode = we_getTagAttribute("countrycode",$attribs);
 	$languagecode = we_getTagAttribute("languagecode",$attribs);
 	$shipping = we_getTagAttribute("shipping",$attribs);
-	$shippingIsNet = we_getTagAttribute("shippingIsNet",$attribs);
-	$shippingVatRate = we_getTagAttribute("shippingVatRate",$attribs);
-	$messageRedirectAuto = we_getTagAttribute("messageRedirectAuto",$attribs);
+	$shippingIsNet = we_getTagAttribute("shippingisnet",$attribs);
+	$shippingVatRate = we_getTagAttribute("shippingvatrate",$attribs);
+	$messageRedirectAuto = we_getTagAttribute("messageredirectauto",$attribs);
 
-	$messageRedirectMan = we_getTagAttribute("messageRedirectMan",$attribs);
-		$formTagOnly = we_getTagAttribute("formTagOnly",$attribs,'false', true);
+	$messageRedirectMan = we_getTagAttribute("messageredirectman",$attribs);
+		$formTagOnly = we_getTagAttribute("formtagonly",$attribs,'false', true);
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
