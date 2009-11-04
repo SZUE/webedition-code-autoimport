@@ -1164,7 +1164,7 @@ EOF;
 		$catOr = we_getTagAttributeTagParser("catOr", $arr, "", true);
 		$rows = we_getTagAttributeTagParser("rows", $arr, "100000000");
 		$order = we_getTagAttributeTagParser("order", $arr);
-		$numericalOrder = we_getTagAttributeTagParser("numericalOrder", $arr, "", true);
+		$numorder = we_getTagAttributeTagParser("numorder", $arr, "", true);
 		$id = we_getTagAttributeTagParser("id", $arr);
 		$cond = we_getTagAttributeTagParser("condition", $arr);
 		$type = we_getTagAttributeTagParser("type", $arr, "document");
@@ -1219,7 +1219,7 @@ $we_lv_desc = (isset($_REQUEST["we_lv_desc_' . $name . '"]) ? $_REQUEST["we_lv_d
 $we_lv_se = (isset($_REQUEST["we_lv_se_' . $name . '"]) ? $_REQUEST["we_lv_se_' . $name . '"] : "' . $searchable . '") ? true : false;
 $we_lv_ct = isset($_REQUEST["we_lv_ct_' . $name . '"]) ? $_REQUEST["we_lv_ct_' . $name . '"] : "' . $contentTypes . '";
 $we_lv_order = isset($_REQUEST["we_lv_order_' . $name . '"]) ? $_REQUEST["we_lv_order_' . $name . '"] : "' . $order . '";
-$we_lv_numericalOrder = (isset($_REQUEST["we_lv_numericalOrder_' . $name . '"]) ? $_REQUEST["we_lv_numericalOrder_' . $name . '"] : "' . $numericalOrder . '") ? true : false;
+$we_lv_numorder = (isset($_REQUEST["we_lv_numorder_' . $name . '"]) ? $_REQUEST["we_lv_numorder_' . $name . '"] : "' . $numorder . '") ? true : false;
 $we_lv_ws = isset($_REQUEST["we_lv_ws_' . $name . '"]) ? $_REQUEST["we_lv_ws_' . $name . '"] : "' . $workspaceID . '";
 $we_lv_cats = isset($_REQUEST["we_lv_cats_' . $name . '"]) ? $_REQUEST["we_lv_cats_' . $name . '"] : "' . $categories . '";
 $we_lv_categoryids = isset($_REQUEST["we_lv_categoryids_' . $name . '"]) ? $_REQUEST["we_lv_categoryids_' . $name . '"] : "' . $categoryids . '";
@@ -1252,13 +1252,13 @@ if($we_lv_doctype=="we_doc"){
 		}
 		if ($type == "document") {
 			$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_listview.class.php");
-$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", ' . $subfolders . ', "' . $customers . '", "' . $id . '", "' . $we_lv_languages . '", $we_lv_numericalOrder);
+$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", ' . $subfolders . ', "' . $customers . '", "' . $id . '", "' . $we_lv_languages . '", $we_lv_numorder);
 ';
 		
 		} else 
 			if ($type == "search") {
 				$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_search_listview.class.php");
-$GLOBALS["lv"] = new we_search_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", "' . $class . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, "' . $cols . '", "' . $cfilter . '", "' . $we_lv_languages .'", $we_lv_numericalOrder);
+$GLOBALS["lv"] = new we_search_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", "' . $class . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, "' . $cols . '", "' . $cfilter . '", "' . $we_lv_languages .'", $we_lv_numorder);
 if(!isset($GLOBALS["weEconda"])) {
 	$GLOBALS["weEconda"] = "";
 }
