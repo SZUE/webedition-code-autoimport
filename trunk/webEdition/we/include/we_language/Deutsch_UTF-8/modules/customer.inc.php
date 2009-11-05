@@ -193,7 +193,7 @@ $l_customer["csv_fieldnames"]="Erste Zeile enthält Feldnamen";
 
 $l_customer["generic_export"]="Generic-Export";
 $l_customer["gxml_export"]="Generic-XML Export";
-$l_customer["txt_gxml_export"]="Export zu \"flachen\" XML-Dateien, wie sie z.B. von phpMyAdmin erzeugt werden. Die Kunden Felder werden den Datensatz-Feldern zugeordnet.";
+$l_customer["txt_gxml_export"]="Export zu \"flachen\" XML-Dateien, wie sie z. B. von phpMyAdmin erzeugt werden. Die Kunden Felder werden den Datensatz-Feldern zugeordnet.";
 $l_customer["csv_export"]="CSV Export";
 $l_customer["txt_csv_export"]="Export zu CSV-Dateien (Comma Separated Values) oder davon abgewandelter Textformate (z. B. *.txt). Die Kunden Felder werden den Datensatz-Feldern zugeordnet.";
 $l_customer["csv_params"]="CSV-Daten Einstellungen";
@@ -231,7 +231,7 @@ $l_customer["download_failed"]="Die angeforderte Datei existiert entweder nicht 
 
 $l_customer["generic_import"]="Generic-Import";
 $l_customer["gxml_import"]="Generic-XML Import";
-$l_customer["txt_gxml_import"]="Import von \"flachen\" XML-Dateien, wie sie z.B. von phpMyAdmin erzeugt werden. Die Datensatz-Feldern werden der Kunden Felder zugeordnet.";
+$l_customer["txt_gxml_import"]="Import von \"flachen\" XML-Dateien, wie sie z. B. von phpMyAdmin erzeugt werden. Die Datensatz-Feldern werden der Kunden Felder zugeordnet.";
 $l_customer["csv_import"]="CSV Import";
 $l_customer["txt_csv_import"]="Import von CSV-Dateien (Comma Separated Values) oder davon abgewandelter Textformate (z. B. *.txt). Die Datensatz-Feldern werden der Kunden Felder zugeordnet.";
 $l_customer["source_file"]="Quelldatei";
