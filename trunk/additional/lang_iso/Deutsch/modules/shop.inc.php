@@ -139,11 +139,11 @@ $l_shop["saferpayUnotifyTxt"] = "* Bestätigungsmail an Kunden";
 $l_shop["saferpayProviderset"] = "Providerset";
 $l_shop["saferpayProvidersetTxt"] = "* kommasepariert!";
 $l_shop["saferpayCMDPath"] = "exec-path";
-$l_shop["saferpayCMDPathTxt"] = "* z.B. /usr/local/bin/";
+$l_shop["saferpayCMDPathTxt"] = "* z. B. /usr/local/bin/";
 $l_shop["saferpayconfPath"] = "conf-path";
 $l_shop["saferpayconfPathTxt"] = "* Pfad zu saferpay";
 $l_shop["saferpaydesc"] = "Beschreibung";
-$l_shop["saferpaydescTxt"] = "* z.B. Bestellung";
+$l_shop["saferpaydescTxt"] = "* z. B. Bestellung";
 $GLOBALS['l_shop']["saferpayError"] = "Saferpay ist nicht korrekt installiert. Bitte konfigurieren Sie Ihren Account. saferpay gibt die folgenden Variablen zurück:\n<br/>";
 $l_shop["NoRevenue"] = "Im ausgewählten Zeitraum existieren keine Umsätze";
 

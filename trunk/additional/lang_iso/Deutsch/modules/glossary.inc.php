@@ -58,7 +58,7 @@ $l_glossary['download'] = "Lade Wörterbücher...";
 
 
 $l_glossary['acronym'] = "Akronym";
-$l_glossary['acronym_description'] = "Ein Akronym ist eine besondere Abkürzung, die aus den Anfangsbuchstaben mehrerer (Teil-) Wörter gebildet wird. Es wird im Deutschen in der Regel ohne Punkt gebildet ('Lkw'). Ein Akronym lässt sich darüber hinaus meist als Wort aussprechen (z.B. 'NATO').";
+$l_glossary['acronym_description'] = "Ein Akronym ist eine besondere Abkürzung, die aus den Anfangsbuchstaben mehrerer (Teil-) Wörter gebildet wird. Es wird im Deutschen in der Regel ohne Punkt gebildet ('Lkw'). Ein Akronym lässt sich darüber hinaus meist als Wort aussprechen (z. B. 'NATO').";
 $l_glossary['abbreviation'] = "Abkürzung";
 $l_glossary['abbreviation_description'] = "Abkürzung (auch Abbreviatur, Kürzel) bezeichnet die verkürzte Form eines Wortes oder einer Wortgruppe. Hierzu gehören Akronyme, Kurzwörter, Initialwörter und Buchstabenketten. Was man abkürzt, ist auch gesellschaftlich bedingt. So erscheinen Abkürzungen wie AB für Anrufbeantworter oder HP für Homepage als regional, national oder durch die Textsorte begrenzt. Eine Abkürzung ist eine Schreib- und Leseerleichterung, sie dient der schnelleren und konzentrierteren Kommunikation. Des Weiteren dient die Abkürzung auch der Platzersparnis.";
 $l_glossary['foreignword'] = "Fremdwort";

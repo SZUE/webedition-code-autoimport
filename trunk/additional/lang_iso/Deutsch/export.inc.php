@@ -156,7 +156,7 @@ $l_export['download_starting3'] = 'Sollte der Download nach 10 Sekunden nicht st
 $l_export['working'] = 'Arbeiten';
 
 $l_export['txt_document_options'] = 'Die Standard-Vorlage ist die Vorlage die in den Dokument-Eigenschaften definiert wurde. Die enthaltenen Dokumente sind die interne Dokumente die über die Tags we:include, we:form, we:url, we:linkToSeeMode, we:a, we:href, we:link, we:css, we:js, we:addDelNewsletterEmail in das exportierte Dokument eingebunden werden. Die enthaltenen Objekte sind die Objekte die über die Tags we:object und we:form in das exportierte Dokument eingebunden werden. Die verlinkten Dokumente sind die internen Dokumente die über die HTML-Tags body, a, img, table, td mit dem exportierten Dokument verlinkt sind.';
-$l_export['txt_object_options'] = 'Die Standard-Klasse ist die Klasse die in den Objekt-Eigenschaften definiert wurde. Um die in den Objekten enthaltenen interne Dokumente, z.B. Bilder, zu exportieren, aktivieren Sie bitte die Option "Enthaltene Dokumente exportieren" weiter oben.';
+$l_export['txt_object_options'] = 'Die Standard-Klasse ist die Klasse die in den Objekt-Eigenschaften definiert wurde. Um die in den Objekten enthaltenen interne Dokumente, z. B. Bilder, zu exportieren, aktivieren Sie bitte die Option "Enthaltene Dokumente exportieren" weiter oben.';
 $l_export['txt_exportdeep_options'] = 'Die Export Tiefe ist die Tiefe bis zu der die enthaltenen Dokumente bzw. Objekte exportiert werden. Das Feld muss numerisch sein!';
 $l_export['name_empty'] = 'Der Name darf nicht leer sein!';
 $l_export['name_exists'] = 'Der Name existiert bereits!';
