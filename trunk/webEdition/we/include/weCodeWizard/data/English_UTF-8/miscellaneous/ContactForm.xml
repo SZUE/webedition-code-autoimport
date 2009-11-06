@@ -53,7 +53,7 @@
       <input type="text" name="Phone" id="Phone" />
     </p>
     <p>
-      <label for="EMailAddress">E-mail address*:</label>
+      <label for="EMailAddress">email address*:</label>
       <input type="text" name="email" id="email" />
     </p>
     <p>

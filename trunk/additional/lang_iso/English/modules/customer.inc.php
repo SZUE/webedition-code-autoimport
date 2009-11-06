@@ -88,8 +88,8 @@ $l_customer["branch"] = "View";
 $l_customer["field_name"] = "Name";
 $l_customer["field_type"] = "Type";
 $l_customer["field_default"] = "Default";
-$l_customer["add_mail"] = "Insert E-mail";
-$l_customer["edit_mail"] = "Edit E-mail";
+$l_customer["add_mail"] = "Insert email";
+$l_customer["edit_mail"] = "Edit email";
 
 $l_customer["no_branch"] = "No view has been selected!";
 $l_customer["no_field"] = "No field has been selected!";

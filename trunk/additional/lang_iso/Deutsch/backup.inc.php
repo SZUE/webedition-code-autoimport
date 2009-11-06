@@ -238,7 +238,7 @@ $l_backup['error_timeout'] = 'Bei der Erstellung des Backup ist ein timeout aufg
 
 $l_backup["export_spellchecker_data"] = "Daten der Rechtschreibprüfung sichern";
 $l_backup["import_spellchecker_data"] = "Daten der Rechtschreibprüfung wiederherstellen";
-$l_backup['spellchecker_info'] = 'Daten der Rechtschreibprüfung: Einstellungen, allgemeine und persönliche Wörterbücher';
+$l_backup['spellchecker_info'] = 'Daten der Rechtschreibprüfung: Einstellungen, allgemeine und persönliche Wörterbücher.';
 
 $l_backup["export_banner_data"] = "Bannerdaten sichern";
 $l_backup["import_banner_data"] = "Bannerdaten wiederherstellen";

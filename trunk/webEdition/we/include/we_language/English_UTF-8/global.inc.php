@@ -44,7 +44,7 @@ $GLOBALS["l_global"]["email_notallfields"] = "You have not filled all required f
 $GLOBALS["l_global"]["email_ban"] = "You do not have the rights to use this script!";
 $GLOBALS["l_global"]["email_recipient_invalid"] = "The recipient's address is invalid!";
 $GLOBALS["l_global"]["email_no_recipient"] = "The recipient's address does not exist!";
-$GLOBALS["l_global"]["email_invalid"] = "Your <b>E-mail address</b> is invalid!";
+$GLOBALS["l_global"]["email_invalid"] = "Your <b>email address</b> is invalid!";
 $GLOBALS["l_global"]["captcha_invalid"] = "The entered security code is wrong!";
 $GLOBALS["l_global"]["question"] = "Question";
 $GLOBALS["l_global"]["warning"] = "Warning";
@@ -52,7 +52,7 @@ $GLOBALS["l_global"]["we_alert"] = "This function is not availabe in the demo ve
 $GLOBALS["l_global"]["index_table"] = "Index table";
 $GLOBALS["l_global"]["cannotconnect"] = "Cannot connect to the webEdition server!";
 $GLOBALS["l_global"]["recipients"] = "Formmail recipients";
-$GLOBALS["l_global"]["recipients_txt"] = "Please enter all E-mail addresses which should receive forms sent by the formmail function (&lt;we:form type=&quot;formmail&quot; ..&gt;). If you do not enter an E-mail address, you cannot send forms using the formmail function!";
+$GLOBALS["l_global"]["recipients_txt"] = "Please enter all email addresses which should receive forms sent by the formmail function (&lt;we:form type=&quot;formmail&quot; ..&gt;). If you do not enter an email address, you cannot send forms using the formmail function!";
 $GLOBALS["l_global"]["std_mailtext_newObj"] = "A new object %s of class %s has been created!";
 $GLOBALS["l_global"]["std_subject_newObj"] = "New object";
 $GLOBALS["l_global"]["std_subject_newDoc"] = "New document";

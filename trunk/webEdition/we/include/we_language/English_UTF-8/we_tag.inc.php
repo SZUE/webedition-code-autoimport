@@ -20,7 +20,7 @@
 
 $l_we_tag['a']['description'] = "The we:a tag creates an HTML link tag that references an internal webEdition document that has the ID listed below. The tag links any content found between the start tag and the end tag.";
 $l_we_tag['a']['defaultvalue'] = "";
-$l_we_tag['addDelNewsletterEmail']['description'] = "This tag is used to add or remove an E-mail address from a newsletter address list. In attribute \"path\" the complete path to the newsletter list must be given. If the path begins without \"/\" the path will be emanated from DOCUMENT_ROOT. If you use several lists, you can enter several paths, separated by a comma.";
+$l_we_tag['addDelNewsletterEmail']['description'] = "This tag is used to add or remove an email address from a newsletter address list. In attribute \"path\" the complete path to the newsletter list must be given. If the path begins without \"/\" the path will be emanated from DOCUMENT_ROOT. If you use several lists, you can enter several paths, separated by a comma.";
 $l_we_tag['addDelShopItem']['description'] = "Use the we:addDelShopItem tag to add or delete an article from the shopping cart.";
 $l_we_tag['addPercent']['description'] = "The we:addPercent tag adds a specified percentage, for example, VAT.";
 $l_we_tag['addPercent']['defaultvalue'] = "";
@@ -328,7 +328,7 @@ $l_we_tag['select']['description'] = "The we:select tag creates a select box for
 $l_we_tag['select']['defaultvalue'] = "&lt;option&gt;#1&lt;/option&gt;
 &lt;option&gt;#2&lt;/option&gt;
 &lt;option&gt;#3&lt;/option&gt;";
-$l_we_tag['sendMail']['description'] = "This tag sends a webEdition page as an E-mail to the addresses which are defined in the attribute \"recipient\".";
+$l_we_tag['sendMail']['description'] = "This tag sends a webEdition page as an email to the addresses which are defined in the attribute \"recipient\".";
 $l_we_tag['sessionField']['description'] = "The we:sessionField tag creates an HTML input, select or text area tag. It is used for any input in session fields (e. g. Userdata, etc.).";
 $l_we_tag['sessionLogout']['description'] = "The we:sessionLogout tag creates an HTML link tag referring to an internal webEdition document with the ID mentioned in the webEdition Tag Wizard. If this webEdition document has a we:sessionStart tag and holds the attribute \"dynamic\", the active session will be cleared and closed. No data will be saved.";
 $l_we_tag['sessionLogout']['defaultvalue'] = "";
@@ -340,14 +340,14 @@ $l_we_tag['shopVat']['description'] = "This tag is used to determine the VAT for
 $l_we_tag['showShopItemNumber']['description'] = "The we:showShopItemNumber tag shows the amount of specified items in the basket.";
 $l_we_tag['sidebar']['description'] = "";
 $l_we_tag['sidebar']['defaultvalue'] = "Open sidebar";
-$l_we_tag['subscribe']['description'] = "This tag is used to add a single line input field to a webEdition document so that a user wanting to subscribe to a newsletter can enter his or her E-mail address.";
+$l_we_tag['subscribe']['description'] = "This tag is used to add a single line input field to a webEdition document so that a user wanting to subscribe to a newsletter can enter his or her email address.";
 $l_we_tag['sum']['description'] = "The we:sum tag sums up all figures in a list.";
 $l_we_tag['target']['description'] = "This tag is used to generate the link target from within &lt;we:linklist&gt;.";
 $l_we_tag['textarea']['description'] = "The we:textarea tag creates a multi-line input box.";
 $l_we_tag['title']['description'] = "The we:title tag creates a normal title tag. If the title field in the Properties view is empty, everything located between the start tag and the end tag will be used as the default title. Otherwise the title will be entered by the Properties view.";
 $l_we_tag['tr']['description'] = "The &lt;we:tr&gt; Tag corresponds to the HTML-tag &lt;tr&gt; and is used to define a table row.";
 $l_we_tag['tr']['defaultvalue'] = "";
-$l_we_tag['unsubscribe']['description'] = "This tag is used to generate a single input field in a webEdition document so that a user can enter his or her E-mail address to unsubscribe from a news-letter.";
+$l_we_tag['unsubscribe']['description'] = "This tag is used to generate a single input field in a webEdition document so that a user can enter his or her email address to unsubscribe from a news-letter.";
 $l_we_tag['url']['description'] = "The we:url tag creates an internal webEdition URL that references to the document that has the ID listed below.";
 $l_we_tag['userInput']['description'] = "The we:userInput tag creates input fields to use with we:form type=\"document\" or type=\"object\" in order to create documents or objects.";
 $l_we_tag['useShopVariant']['description'] = "The we:shopVariant tag uses the data of a article variant by the submitted name of the variant. Is there no variant with the given name the default article will be displayed.";
