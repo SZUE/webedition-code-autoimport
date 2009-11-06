@@ -4474,7 +4474,7 @@ else {
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "navigation_entries_from_document","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? "folder" : "item");
+					$_php_setting->addOption($i, $i == 0 ? $l_prefs["navigation_entries_from_document_folder"] : $l_prefs["navigation_entries_from_document_item"]);
 
 					// Set selected setting
 					if ($i == 0 && !get_value("navigation_entries_from_document")) {
