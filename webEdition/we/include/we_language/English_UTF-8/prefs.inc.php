@@ -340,6 +340,8 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 * NAVIGATION
 	 */
 	 $l_prefs["navigation_entries_from_document"] = "Create new nav-entries from the document as";
+	 $l_prefs["navigation_entries_from_document_item"] = "item";
+	 $l_prefs["navigation_entries_from_document_folder"] = "folder";
 
 	/**
 	 * DATABASE
