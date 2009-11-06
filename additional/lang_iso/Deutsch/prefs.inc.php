@@ -241,7 +241,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 * TEMPLATE EDITOR
 	 */
 
-	$l_prefs["editor_information"] = "Geben Sie hier Schriftart und Größe an, die für die Bearbeitung der Vorlagen, CSS- und Java Script-Dateien innerhalb von webEdition verwendet werden soll.<br /><br />Diese Einstellungen werden für den Texteditor der obengenannten Dateitypen verwendet.";
+	$l_prefs["editor_information"] = "Geben Sie hier Schriftart und Größe an, die für die Bearbeitung der Vorlagen, CSS- und JavaScript-Dateien innerhalb von webEdition verwendet werden soll.<br /><br />Diese Einstellungen werden für den Texteditor der obengenannten Dateitypen verwendet.";
 
 	$l_prefs["editor_font"] = 'Schrift im Editor';
 	$l_prefs["editor_fontname"] = 'Schriftart';
@@ -456,7 +456,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
  *****************************************************************************/
 	$l_prefs['validation']='Validierung';
 	$l_prefs['xhtml_default'] = 'Standardeinstellung für das <em>xml</em>-Attribut in we:Tags';
-	$l_prefs['xhtml_debug_explanation'] = 'Das XHTML-Debugging unterstützt Sie bei der Erstellung valider Web-Sites. Optional kann jede Ausgabe eines we:Tags auf Gültigkeit kontrolliert werden und bei Bedarf fehlerhafte Attribute entfernt, bzw. angezeigt werden. Bitte beachten Sie, dass dieser Vorgang etwas Zeit erfordert und nur während der Erstellung einer neuen Web-Site benutzt werden sollte.';
+	$l_prefs['xhtml_debug_explanation'] = 'Das XHTML-Debugging unterstützt Sie bei der Erstellung valider Websites. Optional kann jede Ausgabe eines we:Tags auf Gültigkeit kontrolliert werden und bei Bedarf fehlerhafte Attribute entfernt, bzw. angezeigt werden. Bitte beachten Sie, dass dieser Vorgang etwas Zeit erfordert und nur während der Erstellung einer neuen Web-Site benutzt werden sollte.';
 	$l_prefs['xhtml_debug_headline'] = 'XHTML-Debugging';
 	$l_prefs['xhtml_debug_html'] = 'XHTML-Debugging aktivieren';
 	$l_prefs['xhtml_remove_wrong'] = 'Fehlerhafte Attribute entfernen';
