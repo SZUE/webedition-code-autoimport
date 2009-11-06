@@ -796,9 +796,9 @@ function we_cmd() {
 		case "help_changelog":
 			<?php
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
-				echo 'new jsWindow("http://documentation.webedition.de/de/webedition/change-log/start","help_changelog",-1,-1,960,700,true,true,true,true);';
+				echo 'new jsWindow("http://documentation.webedition.de/de/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://documentation.webedition.de/en/webedition/change-log/start","help_changelog",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://documentation.webedition.de/en/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';			
 			}
 			?>
 			break;
