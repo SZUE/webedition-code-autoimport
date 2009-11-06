@@ -329,7 +329,7 @@ $l_we_tag['select']['defaultvalue'] = "&lt;option&gt;#1&lt;/option&gt;
 &lt;option&gt;#2&lt;/option&gt;
 &lt;option&gt;#3&lt;/option&gt;";
 $l_we_tag['sendMail']['description'] = "Das we:sendMail-Tag verschickt eine webEdition-Seite als E-Mail an die im Attribut \"recipient\" eingetragenen Adressen.";
-$l_we_tag['sessionField']['description'] = "Das we:sessionField-Tag erzeugt ein HTML Input, Select oder Textarea-Tag, welches f&uuml;r die Eingabe von Session-Feldern (Userdaten o&auml;.) verwendet wird.";
+$l_we_tag['sessionField']['description'] = "Das we:sessionField-Tag erzeugt ein HTML Input, Select oder Textarea-Tag, welches f&uuml;r die Eingabe von Session-Feldern (Kundendaten o&auml;.) verwendet wird.";
 $l_we_tag['sessionLogout']['description'] = "Das we:sessionLogout-Tag erzeugt ein HTML-Link-Tag, das auf ein webEdition-internes Dokument mit der unten angegebenen ID verweist. Wenn das angegebene Dokument ein we:sessionStart-Tag besitzt und dynamisch gespeichert wurde, dann wird die aktuelle Session gel&ouml;scht.";
 $l_we_tag['sessionLogout']['defaultvalue'] = "";
 $l_we_tag['sessionStart']['description'] = "Dieses Tag dient dazu, eine Session zu beginnen oder eine bestehende fortzusetzen. Dieses Tag wird auf folgenden Vorlagen ben&ouml;tigt: bei Seiten, welche durch die Kundenverwaltung gesch&uuml;tzt sind, bei Shopseiten und bei Frontend-Eingaben (Erzeugung von webEdition-Dokumenten und Objekten &uuml;ber das Frontend).<br />Das Tag muss immer in der ersten Zeile der Vorlage stehen!";
