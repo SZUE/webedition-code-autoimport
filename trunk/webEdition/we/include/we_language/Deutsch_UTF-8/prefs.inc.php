@@ -338,7 +338,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	/**
 	 * NAVIGATION
 	 */
-	 $l_prefs["navigation_entries_from_document"] = "Erzeuge neue Nav-Eintr&auml;ge aus dem Dokument als";
+	 $l_prefs["navigation_entries_from_document"] = "Erzeuge neue Navigations-Einträge aus dem Dokument als";
 	 $l_prefs["navigation_entries_from_document_item"] = "Eintrag";
 	 $l_prefs["navigation_entries_from_document_folder"] = "Ordner";
 
