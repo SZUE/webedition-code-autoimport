@@ -58,7 +58,7 @@ class we_object extends we_document
 
 	var $Templates = "";
 
-	var $SerializedArray;
+	var $SerializedArray = array(); // #3931
 
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_WORKSPACE,WE_EDITPAGE_INFO,WE_EDITPAGE_CONTENT); // ,WE_EDITPAGE_PREVIEW
 
@@ -164,7 +164,7 @@ class we_object extends we_document
 			$q .= " OF_Charset VARCHAR(64) NOT NULL,";
 			$q .= " OF_WebUserID BIGINT NOT NULL,";
 			$q .= " OF_Language VARCHAR(5) default 'NULL',";
-			// Letzter Eintrag darf nicht mit einem Leerzeichen enden, letztes Zeichen mu� ein , sein!!!
+			// Letzter Eintrag darf nicht mit einem Leerzeichen enden, letztes Zeichen mu? ein , sein!!!
 
 			$indexe = "";
 			$indexe .= ', KEY OF_WebUserID (OF_WebUserID)';
@@ -1956,8 +1956,8 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$this->Templates = makeCSVFromArray($tempArr,true);
 	}
 
-	function we_initSessDat($sessDat){
-		//	charset must be in other namespace -> for header !!!
+	function we_initSessDat($sessDat){	    
+		//	charset must be in other namespace -> for header !!! 
 		$this->elements["Charset"]["dat"] = (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : "");
 		we_document::we_initSessDat($sessDat);
 		$this->setSort();
