@@ -55,7 +55,7 @@ $l_we_tag['controlElement']['description'] = "De tag we:controlElement kan contr
 $l_we_tag['cookie']['description'] = "Deze tag is vereist binnen de Peiling module en stelt een cookie in, welke ervoor zorgt dat een gebruiker slechts één keer kan stemmen. De tag moet aan het begin vna het sjabloon geplaatst worden. Er mogen geen breaks of spaties zijn voor deze tag.";
 $l_we_tag['createShop']['description'] = "De we:createShop tag is vereist voor iedere pagina die winkel data bevat.";
 $l_we_tag['css']['description'] = "De we:css tag genereert een HTML tag die refereert aan een intern webEdition CSS stylesheet met onderstaand ID. U kunt stylesheets in een apart bestand definiëren.";
-$l_we_tag['customer']['description'] = ""; // TRANSLATE
+$l_we_tag['customer']['description'] = "Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br /><br />Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br />If name is not set but instead the id, the customer with this id is displayed.<br />If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink=\"true\" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid."; // TRANSLATE
 $l_we_tag['customer']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['date']['description'] = "De we:date tag geeft de huidige datum weer op een pagina volgens de ingevoerde specificaties in onderstaand 'format' veld. Als het een statische pagina betreft, kiest u bij type 'js', zodat de datum gegeneerd wordt d.m.v. JavaScript.";
 $l_we_tag['dateSelect']['description'] = "De we:dateSelect tag geeft een keuzeveld weer voor data, welke gebruikt kunnen worden in combinatie met de we:processDateSelect tag bij het uitlezen van de datum gegevens naar een variabele zoals een UNIX tijdstempel.";
@@ -290,10 +290,10 @@ $l_we_tag['navigationEntries']['description'] = "Binnen we:navigationEntry type=
 $l_we_tag['navigationEntry']['description'] = "Met we:navigationEntry kan de weergave van een invoer gecontroleerd worden binnen de navigatie. Met de attributen \"type\", \"level\", \"current\" en \"position\" kunnen individuele elementen van verschillende niveau's specifiek gekozen en getoond worden.";
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;"; // TRANSLATE
 $l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; wordt gebruikt binnen &lt;we:navigationEntry&gt; om een waarde te schrijven van de huidige navigatie invoer.";
-$l_we_tag['navigationWrite']['description'] = ""; // TRANSLATE
+$l_we_tag['navigationWrite']['description'] = "Is used to write a we:navigation with given name"; // TRANSLATE
 $l_we_tag['newsletterConfirmLink']['description'] = "Deze tag wordt gebruikt om de double opt-in bevestigings-koppeling te genereren.";
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Bevestig nieuwsbrief";
-$l_we_tag['newsletterField']['description'] = ""; // TRANSLATE
+$l_we_tag['newsletterField']['description'] = "Displays a field from the recipient dataset within the newsletter."; // TRANSLATE
 $l_we_tag['newsletterSalutation']['description'] = "Deze tag wordt gebruikt om aanhef-velden weer te geven.";
 $l_we_tag['newsletterUnsubscribeLink']['description'] = "Creëert een koppeling voor uitschrijving van een nieuwsbrief lijst. Deze tag kan alleen gebruikt worden in e-mail sjablonen!";
 $l_we_tag['next']['description'] = "Crëert de HTML koppeling tag die refereert aan de volgende pagina binnen listviews. De tag koppelt alle content gevonden tussen de begin- en eind tag.";

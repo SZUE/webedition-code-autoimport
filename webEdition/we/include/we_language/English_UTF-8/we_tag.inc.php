@@ -55,7 +55,7 @@ $l_we_tag['controlElement']['description'] = "The tag we:controlElement can mani
 $l_we_tag['cookie']['description'] = "This tag is required with the Voting Module and sets a cookie, which denies more than one vote for a user. The tag needs to be placed at the very start of the template. There must not be any breaks or spaces in front of this tag.";
 $l_we_tag['createShop']['description'] = "The we:createShop tag is needed on every page that is supposed to contain shop data.";
 $l_we_tag['css']['description'] = "The css tag creates an HTML tag that references an internal webEdition CSS style sheet that has the ID listed below. You can define style sheets in a separate file.";
-$l_we_tag['customer']['description'] = "";
+$l_we_tag['customer']['description'] = "Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br /><br />Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br />If name is not set but instead the id, the customer with this id is displayed.<br />If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink=\"true\" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.";
 $l_we_tag['customer']['defaultvalue'] = "";
 $l_we_tag['date']['description'] = "The we:date tag displays the current date on the page as specified by the format string. If the document is static, the type should be set to &quot;js&quot;, so that the date is generated using JavaScript.";
 $l_we_tag['dateSelect']['description'] = "The we:dateSelect tag displays a select field for dates, which can be used together with the we:processDateSelect tag to read the date value into a variable as a UNIX time stamp.";
@@ -290,10 +290,10 @@ $l_we_tag['navigationEntries']['description'] = "Within we:navigationEntry type=
 $l_we_tag['navigationEntry']['description'] = "With we:navigationEntry the look of an entry can be controlled within the navigation. With the attributes \"type\", \"level\", \"current\" and \"position\" single elements of various levels can be specifically picked and displayed.";
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;";
 $l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.";
-$l_we_tag['navigationWrite']['description'] = "";
+$l_we_tag['navigationWrite']['description'] = "Is used to write a we:navigation with given name";
 $l_we_tag['newsletterConfirmLink']['description'] = "This tag is used to generate the double opt-in confirmation link.";
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Confirm newsletter";
-$l_we_tag['newsletterField']['description'] = "";
+$l_we_tag['newsletterField']['description'] = "Displays a field from the recipient dataset within the newsletter.";
 $l_we_tag['newsletterSalutation']['description'] = "This tag is used to display salutation fields.";
 $l_we_tag['newsletterUnsubscribeLink']['description'] = "Creates a link to unsubscribe from a newsletter list. This tag can only be used in mail templates!";
 $l_we_tag['next']['description'] = "Creates the HTML link tag that references the next page within listviews. The tag links any content found between the start tag and the end tag.";
