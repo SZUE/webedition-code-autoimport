@@ -55,7 +55,7 @@ $l_we_tag['controlElement']['description'] = "Tagia we:controlElement käytetä�
 $l_we_tag['cookie']['description'] = "Tämä tagi on äänestysmoduulin vaatima ja se luo asiakaskoneelle evästeen joka estää useammat äänestyskerrat. Tagi täytyy sijoittaa aivan sivupohjan alkuun (ts. mitään ei saa tulostaa ennen tätä tagia, ei edes välilyöntejä tai rivinvaihtoja).";
 $l_we_tag['createShop']['description'] = "Tagia we:createShop tarvitaan kaikilla sivuilla joilla on tarkoitus tulostaa tietoja ostoksista.";
 $l_we_tag['css']['description'] = "Css tagi luo HTML-tagin joka viittaa ID:llä määriteltyyn webEditionin sisäiseen CSS-tiedostoon.";
-$l_we_tag['customer']['description'] = "";
+$l_we_tag['customer']['description'] = "Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br /><br />Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br />If name is not set but instead the id, the customer with this id is displayed.<br />If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink=\"true\" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.";
 $l_we_tag['customer']['defaultvalue'] = "";
 $l_we_tag['date']['description'] = "we:date tagi näyttää kuluvan hetken päivämäärätiedot muodossa joka on määritelty päivämäärän muotoilumerkkijonossa. Jos dokumentti on staattinen, tyyppi tulee asettaa muotoon &quot;js&quot;, jotta aika saadaan tulostettua JavaScriptillä.";
 $l_we_tag['dateSelect']['description'] = "we:dateSelect tagi tulostaa valintakentän päivämäärälle. Tätä voidaan käyttää yhdessä we:processDateSelect tagin kanssa jos halutaan lukea valittu arvo esim. muuttujaan joka on tyyppiä UNIX TIMESTAMP.";
@@ -290,10 +290,10 @@ $l_we_tag['navigationEntries']['description'] = "we:navigationEntry type='folder
 $l_we_tag['navigationEntry']['description'] = "we:navigationEntry:llä voidaan valita tulostetaanko 'folder' vai 'entry'-tyyppisiä navigaatioita. Lisäattributeilla voidaan tarkentaa haluttua navigaatiotulostusta.";
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;"; 
 $l_we_tag['navigationField']['description'] = "we:navigationField:iä käytetään we:navigationEntryn sisällä tulostettaessa navigaation eri arvoja.";
-$l_we_tag['navigationWrite']['description'] = ""; 
+$l_we_tag['navigationWrite']['description'] = "Is used to write a we:navigation with given name"; 
 $l_we_tag['newsletterConfirmLink']['description'] = "Tätä tagia käytetään 'double opt-in' vahvistuslinkin luomiseen.";
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Todenna uutiskirje";
-$l_we_tag['newsletterField']['description'] = "";
+$l_we_tag['newsletterField']['description'] = "Displays a field from the recipient dataset within the newsletter."; // TRANSLATE
 $l_we_tag['newsletterSalutation']['description'] = "Tätä tagia käytetään näytettäessä 'puhuttelu''-kenttiä.";
 $l_we_tag['newsletterUnsubscribeLink']['description'] = "Luo linkin uutiskirjeen perumiseen. Tagia voidaan käyttää ainoastaan 'sähköposti' sivupohjissa!";
 $l_we_tag['next']['description'] = "Luo linkin joka viittaa seuraaviin sivuihin we:listview:llä.";
