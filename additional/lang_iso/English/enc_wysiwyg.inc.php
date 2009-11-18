@@ -53,6 +53,7 @@ $GLOBALS["l_wysiwyg"]["superscript"] = "Superscript";
 $GLOBALS["l_wysiwyg"]["justify_full"] = "Justify full";
 $GLOBALS["l_wysiwyg"]["strikethrought"] = "Strike through";
 $GLOBALS["l_wysiwyg"]["removeformat"] = "Remove format";
+$GLOBALS["l_wysiwyg"]["removetags"] = "Remove tags, styles and comments";
 $GLOBALS["l_wysiwyg"]["editcell"] = "Edit table cell";
 $GLOBALS["l_wysiwyg"]["edittable"] = "Edit table";
 $GLOBALS["l_wysiwyg"]["insert_row2"] = "Insert rows";

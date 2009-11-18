@@ -317,6 +317,7 @@ class we_wysiwyg{
 						"superscript",
 						"strikethrough",
 						"removeformat",
+						"removetags",
 						"forecolor",
 						"backcolor",
 						"justifyleft",
@@ -548,6 +549,16 @@ class we_wysiwyg{
 													$GLOBALS["l_wysiwyg"]["removeformat"]
 												)
 				);
+		array_push(
+					$this->elements,
+					new we_wysiwygToolbarButton(
+													$this,
+													"removetags",
+													$this->_imagePath."removetags.gif",
+													$GLOBALS["l_wysiwyg"]["removetags"]
+												)
+				);
+
 		array_push(
 					$this->elements,
 					new we_wysiwygToolbarSeparator($this)
@@ -1312,6 +1323,7 @@ onclick="'.$this->editor->ref.'Obj.click(\''.$this->cmd.'\');"></div>';
 			case "subscript":
 			case "superscript":
 			case "strikethrough":
+			case "removetags":
 			case "removeformat":
 				return eregi(",prop,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
 			default:

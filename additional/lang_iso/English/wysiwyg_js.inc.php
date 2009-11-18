@@ -70,6 +70,7 @@ $GLOBALS["l_wysiwyg"]["fontname2"] = "Font name";
 $GLOBALS["l_wysiwyg"]["css_style2"] = "CSS style";
 
 $GLOBALS["l_wysiwyg"]["removeformat_warning"] = "This functions will remove the formating of the whole text field! Do you really want to continue?";
+$GLOBALS["l_wysiwyg"]["removetags_warning"] = "This function will remove all styles, html-tags and comments from the whole text field! Do you really want to continue?"; 
 
 $GLOBALS["l_wysiwyg"]["fontsize"] = "Font size";
 

@@ -78,7 +78,7 @@ print '<script type="text/javascript">
 					parent.we_wysiwyg_lng["fontsize"] = "'.$GLOBALS["l_wysiwyg"]["fontsize"].'";
 					parent.we_wysiwyg_lng["applystyle"] = "'.$GLOBALS["l_wysiwyg"]["css_style2"].'";
 					parent.we_wysiwyg_lng["removeformat_warning"] = "'.$GLOBALS["l_wysiwyg"]["removeformat_warning"].'";
-
+					parent.we_wysiwyg_lng["removetags_warning"] = "'.$GLOBALS["l_wysiwyg"]["removetags_warning"].'";
 				</script>';
 ?>
 
