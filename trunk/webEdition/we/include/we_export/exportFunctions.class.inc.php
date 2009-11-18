@@ -70,7 +70,12 @@ class exportFunctions {
 
 				// Check if can create the file now
 				if (!$_continue === false) {
-					$_text  = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n";
+					if(defined('DEFAULT_CHARSET')) {
+						$_text  = '<?xml version="1.0" encoding="'.DEFAULT_CHARSET."\"?>\n";
+					} else {
+						$_text  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+					}
+					
 					$_text .= "<webEdition>\n";
 
 					$_file_handler = fopen($_file_name, "wb");
