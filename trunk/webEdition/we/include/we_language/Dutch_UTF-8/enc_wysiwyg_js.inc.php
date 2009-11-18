@@ -68,5 +68,6 @@ $GLOBALS["l_wysiwyg"]["fontname2"] = "Lettertype";
 $GLOBALS["l_wysiwyg"]["css_style2"] = "CSS stijl";
 
 $GLOBALS["l_wysiwyg"]["removeformat_warning"] = "Deze functie zal alle opmaak van het tekstveld verwijderen! Weet u zeker dat u wilt doorgaan?";
+$GLOBALS["l_wysiwyg"]["removetags_warning"] = "This function will remove all styles, html-tags and comments from the whole text field! Do you really want to continue?"; // TRANSLATE
 
 ?>

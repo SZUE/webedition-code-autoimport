@@ -68,5 +68,6 @@ $GLOBALS["l_wysiwyg"]["fontname2"] = "Fontin nimi";
 $GLOBALS["l_wysiwyg"]["css_style2"] = "CSS tyyli";
 
 $GLOBALS["l_wysiwyg"]["removeformat_warning"] = "Tämä toiminto poistaa muotoilun koko tekstikentästä! Haluatko jatkaa?";
+$GLOBALS["l_wysiwyg"]["removetags_warning"] = "This function will remove all styles, html-tags and comments from the whole text field! Do you really want to continue?"; // TRANSLATE
 
 ?>

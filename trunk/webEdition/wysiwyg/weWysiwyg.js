@@ -208,6 +208,7 @@ function weWysiwyg(fName,hiddenName,hiddenHTML,editHTML,fullScreenRef,className,
 	this.buttons["superscript"] = new weWysiwygButton("superscript",this);
 	this.buttons["strikethrough"] = new weWysiwygButton("strikethrough",this);
 	this.buttons["removeformat"] = new weWysiwygButton("removeformat",this);
+	this.buttons["removetags"] = new weWysiwygButton("removetags",this);
 	this.buttons["insertunorderedlist"] = new weWysiwygButton("insertunorderedlist",this);
 	this.buttons["insertorderedlist"] = new weWysiwygButton("insertorderedlist",this);
 	this.buttons["createlink"] = new weWysiwygButton("createlink",this);
@@ -257,9 +258,9 @@ function weWysiwyg(fName,hiddenName,hiddenHTML,editHTML,fullScreenRef,className,
 	this.buttons["abbr"] = new weWysiwygButton("abbr",this);
 	this.buttons["lang"] = new weWysiwygButton("lang",this);
 
-	this.highlightButtons = new Array("forecolor","backcolor","cut","copy","paste","undo","redo","bold","italic","underline","subscript","superscript","strikethrough","removeformat","insertunorderedlist","insertorderedlist","justifyleft","justifycenter","justifyright","justifyfull");
+	this.highlightButtons = new Array("forecolor","backcolor","cut","copy","paste","undo","redo","bold","italic","underline","subscript","superscript","strikethrough","removeformat","removetags","insertunorderedlist","insertorderedlist","justifyleft","justifycenter","justifyright","justifyfull");
 	this.editTableButtons = new Array("editcell","insertcolumnleft","insertcolumnright","insertrowabove","insertrowbelow","deleterow","deletecol","increasecolspan","decreasecolspan");
-	this.disableSourceButtons = new Array("cut","copy","paste","undo","redo","insertbreak","importrtf","visibleborders","forecolor","backcolor","inserttable","inserthorizontalrule","insertspecialchar","createlink","unlink","anchor","insertimage","indent","outdent","undo","redo","bold","italic","underline","subscript","superscript","strikethrough","removeformat","insertunorderedlist","insertorderedlist","justifyleft","justifycenter","justifyright","justifyfull","unlink","edittable","editcell","insertcolumnleft","insertcolumnright","insertrowabove","insertrowbelow","deleterow","deletecol","increasecolspan","decreasecolspan","acronym","abbr","lang");
+	this.disableSourceButtons = new Array("cut","copy","paste","undo","redo","insertbreak","importrtf","visibleborders","forecolor","backcolor","inserttable","inserthorizontalrule","insertspecialchar","createlink","unlink","anchor","insertimage","indent","outdent","undo","redo","bold","italic","underline","subscript","superscript","strikethrough","removeformat","removetags","insertunorderedlist","insertorderedlist","justifyleft","justifycenter","justifyright","justifyfull","unlink","edittable","editcell","insertcolumnleft","insertcolumnright","insertrowabove","insertrowbelow","deleterow","deletecol","increasecolspan","decreasecolspan","acronym","abbr","lang");
 
 	this.inlineTags = " a abbr acronym b big blink cite code del em font i ins kbd label q s samp select small span strike strong sub sup textarea tt u var ";
 	this.emptyTags = " base meta link hr br basefont param img area input isindex col ";
@@ -896,6 +897,7 @@ function weWysiwyg_hasCmd(cmd){
 		case "subscript":
 		case "superscript":
 		case "strikethrough":
+		case "removetags":
 		case "removeformat":
 			return  (this.propString.indexOf(",prop,") > -1) || this.propString.length == 0 || (this.propString.indexOf(","+cmd+",") > -1);
 		default:
@@ -1455,13 +1457,20 @@ function weWysiwyg_encodeText(str) {
 
 function weWysiwyg_cleanCode(code){
 	code = this.removeHostname(code,false);
-	re = /<([\w]+) class=["']?Mso([^ |>]*)([^>]*)/gi;if(code.search(re) != -1) code = code.replace(re, "<$1$3")
-	re = /<\\?\??xml[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "")
-	re = /<\?xml[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "")
-	re = /<\/?\w+:[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "")
-	re = /<p([^>])*>(&nbsp;)*\s*<\/p>/gi;if(code.search(re) != -1) code = code.replace(re, "")
-	re = /<div([^>])*>(&nbsp;)*\s*<\/div>/gi;if(code.search(re) != -1) code = code.replace(re, "")
-	re = /<span([^>])*>(&nbsp;)*\s*<\/span>/gi;if(code.search(re) != -1) code = code.replace(re, "")
+	
+	code = code.replace(/<!--\[if !supportLists\]-->|<!--\[endif\]-->|<!--\[if !mso\]-->/gi,""); //Armin
+	re = /.*?(<style>)[\s\S]*?(<\/style>)/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
+	re = /.*?(<style type="text\/css">)[\s\S]*?(<\/style>)/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<([\w]+) class=["']?Mso([^ |>]*)([^>]*)/gi;if(code.search(re) != -1) code = code.replace(re, "<$1$3");
+	re = /<\\?\??xml[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<\?xml[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<\/xml>/gi;if(code.search(re) != -1) code = code.replace(re, ""); //Armin
+	re = /<\/?\w+:[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<p([^>])*>(&nbsp;)*\s*<\/p>/gi;if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<div([^>])*>(&nbsp;)*\s*<\/div>/gi;if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<span([^>])*>(&nbsp;)*\s*<\/span>/gi;if(code.search(re) != -1) code = code.replace(re, "");
 	if(code.indexOf('DESIGNTIMESP="') > -1){
 		code = code.replace(/ DESIGNTIMESP="[^"]+"/gi,'');
 	}
@@ -1505,6 +1514,7 @@ function weWysiwyg_cleanCode(code){
 	code = code.replace(/^<br>\r$/,"");
 	code = code.replace(/^<br>\r\n$/,"");
 	code = code.replace(/^<br>$/,"");
+	
 	return code;
 }
 
@@ -2614,7 +2624,7 @@ function weWysiwyg_execCommand(cmd){
 		case "removeformat":
 			if(confirm(we_wysiwyg_lng["removeformat_warning"])){
 				var text = this.eDocument.body.innerHTML;
-
+				text = this.cleanCode(text);
 				var inlArr = this.inlineTags.trim().split(/ /);
 				for(var i=0; i < inlArr.length; i++){
 					var re = new RegExp("<"+inlArr[i]+" [^>]*>","gi");
@@ -2624,9 +2634,23 @@ function weWysiwyg_execCommand(cmd){
 				}
 				text = text.replace(/(<[^>]*)style="[^"]*"([^>]*>)/gi,"$1$2"); // remove style
 				text = text.replace(/(<[^>]*)v?align="[^"]*"([^>]*>)/gi,"$1$2"); // remove align and valign
+				re = /.*?(<!--\[if gte mso \d+\]>)[\s\S]*?(<!\[endif\]-->)/gi;
+				if(text.search(re) != -1) text = text.replace(re, "");
+				re = /(<o:p>)[\s\S]*?(<\/o:p>)/gi;
+				if(text.search(re) != -1) text = text.replace(re, "");
+				text = text.replace( /(<meta).*?(>)/gi,"");
+				text = text.replace( /(<link).*?(>)/gi,"");
 				this.eDocument.body.innerHTML = text;
 			}
 			break;
+		case "removetags":
+			if(confirm(we_wysiwyg_lng["removetags_warning"])){
+				var text = this.eDocument.body.innerHTML;
+				text = text.replace(/<style[^>]*>.*?<\/style>|<!--.*?-->|&lt;!--.*?&gt;|<[^>]*>/gi, ''); // remove all tags
+				this.eDocument.body.innerHTML = text;
+			}
+			break;
+
 		case "insertbreak":
 			if(!isGecko){
 				this.range.pasteHTML("<br>");

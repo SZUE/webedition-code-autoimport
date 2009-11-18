@@ -52,6 +52,7 @@ $GLOBALS["l_wysiwyg"]["superscript"] = "Superschrift";
 $GLOBALS["l_wysiwyg"]["justify_full"] = "Sta alles toe";
 $GLOBALS["l_wysiwyg"]["strikethrought"] = "Doorhalen";
 $GLOBALS["l_wysiwyg"]["removeformat"] = "Verwijder opmaak";
+$GLOBALS["l_wysiwyg"]["removetags"] = "Remove tags, styles and comments"; //TRANSLATE
 $GLOBALS["l_wysiwyg"]["editcell"] = "Wijzig tabelcel";
 $GLOBALS["l_wysiwyg"]["edittable"] = "Wijzig tabel";
 $GLOBALS["l_wysiwyg"]["insert_row2"] = "Voeg rijen toe";

@@ -51,6 +51,7 @@ $GLOBALS["l_wysiwyg"]["superscript"] = "Hochgestellt";
 $GLOBALS["l_wysiwyg"]["justify_full"] = "Blocksatz";
 $GLOBALS["l_wysiwyg"]["strikethrought"] = "Durchgestrichen";
 $GLOBALS["l_wysiwyg"]["removeformat"] = "Formatierung löschen";
+$GLOBALS["l_wysiwyg"]["removetags"] = "Tags, Styles und Kommentare löschen";
 $GLOBALS["l_wysiwyg"]["inserttable"] = "Tabelle einfügen";
 $GLOBALS["l_wysiwyg"]["editcell"] = "Tabellenzelle bearbeiten";
 $GLOBALS["l_wysiwyg"]["edittable"] = "Tabelle bearbeiten";

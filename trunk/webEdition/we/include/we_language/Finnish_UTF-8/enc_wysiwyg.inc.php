@@ -52,6 +52,7 @@ $GLOBALS["l_wysiwyg"]["superscript"] = "Yläindeksoitu";
 $GLOBALS["l_wysiwyg"]["justify_full"] = "Tasaa molemmista reunoista";
 $GLOBALS["l_wysiwyg"]["strikethrought"] = "Yliviivaus";
 $GLOBALS["l_wysiwyg"]["removeformat"] = "Poista muotoilut";
+$GLOBALS["l_wysiwyg"]["removetags"] = "Remove tags, styles and comments"; //TRANSLATE
 $GLOBALS["l_wysiwyg"]["editcell"] = "Muokkaa taulukon solua";
 $GLOBALS["l_wysiwyg"]["edittable"] = "Muokkaa taulukkoa";
 $GLOBALS["l_wysiwyg"]["insert_row2"] = "Lisää rivi";
