@@ -206,6 +206,10 @@ class we_wizard_import extends we_wizard {
 		$tblData->setCol(3, 0, array(), getPixel(0, 4));
 		$tblData->setCol(4, 0, array(), we_forms::radiobutton("CSVImport", ($cmd[1]=="CSVImport"), "type", $l_import["csv_import"], true, "defaultfont", "", !we_hasPerm("CSV_IMPORT"), $l_import["txt_csv_import"], 0, 384));
 
+		$tblTemplates = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
+		$tblTemplates->setCol(0, 0, array(), we_forms::radiobutton("template_import", ($cmd[1]=="import_templates"), "type", $l_import["template_import"], true, "defaultfont", "", !we_hasPerm("ADMINISTRATOR"), $l_import["txt_template_import"], 0, 384));
+
+
 		$parts = array();
 		array_push($parts, array(
 			"headline" => $l_import["import_file"],
@@ -215,6 +219,11 @@ class we_wizard_import extends we_wizard {
 		array_push($parts, array(
 			"headline" => $l_import["import_data"],
 			"html" => $tblData->getHTMLCode(),
+			"space" => 120,
+			"noline" => 1));
+		array_push($parts, array(
+			"headline" => $l_import["import_templates"],
+			"html" => $tblTemplates->getHTMLCode(),
 			"space" => 120,
 			"noline" => 1));
 
@@ -254,6 +263,9 @@ class we_wizard_import extends we_wizard {
 			"							break;\n" .
 			"						case 'site_import':\n" .
 			"							top.location.href='".WEBEDITION_DIR."we_cmd.php?we_cmd[0]=siteImport';\n" .
+			"							break;\n" .
+			"						case 'template_import':\n" .
+			"							top.opener.top.we_cmd('openFirstStepsWizardDetailTemplates');top.close();" .
 			"							break;\n" .
 			"						default:\n" .
 			"							f.type.value=f.type[i].value;\n" .
