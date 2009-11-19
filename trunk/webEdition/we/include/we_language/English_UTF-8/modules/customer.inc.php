@@ -193,6 +193,7 @@ $l_customer["csv_delimiter"] = "Delimiter";
 $l_customer["csv_enclose"] = "Enclose";
 $l_customer["csv_escape"] = "Escape";
 $l_customer["csv_lineend"] = "Line end";
+$l_customer["import_charset"]="Import charset"; //
 $l_customer["csv_null"] = "NULL replacment";
 $l_customer["csv_fieldnames"] = "First row contains fileds name";
 

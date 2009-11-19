@@ -35,7 +35,7 @@ define("CSV_DELIMITER",";");
 define("CSV_ENCLOSE","");
 define("CSV_LINEEND","windows");
 define("CSV_FIELDS","0");
-
+define("THE_CHARSET","UTF-8");
 class weCustomerEIWizard{
 
 	var $frameset;
@@ -414,6 +414,7 @@ class weCustomerEIWizard{
 			$csv_delimiter= isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
 			$csv_enclose= isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
 			$csv_lineend= isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
+			$the_charset= isset($_REQUEST["the_charset"]) ? $_REQUEST["the_charset"] : THE_CHARSET;
 
 			$csv_fieldnames= isset($_REQUEST["csv_fieldnames"]) ? 1 : 0;
 
@@ -433,6 +434,7 @@ class weCustomerEIWizard{
 						we_htmlElement::htmlHidden(array("name"=>"csv_delimiter","value"=>$csv_delimiter)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_enclose","value"=>$csv_enclose)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_lineend","value"=>$csv_lineend)).
+						we_htmlElement::htmlHidden(array("name"=>"the_charset","value"=>$the_charset)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_fieldnames","value"=>$csv_fieldnames));
 				break;
 				case 2:
@@ -447,6 +449,7 @@ class weCustomerEIWizard{
 						we_htmlElement::htmlHidden(array("name"=>"csv_delimiter","value"=>$csv_delimiter)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_enclose","value"=>$csv_enclose)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_lineend","value"=>$csv_lineend)).
+						we_htmlElement::htmlHidden(array("name"=>"the_charset","value"=>$the_charset)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_fieldnames","value"=>$csv_fieldnames));
 				break;
 				case 3:
@@ -473,6 +476,7 @@ class weCustomerEIWizard{
 						we_htmlElement::htmlHidden(array("name"=>"csv_delimiter","value"=>$csv_delimiter)).
 						'<input type="hidden" name="csv_enclose" value=' . ($csv_enclose=='"' ? "'\"'" : "\"$csv_enclose\"") .'>' .
 						we_htmlElement::htmlHidden(array("name"=>"csv_lineend","value"=>$csv_lineend)).
+						we_htmlElement::htmlHidden(array("name"=>"the_charset","value"=>$the_charset)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_fieldnames","value"=>$csv_fieldnames)).
 						we_htmlElement::htmlHidden(array("name"=>"cmd","value"=>"import"));
 				break;
@@ -727,7 +731,7 @@ class weCustomerEIWizard{
 				$csv_lineend= isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
 				$csv_fieldnames= isset($_REQUEST["csv_fieldnames"]) ? $_REQUEST["csv_fieldnames"] : CSV_FIELDS;
 
-				$fileformattable = new we_htmlTable(array("cellpadding" => 2,"cellspacing" => 2, "border" => 0), 5, 1);
+				$fileformattable = new we_htmlTable(array("cellpadding" => 2,"cellspacing" => 2, "border" => 0), 6, 1);
 
 				$_file_encoding = new we_htmlSelect(array("name" => "csv_lineend", "size" => "1", "class" => "defaultfont", "style" => "width: 254px"));
 				$_file_encoding->addOption("windows", $l_customer["windows"]);
@@ -735,12 +739,27 @@ class weCustomerEIWizard{
 				$_file_encoding->addOption("mac", $l_customer["mac"]);
 				$_file_encoding->selectOption($csv_lineend);
 
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
+				$_charsetHandler = new charsetHandler();
+				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
+				if (strpos($GLOBALS['WE_LANGUAGE'],'UTF') !== false){$charset="UTF-8";} else {$charset="ISO-8859-1";}
+				//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
+				$_importCharset = htmlTextInput('the_charset', 8, '', 255, "", "text", 100);
+				$_importCharsetChooser = htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false,"onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",160,"defaultfont",false);
+				$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
+
+				
+
+
 				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), getPixel(10,10));
 				$fileformattable->setCol(1, 0, array("class" => "defaultfont"), $l_customer["csv_lineend"] . we_htmlElement::htmlBr() . $_file_encoding->getHtmlCode());
-				$fileformattable->setColContent(2,0,$this->getHTMLChooser("csv_delimiter",$csv_delimiter,array(";"=>$l_customer["semicolon"],","=>$l_customer["comma"],":"=>$l_customer["colon"],"\\t"=>$l_customer["tab"]," "=>$l_customer["space"]),$l_customer["csv_delimiter"]));
-				$fileformattable->setColContent(3,0,$this->getHTMLChooser("csv_enclose",$csv_enclose,array("\""=>$l_customer["double_quote"],"'"=>$l_customer["single_quote"]),$l_customer["csv_enclose"]));
+				$fileformattable->setCol(2, 0, array("class" => "defaultfont"), $l_customer["import_charset"] . we_htmlElement::htmlBr() . $import_Charset);
+				//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
+				
+				$fileformattable->setColContent(3,0,$this->getHTMLChooser("csv_delimiter",$csv_delimiter,array(";"=>$l_customer["semicolon"],","=>$l_customer["comma"],":"=>$l_customer["colon"],"\\t"=>$l_customer["tab"]," "=>$l_customer["space"]),$l_customer["csv_delimiter"]));
+				$fileformattable->setColContent(4,0,$this->getHTMLChooser("csv_enclose",$csv_enclose,array("\""=>$l_customer["double_quote"],"'"=>$l_customer["single_quote"]),$l_customer["csv_enclose"]));
 
-				$fileformattable->setColContent(4,0,we_forms::checkbox($csv_fieldnames,($csv_fieldnames==1),"csv_fieldnames",$l_customer["csv_fieldnames"]));
+				$fileformattable->setColContent(5,0,we_forms::checkbox($csv_fieldnames,($csv_fieldnames==1),"csv_fieldnames",$l_customer["csv_fieldnames"]));
 
 				array_push($parts,array("headline" => $l_customer["csv_params"], "html" => $fileformattable->getHtmlCode(),"space" => 150));
 
@@ -840,6 +859,7 @@ class weCustomerEIWizard{
 
 		$filename=isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "";
 		$import_from=isset($_REQUEST["import_from"]) ? $_REQUEST["import_from"] : "";
+		$import_charset=isset($_REQUEST["import_charset"]) ? $_REQUEST["import_charset"] : "";
 		$type=isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
 		$xml_from=isset($_REQUEST["xml_from"]) ? $_REQUEST["xml_from"] : "";
 		$xml_to=isset($_REQUEST["xml_to"]) ? $_REQUEST["xml_to"] : "";
@@ -847,6 +867,7 @@ class weCustomerEIWizard{
 		$csv_delimiter= isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
 		$csv_enclose= isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
 		$csv_lineend= isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
+		$the_charset= isset($_REQUEST["the_charset"]) ? $_REQUEST["the_charset"] : THE_CHARSET;
 		$csv_fieldnames= isset($_REQUEST["csv_fieldnames"]) ? 1 : 0;
 		$same=isset($_REQUEST["same"]) ? $_REQUEST["same"] : "rename";
 
@@ -859,6 +880,7 @@ class weCustomerEIWizard{
 			$arrgs["enclose"]=$csv_enclose;
 			$arrgs["lineend"]=$csv_lineend;
 			$arrgs["fieldnames"]=$csv_fieldnames;
+			$arrgs["charset"]=$the_charset;
 
 		}else{
 			$arrgs["dataset"]=$dataset;
@@ -1475,6 +1497,7 @@ class weCustomerEIWizard{
 					$csv_delimiter= isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : CSV_DELIMITER;
 					$csv_enclose= isset($_REQUEST["csv_enclose"]) ? $_REQUEST["csv_enclose"] : CSV_ENCLOSE;
 					$csv_lineend= isset($_REQUEST["csv_lineend"]) ? $_REQUEST["csv_lineend"] : CSV_LINEEND;
+					$the_charset= isset($_REQUEST["the_charset"]) ? $_REQUEST["the_charset"] : THE_CHARSET;
 					$csv_fieldnames= isset($_REQUEST["csv_fieldnames"]) ? $_REQUEST["csv_fieldnames"] : CSV_FIELDS;
 
 
@@ -1491,6 +1514,7 @@ class weCustomerEIWizard{
 							$options["csv_delimiter"]=$csv_delimiter;
 							$options["csv_enclose"]=$csv_enclose;
 							$options["csv_lineend"]=$csv_lineend;
+							$options["the_charset"]=$the_charset;
 							$options["csv_fieldnames"]=$csv_fieldnames;
 					}
 					else{

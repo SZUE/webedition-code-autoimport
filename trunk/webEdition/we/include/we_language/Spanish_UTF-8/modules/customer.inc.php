@@ -193,6 +193,7 @@ $l_customer["csv_delimiter"] = "Delimtador";
 $l_customer["csv_enclose"] = "Adjuntar";
 $l_customer["csv_escape"] = "Escape"; // TRANSLATE
 $l_customer["csv_lineend"] = "Final de línea";
+$l_customer["import_charset"]="Import charset"; // TRANSLATE
 $l_customer["csv_null"] = "Reemplazo Nulo";
 $l_customer["csv_fieldnames"] = "La primera fila contiene los nombres de campo";
 

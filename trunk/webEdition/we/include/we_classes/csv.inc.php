@@ -177,10 +177,14 @@ class CSV {
 class CSVImport extends CSV {
 	var $FieldDelim;
 	var $Enclosure;
-
+	var $FromCharset;
+	var $ToCharset;
+	
 	function CSVImport() {
 		parent::CSV();
 		$this->FieldDelim = ";";
+		if (defined('DEFAULT_CHARSET')) {$this->FromCharset = DEFAULT_CHARSET;$this->ToCharset = DEFAULT_CHARSET;} else {$this->FromCharset = "UTF-8";$this->ToCharset = "UTF-8";}
+		
 	}
 
 	function setDelim($delimiter) {
@@ -198,6 +202,14 @@ class CSVImport extends CSV {
 	function setEnclosure($enclosure) {
 		$this->Enclosure = $enclosure;
 	}
+
+	function setFromCharset($charset) {
+		$this->FromCharset = $charset;
+	}
+	function setToCharset($charset) {
+		$this->ToCharset = $charset;
+	}
+
 
 	function parseCSV() {
 		if ($this->CSVData) {
@@ -253,11 +265,11 @@ class CSVImport extends CSV {
 				if ($akt_char == "\\") $akt_char = "";
 				$akt_field_value .= $akt_char;
 
-				if ($head_complete) {
-					$this->Fields[$akt_line][$akt_field] = trim($akt_field_value);
+				if ($head_complete) { 
+					$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
 				}
 				else {
-					$this->FieldNames[$akt_field] = trim($akt_field_value);
+					$this->FieldNames[$akt_field] = iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
 				}
 			}
 
