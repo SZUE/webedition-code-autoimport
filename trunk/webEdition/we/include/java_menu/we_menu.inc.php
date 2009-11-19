@@ -72,17 +72,7 @@ $we_menu["1000000"]["enabled"] = "1";
 			if($nr == 197) break;
 		}
 
-		if(we_hasPerm("NO_DOCTYPE")){
-			$we_menu["1010198"]["parent"] = "1010100"; // separator
-
-			// File > New > Others (Import)
-			$we_menu["1010199"]["text"] = $l_javaMenu["other"];
-			$we_menu["1010199"]["parent"] = "1010100";
-			$we_menu["1010199"]["cmd"] = "openFirstStepsWizardDetailTemplates";
-	        $we_menu["1010199"]["perm"] = "ADMINISTRATOR";
-			$we_menu["1010199"]["enabled"] = "1";
-
-		}
+		
 
 		// File > Image
 		$we_menu["1010200"]["text"] = $l_javaMenu["image"];
