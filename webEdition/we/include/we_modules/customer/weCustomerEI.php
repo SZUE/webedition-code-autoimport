@@ -56,7 +56,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 				return weCustomerEI::getXMLDataset($filename,$arrgs["dataset"]);
 			}
 			if($type=="csv"){
-				return weCustomerEI::getCSVDataset($filename,$arrgs["delimiter"],$arrgs["enclose"],$arrgs["lineend"],$arrgs["fieldnames"]);
+				return weCustomerEI::getCSVDataset($filename,$arrgs["delimiter"],$arrgs["enclose"],$arrgs["lineend"],$arrgs["fieldnames"],$arrgs["charset"]);
 			}						
 		}
 		
@@ -224,8 +224,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 		}
 		
 		
-		function getCSVDataset($filename,$delimiter,$enclose,$lineend,$fieldnames){
-			global $l_customer;		
+		function getCSVDataset($filename,$delimiter,$enclose,$lineend,$fieldnames,$charset){
+			global $l_customer;
+			if ($charset == ''){
+				if (defined('DEFAULT_CHARSET')) {$charset = DEFAULT_CHARSET;} else {$charset = "UTF-8";}
+			}		
 			if($delimiter=="\\t") $delimiter="\t";
 			$csvFile=$_SERVER["DOCUMENT_ROOT"].$filename;
 			$nodes = array();
@@ -241,6 +244,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 				$cp = new CSVImport;
 				$cp->setFile($csvFile);
 				$cp->setDelim($delimiter);
+				$cp->setFromCharset($charset);
 				$cp->setEnclosure(($enclose=="")? "\"" : $enclose);
 				$cp->parseCSV();
 				$num = count($cp->FieldNames);
@@ -303,6 +307,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 						$csv_delimiter=$options["csv_delimiter"];
 						$csv_enclose=$options["csv_enclose"];						
 						$csv_fields=$options["csv_fieldnames"];
+						$csv_charset=$options["the_charset"];
 						$exim=$options["exim"];
 
 						$csvFile = $_SERVER["DOCUMENT_ROOT"].$filename;
@@ -333,7 +338,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 							$csv->setDelim($csv_delimiter);
 							$csv->setEnclosure($csv_enclose);
 							$csv->setHeader($csv_fields);
-							$csv->setFile($csvFile);														
+							$csv->setFile($csvFile);
+							$csv->setFromCharset($csv_charset);														
 							$csv->parseCSV();							
 							$data = $csv->CSVFetchRow();
 							while ($data!=FALSE){
@@ -494,12 +500,13 @@ class weCustomerCSVImport extends CSVImport{
 				if ($akt_char == "\\") $akt_char = "";				
 				$akt_field_value .= $akt_char;
 
-				if ($head_complete) {
-					$this->Fields[$akt_line][$akt_field] = trim($akt_field_value);
+				if ($head_complete) { 
+					$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
 				}
 				else {
-					$this->FieldNames[$akt_field] = trim($akt_field_value);					
+					$this->FieldNames[$akt_field] = iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
 				}
+
 			}
 
 			if (!$akt_field) {

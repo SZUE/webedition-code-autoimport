@@ -193,6 +193,7 @@ $l_customer["csv_delimiter"] = "Erotin";
 $l_customer["csv_enclose"] = "Suljin";
 $l_customer["csv_escape"] = "Koodinvaihtomerkki (escape)";
 $l_customer["csv_lineend"] = "Rivin lopetus";
+$l_customer["import_charset"]="Import charset"; // TRANSLATE
 $l_customer["csv_null"] = "NULL korvaaja";
 $l_customer["csv_fieldnames"] = "Kenttänimet ensimmäisellä rivillä";
 

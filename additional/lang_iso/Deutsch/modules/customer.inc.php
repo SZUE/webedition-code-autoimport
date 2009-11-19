@@ -189,6 +189,7 @@ $l_customer["csv_delimiter"]="Trennzeichen";
 $l_customer["csv_enclose"]="Textbegrenzer";
 $l_customer["csv_escape"]="Escapezeichne";
 $l_customer["csv_lineend"]="Linienende";
+$l_customer["import_charset"]="Import-Zeichensatz";
 $l_customer["csv_null"]="NULL-Ersetzung";
 $l_customer["csv_fieldnames"]="Erste Zeile enthält Feldnamen";
 

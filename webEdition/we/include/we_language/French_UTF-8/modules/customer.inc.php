@@ -193,6 +193,7 @@ $l_customer["csv_delimiter"] = "Delimiter"; // TRANSLATE
 $l_customer["csv_enclose"] = "Enclose"; // TRANSLATE
 $l_customer["csv_escape"] = "Escape"; // TRANSLATE
 $l_customer["csv_lineend"] = "Line end"; // TRANSLATE
+$l_customer["import_charset"]="Import charset"; // TRANSLATE
 $l_customer["csv_null"] = "NULL replacment"; // TRANSLATE
 $l_customer["csv_fieldnames"] = "First row contains fileds name"; // TRANSLATE
 

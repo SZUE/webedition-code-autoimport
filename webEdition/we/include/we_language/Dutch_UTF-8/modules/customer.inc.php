@@ -193,6 +193,7 @@ $l_customer["csv_delimiter"] = "Scheidingsteken";
 $l_customer["csv_enclose"] = "Insluiten";
 $l_customer["csv_escape"] = "Uitsluiten";
 $l_customer["csv_lineend"] = "Regel einde";
+$l_customer["import_charset"]="Import charset"; // TRANSLATE
 $l_customer["csv_null"] = "NULL vervanging";
 $l_customer["csv_fieldnames"] = "Eerste rij bevat veldnaam";
 
