@@ -1459,6 +1459,8 @@ function weWysiwyg_cleanCode(code){
 	code = this.removeHostname(code,false);
 	
 	code = code.replace(/<!--\[if !supportLists\]-->|<!--\[endif\]-->|<!--\[if !mso\]-->/gi,""); //Armin
+	code = code.replace(/<p> <table|<p><table/gi,"<table"); //Armin
+	code = code.replace(/<\/table> <\/p>|<\/table><\/p>/gi,"</table>"); //Armin
 	re = /.*?(<style>)[\s\S]*?(<\/style>)/gi;
 	if(code.search(re) != -1) code = code.replace(re, "");
 	re = /.*?(<style type="text\/css">)[\s\S]*?(<\/style>)/gi;
