@@ -446,7 +446,7 @@ function EditorFrameController() {
 				for (frameId in _UsedEditors) {
 					if ( frameId != activeId ) {
 						if ( _UsedEditors[frameId].getEditorIsHot() ) {
-							this.closeDocument(frameId, 'top.we_cmd("close_all_but_active_document", "' + activeId + '")');
+							this.closeDocument(frameId, 'top.we_cmd("close_all_but_active_document", "' + activeId + '");');
 							return;
 							
 						} else {
