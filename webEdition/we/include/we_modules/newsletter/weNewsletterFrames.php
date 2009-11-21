@@ -2379,6 +2379,8 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		} else {
 		    $_nlMessage = (!$csv_file && empty($csv_file) && strlen($csv_file)<4) ? $l_newsletter["no_file_selected"] : $l_newsletter["file_is_empty"];
 			$out=we_htmlElement::htmlDiv(array("class"=>"middlefontgray","align"=>"center"),"--&nbsp;".$_nlMessage."&nbsp;--");
+			$add = $we_button->create_button("image:function_plus", "javascript:editEmailFile(".count($emails).",'','','','','','')");
+			$out .= "<br/><br/>".$add;
 		}
 
 
