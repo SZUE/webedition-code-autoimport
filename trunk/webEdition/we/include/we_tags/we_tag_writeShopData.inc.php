@@ -102,10 +102,9 @@ function we_tag_writeShopData($attribs) {
 
 			$preis = ((isset($shoppingItem['serial']["we_".$pricename])) ? $shoppingItem['serial']["we_".$pricename] : $shoppingItem['serial'][$pricename]);
 
-			$totPrice += $preis * $shoppingItem['quantity'];
-
 			$preis = we_util::std_numberformat($preis);
-
+			
+			$totPrice += $preis * $shoppingItem['quantity'];
 
 			$additionalFields = array();
 
