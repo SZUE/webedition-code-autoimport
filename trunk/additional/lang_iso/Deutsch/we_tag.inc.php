@@ -252,7 +252,7 @@ $l_we_tag['ifVoteActive']['description'] = "Alles, was sich zwischen Start- und 
 $l_we_tag['ifVoteActive']['defaultvalue'] = "";
 $l_we_tag['ifWebEdition']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur innerhalb von webEdition anzuzeigen. Auf der fertig erzeugten Seite wird der umschlossene Inhalt nicht angezeigt.";
 $l_we_tag['ifWebEdition']['defaultvalue'] = "";
-$l_we_tag['ifWorkspace']['description'] = "&Uuml;berpr&uuml;ft, ob sich das Dokument in dem unter \"path\" angegeben Arbeitsbereich befindet.";
+$l_we_tag['ifWorkspace']['description'] = "&Uuml;berpr&uuml;ft, ob sich das Dokument in dem unter \"path\" bzw. \"id\" angegeben Arbeitsbereich befindet.";
 $l_we_tag['ifWorkspace']['defaultvalue'] = "";
 $l_we_tag['ifWritten']['description'] = "Alle was zwischen Start- und Endtag steht, wird nur angezeigt, wenn es keinen Fehler beim Schreiben eines Dokuments/Objekts mit dem Tag we:write gab. Bei einem Objekt mu&szlig; type=\"object\" sein.";
 $l_we_tag['ifWritten']['defaultvalue'] = "";
