@@ -47,7 +47,7 @@ $l_object["search_field"] = "Suchfeld";
 $l_object["defaultdir"] = "Standardverzeichnis";
 $l_object["rootdir"] = "Arbeitsbereich";
 
-$l_object["no_root_ws_select"] = "Das Root Verzeichnis kann nicht als Arbeitbereich ausgewählt werden!";
+$l_object["no_root_ws_select"] = "Das Root Verzeichnis kann nicht als Arbeitbereich ausgew&auml;hlt werden!";
 
 $l_object["objectFile_field"] = "Objekt";
 $l_object["multiObjectFile_field"] = "Multi Objekt";
@@ -63,6 +63,7 @@ $l_object["binary_field"] = "Binary Dokument";
 $l_object["link_field"] = "Link";
 $l_object["href_field"] = "Href";
 $l_object["shopVat_field"] = "Mehrwertsteuer Feld";
+$l_object["multiobject_recursion"] = "In einem Multiobjekt kann ein Objekt nicht in sich selbst eingef&uuml;gt werden";
 
 $l_object["we_new_doc_after_save"] = "Nach Speichern neues Objekt";
 $l_object["objectFile_response_save_ok"] = "Das Objekt '%s' wurde erfolgreich gespeichert!";

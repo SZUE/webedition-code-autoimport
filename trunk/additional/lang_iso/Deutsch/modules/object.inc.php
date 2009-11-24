@@ -64,6 +64,7 @@ $l_object["binary_field"] = "Binary Dokument";
 $l_object["link_field"] = "Link";
 $l_object["href_field"] = "Href";
 $l_object["shopVat_field"] = "Mehrwertsteuer Feld";
+$l_object["multiobject_recursion"] = "In einem Multiobjekt kann ein Objekt nicht in sich selbst eingef&uuml;gt werden";
 
 $l_object["we_new_doc_after_save"] = "Nach Speichern neues Objekt";
 $l_object["objectFile_response_save_ok"] = "Das Objekt '%s' wurde erfolgreich gespeichert!";

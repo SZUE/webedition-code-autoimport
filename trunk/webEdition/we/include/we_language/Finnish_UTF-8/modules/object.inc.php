@@ -53,6 +53,7 @@ $l_object["binary_field"] = "Binääridokumentti";
 $l_object["link_field"] = "Linkki";
 $l_object["href_field"] = "Href";
 $l_object["shopVat_field"] = "ALV kenttä";
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
 
 $l_object["we_new_doc_after_save"] = "Uusi objekti tallentamisen jälkeen";
 $l_object["objectFile_response_save_ok"] = "Objekti '%s' on tallennettu!";

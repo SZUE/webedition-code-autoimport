@@ -54,6 +54,7 @@ $l_object["binary_field"] = "Binary document";
 $l_object["link_field"] = "Link";
 $l_object["href_field"] = "Href";
 $l_object["shopVat_field"] = "VAT field";
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";
 
 $l_object["we_new_doc_after_save"] = "New Object after saving";
 $l_object["objectFile_response_save_ok"] = "The object '%s' has been successfully saved!";
