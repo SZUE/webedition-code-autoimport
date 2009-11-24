@@ -53,6 +53,7 @@ $l_object["binary_field"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ п
 $l_object["link_field"] = "пїЅпїЅпїЅпїЅпїЅпїЅ";
 $l_object["href_field"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
 $l_object["shopVat_field"] = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ";
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
 
 $l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
 $l_object["objectFile_response_save_ok"] = "пїЅпїЅпїЅпїЅпїЅпїЅ '%s' пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!";

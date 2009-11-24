@@ -53,6 +53,7 @@ $l_object["binary_field"] = "Binair document";
 $l_object["link_field"] = "Koppeling";
 $l_object["href_field"] = "Href"; // TRANSLATE
 $l_object["shopVat_field"] = "BTW veld";
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
 
 $l_object["we_new_doc_after_save"] = "Nieuw Object na bewaren";
 $l_object["objectFile_response_save_ok"] = "Het object '%s' is succesvol bewaard!";
