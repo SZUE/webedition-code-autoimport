@@ -173,6 +173,7 @@ class we_folder extends we_root
 	}
 
 	function initByPath($path,$tblName=FILE_TABLE,$IsClassFolder=0,$IsNotEditable=0){
+		if (substr($path,-1)=='/'){$path=substr($path,0,strlen($path)-1); }
 		$id = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='".mysql_real_escape_string($path)."' AND IsFolder=1","ID",$this->DB_WE);
 		if($id != ""){
 			$this->initByID($id);
