@@ -3125,7 +3125,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		foreach ($placeholderfields as $phf) {				
 			$placeholderReplaceValue = $fromCustomer ? $this->View->db->f($phf) : "";
 			$content = str_replace('####PLACEHOLDER:DB::CUSOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$content);
-			$content_plain = str_replace('####PLACEHOLDER::DB:CUSOMER_TABLE:'.$phf.'####',$this->View->db->f($phf),$content_plain);
+			$content_plain = str_replace('####PLACEHOLDER:DB::CUSOMER_TABLE:'.$phf.'####',$this->View->db->f($phf),$content_plain);
 		}
 	}
 
