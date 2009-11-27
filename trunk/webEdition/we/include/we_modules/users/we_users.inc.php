@@ -2010,8 +2010,8 @@ function mapPermissions() {
 		foreach($this->permissions_slots as $group) {
 			foreach($group as $pname=>$pvalue) {
 				if($pname!='ADMINISTRATOR') {
-					$uncheckjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;';
-					$checkjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;';
+					$uncheckjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;top.content.setHot();';
+					$checkjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;top.content.setHot();';
 				}
 			}
 		}
@@ -2040,7 +2040,7 @@ function mapPermissions() {
 						</tr>
 						<tr>
 							<td>
-								' . we_forms::checkbox(($v ? $v : "0"), ($v ? true : false), $this->Name . "_Permission_" . $k , $this->permissions_titles["administrator"][$k], false, "defaultfont", ($k=="REBUILD"?"setRebuidPerms();":"")) . '</td>
+								' . we_forms::checkbox(($v ? $v : "0"), ($v ? true : false), $this->Name . "_Permission_" . $k , $this->permissions_titles["administrator"][$k], false, "defaultfont", ($k=="REBUILD"?"setRebuidPerms();top.content.setHot();":"top.content.setHot();")) . '</td>
 						</tr>
 					</table>';
 			}
