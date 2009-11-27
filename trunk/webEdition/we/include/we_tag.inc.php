@@ -6045,6 +6045,7 @@ function we_tag_setVar($attribs, $content)
 	$from = we_getTagAttribute("from", $attribs);
 	$propertyTo = we_getTagAttribute("propertyto", $attribs, "", true);
 	$propertyFrom = we_getTagAttribute("propertyfrom", $attribs, "", true);
+	$striptags = we_getTagAttribute("striptags", $attribs, "", true);
 	$formnameTo = we_getTagAttribute("formnameto", $attribs, "we_global_form");
 	$formnameFrom = we_getTagAttribute("formnamefrom", $attribs, "we_global_form");
 	if (isset($attribs["value"])) {
@@ -6151,7 +6152,7 @@ function we_tag_setVar($attribs, $content)
 		
 		}
 	}
-	
+	if($striptags){$valueFrom=strip_tags(htmlentities($valueFrom));}
 	switch ($to) {
 		case "request" :
 			$_REQUEST[$nameTo] = $valueFrom;
