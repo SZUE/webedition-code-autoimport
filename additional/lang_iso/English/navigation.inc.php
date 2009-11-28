@@ -204,4 +204,7 @@ $l_navigation['reset_customer_filter'] = 'Reset all customer filters';
 $l_navigation['reset_customerfilter_done_message'] = 'The cusomer filters were successfully reset!';
 $l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters';
 
+$l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool.";
+
+
 ?>

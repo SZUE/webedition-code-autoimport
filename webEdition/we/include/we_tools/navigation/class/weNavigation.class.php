@@ -643,6 +643,29 @@ class weNavigation extends weModelBase
 		}
 		return false;
 	}
+	
+	function hasAnyChilds()
+	{
+		if ($this->ID) {
+			$_dep = f(
+					'SELECT COUNT(ID) as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . abs($this->ID) . ' ;', 
+					'Navi', 
+					$this->db);
+			return $_dep ? true : false;
+		}
+		return false;
+	}
+	function hasIndependentChilds()
+	{
+		if ($this->ID) {
+			$_dep = f(
+					'SELECT COUNT(ID) as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . abs($this->ID) . ' AND Depended=0;', 
+					'Navi', 
+					$this->db);
+			return $_dep ? true : false;
+		}
+		return false;
+	}
 
 	function getDynamicPreview(&$storage, $rules = false)
 	{
