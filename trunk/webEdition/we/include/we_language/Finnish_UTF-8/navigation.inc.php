@@ -203,4 +203,6 @@ $l_navigation['reset_customer_filter'] = 'Tyhjennä kaikki käyttäjäsuodattime
 $l_navigation['reset_customerfilter_done_message'] = 'Käyttäjäsuodattimet tyhjennetty onnistuneesti!';
 $l_navigation['reset_customerfilter_question'] = 'Haluatko varmasti tyhjentää kaikki käyttäjäsuodattimet';
 
+$l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool.";// TRANSLATE
+
 ?>

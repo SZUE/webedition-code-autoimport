@@ -203,4 +203,7 @@ $l_navigation['useDocumentFilter'] = 'Filtereinstellungen des Dokuments bzw. Obj
 $l_navigation['reset_customer_filter'] = 'Alle Kundenfilter zurücksetzen';
 $l_navigation['reset_customerfilter_done_message'] = 'Die Kundenfilter wurden erfolgreich zurückgesetzt!';
 $l_navigation['reset_customerfilter_question'] = 'Möchten Sie wirklich alle Kundenfilter zurücksetzen?';
+
+$l_navigation['NoDeleteFromDocument'] = "Navigationseintrag mit Unterpunkten, kann hier editiert, jedoch nur im Navigationstool gel&ouml;scht werden.";
+
 ?>
