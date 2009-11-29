@@ -281,7 +281,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				
 				
 				
-				$pattern = "/####PLACEHOLDER:DB::CUSOMER_TABLE:(.[^#]{1,200})####/";
+				$pattern = "/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/";
 				preg_match_all($pattern,$mailtext,$placeholderfieldsmatches);
 				$placeholderfields = $placeholderfieldsmatches[1];
 				unset($placeholderfieldsmatches);
@@ -295,8 +295,8 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 							
 					foreach ($placeholderfields as $phf) {				
 						$placeholderReplaceValue = $customer ? $db->f($phf) : "";
-						$mailtext = str_replace('####PLACEHOLDER:DB::CUSOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$mailtext);
-						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$mailtextHTML);
+						$mailtext = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$mailtext);
+						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$mailtextHTML);
 					}						
 				}		
 				
