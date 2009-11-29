@@ -3109,7 +3109,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	 * @param Array $customerInfos
 	 */
 	function replacePlaceholder(&$content, &$content_plain, $customerInfos){
-		$pattern = "/####PLACEHOLDER:DB::CUSOMER_TABLE:(.[^#]{1,200})####/";
+		$pattern = "/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/";
 		preg_match_all($pattern,$content,$placeholderfieldsmatches);
 		$placeholderfields = $placeholderfieldsmatches[1];
 		unset($placeholderfieldsmatches);
@@ -3124,8 +3124,8 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		
 		foreach ($placeholderfields as $phf) {				
 			$placeholderReplaceValue = $fromCustomer ? $this->View->db->f($phf) : "";
-			$content = str_replace('####PLACEHOLDER:DB::CUSOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$content);
-			$content_plain = str_replace('####PLACEHOLDER:DB::CUSOMER_TABLE:'.$phf.'####',$this->View->db->f($phf),$content_plain);
+			$content = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$content);
+			$content_plain = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$this->View->db->f($phf),$content_plain);
 		}
 	}
 

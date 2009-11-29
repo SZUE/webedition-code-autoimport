@@ -200,7 +200,7 @@ $l_navigation['or'] = 'or'; // TRANSLATE
 $l_navigation['selected_customers'] = 'Only folowing customers can access the item'; // TRANSLATE
 $l_navigation['useDocumentFilter'] = 'Use filter settings of document/object'; // TRANSLATE
 $l_navigation['reset_customer_filter'] = 'Reset all customer filters'; // TRANSLATE
-$l_navigation['reset_customerfilter_done_message'] = 'The cusomer filters were successfully reset!'; // TRANSLATE
+$l_navigation['reset_customerfilter_done_message'] = 'The customer filters were successfully reset!'; // TRANSLATE
 $l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters'; // TRANSLATE
 
 $l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool.";// TRANSLATE
