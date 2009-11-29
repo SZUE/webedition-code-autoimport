@@ -70,9 +70,9 @@ class weDynList
 				}
 			}
 			if ($_sort['order'] == 'DESC') {
-				arsort($_arr[$_k], SORT_STRING);
+				array_reverse(natcasesort($_arr[$_k]), true);
 			} else {
-				asort($_arr[$_k], SORT_STRING);
+				natcasesort ($_arr[$_k], SORT_STRING);
 			}
 		}
 		
