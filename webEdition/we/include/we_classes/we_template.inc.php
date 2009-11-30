@@ -493,7 +493,7 @@ class we_template extends we_document
 	 * @return	array with the filed names and attributes
 	 * @param	none
 	 */
-	function readAllVariantFields(){
+	function readAllVariantFields($includedatefield=false){
 
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
 
@@ -542,7 +542,7 @@ class we_template extends we_document
 					@eval('$att = array('.$attribs.');');
 
 					if(in_array($tagname,$variant_tags)) {
-						if($tagname=='input' && isset($att['type']) && $att['type']=='date'){
+						if($tagname=='input' && isset($att['type']) && $att['type']=='date' && !$includedatefield){
 							// do nothing
 						} else {
 							$out[$name] = array(
