@@ -406,7 +406,7 @@ class weNavigationFrames extends weToolFrames
 								$this->Model->IconID, 
 								'IconPath', 
 								'opener.' . $this->topFrame . '.mark()', 
-								'folder,image/*', 
+								'image/*', 
 								false, 
 								true) . getPixel($this->_width_size, 10) . '<table><tr><td>' . we_multiIconBox::getJS() . we_multiIconBox::_getButton(
 								$uniqname, 
