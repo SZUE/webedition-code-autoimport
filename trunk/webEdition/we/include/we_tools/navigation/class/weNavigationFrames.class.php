@@ -1776,7 +1776,7 @@ function onFolderSelectionChangeJS(elem) {
 			foreach ($_ids as $_templateID) {
 				$_template = new we_template();
 				$_template->initByID($_templateID, TEMPLATES_TABLE);
-				$_fields = array_merge($_fields, $_template->readAllVariantFields());
+				$_fields = array_merge($_fields, $_template->readAllVariantFields(true));
 			}
 			$__fields = array_keys($_fields);
 			$__tmp = array();
