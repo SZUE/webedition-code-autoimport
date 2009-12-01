@@ -2863,8 +2863,8 @@ class searchtoolView extends weToolView
 					$imagesize = array(
 						0, 0
 					);
-					$imageView = '<img src="' . IMAGE_DIR . "/icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
-					$imageViewPopup = '<img src="' . IMAGE_DIR . "/icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
+					$imageView = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
+					$imageViewPopup = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
 				}
 				
 				$content[$f][0]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>';

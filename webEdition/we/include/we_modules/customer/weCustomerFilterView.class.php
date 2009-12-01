@@ -252,7 +252,7 @@ EOS;
 
 		$we_button = new we_button();
 
-		$_delBut = addslashes('<img src="'.IMAGE_DIR.'/button/btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;-moz-user-select: none;">');
+		$_delBut = addslashes('<img src="'.IMAGE_DIR.'button/btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;-moz-user-select: none;">');
 
 		$_script = <<<EO_SCRIPT
 

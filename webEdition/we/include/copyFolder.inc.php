@@ -785,7 +785,7 @@ HTS;
 				we_htmlElement::htmlImg(
 						array(
 							
-								'src' => IMAGE_DIR . '/button/btn_function_trash.gif', 
+								'src' => IMAGE_DIR . 'button/btn_function_trash.gif', 
 								'onclick' => 'javascript:#####placeHolder#####;', 
 								'style' => 'cursor: pointer; width: 27px;-moz-user-select: none;'
 						)));

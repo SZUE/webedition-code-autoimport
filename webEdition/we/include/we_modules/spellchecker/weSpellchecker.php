@@ -440,7 +440,7 @@ print STYLESHEET;
 
 	</head>
 
-	<body class="weDialogBody" onload="setDialog()">
+	<body class="weDialogBody" onLoad="setDialog()">
 
 <?php
 
@@ -531,7 +531,7 @@ print STYLESHEET;
 	<div id="spinner">
 		<center>
 			<div style="padding-top: 30%;">
-				<img src="'.IMAGE_DIR.'/spinner.gif"/><br />
+				<img src="'.IMAGE_DIR.'spinner.gif"/><br />
 				<div id="statusText" class="small" style="color: black;">'.$l_spellchecker['download'].'</div>
 			</div>
 		</center>

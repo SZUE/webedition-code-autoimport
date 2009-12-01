@@ -73,10 +73,10 @@ function getTitleLinkObj($text, $orderKey) {
 	if ($orderBy == $orderKey) {
 
 		if (isset($_REQUEST['orderDesc'])) {
-			$arrow = ' <img src="' . IMAGE_DIR . '/arrow_sort_desc.gif" />';
+			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
 		} else {
 			$arrow = ' &darr; ';
-			$arrow = ' <img src="' . IMAGE_DIR . '/arrow_sort_asc.gif" />';
+			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
 		}
 
 	}
@@ -111,10 +111,10 @@ function getTitleLinkDoc($text, $orderKey) {
 	if ($orderBy == $orderKey) {
 
 		if (isset($_REQUEST['orderDesc'])) {
-			$arrow = ' <img src="' . IMAGE_DIR . '/arrow_sort_desc.gif" />';
+			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
 		} else {
 			$arrow = ' &darr; ';
-			$arrow = ' <img src="' . IMAGE_DIR . '/arrow_sort_asc.gif" />';
+			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
 		}
 
 	}
