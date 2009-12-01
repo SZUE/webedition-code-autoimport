@@ -70,7 +70,7 @@
 			we_htmlElement::htmlBody(array("bgcolor"=>"#ffffff","leftmargin"=>"20","topmargin"=>"20","marginheight"=>"20","marginwidth"=>"20","onload"=>"initPlugin();checkPlugin()"),
 							we_htmlElement::htmlForm(array("name"=>"we_form"),
 									we_htmlElement::htmlCenter(
-										we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."/spinner.gif")).
+										we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."spinner.gif")).
 										we_htmlElement::htmlBr().
 										we_htmlElement::htmlBr().
 										we_htmlElement::htmlDiv(array("class"=>"header_small"),$l_eplugin["initialisation"])

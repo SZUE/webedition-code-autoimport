@@ -327,7 +327,7 @@ function htmlClipElement($smalltext, $text, $content)
 						"href" => "javascript:clip_" . $unique . "();"
 					), 
 					we_htmlElement::htmlImg(array(
-						"src" => IMAGE_DIR . "/button/btn_direction_down.gif", "border" => 0
+						"src" => IMAGE_DIR . "button/btn_direction_down.gif", "border" => 0
 					))) . '\';
 				state_' . $unique . '=1;
 			}else{
@@ -338,7 +338,7 @@ function htmlClipElement($smalltext, $text, $content)
 						"href" => "javascript:clip_" . $unique . "();"
 					), 
 					we_htmlElement::htmlImg(array(
-						"src" => IMAGE_DIR . "/button/btn_direction_right.gif", "border" => 0
+						"src" => IMAGE_DIR . "button/btn_direction_right.gif", "border" => 0
 					))) . '\';
 				state_' . $unique . '=0;
 			}
@@ -357,7 +357,7 @@ function htmlClipElement($smalltext, $text, $content)
 			we_htmlElement::htmlA(array(
 				"href" => "javascript:clip_" . $unique . "();"
 			), we_htmlElement::htmlImg(array(
-				"src" => IMAGE_DIR . "/button/btn_direction_right.gif", "border" => 0
+				"src" => IMAGE_DIR . "button/btn_direction_right.gif", "border" => 0
 			))));
 	$oClip->setCol(0, 1, array(
 		"width" => 10, "nowrap" => "nowrap"

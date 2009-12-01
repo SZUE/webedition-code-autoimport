@@ -223,8 +223,8 @@ class weVotingFrames extends weModuleFrames {
 
 		$we_button = new we_button();
 
-		$del_but = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'/button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();#####placeHolder#####','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
-		$del_but1 = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'/button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();if(answers_edit.itemCount>2) #####placeHolder#####; else callAnswerLimit();','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
+		$del_but = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();#####placeHolder#####','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
+		$del_but1 = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();if(answers_edit.itemCount>2) #####placeHolder#####; else callAnswerLimit();','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
 
 		$js = we_htmlElement::jsElement('',array('src'=>JS_DIR.'utils/multi_edit.js?'.time()));
 

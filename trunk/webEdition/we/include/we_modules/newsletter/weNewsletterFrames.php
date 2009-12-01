@@ -2473,7 +2473,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 									$this->View->htmlHidden("nid",$nid).
 									$this->View->htmlHidden("test",$test).
 									we_htmlElement::htmlCenter(
-										we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."/e_busy.gif")).
+										we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."e_busy.gif")).
 										we_htmlElement::htmlBr().
 										we_htmlElement::htmlBr().
 										we_htmlElement::htmlDiv(array("class"=>"header_small"),$l_newsletter["prepare_newsletter"])
