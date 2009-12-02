@@ -507,6 +507,15 @@ weWysiwyg.prototype.cleanCode = function(code){
 	code = code.replace(re, '</li');
 	re = new RegExp(String.fromCharCode(160)+'</li',"gi");
 	code = code.replace(re, '</li');
+	
+	//Bug#3995
+	var LS = String.fromCharCode(8232);
+	var PS = String.fromCharCode(8233);
+	var re = new RegExp(LS,"gi");
+	code = code.replace(re,"\n");
+	var re = new RegExp(PS,"gi");
+	code = code.replace(re,"\n");
+
 	return code;
 }
 

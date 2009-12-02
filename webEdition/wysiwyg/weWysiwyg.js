@@ -1512,6 +1512,15 @@ function weWysiwyg_cleanCode(code){
 	code = code.replace(re,"$1$2");
 	var re = new RegExp("(<img src=\")/webEdition[^\"']*/([^\"']+)","gi");
 	code = code.replace(re,"$1$2");
+	
+	//Bug#3995
+	var LS = String.fromCharCode(8232);
+	var PS = String.fromCharCode(8233);
+	var re = new RegExp(LS,"gi");
+	code = code.replace(re,"\n");
+	var re = new RegExp(PS,"gi");
+	code = code.replace(re,"\n");
+
 	code = code.replace(/^<br>\n$/,"");
 	code = code.replace(/^<br>\r$/,"");
 	code = code.replace(/^<br>\r\n$/,"");
