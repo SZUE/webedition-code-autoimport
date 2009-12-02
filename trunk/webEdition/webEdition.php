@@ -778,9 +778,9 @@ function we_cmd() {
 		case "help_tagreference":
 			<?php
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
-				echo 'new jsWindow("http://documentation.webedition.de/de/webedition/tag-reference/","help_tagreference",-1,-1,960,700,true,true,true,true);';
+				echo 'new jsWindow("http://tags.webedition.de/de/","help_tagreference",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://documentation.webedition.de/en/webedition/tag-reference/","help_tagreference",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://tags.webedition.de/en/","help_tagreference",-1,-1,960,700,true,true,true,true);';			
 			}
 			?>
 			break;
