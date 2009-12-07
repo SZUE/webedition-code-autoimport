@@ -238,4 +238,60 @@ define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "0");
 // Default Charset
 define("DEFAULT_CHARSET", "UTF-8");
 
+// Default setting for hook execution
+define("EXECUTE_HOOKS", 0);
+
+// connection charset to db
+define("DB_SET_CHARSET", "UTF-8");
+
+
+
+//Versioning status for ContentType image/* 
+define("VERSIONING_IMAGE", 0);
+
+//Versioning status for ContentType text/html 
+define("VERSIONING_TEXT_HTML", 0);
+
+//Versioning status for ContentType text/webedition 
+define("VERSIONING_TEXT_WEBEDITION", 0);
+
+//Versioning status for ContentType text/js 
+define("VERSIONING_TEXT_JS", 0);
+
+//Versioning status for ContentType text/css 
+define("VERSIONING_TEXT_CSS", 0);
+
+//Versioning status for ContentType text/plain 
+define("VERSIONING_TEXT_PLAIN", 0);
+
+//Versioning status for ContentType application/x-shockwave-flash 
+define("VERSIONING_FLASH", 0);
+
+//Versioning status for ContentType video/quicktime 
+define("VERSIONING_QUICKTIME", 0);
+
+//Versioning status for ContentType application/* 
+define("VERSIONING_SONSTIGE", 0);
+
+//Versioning status for ContentType text/xml 
+define("VERSIONING_TEXT_XML", 0);
+
+//Versioning status for ContentType objectFile 
+define("VERSIONING_OBJECT", 0);
+
+//Versioning Number of Days
+define("VERSIONS_TIME_DAYS", -1);
+
+//Versioning Number of Weeks
+define("VERSIONS_TIME_WEEKS", -1);
+
+//Versioning Number of Years
+define("VERSIONS_TIME_YEARS", -1);
+
+//Versioning Number of Versions
+define("VERSIONS_ANZAHL", "");
+
+//Versioning Save version only if publishing
+define("VERSIONS_CREATE", 0);
+
 ?>
