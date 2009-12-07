@@ -14,6 +14,7 @@
  * webEdition/licenses/webEditionSDK/License.txt
  *
  * @category   we
+ * @package   we
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */ 
 
