@@ -340,14 +340,14 @@ if (isset($weShipping)) { // show the shipping which must be edited
 	array_push(
 		$parts,
 		array(
-			'headline' => 'Kosten',
+			'headline' => $l_shop['shipping']['costs'],
 			'space' => 150,
 			'html' =>
 	'<table border="0" cellpadding="0" cellspacing="0" width="100%" class="defaultfont" id="shippingCostTable">
 		<tr>
-			<td><b>Bestellwert</b></td>
+			<td><b>'.$l_shop['shipping']['order_value'].'</b></td>
 			<td width="10"></td>
-			<td><b>Versandkosten</b></td>
+			<td><b>'.$l_shop['shipping']['shipping_costs'].'</b></td>
 			<td width="10"></td>
 		</tr>
 		<tbody id="shippingCostTableEntries">

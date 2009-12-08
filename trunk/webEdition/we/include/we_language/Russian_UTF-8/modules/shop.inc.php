@@ -257,6 +257,10 @@ $l_shop['shipping']['payment_provider'] = 'Payment Provider'; // TRANSLATE
 $l_shop['shipping']['revenue_view'] = 'Товары /выручка';
 $l_shop['shipping']['name'] = 'Name'; // TRANSLATE
 $l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
+$l_shop['shipping']['costs'] = 'Costs'; // TRANSLATE
+$l_shop['shipping']['order_value'] = 'Order value'; // TRANSLATE
+$l_shop['shipping']['shipping_costs'] = 'Shipping_costs'; // TRANSLATE
+
 
 $l_shop['preferences']['customerFields'] = "Поля клиентов<br />(модуль управления клиентами)";
 $l_shop['preferences']['orderCustomerFields'] = 'Поля клиентов<br />(заказ)';
