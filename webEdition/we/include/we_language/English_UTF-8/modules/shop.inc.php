@@ -257,6 +257,10 @@ $l_shop['shipping']['payment_provider'] = 'Payment Provider';
 $l_shop['shipping']['revenue_view'] = 'Articles- / Revenues';
 $l_shop['shipping']['name'] = 'Name';
 $l_shop['shipping']['countries'] = 'Countries';
+$l_shop['shipping']['costs'] = 'Costs';
+$l_shop['shipping']['order_value'] = 'Order value';
+$l_shop['shipping']['shipping_costs'] = 'Shipping_costs';
+
 
 $l_shop['preferences']['customerFields'] = "Customer fields<br />(Customer Module)";
 $l_shop['preferences']['orderCustomerFields'] = 'Customer fields<br />(Order)';

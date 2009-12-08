@@ -257,6 +257,10 @@ $l_shop['shipping']['payment_provider'] = 'Maksupalvelun tarjoaja';
 $l_shop['shipping']['revenue_view'] = 'Tuotenimikkeet- / Tulot';
 $l_shop['shipping']['name'] = 'Name'; // TRANSLATE
 $l_shop['shipping']['countries'] = 'Countries'; // TRANSLATE
+$l_shop['shipping']['costs'] = 'Costs'; // TRANSLATE
+$l_shop['shipping']['order_value'] = 'Order value'; // TRANSLATE
+$l_shop['shipping']['shipping_costs'] = 'Shipping_costs'; // TRANSLATE
+
 
 $l_shop['preferences']['customerFields'] = "Asiakaskentät<br />(Asiakashallintamoduuli)";
 $l_shop['preferences']['orderCustomerFields'] = 'Asiakaskentät<br />(Tilaus)';

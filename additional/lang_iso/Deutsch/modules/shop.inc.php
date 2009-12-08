@@ -258,7 +258,9 @@ $l_shop['shipping']['payment_provider'] = 'Payment Provider';
 $l_shop['shipping']['revenue_view'] = 'Artikel- / Umsatzübersicht';
 $l_shop['shipping']['name'] = 'Name';
 $l_shop['shipping']['countries'] = 'Länder';
-
+$l_shop['shipping']['costs'] = 'Kosten';
+$l_shop['shipping']['order_value'] = 'Bestellwert';
+$l_shop['shipping']['shipping_costs'] = 'Versandkosten';
 
 $l_shop['preferences']['customerFields'] = "Kundenfelder<br />(Kundenverwaltung)";
 $l_shop['preferences']['orderCustomerFields'] = 'Kundenfelder<br />(Bestellung)';
