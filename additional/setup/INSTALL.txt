@@ -2,7 +2,7 @@ webEdition Version 6.0.0.7
 
 SYSTEM REQUIREMENTS
 
-PHP 5.2 or newer
+PHP 5.2.4 or newer
 MySQL Server Version 4.1 or newer
 Please set "session.auto_start" to false in your PHP configuration
 
