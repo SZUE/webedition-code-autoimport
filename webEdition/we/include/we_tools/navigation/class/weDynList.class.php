@@ -72,7 +72,7 @@ class weDynList
 			if ($_sort['order'] == 'DESC') {
 				array_reverse(natcasesort($_arr[$_k]), true);
 			} else {
-				natcasesort ($_arr[$_k], SORT_STRING);
+				natcasesort ($_arr[$_k]);
 			}
 		}
 		
