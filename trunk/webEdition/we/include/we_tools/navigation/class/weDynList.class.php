@@ -160,12 +160,12 @@ class weDynList
 		foreach ($sort as $_k => $_sort) {
 			$_order[] = $_sort['field'] . ' ' . $_sort['order'];
 		}
-		
+		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$_fieldset = weDynList::getObjData(
 				$_select, 
 				$classid, 
 				id_to_path($dirid, OBJECT_FILES_TABLE), 
-				makeArrayFromCSV($categories), 
+				$categories, 
 				'AND', 
 				array(), 
 				$_order, 
