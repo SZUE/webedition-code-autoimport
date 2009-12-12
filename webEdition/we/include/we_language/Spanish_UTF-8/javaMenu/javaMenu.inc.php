@@ -121,7 +121,7 @@ $l_javaMenu["publish"] = "Publish"; // TRANSLATE
 $l_javaMenu["delete"] = "Borrar";
 
 	##################################
-	##### SubMenu Datei/L�schen ######
+	##### SubMenu Datei/Löschen ######
 	##################################
 
 	$l_javaMenu["documents"] = "Documentos";
@@ -214,7 +214,6 @@ $l_javaMenu["metadata"] = "Metadata fields"; // TRANSLATE
 $l_javaMenu["navigation"] = "Navigation"; // TRANSLATE
 $l_javaMenu["change_username"] = "Cambiar nombre de usuario";
 $l_javaMenu["change_password"] = "Cambiar contraseña";
-$l_javaMenu["econda"] = "Econda";
 
 $l_javaMenu["formmail_recipients"] = "Destinatarios de formas de correos";
 $l_javaMenu["proxy_server"] = "Servidor Proxy";
@@ -222,7 +221,7 @@ $l_javaMenu["unpublished_pages"] = "Páginas inéditas";
 $l_javaMenu["preferences"] = "Preferencias";
 $l_javaMenu["versioning"] = "Version-Wizard"; // TRANSLATE
 $l_javaMenu["versioning_log"] = "Version-Log"; // TRANSLATE
-
+$l_javaMenu["econda"] = "Econda"; // TRANSLATE
 
 ##################################
 ###### End Menu Bearbeiten #######
@@ -253,7 +252,7 @@ $l_javaMenu["help"] = "Ayuda";
 $l_javaMenu["onlinehelp"] = "Ayuda en línea";
 $l_javaMenu["onlinehelp_documentation"] = "Documentación en línea";
 $l_javaMenu["onlinehelp_forum"] = "webEdition Forum";
-$l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker";
+$l_javaMenu["onlinehelp_bugtracker"] = "Bug tracker"; // TRANSLATE
 $l_javaMenu["onlinehelp_tagreference"] = "Referencias de rótulos";
 $l_javaMenu["onlinehelp_demo"] = "Páginas Demo";
 $l_javaMenu["onlinehelp_changelog"] = "Versión historia";

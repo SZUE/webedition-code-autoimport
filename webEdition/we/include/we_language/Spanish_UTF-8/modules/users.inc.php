@@ -102,7 +102,7 @@ $l_users["status"] = "Estatus";
 $l_users["value"] = " Valor ";
 $l_users["gesperrt"] = "restringido";
 $l_users["freigegeben"] = "abrir";
-$l_users["gelöscht"] = "deleted"; // TRANSLATE
+$l_users["gelÃ¶scht"] = "deleted"; // TRANSLATE
 $l_users["ohne"] = "sin";
 $l_users["user"] = "Usuario";
 $l_users["usertyp"] = "Tipo de usuario";
@@ -126,8 +126,8 @@ $l_users["inherit_wsn"] = "Inherit navigation workspaces from parent group"; // 
 $l_users["workspace_newsletter"] = "Workspace Newsletter"; // TRANSLATE
 $l_users["inherit_wsnl"] = "Inherit newsletter workspaces from parent group"; // TRANSLATE
 
-$l_users["delete_user_same"] = "Sie können nicht Ihr eigenes Konto löschen."; // TRANSLATE
-$l_users["delete_group_user_same"] = "Sie können nicht Ihre eigene Gruppe löschen."; // TRANSLATE
+$l_users["delete_user_same"] = "Sie können nicht Ihr eigenes Konto löschen.";
+$l_users["delete_group_user_same"] = "Sie können nicht Ihre eigene Gruppe löschen.";
 
 $l_users["login_denied"] = "Login denied"; // TRANSLATE
 $l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!"; // TRANSLATE

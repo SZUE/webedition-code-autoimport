@@ -195,9 +195,11 @@ $l_backup['customer_info'] = 'Datos de clientes y cuentas del Módulo Gestión d
 $l_backup['shop_info'] = 'Pedidos del Módulo Compras.';
 $l_backup['workflow_info'] = 'Datos del Módulo Flujo de Trabajo.';
 $l_backup['todo_info'] = 'Mensajes y tareas del Módulo Tareas/Mensajería.';
+
 $l_backup['newsletter_info'] = 'Datos del Módulo Boletín Informativo.';
 $l_backup['banner_info'] = 'Banner y estadístiscas del Módulo Pancarta/Estadísticas.';
 $l_backup['schedule_info'] = 'Datos programados del Módulo Planificador.';
+
 $l_backup['settings_info'] = 'Configuraciones de la aplicación webEdition.';
 $l_backup['temporary_info'] = 'Datos de documentos y objetos no publicados.';
 $l_backup['export_info'] = 'Datos del Módulo Exportación.';

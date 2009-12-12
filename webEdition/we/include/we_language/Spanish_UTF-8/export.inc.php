@@ -175,6 +175,6 @@ $l_export['weNavigationRule'] = 'Navigation rule'; // TRANSLATE
 $l_export['weThumbnail'] = 'Thumbnails'; // TRANSLATE
 $l_export['handle_thumbnails'] = 'Thumbnails'; // TRANSLATE
 
-$l_export['navigation_hint'] = 'To export the navigation entries, the template on which the navigation is displayed has also to be exported!'; // TRANSLATE
+$l_export['navigation_hint'] = 'To export the navigation entries, the template on which the navigation is displayed has also to be exported!';
 
 ?>
