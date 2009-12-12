@@ -45,12 +45,18 @@ $l_alert[FILE_TABLE]["not_im_ws"] = "Le fichier n'est pas dans votre éspace de 
 $l_alert["folder"]["not_im_ws"] = "Le répertoire n'est pas dans votre éspace de travail!";
 $l_alert[TEMPLATES_TABLE]["not_im_ws"] = "Le modèle n'est pas dans votre éspace de travail!";
 $l_alert["delete_recipient"] = "Voulez-vous vraiment supprimer l'adresse E-Mail sélectionné?";
+
 $l_alert["recipient_exists"] = "Cette adresse E-Mail existe déjà!";
+
 $l_alert["input_name"] = "S'il vous plaît saisissez une nouvelle adresse E-Mail!";
+
 $l_alert['input_file_name'] = "Enter a filename."; // TRANSLATE
 $l_alert["max_name_recipient"] = "L'adresse E-Mail doit avoir une longeur maximale de 32 signe!!";
+
 $l_alert["not_entered_recipient"] = "Vous n'avez pas encore saisi une adresse E-Mail!";
+
 $l_alert["recipient_new_name"] = "Changer l'adresse E-Mail!";
+
 $l_alert["no_new"]["objectFile"] = "Vous ne pouvez pas créer des nouveaux objects, parce que ou vous n'avez pas les droits nécessaires<br>ou parce qu'il n'y a aucune classe qui est valide dans un de votre éspaces de travail!";
 $l_alert["required_field_alert"] = "Le champ '%s' est obligatoire et doit être rempli!";
 $l_alert["phpError"] = "webEdition ne peut pas être démarré";

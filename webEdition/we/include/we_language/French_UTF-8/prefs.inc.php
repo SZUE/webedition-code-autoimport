@@ -256,6 +256,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 
 	$l_prefs["formmail_information"] = "Saisissez ici tous les adresses e-mail, aux quelles des formulaires avec la fonction-formmail  (&lt;we:form type=\"formmail\" ..&gt;) sont être envoyés.<br><br>Si aucune adresse e-mail est saisie ici, il n'est pas possible d'envoyer des formulaires avec la fonction-Formmail!";
 
+
 	$l_prefs["formmail_log"] = "Formmail log"; // TRANSLATE
 	$l_prefs['log_is_empty'] = "The log is empty!"; // TRANSLATE
 	$l_prefs['ip_address'] = "IP address"; // TRANSLATE
@@ -343,15 +344,15 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_item"] = "item"; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_folder"] = "folder"; // TRANSLATE
 
-
 	/**
 	 * DATABASE
 	 */
 
 	$l_prefs["db_connect"] = "Type de connexion-<br>de base de données";
 	$l_prefs["db_set_charset"] = "Connection charset"; // TRANSLATE
-	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.";// TRANSLATE
-	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed.";// TRANSLATE
+	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems."; // TRANSLATE
+	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed."; // TRANSLATE
+
 	
 	/**
 	 * HTTP AUTHENTICATION
@@ -372,9 +373,9 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	/**
 	 * HOOKS
 	 */
-	$l_prefs["hooks"] = "Hooks"; //TRANSLATE
+	$l_prefs["hooks"] = "Hooks"; // TRANSLATE //TRANSLATE
 	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
-	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; //TRANSLATE
+	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; 
 
 /*****************************************************************************
  * ERROR HANDLING
@@ -456,6 +457,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs['validation']='Validation'; // TRANSLATE
 	$l_prefs['xhtml_default'] = 'Préférences standard pour l\'attribut <em>xml</em> dans les we:Tags';
 	$l_prefs['xhtml_debug_explanation'] = 'Le Débogage-XHTML vous aide à créer des site-web valide. Optionel chaque édition d\'un we:Tag peut être vérifié sur sa validité 	et si besoin sur des attributs défectueux. Considérez s\'il vous plaît que ce processus nécessite du temps et il considerable d\'effectuer cette option seulement quand vous créez un nouveau site.';
+
 	$l_prefs['xhtml_debug_headline'] = 'Débogage-XHTML';
 	$l_prefs['xhtml_debug_html'] = 'Activer le Débogage-XHTML ';
 	$l_prefs['xhtml_remove_wrong'] = 'Enlever les attributs défectueux';
@@ -509,7 +511,8 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition. <br /><br />For some modules, you have to restart webEdition to activate.<br /><br />"; // TRANSLATE
+	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition. <br /><br />For some modules, you have to restart webEdition to activate.<br /><br />";
+
 	
 	$l_prefs["module_activation"]["headline"] = "Module activation"; // TRANSLATE
 
@@ -536,32 +539,34 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
  * Versions settings
  *****************************************************************************/
 
-	$l_prefs["versioning"] = "Versioning"; //TRANSLATE
-	$l_prefs["version_all"] = "all"; //TRANSLATE
-	$l_prefs["versioning_activate_text"] = "Activate versioning for some or all content types."; //TRANSLATE
-	$l_prefs["versioning_time_text"] = "If you specify a time period, only versions are saved which are created in this time until today. Older versions will be deleted."; //TRANSLATE
-	$l_prefs["versioning_time"] = "Time period"; //TRANSLATE
-	$l_prefs["versioning_anzahl_text"] = "Number of versions which will be created for each document or object."; //TRANSLATE
-	$l_prefs["versioning_anzahl"] = "Number"; //TRANSLATE
-	$l_prefs["versioning_wizard_text"] = "Open the Version-Wizard to delete or reset versions."; //TRANSLATE
-	$l_prefs["versioning_wizard"] = "Open Versions-Wizard"; //TRANSLATE
-	$l_prefs["ContentType"] = "Content Type"; //TRANSLATE
-	$l_prefs["versioning_create_text"] = "Determine which actions provoke new versions. Either if you publish or if you save, unpublish, delete or import files, too."; //TRANSLATE
-	$l_prefs["versioning_create"] = "Create Version"; //TRANSLATE
-	$l_prefs["versions_create_publishing"] = "only when publishing"; //TRANSLATE
-	$l_prefs["versions_create_always"] = "always"; //TRANSLATE
+	$l_prefs["versioning"] = "Versioning"; // TRANSLATE
+	$l_prefs["version_all"] = "all"; // TRANSLATE
+	$l_prefs["versioning_activate_text"] = "Activate versioning for some or all content types."; // TRANSLATE
+	$l_prefs["versioning_time_text"] = "If you specify a time period, only versions are saved which are created in this time until today. Older versions will be deleted."; // TRANSLATE
+	$l_prefs["versioning_time"] = "Time period"; // TRANSLATE
+	$l_prefs["versioning_anzahl_text"] = "Number of versions which will be created for each document or object."; // TRANSLATE
+	$l_prefs["versioning_anzahl"] = "Number"; // TRANSLATE
+	$l_prefs["versioning_wizard_text"] = "Open the Version-Wizard to delete or reset versions."; // TRANSLATE
+	$l_prefs["versioning_wizard"] = "Open Versions-Wizard"; // TRANSLATE
+	$l_prefs["ContentType"] = "Content Type"; // TRANSLATE
+	$l_prefs["versioning_create_text"] = "Determine which actions provoke new versions. Either if you publish or if you save, unpublish, delete or import files, too."; // TRANSLATE
+	$l_prefs["versioning_create"] = "Create Version"; // TRANSLATE
+	$l_prefs["versions_create_publishing"] = "only when publishing"; // TRANSLATE
+	$l_prefs["versions_create_always"] = "always"; // TRANSLATE
+	
+	$l_prefs['use_jeditor'] = "Use"; // TRANSLATE
+	$l_prefs["editor_font_colors"] = 'Specify font colors'; // TRANSLATE
+	$l_prefs["editor_normal_font_color"] = 'Default'; // TRANSLATE
+	$l_prefs["editor_we_tag_font_color"] = 'webEdition tags'; // TRANSLATE
+	$l_prefs["editor_we_attribute_font_color"] = 'webEdition attributes'; // TRANSLATE
+	$l_prefs["editor_html_tag_font_color"] = 'HTML tags'; // TRANSLATE
+	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes'; // TRANSLATE
+	$l_prefs["editor_pi_tag_font_color"] = 'PHP code'; // TRANSLATE
+	$l_prefs["editor_comment_font_color"] = 'Comments'; // TRANSLATE
+	$l_prefs["jeditor"] = 'Java source editor'; // TRANSLATE
+	
+	
+	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
+	
 
-	$l_prefs['use_jeditor'] = "Use"; //TRANSLATE
-	$l_prefs["editor_font_colors"] = 'Specify font colors'; //TRANSLATE
-	$l_prefs["editor_normal_font_color"] = 'Default'; //TRANSLATE
-	$l_prefs["editor_we_tag_font_color"] = 'webEdition tags'; //TRANSLATE
-	$l_prefs["editor_we_attribute_font_color"] = 'webEdition attributes'; //TRANSLATE
-	$l_prefs["editor_html_tag_font_color"] = 'HTML tags'; //TRANSLATE
-	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes'; //TRANSLATE
-	$l_prefs["editor_pi_tag_font_color"] = 'PHP code'; //TRANSLATE
-	$l_prefs["editor_comment_font_color"] = 'Comments'; //TRANSLATE
-	$l_prefs["jeditor"] = 'Java source editor'; //TRANSLATE
-	
-	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; //TRANSLATE
-	
 ?>

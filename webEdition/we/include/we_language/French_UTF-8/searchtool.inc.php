@@ -22,7 +22,7 @@ $GLOBALS['l_weSearch']['save_group_ok'] = 'The group has been succesfully saved'
 $GLOBALS['l_weSearch']['save_ok'] = 'The entry has been succesfully saved.'; // TRANSLATE
 $GLOBALS['l_weSearch']['save_group_failed'] = 'The group could not be saved.'; // TRANSLATE
 $GLOBALS['l_weSearch']['save_failed'] = 'The entry could not be saved.'; // TRANSLATE
-$l_weSearch['weSearch'] = 'Search';
+$l_weSearch['weSearch'] = 'Search'; // TRANSLATE
 $GLOBALS['l_weSearch']['weSearch'] = 'Search'; // TRANSLATE
 $GLOBALS['l_weSearch']['perm_group_title'] = $GLOBALS['l_weSearch']['weSearch'];
 $l_weSearch['perm_group_title'] = $GLOBALS['l_weSearch']['weSearch'];
@@ -118,7 +118,6 @@ $GLOBALS['l_weSearch']['<='] = 'less equal (<=)'; // TRANSLATE
 $GLOBALS['l_weSearch']['>='] = 'greater equal (>=)'; // TRANSLATE
 $GLOBALS['l_weSearch']['>'] = 'greater then (>)'; // TRANSLATE
 
-
 $GLOBALS['l_weSearch']['jeder'] = 'show all'; // TRANSLATE
 $GLOBALS['l_weSearch']['geparkt'] = 'unpublished'; // TRANSLATE
 $GLOBALS['l_weSearch']['veroeffentlicht'] = 'published'; // TRANSLATE
@@ -130,11 +129,9 @@ $GLOBALS['l_weSearch']['statisch'] = 'static'; // TRANSLATE
 $GLOBALS['l_weSearch']['deleted'] = 'deleted'; // TRANSLATE
 
 
-
 $GLOBALS['l_weSearch']['onlyTitle'] = "In Title"; // TRANSLATE
 $GLOBALS['l_weSearch']['onlyFilename'] = "In Filename"; // TRANSLATE
 $GLOBALS['l_weSearch']['Content'] = "In complete Content"; // TRANSLATE
-
 
 
 //result columns
@@ -153,8 +150,8 @@ $GLOBALS['l_weSearch']['confirmDel'] = 'Delete entry.\\nAre you sure?'; // TRANS
 $GLOBALS['l_weSearch']['nameTooLong'] = 'In the name there are allowed at most 30 characters!'; // TRANSLATE
 $GLOBALS['l_weSearch']['nothingCheckedAdv'] = 'Nothing is checked to search for!'; // TRANSLATE
 $GLOBALS['l_weSearch']['nothingCheckedTmplDoc'] = 'Nothing is checked to search for!'; // TRANSLATE
-$GLOBALS['l_weSearch']['noTempTableRightsSearch'] = 'In order to use the search it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.';// TRANSLATE
-$GLOBALS['l_weSearch']['noTempTableRightsDoclist'] = 'In order to show all included documents it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.';// TRANSLATE
+$GLOBALS['l_weSearch']['noTempTableRightsSearch'] = 'In order to use the search it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.'; // TRANSLATE
+$GLOBALS['l_weSearch']['noTempTableRightsDoclist'] = 'In order to show all included documents it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.'; // TRANSLATE
 
 $GLOBALS['l_weSearch']["date_format"] = 'd.m.Y'; // TRANSLATE
 
@@ -174,6 +171,5 @@ $GLOBALS['l_weSearch']['idDiv'] = 'ID'; // TRANSLATE
 $GLOBALS['l_weSearch']['publish_docs'] = 'Do you want to publish the market documents?'; // TRANSLATE
 $GLOBALS['l_weSearch']['notChecked'] = 'No documents are selected.'; // TRANSLATE
 $GLOBALS['l_weSearch']['publishOK'] = 'Documents were published.'; // TRANSLATE
-
 
 ?>

@@ -116,7 +116,7 @@ $l_button["delete"]["value"] = "Delete";
 $l_button["delete"]["alt"] = "Delete";
 $l_button["delete"]["width"] = 100;
 
-$l_button["go"]["value"] = "EXECUTE NOW";
+$l_button["go"]["value"] = "Execute now";
 $l_button["go"]["alt"]   = ""; // TRANSLATE
 $l_button["go"]["width"] = 120;
 
