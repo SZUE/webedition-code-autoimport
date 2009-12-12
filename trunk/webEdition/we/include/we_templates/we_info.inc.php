@@ -112,13 +112,13 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$_loginTable->setCol($loginRow++, 1, array('width'=> $_logoPart, 'rowspan' => '5', 'valign' => 'bottom'), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
 
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), htmlTextInput("username", 25, "", 100, "id=\"username\" style=\"width: 250px;\" autocomplete=\"off\"", "text", 0, 0));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), htmlTextInput("username", 25, "", 100, "id=\"username\" style=\"width: 250px;\" ", "text", 0, 0));
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), getPixel(5,5));
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label",true,array("for"=>"password"),$l_global["password"])));
 
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), htmlTextInput("password", 25, "", 100, "id=\"password\" style=\"width: 250px;\" autocomplete=\"off\"", "password", 0, 0));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), htmlTextInput("password", 25, "", 100, "id=\"password\" style=\"width: 250px;\" ", "password", 0, 0));
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart + $_logoPart, 'colspan'=>2), getPixel(5,5));
 
