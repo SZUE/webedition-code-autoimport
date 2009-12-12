@@ -23,7 +23,7 @@
 /**
  * Language file: we_export.inc.php
  * Provides language strings.
- * Language: French
+ * Language: English
  */
 $l_export['title'] = "Assistant d'Export";
 $l_export['selection_type'] = 'Définer la séléction des éléments';
@@ -38,11 +38,11 @@ $l_export['none'] = '-- aucun --';
 $l_export['doctype'] = 'Type';
 $l_export['template'] = 'Modèle';
 $l_export['categories'] = 'Catégories';
-$l_export['documents'] = 'Documents';
-$l_export['objects'] = 'Objects';
+$l_export['documents'] = 'Documents'; // TRANSLATE
+$l_export['objects'] = 'Objects'; // TRANSLATE
 $l_export['class'] = 'Classe';
 $l_export['isDynamic'] = 'Créer le site dynamiquement';
-$l_export['extension'] = 'Extension';
+$l_export['extension'] = 'Extension'; // TRANSLATE
 $l_export['wexml_export'] = 'Export weXML';
 $l_export['filename'] = 'Nom de fichier';
 $l_export['extra_data'] = 'Donnée supplémentaire';

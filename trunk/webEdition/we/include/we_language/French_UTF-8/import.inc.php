@@ -55,10 +55,12 @@ $l_import['template_import'] = 'First Steps Wizard'; // TRANSLATE
 $l_import['txt_template_import'] = 'Import ready example templates and template sets from the webEdition server'; // TRANSLATE
 $l_import['file_import'] = 'Importer des fichiers locals';
 $l_import['txt_file_import'] = 'Importer une ou plusieurs fichiers du disque dur local.';
+
 $l_import['site_import'] = 'Importer des fichiers du serveur';
 $l_import['site_import_isp'] = 'Importer';
 $l_import['txt_site_import_isp'] = 'Importer des graphique d\'un répertoire serveur.Choisissez, quelles graphiques doivent être importées.';
 $l_import['txt_site_import'] = 'Importer des fichiers d\'un répertoire de serveur. Choisissez par les options de filtre si des Graphiques, des site-HTML, des vidéo-Flash, Fichier-JavaScript,des Fichier-CSS, des Document de texte clair ou autre document doivent être importés';
+
 $l_import['txt_wxml_import'] = 'Des fichiers XML de webEdition contiennent des informations sur les documents de webEdition webEdition. Définissez dans quel répertoire les objects et documents seront importés.';
 $l_import['txt_gxml_import'] = 'Import "flat" XML files, such as those provided by phpMyAdmin. The dataset fields have to be allocated to the webEdition dataset fields. Use this to import XML files exported from webEdition without the export module.'; // TRANSLATE
 $l_import['txt_csv_import'] = 'Import des fichier-CSV (Comma Separated Values) ou des formats comparables (p.ex. *.txt). Les champs d\'enregistrement vont être assignés à des champs de webEdtion.';
