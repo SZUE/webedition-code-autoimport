@@ -22,40 +22,40 @@
 $l_contentTypes["objectFile"] = "Объект";
 $l_contentTypes["object"] = "Класс";
 
-$$l_object["attributes"] = "Атрибуты";
+$l_object["attributes"] = "Attributes"; // TRANSLATE
 $l_object["objectname"] = "Имя объекта";
 $l_object["objectpath"] = "Путь объекта";
 $l_object["class"] = "Класс";
 $l_object["classname"] = "Имя класса";
-$l_object["class_id"] = "ID of the class";// TRANSLATE
-$l_object["default"] = "Default Value";// TRANSLATE
-$l_object["checked"] = "checked";// TRANSLATE
+$l_object["class_id"] = "ID of the class"; // TRANSLATE
+$l_object["default"] = "Default Value";
+$l_object["checked"] = "checked"; // TRANSLATE
 $l_object["name"] = "Автоматическое имя";
 $l_object["allFields"] = "Все поля";
 $l_object["search_term"] = "Искать термин";
 $l_object["search_field"] = "Поле поиска";
-$l_object["defaultdir"] = "Default Directory";// TRANSLATE
-$l_object["rootdir"] = "Workspace";// TRANSLATE
+$l_object["defaultdir"] = "Default Directory"; // TRANSLATE
+$l_object["rootdir"] = "Workspace"; // TRANSLATE
 
 $l_object["no_root_ws_select"] = "Корневой каталог невозможно выбрать!";
 
 $l_object["objectFile_field"] = "Объект";
-$l_object["multiObjectFile_field"] = "Multi object";// TRANSLATE
-$l_object["checkbox_field"] = "Checkbox";// TRANSLATE
+$l_object["multiObjectFile_field"] = "Multi object"; // TRANSLATE
+$l_object["checkbox_field"] = "Checkbox"; // TRANSLATE
 $l_object["meta_field"] = "Выбрать";
 $l_object["input_field"] = "Ввод текста";
-$l_object["int_field"] = "Integer";// TRANSLATE
-$l_object["float_field"] = "Float";// TRANSLATE
+$l_object["int_field"] = "Integer"; // TRANSLATE
+$l_object["float_field"] = "Float"; // TRANSLATE
 $l_object["date_field"] = "Дата";
 $l_object["textarea_field"] = "Область для текста";
 $l_object["img_field"] = "Графика";
 $l_object["binary_field"] = "Бинарный документ";
 $l_object["link_field"] = "Ссылка";
 $l_object["href_field"] = "Гиперссылка";
-$l_object["shopVat_field"] = "Поле НДС"; 
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
+$l_object["shopVat_field"] = "Поле НДС";
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
 
-$l_object["we_new_doc_after_save"] = "New Object after saving";// TRANSLATE
+$l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
 $l_object["objectFile_response_save_ok"] = "Объект '%s' успешно сохранен!";
 $l_object["objectFile_response_publish_ok"] = "Объект '%s' успешно опубликован!";
 $l_object["objectFile_response_unpublish_ok"] = "Объект '%s' успешно снят с публикации!";
@@ -65,13 +65,13 @@ $l_object["fieldNameEmpty"] = "Имя поля обязательно к зап�
 $l_object["length"] = "Длина";
 $l_object["type"] = "Тип";
 $l_object["default"] = "По умолчанию";
-$l_object["max_objects"] = "max. Objects";
-$l_object["no_maximum"] = "leave empty for no limit";
+$l_object["max_objects"] = "max. Objects"; // TRANSLATE
+$l_object["no_maximum"] = "leave empty for no limit"; // TRANSLATE
 
 $l_object["DefaultOwners"] = "Пользователь по умолчанию";
 
 $l_object["copyObject"] = "Копировать объект";
-$l_object["copyClass"] = "Copy class";
+$l_object["copyClass"] = "Copy class"; // TRANSLATE
 
 $l_object["new_field"] = "Новое поле";
 
