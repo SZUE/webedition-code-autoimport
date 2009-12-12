@@ -37,7 +37,8 @@ $l_newsletter["quit"] = "Выйти";
 $l_newsletter["help"] = "Помощь";
 $l_newsletter["info"] = "Справка";
 $l_newsletter["options"] = "Опции";
-$l_newsletter["send_test"] = "Отправить пробное письмо";
+$l_newsletter["send_test"] = "Отправить пробное письмо"; 
+
 $l_newsletter["domain_check"] = "Проверить домен";
 $l_newsletter["send"] = "Отправить";
 $l_newsletter["preview"] = "Предварительный просмотр";
@@ -46,6 +47,7 @@ $l_newsletter["show_log"] = "Показать книгу записей";
 $l_newsletter["mailing_list"] = "Список для рассылки %s";
 $l_newsletter["customers"] = "Клиенты";
 $l_newsletter["emails"] = "Emails";
+
 $l_newsletter["newsletter_content"] = "Содержание листа рассылки";
 $l_newsletter["type_doc"] = "Документы";
 $l_newsletter["type_object"] = "Объекты";
@@ -82,17 +84,25 @@ $l_newsletter["delete_group_question"] = "Do you want to delete the current grou
 $l_newsletter["delete_ok"] = "Лист рассылки удален";
 $l_newsletter["delete_nok"] = "ОШИБКА: лист рассылки не был удален!";
 $l_newsletter["test_email"] = "Пробное письмо";
+
 $l_newsletter["test_email_question"] = "Пробное письмо будет отправлено на тестовый электронный адрес %s!\\n Продолжить?";
+
 $l_newsletter["test_mail_sent"] = "Пробное письмо отправлено на тестовый электронный адрес %s";
+
 $l_newsletter["malformed_mail_group"] = "Список адресов рассылки %s содержит недействительный адрес '%s'!\\nЛист рассылки не сохранен!";
+
 $l_newsletter["malformed_mail_sender"] = "Адрес отправителя '%s' недействительный!\\nЛист рассылки не сохранен!";
+
 $l_newsletter["malformed_mail_reply"] = "Обратный адрес '%s' недействительный!\\nЛист рассылки не сохранен!";
+
 $l_newsletter["malformed_mail_test"] = "Тестовый адрес '%s' недействительный!\\nЛист рассылки не сохранен!";
+
 $l_newsletter["send_question"] = "Отправить лист рассылки по адресам рассылок?";
 $l_newsletter["send_test_question"] = "Это тест (без отправки листа рассылки)\\nПодтвердите для того, чтобы продолжить";
 $l_newsletter["domain_ok"] = "Домен %s проверен";
 $l_newsletter["domain_nok"] = "Домен %s невозможно проверить";
 $l_newsletter["email_malformed"] = "Адрес %s недействителен";
+
 $l_newsletter["domain_check_list"] = "Проверка доменов по списку адресов рассылки %s";
 $l_newsletter["domain_check_begins"] = "Проверка доменов началась";
 $l_newsletter["domain_check_ends"] = "Проверка доменов завершена";
@@ -110,8 +120,10 @@ $l_newsletter["send_to_list"] = "Отправить по адресам расс
 $l_newsletter["campaign_starts"] = "Кампания по рассылке началась...";
 $l_newsletter["campaign_ends"] = "Кампания по рассылке завершена";
 $l_newsletter["test_no_mail"] = "Тестирование - без рассылки писем...";
+
 $l_newsletter["sending"] = "Разослать...";
 $l_newsletter["mail_not_sent"] = "Письмо '%s' не может быть отправлено.";
+
 $l_newsletter["filter"] = "Фильтр";
 $l_newsletter["send_all"] = "Отправить всем";
 $l_newsletter["lists_overview_menu"] = "Обзор списков рассылки";
@@ -120,13 +132,18 @@ $l_newsletter["copy"] = "Копировать";
 $l_newsletter["copy_newsletter"] = "Копировать лист рассылки";
 $l_newsletter["continue_camp"] = "Предыдущая кампания по рассылке листа рассылки не завершена!<br>Есть возможность продолжить предыдущую кампанию.<br>Продолжить предыдущую кампанию по рассылке?";
 $l_newsletter["reject_malformed"] = "Письмо не отправлять в случае, если адрес недействителен";
+
 $l_newsletter["reject_not_verified"] = "Письмо не отправлять в случае, если невозможно проверить адрес";
+
 $l_newsletter["send_step"] = "Количество писем в одной рассылке";
+
 $l_newsletter["test_account"] = "Тестовый адрес";
 $l_newsletter["log_sending"] = "Вносить запись в журнал при отправке письма";
+
 $l_newsletter["default_sender"] = "Отправитель по умолчанию";
 $l_newsletter["default_reply"] = "Обратный адрес по умолчанию";
 $l_newsletter["default_htmlmail"] = "Формат письма HTML по умолчанию";
+
 $l_newsletter["isEmbedImages"] = "Embed images"; // TRANSLATE
 $l_newsletter["ask_to_preserve"] = "Предыдущая кампания по рассылке листа рассылки окончательно не завершена!<br>В случае, если Вы сейчас сохраните данный лист рассылки, Вы не сможете завершить предыдущую кампанию по рассылке!<br>Продолжить?";
 $l_newsletter["log_save_newsletter"] = "Лист рассылки сохранен";
@@ -137,15 +154,23 @@ $l_newsletter["log_campaign_reset"] = "Параметры кампании по 
 $l_newsletter["mail_sent"] = "Лист рассылки отправлен по адресу %s.";
 $l_newsletter["must_save"] = "Лист рассылки изменен.\\nПеред отправкой Вы должны сохранить изменения!";
 $l_newsletter["email_exists"] = "Такой адрес уже существует!";
+
 $l_newsletter["email_max_len"] = "Адрес email не должен превышать 255 символов!";
+
 $l_newsletter["no_email"] = "Адрес email не выбран!";
+
 $l_newsletter["email_new"] = "Введите, пожалуйста, email адрес!";
+
 $l_newsletter["email_delete"] = "Удалить выделенные email адреса?";
+
 $l_newsletter["email_delete_all"] = "Удалить все email адреса?";
+
 $l_newsletter["email_edit"] = "Адрес email изменен!";
+
 $l_newsletter["nothing_to_save"] = "Нет предмета сохранения!";
 $l_newsletter["csv_delimiter"] = "Разделительный знак";
 $l_newsletter["csv_col"] = "Колонка email";
+
 $l_newsletter["csv_hmcol"] = "Колонка HTML";
 $l_newsletter["csv_salutationcol"] = "Колонка обращения";
 $l_newsletter["csv_titlecol"] = "Колонка титула, звания";
@@ -153,6 +178,7 @@ $l_newsletter["csv_firstnamecol"] = "Колонка имени";
 $l_newsletter["csv_lastnamecol"] = "Колонка фамилии";
 $l_newsletter["csv_export"] = "Файл '%s' сохранен";
 $l_newsletter["customer_email_field"] = "Поле еmail клиента";
+
 $l_newsletter["customer_html_field"] = "Поле HTML клиента";
 $l_newsletter["customer_salutation_field"] = "Поле обращения к клиенту";
 $l_newsletter["customer_title_field"] = "Поле титула/степени клиента";
@@ -164,6 +190,7 @@ $l_newsletter["csv_title_explain"] = "(0 - без колонки титула/с
 $l_newsletter["csv_firstname_explain"] = "(0 - без колонки имени)";
 $l_newsletter["csv_lastname_explain"] = "(0 - без колонки фамилии)";
 $l_newsletter["email"] = "Email";
+
 $l_newsletter["lastname"] = "Фамилия";
 $l_newsletter["firstname"] = "Имя";
 $l_newsletter["salutation"] = "Обращение";
@@ -171,25 +198,32 @@ $l_newsletter["title"] = "Титул";
 $l_newsletter["female_salutation"] = "Обращение к женщине";
 $l_newsletter["male_salutation"] = "Обращение к мужчине";
 $l_newsletter["edit_htmlmail"] = "Получить HTML email";
+
 $l_newsletter["htmlmail_check"] = "HTML"; // TRANSLATE
 $l_newsletter["double_name"] = "Название листа рассылки уже существует.";
 $l_newsletter["cannot_preview"] = "Предварительный просмотр листа рассылки невозможен";
 $l_newsletter["empty_name"] = "Не заполнено имя!";
 $l_newsletter["edit_email"] = "Редактировать адреса email";
+
 $l_newsletter["add_email"] = "Добавить адрес email";
+
 $l_newsletter["none"] = "-- Отсутствуют --";
 $l_newsletter["must_save_preview"] = "Лист рассылки изменен.\\nПеред его предварительным просмотром нужно сохранить изменения!";
 $l_newsletter["black_list"] = "Черный список";
 $l_newsletter["email_is_black"] = "Адрес еmail в черном списке!";
+
 $l_newsletter["upload_nok"] = "Невозможно загрузить файл.";
 $l_newsletter["csv_download"] = "Загрузить csv файл";
 $l_newsletter["csv_upload"] = "Загрузить csv";
 $l_newsletter["finished"] = "Завершено";
 $l_newsletter["cannot_open"] = "Невозможно раскрыть файл!";
 $l_newsletter["search_email"] = "Поиск адреса еmail...";
+
 $l_newsletter["search_text"] = "Введите, пожалуйста, адрес email";
+
 $l_newsletter["search_finished"] = "Поиск завершен\\nНайдено: %s";
 $l_newsletter["email_double"] = "Адрес email %s уже существует!";
+
 $l_newsletter["error"] = "ОШИБКА";
 $l_newsletter["warning"] = "ВНИМАНИЕ";
 $l_newsletter["file_email"] = "CSV files"; // TRANSLATE
@@ -197,8 +231,10 @@ $l_newsletter["edit_file"] = "Edit CSV file"; // TRANSLATE
 $l_newsletter["show"] = "Show"; // TRANSLATE
 $l_newsletter["no_file_selected"] = "No file selected!"; // TRANSLATE
 $l_newsletter["file_is_empty"] = "The CSV file is empty"; // TRANSLATE
-$l_newsletter["del_email_file"] = "Delete E-mail '%s'?"; // TRANSLATE
-$l_newsletter["email_missing"] = "Missing E-mail address"; // TRANSLATE
+$l_newsletter["del_email_file"] = "Delete E-mail '%s'?";
+
+$l_newsletter["email_missing"] = "Missing E-mail address";
+
 $l_newsletter["yes"] = "Yes"; // TRANSLATE
 $l_newsletter["no"] = "No"; // TRANSLATE
 $l_newsletter["select_file"] = "Select file"; // TRANSLATE
@@ -219,7 +255,8 @@ $l_newsletter["delete_group_ok"] = "Группа листов рассылки �
 $l_newsletter["delete_group_nok"] = "ОШИБКА: Группа листов рассылки не удалена!";
 $l_newsletter["path_not_valid"] = "The path is not valid"; // TRANSLATE
 $l_newsletter["no_subject"] = "The subject field is empty. Do you really want to send the newsletter?"; // TRANSLATE
-$l_newsletter["mail_failed"] = " E-mail '%s' cannot be sent. A possible cause is an incorrect server configuration."; // TRANSLATE
+$l_newsletter["mail_failed"] = " E-mail '%s' cannot be sent. A possible cause is an incorrect server configuration.";
+
 $l_newsletter["reject_save_malformed"] = "Do not save newsletter if address is malformed."; // TRANSLATE;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
 $l_newsletter["use_https_refer"] = "Use HTTPS for reference"; // TRANSLATE
@@ -231,7 +268,9 @@ $l_newsletter["prepare_newsletter"] = "Preparation..."; // TRANSLATE
 $l_newsletter["use_port_check"] = "Использовать порт для перенаправления";
 $l_newsletter["use_port"] = "порт";
 $l_newsletter["sum_group"] = "адрес(а) E-Mail в списке %s";
+
 $l_newsletter["sum_all"] = "адреса E-Mail всех списков";
+
 $l_newsletter["retry"] = "повторить";
 
 $l_newsletter["charset"]= "Кодировка символов";

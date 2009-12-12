@@ -20,7 +20,8 @@
 
 $l_we_tag['a']['description'] = "The we:a tag creates an HTML link tag that references an internal webEdition document that has the ID listed below. The tag links any content found between the start tag and the end tag."; // TRANSLATE
 $l_we_tag['a']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['addDelNewsletterEmail']['description'] = "This tag is used to add or remove an E-mail address from a newsletter address list. In attribute \"path\" the complete path to the newsletter list must be given. If the path begins without \"/\" the path will be emanated from DOCUMENT_ROOT. If you use several lists, you can enter several paths, separated by a comma."; // TRANSLATE
+$l_we_tag['addDelNewsletterEmail']['description'] = "This tag is used to add or remove an E-mail address from a newsletter address list. In attribute \"path\" the complete path to the newsletter list must be given. If the path begins without \"/\" the path will be emanated from DOCUMENT_ROOT. If you use several lists, you can enter several paths, separated by a comma.";
+
 $l_we_tag['addDelShopItem']['description'] = "Use the we:addDelShopItem tag to add or delete an article from the shopping cart."; // TRANSLATE
 $l_we_tag['addPercent']['description'] = "The we:addPercent tag adds a specified percentage, for example, VAT."; // TRANSLATE
 $l_we_tag['addPercent']['defaultvalue'] = ""; // TRANSLATE
@@ -38,6 +39,7 @@ $l_we_tag['calculate']['description'] = "The we:calculate tag allows all possibl
 $l_we_tag['calculate']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['captcha']['description'] = "This tag generates an image with a random code. "; // TRANSLATE
 $l_we_tag['category']['description'] = "The we:category tag is replaced by the category (or categories) that was / were allocated to the document in the Properties view. If several categories have been allocated, they must be delimited using commas. If you wish to use another delimiter, you must specify it using the \"tokken\" attribute. Example: tokken = \" \" (In this case, a space is being used to delimit categories).";
+
 $l_we_tag['categorySelect']['description'] = "This tag is used to insert a drop-down (&lt;select&gt;) menu into a webEdition document. Use this tag to select a category. By placing an end tag immediatly after the start tag, you will cause the drop-down menu to contain all categories currently defined in webEdition."; // TRANSLATE
 $l_we_tag['categorySelect']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['charset']['description'] = "The we:charset tag generates a meta tag which determines the used charset for the page. \"ISO-8859-1\" is usually used for English Web pages. This tag must be placed within the meta tag of the HTML page."; // TRANSLATE
@@ -81,9 +83,9 @@ $l_we_tag['ifBack']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifCaptcha']['description'] = "Content enclosed by this tag is only displayed if the code entered by the user is valid."; // TRANSLATE
 $l_we_tag['ifCaptcha']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifCat']['description'] = "The we:ifCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under \"categories\" are one of the document's categories."; // TRANSLATE
-$l_we_tag['ifCat']['defaultvalue'] = "";
+$l_we_tag['ifCat']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotCat']['description'] = "The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under \"categories\" are none of the document's categories."; // TRANSLATE
-$l_we_tag['ifNotCat']['defaultvalue'] = "";
+$l_we_tag['ifNotCat']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifClient']['description'] = "The we:ifClient tag ensures that everything located between the start tag and the end tag will only be displayed if the client (browser) meets the established standards. This tag only works with dynamically saved pages!"; // TRANSLATE
 $l_we_tag['ifClient']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifConfirmFailed']['description'] = "When using DoubleOptIn with the Newsletter Module, &lt;we:ifConfirmFailed&gt; checks, if the E-Mail address was confirmed."; // TRANSLATE
@@ -328,26 +330,29 @@ $l_we_tag['select']['description'] = "The we:select tag creates a select box for
 $l_we_tag['select']['defaultvalue'] = "&lt;option&gt;#1&lt;/option&gt;
 &lt;option&gt;#2&lt;/option&gt;
 &lt;option&gt;#3&lt;/option&gt;";
-$l_we_tag['sendMail']['description'] = "This tag sends a webEdition page as an E-mail to the addresses which are defined in the attribute \"recipient\"."; // TRANSLATE
+$l_we_tag['sendMail']['description'] = "This tag sends a webEdition page as an E-mail to the addresses which are defined in the attribute \"recipient\".";
+
 $l_we_tag['sessionField']['description'] = "The we:sessionField tag creates an HTML input, select or text area tag. It is used for any input in session fields (e. g. customer data, etc.)."; // TRANSLATE
 $l_we_tag['sessionLogout']['description'] = "The we:sessionLogout tag creates an HTML link tag referring to an internal webEdition document with the ID mentioned in the webEdition Tag Wizard. If this webEdition document has a we:sessionStart tag and holds the attribute \"dynamic\", the active session will be cleared and closed. No data will be saved."; // TRANSLATE
 $l_we_tag['sessionLogout']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['sessionStart']['description'] = "This tag is used to start a session or to continue an existing one. This tag is required in templates that generate the following pages: Pages which are protected in some form by the Customer Mangement Module, Shop pages and pages which support front end input.&lt;br /&gt;This tag MUST be the first tag on the first line of the template!";
-$l_we_tag['setVar']['description'] = "This tag is used to set the values of various types of varibles.<br/><strong>Attention:</strong> Without the attribute <strong>striptags=\"true\"</strong>, HTML- and PHP-Code is not filtered, this is a potenzial security risk!</strong>";// TRANSLATE
+$l_we_tag['setVar']['description'] = "This tag is used to set the values of various types of varibles.<br/><strong>Attention:</strong> Without the attribute <strong>striptags=\"true\"</strong>, HTML- and PHP-Code is not filtered, this is a potenzial security risk!</strong>"; // TRANSLATE
 $l_we_tag['shipping']['description'] = "In regard to the purchase we:shipping is used to determine shipping costs. These costs are based on the value of the shopping cart, the land of origin of the registered user and the shipping cost rules editable in the Shop Module. The parameter \"sum\" contains the name of a sum calculated with we:sum. The parameter \"type\" is used to determine either the net, gros as well as the amount of the VAT contained in the shipping costs."; // TRANSLATE
 $l_we_tag['shopField']['description'] = "This tag saves various input fields directly from an article or in the shopping cart (order). The administrator can define some values from which the customer can choose or enter an own value. It is therefore possible to map many article variants in a simple way."; // TRANSLATE
 $l_we_tag['shopVat']['description'] = "This tag is used to determine the VAT for an article. To adminstrate different VAT rates use the Shop Module. A given Id directly prints the VAT-Rate for this article."; // TRANSLATE
 $l_we_tag['showShopItemNumber']['description'] = "The we:showShopItemNumber tag shows the amount of specified items in the basket."; // TRANSLATE
 $l_we_tag['sidebar']['description'] = ""; // TRANSLATE
 $l_we_tag['sidebar']['defaultvalue'] = "Open sidebar"; // TRANSLATE
-$l_we_tag['subscribe']['description'] = "This tag is used to add a single line input field to a webEdition document so that a user wanting to subscribe to a newsletter can enter his or her E-mail address."; // TRANSLATE
+$l_we_tag['subscribe']['description'] = "This tag is used to add a single line input field to a webEdition document so that a user wanting to subscribe to a newsletter can enter his or her E-mail address.";
+
 $l_we_tag['sum']['description'] = "The we:sum tag sums up all figures in a list."; // TRANSLATE
 $l_we_tag['target']['description'] = "This tag is used to generate the link target from within &lt;we:linklist&gt;."; // TRANSLATE
 $l_we_tag['textarea']['description'] = "The we:textarea tag creates a multi-line input box."; // TRANSLATE
 $l_we_tag['title']['description'] = "The we:title tag creates a normal title tag. If the title field in the Properties view is empty, everything located between the start tag and the end tag will be used as the default title. Otherwise the title will be entered by the Properties view."; // TRANSLATE
 $l_we_tag['tr']['description'] = "The &lt;we:tr&gt; Tag corresponds to the HTML-tag &lt;tr&gt; and is used to define a table row."; // TRANSLATE
 $l_we_tag['tr']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['unsubscribe']['description'] = "This tag is used to generate a single input field in a webEdition document so that a user can enter his or her E-mail address to unsubscribe from a news-letter."; // TRANSLATE
+$l_we_tag['unsubscribe']['description'] = "This tag is used to generate a single input field in a webEdition document so that a user can enter his or her E-mail address to unsubscribe from a news-letter.";
+
 $l_we_tag['url']['description'] = "The we:url tag creates an internal webEdition URL that references to the document that has the ID listed below."; // TRANSLATE
 $l_we_tag['userInput']['description'] = "The we:userInput tag creates input fields to use with we:form type=\"document\" or type=\"object\" in order to create documents or objects."; // TRANSLATE
 $l_we_tag['useShopVariant']['description'] = "The we:shopVariant tag uses the data of a article variant by the submitted name of the variant. Is there no variant with the given name the default article will be displayed."; // TRANSLATE
@@ -389,10 +394,10 @@ $l_we_tag['ifPageLanguage']['description'] = "The tag we:ifPageLanguage tests on
 $l_we_tag['ifPageLanguage']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotPageLanguage']['description'] = "The tag we:ifNotPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages"; // TRANSLATE
 $l_we_tag['ifNotPageLanguage']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['ifObjectLanguage']['description'] = "The tag we:ifObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";// TRANSLATE
-$l_we_tag['ifObjectLanguage']['defaultvalue'] = "";
-$l_we_tag['ifNotObjectLanguage']['description'] = "The tag we:ifNotObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";// TRANSLATE
-$l_we_tag['ifNotObjectLanguage']['defaultvalue'] = "";
+$l_we_tag['ifObjectLanguage']['description'] = "The tag we:ifObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages"; // TRANSLATE
+$l_we_tag['ifObjectLanguage']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifNotObjectLanguage']['description'] = "The tag we:ifNotObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages"; // TRANSLATE
+$l_we_tag['ifNotObjectLanguage']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page"; // TRANSLATE
 $l_we_tag['ifSendMail']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page"; // TRANSLATE

@@ -45,6 +45,7 @@ $GLOBALS["l_global"]["email_ban"] = "Вы не уполномочены испо
 $GLOBALS["l_global"]["email_recipient_invalid"] = "Адрес получателя введен неверно!";
 $GLOBALS["l_global"]["email_no_recipient"] = "Адреса получателя не существует!";
 $GLOBALS["l_global"]["email_invalid"] = "Ваш электронный <b>адрес</b> недействителен!";
+
 $GLOBALS["l_global"]["captcha_invalid"] = "The entered security code is wrong!"; // TRANSLATE
 $GLOBALS["l_global"]["question"] = "Вопрос";
 $GLOBALS["l_global"]["warning"] = "Внимание";
@@ -53,6 +54,7 @@ $GLOBALS["l_global"]["index_table"] = "Таблица индексов";
 $GLOBALS["l_global"]["cannotconnect"] = "Нет соединения с сервером webEdition!";
 $GLOBALS["l_global"]["recipients"] = "Получатели писем Formmail";
 $GLOBALS["l_global"]["recipients_txt"] = "Введите, пожалуйста, все электронные адреса для рассылки форм с помощью функции Formmail (&lt;we:form type=&quot;formmail&quot; ..&gt;). Если адрес рассылки не введен, невозможно воспользоваться функцией рассылки Formmail!";
+
 $GLOBALS["l_global"]["std_mailtext_newObj"] = "Создан новый объект %s класса %s!";
 $GLOBALS["l_global"]["std_subject_newObj"] = "Новый объект";
 $GLOBALS["l_global"]["std_subject_newDoc"] = "Новый документ";
