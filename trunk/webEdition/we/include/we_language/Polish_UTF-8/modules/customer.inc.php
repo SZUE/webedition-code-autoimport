@@ -87,8 +87,12 @@ $l_customer["branch"] = "View"; // TRANSLATE
 $l_customer["field_name"] = "Name"; // TRANSLATE
 $l_customer["field_type"] = "Type"; // TRANSLATE
 $l_customer["field_default"] = "Default"; // TRANSLATE
-$l_customer["add_mail"] = "Insert E-mail"; // TRANSLATE
-$l_customer["edit_mail"] = "Edit E-mail"; // TRANSLATE
+$l_customer["add_mail"] = "Insert E-mail";
+
+$l_customer["edit_mail"] = "Edit E-mail"; // CHECK
+// changed from: "Edit E-mail"
+// changed to  : "Edit email"
+
 
 $l_customer["no_branch"] = "No view has been selected!"; // TRANSLATE
 $l_customer["no_field"] = "No field has been selected!"; // TRANSLATE
@@ -193,7 +197,7 @@ $l_customer["csv_delimiter"] = "Delimiter"; // TRANSLATE
 $l_customer["csv_enclose"] = "Enclose"; // TRANSLATE
 $l_customer["csv_escape"] = "Escape"; // TRANSLATE
 $l_customer["csv_lineend"] = "Line end"; // TRANSLATE
-$l_customer["import_charset"]="Import charset"; // TRANSLATE
+$l_customer["import_charset"]="Import charset"; // TRANSLATE //
 $l_customer["csv_null"] = "NULL replacment"; // TRANSLATE
 $l_customer["csv_fieldnames"] = "First row contains fileds name"; // TRANSLATE
 
