@@ -87,8 +87,14 @@ $l_customer["branch"] = "Vista";
 $l_customer["field_name"] = "Nombre";
 $l_customer["field_type"] = "Tipo";
 $l_customer["field_default"] = "Predeterminado";
-$l_customer["add_mail"] = "Insertar E-Mail";
-$l_customer["edit_mail"] = "Editar E-Mail";
+$l_customer["add_mail"] = "Insertar E-Mail"; // CHECK
+// changed from: "Insert E-mail"
+// changed to  : "Insert email"
+
+$l_customer["edit_mail"] = "Editar E-Mail"; // CHECK
+// changed from: "Edit E-mail"
+// changed to  : "Edit email"
+
 
 $l_customer["no_branch"] = "Ninguna vista ha sido seleccionada!";
 $l_customer["no_field"] = "Ningún campo ha sido seleccionado!";
@@ -193,7 +199,7 @@ $l_customer["csv_delimiter"] = "Delimtador";
 $l_customer["csv_enclose"] = "Adjuntar";
 $l_customer["csv_escape"] = "Escape"; // TRANSLATE
 $l_customer["csv_lineend"] = "Final de línea";
-$l_customer["import_charset"]="Import charset"; // TRANSLATE
+$l_customer["import_charset"]="Import charset"; // TRANSLATE //
 $l_customer["csv_null"] = "Reemplazo Nulo";
 $l_customer["csv_fieldnames"] = "La primera fila contiene los nombres de campo";
 

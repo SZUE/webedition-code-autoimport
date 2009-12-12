@@ -45,6 +45,7 @@ $GLOBALS["l_global"]["email_ban"] = "UD no tiene los derechos para usar este scr
 $GLOBALS["l_global"]["email_recipient_invalid"] = "La dirección del destinatario no es válida!";
 $GLOBALS["l_global"]["email_no_recipient"] = "La dirección del destinatario no existe!";
 $GLOBALS["l_global"]["email_invalid"] = "Su <b>dirección de E-mail</b> no es válida!";
+
 $GLOBALS["l_global"]["captcha_invalid"] = "The entered security code is wrong!"; // TRANSLATE
 $GLOBALS["l_global"]["question"] = "Pregunta";
 $GLOBALS["l_global"]["warning"] = "Advertencía";
@@ -53,6 +54,7 @@ $GLOBALS["l_global"]["index_table"] = "Tabla del índice";
 $GLOBALS["l_global"]["cannotconnect"] = "No se puede conectar con el servidor de webEdition!";
 $GLOBALS["l_global"]["recipients"] = "Destinatarios de formas de correos";
 $GLOBALS["l_global"]["recipients_txt"] = "Por favor, entre todas las direciones de E-mail que recibirán formularios enviados por las funciones de formas de correos (&lt;we:form type=&quot;formmail&quot; ..&gt;). Si UD no entra una direción de E-mail, no podrá enviar formularios usando esta función!";
+
 $GLOBALS["l_global"]["std_mailtext_newObj"] = "Un nuevo objeto %s de clase %s ha sido creado!";
 $GLOBALS["l_global"]["std_subject_newObj"] = "Nuevo objeto";
 $GLOBALS["l_global"]["std_subject_newDoc"] = "Nuevo documento";
@@ -174,7 +176,7 @@ $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following l
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition login"; // TRANSLATE
 $GLOBALS["l_global"]["untitled"] = "Untitled"; // TRANSLATE
 $GLOBALS["l_global"]["no_document_opened"] = "There is no document opened!"; // TRANSLATE
-$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
-$GLOBALS["l_global"]["credits_translators"] = "Translations";
-$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team"; // TRANSLATE
+$GLOBALS["l_global"]["credits_translators"] = "Translations"; // TRANSLATE
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to"; // TRANSLATE
 ?>

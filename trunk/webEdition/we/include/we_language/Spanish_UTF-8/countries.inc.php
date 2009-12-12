@@ -261,7 +261,8 @@ $GLOBALS['l_countries']['UY'] = 'Uruguay'; // TRANSLATE
 $GLOBALS['l_countries']['UZ'] = 'Uzbekistan'; // TRANSLATE
 $GLOBALS['l_countries']['VA'] = 'Vatican'; // TRANSLATE
 $GLOBALS['l_countries']['VC'] = 'Saint Vincent and the Grenadines'; // TRANSLATE
-$GLOBALS['l_countries']['VD'] = 'North Vietnam'; // TRANSLATE
+$GLOBALS['l_countries']['VD'] = 'North Vietnam';
+
 $GLOBALS['l_countries']['VE'] = 'Venezuela'; // TRANSLATE
 $GLOBALS['l_countries']['VG'] = 'British Virgin Islands'; // TRANSLATE
 $GLOBALS['l_countries']['VI'] = 'U.S. Virgin Islands'; // TRANSLATE
