@@ -53,7 +53,7 @@ $l_object["binary_field"] = "Dokument binarny";
 $l_object["link_field"] = "Link"; // TRANSLATE
 $l_object["href_field"] = "Href"; // TRANSLATE
 $l_object["shopVat_field"] = "Pole VAT";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
 
 $l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
 $l_object["objectFile_response_save_ok"] = "Zapamiďż˝tano obiekt '%s' !";
