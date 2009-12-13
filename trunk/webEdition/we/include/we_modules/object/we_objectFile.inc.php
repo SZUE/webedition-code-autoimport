@@ -130,6 +130,11 @@ class we_objectFile extends we_document
 		$this->IsSearchable = $IsSearchable;
 		$this->Charset = $Charset;
 	}
+	function we_rewrite() {
+		$this->setLanguage();
+		return we_document::we_rewrite();
+		
+	}
 
 	function formCopyDocument(){
 
@@ -1899,6 +1904,9 @@ class we_objectFile extends we_document
 		return true;
 	}
 
+	function setLanguage(){
+		$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Language='".$this->Language."' WHERE OF_ID=".$this->ID);
+	}
 	function markAsPublished(){
 		$this->Published=time();
 		$this->DB_WE->query("UPDATE " . OBJECT_FILES_TABLE . " SET Published='".$this->Published."' WHERE ID=".$this->ID);

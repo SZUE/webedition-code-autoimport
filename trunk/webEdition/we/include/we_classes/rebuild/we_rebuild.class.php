@@ -120,7 +120,6 @@ class we_rebuild {
 
 			}
 
-
 			eval('$GLOBALS["we_doc"] = new '.$data["cn"].'();');
 			$GLOBALS["we_doc"]->initByID($data["id"],$table,LOAD_MAID_DB);
 
@@ -421,6 +420,9 @@ class we_rebuild {
 	* @return array
 	*/
 	function getObjects(){
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."we_updater.inc.php");
+		$updater=new we_updater();
+		$updater->updateObjectFilesX();
 		$data = array();
 		if(we_hasPerm("REBUILD_OBJECTS")){
 			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
