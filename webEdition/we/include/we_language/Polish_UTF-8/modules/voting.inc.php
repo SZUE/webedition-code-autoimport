@@ -136,6 +136,26 @@ $l_voting['log_fallback'] = 'Fallback'; // TRANSLATE
 
 $l_voting['new_ip_add'] = 'Proszę podać nowy adres IP!';
 $l_voting['not_valid_ip'] = 'Nieprawidłowy adres IP';
-$l_voting['not_active'] = 'The entered datum is in the past!'; // TRANSLATE
+$l_voting['not_active'] = 'The entered date is in the past!'; // TRANSLATE
+
+$l_voting['headline_datatype'] = 'Type of Inquiry';// TRANSLATE
+$l_voting['AllowFreeText'] = 'Allow free text';// TRANSLATE
+$l_voting['AllowImages'] = 'Allow images';// TRANSLATE
+$l_voting['AllowSuccessor'] = 'redirect to:';// TRANSLATE
+$l_voting['AllowSuccessors'] = 'allow individual redirects';// TRANSLATE
+$l_voting["csv_charset"] = "Export charset";// TRANSLATE
+$l_voting["imageID_text"] = "Image ID";// TRANSLATE
+$l_voting["successorID_text"] = "Successor ID";// TRANSLATE
+$l_voting['voting-id'] = 'Voting ID';// TRANSLATE
+$l_voting['voting-session'] = 'Voting Session';// TRANSLATE
+$l_voting['voting-successor'] = 'successor';// TRANSLATE
+$l_voting['voting-additionalfields'] = 'add. data';// TRANSLATE
+$l_voting['answerID'] = 'answer ID';// TRANSLATE
+$l_voting['answerText'] = 'answer text';// TRANSLATE
+
+$l_voting['userid_method'] = 'For logged in Users (customer management), compare to saved customer ID (the log has to be active)';// TRANSLATE
+$l_voting['IsRequired'] = 'This is a required field';// TRANSLATE
+
+$l_voting['answer_limit'] = 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!';// TRANSLATE
 
 ?>
