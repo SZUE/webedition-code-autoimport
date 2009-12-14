@@ -106,6 +106,11 @@ $steps = array(
 		"title" => "Setup complete.",
 		"name" => "finish"
 	),
+	array(
+		"id" => "10",
+		"title" => "Cleanup complete.",
+		"name" => "cleanup"
+	),
 );
 
 // identify current step:
@@ -712,18 +717,53 @@ function step_finish() {
 	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
 	";
 	$output .= "<b>Important:</b><br /><br />";
-	$output .= "Please don't forget to remove this script (setup.php) in order to prevent damage to your website by misuse.<br /><br />";
+	$output .= "Please don't forget to remove this setup script in order to prevent damage to your website by misuse. The next and final step of this installation script will take care of that.<br /><br />";
 	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
 	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
 	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
 	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
 	return $output;
 }
+
+function step_cleanup() {
+	@unlink("./README.txt");
+	@unlink("./INSTALL.txt");
+	@unlink("./LICENSE.txt");
+	@unlink("./database.sql");
+	@unlink("./setup.php");
+	$error = false;
+	if(is_readable("./README.txt")) $error = true;
+	if(is_readable("./INSTALL.txt")) $error = true;
+	if(is_readable("./LICENSE.txt")) $error = true;
+	if(is_readable("./database.sql")) $error = true;
+	//if(is_readable("./setup.php")) $error = true;
+	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\">clicking here</a>. 
+	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
+	";
+	if($error === true) {
+		$output .= tpl_errorbox("At least one of the setup files could not be deleted (maybe insufficient access permissions?), please do that manually!");
+	} else {
+		$output .= tpl_infobox("All setup files have been deleted successfully to avoid system damage by misuse.");	
+	}
+	$output .= "<br /><b>Important:</b><br /><br />";
+	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
+	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
+	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
+	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
+	return $output;
+	
+}
+
 // html template functions:
 
 // error message box:
 function tpl_errorbox($text = "") {
 	return '<div style="display:block; padding:3px; padding-left:24px; margin:3px 0px 3px 0px; border:1px solid red; background: url(./webEdition/images/icons/invalid.gif) 3px center no-repeat;" />'.$text.'</div>';
+}
+
+// info message box:
+function tpl_infobox($text = "") {
+	return '<div style="display:block; padding:3px; padding-left:24px; margin:3px 0px 3px 0px; border:1px solid green; background: url(./webEdition/images/icons/valid.gif) 3px center no-repeat;" />'.$text.'</div>';
 }
 
 // informational message:
@@ -771,7 +811,12 @@ function tpl_navigation($step = "1") {
 	} else {
 		*/
 		$buttonNext->setTitle('next step');
-		$buttonNext->setText('next');
+		if($step == (sizeof($steps)-1)) {
+			$buttonNext->setText('cleanup');
+		} else {
+			$buttonNext->setText('next');
+		}
+		
 		$buttonNext->setTarget('_self');
 		$buttonNext->setType('submit');
 		if($step >= sizeof($steps) || $errors === true) {
@@ -786,7 +831,7 @@ function tpl_navigation($step = "1") {
 	$buttonPrev->setText('back');
 	$buttonPrev->setType('href');
 	$buttonPrev->setTarget('_self');
-	if($step == "1" || $step == sizeof($steps)) {
+	if($step == "1" || $step >= (sizeof($steps)-1)) {
 		$buttonPrev->setDisabled(true);
 	} else {
 		$buttonPrev->setHref('?step='.$prevID);
