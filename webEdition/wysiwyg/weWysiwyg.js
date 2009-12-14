@@ -1051,23 +1051,16 @@ function weWysiwyg_getSelection() {
 function weWysiwyg_setButtonState(cmd){
 	if(this.hasCmd(cmd)){
 		var enabled = true;
-		if(isGecko){
-			try {
-				enabled = this.eDocument.queryCommandEnabled(cmd);
-			}catch (e) {}
-		}else{
+		try {
 			enabled = this.eDocument.queryCommandEnabled(cmd);
-		}
+		} catch (e) {}
+		
 		if(enabled){
 			this.buttons[cmd].enable();
 			var flag = false;
-			if(isGecko){
-				try {
-					flag = this.eDocument.queryCommandState(cmd);
-				}catch (e) {}
-			}else{
+			try {
 				flag = this.eDocument.queryCommandState(cmd);
-			}
+			} catch (e) {}
 			if(flag && (!this.buttons[cmd].checked)){
 				this.buttons[cmd].check();
 			}else if((!flag) && this.buttons[cmd].checked){
