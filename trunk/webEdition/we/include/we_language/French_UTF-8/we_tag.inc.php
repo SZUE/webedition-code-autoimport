@@ -403,4 +403,10 @@ $l_we_tag['ifSendMail']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNotSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page"; // TRANSLATE
 $l_we_tag['ifNotSendMail']['defaultvalue'] = ""; // TRANSLATE
 
+$l_we_tag['ifNotVoteActive']['description'] = "Any content between the start- and endtag is only displayed, if the voting has expired.";// TRANSLATE
+$l_we_tag['ifNotVoteActive']['defaultvalue'] = "";
+$l_we_tag['ifNotVoteIsRequired']['description'] = "Any content between the start- and endtag is only displayed, if the voting ist not required to be filled out.";// TRANSLATE
+$l_we_tag['ifNotVoteIsRequired']['defaultvalue'] = "";
+$l_we_tag['ifVoteIsRequired']['description'] = "Any content between the start- and endtag is only displayed, if the voting is a required field.";// TRANSLATE
+$l_we_tag['ifVoteIsRequired']['defaultvalue'] = "";
 ?>

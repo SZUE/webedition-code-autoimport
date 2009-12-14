@@ -86,6 +86,7 @@ $l_voting['voting'] = 'Voting';
 $l_voting['result'] = 'Ergebnis';
 $l_voting['group'] = 'Gruppe';
 $l_voting['name'] = 'Name';
+
 $l_voting['newFolder'] = 'Neue Gruppe';
 $l_voting['save_group_ok'] = 'Gruppe wurde gespeichert.';
 $l_voting['save_ok'] = 'Voting wurde gespeichert.';
@@ -102,7 +103,6 @@ $l_voting['limit_access'] = 'Zugriff einschränken';
 $l_voting['limit_access_text'] = 'Zugriff nur für folgende Benutzer';
 
 $l_voting['variant_limit'] = 'Es muss mindestenst eine Version geben!';
-$l_voting['answer_limit'] = 'Die Befragung muss mindestens zwei Antworten enthalten!';
 
 $l_voting['valid_txt'] = 'Die Checkbox "Aktiv" muss aktiviert sein, damit das Voting auf Ihrer Seite gespeichert und nach Ablauf der Gültigkeit "geparkt" wird. Legen Sie mit den Dropdownmenüs das Datum und die Uhrzeit fest, zu welchem das Voting ablaufen soll. Es werden ab diesem Zeitpunkt keine Stimmen mehr angenommen.';
 $l_voting['active_till'] = 'Aktiv';
@@ -113,9 +113,8 @@ $l_voting['export_txt'] = 'Export von Voting Daten in eine CSV-Datei (Comma Sepa
 
 $l_voting["csv_download"]="CSV-Datei herunterladen";
 $l_voting["csv_export"] = "Die Datei '%s' wurde gespeichert.";
-
 $l_voting['fallback'] = 'Fallback IP-Methode';
-$l_voting['save_user_agent'] = 'Daten des Benutzer-Agents speichern/verglichen';
+$l_voting['save_user_agent'] = 'Daten des Benutzer-Agents speichern/vergleichen';
 $l_voting["save_changed_voting"] = "Das Voting wurde geändert.\\nMöchten Sie Ihre Änderungen speichern?";
 $l_voting['voting_log'] = 'Voting protokollieren';
 $l_voting['forbid_ip'] = 'Folgende IP-Adresse sperren';
@@ -134,7 +133,7 @@ $l_voting['status'] = 'Status';
 $l_voting['log_success'] = 'Erfolg';
 $l_voting['log_error'] = 'Fehler';
 $l_voting['log_error_active'] = 'Fehler: nicht aktiv';
-$l_voting['log_error_revote'] = 'Fehler: neue Abstimmung';
+$l_voting['log_error_revote'] = 'Fehler: Versuch einer erneuten Abstimmung';
 $l_voting['log_error_blackip'] = 'Fehler: gesperrte IP';
 $l_voting['log_is_empty'] = 'Das Logbuch ist leer!';
 $l_voting['enabled'] = 'Aktiviert';
@@ -145,5 +144,27 @@ $l_voting['new_ip_add'] = 'Bitte geben Sie die neue IP-Adresse ein!';
 $l_voting['not_valid_ip'] = 'Die IP-Adresse ist nicht gültig';
 
 $l_voting['not_active'] = 'Das eingegebene Gültigkeitsdatum liegt in der Vergangenheit!';
+
+$l_voting['headline_datatype'] = 'Befragungsart';
+
+$l_voting['AllowFreeText'] = 'Erlaube freie Texteingabe';
+$l_voting['AllowImages'] = 'Erlaube Bilder';
+$l_voting['AllowSuccessor'] = 'Genereller Redirect nach:';
+$l_voting['AllowSuccessors'] = 'Erlaube individuelle Redirects';
+$l_voting['answer_limit'] = 'Die Befragung muss mindestens zwei - bei erlaubter Freitexteingabe eine - Antwort(en) enthalten!';
+$l_voting["csv_charset"] = "Export-Zeichensatz";
+$l_voting["imageID_text"] = "Bild-ID";
+$l_voting["successorID_text"] = "Nachfolger-ID";
+
+$l_voting['answerID'] = 'AntwortID';
+$l_voting['answerText'] = 'Antworttext';
+
+$l_voting['userid_method'] = 'Für eingelogte Nutzer (Kundenverwaltung) mit der gespeicherten <br />Kunden-ID (das Logbuch muss aktiv sein) vergleichen';
+$l_voting['IsRequired'] = 'Mache dies zu einem Pflichtfeld';
+$l_voting['voting-id'] = 'Voting-ID';
+$l_voting['voting-session'] = 'Voting-Session';
+$l_voting['voting-successor'] = 'Nachfolger';
+$l_voting['voting-additionalfields'] = 'Zusatzdaten';
+$l_voting['log_error_required'] = 'Fehler: Dies ist ein Pflichtfeld';
 
 ?>
