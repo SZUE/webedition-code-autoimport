@@ -303,6 +303,17 @@ class weVotingView {
 						document.we_form.cmd.value=oldcmd;
 						document.we_form.pnt.value=oldpnt;		
 					break;
+					case "exportGroup_csv":
+						oldcmd = document.we_form.cmd.value;
+						oldpnt = document.we_form.pnt.value;
+						document.we_form.cmd.value=arguments[0];
+						document.we_form.pnt.value=arguments[0];
+						new jsWindow("","exportGroup_csv",-1,-1,420,250,true,false,true);
+						submitForm("exportGroup_csv");
+						document.we_form.cmd.value=oldcmd;
+						document.we_form.pnt.value=oldpnt;		
+					break;
+
 					case "reset_ipdata":
 						if(confirm("' . $l_voting['delete_ipdata_question'] . '")){
 							url = "/webEdition/we/include/we_modules/voting/edit_voting_frameset.php?pnt="+arguments[0];
@@ -629,6 +640,104 @@ function processCommands() {
 					}
 					weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,implode($lineend,$content));
 					$_REQUEST["lnk"]=$fname;	
+				break;
+				case "exportGroup_csv":
+					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
+			
+					if ($_REQUEST["csv_dir"]=="/") {
+						$fname="/votingGroup_" . $this->voting->ID . "_export_".time().".csv";
+					} else {
+						$fname=$_REQUEST["csv_dir"]."/votingGroup_" . $this->voting->ID . "_export_".time().".csv";
+					}
+
+					$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose']==0 ? '"' : '\'') : '"';
+					$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
+					if(isset($_REQUEST['csv_lineend'])){
+						switch($_REQUEST['csv_lineend']){
+							case 'windows': $lineend = "\r\n";break;
+							case 'unix': $lineend = "\n";break;
+							case 'mac': $lineend = "\r";break;
+							default: $lineend = "\r\n";
+						}
+					}
+					
+					$content = array();
+					$allData = $this->voting->loadDB();
+					if (!defined('DEFAULT_CHARSET')) {define ( 'DEFAULT_CHARSET' ,'UTF-8' );}
+					if (isset($_REQUEST['the_charset']) && $_REQUEST['the_charset'] !='') {$CSV_Charset = $_REQUEST['the_charset'];} else {$CSV_Charset = 'UTF-8';}
+					
+					$headline = '';
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-session']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-id']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['time']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['ip']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['user_agent']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['cookie']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['log_fallback']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['status']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['answerID']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['answerText']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-successor']))  .$enclose . $delimiter;
+					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-additionalfields']))  .$enclose . $delimiter;
+					
+					$content[] = $headline;
+				
+					foreach ($allData as $key => $data) {
+						$myline = '';
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['votingsession'])) . $enclose . $delimiter;
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['voting'])) . $enclose . $delimiter;
+						
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim(date($l_we_editor_info["date_format"], $data['time']))) . $enclose . $delimiter;
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['ip'])) . $enclose . $delimiter;
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['agent'])) . $enclose . $delimiter;
+						$cookie =  $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($cookie)) . $enclose . $delimiter;
+						$fallback = $data['fallback'] ? $GLOBALS['l_global']['yes'] : $GLOBALS['l_global']['no'];
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($fallback)) . $enclose . $delimiter;
+						$mess = $l_voting['log_success'];
+						if($data['status']!=VOTING_SUCCESS){
+							switch ($data['status']) {
+								case VOTING_ERROR :
+									$mess = $l_voting['log_error'];
+									break;
+								case VOTING_ERROR_ACTIVE :
+									$mess = $l_voting['log_error_active'];
+								break;
+								case VOTING_ERROR_REVOTE :
+									$mess = $l_voting['log_error_revote'];
+								break;
+								case VOTING_ERROR_BLACKIP :
+									$mess = $l_voting['log_error_blackip'];
+								break;
+								default:
+									$mess = $l_voting['log_error'];
+							}
+						
+						}
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($mess)) . $enclose . $delimiter;
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['answer'])) . $enclose . $delimiter;
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['answertext'])). $enclose . $delimiter;
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['successor'])). $enclose . $delimiter;
+						$addDataString = "";
+						if ($data['additionalfields'] !=''){
+						
+							$addData = unserialize($data['additionalfields']);
+							
+							if (is_array($addData) && !empty($addData)){
+								foreach ($addData as $key => $values) {
+									$addDataString .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($values)) . $enclose . $delimiter;
+								}
+								
+							} else {
+								$addDataString .= $enclose . '-' . $enclose . $delimiter;
+							}
+						} else {$addDataString .= $enclose . '-' . $enclose . $delimiter;}
+						$myline .= $addDataString;
+						$content[] = $myline;	
+					}
+					
+					weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,implode($lineend,$content));
+					$_REQUEST["lnk"]=$fname;	
 				break;				
 				
 				default:
@@ -650,7 +759,7 @@ function processCommands() {
 		if (is_array($this->voting->persistent_slots)) {
 			foreach ($this->voting->persistent_slots as $key=>$val) {
 				$varname=$val;				
-				if (isset($_REQUEST[$varname])) {
+				if (isset($_REQUEST[$varname])) { 
 					eval('$this->voting->'.$val.'="'.addslashes($_REQUEST[$varname]).'";');
 				}
 			}
@@ -662,24 +771,41 @@ function processCommands() {
 		}
 
 		$qaset = array();
+		$qaADDset = array();
 		if(isset($_REQUEST['question_name']) && isset($_REQUEST['variant_count']) && isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
 			for($i=0;$i<$_REQUEST['variant_count'];$i++){
 				if(isset($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0'])){
 					$set = array();
 					$set['question'] = addslashes($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0']);
 					$set['answers'] = array();
+					
 					$an = $_REQUEST['answers_name'] . '_variant' . $i . '_' . $_REQUEST['answers_name'] . '_item';
+					$anImage = $an.'ImageID';
+					$anSuccessor = $an.'SuccessorID';
+					$addset = array();
 					for($j=0;$j<$_REQUEST['item_count'];$j++){
-						if(isset($_REQUEST[$an.$j])) $set['answers'][] = addslashes($_REQUEST[$an.$j]);
-					}
+						if(isset($_REQUEST[$an.$j])) { $set['answers'][] = addslashes($_REQUEST[$an.$j]);}
+						if(isset($_REQUEST[$anImage.$j])) { 
+							if($_REQUEST[$anImage.$j]!='Array') {
+								$addset['imageID'][] = addslashes($_REQUEST[$anImage.$j]);
+							} else {$addset['imageID'][]=0;}
+						}
+						if(isset($_REQUEST[$anSuccessor.$j])) { 
+							if($_REQUEST[$anSuccessor.$j]!='Array') {
+								$addset['successorID'][] = addslashes($_REQUEST[$anSuccessor.$j]);
+							} else {$addset['successorID'][]=0;}
+						}
+					} 
 					$qaset[] = $set;
+					$qaADDset[] = $addset;
 				}
 				
 			}
 		}
 		
 		$this->voting->QASet = $qaset;
-				
+		$this->voting->QASetAdditions = $qaADDset;
+			
 		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
 			if(isset($_REQUEST['owners_name']) && isset($_REQUEST['owners_count'])){
 				$this->voting->Owners = array();
