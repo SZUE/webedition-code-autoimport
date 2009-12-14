@@ -21,7 +21,11 @@
 function we_tag_writeVoting($attribs, $content) {
 
 	$id = we_getTagAttributeTagParser('id',$attribs,0);
-
+	$additionalFields = we_getTagAttributeTagParser('additionalfields',$attribs,0);
+	$allowredirect = we_getTagAttributeTagParser("allowredirect", $attribs, "", true);
+	$deletesessiondata = we_getTagAttributeTagParser("deletesessiondata", $attribs, "true", true);
+	$writeto = we_getTagAttributeTagParser("writeto", $attribs, "voting");
+	
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
 	
 	if($id) $pattern = '/_we_voting_answer_(' . $id . ')_?([0-9]+)?/';
@@ -38,13 +42,60 @@ function we_tag_writeVoting($attribs, $content) {
 			$_voting[$id][]= $_REQUEST[$value];
 		}
 	}
+	$additionalFieldsArray = makeArrayFromCSV($additionalFields);
+	$addFields = array();
+	foreach ($additionalFieldsArray as $field){
+		$addFields[$field] = $_REQUEST[$field];
+	}
+	
+	
+	if ($deletesessiondata){	unset($_SESSION['_we_voting_sessionData']);}
+	
 
 	foreach($_voting as $id=>$value){
-		$voting = new weVoting($id);
-		$GLOBALS['_we_voting_status'] = $voting->vote($value);
-		if($GLOBALS['_we_voting_status'] != VOTING_SUCCESS) {
-			break;
+		if(	$writeto =='voting'){
+			$voting = new weVoting($id);
+			if ($voting->IsRequired && implode('',$value) =='') {
+		
+				$GLOBALS['_we_voting_status'] = VOTING_ERROR;
+				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
+				if($voting->Log) $voting->logVoting(VOTING_ERROR,$votingsession,'','','');
+				break;
+			}
+
+			$GLOBALS['_we_voting_status'] = $voting->vote($value,$addFields);
+			if($GLOBALS['_we_voting_status'] != VOTING_SUCCESS) {
+				break;
+			}
+		} else {
+			$voting = new weVoting($id);
+			if ($voting->IsRequired && implode('',$value) =='') {
+				
+				$GLOBALS['_we_voting_status'] = VOTING_ERROR;
+				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
+				if($voting->Log) $voting->logVoting(VOTING_ERROR,$votingsession,'','','');
+				break;
+			}
+
+			$GLOBALS['_we_voting_status'] = $voting->setSuccessor($value);
+			if($GLOBALS['_we_voting_status'] != VOTING_SUCCESS) {
+				break;
+			}
+			$_SESSION['_we_voting_sessionData'][$id] = array ('value' => $value,'addFields' => $addFields );
+		
 		}
+			
+		
+	}
+	if ($allowredirect && !$GLOBALS["WE_MAIN_DOC"]->InWebEdition && isset($GLOBALS['_we_voting_SuccessorID']) && $GLOBALS['_we_voting_SuccessorID'] > 0) {
+		$mypath = id_to_path($GLOBALS['_we_voting_SuccessorID']);
+		if ($mypath != $_SERVER['PHP_SELF']) {
+			header("Location: ".$mypath); /* Redirect browser */
+
+		/* Make sure that code below does not get executed when we redirect. */
+			exit;
+		}
+
 	}
 
 }
