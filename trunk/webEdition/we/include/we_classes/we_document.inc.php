@@ -375,7 +375,7 @@ class we_document extends we_root {
 
 		$navis = new MultiFileChooser(508,$this->NavigationItems,"delete_navi", $we_button->create_button_table(array($delallbut, $addbut)),"tool_navigation_edit_navi","Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
-		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path) {
 			$_id = path_to_id($_path,NAVIGATION_TABLE);
