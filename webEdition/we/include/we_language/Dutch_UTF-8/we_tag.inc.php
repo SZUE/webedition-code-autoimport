@@ -289,7 +289,7 @@ $l_we_tag['navigation']['description'] = "we:navigation wordt gebruikt om een na
 $l_we_tag['navigationEntries']['description'] = "Binnen we:navigationEntry type=\"folder\" maakt deze tag een place holder aan voor alle invoeren van een navigatie map.";
 $l_we_tag['navigationEntry']['description'] = "Met we:navigationEntry kan de weergave van een invoer gecontroleerd worden binnen de navigatie. Met de attributen \"type\", \"level\", \"current\" en \"position\" kunnen individuele elementen van verschillende niveau's specifiek gekozen en getoond worden.";
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;"; // TRANSLATE
-$l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; wordt gebruikt binnen &lt;we:navigationEntry&gt; om een waarde te schrijven van de huidige navigatie invoer.";
+$l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.<br/>Choose from <b>either</b> the attribute <i>name</i>, <b>or</b> from the attribute <i>attributes</i>, <b>or</b> from the attribute <i>complete</i>";// TRANSLATE
 $l_we_tag['navigationWrite']['description'] = "Is used to write a we:navigation with given name"; // TRANSLATE
 $l_we_tag['newsletterConfirmLink']['description'] = "Deze tag wordt gebruikt om de double opt-in bevestigings-koppeling te genereren.";
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Bevestig nieuwsbrief";
