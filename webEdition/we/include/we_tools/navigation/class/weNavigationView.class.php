@@ -879,6 +879,15 @@ function processCommands() {
 							$js .= $this->topFrame.'.makeNewEntry(\'link.gif\',\''.$_item['id'].'\',\''.$this->Model->ID.'\',\''.addslashes($_item['text']).'\',0,\'item\',\''. NAVIGATION_TABLE .'\',1,' . $_k . ');';
 						}
 					}
+					if($this->Model->IsFolder && $this->Model->Selection=='nodynamic') {
+						$_old_items = array();
+						if($this->Model->hasDynChilds()){
+							$_old_items = $this->Model->depopulateGroup();
+							foreach ($_old_items as $_id) {
+								$js .= $this->topFrame.'.deleteEntry('.$_id['id'].');';
+							}
+						}						
+					}
 
 
 					$js = we_htmlElement::jsElement($js . '

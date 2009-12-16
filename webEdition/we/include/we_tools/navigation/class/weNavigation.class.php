@@ -401,6 +401,14 @@ class weNavigation extends weModelBase
 			$child->delete();
 		}
 	}
+	function deleteStaticChilds()
+	{
+		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID="' . abs($this->ID) . '" AND Selection="static" ');
+		while ($this->db->next_record()) {
+			$child = new weNavigation($this->db->f("ID"));
+			$child->delete();
+		}
+	}
 
 	function clearSessionVars()
 	{
