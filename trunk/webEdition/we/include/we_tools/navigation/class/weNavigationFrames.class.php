@@ -481,7 +481,7 @@ class weNavigationFrames extends weToolFrames
 				1, 
 				$this->Model->Selection, 
 				false, 
-				'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"', 
+				'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"',
 				'value', 
 				$this->_width_size) . '<br />' . htmlSelect(
 				'SelectionType', 
@@ -1017,7 +1017,7 @@ class weNavigationFrames extends weToolFrames
 				'SortCount', 
 				(isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) . '
 			<div style="display: block;">
-				<div style="display:' . ($this->Model->hasDynChilds() ? 'none' : 'block') . ';">
+				<div style="display:block' . ';">
 				' . htmlSelect(
 				'Selection', 
 				array(
