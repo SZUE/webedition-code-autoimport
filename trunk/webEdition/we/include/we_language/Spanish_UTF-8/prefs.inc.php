@@ -345,6 +345,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document"] = "Create new navigation entries from the document as"; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_item"] = "item"; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_folder"] = "folder"; // TRANSLATE
+	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";// TRANSLATE
 
 	/**
 	 * DATABASE
