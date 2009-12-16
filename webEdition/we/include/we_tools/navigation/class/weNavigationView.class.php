@@ -178,10 +178,11 @@ class weNavigationView {
 							' . we_message_reporting::getShowMessageCall($GLOBALS["l_navigation"]["nothing_selected"], WE_MESSAGE_ERROR) . '
 							return;
 						}
-						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone.value==1){
+						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone){
+							if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone.value==1){
 							' . we_message_reporting::getShowMessageCall($GLOBALS["l_navigation"]["nothing_to_delete"], WE_MESSAGE_ERROR) . '
 							return;
-						}
+						} }
 						'.(!we_hasPerm("DELETE_NAVIGATION") ?
 						(
 							we_message_reporting::getShowMessageCall($GLOBALS["l_navigation"]["no_perms"], WE_MESSAGE_ERROR)
