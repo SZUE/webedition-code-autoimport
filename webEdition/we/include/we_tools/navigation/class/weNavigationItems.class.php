@@ -918,17 +918,21 @@ class weNavigationItems
 				if ($_ponder == 0) {
 					$this->setCurrent($_rule->NavigationID, $_rule->SelfCurrent);
 					return true;
-				} else 
-					if ($_ponder <= $_score) {
-						$_score = $_ponder;
-						$_candidate = $_rule->NavigationID;
+				} else {
+					if ($_ponder <= $_score) {						
+						if( defined('NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH') && NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){ 
+							$this->setCurrent($_rule->NavigationID, null); 
+						} else {
+							$_score = $_ponder;
+							$_candidate = $_rule->NavigationID;
+						}
 					}
-			
+				}
 			}
 			if ($_candidate != 0) {
 				$this->setCurrent($_candidate, null);
 				return true;
-			}
+			}  
 		}
 		return false;
 	}

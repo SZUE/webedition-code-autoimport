@@ -341,6 +341,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 $l_prefs["navigation_entries_from_document"] = "Erzeuge neue Navigations-Einträge aus dem Dokument als";
 	 $l_prefs["navigation_entries_from_document_item"] = "Eintrag";
 	 $l_prefs["navigation_entries_from_document_folder"] = "Ordner";
+	 $l_prefs["navigation_rules_continue"] = "Werte Navigationsregeln auch nach einem ersten Match aus";
 
 	 /**
 	 * DATABASE
