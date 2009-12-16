@@ -289,7 +289,7 @@ $l_we_tag['navigation']['description'] = "Tätä tagia käytetään alustamaan n
 $l_we_tag['navigationEntries']['description'] = "we:navigationEntry type='folder' tulostaa luotuja kansio-tyyppisiä navigaatiopisteitä.";
 $l_we_tag['navigationEntry']['description'] = "we:navigationEntry:llä voidaan valita tulostetaanko 'folder' vai 'entry'-tyyppisiä navigaatioita. Lisäattributeilla voidaan tarkentaa haluttua navigaatiotulostusta.";
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;"; 
-$l_we_tag['navigationField']['description'] = "we:navigationField:iä käytetään we:navigationEntryn sisällä tulostettaessa navigaation eri arvoja.";
+$l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.<br/>Choose from <b>either</b> the attribute <i>name</i>, <b>or</b> from the attribute <i>attributes</i>, <b>or</b> from the attribute <i>complete</i>";// TRANSLATE
 $l_we_tag['navigationWrite']['description'] = "Is used to write a we:navigation with given name"; 
 $l_we_tag['newsletterConfirmLink']['description'] = "Tätä tagia käytetään 'double opt-in' vahvistuslinkin luomiseen.";
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Todenna uutiskirje";

@@ -291,7 +291,7 @@ $l_we_tag['navigation']['description'] = "we:navigation is used to initialise a 
 $l_we_tag['navigationEntries']['description'] = "Within we:navigationEntry type=\"folder\" this tag serves as a place holder for all entries of a folder of the navigation."; // TRANSLATE
 $l_we_tag['navigationEntry']['description'] = "With we:navigationEntry the look of an entry can be controlled within the navigation. With the attributes \"type\", \"level\", \"current\" and \"position\" single elements of various levels can be specifically picked and displayed."; // TRANSLATE
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;"; // TRANSLATE
-$l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry."; // TRANSLATE
+$l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.<br/>Choose from <b>either</b> the attribute <i>name</i>, <b>or</b> from the attribute <i>attributes</i>, <b>or</b> from the attribute <i>complete</i>";// TRANSLATE
 $l_we_tag['navigationWrite']['description'] = "Is used to write a we:navigation with given name"; // TRANSLATE
 $l_we_tag['newsletterConfirmLink']['description'] = "This tag is used to generate the double opt-in confirmation link."; // TRANSLATE
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Confirm newsletter"; // TRANSLATE
