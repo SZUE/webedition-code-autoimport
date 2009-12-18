@@ -49,6 +49,8 @@ class weNavigation extends weModelBase
 
 	var $Path = '/';
 
+	var $Published =1;
+
 	var $Selection = 'static';
 
 	var $SelectionType = 'docLink';
@@ -68,6 +70,10 @@ class weNavigation extends weModelBase
 	var $ShowCount = 5;
 
 	var $LinkID = 0;
+	
+	var $CurrentOnUrlPar = 0;
+	
+	var $CurrentOnAnker = 0;
 
 	var $Ordn = 0;
 
@@ -705,7 +711,9 @@ class weNavigation extends weModelBase
 							'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path(
 									$_nav->IconID), 
 							'attributes' => $_nav->Attributes, 
-							'customers' => weNavigationItems::getCustomerData($_nav), 
+							'customers' => weNavigationItems::getCustomerData($_nav),
+							'currentonurlpar' => $_nav->CurrentOnUrlPar,
+							'currentonanker' => $_nav->CurrentOnAnker, 
 							'limitaccess' => $_nav->LimitAccess, 
 							'depended' => $_nav->Depended
 					);
@@ -880,8 +888,9 @@ class weNavigation extends weModelBase
 			$this->Attributes = @unserialize($this->Attributes);
 		}
 		
-		$_path = $_path . ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '') . ((isset(
-				$this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
+		$_path = $_path . ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
+		$_path = $_path .(($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') .  'we_anchor='.$this->Attributes['anchor']) : '');
+		$_path = $_path	 .((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 		
 		$_path = str_replace('&amp;', '&', $_path);
 		$_path = str_replace('&', '&amp;', $_path);

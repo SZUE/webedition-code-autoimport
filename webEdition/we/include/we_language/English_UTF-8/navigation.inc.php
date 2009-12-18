@@ -204,6 +204,8 @@ $l_navigation['reset_customerfilter_done_message'] = 'The customer filters were 
 $l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters';
 
 $l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool.";
+$l_navigation['current_on_urlpar'] = "Take into account at highlighting";
+$l_navigation['current_on_anker'] = "Take into account at highlighting (using add. URL-Par. we_anchor)";
 
 
 ?>

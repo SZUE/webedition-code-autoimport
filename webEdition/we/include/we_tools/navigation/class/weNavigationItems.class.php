@@ -60,6 +60,10 @@ class weNavigationItem
 	var $containsCurrent = 'false';
 
 	var $visible = 'true';
+	
+	var $CurrentOnUrlPar='0';
+	
+	var $CurrentOnAnker ='0';
 
 	//attributes
 	var $title;
@@ -88,7 +92,7 @@ class weNavigationItem
 
 	var $Storage = array();
 
-	function weNavigationItem($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "")
+	function weNavigationItem($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "",$CurrentOnUrlPar='0', $CurrentOnAnker ='0')
 	{
 		$this->id = $id;
 		$this->parentid = 0;
@@ -102,6 +106,8 @@ class weNavigationItem
 		$this->icon = $icon;
 		$this->level = 0;
 		$this->position = 0;
+		$this->CurrentOnUrlPar = $CurrentOnUrlPar;
+		$this->CurrentOnAnker = $CurrentOnAnker;
 		
 		if (!is_array($attributes)) {
 			$attributes = @unserialize($attributes);
@@ -133,7 +139,6 @@ class weNavigationItem
 				$this->visible = !empty($_v) ? 'true' : 'false';
 			}
 		}
-	
 	}
 
 	function addItem(&$item)
@@ -189,11 +194,13 @@ class weNavigationItem
 
 	function isCurrent($weNavigationItems)
 	{
-		
-		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $this->href) {
-			// fastest way
-			
-
+		$thishref = $this->href;
+		if ($this->CurrentOnAnker || $this->CurrentOnUrlPar){ // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
+			 $thishref= str_replace(strstr($thishref,'#'),'',$thishref);
+			  $thishref= str_replace('&amp;','&',$thishref);
+		}
+		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $thishref) {
+			// fastest way			
 			$this->setCurrent($weNavigationItems);
 			return true;
 		}
@@ -205,8 +212,7 @@ class weNavigationItem
 				$id = $GLOBALS["WE_MAIN_DOC"]->ID;
 			}
 		
-		if (isset($id) && ($this->docid == $id)) {
-			
+		if (isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker) ) {			 
 			$this->setCurrent($weNavigationItems);
 			return true;
 		
@@ -568,7 +574,9 @@ class weNavigationItems
 				$this->id2path($_navigation->IconID), 
 				$_navigation->Attributes, 
 				$_navigation->LimitAccess, 
-				$this->getCustomerData($_navigation));
+				$this->getCustomerData($_navigation),
+				$_navigation->CurrentOnUrlPar,
+				$_navigation->CurrentOnAnker);
 		
 		$_items = $_navigation->getDynamicPreview($this->Storage);
 		
@@ -606,7 +614,9 @@ class weNavigationItems
 					$_item['icon'], 
 					$_item['attributes'], 
 					$_item['limitaccess'], 
-					$_item['customers']);
+					$_item['customers'],
+					$_item['currentonurlpar'],
+					$_item['currentonanker']);
 			if (isset($this->items['id' . $_item['parentid']])) {
 				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 			}
@@ -766,7 +776,9 @@ class weNavigationItems
 				$this->id2path($_navigation->IconID), 
 				$_navigation->Attributes, 
 				$_navigation->LimitAccess, 
-				$this->getCustomerData($_navigation));
+				$this->getCustomerData($_navigation),
+				$_navigation->CurrentOnUrlPar,
+				$_navigation->CurrentOnAnker);
 		
 		$_items = $_navigation->getDynamicPreview($this->Storage, true);
 		
@@ -787,7 +799,9 @@ class weNavigationItems
 						$_item['icon'], 
 						$_item['attributes'], 
 						$_item['limitaccess'], 
-						$_item['customers']);
+						$_item['customers'],
+						$_item['currentonurlpar'],
+						$_item['currentonanker']);
 				
 				if (isset($this->items['id' . $_item['parentid']])) {
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);

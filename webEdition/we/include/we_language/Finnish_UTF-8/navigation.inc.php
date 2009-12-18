@@ -204,5 +204,7 @@ $l_navigation['reset_customerfilter_done_message'] = 'Käyttäjäsuodattimet tyh
 $l_navigation['reset_customerfilter_question'] = 'Haluatko varmasti tyhjentää kaikki käyttäjäsuodattimet';
 
 $l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool.";// TRANSLATE
+$l_navigation['current_on_urlpar'] = "Take into account at highlighting";// TRANSLATE
+$l_navigation['current_on_anker'] = "Take into account at highlighting (using add. URL-Par. we_anchor)";// TRANSLATE
 
 ?>
