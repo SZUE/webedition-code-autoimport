@@ -516,7 +516,7 @@ class weNavigationFrames extends weToolFrames
 						'text', 
 						$this->_width_size, 
 						0), 
-				$l_navigation['parameter']) . '
+				$l_navigation['parameter']) . 	'
 				</div>
 			</div>
 			</div>
@@ -621,7 +621,13 @@ class weNavigationFrames extends weToolFrames
 						'onchange="' . $this->topFrame . '.mark();"', 
 						'text', 
 						$this->_width_size, 
-						0), 
+						0).'<br/>'.we_forms::checkboxWithHidden(
+						$this->Model->CurrentOnUrlPar, 
+						'CurrentOnUrlPar', 
+						$l_navigation['current_on_urlpar'], 
+						false, 
+						"defaultfont", 
+						$this->topFrame . '.mark();"'), 
 				$l_navigation['parameter']);
 		
 		array_push(
@@ -2273,7 +2279,13 @@ function onFolderSelectionChangeJS(elem) {
 						'', 
 						'onchange="' . $this->topFrame . '.mark();"', 
 						'text', 
-						$this->_width_size), 
+						$this->_width_size).'<br/>'.we_forms::checkboxWithHidden(
+						$this->Model->CurrentOnAnker, 
+						'CurrentOnAnker', 
+						$l_navigation['current_on_anker'], 
+						false, 
+						"defaultfont", 
+						$this->topFrame . '.mark();"'), 
 				$l_navigation['anchor']);
 		
 		$_target = htmlFormElementTable(
