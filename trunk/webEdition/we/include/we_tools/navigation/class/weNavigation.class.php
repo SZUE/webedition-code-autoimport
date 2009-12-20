@@ -895,6 +895,11 @@ class weNavigation extends weModelBase
 		$_path = str_replace('&amp;', '&', $_path);
 		$_path = str_replace('&', '&amp;', $_path);
 		
+		if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
+			$dirindexnames = makeArrayFromCSV(NAVIGATION_DIRECTORYINDEX_NAMES);
+			$_path = str_replace($dirindexnames,'',$_path);
+		}
+		
 		return $_path;
 	
 	}

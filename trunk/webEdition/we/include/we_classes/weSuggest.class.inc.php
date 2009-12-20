@@ -1159,6 +1159,9 @@ function doDebugResizeH(){
 	function setMaxResults($val) {
 		$this->maxResults = $val;
 	}
+	function setCheckFieldValue($val) {
+		$this->checkFieldValue = $val;
+	}
 	/**
 	 * Flag if the autocompleter my be empty
 	 *
