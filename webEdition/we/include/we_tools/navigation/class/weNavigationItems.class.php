@@ -197,7 +197,7 @@ class weNavigationItem
 		$thishref = $this->href;
 		if ($this->CurrentOnAnker || $this->CurrentOnUrlPar){ // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
 			 $thishref= str_replace(strstr($thishref,'#'),'',$thishref);
-			  $thishref= str_replace('&amp;','&',$thishref);
+			 $thishref= str_replace('&amp;','&',$thishref);
 		}
 		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $thishref) {
 			// fastest way			

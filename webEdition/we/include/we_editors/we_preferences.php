@@ -139,6 +139,9 @@ $global_config[] = array('define("DEFAULT_HTML_EXT",', '// Default html extensio
 //naviagtion stuff
 $global_config[] = array('define("NAVIGATION_ENTRIES_FROM_DOCUMENT",', '// Flag if new NAV- entries added from Dokument should be items or folders' . "\n" . 'define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "item");');
 $global_config[] = array('define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH",', '// Flag if NAV- rules should be evaluated even after a first match' . "\n" . 'define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH", false);');
+$global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in Nav-output' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_HIDE", false);');
+$global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_NAMES",', '// Comma seperated list such as index.php,index.html' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_NAMES", "");');
+
 
 //default charset
 $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
@@ -482,6 +485,13 @@ function get_value($settingvalue) {
 		case "navigation_rules_continue_after_first_match":
 			return defined("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH : false;
 			break;
+		case "navigation_directoryindex_hide":
+			return defined("NAVIGATION_DIRECTORYINDEX_HIDE") ? NAVIGATION_DIRECTORYINDEX_HIDE : false;
+			break;
+		case "navigation_directoryindex_names":
+			return defined("NAVIGATION_DIRECTORYINDEX_NAMES") ? NAVIGATION_DIRECTORYINDEX_NAMES : '';
+			break;
+
 
 		/*********************************************************************
 		 * DEFAULT CHARSET	
@@ -1437,6 +1447,22 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+				
+			case '$_REQUEST["navigation_directoryindex_hide"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_DIRECTORYINDEX_HIDE", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+			case '$_REQUEST["navigation_directoryindex_names"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_DIRECTORYINDEX_NAMES", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+
 
 			/*****************************************************************
 			 * DEFAULT CHARSET
@@ -2335,6 +2361,8 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_entries_from_document"]) ? $_REQUEST["navigation_entries_from_document"] : null, '$_REQUEST["navigation_entries_from_document"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, '$_REQUEST["navigation_rules_continue_after_first_match"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_hide"]) ? $_REQUEST["navigation_directoryindex_hide"] : null, '$_REQUEST["navigation_directoryindex_hide"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_names"]) ? $_REQUEST["navigation_directoryindex_names"] : null, '$_REQUEST["navigation_directoryindex_names"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
@@ -4511,6 +4539,23 @@ else {
 					}
 				}
 				array_push($_settings, array("headline" => $l_prefs["navigation_rules_continue"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+
+				$_php_setting = new we_htmlSelect(array("name" => "navigation_directoryindex_hide","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("navigation_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("navigation_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+				array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_hide"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				
+				$_navigation_directoryindex_names = htmlTextInput("navigation_directoryindex_names", 22,get_value("navigation_directoryindex_names"), "", "", "text", 225);
+    			array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_names"], "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1));
+				
 
 			}
 

@@ -343,6 +343,9 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 $l_prefs["navigation_entries_from_document_item"] = "item";
 	 $l_prefs["navigation_entries_from_document_folder"] = "folder";
 	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";
+	 $l_prefs["navigation_directoryindex_hide"] = "Hide DirectoryIndex- file names in navigation output";
+	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated)";
+
 
 	/**
 	 * DATABASE
