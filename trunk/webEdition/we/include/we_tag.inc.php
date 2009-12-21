@@ -4617,7 +4617,7 @@ function we_tag_img($attribs, $content)
 			<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
 				<tr>
 					<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">$out
-						<input type=\"hidden\" name=\"$fname\" value=\"$id\"></td>
+						<input onchange=\"_EditorFrame.setEditorIsHot(true);\" type=\"hidden\" name=\"$fname\" value=\"$id\"></td>
 				</tr>";
 		if ($showinputs) { //  only when wanted
 			$out .= "
@@ -4626,14 +4626,14 @@ function we_tag_img($attribs, $content)
 		            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
                     <tr>
                         <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . $l_css["font_family"] . ";\">" . $l_we_class["alt_kurz"] . ":&nbsp;</td>
-                        <td class=\"weEditmodeStyle\">" . htmlTextInput($altname, 16, $alt) . "</td>
+                        <td class=\"weEditmodeStyle\">" . htmlTextInput($altname, 16, $alt,'','onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
                     </tr>
 					<tr>
 						<td class=\"weEditmodeStyle\"></td>
 					</tr>
 				    <tr>
 		                <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . $l_css["font_family"] . ";\">" . $l_we_class["title"] . ":&nbsp;</td>
-		                <td class=\"weEditmodeStyle\">" . htmlTextInput($titlename, 16, $title) . "</td>
+		                <td class=\"weEditmodeStyle\">" . htmlTextInput($titlename, 16, $title,'','onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
                     </tr>
 		            </table>
                 </tr>";
@@ -4657,7 +4657,7 @@ function we_tag_img($attribs, $content)
 						$_editButton, 
 						$we_button->create_button(
 								"image:btn_select_image", 
-								"javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value', '', 'opener.setScrollTo(); opener.top.we_cmd(\\'reload_editpage\\',\\'" . $name . "\\',\\'change_image\\'); opener.top.hot = 1;', '" . session_id() . "', " . $parentid . ", 'image/*', " . (we_hasPerm(
+								"javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value', '', 'opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd(\\'reload_editpage\\',\\'" . $name . "\\',\\'change_image\\'); opener.top.hot = 1;', '" . session_id() . "', " . $parentid . ", 'image/*', " . (we_hasPerm(
 										"CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", 
 								true), 
 						$we_button->create_button(
