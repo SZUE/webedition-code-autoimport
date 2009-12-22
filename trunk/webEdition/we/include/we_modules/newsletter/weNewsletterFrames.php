@@ -104,7 +104,9 @@ class weNewsletterFrames extends weModuleFrames {
 		else $textPre = $l_newsletter["newsletter"];
 
 		if (isset($_REQUEST["txt"])) $textPost=$_REQUEST["txt"];
-		else $textPost=$l_newsletter["new_newsletter"];
+		else {
+			if ($group) {$textPost=$l_newsletter["new_newsletter_group"];} else {$textPost=$l_newsletter["new_newsletter"];}
+		}
 
 		$js=we_htmlElement::jsElement('
 				function setTab(tab) {
