@@ -312,7 +312,11 @@ class weImageDialog extends weDialog{
 		
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
-			$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"imageChanged()"));
+			//Bug #3556, orig, imageChanged wird aufgerufen sobald man mit der Maus klickt, und bevor das input feld gefüllt ist
+			//$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"imageChanged()"));
+			$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"document.we_form.elements['we_dialog_args[type]'][1].checked=true;"));
+			//Bug #3556 imageChanged wird aufgerufen wenn das input feld verlassen wird, nicht ideal, macht es aber nutzbar
+			$yuiSuggest->setDoOnTextfieldBlur('imageChanged();');
 			$yuiSuggest->setLabel($radioBut);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
@@ -320,6 +324,7 @@ class weImageDialog extends weDialog{
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($but);
+			
 			
 			$intSrc = $yuiSuggest->getHTML();
 
@@ -331,7 +336,7 @@ class weImageDialog extends weDialog{
 
 			if(we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset($GLOBALS['GDIMAGE_TYPE'][strtolower($extension)]) ? $GLOBALS['GDIMAGE_TYPE'][strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"]=="int")){
 
-				$thumbnails = '<select name="we_dialog_args[thumbnail] size="1" onchange="imageChanged(true);">'."\n";
+				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">'."\n";
 				$thumbnails .= '<option value="0"'.(($thumbdata==0) ? (' selected="selected"') : "").'>'.$GLOBALS["l_wysiwyg"]["nothumb"].'</option>'."\n";
 				$this->db->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 				while($this->db->next_record()){
