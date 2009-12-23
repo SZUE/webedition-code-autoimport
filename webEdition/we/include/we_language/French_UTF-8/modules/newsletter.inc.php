@@ -299,6 +299,7 @@ $l_newsletter["edit_file"] = "Éditer le ficher CSV";
 $l_newsletter["show"] = "Montre";
 $l_newsletter["no_file_selected"] = "Aucun fichier choisi";
 $l_newsletter["file_is_empty"] = "The CSV file is empty"; // TRANSLATE
+$l_newsletter["file_all_ok"] = "The CSV file has no invalid entries";// TRANSLATE
 $l_newsletter["del_email_file"] = "Supprime l'adresse E-Mail '%s'?"; // CHECK
 // changed from: "Delete E-mail '%s'?"
 // changed to  : "Delete email '%s'?"

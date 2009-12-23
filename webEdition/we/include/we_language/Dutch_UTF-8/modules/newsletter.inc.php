@@ -197,6 +197,7 @@ $l_newsletter["edit_file"] = "Wijzig CSV bestand";
 $l_newsletter["show"] = "Toon";
 $l_newsletter["no_file_selected"] = "Geen bestand geselecteerd!";
 $l_newsletter["file_is_empty"] = "Het CSV bestand is leeg";
+$l_newsletter["file_all_ok"] = "The CSV file has no invalid entries";// TRANSLATE
 $l_newsletter["del_email_file"] = "Verwijder E-mail '%s'?";
 $l_newsletter["email_missing"] = "Ontbrekende e-mail adressen";
 $l_newsletter["yes"] = "Ja";
