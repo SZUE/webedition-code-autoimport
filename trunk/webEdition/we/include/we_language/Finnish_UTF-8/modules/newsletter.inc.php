@@ -197,6 +197,7 @@ $l_newsletter["edit_file"] = "Muokkaa CSV tiedostoa";
 $l_newsletter["show"] = "Näytä";
 $l_newsletter["no_file_selected"] = "Tiedostoa ei ole valittu!";
 $l_newsletter["file_is_empty"] = "CSV-tiedosto on tyhjä";
+$l_newsletter["file_all_ok"] = "The CSV file has no invalid entries";// TRANSLATE
 $l_newsletter["del_email_file"] = "Poista E-mail '%s'?";
 $l_newsletter["email_missing"] = "Puuttuva E-mail osoite";
 $l_newsletter["yes"] = "Kyllä";

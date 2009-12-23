@@ -2379,8 +2379,21 @@ function getDateSelector($_label, $_name, $_btn, $value)
 						getPixel(5,5).
 						$end;
 		} else {
-		    $_nlMessage = (!$csv_file && empty($csv_file) && strlen($csv_file)<4) ? $l_newsletter["no_file_selected"] : $l_newsletter["file_is_empty"];
-			$out=we_htmlElement::htmlDiv(array("class"=>"middlefontgray","align"=>"center"),"--&nbsp;".$_nlMessage."&nbsp;--");
+			if (!$csv_file && empty($csv_file) && strlen($csv_file)<4) {
+				$_nlMessage = $l_newsletter["no_file_selected"];
+				$selectStatus2 = '';
+			} else {
+				if (isset($_REQUEST['weEmailStatus']) && $_REQUEST['weEmailStatus']==1) {
+					$_nlMessage = $l_newsletter["file_all_ok"];
+					$selectStatus2 = "<br/>".we_htmlElement::htmlB($l_newsletter["status"])." ".htmlSelect("weEmailStatus",array($l_newsletter["statusAll"],$l_newsletter["statusInvalid"]),"",(isset($_REQUEST['weEmailStatus'])?$_REQUEST['weEmailStatus']:"0"),"","onchange='listFile();'","value","150");
+
+									} else {
+					$_nlMessage = $l_newsletter["file_all_ok"];
+					$selectStatus2 ='';
+				}
+			}
+		    
+			$out=we_htmlElement::htmlDiv(array("class"=>"middlefontgray","align"=>"center"),"--&nbsp;".$_nlMessage."&nbsp;--".$selectStatus2);
 			$add = $we_button->create_button("image:function_plus", "javascript:editEmailFile(".count($emails).",'','','','','','')");
 			$out .= "<br/><br/>".$add;
 		}
