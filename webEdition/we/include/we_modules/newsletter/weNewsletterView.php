@@ -2328,9 +2328,13 @@ class weNewsletterView {
 
 
 
-			if(isset($this->settings["use_port"]) && $this->settings["use_port"]) $port = ":".$this->settings["use_port"];
-			else if ($_SERVER['SERVER_PORT'] != 80) $port = ":".$_SERVER['SERVER_PORT'];
-			else $port = "";
+			if(isset($this->settings["use_port"]) && $this->settings["use_port"]) {
+				$port = ":".$this->settings["use_port"];
+			} else {
+				//if ($_SERVER['SERVER_PORT'] != 80) { $port = ":".$_SERVER['SERVER_PORT'];} //Dieses Verhalten führt zu Bug #3894
+				// else {$port = "";} 
+				$port = ""; 
+			}
 			if(isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"]) $protocol="https://";
 			else $protocol="http://";
 
