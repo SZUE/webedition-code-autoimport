@@ -2514,6 +2514,18 @@ class weNewsletterView {
 
 	function getFilterSQL($filter) {
 		$filterSQL = $filter["fieldname"];
+		if ($filter["fieldname"] == 'MemberSince' || $filter["fieldname"] == 'LastLogin' || $filter["fieldname"] == 'LastAccess' ){
+			if(stristr($filter['fieldvalue'], '.')) {
+				$date = explode(".", $filter['fieldvalue']);
+				$day = $date[0];
+				$month = $date[1];
+				$year = $date[2];
+				$hour = $filter['hours'];
+				$minute = $filter['minutes']; 
+				$filter['fieldvalue'] = mktime($hour, $minute, 0, $month, $day, $year);
+			} 
+		}
+		
 		switch ($filter["operator"]) {
 			case 0:
 				$filterSQL .= " = '".$filter["fieldvalue"]."'";
