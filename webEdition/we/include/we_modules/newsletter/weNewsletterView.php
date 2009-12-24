@@ -2483,7 +2483,7 @@ class weNewsletterView {
 		$_clean = $this->getCleanMail($this->newsletter->Reply);
 		
 		$phpmail = new we_util_Mailer($this->newsletter->Test,$this->newsletter->Subject,$this->newsletter->Sender,$this->newsletter->Reply,$this->newsletter->isEmbedImages);
-		if(!$this->newsletter->use_base_href) {$phpmail->setIsUseBaseHref($this->newsletter->use_base_href);}
+		if(!$this->View->settings["use_base_href"]) {$phpmail->setIsUseBaseHref($this->View->settings["use_base_href"]);}
 		$phpmail->setCharSet($this->newsletter->Charset!="" ? $this->newsletter->Charset : $GLOBALS["_language"]["charset"]);
 		$phpmail->addHTMLPart($content);
 		$phpmail->addTextPart(trim($plain));
