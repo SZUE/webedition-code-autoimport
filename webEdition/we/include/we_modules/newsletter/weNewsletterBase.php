@@ -91,7 +91,7 @@ class weNewsletterBase{
 									$month = $date[1];
 									$year = $date[2];
 									$hour = $value[$c]['hours'];
-									$minute = $value[$c]['minutes'];
+									$minute = $value[$c]['minutes']; 
 									$timestamp = mktime($hour, $minute, 0, $month, $day, $year);
 								}
 								else {

@@ -885,14 +885,12 @@ class weNewsletterFrames extends weModuleFrames {
 		}
 		$minutes=array();
 		for($i=0;$i<60;$i++) {
-			if($i % 5 == 0) {
-				if ($i <= 9) {
-					$minutes[] = "0" . $i;
-				}
-				else {
-					$minutes[] = $i;
-				}
+			if ($i <= 9) {
+				$minutes[] = "0" . $i;
 			}
+			else {
+				$minutes[] = $i;
+			}		
 		}
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),1,7);
