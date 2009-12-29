@@ -5933,7 +5933,7 @@ function we_tag_sendMail($attribs, $content)
 				$_SESSION['WE_SendMail']=true;	
 				$codes = we_getDocumentByID($id);
 				unset($_SESSION['WE_SendMail']);			
-			    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages); //includeimages wird - aus mir nicht verstaendlichen Gruenden - auf einigen Systemen NICHT richtig übernommen: A. Schulz
+			    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$reply,$includeimages); 
 				if(isset($includeimages)) {$phpmail->setIsEmbedImages($includeimages);}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
 				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}

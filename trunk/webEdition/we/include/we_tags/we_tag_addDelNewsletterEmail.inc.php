@@ -300,10 +300,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					}						
 				}		
 				
-				
-				
 				$phpmail = new we_util_Mailer($f["subscribe_mail"],$subject,$from,$from);
-				$phpmail->setClassVars(array("CharSet"=>$charset,"basedir"=>$basehref));
+				$phpmail->setBaseDir($basehref);
+				$phpmail->setCharSet($charset);
+				
 				
 				if($f["subscribe_html"]){
 					$phpmail->addHTMLPart($mailtextHTML);
