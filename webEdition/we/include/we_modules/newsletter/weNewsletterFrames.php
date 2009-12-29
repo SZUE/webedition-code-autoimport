@@ -2895,7 +2895,13 @@ function getDateSelector($_label, $_name, $_btn, $value)
             $_clean = $this->View->getCleanMail($this->View->newsletter->Reply);
             
             include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
-            
+            if($lastname && $firstname || $title && $lastname){
+				$emailName = '';
+				if($title) {$emailName.= $title." ";}
+				if($firstname) {$emailName.= $firstname." ";}
+				$emailName.= $lastname ."<".$email.">";
+				$email=$emailName;
+			}
             $phpmail = new we_util_Mailer(
             	$email,
             	$this->View->newsletter->Subject,
