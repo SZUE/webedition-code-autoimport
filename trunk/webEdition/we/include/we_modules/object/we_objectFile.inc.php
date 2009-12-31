@@ -2488,6 +2488,7 @@ class we_objectFile extends we_document
 
 		// updater
 		if(!$this->isColExist($ctable,"OF_WebUserID")) $this->addCol($ctable,"OF_WebUserID","BIGINT DEFAULT '0' NOT NULL", "AFTER OF_Charset");
+		if(!$this->isColExist($ctable,"OF_Language")) $this->addCol($ctable,"OF_Language","VARCHAR(5) DEFAULT NULL", "AFTER OF_WebUserID");
 
 		$tableInfo = $this->DB_WE->metadata($ctable);
 		$foo = f("SELECT DefaultValues FROM " .OBJECT_TABLE . " WHERE ID=".$this->TableID,"DefaultValues",$this->DB_WE);

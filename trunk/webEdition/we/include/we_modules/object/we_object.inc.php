@@ -348,6 +348,7 @@ class we_object extends we_document
 			}
 
 			$neu = explode(",", (isset($this->elements["neuefelder"]["dat"]) ? $this->elements["neuefelder"]["dat"] : "") );
+			
 			for($i=0;$i <= sizeof($neu) ; $i++){
 				if(isset($neu[$i]) && $neu[$i]!=""){
 					$nam = $this->getElement($neu[$i]."dtype","dat")."_".$this->getElement($neu[$i],"dat");
@@ -404,7 +405,7 @@ class we_object extends we_document
 					$q .= $this->switchtypes($neu[$i]);
 					$q .= ",";
 				}
-			}
+			} 
 			$q = ereg_replace('^(.+),$','\1',$q);
 
 			$this->DefaultCategory = $this->Category;
@@ -436,7 +437,10 @@ class we_object extends we_document
 				}
 			}
 
-			$this->DB_WE->query("ALTER TABLE $ctable $q");
+			$qa = explode(',',$q);
+			foreach ($qa as $v) {
+				if ($v !='') {$this->DB_WE->query("ALTER TABLE $ctable $v");}
+			}
 
 			$we_sort = $this->getElement("we_sort");
 
