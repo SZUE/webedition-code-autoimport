@@ -197,7 +197,7 @@ $l_newsletter["salutation"] = "Обращение";
 $l_newsletter["title"] = "Титул";
 $l_newsletter["female_salutation"] = "Обращение к женщине";
 $l_newsletter["male_salutation"] = "Обращение к мужчине";
-$l_newsletter["edit_htmlmail"] = "Получить HTML email";
+$l_newsletter["edit_htmlmail"] = "HTML email";
 
 $l_newsletter["htmlmail_check"] = "HTML"; // TRANSLATE
 $l_newsletter["double_name"] = "Название листа рассылки уже существует.";

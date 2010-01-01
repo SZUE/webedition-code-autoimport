@@ -251,7 +251,7 @@ $l_newsletter["salutation"] = "Saludo";
 $l_newsletter["title"] = "Titulo";
 $l_newsletter["female_salutation"] = "Saludo femenino";
 $l_newsletter["male_salutation"] = "Saludo masculino";
-$l_newsletter["edit_htmlmail"] = "Recivir E-Mail HTML"; // CHECK
+$l_newsletter["edit_htmlmail"] = "E-Mail HTML"; // CHECK
 // changed from: "Receive HTML E-mail "
 // changed to  : "Receive HTML email "
 
