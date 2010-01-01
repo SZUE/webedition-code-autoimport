@@ -2159,15 +2159,25 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		$headlines=array();
 		$content=array();
-
-		$headlines[0]["dat"]=$l_newsletter["email"];
-		$headlines[1]["dat"]=$l_newsletter["edit_htmlmail"];
-		$headlines[2]["dat"]=$l_newsletter["salutation"];
-		$headlines[3]["dat"]=$l_newsletter["title"];
-		$headlines[4]["dat"]=$l_newsletter["firstname"];
-		$headlines[5]["dat"]=$l_newsletter["lastname"];
-		$headlines[6]["dat"]=$l_newsletter["edit"];
-		$headlines[7]["dat"]=$l_newsletter["status"];
+		
+		$order = isset($_REQUEST["order"]) ? $_REQUEST["order"] : "";
+		for ($i = 0; $i <14; $i=$i+2){
+			if ($order == $i){ $sorter_code[$i] ="<br/>".we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i,"name"=>"order","checked"=>true,"onclick"=>"submitForm('edit_file')"))."&darr;";} else {$sorter_code[$i] ="<br/>".we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i,"name"=>"order","onclick"=>"submitForm('edit_file')"))."&darr;";}
+			if($order == $i+1) {$sorter_code[$i+1] =we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i+1,"name"=>"order","checked"=>true,"onclick"=>"submitForm('edit_file')"))."&uarr;";} else {$sorter_code[$i+1] =we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i+1,"name"=>"order","onclick"=>"submitForm('edit_file')"))."&uarr;";}
+		}
+				
+		$headlines[0]["dat"]='ID'.$sorter_code[0].$sorter_code[1];
+		$headlines[0]["width"]="20";
+		$headlines[1]["dat"]=$l_newsletter["email"].$sorter_code[2].$sorter_code[3];
+		$headlines[1]["width"]="50";
+		$headlines[2]["dat"]=$l_newsletter["edit_htmlmail"].$sorter_code[4].$sorter_code[5];
+		$headlines[2]["width"]="50";
+		$headlines[3]["dat"]=$l_newsletter["salutation"].$sorter_code[6].$sorter_code[7];
+		$headlines[4]["dat"]=$l_newsletter["title"].$sorter_code[8].$sorter_code[9];
+		$headlines[5]["dat"]=$l_newsletter["firstname"].$sorter_code[10].$sorter_code[11];
+		$headlines[6]["dat"]=$l_newsletter["lastname"].$sorter_code[12].$sorter_code[13];
+		$headlines[7]["dat"]=$l_newsletter["edit"];
+		$headlines[8]["dat"]=$l_newsletter["status"];
 
 
 		$csv_file = isset($_REQUEST["csv_file"]) ? $_REQUEST["csv_file"] : "";
@@ -2184,7 +2194,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		$offset = isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0;
 		$art = isset($_REQUEST["art"]) ? $_REQUEST["art"] : "";
-		$order = isset($_REQUEST["order"]) ? $_REQUEST["order"] : "";
+		
 		$numRows = isset($_REQUEST["numRows"]) ? $_REQUEST["numRows"] : 15;
 
 		$anz = count($emails);
@@ -2193,9 +2203,25 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		if($offset<0) $offset=0;
 		$endRow=$offset+$numRows;
 		if($endRow>$anz) $endRow=$anz;
-
+		
+		function cmp0($a,$b) {return strnatcasecmp ( $a[0] , $b[0]);}
+		function cmp1($a,$b) {return strnatcasecmp ( $a[1] , $b[1]);}
+		function cmp2($a,$b) {return strnatcasecmp ( $a[2] , $b[2]);}
+		function cmp3($a,$b) {return strnatcasecmp ( $a[3] , $b[3]);}
+		function cmp4($a,$b) {return strnatcasecmp ( $a[4] , $b[4]);}
+		function cmp5($a,$b) {return strnatcasecmp ( $a[5] , $b[5]);}
+		
+		if ($order ==2 ||$order ==3 ){uasort($emails,"cmp0");}
+		if ($order ==4 ||$order ==5 ){uasort($emails,"cmp1");}
+		if ($order ==6 ||$order ==7 ){uasort($emails,"cmp2");}
+		if ($order ==8 ||$order ==9 ){uasort($emails,"cmp3");}
+		if ($order ==10 ||$order ==11 ){uasort($emails,"cmp4");}
+		if ($order ==12 ||$order ==13 ){uasort($emails,"cmp5");}
+		
+		if ($order ==0 || $order ==2 || $order ==4 || $order ==6 || $order ==8 || $order ==10 || $order ==12) {
+			$emails = array_reverse($emails, true);
+		}
 		$counter=0;
-		$emails = array_reverse($emails, true);
 		foreach($emails as $k=>$cols){
 			if($k>=$offset && $k<$endRow){
 
@@ -2203,38 +2229,42 @@ function getDateSelector($_label, $_name, $_btn, $value)
 				$trash = $we_button->create_button("image:btn_function_trash","javascript:delEmailFile(".$emailkey[$k].",'".$cols[0]."')");
 
 				$content[$counter]=array();
-				$content[$counter][0]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[0]?$cols[0]:"&nbsp;"));
+				$content[$counter][0]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),$k);
 				$content[$counter][0]["height"]="";
 				$content[$counter][0]["align"]="";
-
-				$content[$counter][1]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[1] ? $l_newsletter["yes"] : $l_newsletter["no"]));
+				
+				$content[$counter][1]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[0]?$cols[0]:"&nbsp;"));
 				$content[$counter][1]["height"]="";
 				$content[$counter][1]["align"]="";
 
-				$content[$counter][2]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[2]?$cols[2]:"&nbsp;"));
-				$content[$counter][2]["height"]="";
-				$content[$counter][2]["align"]="right";
-
-				$content[$counter][3]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[3]?$cols[3]:"&nbsp;"));
+				$content[$counter][2]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[1] ? $l_newsletter["yes"] : $l_newsletter["no"]));
 				$content[$counter][3]["height"]="";
-				$content[$counter][3]["align"]="left";
+				$content[$counter][3]["align"]="";
 
-				$content[$counter][4]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[4]?$cols[4]:"&nbsp;"));
+				$content[$counter][3]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[2]?$cols[2]:"&nbsp;"));
+				$content[$counter][3]["height"]="";
+				$content[$counter][3]["align"]="right";
+
+				$content[$counter][4]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[3]?$cols[3]:"&nbsp;"));
 				$content[$counter][4]["height"]="";
 				$content[$counter][4]["align"]="left";
 
-				$content[$counter][5]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[5]?$cols[5]:"&nbsp;"));
+				$content[$counter][5]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[4]?$cols[4]:"&nbsp;"));
 				$content[$counter][5]["height"]="";
 				$content[$counter][5]["align"]="left";
 
-				$content[$counter][6]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),$we_button->create_button_table(array($edit, $trash)));
+				$content[$counter][6]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[5]?$cols[5]:"&nbsp;"));
 				$content[$counter][6]["height"]="";
 				$content[$counter][6]["align"]="left";
 
-				$iconFolder = "/webEdition/images/icons/";
-				$content[$counter][7]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),we_htmlElement::htmlImg(array("src"=>$iconFolder.(we_check_email($cols[0]) ? "valid.gif" : "invalid.gif"))));
+				$content[$counter][7]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),$we_button->create_button_table(array($edit, $trash)));
 				$content[$counter][7]["height"]="";
-				$content[$counter][7]["align"]="center";
+				$content[$counter][7]["align"]="left";
+
+				$iconFolder = "/webEdition/images/icons/";
+				$content[$counter][8]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),we_htmlElement::htmlImg(array("src"=>$iconFolder.(we_check_email($cols[0]) ? "valid.gif" : "invalid.gif"))));
+				$content[$counter][8]["height"]="";
+				$content[$counter][8]["align"]="center";
 
 				$counter++;
 			}
@@ -2353,6 +2383,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		$nextprev->setCol(0,4,array(),
 					$colcontent
 		);
+		
 		if(count($emails)){
 			$add = $we_button->create_button("image:function_plus", "javascript:editEmailFile(".count($emails).",'','','','','','')");
 			$end=$nextprev->getHtmlCode();
@@ -2373,7 +2404,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 			$out=	$nextprev->getHtmlCode().
 						getPixel(5,5).
-						htmlDialogBorder3(650,300,$content,$headlines).
+						htmlDialogBorder3(750,300,$content,$headlines).
 						getPixel(5,5).
 						$end;
 		} else {
