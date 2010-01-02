@@ -182,18 +182,20 @@ class we_flashDocument extends we_binaryDocument
 			} else if (isset($attribs['pathonly']) && $attribs['pathonly']) {
 				$this->html = $src;
 			}
-		}else{
-		    $imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
-		    $imgAtts["width"]  = 64;
-		    $imgAtts["height"] = 64;
-		    $imgAtts["border"] = 0;
-		    $imgAtts["style"] = "margin:8px 18px;";
-		    $imgAtts["alt"]    = "";
-		    $imgAtts["xml"]    = $this->getElement("xml");
-		    if(isset($this->name)){
-		        $imgAtts["name"] = $this->name;
-		    }
-			$this->html = getHtmlTag("img", $imgAtts);
+		}else{ 
+			if($GLOBALS['we_doc']->InWebEdition == 1) { 
+				$imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
+				$imgAtts["width"]  = 64;
+				$imgAtts["height"] = 64;
+				$imgAtts["border"] = 0;
+				$imgAtts["style"] = "margin:8px 18px;";
+				$imgAtts["alt"]    = "";
+				$imgAtts["xml"]    = $this->getElement("xml");
+				if(isset($this->name)){
+					$imgAtts["name"] = $this->name;
+				}
+				$this->html = getHtmlTag("img", $imgAtts);
+			} else {$this->html ='';}
 		}
 		return $this->html;
 	}

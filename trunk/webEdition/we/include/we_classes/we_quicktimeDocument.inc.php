@@ -166,19 +166,20 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 
 		}else{
-
-		    $_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
-		    $_imgAttr['width']  = 64;
-		    $_imgAttr['height'] = 64;
-		    $_imgAttr['border'] = 0;
-		    $_imgAtts["style"] = "margin:8px 18px;";
-		    $_imgAttr['alt'] = "";
-		    $_imgAttr['xml'] = $this->getElement("xml");
-
-		    if(isset($this->name)){
-		        $_imgAttr['name'] = $this->name;
-		    }
-			$this->html = getHtmlTag('img', $_imgAttr);
+			if($GLOBALS['we_doc']->InWebEdition == 1) {
+				$_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
+				$_imgAttr['width']  = 64;
+				$_imgAttr['height'] = 64;
+				$_imgAttr['border'] = 0;
+				$_imgAtts["style"] = "margin:8px 18px;";
+				$_imgAttr['alt'] = "";
+				$_imgAttr['xml'] = $this->getElement("xml");
+	
+				if(isset($this->name)){
+					$_imgAttr['name'] = $this->name;
+				}
+				$this->html = getHtmlTag('img', $_imgAttr);
+			} else {$this->html ='';}
 		}
 		return $this->html;
 	}
