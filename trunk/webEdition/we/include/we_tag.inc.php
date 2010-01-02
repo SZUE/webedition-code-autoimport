@@ -2587,7 +2587,7 @@ function we_tag_field($attribs, $content)
 							}
 						} else {
 							
-							$showlink = (!isset($GLOBALS["lv"]->ClassName) || $GLOBALS["lv"]->ClassName == "" || $GLOBALS["lv"]->ClassName == "we_listview") || ($GLOBALS["lv"]->ClassName == "we_search_listview") || ($GLOBALS["lv"]->ClassName == "we_listview_shopVariants") || ($GLOBALS["lv"]->ClassName == "we_listview_shoppingCart") || ($GLOBALS["lv"]->triggerID != "0" && $GLOBALS["lv"]->ClassName == "we_objecttag") || ($GLOBALS["lv"]->ClassName == "we_customertag") || ($GLOBALS["lv"]->ClassName == "we_listview_customer") || ($GLOBALS["lv"]->triggerID != "0" && $GLOBALS["lv"]->ClassName == "we_listview_object") || ($tid && $GLOBALS["lv"]->ClassName == "we_listview_object") || ($GLOBALS["lv"]->ClassName == "we_listview_object" && ($GLOBALS["lv"]->DB_WE->f(
+							$showlink = (!isset($GLOBALS["lv"]->ClassName) || $GLOBALS["lv"]->ClassName == "" || $GLOBALS["lv"]->ClassName == "we_listview") || ($GLOBALS["lv"]->ClassName == "we_search_listview") || ($GLOBALS["lv"]->ClassName == "we_listview_shopVariants") || ($GLOBALS["lv"]->ClassName == "we_listview_shoppingCart") || ($GLOBALS["lv"]->ClassName == "we_objecttag" && $GLOBALS["lv"]->triggerID != "0") || ($GLOBALS["lv"]->ClassName == "we_customertag") || ($GLOBALS["lv"]->ClassName == "we_listview_customer") || ($GLOBALS["lv"]->ClassName == "we_listview_object" && $GLOBALS["lv"]->triggerID != "0") || ($tid && $GLOBALS["lv"]->ClassName == "we_listview_object") || ($GLOBALS["lv"]->ClassName == "we_listview_object" && ($GLOBALS["lv"]->DB_WE->f(
 									"OF_Templates") || $GLOBALS["lv"]->docID)) || ($GLOBALS["lv"]->ClassName == "we_listview_multiobject" && ($GLOBALS["lv"]->DB_WE->f(
 									"OF_Templates") || $GLOBALS["lv"]->docID));
 						
