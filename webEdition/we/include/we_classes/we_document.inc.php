@@ -993,6 +993,14 @@ class we_document extends we_root {
             		}
             	}
 
+				if (isset($attribs["sizingrel"])){
+					if(isset($attribs["width"])) {$orig_w = $attribs["width"];} else {$orig_w = $img->elements["width"]["dat"];}
+					if(isset($attribs["height"])) {$orig_h = $attribs["height"];} else {$orig_h = $img->elements["height"]["dat"];}
+					$attribs["width"] = round($orig_w*$attribs["sizingrel"]);
+					$attribs["height"] = round($orig_h*$attribs["sizingrel"]);
+					unset($attribs["sizingrel"]);
+				}
+
 				//	when width or height are given, then let the browser adjust the image
 				if( isset($attribs["width"]) || isset($attribs["width"])){
 
