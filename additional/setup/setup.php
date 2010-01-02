@@ -290,6 +290,7 @@ function step_database() {
 		$input_host->setValue('localhost');
 	}
 	$input_host->setWidth(200);
+	$input_host->setHeight(26);
 	
 	// database name:
 	$input_database = new we_ui_controls_TextField();
@@ -300,6 +301,7 @@ function step_database() {
 		$input_database->setValue('webedition');
 	}
 	$input_database->setWidth(200);
+	$input_database->setHeight(26);
 	
 	// table prefix:
 	$input_tableprefix = new we_ui_controls_TextField();
@@ -310,6 +312,7 @@ function step_database() {
 		$input_tableprefix->setValue('');
 	}
 	$input_tableprefix->setWidth(200);
+	$input_tableprefix->setHeight(26);
 	
 	// database username:
 	$input_username = new we_ui_controls_TextField();
@@ -320,6 +323,7 @@ function step_database() {
 		$input_username->setValue('');
 	}
 	$input_username->setWidth(200);
+	$input_username->setHeight(26);
 	
 	// database user password:
 	$input_password = new we_ui_controls_TextField();
@@ -332,6 +336,7 @@ function step_database() {
 	$input_password->setWidth(200);
 	$input_password->setClass("small");
 	$input_password->setType("password");
+	$input_password->setHeight(26);;
 	
 	foreach($input_host->getJSFiles() as $jsFile) {
 		$header .= '<script src="'.$jsFile.'" language="JavaScript" type="text/javascript"></script>';
@@ -902,7 +907,7 @@ ob_end_clean();
 	<link href="/webEdition/css/global.php?WE_LANGUAGE=English_UTF-8" rel="styleSheet" type="text/css">
 	<?php echo $header; ?>
 </head>
-<body bgcolor="#386AAB" class="header" onload="" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<body bgcolor="#386AAB" class="header" onLoad="" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 <div class="debug"<?php if(isset($_SESSION["debug"])) {echo ' style="display:block;"';} else {echo ' style="display:none;"';} ?>>
 <?php echo $bufferedOutput; ?>
 </div>
