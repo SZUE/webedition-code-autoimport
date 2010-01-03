@@ -505,7 +505,17 @@ class we_imageDocument extends we_binaryDocument {
                         :
             				$img_path;
 
+
+
+			if (isset($this->elements['sizingrel'])){
+				$this->setElement("width", round($this->elements["width"]["dat"]*$this->elements['sizingrel']['dat']), "attrib");
+				$this->setElement("height", round($this->elements["height"]["dat"]*$this->elements['sizingrel']['dat']), "attrib");
+				unset($this->elements['sizingrel']);
+			}
 			$this->resetElements();
+			
+			
+
 
 			/********************************************************/
 			/*   Here we generate the image-tag
