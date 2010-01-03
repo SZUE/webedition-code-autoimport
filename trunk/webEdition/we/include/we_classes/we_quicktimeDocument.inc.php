@@ -61,6 +61,14 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 	// is not written yet
 	function initByAttribs($attribs){
+		if (isset($attribs["sizingrel"])){
+			if(isset($attribs["width"])) {$orig_w = $attribs["width"];} else {$orig_w = $this->elements["width"]["dat"];}
+			if(isset($attribs["height"])) {$orig_h = $attribs["height"];} else {$orig_h = $this->elements["height"]["dat"];}
+			$attribs["width"] = round($orig_w*$attribs["sizingrel"]);
+			$attribs["height"] = round($orig_h*$attribs["sizingrel"]);
+			unset($attribs["sizingrel"]);
+		}
+
 		foreach($attribs as $a=>$b){
 			if($b != ""){
 				if($a == "Pluginspage" || $a == "Codebase"){
