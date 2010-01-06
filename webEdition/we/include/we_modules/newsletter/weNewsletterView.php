@@ -2624,12 +2624,12 @@ class weNewsletterView {
 				$customers=makeArrayFromCSV($this->newsletter->groups[$group-1]->Customers);
 			}
 
-			
+			$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";','pref_value',$this->db);
 			foreach ($customers as $customer) {
 				$foo = getHash("SELECT * FROM ".CUSTOMER_TABLE." WHERE ID=".abs($customer).($filtersql!="" ?  " AND ($filtersql)": ""),$this->db);
 				if (isset($foo[$this->settings["customer_email_field"]]) && $foo[$this->settings["customer_email_field"]]) {
 					$email = $foo[$this->settings["customer_email_field"]];
-					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && $foo[$this->settings["customer_html_field"]]) ? $foo[$this->settings["customer_html_field"]] : "";
+					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && $foo[$this->settings["customer_html_field"]]!='') ? $foo[$this->settings["customer_html_field"]] : $_default_html;
 					$salutation = (isset($foo[$this->settings["customer_salutation_field"]]) && $foo[$this->settings["customer_salutation_field"]]) ? $foo[$this->settings["customer_salutation_field"]] : "";
 					$title = (isset($foo[$this->settings["customer_title_field"]]) && $foo[$this->settings["customer_title_field"]]) ? $foo[$this->settings["customer_title_field"]] : "";
 					$firstname = (isset($foo[$this->settings["customer_firstname_field"]]) && $foo[$this->settings["customer_firstname_field"]]) ? $foo[$this->settings["customer_firstname_field"]] : "";
