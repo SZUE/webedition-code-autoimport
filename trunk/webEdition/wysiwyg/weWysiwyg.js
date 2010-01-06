@@ -1513,6 +1513,10 @@ function weWysiwyg_cleanCode(code){
 	code = code.replace(re,"\n");
 	var re = new RegExp(PS,"gi");
 	code = code.replace(re,"\n");
+	//Bug#4072
+	var MACX = String.fromCharCode(14844072);
+	var re = new RegExp(MACX,"gi");
+	code = code.replace(re,"");
 
 	code = code.replace(/^<br>\n$/,"");
 	code = code.replace(/^<br>\r$/,"");
