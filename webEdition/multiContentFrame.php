@@ -45,7 +45,7 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 	}
 
 	function doSafariLoad() {
-		window.frames["multiEditorDocumentControllerFrame"].document.location = "<?php print WEBEDITION_DIR ?>/multiEditor/EditorFrameController.php";
+		window.frames["multiEditorDocumentControllerFrame"].document.location = "<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php";
 
 	}
 
@@ -60,9 +60,9 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 <frameset cols="*" framespacing="0" border="0" frameborder="NO">
 
 	<frameset onload="startMultiEditor();" rows="22,*,0" id="multiEditorContainer">
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>/multiEditor/multiTabs.php" />
-		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>/multiEditor/multiEditorFrameset.php" />
-		<frame name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>/multiEditor/EditorFrameController.php" />
+		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" />
+		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
+		<frame name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
 	</frameset>
 
 </frameset>
@@ -72,8 +72,8 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 	<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize>
 
 	<frameset rows="22,*,0" id="multiEditorContainer"  border="0" frameborder="NO">
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>/multiEditor/multiTabs.php" />
-		<frame onload="doSafariLoad();" name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>/multiEditor/multiEditorFrameset.php" />
+		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" />
+		<frame onload="doSafariLoad();" name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
 		<frame onload="startMultiEditor();" name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" />
 	</frameset>
 	<frame src="<?php print HTML_DIR ?>whiteWithLeftLine.html" name="bm_resize" scrolling="no" noresize>
@@ -83,9 +83,9 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 <frameset cols="2,*,2" framespacing="0" border="0" frameborder="NO">
 	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
 	<frameset onload="startMultiEditor();" rows="22,*,0" border="1" id="multiEditorContainer" noresize>
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>/multiEditor/multiTabs.php" noresize />
-		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>/multiEditor/multiEditorFrameset.php" />
-		<frame name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>/multiEditor/EditorFrameController.php" />
+		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" noresize />
+		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditormultiEditorFrameset.php" />
+		<frame name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
 	</frameset>
 	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
 </frameset>

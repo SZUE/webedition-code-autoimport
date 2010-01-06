@@ -34,7 +34,7 @@
 	
 		function nojava() {
 				alert("'.$l_eplugin['no_java'].'");
-				top.opener.top.plugin.location="' .WEBEDITION_DIR . '/html/white.html";	
+				top.opener.top.plugin.location="' .WEBEDITION_DIR . 'html/white.html";	
 				self.close();
 		}
 	
@@ -58,7 +58,7 @@
 		}
 		
 		function initPlugin() {
-			top.opener.top.plugin.location="' .WEBEDITION_DIR . '/eplugin/weplugin.inc.php";
+			top.opener.top.plugin.location="' .WEBEDITION_DIR . 'eplugin/weplugin.inc.php";
 		}
 	
 		self.focus();

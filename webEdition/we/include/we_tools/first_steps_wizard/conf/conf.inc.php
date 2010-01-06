@@ -28,6 +28,6 @@ define("LIVEUPDATE_SERVER_SCRIPT", "/we5/snippets.p" . "hp");
 define("LIVEUPDATE_CSS", "");
 
 // Temp Dir for downloaded files
-define("LIVEUPDATE_CLIENT_DOCUMENT_DIR", $_SERVER["DOCUMENT_ROOT"] . WEBEDITION_DIR . "/liveUpdate");
+define("LIVEUPDATE_CLIENT_DOCUMENT_DIR", $_SERVER["DOCUMENT_ROOT"] . WEBEDITION_DIR . "liveUpdate");
 
 ?>

@@ -630,16 +630,16 @@ function we_cmd() {
 			new jsWindow(url,"we_change_passwd",-1,-1,250,220,true,false,true,false);
 			break;
 		case "update":
-			new jsWindow("<?php print WEBEDITION_DIR; ?>/liveUpdate/liveUpdate.php?active=update","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
+			new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=update","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
 			break;
 		case "upgrade":
-			new jsWindow("<?php print WEBEDITION_DIR; ?>/liveUpdate/liveUpdate.php?active=upgrade","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
+			new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=upgrade","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
 			break;
 		case "moduleinstallation":
-			new jsWindow("<?php print WEBEDITION_DIR; ?>/liveUpdate/liveUpdate.php?active=modules","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
+			new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=modules","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
 			break;
 		case "languageinstallation":
-			new jsWindow("<?php print WEBEDITION_DIR; ?>/liveUpdate/liveUpdate.php?active=languages","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
+			new jsWindow("<?php print WEBEDITION_DIR; ?>liveUpdate/liveUpdate.php?active=languages","we_update_<?php print session_id(); ?>",-1,-1, 600,500,true,true,true);
 			break;
 		case "del":
 			we_cmd('delete',1,arguments[2]);
@@ -1237,19 +1237,19 @@ function we_cmd() {
 			}
 			break;
  		case "initPlugin":
-            	weplugin_wait=new jsWindow("<?php print WEBEDITION_DIR?>/eplugin/weplugin_wait.php?callback="+arguments[1],"weplugin_wait",-1,-1,300,100,true,false,true);
+            	weplugin_wait=new jsWindow("<?php print WEBEDITION_DIR;?>eplugin/weplugin_wait.php?callback="+arguments[1],"weplugin_wait",-1,-1,300,100,true,false,true);
 			break;
 		case "edit_settings_newsletter":
-			new jsWindow("<?php print WEBEDITION_DIR?>/we/include/we_modules/newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings","newsletter_settings",-1,-1,600,750,true,false,true);
+			new jsWindow("<?php print WEBEDITION_DIR;?>we/include/we_modules/newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings","newsletter_settings",-1,-1,600,750,true,false,true);
 			break;
         case "edit_settings_customer":
-			new jsWindow("<?php print WEBEDITION_DIR?>/we/include/we_modules/customer/edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,520,300,true,false,true);
+			new jsWindow("<?php print WEBEDITION_DIR;?>we/include/we_modules/customer/edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,520,300,true,false,true);
 			break;
 		case "edit_settings_shop":
 <?php
 			if(defined("WE_SHOP_MODULE_PATH")) {
 ?>
-			new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_pref.php","shoppref",-1,-1,470,600,true,false,true);
+			new jsWindow("<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_pref.php","shoppref",-1,-1,470,600,true,false,true);
 <?php
 			}
 ?>
@@ -1283,7 +1283,7 @@ function we_cmd() {
 			new jsWindow("<?php print WEBEDITION_DIR; ?>sysinfo.php","we_sysinfo",-1,-1,720,660,true,false,true);
 			break;
 		case "show_message_console":
-			new jsWindow("<?php print WEBEDITION_DIR; ?>/we/include/jsMessageConsole/messageConsole.php","we_jsMessageConsole",-1,-1,600,500,true,false,true,false);
+			new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/jsMessageConsole/messageConsole.php","we_jsMessageConsole",-1,-1,600,500,true,false,true,false);
 			break;
 		case "remove_from_editor_plugin":
 			if(arguments[1] && top.plugin && top.plugin.remove){

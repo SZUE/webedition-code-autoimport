@@ -2748,7 +2748,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 				$cc++;
 			}
 			print we_htmlElement::jsElement('
-				top.send_control.location="'.WEBEDITION_DIR.'/html/blank.html";
+				top.send_control.location="'.WEBEDITION_DIR.'html/blank.html";
 				top.send_body.setProgress(100);
 				top.send_body.setProgressText("title","<font color=\"#006699\"><b>'.$l_newsletter["finished"].'</b></font>",2);
 				updateText("'.$l_newsletter["campaign_ends"].'");

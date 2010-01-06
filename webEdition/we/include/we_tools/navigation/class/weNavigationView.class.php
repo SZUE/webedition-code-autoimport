@@ -296,14 +296,14 @@ class weNavigationView {
 						new jsWindow(url,"we_catselector",-1,-1,'.WINDOW_CATSELECTOR_WIDTH.','.WINDOW_CATSELECTOR_HEIGHT.',true,true,true,true);
 						break;
 					case "openNavigationDirselector":
-						url = "'.WEBEDITION_DIR.'/we/include/we_tools/navigation/we_navigationDirSelect.php?";
+						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/we_navigationDirSelect.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}
 						new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 						break;
 					case "openFieldSelector":
-						url = "'.WEBEDITION_DIR.'/we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
+						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
 						new jsWindow(url,"we_navigation_field_selector",-1,-1,380,350,true,true,true);
 						break;
 					case "copyNaviFolder":
@@ -322,7 +322,7 @@ class weNavigationView {
 				}
 			}
 			' . $_we_button->create_state_changer(false) . '
-			var copyNaviFolderUrl = "'.WEBEDITION_DIR.'/rpc/rpc.php";
+			var copyNaviFolderUrl = "'.WEBEDITION_DIR.'rpc/rpc.php";
 			function copyNaviFolder(folderPath,folderID) {
 				var parentPos = selfNaviPath.indexOf(folderPath);
 				if(parentPos==(-1) || selfNaviPath.indexOf(folderPath)>0) {
@@ -1008,7 +1008,7 @@ function processCommands() {
 
 					print 	we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")) .
 							we_htmlElement::jsElement('
-						url = "'.WEBEDITION_DIR.'/we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
+						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 					);
 				break;

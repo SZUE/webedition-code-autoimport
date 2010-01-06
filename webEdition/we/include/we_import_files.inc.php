@@ -495,7 +495,7 @@ class we_import_files
 						array(
 							
 								"action" => WEBEDITION_DIR . "we_cmd.php", 
-								//"action"=>WEBEDITION_DIR."/we/include/we_import_files.inc.php",
+								//"action"=>WEBEDITION_DIR."we/include/we_import_files.inc.php",
 								"name" => "we_startform", 
 								"method" => "post"
 						), 
