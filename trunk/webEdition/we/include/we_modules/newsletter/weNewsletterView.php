@@ -681,7 +681,7 @@ class weNewsletterView {
 						break;
 						
 					case "openNewsletterDirselector":
-						url = "'.WEBEDITION_DIR.'/we/include/we_modules/newsletter/we_dirfs.php?";
+						url = "'.WEBEDITION_DIR.'we/include/we_modules/newsletter/we_dirfs.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}

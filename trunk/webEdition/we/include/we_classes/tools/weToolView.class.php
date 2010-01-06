@@ -225,7 +225,7 @@ class weToolView {
 						new jsWindow(url,"we_catselector",-1,-1,'.WINDOW_CATSELECTOR_WIDTH.','.WINDOW_CATSELECTOR_HEIGHT.',true,true,true,true);
 						break;
 					case "open' . $this->toolName . 'Dirselector":
-						url = "'.WEBEDITION_DIR.'/apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
+						url = "'.WEBEDITION_DIR.'apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}
