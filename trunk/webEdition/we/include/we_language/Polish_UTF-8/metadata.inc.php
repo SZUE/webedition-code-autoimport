@@ -70,7 +70,7 @@ $l_metadata["import_metadata_at_upload"] = "Import meta data from file"; // TRAN
 $l_metadata['error_meta_field_empty_msg'] = "The fieldname at line %s1 can not be empty!"; // TRANSLATE
 $l_metadata['meta_field_wrong_chars_messsage'] = "The fieldname '%s1' is not valid! Valid characters are alpha-numeric, capital and small (a-z, A-Z, 0-9) and underscore."; // TRANSLATE
 $l_metadata['meta_field_wrong_name_messsage'] = "The fieldname '%s1' is not valid! It is used internaly from webEdition! Following names are invalid and can not be used: %s2"; // TRANSLATE
-
+$l_metadata['file_size_0'] = 'The file size is 0 byte, please upload a document to the server before saving';// TRANSLATE
 
 /*****************************************************************************
  * INFO TAB
