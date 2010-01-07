@@ -30,8 +30,8 @@ $l_object_classfoldersearch["AB"] = "Workspace"; // TRANSLATE
 $l_object_classfoldersearch["META"] = "Meta-Informacje";
 $l_object_classfoldersearch["FELDER"] = "Pola";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Katalog";
-$l_object_classfoldersearch["sicht"] = "Pokaż tylko widoczne obiekty";
+$l_object_classfoldersearch["Verzeichnis"] = "Workspace";// TRANSLATE
+$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";// TRANSLATE
 $l_object_classfoldersearch["Ansicht"] = "Widok";
 $l_object_classfoldersearch["teilsuche"] = "Wynik ograniczonego szukania";
 $l_object_classfoldersearch["loesch"] = "Usuń wybrane obiekty.";

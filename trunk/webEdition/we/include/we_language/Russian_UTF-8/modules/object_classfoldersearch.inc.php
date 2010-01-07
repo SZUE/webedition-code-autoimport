@@ -30,8 +30,8 @@ $l_object_classfoldersearch["AB"] = "Рабочее пространство";
 $l_object_classfoldersearch["META"] = "Meta-информация";
 $l_object_classfoldersearch["FELDER"] = "Поля";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Директория";
-$l_object_classfoldersearch["sicht"] = "Показывать только видимые объекты";
+$l_object_classfoldersearch["Verzeichnis"] = "Workspace";// TRANSLATE
+$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";// TRANSLATE
 $l_object_classfoldersearch["Ansicht"] = "Вид";
 $l_object_classfoldersearch["teilsuche"] = "Результат расширенного поиска";
 $l_object_classfoldersearch["loesch"] = "Удалить выделенные объекты";

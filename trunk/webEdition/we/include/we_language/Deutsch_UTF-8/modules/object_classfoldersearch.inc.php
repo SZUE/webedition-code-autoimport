@@ -32,8 +32,8 @@ $l_object_classfoldersearch["AB"] = "Arbeitsbereich";
 $l_object_classfoldersearch["META"] = "Meta-Infos";
 $l_object_classfoldersearch["FELDER"] = "Felder";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Verzeichnis";
-$l_object_classfoldersearch["sicht"] =  "Zeige nur sichtbare Objekte";
+$l_object_classfoldersearch["Verzeichnis"] = "Arbeitsbereich";
+$l_object_classfoldersearch["sicht"] =  "Zeige nur die im oben ausgewählten Arbeitsbereich sichtbaren Objekte";
 $l_object_classfoldersearch["Ansicht"] =  "Ansicht";
 $l_object_classfoldersearch["teilsuche"] = "Ergebnis der eingeschr&auml;nkten Suche";
 $l_object_classfoldersearch["loesch"] = "Ausgew&auml;hlte Objekte l&ouml;schen.";
