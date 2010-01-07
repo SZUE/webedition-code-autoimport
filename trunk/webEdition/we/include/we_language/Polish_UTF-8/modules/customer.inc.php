@@ -302,6 +302,8 @@ $l_customer["we_fieldname_notValid"] = "Podana nazwa pola jest nieprawidłowa!\\
 
 $l_customer["orderTab"] = 'Orders of this customer'; // TRANSLATE
 $l_customer['default_order'] = 'Zadany porządek';
+$l_customer['ASC'] = 'ascending';// TRANSLATE
+$l_customer['DESC'] = 'descending';// TRANSLATE
 
 $l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
 $l_customer["one_customer"] = "Customer"; // TRANSLATE

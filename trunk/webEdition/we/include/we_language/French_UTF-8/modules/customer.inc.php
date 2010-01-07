@@ -304,6 +304,8 @@ $l_customer["we_fieldname_notValid"] = "Le nom de champ saisi n'est pas valid!\\
 
 $l_customer["orderTab"] = 'Commandes de ce client';
 $l_customer['default_order'] = 'Triage préréglé';
+$l_customer['ASC'] = 'ascending';// TRANSLATE
+$l_customer['DESC'] = 'descending';// TRANSLATE
 
 $l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
 $l_customer["one_customer"] = "Customer"; // TRANSLATE
