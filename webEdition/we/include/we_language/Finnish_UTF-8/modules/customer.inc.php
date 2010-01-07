@@ -298,6 +298,8 @@ $l_customer["we_fieldname_notValid"] = "Virheellinen kentän nimi!\\nSallitut me
 
 $l_customer["orderTab"] = 'Tämän asiakkaan tilaukset';
 $l_customer['default_order'] = 'esiasetettu tilaus';
+$l_customer['ASC'] = 'ascending';// TRANSLATE
+$l_customer['DESC'] = 'descending';// TRANSLATE
 
 $l_customer["connected_with_customer"] = "Yhdistettu asiakkaaseen";
 $l_customer["one_customer"] = "Asiakas";

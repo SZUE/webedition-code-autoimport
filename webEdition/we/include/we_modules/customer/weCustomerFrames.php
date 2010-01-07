@@ -924,7 +924,9 @@ class weCustomerFrames extends weModuleFrames {
 		$default_order = new we_htmlSelect(array('name'=>'default_order','style'=>'width:250px;','class'=>'weSelect'));
 		$default_order->addOption('',$l_customer['none']);
 		foreach($this->View->settings->OrderTable as $ord){
-			$default_order->addOption($ord,$ord);
+			if ($ord == 'ASC') {$ordval= $l_customer['ASC'];} 
+			if ($ord == 'DESC') {$ordval= $l_customer['DESC'];} 
+			$default_order->addOption($ord,$ordval);
 		}
 		$default_order->selectOption($this->View->settings->Prefs['default_order']);
 

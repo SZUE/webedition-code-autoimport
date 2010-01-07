@@ -300,6 +300,8 @@ $l_customer["we_fieldname_notValid"] = "Введенное имя поля не�
 
 $l_customer["orderTab"] = 'Заказ клиента';
 $l_customer['default_order'] = 'Заданный порядок';
+$l_customer['ASC'] = 'ascending';// TRANSLATE
+$l_customer['DESC'] = 'descending';// TRANSLATE
 
 $l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
 $l_customer["one_customer"] = "Customer"; // TRANSLATE

@@ -304,6 +304,8 @@ $l_customer["we_fieldname_notValid"] = "Nombre de archivo inválido!\\nLos espac
 
 $l_customer["orderTab"] = 'Órdenes de este cliente';
 $l_customer['default_order'] = 'Orden previa';
+$l_customer['ASC'] = 'ascending';// TRANSLATE
+$l_customer['DESC'] = 'descending';// TRANSLATE
 
 $l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
 $l_customer["one_customer"] = "Customer"; // TRANSLATE
