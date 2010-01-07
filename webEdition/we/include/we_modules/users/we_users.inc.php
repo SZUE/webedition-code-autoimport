@@ -2680,8 +2680,8 @@ function mapPermissions() {
 		$_window_specify_table->setCol(1, 2, null, getPixel(10, 1));
 		$_window_specify_table->setCol(3, 2, null, getPixel(10, 1));
 
-		$_window_specify_table->setCol(1, 3, null, htmlTextInput($this->Name."_Preference_weWidth", 6, ($this->Preferences['sizeOpt'] != $this->Preferences['weWidth'] ? 800 : ""), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
-		$_window_specify_table->setCol(3, 3, null, htmlTextInput($this->Name."_Preference_weHeight", 6, ($this->Preferences['sizeOpt'] != $this->Preferences['weWidth'] ? 600 : ""), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(1, 3, null, htmlTextInput($this->Name."_Preference_weWidth", 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(3, 3, null, htmlTextInput($this->Name."_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
 		$_window_current_dimension_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 2);
