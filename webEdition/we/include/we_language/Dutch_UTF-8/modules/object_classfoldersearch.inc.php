@@ -30,8 +30,8 @@ $l_object_classfoldersearch["AB"] = "Workspace"; // TRANSLATE
 $l_object_classfoldersearch["META"] = "Meta-Info"; // TRANSLATE
 $l_object_classfoldersearch["FELDER"] = "Velden";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Directorie";
-$l_object_classfoldersearch["sicht"] = "Toon alleen zichtbare objecten";
+$l_object_classfoldersearch["Verzeichnis"] = "Workspace";// TRANSLATE
+$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";// TRANSLATE
 $l_object_classfoldersearch["Ansicht"] = "Bekijk";
 $l_object_classfoldersearch["teilsuche"] = "Resultaat van gekwalificeerd zoeken";
 $l_object_classfoldersearch["loesch"] = "Verwijder geselecteerde objecten.";

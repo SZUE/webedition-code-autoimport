@@ -30,8 +30,8 @@ $l_object_classfoldersearch["AB"] = "Workspace";
 $l_object_classfoldersearch["META"] = "Meta-Info";
 $l_object_classfoldersearch["FELDER"] = "Fields";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Directory";
-$l_object_classfoldersearch["sicht"] = "Show visible objects only";
+$l_object_classfoldersearch["Verzeichnis"] = "Workspace";
+$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";
 $l_object_classfoldersearch["Ansicht"] = "View";
 $l_object_classfoldersearch["teilsuche"] = "Result of qualified search";
 $l_object_classfoldersearch["loesch"] = "Delete selected objects.";

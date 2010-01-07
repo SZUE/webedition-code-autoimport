@@ -30,8 +30,8 @@ $l_object_classfoldersearch["AB"] = "Työtilat";
 $l_object_classfoldersearch["META"] = "Meta-tiedot";
 $l_object_classfoldersearch["FELDER"] = "Kentät";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Hakemisto";
-$l_object_classfoldersearch["sicht"] = "Näytä vain näkyvät kansiot";
+$l_object_classfoldersearch["Verzeichnis"] = "Workspace";// TRANSLATE
+$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";// TRANSLATE
 $l_object_classfoldersearch["Ansicht"] = "Näytä";
 $l_object_classfoldersearch["teilsuche"] = "Etsinnän tulos";
 $l_object_classfoldersearch["loesch"] = "Poista valitut objektit.";
