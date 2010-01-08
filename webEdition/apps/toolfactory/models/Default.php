@@ -250,7 +250,7 @@ class toolfactory_models_Default extends we_app_Model
 	 * 
 	 * @return boolean
 	 */
-	function save() {
+	function save($skipHook=0) {
 	
 		$text = htmlspecialchars($this->Text, ENT_NOQUOTES);
 		
@@ -374,9 +374,11 @@ class toolfactory_models_Default extends we_app_Model
 				$_db->query($_sql);
 			}		
 		}
-				
-		$hook = new weHook('save', $this->_appName, array($this));
-		$hook->executeHook();
+		/* hook */
+		if ($skipHook==0){		
+			$hook = new weHook('save', $this->_appName, array($this));
+			$hook->executeHook();
+		}
 				
 		return true;
 			

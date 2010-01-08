@@ -747,7 +747,7 @@ class we_document extends we_root {
 		}
 	}
 
-	function we_save($resave=0){
+	function we_save($resave=0,$skipHook=0){
 
 		/* version */
 		$version = new weVersions();
@@ -773,9 +773,10 @@ class we_document extends we_root {
 		}
 		
 		/* hook */
-		$hook = new weHook('save', '', array($this));
-		$hook->executeHook();
-
+		if ($skipHook==0){
+			$hook = new weHook('save', '', array($this));
+			$hook->executeHook();
+		}
 		return $ret;
 	}
 

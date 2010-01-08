@@ -73,11 +73,14 @@ class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 	 * 
 	 * @return boolean returns true on success, otherwise false
 	 */
-	function save()
+	function save($skipHook=0)
 	{
 		// allowing hook functionality
-		$hook = new weHook('save', $this->_appName, array($this));
-		$hook->executeHook();
+        /* hook */
+		if ($skipHook==0){
+			$hook = new weHook('save', $this->_appName, array($this));
+			$hook->executeHook();
+        }
 	
 		return true;
 	}

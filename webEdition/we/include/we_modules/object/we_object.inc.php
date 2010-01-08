@@ -96,7 +96,9 @@ class we_object extends we_document
 
 		$this->ModDate = time();
 		$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
+
 		$this->saveToDB();
+
 		$we_responseText = $l_we_class["response_save_ok"];
 		$we_responseTextType = WE_MESSAGE_NOTICE;
 
@@ -111,7 +113,7 @@ class we_object extends we_document
 			$cf->Filename=$this->Text;
 			$cf->setParentID($pID);
 			$cf->Path = $cf->getPath();
-			$cf->we_save();
+			$cf->we_save('1');
 			$cf->modifyChildrenPath();
 		}
 
@@ -266,7 +268,7 @@ class we_object extends we_document
 			// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
-				$fold -> initByPath($this->getPath(),OBJECT_FILES_TABLE,1,0);
+				$fold -> initByPath($this->getPath(),OBJECT_FILES_TABLE,1,0,1);
 			}
 
 		}else{
@@ -2191,7 +2193,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		}
 	}
 
-	function we_save(){
+	function we_save($resave=0,$skipHook=0){
 
 		// Check if the cachetype was changed and delete all
 		// cachefiles of the documents based on this template
@@ -2207,15 +2209,15 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				weCacheHelper::clearCache($cacheDir);
 			}
 		}
-
 		$this->save();
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 		we_history::insertIntoHistory($this);
 		
-		/* hook */
-		$hook = new weHook('save', '', array($this));
-		$hook->executeHook();
-
+		/* hook */		
+		if ($skipHook==0){
+			$hook = new weHook('save', '', array($this));
+			$hook->executeHook();
+		}
 		return true;
 	}
 

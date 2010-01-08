@@ -324,7 +324,7 @@ class we_textContentDocument extends we_textDocument{
 		we_textDocument::we_save();
 	}
 
-	function we_save($resave=0){
+	function we_save($resave=0,$skipHook=0){
 		$this->i_setText();
 		if(!$this->ID){  // when no ID, then allways save before in main table
 			if(!we_root::we_save(0)) return false;
@@ -350,13 +350,15 @@ class we_textContentDocument extends we_textDocument{
 		}
 		
 		/* hook */
-		$hook = new weHook('save', '', array($this));
-		$hook->executeHook();
+		if ($skipHook==0){
+			$hook = new weHook('save', '', array($this));
+			$hook->executeHook();
+		}
 		
 		return $ret;
 	}
 
-	function we_publish($DoNotMark=false,$saveinMainDB=true){
+	function we_publish($DoNotMark=false,$saveinMainDB=true,$skipHook=0){
 		if($saveinMainDB){
 			if(!we_root::we_save(1)) return false; // calls the root function, so the document will be saved in main-db but it will not be written!
 		}
@@ -382,13 +384,15 @@ class we_textContentDocument extends we_textDocument{
 			$version->save($this, "published");
 		}
 		/* hook */
-		$hook = new weHook('publish', '', array($this));
-		$hook->executeHook();
+		if ($skipHook==0){
+			$hook = new weHook('publish', '', array($this));
+			$hook->executeHook();
+		}
 
 		return $this->insertAtIndex();
 	}
 
-	function we_unpublish(){
+	function we_unpublish($skipHook=0){
 		if(!$this->ID) return false;
 		if($this->i_isMoved()) {
 			if(!deleteLocalFile($this->getRealPath())) {
@@ -411,9 +415,11 @@ class we_textContentDocument extends we_textDocument{
 			$version = new weVersions();
 			$version->save($this, "unpublished");
 		}
-		
-		$hook = new weHook('unpublish', '', array($this));
-		$hook->executeHook();
+		/* hook */
+		if ($skipHook==0){
+			$hook = new weHook('unpublish', '', array($this));
+			$hook->executeHook();
+		}
 
 		$this->DB_WE->query('SELECT DID FROM ' . INDEX_TABLE . ' WHERE DID=' . abs($this->ID));
 		if($this->DB_WE->next_record()) {

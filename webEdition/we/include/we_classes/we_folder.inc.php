@@ -254,7 +254,7 @@ class we_folder extends we_root
 	}
 
 	/* saves the folder */
-	function we_save($resave=0){
+	function we_save($resave=0,$skipHook=0){
 		$this->i_setText();
 		if(!we_root::we_save($resave)) return false;
 		if(!$this->writeFolder()) return false;
@@ -267,11 +267,12 @@ class we_folder extends we_root
 		if($resave==0) {
 			$this->rewriteNavigation();
 		}
-		
-		/* hook */
-		$hook = new weHook('save', '', array($this));
-		$hook->executeHook();
 
+		/* hook */
+		if ($skipHook==0){
+			$hook = new weHook('save', '', array($this));
+			$hook->executeHook();
+		}
 		return true;
 	}
 
