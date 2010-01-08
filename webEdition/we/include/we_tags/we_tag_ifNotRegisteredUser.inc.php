@@ -22,6 +22,7 @@
 function we_tag_ifNotRegisteredUser($attribs,$content) {
 
 	$match = we_getTagAttribute("match", $attribs);
+	$match = makeArrayFromCSV($match);
 	$cfilter = we_getTagAttribute("cfilter", $attribs, "", true, false);
 
 	if ($GLOBALS["we_doc"]->InWebEdition || $GLOBALS["WE_MAIN_DOC"]->InWebEdition) {
