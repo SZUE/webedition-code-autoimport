@@ -2131,7 +2131,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".mysql_affected_rows($this->Text)."' AND ID != '".$this->ID."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".mysql_real_escape_string($this->Text)."' AND ID != '".$this->ID."'","ID",new DB_WE());
 	}
 
 	function i_checkPathDiffAndCreate(){
