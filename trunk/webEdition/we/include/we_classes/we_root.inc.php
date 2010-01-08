@@ -688,8 +688,8 @@ class we_root extends we_class
 	}
 
 
-	function save(){
-		return $this->we_save();
+	function save($resave=0,$skipHook=0){	
+		return $this->we_save($resave,$skipHook);
 	}
 
 
@@ -714,7 +714,7 @@ class we_root extends we_class
 
 	}
 
-	function we_save($resave=0){
+	function we_save($resave=0,$skipHook=0){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();

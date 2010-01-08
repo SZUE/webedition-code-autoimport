@@ -86,18 +86,17 @@ class we_class_folder extends we_folder
 
 	}
 
-	function we_save() {
-		parent::we_save();
+	function we_save($resave=0,$skipHook=0) {
+		parent::we_save($resave,$skipHook);
 		return true;
 	}
 
-	function initByPath($path,$tblName=FILE_TABLE,$IsClassFolder=0,$IsNotEditable=0){
+	function initByPath($path,$tblName=FILE_TABLE,$IsClassFolder=0,$IsNotEditable=0,$skipHook=0){
 		$id = f("SELECT ID FROM ".$tblName." WHERE Path='$path' AND IsFolder=1","ID",$this->DB_WE);
 		if($id != ""){
 			$this->initByID($id);
 		}else{
-			## Folder does not exist, so we have to create it (if user has permissons to create folders)
-
+			## Folder does not exist, so we have to create it (if user has permissons to create folders)	
 			$spl = explode("/",$path);
 			$folderName = array_pop($spl);
 			$p = array();
@@ -120,14 +119,14 @@ class we_class_folder extends we_folder
 
 						$this->IsClassFolder=$IsClassFolder;
 						$folder->Path=$pa;
-						$folder->save();
+						$folder->save($skipHook);
 						$last_pid = $folder->ID;
 					}else{
 						$last_pid = $pid;
 					}
 
 				}
-			}
+			}	
 			$this->init();
 			$this->Table = $tblName;
 			$this->ClassName=($IsClassFolder)?"we_class_folder":"we_folder";
@@ -139,7 +138,7 @@ class we_class_folder extends we_folder
 			$this->Filename = $folderName;
 			$this->Path=$path;
 			$this->IsNotEditable=$IsNotEditable;
-			$this->save();
+			$this->save(0,$skipHook);
 		}
 		return true;
 

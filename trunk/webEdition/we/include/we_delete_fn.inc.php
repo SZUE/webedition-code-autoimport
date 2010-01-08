@@ -348,7 +348,7 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 	return true;
 }
 
-function deleteEntry($id, $table, $delR = true)
+function deleteEntry($id, $table, $delR = true,$skipHook=0)
 {
 	
 	global $deletedItems;
@@ -372,9 +372,11 @@ function deleteEntry($id, $table, $delR = true)
 			
 			$version->setVersionOnDelete($id, $table,$row['ContentType']);
 		}
-		
-		$hook = new weHook('delete', '', array($object));
-		$hook->executeHook();
+		/* hook */
+		if ($skipHook==0){
+			$hook = new weHook('delete', '', array($object));
+			$hook->executeHook();
+		}
 		
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 		

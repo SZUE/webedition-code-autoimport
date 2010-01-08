@@ -1996,7 +1996,7 @@ class we_objectFile extends we_document
 		}
 	}
 
-	function we_save($resave=0){
+	function we_save($resave=0,$skipHook=0){
 				
 		$foo = getHash("SELECT strOrder,DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
@@ -2020,7 +2020,7 @@ class we_objectFile extends we_document
 		$this->correctWorkspaces();
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
-			if(!we_document::we_save($resave)) return false;
+			if(!we_document::we_save($resave,1)) return false;
 			if(!$this->ObjectID) return false;
 			if($resave){
 				if(!$this->we_republish()) return false;
@@ -2048,9 +2048,12 @@ class we_objectFile extends we_document
 			$version->save($this);
 			
 		}
-
-		$hook = new weHook('save', '', array($this));
-		$hook->executeHook();
+		
+		/* hook */
+		if ($skipHook==0){
+			$hook = new weHook('save', '', array($this));
+			$hook->executeHook();
+		}
 
 		return $a;
 	}
@@ -2170,7 +2173,7 @@ class we_objectFile extends we_document
 		return "";
 	}
 
-	function we_publish($DoNotMark=false,$saveinMainDB=true){
+	function we_publish($DoNotMark=false,$saveinMainDB=true,$skipHook=0){
 		if($saveinMainDB){
 			if(!we_root::we_save(1)) return false;
 		}
@@ -2180,14 +2183,16 @@ class we_objectFile extends we_document
 			if(!$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Published='".$this->Published."' WHERE OF_ID='".$this->ID."'")) return false;
 			$this->we_clearCache($this->ID);
 		}
-		
-		$hook = new weHook('publish', '', array($this));
-		$hook->executeHook();
+		/* hook */
+		if ($skipHook==0){
+			$hook = new weHook('publish', '', array($this));
+			$hook->executeHook();
+		}
 
 		return $this->insertAtIndex();
 	}
 
-	function we_unpublish(){
+	function we_unpublish($skipHook=0){
 		if(!$this->ID) return false;
 		if(!$this->DB_WE->query("UPDATE ".$this->Table." SET Published='0' WHERE ID='".$this->ID."'")) return false;
 		if(!$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Published=0 WHERE OF_ID='".$this->ID."'")) return false;
@@ -2199,9 +2204,11 @@ class we_objectFile extends we_document
 			$version = new weVersions();
 			$version->save($this, "unpublished");
 		}
-		
-		$hook = new weHook('unpublish', '', array($this));
-		$hook->executeHook();
+		/* hook */
+		if ($skipHook==0){
+			$hook = new weHook('unpublish', '', array($this));
+			$hook->executeHook();
+		}
 		
 		return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".$this->ID);
 	}
