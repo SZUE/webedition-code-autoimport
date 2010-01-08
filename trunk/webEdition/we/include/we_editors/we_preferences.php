@@ -1779,7 +1779,7 @@ $_we_active_integrated_modules = array();
 
 			case '$_REQUEST["smtp_port"]':
 				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_POST", $settingvalue,'SMTP server port')) {
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_PORT", $settingvalue,'SMTP server port')) {
 					$_update_prefs = true;
 				}
 				break;
