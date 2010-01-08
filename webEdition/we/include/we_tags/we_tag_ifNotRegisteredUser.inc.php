@@ -42,7 +42,7 @@ function we_tag_ifNotRegisteredUser($attribs,$content) {
 
 		if (isset($attribs["permission"]) && $attribs["permission"]) {
 			if(!empty($match)){
-				return !(isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$attribs["permission"]]) && $_SESSION["webuser"]["registered"] &&  $_SESSION["webuser"][$attribs["permission"]]==$match);
+				return !(isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$attribs["permission"]]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match));
 			} else {
 				return  !(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$attribs["permission"]]);
 			}
