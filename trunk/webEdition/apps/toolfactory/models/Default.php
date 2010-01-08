@@ -327,15 +327,13 @@ class toolfactory_models_Default extends we_app_Model
 						
 					}
 				} else {
-					$_content = '<?php
-					';
+					$_content = '<?php'.PHP_EOL;
 					ob_start();
 					include($_file);
 					$_content .= ob_get_contents();
 					ob_end_clean();
 					
-					$_content .= '
-		?>';
+					$_content .= PHP_EOL.'?>';
 				}
 									
 					if(!is_dir(dirname($_newname))) {
