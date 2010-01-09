@@ -90,7 +90,7 @@ class weCustomerFilterView {
 	 *
 	 * @return string
 	 */
-	function getFilterHTML($ShowModeNone) {
+	function getFilterHTML($ShowModeNone=0) {
 		$this->_ShowModeNone = $ShowModeNone;
 
 		$_script = <<<EO_SCRIPT
