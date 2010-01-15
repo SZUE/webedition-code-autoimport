@@ -8,7 +8,7 @@
 		we_cmd("new","<?php print OBJECT_FILES_TABLE; ?>","","objectFile");
 		break;
 	case "new_objectfile_folder":
-		we_cmd("new","<?php print OBJECT_FILES_TABLE; ?>","","folder");
+		we_cmd("new","<?php print OBJECT_FILES_TABLE; ?>","","class_folder");
 		break;
 
 	case "new_object":

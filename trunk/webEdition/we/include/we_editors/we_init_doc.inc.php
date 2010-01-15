@@ -51,6 +51,10 @@ if (0 && isset($we_ID) && isset($we_Table) && isset($GLOBALS["weDocumentCache_".
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
 				$we_doc = new we_folder();
 			 	break;
+			case "class_folder":
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/object/we_class_folder.inc.php");
+				$we_doc = new we_class_folder();
+			 	break;
 			case "text/weTmpl":
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_template.inc.php");
 				$we_doc = new we_template();

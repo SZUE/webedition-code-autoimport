@@ -34,7 +34,8 @@ $perm_values[$perm_group_name]=array(
 	"CAN_SEE_OBJECTS",
 	"NEW_OBJECT",
 	"DELETE_OBJECT",
-	"CAN_SELECT_OTHER_USERS_OBJECTS"
+	"CAN_SELECT_OTHER_USERS_OBJECTS",
+	"CAN_COPY_OBJECTS"
     );
 
 //	Here the array of the permission-titles is set.
@@ -56,7 +57,8 @@ $perm_defaults[$perm_group_name]=array(
 	"MOVE_OBJECTFILE"=>1,
 	"CAN_SEE_OBJECTS"=>0,
 	"CAN_SEE_OBJECTFILES"=>1,
-	"CAN_SELECT_OTHER_USERS_OBJECTS"=>1
+	"CAN_SELECT_OTHER_USERS_OBJECTS"=>1,
+	"CAN_COPY_OBJECTS"=>1
 	);
 
 ?>
