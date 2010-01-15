@@ -39,4 +39,10 @@ $GLOBALS["l_copyFolder"]["create_new_doctypes"] = "Create new document types";
 $GLOBALS["l_copyFolder"]["prepareTemplates"] = "Preparing to  create new  templates";
 $GLOBALS["l_copyFolder"]["categories"] = "Categories";
 $GLOBALS["l_copyFolder"]["overwrite_categories"] = "Overwrite Categories";
+$GLOBALS["l_copyFolder"]["object_copy"] = "Copy objects and object folders";
+$GLOBALS["l_copyFolder"]["sameName_expl"] = "Determine the behavior of webEdition, for the case that another object exisits with the same name and path.";
+$GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Overwrite the existing object";
+$GLOBALS["l_copyFolder"]["sameName_rename"] = "Rename the new object";
+$GLOBALS["l_copyFolder"]["sameName_nothing"] = "Do not copy the object";
+$GLOBALS["l_copyFolder"]["sameName_headline"] = "What to do for objects of the same name?";
 ?>

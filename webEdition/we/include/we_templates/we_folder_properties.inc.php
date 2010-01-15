@@ -25,16 +25,16 @@ $parts = array();
 array_push($parts,array("icon"=>"path.gif", "headline"=>$GLOBALS["l_we_class"]["path"],"html"=>$GLOBALS['we_doc']->formPath(),"space"=>140));
 
 
-if($we_doc->Table==FILE_TABLE || $we_doc->Table==OBJECT_FILES_TABLE) {
+if($we_doc->Table==FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Table==OBJECT_FILES_TABLE)) {
 	if(isset($_SESSION["perms"]["ADMINISTRATOR"]) && $_SESSION["perms"]["ADMINISTRATOR"]){
 		array_push($parts,array("icon"=>"lang.gif", "headline"=>$GLOBALS["l_we_class"]["language"],"html"=>$GLOBALS['we_doc']->formLanguage(),"space"=>140,"noline"=>1));
 		array_push($parts,array("headline"=>$GLOBALS["l_we_class"]["grant_language"],"html"=>$GLOBALS['we_doc']->formChangeLanguage(),"space"=>140, "forceRightHeadline"=>1));
-	} else if($we_doc->Table==FILE_TABLE  || $we_doc->Table==OBJECT_FILES_TABLE) {
+	} else if($we_doc->Table==FILE_TABLE  || (defined('OBJECT_FILES_TABLE') && $we_doc->Table==OBJECT_FILES_TABLE)) {
 		array_push($parts,array("icon"=>"lang.gif", "headline"=>$GLOBALS["l_we_class"]["language"],"html"=>$GLOBALS['we_doc']->formLanguage(),"space"=>140));
 	}
 }
 
-if($we_doc->Table==FILE_TABLE && we_hasPerm("CAN_COPY_FOLDERS")){
+if($we_doc->Table==FILE_TABLE && we_hasPerm("CAN_COPY_FOLDERS") || (defined('OBJECT_FILES_TABLE') && $we_doc->Table==OBJECT_FILES_TABLE && we_hasPerm("CAN_COPY_OBJECTS")) ){
 	array_push($parts,array("icon"=>"copy.gif", "headline"=>$GLOBALS["l_we_class"]["copyFolder"],"html"=>$GLOBALS['we_doc']->formCopyDocument(),"space"=>140));
 }
 

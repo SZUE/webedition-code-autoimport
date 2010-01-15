@@ -39,10 +39,13 @@ class we_class_folder extends we_folder
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName="we_class_folder";
 
-	var $EditPageNrs = array(WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS);//,WE_EDITPAGE_CFSEARCH);
+	//var $EditPageNrs = array(WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS);//,WE_EDITPAGE_CFSEARCH); #4076 orig
+	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS,WE_EDITPAGE_INFO);
 	var $Icon = "class_folder.gif";
 	var $IsClassFolder = "1";
 	var $InWebEdition = false;
+	var $ClassPath =''; //#4076
+	var $ClassID =''; //#4076
 	var $searchclass;
 	var $searchclass_class;
 
@@ -55,10 +58,21 @@ class we_class_folder extends we_folder
 	function we_class_folder(){
 		$this->we_folder();
 		array_push($this->persistent_slots,"searchclass","searchclass_class");
-
+		$this->ContentType= "folder";
 
 	}
-
+	function setClassProp(){
+		$DB_WE = new DB_WE();
+		$sp = explode("/",$this->Path);
+		$this->ClassPath="/".$sp[1];
+		$this->ClassID = f("SELECT ID FROM " . OBJECT_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
+	}
+	function we_rewrite(){
+		$this->ClassName="we_class_folder";
+		$this->IsNotEditable = 0;
+		$this->we_save(0,1);
+	}
+	
 	function we_initSessDat($sessDat){
 		we_folder::we_initSessDat($sessDat);
 		if(isset($this->searchclass_class) && !is_object($this->searchclass_class)){
@@ -83,6 +97,7 @@ class we_class_folder extends we_folder
 		if(empty($this->EditPageNr)){
 			$this->EditPageNr = WE_EDITPAGE_CFWORKSPACE;
 		}
+		$this->setClassProp();
 
 	}
 
@@ -91,10 +106,10 @@ class we_class_folder extends we_folder
 		return true;
 	}
 
-	function initByPath($path,$tblName=FILE_TABLE,$IsClassFolder=0,$IsNotEditable=0,$skipHook=0){
+	function initByPath($path,$tblName=OBJECT_FILES_TABLE,$IsClassFolder=0,$IsNotEditable=0,$skipHook=0){
 		$id = f("SELECT ID FROM ".$tblName." WHERE Path='$path' AND IsFolder=1","ID",$this->DB_WE);
 		if($id != ""){
-			$this->initByID($id);
+			$this->initByID($id,$tblName);
 		}else{
 			## Folder does not exist, so we have to create it (if user has permissons to create folders)	
 			$spl = explode("/",$path);
@@ -108,16 +123,23 @@ class we_class_folder extends we_folder
 				if($pa){
 					$pid = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='$pa'","ID",new DB_WE());
 					if(!$pid){
-						$folder = new we_folder();
+						// $folder = new we_folder(); 4076 orig
+						$folder = new we_class_folder();
 						$folder->init();
 						$folder->Table = $tblName;
 						$folder->ParentID=$last_pid;
 						$folder->Text = $p[$i];
 						$folder->Filename = $p[$i];
+						/* code vor 4076
 						$folder->IsNotEditable = $IsClassFolder;
 						$folder->ClassName=($IsClassFolder)?"we_class_folder":"we_folder";
-
 						$this->IsClassFolder=$IsClassFolder;
+						*/
+						$folder->IsNotEditable = 0;
+						$folder->ClassName="we_class_folder";
+						$folder->IsClassFolder=$IsClassFolder;
+						$folder->Icon = ($IsClassFolder)?"we_class_folder.gif":"we_folder.gif";
+						
 						$folder->Path=$pa;
 						$folder->save($skipHook);
 						$last_pid = $folder->ID;
@@ -129,14 +151,21 @@ class we_class_folder extends we_folder
 			}	
 			$this->init();
 			$this->Table = $tblName;
+			/* code vor 4076
 			$this->ClassName=($IsClassFolder)?"we_class_folder":"we_folder";
+			
+			*/
+			$this->ClassName="we_class_folder";
 			$this->IsClassFolder=$IsClassFolder;
 			$this->Icon = $IsClassFolder ? "class_folder.gif" : "folder.gif";
-
+			
 			$this->ParentID=$last_pid;
 			$this->Text = $folderName;
 			$this->Filename = $folderName;
 			$this->Path=$path;
+			//#4076
+			$this->setClassProp();
+			
 			$this->IsNotEditable=$IsNotEditable;
 			$this->save(0,$skipHook);
 		}
@@ -147,8 +176,15 @@ class we_class_folder extends we_folder
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor(){
+		$this->ContentType = "folder";
 
 		switch($this->EditPageNr){
+			case WE_EDITPAGE_PROPERTIES:
+                return "we_templates/we_editor_properties.inc.php";
+
+			case WE_EDITPAGE_INFO:
+                return "we_templates/we_editor_info.inc.php";
+
 			case WE_EDITPAGE_CFWORKSPACE:
 			    return "we_modules/object/we_classFolder_properties.inc.php";
 			    break;
@@ -164,9 +200,9 @@ class we_class_folder extends we_folder
 			    break;
 			*/
 			default:
-			    $this->EditPageNr = WE_EDITPAGE_CFWORKSPACE;
-			    $_SESSION["EditPageNr"] = WE_EDITPAGE_CFWORKSPACE;
-			    return "we_modules/object/we_classFolder_properties.inc.php";
+			    $this->EditPageNr = WE_EDITPAGE_PROPERTIES;
+			    $_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
+			    return "we_templates/we_editor_properties.inc.php";
 		}
 	}
 
@@ -182,6 +218,32 @@ class we_class_folder extends we_folder
 		}
 
 		return $userDefaultWsPath;
+
+	}
+
+	function formCopyDocument(){
+		$idname = 'we_'.$this->Name.'_CopyID';
+		$parents = array(0,$this->ID);
+		we_getParentIDs(FILE_TABLE,$this->ID,$parents);
+		$this->setClassProp();
+		$ParentsCSV  = makeCSVFromArray($parents,true);
+		if ($this->ID) {
+			$_disabled = false;
+			$_disabledNote = "";
+		} else {
+			$_disabled = true;
+			$_disabledNote = " ".$GLOBALS["l_we_class"]["availableAfterSave"];
+		}
+
+		$we_button = new we_button();
+		$but = $we_button->create_button("select", $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->ClassID.");" : "javascript:" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folders_no_id"], WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
+
+		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox($GLOBALS["l_we_class"]["copy_owners_expl"].$_disabledNote,2,388,false).'</td><td>'.
+						$this->htmlHidden($idname,$this->CopyID).$but . '</td></tr>
+					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>';
+
+
+		return $content;
 
 	}
 
@@ -229,8 +291,13 @@ class we_class_folder extends we_folder
 			$userDefaultWsPath = "/";
 		}
 
+		//#4076
+		$this->setClassProp();
+		
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'",$DB_WE);
+		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'",$DB_WE);#4076 orig
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->ClassPath)."'",$DB_WE);
+		
 
 		$userDefaultWsPath = $this->getUserDefaultWsPath();
 		$this->WorkspacePath = ($this->WorkspacePath != "") ? $this->WorkspacePath : $userDefaultWsPath;
@@ -244,13 +311,17 @@ class we_class_folder extends we_folder
 		}
 
 		$this->searchclass->settable(OBJECT_X_TABLE.$classArray["ID"].", ".OBJECT_FILES_TABLE);
-		$this->searchclass->setwhere($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID');
+		//$this->searchclass->setwhere($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID'); #4076 orig
+		$this->searchclass->setwhere($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].".OF_PATH LIKE '".$this->Path."/%' ".' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID');
+		
 		$foundItems = $this->searchclass->countitems();
 
 		//$this->searchclass->setorder($z);
 		//$this->searchclass->setstart(1);
 
-		$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_FILES_TABLE.'.ModDate');
+		//$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_FILES_TABLE.'.ModDate'); +4076 orig
+		
+		$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].".OF_PATH LIKE '".$this->Path."/%' ".' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_FILES_TABLE.'.ModDate');
 
 
 		$content=array();
@@ -337,10 +408,14 @@ class we_class_folder extends we_folder
 		$we_obectPathLength = 32;
 		$values = array(10=>10,25=>25,50=>50,100=>100);
 		$strlen = 20;
-
+		
+		//#4076
+		$this->setClassProp();
+		
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'",$DB_WE);
-
+		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'",$DB_WE); #4076 orig
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->ClassPath)."'",$DB_WE);
+		
 		if(isset($_REQUEST["do"]) && $_REQUEST["do"]=="delete"){
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f,0,3)=="weg"){
@@ -383,14 +458,17 @@ class we_class_folder extends we_folder
 		}
 
 		$this->searchclass->settable(OBJECT_X_TABLE.$classArray["ID"]);
-		$this->searchclass->setwhere($where." AND OF_ID !=0 ");
+		//$this->searchclass->setwhere($where." AND OF_ID !=0 "); #4076 orig
+		$this->searchclass->setwhere($where." AND OF_PATH LIKE '".$this->Path."/%' AND OF_ID !=0 ");
+		
 
 		$foundItems = $this->searchclass->countitems();
 
 		//$this->searchclass->setorder($z);
 		//$this->searchclass->setstart(1);
 
-		$this->searchclass->searchquery($where." AND OF_ID !=0 ",$fields);
+		//$this->searchclass->searchquery($where." AND OF_ID !=0 ",$fields); #4076 orig
+		$this->searchclass->searchquery($where." AND OF_PATH LIKE '".$this->Path."/%' AND OF_ID !=0 ",$fields);
 
 		$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a,".OBJECT_FILES_TABLE." c WHERE a.Text=c.Text AND c.ID=".abs($this->ID));
 		$DB_WE->next_record();
@@ -533,7 +611,10 @@ class we_class_folder extends we_folder
 		$we_button = new we_button();
 
 		$DB_WE = new DB_WE();
-
+		
+		//#4076
+		$this->setClassProp();			
+		
 		$out =	'
 				<table cellpadding="2" cellspacing="0" border="0" width="510">
 				<form name="we_form_search"  onSubmit="sub();return false;" methode="GET">
@@ -551,7 +632,9 @@ class we_class_folder extends we_folder
 			}
 
 			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i],0,4)=="meta" || substr($this->searchclass->objsearchField[$i],0,8)=="checkbox")) {
-				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ID));
+				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ID)); #4076 orig
+				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ClassID));
+				p_r("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ClassID));
 				$DB_WE->next_record();
 				$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
 
@@ -567,8 +650,9 @@ class we_class_folder extends we_folder
 				$out .= '
 				<tr>
 					<td class="defaultfont">'.$GLOBALS['l_global']["search"].'</td>
-					<td width="50">'.getPixel(5,2).'</td>
-					<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td>
+					<td width="50">'.getPixel(5,2).'</td>'
+					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
+					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->ClassPath).'</td>
 					<td>'.getPixel(10,2).'</td>
 					<td width="50">'.$this->searchclass->getLocationMeta("objlocation[".$i."]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '') ).'</td>
 					<td>'.getPixel(10,2).'</td>
@@ -578,7 +662,8 @@ class we_class_folder extends we_folder
 				</tr>';
 
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i],0,4)=="date") {
-				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ID));
+				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ID)); #4976 orig
+				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ClassID));
 				$DB_WE->next_record();
 				$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
 
@@ -625,8 +710,9 @@ class we_class_folder extends we_folder
 				$out .= '
 				<tr>
 					<td class="defaultfont">'.$GLOBALS['l_global']["search"].'</td>
-					<td>'.getPixel(5,2).'</td>
-					<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td>
+					<td>'.getPixel(5,2).'</td>'
+					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
+					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->ClassPath).'</td>
 					<td>'.getPixel(10,2).'</td>
 					<td>'.$this->searchclass->getLocationDate("objlocation[".$i."]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '') ).'</td>
 					<td>'.getPixel(10,2).'</td>
@@ -645,8 +731,9 @@ class we_class_folder extends we_folder
 				$out .= '
 				<tr>
 					<td class="defaultfont">'.$GLOBALS['l_global']["search"].'</td>
-					<td>'.getPixel(1,2).'</td>
-					<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->Path).'</td>
+					<td>'.getPixel(1,2).'</td>'
+					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->Path).'</td> #4076 orig
+					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->ClassPath).'</td>
 					<td>'.getPixel(1,2).'</td>
 					<td>'.$this->searchclass->getLocation("objlocation[".$i."]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '') ).'</td>
 					<td>'.getPixel(1,2).'</td>

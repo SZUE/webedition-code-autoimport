@@ -176,7 +176,10 @@ class we_folder extends we_root
 		if (substr($path,-1)=='/'){$path=substr($path,0,strlen($path)-1); }
 		$id = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='".mysql_real_escape_string($path)."' AND IsFolder=1","ID",$this->DB_WE);
 		if($id != ""){
-			$this->initByID($id);
+			$this->initByID($id, $tblName);
+			if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE) {
+				$this->ClassName = "we_class_folder";
+			}
 		}else{
 			## Folder does not exist, so we have to create it (if user has permissons to create folders)
 
@@ -191,12 +194,18 @@ class we_folder extends we_root
 				if($pa){
 					$pid = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='".mysql_real_escape_string($pa)."'","ID",new DB_WE());
 					if(!$pid){
-						$folder = new we_folder();
+						if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE) {
+							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+							$folder = new we_class_folder();
+						} else {
+							$folder = new we_folder();
+						}
 						$folder->we_new();
 						$folder->Table = $tblName;
 						$folder->ParentID=$last_pid;
 						$folder->Text = $p[$i];
 						$folder->Filename = $p[$i];
+						$folder->IsClassFolder = $IsClassFolder;
 						$folder->IsNotEditable = $IsClassFolder;
 						$folder->Path=$pa;
 						$folder->save();
@@ -223,7 +232,16 @@ class we_folder extends we_root
 	}
 
 	function i_canSaveDirinDir(){
-		if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE && (!$this->IsClassFolder) && (!$this->IsNotEditable)){
+		if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE){
+			if ( $this->Icon =='' && $this->ParentID ==0 ) {
+				return false;
+			} else {
+				if ($this->ParentID !=0) {
+				  $this->Icon ='folder.gif';
+				  $this->IsClassFolder=0;
+				}
+			}
+			
 			if($this->ParentID !=0){
 				$this->DB_WE->query("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE IsNotEditable=1");
 				while($this->DB_WE->next_record()){
@@ -231,9 +249,8 @@ class we_folder extends we_root
 						return false;
 					}
 				}
-			}else{
-				return false;
 			}
+			
 		}
 		return true;
 	}
@@ -259,7 +276,8 @@ class we_folder extends we_root
 		if(!we_root::we_save($resave)) return false;
 		if(!$this->writeFolder()) return false;
 		if(defined("OBJECT_TABLE") && $this->Table==OBJECT_TABLE){
-			$f = new we_folder();
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+			$f = new we_class_folder();
 			$f->initByPath($this->Path,OBJECT_FILES_TABLE,0,1);
 		}
 		$this->resaveWeDocumentCustomerFilter();
@@ -392,7 +410,9 @@ class we_folder extends we_root
 			$this->ParentPath = id_to_path($this->ParentID,$this->Table,$this->DB_WE);
 
 		}
+		
 		$userCanChange = we_hasPerm("CHANGE_DOC_FOLDER_PATH") || ($this->CreatorID == $_SESSION["user"]["ID"]) || (!$this->ID);
+		if ($this->ID!=0 && $this->ParentID==0 && $this->ParentPath=='/' && defined('OBJECT_FILES_TABLE') && $this->Table== OBJECT_FILES_TABLE) {$userCanChange=false;}
 		$content = (!$userCanChange) ? ('<span class="defaultfont">'.$this->Path.'</span>') : '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont">'.$this->formInputField("",($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? "Filename" : "Text",$l_we_class["filename"],50,388,255,"onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();").'</td><td></td><td></td>
@@ -404,7 +424,7 @@ class we_folder extends we_root
 		<td colspan="3" class="defaultfont">'.$this->formDirChooser(388).'</td>
 	</tr>
 </table>
-';
+'; 
 		return $content;
 	}
 
@@ -476,7 +496,7 @@ class we_folder extends we_root
 		}
 
 		$we_button = new we_button();
-		$but = $we_button->create_button("select", $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1);}');" : "javascript:" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folders_no_id"], WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
+		$but = $we_button->create_button("select", $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}');" : "javascript:" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folders_no_id"], WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox($GLOBALS["l_we_class"]["copy_owners_expl"].$_disabledNote,2,388,false).'</td><td>'.
 						$this->htmlHidden($idname,$this->CopyID).$but . '</td></tr>

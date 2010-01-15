@@ -37,5 +37,5 @@ $l_perm["object"]["CAN_SEE_OBJECTS"] = "Käyttäjä voi nähdä luokkia.";
 $l_perm["object"]["NEW_OBJECT"] = "Käyttäjä voi luoda luokkia.";
 $l_perm["object"]["DELETE_OBJECT"] = "Käyttäjä voi poistaa luokkia.";
 $l_perm["object"]["CAN_SELECT_OTHER_USERS_OBJECTS"] = "Käyttäjä voi valita objekteja työtilansa ulkopuolelta.";
-
+$l_perm["object"]["CAN_COPY_OBJECTS"] = "The user is allowed to copy object folders"; // TRANSLATE
 ?>
