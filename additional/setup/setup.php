@@ -875,7 +875,7 @@ ob_end_clean();
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta http-equiv="imagetoolbar" content="no">
-	<meta name="generator" content="webEdition Version <?php echo WE_VERSION ?>">
+	<meta name="generator" content="webEdition Version <?php echo WE_VERSION; ?>">
 	<style type="text/css">
 	body, div, div.small, table, td, font, li, form {
 		font-size:8pt;
