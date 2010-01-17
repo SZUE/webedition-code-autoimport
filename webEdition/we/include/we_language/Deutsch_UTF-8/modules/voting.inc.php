@@ -166,5 +166,6 @@ $l_voting['voting-session'] = 'Voting-Session';
 $l_voting['voting-successor'] = 'Nachfolger';
 $l_voting['voting-additionalfields'] = 'Zusatzdaten';
 $l_voting['log_error_required'] = 'Fehler: Dies ist ein Pflichtfeld';
+$l_voting['folder_path_exists'] = "Diese Gruppe existiert schon!";
 
 ?>

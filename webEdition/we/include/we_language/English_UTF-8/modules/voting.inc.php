@@ -157,5 +157,5 @@ $l_voting['userid_method'] = 'For logged in Users (customer management), compare
 $l_voting['IsRequired'] = 'This is a required field';
 
 $l_voting['answer_limit'] = 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!';
-
+$l_voting['folder_path_exists'] = "Folder already exists!";
 ?>
