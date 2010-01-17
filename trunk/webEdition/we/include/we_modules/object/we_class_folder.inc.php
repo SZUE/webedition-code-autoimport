@@ -882,6 +882,22 @@ class we_class_folder extends we_folder
 				</table>
 			</td>
 		</tr>
+		<tr>
+			<td>'.getPixel(175,12).'</td>
+			<td>'.getPixel(460,12).'</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichcopyws"]."'))document.we_form.elements['do'].value='copyws';we_cmd('reload_editpage');") .'</td>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["copyws"] : "").'</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
 		</table>
 		</form>
 		';
@@ -1026,13 +1042,14 @@ EOF;
 	function deleteObjects() {
 
 		$DB_WE = new DB_WE();
-
+		$this->setClassProp();//4076
+        
 		$javascript = "";
 
 		$deletedItems = array();
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'",$DB_WE);
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->ClassPath)."'",$DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f,0,3)=="weg"){
 				//$this->query("");
@@ -1079,16 +1096,53 @@ EOF;
 
 	}
 
+	function copyWSfromClass() {
+    	$DB_WE = new DB_WE();
+        
+        $javascript = "";
+        
+        $this->setClassProp();//4076
+        $foo = getHash("SELECT Workspaces,Templates FROM " .OBJECT_TABLE . " WHERE ID='".$this->ClassID."'",$DB_WE); 
+
+        foreach(array_keys($_REQUEST) as $f){
+        	if(substr($f,0,3)=="weg"){
+                $DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE.$this->ClassID." WHERE ID=".substr($f,3));
+                echo "SELECT OF_ID FROM " . OBJECT_X_TABLE.$this->ClassID." WHERE ID=".substr($f,3);
+                $DB_WE->next_record();
+                $ofid = $DB_WE->f("OF_ID");
+                if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
+                    $obj = new we_objectFile();
+                    $obj->initByID($ofid, OBJECT_FILES_TABLE);
+                    
+                    $obj->Workspaces = $foo["Workspaces"];
+                    $obj->Templates = $foo["Templates"];
+                    $obj->ExtraTemplates = "";
+                    $obj->ExtraWorkspaces = "";
+                    $obj->ExtraWorkspacesSelected = "";
+                    $obj->we_save(0,1);
+                    $obj->we_publish(1,1,1);
+                
+                }
+        	}
+        }
+		$javascript .= "
+			top.drawTree();
+        ";
+		
+		return $javascript;
+		
+    
+    }
 
 	function publishObjects($publish = true) {
 
 		$DB_WE = new DB_WE();
-		
+		$this->setClassProp();
 
 		$javascript = "";
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$this->Path."'",$DB_WE);
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$this->ClassPath."'",$DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f,0,3)=="weg"){
 

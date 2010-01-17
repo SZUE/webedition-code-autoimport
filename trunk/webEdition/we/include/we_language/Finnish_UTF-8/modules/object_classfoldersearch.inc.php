@@ -40,6 +40,8 @@ $l_object_classfoldersearch["parken"] = "Poista valitut objektit julkaisusta.";
 $l_object_classfoldersearch["wirklichloeschen"] = "Toiminto poistaa valitut objektit! Oletko varma?";
 $l_object_classfoldersearch["wirklichveroeffentlichen"] = "Tämä julkaisee valitut objektit! Oletko varma?";
 $l_object_classfoldersearch["wirklichparken"] = "Tämä poistaa valitut objektit julkaisusta! Oletko varma?";
+$l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";// TRANSLATE
+$l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";// TRANSLATE
 
 $l_object_classfoldersearch["zeige"] = "Näytä";
 $l_object_classfoldersearch["Objekt"] = "Objekti";

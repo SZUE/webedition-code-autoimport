@@ -42,6 +42,8 @@ $l_object_classfoldersearch["parken"] = "Ausgew&auml;hlte Objekte parken.";
 $l_object_classfoldersearch["wirklichloeschen"] = "Sind Sie sicher, dass Sie die ausgewählten Objekte löschen wollen?";
 $l_object_classfoldersearch["wirklichveroeffentlichen"] = "Sind Sie sicher, dass Sie die ausgewählten Objekte veröffentlichen wollen?";
 $l_object_classfoldersearch["wirklichparken"] = "Sind Sie sicher, dass Sie die ausgewählten Objekte parken wollen?";
+$l_object_classfoldersearch["copyws"] = "Kopiere die in der Klasse definierten Arbeitsbereiche in die ausgew&auml;hlten Objekte.";
+$l_object_classfoldersearch["wirklichcopyws"] = "Sind Sie sicher, dass Sie bei den ausgewählten Objekten die Arbeitsbereiche der Klasse übernehmen wollen - die Extra-Arbeitsbereiche gehen dabei verloren?";
 
 $l_object_classfoldersearch["zeige"] = "Zeige";
 $l_object_classfoldersearch["Objekt"] = "Objekt";

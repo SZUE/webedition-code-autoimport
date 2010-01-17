@@ -40,6 +40,8 @@ $l_object_classfoldersearch["parken"] = "Depubliceer geselecteerde objecten.";
 $l_object_classfoldersearch["wirklichloeschen"] = "Hiermee verwijdert u de geselecteerde objecten! Weet u het zeker?";
 $l_object_classfoldersearch["wirklichveroeffentlichen"] = "Hiermee publiceert u de geselecteerde objecten! Weet u het zeker?";
 $l_object_classfoldersearch["wirklichparken"] = "Hiermee depubliceert u de geselecteerde objecten! Weet u het zeker?";
+$l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";// TRANSLATE
+$l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";// TRANSLATE
 
 $l_object_classfoldersearch["zeige"] = "Toon";
 $l_object_classfoldersearch["Objekt"] = "Object"; // TRANSLATE
