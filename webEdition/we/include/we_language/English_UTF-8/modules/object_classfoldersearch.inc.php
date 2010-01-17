@@ -30,8 +30,8 @@ $l_object_classfoldersearch["AB"] = "Workspace";
 $l_object_classfoldersearch["META"] = "Meta-Info";
 $l_object_classfoldersearch["FELDER"] = "Fields";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Workspace";// TRANSLATE
-$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";// TRANSLATE
+$l_object_classfoldersearch["Verzeichnis"] = "Workspace";
+$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";
 $l_object_classfoldersearch["Ansicht"] = "View";
 $l_object_classfoldersearch["teilsuche"] = "Result of qualified search";
 $l_object_classfoldersearch["loesch"] = "Delete selected objects.";
@@ -40,6 +40,10 @@ $l_object_classfoldersearch["parken"] = "Unpublish selected Objects.";
 $l_object_classfoldersearch["wirklichloeschen"] = "This deletes the selected objects! Are you sure?";
 $l_object_classfoldersearch["wirklichveroeffentlichen"] = "This publishes the selected objects! Are you sure?";
 $l_object_classfoldersearch["wirklichparken"] = "This unpublishes the selected objects! Are you sure?";
+$l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";
+$l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";
+$l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";// TRANSLATE
+$l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";// TRANSLATE
 
 $l_object_classfoldersearch["zeige"] = "Show";
 $l_object_classfoldersearch["Objekt"] = "Object";

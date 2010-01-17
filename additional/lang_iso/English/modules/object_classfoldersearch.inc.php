@@ -40,6 +40,8 @@ $l_object_classfoldersearch["parken"] = "Unpublish selected Objects.";
 $l_object_classfoldersearch["wirklichloeschen"] = "This deletes the selected objects! Are you sure?";
 $l_object_classfoldersearch["wirklichveroeffentlichen"] = "This publishes the selected objects! Are you sure?";
 $l_object_classfoldersearch["wirklichparken"] = "This unpublishes the selected objects! Are you sure?";
+$l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";
+$l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";
 
 $l_object_classfoldersearch["zeige"] = "Show";
 $l_object_classfoldersearch["Objekt"] = "Object";

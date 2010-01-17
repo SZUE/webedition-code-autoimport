@@ -39,7 +39,11 @@ if(isset($_REQUEST["do"]) && $_REQUEST["do"] == "delete") {
 	$javascript .= $we_doc->publishObjects(false);
 } elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "publish") {
 	$javascript .= $we_doc->publishObjects();
+} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "copyws") {
+	$javascript .= $we_doc->copyWSfromClass();
 }
+
+
 
 protect();
 // Ausgabe beginnen
