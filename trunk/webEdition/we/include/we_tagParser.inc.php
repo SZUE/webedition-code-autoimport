@@ -1226,6 +1226,10 @@ $we_lv_categoryids = isset($_REQUEST["we_lv_categoryids_' . $name . '"]) ? $_REQ
 
 $we_lv_languages = isset($_REQUEST["we_lv_languages_' . $name . '"]) ? $_REQUEST["we_lv_languages_' . $name . '"] : "' . $languages . '";
 
+if($we_lv_languages == "self" || $we_lv_languages == "top"){
+	$we_lv_langguagesdoc= we_getDocForTag($we_lv_languages);
+	$we_lv_languages = $we_lv_langguagesdoc->Language;
+}
 $we_lv_calendar = isset($_REQUEST["we_lv_calendar_' . $name . '"]) ? $_REQUEST["we_lv_calendar_' . $name . '"] : "' . $calendar . '";
 $we_lv_datefield = isset($_REQUEST["we_lv_datefield_' . $name . '"]) ? $_REQUEST["we_lv_datefield_' . $name . '"] : "' . $datefield . '";
 $we_lv_date = isset($_REQUEST["we_lv_date_' . $name . '"]) ? $_REQUEST["we_lv_date_' . $name . '"] : ' . ($date != "" ? ('"' . $date . '"') : 'date("Y-m-d")') . ';
