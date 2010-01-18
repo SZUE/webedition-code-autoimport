@@ -2494,6 +2494,8 @@ class we_objectFile extends we_document
 		$ctable = OBJECT_X_TABLE.$this->TableID;
 
 		// updater
+		if(!$this->isColExist($ctable,"OF_IsSearchable")) $this->addCol($ctable,"OF_IsSearchable","tinyint(1) DEFAULT '1' ", "OF_Published");
+		if(!$this->isColExist($ctable,"OF_Charset")) $this->addCol($ctable,"OF_Charset","varchar(64) NOT NULL", "OF_IsSearchable");
 		if(!$this->isColExist($ctable,"OF_WebUserID")) $this->addCol($ctable,"OF_WebUserID","BIGINT DEFAULT '0' NOT NULL", "AFTER OF_Charset");
 		if(!$this->isColExist($ctable,"OF_Language")) $this->addCol($ctable,"OF_Language","VARCHAR(5) DEFAULT NULL", "AFTER OF_WebUserID");
 
