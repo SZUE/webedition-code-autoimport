@@ -97,13 +97,15 @@ class we_class_folder extends we_folder
 		}
 
 		if(empty($this->EditPageNr)){
-			$this->EditPageNr = WE_EDITPAGE_CFWORKSPACE;
+			$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 		}
 		$this->setClassProp();
 
 	}
 
 	function we_save($resave=0,$skipHook=0) {
+		$sp = explode("/",$this->Path);
+		if ( isset($sp[2]) && $sp[2] != '') {$this->IsClassFolder = 0;}
 		parent::we_save($resave,$skipHook);
 		return true;
 	}
