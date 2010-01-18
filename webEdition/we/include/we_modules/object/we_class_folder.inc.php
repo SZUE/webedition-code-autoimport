@@ -895,6 +895,54 @@ class we_class_folder extends we_folder
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_searchable", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichsearchable"]."'))document.we_form.elements['do'].value='searchable';we_cmd('reload_editpage');") .'</td>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["searchable"] : "").'</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>'.getPixel(175,12).'</td>
+			<td>'.getPixel(460,12).'</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_unsearchable", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichunsearchable"]."'))document.we_form.elements['do'].value='unsearchable';we_cmd('reload_editpage');") .'</td>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["unsearchable"] : "").'</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>'.getPixel(175,12).'</td>
+			<td>'.getPixel(460,12).'</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichcopychar"]."'))document.we_form.elements['do'].value='copychar';we_cmd('reload_editpage');") .'</td>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["copychar"] : "").'</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>'.getPixel(175,12).'</td>
+			<td>'.getPixel(460,12).'</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>'.getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichcopyws"]."'))document.we_form.elements['do'].value='copyws';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["copyws"] : "").'</td>
@@ -1137,7 +1185,81 @@ EOF;
 		
     
     }
+	function copyCharsetfromClass () {
+    	$DB_WE = new DB_WE();
+		$this->setClassProp();
+		$foo = getHash("SELECT DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->ClassID."'",$DB_WE);
+        $fooo =  unserialize($foo["DefaultValues"]);
 
+        if (isset($fooo["elements"]["Charset"]["dat"])){
+        	$Charset=$fooo["elements"]["Charset"]["dat"]; 
+        } else {
+        	if (defined("DEFAULT_CHARSET")) {$Charset=DEFAULT_CHARSET;} else {$Charset="";}        	
+        }
+		$javascript = "";
+
+		// get Class
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$this->ClassPath."'",$DB_WE);
+		foreach(array_keys($_REQUEST) as $f){
+			if(substr($f,0,3)=="weg"){
+            	$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE.$classArray["ID"]." WHERE ID=".substr($f,3));
+				$DB_WE->next_record();
+				$ofid = $DB_WE->f("OF_ID");
+                if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
+                    $obj = new we_objectFile();
+                    $obj->initByID($ofid, OBJECT_FILES_TABLE);
+                    
+                    $obj->Charset = $Charset;
+                    $obj->we_save(0,1);
+                    $obj->we_publish(1,1,1);
+                }
+            
+            }
+        }
+        return $javascript;
+    
+    }
+    
+    function searchableObjects($searchable = true) {
+
+		$DB_WE = new DB_WE();
+		$this->setClassProp();
+
+		$javascript = "";
+
+		// get Class
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$this->ClassPath."'",$DB_WE);
+		foreach(array_keys($_REQUEST) as $f){
+			if(substr($f,0,3)=="weg"){
+				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE.$classArray["ID"]." WHERE ID=".substr($f,3));
+				$DB_WE->next_record();
+				$ofid = $DB_WE->f("OF_ID");
+
+				if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
+					if($searchable!=true) {
+						$obj = new we_objectFile();
+						$obj->initByID($ofid, OBJECT_FILES_TABLE);
+                        $obj->IsSearchable=0;						
+					} else {
+						$obj = new we_objectFile();
+						$obj->initByID($ofid, OBJECT_FILES_TABLE);
+						$obj->IsSearchable=1;
+					}
+                    $obj->we_save(0,1);
+                    if ($obj->Published) {
+                    	$obj->we_publish(0,1,1);
+                    } else {
+                    	$obj->we_publish(1,1,1);
+                    }				
+
+				}
+			}
+		}
+
+		return $javascript;
+
+	}
+    
 	function publishObjects($publish = true) {
 
 		$DB_WE = new DB_WE();
