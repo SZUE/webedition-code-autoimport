@@ -44,6 +44,13 @@ $l_object_classfoldersearch["wirklichveroeffentlichen"] = "Sind Sie sicher, dass
 $l_object_classfoldersearch["wirklichparken"] = "Sind Sie sicher, dass Sie die ausgewählten Objekte parken wollen?";
 $l_object_classfoldersearch["copyws"] = "Kopiere die in der Klasse definierten Arbeitsbereiche in die ausgew&auml;hlten Objekte.";
 $l_object_classfoldersearch["wirklichcopyws"] = "Sind Sie sicher, dass Sie bei den ausgewählten Objekten die Arbeitsbereiche der Klasse übernehmen wollen - die Extra-Arbeitsbereiche gehen dabei verloren?";
+$l_object_classfoldersearch["copychar"] = "Kopiere den in der Klasse definierten Zeichensatz in die ausgewählten Objekte.";
+$l_object_classfoldersearch["wirklichcopychar"] = "Dies überschreibt den in den Objekten definierten Zeichensatz! Sind Sie sicher?";
+$l_object_classfoldersearch["searchable"] = "Setze die gewählten Objekte auf durchsuchbar";
+$l_object_classfoldersearch["wirklichsearchable"] = "Dies setzt die gewählten Objekt auf durchsuchbar! Sind Sie sicher?";
+$l_object_classfoldersearch["unsearchable"] = "Setze die gewählten Objekte auf nicht durchsuchbar";
+$l_object_classfoldersearch["wirklichunsearchable"] = "Dies setzt die gewählten Objekt auf nicht durchsuchbar! Sind Sie sicher?";
+
 $l_object_classfoldersearch["zeige"] = "Zeige";
 $l_object_classfoldersearch["Objekt"] = "Objekt";
 $l_object_classfoldersearch["Arbeitsbereiche"] = "Arbeitsbereiche";

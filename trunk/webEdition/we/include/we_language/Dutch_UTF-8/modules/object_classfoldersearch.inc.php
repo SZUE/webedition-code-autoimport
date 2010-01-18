@@ -42,6 +42,12 @@ $l_object_classfoldersearch["wirklichveroeffentlichen"] = "Hiermee publiceert u 
 $l_object_classfoldersearch["wirklichparken"] = "Hiermee depubliceert u de geselecteerde objecten! Weet u het zeker?";
 $l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";// TRANSLATE
 $l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";// TRANSLATE
+$l_object_classfoldersearch["copychar"] = "Copy the charset defined in the class to the selected objects";// TRANSLATE
+$l_object_classfoldersearch["wirklichcopychar"] = "This overrides the defined charset in the selected objects! Are you sure?";// TRANSLATE
+$l_object_classfoldersearch["searchable"] = "Set the selected objects to searchable";// TRANSLATE
+$l_object_classfoldersearch["wirklichsearchable"] = "This sets the selected objects to searchable! Are you sure?";// TRANSLATE
+$l_object_classfoldersearch["unsearchable"] = "Set the selected objects to unsearchable";// TRANSLATE
+$l_object_classfoldersearch["wirklichunsearchable"] = "This sets the selected objects to unsearchable! Are you sure?";// TRANSLATE
 
 $l_object_classfoldersearch["zeige"] = "Toon";
 $l_object_classfoldersearch["Objekt"] = "Object"; // TRANSLATE

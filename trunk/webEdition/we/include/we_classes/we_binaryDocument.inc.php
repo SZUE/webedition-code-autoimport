@@ -114,14 +114,15 @@ class we_binaryDocument extends we_document
 			print we_htmlElement::jsElement(
 					we_message_reporting::getShowMessageCall($l_metadata['file_size_0'], WE_MESSAGE_ERROR)
 			);
-			break;
-		}
+			
+		} else {
 		if( parent::we_save($resave) ){
 			$this->DocChanged = false;
 			$this->elements["data"]["dat"] = $this->getSitePath();
 			return $this->insertAtIndex();
 		}else{
 			return false;
+		}
 		}
 	}
 
