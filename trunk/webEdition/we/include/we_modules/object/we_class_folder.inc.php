@@ -46,6 +46,7 @@ class we_class_folder extends we_folder
 	var $InWebEdition = false;
 	var $ClassPath =''; //#4076
 	var $ClassID =''; //#4076
+	var $RootfolderID =''; //#4076
 	var $searchclass;
 	var $searchclass_class;
 
@@ -66,6 +67,7 @@ class we_class_folder extends we_folder
 		$sp = explode("/",$this->Path);
 		$this->ClassPath="/".$sp[1];
 		$this->ClassID = f("SELECT ID FROM " . OBJECT_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
+		$this->RootfolderID = f("SELECT ID FROM " . OBJECT_FILES_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
 	}
 	function we_rewrite(){
 		$this->ClassName="we_class_folder";
@@ -236,7 +238,7 @@ class we_class_folder extends we_folder
 		}
 
 		$we_button = new we_button();
-		$but = $we_button->create_button("select", $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->ClassID.");" : "javascript:" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folders_no_id"], WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
+		$but = $we_button->create_button("select", $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->RootfolderID.");" : "javascript:" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folders_no_id"], WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox($GLOBALS["l_we_class"]["copy_owners_expl"].$_disabledNote,2,388,false).'</td><td>'.
 						$this->htmlHidden($idname,$this->CopyID).$but . '</td></tr>
