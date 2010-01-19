@@ -204,6 +204,22 @@ class weNavigationItem
 			$this->setCurrent($weNavigationItems);
 			return true;
 		}
+		if (isset($_SERVER['REQUEST_URI'])) { //#3698
+			$uri = parse_url($_SERVER['REQUEST_URI']);
+			$ref = parse_url($thishref);			
+			if ( ($uri['path'] == $ref['path']) && isset($uri['query']) && isset($ref['query'])  ){
+				$uriarrq = explode('&',$uri['query']);
+				$refarrq = explode('&',$ref['query']);
+				$allfound=true;
+				foreach ($refarrq as $refa) {
+					if (!in_array($refa,$uriarrq)){$allfound=false;}
+				}
+				if($allfound){
+					$this->setCurrent($weNavigationItems);
+					return true;
+				}
+			}			
+		}
 		
 		if (isset($GLOBALS["we_obj"]) && $this->table == OBJECT_FILES_TABLE) {
 			$id = $GLOBALS["we_obj"]->ID;
