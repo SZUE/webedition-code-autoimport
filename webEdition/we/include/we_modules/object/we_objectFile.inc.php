@@ -1898,6 +1898,7 @@ class we_objectFile extends we_document
 				if($w == "0"){
 					$wsPath = "/";
 				}
+				$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".mysql_real_escape_string($this->Category)."',".$this->TableID.",'".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Text)."','".mysql_real_escape_string($this->Language)."')";
 				if(!$this->DB_WE->query($q)) return false;
 			}
 		}
