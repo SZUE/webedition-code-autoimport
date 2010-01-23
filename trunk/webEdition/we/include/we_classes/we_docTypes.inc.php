@@ -70,6 +70,7 @@ class we_docTypes extends we_class {
 	function we_docTypes() {
 		$this->we_class();
 		array_push($this->persistent_slots,"Category","DocType","Extension","ParentID","ParentPath","TemplateID","ContentTable","IsDynamic","IsSearchable","Notify","NotifyTemplateID","NotifySubject","NotifyOnChange","SubDir","Templates","Language");
+		$this->Extension= (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 	}
 
 	function we_save($resave=0){
