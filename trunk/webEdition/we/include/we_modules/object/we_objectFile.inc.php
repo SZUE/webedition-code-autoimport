@@ -809,16 +809,16 @@ class we_objectFile extends we_document
 	function getObjectFieldHTML($ObjectID,$attribs,$editable=true){
 		$db = new DB_WE();
 		$we_button = new we_button();
-
 		$foo = getHash("SELECT Text,Path FROM " .OBJECT_TABLE . " WHERE ID=".abs($ObjectID),$db) ;
 		$name = isset($foo["Text"]) ? $foo["Text"] : '';
 		$classPath = isset($foo["Path"]) ? $foo["Path"] : '';
-		$pid = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
+		$pid = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db); 
 		$textname = 'we_'.$this->Name.'_txt[we_object_'.$ObjectID.'_path]';
 		$idname = 'we_'.$this->Name."_object[we_object_$ObjectID]";
 		$myid = $this->getElement("we_object_".$ObjectID);
 		$path = $this->getElement("we_object_".$ObjectID."_path");
 		$path = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'","Path",$db);
+		if ($path ==''){$myid=0;}
 		if($myid){
 			$ob = new we_objectFile();
 			$ob->initByID($myid,OBJECT_FILES_TABLE);
@@ -2217,6 +2217,17 @@ class we_objectFile extends we_document
 	function we_delete() {
 		if(!$this->ID) return false;
 		$this->we_clearCache($this->ID);
+		// Bug 2892, siehe auch we_delete_fn.inc.php
+		$q = "SELECT ID FROM " .OBJECT_TABLE . " ";
+		$this->DB_WE->query($q);
+		$foo = $this->DB_WE->getAll();
+		foreach ($foo as $testclass) {
+			if($this->isColExist(OBJECT_X_TABLE.$testclass['ID'],"object_".$this->TableID)){				
+				$q = "UPDATE " .OBJECT_X_TABLE.$testclass['ID']. " SET object_".$this->TableID."='0' WHERE object_".$this->TableID."= '".$this->ID."'";
+				$this->DB_WE->query($q);
+			}			
+		}
+		
 		return we_document::we_delete();
 	}
 
