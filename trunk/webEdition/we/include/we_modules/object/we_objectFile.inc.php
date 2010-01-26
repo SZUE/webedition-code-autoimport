@@ -349,6 +349,9 @@ class we_objectFile extends we_document
 				if(isset($vals["WE_CSS_FOR_CLASS"])){
 					$this->CSS = $vals["WE_CSS_FOR_CLASS"];
 				}
+				if(isset($vals["elements"]) && isset($vals["elements"]["Charset"]) && isset($vals["elements"]["Charset"]['dat']) ){
+					$this->Charset = $vals["elements"]["Charset"]['dat'];
+				}
 				if(is_array($vals)){
 					foreach($vals as $name=>$field){
 						if(is_array($field)){
