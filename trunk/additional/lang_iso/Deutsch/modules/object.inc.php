@@ -92,4 +92,5 @@ $l_object["generated_template_for_objectFile"] = "Kein passendes Template gefund
 $l_object["no_workspace_defined"] = "Diesem Objekt wurden noch keine Arbeitsbereiche zugewiesen. Wollen Sie einem Objekt spezielle Arbeitsbereiche zuordnen, müssen Sie diese in der Klasse des Objekts auswählen.";
 
 $l_object["use_thumbnail_preview"] = "Vorschau in Objekten als Miniaturansicht";
+$l_object["not_published"] = "das Objekt ist geparkt";
 ?>

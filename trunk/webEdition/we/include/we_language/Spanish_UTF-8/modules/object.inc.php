@@ -84,4 +84,5 @@ $l_object["generated_template_for_objectFile"] = "Ninguna plantilla igual fue en
 $l_object["no_workspace_defined"] = "No hay ï¿½reas de trabajo definidas para este objeto. UD puede seleccionar ï¿½reas de trabajo especiales para un objeto en su clase.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
+$l_object["not_published"] = "The object is not published"; // TRANSLATE
 ?>
