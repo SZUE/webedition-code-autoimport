@@ -6996,7 +6996,9 @@ function we_tag_write($attribs, $content)
 	$mailfrom = we_getTagAttribute("mailfrom", $attribs);
 	$forceedit = we_getTagAttribute("forceedit", $attribs, "", true);
 	$workspaces = we_getTagAttribute("workspaces", $attribs);
-	
+	$objname = we_getTagAttribute("name", $attribs);
+	$onduplicate = we_getTagAttribute("onduplicate", $attribs,"increment");
+
 	if (isset($_REQUEST["edit_$type"]) && $_REQUEST["edit_$type"]) {
 		
 		if ($type == "document") {
@@ -7019,7 +7021,7 @@ function we_tag_write($attribs, $content)
 			}
 			
 			if ($isAdmin || ($GLOBALS["we_$type"][$name]->ID == 0) || $isOwner || $forceedit) {
-				
+				$doWrite = true;
 				$GLOBALS["we_" . $type . "_write_ok"] = true;
 				$newObject = ($GLOBALS["we_$type"][$name]->ID) ? false : true;
 				if ($protected) {
@@ -7040,7 +7042,9 @@ function we_tag_write($attribs, $content)
 				checkAndCreateImage($name, ($type == "document") ? "we_document" : "we_object");
 				
 				$GLOBALS["we_$type"][$name]->i_checkPathDiffAndCreate();
-				$GLOBALS["we_$type"][$name]->i_correctDoublePath();
+				if ($objname=='') {
+					$GLOBALS["we_$type"][$name]->i_correctDoublePath();
+				}
 				$_WE_DOC_SAVE = $GLOBALS["we_doc"];
 				$GLOBALS["we_doc"] = &$GLOBALS["we_$type"][$name];
 				if (strlen($workspaces) > 0 && $type == "object") {
@@ -7055,24 +7059,52 @@ function we_tag_write($attribs, $content)
 				
 				$GLOBALS["we_$type"][$name]->Path = $GLOBALS["we_$type"][$name]->getPath();
 				if (defined("OBJECT_FILES_TABLE") && $type == "object" && $GLOBALS["we_$type"][$name]->Text == "") {
-					$GLOBALS["we_$type"][$name]->Text = 1 + abs(
-							f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", new DB_WE()));
-				}
-				$GLOBALS["we_$type"][$name]->we_save();
-				if ($publish) {
-					if ($type == "document" && (!$GLOBALS["we_$type"][$name]->IsDynamic) && isset(
-							$GLOBALS["we_doc"])) { // on static HTML Documents we have to do it different
-						$GLOBALS["we_doc"]->we_publish();
+					$db = new DB_WE();
+					if ($objname=='') {
+						$GLOBALS["we_$type"][$name]->Text = 1 + abs(
+							f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
+						$GLOBALS["we_$type"][$name]->Path = $GLOBALS["we_$type"][$name]->Path . '/' . $GLOBALS["we_$type"][$name]->Text;
 					} else {
-						$GLOBALS["we_$type"][$name]->we_publish();
+						
+						$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);
+						if($objexists && $onduplicate == 'abort') {
+							$GLOBALS["we_object_write_ok"] = false;
+							$doWrite = false;
+						}
+						if($objexists && $onduplicate == 'overwrite') {
+							$GLOBALS["we_$type"][$name]->ID = $objexists;
+							$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $objname);
+							$GLOBALS["we_$type"][$name]->Text = $objname;
+						}
+						if($objexists && $onduplicate == 'increment') {
+							$z=0;
+							$footext = $objname."_".$z;
+							while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$footext))."'", "ID", $db)){
+								$z++;
+								$footext = $objname."_".$z;
+							}
+							$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $footext);
+							$GLOBALS["we_$type"][$name]->Text = $footext;
+						}	
+					}
+				}
+				if ($doWrite){
+					$GLOBALS["we_$type"][$name]->we_save();
+					if ($publish) {
+						if ($type == "document" && (!$GLOBALS["we_$type"][$name]->IsDynamic) && isset(
+								$GLOBALS["we_doc"])) { // on static HTML Documents we have to do it different
+							$GLOBALS["we_doc"]->we_publish();
+						} else {
+							$GLOBALS["we_$type"][$name]->we_publish();
+						}
 					}
 				}
 				unset($GLOBALS["we_doc"]);
 				$GLOBALS["we_doc"] = $_WE_DOC_SAVE;
 				unset($_WE_DOC_SAVE);
 				$_REQUEST["we_returnpage"] = $GLOBALS["we_$type"][$name]->getElement("we_returnpage");
-				
-				if ($mail) {
+					
+				if ($doWrite && $mail) {
 					if (!$mailfrom) {
 						$mailfrom = "dontReply@" . $GLOBALS["SERVER_NAME"];
 					}

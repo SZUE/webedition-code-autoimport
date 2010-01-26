@@ -622,7 +622,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 			// check if parentid is in correct folder ...
 			
 
-			$parentfolder = new we_folder();
+			$parentfolder = new we_class_folder();
 			$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 			
 			if ($parentfolder) {
