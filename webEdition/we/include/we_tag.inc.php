@@ -2192,6 +2192,7 @@ function we_tag_field($attribs, $content)
 	$id = we_getTagAttribute("id", $attribs);
 	$xml = we_getTagAttribute("xml", $attribs, "");
 	$striphtml = we_getTagAttribute("striphtml", $attribs, false, true);
+	$only = we_getTagAttribute("only", $attribs);
 	
 	$out = "";
 	
@@ -2243,7 +2244,12 @@ function we_tag_field($attribs, $content)
 					$GLOBALS["DB_WE"], 
 					$classid, 
 					'$GLOBALS["lv"]->f');
-			$out = $t[0];
+			if ($only ==''||$only =='name') {$out = $t[0];}
+			if ($only =='path') {$out = $t[1];}
+			if ($only =='parentpath') {$out = $t[2];}
+			if ($only =='filename') {$out = $t[3];}
+			if ($only =='extension') {$out = $t[4];}
+			if ($only =='filesize') {$out = $t[5];}
 			$href = (empty($href) ? $t[1] : $href);
 			break;
 		case "link" :
