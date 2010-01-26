@@ -84,4 +84,5 @@ $l_object["generated_template_for_objectFile"] = "Vastaavaa sivupohjaa ei löyty
 $l_object["no_workspace_defined"] = "Objektille ei ole määritetty työtilaa. Voit määrittää erityistyötilan tämän luokan objekteille.";
 
 $l_object["use_thumbnail_preview"] = "Esikatselukuvat objekteissa";
+$l_object["not_published"] = "The object is not published"; // TRANSLATE
 ?>

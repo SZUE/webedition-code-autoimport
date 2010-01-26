@@ -84,4 +84,5 @@ $l_object["generated_template_for_objectFile"] = "Aucun modï¿½le correspondan
 $l_object["no_workspace_defined"] = "Aucun ï¿½space de travail n'a ï¿½tï¿½ encore assignï¿½ ï¿½ cet object. Si vous voulez assigner ï¿½ un object des ï¿½paces de travail specieaux, vous devez les choisir dans la classe de l'object.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
+$l_object["not_published"] = "The object is not published"; // TRANSLATE
 ?>

@@ -84,4 +84,5 @@ $l_object["generated_template_for_objectFile"] = "Geen bijpassend sjabloon gevon
 $l_object["no_workspace_defined"] = "Er zijn geen werkgebieden gedefinieerd voor dit object. U kunt speciale werkgebieden selecteren voor een object binnen z'n class.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
+$l_object["not_published"] = "The object is not published"; // TRANSLATE
 ?>

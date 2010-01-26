@@ -549,7 +549,8 @@ class we_class_folder extends we_folder
 					}else if($type[$i+3]=="object"){
 						$tmp = f("SELECT OF_Path FROM " . OBJECT_X_TABLE.$object[$i+3]." WHERE OF_ID='".$this->searchclass->f($type[$i+3]."_".$object[$i+3])."'","OF_Path",$DB_WE);
 						if($tmp != "") {
-							$obj = '<a href="javascript:top.weEditorFrameController.openDocument(\''.OBJECT_FILES_TABLE.'\','.$this->searchclass->f($type[$i+3]."_".$object[$i+3]).',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="'.$tmp.'">'.shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE.$object[$i+3]." WHERE OF_ID='".$this->searchclass->f($type[$i+3]."_".$object[$i+3])."'","OF_Path",$DB_WE),$we_obectPathLength).'</a>';
+							$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE." WHERE ID='".$this->searchclass->f($type[$i+3]."_".$object[$i+3])."'","Published",$DB_WE);
+							$obj = '<a href="javascript:top.weEditorFrameController.openDocument(\''.OBJECT_FILES_TABLE.'\','.$this->searchclass->f($type[$i+3]."_".$object[$i+3]).',\'objectFile\');" style="text-decoration:none; '.($publ? '':'color:red;').'" class="defaultfont" title="'.$tmp.'">'.shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE.$object[$i+3]." WHERE OF_ID='".$this->searchclass->f($type[$i+3]."_".$object[$i+3])."'","OF_Path",$DB_WE),$we_obectPathLength).'</a>';
 						} else {
 							$obj = "&nbsp;";
 						}

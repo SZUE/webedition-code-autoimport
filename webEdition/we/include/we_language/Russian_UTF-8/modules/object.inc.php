@@ -84,4 +84,5 @@ $l_object["generated_template_for_objectFile"] = "Не найдено подхо
 $l_object["no_workspace_defined"] = "Для данного объекта не заданы рабочие пространства. Можно выбрать специальные рабочие пространства для объекта в его классе.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
+$l_object["not_published"] = "The object is not published"; // TRANSLATE
 ?>

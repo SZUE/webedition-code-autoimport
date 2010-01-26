@@ -84,4 +84,5 @@ $l_object["generated_template_for_objectFile"] = "No matching template found.";
 $l_object["no_workspace_defined"] = "There are no workspaces defined for this object. You can select special workspaces for an object in its class.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects";
+$l_object["not_published"] = "The object is not published"; 
 ?>
