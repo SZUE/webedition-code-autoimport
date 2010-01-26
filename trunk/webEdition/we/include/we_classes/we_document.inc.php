@@ -1027,7 +1027,7 @@ class we_document extends we_root {
 					$val = $attribs["id"];
 				}
 				$bin->initByID($val,FILE_TABLE);
-				return array($bin->Text,$bin->Path);
+				return array($bin->Text,$bin->Path,$bin->ParentPath,$bin->Filename,$bin->Extension,(isset($bin->elements['filesize'])? $bin->elements['filesize']['dat']:''));
 			case "flashmovie":
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
 				$fl = new we_flashDocument();
