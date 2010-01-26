@@ -712,6 +712,7 @@ function we_isFieldNotEmpty($attribs)
 		case "binary" :
 		case "img" :
 		case "flashmovie" :
+		case "quicktime" :
 			return $GLOBALS["lv"]->f($match);
 		case "href" :
 			if ($GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag") {
