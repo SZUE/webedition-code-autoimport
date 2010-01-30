@@ -821,8 +821,8 @@ class we_objectFile extends we_document
 		$myid = $this->getElement("we_object_".$ObjectID);
 		$path = $this->getElement("we_object_".$ObjectID."_path");
 		$path = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'","Path",$db);
-		$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'","Published",$db);
-		if ($path ==''){$myid=0;}
+		$npubl = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'","Published",$db);
+		if ($path ==''){$myid=0;$npubl=1;}
 		if($myid){
 			$ob = new we_objectFile();
 			$ob->initByID($myid,OBJECT_FILES_TABLE);
@@ -880,7 +880,7 @@ class we_objectFile extends we_document
 
 			return $this->htmlFormElementTable(
 				$this->htmlTextInput($textname,30,$path,"",' readonly',"text",$inputWidth,0),
-				'<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["object_".$ObjectID]["required"] ? "*" : "") .'</span>'.($publ ? '':' <span style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>') . ( isset($this->DefArray["object_$ObjectID"]['editdescription']) && $this->DefArray["object_$ObjectID"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["object_$ObjectID"]['editdescription'] . '</div>' : '<br />' ),
+				'<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["object_".$ObjectID]["required"] ? "*" : "") .'</span>'.($npubl ? '':' <span style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>') . ( isset($this->DefArray["object_$ObjectID"]['editdescription']) && $this->DefArray["object_$ObjectID"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["object_$ObjectID"]['editdescription'] . '</div>' : '<br />' ),
 				"left",
 				"defaultfont",
 				$this->htmlHidden($idname,$myid),
@@ -898,7 +898,7 @@ class we_objectFile extends we_document
 			$content .= $we_button->create_button_table(
 										array(
 											$but,
-												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($publ ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>')
+												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>')
 											)
 										);
 
