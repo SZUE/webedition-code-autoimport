@@ -56,4 +56,10 @@ $l_object_classfoldersearch["xtraArbeitsbereiche"] = "Extra werkgebieden";
 $l_object_classfoldersearch["Veroeffentlicht"] = "Gepubliceerd";
 $l_object_classfoldersearch["geaendert"] = "Aangepast";
 $l_object_classfoldersearch["anzeige"] = "Toon...";
+$l_object_classfoldersearch["issearchable"] = "searchable";// TRANSLATE
+$l_object_classfoldersearch["isnotsearchable"] = "not searchable";// TRANSLATE
+$l_object_classfoldersearch["ID"] = "ID";// TRANSLATE
+$l_object_classfoldersearch["language"] = "Language";// TRANSLATE
+$l_object_classfoldersearch["charset"] = "Charset";// TRANSLATE
+
 ?>

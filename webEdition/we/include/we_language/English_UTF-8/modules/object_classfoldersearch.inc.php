@@ -58,4 +58,9 @@ $l_object_classfoldersearch["xtraArbeitsbereiche"] = "Extra workspaces";
 $l_object_classfoldersearch["Veroeffentlicht"] = "Published";
 $l_object_classfoldersearch["geaendert"] = "Modified";
 $l_object_classfoldersearch["anzeige"] = "Display...";
+$l_object_classfoldersearch["issearchable"] = "searchable";
+$l_object_classfoldersearch["isnotsearchable"] = "not searchable";
+$l_object_classfoldersearch["ID"] = "ID";
+$l_object_classfoldersearch["language"] = "Language";
+$l_object_classfoldersearch["charset"] = "Charset";
 ?>

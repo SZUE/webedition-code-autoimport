@@ -25,6 +25,7 @@ $l_contentTypes["object"] = "Class";
 $l_object["attributes"] = "Attributes";
 $l_object["objectname"] = "Object name";
 $l_object["objectpath"] = "Object path";
+$l_object["objectid"] = "Object ID";// TRANSLATE
 $l_object["class"] = "Class";
 $l_object["classname"] = "Class name";
 $l_object["class_id"] = "ID of the class";

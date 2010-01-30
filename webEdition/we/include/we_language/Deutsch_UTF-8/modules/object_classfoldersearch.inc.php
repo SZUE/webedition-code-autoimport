@@ -58,5 +58,10 @@ $l_object_classfoldersearch["xtraArbeitsbereiche"] = "Zus&auml;tzlicher Arbeitsb
 $l_object_classfoldersearch["Veroeffentlicht"] = "Veröffentlicht";
 $l_object_classfoldersearch["geaendert"] = "Ge&auml;ndert";
 $l_object_classfoldersearch["anzeige"] = "Anzeige...";
+$l_object_classfoldersearch["issearchable"] = "durchsuchbar";
+$l_object_classfoldersearch["isnotsearchable"] = "nicht durchsuchbar";
+$l_object_classfoldersearch["ID"] = "ID";
+$l_object_classfoldersearch["language"] = "Sprache";
+$l_object_classfoldersearch["charset"] = "Zeichensatz";
 
 ?>
