@@ -56,4 +56,10 @@ $l_object_classfoldersearch["xtraArbeitsbereiche"] = "Lisätyötila";
 $l_object_classfoldersearch["Veroeffentlicht"] = "Julkaistu";
 $l_object_classfoldersearch["geaendert"] = "Muokattu";
 $l_object_classfoldersearch["anzeige"] = "Näytä...";
+$l_object_classfoldersearch["issearchable"] = "searchable";// TRANSLATE
+$l_object_classfoldersearch["isnotsearchable"] = "not searchable";// TRANSLATE
+$l_object_classfoldersearch["ID"] = "ID";// TRANSLATE
+$l_object_classfoldersearch["language"] = "Language";// TRANSLATE
+$l_object_classfoldersearch["charset"] = "Charset";// TRANSLATE
+
 ?>

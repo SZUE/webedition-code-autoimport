@@ -56,4 +56,10 @@ $l_object_classfoldersearch["xtraArbeitsbereiche"] = "Espace de travail supplém
 $l_object_classfoldersearch["Veroeffentlicht"] = "Publié";
 $l_object_classfoldersearch["geaendert"] = "Modified"; // TRANSLATE
 $l_object_classfoldersearch["anzeige"] = "Visualisation...";
+$l_object_classfoldersearch["issearchable"] = "searchable";// TRANSLATE
+$l_object_classfoldersearch["isnotsearchable"] = "not searchable";// TRANSLATE
+$l_object_classfoldersearch["ID"] = "ID";// TRANSLATE
+$l_object_classfoldersearch["language"] = "Language";// TRANSLATE
+$l_object_classfoldersearch["charset"] = "Charset";// TRANSLATE
+
 ?>
