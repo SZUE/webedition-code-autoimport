@@ -1294,7 +1294,7 @@ class we_object extends we_document
 	}
 
 	function getObjectFieldHTML($ObjectID,$attribs,$editable=true){
-
+		global $l_object;
 		$pid = $this->getElement($ObjectID,"dat");
 		$we_button = new we_button();
 		if($editable){
@@ -1303,7 +1303,7 @@ class we_object extends we_document
 			$textname = 'we_'.$this->Name.'_txt['.$pid.'_path]';
 			$idname = 'we_'.$this->Name."_input[".$ObjectID."default]";
 			$myid = $this->getElement($ObjectID."default","dat");
-
+ 			$DoubleNames = $this->includedObjectHasDoubbleFieldNames($pid);
 			$path = $this->getElement("we_object_".$pid."_path");
 			$path = $path ? $path : f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid","Path",$db);
 			$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
@@ -1337,7 +1337,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			"defaultfont",
 			$this->htmlHidden($idname,$myid),
 			getPixel(10,4),
-			$button,getPixel(5,4),$delbutton);
+			$button,getPixel(5,4),$delbutton) . ($DoubleNames ? '<span style="color:red" >' .$l_object["incObject_sameFieldname_start"] . implode(', ',$DoubleNames). $l_object["incObject_sameFieldname_end"] .'</span>':'');
 		}
 	}
 
@@ -2155,6 +2155,36 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			}
 		}
 		return false;
+	}
+	function includedObjectHasDoubbleFieldNames($incClass){
+		$sort = $this->getElement("we_sort");
+		$count = $this->getElement("Sortgesamt");
+		$usedNames = array();
+		$doubleNames = array();
+		if(is_array($sort)){
+			for($i=0;$i <= $count && !empty($sort);$i++){
+				$foo = $this->getElement($this->getElement("wholename".$this->getSortIndex($i)),"dat");
+				array_push($usedNames,$foo);
+			}
+		}
+		$incclassobj = new we_object();
+		$incclassobj->initByID($incClass,$this->Table);
+		$isort = $incclassobj->getElement("we_sort");
+		$icount = $incclassobj->getElement("Sortgesamt");
+		if(is_array($isort)&& !empty($isort)){
+			for($i=0;$i <= $icount;$i++){
+				$foo = $incclassobj->getElement($incclassobj->getElement("wholename".$incclassobj->getSortIndex($i)),"dat");
+				if(in_array($foo,$usedNames)){
+					array_push($doubleNames,$foo);
+				}
+			}
+		}
+		if (empty($doubleNames)) {
+			return false;
+		} else {
+			return $doubleNames;
+		}
+		
 	}
 
 	function i_writeDocument(){

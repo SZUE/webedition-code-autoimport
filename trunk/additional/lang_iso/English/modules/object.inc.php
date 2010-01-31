@@ -86,4 +86,7 @@ $l_object["no_workspace_defined"] = "There are no workspaces defined for this ob
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects";
 $l_object["not_published"] = "The object is not published"; 
+$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";
+$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";
+
 ?>

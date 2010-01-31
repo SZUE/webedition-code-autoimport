@@ -86,4 +86,7 @@ $l_object["no_workspace_defined"] = "Objektille ei ole määritetty työtilaa. V
 
 $l_object["use_thumbnail_preview"] = "Esikatselukuvat objekteissa";
 $l_object["not_published"] = "The object is not published"; // TRANSLATE
+$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
+$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
+
 ?>
