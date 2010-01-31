@@ -110,7 +110,7 @@ class we_listview_object extends listviewBase {
 
 		$matrix = array();
 
-		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);p_r($matrix);
+		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);
 
 		$calendar_select="";
 		$calendar_where="";
