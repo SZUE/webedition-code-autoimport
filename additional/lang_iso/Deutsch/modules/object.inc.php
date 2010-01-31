@@ -94,4 +94,6 @@ $l_object["no_workspace_defined"] = "Diesem Objekt wurden noch keine Arbeitsbere
 
 $l_object["use_thumbnail_preview"] = "Vorschau in Objekten als Miniaturansicht";
 $l_object["not_published"] = "das Objekt ist geparkt";
+$l_object["incObject_sameFieldname_start"] = "Die inkludierte Klasse hat identischen Feldnamen: ";
+$l_object["incObject_sameFieldname_end"] = ". Diese werden in Listviews und we:object nicht angezeigt.";
 ?>

@@ -110,7 +110,7 @@ class we_listview_object extends listviewBase {
 
 		$matrix = array();
 
-		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);		
+		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);p_r($matrix);
 
 		$calendar_select="";
 		$calendar_where="";
@@ -250,11 +250,13 @@ class we_listview_object extends listviewBase {
 						$foo = $this->fillMatrix($matrix,$name,$db);
 						$joinWhere .= " ".OBJECT_X_TABLE.$classID.".object_".$name."=". OBJECT_X_TABLE.$name.".OF_ID AND ".($foo ? "$foo AND " : "");
 					}
-				}else{
-					$matrix[$name]["type"] = $type;
-					$matrix[$name]["table"] = $table;
-					$matrix[$name]["classID"] = $classID;
-					$matrix[$name]["table2"] = $table;
+				}else{ 
+					if( !isset($matrix[$name])) {
+						$matrix[$name]["type"] = $type;
+						$matrix[$name]["table"] = $table;
+						$matrix[$name]["classID"] = $classID;
+						$matrix[$name]["table2"] = $table;
+					}
 				}
 			}
 		}
