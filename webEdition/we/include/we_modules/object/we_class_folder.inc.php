@@ -422,7 +422,7 @@ class we_class_folder extends we_folder
 
 		//$this->searchclass->setlimit(1);
 		$we_obectPathLength = 32;
-		$values = array(10=>10,25=>25,50=>50,100=>100);
+		$values = array(10=>10,25=>25,50=>50,100=>100,500=>500,1000=>1000,5000=>5000,10000=>10000,50000=>50000,100000=>100000);
 		$strlen = 20;
 		
 		//#4076
@@ -793,7 +793,7 @@ class we_class_folder extends we_folder
 
 		$out = "";
 
-		$values = array(10=>10,25=>25,50=>50,100=>100);
+		$values = array(10=>10,25=>25,50=>50,100=>100,500=>500,1000=>1000,5000=>5000,10000=>10000,50000=>50000,100000=>100000);
 
 
 		// JS einbinden
