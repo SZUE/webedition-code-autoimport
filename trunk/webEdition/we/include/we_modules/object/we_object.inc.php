@@ -279,7 +279,7 @@ class we_object extends we_document
 
 			for($i=0;$i<sizeof($tableInfo);$i++){
 
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
 
 					if($regs[1]!="OF" && $regs[1]!="variant"){
 						$fieldsToDelete = isset($this->elements["felderloeschen"]["dat"]) ? explode(",",$this->elements["felderloeschen"]["dat"]) : array();
@@ -529,7 +529,7 @@ class we_object extends we_document
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$fields = array();
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
 					if($regs[1]!="OF" && $regs[1]!="variant"){
 						$fields[] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]);
 					}
@@ -2024,16 +2024,12 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$fields = array();
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
 					if($regs[1]!="OF" && $regs[1]!="variant"){
-						/* BUG FIX #5741 */
-						$temp = explode("_", $tableInfo[$i]["name"]);
-						$type = $temp[0];
-						unset($temp[0]);
-						$name = implode("_", $temp);
-						/* END BUG FIX #5741 */
+						$type = $regs[1];
+						$name = $regs[2];
 
-						//$fields[$sort[$f]] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]);
+						//$fields[$sort[$f]] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]); war bis fix zu 4123 auskommentiert, könnte man wieder rein nehmen
 						$this->elements[$tableInfo[$i]["name"]]["dat"] = $name;
 						$this->elements["wholename".$this->getSortIndexByValue($f)]["dat"] = $tableInfo[$i]["name"];
 						$this->elements[$tableInfo[$i]["name"]."length"]["dat"] = $tableInfo[$i]["len"];

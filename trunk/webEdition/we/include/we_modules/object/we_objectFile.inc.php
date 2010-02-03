@@ -749,12 +749,8 @@ class we_objectFile extends we_document
 		$tableInfo_sorted = $this->getSortedTableInfo($this->TableID,true,$this->DB_WE);
 		$fields = array();
 		for($i=0;$i<sizeof($tableInfo_sorted);$i++){
-			if(ereg('^(.+)_(.+)$',$tableInfo_sorted[$i]["name"])){
-				$foo = explode("_", $tableInfo_sorted[$i]["name"]);
-				$type = $foo[0];
-				unset($foo[0]);
-				$name = implode("_", $foo);
-				array_push($fields,array("name"=>$name,"type"=>$type));
+			if(preg_match('/(.+?)_(.*)/',$tableInfo_sorted[$i]["name"],$regs)){
+				array_push($fields,array("name"=>$regs[2],"type"=>$regs[1]));
 			}
 		}
 
@@ -1449,11 +1445,9 @@ class we_objectFile extends we_document
 		$db->query("SELECT * FROM $DataTable WHERE ID='$ID'");
 		if($db->next_record()){
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
-						$temp = explode("_", $tableInfo[$i]["name"]);
-						unset($temp[0]);
-						$name = implode("_", $temp);
+						$name = $regs[2];
 						if($regs[1] == "object"){
 							$name = "we_object_".$name;
 						}
@@ -2080,11 +2074,9 @@ class we_objectFile extends we_document
 			$db = $this->DB_WE;
 			$tableInfo = $db->metadata($DataTable);
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
-						$foo = explode("_",$tableInfo[$i]["name"]);
-						unset($foo[0]);
-						$name = implode("_", $foo);
+						$name = $regs[2];
 						$this->elements[$name]["type"] = $regs[1];
 						$this->elements[$name]["len"] = $tableInfo[$i]["len"];
 					}
@@ -2333,7 +2325,7 @@ class we_objectFile extends we_document
 			$tableInfo = $this->getSortedTableInfo($this->TableID,false,$this->DB_WE);
 
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
 						if($regs[1] == "object"){
 							$id=$this->getElement("we_".$tableInfo[$i]["name"]);
@@ -2367,12 +2359,9 @@ class we_objectFile extends we_document
 		$db->query("SELECT * FROM $DataTable WHERE ID='$ID'");
 		if($db->next_record()){
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
-
-						$foo = explode("_",$tableInfo[$i]["name"]);
-						unset($foo[0]);
-						$realname = implode("_", $foo);
+						$realname = $regs[2];
 						if($regs[1] == "object"){
 							$name = "we_object_".$realname;
 						}else{
@@ -2526,10 +2515,8 @@ class we_objectFile extends we_document
 			$values = "VALUES(";
 			$this->CreatorID = $this->CreatorID ? $this->CreatorID : (isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0);
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
-					$foo = explode("_",$tableInfo[$i]["name"]);
-					unset($foo[0]);
-					$name = implode("_", $foo);
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+					$name = $regs[2];
 					if($regs[1] == "OF"){
 						$keys .= $tableInfo[$i]["name"] . ",";
 						eval('$values .= "\'".(isset($this->'.$name.') ? addslashes($this->'.$name.') : "")."\',";');
@@ -2563,10 +2550,8 @@ class we_objectFile extends we_document
 			}
 			$q = "";
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
-					$foo = explode("_",$tableInfo[$i]["name"]);
-					unset($foo[0]);
-					$name = implode("_", $foo);
+				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+					$name = $regs[2];
 					if($regs[1] == "OF"){
 						$q .= $tableInfo[$i]["name"] . "=";
 						eval('$q .= "\'".addslashes($this->'.$name.')."\',";');
