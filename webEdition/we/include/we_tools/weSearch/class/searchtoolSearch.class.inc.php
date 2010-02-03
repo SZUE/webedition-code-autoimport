@@ -717,7 +717,7 @@ class searchtoolsearch extends we_search
 				$tableInfo = $_db->metadata($_obj_table);
 				$fields = array();
 				for ($c = 0; $c < count($tableInfo); $c++) {
-					if (ereg('^(.+)_(.+)$', $tableInfo[$c]["name"], $regs)) {
+					if (preg_match('/(.+?)_(.*)/', $tableInfo[$c]["name"], $regs)) {
 						if ($regs[1] != "OF" && $regs[1] != "variant") {
 							$fields[] = array(
 								
