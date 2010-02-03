@@ -2347,7 +2347,9 @@ class we_objectFile extends we_document
 				$tmpObj->initByID($id,OBJECT_FILES_TABLE,0);
 				foreach($tmpObj->elements as $n=>$elem){
 					if($elem["type"] != "object" &&  $n != "Title" && $n != "Description"){
-						$this->elements[$n] = $elem;
+						if (!isset($this->elements[$n])){
+							$this->elements[$n] = $elem;
+						}
 					}
 				}
 			}
