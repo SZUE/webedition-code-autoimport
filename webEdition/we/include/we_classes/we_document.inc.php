@@ -561,7 +561,8 @@ class we_document extends we_root {
 		}
 		else {
 			$listarray = array();
-		}
+		} 
+		if(!is_array($listarray)){$listarray = array();} //bug #4079
 		for($f=0;$f<$number;$f++){
 			$content = $this->getElement($name,"content");
 
@@ -654,7 +655,9 @@ class we_document extends we_root {
 				unset($this->elements[$namesArray[$i].($isBlock ? ("blk_".$name."_") : "").$listarray[$nr]]);
 			}
 		}
-		array_splice($listarray,$nr,1);
+		if (is_array($listarray)) {// Bug #4079
+			array_splice($listarray,$nr,1);
+		}
 		$list = serialize($listarray);
 		$this->setElement($name,$list);
 	}
