@@ -511,7 +511,7 @@ class we_class_folder extends we_folder
 
 					 while(list($key, $val) = each($this->searchclass->Record)){
 
-							if(ereg('^(.+)_(.+)$',$key,$regs)){
+							if(preg_match('/(.+?)_(.*)/',$key,$regs)){
 								if($regs[1]!="OF"){
 									if($regs[1]=="object"){
 										$object[$i+5]=$regs[2];
@@ -525,7 +525,7 @@ class we_class_folder extends we_folder
 										$i++;
 									}else{
 										$headline[$i+5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\''.$key.'\');">'.$regs[2].'</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
-										$head[$i+5]["dat"] = $regs[2];
+										$head[$i+5]["dat"] = $regs[2].(isset($regs[3]) ? $regs[3]:'');
 										$type[$i+5]=$regs[1];
 										$i++;
 									}
