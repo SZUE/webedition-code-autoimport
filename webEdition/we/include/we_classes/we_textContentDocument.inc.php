@@ -498,7 +498,7 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 	function revert_published() {
-		we_temporaryDocument::delete($this->ID);
+		we_temporaryDocument::delete($this->ID,$this->Table);
 		$this->initByID($this->ID);
 		$this->ModDate = $this->Published;
 		$this->we_save();
