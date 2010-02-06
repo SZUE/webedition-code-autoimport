@@ -941,7 +941,7 @@ class weVersions {
 		
 		//if folder was saved don' make versions (if path was changed of folder)
 		if(isset($GLOBALS['we_doc']->ClassName)) {
-			if ($GLOBALS['we_doc']->ClassName=="we_folder") {
+			if ($GLOBALS['we_doc']->ClassName=="we_folder" || $GLOBALS['we_doc']->ClassName=="we_class_folder") {
 				return false;
 			}
 		}
@@ -1884,12 +1884,14 @@ class weVersions {
 						foreach($folders as $k => $v) {
 							if($k!=0 && $k!=(count($folders)-1)) {
 								
-								
-								include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
-								
 								$parentID = (isset($_SESSION['versions']['lastPathID'])) ? $_SESSION['versions']['lastPathID'] : 0;
-								
-								$folder= new we_folder();
+								if(defined("OBJECT_FILES_TABLE") && $resetArray["documentTable"]==OBJECT_FILES_TABLE) {
+									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+									$folder = new we_class_folder();
+								} else {
+									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+									$folder = new we_folder();
+								}
 								$folder->we_new();
 								$folder->setParentID($parentID);
 								$folder->Table=$resetArray["documentTable"];
@@ -1949,7 +1951,7 @@ class weVersions {
 				}
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
 	
-				we_temporaryDocument::delete($resetDoc->ID);
+				we_temporaryDocument::delete($resetDoc->ID,$resetDoc->Table);
 				//$resetDoc->initByID($resetDoc->ID);
 				$resetDoc->ModDate = time();
 				$resetDoc->Published = $resetArray["timestamp"];
