@@ -445,7 +445,7 @@ class we_class_folder extends we_folder
 
 						$DB_WE->query("DELETE FROM " . INDEX_TABLE . " where OID=".abs($ofid));
 						$DB_WE->query("DELETE FROM ".OBJECT_FILES_TABLE." where ID=".abs($ofid));
-						we_temporaryDocument::delete($ofid);
+						we_temporaryDocument::delete($ofid,OBJECT_FILES_TABLE);
 					}
 				}
 			}
