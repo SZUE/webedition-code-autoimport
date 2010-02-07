@@ -436,6 +436,10 @@ class versionsLogView {
 						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
 						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/plain'].": ".$val;
 					break;
+					case "version_text/weTmpl"://#4120
+						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
+						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/weTmpl'].": ".$val;
+					break;
 					case "version_application/x-shockwave-flash":
 						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
 						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['application/x-shockwave-flash'].": ".$val;

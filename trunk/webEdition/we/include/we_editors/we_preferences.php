@@ -720,6 +720,9 @@ function get_value($settingvalue) {
 		case "version_text/plain":
 			return (defined("VERSIONING_TEXT_PLAIN")) ? VERSIONING_TEXT_PLAIN : 0;
 			break;
+		case "version_text/weTmpl": //#4120
+			return (defined("VERSIONING_TEXT_WETMPL")) ? VERSIONING_TEXT_WETMPL : 0;
+			break;
 		case "version_application/x-shockwave-flash":
 			return (defined("VERSIONING_FLASH")) ? VERSIONING_FLASH : 0;
 			break;
@@ -1857,6 +1860,12 @@ $_we_active_integrated_modules = array();
 					$_update_prefs = true;
 				}
 				break;
+			case '$_REQUEST["version_text/weTmpl"]': //#4120
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_WETMPL", $settingvalue,'Versioning status for ContentType text/weTmpl ')) {
+					$_update_prefs = true;
+				}
+				break;
 			case '$_REQUEST["version_application/x-shockwave-flash"]':
 				$_update_prefs = false;
 				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_FLASH", $settingvalue,'Versioning status for ContentType application/x-shockwave-flash ')) {
@@ -2473,6 +2482,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/js"]) ? $_REQUEST["version_text/js"] : '0', '$_REQUEST["version_text/js"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/css"]) ? $_REQUEST["version_text/css"] : '0', '$_REQUEST["version_text/css"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/plain"]) ? $_REQUEST["version_text/plain"] : '0', '$_REQUEST["version_text/plain"]');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/weTmpl"]) ? $_REQUEST["version_text/weTmpl"] : '0', '$_REQUEST["version_text/weTmpl"]');//#4120
 		$_update_prefs = remember_value(isset($_REQUEST["version_application/x-shockwave-flash"]) ? $_REQUEST["version_application/x-shockwave-flash"] : '0', '$_REQUEST["version_application/x-shockwave-flash"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_video/quicktime"]) ? $_REQUEST["version_video/quicktime"] : '0', '$_REQUEST["version_video/quicktime"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_application/*"]) ? $_REQUEST["version_application/*"] : '0', '$_REQUEST["version_application/*"]');
@@ -5262,6 +5272,7 @@ else {
 	            	"version_text/js",
 	            	"version_text/css",
 	            	"version_text/plain",
+					"version_text/weTmpl",
 	            	"version_application/x-shockwave-flash",
 	            	"version_video/quicktime",
 	            	"version_application/*",

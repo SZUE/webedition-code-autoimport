@@ -796,7 +796,8 @@ class weVersions {
 		$contentTypes = array();
 		$contentTypes[] = 'all';
 		foreach($GLOBALS["WE_CONTENT_TYPES"] as $k => $v) {
-			if($k != "object" && $k != "text/weTmpl" && $k != "folder") {
+			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
+			if($k != "object"  && $k != "folder") {
 				$contentTypes[] = $k;
 			}
 		}
@@ -973,6 +974,10 @@ class weVersions {
 				if(defined("VERSIONING_TEXT_PLAIN") && !VERSIONING_TEXT_PLAIN) return false;
 				if(!defined("VERSIONING_TEXT_PLAIN")) return false;
 			break;
+			case "text/weTmpl":
+				if(defined("VERSIONING_TEXT_WETMPL") && !VERSIONING_TEXT_WETMPL) return false;
+				if(!defined("VERSIONING_TEXT_WETMPL")) return false;
+			break;
 			case "application/x-shockwave-flash":
 				if(defined("VERSIONING_FLASH") && !VERSIONING_FLASH) return false;
 				if(!defined("VERSIONING_FLASH")) return false;
@@ -1094,8 +1099,7 @@ class weVersions {
 			}
 	
 			//look if there were made changes
-			if(isset($_SESSION['versions']['versionToCompare'][$document["ID"].'_'.$document["Table"]]) && $_SESSION['versions']['versionToCompare'][$document["ID"].'_'.$document["Table"]]!='') {
-				
+			if(isset($_SESSION['versions']['versionToCompare'][$document["ID"].'_'.$document["Table"]]) && $_SESSION['versions']['versionToCompare'][$document["ID"].'_'.$document["Table"]]!='') { 
 				$lastEntry = unserialize($_SESSION['versions']['versionToCompare'][$document["ID"].'_'.$document["Table"]]);
 				$lastEntry = $this->objectToArray($lastEntry);
 				
@@ -1109,7 +1113,7 @@ class weVersions {
 					$writeVersion = false;
 				}
 			}
-	
+			
 			if($writeVersion) {
 				$mods = true;
 				$tblversionsFields = $this->getFieldsFromTable(VERSIONS_TABLE);
@@ -1222,7 +1226,8 @@ class weVersions {
 		
 					//$binaryPath = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($this->version)."' AND documentTable='".mysql_real_escape_string($document['Table'])."' AND documentID='".abs($document['ID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$db);
 							
-					if($document["ContentType"]=="objectFile") {
+					//if($document["ContentType"]=="objectFile") { vor #4120
+					if($document["ContentType"]=="objectFile" || $document["ContentType"]=="text/weTmpl") {
 						$binaryPath = "";
 					}
 					else {	

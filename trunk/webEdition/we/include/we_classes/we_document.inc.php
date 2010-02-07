@@ -768,7 +768,7 @@ class we_document extends we_root {
 		}
 		
 		
-		if($this->ContentType=="application/x-shockwave-flash" || $this->ContentType=="image/*" 
+		if($this->ContentType=="application/x-shockwave-flash" || $this->ContentType=="image/*" || $this->ContentType=="text/weTmpl" //#4120 hinzugefügt
 			|| $this->ContentType=="video/quicktime" || $this->ContentType=="text/js" || $this->ContentType=="text/css" 
 			|| $this->ContentType=="text/plain" || $this->ContentType=="text/xml"  || $this->ContentType=="application/*") {
 
