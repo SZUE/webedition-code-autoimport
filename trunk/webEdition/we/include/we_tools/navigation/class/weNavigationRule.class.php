@@ -107,6 +107,15 @@ class weNavigationRule extends weModelBase
 	{
 		parent::save($this->ID ? false : true);
 	}
+	
+	function deleteDB()
+	{
+		unset($this->db);
+	}
+	function renewDB()
+	{
+		$this->db = new DB_WE();
+	}
 
 }
 ?>
