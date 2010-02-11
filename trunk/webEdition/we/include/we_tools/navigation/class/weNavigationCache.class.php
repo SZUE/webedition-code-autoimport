@@ -79,6 +79,7 @@ class weNavigationCache
 					$rule->deleteDB();
 				}
 		$_content = serialize($currentRulesStorage);
+		unset($currentRulesStorage);
 		
 		weFile::save($_cacheDir . 'rules.php', $_content);
 	
