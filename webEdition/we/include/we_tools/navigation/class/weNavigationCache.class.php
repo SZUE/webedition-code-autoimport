@@ -74,7 +74,11 @@ class weNavigationCache
 		
 		weFile::save($_cacheDir . 'navigation_0.php', $_content);
 		
-		$_content = serialize($_naviItemes->currentRules);
+		$currentRulesStorage = $_naviItemes->currentRules;
+		foreach ($currentRulesStorage as &$rule){
+					$rule->deleteDB();
+				}
+		$_content = serialize($currentRulesStorage);
 		
 		weFile::save($_cacheDir . 'rules.php', $_content);
 	
