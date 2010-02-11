@@ -108,6 +108,7 @@ class weNavigationRule extends weModelBase
 		parent::save($this->ID ? false : true);
 	}
 	
+	// beide folgenden für Bug #4142
 	function deleteDB()
 	{
 		unset($this->db);

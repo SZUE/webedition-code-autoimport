@@ -74,7 +74,7 @@ class weNavigationCache
 		
 		weFile::save($_cacheDir . 'navigation_0.php', $_content);
 		
-		$currentRulesStorage = $_naviItemes->currentRules;
+		$currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
 		foreach ($currentRulesStorage as &$rule){
 					$rule->deleteDB();
 				}
