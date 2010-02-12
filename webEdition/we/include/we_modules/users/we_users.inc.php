@@ -2400,11 +2400,16 @@ function mapPermissions() {
 
 		if(sizeof($_languages["translation"]) > 1) { // Build language select box
 			$_languages = new we_htmlSelect(array("name" => $this->Name.'_Preference_'.'Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
+			if (isset($this->Preferences['Language']) && $this->Preferences['Language']!=''){
+				$myCompLang = $this->Preferences['Language'];
+			} else {
+				$myCompLang = $GLOBALS["WE_LANGUAGE"];
+			}
 			foreach ($_language["translation"] as $key=>$value) {
 			   	$_languages->addOption($key, $value);
 
 			   	// Set selected extension
-			   	if ($key == $this->Preferences['Language']) {
+			   	if ($key == $myCompLang) {
 			   		$_languages->selectOption($key);
 			   	} else {
 			    	// do nothing
