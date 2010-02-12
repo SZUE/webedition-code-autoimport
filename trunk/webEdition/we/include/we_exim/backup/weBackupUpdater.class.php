@@ -390,10 +390,25 @@
 			$_db = new DB_WE();
 
 			$_table = OBJECT_FILES_TABLE;
-			if($this->isColExist($_table,'OF_IsSearchable')){
-				$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
+			if($this->isColExist($_table,'IsSearchable')){
+				$this->changeColTyp($_table,'IsSearchable','TINYINT(1) DEFAULT 1');
 			} else {
-				$this->addCol($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
+				$this->addCol($_table,'IsSearchable','TINYINT(1) DEFAULT 1',' AFTER Published ');
+			}
+			if($this->isColExist($_table,'Charset')){
+				$this->changeColTyp($_table,'Charset','VARCHAR(64) DEFAULT NULL');
+			} else {
+				$this->addCol($_table,'Charset','VARCHAR(64) DEFAULT NULL',' AFTER IsSearchable ');
+			}
+			if($this->isColExist($_table,'Language')){
+				$this->changeColTyp($_table,'Language','VARCHAR(5) DEFAULT NULL');
+			} else {
+				$this->addCol($_table,'Language','VARCHAR(5) DEFAULT NULL',' AFTER Charset ');
+			}
+			if($this->isColExist($_table,'WebUserID')){
+				$this->changeColTyp($_table,'WebUserID','BIGINT(20) NOT NULL');
+			} else {
+				$this->addCol($_table,'WebUserID','BIGINT(20) NOT NULL',' AFTER Language ');
 			}
 
 			$_maxid = f('SELECT MAX(TableID) as MaxTID FROM ' . OBJECT_FILES_TABLE . ';','MaxTID',$_db);
