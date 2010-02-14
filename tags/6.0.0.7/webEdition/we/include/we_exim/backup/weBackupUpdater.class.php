@@ -400,10 +400,27 @@
 			$_maxid++;
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
-				if($this->isColExist($_table,'OF_IsSearchable')){
-					$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
-				} else {
-					$this->addCol($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
+				if ($this->isTabExist($_table)) {
+					if($this->isColExist($_table,'OF_IsSearchable')){
+						$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
+					} else {
+						$this->addCol($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1',' AFTER OF_Published ');
+					}
+					if($this->isColExist($_table,'OF_Charset')){
+						$this->changeColTyp($_table,'OF_Charset','VARCHAR(64) NOT NULL');
+					} else {
+						$this->addCol($_table,'OF_Charset','VARCHAR(64) NOT NULL',' AFTER OF_IsSearchable ');
+					}
+					if($this->isColExist($_table,'OF_WebUserID')){
+						$this->changeColTyp($_table,'OF_WebUserID','BIGINT(20) NOT NULL');
+					} else {
+						$this->addCol($_table,'OF_WebUserID','BIGINT(20) NOT NULL',' AFTER OF_Charset ');
+					}
+					if($this->isColExist($_table,'OF_Language')){
+						$this->changeColTyp($_table,'OF_Language','VARCHAR(5) DEFAULT NULL');
+					} else {
+						$this->addCol($_table,'OF_Language','VARCHAR(5) DEFAULT NULL',' AFTER OF_WebUserID ');
+					}
 				}
 			}
 

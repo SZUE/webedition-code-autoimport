@@ -130,6 +130,11 @@ class we_objectFile extends we_document
 		$this->IsSearchable = $IsSearchable;
 		$this->Charset = $Charset;
 	}
+	function we_rewrite() {
+		$this->setLanguage();
+		return we_document::we_rewrite();
+		
+	}
 
 	function formCopyDocument(){
 
@@ -1879,6 +1884,8 @@ class we_objectFile extends we_document
 			array_push($ws,$w);
 		}
 		$ws = array_unique($ws);
+		$wsPath = '';
+		$w = '';
 		$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".mysql_real_escape_string($this->Category)."',".$this->TableID.",'".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Text)."','".mysql_real_escape_string($this->Language)."')";
 
 		if (empty($ws)) {
@@ -1897,6 +1904,9 @@ class we_objectFile extends we_document
 		return true;
 	}
 
+	function setLanguage(){
+		$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Language='".$this->Language."' WHERE OF_ID=".$this->ID);
+	}
 	function markAsPublished(){
 		$this->Published=time();
 		$this->DB_WE->query("UPDATE " . OBJECT_FILES_TABLE . " SET Published='".$this->Published."' WHERE ID=".$this->ID);
