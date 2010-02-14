@@ -710,6 +710,9 @@ class weNavigationItems
 					$navigationRulesStorage = weFile::load($_cache);
 				}
 				$this->currentRules = unserialize($navigationRulesStorage);
+				foreach ($this->currentRules as &$rule){ //#Bug 4142
+					$rule->renewDB();
+				}
 				unset($navigationRulesStorage);
 			}
 			
