@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -35,7 +36,6 @@ $l_contentTypes["object"] = "Klasse";
 $l_object["attributes"] = "Attribute";
 $l_object["objectname"] = "Objektname";
 $l_object["objectpath"] = "Objektpfad";
-$l_object["objectid"] = "Objekt-ID";
 $l_object["class"] = "Klasse";
 $l_object["classname"] = "Klassenname";
 $l_object["class_id"] = "ID der Klasse";
@@ -48,7 +48,7 @@ $l_object["search_field"] = "Suchfeld";
 $l_object["defaultdir"] = "Standardverzeichnis";
 $l_object["rootdir"] = "Arbeitsbereich";
 
-$l_object["no_root_ws_select"] = "Das Root Verzeichnis kann nicht als Arbeitbereich ausgew&auml;hlt werden!";
+$l_object["no_root_ws_select"] = "Das Root Verzeichnis kann nicht als Arbeitbereich ausgewählt werden!";
 
 $l_object["objectFile_field"] = "Objekt";
 $l_object["multiObjectFile_field"] = "Multi Objekt";
@@ -93,7 +93,4 @@ $l_object["generated_template_for_objectFile"] = "Kein passendes Template gefund
 $l_object["no_workspace_defined"] = "Diesem Objekt wurden noch keine Arbeitsbereiche zugewiesen. Wollen Sie einem Objekt spezielle Arbeitsbereiche zuordnen, müssen Sie diese in der Klasse des Objekts auswählen.";
 
 $l_object["use_thumbnail_preview"] = "Vorschau in Objekten als Miniaturansicht";
-$l_object["not_published"] = "das Objekt ist geparkt";
-$l_object["incObject_sameFieldname_start"] = "Die inkludierte Klasse hat identischen Feldnamen: ";
-$l_object["incObject_sameFieldname_end"] = ". Diese werden in Listviews und we:object nicht angezeigt.";
 ?>

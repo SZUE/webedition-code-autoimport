@@ -239,7 +239,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	
 	$l_prefs["editor_information"] = "Specify font and size which should be used for the editing of templates, CSS- and JavaScript files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types."; // TRANSLATE
 	
-	$l_prefs["editor_mode"] = 'Editor'; // TRANSLATE
+	$l_prefs["editor_mode"] = 'Edytor';
 	$l_prefs["editor_font"] = 'Czcionka w edytorze';
 	$l_prefs["editor_fontname"] = 'Krój pisma';
 	$l_prefs["editor_fontsize"] = 'Wielkość';
@@ -255,7 +255,6 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 
 	$l_prefs["formmail_information"] = "Wpisz tutaj wszystkie adresy e-mail, do których mogą być wysyłane formularze za pomocą funkcji Formmail (&lt;we:form type=\"formmail\" ..&gt;) .<br><br>Jeżeli nie wpisano tu żadnych adresów e-mail, to nie można wysyłać formularzy za pomocą funkcji Formmail!";
-
 
 	$l_prefs["formmail_log"] = "Formmail log"; // TRANSLATE
 	$l_prefs['log_is_empty'] = "The log is empty!"; // TRANSLATE
@@ -343,10 +342,6 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document"] = "Create new navigation entries from the document as"; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_item"] = "item"; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_folder"] = "folder"; // TRANSLATE
-	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_hide"] = "Hide DirectoryIndex- file names in navigation output";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated)";// TRANSLATE
-
 
 	/**
 	 * DATABASE
@@ -354,9 +349,8 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 
 	$l_prefs["db_connect"] = "Rodzaj połączeń <br>bazą danych";
 	$l_prefs["db_set_charset"] = "Connection charset"; // TRANSLATE
-	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems."; // TRANSLATE
-	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed."; // TRANSLATE
-
+	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.";// TRANSLATE
+	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed.";// TRANSLATE
 	
 	/**
 	 * HTTP AUTHENTICATION
@@ -461,7 +455,6 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs['validation']='Walidacja';
 	$l_prefs['xhtml_default'] = 'Standardowe ustawienie atrybutu <em>xml</em> w we:Tags';
 	$l_prefs['xhtml_debug_explanation'] = 'Wyszukiwanie błędów w XHTML (Debugging) wspierasz tworząc bezbłedne strony WWW. Opcjonalnie można sprawdzić każde wystąpienie znacznika we:Tags pod kątem ważności a w razie potrzeby usunąć bądź wyswietlić błędne atrybuty. Pamiętaj, że proces ten wymaga trochę czasu i może być używany tylko w trakcie tworzenia nowej strony WWW.';
-
 	$l_prefs['xhtml_debug_headline'] = 'XHTML-Debugging';
 	$l_prefs['xhtml_debug_html'] = 'Włącz Debugging XHTML';
 	$l_prefs['xhtml_remove_wrong'] = 'Usuń błędne atrybuty';
@@ -516,7 +509,6 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
  * Module Activation
  *****************************************************************************/
 	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition. <br /><br />For some modules, you have to restart webEdition to activate.<br /><br />";
-
 	
 	$l_prefs["module_activation"]["headline"] = "Module activation"; // TRANSLATE
 
@@ -569,8 +561,5 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["editor_comment_font_color"] = 'Comments'; // TRANSLATE
 	$l_prefs["jeditor"] = 'Java source editor'; // TRANSLATE
 	
-	
 	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
-	
-
 ?>

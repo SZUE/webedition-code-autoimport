@@ -26,7 +26,7 @@ protect();
 $dialog = new weImageDialog();
 $dialog->initByHttp();
 $dialog->registerCmdFn("weDoImgCmd");
-//$yuiSuggest =& weSuggest::getInstance();
+$yuiSuggest =& weSuggest::getInstance();
 print $dialog->getHTML();
 
 function weDoImgCmd($args){

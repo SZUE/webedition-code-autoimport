@@ -191,7 +191,6 @@ $l_shop["saferpayProviderset"] = "Providerset"; // TRANSLATE
 $l_shop["saferpayProvidersetTxt"] = "* разделение запятой!";
 $l_shop["saferpayCMDPath"] = "exec-path"; // TRANSLATE
 $l_shop["saferpayCMDPathTxt"] = "* например, /usr/local/bin/";
-
 $l_shop["saferpayconfPath"] = "conf-path"; // TRANSLATE
 $l_shop["saferpayconfPathTxt"] = "* путь к saferpay";
 $l_shop["saferpaydesc"] = "Описание";
@@ -207,7 +206,6 @@ $l_shop["fieldStreet"] = "Улица";
 $l_shop["fieldZip"] = "Индекс";
 $l_shop["fieldCity"] = "Город";
 $l_shop["fieldEmail"] = "Email";
-
 $l_shop["SelectAll"]= "все";
 $l_shop["plzh"] = "wildcard"; // TRANSLATE
 $l_shop["lastOrder"] = "Last order - Nr.: %s, %s";

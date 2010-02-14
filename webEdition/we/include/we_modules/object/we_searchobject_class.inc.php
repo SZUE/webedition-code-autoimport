@@ -60,6 +60,7 @@ class objectsearch extends we_search {
 		$opts = '';
 		$tableInfo =  $GLOBALS["DB_WE"]->metadata(OBJECT_X_TABLE.$objID);
 		$all = "";
+
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && !eregi("^multiobject", $tableInfo[$i]["name"]) && !eregi("^object", $tableInfo[$i]["name"])) {
 				$regs=explode('_',$tableInfo[$i]["name"],2); 
@@ -76,10 +77,6 @@ class objectsearch extends we_search {
 			}
 			else if($tableInfo[$i]["name"] == "OF_Path") {
 				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objectpath"].'</option>'."\n";
-				$all .= $tableInfo[$i]["name"].",";
-			}
-			else if($tableInfo[$i]["name"] == "OF_ID") {
-				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objectid"].'</option>'."\n";
 				$all .= $tableInfo[$i]["name"].",";
 			}
 		}

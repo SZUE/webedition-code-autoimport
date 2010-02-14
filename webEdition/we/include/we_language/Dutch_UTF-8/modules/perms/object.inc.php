@@ -37,5 +37,5 @@ $l_perm["object"]["CAN_SEE_OBJECTS"] = "De gebruiker is bevoegd om classen te be
 $l_perm["object"]["NEW_OBJECT"] = "De gebruiker is bevoegd om classen aan te maken.";
 $l_perm["object"]["DELETE_OBJECT"] = "De gebruiker is bevoegd om classen te verwijderen.";
 $l_perm["object"]["CAN_SELECT_OTHER_USERS_OBJECTS"] = "De gebruiker is bevoegd om objecten buiten zijn werkgebied te selecteren.";
-$l_perm["object"]["CAN_COPY_OBJECTS"] = "The user is allowed to copy object folders"; // TRANSLATE
+
 ?>

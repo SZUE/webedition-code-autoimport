@@ -17,7 +17,7 @@
  * @subpackage Framework
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Interface.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id$
  */
 
 /**
@@ -28,25 +28,25 @@
  */
 interface Zend_Tool_Framework_Metadata_Interface
 {
-
+    
     /**
      * getType()
-     *
+     * 
      * The type of metadata this describes
      *
      */
     public function getType();
-
+    
     /**
      * getName()
      *
      */
     public function getName();
-
+    
     /**
      * getValue()
      *
      */
     public function getValue();
-
+    
 }

@@ -783,7 +783,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 				$onClick = "return true;";
 			}
 			return '<div style="width:' . $this->getWidth() . 'px;
-			height:' . $this->getHeight() . 'px;"><a onClick="' . $onClick . '" id="a_' . $this->getId() . '" border="0" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
+			height:' . $this->getHeight() . 'px;"><a onClick="' . $onClick . '" id="a_' . $this->getId() . '" border="0" style="text-decoration:none;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
 		}
 		if ($this->getType() == "submit") {
 			return '<div style="position:relative;z-index:1;width:' . $this->getWidth() . 'px;

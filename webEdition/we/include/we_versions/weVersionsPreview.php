@@ -41,14 +41,10 @@ else {
 }
 
 $isObj = false;
-$isTempl = false;
-if($newDoc['ContentType']=="text/weTmpl") {
-	$isTempl = true;
-}
 if($newDoc['ContentType']=="objectFile") {
 	$isObj = true;
 }
-if(! ($isObj OR $isTempl) ) {
+else {
 	//get path of preview-file
 	$binaryPathNew = $newDoc['binaryPath'];
 	if($binaryPathNew == "") {
@@ -165,20 +161,13 @@ $contentNew = "";
 $contentOld = "";
 $contentDiff = "";
 
-if(!($isObj || $isTempl)) {
+if(!$isObj) {
 	$contentNew = '<iframe  name="previewNew" src="'.$fileNew.'" width="980" height="680" frameborder="no" border="0"></iframe>';
 }
-if ($isTempl) {
-	 $nDocElements = unserialize(html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES));
-	 $contentNew = '<textarea style="width:99%;height:99%">'.$nDocElements['data']['dat'].'</textarea>';
-}
-if(!empty($oldDoc) && !($isObj || $isTempl)) {
+if(!empty($oldDoc) && !$isObj) {
 	$contentOld = '<iframe name="previewOld" src="'.$fileOld.'" width="980" height="680" frameborder="no" border="0"></iframe>';
 }
-if(!empty($oldDoc) && $isTempl) {
-	$oDocElements = unserialize(html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES));
-	$contentOld = '<textarea style="width:99%;height:99%">'.$oDocElements['data']['dat'].'</textarea>';
-}
+
 $_versions_time_days = new we_htmlSelect(array(
 	"name" => "versions_time_days",
 	"style"=>"",

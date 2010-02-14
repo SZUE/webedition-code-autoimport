@@ -46,9 +46,8 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 
 		$_mode = WECF_OFF;
 
-		if ($navModel->LimitAccess == 2) {
-			$_mode = WECF_NONE;
-		} else if ($navModel->LimitAccess == 1 && $navModel->ApplyFilter) {
+
+		if ($navModel->LimitAccess && $navModel->ApplyFilter) {
 			$_mode = WECF_FILTER;
 		} else if ($navModel->LimitAccess && $navModel->AllCustomers == 1) {
 			$_mode = WECF_ALL;
@@ -78,29 +77,25 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 
 		if ($navItem->limitaccess == 0) {
 			$this->setMode(WECF_OFF);
-		} else { 
-			if ($navItem->limitaccess == 2) {
-				$this->setMode(WECF_NONE);
-			} else {
-				if (isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && count($navItem->customers['filter'])) {
-					$this->setMode(WECF_FILTER);
-					$_custFilter = $navItem->customers['filter'];
-					$this->updateCustomerFilter($_custFilter);
-					$this->setFilter($_custFilter);
-	
-					if (isset($navItem->customers['blacklist']) && is_array($navItem->customers['blacklist']) && count($navItem->customers['blacklist'])) {
-						$this->setBlackList($navItem->customers['blacklist']);
-					}
-					if (isset($navItem->customers['whitelist']) && is_array($navItem->customers['whitelist']) && count($navItem->customers['whitelist'])) {
-						$this->setWhiteList($navItem->customers['whitelist']);
-					}
-	
-				} else if (isset($navItem->customers['id']) && is_array($navItem->customers['id']) && count($navItem->customers['id'])) {
-					$this->setMode(WECF_SPECIFIC);
-					$this->setSpecificCustomers($navItem->customers['id']);
-				} else {
-					$this->setMode(WECF_ALL);
+		} else {
+			if (isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && count($navItem->customers['filter'])) {
+				$this->setMode(WECF_FILTER);
+				$_custFilter = $navItem->customers['filter'];
+				$this->updateCustomerFilter($_custFilter);
+				$this->setFilter($_custFilter);
+
+				if (isset($navItem->customers['blacklist']) && is_array($navItem->customers['blacklist']) && count($navItem->customers['blacklist'])) {
+					$this->setBlackList($navItem->customers['blacklist']);
 				}
+				if (isset($navItem->customers['whitelist']) && is_array($navItem->customers['whitelist']) && count($navItem->customers['whitelist'])) {
+					$this->setWhiteList($navItem->customers['whitelist']);
+				}
+
+			} else if (isset($navItem->customers['id']) && is_array($navItem->customers['id']) && count($navItem->customers['id'])) {
+				$this->setMode(WECF_SPECIFIC);
+				$this->setSpecificCustomers($navItem->customers['id']);
+			} else {
+				$this->setMode(WECF_ALL);
 			}
 		}
 	}
@@ -168,12 +163,6 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 				$model->AllCustomers = 1;
 			break;
 
-			case WECF_NONE:
-				$model->LimitAccess = 2;
-				$model->ApplyFilter = 0;
-				$model->AllCustomers = 0;
-			break;
-
 			default:
 				$model->LimitAccess = 0;
 		}
@@ -202,13 +191,6 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 				$_applyFilter = 0;
 				$_allCustomers = 1;
 			break;
-			
-			case WECF_NONE:
-				$_limitAccess = 2;
-				$_applyFilter = 0;
-				$_allCustomers = 0;
-			break;
-
 		}
 
 

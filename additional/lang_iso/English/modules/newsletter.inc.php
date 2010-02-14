@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -109,7 +110,7 @@ $l_newsletter["newsletter_test"] = "Test";
 $l_newsletter["send_to_list"] = "Sending to mailing list %s.";
 $l_newsletter["campaign_starts"] = "The newsletter campaign has started...";
 $l_newsletter["campaign_ends"] = "The newsletter campaign has finished.";
-$l_newsletter["test_no_mail"] = "Testing - no emails will be sent...";
+$l_newsletter["test_no_mail"] = "Testing - no email s will be sent...";
 $l_newsletter["sending"] = "Sending...";
 $l_newsletter["mail_not_sent"] = " email '%s' cannot be sent.";
 $l_newsletter["filter"] = "Filter";
@@ -170,7 +171,7 @@ $l_newsletter["salutation"] = "Salutation";
 $l_newsletter["title"] = "Title";
 $l_newsletter["female_salutation"] = "Female salutation";
 $l_newsletter["male_salutation"] = "Male salutation";
-$l_newsletter["edit_htmlmail"] = "HTML email ";
+$l_newsletter["edit_htmlmail"] = "Receive HTML email ";
 $l_newsletter["htmlmail_check"] = "HTML";
 $l_newsletter["double_name"] = "The newsletter name already exists.";
 $l_newsletter["cannot_preview"] = "The newsletter preview cannot be shown.";
@@ -223,7 +224,7 @@ $l_newsletter["mail_failed"] = " email '%s' cannot be sent. A possible cause is 
 $l_newsletter["reject_save_malformed"] = "Do not save newsletter if address is malformed.";;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server.";
 $l_newsletter["use_https_refer"] = "Use HTTPS for reference";
-$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; 
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head";
 $l_newsletter["we_filename_notValid"] = "Invalid name!\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen, dot and whitespace (a-z, A-Z, 0-9, _, -, ., )";
 $l_newsletter["send_wait"] = "Wait period to next load (ms)";
 $l_newsletter["send_images"] = "Send images";

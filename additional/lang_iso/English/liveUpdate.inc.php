@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -94,7 +95,7 @@ $l_liveUpdate['updatelog']['action'] = 'Action';
 $l_liveUpdate['updatelog']['version'] = 'Version';
 $l_liveUpdate['updatelog']['entriesTotal'] = 'Entries total';
 $l_liveUpdate['updatelog']['page'] = 'page';
-$l_liveUpdate['updatelog']['noEntriesMatchFilter'] = 'There are not entries matching the selected filter.';
+$l_liveUpdate['updatelog']['noEntriesMatchFilter'] = 'There are not entries matching the selected filter';
 $l_liveUpdate['updatelog']['legendMessages'] = 'Messages';
 $l_liveUpdate['updatelog']['legendNotices'] = 'Notices';
 $l_liveUpdate['updatelog']['legendErrors'] = 'Errors';

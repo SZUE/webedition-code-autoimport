@@ -20,7 +20,6 @@
 
 $GLOBALS['l_customerFilter'] = array(
 	'mode_off' 					=> 'Kein Filter benutzen (alle Besucher haben Zugriff)',
-	'mode_none' 				=> 'Nur nicht angemeldete Nutzer haben Zugriff',
 	'mode_all' 					=> 'Alle angemeldeten Kunden haben Zugriff',
 	'mode_specific' 			=> 'Nur bestimmte Kunden haben Zugriff',
 	'mode_filter' 				=> 'Kunden mit bestimmten Kriterien haben Zugriff',

@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -170,7 +171,7 @@ $l_newsletter["salutation"] = "Anrede";
 $l_newsletter["title"] = "Titel";
 $l_newsletter["female_salutation"] = "Weibliche Anrede";
 $l_newsletter["male_salutation"] = "M&auml;nnliche Anrede";
-$l_newsletter["edit_htmlmail"] = "HTML-E-Mail";
+$l_newsletter["edit_htmlmail"] = "Empfange HTML-E-Mail";
 $l_newsletter["htmlmail_check"] = "HTML";
 $l_newsletter["double_name"] = "Der Newslettername existiert bereits.";
 $l_newsletter["cannot_preview"] = "Die Newsletter-Vorschau kann nicht angezeigt werden.";

@@ -54,8 +54,6 @@ while ($arr = current($GLOBALS["weFrontendLanguages"])) {
 	$locales[] = new weTagDataOption(key($GLOBALS["weFrontendLanguages"]), false, '');
     next($GLOBALS["weFrontendLanguages"]);
 }
-$locales[] = new weTagDataOption('self', false, '');
-$locales[] = new weTagDataOption('top', false, '');
 $GLOBALS['weTagWizard']['attribute']['id832_languages'] = new weTagData_choiceAttribute('832', 'languages',$locales, false,true, '');
 
 ?>

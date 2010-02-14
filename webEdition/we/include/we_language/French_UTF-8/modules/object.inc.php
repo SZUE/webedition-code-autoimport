@@ -25,7 +25,6 @@ $l_contentTypes["object"] = "Classe";
 $l_object["attributes"] = "Attributs";
 $l_object["objectname"] = "Nom de l'Object";
 $l_object["objectpath"] = "Chemin de l'Object";
-$l_object["objectid"] = "Object ID";// TRANSLATE
 $l_object["class"] = "Classe";
 $l_object["classname"] = "Nom de la Classe";
 $l_object["class_id"] = "ID of the class"; // TRANSLATE
@@ -54,7 +53,7 @@ $l_object["binary_field"] = "Document binaire";
 $l_object["link_field"] = "Lien";
 $l_object["href_field"] = "Href"; // TRANSLATE
 $l_object["shopVat_field"] = "Champ de TVA";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
 
 $l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
 $l_object["objectFile_response_save_ok"] = "L'object '%s' a ï¿½tï¿½ enregistrï¿½ avec succï¿½s!";
@@ -85,8 +84,4 @@ $l_object["generated_template_for_objectFile"] = "Aucun modï¿½le correspondan
 $l_object["no_workspace_defined"] = "Aucun ï¿½space de travail n'a ï¿½tï¿½ encore assignï¿½ ï¿½ cet object. Si vous voulez assigner ï¿½ un object des ï¿½paces de travail specieaux, vous devez les choisir dans la classe de l'object.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
 ?>

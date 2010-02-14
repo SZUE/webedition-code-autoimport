@@ -15,9 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Menu.php 16971 2009-07-22 18:05:45Z mikaelkael $
  */
 
 /**
@@ -31,7 +30,7 @@ require_once 'Zend/View/Helper/Navigation/HelperAbstract.php';
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_Navigation_Menu
@@ -314,33 +313,32 @@ class Zend_View_Helper_Navigation_Menu
                                           $minDepth,
                                           $maxDepth)
     {
-        if (!$active = $this->findActive($container, $minDepth - 1, $maxDepth)) {
+        if (!$found = $this->findActive($container, $minDepth, $maxDepth)) {
             return '';
         }
 
-        // special case if active page is one below minDepth
-        if ($active['depth'] < $minDepth) {
-            if (!$active['page']->hasPages()) {
-                return '';
-            }
-        } else if (!$active['page']->hasPages()) {
+        $foundPage  = $found['page'];
+        $foundDepth = $found['depth'];
+
+        // render children or siblings?
+        if (!$foundPage->hasPages()) {
             // found pages has no children; render siblings
-            $active['page'] = $active['page']->getParent();
-        } else if (is_int($maxDepth) && $active['depth'] +1 > $maxDepth) {
+            $foundPage = $foundPage->getParent();
+        } else if (is_int($maxDepth) && $foundDepth +1 > $maxDepth) {
             // children are below max depth; render siblings
-            $active['page'] = $active['page']->getParent();
+            $foundPage = $foundPage->getParent();
         }
 
         $ulClass = $ulClass ? ' class="' . $ulClass . '"' : '';
         $html = $indent . '<ul' . $ulClass . '>' . self::EOL;
 
-        foreach ($active['page'] as $subPage) {
-            if (!$this->accept($subPage)) {
+        foreach ($foundPage as $page) {
+            if (!$this->accept($page)) {
                 continue;
             }
-            $liClass = $subPage->isActive(true) ? ' class="active"' : '';
+            $liClass = $page->isActive(true) ? ' class="active"' : '';
             $html .= $indent . '    <li' . $liClass . '>' . self::EOL;
-            $html .= $indent . '        ' . $this->htmlify($subPage) . self::EOL;
+            $html .= $indent . '        ' . $this->htmlify($page) . self::EOL;
             $html .= $indent . '    </li>' . self::EOL;
         }
 

@@ -54,17 +54,11 @@ $l_import['import_templates'] = 'Template import'; // TRANSLATE
 $l_import['template_import'] = 'First Steps Wizard'; // TRANSLATE
 $l_import['txt_template_import'] = 'Import ready example templates and template sets from the webEdition server'; // TRANSLATE
 $l_import['file_import'] = 'Importando archivos locales';
-$l_import['txt_file_import'] = 'Importar uno o más archivos desde su disco duro local.'; // CHECK
-// changed from: 'Import one or more files from the local harddrive.'
-// changed to  : 'Import one or more files from the local hard drive.'
-
+$l_import['txt_file_import'] = 'Importar uno o más archivos desde su disco duro local.';
 $l_import['site_import'] = 'Importar archivos desde el servidor';
 $l_import['site_import_isp'] = 'Importando gráficos desde el servidor';
 $l_import['txt_site_import_isp'] = 'Importando gráficos desde el directorio raíz del servidor. Configure las opciones del filtro para escoger cuales gráficos serán importados.';
-$l_import['txt_site_import'] = 'Importar archivos desde el directorio raíz del servidor. Ajuste las opciones de filtro para escoger si los gráficos, las páginas HTML, Flash, JavaScript, archivos CSS, documentos de texto simple, u otro tipo de archivo serán importados.'; // CHECK
-// changed from: 'Import files from the root-directory of the server. Set filter options to choose if graphics, HTML pages, Flash, JavaScript, or CSS files, plain-text documents, or other types of files are to be imported.'
-// changed to  : 'Import files from the root-directory of the server. Set filter options to choose if images, HTML pages, Flash, JavaScript, or CSS files, plain-text documents, or other types of files are to be imported.'
-
+$l_import['txt_site_import'] = 'Importar archivos desde el directorio raíz del servidor. Ajuste las opciones de filtro para escoger si los gráficos, las páginas HTML, Flash, JavaScript, archivos CSS, documentos de texto simple, u otro tipo de archivo serán importados.';
 $l_import['txt_wxml_import'] = 'Los archivos XML de webEdition contienen información acerca de documentos, plantillas u objetos webEdition. Escoja un directorio al cual los archivos serán importados.';
 $l_import['txt_gxml_import'] = 'Import "flat" XML files, such as those provided by phpMyAdmin. The dataset fields have to be allocated to the webEdition dataset fields. Use this to import XML files exported from webEdition without the export module.'; // TRANSLATE
 $l_import['txt_csv_import'] = 'Importar archivos CSV (Valores Separados por Comas) o formatos de texto modificados (por ejemplo *.txt). Los campos de conjuntos de datos son ubicados a los campos de webEdition.';
@@ -236,7 +230,7 @@ $l_import['weThumbnail'] = 'Thumbnail'; // TRANSLATE
 $l_import['import_thumbnails'] = 'Import thumbnails'; // TRANSLATE
 $l_import['rebuild'] = 'Rebuild'; // TRANSLATE
 $l_import['rebuild_txt'] = 'Automatic rebuild'; // TRANSLATE
-$l_import['finished_success'] = 'The import of the data has finished successfully.';
+$l_import['finished_success'] = 'The import of the data has finished successfully.'; // TRANSLATE
 
 $l_import['encoding_headline'] = 'Charset'; // TRANSLATE
 $l_import['encoding_noway'] = 'A conversion  is only possible between ISO-8859-1 and UTF-8 <br/>and with a set default charset (settings dialog)'; // TRANSLATE

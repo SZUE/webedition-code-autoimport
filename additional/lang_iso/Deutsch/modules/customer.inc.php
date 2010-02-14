@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -294,8 +295,7 @@ $l_customer["we_fieldname_notValid"] = "Der eingegebene Feldname ist nicht gülti
 
 $l_customer['orderTab'] = 'Bestellungen des Kunden';
 $l_customer['default_order'] = 'Vorgegebene Ordnung';
-$l_customer['ASC'] = 'aufsteigend';
-$l_customer['DESC'] = 'absteigend';
+
 $l_customer["connected_with_customer"] = "Verknüpft mit Kunde";
 $l_customer["one_customer"] = "Kunde";
 

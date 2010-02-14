@@ -582,19 +582,17 @@ function processCommands() {
 							break;
 						}
 
-						$newone=true;
-						if($this->customer->ID) $newone=false;
-						
-						if ($newone) {
-							$exists=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".mysql_real_escape_string($this->customer->Username)."'","ID",$this->db);						
-						} else {
-							$exists=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".mysql_real_escape_string($this->customer->Username)."' AND ID<>".$this->customer->ID,"ID",$this->db);						
-						} 
+						$exists=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".mysql_real_escape_string($this->customer->Username)."' AND ID<>".$this->customer->ID,"ID",$this->db);
 						if($exists){
 							$js = we_message_reporting::getShowMessageCall(sprintf($l_customer["username_exists"],$this->customer->Username), WE_MESSAGE_ERROR);
 							print we_htmlElement::jsElement($js);
 							break;
 						}
+
+
+						$newone=true;
+						if($this->customer->ID) $newone=false;
+
 						$this->customer->save();
 
 						$tt="";

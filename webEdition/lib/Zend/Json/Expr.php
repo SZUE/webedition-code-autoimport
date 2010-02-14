@@ -15,16 +15,16 @@
  * @category   Zend
  * @package    Zend_Json
  * @subpackage Expr
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Expr.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id: Expr.php 9101 2008-11-14 Oscar Reales $
  */
 
 /**
  * Class for Zend_Json encode method.
  *
  * This class simply holds a string with a native Javascript Expression,
- * so objects | arrays to be encoded with Zend_Json can contain native
+ * so objects | arrays to be encoded with Zend_Json can contain native 
  * Javascript Expressions.
  *
  * Example:
@@ -45,7 +45,7 @@
  * @category   Zend
  * @package    Zend_Json
  * @subpackage Expr
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Json_Expr

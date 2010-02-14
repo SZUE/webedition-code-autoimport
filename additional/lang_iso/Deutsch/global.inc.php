@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -174,7 +175,4 @@ $GLOBALS["l_global"]["redirect_to_login_failed"] = "Falls Sie nicht innerhalb vo
 $GLOBALS["l_global"]["redirect_to_login_name"] = "zur webEdition-Login-Seite";
 $GLOBALS["l_global"]["untitled"] = "Unbenannt";
 $GLOBALS["l_global"]["no_document_opened"] = "Es ist kein Dokument geöffnet!";
-$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
-$GLOBALS["l_global"]["credits_translators"] = "Übersetzungen";
-$GLOBALS["l_global"]["credits_thanks"] = "Vielen Dank an";
 ?>

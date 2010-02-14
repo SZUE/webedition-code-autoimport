@@ -35,7 +35,6 @@ $l_contentTypes["object"] = "Klasse";
 $l_object["attributes"] = "Attribute";
 $l_object["objectname"] = "Objektname";
 $l_object["objectpath"] = "Objektpfad";
-$l_object["objectid"] = "Objekt-ID";
 $l_object["class"] = "Klasse";
 $l_object["classname"] = "Klassenname";
 $l_object["class_id"] = "ID der Klasse";
@@ -93,7 +92,4 @@ $l_object["generated_template_for_objectFile"] = "Kein passendes Template gefund
 $l_object["no_workspace_defined"] = "Diesem Objekt wurden noch keine Arbeitsbereiche zugewiesen. Wollen Sie einem Objekt spezielle Arbeitsbereiche zuordnen, müssen Sie diese in der Klasse des Objekts auswählen.";
 
 $l_object["use_thumbnail_preview"] = "Vorschau in Objekten als Miniaturansicht";
-$l_object["not_published"] = "das Objekt ist geparkt";
-$l_object["incObject_sameFieldname_start"] = "Die inkludierte Klasse hat identischen Feldnamen: ";
-$l_object["incObject_sameFieldname_end"] = ". Diese werden in Listviews und we:object nicht angezeigt.";
 ?>

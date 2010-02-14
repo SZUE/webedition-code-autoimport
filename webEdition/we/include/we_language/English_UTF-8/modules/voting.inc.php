@@ -138,24 +138,4 @@ $l_voting['new_ip_add'] = 'Please enter the new IP address!';
 $l_voting['not_valid_ip'] = 'The IP address is not valid';
 $l_voting['not_active'] = 'The entered datum is in the past!';
 
-$l_voting['headline_datatype'] = 'Type of Inquiry';
-$l_voting['AllowFreeText'] = 'Allow free text';
-$l_voting['AllowImages'] = 'Allow images';
-$l_voting['AllowSuccessor'] = 'redirect to:';
-$l_voting['AllowSuccessors'] = 'allow individual redirects';
-$l_voting["csv_charset"] = "Export charset";
-$l_voting["imageID_text"] = "Image ID";
-$l_voting["successorID_text"] = "Successor ID";
-$l_voting['voting-id'] = 'Voting ID';
-$l_voting['voting-session'] = 'Voting Session';
-$l_voting['voting-successor'] = 'successor';
-$l_voting['voting-additionalfields'] = 'add. data';
-$l_voting['answerID'] = 'answer ID';
-$l_voting['answerText'] = 'answer text';
-
-$l_voting['userid_method'] = 'For logged in Users (customer management), compare to saved customer ID (the log has to be active)';
-$l_voting['IsRequired'] = 'This is a required field';
-
-$l_voting['answer_limit'] = 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!';
-$l_voting['folder_path_exists'] = "Folder already exists!";
 ?>

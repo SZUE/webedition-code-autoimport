@@ -126,8 +126,8 @@ $l_users["inherit_wsn"] = "Inherit navigation workspaces from parent group";
 $l_users["workspace_newsletter"] = "Workspace Newsletter";
 $l_users["inherit_wsnl"] = "Inherit newsletter workspaces from parent group";
 
-$l_users["delete_user_same"] = "You cannot delete your own account.";
-$l_users["delete_group_user_same"] = "You cannot delete your own Group.";
+$l_users["delete_user_same"] = "Sie können nicht Ihr eigenes Konto löschen.";
+$l_users["delete_group_user_same"] = "Sie können nicht Ihre eigene Gruppe löschen.";
 
 $l_users["login_denied"] = "Login denied";
 $l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!";

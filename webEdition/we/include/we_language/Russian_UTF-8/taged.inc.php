@@ -26,7 +26,6 @@
  * Language: English
  */
 $l_taged["description"] = "Description"; // TRANSLATE
-$l_taged['tagreference_linktext'] = "to the tag reference"; // TRANSLATE
 $l_taged["required"] = "All fields which are marked with * have to be filled!"; // TRANSLATE
 $l_taged['fill_required_fields'] = "The following required fields need to be filled."; // TRANSLATE
 $l_taged['type_attribute'] = "Type - Attribute"; // TRANSLATE

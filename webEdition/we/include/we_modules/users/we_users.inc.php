@@ -2400,16 +2400,11 @@ function mapPermissions() {
 
 		if(sizeof($_languages["translation"]) > 1) { // Build language select box
 			$_languages = new we_htmlSelect(array("name" => $this->Name.'_Preference_'.'Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
-			if (isset($this->Preferences['Language']) && $this->Preferences['Language']!=''){
-				$myCompLang = $this->Preferences['Language'];
-			} else {
-				$myCompLang = $GLOBALS["WE_LANGUAGE"];
-			}
 			foreach ($_language["translation"] as $key=>$value) {
 			   	$_languages->addOption($key, $value);
 
 			   	// Set selected extension
-			   	if ($key == $myCompLang) {
+			   	if ($key == $this->Preferences['Language']) {
 			   		$_languages->selectOption($key);
 			   	} else {
 			    	// do nothing
@@ -2685,8 +2680,8 @@ function mapPermissions() {
 		$_window_specify_table->setCol(1, 2, null, getPixel(10, 1));
 		$_window_specify_table->setCol(3, 2, null, getPixel(10, 1));
 
-		$_window_specify_table->setCol(1, 3, null, htmlTextInput($this->Name."_Preference_weWidth", 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
-		$_window_specify_table->setCol(3, 3, null, htmlTextInput($this->Name."_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(1, 3, null, htmlTextInput($this->Name."_Preference_weWidth", 6, ($this->Preferences['sizeOpt'] != $this->Preferences['weWidth'] ? 800 : ""), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(3, 3, null, htmlTextInput($this->Name."_Preference_weHeight", 6, ($this->Preferences['sizeOpt'] != $this->Preferences['weWidth'] ? 600 : ""), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
 		$_window_current_dimension_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 2);

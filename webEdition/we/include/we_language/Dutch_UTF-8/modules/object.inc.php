@@ -25,7 +25,6 @@ $l_contentTypes["object"] = "Class"; // TRANSLATE
 $l_object["attributes"] = "Attributen";
 $l_object["objectname"] = "Object naam";
 $l_object["objectpath"] = "Object pad";
-$l_object["objectid"] = "Object ID";// TRANSLATE
 $l_object["class"] = "Class"; // TRANSLATE
 $l_object["classname"] = "Classnaam";
 $l_object["class_id"] = "ID van de class";
@@ -85,8 +84,4 @@ $l_object["generated_template_for_objectFile"] = "Geen bijpassend sjabloon gevon
 $l_object["no_workspace_defined"] = "Er zijn geen werkgebieden gedefinieerd voor dit object. U kunt speciale werkgebieden selecteren voor een object binnen z'n class.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
 ?>

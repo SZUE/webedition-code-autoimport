@@ -45,7 +45,6 @@ $GLOBALS["l_global"]["email_ban"] = "Vous n'êtes pas autorisé de utiliser ce s
 $GLOBALS["l_global"]["email_recipient_invalid"] = "L'adresse destinataire est invalide!";
 $GLOBALS["l_global"]["email_no_recipient"] = "L'adresse destinataire n'existe pas!";
 $GLOBALS["l_global"]["email_invalid"] = "Votre <b>Adresse E-Mail</b> n'est pas valide!";
-
 $GLOBALS["l_global"]["captcha_invalid"] = "The entered security code is wrong!"; // TRANSLATE
 $GLOBALS["l_global"]["question"] = "Question"; // TRANSLATE
 $GLOBALS["l_global"]["warning"] = "Avertissement";
@@ -54,7 +53,6 @@ $GLOBALS["l_global"]["index_table"] = "Tableau Index";
 $GLOBALS["l_global"]["cannotconnect"] = "Il n'était pas possible de connecter au serveur de webEdition!";
 $GLOBALS["l_global"]["recipients"] = "Destinataire-Formmail";
 $GLOBALS["l_global"]["recipients_txt"] = "Insérer ici tous les adresses e-mail, aux quelles des formulaires avec la fonction-formmail  (&lt;we:form type=\"formmail\" ..&gt;) sont être envoyés.<br><br>Si aucun d'adresse e-mail est saisie ici, il n'est pas possible d'envoyer des formulaires avec la fonction-Formmail!";
-
 $GLOBALS["l_global"]["std_mailtext_newObj"] = "Un nouveau object %s a été créé dans la classe %s!";
 $GLOBALS["l_global"]["std_subject_newObj"] = "Nouveau Object";
 $GLOBALS["l_global"]["std_subject_newDoc"] = "Nouveau Document";
@@ -176,7 +174,7 @@ $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following l
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition login"; // TRANSLATE
 $GLOBALS["l_global"]["untitled"] = "Untitled"; // TRANSLATE
 $GLOBALS["l_global"]["no_document_opened"] = "There is no document opened!"; // TRANSLATE
-$GLOBALS["l_global"]["credits_team"] = "webEdition Team"; // TRANSLATE
-$GLOBALS["l_global"]["credits_translators"] = "Translations"; // TRANSLATE
-$GLOBALS["l_global"]["credits_thanks"] = "Thanks to"; // TRANSLATE
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
+$GLOBALS["l_global"]["credits_translators"] = "Translations";
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
 ?>

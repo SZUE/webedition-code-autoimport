@@ -41,7 +41,7 @@ $GLOBALS["WE_CONTENT_TYPES"]["text/html"] = array(
         <head>
                 <title></title>
                 <meta http-equiv="Content-Type" content="text/html; ' . (isset(
-				$GLOBALS["_language"]["charset"]) ? $GLOBALS["_language"]["charset"] : "UTF-8") . '">
+				$GLOBALS["_language"]["charset"]) ? $GLOBALS["_language"]["charset"] : "") . '">
         </head>
         <body>
         </body>
@@ -167,8 +167,7 @@ $GLOBALS["WE_CONTENT_TYPES"]["text/xml"] = array(
 	
 		"Extension" => ".xml", 
 		"Permission" => 'NEW_TEXT', 
-		"DefaultCode" => '<?xml version="1.0" encoding="'. (isset(
-				$GLOBALS["_language"]["charset"]) ? $GLOBALS["_language"]["charset"] : "UTF-8") .'" ?>', 
+		"DefaultCode" => '<?xml version="1.0" encoding="ISO-8859-1" ?>', 
 		"IsRealFile" => "1", 
 		"IsWebEditionFile" => "1", 
 		"Icon" => "link.gif"

@@ -44,7 +44,7 @@ class weNavigationCustomerFilterView extends weCustomerFilterView {
 			'updateView();',
 			$isDynamic
 		) . $this->getDiv(
-			'<div style="border-top: 1px solid #AFB0AF;margin-bottom: 5px;"></div>' . parent::getFilterHTML(true),
+			'<div style="border-top: 1px solid #AFB0AF;margin-bottom: 5px;"></div>' . parent::getFilterHTML(),
 			'MainFilterDiv',
 			!$_filter->getUseDocumentFilter()
 		);

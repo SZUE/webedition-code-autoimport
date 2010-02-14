@@ -17,7 +17,7 @@
  * @subpackage Amazon
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 18926 2009-11-10 19:16:03Z sidhighwind $
+ * @version    $Id$
  */
 
 require_once 'Zend/Service/Abstract.php';
@@ -29,7 +29,7 @@ require_once 'Zend/Service/Abstract.php';
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 22005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Service_Amazon_Abstract extends Zend_Service_Abstract

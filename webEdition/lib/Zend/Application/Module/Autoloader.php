@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Module
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Autoloader.php 18951 2009-11-12 16:26:19Z alexander $
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Autoloader.php 15203 2009-04-27 15:20:43Z matthew $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -25,19 +25,19 @@ require_once 'Zend/Loader/Autoloader/Resource.php';
 
 /**
  * Resource loader for application module classes
- *
+ * 
  * @uses       Zend_Loader_Autoloader_Resource
  * @package    Zend_Application
  * @subpackage Module
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    New BSD {@link http://framework.zend.com/license/new-bsd}
  */
 class Zend_Application_Module_Autoloader extends Zend_Loader_Autoloader_Resource
 {
     /**
      * Constructor
-     *
-     * @param  array|Zend_Config $options
+     * 
+     * @param  array|Zend_Config $options 
      * @return void
      */
     public function __construct($options)
@@ -48,7 +48,7 @@ class Zend_Application_Module_Autoloader extends Zend_Loader_Autoloader_Resource
 
     /**
      * Initialize default resource types for module resource classes
-     *
+     * 
      * @return void
      */
     public function initDefaultResourceTypes()

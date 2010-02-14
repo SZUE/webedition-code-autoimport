@@ -15,6 +15,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -80,7 +81,6 @@ $GLOBALS['l_versions'] = array(
 	'IsClassFolder' 				=> 'Klassenverzeichnis',
 	'IsNotEditable'					=> 'Nicht editierbar',
 	'Charset'						=> 'Zeichensatz',
-	'InGlossar'						=> 'Von Glossarersetzung nicht berücksichtigen',
 	'documentElements'				=> 'Inhalt',
 	'CreatorID'						=> 'Hauptbesitzer',
 	'Text'							=> 'Name',

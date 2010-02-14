@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -39,7 +40,7 @@ $l_sidebar["default"][0]["text"] = 'webEdition is installed successfully, but co
 $l_sidebar["default"][1] = array();
 $l_sidebar["default"][1]["headline"] = 'Manuals';
 $l_sidebar["default"][1]["text"] = 'Here you find basic information about the operation and structure of webEdition';
-$l_sidebar["default"][1]["link"] = 'http://www.webedition.de/en/Documentation/index.php';
+$l_sidebar["default"][1]["link"] = 'http://www.living-e.com/webEdition/manual/';
 $l_sidebar["default"][1]["icon"] = 'documentation.gif';
 
 $l_sidebar["default"][2] = array();

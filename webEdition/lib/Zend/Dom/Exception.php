@@ -14,9 +14,8 @@
  *
  * @category   Zend
  * @package    Zend_Dom
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php 18951 2009-11-12 16:26:19Z alexander $
  */
 
 /** Zend_Exception */
@@ -24,11 +23,11 @@ require_once 'Zend/Exception.php';
 
 /**
  * Zend_Dom Exceptions
- *
+ * 
  * @category   Zend
  * @package    Zend_Dom
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @copyright  Copyright (C) 2008 - Present, Zend Technologies, Inc.
+ * @license    New BSD {@link http://framework.zend.com/license/new-bsd}
  */
 class Zend_Dom_Exception extends Zend_Exception
 {

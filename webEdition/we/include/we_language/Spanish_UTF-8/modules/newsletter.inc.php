@@ -37,10 +37,7 @@ $l_newsletter["quit"] = "Salir";
 $l_newsletter["help"] = "Ayuda";
 $l_newsletter["info"] = "Info"; // TRANSLATE
 $l_newsletter["options"] = "Opciones";
-$l_newsletter["send_test"] = "Enviar E-Mail de prueba"; // CHECK
-// changed from: "Send test E-mail"
-// changed to  : "Send test email"
-
+$l_newsletter["send_test"] = "Enviar E-Mail de prueba";
 $l_newsletter["domain_check"] = "Chequear Dominio";
 $l_newsletter["send"] = "Enviar";
 $l_newsletter["preview"] = "Vista previa";
@@ -48,10 +45,7 @@ $l_newsletter["settings"] = "Preferencias";
 $l_newsletter["show_log"] = "Show logbook"; // TRANSLATE
 $l_newsletter["mailing_list"] = "Lista de Correos %s";
 $l_newsletter["customers"] = "Clientes";
-$l_newsletter["emails"] = "E-Mails"; // CHECK
-// changed from: "E-mails"
-// changed to  : "emails"
-
+$l_newsletter["emails"] = "E-Mails";
 $l_newsletter["newsletter_content"] = "Contenido del boletín informativo";
 $l_newsletter["type_doc"] = "Documentos";
 $l_newsletter["type_object"] = "Objetos";
@@ -87,42 +81,18 @@ $l_newsletter["delete_question"] = "Desea Ud borrar el boletín informativo actu
 $l_newsletter["delete_group_question"] = "Do you want to delete the current group?"; // TRANSLATE
 $l_newsletter["delete_ok"] = "El boletín informativo fue borrado.";
 $l_newsletter["delete_nok"] = "Error: El boletín informativo no fue borrado";
-$l_newsletter["test_email"] = "E-Mail de prueba"; // CHECK
-// changed from: "Test E-mail"
-// changed to  : "Test email"
-
-$l_newsletter["test_email_question"] = "Esto enviará un E-mail de prueba a su cuenta de E-mail de prueba.\\nDesea Ud continuar?"; // CHECK
-// changed from: "This will send a test E-mail to your test E-mail account %s!\\n Do you want to proceed?"
-// changed to  : "This will send a test email to your test email account %s!\\n Do you want to proceed?"
-
-$l_newsletter["test_mail_sent"] = "El E-mail de prueba fue enviado a la cuenta de E-mail de prueba %s"; // CHECK
-// changed from: "The test E-mail has been sent to the test E-mail account %s."
-// changed to  : "The test email has been sent to the test email account %s."
-
-$l_newsletter["malformed_mail_group"] = "La lista de correos contiene E-mail %s no válido!\\nEl boletín informativo no fue salvado!"; // CHECK
-// changed from: "Mailing list %s has malformed E-mail '%s'!\\nThe newsletter has not been saved!"
-// changed to  : "Mailing list %s has malformed email '%s'!\\nThe newsletter has not been saved!"
-
-$l_newsletter["malformed_mail_sender"] = "La dirección de E-mail del remitente no es válida!\\nEl boletín informativo no fue salvado!"; // CHECK
-// changed from: "The senders E-mail address '%s' is malformed!\\nThe newsletter has not been saved!"
-// changed to  : "The senders email address '%s' is malformed!\\nThe newsletter has not been saved!"
-
-$l_newsletter["malformed_mail_reply"] = "La dirección de E-mail para la respuesta no es válida\\nEl boletín informativo no fue salvado!"; // CHECK
-// changed from: "The reply E-mail address '%s' is malformed!\\nThe newsletter has not been saved!"
-// changed to  : "The reply email address '%s' is malformed!\\nThe newsletter has not been saved!"
-
-$l_newsletter["malformed_mail_test"] = "La dirección de E-mail de prueba %s no es válida!\\nEl boletín informativo no fue salvado!"; // CHECK
-// changed from: "The test E-mail address '%s' is malformed!\\nThe newsletter has not been saved!"
-// changed to  : "The test email address '%s' is malformed!\\nThe newsletter has not been saved!"
-
+$l_newsletter["test_email"] = "E-Mail de prueba";
+$l_newsletter["test_email_question"] = "Esto enviará un E-mail de prueba a su cuenta de E-mail de prueba.\\nDesea Ud continuar?";
+$l_newsletter["test_mail_sent"] = "El E-mail de prueba fue enviado a la cuenta de E-mail de prueba %s";
+$l_newsletter["malformed_mail_group"] = "La lista de correos contiene E-mail %s no válido!\\nEl boletín informativo no fue salvado!";
+$l_newsletter["malformed_mail_sender"] = "La dirección de E-mail del remitente no es válida!\\nEl boletín informativo no fue salvado!";
+$l_newsletter["malformed_mail_reply"] = "La dirección de E-mail para la respuesta no es válida\\nEl boletín informativo no fue salvado!";
+$l_newsletter["malformed_mail_test"] = "La dirección de E-mail de prueba %s no es válida!\\nEl boletín informativo no fue salvado!";
 $l_newsletter["send_question"] = "Desea enviar este boletín informativo a la lista de correos?";
 $l_newsletter["send_test_question"] = "Esto es una prueba y ningún boletín informativo será enviado.\\nConfirmar para continuar";
 $l_newsletter["domain_ok"] = "El dominio %s fue verificado.";
 $l_newsletter["domain_nok"] = "El dominio %s no puede ser verificado.";
-$l_newsletter["email_malformed"] = "La dirección de E-Mail %s no es válida."; // CHECK
-// changed from: "The E-mail address %s is malformed."
-// changed to  : "The email address %s is malformed."
-
+$l_newsletter["email_malformed"] = "La dirección de E-Mail %s no es válida.";
 $l_newsletter["domain_check_list"] = "Chequeo de dominio para la lista de correos %s";
 $l_newsletter["domain_check_begins"] = "El chequeo de dominio ha sido iniciado";
 $l_newsletter["domain_check_ends"] = "El chequeo de dominio ha finalizado";
@@ -139,15 +109,9 @@ $l_newsletter["newsletter_test"] = "Prueba";
 $l_newsletter["send_to_list"] = "Enviar a la lista de correos %s.";
 $l_newsletter["campaign_starts"] = "La campaña del boletín informativo se ha iniciado...";
 $l_newsletter["campaign_ends"] = "La campaña del boletín informativo ha finalizado.";
-$l_newsletter["test_no_mail"] = "Prueba - ningún E-Mail será enviado..."; // CHECK
-// changed from: "Testing - no E-mail s will be sent..."
-// changed to  : "Testing - no emails will be sent..."
-
+$l_newsletter["test_no_mail"] = "Prueba - ningún E-Mail será enviado...";
 $l_newsletter["sending"] = "Enviando...";
-$l_newsletter["mail_not_sent"] = "El E-Mail '%s' no puede ser enviado."; // CHECK
-// changed from: " E-mail '%s' cannot be sent."
-// changed to  : " email '%s' cannot be sent."
-
+$l_newsletter["mail_not_sent"] = "El E-Mail '%s' no puede ser enviado.";
 $l_newsletter["filter"] = "Filtros";
 $l_newsletter["send_all"] = "Enviar a todos";
 $l_newsletter["lists_overview_menu"] = "Vista general de las listas";
@@ -155,30 +119,14 @@ $l_newsletter["lists_overview"] = "Vista general de las listas";
 $l_newsletter["copy"] = "Copiar";
 $l_newsletter["copy_newsletter"] = "Copiar boletín<br>informativo";
 $l_newsletter["continue_camp"] = "La campaña previa del boletín informativo no fue completada!<br>La campaña previa puede ser continuada.<br>Desea UD continuar con la campaña previa?";
-$l_newsletter["reject_malformed"] = "No enviar E-Mail si la dirección no es válida."; // CHECK
-// changed from: "Do not send E-mail if address is malformed."
-// changed to  : "Do not send email if address is malformed."
-
-$l_newsletter["reject_not_verified"] = "No enviar E-Mail si la dirección no se puede verificar."; // CHECK
-// changed from: "Do not send E-mail if address cannot be verified."
-// changed to  : "Do not send email if address cannot be verified."
-
-$l_newsletter["send_step"] = "Número de E-Mails por carga"; // CHECK
-// changed from: "Number of E-mails per load"
-// changed to  : "Number of emails per load"
-
+$l_newsletter["reject_malformed"] = "No enviar E-Mail si la dirección no es válida.";
+$l_newsletter["reject_not_verified"] = "No enviar E-Mail si la dirección no se puede verificar.";
+$l_newsletter["send_step"] = "Número de E-Mails por carga";
 $l_newsletter["test_account"] = "Cuenta de prueba";
-$l_newsletter["log_sending"] = "Crear entradas al diario cuando el E-Mail es enviado"; // CHECK
-// changed from: "Create a logbook entry when sending E-mail."
-// changed to  : "Create a logbook entry when sending email."
-
+$l_newsletter["log_sending"] = "Crear entradas al diario cuando el E-Mail es enviado";
 $l_newsletter["default_sender"] = "Remitente predefinido";
 $l_newsletter["default_reply"] = "Respuesta predefinida";
-$l_newsletter["default_htmlmail"] = "El formato predefinido del E-Mail es HTML"; // CHECK
-// changed from: "The default E-mail format is HTML."
-// changed to  : "The default email format is HTML."
-
-$l_newsletter["isEmbedImages"] = "Embed images"; // TRANSLATE
+$l_newsletter["default_htmlmail"] = "El formato predefinido del E-Mail es HTML";
 $l_newsletter["ask_to_preserve"] = "La campaña previa del boletín informativo no fue completada!<br>Si UD salva la hoja informativa ahora, no podrá continuar con la campaña!<br>Desea UD continuar?";
 $l_newsletter["log_save_newsletter"] = "La hoja informnativa ha sido salvada.";
 $l_newsletter["log_start_send"] = "Inicie la campaña del boletín informativo.";
@@ -187,50 +135,23 @@ $l_newsletter["log_continue_send"] = "La campaña del boletín informativo conti
 $l_newsletter["log_campaign_reset"] = "Los parámetros de la campaña del boletín informativo fueron reajustados.";
 $l_newsletter["mail_sent"] = "El boletín informativo fue enviado a %s .";
 $l_newsletter["must_save"] = "El boletín informativo fue cambiado.\\nDebe de salvar los cambios antes de ser enviada!";
-$l_newsletter["email_exists"] = "La dirección de E-Mail ya existe!"; // CHECK
-// changed from: "The E-mail address already exists!"
-// changed to  : "The email address already exists!"
-
-$l_newsletter["email_max_len"] = "La dirección de E-Mail no puede tener mas de 255 carácteres!"; // CHECK
-// changed from: "The E-mail address cannot exceed 255 charachters!"
-// changed to  : "The email address cannot exceed 255 charachters!"
-
-$l_newsletter["no_email"] = "Ninguna dirección de E-Mail seleccionada!"; // CHECK
-// changed from: " E-mail address missing!"
-// changed to  : " email address missing!"
-
-$l_newsletter["email_new"] = "Por favor, suministre una dirección de E-Mail!"; // CHECK
-// changed from: "Please provide an E-mail address!"
-// changed to  : "Please provide an email address!"
-
-$l_newsletter["email_delete"] = "Desea Ud borrar las direcciónes de E-Mail seleccionados?"; // CHECK
-// changed from: "Do you want to delete the selected E-mail addresses?"
-// changed to  : "Do you want to delete the selected email addresses?"
-
-$l_newsletter["email_delete_all"] = "Desea Ud borrar todas las direcciónes de E-Mail?"; // CHECK
-// changed from: "Do you want to delete all E-mail addresses?"
-// changed to  : "Do you want to delete all email addresses?"
-
-$l_newsletter["email_edit"] = "La dirección de E-Mail fue cambiada!"; // CHECK
-// changed from: "E-mail address changed!"
-// changed to  : "email address changed!"
-
+$l_newsletter["email_exists"] = "La dirección de E-Mail ya existe!";
+$l_newsletter["email_max_len"] = "La dirección de E-Mail no puede tener mas de 255 carácteres!";
+$l_newsletter["no_email"] = "Ninguna dirección de E-Mail seleccionada!";
+$l_newsletter["email_new"] = "Por favor, suministre una dirección de E-Mail!";
+$l_newsletter["email_delete"] = "Desea Ud borrar las direcciónes de E-Mail seleccionados?";
+$l_newsletter["email_delete_all"] = "Desea Ud borrar todas las direcciónes de E-Mail?";
+$l_newsletter["email_edit"] = "La dirección de E-Mail fue cambiada!";
 $l_newsletter["nothing_to_save"] = "Nada para salvar!";
 $l_newsletter["csv_delimiter"] = "Delimitador";
-$l_newsletter["csv_col"] = "Columna de E-Mail"; // CHECK
-// changed from: " E-mail col."
-// changed to  : " email col."
-
+$l_newsletter["csv_col"] = "Columna de E-Mail";
 $l_newsletter["csv_hmcol"] = "Columna de HTML";
 $l_newsletter["csv_salutationcol"] = "Columna de Saludos";
 $l_newsletter["csv_titlecol"] = "Columna de Titulo";
 $l_newsletter["csv_firstnamecol"] = "Columna de Nombre";
 $l_newsletter["csv_lastnamecol"] = "Columna de Apellido";
 $l_newsletter["csv_export"] = "El archivo '%s' fue salvado.";
-$l_newsletter["customer_email_field"] = "Campo de E-Mail del cliente"; // CHECK
-// changed from: "Cust. E-mail field"
-// changed to  : "Cust. email field"
-
+$l_newsletter["customer_email_field"] = "Campo de E-Mail del cliente";
 $l_newsletter["customer_html_field"] = "Campo de HTML del cliente";
 $l_newsletter["customer_salutation_field"] = "Campo de Saludo del cliente";
 $l_newsletter["customer_title_field"] = "Campo de Titulo del cliente";
@@ -241,57 +162,33 @@ $l_newsletter["csv_salutation_explain"] = "(0 - Ninguna columna de Saludo)";
 $l_newsletter["csv_title_explain"] = "(0 - Ninguna columna de Titulo)";
 $l_newsletter["csv_firstname_explain"] = "(0 - Ninguna columna de Nombre)";
 $l_newsletter["csv_lastname_explain"] = "(0 - Ninguna columna de Apellido)";
-$l_newsletter["email"] = "E-Mail"; // CHECK
-// changed from: " E-mail "
-// changed to  : " email "
-
+$l_newsletter["email"] = "E-Mail";
 $l_newsletter["lastname"] = "Apellido";
 $l_newsletter["firstname"] = "Nombre";
 $l_newsletter["salutation"] = "Saludo";
 $l_newsletter["title"] = "Titulo";
 $l_newsletter["female_salutation"] = "Saludo femenino";
 $l_newsletter["male_salutation"] = "Saludo masculino";
-$l_newsletter["edit_htmlmail"] = "E-Mail HTML"; // CHECK
-// changed from: "Receive HTML E-mail "
-// changed to  : "Receive HTML email "
-
+$l_newsletter["edit_htmlmail"] = "Recivir E-Mail HTML";
 $l_newsletter["htmlmail_check"] = "HTML"; // TRANSLATE
 $l_newsletter["double_name"] = "El nombre del boletín informativo ya existe";
 $l_newsletter["cannot_preview"] = "La vista previa del boletín informativo no puede ser mostrada!";
 $l_newsletter["empty_name"] = "¡El nombre no puede estar vacío!";
-$l_newsletter["edit_email"] = "Editar dirección de E-Mail"; // CHECK
-// changed from: "Edit E-mail address"
-// changed to  : "Edit email address"
-
-$l_newsletter["add_email"] = "Adicionar dirección de E-Mail"; // CHECK
-// changed from: "Add E-mail address"
-// changed to  : "Add email address"
-
+$l_newsletter["edit_email"] = "Editar dirección de E-Mail";
+$l_newsletter["add_email"] = "Adicionar dirección de E-Mail";
 $l_newsletter["none"] = "-- Ninguna --";
 $l_newsletter["must_save_preview"] = "El boletín informativo ha sido cambiado.\\nDebe ser salvada antes de poder ver la vista previa!";
 $l_newsletter["black_list"] = "Lista Negra";
-$l_newsletter["email_is_black"] = "El E-Mail %s está en la lista negra!"; // CHECK
-// changed from: " E-mail is on the balck list!"
-// changed to  : " email is on the balck list!"
-
+$l_newsletter["email_is_black"] = "El E-Mail %s está en la lista negra!";
 $l_newsletter["upload_nok"] = "El archivo no puede ser cargado.";
 $l_newsletter["csv_download"] = "Descargar archivo CSV";
 $l_newsletter["csv_upload"] = "Cargar archivo CSV";
 $l_newsletter["finished"] = "Finalizado";
 $l_newsletter["cannot_open"] = "El archivo no se puede abrir";
-$l_newsletter["search_email"] = "Buscar E-Mail..."; // CHECK
-// changed from: "Search E-mail..."
-// changed to  : "Search email..."
-
-$l_newsletter["search_text"] = "Por favor, entre E-Mail"; // CHECK
-// changed from: "Enter E-mail please"
-// changed to  : "Enter email please"
-
+$l_newsletter["search_email"] = "Buscar E-Mail...";
+$l_newsletter["search_text"] = "Por favor, entre E-Mail";
 $l_newsletter["search_finished"] = "Búsqueda finalizada.\\nEncontrado: %s";
-$l_newsletter["email_double"] = "La dirección de E-Mail %s ya existe!"; // CHECK
-// changed from: "The E-mail address %s already exists!"
-// changed to  : "The email address %s already exists!"
-
+$l_newsletter["email_double"] = "La dirección de E-Mail %s ya existe!";
 $l_newsletter["error"] = "ERROR"; // TRANSLATE
 $l_newsletter["warning"] = "AVISO";
 $l_newsletter["file_email"] = "Archivos CSV";
@@ -299,15 +196,8 @@ $l_newsletter["edit_file"] = "Editar archivos CSV";
 $l_newsletter["show"] = "Mostrar";
 $l_newsletter["no_file_selected"] = "Ningún archivo seleccionado";
 $l_newsletter["file_is_empty"] = "The CSV file is empty"; // TRANSLATE
-$l_newsletter["file_all_ok"] = "The CSV file has no invalid entries";// TRANSLATE
-$l_newsletter["del_email_file"] = "Borrar E-Mail '%s'?"; // CHECK
-// changed from: "Delete E-mail '%s'?"
-// changed to  : "Delete email '%s'?"
-
-$l_newsletter["email_missing"] = "Missing E-mail address"; // CHECK
-// changed from: "Missing E-mail address"
-// changed to  : "Missing email address"
-
+$l_newsletter["del_email_file"] = "Borrar E-Mail '%s'?";
+$l_newsletter["email_missing"] = "Missing E-mail address"; // TRANSLATE
 $l_newsletter["yes"] = "Si";
 $l_newsletter["no"] = "No"; // TRANSLATE
 $l_newsletter["select_file"] = "Seleccionar archivo";
@@ -328,28 +218,19 @@ $l_newsletter["delete_group_ok"] = "El grupo de hojas informativas fue borrado."
 $l_newsletter["delete_group_nok"] = "ERROR: el grupo de hojas informativas no ha sido borrado";
 $l_newsletter["path_not_valid"] = "La ruta de acceso no es válida";
 $l_newsletter["no_subject"] = "El campo del asunto está vacío. Desea enviar el boletín informativo de todas formas?";
-$l_newsletter["mail_failed"] = "El E-Mail '%s' no puede enviarse. ¡Una posible causa es la configuración incorrecta del servidor!"; // CHECK
-// changed from: " E-mail '%s' cannot be sent. A possible cause is an incorrect server configuration."
-// changed to  : " email '%s' cannot be sent. A possible cause is an incorrect server configuration."
-
+$l_newsletter["mail_failed"] = "El E-Mail '%s' no puede enviarse. ¡Una posible causa es la configuración incorrecta del servidor!";
 $l_newsletter["reject_save_malformed"] = "No salvar el boletín informativo si la dirección de E-Mail es inválida.";;
 $l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
 $l_newsletter["use_https_refer"] = "Use HTTPS para la referencia";
-$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE 
+$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE
 $l_newsletter["we_filename_notValid"] = "El nombre entrado no es válido!\\nLos carácteres permitidos son alpha-númericos, mayúsculas y minúsculas, subrayado (_), guión (-), punto (.) y espacios ()(a-z, A-Z, 0-9, _, -, ., ).";
 $l_newsletter["send_wait"] = "Esperar un periodo para la próxima carga (en ms)";
 $l_newsletter["send_images"] = "Enviar imágenes";
 $l_newsletter["prepare_newsletter"] = "Preparación...";
 $l_newsletter["use_port_check"] = "Use puerto para la referencia";
 $l_newsletter["use_port"] = "Puerto";
-$l_newsletter["sum_group"] = "Dirección(es) de E-mail en la lista %s"; // CHECK
-// changed from: "E-mail address(es) in liste %s"
-// changed to  : "email address(es) in liste %s"
-
-$l_newsletter["sum_all"] = "Dirección(es) de E-mail en todas las listas"; // CHECK
-// changed from: "E-mail adress(es) all list(s)"
-// changed to  : "email adress(es) all list(s)"
-
+$l_newsletter["sum_group"] = "Dirección(es) de E-mail en la lista %s";
+$l_newsletter["sum_all"] = "Dirección(es) de E-mail en todas las listas";
 $l_newsletter["retry"] = "Intentarlo nuevamente";
 
 $l_newsletter["charset"]= "Charset"; // TRANSLATE

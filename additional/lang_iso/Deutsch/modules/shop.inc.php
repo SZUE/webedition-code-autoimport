@@ -15,6 +15,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -260,7 +261,6 @@ $l_shop['shipping']['countries'] = 'Länder';
 $l_shop['shipping']['costs'] = 'Kosten';
 $l_shop['shipping']['order_value'] = 'Bestellwert';
 $l_shop['shipping']['shipping_costs'] = 'Versandkosten';
-
 
 $l_shop['preferences']['customerFields'] = "Kundenfelder<br />(Kundenverwaltung)";
 $l_shop['preferences']['orderCustomerFields'] = 'Kundenfelder<br />(Bestellung)';

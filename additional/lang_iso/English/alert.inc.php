@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -48,7 +49,7 @@ $l_alert["delete_recipient"] = "Do you really want to delete the selected email 
 $l_alert["recipient_exists"] = "That email address already exists!";
 $l_alert["input_name"] = "Enter a new email address!";
 $l_alert['input_file_name'] = "Enter a filename.";
-$l_alert["max_name_recipient"] = "An email address may only be 255 characters long!";
+$l_alert["max_name_recipient"] = "An Email address may only be 255 characters long!";
 $l_alert["not_entered_recipient"] = "No email address has been entered!";
 $l_alert["recipient_new_name"] = "Change email address!";
 $l_alert["no_new"]["objectFile"] = "You are not allowed to create new objects!<br>Either you have no permission or there is no class where one of your workspaces is valid!";
@@ -102,7 +103,6 @@ $l_alert["template_save_warning1"] = "This template is used by one published doc
 $l_alert["template_save_warning2"] = "This template is used by other templates and documents, should they be resaved?";
 $l_alert["thumbnail_exists"] = 'This thumbnail already exists!';
 $l_alert["thumbnail_not_exists"] = 'This thumbnail does not exist!';
-$l_alert["thumbnail_empty"] = "You must enter a name for the new thumbnail!";
 $l_alert["doctype_exists"] = "This document type already exists!";
 $l_alert["doctype_empty"] = "You must enter a name for the new document type!";
 $l_alert["delete_cat"] = "Do you really want to delete the selected category?";

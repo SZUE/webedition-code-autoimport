@@ -87,10 +87,8 @@ $l_customer["branch"] = "View"; // TRANSLATE
 $l_customer["field_name"] = "Name"; // TRANSLATE
 $l_customer["field_type"] = "Type"; // TRANSLATE
 $l_customer["field_default"] = "Default"; // TRANSLATE
-$l_customer["add_mail"] = "Insert E-mail";
-
-$l_customer["edit_mail"] = "Edit E-mail";
-
+$l_customer["add_mail"] = "Insert E-mail"; // TRANSLATE
+$l_customer["edit_mail"] = "Edit E-mail"; // TRANSLATE
 
 $l_customer["no_branch"] = "No view has been selected!"; // TRANSLATE
 $l_customer["no_field"] = "No field has been selected!"; // TRANSLATE
@@ -195,7 +193,7 @@ $l_customer["csv_delimiter"] = "Delimiter"; // TRANSLATE
 $l_customer["csv_enclose"] = "Enclose"; // TRANSLATE
 $l_customer["csv_escape"] = "Escape"; // TRANSLATE
 $l_customer["csv_lineend"] = "Line end"; // TRANSLATE
-$l_customer["import_charset"]="Import charset"; // TRANSLATE //
+$l_customer["import_charset"]="Import charset"; // TRANSLATE
 $l_customer["csv_null"] = "NULL replacment"; // TRANSLATE
 $l_customer["csv_fieldnames"] = "First row contains fileds name"; // TRANSLATE
 
@@ -300,8 +298,6 @@ $l_customer["we_fieldname_notValid"] = "Введенное имя поля не�
 
 $l_customer["orderTab"] = 'Заказ клиента';
 $l_customer['default_order'] = 'Заданный порядок';
-$l_customer['ASC'] = 'ascending';// TRANSLATE
-$l_customer['DESC'] = 'descending';// TRANSLATE
 
 $l_customer["connected_with_customer"] = "Connected with customer"; // TRANSLATE
 $l_customer["one_customer"] = "Customer"; // TRANSLATE

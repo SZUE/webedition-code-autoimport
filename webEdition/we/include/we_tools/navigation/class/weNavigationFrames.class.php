@@ -481,7 +481,7 @@ class weNavigationFrames extends weToolFrames
 				1, 
 				$this->Model->Selection, 
 				false, 
-				'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"',
+				'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"', 
 				'value', 
 				$this->_width_size) . '<br />' . htmlSelect(
 				'SelectionType', 
@@ -516,7 +516,7 @@ class weNavigationFrames extends weToolFrames
 						'text', 
 						$this->_width_size, 
 						0), 
-				$l_navigation['parameter']) . 	'
+				$l_navigation['parameter']) . '
 				</div>
 			</div>
 			</div>
@@ -621,13 +621,7 @@ class weNavigationFrames extends weToolFrames
 						'onchange="' . $this->topFrame . '.mark();"', 
 						'text', 
 						$this->_width_size, 
-						0).'<br/>'.we_forms::checkboxWithHidden(
-						$this->Model->CurrentOnUrlPar, 
-						'CurrentOnUrlPar', 
-						$l_navigation['current_on_urlpar'], 
-						false, 
-						"defaultfont", 
-						$this->topFrame . '.mark();"'), 
+						0), 
 				$l_navigation['parameter']);
 		
 		array_push(
@@ -1023,7 +1017,7 @@ class weNavigationFrames extends weToolFrames
 				'SortCount', 
 				(isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) . '
 			<div style="display: block;">
-				<div style="display:block' . ';">
+				<div style="display:' . ($this->Model->hasDynChilds() ? 'none' : 'block') . ';">
 				' . htmlSelect(
 				'Selection', 
 				array(
@@ -2279,13 +2273,7 @@ function onFolderSelectionChangeJS(elem) {
 						'', 
 						'onchange="' . $this->topFrame . '.mark();"', 
 						'text', 
-						$this->_width_size).'<br/>'.we_forms::checkboxWithHidden(
-						$this->Model->CurrentOnAnker, 
-						'CurrentOnAnker', 
-						$l_navigation['current_on_anker'], 
-						false, 
-						"defaultfont", 
-						$this->topFrame . '.mark();"'), 
+						$this->_width_size), 
 				$l_navigation['anchor']);
 		
 		$_target = htmlFormElementTable(

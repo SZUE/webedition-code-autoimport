@@ -109,20 +109,12 @@ class we_binaryDocument extends we_document
 
 
 	function we_save($resave=0){
-	global $l_metadata;
-		if ($this->getFilesize() ==0){
-			print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall($l_metadata['file_size_0'], WE_MESSAGE_ERROR)
-			);
+		if( parent::we_save($resave) ){
+			$this->DocChanged = false;
+			$this->elements["data"]["dat"] = $this->getSitePath();
+			return $this->insertAtIndex();
+		}else{
 			return false;
-		} else {
-			if( parent::we_save($resave) ){
-				$this->DocChanged = false;
-				$this->elements["data"]["dat"] = $this->getSitePath();
-				return $this->insertAtIndex();
-			}else{
-				return false;
-			}
 		}
 	}
 

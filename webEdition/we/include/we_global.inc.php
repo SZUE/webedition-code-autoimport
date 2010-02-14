@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we_global.inc.php") {
+if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we_global.inc.php") {
 	exit();
 }
 if (!isset($GLOBALS["WE_IS_DYN"])) {
@@ -622,7 +622,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 			// check if parentid is in correct folder ...
 			
 
-			$parentfolder = new we_class_folder();
+			$parentfolder = new we_folder();
 			$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 			
 			if ($parentfolder) {

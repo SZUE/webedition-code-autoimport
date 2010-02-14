@@ -15,6 +15,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -32,12 +33,12 @@ $l_we_tag['back']['defaultvalue'] = "";
 $l_we_tag['banner']['description'] = "Use the we:banner tag to include a banner from the Banner Module.";
 $l_we_tag['bannerSelect']['description'] = "This tag displays a drop-down menu (&lt;select&gt;), to select banners. If the Customer Management Module is installed and the attribute customer is set to true, only banners of the logged-in customer will be shown.";
 $l_we_tag['bannerSum']['description'] = "The we:bannerSum tag displays the number of all shown or clicked banners or their click rate. The tag only works within a listview with type=\"banner\"";
-$l_we_tag['block']['description'] = "The we:block tag allows you to create expandable blocks/lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags), if you click the plus button in edit mode.";
+$l_we_tag['block']['description'] = "The we:block tag allows you to create expandable blocks/lists. Everything located between the start tag and the end tag will be entered ( any HTML and almost all we:tags ), if you click the plus button in edit mode.";
 $l_we_tag['block']['defaultvalue'] = "";
 $l_we_tag['calculate']['description'] = "The we:calculate tag allows all possible mathematical operations in PHP like *, /, +, -,(), sqrt..etc.";
 $l_we_tag['calculate']['defaultvalue'] = "";
 $l_we_tag['captcha']['description'] = "This tag generates an image with a random code. ";
-$l_we_tag['category']['description'] = "The we:category tag is replaced by the category (or categories) that was / were allocated to the document in the Properties view. If several categories have been allocated, they must be delimited using commas. If you wish to use another delimiter, you must specify it using the \"delimiter\" attribute. Example: delimiter = \" \" (In this case, a space is being used to delimit categories).";
+$l_we_tag['category']['description'] = "The we:category tag is replaced by the category ( or categories ) that was / were allocated to the document in the Properties view. If several categories have been allocated, they must be delimited using commas. If you wish to use another delimiter, you must specify it using the \"delimiter\" attribute. Example: delimiter = \" \" ( In this case, a space is being used to delimit categories ).";
 $l_we_tag['categorySelect']['description'] = "This tag is used to insert a drop-down (&lt;select&gt;) menu into a webEdition document. Use this tag to select a category. By placing an end tag immediatly after the start tag, you will cause the drop-down menu to contain all categories currently defined in webEdition.";
 $l_we_tag['categorySelect']['defaultvalue'] = "";
 $l_we_tag['charset']['description'] = "The we:charset tag generates a meta tag which determines the used charset for the page. \"ISO-8859-1\" is usually used for English Web pages. This tag must be placed within the meta tag of the HTML page.";
@@ -80,11 +81,9 @@ $l_we_tag['ifBack']['description'] = "This tag is used between the start and end
 $l_we_tag['ifBack']['defaultvalue'] = "";
 $l_we_tag['ifCaptcha']['description'] = "Content enclosed by this tag is only displayed if the code entered by the user is valid.";
 $l_we_tag['ifCaptcha']['defaultvalue'] = "";
-$l_we_tag['ifCat']['description'] = "The we:ifCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under \"categories\" are one of the document's categories.";
+$l_we_tag['ifCat']['description'] = "The we:ifNotVar tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under \"categories\" are one of the document\"s categories.";
 $l_we_tag['ifCat']['defaultvalue'] = "";
-$l_we_tag['ifNotCat']['description'] = "The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under \"categories\" are none of the document's categories.";
-$l_we_tag['ifNotCat']['defaultvalue'] = "";
-$l_we_tag['ifClient']['description'] = "The we:ifClient tag ensures that everything located between the start tag and the end tag will only be displayed if the client (browser) meets the established standards. This tag only works with dynamically saved pages!";
+$l_we_tag['ifClient']['description'] = "The we:ifClient tag ensures that everything located between the start tag and the end tag will only be displayed if the client ( browser ) meets the established standards. This tag only works with dynamically saved pages!";
 $l_we_tag['ifClient']['defaultvalue'] = "";
 $l_we_tag['ifConfirmFailed']['description'] = "When using DoubleOptIn with the Newsletter Module, &lt;we:ifConfirmFailed&gt; checks, if the E-Mail address was confirmed.";
 $l_we_tag['ifConfirmFailed']['defaultvalue'] = "";
@@ -92,7 +91,7 @@ $l_we_tag['ifCurrentDate']['description'] = "This tag highlights the current day
 $l_we_tag['ifCurrentDate']['defaultvalue'] = "";
 $l_we_tag['ifDeleted']['description'] = "Content enclosed by the start and end tags of this tag are only displayed if a particular document or object was deleted using &lt;we:delete/&gt;";
 $l_we_tag['ifDeleted']['defaultvalue'] = "";
-$l_we_tag['ifDoctype']['description'] = "The we:ifDoctype tag ensures that everything located between the start tag and the end tag is only displayed if the document type which is entered under \"doctype\" is the same as the document's document type.";
+$l_we_tag['ifDoctype']['description'] = "The we:ifDoctype tag ensures that everything located between the start tag and the end tag is only displayed if the document type which is entered under \"doctype\" is the same as the document\"s document type.";
 $l_we_tag['ifDoctype']['defaultvalue'] = "";
 $l_we_tag['ifDoubleOptIn']['description'] = "Content enclosed by this tag is only displayed during the first part of a double opt-in process.";
 $l_we_tag['ifDoubleOptIn']['defaultvalue'] = "";
@@ -179,7 +178,7 @@ $l_we_tag['ifNotSeeMode']['description'] = "This tag is used to display the encl
 $l_we_tag['ifNotSeeMode']['defaultvalue'] = "";
 $l_we_tag['ifNotSelf']['description'] = "The we:ifNotSelf tag ensures that everything located between the start tag and the end tag will not be displayed if the document has one of the ID's entered in the tag. If the tag is not located within we:linklist or we:listdir tags, \"id\" is a required field!";
 $l_we_tag['ifNotSelf']['defaultvalue'] = "";
-$l_we_tag['ifNotSidebar']['description'] = "This tag is used to display the enclosed contents only if the opened document is not located within the Sidebar.";
+$l_we_tag['ifNotSidebar']['description'] = "";
 $l_we_tag['ifNotSidebar']['defaultvalue'] = "";
 $l_we_tag['ifNotSubscribe']['description'] = "Content enclosed by this tag is only displayed if a subscription was not successful. This tag should appear in a template (for subscribing to newsletters) after &lt;we:addDelNewsletterEmail&gt;.";
 $l_we_tag['ifNotSubscribe']['defaultvalue'] = "";
@@ -223,9 +222,9 @@ $l_we_tag['ifShopNotEmpty']['description'] = "Everything between the start- and 
 $l_we_tag['ifShopNotEmpty']['defaultvalue'] = "";
 $l_we_tag['ifShopPayVat']['description'] = "The enclosed content is only displayed if a logged in customer has to pay VAT.";
 $l_we_tag['ifShopPayVat']['defaultvalue'] = "";
-$l_we_tag['ifShopVat']['description'] = "we:ifShopVat checks the VAT of the actual article (document/ shopping cart). The parameter Id allows to check the article's VAT with for the inserted Id.";
+$l_we_tag['ifShopVat']['description'] = "we:ifShopVat checks the VAT of the actual article (document/ shopping cart). The parameter Id allows to check the article\"s VAT with for the inserted Id.";
 $l_we_tag['ifShopVat']['defaultvalue'] = "";
-$l_we_tag['ifSidebar']['description'] = "This tag is used to display the enclosed contents only if the opened document is located within the Sidebar.";
+$l_we_tag['ifSidebar']['description'] = "";
 $l_we_tag['ifSidebar']['defaultvalue'] = "";
 $l_we_tag['ifSubscribe']['description'] = "Content enclosed by this tag is only displayed if a subscription to the newsletter was successful. It must be used in a subscription template after a &lt;we:addDelnewsletterEmail&gt; tag.";
 $l_we_tag['ifSubscribe']['defaultvalue'] = "";
@@ -266,13 +265,14 @@ $l_we_tag['link']['description'] = "The we:link tag creates a single link which 
 $l_we_tag['linklist']['description'] = "The we:linklist tag is used to generate link lists. A \"+\" button will appear in edit mode. Clicking this button will add a new link to the list. The appearance of the link list is determined by the HTML used in the list and by the use of \"we:prelink\" and \"we:postlink\" between &lt;we:link&gt; and &lt;/we:link&gt;. All the links inserted can be edited using an edit button and deleted using a delete button.";
 $l_we_tag['linklist']['defaultvalue'] = "&lt;we:link /&gt;&lt;we:postlink&gt;&lt;br /&gt;&lt;/we:postlink&gt;";
 $l_we_tag['linkToSeeMode']['description'] = "This tag generates a link which opens the selected document in seeMode.";
-$l_we_tag['list']['description'] = "The we:list tag allows you to create expandable lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags) if you click the plus button in edit mode.";
+$l_we_tag['list']['description'] = "The we:list tag allows you to create expandable lists. Everything located between the start tag and the end tag will be entered ( any HTML and almost all we:tags ) if you click the plus button in edit mode.";
 $l_we_tag['list']['defaultvalue'] = "";
 $l_we_tag['listdir']['description'] = "The we:listdir tag creates a new list displaying all files in the same directory. In the attribute \"field\" you can specify the field which is to be displayed. If the field is empty or does not exist, the name of the file is displayed. Directories are examined regarding index files; if there is an index file, it will be displayed. Which field should be used to display directories can be specified in the attribute \"dirfield\". If the field is empty or does not exist, the entry of \"field\" respective to the name of the file is used. If the attribute \"id\" is set up, the files of the directory with the indicated ID are displayed.";
 $l_we_tag['listdir']['defaultvalue'] = "";
 $l_we_tag['listview']['description'] = "The we:listview tag is the start tag and end tag of lists that are generated automatically (summary news pages etc.).";
 $l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;
-&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"true\"/&gt;
+
+&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;
 &lt;br /&gt;
 &lt;/we:repeat&gt;";
 $l_we_tag['listviewEnd']['description'] = "This tag displays the number of the last entry of the current &lt;we:listview&gt; page.";
@@ -289,7 +289,7 @@ $l_we_tag['navigation']['description'] = "we:navigation is used to initialise a 
 $l_we_tag['navigationEntries']['description'] = "Within we:navigationEntry type=\"folder\" this tag serves as a place holder for all entries of a folder of the navigation.";
 $l_we_tag['navigationEntry']['description'] = "With we:navigationEntry the look of an entry can be controlled within the navigation. With the attributes \"type\", \"level\", \"current\" and \"position\" single elements of various levels can be specifically picked and displayed.";
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;";
-$l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.<br/>Choose from <b>either</b> the attribute <i>name</i>, <b>or</b> from the attribute <i>attributes</i>, <b>or</b> from the attribute <i>complete</i>";
+$l_we_tag['navigationField']['description'] = "&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.";
 $l_we_tag['navigationWrite']['description'] = "Is used to write a we:navigation with given name";
 $l_we_tag['newsletterConfirmLink']['description'] = "This tag is used to generate the double opt-in confirmation link.";
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Confirm newsletter";
@@ -303,7 +303,7 @@ $l_we_tag['noCache']['defaultvalue'] = "";
 $l_we_tag['object']['description'] = "The we:object tag is used to display objects. The fields of an object can be displayed with we:field tags within the start tag and end tag. If just the attribute \"name\" for an object is set or has a value, the object selector will be displayed in the edit mode and the editor has the option to select all objects from all classes. If in addition the attribute \"classid\" has a value, the selection in the object selector will be reduced to all objects related to the class definded in \"classid\". With the attribute \"id\" you can define a preselection of a specific object defined by \"classid\" and \"id\". The attribute \"triggerid\" is used to display dynamic documents in a static object listview.";
 $l_we_tag['object']['defaultvalue'] = "";
 $l_we_tag['pagelogger']['description'] = "The we:pagelogger tag generates, depending on the selected \"type\" attribute, the necessary capture code for pageLogger or the fileserver- respectively the download-code.";
-$l_we_tag['path']['description'] = "The we:path tag represents the path of the current document. If there is an index file in one of the subdirectories, a link is set on the respective directory. The used index files (separated by commas) can be specified in the attribute \"index\". If nothing is specified there, \"default.html\", \"index.htm\", \"index.php\", \"default. htm\", \"default.html\" and \"default.php\" are used as default settings. In the attribute \"home\" you can specify what to put at the very beginning. If nothing is specified, \"home\" is displayed automatically. The attribute separator describes the delimiter between the directories. If the attribute is empty, \"/\" is used as delimiter. The attribute \"field\" defines what sort of field (files, directories) is displayed. If the field is empty or non-existent, the filename will be displayed. The attribute \"dirfield\" defines which field is used for display in directories. If the field is empty or non-existent, the entry of \"field\" or the filename is used.";
+$l_we_tag['path']['description'] = "The we:path tag represents the path of the current document. If there is an index file in one of the subdirectories, a link is set on the respective directory. The used index files ( separated by commas ) can be specified in the attribute \"index\". If nothing is specified there, \"default.html\", \"index.htm\", \"index.php\", \"default. htm\", \"default.html\" and \"default.php\" are used as default settings. In the attribute \"home\" you can specify what to put at the very beginning. If nothing is specified, \"home\" is displayed automatically. The attribute separator describes the delimiter between the directories. If the attribute is empty, \"/\" is used as delimiter. The attribute \"field\" defines what sort of field (files, directories) is displayed. If the field is empty or non-existent, the filename will be displayed. The attribute \"dirfield\" defines which field is used for display in directories. If the field is empty or non-existent, the entry of \"field\" or the filename is used.";
 $l_we_tag['paypal']['description'] = "The tag we:paypal implements an interface to the payment provider paypal. To ensure that this tag works properly, add additional parameters in the backend of the shop module.";
 $l_we_tag['position']['description'] = "The tag we:position is used to return the actual position of a listview, block, linklist, listdir. Is \"type= block or linklist\" it is necessary to specify the name (reference) of the related block/linklist. The attribute \"format\" determines the format of the result.";
 $l_we_tag['postlink']['description'] = "The we:postlink tag ensures that everything located between the start tag and the end tag will not be displayed for the last link in the link list.";
@@ -329,7 +329,7 @@ $l_we_tag['select']['defaultvalue'] = "&lt;option&gt;#1&lt;/option&gt;
 &lt;option&gt;#2&lt;/option&gt;
 &lt;option&gt;#3&lt;/option&gt;";
 $l_we_tag['sendMail']['description'] = "This tag sends a webEdition page as an email to the addresses which are defined in the attribute \"recipient\".";
-$l_we_tag['sessionField']['description'] = "The we:sessionField tag creates an HTML input, select or text area tag. It is used for any input in session fields (e. g. customer data, etc.).";
+$l_we_tag['sessionField']['description'] = "The we:sessionField tag creates an HTML input, select or text area tag. It is used for any input in session fields (e. g. Userdata, etc.).";
 $l_we_tag['sessionLogout']['description'] = "The we:sessionLogout tag creates an HTML link tag referring to an internal webEdition document with the ID mentioned in the webEdition Tag Wizard. If this webEdition document has a we:sessionStart tag and holds the attribute \"dynamic\", the active session will be cleared and closed. No data will be saved.";
 $l_we_tag['sessionLogout']['defaultvalue'] = "";
 $l_we_tag['sessionStart']['description'] = "This tag is used to start a session or to continue an existing one. This tag is required in templates that generate the following pages: Pages which are protected in some form by the Customer Mangement Module, Shop pages and pages which support front end input.<br />This tag MUST be the first tag on the first line of the template!";
@@ -364,17 +364,17 @@ $l_we_tag['writeVoting']['description'] = "This tag writes a voting into the dat
 $l_we_tag['xmlfeed']['description'] = "The tag loads xml content from the given url";
 $l_we_tag['xmlnode']['description'] = "The tag prints a xml element from the given feed or url.";
 $l_we_tag['xmlnode']['defaultvalue'] = "";
-$l_we_tag['ifbannerexists']['description'] = "Executes the enclosed code only, if the banner module is not deaktivated (settings dialog)."; 
+$l_we_tag['ifbannerexists']['description'] = "Executes the enclosed code only, if the banner module is not deaktivated (settings dialog).";
 $l_we_tag['ifbannerexists']['defaultvalue'] = "";
-$l_we_tag['ifcustomerexists']['description'] = "Executes the enclosed code only, if the customer module is not deaktivated (settings dialog)."; 
+$l_we_tag['ifcustomerexists']['description'] = "Executes the enclosed code only, if the customer module is not deaktivated (settings dialog).";
 $l_we_tag['ifcustomerexists']['defaultvalue'] = "";
-$l_we_tag['ifnewsletterexists']['description'] = "Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog)."; 
+$l_we_tag['ifnewsletterexists']['description'] = "Executes the enclosed code only, if the newsletter module is not deaktivated (settings dialog).";
 $l_we_tag['ifnewsletterexists']['defaultvalue'] = "";
-$l_we_tag['ifobjektexists']['description'] = "Executes the enclosed code only, if the object module is not deaktivated (settings dialog)."; 
+$l_we_tag['ifobjektexists']['description'] = "Executes the enclosed code only, if the object module is not deaktivated (settings dialog).";
 $l_we_tag['ifobjektexists']['defaultvalue'] = "";
-$l_we_tag['ifshopexists']['description'] = "Executes the enclosed code only, if the shop module is not deaktivated (settings dialog)."; 
+$l_we_tag['ifshopexists']['description'] = "Executes the enclosed code only, if the shop module is not deaktivated (settings dialog).";
 $l_we_tag['ifshopexists']['defaultvalue'] = "";
-$l_we_tag['ifvotingexists']['description'] = "Executes the enclosed code only, if the voting module is not deaktivated (settings dialog)."; 
+$l_we_tag['ifvotingexists']['description'] = "Executes the enclosed code only, if the voting module is not deaktivated (settings dialog).";
 $l_we_tag['ifvotingexists']['defaultvalue'] = "";
 
 $l_we_tag['ifNotHasChildren']['description'] = "Within the &lt;we:repeat&gt; tag &lt;we:ifNotHasChildren&gt; is used to query if a category(folder) has child categories.";
@@ -389,10 +389,6 @@ $l_we_tag['ifPageLanguage']['description'] = "The tag we:ifPageLanguage tests on
 $l_we_tag['ifPageLanguage']['defaultvalue'] = "";
 $l_we_tag['ifNotPageLanguage']['description'] = "The tag we:ifNotPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";
 $l_we_tag['ifNotPageLanguage']['defaultvalue'] = "";
-$l_we_tag['ifObjectLanguage']['description'] = "The tag we:ifObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";
-$l_we_tag['ifObjectLanguage']['defaultvalue'] = "";
-$l_we_tag['ifNotObjectLanguage']['description'] = "The tag we:ifNotObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages";
-$l_we_tag['ifNotObjectLanguage']['defaultvalue'] = "";
 $l_we_tag['ifSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page";
 $l_we_tag['ifSendMail']['defaultvalue'] = "";
 $l_we_tag['ifNotSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page";

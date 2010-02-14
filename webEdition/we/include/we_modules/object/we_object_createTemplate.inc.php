@@ -61,7 +61,7 @@ function getObjectTags($id,$isField=false){
 ';
 
 	for($i=0;$i<sizeof($tableInfo);$i++){
-		if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+		if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 			$content .= getTmplTableRow($regs[1],$regs[2],$isField);
 		}
 	}
@@ -95,7 +95,7 @@ function getMultiObjectTags($name){
 ';
 
 	for($i=0;$i<sizeof($tableInfo);$i++){
-		if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+		if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 			$content .= getTmplTableRow($regs[1],$regs[2],true);
 		}
 	}

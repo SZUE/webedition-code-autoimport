@@ -60,10 +60,6 @@ class weNavigationItem
 	var $containsCurrent = 'false';
 
 	var $visible = 'true';
-	
-	var $CurrentOnUrlPar='0';
-	
-	var $CurrentOnAnker ='0';
 
 	//attributes
 	var $title;
@@ -92,7 +88,7 @@ class weNavigationItem
 
 	var $Storage = array();
 
-	function weNavigationItem($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "",$CurrentOnUrlPar='0', $CurrentOnAnker ='0')
+	function weNavigationItem($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "")
 	{
 		$this->id = $id;
 		$this->parentid = 0;
@@ -106,8 +102,6 @@ class weNavigationItem
 		$this->icon = $icon;
 		$this->level = 0;
 		$this->position = 0;
-		$this->CurrentOnUrlPar = $CurrentOnUrlPar;
-		$this->CurrentOnAnker = $CurrentOnAnker;
 		
 		if (!is_array($attributes)) {
 			$attributes = @unserialize($attributes);
@@ -139,6 +133,7 @@ class weNavigationItem
 				$this->visible = !empty($_v) ? 'true' : 'false';
 			}
 		}
+	
 	}
 
 	function addItem(&$item)
@@ -194,31 +189,13 @@ class weNavigationItem
 
 	function isCurrent($weNavigationItems)
 	{
-		$thishref = $this->href;
-		if ($this->CurrentOnAnker || $this->CurrentOnUrlPar){ // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
-			 $thishref= str_replace(strstr($thishref,'#'),'',$thishref);
-			 $thishref= str_replace('&amp;','&',$thishref);
-		}
-		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $thishref) {
-			// fastest way			
+		
+		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $this->href) {
+			// fastest way
+			
+
 			$this->setCurrent($weNavigationItems);
 			return true;
-		}
-		if (isset($_SERVER['REQUEST_URI'])) { //#3698
-			$uri = parse_url($_SERVER['REQUEST_URI']);
-			$ref = parse_url($thishref);			
-			if ( ($uri['path'] == $ref['path']) && isset($uri['query']) && isset($ref['query'])  ){
-				$uriarrq = explode('&',$uri['query']);
-				$refarrq = explode('&',$ref['query']);
-				$allfound=true;
-				foreach ($refarrq as $refa) {
-					if (!in_array($refa,$uriarrq)){$allfound=false;}
-				}
-				if($allfound){
-					$this->setCurrent($weNavigationItems);
-					return true;
-				}
-			}			
 		}
 		
 		if (isset($GLOBALS["we_obj"]) && $this->table == OBJECT_FILES_TABLE) {
@@ -228,7 +205,8 @@ class weNavigationItem
 				$id = $GLOBALS["WE_MAIN_DOC"]->ID;
 			}
 		
-		if (isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker) ) {			 
+		if (isset($id) && ($this->docid == $id)) {
+			
 			$this->setCurrent($weNavigationItems);
 			return true;
 		
@@ -590,9 +568,7 @@ class weNavigationItems
 				$this->id2path($_navigation->IconID), 
 				$_navigation->Attributes, 
 				$_navigation->LimitAccess, 
-				$this->getCustomerData($_navigation),
-				$_navigation->CurrentOnUrlPar,
-				$_navigation->CurrentOnAnker);
+				$this->getCustomerData($_navigation));
 		
 		$_items = $_navigation->getDynamicPreview($this->Storage);
 		
@@ -630,9 +606,7 @@ class weNavigationItems
 					$_item['icon'], 
 					$_item['attributes'], 
 					$_item['limitaccess'], 
-					$_item['customers'],
-					$_item['currentonurlpar'],
-					$_item['currentonanker']);
+					$_item['customers']);
 			if (isset($this->items['id' . $_item['parentid']])) {
 				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 			}
@@ -736,9 +710,6 @@ class weNavigationItems
 					$navigationRulesStorage = weFile::load($_cache);
 				}
 				$this->currentRules = unserialize($navigationRulesStorage);
-				foreach ($this->currentRules as &$rule){ //#Bug 4142
-					$rule->renewDB();
-				}
 				unset($navigationRulesStorage);
 			}
 			
@@ -795,9 +766,7 @@ class weNavigationItems
 				$this->id2path($_navigation->IconID), 
 				$_navigation->Attributes, 
 				$_navigation->LimitAccess, 
-				$this->getCustomerData($_navigation),
-				$_navigation->CurrentOnUrlPar,
-				$_navigation->CurrentOnAnker);
+				$this->getCustomerData($_navigation));
 		
 		$_items = $_navigation->getDynamicPreview($this->Storage, true);
 		
@@ -818,9 +787,7 @@ class weNavigationItems
 						$_item['icon'], 
 						$_item['attributes'], 
 						$_item['limitaccess'], 
-						$_item['customers'],
-						$_item['currentonurlpar'],
-						$_item['currentonanker']);
+						$_item['customers']);
 				
 				if (isset($this->items['id' . $_item['parentid']])) {
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
@@ -951,21 +918,17 @@ class weNavigationItems
 				if ($_ponder == 0) {
 					$this->setCurrent($_rule->NavigationID, $_rule->SelfCurrent);
 					return true;
-				} else {
-					if ($_ponder <= $_score) {						
-						if( defined('NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH') && NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){ 
-							$this->setCurrent($_rule->NavigationID, null); 
-						} else {
-							$_score = $_ponder;
-							$_candidate = $_rule->NavigationID;
-						}
+				} else 
+					if ($_ponder <= $_score) {
+						$_score = $_ponder;
+						$_candidate = $_rule->NavigationID;
 					}
-				}
+			
 			}
 			if ($_candidate != 0) {
 				$this->setCurrent($_candidate, null);
 				return true;
-			}  
+			}
 		}
 		return false;
 	}

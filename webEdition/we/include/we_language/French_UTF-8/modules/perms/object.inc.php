@@ -37,5 +37,5 @@ $l_perm["object"]["CAN_SEE_OBJECTS"] = "L'utilisateur peut voir des classes";
 $l_perm["object"]["NEW_OBJECT"] = "L'utilisateur a le droit de créer des classes";
 $l_perm["object"]["DELETE_OBJECT"] = "L'utilisateur a le droit de supprimer des classes";
 $l_perm["object"]["CAN_SELECT_OTHER_USERS_OBJECTS"] = "The user is allowed to select objects outside of his workspace."; // TRANSLATE
-$l_perm["object"]["CAN_COPY_OBJECTS"] = "The user is allowed to copy object folders"; // TRANSLATE
+
 ?>

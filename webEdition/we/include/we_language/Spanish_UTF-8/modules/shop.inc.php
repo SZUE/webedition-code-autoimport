@@ -190,10 +190,7 @@ $l_shop["saferpayUnotifyTxt"] = "* Confirmar correo al cliente";
 $l_shop["saferpayProviderset"] = "Conjunto de proveedores";
 $l_shop["saferpayProvidersetTxt"] = "* ¡Separado por comas!";
 $l_shop["saferpayCMDPath"] = "exec-path"; // TRANSLATE
-$l_shop["saferpayCMDPathTxt"] = "* p.ej. /usr/local/bin/"; // CHECK
-// changed from: "* z.B. /usr/local/bin/"
-// changed to  : "* e.g. /usr/local/bin/"
-
+$l_shop["saferpayCMDPathTxt"] = "* p.ej. /usr/local/bin/";
 $l_shop["saferpayconfPath"] = "conf-path"; // TRANSLATE
 $l_shop["saferpayconfPathTxt"] = "* camino al saferpay";
 $l_shop["saferpaydesc"] = "Descripción";
@@ -208,10 +205,7 @@ $l_shop["fieldSurname"] = "Apellido";
 $l_shop["fieldStreet"] = "Calle";
 $l_shop["fieldZip"] = "C.P.";
 $l_shop["fieldCity"] = "Ciudad";
-$l_shop["fieldEmail"] = "E-Mail"; // CHECK
-// changed from: "E-mail"
-// changed to  : "email"
-
+$l_shop["fieldEmail"] = "E-Mail";
 $l_shop["SelectAll"]= "Todo";
 $l_shop["plzh"] = "comodín";
 $l_shop["lastOrder"] = "Last order - Nr.: %s, %s";

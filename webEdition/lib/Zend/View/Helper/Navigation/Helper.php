@@ -15,9 +15,8 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Helper.php 18951 2009-11-12 16:26:19Z alexander $
  */
 
 /**
@@ -26,7 +25,7 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 interface Zend_View_Helper_Navigation_Helper
@@ -126,7 +125,7 @@ interface Zend_View_Helper_Navigation_Helper
      * @return bool  whether ACL should be used
      */
     public function getUseAcl();
-
+    
     /**
      * Return renderInvisible flag
      *

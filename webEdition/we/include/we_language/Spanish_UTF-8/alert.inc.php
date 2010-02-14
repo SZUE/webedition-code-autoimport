@@ -45,18 +45,12 @@ $l_alert[FILE_TABLE]["not_im_ws"] = "El archivo no está situado dentro de su á
 $l_alert["folder"]["not_im_ws"] = "La carpeta no está situado dentro de su área de trabajo!";
 $l_alert[TEMPLATES_TABLE]["not_im_ws"] = "La plantilla no está situado dentro de su área de trabajo!";
 $l_alert["delete_recipient"] = "UD realmente desea borrar la dirección de E-mail seleccionada?";
-
 $l_alert["recipient_exists"] = "Esa dirección de E-mail ya existe!";
-
 $l_alert["input_name"] = "Entre una nueva dirección de E-mail!";
-
 $l_alert['input_file_name'] = "Enter a filename."; // TRANSLATE
 $l_alert["max_name_recipient"] = "La dirección de E-mail solo debe tener hasta 255 caracteres!";
-
 $l_alert["not_entered_recipient"] = "Ninguna dirección de E-mail ha sido entrada!";
-
 $l_alert["recipient_new_name"] = "Cambiar dirección de E-mail!";
-
 $l_alert["no_new"]["objectFile"] = "Ud no puede crear nuevos objetos!<br>O Ud no tiene permiso o no hay una clase donde una de sus áreas de trabajo sea válida!";
 $l_alert["required_field_alert"] = "El campo '%s' es requerido y tiene que ser llenado!";
 $l_alert["phpError"] = "webEdition no se puede iniciar!";

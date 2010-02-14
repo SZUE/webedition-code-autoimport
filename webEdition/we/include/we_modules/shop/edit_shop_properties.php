@@ -916,7 +916,7 @@ if(isset($_REQUEST["DatePayment"])){
 
 if(isset($_REQUEST["article"])){
 	if(isset($_REQUEST["preis"])){
-		$DB_WE->query("update ".SHOP_TABLE." SET Price='" . sql_regcase($_REQUEST["preis"]) . "' where IntID = ".abs($_REQUEST["article"]));
+		$DB_WE->query("update ".SHOP_TABLE." SET Price='" . msql_regcase($_REQUEST["preis"]) . "' where IntID = ".abs($_REQUEST["article"]));
 	}else if(isset($_REQUEST["anzahl"])){
 		$DB_WE->query("update ".SHOP_TABLE." SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' where IntID = " . abs($_REQUEST["article"]));
 	} else if (isset($_REQUEST['vat'])) {
@@ -1660,7 +1660,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	</script>
 
 	</head>
-<body class="weEditorBody" onUnload="doUnload()">
+<body class="weEditorBody" onunload="doUnload()">
 
 <?php
 

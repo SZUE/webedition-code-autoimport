@@ -681,7 +681,7 @@ class weNewsletterView {
 						break;
 						
 					case "openNewsletterDirselector":
-						url = "'.WEBEDITION_DIR.'we/include/we_modules/newsletter/we_dirfs.php?";
+						url = "'.WEBEDITION_DIR.'/we/include/we_modules/newsletter/we_dirfs.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}
@@ -2328,13 +2328,9 @@ class weNewsletterView {
 
 
 
-			if(isset($this->settings["use_port"]) && $this->settings["use_port"]) {
-				$port = ":".$this->settings["use_port"];
-			} else {
-				//if ($_SERVER['SERVER_PORT'] != 80) { $port = ":".$_SERVER['SERVER_PORT'];} //Dieses Verhalten führt zu Bug #3894
-				// else {$port = "";} 
-				$port = ""; 
-			}
+			if(isset($this->settings["use_port"]) && $this->settings["use_port"]) $port = ":".$this->settings["use_port"];
+			else if ($_SERVER['SERVER_PORT'] != 80) $port = ":".$_SERVER['SERVER_PORT'];
+			else $port = "";
 			if(isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"]) $protocol="https://";
 			else $protocol="http://";
 
@@ -2481,13 +2477,14 @@ class weNewsletterView {
 		$protocol=getServerProtocol(true);
 		$basehref=$protocol.SERVER_NAME.":".$port;
 		$_clean = $this->getCleanMail($this->newsletter->Reply);
+		
 		$phpmail = new we_util_Mailer($this->newsletter->Test,$this->newsletter->Subject,$this->newsletter->Sender,$this->newsletter->Reply,$this->newsletter->isEmbedImages);
-		if(!$this->settings["use_base_href"]) {$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);}
+		if(!$this->newsletter->use_base_href) {$phpmail->setIsUseBaseHref($this->newsletter->use_base_href);}
 		$phpmail->setCharSet($this->newsletter->Charset!="" ? $this->newsletter->Charset : $GLOBALS["_language"]["charset"]);
-		if ($hm) {$phpmail->addHTMLPart($content);}
+		$phpmail->addHTMLPart($content);
 		$phpmail->addTextPart(trim($plain));
 		foreach ($atts as $att) {
-			$phpmail->doAddAttachment($att);
+			$phpmail->AddAttachment($att);
 		}
 		$phpmail->buildMessage();
 		$phpmail->Send();
@@ -2517,18 +2514,6 @@ class weNewsletterView {
 
 	function getFilterSQL($filter) {
 		$filterSQL = $filter["fieldname"];
-		if ($filter["fieldname"] == 'MemberSince' || $filter["fieldname"] == 'LastLogin' || $filter["fieldname"] == 'LastAccess' ){
-			if(stristr($filter['fieldvalue'], '.')) {
-				$date = explode(".", $filter['fieldvalue']);
-				$day = $date[0];
-				$month = $date[1];
-				$year = $date[2];
-				$hour = $filter['hours'];
-				$minute = $filter['minutes']; 
-				$filter['fieldvalue'] = mktime($hour, $minute, 0, $month, $day, $year);
-			} 
-		}
-		
 		switch ($filter["operator"]) {
 			case 0:
 				$filterSQL .= " = '".$filter["fieldvalue"]."'";
@@ -2624,12 +2609,12 @@ class weNewsletterView {
 				$customers=makeArrayFromCSV($this->newsletter->groups[$group-1]->Customers);
 			}
 
-			$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";','pref_value',$this->db);
+			
 			foreach ($customers as $customer) {
 				$foo = getHash("SELECT * FROM ".CUSTOMER_TABLE." WHERE ID=".abs($customer).($filtersql!="" ?  " AND ($filtersql)": ""),$this->db);
 				if (isset($foo[$this->settings["customer_email_field"]]) && $foo[$this->settings["customer_email_field"]]) {
 					$email = $foo[$this->settings["customer_email_field"]];
-					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && $foo[$this->settings["customer_html_field"]]!='') ? $foo[$this->settings["customer_html_field"]] : $_default_html;
+					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && $foo[$this->settings["customer_html_field"]]) ? $foo[$this->settings["customer_html_field"]] : "";
 					$salutation = (isset($foo[$this->settings["customer_salutation_field"]]) && $foo[$this->settings["customer_salutation_field"]]) ? $foo[$this->settings["customer_salutation_field"]] : "";
 					$title = (isset($foo[$this->settings["customer_title_field"]]) && $foo[$this->settings["customer_title_field"]]) ? $foo[$this->settings["customer_title_field"]] : "";
 					$firstname = (isset($foo[$this->settings["customer_firstname_field"]]) && $foo[$this->settings["customer_firstname_field"]]) ? $foo[$this->settings["customer_firstname_field"]] : "";

@@ -16,9 +16,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Simpy
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Simpy.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id: Simpy.php 15893 2009-06-04 23:12:54Z elazar $
  */
 
 
@@ -28,7 +28,7 @@ require_once 'Zend/Http/Client.php';
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Simpy
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @link       http://www.simpy.com/doc/api/rest/
  */
@@ -42,9 +42,9 @@ class Zend_Service_Simpy
     protected $_baseUri = 'http://simpy.com/simpy/api/rest/';
 
     /**
-     * HTTP client for use in making web service calls
+     * HTTP client for use in making web service calls 
      *
-     * @var Zend_Http_Client
+     * @var Zend_Http_Client 
      */
     protected $_http;
 
@@ -66,7 +66,7 @@ class Zend_Service_Simpy
     }
 
     /**
-     * Returns the HTTP client currently in use by this class for REST API
+     * Returns the HTTP client currently in use by this class for REST API 
      * calls, intended mainly for testing.
      *
      * @return Zend_Http_Client

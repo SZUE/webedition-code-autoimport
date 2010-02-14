@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -39,10 +40,4 @@ $GLOBALS["l_copyFolder"]["create_new_doctypes"] = "Erzeuge neue Dokument-Typen";
 $GLOBALS["l_copyFolder"]["prepareTemplates"] = "Erzeugen neuer Vorlagen vorbereiten";
 $GLOBALS["l_copyFolder"]["categories"] = "Kategorien";
 $GLOBALS["l_copyFolder"]["overwrite_categories"] = "Überschreibe Kategorien";
-$GLOBALS["l_copyFolder"]["object_copy"] = "Kopiere Objekte und Objektordner";
-$GLOBALS["l_copyFolder"]["sameName_expl"] = "Bestimmen Sie hier das Verhalten von webEdition, wenn ein Objekt mit gleichem Namen und Pfad existiert.";
-$GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Existierendes Objekt überschreiben";
-$GLOBALS["l_copyFolder"]["sameName_rename"] = "Neues Objekt umbenennen";
-$GLOBALS["l_copyFolder"]["sameName_nothing"] = "Objekt nicht kopieren";
-$GLOBALS["l_copyFolder"]["sameName_headline"] = "Was tun bei gleichem Namen?";
 ?>

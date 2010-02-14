@@ -23,7 +23,6 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 
 	$permission = we_getTagAttribute("permission", $attribs);
 	$match = we_getTagAttribute("match", $attribs);
-	$match = makeArrayFromCSV($match);
 	$cfilter = we_getTagAttribute("cfilter", $attribs, "", true);
 
 	$userid = we_getTagAttribute("userid", $attribs, "");
@@ -53,7 +52,7 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 
 		if($permission) {
 			if(!empty($match)){
-				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match);
+				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission]==$match;
 			} else {
 				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission];
 			}

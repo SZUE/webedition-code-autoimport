@@ -16,9 +16,8 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gapps
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Gapps.php 16971 2009-07-22 18:05:45Z mikaelkael $
  */
 
 /**
@@ -61,7 +60,7 @@ require_once 'Zend/Gdata/Gapps/EmailListRecipientFeed.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Gapps
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_Gapps extends Zend_Gdata
@@ -625,9 +624,7 @@ class Zend_Gdata_Gapps extends Zend_Gdata
             $foundClassName = null;
             foreach ($this->_registeredPackages as $name) {
                  try {
-                     // Autoloading disabled on next line for compatibility
-                     // with magic factories. See ZF-6660.
-                     if (!class_exists($name . '_' . $class, false)) {
+                     if (!class_exists($name . '_' . $class)) {
                         require_once 'Zend/Loader.php';
                         @Zend_Loader::loadClass($name . '_' . $class);
                      }

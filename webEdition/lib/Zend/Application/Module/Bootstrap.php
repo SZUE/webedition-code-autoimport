@@ -15,8 +15,8 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Module
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Bootstrap.php 18951 2009-11-12 16:26:19Z alexander $
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Bootstrap.php 15553 2009-05-12 13:52:41Z matthew $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -27,15 +27,15 @@ require_once 'Zend/Application/Bootstrap/Bootstrap.php';
 
 /**
  * Base bootstrap class for modules
- *
+ * 
  * @uses       Zend_Loader_Autoloader_Resource
  * @uses       Zend_Application_Bootstrap_Bootstrap
  * @package    Zend_Application
  * @subpackage Module
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Application_Module_Bootstrap
+abstract class Zend_Application_Module_Bootstrap 
     extends Zend_Application_Bootstrap_Bootstrap
 {
     /**
@@ -45,8 +45,8 @@ abstract class Zend_Application_Module_Bootstrap
 
     /**
      * Constructor
-     *
-     * @param  Zend_Application|Zend_Application_Bootstrap_Bootstrapper $application
+     * 
+     * @param  Zend_Application|Zend_Application_Bootstrap_Bootstrapper $application 
      * @return void
      */
     public function __construct($application)
@@ -77,15 +77,15 @@ abstract class Zend_Application_Module_Bootstrap
         }
 
         // ZF-6545: prevent recursive registration of modules
-        if ($this->hasPluginResource('modules')) {
-            $this->unregisterPluginResource('modules');
+        if ($this->hasPluginResource('Modules')) {
+            $this->unregisterPluginResource('Modules');
         }
     }
 
     /**
      * Set module resource loader
-     *
-     * @param  Zend_Loader_Autoloader_Resource $loader
+     * 
+     * @param  Zend_Loader_Autoloader_Resource $loader 
      * @return Zend_Application_Module_Bootstrap
      */
     public function setResourceLoader(Zend_Loader_Autoloader_Resource $loader)
@@ -96,7 +96,7 @@ abstract class Zend_Application_Module_Bootstrap
 
     /**
      * Retrieve module resource loader
-     *
+     * 
      * @return Zend_Loader_Autoloader_Resource
      */
     public function getResourceLoader()
@@ -114,7 +114,7 @@ abstract class Zend_Application_Module_Bootstrap
 
     /**
      * Ensure resource loader is loaded
-     *
+     * 
      * @return void
      */
     public function initResourceLoader()
@@ -124,7 +124,7 @@ abstract class Zend_Application_Module_Bootstrap
 
     /**
      * Retrieve module name
-     *
+     * 
      * @return string
      */
     public function getModuleName()

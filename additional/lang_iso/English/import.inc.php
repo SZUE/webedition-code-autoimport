@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -58,7 +59,7 @@ $l_import['txt_file_import'] = 'Import one or more files from the local hard dri
 $l_import['site_import'] = 'Import files from server';
 $l_import['site_import_isp'] = 'Import graphics from server';
 $l_import['txt_site_import_isp'] = 'Import graphics form the root-directory of the server. Set filter options to choose which graphics are to be imported.';
-$l_import['txt_site_import'] = 'Import files from the root-directory of the server. Set filter options to choose if images, HTML pages, Flash, JavaScript, or CSS files, plain-text documents, or other types of files are to be imported.';
+$l_import['txt_site_import'] = 'Import files from the root-directory of the server. Set filter options to choose if graphics, HTML pages, Flash, JavaScript, or CSS files, plain-text documents, or other types of files are to be imported.';
 $l_import['txt_wxml_import'] = 'webEdition XML files contain information about webEdition documents, templates or objects. Choose a directory to which the files are to be imported.';
 $l_import['txt_gxml_import'] = 'Import "flat" XML files, such as those provided by phpMyAdmin. The dataset fields have to be allocated to the webEdition dataset fields. Use this to import XML files exported from webEdition without the export module.';
 $l_import['txt_csv_import'] = 'Import CSV files (Comma Separated Values) or modified textformats (e. g. *.txt). The dataset fields are assigned to the webEdition fields.';

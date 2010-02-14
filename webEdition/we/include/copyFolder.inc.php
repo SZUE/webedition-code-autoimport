@@ -34,11 +34,8 @@ class copyFolderFrag extends taskFragment
 	{
 		$fromID = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : 0;
 		$toID = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 0;
-		$table = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : '';
-		$OverwriteObjects = isset($_REQUEST["OverwriteObjects"]) ? $_REQUEST["OverwriteObjects"] : 'nothing';
 		$CreateTemplate = isset($_REQUEST["CreateTemplate"]) ? $_REQUEST["CreateTemplate"] : false;
 		$CreateDoctypes = isset($_REQUEST["CreateDoctypes"]) ? $_REQUEST["CreateDoctypes"] : false;
-		
 		$CreateTemplateInFolderID = isset($_REQUEST["CreateTemplateInFolderID"]) ? $_REQUEST["CreateTemplateInFolderID"] : 0;
 		$OverwriteCategories = isset($_REQUEST["OverwriteCategories"]) ? $_REQUEST["OverwriteCategories"] : false;
 		$newCategories = array();
@@ -57,8 +54,7 @@ class copyFolderFrag extends taskFragment
 		if (isset($_SESSION["WE_CREATE_TEMPLATE"])) {
 			unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		}
-		if (defined('OBJECT_FILES_TABLE')) {$checkTable = OBJECT_FILES_TABLE;} else {$checkTable="1";}
-		if ($fromID && $toID && $table != $checkTable   ) {
+		if ($fromID && $toID) {
 			//  "fromID"  cannot be a parent  of "toID"
 			
 
@@ -107,155 +103,34 @@ class copyFolderFrag extends taskFragment
 				}
 			}
 		
-		} else {
-			if (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) {
-				$_SESSION["WE_COPY_OBJECTS"] = true;
-				$fromPath = id_to_path($fromID, OBJECT_FILES_TABLE);
-				$db = new DB_WE();
-				$this->alldata = array();
-			
-			
-				$db->query(
-					"SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE (Path like'".mysql_real_escape_string($fromPath)."/%') ORDER BY IsFolder DESC,Path");
-				while ($db->next_record()) {
-					$db->Record["CopyToId"] = $toID;
-					$db->Record["CopyFromId"] = $fromID;
-					$db->Record["CopyFromPath"] = $fromPath;
-					$db->Record["IsWeFile"] = 1;
-					$db->Record["TheTable"] = OBJECT_FILES_TABLE;
-					$db->Record["OverwriteObjects"] = $OverwriteObjects;
-					$db->Record["IsFolder"] = $db->f('IsFolder');
-					$db->Record["CreateTemplate"] =  0;
-					$db->Record["CreateDoctypes"] =  0;
-					$db->Record["CreateTemplateInFolderID"] = 0;
-					$db->Record["OverwriteCategories"] = 0;
-					$db->Record["newCategories"] = '';
-					array_push($this->alldata, $db->Record);
-				}
-			
-			}
-		
 		}
-
+	
 	}
 
 	function doTask()
 	{
 		if (is_array($this->data)) {
-			if (!isset($this->data["TheTable"])){
-				if ($this->copyFile()) {
-					if ($this->data["IsWeFile"] && $this->data["num"]) {
-						$pbText = (sprintf($GLOBALS["l_copyFolder"]["rewrite"], basename($this->data["Path"])));
-					} else {
-						$pbText = (sprintf(
-								$this->data["IsFolder"] ? $GLOBALS["l_copyFolder"]["copyFolder"] : $GLOBALS["l_copyFolder"]["copyFile"], 
-								basename($this->data["Path"])));
-					}
-					print 
-							'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int)((100 / count(
-									$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
-									$pbText) . '");</script>';
-					flush();
-				
+			if ($this->copyFile()) {
+				if ($this->data["IsWeFile"] && $this->data["num"]) {
+					$pbText = (sprintf($GLOBALS["l_copyFolder"]["rewrite"], basename($this->data["Path"])));
 				} else {
-					exit("Error importing File: " . $this->data["Path"]);
-				}
-			} else {
-				if ($this->copyObjects()){
 					$pbText = (sprintf(
-								$this->data["IsFolder"] ? $GLOBALS["l_copyFolder"]["copyObjectFolder"] : $GLOBALS["l_copyFolder"]["copyObjectFile"], 
-								basename($this->data["Path"])));
-					print 
-							'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int)((100 / count(
-									$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
-									$pbText) . '");</script>';
-					flush();
-				} else {
-					exit("Error importing Object: " . $this->data["Path"]);
+							$this->data["IsFolder"] ? $GLOBALS["l_copyFolder"]["copyFolder"] : $GLOBALS["l_copyFolder"]["copyFile"], 
+							basename($this->data["Path"])));
 				}
+				print 
+						'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int)((100 / count(
+								$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
+								$pbText) . '");</script>';
+				flush();
 			
+			} else {
+				exit("Error importing File: " . $this->data["Path"]);
 			}
 		}
+	
 	}
-	function getObjectPid($path, $db)
-	{
-		$path = dirname($path);
-		if ($path == "/") {
-			return 0;
-		}
-		return f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $db);
-	}
-	function copyObjects()
-	{
-		global $we_doc;
-		$we_doc = $this->getObjectFile();
-		$this->copyToPath = id_to_path($this->data["CopyToId"], OBJECT_FILES_TABLE);
-		$path = ereg_replace('^' . $this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $this->data["Path"]);
-		if ($this->data["IsFolder"]) {
-			$we_doc->initByPath($path,OBJECT_FILES_TABLE,1,0);
-			if (!$we_doc->we_save()) {
-				return false;
-			}
-		} else {
-			$we_doc->copyDoc($this->data["ID"]);
-			$we_doc->Text = $this->data["Text"];
-			$we_doc->Path = $path;
-			$we_doc->OldPath = "";
-			$pid = $this->getObjectPid($path, $GLOBALS["DB_WE"]);
-			$we_doc->setParentID($pid);
-			$ObjectExists = $this->CheckForSameObjectName($we_doc->Path, $GLOBALS["DB_WE"]);
-			
-			
-			if ($ObjectExists && $this->data["OverwriteObjects"]=='nothing'){
-				return true;
-			}
-			if ($ObjectExists && $this->data["OverwriteObjects"]=='rename'){
-				$we_doc->Text = $we_doc->Text."_copy";
-				$we_doc->Path = $we_doc->Path."_copy";
-				while ( $this->CheckForSameObjectName($we_doc->Path, $GLOBALS["DB_WE"]) ){
-					$we_doc->Text = $we_doc->Text."_copy";
-					$we_doc->Path = $we_doc->Path."_copy";
-				}
-				
-			}
-			if ($ObjectExists && $this->data["OverwriteObjects"]=='overwrite'){
-				$we_doc->ID = $ObjectExists;
-				
-			}
-			if (!$we_doc->we_save()) {
-				return false;
-			}
-			if ($this->data["Published"]) {$we_doc->we_publish();}
-		}
-		return true;
-	}
-	function CheckForSameObjectName($path, $db)
-	{
-		return f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $db);
-	}
-	function copyObjectFolder()
-	{
-		return true;
-	}
-	function copyObjectFile()
-	{
-		return true;
-	}
-	function getObjectFile()
-	{
-		if ($this->data["ContentType"] == 'folder') {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
-			$we_ContentType = $this->data["ContentType"];
-			$we_doc = new we_class_folder();
-		
-		}
-		if ($this->data["ContentType"] == 'objectFile') {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
-			$we_ContentType = $this->data["ContentType"];
-			$we_doc = new we_objectFile();
-		}
-		return $we_doc;
-	}
+
 	function copyFile()
 	{
 		global $we_doc;
@@ -836,20 +711,10 @@ class copyFolderFrag extends taskFragment
 					'<script language="JavaScript">setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);</script>';
 			#unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		} else {
-			if (defined('OBJECT_FILES_TABLE')) {$checkTable = OBJECT_FILES_TABLE;} else {$checkTable="1";}
-				if (!isset($_SESSION["WE_COPY_OBJECTS"])) {
-					print 
+			print 
 					'<script language="JavaScript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
 							$GLOBALS["l_copyFolder"]["copy_success"], 
 							WE_MESSAGE_NOTICE) . 'top.close();</script>';
-				} else {
-					unset($_SESSION["WE_COPY_OBJECTS"]);
-					print 
-					'<script language="JavaScript">top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
-							$GLOBALS["l_copyFolder"]["copy_success"], 
-							WE_MESSAGE_NOTICE) . 'top.close();</script>';
-				
-				}
 		}
 	}
 
@@ -1190,38 +1055,6 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 			$yes_button, 
 			null, 
 			$cancel_button) . '</td></tr></table>';
-	if (isset($_REQUEST['we_cmd'][4]) && defined('OBJECT_FILES_TABLE') && $_REQUEST['we_cmd'][4]==OBJECT_FILES_TABLE){
-		$content = $GLOBALS["l_copyFolder"]["object_copy"] .'<br/>&nbsp;<br/>'.$GLOBALS["l_copyFolder"]["sameName_headline"].'<br/>';
-		$content .= htmlAlertAttentionBox($GLOBALS["l_copyFolder"]["sameName_expl"], 2, 380);
-		$content .= getPixel(200, 10);
-		$content .= we_forms::radiobutton(
-				"overwrite", 
-				0, 
-				"OverwriteObjects", 
-				$GLOBALS["l_copyFolder"]["sameName_overwrite"]);
-		$content .= we_forms::radiobutton(
-				"rename", 
-				0, 
-				"OverwriteObjects", 
-				$GLOBALS["l_copyFolder"]["sameName_rename"]);
-		$content .= we_forms::radiobutton(
-				"nothing", 
-				1, 
-				"OverwriteObjects", 
-				$GLOBALS["l_copyFolder"]["sameName_nothing"]);
-		
-		$content .= we_htmlElement::htmlHidden(
-			array(
-				"name" => "we_cmd[0]", "value" => $_REQUEST["we_cmd"][0]
-			)) . we_htmlElement::htmlHidden(array(
-		"name" => "we_cmd[1]", "value" => $_REQUEST["we_cmd"][1]
-	)) . we_htmlElement::htmlHidden(array(
-		"name" => "we_cmd[2]", "value" => $_REQUEST["we_cmd"][2]
-	)) . (isset($_REQUEST["we_cmd"][4]) ? we_htmlElement::htmlHidden(array(
-		"name" => "we_cmd[4]", "value" => $_REQUEST["we_cmd"][4] 
-	)) : '');
-		
-	} else {
 	$content = '<table border="0" cellpadding="0" cellspacing="0" width="500"><tr><td>' . we_forms::checkbox(
 			"1", 
 			0, 
@@ -1262,14 +1095,11 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 		"name" => "we_cmd[1]", "value" => $_REQUEST["we_cmd"][1]
 	)) . we_htmlElement::htmlHidden(array(
 		"name" => "we_cmd[2]", "value" => $_REQUEST["we_cmd"][2]
-	)) . (isset($_REQUEST["we_cmd"][4]) ? we_htmlElement::htmlHidden(array(
-		"name" => "we_cmd[4]", "value" => $_REQUEST["we_cmd"][4] 
-	)) : ''). '</td></tr></table>';
-	}
+	)) . '</td></tr></table>';
+	
 	copyFolderFrag::printHeader();
 	print 
 			'<body class="weDialogBody">' . "\n" . $js . "\n" . '<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' . "\n";
-
 	print 
 			htmlDialogLayout(
 					$content, 
@@ -1277,7 +1107,6 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 							id_to_path($_REQUEST["we_cmd"][1]), 
 							46), 
 					$buttons);
-	
 	print '</form>';
 	print '<iframe frameborder="0" src="about:blank" name="pbUpdateFrame" width="0" height="0" id="pbUpdateFrame"></iframe>';
 	print $yuiSuggest->getYuiCss();

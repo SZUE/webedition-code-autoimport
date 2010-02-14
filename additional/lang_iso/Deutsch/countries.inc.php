@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -54,7 +55,7 @@ $GLOBALS['l_countries']['BR'] = 'Brasilien';
 $GLOBALS['l_countries']['BS'] = 'Bahamas';
 $GLOBALS['l_countries']['BT'] = 'Bhutan';
 $GLOBALS['l_countries']['BV'] = 'Bouvetinsel';
-$GLOBALS['l_countries']['BW'] = 'Botsuana';
+$GLOBALS['l_countries']['BW'] = 'Botswana';
 $GLOBALS['l_countries']['BY'] = 'Weißrussland';
 $GLOBALS['l_countries']['BZ'] = 'Belize';
 $GLOBALS['l_countries']['CA'] = 'Kanada';
@@ -63,7 +64,7 @@ $GLOBALS['l_countries']['CD'] = 'Demokratische Republik Kongo';
 $GLOBALS['l_countries']['CF'] = 'Zentralafrikanische Republik';
 $GLOBALS['l_countries']['CG'] = 'Kongo';
 $GLOBALS['l_countries']['CH'] = 'Schweiz';
-$GLOBALS['l_countries']['CI'] = 'Elfenbeinküste';
+$GLOBALS['l_countries']['CI'] = 'Cóte da Ivoire';
 $GLOBALS['l_countries']['CK'] = 'Cookinseln';
 $GLOBALS['l_countries']['CL'] = 'Chile';
 $GLOBALS['l_countries']['CM'] = 'Kamerun';
@@ -261,7 +262,7 @@ $GLOBALS['l_countries']['UY'] = 'Uruguay';
 $GLOBALS['l_countries']['UZ'] = 'Usbekistan';
 $GLOBALS['l_countries']['VA'] = 'Vatikanstadt';
 $GLOBALS['l_countries']['VC'] = 'St. Vincent und die Grenadinen';
-$GLOBALS['l_countries']['VD'] = 'Vietnam';
+$GLOBALS['l_countries']['VD'] = 'North Vietnam';
 $GLOBALS['l_countries']['VE'] = 'Venezuela';
 $GLOBALS['l_countries']['VG'] = 'Britische Jungferninseln';
 $GLOBALS['l_countries']['VI'] = 'Amerikanische Jungferninseln';

@@ -17,7 +17,6 @@
  * @subpackage Parse_Amf3
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Deserializer.php 18951 2009-11-12 16:26:19Z alexander $
  */
 
 /** Zend_Amf_Parse_Deserializer */
@@ -125,10 +124,10 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
      * - 0x00200000 - 0x3FFFFFFF : 1xxxxxxx 1xxxxxxx 1xxxxxxx xxxxxxxx
      * - 0x40000000 - 0xFFFFFFFF : throw range exception
      *
+     *
      * 0x04 -> integer type code, followed by up to 4 bytes of data.
      *
-     * Parsing integers on OSFlash for the AMF3 integer data format:
-     * @link http://osflash.org/amf3/parsing_integers
+     * @see:   Parsing integers on OSFlash {http://osflash.org/amf3/parsing_integers>} for the AMF3 integer data format.
      * @return int|float
      */
     public function readInteger()
@@ -390,18 +389,18 @@ class Zend_Amf_Parse_Amf3_Deserializer extends Zend_Amf_Parse_Deserializer
                     $returnObject->$key = $value;
                 }
             }
-
-
+			
+		  
         }
-
-       if($returnObject instanceof Zend_Amf_Value_Messaging_ArrayCollection) {
-        if(isset($returnObject->externalizedData)) {
-            $returnObject = $returnObject->externalizedData;
-        } else {
-            $returnObject = get_object_vars($returnObject);
-        }
-       }
-
+		
+	   if($returnObject instanceof Zend_Amf_Value_Messaging_ArrayCollection) {
+		if(isset($returnObject->externalizedData)) {
+			$returnObject = $returnObject->externalizedData;
+		} else {
+			$returnObject = get_object_vars($returnObject);
+		}
+	   }
+	   
         return $returnObject;
     }
 

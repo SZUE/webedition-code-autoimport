@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -190,7 +191,7 @@ $l_shop["saferpayUnotifyTxt"] = "* Confirmmail to Customer";
 $l_shop["saferpayProviderset"] = "Providerset";
 $l_shop["saferpayProvidersetTxt"] = "* comma-separated!";
 $l_shop["saferpayCMDPath"] = "exec-path";
-$l_shop["saferpayCMDPathTxt"] = "* e.g. /usr/local/bin/";
+$l_shop["saferpayCMDPathTxt"] = "* i.e. /usr/local/bin/";
 $l_shop["saferpayconfPath"] = "conf-path";
 $l_shop["saferpayconfPathTxt"] = "* path to saferpay";
 $l_shop["saferpaydesc"] = "Description";

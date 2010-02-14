@@ -46,14 +46,6 @@ class weCustomerFilterView {
 	 * @var integer
 	 */
 	var $_width = 0;
-	
-	/**
-	 * show Mode_none
-	 *
-	 * @var integer
-	 */
-	var $_ShowModeNone = 0;
-	
 
 	/*################### CONSTRUCTOR ####################*/
 
@@ -90,8 +82,7 @@ class weCustomerFilterView {
 	 *
 	 * @return string
 	 */
-	function getFilterHTML($ShowModeNone=0) {
-		$this->_ShowModeNone = $ShowModeNone;
+	function getFilterHTML() {
 
 		$_script = <<<EO_SCRIPT
 
@@ -177,12 +168,7 @@ EO_SCRIPT;
 
 		/* ################# Radio buttons ###############*/
 		$_modeRadioOff = we_forms::radiobutton(WECF_OFF, $this->_filter->getMode()===WECF_OFF, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_off'],true, "defaultfont", "wecf_hot();updateView();");
-		if ($this->_ShowModeNone) {
-			$_modeRadioNone = we_forms::radiobutton(WECF_NONE, $this->_filter->getMode()===WECF_NONE, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_none'],true, "defaultfont", "wecf_hot();updateView();");
-       } else {
-       	$_modeRadioNone = '';
-       }
-        $_modeRadioAll = we_forms::radiobutton(WECF_ALL, $this->_filter->getMode()===WECF_ALL, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_all'],true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioAll = we_forms::radiobutton(WECF_ALL, $this->_filter->getMode()===WECF_ALL, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_all'],true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioSpecific = we_forms::radiobutton(WECF_SPECIFIC, $this->_filter->getMode()===WECF_SPECIFIC, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_specific'],true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioFilter = we_forms::radiobutton(WECF_FILTER, $this->_filter->getMode()===WECF_FILTER, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_filter'],true, "defaultfont", "wecf_hot();updateView();");
 
@@ -211,7 +197,7 @@ EO_SCRIPT;
 
 		$_space = '<div style="height:4px;"></div>';
 
-		return $_script.$_modeRadioOff . $_space . $_modeRadioNone . $_space . $_modeRadioAll . $_space . $_modeRadioSpecific . $_space . $_specificCustomersSelect . $_space . $_modeRadioFilter . $_filterCustomers .$_blackListSelect . $_whiteListSelect;
+		return $_script.$_modeRadioOff . $_space . $_modeRadioAll . $_space . $_modeRadioSpecific . $_space . $_specificCustomersSelect . $_space . $_modeRadioFilter . $_filterCustomers .$_blackListSelect . $_whiteListSelect;
 	}
 
 	/**
@@ -229,7 +215,6 @@ EO_SCRIPT;
 	var modeRadioAll 		= r[1];
 	var modeRadioSpecific 	= r[2];
 	var modeRadioFilter 	= r[3];
-    var modeRadioNone	 	= r[4];
 
 	$('specificCustomersEditDiv').style.display = modeRadioSpecific.checked ? "block" : "none";
 	$('blackListEditDiv').style.display = modeRadioFilter.checked ? "block" : "none";

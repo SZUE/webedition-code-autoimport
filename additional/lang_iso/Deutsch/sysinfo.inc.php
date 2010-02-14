@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -36,9 +37,6 @@ $_sysinfo['mysql_version'] = 'MySql-Version';
 $_sysinfo['more_info'] = 'weitere Informationen anzeigen';
 $_sysinfo['back'] = 'zurück';
 $_sysinfo['sysinfo'] = 'Systeminformationen';
-$_sysinfo['zendframework_version'] = 'Zend Framework Version';
-$_sysinfo["register_globals warning"] = 'WARNUNG: register_globals kann die Sicherheit Ihres Systems erheblich beeinträchtigen. Wir empfehlen daher, diese Funktion zu deaktivieren!';
-$_sysinfo["safe_mode warning"] = 'Der PHP Safe Mode kann u.U. zu Probelem bei Installation und Aktualisierung von webEdition führen. Deaktivieren Sie in diesem Fall den Safe Mode.';
 
 $_sysinfo['connection_types'] = 'Update-Verbindungstypen';
 $_sysinfo['gdlib'] = 'GDlib Unterstützung';

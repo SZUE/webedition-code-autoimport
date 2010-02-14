@@ -15,9 +15,8 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Html.php 18951 2009-11-12 16:26:19Z alexander $
  */
 
 
@@ -31,7 +30,7 @@ require_once 'Zend/Search/Lucene/Document.php';
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Document
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
@@ -88,28 +87,28 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
         @$this->_doc->loadHTML($htmlData);
 
         if ($this->_doc->encoding === null) {
-            // Document encoding is not recognized
+        	// Document encoding is not recognized
 
-            /** @todo improve HTML vs HTML fragment recognition */
-            if (preg_match('/<html>/i', $htmlData, $matches, PREG_OFFSET_CAPTURE)) {
-                // It's an HTML document
-                // Add additional HEAD section and recognize document
-                $htmlTagOffset = $matches[0][1] + strlen($matches[0][0]);
+        	/** @todo improve HTML vs HTML fragment recognition */
+        	if (preg_match('/<html>/i', $htmlData, $matches, PREG_OFFSET_CAPTURE)) {
+        		// It's an HTML document
+        		// Add additional HEAD section and recognize document
+        		$htmlTagOffset = $matches[0][1] + strlen($matches[0][1]);
 
-                @$this->_doc->loadHTML(iconv($defaultEncoding, 'UTF-8//IGNORE', substr($htmlData, 0, $htmlTagOffset))
+        		@$this->_doc->loadHTML(iconv($defaultEncoding, 'UTF-8//IGNORE', substr($htmlData, 0, $htmlTagOffset))
                                      . '<head><META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8"/></head>'
                                      . iconv($defaultEncoding, 'UTF-8//IGNORE', substr($htmlData, $htmlTagOffset)));
 
                 // Remove additional HEAD section
                 $xpath = new DOMXPath($this->_doc);
                 $head  = $xpath->query('/html/head')->item(0);
-                $head->parentNode->removeChild($head);
-            } else {
-                // It's an HTML fragment
-                @$this->_doc->loadHTML('<html><head><META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8"/></head><body>'
-                                     . iconv($defaultEncoding, 'UTF-8//IGNORE', $htmlData)
-                                     . '</body></html>');
-            }
+        		$head->parentNode->removeChild($head);
+        	} else {
+        		// It's an HTML fragment
+        		@$this->_doc->loadHTML('<html><head><META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8"/></head><body>'
+        		                     . iconv($defaultEncoding, 'UTF-8//IGNORE', $htmlData)
+        		                     . '</body></html>');
+        	}
 
         }
         /** @todo Add correction of wrong HTML encoding recognition processing
@@ -264,9 +263,6 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
      */
     protected function _highlightTextNode(DOMText $node, $wordsToHighlight, $callback, $params)
     {
-        /** Zend_Search_Lucene_Analysis_Analyzer */
-        require_once 'Zend/Search/Lucene/Analysis/Analyzer.php';
-
         $analyzer = Zend_Search_Lucene_Analysis_Analyzer::getDefault();
         $analyzer->setInput($node->nodeValue, 'UTF-8');
 
@@ -304,16 +300,16 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
                                        . $highlightedWordNodeSetHtml
                                        . '</body></html>');
             if (!$success) {
-                require_once 'Zend/Search/Lucene/Exception.php';
-                throw new Zend_Search_Lucene_Exception("Error occured while loading highlighted text fragment: '$highlightedNodeHtml'.");
+            	require_once 'Zend/Search/Lucene/Exception.php';
+            	throw new Zend_Search_Lucene_Exception("Error occured while loading highlighted text fragment: '$highlightedNodeHtml'.");
             }
             $highlightedWordNodeSetXpath = new DOMXPath($highlightedWordNodeSetDomDocument);
             $highlightedWordNodeSet      = $highlightedWordNodeSetXpath->query('/html/body')->item(0)->childNodes;
 
             for ($count = 0; $count < $highlightedWordNodeSet->length; $count++) {
-                $nodeToImport = $highlightedWordNodeSet->item($count);
-                $node->parentNode->insertBefore($this->_doc->importNode($nodeToImport, true /* deep copy */),
-                                                $matchedWordNode);
+            	$nodeToImport = $highlightedWordNodeSet->item($count);
+            	$node->parentNode->insertBefore($this->_doc->importNode($nodeToImport, true /* deep copy */),
+            	                                $matchedWordNode);
             }
 
             $node->parentNode->removeChild($matchedWordNode);
@@ -375,7 +371,7 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
      */
     public function highlight($words, $colour = '#66ffff')
     {
-        return $this->highlightExtended($words, array($this, 'applyColour'), array($colour));
+    	return $this->highlightExtended($words, array($this, 'applyColour'), array($colour));
     }
 
 
@@ -392,9 +388,6 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
      */
     public function highlightExtended($words, $callback, $params = array())
     {
-        /** Zend_Search_Lucene_Analysis_Analyzer */
-        require_once 'Zend/Search/Lucene/Analysis/Analyzer.php';
-
         if (!is_array($words)) {
             $words = array($words);
         }
@@ -416,8 +409,8 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
         }
 
         if (!is_callable($callback)) {
-            require_once 'Zend/Search/Lucene/Exception.php';
-            throw new Zend_Search_Lucene_Exception('$viewHelper parameter mast be a View Helper name, View Helper object or callback.');
+        	require_once 'Zend/Search/Lucene/Exception.php';
+        	throw new Zend_Search_Lucene_Exception('$viewHelper parameter mast be a View Helper name, View Helper object or callback.');
         }
 
         $xpath = new DOMXPath($this->_doc);
@@ -451,7 +444,7 @@ class Zend_Search_Lucene_Document_Html extends Zend_Search_Lucene_Document
 
         $outputFragments = array();
         for ($count = 0; $count < $bodyNodes->length; $count++) {
-            $outputFragments[] = $this->_doc->saveXML($bodyNodes->item($count));
+        	$outputFragments[] = $this->_doc->saveXML($bodyNodes->item($count));
         }
 
         return implode($outputFragments);

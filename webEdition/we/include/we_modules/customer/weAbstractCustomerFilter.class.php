@@ -22,7 +22,6 @@ define("WECF_OFF", 0);
 define("WECF_ALL", 1);
 define("WECF_SPECIFIC", 2);
 define("WECF_FILTER", 3);
-define("WECF_NONE", 4);
 
 /**
  * Base Class for all Customer Filters (Model)
@@ -112,8 +111,6 @@ class weAbstractCustomerFilter {
 				return true;
 			case WECF_ALL:
 				return weAbstractCustomerFilter::customerIsLogedIn();
-			case WECF_NONE:
-				return !weAbstractCustomerFilter::customerIsLogedIn();
 			case WECF_SPECIFIC:
 				if (!weAbstractCustomerFilter::customerIsLogedIn()) {
 					return false;

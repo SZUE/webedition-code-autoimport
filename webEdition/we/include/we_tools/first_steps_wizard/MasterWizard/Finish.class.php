@@ -72,7 +72,7 @@ class Finish extends leWizardStepBase
 		$RebuildBtnWidth = ($GLOBALS["WE_LANGUAGE"] == "Finnish") ? "130" : "100";
 		$Rebuild = $weButton->create_button('rebuild', 'javascript:top.openRebuild();', true, $RebuildBtnWidth, 22);
 		
-		$SidebarFile = WEBEDITION_DIR . "sidebar/first_steps_wizard.php";
+		$SidebarFile = WEBEDITION_DIR . "/sidebar/first_steps_wizard.php";
 		$webEditionDir = WEBEDITION_DIR;
 		
 		$NextStep = <<<EOF

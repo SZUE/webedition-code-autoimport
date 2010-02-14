@@ -712,7 +712,6 @@ function we_isFieldNotEmpty($attribs)
 		case "binary" :
 		case "img" :
 		case "flashmovie" :
-		case "quicktime" :
 			return $GLOBALS["lv"]->f($match);
 		case "href" :
 			if ($GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag") {
@@ -2193,7 +2192,6 @@ function we_tag_field($attribs, $content)
 	$id = we_getTagAttribute("id", $attribs);
 	$xml = we_getTagAttribute("xml", $attribs, "");
 	$striphtml = we_getTagAttribute("striphtml", $attribs, false, true);
-	$only = we_getTagAttribute("only", $attribs);
 	
 	$out = "";
 	
@@ -2245,12 +2243,7 @@ function we_tag_field($attribs, $content)
 					$GLOBALS["DB_WE"], 
 					$classid, 
 					'$GLOBALS["lv"]->f');
-			if ($only ==''||$only =='name') {$out = $t[0];}
-			if ($only =='path') {$out = $t[1];}
-			if ($only =='parentpath') {$out = $t[2];}
-			if ($only =='filename') {$out = $t[3];}
-			if ($only =='extension') {$out = $t[4];}
-			if ($only =='filesize') {$out = $t[5];}
+			$out = $t[0];
 			$href = (empty($href) ? $t[1] : $href);
 			break;
 		case "link" :
@@ -2594,7 +2587,7 @@ function we_tag_field($attribs, $content)
 							}
 						} else {
 							
-							$showlink = (!isset($GLOBALS["lv"]->ClassName) || $GLOBALS["lv"]->ClassName == "" || $GLOBALS["lv"]->ClassName == "we_listview") || ($GLOBALS["lv"]->ClassName == "we_search_listview") || ($GLOBALS["lv"]->ClassName == "we_listview_shopVariants") || ($GLOBALS["lv"]->ClassName == "we_listview_shoppingCart") || ($GLOBALS["lv"]->ClassName == "we_objecttag" && $GLOBALS["lv"]->triggerID != "0") || ($GLOBALS["lv"]->ClassName == "we_customertag") || ($GLOBALS["lv"]->ClassName == "we_listview_customer") || ($GLOBALS["lv"]->ClassName == "we_listview_object" && $GLOBALS["lv"]->triggerID != "0") || ($tid && $GLOBALS["lv"]->ClassName == "we_listview_object") || ($GLOBALS["lv"]->ClassName == "we_listview_object" && ($GLOBALS["lv"]->DB_WE->f(
+							$showlink = (!isset($GLOBALS["lv"]->ClassName) || $GLOBALS["lv"]->ClassName == "" || $GLOBALS["lv"]->ClassName == "we_listview") || ($GLOBALS["lv"]->ClassName == "we_search_listview") || ($GLOBALS["lv"]->ClassName == "we_listview_shopVariants") || ($GLOBALS["lv"]->ClassName == "we_listview_shoppingCart") || ($GLOBALS["lv"]->triggerID != "0" && $GLOBALS["lv"]->ClassName == "we_objecttag") || ($GLOBALS["lv"]->ClassName == "we_customertag") || ($GLOBALS["lv"]->ClassName == "we_listview_customer") || ($GLOBALS["lv"]->triggerID != "0" && $GLOBALS["lv"]->ClassName == "we_listview_object") || ($tid && $GLOBALS["lv"]->ClassName == "we_listview_object") || ($GLOBALS["lv"]->ClassName == "we_listview_object" && ($GLOBALS["lv"]->DB_WE->f(
 									"OF_Templates") || $GLOBALS["lv"]->docID)) || ($GLOBALS["lv"]->ClassName == "we_listview_multiobject" && ($GLOBALS["lv"]->DB_WE->f(
 									"OF_Templates") || $GLOBALS["lv"]->docID));
 						
@@ -4624,7 +4617,7 @@ function we_tag_img($attribs, $content)
 			<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
 				<tr>
 					<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">$out
-						<input onchange=\"_EditorFrame.setEditorIsHot(true);\" type=\"hidden\" name=\"$fname\" value=\"$id\"></td>
+						<input type=\"hidden\" name=\"$fname\" value=\"$id\"></td>
 				</tr>";
 		if ($showinputs) { //  only when wanted
 			$out .= "
@@ -4633,14 +4626,14 @@ function we_tag_img($attribs, $content)
 		            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
                     <tr>
                         <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . $l_css["font_family"] . ";\">" . $l_we_class["alt_kurz"] . ":&nbsp;</td>
-                        <td class=\"weEditmodeStyle\">" . htmlTextInput($altname, 16, $alt,'','onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
+                        <td class=\"weEditmodeStyle\">" . htmlTextInput($altname, 16, $alt) . "</td>
                     </tr>
 					<tr>
 						<td class=\"weEditmodeStyle\"></td>
 					</tr>
 				    <tr>
 		                <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . $l_css["font_family"] . ";\">" . $l_we_class["title"] . ":&nbsp;</td>
-		                <td class=\"weEditmodeStyle\">" . htmlTextInput($titlename, 16, $title,'','onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
+		                <td class=\"weEditmodeStyle\">" . htmlTextInput($titlename, 16, $title) . "</td>
                     </tr>
 		            </table>
                 </tr>";
@@ -4664,7 +4657,7 @@ function we_tag_img($attribs, $content)
 						$_editButton, 
 						$we_button->create_button(
 								"image:btn_select_image", 
-								"javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value', '', 'opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd(\\'reload_editpage\\',\\'" . $name . "\\',\\'change_image\\'); opener.top.hot = 1;', '" . session_id() . "', " . $parentid . ", 'image/*', " . (we_hasPerm(
+								"javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value', '', 'opener.setScrollTo(); opener.top.we_cmd(\\'reload_editpage\\',\\'" . $name . "\\',\\'change_image\\'); opener.top.hot = 1;', '" . session_id() . "', " . $parentid . ", 'image/*', " . (we_hasPerm(
 										"CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", 
 								true), 
 						$we_button->create_button(
@@ -5940,7 +5933,7 @@ function we_tag_sendMail($attribs, $content)
 				$_SESSION['WE_SendMail']=true;	
 				$codes = we_getDocumentByID($id);
 				unset($_SESSION['WE_SendMail']);			
-			    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$reply,$includeimages); 
+			    $phpmail = new we_util_Mailer($we_recipient,$subject,$from,$from,$reply,$includeimages); //includeimages wird - aus mir nicht verstaendlichen Gruenden - auf einigen Systemen NICHT richtig übernommen: A. Schulz
 				if(isset($includeimages)) {$phpmail->setIsEmbedImages($includeimages);}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
 				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
@@ -6996,9 +6989,7 @@ function we_tag_write($attribs, $content)
 	$mailfrom = we_getTagAttribute("mailfrom", $attribs);
 	$forceedit = we_getTagAttribute("forceedit", $attribs, "", true);
 	$workspaces = we_getTagAttribute("workspaces", $attribs);
-	$objname = we_getTagAttribute("name", $attribs);
-	$onduplicate = we_getTagAttribute("onduplicate", $attribs,"increment");
-
+	
 	if (isset($_REQUEST["edit_$type"]) && $_REQUEST["edit_$type"]) {
 		
 		if ($type == "document") {
@@ -7021,7 +7012,7 @@ function we_tag_write($attribs, $content)
 			}
 			
 			if ($isAdmin || ($GLOBALS["we_$type"][$name]->ID == 0) || $isOwner || $forceedit) {
-				$doWrite = true;
+				
 				$GLOBALS["we_" . $type . "_write_ok"] = true;
 				$newObject = ($GLOBALS["we_$type"][$name]->ID) ? false : true;
 				if ($protected) {
@@ -7042,9 +7033,7 @@ function we_tag_write($attribs, $content)
 				checkAndCreateImage($name, ($type == "document") ? "we_document" : "we_object");
 				
 				$GLOBALS["we_$type"][$name]->i_checkPathDiffAndCreate();
-				if ($objname=='') {
-					$GLOBALS["we_$type"][$name]->i_correctDoublePath();
-				}
+				$GLOBALS["we_$type"][$name]->i_correctDoublePath();
 				$_WE_DOC_SAVE = $GLOBALS["we_doc"];
 				$GLOBALS["we_doc"] = &$GLOBALS["we_$type"][$name];
 				if (strlen($workspaces) > 0 && $type == "object") {
@@ -7059,52 +7048,24 @@ function we_tag_write($attribs, $content)
 				
 				$GLOBALS["we_$type"][$name]->Path = $GLOBALS["we_$type"][$name]->getPath();
 				if (defined("OBJECT_FILES_TABLE") && $type == "object" && $GLOBALS["we_$type"][$name]->Text == "") {
-					$db = new DB_WE();
-					if ($objname=='') {
-						$GLOBALS["we_$type"][$name]->Text = 1 + abs(
-							f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
-						$GLOBALS["we_$type"][$name]->Path = $GLOBALS["we_$type"][$name]->Path . '/' . $GLOBALS["we_$type"][$name]->Text;
-					} else {
-						
-						$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);
-						if($objexists && $onduplicate == 'abort') {
-							$GLOBALS["we_object_write_ok"] = false;
-							$doWrite = false;
-						}
-						if($objexists && $onduplicate == 'overwrite') {
-							$GLOBALS["we_$type"][$name]->ID = $objexists;
-							$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $objname);
-							$GLOBALS["we_$type"][$name]->Text = $objname;
-						}
-						if($objexists && $onduplicate == 'increment') {
-							$z=0;
-							$footext = $objname."_".$z;
-							while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$footext))."'", "ID", $db)){
-								$z++;
-								$footext = $objname."_".$z;
-							}
-							$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $footext);
-							$GLOBALS["we_$type"][$name]->Text = $footext;
-						}	
-					}
+					$GLOBALS["we_$type"][$name]->Text = 1 + abs(
+							f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", new DB_WE()));
 				}
-				if ($doWrite){
-					$GLOBALS["we_$type"][$name]->we_save();
-					if ($publish) {
-						if ($type == "document" && (!$GLOBALS["we_$type"][$name]->IsDynamic) && isset(
-								$GLOBALS["we_doc"])) { // on static HTML Documents we have to do it different
-							$GLOBALS["we_doc"]->we_publish();
-						} else {
-							$GLOBALS["we_$type"][$name]->we_publish();
-						}
+				$GLOBALS["we_$type"][$name]->we_save();
+				if ($publish) {
+					if ($type == "document" && (!$GLOBALS["we_$type"][$name]->IsDynamic) && isset(
+							$GLOBALS["we_doc"])) { // on static HTML Documents we have to do it different
+						$GLOBALS["we_doc"]->we_publish();
+					} else {
+						$GLOBALS["we_$type"][$name]->we_publish();
 					}
 				}
 				unset($GLOBALS["we_doc"]);
 				$GLOBALS["we_doc"] = $_WE_DOC_SAVE;
 				unset($_WE_DOC_SAVE);
 				$_REQUEST["we_returnpage"] = $GLOBALS["we_$type"][$name]->getElement("we_returnpage");
-					
-				if ($doWrite && $mail) {
+				
+				if ($mail) {
 					if (!$mailfrom) {
 						$mailfrom = "dontReply@" . $GLOBALS["SERVER_NAME"];
 					}
@@ -7436,6 +7397,79 @@ function we_tag_ifCurrentDate($attribs, $content)
 		}
 	}
 	return false;
+}
+
+/**
+ * @return boolean
+ * @param array $attribs
+ * @param string $content
+ * @desc returns true if voting was successful
+ */
+function we_tag_ifVote($attribs, $content)
+{
+	
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
+	return (isset($GLOBALS["_we_voting_status"]) && $GLOBALS["_we_voting_status"] == VOTING_SUCCESS);
+}
+
+/**
+ * @return boolean
+ * @param array $attribs
+ * @param string $content
+ * @desc returns true if voting was unsuccessful
+ */
+function we_tag_ifNotVote($attribs, $content)
+{
+	
+	$foo = attributFehltError($attribs, "type", "ifNotVote");
+	if ($foo)
+		return $foo;
+	$type = we_getTagAttribute("type", $attribs, "error");
+	
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
+	
+	if (isset($GLOBALS["_we_voting_status"])) {
+		switch ($type) {
+			case "error" :
+				return ($GLOBALS["_we_voting_status"] == VOTING_ERROR);
+				break;
+			case "revote" :
+				return ($GLOBALS["_we_voting_status"] == VOTING_ERROR_REVOTE);
+				break;
+			case "active" :
+				return ($GLOBALS["_we_voting_status"] == VOTING_ERROR_ACTIVE);
+				break;
+			case "forbidden" :
+				return ($GLOBALS["_we_voting_status"] == VOTING_ERROR_BLACKIP);
+				break;
+			default :
+				return ($GLOBALS["_we_voting_status"] > 0);
+		
+		}
+	}
+	
+	return false;
+}
+
+/**
+ * @return boolean
+ * @param array $attribs
+ * @param string $content
+ * @desc returns true if voting was successful
+ */
+function we_tag_ifVoteActive($attribs, $content)
+{
+	$id = we_getTagAttributeTagParser('id', $attribs, 0);
+	
+	if (isset($GLOBALS['_we_voting']) && $id == 0) {
+		return $GLOBALS['_we_voting']->isActive();
+	}
+	
+	if ($id == 0)
+		return false;
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
+	$voting = new weVoting($id);
+	return $voting->isActive();
 }
 
 // navigation tags

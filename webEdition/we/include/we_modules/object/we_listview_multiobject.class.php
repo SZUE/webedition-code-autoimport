@@ -254,9 +254,11 @@ class we_listview_multiobject extends listviewBase {
 		$joinWhere = "";
 		$tableInfo = we_objectFile::getSortedTableInfo($classID,true,$db);
 		foreach($tableInfo as $fieldInfo){
-			if(preg_match('/(.+?)_(.*)/',$fieldInfo["name"],$regs)){
-				$type = $regs[1];
-				$name = $regs[2];
+			if(ereg('^(.+)_(.+)$',$fieldInfo["name"],$regs)){
+				$temp = explode("_", $fieldInfo["name"]);
+				$type = $temp[0];
+				unset($temp[0]);
+				$name = implode("_", $temp);
 				if($type == "object" && $name != $this->classID){
 					if(!isset($matrix["we_object_".$name]["type"]) || !$matrix["we_object_".$name]["type"]){
 						$matrix["we_object_".$name]["type"] = $type;

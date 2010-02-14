@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 19115 2009-11-20 17:41:25Z matthew $
+ * @version    $Id: Abstract.php 16029 2009-06-12 18:01:37Z doctorrock83 $
  */
 
 
@@ -37,7 +37,7 @@ require_once 'Zend/Db/Select.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Db_Adapter_Abstract
@@ -173,10 +173,10 @@ abstract class Zend_Db_Adapter_Abstract
                 $config = $config->toArray();
             } else {
                 /**
-                 * @see Zend_Db_Adapter_Exception
+                 * @see Zend_Db_Exception
                  */
-                require_once 'Zend/Db/Adapter/Exception.php';
-                throw new Zend_Db_Adapter_Exception('Adapter parameters must be in an array or a Zend_Config object');
+                require_once 'Zend/Db/Exception.php';
+                throw new Zend_Db_Exception('Adapter parameters must be in an array or a Zend_Config object');
             }
         }
 
@@ -208,10 +208,6 @@ abstract class Zend_Db_Adapter_Abstract
 
         if (!isset($config['charset'])) {
             $config['charset'] = null;
-        }
-
-        if (!isset($config['persistent'])) {
-            $config['persistent'] = false;
         }
 
         $this->_config = array_merge($this->_config, $config);
@@ -475,7 +471,7 @@ abstract class Zend_Db_Adapter_Abstract
     /**
      * Leave autocommit mode and begin a transaction.
      *
-     * @return Zend_Db_Adapter_Abstract
+     * @return bool True
      */
     public function beginTransaction()
     {
@@ -483,13 +479,13 @@ abstract class Zend_Db_Adapter_Abstract
         $q = $this->_profiler->queryStart('begin', Zend_Db_Profiler::TRANSACTION);
         $this->_beginTransaction();
         $this->_profiler->queryEnd($q);
-        return $this;
+        return true;
     }
 
     /**
      * Commit a transaction and return to autocommit mode.
      *
-     * @return Zend_Db_Adapter_Abstract
+     * @return bool True
      */
     public function commit()
     {
@@ -497,13 +493,13 @@ abstract class Zend_Db_Adapter_Abstract
         $q = $this->_profiler->queryStart('commit', Zend_Db_Profiler::TRANSACTION);
         $this->_commit();
         $this->_profiler->queryEnd($q);
-        return $this;
+        return true;
     }
 
     /**
      * Roll back a transaction and return to autocommit mode.
      *
-     * @return Zend_Db_Adapter_Abstract
+     * @return bool True
      */
     public function rollBack()
     {
@@ -511,7 +507,7 @@ abstract class Zend_Db_Adapter_Abstract
         $q = $this->_profiler->queryStart('rollback', Zend_Db_Profiler::TRANSACTION);
         $this->_rollBack();
         $this->_profiler->queryEnd($q);
-        return $this;
+        return true;
     }
 
     /**
@@ -738,7 +734,7 @@ abstract class Zend_Db_Adapter_Abstract
      *
      * @param string|Zend_Db_Select $sql An SQL SELECT statement.
      * @param mixed $bind Data to bind into SELECT placeholders.
-     * @return array
+     * @return string
      */
     public function fetchAssoc($sql, $bind = array())
     {
@@ -775,7 +771,7 @@ abstract class Zend_Db_Adapter_Abstract
      *
      * @param string|Zend_Db_Select $sql An SQL SELECT statement.
      * @param mixed $bind Data to bind into SELECT placeholders.
-     * @return array
+     * @return string
      */
     public function fetchPairs($sql, $bind = array())
     {
@@ -902,7 +898,7 @@ abstract class Zend_Db_Adapter_Abstract
             return str_replace('?', $this->quote($value, $type), $text);
         } else {
             while ($count > 0) {
-                if (strpos($text, '?') !== false) {
+                if (strpos($text, '?') != false) {
                     $text = substr_replace($text, $this->quote($value, $type), strpos($text, '?'), 1);
                 }
                 --$count;

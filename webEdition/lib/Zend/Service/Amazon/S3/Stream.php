@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_S3
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008, Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Stream.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id: S3.php 9786 2008-06-24 23:50:25Z jplock $
  */
 
 /**
@@ -31,7 +31,7 @@ require_once 'Zend/Service/Amazon/S3.php';
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_S3
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008, Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Service_Amazon_S3_Stream
@@ -331,13 +331,13 @@ class Zend_Service_Amazon_S3_Stream
         $stat['blksize'] = 0;
         $stat['blocks'] = 0;
 
-    if(($slash = strchr($this->_objectName, '/')) === false || $slash == strlen($this->_objectName)-1) {
-        /* bucket */
-        $stat['mode'] |= 040000;
-    } else {
-        $stat['mode'] |= 0100000;
-    }
-           $info = $this->_s3->getInfo($this->_objectName);
+	if(($slash = strchr($this->_objectName, '/')) === false || $slash == strlen($this->_objectName)-1) {
+		/* bucket */
+		$stat['mode'] |= 040000;
+	} else {
+		$stat['mode'] |= 0100000;
+	}
+       	$info = $this->_s3->getInfo($this->_objectName);
         if (!empty($info)) {
             $stat['size']  = $info['size'];
             $stat['atime'] = time();
@@ -441,14 +441,14 @@ class Zend_Service_Amazon_S3_Stream
         $stat['blksize'] = 0;
         $stat['blocks'] = 0;
 
-    $name = $this->_getNamePart($path);
-    if(($slash = strchr($name, '/')) === false || $slash == strlen($name)-1) {
-        /* bucket */
-        $stat['mode'] |= 040000;
-    } else {
-        $stat['mode'] |= 0100000;
-    }
-           $info = $this->_getS3Client($path)->getInfo($name);
+	$name = $this->_getNamePart($path);
+	if(($slash = strchr($name, '/')) === false || $slash == strlen($name)-1) {
+		/* bucket */
+		$stat['mode'] |= 040000;
+	} else {
+		$stat['mode'] |= 0100000;
+	}
+       	$info = $this->_getS3Client($path)->getInfo($name);
 
         if (!empty($info)) {
             $stat['size']  = $info['size'];

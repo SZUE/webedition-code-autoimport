@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -204,4 +205,5 @@ $l_navigation['reset_customerfilter_done_message'] = 'Die Kundenfilter wurden er
 $l_navigation['reset_customerfilter_question'] = 'Möchten Sie wirklich alle Kundenfilter zurücksetzen?';
 
 $l_navigation['NoDeleteFromDocument'] = "Navigationseintrag mit Unterpunkten, kann hier editiert, jedoch nur im Navigationstool gel&ouml;scht werden.";
+
 ?>

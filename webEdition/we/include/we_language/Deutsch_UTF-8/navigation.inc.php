@@ -204,6 +204,4 @@ $l_navigation['reset_customerfilter_done_message'] = 'Die Kundenfilter wurden er
 $l_navigation['reset_customerfilter_question'] = 'Möchten Sie wirklich alle Kundenfilter zurücksetzen?';
 
 $l_navigation['NoDeleteFromDocument'] = "Navigationseintrag mit Unterpunkten, kann hier editiert, jedoch nur im Navigationstool gel&ouml;scht werden.";
-$l_navigation['current_on_urlpar'] = "Beim Highlighting ber&uuml;cksichtigen";
-$l_navigation['current_on_anker'] = "Beim Highlighting ber&uuml;cksichtigen (&uuml;ber zus. URL-Par. we_anchor)";
 ?>

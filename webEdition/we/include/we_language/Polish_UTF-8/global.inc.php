@@ -45,7 +45,6 @@ $GLOBALS["l_global"]["email_ban"] = "Nie masz uprawnień do korzystania z tego s
 $GLOBALS["l_global"]["email_recipient_invalid"] = "Adres odbiorcy jest nieprawidłowy!";
 $GLOBALS["l_global"]["email_no_recipient"] = "Adres odbiorcy nie istnieje!";
 $GLOBALS["l_global"]["email_invalid"] = "Twój <b>adres e-mail </b> jest nieprawidłowy!";
-
 $GLOBALS["l_global"]["captcha_invalid"] = "The entered security code is wrong!"; // TRANSLATE
 $GLOBALS["l_global"]["question"] = "Pytanie";
 $GLOBALS["l_global"]["warning"] = "Ostrzeżenie";
@@ -54,7 +53,6 @@ $GLOBALS["l_global"]["index_table"] = "Tabela indeksu";
 $GLOBALS["l_global"]["cannotconnect"] = "Nie można było nawiązać połączenia z serwerem webEdition!";
 $GLOBALS["l_global"]["recipients"] = "Odbiorca formularza pocztowego";
 $GLOBALS["l_global"]["recipients_txt"] = "Wpisz tutaj wszystkie adresy e-mail, do których może być skierowany formularz za pomocą funkcji formularza pocztowego(&lt;we:form type=&quot;formmail&quot; ..&gt;). Jeżeli nie podanych adresów e-mail, nie można wysyłać formularzy za pomocą formularza poczty!";
-
 $GLOBALS["l_global"]["std_mailtext_newObj"] = "Stworzono nowy obiekt %s klasy %s!";
 $GLOBALS["l_global"]["std_subject_newObj"] = "Nowy obiekt";
 $GLOBALS["l_global"]["std_subject_newDoc"] = "Nowy dokument";

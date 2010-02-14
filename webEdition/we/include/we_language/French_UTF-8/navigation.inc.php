@@ -54,7 +54,6 @@ $l_navigation['navigation'] = 'Navigation'; // TRANSLATE
 $l_navigation['group'] = 'Folder'; // TRANSLATE
 $l_navigation['name'] = 'Name'; // TRANSLATE
 $l_navigation['newFolder'] = 'New folder'; // TRANSLATE
-$l_navigation['display'] = 'Display'; // TRANSLATE
 $l_navigation['save_group_ok'] = 'The folder was saved.'; // TRANSLATE
 $l_navigation['save_ok'] = 'The navigation was saved.'; // TRANSLATE
 
@@ -203,9 +202,6 @@ $l_navigation['reset_customer_filter'] = 'Reset all customer filters'; // TRANSL
 $l_navigation['reset_customerfilter_done_message'] = 'The customer filters were successfully reset!'; // TRANSLATE
 $l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters'; // TRANSLATE
 
-$l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool."; // TRANSLATE
-$l_navigation['current_on_urlpar'] = "Take into account at highlighting";// TRANSLATE
-$l_navigation['current_on_anker'] = "Take into account at highlighting (using add. URL-Par. we_anchor)";// TRANSLATE
-
+$l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool.";// TRANSLATE
 
 ?>

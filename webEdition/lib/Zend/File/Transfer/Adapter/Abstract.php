@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_File_Transfer
- * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Abstract.php 17616 2009-08-15 03:28:29Z yoshida@zend.co.jp $
+ * @version   $Id: $
  */
 
 /**
@@ -24,13 +24,13 @@
  *
  * @category  Zend
  * @package   Zend_File_Transfer
- * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_File_Transfer_Adapter_Abstract
 {
     /**@+
-     * Plugin loader Constants
+     * @const string Plugin loader Constants
      */
     const FILTER    = 'FILTER';
     const VALIDATE  = 'VALIDATE';
@@ -246,9 +246,7 @@ abstract class Zend_File_Transfer_Adapter_Abstract
      *
      * Otherwise, the path prefix is set on the appropriate plugin loader.
      *
-     * @param  string $prefix
      * @param  string $path
-     * @param  string $type
      * @return Zend_File_Transfer_Adapter_Abstract
      * @throws Zend_File_Transfer_Exception for invalid type
      */
@@ -552,19 +550,11 @@ abstract class Zend_File_Transfer_Adapter_Abstract
         if (is_array($options)) {
             foreach ($options as $name => $value) {
                 foreach ($file as $key => $content) {
-                    switch ($name) {
-                        case 'magicFile' :
-                            $this->_files[$key]['options'][$name] = (string) $value;
-                            break;
-
-                        case 'ignoreNoFile' :
-                        case 'useByteString' :
-                            $this->_files[$key]['options'][$name] = (boolean) $value;
-                            break;
-
-                        default:
-                            require_once 'Zend/File/Transfer/Exception.php';
-                            throw new Zend_File_Transfer_Exception("Unknown option: $name = $value");
+                    if (array_key_exists($name, $this->_options)) {
+                        $this->_files[$key]['options'][$name] = (boolean) $value;
+                    } else {
+                        require_once 'Zend/File/Transfer/Exception.php';
+                        throw new Zend_File_Transfer_Exception("Unknown option: $name = $value");
                     }
                 }
             }
@@ -626,7 +616,7 @@ abstract class Zend_File_Transfer_Adapter_Abstract
 
         foreach ($check as $key => $content) {
             $fileerrors  = array();
-            if (array_key_exists('validators', $content) && $content['validated']) {
+            if (array_key_exists('validator', $content) && $content['validated']) {
                 continue;
             }
 
@@ -1020,7 +1010,7 @@ abstract class Zend_File_Transfer_Adapter_Abstract
             }
         } else {
             $files = $this->_getFiles($files, true, true);
-            if (empty($files) and is_string($orig)) {
+            if (empty($this->_files) and is_string($orig)) {
                 $this->_files[$orig]['destination'] = $destination;
             }
 
@@ -1040,18 +1030,8 @@ abstract class Zend_File_Transfer_Adapter_Abstract
      */
     public function getDestination($files = null)
     {
-        $orig  = $files;
-        $files = $this->_getFiles($files, false, true);
+        $files        = $this->_getFiles($files, false);
         $destinations = array();
-        if (empty($files) and is_string($orig)) {
-            if (isset($this->_files[$orig]['destination'])) {
-                $destinations[$orig] = $this->_files[$orig]['destination'];
-            } else {
-                require_once 'Zend/File/Transfer/Exception.php';
-                throw new Zend_File_Transfer_Exception(sprintf('"%s" not found by file transfer adapter', $orig));
-            }
-        }
-
         foreach ($files as $key => $content) {
             if (isset($this->_files[$key]['destination'])) {
                 $destinations[$key] = $this->_files[$key]['destination'];
@@ -1205,7 +1185,7 @@ abstract class Zend_File_Transfer_Adapter_Abstract
      *
      * @param string|array $files Files to get the mimetype from
      * @throws Zend_File_Transfer_Exception When the file does not exist
-     * @return string|array MimeType
+     * @return string|array Filesize
      */
     public function getMimeType($files = null)
     {
@@ -1221,27 +1201,19 @@ abstract class Zend_File_Transfer_Adapter_Abstract
                 throw new Zend_File_Transfer_Exception("File '{$value['name']}' does not exist");
             }
 
-            if (class_exists('finfo', false)) {
-                $const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
+            if (class_exists('finfo', false) && ((!empty($value['options']['magicFile'])) or (defined('MAGIC')))) {
                 if (!empty($value['options']['magicFile'])) {
-                    $mime = new finfo($const, $value['options']['magicFile']);
+                    $mime = new finfo(FILEINFO_MIME, $value['options']['magicFile']);
                 } else {
-                    $mime = new finfo($const);
+                    $mime = new finfo(FILEINFO_MIME);
                 }
 
-                if ($mime !== false) {
-                    $result[$key] = $mime->file($file);
-                }
-
+                $result[$key] = $mime->file($file);
                 unset($mime);
-            }
-
-            if (empty($result[$key])) {
-                if (function_exists('mime_content_type') && ini_get('mime_magic.magicfile')) {
-                    $result[$key] = mime_content_type($file);
-                } else {
-                    $result[$key] = $value['type'];
-                }
+            } elseif (function_exists('mime_content_type') && ini_get('mime_magic.magicfile')) {
+                $result[$key] = mime_content_type($file);
+            } else {
+                $result[$key] = $value['type'];
             }
 
             if (empty($result[$key])) {

@@ -247,7 +247,7 @@ function reloadDir() {
 function writeBody(d){
 	d.open();
 	//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition Version <?php echo WE_VERSION; ?>">');
+	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition Version 4.9.0.0">');
 	d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
@@ -312,7 +312,7 @@ function writeBody(d){
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || top.we_editDirID) ? ' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"' : '')+'>');
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 
 	if(we_editDirID){
 	//if(top.we_editDirID){
@@ -329,7 +329,7 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr>');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
 		d.writeln('<td class="selector"ddd<?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
 		d.writeln('<td class="selector"><?php print date($GLOBALS["l_global"]["date_format"])?></td>');
 		d.writeln('</tr>');
@@ -343,7 +343,7 @@ function writeBody(d){
 		d.writeln('</td>');
 		d.writeln('<td class="selector"'+(entries[i].published==0 && entries[i].isFolder==0 ? ' style="color: red;"' : '')+' title="'+entries[i].text+'">');
 		if(we_editDirID == entries[i].ID){
-			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%">');
+			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%">');
 		}else{
 			d.writeln(cutText(entries[i].text,25));
 		}

@@ -741,8 +741,7 @@ class exportFunctions {
 			//if (ereg('^(.+)_(.+)$', $tableInfo_sorted[$i]["name"], $regs)) {
 			// bugfix 8141
 			$regs = array();
-			//if (ereg('^([^_]+)_(.+)$',$tableInfo_sorted[$i]["name"],$regs)) {  bug #4123
-			if (preg_match('/(.+?)_(.*)/',$tableInfo_sorted[$i]["name"],$regs)) {
+			if (ereg('^([^_]+)_(.+)$',$tableInfo_sorted[$i]["name"],$regs)) {
 				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
 			}
 		}
@@ -841,8 +840,7 @@ class exportFunctions {
 		for ($i = 0; $i < sizeof($tableInfo_sorted); $i++) {
 			//if (ereg('^(.+)_(.+)$', $tableInfo_sorted[$i]["name"], $regs)) {
 			// bugfix 8141
-			//if (ereg('^([^_]+)_(.+)$',$tableInfo_sorted[$i]["name"],$regs)) {  bug #4123
-			if (preg_match('/(.+?)_(.*)/',$tableInfo_sorted[$i]["name"],$regs)) {
+			if (ereg('^([^_]+)_(.+)$', $tableInfo_sorted[$i]["name"], $regs)) {
 				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
 			}
 		}

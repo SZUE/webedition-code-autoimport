@@ -96,9 +96,7 @@ class we_object extends we_document
 
 		$this->ModDate = time();
 		$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
-
 		$this->saveToDB();
-
 		$we_responseText = $l_we_class["response_save_ok"];
 		$we_responseTextType = WE_MESSAGE_NOTICE;
 
@@ -113,7 +111,7 @@ class we_object extends we_document
 			$cf->Filename=$this->Text;
 			$cf->setParentID($pID);
 			$cf->Path = $cf->getPath();
-			$cf->we_save('1');
+			$cf->we_save();
 			$cf->modifyChildrenPath();
 		}
 
@@ -268,7 +266,7 @@ class we_object extends we_document
 			// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
-				$fold -> initByPath($this->getPath(),OBJECT_FILES_TABLE,1,0,1);
+				$fold -> initByPath($this->getPath(),OBJECT_FILES_TABLE,1,0);
 			}
 
 		}else{
@@ -279,7 +277,7 @@ class we_object extends we_document
 
 			for($i=0;$i<sizeof($tableInfo);$i++){
 
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 
 					if($regs[1]!="OF" && $regs[1]!="variant"){
 						$fieldsToDelete = isset($this->elements["felderloeschen"]["dat"]) ? explode(",",$this->elements["felderloeschen"]["dat"]) : array();
@@ -350,7 +348,6 @@ class we_object extends we_document
 			}
 
 			$neu = explode(",", (isset($this->elements["neuefelder"]["dat"]) ? $this->elements["neuefelder"]["dat"] : "") );
-			
 			for($i=0;$i <= sizeof($neu) ; $i++){
 				if(isset($neu[$i]) && $neu[$i]!=""){
 					$nam = $this->getElement($neu[$i]."dtype","dat")."_".$this->getElement($neu[$i],"dat");
@@ -407,7 +404,7 @@ class we_object extends we_document
 					$q .= $this->switchtypes($neu[$i]);
 					$q .= ",";
 				}
-			} 
+			}
 			$q = ereg_replace('^(.+),$','\1',$q);
 
 			$this->DefaultCategory = $this->Category;
@@ -439,10 +436,7 @@ class we_object extends we_document
 				}
 			}
 
-			$qa = explode(',',$q);
-			foreach ($qa as $v) {
-				if ($v !='') {$this->DB_WE->query("ALTER TABLE $ctable $v");}
-			}
+			$this->DB_WE->query("ALTER TABLE $ctable $q");
 
 			$we_sort = $this->getElement("we_sort");
 
@@ -529,7 +523,7 @@ class we_object extends we_document
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$fields = array();
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 					if($regs[1]!="OF" && $regs[1]!="variant"){
 						$fields[] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]);
 					}
@@ -1294,7 +1288,7 @@ class we_object extends we_document
 	}
 
 	function getObjectFieldHTML($ObjectID,$attribs,$editable=true){
-		global $l_object;
+
 		$pid = $this->getElement($ObjectID,"dat");
 		$we_button = new we_button();
 		if($editable){
@@ -1303,7 +1297,7 @@ class we_object extends we_document
 			$textname = 'we_'.$this->Name.'_txt['.$pid.'_path]';
 			$idname = 'we_'.$this->Name."_input[".$ObjectID."default]";
 			$myid = $this->getElement($ObjectID."default","dat");
- 			$DoubleNames = $this->includedObjectHasDoubbleFieldNames($pid);
+
 			$path = $this->getElement("we_object_".$pid."_path");
 			$path = $path ? $path : f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid","Path",$db);
 			$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
@@ -1337,7 +1331,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			"defaultfont",
 			$this->htmlHidden($idname,$myid),
 			getPixel(10,4),
-			$button,getPixel(5,4),$delbutton) . ($DoubleNames ? '<span style="color:red" >' .$l_object["incObject_sameFieldname_start"] . implode(', ',$DoubleNames). $l_object["incObject_sameFieldname_end"] .'</span>':'');
+			$button,getPixel(5,4),$delbutton);
 		}
 	}
 
@@ -2024,12 +2018,16 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$fields = array();
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 					if($regs[1]!="OF" && $regs[1]!="variant"){
-						$type = $regs[1];
-						$name = $regs[2];
+						/* BUG FIX #5741 */
+						$temp = explode("_", $tableInfo[$i]["name"]);
+						$type = $temp[0];
+						unset($temp[0]);
+						$name = implode("_", $temp);
+						/* END BUG FIX #5741 */
 
-						//$fields[$sort[$f]] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]); war bis fix zu 4123 auskommentiert, könnte man wieder rein nehmen
+						//$fields[$sort[$f]] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]);
 						$this->elements[$tableInfo[$i]["name"]]["dat"] = $name;
 						$this->elements["wholename".$this->getSortIndexByValue($f)]["dat"] = $tableInfo[$i]["name"];
 						$this->elements[$tableInfo[$i]["name"]."length"]["dat"] = $tableInfo[$i]["len"];
@@ -2129,7 +2127,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".mysql_real_escape_string($this->Text)."' AND ID != '".$this->ID."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".mysql_affected_rows($this->Text)."' AND ID != '".$this->ID."'","ID",new DB_WE());
 	}
 
 	function i_checkPathDiffAndCreate(){
@@ -2151,36 +2149,6 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			}
 		}
 		return false;
-	}
-	function includedObjectHasDoubbleFieldNames($incClass){
-		$sort = $this->getElement("we_sort");
-		$count = $this->getElement("Sortgesamt");
-		$usedNames = array();
-		$doubleNames = array();
-		if(is_array($sort)){
-			for($i=0;$i <= $count && !empty($sort);$i++){
-				$foo = $this->getElement($this->getElement("wholename".$this->getSortIndex($i)),"dat");
-				array_push($usedNames,$foo);
-			}
-		}
-		$incclassobj = new we_object();
-		$incclassobj->initByID($incClass,$this->Table);
-		$isort = $incclassobj->getElement("we_sort");
-		$icount = $incclassobj->getElement("Sortgesamt");
-		if(is_array($isort)&& !empty($isort)){
-			for($i=0;$i <= $icount;$i++){
-				$foo = $incclassobj->getElement($incclassobj->getElement("wholename".$incclassobj->getSortIndex($i)),"dat");
-				if(in_array($foo,$usedNames)){
-					array_push($doubleNames,$foo);
-				}
-			}
-		}
-		if (empty($doubleNames)) {
-			return false;
-		} else {
-			return $doubleNames;
-		}
-		
 	}
 
 	function i_writeDocument(){
@@ -2219,7 +2187,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		}
 	}
 
-	function we_save($resave=0,$skipHook=0){
+	function we_save(){
 
 		// Check if the cachetype was changed and delete all
 		// cachefiles of the documents based on this template
@@ -2235,15 +2203,15 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				weCacheHelper::clearCache($cacheDir);
 			}
 		}
+
 		$this->save();
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 		we_history::insertIntoHistory($this);
 		
-		/* hook */		
-		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
-		}
+		/* hook */
+		$hook = new weHook('save', '', array($this));
+		$hook->executeHook();
+
 		return true;
 	}
 

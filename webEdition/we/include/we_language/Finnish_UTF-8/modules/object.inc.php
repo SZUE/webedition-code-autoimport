@@ -25,7 +25,6 @@ $l_contentTypes["object"] = "Luokka";
 $l_object["attributes"] = "Ominaisuudet";
 $l_object["objectname"] = "Objektin nimi";
 $l_object["objectpath"] = "Objektin polku";
-$l_object["objectid"] = "Object ID";// TRANSLATE
 $l_object["class"] = "Luokka";
 $l_object["classname"] = "Luokan nimi";
 $l_object["class_id"] = "Luokan ID";
@@ -85,8 +84,4 @@ $l_object["generated_template_for_objectFile"] = "Vastaavaa sivupohjaa ei löyty
 $l_object["no_workspace_defined"] = "Objektille ei ole määritetty työtilaa. Voit määrittää erityistyötilan tämän luokan objekteille.";
 
 $l_object["use_thumbnail_preview"] = "Esikatselukuvat objekteissa";
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
 ?>

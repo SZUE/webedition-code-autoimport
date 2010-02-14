@@ -112,7 +112,7 @@ function addEventHandler(node, type, handler, removeFunc) {
 }
 
 function nodeText(node) {
-  return node.textContent || node.innerText || node.nodeValue || "";
+  return node.innerText || node.textContent || node.nodeValue || "";
 }
 
 function nodeTop(node) {
@@ -122,13 +122,4 @@ function nodeTop(node) {
     node = node.offsetParent;
   }
   return top;
-}
-
-function isBR(node) {
-  var nn = node.nodeName;
-  return nn == "BR" || nn == "br";
-}
-function isSpan(node) {
-  var nn = node.nodeName;
-  return nn == "SPAN" || nn == "span";
 }

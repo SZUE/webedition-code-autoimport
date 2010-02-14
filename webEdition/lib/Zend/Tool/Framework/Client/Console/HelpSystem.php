@@ -17,7 +17,7 @@
  * @subpackage Framework
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HelpSystem.php 18305 2009-09-19 16:31:16Z beberlei $
+ * @version    $Id$
  */
 
 /**
@@ -297,9 +297,7 @@ class Zend_Tool_Framework_Client_Console_HelpSystem
                             'clientName'    => 'console'
                             ));
 
-                        if($actionableSpecialtyLongMetadata) {
-                            $this->_respondWithCommand($providerMetadata, $actionMetadata, $specialtyMetadata, $actionableSpecialtyLongMetadata);
-                        }
+                        $this->_respondWithCommand($providerMetadata, $actionMetadata, $specialtyMetadata, $actionableSpecialtyLongMetadata);
 
                     }
                 }

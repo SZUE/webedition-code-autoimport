@@ -30,8 +30,8 @@ $l_object_classfoldersearch["AB"] = "Workspace"; // TRANSLATE
 $l_object_classfoldersearch["META"] = "Meta-Info"; // TRANSLATE
 $l_object_classfoldersearch["FELDER"] = "Velden";
 
-$l_object_classfoldersearch["Verzeichnis"] = "Workspace";// TRANSLATE
-$l_object_classfoldersearch["sicht"] = "Show only in the above selected workspace visible objects";// TRANSLATE
+$l_object_classfoldersearch["Verzeichnis"] = "Directorie";
+$l_object_classfoldersearch["sicht"] = "Toon alleen zichtbare objecten";
 $l_object_classfoldersearch["Ansicht"] = "Bekijk";
 $l_object_classfoldersearch["teilsuche"] = "Resultaat van gekwalificeerd zoeken";
 $l_object_classfoldersearch["loesch"] = "Verwijder geselecteerde objecten.";
@@ -40,14 +40,6 @@ $l_object_classfoldersearch["parken"] = "Depubliceer geselecteerde objecten.";
 $l_object_classfoldersearch["wirklichloeschen"] = "Hiermee verwijdert u de geselecteerde objecten! Weet u het zeker?";
 $l_object_classfoldersearch["wirklichveroeffentlichen"] = "Hiermee publiceert u de geselecteerde objecten! Weet u het zeker?";
 $l_object_classfoldersearch["wirklichparken"] = "Hiermee depubliceert u de geselecteerde objecten! Weet u het zeker?";
-$l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";// TRANSLATE
-$l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";// TRANSLATE
-$l_object_classfoldersearch["copychar"] = "Copy the charset defined in the class to the selected objects";// TRANSLATE
-$l_object_classfoldersearch["wirklichcopychar"] = "This overrides the defined charset in the selected objects! Are you sure?";// TRANSLATE
-$l_object_classfoldersearch["searchable"] = "Set the selected objects to searchable";// TRANSLATE
-$l_object_classfoldersearch["wirklichsearchable"] = "This sets the selected objects to searchable! Are you sure?";// TRANSLATE
-$l_object_classfoldersearch["unsearchable"] = "Set the selected objects to unsearchable";// TRANSLATE
-$l_object_classfoldersearch["wirklichunsearchable"] = "This sets the selected objects to unsearchable! Are you sure?";// TRANSLATE
 
 $l_object_classfoldersearch["zeige"] = "Toon";
 $l_object_classfoldersearch["Objekt"] = "Object"; // TRANSLATE
@@ -56,10 +48,4 @@ $l_object_classfoldersearch["xtraArbeitsbereiche"] = "Extra werkgebieden";
 $l_object_classfoldersearch["Veroeffentlicht"] = "Gepubliceerd";
 $l_object_classfoldersearch["geaendert"] = "Aangepast";
 $l_object_classfoldersearch["anzeige"] = "Toon...";
-$l_object_classfoldersearch["issearchable"] = "searchable";// TRANSLATE
-$l_object_classfoldersearch["isnotsearchable"] = "not searchable";// TRANSLATE
-$l_object_classfoldersearch["ID"] = "ID";// TRANSLATE
-$l_object_classfoldersearch["language"] = "Language";// TRANSLATE
-$l_object_classfoldersearch["charset"] = "Charset";// TRANSLATE
-
 ?>

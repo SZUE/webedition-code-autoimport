@@ -195,18 +195,15 @@ $l_backup['customer_info'] = 'Données des clients du module gestion clients.';
 $l_backup['shop_info'] = 'Données de commande du module boutique.';
 $l_backup['workflow_info'] = 'Données du module gestion de flux.';
 $l_backup['todo_info'] = 'Messages et tâches du module tâches/messageries.';
-
 $l_backup['newsletter_info'] = 'Données du module lettre d\'info.';
 $l_backup['banner_info'] = 'Données du module de banière/statistique.';
 $l_backup['schedule_info'] = 'Données du module Ordonnanceur.';
-
 $l_backup['settings_info'] = 'Préférences du logiciel webEdition.';
 $l_backup['temporary_info'] = 'Données des document et objects non publié.';
 $l_backup['export_info'] = 'Données du modul d\'export.';
 $l_backup['glossary_info'] = 'Data from the glossary.'; // TRANSLATE
-$l_backup['versions_info'] = 'Data from Versioning.'; // TRANSLATE
-$l_backup['versions_binarys_info'] = 'This option could take some time and memory because the folder /webEdition/we/versions/ could be very large. It is recommended to save this folder manually.'; // TRANSLATE
-
+$l_backup['versions_info'] = 'Data from Versioning.';
+$l_backup['versions_binarys_info'] = 'This option could take some time and memory because the folder /webEdition/we/versions/ could be very large. It is recommended to save this folder manually.';
 
 $l_backup["import_voting_data"] = "Restaure des données de vote";
 $l_backup["export_voting_data"] = "Exporter des données de vote";

@@ -69,7 +69,6 @@ class we_template extends we_document
 		if(defined('DEFAULT_CHARSET')) {
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		}
-		array_push($this->EditPageNrs, WE_EDITPAGE_VERSIONS);
     }
 
     function copyDoc($id){
@@ -132,9 +131,6 @@ class we_template extends we_document
                 $GLOBALS["we_editmode"] = true;
                 return 'we_templates/we_editor_variants.inc.php';
                 break;
-			case WE_EDITPAGE_VERSIONS:
-				return "we_versions/we_editor_versions.inc.php";
-				break;
             default:
                 $this->EditPageNr = WE_EDITPAGE_PROPERTIES;
                 $_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;

@@ -38,7 +38,6 @@ function we_tag_votingField($attribs, $content) {
 						return '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 					break;
 					case 'radio':
-					case 'checkbox':
 					case 'chekbox':
 						return '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
 					break;
@@ -54,65 +53,24 @@ function we_tag_votingField($attribs, $content) {
 			case 'answer':
 				switch ($type){
 					case 'radio':
-						$code = '';
-						$GLOBALS['_we_voting']->IsRadio = true;
-						$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-						if ($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers-1){$subb = 1;} else {$subb = 0;}
-						if ($GLOBALS['_we_voting']->answerCount < $countanswers - $subb){
-							$atts = removeAttribs($attribs,array('name','type'));
-							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
-							if ($GLOBALS['_we_voting']->IsRequired && $GLOBALS['_we_voting']->answerCount==0) {
-								$atts['type'] = 'hidden';
-								$code .=  getHtmlTag('input',$atts,'');
-							}
-							$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-							$atts['value'] = $GLOBALS['_we_voting']->answerCount;
-							$atts['type'] = 'radio';
-							if (isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){							
-								$selItem = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][0];								
-								if (is_numeric($selItem) && $selItem == $GLOBALS['_we_voting']->answerCount) {
-									$atts['checked'] = 'checked';
-								}
-							}
-							if($GLOBALS['_we_voting']->AllowFreeText){
-								$countanswers--;
-								$atts['onclick']=  "_we_voting_answer_". $GLOBALS['_we_voting']->ID . "_".$countanswers.".value='';";
-							}
-	
-							$code .=  getHtmlTag('input',$atts,'');
-						}
-						return $code;
+						$atts = removeAttribs($attribs,array('name','type'));
+						$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
+						$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
+						$atts['value'] = $GLOBALS['_we_voting']->answerCount;
+						$atts['type'] = 'radio';
+
+						return getHtmlTag('input',$atts,'');
+
 					break;
 					case 'checkbox':
-						$code = '';
-						$GLOBALS['_we_voting']->IsCheckbox = true;
-						$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-						if ($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers-1){$subb = 1;} else {$subb = 0;}
-						if ($GLOBALS['_we_voting']->answerCount < $countanswers - $subb){
-							$atts = removeAttribs($attribs,array('name','type'));
-							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
-							if ($GLOBALS['_we_voting']->IsRequired && $GLOBALS['_we_voting']->answerCount==0) {
-								$atts['type'] = 'hidden';
-								$code .=  getHtmlTag('input',$atts,'');
-							}
-							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-							$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-							$atts['value'] = $GLOBALS['_we_voting']->answerCount;
-							$atts['type'] = 'checkbox';
-							if (isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){
-								foreach ($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'] as $kk => $wert) {
-									$selItem = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$kk];
-									$selItem = $wert;
-									
-									if (is_numeric($selItem) &&  $selItem == $GLOBALS['_we_voting']->answerCount) {
-										$atts['checked'] = 'checked';
-									}
-								}
-							}
+						$atts = removeAttribs($attribs,array('name','type'));
+						$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
+						$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
+						$atts['value'] = $GLOBALS['_we_voting']->answerCount;
+						$atts['type'] = 'checkbox';
 
-							$code .= getHtmlTag('input',$atts,'');
-						}
-						return $code;
+						return getHtmlTag('input',$atts,'');
+
 					break;
 					case 'select':
 						$code = '';
@@ -122,7 +80,7 @@ function we_tag_votingField($attribs, $content) {
 							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 							$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 
-							$code .= getHtmlTag('select',$atts,'');
+							$code = getHtmlTag('select',$atts,'');
 						}
 
 						$atts = removeAttribs($attribs,array('name','type'));
@@ -134,107 +92,9 @@ function we_tag_votingField($attribs, $content) {
 						}
 						return $code;
 					break;
-					case 'image':
-						$code = '';
-						$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-						if ($GLOBALS['_we_voting']->answerCount < $countanswers){
-							$myImageID = stripslashes($GLOBALS['_we_voting']->QASetAdditions[$GLOBALS['_we_voting']->defVersion]['imageID'][$GLOBALS['_we_voting']->answerCount]);
-							if (is_numeric($myImageID)) {
-								$myImage= new we_imageDocument();
-								$myImage->initByID($myImageID);
-								$code = $myImage->getHtml();
-								$atts = removeAttribs($attribs,array('name','type'));
-								$atts['alt'] = $myImage->getElement('alt');
-								$atts['title'] = $myImage->getElement('title');
-								$atts['width'] = $myImage->getElement('width');
-								$atts['height'] = $myImage->getElement('height');
-								$atts['src'] = $myImage->Path;
-								
-								$code = getHtmlTag('img',$atts,'');
-							}
-						}
-						return $code;
-					break;
-					case 'textinput':
-						$code = '';
-						if ($GLOBALS['_we_voting']['AllowFreeText']) {
-							
-							$atts = removeAttribs($attribs,array('name','type'));
-							$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-							if ($GLOBALS['_we_voting']->answerCount == $countanswers-1){
-								$atts['type'] = 'text';
-								$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-								$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-								$value= '';
-								if (isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){
-									if ($GLOBALS['_we_voting']->IsRadio) {
-										$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][0];
-									} else {
-										if ($GLOBALS['_we_voting']->IsCheckbox) {
-											$mycount = count($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value']);
-											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$mycount-1];
-											
-										} else {
-											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$GLOBALS['_we_voting']->answerCount];
-										}
-									}							
-									
-								}
-								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio) {
-									$atts['onkeydown'] ='';
-									for ($i = 0;$i < $countanswers - 1;$i++) {
-										$atts['onkeydown'] .= "_we_voting_answer_". $GLOBALS['_we_voting']->ID . "_".$i.".checked=0;";
-									}
-									
-								}
-								$code .= getHtmlTag('input',$atts,$value);
-							}
-						}
-						return $code;
-					break;
-					case 'textarea':
-						$code = '';
-						if ($GLOBALS['_we_voting']->AllowFreeText) {
-							$atts = removeAttribs($attribs,array('name','type'));
-							$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-							if ($GLOBALS['_we_voting']->answerCount == $countanswers-1){
-								$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-								$atts['id'] = '_we_voting_answerfree_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-								$value= '';
-								if (isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){
-									if ($GLOBALS['_we_voting']->IsRadio) {
-										$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][0];
-									} else {
-										if ($GLOBALS['_we_voting']->IsCheckbox) {
-											$mycount = count($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value']);
-											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$mycount-1];
-											
-										} else {
-											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$GLOBALS['_we_voting']->answerCount];
-										}
-									}								
-									
-								}
-								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio) {
-									$atts['onkeydown'] ='';
-									for ($i = 0;$i < $countanswers - 1;$i++) {
-										$atts['onkeydown'] .= "_we_voting_answer_". $GLOBALS['_we_voting']->ID . "_".$i.".checked=0;";
-									}
-									
-								}
-								$code = getHtmlTag('textarea',$atts,$value,true);
-							}
-						}
-						return $code;
-					break;
 					case 'text':
 					default:
-						$code = '';
-						$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-						if ($GLOBALS['_we_voting']->answerCount < $countanswers){
-							$code = stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers'][$GLOBALS['_we_voting']->answerCount]);
-						}
-						return $code;
+						return stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers'][$GLOBALS['_we_voting']->answerCount]);
 					break;
 				}
 			break;

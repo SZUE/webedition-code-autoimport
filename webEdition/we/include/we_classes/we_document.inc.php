@@ -375,7 +375,7 @@ class we_document extends we_root {
 
 		$navis = new MultiFileChooser(508,$this->NavigationItems,"delete_navi", $we_button->create_button_table(array($delallbut, $addbut)),"tool_navigation_edit_navi","Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
+		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path) {
 			$_id = path_to_id($_path,NAVIGATION_TABLE);
@@ -561,8 +561,7 @@ class we_document extends we_root {
 		}
 		else {
 			$listarray = array();
-		} 
-		if(!is_array($listarray)){$listarray = array();} //bug #4079
+		}
 		for($f=0;$f<$number;$f++){
 			$content = $this->getElement($name,"content");
 
@@ -655,9 +654,7 @@ class we_document extends we_root {
 				unset($this->elements[$namesArray[$i].($isBlock ? ("blk_".$name."_") : "").$listarray[$nr]]);
 			}
 		}
-		if (is_array($listarray)) {// Bug #4079
-			array_splice($listarray,$nr,1);
-		}
+		array_splice($listarray,$nr,1);
 		$list = serialize($listarray);
 		$this->setElement($name,$list);
 	}
@@ -750,7 +747,7 @@ class we_document extends we_root {
 		}
 	}
 
-	function we_save($resave=0,$skipHook=0){
+	function we_save($resave=0){
 
 		/* version */
 		$version = new weVersions();
@@ -768,7 +765,7 @@ class we_document extends we_root {
 		}
 		
 		
-		if($this->ContentType=="application/x-shockwave-flash" || $this->ContentType=="image/*" || $this->ContentType=="text/weTmpl" //#4120 hinzugefügt
+		if($this->ContentType=="application/x-shockwave-flash" || $this->ContentType=="image/*" 
 			|| $this->ContentType=="video/quicktime" || $this->ContentType=="text/js" || $this->ContentType=="text/css" 
 			|| $this->ContentType=="text/plain" || $this->ContentType=="text/xml"  || $this->ContentType=="application/*") {
 
@@ -776,10 +773,9 @@ class we_document extends we_root {
 		}
 		
 		/* hook */
-		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
-		}
+		$hook = new weHook('save', '', array($this));
+		$hook->executeHook();
+
 		return $ret;
 	}
 
@@ -1030,7 +1026,7 @@ class we_document extends we_root {
 					$val = $attribs["id"];
 				}
 				$bin->initByID($val,FILE_TABLE);
-				return array($bin->Text,$bin->Path,$bin->ParentPath,$bin->Filename,$bin->Extension,(isset($bin->elements['filesize'])? $bin->elements['filesize']['dat']:''));
+				return array($bin->Text,$bin->Path);
 			case "flashmovie":
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
 				$fl = new we_flashDocument();

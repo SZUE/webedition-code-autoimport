@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: View.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id: View.php 15333 2009-05-05 13:43:53Z matthew $
  */
 
 /**
@@ -27,7 +27,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Resource_View extends Zend_Application_Resource_ResourceAbstract
@@ -54,7 +54,7 @@ class Zend_Application_Resource_View extends Zend_Application_Resource_ResourceA
 
     /**
      * Retrieve view object
-     *
+     * 
      * @return Zend_View
      */
     public function getView()

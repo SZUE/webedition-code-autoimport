@@ -12,11 +12,10 @@
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
  *
- * @category   Zend
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Route.php 18951 2009-11-12 16:26:19Z alexander $
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Route.php 15464 2009-05-09 16:34:07Z dasprid $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -28,7 +27,7 @@ require_once 'Zend/Controller/Router/Route/Abstract.php';
  *
  * @package    Zend_Controller
  * @subpackage Router
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
@@ -47,28 +46,28 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
      * @var Zend_Translate
      */
     protected $_translator;
-
+    
     /**
      * Default locale
      *
      * @var mixed
      */
     protected static $_defaultLocale;
-
+    
     /**
      * Locale
-     *
+     * 
      * @var mixed
      */
     protected $_locale;
-
+    
     /**
      * Wether this is a translated route or not
      *
      * @var boolean
      */
     protected $_isTranslated = false;
-
+    
     /**
      * Translatable variables
      *
@@ -132,7 +131,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     public function getVersion() {
         return 1;
     }
-
+    
     /**
      * Instantiates route based on passed Zend_Config structure
      *
@@ -174,20 +173,20 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                         $this->_translatable[] = $name;
                         $this->_isTranslated   = true;
                     }
-
+                    
                     $this->_parts[$pos]     = (isset($reqs[$name]) ? $reqs[$name] : $this->_defaultRegex);
                     $this->_variables[$pos] = $name;
                 } else {
                     if (substr($part, 0, 1) == $this->_urlVariable) {
                         $part = substr($part, 1);
                     }
-
+                    
                     if (substr($part, 0, 1) === '@' && substr($part, 1, 1) !== '@') {
                         $this->_isTranslated = true;
                     }
-
+                    
                     $this->_parts[$pos] = $part;
-
+                    
                     if ($part !== '*') {
                         $this->_staticCount++;
                     }
@@ -208,15 +207,15 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
         if ($this->_isTranslated) {
             $translateMessages = $this->getTranslator()->getMessages();
         }
-
+        
         $pathStaticCount = 0;
         $values          = array();
         $matchedPath     = '';
-
+        
         if (!$partial) {
             $path = trim($path, $this->_urlDelimiter);
         }
-
+        
         if ($path !== '') {
             $path = explode($this->_urlDelimiter, $path);
 
@@ -229,9 +228,9 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                         return false;
                     }
                 }
-
+                
                 $matchedPath .= $pathPart . $this->_urlDelimiter;
-
+                
                 // If it's a wildcard, get the rest of URL as wildcard data and stop matching
                 if ($this->_parts[$pos] == '*') {
                     $count = count($path);
@@ -253,12 +252,12 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                     if (substr($part, 0, 1) === '@') {
                         $part = substr($part, 1);
                     }
-
+                    
                     if (($originalPathPart = array_search($pathPart, $translateMessages)) !== false) {
                         $pathPart = $originalPathPart;
                     }
                 }
-
+                
                 if (substr($part, 0, 2) === '@@') {
                     $part = substr($part, 1);
                 }
@@ -278,7 +277,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                     $values[$name] = $pathPart;
                 } else {
                     $pathStaticCount++;
-                }
+                }  
             }
         }
 
@@ -295,11 +294,11 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                 return false;
             }
         }
-
+        
         $this->setMatchedPath(rtrim($matchedPath, $this->_urlDelimiter));
 
         $this->_values = $values;
-
+        
         return $return;
 
     }
@@ -315,7 +314,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     {
         if ($this->_isTranslated) {
             $translator = $this->getTranslator();
-
+            
             if (isset($data['@locale'])) {
                 $locale = $data['@locale'];
                 unset($data['@locale']);
@@ -323,7 +322,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                 $locale = $this->getLocale();
             }
         }
-
+        
         $url  = array();
         $flag = false;
 
@@ -349,12 +348,12 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                     require_once 'Zend/Controller/Router/Exception.php';
                     throw new Zend_Controller_Router_Exception($name . ' is not specified');
                 }
-
+                
                 if ($this->_isTranslated && in_array($name, $this->_translatable)) {
                     $url[$key] = $translator->translate($value, $locale);
                 } else {
                     $url[$key] = $value;
-                }
+                } 
             } elseif ($part != '*') {
                 if ($this->_isTranslated && substr($part, 0, 1) === '@') {
                     if (substr($part, 1, 1) !== '@') {
@@ -366,7 +365,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                     if (substr($part, 0, 2) === '@@') {
                         $part = substr($part, 1);
                     }
-
+                    
                     $url[$key] = $part;
                 }
             } else {
@@ -385,15 +384,15 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
 
         foreach (array_reverse($url, true) as $key => $value) {
             $defaultValue = null;
-
+            
             if (isset($this->_variables[$key])) {
                 $defaultValue = $this->getDefault($this->_variables[$key]);
-
+               
                 if ($this->_isTranslated && $defaultValue !== null && isset($this->_translatable[$this->_variables[$key]])) {
                     $defaultValue = $translator->translate($defaultValue, $locale);
                 }
             }
-
+                
             if ($flag || $value !== $defaultValue || $partial) {
                 if ($encode) $value = urlencode($value);
                 $return = $this->_urlDelimiter . $value . $return;
@@ -426,7 +425,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     public function getDefaults() {
         return $this->_defaults;
     }
-
+    
     /**
      * Get all variables which are used by the route
      *
@@ -439,7 +438,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
 
     /**
      * Set a default translator
-     *
+     * 
      * @param  Zend_Translate $translator
      * @return void
      */
@@ -447,7 +446,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     {
         self::$_defaultTranslator = $translator;
     }
-
+    
     /**
      * Get the default translator
      *
@@ -457,10 +456,10 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     {
         return self::$_defaultTranslator;
     }
-
+    
     /**
      * Set a translator
-     *
+     * 
      * @param  Zend_Translate $translator
      * @return void
      */
@@ -468,10 +467,10 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     {
         $this->_translator = $translator;
     }
-
+    
     /**
      * Get the translator
-     *
+     * 
      * @throws Zend_Controller_Router_Exception When no translator can be found
      * @return Zend_Translate
      */
@@ -487,19 +486,19 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
             } catch (Zend_Exception $e) {
                 $translator = null;
             }
-
-            if ($translator instanceof Zend_Translate) {
+            
+            if ($translator instanceof Zend_Translate) { 
                 return $translator;
             }
         }
-
+        
         require_once 'Zend/Controller/Router/Exception.php';
         throw new Zend_Controller_Router_Exception('Could not find a translator');
     }
-
+    
     /**
      * Set a default locale
-     *
+     * 
      * @param  mixed $locale
      * @return void
      */
@@ -507,7 +506,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     {
         self::$_defaultLocale = $locale;
     }
-
+    
     /**
      * Get the default locale
      *
@@ -517,10 +516,10 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     {
         return self::$_defaultLocale;
     }
-
+    
     /**
      * Set a locale
-     *
+     * 
      * @param  mixed $locale
      * @return void
      */
@@ -528,10 +527,10 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     {
         $this->_locale = $locale;
     }
-
+    
     /**
      * Get the locale
-     *
+     * 
      * @return mixed
      */
     public function getLocale()
@@ -546,12 +545,12 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
             } catch (Zend_Exception $e) {
                 $locale = null;
             }
-
-            if ($locale !== null) {
+            
+            if ($locale !== null) { 
                 return $locale;
             }
         }
-
+        
         return null;
     }
 }

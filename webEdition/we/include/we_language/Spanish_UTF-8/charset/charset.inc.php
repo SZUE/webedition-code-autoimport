@@ -32,7 +32,7 @@
  */
  
 //	This is for the charset of webEdition itself.
-$_language["charset"] = "UTF-8"; // TRANSLATE
+$_language["charset"] = "UTF-8";
 
 $_charset["error"]["no_charset_tag"] = "No hay rótulo we:charset en la plantilla";
 $_charset["error"]["no_charset_available"] = "--ninguno--";

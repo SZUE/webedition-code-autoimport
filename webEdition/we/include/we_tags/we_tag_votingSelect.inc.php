@@ -26,8 +26,6 @@ function we_tag_votingSelect($attribs, $content){
  	if($we_editmode && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
 		$firstentry = we_getTagAttribute("firstentry",$attribs);
 		$submitonchange = we_getTagAttribute("submitonchange",$attribs,"",true);
-		$reload = we_getTagAttribute("reload", $attribs, "", true);
-		if($submitonchange) {$reload=true;}
 		
 		$where = ' WHERE IsFolder=0 ' . weVoting::getOwnersSql();
 		
@@ -40,8 +38,6 @@ function we_tag_votingSelect($attribs, $content){
 
 		if($submitonchange){
 			$newAttribs['onchange'] = 'we_submitForm();';
-		} else {
-			$newAttribs['onchange'] = '_EditorFrame.setEditorIsHot(true)'. ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '';
 		}
 		
 		$options = '';
@@ -50,9 +46,9 @@ function we_tag_votingSelect($attribs, $content){
 		    $options = getHtmlTag('option',array('value'=>''),$firstentry,true);
 		}
 		
-		$DB_WE->query("SELECT ID,Text,Path FROM " . VOTING_TABLE . " $where ORDER BY Path;");
+		$DB_WE->query("SELECT ID,Text FROM " . VOTING_TABLE . " $where ORDER BY Text;");
 		while($DB_WE->next_record()){
-				$options .= getHtmlTag('option',($DB_WE->f('ID')==$val ? array('value'=>$DB_WE->f("ID"),'selected'=>'selected') : array('value'=>$DB_WE->f("ID"))), $DB_WE->f("Path")) . "\n";
+				$options .= getHtmlTag('option',($DB_WE->f('ID')==$val ? array('value'=>$DB_WE->f("ID"),'selected'=>'selected') : array('value'=>$DB_WE->f("ID"))), $DB_WE->f("Text")) . "\n";
 		}
 	
 		return getHtmlTag('select',$newAttribs,$options,true);

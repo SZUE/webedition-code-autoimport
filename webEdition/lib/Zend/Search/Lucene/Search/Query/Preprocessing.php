@@ -15,14 +15,20 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Search
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Preprocessing.php 18954 2009-11-12 20:01:33Z alexander $
  */
 
 
-/** Zend_Search_Lucene_Search_Query */
+/**
+ * Zend_Search_Lucene_Search_Query
+ */
 require_once 'Zend/Search/Lucene/Search/Query.php';
+
+/**
+ * Zend_Search_Lucene_Search_Weight
+ */
+require_once 'Zend/Search/Lucene/Search/Weight.php';
 
 
 /**
@@ -33,7 +39,7 @@ require_once 'Zend/Search/Lucene/Search/Query.php';
  * @package    Zend_Search_Lucene
  * @subpackage Search
  * @internal
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Search_Lucene_Search_Query_Preprocessing extends Zend_Search_Lucene_Search_Query

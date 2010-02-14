@@ -191,7 +191,6 @@ $l_shop["saferpayProviderset"] = "Zestaw providera";
 $l_shop["saferpayProvidersetTxt"] = "* oddzielony przecinkami!";
 $l_shop["saferpayCMDPath"] = "exec-path"; // TRANSLATE
 $l_shop["saferpayCMDPathTxt"] = "* np. /usr/local/bin/";
-
 $l_shop["saferpayconfPath"] = "conf-path"; // TRANSLATE
 $l_shop["saferpayconfPathTxt"] = "* Ścieżka dosaferpay";
 $l_shop["saferpaydesc"] = "Opis";
@@ -206,8 +205,7 @@ $l_shop["fieldSurname"] = "Nazwisko";
 $l_shop["fieldStreet"] = "Ulica";
 $l_shop["fieldZip"] = "kod pocztowy";
 $l_shop["fieldCity"] = "Miejscowość";
-$l_shop["fieldEmail"] = "E-mail";
-
+$l_shop["fieldEmail"] = "E-mail"; // TRANSLATE
 $l_shop["SelectAll"]= "Wszystkie";
 $l_shop["plzh"] = "Rezerwacja";
 $l_shop["lastOrder"] = "Last order - Nr.: %s, %s";

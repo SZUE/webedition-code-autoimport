@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -25,7 +26,6 @@ $l_contentTypes["object"] = "Class";
 $l_object["attributes"] = "Attributes";
 $l_object["objectname"] = "Object name";
 $l_object["objectpath"] = "Object path";
-$l_object["objectid"] = "Object ID";// TRANSLATE
 $l_object["class"] = "Class";
 $l_object["classname"] = "Class name";
 $l_object["class_id"] = "ID of the class";
@@ -85,8 +85,4 @@ $l_object["generated_template_for_objectFile"] = "No matching template found.";
 $l_object["no_workspace_defined"] = "There are no workspaces defined for this object. You can select special workspaces for an object in its class.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects";
-$l_object["not_published"] = "The object is not published"; 
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";
-
 ?>

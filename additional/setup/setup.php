@@ -106,11 +106,6 @@ $steps = array(
 		"title" => "Setup complete.",
 		"name" => "finish"
 	),
-	array(
-		"id" => "10",
-		"title" => "Cleanup complete.",
-		"name" => "cleanup"
-	),
 );
 
 // identify current step:
@@ -290,7 +285,6 @@ function step_database() {
 		$input_host->setValue('localhost');
 	}
 	$input_host->setWidth(200);
-	$input_host->setHeight(26);
 	
 	// database name:
 	$input_database = new we_ui_controls_TextField();
@@ -301,7 +295,6 @@ function step_database() {
 		$input_database->setValue('webedition');
 	}
 	$input_database->setWidth(200);
-	$input_database->setHeight(26);
 	
 	// table prefix:
 	$input_tableprefix = new we_ui_controls_TextField();
@@ -312,7 +305,6 @@ function step_database() {
 		$input_tableprefix->setValue('');
 	}
 	$input_tableprefix->setWidth(200);
-	$input_tableprefix->setHeight(26);
 	
 	// database username:
 	$input_username = new we_ui_controls_TextField();
@@ -323,7 +315,6 @@ function step_database() {
 		$input_username->setValue('');
 	}
 	$input_username->setWidth(200);
-	$input_username->setHeight(26);
 	
 	// database user password:
 	$input_password = new we_ui_controls_TextField();
@@ -336,7 +327,6 @@ function step_database() {
 	$input_password->setWidth(200);
 	$input_password->setClass("small");
 	$input_password->setType("password");
-	$input_password->setHeight(26);;
 	
 	foreach($input_host->getJSFiles() as $jsFile) {
 		$header .= '<script src="'.$jsFile.'" language="JavaScript" type="text/javascript"></script>';
@@ -722,53 +712,18 @@ function step_finish() {
 	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
 	";
 	$output .= "<b>Important:</b><br /><br />";
-	$output .= "Please don't forget to remove this setup script in order to prevent damage to your website by misuse. The next and final step of this installation script will take care of that.<br /><br />";
+	$output .= "Please don't forget to remove this script (setup.php) in order to prevent damage to your website by misuse.<br /><br />";
 	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
 	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
 	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
 	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
 	return $output;
 }
-
-function step_cleanup() {
-	@unlink("./README.txt");
-	@unlink("./INSTALL.txt");
-	@unlink("./LICENSE.txt");
-	@unlink("./database.sql");
-	@unlink("./setup.php");
-	$error = false;
-	if(is_readable("./README.txt")) $error = true;
-	if(is_readable("./INSTALL.txt")) $error = true;
-	if(is_readable("./LICENSE.txt")) $error = true;
-	if(is_readable("./database.sql")) $error = true;
-	//if(is_readable("./setup.php")) $error = true;
-	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\">clicking here</a>. 
-	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
-	";
-	if($error === true) {
-		$output .= tpl_errorbox("At least one of the setup files could not be deleted (maybe insufficient access permissions?), please do that manually!");
-	} else {
-		$output .= tpl_infobox("All setup files have been deleted successfully to avoid system damage by misuse.");	
-	}
-	$output .= "<br /><b>Important:</b><br /><br />";
-	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
-	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
-	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
-	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
-	return $output;
-	
-}
-
 // html template functions:
 
 // error message box:
 function tpl_errorbox($text = "") {
 	return '<div style="display:block; padding:3px; padding-left:24px; margin:3px 0px 3px 0px; border:1px solid red; background: url(./webEdition/images/icons/invalid.gif) 3px center no-repeat;" />'.$text.'</div>';
-}
-
-// info message box:
-function tpl_infobox($text = "") {
-	return '<div style="display:block; padding:3px; padding-left:24px; margin:3px 0px 3px 0px; border:1px solid green; background: url(./webEdition/images/icons/valid.gif) 3px center no-repeat;" />'.$text.'</div>';
 }
 
 // informational message:
@@ -816,12 +771,7 @@ function tpl_navigation($step = "1") {
 	} else {
 		*/
 		$buttonNext->setTitle('next step');
-		if($step == (sizeof($steps)-1)) {
-			$buttonNext->setText('cleanup');
-		} else {
-			$buttonNext->setText('next');
-		}
-		
+		$buttonNext->setText('next');
 		$buttonNext->setTarget('_self');
 		$buttonNext->setType('submit');
 		if($step >= sizeof($steps) || $errors === true) {
@@ -836,7 +786,7 @@ function tpl_navigation($step = "1") {
 	$buttonPrev->setText('back');
 	$buttonPrev->setType('href');
 	$buttonPrev->setTarget('_self');
-	if($step == "1" || $step >= (sizeof($steps)-1)) {
+	if($step == "1" || $step == sizeof($steps)) {
 		$buttonPrev->setDisabled(true);
 	} else {
 		$buttonPrev->setHref('?step='.$prevID);
@@ -867,7 +817,6 @@ $navigation = tpl_navigation($currentStep["id"]);
 $bufferedOutput = ob_get_contents();
 ob_end_clean();
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<title>webEdition &bull; initial configuration</title>
@@ -875,7 +824,7 @@ ob_end_clean();
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta http-equiv="imagetoolbar" content="no">
-	<meta name="generator" content="webEdition Version <?php echo WE_VERSION; ?>">
+	<meta name="generator" content="webEdition Version <?php echo WE_VERSION ?>">
 	<style type="text/css">
 	body, div, div.small, table, td, font, li, form {
 		font-size:8pt;
@@ -908,7 +857,7 @@ ob_end_clean();
 	<link href="/webEdition/css/global.php?WE_LANGUAGE=English_UTF-8" rel="styleSheet" type="text/css">
 	<?php echo $header; ?>
 </head>
-<body bgcolor="#386AAB" class="header" onLoad="" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<body bgcolor="#386AAB" class="header" onload="" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 <div class="debug"<?php if(isset($_SESSION["debug"])) {echo ' style="display:block;"';} else {echo ' style="display:none;"';} ?>>
 <?php echo $bufferedOutput; ?>
 </div>

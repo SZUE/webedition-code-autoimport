@@ -178,11 +178,10 @@ class weNavigationView {
 							' . we_message_reporting::getShowMessageCall($GLOBALS["l_navigation"]["nothing_selected"], WE_MESSAGE_ERROR) . '
 							return;
 						}
-						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone){
-							if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone.value==1){
+						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone.value==1){
 							' . we_message_reporting::getShowMessageCall($GLOBALS["l_navigation"]["nothing_to_delete"], WE_MESSAGE_ERROR) . '
 							return;
-						} }
+						}
 						'.(!we_hasPerm("DELETE_NAVIGATION") ?
 						(
 							we_message_reporting::getShowMessageCall($GLOBALS["l_navigation"]["no_perms"], WE_MESSAGE_ERROR)
@@ -296,14 +295,14 @@ class weNavigationView {
 						new jsWindow(url,"we_catselector",-1,-1,'.WINDOW_CATSELECTOR_WIDTH.','.WINDOW_CATSELECTOR_HEIGHT.',true,true,true,true);
 						break;
 					case "openNavigationDirselector":
-						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/we_navigationDirSelect.php?";
+						url = "'.WEBEDITION_DIR.'/we/include/we_tools/navigation/we_navigationDirSelect.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}
 						new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 						break;
 					case "openFieldSelector":
-						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
+						url = "'.WEBEDITION_DIR.'/we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
 						new jsWindow(url,"we_navigation_field_selector",-1,-1,380,350,true,true,true);
 						break;
 					case "copyNaviFolder":
@@ -322,7 +321,7 @@ class weNavigationView {
 				}
 			}
 			' . $_we_button->create_state_changer(false) . '
-			var copyNaviFolderUrl = "'.WEBEDITION_DIR.'rpc/rpc.php";
+			var copyNaviFolderUrl = "'.WEBEDITION_DIR.'/rpc/rpc.php";
 			function copyNaviFolder(folderPath,folderID) {
 				var parentPos = selfNaviPath.indexOf(folderPath);
 				if(parentPos==(-1) || selfNaviPath.indexOf(folderPath)>0) {
@@ -879,15 +878,6 @@ function processCommands() {
 							$js .= $this->topFrame.'.makeNewEntry(\'link.gif\',\''.$_item['id'].'\',\''.$this->Model->ID.'\',\''.addslashes($_item['text']).'\',0,\'item\',\''. NAVIGATION_TABLE .'\',1,' . $_k . ');';
 						}
 					}
-					if($this->Model->IsFolder && $this->Model->Selection=='nodynamic') {
-						$_old_items = array();
-						if($this->Model->hasDynChilds()){
-							$_old_items = $this->Model->depopulateGroup();
-							foreach ($_old_items as $_id) {
-								$js .= $this->topFrame.'.deleteEntry('.$_id['id'].');';
-							}
-						}						
-					}
 
 
 					$js = we_htmlElement::jsElement($js . '
@@ -1008,7 +998,7 @@ function processCommands() {
 
 					print 	we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")) .
 							we_htmlElement::jsElement('
-						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
+						url = "'.WEBEDITION_DIR.'/we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 					);
 				break;

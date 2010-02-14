@@ -191,7 +191,6 @@ $l_shop["saferpayProviderset"] = "Providerset"; // TRANSLATE
 $l_shop["saferpayProvidersetTxt"] = "* séparé-par-virgule!";
 $l_shop["saferpayCMDPath"] = "exec-path"; // TRANSLATE
 $l_shop["saferpayCMDPathTxt"] = "* p.ex. /usr/local/bin/";
-
 $l_shop["saferpayconfPath"] = "conf-path"; // TRANSLATE
 $l_shop["saferpayconfPathTxt"] = "* chemin de saferpay";
 $l_shop["saferpaydesc"] = "Description"; // TRANSLATE
@@ -207,7 +206,6 @@ $l_shop["fieldStreet"] = "Rue";
 $l_shop["fieldZip"] = "Code Postale";
 $l_shop["fieldCity"] = "Ville";
 $l_shop["fieldEmail"] = "E-Mail";
-
 $l_shop["SelectAll"]= "Tous";
 $l_shop["plzh"] = "joker";
 $l_shop["lastOrder"] = "Last order - Nr.: %s, %s";

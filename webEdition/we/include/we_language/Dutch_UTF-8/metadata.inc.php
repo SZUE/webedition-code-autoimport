@@ -70,7 +70,7 @@ $l_metadata["import_metadata_at_upload"] = "Importeer metagegevens uit bestand";
 $l_metadata['error_meta_field_empty_msg'] = "De veldnaam op regel %s1 mag niet leeg zijn!";
 $l_metadata['meta_field_wrong_chars_messsage'] = "De veldnaam '%s1' is niet geldig! Geldige karakters zijn alfa-numeriek, hoofd- en kleine letters (a-z, A-Z, 0-9) en underscore.";
 $l_metadata['meta_field_wrong_name_messsage'] = "De veldnaam '%s1' is niet geldig! Deze naam wordt intern gebruikt in webEdition! De volgende namen zijn niet geldig en kunnen niet gebruikt worden: %s2";
-$l_metadata['file_size_0'] = 'The file size is 0 byte, please upload a document to the server before saving';// TRANSLATE
+
 
 /*****************************************************************************
  * INFO TAB

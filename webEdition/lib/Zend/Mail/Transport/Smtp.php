@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
- *
+ * 
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Transport
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Smtp.php 18989 2009-11-15 13:23:41Z yoshida@zend.co.jp $
+ * @version    $Id: Smtp.php 15577 2009-05-14 12:43:34Z matthew $
  */
 
 
@@ -45,7 +45,7 @@ require_once 'Zend/Mail/Transport/Abstract.php';
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Transport
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
@@ -199,8 +199,8 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
             $this->_connection->rset();
         }
 
-        // Set sender email address
-        $this->_connection->mail($this->_mail->getFrom());
+        // Set mail return path from sender email address
+        $this->_connection->mail($this->_mail->getReturnPath());
 
         // Set recipient forward paths
         foreach ($this->_mail->getRecipients() as $recipient) {

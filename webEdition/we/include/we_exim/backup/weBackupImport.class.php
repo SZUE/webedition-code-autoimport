@@ -241,9 +241,7 @@
 
 			foreach ($newglobals as $k=>$v){
 				if($k != 'BACKUP_STEPS' && $v != ''){
-					if($k != 'DB_SET_CHARSET') {
-				 		weConfParser::setGlobalPref($k,$v);
-					}
+				 	weConfParser::setGlobalPref($k,$v);
 				}
 			}
 			@unlink($_SERVER["DOCUMENT_ROOT"].$file);

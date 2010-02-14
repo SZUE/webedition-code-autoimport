@@ -26,5 +26,4 @@ $GLOBALS['weTagWizard']['attribute']['id312_showimage'] = new weTagData_selectAt
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id313_showinputs'] = new weTagData_selectAttribute('313', 'showinputs', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-$GLOBALS['weTagWizard']['attribute']['id847_sizingrel'] = new weTagData_textAttribute('847', 'sizingrel', false, '');
 ?>

@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -193,7 +194,7 @@ $l_customer["csv_delimiter"] = "Delimiter";
 $l_customer["csv_enclose"] = "Enclose";
 $l_customer["csv_escape"] = "Escape";
 $l_customer["csv_lineend"] = "Line end";
-$l_customer["import_charset"]="Import charset"; //
+$l_customer["import_charset"]="Import charset";
 $l_customer["csv_null"] = "NULL replacment";
 $l_customer["csv_fieldnames"] = "First row contains fileds name";
 
@@ -298,8 +299,6 @@ $l_customer["we_fieldname_notValid"] = "Invalid field name!\\nValid characters a
 
 $l_customer["orderTab"] = 'Orders of this customer';
 $l_customer['default_order'] = 'pre-set order';
-$l_customer['ASC'] = 'ascending';
-$l_customer['DESC'] = 'descending';
 
 $l_customer["connected_with_customer"] = "Connected with customer";
 $l_customer["one_customer"] = "Customer";

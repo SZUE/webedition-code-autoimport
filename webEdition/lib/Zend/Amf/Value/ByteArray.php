@@ -17,7 +17,6 @@
  * @subpackage Value
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ByteArray.php 18951 2009-11-12 16:26:19Z alexander $
  */
 
 /**
@@ -28,7 +27,7 @@
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Amf_Value_ByteArray
+class Zend_Amf_Value_ByteArray 
 {
     /**
      * @var string ByteString Data

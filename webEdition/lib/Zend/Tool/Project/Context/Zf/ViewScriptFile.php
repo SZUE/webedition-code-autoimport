@@ -17,7 +17,7 @@
  * @subpackage Framework
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ViewScriptFile.php 16971 2009-07-22 18:05:45Z mikaelkael $
+ * @version    $Id$
  */
 
 /**
@@ -124,23 +124,23 @@ class Zend_Tool_Project_Context_Zf_ViewScriptFile extends Zend_Tool_Project_Cont
 </head>
 <body>
   <h1>An error occurred</h1>
-  <h2><?php echo \$this->message ?></h2>
+  <h2><?= \$this->message ?></h2>
 
-  <?php if ('development' == APPLICATION_ENV): ?>
+  <? if ('development' == APPLICATION_ENV): ?>
 
   <h3>Exception information:</h3>
   <p>
-      <b>Message:</b> <?php echo \$this->exception->getMessage() ?>
+      <b>Message:</b> <?= \$this->exception->getMessage() ?>
   </p>
 
   <h3>Stack trace:</h3>
-  <pre><?php echo \$this->exception->getTraceAsString() ?>
+  <pre><?= \$this->exception->getTraceAsString() ?>
   </pre>
 
   <h3>Request Parameters:</h3>
-  <pre><?php echo var_export(\$this->request->getParams(), true) ?>
+  <pre><? var_dump(\$this->request->getParams()) ?>
   </pre>
-  <?php endif ?>
+  <? endif ?>
 
 </body>
 </html>
@@ -150,6 +150,7 @@ EOS;
 
             $contents =<<<EOS
 <style>
+
     a:link,
     a:visited
     {
@@ -169,7 +170,6 @@ EOS;
         height: 400px;
         border: 2px solid #444444;
         overflow: hidden;
-        text-align: center;
     }
 
     div#more-information
@@ -177,21 +177,22 @@ EOS;
         background-image: url(http://framework.zend.com/images/bkg_body-bottom.gif);
         height: 100%;
     }
+
 </style>
-<div id="welcome">
-    <h1>Welcome to the <span id="zf-name">Zend Framework!</span></h1>
-
-    <h3>This is your project's main page</h3>
-
-    <div id="more-information">
-        <p><img src="http://framework.zend.com/images/PoweredBy_ZF_4LightBG.png" /></p>
-        <p>
+<center>
+    <div id="welcome">
+        <br />
+        <h1>Welcome to the <span id="zf-name">Zend Framework!</span></h1>
+        <h3>This is your project's main page</h3><br /><br />
+        <div id="more-information">
+            <br />
+            <img src="http://framework.zend.com/images/PoweredBy_ZF_4LightBG.png" /><br /><br />
             Helpful Links: <br />
             <a href="http://framework.zend.com/">Zend Framework Website</a> |
             <a href="http://framework.zend.com/manual/en/">Zend Framework Manual</a>
-        </p>
+        </div>
     </div>
-</div>
+</center>
 EOS;
 
         } else {

@@ -64,13 +64,6 @@ class we_flashDocument extends we_binaryDocument
 
 	// is not written yet
 	function initByAttribs($attribs){
-		if (isset($attribs["sizingrel"])){
-			if(isset($attribs["width"])) {$orig_w = $attribs["width"];} else {$orig_w = $this->elements["width"]["dat"];}
-			if(isset($attribs["height"])) {$orig_h = $attribs["height"];} else {$orig_h = $this->elements["height"]["dat"];}
-			$attribs["width"] = round($orig_w*$attribs["sizingrel"]);
-			$attribs["height"] = round($orig_h*$attribs["sizingrel"]);
-			unset($attribs["sizingrel"]);
-		}
 		foreach($attribs as $a=>$b){
 			if($b != ""){
 				if($a == "Pluginspage" || $a == "Codebase"){
@@ -189,20 +182,18 @@ class we_flashDocument extends we_binaryDocument
 			} else if (isset($attribs['pathonly']) && $attribs['pathonly']) {
 				$this->html = $src;
 			}
-		}else{ 
-			if($GLOBALS['we_doc']->InWebEdition == 1) { 
-				$imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
-				$imgAtts["width"]  = 64;
-				$imgAtts["height"] = 64;
-				$imgAtts["border"] = 0;
-				$imgAtts["style"] = "margin:8px 18px;";
-				$imgAtts["alt"]    = "";
-				$imgAtts["xml"]    = $this->getElement("xml");
-				if(isset($this->name)){
-					$imgAtts["name"] = $this->name;
-				}
-				$this->html = getHtmlTag("img", $imgAtts);
-			} else {$this->html ='';}
+		}else{
+		    $imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
+		    $imgAtts["width"]  = 64;
+		    $imgAtts["height"] = 64;
+		    $imgAtts["border"] = 0;
+		    $imgAtts["style"] = "margin:8px 18px;";
+		    $imgAtts["alt"]    = "";
+		    $imgAtts["xml"]    = $this->getElement("xml");
+		    if(isset($this->name)){
+		        $imgAtts["name"] = $this->name;
+		    }
+			$this->html = getHtmlTag("img", $imgAtts);
 		}
 		return $this->html;
 	}

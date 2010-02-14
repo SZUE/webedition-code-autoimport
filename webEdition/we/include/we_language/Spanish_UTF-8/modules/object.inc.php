@@ -25,7 +25,6 @@ $l_contentTypes["object"] = "Clase";
 $l_object["attributes"] = "Atributos";
 $l_object["objectname"] = "Nombre del objeto";
 $l_object["objectpath"] = "Ruta de acceso del objeto";
-$l_object["objectid"] = "Object ID";// TRANSLATE
 $l_object["class"] = "Clase";
 $l_object["classname"] = "Nombre de la Clase";
 $l_object["class_id"] = "ID of the class"; // TRANSLATE
@@ -54,7 +53,8 @@ $l_object["binary_field"] = "Documento binario";
 $l_object["link_field"] = "Vï¿½nculo";
 $l_object["href_field"] = "Href"; // TRANSLATE
 $l_object["shopVat_field"] = "Campo IVA";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
+
 
 $l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
 $l_object["objectFile_response_save_ok"] = "El objeto '%s' fue salvado exitosamente!";
@@ -85,8 +85,4 @@ $l_object["generated_template_for_objectFile"] = "Ninguna plantilla igual fue en
 $l_object["no_workspace_defined"] = "No hay ï¿½reas de trabajo definidas para este objeto. UD puede seleccionar ï¿½reas de trabajo especiales para un objeto en su clase.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
 ?>

@@ -45,18 +45,12 @@ $l_alert[FILE_TABLE]["not_im_ws"] = "Plik nie znajduje się w twoim obszarze rob
 $l_alert["folder"]["not_im_ws"] = "Ten katalog nie znajduje się w twoim obszarze roboczym!";
 $l_alert[TEMPLATES_TABLE]["not_im_ws"] = "Szablon nie znajduje się w twoim obszarze roboczym!";
 $l_alert["delete_recipient"] = "Czy naprawdę chcesz usunąć wybrany adres e-mail?";
-
 $l_alert["recipient_exists"] = "Adres e-mail już istnieje!";
-
 $l_alert["input_name"] = "Wprowadź nowy adres e-mail!";
-
 $l_alert['input_file_name'] = "Enter a filename."; // TRANSLATE
 $l_alert["max_name_recipient"] = "Adres e-mail może składać się najwyżej z 255 znaków!";
-
 $l_alert["not_entered_recipient"] = "Nie wprowadzono adresu e-mail!";
-
 $l_alert["recipient_new_name"] = "Zmiana adresu e-mail!";
-
 $l_alert["no_new"]["objectFile"] = "Nie możesz stworzyć obiektów, gdyż albo brakuje ci uprawnień<br>albo nie istnieje klasa, w której ważny jest jeden z Twoich obszarów pracy!";
 $l_alert["required_field_alert"] = "Pole '%s' jest polem obowiązkowym i należy je wypełnić!";
 $l_alert["phpError"] = "Nie można uruchomić webEdition";

@@ -61,14 +61,6 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 	// is not written yet
 	function initByAttribs($attribs){
-		if (isset($attribs["sizingrel"])){
-			if(isset($attribs["width"])) {$orig_w = $attribs["width"];} else {$orig_w = $this->elements["width"]["dat"];}
-			if(isset($attribs["height"])) {$orig_h = $attribs["height"];} else {$orig_h = $this->elements["height"]["dat"];}
-			$attribs["width"] = round($orig_w*$attribs["sizingrel"]);
-			$attribs["height"] = round($orig_h*$attribs["sizingrel"]);
-			unset($attribs["sizingrel"]);
-		}
-
 		foreach($attribs as $a=>$b){
 			if($b != ""){
 				if($a == "Pluginspage" || $a == "Codebase"){
@@ -174,20 +166,19 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 
 		}else{
-			if($GLOBALS['we_doc']->InWebEdition == 1) {
-				$_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
-				$_imgAttr['width']  = 64;
-				$_imgAttr['height'] = 64;
-				$_imgAttr['border'] = 0;
-				$_imgAtts["style"] = "margin:8px 18px;";
-				$_imgAttr['alt'] = "";
-				$_imgAttr['xml'] = $this->getElement("xml");
-	
-				if(isset($this->name)){
-					$_imgAttr['name'] = $this->name;
-				}
-				$this->html = getHtmlTag('img', $_imgAttr);
-			} else {$this->html ='';}
+
+		    $_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
+		    $_imgAttr['width']  = 64;
+		    $_imgAttr['height'] = 64;
+		    $_imgAttr['border'] = 0;
+		    $_imgAtts["style"] = "margin:8px 18px;";
+		    $_imgAttr['alt'] = "";
+		    $_imgAttr['xml'] = $this->getElement("xml");
+
+		    if(isset($this->name)){
+		        $_imgAttr['name'] = $this->name;
+		    }
+			$this->html = getHtmlTag('img', $_imgAttr);
 		}
 		return $this->html;
 	}

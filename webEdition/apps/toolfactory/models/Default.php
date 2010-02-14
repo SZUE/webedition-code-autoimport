@@ -250,7 +250,7 @@ class toolfactory_models_Default extends we_app_Model
 	 * 
 	 * @return boolean
 	 */
-	function save($skipHook=0) {
+	function save() {
 	
 		$text = htmlspecialchars($this->Text, ENT_NOQUOTES);
 		
@@ -327,13 +327,15 @@ class toolfactory_models_Default extends we_app_Model
 						
 					}
 				} else {
-					$_content = '<?php'.PHP_EOL;
+					$_content = '<?php
+					';
 					ob_start();
 					include($_file);
 					$_content .= ob_get_contents();
 					ob_end_clean();
 					
-					$_content .= PHP_EOL.'?>';
+					$_content .= '
+		?>';
 				}
 									
 					if(!is_dir(dirname($_newname))) {
@@ -372,11 +374,9 @@ class toolfactory_models_Default extends we_app_Model
 				$_db->query($_sql);
 			}		
 		}
-		/* hook */
-		if ($skipHook==0){		
-			$hook = new weHook('save', $this->_appName, array($this));
-			$hook->executeHook();
-		}
+				
+		$hook = new weHook('save', $this->_appName, array($this));
+		$hook->executeHook();
 				
 		return true;
 			

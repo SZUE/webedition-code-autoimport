@@ -194,7 +194,7 @@ class weCacheHelper
 		
 		$d->close();
 		
-		if (rmdir($dir)) {return true;} else {return false;}
+		return rmdir($dir);
 	
 	}
 

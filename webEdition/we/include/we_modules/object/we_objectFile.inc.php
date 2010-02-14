@@ -349,9 +349,6 @@ class we_objectFile extends we_document
 				if(isset($vals["WE_CSS_FOR_CLASS"])){
 					$this->CSS = $vals["WE_CSS_FOR_CLASS"];
 				}
-				if(isset($vals["elements"]) && isset($vals["elements"]["Charset"]) && isset($vals["elements"]["Charset"]['dat']) ){
-					$this->Charset = $vals["elements"]["Charset"]['dat'];
-				}
 				if(is_array($vals)){
 					foreach($vals as $name=>$field){
 						if(is_array($field)){
@@ -749,8 +746,12 @@ class we_objectFile extends we_document
 		$tableInfo_sorted = $this->getSortedTableInfo($this->TableID,true,$this->DB_WE);
 		$fields = array();
 		for($i=0;$i<sizeof($tableInfo_sorted);$i++){
-			if(preg_match('/(.+?)_(.*)/',$tableInfo_sorted[$i]["name"],$regs)){
-				array_push($fields,array("name"=>$regs[2],"type"=>$regs[1]));
+			if(ereg('^(.+)_(.+)$',$tableInfo_sorted[$i]["name"])){
+				$foo = explode("_", $tableInfo_sorted[$i]["name"]);
+				$type = $foo[0];
+				unset($foo[0]);
+				$name = implode("_", $foo);
+				array_push($fields,array("name"=>$name,"type"=>$type));
 			}
 		}
 
@@ -808,17 +809,16 @@ class we_objectFile extends we_document
 	function getObjectFieldHTML($ObjectID,$attribs,$editable=true){
 		$db = new DB_WE();
 		$we_button = new we_button();
+
 		$foo = getHash("SELECT Text,Path FROM " .OBJECT_TABLE . " WHERE ID=".abs($ObjectID),$db) ;
 		$name = isset($foo["Text"]) ? $foo["Text"] : '';
 		$classPath = isset($foo["Path"]) ? $foo["Path"] : '';
-		$pid = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db); 
+		$pid = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
 		$textname = 'we_'.$this->Name.'_txt[we_object_'.$ObjectID.'_path]';
 		$idname = 'we_'.$this->Name."_object[we_object_$ObjectID]";
 		$myid = $this->getElement("we_object_".$ObjectID);
 		$path = $this->getElement("we_object_".$ObjectID."_path");
 		$path = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'","Path",$db);
-		$npubl = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'","Published",$db);
-		if ($path ==''){$myid=0;$npubl=1;}
 		if($myid){
 			$ob = new we_objectFile();
 			$ob->initByID($myid,OBJECT_FILES_TABLE);
@@ -874,9 +874,12 @@ class we_objectFile extends we_document
 
 			$button = $we_button->create_button_table($_buttons,5);
 
+
+
+
 			return $this->htmlFormElementTable(
 				$this->htmlTextInput($textname,30,$path,"",' readonly',"text",$inputWidth,0),
-				'<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["object_".$ObjectID]["required"] ? "*" : "") .'</span>'.($npubl ? '':' <span style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>') . ( isset($this->DefArray["object_$ObjectID"]['editdescription']) && $this->DefArray["object_$ObjectID"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["object_$ObjectID"]['editdescription'] . '</div>' : '<br />' ),
+				'<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["object_".$ObjectID]["required"] ? "*" : "") . '</span>' . ( isset($this->DefArray["object_$ObjectID"]['editdescription']) && $this->DefArray["object_$ObjectID"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["object_$ObjectID"]['editdescription'] . '</div>' : '<br />' ),
 				"left",
 				"defaultfont",
 				$this->htmlHidden($idname,$myid),
@@ -894,7 +897,7 @@ class we_objectFile extends we_document
 			$content .= $we_button->create_button_table(
 										array(
 											$but,
-												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>')
+												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'
 											)
 										);
 
@@ -1445,9 +1448,11 @@ class we_objectFile extends we_document
 		$db->query("SELECT * FROM $DataTable WHERE ID='$ID'");
 		if($db->next_record()){
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
-						$name = $regs[2];
+						$temp = explode("_", $tableInfo[$i]["name"]);
+						unset($temp[0]);
+						$name = implode("_", $temp);
 						if($regs[1] == "object"){
 							$name = "we_object_".$name;
 						}
@@ -1893,7 +1898,6 @@ class we_objectFile extends we_document
 				if($w == "0"){
 					$wsPath = "/";
 				}
-				$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".mysql_real_escape_string($this->Category)."',".$this->TableID.",'".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Text)."','".mysql_real_escape_string($this->Language)."')";
 				if(!$this->DB_WE->query($q)) return false;
 			}
 		}
@@ -1992,7 +1996,7 @@ class we_objectFile extends we_document
 		}
 	}
 
-	function we_save($resave=0,$skipHook=0){
+	function we_save($resave=0){
 				
 		$foo = getHash("SELECT strOrder,DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
@@ -2016,7 +2020,7 @@ class we_objectFile extends we_document
 		$this->correctWorkspaces();
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
-			if(!we_document::we_save($resave,1)) return false;
+			if(!we_document::we_save($resave)) return false;
 			if(!$this->ObjectID) return false;
 			if($resave){
 				if(!$this->we_republish()) return false;
@@ -2044,12 +2048,9 @@ class we_objectFile extends we_document
 			$version->save($this);
 			
 		}
-		
-		/* hook */
-		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
-		}
+
+		$hook = new weHook('save', '', array($this));
+		$hook->executeHook();
 
 		return $a;
 	}
@@ -2074,9 +2075,11 @@ class we_objectFile extends we_document
 			$db = $this->DB_WE;
 			$tableInfo = $db->metadata($DataTable);
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
-						$name = $regs[2];
+						$foo = explode("_",$tableInfo[$i]["name"]);
+						unset($foo[0]);
+						$name = implode("_", $foo);
 						$this->elements[$name]["type"] = $regs[1];
 						$this->elements[$name]["len"] = $tableInfo[$i]["len"];
 					}
@@ -2167,7 +2170,7 @@ class we_objectFile extends we_document
 		return "";
 	}
 
-	function we_publish($DoNotMark=false,$saveinMainDB=true,$skipHook=0){
+	function we_publish($DoNotMark=false,$saveinMainDB=true){
 		if($saveinMainDB){
 			if(!we_root::we_save(1)) return false;
 		}
@@ -2177,16 +2180,14 @@ class we_objectFile extends we_document
 			if(!$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Published='".$this->Published."' WHERE OF_ID='".$this->ID."'")) return false;
 			$this->we_clearCache($this->ID);
 		}
-		/* hook */
-		if ($skipHook==0){
-			$hook = new weHook('publish', '', array($this));
-			$hook->executeHook();
-		}
+		
+		$hook = new weHook('publish', '', array($this));
+		$hook->executeHook();
 
 		return $this->insertAtIndex();
 	}
 
-	function we_unpublish($skipHook=0){
+	function we_unpublish(){
 		if(!$this->ID) return false;
 		if(!$this->DB_WE->query("UPDATE ".$this->Table." SET Published='0' WHERE ID='".$this->ID."'")) return false;
 		if(!$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Published=0 WHERE OF_ID='".$this->ID."'")) return false;
@@ -2198,11 +2199,9 @@ class we_objectFile extends we_document
 			$version = new weVersions();
 			$version->save($this, "unpublished");
 		}
-		/* hook */
-		if ($skipHook==0){
-			$hook = new weHook('unpublish', '', array($this));
-			$hook->executeHook();
-		}
+		
+		$hook = new weHook('unpublish', '', array($this));
+		$hook->executeHook();
 		
 		return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".$this->ID);
 	}
@@ -2210,17 +2209,6 @@ class we_objectFile extends we_document
 	function we_delete() {
 		if(!$this->ID) return false;
 		$this->we_clearCache($this->ID);
-		// Bug 2892, siehe auch we_delete_fn.inc.php
-		$q = "SELECT ID FROM " .OBJECT_TABLE . " ";
-		$this->DB_WE->query($q);
-		$foo = $this->DB_WE->getAll();
-		foreach ($foo as $testclass) {
-			if($this->isColExist(OBJECT_X_TABLE.$testclass['ID'],"object_".$this->TableID)){				
-				$q = "UPDATE " .OBJECT_X_TABLE.$testclass['ID']. " SET object_".$this->TableID."='0' WHERE object_".$this->TableID."= '".$this->ID."'";
-				$this->DB_WE->query($q);
-			}			
-		}
-		
 		return we_document::we_delete();
 	}
 
@@ -2325,7 +2313,7 @@ class we_objectFile extends we_document
 			$tableInfo = $this->getSortedTableInfo($this->TableID,false,$this->DB_WE);
 
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
 						if($regs[1] == "object"){
 							$id=$this->getElement("we_".$tableInfo[$i]["name"]);
@@ -2339,9 +2327,7 @@ class we_objectFile extends we_document
 				$tmpObj->initByID($id,OBJECT_FILES_TABLE,0);
 				foreach($tmpObj->elements as $n=>$elem){
 					if($elem["type"] != "object" &&  $n != "Title" && $n != "Description"){
-						if (!isset($this->elements[$n])){
-							$this->elements[$n] = $elem;
-						}
+						$this->elements[$n] = $elem;
 					}
 				}
 			}
@@ -2359,9 +2345,12 @@ class we_objectFile extends we_document
 		$db->query("SELECT * FROM $DataTable WHERE ID='$ID'");
 		if($db->next_record()){
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
 					if($regs[1] != "OF"){
-						$realname = $regs[2];
+
+						$foo = explode("_",$tableInfo[$i]["name"]);
+						unset($foo[0]);
+						$realname = implode("_", $foo);
 						if($regs[1] == "object"){
 							$name = "we_object_".$realname;
 						}else{
@@ -2498,10 +2487,7 @@ class we_objectFile extends we_document
 		$ctable = OBJECT_X_TABLE.$this->TableID;
 
 		// updater
-		if(!$this->isColExist($ctable,"OF_IsSearchable")) $this->addCol($ctable,"OF_IsSearchable","tinyint(1) DEFAULT '1' ", "OF_Published");
-		if(!$this->isColExist($ctable,"OF_Charset")) $this->addCol($ctable,"OF_Charset","varchar(64) NOT NULL", "OF_IsSearchable");
 		if(!$this->isColExist($ctable,"OF_WebUserID")) $this->addCol($ctable,"OF_WebUserID","BIGINT DEFAULT '0' NOT NULL", "AFTER OF_Charset");
-		if(!$this->isColExist($ctable,"OF_Language")) $this->addCol($ctable,"OF_Language","VARCHAR(5) DEFAULT NULL", "AFTER OF_WebUserID");
 
 		$tableInfo = $this->DB_WE->metadata($ctable);
 		$foo = f("SELECT DefaultValues FROM " .OBJECT_TABLE . " WHERE ID=".$this->TableID,"DefaultValues",$this->DB_WE);
@@ -2515,8 +2501,10 @@ class we_objectFile extends we_document
 			$values = "VALUES(";
 			$this->CreatorID = $this->CreatorID ? $this->CreatorID : (isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0);
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
-					$name = $regs[2];
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+					$foo = explode("_",$tableInfo[$i]["name"]);
+					unset($foo[0]);
+					$name = implode("_", $foo);
 					if($regs[1] == "OF"){
 						$keys .= $tableInfo[$i]["name"] . ",";
 						eval('$values .= "\'".(isset($this->'.$name.') ? addslashes($this->'.$name.') : "")."\',";');
@@ -2550,8 +2538,10 @@ class we_objectFile extends we_document
 			}
 			$q = "";
 			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
-					$name = $regs[2];
+				if(ereg('^(.+)_(.+)$',$tableInfo[$i]["name"],$regs)){
+					$foo = explode("_",$tableInfo[$i]["name"]);
+					unset($foo[0]);
+					$name = implode("_", $foo);
 					if($regs[1] == "OF"){
 						$q .= $tableInfo[$i]["name"] . "=";
 						eval('$q .= "\'".addslashes($this->'.$name.')."\',";');

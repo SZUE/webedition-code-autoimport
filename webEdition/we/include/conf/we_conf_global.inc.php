@@ -181,7 +181,7 @@ define("SMTP_SERVER", "localhost");
 
 
 //SMTP server port
-define("SMTP_PORT", 25);
+define("SMTP_POST", 25);
 
 
 //SMTP authentication

@@ -15,9 +15,8 @@
  * @category   Zend
  * @package    Zend_Validate
  * @subpackage Sitemap
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Changefreq.php 17470 2009-08-08 22:27:09Z thomas $
  */
 
 /**
@@ -33,7 +32,7 @@ require_once 'Zend/Validate/Abstract.php';
  * @category   Zend
  * @package    Zend_Validate
  * @subpackage Sitemap
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_Sitemap_Changefreq extends Zend_Validate_Abstract
@@ -80,7 +79,7 @@ class Zend_Validate_Sitemap_Changefreq extends Zend_Validate_Abstract
         }
 
         if (!in_array($value, $this->_changeFreqs, true)) {
-            $this->_error(self::NOT_VALID);
+            $this->_error();
             return false;
         }
 

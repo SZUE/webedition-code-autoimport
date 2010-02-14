@@ -70,7 +70,7 @@ $l_metadata["import_metadata_at_upload"] = "Tuo metatieto tiedostosta";
 $l_metadata['error_meta_field_empty_msg'] = "Kentän nimi rivillä %s1 ei voi olla tyhjä!";
 $l_metadata['meta_field_wrong_chars_messsage'] = "Kentän nimi '%s1' on virheellinen! Sallitut kirjaimet ovat (a-z, A-Z, 0-9) ja alaviiva.";
 $l_metadata['meta_field_wrong_name_messsage'] = "Kentän nimi '%s1' on virheellinen! Se on sisäisesti webEditionin käytössä! Seuraavat nimet ovat virheellisiä, eikä voida käyttää: %s2";
-$l_metadata['file_size_0'] = 'The file size is 0 byte, please upload a document to the server before saving';// TRANSLATE
+
 
 /*****************************************************************************
  * INFO TAB

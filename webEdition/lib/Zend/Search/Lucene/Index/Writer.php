@@ -15,21 +15,30 @@
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Index
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Writer.php 18954 2009-11-12 20:01:33Z alexander $
  */
 
 
+/** Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter */
+require_once 'Zend/Search/Lucene/Index/SegmentWriter/DocumentWriter.php';
+
+/** Zend_Search_Lucene_Index_SegmentInfo */
+require_once 'Zend/Search/Lucene/Index/SegmentInfo.php';
+
+/** Zend_Search_Lucene_Index_SegmentMerger */
+require_once 'Zend/Search/Lucene/Index/SegmentMerger.php';
+
 /** Zend_Search_Lucene_LockManager */
 require_once 'Zend/Search/Lucene/LockManager.php';
+
 
 
 /**
  * @category   Zend
  * @package    Zend_Search_Lucene
  * @subpackage Index
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Search_Lucene_Index_Writer
@@ -234,9 +243,6 @@ class Zend_Search_Lucene_Index_Writer
      */
     public function addDocument(Zend_Search_Lucene_Document $document)
     {
-        /** Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter */
-        require_once 'Zend/Search/Lucene/Index/SegmentWriter/DocumentWriter.php';
-
         if ($this->_currentSegment === null) {
             $this->_currentSegment =
                 new Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter($this->_directory, $this->_newSegmentName());
@@ -372,9 +378,6 @@ class Zend_Search_Lucene_Index_Writer
     private function _mergeSegments($segments)
     {
         $newName = $this->_newSegmentName();
-
-        /** Zend_Search_Lucene_Index_SegmentMerger */
-        require_once 'Zend/Search/Lucene/Index/SegmentMerger.php';
         $merger = new Zend_Search_Lucene_Index_SegmentMerger($this->_directory,
                                                              $newName);
         foreach ($segments as $segmentInfo) {
@@ -517,8 +520,6 @@ class Zend_Search_Lucene_Index_Writer
                             $isCompound = true;
                         }
 
-                        /** Zend_Search_Lucene_Index_SegmentInfo */
-                        require_once 'Zend/Search/Lucene/Index/SegmentInfo.php';
                         $this->_segmentInfos[$segName] =
                                     new Zend_Search_Lucene_Index_SegmentInfo($this->_directory,
                                                                              $segName,

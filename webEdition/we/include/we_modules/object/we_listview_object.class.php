@@ -110,7 +110,7 @@ class we_listview_object extends listviewBase {
 
 		$matrix = array();
 
-		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);
+		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);		
 
 		$calendar_select="";
 		$calendar_where="";
@@ -236,9 +236,11 @@ class we_listview_object extends listviewBase {
 		$joinWhere = "";
 		$tableInfo = we_objectFile::getSortedTableInfo($classID,true,$db);
 		foreach($tableInfo as $fieldInfo){
-			if(preg_match('/(.+?)_(.*)/',$fieldInfo["name"],$regs)){
-				$type = $regs[1];
-				$name = $regs[2];
+			if(ereg('^(.+)_(.+)$',$fieldInfo["name"],$regs)){
+				$temp = explode("_", $fieldInfo["name"]);
+				$type = $temp[0];
+				unset($temp[0]);
+				$name = implode("_", $temp);
 				if($type == "object" && $name != $this->classID){
 					if(!isset($matrix["we_object_".$name]["type"]) || !$matrix["we_object_".$name]["type"]){
 						$matrix["we_object_".$name]["type"] = $type;
@@ -248,13 +250,11 @@ class we_listview_object extends listviewBase {
 						$foo = $this->fillMatrix($matrix,$name,$db);
 						$joinWhere .= " ".OBJECT_X_TABLE.$classID.".object_".$name."=". OBJECT_X_TABLE.$name.".OF_ID AND ".($foo ? "$foo AND " : "");
 					}
-				}else{ 
-					if( !isset($matrix[$name])) {
-						$matrix[$name]["type"] = $type;
-						$matrix[$name]["table"] = $table;
-						$matrix[$name]["classID"] = $classID;
-						$matrix[$name]["table2"] = $table;
-					}
+				}else{
+					$matrix[$name]["type"] = $type;
+					$matrix[$name]["table"] = $table;
+					$matrix[$name]["classID"] = $classID;
+					$matrix[$name]["table2"] = $table;
 				}
 			}
 		}

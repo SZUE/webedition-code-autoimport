@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -70,7 +71,6 @@ $GLOBALS["l_wysiwyg"]["css_style2"] = "CSS Style";
 
 $GLOBALS["l_wysiwyg"]["removeformat_warning"] = "Diese Funktion löscht die Formatierung des gesamten Textfeldes! Möchten Sie wirklich fortfahren?";
 $GLOBALS["l_wysiwyg"]["removetags_warning"] = "Diese Funktion löscht alle Styles, HTML-Tags und Kommentare des gesamten Textfeldes! Möchten Sie wirklich fortfahren?"; 
-
 
 $GLOBALS["l_wysiwyg"]["fontsize"] = "Schriftgröße";
 

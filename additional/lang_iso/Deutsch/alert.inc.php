@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -98,7 +99,6 @@ $l_alert["template_save_warning1"] = "Diese Vorlage wird von einem veröffentlich
 $l_alert["template_save_warning2"] = "Diese Vorlage wird von anderen Vorlagen und Dokumenten benutzt. Sollen diese neu gespeichert werden?";
 $l_alert["thumbnail_exists"] = "Diese Miniaturansicht ist bereits vorhanden!";
 $l_alert["thumbnail_not_exists"] = "Diese Miniaturansicht ist nicht vorhanden!";
-$l_alert["thumbnail_empty"] = "Sie haben noch keinen Namen für die Miniaturansicht eingegeben!";
 $l_alert["doctype_exists"] = "Dieser Dokument-Typ ist bereits vorhanden!";
 $l_alert["doctype_empty"] = "Sie haben noch keinen Namen eingegeben!";
 $l_alert["delete_cat"] = "Möchten Sie die ausgewählte Kategorie wirklich löschen?";
@@ -135,7 +135,7 @@ $l_alert["we_filename_notValid"] = "Der eingegebene Dateiname ist nicht gültig!\
 $l_alert["empty_image_to_save"] = "Gewählte Grafik ist leer.\\nTrotzdem weitermachen?";
 $l_alert["path_exists"] = "Das Dokument bzw. Verzeichnis %s konnte nicht gespeichert werden, da es bereits ein anderes Dokument an dieser Stelle gibt!";
 $l_alert["folder_not_empty"] = "Da eines oder mehrere der zu löschende Verzeichnisse nicht ganz leer waren, konnten Sie nicht vollständig vom Server gelöscht werden! Löschen Sie die Dateien manuell.\\n Folgende Verzeichnisse sind davon betroffen:\\n%s";
-$l_alert["name_nok"] = "Namen dürfen die Zeichen '<', '>' und '/' nicht erhalten!";
+$l_alert["name_nok"] = "Namen dürfen die Zeichen '<', '>' und '/'nicht erhalten!";
 $l_alert["found_in_workflow"] = "Ein oder mehrere zu löschende Einträge befinden sich zur Zeit im Workflow! Möchten Sie diese Einträge aus dem Workflow entfernen?";
 $l_alert["import_we_dirs"] = "Sie versuchen einen Import von einem, mit webEdition verwaltetem Verzeichnis zu machen!\\nDiese Verzeichnisse sind geschützt und deswegen es ist nicht möglich von ihnen zu importieren!";
 $l_alert["wrong_file"]["image/*"] = "Die Datei konnte nicht angelegt werden. Entweder handelt es sich nicht um eine Grafik oder es steht nicht ausreichend Speicherplatz (Webspace) zur Verfügung!";
@@ -159,7 +159,7 @@ $l_alert['delete_single']['return_to_start'] = 'Die Datei wurde erfolgreich gelö
 $l_alert['move_single']['return_to_start'] = 'Die Datei wurde erfolgreich verschoben.\\nZurück zum seeMode Startdokument.';
 $l_alert['move_single']['no_delete'] = 'Die Datei konnte nicht verschoben werden.';
 $l_alert['cockpit_not_activated'] = 'Die Aktion konnte nicht ausgeführt werden, da das Cockpit nicht aktiviert ist.';
-$l_alert['cockpit_reset_settings'] = 'Sollen die aktuellen Cockpit-Einstellungen gelöscht und die Standard-Einstellungen wiederhergestellt werden?';
+$l_alert['cockpit_reset_settings'] = 'Sollen die aktuellen Cockpit Einstellungen geslöscht werden und die Standard-Einstellungen wiederhergestellt werden?';
 $l_alert['save_error_fields_value_not_valid'] = 'Die markierten Felder enthalten keine gültigen Werte.\\nBitte tragen Sie gültige Werte ein.';
 
 $l_alert['eplugin_exit_doc'] = "Die Verbindung zwischen webEdition und dem externen Editor wird beim Schließen des Dokuments getrennt und die Inhalte werden nicht mehr synchronisiert.\\nMöchten Sie das Dokument schließen?";

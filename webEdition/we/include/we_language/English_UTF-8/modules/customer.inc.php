@@ -298,8 +298,6 @@ $l_customer["we_fieldname_notValid"] = "Invalid field name!\\nValid characters a
 
 $l_customer["orderTab"] = 'Orders of this customer';
 $l_customer['default_order'] = 'pre-set order';
-$l_customer['ASC'] = 'ascending';
-$l_customer['DESC'] = 'descending';
 
 $l_customer["connected_with_customer"] = "Connected with customer";
 $l_customer["one_customer"] = "Customer";

@@ -17,7 +17,7 @@
  * @subpackage PHP
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id$
  */
 
 /**
@@ -33,23 +33,17 @@ require_once 'Zend/CodeGenerator/Abstract.php';
  */
 abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstract
 {
-
-    /**
-     * Line feed to use in place of EOL
-     *
-     */
-    const LINE_FEED = "\n";
-
+   
     /**
      * @var bool
      */
     protected $_isSourceDirty = true;
-
+    
     /**
      * @var int|string
      */
     protected $_indentation = '    ';
-
+    
     /**
      * setSourceDirty()
      *
@@ -61,7 +55,7 @@ abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstra
         $this->_isSourceDirty = ($isSourceDirty) ? true : false;
         return $this;
     }
-
+    
     /**
      * isSourceDirty()
      *
@@ -71,7 +65,7 @@ abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstra
     {
         return $this->_isSourceDirty;
     }
-
+    
     /**
      * setIndentation()
      *
@@ -83,7 +77,7 @@ abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstra
         $this->_indentation = $indentation;
         return $this;
     }
-
+    
     /**
      * getIndentation()
      *
@@ -93,5 +87,5 @@ abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstra
     {
         return $this->_indentation;
     }
-
+    
 }

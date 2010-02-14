@@ -39,17 +39,7 @@ if(isset($_REQUEST["do"]) && $_REQUEST["do"] == "delete") {
 	$javascript .= $we_doc->publishObjects(false);
 } elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "publish") {
 	$javascript .= $we_doc->publishObjects();
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "unsearchable") {
-	$javascript .= $we_doc->searchableObjects(false);
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "searchable") {
-	$javascript .= $we_doc->searchableObjects();
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "copychar") {
-	$javascript .= $we_doc->copyCharsetfromClass();
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "copyws") {
-	$javascript .= $we_doc->copyWSfromClass();
 }
-
-
 
 protect();
 // Ausgabe beginnen

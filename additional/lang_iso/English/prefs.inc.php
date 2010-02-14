@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -77,8 +78,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 * CHARSET
 	 */
 
-	$l_prefs["default_charset"] = "Standard charset";
-
+	$l_prefs["default_charset"] = "standard charset";
 
 	/**
 	 * SEEM
@@ -237,9 +237,8 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 * TEMPLATE EDITOR
 	 */
 	
-	$l_prefs["editor_information"] = "Specify font and size which should be used for the editing of templates, CSS- and JavaScript files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types.";
+	$l_prefs["editor_information"] = "Specify font and size which should be used for the editing of templates, CSS- and Java Script files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types.";
 	
-	$l_prefs["editor_mode"] = 'Editor';
 	$l_prefs["editor_font"] = 'Font in editor';
 	$l_prefs["editor_fontname"] = 'Fontname';
 	$l_prefs["editor_fontsize"] = 'Size';
@@ -254,7 +253,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 * FORMMAIL RECIPIENTS
 	 */
 
-	$l_prefs["formmail_information"] = "Please enter all email addresses, which should receive forms sent by the formmail function (&lt;we:form type=\"formmail\" ..&gt;).<br><br>If you do not enter an email address, you cannot send forms using the formmail function!";
+	$l_prefs["formmail_information"] = "Please enter all E-Mail addresses, which should receive forms sent by the formmail function (&lt;we:form type=\"formmail\" ..&gt;).<br><br>If you do not enter an E-Mail address, you cannot send forms using the formmail function!";
 
 	$l_prefs["formmail_log"] = "Formmail log";
 	$l_prefs['log_is_empty'] = "The log is empty!";
@@ -339,7 +338,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	/**
 	 * NAVIGATION
 	 */
-	 $l_prefs["navigation_entries_from_document"] = "Create new navigation entries from the document as";
+	 $l_prefs["navigation_entries_from_document"] = "Create new nav-entries from the document as";
 	 $l_prefs["navigation_entries_from_document_item"] = "item";
 	 $l_prefs["navigation_entries_from_document_folder"] = "folder";
 
@@ -351,7 +350,6 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["db_set_charset"] = "Connection charset";
 	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.";
 	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed.";
-
 	
 	/**
 	 * HTTP AUTHENTICATION
@@ -509,7 +507,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition.<br /><br />For some modules, you have to restart webEdition to activate.<br /><br />";
+	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />For some modules, you have to restart webEdition to activate. <br /><br />";
 	
 	$l_prefs["module_activation"]["headline"] = "Module activation";
 

@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Translate.php 19122 2009-11-20 18:06:37Z matthew $
+ * @version    $Id: Translate.php 15766 2009-05-25 20:09:35Z thomas $
  */
 
 /** Zend_Locale */
@@ -31,7 +31,7 @@ require_once 'Zend/View/Helper/Abstract.php';
  *
  * @category  Zend
  * @package   Zend_View
- * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_View_Helper_Translate extends Zend_View_Helper_Abstract
@@ -50,7 +50,7 @@ class Zend_View_Helper_Translate extends Zend_View_Helper_Abstract
      */
     public function __construct($translate = null)
     {
-        if ($translate !== null) {
+        if (empty($translate) === false) {
             $this->setTranslator($translate);
         }
     }
@@ -132,7 +132,7 @@ class Zend_View_Helper_Translate extends Zend_View_Helper_Abstract
     {
         if ($this->_translator === null) {
             require_once 'Zend/Registry.php';
-            if (Zend_Registry::isRegistered('Zend_Translate')) {
+            if (Zend_Registry::isRegistered('Zend_Translate') === true) {
                 $this->setTranslator(Zend_Registry::get('Zend_Translate'));
             }
         }

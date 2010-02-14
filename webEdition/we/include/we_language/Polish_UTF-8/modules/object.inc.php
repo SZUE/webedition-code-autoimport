@@ -25,7 +25,6 @@ $l_contentTypes["object"] = "Klasa";
 $l_object["attributes"] = "Atrybut";
 $l_object["objectname"] = "Nazwa obiektu";
 $l_object["objectpath"] = "ďż˝cieďż˝ka obiektu";
-$l_object["objectid"] = "Object ID";// TRANSLATE
 $l_object["class"] = "Klasa";
 $l_object["classname"] = "Nazwa klasy";
 $l_object["class_id"] = "ID of the class"; // TRANSLATE
@@ -54,7 +53,7 @@ $l_object["binary_field"] = "Dokument binarny";
 $l_object["link_field"] = "Link"; // TRANSLATE
 $l_object["href_field"] = "Href"; // TRANSLATE
 $l_object["shopVat_field"] = "Pole VAT";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
+$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
 
 $l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
 $l_object["objectFile_response_save_ok"] = "Zapamiďż˝tano obiekt '%s' !";
@@ -85,8 +84,4 @@ $l_object["generated_template_for_objectFile"] = "Nie znaleziono pasujďż˝cego
 $l_object["no_workspace_defined"] = "Temu obiektowi nie przyporzďż˝dkowano jeszcze obszaru roboczego. Jeďż˝eli chcesz przyporzďż˝dkowaďż˝ obiektowi specjalne obszary robocze, musisz wybraďż˝ je w klasie obiektu.";
 
 $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
 ?>

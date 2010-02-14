@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -72,7 +73,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 */
 
 	$l_prefs["choose_language"] = "Sprache";
-	$l_prefs["language_notice"] = "Die Sprachumstellung wird erst nach einem Neustart von webEdition an allen Stellen durchgeführt.";
+	$l_prefs["language_notice"] = "Die Sprachumstellung wird erst nach einem Neustart des webEdition an allen Stellen durchgeführt.";
 
 	/**
 	 * CHARSET
@@ -242,7 +243,6 @@ $l_prefs["tab_versions"] = 'Versionierung';
 
 	$l_prefs["editor_information"] = "Geben Sie hier Schriftart und Größe an, die für die Bearbeitung der Vorlagen, CSS- und JavaScript-Dateien innerhalb von webEdition verwendet werden soll.<br /><br />Diese Einstellungen werden für den Texteditor der obengenannten Dateitypen verwendet.";
 
-	$l_prefs["editor_mode"] = 'Editor';
 	$l_prefs["editor_font"] = 'Schrift im Editor';
 	$l_prefs["editor_fontname"] = 'Schriftart';
 	$l_prefs["editor_fontsize"] = 'Größe';
@@ -263,7 +263,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs['ip_address'] = "IP Adresse";
 	$l_prefs['blocked_until'] = "Geblockt bis";
 	$l_prefs['unblock'] = "freigeben";
-	$l_prefs['clear_log_question'] = "Möchten Sie das Logbuch wirklich leeren?";
+	$l_prefs['logboockEmptyQuestion'] = "Möchten Sie das Logbuch wirklich leeren?";
 	$l_prefs['clear_block_entry_question'] = "Möchten Sie die IP %s wirklich freigeben?";
 	$l_prefs["forever"] = "Für immer";
 	$l_prefs["yes"] = "ja";
@@ -338,7 +338,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	/**
 	 * NAVIGATION
 	 */
-	 $l_prefs["navigation_entries_from_document"] = "Erzeuge neue Navigations-Einträge aus dem Dokument als";
+	 $l_prefs["navigation_entries_from_document"] = "Erzeuge neue Nav-Eintr&auml;ge aus dem Dokument als";
 	 $l_prefs["navigation_entries_from_document_item"] = "Eintrag";
 	 $l_prefs["navigation_entries_from_document_folder"] = "Ordner";
 
@@ -458,7 +458,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
  *****************************************************************************/
 	$l_prefs['validation']='Validierung';
 	$l_prefs['xhtml_default'] = 'Standardeinstellung für das <em>xml</em>-Attribut in we:Tags';
-	$l_prefs['xhtml_debug_explanation'] = 'Das XHTML-Debugging unterstützt Sie bei der Erstellung valider Websites. Optional kann jede Ausgabe eines we:Tags auf Gültigkeit kontrolliert werden und bei Bedarf fehlerhafte Attribute entfernt, bzw. angezeigt werden. Bitte beachten Sie, dass dieser Vorgang etwas Zeit erfordert und nur während der Erstellung einer neuen Website benutzt werden sollte.';
+	$l_prefs['xhtml_debug_explanation'] = 'Das XHTML-Debugging unterstützt Sie bei der Erstellung valider Websites. Optional kann jede Ausgabe eines we:Tags auf Gültigkeit kontrolliert werden und bei Bedarf fehlerhafte Attribute entfernt, bzw. angezeigt werden. Bitte beachten Sie, dass dieser Vorgang etwas Zeit erfordert und nur während der Erstellung einer neuen Web-Site benutzt werden sollte.';
 	$l_prefs['xhtml_debug_headline'] = 'XHTML-Debugging';
 	$l_prefs['xhtml_debug_html'] = 'XHTML-Debugging aktivieren';
 	$l_prefs['xhtml_remove_wrong'] = 'Fehlerhafte Attribute entfernen';
@@ -511,7 +511,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Hier können Sie die Module aktivieren bzw. deaktivieren wenn Sie diese nicht benötigen.<br /><br />Nicht aktivierte Module verbessern die Performance von webEdition.<br /><br />Gegebenenfalls müssen Sie webEdition neu starten, um Module zu aktivieren.";
+	$l_prefs["module_activation"]["information"] = "Hier können Sie die Module aktivieren bzw. deaktivieren wenn Sie diese nicht benötigen.<br /><br />Nicht aktivierte Module verbessern die Performance von webEdition.<br /><br />Gegebenenfalls müssen Sie webEdition neu starten um Module zu aktivieren.";
 
 	$l_prefs["module_activation"]["headline"] = "Modulaktivierung";
 

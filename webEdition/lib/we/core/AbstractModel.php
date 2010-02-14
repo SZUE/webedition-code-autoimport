@@ -138,7 +138,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 * 
 	 * @return void
 	 */
-	public function save($skipHook=0)
+	public function save()
 	{
 		$db = we_io_DB::sharedAdapter();
 		
@@ -172,11 +172,9 @@ class we_core_AbstractModel extends we_core_AbstractObject
 				throw new we_core_ModelException('Error updating model in database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 			}
 		}
-		/* hook */
-		if ($skipHook==0){
-			$hook = new weHook('save', $this->_appName, array($this));
-			$hook->executeHook();
-		}
+		
+		$hook = new weHook('save', $this->_appName, array($this));
+		$hook->executeHook();
 	
 	}
 
@@ -185,16 +183,13 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 * 
 	 * @return void
 	 */
-	public function delete($skipHook=0)
+	public function delete()
 	{
 		$db = we_io_DB::sharedAdapter();
 		try {
 			$db->delete($this->_table, $this->_getPKCondition());
-			/* hook */
-			if ($skipHook==0){
-				$hook = new weHook('delete', $this->_appName, array($this));
-				$hook->executeHook();
-			}
+			$hook = new weHook('delete', $this->_appName, array($this));
+			$hook->executeHook();
 		} catch (Exception $e) {
 			throw new we_core_ModelException('Error updating model in database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 		}

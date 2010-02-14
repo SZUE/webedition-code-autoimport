@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -35,9 +35,9 @@ require_once 'Zend/Form/Decorator/Abstract.php';
  * @category   Zend
  * @package    Zend_Form
  * @subpackage Decorator
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormElements.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id: FormElements.php 13988 2009-02-05 20:55:38Z thomas $
  */
 class Zend_Form_Decorator_FormElements extends Zend_Form_Decorator_Abstract
 {
@@ -101,7 +101,7 @@ class Zend_Form_Decorator_FormElements extends Zend_Form_Decorator_Abstract
             $items[] = $item->render();
 
             if (($item instanceof Zend_Form_Element_File)
-                || (($item instanceof Zend_Form)
+                || (($item instanceof Zend_Form) 
                     && (Zend_Form::ENCTYPE_MULTIPART == $item->getEnctype()))
                 || (($item instanceof Zend_Form_DisplayGroup)
                     && (Zend_Form::ENCTYPE_MULTIPART == $item->getAttrib('enctype')))

@@ -15,6 +15,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -80,7 +81,6 @@ $GLOBALS['l_versions'] = array(
 	'IsClassFolder' 				=> 'Classfolder',
 	'IsNotEditable'					=> 'Not editable',
 	'Charset'						=> 'Charset',
-	'InGlossar'						=> 'Not allowed for automatic glossary replacement',
 	'documentElements'				=> 'Content',
 	'CreatorID'						=> 'Main creator',
 	'Text'							=> 'Name',
@@ -155,7 +155,7 @@ $GLOBALS['l_versions'] = array(
 	'deleteAllVersionsQuestion' 	=> "Are you sure to delete all versions?",
 	'deleteDateVersionsQuestion' 	=> "Are you sure to delete all versions created before %s ?",
 	'deleteDateVersionsMissing' 	=> "Select a date!",
-	'deleteDateVersionsOK' 			=> "Versions were deleted succesfully!",
+	'deleteDateVersionsOK' 			=> "Versions were reset succesfully!",
 	'resetDateVersionsMissing' 		=> "Select a date!",
 	'resetDateVersionsNothingChecked' => "Select the content type of documents which should be reset!",
 	'resetDateVersionsQuestion' 	=> "Are you sure to reset all documents of the selected content type which were published at %s ?",

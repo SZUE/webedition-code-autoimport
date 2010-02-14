@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -194,7 +195,7 @@ $l_backup['user_info'] = 'User and accounts data from  the user module.';
 $l_backup['customer_info'] = 'Customers and accounts data from the customer module.';
 $l_backup['shop_info'] = 'Orders data from the shop module.';
 $l_backup['workflow_info'] = 'Data from the workflow module.';
-$l_backup['todo_info'] = 'Messages and tasks from the tasks/messaging module.';
+$l_backup['todo_info'] = 'Messages and tasks from the todo-/messaging module.';
 $l_backup['newsletter_info'] = 'Data from newsletter module.';
 $l_backup['banner_info'] = 'Banner and statistics from the banner module.';
 $l_backup['schedule_info'] = 'Scheduler data from scheduler module.';

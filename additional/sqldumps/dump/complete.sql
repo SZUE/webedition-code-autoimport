@@ -689,14 +689,12 @@ CREATE TABLE tblWebUser (
   Newsletter_Ok varchar(200) NOT NULL default '',
   Newsletter_HTMLNewsletter varchar(200) NOT NULL default '',
   Gruppe varchar(200) NOT NULL default '',
-  PRIMARY KEY  (ID),
-  UNIQUE KEY `Username` (`Username`)
+  PRIMARY KEY  (ID)
 ) TYPE=MyISAM;
 /* query separator */
 INSERT INTO tblWebUser VALUES (1,'admin','admin','','','John','Doe','Street','ZIP City','State','Country','','','','','',1,'1144395493','1144397956','1144397956',0,'/admin',0,'customer.gif','admin','','','Administratoren');
 /* query separator */
-INSERT INTO tblWebUser VALUES (2,'customer','customer','','','web','user','webland','universe','','','','','','','',0,'0','0','0',0,'/customer',1,'customer.gif','customer','','','Kunden');
-/* query separator */
+INSERT INTO tblWebUser VALUES (2,'customer','customer','','','web','user','webland','universe','','','','','','','',0,'0','0','0',0,'/customer',1,'customer.gif','customer','','','Kunden');/* query separator */
 CREATE TABLE tblWorkflowDef (
   ID int(11) NOT NULL auto_increment,
   `Text` varchar(255) NOT NULL default '',
@@ -935,9 +933,8 @@ CREATE TABLE tblnavigation (
   ID bigint(20) NOT NULL auto_increment,
   ParentID bigint(20) NOT NULL default '0',
   Path varchar(255) NOT NULL default '',
-  Published int(11) NOT NULL DEFAULT '1',
-  Text varchar(255) NOT NULL default '',
-  Display varchar(255) NOT NULL default '',
+  `Text` varchar(255) NOT NULL default '',
+  `Display` varchar(255) NOT NULL default '',
   ContentType varchar(255) NOT NULL default 'weNavigation',
   Icon varchar(32) NOT NULL default '0',
   IsFolder tinyint(4) NOT NULL default '0',
@@ -945,8 +942,6 @@ CREATE TABLE tblnavigation (
   IconID bigint(20) NOT NULL default '0',
   Selection varchar(32) NOT NULL default '',
   LinkID bigint(20) NOT NULL default '0',
-  CurrentOnUrlPar tinyint(1) NOT NULL DEFAULT '0',
-  CurrentOnAnker tinyint(1) NOT NULL DEFAULT '0',
   SelectionType varchar(32) NOT NULL default '',
   FolderID bigint(20) NOT NULL default '0',
   DocTypeID bigint(20) NOT NULL default '0',
@@ -1159,13 +1154,6 @@ CREATE TABLE tblvoting (
   `Text` varchar(255) NOT NULL default '',
   PublishDate bigint(20) NOT NULL default '0',
   QASet text NOT NULL,
-  QASetAdditions text,
-  IsRequired tinyint(1) NOT NULL DEFAULT '0',
-  AllowFreeText tinyint(1) NOT NULL DEFAULT '0',
-  AllowImages tinyint(1) NOT NULL DEFAULT '0',
-  AllowSuccessor tinyint(1) NOT NULL DEFAULT '0',
-  AllowSuccessors tinyint(1) NOT NULL DEFAULT '0',
-  Successor bigint(20) unsigned NOT NULL DEFAULT '0',
   Scores text NOT NULL,
   RevoteControl tinyint(1) NOT NULL default '0',
   RevoteTime int(11) NOT NULL default '0',
@@ -1178,7 +1166,6 @@ CREATE TABLE tblvoting (
   ActiveTime tinyint(1) NOT NULL default '0',
   FallbackIp tinyint(1) NOT NULL default '0',
   UserAgent tinyint(1) NOT NULL default '0',
-  FallbackUserID tinyint(1) NOT NULL DEFAULT '0',
   Log tinyint(1) NOT NULL default '0',
   LogData longtext NOT NULL,
   RestrictIP tinyint(1) NOT NULL default '0',
@@ -1188,19 +1175,13 @@ CREATE TABLE tblvoting (
 /* query separator */
 CREATE TABLE `tblvotinglog` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
-  `votingsession` varchar(255) NOT NULL,
   `voting` bigint(20) NOT NULL,
   `time` int(11) unsigned NOT NULL,
   `ip` varchar(255) NOT NULL,
   `agent` varchar(255) NOT NULL,
-  `userid` bigint(20) NOT NULL DEFAULT '0',
   `cookie` tinyint(1) NOT NULL,
   `fallback` tinyint(1) NOT NULL,
   `status` tinyint(2) NOT NULL,
-  `answer` varchar(255) NOT NULL,
-  `answertext` text NOT NULL,
-  `successor` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `additionalfields` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 /* query separator */

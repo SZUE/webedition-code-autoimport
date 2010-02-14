@@ -173,11 +173,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 	}
 
 }
-function isColExistForDelete($tab,$col){
-	$DB_WE = new DB_WE();;
-	$DB_WE->query("SHOW COLUMNS FROM ".$tab." LIKE '$col';");
-	if($DB_WE->next_record()) return true; else return false;
-}
+
 function deleteFile($id, $table, $path = "", $contentType = "")
 {
 	$DB_WE = new DB_WE();
@@ -223,16 +219,6 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		$tableID = f("SELECT TableID FROM " . OBJECT_FILES_TABLE . " WHERE ID='".abs($id)."'", "TableID", $DB_WE);
 		if ($tableID != "" || $tableID == "0") {
 			$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . $tableID . " WHERE OF_ID='" . abs($id) . "'");
-			//Bug 2892
-			$q = "SELECT ID FROM " .OBJECT_TABLE . " ";
-			$DB_WE->query($q);
-			$foo = $DB_WE->getAll();
-			foreach ($foo as $testclass) {
-				if(isColExistForDelete(OBJECT_X_TABLE.$testclass['ID'],"object_".$tableID)){				
-					$q = "UPDATE " .OBJECT_X_TABLE.$testclass['ID']. " SET object_".$tableID."='0' WHERE object_".$tableID."= '".abs($id)."'";
-					$DB_WE->query($q);
-				}			
-			}
 		}
 		if (in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
 			$DB_WE->query(
@@ -362,7 +348,7 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 	return true;
 }
 
-function deleteEntry($id, $table, $delR = true,$skipHook=0)
+function deleteEntry($id, $table, $delR = true)
 {
 	
 	global $deletedItems;
@@ -386,11 +372,9 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 			
 			$version->setVersionOnDelete($id, $table,$row['ContentType']);
 		}
-		/* hook */
-		if ($skipHook==0){
-			$hook = new weHook('delete', '', array($object));
-			$hook->executeHook();
-		}
+		
+		$hook = new weHook('delete', '', array($object));
+		$hook->executeHook();
 		
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 		

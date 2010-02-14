@@ -15,6 +15,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -82,8 +83,6 @@ $l_we_tag['ifCaptcha']['description'] = "Dieses Tag dient dazu, den umschlossene
 $l_we_tag['ifCaptcha']['defaultvalue'] = "";
 $l_we_tag['ifCat']['description'] = "Das we:ifCat-Tag bewirkt, da&szlig; alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn die in \"categories\" eingetragenen Kategorien dem Dokument zugewiesen wurden.";
 $l_we_tag['ifCat']['defaultvalue'] = "";
-$l_we_tag['ifNotCat']['description'] = "Das we:ifNotCat-Tag bewirkt, da&szlig; alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn die in \"categories\" eingetragenen Kategorien nicht dem Dokument zugewiesen wurden.";
-$l_we_tag['ifNotCat']['defaultvalue'] = "";
 $l_we_tag['ifClient']['description'] = "Das we:ifClient-Tag bewirkt, da&szlig; alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn der Client (Browser) den vorgegebenen Anforderungen entspricht. Dieses Tag funktioniert nur bei dynamisch abgespeicherten Seiten!";
 $l_we_tag['ifClient']['defaultvalue'] = "";
 $l_we_tag['ifConfirmFailed']['description'] = "Nutzt man DoubleOptIn bei der Anmeldung zum Newslettermodul, kann mit &lt;we:ifConfirmFailed&gt; &uuml;berpr&uuml;ft werden, ob die gegebene E-Mail Adresse best&auml;tigt werden konnte.";
@@ -179,7 +178,7 @@ $l_we_tag['ifNotSeeMode']['description'] = "Dieses Tag dient dazu, den umschloss
 $l_we_tag['ifNotSeeMode']['defaultvalue'] = "";
 $l_we_tag['ifNotSelf']['description'] = "Das we:ifNotSelf-Tag bewirkt, da&szlig; alles, was zwischen dem Start- und Endtag steht, nicht angezeigt wird, wenn das Dokument eine der unten eingetragenen ID's hat. Befindet sich das Tag nicht innerhalb von we:linklist oder we:listdir Tags, dann ist \"id\" ein erforderlicher Eintrag!";
 $l_we_tag['ifNotSelf']['defaultvalue'] = "";
-$l_we_tag['ifNotSidebar']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur auszugeben, wenn der Seitenaufruf ausserhalb der Sidebar stattfindet.";
+$l_we_tag['ifNotSidebar']['description'] = "Dieses Tag dient dazu den umschlossenen Inhalt nur auszugeben, wenn sich der Seitenaufruf ausserhalb der Sidebar stattfindet.";
 $l_we_tag['ifNotSidebar']['defaultvalue'] = "";
 $l_we_tag['ifNotSubscribe']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn der Eintrag in eine Newsletter-Adressliste nicht erfolgreich war und sollte in der Vorlage nach &lt;we:addDelNewsletterEmail&gt; stehen, aus der das webEdition-Dokument erzeugt wird, welches nach einem Eintrag in eine Newsletter-Adressliste aufgerufen wird.";
 $l_we_tag['ifNotSubscribe']['defaultvalue'] = "";
@@ -225,7 +224,7 @@ $l_we_tag['ifShopPayVat']['description'] = "Mit we:ifShopPayVat wird ein Inhalt 
 $l_we_tag['ifShopPayVat']['defaultvalue'] = "";
 $l_we_tag['ifShopVat']['description'] = "Mit we:ifShopTag kann man den Mehrwertsteuersatz, des aktuellen Artikels des Dokuments, bzw. des Warenkorbs pr&uuml;fen. Ist Id gesetzt, wird die des Mehrwertsteuersatzes des aktuellen (Dokument oder Warenkorb) Artikels mit der hier angegeben verglichen.";
 $l_we_tag['ifShopVat']['defaultvalue'] = "";
-$l_we_tag['ifSidebar']['description'] = "Dieses Tag dient dazu, den umschliessenden Inhalt nur auszugeben, wenn der Seitenaufruf innerhalb der Sidebar stattfindet.";
+$l_we_tag['ifSidebar']['description'] = "Dieses Tag dienst dazu den umschliessenden Inhalt nur auszugeben, wenn sich der Seitenaufruf innerhalb der Sidebar stattfindet.";
 $l_we_tag['ifSidebar']['defaultvalue'] = "";
 $l_we_tag['ifSubscribe']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn der Eintrag in eine Newsletter-Adressliste erfolgreich war.";
 $l_we_tag['ifSubscribe']['defaultvalue'] = "";
@@ -272,7 +271,8 @@ $l_we_tag['listdir']['description'] = "Mit dem we:listdir-Tag kann man eine List
 $l_we_tag['listdir']['defaultvalue'] = "";
 $l_we_tag['listview']['description'] = "Das we:listview-Tag ist das Start- und Endtag von automatisch generierten Listen. (&Uuml;bersichtsseiten von News, usw.).";
 $l_we_tag['listview']['defaultvalue'] = "&lt;we:repeat&gt;
-&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"true\"/&gt;
+
+&lt;we:field name=\"Title\" alt=\"we_path\" hyperlink=\"on\"/&gt;
 &lt;br /&gt;
 &lt;/we:repeat&gt;";
 $l_we_tag['listviewEnd']['description'] = "Dieses Tag gibt die Nummer des letzten Eintrags der aktuellen Seite einer &lt;we:listview&gt; aus.";
@@ -289,7 +289,7 @@ $l_we_tag['navigation']['description'] = "Mit we:navigation wird eine innerhalb 
 $l_we_tag['navigationEntries']['description'] = "Dient innerhalb eines we:navigationEntry type=\"folder\" als Platzhalter f&uuml;r alle Eintr&auml;ge eines Ordners der Navigation.";
 $l_we_tag['navigationEntry']['description'] = "Mit we:navigationEntry kann das Aussehen eines Eintrags innerhalb der Navigation beeinflusst werden. Mit den Attributen \"type\", \"level\", \"current\" und \"position\" kann man sich dabei gezielt einzelne Elemente verschiedenster Ebene rauspicken und ausgeben.";
 $l_we_tag['navigationEntry']['defaultvalue'] = "&lt;a href=\"&lt;we:navigationField name=\"href\" /&gt;\"&gt;&lt;we:navigationField name=\"text\" /&gt;&lt;/a&gt;&lt;br /&gt;";
-$l_we_tag['navigationField']['description'] = "Mit dem Tag &lt;we:navigationField&gt; kann innerhalb eines &lt;we:navigationEntry&gt; ein Wert des aktuellen Navigationseintrags ausgegeben werden.<br/> W&auml;hlen Sie dabei <b>entweder</b> einen Eintrag f&uuml;r das Attribut <i>name</i>, <b>oder</b> einen Eintrag f&uuml;r das Attribut <i>attributes</i>, <b>oder</b> einen Eintrag f&uuml;r das Attribut <i>complete</i>";
+$l_we_tag['navigationField']['description'] = "Mit dem Tag &lt;we:navigationField&gt; kann innerhalb eines &lt;we:navigationEntry&gt; ein Wert des aktuellen Navigationseintrags ausgegeben werden.";
 $l_we_tag['navigationWrite']['description'] = "Wird benutzt um eine we:navigation mit gegebenem Name zu schreiben.";
 $l_we_tag['newsletterConfirmLink']['description'] = "Dieser Tag dient dazu, einen Best&auml;tigungs-Link f&uuml;r einen Double-Opt-In zu erstellen. Ein Newsletter-Interessent kann so best&auml;tigen, dass er den Newsletter abonnieren m&ouml;chte.";
 $l_we_tag['newsletterConfirmLink']['defaultvalue'] = "Newsletter best&auml;tigen";
@@ -375,7 +375,6 @@ $l_we_tag['ifobjektexists']['defaultvalue'] = "";
 $l_we_tag['ifshopexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Shop-Modul nicht deaktiviert wurde (Einstellungsdialog).";
 $l_we_tag['ifshopexists']['defaultvalue'] = "";
 $l_we_tag['ifvotingexists']['description'] = "F&uuml;hrt den eingeschlossenen Code nur aus, wenn das Voting-Modul nicht deaktiviert wurde (Einstellungsdialog).";
-$l_we_tag['ifvotingexists']['defaultvalue'] = "";
 $l_we_tag['ifNotHasShopVariants']['description'] = "Mit &lt;we:ifNotHasShopVariants&gt; kann ein Inhalt bedingt nur dann angezeigt werden, wenn ein Dokument, Objekt KEINE Varianten enth&auml;lt. Damit kann bspw. kontrolliert werden, ob eine &lt;we:listview type=\"shopVariant\"&gt; &uuml;berhaupt angezeigt werden soll bzw. was alternativ angezeigt werden soll.";
 $l_we_tag['ifNotHasShopVariants']['defaultvalue'] = "";
 $l_we_tag['ifNotHasChildren']['description'] = "Innerhalb des we:repeat Tags kann mit &lt;we:ifNotHasChildren&gt; abgefragt werden, ob der aktuelle Kategorie-Ordner Kategorien enth&auml;lt bzw. die Kategorie Kinder hat.";
@@ -388,10 +387,6 @@ $l_we_tag['ifPageLanguage']['description'] = "Mit we:ifPageLanguage kann auf die
 $l_we_tag['ifPageLanguage']['defaultvalue'] = "";
 $l_we_tag['ifNotPageLanguage']['description'] = "Mit we:ifNotPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei k&ouml;nnen mehrere Werte durch Komma separiert angegeben werden (oder-Verkn&uuml;pfung). Die m&ouml;glichen Werte ergeben sich aus dem Einstellungsdialog, Tab 'Sprachen'.";
 $l_we_tag['ifNotPageLanguage']['defaultvalue'] = "";
-$l_we_tag['ifObjectLanguage']['description'] = "Mit we:ifObjectLanguage kann auf die Spracheinstellung des Objectes getestet werden, dabei k&ouml;nnen mehrere Werte durch Komma separiert angegeben werden (oder-Verkn&uuml;pfung). Die m&ouml;glichen Werte ergeben sich aus dem Einstellungsdialog, Tab 'Sprachen'.";
-$l_we_tag['ifObjectLanguage']['defaultvalue'] = "";
-$l_we_tag['ifNotObjectLanguage']['description'] = "Mit we:ifObjectLanguage kann auf die Spracheinstellung des Objectes getestet werden, dabei k&ouml;nnen mehrere Werte durch Komma separiert angegeben werden (oder-Verkn&uuml;pfung). Die m&ouml;glichen Werte ergeben sich aus dem Einstellungsdialog, Tab 'Sprachen'.";
-$l_we_tag['ifNotObjectLanguage']['defaultvalue'] = "";
 $l_we_tag['ifSendMail']['description'] = "Pr&uuml;ft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden";
 $l_we_tag['ifSendMail']['defaultvalue'] = "";
 $l_we_tag['ifNotSendMail']['description'] = "Pr&uuml;ft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden";

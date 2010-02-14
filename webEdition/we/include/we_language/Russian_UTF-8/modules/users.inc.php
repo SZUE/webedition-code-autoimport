@@ -52,14 +52,14 @@ $l_users["workspace_specify"] = "Установить рабочую облас�
 $l_users["permissions"] = "Права";
 $l_users["user_permissions"] = "Полномочия пользователя/редактора";
 $l_users["admin_permissions"] = "Полномочия администратора";
-$l_users["password_alert"] = "Пароль должен состоять минимум из 4 знаков"; 
-$l_users["delete_alert_user"] = "All user data for user '%s' will be deleted.\\n Are you sure that you wish to do this?"; // TRANSLATE
+$l_users["password_alert"] = "Пароль должен состоять минимум из 4 знаков";
+$l_users["delete_alert_user"] = "All user data for user '%s' will be deleted.\\n Are you sure that you wish to do this?";
 $l_users["delete_alert_alias"] = "Все данные алиаса '%s' будут удалены.\\n Вы уверены?";
 $l_users["delete_alert_group"] = "Все данные группы и пользователей группы '%s' будут удалены. Вы уверены?";
 $l_users["created_by"] = "Создано пользователем:";
 $l_users["changed_by"] = "Изменено пользователем:";
 $l_users["no_perms"] = "У Вас нет полномочий на данную опцию!";
-$l_users["publish_specify"] = "User is allowed to publish."; // TRANSLATE 
+$l_users["publish_specify"] = "User is allowed to publish."; // TRANSLATE
 $l_users["work_permissions"] = "Working permissions"; // TRANSLATE
 $l_users["control_permissions"] = "Control permissions"; // TRANSLATE
 $l_users["log_permissions"] = "Login permissions"; // TRANSLATE
@@ -69,7 +69,7 @@ if(defined("OBJECT_TABLE")){
 	$l_users["file_locked"][OBJECT_TABLE] = "В данный момент класс '%s' обрабатывается пользователем '%s'!";
 	$l_users["file_locked"][OBJECT_FILES_TABLE] = "В данный момент объект '%s' обрабатывается пользователем '%s'!";
 }
-$l_users["acces_temp_denied"] = "Доступ временно отклонен";  
+$l_users["acces_temp_denied"] = "Доступ временно отклонен";
 $l_users["description"] = "Description"; // TRANSLATE
 $l_users["group_data"] = "Group data"; // TRANSLATE
 $l_users["group_name"] = "Group name"; // TRANSLATE
@@ -102,13 +102,13 @@ $l_users["status"] = "Status"; // TRANSLATE
 $l_users["value"] = " Value "; // TRANSLATE
 $l_users["gesperrt"] = "restricted"; // TRANSLATE
 $l_users["freigegeben"] = "open"; // TRANSLATE
-$l_users["gelöscht"] = "deleted"; // TRANSLATE
+$l_users["gel�scht"] = "deleted"; // TRANSLATE
 $l_users["ohne"] = "without"; // TRANSLATE
 $l_users["user"] = "Пользователь";
 $l_users["usertyp"] = "Тип пользователя";
-$l_users["search"] = "Suche";
-$l_users["search_result"] = "Ergebnis";
-$l_users["search_for"] = "Suche nach";
+$l_users["search"] = "Suche"; // TRANSLATE
+$l_users["search_result"] = "Ergebnis"; // TRANSLATE
+$l_users["search_for"] = "Suche nach"; // TRANSLATE
 $l_users["inherit"] = "Inherit permissions from parent group."; // TRANSLATE
 $l_users["inherit_ws"] = "Inherit documents workspace from parent group."; // TRANSLATE
 $l_users["inherit_wst"] = "Inherit templates workspace from parent group."; // TRANSLATE
@@ -123,14 +123,14 @@ $l_users["alias_data"] = "Alias data"; // TRANSLATE
 $l_users["rights_and_workspaces"] = "Права и<br>рабочие<br>области";
 $l_users["workspace_navigations"] = "Workspave Navigation"; // TRANSLATE
 $l_users["inherit_wsn"] = "Inherit navigation workspaces from parent group"; // TRANSLATE
-$l_users["workspace_newsletter"] = "Workspace Newsletter";
-$l_users["inherit_wsnl"] = "Inherit newsletter workspaces from parent group";
+$l_users["workspace_newsletter"] = "Workspace Newsletter"; // TRANSLATE
+$l_users["inherit_wsnl"] = "Inherit newsletter workspaces from parent group"; // TRANSLATE
 
-$l_users["delete_user_same"] = "You cannot delete your own account."; // TRANSLATE
-$l_users["delete_group_user_same"] = "You cannot delete your own account."; // TRANSLATE
+$l_users["delete_user_same"] = "Sie k�nnen nicht Ihr eigenes Konto l�schen."; // TRANSLATE
+$l_users["delete_group_user_same"] = "Sie k�nnen nicht Ihre eigene Gruppe l�schen."; // TRANSLATE
 
-$l_users["login_denied"] = "Login denied";
-$l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!";
-$l_users["noGroupError"] = "Error: Invalid entry in field group!";
+$l_users["login_denied"] = "Login denied"; // TRANSLATE
+$l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!"; // TRANSLATE
+$l_users["noGroupError"] = "Error: Invalid entry in field group!"; // TRANSLATE
 
 ?>

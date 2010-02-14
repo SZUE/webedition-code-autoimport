@@ -62,7 +62,7 @@ $l_navigation['path_nok'] = 'The path is not correct!'; // TRANSLATE
 $l_navigation['name_empty'] = 'The name may not be empty!'; // TRANSLATE
 $l_navigation['name_exists'] = 'The name already exists!'; // TRANSLATE
 $l_navigation['wrongtext'] = 'The name is not valid!\\nValid characters are are letters from a to z (upper case or lower case), figures, low line (_), deficit (-), dot (.), blank characters ( ) and at symbols (@). '; // TRANSLATE
-$l_navigation['wrongTitleField'] = 'The navigation folder could not be saved, because the given title field doesn\'t  exist. Please correct the title field on the "content" tab and save again.'; // TRANSLATE
+$l_navigation['wrongTitleField'] = 'The navigation folder could not be saved, because the given title field doesn\'t  exist. Please correct the title field on the "content" tab and save again.';
 $l_navigation['folder_path_exists'] = 'A entry/foder with this name exists allredy.'; // TRANSLATE
 $l_navigation['navigation_deleted'] = 'The entry/folder was deleted successfully.'; // TRANSLATE
 $l_navigation['group_deleted'] = 'The folder was deleted successfully.'; // TRANSLATE
@@ -203,9 +203,6 @@ $l_navigation['reset_customer_filter'] = 'Reset all customer filters'; // TRANSL
 $l_navigation['reset_customerfilter_done_message'] = 'The customer filters were successfully reset!'; // TRANSLATE
 $l_navigation['reset_customerfilter_question'] = 'Do you realy want to reset all customer filters'; // TRANSLATE
 
-$l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool."; // TRANSLATE
-$l_navigation['current_on_urlpar'] = "Take into account at highlighting";// TRANSLATE
-$l_navigation['current_on_anker'] = "Take into account at highlighting (using add. URL-Par. we_anchor)";// TRANSLATE
-
+$l_navigation['NoDeleteFromDocument'] = "Navigation entry with subentries, can be edited from here, but deletion has to be done in the navigation tool.";// TRANSLATE
 
 ?>

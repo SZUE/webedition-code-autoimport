@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -76,7 +77,7 @@ $l_we_class["salign"] = "Scaled align";
 $l_we_class["play"] = "Play";
 $l_we_class["loop"] = "Loop";
 $l_we_class["scale"] = "Scale";
-$l_we_class["wmode"] = "Window mode"; 
+$l_we_class["wmode"] = "Window mode";
 $l_we_class["bgcolor"] = "Background color";
 $l_we_class["response_save_noperms_to_create_folders"] = "The document could not be saved because you do not have the neccessary rights to create folders (%s)!";
 $l_we_class["file_on_liveserver"]="File already exists";

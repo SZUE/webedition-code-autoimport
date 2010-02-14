@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -261,7 +262,7 @@ $GLOBALS['l_countries']['UY'] = 'Uruguay';
 $GLOBALS['l_countries']['UZ'] = 'Uzbekistan';
 $GLOBALS['l_countries']['VA'] = 'Vatican';
 $GLOBALS['l_countries']['VC'] = 'Saint Vincent and the Grenadines';
-$GLOBALS['l_countries']['VD'] = 'Vietnam';
+$GLOBALS['l_countries']['VD'] = 'North Vietnam';
 $GLOBALS['l_countries']['VE'] = 'Venezuela';
 $GLOBALS['l_countries']['VG'] = 'British Virgin Islands';
 $GLOBALS['l_countries']['VI'] = 'U.S. Virgin Islands';

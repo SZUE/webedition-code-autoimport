@@ -205,7 +205,7 @@ function RenameFolder(id){
 function writeBody(d){
 	d.open();
 	//d.writeln('<?php print $htmltop; ?>');
-	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition Version <?php echo WE_VERSION; ?>">');
+	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition Version 4.9.0.0">');
 	d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
@@ -272,7 +272,7 @@ function writeBody(d){
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || top.we_editDirID) ? '  onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"' : '')+'>');
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 
 	if(we_editDirID){
 		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>">');
@@ -288,7 +288,7 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" class="wetextinput" onblur="submitFolderMods(); this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
 		d.writeln('<td class="selector"><?php print date($GLOBALS["l_global"]["date_format"])?></td>');
 		d.writeln('</tr>');
 	}
@@ -301,7 +301,7 @@ function writeBody(d){
 		d.writeln('</td>');
 		if(we_editDirID == entries[i].ID){
 			d.writeln('<td class="selector">');
-			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%">');
+			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onblur="submitFolderMods(); this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%">');
 		}else{
 			d.writeln('<td class="selector" style="-moz-user-select: none;" unselectable="on" title="'+entries[i].text+'">');
 			d.writeln(cutText(entries[i].text,30));
@@ -799,14 +799,8 @@ top.clearEntries();
 		}elseif($_REQUEST['id']==0 && strtolower($txt)=="webedition"){
 			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notAllowed"], WE_MESSAGE_ERROR);
 		}else{
-			if (defined('OBJECT_FILES_TABLE') && $this->table==OBJECT_FILES_TABLE) { //4076
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
-				$folder= new we_class_folder();				
-			} else {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
-				$folder= new we_folder();			
-			}
-			
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+			$folder= new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
 			$folder->Table=$this->table;
@@ -910,14 +904,8 @@ top.clearEntries();
 		if($txt==""){
 			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["filename_empty"], WE_MESSAGE_ERROR);
 		}else{
-			if (defined('OBJECT_FILES_TABLE') && $this->table==OBJECT_FILES_TABLE) { //4076
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
-				$folder= new we_class_folder();
-			} else {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
-				$folder= new we_folder();
-			}
-			
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+			$folder= new we_folder();
 			$folder->initByID($this->we_editDirID,$this->table);
 			$folder->Text=$txt;
 			$folder->ModDate=time();

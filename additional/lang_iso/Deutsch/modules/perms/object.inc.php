@@ -16,6 +16,7 @@
  *
  * @category   webEdition
  * @package    webEdition_language
+ * @copyright  Copyright (c) 2008 living-e AG (http://www.living-e.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
@@ -31,5 +32,5 @@ $l_perm["object"]["CAN_SEE_OBJECTS"] = "Der Benutzer darf Klassen sehen";
 $l_perm["object"]["NEW_OBJECT"] = "Der Benutzer darf Klassen erstellen";
 $l_perm["object"]["DELETE_OBJECT"] = "Der Benutzer darf Klassen löschen";
 $l_perm["object"]["CAN_SELECT_OTHER_USERS_OBJECTS"] = "Der Benutzer darf Objekte außerhalb seines Arbeitsbereichs wählen";
-$l_perm["object"]["CAN_COPY_OBJECTS"] = "Der Benutzer darf ganze Objektverzeichnisse kopieren";
+
 ?>

@@ -17,7 +17,7 @@
  * @subpackage PHP
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Class.php 18951 2009-11-12 16:26:19Z alexander $
+ * @version    $Id$
  */
 
 /**
@@ -53,37 +53,37 @@ require_once 'Zend/CodeGenerator/Php/Docblock.php';
  */
 class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
 {
-
+    
     /**
      * @var Zend_CodeGenerator_Php_Docblock
      */
     protected $_docblock = null;
-
+    
     /**
      * @var string
      */
     protected $_name = null;
-
+    
     /**
      * @var bool
      */
     protected $_isAbstract = false;
-
+    
     /**
      * @var string
      */
     protected $_extendedClass = null;
-
+    
     /**
      * @var array Array of string names
      */
     protected $_implementedInterfaces = array();
-
+    
     /**
      * @var array Array of properties
      */
     protected $_properties = null;
-
+    
     /**
      * @var array Array of methods
      */
@@ -98,31 +98,26 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     public static function fromReflection(Zend_Reflection_Class $reflectionClass)
     {
         $class = new self();
-
+        
         $class->setSourceContent($class->getSourceContent());
         $class->setSourceDirty(false);
-
+        
         if ($reflectionClass->getDocComment() != '') {
             $class->setDocblock(Zend_CodeGenerator_Php_Docblock::fromReflection($reflectionClass->getDocblock()));
         }
-
+        
         $class->setAbstract($reflectionClass->isAbstract());
         $class->setName($reflectionClass->getName());
-
+        
         if ($parentClass = $reflectionClass->getParentClass()) {
             $class->setExtendedClass($parentClass->getName());
-            $interfaces = array_diff($reflectionClass->getInterfaces(), $parentClass->getInterfaces());
+            $interfaces = array_diff($parentClass->getInterfaces(), $reflectionClass->getInterfaces());
         } else {
             $interfaces = $reflectionClass->getInterfaces();
         }
-
-        $interfaceNames = array();
-        foreach($interfaces AS $interface) {
-            $interfaceNames[] = $interface->getName();
-        }
-
-        $class->setImplementedInterfaces($interfaceNames);
-
+        
+        $class->setImplementedInterfaces($interfaces);
+        
         $properties = array();
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getDeclaringClass()->getName() == $class->getName()) {
@@ -130,7 +125,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
             }
         }
         $class->setProperties($properties);
-
+        
         $methods = array();
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
             if ($reflectionMethod->getDeclaringClass()->getName() == $class->getName()) {
@@ -138,33 +133,33 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
             }
         }
         $class->setMethods($methods);
-
+        
         return $class;
     }
-
+    
     /**
      * setDocblock() Set the docblock
      *
      * @param Zend_CodeGenerator_Php_Docblock|array|string $docblock
      * @return Zend_CodeGenerator_Php_File
      */
-    public function setDocblock($docblock)
+    public function setDocblock($docblock) 
     {
         if (is_string($docblock)) {
             $docblock = array('shortDescription' => $docblock);
         }
-
+        
         if (is_array($docblock)) {
             $docblock = new Zend_CodeGenerator_Php_Docblock($docblock);
         } elseif (!$docblock instanceof Zend_CodeGenerator_Php_Docblock) {
             require_once 'Zend/CodeGenerator/Php/Exception.php';
             throw new Zend_CodeGenerator_Php_Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
         }
-
+        
         $this->_docblock = $docblock;
         return $this;
     }
-
+    
     /**
      * getDocblock()
      *
@@ -174,7 +169,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     {
         return $this->_docblock;
     }
-
+    
     /**
      * setName()
      *
@@ -186,7 +181,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         $this->_name = $name;
         return $this;
     }
-
+    
     /**
      * getName()
      *
@@ -208,7 +203,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         $this->_isAbstract = ($isAbstract) ? true : false;
         return $this;
     }
-
+    
     /**
      * isAbstract()
      *
@@ -218,7 +213,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     {
         return $this->_isAbstract;
     }
-
+    
     /**
      * setExtendedClass()
      *
@@ -230,7 +225,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         $this->_extendedClass = $extendedClass;
         return $this;
     }
-
+    
     /**
      * getExtendedClass()
      *
@@ -240,7 +235,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     {
         return $this->_extendedClass;
     }
-
+    
     /**
      * setImplementedInterfaces()
      *
@@ -252,7 +247,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         $this->_implementedInterfaces = $implementedInterfaces;
         return $this;
     }
-
+    
     /**
      * getImplementedInterfaces
      *
@@ -262,7 +257,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     {
         return $this->_implementedInterfaces;
     }
-
+    
     /**
      * setProperties()
      *
@@ -274,10 +269,10 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         foreach ($properties as $property) {
             $this->setProperty($property);
         }
-
+        
         return $this;
     }
-
+    
     /**
      * setProperty()
      *
@@ -295,16 +290,16 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
             require_once 'Zend/CodeGenerator/Php/Exception.php';
             throw new Zend_CodeGenerator_Php_Exception('setProperty() expects either an array of property options or an instance of Zend_CodeGenerator_Php_Property');
         }
-
+        
         if (isset($this->_properties[$propertyName])) {
             require_once 'Zend/CodeGenerator/Php/Exception.php';
             throw new Zend_CodeGenerator_Php_Exception('A property by name ' . $propertyName . ' already exists in this class.');
         }
-
-        $this->_properties[$propertyName] = $property;
+        
+        $this->_properties->append($property);
         return $this;
     }
-
+    
     /**
      * getProperties()
      *
@@ -314,7 +309,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     {
         return $this->_properties;
     }
-
+    
     /**
      * getProperty()
      *
@@ -330,18 +325,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         }
         return false;
     }
-
-    /**
-     * hasProperty()
-     *
-     * @param string $propertyName
-     * @return bool
-     */
-    public function hasProperty($propertyName)
-    {
-        return isset($this->_properties[$propertyName]);
-    }
-
+    
     /**
      * setMethods()
      *
@@ -355,7 +339,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         }
         return $this;
     }
-
+    
     /**
      * setMethod()
      *
@@ -373,16 +357,16 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
             require_once 'Zend/CodeGenerator/Php/Exception.php';
             throw new Zend_CodeGenerator_Php_Exception('setMethod() expects either an array of method options or an instance of Zend_CodeGenerator_Php_Method');
         }
-
+        
         if (isset($this->_methods[$methodName])) {
             require_once 'Zend/CodeGenerator/Php/Exception.php';
             throw new Zend_CodeGenerator_Php_Exception('A method by name ' . $methodName . ' already exists in this class.');
         }
-
-        $this->_methods[$methodName] = $method;
+        
+        $this->_methods->append($method);
         return $this;
     }
-
+    
     /**
      * getMethods()
      *
@@ -392,7 +376,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     {
         return $this->_methods;
     }
-
+    
     /**
      * getMethod()
      *
@@ -408,7 +392,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         }
         return false;
     }
-
+    
     /**
      * hasMethod()
      *
@@ -419,7 +403,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     {
         return isset($this->_methods[$methodName]);
     }
-
+    
     /**
      * isSourceDirty()
      *
@@ -430,22 +414,22 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         if (($docblock = $this->getDocblock()) && $docblock->isSourceDirty()) {
             return true;
         }
-
+        
         foreach ($this->_properties as $property) {
             if ($property->isSourceDirty()) {
                 return true;
             }
         }
-
+        
         foreach ($this->_methods as $method) {
             if ($method->isSourceDirty()) {
                 return true;
             }
         }
-
+        
         return parent::isSourceDirty();
     }
-
+    
     /**
      * generate()
      *
@@ -456,50 +440,50 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         if (!$this->isSourceDirty()) {
             return $this->getSourceContent();
         }
-
-        $output = '';
-
+        
+        $output = ''; 
+        
         if (null !== ($docblock = $this->getDocblock())) {
             $docblock->setIndentation('');
             $output .= $docblock->generate();
         }
-
+        
         if ($this->isAbstract()) {
             $output .= 'abstract ';
         }
-
+        
         $output .= 'class ' . $this->getName();
-
+        
         if (null !== ($ec = $this->_extendedClass)) {
             $output .= ' extends ' . $ec;
         }
-
+        
         $implemented = $this->getImplementedInterfaces();
         if (!empty($implemented)) {
             $output .= ' implements ' . implode(', ', $implemented);
         }
-
-        $output .= self::LINE_FEED . '{' . self::LINE_FEED . self::LINE_FEED;
-
+        
+        $output .= PHP_EOL . '{' . PHP_EOL . PHP_EOL;
+        
         $properties = $this->getProperties();
         if (!empty($properties)) {
             foreach ($properties as $property) {
-                $output .= $property->generate() . self::LINE_FEED . self::LINE_FEED;
+                $output .= $property->generate() . PHP_EOL . PHP_EOL;
             }
         }
-
+        
         $methods = $this->getMethods();
         if (!empty($methods)) {
             foreach ($methods as $method) {
-                $output .= $method->generate() . self::LINE_FEED;
+                $output .= $method->generate() . PHP_EOL;
             }
         }
-
-        $output .= self::LINE_FEED . '}' . self::LINE_FEED;
-
+        
+        $output .= PHP_EOL . '}' . PHP_EOL;
+        
         return $output;
     }
-
+    
     /**
      * _init() - is called at construction time
      *

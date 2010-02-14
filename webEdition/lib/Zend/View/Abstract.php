@@ -14,9 +14,8 @@
  *
  * @category   Zend
  * @package    Zend_View
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 19117 2009-11-20 17:44:14Z matthew $
  */
 
 /** Zend_Loader */
@@ -33,7 +32,7 @@ require_once 'Zend/View/Interface.php';
  *
  * @category   Zend
  * @package    Zend_View
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_View_Abstract implements Zend_View_Interface
@@ -138,6 +137,8 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      * @var boolean
      */
     private $_strictVars = false;
+
+    private $_log;
 
     /**
      * Constructor.
@@ -708,8 +709,8 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
 
     /**
      * Set LFI protection flag
-     *
-     * @param  bool $flag
+     * 
+     * @param  bool $flag 
      * @return Zend_View_Abstract
      */
     public function setLfiProtection($flag)
@@ -720,7 +721,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
 
     /**
      * Return status of LFI protection flag
-     *
+     * 
      * @return bool
      */
     public function isLfiProtectionOn()

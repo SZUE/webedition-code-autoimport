@@ -91,7 +91,7 @@ class weNewsletterBase{
 									$month = $date[1];
 									$year = $date[2];
 									$hour = $value[$c]['hours'];
-									$minute = $value[$c]['minutes']; 
+									$minute = $value[$c]['minutes'];
 									$timestamp = mktime($hour, $minute, 0, $month, $day, $year);
 								}
 								else {
@@ -206,13 +206,10 @@ class weNewsletterBase{
 		$arr=makeArrayFromCSV($files);
 		if(count($arr)){
 			foreach($arr as $file){
-				if(!ereg("\.\.",$file)){
-					$data = weFile::load($_SERVER["DOCUMENT_ROOT"].$file);
-					$data = str_replace("\r\n","\n",$data);
-					$dataArr = explode("\n",$data);
-					if(!empty($dataArr)){ 
-						foreach($dataArr as $value){
-							$dat=makeArrayFromCSV($value);
+				if(!ereg("\.\.",$file)){ 
+					$fh=@fopen($_SERVER["DOCUMENT_ROOT"].$file,"rb");
+					if($fh){
+						while($dat=fgetcsv($fh,1000)){
 							$_alldat = implode("",$dat);
 							if (str_replace(" ", "", $_alldat)=="") {
 								continue;
@@ -224,7 +221,8 @@ class weNewsletterBase{
 							} else{
 								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
 							}
-						}			
+						}
+						fclose($fh);			
 					}
 				}
 			}						
@@ -251,13 +249,10 @@ class weNewsletterBase{
 		$arr=makeArrayFromCSV($files);
 		if(count($arr)){
 			foreach($arr as $file){
-				if(!ereg("\.\.",$file)){
-					$data = weFile::load($_SERVER["DOCUMENT_ROOT"].$file);
-					$data = str_replace("\r\n","\n",$data);
-					$dataArr = explode("\n",$data);
-					if(!empty($dataArr)){
-						foreach($dataArr as $value){							
-							$dat=makeArrayFromCSV($value);
+				if(!ereg("\.\.",$file)){ 
+					$fh=@fopen($_SERVER["DOCUMENT_ROOT"].$file,"rb");
+					if($fh){
+						while($dat=fgetcsv($fh,1000)){
 							$_alldat = implode("",$dat);
 							if (str_replace(" ", "", $_alldat)=="") {
 								continue;
@@ -277,7 +272,7 @@ class weNewsletterBase{
 								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
 							}
 						}
-									
+						fclose($fh);			
 					}
 				}
 			}						
