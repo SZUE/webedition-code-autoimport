@@ -1,0 +1,187 @@
+<?php
+//
+// ---> Template
+//
+
+$lang["Template"]["headline"] = "webEdition Online Installer";
+$lang["Template"]["title"] = "webEdition Online Installer";
+$lang["Template"]["moreComponentsToCome"] = "Preparing components";
+$lang["Template"]["autocontinue"] = "You will be redirected in %s seconds.";
+
+
+//
+// ---> Applications
+//
+
+$lang["Application"]["webEdition5"]["name"] = "webEdition 5";
+$lang["Application"]["webEdition5"]["description"] = "Professional web content management system.";
+$lang["Application"]["webEdition5"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
+$lang["Application"]["webEdition5"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+
+$lang["Application"]["webEdition"]["name"] = "webEdition 6";
+$lang["Application"]["webEdition"]["description"] = "Professional web content management system.";
+$lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
+$lang["Application"]["webEdition"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+
+$lang["Application"]["webEditionBeta"]["name"] = "webEdition Beta";
+$lang["Application"]["webEditionBeta"]["description"] = "Professional web content management system.";
+$lang["Application"]["webEditionBeta"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
+$lang["Application"]["webEditionBeta"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+
+$lang["Application"]["webEditionLight"]["name"] = "webEdition light";
+$lang["Application"]["webEditionLight"]["description"] = "Web content management system for small websites.";
+$lang["Application"]["webEditionLight"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
+$lang["Application"]["webEditionLight"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+
+$lang["Application"]["pageLogger"]["name"] = "pageLogger 1.6";
+$lang["Application"]["pageLogger"]["description"] = "Open source real time tracking for your homepage.";
+$lang["Application"]["pageLogger"]["longdescription"] = "pageLogger records visitor traffic on your website in real time, and does not rely on server log files. At the push of a button you get all the details about recent visitors to your website - clearly and efficiently displayed.";
+$lang["Application"]["pageLogger"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+
+
+//
+// ---> Buttons
+//
+
+$lang["Buttons"]["next"] = "next";
+$lang["Buttons"]["back"] = "back";
+$lang["Buttons"]["print"] = "print";
+$lang["Buttons"]["close"] = "close";
+
+
+//
+// ---> Wizards
+//
+
+$lang["Wizard"]["Welcome"]["title"] = "Welcome";
+$lang["Wizard"]["DownloadInstaller"]["title"] = "Download installer";
+
+
+
+//
+// ---> Steps
+//
+
+// Welcome
+$lang["Step"]["Welcome"]["title"] = "Choose language";
+$lang["Step"]["Welcome"]["headline"] = "webEdition Online Installer";
+$lang["Step"]["Welcome"]["content"] = "This wizard will guide you step by step through the installation process of our software products.";
+$lang["Step"]["Welcome"]['choose_language'] = "Change language";
+$lang["Step"]["Welcome"]['language_Deutsch_UTF-8'] = "Deutsch (UTF-8)";
+$lang["Step"]["Welcome"]['language_English_UTF-8'] = "English (UTF-8)";
+$lang["Step"]["Welcome"]['language_Deutsch'] = "Deutsch (ISO 8859-1)";
+$lang["Step"]["Welcome"]['language_English'] = "English (ISO 8859-1)";
+
+
+// HintAboutOnlineInstallation
+$lang["Step"]["HintAboutOnlineInstallation"]["title"] = "Notes";
+$lang["Step"]["HintAboutOnlineInstallation"]["headline"] = "Online Installation notes";
+$lang["Step"]["HintAboutOnlineInstallation"]["content"] = "During the Online Installation procedure a connection to our server is established. Therby some data are submitted to our server, these data will only be used to select all required files for the installation.";
+
+$lang["Step"]["HintAboutOnlineInstallation"]["labelAccept"] = "Yes, I agree";
+$lang["Step"]["HintAboutOnlineInstallation"]["chmod_hint"] = "Attention:<br />Die Verzeichnisberechtigung Ihres Document Root wurde auf von %s auf 777 abgeändert.";
+
+// Check Online Installer Version
+$lang["Step"]["VersionCheck"]["title"] = "Installer-Version";
+$lang["Step"]["VersionCheck"]["headline"] = "Check Installer-Version";
+$lang["Step"]["VersionCheck"]["content"] = "This step checks if there is a new Online Installer version available. It is recommended always to use the most recent Installer Version.";
+
+$lang["Step"]["VersionCheck"]["installerVersion"] = "";
+$lang["Step"]["VersionCheck"]["installerVersionFailed"] = "";
+
+
+// ChooseApplication
+$lang["Step"]["ChooseApplication"]["title"] = "Choose application";
+$lang["Step"]["ChooseApplication"]["headline"] = "Choose the application";
+$lang["Step"]["ChooseApplication"]["content"] = "With this installer it is possible to install all web based products of the the webEdition project.";
+
+$lang["Step"]["ChooseApplication"]["select_application"] = "Please choose the application to be installed";
+
+
+// ProxyServer
+$lang["Step"]["ProxyServer"]["title"] = "Proxy server";
+$lang["Step"]["ProxyServer"]["headline"] = "Proxy server";
+$lang["Step"]["ProxyServer"]["content"] = "If you need a proxy for the internet connection you could enter your data here.";
+
+$lang["Step"]["ProxyServer"]["labelUseProxy"] = "Use the following proxy";
+$lang["Step"]["ProxyServer"]["host"] = "Host";
+$lang["Step"]["ProxyServer"]["port"] = "Port";
+$lang["Step"]["ProxyServer"]["username"] = "Username";
+$lang["Step"]["ProxyServer"]["password"] = "Password";
+
+$lang["Step"]["ProxyServer"]["noProxyServer"] = "Enter the Ip-Adress or Hostname of your proxy server.";
+
+
+// ConnectionCheck
+$lang["Step"]["ConnectionCheck"]["title"] = "Connection check";
+$lang["Step"]["ConnectionCheck"]["headline"] = "Check the connection to the server";
+$lang["Step"]["ConnectionCheck"]["content"] = "This step will be executed by the LiveUpdate-Server";
+
+$lang["Step"]["ConnectionCheck"]["connectionReady"] = "A connection to the server could be established, you could now continue with the installation.";
+$lang["Step"]["ConnectionCheck"]["connectionWithError"] = "A connection to our server could be established. But there was an error on the server.";
+$lang["Step"]["ConnectionCheck"]["noConnection"] = "A connection to our server could not be established, an Online Installation is not possible at the moment.";
+
+$lang["Step"]["ConnectionCheck"]["connectionInfo"] = "Connection informations";
+$lang["Step"]["ConnectionCheck"]["availableConnectionTypes"] = "Available connection types";
+$lang["Step"]["ConnectionCheck"]["connectionType"] = "Used connection type";
+$lang["Step"]["ConnectionCheck"]["proxyHost"] = "Proxy host";
+$lang["Step"]["ConnectionCheck"]["proxyPort"] = "Proxy port";
+$lang["Step"]["ConnectionCheck"]["hostName"] = "Hostname";
+$lang["Step"]["ConnectionCheck"]["addressResolution"] = "Address resolution";
+$lang["Step"]["ConnectionCheck"]["updateServer"] = "Update server";
+$lang["Step"]["ConnectionCheck"]["ipResolutionTest"] = "IP resolution test";
+$lang["Step"]["ConnectionCheck"]["dnsResolutionTest"] = "DNS resolution test";
+$lang["Step"]["ConnectionCheck"]["succeeded"] = "succeeded";
+$lang["Step"]["ConnectionCheck"]["failed"] = "failed";
+$lang["Step"]["ConnectionCheck"]["ipAddresses"] = "IP address(es)";
+
+// SessionAndCookieTest
+$lang["Step"]["SessionAndCookieTest"]["title"] = "Session &amp; cookies test";
+$lang["Step"]["SessionAndCookieTest"]["headline"] = "Session and cookies test";
+$lang["Step"]["SessionAndCookieTest"]["content"] = "Now it will be checked if a session could be started on your server and a cookie could be set.";
+
+$lang["Step"]["SessionAndCookieTest"]["session"] = "Session";
+$lang["Step"]["SessionAndCookieTest"]["cookie"] = "Cookie";
+$lang["Step"]["SessionAndCookieTest"]["failureMessage"] = "One or more of the system requirements are not satisfied.<br />The installation will can not continued.";
+$lang["Step"]["SessionAndCookieTest"]["cookieFailed"] = "Cookie: A cookie can not be set.";
+$lang["Step"]["SessionAndCookieTest"]["sessionFailed"] = "Session: A session can not be started.";
+
+
+// DetermineFilesInstaller
+$lang["Step"]["DetermineFilesInstaller"]["title"] = "Determine files";
+$lang["Step"]["DetermineFilesInstaller"]["headline"] = "Determine required files";
+$lang["Step"]["DetermineFilesInstaller"]["content"] = "This step will be executed by the LiveUpdate-Server";
+
+
+// DownloadFilesInstaller
+$lang["Step"]["DownloadFilesInstaller"]["title"] = "Download files";
+$lang["Step"]["DownloadFilesInstaller"]["headline"] = "Download installer files";
+$lang["Step"]["DownloadFilesInstaller"]["content"] = "This step will be executed by the LiveUpdate-Server";
+
+
+// PrepareFilesInstaller
+$lang["Step"]["PrepareFilesInstaller"]["title"] = "Prepare files";
+$lang["Step"]["PrepareFilesInstaller"]["headline"] = "Prepare installer files";
+$lang["Step"]["PrepareFilesInstaller"]["content"] = "This step will be executed by the LiveUpdate-Server";
+
+
+// InstallFilesInstaller
+$lang["Step"]["InstallFilesInstaller"]["title"] = "Copy files";
+$lang["Step"]["InstallFilesInstaller"]["headline"] = "Copy installer files";
+$lang["Step"]["InstallFilesInstaller"]["content"] = "This step will be executed by the LiveUpdate-Server";
+
+
+// ConfigureInstaller
+$lang["Step"]["ConfigureInstaller"]["title"] = "Configure installer";
+$lang["Step"]["ConfigureInstaller"]["headline"] = "Configure installer";
+$lang["Step"]["ConfigureInstaller"]["content"] = "Now the installation package will be configured.";
+
+// Error Messages
+
+// Error message for missing write permissions:
+$lang["errors"]["writeFile"] = "No Write Permissions!<br /><br />Could not write to %s<br /><br />In order for 
+		webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..) 
+		at least during installation. Please read the installation guide, which is included in the installation package or 
+		visit <a href=\"http://www.webedition.de/path/to/write/permission/help.html\" target=\"_blank\">www.webedition.de</a>.";
+
+?>
