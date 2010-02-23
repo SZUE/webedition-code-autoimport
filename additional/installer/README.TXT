@@ -19,10 +19,11 @@ $le_OnlineInstaller = new le_OnlineInstaller_Make();
 $le_OnlineInstaller->execute('path/to/base', 'path/to/out/', '6.0.0.9');
 
 To avoid creating the OnlineInstaller.php file in /additional/installer/out/ you can comment out the two last lines of code in make.php
+Then execute() returns the contents of the OnlineInstaller.php script to the caller instead of writing it to a file.
 
 TO DEVELOPERS: Creating new versions:
 -------------------------------------
-When creating a new releases of the webEdition installer (meaning changing the version number), the version number has to be changed in these files:
+When creating a new release of the webEdition installer (meaning changing the version number), the version number has to be changed in these files:
 
 - setup.php (script comment and variable $LU_Version, line 39)
 - make.php (last line of code, app. line 514)
