@@ -380,7 +380,7 @@ class we_object extends we_document
 					$arrt[$nam]["intID"] = isset($this->elements[$neu[$i]."intID"]["dat"]) ? $this->elements[$neu[$i]."intID"]["dat"] : "";
 					$arrt[$nam]["intPath"] = isset($this->elements[$neu[$i]."intPath"]["dat"]) ? $this->elements[$neu[$i]."intPath"]["dat"] : "";
 					$arrt[$nam]["hreftype"] = isset($this->elements[$neu[$i]."hreftype"]["dat"]) ? $this->elements[$neu[$i]."hreftype"]["dat"] : "";
-					$arrt[$nam]["hrefdirectory"] = isset($this->elements[$neu[$i]."hrefdirectory"]["dat"]) ? $this->elements[$neu[$i]."hrefdirectory"]["dat"] : "flase";
+					$arrt[$nam]["hrefdirectory"] = isset($this->elements[$neu[$i]."hrefdirectory"]["dat"]) ? $this->elements[$neu[$i]."hrefdirectory"]["dat"] : "false";
 					$arrt[$nam]["hreffile"] = isset($this->elements[$neu[$i]."hreffile"]["dat"]) ? $this->elements[$neu[$i]."hreffile"]["dat"] : "true";
 					$arrt[$nam]["uniqueID"] = md5(uniqid(rand(),1));
 

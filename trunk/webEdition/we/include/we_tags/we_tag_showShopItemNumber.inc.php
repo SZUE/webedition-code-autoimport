@@ -44,7 +44,12 @@ function we_tag_showShopItemNumber($attribs,$content) {
 		$articleType = 'o';
 	}
 	
-	$itemQuantity = $GLOBALS[$shopname]->Get_Item_Quantity($GLOBALS["lv"]->ShoppingCartKey);
+	if (isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->ShoppingCartKey) ) {
+		$itemQuantity = $GLOBALS[$shopname]->Get_Item_Quantity($GLOBALS["lv"]->ShoppingCartKey);
+	} else {
+		$itemQuantity = 0;
+	}
+	
 	
 	if($option || ($type=="select")) {
 		

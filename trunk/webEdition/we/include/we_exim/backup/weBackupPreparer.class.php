@@ -204,6 +204,7 @@
 		function getOptions(&$options,&$handle_options){
 
 			$options['backup_extern'] = (isset($_REQUEST['handle_extern']) && $_REQUEST['handle_extern']) ? 1 : 0;
+			$options['convert_charset'] =(isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0;
 			$options['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress']) ? 1 : 0;
 			$options['backup_binary'] = (isset($_REQUEST['handle_binary']) && $_REQUEST['handle_binary']) ? 1 : 0;
 			$options['rebuild'] = (isset($_REQUEST['rebuild']) && $_REQUEST['rebuild']) ? 1 : 0;
@@ -251,7 +252,10 @@
 			$handle_options['glossary'] = (isset($_REQUEST['handle_glossary']) && $_REQUEST['handle_glossary']) ? 1 : 0;
 			// exception for sql imports
 			$handle_options['backup'] = $options['backup_extern'];
-
+			if ($options['convert_charset']) {
+				$handle_options['settings'] = 0;
+				$handle_options['spellchecker'] = 0;
+			}
 
 		}
 

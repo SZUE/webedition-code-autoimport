@@ -26,9 +26,12 @@
 
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupFileReader.class.php');
-
-			$data = $GLOBALS['weXmlExImHeader'];
-
+			if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+				$data ='<?xml version="1.0" encoding="'.$_SESSION['weBackupVars']['encoding'].'" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
+					 '<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
+			} else {
+				$data = $GLOBALS['weXmlExImHeader'];
+			}
 			if($log){
 				weBackupUtil::addLog(sprintf('Reading offset %s',$offset));
 			}
@@ -54,7 +57,13 @@
 			}
 			
 			$parser = new weXMLParser();
-			$parser->parse($data);
+			if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+			
+				$parser->parse($data,DEFAULT_CHARSET);
+			} else {
+				$parser->parse($data);
+			}
+			if($parser===false){p_r($parser->parseError);sleep(5);}
 
 			// free some memory
 			unset($parser->Indexes);
@@ -139,21 +148,24 @@
 
 
 					if($log){
+						if (method_exists($object,'convertCharsetEncoding')) {$addtext=" - ja - ".$_SESSION['weBackupVars']['options']['convert_charset']." ".$_SESSION['weBackupVars']['encoding']."  ".DEFAULT_CHARSET;} else {$addtext=" - nein - ";}
 						$_prefix = 'Saving object ';
 						if($classname=='weTable') {
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table );
+							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
 						} else if($classname=='weTableItem'){
 							$_id_val = '';
 							foreach ($object->keys as $_key) {
 								$_id_val .= ':' . $object->$_key;
 							}
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val);
+							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
 
 						} else if($classname=='weBinary'){
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' .  $object->Path);
+							weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' .  $object->Path . $addtext);
 						}
 					}
-									
+					if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+							if (method_exists($object,'convertCharsetEncoding')) 	$object->convertCharsetEncoding($_SESSION['weBackupVars']['encoding'],DEFAULT_CHARSET);
+					}				
 					if(isset($object->Path) && $object->Path == '/webEdition/we/include/conf/we_conf_global.inc.php'){
 						weBackupImport::handlePrefs($object);
 					} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path,'/webEdition/we/include/we_modules/spellchecker/')===0) && !$_SESSION['weBackupVars']['handle_options']['spellchecker']){
@@ -162,7 +174,7 @@
 						$object->save();
 					}
 
-					//sppedup for some tables
+					//speedup for some tables
 					if(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE)) {
 						$_SESSION['weBackupVars']['backup_steps'] = BACKUP_STEPS * $nFactor;
 					} else {

@@ -254,4 +254,8 @@ $l_backup["tools_export_desc"] = "Here you can save webEdition tools data. Pleas
 
 $l_backup['ftp_hint'] = "Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!"; // TRANSLATE
 
+$l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.de/de/webedition/administration/charset-conversion-of-legacy-sites"; // TRANSLATE
+
+$l_backup["convert_charset_data"] = "While importing the backup, convert the site from ISO to UTF-8"; // TRANSLATE
+
 ?>

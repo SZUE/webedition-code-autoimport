@@ -550,6 +550,7 @@ class weBackupWizard{
 					100=>"handle_settings",
 					101=>"handle_temporary",
 					300=>"handle_extern",
+					310=>"convert_charset",
 					320=>"backup_log"					
 		);
 
@@ -629,6 +630,9 @@ class weBackupWizard{
 		
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["extern_exp"], 1, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "handle_extern", $l_backup["import_extern_data"], false, "defaultfont", "doClick(300);"),"space"=>70,"noline"=>1));
+		
+		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["convert_charset"], 1, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "convert_charset", $l_backup["convert_charset_data"], false, "defaultfont", "doClick(310);"),"space"=>70,"noline"=>1));
 
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["backup_log_exp"], 2, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "backup_log", $l_backup["export_backup_log"], false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
@@ -1380,6 +1384,7 @@ class weBackupWizard{
 
 						if (!$temp_filename) {
 							$we_backup_obj->backup_extern = (isset($_REQUEST["handle_extern"]) && $_REQUEST["handle_extern"]) ? 1 : 0;
+							$we_backup_obj->convert_charset = (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0;
 							$we_backup_obj->export2server = (isset($_REQUEST["export_server"]) && $_REQUEST["export_server"]) ? 1 : 0;
 							$we_backup_obj->export2send = (isset($_REQUEST["export_send"]) && $_REQUEST["export_send"]) ? 1 : 0;
 							$we_backup_obj->filename = getRequestVar("filename","weBackup_".time().".xml");
@@ -1478,6 +1483,7 @@ class weBackupWizard{
 						if (!$temp_filename) {
 
 							$we_backup_obj->backup_extern = (isset($_REQUEST["handle_extern"]) && $_REQUEST["handle_extern"]) ? 1 : 0;
+							$we_backup_obj->convert_charset = (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0;
 							$we_backup_obj->compress = (isset($_REQUEST["compress"]) && $_REQUEST["compress"]) ? 1 : 0;
 							$we_backup_obj->backup_steps = getPref("BACKUP_STEPS");
 							if($we_backup_obj->backup_steps == 0) $we_backup_obj->backup_steps = $this->getAutoSteps();
