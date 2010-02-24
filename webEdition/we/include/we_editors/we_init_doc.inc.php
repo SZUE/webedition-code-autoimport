@@ -33,7 +33,7 @@ if (0 && isset($we_ID) && isset($we_Table) && isset($GLOBALS["weDocumentCache_".
 	if( (!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]["ClassName"])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
 		$we_ContentType = f("SELECT ContentType FROM $we_Table WHERE ID=$we_ID","ContentType",$DB_WE);
 	}
-	if(isset($we_ContentType)){
+	if(isset($we_ContentType) && $we_ContentType!=''){
 		switch($we_ContentType){
 			case "application/x-shockwave-flash":
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
@@ -88,7 +88,7 @@ if (0 && isset($we_ID) && isset($we_Table) && isset($GLOBALS["weDocumentCache_".
 					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php");
 					eval('$we_doc = new we_'.$we_ContentType.'();');
 				}else{
-					exit("Can NOT initialize document");
+					exit("Can NOT initialize document of type -".$we_ContentType."- ".$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php");
 				}
 
 		}

@@ -144,7 +144,7 @@
 			if($prop=="schedArr") return true;			
 			$encoded=array(
 				"we_element"=>array("Dat","dat"),
-				"weTableItem"=>array("Dat","strFelder","strSerial","DocumentObject","QASet","Catfields","RevoteUserAgent","LogData","strSerialOrder"),
+				"weTableItem"=>array("Dat","strFelder","strSerial","DocumentObject","QASet","QASetAdditions","Catfields","RevoteUserAgent","LogData","strSerialOrder"),
 				"we_object"=>array("DefaultText","DefaultValues","SerializedArray"),
 				"we_objectFile"=>array("DefArray","schedArr"),
 				"weBinary"=>array("Data"),
@@ -171,7 +171,8 @@
 			$nocodingDocClasses=array(
 				"we_imageDocument",
 				"we_flashDocument",
-				"we_quicktimeDocument"
+				"we_quicktimeDocument",
+				"we_otherDocument"
 				
 			);
 			if(isset($nocoding[$classname])) {

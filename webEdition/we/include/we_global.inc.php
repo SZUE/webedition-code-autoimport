@@ -3464,4 +3464,41 @@ function pos_number($val)
 	return (bool)is_numeric($val) && $val == (int)$val && $val > 0;
 }
 
+function convertCharsetEncoding($fromC,$toC,$string){
+	if ($fromC!='' && $toC!=''){
+		if (function_exists("iconv")) {
+			$string = iconv($fromC, $toC.'//TRANSLIT', $string);
+			
+		} elseif ($fromC =='UTF-8' && $toC == "ISO-8859-1") {
+			$string = utf8_decode($string);
+		} elseif ($fromC =='ISO-8859-1' && $toC == "UTF-8") {
+			$string = utf8_encode($string);
+		}
+	}
+	return $string; 
+}
+
+function isSerialized($str) {
+	return ($str == serialize(false) || @unserialize($str) !== false);
+}
+function AAcorrectSerDataISOtoUTF($serialized){
+	return preg_replace_callback('!(?<=^|;)s:(\d+)(?=:"(.*?)";(?:}|a:|s:|b:|i:|o:|N;))!s','serialize_fix_callback',$serialized);
+}
+function serialize_fix_callback($match) {
+    return 's:' . strlen($match[2]);
+}
+
+function correctSerDataISOtoUTF($serial_str) { 
+	$out = preg_replace('!s:(\d+):"(.*?)";!se', '"s:".strlen("$2").":\"$2\";"', $serial_str ); 
+	return $out; 
+}
+function convertExactCharsetString($fromC,$toC,$string){
+	if($string == $fromC) return $toC;
+	return $string;
+}
+function convertCharsetString($fromC,$toC,$string){
+	return str_replace($fromC,$toC,$string);
+	
+}
+
 ?>
