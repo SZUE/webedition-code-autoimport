@@ -191,6 +191,7 @@ class we_flashDocument extends we_binaryDocument
 			}
 		}else{ 
 			if($GLOBALS['we_doc']->InWebEdition == 1) { 
+				/* Anzeige des No_Falsh-Bildes in der Vorschau
 				$imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
 				$imgAtts["width"]  = 64;
 				$imgAtts["height"] = 64;
@@ -202,6 +203,8 @@ class we_flashDocument extends we_binaryDocument
 					$imgAtts["name"] = $this->name;
 				}
 				$this->html = getHtmlTag("img", $imgAtts);
+				*/
+				$this->html ='';
 			} else {$this->html ='';}
 		}
 		return $this->html;
