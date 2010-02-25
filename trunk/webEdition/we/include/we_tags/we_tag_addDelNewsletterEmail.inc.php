@@ -502,33 +502,27 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
 					return;
 				}
-				$fh=@fopen($path,"rb");			
-				if($fh){
-					$file="";
-					if(filesize($path)) while(!feof($fh)) $file.=fread($fh,filesize($path));
-					fclose($fh);
-					if((eregi("[\r\n]$unsubscribe_mail,[^\r\n]+[\r\n]",$file) || eregi("^$unsubscribe_mail,[^\r\n]+[\r\n]",$file))){
-						$emailExists = true;					
-						$file = eregi_replace("([\r\n])+$unsubscribe_mail,[^\r\n]+[\r\n]+",'\1',$file);
-						$file = eregi_replace("^$unsubscribe_mail,[^\r\n]+[\r\n]+","",$file);
-						$fh=@fopen($path,"wb");
-						if(strlen($file)){
-							if($fh){
-								if(!@fwrite($fh,$file)){
-									fclose($fh);
-									$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
-									return;
-								}
-								fclose($fh);
-							}else{
-								$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
-								return;
-							}
-						}else{
-							fclose($fh);
-						}
+				
+				// #4158
+				$file = @file($path);
+				if (!$file) continue;
+
+				$fileChanged = false;
+				foreach ($file as $i => $line) {
+					if (mb_substr($line, 0, mb_strlen($unsubscribe_mail) + 1) == "$unsubscribe_mail,") {
+						$emailExists = true;
+						unset($file[$i]);
+						$fileChanged = true;
 					}
 				}
+
+				if ($fileChanged) {
+					$success = file_put_contents($path, implode("\n", array_map('trim', $file)) . "\n");
+					if (!$success) {
+						$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+					}
+				}
+				//
 			}
 		}
 
