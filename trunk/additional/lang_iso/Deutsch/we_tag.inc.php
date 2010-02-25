@@ -396,5 +396,11 @@ $l_we_tag['ifSendMail']['description'] = "Pr&uuml;ft, ob eine Seite gerade mit w
 $l_we_tag['ifSendMail']['defaultvalue'] = "";
 $l_we_tag['ifNotSendMail']['description'] = "Pr&uuml;ft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden";
 $l_we_tag['ifNotSendMail']['defaultvalue'] = "";
+$l_we_tag['pageLanguage']['description'] = "Gibt die dem Dokument zugewiesene Sprache aus";
+$l_we_tag['pageLanguage']['defaultvalue'] = "";
+$l_we_tag['objectLanguage']['description'] = "Gibt die dem Objekt zugewiesene Sprache aus";
+$l_we_tag['objectLanguage']['defaultvalue'] = "";
+
+
 
 ?>
