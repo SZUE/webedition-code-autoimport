@@ -396,6 +396,10 @@ $l_we_tag['ifSendMail']['description'] = "Checks if a page is currently sent by 
 $l_we_tag['ifSendMail']['defaultvalue'] = "";
 $l_we_tag['ifNotSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page"; // TRANSLATE
 $l_we_tag['ifNotSendMail']['defaultvalue'] = "";
+$l_we_tag['pageLanguage']['description'] = "Shows the language of the document";// TRANSLATE
+$l_we_tag['pageLanguage']['defaultvalue'] = "";
+$l_we_tag['objectLanguage']['description'] = "Shows the language of the object";// TRANSLATE
+$l_we_tag['objectLanguage']['defaultvalue'] = "";
 
 
 ?>

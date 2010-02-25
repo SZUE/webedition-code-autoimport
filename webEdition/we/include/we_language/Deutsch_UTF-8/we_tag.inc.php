@@ -402,5 +402,10 @@ $l_we_tag['ifNotVoteActive']['description'] = "Alles, was sich zwischen Start- u
 $l_we_tag['ifNotVoteActive']['defaultvalue'] = "";
 $l_we_tag['ifNotVoteIsRequired']['description'] = "Alles, was sich zwischen Start- und Endtag befindet, wird nur angezeigt, wenn das Voting kein Pflichtfeld ist.";
 $l_we_tag['ifNotVoteIsRequired']['defaultvalue'] = "";
+$l_we_tag['pageLanguage']['description'] = "Gibt die dem Dokument zugewiesene Sprache aus";
+$l_we_tag['pageLanguage']['defaultvalue'] = "";
+$l_we_tag['objectLanguage']['description'] = "Gibt die dem Objekt zugewiesene Sprache aus";
+$l_we_tag['objectLanguage']['defaultvalue'] = "";
+
 
 ?>

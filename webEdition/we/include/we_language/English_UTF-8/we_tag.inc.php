@@ -403,6 +403,10 @@ $l_we_tag['ifNotVoteIsRequired']['description'] = "Any content between the start
 $l_we_tag['ifNotVoteIsRequired']['defaultvalue'] = "";
 $l_we_tag['ifVoteIsRequired']['description'] = "Any content between the start- and endtag is only displayed, if the voting is a required field.";
 $l_we_tag['ifVoteIsRequired']['defaultvalue'] = "";
+$l_we_tag['pageLanguage']['description'] = "Shows the language of the document";
+$l_we_tag['pageLanguage']['defaultvalue'] = "";
+$l_we_tag['objectLanguage']['description'] = "Shows the language of the object";
+$l_we_tag['objectLanguage']['defaultvalue'] = "";
 
 
 ?>
