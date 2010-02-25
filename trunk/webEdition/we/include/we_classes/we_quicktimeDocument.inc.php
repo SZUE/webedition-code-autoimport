@@ -175,6 +175,7 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 		}else{
 			if($GLOBALS['we_doc']->InWebEdition == 1) {
+				/* Anzeige des No_quicktime-Bildes in der Vorschau
 				$_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
 				$_imgAttr['width']  = 64;
 				$_imgAttr['height'] = 64;
@@ -187,6 +188,8 @@ class we_quicktimeDocument extends we_binaryDocument {
 					$_imgAttr['name'] = $this->name;
 				}
 				$this->html = getHtmlTag('img', $_imgAttr);
+				*/
+				$this->html ='';
 			} else {$this->html ='';}
 		}
 		return $this->html;
