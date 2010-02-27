@@ -532,6 +532,11 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["smtp_password"] = "Salasana";
 	$l_prefs["smtp_halo"] = "SMTP helo";
 	$l_prefs["smtp_timeout"] = "SMTP aikakatkaisu";
+	$l_prefs["smtp_encryption"] = "encrypted transport";// TRANSLATE
+	$l_prefs["smtp_encryption_none"] = "no";// TRANSLATE
+	$l_prefs["smtp_encryption_ssl"] = "SSL";// TRANSLATE
+	$l_prefs["smtp_encryption_tls"] = "TLS";// TRANSLATE
+
 
 /*****************************************************************************
  * Versions settings

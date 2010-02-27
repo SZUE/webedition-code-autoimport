@@ -694,6 +694,9 @@ function get_value($settingvalue) {
 		case "smtp_timeout":
 			return defined('SMTP_TIMEOUT') ? SMTP_TIMEOUT : '';
 		break;
+		case "smtp_encryption":
+			return defined('SMTP_ENCRYPTION') ? SMTP_ENCRYPTION : 0;
+		break;
 		default:
 			return "";
 			break;
@@ -1821,6 +1824,12 @@ $_we_active_integrated_modules = array();
 					$_update_prefs = true;
 				}
 				break;
+			case '$_REQUEST["smtp_encryption"]':
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_ENCRYPTION", $settingvalue,'SMTP encryption')) {
+					$_update_prefs = true;
+				}
+				break;
 			/*****************************************************************
 			 * VERSIONING
 			 *****************************************************************/
@@ -2468,6 +2477,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["smtp_password"]) ? $_REQUEST["smtp_password"] : '', '$_REQUEST["smtp_password"]');
 		$_update_prefs = remember_value(isset($_REQUEST["smtp_halo"]) ? $_REQUEST["smtp_halo"] : '', '$_REQUEST["smtp_halo"]');
 		$_update_prefs = remember_value(isset($_REQUEST["smtp_timeout"]) ? $_REQUEST["smtp_timeout"] : '', '$_REQUEST["smtp_timeout"]');
+		$_update_prefs = remember_value(isset($_REQUEST["smtp_encryption"]) ? $_REQUEST["smtp_encryption"] : '', '$_REQUEST["smtp_encryption"]');
 
 	}
 	
@@ -5170,7 +5180,7 @@ else {
 
 					array_push($_settings, array('headline'=> $l_prefs['mailer_type'], 'html' => $_emailSelect, 'space' => 120, 'noline' => 1));
 
-					$_smtp_table = new we_htmlTable(array('border'=>'0', 'cellpadding'=>'0', 'cellspacing'=>'0', 'id'=>'smtp_table','width'=>300, 'style'=>'display: ' . ((get_value('mailer_type')=='php') ? 'none' : 'block') . ';'), 11, 3);
+					$_smtp_table = new we_htmlTable(array('border'=>'0', 'cellpadding'=>'0', 'cellspacing'=>'0', 'id'=>'smtp_table','width'=>300, 'style'=>'display: ' . ((get_value('mailer_type')=='php') ? 'none' : 'block') . ';'), 9, 3);
 
 					$_smtp_table->setCol(0, 0, array('class' => 'defaultfont'), $l_prefs['smtp_server']);
 					$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), getPixel(10,5));
@@ -5181,6 +5191,8 @@ else {
 					$_smtp_table->setCol(2, 0, array('class' => 'defaultfont'), $l_prefs['smtp_port']);
 					$_smtp_table->setCol(2, 2, array('align' => 'right'), htmlTextInput('smtp_port', 24, get_value('smtp_port'), 180, '', 'text', 180));
 
+
+					/* halo und timeout lassen sich nicht mehr mit Zend_mail setzen
 					$_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), getPixel(10,10));
 					$_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), $l_prefs['smtp_halo']);
 					$_smtp_table->setCol(4, 2, array('align' => 'right'), htmlTextInput('smtp_halo', 24, get_value('smtp_halo'), 180, '', 'text', 180));
@@ -5188,6 +5200,15 @@ else {
 					$_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), getPixel(10,10));
 					$_smtp_table->setCol(6, 0, array('class' => 'defaultfont'), $l_prefs['smtp_timeout']);
 					$_smtp_table->setCol(6, 2, array('align' => 'right'), htmlTextInput('smtp_timeout', 24, get_value('smtp_timeout'), 180, '', 'text', 180));
+					
+					Tabellenzellen neu durchnummeriert
+					*/
+
+					$_encryptSelect = htmlSelect('smtp_encryption', array('0'=>$l_prefs['smtp_encryption_none'],'ssl'=>$l_prefs['smtp_encryption_ssl'],'tls'=>$l_prefs['smtp_encryption_tls']), 1, get_value('smtp_encryption'), false,"",'value',180,'defaultfont');
+
+					$_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), getPixel(10,10));
+					$_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), $l_prefs['smtp_encryption']);
+					$_smtp_table->setCol(4, 2, array('align' => 'left'), $_encryptSelect);
 
 
 					$_auth_table = new we_htmlTable(array('border'=>'0', 'cellpadding'=>'0', 'cellspacing'=>'0', 'id'=>'auth_table','width'=>200, 'style'=>'display: ' . ((get_value('smtp_auth') == 1) ? 'block' : 'none') . ';'), 4, 3);
@@ -5203,12 +5224,12 @@ else {
 
 					$_auth_table->setCol(3, 0, array('class' => 'defaultfont'), getPixel(10,10));
 
-					$_smtp_table->setCol(7, 0, array('class' => 'defaultfont'), getPixel(10,20));
-					$_smtp_table->setCol(8, 0, array('class' => 'defaultfont','colspan'=>3),
+					$_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), getPixel(10,20));
+					$_smtp_table->setCol(6, 0, array('class' => 'defaultfont','colspan'=>3),
 						we_forms::checkbox(1, get_value('smtp_auth') , 'smtp_auth', $l_prefs['smtp_auth'], false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';" )
 					);
-					$_smtp_table->setCol(9, 0, array('class' => 'defaultfont'), getPixel(10,10));
-					$_smtp_table->setCol(10, 0, array('align' => 'right','colspan'=>3), getPixel(5,5) . $_auth_table->getHtmlCode());
+					$_smtp_table->setCol(7, 0, array('class' => 'defaultfont'), getPixel(10,10));
+					$_smtp_table->setCol(8, 0, array('align' => 'right','colspan'=>3), getPixel(5,5) . $_auth_table->getHtmlCode());
 
 					array_push($_settings, array('headline'=>'','html' => $_smtp_table->getHtmlCode(), 'space' => 120, 'noline' => 1));
 
