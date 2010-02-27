@@ -121,6 +121,11 @@ class we_util_Mailer extends Zend_Mail
 						}
 						if (defined('SMTP_HALO')) {//keine Möglichkeit gefunden das zu ändern, aber auch nicht lange gesucht, scheint den Host zu übergeben
 						}
+						if (defined('SMTP_ENCRYPTION')){
+							if ((SMTP_ENCRYPTION !=0 ) || SMTP_ENCRYPTION !=''){
+								$smtp_config['ssl'] = SMTP_ENCRYPTION;
+							}						
+						}
 						$tr = new Zend_Mail_Transport_Smtp(SMTP_SERVER, $smtp_config); 
 						$this->setDefaultTransport($tr);					
 					}

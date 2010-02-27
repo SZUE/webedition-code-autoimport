@@ -530,6 +530,11 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["smtp_password"] = "Wachtwoord";
 	$l_prefs["smtp_halo"] = "SMTP halo"; // TRANSLATE
 	$l_prefs["smtp_timeout"] = "SMTP timeout"; // TRANSLATE
+	$l_prefs["smtp_encryption"] = "encrypted transport";// TRANSLATE
+	$l_prefs["smtp_encryption_none"] = "no";// TRANSLATE
+	$l_prefs["smtp_encryption_ssl"] = "SSL";// TRANSLATE
+	$l_prefs["smtp_encryption_tls"] = "TLS";// TRANSLATE
+
 	
 /*****************************************************************************
  * Versions settings

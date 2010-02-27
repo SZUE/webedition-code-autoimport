@@ -535,6 +535,11 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["smtp_password"] = "Password";
 	$l_prefs["smtp_halo"] = "SMTP halo";
 	$l_prefs["smtp_timeout"] = "SMTP timeout";
+	$l_prefs["smtp_encryption"] = "encrypted transport";
+	$l_prefs["smtp_encryption_none"] = "no";
+	$l_prefs["smtp_encryption_ssl"] = "SSL";
+	$l_prefs["smtp_encryption_tls"] = "TLS";
+
 	
 /*****************************************************************************
  * Versions settings
