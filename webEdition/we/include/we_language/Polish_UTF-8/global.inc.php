@@ -179,4 +179,7 @@ $GLOBALS["l_global"]["no_document_opened"] = "There is no document opened!"; // 
 $GLOBALS["l_global"]["credits_team"] = "webEdition Team"; // TRANSLATE
 $GLOBALS["l_global"]["credits_translators"] = "Translations"; // TRANSLATE
 $GLOBALS["l_global"]["credits_thanks"] = "Thanks to"; // TRANSLATE
+$GLOBALS["l_global"]["unable_to_call_ping"] = "Connection to server is lost - RPC: Ping!";// TRANSLATE
+$GLOBALS["l_global"]["unable_to_call_setpagenr"] = "Connection to server is lost - RPC: setPageNr!";// TRANSLATE
+
 ?>

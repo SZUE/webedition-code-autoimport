@@ -21,6 +21,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 
 
 		
@@ -69,7 +70,7 @@ var ajaxCallback = {
 		}
 	},
 	failure: function(o) {
-		alert("Error: Unable to call RPC: Ping!");
+		alert(<?php echo $GLOBALS["l_global"]["unable_to_call_ping"];?>);
 	}
 }
 
@@ -80,6 +81,6 @@ function YUIdoAjax() {
 //setTimeout("self.location='we_users_ping.php?r=<?php print rand() ?>'",<?php print PING_TIME ?>*1000);
 </script>
 </head>
-<body bgcolor="white" onload="YUIdoAjax();">
+<body bgcolor="white" onLoad="YUIdoAjax();">
 </body>
 </html>
