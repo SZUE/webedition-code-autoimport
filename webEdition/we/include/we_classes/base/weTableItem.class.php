@@ -177,15 +177,15 @@
 						if (is_array($mydataUS)){
 							foreach ($mydataUS as &$ad){
 								$ad = convertCharsetEncoding($fromC,$toC,$ad);
-								if ($ad == $fromC) {$ad = $toC;}
-								$ad = str_replace($fromC,$toC,$ad);
+								$ad = convertExactCharsetString($fromC,$toC,$ad);
+								$ad = convertCharsetString($fromC,$toC,$ad);
 							}
 							$val = serialize($mydataUS);
 						}
 					} else {
 						$val = convertCharsetEncoding($fromC,$toC,$mydata);
-						if ($val == $fromC) {$val = $toC;}
-						$val=str_replace($fromC,$toC,$val);
+						$val = convertExactCharsetString($fromC,$toC,$val);
+						$val = convertCharsetString($fromC,$toC,$val);
 					}
 				}
 				if ($this->doCorrectExactCharsetString($key)){
@@ -205,13 +205,9 @@
 						}
 					}
 					$val = @serialize($mydataUS);
-				}
-				
-				
+				}				
 			}		
-		}
-		
-		
+		}				
 	}
 	
 ?>

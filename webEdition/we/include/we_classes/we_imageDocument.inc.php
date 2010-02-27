@@ -512,6 +512,37 @@ class we_imageDocument extends we_binaryDocument {
 				$this->setElement("height", round($this->elements["height"]["dat"]*$this->elements['sizingrel']['dat']), "attrib");
 				unset($this->elements['sizingrel']);
 			}
+			
+			if (isset($this->elements['sizingbase']) && $this->elements['sizingbase']['dat']!= 16 ){
+				$sizingbase = $this->elements['sizingbase']['dat'];
+			} else {
+				$sizingbase = 16;
+			}
+			if (isset($this->elements['sizingbase']) ) {unset($this->elements['sizingbase']);}
+
+			if (isset($this->elements['sizingstyle']) ) {
+				if ($this->elements['sizingstyle']['dat'] =="none") {
+					$sizingstyle = false;
+				} else {
+					$sizingstyle = $this->elements['sizingstyle']['dat'];
+				}
+				unset($this->elements['sizingstyle']);
+			} else {$sizingstyle = false;}
+			
+			if ($sizingstyle){
+				$style_width = round($this->elements["width"]["dat"]/$sizingbase,6);
+				$style_height = round($this->elements["height"]["dat"]/$sizingbase,6);
+				if (isset($this->elements["style"]) ) {
+					$newstyle = $this->elements["style"]["dat"];
+				} else {$newstyle="";}
+
+				$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";"; 
+				$this->setElement("style", $newstyle, "attrib");
+				unset($this->elements['width']);
+				unset($this->elements['height']);
+			}
+
+			
 			$this->resetElements();
 			
 			

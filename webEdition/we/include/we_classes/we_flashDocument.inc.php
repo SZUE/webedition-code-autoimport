@@ -39,7 +39,7 @@ class we_flashDocument extends we_binaryDocument
 	var $ContentType="application/x-shockwave-flash";
 
 	/* Parameternames which are placed within the object-Tag */
-	var $ObjectParamNames = array("align","border","id","height","hspace","name","width","vspace","only");
+	var $ObjectParamNames = array("align","border","id","height","hspace","name","width","vspace","only","style");
 
 	######################################################################################################################################################
 	##################################################################### FUNCTIONS ######################################################################
@@ -70,6 +70,34 @@ class we_flashDocument extends we_binaryDocument
 			$attribs["width"] = round($orig_w*$attribs["sizingrel"]);
 			$attribs["height"] = round($orig_h*$attribs["sizingrel"]);
 			unset($attribs["sizingrel"]);
+		}
+		if (isset($attribs['sizingbase']) && $attribs['sizingbase']!= 16 ){
+				$sizingbase = $attribs['sizingbase'];
+			} else {
+				$sizingbase = 16;
+			}
+		if (isset($attribs['sizingbase']) ) {unset($attribs['sizingbase']);}
+
+		if (isset($attribs['sizingstyle']) ) {
+			if ($attribs['sizingstyle'] =="none") {
+				$sizingstyle = false;
+			} else {
+				$sizingstyle = $attribs['sizingstyle'];
+			}
+			unset($attribs['sizingstyle']);
+		} else {$sizingstyle = false;}
+			
+		if ($sizingstyle){
+			$style_width = round($attribs["width"]/$sizingbase,6);
+			$style_height = round($attribs["height"]/$sizingbase,6);
+			if (isset($attribs["style"]) ) {
+				$newstyle = $attribs["style"];
+			} else {$newstyle="";}
+
+			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";"; 
+			$attribs["style"]= $newstyle;
+			unset($attribs['width']);
+			unset($attribs['height']);
 		}
 		foreach($attribs as $a=>$b){
 			if($b != ""){
