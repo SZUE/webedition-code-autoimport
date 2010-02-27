@@ -654,7 +654,8 @@ class we_document extends we_root {
 			for($i=0;$i<sizeof($namesArray);$i++) {
 				unset($this->elements[$namesArray[$i].($isBlock ? ("blk_".$name."_") : "").$listarray[$nr]]);
 			}
-		}
+		} else {$listarray=array();}
+		
 		if (is_array($listarray)) {// Bug #4079
 			array_splice($listarray,$nr,1);
 		}
