@@ -112,6 +112,10 @@ $l_button["publish"]["value"] = "Julkaise";
 $l_button["publish"]["alt"]   = "Tallenna ja julkaise";
 $l_button["publish"]["width"] = 100;
 
+$l_button["saveversion"]["value"] = "Save Version";// TRANSLATE
+$l_button["saveversion"]["alt"]   = "Saves the template and creates a new version";// TRANSLATE
+$l_button["saveversion"]["width"] = 120;// TRANSLATE
+
 $l_button["delete"]["value"] = "Poista";
 $l_button["delete"]["alt"] = "Poista";
 $l_button["delete"]["width"] = 100;

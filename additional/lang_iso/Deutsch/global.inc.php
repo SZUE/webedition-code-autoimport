@@ -177,4 +177,6 @@ $GLOBALS["l_global"]["no_document_opened"] = "Es ist kein Dokument geöffnet!";
 $GLOBALS["l_global"]["credits_team"] = "webEdition Team";
 $GLOBALS["l_global"]["credits_translators"] = "Übersetzungen";
 $GLOBALS["l_global"]["credits_thanks"] = "Vielen Dank an";
+$GLOBALS["l_global"]["unable_to_call_ping"] = "Verbindung zum Server verloren - RPC: Ping!";
+$GLOBALS["l_global"]["unable_to_call_setpagenr"] = "Verbindung zum Server verloren - RPC: setPageNr!";
 ?>

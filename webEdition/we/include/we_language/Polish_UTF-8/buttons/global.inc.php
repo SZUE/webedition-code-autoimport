@@ -112,6 +112,10 @@ $l_button["publish"]["value"] = "Publish";
 $l_button["publish"]["alt"]   = "Save and publish";
 $l_button["publish"]["width"] = 100;
 
+$l_button["saveversion"]["value"] = "Save Version";// TRANSLATE
+$l_button["saveversion"]["alt"]   = "Saves the template and creates a new version";// TRANSLATE
+$l_button["saveversion"]["width"] = 120;// TRANSLATE
+
 $l_button["delete"]["value"] = "Delete";
 $l_button["delete"]["alt"] = "Delete";
 $l_button["delete"]["width"] = 100;

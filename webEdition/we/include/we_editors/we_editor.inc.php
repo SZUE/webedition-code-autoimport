@@ -438,6 +438,13 @@ else {
 							$_REQUEST["we_cmd"][3] = 1;
 							$_REQUEST["we_cmd"][4] = 1;
 						}
+						if($_REQUEST["we_cmd"][5]) { //Save in version
+							$_REQUEST["we_cmd"][5] = "";
+							$we_doc->we_publish();		
+									
+						}
+						
+						
 ####TEMPLATE_SAVE_CODE2_START###
 						$TEMPLATE_SAVE_CODE2 = true;
 						$arr = getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);

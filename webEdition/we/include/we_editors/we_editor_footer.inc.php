@@ -176,9 +176,15 @@ if($we_doc->userCanSave()){
 	$_js_we_save_document .= "
 			var addCmd = arguments[0] ? arguments[0] : '';
 		";
-
+	
+	// publish for templates to save in version
+	$pass_publish = $showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
+	if ( $we_doc->ContentType == "text/weTmpl" && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
+	}
+	
 	$_js_we_save_document .= "
-		we_cmd('save_document','','','',''," . ($showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''") . ",addCmd);
+		we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);
 	" . ($reloadPage ? "self.location='" . $we_doc->url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';" : "");
 
 }
@@ -269,7 +275,7 @@ if($we_doc->Table == TEMPLATES_TABLE){	//	Its a template
 		  "
 			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1,'','',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');"
 		: "
-			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,0,'','',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
+			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,0,'',arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
 " ) . "
 			return;
 		}";
@@ -460,9 +466,16 @@ if(inWorkflow($we_doc)) {
 
 		if($we_doc->ContentType == "text/weTmpl") {
 
+			if (defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+				$_normalTable->addCol(2);
+				$_normalTable->setColContent(0, $_pos++, $we_button->create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));			
+			}
+			
 			$_normalTable->addCol(2);
 			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", $l_global["we_rebuild_at_save"], false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
 			$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+			
 
 		} else if($showPubl) {
 

@@ -562,6 +562,10 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["versioning_create"] = "Create Version"; // TRANSLATE
 	$l_prefs["versions_create_publishing"] = "only when publishing"; // TRANSLATE
 	$l_prefs["versions_create_always"] = "always"; // TRANSLATE
+	$l_prefs["versioning_templates_text"] = "Define special values for the <b>versioning of templates</b>";// TRANSLATE
+	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";// TRANSLATE
+	$l_prefs["versions_create_tmpl_always"] = "always";// TRANSLATE
+
 	
 	$l_prefs['use_jeditor'] = "Use"; // TRANSLATE
 	$l_prefs["editor_font_colors"] = 'Specify font colors'; // TRANSLATE

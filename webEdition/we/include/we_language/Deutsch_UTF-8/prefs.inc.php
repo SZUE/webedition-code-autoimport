@@ -559,7 +559,9 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs["versioning_create"] = "Version erstellen";
 	$l_prefs["versions_create_publishing"] = "nur beim Veröffentlichen";
 	$l_prefs["versions_create_always"] = "immer";
-	
+	$l_prefs["versioning_templates_text"] = "Legen Sie hier spezielle Werte für die <b>Versionierung von Vorlagen</b> fest";
+	$l_prefs["versions_create_tmpl_publishing"] = "nur durch speziellen Button";
+	$l_prefs["versions_create_tmpl_always"] = "immer";
 	
 	$l_prefs['use_jeditor'] = "Benutzen";
 	$l_prefs["editor_font_colors"] = 'Schriftfarben spezifizieren';

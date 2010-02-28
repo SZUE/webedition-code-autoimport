@@ -556,6 +556,10 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["versioning_create"] = "Luo Versio";
 	$l_prefs["versions_create_publishing"] = "vain julkaistaessa";
 	$l_prefs["versions_create_always"] = "aina";
+	$l_prefs["versioning_templates_text"] = "Define special values for the <b>versioning of templates</b>";// TRANSLATE
+	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";// TRANSLATE
+	$l_prefs["versions_create_tmpl_always"] = "always";// TRANSLATE
+
 	
 	$l_prefs['use_jeditor'] = "Käytä";
 	$l_prefs["editor_font_colors"] = 'Määrittele fontin värit';
