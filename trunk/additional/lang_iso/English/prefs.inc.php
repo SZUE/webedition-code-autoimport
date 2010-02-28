@@ -555,6 +555,10 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["versioning_create"] = "Create Version";
 	$l_prefs["versions_create_publishing"] = "only when publishing";
 	$l_prefs["versions_create_always"] = "always";
+	$l_prefs["versioning_templates_text"] = "Define special values for the <b>versioning of templates</b>";
+	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";
+	$l_prefs["versions_create_tmpl_always"] = "always";
+
 	
 	$l_prefs['use_jeditor'] = "Use";
 	$l_prefs["editor_font_colors"] = 'Specify font colors';

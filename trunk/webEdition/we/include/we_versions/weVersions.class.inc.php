@@ -1006,10 +1006,16 @@ class weVersions {
 	function CheckPreferencesTime($docID, $docTable) {
 		
 		$db = new DB_WE();
-				
-		$prefTimeDays = (defined("VERSIONS_TIME_DAYS") && VERSIONS_TIME_DAYS!="-1") ? VERSIONS_TIME_DAYS : ""; 
-		$prefTimeWeeks = (defined("VERSIONS_TIME_WEEKS") && VERSIONS_TIME_WEEKS!="-1") ? VERSIONS_TIME_WEEKS : ""; 
-		$prefTimeYears = (defined("VERSIONS_TIME_YEARS") && VERSIONS_TIME_YEARS!="-1") ? VERSIONS_TIME_YEARS : ""; 
+		
+		if ($docTable == TEMPLATES_TABLE) {
+			$prefTimeDays = (defined("VERSIONS_TIME_DAYS_TMPL") && VERSIONS_TIME_DAYS_TMPL!="-1") ? VERSIONS_TIME_DAYS_TMPL : ""; 
+			$prefTimeWeeks = (defined("VERSIONS_TIME_WEEKS_TMPL") && VERSIONS_TIME_WEEKS_TMPL!="-1") ? VERSIONS_TIME_WEEKS_TMPL : ""; 
+			$prefTimeYears = (defined("VERSIONS_TIME_YEARS_TMPL") && VERSIONS_TIME_YEARS_TMPL!="-1") ? VERSIONS_TIME_YEARS_TMPL : ""; 		
+		} else {
+			$prefTimeDays = (defined("VERSIONS_TIME_DAYS") && VERSIONS_TIME_DAYS!="-1") ? VERSIONS_TIME_DAYS : ""; 
+			$prefTimeWeeks = (defined("VERSIONS_TIME_WEEKS") && VERSIONS_TIME_WEEKS!="-1") ? VERSIONS_TIME_WEEKS : ""; 
+			$prefTimeYears = (defined("VERSIONS_TIME_YEARS") && VERSIONS_TIME_YEARS!="-1") ? VERSIONS_TIME_YEARS : ""; 		
+		}	
 		
 		$prefTime = 0;
 		if($prefTimeDays!="") {
@@ -1028,9 +1034,11 @@ class weVersions {
 			$where = " timestamp < ".$deletetime." AND CreationDate!=timestamp ";
 			$this->deleteVersion("", $where);
 		}
-		
-		$prefAnzahl = (defined("VERSIONS_ANZAHL") && VERSIONS_ANZAHL!="") ? VERSIONS_ANZAHL : ""; 
-
+		if ($docTable == TEMPLATES_TABLE) {
+			$prefAnzahl = (defined("VERSIONS_ANZAHL_TMPL") && VERSIONS_ANZAHL_TMPL!="") ? VERSIONS_ANZAHL_TMPL : ""; 		
+		} else {
+			$prefAnzahl = (defined("VERSIONS_ANZAHL") && VERSIONS_ANZAHL!="") ? VERSIONS_ANZAHL : ""; 
+		}
 		$anzahl = f("SELECT COUNT(*) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = '".abs($docID)."' AND documentTable = '".mysql_real_escape_string($docTable)."'","Count",$db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl!="") {
@@ -1078,7 +1086,7 @@ class weVersions {
 				}
 			}
 			
-			if($document["ContentType"]!="objectFile" && $document["ContentType"]!="text/webedition" && $document["ContentType"]!="text/html") {
+			if($document["ContentType"]!="objectFile" && $document["ContentType"]!="text/webedition" && $document["ContentType"]!="text/html" && !($document["ContentType"]=="text/weTmpl" && defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL) ) {
 				$status = "saved";
 			}
 			
@@ -1092,8 +1100,11 @@ class weVersions {
 				$status = "published";
 			}
 			
-			if($document["ContentType"]=="objectFile" || $document["ContentType"]=="text/webedition" || $document["ContentType"]=="text/html") {
-				if((defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && isset($_REQUEST["we_cmd"][5]) && !$_REQUEST["we_cmd"][5]) {
+			if($document["ContentType"]=="objectFile" || $document["ContentType"]=="text/webedition" || $document["ContentType"]=="text/html" || ($document["ContentType"]=="text/weTmpl" && defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL) ) {
+				if(  $document["ContentType"]!="text/weTmpl" && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && isset($_REQUEST["we_cmd"][5]) && !$_REQUEST["we_cmd"][5]) {
+					$writeVersion = false;
+				}
+				if( $document["ContentType"]=="text/weTmpl" && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && isset($_REQUEST["we_cmd"][5]) && !$_REQUEST["we_cmd"][5]) {
 					$writeVersion = false;
 				}
 			}

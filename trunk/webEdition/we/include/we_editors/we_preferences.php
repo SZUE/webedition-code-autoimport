@@ -756,6 +756,22 @@ function get_value($settingvalue) {
 		case "versions_create":
 			return (defined("VERSIONS_CREATE")) ? VERSIONS_CREATE : 0;
 			break;
+		case "versions_time_days_tmpl":
+			return (defined("VERSIONS_TIME_DAYS_TMPL")) ? VERSIONS_TIME_DAYS_TMPL : -1;
+			break;
+		case "versions_time_weeks_tmpl":
+			return (defined("VERSIONS_TIME_WEEKS_TMPL")) ? VERSIONS_TIME_WEEKS_TMPL : -1;
+			break;
+		case "versions_time_years_tmpl":
+			return (defined("VERSIONS_TIME_YEARS_TMPL")) ? VERSIONS_TIME_YEARS_TMPL : -1;
+			break;
+		case "versions_anzahl_tmpl":
+			return (defined("VERSIONS_ANZAHL_TMPL")) ? VERSIONS_ANZAHL_TMPL : "";
+			break;
+
+		case "versions_create_tmpl":
+			return (defined("VERSIONS_CREATE_TMPL")) ? VERSIONS_CREATE_TMPL : 1;
+			break;
 	}
 }
 
@@ -1939,6 +1955,40 @@ $_we_active_integrated_modules = array();
 					$_update_prefs = true;
 				}
 				break;
+			case '$_REQUEST["versions_create_tmpl"]':
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_CREATE_TMPL", $settingvalue,'Versioning Save template version only on special request')) {
+					$_update_prefs = true;
+				}
+				break;
+			case '$_REQUEST["versions_time_days_tmpl"]':
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_DAYS_TMPL", $settingvalue,'Versioning Number of Days')) {
+					$_update_prefs = true;
+				}
+				break;
+				
+			case '$_REQUEST["versions_time_weeks_tmpl"]':
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_WEEKS_TMPL", $settingvalue,'Versioning Number of Weeks')) {
+					$_update_prefs = true;
+				}
+				break;
+				
+			case '$_REQUEST["versions_time_years_tmpl"]':
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_YEARS_TMPL", $settingvalue,'Versioning Number of Years')) {
+					$_update_prefs = true;
+				}
+				break;
+				
+			case '$_REQUEST["versions_anzahl_tmpl"]':
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_ANZAHL_TMPL", $settingvalue,'Versioning Number of Versions')) {
+					$_update_prefs = true;
+				}
+				break;
+
 			
 			/*****************************************************************
 			 * CANCEL OTHER REQUESTS
@@ -2503,6 +2553,12 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["versions_time_years"]) ? $_REQUEST["versions_time_years"] : '-1', '$_REQUEST["versions_time_years"]');
 		$_update_prefs = remember_value(isset($_REQUEST["versions_anzahl"]) ? $_REQUEST["versions_anzahl"] : '-1', '$_REQUEST["versions_anzahl"]');
 		$_update_prefs = remember_value(isset($_REQUEST["versions_create"]) ? $_REQUEST["versions_create"] : '1', '$_REQUEST["versions_create"]');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_create_tmpl"]) ? $_REQUEST["versions_create_tmpl"] : '1', '$_REQUEST["versions_create_tmpl"]');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_days_tmpl"]) ? $_REQUEST["versions_time_days_tmpl"] : '-1', '$_REQUEST["versions_time_days_tmpl"]');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_weeks_tmpl"]) ? $_REQUEST["versions_time_weeks_tmpl"] : '-1', '$_REQUEST["versions_time_weeks_tmpl"]');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_years_tmpl"]) ? $_REQUEST["versions_time_years_tmpl"] : '-1', '$_REQUEST["versions_time_years_tmpl"]');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_anzahl_tmpl"]) ? $_REQUEST["versions_anzahl_tmpl"] : '-1', '$_REQUEST["versions_anzahl_tmpl"]');
+
 	
 		$_SESSION['versions']['logPrefsChanged'] = array();
 		foreach($_SESSION['versions']['logPrefs'] as $k=>$v) {
@@ -5302,7 +5358,13 @@ else {
 	            	"versions_time_days",
 	            	"versions_time_weeks",
 	            	"versions_time_years",
-	            	"versions_anzahl"
+	            	"versions_anzahl",
+					"versions_create",
+					"versions_create_tmpl",
+					"versions_time_days_tmpl",
+	            	"versions_time_weeks_tmpl",
+	            	"versions_time_years_tmpl",
+	            	"versions_anzahl_tmpl"
 	            );
 	            $_SESSION['versions']['logPrefs'] = array();
 	            foreach($_SESSION['versions']['Prefs'] as $k) {
@@ -5436,6 +5498,85 @@ else {
 						'space'=>170
 						)
 					);
+
+					array_push($_settings, array(
+						'html' => htmlAlertAttentionBox($l_prefs['versioning_templates_text'],2,470,false), 
+						'noline'=>0, 
+						'space' => 0
+						)
+					);
+					
+					$_versions_time_days_tmpl = new we_htmlSelect(array(
+						"name" => "versions_time_days_tmpl",
+						"style"=>"",
+						"class"=>"weSelect"
+						)
+					);	
+					$secondsDay = 86400;
+					$secondsWeek = 604800;	
+					$secondsYear = 31449600;
+										
+					$_versions_time_days_tmpl->addOption(-1,"");
+					$_versions_time_days_tmpl->addOption($secondsDay,$l_prefs["1_day"]);
+					for($x = 2; $x<=31; $x++) {
+						$_versions_time_days_tmpl->addOption(($x*$secondsDay),sprintf($l_prefs["more_days"],$x));
+					}
+					$_versions_time_days_tmpl->selectOption(get_value("versions_time_days_tmpl"));
+					
+					
+					$_versions_time_weeks_tmpl = new we_htmlSelect(array(
+						"name" => "versions_time_weeks_tmpl",
+						"style"=>"",
+						"class"=>"weSelect")
+					);
+					$_versions_time_weeks_tmpl->addOption(-1,"");
+					$_versions_time_weeks_tmpl->addOption($secondsWeek,$l_prefs["1_week"]);
+					for($x = 2; $x<=52; $x++) {
+						$_versions_time_weeks_tmpl->addOption(($x*$secondsWeek),sprintf($l_prefs["more_weeks"],$x));
+					}
+					$_versions_time_weeks_tmpl->selectOption(get_value("versions_time_weeks_tmpl"));
+					
+				
+					$_versions_time_years_tmpl = new we_htmlSelect(array(
+						"name" => "versions_time_years_tmpl",
+						"style"=>"",
+						"class"=>"weSelect"
+						)
+					);				
+					$_versions_time_years_tmpl->addOption(-1,"");
+					$_versions_time_years_tmpl->addOption($secondsYear,$l_prefs["1_year"]);
+					for($x = 2; $x<=10; $x++) {
+						$_versions_time_years_tmpl->addOption(($x*$secondsYear),sprintf($l_prefs["more_years"],$x));
+					}
+					$_versions_time_years_tmpl->selectOption(get_value("versions_time_years_tmpl"));
+
+					array_push($_settings, array(
+						'html' => $_versions_time_days_tmpl->getHtmlCode()." ".$_versions_time_weeks_tmpl->getHtmlCode()." ".$_versions_time_years_tmpl->getHtmlCode(), 
+						"space" => 170, 
+						'noline'=>1,
+						"headline"=>$l_prefs["versioning_time"]
+						)
+					);	
+					
+					$_versions_anzahl_tmpl = htmlTextInput("versions_anzahl_tmpl",24,get_value("versions_anzahl_tmpl"),5,"","text",50,0,"");
+					
+					array_push($_settings, array(
+						'headline'=>$l_prefs['versioning_anzahl'], 
+						'html' => $_versions_anzahl_tmpl,
+						'noline'=>1, 
+						'space'=>170
+						)
+					);
+					$_versions_create_tmpl_publishing = we_forms::radiobutton("1",(get_value("versions_create_tmpl") == "1"),"versions_create_tmpl",$l_prefs["versions_create_tmpl_publishing"],true,"defaultfont","",false,"");
+					$_versions_create_tmpl_always = we_forms::radiobutton("0",(get_value("versions_create_tmpl") == "0"),"versions_create_tmpl",$l_prefs["versions_create_tmpl_always"],true,"defaultfont","",false,"");
+			
+					array_push($_settings, array(
+						'headline'=>$l_prefs['versioning_create'], 
+						'html' => $_versions_create_tmpl_publishing."<br/>".$_versions_create_tmpl_always, 
+						'space'=>170
+						)
+					);
+
 					
 					
 					array_push($_settings, array(

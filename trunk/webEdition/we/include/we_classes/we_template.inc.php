@@ -23,6 +23,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_linklist.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tagParser.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/parser.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
@@ -860,6 +861,13 @@ class we_template extends we_document
 			$this->elements['allVariants']['dat'] = unserialize($this->elements['allVariants']['dat']);
 		}
 		return $_ret;
+	}
+	function we_publish(){
+		if(defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL){
+			$version = new weVersions();
+			$version->save($this, "published");
+		}
+		return true;
 	}
 
 	function we_load($from=LOAD_MAID_DB) {
