@@ -162,7 +162,7 @@ var setPageNrCallback = {
 	success: function(o) {
 	},
 	failure: function(o) {
-		alert(<?php echo $GLOBALS["l_global"]["unable_to_call_setpagenr"];);
+		alert("<?php echo $GLOBALS["l_global"]["unable_to_call_setpagenr"];?>");
 	}
 }
 
