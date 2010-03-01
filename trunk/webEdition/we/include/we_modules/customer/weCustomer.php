@@ -132,11 +132,28 @@ class weCustomer extends weModelBase{
 			return $real_name;
 	}
 
-	function getBranches(&$banches,&$fixed,&$other){
+	function getBranches(&$banches,&$fixed,&$other,$mysort=""){
 
 		$fixed["ID"]=$this->ID; // Bug Fix #8413 + #8520
 		if(isset($this->persistent_slots)){
-			foreach($this->persistent_slots as $per){
+			$orderedarray=$this->persistent_slots;
+			//$sortarray = array_map('strtolower', $orderedarray);
+			if ($mysort!=""){
+				$sortarray= makeArrayFromCSV($mysort); 
+			} else {
+ 				$sortarray= range(0,count($orderedarray)-1);
+			}
+			
+			if (count($sortarray) != count($orderedarray)){
+
+				if (count($sortarray) == count($orderedarray)-1){
+					$sortarray[] = max($sortarray)+1;
+				} else {$sortarray= range(0,count($orderedarray)-1);}				
+			}
+			$orderedarray= array_combine($sortarray,$orderedarray);
+			ksort($orderedarray);
+			
+			foreach($orderedarray as $per){
 				$var_value="";
 				eval('if(isset($this->'.$per.')) $var_value=$this->'.$per.';');
 
@@ -167,14 +184,14 @@ class weCustomer extends weModelBase{
 
 	}
 
-	function getFieldsNames($branch){
+	function getFieldsNames($branch,$mysort=""){
 		global $l_customer;
 
 		$branches=array();
 		$common=array();
 		$other=array();
 
-		$this->getBranches($branches,$common,$other);
+		$this->getBranches($branches,$common,$other,$mysort);
 
 		$arr=array();
 
