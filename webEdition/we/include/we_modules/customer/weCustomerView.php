@@ -385,6 +385,26 @@ class weCustomerView {
 							}
 						}
 					break;
+					case "move_field_up":
+						var field=document.we_form.fields_select.value;
+						var branch=document.we_form.branch.value;
+						if(field=="") {
+							' . we_message_reporting::getShowMessageCall($l_customer["no_field"], WE_MESSAGE_ERROR) . '
+						} else{
+								document.we_form.cmd.value=arguments[0];
+								submitForm();
+						}
+					break;
+					case "move_field_down":
+						var field=document.we_form.fields_select.value;
+						var branch=document.we_form.branch.value;
+						if(field=="") {
+							' . we_message_reporting::getShowMessageCall($l_customer["no_field"], WE_MESSAGE_ERROR) . '
+						} else{
+								document.we_form.cmd.value=arguments[0];
+								submitForm();
+						}
+					break;
 					case "open_edit_branch":
 						var branch=document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
 						if(branch=="") {
@@ -671,7 +691,26 @@ function processCommands() {
 					else if($saveret==-3)
 						$js = we_message_reporting::getShowMessageCall($l_customer["field_not_empty"], WE_MESSAGE_ERROR);
 					else{
+						
 						$this->customer->loadPresistents();
+						$sort = $this->settings->getEditSort();
+						$sortarray= makeArrayFromCSV($sort);
+						$orderedarray= $this->customer->persistent_slots;
+						if (count($sortarray) != count($orderedarray)){
+							if (count($sortarray) < count($orderedarray)){
+								$sortarray[] = max($sortarray)+1;
+							}
+							if (count($sortarray) < count($orderedarray)){
+								$sortarray[] = max($sortarray)+1;
+							}
+							if (count($sortarray) < count($orderedarray)){
+								$sortarray[] = max($sortarray)+1;
+							}
+							if (count($sortarray) != count($orderedarray)) {$sortarray= range(0,count($orderedarray)-1);} 
+						}
+						$this->settings->setEditSort(makeCSVFromArray($sortarray,true));
+						$this->settings->save();
+						
 						$js='
 							opener.submitForm();
 							opener.opener.refreshForm();
@@ -683,6 +722,21 @@ function processCommands() {
 				break;
 				case "delete_field":
 					$field=$_REQUEST["fields_select"];
+
+					$sort = $this->settings->getEditSort();
+					$sortarray= makeArrayFromCSV($sort);
+					$orderedarray= $this->customer->persistent_slots;
+					if (count($sortarray) != count($orderedarray)){$sortarray= range(0,count($orderedarray)-1);}
+					$orderedarray= array_combine($sortarray,$orderedarray);
+					ksort($orderedarray);					
+					$curpos= array_search($field,$orderedarray);
+					unset($sortarray[$curpos]);
+					foreach ($sortarray as &$val){
+						if ($val > $curpos) {$val--;}
+					}
+					$this->settings->setEditSort(makeCSVFromArray($sortarray,true));
+					$this->settings->save();
+				
 					$ber="";
 					$fname=$this->customer->transFieldName($field,$ber);
 
@@ -694,6 +748,83 @@ function processCommands() {
 					$this->customer->loadPresistents();
 					$js =
 						we_message_reporting::getShowMessageCall(sprintf($l_customer["field_deleted"],$fname,$ber), WE_MESSAGE_NOTICE) .
+						'opener.refreshForm();
+					';
+					print we_htmlElement::jsElement($js);
+
+				break;
+				case "move_field_up":
+					$field=$_REQUEST["fields_select"];
+					$sort = $this->settings->getEditSort();
+					$sortarray= makeArrayFromCSV($sort);
+					$orderedarray= $this->customer->persistent_slots;
+					if (count($sortarray) != count($orderedarray)){
+						if (count($sortarray) < count($orderedarray)) {
+							$sortarray[] = max ($sortarray)+1;
+						}
+						if (count($sortarray) < count($orderedarray)) {
+							$sortarray[] = max ($sortarray)+1;
+						} 
+						if (count($sortarray) < count($orderedarray)) {
+							$sortarray[] = max ($sortarray)+1;
+						}  
+						if (count($sortarray) != count($orderedarray)){	$sortarray= range(0,count($orderedarray)-1);						}
+					}
+					$orderedarray= array_combine($sortarray,$orderedarray);
+					ksort($orderedarray);
+					
+					$curpos= array_search($field,$orderedarray);
+					$curpos1 = $curpos - 1;
+					if ($curpos!=0){
+						
+						$sort=str_replace(",".$curpos.",",',XX,',$sort);
+						$sort=str_replace(",".$curpos1.",",',YY,',$sort);
+						$sort=str_replace(',XX,',",".$curpos1.",",$sort);
+						$sort=str_replace(',YY,',",".$curpos.",",$sort);
+						$this->settings->setEditSort($sort);
+						$this->settings->save();
+						$this->customer->loadPresistents();
+					}
+					$js = 
+						
+						'opener.refreshForm();
+					';
+					print we_htmlElement::jsElement($js);
+
+				break;
+				case "move_field_down":
+					$field=$_REQUEST["fields_select"];
+					$sort = $this->settings->getEditSort();
+					$sortarray= makeArrayFromCSV($sort);
+					$orderedarray= $this->customer->persistent_slots;
+					if (count($sortarray) != count($orderedarray)){
+						if (count($sortarray) < count($orderedarray)) {
+							$sortarray[] = max ($sortarray)+1;
+						}
+						if (count($sortarray) < count($orderedarray)) {
+							$sortarray[] = max ($sortarray)+1;
+						} 
+						if (count($sortarray) < count($orderedarray)) {
+							$sortarray[] = max ($sortarray)+1;
+						}  
+						if (count($sortarray) != count($orderedarray)){	$sortarray= range(0,count($orderedarray)-1);						}
+					}
+					$orderedarray= array_combine($sortarray,$orderedarray);
+					ksort($orderedarray);
+					
+					$curpos= array_search($field,$orderedarray);
+					$curpos1 = $curpos + 1;
+					if ($curpos!=count($orderedarray)-1){
+						$sort=str_replace(",".$curpos.",",',XX,',$sort);
+						$sort=str_replace(",".$curpos1.",",',YY,',$sort);
+						$sort=str_replace(',XX,',",".$curpos1.",",$sort);
+						$sort=str_replace(',YY,',",".$curpos.",",$sort);
+						$this->settings->setEditSort($sort);
+						$this->settings->save();
+						$this->customer->loadPresistents();
+					}
+					$js = 
+						
 						'opener.refreshForm();
 					';
 					print we_htmlElement::jsElement($js);

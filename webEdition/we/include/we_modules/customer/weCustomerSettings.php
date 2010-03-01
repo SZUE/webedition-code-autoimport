@@ -49,6 +49,7 @@ class weCustomerSettings{
 	var $FieldAdds=array();
 	var $SortView=array();
 	var $Prefs=array();
+	var $EditSort="";
 
 	var $OrderTable=array(
 			"ASC"=>"ASC",
@@ -156,6 +157,9 @@ class weCustomerSettings{
 
 		if(isset($this->properties["SortView"])) $this->SortView=@unserialize($this->properties["SortView"]);
 		if(!is_array($this->SortView)) $this->SortView=array();
+		
+		if(isset($this->properties["EditSort"])) {$this->EditSort=($this->properties["EditSort"]);}
+		
 
 		if(isset($this->properties["FieldAdds"])) $this->FieldAdds=@unserialize($this->properties["FieldAdds"]);
 
@@ -184,6 +188,7 @@ class weCustomerSettings{
 
 		$this->properties["FieldAdds"]=serialize($this->FieldAdds);
 		$this->properties["SortView"]=serialize($this->SortView);
+		$this->properties["EditSort"]=$this->EditSort;
 		$this->properties["Prefs"]=addslashes(serialize($this->Prefs));
 
 		foreach ($this->properties as $key=>$value) {
@@ -196,7 +201,14 @@ class weCustomerSettings{
 
 		return true;
 	}
+	
+	function getEditSort(){
+		return $this->EditSort;
+	}
 
+	function setEditSort($sortedarray){
+		$this->EditSort=$sortedarray;
+	}
 
 	function getPref($pref_name){
 		return $this->properties[$pref_name];

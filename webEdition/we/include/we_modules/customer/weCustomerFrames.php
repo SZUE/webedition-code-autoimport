@@ -98,7 +98,7 @@ class weCustomerFrames extends weModuleFrames {
 		$select=new we_htmlSelect(array("name"=>"branch"));
 
 		$fields_names=array();
-		$fields_names=$this->View->customer->getFieldsNames($branch);
+		$fields_names=$this->View->customer->getFieldsNames($branch,$this->View->settings->getEditSort());
 		$this->jsOut_fieldTypesByName = "\tvar fieldTypesByName = new Array();\n";
 		foreach ($fields_names as $val) {
 			$tmp = $this->View->getFieldProperties($val);
@@ -394,8 +394,8 @@ class weCustomerFrames extends weModuleFrames {
 		$other=array();
 
 		$common['ID'] = $this->View->customer->ID;
-		$this->View->customer->getBranches($branches,$common,$other);
-
+		$this->View->customer->getBranches($branches,$common,$other,$this->View->settings->getEditSort());
+		
 		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 
@@ -585,13 +585,17 @@ class weCustomerFrames extends weModuleFrames {
 		$fields->setAttributes(array("name"=>"fields_select","size"=>"15","onChange"=>"","style"=>"width:310;height:250"));
 		$hiddens=we_htmlElement::htmlHidden(array("name"=>"field","value"=>""));
 
-		$buttons_table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),5,1);
+		$buttons_table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),9,1);
 		$buttons_table->setCol(0,0,array(),$we_button->create_button("add", "javascript:we_cmd('open_add_field')"));
 		$buttons_table->setCol(1,0,array(),getPixel(1,5));
 		$buttons_table->setCol(2,0,array(),$we_button->create_button("edit", "javascript:we_cmd('open_edit_field')"));
 		$buttons_table->setCol(3,0,array(),getPixel(1,5));
 		$buttons_table->setCol(4,0,array(),$we_button->create_button("delete", "javascript:we_cmd('delete_field')"));
-
+		$buttons_table->setCol(5,0,array(),getPixel(1,15));
+		$buttons_table->setCol(6,0,array(),$we_button->create_button("image:btn_direction_up", "javascript:we_cmd('move_field_up')"));
+		$buttons_table->setCol(7,0,array(),getPixel(1,5));
+		$buttons_table->setCol(8,0,array(),$we_button->create_button("image:btn_direction_down", "javascript:we_cmd('move_field_down')"));
+		
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"500"),5,5);
 
 		$table->setCol(0,0,array("class"=>"defaultgray"),$l_customer["branch"]);
