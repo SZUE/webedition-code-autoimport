@@ -70,7 +70,7 @@ var ajaxCallback = {
 		}
 	},
 	failure: function(o) {
-		alert(<?php echo $GLOBALS["l_global"]["unable_to_call_ping"];?>);
+		alert("<?php echo $GLOBALS["l_global"]["unable_to_call_ping"];?>");
 	}
 }
 
