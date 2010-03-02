@@ -609,7 +609,7 @@ class weShopVariants {
 						foreach ($varArr as $key => $fieldArr) {
 	
 							if (isset($model->elements[$key])) {
-								$elements[$newPos][$defaultname][$key] = $model->elements[$key];
+								if ($defaultname=='default') {$elements[$newPos][$defaultname][$key] = $model->elements[$key];}
 							}
 						}
 					}
