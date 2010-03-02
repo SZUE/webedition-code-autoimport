@@ -722,7 +722,7 @@ function processCommands() {
 						$this->settings->setEditSort(makeCSVFromArray($sortarray,true));
 						$this->settings->save();
 						
-						$js='alert("'.$cs.'-'.$co .'");
+						$js='
 							opener.submitForm();
 							opener.opener.refreshForm();
 							close();
