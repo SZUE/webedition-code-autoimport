@@ -585,7 +585,7 @@ class weCustomerFrames extends weModuleFrames {
 		$fields->setAttributes(array("name"=>"fields_select","size"=>"15","onChange"=>"","style"=>"width:310;height:250"));
 		$hiddens=we_htmlElement::htmlHidden(array("name"=>"field","value"=>""));
 
-		$buttons_table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),9,1);
+		$buttons_table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),12,1);
 		$buttons_table->setCol(0,0,array(),$we_button->create_button("add", "javascript:we_cmd('open_add_field')"));
 		$buttons_table->setCol(1,0,array(),getPixel(1,5));
 		$buttons_table->setCol(2,0,array(),$we_button->create_button("edit", "javascript:we_cmd('open_edit_field')"));
@@ -595,7 +595,9 @@ class weCustomerFrames extends weModuleFrames {
 		$buttons_table->setCol(6,0,array(),$we_button->create_button("image:btn_direction_up", "javascript:we_cmd('move_field_up')"));
 		$buttons_table->setCol(7,0,array(),getPixel(1,5));
 		$buttons_table->setCol(8,0,array(),$we_button->create_button("image:btn_direction_down", "javascript:we_cmd('move_field_down')"));
-		
+		$buttons_table->setCol(9,0,array("class"=>"defaultgray"),$l_customer["sort_edit_fields_explain"]);
+		$buttons_table->setCol(10,0,array(),getPixel(1,5));
+		$buttons_table->setCol(10,0,array(),$we_button->create_button("reset", "javascript:we_cmd('reset_edit_order')"));
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"500"),5,5);
 
 		$table->setCol(0,0,array("class"=>"defaultgray"),$l_customer["branch"]);

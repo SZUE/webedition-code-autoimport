@@ -303,6 +303,7 @@ $l_customer['DESC'] = 'descending';// TRANSLATE
 
 $l_customer["connected_with_customer"] = "Yhdistettu asiakkaaseen";
 $l_customer["one_customer"] = "Asiakas";
+$l_customer["sort_edit_fields_explain"] = "If a field is apparently not moving, it moves along fields in other branches, not visible here";// TRANSLATE
 
 
 ?>

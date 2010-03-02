@@ -385,6 +385,14 @@ class weCustomerView {
 							}
 						}
 					break;
+					case "reset_edit_order":
+						var field=document.we_form.fields_select.value;
+						var branch=document.we_form.branch.value;
+							if(confirm("'.$l_customer["reset_edit_order_question"].'")){
+								document.we_form.cmd.value=arguments[0];
+								submitForm();
+							}
+					break;
 					case "move_field_up":
 						var field=document.we_form.fields_select.value;
 						var branch=document.we_form.branch.value;
@@ -696,6 +704,9 @@ function processCommands() {
 						$sort = $this->settings->getEditSort();
 						$sortarray= makeArrayFromCSV($sort);
 						$orderedarray= $this->customer->persistent_slots;
+						
+						$cs= count($sortarray);
+						$co = count($orderedarray);
 						if (count($sortarray) != count($orderedarray)){
 							if (count($sortarray) < count($orderedarray)){
 								$sortarray[] = max($sortarray)+1;
@@ -711,7 +722,7 @@ function processCommands() {
 						$this->settings->setEditSort(makeCSVFromArray($sortarray,true));
 						$this->settings->save();
 						
-						$js='
+						$js='alert("'.$cs.'-'.$co .'");
 							opener.submitForm();
 							opener.opener.refreshForm();
 							close();
@@ -730,10 +741,12 @@ function processCommands() {
 					$orderedarray= array_combine($sortarray,$orderedarray);
 					ksort($orderedarray);					
 					$curpos= array_search($field,$orderedarray);
-					unset($sortarray[$curpos]);
+					$curposS = array_search($curpos,$sortarray);
+					unset($sortarray[$curposS]);
 					foreach ($sortarray as &$val){
-						if ($val > $curpos) {$val--;}
+						if ($val >= $curpos) {$val--;}
 					}
+					if ($sortarray[count($sortarray)-1]==''){array_pop ($sortarray );}
 					$this->settings->setEditSort(makeCSVFromArray($sortarray,true));
 					$this->settings->save();
 				
@@ -753,6 +766,12 @@ function processCommands() {
 					print we_htmlElement::jsElement($js);
 
 				break;
+				case "reset_edit_order":
+					$orderedarray= $this->customer->persistent_slots;
+					$sortarray= range(0,count($orderedarray)-1);
+					$this->settings->setEditSort(makeCSVFromArray($sortarray,true));
+					$this->settings->save();
+					break;
 				case "move_field_up":
 					$field=$_REQUEST["fields_select"];
 					$sort = $this->settings->getEditSort();
@@ -761,13 +780,7 @@ function processCommands() {
 					if (count($sortarray) != count($orderedarray)){
 						if (count($sortarray) < count($orderedarray)) {
 							$sortarray[] = max ($sortarray)+1;
-						}
-						if (count($sortarray) < count($orderedarray)) {
-							$sortarray[] = max ($sortarray)+1;
 						} 
-						if (count($sortarray) < count($orderedarray)) {
-							$sortarray[] = max ($sortarray)+1;
-						}  
 						if (count($sortarray) != count($orderedarray)){	$sortarray= range(0,count($orderedarray)-1);						}
 					}
 					$orderedarray= array_combine($sortarray,$orderedarray);
@@ -781,6 +794,7 @@ function processCommands() {
 						$sort=str_replace(",".$curpos1.",",',YY,',$sort);
 						$sort=str_replace(',XX,',",".$curpos1.",",$sort);
 						$sort=str_replace(',YY,',",".$curpos.",",$sort);
+						
 						$this->settings->setEditSort($sort);
 						$this->settings->save();
 						$this->customer->loadPresistents();
@@ -800,13 +814,7 @@ function processCommands() {
 					if (count($sortarray) != count($orderedarray)){
 						if (count($sortarray) < count($orderedarray)) {
 							$sortarray[] = max ($sortarray)+1;
-						}
-						if (count($sortarray) < count($orderedarray)) {
-							$sortarray[] = max ($sortarray)+1;
 						} 
-						if (count($sortarray) < count($orderedarray)) {
-							$sortarray[] = max ($sortarray)+1;
-						}  
 						if (count($sortarray) != count($orderedarray)){	$sortarray= range(0,count($orderedarray)-1);						}
 					}
 					$orderedarray= array_combine($sortarray,$orderedarray);
