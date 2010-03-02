@@ -1339,6 +1339,14 @@ $GLOBALS["lv"] = new we_listview_banner("' . $name . '", $we_rows, "' . $order .
 										$php .= '
 $docId = "' . $docId . '";
 $objectId = "' . $objId . '";
+if($objectId ==""){
+	if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_objecttag"){
+		$objectId = $GLOBALS["lv"]->object->DB_WE->f("OF_ID");	
+	}
+	if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_listview_object"){
+		$objectId = $GLOBALS["lv"]->DB_WE->f("OF_ID");
+	}
+}
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_shopVariants.class.php");
 $GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $defaultname . '", $docId, $objectId, $we_offset);
 ';
