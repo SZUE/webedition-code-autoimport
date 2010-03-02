@@ -304,5 +304,6 @@ $l_customer['DESC'] = 'descending';
 $l_customer["connected_with_customer"] = "Connected with customer";
 $l_customer["one_customer"] = "Customer";
 
+$l_customer["sort_edit_fields_explain"] = "If a field is apparently not moving, it moves along fields in other branches, not visible here";
 
 ?>

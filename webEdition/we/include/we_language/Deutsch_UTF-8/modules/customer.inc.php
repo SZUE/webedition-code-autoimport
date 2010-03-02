@@ -300,4 +300,7 @@ $l_customer['DESC'] = 'absteigend';
 $l_customer["connected_with_customer"] = "Verknüpft mit Kunde";
 $l_customer["one_customer"] = "Kunde";
 
+$l_customer["sort_edit_fields_explain"] = "Wenn ein Feld sich anscheinend nicht bewegt, so bewegt es sich an Feldern anderer (hier nicht sichtbarer) Bereiche vorbei";
+$l_customer["reset_edit_order_question"] ="Sind Sie sicher? Jegliche Sortierung wird zurückgesetzt auf die Erstellungsreihenfolge der Felder"
+
 ?>
