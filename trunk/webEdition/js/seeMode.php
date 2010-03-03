@@ -49,7 +49,7 @@ function seeMode_dealWithLinks() {
 	
 	var _aTags = document.getElementsByTagName("a");
 	
-	for (i=0; i<_aTags.length; i++) {
+	for (i = 0; i < _aTags.length; i++) {
 		
 		var _href = _aTags[i].href;
 		
