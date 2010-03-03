@@ -41,6 +41,14 @@ class le_OnlineInstaller_Make {
 	 * @return unknown
 	 */
 	function execute($directory, $saveTo, $version) {
+		if(is_null($directory)) {
+			$directory = "./base";
+		} else {
+			$directory .= (!eregi("/$", $directory) ? "/" : "");
+		}
+		if(!is_null($saveTo) || !empty($saveTo)) {
+			$saveTo .= !eregi("/$", $saveTo) ? "/" : "";
+		}
 
 		$lang['error'] = "An error occured!";
 		$lang["file_permissions"] = '<br /><br />In order for webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..) at least during installation. Please read the installation guide, which is included in the installation package or visit <a href=\"http://www.webedition.de/path/to/write/permission/help.html\" target=\"_blank\">webedition.de</a>.';
@@ -49,12 +57,9 @@ class le_OnlineInstaller_Make {
 		$lang['file_write'] = "Cannot write file '\$filename'.<br />Please check your file access permissions.".$lang["file_permissions"];
 		$lang['file_save'] = "Cannot save file '\$filename'.<br />Please check your file access permissions.".$lang["file_permissions"];
 		$lang['change_perms'] = "Cannot change file permissions of file '\$filename'.";
-
-		$saveTo .= !eregi("/$", $saveTo) ? "/" : "";
-		$directory .= (!eregi("/$", $directory) ? "/" : "");
-
+		
 		// first build array with all files
-		$files = $this->getDirAsBase64EncodedString($directory);
+		$files = $this->getDirAsBase64EncodedString($directory,'files',$version);
 		$cleanUpContent = $this->getCleanUp();
 		$header = $this->getHeader($version);
 		$content = <<<EOF
@@ -244,26 +249,28 @@ if(\$parameters != "") {
 header("Location: " . \$http . \$host . \$cleanUp . \$parameters);
 ?>
 EOF;
-		$fp = fopen($saveTo . "OnlineInstaller.php", "wb+");
-		if(!$fp) {
-			return false;
+		if(is_null($saveTo)) {
+			return $content;
+		} else {
+			$fp = fopen($saveTo . "OnlineInstaller.php", "wb+");
+			if(!$fp) {
+				return false;
+			}
+	
+			// put the content into the file
+			fputs($fp, $content);
+	
+			// save the file
+			if(!fclose($fp)) {
+				return false;
+			}
+			
+			header ("Content-Type: application/octet-stream");
+	        header ("Content-Length: " . filesize($saveTo . "OnlineInstaller.php"));
+	        header ("Content-Disposition: attachment; filename=OnlineInstaller.php");
+			readfile($saveTo . "OnlineInstaller.php");
+			return true;
 		}
-
-		// put the content into the file
-		fputs($fp, $content);
-
-		// save the file
-		if(!fclose($fp)) {
-			return false;
-		}
-		
-		/*
-		header ("Content-Type: application/octet-stream");
-        header ("Content-Length: " . filesize($saveTo . "OnlineInstaller.php"));
-        header ("Content-Disposition: attachment; filename=OnlineInstaller.php");
-		readfile($saveTo . "OnlineInstaller.php");
-		*/
-		return true;
 	}
 
 	/**
@@ -276,19 +283,18 @@ EOF;
 	 * @desc read the content of all files in this directory an return
 	 * them as an array with the filename as key and content as value.
 	 */
-	function readFiles($dirname, $prefix = "") {
+	function readFiles($dirname, $prefix = "",$version="") {
 		$files = array();
 
 		if(!file_exists($dirname) || !is_dir($dirname) || stristr($dirname,".svn")) {
 			return $files;
 		}
-
 		$dirname .= !eregi("/$", $dirname) ? "/" : "";
 		$d = dir($dirname);
 		while (false !== ($entry = $d->read())) {
 			if($entry != '.' && $entry != '..') {
 				if(is_dir($dirname.$entry)) {
-					$tmpfiles = self::readFiles($dirname.$entry.'/', $prefix.'/'.$entry);
+					$tmpfiles = self::readFiles($dirname.$entry.'/', $prefix.'/'.$entry,$version);
 					$files = array_merge($files, $tmpfiles);
 				} else {
 					$fp = fopen($dirname.$entry, "rb");
@@ -296,7 +302,12 @@ EOF;
 						if(filesize($dirname.$entry)==0) {
 							$files[$prefix.'/'.$entry] = "";
 						} else {
-							$files[$prefix.'/'.$entry] = fread($fp, filesize($dirname.$entry));
+							if($entry == "setup.php") {
+								//$files[$prefix.'/'.$entry] = fread($fp, filesize($dirname.$entry));
+								$files[$prefix.'/'.$entry] = str_replace("###VERSION###",$version,fread($fp, filesize($dirname.$entry)));
+							} else {
+								$files[$prefix.'/'.$entry] = fread($fp, filesize($dirname.$entry));
+							}
 						}
 						fclose($fp);
 					}
@@ -318,8 +329,8 @@ EOF;
 	 * The keys of the array represent the filenames and the values
 	 * the base64encoded content
 	 */
-	function getDirAsBase64EncodedString($dirname, $arrayname = 'files') {
-		$files = self::readFiles($dirname);
+	function getDirAsBase64EncodedString($dirname, $arrayname = 'files',$version="") {
+		$files = self::readFiles($dirname,"",$version);
 		$encoded =	"\$$arrayname = array(\n";
 		foreach ($files as $filename => $content) {
 			$encoded .= "	'$filename' => '" . base64_encode($content) . "',\n";
