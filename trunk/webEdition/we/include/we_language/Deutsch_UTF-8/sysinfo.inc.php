@@ -1,5 +1,5 @@
 <?php
-
+require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 /**
  * webEdition CMS
  *
@@ -39,6 +39,7 @@ $_sysinfo['sysinfo'] = 'Systeminformationen';
 $_sysinfo['zendframework_version'] = 'Zend Framework Version';
 $_sysinfo["register_globals warning"] = 'WARNUNG: register_globals kann die Sicherheit Ihres Systems erheblich beeinträchtigen. Wir empfehlen daher, diese Funktion zu deaktivieren!';
 $_sysinfo["safe_mode warning"] = 'Der PHP Safe Mode kann u.U. zu Probelem bei Installation und Aktualisierung von webEdition führen. Deaktivieren Sie in diesem Fall den Safe Mode.';
+$_sysinfo["zend_framework warning"] = 'Sie verwenden derzeit eine andere Version des Zend Framework als die für webEdition ursprünglich vorhergesehene Version '.WE_ZFVERSION.'.';
 
 $_sysinfo['connection_types'] = 'Update-Verbindungstypen';
 $_sysinfo['gdlib'] = 'GDlib Unterstützung';

@@ -27,7 +27,7 @@
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sysinfo.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/Zend/Version.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/we/core/autoload.php");
 		
 
 		function getInfoTable($_infoArr,$name) {
@@ -161,7 +161,7 @@
 
 			'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 				$_sysinfo['php_version'] => phpversion(),
-				$_sysinfo['zendframework_version'] => Zend_Version::VERSION,
+				$_sysinfo['zendframework_version'] => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning($_sysinfo["zend_framework warning"],Zend_Version::VERSION) : Zend_Version::VERSION,
 				'register_globals' => (ini_get_bool('register_globals')) ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : ini_get('register_globals'),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),

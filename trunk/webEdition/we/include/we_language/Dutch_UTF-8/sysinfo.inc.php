@@ -39,6 +39,7 @@ $_sysinfo['sysinfo'] = 'Systeem informatie';
 $_sysinfo['zendframework_version'] = 'Zend Framework Version';
 $_sysinfo["register_globals warning"] = 'WARNING: register_globals can be a serious security risk for your system so we strongly recommend to turn off this feature!';
 $_sysinfo["safe_mode warning"] = 'Please deactivate the PHP Safe Mode if you experience problems during installation or update procedures.';
+$_sysinfo["zend_framework warning"] = 'You are currently using a different version of the Zend Framework than the recommended version '.WE_ZFVERSION.'.';
 
 $_sysinfo['connection_types'] = 'Bijwerken connectie types';
 $_sysinfo['gdlib'] = 'GDlib ondersteuning';
