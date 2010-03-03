@@ -129,7 +129,7 @@ class we_util_Sys_Server extends we_util_Sys
 	 */
 	public static function getProtocol()
 	{
-		return (empty($_SERVER['HTTPS'])) ? 'http' : 'https';
+		return (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
 	}
 
 	/**

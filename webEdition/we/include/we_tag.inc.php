@@ -2176,6 +2176,11 @@ function we_tag_field($attribs, $content)
 {
 	
 	$name = we_getTagAttribute("name", $attribs);
+	
+	// quickfix 4192
+	$nameA = explode("blk_",$name);
+	$name = $nameA[0];
+	// quickfix 4192
 	$href = we_getTagAttribute("href", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
 	$alt = we_getTagAttribute("alt", $attribs);
@@ -2216,6 +2221,7 @@ function we_tag_field($attribs, $content)
 	if (isset($attribs["winprops"])) {
 		unset($attribs["winprops"]);
 	}
+	
 	$classid = $classid ? $classid : (isset($GLOBALS["lv"]) ? (isset($GLOBALS["lv"]->object->classID) ? $GLOBALS["lv"]->object->classID : (isset(
 			$GLOBALS["lv"]->classID) ? $GLOBALS["lv"]->classID : "")) : (isset($GLOBALS["we_doc"]->TableID) ? $GLOBALS["we_doc"]->TableID : 0));
 	$isImageDoc = false;
@@ -2232,6 +2238,7 @@ function we_tag_field($attribs, $content)
 	if (!$GLOBALS["lv"]->f("WE_ID") && $GLOBALS["lv"]->calendar_struct["calendar"] == "") {
 		return "";
 	}
+	
 	switch ($type) {
 		
 		case "binary" :
@@ -2360,6 +2367,7 @@ function we_tag_field($attribs, $content)
 			break;
 		
 		default :
+	
 			$normVal = we_document::getFieldByVal(
 					$GLOBALS["lv"]->f($name), 
 					$type, 
@@ -3747,7 +3755,10 @@ function we_tag_ifField($attribs, $content)
 	}
 	
 	$match = we_getTagAttribute("match", $attribs);
-	
+	// quickfix 4192
+	$matchA = explode("blk_",$match);
+	$match = $matchA[0];
+	// quickfix 4192
 	$matchArray = makeArrayFromCSV($match);
 	
 	$realvalue = we_tag_field($attribs, "");
