@@ -60,4 +60,4 @@ print STYLESHEET;
 			</tr>
 		</table>
 	</body>
-</html
+</html>
