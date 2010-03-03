@@ -85,7 +85,7 @@
 
 		case "exit_shop":
 			if(jsWindow_count){
-				for(i=0;i<jsWindow_count;i++){
+				for(i = 0;i < jsWindow_count;i++){
 					eval("if(jsWindow"+i+"Object.ref=='edit_module') jsWindow"+i+"Object.close()");
 				}
 			}
