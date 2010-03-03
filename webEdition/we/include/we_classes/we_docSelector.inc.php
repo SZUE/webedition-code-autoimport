@@ -330,7 +330,7 @@ function writeBody(d){
 		d.writeln('<tr>');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
 		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
-		d.writeln('<td class="selector"ddd<?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
+		d.writeln('<td class="selector"><?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
 		d.writeln('<td class="selector"><?php print date($GLOBALS["l_global"]["date_format"])?></td>');
 		d.writeln('</tr>');
 	}
