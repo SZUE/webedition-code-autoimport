@@ -51,10 +51,10 @@
 				
 				// highlight some values:
 				if($name == "PHP") {
-					if($_i == 3) {
+					if($_i == 3 && ini_get_bool('register_globals')) {
 						$_table->setColAttributes(2,1,array("style" => "border:1px solid red;"));
 					}
-					if($_i == 8)
+					if($_i == 8 && ini_get_bool('safe_mode'))
 						$_table->setColAttributes(7,1,array("style" => "border:1px solid grey;"));
 				}
 				
@@ -62,6 +62,25 @@
 			return $_table->getHtmlCode();
 		}
 		
+		function ini_get_bool($val) {
+		    $bool = ini_get($val);
+			if($val == "1") {
+				return true;
+			}
+			if($val == "0") {
+				return false;
+			}
+			switch (strtolower($bool)) {
+		    	case '1':
+		    	case 'on':
+				case 'yes':
+				case 'true':
+					return true;
+		    	default:
+		    		return false;
+		    }
+		    return false;
+		}
 		
 		function parseValue($name,$value) {
 			global $_types;
@@ -143,12 +162,12 @@
 			'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 				$_sysinfo['php_version'] => phpversion(),
 				$_sysinfo['zendframework_version'] => Zend_Version::VERSION,
-				'register_globals' => (ini_get('register_globals') == "1") ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : ini_get('register_globals'),
+				'register_globals' => (ini_get_bool('register_globals')) ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : ini_get('register_globals'),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),
 				'allow_url_fopen' => ini_get('allow_url_fopen'),
 				'open_basedir' => ini_get('open_basedir'),
-				'safe_mode' => (ini_get('safe_mode') == "1") ? getInfo($_sysinfo["safe_mode warning"],ini_get('safe_mode')) : ini_get('safe_mode'),
+				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo($_sysinfo["safe_mode warning"],ini_get('safe_mode')) : ini_get('safe_mode'),
 				'safe_mode_exec_dir' => ini_get('safe_mode_exec_dir'),
 				'safe_mode_gid' => ini_get('safe_mode_gid'),
 				'safe_mode_include_dir' => ini_get('safe_mode_include_dir'),
