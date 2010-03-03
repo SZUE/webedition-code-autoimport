@@ -283,7 +283,7 @@ class we_net_Community
 	 */
 	private function _updateAccount()
 	{
-		if (empty($this->_uid) ||  empty($this->_password)) {
+		if (empty($this->_uid) || empty($this->_password)) {
 			return false;
 		}
 		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_community.inc.php';
