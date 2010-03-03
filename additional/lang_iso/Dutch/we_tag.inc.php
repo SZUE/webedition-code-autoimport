@@ -124,7 +124,7 @@ $l_we_tag['ifHasCurrentEntry']['description'] = "we:ifHasCurrentEntry kan gebrui
 $l_we_tag['ifHasCurrentEntry']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifHasEntries']['description'] = "we:ifHasEntries kan gebruikt worden binnen we:navigationEntry om alleen content te tonen indien de navigatie invoer gegevens bevat.";
 $l_we_tag['ifHasEntries']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['ifHasShopVariants']['description'] = "De tag we:ifHasShopVariants kan content tonen afhankelijk van het bestaan van varianten in een object of document. Hiermee kan geregeld worden of een &lt;we:listview type=\"shopVariant\"&gt; getoond moet worden.";
+$l_we_tag['ifHasShopVariants']['description'] = "De tag we:ifHasShopVariants kan content tonen afhankelijk van het bestaan van varianten in een object of document. Hiermee kan geregeld worden of een &lt;we:listview type=\"shopVariant\"&gt; getoond moet worden. <b>This tag works in document and object templates attached by object-workspaces, but not inside the we:listview and we:object - tags</b>";
 $l_we_tag['ifHasShopVariants']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifHtmlMail']['description'] = "Content omsloten door deze tag wordt alleen getoond indien het nieuwsbrief formaat HTML is.";
 $l_we_tag['ifHtmlMail']['defaultvalue'] = ""; // TRANSLATE

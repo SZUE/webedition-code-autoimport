@@ -124,7 +124,7 @@ $l_we_tag['ifHasCurrentEntry']['description'] = "we:ifHasCurrentEntry:ä voidaan
 $l_we_tag['ifHasCurrentEntry']['defaultvalue'] = ""; 
 $l_we_tag['ifHasEntries']['description'] = "we:ifHasEntries:iä voidaan käyttää tulostaakseen we:nagigationEntry:n mahdolliset alikansiot";
 $l_we_tag['ifHasEntries']['defaultvalue'] = ""; 
-$l_we_tag['ifHasShopVariants']['description'] = "we:ifHasShopVariants voi näyttää sisältöä riippuen muuttujien olemassaolosta objektissa tai dokumentissa. Voidaan kontrolloida we:listview type='shopVariant'.";
+$l_we_tag['ifHasShopVariants']['description'] = "we:ifHasShopVariants voi näyttää sisältöä riippuen muuttujien olemassaolosta objektissa tai dokumentissa. Voidaan kontrolloida we:listview type='shopVariant'. <b>This tag works in document and object templates attached by object-workspaces, but not inside the we:listview and we:object - tags</b>";// TRANSLATE
 $l_we_tag['ifHasShopVariants']['defaultvalue'] = ""; 
 $l_we_tag['ifHtmlMail']['description'] = "Tämän tagin sisältö näytetään vain jos uutiskirjeen formaatti on HTML.";
 $l_we_tag['ifHtmlMail']['defaultvalue'] = ""; 
