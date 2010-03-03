@@ -124,7 +124,7 @@ $l_we_tag['ifHasCurrentEntry']['description'] = "Mit we:ifHasCurrentEntry kann i
 $l_we_tag['ifHasCurrentEntry']['defaultvalue'] = "";
 $l_we_tag['ifHasEntries']['description'] = "Mit we:ifHasEntries kann innerhalb eines we:navigationEntry Inhalt nur ausgegeben werden, wenn der auszugebende Navigationseintrag Eintr&auml;ge besitzt";
 $l_we_tag['ifHasEntries']['defaultvalue'] = "";
-$l_we_tag['ifHasShopVariants']['description'] = "Mit &lt;we:ifHasShopVariants&gt; kann ein Inhalt bedingt nur dann angezeigt werden, wenn ein Dokument, Objekt auch Varianten enth&auml;lt. Damit kann bspw. kontrolliert werden, ob eine &lt;we:listview type=\"shopVariant\"&gt; &uuml;berhaupt angezeigt werden soll.";
+$l_we_tag['ifHasShopVariants']['description'] = "Mit &lt;we:ifHasShopVariants&gt; kann ein Inhalt bedingt nur dann angezeigt werden, wenn ein Dokument, Objekt auch Varianten enth&auml;lt. Damit kann bspw. kontrolliert werden, ob eine &lt;we:listview type=\"shopVariant\"&gt; &uuml;berhaupt angezeigt werden soll. <b>Dieses Tag wirkt in Dokumenten und in Objekt-Vorlagen die per Arbeitsbereich zugewiesen wurden, nicht jedoch in we:listview bzw. we:object Tags!</b>";
 $l_we_tag['ifHasShopVariants']['defaultvalue'] = "";
 $l_we_tag['ifHtmlMail']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn es sich um Inhalt f&uuml;r einen Newsletter im HTML-Format handelt.";
 $l_we_tag['ifHtmlMail']['defaultvalue'] = "";

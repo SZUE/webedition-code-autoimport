@@ -124,7 +124,7 @@ $l_we_tag['ifHasCurrentEntry']['description'] = "we:ifHasCurrentEntry can be use
 $l_we_tag['ifHasCurrentEntry']['defaultvalue'] = "";
 $l_we_tag['ifHasEntries']['description'] = "we:ifHasEntries can be used within we:navigationEntry to show content only, if the navigation entry contains entries.";
 $l_we_tag['ifHasEntries']['defaultvalue'] = "";
-$l_we_tag['ifHasShopVariants']['description'] = "The tag we:ifHasShopVariants can display content depending on the existance of variants in an object or document. With this, it can be controlled whether a &lt;we:listview type=\"shopVariant\"&gt; should be displayed at all.";
+$l_we_tag['ifHasShopVariants']['description'] = "The tag we:ifHasShopVariants can display content depending on the existance of variants in an object or document. With this, it can be controlled whether a &lt;we:listview type=\"shopVariant\"&gt; should be displayed at all. <b>This tag works in document and object templates attached by object-workspaces, but not inside the we:listview and we:object - tags</b>";
 $l_we_tag['ifHasShopVariants']['defaultvalue'] = "";
 $l_we_tag['ifHtmlMail']['description'] = "Content enclosed by this tag is only displayed if the format of a newsletter is HTML.";
 $l_we_tag['ifHtmlMail']['defaultvalue'] = "";
