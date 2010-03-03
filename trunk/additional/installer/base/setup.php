@@ -4,7 +4,7 @@
  *
  * @category   WE
  * @package    WE_installer
- * @version		6.0.0.9
+ * @version    ###VERSION###
 
 *
  * VERSION HISTORY:
@@ -36,7 +36,7 @@
  * - changelog moved to http://documentation.webedition.de
  */
  	
- 	$LU_Version = "6.0.0.9";
+ 	$LU_Version = "###VERSION###";
 	
 	if (isset($_REQUEST["phpinfo"])) {
 		echo '<body style="margin:0px; padding:0px;"><div style="background:transparent url(./OnlineInstaller/img/leLayout/bgcontent.gif);">';
