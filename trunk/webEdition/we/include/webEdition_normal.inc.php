@@ -79,7 +79,7 @@ function doUnload(whichWindow) {
 
 	try{
         if(jsWindow_count) {
-            for(i=0;i<jsWindow_count;i++){
+            for(i = 0;i < jsWindow_count;i++){
         	   eval("jsWindow"+i+"Object.close()");
         	}
         }
