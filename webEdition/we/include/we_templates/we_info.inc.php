@@ -37,7 +37,7 @@ $_leftPart = $_middlePart - $_logoPart;
 
 $_credits = "<br />"
 			."<b>".$l_global["credits_team"].":</b><br/>"
-			."Holger Meyer, <a href=\"http://www.lindenstruth.org\" target=\"_blank\">Alexander Lindenstruth</a>, <a href=\"http://www.loewi-partner.de/Dr-Armin-Schulz/index.php\" target=\"_blank\">Dr. Armin Schulz</a>, Dirk Einecke, Martin Schurbohm, Thomas G&ouml;be, Silke Kr&auml;mer, Anna Baumann, Benny Johnson, Tatjana Hermann, Michael Weiss"
+			."Holger Meyer, <a href=\"http://we.wrench.at\" target=\"_blank\">Alexander Lindenstruth</a>, <a href=\"http://www.loewi-partner.de/Dr-Armin-Schulz/index.php\" target=\"_blank\">Dr. Armin Schulz</a>, Dirk Einecke, Martin Schurbohm, Thomas G&ouml;be, Silke Kr&auml;mer, Anna Baumann, Benny Johnson, Tatjana Hermann, Michael Weiss"
 			."<br/><br/>"
 			."<b>".$l_global["credits_translators"].":</b><br />"
 			."Tatjana Hermann, Joni Eskelinen, Kari Vatanen, Antti Kurtelius, Jasper van den Ham, Jorg Tiemens, Philip Moore";
