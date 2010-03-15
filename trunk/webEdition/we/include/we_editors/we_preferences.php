@@ -3831,7 +3831,7 @@ else {
 			$_template_editor_mode = new we_htmlSelect(array("class" => "weSelect", "name" => "editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 			$_template_editor_mode->addOption('textarea', 'Textarea');
 			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
-			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
+			$_template_editor_mode->addOption('codemirror', 'CodeMirror (Beta)');
 			$_template_editor_mode->selectOption(get_value("editor_mode"));
 			array_push($_settings, array("headline" => $l_prefs["editor_mode"], "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
 

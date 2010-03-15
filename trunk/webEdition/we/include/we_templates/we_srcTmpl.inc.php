@@ -71,6 +71,8 @@ if($we_editmode) {
 
 			if (editarea) {
 				editarea.style.width=editorWidth;
+				if(editarea.nextSibling)
+					editarea.nextSibling.style.width=editorWidth;
 			}
 
 			if (document.weEditorApplet) {
@@ -91,6 +93,8 @@ if($we_editmode) {
 					
 					if (editarea) {
 						editarea.style.height= (h - (wizardOpen ? 110 : 285)) + "px";
+						if(editarea.nextSibling)
+							editarea.nextSibling.style.height= (h - (wizardOpen ? 110 : 285)) + "px";
 					}
 					
 					if(window.editor && window.editor.frame) {
@@ -113,6 +117,8 @@ if($we_editmode) {
  				} else {
  					if (editarea) {
  						editarea.style.height = h - 110;
+ 						if(editarea.nextSibling)
+	 						editarea.nextSibling.style.height = h - 110;
  					}
 
 					if(window.editor && window.editor.frame) {
@@ -162,6 +168,8 @@ if($we_editmode) {
 
 				var editarea = document.getElementById("editarea");
 				editarea.style.height=h- (wizardOpen ? 110 : 285);
+				if(editarea.nextSibling)
+					editarea.nextSibling.style.height=h- (wizardOpen ? 110 : 285);
 
 				if(window.editor && window.editor.frame) {
 					window.editor.frame.style.height = h- (wizardOpen ? 110 : 285);
@@ -268,6 +276,15 @@ if($we_editmode) {
 
 		function getCharset(){
 			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS["_language"]["charset"]; ?>";
+		}
+		
+		// ############ CodeMirror Functions ################
+		
+		function reindent() { // reindents code of CodeMirror
+			if(editor.selection().length)
+				editor.reindentSelection();
+			else
+				editor.reindent();
 		}
 
 	</script>
@@ -424,6 +441,7 @@ if($we_editmode) {
 	    <tr>';
 
 		$maineditor .= '<td align="right" class="defaultfont">'.
+					($_SESSION['prefs']['editorMode']=='codemirror'?'<div style="float:right;margin-left:10px;margin-top:-3px">'.$we_button->create_button("reindent", 'javascript:reindent();').'</div>':'').
 					($_useJavaEditor ? "" : we_forms::checkbox(	"1",
 										( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1" ),
 										"we_wrapcheck_tmp",
