@@ -158,7 +158,13 @@ class weCustomerSettings{
 		if(isset($this->properties["SortView"])) $this->SortView=@unserialize($this->properties["SortView"]);
 		if(!is_array($this->SortView)) $this->SortView=array();
 		
-		if(isset($this->properties["EditSort"])) {$this->EditSort=($this->properties["EditSort"]);}
+		if(isset($this->properties["EditSort"])) {
+			$this->EditSort=$this->properties["EditSort"];
+		} else {
+			$orderedarray= $this->customer->persistent_slots;
+			$sortarray= range(0,count($orderedarray)-1);
+			$this->EditSort = makeCSVFromArray($sortarray,true);
+		}
 		
 
 		if(isset($this->properties["FieldAdds"])) $this->FieldAdds=@unserialize($this->properties["FieldAdds"]);
@@ -206,8 +212,8 @@ class weCustomerSettings{
 		return $this->EditSort;
 	}
 
-	function setEditSort($sortedarray){
-		$this->EditSort=$sortedarray;
+	function setEditSort($sortstring){
+		$this->EditSort=$sortstring;
 	}
 
 	function getPref($pref_name){
