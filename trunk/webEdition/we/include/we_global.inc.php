@@ -2481,6 +2481,7 @@ function we_mail($recipient, $subject, $txt, $from = "")
 
 	include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 	$phpmail = new we_util_Mailer($recipient,$subject,$from);
+	$phpmail->setCharSet($GLOBALS["_language"]["charset"]);
 	$phpmail->addTextPart(trim($txt));
 	$phpmail->buildMessage();
 	$phpmail->Send();
