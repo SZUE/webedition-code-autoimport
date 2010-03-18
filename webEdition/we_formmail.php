@@ -28,6 +28,7 @@ define("WE_DEFAULT_SUBJECT","webEdition mailform");
 
 $_blocked = false;
 
+
 // check to see if we need to lock or block the formmail request
 
 if (defined("FORMMAIL_LOG") && FORMMAIL_LOG) {
@@ -395,10 +396,10 @@ if($recipient){
 	} else{
 		$sender = $fromMail;
 	}
-	 
+	
 	$phpmail = new we_util_Mailer("",$subject,$sender);
 	$phpmail->setCharSet($charset);
-	
+
 	$recipientsList = array();
 	
 	foreach($recipients as $recipientID){
@@ -434,7 +435,7 @@ if($recipient){
 					$phpmail->AddAttachment($tempName);
 				}
 			}
-		}
+		} 	
 		$phpmail->addAddressList($recipientsList);
 		if($mimetype == "text/html"){
 			$phpmail->addHTMLPart($we_html);

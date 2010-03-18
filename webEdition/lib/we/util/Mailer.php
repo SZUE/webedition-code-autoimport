@@ -84,8 +84,20 @@ class we_util_Mailer extends Zend_Mail
 	 * @var array
 	 */
 	protected $embedImages = array('gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf','GIF', 'JPG', 'JPEG', 'JPE', 'BMP', 'PNG', 'TIF', 'TIFF','SWF');
-	
+
+	/**
+	 * Enter description here...
+	 *
+	 * @var array
+	 */
 	protected $inlineAtt = array();
+
+	/**
+	 * Internal storage for the subject to survive change of charset
+	 *
+	 * @var string
+	 */
+	protected $internal_subject = '';
 
 	/**
 	 * Enter description here...
@@ -98,7 +110,11 @@ class we_util_Mailer extends Zend_Mail
 	 */
 	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0)
 	{ 
-		$this->setCharSet();
+		if (isset($GLOBALS["_language"]["charset"])){
+			$this->setCharSet($GLOBALS["_language"]["charset"]);
+		} else {
+			setCharSet('UTF-8');
+		}
 		if (defined("WE_MAILER")) {
 			switch (WE_MAILER) {
 				case 'smtp' :
@@ -160,6 +176,7 @@ class we_util_Mailer extends Zend_Mail
 		
 		$_sender = $this->parseEmailUser($sender);
 		$this->setFrom($_sender['email'],$_sender['name']);
+		
 		$this->setSubject($subject);
 		$this->setIsEmbedImages($isEmbedImages);
 		$this->setIsUseBaseHref(true);
@@ -493,6 +510,7 @@ class we_util_Mailer extends Zend_Mail
 	public function setCharSet($val = 'UTF-8')
 	{
 		$this->_charset = $val;
+		$this->setSubject($this->internal_subject);
 	}
 
 	public function setContentType($val = 'text/plain')
@@ -520,12 +538,14 @@ class we_util_Mailer extends Zend_Mail
 	{
 		$this->Sender = $val;
 	}
-/**
+
 	public function setSubject($val)
 	{
-		$this->Subject = $val;
+		$this->internal_subject = $val;
+		$this->clearSubject();
+		parent::setSubject($this->internal_subject);
 	}
-*/
+
 	public function setBaseDir($val)
 	{
 		$this->basedir = $val;
@@ -544,6 +564,15 @@ class we_util_Mailer extends Zend_Mail
 	public function setBody($val)
 	{
 		$this->Body = $val;
+	}
+	public function Send()
+	{
+		try {
+			$t = parent::send();
+		} catch (Zend_Exception $e) {
+			return false;
+		}
+		return true;
 	}
 
 /**
