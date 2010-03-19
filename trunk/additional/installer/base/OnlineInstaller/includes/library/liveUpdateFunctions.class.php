@@ -323,6 +323,9 @@ class liveUpdateFunctions {
 	 * @return boolean
 	 */
 	function moveFile($source, $destination) {
+		
+		if($source==$destination)
+			return true;
 
 		if ($this->checkMakeDir(dirname($destination))) {
 
