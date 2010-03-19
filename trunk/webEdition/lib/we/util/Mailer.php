@@ -293,7 +293,7 @@ class we_util_Mailer extends Zend_Mail
 			}
 		
 			if ($this->AltBody == "") { // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter häufig der Fall
-				$this->parseHtml2TextPart($this->Body);
+			//	$this->parseHtml2TextPart($this->Body);
 			}
 		}
 		/**
