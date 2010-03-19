@@ -37,7 +37,7 @@ $_leftPart = $_middlePart - $_logoPart;
 
 $_credits = "<br />"
 			."<b>".$l_global["credits_team"].":</b><br/>"
-			."Holger Meyer, <a href=\"http://we.wrench.at\" target=\"_blank\">Alexander Lindenstruth</a>, <a href=\"http://www.loewi-partner.de/Dr-Armin-Schulz/index.php\" target=\"_blank\">Dr. Armin Schulz</a>, Dirk Einecke, Martin Schurbohm, Thomas G&ouml;be, Silke Kr&auml;mer, Anna Baumann, Benny Johnson, Tatjana Hermann, Michael Weiss"
+			."Holger Meyer, <a href=\"http://we.wrench.at\" target=\"_blank\">Alexander Lindenstruth</a>, <a href=\"http://www.loewi-partner.de/Dr-Armin-Schulz/index.php\" target=\"_blank\">Dr. Armin Schulz</a>, Dirk Einecke, Martin Schurbohm, Thomas G&ouml;be, Silke Kr&auml;mer, Anna Baumann, Benny Johnson, Tatjana Hermann, Michael Weiss, <a href=\"http://we.willRockYou.net/\" target=\"_blank\">Daniel Schroeder</a>"
 			."<br/><br/>"
 			."<b>".$l_global["credits_translators"].":</b><br />"
 			."Tatjana Hermann, Joni Eskelinen, Kari Vatanen, Antti Kurtelius, Jasper van den Ham, Jorg Tiemens, Philip Moore";
@@ -67,7 +67,7 @@ $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 
 //	3rd Version
 $_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,1));
-$we_version = ereg_replace('^(.*)\.0$','\1',WE_VERSION);
+$we_version = preg_replace('/\.0$/','', WE_VERSION);
 if(defined("WE_VERSION_SUPP")) $we_version .= " (".WE_VERSION_SUPP.")";
 $_table->setCol($_actRow,1,array(	"width" => $_middlePart,
 							"class" => "small"), "Version: " . $we_version);

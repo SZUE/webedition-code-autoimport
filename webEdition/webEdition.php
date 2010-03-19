@@ -59,7 +59,7 @@ protect();
 cleanTempFiles();
 $sn = SERVER_NAME;
 
-if(ereg('@',$sn)) {
+if(strstr($sn, '@')) {
 	list($foo,$sn) = explode('@',$sn);
 }
 
