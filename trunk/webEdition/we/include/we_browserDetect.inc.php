@@ -35,11 +35,11 @@ class we_browserDetect
 		
 		$this->ua = $ua ? $ua : $_SERVER["HTTP_USER_AGENT"];
 		$regs = array();
-		if (eregi('^([^ ]+) ([^\(]*)(\([^\)]+\))(.*)$', $this->ua, $regs)) {
+		if (preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', $this->ua, $regs)) {
 			$pre = $regs[1];
 			$mid = $regs[2];
 			$bracket = $regs[3];
-			$bracket = ereg_replace('[\(\)]', '', $bracket);
+			$bracket = str_replace(array('(',')'), '', $bracket);
 			$brArr = explode(";", $bracket);
 			$post = $regs[4];
 			
@@ -49,46 +49,46 @@ class we_browserDetect
 				$this->br = "lynx";
 			} else 
 				if (strtolower($bez) == "mozilla") {
-					if (eregi('msie (.*)$', trim($brArr[1]), $regs) && (trim($post) == "" || eregi('.net', $post))) {
+					if (preg_match('/msie (.*)$/i', trim($brArr[1]), $regs) && (trim($post) == "" || preg_match('/\.net/i', $post))) { //if last condition matches this will produce a notice. $regs[1] won't be defined...
 						$this->br = "ie";
 						$this->v = $regs[1];
 						$this->_getSys($bracket);
 					} else 
-						if (eregi('konqueror/(.*)$', trim($brArr[1]), $regs)) {
+						if (preg_match('/konqueror\/(.*)$/i', trim($brArr[1]), $regs)) {
 							$this->br = "konqueror";
 							$this->v = $regs[1];
 							$this->_getSys($bracket);
 						} else 
-							if (eregi('galeon/(.*)$', trim($brArr[1]), $regs)) {
+							if (preg_match('/galeon\/(.*)$/i', trim($brArr[1]), $regs)) {
 								$this->br = "unknown";
 								$this->v = $regs[1];
 								$this->_getSys($bracket);
 							} else {
-								if (eregi('netscape6', $post)) {
+								if (stristr($post, 'netscape6')) {
 									$this->br = "nn";
-									if (eregi('netscape6/(.+)', $post, $regs)) {
+									if (preg_match('/netscape6\/(.+)/i', $post, $regs)) {
 										$this->v = trim($regs[1]);
 									} else {
 										$this->v = 6;
 									}
 									$this->_getSys($bracket);
 								} else 
-									if (eregi('netscape/7', $post)) {
+									if (stristr($post, 'netscape/7')) {
 										$this->br = "nn";
-										if (eregi('netscape/(7.+)', $post, $regs)) {
+										if (preg_match('/netscape\/(7.+)/i', $post, $regs)) {
 											$this->v = trim($regs[1]);
 										} else {
 											$this->v = 7;
 										}
 										$this->_getSys($bracket);
 									} else 
-										if (eregi(' AppleWebKit/([0-9\.]+)', $post, $regs)) {
+										if (preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)) {
 											$this->v = $regs[1];
 											$this->br = "appleWebKit";
 											$this->_getSys($bracket);
 										} else 
-											if (eregi('safari', $post)) {
-												if (eregi('safari/([0-9\.]+)', $post, $regs)) {
+											if (stristr($post, 'safari')) {
+												if (preg_match('/safari\/([0-9.]+)/i', $post, $regs)) {
 													$this->v = substr($regs[1] / 100, 0, 3);
 												} else {
 													$this->v = "1";
@@ -97,19 +97,19 @@ class we_browserDetect
 												
 												$this->_getSys($bracket);
 											} else 
-												if (eregi(' firefox/([0-9\.]+)', $post, $regs)) {
+												if (preg_match('/firefox\/([0-9.]+)/i', $post, $regs)) {
 													$this->v = $regs[1];
 													$this->br = "firefox";
 													$this->_getSys($bracket);
 												} else 
-													if (eregi('gecko', $post)) {
+													if (stristr($post, 'gecko')) {
 														$this->br = "mozilla";
-														if (eregi('rv:([0-9\.]*)', $bracket, $regs)) {
+														if (preg_match('/rv:([0-9.]*)/i', $bracket, $regs)) {
 															$this->v = $regs[1];
 														}
 														$this->_getSys($bracket);
 													} else 
-														if (eregi('opera ([^ ]+)', $post, $regs)) {
+														if (preg_match('/opera ([^ ]+)/i', $post, $regs)) {
 															$this->br = "opera";
 															$this->v = $regs[1];
 															$this->_getSys($bracket);
@@ -128,12 +128,9 @@ class we_browserDetect
 						$this->v = $prever;
 						}*/
 															} else 
-																if (!eregi('msie', $bracket)) {
+																if (!stristr($bracket, 'msie')) {
 																	$this->br = "nn";
-																	$this->v = ereg_replace(
-																			'[^0-9\.]', 
-																			'', 
-																			$prever);
+																	$this->v = preg_replace('/[^0-9.]/', '', $prever);
 																	$this->_getSys($bracket);
 																}
 							}
@@ -151,12 +148,12 @@ class we_browserDetect
 								$this->br = "unknown";
 							}
 			if ($this->sys == "unknown") {
-				if (eregi('webtv', $this->ua)) {
+				if (stristr($this->ua, 'webtv')) {
 					$this->sys = "webtv";
 				}
 			}
 		} else 
-			if (eregi('^lynx([^a-zA-Z]+)[a-zA-Z].*', $ua, $regs)) {
+			if (preg_match('/^lynx([^a-z]+)[a-z].*/i', $ua, $regs)) {
 				$this->br = "lynx";
 				$this->v = str_replace('/', '', $regs[1]);
 				/*}else if(eregi('wget/([0-9\.]+)',$this->ua,$regs)){
@@ -190,13 +187,13 @@ class we_browserDetect
 
 	function _getSys($bracket)
 	{
-		if (eregi('mac', $bracket)) {
+		if (stristr($bracket, 'mac')) {
 			$this->sys = "mac";
 		} else 
-			if (eregi('win', $bracket)) {
+			if (stristr($bracket, 'win')) {
 				$this->sys = "win";
 			} else 
-				if (eregi('linux', $bracket) || eregi('x11', $bracket) || eregi('sun', $bracket)) {
+				if (stristr($bracket, 'linux') || stristr($bracket, 'x11') || stristr($bracket, 'sun')) {
 					$this->sys = "unix";
 				}
 	}

@@ -24,10 +24,10 @@ $SAFARI_3 = false;
 $_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
 		$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
 
-if (eregi("(ozilla.[23]|MSIE.3)", $_SERVER["HTTP_USER_AGENT"])) {
+if (preg_match('/(ozilla.[23]|MSIE.3)/i', $_SERVER['HTTP_USER_AGENT'])) {
 	$BROWSER3 = true;
 }
-if (eregi("safari", $_SERVER["HTTP_USER_AGENT"])) {
+if (stristr($_SERVER['HTTP_USER_AGENT'], 'safari')) {
 	$BROWSER = "SAFARI";
 	if (eregi('AppleWebKit/([^ ]+)', $_SERVER["HTTP_USER_AGENT"], $regs)) {
 		$v = $regs[1];
@@ -39,30 +39,30 @@ if (eregi("safari", $_SERVER["HTTP_USER_AGENT"])) {
 		}
 	}
 } else 
-	if (eregi("opera", $_SERVER["HTTP_USER_AGENT"])) {
+	if (stristr($_SERVER['HTTP_USER_AGENT'], 'opera')) {
 		$BROWSER = "OPERA";
 	} else 
-		if (eregi("MSIE", $_SERVER["HTTP_USER_AGENT"])) {
+		if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
 			$BROWSER = "IE";
 		} else 
-			if (eregi("mozilla", $_SERVER["HTTP_USER_AGENT"])) {
+			if (stristr($_SERVER['HTTP_USER_AGENT'], 'mozilla')) {
 				$BROWSER = "NN";
-				if (eregi("gecko", $_SERVER["HTTP_USER_AGENT"])) {
+				if (stristr($_SERVER['HTTP_USER_AGENT'], 'gecko')) {
 					$BROWSER = "NN6";
 				}
 			} else {
 				$BROWSER = "UNKNOWN";
 			}
 $OSX = false;
-if (eregi("X11", $_SERVER["HTTP_USER_AGENT"])) {
+if (stristr($_SERVER['HTTP_USER_AGENT'], 'X11')) {
 	$SYSTEM = "X11";
 } else 
-	if (eregi("Win", $_SERVER["HTTP_USER_AGENT"])) {
+	if (stristr($_SERVER['HTTP_USER_AGENT'], 'Win')) {
 		$SYSTEM = "WIN";
 	} else 
-		if (eregi("Mac", $_SERVER["HTTP_USER_AGENT"])) {
+		if (stristr($_SERVER['HTTP_USER_AGENT'], 'Mac')) {
 			$SYSTEM = "MAC";
-			if (eregi("os x", $_SERVER["HTTP_USER_AGENT"])) {
+			if (stristr($_SERVER['HTTP_USER_AGENT'], 'os x')) {
 				$OSX = true;
 			}
 		} else {
@@ -71,7 +71,7 @@ if (eregi("X11", $_SERVER["HTTP_USER_AGENT"])) {
 
 if (($BROWSER == "IE") && ($SYSTEM == "WIN")) {
 	$foo = explode(";", $_SERVER["HTTP_USER_AGENT"]);
-	$foo = abs(eregi_replace("[^0-9\\.]", "", $foo[1]));
+	$foo = abs(preg_replace('/[^\d.]/', '', $foo[1]));
 	if ($foo >= 5.5) {
 		$IE55 = true;
 	}
@@ -86,7 +86,7 @@ if (($BROWSER == "IE") && ($SYSTEM == "WIN")) {
 $MOZ13 = false;
 
 if (($BROWSER == "NN6")) {
-	if (ereg('.*; ?rv:([0-9\.]+).*', $_SERVER["HTTP_USER_AGENT"], $regs)) {
+	if (preg_match('/.*; ?rv:([\d.]+).*/', $_SERVER['HTTP_USER_AGENT'], $regs)) {
 		if (abs($regs[1]) >= 1.3) {
 			$MOZ13 = true;
 		}
@@ -99,9 +99,9 @@ if (($BROWSER == "NN6")) {
 $NET6 = false;
 $FF = ""; 
 if (($BROWSER == "NN6")) {
-	if (ereg('.*Netscape.*', $_SERVER["HTTP_USER_AGENT"], $regs)) {
+	if (stristr($_SERVER['HTTP_USER_AGENT'], 'Netscape')) {
 		$NET6 = true;
-	} elseif (ereg('.*Firefox*', $_SERVER["HTTP_USER_AGENT"], $regs)) {
+	} elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'Firefox')) {
 		$BROWSERVERSION = substr(strstr($_SERVER["HTTP_USER_AGENT"], "Firefox/"),8);
 		$_bvArray=explode(".",$BROWSERVERSION);
 		$FF = $_bvArray[0];		

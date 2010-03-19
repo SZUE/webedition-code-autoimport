@@ -498,7 +498,7 @@ function mapPermissions() {
 
 		$d = dir(WE_USERS_MODULE_DIR."perms");
 		while($file=$d->read()) {
-			if(ereg('^we_perms_',$file)) {
+			if(substr($file, 0, 9)=='we_perms_') {
 				$entries[] = WE_USERS_MODULE_DIR . "perms/" . $file;
 			}
 		}
