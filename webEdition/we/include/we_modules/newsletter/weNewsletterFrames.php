@@ -2946,7 +2946,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 				$phpmail->addHTMLPart($content);
 				$phpmail->addTextPart(trim($content_plain));
 			} else {
-				$phpmail->setBody(trim($content_plain));
+				$phpmail->addTextPart(trim($content_plain));
 			}
 
 			if(!$this->View->settings["use_base_href"]) {$phpmail->setIsUseBaseHref($this->View->settings["use_base_href"]);}
