@@ -107,7 +107,7 @@ class leOnlineInstaller {
 				if($_readdir != '.' && $_readdir != '..') {
 					$_path = LE_ONLINE_INSTALLER_PATH . '/includes/language/'. $_readdir;
 					if (is_file($_path)) {
-						array_push($AvailableLanguages, ereg_replace(".inc.php$", "", $_readdir));
+						array_push($AvailableLanguages, preg_replace('/\.inc\.php$/', '', $_readdir));
 
 					}
 
