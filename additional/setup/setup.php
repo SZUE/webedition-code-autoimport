@@ -419,7 +419,7 @@ function step_databasecheck() {
 	// check if selected database already exists:
 	$op_createdb = false;
 	//$result = @mysql_list_dbs($conn);
-	$result = @mysql_query("use ".$_SESSION["db_database"],$conn);
+	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']), $conn);
 	//$dblist = mysql_fetch_array($result);
 	//$output .= print_r($dblist,true);
 	//if(!in_array($_SESSION["db_database"],$dblist)) {
@@ -433,13 +433,13 @@ function step_databasecheck() {
 	
 	// try to create db:
 	if($op_createdb === true) {
-		if(!@mysql_query("create database ".$_SESSION["db_database"],$conn)) {
+		if(!@mysql_query(sprintf('use `%s`', $_SESSION['db_database']), $conn)) {
 			$output .= tpl_error("Could not create the database. Message from the server: ".mysql_error($conn));
 			$errors = true;
 			return $output.'</ul>';
 		}
 	}
-	$result = @mysql_query("use ".$_SESSION["db_database"],$conn);
+	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn);
 	
 	// check if there is already a webEdition installation present:
 	
@@ -614,7 +614,7 @@ function step_installation() {
 		$output .= tpl_ok("connected to database server on \"".$_SESSION["db_host"]."\"");
 	}
 	// select database:
-	if(!@mysql_query("use ".$_SESSION["db_database"],$conn)) {
+	if(!@mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn)) {
 		$output .= tpl_error("Error using specified database. Message from server: ".mysql_error());
 		$errors = true;
 		return $output;
