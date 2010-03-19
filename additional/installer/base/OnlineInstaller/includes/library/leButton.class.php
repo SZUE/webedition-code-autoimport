@@ -30,7 +30,7 @@ class leButton {
 		$_on_mouse_down .= "if (" . $_button_name . "_enabled) { document.getElementById('" . $_button_name . "_right').className = 'leBtnRightClicked'; }";
 
 		//	Onmouseover-Events
-		if(!eregi(".gif$", $text)) {
+		if(!preg_match('/\.gif$/', $text)) {
 			$_on_mouse_over = "window.status='" . $text . "';return true;";
 		} else {
 			$_on_mouse_over = "";
