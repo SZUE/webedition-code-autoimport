@@ -40,6 +40,7 @@ $GLOBALS["l_copyFolder"]["prepareTemplates"] = "Bezig met voorbereiden van aanma
 $GLOBALS["l_copyFolder"]["categories"] = "Categorieën";
 $GLOBALS["l_copyFolder"]["overwrite_categories"] = "Overschrijf Categorieën";
 $GLOBALS["l_copyFolder"]["object_copy"] = "Copy objects and object folders"; //TRANSLATE
+$GLOBALS["l_copyFolder"]["object_copy_no_folders"] = "do not copy sub-folders";//TRANSLATE
 $GLOBALS["l_copyFolder"]["sameName_expl"] = "Determine the behavior of webEdition, for the case that another object exisits with the same name and path."; //TRANSLATE
 $GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Overwrite the existing object"; //TRANSLATE
 $GLOBALS["l_copyFolder"]["sameName_rename"] = "Rename the new object"; //TRANSLATE

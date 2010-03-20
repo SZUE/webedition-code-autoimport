@@ -36,6 +36,7 @@ class copyFolderFrag extends taskFragment
 		$toID = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 0;
 		$table = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : '';
 		$OverwriteObjects = isset($_REQUEST["OverwriteObjects"]) ? $_REQUEST["OverwriteObjects"] : 'nothing';
+		$ObjectCopyNoFolders = isset($_REQUEST["DoNotCopyFolders"]) ? $_REQUEST["DoNotCopyFolders"] : 0;
 		$CreateTemplate = isset($_REQUEST["CreateTemplate"]) ? $_REQUEST["CreateTemplate"] : false;
 		$CreateDoctypes = isset($_REQUEST["CreateDoctypes"]) ? $_REQUEST["CreateDoctypes"] : false;
 		
@@ -111,12 +112,19 @@ class copyFolderFrag extends taskFragment
 			if (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) {
 				$_SESSION["WE_COPY_OBJECTS"] = true;
 				$fromPath = id_to_path($fromID, OBJECT_FILES_TABLE);
+				
+				if ($ObjectCopyNoFolders){
+					$qfolders = ' ParentID = '.$fromID.' AND IsFolder = 0 AND ';
+				} else {
+					$qfolders='';
+				}
+
+				
 				$db = new DB_WE();
 				$this->alldata = array();
+				$q = "SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE ".$qfolders." (Path like'".mysql_real_escape_string($fromPath)."/%') ORDER BY IsFolder DESC,Path";
 			
-			
-				$db->query(
-					"SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE (Path like'".mysql_real_escape_string($fromPath)."/%') ORDER BY IsFolder DESC,Path");
+				$db->query($q);
 				while ($db->next_record()) {
 					$db->Record["CopyToId"] = $toID;
 					$db->Record["CopyFromId"] = $fromID;
@@ -124,6 +132,7 @@ class copyFolderFrag extends taskFragment
 					$db->Record["IsWeFile"] = 1;
 					$db->Record["TheTable"] = OBJECT_FILES_TABLE;
 					$db->Record["OverwriteObjects"] = $OverwriteObjects;
+					$db->Record["ObjectCopyNoFolders"] = $ObjectCopyNoFolders;
 					$db->Record["IsFolder"] = $db->f('IsFolder');
 					$db->Record["CreateTemplate"] =  0;
 					$db->Record["CreateDoctypes"] =  0;
@@ -1191,7 +1200,10 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 			null, 
 			$cancel_button) . '</td></tr></table>';
 	if (isset($_REQUEST['we_cmd'][4]) && defined('OBJECT_FILES_TABLE') && $_REQUEST['we_cmd'][4]==OBJECT_FILES_TABLE){
-		$content = $GLOBALS["l_copyFolder"]["object_copy"] .'<br/>&nbsp;<br/>'.$GLOBALS["l_copyFolder"]["sameName_headline"].'<br/>';
+		$content = $GLOBALS["l_copyFolder"]["object_copy"] .'<br/>';
+		$content .= we_forms::checkbox("1",0,"DoNotCopyFolders",$GLOBALS["l_copyFolder"]["object_copy_no_folders"]);
+		$content .= '&nbsp;<br/>'.$GLOBALS["l_copyFolder"]["sameName_headline"].'<br/>';
+		
 		$content .= htmlAlertAttentionBox($GLOBALS["l_copyFolder"]["sameName_expl"], 2, 380);
 		$content .= getPixel(200, 10);
 		$content .= we_forms::radiobutton(
