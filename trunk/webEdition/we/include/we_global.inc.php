@@ -52,7 +52,7 @@ function we_getModuleNameByContentType($ctype)
 	$_moduleDir = "";
 	for ($i = 0; $i < sizeof($_we_active_modules); $i++) {
 		
-		if (ereg($_we_active_modules[$i], $ctype)) {
+		if (strstr($ctype, $_we_active_modules[$i])) {
 			$_moduleDir = $_we_active_modules[$i];
 		}
 	}
@@ -163,7 +163,7 @@ function we_getIndexFileIDs($db)
 	$list = "";
 	while ($db->next_record())
 		$list .= $db->f("ID") . ",";
-	$list = ereg_replace('^(.*),$', '\1', $list);
+	$list = rtrim($list, ',');
 	return $list;
 }
 
@@ -177,31 +177,31 @@ function we_getIndexObjectIDs($db)
 	$list = "";
 	while ($db->next_record())
 		$list .= $db->f("ID") . ",";
-	$list = ereg_replace('^(.*),$', '\1', $list);
+	$list = rtrim($list, ',');
 	return $list;
 }
 
 function correctUml($in)
 {
-	$in = str_replace("�", "ae", $in);
-	$in = str_replace("�", "oe", $in);
-	$in = str_replace("�", "ue", $in);
-	$in = str_replace("�", "Ae", $in);
-	$in = str_replace("�", "Oe", $in);
-	$in = str_replace("�", "Ue", $in);
-	return str_replace("�", "ss", $in);
+	$in = str_replace("ä", "ae", $in);
+	$in = str_replace("ö", "oe", $in);
+	$in = str_replace("ü", "ue", $in);
+	$in = str_replace("Ä", "Ae", $in);
+	$in = str_replace("Ö", "Oe", $in);
+	$in = str_replace("Ü", "Ue", $in);
+	return str_replace("ß", "ss", $in);
 }
 
 function we_html2uml($text)
 {
 	
-	$text = str_replace("&uuml;", "�", $text);
-	$text = str_replace("&Uuml;", "�", $text);
-	$text = str_replace("&auml;", "�", $text);
-	$text = str_replace("&Auml;", "�", $text);
-	$text = str_replace("&ouml;", "�", $text);
-	$text = str_replace("&Ouml;", "�", $text);
-	$text = str_replace("&szlig;", "�", $text);
+	$text = str_replace("&uuml;", "ü", $text);
+	$text = str_replace("&Uuml;", "Ü", $text);
+	$text = str_replace("&auml;", "ä", $text);
+	$text = str_replace("&Auml;", "Ä", $text);
+	$text = str_replace("&ouml;", "ö", $text);
+	$text = str_replace("&Ouml;", "Ö", $text);
+	$text = str_replace("&szlig;", "ß", $text);
 	
 	return $text;
 }
@@ -1939,7 +1939,7 @@ function getPathsFromTable($table = FILE_TABLE, $db = "", $type = FILE_ONLY, $ws
 {
 	if (!$db)
 		$db = new DB_WE();
-	$limitCSV = ereg_replace('^,(.*),$', '\1', $limitCSV);
+	$limitCSV = trim($limitCSV,',');
 	$q = "";
 	if ($wsIDs) {
 		$idArr = makeArrayFromCSV($wsIDs);

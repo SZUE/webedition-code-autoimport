@@ -960,7 +960,7 @@ function getUser(){
 </script>
 </head>
 <?php
-	$aCmd = split('_', $_REQUEST['we_cmd'][0]);
+	$aCmd = explode('_', $_REQUEST['we_cmd'][0]);
 	if ($aCmd[0] == 'new') {
 		$in = array(
 			substr($aCmd[2], -3), 1, 1

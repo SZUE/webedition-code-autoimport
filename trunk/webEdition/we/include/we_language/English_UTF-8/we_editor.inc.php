@@ -179,7 +179,7 @@ $_language_directory = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_lang
 $_directory = dir($_language_directory);
 
 while (false !== ($entry = $_directory->read())) {
-	if (ereg('_we_editor', $entry)) {
+	if (strstr($entry, '_we_editor')) {
 		include_once($_language_directory."/".$entry);
 	}
 }

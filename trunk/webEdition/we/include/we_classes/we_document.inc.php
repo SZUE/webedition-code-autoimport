@@ -585,7 +585,7 @@ class we_document extends we_root {
 	function getMaxListArrayNr($la) {
 		$maxnr = 0;
 		for($i=0;$i<sizeof($la);$i++) {
-			$nr = abs(ereg_replace("_","",$la[$i]));
+			$nr = abs(str_replace('_', '', $la[$i]));
 			$maxnr=max($maxnr,$nr);
 		}
 		return $maxnr;
@@ -1145,7 +1145,7 @@ class we_document extends we_root {
 				return we_document::getHref($attribs,$db,$fn);
 			default:
 				parseInternalLinks($val, $parentID);
-				$retval = eregi_replace('<\?xml[^>]+>',"",$val);
+				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
 				if( isset($attribs["html"]) && ($attribs["html"] == "off" || $attribs["html"] == "false" || $attribs["html"] == "0") ) {
 					$retval =  strip_tags($retval,'<br>,<p>');
@@ -1155,9 +1155,9 @@ class we_document extends we_root {
 				$_wysiwyg = isset($attribs["wysiwyg"]) && ($attribs["wysiwyg"] == "on" || $attribs["wysiwyg"] == "true" || $attribs["wysiwyg"] == "wysiwyg");
 
 				if($_htmlspecialchars && (!$_wysiwyg)) {
-					$retval = eregi_replace('<br([^>]*)>','#we##br\1#we##',$retval);
+					$retval = preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval);
 					$retval = htmlspecialchars($retval, ENT_QUOTES);
-					$retval = eregi_replace('#we##br([^#]*)#we##','<br\1>',$retval);
+					$retval = preg_replace('/#we##br([^#]*)#we##/' ,'<br\1>', $retval);
 				}
 
 				if(!(defined("WE_PHP_DEFAULT") && WE_PHP_DEFAULT)){
@@ -1169,7 +1169,7 @@ class we_document extends we_root {
 						$retval = removePHP($retval);
 					}
 				}
-				if(ereg('^[0-9\.,]+$',trim($retval))) {
+				if(preg_match('/^[\d.,]+$/', trim($retval))) {
 					$precision = isset($attribs["precision"]) ? abs($attribs["precision"]) : 2;
 
 					if(isset($attribs["num_format"])){
@@ -1585,9 +1585,9 @@ class we_document extends we_root {
 		if(sizeof($_REQUEST)) {
 			$dates = array();
 			foreach($_REQUEST as $n=>$v) {
-				if(ereg('^we_schedule_([^\[]+)$',$n,$regs)) {
+				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)) {
 					$rest = $regs[1];
-					$nr = ereg_replace('^.+_([0-9])+$','\1',$rest);
+					$nr = preg_replace('/^.+_([0-9])+$/', '\1', $rest);
 					if(substr($rest,0,5) == "task_") {
 						$this->schedArr[$nr]["task"] = $v;
 					}
@@ -1608,22 +1608,22 @@ class we_document extends we_root {
 					}
 					else if(substr($rest,0,5) == "month") {
 						$rest = substr($rest,5);
-						$m = ereg_replace('^([^_]+)_[0-9]+$','\1',$rest);
+						$m = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
 						$this->schedArr[$nr]["months"][$m-1] = $v;
 					}
 					else if(substr($rest,0,3) == "day") {
 						$rest = substr($rest,3);
-						$d = ereg_replace('^([^_]+)_[0-9]+$','\1',$rest);
+						$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
 						$this->schedArr[$nr]["days"][$d-1] = $v;
 					}
 					else if(substr($rest,0,4) == "wday") {
 						$rest = substr($rest,4);
-						$d = ereg_replace('^([^_]+)_[0-9]+$','\1',$rest);
+						$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
 						$this->schedArr[$nr]["weekdays"][$d-1] = $v;
 					}
 					else if(substr($rest,0,5) == "time_") {
 						$rest = substr($rest,5);
-						$foo = ereg_replace('^([^_]+)_[0-9]+$','\1',$rest);
+						$foo = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
 						if(!(isset($dates[$nr]) && is_array($dates[$nr]))) {
 							$dates[$nr] = array();
 						}

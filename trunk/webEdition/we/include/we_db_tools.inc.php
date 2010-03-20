@@ -53,7 +53,7 @@ function doUpdateQuery($DB_WE, $table, $hash, $where)
 			$sql .= $fieldName . "='" . (isset($hash[$fieldName]) ? mysql_real_escape_string($hash[$fieldName]) : "") . "',";
 		}
 	}
-	$sql = ereg_replace("(.+),$", "\\1", $sql) . " $where";
+	$sql = rtrim($sql, ',').' '.$where;
 	return $DB_WE->query($sql);
 
 }
@@ -68,7 +68,7 @@ function doUpdateQuery2($DB_WE, $table, $hash, $where)
 			$sql .= $fieldName . "='" . mysql_real_escape_string($hash[$fieldName]) . "',";
 		}
 	}
-	$sql = ereg_replace("(.+),$", "\\1", $sql) . " $where";
+	$sql = rtrim($sql, ',').' '.$where;
 	
 	return $DB_WE->query($sql);
 
@@ -86,7 +86,7 @@ function doInsetQuery($DB_WE, $table, $hash)
 		$values .= "'" . mysql_real_escape_string(isset($hash[$fieldName . "_autobr"]) ? nl2br($hash[$fieldName]) : $hash[$fieldName]) . "',";
 	}
 	$ti_s = implode(",", $fn);
-	$values = ereg_replace("(.+),$", "\\1", $values);
+	$values = rtrim($values, ',');
 	$sql = "INSERT INTO $table ($ti_s) VALUES ($values)";
 	
 	return $DB_WE->query($sql);
