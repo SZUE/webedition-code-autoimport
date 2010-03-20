@@ -571,7 +571,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 			$moduleList .= $key . "|";
 		}
 	}
-	$_SESSION["we_module_list"] = ereg_replace('^(.+)\|$','\1',$moduleList);
+	$_SESSION["we_module_list"] = rtrim($moduleList, '|');
 
 	// Modules > pagelogger
 	if(defined("WE_TRACKER_DIR") && WE_TRACKER_DIR){

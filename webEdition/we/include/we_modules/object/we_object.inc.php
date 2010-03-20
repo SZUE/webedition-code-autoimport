@@ -138,7 +138,7 @@ class we_object extends we_document
 			for($i=0; $i <= $this->elements["Defaultanzahl"]["dat"];$i++){
 				$was = "DefaultText_".$i;
 				if($this->elements[$was]["dat"]!=""){ //&& in_array($this->elements[$was]["dat"],$var_flip)
-				if(eregi('unique',$this->elements[$was]["dat"])){
+				if(stristr($this->elements[$was]["dat"], 'unique')){
 					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(($this->elements["unique_".$i]["dat"]>0)?$this->elements["unique_".$i]["dat"]:"16")."%";
 					//echo $this->elements[$was]["dat"];
 				}
@@ -230,7 +230,7 @@ class we_object extends we_document
 					}
 				}
 			}
-			$q = ereg_replace('^(.+),$','\1',$q);
+			$q = rtrim($q, ',');
 
 			$arrt["WE_CSS_FOR_CLASS"] = $this->CSS;
 			$this->DefaultValues=serialize($arrt);
@@ -408,7 +408,7 @@ class we_object extends we_document
 					$q .= ",";
 				}
 			} 
-			$q = ereg_replace('^(.+),$','\1',$q);
+			$q = rtrim($q, ',');
 
 			$this->DefaultCategory = $this->Category;
 
@@ -720,7 +720,7 @@ class we_object extends we_document
 
 		$uid = $this->elements["wholename".$identifier]["dat"];
 
-		if(eregi(",".$uid, (isset($this->elements["neuefelder"]["dat"]) ? $this->elements["neuefelder"]["dat"] : "")  )){
+		if(stristr((isset($this->elements['neuefelder']['dat']) ? $this->elements['neuefelder']['dat'] : ''), ','.$uid)){
 			$this->elements["neuefelder"]["dat"] = str_replace(",".$uid,"",$this->elements["neuefelder"]["dat"]);
 		}else{
 		    if(!isset($this->elements["felderloeschen"]["dat"])){
@@ -840,7 +840,7 @@ class we_object extends we_document
 			$count=0;
 			while($count < sizeof($all)){
 				if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
-					if(ereg('^(.+)_([0-9]+)$',$all[$count]["table_name"],$regs)){
+					if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 						if($this->ID != $regs[2]) {
 							$this->DB_WE->query("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID = ".$regs[2]);
 							$this->DB_WE->next_record();
@@ -918,7 +918,7 @@ class we_object extends we_document
 			$count=0;
 			while($count < sizeof($all)){
 				if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
-					if(ereg('^(.+)_([0-9]+)$',$all[$count]["table_name"],$regs)){
+					if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 						$this->DB_WE->query("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID = ".$regs[2]);
 						$this->DB_WE->next_record();
 						if ($this->DB_WE->f("Path") !== '') {
@@ -1639,7 +1639,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			for($i=0; $i <= $this->elements["Defaultanzahl"]["dat"];$i++){
 				$was = "DefaultText_".$i;
 				if($this->elements[$was]["dat"]!=""){ //&& in_array($this->elements[$was]["dat"],$var_flip)
-				if(eregi('unique',$this->elements[$was]["dat"])){
+				if(stristr($this->elements[$was]["dat"], 'unique')){
 					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(( isset($this->elements["unique_".$i]["dat"]) && $this->elements["unique_".$i]["dat"]>0 )?$this->elements["unique_".$i]["dat"]:"16")."%";
 					//echo $this->elements[$was]["dat"];
 				}
@@ -1654,23 +1654,23 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$zahl=0;
 
 		while(!empty($all)){
-			if(eregi("^\%([^\%]+)\%",$all,$regs)){
+			if(preg_match('/^%([^%]+)%/', $all, $regs)){
 				$all = substr($all,strlen($regs[1])+2);
 				$key = $regs[1];
-				if(ereg('unique([^%]*)',$key,$regs)){
+				if(preg_match('/unique([^%]*)/', $key, $regs)){
 					if(!$regs[1]){
 						$anz = 16;
 					}else{
 						$anz = abs($regs[1]);
 					}
 					$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
-					$text = ereg_replace('%unique[^%]*%',$unique, (isset($text) ? $text : ""));
+					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$l_object_value,1,"%unique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 					$select .= $this->htmlTextInput("we_".$this->Name."_input[unique_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 				}else{
 					$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$l_object_value,1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 				}
-			}else if(eregi("^([^\%]+)",$all,$regs)){
+			}else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all,strlen($regs[1]));
 				$key = $regs[1];
 				$select .= $this->htmlSelect("textwert_".$zahl,$l_object_value,1,"Text","",'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_'.$this->Name.'_input[DefaultText_'.$zahl.']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
@@ -1884,7 +1884,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			}
 			$this->elements = $doc->elements;
 			foreach($this->elements as $n=>$e){
-				if(eregi("^wholename", $n)) {
+				if(strtolower(substr($n, 0, 9))=='wholename') {
 					if (isset($this->elements['neuefelder']) && is_array($this->elements['neuefelder'])) {
 						$this->elements['neuefelder']['dat'] .= ",".$e['dat'];
 					} else {
@@ -2113,7 +2113,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				$end = substr($k, 12, strlen($k));
 				if(isset($_REQUEST['textwert_'.$end])) {
 					if(isset($v['dat']) && $v['dat']!='') {
-						if(eregi('[^a-z0-9\._\-]',$v['dat'])) {
+						if(preg_match('/[^\w\-.]/', $v['dat'])) {
 							$defTextValid = true;
 							break;
 						}
@@ -2121,7 +2121,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				}
 			}
 		}
-		return (eregi('[^a-z0-9\._\-]',$this->Text) || $defTextValid);
+		return (preg_match('/[^\w\-.]/', $this->Text) || $defTextValid);
 	}
 
 	function i_filenameNotAllowed(){
@@ -2194,7 +2194,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		foreach($_REQUEST as $n=>$v){
 
-			if(ereg('^we_'.$this->Name.'_([^\[]+)$',$n,$regs)){
+			if(preg_match('/^we_'.preg_quote($this->Name).'_([^\[]+)$/', $n, $regs)){
 				if($regs[1]=="href"){
 					$hrefFields = true;
 					break;
@@ -2207,8 +2207,8 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$hrefs = array();
 			while(list($k,$v) = $this->nextElement("href")){
 
-				$realName = ereg_replace("^(.+)_we_jkhdsf_.+$",'\1',$k);
-				$key = ereg_replace("^.+_we_jkhdsf_(.+)$",'\1',$k);
+				$realName = preg_replace('/^(.+)_we_jkhdsf_.+$/', '\1', $k);
+				$key = preg_replace('/^.+_we_jkhdsf_(.+)$/', '\1', $k);
 				if(!isset($hrefs[$realName])) $hrefs[$realName] = array();
 				$hrefs[$realName][$key] = $v["dat"];
 			}
@@ -2281,7 +2281,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$fields = $this->getAllVariantFields();
 		$fieldnamesarr = array_keys($fields);
 		$fieldnames = implode(',',$fieldnamesarr).',';
-		return eregi('_shoptitle,',$fieldnames) && eregi('_shopdescription,',$fieldnames);
+		return stristr($fieldnames, '_shoptitle,') && stristr($fieldnames, '_shopdescription,');
 	}
 
 	/**

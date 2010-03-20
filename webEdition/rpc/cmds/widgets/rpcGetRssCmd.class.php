@@ -55,7 +55,7 @@ class rpcGetRssCmd extends rpcCmd {
 		$bTbPubDate = (bool) $sTbBinary{4};
 		$bTbCopyright = (bool) $sTbBinary{5};
 		
-		$oRssParser =& new XML_RSS($sRssUri,$GLOBALS["_language"]["charset"]);
+		$oRssParser = new XML_RSS($sRssUri,$GLOBALS["_language"]["charset"]);
 		$oRssParser->parse();
 		$sRssOut = "";
 		

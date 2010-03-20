@@ -838,20 +838,20 @@ class we_root extends we_class
 		if(sizeof($_REQUEST)){
 			$dates = array();
 			foreach($_REQUEST as $n=>$v){
-				if(ereg('^we_'.$this->Name.'_([^\[]+)$',$n,$regs)){
+				if(preg_match('/^we_'.preg_quote($this->Name).'_([^\[]+)$/',$n,$regs)){
 					if(is_array($v)){
 						foreach($v as $n2=>$v2){
 							$v2 = we_util::cleanNewLine($v2);
 							//$v2 = eregi_replace("&quot;","\"",$v2);  // check ob benoetigt
 							$type=$regs[1];
 							if($type=="date"){
-								$name = ereg_replace('^(.+)_[^_]+$','\1',$n2);
-								$what = ereg_replace('^.+_([^_]+)$','\1',$n2);
+								$name = preg_replace('/^(.+)_[^_]+$/','\1',$n2);
+								$what = preg_replace('/^.+_([^_]+)$/','\1',$n2);
 								$dates[$name][$what] = $v2;
 
 							}else{
 								$name = $n2;
-								if(ereg("(.+)#(.+)",$name,$regs2)){
+								if(preg_match('/(.+)#(.+)/',$name,$regs2)){
 									$this->elements[$regs2[1]]["type"] = $type;
 									$this->elements[$regs2[1]][$regs2[2]] = $v2;
 								}else{
@@ -906,7 +906,7 @@ class we_root extends we_class
 			}else{
 				if($this->i_isElement($Name)){
 					while(list($k,$v) = each($this->DB_WE->Record)){
-						if(!in_array($k,$filter) &&  !ereg('^[0-9]+$',$k)){
+						if(!in_array($k,$filter) && !ctype_digit($k)){
 							$k = strtolower($k);
 							$this->elements[$Name][$k] = $v;
 						}
