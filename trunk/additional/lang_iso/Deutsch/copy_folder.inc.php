@@ -40,6 +40,7 @@ $GLOBALS["l_copyFolder"]["prepareTemplates"] = "Erzeugen neuer Vorlagen vorberei
 $GLOBALS["l_copyFolder"]["categories"] = "Kategorien";
 $GLOBALS["l_copyFolder"]["overwrite_categories"] = "Überschreibe Kategorien";
 $GLOBALS["l_copyFolder"]["object_copy"] = "Kopiere Objekte und Objektordner";
+$GLOBALS["l_copyFolder"]["object_copy_no_folders"] = "kopiere keine Unterordner";
 $GLOBALS["l_copyFolder"]["sameName_expl"] = "Bestimmen Sie hier das Verhalten von webEdition, wenn ein Objekt mit gleichem Namen und Pfad existiert.";
 $GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Existierendes Objekt überschreiben";
 $GLOBALS["l_copyFolder"]["sameName_rename"] = "Neues Objekt umbenennen";
