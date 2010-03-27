@@ -137,9 +137,7 @@ class we_linklist
 		$lattribs['lang'] = $lang;
 		$lattribs['hreflang'] = $hreflang;
 		$lattribs['rel'] = $rel;
-		$lattribs['rev'] = $rev;
-		$lattribs['text'] = $text; // #3636
-		
+		$lattribs['rev'] = $rev;		
 		$lattribs = removeEmptyAttribs($lattribs, array());
 		
 		$rollOverAttribsArr = $this->rollAttribs;
