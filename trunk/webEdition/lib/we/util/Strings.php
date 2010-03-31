@@ -38,7 +38,7 @@ class we_util_Strings
 	 */
 	static function createUniqueId($length = 32)
 	{
-		return substr(md5(uniqid(time())), 0, $length);
+		return substr('we'.md5(uniqid(time())), 0, $length);
 	}
 
 	/**
