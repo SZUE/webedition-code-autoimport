@@ -160,7 +160,7 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 				}
 			} catch (e) { 
 				// tell the command controller that the command was not ok.
-				cmdObj.errorMessage = "Invalid JSON data!";
+				cmdObj.errorMessage = "Invalid JSON data!" + jsonString;
 				weCmdController.cmdError(cmdObj);
 			}
 		}, 
