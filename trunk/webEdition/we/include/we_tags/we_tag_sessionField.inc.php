@@ -162,6 +162,8 @@ function we_tag_sessionField($attribs,$content) {
 			$checkboxclass = we_getTagAttribute("checkboxclass",$attribs);
 			$inputclass = we_getTagAttribute("inputclass",$attribs);
 			$checkboxtext = we_getTagAttribute("checkboxtext",$attribs, $GLOBALS["l_parser"]["delete"]);
+			
+			 
 
 			if($_SESSION["webuser"]['imgtmp'][$name]["id"]){
 				$attribs["id"] = $_SESSION["webuser"]['imgtmp'][$name];
@@ -182,9 +184,14 @@ function we_tag_sessionField($attribs,$content) {
 			$imgId = $_SESSION["webuser"]['imgtmp'][$name]["id"];
 
 			include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/"."we_classes/we_document.inc.php");
-						
-			$imgTag = we_document::getFieldByVal($imgId, "img");
 			
+			$thumbnail = we_getTagAttribute("thumbnail",$attribs, "");
+			if ($thumbnail !='') {
+				$attr['thumbnail']= $thumbnail;
+				$imgTag = we_document::getFieldByVal($imgId, "img", $attr);
+			} else {
+				$imgTag = we_document::getFieldByVal($imgId, "img");
+			}
 
 			if ($showcontrol) {
 				$checked = '';
