@@ -135,54 +135,56 @@ function we_tag_sessionField($attribs,$content) {
             return getHtmlTag('input', $_hidden);
 
 		case "img":
+			
+			if (!isset($_SESSION["webuser"]['imgtmp'])) {
+				$_SESSION["webuser"]['imgtmp'] = array();
+			}
+			if (!isset($_SESSION["webuser"]['imgtmp'][$name])) {
+				$_SESSION["webuser"]['imgtmp'][$name] = array();
+			}
 
+			$_SESSION["webuser"]['imgtmp'][$name]["parentid"] = we_getTagAttribute("parentid",$attribs, "0");
+			$_SESSION["webuser"]['imgtmp'][$name]["width"] = we_getTagAttribute("width",$attribs,0);
+			$_SESSION["webuser"]['imgtmp'][$name]["height"] = we_getTagAttribute("height",$attribs,0);
+			$_SESSION["webuser"]['imgtmp'][$name]["quality"] = we_getTagAttribute("quality",$attribs,"8");
+			$_SESSION["webuser"]['imgtmp'][$name]["keepratio"] = we_getTagAttribute("keepratio",$attribs,"",true, true);
+			$_SESSION["webuser"]['imgtmp'][$name]["maximize"] = we_getTagAttribute("maximize",$attribs,"",true);
+			$_SESSION["webuser"]['imgtmp'][$name]["id"] = $orgVal ? $orgVal : '';
+
+			$_foo = id_to_path($_SESSION["webuser"]['imgtmp'][$name]["id"]);
+			if (!$_foo) {
+				$_SESSION["webuser"]['imgtmp'][$name]["id"] = 0;
+			}
+
+			$bordercolor = we_getTagAttribute("bordercolor",$attribs, "#006DB8");
+			$checkboxstyle = we_getTagAttribute("checkboxstyle",$attribs);
+			$inputstyle = we_getTagAttribute("inputstyle",$attribs);
+			$checkboxclass = we_getTagAttribute("checkboxclass",$attribs);
+			$inputclass = we_getTagAttribute("inputclass",$attribs);
+			$checkboxtext = we_getTagAttribute("checkboxtext",$attribs, $GLOBALS["l_parser"]["delete"]);
+
+			if($_SESSION["webuser"]['imgtmp'][$name]["id"]){
+				$attribs["id"] = $_SESSION["webuser"]['imgtmp'][$name];
+			}
+
+			unset($attribs["width"]);
+			unset($attribs["height"]);
+			
 			$showcontrol = we_getTagAttribute("showcontrol", $attribs, "", true, true);
 			if ($showcontrol) {
 				$we_button = new we_button();
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/parser.inc.php");
 	
 				$foo = attributFehltError($attribs, "parentid", "sessionField");if($foo) return $foo;
-	
-				if (!isset($_SESSION["webuser"]['imgtmp'])) {
-					$_SESSION["webuser"]['imgtmp'] = array();
-				}
-				if (!isset($_SESSION["webuser"]['imgtmp'][$name])) {
-					$_SESSION["webuser"]['imgtmp'][$name] = array();
-				}
-	
-				$_SESSION["webuser"]['imgtmp'][$name]["parentid"] = we_getTagAttribute("parentid",$attribs, "0");
-				$_SESSION["webuser"]['imgtmp'][$name]["width"] = we_getTagAttribute("width",$attribs,0);
-				$_SESSION["webuser"]['imgtmp'][$name]["height"] = we_getTagAttribute("height",$attribs,0);
-				$_SESSION["webuser"]['imgtmp'][$name]["quality"] = we_getTagAttribute("quality",$attribs,"8");
-				$_SESSION["webuser"]['imgtmp'][$name]["keepratio"] = we_getTagAttribute("keepratio",$attribs,"",true, true);
-				$_SESSION["webuser"]['imgtmp'][$name]["maximize"] = we_getTagAttribute("maximize",$attribs,"",true);
-				$_SESSION["webuser"]['imgtmp'][$name]["id"] = $orgVal ? $orgVal : '';
-	
-				$_foo = id_to_path($_SESSION["webuser"]['imgtmp'][$name]["id"]);
-				if (!$_foo) {
-					$_SESSION["webuser"]['imgtmp'][$name]["id"] = 0;
-				}
-	
-				$bordercolor = we_getTagAttribute("bordercolor",$attribs, "#006DB8");
-				$checkboxstyle = we_getTagAttribute("checkboxstyle",$attribs);
-				$inputstyle = we_getTagAttribute("inputstyle",$attribs);
-				$checkboxclass = we_getTagAttribute("checkboxclass",$attribs);
-				$inputclass = we_getTagAttribute("inputclass",$attribs);
-				$checkboxtext = we_getTagAttribute("checkboxtext",$attribs, $GLOBALS["l_parser"]["delete"]);
-	
-				if($_SESSION["webuser"]['imgtmp'][$name]["id"]){
-				    $attribs["id"] = $_SESSION["webuser"]['imgtmp'][$name];
-				}
-	
-				unset($attribs["width"]);
-				unset($attribs["height"]);
 
 			}
 			
 			$imgId = $_SESSION["webuser"]['imgtmp'][$name]["id"];
 
 			include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/"."we_classes/we_document.inc.php");
+						
 			$imgTag = we_document::getFieldByVal($imgId, "img");
+			
 
 			if ($showcontrol) {
 				$checked = '';
@@ -215,7 +217,11 @@ function we_tag_sessionField($attribs,$content) {
 					</tr>
 				</table>';
 			} else {
-				return $imgTag;
+			 	if ($imgId) {
+					return $imgTag;
+				} else {
+					return '';
+				} 
 			}
 	}
 }
