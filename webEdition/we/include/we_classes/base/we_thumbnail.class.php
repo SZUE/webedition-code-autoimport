@@ -171,6 +171,11 @@ class we_thumbnail {
 	 */
 	var $outputHeight=0;
 
+	/**
+	 * defines, that even when the original is smaller than desired size, and image should not be maximized, a thumb is generated, needed for Bug #4258: upload of customer image
+	 * @var bool
+	 */
+	var $generateSmaller=false;
 
 	/**
 	* Constructor of class
@@ -204,7 +209,7 @@ class we_thumbnail {
 	* @param int $date
 	* @public
 	*/
-	function init($thumbID,$thumbWidth,$thumbHeight,$thumbRatio,$thumbMaxsize,$thumbInterlace,$thumbFormat,$thumbName,$imageID,$imageFileName,$imagePath,$imageExtension,$imageWidth,$imageHeight,$imageData="",$date="",$thumbQuality=8){
+	function init($thumbID,$thumbWidth,$thumbHeight,$thumbRatio,$thumbMaxsize,$thumbInterlace,$thumbFormat,$thumbName,$imageID,$imageFileName,$imagePath,$imageExtension,$imageWidth,$imageHeight,$imageData="",$date="",$thumbQuality=8,$generateSmaller=false){
 
 		$this->thumbID = $thumbID;
 		$this->thumbWidth=$thumbWidth;
@@ -223,6 +228,7 @@ class we_thumbnail {
 		$this->imageHeight = $imageHeight;
 		$this->imageData = $imageData;
 		$this->date = $date;
+		$this->generateSmaller = $generateSmaller;
 		if($this->thumbID && $this->thumbName){
 			$this->outputFormat = $this->thumbFormat ? $this->thumbFormat : (isset($GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)]) ? $GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)] : "jpg");
 			$this->_checkAndGetImageSizeIfNeeded();
@@ -577,7 +583,8 @@ class we_thumbnail {
 	* @private
 	*/
 	function _useOriginalSize(){
-		$outvar = ($this->thumbMaxsize == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth==0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight==0);
+		$outvar = $this->generateSmaller ($this->thumbMaxsize == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth==0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight==0);
+		if ($this->generateSmaller){$outvar=false;} 
 		return $outvar;
 	}
 
