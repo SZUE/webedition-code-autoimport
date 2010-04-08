@@ -71,7 +71,7 @@ class weTagCache extends weCache
 	function __construct($weTag, $params, $content, $lifeTime = 0)
 	{
 		
-		if ($GLOBALS['we_doc']->CacheType == "none") {
+		if ( (isset($GLOBALS['we_doc']->CacheType) && $GLOBALS['we_doc']->CacheType == "none") || !isset($GLOBALS['we_doc']->CacheType) ) {
 			$lifeTime = 0;
 		}
 		

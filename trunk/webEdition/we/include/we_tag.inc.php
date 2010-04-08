@@ -67,7 +67,12 @@ function we_tag($name, $attribs, $content = "")
 		$attribs['cachelifetime'] = 0;
 		$CacheType = 'none';
 	} else {
-		$CacheType = $GLOBALS["we_doc"]->CacheType;
+		if (isset($GLOBALS["we_doc"]->CacheType) ){
+			$CacheType = $GLOBALS["we_doc"]->CacheType;
+		} else {
+			$CacheType = 'none';
+			$attribs['cachelifetime'] = 0;
+		}
 	}
 	
 	if ($name == "navigation") {
