@@ -1170,7 +1170,7 @@ function we_cmd(){
 	}
 }
 function we_checkName() {
-	var regExp = /\'|"|>|<|\\|///;
+	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {
 ';
 	$we_responseText = sprintf($GLOBALS["l_we_editor"]["category"]["we_filename_notValid"], $path);
