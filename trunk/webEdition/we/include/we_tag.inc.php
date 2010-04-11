@@ -2314,10 +2314,12 @@ function we_tag_field($attribs, $content)
 				$out = getHtmlTag('img', $_imgAtts);
 			
 			} else {
-				
-				$out = we_document::getFieldByVal(
-						($isImageDoc && $type == "img") ? $GLOBALS["lv"]->Record["wedoc_ID"] : $GLOBALS["lv"]->f(
-								$name), 
+				$id = ($isImageDoc && $type == "img") ? $GLOBALS["lv"]->Record["wedoc_ID"] : $GLOBALS["lv"]->f($name);
+				if ($id ==0) {
+					$out = '';
+				} else {
+					$out = we_document::getFieldByVal(
+						$id, 
 						$type, 
 						$attribs, 
 						false, 
@@ -2326,6 +2328,7 @@ function we_tag_field($attribs, $content)
 						$GLOBALS["DB_WE"], 
 						$classid, 
 						'$GLOBALS["lv"]->f');
+				}
 			}
 			break;
 		case "day" :
