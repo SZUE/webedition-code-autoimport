@@ -14,7 +14,7 @@ CREATE TABLE tblFile (
   Extension varchar(16) NOT NULL default '',
   IsDynamic tinyint(4) NOT NULL default '0',
   IsSearchable tinyint(1) NOT NULL default '0',
-  DocType varchar(32) NOT NULL default '',
+  DocType varchar(64) NOT NULL default '',
   temp_doc_type varchar(32) NOT NULL default '',
   ClassName varchar(64) NOT NULL default '',
   Category varchar(255) default NULL,
