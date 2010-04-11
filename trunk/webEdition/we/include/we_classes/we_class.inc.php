@@ -289,7 +289,11 @@ class we_class
 
 	}
 	function htmlSelect($name,$values,$size=1,$selectedIndex="",$multiple=false,$attribs="",$compare="value",$width=""){
-		reset($values);
+		if (is_array($values)) {
+			reset($values);
+		} else {
+			$values = array();	
+		}
 		$ret = '<select id="'.trim($name).'" class="weSelect defaultfont" name="'.trim($name).'" size="'.abs($size).'"'.($multiple ? " multiple" : "").($attribs ? " $attribs" : "").($width ? ' style="width: '.$width.'px"' : '').'>'."\n";
 		$selIndex = split(",",$selectedIndex);
 		while(list($value,$text) = each($values)){
@@ -297,6 +301,7 @@ class we_class
 		}
 		$ret .= "</select>";
 		return $ret;
+		
 	}
 	
 	// this function doesn't split selectedIndex
