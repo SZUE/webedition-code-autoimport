@@ -60,4 +60,5 @@ $l_we_editor_info["mysql_date_only_format"] = '%d.%m.%Y';
 $l_we_editor_info["mysql_time_only_format"] = '%H:%i';
 
 $l_we_editor_info["revert_publish_question"] = 'Oletko varma että haluat palauttaa julkaistun version? Kaikki edellisen julkaisun jälkeen tekemäsi muutokset menetetään prosessin aikana.';
+$l_we_editor_info["openDocument"] = "Open document";// TRANSLATE
 ?>
