@@ -60,5 +60,5 @@ $l_we_editor_info["mysql_date_only_format"] = '%d.%m.%Y';
 $l_we_editor_info["mysql_time_only_format"] = '%H:%i';
 
 $l_we_editor_info["revert_publish_question"] = 'Möchten Sie wirklich die veröffentlichte Version wiederherstellen? Alle Änderungen seit der letzten Veröffentlichung gehen dabei verloren.';
-
+$l_we_editor_info["openDocument"] = "Öffne Dokument zum bearbeiten";
 ?>

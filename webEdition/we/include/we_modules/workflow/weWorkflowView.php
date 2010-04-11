@@ -1243,6 +1243,15 @@ class weWorkflowView extends weWorkflowBase{
 		$_parts = array();
 
 		$out = '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'tooltip.js"></script>';
+		$out .= '<script language="JavaScript" type="text/javascript">function openToEdit(tab,id,contentType){
+		if(top.opener && top.opener.top.weEditorFrameController) {
+			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
+			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
+			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+		}
+	} </script>';
 
 		//	Part - file-information
 		array_push(	$_parts, array(	"headline" => $l_we_editor_info["content_type"],
@@ -1320,7 +1329,7 @@ class weWorkflowView extends weWorkflowBase{
 					$this->documentDef->document->ContentType=="application/x-shockwave-flash");
 
 			array_push(	$_parts, array(	"headline" => $l_we_editor_info["local_path"],
-										"html"     => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onMouseOver="showtip(this,event,\''.$rp.'\')" onMouseOut="hidetip()">'.shortenPath($rp,74).'</a>',
+										"html"     => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onMouseOver="showtip(this,event,\''.$rp.'\')" onMouseOut="hidetip()"  onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.shortenPath($rp,74).'</a>',
 										"space"    => $_space,
 										"noline"   => 1
 									)
@@ -1331,7 +1340,15 @@ class weWorkflowView extends weWorkflowBase{
 										"space"    => $_space
 									)
 						);
+			array_push(	$_parts, array(	"headline" => '',
+										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.$l_we_editor_info["openDocument"].'</a>',
+										"space"    => $_space
+									)
+						);
+						
 		}
+			
+
 
 		//	Logbook
 		array_push(	$_parts, array(	"headline" => "",
