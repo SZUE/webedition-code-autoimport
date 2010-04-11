@@ -49,7 +49,7 @@ CREATE TABLE tblContentTypes (
 /* query separator */
 CREATE TABLE tblDocTypes (
   ID int(11) NOT NULL auto_increment,
-  DocType varchar(32) NOT NULL default '',
+  DocType varchar(64) NOT NULL default '',
   Extension varchar(10) NOT NULL default '',
   ParentID int(11) NOT NULL default '0',
   ParentPath varchar(255) NOT NULL default '',
@@ -102,7 +102,7 @@ CREATE TABLE tblFile (
   Extension varchar(16) NOT NULL default '',
   IsDynamic tinyint(4) NOT NULL default '0',
   IsSearchable tinyint(1) NOT NULL default '0',
-  DocType varchar(32) NOT NULL default '',
+  DocType varchar(64) NOT NULL default '',
   temp_doc_type varchar(32) NOT NULL default '',
   ClassName varchar(64) NOT NULL default '',
   Category varchar(255) default NULL,
@@ -1116,7 +1116,7 @@ CREATE TABLE `tblversions` (
   `IsDynamic` tinyint(4) NOT NULL,
   `IsSearchable` tinyint(1) NOT NULL,
   `ClassName` varchar(64) NOT NULL,
-  `DocType` varchar(32) NOT NULL,
+  `DocType` varchar(64) NOT NULL,
   `Category` varchar(255) NOT NULL,
   `RestrictOwners` tinyint(1) NOT NULL,
   `Owners` varchar(255) NOT NULL,

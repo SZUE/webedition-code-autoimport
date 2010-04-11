@@ -26,7 +26,7 @@ CREATE TABLE `tblversions` (
   `IsDynamic` tinyint(4) NOT NULL,
   `IsSearchable` tinyint(1) NOT NULL,
   `ClassName` varchar(64) NOT NULL,
-  `DocType` varchar(32) NOT NULL,
+  `DocType` varchar(64) NOT NULL,
   `Category` varchar(255) NOT NULL,
   `RestrictOwners` tinyint(1) NOT NULL,
   `Owners` varchar(255) NOT NULL,
