@@ -2136,7 +2136,7 @@ class we_objectFile extends we_document
 	}
 
 	function i_getUniqueIDsAndFixNames(){
-		if(sizeof($this->DefArray)){
+		if(is_array($this->DefArray) && sizeof($this->DefArray)){
 			$newDefArr = $this->getDefaultValueArray();
 			foreach($newDefArr as $n=>$v){
 				if(is_array($v) && isset($v["uniqueID"])){
