@@ -142,15 +142,10 @@ function we_tag_votingField($attribs, $content) {
 							if (is_numeric($myImageID)) {
 								$myImage= new we_imageDocument();
 								$myImage->initByID($myImageID);
-								$code = $myImage->getHtml();
-								$atts = removeAttribs($attribs,array('name','type'));
-								$atts['alt'] = $myImage->getElement('alt');
-								$atts['title'] = $myImage->getElement('title');
-								$atts['width'] = $myImage->getElement('width');
-								$atts['height'] = $myImage->getElement('height');
-								$atts['src'] = $myImage->Path;
 								
-								$code = getHtmlTag('img',$atts,'');
+								$atts = removeAttribs($attribs,array('name','type'));
+								$myImage->initByAttribs($atts);								
+								$code = $myImage->getHtml();
 							}
 						}
 						return $code;

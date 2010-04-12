@@ -583,7 +583,7 @@ class we_thumbnail {
 	* @private
 	*/
 	function _useOriginalSize(){
-		$outvar = $this->generateSmaller ($this->thumbMaxsize == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth==0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight==0);
+		$outvar = ($this->thumbMaxsize == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth==0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight==0);
 		if ($this->generateSmaller){$outvar=false;} 
 		return $outvar;
 	}
