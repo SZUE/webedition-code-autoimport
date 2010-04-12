@@ -781,6 +781,7 @@ function processCommands() {
 					
 					$an = $_REQUEST['answers_name'] . '_variant' . $i . '_' . $_REQUEST['answers_name'] . '_item';
 					$anImage = $an.'ImageID';
+					$anMedia = $an.'MediaID';
 					$anSuccessor = $an.'SuccessorID';
 					$addset = array();
 					for($j=0;$j<$_REQUEST['item_count'];$j++){
@@ -789,6 +790,11 @@ function processCommands() {
 							if($_REQUEST[$anImage.$j]!='Array') {
 								$addset['imageID'][] = addslashes($_REQUEST[$anImage.$j]);
 							} else {$addset['imageID'][]=0;}
+						}
+						if(isset($_REQUEST[$anMedia.$j])) { 
+							if($_REQUEST[$anMedia.$j]!='Array') {
+								$addset['mediaID'][] = addslashes($_REQUEST[$anMedia.$j]);
+							} else {$addset['mediaID'][]=0;}
 						}
 						if(isset($_REQUEST[$anSuccessor.$j])) { 
 							if($_REQUEST[$anSuccessor.$j]!='Array') {

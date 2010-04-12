@@ -155,7 +155,8 @@ $l_voting['answer_limit'] = 'Die Befragung muss mindestens zwei - bei erlaubter 
 $l_voting["csv_charset"] = "Export-Zeichensatz";
 $l_voting["imageID_text"] = "Bild-ID";
 $l_voting["successorID_text"] = "Nachfolger-ID";
-
+$l_voting["mediaID_text"] = "Media-ID";
+$l_voting['AllowMedia'] = 'Erlaube Media-Dateien wie Audio- und Video-Dateien';
 $l_voting['answerID'] = 'AntwortID';
 $l_voting['answerText'] = 'Antworttext';
 

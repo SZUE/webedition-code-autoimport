@@ -146,4 +146,28 @@ $l_voting['not_valid_ip'] = 'Die IP-Adresse ist nicht gültig';
 
 $l_voting['not_active'] = 'Das eingegebene Gültigkeitsdatum liegt in der Vergangenheit!';
 
+$l_voting['headline_datatype'] = 'Befragungsart';
+
+$l_voting['AllowFreeText'] = 'Erlaube freie Texteingabe';
+$l_voting['AllowImages'] = 'Erlaube Bilder';
+$l_voting['AllowSuccessor'] = 'Genereller Redirect nach:';
+$l_voting['AllowSuccessors'] = 'Erlaube individuelle Redirects';
+$l_voting['answer_limit'] = 'Die Befragung muss mindestens zwei - bei erlaubter Freitexteingabe eine - Antwort(en) enthalten!';
+$l_voting["csv_charset"] = "Export-Zeichensatz";
+$l_voting["imageID_text"] = "Bild-ID";
+$l_voting["successorID_text"] = "Nachfolger-ID";
+$l_voting["mediaID_text"] = "Media-ID";
+$l_voting['AllowMedia'] = 'Erlaube Media-Dateien wie Audio- und Video-Dateien';
+$l_voting['answerID'] = 'AntwortID';
+$l_voting['answerText'] = 'Antworttext';
+
+$l_voting['userid_method'] = 'Für eingelogte Nutzer (Kundenverwaltung) mit der gespeicherten <br />Kunden-ID (das Logbuch muss aktiv sein) vergleichen';
+$l_voting['IsRequired'] = 'Mache dies zu einem Pflichtfeld';
+$l_voting['voting-id'] = 'Voting-ID';
+$l_voting['voting-session'] = 'Voting-Session';
+$l_voting['voting-successor'] = 'Nachfolger';
+$l_voting['voting-additionalfields'] = 'Zusatzdaten';
+$l_voting['log_error_required'] = 'Fehler: Dies ist ein Pflichtfeld';
+$l_voting['folder_path_exists'] = "Diese Gruppe existiert schon!";
+
 ?>

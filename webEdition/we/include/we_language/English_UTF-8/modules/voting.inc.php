@@ -143,9 +143,13 @@ $l_voting['AllowFreeText'] = 'Allow free text';
 $l_voting['AllowImages'] = 'Allow images';
 $l_voting['AllowSuccessor'] = 'redirect to:';
 $l_voting['AllowSuccessors'] = 'allow individual redirects';
+
+
 $l_voting["csv_charset"] = "Export charset";
 $l_voting["imageID_text"] = "Image ID";
 $l_voting["successorID_text"] = "Successor ID";
+$l_voting["mediaID_text"] = "Media-ID";
+$l_voting['AllowMedia'] = 'Erlaube Media-Dateien wie Audio- und Video-Dateien';
 $l_voting['voting-id'] = 'Voting ID';
 $l_voting['voting-session'] = 'Voting Session';
 $l_voting['voting-successor'] = 'successor';
