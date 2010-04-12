@@ -11,6 +11,7 @@ CREATE TABLE tblvoting (
   IsRequired tinyint(1) NOT NULL DEFAULT '0',
   AllowFreeText tinyint(1) NOT NULL DEFAULT '0',
   AllowImages tinyint(1) NOT NULL DEFAULT '0',
+  AllowMedia tinyint(1) NOT NULL DEFAULT '0',
   AllowSuccessor tinyint(1) NOT NULL DEFAULT '0',
   AllowSuccessors tinyint(1) NOT NULL DEFAULT '0',
   Successor bigint(20) unsigned NOT NULL DEFAULT '0',

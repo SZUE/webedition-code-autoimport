@@ -50,6 +50,7 @@ class weVoting extends weModelBase{
 	var $IsRequired=false;
 	var $AllowFreeText=false;
 	var $AllowImages=false;
+	var $AllowMedia=false;
 	var $AllowSuccessor=false;
 	var $AllowSuccessors=false;
 	var $Successor=0;
@@ -115,7 +116,7 @@ class weVoting extends weModelBase{
 		}
 		if(empty($this->QASetAdditions)) {
 			$this->QASetAdditions = array(
-				0=>array("imageID"=>"","successorID"=>"")
+				0=>array("imageID"=>"","mediaID"=>"","successorID"=>"")
 				
 			);
 		}

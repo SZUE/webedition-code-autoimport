@@ -249,6 +249,7 @@ class weVotingFrames extends weModuleFrames {
 				question_edit = new multi_edit("question",document.we_form,1,"",'.($this->_width_size).',true);
 				answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",'.($this->_width_size-32).',true);
 				answers_edit.SetImageIDText("'.$l_voting['imageID_text'].'");
+				answers_edit.SetMediaIDText("'.$l_voting['mediaID_text'].'");
 				answers_edit.SetSuccessorIDText("'.$l_voting['successorID_text'].'");
 			';
 
@@ -273,12 +274,14 @@ class weVotingFrames extends weModuleFrames {
 					if($k == 'answers'){
 						foreach ($v as $akey=>$aval){
 							$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
-							$aval3 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
+							$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
+							$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
 							$variant_js .= '
 								answers_edit.setItem("'.$variant.'","'.$akey.'","' . $aval . '");
 								 
 								answers_edit.setItemImageID("'.$variant.'","'.$akey.'","' . $aval2 . '");
-								answers_edit.setItemSuccessorID("'.$variant.'","'.$akey.'","' . $aval3 . '");
+								answers_edit.setItemMediaID("'.$variant.'","'.$akey.'","' . $aval3 . '");
+								answers_edit.setItemSuccessorID("'.$variant.'","'.$akey.'","' . $aval4 . '");
 							';
 						}
 					}
@@ -311,6 +314,15 @@ class weVotingFrames extends weModuleFrames {
 				$variant_js .= '
 				
 				answers_edit.hideImages();';
+			}
+			if ($this->View->voting->AllowMedia) {
+				$variant_js .= '
+				
+				answers_edit.showMedia();';
+			} else {
+				$variant_js .= '
+				
+				answers_edit.hideMedia();';
 			}
 			if ($this->View->voting->AllowSuccessors) {
 				$variant_js .= '
@@ -567,6 +579,7 @@ class weVotingFrames extends weModuleFrames {
 				we_forms::checkboxWithHidden($this->View->voting->IsRequired ? true : false, 'IsRequired', $l_voting['IsRequired'],false,'defaultfont','top.content.setHot();').
 				we_forms::checkboxWithHidden($this->View->voting->AllowFreeText ? true : false, 'AllowFreeText', $l_voting['AllowFreeText'],false,'defaultfont','top.content.setHot();answers_edit.toggleMinCount();').
 				we_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', $l_voting['AllowImages'],false,'defaultfont','top.content.setHot();answers_edit.toggleImages();') .
+				we_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', $l_voting['AllowMedia'],false,'defaultfont','top.content.setHot();answers_edit.toggleMedia();') .
 				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', $l_voting['AllowSuccessor'],false,'defaultfont','top.content.setHot(); toggle(\'Successor\')') .
 				htmlFormElementTable(htmlTextInput('Successor','',$this->View->voting->Successor,'','style="width: '.$this->_width_size.';display:'.$displaySuccessor.'" id="Successor" onchange="top.content.setHot();" '),$l_voting["successor_id"]) .
 				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', $l_voting['AllowSuccessors'],false,'defaultfont','top.content.setHot();answers_edit.toggleSuccessors();')

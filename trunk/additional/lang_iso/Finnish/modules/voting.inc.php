@@ -138,4 +138,27 @@ $l_voting['new_ip_add'] = 'Syötä uusi IP osoite!';
 $l_voting['not_valid_ip'] = 'Annettu IP ei ole validi';
 $l_voting['not_active'] = 'Annettu päiväys on jo mennyt!';
 
+$l_voting['headline_datatype'] = 'Type of Inquiry';// TRANSLATE
+$l_voting['AllowFreeText'] = 'Allow free text';// TRANSLATE
+$l_voting['AllowImages'] = 'Allow images';// TRANSLATE
+$l_voting['AllowSuccessor'] = 'redirect to:';// TRANSLATE
+$l_voting['AllowSuccessors'] = 'allow individual redirects';// TRANSLATE
+$l_voting["csv_charset"] = "Export charset";// TRANSLATE
+$l_voting["imageID_text"] = "Image ID";// TRANSLATE
+$l_voting["successorID_text"] = "Successor ID";// TRANSLATE
+$l_voting["mediaID_text"] = "Media-ID";// TRANSLATE
+$l_voting['AllowMedia'] = 'Allow Media such as Audio or video files';// TRANSLATE
+$l_voting['voting-id'] = 'Voting ID';// TRANSLATE
+$l_voting['voting-session'] = 'Voting Session';// TRANSLATE
+$l_voting['voting-successor'] = 'successor';// TRANSLATE
+$l_voting['voting-additionalfields'] = 'add. data';// TRANSLATE
+$l_voting['answerID'] = 'answer ID';// TRANSLATE
+$l_voting['answerText'] = 'answer text';// TRANSLATE
+
+$l_voting['userid_method'] = 'For logged in Users (customer management), compare to saved customer ID (the log has to be active)';// TRANSLATE
+$l_voting['IsRequired'] = 'This is a required field';// TRANSLATE
+
+$l_voting['answer_limit'] = 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!';// TRANSLATE
+$l_voting['folder_path_exists'] = "Folder already exists!";// TRANSLATE
+
 ?>

@@ -27,6 +27,7 @@
 		this.imageIDText ="";
 		this.successorIDText ="";
 		this.ImagesHidden =0;
+		this.MediaHidden =0;
 		this.SuccessorsHidden =0;
 		this.defWidth = width;
 		this.name = "me" + Math.round(Math.random()*10000);
@@ -44,6 +45,9 @@
 		}
 		this.SetImageIDText = function(derText){
 			this.imageIDText =derText;
+		}
+		this.SetMediaIDText = function(derText){
+			this.mediaIDText =derText;
 		}
 		this.SetSuccessorIDText = function(derText){
 			this.successorIDText =derText;
@@ -73,6 +77,33 @@
 			this.ImagesHidden = 0;
 			for(var i=0;i<this.itemCount;i++){
 				document.getElementById('tabrowImageID'+i).style.display = "block";
+			}
+		}
+		this.toggleMedia = function(){
+			if(this.MediaHidden) { 
+				this.MediaHidden = 0;
+				for(var i=0;i<this.itemCount;i++){
+					document.getElementById('tabrowMediaID'+i).style.display = "block";
+				}
+			} else {
+				this.MediaHidden = 1;
+				for(var i=0;i<this.itemCount;i++){
+					document.getElementById('tabrowMediaID'+i).style.display = "none";
+				}
+
+			}
+			
+		}
+		this.hideMedia = function(){
+			this.MediaHidden = 1;
+			for(var i=0;i<this.itemCount;i++){
+				document.getElementById('tabrowMediaID'+i).style.display = "none";
+			}
+		}
+		this.showMedia = function(){
+			this.MediaHidden = 0;
+			for(var i=0;i<this.itemCount;i++){
+				document.getElementById('tabrowMediaID'+i).style.display = "block";
 			}
 		}
 		this.toggleSuccessors = function(){
@@ -127,6 +158,7 @@
 			for(var i=0;i<this.itemCount;i++){
 				this.createItemHidden(this.name+"_variant"+this.variantCount+"_"+this.name+"_item"+i);
 				this.createItemHidden(this.name+"_variant"+this.variantCount+"_"+this.name+"_itemImageID"+i);
+				this.createItemHidden(this.name+"_variant"+this.variantCount+"_"+this.name+"_itemMediaID"+i);
 				this.createItemHidden(this.name+"_variant"+this.variantCount+"_"+this.name+"_itemSuccessorID"+i);
 			}
 			this.variantCount++;
@@ -148,6 +180,7 @@
 				//this.form.removeChild(item);
 				this.parent.removeChild(item);
 				var item = document.getElementById(this.name+"_variant"+this.variantCount+"_"+this.name+"_itemImageID"+z);
+				var item = document.getElementById(this.name+"_variant"+this.variantCount+"_"+this.name+"_itemMediaID"+z);
 				var item = document.getElementById(this.name+"_variant"+this.variantCount+"_"+this.name+"_itemSuccessorID"+z);
 				this.parent.removeChild(item);
 			}
@@ -172,10 +205,11 @@
 				TabEnd =  "</table>";
 				
 				TabMiddle1 = "<tr valign=\"middle\" id=\"tabrowImageID"+this.itemCount+"\"><td style=\"width:"+this.defWidth+"\"><table style=\"margin-bottom:0px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:120\" class=\"defaultfont\">"+this.imageIDText+"</td><td><input name=\""+this.name+"_itemImageID"+this.itemCount+"\" id=\""+this.name+"_itemImageID_input_"+this.itemCount+"\" type=\"text\" style=\"width:383\" onkeyup=\""+this.name+".updateHidden(\'itemImageID"+this.itemCount+"\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+				TabMiddle2 = "<tr valign=\"middle\" id=\"tabrowMediaID"+this.itemCount+"\"><td style=\"width:"+this.defWidth+"\"><table style=\"margin-bottom:0px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:120\" class=\"defaultfont\">"+this.mediaIDText+"</td><td><input name=\""+this.name+"_itemMediaID"+this.itemCount+"\" id=\""+this.name+"_itemMediaID_input_"+this.itemCount+"\" type=\"text\" style=\"width:383\" onkeyup=\""+this.name+".updateHidden(\'itemMediaID"+this.itemCount+"\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 
-				TabMiddle2 = "<tr valign=\"middle\" id=\"tabrowSuccessorID"+this.itemCount+"\"><td style=\"width:"+this.defWidth+"\"><table style=\"margin-bottom:0px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:120\" class=\"defaultfont\">"+this.successorIDText+"</td><td><input name=\""+this.name+"_itemSuccessorID"+this.itemCount+"\" id=\""+this.name+"_itemSuccessorID_input_"+this.itemCount+"\" type=\"text\" style=\"width:383\" onkeyup=\""+this.name+".updateHidden(\'itemSuccessorID"+this.itemCount+"\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+				TabMiddle3 = "<tr valign=\"middle\" id=\"tabrowSuccessorID"+this.itemCount+"\"><td style=\"width:"+this.defWidth+"\"><table style=\"margin-bottom:0px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:120\" class=\"defaultfont\">"+this.successorIDText+"</td><td><input name=\""+this.name+"_itemSuccessorID"+this.itemCount+"\" id=\""+this.name+"_itemSuccessorID_input_"+this.itemCount+"\" type=\"text\" style=\"width:383\" onkeyup=\""+this.name+".updateHidden(\'itemSuccessorID"+this.itemCount+"\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 
-				set.innerHTML = TabStart+TabMiddle1+TabMiddle2+TabEnd; 
+				set.innerHTML = TabStart+TabMiddle1+TabMiddle2+TabMiddle3+TabEnd; 
 			}
 			else{
 				set.innerHTML = "<table style=\"margin-bottom:5px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:"+this.defWidth+"\"><label id=\""+this.name+"_item_label_"+this.itemCount+"\" class=\"defaultfont\"></td><td>&nbsp;</td><td>" + butt + "</td></tr></table>";
@@ -193,6 +227,7 @@
 
 			this.itemCount++;
 			if (this.ImagesHidden) {this.hideImages();}else {this.showImages();}
+			if (this.MediaHidden) {this.hideMedia();}else {this.showMedia();}
 			if (this.SuccessorsHidden) {this.hideSuccessors();}else {this.showSuccessors();}
 		}
 
@@ -236,6 +271,10 @@
 			this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+item].value=value;
 			//alert(this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+item+ ' ' +this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+item].value);
 		}
+		this.setItemMediaID = function (variant,item,value){
+			this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemMediaID"+item].value=value;
+			
+		}
 		this.setItemSuccessorID = function (variant,item,value){
 			this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+item].value=value;
 			//alert(this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+item+ ' ' +this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+item].value);
@@ -254,6 +293,7 @@
 				if(this.editable) {
 					this.form.elements[this.name+"_item"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
 					this.form.elements[this.name+"_itemImageID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+i].value;
+					this.form.elements[this.name+"_itemMediaID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemMediaID"+i].value;
 					this.form.elements[this.name+"_itemSuccessorID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+i].value;
 					
 				}
