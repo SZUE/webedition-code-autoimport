@@ -136,7 +136,7 @@ class weWorkflowView extends weWorkflowBase{
 	function getProperties(){
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$GLOBALS["we_print_not_htmltop"] = true;
-			$GLOBALS["we_head_insert"] = $this->getPropertyJS();
+			$GLOBALS["we_head_insert"] = $this->getPropertyJS();  //this this is bullshit since getPropertyJS writes directly to screen
 			$GLOBALS["we_body_insert"] = '<form name="we_form">'."\n";
 			$GLOBALS["we_body_insert"] .= $this->getHiddens().'</form>'."\n";
 			$GLOBALS["mod"] = "workflow";
@@ -145,7 +145,10 @@ class weWorkflowView extends weWorkflowBase{
             $out = ob_get_contents();
             ob_end_clean();
 		}else{
-			$out=$this->getPropertyJS().'</head><body class="weEditorBody" onload="loaded=1;" onunload="doUnload()"><form name="we_form" onsubmit="return false">'."\r\n";
+			//$out=$this->getPropertyJS(); this is bullshit since getPropertyJS writes directly to screen
+			$this->getPropertyJS();
+			
+			$out ='</head><body class="weEditorBody" onload="loaded=1;" onunload="doUnload()"><form name="we_form" onsubmit="return false">'."\r\n";
 			$out.=$this->getHiddens();
 			if($this->show){
 				$out.=$this->getDocumentInfo();
@@ -887,7 +890,7 @@ class weWorkflowView extends weWorkflowBase{
 				return true;
 			}
 
-		<?php endif?>
+		<?php endif; ?>
 		</script>
 	<?php
 	}

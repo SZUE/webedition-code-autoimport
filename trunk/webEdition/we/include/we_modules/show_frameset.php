@@ -38,9 +38,9 @@ if(isset($_REQUEST['mod']) && !isset($mod)) {
 }
 ?>
 	</head>
-	<frameset rows="26,*" border="0" framespacing="0" frameborder="no">;
+	<frameset rows="26,*" border="0" framespacing="0" frameborder="no">
 		<frame src="<?php print WE_MODULE_PATH; ?>navi.php?mod=<?php echo $mod ?>" name="navi" noresize scrolling="no">
 		<frame src="<?php print WE_MODULE_PATH; ?>show.php?mod=<?php echo $mod . (empty($_REQUEST["we_cmd"][1]) ? '' : "&msg_param=" . $_REQUEST["we_cmd"][1]) . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . (isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : ''); ?>" name="content" noresize scrolling="no">
-	</frameset>
+	</frameset><noframes></noframes>
 	<body bgcolor="#ffffff"></body>
 </html>

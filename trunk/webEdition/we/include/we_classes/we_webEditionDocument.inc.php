@@ -742,8 +742,11 @@ class we_webEditionDocument extends we_textContentDocument {
 			$basehrefMerk = $GLOBALS["we_baseHref"];
 			unset($GLOBALS["we_baseHref"]);
 		}
-  		ob_start();
-    	if(is_file($we_include))include($we_include);
+		// hier bricht es manchmal ab, aus unbekannten gründen, sieh bugbase #4271
+		ob_start();
+ 		if(is_file($we_include)){
+			include($we_include);
+		}
     	$contents = ob_get_contents();
     	ob_end_clean();
 		if(isset($basehrefMerk)){
@@ -820,11 +823,16 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	// returns the filesize of the document
 	function getFilesize() {
+	/* dies führt bei manchen dokumenten zum absturz in i_getDocument, und zwar dort beim include innerhalb von ob_start
 		$filename = TMP_DIR."/".md5(uniqid(rand()));
-		saveFile($filename,$this->i_getDocument());
+		saveFile($filename,$this->i_getDocument($includepath));
 		$fs = filesize($filename);
 		unlink($filename);
 		return $fs;
+	*/
+		$fs= filesize($_SERVER[DOCUMENT_ROOT].$this->Path);//das ist ungenau
+		return $fs;
+	
 	}
 
 	function i_getDocumentToSave() {
