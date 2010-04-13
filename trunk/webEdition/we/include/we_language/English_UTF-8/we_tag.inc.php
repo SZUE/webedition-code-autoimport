@@ -354,7 +354,7 @@ $l_we_tag['useShopVariant']['description'] = "The we:shopVariant tag uses the da
 $l_we_tag['var']['description'] = "The we:var tag displays the content of a global PHP variable respective to the content of a document field with the name listed below.";
 $l_we_tag['voting']['description'] = "The we:voting tag is used to display Votings.";
 $l_we_tag['voting']['defaultvalue'] = "";
-$l_we_tag['votingField']['description'] = "The we:votingField-tag is required to display the content of a voting. The attribute \"name\" defines what to show. The attribute \"type\", how to display it. Valid name-type combinations are: question - text; answer - text,radio,select; result - count, percent, total; id - answer, select, radio, voting;";
+$l_we_tag['votingField']['description'] = "The we:votingField-tag is required to display the content of a voting. The attribute \"name\" defines what to show. The attribute \"type\", how to display it. Valid name-type combinations are: question - text; result - count, percent, total; id - answer, select, radio, voting; answer - text,radio,checkbox (select multiple) select, textinput and textarea (free text answer field), image (all we:img attributes such as thumbnail are supported), media (delivers the path utilizing outputto and nameto); ";
 $l_we_tag['votingList']['description'] = "This tag automatically generates the voting lists.";
 $l_we_tag['votingList']['defaultvalue'] = "";
 $l_we_tag['votingSelect']['description'] = "Use this tag to generate a dropdown-menu; (&lt;select&gt;) to select voting.";
@@ -408,5 +408,9 @@ $l_we_tag['pageLanguage']['defaultvalue'] = "";
 $l_we_tag['objectLanguage']['description'] = "Shows the language of the object";
 $l_we_tag['objectLanguage']['defaultvalue'] = "";
 
+$l_we_tag['ifVotingField']['description'] = "Checks if a votingField has a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";
+$l_we_tag['ifNotVotingField']['description'] = "Checks if a votingField has not a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";
+$l_we_tag['ifVotingFieldEmpty']['description'] = "Checks if a votingField is empty, the attribute combinations of name and type are the same as in the we:votingField tag";
+$l_we_tag['ifVotingFieldNotEmpty']['description'] = "Checks if a votingField is not empty, the attribute combinations of name and type are the same as in the we:votingField tag";
 
 ?>

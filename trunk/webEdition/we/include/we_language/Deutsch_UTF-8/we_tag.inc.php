@@ -354,7 +354,7 @@ $l_we_tag['useShopVariant']['description'] = "Das we:shopVariant-Tag &uuml;berni
 $l_we_tag['var']['description'] = "Das we:var-Tag zeigt den Inhalt einer globalen Php-Variablen bzw. den Inhalt eines Dokumentfeldes mit dem unten eingegebenen Namen an.";
 $l_we_tag['voting']['description'] = "Das we:voting-Tag wird ben&ouml;tigt, um Votings darzustellen.";
 $l_we_tag['voting']['defaultvalue'] = "";
-$l_we_tag['votingField']['description'] = "Das we:votingField-Tag wird ben&ouml;tigt, um den Inhalt eines Votings anzuzeigen. Das Attribut name definiert den zu zeigenden Inhalt, das Attribut type die Art der Anzeige. G&uuml;ltige name-type Kombinationen sind: question - text; answer - text, radio, select; result - count, percent, total; id - answer, select, radio, voting.";
+$l_we_tag['votingField']['description'] = "Das we:votingField-Tag wird ben&ouml;tigt, um den Inhalt eines Votings anzuzeigen. Das Attribut name definiert den zu zeigenden Inhalt, das Attribut type die Art der Anzeige. G&uuml;ltige name-type Kombinationen sind: question - text; result - count, percent, total; id - answer, select, radio, voting; answer - text, radio, checkbox (Mehrfachauswahl), select (Mehrfachauswahl), textinput und textarea (freies Textantwortfeld), image (hier sind alle we:img Attribute wie thumbnail usw. m&ouml;glich), media (liefert &uuml;ber to und nameto den Pfad der Datei); ";
 $l_we_tag['votingList']['description'] = "Mit diesem Tag k&ouml;nnen Sie automatisch Listen &uuml;ber Ihre Votings generieren.";
 $l_we_tag['votingList']['defaultvalue'] = "";
 $l_we_tag['votingSelect']['description'] = "Mit diesem Tag wird ein DropDown-Men&uuml; (&lt;select&gt;) erzeugt, mit dem es m&ouml;glich ist, ein Voting auszuw&auml;hlen.";
@@ -407,5 +407,9 @@ $l_we_tag['pageLanguage']['defaultvalue'] = "";
 $l_we_tag['objectLanguage']['description'] = "Gibt die dem Objekt zugewiesene Sprache aus";
 $l_we_tag['objectLanguage']['defaultvalue'] = "";
 
+$l_we_tag['ifVotingField']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField einen Wert entsprechend dem Attribut match hat, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
+$l_we_tag['ifNotVotingField']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField keinen Wert entsprechend dem Attribut match hat, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
+$l_we_tag['ifVotingFieldEmpty']['description'] = "Uuml;berpr&uuml;ft ob ein VotingField leer ist, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
+$l_we_tag['ifVotingFieldNotEmpty']['description'] = "Uuml;berpr&uuml;ft ob ein VotingField nicht leer ist, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
 
 ?>
