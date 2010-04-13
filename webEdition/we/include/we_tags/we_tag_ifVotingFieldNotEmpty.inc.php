@@ -18,10 +18,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_ifVoteActive($attribs,$content) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');    
+function we_tag_ifVotingFieldNotEmpty($attribs,$content) {
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_ifVotingFieldEmpty.inc.php');   
 	
-	return $GLOBALS['_we_voting']->Active;
+	return !we_tag_ifVotingFieldEmpty($attribs, $content);
 }
 
 ?>

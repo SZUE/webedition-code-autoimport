@@ -21,35 +21,38 @@
 
 
 function we_tag_votingField($attribs, $content) {
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/voting/weVoting.php");
 
 	if(isset($GLOBALS['_we_voting'])){
 		$name = we_getTagAttributeTagParser("name",$attribs);
 		$type = we_getTagAttributeTagParser("type",$attribs);
 		$precision = we_getTagAttributeTagParser("precision",$attribs,0);
 		$num_format = we_getTagAttributeTagParser("num_format",$attribs,'');
+		$nameTo = we_getTagAttribute("nameto", $attribs);
+		$to = we_getTagAttribute("outputto", $attribs,'screen');
 
 		switch ($name){
 			case 'id':
 				switch ($type){
 					case 'answer':
-						return $GLOBALS['_we_voting']->answerCount;
+						$returnvalue =  $GLOBALS['_we_voting']->answerCount;
 					break;
 					case 'select':
-						return '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
+						$returnvalue =  '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 					break;
 					case 'radio':
 					case 'checkbox':
 					case 'chekbox':
-						return '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
+						$returnvalue =  '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
 					break;
 					case 'voting':
 					default:
-						return $GLOBALS['_we_voting']->ID;
+						$returnvalue =  $GLOBALS['_we_voting']->ID;
 					break;					
 				}
 			break;
 			case 'question':
-				return stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['question']);
+				$returnvalue =  stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['question']);
 			break;
 			case 'answer':
 				switch ($type){
@@ -81,7 +84,7 @@ function we_tag_votingField($attribs, $content) {
 	
 							$code .=  getHtmlTag('input',$atts,'');
 						}
-						return $code;
+						$returnvalue =  $code;
 					break;
 					case 'checkbox':
 						$code = '';
@@ -112,7 +115,7 @@ function we_tag_votingField($attribs, $content) {
 
 							$code .= getHtmlTag('input',$atts,'');
 						}
-						return $code;
+						$returnvalue =  $code;
 					break;
 					case 'select':
 						$code = '';
@@ -132,7 +135,7 @@ function we_tag_votingField($attribs, $content) {
 						if($GLOBALS['_we_voting']->isLastSet()){
 							$code .= '</select>';
 						}
-						return $code;
+						$returnvalue =  $code;
 					break;
 					case 'image':
 						$code = '';
@@ -143,12 +146,19 @@ function we_tag_votingField($attribs, $content) {
 								$myImage= new we_imageDocument();
 								$myImage->initByID($myImageID);
 								
-								$atts = removeAttribs($attribs,array('name','type'));
+								$atts = removeAttribs($attribs,array('name','type','precision','num_format','nameto','outputto'));
 								$myImage->initByAttribs($atts);								
 								$code = $myImage->getHtml();
 							}
 						}
-						return $code;
+						$returnvalue =  $code;
+					break;
+					case 'media':
+						$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
+						if ($GLOBALS['_we_voting']->answerCount < $countanswers){
+							$myMediaID = stripslashes($GLOBALS['_we_voting']->QASetAdditions[$GLOBALS['_we_voting']->defVersion]['mediaID'][$GLOBALS['_we_voting']->answerCount]);
+						}
+						$returnvalue =  id_to_path($myMediaID);
 					break;
 					case 'textinput':
 						$code = '';
@@ -185,7 +195,7 @@ function we_tag_votingField($attribs, $content) {
 								$code .= getHtmlTag('input',$atts,$value);
 							}
 						}
-						return $code;
+						$returnvalue =  $code;
 					break;
 					case 'textarea':
 						$code = '';
@@ -220,7 +230,7 @@ function we_tag_votingField($attribs, $content) {
 								$code = getHtmlTag('textarea',$atts,$value,true);
 							}
 						}
-						return $code;
+						$returnvalue =  $code;
 					break;
 					case 'text':
 					default:
@@ -229,22 +239,45 @@ function we_tag_votingField($attribs, $content) {
 						if ($GLOBALS['_we_voting']->answerCount < $countanswers){
 							$code = stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers'][$GLOBALS['_we_voting']->answerCount]);
 						}
-						return $code;
+						$returnvalue =  $code;
 					break;
 				}
 			break;
 			case 'result':
-				return $GLOBALS['_we_voting']->getResult($type,$num_format,$precision);
+				$returnvalue =  $GLOBALS['_we_voting']->getResult($type,$num_format,$precision);
 			break;
 			case 'date':
 				$format = we_getTagAttributeTagParser("format",$attribs,"");
 				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_editor_info.inc.php");
-				return date(($format!="" ? $format : $l_we_editor_info["date_format"]), $GLOBALS['_we_voting']->PublishDate);
+				$returnvalue =  date(($format!="" ? $format : $l_we_editor_info["date_format"]), $GLOBALS['_we_voting']->PublishDate);
 			break;
 		}
 
 	}
-
+	switch ($to) {
+		case "request" :
+			$_REQUEST[$nameTo] = $returnvalue;
+			break;
+		case "global" :
+			$GLOBALS[$nameTo] = $returnvalue;
+			break;
+		case "session" :
+			$_SESSION[$nameTo] = $returnvalue;
+			break;
+		case "top" :
+			$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $returnvalue);
+			break;
+		case "block" :
+		case "self" :
+			$GLOBALS["we_doc"]->setElement($nameTo, $returnvalue);
+			break;		
+		case "sessionfield" :
+			if (isset($_SESSION["webuser"][$nameTo])){
+				$_SESSION["webuser"][$nameTo] = $returnvalue;
+			}
+			break;
+		case "screen": return $returnvalue;
+	}
 	return null;
 }
 ?>

@@ -354,7 +354,7 @@ $l_we_tag['useShopVariant']['description'] = "we:shopVariant -tagi käyttää ar
 $l_we_tag['var']['description'] = "we:var -tagi esittää alla annettuun nimeen liittyvän tiedosto-kentän globaalin php -muuttujan sisällön.";
 $l_we_tag['voting']['description'] = "we:voting -tagia käytetään äänestyksen luomiseen.";
 $l_we_tag['voting']['defaultvalue'] = ""; 
-$l_we_tag['votingField']['description'] = "The we:votingField -tagia tarvitaan esittämään äänestys. \"Nimi\" määrittelee mitä esitetään. \"Tyyppi\", määrittelee kuinka se esitetään. Hyväksyttävät nimi-tyyppi yhdistelmät ovat: kysymys - teksti; vastaus - teksti, radio, valinta; vastaus - lukumäärä, prosentti, yhteensä; id - vastaus, valinta, radio, äänestys;";
+$l_we_tag['votingField']['description'] = "The we:votingField-tag is required to display the content of a voting. The attribute \"name\" defines what to show. The attribute \"type\", how to display it. Valid name-type combinations are: question - text; result - count, percent, total; id - answer, select, radio, voting; answer - text,radio,checkbox (select multiple) select, textinput and textarea (free text answer field), image (all we:img attributes such as thumbnail are supported), media (delivers the path utilizing outputto and nameto); ";// TRANSLATE
 $l_we_tag['votingList']['description'] = "Tämä tagi luo automaattisesti äänestyslistat.";
 $l_we_tag['votingList']['defaultvalue'] = "";
 $l_we_tag['votingSelect']['description'] = "Käytä tätä tagia luodaksesi alasvetovalikon; (&lt;select&gt;) äänestyksen valintaan.";
@@ -409,5 +409,10 @@ $l_we_tag['pageLanguage']['description'] = "Shows the language of the document";
 $l_we_tag['pageLanguage']['defaultvalue'] = "";
 $l_we_tag['objectLanguage']['description'] = "Shows the language of the object";// TRANSLATE
 $l_we_tag['objectLanguage']['defaultvalue'] = "";
+
+$l_we_tag['ifVotingField']['description'] = "Checks if a votingField has a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE
+$l_we_tag['ifNotVotingField']['description'] = "Checks if a votingField has not a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE
+$l_we_tag['ifVotingFieldEmpty']['description'] = "Checks if a votingField is empty, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE
+$l_we_tag['ifVotingFieldNotEmpty']['description'] = "Checks if a votingField is not empty, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE
 
 ?>
