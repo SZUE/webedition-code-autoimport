@@ -129,5 +129,27 @@ class we_util_Strings
 		$l = ($len / 2) - 2;
 		return substr($path, 0, $l) . "...." . substr($path, $l * -1);
 	}
+	
+	/**
+	 * Returns a formatted string
+	 *
+	 * @param string vale
+	 * @param string format 
+	 * @return string
+	 */
+	static function formatnumber($value, $format)
+	{ 
+		switch ($format) {
+			case 'german': return number_format($value, 2, ",", ".");
+			break;
+			case 'french': return number_format($value, 2, ",", " ");
+			break;
+			case 'english': return number_format($value, 2, ".", "");
+			break;
+			case 'swiss' : return number_format($value, 2, ".", "'");
+			break;
+		
+		}
+	}
 
 }
