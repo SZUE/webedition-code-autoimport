@@ -109,6 +109,8 @@ function we_tag_shipping($attribs, $content) {
 			$shippingCost=number_format($shippingCost,2,","," ");
 		}else if($num_format=="english"){
 			$shippingCost=number_format($shippingCost,2,".","");
+		}else if($num_format=="swiss"){
+			$shippingCost=number_format($shippingCost,2,".", "'");
 		}
 		return $shippingCost;
 	}
