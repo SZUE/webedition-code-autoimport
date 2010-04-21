@@ -19,7 +19,6 @@
  */
 
 	if(isset($_REQUEST["code"])) {
-		print $_REQUEST["code"];
 		exit();
 	}
 	
