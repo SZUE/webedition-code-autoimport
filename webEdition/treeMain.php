@@ -19,7 +19,7 @@
  */
 
 	if(isset($_REQUEST["code"])) {
-		exit();
+		exit("REQUEST['code'] is forbidden!");
 	}
 	
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMainTree.inc.php");
