@@ -1184,7 +1184,11 @@ class we_document extends we_root {
 					    else if($attribs["num_format"]=="english") {
     						$retval =we_util::std_numberformat($retval);
 						    $retval=number_format($retval,$precision,".","");
-					    }
+					    } 
+						else if($attribs["num_format"]=="swiss"){
+							$retval =we_util::std_numberformat($retval);
+						    $retval=number_format($retval,$precision,".", "'");						
+						}
 				    }
 
 				}

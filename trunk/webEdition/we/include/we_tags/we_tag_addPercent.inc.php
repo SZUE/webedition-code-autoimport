@@ -40,6 +40,8 @@ function we_tag_addPercent($attribs,$content){
 		$result=number_format($result,2,","," ");
 	}else if($num_format=="english"){
 		$result=number_format($result,2,".","");
+	} else if ($num_format == "swiss") {
+		$result = number_format($result, 2, ".", "'");
 	}
 	return $result;
 }
