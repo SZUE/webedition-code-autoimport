@@ -28,6 +28,7 @@ $GLOBALS['weTagWizard']['attribute']['id365_condition'] = new weTagData_textAttr
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id366_triggerid'] = new weTagData_selectorAttribute('366', 'triggerid',FILE_TABLE, 'text/webedition', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id367_seeMode'] = new weTagData_selectAttribute('367', 'seeMode', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id707_workspaceID'] = new weTagData_multiSelectorAttribute('707','workspaceID',FILE_TABLE, 'folder', 'ID', false, '');
+$GLOBALS['weTagWizard']['attribute']['id862_workspaceID'] = new weTagData_multiSelectorAttribute('862','workspaceID',OBJECT_FILES_TABLE, 'folder', 'ID', false, '');
 $GLOBALS['weTagWizard']['attribute']['id644_categoryids'] = new weTagData_multiSelectorAttribute('644','categoryids',CATEGORY_TABLE, '', 'ID', false, '');
 if(defined("CATEGORY_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id370_parentid'] = new weTagData_selectorAttribute('370', 'parentid',CATEGORY_TABLE, '', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id371_parentidname'] = new weTagData_textAttribute('371', 'parentidname', false, '');
