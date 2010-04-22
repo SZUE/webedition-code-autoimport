@@ -127,7 +127,7 @@ class weWorkflowDocument extends weWorkflowBase{
 			$mess="<p><b>".$l_workflow["todo_returned"]."</b></p><p>".$desc."</p><p>".$path."</p>";
 			$deadline=time()+3600;
 			$this->sendTodo($this->userID,$l_workflow["todo_returned"],$mess,$deadline,1);
-
+			$desc = str_repace('<br />',"\n",$desc);
 			$mess = $l_workflow["todo_returned"]."\n\n".$desc."\n\n".$this->document->Path;
 			$this->sendMail($this->userID,$l_workflow["todo_returned"],$mess);
 		}

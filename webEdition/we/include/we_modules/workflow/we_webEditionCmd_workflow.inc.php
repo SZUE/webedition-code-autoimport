@@ -32,8 +32,9 @@
         case "edit_workflow_ifthere":
             new jsWindow(url,"edit_module",-1,-1,970,760,true,true,true,true);
 			break;
-	        case "new_user":
+	    case "new_user":
 	    case "exit_workflow":
+        case "reload_workflow":
         case "save_workflow":
         case "new_workflow":
         case "delete_workflow":

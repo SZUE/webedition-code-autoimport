@@ -127,7 +127,11 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 					$foo=f("SELECT Email FROM ".USER_TABLE." WHERE ID=".abs($workflowTask->userID),"Email",$this->db);
 					$this_user=getHash("SELECT First,Second,Email FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'",$this->db);					
 					//if($foo) we_mail($foo,correctUml($l_workflow["todo_next"]),$desc,(isset($this_user["Email"]) && $this_user["Email"]!="" ? "From: ".$this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">\n":"")."Content-Type: text/html; charset=iso-8859-1");
-					if($foo) we_mail($foo,correctUml($l_workflow["todo_next"]),$mess,(isset($this_user["Email"]) && $this_user["Email"]!="" ? $this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">":""));
+					if($foo) {
+						$desc = str_repace('<br />',"\n",$desc);
+						$mess = $l_workflow["todo_next"]." ID:".$workflowDoc->document->ID.", Pfad:".$workflowDoc->document->Path."\n\n".$desc;
+						we_mail($foo,correctUml($l_workflow["todo_next"]),$mess,(isset($this_user["Email"]) && $this_user["Email"]!="" ? $this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">":""));
+						}
 				}
 
 

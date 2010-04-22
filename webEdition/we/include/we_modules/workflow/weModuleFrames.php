@@ -244,17 +244,17 @@ class weModuleFrames{
 <?php if ($GLOBALS["BROWSER"] == "NN6"){ ?>
 	<frameset cols="170,*" border="1" id="resizeframeid">
 		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" name="right">
+		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" >
 	</frameset>
 <?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
 		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" name="right">
+		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" >
 	</frameset>
 <?php } else { //IE ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
 		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" frameborder="0" name="left">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" name="right">
+		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" >
 	</frameset>
 <?php } ?>
 <noframes>

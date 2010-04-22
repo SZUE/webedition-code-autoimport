@@ -626,10 +626,15 @@ class weWorkflowView extends weWorkflowBase{
 						<?php endif?>
 					break;
 					case "edit_workflow":
+					
+					break;
 					case "show_document":
 						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.document.we_form.wid.value=arguments[1];
 						top.content.resize.right.editor.edbody.submitForm();
+					break;
+					case "reload_workflow":
+						top.content.resize.left.tree.location.reload(true);
 					break;
 					case "empty_log":
 						new jsWindow("<?php print WE_WORKFLOW_MODULE_PATH ?>edit_workflow_frameset.php?pnt=qlog","log_question",-1,-1,360,230,true,false,true);

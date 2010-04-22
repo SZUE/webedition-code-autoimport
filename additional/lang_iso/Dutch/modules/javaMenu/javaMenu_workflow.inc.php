@@ -32,7 +32,7 @@ $l_javaMenu["workflow"]["new"] = "Nieuw";
 $l_javaMenu["workflow"]["delete"] = "Verwijder";
 $l_javaMenu["workflow"]["save"] = "Bewaar";
 $l_javaMenu["workflow"]["quit"] = "Sluit";
-
+$l_javaMenu["workflow"]["reload"]       = "Reload";// TRANSLATE
 $l_javaMenu["workflow"]["help"] = "Help"; // TRANSLATE
 $l_javaMenu["workflow"]["info"] = "Info"; // TRANSLATE
 
