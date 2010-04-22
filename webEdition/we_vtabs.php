@@ -38,8 +38,8 @@ if(defined("OBJECT_TABLE")){
 $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : WE_TREE_DEFAULT_WIDTH;
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></SCRIPT>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>we_tabs.js"></SCRIPT>
+<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>we_tabs.js"></script>
 <script language="JavaScript" type="text/javascript">
 
 
@@ -212,6 +212,6 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 					//-->
 					</script>
 		</div>
-		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 22) ? "right" : "left"; ?>.gif" width="9" height="12"style="position:absolute;bottom:13px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;" onclick="toggleTree();">
+		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 22) ? "right" : "left"; ?>.gif" width="9" height="12"style="position:absolute;bottom:13px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
 	</body>
 </html>

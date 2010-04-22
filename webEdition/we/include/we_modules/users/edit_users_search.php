@@ -25,7 +25,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 htmlTop();
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></SCRIPT>
+<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
 <script language="JavaScript" type="text/javascript"><!--
 
 //-->
@@ -37,7 +37,7 @@ htmlTop();
 	?>
 	</head>
     <body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
-     <form name="we_form" onsubmit="top.content.we_cmd('search',document.we_form.keyword.value); return false;">
+     <form name="we_form" onSubmit="top.content.we_cmd('search',document.we_form.keyword.value); return false;">
         <table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
 				<td></td>
