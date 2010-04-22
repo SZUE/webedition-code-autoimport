@@ -29,7 +29,7 @@ $l_javaMenu["workflow"]["new"]          = "Neu";
 $l_javaMenu["workflow"]["delete"]       = "Löschen";
 $l_javaMenu["workflow"]["save"]         = "Speichern";
 $l_javaMenu["workflow"]["quit"]         = "Schließen";
-
+$l_javaMenu["workflow"]["reload"]         = "Aktualisieren";
 $l_javaMenu["workflow"]["help"]         = "Hilfe";
 $l_javaMenu["workflow"]["info"]         = "Info";
 

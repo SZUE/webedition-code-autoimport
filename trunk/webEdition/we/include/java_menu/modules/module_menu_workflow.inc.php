@@ -44,7 +44,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $
     $we_menu_workflow["000700"]["enabled"] = "0";
 
     $we_menu_workflow["000800"]["parent"] = "000100"; // separator
-
+/*
+	$we_menu_workflow["000850"]["text"] = $l_javaMenu["workflow"]["reload"];
+    $we_menu_workflow["000850"]["parent"] = "000100";
+    $we_menu_workflow["000850"]["cmd"] = "reload_workflow";  
+    $we_menu_workflow["000850"]["enabled"] = "0";
+	
+	$we_menu_workflow["000880"]["parent"] = "000100"; // separator
+*/
     $we_menu_workflow["000900"]["text"]= $l_javaMenu["workflow"]["empty_log"]."...";
     $we_menu_workflow["000900"]["parent"] = "000100";
     $we_menu_workflow["000900"]["cmd"] = "empty_log";
