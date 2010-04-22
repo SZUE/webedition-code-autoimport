@@ -58,8 +58,8 @@ class weModuleFrames{
  function drawEintraege(){
     fr = top.content.resize.left.tree.document;
     fr.open();
-    fr.writeln("<HTML><HEAD>");
-    fr.writeln("<SCRIPT LANGUAGE=\"JavaScript\">");
+    fr.writeln("<html><head>");
+    fr.writeln("<script language=\"JavaScript\" type=\"text/javascript\">");
     fr.writeln("clickCount=0;");
     fr.writeln("wasdblclick=0;");
     fr.writeln("tout=null");
@@ -68,14 +68,14 @@ class weModuleFrames{
 	 fr.writeln("top.content.we_cmd('<?php print $this->edit_cmd; ?>',id,ct,table);");
     fr.writeln("}");
     fr.writeln("top.content.loaded=1;");
-    fr.writeln("</"+"SCRIPT>");
+    fr.writeln("</"+"script>");
     fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
-    fr.write("</HEAD>\n");
-    fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
-    fr.write("<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td class=\"tree\">\n<NOBR>\n");
+    fr.write("</head>\n");
+    fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
+    fr.write("<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td class=\"tree\">\n<nobr>\n");
     zeichne(top.content.startloc,"");
-    fr.write("</NOBR>\n</td></tr></table>\n");
-    fr.write("</BODY>\n</HTML>");
+    fr.write("</nobr>\n</td></tr></table>\n");
+    fr.write("</body>\n</html>");
     fr.close();
    }
 
@@ -87,8 +87,8 @@ class weModuleFrames{
 		fr.write(zweigEintrag);
 
                 if (nf[ai].typ == 'file') {
-			if(ai == nf.laenge) fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
-			else fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+			if(ai == nf.laenge) fr.write("&nbsp;&nbsp;<img src=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif width=19 height=18 align=absmiddle border=0>");
+			else fr.write("&nbsp;&nbsp;<img src=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif width=19 height=18 align=absmiddle border=0>");
 			if(nf[ai].name != -1){
 				fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
 			}

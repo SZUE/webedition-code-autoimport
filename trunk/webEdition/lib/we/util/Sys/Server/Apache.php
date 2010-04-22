@@ -86,7 +86,7 @@ class we_util_Sys_Server_Apache extends we_util_Sys_Server
 	public static function versionCompare($reference = "", $operator = "")
 	{
 		$version = self::version();
-		if($version === false�|| empty($reference)) return false;
+		if($version === false || empty($reference)) return false;
 		return parent::_versionCompare($reference,$version,$operator);
 	}
 }

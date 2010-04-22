@@ -435,7 +435,7 @@ class we_docTypes extends we_class {
 		global $l_we_class;
 		$vals = array();
 		for($i=0;$i<sizeof($l_we_class["subdir"]);$i++) {
-			$vals[(String)$i] = $l_we_class["subdir"][$i];
+			$vals[(string)$i] = $l_we_class["subdir"][$i];
 		}
 		return $this->htmlFormElementTable($this->htmlSelect('we_'.$this->Name.'_SubDir',$vals,$size=1,$this->SubDir,false,"","value",$width),$l_we_class["subdirectory"]);
 	}

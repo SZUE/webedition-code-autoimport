@@ -96,7 +96,7 @@ if(z != 0){
 	}
 	document.writeln(\'</tr>\');
 }
-</SCRIPT>
+</script>
 		</table>
 	';
 

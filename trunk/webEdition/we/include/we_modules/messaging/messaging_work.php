@@ -26,7 +26,7 @@
 
   htmlTop();
 ?>
-    <script language="JavaScript")>
+    <script language="JavaScript" type="text/javascript">
 	do_mark_messages = 0;
 	last_entry_selected = -1;
 	entries_selected = new Array();
