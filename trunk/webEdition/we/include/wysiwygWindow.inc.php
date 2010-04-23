@@ -131,11 +131,11 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 <form action="<?php
 	print $_SERVER['PHP_SELF'];
 	?>" name="we_form"
-	method="post"><input type="hidden" name="we_okpressed" value="1">
+	method="post"><input type="hidden" name="we_okpressed" value="1" />
 <?php
 	
 	foreach ($_REQUEST["we_cmd"] as $i => $v) {
-		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST["we_cmd"][$i] . '">' . "\n";
+		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST["we_cmd"][$i] . '" />' . "\n";
 	}
 	
 	/*

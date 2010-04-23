@@ -316,20 +316,20 @@ function writeBody(d){
 
 	if(we_editDirID){
 	//if(top.we_editDirID){
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>">');
-		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'">');
+		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
 	}else{
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>">');
+		d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>" />');
 	}
-	d.writeln('<input type="hidden" name="order" value="'+top.order+'">');
-	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>">');
-	d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>">');
-	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'">');
+	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
+	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
+	d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>" />');
+	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'" />');
 	d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 	if(makeNewFolder){
 		d.writeln('<tr>');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('<td class="selector"><?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
 		d.writeln('<td class="selector"><?php print date($GLOBALS["l_global"]["date_format"])?></td>');
 		d.writeln('</tr>');
@@ -339,11 +339,11 @@ function writeBody(d){
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr' + ((entries[i].ID == top.currentID)  ? ' style="background-color:#DFE9F5;cursor:pointer;-moz-user-select: none;"' : '') + ' id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" align="center">');
-		d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0">');
+		d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 		d.writeln('</td>');
 		d.writeln('<td class="selector"'+(entries[i].published==0 && entries[i].isFolder==0 ? ' style="color: red;"' : '')+' title="'+entries[i].text+'">');
 		if(we_editDirID == entries[i].ID){
-			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%">');
+			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
 		}else{
 			d.writeln(cutText(entries[i].text,25));
 		}
@@ -595,7 +595,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0"></td>
+					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>

@@ -70,7 +70,7 @@ class we_forms {
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
 					<td'.($description ? ' valign="top"' : '').'>
-						<input type="checkbox" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer;-moz-outline: none;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").'></td>
+						<input type="checkbox" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer;-moz-outline: none;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
 					<td>
 						'.getPixel(4,2).'</td>
 					<td class="'.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'-moz-user-select: none;-moz-outline: none;" hidefocus="hidefocus" unselectable="on">'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").($html ? $html : "").'</td>
@@ -95,7 +95,7 @@ class we_forms {
 
 	 function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick="", $disabled=false, $description="",$type=0,$width=0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;".$onClick;
-		return '<input type="hidden" name="'.$name.'" value="'.($checked ? 1 : 0).'">'.we_forms::checkbox(1, $checked, "_".$name, $text, $uniqid, $class, $onClick, $disabled, $description,$type, $width);
+		return '<input type="hidden" name="'.$name.'" value="'.($checked ? 1 : 0).'" />'.we_forms::checkbox(1, $checked, "_".$name, $text, $uniqid, $class, $onClick, $disabled, $description,$type, $width);
 	}
 
 	/**
@@ -134,7 +134,7 @@ class we_forms {
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
 					<td class="weEditmodeStyle"'.($description ? ' valign="top"' : '').'>
-						<input type="radio" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer;-moz-outline: none;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").'></td>
+						<input type="radio" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer;-moz-outline: none;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
 					<td class="weEditmodeStyle">
 						'.getPixel(4,2).'</td>
 					<td class="weEditmodeStyle '.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'-moz-user-select: none;-moz-outline: none;" hidefocus="hidefocus" unselectable="on"'.($onMouseUp ? " onmouseup=\"".str_replace("this.","document.getElementById('".$_id."').",$onMouseUp)."\"" : "").'>'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").

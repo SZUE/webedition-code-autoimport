@@ -396,7 +396,7 @@ class weHyperlinkDialog extends weDialog{
 				$_object_link = $yuiSuggest->getHTML();
 /*
 				$_object_link = htmlFormElementTable(htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, "0", "", !we_hasPerm("CAN_SEE_OBJECTFILES")) .
-				'<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'">', "", "left", "defaultfont", getPixel(10, 1), $_object_select_button, "", "", "", 0);
+				'<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", getPixel(10, 1), $_object_select_button, "", "", "", 0);
 				*/
 			}
 		}
@@ -579,7 +579,7 @@ class weHyperlinkDialog extends weDialog{
 	}
 
 	function getRevRelSelect($type){
-		return '<input type="text" name="we_dialog_args['.$type.']" value="'.htmlspecialchars($this->args["$type"]).'" style="width:70px;"><select name="'.$type.'_sel" size="1" style="width:75px;" onchange="this.form.elements[\'we_dialog_args['.$type.']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
+		return '<input type="text" name="we_dialog_args['.$type.']" value="'.htmlspecialchars($this->args["$type"]).'" style="width:70px;" /><select name="'.$type.'_sel" size="1" style="width:75px;" onchange="this.form.elements[\'we_dialog_args['.$type.']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 <option></option>
 <option>contents</option>
 <option>chapter</option>

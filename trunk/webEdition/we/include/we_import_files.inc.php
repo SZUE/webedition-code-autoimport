@@ -370,7 +370,7 @@ class we_import_files
 							$GLOBALS["DB_WE"]->f("ID"), 
 							$thumbsArray) ? " selected" : "") . '>' . $GLOBALS["DB_WE"]->f("Name") . "</option>\n";
 				}
-				$Thselect .= "</select>\n" . '<input type="hidden" name="thumbs" value="' . $this->thumbs . '">' . "\n";
+				$Thselect .= "</select>\n" . '<input type="hidden" name="thumbs" value="' . $this->thumbs . '" />' . "\n";
 				
 				if (!(defined("ISP_VERSION") && ISP_VERSION)) {
 					

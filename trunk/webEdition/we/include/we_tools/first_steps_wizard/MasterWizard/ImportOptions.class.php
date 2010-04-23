@@ -29,7 +29,7 @@ class ImportOptions extends leWizardStepBase
 	function execute(&$Template)
 	{
 		
-		$this->setContent("<input type=\"hidden\" name=\"startImport\" value=\"1\">");
+		$this->setContent("<input type=\"hidden\" name=\"startImport\" value=\"1\" />");
 		
 		return LE_WIZARDSTEP_NEXT;
 	

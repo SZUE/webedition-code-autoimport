@@ -394,7 +394,7 @@ function we_getInputPasswordField($name, $value, $atts)
 
 function we_getHiddenField($name, $value, $xml = false)
 {
-	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? " /" : "") . '>';
+	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? " /" : "") . ' />';
 }
 
 function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false)
@@ -1541,9 +1541,9 @@ function we_makeHiddenFields($filter = "")
 			if (!in_array($key, $filterArr)) {
 				if (is_array($val)) {
 					for ($i = 0; $i < sizeof($val); $i++)
-						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val[$i]) . '">';
+						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val[$i]) . '" />';
 				} else
-					$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val) . '">';
+					$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val) . '" />';
 			}
 	}
 	return $hidden;

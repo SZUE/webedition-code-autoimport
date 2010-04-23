@@ -132,7 +132,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	 $_tab_1 =
 	 htmlDialogLayout('
 	 <form name="we_form" target="hiddenCmd" method="post" action="'.WE_SPELLCHECKER_MODULE_PATH.'weSpellcheckerCmd.php">
-	 <input type="hidden" name="cmd[0]" value="saveSettings">
+	 <input type="hidden" name="cmd[0]" value="saveSettings" />
 	 <div id="dictTable">
 	 	<div id="selector" class="blockWrapper" style="width: 400px; height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:#f6f6f6 ! important;">
 
@@ -324,7 +324,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 	</head>
 
-	<body onload="loadTable()" class="weDialogBody">
+	<body onLoad="loadTable()" class="weDialogBody">
 
 	<?php print $tabsBody;?>
 

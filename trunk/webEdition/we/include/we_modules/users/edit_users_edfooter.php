@@ -42,7 +42,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/users/
      <table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
 				<td></td>
-				<td valign="top"><img align="absmiddle" height="10" width="1600" src="<?php print IMAGE_DIR ?>pixel.gif"></td>
+				<td valign="top"><img align="absmiddle" height="10" width="1600" src="<?php print IMAGE_DIR ?>pixel.gif" /></td>
 			</tr>
 			<tr>
 				<td width="16"></td>

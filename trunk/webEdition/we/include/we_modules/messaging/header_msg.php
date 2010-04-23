@@ -63,12 +63,12 @@ protect();
 <tr>
 	<td id="msgCount" align="right" class="middlefont' . ($newmsg_count ? 'red' : '') . '"><a style="text-decoration:none"  href="' . $msg_cmd . '">' . $newmsg_count . '</a></td>
 	<td>' . getPixel(5, 1) . '</td>
-	<td valign="bottom"><a href="' . $msg_cmd . '"><img src="'. IMAGE_DIR . 'modules/messaging/launch_messages.gif" border="0" width="16" height="12" alt=""></a></td>
+	<td valign="bottom"><a href="' . $msg_cmd . '"><img src="'. IMAGE_DIR . 'modules/messaging/launch_messages.gif" border="0" width="16" height="12" alt="" /></a></td>
 </tr>
 <tr>
 	<td id="todoCount" align="right" class="middlefont' . ($newtodo_count ? 'red' : '') . '"><a style="text-decoration:none" href="' . $todo_cmd . '">' . $newtodo_count . '</a></td>
 	<td>' . getPixel(5, 1) . '</td>
-	<td valign="bottom"><a href="' . $todo_cmd . '"><img src="'. IMAGE_DIR . 'modules/messaging/launch_tasks.gif" border="0" width="16" height="12" alt=""></a></td>
+	<td valign="bottom"><a href="' . $todo_cmd . '"><img src="'. IMAGE_DIR . 'modules/messaging/launch_tasks.gif" border="0" width="16" height="12" alt="" /></a></td>
 </tr>'
 ?>
 </table>

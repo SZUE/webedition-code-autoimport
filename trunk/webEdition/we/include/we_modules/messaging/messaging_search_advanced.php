@@ -66,9 +66,9 @@ $we_button = new we_button();
 </head>
 
 <body class="weDialogBody">
-<form action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_advanced.php" name="search_adv">
-<input type="hidden" name="we_transaction" value="<?php echo htmlspecialchars(strip_tags($_REQUEST['we_transaction']))?>">
-<input type="hidden" name="save" value="1">
+<form action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_advanced.php" name="search_adv" >
+<input type="hidden" name="we_transaction" value="<?php echo htmlspecialchars(strip_tags($_REQUEST['we_transaction']))?>" />
+<input type="hidden" name="save" value="1" />
 
 <?php
 	$table =  '<table cellpadding="10" cellspacing="0" border="0">

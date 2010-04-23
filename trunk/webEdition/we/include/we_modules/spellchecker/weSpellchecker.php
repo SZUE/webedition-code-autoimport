@@ -539,7 +539,7 @@ print STYLESHEET;
 
 	<form name="we_form" action="'.WE_SPELLCHECKER_MODULE_PATH.'weSpellchecker.php" method="post" target="_self">
 
-	<input name="' . ($_mode=='wysiwyg' ? 'we_dialog_args[editname]': 'editname') . '" value="'.$_editname.'" type="hidden">
+	<input name="' . ($_mode=='wysiwyg' ? 'we_dialog_args[editname]': 'editname') . '" value="'.$_editname.'" type="hidden" />
 	<div id="mainPanel">
 	'.
 

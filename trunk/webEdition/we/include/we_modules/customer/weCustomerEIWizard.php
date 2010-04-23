@@ -474,7 +474,7 @@ class weCustomerEIWizard{
 						we_htmlElement::htmlHidden(array("name"=>"xml_from","value"=>$xml_from)).
 						we_htmlElement::htmlHidden(array("name"=>"xml_to","value"=>$xml_to)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_delimiter","value"=>$csv_delimiter)).
-						'<input type="hidden" name="csv_enclose" value=' . ($csv_enclose=='"' ? "'\"'" : "\"$csv_enclose\"") .'>' .
+						'<input type="hidden" name="csv_enclose" value=' . ($csv_enclose=='"' ? "'\"'" : "\"$csv_enclose\"") .' />' .
 						we_htmlElement::htmlHidden(array("name"=>"csv_lineend","value"=>$csv_lineend)).
 						we_htmlElement::htmlHidden(array("name"=>"the_charset","value"=>$the_charset)).
 						we_htmlElement::htmlHidden(array("name"=>"csv_fieldnames","value"=>$csv_fieldnames)).
@@ -1308,7 +1308,7 @@ class weCustomerEIWizard{
 
 					if($file_format=="csv") $hiddens.=we_htmlElement::htmlHidden(array("name"=>"csv_delimiter","value"=>$csv_delimiter)).
 								 	($csv_enclose=='"' ?
-								 	 	"<input type='hidden' name='csv_enclose' value='".$csv_enclose."'>"
+								 	 	"<input type='hidden' name='csv_enclose' value='".$csv_enclose."' />"
 								 	 	:
 								 	 	we_htmlElement::htmlHidden(array("name"=>"csv_enclose","value"=>$csv_enclose))
 								 	 ).
@@ -1349,7 +1349,7 @@ class weCustomerEIWizard{
 
 						$hiddens.=we_htmlElement::htmlHidden(array("name"=>"csv_delimiter","value"=>$csv_delimiter)).
 								 		($csv_enclose=='"' ?
-								 	 	"<input type='hidden' name='csv_enclose' value='".$csv_enclose."'>"
+								 	 	"<input type='hidden' name='csv_enclose' value='".$csv_enclose."' />"
 								 	 	:
 								 	 	we_htmlElement::htmlHidden(array("name"=>"csv_enclose","value"=>$csv_enclose))
 								 	 ).

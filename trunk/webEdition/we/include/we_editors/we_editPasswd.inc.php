@@ -101,9 +101,9 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 
 					$frame = htmlDialogLayout($content, $l_global["changePass"], $_buttons);
 					print $frame;
-					print '	<input type="hidden" name="cmd" value="ok">
-							<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST["we_cmd"][0] . '">
-							<input type="hidden" name="we_cmd[1]" value="load">';
+					print '	<input type="hidden" name="cmd" value="ok" />
+							<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST["we_cmd"][0] . '" />
+							<input type="hidden" name="we_cmd[1]" value="load" />';
 				?>
 			</form>
 		</center>

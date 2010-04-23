@@ -718,7 +718,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td>'.getPixel(25,14).'</td>
-					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_fileselector"]["filename"].'</a></b></td>
+					<td class="selector"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_fileselector"]["filename"].'</a></b></td>
 				</tr>
 				<tr>
 					<td width="25">'.getPixel(25,1).'</td>
@@ -732,7 +732,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 	function printHeaderLine(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0"></td>
+					<td><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 			</table>
 ';
@@ -877,7 +877,7 @@ top.fsheader.selectIt();
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0"></td>
+					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>

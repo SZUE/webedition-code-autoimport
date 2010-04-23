@@ -372,7 +372,7 @@ class we_root extends we_class
 			$v = $this->RestrictOwners ? true : false;
 			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class["limitedAccess"],false,"defaultfont","setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		}else{
-			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif').'"></td><td class="defaultfont">&nbsp;'.$l_we_class["limitedAccess"].'</td></tr></table>';
+			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif').'" /></td><td class="defaultfont">&nbsp;'.$l_we_class["limitedAccess"].'</td></tr></table>';
 		}
 	}
 
@@ -385,21 +385,21 @@ class we_root extends we_class
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
-		$content = '<table border="0" callpadding="0" cellspacing="0" width="370">';
+		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">';
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(351,2).'</td><td>'.getPixel(100,2).'</td><td>'.getPixel(26,2).'</td></tr>'."\n";
 		if(sizeof($owners)){
 			for($i=0;$i<sizeof($owners);$i++){
 				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='".abs($owners[$i])."'",$this->DB_WE);
 				$icon = isset($foo["Icon"]) ? ICON_DIR.$foo["Icon"] : ICON_DIR."user.gif";
 				$_path = isset($foo["Path"]) ? $foo["Path"] : "";
-				$content .= '<tr><td><img src="'.$icon.'" width="16" height="18"></td><td class="defaultfont">'.$_path.'</td><td>'.
+				$content .= '<tr><td><img src="'.$icon.'" width="16" height="18" /></td><td class="defaultfont">'.$_path.'</td><td>'.
 
 				we_forms::checkboxWithHidden(isset($ownersReadOnly[$owners[$i]]) ? $ownersReadOnly[$owners[$i]] : "", 'we_owners_read_only['.$owners[$i].']', $l_we_class["readOnly"],false,"defaultfont","_EditorFrame.setEditorIsHot(true);",!$canChange).
 
 				'</td><td>'.($canChange ? $we_button->create_button("image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','".$owners[$i]."');") : "").'</td></tr>'."\n";
 			}
 		}else{
-			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18"></td><td class="defaultfont">'.$l_we_class["onlyOwner"].'</td><td></td><td></td></tr>'."\n";
+			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.$l_we_class["onlyOwner"].'</td><td></td><td></td></tr>'."\n";
 		}
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(351,2).'</td><td>'.getPixel(100,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
 

@@ -197,7 +197,7 @@ class weNewsletterView {
 	}
 
 	function htmlHidden($name, $value = "") {
-		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '">';
+		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '" />';
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */

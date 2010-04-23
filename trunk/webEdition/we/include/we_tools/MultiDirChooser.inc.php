@@ -71,7 +71,7 @@ class MultiDirChooser{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="'.ICON_DIR.$this->db->f($this->fieldsArr[0]).'" width="16" height="18"></td>
+	<td><img src="'.ICON_DIR.$this->db->f($this->fieldsArr[0]).'" width="16" height="18" /></td>
 	<td class="'.$this->css.'">'.$this->db->f($this->fieldsArr[1]).'</td>
 	<td>'.((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 			$we_button->create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','".$this->db->f("ID")."'".(strlen($this->thirdDelPar) ? ",'".$this->thirdDelPar."'" : "").");")  :
@@ -88,7 +88,7 @@ class MultiDirChooser{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="'.ICON_DIR.'folder.gif" width="16" height="18"></td>
+	<td><img src="'.ICON_DIR.'folder.gif" width="16" height="18" /></td>
 	<td class="'.$this->css.'">/</td>
 	<td>'.((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 			$we_button->create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','0');") :
@@ -110,7 +110,7 @@ class MultiDirChooser{
 	}
 
 	function get(){
-		$out = '<table border="0" callpadding="0" cellspacing="0" width="'.abs($this->width-20).'">
+		$out = '<table border="0" cellpadding="0" cellspacing="0" width="'.abs($this->width-20).'">
 	<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(abs($this->width-66),2).'</td><td>'.getPixel(26,2).'</td></tr>
 ';
 

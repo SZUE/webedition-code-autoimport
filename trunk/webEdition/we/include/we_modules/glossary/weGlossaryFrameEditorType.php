@@ -275,9 +275,9 @@
 			$content = array();
 			while($Search->next()) {
 
-				$show = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18">';
+				$show = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18" />';
 				if($Search->getField('Published')) {
-					$show = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18">';
+					$show = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" />';
 
 				}
 
@@ -395,12 +395,12 @@
 
 
 			$out = '
-		<input type="hidden" name="we_transaction" value="'.$we_transaction.'">
-		<input type="hidden" name="Order" value="'.$Search->Order.'">
-		<input type="hidden" name="Offset" value="'.$Search->Offset.'">
-		<input type="hidden" name="Sort" value="'.$Search->Sort.'">
-		<input type="hidden" name="selectAll" value="0">
-		<input type="hidden" name="do" value="">
+		<input type="hidden" name="we_transaction" value="'.$we_transaction.'" />
+		<input type="hidden" name="Order" value="'.$Search->Order.'" />
+		<input type="hidden" name="Offset" value="'.$Search->Offset.'" />
+		<input type="hidden" name="Sort" value="'.$Search->Sort.'" />
+		<input type="hidden" name="selectAll" value="0" />
+		<input type="hidden" name="do" value="" />
 		<table width="637" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td width="80"></td>

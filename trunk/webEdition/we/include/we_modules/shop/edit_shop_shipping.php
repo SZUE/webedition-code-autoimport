@@ -174,14 +174,14 @@ $jsFunction = '
         	theNewRow.setAttribute("id", "weShippingId_" + entryId);
 
 			var cell1 = document.createElement("TD");
-			cell1.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_cartValue[]" size="24" onblur="this.className=\\\'wetextinput\\\';" onfocus="this.className=\\\'wetextinputselected\\\'">\';
+			cell1.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_cartValue[]" size="24" onblur="this.className=\\\'wetextinput\\\';" onfocus="this.className=\\\'wetextinputselected\\\'" />\';
         	var cell2 = document.createElement("TD");
 			var cell3 = document.createElement("TD");
-			cell3.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_shipping[]" size="24" onblur="this.className=\\\'wetextinput\\\';" onfocus="this.className=\\\'wetextinputselected\\\'">\';
+			cell3.innerHTML=\'<input class="wetextinput" type="text" name="weShipping_shipping[]" size="24" onblur="this.className=\\\'wetextinput\\\';" onfocus="this.className=\\\'wetextinputselected\\\'" />\';
 			var cell4 = document.createElement("TD");
 			var cell5 = document.createElement("TD");
 
-			eval("cell5.innerHTML=\'<img onclick=\"we_cmd(\\\\\'deleteShippingCostTableRow\\\\\', \\\\\'weShippingId_" + entryId + "\\\\\');\" style=\"cursor: pointer;\" src=\"' . BUTTONS_DIR . 'btn_function_trash.gif\">\';");
+			eval("cell5.innerHTML=\'<img onclick=\"we_cmd(\\\\\'deleteShippingCostTableRow\\\\\', \\\\\'weShippingId_" + entryId + "\\\\\');\" style=\"cursor: pointer;\" src=\"' . BUTTONS_DIR . 'btn_function_trash.gif\" />\';");
 
 			theNewRow.appendChild(cell1);
 			theNewRow.appendChild(cell2);
@@ -332,7 +332,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 				<td></td>
 				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 24, $weShipping->shipping[$i], '', 'onkeypress="return IsDigit(event);"') . '</td>
 				<td></td>
-				<td><img style="cursor: pointer;" src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="we_cmd(\'deleteShippingCostTableRow\',\'' . $tblRowName . '\');"></td>
+				<td><img style="cursor: pointer;" src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="we_cmd(\'deleteShippingCostTableRow\',\'' . $tblRowName . '\');" /></td>
 			</tr>';
 		}
 

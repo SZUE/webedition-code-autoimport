@@ -267,9 +267,9 @@ $buttons = $we_button->position_yes_no_cancel(
 
 
 echo htmlDialogLayout($tmpl->formPath(),$GLOBALS['l_we_class']['generateTemplate'],$buttons);
-echo '<input type="hidden" name="SID" value="'.$tmpl->Name.'">';
-echo '<input type="hidden" name="we_cmd[3]" value="'.$_REQUEST["we_cmd"][3].'">';
-echo '<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'">';
+echo '<input type="hidden" name="SID" value="'.$tmpl->Name.'" />';
+echo '<input type="hidden" name="we_cmd[3]" value="'.$_REQUEST["we_cmd"][3].'" />';
+echo '<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';
 echo "</form>";
 echo "</body></html>";
 

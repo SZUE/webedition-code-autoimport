@@ -51,7 +51,7 @@ for ( col in we_color2 ){
 		document.writeln(\'<tr>\');
 	}
 
-document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><img src="'.IMAGE_DIR.'pixel.gif" width="15" height="15" border="0" alt="\'+we_color2[col]+\'"></a></td>\');
+document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><img src="'.IMAGE_DIR.'pixel.gif" width="15" height="15" border="0" alt="\'+we_color2[col]+\'" /></a></td>\');
 
 if(z==17){
 		document.writeln(\'</tr>\');
@@ -72,7 +72,7 @@ if(z != 0){
 	$we_button = new we_button();
 	$trash = $we_button->create_button("image:btn_function_trash", "javascript:selectColor('')");
 	
-	$foo = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><input type="text" size="20" name="we_dialog_args[color]" class="defaultfont" style="width:150px;'.($this->args["color"] ? ('background-color:'.$this->args["color"].';') : '').'" value="'.$this->args["color"].'"></td><td>'.getPixel(10,2).'</td><td>'.$trash.'</td></tr></table>';
+	$foo = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><input type="text" size="20" name="we_dialog_args[color]" class="defaultfont" style="width:150px;'.($this->args["color"] ? ('background-color:'.$this->args["color"].';') : '').'" value="'.$this->args["color"].'" /></td><td>'.getPixel(10,2).'</td><td>'.$trash.'</td></tr></table>';
 	$color = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["color"]);
 	
 

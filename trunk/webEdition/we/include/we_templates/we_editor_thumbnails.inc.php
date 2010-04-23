@@ -98,7 +98,7 @@ if(we_image_edit::gd_version() > 0){
 
 
 			$thumbnail = '<table border="0" cellpadding="0" cellspacing="0" width="570"><tr><td width="538"><img src="'.$src.'" width="'.$thumbObj->getOutputWidth().
-						'" height="'.$thumbObj->getOutputHeight().'" border="0"></td><td width="10">'.getPixel(10,2).'</td><td width="22">'.$delbut.'</td></tr></table>';
+						'" height="'.$thumbObj->getOutputHeight().'" border="0" /></td><td width="10">'.getPixel(10,2).'</td><td width="22">'.$delbut.'</td></tr></table>';
 
 			array_push($parts, array(	"headline"=>$thumbObj->getThumbName(),
 										"html"=>$thumbnail,

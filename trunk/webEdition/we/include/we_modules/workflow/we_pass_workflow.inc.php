@@ -101,9 +101,9 @@ $frame = htmlDialogLayout($content,$l_workflow["pass_workflow"], $_buttons);
 
 print $frame;
 
-print '	<input type="hidden" name="cmd" value="ok">
-		<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'">
-		<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'">';
+print '	<input type="hidden" name="cmd" value="ok" />
+		<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'" />
+		<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'" />';
 ?>
 </form>
 <?php endif ?>

@@ -68,7 +68,7 @@ class weRuleDialog extends weDialog{
 		$height = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["height"]);
 
 		$noshade = '<table cellpadding="0" cellspacing="0" border="0">
-<tr><td><input type="checkbox" name="we_dialog_args[noshade]" value="1"'.((isset($this->args["noshade"]) && $this->args["noshade"]) ? " checked" : "").'></td><td>'.getPixel(8,2).'</td><td class="defaultfont">'.
+<tr><td><input type="checkbox" name="we_dialog_args[noshade]" value="1"'.((isset($this->args["noshade"]) && $this->args["noshade"]) ? " checked" : "").' /></td><td>'.getPixel(8,2).'</td><td class="defaultfont">'.
 				$GLOBALS["l_wysiwyg"]["noshade"].'</td></tr></table>';
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">

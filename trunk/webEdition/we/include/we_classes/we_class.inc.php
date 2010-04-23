@@ -97,7 +97,7 @@ class we_class
 	/* returns the code for a hidden " we_transaction-field" */
 	function hiddenTrans(){
 		global $we_transaction;
-		return '<input type="hidden" name="we_transaction" value="'.$we_transaction.'">';
+		return '<input type="hidden" name="we_transaction" value="'.$we_transaction.'" />';
 	}
 
 	/* shortcut for print $this->hiddenTrans() */
@@ -126,13 +126,13 @@ class we_class
 			. "</td>";
 
 		}else{
-			$out .= '<input type="hidden" name="'.$int_elem_Name.'" value="'.($intID_elem_Name ? 1 : 0).'">';
+			$out .= '<input type="hidden" name="'.$int_elem_Name.'" value="'.($intID_elem_Name ? 1 : 0).'" />';
 		}
 		$out .= '			<td>';
 		if($intID_elem_Name){
-			$out .= '<input type="hidden" name="'.$intID_elem_Name.'" value="'.$intID.'"><input type="text" name="'.$Path_elem_Name.'" value="'.$path.'" '.$attr.' readonly="readonly">';
+			$out .= '<input type="hidden" name="'.$intID_elem_Name.'" value="'.$intID.'"><input type="text" name="'.$Path_elem_Name.'" value="'.$path.'" '.$attr.' readonly="readonly" />';
 		}else{
-			$out .= '<input'.($showRadio ? ' onChange="this.form.elements[\''.$int_elem_Name.'\']['.($intID_elem_Name ? 0 : 1).'].checked=true;"' : '' ).' type="text" name="'.$Path_elem_Name.'" value="'.$path.'" '.$attr.'>';
+			$out .= '<input'.($showRadio ? ' onChange="this.form.elements[\''.$int_elem_Name.'\']['.($intID_elem_Name ? 0 : 1).'].checked=true;"' : '' ).' type="text" name="'.$Path_elem_Name.'" value="'.$path.'" '.$attr.' />';
 		}
 		if($intID_elem_Name){
 			$trashbut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['".$intID_elem_Name."'].value='';document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
@@ -241,7 +241,7 @@ class we_class
 		return htmlTextInput($name,$size,$value,$maxlength,$attribs,$type,$width,$height);
 	}
 	function htmlHidden($name,$value="", $params=null){
-		return '<input type="hidden" name="'.trim($name).'" value="'.htmlspecialchars($value).'" '. $params .'>';
+		return '<input type="hidden" name="'.trim($name).'" value="'.htmlspecialchars($value).'" '. $params .' />';
 	}
 	function htmlPasswordInput($name,$size=24,$value="",$maxlength="",$attribs=""){
 		return $this->htmlTextInput($name,$size,$value,$maxlength,$attribs,"password");
@@ -257,7 +257,7 @@ class we_class
 							"<td>")
 				) :
 				""
-			).'<input type="'.trim($type).'" name="'.trim($name).'" value="'.$v.'"'.($attribs ? " $attribs" : '').($checked ? " checked" : "").'>'.
+			).'<input type="'.trim($type).'" name="'.trim($name).'" value="'.$v.'"'.($attribs ? " $attribs" : '').($checked ? " checked" : "").' />'.
 			(	$text ?
 				( (($textalign=="right") ?
 					('</td><td class="'.$textclass.'">&nbsp;'.$text.'</td>') :
@@ -277,7 +277,7 @@ class we_class
 							"<td>")
 				) :
 				""
-			).'<input type="'.trim($type).'" name="'.trim($name).'" value="'.$v.'"'.($attribs ? " $attribs" : '').($checked ? " checked" : "").'>'.
+			).'<input type="'.trim($type).'" name="'.trim($name).'" value="'.$v.'"'.($attribs ? " $attribs" : '').($checked ? " checked" : "").' />'.
 			(	$text ?
 				( (($textalign=="right") ?
 					('</td><td class="'.$textclass.'">&nbsp;'.$text.'</td>') :

@@ -745,9 +745,9 @@ class weNewsletterFrames extends weModuleFrames {
 				<table cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td>
-							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'"></td>
+							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'" /></td>
 						<td>
-							<img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="'.$height.'"></td>
+							<img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="'.$height.'" /></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -759,9 +759,9 @@ class weNewsletterFrames extends weModuleFrames {
 					</tr>
 					<tr>
 						<td>
-							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'"></td>
+							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'" /></td>
 						<td>
-							<img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="'.$height.'"></td>
+							<img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="'.$height.'" /></td>
 						<td></td>
 					</tr>
 				</table>';
@@ -770,7 +770,7 @@ class weNewsletterFrames extends weModuleFrames {
 				<table cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td>
-							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'"></td>
+							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'" /></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -780,7 +780,7 @@ class weNewsletterFrames extends weModuleFrames {
 					</tr>
 					<tr>
 						<td>
-							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'"></td>
+							<img src="'.IMAGE_DIR.'pixel.gif" width="24" height="'.$height.'" /></td>
 						<td></td>
 					</tr></table>';
 		}

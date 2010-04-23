@@ -170,7 +170,7 @@ function we_tag_subscribe($attribs, $content){
     			} else {
     			    $newAttribs['value'] = htmlspecialchars($value);
     			}
-				return getHtmlTag('input',$newAttribs); // '<input type="text" name="we_subscribe_title__"'.($attr ? " $attr" : "").($value ? ' value="'.htmlspecialchars($value).'"' : '').($xml ? ' /' : '').'>';
+				return getHtmlTag('input',$newAttribs); // '<input type="text" name="we_subscribe_title__"'.($attr ? " $attr" : "").($value ? ' value="'.htmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 			}
 
 		case "lastname":
@@ -198,7 +198,7 @@ function we_tag_subscribe($attribs, $content){
 			} else {
 			    $newAttribs['value'] = htmlspecialchars($value);
 			}
-			return getHtmlTag('input',$newAttribs);// '<input type="text" name="we_subscribe_email__"'.($attr ? " $attr" : "").($value ? ' value="'.htmlspecialchars($value).'"' : '').($xml ? ' /' : '').'>';
+			return getHtmlTag('input',$newAttribs);// '<input type="text" name="we_subscribe_email__"'.($attr ? " $attr" : "").($value ? ' value="'.htmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 	}
 
 	return "";

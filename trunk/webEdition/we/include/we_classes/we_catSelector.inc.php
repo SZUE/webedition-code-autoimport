@@ -307,29 +307,29 @@ function writeBody(d){
 
 <?php } ?>
 	if(top.we_editCatID){
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEENTRY; ?>">');
-		d.writeln('<input type="hidden" name="we_editCatID" value="'+top.we_editCatID+'">');
+		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEENTRY; ?>" />');
+		d.writeln('<input type="hidden" name="we_editCatID" value="'+top.we_editCatID+'" />');
 	}else{
 		if(makeNewFolder){
-			d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>">');
+			d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>" />');
 		}else{
-			d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATECAT; ?>">');
+			d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATECAT; ?>" />');
 		}
 	}
-	d.writeln('<input type="hidden" name="order" value="'+top.order+'">');
-	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>">');
-	d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>">');
-	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'">');
+	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
+	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
+	d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>" />');
+	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'" />');
 	d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
-		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
+		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0" /></td>');
+		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}else if(makeNewCat){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
-		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>cat.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print $GLOBALS["l_fileselector"]["new_cat_name"]; ?>"><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_cat_name"]?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
+		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>cat.gif" width="16" height="18" border="0" /></td>');
+		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print $GLOBALS["l_fileselector"]["new_cat_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_cat_name"]?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -338,12 +338,12 @@ function writeBody(d){
 		d.writeln('<tr id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editCatID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" width="25" align="center">');
 		if(we_editCatID == entries[i].ID){
-			d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0">');
+			d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 			d.writeln('</td>');
 			d.writeln('<td class="selector">');
-			d.writeln('<input type="hidden" name="we_EntryText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%">');
+			d.writeln('<input type="hidden" name="we_EntryText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" />');
 		}else{
-			d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0">');
+			d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 			d.writeln('</td>');
 			d.writeln('<td class="selector"' + (we_editCatID ? '' : ' unselectable="on"') + ' title="'+entries[i].text+'">');
 			d.writeln(cutText(entries[i].text,80));
@@ -967,7 +967,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0"></td>
+					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>
@@ -1183,7 +1183,7 @@ function we_checkName() {
 ';
 		print STYLESHEET.'</head><body class="defaultfont" style="margin:0;padding: 15px 0 0 10px;background-image:url(/webEdition/images/backgrounds/aquaBackgroundLineLeft.gif);">
 ' . ($showPrefs ? '
-	<form onsubmit="weWysiwygSetHiddenText();"; action="'.$_SERVER["PHP_SELF"].'" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="'.FS_CHANGE_CAT.'"><input type="hidden" name="catid" value="'.$_REQUEST["catid"].'">
+	<form onsubmit="weWysiwygSetHiddenText();"; action="'.$_SERVER["PHP_SELF"].'" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="'.FS_CHANGE_CAT.'" /><input type="hidden" name="catid" value="'.$_REQUEST["catid"].'" />
 		'.$table->getHtmlCode()."<br />".$ta."<br />".$saveBut.'
 	</div>		' : '' ) .'
 </body></html>';

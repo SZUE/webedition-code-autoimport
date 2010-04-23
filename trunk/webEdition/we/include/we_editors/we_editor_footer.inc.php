@@ -715,7 +715,7 @@ if(inWorkflow($we_doc)) {
 
 <body bgcolor="#f0f0f0"  background="<?php print EDIT_IMAGE_DIR ?>editfooterback.gif" marginwidth="0" marginheight="10" leftmargin="0" topmargin="10">
 	<form name="we_form"<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onSubmit="sub();return false;"<?php } ?>>
-	<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>">
+	<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
 		<?php
 		$_SESSION['seemForOpenDelSelector']['ID'] = $we_doc->ID;
 		$_SESSION['seemForOpenDelSelector']['Table'] = $we_doc->Table;

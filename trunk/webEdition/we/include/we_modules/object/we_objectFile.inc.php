@@ -1381,7 +1381,7 @@ class we_objectFile extends we_document
 		$content = "";
 		if($editable){
 			$fname = 'we_'.$this->Name.'_img['.$name.']';
-			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'">';
+			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
 			// show thumbnail of image if there exists one: 
 			if(!empty($thumbID)) {
 				$content .= '<img src="'.$_imgSrc.'" height="'.$_imgHeight.'" width="'.$_imgWight.'" />';
@@ -1413,7 +1413,7 @@ class we_objectFile extends we_document
 		if($editable){
 			$content = "";
 			$fname = 'we_'.$this->Name.'_img['.$name.']';
-			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'">';
+			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
 			$content .= $img->getHtml();
 			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'binary_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')"),
 																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."','binary_".$name."')")));

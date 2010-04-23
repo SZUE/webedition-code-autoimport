@@ -342,7 +342,7 @@ function step_database() {
 		$header .= '<script src="'.$jsFile.'" language="JavaScript" type="text/javascript"></script>';
 	}
 	foreach($input_host->getCSSFiles() as $cssFile) {
-		$header .= '<link href="'.$cssFile["path"].'" media = "'.$cssFile["media"].'" rel="styleSheet" type="text/css">';
+		$header .= '<link href="'.$cssFile["path"].'" media = "'.$cssFile["media"].'" rel="styleSheet" type="text/css" />';
 	}
 	$output .= '<table class="small">';
 	$output .= '<tr><td style="width:80px;">Server: </td><td>'.$input_host->getHTML().'</td></tr>';
@@ -848,7 +848,7 @@ function tpl_navigation($step = "1") {
 		$header .= '<script src="'.$jsFile.'" language="JavaScript" type="text/javascript"></script>';
 	}
 	foreach($buttonNext->getCSSFiles() as $cssFile) {
-		$header .= '<link href="'.$cssFile["path"].'" media = "'.$cssFile["media"].'" rel="styleSheet" type="text/css">';
+		$header .= '<link href="'.$cssFile["path"].'" media = "'.$cssFile["media"].'" rel="styleSheet" type="text/css" />';
 	}
 	
 	$output = '<div style="display:block; margin:10px 0px 10px 0px;"><div style="float:left;">'.$buttonPrev->getHTML().'</div>';
@@ -905,7 +905,7 @@ ob_end_clean();
 		color:#000000;
 	}
 	</style>
-	<link href="/webEdition/css/global.php?WE_LANGUAGE=English_UTF-8" rel="styleSheet" type="text/css">
+	<link href="/webEdition/css/global.php?WE_LANGUAGE=English_UTF-8" rel="styleSheet" type="text/css" />
 	<?php echo $header; ?>
 </head>
 <body bgcolor="#386AAB" class="header" onLoad="" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">

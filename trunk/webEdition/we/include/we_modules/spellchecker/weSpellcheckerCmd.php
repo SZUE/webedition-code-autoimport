@@ -270,8 +270,8 @@ if(isset($_REQUEST['cmd'][0])) {
 
 <body>
 <form name="dispatcherForm" method="post" target="_self" action="<?php print WE_SPELLCHECKER_MODULE_PATH?>weSpellcheckerCmd.php">
-	<input type="hidden" name="cmd[0]" value="">
-	<input type="hidden" name="cmd[1]" value="">
+	<input type="hidden" name="cmd[0]" value="" />
+	<input type="hidden" name="cmd[1]" value="" />
 </form>
 </body>
 </html>

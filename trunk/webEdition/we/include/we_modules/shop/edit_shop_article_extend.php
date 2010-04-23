@@ -257,7 +257,7 @@ if (isset($daten)){
 			}
         }
         $menu .= "</select>\n";
-        $menu .= '<input type="hidden" name="typ" value="object">';
+        $menu .= '<input type="hidden" name="typ" value="object" />';
         return $menu;
     }
     /* ************* selectbox function ************** */

@@ -166,7 +166,7 @@ class weSpecialCharDialog extends weDialog{
 "&yuml;");
 
 
-		$field = '<input type="hidden" name="we_dialog_args[char]" value="">';
+		$field = '<input type="hidden" name="we_dialog_args[char]" value="" />';
 
 		$table = '<table border="1" cellpadding="0" cellspacing="0" id="wechartb" style="border:black solid 1px;cursor:pointer;" width="340">
 ';

@@ -212,7 +212,7 @@ class weCustomerFrames extends weModuleFrames {
 					<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
 						<tr>
 							<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">$out
-								<input type=\"hidden\" name=\"$field\" value=\"$imgId\"></td>
+								<input type=\"hidden\" name=\"$field\" value=\"$imgId\" /></td>
 						</tr>
 						<tr>
 							<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">";

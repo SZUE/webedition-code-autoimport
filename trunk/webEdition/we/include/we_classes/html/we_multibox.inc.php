@@ -69,7 +69,7 @@ class we_multiIconBox{
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
 
 			$icon = (isset($c["icon"]) && $c["icon"])  ?
-						('<img src="'.IMAGE_DIR . 'icons/' . $c["icon"].'" alt="" style="margin-left:20px;">')
+						('<img src="'.IMAGE_DIR . 'icons/' . $c["icon"].'" alt="" style="margin-left:20px;" />')
 						:
 						 "";
 			$headline = (isset($c["headline"]) && $c["headline"]) ?
@@ -260,7 +260,7 @@ class we_multiIconBox{
 			function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore){
 				var lastNum = weGetLastMultiboxNr();
 				var i = (lastNum + 1);
-				icon = icon  ? (\'<img src="'.IMAGE_DIR . 'icons/\' + icon + \'" width="64" height="64" alt="" style="margin-left:20px;">\') : "";
+				icon = icon  ? (\'<img src="'.IMAGE_DIR . 'icons/\' + icon + \'" width="64" height="64" alt="" style="margin-left:20px;" />\') : "";
 				headline = headline ? (\'<div  id="'.$uniqname.'_headline_\'+ i + \'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">\' + headline + \'</div>\') : "";
 
 				var mainContent = content ? content : "";

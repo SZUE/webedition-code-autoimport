@@ -81,7 +81,7 @@ for ( col in we_color2 ){
 		document.writeln(\'<tr>\');
 	}
 
-document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><img src="'.IMAGE_DIR.'pixel.gif" width="15" height="15" border="0" alt="\'+we_color2[col]+\'"></a></td>\');
+document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><img src="'.IMAGE_DIR.'pixel.gif" width="15" height="15" border="0" alt="\'+we_color2[col]+\'" /></a></td>\');
 
 if(z==17){
 		document.writeln(\'</tr>\');
@@ -100,7 +100,7 @@ if(z != 0){
 		</table>
 	';
 
-	$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px">';
+	$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
 	$color = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["color"]);
 
 if($_REQUEST["we_cmd"][0]){

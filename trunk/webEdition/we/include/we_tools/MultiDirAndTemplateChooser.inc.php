@@ -58,7 +58,7 @@ class MultiDirAndTemplateChooser extends MultiDirChooser{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="'.ICON_DIR.'folder.gif" width="16" height="18"></td>
+	<td><img src="'.ICON_DIR.'folder.gif" width="16" height="18" /></td>
 	<td class="'.$this->css.'">/</td>
 	<td>'.((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ? 
 			$we_button->create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','0');") : 
@@ -90,7 +90,7 @@ class MultiDirAndTemplateChooser extends MultiDirChooser{
 					$tmplSelect = htmlSelect($this->tmplSelectName."_".$this->nr,$this->tmplValsArr,1,isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", false, "onchange='if(_EditorFrame) {_EditorFrame.setEditorIsHot(true);}'");
 					return '<tr><td></td><td><span class="small"><b>'.$GLOBALS["l_we_class"]["template"].':</b></span><br>'.$tmplSelect.'</td><td valign="bottom">'.$but.'</td></tr>'."\n";
 				}else{
-					return '<tr><td></td><td class="'.$this->css.'"><span class="small"><b>'.$GLOBALS["l_we_class"]["template"].':</b></span><br>'.$path.'<input type="hidden" name="'.$this->tmplSelectName."_".$this->nr.'" value="'.(isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") .'"></td><td valign="bottom">'.$but.'</td></tr>'."\n";
+					return '<tr><td></td><td class="'.$this->css.'"><span class="small"><b>'.$GLOBALS["l_we_class"]["template"].':</b></span><br>'.$path.'<input type="hidden" name="'.$this->tmplSelectName."_".$this->nr.'" value="'.(isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") .'" /></td><td valign="bottom">'.$but.'</td></tr>'."\n";
 				}
 		}
 	}

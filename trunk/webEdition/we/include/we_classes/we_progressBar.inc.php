@@ -251,10 +251,10 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.
          	$out.='<tr>'.($left!="" ? $left."<td>".getPixel(5,1)."</td>" : "");
 
 			if($this->orientation==1){				
-				$out.='<td><table border="0" cellpadding="0" cellspacing="0">'.($this->showBack ? '<tr><td><img name="progress_image_bg" src="'.$this->progress_image_bg.'" height="'.$rest_len.'" width="'.$this->stud_width.'"></td></tr>' : "").'<tr><td><img  name="progress_image" src="'.$this->progress_image.'" height="'.$progress_len.'" width="'.$this->stud_width.'"></td></tr></table></td>';
+				$out.='<td><table border="0" cellpadding="0" cellspacing="0">'.($this->showBack ? '<tr><td><img name="progress_image_bg" src="'.$this->progress_image_bg.'" height="'.$rest_len.'" width="'.$this->stud_width.'" /></td></tr>' : "").'<tr><td><img  name="progress_image" src="'.$this->progress_image.'" height="'.$progress_len.'" width="'.$this->stud_width.'" /></td></tr></table></td>';
 			}				
 			else{
-				$out.='<td><img name="progress_image'.$this->name.'" src="'.$this->progress_image.'" width="'.$progress_len.'" height="'.$this->stud_width.'"></td>'.($this->showBack ? '<td><img  name="progress_image_bg'.$this->name.'" src="'.$this->progress_image_bg.'" width="'.$rest_len.'" height="'.$this->stud_width.'"></td>' : "");
+				$out.='<td><img name="progress_image'.$this->name.'" src="'.$this->progress_image.'" width="'.$progress_len.'" height="'.$this->stud_width.'" /></td>'.($this->showBack ? '<td><img  name="progress_image_bg'.$this->name.'" src="'.$this->progress_image_bg.'" width="'.$rest_len.'" height="'.$this->stud_width.'" /></td>' : "");
 			}
 			
          $out.=($right!="" ? "<td>".getPixel(5,1)."</td>".$right : "")."</tr>";

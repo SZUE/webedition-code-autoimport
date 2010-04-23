@@ -106,7 +106,7 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">'.
 ($maxsize ? ('<tr><td>'.htmlAlertAttentionBox(
 								$we_maxfilesize_text,
 								1,390).'</td></tr><tr><td>'.getPixel(2,10).'</td></tr>') : '').'
-				<tr><td><input name="we_File" TYPE="file"'.($allowedContentTypes ? ' ACCEPT="'.$allowedContentTypes.'"' : '').' size="35">'.'</td></tr>
+				<tr><td><input name="we_File" TYPE="file"'.($allowedContentTypes ? ' ACCEPT="'.$allowedContentTypes.'"' : '').' size="35" />'.'</td></tr>
 				<tr><td>'.getPixel(2,10).'</td></tr>
 ';
 								if 	($we_doc->ContentType=="image/*") {
@@ -145,7 +145,7 @@ $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("uploa
 <body class="weDialogBody" onLoad="self.focus();">
 	<center>
 		<form method="post" enctype="multipart/form-data">
-			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>">
+			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
 			<?php print htmlDialogLayout($content,$l_newFile["import_File_from_hd_title"], $_buttons); ?>
 		</form>
 	</center>

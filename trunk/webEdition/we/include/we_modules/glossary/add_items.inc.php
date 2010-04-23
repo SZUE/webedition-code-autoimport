@@ -523,7 +523,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 		var td = document.createElement('td');
 		var html;
 
-		html	=	'<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" onblur="this.className=\'wetextinput\';" disabled=\"disabled\" onfocus="this.className=\'wetextinputselected\'">'
+		html	=	'<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" onblur="this.className=\'wetextinput\';" disabled=\"disabled\" onfocus="this.className=\'wetextinputselected\'" />'
 				+	'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">'
 				+	'<option value="' + word + '">' + word + '</option>'
 				+	'<optgroup label="<?php echo $GLOBALS['l_glossary']['change_to']; ?>">'
@@ -773,13 +773,13 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 
 	<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck">
-	<input type="hidden" name="ItemsToPublish" id="ItemsToPublish" value="">
-	<input type="hidden" name="we_cmd[0]" value="<?php echo $_REQUEST["we_cmd"][0]; ?>">
-	<input type="hidden" name="we_cmd[1]" value="finish">
-	<input type="hidden" name="we_cmd[2]" value="<?php echo $Transaction; ?>">
+	<input type="hidden" name="ItemsToPublish" id="ItemsToPublish" value="" />
+	<input type="hidden" name="we_cmd[0]" value="<?php echo $_REQUEST["we_cmd"][0]; ?>" />
+	<input type="hidden" name="we_cmd[1]" value="finish" />
+	<input type="hidden" name="we_cmd[2]" value="<?php echo $Transaction; ?>" />
 <?php
 	if(isset($_REQUEST['we_cmd'][3])) {
-		echo "	<input type=\"hidden\" name=\"we_cmd[3]\" value=\"" . $_REQUEST["we_cmd"][3] . "\">";
+		echo "	<input type=\"hidden\" name=\"we_cmd[3]\" value=\"" . $_REQUEST["we_cmd"][3] . "\" />";
 	}
 
 

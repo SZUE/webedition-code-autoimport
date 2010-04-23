@@ -111,7 +111,7 @@ function importFile(){
 		<td class="defaultfont"><b>'.$GLOBALS["l_importrtf"]["chose"].'</b></td>
 	</tr>            
 	<tr>
-		<td><input type="file" name="fileName" size="50" onKeyDown="return false"></td>
+		<td><input type="file" name="fileName" size="50" onKeyDown="return false" /></td>
 	</tr>
 	<tr>
 		<td>'.getPixel(5,10).'</td>
@@ -128,7 +128,7 @@ function importFile(){
 	<tr>
 		<td>'.getPixel(5,22).'</td>
 	</tr>
-</table><input type="hidden" name="we_pageNr" value="2">
+</table><input type="hidden" name="we_pageNr" value="2" />
 ';
 				break;
 ########################################################################	

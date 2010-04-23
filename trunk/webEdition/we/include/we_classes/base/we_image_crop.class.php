@@ -937,14 +937,14 @@ if(!Function.prototype.apply){
 		$okbut = $we_button->create_button("save", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('doImage_crop',document.forms['we_form'].cropCoordX.value,document.forms['we_form'].cropCoordY.value,document.forms['we_form'].CropWidth.value,document.forms['we_form'].CropHeight.value);", true, -1, -1, "", "", true, false);
 
 		return '
-<input type="hidden" name="cropCoordX" id="cropCoordX">
-<input type="hidden" name="cropCoordY" id="cropCoordY">
+<input type="hidden" name="cropCoordX" id="cropCoordX" />
+<input type="hidden" name="cropCoordY" id="cropCoordY" />
 <table cellpadding="0" cellspacing="5" border="0">
   <tr>
     <td>
       <div id="weImgDiv">
         <div id="weImagePanelBorder"><div id="weImagePanel">
-          <img id="weImage" src="'.$attribs["src"].'"'.(isset($attribs["width"])? ' width="'.$attribs["width"].'"' : '' ).(isset($attribs["height"])? ' height="'.$attribs["height"].'"' : '').(isset($attribs["alt"])? ' alt="'.$attribs["alt"].'"' : '').'></div>
+          <img id="weImage" src="'.$attribs["src"].'"'.(isset($attribs["width"])? ' width="'.$attribs["width"].'"' : '' ).(isset($attribs["height"])? ' height="'.$attribs["height"].'"' : '').(isset($attribs["alt"])? ' alt="'.$attribs["alt"].'"' : '').' /></div>
         </div>
       </div>
       <div id="weControl" style="display:none;height:24px;background:#CECECE;border-top:solid 1px #fff;padding:3px;">
@@ -953,8 +953,8 @@ if(!Function.prototype.apply){
         	  <td style="width:100px;padding-top:4px;">
         	  	<div id="console" style="display:none;">
         		  <div id="weSizeDiv">
-         	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="CropTool.setCropWidth(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);">
-                <input type="text" name="CropHeight" id="CropHeight" value="0" onchange="CropTool.setCropHeight(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);">
+         	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="CropTool.setCropWidth(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
+                <input type="text" name="CropHeight" id="CropHeight" value="0" onchange="CropTool.setCropHeight(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
               </div>
               <a id="cropButtonZoomIn" title="'.$l_crop["enlarge_crop_area"].'" onmousedown="CropTool.zoom(1);">&nbsp;</a>
               <a id="cropButtonZoomOut" title="'.$l_crop["reduce_crop_area"].'" onmousedown="CropTool.zoom(-1);">&nbsp;</a>

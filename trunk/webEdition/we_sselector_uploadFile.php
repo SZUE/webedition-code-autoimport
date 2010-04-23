@@ -89,7 +89,7 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">'.
 ($maxsize ? ('<tr><td>'.htmlAlertAttentionBox(
 							sprintf($GLOBALS["l_newFile"]["max_possible_size"],round($maxsize / (1024*1024),3)."MB"),
 							1,390).'</td></tr><tr><td>'.getPixel(2,10).'</td></tr>') : '').'
-			<tr><td><input name="we_uploadFile" TYPE="file" size="35">'.'</td></tr><tr><td>'.getPixel(2,10).'</td></tr>
+			<tr><td><input name="we_uploadFile" TYPE="file" size="35" />'.'</td></tr><tr><td>'.getPixel(2,10).'</td></tr>
 			<tr><td class="defaultfont">'.$GLOBALS["l_newFile"]["caseFileExists"].'</td></tr><tr><td>'.
 			we_forms::radiobutton("yes", true, "overwrite", $GLOBALS["l_newFile"]["overwriteFile"]).
 			we_forms::radiobutton("no", false, "overwrite", $GLOBALS["l_newFile"]["renameFile"]).'</td></tr></table>';
@@ -110,8 +110,8 @@ endif ?>
 //-->
 </script>
 </head>
-<body class="weDialogBody" onload="self.focus();"><center>
-<input type="hidden" name="pat" value="<?php print $_REQUEST["pat"]; ?>">
+<body class="weDialogBody" onLoad="self.focus();"><center>
+<input type="hidden" name="pat" value="<?php print $_REQUEST["pat"]; ?>" />
 <form method="post" enctype="multipart/form-data" name="we_form">
 	<?php print $content; ?>
 </form>

@@ -705,7 +705,7 @@ class searchtoolFrames extends weToolFrames
 		foreach ($content as $i => $c) {
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
 			
-			$icon = (isset($c["icon"]) && $c["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;">') : "";
+			$icon = (isset($c["icon"]) && $c["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
 			$headline = (isset($c["headline"]) && $c["headline"]) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
 			
 			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : "";
