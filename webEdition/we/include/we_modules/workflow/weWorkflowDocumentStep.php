@@ -128,7 +128,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 					$this_user=getHash("SELECT First,Second,Email FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'",$this->db);					
 					//if($foo) we_mail($foo,correctUml($l_workflow["todo_next"]),$desc,(isset($this_user["Email"]) && $this_user["Email"]!="" ? "From: ".$this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">\n":"")."Content-Type: text/html; charset=iso-8859-1");
 					if($foo) {
-						$desc = str_repace('<br />',"\n",$desc);
+						$desc = str_replace('<br />',"\n",$desc);
 						$mess = $l_workflow["todo_next"]." ID:".$workflowDoc->document->ID.", Pfad:".$workflowDoc->document->Path."\n\n".$desc;
 						we_mail($foo,correctUml($l_workflow["todo_next"]),$mess,(isset($this_user["Email"]) && $this_user["Email"]!="" ? $this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">":""));
 						}

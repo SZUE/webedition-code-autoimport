@@ -93,7 +93,7 @@ class weWorkflow extends weWorkflowBase{
 		$this->Folders = ",0,";
 		$this->ObjectFileFolders = ",0,";
 		$this->FolderPath = "";
-		$this->DocType = 0;
+		$this->DocType = '0';
 		$this->Objects = "";
 		$this->Categories = "";
 		$this->ObjCategories = "";
@@ -283,7 +283,7 @@ class weWorkflow extends weWorkflowBase{
 		*/
 
 		if ($doctype){
-			$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType='".$doctype."' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+			$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType IN (".$doctype.") AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
 			while ($db->next_record()){
 				if(isset($wfIDs[$db->f("ID")])){
 					$wfIDs[$db->f("ID")]++;
@@ -301,7 +301,7 @@ class weWorkflow extends weWorkflowBase{
 			$cats=makeArrayFromCSV($categories);
 			foreach($cats as $k=>$v){
 				if ($doctype!="")
-					$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType=".abs($doctype)."' AND Categories LIKE '%,".mysql_real_escape_string($v).",%' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+					$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType IN (".$doctype.") AND Categories LIKE '%,".mysql_real_escape_string($v).",%' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
 				else
 					$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE Categories LIKE '%,".mysql_real_escape_string($v).",%' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
 				while ($db->next_record()){

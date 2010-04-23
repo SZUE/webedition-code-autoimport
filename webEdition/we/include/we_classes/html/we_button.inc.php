@@ -85,7 +85,7 @@ class we_button {
 					'<tr><td class="weBtnLeft'.($disabled ? 'Disabled' : '').'"></td>'.
 					'<td class="weBtnMiddle'.($disabled ? 'Disabled' : '').($width ? ('" style="width:'.
 					($width - (WE_BUTTON_LEFT_WIDTH+WE_BUTTON_RIGHT_WIDTH)).'px;') : '').'" unselectable="on">'.$value.'</td>'.
-					'<td class="weBtnRight'.($disabled ? 'Disabled' : '').'">'.($isFormButton ? '<input border="0" type="image" src="'.IMAGE_DIR.'pixel.gif">' : '').'</td>'.
+					'<td class="weBtnRight'.($disabled ? 'Disabled' : '').'">'.($isFormButton ? '<input border="0" type="image" src="'.IMAGE_DIR.'pixel.gif" />' : '').'</td>'.
 				'</tr></table>';
 
 	}

@@ -40,13 +40,13 @@ function we_schedule_props(){
 	<tr>
 		<td><table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td><input type="checkbox" name="we_from" value="1"'.($fromOk ? " checked" : "").' onClick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_'.$n.'_FromOk\'].value=((this.checked) ? 1 : 0);"><input type="hidden" name="we_'.$n.'_FromOk" value="'.$fromOk.'"></td>
+				<td><input type="checkbox" name="we_from" value="1"'.($fromOk ? " checked" : "").' onClick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_'.$n.'_FromOk\'].value=((this.checked) ? 1 : 0);" /><input type="hidden" name="we_'.$n.'_FromOk" value="'.$fromOk.'" /></td>
 				<td class="defaultfont">&nbsp;'.$l_schedule["from"].'</td>
 			</tr></table></td>
 		<td></td>
 		<td><table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td><input type="checkbox" name="we_to" value="1"'.($toOk ? " checked" : "").' onClick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_'.$n.'_ToOk\'].value=((this.checked) ? 1 : 0);"><input type="hidden" name="we_'.$n.'_ToOk" value="'.$toOk.'"></td>
+				<td><input type="checkbox" name="we_to" value="1"'.($toOk ? " checked" : "").' onClick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_'.$n.'_ToOk\'].value=((this.checked) ? 1 : 0);" /><input type="hidden" name="we_'.$n.'_ToOk" value="'.$toOk.'" /></td>
 				<td class="defaultfont">&nbsp;'.$l_schedule["to"].'</td>
 			</tr></table></td>
 	</tr>

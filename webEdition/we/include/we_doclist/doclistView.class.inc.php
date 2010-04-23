@@ -458,8 +458,8 @@ class doclistView {
           row.removeChild(searchTD);
                               
           var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\">\n"
-              + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\"></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\"></td><td>\n"
+              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+              + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\" /></td><td>\n"
               + "<table title=\"' . $GLOBALS ['l_button'] ['select'] ['value'] . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" 
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\" unselectable=\"on\">\n"
               + "' . $GLOBALS ['l_button'] ['select'] ['value'] . '\n"
@@ -487,8 +487,8 @@ class doclistView {
           row.removeChild(searchTD);
                     
           var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\">\n"
-              + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\"></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\"></td><td>\n"
+              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+              + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\" /></td><td>\n"
               + "<table title=\"' . $GLOBALS ['l_button'] ['select'] ['value'] . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" 
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\" unselectable=\"on\">\n"
               + "' . $GLOBALS ['l_button'] ['select'] ['value'] . '\n"
@@ -589,11 +589,11 @@ class doclistView {
           row.removeChild(searchTD);
           
           var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\">\n"
+              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
               + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
               + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" 
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" unselectable=\"on\">\n"
-              + "<img src=\"/webEdition/images/button/icons/date_picker.gif\" class=\"weBtnImage\">\n"
+              + "<img src=\"/webEdition/images/button/icons/date_picker.gif\" class=\"weBtnImage\" />\n"
               + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
               
               
@@ -1228,15 +1228,15 @@ class doclistView {
 						$imagesize = getimagesize ( $_SERVER["DOCUMENT_ROOT"] . $_result [$f] ["Path"] );
 						if (file_exists ( $_SERVER["DOCUMENT_ROOT"] . '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower ( $_result [$f] ["Extension"] ) )) {
 							$thumbpath = '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower ( $_result [$f] ["Extension"] );
-							$imageView = "<img src='$thumbpath' border='0'></a>";
+							$imageView = "<img src='$thumbpath' border='0' /></a>";
 						} else {
-							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0'></a>";
+							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
 						}
 						if (file_exists ( $_SERVER["DOCUMENT_ROOT"] . '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower ( $_result [$f] ["Extension"] ) )) {
 							$thumbpathPopup = '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower ( $_result [$f] ["Extension"] );
-							$imageViewPopup = "<img src='$thumbpathPopup' border='0'></a>";
+							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
 						} else {
-							$imageViewPopup = "<img src='/webEdition/thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $bigSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0'></a>";
+							$imageViewPopup = "<img src='/webEdition/thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $bigSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
 						}
 					} else {
 						$imagesize = array (0, 0 );
@@ -1506,7 +1506,7 @@ class doclistView {
 			
 			$_forceRightHeadline = (isset ( $c ["forceRightHeadline"] ) && $c ["forceRightHeadline"]);
 			
-			$icon = (isset ( $c ["icon"] ) && $c ["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c ["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;">') : "";
+			$icon = (isset ( $c ["icon"] ) && $c ["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c ["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
 			
 			$headline = (isset ( $c ["headline"] ) && $c ["headline"]) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c ["headline"] . '</div>') : "";
 			

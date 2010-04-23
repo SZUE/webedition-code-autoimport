@@ -172,7 +172,7 @@ if($maxsize){
 
 }
 
-array_push($parts,array("headline"=>"","html"=>'<input name="we_uploadedFile" TYPE="file"'.($allowedContentTypes ? ' ACCEPT="'.$allowedContentTypes.'"' : '').' size="35">',"space"=>0));
+array_push($parts,array("headline"=>"","html"=>'<input name="we_uploadedFile" TYPE="file"'.($allowedContentTypes ? ' ACCEPT="'.$allowedContentTypes.'"' : '').' size="35" />',"space"=>0));
 array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_newFile"]["caseFileExists"].'<br>'.we_forms::radiobutton("yes", true, "overwrite", $GLOBALS["l_newFile"]["overwriteFile"]).
 we_forms::radiobutton("no", false, "overwrite", $GLOBALS["l_newFile"]["renameFile"]),"space"=>0));
 
@@ -231,9 +231,9 @@ endif ?>
 </head>
 <body class="weDialogBody" onLoad="self.focus();" ><center>
 <form method="post" enctype="multipart/form-data">
-   <input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>">
-   <input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>">
-   <input type="hidden" name="ct" value="<?php print $we_ContentType; ?>">
+   <input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
+   <input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
+   <input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
 	<?php print we_multiIconBox::getHTML("","100%",$parts,30,$buttons,-1,"","",false,$l_newFile["import_File_from_hd_title"], "", 560); ?>
 </form></center>
 </body>

@@ -974,7 +974,7 @@ class we_object extends we_document
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= we_forms::checkbox("1", $this->getElement($name."default","dat"), "we_".$this->Name."_input[".$name."default1]", $GLOBALS["l_object"]["checked"], true, "defaultfont", "if(this.checked){document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=1;}else{ document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=0;}");
-			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."default]".'" value="'.$this->getElement($name."default","dat").'">';
+			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."default]".'" value="'.$this->getElement($name."default","dat").'" />';
 			$content .= '</td></tr>';
 
 		}else if($type=="img"){
@@ -1149,7 +1149,7 @@ class we_object extends we_document
 					$content .= we_forms::checkboxWithHidden(($variant ==1 ? true : false), "we_".$this->Name."_variant[".$name."variant]", $GLOBALS["l_global"]["variant_field"],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 				}
 			}
-			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="'.$this->getElement($name."required","dat").'">';
+			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="'.$this->getElement($name."required","dat").'" />';
 			$content .= '</td></tr>';
 			// description for editmode.
 		} else if(defined('SHOP_TABLE')){
@@ -1160,11 +1160,11 @@ class we_object extends we_document
 				$variant = $this->getElement($name."variant","dat");
 				$content .= we_forms::checkboxWithHidden(($variant ==1 ? true : false), "we_".$this->Name."_variant[".$name."variant]", $GLOBALS["l_global"]["variant_field"],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 			}
-			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="0">';
+			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="0" />';
 			$content .= '</td></tr>';
 			// description for editmode.
 		} else {
-			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="0">';
+			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="0" />';
 		}
 
 
@@ -1453,10 +1453,10 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		if(sizeof($users)){
 			for($i=1;$i<(sizeof($users) -1);$i++){
 				$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID='".$users[$i]."'",$this->DB_WE);
-				$content .= '<tr><td><img src="'.ICON_DIR.$foo["Icon"].'" width="16" height="18"></td><td class="defaultfont">'.$foo["Path"].'</td><td>' . $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','".$GLOBALS['we_transaction']."','".$nr."',".$users[$i].",'".$name."');").'</td></tr>'."\n";
+				$content .= '<tr><td><img src="'.ICON_DIR.$foo["Icon"].'" width="16" height="18" /></td><td class="defaultfont">'.$foo["Path"].'</td><td>' . $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','".$GLOBALS['we_transaction']."','".$nr."',".$users[$i].",'".$name."');").'</td></tr>'."\n";
 			}
 		}else{
-			$content .= '<tr><td><img src="'.ICON_DIR.'usergroup.gif" width="16" height="18"></td><td class="defaultfont">'.$GLOBALS["l_we_class"]["everybody"].'</td><td>'.getPixel(26,18).'</td></tr>'."\n";
+			$content .= '<tr><td><img src="'.ICON_DIR.'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">'.$GLOBALS["l_we_class"]["everybody"].'</td><td>'.getPixel(26,18).'</td></tr>'."\n";
 		}
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(324,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
 
@@ -1465,7 +1465,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$delallbut = $we_button->create_button("delete_all","javascript:we_cmd('del_all_users','".$GLOBALS['we_transaction']."','$nr','$name')",true,-1,-1,"","",sizeof($users) ? false : true);
 		$addbut = $this->htmlHidden($idname,"0").$this->htmlHidden($textname,"").$we_button->create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['".$idname."'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$nr."\\', top.allIDs,\\'".$name."\\')','','',1)");
 
-		return '<table border="0" callpadding="0" cellspacing="0"><tr><td>'.
+		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.
 		'<div style="width:388px;" class="multichooser">'.$content.'</div>'.'</td></tr><tr><td align="right">'.getPixel(2,4).$we_button->create_button_table(array($delallbut, $addbut)).'</td></tr></table>';
 	}
 
@@ -1477,18 +1477,18 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$users = makeArrayFromCSV($this->Users);
 		$usersReadOnly = $this->UsersReadOnly ? unserialize($this->UsersReadOnly) : array();
 
-		$content = '<table border="0" callpadding="0" cellspacing="0" width="388">';
+		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">';
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(333,2).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(80,2).'</td><td>'.getPixel(26,2).'</td></tr>'."\n";
 		if(sizeof($users)){
 			for($i=0;$i<sizeof($users);$i++){
 				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='".$users[$i]."'",$this->DB_WE);
-				$content .= '<tr><td><img src="'.ICON_DIR.$foo["Icon"].'" width="16" height="18"></td><td class="defaultfont">'.$foo["Path"].'</td><td>'.
+				$content .= '<tr><td><img src="'.ICON_DIR.$foo["Icon"].'" width="16" height="18" /></td><td class="defaultfont">'.$foo["Path"].'</td><td>'.
 				($canChange ?
-				$this->htmlHidden('we_users_read_only['.$users[$i].']',(isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ).'<input type="checkbox" value="1" name="wetmp_users_read_only['.$users[$i].']"'.( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '').' OnClick="this.form.elements[\'we_users_read_only['.$users[$i].']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);">' :
-				'<img src="'.TREE_IMAGE_DIR.($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif').'">').'</td><td class="defaultfont">'.$l_we_class["readOnly"].'</td><td>'.($canChange ? $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_user','".$users[$i]."');_EditorFrame.setEditorIsHot(true);") : "").'</td></tr>'."\n";
+				$this->htmlHidden('we_users_read_only['.$users[$i].']',(isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ).'<input type="checkbox" value="1" name="wetmp_users_read_only['.$users[$i].']"'.( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '').' OnClick="this.form.elements[\'we_users_read_only['.$users[$i].']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
+				'<img src="'.TREE_IMAGE_DIR.($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif').'" />').'</td><td class="defaultfont">'.$l_we_class["readOnly"].'</td><td>'.($canChange ? $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_user','".$users[$i]."');_EditorFrame.setEditorIsHot(true);") : "").'</td></tr>'."\n";
 			}
 		}else{
-			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18"></td><td class="defaultfont">'.$l_we_class["onlyOwner"].'</td><td></td></tr>'."\n";
+			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.$l_we_class["onlyOwner"].'</td><td></td></tr>'."\n";
 		}
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(333,2).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(80,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
 
@@ -1578,7 +1578,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		}
 		
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
-		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'">';
+		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
 		$content .= $we_button->create_button_table(array(
 															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'image/*')"),
 															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."')")
@@ -1617,7 +1617,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$id = $defaultname;//$this->getElement($defaultname);
 		$other->initByID($id,FILE_TABLE,false);
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
-		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'">';
+		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
 		$content .= $we_button->create_button_table(array(
 															$we_button->create_button("select", "javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')"),
 															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."');")
@@ -1682,7 +1682,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		}
 
 		$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$l_object_value,1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
-		$select .= '<input type = "hidden" name="we_'.$this->Name.'_input[Defaultanzahl]" value="'.$zahl.'">';
+		$select .= '<input type = "hidden" name="we_'.$this->Name.'_input[Defaultanzahl]" value="'.$zahl.'" />';
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 
 	<tr>
@@ -1740,7 +1740,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$check = we_forms::checkbox("1", $this->RestrictUsers ? true : false, $tmpname, $l_we_class["limitedAccess"], true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['".$hiddenname."'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
 			return $hidden.$check;
 		}else{
-			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictUsers ? 'check1_disabled.gif' : 'check0_disabled.gif').'"></td><td class="defaultfont">&nbsp;'.$l_we_class["limitedAccess"].'</td></tr></table>';
+			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictUsers ? 'check1_disabled.gif' : 'check0_disabled.gif').'" /></td><td class="defaultfont">&nbsp;'.$l_we_class["limitedAccess"].'</td></tr></table>';
 		}
 	}
 

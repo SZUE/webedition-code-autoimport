@@ -63,7 +63,7 @@
 	
 		self.focus();
 	');	
-	$css='<link href="/webEdition/css/global.php?WE_LANGUAGE='.$GLOBALS["WE_LANGUAGE"].'" rel="styleSheet" type="text/css">';
+	$css='<link href="/webEdition/css/global.php?WE_LANGUAGE='.$GLOBALS["WE_LANGUAGE"].'" rel="styleSheet" type="text/css" />';
 		
 	print we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead($css."\n".$js).

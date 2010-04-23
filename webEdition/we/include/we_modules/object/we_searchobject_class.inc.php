@@ -137,10 +137,10 @@ class objectsearch extends we_search {
 						$foo = in_workspace($exws[$i],$userWSArray);
 					}
 					if($foo) {
-						$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\''.$GLOBALS["we_transaction"].'\',\''.$this->f("ID").'\',\''.$exws[$i].'\',\''.$id.'\')"><img name="check_'.$id.'_'.$this->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'.gif" width="16" height="18" border="0"></a>';
+						$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\''.$GLOBALS["we_transaction"].'\',\''.$this->f("ID").'\',\''.$exws[$i].'\',\''.$id.'\')"><img name="check_'.$id.'_'.$this->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'.gif" width="16" height="18" border="0" /></a>';
 					}
 					else {
-						$checkbox = '<img name="check_'.$id.'_'.$this->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'_disabled.gif" width="16" height="18" border="0">';
+						$checkbox = '<img name="check_'.$id.'_'.$this->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'_disabled.gif" width="16" height="18" border="0" />';
 					}
 					$p = id_to_path($exws[$i]);
 					$out .= '

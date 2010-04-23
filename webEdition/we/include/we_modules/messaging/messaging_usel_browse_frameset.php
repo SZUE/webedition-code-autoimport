@@ -161,7 +161,7 @@ $browser = new we_browserDetect();
 			    checkpic = "check0.gif";
 			}
 
-			fr.write("<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"<?php echo TREE_IMAGE_DIR?>" + checkpic + "\" \"width=\"16\" height=\"18\" align=\"absmiddle\" border=\"0\" alt=\"\" name=\"img_" + nf[ai].name + "\"></a>");
+			fr.write("<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"<?php echo TREE_IMAGE_DIR?>" + checkpic + "\" \"width=\"16\" height=\"18\" align=\"absmiddle\" border=\"0\" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>");
 			fr.write("&nbsp;<a name='_"+nf[ai].name+"' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">"+(parseInt(nf[ai].published) ? " <b>" : "")+ nf[ai].text +(parseInt(nf[ai].published) ? " </b>" : "")+ "</span></A>&nbsp;&nbsp;<BR>\n");
 		}else{
 			var newAst = zweigEintrag;
@@ -362,7 +362,7 @@ $browser = new we_browserDetect();
   <frameset rows="*,40" framespacing="0" border="0" frameborder="NO" onLoad=" start();">
    <frame src="<?php print HTML_DIR?>white.html" name="messaging_usel_main" scrolling="auto">
    <frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel_iconbar.php" name="user_cmd" scrolling=no noresize marginwidth="0" marginheight="0">
-  </frameset>
+  </frameset><noframes></noframes>
 
  <body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
  </body>

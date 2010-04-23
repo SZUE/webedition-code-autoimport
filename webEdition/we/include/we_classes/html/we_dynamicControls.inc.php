@@ -364,7 +364,7 @@ class we_dynamicControls {
 
 				// Build header for open group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></a></td>
+								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '" /></a></td>
 							<td class="defaultfont" colspan="3">
 								<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
 						</tr>
@@ -535,7 +535,7 @@ class we_dynamicControls {
 
 				// Build header for open group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></a></td>
+								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '" /></a></td>
 							<td class="defaultfont" colspan="3">
 								<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
 						</tr>

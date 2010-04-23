@@ -1598,7 +1598,7 @@ function mapPermissions() {
 			</script>';
 
 		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',$GLOBALS['l_users']["username"]) : $this->getUserfield("username","username");
-		$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'">' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()"','password',240);
+		$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()"','password',240);
 
 
 
@@ -1634,7 +1634,7 @@ function mapPermissions() {
 
 		$adminperm=$this->checkPermission("ADMINISTRATOR");
 		$publishperm=$this->checkPermission("PUBLISH");
-		$_input = '<input type="hidden" name="'.$this->Name.'_workSpace" value="'.$_ws.'">'.htmlTextInput('specify_location',40,$wpath,"",'onchange="top.content.setHot()" readonly="readonly"','text',365);
+		$_input = '<input type="hidden" name="'.$this->Name.'_workSpace" value="'.$_ws.'" />'.htmlTextInput('specify_location',40,$wpath,"",'onchange="top.content.setHot()" readonly="readonly"','text',365);
 		$_button = $we_button->create_button("select", "javascript:choseDir()",true,-1,-1,"","",$adminperm,false);
 		$_chooser = $we_button->create_button_table(array($_input,$_button));
 
@@ -1709,7 +1709,7 @@ function mapPermissions() {
 			$content1 = '
 						<table border="0" cellpadding="0" cellspacing="2">
 						<tr>
-							<td><input type="hidden" name="seem_start_file" value="' . $startDocid . '"></td>
+							<td><input type="hidden" name="seem_start_file" value="' . $startDocid . '" /></td>
 							<td valign="middle">'.htmlTextInput('seem_start_file_name',40,$startDocPath,"",'readonly="readonly" onChange="top.content.setHot();"','text',411).'</td>
 							<td width="5"></td>
 							<td>' . $we_button->create_button("select", "javascript:top.content.setHot(); we_cmd('select_seem_start');") . '</td>
@@ -1861,7 +1861,7 @@ function mapPermissions() {
 		if(isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["ID"] && $_SESSION["user"]["ID"]==$this->ID && !we_hasPerm("EDIT_PASSWD"))
 			$_password="****************";
 		else
-			$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'">' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()"','password',240);
+			$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()"','password',240);
 
 		$this->DB_WE->query("SELECT Path FROM ".USER_TABLE." WHERE ID='".$this->ParentID."'");
 
@@ -2201,8 +2201,8 @@ function mapPermissions() {
 			$content .= "<p>";
 
 			$content1.='
-				<input type="hidden" name="'.$obj_values.'" value="'.implode(",",$v).'">
-				<input type="hidden" name="'.$obj_def_values.'" value="'.implode(",",$this->workspaces_defaults[$k]).'">
+				<input type="hidden" name="'.$obj_values.'" value="'.implode(",",$v).'" />
+				<input type="hidden" name="'.$obj_def_values.'" value="'.implode(",",$this->workspaces_defaults[$k]).'" />
 				<table border="0" cellpadding="0" cellspacing="2" width="520">';
 			foreach($v as $key=>$val) {
 				$path="/";

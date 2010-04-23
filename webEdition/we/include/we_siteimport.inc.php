@@ -462,7 +462,7 @@ class weSiteImport
 			foreach ($fields as $name => $type) {
 				$row = array();
 				$row[0]["dat"] = htmlspecialchars($name) . '<input type="hidden" name="fields[' . $i . '][name]" value="' . htmlspecialchars(
-						$name) . '">';
+						$name) . '" />';
 				$index = $this->_getIndexOfValues($values, $name);
 				if ($index > -1) {
 					$valpre = $values[$index]["pre"];
@@ -590,8 +590,8 @@ class weSiteImport
 		$bodyhtml = '<body class="weDialogBody">
 					<iframe style="position:absolute;top:-2000px;" src="about:blank" id="iloadframe" name="iloadframe" width="400" height="200"></iframe>
 					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['PHP_SELF'] . '" target="iloadframe">
-					<input type="hidden" name="we_cmd[0]" value="siteImportSaveWePageSettings">
-					<input type="hidden" name="ok" value="1">' . we_multiIconBox::getJS();
+					<input type="hidden" name="we_cmd[0]" value="siteImportSaveWePageSettings" />
+					<input type="hidden" name="ok" value="1" />' . we_multiIconBox::getJS();
 		
 		$okbutton = $we_button->create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
 		$cancelbutton = $we_button->create_button("cancel", "javascript:self.close()");

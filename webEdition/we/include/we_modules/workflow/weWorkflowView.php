@@ -57,7 +57,7 @@ class weWorkflowView extends weWorkflowBase{
 		$this->hiddens[]="ObjectFileFolders";
 		$this->hiddens[]="Categories";
 		$this->hiddens[]="ObjCategories";
-        	$this->hiddens[]="DocType";
+        $this->hiddens[]="DocType";
 		$this->hiddens[]="Objects";
 		$this->show=0;
 		$this->page=0;
@@ -477,8 +477,8 @@ class weWorkflowView extends weWorkflowBase{
 		if($headline){
 			$out='<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15"></td>
-				<td><img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="15"></td>
+				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15" /></td>
+				<td><img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="15" /></td>
 				<td></td>
 			</tr>
 			<tr>
@@ -487,14 +487,14 @@ class weWorkflowView extends weWorkflowBase{
 				<td>'.$content.'</td>
 			</tr>
 			<tr>
-				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15"></td>
-				<td><img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="15"></td>
+				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15" /></td>
+				<td><img src="'.IMAGE_DIR.'pixel.gif" width="'.$width.'" height="15" /></td>
 				<td></td>
 			</tr></table>';
 		}else{
 			$out='<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15"></td>
+				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15 /"></td>
 				<td></td>
 			</tr>
 			<tr>
@@ -502,7 +502,7 @@ class weWorkflowView extends weWorkflowBase{
 				<td>'.$content.'</td>
 			</tr>
 			<tr>
-				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15"></td>
+				<td><img src="'.IMAGE_DIR.'pixel.gif" width="24" height="15" /></td>
 				<td></td>
 			</tr></table>';
 		}
@@ -522,13 +522,13 @@ class weWorkflowView extends weWorkflowBase{
 			$t = $this->db->f("DocType");
 			$vals[$v]=$t;
 		}
-		$pop = htmlSelect($this->uid."_DocType",$vals,1,$this->workflowDef->DocType,false,'onChange="top.content.setHot();"',"value",$width,"defaultfont");
+		$pop = htmlSelect($this->uid."_MYDocType[]",$vals,6,$this->workflowDef->DocType,true,'onChange="top.content.setHot();"',"value",$width,"defaultfont");
 
         return htmlFormElementTable($pop,$l_workflow["doctype"]);
 	}
 
 	function htmlHidden($name,$value=""){
-		return '<input type="hidden" name="'.trim($name).'" value="'.htmlspecialchars($value).'">';
+		return '<input type="hidden" name="'.trim($name).'" value="'.htmlspecialchars($value).'" />';
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -626,8 +626,6 @@ class weWorkflowView extends weWorkflowBase{
 						<?php endif?>
 					break;
 					case "edit_workflow":
-					
-					break;
 					case "show_document":
 						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.document.we_form.wid.value=arguments[1];
@@ -1090,7 +1088,10 @@ class weWorkflowView extends weWorkflowBase{
 						$this->workflowDef->loadDocuments();
 						foreach($this->workflowDef->documents as $k=>$v)
 							$childs.="top.content.deleteEntry(".$v["ID"].",'file');\n";
-			        	$this->workflowDef->save();
+						if (is_array($_REQUEST[$this->uid.'_MYDocType']) && !empty($_REQUEST[$this->uid.'_MYDocType']))	{
+							$this->workflowDef->DocType=implode(",",$_REQUEST[$this->uid.'_MYDocType']);
+						}    	
+						$this->workflowDef->save();
 						print '<script language="JavaScript" type="text/javascript">';
 						if($newone) print 'top.content.makeNewEntry("workflow_folder",'.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'",true,"folder","weWorkflowDef","'.$this->workflowDef->Status.'");';
 						else print 'top.content.updateEntry('.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'","'.$this->workflowDef->Status.'");';

@@ -117,7 +117,7 @@
 
 					if (nf[ai].open==1){
 						if(ai == nf.len) newAst = newAst + "<img src="+treeData.tree_image_dir+"leer.gif width=19 height=18 align=absmiddle border=0>";
-						else newAst = newAst + "<img src="+treeData.tree_image_dir+"strich2.gif width=19 height=18 align=absmiddle border=0>";
+						else newAst = newAst + "<img src="+treeData.tree_image_dir+"strich2.gif width=19 height=18 align=absmiddle border=0 >";
 						row+=draw(nf[ai].id,newAst);
 					}
 

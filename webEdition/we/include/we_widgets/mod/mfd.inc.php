@@ -164,7 +164,7 @@ while ($j < $iMaxItems) {
 					$i++;
 					$j++;
 					$lastModified .= '<tr>';
-					$lastModified .= '<td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '">' . getpixel(
+					$lastModified .= '<td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . getpixel(
 							4, 
 							1) . '</td>';
 					$lastModified .= '<td valign="middle" class="middlefont">';

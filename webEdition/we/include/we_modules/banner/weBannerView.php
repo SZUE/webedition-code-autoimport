@@ -78,7 +78,7 @@ class weBannerView extends weBannerBase{
 	}
 
    	function htmlHidden($name,$value="",$id=""){
-		return '<input type="hidden" name="'.trim($name).'" value="'.htmlspecialchars($value).'"' .(empty($id)?"":' id="'.$id.'"').'>';
+		return '<input type="hidden" name="'.trim($name).'" value="'.htmlspecialchars($value).'"' .(empty($id)?"":' id="'.$id.'"').' />';
 	}
 
 	function getProperties(){
@@ -1201,14 +1201,14 @@ class weBannerView extends weBannerBase{
 
 		$title1 = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td><input type="radio" name="'.$this->uid.'_IntHref" id="'.$this->uid.'_IntHref0" value="0"'.($this->banner->IntHref ? "" : " checked").'></td>
+		<td><input type="radio" name="'.$this->uid.'_IntHref" id="'.$this->uid.'_IntHref0" value="0"'.($this->banner->IntHref ? "" : " checked").' /></td>
 		<td class="defaultfont">&nbsp;<label for="'.$this->uid.'_IntHref0">'.$title1.'</label></td>
 	</tr>
 </table>';
 
 		$title2 = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td><input type="radio" name="'.$this->uid.'_IntHref" id="'.$this->uid.'_IntHref1" value="1"'.($this->banner->IntHref ? " checked" : "").'></td>
+		<td><input type="radio" name="'.$this->uid.'_IntHref" id="'.$this->uid.'_IntHref1" value="1"'.($this->banner->IntHref ? " checked" : "").' /></td>
 		<td class="defaultfont">&nbsp;<label for="'.$this->uid.'_IntHref1">'.$title2.'</label></td>
 	</tr>
 </table>';

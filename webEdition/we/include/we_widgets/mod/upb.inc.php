@@ -107,7 +107,7 @@ foreach ($tbls as $table) {
 	while ($DB_WE->next_record()) {
 		$row = array();
 		$_cont[$DB_WE->f("ModDate")] = $path = '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $DB_WE->f(
-				"Icon") . '" width="16" height="18">' . getpixel(4, 1) . '</td>' . '<td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f(
+				"Icon") . '" width="16" height="18" />' . getpixel(4, 1) . '</td>' . '<td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f(
 				"ID") . '\',\'' . $DB_WE->f("ContentType") . '\')"' . ' title="' . $DB_WE->f("Path") . '" style="color:' . ($DB_WE->f(
 				"Published") ? "#3366CC" : "FF0000") . ';text-decoration:none;">' . $DB_WE->f("Path") . '</a></nobr></td></tr>';
 		array_push($row, array(
@@ -149,9 +149,9 @@ foreach ($tbls as $table) {
 				$steps = count(weWorkflowUtility::getNumberOfSteps($DB_WE->f("ID"), $table));
 				$text = "$step&nbsp;" . $l_resave["of"] . "&nbsp;$steps";
 				if ($DB_WE->f("mywforder"))
-					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle">';
+					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle" />';
 				else
-					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" align="absmiddle">';
+					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" align="absmiddle" />';
 				array_push($row, array(
 					"dat" => $text
 				));

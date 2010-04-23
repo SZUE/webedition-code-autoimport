@@ -249,14 +249,14 @@ class weImageDialog extends weDialog{
 		$hiddens = "";
 		if(isset($_REQUEST["we_cmd"]) && is_array($_REQUEST["we_cmd"])){
 			foreach($_REQUEST["we_cmd"] as $k=>$v){
-				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"".rawurlencode($v)."\">";
+				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"".rawurlencode($v)."\" />";
 			}
 		}
 		$target = '';
 		if(!$this->JsOnly) {
 			$target = ' target="we_'.$this->ClassName.'_cmd_frame"';
 		}
-		return '<form name="we_form" action="'.$_SERVER["PHP_SELF"].'" method="post"' . $target . ' onsubmit="return fsubmit(this)">'.$hiddens;
+		return '<form name="we_form" action="'.$_SERVER["PHP_SELF"].'" method="post"' . $target . ' onsubmit="return fsubmit(this)" >'.$hiddens;
 	}
 
 	function getDialogContentHTML(){

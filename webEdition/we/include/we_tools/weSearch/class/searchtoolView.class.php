@@ -45,8 +45,8 @@ class searchtoolView extends weToolView
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->Model = new searchtool();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/link.gif\">&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/folder.gif\">&nbsp;';
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/link.gif\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/folder.gif\" />&nbsp;';
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclass = new searchtoolsearch();
 		$this->searchclassExp = new searchtoolExp();
@@ -1062,8 +1062,8 @@ class searchtoolView extends weToolView
      row.removeChild(searchTD);
                
      var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\">\n"
-       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\"></td><td>\n"
+       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\" /></td><td>\n"
        + "<table title=\"' . $GLOBALS['l_button']['select']['value'] . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" 
        + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\" unselectable=\"on\">\n"
        + "' . $GLOBALS['l_button']['select']['value'] . '\n"
@@ -1093,8 +1093,8 @@ class searchtoolView extends weToolView
      row.removeChild(searchTD);
           
      var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\">\n"
-       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\"></td><td>\n"
+       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\" /></td><td>\n"
        + "<table title=\"' . $GLOBALS['l_button']['select']['value'] . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" 
        + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\" unselectable=\"on\">\n"
        + "' . $GLOBALS['l_button']['select']['value'] . '\n"
@@ -1136,8 +1136,8 @@ class searchtoolView extends weToolView
      }
      
      var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\">\n"
-       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\"></td><td>\n"
+       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td><img src=\"/webEdition/images/pixel.gif\" border=\"0\" height=\"4\" width=\"5\" /></td><td>\n"
        + "<table title=\"' . $GLOBALS['l_button']['select']['value'] . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDirselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'"+table+"\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" 
        + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\" unselectable=\"on\">\n"
        + "' . $GLOBALS['l_button']['select']['value'] . '\n"
@@ -1286,11 +1286,11 @@ class searchtoolView extends weToolView
      row.removeChild(searchTD);
      
      var innerhtml= "<table id=\"searchAdvSearch["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\">\n"
+       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
        + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
        + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" 
        + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" unselectable=\"on\">\n"
-       + "<img src=\"/webEdition/images/button/icons/date_picker.gif\" class=\"weBtnImage\">\n"
+       + "<img src=\"/webEdition/images/button/icons/date_picker.gif\" class=\"weBtnImage\" />\n"
        + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
        
        
@@ -2838,18 +2838,18 @@ class searchtoolView extends weToolView
 										$_result[$f]["Extension"]))) {
 							$thumbpath = '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower(
 									$_result[$f]["Extension"]);
-							$imageView = "<img src='$thumbpath' border='0'></a>";
+							$imageView = "<img src='$thumbpath' border='0' /></a>";
 						} else {
-							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0'></a>";
+							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
 						if (file_exists(
 								$_SERVER["DOCUMENT_ROOT"] . '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower(
 										$_result[$f]["Extension"]))) {
 							$thumbpathPopup = '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower(
 									$_result[$f]["Extension"]);
-							$imageViewPopup = "<img src='$thumbpathPopup' border='0'></a>";
+							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
 						} else {
-							$imageViewPopup = "<img src='/webEdition/thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0'></a>";
+							$imageViewPopup = "<img src='/webEdition/thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
 					} else {
 						$imagesize = array(
@@ -2993,10 +2993,10 @@ class searchtoolView extends weToolView
 		
 		$out .= '
 		
-   <input type="hidden" name="' . $view . '" value="' . $_view . '">
-   <input type="hidden" name="position">
-   <input type="hidden" name="' . $order . '" value="' . $_order . '">
-   <input type="hidden" name="do">
+   <input type="hidden" name="' . $view . '" value="' . $_view . '" />
+   <input type="hidden" name="position" />
+   <input type="hidden" name="' . $order . '" value="' . $_order . '" />
+   <input type="hidden" name="do" />
    <table border="0" cellpadding="0" cellspacing="0">
    <tr>
    <td>' . getPixel(30, 12) . '</td>

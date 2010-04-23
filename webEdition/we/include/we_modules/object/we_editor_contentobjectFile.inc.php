@@ -60,7 +60,7 @@ htmlTop();
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){
-		print '<link href="'.id_to_path($cs).'" rel="styleSheet" type="text/css">'."\n";
+		print '<link href="'.id_to_path($cs).'" rel="styleSheet" type="text/css" />'."\n";
 
 	}
 }

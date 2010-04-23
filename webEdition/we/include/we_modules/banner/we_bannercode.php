@@ -49,7 +49,7 @@ if($ok){
 r = Math.random();
 document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" src=\"'.$getscript.'?r="+r+"&amp;bannername='.rawurlencode($tagname).'&amp;paths='.rawurlencode($paths).'&amp;type=js&amp;target='.rawurlencode($target).'&amp;bannerclick='.rawurlencode($clickscript).'&amp;height='.rawurlencode($height).'&amp;width='.rawurlencode($width).'&amp;page='.rawurlencode($page).'"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
 //-->
-</script><noscript><a href="'.$clickscript.'?u='.md5(uniqid(rand(0,99999))).'&amp;bannername='.rawurlencode($tagname).'&amp;page='.rawurlencode($page).'" target="'.$target.'"><img src="'.$getscript.'?bannername='.rawurlencode($tagname).'&amp;paths='.rawurlencode($paths).'&amp;page='.rawurlencode($page).'&amp;bannerclick='.rawurlencode($clickscript).'&amp;c=1" border="0" alt="" width="'.$width.'" height="'.$height.'"></a></noscript>';
+</script><noscript><a href="'.$clickscript.'?u='.md5(uniqid(rand(0,99999))).'&amp;bannername='.rawurlencode($tagname).'&amp;page='.rawurlencode($page).'" target="'.$target.'"><img src="'.$getscript.'?bannername='.rawurlencode($tagname).'&amp;paths='.rawurlencode($paths).'&amp;page='.rawurlencode($page).'&amp;bannerclick='.rawurlencode($clickscript).'&amp;c=1" border="0" alt="" width="'.$width.'" height="'.$height.'" /></a></noscript>';
 	}else{
 		$code = '<iframe
 	src="'.$getscript.'?bannername='.rawurlencode($tagname).'&amp;type=iframe&amp;target='.rawurlencode($target).'&amp;bannerclick='.rawurlencode($clickscript).'&amp;width='.rawurlencode($width).'&amp;height='.rawurlencode($height).'&amp;page='.rawurlencode($page).'"
@@ -63,7 +63,7 @@ document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" s
 	src="'.$getscript.'?bannername='.rawurlencode($tagname).'&amp;type=iframe&amp;target='.rawurlencode($target).'&amp;bannerclick='.rawurlencode($clickscript).'&amp;width='.rawurlencode($width).'&amp;height='.rawurlencode($height).'&amp;page='.rawurlencode($page).'"
 	width="'.$width.'"
 	height="'.$height.'"
-></ilayer><nolayer><a href="'.$clickscript.'?u='.md5(uniqid(rand(0,99999))).'&amp;bannername='.rawurlencode($tagname).'&amp;page='.rawurlencode($page).'" target="'.$target.'"><img src="'.$getscript.'?bannername='.rawurlencode($tagname).'&amp;paths='.rawurlencode($paths).'&amp;page='.rawurlencode($page).'&amp;bannerclick='.rawurlencode($clickscript).'" border="0" alt="" width="'.$width.'" height="'.$height.'"></a></a>
+></ilayer><nolayer><a href="'.$clickscript.'?u='.md5(uniqid(rand(0,99999))).'&amp;bannername='.rawurlencode($tagname).'&amp;page='.rawurlencode($page).'" target="'.$target.'"><img src="'.$getscript.'?bannername='.rawurlencode($tagname).'&amp;paths='.rawurlencode($paths).'&amp;page='.rawurlencode($page).'&amp;bannerclick='.rawurlencode($clickscript).'" border="0" alt="" width="'.$width.'" height="'.$height.'" /></a>
 </nolayer>
 </iframe>';
 	}
@@ -119,8 +119,8 @@ function checkForm(f){
 
 
 	</head>
-	<body class="weDialogBody"<?php if($ok){ ?> onload="document.we_form.code.focus();document.we_form.code.select();"<?php } ?>>
-	<form onsubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["PHP_SELF"]; ?>" method="get"><input type="hidden" name="ok" value="1"><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>">
+	<body class="weDialogBody"<?php if($ok){ ?> onLoad="document.we_form.code.focus();document.we_form.code.select();"<?php } ?>>
+	<form onSubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["PHP_SELF"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>" />
 <?php
 
 

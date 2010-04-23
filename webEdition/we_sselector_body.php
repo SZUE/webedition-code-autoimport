@@ -322,10 +322,10 @@ foreach ($final as $key => $entry) {
 
 </table>
 <?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"))&&($set_rename))):?>
-   <input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"];?>">
-   <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"):?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"]?>">
-   <input type="hidden" name="oldtxt" value=""><?php endif?>
-   <input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : "" ?>">
+   <input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"];?>" />
+   <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"):?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"]?>" />
+   <input type="hidden" name="oldtxt" value="" /><?php endif?>
+   <input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : "" ?>" />
 <?php endif?>
 </form>
 

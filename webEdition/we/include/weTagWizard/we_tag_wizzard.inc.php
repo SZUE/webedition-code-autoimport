@@ -311,7 +311,7 @@ $_buttons = we_button::position_yes_no_cancel(
 		<?php print $_buttons; ?>
 	</div>
 </div>
-<input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;">
+<input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />
 
 
 <?php

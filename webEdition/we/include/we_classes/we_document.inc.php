@@ -252,7 +252,7 @@ class we_document extends we_root {
 		$n = "we_".$this->Name."_IsSearchable";
 
 		if( (defined('ISP_VERSION') && ISP_VERSION) && ISP_TYPE == 'small' ){
-		    return '<input type="hidden" name="' . $n . '" value="1">';
+		    return '<input type="hidden" name="' . $n . '" value="1" />';
 		}
 
 

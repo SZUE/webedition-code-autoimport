@@ -120,7 +120,7 @@ if($cmd == "ok"){
 						}
 						else {
 							$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
-							$content .= '<input type="hidden" name="wf_select" value="'.$wfID.'">';
+							$content .= '<input type="hidden" name="wf_select" value="'.$wfID.'" />';
 						}
 						$content .= '
 								<tr>
@@ -142,10 +142,10 @@ if($cmd == "ok"){
 						
 						print $frame;
 						print '
-							<input type="hidden" name="cmd" value="ok">
-							<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'">
-							<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'">
-							<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'">';
+							<input type="hidden" name="cmd" value="ok" />
+							<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'" />
+							<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'" />
+							<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';
 					?>
 				</form>
 			<?php else: ?>

@@ -734,7 +734,7 @@ class we_linklist
 						"", 
 						$disabled);
 				$out .= '<input type="hidden" name="we_' . $docName . '_linklist[' . $attribs["name"] . ']" value="' . htmlspecialchars(
-						$this->getString()) . '">' . eregi_replace(
+						$this->getString()) . '" />' . eregi_replace(
 						'(.*)<we_:_link[^>/]*/?>(.*)', 
 						'\1' . $plusbut . '\2' . "\n", 
 						$clearContent);

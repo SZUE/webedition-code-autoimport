@@ -84,7 +84,7 @@ htmlTop("webEdition - ".$sn." - ".$_SESSION["user"]["Username"]);
 $online_help=true;
 
 ?>
-<link rel="SHORTCUT ICON" href="/webEdition/images/webedition.ico">
+<link rel="SHORTCUT ICON" href="/webEdition/images/webedition.ico" />
 <script src="<?php print JS_DIR; ?>windows.js" language="JavaScript" type="text/javascript"></script>
 <script type="text/javascript" src="<?php print JS_DIR . "weJsStrings.php"; ?>"></script>
 <script src="<?php print JS_DIR; ?>md5.js" language="JavaScript" type="text/javascript"></script>

@@ -38,7 +38,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">         
 				<tr>
 					<td>'.getPixel(25,14).'</td>             
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS['l_tools']['name'].'</a></b></td> 
+					<td class="selector"colspan="2"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS['l_tools']['name'].'</a></b></td> 
 				</tr>
 				<tr>  
 					<td width="25">'.getPixel(25,1).'</td>								
@@ -126,20 +126,20 @@ function writeBody(d){
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 	d.writeln('<form name="we_form" target="fscmd" action="<?php print '<?php print $_SERVER["PHP_SELF"]; ?>';?>">');
 	if(top.we_editDirID){
-		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print FS_DORENAMEFOLDER; ?>';?>">');
-		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'">');
+		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print FS_DORENAMEFOLDER; ?>';?>" />');
+		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
 	}else{
-		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print FS_CREATEFOLDER; ?>';?>">');
+		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print FS_CREATEFOLDER; ?>';?>" />');
 	}
-	d.writeln('<input type="hidden" name="order" value="'+top.order+'">');
-	d.writeln('<input type="hidden" name="rootDirID" value="<?php print '<?php print $this->rootDirID; ?>';?>">');
-	d.writeln('<input type="hidden" name="table" value="<?php print '<?php print $this->table; ?>';?>">');
-	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'">');
+	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
+	d.writeln('<input type="hidden" name="rootDirID" value="<?php print '<?php print $this->rootDirID; ?>';?>" />');
+	d.writeln('<input type="hidden" name="table" value="<?php print '<?php print $this->table; ?>';?>" />');
+	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'" />');
 	d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print '<?php print WE_TOOLS_PATH;?>' . $TOOLNAME;?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>"  class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -151,7 +151,7 @@ function writeBody(d){
 		d.writeln('</td>');
 		if(we_editDirID == entries[i].ID){
 			d.writeln('<td class="selector">');
-			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%">');
+			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
 		}else{
 			d.writeln('<td class="selector" style="-moz-user-select: none;" unselectable="on">');
 			//d.writeln(cutText(entries[i].text,24));

@@ -180,19 +180,19 @@ $addbut = $we_button->create_button(
 		"add", 
 		"javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].addUserToField()','','',1);");
 
-$content = '<table border="0" callpadding="0" cellspacing="0" width="300">';
+$content = '<table border="0" cellpadding="0" cellspacing="0" width="300">';
 $content .= '<tr><td>' . getPixel(20, 2) . '</td><td>' . getPixel(254, 2) . '</td><td>' . getPixel(26, 2) . '</td></tr>' . "\n";
 
 if (sizeof($users)) {
 	$db = new DB_WE();
 	for ($i = 0; $i < sizeof($users); $i++) {
 		$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='" . abs($users[$i]) . "'", $db);
-		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18"></td><td class="defaultfont">' . $foo["Path"] . '</td>' . '<td>' . $we_button->create_button(
+		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td>' . '<td>' . $we_button->create_button(
 				"image:btn_function_trash", 
 				"javascript:delUser('" . $users[$i] . "');") . '</td></tr>' . "\n";
 	}
 } else {
-	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18"></td><td class="defaultfont">' . $l_cockpit['all_users'] . '</td><td></td><td></td></tr>' . "\n";
+	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . $l_cockpit['all_users'] . '</td><td></td><td></td></tr>' . "\n";
 }
 $content .= '<tr><td>' . getPixel(20, 2) . '</td><td>' . getPixel(254, 2) . '</td><td>' . getPixel(26, 2) . '</td></tr></table>' . "\n";
 

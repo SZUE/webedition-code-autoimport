@@ -1340,7 +1340,7 @@ function we_tag_block($attribs, $content)
 			}
 			$out .= (!$isInListview) ? ('<input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . ']" value="' . htmlentities(
 					$list) . '"><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . '#content]" value="' . htmlspecialchars(
-					$content) . '">' . $plusbut) : '';
+					$content) . '" />' . $plusbut) : '';
 		}
 	
 	}
@@ -2716,7 +2716,7 @@ function we_tag_flashmovie($attribs, $content)
 					<td class=\"weEditmodeStyle\">$out
 						<input type=\"hidden\" name=\"$fname\" value=\"" . $GLOBALS["we_doc"]->getElement(
 				$name, 
-				"bdid") . "\"></td>
+				"bdid") . "\" /></td>
 				</tr>
 				<tr>
 					<td class=\"weEditmodeStyle\" align=\"center\">";
@@ -2807,7 +2807,7 @@ function we_tag_formfield($attribs, $content)
 		$tbl = '<table width="223" border="0" cellspacing="0" cellpadding="4" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">
 	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["name"] . ':&nbsp;</nobr></td>
-		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffname]' . '" value="' . $ffname . '" size="24"></td>
+		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffname]' . '" value="' . $ffname . '" size="24" /></td>
 	</tr>
 	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["type"] . ':&nbsp;</nobr></td>
@@ -2842,7 +2842,7 @@ function we_tag_formfield($attribs, $content)
 					if ((!arrayKeyExists('value', $m)) && sizeof($default) == 1) {
 						$val = $default[0];
 					}
-					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7" border="0"' . ($val ? ' value="' . $val . '"' : '') . '>' . $valselect;
+					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7" border="0"' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
 				} else {
 					if (sizeof($default) > 1) {
 						$val = $GLOBALS["we_doc"]->getElement($name, 'ff_' . $type_sel . '_' . $f);
@@ -2857,7 +2857,7 @@ function we_tag_formfield($attribs, $content)
 						$tbl .= $valselect;
 					} else {
 						$foo = sizeof($default) ? $default[0] : "";
-						$tbl .= $foo . '<input type="hidden" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" value="' . $foo . '">';
+						$tbl .= $foo . '<input type="hidden" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" value="' . $foo . '" />';
 					}
 				}
 				$tbl .= '</span></nobr></td><td class=\"weEditmodeStyle\">' . getPixel(5, 2) . "</td>\n";
@@ -2879,7 +2879,7 @@ function we_tag_formfield($attribs, $content)
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["default"] . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffdefault]" size="24" value="' . $GLOBALS["we_doc"]->getElement(
 					$name, 
-					'ffdefault') . '"></td>
+					'ffdefault') . '" /></td>
 	</tr>
 ';
 		
@@ -2889,7 +2889,7 @@ function we_tag_formfield($attribs, $content)
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["max_file_size"] . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffmaxfilesize]" size="24" value="' . $GLOBALS["we_doc"]->getElement(
 						$name, 
-						'ffmaxfilesize') . '"></td>
+						'ffmaxfilesize') . '" /></td>
 	</tr>
 ';
 			} else 
@@ -3157,8 +3157,8 @@ function we_tag_href($attribs, $content)
 					$int_elem_Name, 
 					$span . $GLOBALS["l_tags"]["int_href"] . ":</span>") . '</td>
 						<td class="weEditmodeStyle">
-							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '">
-							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly></td>
+							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
+							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>
 						<td class="weEditmodeStyle">
 							' . getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
@@ -3174,7 +3174,7 @@ function we_tag_href($attribs, $content)
 					$int_elem_Name, 
 					$span . $GLOBALS["l_tags"]["ext_href"] . ":</span>") . '</td>
 						<td class="weEditmodeStyle">
-							<input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . '></td>
+							<input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
 							' . getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
@@ -3219,12 +3219,12 @@ function we_tag_href($attribs, $content)
 				<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" nowrap="nowrap">
-							<input type="hidden" name="' . $int_elem_Name . '" value="1">
+							<input type="hidden" name="' . $int_elem_Name . '" value="1" />
 							' . $span . $GLOBALS["l_tags"]["int_href"] . ':</span></td>
 						<td class="weEditmodeStyle">
 							<input type="hidden" name="' . $ext_elem_Name . '" />
-							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '">
-							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly></td>
+							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
+							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>
 						<td class="weEditmodeStyle">
 							' . getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
@@ -3275,10 +3275,10 @@ function we_tag_href($attribs, $content)
 				<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" nowrap="nowrap">
-							<input type="hidden" name="' . $int_elem_Name . '" value="0">
+							<input type="hidden" name="' . $int_elem_Name . '" value="0" />
 							' . $span . $GLOBALS["l_tags"]["ext_href"] . ':</span></td>
 						<td class="weEditmodeStyle">
-							<input type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . '></td>
+							<input type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
 							' . getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
@@ -4644,7 +4644,7 @@ function we_tag_img($attribs, $content)
 			<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
 				<tr>
 					<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">$out
-						<input onchange=\"_EditorFrame.setEditorIsHot(true);\" type=\"hidden\" name=\"$fname\" value=\"$id\"></td>
+						<input onchange=\"_EditorFrame.setEditorIsHot(true);\" type=\"hidden\" name=\"$fname\" value=\"$id\" /></td>
 				</tr>";
 		if ($showinputs) { //  only when wanted
 			$out .= "
@@ -4736,7 +4736,7 @@ function we_tag_input($attribs, $content)
 		if ($type == "checkbox") {
 			if ($we_editmode) {
 				$attr = we_make_attribs($attribs, "name,value,type");
-				return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS["we_doc"]->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . '><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '">';
+				return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS["we_doc"]->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '" />';
 			} else {
 				return ($GLOBALS["we_doc"]->getElement($name));
 			}
@@ -4766,7 +4766,7 @@ function we_tag_input($attribs, $content)
 					}
 					$attr = we_make_attribs($attribs, "name,value,type,onchange,mode,values");
 					
-					return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . '>' . "&nbsp;" . (isset(
+					return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" . (isset(
 							$sel) ? $sel : "");
 				} else {
 					return ($GLOBALS["we_doc"]->getElement($name));
@@ -4782,7 +4782,7 @@ function we_tag_input($attribs, $content)
 						if (defined('SPELLCHECKER') && $spellcheck == 'true') {
 							return '<table border="0" cellpadding="0" cellspacing="0" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">
 	<tr>
-			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . '></td>
+			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' /></td>
 			<td class="weEditmodeStyle">' . getPixel(6, 4) . '</td>
 			<td class="weEditmodeStyle">' . $we_button->create_button(
 									'image:spellcheck', 
@@ -4790,7 +4790,7 @@ function we_tag_input($attribs, $content)
 	</tr>
 </table>';
 						} else {
-							return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . '>';
+							return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 						}
 					
 					} else {
@@ -5186,8 +5186,8 @@ function we_tag_list($attribs, $content)
 	}
 	
 	$out .= ((!$isInListview) && $we_editmode) ? ('<input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . ']" value="' . htmlspecialchars(
-			$list) . '"><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . '#content]" value="' . htmlspecialchars(
-			$content) . '">' . $plusbut) : '';
+			$list) . '" /><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . '#content]" value="' . htmlspecialchars(
+			$content) . '" />' . $plusbut) : '';
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;
 }

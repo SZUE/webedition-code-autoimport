@@ -34,9 +34,9 @@ function sort_arrow($name, $href) {
 
 	// Check if we have to create a form or href
 	if ($href) { // Return href
-		return '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt=""></a>';
+		return '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt="" /></a>';
 	} else { // Return form
-		return '<input type="image" src="' . $_image_path . '" border="0" alt="">';
+		return '<input type="image" src="' . $_image_path . '" border="0" alt="" />';
 	}
 }
 

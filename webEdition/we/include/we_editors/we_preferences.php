@@ -2761,7 +2761,7 @@ function build_dialog($selected_setting = "ui") {
 <tbody>
 <tr>
 <td style="padding-right: 10px;" valign="top">
-  <img src="/webEdition/images/info_small.gif" height="22" width="20">
+  <img src="/webEdition/images/info_small.gif" height="22" width="20" />
 </td>
 <td class="middlefont">'.$l_prefs["language_notice"].'
 </td>

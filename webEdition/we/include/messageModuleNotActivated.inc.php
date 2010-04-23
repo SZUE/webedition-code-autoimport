@@ -35,7 +35,7 @@ $content = '
 </tr>
 <tr>
 	<td valign="top">
-		<img src="' . IMAGE_DIR . "alert.gif" . '">
+		<img src="' . IMAGE_DIR . "alert.gif" . '" />
 	</td>
 	<td class="defaultfont">
 		' . $l_moduleActivation["content"] . '

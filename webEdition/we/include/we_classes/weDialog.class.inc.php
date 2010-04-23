@@ -185,7 +185,7 @@ class weDialog{
 			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
 				<frame src="' . $_SERVER["PHP_SELF"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
 				<frame src="/webEdition/html/white.html" name="we_'.$this->ClassName.'_cmd_frame" scrolling="no" noresize="noresize">
-			</frameset>';
+			<frame src="UntitledFrame-19"></frameset><noframes></noframes>';
 	}
 
 	function getNextBut() {
@@ -215,7 +215,7 @@ class weDialog{
 			$dialogContent = htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons());
 		}
 		return $this->getFormHTML() . $dialogContent .
-			'<input type="hidden" name="we_what" value="cmd">' . $this->getHiddenArgs() . '</form>';
+			'<input type="hidden" name="we_what" value="cmd" />' . $this->getHiddenArgs() . '</form>';
 	}
 
 	function getDialogHeight() {
@@ -242,7 +242,7 @@ class weDialog{
 		$hiddens = "";
 		if(isset($_REQUEST["we_cmd"]) && is_array($_REQUEST["we_cmd"])){
 			foreach($_REQUEST["we_cmd"] as $k=>$v){
-				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"".rawurlencode($v)."\">";
+				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"".rawurlencode($v)."\" />";
 			}
 		}
 		$target = '';
@@ -257,7 +257,7 @@ class weDialog{
 
 		foreach ($this->args as $k=>$v) {
 			if (!in_array($k,$this->changeableArgs)) {
-				$hiddenArgs .= '<input type="hidden" name="we_dialog_args['.$k.']" value="'.htmlspecialchars($v).'">';
+				$hiddenArgs .= '<input type="hidden" name="we_dialog_args['.$k.']" value="'.htmlspecialchars($v).'" />';
 			}
 		}
 		return $hiddenArgs;
@@ -374,7 +374,7 @@ class weDialog{
 	}
 
 	function formColor($size, $name, $value, $width="") {
-		return '<input size="'.$size.'" type="text" name="'.$name.'" style="'.($width ? 'width:'.$width.'px;' : '').'background-color:'.$value.'" value="'.$value.'" onclick="openColorChooser(\''.$name.'\',this.value);" readonly>';
+		return '<input size="'.$size.'" type="text" name="'.$name.'" style="'.($width ? 'width:'.$width.'px;' : '').'background-color:'.$value.'" value="'.$value.'" onClick="openColorChooser(\''.$name.'\',this.value);" readonly />';
 	}
 
 	function getBodyTagHTML() {
@@ -391,7 +391,7 @@ class weDialog{
 
 	function getLangField($name,$title,$width){
 		$foo = htmlTextInput("we_dialog_args[".$name."]", 15, (isset($this->args[$name]) ? $this->args[$name] :""), "", '', "text" , $width-50 );
-		$foo2 = '<select style="width:50px;" class="defaultfont" name="'.$name.'_select" size="1" onchange="this.form.elements[\'we_dialog_args['.$name.']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
+		$foo2 = '<select style="width:50px;" class="defaultfont" name="'.$name.'_select" size="1" onChange="this.form.elements[\'we_dialog_args['.$name.']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 							<option value=""></option>
 							<option value="en">en</option>
 							<option value="de">de</option>

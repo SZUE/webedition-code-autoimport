@@ -1140,7 +1140,7 @@ class we_wysiwyg{
 
 		$min_w = 0;
 		$row_w = 0;
-		$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" unselectable="on" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground"><img src="/webEdition/images/pixel.gif" width="'.$this->width.'" height="2"  unselectable="on"></td></tr>';
+		$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" unselectable="on" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground"><img src="/webEdition/images/pixel.gif" width="'.$this->width.'" height="2"  unselectable="on" /></td></tr>';
 		$linerow = '<tr><td unselectable="on"><div class="tbButtonsHR" unselectable="on" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
 		$out = '<script language="JavaScript" type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">
 ';
@@ -1172,7 +1172,7 @@ if (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"]) {
 ';
 }
 $out .='	</tr>
-</table></td></tr></table><input type="hidden" id="'.$this->name.'" name="'.$this->name.'" value="'.htmlspecialchars($this->hiddenValue).'"><div id="'.$this->ref.'edit_buffer" style="display: none;"></div>
+</table></td></tr></table><input type="hidden" id="'.$this->name.'" name="'.$this->name.'" value="'.htmlspecialchars($this->hiddenValue).'" /><div id="'.$this->ref.'edit_buffer" style="display: none;"></div>
 <script language="JavaScript" type="text/javascript">
 var '.$this->ref.'Obj = null;
 '.$this->ref.'Obj = new weWysiwyg("'.$this->ref.'edit","'.$this->name.'","'.str_replace("\"","\\\"",$this->value).'","'.str_replace("\"","\\\"",$editValue).'",\''.$this->fullscreen.'\',\''.$this->className.'\',\''.$this->propstring.'\',\''.$this->bgcol.'\','.($this->outsideWE ? "true" : "false").',"'.$this->baseHref.'","'.$this->xml.'","'.$this->removeFirstParagraph.'","'.$this->charset.'","'.$this->cssClasses.'","'.$this->Language.'", "'.($this->isFrontendEdit ? 1 : 0).'");
@@ -1267,7 +1267,7 @@ class we_wysiwygToolbarButton extends we_wysiwygToolbarElement{
 <img unselectable="on" width="'.($this->width-2).'" height="'.$this->height.'" id="'.$this->editor->ref.'edit_'.$this->cmd.'" src="'.$this->imgSrc.'" alt="'.$this->tooltiptext.'" title="'.$this->tooltiptext.'"
 onmouseover="'.$this->editor->ref.'Obj.over(\''.$this->cmd.'\');"
 onmouseout="'.$this->editor->ref.'Obj.out(\''.$this->cmd.'\');"
-onmousedown="'.$this->editor->ref.'Obj.click(event,\''.$this->cmd.'\');"></div>';
+onmousedown="'.$this->editor->ref.'Obj.click(event,\''.$this->cmd.'\');" /></div>';
 		} else {
 
 			return '<div unselectable="on" id="'.$this->editor->ref.'edit_'.$this->cmd.'Div" class="tbButton">
@@ -1276,7 +1276,7 @@ onmouseover="'.$this->editor->ref.'Obj.over(\''.$this->cmd.'\');"
 onmouseout="'.$this->editor->ref.'Obj.out(\''.$this->cmd.'\');"
 onmousedown="'.$this->editor->ref.'Obj.check(\''.$this->cmd.'\');"
 onmouseup="'.$this->editor->ref.'Obj.uncheck(\''.$this->cmd.'\');"
-onclick="'.$this->editor->ref.'Obj.click(\''.$this->cmd.'\');"></div>';
+onclick="'.$this->editor->ref.'Obj.click(\''.$this->cmd.'\');" /></div>';
 		}
 	}
 
@@ -1367,7 +1367,7 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 			$out = '<table id="'.$this->editor->ref.'_sel_'.$this->cmd.'" unselectable="on" onclick="if('.$this->editor->ref.'Obj.menus[\''.$this->cmd.'\'].disabled==false){'.$this->editor->ref.'Obj.showPopupmenu(\''.$this->cmd.'\');}" class="tbButtonWysiwygDefaultStyle" width="'.$this->width.'" height="'.$this->height.'" cellpadding="0" cellspacing="0" border="0" title="'.($this->title).'" style="cursor:pointer;position: relative;">
 	<tr>
 		<td width="'.($this->width-20).'" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);" unselectable="on" class="tbButtonWysiwygDefaultStyle"><input value="'.htmlspecialchars($this->title).'" type="text" name="'.$this->editor->ref.'_seli_'.$this->cmd.'" id="'.$this->editor->ref.'_seli_'.$this->cmd.'" readonly="readonly" style="-moz-user-select:none;cursor:pointer;height:16px;width:'.($this->width-30).'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" unselectable="on" /></td>
-		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="'.IMAGE_DIR.'wysiwyg/menudown.gif" width="20" height="20" alt=""></td>
+		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="'.IMAGE_DIR.'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
 </table><iframe src="/webEdition/html/blank.html" unselectable="on" width="280" height="160" id="'.$this->editor->ref.'edit_'.$this->cmd.'" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
 			$out .= '<script language="JavaScript" type="text/javascript">wePopupMenuArray[wefoo]["'.$this->cmd.'"] = new Array();';

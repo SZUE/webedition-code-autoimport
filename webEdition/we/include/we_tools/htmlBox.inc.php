@@ -55,11 +55,11 @@ class htmlBox {
 	</tr>
 '.$this->mBottom().'
 	<tr>
-		<td'.$this->bColor().'><img'.$this->bHeight().$this->bWidth().' src="'.$this->pixelGif.'"></td>
-'.($this->leftMargin ? '		<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->leftMargin.'" src="'.$this->pixelGif.'"></td>
-' : "").'<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->cWidth().'" src="'.$this->pixelGif.'"></td>
-'.($this->rightMargin ? '		<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->rightMargin.'" src="'.$this->pixelGif.'"></td>
-' : "").'<td'.$this->bColor().'><img'.$this->bHeight().$this->bWidth().' src="'.$this->pixelGif.'"></td>
+		<td'.$this->bColor().'><img'.$this->bHeight().$this->bWidth().' src="'.$this->pixelGif.'" /></td>
+'.($this->leftMargin ? '		<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->leftMargin.'" src="'.$this->pixelGif.'" /></td>
+' : "").'<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->cWidth().'" src="'.$this->pixelGif.'" /></td>
+'.($this->rightMargin ? '		<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->rightMargin.'" src="'.$this->pixelGif.'" /></td>
+' : "").'<td'.$this->bColor().'><img'.$this->bHeight().$this->bWidth().' src="'.$this->pixelGif.'" /></td>
 	</tr>
 </table>
 ';
@@ -81,31 +81,31 @@ class htmlBox {
 		return $this->borderWidth ? ' height="'.$this->borderWidth.'"' : ' height="1"';
 	}
 	function tMargin(){
-		return $this->titleMargin ? '<img height="'.$this->titleHeight.'" width="'.$this->titleMargin.'" src="'.$this->pixelGif.'">' : '<img height="'.$this->titleHeight.'" width="1">';
+		return $this->titleMargin ? '<img height="'.$this->titleHeight.'" width="'.$this->titleMargin.'" src="'.$this->pixelGif.'" />' : '<img height="'.$this->titleHeight.'" width="1" />';
 	}
 	function cHeight(){
-		return '<img height="'.($this->height ? $this->height : "1").'"'.$this->bWidth().' src="'.$this->pixelGif.'">';
+		return '<img height="'.($this->height ? $this->height : "1").'"'.$this->bWidth().' src="'.$this->pixelGif.'" />';
 	}
 	function cWidth(){
 		return $this->width - ($this->leftMargin + $this->rightMargin + $this->borderWidth*2);
 	}
 	function mBottom(){
 		return $this->bottomMargin ? '	<tr>
-		<td'.$this->bColor().'><img height="'.$this->bottomMargin.'"'.$this->bWidth().' src="'.$this->pixelGif.'"></td>
+		<td'.$this->bColor().'><img height="'.$this->bottomMargin.'"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
 		'.($this->leftMargin ? "<td></td>" : "").'
 		<td></td>
 		'.($this->rightMargin ? "<td></td>" : "").'
-		<td'.$this->bColor().'><img height="10"'.$this->bWidth().' src="'.$this->pixelGif.'"></td>
+		<td'.$this->bColor().'><img height="10"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
 	</tr>
 ' : "";
 	}
 	function mTop(){
 		return $this->topMargin ? '	<tr>
-		<td'.$this->bColor().'><img height="'.$this->topMargin.'"'.$this->bWidth().' src="'.$this->pixelGif.'"></td>
+		<td'.$this->bColor().'><img height="'.$this->topMargin.'"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
 		'.($this->leftMargin ? "<td></td>" : "").'
 		<td></td>
 		'.($this->rightMargin ? "<td></td>" : "").'
-		<td'.$this->bColor().'><img height="10"'.$this->bWidth().' src="'.$this->pixelGif.'"></td>
+		<td'.$this->bColor().'><img height="10"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
 	</tr>
 ' : "";
 	}

@@ -82,9 +82,9 @@ self.focus();
 //-->
 </script>
 </head>
-<body class="weDialogBody" onresize="setSize()" style="width:100%; height:100%"><center>
+<body class="weDialogBody" onResize="setSize()" style="width:100%; height:100%"><center>
 <form method="post">
-   <input type="hidden" name="cmd" value="save">
+   <input type="hidden" name="cmd" value="save" />
    <?php print htmlDialogLayout($content,$l_global["edit_file"].": <span class=\"weMultiIconBoxHeadline\">".ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons)."</span>"; ?>
 </form></center>
 </body>

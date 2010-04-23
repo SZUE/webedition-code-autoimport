@@ -35,7 +35,7 @@ class ImportOptions extends leWizardStepBase
 		$we_button = new we_button();
 		
 		// Hidden Field
-		$Hidden = "<input type=\"hidden\" name=\"startImport\" value=\"1\">";
+		$Hidden = "<input type=\"hidden\" name=\"startImport\" value=\"1\" />";
 		
 		// MasterTemplate
 		$MasterTemplateID = path_to_id("/master/standard.php", TEMPLATES_TABLE);
@@ -55,7 +55,7 @@ class ImportOptions extends leWizardStepBase
 				' readonly="readonly" id="' . $textname . '"', 
 				'text', 
 				388);
-		$MastertemplateHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\">";
+		$MastertemplateHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\" />";
 		$MastertemplateButton = $we_button->create_button(
 				"select", 
 				"javascript:we_cmd('openDocselector',document.getElementById('$idname').value,'$table','document.getElementById(\\'$idname\\').value','document.getElementById(\\'$textname\\').value','','" . session_id() . "','','text/weTmpl',1)");
@@ -102,7 +102,7 @@ class ImportOptions extends leWizardStepBase
 				' readonly="readonly" id="' . $textname . '"', 
 				'text', 
 				388);
-		$DocumentHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\">";
+		$DocumentHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\" />";
 		$DocumentButton = $we_button->create_button(
 				"select", 
 				"javascript:we_cmd('openDirselector',document.getElementById('$idname').value,'$table','document.getElementById(\\'$idname\\').value','document.getElementById(\\'$textname\\').value','','" . session_id() . "','','text/weFolder',1)");

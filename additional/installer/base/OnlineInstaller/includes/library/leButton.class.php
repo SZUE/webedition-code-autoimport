@@ -111,12 +111,12 @@ var " . $_button_name . "_mouse_event;var " . $_button_name . "_enabled = " . ($
 <tr style="height: ' . $height . 'px;">
 	<td' . $_button_attribs_left . '></td>
 	<td' . $_button_attribs_middle . '>' . $text . '</td>
-	<td' . $_button_attribs_right . '>'.($name=='next'?'<input border="0" type="image" src="' . LE_ONLINE_INSTALLER_URL . '/img/leButton/pixel.gif">':'').'</td>
+	<td' . $_button_attribs_right . '>'.($name=='next'?'<input border="0" type="image" src="' . LE_ONLINE_INSTALLER_URL . '/img/leButton/pixel.gif" />':'').'</td>
 </tr>
 </table>
 ';
 	 	if($_add_form_submit_dummy){
-	 		$_buttonString .= '<div style="height: 0px;width: 0px;"><input type="image" src="' . LE_ONLINE_INSTALLER_URL . '/img/leButton/pixel.gif" height="1" width="1" border="0" onfocus="this.blur();" class="defaultfont"></div>';
+	 		$_buttonString .= '<div style="height: 0px;width: 0px;"><input type="image" src="' . LE_ONLINE_INSTALLER_URL . '/img/leButton/pixel.gif" height="1" width="1" border="0" onfocus="this.blur();" class="defaultfont" /></div>';
 	 	}
 	 	return $_buttonString;
 	 }

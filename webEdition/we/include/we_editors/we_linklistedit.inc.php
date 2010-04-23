@@ -890,19 +890,19 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 		?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onSubmit="return false">
-			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>">
+			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>" />
 			<?php
 				if (isset($ll) && $ll) {
 			?>
-				<input type="hidden" name="linklist" value="<?php print htmlspecialchars($ll->getString()); ?>">
+				<input type="hidden" name="linklist" value="<?php print htmlspecialchars($ll->getString()); ?>" />
 			<?php
 				}
 			?>
-			<input type="hidden" name="name" value="<?php print $name; ?>">
-			<input type="hidden" name="nr" value="<?php print isset($_REQUEST["nr"]) ? $_REQUEST["nr"] : $nr; ?>">
-			<input type="hidden" name="ok" value="1">
-			<input type="hidden" name="we_transaction" value="<?php print $we_transaction; ?>">
-			<input type="hidden" name="we_field" value="<?php print isset($_REQUEST['we_cmd'][3])?$_REQUEST['we_cmd'][3]:""; ?>">
+			<input type="hidden" name="name" value="<?php print $name; ?>" />
+			<input type="hidden" name="nr" value="<?php print isset($_REQUEST["nr"]) ? $_REQUEST["nr"] : $nr; ?>" />
+			<input type="hidden" name="ok" value="1" />
+			<input type="hidden" name="we_transaction" value="<?php print $we_transaction; ?>" />
+			<input type="hidden" name="we_field" value="<?php print isset($_REQUEST['we_cmd'][3])?$_REQUEST['we_cmd'][3]:""; ?>" />
 			<?php
 				print we_multiIconBox::getHTML("","100%",$_parts,30,$buttons,-1,"","",false,$l_linklist_edit["edit_link"],"",671);
 				print $yuiSuggest->getYuiCss();

@@ -74,7 +74,7 @@ class we_votingDirSelector extends we_dirSelector{
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0"></td>
+					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>
@@ -194,22 +194,22 @@ function writeBody(d){
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" >');
 	if(top.we_editDirID){
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>">');
-		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'">');
+		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
 	}else{
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>">');
+		d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>" />');
 	}
-	d.writeln('<input type="hidden" name="order" value="'+top.order+'">');
-	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>">');
-	d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>">');
-	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'">');
+	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
+	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
+	d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>" />');
+	d.writeln('<input type="hidden" name="id" value="'+top.currentDir+'" />');
 	d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
-		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_voting"]["newFolder"]?>"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_voting"]["newFolder"]?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%"></td>');
+		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0" /></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_voting"]["newFolder"]?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_voting"]["newFolder"]?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -217,11 +217,11 @@ function writeBody(d){
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" width="25" align="center">');
-		d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0">');
+		d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 		d.writeln('</td>');
 		if(we_editDirID == entries[i].ID){
 			d.writeln('<td class="selector">');
-			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%">');
+			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
 		}else{
 			d.writeln('<td class="selector" style="-moz-user-select: none;" unselectable="on">');
 			d.writeln(cutText(entries[i].text,24));

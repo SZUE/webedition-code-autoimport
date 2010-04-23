@@ -343,9 +343,9 @@ class we_class_folder extends we_folder
 				$content[$f][0]["align"]="center";
 
 				if((we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE")) && checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"),OBJECT_FILES_TABLE)){
-					$content[$f][0]["dat"] = '<input type="checkbox" name="weg'.$this->searchclass->f("ID").'">';
+					$content[$f][0]["dat"] = '<input type="checkbox" name="weg'.$this->searchclass->f("ID").'" />';
 				} else {
-					$content[$f][0]["dat"] = '<img src="'.TREE_IMAGE_DIR.'check0_disabled.gif">';
+					$content[$f][0]["dat"] = '<img src="'.TREE_IMAGE_DIR.'check0_disabled.gif" />';
 				}
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg".$this->searchclass->f("ID")."'].checked=true;";
@@ -541,16 +541,16 @@ class we_class_folder extends we_folder
 				$content[$f][0]["height"]=35;
 				$content[$f][0]["align"]="center";
 				if(we_hasPerm("DELETE_OBJECTFILE")){
-					$content[$f][0]["dat"] = '<input type="checkbox" name="weg'.$this->searchclass->f("ID").'">';
+					$content[$f][0]["dat"] = '<input type="checkbox" name="weg'.$this->searchclass->f("ID").'" />';
 				}else{
-					$content[$f][0]["dat"] = '<img src="'.TREE_IMAGE_DIR.'check0_disabled.gif">';
+					$content[$f][0]["dat"] = '<img src="'.TREE_IMAGE_DIR.'check0_disabled.gif" />';
 				}
 				$javascriptAll .= "var flo=document.we_form.elements['weg".$this->searchclass->f("ID")."'].checked=true;";
 
 				if($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID,$this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces")!="") || (in_workspace($this->WorkspaceID,$this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected")!="" ) ) || ($this->searchclass->f("OF_Workspaces")=="" && $ok))){
-					$content[$f][1]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18">';
+					$content[$f][1]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18" />';
 				}else{
-					$content[$f][1]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18">';
+					$content[$f][1]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" />';
 				}
 				if($this->searchclass->f("OF_IsSearchable") ){
 					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18" title="'.$GLOBALS['l_object_classfoldersearch']["issearchable"].'" />';
@@ -644,8 +644,8 @@ class we_class_folder extends we_folder
 				<table cellpadding="2" cellspacing="0" border="0" width="510">
 				<form name="we_form_search"  onSubmit="sub();return false;" methode="GET">
 				'.$this->HiddenTrans().'
-				<input type="hidden" name="todo">
-				<input type="hidden" name="position">';
+				<input type="hidden" name="todo" />
+				<input type="hidden" name="position" />';
 
 		for($i=0;$i <= $this->searchclass->height ;$i++){
 			

@@ -96,9 +96,9 @@ if($cmd == "ok") {
 					$frame = htmlDialogLayout($content,$l_workflow["decline_workflow"], $_button);
 					print $frame;
 					print '
-						<input type="hidden" name="cmd" value="ok">
-						<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'">
-						<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'">';
+						<input type="hidden" name="cmd" value="ok" />
+						<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'" />
+						<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'" />';
 				?>
 			</form>
 		<?php endif ?>
