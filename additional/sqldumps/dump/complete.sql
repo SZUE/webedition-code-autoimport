@@ -702,12 +702,14 @@ CREATE TABLE tblWorkflowDef (
   `Text` varchar(255) NOT NULL default '',
   `Type` bigint(20) NOT NULL default '0',
   Folders varchar(255) NOT NULL default '',
-  DocType bigint(20) NOT NULL default '0',
+  DocType varchar(255) NOT NULL default '0',
   Objects varchar(255) NOT NULL default '',
   ObjectFileFolders varchar(255) NOT NULL default '',
   Categories varchar(255) NOT NULL default '',
   ObjCategories varchar(255) NOT NULL default '',
   `Status` tinyint(1) NOT NULL default '0',
+  `EmailPath` tinyint(1) NOT NULL DEFAULT '0',
+  `LastStepAutoPublish` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (ID)
 ) TYPE=MyISAM;
 /* query separator */
@@ -753,7 +755,7 @@ CREATE TABLE tblWorkflowLog (
 /* query separator */
 CREATE TABLE tblWorkflowStep (
   ID int(11) NOT NULL auto_increment,
-  Worktime int(11) NOT NULL default '0',
+  `Worktime` float NOT NULL default '0',
   timeAction tinyint(1) NOT NULL default '0',
   stepCondition int(11) NOT NULL default '0',
   workflowID int(11) NOT NULL default '0',
@@ -1163,6 +1165,7 @@ CREATE TABLE tblvoting (
   IsRequired tinyint(1) NOT NULL DEFAULT '0',
   AllowFreeText tinyint(1) NOT NULL DEFAULT '0',
   AllowImages tinyint(1) NOT NULL DEFAULT '0',
+  AllowMedia tinyint(1) NOT NULL DEFAULT '0',
   AllowSuccessor tinyint(1) NOT NULL DEFAULT '0',
   AllowSuccessors tinyint(1) NOT NULL DEFAULT '0',
   Successor bigint(20) unsigned NOT NULL DEFAULT '0',

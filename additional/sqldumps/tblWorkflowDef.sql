@@ -9,5 +9,7 @@ CREATE TABLE tblWorkflowDef (
   Categories varchar(255) NOT NULL default '',
   ObjCategories varchar(255) NOT NULL default '',
   `Status` tinyint(1) NOT NULL default '0',
+  `EmailPath` tinyint(1) NOT NULL DEFAULT '0',
+  `LastStepAutoPublish` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (ID)
 ) TYPE=MyISAM;

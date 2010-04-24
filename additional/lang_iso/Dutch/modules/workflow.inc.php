@@ -76,7 +76,10 @@ $l_workflow["active"] = "Workflow is actief.";
 
 $l_workflow["step"] = "Stap";
 $l_workflow["and_or"] = "EN&nbsp;/&nbsp;OF";
-$l_workflow["worktime"] = "Werktijd (U)";
+$l_workflow["worktime"] = "Worktime (H, 1 min = 0<b>.</b>016)"; // TRANSLATE
+$l_workflow["specials"] = "Specials";// TRANSLATE
+$l_workflow["EmailPath"] = "Show the document path in the subject of notifications emails";// TRANSLATE
+$l_workflow["LastStepAutoPublish"] = "Publish the document automatically after the last step";// TRANSLATE
 $l_workflow["user"] = "Gebruiker";
 
 $l_workflow["edit"] = "Wijzig";

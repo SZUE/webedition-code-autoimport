@@ -111,7 +111,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 
 		$workflowDoc = new weWorkflowDocument($this->workflowDocID);
 		$workflowStep = new weWorkflowStep($this->workflowStepID);
-		$deadline=$this->startDate+($workflowStep->Worktime*3600);
+		$deadline=$this->startDate+ round($workflowStep->Worktime*3600);
 
 		// set all tasks to pending
 		for ($i = 0; $i < count($this->tasks); $i++)

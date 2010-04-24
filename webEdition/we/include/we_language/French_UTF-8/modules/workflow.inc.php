@@ -76,7 +76,10 @@ $l_workflow["active"] = "Gestion de Flux est active";
 
 $l_workflow["step"] = "Étape";
 $l_workflow["and_or"] = "ET&nbsp;/&nbsp;OU";
-$l_workflow["worktime"] = "Temps de travail (hr.)";
+$l_workflow["worktime"] = "Worktime (H, 1 min = 0<b>.</b>016)"; // TRANSLATE
+$l_workflow["specials"] = "Specials";// TRANSLATE
+$l_workflow["EmailPath"] = "Show the document path in the subject of notifications emails";// TRANSLATE
+$l_workflow["LastStepAutoPublish"] = "Publish the document automatically after the last step";// TRANSLATE
 $l_workflow["user"] = "Utilisateur ";
 
 $l_workflow["edit"] = "Éditer";

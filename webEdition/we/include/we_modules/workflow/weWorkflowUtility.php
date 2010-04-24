@@ -300,7 +300,7 @@
          		               
 			$db=new DB_WE();         
 			$ret="";
-			$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID AS docID,".WORKFLOW_DOC_STEP_TABLE.".ID AS docstepID,".WORKFLOW_STEP_TABLE.".ID AS stepID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_DOC_STEP_TABLE.",".WORKFLOW_STEP_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".ID=".WORKFLOW_DOC_STEP_TABLE.".workflowDocID AND ".WORKFLOW_DOC_STEP_TABLE.".workflowStepID=".WORKFLOW_STEP_TABLE.".ID AND ".WORKFLOW_DOC_STEP_TABLE.".startDate<>0 AND (".WORKFLOW_DOC_STEP_TABLE.".startDate+(".WORKFLOW_STEP_TABLE.".Worktime*3600))<".time()." AND ".WORKFLOW_DOC_STEP_TABLE.".finishDate=0 AND ".WORKFLOW_DOC_STEP_TABLE.".Status=".WORKFLOWDOC_STEP_STATUS_UNKNOWN." AND ".WORKFLOW_DOC_TABLE.".Status=".WORKFLOWDOC_STATUS_UNKNOWN);
+			$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID AS docID,".WORKFLOW_DOC_STEP_TABLE.".ID AS docstepID,".WORKFLOW_STEP_TABLE.".ID AS stepID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_DOC_STEP_TABLE.",".WORKFLOW_STEP_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".ID=".WORKFLOW_DOC_STEP_TABLE.".workflowDocID AND ".WORKFLOW_DOC_STEP_TABLE.".workflowStepID=".WORKFLOW_STEP_TABLE.".ID AND ".WORKFLOW_DOC_STEP_TABLE.".startDate<>0 AND (".WORKFLOW_DOC_STEP_TABLE.".startDate+ ROUND(".WORKFLOW_STEP_TABLE.".Worktime*3600))<".time()." AND ".WORKFLOW_DOC_STEP_TABLE.".finishDate=0 AND ".WORKFLOW_DOC_STEP_TABLE.".Status=".WORKFLOWDOC_STEP_STATUS_UNKNOWN." AND ".WORKFLOW_DOC_TABLE.".Status=".WORKFLOWDOC_STATUS_UNKNOWN);
 			while($db->next_record()){            
 				@set_time_limit(50);
 				$workflowDocument=new weWorkflowDocument($db->f("docID"));
@@ -310,7 +310,7 @@
 					$next=false;
 					$workflowStep=new weWorkflowStep($db->f("stepID"));
 					$next=$workflowStep->timeAction==1 ? true : false;
-					if($next){
+					if($next){p_r($workflowDocument->findLastActiveStep()); p_r($workflowDocument);
 						if($workflowDocument->findLastActiveStep()>=count($workflowDocument->steps)-1){
                      		$workflowDocument->decline($userID,$GLOBALS["l_workflow"]["auto_declined"],true);
                      		$ret.="(ID: ".$workflowDocument->ID.") ".$GLOBALS["l_workflow"]["auto_declined"]."\n";
