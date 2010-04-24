@@ -1495,7 +1495,7 @@ class weWorkflowView extends weWorkflowBase{
 			$secs=time()-$sv->startDate;
 			$elapsed=weWorkflowView::getTime($secs);
 
-			$secs=($sv->startDate+($workflowStep->Worktime*3600))-time();
+			$secs=($sv->startDate+ round($workflowStep->Worktime*3600))-time();
 			$remained=weWorkflowView::getTime($secs);
 
 			if($remained["hour"]<0){
@@ -1513,7 +1513,7 @@ class weWorkflowView extends weWorkflowBase{
 				$notfinished_font="middlefontgray";
 			}
 
-			$end=date($l_we_editor_info["date_format"],$sv->startDate+$workflowStep->Worktime*3600);
+			$end=date($l_we_editor_info["date_format"],$sv->startDate+ round($workflowStep->Worktime*3600));
 
 			$content[$counter][0]["dat"]=($sv->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').($counter+1)."</div>";
 			$content[$counter][0]["height"]="";

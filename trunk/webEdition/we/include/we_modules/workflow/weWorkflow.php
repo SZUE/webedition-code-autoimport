@@ -51,6 +51,8 @@ class weWorkflow extends weWorkflowBase{
 	var $ObjectFileFolders;
 	var $ObjCategories;
 	var $Status=0;
+	var $EmailPath=0;
+	var $LastStepAutoPublish=0;
 
 
 	/**
@@ -85,6 +87,8 @@ class weWorkflow extends weWorkflowBase{
 		$this->persistents[]="Categories";
 		$this->persistents[]="ObjCategories";
 		$this->persistents[]="Status";
+		$this->persistents[]="EmailPath";
+		$this->persistents[]="LastStepAutoPublish";
 
 
 		$this->ID = 0;
@@ -98,6 +102,8 @@ class weWorkflow extends weWorkflowBase{
 		$this->Categories = "";
 		$this->ObjCategories = "";
 		$this->Status = WE_WORKFLOW_STATE_INACTIVE;
+		$this->EmailPath = 0;
+		$this->LastStepAutoPublish = 0;
 		$this->steps = array();
 
 		$this->AddNewStep();
