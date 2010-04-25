@@ -23,6 +23,7 @@
 define ("WORKFLOWDOC_STEP_STATUS_UNKNOWN", 0);
 define ("WORKFLOWDOC_STEP_STATUS_APPROVED", 1);
 define ("WORKFLOWDOC_STEP_STATUS_CANCELED", 2);
+define ("WORKFLOWDOC_STEP_STATUS_AUTOPUBLISHED", 3);
 
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowBase.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocumentTask.php");
@@ -130,7 +131,8 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 					if($foo) {
 						$desc = str_replace('<br />',"\n",$desc);
 						$mess = $l_workflow["todo_next"]." ID:".$workflowDoc->document->ID.", Pfad:".$workflowDoc->document->Path."\n\n".$desc;
-						we_mail($foo,correctUml($l_workflow["todo_next"]),$mess,(isset($this_user["Email"]) && $this_user["Email"]!="" ? $this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">":""));
+						
+						we_mail($foo,correctUml($l_workflow["todo_next"].($this->EmailPath ? ' '.$workflowDoc->document->Path :'')),$mess,(isset($this_user["Email"]) && $this_user["Email"]!="" ? $this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">":""));
 						}
 				}
 
@@ -225,6 +227,52 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 
 	}
 
+	function autopublish($uID,$desc,$force=false){
+		global $l_workflow;
+		if($force){
+			foreach($this->tasks as $tk=>$tv){
+				$this->tasks[$tk]->approve();
+			}
+			$this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+			$this->finishDate=time();
+			//insert into document Log
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE_FORCE,$desc);
+			return true;
+		}
+		$i=$this->findTaskByUser($uID);
+		if($i>-1){
+			$this->tasks[$i]->approve();
+
+			$workflowStep = new weWorkflowStep($this->workflowStepID);
+			if($workflowStep->stepCondition==0) $this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+			else{
+				$num=$this->findNumOfFinishedTasks();
+				if($num==count($this->tasks)){
+					$status=true;
+					foreach($this->tasks as $k=>$v){
+						$status=$status && ($v->Status==WORKFLOWDOC_TASK_STATUS_APPROVED ? true : false);
+					}
+
+					if($status) $this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+
+
+				}
+			}
+			if($this->Status==WORKFLOWDOC_STEP_STATUS_APPROVED || $this->Status==WORKFLOWDOC_STEP_STATUS_CANCELED){
+				$this->finishDate=time();
+				foreach($this->tasks as $tk=>$tv){
+					if($tv->Status==WORKFLOWDOC_TASK_STATUS_UNKNOWN) $this->tasks[$tk]->removeTodo();
+				}
+
+			}
+			//insert into document Log
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE,$desc);
+			return true;
+		}
+		return false;
+
+	}
+	
 	function decline($uID,$desc,$force=false){
 		global $l_workflow;
 		if($force){

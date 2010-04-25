@@ -79,7 +79,7 @@ $l_workflow["and_or"] = "ET&nbsp;/&nbsp;OU";
 $l_workflow["worktime"] = "Worktime (H, 1 min = 0<b>.</b>016)"; // TRANSLATE
 $l_workflow["specials"] = "Specials";// TRANSLATE
 $l_workflow["EmailPath"] = "Show the document path in the subject of notifications emails";// TRANSLATE
-$l_workflow["LastStepAutoPublish"] = "Publish the document automatically after the last step";// TRANSLATE
+$l_workflow["LastStepAutoPublish"] = "After the last step (next step clicked), publish the document instead of decline ist";// TRANSLATE
 $l_workflow["user"] = "Utilisateur ";
 
 $l_workflow["edit"] = "Éditer";
@@ -163,6 +163,7 @@ if(defined("OBJECT_FILES_TABLE")){
 }
 $l_workflow["auto_approved"] = "Document has been automatically approved."; // TRANSLATE
 $l_workflow["auto_declined"] = "Document has been automatically declined."; // TRANSLATE
+$l_workflow["auto_published"] = "Document has been automatically published.";// TRANSLATE
 
 $l_workflow["doc_deleted"] = "Document has been deleted!"; // TRANSLATE
 $l_workflow["ask_before_recover"] = "There are still documents/objects in the workflow process! Do you want to remove them from the workflow process?"; // TRANSLATE

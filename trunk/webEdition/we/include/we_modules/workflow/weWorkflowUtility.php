@@ -310,14 +310,19 @@
 					$next=false;
 					$workflowStep=new weWorkflowStep($db->f("stepID"));
 					$next=$workflowStep->timeAction==1 ? true : false;
-					if($next){p_r($workflowDocument->findLastActiveStep()); p_r($workflowDocument);
+					if($next){
 						if($workflowDocument->findLastActiveStep()>=count($workflowDocument->steps)-1){
-                     		$workflowDocument->decline($userID,$GLOBALS["l_workflow"]["auto_declined"],true);
-                     		$ret.="(ID: ".$workflowDocument->ID.") ".$GLOBALS["l_workflow"]["auto_declined"]."\n";
+							if($workflowDocument->workflow->LastStepAutoPublish){
+								$workflowDocument->autopublish($userID,$GLOBALS["l_workflow"]["auto_published"],true);
+								$ret.="(ID: ".$workflowDocument->ID.") ".$GLOBALS["l_workflow"]["auto_published"]."\n";
+							} else {
+								$workflowDocument->decline($userID,$GLOBALS["l_workflow"]["auto_declined"],true);
+								$ret.="(ID: ".$workflowDocument->ID.") ".$GLOBALS["l_workflow"]["auto_declined"]."\n";
+							}
                   		}                     
-                  		else{
-                     		$workflowDocument->approve($userID,$GLOBALS["l_workflow"]["auto_approved"],true);
-                     		$ret.="(ID: ".$workflowDocument->ID.") ".$GLOBALS["l_workflow"]["auto_approved"]."\n";
+                  		else{						
+							$workflowDocument->approve($userID,$GLOBALS["l_workflow"]["auto_approved"],true);
+							$ret.="(ID: ".$workflowDocument->ID.") ".$GLOBALS["l_workflow"]["auto_approved"]."\n";						
                   		}                     
                		}               
 					$workflowDocument->save();
