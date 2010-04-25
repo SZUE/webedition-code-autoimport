@@ -150,6 +150,15 @@
 			$foo = weWorkflowUtility::getAllWorkflows();
 			return $foo[$workflowID];
 		}
+		
+		function getWorkflowID($workflowName){
+			$foo = weWorkflowUtility::getAllWorkflows();
+			if (in_array($workflowName,$foo) ){
+				return array_search($workflowName,$foo );
+			} else {
+				return false;
+			}
+		}
 
 		function getAllWorkflows($status=WE_WORKFLOW_STATE_ACTIVE,$table=FILE_TABLE){ // returns hash array with ID as key and Name as value
 			$type=weWorkflowUtility::getTypeForTable($table);

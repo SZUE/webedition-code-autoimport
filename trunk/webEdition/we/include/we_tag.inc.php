@@ -7018,6 +7018,13 @@ function we_tag_write($attribs, $content)
 	$workspaces = we_getTagAttribute("workspaces", $attribs);
 	$objname = we_getTagAttribute("name", $attribs);
 	$onduplicate = we_getTagAttribute("onduplicate", $attribs,"increment");
+	$workflowname = we_getTagAttribute("workflowname", $attribs,"");
+	$workflowuserid = we_getTagAttribute("workflowuserid", $attribs,0);
+	if ($workflowname!='' && $workflowuserid!=0){
+		$doworkflow = true;
+	} else {
+		$doworkflow = false;
+	}
 
 	if (isset($_REQUEST["edit_$type"]) && $_REQUEST["edit_$type"]) {
 		
@@ -7119,6 +7126,20 @@ function we_tag_write($attribs, $content)
 						}
 					}
 				}
+				if ($doWrite && $doworkflow) {
+					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+					$workflowID = weWorkflowUtility::getWorkflowID($workflowname);
+					$wf_text = "we:write ".$workflowname."  " ;
+					if($GLOBALS["we_doc"]->Table==FILE_TABLE) {
+						$wf_text .= "we_object ID: " . $GLOBALS["we_doc"]->ID;
+					} else {
+						$wf_text .= "we_document ID: ".$GLOBALS["we_doc"]->ID ;
+					}
+					if(weWorkflowUtility::insertDocInWorkflow($GLOBALS["we_doc"]->ID,$GLOBALS["we_doc"]->Table,$workflowID,$workflowuserid,$wf_text)){
+					}
+
+				}
+
 				unset($GLOBALS["we_doc"]);
 				$GLOBALS["we_doc"] = $_WE_DOC_SAVE;
 				unset($_WE_DOC_SAVE);
