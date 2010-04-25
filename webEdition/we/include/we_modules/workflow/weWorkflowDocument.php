@@ -114,6 +114,29 @@ class weWorkflowDocument extends weWorkflowBase{
 		}
 		return $ret;
 	}
+	
+	function autopublish($uID,$desc,$force=false){
+		global $l_workflow;
+		$i=$this->findLastActiveStep();
+		if($i<0 && !$force){
+			return false;
+		} 
+		$ret=$this->steps[$i]->approve($uID,$desc,$force);
+		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_APPROVED){
+			$this->finishWorkflow(1,$uID);
+			$this->document->save();
+			$this->document->we_publish();
+			$path = "<b>".$l_workflow[($this->workflow->Type==2) ? OBJECT_FILES_TABLE : FILE_TABLE]["messagePath"].':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
+			$mess="<p><b>".$l_workflow["auto_published"]."</b></p><p>".$desc."</p><p>".$path."</p>";
+			$deadline=time();
+			$this->sendTodo($this->userID,$l_workflow["auto_published"],$mess,$deadline,1);
+			$desc = str_replace('<br />',"\n",$desc);
+			$mess = $l_workflow["auto_published"]."\n\n".$desc."\n\n".$this->document->Path;
+			$this->sendMail($this->userID,$l_workflow["auto_published"].($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
+
+		}
+		return $ret;
+	}
 
 	function decline($uID,$desc,$force=false){
 		global $l_workflow;
@@ -129,7 +152,7 @@ class weWorkflowDocument extends weWorkflowBase{
 			$this->sendTodo($this->userID,$l_workflow["todo_returned"],$mess,$deadline,1);
 			$desc = str_replace('<br />',"\n",$desc);
 			$mess = $l_workflow["todo_returned"]."\n\n".$desc."\n\n".$this->document->Path;
-			$this->sendMail($this->userID,$l_workflow["todo_returned"],$mess);
+			$this->sendMail($this->userID,$l_workflow["todo_returned"].($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
 		}
 		return $ret;
 	}

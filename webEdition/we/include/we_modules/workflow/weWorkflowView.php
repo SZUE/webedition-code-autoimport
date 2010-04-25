@@ -59,6 +59,8 @@ class weWorkflowView extends weWorkflowBase{
 		$this->hiddens[]="ObjCategories";
         $this->hiddens[]="DocType";
 		$this->hiddens[]="Objects";
+		//$this->hiddens[]="EmailPath";
+		//$this->hiddens[]="LastStepAutoPublish";
 		$this->show=0;
 		$this->page=0;
 	}
@@ -85,6 +87,8 @@ class weWorkflowView extends weWorkflowBase{
 		$out.=$this->htmlHidden($this->uid."_Categories",$this->workflowDef->Categories);
 		$out.=$this->htmlHidden($this->uid."_ObjCategories",$this->workflowDef->ObjCategories);
 		$out.=$this->htmlHidden($this->uid."_Objects",$this->workflowDef->Objects);
+		$out.=$this->htmlHidden($this->uid."_EmailPath",$this->workflowDef->EmailPath);
+		$out.=$this->htmlHidden($this->uid."_LastStepAutoPublish",$this->workflowDef->LastStepAutoPublish);
 
 		return $out;
 	}
@@ -168,6 +172,13 @@ class weWorkflowView extends weWorkflowBase{
 					array_push($parts, array(	"headline" => $GLOBALS["l_workflow"]["type"],
 												"space"    => $_space-25,
 												"html"     => $_type));
+					$myout= "<br/>";
+					$myout .= we_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid.'_EmailPath', $GLOBALS["l_workflow"]["EmailPath"], false, "defaultfont", "", false );
+					
+					$myout .= we_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid.'_LastStepAutoPublish', $GLOBALS["l_workflow"]["LastStepAutoPublish"], false, "defaultfont", "", false );
+					array_push($parts, array(	"headline" => $GLOBALS["l_workflow"]["specials"],
+												"space"    => $_space-25,
+												"html"     => $myout));
 					//	Workflow-Type
 					$out .= we_multiIconBox::getHTML("workflowProperties", "100%", $parts,30);
 				}
@@ -1090,7 +1101,8 @@ class weWorkflowView extends weWorkflowBase{
 							$childs.="top.content.deleteEntry(".$v["ID"].",'file');\n";
 						if (is_array($_REQUEST[$this->uid.'_MYDocType']) && !empty($_REQUEST[$this->uid.'_MYDocType']))	{
 							$this->workflowDef->DocType=implode(",",$_REQUEST[$this->uid.'_MYDocType']);
-						}    	
+						}  
+						  	
 						$this->workflowDef->save();
 						print '<script language="JavaScript" type="text/javascript">';
 						if($newone) print 'top.content.makeNewEntry("workflow_folder",'.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'",true,"folder","weWorkflowDef","'.$this->workflowDef->Status.'");';
