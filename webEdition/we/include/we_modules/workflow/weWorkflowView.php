@@ -1100,7 +1100,7 @@ class weWorkflowView extends weWorkflowBase{
 						foreach($this->workflowDef->documents as $k=>$v)
 							$childs.="top.content.deleteEntry(".$v["ID"].",'file');\n";
 						if (is_array($_REQUEST[$this->uid.'_MYDocType']) && !empty($_REQUEST[$this->uid.'_MYDocType']))	{
-							$this->workflowDef->DocType=implode(",",$_REQUEST[$this->uid.'_MYDocType']);
+							$this->workflowDef->DocType=makeCSVFromArray($_REQUEST[$this->uid.'_MYDocType'],true);
 						}  
 						  	
 						$this->workflowDef->save();

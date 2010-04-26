@@ -289,7 +289,7 @@ class weWorkflow extends weWorkflowBase{
 		*/
 
 		if ($doctype){
-			$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType IN (".$doctype.") AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+			$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType LIKE '%,".$doctype.",%' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
 			while ($db->next_record()){
 				if(isset($wfIDs[$db->f("ID")])){
 					$wfIDs[$db->f("ID")]++;
