@@ -3446,7 +3446,7 @@ function we_tag_ifCat($attribs, $content)
 			$match = "/" . $match;
 		}
 		if ($parent) {
-			if (!(strpos($DocCatsPaths, "," . $match) === false)) {
+			if (strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false) {
 				return true;
 			}
 		} else {
