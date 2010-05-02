@@ -830,8 +830,8 @@ class we_webEditionDocument extends we_textContentDocument {
 		unlink($filename);
 		return $fs;
 	*/
-		if (file_exists($_SERVER[DOCUMENT_ROOT].$this->Path) ) {
-			$fs= filesize($_SERVER[DOCUMENT_ROOT].$this->Path);//das ist ungenau
+		if (file_exists($_SERVER['DOCUMENT_ROOT'].$this->Path) ) {
+			$fs= filesize($_SERVER['DOCUMENT_ROOT'].$this->Path);//das ist ungenau
 		} else {
 			$fs=0;
 		}
