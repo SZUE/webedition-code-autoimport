@@ -1217,7 +1217,7 @@ function getHTTP($server, $url, $port = "", $username = "", $password = "")
 		$page = "Server Error: Failed opening URL: $foo";
 		$fh = @fopen($foo, "rb");
 		if(!$fh) {
-			$fh = fopen($_SERVER['DOCUMENT_ROOT'].$url, "rb");
+			$fh = @fopen($_SERVER['DOCUMENT_ROOT'].$url, "rb");
 		}
 		if ($fh) {
 			$page = "";
