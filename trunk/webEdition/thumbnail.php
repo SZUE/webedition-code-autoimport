@@ -45,7 +45,7 @@ if(!empty($exts)){
 	$whiteList = makeArrayFromCSV($exts);
 }
 
-if (!in_array($_REQUEST['extension'], $whiteList)) {
+if (!in_array(strtolower($_REQUEST['extension']), $whiteList)) {
 	exit();
 }
 

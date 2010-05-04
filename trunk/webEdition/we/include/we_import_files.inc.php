@@ -921,7 +921,8 @@ class we_import_files
 			
 			$we_doc->Filename = eregi_replace('^(.+)\..+$', "\\1", $_fn);
 			if (stristr($_fn, ".")) {
-				$we_doc->Extension = eregi_replace('^.+(\..+)$', "\\1", $_fn);
+				//$we_doc->Extension = eregi_replace('^.+(\..+)$', "\\1", $_fn); 
+				$we_doc->Extension = strtolower(eregi_replace('^.+(\..+)$', "\\1", $_fn));// Feature 3764 
 			} else {
 				$we_doc->Extension = "";
 			}
