@@ -220,6 +220,12 @@
 						
 		}
 		
+		function getAllToolTagWizards($toolname) {
+			
+			return weToolLookup::getFileRegister($toolname,'/tagwizard',"^we_tag_",'we_tag_','.inc.php');
+						
+		}
+		
 		
 		function getAllToolServices($toolname) {
 
@@ -285,6 +291,23 @@
 			foreach ($_tools as $_tool) {
 				if(file_exists($toolFolder . $_tool['name'] . '/tags/we_tag_' . $name . '.inc.php')) {
 					$include = $toolFolder . $_tool['name'] . '/tags/we_tag_' . $name . '.inc.php';
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function getToolTagWizard($name,&$include) {
+			$_tools = weToolLookup::getAllTools();
+			if(!defined('WE_TOOLS_DIR')) {
+				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
+			}
+			else {
+				$toolFolder = WE_TOOLS_DIR;
+			}
+			foreach ($_tools as $_tool) {
+				if(file_exists($toolFolder . $_tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php')) {
+					$include = $toolFolder . $_tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php';
 					return true;
 				}
 			}

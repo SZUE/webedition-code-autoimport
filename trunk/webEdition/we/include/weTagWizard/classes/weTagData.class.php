@@ -61,7 +61,7 @@ class weTagData
 	 * @param boolean $needsendtag
 	 * @param string $defaultvalue
 	 */
-	function weTagData($name, $attributes = array(), $description = '', $needsendtag = false, $defaultvalue = '')
+	function weTagData($name, $attributes = array(), $description = '', $needsendtag = false, $defaultvalue = '', $noDocuLink=false,$DocuLink='')
 	{
 		
 		// only use attributes allowed regarding the installed modules
@@ -84,7 +84,8 @@ class weTagData
 		}
 		
 		// Feature #3800
-		if (isset($GLOBALS['TagRefURL'])){ //hier kann man das einfach Abschalten bis die neue Doku online ist
+		if (isset($GLOBALS['TagRefURL']) && !$noDocuLink){ //hier kann man das einfach Abschalten bis die neue Doku online ist
+			if ($DocuLink !=''){$GLOBALS['TagRefURL']=$DocuLink;}
 			if ($this->TypeAttribute){
 				foreach ($this->TypeAttribute->Options as &$value){
 					$value->AllowedAttributes[]='idTagRef_'.$this->TypeAttribute->Name.'_'.$value->Value.'_TagReferenz';
@@ -134,7 +135,23 @@ class weTagData
 					$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')) {
 				require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 			} else {
-				return false;
+				//Application Tags
+				include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
+				$apptags = array();
+				$alltools = weToolLookup::getAllTools(true);
+				$allapptags = array();
+				$allapptagnames = array();
+				foreach ($alltools as $tool){
+					$apptags = weToolLookup::getAllToolTagWizards($tool['name']);
+					$allapptags = array_merge($allapptags,$apptags); 
+					$apptagnames = array_keys($apptags);					
+					$allapptagnames = array_merge( $allapptagnames, $apptagnames);
+				}			
+				if (in_array($tagName, $allapptagnames)) {
+					require_once ($allapptags[$tagName]);
+				} else {
+					return false;
+				}
 			}
 		
 		return new weTagData(
@@ -142,7 +159,10 @@ class weTagData
 				isset($GLOBALS['weTagWizard']['attribute']) ? $GLOBALS['weTagWizard']['attribute'] : array(), 
 				$GLOBALS['l_we_tag'][$tagName]['description'], 
 				$GLOBALS['weTagWizard']['weTagData']['needsEndtag'], 
-				isset($GLOBALS['l_we_tag'][$tagName]['defaultvalue']) ? $GLOBALS['l_we_tag'][$tagName]['defaultvalue'] : '');
+				isset($GLOBALS['l_we_tag'][$tagName]['defaultvalue']) ? $GLOBALS['l_we_tag'][$tagName]['defaultvalue'] : '',
+				isset($GLOBALS['weTagWizard']['weTagData']['noDocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['noDocuLink']:'',
+				isset($GLOBALS['weTagWizard']['weTagData']['DocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['DocuLink']:'' 
+				);
 	}
 
 	/**
