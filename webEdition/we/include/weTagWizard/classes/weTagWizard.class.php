@@ -39,6 +39,8 @@ class weTagWizard
 		// add custom tags
 		$retTags = array_merge($retTags, weTagWizard::getCustomTags());
 		
+		// add application tags
+		$retTags = array_merge($retTags, weTagWizard::getApplicationTags());
 		natcasesort($retTags);
 		return array_values($retTags);
 	}
@@ -60,7 +62,15 @@ class weTagWizard
 				$taggroups['alltags'] = array_merge($taggroups['alltags'], $tags);
 			}
 		}
+		//add applicationTags
+			$apptags = weTagWizard::getApplicationTags();
+		if (sizeof($apptags)) {
+			$taggroups['apptags'] = $apptags;
+			$taggroups['alltags'] = array_merge($taggroups['alltags'],$taggroups['apptags']);
 		
+		}	
+			
+			
 		// 2nd add some taggroups to this array
 		if (!sizeof($allTags)) {
 			$allTags = weTagWizard::getExistingWeTags();
@@ -108,6 +118,24 @@ class weTagWizard
 		}
 		return $GLOBALS['weTagWizard_customTags'];
 	}
+	function getApplicationTags()
+	{
+		
+		if (!isset($GLOBALS['weTagWizard_applicationTags'])) {
+			
+			$GLOBALS['weTagWizard_applicationTags'] = array();
+			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
+			$apptags = array();
+			$alltools = weToolLookup::getAllTools(true);
+			foreach ($alltools as $tool){
+				$apptags = weToolLookup::getAllToolTagWizards($tool['name']); 
+				$apptagnames = array_keys($apptags);
+				$GLOBALS['weTagWizard_applicationTags'] = array_merge( $GLOBALS['weTagWizard_applicationTags'], $apptagnames);
+			}
+		}
+		return $GLOBALS['weTagWizard_applicationTags'];
+	}
+	
 }
 
 ?>
