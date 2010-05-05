@@ -125,7 +125,11 @@ class weWorkflowDocument extends weWorkflowBase{
 		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_APPROVED){
 			$this->finishWorkflow(1,$uID);
 			$this->document->save();
-			$this->document->we_publish();
+			if ($this->document->i_publInScheduleTable()){
+				$foo = $this->document->getNextPublishDate();
+			} else {
+				$this->document->we_publish();
+			}
 			$path = "<b>".$l_workflow[($this->workflow->Type==2) ? OBJECT_FILES_TABLE : FILE_TABLE]["messagePath"].':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
 			$mess="<p><b>".$l_workflow["auto_published"]."</b></p><p>".$desc."</p><p>".$path."</p>";
 			$deadline=time();
