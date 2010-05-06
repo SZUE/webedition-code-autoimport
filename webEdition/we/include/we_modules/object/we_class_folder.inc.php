@@ -1180,20 +1180,23 @@ EOF;
         foreach(array_keys($_REQUEST) as $f){
         	if(substr($f,0,3)=="weg"){
                 $DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE.$this->ClassID." WHERE ID=".substr($f,3));
-                echo "SELECT OF_ID FROM " . OBJECT_X_TABLE.$this->ClassID." WHERE ID=".substr($f,3);
+                
                 $DB_WE->next_record();
                 $ofid = $DB_WE->f("OF_ID");
                 if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
                     $obj = new we_objectFile();
                     $obj->initByID($ofid, OBJECT_FILES_TABLE);
-                    
+                    $obj->getContentDataFromTemporaryDocs($ofid);
                     $obj->Workspaces = $foo["Workspaces"];
                     $obj->Templates = $foo["Templates"];
                     $obj->ExtraTemplates = "";
                     $obj->ExtraWorkspaces = "";
                     $obj->ExtraWorkspacesSelected = "";
+                    $oldModDate =$obj->ModDate; 
                     $obj->we_save(0,1);
-                    $obj->we_publish(1,1,1);
+                    if ($obj->Published !=0 && $obj->Published == $oldModDate){
+                    	$obj->we_publish(0,1,1);
+                    }
                 
                 }
         	}
@@ -1229,10 +1232,13 @@ EOF;
                 if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
                     $obj = new we_objectFile();
                     $obj->initByID($ofid, OBJECT_FILES_TABLE);
-                    
+                    $obj->getContentDataFromTemporaryDocs($ofid);
                     $obj->Charset = $Charset;
+                    $oldModDate =$obj->ModDate; 
                     $obj->we_save(0,1);
-                    $obj->we_publish(1,1,1);
+                    if ($obj->Published !=0 && $obj->Published == $oldModDate){
+                    	$obj->we_publish(0,1,1);
+                    }
                 }
             
             }
@@ -1257,20 +1263,18 @@ EOF;
 				$ofid = $DB_WE->f("OF_ID");
 
 				if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
+               		 $obj = new we_objectFile();
+					 $obj->initByID($ofid, OBJECT_FILES_TABLE);
+                     $obj->getContentDataFromTemporaryDocs($ofid);
 					if($searchable!=true) {
-						$obj = new we_objectFile();
-						$obj->initByID($ofid, OBJECT_FILES_TABLE);
                         $obj->IsSearchable=0;						
 					} else {
-						$obj = new we_objectFile();
-						$obj->initByID($ofid, OBJECT_FILES_TABLE);
 						$obj->IsSearchable=1;
 					}
+                    $oldModDate =$obj->ModDate; 
                     $obj->we_save(0,1);
-                    if ($obj->Published) {
+                    if ($obj->Published !=0 && $obj->Published == $oldModDate){
                     	$obj->we_publish(0,1,1);
-                    } else {
-                    	$obj->we_publish(1,1,1);
                     }				
 
 				}
