@@ -7090,7 +7090,7 @@ function we_tag_write($attribs, $content)
 					if ($objname=='') {
 						$GLOBALS["we_$type"][$name]->Text = 1 + abs(
 							f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
-						$GLOBALS["we_$type"][$name]->Path = $GLOBALS["we_$type"][$name]->Path . '/' . $GLOBALS["we_$type"][$name]->Text;
+						$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $GLOBALS["we_$type"][$name]->Text);
 					} else {
 						
 						$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);
