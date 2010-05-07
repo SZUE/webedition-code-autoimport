@@ -343,6 +343,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 $l_prefs["navigation_entries_from_document_folder"] = "Ordner";
 	 $l_prefs["navigation_rules_continue"] = "Werte Navigationsregeln auch nach einem ersten Match aus";
 	 $l_prefs["navigation_directoryindex_hide"] = "Verstecke DirectoryIndex-Dateinamen in der Navigationsausgabe";
+	 $l_prefs["navigation_directoryindex_description"] = "Nach einer Änderung muss ein Rebuild des Navigation Cache durchgeführt werden";
 	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex-Dateinamen (Komma-separiert)";
 
 	 /**

@@ -4627,7 +4627,7 @@ else {
 						$_php_setting->selectOption($i);
 					}
 				}
-				array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_hide"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_hide"], "html" => htmlAlertAttentionBox($l_prefs["navigation_directoryindex_description"],2,200)."<br>".$_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
 				
 				$_navigation_directoryindex_names = htmlTextInput("navigation_directoryindex_names", 22,get_value("navigation_directoryindex_names"), "", "", "text", 225);
     			array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_names"], "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1));
