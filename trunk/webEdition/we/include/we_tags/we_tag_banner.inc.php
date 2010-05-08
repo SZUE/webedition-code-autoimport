@@ -62,7 +62,7 @@ function we_tag_banner($attribs, $content){
 	if($height){
 	   $imgAtts['height'] = $height;
 	}
-	$img = getHtmlTag('img',$imgAtts); 
+	$img = getHtmlTag('img',$imgAtts);
 	
 	if($link){ //  with link
 	    $linkAtts['href'] = $bannerclick.'?'.($nocount ? 'nocount='.$nocount.'&amp;' : '').'u='.$uniq.'&amp;bannername='.rawurlencode($bannername).($page ? ('&amp;page='.rawurlencode($page)) : ('&amp;did='.$GLOBALS["WE_MAIN_DOC"]->ID));

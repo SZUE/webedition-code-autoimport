@@ -355,7 +355,8 @@ class weBanner extends weBannerBase{
 		if($height){
 		    $attsImage['height'] = $height;
 		}
-
+		if(isset($attsImage['type'])){unset($attsImage['type']);}
+		if(isset($attsImage['filesize'])){unset($attsImage['filesize']);}
 		$img = getHtmlTag('img', $attsImage);
 
 		if($showlink){
