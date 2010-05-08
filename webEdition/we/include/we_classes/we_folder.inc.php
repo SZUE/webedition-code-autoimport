@@ -273,6 +273,9 @@ class we_folder extends we_root
 	/* saves the folder */
 	function we_save($resave=0,$skipHook=0){
 		$this->i_setText();
+		if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE){
+			$this->ClassName = "we_class_folder";
+		}
 		if(!we_root::we_save($resave)) return false;
 		if(!$this->writeFolder()) return false;
 		if(defined("OBJECT_TABLE") && $this->Table==OBJECT_TABLE){
