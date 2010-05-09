@@ -60,9 +60,9 @@ class we_objectFile extends we_document
 	var $AllowedWorkspaces = array();
 	var $AllowedClasses = "";
 	var $CSS = "";
-	var $IsSearchable;
-	var $Charset;
-	var $Language;
+	var $IsSearchable ="";
+	var $Charset ='';
+	var $Language='';
 
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_INFO,WE_EDITPAGE_CONTENT,WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VARIANTS);
 
