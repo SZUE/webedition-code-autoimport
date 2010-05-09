@@ -228,7 +228,25 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 			$DB_WE->query($q);
 			$foo = $DB_WE->getAll();
 			foreach ($foo as $testclass) {
-				if(isColExistForDelete(OBJECT_X_TABLE.$testclass['ID'],"object_".$tableID)){				
+				if(isColExistForDelete(OBJECT_X_TABLE.$testclass['ID'],"object_".$tableID)){
+								
+					//das löschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
+					$qtest = "SELECT OF_ID FROM " .OBJECT_X_TABLE.$testclass['ID']. " WHERE object_".$tableID."= '".abs($id)."'";
+					$DB_WE->query($qtest);
+					$foos = $DB_WE->getAll();
+					foreach ($foos as $affectedobjects){
+						$obj = new we_objectFile();
+					 	$obj->initByID($affectedobjects['OF_ID'], OBJECT_FILES_TABLE);
+						
+                     	$obj->getContentDataFromTemporaryDocs($affectedobjects['OF_ID']);
+						$oldModDate =$obj->ModDate; 
+						$obj->setElement("we_object_".$tableID,"0");
+						$obj->we_save(0,1);
+						if ($obj->Published !=0 && $obj->Published == $oldModDate){
+                    		$obj->we_publish(0,1,1);
+                    	}						
+					}
+					
 					$q = "UPDATE " .OBJECT_X_TABLE.$testclass['ID']. " SET object_".$tableID."='0' WHERE object_".$tableID."= '".abs($id)."'";
 					$DB_WE->query($q);
 				}			
