@@ -1832,7 +1832,7 @@ class weVersions {
 				}
 					
 				$resetDoc = new $resetArray["ClassName"]();
-		
+
 				foreach($resetArray as $k=>$v) {
 			
 					if(isset($resetDoc->$k)) {
@@ -1868,6 +1868,7 @@ class weVersions {
 							}
 						}
 					}
+				
 				}
 	
 				if($resetDoc->ContentType=="image/*") {
