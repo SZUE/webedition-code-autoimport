@@ -209,6 +209,16 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	{
 		return $this->_table;
 	}
+	
+	/**
+	 * set table
+	 * 
+	 * @return void
+	 */
+	public function setTable($table)
+	{
+		$this->_table = $table;
+	}
 
 	/**
 	 * load persistent slots

@@ -406,6 +406,9 @@ class toolfactory_models_Default extends we_app_Model
 		if($this->makeTags && ($_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tags')) {
 			return true;
 		}
+		if($this->makeTags && ($_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tagwizard')) {
+			return true;
+		}
 		
 		if($this->makeServices && ($_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/cmds' || $_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views')) {
 			return true;

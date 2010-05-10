@@ -10,6 +10,8 @@ $this->inputWidth = 400;
 
 $form = new we_ui_layout_Form(array('name' => 'we_form', 'onsubmit' => 'return false', 'method' => 'post'));
 
+$onBeforeSubmitJS = '';
+
 $form->addHTML(we_ui_layout_Form::hidden('ID', $this->model->ID));
 $form->addHTML(we_ui_layout_Form::hidden('activTab', $activTab));
 
@@ -132,6 +134,8 @@ weCmdController.register("save_body", "app_'.$appName.'_save", null, self, funct
 		form.Text.select();
 		return false;
 	}
+
+	'.$onBeforeSubmitJS.'
 
 	var checkACFields = function() {
 		if(YAHOO && YAHOO.autocoml && YAHOO.autocoml.checkACFields()) {
