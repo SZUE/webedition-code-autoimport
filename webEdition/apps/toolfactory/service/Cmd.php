@@ -193,9 +193,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 					'Model is not set in session!', 
 					we_service_ErrorCodes::kModelNotSetInSession);
 		}
-		$model = $session->model; 
-		
-		
+		$model = $session->model;
+				
 		if ($model->ID != $IdToDel) {
 			throw new we_service_Exception(
 					'Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!', 
@@ -207,8 +206,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 				$db = we_io_DB::sharedAdapter();
 				$result = $db->getConnection()->exec('DROP TABLE '.$model->maintable);
 			}
-		} catch (we_core_ModelException $e) {
-			
+		} catch (we_core_ModelException $e) {		
 			throw new we_service_Exception($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.$e->getMessage());
 		}
 		//delte the directoy		
