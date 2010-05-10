@@ -193,7 +193,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 					'Model is not set in session!', 
 					we_service_ErrorCodes::kModelNotSetInSession);
 		}
-		$model = $session->model;
+		$model = $session->model; 
+		
 		
 		if ($model->ID != $IdToDel) {
 			throw new we_service_Exception(
@@ -202,10 +203,16 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		}
 		
 		try {
-			$model->delete();
+			if ($model->maintable!=''){
+				$db = we_io_DB::sharedAdapter();
+				$result = $db->getConnection()->exec('DROP TABLE '.$model->maintable);
+			}
 		} catch (we_core_ModelException $e) {
-			throw new we_service_Exception($e->getMessage());
+			
+			throw new we_service_Exception($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.$e->getMessage());
 		}
+		//delte the directoy		
+		we_util_File::rmdirr($GLOBALS['__WE_APP_PATH__'].DIRECTORY_SEPARATOR.$model->classname);
 		
 		//return deleted model
 		return array(

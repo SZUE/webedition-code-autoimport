@@ -14,7 +14,7 @@
 			<tuv xml:lang="de"><seg>Sie haben keinen Tabellennamen angegeben.</seg></tuv>
 		</tu>
 		<tu tuid="Delete Entry/Group.">
-			<tuv xml:lang="de"><seg>Aktuelle Eintrag/Ordner löschen.</seg></tuv>
+			<tuv xml:lang="de"><seg>Aktuellen Eintrag/Ordner löschen.</seg></tuv>
 		</tu>
 		<tu tuid="Are you sure?">
 			<tuv xml:lang="de"><seg>Sind Sie sich sicher?</seg></tuv>

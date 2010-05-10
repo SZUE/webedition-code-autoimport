@@ -151,5 +151,12 @@ class we_util_Strings
 		
 		}
 	}
+	
+	static function p_r($val)
+	{
+		print "<pre>";
+		print_r($val);
+		print "</pre>";
+	}
 
 }
