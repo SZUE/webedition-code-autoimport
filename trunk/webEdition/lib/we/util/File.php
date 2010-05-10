@@ -713,7 +713,7 @@ class we_util_File
 	function rmdirr($path, $nofiles = false)
 	{
 		error_log("trying to recursively delete " . $path);
-		if (!is_dir($path)) {
+		if ($nofiles && !is_dir($path)) {
 			error_log("ERROR: $path is no directory");
 			return false;
 		}
