@@ -319,28 +319,31 @@ class we_folder extends we_root
 		while($DB_WE->next_record()) {
 			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND Active = 0";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
-			$DocumentObject = unserialize($DocumentObject);
-			$DocumentObject[0]['Language'] = $this->Language;
-			$DocumentObject = serialize($DocumentObject);
-			$DocumentObject = str_replace("'", "\'", $DocumentObject);
-
-			$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
-			if(!$DB_WE2->query($query)) {
-				return false;
-
+			if ($DocumentObject!=''){
+				$DocumentObject = unserialize($DocumentObject);
+				
+				$DocumentObject[0]['Language'] = $this->Language;
+				$DocumentObject = serialize($DocumentObject);
+				$DocumentObject = str_replace("'", "\'", $DocumentObject);
+	
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
+				if(!$DB_WE2->query($query)) {
+					return false;
+	
+				}
 			}
-
 			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND Active = 1";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
-			$DocumentObject = unserialize($DocumentObject);
-			$DocumentObject[0]['Language'] = $this->Language;
-			$DocumentObject = serialize($DocumentObject);
-			$DocumentObject = str_replace("'", "\'", $DocumentObject);
-
-			$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
-			if(!$DB_WE2->query($query)) {
-				return false;
-
+			if ($DocumentObject!=''){
+				$DocumentObject = unserialize($DocumentObject);
+				$DocumentObject[0]['Language'] = $this->Language;
+				$DocumentObject = serialize($DocumentObject);
+				$DocumentObject = str_replace("'", "\'", $DocumentObject);
+	
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
+				if(!$DB_WE2->query($query)) {
+					return false;	
+				}
 			}
 		}
 		
