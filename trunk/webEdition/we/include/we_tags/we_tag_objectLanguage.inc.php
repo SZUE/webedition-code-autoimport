@@ -52,7 +52,31 @@ function we_tag_objectLanguage($attribs, $content)
 			$out=$out;	
 	}
 
-	return $out;
+		switch ($to) {
+		case "request" :
+			$_REQUEST[$nameTo] = $out;
+			break;
+		case "global" :
+			$GLOBALS[$nameTo] = $out;
+			break;
+		case "session" :
+			$_SESSION[$nameTo] = $out;
+			break;
+		case "top" :
+			$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $out);
+			break;
+		case "block" :
+		case "self" :
+			$GLOBALS["we_doc"]->setElement($nameTo, $out);
+			break;		
+		case "sessionfield" :
+			if (isset($_SESSION["webuser"][$nameTo])){
+				$_SESSION["webuser"][$nameTo] = $out;
+			}
+			break;
+		case "screen": return $out;
+	}
+	return null;
 	
 
 }
