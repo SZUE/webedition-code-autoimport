@@ -281,8 +281,11 @@ class we_objectFile extends we_document
 		$this->ParentID = $workspaceRootDirId;
 	}
 
-	function restoreDefaults(){
+	function restoreDefaults($makeSameNewFlag=false){
 		$this->DefaultInit = true;
+		if (!$makeSameNewFlag){
+			$this->resetParentID();
+		}
 		$this->Owners = "";
 		$this->OwnersReadOnly = "";
 		$this->RestrictOwners = "";
@@ -2267,7 +2270,7 @@ class we_objectFile extends we_document
 				if (!$makeSameNewFlag) {
 					$this->resetParentID();
 				}
-				$this->restoreDefaults();
+				$this->restoreDefaults($makeSameNewFlag);
 			}
 		}else if(isset($GLOBALS["we_EDITOR"]) && $GLOBALS["we_EDITOR"] && (!$this->ID)){
 			$_initWeDocumentCustomerFilter = false;
