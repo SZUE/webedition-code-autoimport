@@ -2283,10 +2283,12 @@ class we_objectFile extends we_document
 			}
 
 			$this->setRootDirID();
+			/*
 			if(!isset($this->ParentID)) {
 				$this->resetParentID();
 			}
-
+*/
+$this->checkAndCorrectParent();
 			if ($_initWeDocumentCustomerFilter) {
 				// get customerFilter of parent Folder
 				$_tmpFolder = new we_class_folder();
@@ -2849,6 +2851,16 @@ class we_objectFile extends we_document
 			'objects' => $objects,
 		);
 		$this->setElement($name, serialize($new));
+	}
+	
+	function checkAndCorrectParent(){
+		if (!isset($this->ParentID) || $this->ParentID==""){
+			$this->resetParentID();
+		}
+		$len = strlen($this->RootDirPath."/");
+		if(substr($this->ParentPath."/",0,$len) != substr($this->RootDirPath."/",0,$len)){
+			$this->resetParentID();
+		}
 	}
 }
 ?>
