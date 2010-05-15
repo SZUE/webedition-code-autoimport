@@ -2302,8 +2302,8 @@ class searchtoolView extends weToolView
 			}
 			for ($i = 0; $i < count($searchText); $i++) {
 				if (isset($searchText[$i])) {
-					if (eregi('_UTF-8', $GLOBALS['WE_LANGUAGE'])) {
-										$searchText[$i] = utf8_decode($searchText[$i]);
+					if (stripos($GLOBALS['WE_LANGUAGE'],'_UTF-8') !==false) { //was #3849
+						$searchText[$i] = utf8_decode($searchText[$i]);
 					}
 				}
 			}
@@ -2799,7 +2799,7 @@ class searchtoolView extends weToolView
 						"middlefont", 
 						"") : getPixel(20, 10) : '';
 
-				if (eregi('_UTF-8', $GLOBALS['WE_LANGUAGE'])) {
+				if (stripos($GLOBALS['WE_LANGUAGE'],'_UTF-8') !==false) { //was #3849
 					$_result[$f]["SiteTitle"] = utf8_encode($_result[$f]["SiteTitle"]);
 				}
 				

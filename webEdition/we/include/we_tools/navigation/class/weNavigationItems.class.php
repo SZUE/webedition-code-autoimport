@@ -716,7 +716,7 @@ class weNavigationItems
 		
 		if (file_exists($_cache)) {
 			$_part = weFile::loadPart($_cache, 0, 10);
-			if (eregi("<?php", $_part)) {
+			if (stripos($_part,"<?php") !==false) { //was #3849
 				include ($_cache);
 			} else {
 				$navigationItemsStorage = weFile::load($_cache);
@@ -730,7 +730,7 @@ class weNavigationItems
 			$_cache = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/rules.php';
 			if (file_exists($_cache)) {
 				$_part = weFile::loadPart($_cache, 0, 10);
-				if (eregi("<?php", $_part)) {
+				if (stripos($_part,"<?php") !==false) { //was #3849
 					include ($_cache);
 				} else {
 					$navigationRulesStorage = weFile::load($_cache);

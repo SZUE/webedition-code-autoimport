@@ -57,8 +57,8 @@ class we_catListview extends listviewBase {
 		$this->catID = trim($catID);
 
 		$this->variant = $variant;
-		if(eregi(" desc",$this->order)){
-			$this->order = eregi_replace(" desc","",$this->order);
+		if(stripos($this->order," desc") !== false){//was #3849			
+			$this->order = str_ireplace(" desc","",$this->order);
 			$this->desc = true;
 		}
 
