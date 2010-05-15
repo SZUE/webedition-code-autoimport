@@ -514,6 +514,16 @@ var Editor = (function(){
       return startOfLine(line.previousSibling);
     },
 
+    visibleLineCount: function() {
+      var line = this.container.firstChild;
+      while (line && isBR(line)) line = line.nextSibling; // BR heights are unreliable
+      if (!line) return false;
+      var innerHeight = (window.innerHeight
+                         || document.documentElement.clientHeight
+                         || document.body.clientHeight);
+      return Math.floor(innerHeight / line.offsetHeight);
+    },
+
     selectLines: function(startLine, startOffset, endLine, endOffset) {
       this.checkLine(startLine);
       var start = {node: startLine, offset: startOffset}, end = null;
@@ -620,14 +630,9 @@ var Editor = (function(){
     reroutePasteEvent: function() {
       if (this.capturingPaste || window.opera) return;
       this.capturingPaste = true;
-      var te = parent.document.createElement("TEXTAREA");
-      te.style.position = "absolute";
-      te.style.left = "-10000px";
-      te.style.width = "10px";
-      te.style.top = nodeTop(frameElement) + "px";
-      var wrap = window.frameElement.CodeMirror.wrapping;
-      wrap.parentNode.insertBefore(te, wrap);
+      var te = window.frameElement.CodeMirror.textareaHack;
       parent.focus();
+      te.value = "";
       te.focus();
 
       var self = this;
@@ -641,7 +646,6 @@ var Editor = (function(){
           self.replaceSelection(text);
           select.scrollToCursor(self.container);
         }
-        removeElement(te);
       }, 10);
     },
 
@@ -701,7 +705,7 @@ var Editor = (function(){
     // Intercept enter and tab, and assign their new functions.
     keyDown: function(event) {
       if (this.frozen == "leave") this.frozen = null;
-      if (this.frozen && (!this.keyFilter || this.keyFilter(event.keyCode))) {
+      if (this.frozen && (!this.keyFilter || this.keyFilter(event.keyCode, event))) {
         event.stop();
         this.frozen(event);
         return;
@@ -741,6 +745,13 @@ var Editor = (function(){
       }
       else if (code == 35 && !event.shiftKey && !event.ctrlKey) { // end
         if (this.end()) event.stop();
+      }
+      // Only in Firefox is the default behavior for PgUp/PgDn correct.
+      else if (code == 33 && !event.shiftKey && !event.ctrlKey && !gecko) { // PgUp
+        if (this.pageUp()) event.stop();
+      }
+      else if (code == 34 && !event.shiftKey && !event.ctrlKey && !gecko) {  // PgDn
+        if (this.pageDown()) event.stop();
       }
       else if ((code == 219 || code == 221) && event.ctrlKey && !event.altKey) { // [, ]
         this.highlightParens(event.shiftKey, true);
@@ -784,7 +795,7 @@ var Editor = (function(){
       // keydown event does not prevent the associated keypress event
       // from happening, so we have to cancel enter and tab again
       // here.
-      if ((this.frozen && (!this.keyFilter || this.keyFilter(event.keyCode))) ||
+      if ((this.frozen && (!this.keyFilter || this.keyFilter(event.keyCode, event))) ||
           event.code == 13 || (event.code == 9 && this.options.tabMode != "default") ||
           (event.keyCode == 32 && event.shiftKey && this.options.tabMode == "default"))
         event.stop();
@@ -855,10 +866,10 @@ var Editor = (function(){
           if (start) insertAfter(whiteSpace, start);
           else this.container.insertBefore(whiteSpace, this.container.firstChild);
         }
-        if (firstText) select.snapshotMove(firstText.firstChild, whiteSpace.firstChild, curIndent, false, true);
+        var fromNode = firstText && (firstText.firstChild || firstText);
+        select.snapshotMove(fromNode, whiteSpace.firstChild, newIndent, false, true);
       }
       if (indentDiff != 0) this.addDirtyNode(start);
-      return whiteSpace;
     },
 
     // Re-highlight the selected part of the document.
@@ -910,6 +921,37 @@ var Editor = (function(){
       cur = endOfLine(cur, this.container);
       if (!cur) return false;
       select.focusAfterNode(cur.previousSibling, this.container);
+      select.scrollToCursor(this.container);
+      return true;
+    },
+
+    pageUp: function() {
+      var line = this.cursorPosition().line, scrollAmount = this.visibleLineCount();
+      if (line === false || scrollAmount === false) return false;
+      // Try to keep one line on the screen.
+      scrollAmount -= 2;
+      for (var i = 0; i < scrollAmount; i++) {
+        line = this.prevLine(line);
+        if (line === false) break;
+      }
+      if (i == 0) return false; // Already at first line
+      select.setCursorPos(this.container, {node: line, offset: 0});
+      select.scrollToCursor(this.container);
+      return true;
+    },
+
+    pageDown: function() {
+      var line = this.cursorPosition().line, scrollAmount = this.visibleLineCount();
+      if (line === false || scrollAmount === false) return false;
+      // Try to move to the last line of the current page.
+      scrollAmount -= 2;
+      for (var i = 0; i < scrollAmount; i++) {
+        var nextLine = this.nextLine(line);
+        if (nextLine === false) break;
+        line = nextLine;
+      }
+      if (i == 0) return false; // Already at last line
+      select.setCursorPos(this.container, {node: line, offset: 0});
       select.scrollToCursor(this.container);
       return true;
     },
@@ -1036,13 +1078,9 @@ var Editor = (function(){
       // there's nothing to indent.
       if (cursor === false)
         return;
-      var lineStart = startOfLine(cursor);
-      var whiteSpace = this.indentLineAfter(lineStart, direction);
-      if (cursor == lineStart && whiteSpace)
-          cursor = whiteSpace;
-      // This means the indentation has probably messed up the cursor.
-      if (cursor == whiteSpace)
-        select.focusAfterNode(cursor, this.container);
+      select.markSelection(this.win);
+      this.indentLineAfter(startOfLine(cursor), direction);
+      select.selectMarked();
     },
 
     // Indent all lines whose start falls inside of the current
