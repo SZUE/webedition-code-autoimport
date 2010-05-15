@@ -84,15 +84,13 @@ $aPrefs['sct'] = array(
 		'dlgHeight' => 435, 
 		'isResizable' => 1
 );
-// http://www.webedition.de/de/Presse/Pressemeldungen/rss2.xml
-// aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=
 $aPrefs['rss'] = array(
 	
 		'width' => $small, 
 		'height' => 307, 
 		'res' => 0, 
 		'cls' => 'yellow', 
-		'csv' => base64_encode('http://www.webedition.de/de/Presse/Pressemeldungen/rss2.xml') . ',111000,0,110000,1', 
+		'csv' => base64_encode('http://www.webedition.de/de/News/meldungen/rss2.xml') . ',111000,0,110000,1', 
 		'dlgHeight' => 480, 
 		'isResizable' => 1
 );
@@ -189,7 +187,7 @@ $aCfgProps = array(
 						"rss", 
 						"yellow", 
 						1, 
-						base64_encode('http://www.webedition.de/de/Presse/Pressemeldungen/rss2.xml') . ',111000,0,110000,1'
+						base64_encode('http://www.webedition.de/de/News/meldungen/rss2.xml') . ',111000,0,110000,1'
 				), 
 				array(
 					"sct", "red", 1, implode(',', $shortCuts_left) . ';' . implode(',', $shortCuts_right)

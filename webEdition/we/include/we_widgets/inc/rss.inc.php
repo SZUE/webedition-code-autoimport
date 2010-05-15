@@ -31,8 +31,8 @@ list($_rssUri, $_rssCont, $_rssNumItems, $_rssTb, $_rssTitle) = explode(',', $aP
 
 list($bTbLabel, $bTbTitel, $bTbDesc, $bTbLink, $bTbPubDate, $bTbCopyright) = $_rssTb;
 $aLabelPrefix = array();
-if ($bTbLabel)
-	$aLabelPrefix[] = $l_cockpit['rss_feed'];
+#if ($bTbLabel)
+#	$aLabelPrefix[] = $l_cockpit['rss_feed'];
 if ($bTbTitel && $_rssTitle) {
 	$_feed = (isset($aTrf)) ? $aTrf : $aTopRssFeeds;
 	foreach ($_feed as $iRssFeedIndex => $aFeed) {
