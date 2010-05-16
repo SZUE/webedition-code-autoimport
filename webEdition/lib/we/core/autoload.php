@@ -51,7 +51,7 @@ $GLOBALS['__WE_APP_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/apps';
 $GLOBALS['__WE_CMS_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/cms';
 
 // add __WE_LIB_PATH__ and __WE_APP_PATH__ to the include_path
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . $GLOBALS['__WE_LIB_PATH__'] . PATH_SEPARATOR . $GLOBALS['__WE_APP_PATH__']);
+ini_set('include_path', $GLOBALS['__WE_LIB_PATH__'] . PATH_SEPARATOR . $GLOBALS['__WE_APP_PATH__'] . PATH_SEPARATOR . ini_get('include_path'));
 
 // include Zend_Autoloader  #3815
 require_once('Zend/Loader/Autoloader.php');
