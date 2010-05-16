@@ -60,9 +60,9 @@
 		break;
 				
 <?php
-    $yearshop = "2002";
+    $yearshop = "2010";
    	$z=1;
-	while($yearshop <= date("Y")){
+	while($yearshop <= @date("Y")){
        echo ' case "'."year".$yearshop.'":
        ';
 	   $yearshop++; $z++;
