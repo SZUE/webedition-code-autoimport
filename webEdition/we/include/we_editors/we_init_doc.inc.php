@@ -19,7 +19,7 @@
  */
 
 // exit if script called directly
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we_inc_doc.inc.php") {
+if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we_init_doc.inc.php") {
 	exit();
 }
 
