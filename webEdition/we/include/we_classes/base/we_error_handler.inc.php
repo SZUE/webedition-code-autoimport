@@ -66,8 +66,8 @@ function we_error_handler($in_webEdition = true) {
 	$_send_address = (defined("WE_ERROR_MAIL") && defined("WE_ERROR_MAIL_ADDRESS")) ? WE_ERROR_MAIL_ADDRESS : "";
 
 	// Check PHP version
-	if (strcmp('4.1.0', phpversion()) > 0) {
-		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 4.1.0 or higher required!', "/webEdition/we/we_classes/base/we_error_handler.inc.php", 69);
+	if (version_compare(PHP_VERSION, '5.2.4') < 0) {
+		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', "/webEdition/we/we_classes/base/we_error_handler.inc.php", 69);
 		exit();
 	}
 
