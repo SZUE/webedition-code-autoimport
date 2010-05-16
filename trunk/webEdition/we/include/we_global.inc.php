@@ -26,24 +26,6 @@ if (!isset($GLOBALS["WE_IS_DYN"])) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 }
 
-if (version_compare(phpversion(), '5.0') < 0) {
-	eval('
-    function clone($object) {
-      return $object;
-    }
-    ');
-}
-
-// bugfix for php 4.1
-if (!function_exists('is_a')) {
-
-	function is_a($anObject, $aClass)
-	{
-		
-		return get_class($anObject) == strtolower($aClass) or is_subclass_of($anObject, $aClass);
-	}
-}
-
 function we_getModuleNameByContentType($ctype)
 {
 	
