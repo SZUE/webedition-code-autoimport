@@ -534,11 +534,7 @@ class we_util_File
 		/* if the directory exists, we have nothing to do and then we return true  */
 		if (file_exists($path) && is_dir($path))
 			return true;
-		//$docroot = ereg_replace('^(.*)/$', '\1', $_SERVER["DOCUMENT_ROOT"]);
-		$docroot = preg_replace('#^(.*)/$#', '\1', $_SERVER["DOCUMENT_ROOT"]);
-		//$path2 = ereg_replace('^(.*)/$', '\1', $path);
-		$path2 = preg_replace('#^(.*)/$#', '\1', $path);
-		if (strtolower($docroot) == strtolower($path2))
+		if (strtolower(rtrim($_SERVER["DOCUMENT_ROOT"],'/')) == strtolower(rtrim($path,'/')))
 			return true;
 			
 		// if instead of the directory a file exists, we delete the file and create the directory
