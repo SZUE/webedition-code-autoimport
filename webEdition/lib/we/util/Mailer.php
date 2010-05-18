@@ -259,8 +259,8 @@ class we_util_Mailer extends Zend_Mail
 						}
 						
 						
-						$fileParts = split("\.", $filename);
-						$ext = $fileParts[1];
+						$fileParts = pathinfo($filename);
+						$ext = $fileParts['extension'];
 						
 						if ($this->basedir == "") {
 							$this->basedir = $_SERVER['DOCUMENT_ROOT'];
@@ -347,8 +347,8 @@ class we_util_Mailer extends Zend_Mail
 			$rep=str_replace($_SERVER['DOCUMENT_ROOT'],'',$attachmentpath);
 			$at->id=md5($filename);
 			$at->filename=$filename;
-			$fileParts = split("\.", $filename);
-          	$ext = $fileParts[1];
+			$fileParts = pathinfo($filename);
+			$ext = $fileParts['extension'];		
 			$at->type = $this->get_mime_type($ext,$filename);
 			$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'],"/"),"",$_SERVER['SERVER_PROTOCOL']));
 			$loc = $protocol."://".$_SERVER['HTTP_HOST'].$rep;
@@ -375,8 +375,8 @@ class we_util_Mailer extends Zend_Mail
 			$filename = basename($attachmentpath);
 			$at->id=md5($filename);
 			$at->filename=$filename;
-			$fileParts = split("\.", $filename);
-          	$ext = $fileParts[1];
+			$fileParts = pathinfo($filename);
+			$ext = $fileParts['extension'];
 			$at->type = $this->get_mime_type($ext,$filename);
 			
 			$this->addAttachment($at);				

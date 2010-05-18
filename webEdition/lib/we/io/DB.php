@@ -44,7 +44,15 @@ class we_io_DB
 	 */
 	static function newAdapter()
 	{
-		$db = Zend_Db::factory('Pdo_Mysql', array('host' => DB_HOST, 'username' => DB_USER, 'password' => DB_PASSWORD, 'dbname' => DB_DATABASE, 'charset'=> 'utf8'));
+		$DBpar = array('username' => DB_USER, 'password' => DB_PASSWORD, 'dbname' => DB_DATABASE, 'charset'=> 'utf8');
+		if(stripos(DB_HOST,':') !== false){
+			list($host,$port) = explode(':',DB_HOST);
+			$DBpar['host'] = $host;
+			$DBpar['port'] = $port;
+		} else {
+			$DBpar['host'] =  DB_HOST;
+		}
+		$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
 		return $db;
 	}
 

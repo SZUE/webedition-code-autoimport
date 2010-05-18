@@ -110,7 +110,11 @@ class we_app_Model extends we_core_AbstractModel
 	 */
 	public function textNotValid()
 	{
-		return eregi('/', $this->Text);
+		if (stripos($this->Text, '/') === false) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
