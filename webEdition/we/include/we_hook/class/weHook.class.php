@@ -65,10 +65,12 @@ class weHook{
 				
 				$hookFile = $this->getHookFile($action, $appName);
 
-				include_once($hookFile);
+				if ($hookFile!='') {
+					include_once($hookFile);
 					
-				if(function_exists($functionName)) {
-					eval($functionName.'($param);');
+					if(function_exists($functionName)) {
+						eval($functionName.'($param);');
+					}
 				}
 			}
 		}
@@ -91,7 +93,7 @@ class weHook{
 			// look in app folder
 			$toolHookFile = $_SERVER['DOCUMENT_ROOT'].'/webEdition/apps/'.$appName.'/hook/custom_hooks/'.$filename;
 			if(file_exists($toolHookFile) && is_readable($toolHookFile)) {
-		  	$hookFile = $toolHookFile;
+		  		$hookFile = $toolHookFile;
 			}
 		}
 		else {
@@ -100,6 +102,11 @@ class weHook{
 	  		$weHookFile = $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_hook/custom_hooks/'.$filename;
 	  		if(file_exists($weHookFile) && is_readable($weHookFile)) {
 	  			$hookFile = $weHookFile;
+	  		}  else {
+				$weHookFile = $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_hook/sample_hooks/'.$filename;
+				if(file_exists($weHookFile) && is_readable($weHookFile)) {
+	  				$hookFile = $weHookFile;
+				}
 	  		}
 		}
 		
