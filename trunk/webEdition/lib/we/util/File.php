@@ -355,7 +355,7 @@ class we_util_File
 	{
 		$compressions = array("gzip", "zip", "bzip");
 		foreach ($compressions as $val) {
-			if (eregi("." . self::getZExtension($val), basename($filename)))
+			if (stripos(basename($filename), "." . self::getZExtension($val) ) !== false)
 				return $val;
 		}
 		return "none";
@@ -534,8 +534,10 @@ class we_util_File
 		/* if the directory exists, we have nothing to do and then we return true  */
 		if (file_exists($path) && is_dir($path))
 			return true;
-		$docroot = ereg_replace('^(.*)/$', '\1', $_SERVER["DOCUMENT_ROOT"]);
-		$path2 = ereg_replace('^(.*)/$', '\1', $path);
+		//$docroot = ereg_replace('^(.*)/$', '\1', $_SERVER["DOCUMENT_ROOT"]);
+		$docroot = preg_replace('#^(.*)/$#', '\1', $_SERVER["DOCUMENT_ROOT"]);
+		//$path2 = ereg_replace('^(.*)/$', '\1', $path);
+		$path2 = preg_replace('#^(.*)/$#', '\1', $path);
 		if (strtolower($docroot) == strtolower($path2))
 			return true;
 			

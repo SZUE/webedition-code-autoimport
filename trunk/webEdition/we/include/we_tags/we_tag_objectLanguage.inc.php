@@ -52,7 +52,7 @@ function we_tag_objectLanguage($attribs, $content)
 			$out=$out;	
 	}
 
-		switch ($to) {
+	switch ($to) {
 		case "request" :
 			$_REQUEST[$nameTo] = $out;
 			break;
