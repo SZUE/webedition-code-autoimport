@@ -136,6 +136,15 @@ $GLOBALS["WE_CONTENT_TYPES"]["folder"] = array(
 		"IsWebEditionFile" => "0", 
 		"Icon" => "folder.gif"
 );
+$GLOBALS["WE_CONTENT_TYPES"]["class_folder"] = array(
+	
+		"Extension" => "", 
+		"Permission" => '', 
+		"DefaultCode" => '', 
+		"IsRealFile" => "0", 
+		"IsWebEditionFile" => "0", 
+		"Icon" => "class_folder.gif"
+);
 $GLOBALS["WE_CONTENT_TYPES"]["application/x-shockwave-flash"] = array(
 	
 		"Extension" => ".swf", 
