@@ -32,7 +32,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSu
 
 class weNewsletterFrames extends weModuleFrames {
 
-	var $multibox_width = 650;
+	var $multibox_width = 950;
 	var $def_width = 450;
 	var $weAutoColpleter;
 
@@ -2404,7 +2404,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 			$out=	$nextprev->getHtmlCode().
 						getPixel(5,5).
-						htmlDialogBorder3(750,300,$content,$headlines).
+						htmlDialogBorder3(850,300,$content,$headlines).
 						getPixel(5,5).
 						$end;
 		} else {
