@@ -101,4 +101,9 @@ $l_liveUpdate['updatelog']['legendNotices'] = 'Hinweise';
 $l_liveUpdate['updatelog']['legendErrors'] = 'Fehler';
 $l_liveUpdate['updatelog']['confirmDelete'] = 'Wenn sie fortfahren, werden alle ausgewählten Einträge gelöscht';
 
+$l_liveUpdate['tabs']['beta'] = 'Beta Versionen';
+$l_liveUpdate['beta']['headline'] = 'Sollen auch Beta-Versionen mit in die Suche einbezogen werden?';
+$l_liveUpdate['beta']['lookForUpdate'] = 'nach Beta-Versionen suchen';
+$l_liveUpdate['beta']['warning'] = '<b>Beta-Versionen sollten niemals in Produktions-Sites eingesetzt werden!</b><br/>Sie werden nur zu Testzwecken zur Verfügung gestellt und sollen es erleichtern,<br/> vor der offiziellen Veröffentlichung einer Version Fehler zu finden und zu beheben.';
+
 ?>

@@ -100,4 +100,9 @@ $l_liveUpdate['updatelog']['legendNotices'] = 'Notices';
 $l_liveUpdate['updatelog']['legendErrors'] = 'Errors';
 $l_liveUpdate['updatelog']['confirmDelete'] = 'Do you really want to delete all selected entries?'
 
+$l_liveUpdate['tabs']['beta'] = 'Beta Versions';
+$l_liveUpdate['beta']['headline'] = 'Shall Beta-Version be included in the search?';
+$l_liveUpdate['beta']['lookForUpdate'] = 'search for Beta-Versions';
+$l_liveUpdate['beta']['warning'] = '<b>Beta-Versions should never be used in produktions-sites!</b><br/>They are provided for testing purposes only and aim at easing <br/>the search for severe erros before an official version is published.';
+
 ?>

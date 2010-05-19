@@ -34,7 +34,7 @@ $content = '
 	' . $nextButton . '
 </div>
 ';
-
+p_r($GLOBALS['LU_Variables']);
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['register']['headline'], $content);
 
 ?>

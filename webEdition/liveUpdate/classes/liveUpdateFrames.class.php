@@ -60,6 +60,10 @@ class liveUpdateFrames {
 					$this->processUpdateVariables();
 				break;
 				
+				case 'beta':
+					$this->processBeta();
+				break;
+				
 				case 'updatelog':
 					$this->processUpdateLogVariables();
 				break;
@@ -86,7 +90,9 @@ class liveUpdateFrames {
 			case 'upgrade':
 				return $this->htmlUpgrade();
 			break;
-			
+			case 'beta':
+				return $this->htmlBeta();
+			break;
 			case 'update':
 				return $this->htmlUpdate();
 			break;
@@ -119,13 +125,38 @@ class liveUpdateFrames {
 				print "Frame $this->Section is not known!";
 			break;
 				
-		}
+		}p_r($GLOBALS['updatecmds']);
 	}
 	
 	function getData($name) {
 		
 		if (isset($this->Data[$name])) {
 			return $this->Data[$name];
+		}
+	}
+	
+	function processBeta(){
+		if (isset($_REQUEST['setTestUpdate']) ) {
+			$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
+			
+			if (strpos($conf,'$'."_REQUEST['testUpdate']")!==false){
+				if ($_REQUEST['setTestUpdate']==1){
+					if (strpos($conf,'$'."_REQUEST['testUpdate'] = 0;")!==false){
+						$conf=str_replace('$'."_REQUEST['testUpdate'] = 0;",'$'."_REQUEST['testUpdate'] = 1;",$conf);
+						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+					}
+				}
+				if ($_REQUEST['setTestUpdate']==0){
+					if (strpos($conf,'$'."_REQUEST['testUpdate'] = 1;")!==false){
+						$conf=str_replace('$'."_REQUEST['testUpdate'] = 1;",'$'."_REQUEST['testUpdate'] = 0;",$conf);
+						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+					}
+				}				
+			} else {
+				$conf=str_replace("?>",'$'."_REQUEST['testUpdate'] = ".$_REQUEST['setTestUpdate'].";\n ?>",$conf);p_r($conf);
+				weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+			}
+			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
 		}
 	}
 	
@@ -338,7 +369,7 @@ class liveUpdateFrames {
 		$show = "?section=$activeTab";
 		$active = "&active=$activeTab";
 		
-		return '<html>
+		$html = '<html>
 <head>
 	<title>webEdition Update</title>
 </head>
@@ -348,6 +379,7 @@ class liveUpdateFrames {
 	<frame name="updateload" src="about:blank" />
 </frameset>
 </html>';
+		return $html;
 	}
 	
 	function htmlTabs() {
@@ -358,6 +390,11 @@ class liveUpdateFrames {
 	function htmlUpgrade() {
 		
 		include(LIVEUPDATE_TEMPLATE_DIR . 'upgrade.inc.php');
+	}
+	
+	function htmlBeta() {
+		
+		include(LIVEUPDATE_TEMPLATE_DIR . 'beta.inc.php');
 	}
 	
 	function htmlUpdate() {

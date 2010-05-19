@@ -59,7 +59,7 @@ class liveUpdateTemplates {
 		return "
 		<div id=\"contentDiv\" class=\"defaultfont\" style=\"width: $width; height: $height;\">
 			<div id=\"contentHeadlineDiv\" style=\"height: " . ($headlineHeight) . "\">
-			<b>$headline<hr /></b>
+			<b>$headline</b><hr />
 			</div>
 			<div id=\"contentTextDiv\" class=\"defaultfont\" style=\"height: " . ($contentHeight). "\">
 				$content
