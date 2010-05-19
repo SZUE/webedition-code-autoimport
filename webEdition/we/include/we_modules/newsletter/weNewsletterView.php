@@ -813,9 +813,9 @@ class weNewsletterView {
 
 					case "edit_file":
 						if (arguments[1]){
-							new jsWindow("'.$this->frameset.'?pnt="+arguments[0]+"&art="+arguments[1],arguments[0],-1,-1,800,640,true,true,true,true);
+							new jsWindow("'.$this->frameset.'?pnt="+arguments[0]+"&art="+arguments[1],arguments[0],-1,-1,950,640,true,true,true,true);
 						} else {
-							new jsWindow("'.$this->frameset.'?pnt="+arguments[0],arguments[0],-1,-1,800,640,true,true,true,true);
+							new jsWindow("'.$this->frameset.'?pnt="+arguments[0],arguments[0],-1,-1,950,640,true,true,true,true);
 						}
 						break;
 
