@@ -29,7 +29,7 @@ define('LIVEUPDATE_LANGUAGE', $GLOBALS['WE_LANGUAGE']);
 define('LIVEUPDATE_LANGUAGE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . LIVEUPDATE_LANGUAGE . '/');
 
 // include some files
-define('LIVEUPDATE_CSS', '<link rel="stylesheet" href="/webEdition/liveUpdate/css/liveupdate.css" />');
+define('LIVEUPDATE_CSS', '<link rel="stylesheet" type="text/css" href="/webEdition/liveUpdate/css/liveupdate.css" />');
 define('LIVEUPDATE_TEMPLATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/templates/');
 
 define('LIVEUPDATE_SERVER', 'update.webedition.org');
@@ -48,8 +48,12 @@ define('LIVEUPDATE_CLIENT_DOCUMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEditio
 define('LIVEUPDATE_TABLE_PREFIX', TBL_PREFIX);
 
 // liveupdater contains the following actions
-$updatecmds = array('update', 'languages', 'updatelog', 'connect');
+$updatecmds = array('update', 'languages', 'updatelog', 'connect','beta');
+//$updatecmds = array('update', 'languages', 'updatelog', 'connect');
 if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && ini_get("safe_mode") != "1") {
 	@set_time_limit(180);
 }
+
+//Beta-Switch
+
 ?>

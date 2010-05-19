@@ -98,6 +98,11 @@ $l_liveUpdate['updatelog']['noEntriesMatchFilter'] = 'There are not entries matc
 $l_liveUpdate['updatelog']['legendMessages'] = 'Messages'; // TRANSLATE
 $l_liveUpdate['updatelog']['legendNotices'] = 'Notices'; // TRANSLATE
 $l_liveUpdate['updatelog']['legendErrors'] = 'Errors'; // TRANSLATE
-$l_liveUpdate['updatelog']['confirmDelete'] = 'Do you really want to delete all selected entries?'
+$l_liveUpdate['updatelog']['confirmDelete'] = 'Do you really want to delete all selected entries?';// TRANSLATE
+
+$l_liveUpdate['tabs']['beta'] = 'Beta Versions';// TRANSLATE
+$l_liveUpdate['beta']['headline'] = 'Shall Beta-Version be included in the search?';// TRANSLATE
+$l_liveUpdate['beta']['lookForUpdate'] = 'search for Beta-Versions';// TRANSLATE
+$l_liveUpdate['beta']['warning'] = '<b>Beta-Versions should never be used in produktions-sites!</b><br/>They are provided for testing purposes only and aim at easing <br/>the search for severe erros before an official version is published.';// TRANSLATE
 
 ?>
