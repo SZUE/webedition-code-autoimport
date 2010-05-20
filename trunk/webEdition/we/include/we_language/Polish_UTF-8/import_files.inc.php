@@ -36,7 +36,7 @@ $GLOBALS["l_import_files"]["step1"] = "Importownie lokalnych plików - krok 1 z 
 $GLOBALS["l_import_files"]["step2"] = "Importownie lokalnych plików - krok 2 z 2";
 $GLOBALS["l_import_files"]["step3"] = "Import local files - Step 3 of 3"; // TRANSLATE
 $GLOBALS["l_import_files"]["import_expl"] = "Poprzez kliknięcie przycisku obok pola wprowadzenia można wybrać plik z dysku. Po wyborze jednego ukarze się kolejne okno w którym można wybrać następne pliki. Należy uważać, aby maksymalna wielkość pliku nie przekroczyła %s!<br><br>Kliknij na \"Dalej\", aby rozpocząć importowanie.";
-$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP and MySQL!<br><br>Click on \"Next\", to start the import.";
+$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP!<br><br>Click on \"Next\", to start the import.";
 
 $GLOBALS["l_import_files"]["error"] = "Wystąpił błąd podczas importu!\\n\\nNastępujący plik nie mógł zostać zaimportowany:\\n%s";
 $GLOBALS["l_import_files"]["finished"] = "Pomyślnie zakończono importowanie pliku!";

@@ -35,8 +35,8 @@ $GLOBALS["l_import_files"]["sameName_headline"] = "Qué hacer<br>si un archivo e
 $GLOBALS["l_import_files"]["step1"] = "Importar archivos locales - Paso 1 de 2";
 $GLOBALS["l_import_files"]["step2"] = "Importar archivos locales - Paso 2 de 2";
 $GLOBALS["l_import_files"]["step3"] = "Import local files - Step 3 of 3"; // TRANSLATE
-$GLOBALS["l_import_files"]["import_expl"] = "Clic en el botón proximo al campo de entrada para seleccionar un archivo en su disco duro. Después de la selección aparece un nuevo campo de entrada y Ud puede seleccionar otro archivo. Por favor, note que el tamaño maximo del archivo de  %s no debe ser excedido por las restricciones de PHP y MySQL!<br><br>Clic en \"Siguiente\", para iniciar la importación.";
-$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP and MySQL!<br><br>Click on \"Next\", to start the import.";
+$GLOBALS["l_import_files"]["import_expl"] = "Clic en el botón proximo al campo de entrada para seleccionar un archivo en su disco duro. Después de la selección aparece un nuevo campo de entrada y Ud puede seleccionar otro archivo. Por favor, note que el tamaño maximo del archivo de  %s no debe ser excedido por las restricciones de PHP!<br><br>Clic en \"Siguiente\", para iniciar la importación.";
+$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP!<br><br>Click on \"Next\", to start the import.";
 
 $GLOBALS["l_import_files"]["error"] = "Un error ocurre durante el proceso de importación!\\n\\nLos siguientes archivos no pudieron ser importados:\\n%s";
 $GLOBALS["l_import_files"]["finished"] = "La importación fue exitosa!";

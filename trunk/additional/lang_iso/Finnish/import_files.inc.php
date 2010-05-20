@@ -35,8 +35,8 @@ $GLOBALS["l_import_files"]["sameName_headline"] = "Jos tiedosto<br>on olemassa?"
 $GLOBALS["l_import_files"]["step1"] = "Tuo paikallisia tiedostoja - Vaihe 1 / 3";
 $GLOBALS["l_import_files"]["step2"] = "Tuo paikallisia tiedostoja - Vaihe 2 / 3";
 $GLOBALS["l_import_files"]["step3"] = "Tuo paikallisia tiedostoja - Vaihe 3 / 3";
-$GLOBALS["l_import_files"]["import_expl"] = "Paina seuraava painiketta syöttökentässä valitaksesi tiedoston kovalevyltäsi. Valinnan jälkeen ilmestyy uusi syöttökenttä ja voit valita uuden tiedoston. Huomaa että tiedoston maksimikokoa %s ei voida ylittää johtuen PHP:n ja MySQL:n rajoituksesta!<br><br>Paina \"Seuraava\" -painiketta aloittaaksesi tuonnin.";
-$GLOBALS["l_import_files"]["import_expl_jupload"] = "Painiketta painamalla voit valita useampia tiedostoja kovalevyltäsi. Vaihtoehtoisesti voit valita tiedostoja 'raahaamalla' niitä koneesi tiedostojenhallinnasta.  Huomioi että PHP:n ja MySQL:n rajoittamaa tiedostojen maksimikokoa %s ei saa ylittää!<br><br>Klikkaa \"Seuraava\", aloittaaksesi tuonnin.";
+$GLOBALS["l_import_files"]["import_expl"] = "Paina seuraava painiketta syöttökentässä valitaksesi tiedoston kovalevyltäsi. Valinnan jälkeen ilmestyy uusi syöttökenttä ja voit valita uuden tiedoston. Huomaa että tiedoston maksimikokoa %s ei voida ylittää johtuen PHP:n rajoituksesta!<br><br>Paina \"Seuraava\" -painiketta aloittaaksesi tuonnin.";
+$GLOBALS["l_import_files"]["import_expl_jupload"] = "Painiketta painamalla voit valita useampia tiedostoja kovalevyltäsi. Vaihtoehtoisesti voit valita tiedostoja 'raahaamalla' niitä koneesi tiedostojenhallinnasta.  Huomioi että PHP:n rajoittamaa tiedostojen maksimikokoa %s ei saa ylittää!<br><br>Klikkaa \"Seuraava\", aloittaaksesi tuonnin.";
 
 $GLOBALS["l_import_files"]["error"] = "Virhe tiedoston tuonnissa!\\n\\nSeuraavia tiedostoja ei voitu tuoda:\\n%s";
 $GLOBALS["l_import_files"]["finished"] = "Tuonti onnistui!";

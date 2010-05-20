@@ -53,7 +53,7 @@ class weBackupWizard{
  		$this->mode=$mode;
  	}
 
-	function getJSDep($mode,$docheck,$doclick){
+	function getJSDep($mode,$docheck,$doclick,$douncheck){
 		global $l_backup;
 		return we_htmlElement::jsElement('
 			function we_submitForm(target,url) {
@@ -68,6 +68,12 @@ class weBackupWizard{
 			function doCheck(opt){
 				switch (opt) {
 					'.$docheck.'
+				}
+			}
+			
+			function doUnCheck(opt){
+				switch (opt) {
+					'.$douncheck.'
 				}
 			}
 
@@ -583,6 +589,7 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["import_options"], 2, 600, false),"space"=>70,"noline"=>1));
 
 		$docheck="";
+		$douncheck="";
 		$doclick="";
 		$doclickall1="";
 		$doclickall2="";
@@ -590,6 +597,12 @@ class weBackupWizard{
 			$docheck.='
 				case '.$k.':
 					document.we_form.'.$v.'.checked=true;
+					doClick('.$k.');
+				break;
+			';
+			$douncheck.='
+				case '.$k.':
+					document.we_form.'.$v.'.checked=false;
 					doClick('.$k.');
 				break;
 			';
@@ -632,7 +645,7 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "handle_extern", $l_backup["import_extern_data"], false, "defaultfont", "doClick(300);"),"space"=>70,"noline"=>1));
 		
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["convert_charset"], 1, 600, false),"space"=>70,"noline"=>1));
-		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "convert_charset", $l_backup["convert_charset_data"], false, "defaultfont", "doClick(310);"),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "convert_charset", $l_backup["convert_charset_data"], false, "defaultfont", "doClick(310);doUnCheck(101);doUnCheck(100);doUnCheck(70)"),"space"=>70,"noline"=>1));
 
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["backup_log_exp"], 2, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "backup_log", $l_backup["export_backup_log"], false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
@@ -640,7 +653,7 @@ class weBackupWizard{
 
 		$js=we_htmlElement::jsElement($js);
 		$js.=we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
-		$js.=weBackupWizard::getJSDep("import",$docheck,$doclick);
+		$js.=weBackupWizard::getJSDep("import",$docheck,$doclick,$douncheck);
 		$js.=we_htmlElement::jsElement($we_button->create_state_changer(false) .'
 
 			function startBusy() {

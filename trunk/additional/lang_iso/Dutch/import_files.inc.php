@@ -35,8 +35,8 @@ $GLOBALS["l_import_files"]["sameName_headline"] = "Wat te doen<br>wanneer een be
 $GLOBALS["l_import_files"]["step1"] = "Importeer lokale bestanden - Stap 1 van 2";
 $GLOBALS["l_import_files"]["step2"] = "Importeer lokale bestanden - Stap 2 van 2";
 $GLOBALS["l_import_files"]["step3"] = "Importeer lokale bestanden - Stap 3 van 3";
-$GLOBALS["l_import_files"]["import_expl"] = "Klik op de button naast het invoer veld om een bestand te selecteren vanaf uw harde schijf. Na de selectie verschijnt er een nieuw invoer veld en kunt u een nieuw bestand selecteren. Let er wel op dat de maximale bestandsgrootte van %s niet overschreden wordt vanwege restricties binnen PHP en MySQL!<br><br>Klik op \"Volgende\", om te beginnen met importeren.";
-$GLOBALS["l_import_files"]["import_expl_jupload"] = "Met een druk op de knop kunt u meerdere bestanden selecteren vanaf uw harddisk. Daarnaast kunt u de bestanden verslepen vanaf uw desktop. Let er op dat de maximale bestandsgrootte van %s niet overschreden mag worden in verband met restricties binnen PHP en MySQL!<br><br>Klik op \"Volgende\", om te beginnen met importeren.";
+$GLOBALS["l_import_files"]["import_expl"] = "Klik op de button naast het invoer veld om een bestand te selecteren vanaf uw harde schijf. Na de selectie verschijnt er een nieuw invoer veld en kunt u een nieuw bestand selecteren. Let er wel op dat de maximale bestandsgrootte van %s niet overschreden wordt vanwege restricties binnen PHP!<br><br>Klik op \"Volgende\", om te beginnen met importeren.";
+$GLOBALS["l_import_files"]["import_expl_jupload"] = "Met een druk op de knop kunt u meerdere bestanden selecteren vanaf uw harddisk. Daarnaast kunt u de bestanden verslepen vanaf uw desktop. Let er op dat de maximale bestandsgrootte van %s niet overschreden mag worden in verband met restricties binnen PHP!<br><br>Klik op \"Volgende\", om te beginnen met importeren.";
 
 $GLOBALS["l_import_files"]["error"] = "Er is een fout opgetreden tijdens het importeren!\\n\\nDe volgende bestanden konden niet geïmporteerd worden:\\n%s";
 $GLOBALS["l_import_files"]["finished"] = "Het importeren is succesvol beïndigd!";
