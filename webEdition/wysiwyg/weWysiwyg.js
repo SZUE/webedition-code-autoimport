@@ -3086,7 +3086,8 @@ function weWysiwygPopupMenu_execCommand(value){
 	this.editor.windowFocus();
 	if(this.cmd == "formatblock" && isGecko==false){
 		if(value=="normal"){
-			value = "Normal";
+			//value = "Normal";
+			value = "<"+"div"+">";
 		}else{
 			value = "<"+value+">";
 		}
