@@ -35,8 +35,8 @@ $GLOBALS["l_import_files"]["sameName_headline"] = "What to do<br>if a file exist
 $GLOBALS["l_import_files"]["step1"] = "Import local files - Step 1 of 2";
 $GLOBALS["l_import_files"]["step2"] = "Import local files - Step 2 of 3";
 $GLOBALS["l_import_files"]["step3"] = "Import local files - Step 3 of 3";
-$GLOBALS["l_import_files"]["import_expl"] = "Click on the button next to the input field to select a file from your harddrive. After the selection a new input field appears and you can select another file. Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP and MySQL!<br><br>Click on \"Next\", to start the import.";
-$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP and MySQL!<br><br>Click on \"Upload Files\", to start the import.";
+$GLOBALS["l_import_files"]["import_expl"] = "Click on the button next to the input field to select a file from your harddrive. After the selection a new input field appears and you can select another file. Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP!<br><br>Click on \"Next\", to start the import.";
+$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP!<br><br>Click on \"Upload Files\", to start the import.";
 
 $GLOBALS["l_import_files"]["error"] = "An error occured during the import process!\\n\\nThe following files could not be imported:\\n%s";
 $GLOBALS["l_import_files"]["finished"] = "The import was successful!";

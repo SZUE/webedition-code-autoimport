@@ -35,8 +35,8 @@ $GLOBALS["l_import_files"]["sameName_headline"] = "En cas de<br>nom égal?";
 $GLOBALS["l_import_files"]["step1"] = "Import des fichiers local - étape 1 sur 2";
 $GLOBALS["l_import_files"]["step2"] = "Import des fichiers local - étape 2 sur 2";
 $GLOBALS["l_import_files"]["step3"] = "Import local files - Step 3 of 3"; // TRANSLATE
-$GLOBALS["l_import_files"]["import_expl"] = "Avec un clic sur le bouton à coté du saisi de texte vous pouvez choisir un fichier sur votre disque dur local. Après la séléction un autre champ de saisi apparaîtra dans lequel vous pouvez choisir un autre fichier. Considérez que la taille par fichier ne doit pas dépasser %s à cause de restriction de PHP et MySQL!<br><br>Cliquez \"Avancer\", pour démarrer l'import.";
-$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP and MySQL!<br><br>Click on \"Next\", to start the import.";
+$GLOBALS["l_import_files"]["import_expl"] = "Avec un clic sur le bouton à coté du saisi de texte vous pouvez choisir un fichier sur votre disque dur local. Après la séléction un autre champ de saisi apparaîtra dans lequel vous pouvez choisir un autre fichier. Considérez que la taille par fichier ne doit pas dépasser %s à cause de restriction de PHP!<br><br>Cliquez \"Avancer\", pour démarrer l'import.";
+$GLOBALS["l_import_files"]["import_expl_jupload"] = "With the click on the button you can select more then one file from your harddrive. Alternatively the files can be selected per 'Drag and Drop' from the file manager.  Please note that the maximum filesize of  %s is not to be exceeded because of restrictions by PHP!<br><br>Click on \"Next\", to start the import.";
 
 $GLOBALS["l_import_files"]["error"] = "Erreur en important!\\n\\nLes fichiers suivant ne pouvait pas être importés:\\n%s";
 $GLOBALS["l_import_files"]["finished"] = "L&rsquo;import a été terminé avec succès!";
