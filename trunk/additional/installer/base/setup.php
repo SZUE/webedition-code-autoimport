@@ -88,7 +88,7 @@
 			'Description' => $lang["Application"]["webEdition"]["description"],
 			'Longdescription' => $lang["Application"]["webEdition"]["longdescription"],
 			'Link' => $lang["Application"]["webEdition"]["link"],
-			'UpdateServer' => 'update.webedition.org',
+			'UpdateServer' => 'update.webedition.de',
 			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/server/we/onlineInstallation.p' . 'hp',
 		),
@@ -97,7 +97,7 @@
 			'Description' => $lang["Application"]["webEdition5"]["description"],
 			'Longdescription' => $lang["Application"]["webEdition5"]["longdescription"],
 			'Link' => $lang["Application"]["webEdition5"]["link"],
-			'UpdateServer' => 'update.webedition.org',
+			'UpdateServer' => 'update.webedition.de',
 			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/we5/onlineInstallation.p' . 'hp',
 		),
@@ -106,7 +106,7 @@
 			'Description' => $lang["Application"]["pageLogger"]["description"],
 			'Longdescription' => $lang["Application"]["pageLogger"]["longdescription"],
 			'Link' => $lang["Application"]["pageLogger"]["link"],
-			'UpdateServer' => 'update.webedition.org',
+			'UpdateServer' => 'update.webedition.de',
 			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/server/pl/onlineInstallation.p' . 'hp',
 		),
