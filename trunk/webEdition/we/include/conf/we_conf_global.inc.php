@@ -235,14 +235,14 @@ define("FORMMAIL_VIAWEDOC", 0);
 // Flag if new NAV- entries added from Dokument should be items or folders
 define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "0");
 
-// Default Charset
-define("DEFAULT_CHARSET", "UTF-8");
+// Default Charset wichtig: klein Leerzeichen nach/vor Komma im define, für Tarball-Setup exakt so stehen lassen
+define("DEFAULT_CHARSET","UTF-8");
 
 // Default setting for hook execution
 define("EXECUTE_HOOKS", 0);
 
-// connection charset to db
-define("DB_SET_CHARSET", "UTF-8");
+// connection charset to db wichtig: klein Leerzeichen nach/vor Komma im define
+define("DB_SET_CHARSET","utf8");
 
 
 

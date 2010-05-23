@@ -503,7 +503,7 @@ function step_language() {
 	$langdirs = scandir('./webEdition/we/include/we_language/');
 	//$output .= print_r($langdirs,true);
 	foreach($langdirs as $lang) {
-		if(substr(0,1,$lang) != "." && strtoupper($lang) != "CVS" && strtoupper($lang) != "SVN") {
+		if(substr($lang,0,1) != "." && strtoupper($lang) != "CVS" && strtoupper($lang) != "SVN") {
 			if(is_readable('./webEdition/we/include/we_language/'.$lang.'/translation.inc.php')) {
 				include_once('./webEdition/we/include/we_language/'.$lang.'/translation.inc.php');
 			}
@@ -533,7 +533,7 @@ function step_language() {
 			$isoLanguages = true;
 			$v .= " (ISO 8859-1)";
 		}
-		$output .= '<option '.$selected.'name="'.$v.'" value="'.$k.'">'.$v.'</li>';
+		$output .= '<option '.$selected.'name="'.$v.'" value="'.$k.'">'.$v.'</option>';
 	}
 	$output .= '</select></div>';
 	// additional information box for iso encoded languages:
@@ -541,6 +541,35 @@ function step_language() {
 		$output .= "<b>Important:</b> We strongly recommend using UTF-8 for new projects. webEdition still contains a couple of ISO-8859-1 (ISO Latin-1) encoded translations for backwards compatibility, but all new translations are and will be UTF-8 encoded.<br /><br />";
 	}
 	$output .= "If your language is missing in this list, feel free to contribute a new translation to the webEdition community. You can find more informations about contributing code and translations on the <a href=\"http://www.webedition.de\" target=\"_blank\">webEdition website</a>.";
+	
+	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
+	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn);
+	$result = @mysql_query("SHOW COLLATION WHERE Compiled = 'Yes' ",$conn);
+	if(!isset($_SESSION["we_db_collation"])) {
+		$currentcharset = 'utf8_general_ci';
+	} else {
+		$currentcharset = $_SESSION["we_db_collation"];
+	}
+	
+	$output .= "<br/>&nbsp;<br/>Please select the default encoding and the corresponding database collation (defining the standard sorting within database calls). We recommend utf8_general_ci";
+	$output .= '<input type="hidden" name="we_db_collation" value="'.$currentcharset.'" />';
+	$output .= '<div style="display:block; margin:10px; text-align:center;">';
+	
+	$output .= '<select name="we_db_char" onchange="document.getElementsByName(\'we_db_collation\')[0].value = this[this.selectedIndex].text;">';
+	$cset ='';
+	while ($row = mysql_fetch_assoc($result)) {
+		if ($cset != $row['Charset']){
+			if ($cset != ''){$output .= '</optgroup>';}
+			$output .= '<optgroup label="'.$row['Charset'].'">';
+			$cset = $row['Charset'];
+		}
+		$output .= '<option ';
+		if ($row['Collation']== $currentcharset){$output .= 'selected="selected"';  }
+		$output .= ' >'.$row['Collation'].'</option>';
+	}
+				//sort($charsets);
+	$output .= '</select></div>';
+	
 	return $output;
 }
 
@@ -549,25 +578,44 @@ function step_summary() {
 	//print_r($_SESSION);
 	$output = "";
 	if((!isset($_SESSION["we_language"]) || empty($_SESSION["we_language"])) && (!isset($_REQUEST["we_language"]) || empty($_REQUEST["we_language"]))) {
-		$output .= tpl_errorbox("Please select a valid language used by webEdition.");
+		$output .= tpl_errorbox("Please select a valid language to be used by webEdition.");
 		$errors = true;
 	} else if(isset($_REQUEST["we_language"])) {
 		$_SESSION["we_language"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["we_language"]))));
 		$_SESSION["we_language_translation"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["we_language_translation"]))));
 	}
+	if((!isset($_SESSION["we_db_collation"]) || empty($_SESSION["we_db_collation"])) && (!isset($_REQUEST["we_db_collation"]) || empty($_REQUEST["we_db_collation"]))) {
+		$output .= tpl_errorbox("Please select a valid database collation to be  used by webEdition.");
+		$errors = true;
+	} else if(isset($_REQUEST["we_db_collation"])) {
+		$_SESSION["we_db_collation"] = str_replace("/*","",str_replace('"','',str_replace("'","",trim($_REQUEST["we_db_collation"]))));
+	}
+	$dbcharsetparts = explode('_',$_SESSION["we_db_collation"]);
+	$_SESSION["we_db_charset"] = $dbcharsetparts[0];
+	if ($_SESSION["we_db_charset"] =="utf8") {
+		$_SESSION["we_charset"] = "UTF-8";
+	} else {
+		$_SESSION["we_charset"] = "ISO-8859-1";
+	}
+	
 	// webEdition settings:
 	$output .= '<fieldset><legend>webEdition:</legend><table class="small" style="width:100%; table-layout:fixed;">';
-	$output .= '<tr><td style="width:100px;">Language:</td><td>'.(isset($_SESSION["we_language_translation"]) ? htmlentities($_SESSION["we_language_translation"]) : ' - ').'</td></tr>';
-	$output .= '<tr><td>webEdition Code:</td><td>'.(isset($_SESSION["we_language"]) ? htmlentities($_SESSION["we_language"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td style="width:160px;">Language*:</td><td>'.(isset($_SESSION["we_language_translation"]) ? htmlentities($_SESSION["we_language_translation"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>webEdition Code*:</td><td>'.(isset($_SESSION["we_language"]) ? htmlentities($_SESSION["we_language"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>Default Charset*:</td><td>'.(isset($_SESSION["we_charset"]) ? htmlentities($_SESSION["we_charset"]) : ' - ').'</td></tr>';
+	
 	$output .= '</table></fieldset><br />';
 	
 	// database settings:
 	$output .= '<fieldset><legend>Database server:</legend><table class="small" style="width:100%; table-layout:fixed;">';
-	$output .= '<tr><td style="width:100px;">Server name:</td><td>'.(isset($_SESSION["db_host"]) ? htmlentities($_SESSION["db_host"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td style="width:160px;">Server name:</td><td>'.(isset($_SESSION["db_host"]) ? htmlentities($_SESSION["db_host"]) : ' - ').'</td></tr>';
 	$output .= '<tr><td>Database name:</td><td>'.(isset($_SESSION["db_database"]) ? htmlentities($_SESSION["db_database"]) : ' - ').'</td></tr>';
 	$output .= '<tr><td>Table prefix:</td><td>'.(isset($_SESSION["db_tableprefix"]) ? htmlentities($_SESSION["db_tableprefix"]) : ' - ').'</td></tr>';
 	$output .= '<tr><td>Username:</td><td>'.(isset($_SESSION["db_username"]) ? htmlentities($_SESSION["db_username"]) : ' - ').'</td></tr>';
 	$output .= '<tr><td>Password:</td><td>'.(isset($_SESSION["db_password"]) ? htmlentities($_SESSION["db_password"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>Database charset:</td><td>'.(isset($_SESSION["we_db_charset"]) ? htmlentities($_SESSION["we_db_charset"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>Database collation:</td><td>'.(isset($_SESSION["we_db_collation"]) ? htmlentities($_SESSION["we_db_collation"]) : ' - ').'</td></tr>';
+	$output .= '<tr><td>DB connection charset*:</td><td>'.(isset($_SESSION["we_db_charset"]) ? htmlentities($_SESSION["we_db_charset"]) : ' - ').'</td></tr>';
 	$output .= '</table></fieldset>';
 	if(
 		!isset($_SESSION["db_host"]) || 
@@ -585,6 +633,7 @@ function step_summary() {
 		) {
 		$errors = true;
 	}
+	$output.="*These values can be changed easily with the configuration dialog.";
 	return $output;
 }
 
@@ -630,12 +679,26 @@ function step_installation() {
 	// insert table prefix and install all tables from sql dump:
 	$queryTypes = array("CREATE TABLE","INSERT INTO","ALTER TABLE","UPDATE");
 	$queryErrors = false;
+
+	$charset_collation = "";
+	if (isset($_SESSION["we_db_charset"]) && $_SESSION["we_db_charset"] != "" && isset($_SESSION["we_db_collation"]) && $_SESSION["we_db_collation"] != "") {
+		$Charset = $_SESSION["we_db_charset"];
+		$Collation = $_SESSION["we_db_collation"];
+		$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+		$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation. " TYPE=MyISAM ";
+	} else {
+		$charset_collation = "TYPE=MyISAM";
+	}
+
 	foreach($dbqueries as $dbquery) {
 		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])) {
 			foreach($queryTypes as $queryType) {
 				$dbquery = str_replace($queryType." tbl",$queryType." ".$_SESSION["db_tableprefix"]."tbl",$dbquery);
 			}
 		}
+		
+		$dbquery = str_replace("TYPE=MyISAM",$charset_collation,$dbquery);
+
 		if(!empty($dbquery)) {
 			if(!@mysql_query($dbquery,$conn)) {
 				if(mysql_errno() != "1065") {
@@ -668,24 +731,31 @@ function step_installation() {
 	}
 	@mysql_close($conn);
 	// write database connection data to we_conf.inc.php
-	if(!is_writable('./webEdition/we/include/conf/we_conf.inc.php')) {
-		tpl_error("Could not open webEdition configuration file for writing.");
+	if(!is_writable('./webEdition/we/include/conf/we_conf.inc.php') || !is_writable('./webEdition/we/include/conf/we_conf_global.inc.php')) {
+		tpl_error("Could not open webEdition configuration files for writing.");
 		$errors = true;
 	} else {
 		$we_config = file_get_contents('./webEdition/we/include/conf/we_conf.inc.php');
+		$we_config_global = file_get_contents('./webEdition/we/include/conf/we_conf_global.inc.php');
 		//$we_config = str_replace('define("WE_LANGUAGE","English_UTF-8");','define("WE_LANGUAGE","'.$_SESSION["we_language"].'");',$we_config);
 		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\s*)+("\);)/i','$1'.$_SESSION["we_language"].'$3',$we_config);
 		//str_replace('define("TBL_PREFIX","");','define("TBL_PREFIX","'.$_SESSION["db_tableprefix"].'"',$we_config);
-		if(strstr($_SESSION["we_language"],"UTF-8")) {
-			//$we_config = preg_replace('/(define\("DB_CHARSET",")(\w*)("\);)/i','$1UTF-8$3',$we_config);
-			$we_config = preg_replace('/(define\("DB_CHARSET",")(\w*)("\);)/i','${1}UTF-8${3}',$we_config);
-		}
+			
 		//$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','$1'.$_SESSION["db_host"].'$3',$we_config);
 		//$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','$1'.$_SESSION["db_database"].'$3',$we_config);
 		//$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','$1'.$_SESSION["db_username"].'$3',$we_config);
 		//$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','$1'.$_SESSION["db_password"].'$3',$we_config);
 		//$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','$1'.$_SESSION["db_tableprefix"].'$3',$we_config);
 		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','$1'.$_SESSION["we_language"].'$5',$we_config);
+
+		$we_config = preg_replace('/(define\("DB_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\("DB_COLLATION",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_collation"]).'${3}',$we_config);
+
+		$we_config_global = preg_replace('/(define\("DB_SET_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config_global);
+		 
+		//$we_config_global = preg_replace('/(define\("DEFAULT_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_charset"]).'${3}',$we_config_global); Das klappt irgendwie nicht, ersatz:
+		$we_config_global = str_replace('define("DEFAULT_CHARSET","UTF-8")','define("DEFAULT_CHARSET","'.str_replace('"', '\\"', $_SESSION["we_charset"]).'")',$we_config_global);
+		
 		$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_host"]).'${3}',$we_config);
 		$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_database"]).'${3}',$we_config);
 		$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_username"]).'${3}',$we_config);
@@ -694,11 +764,11 @@ function step_installation() {
 		$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_language"]).'${5}',$we_config);
 		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_language"]);
 		$output .= tpl_ok("Saved database configuration.");
-		if(!file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config)) {
-			$output .= tpl_error("Could not write webEdition configuration file.");
+		if(! (file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config) && file_put_contents('./webEdition/we/include/conf/we_conf_global.inc.php',$we_config_global) )) {
+			$output .= tpl_error("Could not write webEdition configuration files.");
 			$errors = true;
 		} else {
-			$output .= tpl_ok("webEdition configuration file written.");
+			$output .= tpl_ok("webEdition configuration files written.");
 		}
 		//error_log($we_config);
 		/*
@@ -711,10 +781,7 @@ function step_installation() {
 		define("WE_LANGUAGE","English_UTF-8");
 		*/ 
 	}
-	
-	return $output;
-	
-	
+	return $output;	
 }
 
 function step_finish() {
@@ -773,22 +840,22 @@ function tpl_infobox($text = "") {
 
 // informational message:
 function tpl_info($text = "") {
-	return '<li>INFO: '.$text.'</li>';
+	return '<p>INFO: '.$text.'</p>';
 }
 
 // error message:
 function tpl_error($text = "") {
-	return '<li><font color="red">ERROR: </font>'.$text.'</li>';
+	return '<p><font color="red">ERROR: </font>'.$text.'</p>';
 }
 
 // succes message:
 function tpl_ok($text = "") {
-	return '<li>'.$text.' - <font color="green">OK</font></li>';
+	return '<p>'.$text.' - <font color="green">OK</font></p>';
 }
 
 // warning message:
 function tpl_warning($text = "") {
-	return '<li><font color="orange">WARNING:</font> '.$text.'</li>';
+	return '<p><font color="orange">WARNING:</font> '.$text.'</p>';
 }
 
 // title text
