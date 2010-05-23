@@ -44,7 +44,7 @@ class we_io_DB
 	 */
 	static function newAdapter()
 	{
-		$DBpar = array('username' => DB_USER, 'password' => DB_PASSWORD, 'dbname' => DB_DATABASE, 'charset'=> 'utf8');
+		$DBpar = array('username' => DB_USER, 'password' => DB_PASSWORD, 'dbname' => DB_DATABASE);
 		if(stripos(DB_HOST,':') !== false){
 			list($host,$port) = explode(':',DB_HOST);
 			$DBpar['host'] = $host;
@@ -52,7 +52,12 @@ class we_io_DB
 		} else {
 			$DBpar['host'] =  DB_HOST;
 		}
-		$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
+		if (defined('DB_CHARSET') && DB_CHARSET !='' ){
+			$DBpar['charset'] = DB_CHARSET;
+		} else {
+			$DBpar['charset'] = 'utf8';
+		}
+		$db = Zend_Db::factory('Mysqli', $DBpar);
 		return $db;
 	}
 
