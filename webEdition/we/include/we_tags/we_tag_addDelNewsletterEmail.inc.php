@@ -599,12 +599,12 @@ function getNewsletterFields($request,$confirmid,&$errorcode,$mail=""){
 		}
 	}
 
-	return array(	"subscribe_mail"=>$subscribe_mail,
-					"subscribe_html"=>$subscribe_html,
-					"subscribe_salutation"=>$subscribe_salutation,
-					"subscribe_title"=>$subscribe_title,
-					"subscribe_firstname"=>$subscribe_firstname,
-					"subscribe_lastname"=>$subscribe_lastname
+	return array(	"subscribe_mail"=>trim($subscribe_mail),
+					"subscribe_html"=>trim($subscribe_html),
+					"subscribe_salutation"=>trim($subscribe_salutation),
+					"subscribe_title"=>trim($subscribe_title),
+					"subscribe_firstname"=>trim($subscribe_firstname),
+					"subscribe_lastname"=>trim($subscribe_lastname)
 				);
 }
 

@@ -1706,7 +1706,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 					<body>
 						<form>
 							<textarea name="foo" style="width:100%;height:95%" cols="80" rows="40">'.
-								htmlspecialchars($content).
+								htmlspecialchars(trim($content)).
 							'</textarea>
 						</form>
 					</body>
