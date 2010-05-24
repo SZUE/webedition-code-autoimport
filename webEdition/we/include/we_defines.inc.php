@@ -144,9 +144,9 @@ $GDIMAGE_TYPE = array(
 );
 
 // PHP 5.3 date init #4353
-if (!date_default_timezone_set(@date_default_timezone_get()){
+if (!date_default_timezone_set(@date_default_timezone_get())){
 	date_default_timezone_set('Europe/Berlin');
-} 
+}
 
 
 define("IMAGE_CONTENT_TYPES", "image/jpeg,image/pjpeg,image/gif,image/png,image/x-png");
