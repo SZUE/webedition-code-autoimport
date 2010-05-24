@@ -21,7 +21,7 @@
 
 function we_tag_ifNotRegisteredUser($attribs,$content) {
 
-	$match = we_getTagAttribute("match", $attribs);
+	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
 	$match = makeArrayFromCSV($match);
 	$cfilter = we_getTagAttribute("cfilter", $attribs, "", true, false);
 

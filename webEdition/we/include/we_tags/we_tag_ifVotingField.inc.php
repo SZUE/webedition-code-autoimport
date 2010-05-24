@@ -27,7 +27,7 @@ function we_tag_ifVotingField($attribs,$content) {
 		print($foo);
 		return "";
 	}    
-	$match = we_getTagAttributeTagParser("match",$attribs,'');
+	$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
 	
 	$atts = removeAttribs($attribs,array('match'));
 	

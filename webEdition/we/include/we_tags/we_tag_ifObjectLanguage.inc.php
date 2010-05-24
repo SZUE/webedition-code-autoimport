@@ -18,18 +18,27 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+
+
 function we_tag_ifObjectLanguage($attribs, $content)
-{
+{	
 	$foo = attributFehltError($attribs, "match", "ifObjectLanguage", true);
 	if ($foo) {
 		print($foo);
 		return "";
 	}
 	
-	$match = we_getTagAttribute("match", $attribs);
+	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
 	$matchArray = makeArrayFromCSV($match);
+	if (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->object->DB_WE->Record['OF_Language'])){
+		$lang=$GLOBALS['lv']->object->DB_WE->Record['OF_Language'];
+	} elseif (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->DB_WE->Record['OF_Language'])) {
+		$lang=$GLOBALS['lv']->DB_WE->Record['OF_Language'];
+	} else {
+		$lang='';
+	}
 	foreach ($matchArray as $match) {
-		if (isset($GLOBALS['lv']) && $GLOBALS['lv']->DB_WE->Record['OF_Language'] ==$match) {return true;}
+		if ($lang == $match) return true;
 	}
 	return false;
 }
