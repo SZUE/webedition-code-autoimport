@@ -24,7 +24,7 @@ function we_tag_votingField($attribs, $content) {
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/voting/weVoting.php");
 
 	if(isset($GLOBALS['_we_voting'])){
-		$name = we_getTagAttributeTagParser("name",$attribs);
+		$name = we_getTagAttributeTagParser("name",$attribs,'',false,false,true);
 		$type = we_getTagAttributeTagParser("type",$attribs);
 		$precision = we_getTagAttributeTagParser("precision",$attribs,0);
 		$num_format = we_getTagAttributeTagParser("num_format",$attribs,'');

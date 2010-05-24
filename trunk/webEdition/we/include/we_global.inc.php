@@ -79,7 +79,7 @@ function decodetmlSpecialChars($in)
 	return $out;
 }
 
-function we_getTagAttributeTagParser($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false)
+function we_getTagAttributeTagParser($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false,$removeblk=false)
 {
 	$out = "";
 	if ($isFlag) {
@@ -91,10 +91,14 @@ function we_getTagAttributeTagParser($name, $attribs, $default = "", $isFlag = f
 	} else {
 		$out = isset($attribs[$name]) ? $attribs[$name] : $default;
 	}
+	if ($removeblk){
+		$outA = explode("blk_",$out);
+		$out = $outA[0];
+	}
 	return decodetmlSpecialChars($out);
 }
 
-function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false)
+function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false,$removeblk=false)
 {
 	$value = isset($attribs[$name]) ? $attribs[$name] : "";
 	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
@@ -109,6 +113,10 @@ function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $ch
 		}
 	} else {
 		$out = strlen($value) ? $value : $default;
+	}
+	if ($removeblk){
+		$outA = explode("blk_",$out);
+		$out = $outA[0];
 	}
 	return decodetmlSpecialChars($out);
 }

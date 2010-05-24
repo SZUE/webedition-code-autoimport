@@ -757,7 +757,7 @@ function we_isUserInputNotEmpty($attribs)
 {
 	
 	$formname = we_getTagAttribute("formname", $attribs, "we_global_form");
-	$match = we_getTagAttribute("match", $attribs);
+	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
 	return (isset($_REQUEST["we_ui_" . $formname][$match]) && strlen($_REQUEST["we_ui_" . $formname][$match]));
 
 }
@@ -1153,7 +1153,15 @@ function we_tag_block($attribs, $content)
 				$content, 
 				'<we_:_ref>', 
 				array(
-					'we:field', 'we:ifFieldNotEmpty', 'we:ifFieldEmpty'
+					'we:field', 
+					'we:ifField',
+					'we:ifNotField',
+					'we:ifFieldEmpty',
+					'we:ifFieldNotEmpty',
+					'we:ifPageLanguage',
+					'we:ifNotPageLanguage',
+					'we:ifObjectLanguage',
+					'we:ifNotObjectLanguage'
 				));
 	}
 	$out = "";
