@@ -2739,8 +2739,8 @@ class weNewsletterView {
 	}
 
 	function isBlack($email) {
-		$arr=explode(",",strtolower($this->settings["black_list"]));
-		return in_array(strtolower($email),$arr);
+		$arr=explode(",",trim(strtolower($this->settings["black_list"])));
+		return in_array(trim(strtolower($email)),$arr);
 	}
 
 	/**
