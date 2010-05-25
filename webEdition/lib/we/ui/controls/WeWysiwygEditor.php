@@ -163,17 +163,6 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_Textfield'));
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
-/*		
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/event-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/connection-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/dom-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/animation-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/autocomplete-min.js');
-		
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/lib/we/core/JsonRpc.js');
-*/
 	}
 
 	/**
