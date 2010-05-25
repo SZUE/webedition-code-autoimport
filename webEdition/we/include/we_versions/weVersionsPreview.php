@@ -298,7 +298,7 @@ $contentDiff .= '</tr>';
 			else {
 				$newVal = (isset($v['dat']) && $v['dat'] != "") ? $v['dat'] : getPixel(1,1);
 			}
-			
+
 			$mark = "border-bottom:1px solid #B8B8B7; ";
 			if(!empty($oldDoc)) {
 				
@@ -329,6 +329,7 @@ $contentDiff .= '</tr>';
 			*/
 
 			if($newVal!=getPixel(1,1)  && $k!='weInternVariantElement') {
+				if(is_array($newVal) ) {$newVal = implode('',$newVal);}
 				$newVal = htmlspecialchars($newVal);
 			}
 
@@ -337,6 +338,7 @@ $contentDiff .= '</tr>';
             $contentDiff .= '<td width="33%" style="'.$mark.'">'.$newVal.'</td>';
 			if($oldVersion) {
 				if($oldVal!=getPixel(1,1) && $k!='weInternVariantElement') {
+					if(is_array($oldVal) ) {$oldVal = implode('',$oldVal);}
 					$oldVal = htmlspecialchars($oldVal);
 				}
 				$contentDiff .= '<td width="33%" style="'.$mark.'border-left:1px solid #B8B8B7;">'.$oldVal.'</td>';
