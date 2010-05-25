@@ -125,7 +125,7 @@ class liveUpdateFrames {
 				print "Frame $this->Section is not known!";
 			break;
 				
-		}p_r($GLOBALS['updatecmds']);
+		}
 	}
 	
 	function getData($name) {
@@ -153,7 +153,7 @@ class liveUpdateFrames {
 					}
 				}				
 			} else {
-				$conf=str_replace("?>",'$'."_REQUEST['testUpdate'] = ".$_REQUEST['setTestUpdate'].";\n ?>",$conf);p_r($conf);
+				$conf=str_replace("?>",'$'."_REQUEST['testUpdate'] = ".$_REQUEST['setTestUpdate'].";\n ?>",$conf);
 				weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
 			}
 			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
