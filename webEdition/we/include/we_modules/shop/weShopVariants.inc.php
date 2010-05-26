@@ -596,27 +596,43 @@ class weShopVariants {
 
 			// add default data to listview
 			$elements = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
-
+			//this elemets contains only the variant fields, not the non-variant fields of the object
+			
 			$newPos = sizeof($elements);
 
 			if($newPos>0) {
 
 				$elemdata = $elements[0];
-				if (is_array($elemdata)){
-
+				if (is_array($elemdata) && $defaultname!=''){
+					if (strpos($defaultname,'FIRST')===false){$noFirst = true;} else {$noFirst = false;}
 					foreach ( $elemdata as $name => $varArr) {
 	
 						foreach ($varArr as $key => $fieldArr) {
 	
 							if (isset($model->elements[$key])) {
-								if ($defaultname=='default') {$elements[$newPos][$defaultname][$key] = $model->elements[$key];}
+								if ($noFirst) {$elements[$newPos][$defaultname][$key] = $model->elements[$key];} 
+								else {$elementF[$defaultname][$key] = $model->elements[$key];}
 							}
 						}
 					}
+					if (!$noFirst) {array_unshift($elements,$elementF);}
 				}
 
 			}
-
+			// attemot to add the other fields
+			$modelelemets = $model->elements;//get a copy of the non variant fields
+			unset($modelelemets[WE_SHOP_VARIANTS_ELEMENT_NAME]); // get rid of some keys
+			foreach ($modelelemets as $key => $value){
+				if( strpos($key,WE_SHOP_VARIANTS_PREFIX) !== false &&  strpos($key,WE_SHOP_VARIANTS_PREFIX)==0){
+					unset($modelelemets[$key]);
+				}	
+			}
+			foreach ($elements as $name => &$varArr){//now add the elements
+				foreach ($varArr as $key => &$fieldArr){
+					$fieldArr=array_merge($modelelemets,$fieldArr);
+				}			
+			}
+			//
 			return $elements;
 
 		} else {

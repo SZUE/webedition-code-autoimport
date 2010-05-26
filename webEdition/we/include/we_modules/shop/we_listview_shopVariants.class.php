@@ -116,11 +116,14 @@ class we_listview_shopVariants extends listviewBase {
 					// there is a difference between objects and webEdition Documents
 					$ret[$name] = isset($value['bdid']) ? $value['bdid'] : $value['dat'];
 				} else {
+					/* dies führt dazu, dass nur im Default (und nicht in den varianten) die nicht-varianten-Felder auftauchen
 					if ($key == $this->DefaultName) {
 						$ret[$name] = $this->Model->getElement($name);
 					} else {
 						$ret[$name] = $this->Model->getElement(WE_SHOP_VARIANTS_PREFIX . $this->Position . '_' . $name);
 					}
+					*/
+					$ret[$name]=$value['dat'];
 				}
 			}
 			
