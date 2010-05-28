@@ -797,7 +797,7 @@ class weVersions {
 		$contentTypes[] = 'all';
 		foreach($GLOBALS["WE_CONTENT_TYPES"] as $k => $v) {
 			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
-			if($k != "object"  && $k != "folder") {
+			if($k != "object"  && $k != "folder" && $k != "class_folder") {
 				$contentTypes[] = $k;
 			}
 		}
