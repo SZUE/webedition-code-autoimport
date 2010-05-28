@@ -29,7 +29,7 @@ function we_tag_votingField($attribs, $content) {
 		$precision = we_getTagAttributeTagParser("precision",$attribs,0);
 		$num_format = we_getTagAttributeTagParser("num_format",$attribs,'');
 		$nameTo = we_getTagAttribute("nameto", $attribs);
-		$to = we_getTagAttribute("outputto", $attribs,'screen');
+		$to = we_getTagAttribute("to", $attribs,'screen');
 
 		switch ($name){
 			case 'id':
@@ -146,7 +146,7 @@ function we_tag_votingField($attribs, $content) {
 								$myImage= new we_imageDocument();
 								$myImage->initByID($myImageID);
 								
-								$atts = removeAttribs($attribs,array('name','type','precision','num_format','nameto','outputto'));
+								$atts = removeAttribs($attribs,array('name','type','precision','num_format','nameto','to'));
 								$myImage->initByAttribs($atts);								
 								$code = $myImage->getHtml();
 							}

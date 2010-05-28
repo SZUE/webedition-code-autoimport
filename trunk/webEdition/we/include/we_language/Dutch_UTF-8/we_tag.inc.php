@@ -355,7 +355,7 @@ $l_we_tag['var']['description'] = "De we:var tag toont de inhoud van een globaal
 $l_we_tag['voting']['description'] = "De we:voting tag wordt gebruikt om peilingen weer te geven.";
 $l_we_tag['voting']['defaultvalue'] = ""; // TRANSLATE
 
-$l_we_tag['votingField']['description'] = "The we:votingField-tag is required to display the content of a voting. The attribute \"name\" defines what to show. The attribute \"type\", how to display it. Valid name-type combinations are: question - text; result - count, percent, total; id - answer, select, radio, voting; answer - text,radio,checkbox (select multiple) select, textinput and textarea (free text answer field), image (all we:img attributes such as thumbnail are supported), media (delivers the path utilizing outputto and nameto); ";// TRANSLATE
+$l_we_tag['votingField']['description'] = "The we:votingField-tag is required to display the content of a voting. The attribute \"name\" defines what to show. The attribute \"type\", how to display it. Valid name-type combinations are: question - text; result - count, percent, total; id - answer, select, radio, voting; answer - text,radio,checkbox (select multiple) select, textinput and textarea (free text answer field), image (all we:img attributes such as thumbnail are supported), media (delivers the path utilizing to and nameto); ";// TRANSLATE
 $l_we_tag['votingList']['description'] = "Deze tag genereert automatisch de peiling lijsten.";
 $l_we_tag['votingList']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['votingSelect']['description'] = "Gebruik deze tag voor het genereren van een dropdown menu; (&lt;select&gt;) voor het selecteren van een peiling.";

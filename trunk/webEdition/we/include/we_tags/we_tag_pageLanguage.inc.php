@@ -25,7 +25,7 @@ function we_tag_pageLanguage($attribs, $content)
 	$type = we_getTagAttribute("type", $attribs, "complete");
 	$case = we_getTagAttribute("case", $attribs, "unchanged");
 	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("outputto", $attribs,'screen');
+	$to = we_getTagAttribute("to", $attribs,'screen');
 
 	$doc = we_getDocForTag($docAttr);
 	
