@@ -61,12 +61,12 @@ class we_ui_layout_Themes
 			$parts = explode('_', $classname);
 			$appName = $parts[0];
 			
-			$relPath = '/' . $appName . '/' . WE_APP_THEMES_DIR . '/' . WE_THEME_NAME . '/' . $classname . '/' . $filename;
+			$relPath = '/' . $appName .  WE_APP_THEMES_DIR . '/' . WE_THEME_NAME . '/' . $classname . '/' . $filename;
 			if (file_exists($GLOBALS['__WE_APP_PATH__'] . $relPath)) {
 				return $GLOBALS['__WE_APP_URL__'] . $relPath;
 			}
 			
-			$relPath = '/' . $appName . '/' . WE_APP_THEMES_DIR . '/' . WE_DEFAULT_THEME_NAME . '/' . $classname . '/' . $filename;
+			$relPath = '/' . $appName .  WE_APP_THEMES_DIR . '/' . WE_DEFAULT_THEME_NAME . '/' . $classname . '/' . $filename;
 			if (file_exists($GLOBALS['__WE_APP_PATH__'] . $relPath)) {
 				return $GLOBALS['__WE_APP_URL__'] . $relPath;
 			}
