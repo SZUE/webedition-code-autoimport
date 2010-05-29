@@ -25,6 +25,14 @@ body {
 	background-color: #F3F7FF;
 }
 
+/* the cell in which each item resides */
+
+.ygtvcell {
+
+	cursor:pointer;
+
+}
+
 /* first or middle sibling, no children */
 .ygtvtn {
 	width: 16px;

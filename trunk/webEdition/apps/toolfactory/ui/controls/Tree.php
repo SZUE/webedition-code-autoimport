@@ -138,13 +138,13 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 		}
 
 		$js = '
-			var tree_' . $this->_id . ' = new YAHOO.widget.TreeView("'.$this->_id.'");
+			var tree_' . $this->_id . ';
 			var tree_' . $this->_id . '_activEl = 0;       
 
 			(function() {
 
 				function tree_' . $this->_id . '_Init() { 
-												
+					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("'.$this->_id.'");								
 					'.$this->getNodesJS().'
 							
 					tree_' . $this->_id . '.draw(); 
@@ -158,7 +158,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addInlineJS($js);
 		
-		return '<div id="'.htmlspecialchars($this->_id).'"></div>';
+		return '<div class="yui-skin-sam"><div id="'.htmlspecialchars($this->_id).'"></div></div>';
 	}
 	
 }

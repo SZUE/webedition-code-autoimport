@@ -138,6 +138,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		
 		// add needed JS Files
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');
+		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/dom-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/event-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/connection-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
@@ -325,13 +326,13 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		}
 
 		$js = '
-			var tree_' . $this->_id . ' = new YAHOO.widget.TreeView("'.$this->_id.'");
+			var tree_' . $this->_id . '; 
 			var tree_' . $this->_id . '_activEl = 0;       
 
 			(function() {
-
+				
 				function tree_' . $this->_id . '_Init() { 
-					
+					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("'.$this->_id.'");
 					tree_' . $this->_id . '.setDynamicLoad(loadNodeData); 
 							
 					'.$this->getNodesJS().'
@@ -439,7 +440,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addInlineJS($js);
 		
-		return '<div id="'.htmlspecialchars($this->_id).'"></div>';
+		return '<div class="yui-skin-sam"><div id="'.htmlspecialchars($this->_id).'"></div></div>';
 	}
 	
 }

@@ -45,8 +45,8 @@ $InfoFieldId->setId('infoFieldId');
 $InfoFieldId->setStyle('margin:5px 10px;font-size:11px;');
 
 $js = '
-	var weTree = new we_ui_controls_Tree("' . $tree->getId() . '");
-	
+	//var weTree = new we_ui_controls_Tree("' . $tree->getId() . '"); YUI 2.5
+	var weTree; // YUI 2.8
 	YAHOO.util.Event.addListener(window, "load", function() {
 		tree_' . $tree->getId() . '.subscribe("labelClick", function(node) { 
 			weTree.unmarkAllNodes();
@@ -57,6 +57,7 @@ $js = '
 			
 			return false;
 		});
+		weTree = new we_ui_controls_Tree("' . $tree->getId() . '");// YUI 2.8
 	});
 	
 	YAHOO.util.Event.addListener("'.$TreeDiv->getId().'", "mouseover", function(e) {
