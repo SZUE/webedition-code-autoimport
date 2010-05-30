@@ -179,13 +179,12 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement
 		
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/event-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/connection-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/dom-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/animation-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/datasource-min.js');
-		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/autocomplete-min.js');
-		
+		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/connection-min.js');		
+		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/animation-min.js');
+		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
+		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/autocomplete-min.js');		
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/lib/we/core/JsonRpc.js');
 	}
 
