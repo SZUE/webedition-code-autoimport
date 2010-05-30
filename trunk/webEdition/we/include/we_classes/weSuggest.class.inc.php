@@ -133,9 +133,10 @@ class weSuggest {
 		$out  = "<script type='text/javascript' src='/webEdition/js/libs/yui/yahoo-min.js'></script>\n";
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/dom-min.js'></script>\n";
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/event-min.js'></script>\n";
+		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/datasource-min.js'></script>\n";
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/connection-min.js'></script>\n";
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/animation-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/datasource-min.js'></script>\n";
+		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/json-min.js'></script>\n";
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/autocomplete-min.js'></script>\n";
 		return $out;
 	}

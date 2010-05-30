@@ -448,10 +448,11 @@ class weWorkflowView extends weWorkflowBase{
 		}
 		$out  = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")); 
 		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/dom-min.js")); 
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js")); 
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js"));
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/datasource-min.js"));  
 		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")); 
 		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/animation-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/datasource-min.js"));  
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js"));		 
 		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/autocomplete-min.js")); 
 		$out .= $yuiSuggest->getYuiFiles();
 
