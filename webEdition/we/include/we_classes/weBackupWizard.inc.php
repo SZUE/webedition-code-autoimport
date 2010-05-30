@@ -53,7 +53,7 @@ class weBackupWizard{
  		$this->mode=$mode;
  	}
 
-	function getJSDep($mode,$docheck,$doclick,$douncheck){
+	function getJSDep($mode,$docheck,$doclick,$douncheck=''){
 		global $l_backup;
 		return we_htmlElement::jsElement('
 			function we_submitForm(target,url) {
