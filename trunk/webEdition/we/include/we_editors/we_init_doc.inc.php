@@ -23,103 +23,97 @@ if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/
 	exit();
 }
 
-if (0 && isset($we_ID) && isset($we_Table) && isset($GLOBALS["weDocumentCache_".$we_ID."_".$we_Table])) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_webEditionDocument.inc.php");
-	$we_doc = new we_webEditionDocument();
-	$we_doc->we_initSessDat($GLOBALS["weDocumentCache_" . $we_ID . "_" . $we_Table]);
 
-} else {
-
-	if( (!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]["ClassName"])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
-		$we_ContentType = f("SELECT ContentType FROM $we_Table WHERE ID=$we_ID","ContentType",$DB_WE);
-	}
-	if(isset($we_ContentType) && $we_ContentType!=''){
-		switch($we_ContentType){
-			case "application/x-shockwave-flash":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
-				$we_doc = new we_flashDocument();
-			 	break;
-			case "video/quicktime":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_quicktimeDocument.inc.php");
-				$we_doc = new we_quicktimeDocument();
-			 	break;
-			case "image/*":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
-				$we_doc = new we_imageDocument();
-			 	break;
-			case "folder":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
-				$we_doc = new we_folder();
-			 	break;
-			case "class_folder":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/object/we_class_folder.inc.php");
-				$we_doc = new we_class_folder();
-			 	break;
-			case "text/weTmpl":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_template.inc.php");
-				$we_doc = new we_template();
-			 	break;
-			case "text/webedition":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_webEditionDocument.inc.php");
-				$we_doc = new we_webEditionDocument();
-			 	break;
-			case "text/html":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_htmlDocument.inc.php");
-				$we_doc = new we_htmlDocument();
-			 	break;
-			case "text/xml":
-			case "text/js":
-			case "text/css":
-			case "text/plain":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_textDocument.inc.php");
-				$we_doc = new we_textDocument();
-			 	break;
-			case "application/*":
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_otherDocument.inc.php");
-				$we_doc = new we_otherDocument();
-				break;
-			default:
-				$moduleDir = we_getModuleNameByContentType($we_ContentType);
-				if($moduleDir != ""){
-					$moduleDir .= "/";
-				}
-
-				if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php")){
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php");
-					eval('$we_doc = new we_'.$we_ContentType.'();');
-				}else{
-					exit("Can NOT initialize document of type -".$we_ContentType."- ".$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php");
-				}
-
-		}
-	}else{
-		if(isset($we_dt[0]["ClassName"]) && $we_dt[0]["ClassName"]){
-			if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/".$we_dt[0]["ClassName"].".inc.php")){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/".$we_dt[0]["ClassName"].".inc.php");
-			}else{	//	Here only object-Files??
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/object/".$we_dt[0]["ClassName"].".inc.php");
-			}
-			eval('$we_doc =new '.$we_dt[0]["ClassName"].'();');
-		}else{
+if( (!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]["ClassName"])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
+	$we_ContentType = f("SELECT ContentType FROM $we_Table WHERE ID=$we_ID","ContentType",$DB_WE);
+}
+if(isset($we_ContentType) && $we_ContentType!=''){
+	switch($we_ContentType){
+		case "application/x-shockwave-flash":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
+			$we_doc = new we_flashDocument();
+			break;
+		case "video/quicktime":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_quicktimeDocument.inc.php");
+			$we_doc = new we_quicktimeDocument();
+			break;
+		case "image/*":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
+			$we_doc = new we_imageDocument();
+			break;
+		case "folder":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+			$we_doc = new we_folder();
+			break;
+		case "class_folder":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/object/we_class_folder.inc.php");
+			$we_doc = new we_class_folder();
+			break;
+		case "text/weTmpl":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_template.inc.php");
+			$we_doc = new we_template();
+			break;
+		case "text/webedition":
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_webEditionDocument.inc.php");
 			$we_doc = new we_webEditionDocument();
-		}
+			break;
+		case "text/html":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_htmlDocument.inc.php");
+			$we_doc = new we_htmlDocument();
+			break;
+		case "text/xml":
+		case "text/js":
+		case "text/css":
+		case "text/plain":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_textDocument.inc.php");
+			$we_doc = new we_textDocument();
+			break;
+		case "application/*":
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_otherDocument.inc.php");
+			$we_doc = new we_otherDocument();
+			break;
+		default:
+			$moduleDir = we_getModuleNameByContentType($we_ContentType);
+			if($moduleDir != ""){
+				$moduleDir .= "/";
+			}
+
+			if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php")){
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php");
+				eval('$we_doc = new we_'.$we_ContentType.'();');
+			}else{
+				exit("Can NOT initialize document of type -".$we_ContentType."- ".$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/" . $moduleDir . "we_".$we_ContentType.".inc.php");
+			}
+
 	}
-	if(isset($we_ID)){
-		$we_doc->initByID($we_ID,$we_Table,( (isset($GLOBALS["FROM_WE_SHOW_DOC"]) && $GLOBALS["FROM_WE_SHOW_DOC"]) || (isset($GLOBALS["WE_RESAVE"]) && $GLOBALS["WE_RESAVE"]) ) ? LOAD_MAID_DB : LOAD_TEMP_DB);
-
-	}else if(isset($we_dt)){
-		$we_doc->we_initSessDat($we_dt);
-		//	in some templates we must disable some EDIT_PAGES and disable some buttons
-		$we_doc->executeDocumentControlElements();
-
+}else{
+	if(isset($we_dt[0]["ClassName"]) && $we_dt[0]["ClassName"]){
+		if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/".$we_dt[0]["ClassName"].".inc.php")){
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/".$we_dt[0]["ClassName"].".inc.php");
+		}else{	//	Here only object-Files??
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_modules/object/".$we_dt[0]["ClassName"].".inc.php");
+		}
+		eval('$we_doc =new '.$we_dt[0]["ClassName"].'();');
 	}else{
-		$we_doc->ContentType=$we_ContentType;
-		$we_doc->Table= (isset($we_Table) && $we_Table) ? $we_Table : FILE_TABLE;
-		$we_doc->we_new();
-
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_webEditionDocument.inc.php");
+		$we_doc = new we_webEditionDocument();
 	}
 }
+if(isset($we_ID)){
+	$we_doc->initByID($we_ID,$we_Table,( (isset($GLOBALS["FROM_WE_SHOW_DOC"]) && $GLOBALS["FROM_WE_SHOW_DOC"]) || (isset($GLOBALS["WE_RESAVE"]) && $GLOBALS["WE_RESAVE"]) ) ? LOAD_MAID_DB : LOAD_TEMP_DB);
+
+}else if(isset($we_dt)){
+	$we_doc->we_initSessDat($we_dt);
+	//	in some templates we must disable some EDIT_PAGES and disable some buttons
+	$we_doc->executeDocumentControlElements();
+
+}else{
+	$we_doc->ContentType=$we_ContentType;
+	$we_doc->Table= (isset($we_Table) && $we_Table) ? $we_Table : FILE_TABLE;
+	$we_doc->we_new();
+
+}
+
 
 $GLOBALS["we_doc"] = clone($we_doc);
 
