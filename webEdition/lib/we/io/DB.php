@@ -53,11 +53,20 @@ class we_io_DB
 			$DBpar['host'] =  DB_HOST;
 		}
 		if (defined('DB_CHARSET') && DB_CHARSET !='' ){
-			$DBpar['charset'] = DB_CHARSET;
+			if (strpos(strtolower(DB_CHARSET), 'utf') !== false){// es gibt alte sites, da steht UTF-8 drin, was aber falsch ist
+				$DBpar['charset'] = 'utf8';
+			} else {
+				$DBpar['charset'] = DB_CHARSET;
+			}
+			
 		} else {
 			$DBpar['charset'] = 'utf8';
 		}
-		$db = Zend_Db::factory('Mysqli', $DBpar);
+		if (extension_loaded('mysqli')){// es gibt Provider, die Schwierigkeiten haben mysqli in 5.3 zu integrieren
+			$db = Zend_Db::factory('Mysqli', $DBpar);
+		} else {
+			$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
+		}
 		return $db;
 	}
 
