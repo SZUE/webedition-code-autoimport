@@ -122,5 +122,10 @@ if (!isset($GLOBALS["WE_LANGUAGE"])) {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
 
+// PHP 5.3 date init #4353
+if (!date_default_timezone_set(@date_default_timezone_get())){
+	date_default_timezone_set('Europe/Berlin');
+}
+
 //define ("WE_SQL_DEBUG", 1);
 ?>
