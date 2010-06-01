@@ -1369,6 +1369,15 @@ class weWorkflowView extends weWorkflowBase{
 									)
 						);
 						
+		} else {
+			if($this->documentDef->workflow->Type==WE_WORKFLOW_OBJECT){
+				array_push(	$_parts, array(	"headline" => '',
+										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.$l_we_editor_info["openDocument"].'</a>',
+										"space"    => $_space
+									)
+						);		
+			}
+		
 		}
 			
 
