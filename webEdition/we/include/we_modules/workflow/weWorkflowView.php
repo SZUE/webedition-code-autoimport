@@ -1369,16 +1369,7 @@ class weWorkflowView extends weWorkflowBase{
 									)
 						);
 						
-		} else {
-			if($this->documentDef->workflow->Type==WE_WORKFLOW_OBJECT){
-				array_push(	$_parts, array(	"headline" => '',
-										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.$l_we_editor_info["openDocument"].'</a>',
-										"space"    => $_space
-									)
-						);		
-			}
-		
-		}
+		} 
 			
 
 
@@ -1397,6 +1388,7 @@ class weWorkflowView extends weWorkflowBase{
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
+
 
 		$_parts = array();
 		$_space = 150;
@@ -1421,40 +1413,41 @@ class weWorkflowView extends weWorkflowBase{
 									"noline"   => 1
 									)
 					);
-		if(false){
-   			$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->CreatorID);
-   			if($this->db->next_record()){
-   				array_push($_parts, array(	"headline" => $l_users["created_by"],
-											"html"     => $this->db->f("First").' '.
-											              $this->db->f("Second") .
-											              ' ('.$this->db->f("username").')',
+		
+		$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->CreatorID);
+			if($this->db->next_record())
+				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["created_by"],
+											"html"     => $this->db->f("First").' '.$this->db->f("Second").' ('.$this->db->f("username") . ')',
 											"space"    => $_space,
 											"noline"   => 1
-											)
-							);
-			}
-		}
+										)
+						);
+		
 		array_push($_parts, array(	"headline" => $l_we_editor_info["changed_date"],
 									"html"     => date($l_we_editor_info["date_format"], $this->documentDef->document->ModDate),
 									"space"    => $_space,
 									"noline"   => 1
 									)
 					);
-		if(false){
-   			$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->ModifierID);
-   			if($this->db->next_record()){
-   				array_push($_parts, array(	"headline" => $l_users["changed_by"],
+		
+		$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->ModifierID);
+			if($this->db->next_record())
+				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["changed_by"],
 											"html"     => $this->db->f("First").' '.$this->db->f("Second").' ('.$this->db->f("username").')',
 											"space"    => $_space,
 											"noline"   => 1
-											)
-							);
-			}
-		}
-
+										)
+						);
+		
 		array_push($_parts, array(	"headline" => $l_we_editor_info["lastLive"],
 									"html"     => ($this->documentDef->document->Published ? date($l_we_editor_info["date_format"],$this->documentDef->document->Published) : "-"),
 									"space"    => $_space,
+									)
+					);
+					
+		array_push(	$_parts, array(	"headline" => '',
+										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.$l_we_editor_info["openDocument"].'</a>',
+										"space"    => $_space
 									)
 					);
 
@@ -1463,10 +1456,21 @@ class weWorkflowView extends weWorkflowBase{
 									"space"    => 0,
 									)
 					);
+		
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php");
 
 		$out  = '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
+		<script language="JavaScript" type="text/javascript">function openToEdit(tab,id,contentType){
+		if(top.opener && top.opener.top.weEditorFrameController) {
+			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
+			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
+			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+		}
+	} </script>
+		
 		</head>
 		<body class="weEditorBody" onunload="doUnload()">
 				<form name="we_form">'.$this->documentDef->document->hiddenTrans().'<table cellpadding="6" cellspacing="0" border="0">';
@@ -1605,7 +1609,7 @@ class weWorkflowView extends weWorkflowBase{
 		$wfType = f("SELECT ".WORKFLOW_TABLE.".Type as Type FROM ".WORKFLOW_TABLE.",".WORKFLOW_DOC_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".ID=".abs($workflowDocument->ID),"Type",$db);
 		$out='<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
-			<td></td><td>'.htmlDialogBorder3(400,300,$content,$headline).'</td><td>'.getPixel(15,10).'</td>
+			<td></td><td>'.htmlDialogBorder3(730,300,$content,$headline).'</td><td>'.getPixel(15,10).'</td>
 		</tr>
 			<td></td><td>'.getPixel(10,10).'</td><td>'.getPixel(15,10).'</td>
 		<tr>

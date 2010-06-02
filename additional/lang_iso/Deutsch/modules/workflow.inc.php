@@ -70,7 +70,7 @@ $l_workflow["active"] = "Workflow ist aktiv";
 
 $l_workflow["step"] = "Stufe";
 $l_workflow["and_or"] = "UND&nbsp;/&nbsp;ODER";
-$l_workflow["worktime"] = "Arbeitszeit (Std., 1 Min = 0<b>.</b>016)";
+$l_workflow["worktime"] = "Arbeitszeit (Std., 1Min=0<b>.</b>016)";
 $l_workflow["specials"] = "Spezial";
 $l_workflow["EmailPath"] = "Zeige den Dokumentenpfad im Betreff von Benachrichtigungs-E-Mails";
 $l_workflow["LastStepAutoPublish"] = "Nach Ablaufen des letzten Schrittes (Nächste Stufe angeklickt), publiziere das Dokument statt es zurückzuweisen";

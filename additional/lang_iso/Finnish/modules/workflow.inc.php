@@ -76,7 +76,7 @@ $l_workflow["active"] = "Työnkulku on aktiivinen.";
 
 $l_workflow["step"] = "Vaihe";
 $l_workflow["and_or"] = "JA&nbsp;/&nbsp;TAI";
-$l_workflow["worktime"] = "Worktime (H, 1 min = 0<b>.</b>016)"; // TRANSLATE
+$l_workflow["worktime"] = "Worktime (H, 1min=0<b>.</b>016)"; // TRANSLATE
 $l_workflow["specials"] = "Specials";// TRANSLATE
 $l_workflow["EmailPath"] = "Show the document path in the subject of notifications emails";// TRANSLATE
 $l_workflow["LastStepAutoPublish"] = "After the last step (next step clicked), publish the document instead of decline ist";// TRANSLATE
