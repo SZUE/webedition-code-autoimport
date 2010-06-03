@@ -403,7 +403,7 @@ class we_wysiwyg{
 															"address"=>$GLOBALS["l_wysiwyg"]["address"],
 															"blockquote"=>"blockquote"
 														) : array(
-															"div"=>$GLOBALS["l_wysiwyg"]["normal"],
+															"normal"=>$GLOBALS["l_wysiwyg"]["normal"],
 															"p"=>$GLOBALS["l_wysiwyg"]["paragraph"],
 															"h1"=>$GLOBALS["l_wysiwyg"]["h1"],
 															"h2"=>$GLOBALS["l_wysiwyg"]["h2"],
