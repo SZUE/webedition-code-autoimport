@@ -1838,9 +1838,14 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 		$formAttribs['xml'] = $xml;
 		$formAttribs['method'] = $method;
 		
-		if ($id && ($id != "self")) {
-			$php = '<?php $__id__ = ' . $id . ';$GLOBALS["we_form_action"] = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS["DB_WE"]); ?>
+		if ($id) {
+			if ($id != "self") {
+				$php = '<?php $__id__ = ' . $id . ';$GLOBALS["we_form_action"] = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS["DB_WE"]); ?>
 ';
+			} else {
+				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["PHP_SELF"]; ?>
+';
+			}
 		} else 
 			if ($action) {
 				$php = '<?php $GLOBALS["we_form_action"] = "' . $action . '"; ?>
