@@ -38,6 +38,7 @@ $_sysinfo['back'] = 'back';
 $_sysinfo['sysinfo'] = 'System information';
 $_sysinfo['zendframework_version'] = 'Zend Framework version';
 $_sysinfo["register_globals warning"] = 'WARNUNG: register_globals can be a serious security risk for your system so we strongly recommend to turn off this feature!';
+$_sysinfo["short_open_tag warning"] = 'WARNUNG: short_open_tag can lead to severe problems with the processing of xml-files, i.e. for backup files. We strongly recommend to turn off this feature!!';
 
 $_sysinfo['connection_types'] = 'Update connection types';
 $_sysinfo['gdlib'] = 'GDlib Support';

@@ -54,8 +54,11 @@
 					if($_i == 3 && ini_get_bool('register_globals')) {
 						$_table->setColAttributes(2,1,array("style" => "border:1px solid red;"));
 					}
-					if($_i == 8 && ini_get_bool('safe_mode'))
-						$_table->setColAttributes(7,1,array("style" => "border:1px solid grey;"));
+					if($_i == 6 && ini_get_bool('register_globals')) {
+						$_table->setColAttributes(5,1,array("style" => "border:1px solid red;"));
+					}
+					if($_i == 9 && ini_get_bool('safe_mode'))
+						$_table->setColAttributes(8,1,array("style" => "border:1px solid grey;"));
 				}
 				
 			}
@@ -165,6 +168,7 @@
 				'register_globals' => (ini_get_bool('register_globals')) ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : ini_get('register_globals'),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),
+				'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning($_sysinfo["short_open_tag warning"],ini_get('short_open_tag')) : ini_get('short_open_tag'),
 				'allow_url_fopen' => ini_get('allow_url_fopen'),
 				'open_basedir' => ini_get('open_basedir'),
 				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo($_sysinfo["safe_mode warning"],ini_get('safe_mode')) : ini_get('safe_mode'),
@@ -252,7 +256,7 @@
 
 </head>
 
-<body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
+<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 <div id="info" style="display: block;">
 <?php		
 		print we_multiIconBox::getJS();
