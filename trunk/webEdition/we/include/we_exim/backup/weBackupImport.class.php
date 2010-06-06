@@ -148,7 +148,14 @@
 
 
 					if($log){
-						if (method_exists($object,'convertCharsetEncoding')) {$addtext=" - ja - ".$_SESSION['weBackupVars']['options']['convert_charset']." ".$_SESSION['weBackupVars']['encoding']."  ".DEFAULT_CHARSET;} else {$addtext=" - nein - ";}
+						$addtext='';
+						if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+							if (method_exists($object,'convertCharsetEncoding')) {
+								$addtext=" - Converting Charset: ".$_SESSION['weBackupVars']['encoding']." -> ".DEFAULT_CHARSET;
+							} else {
+								$addtext=" - Converting Charset: NO ";
+							}
+						}
 						$_prefix = 'Saving object ';
 						if($classname=='weTable') {
 							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);

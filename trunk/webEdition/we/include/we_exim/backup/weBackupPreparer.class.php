@@ -67,7 +67,7 @@
 
 			if($_SESSION['weBackupVars']['backup_log']){
 				$_SESSION['weBackupVars']['backup_log_data'] = '';
-				$_SESSION['weBackupVars']['backup_log_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/lastlog.php';
+				$_SESSION['weBackupVars']['backup_log_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php';
 				weFile::save($_SESSION['weBackupVars']['backup_log_file'],"<?php exit();?>\r\n");
 			}
 

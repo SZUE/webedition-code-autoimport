@@ -265,8 +265,16 @@ $we_menu["1000000"]["enabled"] = "1";
 	$we_menu["1160100"]["text"] = $l_javaMenu["make_backup"] . "...";
 	$we_menu["1160100"]["parent"] = "1000000";
 	$we_menu["1160100"]["cmd"] = "make_backup";
-	$we_menu["1160100"]["perm"] = "EXPORT || ADMINISTRATOR";
+	$we_menu["1160100"]["perm"] = "EXPORT || EXPORTNODOWNLOAD || ADMINISTRATOR";
 	$we_menu["1160100"]["enabled"] = "1";
+	
+			// File > Backup > view Log
+		$we_menu["1160300"]["text"] = $l_javaMenu["view_backuplog"] . "...";
+		$we_menu["1160300"]["parent"] = "1000000";
+		$we_menu["1160300"]["cmd"] = "view_backuplog";
+		$we_menu["1160300"]["perm"] = "BACKUPLOG || ADMINISTRATOR";
+		$we_menu["1160300"]["enabled"] = "1";
+
 
 		// File > Backup > recover
 

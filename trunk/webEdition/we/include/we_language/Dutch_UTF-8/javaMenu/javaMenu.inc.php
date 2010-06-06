@@ -155,6 +155,7 @@ $l_javaMenu["backup"] = "Backup"; // TRANSLATE
 
 	$l_javaMenu["make_backup"] = "Creëer Backup";
 	$l_javaMenu["recover_backup"] = "Herstel Backup";
+	$l_javaMenu["view_backuplog"] = "View Backup-Log";// TRANSLATE
 
 	##################################
 	### SubMenu Datei/Backup ####

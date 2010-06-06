@@ -463,43 +463,51 @@ class weBackupWizard{
 			';
 			$select=new we_htmlSelect(array("name"=>"backup_select","size"=>"7","style"=>"width: 600px;"));
 
-			$d = dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR);
+			
 			$files=array();
 			$extra_files=array();
-			while($entry=$d->read()) {
-				if($entry!="." && $entry!=".." && $entry!="CVS" && $entry!="download" && $entry!="tmp" && !@is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR . $entry)) {
-					$filename=$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."/".$entry;
-					$filesize=round(filesize($filename)/1024,2);
-					$filedate=date("d.m.Y H:i:s.",filemtime($filename));
-					if(ereg('^weBackup_',$entry)) {
-						$ts=ereg_replace('^weBackup_',"",$entry);
-						$ts=ereg_replace('.php',"",$ts);
-						$ts=ereg_replace('.xml',"",$ts);
-						$ts=ereg_replace('.gz',"",$ts);
-						$ts=ereg_replace('.bz',"",$ts);
-						$ts=ereg_replace('.zip',"",$ts);
-
-						if(is_numeric($ts) || (substr_count($ts, '_') == 6)) {
-
-							if (!($ts<1004569200)) {
-								$comp=weFile::getCompression($entry);
-								$files[$entry]=$l_backup["backup_form"].date("d.m.Y H:i:s",$ts).($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
-							} else if ((substr_count($ts, '_') == 6)) {
-								$comp=weFile::getCompression($entry);
-								$_dateParts = explode('__', $ts);
-								$_date = explode('_', $_dateParts[0]);
-								$_date = array_reverse($_date);
-								$files[$entry]=$l_backup["backup_form"] . ( implode('.', $_date) .  ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
-							} else {
+			for ($i=0; $i<=1;$i++){
+				if ($i==0) {
+					$dstr = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR;				
+				} else {
+					$dstr = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR.'data/';
+				}
+				$d = dir($dstr);
+				while($entry=$d->read()) {
+					if($entry!="." && $entry!=".." && $entry!="CVS" && $entry!="download" && $entry!="tmp" && $entry!="lastlog.php" && $entry!=".htaccess" &&!@is_dir($dstr . $entry)) {
+						$filename=$dstr.$entry;
+						$filesize=round(filesize($filename)/1024,2);
+						$filedate=date("d.m.Y H:i:s.",filemtime($filename));
+						if(ereg('^weBackup_',$entry)) {
+							$ts=ereg_replace('^weBackup_',"",$entry);
+							$ts=ereg_replace('.php',"",$ts);
+							$ts=ereg_replace('.xml',"",$ts);
+							$ts=ereg_replace('.gz',"",$ts);
+							$ts=ereg_replace('.bz',"",$ts);
+							$ts=ereg_replace('.zip',"",$ts);
+	
+							if(is_numeric($ts) || (substr_count($ts, '_') == 6)) {
+	
+								if (!($ts<1004569200)) {
+									$comp=weFile::getCompression($entry);
+									$files[$entry]=$l_backup["backup_form"].date("d.m.Y H:i:s",$ts).($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
+								} else if ((substr_count($ts, '_') == 6)) {
+									$comp=weFile::getCompression($entry);
+									$_dateParts = explode('__', $ts);
+									$_date = explode('_', $_dateParts[0]);
+									$_date = array_reverse($_date);
+									$files[$entry]=$l_backup["backup_form"] . ( implode('.', $_date) .  ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
+								} else {
+									$extra_files[$entry]=$entry." $filedate $filesize KB";
+								}
+							}
+							else {
 								$extra_files[$entry]=$entry." $filedate $filesize KB";
 							}
 						}
 						else {
 							$extra_files[$entry]=$entry." $filedate $filesize KB";
 						}
-					}
-					else {
-						$extra_files[$entry]=$entry." $filedate $filesize KB";
 					}
 				}
 			}
@@ -875,11 +883,13 @@ class weBackupWizard{
 
 
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["protect_txt"], 2, 600, false),"space"=>0,"noline"=>1));
-		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "protect", $l_backup["protect"], false, "defaultfont", ""),"space"=>70));
-
+		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "protect", $l_backup["protect"], false, "defaultfont", ""),"space"=>70));
+		
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["export_location"], 2, 600, false),"space"=>0,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "export_server", $l_backup["export_location_server"], false, "defaultfont", "doClick(1)"),"space"=>70,"noline"=>1));
-		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "export_send", $l_backup["export_location_send"], false, "defaultfont", "doClick(2)"),"space"=>70));
+		if (we_hasPerm("EXPORT")){
+			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "export_send", $l_backup["export_location_send"], false, "defaultfont", "doClick(2)"),"space"=>70));
+		}
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["export_options"], 2, 600, false),"space"=>0,"noline"=>1));
 
 		$docheck="";
@@ -1011,7 +1021,7 @@ class weBackupWizard{
 					$_link = weBackupUtil::getHttpLink(
 												SERVER_NAME,
 												str_replace($_SERVER['DOCUMENT_ROOT'],'',$_down),
-												(defined('HTTP_PORT') ? HTTP_PORT : 80),
+												(defined('HTTP_PORT') ? HTTP_PORT : ''),
 												(defined('HTTP_USERNAME') ? HTTP_USERNAME : ''),
 												(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '')
 					);

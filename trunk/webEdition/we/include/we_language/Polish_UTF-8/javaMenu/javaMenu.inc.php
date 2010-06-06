@@ -155,6 +155,7 @@ $l_javaMenu["backup"] = "Backup"; // TRANSLATE
 
 	$l_javaMenu["make_backup"] = "Utwórz backup";
 	$l_javaMenu["recover_backup"] = "Przywróć backup";
+	$l_javaMenu["view_backuplog"] = "View Backup-Log";// TRANSLATE
 
 	##################################
 	### SubMenu Datei/Backup ####
