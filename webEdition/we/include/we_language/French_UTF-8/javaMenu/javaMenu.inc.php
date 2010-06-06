@@ -155,6 +155,7 @@ $l_javaMenu["backup"] = "Sauvegardes";
 
 	$l_javaMenu["make_backup"] = "Créer une Sauvegarde";
 	$l_javaMenu["recover_backup"] = "Restaurer une sauvegarde";
+	$l_javaMenu["view_backuplog"] = "View Backup-Log";// TRANSLATE
 
 	##################################
 	### SubMenu Datei/Backup ####

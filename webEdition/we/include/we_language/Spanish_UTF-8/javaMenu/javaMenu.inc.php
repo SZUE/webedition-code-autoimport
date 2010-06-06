@@ -155,6 +155,7 @@ $l_javaMenu["backup"] = "Reserva";
 
 	$l_javaMenu["make_backup"] = "Crear Reserva";
 	$l_javaMenu["recover_backup"] = "Restaurar Reserva";
+	$l_javaMenu["view_backuplog"] = "View Backup-Log";// TRANSLATE
 
 	##################################
 	### SubMenu Datei/Backup ####

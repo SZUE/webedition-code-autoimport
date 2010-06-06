@@ -42,7 +42,7 @@ $l_backup["export_title"] = "Exporteren";
 $l_backup["finished"] = "Voltooid";
 $l_backup["extern_files_size"] = "Omdat de maximale bestandsgrootte is beperkt tot %.1f MB (%s byte) vanwege de database instellingen, kunnen er meerdere bestanden aangemaakt worden.";
 $l_backup["extern_files_question"] = "Bewaar externe webEdition bestanden en mappen.";
-$l_backup["export_location"] = "Kies de locatie waar u het backup bestand wilt bewaren.";
+$l_backup["export_location"] = "Specify where you want to save the backup file. If it is stored on the server, you find the file in '/webEdition/we_backup/data/'.";// TRANSLATE
 $l_backup["export_location_server"] = "Op de server";
 $l_backup["export_location_send"] = "Op een lokale harde schijf";
 $l_backup["can_not_open_file"] = "Bestand '%s' kan niet geopend worden.";
@@ -255,4 +255,8 @@ $l_backup['ftp_hint'] = "Attention! Use the Binary mode for the download by FTP 
 $l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.de/de/webedition/administration/charset-conversion-of-legacy-sites"; // TRANSLATE
 
 $l_backup["convert_charset_data"] = "While importing the backup, convert the site from ISO to UTF-8"; // TRANSLATE
+
+$l_backup["view_log"] = "Backup-Log";// TRANSLATE
+$l_backup["view_log_not_found"] = "The backup log file was not found! ";// TRANSLATE
+$l_backup["view_log_no_perm"] = "You do not have the needed permissions to view the backup log file! ";// TRANSLATE
 ?>

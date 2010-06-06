@@ -155,6 +155,7 @@ $l_javaMenu["backup"] = "Varmuuskopioi";
 
 	$l_javaMenu["make_backup"] = "Luo varmuuskopio";
 	$l_javaMenu["recover_backup"] = "Palauta varmuuskopiosta";
+	$l_javaMenu["view_backuplog"] = "View Backup-Log";// TRANSLATE
 
 	##################################
 	### SubMenu Datei/Backup ####

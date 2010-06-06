@@ -42,7 +42,7 @@ $l_backup["export_title"] = "Créer une sauvegarde";
 $l_backup["finished"] = "Terminé";
 $l_backup["extern_files_size"] = "Comme la taille maximale de la base de donne est limité à %.1f MO (%s Octet), il est possible que plusiers fichiers soient créés";
 $l_backup["extern_files_question"] = "Sauvegarder les fichiers/répertoire externe de webEdition";
-$l_backup["export_location"] = "S'il vous plaît choisissez, d'où le fichier de sauvegarde doit être enregistré. Si le fichier est enregistré au serveur, vous le trouvez dans le répertoire '/webEdition/we_backup'.";
+$l_backup["export_location"] = "S'il vous plaît choisissez, d'où le fichier de sauvegarde doit être enregistré. Si le fichier est enregistré au serveur, vous le trouvez dans le répertoire '/webEdition/we_backup/data/'.";
 $l_backup["export_location_server"] = "Au Serveur";
 $l_backup["export_location_send"] = "Au disc dur local";
 $l_backup["can_not_open_file"] = "Le fichier '%s' ne peut pas être overt.";
@@ -257,5 +257,9 @@ $l_backup['ftp_hint'] = "Attention! Use the Binary mode for the download by FTP 
 $l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.de/de/webedition/administration/charset-conversion-of-legacy-sites"; // TRANSLATE
 
 $l_backup["convert_charset_data"] = "While importing the backup, convert the site from ISO to UTF-8"; // TRANSLATE
+
+$l_backup["view_log"] = "Backup-Log";// TRANSLATE
+$l_backup["view_log_not_found"] = "The backup log file was not found! ";// TRANSLATE
+$l_backup["view_log_no_perm"] = "You do not have the needed permissions to view the backup log file! ";// TRANSLATE
 
 ?>

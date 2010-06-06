@@ -240,7 +240,7 @@
 
 							//copy the file to right location
 							if($_SESSION['weBackupVars']['options']['export2server']==1) {
-								$_backup_filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_SESSION['weBackupVars']['filename'];
+								$_backup_filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR .'data/'. $_SESSION['weBackupVars']['filename'];
 
 								if($_SESSION['weBackupVars']['backup_log']){
 										weBackupUtil::addLog('Move file to ' . $_backup_filename);

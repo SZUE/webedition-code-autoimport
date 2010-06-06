@@ -152,12 +152,24 @@ if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR)) {
 if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/")) {
 	createLocalFolder($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/");
 }
-if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."download/")) {
-	createLocalFolder($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."download/");
+if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/")) {
+	createLocalFolder($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/");
+}
+if (!file_exists($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/.htaccess") ){
+	if (file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/conf/.htaccess")) {
+		$htaccessdata=file_get_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/conf/.htaccess");
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/.htaccess",$htaccessdata);
+	} 
 }
 if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/')) {
 	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/');
 }
+/*****************************************************************************
+ * CLEAN Temporary Data left over from last logout  bug #4240
+ *****************************************************************************/
+
+cleanTempFiles(1);
+
 
 /*****************************************************************************
  * CHECK FOR FAILED LOGIN ATTEMPTS

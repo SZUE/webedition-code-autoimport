@@ -308,8 +308,11 @@
 
 
 		function getHttpLink($server,$url,$port='',$username='',$password='') {
-
-			return getServerProtocol(true) . (($username && $password) ? "$username:$password@" : '') . $server . ':' . $port . $url;
+			if ($port!=''){
+				return getServerProtocol(true) . (($username && $password) ? "$username:$password@" : '') . $server . ':' . $port . $url;
+			} else {
+				return getServerProtocol(true) . (($username && $password) ? "$username:$password@" : '') . $server . $url;
+			}
 
 		}
 

@@ -43,7 +43,7 @@ $l_backup["export_title"] = "Vienti";
 $l_backup["finished"] = "Valmis";
 $l_backup["extern_files_size"] = "Koska tiedoston maksimikoko on rajoitettu kokoon %.1f MB (%s tavua) tietokanta-asetuksissa, saatetaan joutua luomaan useita tiedostoja .";
 $l_backup["extern_files_question"] = "Tallenna webEditionin ulkoiset tiedostot ja kansiot.";
-$l_backup["export_location"] = "Tallenna hakemisto jonne haluat tallentaa varmuuskopiotiedoston.";
+$l_backup["export_location"] = "Specify where you want to save the backup file. If it is stored on the server, you find the file in '/webEdition/we_backup/data/'.";// TRANSLATE
 $l_backup["export_location_server"] = "Palvelimelle";
 $l_backup["export_location_send"] = "Paikalliselle kovalevylle";
 $l_backup["can_not_open_file"] = "Tiedostoa '%s' ei voida avata.";
@@ -256,5 +256,9 @@ $l_backup['ftp_hint'] = "Huomio! Jos varmuuskopiotiedosto on pakattu, käytä lata
 $l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.de/de/webedition/administration/charset-conversion-of-legacy-sites"; // TRANSLATE
 
 $l_backup["convert_charset_data"] = "While importing the backup, convert the site from ISO to UTF-8"; // TRANSLATE
+
+$l_backup["view_log"] = "Backup-Log";// TRANSLATE
+$l_backup["view_log_not_found"] = "The backup log file was not found! ";// TRANSLATE
+$l_backup["view_log_no_perm"] = "You do not have the needed permissions to view the backup log file! ";// TRANSLATE
 
 ?>

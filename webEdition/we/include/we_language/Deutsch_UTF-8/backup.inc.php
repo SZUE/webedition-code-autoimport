@@ -47,7 +47,7 @@ $l_backup["export_title"] = "Backup erstellen";
 $l_backup["finished"] = "Beendet";
 $l_backup["extern_files_size"] = "Dieser Vorgang kann einige Minuten dauern. Es werden unter Umständen mehrere Dateien angelegt, da die Datenbankeinstellung auf eine maximale Dateigröße von %.1f MB (%s Byte) beschränkt ist.";
 $l_backup["extern_files_question"] = "webEdition-externe Dateien/Verzeichnisse sichern";
-$l_backup["export_location"] = "Bitte wählen Sie aus, wo die Backup-Datei gespeichert werden soll. Wird die Datei auf dem Server gespeichert, finden Sie diese unter '/webEdition/we_backup'.";
+$l_backup["export_location"] = "Bitte wählen Sie aus, wo die Backup-Datei gespeichert werden soll. Wird die Datei auf dem Server gespeichert, finden Sie diese unter '/webEdition/we_backup/data/'.";
 $l_backup["export_location_server"] = "Auf dem Server";
 $l_backup["export_location_send"] = "Auf Ihrer lokalen Festplatte";
 $l_backup["can_not_open_file"] = "Die Datei '%s' kann nicht geöffnet werden.";
@@ -254,10 +254,14 @@ $l_backup["file_not_readable"] = "Die Backup-Datei ist nicht lesbar. Bitte über
 $l_backup["tools_import_desc"] = "Hier können Sie die Daten der webEdition-Tools wiederhestellen. Wählen Sie bitte die gewünschte Tools aus.";
 $l_backup["tools_export_desc"] = "Hier können Sie die Daten der webEdition-Tools sichern. Wählen Sie bitte die gewünschte Tools aus.";
 
-$l_backup['ftp_hint'] = "Achtung! Benutzen Sie den Binary-Modus beim Download per FTP, wenn die Backup-Datei mit zip komprimiert ist! Ein 	Download im ASCII-Modus zerstört die Datei, so dass sie nicht wieder hergestellt werden kann!";
+$l_backup['ftp_hint'] = "Achtung! Benutzen Sie den Binary-Modus beim Download per FTP, wenn die Backup-Datei mit zip komprimiert ist! Ein Download im ASCII-Modus zerstört die Datei, so dass sie nicht wieder hergestellt werden kann!";
 
-$l_backup["convert_charset"] = "Achtung! Beim Nutzung dieser Option in einer bestehenden Site besteht die Gefahr des totalen Datenverlustes Bitte beachten Sie die Hinweise unter http://documentation.webedition.de/de/webedition/administration/charset-conversion-of-legacy-sites";
+$l_backup["convert_charset"] = "Achtung! Beim Nutzung dieser Option in einer bestehenden Site besteht die Gefahr des totalen Datenverlustes. Bitte beachten Sie die Hinweise unter http://documentation.webedition.de/de/webedition/administration/charset-conversion-of-legacy-sites";
 
 $l_backup["convert_charset_data"] = "Beim Einspielen des Backups Umstellung der Installation von ISO auf UTF-8";
+
+$l_backup["view_log"] = "Backup-Log";
+$l_backup["view_log_not_found"] = "Keine Backup-Log-Datei gefunden! ";
+$l_backup["view_log_no_perm"] = "Sie haben nicht die notwendigen Rechte, die Backup-Log-Datei einzusehen! ";
 
 ?>
