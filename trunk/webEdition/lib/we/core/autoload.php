@@ -62,4 +62,9 @@ $loader->setFallbackAutoloader(true); #3815
 // include configuration file of webEdition
 include_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
 
-
+if (!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
+	if (!date_default_timezone_set(@date_default_timezone_get())){
+		date_default_timezone_set('Europe/Berlin');
+	}
+	define("DATETIME_INITIALIZED","1"); 
+}
