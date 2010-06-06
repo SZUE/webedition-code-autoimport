@@ -956,7 +956,7 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "handle_extern", $l_backup["export_extern_data"], false, "defaultfont", "doClick(300);"),"space"=>70,"noline"=>1));
 
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["backup_log_exp"], 2, 600, false),"space"=>70,"noline"=>1));
-		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "backup_log", $l_backup["export_backup_log"], false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "backup_log", $l_backup["export_backup_log"], false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
 
 
 		$mode="export";
