@@ -244,4 +244,11 @@ $GLOBALS['WE_LANGS'] = array(
 		"pl" => "Polish", 
 		"fr" => "French"
 );
+if (!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in autoload, this also allows later to make that an settings-item
+	if (!date_default_timezone_set(@date_default_timezone_get())){
+		date_default_timezone_set('Europe/Berlin');
+	}
+	define("DATETIME_INITIALIZED","1"); 
+}
+
 ?>
