@@ -62,11 +62,8 @@ class we_io_DB
 		} else {
 			$DBpar['charset'] = 'utf8';
 		}
-		if (extension_loaded('mysqli')){// es gibt Provider, die Schwierigkeiten haben mysqli in 5.3 zu integrieren
-			$db = Zend_Db::factory('Mysqli', $DBpar);
-		} else {
-			$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
-		}
+		
+		$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
 		return $db;
 	}
 
