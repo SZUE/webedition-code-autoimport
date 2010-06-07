@@ -1991,7 +1991,18 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 				$formAttribs['onsubmit'] = $onsubmit;
 				/*				$formAttribs['action'] = '<?php print WEBEDITION_DIR ?>we_formmail.php';  */
 				$formAttribs['action'] = '<?php print WEBEDITION_DIR ?>we_formmail.php';
-				$formAttribs['action'] = ($id && ($id != "self")) ? '<?php print(f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\'' . $id . '\'","Path",$GLOBALS["DB_WE"])); ?>' : '<?php print isset($GLOBALS["we_form_action"]) && $GLOBALS["we_form_action"] ? $GLOBALS["we_form_action"] : (WEBEDITION_DIR."we_formmail.php"); ?>';
+				if ($id) {
+					if ($id != "self") {
+						
+						$formAttribs['action'] = '<?php print(f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\'' . $id . '\'","Path",$GLOBALS["DB_WE"])); ?>';
+					} else {
+						$formAttribs['action'] = '<?php print $_SERVER["PHP_SELF"]; ?>';
+					}
+				}
+				
+				
+				
+				
 				/*
 				if($id && ($id != "self")){
 					$php = '<?php $action = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\''.$id.'\'","Path",$GLOBALS["DB_WE"]); ?>';
