@@ -796,6 +796,8 @@ top.clearEntries();
 			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["filename_empty"], WE_MESSAGE_ERROR);
 		//}elseif(strpos($txt,".")!==false){ entfernt fuer #4333
 			//print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notAllowed"], WE_MESSAGE_ERROR);
+		}elseif(substr($txt,-1)=='.'){ // neue Version testet auf "." am ende, analog zu i_filenameNotAllowed in we_root 
+			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notAllowed"], WE_MESSAGE_ERROR);
 		}elseif($_REQUEST['id']==0 && strtolower($txt)=="webedition"){
 			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notAllowed"], WE_MESSAGE_ERROR);
 		}else{
