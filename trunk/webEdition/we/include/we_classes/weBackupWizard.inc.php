@@ -889,6 +889,8 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "export_server", $l_backup["export_location_server"], false, "defaultfont", "doClick(1)"),"space"=>70,"noline"=>1));
 		if (we_hasPerm("EXPORT")){
 			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "export_send", $l_backup["export_location_send"], false, "defaultfont", "doClick(2)"),"space"=>70));
+		} else {
+			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "export_send", $l_backup["export_location_send"], false, "defaultfont", "doClick(2)",true),"space"=>70));		
 		}
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["export_options"], 2, 600, false),"space"=>0,"noline"=>1));
 
