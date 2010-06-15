@@ -35,11 +35,13 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 	$forcedoubleoptin = we_getTagAttribute("forcedoubleoptin",$attribs,"",true);
 	if ($forcedoubleoptin) $doubleoptin = 1;
 	$customer = we_getTagAttribute("type",$attribs) == "customer" ? true : false;
+	$emailonly = we_getTagAttribute("type",$attribs) == "emailonly" ? true : false;
 	$fieldGroup = we_getTagAttribute("fieldGroup",$attribs);
 	$fieldGroup = empty($fieldGroup) ? "Newsletter" : $fieldGroup;	
 	$abos = array();	
 	$paths = array();
 	$db=new DB_WE();
+
 	$db->query("SELECT * FROM " . NEWSLETTER_PREFS_TABLE);
 	if($db->num_rows()){
 		while($db->next_record()) {
@@ -86,9 +88,13 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$abos[0] = "Newsletter_Ok";
 			}
 		} else {
-			$paths = makeArrayFromCSV(we_getTagAttribute("path",$attribs));		
-			if (!sizeof($paths) || (strlen($paths[0]) == 0)) {
-				$paths[0] = "newsletter.txt";
+			if ($emailonly) {
+			
+			} else {
+				$paths = makeArrayFromCSV(we_getTagAttribute("path",$attribs));		
+				if (!sizeof($paths) || (strlen($paths[0]) == 0)) {
+					$paths[0] = "newsletter.txt";
+				}
 			}
 		}
 	} else {
@@ -177,30 +183,32 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					$lists .= $cAbo . ",";
 				}
 			} else {
-				foreach($paths as $p){
-					if(!$emailExistsInOneOfTheLists){
-						$realPath = (substr($p,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $p) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $p);
-						if(@file_exists($realPath)){
-							$fh=@fopen($realPath,"rb");
-							if($fh) {
-								$file="";
-								if(filesize($realPath)){
-									while(!feof($fh)) $file.=fread($fh,filesize($realPath));
+				if(!$emailonly){
+					foreach($paths as $p){
+						if(!$emailExistsInOneOfTheLists){
+							$realPath = (substr($p,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $p) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $p);
+							if(@file_exists($realPath)){
+								$fh=@fopen($realPath,"rb");
+								if($fh) {
+									$file="";
+									if(filesize($realPath)){
+										while(!feof($fh)) $file.=fread($fh,filesize($realPath));
+									}
+									fclose($fh);
+									if(eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file)){
+										$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
+									}
+								} else {
+									$GLOBALS["WE_WRITENEWSLETTER_STATUS"]= WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR
+									$GLOBALS["WE_REMOVENEWSLETTER_STATUS"]= WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+									return;
 								}
-								fclose($fh);
-								if(eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file)){
-									$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
-								}
-							} else {
-								$GLOBALS["WE_WRITENEWSLETTER_STATUS"]= WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR
-								$GLOBALS["WE_REMOVENEWSLETTER_STATUS"]= WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
-								return;
+							}else{
+								$emailExistsInOneOfTheLists = false; // List does not exists, so email can't also exists
 							}
-						}else{
-							$emailExistsInOneOfTheLists = false; // List does not exists, so email can't also exists
 						}
+						$lists .= $p.","; 
 					}
-					$lists .= $p.","; 
 				}
 			}
 			if($emailExistsInOneOfTheLists){
@@ -219,7 +227,8 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			if($mailid){
 
 				$q = "INSERT INTO " . NEWSLETTER_CONFIRM_TABLE . " (confirmID,subscribe_mail,subscribe_html,subscribe_salutation,subscribe_title,subscribe_firstname,subscribe_lastname,lists,expires)
-							VALUES ('".abs($confirmID)."','".mysql_real_escape_string($f["subscribe_mail"])."','".mysql_real_escape_string($f["subscribe_html"])."','".mysql_real_escape_string($f["subscribe_salutation"])."','".mysql_real_escape_string($f["subscribe_title"])."','".mysql_real_escape_string($f["subscribe_firstname"])."','".mysql_real_escape_string($f["subscribe_lastname"])."','".mysql_real_escape_string($lists)."','".($expiredoubleoptin+time())."')";
+							VALUES ('".mysql_real_escape_string($confirmID)."','".mysql_real_escape_string($f["subscribe_mail"])."','".mysql_real_escape_string($f["subscribe_html"])."','".mysql_real_escape_string($f["subscribe_salutation"])."','".mysql_real_escape_string($f["subscribe_title"])."','".mysql_real_escape_string($f["subscribe_firstname"])."','".mysql_real_escape_string($f["subscribe_lastname"])."','".mysql_real_escape_string($lists)."','".($expiredoubleoptin+time())."')";
+							
 				$db->query($q);
 
 				$id = we_getTagAttribute("id",$attribs);
@@ -321,7 +330,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				return;
 			}	
 												
-		} else {
+		} else { //confirmID wurde übermittelt, eine Bestätigung liegt also vor
 			$emailwritten = 0;
 			if($customer) {
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php");
@@ -401,53 +410,79 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$__db->query("UPDATE " . CUSTOMER_TABLE . " SET ".mysql_real_escape_string($__set)." WHERE " . $_customerFieldPrefs['customer_email_field'] . "='".mysql_real_escape_string($f["subscribe_mail"])."'");
 				$__db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='".mysql_real_escape_string($f["subscribe_mail"])."'");
 			} else {
-				foreach($paths as $path){
-				
-					$path = (substr($path,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $path) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $path);
+				if(!$emailonly){ //in die Liste eintragen
+					foreach($paths as $path){
 					
-					if(!@file_exists(dirname($path))){
-						$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR
-						$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
-						return;
-					}
-			
-			
-					$ok = true;
-		
-					$fh=@fopen($path,"rb");
-					if($fh){
-						$file="";
-						if(filesize($path)){
-							while(!feof($fh)) $file.=fread($fh,filesize($path));
+						$path = (substr($path,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $path) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $path);
+						
+						if(!@file_exists(dirname($path))){
+							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR
+							$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+							return;
 						}
-						fclose($fh);
-						if((eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file))){
-							$ok = false; // E-Mail schon vorhanden => Nix tun
-						}
-					}
-					if($ok){
-						$fh=@fopen($path,"ab+");
+				
+				
+						$ok = true;
+			
+						$fh=@fopen($path,"rb");
 						if($fh){
-							$row=$f["subscribe_mail"].",".$f["subscribe_html"].",".$f["subscribe_salutation"].",".$f["subscribe_title"].",".$f["subscribe_firstname"].",".$f["subscribe_lastname"]."\n";
-							if(!@fwrite($fh,$row)){
+							$file="";
+							if(filesize($path)){
+								while(!feof($fh)) $file.=fread($fh,filesize($path));
+							}
+							fclose($fh);
+							if((eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file))){
+								$ok = false; // E-Mail schon vorhanden => Nix tun
+							}
+						}
+						if($ok){
+							$fh=@fopen($path,"ab+");
+							if($fh){
+								$row=$f["subscribe_mail"].",".$f["subscribe_html"].",".$f["subscribe_salutation"].",".$f["subscribe_title"].",".$f["subscribe_firstname"].",".$f["subscribe_lastname"]."\n";
+								if(!@fwrite($fh,$row)){
+									fclose($fh);
+									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+									return;
+								}
 								fclose($fh);
+								$emailwritten++;
+							}else{
 								$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
 								return;
 							}
-							fclose($fh);
-							$emailwritten++;
-						}else{
-							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
-							return;
 						}
+						@chmod($path);
 					}
-					@chmod($path);
+					if($emailwritten==0){
+						$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_EXISTS;
+					}
+					$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='".mysql_real_escape_string($f["subscribe_mail"])."'");
+				
+				} else { //nicht in eine Liste eintragen sondern adminmail versenden
+				
+					$adminmailid = we_getTagAttribute("adminmailid",$attribs);
+					$adminsubject = we_getTagAttribute("adminsubject",$attribs);
+					$adminemail = we_getTagAttribute("adminemail",$attribs);
+					$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='".mysql_real_escape_string($f["subscribe_mail"])."'");
+					$phpmail = new we_util_Mailer($adminemail,$adminsubject,$f["subscribe_mail"],$f["subscribe_mail"]);
+					$phpmail->setCharSet($charset);
+					
+					$adminmailtextHTML = we_getDocumentByID($adminmailid);
+					$adminmailtextHTML = str_replace('###MAIL###',$f["subscribe_mail"],$adminmailtextHTML);
+					$adminmailtextHTML = str_replace('###SALUTATION###',$f["subscribe_salutation"],$adminmailtextHTML);
+					$adminmailtextHTML = str_replace('###TITLE###',$f["subscribe_title"],$adminmailtextHTML);
+					$adminmailtextHTML = str_replace('###FIRSTNAME###',$f["subscribe_firstname"],$adminmailtextHTML);
+					$adminmailtextHTML = str_replace('###LASTNAME###',$f["subscribe_lastname"],$adminmailtextHTML);
+					$adminmailtextHTML = str_replace('###HTML###',$f["subscribe_html"],$adminmailtextHTML);
+					
+					$phpmail->addHTMLPart($adminmailtextHTML);				
+					
+					$phpmail->buildMessage();
+					$phpmail->Send();
+				
 				}
-				if($emailwritten==0){
-					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_EXISTS;
-				}
-				$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='".mysql_real_escape_string($f["subscribe_mail"])."'");
-			}	
+			}
+				
 		}
 	}	
 
@@ -547,7 +582,7 @@ function getNewsletterFields($request,$confirmid,&$errorcode,$mail=""){
 
 	$errorcode = 0;
 	if($confirmid){
-		$_h = getHash("SELECT * FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE confirmID = '".abs($confirmid)."' AND subscribe_mail='".mysql_real_escape_string($mail)."'", new DB_WE());
+		$_h = getHash("SELECT * FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE confirmID = '".mysql_real_escape_string($confirmid)."' AND subscribe_mail='".mysql_real_escape_string($mail)."'", new DB_WE());
 		if(empty($_h)) {
 			$errorcode = WE_NEWSLETTER_STATUS_CONFIR_FAILED;
 		}
