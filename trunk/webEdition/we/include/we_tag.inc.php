@@ -6389,6 +6389,10 @@ function we_tag_url($attribs, $content)
 	if ($id == 0) {
 		$url = "/";
 	} else {
+	    if ($id=='self' || $id=='top'){
+			$doc = we_getDocForTag($docAttr, true); // check if we should use the top document or the  included document
+			$id = $doc->ID;
+		}
 		$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());
 		$url = isset($row["Path"]) ? ($row["Path"] . ($row["IsFolder"] ? "/" : "")) : "";
 	}
