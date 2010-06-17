@@ -32,7 +32,7 @@ define('LIVEUPDATE_LANGUAGE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/in
 define('LIVEUPDATE_CSS', '<link rel="stylesheet" type="text/css" href="/webEdition/liveUpdate/css/liveupdate.css" />');
 define('LIVEUPDATE_TEMPLATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/templates/');
 
-define('LIVEUPDATE_SERVER', 'update.webedition.de');
+define('LIVEUPDATE_SERVER', 'update.webedition.org');
 
 if(isset($_REQUEST['section'])) {
 	$_SESSION['liveUpdateSection'] = $_REQUEST['section'];

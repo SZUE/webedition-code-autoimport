@@ -479,6 +479,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					
 					$phpmail->buildMessage();
 					$phpmail->Send();
+					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_SUCCESS;
 				
 				}
 			}
