@@ -344,7 +344,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";// TRANSLATE
 	 $l_prefs["navigation_directoryindex_hide"] = "Hide DirectoryIndex- file names in navigation output";// TRANSLATE
 	 $l_prefs["navigation_directoryindex_description"] = "After a change, rebuild the navigation cache";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated)";// TRANSLATE
+	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html')";// TRANSLATE
 
 	/**
 	 * DATABASE
