@@ -120,6 +120,29 @@ if(isset($_REQUEST["step"]) && !empty($_REQUEST["step"]) && intval($_REQUEST) >=
 	$currentStep = $steps[0];
 }
 
+//functions for checking system 
+function ini_get_bool($val) {
+	$bool = ini_get($val);
+	if($val == "1") {
+		return true;
+	}
+	if($val == "0") {
+		return false;
+	}
+	switch (strtolower($bool)) {
+		case '1':
+		case 'on':
+		case 'yes':
+		case 'true':
+			return true;
+		default:
+			return false;
+	}
+	return false;
+}
+
+
+
 // function for executing steps:
 function step_welcome() {
 	$output = '<b>Welcome to webEdition 6!</b><br />
@@ -157,19 +180,27 @@ function step_requirements() {
 		$output.=tpl_ok("Your PHP Version is up to date (Version ".PHP_VERSION.")");
 	}
 	if(!is_callable("mysql_query")) {
-		$output.=tpl_error("PHP MySQL Support is required for running webEdition! MySQL servers at version 4.1 or newer are supported.");
+		$output.=tpl_error("PHP MySQL Support is required for running webEdition! MySQL servers at version 5.0 or newer are supported.");
 		$errors = true;
 	} else {
 		$mysqlVersion = mysql_get_client_info();
-		$output.=tpl_ok("PHP MySQL support available (Client API Version ".$mysqlVersion." found)");
+		if(version_compare($mysqlVersion,"5.0","<")) {
+			$output.=tpl_error("MySQL Version 5.0 or newer required!");
+			$errors = true;
+		} else {
+			$output.=tpl_ok("PHP MySQL support available (Client API Version ".$mysqlVersion." found)");
+		}		
 	}
 
 	$output .= "</ul><b>Additional requirements:</b><ul style=\"list-style-position:outside;\">";
-	if(ini_get('safe_mode')) {
+	if(ini_get_bool('safe_mode')) {
 		$output.=tpl_warning("PHP Safe Mode is active.<br />webEdition may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Sode</a>, yet we do not recommend it and cannot guarantee that all features of webEdition will work properly.");
 	}
-	if(ini_get('register_globals')) {
+	if(ini_get_bool('register_globals')) {
 		$output.=tpl_warning("register_globals is active!<br />This may cause <b>severe security problems</b> so we recommend to disable this \"feature\". See <a href=\"http://www.php.net/manual/en/security.globals.php\" target=\"_blank\">php.net/manual</a> for more informations.");
+	}
+	if(ini_get_bool('short_open_tag')) {
+		$output.=tpl_warning("short_open_tag is active!<br />webEdition may run with activated <a href=\"http://de2.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, yet we do not recommend it since it can lead to problems when working with .xml files.");
 	}
 	
 	if(!is_callable("curl_getinfo")) {
