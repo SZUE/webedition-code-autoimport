@@ -799,6 +799,7 @@ function step_finish() {
 
 function step_cleanup() {
 	@unlink("./README.txt");
+	@unlink("./BUILDDATE");
 	@unlink("./INSTALL.txt");
 	@unlink("./LICENSE.txt");
 	@unlink("./database.sql");
