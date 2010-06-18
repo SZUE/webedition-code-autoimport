@@ -345,7 +345,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";
 	 $l_prefs["navigation_directoryindex_hide"] = "Hide DirectoryIndex- file names in navigation output";
 	 $l_prefs["navigation_directoryindex_description"] = "After a change, rebuild the navigation cache";
-	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated)";
+	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html')";
 
 
 	/**
