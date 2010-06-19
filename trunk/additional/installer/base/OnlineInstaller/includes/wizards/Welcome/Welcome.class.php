@@ -26,7 +26,7 @@ class Welcome extends leStep {
 
 			$PostContent = <<<EOF
 <b>{$this->Language['choose_language']}:</b><br />
-{$Select}
+{$Select}<br/>{$this->Language['ISO_language']}
 EOF;
 
 		}

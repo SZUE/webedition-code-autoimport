@@ -177,7 +177,7 @@ class leStep {
 
 
 	/**
-	 * Execute the preparation of the step, liek setting cookies for example
+	 * Execute the preparation of the step, like setting cookies for example
 	 *
 	 * @return booelan
 	 */

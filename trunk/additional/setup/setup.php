@@ -194,13 +194,13 @@ function step_requirements() {
 
 	$output .= "</ul><b>Additional requirements:</b><ul style=\"list-style-position:outside;\">";
 	if(ini_get_bool('safe_mode')) {
-		$output.=tpl_warning("PHP Safe Mode is active.<br />webEdition may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Sode</a>, yet we do not recommend it and cannot guarantee that all features of webEdition will work properly.");
+		$output.=tpl_warning("PHP Safe Mode is active.<br />webEdition may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Mode</a>, yet we do not recommend it since it is DEPRECATED since PHP version 5.3. We also cannot guarantee that all features of webEdition will work properly.");
 	}
 	if(ini_get_bool('register_globals')) {
-		$output.=tpl_warning("register_globals is active!<br />This may cause <b>severe security problems</b> so we recommend to disable this \"feature\". See <a href=\"http://www.php.net/manual/en/security.globals.php\" target=\"_blank\">php.net/manual</a> for more informations.");
+		$output.=tpl_warning("register_globals is active!<br />This may cause <b>severe security problems</b>, is declared DEPRECATED since PHP version 5.3 and we strongly recommend to disable this \"feature\". See <a href=\"http://www.php.net/manual/en/security.globals.php\" target=\"_blank\">php.net/manual</a> for more information.");
 	}
 	if(ini_get_bool('short_open_tag')) {
-		$output.=tpl_warning("short_open_tag is active!<br />webEdition may run with activated <a href=\"http://de2.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, yet we do not recommend it since it can lead to problems when working with .xml files.");
+		$output.=tpl_warning("short_open_tag is active!<br />webEdition may run with activated <a href=\"http://de2.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, but yet we do not recommend it since it can lead to problems when working with .xml files.");
 	}
 	
 	if(!is_callable("curl_getinfo")) {
@@ -286,6 +286,7 @@ function step_filesystem() {
 	} else {
 		$output .= tpl_ok("webEdition/we/include/conf/we_conf.inc.php");
 	}
+	
 	/*
 	if(!is_writable('./webEdition/we/tmp')) {
 		$output .= tpl_error("The webEdition temporary directory file is not writable!");
@@ -569,7 +570,7 @@ function step_language() {
 	$output .= '</select></div>';
 	// additional information box for iso encoded languages:
 	if($isoLanguages === true) {
-		$output .= "<b>Important:</b> We strongly recommend using UTF-8 for new projects. webEdition still contains a couple of ISO-8859-1 (ISO Latin-1) encoded translations for backwards compatibility, but all new translations are and will be UTF-8 encoded.<br /><br />";
+		$output .= "<b>Important:</b> We strongly recommend using UTF-8 for new projects. webEdition still contains a couple of ISO-8859-1 (ISO Latin-1) encoded translations for backwards compatibility, but all new translations are and will be UTF-8 encoded. In addition, for the upcoming Version 7, we do do not guarantee full support for ISO languages, so you might need to convert your site to UTF-8. <br /><br />";
 	}
 	$output .= "If your language is missing in this list, feel free to contribute a new translation to the webEdition community. You can find more informations about contributing code and translations on the <a href=\"http://www.webedition.de\" target=\"_blank\">webEdition website</a>.";
 	
