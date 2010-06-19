@@ -9,7 +9,7 @@
 *
  * VERSION HISTORY:
  * 
- * 6.0.0.9
+ * 3.0.0.0
  * 2010-02-23
  * - Various bugsfixes regarding all parts and steps of the online installation process
 
@@ -30,8 +30,7 @@
  * - updated layout
  * - renamed to "webEdition installer"
  * 
- * 6.0.0.9
- * - changed version numbering according to webEdition
+ * 3.0.0.0
  * - the webEdition installer is now a subproject of webEdition
  * - changelog moved to http://documentation.webedition.de
  */
@@ -91,8 +90,19 @@
 			'UpdateServer' => 'update.webedition.org',
 			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/server/we/onlineInstallation.p' . 'hp',
+			'testUpdate' => false,
 		),
-		'webEdition5' => array( // webEdition 5
+		'webEditionBeta' => array( // webEdition 6 (Open Source)
+			'Name' => $lang["Application"]["webEditionBeta"]["name"],
+			'Description' => $lang["Application"]["webEditionBeta"]["description"],
+			'Longdescription' => $lang["Application"]["webEditionBeta"]["longdescription"],
+			'Link' => $lang["Application"]["webEditionBeta"]["link"],
+			'UpdateServer' => 'update.webedition.org',
+			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
+			'UpdateScript' => '/server/we/onlineInstallation.p' . 'hp',
+			'testUpdate' => true,
+		),
+/*		'webEdition5' => array( // webEdition 5
 			'Name' => $lang["Application"]["webEdition5"]["name"],
 			'Description' => $lang["Application"]["webEdition5"]["description"],
 			'Longdescription' => $lang["Application"]["webEdition5"]["longdescription"],
@@ -100,7 +110,7 @@
 			'UpdateServer' => 'update.webedition.org',
 			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/we5/onlineInstallation.p' . 'hp',
-		),
+		), */
 		'pageLogger' => array( // pageLogger 1.6 (Open Source)
 			'Name' => $lang["Application"]["pageLogger"]["name"],
 			'Description' => $lang["Application"]["pageLogger"]["description"],
@@ -109,6 +119,7 @@
 			'UpdateServer' => 'update.webedition.org',
 			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/server/pl/onlineInstallation.p' . 'hp',
+			'testUpdate' => false,
 		),
 	);
 	
@@ -199,7 +210,8 @@
 		'part',
 		'clientLng',
 		'clientTargetVersionNumber',
-		'decreaseSpeed'
+		'decreaseSpeed',
+		'testUpdate'
 	);
 
 	if (isset($_REQUEST["leWizard"])) {

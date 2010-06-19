@@ -22,17 +22,13 @@ $lang["Application"]["webEdition5"]["link"] = "http://www.living-e.de/produkte/w
 $lang["Application"]["webEdition"]["name"] = "webEdition 6";
 $lang["Application"]["webEdition"]["description"] = "Professionelles Open Source Web Content Management System.";
 $lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
-$lang["Application"]["webEdition"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+$lang["Application"]["webEdition"]["link"] = "http://www.webedition.org/";
 
-$lang["Application"]["webEditionBeta"]["name"] = "webEdition Beta";
+$lang["Application"]["webEditionBeta"]["name"] = "webEdition einschließlich Alpha und Beta-Versionen";
 $lang["Application"]["webEditionBeta"]["description"] = "Professionelles Open Source Web Content Management System.";
-$lang["Application"]["webEditionBeta"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
-$lang["Application"]["webEditionBeta"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+$lang["Application"]["webEditionBeta"]["longdescription"] = "Alpha und Beta Versionen dienen als Testumgebung zum Auffinden von Fehlern bevor ein offizielles neues Release herausgebracht wird. <b>Sie sollten niemals für produktive Sites eingesetzt werden. Wir übernehmen keinerlei Haftung für eventuell auftretende Fehler oder für Datenverluste.</b>";
+$lang["Application"]["webEditionBeta"]["link"] = "http://www.webedition.org/";
 
-$lang["Application"]["webEditionLight"]["name"] = "webEdition light";
-$lang["Application"]["webEditionLight"]["description"] = "Web Content Management System für kleinere Websites.";
-$lang["Application"]["webEditionLight"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
-$lang["Application"]["webEditionLight"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
 
 $lang["Application"]["pageLogger"]["name"] = "pageLogger 1.6";
 $lang["Application"]["pageLogger"]["description"] = "Open Source Trackingsystem für Ihre Homepage.";
@@ -66,8 +62,9 @@ $lang["Wizard"]["DownloadInstaller"]["title"] = "Installationspaket herunterlade
 // Welcome
 $lang["Step"]["Welcome"]["title"] = "Sprache wählen";
 $lang["Step"]["Welcome"]["headline"] = "webEdition Online Installer";
-$lang["Step"]["Welcome"]["content"] = "Dieser Wizard wird Sie Schritt für Schritt durch die Installation unserer Softwareprodukte führen.";
+$lang["Step"]["Welcome"]["content"] = "Dieser Wizard wird Sie Schritt für Schritt durch die Installation unserer Softwareprojekte führen.";
 $lang["Step"]["Welcome"]['choose_language'] = "Sprache ändern";
+$lang["Step"]["Welcome"]['ISO_language'] = "<br /><b>Wichtig:</b> Wir empfehlen, für neue Projekte UTF-8 zu verwenden. webEdition verfügt noch über einige ISO-8859-1 (ISO Latin-1) kodierte Übersetzungen um die Kompatibilität mit alten Versionen zu wahren, aber alle neuen Übersetzungen werden UTF-8 kodiert. <br />Für die zukünftige Version 7 wird keine Unterstützung für ISO-Sprachen mehr garantiert, sodass dann eine Umstellung der Site auf UTF-8 notwendig werden könnte.<br /><br />";
 $lang["Step"]["Welcome"]['language_Deutsch_UTF-8'] = "Deutsch (UTF-8)";
 $lang["Step"]["Welcome"]['language_English_UTF-8'] = "English (UTF-8)";
 $lang["Step"]["Welcome"]['language_Deutsch'] = "Deutsch (ISO 8859-1)";
@@ -93,7 +90,7 @@ $lang["Step"]["VersionCheck"]["installerVersionFailed"] = "";
 // ChooseApplication
 $lang["Step"]["ChooseApplication"]["title"] = "Applikation wählen";
 $lang["Step"]["ChooseApplication"]["headline"] = "Zu installierende Applikation wählen";
-$lang["Step"]["ChooseApplication"]["content"] = "Mit diesem Installer ist es möglich alle webbasierenden Produkte des webEdition Projektes zu installieren.";
+$lang["Step"]["ChooseApplication"]["content"] = "Mit diesem Installer ist es möglich alle webbasierenden Anwendungen des webEdition Projektes zu installieren.";
 
 $lang["Step"]["ChooseApplication"]["select_application"] = "Bitte wählen Sie die gewünschte Applikation";
 
@@ -136,15 +133,30 @@ $lang["Step"]["ConnectionCheck"]["failed"] = "fehlgeschlagen";
 $lang["Step"]["ConnectionCheck"]["ipAddresses"] = "IP-Adresse(n)";
 
 // SessionAndCookieTest
-$lang["Step"]["SessionAndCookieTest"]["title"] = "Session &amp; Cookies";
-$lang["Step"]["SessionAndCookieTest"]["headline"] = "Session und Cookies Test";
-$lang["Step"]["SessionAndCookieTest"]["content"] = "In diesem Schritt wird geprüft, ob eine Session auf dem Server gestartet und ein Cookie gesetzt werden kann.";
+$lang["Step"]["SessionAndCookieTest"]["title"] = "PHP-Version, Session &amp; Cookies";
+$lang["Step"]["SessionAndCookieTest"]["headline"] = "PHP-Version, Session und Cookies Test";
+$lang["Step"]["SessionAndCookieTest"]["content"] = "In diesem Schritt wird die verwendete PHP-Version überprüft und getestet, ob eine Session auf dem Server gestartet und ein Cookie gesetzt werden kann.";
 
 $lang["Step"]["SessionAndCookieTest"]["session"] = "Session";
 $lang["Step"]["SessionAndCookieTest"]["cookie"] = "Cookie";
 $lang["Step"]["SessionAndCookieTest"]["failureMessage"] = "Die Installation kann nicht fortgesetzt werden, da Ihr System nicht die benötigten Anforderungen erfüllt.";
 $lang["Step"]["SessionAndCookieTest"]["cookieFailed"] = "Es konnte kein Cookie gesetzt werden";
 $lang["Step"]["SessionAndCookieTest"]["sessionFailed"] = "Es konnte keine Session initialisiert werden";
+
+$lang["Step"]["SessionAndCookieTest"]["php"] = "PHP-Version %s";
+$lang["Step"]["SessionAndCookieTest"]["phpFailed"] = "Die verwendete PHP-Version <b>%s</b> ist zu alt. Es wird mindestens PHP in der Version 5.2.4 benötigt";
+
+$lang["Step"]["SessionAndCookieTest"]["safe_mode"] = "PHP Safe Mode";
+$lang["Step"]["SessionAndCookieTest"]["safe_mode_OK"] = "PHP Safe Mode nicht aktiviert";
+$lang["Step"]["SessionAndCookieTest"]["safe_mode_warning"] = "PHP Safe Mode ist aktiviert.<br />webEdition läuft mit aktiviertem <a href=\"http://www.php.net/manual/de/features.safe-mode.php\" target=\"_blank\">PHP Safe Mode</a>, aber wir empfehlen dies nicht, da dies seit PHP Version 5.3 als DEPRECATED (veraltet) gilt und wir nicht garantieren können, dass alle Features von webEdition problemlos funktionieren werden.";
+
+$lang["Step"]["SessionAndCookieTest"]["register_globals"] = "Register Globals";
+$lang["Step"]["SessionAndCookieTest"]["register_globals_OK"] = "Register Globals nicht aktiviert";
+$lang["Step"]["SessionAndCookieTest"]["register_globals_warning"] = "register_globals ist activiert!<br />Dies kann schwerwiegende Sicherheitsprobleme hervorrufen und gilt seit PHP Version 5.3 als DEPRECATED (veraltet), deshalb empfehlen wir, dieses Feature zu deaktivieren. Beachten Sie <a href=\"http://www.php.net/manual/de/security.globals.php\" target=\"_blank\">php.net/manual</a> für weitere Informationen";
+
+$lang["Step"]["SessionAndCookieTest"]["short_open_tag"] = "Short Open Tag";
+$lang["Step"]["SessionAndCookieTest"]["short_open_tag_OK"] = "Short Open Tag nicht aktiviert";
+$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is activiert!<br />webEdition läuft mit aktiviertem  <a href=\"http://www.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, wir empfehlen dies aber nicht, da es zu Problemen führen kann, wenn mit XML-Files gearbeitet wird.";
 
 
 // DetermineFilesInstaller
@@ -180,7 +192,7 @@ $lang["Step"]["ConfigureInstaller"]["content"] = "Das Installationspaket wird ko
 
 // Fehlertext, wenn Installer von Anfang an nicht schreiben kann:
 $lang["errors"]["writeFile"] = "Keine Schreibrechte!<br /><br />Konnte %s nicht beschreiben.<br /><br />Um webEdition 
-		installieren zu können, muss das Eurzelverzeichnis (DOCUMENT_ROOT) für den Webserver (Apache, IIS...) 
+		installieren zu können, muss das Wurzelverzeichnis (DOCUMENT_ROOT) für den Webserver (Apache, IIS...) 
 		zumindest während der Installation beschreibbar sein. Weitere Informationen entnehmen Sie der 
 		Installationsanleitung, die im Installationspaket enthalten ist oder besuchen Sie 
 		<a href=\"http://www.webedition.de/path/to/write/permission/help.html\" target=\"_blank\">www.webedition.de</a>.";
