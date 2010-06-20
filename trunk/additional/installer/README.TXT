@@ -18,7 +18,7 @@ you can also use make.php from another PHP script using this piece of code (and 
 
 include('path/to/make.php');
 $le_OnlineInstaller = new le_OnlineInstaller_Make();
-$code = $le_OnlineInstaller->execute(null, null, '3.0.0.0');
+$code = $le_OnlineInstaller->execute(null, null, '2.3.0.0');
 
 To avoid creating http headers for sending the OnlineInstaller.php file to the browser you should comment out the two last lines of code in make.php
 The null values in execute() causes make.php to return the contents of the OnlineInstaller.php script to the caller instead of writing it to a file.

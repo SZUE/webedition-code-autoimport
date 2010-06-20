@@ -290,7 +290,7 @@ class leOnlineInstaller {
 		$leWizard = $this->Wizards[0]->Name;
 		$leStep =  $this->Wizards[0]->WizardSteps[0]->Name;
 
-		return LE_INSTALLER_ADAPTER_URL . "?leWizard=" . $leWizard. "&leStep=" . $leStep;
+		return LE_INSTALLER_ADAPTER_URL . "?leWizard=" . $leWizard. "&amp;leStep=" . $leStep;
 
 	}
 

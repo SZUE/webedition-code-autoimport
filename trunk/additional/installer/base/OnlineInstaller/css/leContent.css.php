@@ -4,19 +4,16 @@
 	header("Content-type: text/css");
 
 
-	if(eregi("X11",$_SERVER["HTTP_USER_AGENT"])) {
-
+	if(stristr($_SERVER['HTTP_USER_AGENT'], 'X11')) {
 		$System = "X11";
-	} else if(eregi("Win",$_SERVER["HTTP_USER_AGENT"])) {
+	} else if(stristr($_SERVER['HTTP_USER_AGENT'], 'Win')) {
 		$System = "WIN";
-
-	} else if(eregi("Mac",$_SERVER["HTTP_USER_AGENT"])) {
+	} else if(stristr($_SERVER['HTTP_USER_AGENT'], 'Mac')) {
 		$System = "MAC";
-
 	} else {
 		$System = "UNKNOWN";
-
 	}
+
 ?>
 
 .leContentTable {
