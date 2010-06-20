@@ -147,7 +147,7 @@ $lang["Step"]["SessionAndCookieTest"]["phpFailed"] = "The used PHP version <b>%s
 
 $lang["Step"]["SessionAndCookieTest"]["safe_mode"] = "PHP Safe Mode";
 $lang["Step"]["SessionAndCookieTest"]["safe_mode_OK"] = "PHP Safe Mode not active";
-$lang["Step"]["SessionAndCookieTest"]["safe_mode_warning"] = "PHP Safe Mode is active.<br />webEdition may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Mode</a>, yet we do not recommend it since it is DEPRECATED since PHP version 5.3. We also cannot guarantee that all features of webEdition will work properly.";
+$lang["Step"]["SessionAndCookieTest"]["safe_mode_warning"] = "PHP Safe Mode is active.<br />The applications may run with activated <a href=\"http://www.php.net/manual/en/features.safe-mode.php\" target=\"_blank\">PHP Safe Mode</a>, yet we do not recommend it since it is DEPRECATED since PHP version 5.3. We also cannot guarantee that all features of the applications will work properly.";
 
 $lang["Step"]["SessionAndCookieTest"]["register_globals"] = "Register Globals";
 $lang["Step"]["SessionAndCookieTest"]["register_globals_OK"] = "Register Globals not active";
@@ -155,7 +155,7 @@ $lang["Step"]["SessionAndCookieTest"]["register_globals_warning"] = "register_gl
 
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag"] = "Short Open Tag";
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag_OK"] = "Short Open Tag not active";
-$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is active!<br />webEdition may run with activated <a href=\"http://de2.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, but yet we do not recommend it since it can lead to problems when working with .xml files.";
+$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is active!<br />The applications may run with activated <a href=\"http://de2.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, but yet we do not recommend it since it can lead to problems when working with .xml files.";
 
 
 // DetermineFilesInstaller

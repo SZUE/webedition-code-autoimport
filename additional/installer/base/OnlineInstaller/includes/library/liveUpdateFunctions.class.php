@@ -239,26 +239,16 @@ class liveUpdateFunctions {
 		$dirPath = str_replace("//", "/", $dirPath);
 		
 		// remove trailing slash
-		if(ereg("/$", $dirPath)) {
-			$dirPath = ereg_replace("/$", "", $dirPath);
-			
-		}
-		
+		$dirPath = rtrim($dirPath,'/');
+				
 		// remove trailing slash
 		$le_installer_path = LE_INSTALLER_PATH;
-		if(ereg("/$", $le_installer_path)) {
-			$le_installer_path = ereg_replace("/$", "", $le_installer_path);
-			
-		}
-		
+		$le_installer_path = rtrim($le_installer_path,'/');
+				
 		// remove trailing slash
 		if(isset($_SESSION["le_installationDirectory"])) {
 			$le_installation_dir = $_SESSION["le_installationDirectory"];
-			if(ereg("/$", $le_installation_dir)) {
-				$le_installation_dir = ereg_replace("/$", "", $le_installation_dir);
-				
-			}
-			
+			$le_installation_dir = rtrim($le_installation_dir,'/');			
 		}
 
 		if (strpos($dirPath, $le_installer_path) === 0) {
@@ -689,7 +679,8 @@ class liveUpdateFunctions {
 				if(empty($query)) continue;
 				// second, we need to check if there is a collation
 				if (isset($_SESSION['le_db_collation']) && $_SESSION['le_db_collation'] != "") {
-					if(eregi("^CREATE TABLE ", $query)) {
+					//if(eregi("^CREATE TABLE ", $query)) {
+					if(preg_match("/^CREATE TABLE /",$query)){
 						$Charset = $_SESSION['le_db_charset'];
 						$Collation = $_SESSION['le_db_collation'];
 						$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);

@@ -69,7 +69,7 @@ class leStatus {
 		}
 
 		if($ShowMoreComponents) {
-			$StatusBar .= "<li id=\"_replaceableWizardStep\" class=\"{$id}UpcomingStep\">" . $GLOBALS['lang']['Template']['moreComponentsToCome'] . "</li>";
+			$StatusBar .= "<li id=\"replaceableWizardStep\" class=\"{$id}UpcomingStep\">" . $GLOBALS['lang']['Template']['moreComponentsToCome'] . "</li>";
 
 		}
 

@@ -213,10 +213,7 @@ class liveUpdateFunctions {
 		$dirPath = str_replace("//", "/", $dirPath);
 
 		// remove trailing slash
-		if(ereg("/$", $dirPath)) {
-			$dirPath = ereg_replace("/$", "", $dirPath);
-
-		}
+		$dirPath = rtrim($dirPath,'/');
 
 		// remove doubble slash
 		$le_installer_path = $_SERVER["DOCUMENT_ROOT"]."/webEdition/";

@@ -28,7 +28,7 @@
 	<link type="text/css" rel="stylesheet" id="leCSSStatus" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leStatus.css.php" media="screen" />
 
 	<!-- Use styles for forms -->
-	<link type="text/css" rel="stylesheet" id="leCSSForm" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/lePrint.css.php" media="print" />
+	<link type="text/css" rel="stylesheet" id="leCSSPrint" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/lePrint.css.php" media="print" />
 
 	<!-- JavaScript Effects -->
 	<script type="text/javascript" id="leJSEffects" src="<?php echo LE_ONLINE_INSTALLER_URL; ?>/js/leEffects.js"></script>
@@ -48,12 +48,9 @@
 	<!-- JavaScript Status Bar -->
 	<script type="text/javascript" id="leJSStatus" src="<?php echo LE_ONLINE_INSTALLER_URL; ?>/js/leStatus.js"></script>
 
-	<!-- JavaScript Buttons -->
-	<script type="text/javascript" id="leJSButton" src="<?php echo LE_ONLINE_INSTALLER_URL; ?>/js/leButton.js"></script>
-
 	<!-- external Javascript libraries -->
-	<script src="<?php echo LE_ONLINE_INSTALLER_URL; ?>/js/external/prototype.js" type="text/javascript" /></script>
-	<script src="<?php echo LE_ONLINE_INSTALLER_URL; ?>/js/external/scriptaculous.js?load=effects" type="text/javascript" /></script>
+	<script src="<?php echo LE_ONLINE_INSTALLER_URL; ?>/js/external/prototype.js" type="text/javascript" ></script>
+	<script src="<?php echo LE_ONLINE_INSTALLER_URL; ?>/js/external/scriptaculous.js?load=effects" type="text/javascript" ></script>
 
 	<script type="text/JavaScript">
 		var nextUrl = "";
@@ -76,7 +73,7 @@
 <div id="leToolbar">
 <div style="text-align:left; float:left; height:22px; padding:3px 10px 0px 24px; background:url(<?php echo leEmbeddedImage::get(LE_ONLINE_INSTALLER_PATH . "/img/leLayout/favicon.gif"); ?>) 3px center no-repeat;">webEdition Online Installer Version <?php print $LU_Version;?></div>
 <div style="text-align:right;float:right; padding:1px 10px 0px 10px;">
-<a style="cursor:pointer; float:right; padding-right:4px;" title="phpinfo" alt="phpinfo" onclick="javascript:togglePhpinfo();"><img src="<?php echo leEmbeddedImage::get(LE_ONLINE_INSTALLER_PATH . "/img/leLayout/php.gif"); ?>" alt="" style="" id="leEmoticonImg" /></a>
+<a style="cursor:pointer; float:right; padding-right:4px;" title="phpinfo" onclick="javascript:togglePhpinfo();"><img src="<?php echo leEmbeddedImage::get(LE_ONLINE_INSTALLER_PATH . "/img/leLayout/php.gif"); ?>" alt="phpinfo" style="" id="leEmoticonImg" /></a>
 </div>
 </div>
 
@@ -85,7 +82,7 @@
 <input type="hidden" name="leWizard" value="" />
 <input type="hidden" name="leStep" value="" />
 <input type="hidden" name="liveUpdateSession" value="" />
-
+<?php if(isset($_SESSION['testUpdate']) && $_SESSION['testUpdate'])  {echo '<input type="hidden" name="testUpdate" value="1" />';} else {echo '<input type="hidden" name="testUpdate" value="0" />';}; ?>
 <div id="leLogo">
 	<img src="<?php echo leEmbeddedImage::get(LE_ONLINE_INSTALLER_PATH . "/img/leLayout/logo.gif"); ?>" alt="" id="leLogoImg" />
 </div>
@@ -124,17 +121,17 @@
 </div>
 
 <div id="debug" style="visibility: <?php echo (isset($_REQUEST['debug']) ? "block" : "hidden" ); ?>">
-	<iframe id="leLoadFrame" src="<?php print $OnlineInstaller->getFirstStepUrl(); ?>" name="leLoadFrame" width="100%" height="100px" frameborder="0"></iframe>
+	<iframe id="leLoadFrame" src="<?php print $OnlineInstaller->getFirstStepUrl(); ?>" name="leLoadFrame" width="100%" height="100" frameborder="0"></iframe>
 </div>	
 
 <div id="phpinfo" style="display: none;">
-	<iframe id="lePhpinfoFrame" src="<?php print LE_INSTALLER_ADAPTER_URL ?>?phpinfo=true" name="lePhpinfoFrame" width="100%" height="444px" frameborder="0"></iframe>
+	<iframe id="lePhpinfoFrame" src="<?php print LE_INSTALLER_ADAPTER_URL ?>?phpinfo=true" name="lePhpinfoFrame" width="100%" height="444" frameborder="0"></iframe>
 	<a style="cursor:pointer; float:right; margin:0px; padding:2px 4px 0px 0px;" onclick="javascript:togglePhpinfo();"><?php echo $GLOBALS['lang']['Buttons']['close'];?></a>
 </div>
 <script type="text/javascript">
 	leButton.hide('print');
 	document.onkeypress = leForm.checkSubmit;
 </script>
-
+</form>
 </body>
 </html>

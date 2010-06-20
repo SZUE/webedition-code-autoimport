@@ -9,7 +9,7 @@
 *
  * VERSION HISTORY:
  * 
- * 3.0.0.0
+ * 2.5.0.0
  * 2010-02-23
  * - Various bugsfixes regarding all parts and steps of the online installation process
 
@@ -30,7 +30,7 @@
  * - updated layout
  * - renamed to "webEdition installer"
  * 
- * 3.0.0.0
+ * 2.5.0.0
  * - the webEdition installer is now a subproject of webEdition
  * - changelog moved to http://documentation.webedition.de
  */
@@ -141,6 +141,10 @@
 
 	}
 
+	// Beta-Version an- abwählen
+	$_SESSION['testUpdate'] = $leApplicationList[$_SESSION['leApplication']]['testUpdate'];
+	
+	
 	/**
 	 * End Online Installation Applications
 	 *

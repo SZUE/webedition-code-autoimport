@@ -16,8 +16,7 @@ class leCheckbox {
 			$_checked .= " checked=\"checked\"";
 		}
 		
-		$BROWSER = "";
-		if(eregi("safari",$_SERVER["HTTP_USER_AGENT"])){
+		if(stristr($_SERVER['HTTP_USER_AGENT'], 'safari')) {
 			$BROWSER = "SAFARI";
 		}
 		
@@ -31,7 +30,7 @@ class leCheckbox {
 				.	"value=\"" . $value . "\"" . $_attribs . $_checked . " />"
 				.	"</td>"
 				.	"<td class=\"defaultfont\" nowrap=\"nowrap\">"
-				.	($text != "" ? "<label" . (($BROWSER == "SAFARI") ? ' style=\"cursor:normal!important\"' : '')." for=\"" . $name . "\" style=\"cursor: pointer;-moz-user-select: none;-moz-outline: none;\" hidefocus=\"hidefocus\" unselectable=\"on\">&nbsp;" . $text . "</label>" : "")
+				.	($text != "" ? "<label" . (($BROWSER == "SAFARI") ? ' style=\"cursor:normal!important\"' : '')." for=\"" . $name . "\" style=\"cursor: pointer;-moz-user-select: none;-moz-outline: none;\" hidefocus=\"hidefocus\" >&nbsp;" . $text . "</label>" : "")
 				.	"</td>"
 				.	"</tr>"
 				.	"</table>";
