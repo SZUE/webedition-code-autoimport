@@ -24,7 +24,7 @@
  * Provides language strings.
  * Language: English
  */
-$l_start["we_homepage"] = 'http://www.webedition.biz/'; // TRANSLATE
+$l_start["we_homepage"] = 'http://www.webedition.de/'; // TRANSLATE
 
 $l_start["phpini_problems"] = 'Er is een probleem opgetreden met de sessie instellingen in uw php.ini-bestand%s!';
 $l_start["tmp_path"] = "De variable <b>session.bewaar_pad</b> is ingesteld op '%s'. Deze directory bestaat niet op uw server!";
