@@ -214,8 +214,7 @@
 		'part',
 		'clientLng',
 		'clientTargetVersionNumber',
-		'decreaseSpeed',
-		'testUpdate'
+		'decreaseSpeed'
 	);
 
 	if (isset($_REQUEST["leWizard"])) {

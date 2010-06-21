@@ -254,7 +254,7 @@ class leStep {
 	 */
 	function getLiveUpdateHttpResponse() {
 
-		global $LU_IgnoreRequestParameters, $LU_ParameterNames;
+		global $LU_IgnoreRequestParameters, $LU_ParameterNames,$leApplicationList;
 
 		$parameters = array();
 
@@ -276,7 +276,7 @@ class leStep {
 				$reqVars[$key] = $value;
 			}
 		}
-
+		$reqVars['testUpdate'] = $leApplicationList[$_SESSION['leApplication']]['testUpdate'];
 		$parameters['reqArray'] = base64_encode(serialize($reqVars));
 		$response = liveUpdateHttp::getHttpResponse($GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateServer'], $GLOBALS['leApplicationList'][$_SESSION['leApplication']]['UpdateScript'], $parameters);
 		$liveUpdateResponse = new liveUpdateResponse();

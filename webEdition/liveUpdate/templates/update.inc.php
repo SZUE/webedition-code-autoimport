@@ -26,12 +26,17 @@
 
 $we_button = new we_button();
 $searchButton = $we_button->create_button('search', $_SERVER['PHP_SELF'] . '?section=update&update_cmd=update&detail=lookForUpdate');
+if (isset($GLOBALS['LU_Variables']['clientSubVersion']) &&  $GLOBALS['LU_Variables']['clientSubVersion'] !=''){
+	$clientSubVersion = ' ('.$GLOBALS['LU_Variables']['clientSubVersion'].')';
+} else { 
+	$clientSubVersion = '';
+}
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
 	<td>' . $GLOBALS['l_liveUpdate']['update']['actualVersion'] . '</td>
-	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . '</td>
+	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . $clientSubVersion . '</td>
 </tr>
 <tr>
 	<td>' . $GLOBALS['l_liveUpdate']['update']['lastUpdate'] . '</td>
