@@ -3292,7 +3292,7 @@ function we_loadLanguageConfig()
 	
 	$file = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_conf_language.inc.php";
 	if (!file_exists($file) || !is_file($file)) {
-		if (WE_LANGUAGE == "Deutsch") {
+		if (WE_LANGUAGE == "Deutsch" || WE_LANGUAGE == "Deutsch_UTF-8") {
 			we_writeLanguageConfig('de_DE', array(
 				'de_DE', 'en_GB'
 			));
