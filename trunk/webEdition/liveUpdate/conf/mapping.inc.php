@@ -29,6 +29,7 @@ $LU_Variables = array(
 
 	// always needed variables
 	'clientVersion' => WE_VERSION,
+	'clientSubVersion' => WE_VERSION_SUPP,
 	'clientUid' => (defined('UID') ? UID : false),
 	'clientSyslng' => WE_LANGUAGE,
 	'clientLng' => $GLOBALS['WE_LANGUAGE'],

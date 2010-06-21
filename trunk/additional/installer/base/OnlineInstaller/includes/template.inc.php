@@ -82,7 +82,7 @@
 <input type="hidden" name="leWizard" value="" />
 <input type="hidden" name="leStep" value="" />
 <input type="hidden" name="liveUpdateSession" value="" />
-<?php if(isset($_SESSION['testUpdate']) && $_SESSION['testUpdate'])  {echo '<input type="hidden" name="testUpdate" value="1" />';} else {echo '<input type="hidden" name="testUpdate" value="0" />';}; ?>
+<?php if(isset($_SESSION['testUpdate']) && $_SESSION['testUpdate'])  {echo '<input type="hidden" name="testUpdate" value="1" />';$_REQUEST['testUpdate']=1;} else {echo '<input type="hidden" name="testUpdate" value="0" />';$_REQUEST['testUpdate']=0;}; ?>
 <div id="leLogo">
 	<img src="<?php echo leEmbeddedImage::get(LE_ONLINE_INSTALLER_PATH . "/img/leLayout/logo.gif"); ?>" alt="" id="leLogoImg" />
 </div>
