@@ -34,7 +34,7 @@ class leButton {
 			$_on_mouse_over = "window.status='" . $text . "';return true;";
 		} else {
 			$_on_mouse_over = "";
-			$text = '<img src="' . LE_ONLINE_INSTALLER_URL . '/img/leButton/icons/'.$text.'" class="leBtnImage" />';
+			$text = '<img src="' . LE_ONLINE_INSTALLER_URL . '/img/leButton/'.$text.'" class="leBtnImage" />';
 		}
 
 		//	Onmouseout

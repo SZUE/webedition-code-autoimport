@@ -27,7 +27,7 @@
 $we_button = new we_button();
 $searchButton = $we_button->create_button('search', $_SERVER['PHP_SELF'] . '?section=update&update_cmd=update&detail=lookForUpdate');
 if (isset($GLOBALS['LU_Variables']['clientSubVersion']) &&  $GLOBALS['LU_Variables']['clientSubVersion'] !=''){
-	$clientSubVersion = ' ('.$GLOBALS['LU_Variables']['clientSubVersion'].')';
+	$clientSubVersion = ' (SVN-Revision: '.$GLOBALS['LU_Variables']['clientSubVersion'].')';
 } else { 
 	$clientSubVersion = '';
 }
