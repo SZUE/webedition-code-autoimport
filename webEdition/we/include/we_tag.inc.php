@@ -7105,25 +7105,30 @@ function we_tag_write($attribs, $content)
 						$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $GLOBALS["we_$type"][$name]->Text);
 					} else {
 						
-						$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);
-						if($objexists && $onduplicate == 'abort') {
-							$GLOBALS["we_object_write_ok"] = false;
-							$doWrite = false;
-						}
-						if($objexists && $onduplicate == 'overwrite') {
-							$GLOBALS["we_$type"][$name]->ID = $objexists;
-							$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $objname);
+						$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);  
+						if($objexists==''){
 							$GLOBALS["we_$type"][$name]->Text = $objname;
-						}
-						if($objexists && $onduplicate == 'increment') {
-							$z=0;
-							$footext = $objname."_".$z;
-							while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$footext))."'", "ID", $db)){
-								$z++;
-								$footext = $objname."_".$z;
+							$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $objname);
+						} else {
+							if($onduplicate == 'abort') {
+								$GLOBALS["we_object_write_ok"] = false;
+								$doWrite = false;
 							}
-							$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $footext);
-							$GLOBALS["we_$type"][$name]->Text = $footext;
+							if($onduplicate == 'overwrite') {
+								$GLOBALS["we_$type"][$name]->ID = $objexists;
+								$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $objname);
+								$GLOBALS["we_$type"][$name]->Text = $objname;
+							}
+							if($onduplicate == 'increment') {
+								$z=0;
+								$footext = $objname."_".$z;
+								while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$footext))."'", "ID", $db)){
+									$z++;
+									$footext = $objname."_".$z;
+								}
+								$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $footext);
+								$GLOBALS["we_$type"][$name]->Text = $footext;
+							}
 						}	
 					}
 				}
