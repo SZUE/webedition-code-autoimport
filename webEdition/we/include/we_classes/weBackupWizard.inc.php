@@ -468,9 +468,11 @@ class weBackupWizard{
 			$extra_files=array();
 			for ($i=0; $i<=1;$i++){
 				if ($i==0) {
-					$dstr = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR;				
+					$dstr = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR;
+					$adddatadir = '';				
 				} else {
 					$dstr = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR.'data/';
+					$adddatadir = 'data/';
 				}
 				$d = dir($dstr);
 				while($entry=$d->read()) {
@@ -490,23 +492,23 @@ class weBackupWizard{
 	
 								if (!($ts<1004569200)) {
 									$comp=weFile::getCompression($entry);
-									$files[$entry]=$l_backup["backup_form"].date("d.m.Y H:i:s",$ts).($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
+									$files[$adddatadir.$entry]=$l_backup["backup_form"].date("d.m.Y H:i:s",$ts).($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
 								} else if ((substr_count($ts, '_') == 6)) {
 									$comp=weFile::getCompression($entry);
 									$_dateParts = explode('__', $ts);
 									$_date = explode('_', $_dateParts[0]);
 									$_date = array_reverse($_date);
-									$files[$entry]=$l_backup["backup_form"] . ( implode('.', $_date) .  ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
+									$files[$adddatadir.$entry]=$l_backup["backup_form"] . ( implode('.', $_date) .  ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($comp && $comp!="none" ? " ($comp)" : "")." ".$filesize." KB";
 								} else {
-									$extra_files[$entry]=$entry." $filedate $filesize KB";
+									$extra_files[$adddatadir.$entry]=$entry." $filedate $filesize KB";
 								}
 							}
 							else {
-								$extra_files[$entry]=$entry." $filedate $filesize KB";
+								$extra_files[$adddatadir.$entry]=$entry." $filedate $filesize KB";
 							}
 						}
 						else {
-							$extra_files[$entry]=$entry." $filedate $filesize KB";
+							$extra_files[$adddatadir.$entry]=$entry." $filedate $filesize KB";
 						}
 					}
 				}
@@ -518,7 +520,6 @@ class weBackupWizard{
 			$i=0;
 
 			/*foreach($files as $fk=>$fv)	$select->addOption($fk,$fv);*/
-
 
 			$default = we_htmlSelect::getNewOptionGroup(array('style'=>'font-weight: bold; font-style: normal; color: darkblue;','label'=>$l_backup['we_backups']));
 			$other = we_htmlSelect::getNewOptionGroup(array('style'=>'font-weight: bold; font-style: normal; color: darkblue;','label'=>$l_backup['other_files']));
