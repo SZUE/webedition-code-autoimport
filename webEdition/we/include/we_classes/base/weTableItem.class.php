@@ -95,6 +95,7 @@
 		function doConvertCharset($was){ //dies konvertiert die Daten, die binary im backup waren
 			$tables = array();
 			$tables[CONTENT_TABLE] = array('Dat');
+			
 			if(defined("OBJECT_TABLE")) {
 				$tables[OBJECT_FILES_TABLE] = array('Category');
 				
@@ -154,6 +155,15 @@
 			} 
 			return false;		
 		}
+		function doPrepareCorrectSerializedLenghtValues($was){
+			$tables = array();
+			$tables[CATEGORY_TABLE] = array('Catfields');
+			$table = $this->table;
+			if (array_key_exists($table , $tables)){
+				if ( in_array($was,$tables[$table]) ) {return true;}			
+			} 
+			return false;	
+		}
 		function doCorrectSerializedExactCharsetString($was){
 			$tables = array();
 			if(defined("OBJECT_TABLE")) {
@@ -191,9 +201,13 @@
 				if ($this->doCorrectExactCharsetString($key)){
 					$val = convertExactCharsetString($fromC,$toC,$val);
 				}
-				if ($this->doCorrectSerializedLenghtValues($key))	{	
+				if ($this->doCorrectSerializedLenghtValues($key))	{
+					if ($this->doPrepareCorrectSerializedLenghtValues($key))	{
+						$val = convertCharsetEncoding($fromC,$toC,$val);
+					}
 					$val =  correctSerDataISOtoUTF($val);
 				}
+				
 				if ($this->doCorrectSerializedExactCharsetString($key))	{ 
 					$mydata = $val;
 					$mydataUS = @unserialize($mydata);

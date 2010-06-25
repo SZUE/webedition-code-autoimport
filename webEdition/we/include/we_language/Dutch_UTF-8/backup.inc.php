@@ -214,7 +214,7 @@ $l_backup['we_backups'] = 'webEdition backups';
 $l_backup['other_files'] = 'Andere bestanden';
 
 $l_backup['filename_info'] = 'Voer de naam van het backup bestand in.';
-$l_backup['backup_log_exp'] = 'De log wordt bewaard in /webEdition/we_backup/tmp/lastlog.php';
+$l_backup['backup_log_exp'] = 'De log wordt bewaard in /webEdition/we_backup/data/lastlog.php';
 $l_backup['export_backup_log'] = 'Maak log aan';
 
 $l_backup['download_file'] = 'Download bestand';

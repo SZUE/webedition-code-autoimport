@@ -218,7 +218,7 @@ $l_backup['we_backups'] = 'webEdition Backups';
 $l_backup['other_files'] = 'Sonstige Datei';
 
 $l_backup['filename_info'] = 'Geben Sie hier der Ziel-Backup-Datei einen Namen.';
-$l_backup['backup_log_exp'] = 'Das Logbuch wird in /webEdition/we_backup/tmp/lastlog.php erstellt';
+$l_backup['backup_log_exp'] = 'Das Logbuch wird in /webEdition/we_backup/data/lastlog.php erstellt';
 $l_backup['export_backup_log'] = 'Logbuch erstellen';
 
 $l_backup['download_file'] = 'Datei herunterladen';

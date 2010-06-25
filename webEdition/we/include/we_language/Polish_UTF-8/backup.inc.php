@@ -216,7 +216,7 @@ $l_backup['we_backups'] = 'Kopie bezpieczeństwa webEdition';
 $l_backup['other_files'] = 'Pozostałe pliki';
 
 $l_backup['filename_info'] = 'Nadaj nazwę docelowemu plikowi kopii bezpieczeństwa';
-$l_backup['backup_log_exp'] = 'Utworzono log w /webEdition/we_backup/tmp/lastlog.php';
+$l_backup['backup_log_exp'] = 'Utworzono log w /webEdition/we_backup/data/lastlog.php';
 $l_backup['export_backup_log'] = 'Utwórz log';
 
 $l_backup['download_file'] = 'Pobierz plik';

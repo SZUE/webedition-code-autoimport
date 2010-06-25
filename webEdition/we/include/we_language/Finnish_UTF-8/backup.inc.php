@@ -215,7 +215,7 @@ $l_backup['we_backups'] = 'webEdition varmuuskopiot';
 $l_backup['other_files'] = 'Muut tiedostot';
 
 $l_backup['filename_info'] = 'Anna varmuuskopiotiedoston nimi.';
-$l_backup['backup_log_exp'] = 'Lokitiedosto tallennetaan kohteeseen /webEdition/we_backup/tmp/lastlog.php';
+$l_backup['backup_log_exp'] = 'Lokitiedosto tallennetaan kohteeseen /webEdition/we_backup/data/lastlog.php';
 $l_backup['export_backup_log'] = 'Luo loki';
 
 $l_backup['download_file'] = 'Lataa tiedosto';

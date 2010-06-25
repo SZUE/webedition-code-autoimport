@@ -216,7 +216,7 @@ $l_backup['we_backups'] = 'Резервные файлы webEdition';
 $l_backup['other_files'] = 'Другие файлы';
 
 $l_backup['filename_info'] = 'Введите имя резервного файла.';
-$l_backup['backup_log_exp'] = 'Лог сохранен в /webEdition/we_backup/tmp/lastlog.php';
+$l_backup['backup_log_exp'] = 'Лог сохранен в /webEdition/we_backup/data/lastlog.php';
 $l_backup['export_backup_log'] = 'Создать лог';
 
 $l_backup['download_file'] = 'Сохранить файл';
