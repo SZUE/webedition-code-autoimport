@@ -216,7 +216,7 @@ $l_backup['we_backups'] = 'Sauvegardes de webEdition';
 $l_backup['other_files'] = 'Fichiers divers';
 
 $l_backup['filename_info'] = 'Saisissez le nom du fichier de sauvegarde.';
-$l_backup['backup_log_exp'] = 'Le journal sera sauvegardé sous /webEdition/we_backup/tmp/lastlog.php';
+$l_backup['backup_log_exp'] = 'Le journal sera sauvegardé sous /webEdition/we_backup/data/lastlog.php';
 $l_backup['export_backup_log'] = 'Créer un journal';
 
 $l_backup['download_file'] = 'Télécharger le fichier';

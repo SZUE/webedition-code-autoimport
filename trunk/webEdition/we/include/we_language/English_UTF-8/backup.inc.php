@@ -214,7 +214,7 @@ $l_backup['we_backups'] = 'webEdition Backups';
 $l_backup['other_files'] = 'Other files';
 
 $l_backup['filename_info'] = 'Enter the name of the backup file.';
-$l_backup['backup_log_exp'] = 'The log will be saved in /webEdition/we_backup/tmp/lastlog.php';
+$l_backup['backup_log_exp'] = 'The log will be saved in /webEdition/we_backup/data/lastlog.php';
 $l_backup['export_backup_log'] = 'Create log';
 
 $l_backup['download_file'] = 'Download file';

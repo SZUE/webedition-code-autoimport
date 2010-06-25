@@ -216,7 +216,7 @@ $l_backup['we_backups'] = 'Copias de seguridad de webEdition';
 $l_backup['other_files'] = 'Otros ficheros';
 
 $l_backup['filename_info'] = 'Entre el nombre del archivo de copia.';
-$l_backup['backup_log_exp'] = 'El diario sera guardado en /webEdition/we_backup/tmp/lastlog.php';
+$l_backup['backup_log_exp'] = 'El diario sera guardado en /webEdition/we_backup/data/lastlog.php';
 $l_backup['export_backup_log'] = 'Crear diario';
 
 $l_backup['download_file'] = 'Descargar Archivo';
