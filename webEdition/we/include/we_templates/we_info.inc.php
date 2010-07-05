@@ -68,7 +68,7 @@ $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 //	3rd Version
 $_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,1));
 $we_version = preg_replace('/\.0$/','', WE_VERSION);
-if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='') $we_version .= " (SVN-Revision: ".WE_VERSION_SUPP.")";
+if(defined("WE_SVNREV") && WE_SVNREV!='0000') $we_version .= " (SVN-Revision: ".WE_SVNREV.")";
 $_table->setCol($_actRow,1,array(	"width" => $_middlePart,
 							"class" => "small"), "Version: " . $we_version);
 $_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));

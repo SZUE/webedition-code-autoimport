@@ -493,7 +493,7 @@ EOF;
 		$SoftwareVersion = "Version ".$version;
 		$SoftwareVersionFiller = str_repeat(" ", $HeaderCols - strlen($SoftwareVersion));
 		
-		$PHPVersion = "PHP version 5.0 or greater";
+		$PHPVersion = "PHP version 5.2.4 or greater";
 		$PHPVersionFiller = str_repeat(" ", $HeaderCols - strlen($PHPVersion));
 
 		$AvailableSoftware = "Applications: webEdition, pageLogger";
