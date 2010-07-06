@@ -156,7 +156,7 @@ $lang["Step"]["SessionAndCookieTest"]["register_globals_warning"] = "register_gl
 
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag"] = "Short Open Tag";
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag_OK"] = "Short Open Tag nicht aktiviert";
-$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is activiert!<br />Die Anwendungen laufen läuft mit aktiviertem  <a href=\"http://www.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, wir empfehlen dies aber nicht, da es zu Problemen führen kann, wenn mit XML-Files gearbeitet wird.";
+$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is activiert!<br />Die Anwendungen laufen mit aktiviertem  <a href=\"http://www.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, wir empfehlen dies aber nicht, da es zu Problemen führen kann, wenn mit XML-Files gearbeitet wird.";
 
 // DetermineFilesInstaller
 $lang["Step"]["DetermineFilesInstaller"]["title"] = "Daten ermitteln";
