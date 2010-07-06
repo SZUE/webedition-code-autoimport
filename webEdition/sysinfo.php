@@ -138,6 +138,9 @@
 		}
 		
 		$weVersion  = WE_VERSION;
+		if (defined("WE_SVNREV") &&  WE_SVNREV!='0000'){
+			$weVersion  .= ' (SVN-Revision: '.WE_SVNREV.')';
+		}
 		
 		// GD_VERSION is mor precise but only available in PHP 5.2.4 or newer
 		if(is_callable("gd_info")) {
