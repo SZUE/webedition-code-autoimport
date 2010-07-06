@@ -23,9 +23,9 @@ $lang["Application"]["webEdition"]["description"] = "Professional open source we
 $lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
 $lang["Application"]["webEdition"]["link"] = "http://www.webedition.org/";
 
-$lang["Application"]["webEditionBeta"]["name"] = "webEdition Beta";
-$lang["Application"]["webEditionBeta"]["description"] = "Professional open source web content management system.";
-$lang["Application"]["webEditionBeta"]["longdescription"] = "Alpha and Beta versions are used to find errors before a new official version is released. <b>They should never be used for productive sites. We take no responsibility for any damages or loss of data.</b>";
+$lang["Application"]["webEditionBeta"]["name"] = "webEdition incl. Pre-Release Versions";
+$lang["Application"]["webEditionBeta"]["description"] = "Professional web content management system.";
+$lang["Application"]["webEditionBeta"]["longdescription"] = "Pre-Release versions (nightly builds, Alpha-, Beta and RC-Versions) are used to find errors before a new official version is released. <b>They should never be used for productive sites. We take no responsibility for any damages or loss of data.</b>";
 $lang["Application"]["webEditionBeta"]["link"] = "http://www.webedition.org/";
 
 $lang["Application"]["pageLogger"]["name"] = "pageLogger 1.6";
