@@ -23,9 +23,9 @@ $lang["Application"]["webEdition"]["description"] = "Professional web content ma
 $lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is an OpenSource CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
 $lang["Application"]["webEdition"]["link"] = "http://www.webedition.org/";
 
-$lang["Application"]["webEditionBeta"]["name"] = "webEdition incl. Alpha and Beta Versions";
+$lang["Application"]["webEditionBeta"]["name"] = "webEdition incl. Pre-Release Versions";
 $lang["Application"]["webEditionBeta"]["description"] = "Professional web content management system.";
-$lang["Application"]["webEditionBeta"]["longdescription"] = "Alpha and Beta versions are used to find errors before a new official version is released. <b>They should never be used for productive sites. We take no responsibility for any damages or loss of data.</b>";
+$lang["Application"]["webEditionBeta"]["longdescription"] = "Pre-Release versions (nightly builds, Alpha-, Beta and RC-Versions) are used to find errors before a new official version is released. <b>They should never be used for productive sites. We take no responsibility for any damages or loss of data.</b>";
 $lang["Application"]["webEditionBeta"]["link"] = "http://www.webedition.org/";
 
 
