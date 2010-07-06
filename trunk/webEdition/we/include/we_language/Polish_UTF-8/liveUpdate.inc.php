@@ -99,10 +99,10 @@ $l_liveUpdate['updatelog']['legendMessages'] = 'Messages'; // TRANSLATE
 $l_liveUpdate['updatelog']['legendNotices'] = 'Notices'; // TRANSLATE
 $l_liveUpdate['updatelog']['legendErrors'] = 'Errors'; // TRANSLATE
 $l_liveUpdate['updatelog']['confirmDelete'] = 'Do you really want to delete all selected entries?';
-$l_liveUpdate['tabs']['beta'] = 'Beta Versions';// TRANSLATE
-$l_liveUpdate['beta']['headline'] = 'Shall Beta-Version be included in the search?';// TRANSLATE
-$l_liveUpdate['beta']['lookForUpdate'] = 'search for Beta-Versions';// TRANSLATE
-$l_liveUpdate['beta']['warning'] = '<b>Beta-Versions should never be used in produktions-sites!</b><br/>They are provided for testing purposes only and aim at easing <br/>the search for severe erros before an official version is published.';// TRANSLATE
 
+$l_liveUpdate['tabs']['beta'] = 'Pre-Release Versions';// TRANSLATE
+$l_liveUpdate['beta']['headline'] = 'Shall Pre-Release Versions be included in the search?';// TRANSLATE
+$l_liveUpdate['beta']['lookForUpdate'] = 'search for Pre-Release Versions';// TRANSLATE
+$l_liveUpdate['beta']['warning'] = '<b>Pre-Release versions,<br/> such as <u>nightly Builds, Alpha-, Beta- und RC-Versions</u>,<br/> should never be used in produktion sites!</b><br/><br/>They are provided for testing purposes only and aim at easing <br/>the search for severe erros before an official version is published.';// TRANSLATE
 
 ?>
