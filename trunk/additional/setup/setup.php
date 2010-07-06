@@ -878,17 +878,17 @@ function tpl_info($text = "") {
 
 // error message:
 function tpl_error($text = "") {
-	return '<p><font color="red">ERROR: </font>'.$text.'</p>';
+	return '<li><font color="red">ERROR: </font>'.$text.'</li>';
 }
 
 // succes message:
 function tpl_ok($text = "") {
-	return '<p>'.$text.' - <font color="green">OK</font></p>';
+	return '<li>'.$text.' - <font color="green">OK</font></li>';
 }
 
 // warning message:
 function tpl_warning($text = "") {
-	return '<p><font color="orange">WARNING:</font> '.$text.'</p>';
+	return '<li><font color="orange">WARNING:</font> '.$text.'</li>';
 }
 
 // title text
@@ -967,8 +967,11 @@ $navigation = tpl_navigation($currentStep["id"]);
 $bufferedOutput = ob_get_contents();
 ob_end_clean();
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
 <head>
 	<title>webEdition &bull; initial configuration</title>
 	<meta http-equiv="expires" content="0">
@@ -980,6 +983,7 @@ ob_end_clean();
 	body, div, div.small, table, td, font, li, form {
 		font-size:8pt;
 	}
+	table {font-weight:normal;}
 	fieldset {
 		border:1px solid #888;
 	}
@@ -1008,11 +1012,11 @@ ob_end_clean();
 	<link href="/webEdition/css/global.php?WE_LANGUAGE=English_UTF-8" rel="styleSheet" type="text/css" />
 	<?php echo $header; ?>
 </head>
-<body bgcolor="#386AAB" class="header" onLoad="" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<body bgcolor="#386AAB" class="header" onLoad="" style="margin:0px">
 <div class="debug"<?php if(isset($_SESSION["debug"])) {echo ' style="display:block;"';} else {echo ' style="display:none;"';} ?>>
 <?php echo $bufferedOutput; ?>
 </div>
-<table width="100%" height="100%" style="width: 100%; height: 100%;">
+<table width="100%" style="width: 100%; height: 100%;">
 	<tr>
 		<td align="center" valign="middle">
 			<form action="/setup.php?step=<?php echo ($currentStep["id"] + 1) ?>" method="post">
