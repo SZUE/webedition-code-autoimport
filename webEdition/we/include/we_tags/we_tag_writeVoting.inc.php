@@ -45,7 +45,9 @@ function we_tag_writeVoting($attribs, $content) {
 	$additionalFieldsArray = makeArrayFromCSV($additionalFields);
 	$addFields = array();
 	foreach ($additionalFieldsArray as $field){
-		$addFields[$field] = $_REQUEST[$field];
+		if(isset($_REQUEST[$field])) {
+			$addFields[$field] = $_REQUEST[$field];
+		}
 	}
 	
 	
