@@ -21,7 +21,7 @@ $lang["Application"]["webEdition5"]["link"] = "http://www.living-e.de/produkte/w
 
 $lang["Application"]["webEdition"]["name"] = "webEdition 6";
 $lang["Application"]["webEdition"]["description"] = "Professionelles Open Source Web Content Management System.";
-$lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
+$lang["Application"]["webEdition"]["longdescription"] = "Das webEdition Web CMS (Content-Management-System) ist ein OpenSource CMS das auf PHP und MySQL basiert. Es ist das perfekte CMS für Nutzer, die Ihre Website komfortabel selbst verwalten wollen. Das webEdition CMS hat ein großes Funktionsspektrum und kann einfach an individuelle Bedürfnisse angepasst werden";
 $lang["Application"]["webEdition"]["link"] = "http://www.webedition.org/";
 
 $lang["Application"]["webEditionBeta"]["name"] = "webEdition einschließlich Pre-Release Versionen";
@@ -32,8 +32,8 @@ $lang["Application"]["webEditionBeta"]["link"] = "http://www.webedition.org/";
 
 $lang["Application"]["pageLogger"]["name"] = "pageLogger 1.6";
 $lang["Application"]["pageLogger"]["description"] = "Open Source Trackingsystem für Ihre Homepage.";
-$lang["Application"]["pageLogger"]["longdescription"] = "pageLogger records visitor traffic on your website in real time, and does not rely on server log files. At the push of a button you get all the details about recent visitors to your website - clearly and efficiently displayed.";
-$lang["Application"]["pageLogger"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
+$lang["Application"]["pageLogger"]["longdescription"] = "pageLogger speichert den Besucherverkehr Ihrer Website in Realzeit und verlässt sich nicht auf Server-Log-Dateien. Auf Knopfdruck erhalten Sie alle relevanten Informationen über Ihre Besucher, klar und effizient dargestellt.";
+$lang["Application"]["pageLogger"]["link"] = "http://www.pagelogger.com/de/";
 
 
 //
