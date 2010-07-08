@@ -830,17 +830,24 @@ function step_finish() {
 }
 
 function step_cleanup() {
-	@unlink("./README.txt");
-	@unlink("./BUILDDATE");
-	@unlink("./INSTALL.txt");
-	@unlink("./LICENSE.txt");
-	@unlink("./database.sql");
-	@unlink("./setup.php");
+	$filesToDelete = array(
+		".".DIRECTORY_SEPARATOR."README.txt",
+		".".DIRECTORY_SEPARATOR."BUILD	",
+		".".DIRECTORY_SEPARATOR."BUILDDATE",
+		".".DIRECTORY_SEPARATOR."INSTALL.txt",
+		".".DIRECTORY_SEPARATOR."LICENSE.txt",
+		".".DIRECTORY_SEPARATOR."database.sql",
+		".".DIRECTORY_SEPARATOR."setup.php"
+	);
 	$error = false;
-	if(is_readable("./README.txt")) $error = true;
-	if(is_readable("./INSTALL.txt")) $error = true;
-	if(is_readable("./LICENSE.txt")) $error = true;
-	if(is_readable("./database.sql")) $error = true;
+	foreach($filesToDelete as $fileToDelete) {
+		if(is_file($fileToDelete)) {
+			@unlink($fileToDelete);
+			if(is_readable($fileToDelete) && $fileToDelete != ".".DIRECTORY_SEPARATOR."setup.php") {
+				$error = true;
+			}
+		}
+	}
 	//if(is_readable("./setup.php")) $error = true;
 	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\">clicking here</a>. 
 	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
