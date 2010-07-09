@@ -146,6 +146,9 @@ if (!is_dir($_SERVER["DOCUMENT_ROOT"].VERSION_DIR)) {
 if (!is_dir($_SERVER["DOCUMENT_ROOT"].SITE_DIR)) {
 	createLocalFolder($_SERVER["DOCUMENT_ROOT"] . SITE_DIR);
 }
+if (!is_dir($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'we/include/we_hook/custom_hooks/')) {
+	createLocalFolder($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'we/include/we_hook/custom_hooks/');
+}
 if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR)) {
 	createLocalFolder($_SERVER["DOCUMENT_ROOT"] . BACKUP_DIR);
 }
