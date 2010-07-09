@@ -2408,7 +2408,7 @@ $this->checkAndCorrectParent();
 	}
 
 	function i_filenameNotValid(){
-		return eregi('[^a-z0-9\._\-]',$this->Text);
+		return preg_match('/[^a-z0-9\._\-]/i',$this->Text);
 	}
 
 	function i_filenameNotAllowed(){

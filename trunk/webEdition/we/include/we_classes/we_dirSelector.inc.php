@@ -796,8 +796,10 @@ top.clearEntries();
 			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["filename_empty"], WE_MESSAGE_ERROR);
 		//}elseif(strpos($txt,".")!==false){ entfernt fuer #4333
 			//print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notAllowed"], WE_MESSAGE_ERROR);
-		}elseif(substr($txt,-1)=='.'){ // neue Version testet auf "." am ende, analog zu i_filenameNotAllowed in we_root 
+		}elseif(substr($txt,-1)=='.'){ // neue Version für 4333 testet auf "." am ende, analog zu i_filenameNotAllowed in we_root 
 			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notAllowed"], WE_MESSAGE_ERROR);
+		}elseif(preg_match('/[^a-z0-9\._\-]/i',$txt)){ // Test auf andere verbotene Zeichen
+			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"], WE_MESSAGE_ERROR);	
 		}elseif($_REQUEST['id']==0 && strtolower($txt)=="webedition"){
 			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["we_filename_notAllowed"], WE_MESSAGE_ERROR);
 		}else{
@@ -825,7 +827,7 @@ top.clearEntries();
 				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(eregi('[^a-z0-9\._\-]',$folder->Filename)){
+				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
 					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
@@ -932,7 +934,7 @@ top.clearEntries();
 				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(eregi('[^a-z0-9\._\-]',$folder->Filename)){
+				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
 					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else if(in_workspace($this->we_editDirID,get_ws($this->table),$this->table,$this->db)){

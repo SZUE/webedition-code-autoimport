@@ -61,7 +61,7 @@ top.clearEntries();
 				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(eregi('[^a-z0-9\._\-]',$folder->Filename)){
+				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
 					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
@@ -120,7 +120,7 @@ top.clearEntries();
 				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(eregi('[^a-z0-9\._\-]',$folder->Filename)){
+				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
 					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
