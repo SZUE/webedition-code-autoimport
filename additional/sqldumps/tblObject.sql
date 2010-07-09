@@ -28,7 +28,7 @@ CREATE TABLE tblObject (
   Workspaces varchar(255) NOT NULL default '',
   DefaultWorkspaces varchar(255) NOT NULL default '',
   Templates varchar(255) NOT NULL default '',
-  CacheType ENUM( '', 'none', 'tag', 'document', 'full' ) DEFAULT 'none' NOT NULL,
+  `CacheType` enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID)
 ) TYPE=MyISAM;
