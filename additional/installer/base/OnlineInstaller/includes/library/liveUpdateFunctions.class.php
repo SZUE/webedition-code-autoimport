@@ -377,7 +377,9 @@ class liveUpdateFunctions {
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
 			if ($needle) {
-				$newContent = ereg_replace($needle, $replace, $oldContent);
+				$newneedle= preg_quote($needle, '~'); 
+				$newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
+				//$newContent = ereg_replace($needle, $replace, $oldContent);
 
 			} else {
 				$newContent = $replace;

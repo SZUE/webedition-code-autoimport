@@ -1,7 +1,7 @@
 <?php
 class SessionAndCookieTest extends leStep {
 
-	var $AutoContinue = 20;
+	var $AutoContinue = 9;
 
 	function ini_get_bool($val) {
 		$bool = ini_get($val);
