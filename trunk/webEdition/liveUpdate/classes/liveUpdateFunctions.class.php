@@ -495,11 +495,14 @@ class liveUpdateFunctions {
            $extra = strtoupper($fieldInfo['Extra']);
 
            if ($isNew) {
-
-               $queries[] = "ALTER TABLE $tableName ADD " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Type']) . " $null $default $extra";
+				//Bug #4431, siehe unten
+               //$queries[] = "ALTER TABLE $tableName ADD " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Type']) . " $null $default $extra";
+			   $queries[] = "ALTER TABLE $tableName ADD " . mysql_real_escape_string($fieldInfo['Field']) . " " . $fieldInfo['Type'] . " $null $default $extra";
            } else {
-
-               $queries[] = "ALTER TABLE $tableName CHANGE " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Type']) . " $null $default $extra";
+				//Bug #4431
+               //$queries[] = "ALTER TABLE $tableName CHANGE " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Type']) . " $null $default $extra";
+			   // das  mysql_real_escape_string bei $fieldInfo['Type'] führt für enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
+			   $queries[] = "ALTER TABLE $tableName CHANGE " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Field']) . " " .$fieldInfo['Type'] . " $null $default $extra";
            }
        }
        return $queries;
