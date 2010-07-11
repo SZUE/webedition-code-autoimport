@@ -328,7 +328,7 @@ class we_util_Mailer extends Zend_Mail
 
 	public function parseHtml2TextPart($html)
 	{
-		$lineBreacks = array("\n" => "", "\r" => "", "</h1>" => "</h1>\n\n", "</h2>" => "</h2>\n\n", "</h3>" => "</h3>\n\n", "</h4>" => "</h4>\n\n", "</h5>" => "</h5>\n\n", "</h6>" => "</h6>\n\n", "</p>" => "</p>\n\n", "</div>" => "</div>\n", "</li>" => "</li>\n");
+		$lineBreacks = array("\n" => "", "\r" => "", "</h1>" => "</h1>\n\n", "</h2>" => "</h2>\n\n", "</h3>" => "</h3>\n\n", "</h4>" => "</h4>\n\n", "</h5>" => "</h5>\n\n", "</h6>" => "</h6>\n\n", "</p>" => "</p>\n\n", "</div>" => "</div>\n", "</li>" => "</li>\n","&lt;" => "<",,"&gt;" => ">");
 		
 		$textpart = strtr($html, $lineBreacks);
 		$textpart = preg_replace('/<br[^>]*>/s', "\n", $textpart);
