@@ -6016,29 +6016,35 @@ function we_tag_sessionStart($attribs, $content)
 				}
 				if (isset($_REQUEST["s"]["Username"]) && isset($_REQUEST["s"]["Password"]) && !(isset(
 						$_REQUEST["s"]["ID"]))) {
-					$u = getHash(
-							'SELECT * from ' . CUSTOMER_TABLE . ' WHERE Username="' . mysql_real_escape_string($_REQUEST['s']["Username"]) . '"', 
-							$GLOBALS["DB_WE"]);
-					if (isset($u["Password"]) && $u["LoginDenied"] != 1) {
-						if ($_REQUEST['s']["Username"] == $u["Username"] && $_REQUEST['s']["Password"] == $u["Password"]) {
-							$_SESSION["webuser"] = $u;
-							$_SESSION["webuser"]["registered"] = true;
-							$GLOBALS["DB_WE"]->query(
-									"UPDATE " . CUSTOMER_TABLE . " SET LastLogin='" . time() . "' WHERE ID='" . abs($_SESSION["webuser"]["ID"]) . "'");
+					if($_REQUEST["s"]["Username"] != ''){
+						$u = getHash(
+								'SELECT * from ' . CUSTOMER_TABLE . ' WHERE Username="' . mysql_real_escape_string($_REQUEST['s']["Username"]) . '"', 
+								$GLOBALS["DB_WE"]);
+						if (isset($u["Password"]) && $u["LoginDenied"] != 1) {
+							if ($_REQUEST['s']["Username"] == $u["Username"] && $_REQUEST['s']["Password"] == $u["Password"]) {
+								$_SESSION["webuser"] = $u;
+								$_SESSION["webuser"]["registered"] = true;
+								$GLOBALS["DB_WE"]->query(
+										"UPDATE " . CUSTOMER_TABLE . " SET LastLogin='" . time() . "' WHERE ID='" . abs($_SESSION["webuser"]["ID"]) . "'");
+							} else {
+								$_SESSION["webuser"] = array(
+									"registered" => false, "loginfailed" => true
+								);
+							}
+						
 						} else {
 							$_SESSION["webuser"] = array(
 								"registered" => false, "loginfailed" => true
 							);
 						}
-					
 					} else {
 						$_SESSION["webuser"] = array(
 							"registered" => false, "loginfailed" => true
-						);
+						);					
 					}
 				}
 				
-				if (isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"]) {
+				if (isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && isset($_SESSION["webuser"]["Username"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"] && $_SESSION["webuser"]["Username"]!='') {
 					$lastAccessExists = false;
 					$foo = $GLOBALS["DB_WE"]->metadata(CUSTOMER_TABLE);
 					for ($i = 0; $i < sizeof($foo); $i++) {
