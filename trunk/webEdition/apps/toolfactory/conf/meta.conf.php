@@ -25,5 +25,5 @@ $metaInfo = array(
 	'classname'=>'toolfactory',
 	'maintable'=>'',
 	'datasource'=>'custom:',
-	'startpermission'=>'EDIT_APP_TOOLFACTORY'
+	'startpermission'=>'USE_APP_TOOLFACTORY'
 );

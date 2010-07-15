@@ -91,6 +91,17 @@ class we_app_TopFrameView extends Zend_View
 		$warningMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageWarning, true);
 		
 		$appName = addslashes($translate->_($this->appName));
+		//we_util_Strings::p_r($this);
+		if (file_exists($_SERVER['DOCUMENT_ROOT'].$this->appDir. DIRECTORY_SEPARATOR.'info.php')){
+			$infowindow = $this->appDir. DIRECTORY_SEPARATOR.'info.php';
+		} else {
+			$infowindow = "/webEdition/we_cmd.php?we_cmd[0]=info";
+		}
+		if (file_exists($_SERVER['DOCUMENT_ROOT'].$this->appDir. DIRECTORY_SEPARATOR.'help.php')){
+			$helpwindow =$this->appDir. DIRECTORY_SEPARATOR.'help.php';
+		} else {
+			$helpwindow = "/webEdition/getHelp.php";
+		}
 		
 		$js = <<<EOS
 
@@ -259,13 +270,13 @@ weCmdController.register('exit_top', 'app_{$this->appName}_exit', function(cmdOb
 
 /* help */
 weCmdController.register('help_top', 'app_{$this->appName}_help', function(cmdObj) {
-	var dialog = new we_ui_layout_Dialog("/webEdition/getHelp.php", 900, 700, null);
+	var dialog = new we_ui_layout_Dialog("$helpwindow", 900, 700, null);
 	dialog.open();
 });
 
 /* info */
 weCmdController.register('info_top', 'app_{$this->appName}_info', function(cmdObj) {
-	var dialog = new we_ui_layout_Dialog("/webEdition/we_cmd.php?we_cmd[0]=info", 432, 350, null);
+	var dialog = new we_ui_layout_Dialog("$infowindow", 432, 350, null);
 	dialog.open();
 });
 

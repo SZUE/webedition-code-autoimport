@@ -28,13 +28,13 @@ $perm_group_name = "toolfactory";
 $perm_group_title[$perm_group_name] = $isUTF8 ? $translate->_('toolfactory') : utf8_decode($translate->_('toolfactory'));
 
 $perm_values[$perm_group_name] = array(
-	"NEW_APP_TOOLFACTORY", "DELETE_APP_TOOLFACTORY", "EDIT_APP_TOOLFACTORY"
+	"USE_APP_TOOLFACTORY", "NEW_APP_TOOLFACTORY", "DELETE_APP_TOOLFACTORY", "EDIT_APP_TOOLFACTORY"
 );
 
 $perm_titles[$perm_group_name] = array();
 
 $translated = array(
-	
+		$translate->_('The user is allowed to use toolfactory'), 
 		$translate->_('The user is allowed to create new items in toolfactory'), 
 		$translate->_('The user is allowed to delete items from toolfactory'), 
 		$translate->_('The user is allowed to edit items toolfactory')
@@ -45,5 +45,5 @@ foreach ($translated as $i => $value) {
 }
 
 $perm_defaults[$perm_group_name] = array(
-	"NEW_APP_TOOLFACTORY" => 1, "DELETE_APP_TOOLFACTORY" => 0, "EDIT_APP_TOOLFACTORY" => 0
+	"USE_APP_TOOLFACTORY" => 1, "NEW_APP_TOOLFACTORY" => 1, "DELETE_APP_TOOLFACTORY" => 0, "EDIT_APP_TOOLFACTORY" => 0
 );

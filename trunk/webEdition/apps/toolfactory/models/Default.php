@@ -211,13 +211,14 @@ class toolfactory_models_Default extends we_app_Model
 
 		$this->ID = $this->Text;
 				
-		$this->tags = weToolLookup::getAllToolTags($id);
+		$this->tags = weToolLookup::getAllToolTags($id,true);
 		
-		$this->services = weToolLookup::getAllToolServices($id);
+		$this->services = weToolLookup::getAllToolServices($id,true);
 		
-		$this->languages = weToolLookup::getAllToolLanguages($id);
+		$this->languages = weToolLookup::getAllToolLanguages($id,'/lang',true);
+		if(empty($this->languages)){$this->languages=array('a','b');}
 		
-		$this->backupTables = weToolLookup::getBackupTables($id);
+		$this->backupTables = weToolLookup::getBackupTables($id,true);
 		
 		$appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 		
@@ -253,6 +254,7 @@ class toolfactory_models_Default extends we_app_Model
 	function save($skipHook=0) {
 	
 		$text = htmlspecialchars($this->Text, ENT_NOQUOTES);
+		include_once($GLOBALS['__WE_BASE_PATH__']. DIRECTORY_SEPARATOR .'we'. DIRECTORY_SEPARATOR .'include'. DIRECTORY_SEPARATOR.'we_version.php');
 		
 		$TOOLNAMELANG = $text;
 		$TOOLNAME = $this->classname;
@@ -270,7 +272,7 @@ class toolfactory_models_Default extends we_app_Model
 		}
 		
 		if($this->makePerms) {
-			$PERMISSIONCONDITION = 'EDIT_APP_' . strtoupper($this->classname);
+			$PERMISSIONCONDITION = 'USE_APP_' . strtoupper($this->classname);
 			$DELETECONDITION = 'DELETE_APP_' . strtoupper($this->classname);
 		} else {
 			$PERMISSIONCONDITION = '';
@@ -466,7 +468,7 @@ class toolfactory_models_Default extends we_app_Model
 	 */
 	function modelclassExists($classname) {
 		
-		$_menuItems = weToolLookup::getAllTools(true);
+		$_menuItems = weToolLookup::getAllTools(true,false,true);
 
 		$_prohibit_classnames = array($_menuItems);
 		
