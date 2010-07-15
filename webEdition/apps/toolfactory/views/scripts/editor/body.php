@@ -22,6 +22,8 @@ $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 $translate = we_core_Local::addTranslation('apps.xml');
 we_core_Local::addTranslation('default.xml', 'toolfactory');
 
+include_once($GLOBALS['__WE_BASE_PATH__']. DIRECTORY_SEPARATOR .'we'. DIRECTORY_SEPARATOR .'include'. DIRECTORY_SEPARATOR.'we_version.php');
+
 $activTab = isset($_REQUEST['activTab']) ? ($_REQUEST['activTab']) : 'idPropertyTab';
 
 $this->inputWidth = 400;
@@ -114,7 +116,6 @@ $divMaintable->addElement($inputMaintable);
 
 $rowGeneral->addElement($divMaintable);
 
-
 if(empty($this->model->ID)) {
 	$checkboxMakeTags = new we_ui_controls_Checkbox();
 	$checkboxMakeTags->setId('makeTags');
@@ -165,6 +166,107 @@ $tableGeneral->setRows(array($rowGeneral));
 $propertyTab->addElement($tableGeneral);
 
 if(!empty($this->model->ID)) {
+	
+	if(!empty($this->model->version) || !empty($this->model->minWEversion)){
+		$rowVersion = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('AppVersion')));
+		$html = '';
+		if(!empty($this->model->version)){
+			$html .= '<strong>'.we_util_Strings:: number2version($this->model->version,true).'</strong>';
+			if(!empty($this->model->copyright) || !empty($this->model->copyrighturl)){
+				$html .= ' &copy;';
+				if(!empty($this->model->copyrighturl)){
+					$html .= ' <a href="http://'.$this->model->copyrighturl.'" target="_blank">';
+					$html .=  $this->model->copyright;
+					$html .= '</a>';				
+				}
+			}
+			$html .= '<br/>';
+		}	
+		if(!empty($this->model->minWEversion)){
+			$we_version = we_util_Strings::version2number(WE_VERSION,false);
+			if ($we_version < $this->model->minWEversion){
+				$html .= $translate->_('MinWeVersion').': <strong><span style="color:red">'.we_util_Strings::number2version($this->model->minWEversion,false).'</span></strong> '.$translate->_('AktWeVersion').' <strong>' .WE_VERSION.'</strong>';
+			} else {
+				$html .= $translate->_('MinWeVersion').': <strong>'.we_util_Strings::number2version($this->model->minWEversion,false).'</strong>';
+			}
+		}
+		if(isset($this->model->appdisabled)){
+			$html .= '<br/>'.$translate->_('AppStatus').': <strong>';
+			if($this->model->appdisabled){
+				$html .= $translate->_('AppStatusDiabled').'</strong>';
+			} else {
+				$html .= $translate->_('AppStatusActive').'</strong>';
+			}
+		}
+		$rowVersion->addHTML($html);
+		$tableVersion = new we_ui_layout_HeadlineIconTable();
+		$tableVersion->setId('tabVersion');
+		$tableVersion->setMarginLeft(30);
+		$tableVersion->setRows(array($rowVersion));
+		$propertyTab->addElement($tableVersion);
+	}
+	if (!empty($this->model->author) || !empty($this->model->maintainer)){
+		$tableAuthor = new we_ui_layout_HeadlineIconTable();
+		$tableAuthor->setId('tabAuthor');
+		$tableAuthor->setMarginLeft(30);
+		$rowsAuthor=array();	
+		if(!empty($this->model->author)){
+			$rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
+			$rowAuthor->setLine(0);
+			$html = $this->model->author;
+			if(!empty($this->model->authorurl)){
+				$html .= ' <a href="http://'.$this->model->authorurl.'" target="_blank">';
+				if(!empty($this->model->authorurltext)){$html .= $this->model->authorurltext;} else {$html .= $this->model->authorurl;}
+				$html .= '</a>';
+			}
+			$rowAuthor->addHTML($html);
+			$rowsAuthor[] = $rowAuthor;
+		}
+		if(!empty($this->model->maintainer)){
+			$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Maintainer')));
+			$rowMaintainer->setLine(0);
+			$html = $this->model->maintainer;
+			if(!empty($this->model->maintainerurl)){
+				$html .= ' <a href="http://'.$this->model->maintainerurl.'" target="_blank">';
+				if(!empty($this->model->maintainerurltext)){$html .= $this->model->maintainerurltext;} else {$html .= $this->model->maintainerurl;}
+				$html .= '</a>';
+			}
+			$rowMaintainer->addHTML($html);
+			
+			$rowsAuthor[] = $rowMaintainer;
+		}
+		$tableAuthor->setRows($rowsAuthor);
+		$propertyTab->addElement($tableAuthor);
+		
+
+	}
+	if (!empty($this->model->externaltool) &&  $this->model->externaltool){
+		$tableExTool = new we_ui_layout_HeadlineIconTable();
+		$tableExTool->setId('tabExTool');
+		$tableExTool->setMarginLeft(30);
+		$rowsExTool=array();
+		$html = '';	
+		$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
+		if(!empty($this->model->externaltoolurl)){
+				$html .= ' <a href="http://'.$this->model->externaltoolurl.'" target="_blank">';
+				if(!empty($this->model->externaltoolname)){$html .= $this->model->externaltoolname;} else {$html .= $this->model->externaltoolurl;}
+				$html .= '</a>';
+		}
+		if(!empty($this->model->externaltoolversion)){
+			$html .= ', '.$translate->_('Version'). ' '.$this->model->externaltoolversion;
+		}
+		if(!empty($this->model->externaltoollicensetype)){
+			$html .= '<br/> '.$translate->_('LicenseType');
+			if(!empty($this->model->externaltoollicenseurl)){
+				$html .= ' <a href="http://'.$this->model->externaltoollicenseurl.'" target="_blank">';
+				if(!empty($this->model->externaltoollicensetype)){$html .= $this->model->externaltoollicensetype;} else {$html .= $this->model->externaltoollicenseurl;}
+				$html .= '</a>';		
+			}
+		}
+		$rowExTool->addHTML($html);
+		$tableExTool->setRows(array($rowExTool));
+		$propertyTab->addElement($tableExTool);
+	}
 	$rowTags = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Tags')));
 	$html = '';
 	foreach ($this->model->tags as $_tag=>$_incfile) {

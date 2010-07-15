@@ -76,7 +76,7 @@ if (!defined("NO_SESS")) {
 			@include_once ($_tooldefine);
 		}
 	}
-
+	$_tooltagdirs = weToolLookup::getTagDirs();
 }
 
 if (isset($_SESSION) && isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem") {

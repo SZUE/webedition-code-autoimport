@@ -7,6 +7,9 @@
 		<tu tuid="toolfactory">
 			<tuv xml:lang="ru"><seg>Application Management</seg></tuv>
 		</tu>
+		<tu tuid="The user is allowed to use toolfactory">
+			<tuv xml:lang="ru"><seg>The user is allowed to use the Application Management</seg></tuv>
+		</tu>
 		<tu tuid="The user is allowed to create new items in toolfactory">
 			<tuv xml:lang="ru"><seg>The user is allowed to create new items in Application Management</seg></tuv>
 		</tu>
@@ -64,6 +67,40 @@
 		<tu tuid="The tablename is missing.">
 			<tuv xml:lang="ru"><seg>The tablename is missing.</seg></tuv>
 		</tu>
+		<tu tuid="Versions">
+			<tuv xml:lang="ru"><seg>Versions</seg></tuv>
+		</tu>
+		<tu tuid="AppVersion">
+			<tuv xml:lang="ru"><seg>Application version</seg></tuv>
+		</tu>
+		<tu tuid="MinWeVersion">
+			<tuv xml:lang="ru"><seg>minimal webEdition version</seg></tuv>
+		</tu>
+		<tu tuid="AktWeVersion">
+			<tuv xml:lang="ru"><seg>currently installed webEdition version</seg></tuv>
+		</tu>
+		<tu tuid="Author">
+			<tuv xml:lang="ru"><seg>Author</seg></tuv>
+		</tu>
+		<tu tuid="Maintainer">
+			<tuv xml:lang="ru"><seg>Maintainer</seg></tuv>
+		</tu>
+		<tu tuid="ExTool">
+			<tuv xml:lang="ru"><seg>External Tool</seg></tuv>
+		</tu>
+		<tu tuid="LicenseType">
+			<tuv xml:lang="ru"><seg>License</seg></tuv>
+		</tu>
+		<tu tuid="AppStatus">
+			<tuv xml:lang="ru"><seg>Application staatus</seg></tuv>
+		</tu>
+		<tu tuid="AppStatusActive">
+			<tuv xml:lang="ru"><seg>active</seg></tuv>
+		</tu>
+		<tu tuid="AppStatusDiabled">
+			<tuv xml:lang="ru"><seg>disabled</seg></tuv>
+		</tu>
+
 		<tu tuid="Tags">
 			<tuv xml:lang="ru"><seg>Tags</seg></tuv>
 		</tu>

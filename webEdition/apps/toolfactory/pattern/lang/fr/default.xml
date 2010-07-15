@@ -7,6 +7,9 @@
 		<tu tuid="{$TOOLNAME}">
 			<tuv xml:lang="fr"><seg>{$TOOLNAMELANG}</seg></tuv>
 		</tu>
+		<tu tuid="The user is allowed to use {$TOOLNAME}">
+			<tuv xml:lang="fr"><seg>The user is allowed to use {$TOOLNAMELANG}</seg></tuv>
+		</tu>
 		<tu tuid="The user is allowed to create new items in {$TOOLNAME}">
 			<tuv xml:lang="fr"><seg>The user is allowed to create new items in {$TOOLNAMELANG}</seg></tuv>
 		</tu>
@@ -22,5 +25,39 @@
 		<tu tuid="Save {$TOOLNAME} data">
 			<tuv xml:lang="fr"><seg>Save {$TOOLNAMELANG} data</seg></tuv>
 		</tu>
+		<tu tuid="Versions">
+			<tuv xml:lang="fr"><seg>Versions</seg></tuv>
+		</tu>
+		<tu tuid="AppVersion">
+			<tuv xml:lang="fr"><seg>Application version</seg></tuv>
+		</tu>
+		<tu tuid="MinWeVersion">
+			<tuv xml:lang="fr"><seg>minimal webEdition version</seg></tuv>
+		</tu>
+		<tu tuid="AktWeVersion">
+			<tuv xml:lang="fr"><seg>currently installed webEdition version</seg></tuv>
+		</tu>
+		<tu tuid="Author">
+			<tuv xml:lang="fr"><seg>Author</seg></tuv>
+		</tu>
+		<tu tuid="Maintainer">
+			<tuv xml:lang="fr"><seg>Maintainer</seg></tuv>
+		</tu>
+		<tu tuid="ExTool">
+			<tuv xml:lang="fr"><seg>External Tool</seg></tuv>
+		</tu>
+		<tu tuid="LicenseType">
+			<tuv xml:lang="fr"><seg>License</seg></tuv>
+		</tu>
+		<tu tuid="AppStatus">
+			<tuv xml:lang="fr"><seg>Application staatus</seg></tuv>
+		</tu>
+		<tu tuid="AppStatusActive">
+			<tuv xml:lang="fr"><seg>active</seg></tuv>
+		</tu>
+		<tu tuid="AppStatusDiabled">
+			<tuv xml:lang="fr"><seg>disabled</seg></tuv>
+		</tu>
+
 	</body>
 </tmx>

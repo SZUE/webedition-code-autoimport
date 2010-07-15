@@ -151,6 +151,117 @@ class we_util_Strings
 		
 		}
 	}
+
+	/**
+	 * splits a version (string) to a number. 
+	 *
+	 * @param string $version
+	 * @param bool $isApp
+	 * @return float
+	 */
+	static function version2number($version, $isApp = false) 
+	{
+		if ($isApp){
+			if (substr($version,0,1)=="0"){
+				if (strlen($version)==3){
+					$numberStr = '0.0'.substr($version,2,1);
+					$number = (float) $numberStr;
+				} else {
+					$numberStr = '0.'.substr($version,2,2);
+					$number = (float) $numberStr;
+				}
+				
+			} else {
+				$count=2;
+				$numberStr = str_replace('.','',$version,$count);
+				$number = (float) $numberStr;
+			}
+		} else {
+			$count=3;
+			if (substr($version,0,1)=="6"){
+				$numberStr = str_replace('.', '', $version,$count);
+				$number = (float) $numberStr;
+			} else {
+				$numberStr = str_replace('.', '', $version,$count);
+				$number = (float) $numberStr;
+			}
+		}	
+		return $number;
+
+	}
+
+
+	/**
+	 * this function converts a versionnumber (integer/float) to the number as string
+	 * each number separated with ".". Parameter isApp determines if the versionnumber might by float to allow for 0.something.
+	 *
+	 * @param float $number
+	 * @param bool $isApp
+	 * @return string
+	 */
+	static function number2version($number, $isApp=false) {
+
+		$mynumber = "$number";
+		$numbers = array();
+		
+		if ($isApp){
+			if ($number < 1){
+				if ($number < 0.1){
+					$mynumber = str_replace('.0','.',$mynumber);
+					$version = $mynumber;
+				} else {
+					$version = $mynumber;
+				}		
+			} else {
+				$intnumber = floor($number);
+				$decimal = $number - $intnumber;
+				$mynumber = "$intnumber";
+				for ($i=0;$i<strlen($mynumber)-1;$i++) {
+					if ($i=2 && isset($mynumber[3])){
+						$numbers[] = $mynumber[2].$numbers[] = $mynumber[3];
+					} else {
+						$numbers[] = $mynumber[$i];
+					}
+				}
+				if ($decimal !=0) {
+					$version = implode('.', $numbers).$decimal;
+				} else {
+					$version = implode('.', $numbers);
+				}
+			}
+		} else {
+			if ($number > 6999){
+				$intnumber = floor($number);
+				$decimal = $number - $intnumber;
+				$mynumber = "$intnumber";
+				for ($i=0;$i<strlen($mynumber)-1;$i++) {
+					if ($i=2 && isset($mynumber[3])){
+						$numbers[] = $mynumber[2].$numbers[] = $mynumber[3];
+					} else {
+						$numbers[] = $mynumber[$i];
+					}
+				}
+				if ($decimal !=0) {
+					$version = implode('.', $numbers).$decimal;
+				} else {
+					$version = implode('.', $numbers);
+				}		
+			} else {
+				for ($i=0;$i<4;$i++) {
+					$numbers[] = $number[$i];
+				}
+				$version = implode('.', $numbers);
+			}		
+		}
+		return $version;
+	}
+
+	/**
+	 * this function prints recursively any array or object 
+	 *
+	 * @param  $val
+	 * @return void
+	 */
 	
 	static function p_r($val)
 	{

@@ -109,7 +109,7 @@ function we_tag($name, $attribs, $content = "")
 					include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . "we_tag_$name.inc.php");
 				} else {
 					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
-					if (weToolLookup::getToolTag($name, $toolinc)) {
+					if (weToolLookup::getToolTag($name, $toolinc,true)) {
 						include_once ($toolinc);
 					} else {
 						if (strpos(trim($name), "if") === 0) { // this ifTag does not exist
@@ -7107,7 +7107,7 @@ function we_tag_write($attribs, $content)
 				if (defined("OBJECT_FILES_TABLE") && $type == "object" ) {
 					$db = new DB_WE();
 					if ($GLOBALS["we_$type"][$name]->Text == ""){
-						if ($objname=='') {p_r(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
+						if ($objname=='') {
 							$objname = 1 + abs(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
 						}					
 					} else {

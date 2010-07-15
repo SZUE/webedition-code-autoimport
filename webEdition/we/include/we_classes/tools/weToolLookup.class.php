@@ -27,10 +27,13 @@
 			
 		}
 		
-		function getAllTools($force=false, $addInternTools=false) {
+		function getAllTools($force=false, $addInternTools=false, $includeDisabled=false) {
 
-			if(!$force && !defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['meta'])) {
+			if(!$force && !$includeDisabled && !defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['meta'])) {
 				return $_SESSION[TOOL_REGISTRY_NAME]['meta'];
+			}
+			if(!$force && $includeDisabled && !defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'])) {
+				return $_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'];
 			}
 
 			$_tools = array();
@@ -76,7 +79,11 @@
 							$langStr = $translate->_($metaInfo['name']);
 						}
 						$metaInfo['text'] = htmlspecialchars($langStr);
-						$_tools[] = $metaInfo;
+						if (!$includeDisabled && isset($metaInfo['appdisabled']) && $metaInfo['appdisabled'] ){
+							
+						} else {
+							$_tools[] = $metaInfo;
+						}				
 						unset($metaInfo);
 					}
 				}
@@ -100,8 +107,11 @@
 			
 			}
 			
-			if(!defined("NO_SESS")) {
+			if(!defined("NO_SESS") && !$includeDisabled) {
 				$_SESSION[TOOL_REGISTRY_NAME]['meta'] = $_tools;
+			}
+			if(!defined("NO_SESS") && $includeDisabled) {
+				$_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'] = $_tools;
 			}
 	
 			return $_tools;
@@ -111,7 +121,7 @@
 		
 		function getToolProperties($name) {
 			
-			$_tools = weToolLookup::getAllTools(true,false);
+			$_tools = weToolLookup::getAllTools(true,false,true);
 			
 			foreach ($_tools as $_tool) {
 				if($_tool['name']==$name) {
@@ -182,8 +192,32 @@
 			return $_inc;
 		}
 		
-		function isTool($name) {
+		function getTagDirs() {
+			
+			if(!defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['tagdirs'])) {
+				return $_SESSION[TOOL_REGISTRY_NAME]['tagdirs'];
+			}
+			
+			$_inc = array();
 			$_tools = weToolLookup::getAllTools();
+			foreach($_tools as $_tool){
+				if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/tags')){
+					$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/tags';
+				}
+			}
+			if(!defined("NO_SESS")) {
+				$_SESSION[TOOL_REGISTRY_NAME]['tagdirs'] = $_inc;
+			}
+				
+			return $_inc;
+		}
+		
+		function isActiveTag($filepath){p_r(dirname($filepath));p_r(weToolLookup::getTagDirs());
+			return in_array(dirname($filepath), weToolLookup::getTagDirs());
+		}
+		
+		function isTool($name,$includeDisabled=false) {
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			foreach ($_tools as $_tool) {
 				if($_tool['name']==$name) {
 					return true;
@@ -214,26 +248,26 @@
 			
 		}
 		
-		function getAllToolTags($toolname) {
+		function getAllToolTags($toolname,$includeDisabled=false) {
 			
-			return weToolLookup::getFileRegister($toolname,'/tags',"^we_tag_",'we_tag_','.inc.php');
+			return weToolLookup::getFileRegister($toolname,'/tags',"^we_tag_",'we_tag_','.inc.php',$includeDisabled);
 						
 		}
 		
-		function getAllToolTagWizards($toolname) {
+		function getAllToolTagWizards($toolname,$includeDisabled=false) {
 			
-			return weToolLookup::getFileRegister($toolname,'/tagwizard',"^we_tag_",'we_tag_','.inc.php');
+			return weToolLookup::getFileRegister($toolname,'/tagwizard',"^we_tag_",'we_tag_','.inc.php',$includeDisabled);
 						
 		}
 		
 		
-		function getAllToolServices($toolname) {
+		function getAllToolServices($toolname,$includeDisabled=false) {
 
-			return weToolLookup::getFileRegister($toolname,'/service/cmds',"^rpc",'rpc','Cmd.class.php');
+			return weToolLookup::getFileRegister($toolname,'/service/cmds',"^rpc",'rpc','Cmd.class.php',$includeDisabled);
 			
 		}
 		
-		function getAllToolLanguages($toolname, $subdir='/lang') {
+		function getAllToolLanguages($toolname, $subdir='/lang',$includeDisabled=false) {
 			
 			$_founds = array();
 			if(!defined('WE_TOOLS_DIR')) {
@@ -243,7 +277,7 @@
 				$toolFolder = WE_TOOLS_DIR;
 			}
 			$_tooldir = $toolFolder . $toolname . $subdir;
-			if(weToolLookup::isTool($toolname) && is_dir($_tooldir)) {
+			if(weToolLookup::isTool($toolname,$includeDisabled) && is_dir($_tooldir)) {
 				$_d = opendir($_tooldir);
 				while( $_entry = readdir($_d) ){
 					if(is_dir($_tooldir . '/' . $_entry) && stristr($_entry, '.') === FALSE) {
@@ -256,7 +290,7 @@
 			return $_founds;
 		}
 		
-		function getFileRegister($toolname,$subdir,$filematch,$rem_before='',$rem_after='') {
+		function getFileRegister($toolname,$subdir,$filematch,$rem_before='',$rem_after='',$includeDisabled=false) {
 			$_founds = array();
 			if(!defined('WE_TOOLS_DIR')) {
 				$toolFolder = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['__WE_APP_URL__'].'/';
@@ -265,7 +299,7 @@
 				$toolFolder = WE_TOOLS_DIR;
 			}
 			$_tooldir = $toolFolder . $toolname . $subdir;
-			if(weToolLookup::isTool($toolname) && is_dir($_tooldir)) {
+			if(weToolLookup::isTool($toolname,$includeDisabled) && is_dir($_tooldir)) {
 				$_d = opendir($_tooldir);
 				while( $_entry = readdir($_d) ){
 					if(!is_dir($_tooldir . '/' . $_entry) && eregi($filematch,$_entry)){
@@ -280,8 +314,8 @@
 		}
 		
 		
-		function getToolTag($name,&$include) {
-			$_tools = weToolLookup::getAllTools();
+		function getToolTag($name,&$include,$includeDisabled=false) {
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			if(!defined('WE_TOOLS_DIR')) {
 				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
 			}
@@ -297,8 +331,8 @@
 			return false;
 		}
 		
-		function getToolTagWizard($name,&$include) {
-			$_tools = weToolLookup::getAllTools();
+		function getToolTagWizard($name,&$include,$includeDisabled=false) {
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			if(!defined('WE_TOOLS_DIR')) {
 				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
 			}
@@ -314,9 +348,9 @@
 			return false;
 		}
 		
-		function getPermissionIncludes() {
+		function getPermissionIncludes($includeDisabled=false) {
 			$_inc = array();
-			$_tools = weToolLookup::getAllTools();
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			foreach($_tools as $_tool){
 				if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/permission.conf.php')){
 					$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/permission.conf.php';
@@ -347,9 +381,9 @@
 
 		}
 		
-		function getToolsForBackup() {
+		function getToolsForBackup($includeDisabled=false) {
 			$_inc = array();
-			$_tools = weToolLookup::getAllTools();
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			foreach($_tools as $_tool){
 				if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/backup.conf.php')){
 					if($_tool['maintable']!='') {

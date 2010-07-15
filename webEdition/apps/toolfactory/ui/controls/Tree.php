@@ -81,7 +81,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 	{
 		$items=array();
 		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
-		$_tools = weToolLookup::getAllTools();
+		$_tools = weToolLookup::getAllTools(false,false,true);
 
 		foreach($_tools as $_k=>$_tool) {		
 			if(!weToolLookup::isInIgnoreList($_tool['name'])) {
