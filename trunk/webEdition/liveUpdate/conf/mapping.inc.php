@@ -37,6 +37,7 @@ $LU_Variables = array(
 	'clientDomain' => urlencode($_SERVER['SERVER_NAME']),
 	'clientInstalledModules' => array_merge($_we_installed_modules, $_pro_modules),
 	'clientInstalledLanguages' => liveUpdateFunctions::getInstalledLanguages(),
+	'clientInstalledApps' => weToolLookup::getAllTools(true, false, true),
 	'clientUpdateUrl' => liveUpdateHttp::getServerProtocol() . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : "" ) . $_SERVER["PHP_SELF"],
 	'clientContent' => false,
 	'clientEncoding' => 'none'
