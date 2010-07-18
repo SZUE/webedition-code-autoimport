@@ -55,6 +55,7 @@ $labelClass->setStyle('margin-top:20px;display:block;');
 $labelClass->setText($translate->_('Name of the model class'). ($this->model->isRequiredField('classname') ? ' ['.$translate->_('Mandatory field').']' : ''));
 $inputClass = new we_ui_controls_TextField();
 $inputClass->setName('classname');
+$inputClass->setID('classname');
 
 if(!empty($this->model->ID)) {
 	$inputClass->setDisabled(true);
@@ -189,6 +190,14 @@ if(!empty($this->model->ID)) {
 			} else {
 				$html .= $translate->_('MinWeVersion').': <strong>'.we_util_Strings::number2version($this->model->minWEversion,false).'</strong>';
 			}
+		}
+		if(!empty($this->model->SDKversion)){
+			$html .= $translate->_('SdkVersion').': <strong>'.we_util_Strings::number2version($this->model->SDKversion,false).'</strong>';
+		}
+		if(file_exists($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/manifest.php')){
+			$html .= '<br/>'.$translate->_('The update manifest is available');
+		} else {
+			$html .= '<br/>'.$translate->_('The update manifest is not available');
 		}
 		if(isset($this->model->appdisabled)){
 			$html .= '<br/>'.$translate->_('AppStatus').': <strong>';

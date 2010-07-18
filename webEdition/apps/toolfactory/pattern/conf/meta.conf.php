@@ -8,8 +8,8 @@ $metaInfo = array(
 	'datasource'=><?php if($DATASOURCE=='table:') print "'table:'.$TABLECONSTANT"; else print "'$DATASOURCE'"?>,
 	'startpermission'=>'<?php print $PERMISSIONCONDITION; ?>',
     'version'=>'0.01', // Startwert 0.01 um zweistellige Vorabversionen zu ermöglichen, für offizielle Versionen ab 1.0 nutzt man 1000 und aufwärts (Versionsnummern alla PHP 5.2.13 also als 5213  
-    'minWEversion'=>'<?php print we_util_Strings::version2number(WE_VERSION,false); ?>', //hier steht dann die aktuelle als number (nicht als version), kann von Hand reduziert werden
-    'updateserver'=>'update.webedition.org',
+    'minWEversion'=>'<?php print we_util_Strings::version2number(WE_VERSION,false); ?>', //hier steht dann die aktuelle als Zahl (nicht als version), kann von Hand reduziert werden
+    'SDKversion'=>'<?php print we_util_Strings::version2number(WE_VERSION,false); ?>', //hier steht dann die aktuelle als Zahl (nicht als version), kann von Hand reduziert werden, um später auch Apps für ältere SDK-Versionen unterstützen zu können
     'author'=>'', //Name
     'authorurl'=>'', // url ohne http://
     'authorurltext'=>'', // Text des Links, sonst wird die url angezeigt
@@ -24,7 +24,6 @@ $metaInfo = array(
     'externaltoolversion'=>'', // as string
     'externaltoollicensetype'=>'',//GPL or BSD or whatever
     'externaltoollicenseurl'=>'', //link to the license
-    'appcosts'=>'free',
     'appdisabled'=>0 //set to 1 to disable
     
 );

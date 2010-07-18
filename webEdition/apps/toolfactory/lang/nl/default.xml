@@ -19,6 +19,9 @@
 		<tu tuid="The user is allowed to edit items toolfactory">
 			<tuv xml:lang="nl"><seg>The user is allowed to edit items Application Management</seg></tuv>
 		</tu>
+		<tu tuid="The user is allowed to publish items {$TOOLNAME}">
+			<tuv xml:lang="en"><seg>The user is allowed to activate/deactivate Applications</seg></tuv>
+		</tu>
 		<tu tuid="Restore toolfactory data">
 			<tuv xml:lang="nl"><seg>Restore Application Management data</seg></tuv>
 		</tu>
@@ -79,6 +82,9 @@
 		<tu tuid="AktWeVersion">
 			<tuv xml:lang="nl"><seg>currently installed webEdition version</seg></tuv>
 		</tu>
+		<tu tuid="SdkVersion">
+			<tuv xml:lang="nl"><seg>SDK version</seg></tuv>
+		</tu>
 		<tu tuid="Author">
 			<tuv xml:lang="nl"><seg>Author</seg></tuv>
 		</tu>
@@ -118,6 +124,21 @@
 		</tu>
 		<tu tuid="The application '%s' has been succesfully saved. Please restart webEdition!">
 			<tuv xml:lang="nl"><seg>The application '%s' has been succesfully saved. Please restart webEdition!</seg></tuv>
+		</tu>
+		<tu tuid="Publish">
+			<tuv xml:lang="nl"><seg>aktivate</seg></tuv>
+		</tu>
+		<tu tuid="Unpublish">
+			<tuv xml:lang="nl"><seg>deaktivate</seg></tuv>
+		</tu>
+		<tu tuid="The status of the application '%s' has been succesfully changed. Please restart webEdition!">
+			<tuv xml:lang="nl"><seg>The application status of the application '%s' has been succesfully changed. Please restart webEdition!</seg></tuv>
+		</tu>
+		<tu tuid="The update manifest is available">
+			<tuv xml:lang="nl"><seg>The update manifest is available</seg></tuv>
+		</tu>
+		<tu tuid="The update manifest is not available">
+			<tuv xml:lang="nl"><seg>The update manifest is not available, default values are used.</seg></tuv>
 		</tu>
 	</body>
 </tmx>

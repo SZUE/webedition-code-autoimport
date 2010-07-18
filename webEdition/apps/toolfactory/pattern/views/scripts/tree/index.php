@@ -114,6 +114,12 @@ $js = '
 			}
 		}
 	});
+    weEventController.register("markpublished", function(data, sender) {		
+			weTree.markNodeP(data, 1);		
+	});
+	weEventController.register("markunpublished", function(data, sender) {								
+		weTree.markNodeP(data, 0);					
+	});
 ';
 
 $TreeDiv->addElement($tree);

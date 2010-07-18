@@ -8,7 +8,7 @@
 			<tuv xml:lang="de"><seg>{$TOOLNAMELANG}</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to use {$TOOLNAME}">
-			<tuv xml:lang="en"><seg>Der Benutzer darf {$TOOLNAMELANG} nutzen</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf {$TOOLNAMELANG} nutzen</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to create new items in {$TOOLNAME}">
 			<tuv xml:lang="de"><seg>Der Benutzer darf neue {$TOOLNAMELANG}-Einträge erstellen</seg></tuv>
@@ -18,6 +18,9 @@
 		</tu>
 		<tu tuid="The user is allowed to edit items {$TOOLNAME}">
 			<tuv xml:lang="de"><seg>Der Benutzer darf {$TOOLNAMELANG}-Einträge bearbeiten</seg></tuv>
+		</tu>
+		<tu tuid="The user is allowed to publish items {$TOOLNAME}">
+			<tuv xml:lang="de"><seg>Der Benutzer darf {$TOOLNAMELANG}-Einträge veröffentlichen</seg></tuv>
 		</tu>
 		<tu tuid="Restore {$TOOLNAME} data">
 			<tuv xml:lang="de"><seg>Die Daten der Anwendung {$TOOLNAMELANG} wiederherstellen</seg></tuv>

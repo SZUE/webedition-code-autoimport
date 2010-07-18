@@ -37,6 +37,12 @@
 		<tu tuid="Save">
 			<tuv xml:lang="pl"><seg>Save</seg></tuv>
 		</tu>
+		<tu tuid="Publish">
+			<tuv xml:lang="pl"><seg>Publish</seg></tuv>
+		</tu>
+		<tu tuid="Unpublish">
+			<tuv xml:lang="pl"><seg>Unpublish</seg></tuv>
+		</tu>
 		<tu tuid="Delete">
 			<tuv xml:lang="pl"><seg>Delete</seg></tuv>
 		</tu>

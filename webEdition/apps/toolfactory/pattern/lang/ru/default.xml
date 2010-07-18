@@ -19,6 +19,9 @@
 		<tu tuid="The user is allowed to edit items {$TOOLNAME}">
 			<tuv xml:lang="ru"><seg>The user is allowed to edit items {$TOOLNAMELANG}</seg></tuv>
 		</tu>
+		<tu tuid="The user is allowed to publish items {$TOOLNAME}">
+			<tuv xml:lang="ru"><seg>The user is allowed to publish items {$TOOLNAMELANG}</seg></tuv>
+		</tu>
 		<tu tuid="Restore {$TOOLNAME} data">
 			<tuv xml:lang="ru"><seg>Restore {$TOOLNAMELANG} data</seg></tuv>
 		</tu>

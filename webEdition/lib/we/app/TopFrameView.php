@@ -252,6 +252,40 @@ weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(c
 	}
 });
 
+/* unpublish */
+weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', function(cmdObj) {
+
+	if (typeof({$fs}.edbody) == 'undefined') {
+		$nothingToSaveMessageCall
+	} else {
+		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.ID.value); 
+		we_core_JsonRpc.callMethod(
+			cmdObj, 
+			'{$this->appDir}/index.php/rpc/index', 
+			'{$this->appName}.service.Cmd', 
+			'unpublish', 
+			{$fs}.edbody.document.we_form
+		);
+	}
+});
+
+/* publish */
+weCmdController.register('publish_top', 'app_{$this->appName}_publish', function(cmdObj) {
+
+	if (typeof({$fs}.edbody) == 'undefined') {
+		$nothingToSaveMessageCall
+	} else {
+		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.ID.value); 
+		we_core_JsonRpc.callMethod(
+			cmdObj, 
+			'{$this->appDir}/index.php/rpc/index', 
+			'{$this->appName}.service.Cmd', 
+			'publish', 
+			{$fs}.edbody.document.we_form
+		);
+	}
+});
+
 /* home */
 weCmdController.register('home_top', 'app_{$this->appName}_home', function(cmdObj) {
 	{$fs}.location.replace("{$this->appDir}/index.php/home/index");

@@ -54,6 +54,10 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView {
 		
 		$saveEntryMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageNotice, true);
 		
+		$statusChangeMessage = we_util_Strings::quoteForJSString($translate->_('The status of the application \'%s\' has been succesfully changed. Please restart webEdition!'), false);
+		
+		$statusChangeMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageNotice, true);
+		
 		$nothingToSaveMessage = we_util_Strings::quoteForJSString($translate->_('There is nothing to save!'), false);
 		
 		$nothingToSaveMessageCall = we_core_MessageReporting::getShowMessageCall($nothingToSaveMessage, we_core_MessageReporting::kMessageNotice);
@@ -214,7 +218,7 @@ weCmdController.register('open_top', 'app_{$this->appName}_open', function(cmdOb
 /* save */
 weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdObj) {
 	if (typeof({$fs}.edbody) == "undefined") {
-		$nothingToSaveMessageCall
+		$nothingToSaveMessageCall;
 	} else {
 		addLoadingWheel();
 		we_core_JsonRpc.callMethod(
@@ -231,7 +235,7 @@ weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdOb
 /* delete */
 weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
 	if (typeof({$fs}.edbody) == "undefined") {
-		$nothingToDeleteMessageCall
+		$nothingToDeleteMessageCall;
 	} else {
 		we_core_JsonRpc.callMethod(
 			cmdObj, 
@@ -243,6 +247,41 @@ weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(c
 	}
 });
 
+/* unpublish */
+weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', function(cmdObj) {
+
+	if (typeof({$fs}.edbody) == 'undefined') {
+		$nothingToSaveMessageCall;
+	} else {
+		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.classname.value); 
+		we_core_JsonRpc.callMethod(
+			cmdObj, 
+			'{$this->appDir}/index.php/rpc/index', 
+			'{$this->appName}.service.Cmd', 
+			'unpublish', 
+			{$fs}.edbody.document.we_form
+		);
+	} 
+	weCmdController.cmdOk(cmdObj);
+});
+
+/* publish */
+weCmdController.register('publish_top', 'app_{$this->appName}_publish', function(cmdObj) {
+
+	if (typeof({$fs}.edbody) == 'undefined') {
+		$nothingToSaveMessageCall;
+	} else {
+		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.classname.value);  
+		we_core_JsonRpc.callMethod(
+			cmdObj, 
+			'{$this->appDir}/index.php/rpc/index', 
+			'{$this->appName}.service.Cmd', 
+			'publish', 
+			{$fs}.edbody.document.we_form
+		);
+	}
+	weCmdController.cmdOk(cmdObj);
+});
 
 /* home */
 weCmdController.register('home_top', 'app_{$this->appName}_home', function(cmdObj) {

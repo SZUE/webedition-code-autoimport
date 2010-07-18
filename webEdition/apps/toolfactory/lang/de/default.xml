@@ -11,13 +11,16 @@
 			<tuv xml:lang="de"><seg>Der Benutzer darf die Anwendungsverwaltung nutzen</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to create new items in toolfactory">
-			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungsverwaltung erstellen</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungungen erstellen</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to delete items from toolfactory">
-			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungsverwaltung löschen</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungen löschen</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to edit items toolfactory">
-			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungsverwaltung bearbeiten</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungs bearbeiten</seg></tuv>
+		</tu>
+		<tu tuid="The user is allowed to publish items {$TOOLNAME}">
+			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendung aktivieren und deaktivieren</seg></tuv>
 		</tu>
 		<tu tuid="Restore toolfactory data">
 			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungsverwaltung bearbeiten</seg></tuv>
@@ -79,6 +82,9 @@
 		<tu tuid="AktWeVersion">
 			<tuv xml:lang="de"><seg>aktuell installierte webEdition-Version</seg></tuv>
 		</tu>
+		<tu tuid="SdkVersion">
+			<tuv xml:lang="de"><seg>SDK Version</seg></tuv>
+		</tu>
 		<tu tuid="Author">
 			<tuv xml:lang="de"><seg>Autor</seg></tuv>
 		</tu>
@@ -117,6 +123,21 @@
 		</tu>
 		<tu tuid="The application '%s' has been succesfully saved. Please restart webEdition!">
 			<tuv xml:lang="de"><seg>Die Anwendung '%s' wurde erfolgreich gespeichert. Bitte starten Sie webEdition neu!</seg></tuv>
+		</tu>
+		<tu tuid="Publish">
+			<tuv xml:lang="de"><seg>Aktivieren</seg></tuv>
+		</tu>
+		<tu tuid="Unpublish">
+			<tuv xml:lang="de"><seg>Deaktivieren</seg></tuv>
+		</tu>
+		<tu tuid="The status of the application '%s' has been succesfully changed. Please restart webEdition!">
+			<tuv xml:lang="de"><seg>Der Status der Anwendung '%s' wurde erfolgreich geändert. Bitte starten Sie webEdition neu!</seg></tuv>
+		</tu>
+		<tu tuid="The update manifest is available">
+			<tuv xml:lang="de"><seg>Das Update-Minifest ist vorhanden</seg></tuv>
+		</tu>
+		<tu tuid="The update manifest is not available">
+			<tuv xml:lang="de"><seg>Das Update-Manifest ist nicht vorhanden, die Standardwerte werden verwendet.</seg></tuv>
 		</tu>
 	</body>
 </tmx>

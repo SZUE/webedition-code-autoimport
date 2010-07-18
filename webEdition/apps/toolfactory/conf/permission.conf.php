@@ -37,7 +37,8 @@ $translated = array(
 		$translate->_('The user is allowed to use toolfactory'), 
 		$translate->_('The user is allowed to create new items in toolfactory'), 
 		$translate->_('The user is allowed to delete items from toolfactory'), 
-		$translate->_('The user is allowed to edit items toolfactory')
+		$translate->_('The user is allowed to edit items toolfactory'),
+		$translate->_('The user is allowed to publish items toolfactory') 
 );
 
 foreach ($translated as $i => $value) {
