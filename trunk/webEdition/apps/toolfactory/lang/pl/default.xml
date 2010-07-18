@@ -19,6 +19,9 @@
 		<tu tuid="The user is allowed to edit items toolfactory">
 			<tuv xml:lang="pl"><seg>The user is allowed to edit items Application Management</seg></tuv>
 		</tu>
+		<tu tuid="The user is allowed to publish items {$TOOLNAME}">
+			<tuv xml:lang="en"><seg>The user is allowed to activate/deactivate Applications</seg></tuv>
+		</tu>
 		<tu tuid="Restore toolfactory data">
 			<tuv xml:lang="pl"><seg>Restore Application Management data</seg></tuv>
 		</tu>
@@ -79,6 +82,9 @@
 		<tu tuid="AktWeVersion">
 			<tuv xml:lang="pl"><seg>currently installed webEdition version</seg></tuv>
 		</tu>
+		<tu tuid="SdkVersion">
+			<tuv xml:lang="pl"><seg>SDK version</seg></tuv>
+		</tu>
 		<tu tuid="Author">
 			<tuv xml:lang="pl"><seg>Author</seg></tuv>
 		</tu>
@@ -92,7 +98,7 @@
 			<tuv xml:lang="pl"><seg>License</seg></tuv>
 		</tu>
 		<tu tuid="AppStatus">
-			<tuv xml:lang="pl"><seg>Application staatus</seg></tuv>
+			<tuv xml:lang="pl"><seg>Application status</seg></tuv>
 		</tu>
 		<tu tuid="AppStatusActive">
 			<tuv xml:lang="pl"><seg>active</seg></tuv>
@@ -118,6 +124,21 @@
 		</tu>
 		<tu tuid="The application '%s' has been succesfully saved. Please restart webEdition!">
 			<tuv xml:lang="pl"><seg>The application '%s' has been succesfully saved. Please restart webEdition!</seg></tuv>
+		</tu>
+		<tu tuid="Publish">
+			<tuv xml:lang="pl"><seg>aktivate</seg></tuv>
+		</tu>
+		<tu tuid="Unpublish">
+			<tuv xml:lang="pl"><seg>deaktivate</seg></tuv>
+		</tu>
+		<tu tuid="The status of the application '%s' has been succesfully changed. Please restart webEdition!">
+			<tuv xml:lang="pl"><seg>The application status of the application '%s' has been succesfully changed. Please restart webEdition!</seg></tuv>
+		</tu>
+		<tu tuid="The update manifest is available">
+			<tuv xml:lang="pl"><seg>The update manifest is available</seg></tuv>
+		</tu>
+		<tu tuid="The update manifest is not available">
+			<tuv xml:lang="pl"><seg>The update manifest is not available, default values are used.</seg></tuv>
 		</tu>
 	</body>
 </tmx>

@@ -209,7 +209,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		} catch (we_core_ModelException $e) {		
 			throw new we_service_Exception($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.$e->getMessage());
 		}
-		//delte the directoy		
+		//delete the directoy		
 		we_util_File::rmdirr($GLOBALS['__WE_APP_PATH__'].DIRECTORY_SEPARATOR.$model->classname);
 		
 		//return deleted model
@@ -217,6 +217,86 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 			'model' => $model
 		);
 	}
+	
+	/**
+	 * check arguments and unpublish the model
+	 * @param array $args
+	 * 
+	 * @return array
+	 */
+	public function unpublish($args)
+	{
+	
+		$utf8_decode = true;
+		
+		$translate = we_core_Local::addTranslation('apps.xml');
+		
+		if (!isset($args[0])) {
+			throw new we_service_Exception('Form data not set (first argument) at save cmd!', we_service_ErrorCodes::kModelFormDataNotSet);
+		}
+		$formData = $args[0];
+		
+		$controller = Zend_Controller_Front::getInstance();
+		$appName = $controller->getParam('appName');
+		$session = new Zend_Session_Namespace($appName);
+		if (!isset($session->model)) {
+			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
+		}
+		
+		$model = $session->model;
+		//return $this->save($args);
+		
+		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
+		$dieConf = str_replace("'appdisabled'=>0","'appdisabled'=>1",$dieConf);
+		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php', $dieConf);
+		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
+
+		$model->appdisabled=1;
+		
+		return array(
+			'model' => $model
+		);
+	}
+
+	/**
+	 * check arguments and publish the model
+	 * @param array $args
+	 * 
+	 * @return array
+	 */
+	public function publish($args)
+	{
+	
+		$utf8_decode = true;
+		
+		$translate = we_core_Local::addTranslation('apps.xml');
+		
+		if (!isset($args[0])) {
+			throw new we_service_Exception('Form data not set (first argument) at save cmd!', we_service_ErrorCodes::kModelFormDataNotSet);
+		}
+		$formData = $args[0];
+		
+		$controller = Zend_Controller_Front::getInstance();
+		$appName = $controller->getParam('appName');
+		$session = new Zend_Session_Namespace($appName);
+		if (!isset($session->model)) {
+			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
+		}
+		$session->model->Published=1;
+		$model = $session->model;
+		
+		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
+		$dieConf = str_replace("'appdisabled'=>1","'appdisabled'=>0",$dieConf);
+		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php', $dieConf);
+		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
+
+		$model->appdisabled=0;
+
+		return array(
+			'model' => $model
+		);
+	}
+
 	
 	/**
 	 * Accessibility for services

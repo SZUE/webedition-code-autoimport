@@ -107,6 +107,55 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		return array('model' => $model, 'newBeforeSaving' => $newBeforeSaving);
 	}
 
+	public function unpublish($args)
+	{
+	
+		$utf8_decode = true;
+		
+		$translate = we_core_Local::addTranslation('apps.xml');
+		
+		if (!isset($args[0])) {
+			throw new we_service_Exception('Form data not set (first argument) at save cmd!', we_service_ErrorCodes::kModelFormDataNotSet);
+		}
+		$formData = $args[0];
+		
+		$controller = Zend_Controller_Front::getInstance();
+		$appName = $controller->getParam('appName');
+		$session = new Zend_Session_Namespace($appName);
+		if (!isset($session->model)) {
+			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
+		}
+		$session->model->Published=0;
+		$model = $session->model;
+		return $this->save($args);
+	}
+
+
+	public function publish($args)
+	{
+	
+		$utf8_decode = true;
+		
+		$translate = we_core_Local::addTranslation('apps.xml');
+		
+		if (!isset($args[0])) {
+			throw new we_service_Exception('Form data not set (first argument) at save cmd!', we_service_ErrorCodes::kModelFormDataNotSet);
+		}
+		$formData = $args[0];
+		
+		$controller = Zend_Controller_Front::getInstance();
+		$appName = $controller->getParam('appName');
+		$session = new Zend_Session_Namespace($appName);
+		if (!isset($session->model)) {
+			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
+		}
+		$session->model->Published=time();
+		$model = $session->model;
+		
+		return $this->save($args);
+	}
+
+
 	/**
 	 * check arguments and delete the model
 	 * 

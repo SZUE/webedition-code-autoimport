@@ -37,6 +37,12 @@
 		<tu tuid="Save">
 			<tuv xml:lang="de"><seg>Speichern</seg></tuv>
 		</tu>
+		<tu tuid="Publish">
+			<tuv xml:lang="de"><seg>Veröffentlichen</seg></tuv>
+		</tu>
+		<tu tuid="Unpublish">
+			<tuv xml:lang="de"><seg>Parken</seg></tuv>
+		</tu>
 		<tu tuid="Delete">
 			<tuv xml:lang="de"><seg>Löschen</seg></tuv>
 		</tu>

@@ -127,13 +127,39 @@ function we_ui_controls_Tree(treeId)
 
 		if(mNodeSpan) {
 			if(mark) {
-				mNodeSpan.className = "selected";
+				classA = mNodeSpan.className.split(" ");
+				classA.push("selected");
+				mNodeSpan.className = classA.join(" ");
+				mNodeSpan.className = mNodeSpan.className.replace (/^\s+/, '').replace (/\s+$/, '');
 			}
-			else {
-				mNodeSpan.className = "";
+			else {				
+				mNodeSpan.className = mNodeSpan.className.replace(/selected/,"");
+				mNodeSpan.className = mNodeSpan.className.replace (/^\s+/, '').replace (/\s+$/, '');
 			}
 		}
 	}
+	
+	/**
+	 * marks a node as publsihed/unpublished
+	 *
+	 * @param integer id 
+	 * @param boolean mark
+	 */
+	this.markNodeP = function(id, mark) {
+		var mNodeSpan = document.getElementById('spanText_'+this.id+'_'+id+'');
+		if(mNodeSpan) {
+			if(!mark) {
+				classA = mNodeSpan.className.split(" ");
+				classA.push("unpublished");
+				mNodeSpan.className = classA.join(" ");
+				mNodeSpan.className= mNodeSpan.className.replace (/^\s+/, '').replace (/\s+$/, '');
+			} else {				
+				mNodeSpan.className = mNodeSpan.className.replace(/unpublished/,"");
+				mNodeSpan.className = mNodeSpan.className.replace (/^\s+/, '').replace (/\s+$/, '');				
+			}
+		}
+	}
+	
 	
 	/**
 	 * unmark all nodes

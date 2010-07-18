@@ -75,6 +75,13 @@ class we_app_Model extends we_core_AbstractModel
 	 * @var boolean
 	 */
 	public $IsFolder;
+	
+	/**
+	 * Published attribute
+	 *
+	 * @var int
+	 */
+	public $Published = 0;
 
 	/**
 	 * _appName attribute

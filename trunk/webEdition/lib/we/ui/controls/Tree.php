@@ -165,6 +165,24 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 
 		$nodes = $db->fetchAll("SELECT " . addslashes($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `".addslashes($table)."` WHERE ParentID= ? ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ", $parentID);
 		
+		if(!empty($nodes)){
+			if (!array_key_exists('Published', $nodes[0])){
+				$addPublished=true;
+			} else {
+				$addPublished=false;
+			}
+			if (!array_key_exists('Status', $nodes[0])){
+				$addStatus=true;
+			} else {
+				$addStatus=false;
+			}
+			foreach ($nodes as &$node){
+				if ($addPublished) $node['Published']=1;
+				if ($addStatus) $node['Status']='';
+				if ($node['IsFolder']) $node['Published']=1;
+			}		
+		}
+		//we_util_Strings::p_r($nodes);
 		return $nodes;
 	}
 	
@@ -190,7 +208,9 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		        'ParentID' => 0,
 		        'Text' => 'custom 1',
 		        'ContentType' => $appName.'/item',
-		        'IsFolder' => 0
+		        'IsFolder' => 0,
+				'Published' => 1,
+				'Status' => ''
 			)
 		;
 		
@@ -200,7 +220,9 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		        'ParentID' => 0,
 		        'Text' => 'custom 2',
 		        'ContentType' => $appName.'/item',
-		        'IsFolder' => 0
+		        'IsFolder' => 0,
+				'Published' => 1,
+				'Status' => ''
 			)
 		;
 		
@@ -227,12 +249,15 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 	 * @param string $text
 	 * @return string
 	 */
-	public function getNodeObject($id, $text) 
+	public function getNodeObject($id, $text, $Published=1, $Status='') 
 	{
 		//$doOnClick = "alert(&quot;".$id."&quot;);";
-		 
+		if( isset($Published) && $Published==0){$outClasses[] = 'unpublished';}
+		if( isset($Status) && $Status !=''){$outClasses[] = $Status;} 
+		if(!empty($outClasses)){$outClass= ' class=\"'.implode(' ',$outClasses).'\" ';} else $outClass = '';
+	
 		$out = 'var myobj = { ';
-				$out .= 'label: "<span title=\"'.$id.'\" id=\"spanText_' . $this->_id . '_'.$id.'\">'.$text.'</span>"';
+				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">'.$text.'</span>"';
 				//$out .= ',';
 				//$out .= 'href: "javascript:'.$doOnClick.'"';
 				$out .= ',';
@@ -240,7 +265,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 				$out .= ',';
 				$out .= 'text: "'.$text.'"';
 				$out .= ',';
-				$out .= 'title: "'.$id.'"';			
+				$out .= 'title: "'.$id.'"';
 		$out .= '}; ';
 		
 		return $out;
@@ -258,7 +283,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		$nodes = $this->getNodes();
 		if(!empty($nodes)) {
 			foreach ($nodes as $k => $v) {
-				$out .= $this->getNodeObject($v['ID'],$v['Text']);
+				$out .= $this->getNodeObject($v['ID'],$v['Text'],$v['Published'],$v['Status']);
 				$out .= 'var tmpNode = new YAHOO.widget.TextNode(myobj, root, false);';
 				$out .= 'tmpNode.labelStyle = "'.$this->getTreeIconClass($v['ContentType']).'";';
 				if($this->getTreeIconClass($v['ContentType'])!=='folder') {
@@ -390,7 +415,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 				                //Result is an array if more than one result, string otherwise
 				                if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {
 				                    for (var i=0, j=oResults.ResultSet.Result.length; i<j; i++) {
-				                    	'.$this->getNodeObject('"+oResults.ResultSet.Id[i]+"','"+oResults.ResultSet.Result[i]+"').'
+				                    	'.$this->getNodeObject('"+oResults.ResultSet.Id[i]+"','"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Published[i]+"').'
 				                    	var tmpNode = new YAHOO.widget.TextNode(myobj, node, oResults.ResultSet.open[i]);
 				                    	tmpNode.labelStyle = oResults.ResultSet.LabelStyle[i];                  
 				                    	if(tmpNode.labelStyle!=="folder") {
@@ -402,7 +427,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 				                    }
 				                } else {
 				                    //there is only one result; comes as string:
-									'.$this->getNodeObject('"+oResults.ResultSet.Id+"','"+oResults.ResultSet.Result+"').'
+									'.$this->getNodeObject('"+oResults.ResultSet.Id+"','"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"').'
 				                    var tmpNode = new YAHOO.widget.TextNode(myobj, node, false);
 				                    tmpNode.labelStyle = oResults.ResultSet.LabelStyle;
 				                    if(tmpNode.labelStyle!=="folder") {
