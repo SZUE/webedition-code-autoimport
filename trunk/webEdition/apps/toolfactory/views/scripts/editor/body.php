@@ -192,7 +192,7 @@ if(!empty($this->model->ID)) {
 			}
 		}
 		if(!empty($this->model->SDKversion)){
-			$html .= $translate->_('SdkVersion').': <strong>'.we_util_Strings::number2version($this->model->SDKversion,false).'</strong>';
+			$html .= '<br/>'.$translate->_('SdkVersion').': <strong>'.we_util_Strings::number2version($this->model->SDKversion,false).'</strong>';
 		}
 		if(file_exists($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/manifest.php')){
 			$html .= '<br/>'.$translate->_('The update manifest is available');
