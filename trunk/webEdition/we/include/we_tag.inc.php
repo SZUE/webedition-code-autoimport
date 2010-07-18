@@ -7034,8 +7034,9 @@ function we_tag_write($attribs, $content)
 	$mailfrom = we_getTagAttribute("mailfrom", $attribs);
 	$forceedit = we_getTagAttribute("forceedit", $attribs, "", true);
 	$workspaces = we_getTagAttribute("workspaces", $attribs);
-	$objname = we_getTagAttribute("name", $attribs);
+	$objname = preg_replace('/[^a-z0-9_-]/i','',we_getTagAttribute("name", $attribs));
 	$onduplicate = we_getTagAttribute("onduplicate", $attribs,"increment");
+	$onpredefinedname = we_getTagAttribute("onpredefinedname", $attribs,"appendto");
 	$workflowname = we_getTagAttribute("workflowname", $attribs,"");
 	$workflowuserid = we_getTagAttribute("workflowuserid", $attribs,0);
 	if ($workflowname!='' && $workflowuserid!=0){
@@ -7111,7 +7112,11 @@ function we_tag_write($attribs, $content)
 							$objname = 1 + abs(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
 						}					
 					} else {
-						$objname = $GLOBALS["we_$type"][$name]->Text . $objname;
+						if ($onpredefinedname=='appendto') { 
+							$objname = $GLOBALS["we_$type"][$name]->Text . '_'.$objname;
+						} elseif($onpredefinedname=='infrontof'){
+							$objname .= '_'.$GLOBALS["we_$type"][$name]->Text;
+						}
 					}						
 					$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);  
 					if($objexists==''){

@@ -8,7 +8,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cla
 
 $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
-$GLOBALS['weTagWizard']['attribute']['id604_type'] = new weTagData_typeAttribute('604', 'type', array(new weTagDataOption('document', false, '', array('id604_type','id605_formname','id606_publish','id607_doctype','id608_categories','id610_userid','id611_admin','id612_forceedit','id613_mail','id614_mailfrom','id615_charset','id755_protected','id863_workflowname','id864_workflowuserid'), array()), new weTagDataOption('object', false, '', array('id604_type','id605_formname','id606_publish','id608_categories','id609_classid','id851_name','id852_onduplicate','id610_userid','id611_admin','id612_forceedit','id613_mail','id614_mailfrom','id615_charset','id616_triggerid','id640_parentid','id755_protected','id863_workflowname','id864_workflowuserid'), array())), false, '');
+$GLOBALS['weTagWizard']['attribute']['id604_type'] = new weTagData_typeAttribute('604', 'type', array(new weTagDataOption('document', false, '', array('id604_type','id605_formname','id606_publish','id607_doctype','id608_categories','id610_userid','id611_admin','id612_forceedit','id613_mail','id614_mailfrom','id615_charset','id755_protected','id863_workflowname','id864_workflowuserid'), array()), new weTagDataOption('object', false, '', array('id604_type','id605_formname','id606_publish','id608_categories','id609_classid','id851_name','id852_onduplicate','id867_onpredefinedname','id610_userid','id611_admin','id612_forceedit','id613_mail','id614_mailfrom','id615_charset','id616_triggerid','id640_parentid','id755_protected','id863_workflowname','id864_workflowuserid'), array())), false, '');
 $GLOBALS['weTagWizard']['attribute']['id605_formname'] = new weTagData_textAttribute('605', 'formname', false, '');
 $GLOBALS['weTagWizard']['attribute']['id606_publish'] = new weTagData_selectAttribute('606', 'publish', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id607_doctype'] = new weTagData_sqlRowAttribute('607', 'doctype',DOC_TYPES_TABLE, true, 'DocType', '', '', '');
@@ -26,6 +26,7 @@ if(defined("OBJECT_FILES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id640_
 $GLOBALS['weTagWizard']['attribute']['id610_userid'] = new weTagData_textAttribute('610', 'userid', false, '');
 $GLOBALS['weTagWizard']['attribute']['id851_name'] = new weTagData_textAttribute('851', 'name', false, '');
 $GLOBALS['weTagWizard']['attribute']['id852_onduplicate'] = new weTagData_selectAttribute('852', 'onduplicate', array(new weTagDataOption('abort', false, ''), new weTagDataOption('overwrite', false, ''), new weTagDataOption('increment', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id867_onpredefinedname'] = new weTagData_selectAttribute('867', 'onpredefinedname', array(new weTagDataOption('appendto', false, ''), new weTagDataOption('infrontog', false, ''), new weTagDataOption('overwrite', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id863_workflowname'] = new weTagData_textAttribute('863', 'workflowname', false, '');
 $GLOBALS['weTagWizard']['attribute']['id864_workflowuserid'] = new weTagData_textAttribute('864', 'workflowuserid', false, '');
 ?>
