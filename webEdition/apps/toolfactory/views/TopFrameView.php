@@ -52,11 +52,11 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView {
 
 		$saveMessage = we_util_Strings::quoteForJSString($translate->_('The application \'%s\' has been succesfully saved. Please restart webEdition!'), false);
 		
-		$saveEntryMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageNotice, true);
+		$saveEntryMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
 		
 		$statusChangeMessage = we_util_Strings::quoteForJSString($translate->_('The status of the application \'%s\' has been succesfully changed. Please restart webEdition!'), false);
 		
-		$statusChangeMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageNotice, true);
+		$statusChangeMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
 		
 		$nothingToSaveMessage = we_util_Strings::quoteForJSString($translate->_('There is nothing to save!'), false);
 		
@@ -68,7 +68,7 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView {
 		
 		$deleteMessage = we_util_Strings::quoteForJSString($translate->_('The entry/folder \'%s\' has been succesfully deleted.'), false);
 		
-		$deleteMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageNotice, true);
+		$deleteMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
 		
 		$errorMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageError, true);
 		$noticeMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageNotice, true);
