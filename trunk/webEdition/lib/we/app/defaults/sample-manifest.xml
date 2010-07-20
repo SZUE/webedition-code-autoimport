@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
+<!-- exsample manifest for webEdition applications showing all supported values -->
+<manifest>
+	
+	<!-- the creator develloped the application  -->
+	<creator>
+		<company>webEdition project</company>
+		<name>webEdition e.V.</name>
+		<!-- list of the authors  -->
+		<authors>
+			<author>misc.</author>
+		</authors>
+		<address>c/o Löwi & Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+        <country>DE</country>
+		<phone>+49 30 766835-79</phone>
+		<fax>+49 30 766835-85</fax>
+		<email>info@webedition.org</email>
+		<www>http://www.webedition.org</www>
+		<linktext>webEdition-Site</linktext>
+		<year>2010</year>
+	</creator>
+	
+	<!-- the maintainer maintains an application, include if somebody else wrote it for webEdition or if it is an externally develloped, third party application  -->
+	<maintainer>
+		<company>webEdition project</company>
+		<name>webEdition e.V.</name>
+		<!-- list of the authors who maintain it -->
+		<authors>
+			<author>misc.</author>
+		</authors>
+		<address>c/o Löwi & Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+        <country>DE</country>
+		<phone>+49 30 766835-79</phone>
+		<fax>+49 30 766835-85</fax>
+		<email>info@webedition.org</email>
+		<www>http://www.webedition.org</www>
+		<linktext>webEdition-Site</linktext>
+		<year>2010</year>
+	</maintainer>
+	
+	<!-- this should be included if the application is an wrapper to a third-party application such as phpMyAdmin -->
+	<thirdparty>
+		<company>webEdition project</company>
+		<name>webEdition e.V.</name>
+		<authornames>misc.</authornames>
+		<address>c/o Löwi & Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+        <country>DE</country>
+		<phone>+49 30 766835-79</phone>
+		<fax>+49 30 766835-85</fax>
+		<email>info@webedition.org</email>
+		<www>http://www.webedition.org</www>
+		<year>2010</year>
+		<version>6100</version>
+		<license>GPL3</license>
+		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>
+	</thirdparty>
+	
+	<info>
+		<implementation>tool</implementation>
+		<name>exampleApplication</name>
+		<version>0.01</version>
+		<license>GPL3</license>
+		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>
+		<encoding>none</encoding>
+		<deactivatable>true</deactivatable>
+		<deinstallable>true</deinstallable>
+		<updatable>true</updatable>
+		<!-- list of categories, here showing all currently supported catagories -->
+		<categories>
+			<category>miscellaneous</category>
+			<category>backend</category>
+			<category>frontend</category>
+			<category>third-party</category>
+		</categories>
+	</info>
+	
+	<requirements>
+      <php-version>5.2.4</php-version>
+	  <!-- list of all requird php extensions -->
+      <php-ext>simplexml</php-ext>
+      <php-ext>gdlib</php-ext>
+	</requirements>
+	
+	<dependencies>
+		<!-- min. webEdition Version -->
+		<version>6100</version>
+		<!-- Version of the webEdition SDK -->
+		<sdkversion>6100</version>
+	</dependencies>
+	
+</manifest>
