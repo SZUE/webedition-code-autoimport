@@ -19,8 +19,8 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-include_once ('Zend/Config/Xml.php');
-
+//include_once ('Zend/Config/Xml.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 /**
  * class for administrating webEdition applications (formerly known as "tools")
  * 
@@ -197,6 +197,7 @@ class we_app_Common
 			return false;
 		}
 		$appmanifest = self::getManifestXml($appname);
+		
 		$date = @self::getAppTOCElement($appname, "date");
 		if (!$date)
 			$date = time();
@@ -216,7 +217,7 @@ class we_app_Common
 		$entry->addChild("deactivatable", $appmanifest->info->deactivatable);
 		$entry->addChild("deinstallable", $appmanifest->info->deinstallable);
 		$entry->addChild("updatable", $appmanifest->info->updatable);
-		
+		/**
 		$title = $entry->addChild("title");
 		foreach ($appmanifest->xpath('//title') as $item) {
 			foreach ($item as $lang => $text) {
@@ -229,6 +230,8 @@ class we_app_Common
 				$description->addChild($lang, $text);
 			}
 		}
+		*/
+		print_r($appmanifest);
 		return $entry;
 	}
 

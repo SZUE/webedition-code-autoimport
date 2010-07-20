@@ -1,6 +1,6 @@
 	
 include_once('define.conf.php');
-
+// additional information should be inserted in manifest.xml, which is important for future update-services
 $metaInfo = array(
 	'name'=>'<?php print $CLASSNAME; ?>',
 	'classname'=>'<?php print $CLASSNAME; ?>',

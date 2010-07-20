@@ -278,7 +278,8 @@ class toolfactory_models_Default extends we_app_Model
 			$PERMISSIONCONDITION = '';
 			$DELETECONDITION = '';
 		}
-
+		$WEVERSION = we_util_Strings::version2number(WE_VERSION,false);
+		$SDKVERSION = we_util_Strings::version2number(WE_VERSION,false);
 		$_templateDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/toolfactory/pattern';
 		
 		$_toolDir = $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/';
@@ -326,7 +327,8 @@ class toolfactory_models_Default extends we_app_Model
 						$_content = str_replace('{$TOOLNAME}',$TOOLNAME,$_content);	
 						$_content = str_replace('{$TOOLNAMELANG}',$TOOLNAMELANG,$_content);	
 
-						
+						$_content = str_replace('{$WEVERSION}',$WEVERSION,$_content);	
+						$_content = str_replace('{$SDKVERSION}',$SDKVERSION,$_content);	
 					}
 				} else {
 					$_content = '<?php'.PHP_EOL;
@@ -379,7 +381,11 @@ class toolfactory_models_Default extends we_app_Model
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
 		}
-				
+		
+		
+		/* generate new toc.xml */
+		//we_app_Common::rebuildAppTOC();
+			
 		return true;
 			
 	}
