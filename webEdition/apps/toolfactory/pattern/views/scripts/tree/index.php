@@ -93,9 +93,9 @@ $js = '
 		if (data.model.ID) {
 			if (data.newBeforeSaving) {
 				if (data.model.IsFolder) {
-					weTree.addNode(data.model.ID, data.model.Text, "folder", data.model.ParentID);
+					weTree.addNode(data.model.ID, data.model.Text, "folder", data.model.ParentID, data.model.Published,data.model.Status);
 				} else {
-					weTree.addNode(data.model.ID, data.model.Text, "' . $tree->getTreeIconClass($appName.'/item') . '", data.model.ParentID);
+					weTree.addNode(data.model.ID, data.model.Text, "' . $tree->getTreeIconClass($appName.'/item') . '", data.model.ParentID, data.model.Published,data.model.Status);
 				}
 			} else {
 				var newParentId = data.model.ParentID;

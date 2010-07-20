@@ -252,9 +252,50 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 	public function getNodeObject($id, $text, $Published=1, $Status='') 
 	{
 		//$doOnClick = "alert(&quot;".$id."&quot;);";
-		if( isset($Published) && $Published==0){$outClasses[] = 'unpublished';}
-		if( isset($Status) && $Status !=''){$outClasses[] = $Status;} 
-		if(!empty($outClasses)){$outClass= ' class=\"'.implode(' ',$outClasses).'\" ';} else $outClass = '';
+		$doOnClick = "alert(&quot;".$Published."&quot;);";
+		$outClasses= array();
+		if($Published == 0){
+			$outClasses[] = 'unpublished';
+		}
+		if($Status !=''){
+			$outClasses[] = $Status;
+		}
+		if (!empty($outClasses)) {
+			$ClassesStr = implode(' ',$outClasses);
+			$ClassesStr = trim($ClassesStr,' ');
+		} else {
+			$ClassesStr='';
+		}
+		
+		$doOnClick = "alert(&quot;Pub:-".$Published."- Status:-".$Status ."- classes:".$ClassesStr."-&quot;);";
+		if($ClassesStr!=''){$outClass= 'class=\"'.$ClassesStr.'\"';} else $outClass = '';
+	
+		$out = 'var myobj = { ';
+				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">'.$text.'</span>"';
+				//$out .= ',';
+				//$out .= 'href: "javascript:'.$doOnClick.'"';
+				$out .= ',';
+				$out .= 'id: "'.$id.'"';
+				$out .= ',';
+				$out .= 'text: "'.$text.'"';
+				$out .= ',';
+				$out .= 'title: "'.$id.'"';
+		$out .= '}; ';
+		
+		return $out;
+	}
+	
+	/**
+	 * Retrieve string of node object
+	 * 
+	 * @param integer $id
+	 * @param string $text
+	 * @return string
+	 */
+	public function getNodeObjectSuggest($id, $text, $Classes='', $Status='') 
+	{	
+		$doOnClick = "alert(&quot;Status:-".$Status ."- classes:".$Classes."-&quot;);";
+		if($Classes != ''){$outClass= 'class=\"'.$Classes.'\"';} else $outClass = '';
 	
 		$out = 'var myobj = { ';
 				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">'.$text.'</span>"';
@@ -415,7 +456,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 				                //Result is an array if more than one result, string otherwise
 				                if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {
 				                    for (var i=0, j=oResults.ResultSet.Result.length; i<j; i++) {
-				                    	'.$this->getNodeObject('"+oResults.ResultSet.Id[i]+"','"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Published[i]+"').'
+				                    	'.$this->getNodeObjectSuggest('"+oResults.ResultSet.Id[i]+"','"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Classes[i]+"', '"+oResults.ResultSet.Status[i]+"').'
 				                    	var tmpNode = new YAHOO.widget.TextNode(myobj, node, oResults.ResultSet.open[i]);
 				                    	tmpNode.labelStyle = oResults.ResultSet.LabelStyle[i];                  
 				                    	if(tmpNode.labelStyle!=="folder") {
@@ -427,7 +468,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 				                    }
 				                } else {
 				                    //there is only one result; comes as string:
-									'.$this->getNodeObject('"+oResults.ResultSet.Id+"','"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"').'
+									'.$this->getNodeObjectSuggest('"+oResults.ResultSet.Id+"','"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"', '"+oResults.ResultSet.Status+"').'
 				                    var tmpNode = new YAHOO.widget.TextNode(myobj, node, false);
 				                    tmpNode.labelStyle = oResults.ResultSet.LabelStyle;
 				                    if(tmpNode.labelStyle!=="folder") {

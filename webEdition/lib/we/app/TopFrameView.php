@@ -173,6 +173,38 @@ weEventController.register("save", function(data, sender) {
 	$saveEntryMessageCall	
 });
 
+/* publish */
+weEventController.register("publish", function(data, sender) {
+	self.hot = false;
+	var msg = "$saveMessage";
+	//datasource: table
+	if(data.model.Path!=null) {
+		text = data.model.Path;
+	}
+	else {
+		//custom tool, no Path
+		text = data.model.Text;
+	}
+	msg = msg.replace(/%s/, data.model.Text);
+	$saveEntryMessageCall	
+});
+
+/* unpublish */
+weEventController.register("unpublish", function(data, sender) {
+	self.hot = false;
+	var msg = "$saveMessage";
+	//datasource: table
+	if(data.model.Path!=null) {
+		text = data.model.Path;
+	}
+	else {
+		//custom tool, no Path
+		text = data.model.Text;
+	}
+	msg = msg.replace(/%s/, data.model.Text);
+	$saveEntryMessageCall	
+});
+
 /* delete */
 weEventController.register("delete", function(data, sender) {
 	// fire home command, because when entry is deleted we can't show it anymore!
@@ -237,27 +269,13 @@ weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdOb
 	}
 });
 
-/* delete */
-weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
-	if (typeof({$fs}.edbody) == "undefined") {
-		$nothingToDeleteMessageCall
-	} else {
-		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			"{$this->appDir}/index.php/rpc/index", 
-			"{$this->appName}.service.Cmd", 
-			"delete", 
-			{$fs}.edbody.document.we_form.ID.value
-		);
-	}
-});
-
 /* unpublish */
 weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', function(cmdObj) {
 
 	if (typeof({$fs}.edbody) == 'undefined') {
 		$nothingToSaveMessageCall
 	} else {
+		cmdObj.ignoreHot = true;
 		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.ID.value); 
 		we_core_JsonRpc.callMethod(
 			cmdObj, 
@@ -275,6 +293,7 @@ weCmdController.register('publish_top', 'app_{$this->appName}_publish', function
 	if (typeof({$fs}.edbody) == 'undefined') {
 		$nothingToSaveMessageCall
 	} else {
+		cmdObj.ignoreHot = true;
 		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.ID.value); 
 		we_core_JsonRpc.callMethod(
 			cmdObj, 
@@ -285,6 +304,22 @@ weCmdController.register('publish_top', 'app_{$this->appName}_publish', function
 		);
 	}
 });
+
+/* delete */
+weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
+	if (typeof({$fs}.edbody) == "undefined") {
+		$nothingToDeleteMessageCall
+	} else {
+		we_core_JsonRpc.callMethod(
+			cmdObj, 
+			"{$this->appDir}/index.php/rpc/index", 
+			"{$this->appName}.service.Cmd", 
+			"delete", 
+			{$fs}.edbody.document.we_form.ID.value
+		);
+	}
+});
+
 
 /* home */
 weCmdController.register('home_top', 'app_{$this->appName}_home', function(cmdObj) {

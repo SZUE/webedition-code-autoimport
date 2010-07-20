@@ -18,7 +18,7 @@ $saveButton = new we_ui_controls_Button(
 $unpublishButton = new we_ui_controls_Button(
 	array(
 		'text'		=> $translate->_('Unpublish'), 
-		'onClick'	=> 'weCmdController.fire({cmdName: "app_<?php print $TOOLNAME;?>_unpublish", followCmd : {cmdName: "app_<?php print $TOOLNAME;?>_open",id: "'.$this->model->ID.'"}})', 
+		'onClick'	=> 'weCmdController.fire({cmdName: "app_<?php print $TOOLNAME;?>_unpublish", ignoreHot: "1", followCmd : {cmdName: "app_<?php print $TOOLNAME;?>_open",id: "'.$this->model->ID.'", ignoreHot: "1"}})', 
 		'type'		=> 'onClick', 
 		'width'		=> 110,
 		'disabled'	=> !we_core_Permissions::hasPerm('PUBLISH_APP_<?php print strtoupper($TOOLNAME);?>'),
@@ -28,7 +28,7 @@ $unpublishButton = new we_ui_controls_Button(
 $publishButton = new we_ui_controls_Button(
 	array(
 		'text'		=> $translate->_('Publish'), 
-		'onClick'	=> 'weCmdController.fire({cmdName: "app_<?php print $TOOLNAME;?>_publish", followCmd : {cmdName: "app_<?php print $TOOLNAME;?>_open",id: "'.$this->model->ID.'"}})', 
+		'onClick'	=> 'weCmdController.fire({cmdName: "app_<?php print $TOOLNAME;?>_publish", ignoreHot: "1", followCmd : {cmdName: "app_<?php print $TOOLNAME;?>_open",id: "'.$this->model->ID.'", ignoreHot: "1"}})', 
 		'type'		=> 'onClick', 
 		'width'		=> 110,
 		'disabled'	=> !we_core_Permissions::hasPerm('PUBLISH_APP_<?php print strtoupper($TOOLNAME);?>'),
