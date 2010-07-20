@@ -278,7 +278,7 @@ class toolfactory_models_Default extends we_app_Model
 			$PERMISSIONCONDITION = '';
 			$DELETECONDITION = '';
 		}
-	
+
 		$_templateDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/toolfactory/pattern';
 		
 		$_toolDir = $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/';
@@ -394,7 +394,7 @@ class toolfactory_models_Default extends we_app_Model
 		$_dn = dirname($file);
 		$_bn = basename($file);
 
-		if($_bn!=$this->Text . '.sql' && $_bn!='permission.conf.php' && $_bn!='backup.conf.php' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tags' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/cmds' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/json' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/text') {
+		if($_bn!=$this->Text . '.sql' && $_bn!='permission.conf.php' && $_bn!='backup.conf.php' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tagwizard' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tags' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/cmds' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/json' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/text') {
 			return true;
 		}
 		

@@ -56,21 +56,25 @@ function we_ui_controls_Tree(treeId)
 	 * @return integer ParentId
 	 */
 	 
-	this.addNode = function(id, text, contentType, parentId) {
+	this.addNode = function(id, text, contentType, parentId, published, status) {
 	
 		text = text.replace(/</g,"&lt;");
 		text = text.replace(/>/g,"&gt;");
-		
 		if(parentId>0) {
 			var mParentNode = eval("tree_"+this.id+".getNodeByProperty('id',parentId);");
 		}   
 		else {
 			var mParentNode = this.rootNode;
 		}
-
+		var classA= new Array();
+		classA.push('selected');
+		if(published==0) {classA.push('unpublished');}
+		var classStr = classA.join(" ");
+		classStr = classStr.replace (/^\s+/, '').replace (/\s+$/, '');
+		if (classStr!=''){classStr = 'class="'+classStr+'"';}else classStr='';
 		if((mParentNode.childrenRendered && mParentNode!="RootNode") || mParentNode=="RootNode") {
 			var myobj = { 
-					label: "<span title=\""+id+"\" id=\"spanText_"+this.id+"_"+id+"\">"+text+"</span>",
+					label: "<span title=\""+id+"\" "+classStr+" id=\"spanText_"+this.id+"_"+id+"\">"+text+"</span>",
 					id: id,
 					text: text,
 					title: id		
@@ -140,7 +144,31 @@ function we_ui_controls_Tree(treeId)
 	}
 	
 	/**
-	 * marks a node as publsihed/unpublished
+	 * marks a node as published/unpublished
+	 *
+	 * @param integer id 
+	 * @param boolean mark
+	 */
+	this.markNodeStatus = function(id, status) {
+		var mNodeSpan = document.getElementById('spanText_'+this.id+'_'+id+'');
+		if(mNodeSpan) {
+			classB= new Array();
+			classA = mNodeSpan.className.split(" ");
+			for (var i=0; i<classA.length; i++){
+				if(classA[i] == 'selected' || classA[i] == 'unpublished'){
+					classB.push(classA[i]);	
+				}
+			}
+			if(status != '') {
+				classB.push(status);
+			}
+			mNodeSpan.className = classB.join(" ");
+			mNodeSpan.className= mNodeSpan.className.replace (/^\s+/, '').replace (/\s+$/, '');
+		}
+	}
+	
+	/**
+	 * marks a node as published/unpublished
 	 *
 	 * @param integer id 
 	 * @param boolean mark
@@ -159,7 +187,6 @@ function we_ui_controls_Tree(treeId)
 			}
 		}
 	}
-	
 	
 	/**
 	 * unmark all nodes

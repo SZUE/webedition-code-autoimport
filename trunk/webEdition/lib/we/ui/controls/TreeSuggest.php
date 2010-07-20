@@ -127,6 +127,45 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 				if($m<$nodesCount) $response .= ',';
 			}
 			
+			$response .= '],"Status":[';
+			
+			$m = 0;
+			foreach ($nodes as $k => $v) {
+				$m++;
+				$response .= '"'.$v['Status'].'"';
+				if($m<$nodesCount) $response .= ',';
+			}
+			
+			$response .= '],"Published":[';
+			
+			$m = 0;
+			foreach ($nodes as $k => $v) {
+				$m++;
+				$response .= '"'.$v['Published'].'"';//we_util_Strings::p_r($v['Published']);
+				if($m<$nodesCount) $response .= ',';
+			}
+			
+			$response .= '],"Classes":[';
+			
+			$m = 0;
+			foreach ($nodes as $k => $v) {
+				$m++;
+				$outClasses= array();
+				if($v['Published'] == 0){
+					$outClasses[] = 'unpublished';
+				}
+				if($v['Status'] !=''){
+					$outClasses[] = $v['Status'];
+				}
+				if (!empty($outClasses)) {
+					$ClassesStr = implode(' ',$outClasses);
+					$ClassesStr = trim($ClassesStr,' ');
+				} else {
+					$ClassesStr='';
+				} 
+				$response .= '"'.$ClassesStr.'"';//we_util_Strings::p_r($v['Published']);
+				if($m<$nodesCount) $response .= ',';
+			}
 			$response .= '],"open":[';
 			
 			$m = 0;
