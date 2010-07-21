@@ -32,6 +32,19 @@ Zend_Loader::loadClass('we_app_controller_EditorAction');
  */
 class EditorController extends we_app_controller_EditorAction
 {
-
+public function deletedocquestionAction()
+	{
+		$this->_setupModel();
+		$this->_processPostVars();
+		$this->_renderDefaultView('editor/deleteDocQuestion.php');
+/*
+		$this->view = new Zend_View();
+		$this->view->setScriptPath('views/scripts');
+		$this->_setupModel();
+		$this->view->model= $this->model;
+		$this->view->cmdstack = $this->getRequest()->getParam('cmdstack');
+		echo $this->view->render('editor/deleteDocQuestion.php');
+		*/
+	}
 
 }

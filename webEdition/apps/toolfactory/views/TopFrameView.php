@@ -233,10 +233,15 @@ weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdOb
 
 
 /* delete */
-weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
+weCmdController.register('checkdelete_top', 'app_{$this->appName}_checkdelete', function(cmdObj) {
 	if (typeof({$fs}.edbody) == "undefined") {
 		$nothingToDeleteMessageCall;
 	} else {
+		_weYesNoCancelDeleteDialog(cmdObj);
+	}
+});
+weCmdController.register('really_delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
+
 		we_core_JsonRpc.callMethod(
 			cmdObj, 
 			"{$this->appDir}/index.php/rpc/index", 
@@ -244,7 +249,6 @@ weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(c
 			"delete", 
 			{$fs}.edbody.document.we_form.ID.value
 		);
-	}
 });
 
 /* unpublish */
@@ -319,6 +323,14 @@ function _weYesNoCancelDialog(cmdObj) {
 	var noCmd = cmdObj;
 	noCmd.ignoreHot = true;
 	var dialog = new we_ui_layout_Dialog("{$this->appDir}/index.php/editor/exitdocquestion", 380, 130, {"yesCmd":yesCmd, "noCmd":noCmd});
+	dialog.open();
+}
+
+function _weYesNoCancelDeleteDialog(cmdObj) {
+	var yesCmd = {cmdName : {$fs}.edbody.document.we_form.classname.value, followCmd : cmdObj};
+	var noCmd = cmdObj;
+	noCmd.ignoreHot = true;
+	var dialog = new we_ui_layout_Dialog("{$this->appDir}/index.php/editor/deletedocquestion", 380, 130, {"yesCmd":yesCmd, "noCmd":noCmd,"app":{$fs}.edbody.document.we_form.classname.value});
 	dialog.open();
 }
 

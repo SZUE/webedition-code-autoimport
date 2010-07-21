@@ -5,7 +5,7 @@
 	<creator>
 		<company>webEdition project</company>
 		<name>webEdition e.V.</name>
-		<address>c/o Löwi & Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
 		<fax>+49 30 766835-85</fax>
@@ -17,6 +17,7 @@
 	<info>
 		<implementation>tool</implementation>
 		<name>exampleApplication</name>
+		<classname>exampleApplication</classname>
 		<version>0.1</version>
 		<license>GPL3</license>
 		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>

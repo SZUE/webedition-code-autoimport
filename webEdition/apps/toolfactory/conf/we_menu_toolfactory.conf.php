@@ -40,7 +40,7 @@ $we_menu_toolfactory['000200']['enabled'] = '1';
 
 $we_menu_toolfactory['000300']['text'] = $translate->_('Delete Entry/Group.');
 $we_menu_toolfactory['000300']['parent'] = '000100';
-$we_menu_toolfactory['000300']['cmd'] = 'app_' . $appName . '_delete';
+$we_menu_toolfactory['000300']['cmd'] = 'app_' . $appName . '_checkdelete';
 $we_menu_toolfactory['000300']['perm'] = 'DELETE_APP_TOOLFACTORY || ADMINISTRATOR';
 $we_menu_toolfactory['000300']['enabled'] = '1';
 

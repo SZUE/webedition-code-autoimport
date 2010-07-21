@@ -270,6 +270,7 @@ class toolfactory_models_Default extends we_app_Model
 			$TABLEEXISTS = false;
 			$this->makeTable = false;
 		}
+		$ACTIVECONSTANT = 'WEAPP_'.strtoupper($this->classname) . '_ACTIVE';
 		
 		if($this->makePerms) {
 			$PERMISSIONCONDITION = 'USE_APP_' . strtoupper($this->classname);
@@ -384,7 +385,7 @@ class toolfactory_models_Default extends we_app_Model
 		
 		
 		/* generate new toc.xml */
-		//we_app_Common::rebuildAppTOC();
+		we_app_Common::rebuildAppTOC();
 			
 		return true;
 			

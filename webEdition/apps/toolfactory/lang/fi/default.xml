@@ -20,7 +20,7 @@
 			<tuv xml:lang="fi"><seg>The user is allowed to edit items Application Management</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to publish items {$TOOLNAME}">
-			<tuv xml:lang="en"><seg>The user is allowed to activate/deactivate Applications</seg></tuv>
+			<tuv xml:lang="fi"><seg>The user is allowed to activate/deactivate Applications</seg></tuv>
 		</tu>
 		<tu tuid="Restore toolfactory data">
 			<tuv xml:lang="fi"><seg>Restore Application Management data</seg></tuv>
@@ -133,11 +133,41 @@
 		<tu tuid="The status of the application '%s' has been succesfully changed. Please restart webEdition!">
 			<tuv xml:lang="fi"><seg>The application status of the application '%s' has been succesfully changed. Please restart webEdition!</seg></tuv>
 		</tu>
-		<tu tuid="The update manifest is available">
-			<tuv xml:lang="fi"><seg>The update manifest is available</seg></tuv>
+		<tu tuid="The application manifest is available">
+			<tuv xml:lang="fi"><seg>The application manifest is available</seg></tuv>
 		</tu>
-		<tu tuid="The update manifest is not available">
-			<tuv xml:lang="fi"><seg>The update manifest is not available, default values are used.</seg></tuv>
+		<tu tuid="The application manifest is not available">
+			<tuv xml:lang="fi"><seg>The application manifest is not available, default values are used.</seg></tuv>
+		</tu>
+		<tu tuid="The application will be deleted.">
+			<tuv xml:lang="fi"><seg>The application will be de-installed (deleted) !</seg></tuv>
+		</tu>
+		<tu tuid="Are you sure?">
+			<tuv xml:lang="fi"><seg>Are you sure?</seg></tuv>
+		</tu>
+		<tu tuid="The application can not be deleted!">
+			<tuv xml:lang="fi"><seg>The application can not be deinstalled according to the application manifest!</seg></tuv>
+		</tu>
+		<tu tuid="The application is deletable.">
+			<tuv xml:lang="fi"><seg>The application can be deinstalled.</seg></tuv>
+		</tu>
+		<tu tuid="The application will be deactivated.">
+			<tuv xml:lang="fi"><seg>The application will be deinstalled</seg></tuv>
+		</tu>
+		<tu tuid="The application can not be deactivated!">
+			<tuv xml:lang="fi"><seg>The application can not be deactivated according to the application manifest!</seg></tuv>
+		</tu>
+		<tu tuid="The application can be deactivated.">
+			<tuv xml:lang="fi"><seg>The application can be deactivated</seg></tuv>
+		</tu>
+		<tu tuid="The application can be updated.">
+			<tuv xml:lang="fi"><seg>The application can be updated.</seg></tuv>
+		</tu>
+		<tu tuid="The application can not be updated.">
+			<tuv xml:lang="fi"><seg>The application can not be updated according to the application manifest!</seg></tuv>
+		</tu>
+		<tu tuid="The application will be be updated.">
+			<tuv xml:lang="fi"><seg>The application will be updated</seg></tuv>
 		</tu>
 	</body>
 </tmx>
