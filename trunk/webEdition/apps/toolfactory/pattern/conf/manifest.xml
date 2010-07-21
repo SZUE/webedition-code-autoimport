@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
 <!-- minimal manifest for webEdition applications -->
 <!-- values not found here are obtained from /webEdition/lib/we/app/defaults/manifest.xml -->
 <!-- a sample showing all currently supported values can be found at /webEdition/lib/we/app/defaults/sample-manifest.xml -->
@@ -8,7 +7,7 @@
 	<creator>
 		<company>webEdition project</company>
 		<name>webEdition e.V.</name>
-		<address>c/o Löwi & Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
 		<fax>+49 30 766835-85</fax>
@@ -21,6 +20,16 @@
 		<implementation>tool</implementation>
 		<name>{$TOOLNAMELANG}</name>
 		<classname>{$TOOLNAME}</classname>
+		<!-- name of the app, at least de and en should be supplied -->
+		<title>
+			<de>App Name</de>
+			<en>app name</en>
+		</title>
+		<!-- a small description of the app, at least de and en should be supplied -->
+		<description>
+			<de>Beschreibung</de>
+			<en>description</en>
+		</description>
 		<version>0.01</version>
 		<license>GPL3</license>
 		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>

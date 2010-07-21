@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
 <manifest>
 	
 	<creator>
 		<company>webEdition project</company>
 		<name>webEdition e.V.</name>
-		<address>c/o Löwi & Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
 		<fax>+49 30 766835-85</fax>
@@ -17,6 +16,15 @@
 	<info>
 		<implementation>tool</implementation>
 		<name>toolfactory</name>
+		<classname>toolfactory</classname>
+		<title>
+			<de>Anwendungsverwaltung</de>
+			<en>Application management</en>
+		</title>
+		<description>
+			<de>Tool zum Einrichten von webEdition Anwendungen</de>
+			<en>Tool for the administration of applications</en>
+		</description>
 		<license>GPL3</license>
 		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>
 		<encoding>none</encoding>

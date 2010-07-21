@@ -61,8 +61,9 @@ $table = new we_ui_layout_Table;
 if(empty($this->model->ID)) {
 	$table->addElement($saveButton, 1, 0);
 } else {
-	if(isset($this->model->appdisabled)){
-		if (!$this->model->appdisabled){
+	
+	if(we_app_Common::isDeactivatable($this->model->classname)){
+		if (we_app_Common::isActive($this->model->classname)){
 			$table->addElement($unpublishButton,1,0);
 		} else {
 			$table->addElement($publishButton,1,0);

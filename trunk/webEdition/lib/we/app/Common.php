@@ -196,8 +196,7 @@ class we_app_Common
 		if ($checkInstallation && !self::isInstalled($appname)) {
 			return false;
 		}
-		$appmanifest = self::getManifestXml($appname);
-		
+		$appmanifest = self::getManifestXML($appname);
 		$date = @self::getAppTOCElement($appname, "date");
 		if (!$date)
 			$date = time();
@@ -217,21 +216,20 @@ class we_app_Common
 		$entry->addChild("deactivatable", $appmanifest->info->deactivatable);
 		$entry->addChild("deinstallable", $appmanifest->info->deinstallable);
 		$entry->addChild("updatable", $appmanifest->info->updatable);
-		/**
+		
 		$title = $entry->addChild("title");
-		foreach ($appmanifest->xpath('//title') as $item) {
+		foreach ($appmanifest->xpath('info/title') as $item) {
 			foreach ($item as $lang => $text) {
 				$title->addChild($lang, $text);
 			}
 		}
 		$description = $entry->addChild("description");
-		foreach ($appmanifest->xpath('//description') as $item) {
+		foreach ($appmanifest->xpath('info/description') as $item) {
 			foreach ($item as $lang => $text) {
 				$description->addChild($lang, $text);
 			}
 		}
-		*/
-		print_r($appmanifest);
+		
 		return $entry;
 	}
 
@@ -391,7 +389,7 @@ class we_app_Common
 		return false;
 	}
 
-	/**
+	/** DERECIATED, since its not compatible with ZendConfig Namespace
 	 * reads the manifest file via SimpleXML from a specified path (absolute path)
 	 * @param string $filename path and filename to the manifest.xml file
 	 * @return object SimpleXML object of manifest file contents
@@ -420,6 +418,7 @@ class we_app_Common
 		}
 		return $xml;
 	}
+
 
 	/**
 	 * reads an element from a specified manifest file (application name)
@@ -656,6 +655,51 @@ class we_app_Common
 	}
 
 	/**
+	 * 
+	 * checks if the application with the name $name can be deactivated
+	 *
+	 * - set attribute in manifest.xml
+	 * - set attribute of the application's toc.xml entry
+	 */
+	public static function isDeactivatable($appname = "")
+	{
+		if (empty($appname) || !self::isInstalled($appname)) {
+			return false;
+		}
+		
+		// 1. check first if the application is deactivatable
+		$deactivatable = self::getManifestElement($appname, "/info/deactivatable");
+		if ($deactivatable != "true") {
+			return false;
+		} else {
+			return true;
+		}	
+	}
+	
+	/**
+	 * 
+	 * checks if the application with the name $name can be deinstalled - deleted
+	 *
+	 * no function to delete the app here, just use we_app_Common::rebuildAppTOC() after deletion
+	 * 
+	 */
+	public static function isDeinstallable($appname = "")
+	{
+		if (empty($appname) || !self::isInstalled($appname)) {
+			return false;
+		}
+		
+		// 1. check first if the application is deactivatable
+		$deactivatable = self::getManifestElement($appname, "/info/deinstallable");
+		if ($deactivatable != "true") {
+			return false;
+		} else {
+			return true;
+		}	
+	}
+	
+	
+	/**
 	 * activate a previoulsy deactivated application
 	 * - set attribute in manifest.xml
 	 * - set attribute of the application's toc.xml entry
@@ -720,6 +764,7 @@ class we_app_Common
 		self::saveAppTOC($toc);
 	
 	}
+	
 
 	/**
 	 * returns a specified config value or false

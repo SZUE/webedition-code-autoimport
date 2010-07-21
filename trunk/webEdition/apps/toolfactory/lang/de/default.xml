@@ -133,12 +133,43 @@
 		<tu tuid="The status of the application '%s' has been succesfully changed. Please restart webEdition!">
 			<tuv xml:lang="de"><seg>Der Status der Anwendung '%s' wurde erfolgreich geändert. Bitte starten Sie webEdition neu!</seg></tuv>
 		</tu>
-		<tu tuid="The update manifest is available">
-			<tuv xml:lang="de"><seg>Das Update-Minifest ist vorhanden</seg></tuv>
+		<tu tuid="The application manifest is available">
+			<tuv xml:lang="de"><seg>Das Anwendungs-Manifest ist vorhanden</seg></tuv>
 		</tu>
-		<tu tuid="The update manifest is not available">
-			<tuv xml:lang="de"><seg>Das Update-Manifest ist nicht vorhanden, die Standardwerte werden verwendet.</seg></tuv>
+		<tu tuid="The application manifest is not available">
+			<tuv xml:lang="de"><seg>Das Anwendungs-Manifest ist nicht vorhanden, die Standardwerte werden verwendet.</seg></tuv>
 		</tu>
+		<tu tuid="The application will be deleted.">
+			<tuv xml:lang="de"><seg>Die Anwendung wird deinstalliert (gelöscht) !</seg></tuv>
+		</tu>
+		<tu tuid="Are you sure?">
+			<tuv xml:lang="de"><seg>Sind Sie sicher?</seg></tuv>
+		</tu>
+		<tu tuid="The application can not be deleted!">
+			<tuv xml:lang="de"><seg>Nach den Angaben des Anwendungs-Manifestes kann die Anwendung nicht deinstalliert werden!</seg></tuv>
+		</tu>
+		<tu tuid="The application is deletable.">
+			<tuv xml:lang="de"><seg>Die Anwendung ist deinstallierbar.</seg></tuv>
+		</tu>
+		<tu tuid="The application will be deactivated.">
+			<tuv xml:lang="de"><seg>Die Anwendung wird deaktiviert!</seg></tuv>
+		</tu>
+		<tu tuid="The application can not be deactivated!">
+			<tuv xml:lang="de"><seg>Nach den Angaben des Anwendungs-Manifestes kann die Anwendung nicht deaktiviert werden!</seg></tuv>
+		</tu>
+		<tu tuid="The application can be deactivated.">
+			<tuv xml:lang="de"><seg>Die Anwendung ist deaktivierbar.</seg></tuv>
+		</tu>
+		<tu tuid="The application can be updated.">
+			<tuv xml:lang="de"><seg>Die Anwendung ist update-fähig.</seg></tuv>
+		</tu>
+		<tu tuid="The application can not be updated.">
+			<tuv xml:lang="de"><seg>Nach den Angaben des Anwendungs-Manifestes ist die Anwendung nicht update-fähig.</seg></tuv>
+		</tu>
+		<tu tuid="The application will be be updated.">
+			<tuv xml:lang="de"><seg>Die Anwendung wird upgedated</seg></tuv>
+		</tu>
+		
 	</body>
 </tmx>
 	
