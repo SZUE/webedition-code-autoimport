@@ -204,6 +204,8 @@ class toolfactory_models_Default extends we_app_Model
 		foreach ($_props as $_key => $_prop) {
 			$this->$_key = $_prop;
 		}
+
+		$this->appconfig = we_app_Common::getManifest($id);
 		
 		$name = isset($_props['text']) ? $_props['text'] : $_props['classname'];
 				

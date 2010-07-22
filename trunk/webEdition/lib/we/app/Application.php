@@ -153,7 +153,7 @@ class we_app_Application
 		if (empty($this->_name)) {
 			return false;
 		}
-		$this->_manifest = we_app_Common::getManifest($this->_name);
+		$this->_manifest = we_app_Common::getMergedManifest($this->_name);
 		if ($this->_manifest == false) {
 			$this->_manifest = null;
 			return false;

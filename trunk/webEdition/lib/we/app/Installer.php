@@ -203,7 +203,7 @@ Zend_Loader::loadClass('we_util_File');
 			}
 			$this->_instance->_source = $source;
 			$this->_instance->_config = &we_app_Common::readConfig();
-			$this->_instance->_toc = &we_app_Common::readAppTOC();
+			$this->_instance->_toc = &we_app_Common::readAppTOCsxmle();
 			$this->_instance->_tmpDir = we_util_File::addTrailingSlash($_SERVER["DOCUMENT_ROOT"].$this->_instance->_config->tmp_installer);
 			$applicationPath = we_app_Common::getConfigElement("applicationpath").$this->_instance->_appname."/";
 			$this->_instance->_configFiles = array(

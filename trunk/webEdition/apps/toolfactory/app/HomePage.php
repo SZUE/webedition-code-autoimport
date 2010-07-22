@@ -59,7 +59,17 @@ class toolfactory_app_HomePage extends we_app_HomePage
 			'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,
 			'width'=>200
 		));
+		$perm = 'GENTOC_APP_'.strtoupper($appName);
+		$regenerateTocButton = new we_ui_controls_Button(array(
+			'text'=>$translate->_('Regenetrate TOC'), 
+			'onClick'=>'weCmdController.fire({cmdName: "app_'.$appName.'_gentoc"})', 
+			'type'=>'onClick', 
+			'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,
+			'width'=>200,
+			'top'=>'10px;'
+		));
 		$bodyDiv->addElement($newItemButton);
+		$bodyDiv->addElement($regenerateTocButton);
 		
 		
 		return $bodyDiv;

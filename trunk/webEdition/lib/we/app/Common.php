@@ -51,6 +51,12 @@ class we_app_Common
 	 * 		read from webEdition/apps/toc.xml
 	 */
 	private static $toc = null;
+	
+	/**
+	 * @var application toc as Zend_Config
+	 * 		read from webEdition/apps/toc.xml
+	 */
+	private static $tocZC = null;
 
 	/**
 	 * returns an array with the name of all installed applications
@@ -58,7 +64,7 @@ class we_app_Common
 	public static function getAllApplications()
 	{
 		$retval = array();
-		$apps = self::readAppTOC();
+		$apps = self::readAppTOCsxmle();
 		foreach ($apps as $application) {
 			$retval[] = $application->name;
 		}
@@ -71,7 +77,7 @@ class we_app_Common
 	public static function getActiveApplications()
 	{
 		$retval = array();
-		$apps = self::readAppTOC();
+		$apps = self::readAppTOCsxmle();
 		foreach ($apps as $application) {
 			if ($application["active"] == "true") {
 				$retval[] = $application->name;
@@ -106,10 +112,10 @@ class we_app_Common
 	}
 
 	/**
-	 * reads the application toc file from webEdition/apps/toc.xml
+	 * reads the application toc file from webEdition/apps/toc.xml as SimpleXMLElement
 	 * @param bool $overwrite switch to read the toc file independently of self::$toc
 	 */
-	public static function readAppTOC($overwrite = false)
+	public static function readAppTOCsxmle($overwrite = false)
 	{
 		if (!is_null(self::$toc) && $overwrite === false) {
 			//error_log("toc already read, returning class variable");
@@ -132,6 +138,35 @@ class we_app_Common
 			return null;
 		}
 		return self::$toc;
+	}
+	
+	/**
+	 * reads the application toc file from webEdition/apps/toc.xml as Zend_config_XML
+	 * @param bool $overwrite switch to read the toc file independently of self::$tocZC
+	 */
+	public static function readAppTOC($overwrite = false)
+	{
+		if (!is_null(self::$tocZC) && $overwrite === false) {
+			//error_log("toc already read, returning class variable");
+			return self::$tocZC;
+		}
+		//error_log("loading toc from file.");
+		self::readConfig();
+		if (isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)) {
+			$filename = self::$_config->applicationpath . "/toc.xml";
+		} else {
+			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml";
+		}
+		if (!is_readable($filename)) {
+			return false;
+		}
+		try {
+			self::$tocZC = new Zend_Config_Xml($filename, null, true);
+		} catch (Exception $e) {
+			//error_log("Could not read application toc file from ".$filename.". Please check your installation.");
+			return null;
+		}
+		return self::$tocZC;
 	}
 
 	/**
@@ -306,7 +341,7 @@ class we_app_Common
 		}
 		//error_log("checking if $appname is installed.");
 		$config = self::readConfig();
-		$apps = self::readAppTOC(true);
+		$apps = self::readAppTOCsxmle(true);
 		//error_log(print_r($apps,true));
 		$path = $config->applicationpath . $appname . "/";
 		if (is_dir($path)) {
@@ -389,7 +424,7 @@ class we_app_Common
 		return false;
 	}
 
-	/** DERECIATED, since its not compatible with ZendConfig Namespace
+	/** 
 	 * reads the manifest file via SimpleXML from a specified path (absolute path)
 	 * @param string $filename path and filename to the manifest.xml file
 	 * @return object SimpleXML object of manifest file contents
@@ -418,7 +453,36 @@ class we_app_Common
 		}
 		return $xml;
 	}
-
+	
+	/** 
+	 * reads the manifest file via Zend_Config from a specified path (absolute path)
+	 * @param string $filename path and filename to the manifest.xml file
+	 * @return object SimpleXML object of manifest file contents
+	 */
+	public static function getManifest($source = "")
+	{
+		if (empty($source)) {
+			//error_log("source empty");
+			return false;
+		}
+		if (is_readable($source)) {
+			//error_log("readable source file");
+			// seems to be a file ...
+			$filename = $source;
+		} else {
+			// seems to be an app name:
+			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
+		}
+		if (!is_readable($filename)) {
+			//error_log("file $filename not readable");
+			return false;
+		}
+		if (!$zc = new Zend_Config_Xml($filename,null,true)) {
+			//error_log("could not read xml file");
+			return false;
+		}
+		return $zc;
+	}
 
 	/**
 	 * reads an element from a specified manifest file (application name)
@@ -586,7 +650,7 @@ class we_app_Common
 	 * @param string $application name of the application
 	 * @return object Zend_Config object containing the merge result
 	 */
-	public static function getManifest($application)
+	public static function getMergedManifest($application)
 	{
 		if (empty($application) || !self::isInstalled($application)) {
 			return false;
@@ -645,7 +709,7 @@ class we_app_Common
 		if (empty($appname) || !self::isInstalled($appname)) {
 			return false;
 		}
-		$toc = self::readAppTOC();
+		$toc = self::readAppTOCsxmle();
 		foreach ($toc as $entry) {
 			if ($entry->name == $appname) {
 				return $entry;
@@ -722,7 +786,7 @@ class we_app_Common
 		}
 		
 		// 3. activate it
-		$toc = self::readAppTOC();
+		$toc = self::readAppTOCsxmle();
 		foreach ($toc as $entry) {
 			if ($entry->name == $appname) {
 				$entry["active"] = "true";
@@ -755,7 +819,7 @@ class we_app_Common
 		}
 		
 		// 3. deactivate it
-		$toc = self::readAppTOC();
+		$toc = self::readAppTOCsxmle();
 		foreach ($toc as $entry) {
 			if ($entry->name == $appname) {
 				$entry["active"] = "false";

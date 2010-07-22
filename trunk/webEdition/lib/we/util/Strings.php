@@ -263,11 +263,18 @@ class we_util_Strings
 	 * @return void
 	 */
 	
-	static function p_r($val)
+	static function p_r($val,$where=false)
 	{
-		print "<pre>";
-		print_r($val);
-		print "</pre>";
+		if ($where){
+			$out = "<pre>";
+			$out .= print_r($val,$where);
+			$out .= "</pre>";
+			return $out;
+		} else {
+			print "<pre>";
+			print_r($val,$where);
+			print "</pre>";
+		}
 	}
 
 }

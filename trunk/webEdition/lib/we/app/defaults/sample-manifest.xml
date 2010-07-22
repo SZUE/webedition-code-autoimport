@@ -10,6 +10,9 @@
 		<authors>
 			<author>misc.</author>
 		</authors>
+		<authorlinks>
+			<www>http://xyz</www>
+		</authorlinks>
 		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
@@ -28,6 +31,9 @@
 		<authors>
 			<author>misc.</author>
 		</authors>
+		<authorlinks>
+			<www>http://xyz</www>
+		</authorlinks>
 		<address>c/o Löwi &amp Partner, Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
@@ -59,6 +65,8 @@
 		<implementation>tool</implementation>
 		<name>exampleApplication</name>
 		<classname>exampleapplication</classname>
+		<!-- name of the copyrightholder of the app -->
+		<copyright>copyright owner</copyright>
 		<!-- name of the app, at least de and en should be supplied -->
 		<title>
 			<de>App Name</de>

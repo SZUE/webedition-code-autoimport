@@ -73,8 +73,14 @@
 		<tu tuid="Versions">
 			<tuv xml:lang="de"><seg>Versionen</seg></tuv>
 		</tu>
+		<tu tuid="Version">
+			<tuv xml:lang="de"><seg>Version</seg></tuv>
+		</tu>
 		<tu tuid="AppVersion">
 			<tuv xml:lang="de"><seg>Anwendungs-Version</seg></tuv>
+		</tu>
+		<tu tuid="AppStatus">
+			<tuv xml:lang="de"><seg>Anwendungs-Status</seg></tuv>
 		</tu>
 		<tu tuid="MinWeVersion">
 			<tuv xml:lang="de"><seg>minimale webEdition-Version</seg></tuv>
@@ -169,7 +175,12 @@
 		<tu tuid="The application will be be updated.">
 			<tuv xml:lang="de"><seg>Die Anwendung wird upgedated</seg></tuv>
 		</tu>
-		
+		<tu tuid="The user is allowed to regenerate the application toc.xml">
+			<tuv xml:lang="de"><seg>Der Benutzer darf die Anwendungs-TOC neu generieren</seg></tuv>
+		</tu>
+		<tu tuid="Regenetrate TOC">
+			<tuv xml:lang="de"><seg>Generiere toc.xml neu</seg></tuv>
+		</tu>
 	</body>
 </tmx>
 	

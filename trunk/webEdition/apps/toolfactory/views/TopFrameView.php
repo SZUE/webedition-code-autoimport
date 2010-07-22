@@ -70,6 +70,10 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView {
 		
 		$deleteMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
 		
+		$gentocMessage = we_util_Strings::quoteForJSString($translate->_('The application toc.xml was succesfully rebuild'), false);
+		
+		$gentocMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
+		
 		$errorMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageError, true);
 		$noticeMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageNotice, true);
 		$warningMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageWarning, true);
@@ -175,6 +179,17 @@ weEventController.register("delete", function(data, sender) {
 	var msg = "$deleteMessage";
 	msg = msg.replace(/%s/, data.model.Path);
 	$deleteMessageCall	
+	
+});
+
+/* gentoc */
+weEventController.register("gentoc", function(data, sender) {
+	// fire home command, because when entry is deleted we can't show it anymore!
+	weCmdController.fire({"cmdName": "app_{$this->appName}_home"});
+	self.hot = false;  // reset hot
+	var msg = "$gentocMessage";
+	msg = msg.replace(/%s/, data.model.Path);
+	$gentocMessageCall	
 	
 });
 
@@ -292,6 +307,19 @@ weCmdController.register('home_top', 'app_{$this->appName}_home', function(cmdOb
 	{$fs}.location.replace("{$this->appDir}/index.php/home/index");
 	// tell the command controller that the command was ok. Needed to check if there is a following command
 	weCmdController.cmdOk(cmdObj);
+});
+
+/* generate new toc */
+weCmdController.register('gentoc_top', 'app_{$this->appName}_gentoc', function(cmdObj) {
+	we_core_JsonRpc.callMethod(
+		cmdObj, 
+		'{$this->appDir}/index.php/rpc/index', 
+		'{$this->appName}.service.Cmd', 
+		'regeneratetoc',
+		''
+	);
+	weCmdController.cmdOk(cmdObj);
+	
 });
 
 /* exit */

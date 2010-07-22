@@ -73,6 +73,9 @@
 		<tu tuid="Versions">
 			<tuv xml:lang="ru"><seg>Versions</seg></tuv>
 		</tu>
+		<tu tuid="Version">
+			<tuv xml:lang="ru"><seg>Versios</seg></tuv>
+		</tu>
 		<tu tuid="AppVersion">
 			<tuv xml:lang="ru"><seg>Application version</seg></tuv>
 		</tu>
@@ -106,7 +109,6 @@
 		<tu tuid="AppStatusDiabled">
 			<tuv xml:lang="ru"><seg>disabled</seg></tuv>
 		</tu>
-
 		<tu tuid="Tags">
 			<tuv xml:lang="ru"><seg>Tags</seg></tuv>
 		</tu>
@@ -169,6 +171,13 @@
 		</tu>
 		<tu tuid="The application will be be updated.">
 			<tuv xml:lang="ru"><seg>The application will be updated</seg></tuv>
-		</tu>	</body>
+		</tu>
+		<tu tuid="The user is allowed to regenerate the application toc.xml">
+			<tuv xml:lang="ru"><seg>The user is allowed to regenerate the application TOC</seg></tuv>
+		</tu>
+		<tu tuid="Regenetrate TOC">
+			<tuv xml:lang="ru"><seg>Regenetrate toc.xml</seg></tuv>
+		</tu>
+	</body>
 </tmx>
 	
