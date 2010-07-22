@@ -220,6 +220,17 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 	}
 	
 	/**
+	 * regenerate toc.xml
+	 * 
+	 * 
+	 */
+	public function regeneratetoc($args)
+	{
+		we_app_Common::rebuildAppTOC();
+		return $args;
+	}
+	
+	/**
 	 * check arguments and unpublish the model
 	 * @param array $args
 	 * 

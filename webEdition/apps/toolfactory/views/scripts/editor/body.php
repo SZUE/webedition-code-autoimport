@@ -167,115 +167,235 @@ $tableGeneral->setRows(array($rowGeneral));
 $propertyTab->addElement($tableGeneral);
 
 if(!empty($this->model->ID)) {
+	if ($this->model->appconfig){
+		if(!empty($this->model->appconfig->info->title)){
+			$tableTitle = new we_ui_layout_HeadlineIconTable();
+			$tableTitle->setId('tabTitle');
+			$tableTitle->setMarginLeft(30);
+			$rowsTitle=array();
+			$rowTitle = new we_ui_layout_HeadlineIconTableRow(array('title' => ''));	
+			$lang=we_core_Local::getLocale();
+			
+			if (!empty($this->model->appconfig->info->title->$lang)){
+				$title = $this->model->appconfig->info->title->$lang;
+			} else {
+				$title = $this->model->appconfig->info->title->de;
+			}
+			if (!empty($this->model->appconfig->info->description->$lang)){
+				$description = $this->model->appconfig->info->description->$lang;
+			} else {
+				$description = $this->model->appconfig->info->description->de;
+			}
+			$html = '<strong>'.$title.'</strong><br/>';
+			$html .= $description;
+			$rowTitle->addHTML($html);
+			$rowsTitle[] = $rowTitle;
+			$tableTitle->setRows($rowsTitle);
+			$propertyTab->addElement($tableTitle);
+		}
+		if (!empty($this->model->appconfig->creator) || !empty($this->model->appconfig->maintainer)){
+			$tableAuthor = new we_ui_layout_HeadlineIconTable();
+			$tableAuthor->setId('tabAuthor');
+			$tableAuthor->setMarginLeft(30);
+			$rowsAuthor=array();	
+			if(!empty($this->model->appconfig->creator)){ 
+				$cm = $this->model->appconfig->creator; 
+				$rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
+				$rowAuthor->setLine(0);
+				$html = '';
+				if(!empty($cm->company)){
+					$html .= '<strong>'.$cm->company.'</strong><br/>';
+				}
+				if(!empty($cm->authors->author)){
+					if(is_array($cm->authors->author) ){
+						$authornames= $cm->authors->author->toArray();
+					} else {$authornames = $cm->authors->author;}
+					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www) ){
+						$authorlinks= $cm->authorlinks->www->toArray();
+					} else {$authorlinks= $cm->authorlinks->www;}
+					if (is_array($authornames)){
+						$authorentry = array();
+						for ($i=0; $i < count($authornames);$i++){
+							$htmla = '';
+							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+								$htmla .= '<a href="'.$authorlinks[$i].'" target="_blank" >';
+							}
+							$htmla .= $authornames[$i];
+							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+								$htmla .= '</a>';
+							}
+							$authorentry[]=$htmla;
+						}
+						$html = implode(', ',$authorentry);
+					} else {
+						$html = '';
+						if(isset($authorlinks) && !empty($authorlinks)){
+								$html .= '<a href="'.$authorlinks.'" target="_blank" >';
+							}
+							$html .= $authornames;
+							if(isset($authorlinks) && !empty($authorlinks)){
+								$html .= '</a>';
+							}
+					}
+				}
+				if(!empty($cm->address)){
+					$html .= '<br/>'.$cm->address;
+				}
+				if(!empty($cm->email)){
+					$html .= '<br/><a href="mailto'.$cm->email.'">'.$cm->email.'</a>';
+				}
+				$rowAuthor->addHTML($html);
+				$rowsAuthor[] = $rowAuthor;
+			}
+			if(!empty($this->model->appconfig->maintainer)){
+				$cm = $this->model->appconfig->maintainer; 
+				$html = '';
+				$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Maintainer')));
+				$rowMaintainer->setLine(0);
+				if(!empty($cm->company)){
+					$html .= '<strong>'.$cm->company.'</strong><br/>';
+				}
+				if(!empty($cm->authors->author)){
+					if(is_array($cm->authors->author)){
+						$authornames= $cm->authors->author->toArray();
+					} else {$authornames= $cm->authors->author;}
+					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
+						$authorlinks= $cm->authorlinks->www->toArray();
+					} else {$authorlinks= $cm->authorlinks->www;}
+					if (is_array($authornames)){
+						$authorentry = array();
+						for ($i=0; $i < count($authornames);$i++){
+							$htmla = '';
+							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+								$htmla .= '<a href="'.$authorlinks[$i].'" target="_blank" >';
+							}
+							$htmla .= $authornames[$i];
+							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+								$htmla .= '</a>';
+							}
+							$authorentry[]=$htmla;
+						}
+						$html .= implode(', ',$authorentry);
+					} else {
+						$html .= '';
+						if(isset($authorlinks) && !empty($authorlinks)){
+							$html .= '<a href="'.$authorlinks.'" target="_blank" >';
+						}
+						$html .= $authornames;
+						if(isset($authorlinks) && !empty($authorlinks)){
+							$html .= '</a>';
+						}
+					}
+				
+				}
+				if(!empty($cm->address)){
+					$html .= '<br/>'.$cm->address;
+				}
+				if(!empty($cm->email)){
+					$html .= '<br/><a href="mailto'.$cm->email.'">'.$cm->email.'</a>';
+				}
+				
+				$rowMaintainer->addHTML($html);
+				
+				$rowsAuthor[] = $rowMaintainer;
+			}
+			$tableAuthor->setRows($rowsAuthor);
+			$propertyTab->addElement($tableAuthor);
+			
 	
-	if(!empty($this->model->version) || !empty($this->model->minWEversion)){
-		$rowVersion = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('AppVersion')));
-		$html = '';
-		if(!empty($this->model->version)){
-			$html .= '<strong>'.we_util_Strings:: number2version($this->model->version,true).'</strong>';
-			if(!empty($this->model->copyright) || !empty($this->model->copyrighturl)){
-				$html .= ' &copy;';
-				if(!empty($this->model->copyrighturl)){
-					$html .= ' <a href="http://'.$this->model->copyrighturl.'" target="_blank">';
-					$html .=  $this->model->copyright;
-					$html .= '</a>';				
+		}
+
+	
+	
+		if(!empty($this->model->appconfig->info->version) || !empty($this->model->appconfig->dependencies->version)){
+			$rowVersion = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('AppStatus')));
+			$html = '';
+			if(!empty($this->model->appconfig->info->version)){
+				$html .= '<strong>'.$translate->_('Version').': '.we_util_Strings:: number2version($this->model->appconfig->info->version,true).'</strong>';
+				if(!empty($this->model->appconfig->info->copyright) || !empty($this->model->appconfig->info->copyrighturl)){
+					$html .= ' &copy; ';
+					if(!empty($this->model->appconfig->info->copyrighturl)){
+						$html .= ' <a href="http://'.$this->model->appconfig->info->copyrighturl.'" target="_blank">';
+					}
+					$html .=  $this->model->appconfig->info->copyright;
+					if(!empty($this->model->appconfig->info->copyrighturl)){
+						$html .= '</a>';				
+					}
+				}
+				$html .= '<br/>';
+			}	
+			if(!empty($this->model->appconfig->dependencies->version)){
+				$we_version = we_util_Strings::version2number(WE_VERSION,false);
+				if ($we_version < $this->model->appconfig->dependencies->version){
+					$html .= $translate->_('MinWeVersion').': <strong><span style="color:red">'.we_util_Strings::number2version($this->model->appconfig->dependencies->version,false).'</span></strong> '.$translate->_('AktWeVersion').' <strong>' .WE_VERSION.'</strong>';
+				} else {
+					$html .= $translate->_('MinWeVersion').': <strong>'.we_util_Strings::number2version($this->model->appconfig->dependencies->version,false).'</strong>';
 				}
 			}
-			$html .= '<br/>';
-		}	
-		if(!empty($this->model->minWEversion)){
-			$we_version = we_util_Strings::version2number(WE_VERSION,false);
-			if ($we_version < $this->model->minWEversion){
-				$html .= $translate->_('MinWeVersion').': <strong><span style="color:red">'.we_util_Strings::number2version($this->model->minWEversion,false).'</span></strong> '.$translate->_('AktWeVersion').' <strong>' .WE_VERSION.'</strong>';
-			} else {
-				$html .= $translate->_('MinWeVersion').': <strong>'.we_util_Strings::number2version($this->model->minWEversion,false).'</strong>';
+			if(!empty($this->model->appconfig->dependencies->sdkversion)){
+				$html .= '<br/>'.$translate->_('SdkVersion').': <strong>'.we_util_Strings::number2version($this->model->appconfig->dependencies->sdkversion,false).'</strong>';
 			}
-		}
-		if(!empty($this->model->SDKversion)){
-			$html .= '<br/>'.$translate->_('SdkVersion').': <strong>'.we_util_Strings::number2version($this->model->SDKversion,false).'</strong>';
-		}
-		if(file_exists($GLOBALS['__WE_APP_PATH__'].'/'.$this->model->classname.'/conf/manifest.xml')){
-			$html .= '<br/>'.$translate->_('The update manifest is available');
-		} else {
-			$html .= '<br/>'.$translate->_('The update manifest is not available');
-			$html .= $GLOBALS['__WE_APP_PATH__'].'/'.$this->model->classname.'/conf/manifest.xml';
-		}
-		if(isset($this->model->appdisabled)){
+			if($this->model->appconfig){
+				$html .= '<br/>'.$translate->_('The application manifest is available');
+			} else {
+				$html .= '<br/>'.$translate->_('The application manifest is not available');
+			}
+			if($this->model->appconfig->info->deactivatable){
+				$html .= '<br/>'.$translate->_('The application can be deactivated.');
+			} else {
+				$html .= '<br/>'.$translate->_('The application can not be deactivated!');
+			}
+			if($this->model->appconfig->info->deinstallable){
+				$html .= '<br/>'.$translate->_('The application is deletable.');
+			} else {
+				$html .= '<br/>'.$translate->_('The application can not be deleted!');
+			}
+			if($this->model->appconfig->info->updatable){
+				$html .= '<br/>'.$translate->_('The application can be updated.');
+			} else {
+				$html .= '<br/>'.$translate->_('The application can not be updated.');
+			}
 			$html .= '<br/>'.$translate->_('AppStatus').': <strong>';
-			if($this->model->appdisabled){
+			if(!we_app_Common::isActive($this->model->classname)){
 				$html .= $translate->_('AppStatusDiabled').'</strong>';
 			} else {
 				$html .= $translate->_('AppStatusActive').'</strong>';
 			}
-		}
-		$rowVersion->addHTML($html);
-		$tableVersion = new we_ui_layout_HeadlineIconTable();
-		$tableVersion->setId('tabVersion');
-		$tableVersion->setMarginLeft(30);
-		$tableVersion->setRows(array($rowVersion));
-		$propertyTab->addElement($tableVersion);
-	}
-	if (!empty($this->model->author) || !empty($this->model->maintainer)){
-		$tableAuthor = new we_ui_layout_HeadlineIconTable();
-		$tableAuthor->setId('tabAuthor');
-		$tableAuthor->setMarginLeft(30);
-		$rowsAuthor=array();	
-		if(!empty($this->model->author)){
-			$rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
-			$rowAuthor->setLine(0);
-			$html = $this->model->author;
-			if(!empty($this->model->authorurl)){
-				$html .= ' <a href="http://'.$this->model->authorurl.'" target="_blank">';
-				if(!empty($this->model->authorurltext)){$html .= $this->model->authorurltext;} else {$html .= $this->model->authorurl;}
-				$html .= '</a>';
-			}
-			$rowAuthor->addHTML($html);
-			$rowsAuthor[] = $rowAuthor;
-		}
-		if(!empty($this->model->maintainer)){
-			$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Maintainer')));
-			$rowMaintainer->setLine(0);
-			$html = $this->model->maintainer;
-			if(!empty($this->model->maintainerurl)){
-				$html .= ' <a href="http://'.$this->model->maintainerurl.'" target="_blank">';
-				if(!empty($this->model->maintainerurltext)){$html .= $this->model->maintainerurltext;} else {$html .= $this->model->maintainerurl;}
-				$html .= '</a>';
-			}
-			$rowMaintainer->addHTML($html);
 			
-			$rowsAuthor[] = $rowMaintainer;
+			$rowVersion->addHTML($html);
+			$tableVersion = new we_ui_layout_HeadlineIconTable();
+			$tableVersion->setId('tabVersion');
+			$tableVersion->setMarginLeft(30);
+			$tableVersion->setRows(array($rowVersion));
+			$propertyTab->addElement($tableVersion);
 		}
-		$tableAuthor->setRows($rowsAuthor);
-		$propertyTab->addElement($tableAuthor);
-		
-
-	}
-	if (!empty($this->model->externaltool) &&  $this->model->externaltool){
-		$tableExTool = new we_ui_layout_HeadlineIconTable();
-		$tableExTool->setId('tabExTool');
-		$tableExTool->setMarginLeft(30);
-		$rowsExTool=array();
-		$html = '';	
-		$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
-		if(!empty($this->model->externaltoolurl)){
-				$html .= ' <a href="http://'.$this->model->externaltoolurl.'" target="_blank">';
-				if(!empty($this->model->externaltoolname)){$html .= $this->model->externaltoolname;} else {$html .= $this->model->externaltoolurl;}
-				$html .= '</a>';
-		}
-		if(!empty($this->model->externaltoolversion)){
-			$html .= ', '.$translate->_('Version'). ' '.$this->model->externaltoolversion;
-		}
-		if(!empty($this->model->externaltoollicensetype)){
-			$html .= '<br/> '.$translate->_('LicenseType');
-			if(!empty($this->model->externaltoollicenseurl)){
-				$html .= ' <a href="http://'.$this->model->externaltoollicenseurl.'" target="_blank">';
-				if(!empty($this->model->externaltoollicensetype)){$html .= $this->model->externaltoollicensetype;} else {$html .= $this->model->externaltoollicenseurl;}
-				$html .= '</a>';		
+		if (!empty($this->model->appconfig->thirdparty)){
+			$tableExTool = new we_ui_layout_HeadlineIconTable();
+			$tableExTool->setId('tabExTool');
+			$tableExTool->setMarginLeft(30);
+			$rowsExTool=array();
+			$html = '';	
+			$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
+			if(!empty($this->model->appconfig->thirdparty->www)){
+					$html .= ' <a href="'.$this->model->appconfig->thirdparty->www.'" target="_blank">';
+					if(!empty($this->model->appconfig->thirdparty->name)){$html .= $this->model->appconfig->thirdparty->name;} else {$html .= $this->model->appconfig->thirdparty->www;}
+					$html .= '</a>';
 			}
+			if(!empty($this->model->appconfig->thirdparty->version)){
+				$html .= ', '.$translate->_('Version'). ' '.$this->model->appconfig->thirdparty->version;
+			}
+			if(!empty($this->model->appconfig->thirdparty->license)){
+				$html .= '<br/> '.$translate->_('LicenseType');
+				if(!empty($this->model->appconfig->thirdparty->licenseurl)){
+					$html .= ' <a href="'.$this->model->appconfig->thirdparty->licenseurl.'" target="_blank">';
+					if(!empty($this->model->appconfig->thirdparty->license)){$html .= $this->model->appconfig->thirdparty->license;} else {$html .= $this->model->appconfig->thirdparty->licenseurl;}
+					$html .= '</a>';		
+				}
+			}
+			$rowExTool->addHTML($html);
+			$tableExTool->setRows(array($rowExTool));
+			$propertyTab->addElement($tableExTool);
 		}
-		$rowExTool->addHTML($html);
-		$tableExTool->setRows(array($rowExTool));
-		$propertyTab->addElement($tableExTool);
 	}
 	$rowTags = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Tags')));
 	$html = '';

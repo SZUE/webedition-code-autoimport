@@ -269,6 +269,32 @@ function we_ui_controls_Tree(treeId)
 	}
 	
 	/**
+	 * return the status of a node
+	 *
+	 * @param integer id 
+	 */
+	this.getStatus = function(id) {
+
+		var mNode = eval("tree_"+this.id+".getNodeByProperty('id',id);");   
+
+		return mNode.data.Status;      
+		
+	}
+	
+	/**
+	 * return the published status of a node
+	 *
+	 * @param integer id 
+	 */
+	this.getPublished = function(id) {
+
+		var mNode = eval("tree_"+this.id+".getNodeByProperty('id',id);");   
+
+		return mNode.data.Published;      
+		
+	}
+	
+	/**
 	 * check if id exists in tree
 	 *
 	 * @param integer id 

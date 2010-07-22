@@ -205,5 +205,18 @@
 		<tu tuid="custom_app_hint">
 			<tuv xml:lang="es"><seg>This is an application for which no data management has been implemented yet. Thus, the two entries in the tree are fake entries which come from the session. This is implemented in the tree base class <i>we_ui_controls_Tree</i> in the function <i>doCustom</i>. <br/>If you implement your own data management, you must overwrite this function in the derived tree class for these applications. Further information can be found in the online documentation.</seg></tuv>
 		</tu>
+		<tu tuid="phone">
+			<tuv xml:lang="es"><seg>Phone</seg></tuv>
+		</tu>
+		<tu tuid="fax">
+			<tuv xml:lang="es"><seg>Fax</seg></tuv>
+		</tu>
+		<tu tuid="mobile-phone">
+			<tuv xml:lang="es"><seg>Mobile</seg></tuv>
+		</tu>
+		<tu tuid="e-mail">
+			<tuv xml:lang="es"><seg>e-mail</seg></tuv>
+		</tu>
+		
 	</body>
 </tmx>

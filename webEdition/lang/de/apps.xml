@@ -86,7 +86,7 @@
 			<tuv xml:lang="de"><seg>Name</seg></tuv>
 		</tu>
 		<tu tuid="General">
-			<tuv xml:lang="de"><seg>Allgemeine</seg></tuv>
+			<tuv xml:lang="de"><seg>Allgemeine Daten</seg></tuv>
 		</tu>
 		<tu tuid="The folder '%s' has been succesfully saved.">
 			<tuv xml:lang="de"><seg>Der Ordner '%s' wurde erfolgreich gespeichert.</seg></tuv>
@@ -205,7 +205,17 @@
 		<tu tuid="custom_app_hint">
 			<tuv xml:lang="de"><seg>Es handelt sich hierbei um eine Applikation, für die noch keine Datenhaltung implementiert worden ist. Demzufolge sind die beiden Einträge im Baum Fake-Einträge, die aus der Session kommen. Dies ist in der Tree-Basisklasse <i>we_ui_controls_Tree</i> in der Funktion <i>doCustom()</i> implementiert.<br/>Wenn Sie Ihre eigene Datenhaltung implementieren, müssen Sie diese Funktion in der abgeleiteten Tree-Klasse dieser Applikationen überschreiben.<br/>Weitere Informationen erhalten Sie in der Online-Dokumentation.</seg></tuv>
 		</tu>
-		
-		
+		<tu tuid="phone">
+			<tuv xml:lang="de"><seg>Telefon</seg></tuv>
+		</tu>
+		<tu tuid="fax">
+			<tuv xml:lang="de"><seg>Fax</seg></tuv>
+		</tu>
+		<tu tuid="mobile-phone">
+			<tuv xml:lang="de"><seg>Mobil</seg></tuv>
+		</tu>
+		<tu tuid="e-mail">
+			<tuv xml:lang="de"><seg>E-Mail</seg></tuv>
+		</tu>
 	</body>
 </tmx>
