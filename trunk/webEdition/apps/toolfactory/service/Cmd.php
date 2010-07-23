@@ -262,8 +262,9 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php');
 		$dieConf = str_replace('define("'.$ACTIVECONSTANT.'",true)','define("'.$ACTIVECONSTANT.'",false)',$dieConf);
 		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php', $dieConf);
-		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php');
-
+		$dieConf2 = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
+		$dieConf2 = str_replace("appdisabled'=>0","appdisabled'=>1",$dieConf2);
+		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php', $dieConf2);
 		
 		we_app_Common::deactivate($model->classname);
 		return array(
@@ -301,10 +302,11 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php');
 		$dieConf = str_replace('define("'.$ACTIVECONSTANT.'",false)','define("'.$ACTIVECONSTANT.'",true)',$dieConf);
 		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php', $dieConf);
-		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php');
-
+		$dieConf2 = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
+		$dieConf2 = str_replace("appdisabled'=>1","appdisabled'=>0",$dieConf2);
+		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php', $dieConf2);
 		
-		we_app_Common::deactivate($model->classname);
+		we_app_Common::activate($model->classname);
 		return array(
 			'model' => $model
 		);

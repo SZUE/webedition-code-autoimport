@@ -106,6 +106,10 @@
 		<version>6100</version>
 		<!-- Version of the webEdition SDK -->
 		<sdkversion>6100</version>
+		<!-- max. webEdition Version if already known, otherwise empty-->
+		<versionmax></versionmax>
+		<!-- max. Version of the webEdition SDK if already known, otherwise empty, if set, WE expects the application to be compatible with all versions in between -->
+		<sdkversionmax></versionmax>
 	</dependencies>
 	
 </manifest>
