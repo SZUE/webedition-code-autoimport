@@ -8,13 +8,15 @@
     <deactivatable>false</deactivatable>
     <deinstallable>false</deinstallable>
     <updatable>false</updatable>
+    <dependencies/>
+    <requirements/>
     <title>
-      <de>webEdition toolfactory</de>
-      <en>webEdition toolfactory</en>
+      <de>Anwendungsverwaltung</de>
+      <en>Application management</en>
     </title>
     <description>
-      <de>webEdition Tool Factory zum Erzeugen neuer webEdition Anwendungen</de>
-      <en>webEdition Tool Factory for creating webEdition Applications</en>
+      <de>Tool zum Einrichten von webEdition Anwendungen</de>
+      <en>Tool for the administration of applications</en>
     </description>
   </application>
 </toc>

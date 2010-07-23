@@ -232,6 +232,7 @@ class we_app_Common
 			return false;
 		}
 		$appmanifest = self::getManifestXML($appname);
+		
 		$date = @self::getAppTOCElement($appname, "date");
 		if (!$date)
 			$date = time();
@@ -243,6 +244,11 @@ class we_app_Common
 			$active = "true";
 		
 		$entry = new SimpleXMLElement("<application></application>");
+		if ($metaInfo['appdisabled']){
+			$active="false";
+		} else {
+			$active="true";
+		}
 		$entry->addAttribute("active", $active);
 		$entry->addChild("name", $appname);
 		$entry->addChild("installer", $installer);
@@ -252,6 +258,18 @@ class we_app_Common
 		$entry->addChild("deinstallable", $appmanifest->info->deinstallable);
 		$entry->addChild("updatable", $appmanifest->info->updatable);
 		
+		$dependencies = $entry->addChild("dependencies");
+		foreach ($appmanifest->xpath('dependencies') as $item) {
+			foreach ($item as $lang => $text) {
+				$dependencies->addChild($lang, $text);
+			}
+		}
+		$requirements = $entry->addChild("requirements");
+		foreach ($appmanifest->xpath('requirements') as $item) {
+			foreach ($item as $lang => $text) {
+				$requirements->addChild($lang, $text);
+			}
+		}
 		$title = $entry->addChild("title");
 		foreach ($appmanifest->xpath('info/title') as $item) {
 			foreach ($item as $lang => $text) {
