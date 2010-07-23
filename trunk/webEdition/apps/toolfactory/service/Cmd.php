@@ -184,6 +184,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 					'ID not set (first argument) at delete cmd!', 
 					we_service_ErrorCodes::kModelIdNotSet);
 		}
+		
 		$IdToDel = $args[0];
 		$controller = Zend_Controller_Front::getInstance();
 		$appName = $controller->getParam('appName');

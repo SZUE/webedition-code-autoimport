@@ -255,7 +255,7 @@ weCmdController.register('checkdelete_top', 'app_{$this->appName}_checkdelete', 
 		_weYesNoCancelDeleteDialog(cmdObj);
 	}
 });
-weCmdController.register('really_delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
+weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
 
 		we_core_JsonRpc.callMethod(
 			cmdObj, 
@@ -355,7 +355,7 @@ function _weYesNoCancelDialog(cmdObj) {
 }
 
 function _weYesNoCancelDeleteDialog(cmdObj) {
-	var yesCmd = {cmdName : {$fs}.edbody.document.we_form.classname.value, followCmd : cmdObj};
+	var yesCmd = {cmdName : "app_{$this->appName}_delete", followCmd : cmdObj};
 	var noCmd = cmdObj;
 	noCmd.ignoreHot = true;
 	var dialog = new we_ui_layout_Dialog("{$this->appDir}/index.php/editor/deletedocquestion", 380, 130, {"yesCmd":yesCmd, "noCmd":noCmd,"app":{$fs}.edbody.document.we_form.classname.value});
