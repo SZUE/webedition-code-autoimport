@@ -340,17 +340,17 @@ if(!empty($this->model->ID)) {
 			} else {
 				$html .= '<br/>'.$translate->_('The application manifest is not available');
 			}
-			if($this->model->appconfig->info->deactivatable){
+			if($this->model->appconfig->info->deactivatable == "true"){
 				$html .= '<br/>'.$translate->_('The application can be deactivated.');
 			} else {
 				$html .= '<br/>'.$translate->_('The application can not be deactivated!');
 			}
-			if($this->model->appconfig->info->deinstallable){
+			if($this->model->appconfig->info->deinstallable == "true"){
 				$html .= '<br/>'.$translate->_('The application is deletable.');
 			} else {
 				$html .= '<br/>'.$translate->_('The application can not be deleted!');
 			}
-			if($this->model->appconfig->info->updatable){
+			if($this->model->appconfig->info->updatable == "true"){
 				$html .= '<br/>'.$translate->_('The application can be updated.');
 			} else {
 				$html .= '<br/>'.$translate->_('The application can not be updated.');
@@ -361,7 +361,7 @@ if(!empty($this->model->ID)) {
 			} else {
 				$html .= $translate->_('AppStatusActive').'</strong>';
 			}
-			
+			//$html .= we_util_Strings::p_r($this->model->appconfig,true);
 			$rowVersion->addHTML($html);
 			$tableVersion = new we_ui_layout_HeadlineIconTable();
 			$tableVersion->setId('tabVersion');
