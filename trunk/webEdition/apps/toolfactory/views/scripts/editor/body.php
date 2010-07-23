@@ -385,10 +385,12 @@ if(!empty($this->model->ID)) {
 				$html .= ', '.$translate->_('Version'). ' '.$this->model->appconfig->thirdparty->version;
 			}
 			if(!empty($this->model->appconfig->thirdparty->license)){
-				$html .= '<br/> '.$translate->_('LicenseType');
+				$html .= '<br/> '.$translate->_('LicenseType').' ';
 				if(!empty($this->model->appconfig->thirdparty->licenseurl)){
 					$html .= ' <a href="'.$this->model->appconfig->thirdparty->licenseurl.'" target="_blank">';
-					if(!empty($this->model->appconfig->thirdparty->license)){$html .= $this->model->appconfig->thirdparty->license;} else {$html .= $this->model->appconfig->thirdparty->licenseurl;}
+				}
+				if(!empty($this->model->appconfig->thirdparty->license)){$html .= $this->model->appconfig->thirdparty->license;} else {$html .= $this->model->appconfig->thirdparty->licenseurl;}
+				if(!empty($this->model->appconfig->thirdparty->licenseurl)){
 					$html .= '</a>';		
 				}
 			}
