@@ -158,6 +158,9 @@ $lang["Step"]["SessionAndCookieTest"]["short_open_tag"] = "Short Open Tag";
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag_OK"] = "Short Open Tag not active";
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is active!<br />The applications may run with activated <a href=\"http://de2.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, but yet we do not recommend it since it can lead to problems when working with .xml files.";
 
+$lang["Step"]["SessionAndCookieTest"]["suhosin"] = "Suhosin Extension toPHP";
+$lang["Step"]["SessionAndCookieTest"]["suhosin_OK"] = "Suhosin extension is not active";
+$lang["Step"]["SessionAndCookieTest"]["suhosin_warning"] = "Suhosin is active!<br />The application <b>might</b> work with activated <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>,but yet we do not recommend it, since Suhosin can lead to problems due it's many configuration options.<br />It can happen, although the OnlineInstaller itself does not run properly, the application runs without problems. <br/>In this case, we recommend to try the installation of  tarball, found at <a href=\"http://download.webedition.org/releases\" target=\"_blank\">WebEdition Tarballs</a>.";
 
 
 
