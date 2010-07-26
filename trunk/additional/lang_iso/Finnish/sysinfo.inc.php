@@ -40,6 +40,10 @@ $_sysinfo['zendframework_version'] = 'Zend Framework versio';
 $_sysinfo["register_globals warning"] = 'WARNUNG: register_globals can be a serious security risk for your system so we strongly recommend to turn off this feature!';
 $_sysinfo["short_open_tag warning"] = 'WARNUNG: short_open_tag can lead to severe problems with the processing of xml-files, i.e. for backup files. We strongly recommend to turn off this feature!!';
 
+$_sysinfo["safe_mode warning"] = 'Please deactivate the PHP Safe Mode if you experience problems during installation or update procedures.';
+$_sysinfo["zend_framework warning"] = 'You are currently using a different version of the Zend Framework than the recommended version '.WE_ZFVERSION.'.';
+$_sysinfo["suhosin warning"] = 'Due to the many configuration options of this PHP extension, we cannot guarenty the full functionality of webEdition.';
+
 $_sysinfo['connection_types'] = 'Päivitä yhteystyypit';
 $_sysinfo['gdlib'] = 'GDlib tuki';
 $_sysinfo['mbstring'] = 'Multibyte String funktiot';

@@ -178,7 +178,8 @@
 				'safe_mode_exec_dir' => ini_get('safe_mode_exec_dir'),
 				'safe_mode_gid' => ini_get('safe_mode_gid'),
 				'safe_mode_include_dir' => ini_get('safe_mode_include_dir'),
-				'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize'))
+				'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
+				'Suhosin' => (in_array('suhosin',get_loaded_extensions()) ) ? getWarning($_sysinfo["suhosin warning"],in_array('suhosin',get_loaded_extensions())) : ''
 			),
 
 			'MySql' => array (

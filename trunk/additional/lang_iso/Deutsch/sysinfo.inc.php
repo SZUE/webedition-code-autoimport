@@ -40,6 +40,8 @@ $_sysinfo['zendframework_version'] = 'Zend Framework Version';
 $_sysinfo["register_globals warning"] = 'WARNUNG: register_globals kann die Sicherheit Ihres Systems erheblich beeinträchtigen. Wir empfehlen daher, diese Funktion zu deaktivieren!';
 $_sysinfo["short_open_tag warning"] = 'WARNUNG: der short_open_tag kann zu erheblichen Problemen bei der Verarbeitung von xml-Dateien führen, z.B. für die Erzeugung von Backup-Files. Wir empfehlen daher, diese Funktion zu deaktivieren!';
 $_sysinfo["safe_mode warning"] = 'Der PHP Safe Mode kann u.U. zu Probelem bei Installation und Aktualisierung von webEdition führen. Deaktivieren Sie in diesem Fall den Safe Mode.';
+$_sysinfo["zend_framework warning"] = 'Sie verwenden derzeit eine andere Version des Zend Framework als die für webEdition ursprünglich vorhergesehene Version '.WE_ZFVERSION.'.';
+$_sysinfo["suhosin warning"] = 'Wegen der vielfältigen Konfigurationsmöglichkeiten kann bei Nutzung dieser PHP Erweiterung die volle Funktionsfähigkeit von webEdition leider nicht garantiert werden.';
 
 $_sysinfo['connection_types'] = 'Update-Verbindungstypen';
 $_sysinfo['gdlib'] = 'GDlib Unterstützung';
