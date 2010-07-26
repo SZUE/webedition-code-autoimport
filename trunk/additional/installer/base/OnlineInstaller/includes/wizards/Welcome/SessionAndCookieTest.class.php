@@ -1,7 +1,7 @@
 <?php
 class SessionAndCookieTest extends leStep {
 
-	var $AutoContinue = 9;
+	var $AutoContinue = 15;
 
 	function ini_get_bool($val) {
 		$bool = ini_get($val);
@@ -104,6 +104,15 @@ class SessionAndCookieTest extends leStep {
 			$ShortOpenTagWarning = $this->Language['short_open_tag_warning'];
 		}
 		
+		$SuhosinImage = leLayout::getWarningStateImage();
+		$SuhosinText = $this->Language['suhosin_OK'];
+		$SuhosinWarning = '';	
+		if ( in_array('suhosin',get_loaded_extensions() ) ){
+			$SuhosinImage = leLayout::getWarningStateImage(false);
+			$SuhosinText = $this->Language['suhosin'];
+			$SuhosinWarning = $this->Language['suhosin_warning'];
+		}
+		
 
 		$Content = <<<EOF
 {$this->Language['content']}<br />
@@ -140,6 +149,13 @@ class SessionAndCookieTest extends leStep {
 </tr>
 <tr>
 	<td colspan="2">{$ShortOpenTagWarning}</td>
+</tr>
+<tr>
+	<td>&middot; {$SuhosinText}</td>
+	<td align="right">{$SuhosinImage}</td>
+</tr>
+<tr>
+	<td colspan="2">{$SuhosinWarning}</td>
 </tr>
 </table>
 EOF;

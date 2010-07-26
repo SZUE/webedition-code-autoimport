@@ -156,7 +156,11 @@ $lang["Step"]["SessionAndCookieTest"]["register_globals_warning"] = "register_gl
 
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag"] = "Short Open Tag";
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag_OK"] = "Short Open Tag nicht aktiviert";
-$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is activiert!<br />Die Anwendungen laufen mit aktiviertem  <a href=\"http://www.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, wir empfehlen dies aber nicht, da es zu Problemen führen kann, wenn mit XML-Files gearbeitet wird.";
+$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag ist aktiviert!<br />Die Anwendungen laufen mit aktiviertem  <a href=\"http://www.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, wir empfehlen dies aber nicht, da es zu Problemen führen kann, wenn mit XML-Files gearbeitet wird.";
+
+$lang["Step"]["SessionAndCookieTest"]["suhosin"] = "Suhosin Erweiterung zu PHP";
+$lang["Step"]["SessionAndCookieTest"]["suhosin_OK"] = "Suhosin Erweiterung nicht aktiviert";
+$lang["Step"]["SessionAndCookieTest"]["suhosin_warning"] = "Suhosin is aktiviert!<br />Die Anwendungen laufen <b>eventuell</b> mit aktiviertem  <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>, wir empfehlen dies aber nicht, da Suhosin wegen der Vielzahl der Konfigurationsmöglichkeiten zu nur schwer eingrenzbaren Problemen führen kann. <br />So kann es sein, dass, obwohl der OnlineInstaller selbst nicht problemlos arbeitet, die Anwendung selbst aber problemlos läuft. <br/>Wir empfehlen dann eine Installation des Tarballs, siehe <a href=\"http://download.webedition.org/releases\" target=\"_blank\">WebEdition Tarballs</a>.";
 
 // DetermineFilesInstaller
 $lang["Step"]["DetermineFilesInstaller"]["title"] = "Daten ermitteln";

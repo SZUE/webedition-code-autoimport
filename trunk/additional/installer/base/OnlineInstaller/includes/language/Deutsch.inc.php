@@ -152,11 +152,15 @@ $lang["Step"]["SessionAndCookieTest"]["safe_mode_warning"] = "PHP Safe Mode ist 
 
 $lang["Step"]["SessionAndCookieTest"]["register_globals"] = "Register Globals";
 $lang["Step"]["SessionAndCookieTest"]["register_globals_OK"] = "Register Globals nicht aktiviert";
-$lang["Step"]["SessionAndCookieTest"]["register_globals_warning"] = "register_globals ist activiert!<br />Dies kann schwerwiegende Sicherheitsprobleme hervorrufen und gilt seit PHP Version 5.3 als DEPRECATED (veraltet), deshalb empfehlen wir, dieses Feature zu deaktivieren. Beachten Sie <a href=\"http://www.php.net/manual/de/security.globals.php\" target=\"_blank\">php.net/manual</a> für weitere Informationen";
+$lang["Step"]["SessionAndCookieTest"]["register_globals_warning"] = "register_globals ist aKtiviert!<br />Dies kann schwerwiegende Sicherheitsprobleme hervorrufen und gilt seit PHP Version 5.3 als DEPRECATED (veraltet), deshalb empfehlen wir, dieses Feature zu deaktivieren. Beachten Sie <a href=\"http://www.php.net/manual/de/security.globals.php\" target=\"_blank\">php.net/manual</a> für weitere Informationen";
 
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag"] = "Short Open Tag";
 $lang["Step"]["SessionAndCookieTest"]["short_open_tag_OK"] = "Short Open Tag nicht aktiviert";
-$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is activiert!<br />Die Anwendungen laufen mit aktiviertem  <a href=\"http://www.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, wir empfehlen dies aber nicht, da es zu Problemen führen kann, wenn mit XML-Files gearbeitet wird.";
+$lang["Step"]["SessionAndCookieTest"]["short_open_tag_warning"] = "short_open_tag is aKtiviert!<br />Die Anwendungen laufen mit aktiviertem  <a href=\"http://www.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, wir empfehlen dies aber nicht, da es zu Problemen führen kann, wenn mit XML-Files gearbeitet wird.";
+
+$lang["Step"]["SessionAndCookieTest"]["suhosin"] = "Suhosin Erweiterung zu PHP";
+$lang["Step"]["SessionAndCookieTest"]["suhosin_OK"] = "Suhosin Erweiterung nicht aktiviert";
+$lang["Step"]["SessionAndCookieTest"]["suhosin_warning"] = "Suhosin is aktiviert!<br />Die Anwendungen laufen <b>eventuell</b> mit aktiviertem  <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>, wir empfehlen dies aber nicht, da Suhosin wegen der Vielzahl der Konfigurationsmöglichkeiten zu nur schwer eingrenzbaren Problemen führen kann. <br />So kann es sein, dass, obwohl der OnlineInstaller selbst nicht problemlos arbeitet, die Anwendung selbst aber problemlos läuft. <br/>Wir empfehlen dann eine Installation des Tarballs, siehe <a href=\"http://download.webedition.org/releases\" target=\"_blank\">WebEdition Tarballs</a>.";
 
 
 // DetermineFilesInstaller
