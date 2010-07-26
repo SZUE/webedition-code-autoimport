@@ -199,9 +199,10 @@ function step_requirements() {
 	if(ini_get_bool('register_globals')) {
 		$output.=tpl_warning("register_globals is active!<br />This may cause <b>severe security problems</b>, is declared DEPRECATED since PHP version 5.3 and we strongly recommend to disable this \"feature\". See <a href=\"http://www.php.net/manual/en/security.globals.php\" target=\"_blank\">php.net/manual</a> for more information.");
 	}
-	if(ini_get_bool('short_open_tag')) {
-		$output.=tpl_warning("short_open_tag is active!<br />webEdition may run with activated <a href=\"http://de2.php.net/manual/en/ini.core.php#ini.short-open-tag\" target=\"_blank\">short_open_tag</a>, but yet we do not recommend it since it can lead to problems when working with .xml files.");
+	if(in_array('suhosin',get_loaded_extensions()) ) {
+		$output.=tpl_warning("Suhosin is active! The application <b>might</b> work with activated <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>, but yet we do not recommend it, since Suhosin can lead to problems due it's many configuration options.");
 	}
+	
 	
 	if(!is_callable("curl_getinfo")) {
 		$output.=tpl_warning("curl support is not available.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate, the First Steps Wizard or the application installer.");
@@ -513,6 +514,11 @@ function step_databasecheck() {
 	} else {
 		$output .= tpl_ok("DROP TABLE succeeded");
 	}
+	if ( (float) mysql_get_server_info($conn) < 5.0) {
+		$output .= 	tpl_warning(sprintf("The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><b>In addition: there are no security updates available for the installed MySQL version since many years!</b><br/>",mysql_get_server_info($conn)));
+	}
+	
+
 	$output .= "</ul>";
 	if($errors === false) {
 	 	$output .= "All seems to be ok, all requirements are met.";
