@@ -183,7 +183,7 @@
 			),
 
 			'MySql' => array (
-				$_sysinfo['mysql_version'] => getMysqlVer(false),
+				$_sysinfo['mysql_version'] => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf($_sysinfo["dbversion warning"],getMysqlVer(false)),getMysqlVer(false) ) :  getMysqlVer(false),
 				'max_allowed_packet' => getMaxAllowedPacket()
 			),
 			
