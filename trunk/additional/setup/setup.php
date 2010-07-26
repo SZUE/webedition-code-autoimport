@@ -210,7 +210,7 @@ function step_requirements() {
 		$curlVersion = curl_version();
 		$output.=tpl_ok("curl support is available (Version ".$curlVersion["version"]." found)");
 	}
-	if(ini_get("allow_url_fopen") == "Off") {
+	if(!ini_get_bool("allow_url_fopen")) {
 		$output.=tpl_warning("allow_url_fopen deactivated.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate.");
 	} else {
 		$output.=tpl_ok("allow_url_fopen activated.");
