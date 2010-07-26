@@ -487,6 +487,9 @@ function step_databasecheck() {
 			$output .= tpl_ok("The selected database obviously does not conain any previous webEdition installations using this table prefix");
 		}
 	}
+	if ( (float) mysql_get_server_info($conn) < 5.0) {
+		$output .= 	tpl_warning(sprintf("The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><span style=\"color:red;font-weight:bold\">In addition: In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!</span><br/<br/>",mysql_get_server_info($conn)));
+	}
 		
 	// check for required database access permissions (select, insert, alter, update, drop)
 	$output .= "</ul>Performing some permission tests for important database operations:<ul>";
@@ -514,9 +517,7 @@ function step_databasecheck() {
 	} else {
 		$output .= tpl_ok("DROP TABLE succeeded");
 	}
-	if ( (float) mysql_get_server_info($conn) < 5.0) {
-		$output .= 	tpl_warning(sprintf("The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><b>In addition: there are no security updates available for the installed MySQL version since many years!</b><br/>",mysql_get_server_info($conn)));
-	}
+	
 	
 
 	$output .= "</ul>";
