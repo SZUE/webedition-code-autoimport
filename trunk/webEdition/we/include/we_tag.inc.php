@@ -5996,7 +5996,7 @@ function we_tag_sessionStart($attribs, $content)
 			if (!isset($_SESSION))
 				@session_start();
 			unset($_SESSION["webuser"]);
-			session_unregister("s");
+			unset($_SESSION["s"]);
 			unset($_REQUEST["s"]);
 			$_SESSION["webuser"] = array(
 				"registered" => false

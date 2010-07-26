@@ -64,9 +64,9 @@ class we_app_Common
 	public static function getAllApplications()
 	{
 		$retval = array();
-		$apps = self::readAppTOCsxmle();
-		foreach ($apps as $application) {
-			$retval[] = $application->name;
+		$tocZC = self::readAppTOC();
+		foreach ($tocZC->applications->application as $app) {
+			$retval[] = $app->name;
 		}
 		return $retval;
 	}
@@ -77,10 +77,10 @@ class we_app_Common
 	public static function getActiveApplications()
 	{
 		$retval = array();
-		$apps = self::readAppTOCsxmle();
-		foreach ($apps as $application) {
-			if ($application["active"] == "true") {
-				$retval[] = $application->name;
+		$tocZC = self::readAppTOC();
+		foreach ($tocZC->applications->application as $app) {
+			if ($app->active == "true") {
+				$retval[] = $app->name;
 			}
 		}
 		return $retval;
@@ -181,7 +181,8 @@ class we_app_Common
 		 * - entry has to be a directory
 		 * - there has to be a file called "manifest.xml" in a subdirectory called "conf"
 		 */
-		$dir = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/";
+		self::readConfig(); 
+		$dir = $_SERVER["DOCUMENT_ROOT"] . self::$_config->applicationpath;
 		$skiplist = array(".", "..", "cache", "first_steps_wizard", "CVS", ".svn");
 		$applist = array();
 		foreach (scandir($_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/") as $entry) {
@@ -196,7 +197,7 @@ class we_app_Common
 		$doc = new DOMDocument('1.0', 'UTF-8');
 		$doc->formatOutput = true;
 		$root = $doc->createElement('toc');
-		
+		$apps = $doc->createElement('applications');
 		//$newtoc = new SimpleXMLElement('<toc></toc>');
 		foreach ($applist as $app) {
 			//error_log("creating toc entry for ".$app);
@@ -205,14 +206,18 @@ class we_app_Common
 				//error_log(print_r($entry,true));
 				$domnode = dom_import_simplexml($entry);
 				$domnode = $doc->importNode($domnode, true);
-				$domnode = $root->appendChild($domnode);
+				$domnode = $apps->appendChild($domnode);
 			}
 		}
+		
+		$root->appendChild($apps);
 		
 		// We insert the new element as root (child of the document)
 		$doc->appendChild($root);
 		
 		file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml", $doc->saveXML());
+		self::readAppTOCsxmle(true);
+		self::readAppTOC(true);
 	}
 
 	/**
@@ -359,13 +364,13 @@ class we_app_Common
 		}
 		//error_log("checking if $appname is installed.");
 		$config = self::readConfig();
-		$apps = self::readAppTOCsxmle(true);
+		$apps = self::readAppTOC(true);
 		//error_log(print_r($apps,true));
 		$path = $config->applicationpath . $appname . "/";
 		if (is_dir($path)) {
 			//error_log("directory $path found.");
 			if (is_readable($path . "conf/manifest.xml")) {
-				foreach ($apps as $app) {
+				foreach ($apps->applications->application as $app) {
 					if ($app->name == $appname) {
 						return true;
 					}
@@ -432,7 +437,7 @@ class we_app_Common
 		}
 		$entry = self::getAppTOCEntry($appname);
 		if ($entry === false) {
-			error_log("here");
+			//error_log("here");
 			return false;
 		} else if (empty($element) && isset($entry[$attribute])) {
 			return $entry[$attribute];
@@ -728,14 +733,15 @@ class we_app_Common
 			return false;
 		}
 		$toc = self::readAppTOCsxmle();
-		foreach ($toc as $entry) {
+		foreach ($toc->applications->application as $entry) {
 			if ($entry->name == $appname) {
 				return $entry;
 			}
 		}
 		return false;
 	}
-
+	
+	
 	/**
 	 * 
 	 * checks if the application with the name $name can be deactivated
@@ -805,12 +811,27 @@ class we_app_Common
 		
 		// 3. activate it
 		$toc = self::readAppTOCsxmle();
-		foreach ($toc as $entry) {
+		$config = self::readConfig();
+		$path = $config->applicationpath . $appname . "/";
+		foreach ($toc->applications->application as $entry) {
 			if ($entry->name == $appname) {
-				$entry["active"] = "true";
-			}
-		}
+				if (is_dir($path)) {
+					$ACTIVECONSTANT = 'WEAPP_'.strtoupper($appname) . '_ACTIVE';
+					if (is_readable($path . "conf/define.conf.php") && is_readable($path . "conf/meta.conf.php") ) {
+							$dieConf = we_util_File::load($path . "conf/define.conf.php");
+							$dieConf = str_replace('define("'.$ACTIVECONSTANT.'",false)','define("'.$ACTIVECONSTANT.'",true)',$dieConf);
+							we_util_File::save($path . "conf/define.conf.php", $dieConf);
+							$dieConf2 = we_util_File::load($path . "conf/meta.conf.php");
+							$dieConf2 = str_replace("appdisabled'=>1","appdisabled'=>0",$dieConf2);
+							we_util_File::save($path . "conf/meta.conf.php", $dieConf2);
+							$entry["active"] = "true";
+					}	
+				}
+				
+			}		}
 		self::saveAppTOC($toc);
+		self::readAppTOCsxmle(true);
+		self::readAppTOC(true);
 	
 	}
 
@@ -838,12 +859,28 @@ class we_app_Common
 		
 		// 3. deactivate it
 		$toc = self::readAppTOCsxmle();
-		foreach ($toc as $entry) {
+		$config = self::readConfig();
+		$path = $config->applicationpath . $appname . "/";
+		foreach ($toc->applications->application as $entry) {
 			if ($entry->name == $appname) {
-				$entry["active"] = "false";
+				if (is_dir($path)) {
+					$ACTIVECONSTANT = 'WEAPP_'.strtoupper($appname) . '_ACTIVE';
+					if (is_readable($path . "conf/define.conf.php") && is_readable($path . "conf/meta.conf.php") ) {
+							$dieConf = we_util_File::load($path . "conf/define.conf.php");
+							$dieConf = str_replace('define("'.$ACTIVECONSTANT.'",true)','define("'.$ACTIVECONSTANT.'",false)',$dieConf);
+							we_util_File::save($path . "conf/define.conf.php", $dieConf);
+							$dieConf2 = we_util_File::load($path . "conf/meta.conf.php");
+							$dieConf2 = str_replace("appdisabled'=>0","appdisabled'=>1",$dieConf2);
+							we_util_File::save($path . "conf/meta.conf.php", $dieConf2);
+							$entry["active"] = "false";
+					}	
+				}
+				
 			}
 		}
 		self::saveAppTOC($toc);
+		self::readAppTOCsxmle(true);
+		self::readAppTOC(true);
 	
 	}
 	
