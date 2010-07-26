@@ -42,6 +42,7 @@ $_sysinfo["short_open_tag warning"] = 'WARNUNG: short_open_tag can lead to sever
 
 $_sysinfo["safe_mode warning"] = 'Please deactivate the PHP Safe Mode if you experience problems during installation or update procedures.';
 $_sysinfo["zend_framework warning"] = 'You are currently using a different version of the Zend Framework than the recommended version '.WE_ZFVERSION.'.';
+$_sysinfo["suhosin warning"] = 'Due to the many configuration options of this PHP extension, we cannot guarenty the full functionality of webEdition.';
 
 $_sysinfo['connection_types'] = 'Bijwerken connectie types';
 $_sysinfo['gdlib'] = 'GDlib ondersteuning';
