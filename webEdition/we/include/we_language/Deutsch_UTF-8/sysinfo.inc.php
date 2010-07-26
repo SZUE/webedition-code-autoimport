@@ -42,7 +42,7 @@ $_sysinfo["short_open_tag warning"] = 'WARNUNG: short_open_tag kann zu erheblich
 $_sysinfo["safe_mode warning"] = 'Der PHP Safe Mode kann u.U. zu Probelem bei Installation und Aktualisierung von webEdition führen. Deaktivieren Sie in diesem Fall den Safe Mode.';
 $_sysinfo["zend_framework warning"] = 'Sie verwenden derzeit eine andere Version des Zend Framework als die für webEdition ursprünglich vorhergesehene Version '.WE_ZFVERSION.'.';
 $_sysinfo["suhosin warning"] = 'Wegen der vielfältigen Konfigurationsmöglichkeiten kann bei Nutzung dieser PHP Erweiterung die volle Funktionsfähigkeit von webEdition leider nicht garantiert werden.';
-$_sysinfo["dbversion warning"] = 'Der verwendete DB-Server meldet die Version %s, webEdition benötigt jedoch mindestens die MySQL-Server Version 5.0. webEdition mag mit der genutzten Version funktionieren, dies kann jedoch nicht für neue webEdition Versionen (z.B. nach Updates) garantiert werden.  Spätestens ab webEdition Version 7 wird MySQL Version 5 benötigt.Sicherheitstechnisch ist die verwendete MySQL Version ein offenes Scheunentor für das es keine Updates mehr gibt.';
+$_sysinfo["dbversion warning"] = 'Der verwendete DB-Server meldet die Version %s, webEdition benötigt jedoch mindestens die MySQL-Server Version 5.0. webEdition mag mit der genutzten Version funktionieren, dies kann jedoch nicht für neue webEdition Versionen (z.B. nach Updates) garantiert werden.  Spätestens ab webEdition Version 7 wird MySQL Version 5 benötigt. Außerdem: die auf dem Server installierte MySQL Version ist veraltet. Für diese Version gibt es keine Updates mehr, dies kann die Sicherheit des gesamten Systems beeinträchtigen.';
 
 $_sysinfo['connection_types'] = 'Update-Verbindungstypen';
 $_sysinfo['gdlib'] = 'GDlib Unterstützung';
