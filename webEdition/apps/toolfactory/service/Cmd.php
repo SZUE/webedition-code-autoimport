@@ -165,7 +165,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		
 		}
 		$model->ID = $model->classname;
-
+		we_app_Common::rebuildAppTOC();
 		return array(
 			'model' => $model, 'newBeforeSaving' => $newBeforeSaving
 		);
@@ -259,13 +259,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		$model = $session->model;
 		//return $this->save($args);
 		
-		$ACTIVECONSTANT = 'WEAPP_'.strtoupper($model->classname) . '_ACTIVE';
-		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php');
-		$dieConf = str_replace('define("'.$ACTIVECONSTANT.'",true)','define("'.$ACTIVECONSTANT.'",false)',$dieConf);
-		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php', $dieConf);
-		$dieConf2 = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
-		$dieConf2 = str_replace("appdisabled'=>0","appdisabled'=>1",$dieConf2);
-		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php', $dieConf2);
 		
 		we_app_Common::deactivate($model->classname);
 		return array(
@@ -299,15 +292,9 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		}
 		$session->model->Published=1;
 		$model = $session->model;
-		$ACTIVECONSTANT = 'WEAPP_'.strtoupper($model->classname) . '_ACTIVE';
-		$dieConf = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php');
-		$dieConf = str_replace('define("'.$ACTIVECONSTANT.'",false)','define("'.$ACTIVECONSTANT.'",true)',$dieConf);
-		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/define.conf.php', $dieConf);
-		$dieConf2 = we_util_File::load($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php');
-		$dieConf2 = str_replace("appdisabled'=>1","appdisabled'=>0",$dieConf2);
-		we_util_File::save($GLOBALS['__WE_APP_PATH__'].'/'.$model->classname.'/conf/meta.conf.php', $dieConf2);
 		
-		we_app_Common::activate($model->classname);
+		
+		we_app_Common::activate($model->classname);// eintrag im TOC, in define und meta
 		return array(
 			'model' => $model
 		);
