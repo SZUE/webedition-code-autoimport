@@ -17,3 +17,5 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+define("WEAPP_TOOLFACTORY_ACTIVE",true);
