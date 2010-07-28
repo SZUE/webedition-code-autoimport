@@ -182,10 +182,10 @@ class we_app_Common
 		 * - there has to be a file called "manifest.xml" in a subdirectory called "conf"
 		 */
 		self::readConfig(); 
-		$dir = $_SERVER["DOCUMENT_ROOT"] . self::$_config->applicationpath;
+		$dir = self::$_config->applicationpath;we_util_Strings::p_r($dir);
 		$skiplist = array(".", "..", "cache", "first_steps_wizard", "CVS", ".svn");
 		$applist = array();
-		foreach (scandir($_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/") as $entry) {
+		foreach (scandir($dir) as $entry) {
 			if (is_dir($dir . $entry) && !in_array($entry, $skiplist)) {
 				if (is_readable($dir . $entry . "/conf/manifest.xml")) {
 					$applist[] = $entry;
@@ -249,11 +249,6 @@ class we_app_Common
 			$active = "true";
 		
 		$entry = new SimpleXMLElement("<application></application>");
-		if ($metaInfo['appdisabled']){
-			$active="false";
-		} else {
-			$active="true";
-		}
 		$entry->addAttribute("active", $active);
 		$entry->addChild("name", $appname);
 		$entry->addChild("installer", $installer);
