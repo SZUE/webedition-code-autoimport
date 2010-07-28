@@ -182,7 +182,7 @@ class we_app_Common
 		 * - there has to be a file called "manifest.xml" in a subdirectory called "conf"
 		 */
 		self::readConfig(); 
-		$dir = self::$_config->applicationpath;we_util_Strings::p_r($dir);
+		$dir = self::$_config->applicationpath;
 		$skiplist = array(".", "..", "cache", "first_steps_wizard", "CVS", ".svn");
 		$applist = array();
 		foreach (scandir($dir) as $entry) {
