@@ -5,13 +5,13 @@
 <manifest>
 	
 	<creator>
-		<company>webEdition project</company>
+		<company>webEdition Project</company>
 		<name>webEdition e.V.</name>
-		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+		<address>Adresse</address>
         <country>DE</country>
-		<phone>+49 30 766835-79</phone>
-		<fax>+49 30 766835-85</fax>
-		<email>info@webedition.org</email>
+		<phone></phone>
+		<fax></fax>
+		<email>applications@webedition.org</email>
 		<www>http://www.webedition.org</www>
 		<year>2010</year>
 	</creator>
