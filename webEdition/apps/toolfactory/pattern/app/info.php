@@ -1,10 +1,10 @@
 
 
 // include autoload function
-include_once('../../lib/we/core/autoload.php');
+include_once('../../../lib/we/core/autoload.php');
 
 // include configuration
-include_once('conf/meta.conf.php');
+include_once('../conf/meta.conf.php');
 
 $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 
