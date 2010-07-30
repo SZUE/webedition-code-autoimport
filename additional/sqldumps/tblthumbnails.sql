@@ -12,4 +12,4 @@ CREATE TABLE tblthumbnails (
   Utilize tinyint(1) NOT NULL default '0',
   `Quality` TINYINT NOT NULL DEFAULT  '8',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

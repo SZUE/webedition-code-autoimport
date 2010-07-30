@@ -4,4 +4,4 @@ CREATE TABLE tblMsgSettings (
   strKey varchar(255) default NULL,
   strVal varchar(255) default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

@@ -1,7 +1,7 @@
 CREATE TABLE tblNewsletterPrefs (
   pref_name varchar(255) NOT NULL default '',
   pref_value longtext NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblNewsletterPrefs VALUES ('black_list','');
 /* query separator */

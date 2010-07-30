@@ -34,4 +34,4 @@ CREATE TABLE tblFile (
   PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

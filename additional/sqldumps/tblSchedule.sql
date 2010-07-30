@@ -7,4 +7,4 @@ CREATE TABLE tblSchedule (
   Schedpro longtext,
   `Type` tinyint(3) NOT NULL default '0',
   Active tinyint(1) default NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

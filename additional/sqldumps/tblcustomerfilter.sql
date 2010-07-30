@@ -15,4 +15,4 @@ CREATE TABLE `tblcustomerfilter` (
   KEY `mode` (`mode`,`specificCustomers`(330)),
   KEY `modelId` (`modelId`,`modelType`,`modelTable`),
   KEY `accessControlOnTemplate` (`accessControlOnTemplate`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

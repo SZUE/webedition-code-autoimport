@@ -5,4 +5,4 @@ CREATE TABLE tblNewsletterLog (
   Log varchar(255) NOT NULL default '',
   Param varchar(255) NOT NULL default '',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

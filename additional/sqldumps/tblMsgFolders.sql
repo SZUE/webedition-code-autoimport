@@ -11,7 +11,7 @@ CREATE TABLE tblMsgFolders (
   Properties int(10) unsigned default NULL,
   tag tinyint(4) default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblMsgFolders VALUES (1,0,1,-1,1,3,'Messages',NULL,NULL,1,NULL);
 /* query separator */

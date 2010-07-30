@@ -4,4 +4,4 @@ CREATE TABLE tblFailedLogins (
   `Password` varchar(32) NOT NULL default '',
   IP varchar(15) NOT NULL default '',
   LoginDate int(11) NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

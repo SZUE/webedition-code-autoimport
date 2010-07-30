@@ -4,4 +4,4 @@ CREATE TABLE tblformmaillog (
   unixTime int(11) NOT NULL,
   PRIMARY KEY  (id),
   KEY ipwhen (ip,unixTime)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

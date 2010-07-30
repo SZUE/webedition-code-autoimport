@@ -6,4 +6,4 @@ CREATE TABLE tblTemporaryDoc (
   UnixTimestamp bigint(20) NOT NULL default '0',
   Active tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

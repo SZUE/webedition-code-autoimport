@@ -14,4 +14,4 @@ CREATE TABLE tblMessages (
   MessageText text,
   tag tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

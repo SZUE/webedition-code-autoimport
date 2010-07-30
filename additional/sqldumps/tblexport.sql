@@ -31,5 +31,5 @@ CREATE TABLE tblexport (
   HandleNavigation tinyint(1) NOT NULL default '0',
   HandleThumbnails tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 

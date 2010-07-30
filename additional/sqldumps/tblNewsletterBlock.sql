@@ -9,4 +9,4 @@ CREATE TABLE tblNewsletterBlock (
   Html longtext NOT NULL,
   Pack tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

@@ -32,4 +32,4 @@ CREATE TABLE tblObjectFiles (
   PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

@@ -7,4 +7,4 @@ CREATE TABLE tblContentTypes (
   Template tinyint(4) NOT NULL default '0',
   `File` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (ContentType)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

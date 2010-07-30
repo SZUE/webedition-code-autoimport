@@ -493,7 +493,7 @@ function step_databasecheck() {
 		
 	// check for required database access permissions (select, insert, alter, update, drop)
 	$output .= "</ul>Performing some permission tests for important database operations:<ul>";
-	if(!@mysql_query("CREATE TABLE  `we_installer_test` (`id` VARCHAR( 100 ) NOT NULL) ENGINE = MYISAM;",$conn)) {
+	if(!@mysql_query("CREATE TABLE  `we_installer_test` (`id` VARCHAR( 100 ) NOT NULL) ENGINE = MyISAM;",$conn)) {
 		$output .= tpl_error("CREATE TABLE failed: ".mysql_error($conn));
 		$errors = true;
 	} else {
@@ -724,13 +724,11 @@ function step_installation() {
 		$Charset = $_SESSION["we_db_charset"];
 		$Collation = $_SESSION["we_db_collation"];
 		$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
-		$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation. " TYPE=MyISAM ";
+		$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation. " ENGINE=MyISAM ";
 	} else {
-		$charset_collation = "TYPE=MyISAM";
+		$charset_collation = "ENGINE=MyISAM";
 	}
-	if ( (float) mysql_get_server_info($conn) > 5.0){
-		$charset_collation = str_replace("TYPE=MyISAM","ENGINE=MyISAM",$charset_collation);
-	}
+	
 	foreach($dbqueries as $dbquery) {
 		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])) {
 			foreach($queryTypes as $queryType) {
@@ -738,7 +736,7 @@ function step_installation() {
 			}
 		}
 		
-		$dbquery = str_replace("TYPE=MyISAM",$charset_collation,$dbquery);
+		$dbquery = str_replace("ENGINE=MyISAM",$charset_collation,$dbquery);
 
 		if(!empty($dbquery)) {
 			if(!@mysql_query($dbquery,$conn)) {

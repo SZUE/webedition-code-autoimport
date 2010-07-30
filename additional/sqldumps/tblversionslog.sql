@@ -5,4 +5,4 @@ CREATE TABLE `tblversionslog` (
   `userID` int(11) NOT NULL,
   `data` longtext NOT NULL,
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM ;
+) ENGINE=MyISAM ;

@@ -4,4 +4,4 @@ CREATE TABLE tblformmailblock (
   blockedUntil int(11) NOT NULL,
   PRIMARY KEY  (id),
   KEY ipblockeduntil (ip,blockedUntil)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

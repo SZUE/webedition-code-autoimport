@@ -15,4 +15,4 @@ CREATE TABLE tblNewsletter (
   `Charset` varchar(255) NOT NULL default '',
   isEmbedImages tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

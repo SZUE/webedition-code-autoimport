@@ -24,4 +24,4 @@ CREATE TABLE tblTemplates (
   PRIMARY KEY  (ID),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

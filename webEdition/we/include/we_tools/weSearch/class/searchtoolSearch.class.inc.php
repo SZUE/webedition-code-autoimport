@@ -926,7 +926,7 @@ class searchtoolsearch extends we_search
 				`Extension` VARCHAR( 16 ) NOT NULL ,
 				`TableID` INT( 11 ) NOT NULL,
 				`VersionID` BIGINT( 20 ) NOT NULL 
-				) TYPE = " . $tableType . "
+				) ENGINE = " . $tableType . "
 			";
 			
 			$this->query($q);
@@ -1163,7 +1163,7 @@ class searchtoolsearch extends we_search
 		$rights = "
 			   CREATE TEMPORARY TABLE `test_" . SEARCH_TEMP_TABLE . "` (
 				`test` VARCHAR( 1 ) NOT NULL
-				) TYPE=" . $tableType . " 
+				) ENGINE=" . $tableType . " 
 		";
 		$db->query($rights);
 		$db->next_record();
@@ -1190,7 +1190,7 @@ class searchtoolsearch extends we_search
 		$rights = "
 			   CREATE TABLE `test_" . SEARCH_TEMP_TABLE . "` (
 				`test` VARCHAR( 1 ) NOT NULL
-				) TYPE=" . $tableType . " 
+				) ENGINE=" . $tableType . " 
 		";
 		$db->query($rights);
 		$db->next_record();

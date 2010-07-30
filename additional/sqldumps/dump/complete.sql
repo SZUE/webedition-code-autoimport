@@ -3,7 +3,7 @@ CREATE TABLE tblAnzeigePrefs (
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblAnzeigePrefs VALUES (1,'edit_shop_properties','a:2:{s:14:"customerFields";a:0:{}s:19:"orderCustomerFields";a:0:{}}');
 /* query separator */
@@ -19,12 +19,12 @@ CREATE TABLE tblCategorys (
   Icon varchar(64) default NULL,
   Catfields longtext NOT NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblCleanUp (
   Path varchar(255) NOT NULL default '',
   `Date` int(11) NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblContent (
   ID bigint(20) NOT NULL auto_increment,
@@ -34,7 +34,7 @@ CREATE TABLE tblContent (
   AutoBR char(3) NOT NULL default '',
   LanguageID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblContentTypes (
   OrderNr int(11) NOT NULL default '0',
@@ -45,7 +45,7 @@ CREATE TABLE tblContentTypes (
   Template tinyint(4) NOT NULL default '0',
   `File` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (ContentType)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblDocTypes (
   ID int(11) NOT NULL auto_increment,
@@ -69,14 +69,14 @@ CREATE TABLE tblDocTypes (
   Category varchar(255) default NULL,
   Language varchar(5) default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblErrorLog (
   ID int(11) NOT NULL auto_increment,
   `Text` text NOT NULL,
   `Date` int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblFailedLogins (
   ID bigint(20) NOT NULL default '0',
@@ -84,7 +84,7 @@ CREATE TABLE tblFailedLogins (
   `Password` varchar(32) NOT NULL default '',
   IP varchar(15) NOT NULL default '',
   LoginDate int(11) NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblFile (
   ID int(11) NOT NULL auto_increment,
@@ -122,7 +122,7 @@ CREATE TABLE tblFile (
   PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblIndex (
   DID int(11) NOT NULL default '0',
@@ -140,7 +140,7 @@ CREATE TABLE tblIndex (
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
   KEY DID (DID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblLink (
   DID int(11) NOT NULL default '0',
@@ -149,13 +149,13 @@ CREATE TABLE tblLink (
   Name varchar(255) NOT NULL default '',
   DocumentTable varchar(64) NOT NULL default '',
   KEY DID (DID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblLock (
   ID bigint(20) NOT NULL default '0',
   UserID bigint(20) NOT NULL default '0',
   tbl varchar(32) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblMessages (
   ID int(11) NOT NULL auto_increment,
@@ -173,7 +173,7 @@ CREATE TABLE tblMessages (
   MessageText text,
   tag tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblMetadata` (
   `id` int(11) NOT NULL auto_increment,
@@ -181,7 +181,7 @@ CREATE TABLE `tblMetadata` (
   `type` varchar(255) NOT NULL,
   `importFrom` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-)  TYPE=MyISAM;/* query separator */
+)  ENGINE=MyISAM;/* query separator */
 CREATE TABLE tblMsgAccounts (
   ID int(11) NOT NULL auto_increment,
   UserID int(11) default NULL,
@@ -194,7 +194,7 @@ CREATE TABLE tblMsgAccounts (
   update_interval smallint(5) unsigned NOT NULL default '0',
   ext varchar(255) default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblMsgAddrbook (
   ID int(11) NOT NULL auto_increment,
@@ -205,7 +205,7 @@ CREATE TABLE tblMsgAddrbook (
   strFirstname varchar(255) default NULL,
   strSurname varchar(255) default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblMsgFolders (
   ID int(11) NOT NULL auto_increment,
@@ -220,7 +220,7 @@ CREATE TABLE tblMsgFolders (
   Properties int(10) unsigned default NULL,
   tag tinyint(4) default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblMsgFolders VALUES (1,0,1,-1,1,3,'Messages',NULL,NULL,1,NULL);
 /* query separator */
@@ -239,7 +239,7 @@ CREATE TABLE tblMsgSettings (
   strKey varchar(255) default NULL,
   strVal varchar(255) default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletter (
   ID bigint(20) NOT NULL auto_increment,
@@ -258,7 +258,7 @@ CREATE TABLE tblNewsletter (
   `Charset` varchar(255) NOT NULL default '',
   isEmbedImages tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterBlock (
   ID bigint(20) NOT NULL auto_increment,
@@ -271,7 +271,7 @@ CREATE TABLE tblNewsletterBlock (
   Html longtext NOT NULL,
   Pack tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterConfirm (
   confirmID varchar(96) NOT NULL default '',
@@ -283,7 +283,7 @@ CREATE TABLE tblNewsletterConfirm (
   subscribe_lastname varchar(255) NOT NULL default '',
   lists text NOT NULL,
   expires bigint(20) NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterGroup (
   ID bigint(20) NOT NULL auto_increment,
@@ -294,7 +294,7 @@ CREATE TABLE tblNewsletterGroup (
   Filter blob NOT NULL,
   Extern longtext,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterLog (
   ID bigint(20) NOT NULL auto_increment,
@@ -303,12 +303,12 @@ CREATE TABLE tblNewsletterLog (
   Log varchar(255) NOT NULL default '',
   Param varchar(255) NOT NULL default '',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterPrefs (
   pref_name varchar(255) NOT NULL default '',
   pref_value longtext NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblNewsletterPrefs VALUES ('black_list','');
 /* query separator */
@@ -382,7 +382,7 @@ CREATE TABLE tblObject (
   `CacheType` enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblObjectFiles (
   ID int(11) NOT NULL auto_increment,
@@ -418,7 +418,7 @@ CREATE TABLE tblObjectFiles (
   PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblOrders (
   IntID int(11) NOT NULL auto_increment,
@@ -434,7 +434,7 @@ CREATE TABLE tblOrders (
   strSerial longtext NOT NULL,
   strSerialOrder longtext NOT NULL,
   PRIMARY KEY  (IntID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblPrefs (
   userID bigint(20) NOT NULL default '0',
@@ -489,7 +489,7 @@ CREATE TABLE tblPrefs (
   editorCommentFontcolor varchar(255) NOT NULL,
   specify_jeditor_colors tinyint(1) NOT NULL,
   editorMode varchar(64) NOT NULL DEFAULT 'textarea'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblPrefs (userID, FileFilter, openFolders_tblFile, openFolders_tblTemplates, DefaultTemplateID, DefaultStaticExt, DefaultDynamicExt, DefaultHTMLExt, sizeOpt, weWidth, weHeight, usePlugin, autostartPlugin, promptPlugin, Language, openFolders_tblObject, openFolders_tblObjectFiles, phpOnOff, seem_start_file, seem_start_type, editorSizeOpt, editorWidth, editorHeight, debug_normal, debug_seem, editorFontname, editorFontsize, editorFont, default_tree_count, xhtml_show_wrong, xhtml_show_wrong_text, xhtml_show_wrong_js, xhtml_show_wrong_error_log, import_from, siteImportPrefs, cockpit_amount_last_documents, cockpit_rss_feed_url, use_jupload, cockpit_dat, cockpit_amount_columns, message_reporting, force_glossary_check, force_glossary_action, editorFontcolor, editorWeTagFontcolor, editorWeAttributeFontcolor, editorHTMLTagFontcolor, editorHTMLAttributeFontcolor, editorPiTagFontcolor, editorCommentFontcolor, specify_jeditor_colors) VALUES (1, 0, ',1', '1,10', 0, '.html', '.php', '.html', 0, 0, 0, 0, 0, 0, 'English_UTF-8', '', '', 0, 0, 'cockpit', 1, 900, 700, 0, 0, 'none', -1, 0, 0, 0, 0, 0, 0, '', '', 5, 'http://www.webedition.de/de/News/meldungen/rss2.xml', 1, 'a:3:{i:0;a:2:{i:0;a:4:{i:0;s:3:"pad";i:1;s:4:"blue";i:2;i:1;i:3;s:26:"TWlzY2VsbGFuZW91cw==,30020";}i:1;a:4:{i:0;s:3:"mfd";i:1;s:5:"green";i:2;i:1;i:3;s:12:"1111;0;5;00;";}}i:1;a:2:{i:0;a:4:{i:0;s:3:"rss";i:1;s:6:"yellow";i:2;i:1;i:3;s:86:"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL05ld3MvbWVsZHVuZ2VuL3JzczIueG1s,111000,0,110000,1";}i:1;a:4:{i:0;s:3:"sct";i:1;s:3:"red";i:2;i:1;i:3;s:124:"open_document,new_document,new_template,new_directory,unpublished_pages;unpublished_objects,new_object,new_class,preferences";}}i:2;a:2:{i:0;a:2:{i:0;s:20:"d2ViRWRpdGlvbiBOZXdz";i:1;s:68:"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL05ld3MvbWVsZHVuZ2VuL3JzczIueG1s";}i:1;a:2:{i:0;s:28:"d2ViRWRpdGlvbiBAIFR3aXR0ZXI=";i:1;s:72:"aHR0cDovL3R3aXR0ZXIuY29tL3N0YXR1c2VzL3VzZXJfdGltZWxpbmUvMTY5MjI4MjAucnNz";}}}', 2, 7, 0, 0, '', '', '', '', '', '', '', 'textarea');
 /* query separator */
@@ -497,7 +497,7 @@ CREATE TABLE tblRecipients (
   ID bigint(20) NOT NULL auto_increment,
   Email varchar(255) NOT NULL default '',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblSchedule (
   DID bigint(20) NOT NULL default '0',
@@ -508,7 +508,7 @@ CREATE TABLE tblSchedule (
   Schedpro longtext,
   `Type` tinyint(3) NOT NULL default '0',
   Active tinyint(1) default NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblTODO (
   ID int(11) NOT NULL auto_increment,
@@ -530,7 +530,7 @@ CREATE TABLE tblTODO (
   seenStatus tinyint(3) unsigned default NULL,
   tag tinyint(3) unsigned default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblTODOHistory (
   ID int(11) NOT NULL auto_increment,
@@ -543,7 +543,7 @@ CREATE TABLE tblTODOHistory (
   `status` tinyint(3) unsigned default NULL,
   tag tinyint(3) unsigned default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblTemplates (
   ID int(11) NOT NULL auto_increment,
@@ -571,7 +571,7 @@ CREATE TABLE tblTemplates (
   PRIMARY KEY  (ID),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblTemporaryDoc (
   ID bigint(20) NOT NULL auto_increment,
@@ -581,7 +581,7 @@ CREATE TABLE tblTemporaryDoc (
   UnixTimestamp bigint(20) NOT NULL default '0',
   Active tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblUpdateLog (
   ID int(255) NOT NULL auto_increment,
@@ -593,7 +593,7 @@ CREATE TABLE tblUpdateLog (
   error tinyint(1) NOT NULL default '0',
   step int(4) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblUser (
   ID bigint(20) NOT NULL auto_increment,
@@ -644,14 +644,14 @@ CREATE TABLE tblUser (
   LoginDenied tinyint(4) NOT NULL default '0',
   UseSalt tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblUser VALUES (1,0,'admin','/admin','user.gif',0,0,'webEdition','','','','',0,'','','','','','','','','','admin','c0e024d9200b5705bc4804722636378a','a:55:{s:13:\"ADMINISTRATOR\";s:1:\"1\";s:18:\"NEW_WEBEDITIONSITE\";s:1:\"1\";s:10:\"NEW_GRAFIK\";s:1:\"1\";s:8:\"NEW_HTML\";s:1:\"1\";s:9:\"NEW_FLASH\";s:1:\"1\";s:6:\"NEW_JS\";s:1:\"1\";s:7:\"NEW_CSS\";s:1:\"1\";s:12:\"NEW_SONSTIGE\";s:1:\"1\";s:12:\"NEW_TEMPLATE\";s:1:\"1\";s:14:\"NEW_DOC_FOLDER\";s:1:\"1\";s:22:\"CHANGE_DOC_FOLDER_PATH\";s:1:\"0\";s:15:\"NEW_TEMP_FOLDER\";s:1:\"1\";s:17:\"CAN_SEE_DOCUMENTS\";s:1:\"1\";s:17:\"CAN_SEE_TEMPLATES\";s:1:\"1\";s:22:\"SAVE_DOCUMENT_TEMPLATE\";s:1:\"1\";s:17:\"DELETE_DOC_FOLDER\";s:1:\"1\";s:18:\"DELETE_TEMP_FOLDER\";s:1:\"1\";s:15:\"DELETE_DOCUMENT\";s:1:\"1\";s:15:\"DELETE_TEMPLATE\";s:1:\"1\";s:13:\"BROWSE_SERVER\";s:1:\"1\";s:12:\"EDIT_DOCTYPE\";s:1:\"1\";s:14:\"EDIT_KATEGORIE\";s:1:\"1\";s:7:\"REBUILD\";s:1:\"1\";s:6:\"EXPORT\";s:1:\"1\";s:6:\"IMPORT\";s:1:\"1\";s:9:\"NEW_GROUP\";s:1:\"1\";s:8:\"NEW_USER\";s:1:\"1\";s:10:\"SAVE_GROUP\";s:1:\"1\";s:9:\"SAVE_USER\";s:1:\"1\";s:12:\"DELETE_GROUP\";s:1:\"1\";s:11:\"DELETE_USER\";s:1:\"1\";s:7:\"PUBLISH\";s:1:\"1\";s:21:\"EDIT_SETTINGS_DEF_EXT\";s:1:\"1\";s:13:\"EDIT_SETTINGS\";s:1:\"1\";s:11:\"EDIT_PASSWD\";s:1:\"1\";s:12:\"NEW_CUSTOMER\";s:1:\"0\";s:15:\"DELETE_CUSTOMER\";s:1:\"0\";s:13:\"EDIT_CUSTOMER\";s:1:\"0\";s:19:\"SHOW_CUSTOMER_ADMIN\";s:1:\"0\";s:16:\"NEW_SHOP_ARTICLE\";s:1:\"0\";s:19:\"DELETE_SHOP_ARTICLE\";s:1:\"0\";s:15:\"EDIT_SHOP_ORDER\";s:1:\"0\";s:17:\"DELETE_SHOP_ORDER\";s:1:\"0\";s:15:\"EDIT_SHOP_PREFS\";s:1:\"0\";s:19:\"CAN_SEE_OBJECTFILES\";s:1:\"1\";s:14:\"NEW_OBJECTFILE\";s:1:\"1\";s:21:\"NEW_OBJECTFILE_FOLDER\";s:1:\"1\";s:17:\"DELETE_OBJECTFILE\";s:1:\"1\";s:15:\"CAN_SEE_OBJECTS\";s:1:\"0\";s:10:\"NEW_OBJECT\";s:1:\"0\";s:13:\"DELETE_OBJECT\";s:1:\"0\";s:12:\"NEW_WORKFLOW\";s:1:\"0\";s:15:\"DELETE_WORKFLOW\";s:1:\"0\";s:13:\"EDIT_WORKFLOW\";s:1:\"0\";s:9:\"EMPTY_LOG\";s:1:\"0\";}',0,0,0,0,0,0,1146233940,'','','','','','','',0,0,0,0,0,'',0,1);
 /* query separator */
 CREATE TABLE tblWebAdmin (
   Name varchar(255) NOT NULL default '',
   `Value` text NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblWebAdmin VALUES ('FieldAdds','a:9:{s:13:\"Newsletter_Ok\";a:1:{s:7:\"default\";s:3:\",ja\";}s:25:\"Newsletter_HTMLNewsletter\";a:1:{s:7:\"default\";s:3:\",ja\";}s:17:\"Kontakt_Addresse1\";a:1:{s:7:\"default\";s:0:\"\";}s:17:\"Kontakt_Addresse2\";a:1:{s:7:\"default\";s:0:\"\";}s:18:\"Kontakt_Bundesland\";a:1:{s:7:\"default\";s:214:\"Baden-Württemberg,Bayern,Berlin,Brandenburg,Bremen,Hamburg,Hessen,Mecklenburg-Vorpommern,Niedersachsen,Nordrhein-Westfalen,Rheinland-PfalzRheinland-Pfalz,Saarland,Sachsen,Sachsen-Anhalt,Schleswig-Holstein,Thüringen\";}s:12:\"Kontakt_Land\";a:1:{s:7:\"default\";s:0:\"\";}s:13:\"Anrede_Anrede\";a:1:{s:7:\"default\";s:10:\",Herr,Frau\";}s:12:\"Anrede_Titel\";a:1:{s:7:\"default\";s:11:\",Dr., Prof.\";}s:6:\"Gruppe\";a:1:{s:7:\"default\";s:22:\"Administratoren,Kunden\";}}');
 /* query separator */
@@ -691,7 +691,7 @@ CREATE TABLE tblWebUser (
   Gruppe varchar(200) NOT NULL default '',
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblWebUser VALUES (1,'admin','admin','','','John','Doe','Street','ZIP City','State','Country','','','','','',1,'1144395493','1144397956','1144397956',0,'/admin',0,'customer.gif','admin','','','Administratoren');
 /* query separator */
@@ -711,7 +711,7 @@ CREATE TABLE tblWorkflowDef (
   `EmailPath` tinyint(1) NOT NULL DEFAULT '0',
   `LastStepAutoPublish` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowDoc (
   ID int(11) NOT NULL auto_increment,
@@ -720,7 +720,7 @@ CREATE TABLE tblWorkflowDoc (
   userID int(11) NOT NULL default '0',
   `Status` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowDocStep (
   ID int(11) NOT NULL auto_increment,
@@ -730,7 +730,7 @@ CREATE TABLE tblWorkflowDocStep (
   finishDate bigint(20) NOT NULL default '0',
   `Status` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowDocTask (
   ID int(11) NOT NULL auto_increment,
@@ -740,7 +740,7 @@ CREATE TABLE tblWorkflowDocTask (
   todoID bigint(20) NOT NULL default '0',
   `Status` int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowLog (
   ID bigint(20) NOT NULL auto_increment,
@@ -751,7 +751,7 @@ CREATE TABLE tblWorkflowLog (
   `Type` tinyint(4) NOT NULL default '0',
   Description varchar(255) NOT NULL default '',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowStep (
   ID int(11) NOT NULL auto_increment,
@@ -760,7 +760,7 @@ CREATE TABLE tblWorkflowStep (
   stepCondition int(11) NOT NULL default '0',
   workflowID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowTask (
   ID int(11) NOT NULL auto_increment,
@@ -769,7 +769,7 @@ CREATE TABLE tblWorkflowTask (
   Mail int(11) NOT NULL default '0',
   stepID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblbanner (
   ID bigint(20) NOT NULL auto_increment,
@@ -806,7 +806,7 @@ CREATE TABLE tblbanner (
   TagName varchar(255) NOT NULL default '',
   weight tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblbannerclicks (
   ID bigint(20) NOT NULL default '0',
@@ -815,12 +815,12 @@ CREATE TABLE tblbannerclicks (
   Referer varchar(255) NOT NULL default '',
   DID bigint(20) NOT NULL default '0',
   Page varchar(255) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblbannerprefs (
   pref_name varchar(255) NOT NULL default '',
   pref_value varchar(255) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblbannerviews (
   ID bigint(20) NOT NULL default '0',
@@ -829,7 +829,7 @@ CREATE TABLE tblbannerviews (
   Referer varchar(255) NOT NULL default '',
   DID bigint(20) NOT NULL default '0',
   Page varchar(255) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblcustomerfilter` (
   `id` bigint(20) NOT NULL auto_increment,
@@ -848,7 +848,7 @@ CREATE TABLE `tblcustomerfilter` (
   KEY `mode` (`mode`,`specificCustomers`(330)),
   KEY `modelId` (`modelId`,`modelType`,`modelTable`),
   KEY `accessControlOnTemplate` (`accessControlOnTemplate`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblexport (
   ID bigint(20) NOT NULL auto_increment,
@@ -883,7 +883,7 @@ CREATE TABLE tblexport (
   HandleNavigation tinyint(1) NOT NULL default '0',
   HandleThumbnails tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 /* query separator */
 CREATE TABLE tblformmailblock (
@@ -892,7 +892,7 @@ CREATE TABLE tblformmailblock (
   blockedUntil int(11) NOT NULL,
   PRIMARY KEY  (id),
   KEY ipblockeduntil (ip,blockedUntil)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblformmaillog (
   id bigint(20) NOT NULL auto_increment,
@@ -900,7 +900,7 @@ CREATE TABLE tblformmaillog (
   unixTime int(11) NOT NULL,
   PRIMARY KEY  (id),
   KEY ipwhen (ip,unixTime)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblglossary` (
   `ID` int(10) NOT NULL auto_increment,
@@ -920,7 +920,7 @@ CREATE TABLE `tblglossary` (
   `CreatorID` bigint(20) NOT NULL default '0',
   `ModifierID` bigint(20) NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblhistory (
   ID bigint(20) NOT NULL auto_increment,
@@ -931,7 +931,7 @@ CREATE TABLE tblhistory (
   Act varchar(16) NOT NULL default '',
   UserName varchar(64) NOT NULL default '',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblnavigation (
   ID bigint(20) NOT NULL auto_increment,
@@ -992,7 +992,7 @@ CREATE TABLE tblnavigationrules (
   ClassID int(11) NOT NULL default '0',
   WorkspaceID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblsearchtool` (
   `ID` bigint(20) NOT NULL auto_increment,
@@ -1026,7 +1026,7 @@ CREATE TABLE `tblsearchtool` (
   `search_tables_advSearch` varchar(255) NOT NULL,
   `activTab` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM ;
+) ENGINE=MyISAM ;
 /* query separator */
 INSERT INTO `tblsearchtool` (`ID`, `ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
 (1, 0, 1, 'folder.gif', '/Vordefinierte Suchanfragen', 'Vordefinierte Suchanfragen', 1, 0, 0, '', '', '', 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '',4),
@@ -1056,7 +1056,7 @@ CREATE TABLE tblshopvats (
   vat varchar(16) NOT NULL default '',
   standard tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblthumbnails (
   ID bigint(20) NOT NULL auto_increment,
@@ -1072,7 +1072,7 @@ CREATE TABLE tblthumbnails (
   Utilize tinyint(1) NOT NULL default '0',
   `Quality` TINYINT NOT NULL DEFAULT  '8',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblvalidationservices (
   PK_tblvalidationservices int(11) NOT NULL auto_increment,
@@ -1088,7 +1088,7 @@ CREATE TABLE tblvalidationservices (
   fileEndings varchar(255) NOT NULL default '',
   active tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (PK_tblvalidationservices)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblversions` (
   `ID` bigint(20) NOT NULL auto_increment,
@@ -1141,7 +1141,7 @@ CREATE TABLE `tblversions` (
   `resetFromVersion` bigint(20) NOT NULL,
   `InGlossar` tinyint(1) NOT NULL,
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM ;
+) ENGINE=MyISAM ;
 /* query separator */
 CREATE TABLE `tblversionslog` (
   `ID` bigint(20) NOT NULL auto_increment,
@@ -1150,7 +1150,7 @@ CREATE TABLE `tblversionslog` (
   `userID` int(11) NOT NULL,
   `data` longtext NOT NULL,
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM ;
+) ENGINE=MyISAM ;
 /* query separator */
 CREATE TABLE tblvoting (
   ID bigint(20) NOT NULL auto_increment,
@@ -1187,7 +1187,7 @@ CREATE TABLE tblvoting (
   RestrictIP tinyint(1) NOT NULL default '0',
   BlackList longtext NOT NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblvotinglog` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
@@ -1205,7 +1205,7 @@ CREATE TABLE `tblvotinglog` (
   `successor` bigint(20) unsigned NOT NULL DEFAULT '0',
   `additionalfields` text NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM ;
+) ENGINE=MyISAM ;
 /* query separator */
 CREATE TABLE `tblwidgetnotepad` (
   `ID` bigint(20) NOT NULL auto_increment,
@@ -1219,6 +1219,6 @@ CREATE TABLE `tblwidgetnotepad` (
   `ValidFrom` date NOT NULL default '0000-00-00',
   `ValidUntil` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO `tblwidgetnotepad` VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');/* query separator */

@@ -4,4 +4,4 @@ CREATE TABLE `tblMetadata` (
   `type` varchar(255) NOT NULL,
   `importFrom` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-)  TYPE=MyISAM;
+)  ENGINE=MyISAM;
