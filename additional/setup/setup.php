@@ -728,7 +728,9 @@ function step_installation() {
 	} else {
 		$charset_collation = "TYPE=MyISAM";
 	}
-
+	if ( (float) mysql_get_server_info($conn) > 5.0){
+		$charset_collation = str_replace("TYPE=MyISAM","ENGINE=MyISAM",$charset_collation);
+	}
 	foreach($dbqueries as $dbquery) {
 		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])) {
 			foreach($queryTypes as $queryType) {
