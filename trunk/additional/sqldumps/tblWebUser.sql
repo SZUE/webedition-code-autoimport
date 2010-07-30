@@ -29,7 +29,7 @@ CREATE TABLE tblWebUser (
   Gruppe varchar(200) NOT NULL default '',
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblWebUser VALUES (1,'admin','admin','','','John','Doe','Street','ZIP City','State','Country','','','','','',1,'1144395493','1144397956','1144397956',0,'/admin',0,'customer.gif','admin','','','Administratoren');
 /* query separator */

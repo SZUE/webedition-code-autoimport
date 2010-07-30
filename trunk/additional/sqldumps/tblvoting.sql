@@ -33,4 +33,4 @@ CREATE TABLE tblvoting (
   RestrictIP tinyint(1) NOT NULL default '0',
   BlackList longtext NOT NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

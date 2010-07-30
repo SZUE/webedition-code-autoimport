@@ -16,4 +16,4 @@ CREATE TABLE `tblglossary` (
   `CreatorID` bigint(20) NOT NULL default '0',
   `ModifierID` bigint(20) NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

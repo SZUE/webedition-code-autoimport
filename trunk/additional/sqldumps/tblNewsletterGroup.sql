@@ -7,4 +7,4 @@ CREATE TABLE tblNewsletterGroup (
   Filter blob NOT NULL,
   Extern longtext,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

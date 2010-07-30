@@ -14,4 +14,4 @@ CREATE TABLE tblIndex (
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
   KEY DID (DID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

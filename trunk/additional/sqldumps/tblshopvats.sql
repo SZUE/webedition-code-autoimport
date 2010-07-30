@@ -4,4 +4,4 @@ CREATE TABLE tblshopvats (
   vat varchar(16) NOT NULL default '',
   standard tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

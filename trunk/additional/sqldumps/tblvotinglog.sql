@@ -14,4 +14,4 @@ CREATE TABLE `tblvotinglog` (
   `successor` bigint(20) unsigned NOT NULL DEFAULT '0',
   `additionalfields` text NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM ;
+) ENGINE=MyISAM ;

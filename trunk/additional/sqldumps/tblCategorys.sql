@@ -8,4 +8,4 @@ CREATE TABLE tblCategorys (
   Icon varchar(64) default NULL,
   Catfields longtext NOT NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

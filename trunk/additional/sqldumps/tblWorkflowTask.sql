@@ -5,4 +5,4 @@ CREATE TABLE tblWorkflowTask (
   Mail int(11) NOT NULL default '0',
   stepID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

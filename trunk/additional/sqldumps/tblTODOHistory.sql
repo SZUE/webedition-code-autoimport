@@ -9,4 +9,4 @@ CREATE TABLE tblTODOHistory (
   `status` tinyint(3) unsigned default NULL,
   tag tinyint(3) unsigned default NULL,
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

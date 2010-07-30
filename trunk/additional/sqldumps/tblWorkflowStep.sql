@@ -5,4 +5,4 @@ CREATE TABLE tblWorkflowStep (
   stepCondition int(11) NOT NULL default '0',
   workflowID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

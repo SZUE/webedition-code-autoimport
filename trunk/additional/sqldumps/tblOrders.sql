@@ -12,4 +12,4 @@ CREATE TABLE tblOrders (
   strSerial longtext NOT NULL,
   strSerialOrder longtext NOT NULL,
   PRIMARY KEY  (IntID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

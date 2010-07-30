@@ -7,4 +7,4 @@ CREATE TABLE tblWorkflowLog (
   `Type` tinyint(4) NOT NULL default '0',
   Description varchar(255) NOT NULL default '',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

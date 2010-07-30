@@ -39,7 +39,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 *   UnixTimestamp bigint(20) NOT NULL default '0',
 *   Active tinyint(1) NOT NULL default '0',
 *   PRIMARY KEY  (ID)
-* ) TYPE=MyISAM;
+* ) ENGINE=MyISAM;
 *
 */
 

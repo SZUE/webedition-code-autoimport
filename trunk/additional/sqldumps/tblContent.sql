@@ -6,4 +6,4 @@ CREATE TABLE tblContent (
   AutoBR char(3) NOT NULL default '',
   LanguageID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

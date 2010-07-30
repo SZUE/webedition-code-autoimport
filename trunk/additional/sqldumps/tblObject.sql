@@ -31,4 +31,4 @@ CREATE TABLE tblObject (
   `CacheType` enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

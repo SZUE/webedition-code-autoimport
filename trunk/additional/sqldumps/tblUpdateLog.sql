@@ -8,4 +8,4 @@ CREATE TABLE tblUpdateLog (
   error tinyint(1) NOT NULL default '0',
   step int(4) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

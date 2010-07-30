@@ -5,4 +5,4 @@ CREATE TABLE tblWorkflowDoc (
   userID int(11) NOT NULL default '0',
   `Status` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

@@ -5,4 +5,4 @@ CREATE TABLE tblLink (
   Name varchar(255) NOT NULL default '',
   DocumentTable varchar(64) NOT NULL default '',
   KEY DID (DID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

@@ -7,4 +7,4 @@ CREATE TABLE tblhistory (
   Act varchar(16) NOT NULL default '',
   UserName varchar(64) NOT NULL default '',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

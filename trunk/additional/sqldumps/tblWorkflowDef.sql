@@ -12,4 +12,4 @@ CREATE TABLE tblWorkflowDef (
   `EmailPath` tinyint(1) NOT NULL DEFAULT '0',
   `LastStepAutoPublish` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

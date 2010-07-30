@@ -49,4 +49,4 @@ CREATE TABLE `tblversions` (
   `resetFromVersion` bigint(20) NOT NULL,
   `InGlossar` tinyint(1) NOT NULL,
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM ;
+) ENGINE=MyISAM ;

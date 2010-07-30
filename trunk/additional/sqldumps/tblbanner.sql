@@ -33,4 +33,4 @@ CREATE TABLE tblbanner (
   TagName varchar(255) NOT NULL default '',
   weight tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (ID)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

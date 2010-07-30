@@ -5,4 +5,4 @@ CREATE TABLE tblbannerclicks (
   Referer varchar(255) NOT NULL default '',
   DID bigint(20) NOT NULL default '0',
   Page varchar(255) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
