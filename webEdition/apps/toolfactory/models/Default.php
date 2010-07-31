@@ -362,7 +362,7 @@ class toolfactory_models_Default extends we_app_Model
 				}
 				else {
 					//print "Saving file " . $_newname . "...<br>";
-					if(eregi('_UTF-8.inc.php',$_newname)) {
+					if(stripos($_newname, '_UTF-8.inc.php') === false) {
 						$_content = utf8_encode($_content);
 					}
 					weFile::save($_newname,$_content);
@@ -444,7 +444,11 @@ class toolfactory_models_Default extends we_app_Model
 	 */
 	function textNotValid() {
 		// comma not allowed because it causes broken webEdition navigation
-		return eregi(',',$this->Text);
+		if (stripos($this->Text, ',') === false) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	/**
@@ -453,7 +457,7 @@ class toolfactory_models_Default extends we_app_Model
 	 * @return boolean
 	 */
 	function classnameNotValid() {
-		if(eregi('[^a-z0-9]',$this->classname) || is_numeric(substr($this->classname, 0 , 1))) {
+		if(preg_match('/[^a-z0-9]/i',$this->classname) || is_numeric(substr($this->classname, 0 , 1))) {
 			return true;
 		}
 		return false;
@@ -466,7 +470,7 @@ class toolfactory_models_Default extends we_app_Model
 	 * @return boolean
 	 */
 	function maintablenameNotValid() {
-		return eregi('[^a-z0-9_-]',$this->maintable);
+		return preg_match('/[^a-z0-9_-]/i',$this->maintable);
 	}
 	
 	/**
