@@ -2372,9 +2372,20 @@ class searchtoolView extends weToolView
 						$w = "";
 						if (isset($searchText[0])) {
 							if ($whichSearch == "AdvSearch" && isset($searchText[$i])) {
-								$searchString = $searchText[$i];
+								// $searchString = $searchText[$i];  Bug#4422
+								if ($GLOBALS["_language"]["charset"] == "UTF-8") {
+									$searchString = utf8_encode($searchText[$i]);
+								} else {
+									$searchString = $searchText[$i];
+								}
+								
 							} else {
-								$searchString = $searchText[0];
+								//$searchString = $searchText[0]; Bug#4422
+								if ($GLOBALS["_language"]["charset"] == "UTF-8") {
+									$searchString = utf8_encode($searchText[0]);
+								} else {
+									$searchString = $searchText[0];
+								}
 							}
 						}
 						if (isset($searchString) && $searchString != "") {
@@ -2799,9 +2810,9 @@ class searchtoolView extends weToolView
 						"middlefont", 
 						"") : getPixel(20, 10) : '';
 
-				if (stripos($GLOBALS['WE_LANGUAGE'],'_UTF-8') !==false) { //was #3849
-					$_result[$f]["SiteTitle"] = utf8_encode($_result[$f]["SiteTitle"]);
-				}
+				//if (stripos($GLOBALS['WE_LANGUAGE'],'_UTF-8') !==false) { //was #4422
+				//	$_result[$f]["SiteTitle"] = utf8_encode($_result[$f]["SiteTitle"]);
+				//}
 				
 				$content[$f][0]["dat"] = getPixel(20,1).$publishCheckbox;
 				$content[$f][1]["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
