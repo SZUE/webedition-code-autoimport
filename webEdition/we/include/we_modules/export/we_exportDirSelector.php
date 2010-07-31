@@ -382,7 +382,7 @@ top.clearEntries();
 				$we_responseText = sprintf($GLOBALS["l_export"]["folder_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(ereg('[%/\\"\']',$folder->Text)){
+				if(preg_match('/[%/\\"\']/',$folder->Text)){
 					$we_responseText = $GLOBALS["l_export"]["wrongtext"];
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{

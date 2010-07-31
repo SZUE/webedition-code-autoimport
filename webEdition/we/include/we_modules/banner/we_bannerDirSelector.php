@@ -318,7 +318,7 @@ top.clearEntries();
 				$we_responseText = sprintf($GLOBALS["l_banner"]["group_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(ereg('[%/\\"\']',$folder->Text)){
+				if(preg_match('/[%/\\"\']/',$folder->Text)){
 					$we_responseText = $GLOBALS["l_banner"]["wrongtext"];
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 		         }else{
@@ -380,7 +380,7 @@ top.clearEntries();
 				$we_responseText = sprintf($GLOBALS["l_banner"]["group_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(ereg('[%/\\"\']',$folder->Text)){
+				if(preg_match('/[%/\\"\']/',$folder->Text)){
 					$we_responseText = $GLOBALS["l_banner"]["wrongtext"];
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
