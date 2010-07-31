@@ -124,7 +124,7 @@ class we_navigationDirSelector extends we_dirSelector{
 
 	function printFramesetJSFunctioWriteBody(){
 		global $BROWSER;
-		$htmltop = ereg_replace("[[:cntrl:]]","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 
