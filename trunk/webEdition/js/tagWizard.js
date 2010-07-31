@@ -177,7 +177,8 @@ function weTagWizard(tagName) {
 				} else {
 				
 					// check if attribute is required by the value of the type-Attribut
-					if (this.typeAttributeRequires[typeValue] && (!fieldValue || fieldValue == '-') && this.inArray(fieldId, typeAttributeRequires[typeValue]) ) {
+					//if (this.typeAttributeRequires[typeValue] && (!fieldValue || fieldValue == '-') && this.inArray(fieldId, typeAttributeRequires[typeValue]) ) { //#4483
+					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && this.inArray(fieldId, typeAttributeRequires[typeValue]) ) {
 						this.missingFields.push(fieldName);
 					}
 				}
@@ -201,7 +202,8 @@ function weTagWizard(tagName) {
 				fieldName = this.getPartFromId(fieldId);
 				fieldValue = document.getElementById(fieldId).value;
 				
-				if( this.reqAttributes[fieldId] && (!fieldValue || fieldValue == '-') ) {
+				//if( this.reqAttributes[fieldId] && (!fieldValue || fieldValue == '-') ) { //#4483
+				if( this.reqAttributes[fieldId] && (!fieldValue) ) {
 					this.missingFields.push(fieldName); 
 				}
 				
