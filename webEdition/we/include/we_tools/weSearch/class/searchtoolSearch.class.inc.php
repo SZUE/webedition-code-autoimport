@@ -901,6 +901,13 @@ class searchtoolsearch extends we_search
 		
 		$tableType = searchtoolsearch::getTableType();
 		
+		$charset_collation = "";
+		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
+			$Charset = DB_CHARSET;
+			$Collation = DB_COLLATION;
+			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+		}
+		
 		$tempTableTrue = ($this->checkRightTempTable() == "0") ? "TEMPORARY" : "";
 		
 		if ($this->checkRightDropTable() == "1" && $tempTableTrue == "") {
@@ -926,7 +933,7 @@ class searchtoolsearch extends we_search
 				`Extension` VARCHAR( 16 ) NOT NULL ,
 				`TableID` INT( 11 ) NOT NULL,
 				`VersionID` BIGINT( 20 ) NOT NULL 
-				) ENGINE = " . $tableType . "
+				) ENGINE = " . $tableType . $charset_collation . "
 			";
 			
 			$this->query($q);
@@ -1160,11 +1167,17 @@ class searchtoolsearch extends we_search
 	{
 		$db = new DB_WE();
 		$tableType = searchtoolsearch::getTableType();
+		$charset_collation = "";
+		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
+			$Charset = DB_CHARSET;
+			$Collation = DB_COLLATION;
+			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+		}
 		$rights = "
 			   CREATE TEMPORARY TABLE `test_" . SEARCH_TEMP_TABLE . "` (
 				`test` VARCHAR( 1 ) NOT NULL
-				) ENGINE=" . $tableType . " 
-		";
+				) ENGINE=" . $tableType . $charset_collation . " 
+		"; 
 		$db->query($rights);
 		$db->next_record();
 		
@@ -1186,11 +1199,22 @@ class searchtoolsearch extends we_search
 	function checkRightDropTable()
 	{
 		$db = new DB_WE();
+		
+		$charset_collation = "";
+		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
+			$Charset = DB_CHARSET;
+			$Collation = DB_COLLATION;
+			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+		}
+		
 		$tableType = searchtoolsearch::getTableType();
+		
+		
+		
 		$rights = "
 			   CREATE TABLE `test_" . SEARCH_TEMP_TABLE . "` (
 				`test` VARCHAR( 1 ) NOT NULL
-				) ENGINE=" . $tableType . " 
+				) ENGINE=" . $tableType . $charset_collation ." 
 		";
 		$db->query($rights);
 		$db->next_record();
