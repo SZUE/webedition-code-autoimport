@@ -728,7 +728,7 @@ function step_installation() {
 	} else {
 		$charset_collation = "ENGINE=MyISAM";
 	}
-	
+	@mysql_query(" SET NAMES '" . $_SESSION["we_db_charset"] . "' ",$conn );
 	foreach($dbqueries as $dbquery) {
 		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])) {
 			foreach($queryTypes as $queryType) {
