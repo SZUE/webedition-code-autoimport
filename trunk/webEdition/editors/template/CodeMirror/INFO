@@ -1,3 +1,9 @@
-This is version 0.6.7 of CodeMirror
+This is version 0.8 of CodeMirror
 
 http://marijn.haverbeke.nl/codemirror/
+
+Updating Info:
+ - Update all contrib-modules to the "contrib" folder. Don't override webEdition module in there!
+ - Update all files in js nad css folders
+ - Update LICENSE if needed
+ - Update this file (version)
