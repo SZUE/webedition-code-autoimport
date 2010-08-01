@@ -454,10 +454,14 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 				}
 
-				for ( $i=0; $i<sizeof($variantData); $i++ ) {
-					list($key, $varData) = each($variantData[$i]);
-					if ($key != '-') {
-						$variantOptions[$key] = $key;
+				$sizeVariantData = sizeof($variantData);
+				
+				if ($sizeVariantData > 1) {
+					for ( $i=0; $i<$sizeVariantData; $i++ ) {
+						list($key, $varData) = each($variantData[$i]); 
+						if ($key != '-') {
+							$variantOptions[$key] = $key;
+						}
 					}
 				}
 
