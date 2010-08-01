@@ -240,7 +240,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 					}
 				}
 
-				$preis = getFieldFromShoparticle($serialDoc,'price');
+				$preis = getFieldFromShoparticle($serialDoc,'shopprice');
 
 				// now insert article to order:
 				$DB_WE->query("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($_REQUEST["bid"]));
