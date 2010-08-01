@@ -401,10 +401,11 @@ class le_MySQL_DB extends le_MySQL {
 		$this->User     = $_SESSION["le_db_user"];
 		$this->Password = $_SESSION["le_db_password"];
 		$this->Database = $_SESSION["le_db_database"];
+		if(isset($_SESSION["le_db_charset"])) {$this->Charset = $_SESSION["le_db_charset"];} else {$this->Charset ='';}
 	}
 
 
-	function connect($Database = "", $Host = "", $User = "", $Password = "") {
+	function connect($Database = "", $Host = "", $User = "", $Password = "", $Charset="") {
 
 		/* Handle defaults */
 		if ("" == $Database)
@@ -415,6 +416,8 @@ class le_MySQL_DB extends le_MySQL {
 			$User     = $this->User;
 		if ("" == $Password)
 			$Password = $this->Password;
+		if ("" == $Charset)
+			$Charset = $this->Charset;
 
 		/* establish connection, select database */
 		if ( 0 == $this->Link_ID ) {
@@ -439,6 +442,9 @@ class le_MySQL_DB extends le_MySQL {
 			}
 			// deactivate MySQL strict mode #185
 			$this->query(" SET SESSION sql_mode='' ");
+			
+			//
+			if($Charset !=''){$this->query(" SET NAMES '" . $Charset . "' ");}
 		}
 		return $this->Link_ID;
 	}
