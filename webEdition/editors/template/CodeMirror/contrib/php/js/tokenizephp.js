@@ -115,15 +115,16 @@ var tokenizePHP = (function() {
 
     // http://php.net/manual/en/control-structures.alternative-syntax.php must be followed by a ':'
     ["endif", "endwhile", "endfor", "endforeach", "endswitch", "enddeclare"].forEach(function(element, index, array) {
-      result[element] = token("default", "php-keyword");
+      result[element] = token("altsyntaxend", "php-keyword");
     });
 
     result["const"] = token("const", "php-keyword");
 
-    ["abstract", "final", "private", "protected", "public", "global", "static"].forEach(function(element, index, array) {
+    ["final", "private", "protected", "public", "global", "static"].forEach(function(element, index, array) {
       result[element] = token("modifier", "php-keyword");
     });
     result["var"] = token("modifier", "php-keyword deprecated");
+    result["abstract"] = token("abstract", "php-keyword");
 
     result["foreach"] = token("foreach", "php-keyword");
     result["as"] = token("as", "php-keyword");
