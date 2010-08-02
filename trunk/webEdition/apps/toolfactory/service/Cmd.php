@@ -226,8 +226,15 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 	 * 
 	 */
 	public function regeneratetoc($args)
-	{
+	{	
+		$translate = we_core_Local::addTranslation('apps.xml');
+		we_core_Local::addTranslation('default.xml', 'toolfactory');
 		we_app_Common::rebuildAppTOC();
+		$ex = new we_service_Exception(
+					$translate->_(
+							'The application toc.xml was succesfully rebuild!',null,$utf8_decode));
+		$ex->setType('notice');
+		throw $ex;
 		return $args;
 	}
 	

@@ -178,6 +178,9 @@
 		<tu tuid="Regenetrate TOC">
 			<tuv xml:lang="en"><seg>Regenetrate toc.xml</seg></tuv>
 		</tu>
+		<tu tuid="The application toc.xml was succesfully rebuild!">
+			<tuv xml:lang="en"><seg>The application toc.xml was succesfully rebuild!</seg></tuv>
+		</tu>
 	</body>
 </tmx>
 	

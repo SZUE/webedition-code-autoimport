@@ -1,6 +1,6 @@
 
 /**
- * if hook execution is enabled this function will be executed 
+ * if hook execution is enabled this function will be executed
  * when saving an entry or folder in the application <?php print $TOOLNAME; ?> 
  * The array $param has all information about the respective entry or folder.
  * 

@@ -70,7 +70,7 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView {
 		
 		$deleteMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
 		
-		$gentocMessage = we_util_Strings::quoteForJSString($translate->_('The application toc.xml was succesfully rebuild'), false);
+		$gentocMessage = we_util_Strings::quoteForJSString($translate->_('The application toc.xml was succesfully rebuild.'), false);
 		
 		$gentocMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
 		
@@ -315,8 +315,8 @@ weCmdController.register('gentoc_top', 'app_{$this->appName}_gentoc', function(c
 		cmdObj, 
 		'{$this->appDir}/index.php/rpc/index', 
 		'{$this->appName}.service.Cmd', 
-		'regeneratetoc',
-		''
+		'regeneratetoc'
+		
 	);
 	weCmdController.cmdOk(cmdObj);
 	
@@ -356,7 +356,7 @@ function _weYesNoCancelDialog(cmdObj) {
 
 function _weYesNoCancelDeleteDialog(cmdObj) {
 	var yesCmd = {cmdName : "app_{$this->appName}_delete", followCmd : cmdObj};
-	var noCmd = cmdObj;
+	var noCmd = '';
 	noCmd.ignoreHot = true;
 	var dialog = new we_ui_layout_Dialog("{$this->appDir}/index.php/editor/deletedocquestion", 380, 130, {"yesCmd":yesCmd, "noCmd":noCmd,"app":{$fs}.edbody.document.we_form.classname.value});
 	dialog.open();

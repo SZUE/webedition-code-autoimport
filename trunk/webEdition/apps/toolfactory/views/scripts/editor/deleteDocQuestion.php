@@ -30,7 +30,7 @@ if(we_app_Common::isDeinstallable($this->model->classname)){
 } else {
 	$dialog = new we_ui_dialog_OkDialog();
 	$dialog->setMessage($translate->_('The application can not be deleted!'));
-	$dialog->setOkAction("weCmdController.fire(dialog.args.yesCmd);");
+	$dialog->setOkAction("weCmdController.fire(dialog.args.noCmd);");
 	echo $dialog->getHTML();
 }
 
