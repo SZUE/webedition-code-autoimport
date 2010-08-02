@@ -65,10 +65,10 @@ class we_app_Common
 	{
 		$retval = array();
 		$tocZC = self::readAppTOC();
-		foreach ($tocZC->applications->application as $app) {
+		foreach ($tocZC->applications as $app) {
 			$retval[] = $app->name;
 		}
-		return $retval;
+		return $retval; 
 	}
 
 	/**
@@ -78,7 +78,7 @@ class we_app_Common
 	{
 		$retval = array();
 		$tocZC = self::readAppTOC();
-		foreach ($tocZC->applications->application as $app) {
+		foreach ($tocZC->applications as $app) {
 			if ($app->active == "true") {
 				$retval[] = $app->name;
 			}
@@ -168,6 +168,27 @@ class we_app_Common
 		}
 		return self::$tocZC;
 	}
+
+/**
+	 * reads the application toc file from webEdition/apps/toc.xml as string
+	 * @param bool $overwrite switch to read the toc file independently of self::$tocZC
+	 */
+	public static function readAppTOCasString()
+	{
+		
+		//error_log("loading toc from file.");
+		self::readConfig();
+		if (isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)) {
+			$filename = self::$_config->applicationpath . "/toc.xml";
+		} else {
+			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml";
+		}
+		if (!is_readable($filename)) {
+			return false;
+		}
+		return file_get_contents($filename);
+	}
+
 
 	/**
 	 * rebuilds the application toc file from webEdition/apps/toc.xml
