@@ -68,7 +68,7 @@ class we_app_Common
 		foreach ($tocZC->applications as $app) {
 			$retval[] = $app->name;
 		}
-		return $retval; 
+		return $retval;
 	}
 
 	/**
