@@ -149,9 +149,9 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 							}
 							$authorentry[]=$htmla;
 						}
-						$html = implode(', ',$authorentry);
+						$html .= implode(', ',$authorentry);
 					} else {
-						$html = '';
+						$html .= '';
 						if(isset($authorlinks) && !empty($authorlinks)){
 								$html .= '<a href="'.$authorlinks.'" target="_blank" >';
 							}
@@ -209,7 +209,8 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 						if(isset($authorlinks) && !empty($authorlinks)){
 							$html .= '</a>';
 						}
-					}			
+					}
+				
 				}
 				if(!empty($cm->address)){
 					$html .= '<br/>'.$cm->address;
@@ -232,3 +233,4 @@ $button->setOnClick('top.close()');
 $button->setStyle('margin-left:auto;margin-right:auto;');
 $htmlPage->addElement($button);
 echo $htmlPage->getHTML();
+
