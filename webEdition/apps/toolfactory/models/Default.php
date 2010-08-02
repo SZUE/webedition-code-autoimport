@@ -363,7 +363,7 @@ class toolfactory_models_Default extends we_app_Model
 				else {
 					//print "Saving file " . $_newname . "...<br>";
 					if(stripos($_newname, '_UTF-8.inc.php') === false) {
-						$_content = utf8_encode($_content);
+						//$_content = utf8_encode($_content);
 					}
 					weFile::save($_newname,$_content);
 				}
