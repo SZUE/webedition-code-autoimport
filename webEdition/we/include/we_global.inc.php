@@ -2757,6 +2757,7 @@ function we_check_email($email)
 			return false;
 		$email = substr($_email[0], 1, strlen($_email[0]) - 2);
 	}
+	/*
 	$tmp = str_replace("\@", "#####:::::at:::::#####", $email);
 	$parts = split('@', $tmp);
 	if (count($parts) != 2)
@@ -2766,6 +2767,10 @@ function we_check_email($email)
 	$parts[0] = preg_replace('/\\\\(.)/', "y", $parts[0]);
 	$parts[1] = str_replace("#####:::::at:::::#####", "\@", $parts[1]);
 	return !preg_match('/[ ,;\\\\\[\]()\<\>�]/', implode("", $parts));
+	*/
+	$validator = new Zend_Validate_EmailAddress();
+	return $validator->isValid($email);
+	
 }
 
 function getRequestVar($name, $default, $yescode = "", $nocode = "")
