@@ -181,6 +181,9 @@
 		<tu tuid="Regenetrate TOC">
 			<tuv xml:lang="de"><seg>Generiere toc.xml neu</seg></tuv>
 		</tu>
+		<tu tuid="The application toc.xml was succesfully rebuild!">
+			<tuv xml:lang="de"><seg>Das Anwendungsverzeichnis toc.xml wurde erfolgreich neu erzeugt.</seg></tuv>
+		</tu>
 	</body>
 </tmx>
 	
