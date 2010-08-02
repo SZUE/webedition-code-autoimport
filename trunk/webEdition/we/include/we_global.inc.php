@@ -2746,7 +2746,7 @@ function getServerProtocol($slash = false)
 }
 
 function we_check_email($email)
-{
+{   // Zend validates only the pure address
 	$email = html_entity_decode($email);
 	$namePart[0] = "";
 	if (preg_match('/<(.)*>/', $email, $_email)) {
@@ -2768,6 +2768,7 @@ function we_check_email($email)
 	$parts[1] = str_replace("#####:::::at:::::#####", "\@", $parts[1]);
 	return !preg_match('/[ ,;\\\\\[\]()\<\>�]/', implode("", $parts));
 	*/
+	
 	$validator = new Zend_Validate_EmailAddress();
 	return $validator->isValid($email);
 	
