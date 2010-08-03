@@ -26,5 +26,6 @@ $metaInfo = array(
 	'maintable'=>'',
 	'datasource'=>'custom:',
 	'startpermission'=>'USE_APP_TOOLFACTORY',
+	'supportshooks' => 1,
 	'appdisabled'=>0 
 );

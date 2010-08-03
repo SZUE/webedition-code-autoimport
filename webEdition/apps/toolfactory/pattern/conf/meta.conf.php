@@ -7,6 +7,7 @@ $metaInfo = array(
 	'maintable'=><?php print (isset($TABLECONSTANT) && !empty($TABLECONSTANT)) ? $TABLECONSTANT : '""'; ?>,
 	'datasource'=><?php if($DATASOURCE=='table:') print "'table:'.$TABLECONSTANT"; else print "'$DATASOURCE'"?>,
 	'startpermission'=>'<?php print $PERMISSIONCONDITION; ?>',
-    'appdisabled'=>0 //set to 1 to disable, important: do also in in toc.xml
+    'supportshooks' => 1, //set to 0 if hooks are not supported by the app, important: do also in in manifest.xml 
+    'appdisabled'=>0 //set to 1 to disable, important: do also in in manifest.xml
     
 );
