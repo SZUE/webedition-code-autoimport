@@ -197,8 +197,6 @@ $lang["Step"]["ConfigureInstaller"]["content"] = "Das Installationspaket wird ko
 // Fehlertext, wenn Installer von Anfang an nicht schreiben kann:
 $lang["errors"]["writeFile"] = "Keine Schreibrechte!<br /><br />Konnte %s nicht beschreiben.<br /><br />Um webEdition 
 		installieren zu können, muss das Wurzelverzeichnis (DOCUMENT_ROOT) für den Webserver (Apache, IIS...) 
-		zumindest während der Installation beschreibbar sein. Weitere Informationen entnehmen Sie der 
-		Installationsanleitung, die im Installationspaket enthalten ist oder besuchen Sie 
-		<a href=\"http://www.webedition.de/path/to/write/permission/help.html\" target=\"_blank\">www.webedition.de</a>.";
+		zumindest während der Installation beschreibbar sein.";
 
 ?>

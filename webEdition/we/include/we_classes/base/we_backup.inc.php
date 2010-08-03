@@ -479,7 +479,7 @@ class we_backup {
 			if($fh) {
 				@fwrite($fh,"#<?php exit();?>\n");
 				@fwrite($fh,"# webEdition MySQL-Dump$nl");
-				@fwrite($fh,"# http://www.webedition.de$nl");
+				@fwrite($fh,"# http://www.webedition.org$nl");
 				@fwrite($fh,"#$nl");
 				@fwrite($fh,"# Host: ".SERVER_NAME."   Datenbank: ".$this->backup_db->Database.";$nl");
 				@fwrite($fh,"# webEdition version: ".WE_VERSION.$nl);

@@ -198,7 +198,6 @@ $lang["Step"]["ConfigureInstaller"]["content"] = "Now the installation package w
 // Error message for missing write permissions:
 $lang["errors"]["writeFile"] = "No Write Permissions!<br /><br />Could not write to %s<br /><br />In order for 
 		webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..) 
-		at least during installation. Please read the installation guide, which is included in the installation package or 
-		visit <a href=\"http://www.webedition.de/path/to/write/permission/help.html\" target=\"_blank\">www.webedition.de</a>.";
+		at least during installation.";
 
 ?>

@@ -46,7 +46,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	 *
 	 * @var string
 	 */
-	protected $_title = 'webEdition (http://www.webedition.de)';
+	protected $_title = 'webEdition (http://www.webedition.org)';
 
 	/**
 	 * array that holds internal css code to include into page

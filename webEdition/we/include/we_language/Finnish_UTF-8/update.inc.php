@@ -51,7 +51,7 @@ $l_update["log"]["legend"]["notices"]  = "Ilmoitukset";
 $l_update["log"]["legend"]["errors"]   = "Virheet";
 
 $l_update["connection_error"]["headline"] = "webEdition -järjestelmää ei ole mahdollista päivittää!";
-$l_update["connection_error"]["text"]     = "webEdition -järjestelmän palvelimelle ei saatu yhteyttä (www.webedition.de)! Yritä myöhemmin uudelleen.<br><br>Jos palvelin on kytketty internetiin välityspalvelinta käyttäen, tarkista välityspalvelimen asetukset, asetukset ikkunasta.";
+$l_update["connection_error"]["text"]     = "webEdition -järjestelmän palvelimelle ei saatu yhteyttä (update.webedition.org)! Yritä myöhemmin uudelleen.<br><br>Jos palvelin on kytketty internetiin välityspalvelinta käyttäen, tarkista välityspalvelimen asetukset, asetukset ikkunasta.";
 $l_update["connection_error"]["js_alert"] = "webEdition -palvelin ei vastaa tällä hetkellä.\\n Paina päivitä painiketta yrittääksesi uudelleen,\\ntai yritä myöhemmin uudelleen.";
 
 $l_update["language"]["headline"]       = "Kielen asennus";

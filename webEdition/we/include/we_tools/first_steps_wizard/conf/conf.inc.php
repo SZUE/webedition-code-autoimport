@@ -19,7 +19,7 @@
  */
 
 // Live Update Server
-define("LIVEUPDATE_SERVER", "update.webedition.de");
+define("LIVEUPDATE_SERVER", "update.webedition.org");
 
 // Live Update Server Script
 define("LIVEUPDATE_SERVER_SCRIPT", "/we5/snippets.p" . "hp");

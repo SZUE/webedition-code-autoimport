@@ -59,7 +59,7 @@ $l_update["log"]["legend"]["errors"]   = "ошибки";
 
 
 $l_update["connection_error"]["headline"] = "Обновление в данный момент невозможно";
-$l_update["connection_error"]["text"]     = "В данный момент нет соединения с сервером webEdition (www.webedition.de). Попробуйте, пожалуйста, позже.<br><br>При соединении к интернет через Proxy-сервер проверьте, пожалуйста, настройки proxy.";
+$l_update["connection_error"]["text"]     = "В данный момент нет соединения с сервером webEdition (update.webedition.org). Попробуйте, пожалуйста, позже.<br><br>При соединении к интернет через Proxy-сервер проверьте, пожалуйста, настройки proxy.";
 $l_update["connection_error"]["js_alert"] = "Нет соединения с сервером webEdition.\\nДля повторения попытки нажмите на кнопку «обновить»\\nили попробуйте позже.";
 
 
