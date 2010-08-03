@@ -25,7 +25,8 @@
 		'maintable' => NAVIGATION_TABLE,
 		'classname' => 'weNavigation',
 		'datasource' => 'table:' . NAVIGATION_TABLE,
-		'startpermission' => 'EDIT_NAVIGATION'
+		'startpermission' => 'EDIT_NAVIGATION',
+		'supportshooks' => 0
 	);
 
 ?>

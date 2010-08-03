@@ -25,7 +25,8 @@ $metaInfo = array(
 		'classname' => 'searchtool', 
 		'maintable' => SUCHE_TABLE, 
 		'datasource' => 'table:' . SUCHE_TABLE, 
-		'startpermission' => ''
+		'startpermission' => '',
+		'supportshooks' => 0
 );
 
 ?>

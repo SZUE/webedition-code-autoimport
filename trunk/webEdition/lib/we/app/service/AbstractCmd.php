@@ -91,8 +91,13 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 			throw $ex;
 		}
 		
+		if (isset($args['skipHook'])){
+			$skipHook = $args['skipHook'];
+		} else {
+			$skipHook = 0;
+		}
 		try {
-			$model->save();
+			$model->save($skipHook);
 		} catch (we_core_ModelException $e) {
 			switch ($e->getCode()) {
 				case we_service_ErrorCodes::kPathExists :
@@ -127,7 +132,11 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		}
 		$session->model->Published=0;
 		$model = $session->model;
-		return $this->save($args);
+		$dieargs = $args;
+		$dieargs['skipHook'] = 1;
+		$hook = new weHook('unpublish', $appName, array($model));
+		$hook->executeHook();
+		return $this->save($dieargs);
 	}
 
 
@@ -151,8 +160,11 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		}
 		$session->model->Published=time();
 		$model = $session->model;
-		
-		return $this->save($args);
+		$dieargs = $args;
+		$dieargs['skipHook'] = 1;
+		$hook = new weHook('publish', $appName, array($model));
+		$hook->executeHook();
+		return $this->save($dieargs);
 	}
 
 
