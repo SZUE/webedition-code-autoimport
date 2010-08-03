@@ -215,7 +215,7 @@ if ( isset($GLOBALS["userLoginDenied"]) ) {
 /*****************************************************************************
  * CREATE HEADER
  *****************************************************************************/
-htmlTop("webEdition " . WE_VERSION);
+htmlTop($_SERVER['SERVER_NAME']. " webEdition " . WE_VERSION);
 print STYLESHEET;
 
 print we_htmlElement::jsElement("", array("src" => JS_DIR . "windows.js"));
