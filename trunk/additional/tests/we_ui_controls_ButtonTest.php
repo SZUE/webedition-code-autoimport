@@ -32,7 +32,7 @@ class we_ui_controls_ButtonTest extends PHPUnit_Framework_TestCase
 		$this->we_ui_controls_Button->setWidth(200);
 		$this->we_ui_controls_Button->setHeight(22);
 		$this->we_ui_controls_Button->setOnClick('alert("Hallo Welt!");');
-		$this->we_ui_controls_Button->setHref('http://www.webedition.de');
+		$this->we_ui_controls_Button->setHref('http://www.webedition.org');
 
 	}
 
@@ -89,7 +89,7 @@ class we_ui_controls_ButtonTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetHref()
 	{
-		$this->assertEquals($this->we_ui_controls_Button->getHref(), 'http://www.webedition.de');
+		$this->assertEquals($this->we_ui_controls_Button->getHref(), 'http://www.webedition.org');
 	}
 
 	/**

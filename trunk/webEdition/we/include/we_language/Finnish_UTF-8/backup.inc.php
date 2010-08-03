@@ -253,7 +253,7 @@ $l_backup["tools_export_desc"] = "Täällä voit tallentaa webEditionin työkalu
 
 $l_backup['ftp_hint'] = "Huomio! Jos varmuuskopiotiedosto on pakattu, käytä lataukseen FTP-asetuksista binäärimuotoa! ASCII-muotoinen lataus hajottaa tiedoston, jonka jälkeen sitä ei voi palauttaa!";
 
-$l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.de/de/webedition/administration/charset-conversion-of-legacy-sites"; // TRANSLATE
+$l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.org/de/webedition/administration/charset-conversion-of-legacy-sites"; // TRANSLATE
 
 $l_backup["convert_charset_data"] = "While importing the backup, convert the site from ISO to UTF-8"; // TRANSLATE
 $l_backup["view_log"] = "Backup-Log";// TRANSLATE

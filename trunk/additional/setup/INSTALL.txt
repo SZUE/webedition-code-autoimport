@@ -1,4 +1,4 @@
-webEdition Version 6.0.0.7
+webEdition Version 6.1.0.0
 
 SYSTEM REQUIREMENTS
 
@@ -31,4 +31,4 @@ delete this setup script in order to prevent damage by misuse.
 
 Please visit our website for more informations about webEdition
 
-http://www. webedition.de
+http://www.webedition.org

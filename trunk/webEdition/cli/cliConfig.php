@@ -40,7 +40,7 @@ exit();
  * to be done here.
  */
 
-$SERVER_NAME = (isset($SERVER_NAME) && $SERVER_NAME) ? $SERVER_NAME : '__SERVER_NAME__';  // replace __SERVER_NAME__  with the name (domain) of your server eg. www.webedition.de
+$SERVER_NAME = (isset($SERVER_NAME) && $SERVER_NAME) ? $SERVER_NAME : '__SERVER_NAME__';  // replace __SERVER_NAME__  with the name (domain) of your server eg. www.webedition.org
 $_SERVER['DOCUMENT_ROOT'] = (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : '__PATH_TO_DOCUMENT_ROOT__'; //replace __PATH_TO_DOCUMENT_ROOT__  with the server path of your domains root directory
 
 ?>

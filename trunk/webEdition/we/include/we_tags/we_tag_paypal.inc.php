@@ -169,7 +169,7 @@ $p = new paypal_class;             // initiate an instance of the class
 $p->paypal_url = $paypalURL;   // testing paypal url
 //$p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';     // paypal url
 
-// setup a variable for this script (ie: 'http://www.webEdition.de/shop/paypal.php')
+// setup a variable for this script (ie: 'http://www.webedition.org/shop/paypal.php')
 $this_script = getServerProtocol(true) . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 
 // if there is not action variable, set the default action of 'process'

@@ -51,7 +51,7 @@ class le_OnlineInstaller_Make {
 		}
 
 		$lang['error'] = "An error occured!";
-		$lang["file_permissions"] = '<br /><br />In order for webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..) at least during installation. Please read the installation guide, which is included in the installation package or visit <a href=\"http://www.webedition.de/path/to/write/permission/help.html\" target=\"_blank\">webedition.de</a>.';
+		$lang["file_permissions"] = '<br /><br />In order for webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..) at least during installation.';
 		$lang['dir_create'] = "Cannot create directory '\$directory'.<br />Please check your file access permissions.".$lang["file_permissions"];
 		$lang['file_open'] = "Cannot open/create file '\$filename'.<br />Please check your file access permissions.".$lang["file_permissions"];
 		$lang['file_write'] = "Cannot write file '\$filename'.<br />Please check your file access permissions.".$lang["file_permissions"];

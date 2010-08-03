@@ -32,7 +32,7 @@
  * 
  * 2.5.0.0
  * - the webEdition installer is now a subproject of webEdition
- * - changelog moved to http://documentation.webedition.de
+ * - changelog moved to http://documentation.webedition.org
  */
  	
  	$LU_Version = "###VERSION###";

@@ -23,7 +23,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cla
 
 $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 $GLOBALS['weTagWizard']['weTagData']['noDocuLink'] = true;
-$GLOBALS['weTagWizard']['weTagData']['DocuLink'] = 'tags.webedition.de/de/toolfactory/';
+$GLOBALS['weTagWizard']['weTagData']['DocuLink'] = 'tags.webedition.org/de/toolfactory/';
 
 
 $GLOBALS['weTagWizard']['attribute']['id111_name'] = new weTagData_textAttribute('111', 'name', false, '');

@@ -703,7 +703,7 @@ function we_cmd() {
 			new jsWindow(url,"info",-1,-1,432,360,true,false,true);
 			break;
 		case "webEdition_online":
-			new jsWindow("http://www.webedition.de/","webEditionOnline",-1,-1,960,700,true,true,true,true);
+			new jsWindow("http://www.webedition.org/","webEditionOnline",-1,-1,960,700,true,true,true,true);
 			break;
 		case "snippet_shop":
 			alert("Es gibt noch keine URL für die Snippets Seite");
@@ -763,42 +763,42 @@ function we_cmd() {
 		case "help_documentation":
 			<?php
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
-				echo 'new jsWindow("http://documentation.webedition.de/de/","help_documentation",-1,-1,960,700,true,true,true,true);';
+				echo 'new jsWindow("http://documentation.webedition.org/wiki/de/","help_documentation",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://documentation.webedition.de/en/","help_documentation",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://documentation.webedition.org/wiki/en/","help_documentation",-1,-1,960,700,true,true,true,true);';			
 			}
 			?>
 			break;
 		case "help_forum":
-			new jsWindow("http://forum.webedition.de","help_forum",-1,-1,960,700,true,true,true,true);
+			new jsWindow("http://forum.webedition.org","help_forum",-1,-1,960,700,true,true,true,true);
 			break;
 		case "help_bugtracker":
-			new jsWindow("http://qa.webedition.de/tracker/","help_bugtracker",-1,-1,960,700,true,true,true,true);
+			new jsWindow("http://qa.webedition.org/tracker/","help_bugtracker",-1,-1,960,700,true,true,true,true);
 			break;
 		case "help_tagreference":
 			<?php
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
-				echo 'new jsWindow("http://tags.webedition.de/de/","help_tagreference",-1,-1,960,700,true,true,true,true);';
+				echo 'new jsWindow("http://tags.webedition.org/de/","help_tagreference",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://tags.webedition.de/en/","help_tagreference",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://tags.webedition.org/en/","help_tagreference",-1,-1,960,700,true,true,true,true);';			
 			}
 			?>
 			break;
 		case "help_demo":
 			<?php
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
-				echo 'new jsWindow("http://demo.webedition.de/de/","help_demo",-1,-1,960,700,true,true,true,true);';
+				echo 'new jsWindow("http://demo.webedition.org/de/","help_demo",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://demo.webedition.de/en/","help_demo",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://demo.webedition.org/en/","help_demo",-1,-1,960,700,true,true,true,true);';			
 			}
 			?>
 			break;
 		case "help_changelog":
 			<?php
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
-				echo 'new jsWindow("http://documentation.webedition.de/de/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
+				echo 'new jsWindow("http://documentation.webedition.org/de/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://documentation.webedition.de/en/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://documentation.webedition.org/en/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';			
 			}
 			?>
 			break;
