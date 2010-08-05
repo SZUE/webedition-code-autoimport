@@ -138,12 +138,12 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 		var w = top.getTreeWidth();
 
 		if (w <= 22) {
-			var newWidth = oldWidth+4;
+			var newWidth = parseInt(oldWidth);
 			top.setTreeWidth(newWidth);
 			top.setTreeArrow("left");
 			top.storeTreeWidth(newWidth);
 		} else {
-			oldWidth = w;
+			oldWidth = parseInt(w);
 			top.setTreeWidth(22);
 			top.setTreeArrow("right");
 			top.storeTreeWidth(22);
@@ -166,7 +166,7 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 		var w = top.getTreeWidth();
 
 		if (w <= 22) {
-			var newWidth = oldWidth;
+			var newWidth = parseInt(oldWidth);
 			top.setTreeWidth(newWidth);
 			top.setTreeArrow("left");
 			top.storeTreeWidth(newWidth);
@@ -184,7 +184,7 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 
 </script>
 	</head>
-	<body bgcolor="#ffffff" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" style="background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;">
+	<body bgcolor="#ffffff" style="background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">
 		<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;">
 					<script language="JavaScript" type="text/javascript"><!--
 						for (var i=0; i<we_tabs.length;i++) {
@@ -212,6 +212,6 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 					//-->
 					</script>
 		</div>
-		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 22) ? "right" : "left"; ?>.gif" width="9" height="12"style="position:absolute;bottom:13px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
+		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 22) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
 	</body>
 </html>
