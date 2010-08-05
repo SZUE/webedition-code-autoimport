@@ -155,7 +155,7 @@ function setTabClass(elem) {
 
 function allowed_change_edit_page() {
 	try	{
-		var contentEditor = top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController ? top.opener.top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.opener && top.opener.top.weEditorFrameController ? top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.weEditorFrameController.getVisibleEditorFrame();
+		var contentEditor = top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController ? top.opener.top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.opener && top.opener.top.weEditorFrameController ? top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.weEditorFrameController.getVisibleEditorFrame();
 		if ( contentEditor && contentEditor.fields_are_valid ) {
 			return contentEditor.fields_are_valid();
 		
@@ -185,7 +185,7 @@ function setPathGroup(pathGroup) {
 	if(hasPathGroup) titlePathGroup = pathGroup;
 }
 
-var __weEditorFrameController = (top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) ? top.opener.top.opener.top.weEditorFrameController : (top.opener && top.opener.top.weEditorFrameController) ? top.opener.top.weEditorFrameController : top.weEditorFrameController; 
+var __weEditorFrameController = (top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) ? top.opener.top.opener.top.weEditorFrameController : (top.opener && top.opener.top.weEditorFrameController) ? top.opener.top.weEditorFrameController : top.weEditorFrameController; 
 
 if (__weEditorFrameController.getVisibleEditorFrame() || (parent.frames && parent.frames[1])) {
 	setTimeout("getPathInfos()",250);
