@@ -24,6 +24,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/htm
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
+//make sure we know which browser is used
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browserDetect.inc.php');
+
 protect();
 $parts = array();
 $jsCode = "
@@ -47,7 +50,7 @@ function isUrl(s) {
 }
 
 function populateSct(oSctRss){
-	var saf=(navigator.userAgent.toLowerCase().indexOf('safari')>-1)?1:0;
+	var saf = ".($GLOBALS['BROWSER']=='SAFARI'?'true':'false').";
 	for(var i=0;_iTopRssFeedsLen>i;i++){
 		var sOptVal=opener.base64_decode(_aTopRssFeeds_[i][1]);
 		var sOptTxt=opener.base64_decode(_aTopRssFeeds_[i][0]);

@@ -40,7 +40,7 @@ if (stristr($_SERVER['HTTP_USER_AGENT'], 'safari')) {
 	}
 } else 
 	if (stristr($_SERVER['HTTP_USER_AGENT'], 'opera')) {
-		$BROWSER = "OPERA";
+		$BROWSER = 'OPERA';
 	} else 
 		if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
 			$BROWSER = "IE";
