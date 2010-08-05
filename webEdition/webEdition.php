@@ -26,6 +26,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/' . $GLOBALS["WE_LANGUAGE"] .  '/multiEditor.inc.php');
+//make sure we know which browser is used
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browserDetect.inc.php');
 
 
 //	we need some different functions for normal mode and seeMode
@@ -312,13 +314,16 @@ function setTreeArrow(direction) {
 }
 
 function getTreeWidth() {
-	if (navigator.appVersion.indexOf("MSIE")) {
-		return self.rframe.bframe.document.body.offsetWidth-4;
-	}
+	<?php if($GLOBALS['BROWSER']=='IE'){
+		echo 'return self.rframe.bframe.document.body.offsetWidth-4;';
+	}else{
+		echo '
 	var frameobj = self.rframe.document.getElementById("resizeframeid");
 	var cols = frameobj.cols;
 	var pairs = cols.split(",");
 	return pairs[0];
+	';
+	}?>
 }
 
 function getSidebarWidth() {
