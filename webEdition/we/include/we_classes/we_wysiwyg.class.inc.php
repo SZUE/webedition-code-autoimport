@@ -22,6 +22,8 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css/css.inc.php");
+//make sure we know which browser is used
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browserDetect.inc.php');
 
 class we_wysiwyg{
 
@@ -226,10 +228,11 @@ class we_wysiwyg{
 				</style>
 
 				<script language="JavaScript" type="text/javascript"><!--
-
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
+					//FIXME: recognize in browser_check an set according
 					var isGecko = false;
+					var isOpera = '.($GLOBALS['BROWSER']=='OPERA'?'true':'false').';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
 					var weWysiwygFolderPath = "/webEdition/wysiwyg/";
@@ -254,17 +257,18 @@ class we_wysiwyg{
                     }
 
 					//window.onerror = weNothing;
-                    //  Bugfix do not overwrite body.onload !!!
-                    weEvent.addEvent(window,"load", weWysiwygInitializeIt);
+					//  Bugfix do not overwrite body.onload !!!
+					weEvent.addEvent(window,"load", weWysiwygInitializeIt);
 					//window.onload = weWysiwygInitializeIt + window.onload;
 
 					function weNothing() {
 						return true;
 					}
 
-					if (navigator.product == \'Gecko\') {
-						isGecko = true;
-					}
+					var ua = navigator.userAgent.toLowerCase(); 
+
+					isGecko     = (ua.indexOf(\'gecko\') != -1 && ua.indexOf(\'safari\') == -1);
+
 
 					function weWysiwygInitializeIt() {
 						for (var i=0;i<we_wysiwygs.length;i++) {
@@ -299,7 +303,7 @@ class we_wysiwyg{
 					($GLOBALS["SAFARI_WYSIWYG"]
 						? '<script language="JavaScript" type="text/javascript" src="/webEdition/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
 						  '<script language="JavaScript" type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
-						: '<script language="JavaScript" type="text/javascript" src="/webEdition/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>') . "\n";
+						  : '<script language="JavaScript" type="text/javascript" src="/webEdition/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
 		} else {
 			return "";
 		}
@@ -1357,7 +1361,10 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 	}
 
 	function getHTML(){
-		if ($GLOBALS["SAFARI_WYSIWYG"]) {
+		if($GLOBALS["BROWSER"]=="OPERA"){
+			//FIMXE: opera not intended - but currently fixes racing condition
+			return '';
+		}else if ($GLOBALS["SAFARI_WYSIWYG"]) {
 			$out = '<select id="'.$this->editor->ref.'_sel_'.$this->cmd.'" style="width:'.$this->width.'px;margin-right:3px;" size="1" onmousedown="'.$this->editor->ref.'Obj.saveSelection();" onmouseup="'.$this->editor->ref.'Obj.restoreSelection();" onchange="'.$this->editor->ref.'Obj.restoreSelection();'.$this->editor->ref.'Obj.selectChanged(\''.$this->cmd.'\',this.value);this.selectedIndex=0">';
 			$out .= '<option value="">'.htmlspecialchars($this->title).'</option>'."\n";
  			foreach($this->vals as $val=>$txt){
