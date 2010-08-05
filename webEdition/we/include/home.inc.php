@@ -25,6 +25,8 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/SEEM.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_widget.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/cfg.inc.php");
+//make sure we know which browser is used
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browserDetect.inc.php');
 
 protect();
 htmlTop();
@@ -671,25 +673,22 @@ function composeUri(args){
 	 * show the spinning wheel for a widget
 	 */
 	function showLoadingSymbol(elementId) {
-		
-		var saf=navigator.userAgent.match(/Safari/i);
-		
-		if (!saf) {
+		<?php if($GLOBALS['BROWSER']!='SAFARI'){
+		echo '
+			if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 			
-			if (!gel('rpcBusyClone_' + elementId)) { // only show ONE loading symbol per widget
-			
-				var clone=gel('rpcBusy').cloneNode(true);
-				var wpNode=gel(elementId+'_wrapper');
-				var ctNode=gel(elementId+'_content');
+				var clone=gel("rpcBusy").cloneNode(true);
+				var wpNode=gel(elementId+"_wrapper");
+				var ctNode=gel(elementId+"_content");
 		
-				ctNode.style.display='none';
-				wpNode.style.textAlign='center';
-				wpNode.style.verticalAlign='middle';
+				ctNode.style.display="none";
+				wpNode.style.textAlign="center";
+				wpNode.style.verticalAlign="middle";
 				wpNode.insertBefore(clone,ctNode);
 				clone.id="rpcBusyClone_" + elementId;
-				clone.style.display='inline';
-			}
-		}
+				clone.style.display="inline";
+			}';
+		}?>
 	}
 	
 	
@@ -697,8 +696,7 @@ function composeUri(args){
 	 * hide the spinning wheel for a widget
 	 */
 	function hideLoadingSymbol( elementId ) {
-		
-		var saf=(navigator.userAgent.toLowerCase().indexOf('safari')>-1)?1:0;
+		var saf = <?php echo ($GLOBALS['BROWSER']=='SAFARI'?'true':'false');?>;
 		
 		if(!saf && gel('rpcBusyClone_' + elementId)){
 			var oWrapper=gel(elementId+'_wrapper');
@@ -716,7 +714,7 @@ function composeUri(args){
 		var docIFrm,iFrmScr;
 		var oInline = gel(widgetId+'_inline'); // object-inline
 	
-		var saf=(navigator.userAgent.toLowerCase().indexOf('safari')>-1)?1:0;
+		var saf = <?php echo ($GLOBALS['BROWSER']=='SAFARI'?'true':'false');?>;
 		if(!saf) {
 			oInline.style.display='block';
 		}
@@ -849,7 +847,7 @@ function composeUri(args){
 		var docIFrm,iFrmScr;
 		var oInline=gel(sObjId+'_inline');
 	
-		var saf=(navigator.userAgent.toLowerCase().indexOf('safari')>-1)?1:0;
+		var saf = <?php echo ($GLOBALS['BROWSER']=='SAFARI'?'true':'false');?>;
 		if(!saf) {
 			oInline.style.display='block';
 		}

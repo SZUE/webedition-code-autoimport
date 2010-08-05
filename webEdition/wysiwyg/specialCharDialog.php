@@ -20,6 +20,8 @@
  */
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSpecialCharDialog.class.inc.php");
+//make sure we know which browser is used
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browserDetect.inc.php');
 protect();
 $dialog = new weSpecialCharDialog();
 $dialog->initByHttp();
@@ -30,7 +32,7 @@ function weDoRuleJS(){
 	return '
 eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
 var ch = document.we_form.elements["we_dialog_args[char]"].value;
-var isSafari = (navigator.userAgent.toLowerCase().indexOf("safari") > -1);
+var isSafari = '.($GLOBALS['BROWSER']=='SAFARI'?'true':'false').';
 
 if (isSafari) {
 	ch = ch.replace(/^&/,"_xx_WE_AMP_xx_");
