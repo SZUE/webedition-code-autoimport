@@ -174,9 +174,11 @@ $GLOBALS["l_global"]["redirect_to_login_failed"] = "Klik a.u.b. op de volgende k
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition inlog";
 $GLOBALS["l_global"]["untitled"] = "Untitled"; // TRANSLATE
 $GLOBALS["l_global"]["no_document_opened"] = "There is no document opened!"; // TRANSLATE
-$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
-$GLOBALS["l_global"]["credits_translators"] = "Translations";
-$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team"; // TRANSLATE
+$GLOBALS["l_global"]["developed_further_by"] = "developed further by"; // TRANSLATE
+$GLOBALS["l_global"]["with"] = "with the"; // TRANSLATE
+$GLOBALS["l_global"]["credits_translators"] = "Translations"; // TRANSLATE
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to"; // TRANSLATE
 $GLOBALS["l_global"]["unable_to_call_ping"] = "Connection to server is lost - RPC: Ping!";// TRANSLATE
 $GLOBALS["l_global"]["unable_to_call_setpagenr"] = "Connection to server is lost - RPC: setPageNr!";// TRANSLATE
 

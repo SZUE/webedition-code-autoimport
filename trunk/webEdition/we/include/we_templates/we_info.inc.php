@@ -35,18 +35,11 @@ $_middlePart = ($_widthTotal - (2 * $_space));
 $_logoPart = 140;
 $_leftPart = $_middlePart - $_logoPart;
 
-$_credits = "<br />"
-			."<b>".$l_global["credits_team"].":</b><br/>"
-			."Holger Meyer, <a href=\"http://www.lindenstruth.org\" target=\"_blank\">Alexander Lindenstruth</a>, <a href=\"http://www.loewi-partner.de/Dr-Armin-Schulz/index.php\" target=\"_blank\">Dr. Armin Schulz</a>, Dirk Einecke, Martin Schurbohm, Thomas G&ouml;be, Silke Kr&auml;mer, Anna Baumann, Benny Johnson, Tatjana Hermann, Michael Weiss, <a href=\"http://we.willRockYou.net/\" target=\"_blank\">Daniel Schroeder</a>"
-			."<br/><br/>"
-			."<b>".$l_global["credits_translators"].":</b><br />"
-			."Tatjana Hermann, Joni Eskelinen, Kari Vatanen, Antti Kurtelius, Jasper van den Ham, Jorg Tiemens, Philip Moore";
-if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "info") {
-	$_credits .= "<br/><br/>"
-				."<b>".$l_global["credits_thanks"].":</b><br/>"
-				."Florian Mertin, Damjan Denic, Thomas Kneip, Slavko Tomcic, Andreas Frey, Bj&ouml;rn B&ouml;ttle, Elad Messing, Herbert Hohn, Stefan Oberrecht, Christoph L&uuml;tjen, Axel Regnet, Severin Kurpiers, Michael Scheurer, Florian Wittke, Oliver Krahnen, Jochen Nees, Angela D&uuml;rrmann, Jessica Holzapfel, Rebecca Dreher"
-				."";
-}
+$_credits = '<br /><span style="line-height:160%">'
+			.$l_global["developed_further_by"].': <a href="http://www.webedition.org/" target="_blank" ><strong>webediton.org</strong></a><br/>'
+			.$l_global["with"].' <b><a href="http://credits.webedition.org/6100/index.html?language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.$l_global["credits_team"].'</a></b></span><br/>';
+
+
 $_table = new we_htmlTable( array(	"border"      => 0,
 									"cellpadding" => 0,
 									"cellspacing" => 0,
@@ -58,7 +51,7 @@ $_actRow = 0;
 //	First row with background
 $_table->setCol($_actRow++,0, array(	"colspan" => 3,
 							"width"   => $_widthTotal,
-							"height"  => 110), '<a href="http://www.webedition.org" target="_blank" alt="www.webedition.org" title="www.webedition.org">'.getPixel($_widthTotal,110,0).'</a><br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
+							"height"  => 110), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">'.getPixel($_widthTotal,110,0).'</a><br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
 
 $_table->addRow(2);
 //	spaceholder
@@ -88,7 +81,17 @@ $_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
 $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 							"colspan" => 3), getPixel($_widthTotal,10));
 
-//	7th copyright
+//	7th agency
+if (is_readable($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'agency.php') ){
+	include_once($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'agency.php');
+	$_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
+							"colspan" => 3), getPixel($_widthTotal,10));
+
+	$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,5));
+	$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
+							"class" => "defaultfont small"), $_agency);
+	$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));							
+}
 
 //	8th row
 $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
