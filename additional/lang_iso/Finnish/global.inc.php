@@ -174,9 +174,11 @@ $GLOBALS["l_global"]["redirect_to_login_failed"] = "Klikkaa seuraavaa linkkiä jo
 $GLOBALS["l_global"]["redirect_to_login_name"] = "webEdition kirjautumisnimi";
 $GLOBALS["l_global"]["untitled"] = "Nimetön";
 $GLOBALS["l_global"]["no_document_opened"] = "Dokumenttia ei ole avoinna!";
-$GLOBALS["l_global"]["credits_team"] = "webEdition Team";
-$GLOBALS["l_global"]["credits_translators"] = "Translations";
-$GLOBALS["l_global"]["credits_thanks"] = "Thanks to";
+$GLOBALS["l_global"]["credits_team"] = "webEdition Team"; // TRANSLATE
+$GLOBALS["l_global"]["developed_further_by"] = "developed further by"; // TRANSLATE
+$GLOBALS["l_global"]["with"] = "with the"; // TRANSLATE
+$GLOBALS["l_global"]["credits_translators"] = "Translations"; // TRANSLATE
+$GLOBALS["l_global"]["credits_thanks"] = "Thanks to"; // TRANSLATE
 $GLOBALS["l_global"]["unable_to_call_ping"] = "Connection to server is lost - RPC: Ping!";// TRANSLATE
 $GLOBALS["l_global"]["unable_to_call_setpagenr"] = "Connection to server is lost - RPC: setPageNr!";// TRANSLATE
 

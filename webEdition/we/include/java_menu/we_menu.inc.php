@@ -881,11 +881,11 @@ $we_menu["5000000"]["enabled"] = "1";
     $we_menu["5010006"]["perm"] = "";
 	$we_menu["5010006"]["enabled"] = "1";
 
-	$we_menu["5010007"]["text"] = $l_javaMenu["onlinehelp_demo"] . "...";
-	$we_menu["5010007"]["parent"] = "5010000";
-	$we_menu["5010007"]["cmd"] = "help_demo";
-    $we_menu["5010007"]["perm"] = "";
-	$we_menu["5010007"]["enabled"] = "1";
+	//$we_menu["5010007"]["text"] = $l_javaMenu["onlinehelp_demo"] . "...";
+	//$we_menu["5010007"]["parent"] = "5010000";
+	//$we_menu["5010007"]["cmd"] = "help_demo";
+    //$we_menu["5010007"]["perm"] = "";
+	//$we_menu["5010007"]["enabled"] = "1";
 	
 	$we_menu["5010008"]["parent"] = "5010000"; // separator
 	
