@@ -168,7 +168,7 @@ class weModuleFrames{
 	function getHTMLRight(){
 
 		$frameset=new we_htmlFrameset(array("framespacing"=>"0","border"=>"0","frameborder"=>"no"));
-		if ($GLOBALS["BROWSER"] == "NN6")	{
+		if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{
 			$frameset->setAttributes(array("cols"=>"*"));
 			$frameset->addFrame(array("src"=>$this->frameset."?pnt=editor" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''),"name"=>"editor","noresize"=>null,"scrolling"=>"no"));
 		} else if($GLOBALS["BROWSER"] == "SAFARI") {

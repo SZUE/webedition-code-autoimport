@@ -241,7 +241,7 @@ class weModuleFrames{
 	function getHTMLResize(){
 ?>
 </head>
-<?php if ($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){ ?>
 	<frameset cols="170,*" border="1" id="resizeframeid">
 		<frame src="<?php print WEBEDITION_DIR."we/include/we_modules/"?><?php print $this->frameset?>?pnt=left" name="left" scrolling="no">
 		<frame src="<?php print WEBEDITION_DIR."we/include/we_modules/"?><?php print $this->frameset?>?pnt=right" name="right">
@@ -287,7 +287,7 @@ class weModuleFrames{
 
 ?>
 </head>
-<?php if ($GLOBALS["BROWSER"] == "NN6")	{ ?>
+<?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{ ?>
 	<frameset cols="*" framespacing="0" border="0" frameborder="NO">
         <frame src="<?php print WEBEDITION_DIR."we/include/we_modules/"?><?php print $this->frameset?>?pnt=editor" scrolling="no" noresize name="editor">
 	</frameset>

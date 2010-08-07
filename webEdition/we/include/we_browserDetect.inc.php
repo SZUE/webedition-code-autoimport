@@ -22,17 +22,24 @@
 class we_browserDetect
 {
 
-	var $br = "unknown";
+	protected static $br = "unknown";
 
-	var $ua = "";
+	protected static $ua = "";
 
-	var $v = 0;
+	protected static $v = 0;
 
-	var $sys = "unknown";
+	protected static $sys = "unknown";
+
+	//determines, if browser already detected
+	private static $detected=false;
 
 	function we_browserDetect($ua = "")
 	{
-		
+		//prevent from redetecting the same strings
+		if($this->detected){
+			return;
+		}
+		$this->detected=true;
 		$this->ua = $ua ? $ua : $_SERVER["HTTP_USER_AGENT"];
 		$regs = array();
 		if (preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', $this->ua, $regs)) {

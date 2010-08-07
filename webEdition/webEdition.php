@@ -27,7 +27,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/' . $GLOBALS["WE_LANGUAGE"] .  '/multiEditor.inc.php');
 //make sure we know which browser is used
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browserDetect.inc.php');
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
 
 
 //	we need some different functions for normal mode and seeMode
@@ -339,7 +339,7 @@ function setTreeWidth(w) {
 	var frameobj = self.rframe.document.getElementById("resizeframeid");
 	var split = new Array;
 	split = frameobj.cols.split(',');
-	frameobj.cols = w + ",*," + split[2];
+	frameobj.cols = w + ",*" + (split.length>2?","+split[2]:"");
 }
 
 function storeTreeWidth(w) {

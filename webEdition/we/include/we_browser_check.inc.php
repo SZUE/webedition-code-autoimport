@@ -93,6 +93,13 @@ if (($BROWSER == "NN6")) {
 	}
 }
 
+#### Gecko stuff
+	$isGecko=(preg_match('@gecko/([^ ]+)@i',$_SERVER["HTTP_USER_AGENT"],$regs)>0);
+	if ($isGecko) {
+		$geckoVersion=abs($regs[1]);
+	}
+
+
 #### Erkennung fuer Netscape >= 6.0
 
 

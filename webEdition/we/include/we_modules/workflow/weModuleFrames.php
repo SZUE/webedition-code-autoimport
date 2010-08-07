@@ -241,7 +241,7 @@ class weModuleFrames{
 	function getHTMLResize(){
 ?>
 </head>
-<?php if ($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){ ?>
 	<frameset cols="170,*" border="1" id="resizeframeid">
 		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
 		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" >
@@ -287,7 +287,7 @@ class weModuleFrames{
 
 ?>
 </head>
-<?php if ($GLOBALS["BROWSER"] == "NN6")	{ ?>
+<?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{ ?>
 	<frameset cols="*" framespacing="0" border="0" frameborder="NO">
         <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=editor" scrolling="no" noresize name="editor">
 	</frameset>

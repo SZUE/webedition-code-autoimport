@@ -55,7 +55,7 @@ class weJavaMenu {
 	}
 	
 	function getCode() {
-		
+
 		$ffJavaMenu = false;
 		if (preg_match('@gecko/([^ ]+)@i',$_SERVER["HTTP_USER_AGENT"],$regs)) {
 			if (abs($regs[1]) > 20070309) {
@@ -63,7 +63,7 @@ class weJavaMenu {
 			}
 		}
 
-		return $this->getJS() . ( (!$ffJavaMenu && $GLOBALS["BROWSER"] == "NN6") ? $this->getMozillaMenuHTML() : $this->getHTML() );
+		return $this->getJS() . ( $ffJavaMenu ? $this->getMozillaMenuHTML() : $this->getHTML() );
 	}
 	function getMozillaMenuHTML(){
 		return '<iframe src="'.WEBEDITION_DIR.'mozillamenu.php?wecharset='.rawurlencode($GLOBALS["_language"]["charset"]).($this->prename != "" ? "&pre=".$this->prename : "").'" frameborder="0" style="position:absolute;left:0px;top:5px; width:' . $this->width . '"px"></iframe>';
@@ -129,12 +129,15 @@ class weJavaMenu {
   		return $out;
 	}
 	function getHTML() {
+		//FIXME: currently new opera versions do not support java menu -> browser crashes on reload of normal menu
+		if($GLOBALS['BROWSER']=='OPERA'){
+			$_SESSION['weShowAltMenu']=1;
+		}
 		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
 		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
 
 		$out = '';
-
 		if(!$showAltMenu) {
 			$out .= '
 				<div id="divForSelectMenu"></div>

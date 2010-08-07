@@ -108,7 +108,7 @@ class weToolFrames extends weModuleFrames {
 	
 	function getHTMLResize(){
 	
-		if ($GLOBALS["BROWSER"] == "NN6"){
+		if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
 			$frameset=new we_htmlFrameset(array("cols"=>"200,*", "border"=>"1", "id"=>"resizeframeid"));
 		} else {
 			$frameset=new we_htmlFrameset(array("cols"=>"200,*", "border"=>"0", "frameborder"=>"0", "framespacing"=>"0", "id"=>"resizeframeid"));
@@ -132,7 +132,7 @@ class weToolFrames extends weModuleFrames {
 	function getHTMLRight(){
 
 		$frameset=new we_htmlFrameset(array("framespacing"=>"0","border"=>"0","frameborder"=>"no"));
-		if ($GLOBALS["BROWSER"] == "NN6")	{
+		if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{
 			$frameset->setAttributes(array("cols"=>"*"));
 			$frameset->addFrame(array("src"=>$this->frameset."?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''),"name"=>"editor","noresize"=>null,"scrolling"=>"no"));
 		} else if($GLOBALS["BROWSER"] == "SAFARI") {
