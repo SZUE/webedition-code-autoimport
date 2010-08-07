@@ -56,7 +56,7 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 
 </script>
 </head>
-<?php if ($GLOBALS["BROWSER"] == "NN6")	{ ?>
+<?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{ ?>
 <frameset cols="*" framespacing="0" border="0" frameborder="NO">
 
 	<frameset onload="startMultiEditor();" rows="22,*,0" id="multiEditorContainer">

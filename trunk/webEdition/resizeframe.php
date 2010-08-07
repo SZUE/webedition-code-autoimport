@@ -56,7 +56,9 @@ function startNormalMode() {
 		}
 		
 	}
-	if ($GLOBALS["BROWSER"] == "NN6"){
+
+	//FIXME: do we really want to load sidebar-frame - even if it is deactivated?
+	if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
 ?>
 	<frameset cols="<?php print $_treewidth; ?>,*,<?php print $_sidebarwidth; ?>" border="1" id="resizeframeid">
 		<frame src="baumFrame.php" name="bframe" scrolling="no">
@@ -119,7 +121,7 @@ function startEditIncludeMode(){
  			in the SEEM-mode.
  */
 function startSEEMMode(){
-	if($GLOBALS["BROWSER"]== "NN6"){
+	if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
 ?>
   <FRAMESET cols="0,*,0" border="1">
 		<frame src="<?php print HTML_DIR; ?>white.html" name="bframe" scrolling="no" noresize>

@@ -93,6 +93,7 @@ function checkSupportedBrowser() {
 
 		case "MAC":
 			switch ($BROWSER) {
+				case "OPERA":
 				case "NN6":
 				case "SAFARI":
 					$_supported = true;
@@ -120,6 +121,7 @@ function checkSupportedBrowser() {
 
 					break;
 
+				case "OPERA":
 				case "NN6":
 				case "SAFARI":
 					$_supported = true;
