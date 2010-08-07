@@ -21,7 +21,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSpecialCharDialog.class.inc.php");
 //make sure we know which browser is used
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browserDetect.inc.php');
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
 protect();
 $dialog = new weSpecialCharDialog();
 $dialog->initByHttp();
