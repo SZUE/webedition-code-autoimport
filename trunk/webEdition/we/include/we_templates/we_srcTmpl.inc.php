@@ -499,8 +499,8 @@ if($we_editmode) {
 										lineNumbers.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
 
 										sizeEditor();
-										var showDescription=function(e) { //this function will display a tooltip with the tags description. will be cales by onmousemove
-											if(typeof(cscc) != "undefined")
+										var showDescription=function(e) { //this function will display a tooltip with the tags description. will be caled by onmousemove
+											if(typeof(cscc)=="undefined")
 												return;
 											var wrap = cscc.editor.wrapping;
 											var doc = wrap.ownerDocument;
