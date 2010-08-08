@@ -758,6 +758,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 										
 										} else 
 											if ($tagname == "object" || $tagname == "customer" || $tagname == "metadata") {
+												$replace_count = 1;
 												$code = str_replace(
 														$tag, 
 														'<?php endif ?><?php
@@ -770,7 +771,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	}
 } ?>' . $this->getEndCacheCode($tag), 
 														$code,
-														1);
+														$replace_count);
 											
 											} else 
 												if ($tagname == "listviewOrder") {
