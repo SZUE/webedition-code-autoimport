@@ -175,10 +175,16 @@
 
 
 	$_tmp = pathinfo(__FILE__);
+	if ( !isset($_tmp["extension"]) || $_tmp["extension"] =='') {
+		$_tmp["extension"] = 'php';
+	}
 	$LU_Variables = array(
 
 		// always needed variables
 		'clientIsOnlineInstaller' => true,
+		'clientPhpVersion' => phpversion(),
+		'clientPhpExtensions' => implode(',',get_loaded_extensions()),
+		'clientServerSoftware' => $_SERVER["SERVER_SOFTWARE"],
 		'clientHttpHost' => $_SERVER['HTTP_HOST'],
 		'clientLeWizard' => isset($_REQUEST["leWizard"]) ? $_REQUEST["leWizard"] : "",
 		'clientLeStep' => isset($_REQUEST["leStep"]) ? $_REQUEST["leStep"] : "",

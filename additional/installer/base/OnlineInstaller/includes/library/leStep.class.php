@@ -272,7 +272,7 @@ class leStep {
 		// add all other request parameters to the request
 		$reqVars = array();
 		foreach ($_REQUEST as $key => $value) {
-			if (!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters)) {
+			if (!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters) && !array_key_exists($key,$_COOKIE) ) {
 				$reqVars[$key] = $value;
 			}
 		}

@@ -30,6 +30,10 @@ $LU_Variables = array(
 	// always needed variables
 	'clientVersion' => WE_VERSION,
 	'clientSubVersion' => WE_SVNREV,
+	'clientPhpVersion' => phpversion(),
+	'clientPhpExtensions' => implode(',',get_loaded_extensions()),
+	'clientMySQLVersion' => getMysqlVer(false),
+	'clientServerSoftware' => $_SERVER["SERVER_SOFTWARE"],
 	'clientUid' => (defined('UID') ? UID : false),
 	'clientSyslng' => WE_LANGUAGE,
 	'clientLng' => $GLOBALS['WE_LANGUAGE'],
