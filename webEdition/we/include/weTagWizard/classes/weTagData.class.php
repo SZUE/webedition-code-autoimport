@@ -19,7 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_linkAttribute.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_cmdAttribute.class.php');
 class weTagData
 {
 
@@ -83,19 +83,22 @@ class weTagData
 			}
 		}
 		
-		// Feature #3800
-		if (isset($GLOBALS['TagRefURL']) && !$noDocuLink){ //hier kann man das einfach Abschalten bis die neue Doku online ist
-			if ($DocuLink !=''){$GLOBALS['TagRefURL']=$DocuLink;}
-			if ($this->TypeAttribute){
-				foreach ($this->TypeAttribute->Options as &$value){
-					$value->AllowedAttributes[]='idTagRef_'.$this->TypeAttribute->Name.'_'.$value->Value.'_TagReferenz';
-					if($value->Value !='-'){$TagRefDetail = "-".$this->TypeAttribute->Name."-".$value->Name;}else {$TagRefDetail="";}
-					$attribs[] = new weTagData_linkAttribute('TagRef_'.$this->TypeAttribute->Name.'_'.$value->Value, 'TagReferenz', false, '',$GLOBALS['TagRefURL'].$GLOBALS['TagRefURLName'].$TagRefDetail);
-				}		
-			} else {
-				$attribs[] = new weTagData_linkAttribute('TagRef_', 'TagReferenz', false, '',$GLOBALS['TagRefURL'].$GLOBALS['TagRefURLName']);
-			}
+		// Feature #4535
+		if ($DocuLink !=''){
+			$GLOBALS['TagRefURL']=$DocuLink; //??? Where does this come from? When does it occur? If this is beeing used it wont work with we_cmd
+		} 
+		if ($this->TypeAttribute){
+			foreach ($this->TypeAttribute->Options as &$value){
+				$value->AllowedAttributes[]='idTagRef_'.$this->TypeAttribute->Name.'_'.$value->Value.'_TagReferenz';
+				if($value->Value !='-') {
+					$attribs[] = new weTagData_cmdAttribute('TagRef_'.$this->TypeAttribute->Name.'_'.$value->Value, 'TagReferenz', false, '',array('open_tagreference', $GLOBALS['TagRefURLName'].'-'.$this->TypeAttribute->Name.'-'.$value->Name),$GLOBALS['l_taged']['tagreference_linktext']);
+				}
+			}		
 		}
+		else {
+			$attribs[] = new weTagData_cmdAttribute('TagRef_', 'TagReferenz', false, '', array('open_tagreference',$GLOBALS['TagRefURLName']),$GLOBALS['l_taged']['tagreference_linktext']);
+		}
+
 		$this->Name = $name;
 		$this->Attributes = $attribs;
 		$this->Description = $description;
