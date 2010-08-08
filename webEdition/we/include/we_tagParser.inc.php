@@ -754,7 +754,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 		unset($GLOBALS["lv"]);unset($GLOBALS["we_lv_array"]);
 	}
 }?>' . $this->getEndCacheCode($tag), 
-													$code);
+													$code,1);
 										
 										} else 
 											if ($tagname == "object" || $tagname == "customer" || $tagname == "metadata") {
