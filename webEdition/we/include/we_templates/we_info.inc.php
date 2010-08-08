@@ -37,7 +37,7 @@ $_leftPart = $_middlePart - $_logoPart;
 
 $_credits = '<br /><span style="line-height:160%">'
 			.$l_global["developed_further_by"].': <a href="http://www.webedition.org/" target="_blank" ><strong>webediton.org</strong></a><br/>'
-			.$l_global["with"].' <b><a href="http://credits.webedition.org/6100/index.html?language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.$l_global["credits_team"].'</a></b></span><br/>';
+			.$l_global["with"].' <b><a href="http://credits.webedition.org/?version='.str_replace(".","",WE_VERSION).'&language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.$l_global["credits_team"].'</a></b></span><br/>';
 
 
 $_table = new we_htmlTable( array(	"border"      => 0,
