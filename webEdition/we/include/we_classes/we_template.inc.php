@@ -233,7 +233,9 @@ class we_template extends we_document
 		$code = str_replace("<?xml",'<?php print "<?xml"; ?>',$code);
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
 		$tags = $tp->getAllTags($code);
+		/*Bug #4186, #3785
 		$code = eregi_replace('(</?form[^>]*>)','<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?>\1<?php endif ?>',$code);
+		 */
 		$foo = $this->checkElsetags($tags);if($foo) return $foo;
 		$foo = $this->checkEndtags("if",0,$tags);if($foo) return $foo;
 
