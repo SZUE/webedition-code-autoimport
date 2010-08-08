@@ -950,10 +950,10 @@ class we_object extends we_document
 			<option'.(($fileVal=="false") ? " selected" : "").' value="false">false
 			</select>';
 			$dirVal = $this->getElement($name."hrefdirectory","dat");
-			$dirVal = $dirVal ? $dirVal : "false";
+			$dirVal = $dirVal ? $dirVal : "false"; // options anzeige umgedreht wegen 4363
 			$dirSelect = '<select class="weSelect" id="we_'.$this->Name.'_input['.$name.'hrefdirectory]" name="we_'.$this->Name.'_input['.$name.'hrefdirectory]">
-			<option'.(($dirVal=="true") ? " selected" : "").' value="true">true
-			<option'.(($dirVal=="false") ? " selected" : "").' value="false">false
+			<option'.(($dirVal=="true") ? " selected" : "").' value="true">false
+			<option'.(($dirVal=="false") ? " selected" : "").' value="false">true
 			</select>';
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"  valign="top"></td>';
 			$content .= '<td class="defaultfont">type'.getPixel(8,2);
