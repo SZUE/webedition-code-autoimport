@@ -591,6 +591,10 @@ class we_tagParser
 																		'$GLOBALS[\"we_lv_array\"]', 
 																		'\$GLOBALS[\"we_lv_array\"]', 
 																		$content); //	this must be slashed inside blocks (for objects)!!!!
+																$content = str_replace(
+																		'$GLOBALS[\"_we_listview_object_flag\"]', 
+																		'\$GLOBALS[\"_we_listview_object_flag\"]', 
+																		$content); //	this must be slashed inside blocks (for objects)!!!!  # 3479																
 															} else {
 																$content = "";
 															}
@@ -739,8 +743,8 @@ class we_tagParser
 									
 									} else 
 										if ($tagname == "listview") {
-											$code = str_replace(
-													$tag, 
+											$code = preg_replace(
+													'/'.preg_quote($tag, '/').'/', 
 													'<?php
 if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	array_pop($GLOBALS["we_lv_array"]);
@@ -765,7 +769,8 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 		unset($GLOBALS["lv"]);unset($GLOBALS["we_lv_array"]);
 	}
 } ?>' . $this->getEndCacheCode($tag), 
-														$code);
+														$code,
+														1);
 											
 											} else 
 												if ($tagname == "listviewOrder") {
