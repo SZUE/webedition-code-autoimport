@@ -67,9 +67,12 @@ Zend Framework License can be found in the webEdition/licenses/ZendFramework dir
 The full version of Zend Framework, including full documentation can be found 
 on its homepage.
 
-webEdition CMS contains CodeMirror (http://marijn.haverbeke.nl/codemirror/) as one of the
+webEdition CMS contains CodeMirror (http://codemirror.net) as one of the
 available template editors. CodeMirror is released under a zlib-style license, the license
 text is available in the directory webEdition/licenses/CodeMirror/
 
-webEdition CMS also uses a PHP Parser for CodeMirror under Copyright of Yahoo. The license
+webEdition CMS uses a PHP Parser for CodeMirror under Copyright of Yahoo. The license
 text is located at webEdition/licenses/CodeMirror/PHP-Parser/LICENSE
+
+webEdition CMS implements CSCC by quplo for tag completion inside CodeMirror.
+Licence text is availbale at webEdition/licenses/CodeMirror/CSCC/LICENSE
