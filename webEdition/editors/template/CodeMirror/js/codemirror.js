@@ -26,7 +26,7 @@ var CodeMirror = (function(){
   // options to a specific CodeMirror constructor. See manual.html for
   // their meaning.
   setDefaults(CodeMirrorConfig, {
-    stylesheet: "",
+    stylesheet: [],
     path: "",
     parserfile: [],
     basefiles: ["util.js", "stringstream.js", "select.js", "undo.js", "editor.js", "tokenize.js"],
@@ -45,6 +45,7 @@ var CodeMirror = (function(){
     readOnly: false,
     width: "",
     height: "300px",
+    minHeight: 100,
     autoMatchParens: false,
     parserConfig: null,
     tabMode: "indent", // or "spaces", "default", "shift"
@@ -66,10 +67,12 @@ var CodeMirror = (function(){
       catch(e) {} // Seems to throw 'Not Implemented' on some IE8 versions
     }
     nums.style.top = "0px";
+    nums.style.left = "0px";
     nums.style.overflow = "hidden";
     container.appendChild(nums);
     scroller.className = "CodeMirror-line-numbers";
     nums.appendChild(scroller);
+    scroller.innerHTML = "<div>1</div>";
     return nums;
   }
 
@@ -86,7 +89,8 @@ var CodeMirror = (function(){
       html.push("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + file + "\"/>");
     });
     forEach(options.basefiles.concat(options.parserfile), function(file) {
-      html.push("<script type=\"text/javascript\" src=\"" + options.path + file + "\"><" + "/script>");
+      if (!/^https?:/.test(file)) file = options.path + file;
+      html.push("<script type=\"text/javascript\" src=\"" + file + "\"><" + "/script>");
     });
     html.push("</head><body style=\"border-width: 0;\" class=\"editbox\" spellcheck=\"" +
               (options.disableSpellcheck ? "false" : "true") + "\"></body></html>");
@@ -96,13 +100,13 @@ var CodeMirror = (function(){
   var internetExplorer = document.selection && window.ActiveXObject && /MSIE/.test(navigator.userAgent);
 
   function CodeMirror(place, options) {
-    // Backward compatibility for deprecated options.
-    if (options.dumbTabs) options.tabMode = "spaces";
-    else if (options.normalTab) options.tabMode = "default";
-
     // Use passed options, if any, to override defaults.
     this.options = options = options || {};
     setDefaults(options, CodeMirrorConfig);
+
+    // Backward compatibility for deprecated options.
+    if (options.dumbTabs) options.tabMode = "spaces";
+    else if (options.normalTab) options.tabMode = "default";
 
     var frame = this.frame = document.createElement("IFRAME");
     if (options.iframeClass) frame.className = options.iframeClass;
@@ -118,7 +122,7 @@ var CodeMirror = (function(){
     div.style.position = "relative";
     div.className = "CodeMirror-wrapping";
     div.style.width = options.width;
-    div.style.height = options.height;
+    div.style.height = (options.height == "dynamic") ? options.minHeight + "px" : options.height;
     // This is used by Editor.reroutePasteEvent
     var teHack = this.textareaHack = document.createElement("TEXTAREA");
     div.appendChild(teHack);
@@ -157,6 +161,7 @@ var CodeMirror = (function(){
       if (this.options.initCallback) this.options.initCallback(this);
       if (this.options.lineNumbers) this.activateLineNumbers();
       if (this.options.reindentOnLoad) this.reindent();
+      if (this.options.height == "dynamic") this.setDynamicHeight();
     },
 
     getCode: function() {return this.editor.getCode();},
@@ -194,7 +199,7 @@ var CodeMirror = (function(){
     grabKeys: function(callback, filter) {this.editor.grabKeys(callback, filter);},
     ungrabKeys: function() {this.editor.ungrabKeys();},
 
-    setParser: function(name) {this.editor.setParser(name);},
+    setParser: function(name, parserConfig) {this.editor.setParser(name, parserConfig);},
     setSpellcheck: function(on) {this.win.document.body.spellcheck = on;},
     setStylesheet: function(names) {
       if (typeof names === "string") names = [names];
@@ -294,6 +299,7 @@ var CodeMirror = (function(){
     cursorLine: function() {
       return this.cursorPosition().line;
     },
+    cursorCoords: function(start) {return this.editor.cursorCoords(start);},
 
     activateLineNumbers: function() {
       var frame = this.frame, win = frame.contentWindow, doc = win.document, body = doc.body,
@@ -312,7 +318,7 @@ var CodeMirror = (function(){
 
         if (nums.offsetWidth != barWidth) {
           barWidth = nums.offsetWidth;
-          nums.style.left = "-" + (frame.parentNode.style.marginLeft = barWidth + "px");
+          frame.parentNode.style.paddingLeft = barWidth + "px";
         }
       }
       function doScroll() {
@@ -323,60 +329,76 @@ var CodeMirror = (function(){
       sizeBar();
       var sizeInterval = setInterval(sizeBar, 500);
 
+      function ensureEnoughLineNumbers(fill) {
+        var lineHeight = scroller.firstChild.offsetHeight;
+        if (lineHeight == 0) return;
+        var targetHeight = 50 + Math.max(body.offsetHeight, Math.max(frame.offsetHeight, body.scrollHeight || 0)),
+            lastNumber = Math.ceil(targetHeight / lineHeight);
+        for (var i = scroller.childNodes.length; i <= lastNumber; i++) {
+          var div = document.createElement("DIV");
+          div.appendChild(document.createTextNode(fill ? String(i + 1) : "\u00a0"));
+          scroller.appendChild(div);
+        }
+      }
+
       function nonWrapping() {
-        var nextNum = 1, pending;
         function update() {
-          var target = 50 + Math.max(body.offsetHeight, Math.max(frame.offsetHeight, body.scrollHeight || 0));
-          var endTime = new Date().getTime() + self.options.lineNumberTime;
-          while (scroller.offsetHeight < target && (!scroller.firstChild || scroller.offsetHeight)) {
-            scroller.appendChild(document.createElement("DIV"));
-            scroller.lastChild.innerHTML = nextNum++;
-            if (new Date().getTime() > endTime) {
-              if (pending) clearTimeout(pending);
-              pending = setTimeout(update, self.options.lineNumberDelay);
-              break;
-            }
-          }
+          ensureEnoughLineNumbers(true);
           doScroll();
         }
-        var onScroll = win.addEventHandler(win, "scroll", update, true),
+        self.updateNumbers = update;
+        var onScroll = win.addEventHandler(win, "scroll", doScroll, true),
             onResize = win.addEventHandler(win, "resize", update, true);
-        clear = function(){onScroll(); onResize(); if (pending) clearTimeout(pending);};
+        clear = function(){
+          onScroll(); onResize();
+          if (self.updateNumbers == update) self.updateNumbers = null;
+        };
         update();
       }
-      function wrapping() {
-        var node, lineNum, next, pos;
 
-        function addNum(n) {
+      function wrapping() {
+        var node, lineNum, next, pos, changes = [], styleNums = self.options.styleNumbers;
+
+        function setNum(n, node) {
+          // Does not typically happen (but can, if you mess with the
+          // document during the numbering)
           if (!lineNum) lineNum = scroller.appendChild(document.createElement("DIV"));
-          lineNum.innerHTML = n;
+          if (styleNums) styleNums(lineNum, node, n);
+          // Changes are accumulated, so that the document layout
+          // doesn't have to be recomputed during the pass
+          changes.push(lineNum); changes.push(n);
           pos = lineNum.offsetHeight + lineNum.offsetTop;
           lineNum = lineNum.nextSibling;
+        }
+        function commitChanges() {
+          for (var i = 0; i < changes.length; i += 2)
+            changes[i].innerHTML = changes[i + 1];
+          changes = [];
         }
         function work() {
           if (!scroller.parentNode || scroller.parentNode != self.lineNumbers) return;
 
           var endTime = new Date().getTime() + self.options.lineNumberTime;
           while (node) {
-            addNum(next++);
+            setNum(next++, node.previousSibling);
             for (; node && !win.isBR(node); node = node.nextSibling) {
               var bott = node.offsetTop + node.offsetHeight;
-              while (scroller.offsetHeight && bott - 3 > pos) addNum("&nbsp;");
+              while (scroller.offsetHeight && bott - 3 > pos) setNum("&nbsp;");
             }
             if (node) node = node.nextSibling;
             if (new Date().getTime() > endTime) {
+              commitChanges();
               pending = setTimeout(work, self.options.lineNumberDelay);
               return;
             }
           }
-          // While there are un-processed number DIVs, or the scroller is smaller than the frame...
-          var target = 50 + Math.max(body.offsetHeight, Math.max(frame.offsetHeight, body.scrollHeight || 0));
-          while (lineNum || (scroller.offsetHeight < target && (!scroller.firstChild || scroller.offsetHeight)))
-            addNum(next++);
+          while (lineNum) setNum(next++);
+          commitChanges();
           doScroll();
         }
-        function start() {
+        function start(firstTime) {
           doScroll();
+          ensureEnoughLineNumbers(firstTime);
           node = body.firstChild;
           lineNum = scroller.firstChild;
           pos = 0;
@@ -384,7 +406,7 @@ var CodeMirror = (function(){
           work();
         }
 
-        start();
+        start(true);
         var pending = null;
         function update() {
           if (pending) clearTimeout(pending);
@@ -401,7 +423,33 @@ var CodeMirror = (function(){
           onResize();
         };
       }
-      (this.options.textWrapping ? wrapping : nonWrapping)();
+      (this.options.textWrapping || this.options.styleNumbers ? wrapping : nonWrapping)();
+    },
+
+    setDynamicHeight: function() {
+      var self = this, activity = self.options.cursorActivity, win = self.win, body = win.document.body,
+          lineHeight = null, timeout = null, vmargin = 2 * self.frame.offsetTop;
+      body.style.overflowY = "hidden";
+      win.document.documentElement.style.overflowY = "hidden";
+      this.frame.scrolling = "no";
+
+      function updateHeight() {
+        for (var span = body.firstChild, sawBR = false; span; span = span.nextSibling)
+          if (win.isSpan(span) && span.offsetHeight) {
+            lineHeight = span.offsetHeight;
+            if (!sawBR) vmargin = 2 * (self.frame.offsetTop + span.offsetTop + body.offsetTop + (internetExplorer ? 10 : 0));
+            break;
+          }
+        if (lineHeight)
+          self.wrapping.style.height = Math.max(vmargin + lineHeight * (body.getElementsByTagName("BR").length + 1),
+                                                self.options.minHeight) + "px";
+      }
+      setTimeout(updateHeight, 100);
+      self.options.cursorActivity = function(x) {
+        if (activity) activity(x);
+        clearTimeout(timeout);
+        timeout = setTimeout(updateHeight, 200);
+      };
     }
   };
 
@@ -434,6 +482,15 @@ var CodeMirror = (function(){
         area.form.addEventListener("submit", updateField, false);
       else
         area.form.attachEvent("onsubmit", updateField);
+      var realSubmit = area.form.submit;
+      function wrapSubmit() {
+        updateField();
+        // Can't use realSubmit.apply because IE6 is too stupid
+        area.form.submit = realSubmit;
+        area.form.submit();
+        area.form.submit = wrapSubmit;
+      }
+      area.form.submit = wrapSubmit;
     }
 
     function insert(frame) {
@@ -445,6 +502,18 @@ var CodeMirror = (function(){
 
     area.style.display = "none";
     var mirror = new CodeMirror(insert, options);
+    mirror.toTextArea = function() {
+      area.parentNode.removeChild(mirror.wrapping);
+      area.style.display = "";
+      if (area.form) {
+        area.form.submit = realSubmit;
+        if (typeof area.form.removeEventListener == "function")
+          area.form.removeEventListener("submit", updateField, false);
+        else
+          area.form.detachEvent("onsubmit", updateField);
+      }
+    };
+
     return mirror;
   };
 

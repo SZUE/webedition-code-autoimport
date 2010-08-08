@@ -1315,6 +1315,10 @@ function we_cmd() {
 		case "setEconda":
 			new jsWindow(cmsurl+"Econdasettings","setEconda",-1,-1,540,440,true,false,true);
 			break;
+		case "open_tagreference":
+			var docupath="http://tags.webedition.org/<?php print stristr($GLOBALS['WE_LANGUAGE'],'Deutsch')?'de':'en' ?>/"+arguments[1];
+			new jsWindow(docupath,"we_tagreference",-1,-1,1024,768,true,true,true);
+			break;
 		<?php
 		pWebEdition_JSwe_cmds();
 		?>
