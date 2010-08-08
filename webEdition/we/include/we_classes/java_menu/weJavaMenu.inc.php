@@ -63,7 +63,7 @@ class weJavaMenu {
 			}
 		}
 
-		return $this->getJS() . ( $ffJavaMenu ? $this->getMozillaMenuHTML() : $this->getHTML() );
+		return $this->getJS() . ( (!$ffJavaMenu && $GLOBALS["BROWSER"] == "NN6") ? $this->getMozillaMenuHTML() : $this->getHTML() );
 	}
 	function getMozillaMenuHTML(){
 		return '<iframe src="'.WEBEDITION_DIR.'mozillamenu.php?wecharset='.rawurlencode($GLOBALS["_language"]["charset"]).($this->prename != "" ? "&pre=".$this->prename : "").'" frameborder="0" style="position:absolute;left:0px;top:5px; width:' . $this->width . '"px"></iframe>';
