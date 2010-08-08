@@ -117,7 +117,7 @@ class paypal_class {
       $this->fields["$field"] = $value;
    }
 
-	function submit_paypal_post($formTagOnly,$messageAuto,$messageMan) {
+	function submit_paypal_post($formTagOnly,$messageAuto,$messageMan,$converttocharset='') {
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
 		// this function actually generates an entire HTML page consisting of
 		// a form with hidden elements which is submitted to paypal via the 
@@ -130,7 +130,7 @@ class paypal_class {
 		// The user will briefly see a message on the screen that reads:
 		// "Please wait, your order is being processed..." and then immediately
 		// is redirected to paypal.
-
+		
 		if ($messageAuto=='') {$messageAuto = $l_paypal['redirect_auto'];}
 		if ($messageMan=='') {$messageMan = $l_paypal['redirect_man'];}
 		if ($formTagOnly) {
@@ -139,6 +139,9 @@ class paypal_class {
 			echo "action=\"".$this->paypal_url."\">\n";
 		
 			foreach ($this->fields as $name => $value) {
+				if ($converttocharset!='') { 
+					$value = iconv ( DEFAULT_CHARSET , $converttocharset , $value );
+				}
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
 		
@@ -156,6 +159,9 @@ class paypal_class {
 			echo "action=\"".$this->paypal_url."\">\n";
 		
 			foreach ($this->fields as $name => $value) {
+				if ($converttocharset!='') { 
+					$value = iconv ( DEFAULT_CHARSET , $converttocharset , $value );
+				}
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
 			
