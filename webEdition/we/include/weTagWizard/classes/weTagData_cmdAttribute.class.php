@@ -63,7 +63,7 @@ class weTagData_cmdAttribute extends weTagDataAttribute
 					'value' => '', 
 					'class' => 'defaultfont',
 				),
-				sprintf('<a href="#" onclick="we_cmd(%s);">%s</a>','\''.implode('\',\'',$this->Options).'\'',$this->Text);
+				sprintf('<a href="#" onclick="we_cmd(%s);">%s</a>','\''.implode('\',\'',$this->Options).'\'',$this->Text)
 			)
 		);
 	}
