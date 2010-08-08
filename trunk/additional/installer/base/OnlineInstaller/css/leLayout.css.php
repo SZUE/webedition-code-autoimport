@@ -53,7 +53,7 @@ body {
 	position			: absolute;
 	height				: 532px;
 	width				: 640px;
-	margin				: -239px 0px 0px -260px;
+	margin				: -239px 0px 0px -320px;
 	top					: 50%;
 	left				: 50%;
 	overflow			: hidden;
