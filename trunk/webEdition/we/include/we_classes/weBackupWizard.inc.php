@@ -481,12 +481,12 @@ class weBackupWizard{
 						$filesize=round(filesize($filename)/1024,2);
 						$filedate=date("d.m.Y H:i:s.",filemtime($filename));
 						if(ereg('^weBackup_',$entry)) {
-							$ts=ereg_replace('^weBackup_',"",$entry);
-							$ts=ereg_replace('.php',"",$ts);
-							$ts=ereg_replace('.xml',"",$ts);
-							$ts=ereg_replace('.gz',"",$ts);
-							$ts=ereg_replace('.bz',"",$ts);
-							$ts=ereg_replace('.zip',"",$ts);
+							$ts=ereg_replace('^weBackup_','',$entry);
+							$ts=str_replace('.php','',$ts);
+							$ts=str_replace('.xml','',$ts);
+							$ts=str_replace('.gz','',$ts);
+							$ts=str_replace('.bz','',$ts);
+							$ts=str_replace('.zip','',$ts);
 	
 							if(is_numeric($ts) || (substr_count($ts, '_') == 6)) {
 	

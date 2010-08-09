@@ -324,22 +324,22 @@ class we_objectFile extends we_document
 				}
 				if(ereg('%ID%',$text)){
 					$id = 1 + abs(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE ,"ID",new DB_WE()));
-					$text = ereg_replace('%ID%',"".$id,$text);
+					$text = str_replace('%ID%',"".$id,$text);
 				}
 				if(ereg('%d%',$text,$regs)){
-					$text = ereg_replace('%d%',date("d"),$text);
+					$text = str_replace('%d%',date("d"),$text);
 				}
 				if(ereg('%m%',$text,$regs)){
-					$text = ereg_replace('%m%',date("m"),$text);
+					$text = str_replace('%m%',date("m"),$text);
 				}
 				if(ereg('%y%',$text,$regs)){
-					$text = ereg_replace('%y%',date("y"),$text);
+					$text = str_replace('%y%',date("y"),$text);
 				}
 				if(ereg('%Y%',$text,$regs)){
-					$text = ereg_replace('%Y%',date("Y"),$text);
+					$text = str_replace('%Y%',date("Y"),$text);
 				}
 				if(ereg('%n%',$text,$regs)){
-					$text = ereg_replace('%n%',date("n"),$text);
+					$text = str_replace('%n%',date("n"),$text);
 				}
 				if(ereg('%h%',$text,$regs)){
 					$text = ereg_replace('%h%',date("h"),$text);

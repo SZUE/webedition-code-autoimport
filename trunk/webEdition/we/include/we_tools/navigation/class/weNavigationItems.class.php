@@ -406,7 +406,8 @@ class weNavigationItem
 							$_js = $_imgObj->getRollOverScript();
 							$_js = ereg_replace("<[^>]+><!--", "", $_js);
 							$_js = ereg_replace("//--><[^>]+>", "", $_js);
-							$_js = ereg_replace("\r?\n", '', $_js);
+							$_js = str_replace("\r\n", '', $_js);
+							$_js = str_replace("\n", '', $_js);
 							
 							$_arr = $_imgObj->getRollOverAttribsArr();
 							if (count($_arr)) {

@@ -2603,16 +2603,13 @@ class XML_Parser {
 			$args = func_get_args();
 
 			// format string
-			$str = "\$errtxt = sprintf(\$errtxt, ";
+			$str = "\$errtxt = sprintf(\$errtxt";
 
 			// run through the array of arguments
 			for($i = 1; $i < sizeof($args); $i++) {
 				// add arguments to the format string
-				$str .= "\$args[".$i."], ";
+				$str .= ", \$args[".$i."]";
 			}
-
-			// replace the last separator
-			$str = eregi_replace(", $", ");", $str);
 
 			eval($str);
 		}

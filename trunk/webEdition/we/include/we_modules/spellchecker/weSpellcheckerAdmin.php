@@ -114,7 +114,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 			$_i++;
 			$table->addRow();
 
-			$_name = ereg_replace('.zip','',$entry);
+			$_name = str_replace('.zip','',$entry);
 
 			$table->setCol($_i,0,array('valign'=>'top'), we_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false),'default', '',true,'defaultfont','document.we_form.enable_'.$_name.'.value=1;document.we_form._enable_'.$_name.'.checked=true;'));
 			$table->setCol($_i,1,array('valign'=>'top','class'=>'defaultfont'), $_name);

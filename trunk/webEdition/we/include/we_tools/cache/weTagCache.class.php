@@ -174,7 +174,7 @@ class weTagCache extends weCache
 	 */
 	function _filenameToCacheId($filename)
 	{
-		
+		//FIXME: this won't work - and is never used ->remove?
 		return ereg_replace("^weTag_", ereg_replace(".php$", $filename));
 	
 	}

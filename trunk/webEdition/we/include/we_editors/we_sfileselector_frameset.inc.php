@@ -59,7 +59,7 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
      var currentID="<?php print $currentID; ?>";
      var currentDir="<?php print str_replace($rootDir, "", $currentDir); ?>";
      var currentName="<?php print $currentName; ?>";
-     var currentFilter="<?php print ereg_replace(" ","%20",isset($l_contentTypes[$filter]) ? $l_contentTypes[$filter] : ""); ?>";
+     var currentFilter="<?php print str_replace(' ','%20',isset($l_contentTypes[$filter]) ? $l_contentTypes[$filter] : ""); ?>";
      var filter = '<?php print $filter; ?>';
      var browseServer = <?php print isset($_REQUEST["we_cmd"][1]) ? "false" : "true"; ?>
 

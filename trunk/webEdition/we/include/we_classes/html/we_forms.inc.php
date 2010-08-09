@@ -295,8 +295,8 @@ class we_forms {
 			if($showAutobr || $showSpell){
 				$clearval = $value;
 				$value = str_replace("<?","##|lt;?##",$value);
-				$value = eregi_replace("<script","<##scr#ipt##",$value);
-				$value = eregi_replace("</script","</##scr#ipt##",$value);
+				$value = str_replace("<script","<##scr#ipt##",$value);
+				$value = str_replace("</script","</##scr#ipt##",$value);
 				$value = str_replace("\\","\\\\",$value);
 				$value = str_replace("\n","\\n",$value);
 				$value = str_replace("\r","\\r",$value);

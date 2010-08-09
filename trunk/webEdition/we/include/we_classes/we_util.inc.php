@@ -96,9 +96,9 @@ class we_util{
 	* @param mixed number
 	*/
 	function cleanNewLine($string){
-		$string = eregi_replace("\r\n","\n",$string);
-		$string = eregi_replace("\n\r","\n",$string);
-		$string = eregi_replace("\r","\n",$string);
+		$string = str_replace("\r\n","\n",$string);
+		$string = str_replace("\n\r","\n",$string);
+		$string = str_replace("\r","\n",$string);
 		return $string;
 	}
 
@@ -113,10 +113,10 @@ class we_util{
 	* @param mixed number
 	*/
 	function br2nl($string){
-		$string = eregi_replace("\r\n","",$string);
-		$string = eregi_replace("\n\r","",$string);
-		$string = eregi_replace("\n","",$string);
-		$string = eregi_replace("\r","",$string);
+		$string = str_replace("\r\n","",$string);
+		$string = str_replace("\n\r","",$string);
+		$string = str_replace("\n","",$string);
+		$string = str_replace("\r","",$string);
 		return eregi_replace("<br ?/?>","\n",$string);
 	}
 

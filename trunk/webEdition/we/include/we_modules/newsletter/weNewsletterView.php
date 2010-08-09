@@ -2252,13 +2252,13 @@ class weNewsletterView {
 									$content .=  $block->Html;
 								}else{
 									$newhtml="";
-									$newhtml=eregi_replace("(\r)?\n","\n",$block->Source);
-									$newhtml=eregi_replace("\r","\n",$newhtml);
-									$newhtml=eregi_replace("&","&amp;",$newhtml);
-									$newhtml=eregi_replace("<","&lt;",$newhtml);
-									$newhtml=eregi_replace(">","&gt;",$newhtml);
-									$newhtml=eregi_replace("\n","<br>",$newhtml);
-									$newhtml=eregi_replace("\t","&nbsp;&nbsp;&nbsp;",$newhtml);
+									$newhtml=str_replace("\r\n","\n",$block->Source);
+									$newhtml=str_replace("\r","\n",$newhtml);
+									$newhtml=str_replace("&","&amp;",$newhtml);
+									$newhtml=str_replace("<","&lt;",$newhtml);
+									$newhtml=str_replace(">","&gt;",$newhtml);
+									$newhtml=str_replace("\n","<br>",$newhtml);
+									$newhtml=str_replace("\t","&nbsp;&nbsp;&nbsp;",$newhtml);
 									$content .=  $newhtml;
 								}
 							} else {

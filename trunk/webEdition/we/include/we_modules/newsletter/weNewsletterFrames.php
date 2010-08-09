@@ -738,7 +738,7 @@ class weNewsletterFrames extends weModuleFrames {
 
 	function getHTMLBox($w, $h, $content, $headline = "", $width = 120,$height = 2) {
 		$out="";
-		$headline = ereg_replace(" ","&nbsp;",$headline);
+		$headline = str_replace(" ","&nbsp;",$headline);
 
 		if ($headline) {
 			$out='

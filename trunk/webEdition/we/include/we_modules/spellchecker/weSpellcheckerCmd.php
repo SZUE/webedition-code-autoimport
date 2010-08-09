@@ -217,7 +217,7 @@ if(isset($_REQUEST['cmd'][0])) {
 					$_i++;
 					$table->addRow();
 
-					$_name = ereg_replace('.zip','',$entry);
+					$_name = str_replace('.zip','',$entry);
 					$_display = (strlen($_name)>10) ? (substr($_name,0,10) . '...') : $_name;
 
 					$table->setCol($_i,0,array('valign'=>'top'), we_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false),'default', '',true,'defaultfont','document.we_form.enable_'.$_name.'.value=1;document.we_form._enable_'.$_name.'.checked=true;'));

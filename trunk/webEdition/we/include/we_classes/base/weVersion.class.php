@@ -68,8 +68,8 @@
 		}
 		
 		function loadFile($file){
-			$path=eregi_replace($_SERVER["DOCUMENT_ROOT"],"",$file);
-			$path=eregi_replace(SITE_DIR,"",$path);
+			$path=stri_replace($_SERVER["DOCUMENT_ROOT"],"",$file);
+			$path=stri_replace(SITE_DIR,"",$path);
 			$this->Path=$path;
 			if($this->linkData)
 				return $this->Data=weFile::load($file);
