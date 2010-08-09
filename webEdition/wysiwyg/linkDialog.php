@@ -31,8 +31,7 @@ function weDoLinkCmd($args){
 	if((!isset($args["href"])) || $args["href"] == "http://") $args["href"] = "";
 
 	$param = ($args["param"] ? "?".str_replace("?","",$args["param"]) : "");
-	$param = ereg_replace('^&"','',$param);
-	$param = ereg_replace('&$','',$param);
+	$param=trim($param,'&');
 	$href = $args["href"] . $param . ($args["anchor"] ? "#".$args["anchor"] : "");
 	return '<script language="JavaScript" type="text/javascript">
 

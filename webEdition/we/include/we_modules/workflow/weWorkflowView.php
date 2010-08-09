@@ -486,7 +486,7 @@ class weWorkflowView extends weWorkflowBase{
 
 	function getBoxHTML($w,$h,$content,$headline="",$width=120){
 		$out="";
-		$headline = ereg_replace(" ","&nbsp;",$headline);
+		$headline = str_replace(" ","&nbsp;",$headline);
 		if($headline){
 			$out='<table cellpadding="0" cellspacing="0" border="0">
 			<tr>

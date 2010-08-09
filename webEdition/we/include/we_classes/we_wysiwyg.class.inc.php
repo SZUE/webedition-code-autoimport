@@ -98,12 +98,12 @@ class we_wysiwyg{
 				$value = str_replace("\\","\\\\",$value);
 				$value = str_replace("\n","\\n",$value);
 				$value = str_replace("\r","\\r",$value);
-				$value = ereg_replace("script","##scr#ipt##",$value);
-				$value = ereg_replace("Script","##Scr#ipt##",$value);
-				$value = ereg_replace("SCRIPT","##SCR#IPT##",$value);
-				$value = eregi_replace('<\?xml[^>]*>',"",$value);
-				$value = eregi_replace("<\?","||##?##||",$value);
-				$value = eregi_replace("\?>","##||?||##",$value);
+				$value = str_replace('script','##scr#ipt##',$value);
+				$value = str_replace('Script','##Scr#ipt##',$value);
+				$value = str_replace('SCRIPT','##SCR#IPT##',$value);
+				$value = eregi_replace('<\?xml[^>]*>','',$value);
+				$value = str_replace('<?','||##?##||',$value);
+				$value = str_replace('?>','##||?||##',$value);
 			}
 		}
 

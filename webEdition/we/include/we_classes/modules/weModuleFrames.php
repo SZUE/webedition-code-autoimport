@@ -215,7 +215,7 @@ class weModuleFrames{
 	
 	function getHTMLBox($content,$headline="",$width="100",$height="50",$w="25",$vh="0",$ident="0",$space="5",$headline_align="left",$content_align="left"){
 		$out="";
-		$headline = ereg_replace(" ","&nbsp;",$headline);
+		$headline = str_replace(" ","&nbsp;",$headline);
 		if($ident) $pix1=new we_baseElement("img",false,array("src"=>IMAGE_DIR."pixel.gif","width"=>"$ident","height"=>"$vh"));
 		if($w){
 			if(!$vh) $vh=1;

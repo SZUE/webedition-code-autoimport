@@ -34,7 +34,7 @@ print STYLESHEET;
 
 $we_button = new we_button();
 
-$cpat=ereg_replace("//","/",$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"]);
+$cpat=str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"]);
 
 function weFile($f){
     global $DB_WE;

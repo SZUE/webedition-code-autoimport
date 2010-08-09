@@ -99,7 +99,7 @@ if($_REQUEST["ret"]==1){
 					<td></td>
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.forms['we_form'].elements['filter'].options[document.forms['we_form'].elements['filter'].selectedIndex].value)" style="width:100%">
-                      <option value="<?php print ereg_replace(" ","%20",$l_contentTypes["all_Types"]); ?>"><?php print $l_contentTypes["all_Types"]; ?></option>
+                      <option value="<?php print str_replace(' ','%20',$l_contentTypes["all_Types"]); ?>"><?php print $l_contentTypes["all_Types"]; ?></option>
                       <?php
                         foreach($GLOBALS["WE_CONTENT_TYPES"] as $key=>$value){
                         	if($value["IsRealFile"]){
