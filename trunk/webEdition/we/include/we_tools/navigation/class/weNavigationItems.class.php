@@ -1029,7 +1029,8 @@ class weNavigationItems
 		if (isset($useTemplate['last'])) {
 			
 			// check if item is last
-			if (sizeof($this->items['id' . $item->parentid]->items) == $item->position) {
+			//bug #4545 - sizeof is one element too large
+			if ((sizeof($this->items['id' . $item->parentid]->items)-1) == $item->position) {
 				return $useTemplate['last'];
 			}
 		}
