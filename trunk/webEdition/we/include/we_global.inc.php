@@ -25,6 +25,7 @@ if (!isset($GLOBALS["WE_IS_DYN"])) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_live_tools.inc.php");
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 }
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/lib/we/core/autoload.php");
 
 function we_getModuleNameByContentType($ctype)
 {
