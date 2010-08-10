@@ -74,7 +74,7 @@ $lang["Step"]["Welcome"]['language_English'] = "English (ISO 8859-1)";
 // HintAboutOnlineInstallation
 $lang["Step"]["HintAboutOnlineInstallation"]["title"] = "Hinweise";
 $lang["Step"]["HintAboutOnlineInstallation"]["headline"] = "Hinweise zur Online Installation";
-$lang["Step"]["HintAboutOnlineInstallation"]["content"] = "Während der Online-Installation werden Daten zu Ihrem Server gesammelt und an den webEdition Server übertragen, um die für Sie relevanten Daten zusammen zu stellen.";
+$lang["Step"]["HintAboutOnlineInstallation"]["content"] = "Während der Online-Installation werden technische Daten zu Ihrem Server gesammelt und an den webEdition Server übertragen, um die für Sie relevanten Daten zusammen zu stellen. Anonymisierte Daten zu PHP-Version und installierten PHP-Extensions sowie zur verwendeten Webserver-Version werden dabei für statistische Zwecke gespeichert. Sollten Sie damit nicht einverstanden sein, so steht Ihnen der Tarball-Setup zur Verfügung, den Sie unter download.webedition.org/releases/ herunterladen können.";
 
 $lang["Step"]["HintAboutOnlineInstallation"]["labelAccept"] = "Ich bin damit einverstanden";
 $lang["Step"]["HintAboutOnlineInstallation"]["chmod_hint"] = "Achtung:<br />Die Verzeichnisberechtigung Ihres Document Root wurde von %s auf 777 abgeändert.";
