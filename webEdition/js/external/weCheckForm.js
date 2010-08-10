@@ -70,7 +70,7 @@ function weCheckFormMandatory(form, reqFields){ //  return name of not set manda
         	if (!elem.checked) {
         		ok = false;
         	}
-        } else if(elem && elem.type && (elem.type == "select-one" || elem.type == "select-multi") {
+        } else if(elem && elem.type && (elem.type == "select-one" || elem.type == "select-multi") ) {
 					if(!elem.selectedIndex || !elem.options[elem.selectedIndex].text){ // select
 						ok = false;
 					}
