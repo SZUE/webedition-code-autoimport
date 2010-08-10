@@ -10,7 +10,7 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
 
 
 ############ cscc-parse-xml.js ############
---- cscc-parse-xml.js	2010-06-23 13:48:26.000000000 +0200
+--- cscc-1.1/cscc-parse-xml.js	2010-06-23 13:48:26.000000000 +0200
 +++ webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js	2010-08-08 16:10:04.000000000 +0200
 @@ -64,7 +64,7 @@ csccParseXml.prototype =
      switch (this.state) {
@@ -29,8 +29,8 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
          
          
 ############ cscc.js ############
---- cscc.js	2010-06-24 09:45:50.000000000 +0200
-+++ webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js	2010-08-08 16:41:49.000000000 +0200
+--- cscc-1.1/cscc.js	2010-06-24 09:45:50.000000000 +0200
++++ webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js	2010-08-10 21:19:11.000000000 +0200
 @@ -35,25 +35,18 @@ var cscc = {
    // creates the CodeMirror instance
    init: function(textareaId) {
@@ -89,7 +89,7 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
        "}",
        "#cmc-suggestions div.selected",
        "{",
-@@ -99,7 +96,9 @@ var cscc = {
+@@ -99,7 +96,11 @@ var cscc = {
      document.body.appendChild(style);
    },
  
@@ -97,10 +97,12 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
 +  keyDown: function(evt, select, editor) {
 +    cscc.selectX=select; //added by we:willRockYou - we need this in onclick-event. I know, doesn't look pretty. didn't know how to get these objects, but they are out here somewhere, I'm sure!
 +    cscc.editorX=editor; //added by we:willRockYou
++    top.currentHoveredTag=undefined; //added by we:willRockYou - we need to hide our tooltip on keypress
++    hideDescription(); //added by we:willRockYou - we need to hide our tooltip on keypress
      var l = cscc.getCursorInfo();
      var text = l.text.substr(0, l.pos);
      var startPos = text.lastIndexOf("<");
-@@ -144,7 +143,7 @@ var cscc = {
+@@ -144,7 +145,7 @@ var cscc = {
  
      // get the tagName that we're in
      text = text.substr(startPos + 1);
@@ -109,7 +111,7 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
  
      // ">" pressed, check for autoclosing the tag
      if (evt.shiftKey && evt.keyCode == 190) {
-@@ -318,7 +317,22 @@ var cscc = {
+@@ -318,7 +319,22 @@ var cscc = {
  
      // add the items, and take into account the prev selected item
      for (var i = 0; i < items.length; i++) {
@@ -133,7 +135,7 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
        var value = items[i].replace(/\|/, "");
        el.setAttribute("rel", items[i]);
        el.innerHTML = value;
-@@ -348,20 +362,12 @@ var cscc = {
+@@ -348,20 +364,12 @@ var cscc = {
        el = cm.nthLine(line + 1);
        offsetTop = -26;
      }
@@ -157,7 +159,7 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
      cscc.visible = true;
      if (!cscc.selected)
        cscc.next();
-@@ -436,7 +442,10 @@ var cscc = {
+@@ -436,7 +444,10 @@ var cscc = {
        selectedIndex = 0;
      if (results[selectedIndex]) {
        cscc.selected = results[selectedIndex];
@@ -169,7 +171,7 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
      }
    },
  
-@@ -458,6 +467,9 @@ var cscc = {
+@@ -458,6 +469,9 @@ var cscc = {
      if (results[selectedIndex]) {
        cscc.selected = results[selectedIndex];
        results[selectedIndex].className = "selected";
@@ -178,3 +180,4 @@ Subsequent you'll find complete diffs of changes we've made inside CSCC files. E
 +      results[selectedIndex].scrollIntoView();
      }
    },
+ 

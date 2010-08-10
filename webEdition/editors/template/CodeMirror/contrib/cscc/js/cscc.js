@@ -99,6 +99,8 @@ var cscc = {
   keyDown: function(evt, select, editor) {
     cscc.selectX=select; //added by we:willRockYou - we need this in onclick-event. I know, doesn't look pretty. didn't know how to get these objects, but they are out here somewhere, I'm sure!
     cscc.editorX=editor; //added by we:willRockYou
+    top.currentHoveredTag=undefined; //added by we:willRockYou - we need to hide our tooltip on keypress
+    hideDescription(); //added by we:willRockYou - we need to hide our tooltip on keypress
     var l = cscc.getCursorInfo();
     var text = l.text.substr(0, l.pos);
     var startPos = text.lastIndexOf("<");
