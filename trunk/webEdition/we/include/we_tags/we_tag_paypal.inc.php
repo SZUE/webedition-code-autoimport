@@ -61,7 +61,7 @@ function we_tag_paypal($attribs) {
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
-		$useVat = we_getTagAttribute("usevat",$attribs,'true', true);
+	$useVat = we_getTagAttribute("usevat",$attribs,'true', true,true);
 
 	if ($useVat) {
 		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
