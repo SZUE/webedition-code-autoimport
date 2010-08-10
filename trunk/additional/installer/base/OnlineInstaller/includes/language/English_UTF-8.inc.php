@@ -72,7 +72,7 @@ $lang["Step"]["Welcome"]['language_English'] = "English (ISO 8859-1)";
 // HintAboutOnlineInstallation
 $lang["Step"]["HintAboutOnlineInstallation"]["title"] = "Notes";
 $lang["Step"]["HintAboutOnlineInstallation"]["headline"] = "Online Installation notes";
-$lang["Step"]["HintAboutOnlineInstallation"]["content"] = "During the Online Installation procedure a connection to our server is established. Thereby some data are submitted to our server, these data will only be used to select all required files for the installation.";
+$lang["Step"]["HintAboutOnlineInstallation"]["content"] = "During the Online Installation procedure a connection to our server is established. Thereby some data are submitted to our server, these data are used to select all required files for the installation. In addition, anonymised data about the used PHP version, the installed php extensions and the used webserver software version are stored for statistical purposes only. If you do not agree to the storage, please use our tarball-setup, which can be downloaded from download.webedition.org/releases/.";
 
 $lang["Step"]["HintAboutOnlineInstallation"]["labelAccept"] = "Yes, I agree";
 $lang["Step"]["HintAboutOnlineInstallation"]["chmod_hint"] = "Attention:<br />The directory rights of your document root was changed from %s to 777.";
