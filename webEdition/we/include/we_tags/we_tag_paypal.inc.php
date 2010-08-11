@@ -57,7 +57,7 @@ function we_tag_paypal($attribs) {
 
 	$messageRedirectMan = we_getTagAttribute("messageredirectman",$attribs);
 	$formTagOnly = we_getTagAttribute("formtagonly",$attribs,'false', true);
-	$urlencode = we_getTagAttribute("urlencode",$attribs,'false', true));
+	$urlencode = we_getTagAttribute("urlencode",$attribs,'false', true);
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
