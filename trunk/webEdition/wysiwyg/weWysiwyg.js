@@ -266,7 +266,7 @@ function weWysiwyg(fName,hiddenName,hiddenHTML,editHTML,fullScreenRef,className,
 	this.emptyTags = " base meta link hr br basefont param img area input isindex col ";
 	this.booleanAttributes = " nowrap ismap declare noshade checked disabled readonly multiple selected noresize defer";
 	this.nlAfterStartTag = " table tr ul ol th tbody br ";
-	this.nlAfterEndTag = " table tr td ul ol th tbody p li h1 h2 h3 h4 h5 h6 pre code div ";
+	this.nlAfterEndTag = " table tr td ul ol th tbody p li h1 h2 h3 h4 h5 h6 pre code div script noscript";
 
 	this.menus = new Array();
 	this.menus["fontname"] = new weWysiwygPopupMenu("fontname",this);
@@ -1397,7 +1397,10 @@ function weWysiwyg_getHTMLCode(rootNode, outputRootNode){
 			}
 			if (rootNode.nodeName.toLowerCase() == 'script') {
 				html += "\n" + rootNode.innerHTML.trim() + "\n";
-			} else {
+			} else if(rootNode.nodeName.toLowerCase() == 'noscript'){
+				//bug #4453 - since this script is executed - scripts are interpreted (browser set innercontent to text)
+				html += "\n" + rootNode.innerText.trim() + "\n";
+			}	else{
 				for (i = rootNode.firstChild; i; i = i.nextSibling) {
 					html += this.getHTMLCode(i, true);
 				}
