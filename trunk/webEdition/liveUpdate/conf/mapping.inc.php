@@ -16,7 +16,7 @@
  * @category   webEdition
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
+ */ 
 
 /*
  * map needed variables for the program here, for example map version number
