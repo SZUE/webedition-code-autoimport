@@ -57,7 +57,7 @@ function we_tag_paypal($attribs) {
 
 	$messageRedirectMan = we_getTagAttribute("messageredirectman",$attribs);
 	$formTagOnly = we_getTagAttribute("formtagonly",$attribs,'false', true);
-	$converttocharset = we_getTagAttribute("converttocharset",$attribs);
+	$urlencode = we_getTagAttribute("urlencode",$attribs,'false', true));
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
@@ -318,7 +318,7 @@ switch ($_GET['action']) {
 
 	// exit;
  
-    	$p->submit_paypal_post($formTagOnly,$messageRedirectAuto,$messageRedirectMan,$converttocharset); // submit the fields to paypal
+    	$p->submit_paypal_post($formTagOnly,$messageRedirectAuto,$messageRedirectMan,$urlencode); // submit the fields to paypal
       break;
 
    case 'success':      // Order was successful...
