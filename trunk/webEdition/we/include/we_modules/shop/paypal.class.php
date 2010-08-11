@@ -117,7 +117,7 @@ class paypal_class {
       $this->fields["$field"] = $value;
    }
 
-	function submit_paypal_post($formTagOnly,$messageAuto,$messageMan,$converttocharset='') {
+	function submit_paypal_post($formTagOnly,$messageAuto='',$messageMan='',$urlencode=0) {
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
 		// this function actually generates an entire HTML page consisting of
 		// a form with hidden elements which is submitted to paypal via the 
@@ -139,8 +139,8 @@ class paypal_class {
 			echo "action=\"".$this->paypal_url."\">\n";
 		
 			foreach ($this->fields as $name => $value) {
-				if ($converttocharset!='') { 
-					$value = iconv ( DEFAULT_CHARSET , $converttocharset , $value );
+				if ($urlencode) { 
+					$value = urlencode(stripslashes($value));
 				}
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
@@ -159,8 +159,8 @@ class paypal_class {
 			echo "action=\"".$this->paypal_url."\">\n";
 		
 			foreach ($this->fields as $name => $value) {
-				if ($converttocharset!='') { 
-					$value = iconv ( DEFAULT_CHARSET , $converttocharset , $value );
+				if ($urlencode) { 
+					$value = urlencode(stripslashes($value));
 				}
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
