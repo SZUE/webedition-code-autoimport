@@ -59,10 +59,14 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 <?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{ ?>
 <frameset cols="*" framespacing="0" border="0" frameborder="NO">
 
-	<frameset onload="startMultiEditor();" rows="22,*,0" id="multiEditorContainer">
+	<frameset <?php
+		if ($GLOBALS["BROWSER"] != "OPERA") echo 'onload="startMultiEditor();"';
+			?> rows="22,*,0" id="multiEditorContainer">
 		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" />
 		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
-		<frame name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
+		<frame <?php
+		if ($GLOBALS["BROWSER"] == "OPERA") echo 'onload="startMultiEditor();"';
+			?>name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
 	</frameset>
 
 </frameset>
