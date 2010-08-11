@@ -67,6 +67,8 @@
 			echo '{';
 			$attributes=array();
 			foreach($weTag->Attributes as $attribute) {
+				if(get_class($attribute)=='weTagData_cmdAttribute')
+					continue;
 				$attributeString=sprintf('"%s":',$attribute->getName());
 				if(isset($attribute->Options) && is_array($attribute->Options) && count($attribute->Options)) {
 					$attributeString.='{';
