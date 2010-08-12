@@ -30,7 +30,3 @@ CREATE TABLE tblWebUser (
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`)
 ) ENGINE=MyISAM;
-/* query separator */
-INSERT INTO tblWebUser VALUES (1,'admin','admin','','','John','Doe','Street','ZIP City','State','Country','','','','','',1,'1144395493','1144397956','1144397956',0,'/admin',0,'customer.gif','admin','','','Administratoren');
-/* query separator */
-INSERT INTO tblWebUser VALUES (2,'customer','customer','','','web','user','webland','universe','','','','','','','',0,'0','0','0',0,'/customer',1,'customer.gif','customer','','','Kunden');
