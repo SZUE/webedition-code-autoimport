@@ -39,11 +39,41 @@ $_credits = '<br /><span style="line-height:160%">'
 			.$l_global["developed_further_by"].': <a href="http://www.webedition.org/" target="_blank" ><strong>webediton.org</strong></a><br/>'
 			.$l_global["with"].' <b><a href="http://credits.webedition.org/?version='.str_replace(".","",WE_VERSION).'&language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.$l_global["credits_team"].'</a></b></span><br/>';
 
+$_logo = "info.jpg";
+if(defined("WE_VERSION_SUPP")) {
+	switch(strtolower(WE_VERSION_SUPP)) {
+		case "rc":
+			$_logo = "info_rc.jpg";
+			break;
+		case "alpha":
+			$_logo = "info_alpha.jpg";
+			break;
+		case "beta":
+			$_logo = "info_beta.jpg";
+			break;
+		case "nightly":
+		case "weekly":
+		case "nightly-build":
+			$_logo = "info_nightly.jpg";
+			break;
+		case "preview":
+		case "dp":
+			$_logo = "info_preview.jpg";
+			break;
+		case "trunk":
+		case "svn":
+			$_logo = "info_svn.jpg";
+			break;
+		default:
+			$_logo = "info.jpg";
+			break;
+	}
+}
 
 $_table = new we_htmlTable( array(	"border"      => 0,
 									"cellpadding" => 0,
 									"cellspacing" => 0,
-									"style"  => "background-image:url(" . IMAGE_DIR . "info/info.jpg?we=".str_replace(".","",WE_VERSION).");background-repeat: no-repeat;background-color:#EBEBEB" ),
+									"style"  => "background-image:url(" . IMAGE_DIR . "info/".$_logo."?we=".str_replace(".","",WE_VERSION).");background-repeat: no-repeat;background-color:#EBEBEB" ),
 									8,
 									3);
 
