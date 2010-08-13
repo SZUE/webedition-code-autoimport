@@ -183,5 +183,10 @@ $GLOBALS["l_global"]["credits_translators"] = "Translations"; // TRANSLATE
 $GLOBALS["l_global"]["credits_thanks"] = "Thanks to"; // TRANSLATE
 $GLOBALS["l_global"]["unable_to_call_ping"] = "Connection to server is lost - RPC: Ping!";// TRANSLATE
 $GLOBALS["l_global"]["unable_to_call_setpagenr"] = "Connection to server is lost - RPC: setPageNr!";// TRANSLATE
-
+$GLOBALS["l_global"]["nightly-build"] ="nightly Build"; // TRANSLATE
+$GLOBALS["l_global"]["alpha"] ="Alpha"; // TRANSLATE
+$GLOBALS["l_global"]["beat"] ="Beta"; // TRANSLATE
+$GLOBALS["l_global"]["rc"] ="RC"; // TRANSLATE
+$GLOBALS["l_global"]["preview"] ="preview"; // TRANSLATE
+$GLOBALS["l_global"]["release"] ="official release"; // TRANSLATE
 ?>

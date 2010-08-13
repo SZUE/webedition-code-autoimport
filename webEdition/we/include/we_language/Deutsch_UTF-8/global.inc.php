@@ -181,4 +181,11 @@ $GLOBALS["l_global"]["credits_translators"] = "Übersetzungen";
 $GLOBALS["l_global"]["credits_thanks"] = "Vielen Dank an";
 $GLOBALS["l_global"]["unable_to_call_ping"] = "Verbindung zum Server verloren - RPC: Ping!";
 $GLOBALS["l_global"]["unable_to_call_setpagenr"] = "Verbindung zum Server verloren - RPC: setPageNr!";
+$GLOBALS["l_global"]["nightly-build"] ="nightly Build";
+$GLOBALS["l_global"]["alpha"] ="Alpha";
+$GLOBALS["l_global"]["beat"] ="Beta";
+$GLOBALS["l_global"]["rc"] ="RC";
+$GLOBALS["l_global"]["preview"] ="Vorschau";
+$GLOBALS["l_global"]["release"] ="offizieller Release";
+
 ?>
