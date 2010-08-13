@@ -130,7 +130,7 @@ class paypal_class {
 		// The user will briefly see a message on the screen that reads:
 		// "Please wait, your order is being processed..." and then immediately
 		// is redirected to paypal.
-		
+		$excludes = array('business');
 		if ($messageAuto=='') {$messageAuto = $l_paypal['redirect_auto'];}
 		if ($messageMan=='') {$messageMan = $l_paypal['redirect_man'];}
 		if ($formTagOnly) {
@@ -139,7 +139,7 @@ class paypal_class {
 			echo "action=\"".$this->paypal_url."\">\n";
 		
 			foreach ($this->fields as $name => $value) {
-				if ($urlencode) { 
+				if ($urlencode && !in_array($name,$excludes) ) { 
 					$value = urlencode(stripslashes($value));
 				}
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
@@ -159,7 +159,7 @@ class paypal_class {
 			echo "action=\"".$this->paypal_url."\">\n";
 		
 			foreach ($this->fields as $name => $value) {
-				if ($urlencode) { 
+				if ($urlencode && !in_array($name,$excludes)) { 
 					$value = urlencode(stripslashes($value));
 				}
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
