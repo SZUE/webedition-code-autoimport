@@ -45,7 +45,7 @@
 //define("HTTP_PASSWORD", "myPassword");
 
 if (isset($_SERVER["HTTP_HOST"])) {
-	preg_match('/(?<host>\w+):(?<port>\d+)/', $_SERVER["HTTP_HOST"], $matches);
+	preg_match('/(?P<host>\w+):(?P<port>\d+)/', $_SERVER["HTTP_HOST"], $matches);
 	if(isset($matches["port"]) && !empty($matches["port"])) {
 		$SERVER_NAME = $matches["host"];
 		$SERVER_PORT = $matches["port"];
