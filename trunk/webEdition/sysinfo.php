@@ -27,6 +27,7 @@
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sysinfo.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/we/core/autoload.php");
 		
 
@@ -141,6 +142,8 @@
 		if (defined("WE_SVNREV") &&  WE_SVNREV!='0000'){
 			$weVersion  .= ' (SVN-Revision: '.WE_SVNREV.')';
 		}
+		if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='') $weVersion .= ' '.$l_global[WE_VERSION_SUPP];
+		if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' ) $weVersion .= WE_VERSION_SUPP_VERSION;
 		
 		// GD_VERSION is mor precise but only available in PHP 5.2.4 or newer
 		if(is_callable("gd_info")) {
