@@ -1370,7 +1370,7 @@ function cleanTempFiles($cleanSessFiles = 0)
 				if (is_dir($foo))
 					deleteLocalFolder($foo, 1);
 				else 
-					if (file_exists($foo))
+					if (file_exists($foo) && is_writable($foo) )
 						deleteLocalFile($foo);
 			}
 		}
