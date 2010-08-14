@@ -155,7 +155,7 @@ class we_messaging extends we_class {
 	    }
 	    
     	include_once($inc_files[$objname]);
-        if (!class_exists($objname)){
+        if (! @class_exists($objname)){
 	        return -2;
 	    }
 	    
