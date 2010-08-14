@@ -70,10 +70,11 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 		if(isset($metaInfo['appdisabled'])){
 			$html .= '<br/>'.$translate->_('AppStatus').': <strong>';
 			if($metaInfo['appdisabled']){
-				$html .= $translate->_('AppStatusDiabled').'</strong>';
+				$html .= $translate->_('AppStatusDiabled');
 			} else {
-				$html .= $translate->_('AppStatusActive').'</strong>';
+				$html .= $translate->_('AppStatusActive');
 			}
+			$html . ='</strong>';
 		}
 
 		$rowVersion->addHTML($html);

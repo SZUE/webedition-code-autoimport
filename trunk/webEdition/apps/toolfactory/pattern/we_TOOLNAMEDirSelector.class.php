@@ -1,7 +1,7 @@
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_dirSelector.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$GLOBALS["WE_LANGUAGE"].'/tools.inc.php');
 include_once('conf/define.conf.php');
 
 class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
