@@ -2484,8 +2484,6 @@ function we_mail($recipient, $subject, $txt, $from = "")
 		if ($txt) $txt = str_replace("\n", "\r\n", $txt);
 	}
 	
-
-	include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 	$phpmail = new we_util_Mailer($recipient,$subject,$from);
 	$phpmail->setCharSet($GLOBALS["_language"]["charset"]);
 	$phpmail->addTextPart(trim($txt));
