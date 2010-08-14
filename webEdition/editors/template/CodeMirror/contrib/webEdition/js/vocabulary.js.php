@@ -15,7 +15,7 @@
  *
  *
  * This File creates in the top window (DOM) a javascript array of object containing we:tag descriptions and attributes.
- * It is beeing saven in the top window, so it is cached and there's no need to load this file more than one in a session.
+ * It is beeing saven in the top window, so it is cached and there's no need to load this file more than once in a session.
  * Before including this file, check if top.we_tags is defined:
  *
  * if(top.we_tags==undefined) { //this is our tag cache
@@ -57,7 +57,7 @@
 	$allWeTags = weTagWizard::getExistingWeTags();
 	foreach($allWeTags as $tagName) {
 		unset($GLOBALS['weTagWizard']['attribute']); //yes, webedition saves this in a global, which is absolutley unhandy in this situation
-		if($weTag)
+		if(isset($weTag))
 			unset($weTag);
 		$weTag = weTagData::getTagData($tagName);
 		echo sprintf('top.we_tags["we:%s"]= {',$tagName);
