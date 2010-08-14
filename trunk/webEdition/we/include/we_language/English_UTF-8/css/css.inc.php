@@ -31,6 +31,6 @@
  *	In this file all these language specific characteristica can be set.
  */
 
-$l_css["font_family"] = "Verdana, Arial, Helvetica, sans-serif";
+$l_css["font_family"] = "Verdana, Arial, Helvetica, Liberation Sans, sans-serif";
 
 ?>
