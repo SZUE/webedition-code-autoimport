@@ -345,7 +345,29 @@ function get_value($settingvalue) {
 			return $_SESSION["prefs"]["editorCommentFontcolor"];
 			break;
 
+		case 'editor_line_numbers':
+			return $_SESSION['prefs']['editorLinenumbers'];
+			break;
+			
+		case 'editor_code_completion':
+			return $_SESSION['prefs']['editorCodecompletion'];
+			break;
 
+		case 'editor_tooltips':
+			return $_SESSION['prefs']['editorTooltips'];
+			break;
+
+		case 'editor_docu_integration':
+			return $_SESSION['prefs']['editorDocuintegration'];
+			break;
+
+		case 'editor_tooltip_font_name':
+			return $_SESSION['prefs']['editorTooltipFontname'];
+			break;
+
+		case 'editor_tooltip_font_size':
+			return $_SESSION['prefs']['editorTooltipFontsize'];
+			break;
 
 		/*********************************************************************
 		 * PROXY SERVER
@@ -1069,6 +1091,75 @@ function remember_value($settingvalue, $settingname) {
 
 			case '$_REQUEST["editorCommentFontcolor"]':
 				$_SESSION["prefs"]["editorCommentFontcolor"] = $settingvalue;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorLinenumbers"]':
+				$_SESSION['prefs']['editorLinenumbers'] = $settingvalue;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorCodecompletion"]':
+				$_SESSION['prefs']['editorCodecompletion'] = $settingvalue;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorTooltips"]':
+				$_SESSION['prefs']['editorTooltips'] = $settingvalue;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorDocuintegration"]':
+				$_SESSION['prefs']['editorDocuintegration'] = $settingvalue;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorTooltipFontname"]':
+				$_SESSION['prefs']['editorTooltipFontname'] = $settingvalue;
+				$_update_prefs = true;
+				break;
+				
+			case '$_REQUEST["editorTooltipFontsize"]':
+				$_SESSION['prefs']['editorTooltipFontsize'] = $settingvalue;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorTooltipFont"]':
+				if ($settingvalue == 0) {
+					$_SESSION['prefs']['editorTooltipFontname'] = 'none';
+					$_SESSION['prefs']['editorTooltipFontsize'] = -1;
+					$_SESSION['prefs']['editorTooltipFont'] = 0;
+				} else if (($settingvalue == 1) && isset($_REQUEST['editorTooltipFontname']) && isset($_REQUEST['editorTooltipFontsize'])) {
+					$_SESSION['prefs']['editorTooltipFont'] = 1;
+				}
+
+				if (!$editor_reloaded) {
+					$editor_reloaded = true;
+
+					// editor tooltip font has changed - mark all editors to reload!
+					$save_javascript .= '
+					if (!_multiEditorreload) {
+						var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+							for (frameId in _usedEditors) {
+
+								if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
+									_usedEditors[frameId].getEditorEditPageNr() == ' . WE_EDITPAGE_CONTENT . ' ) {
+
+									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+										_usedEditors[frameId].setEditorReloadNeeded(true);
+										_usedEditors[frameId].setEditorIsActive(true);
+
+									} else {
+										_usedEditors[frameId].setEditorReloadNeeded(true);
+									}
+								}
+							}
+					}
+					_multiEditorreload = true;
+					';
+
+				}
+
 				$_update_prefs = true;
 				break;
 
@@ -2111,6 +2202,59 @@ $_we_active_integrated_modules = array();
 				$_update_prefs = true;
 				break;
 
+			case '$_REQUEST["editorLinenumbers"]':
+				$_SESSION['prefs']['editorLinenumbers'] = 0;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorCodecompletion"]':
+				$_SESSION['prefs']['editorCodecompletion'] = 0;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorTooltips"]':
+				$_SESSION['prefs']['editorTooltips'] = 0;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorDocuintegration"]':
+				$_SESSION['prefs']['editorDocuintegration'] = 0;
+				$_update_prefs = true;
+				break;
+
+			case '$_REQUEST["editorTooltipFont"]':
+				$_SESSION['prefs']['editorTooltipFontname'] = 'none';
+				$_SESSION['prefs']['editorTooltipFontsize'] = -1;
+				$_SESSION['prefs']['editorTooltipFont'] = 0;
+
+				if (!$editor_reloaded) {
+					$editor_reloaded = true;
+
+					$save_javascript .= '
+					if (!_multiEditorreload) {
+						var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+							for (frameId in _usedEditors) {
+
+								if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
+									_usedEditors[frameId].getEditorEditPageNr() == ' . WE_EDITPAGE_CONTENT . ' ) {
+
+									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+										_usedEditors[frameId].setEditorReloadNeeded(true);
+										_usedEditors[frameId].setEditorIsActive(true);
+
+									} else {
+										_usedEditors[frameId].setEditorReloadNeeded(true);
+									}
+								}
+							}
+					}
+					_multiEditorreload = true;
+					';
+				}
+
+				$_update_prefs = true;
+				break;
+
 			/*****************************************************************
 			 * PROXY SERVER
 			 *****************************************************************/
@@ -2387,6 +2531,14 @@ function save_all_values() {
 	$_update_prefs = remember_value(isset($_REQUEST["editorPiTagFontcolor"]) ? $_REQUEST["editorPiTagFontcolor"] : null, '$_REQUEST["editorPiTagFontcolor"]') || $_update_prefs;
 	$_update_prefs = remember_value(isset($_REQUEST["editorCommentFontcolor"]) ? $_REQUEST["editorCommentFontcolor"] : null, '$_REQUEST["editorCommentFontcolor"]') || $_update_prefs;
 	
+	$_update_prefs = remember_value(isset($_REQUEST['editorLinenumbers']) ? $_REQUEST['editorLinenumbers'] : null, '$_REQUEST["editorLinenumbers"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorCodecompletion']) ? $_REQUEST['editorCodecompletion'] : null, '$_REQUEST["editorCodecompletion"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltips']) ? $_REQUEST['editorTooltips'] : null, '$_REQUEST["editorTooltips"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorDocuintegration']) ? $_REQUEST['editorDocuintegration'] : null, '$_REQUEST["editorDocuintegration"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFont']) ? $_REQUEST['editorTooltipFont'] : null, '$_REQUEST["editorTooltipFont"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFontname']) ? $_REQUEST['editorTooltipFontname'] : null, '$_REQUEST["editorTooltipFontname"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFontsize']) ? $_REQUEST['editorTooltipFontsize'] : null, '$_REQUEST["editorTooltipFontsize"]') || $_update_prefs;
+
 	/*************************************************************************
 	 * FORMMAIL RECIPIENTS
 	 *************************************************************************/
@@ -3414,7 +3566,7 @@ function build_dialog($selected_setting = "ui") {
 				if(defined("SPELLCHECKER")) {
 					$preJs .= "
 
-				// W�rterbuch hinzuf�gen
+				// Wörterbuch hinzufügen
 				if(confirm('{$GLOBALS['l_prefs']["add_dictionary_question"]}')) {
 					top.opener.top.we_cmd('edit_spellchecker_ifthere');
 				}
@@ -3779,20 +3931,80 @@ function setColorChooserDisabled(id, disabled) {
 function displayEditorOptions(editor) {
 	switch(editor) {
 		case "java":
-			document.getElementById("settings_editor_predefined_div_2").style.display="none";
+			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
-			document.getElementById("settings_editor_predefined_div_3").style.display="block";
-			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="block";
-			setJavaEditorDisabled(false);
+			
+			document.getElementById("settings_editor_predefined_div_3").style.display="none"; //Font
+			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_4").style.display="block"; //Java Colors
+			document.getElementById("settings_editor_predefined_div_4").previousSibling.style.display="block";
+			
+			document.getElementById("settings_editor_predefined_div_5").style.display="none"; //Line numbers
+			document.getElementById("settings_editor_predefined_div_5").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_6").style.display="none"; //Code Completion
+			document.getElementById("settings_editor_predefined_div_6").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_7").style.display="none"; //Tooltips
+			document.getElementById("settings_editor_predefined_div_7").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
+			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
+		
+			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
+			
 			break;
-		case "CodeMirror":
+		case "codemirror":
+			document.getElementById("settings_editor_predefined_div_2").style.display="block"; //JavaScript-Editor-Notice
+			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
+			
+			document.getElementById("settings_editor_predefined_div_3").style.display="block"; //Font
+			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="block";
+			
+			document.getElementById("settings_editor_predefined_div_4").style.display="none"; //Java Colors
+			document.getElementById("settings_editor_predefined_div_4").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_5").style.display="block"; //Line numbers
+			document.getElementById("settings_editor_predefined_div_5").previousSibling.style.display="block";
+			
+			document.getElementById("settings_editor_predefined_div_6").style.display="block"; //Code Completion
+			document.getElementById("settings_editor_predefined_div_6").previousSibling.style.display="block";
+			
+			document.getElementById("settings_editor_predefined_div_7").style.display="block"; //Tooltips
+			document.getElementById("settings_editor_predefined_div_7").previousSibling.style.display="block";
+			
+			document.getElementById("settings_editor_predefined_div_8").style.display="block"; //Docu on dblclick
+			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="block";
+			
+			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
+			
+			break;
 		case "textarea":
 		default:
-			document.getElementById("settings_editor_predefined_div_2").style.display="block";
-			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
-			document.getElementById("settings_editor_predefined_div_3").style.display="none";
-			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="none";
-			setJavaEditorDisabled(true);
+			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
+			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_3").style.display="block"; //Font
+			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="block";
+			
+			document.getElementById("settings_editor_predefined_div_4").style.display="none"; //Java Colors
+			document.getElementById("settings_editor_predefined_div_4").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_5").style.display="none"; //Line numbers
+			document.getElementById("settings_editor_predefined_div_5").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_6").style.display="none"; //Code Completion
+			document.getElementById("settings_editor_predefined_div_6").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_7").style.display="none"; //Tooltips
+			document.getElementById("settings_editor_predefined_div_7").previousSibling.style.display="none";
+			
+			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
+			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
+
+			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
+			
 			break;
 	}
 }
@@ -3829,9 +4041,9 @@ else {
 			 */
 
 			$_template_editor_mode = new we_htmlSelect(array("class" => "weSelect", "name" => "editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
-			$_template_editor_mode->addOption('textarea', 'Textarea');
-			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
-			$_template_editor_mode->addOption('codemirror', 'CodeMirror (Beta)');
+			$_template_editor_mode->addOption('textarea', $l_prefs['editor_plaintext']);
+			$_template_editor_mode->addOption('codemirror', $l_prefs['editor_javascript']);
+			$_template_editor_mode->addOption('java', $l_prefs['editor_java']);
 			$_template_editor_mode->selectOption(get_value("editor_mode"));
 			array_push($_settings, array("headline" => $l_prefs["editor_mode"], "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
 
@@ -3839,7 +4051,7 @@ else {
 			 * Editor font settings
 			 */
 
-            $_template_fonts = array("Courier New", "Courier", "mono", "Verdana", "Arial", "Helvetica", "Monaco", "serif", "sans-serif", "none");
+            $_template_fonts = array('Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none');
             $_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
 
 			$_template_editor_font_specify = false;
@@ -3941,16 +4153,101 @@ else {
 	</tr>
 </table>';
 
+
+
+
+			//Build CodeMirror info box
+			$_cm_information = htmlAlertAttentionBox($l_prefs['editor_javascript_information'], 2, 480, false);
+
+			array_push($_settings, array('headline' => '', 'html' => $_cm_information, 'space' => 0));
+
+
+
+			//Build activation of line numbers
+			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editor_line_numbers'), 'editorLinenumbers', $l_prefs['editor_enable'], true, 'defaultfont', '');
+			
+			//Build activation of code completion
+			$_template_editor_codecompletion_code = we_forms::checkbox(1, get_value('editor_code_completion'), 'editorCodecompletion', $l_prefs['editor_enable'], true, 'defaultfont', '');
+			
+			//Build activation of tooltips
+			$_template_editor_tooltips_code = we_forms::checkbox(1, get_value('editor_tooltips'), 'editorTooltips', $l_prefs['editor_enable'], true, 'defaultfont', '');
+			
+
+
+			
+			$_template_editor_tooltip_font_specify = false;
+			$_template_editor_tooltip_font_size_specify = false;
+
+			if (get_value('editor_tooltip_font_name') != '' && get_value('editor_tooltip_font_name') != 'none') {
+				$_template_editor_tooltip_font_specify = true;
+			}
+
+			if (get_value('editor_tooltip_font_size') != '' && get_value('editor_tooltip_font_size') != -1) {
+				$_template_editor_tooltip_font_size_specify = true;
+			}
+
+			// Build specify font
+			$_template_editor_tooltip_font_specify_code = we_forms::checkbox(1, $_template_editor_tooltip_font_specify, 'editorTooltipFont', $l_prefs['specify'], true, 'defaultfont', 'if (document.getElementsByName(\'editorTooltipFont\')[0].checked) { document.getElementsByName(\'editorTooltipFontname\')[0].disabled = false;document.getElementsByName(\'editorTooltipFontsize\')[0].disabled = false; } else { document.getElementsByName(\'editorTooltipFontname\')[0].disabled = true;document.getElementsByName(\'editorTooltipFontsize\')[0].disabled = true; }');
+
+			$_template_editor_tooltip_font_select_box = new we_htmlSelect(array('class' => 'weSelect', 'name' => 'editorTooltipFontname',  'size' => '1', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
+
+			for ($i = 0; $i < (count($_template_fonts) - 1); $i++) {
+				$_template_editor_tooltip_font_select_box->addOption($_template_fonts[$i], $_template_fonts[$i]);
+				if (!$_template_editor_tooltip_font_specify) {
+					if ($_template_fonts[$i] == 'Tahmoa') {
+						$_template_editor_tooltip_font_select_box->selectOption($_template_fonts[$i]);
+					}
+				} else {
+					if ($_template_fonts[$i] == get_value('editor_tooltip_font_name')) {
+						$_template_editor_tooltip_font_select_box->selectOption($_template_fonts[$i]);
+					}
+				}
+			}
+									
+
+						
+			$_template_editor_tooltip_font_sizes_select_box = new we_htmlSelect(array('class' => 'weSelect', 'name' => 'editorTooltipFontsize',  'size' => '1', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
+
+			for ($i = 0; $i < (count($_template_font_sizes) - 1); $i++) {
+				$_template_editor_tooltip_font_sizes_select_box->addOption($_template_font_sizes[$i], $_template_font_sizes[$i]);
+				if (!$_template_editor_tooltip_font_specify) {
+					if ($_template_font_sizes[$i] == 11) {
+						$_template_editor_tooltip_font_sizes_select_box->selectOption($_template_font_sizes[$i]);
+					}
+				} else {
+					if ($_template_font_sizes[$i] == get_value("editor_tooltip_font_size")) {
+						$_template_editor_tooltip_font_sizes_select_box->selectOption($_template_font_sizes[$i]);
+					}
+				}
+			}
+			$_attr = ' class="defaultfont" style="width:150px;"';
+			$_attr_dis = ' class="defaultfont" style="width:150px;color:gray;"';
+			$_template_editor_tooltip_font_specify_table = '<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td'.$_attr.'>' . $l_prefs["editor_fontname"] . '</td><td>' . $_template_editor_tooltip_font_select_box->getHtmlCode() . '</td>
+				</tr>
+				<tr>
+					<td'.$_attr.'>' . $l_prefs["editor_fontsize"] . '</td><td>' . $_template_editor_tooltip_font_sizes_select_box->getHtmlCode() . '</td>
+				</tr>
+			</table>';
+			
+			//Build activation of integration of documentation
+			$_template_editor_docuintegration_code = we_forms::checkbox(1, get_value('editor_docu_integration'), 'editorDocuintegration', $l_prefs['editor_enable'], true, 'defaultfont', '');
+
 			// Build dialog
-			array_push($_settings, array("headline" => $l_prefs["editor_font"], "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table , "space" => 150));
-			array_push($_settings, array("headline" => $l_prefs["jeditor"], "html" => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, "space" => 150));
+			array_push($_settings, array('headline' => $l_prefs['editor_font'], 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table , 'space' => 150));
+			array_push($_settings, array('headline' => $l_prefs['editor_highlight_colors'], 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150));
+			array_push($_settings, array('headline' => $l_prefs['editor_linenumbers'], 'html' => $_template_editor_linenumbers_code, 'space' => 150));
+			array_push($_settings, array('headline' => $l_prefs['editor_completion'], 'html' => $_template_editor_codecompletion_code, 'space' => 150));
+			array_push($_settings, array('headline' => $l_prefs['editor_tooltips'], 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150));
+			array_push($_settings, array('headline' => $l_prefs['editor_docuclick'], 'html' => $_template_editor_docuintegration_code, 'space' => 150));
 
 			/**
 			 * BUILD FINAL DIALOG
 			 */
 			$_settings_cookie = weGetCookieVariable("but_settings_editor_predefined");
 
-			$_dialog = create_dialog("settings_editor_predefined", $l_prefs["tab_editor"], $_settings, 5, $l_prefs["show_predefined"], $l_prefs["hide_predefined"], $_settings_cookie, $_needed_JavaScript);
+			$_dialog = create_dialog("settings_editor_predefined", $l_prefs["tab_editor"], $_settings, count($_settings), $l_prefs["show_predefined"], $l_prefs["hide_predefined"], $_settings_cookie, $_needed_JavaScript);
 
 			break;
 

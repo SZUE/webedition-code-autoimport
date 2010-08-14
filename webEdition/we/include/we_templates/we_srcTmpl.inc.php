@@ -84,8 +84,10 @@ if($we_editmode) {
 			}
 
 			if(window.editor && window.editor.frame) {
-				editorWidth-=window.editor.frame.nextSibling.offsetWidth;
-				document.getElementById("reindentButton").style.marginRight=window.editor.frame.nextSibling.offsetWidth-3;
+				if(window.editor.frame.nextSibling!=undefined) {
+					editorWidth-=window.editor.frame.nextSibling.offsetWidth;
+					document.getElementById("reindentButton").style.marginRight=window.editor.frame.nextSibling.offsetWidth-3;
+				}
 				window.editor.frame.style.width = editorWidth;
 			}
 
@@ -322,7 +324,7 @@ if($we_editmode) {
         if ($_useJavaEditor) {
         	
             $maineditor .= '<input type="hidden" name="we_'.$we_doc->Name.'_txt[data]" value="'. htmlspecialchars( $code ) .'" />
-            <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="http://'.$SERVER_NAME.((isset($SERVER_PORT) && $SERVER_PORT != 80) ? ":".$SERVER_PORT : "").'/webEdition/editors/template/editor">
+            <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="http://'.$SERVER_NAME.((isset($SERVER_PORT) && $SERVER_PORT != 80) ? ":".$SERVER_PORT : "").'/webEdition/editor/">
             	<param name="phpext" value=".php">';
         
 	        if ($_SESSION["prefs"]["editorFont"] == 1) {
@@ -358,7 +360,7 @@ if($we_editmode) {
 			if($_SESSION['prefs']['editorMode']=='codemirror') { //Syntax-Highlighting
 				$parser_js = array();
 				$parser_css = array();
-				$useCodeCompletion=false;
+				$useCSCC=false;
 				switch($we_doc->ContentType) { // Depending on content type we use different parsers and css files
 					case 'text/css':
 						$parser_js[]  = 'parsecss.js';
@@ -370,7 +372,7 @@ if($we_editmode) {
 						$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
 						break;
 					case 'text/weTmpl':
-						$useCodeCompletion=$GLOBALS['BROWSER']=='IE'?false:true; //tag completion doesn't work in IE yet
+						$useCSCC=$GLOBALS['BROWSER']=='IE'?false:true; //tag completion doesn't work in IE yet
 						$parser_js[]  = 'parsexml.js';
 						$parser_js[]  = 'parsecss.js';
 						$parser_js[]  = 'tokenizejavascript.js';
@@ -411,15 +413,14 @@ if($we_editmode) {
 								text-align: right;
 							}
 							#tagDescriptionDiv {
-								font-size: 12px;
 								color: black;
 								background: white;
 								position: absolute;
 								width: 400px;
 								padding: 5px 8px;
 								z-index: 1000;
-								font-family: tahoma;
-								font-size: 11px;
+								font-family: '.($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname']?$_SESSION['prefs']['editorTooltipFontname']:'Tahoma').';
+								font-size: '.($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize']?$_SESSION['prefs']['editorTooltipFontsize']:'12').'px;
 								border: outset 1px;
 								box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 								-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
@@ -431,7 +432,7 @@ if($we_editmode) {
 						</style>
 						<script src="/webEdition/editors/template/CodeMirror/js/codemirror.js" type="text/javascript"></script>
 					';
-					if($useCodeCompletion) { //if we use tag completion we need additional files
+					if($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //if we use tag completion we need additional files
 						$maineditor.='
 							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js" type="text/javascript"></script>
 							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js" type="text/javascript"></script>
@@ -441,17 +442,36 @@ if($we_editmode) {
 								if(top.we_tags==undefined) { //this is our tag cache
 									document.write("<scr"+"ipt src=\"/webEdition/editors/template/CodeMirror/contrib/webEdition/js/vocabulary.js.php\" type=\"text/javascript\"></sc"+"ript>");
 								};
-								var hideDescription=function(){
-									var wrap = cscc.editor.wrapping;
-									var doc = wrap.ownerDocument;
-									var tagDescriptionDiv = doc.getElementById("tagDescriptionDiv");
-									tagDescriptionDiv.style.display="none";
-								}
 							</script>
 						';
 					}
 					$maineditor.='
 						<script type="text/javascript">
+							var getDescriptionDiv=function() {
+								var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
+								var wrap = ed.wrapping;
+								var doc = wrap.ownerDocument;
+								var tagDescriptionDiv = doc.getElementById("tagDescriptionDiv");
+								if(!tagDescriptionDiv) { //if our div is not yet in the DOM, we create it
+									var tagDescriptionDiv = doc.createElement("div");
+									tagDescriptionDiv.setAttribute("id", "tagDescriptionDiv");
+									if(tagDescriptionDiv.addEventListener) {
+										tagDescriptionDiv.addEventListener("mouseover", hideDescription, false);
+									}
+									else {
+										tagDescriptionDiv.attachEvent("onmouseover", hideDescription);
+									}
+									wrap.appendChild(tagDescriptionDiv);
+								}
+								return tagDescriptionDiv;
+							};
+							var hideDescription=function(){
+								var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
+								var wrap = ed.wrapping;
+								var doc = wrap.ownerDocument;
+								var tagDescriptionDiv = getDescriptionDiv();
+								tagDescriptionDiv.style.display="none";
+							};
 							var XgetComputedStyle = function(el, s) { // cross browser getComputedStyle()
 								var computedStyle;
 								if(typeof el.currentStyle!="undefined") {
@@ -461,7 +481,7 @@ if($we_editmode) {
 									computedStyle = document.defaultView.getComputedStyle(el, null);
 								}
 								return computedStyle[s];
-							}
+							};
 							var CMoptions = { //these are the CodeMirror options
 								tabMode: "spaces",
 								height: "'.(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320").'",
@@ -470,9 +490,9 @@ if($we_editmode) {
 								stylesheet: ["'.(implode('", "',$parser_css)).'"],
 								path: "/webEdition/editors/template/CodeMirror/js/",
 								autoMatchParens: false,
-								'.($useCodeCompletion && $we_doc->ContentType=='text/weTmpl'?'cursorActivity: cscc.cursorActivity,':'').'
+								'.($useCSCC && $we_doc->ContentType=='text/weTmpl' && $_SESSION['prefs']['editorCodecompletion']?'cursorActivity: cscc.cursorActivity,':'').'
 								undoDelay: 200,
-								lineNumbers: true,
+								lineNumbers: '.($_SESSION['prefs']['editorLinenumbers']?'true':'false').',
 								initCallback: function() {
 									window.setTimeout(function(){ //without timeout this will raise an exception in firefox
 										if (document.addEventListener) {
@@ -494,28 +514,20 @@ if($we_editmode) {
 										editorFrame.style.marginTop="5px";
 										
 										//we adapt font styles from orignal <textarea> to the line numbers of CodeMirror.
-										lineNumbers.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
-										lineNumbers.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
-										lineNumbers.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
+										if(lineNumbers!=undefined) { //line numbers might be disabled
+											lineNumbers.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
+											lineNumbers.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
+											lineNumbers.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
+										}
 
 										sizeEditor();
-										var showDescription=function(e) { //this function will display a tooltip with the tags description. will be caled by onmousemove
-											if(typeof(cscc)=="undefined")
-												return;
-											var wrap = cscc.editor.wrapping;
+										var showDescription=function(e) { //this function will display a tooltip with the tags description. will be called by onmousemove
+											var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
+											if(typeof ed=="undefined" || !ed)
+												return
+											var wrap = ed.wrapping;
 											var doc = wrap.ownerDocument;
-											var tagDescriptionDiv = doc.getElementById("tagDescriptionDiv");
-											if(!tagDescriptionDiv) { //if our div is not yet in the DOM, we create it
-												var tagDescriptionDiv = doc.createElement("div");
-												tagDescriptionDiv.setAttribute("id", "tagDescriptionDiv");
-												if(tagDescriptionDiv.addEventListener) {
-													tagDescriptionDiv.addEventListener("mouseover", hideDescription, false);
-												}
-												else {
-													tagDescriptionDiv.attachEvent("onmouseover", hideDescription);
-												}
-												wrap.appendChild(tagDescriptionDiv);
-											}
+											var tagDescriptionDiv = getDescriptionDiv();
 											if(top.currentHoveredTag===undefined) { //no tag is currently hoverd -> hide description
 												hideDescription();
 												return;
@@ -543,22 +555,28 @@ if($we_editmode) {
 											var hideCscc=function() {
 												cscc.hide();
 											}
-											if(window.addEventListener) {
-												editor.frame.contentWindow.document.addEventListener("mousemove", showDescription, false);
-												editor.frame.contentWindow.document.addEventListener("click", hideCscc, false);
-											}
-											else {
-												editor.frame.contentWindow.document.attachEvent("onmousemove", showDescription);
-												editor.frame.contentWindow.document.attachEvent("onclick", hideCscc);
-											}
 										}
-									},500)
+					';
+					if($useCSCC && $we_doc->ContentType=='text/weTmpl') {
+						$maineditor.='
+										if(window.addEventListener) {
+											editor.frame.contentWindow.document.addEventListener("mousemove", showDescription, false);
+											editor.frame.contentWindow.document.addEventListener("click", hideCscc, false);
+										}
+										else {
+											editor.frame.contentWindow.document.attachEvent("onmousemove", showDescription);
+											editor.frame.contentWindow.document.attachEvent("onclick", hideCscc);
+										}
+									';
+					}
+					$maineditor.='
+									},500);
 								},
 								onChange: function(){
 									updateEditor();
 								}
 								';
-					if($useCodeCompletion) {
+					if($useCSCC) {
 						$maineditor.='
 							,activeTokens: function(span, token) {
 								if(token.style == "xml-tagname" && !span.className.match(/we-tagname/) && token.content.substring(0,3)=="we:" ) { //this is our hook to colorize we:tags
@@ -574,14 +592,12 @@ if($we_editmode) {
 										top.currentHoveredTag=undefined;
 									}
 									if(window.addEventListener) {
-										span.addEventListener("dblclick", clickTag, false);
-										span.addEventListener("mouseover", mouseOverTag, false);
-										span.addEventListener("mouseout", mouseOutTag, false);
+										'.($_SESSION['prefs']['editorDocuintegration']?'span.addEventListener("dblclick", clickTag, false);':'').'
+										'.($_SESSION['prefs']['editorTooltips']?'span.addEventListener("mouseover", mouseOverTag, false);span.addEventListener("mouseout", mouseOutTag, false);':'').'
 									}
 									else {
-										span.attachEvent("ondblclick", clickTag);
-										span.attachEvent("onmouseover", mouseOverTag);
-										span.attachEvent("onmouseout", mouseOutTag);
+										'.($_SESSION['prefs']['editorDocuintegration']?'span.attachEvent("ondblclick", clickTag);':'').'
+										'.($_SESSION['prefs']['editorTooltips']?'span.attachEvent("onmouseover", mouseOverTag);span.attachEvent("onmouseout", mouseOutTag);':'').'
 									}
 								}
 							},
@@ -625,7 +641,7 @@ if($we_editmode) {
 							window.orignalTemplateContent=document.getElementById("editarea").value; //this is our reference of the original content to compare with current content
 						</script>
 					';
-					if($useCodeCompletion) { //initiation depends on the use of code completion
+					if($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //initiation depends on the use of code completion
 						$maineditor.='
 							<script type="text/JavaScript">
 								cscc.init("editarea");
