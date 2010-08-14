@@ -564,6 +564,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs["versions_create_tmpl_publishing"] = "nur durch speziellen Button";
 	$l_prefs["versions_create_tmpl_always"] = "immer";
 	
+	
 	$l_prefs['use_jeditor'] = "Benutzen";
 	$l_prefs["editor_font_colors"] = 'Schriftfarben spezifizieren';
 	$l_prefs["editor_normal_font_color"] = 'Standard';
@@ -573,7 +574,17 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs["editor_html_attribute_font_color"] = 'HTML-Attribute';
 	$l_prefs["editor_pi_tag_font_color"] = 'PHP Code';
 	$l_prefs["editor_comment_font_color"] = 'Kommentare';
-	$l_prefs["jeditor"] = 'Java Quelltext Editor';
+	$l_prefs['editor_highlight_colors'] = 'Highlighting-Farben';
+	$l_prefs['editor_linenumbers'] = 'Zeilennummern';
+	$l_prefs['editor_completion'] = 'Codevervollständigung';
+	$l_prefs['editor_tooltips'] = 'Tooltips auf we:tags';
+	$l_prefs['editor_docuclick'] = 'Doku-Integration';
+	$l_prefs['editor_enable'] = 'Aktivieren';
+	$l_prefs['editor_plaintext'] = 'Unformatierte Textarea';
+	$l_prefs['editor_java'] = 'Java-Editor';
+	$l_prefs['editor_javascript'] = 'JavaScript-Editor (beta)';
+	$l_prefs['editor_javascript_information'] = 'Der JavaScript-Editor befindet sich derzeit im Beta-Stadium. Je nach aktivierten Funktionen kann es noch zu Fehlern kommen. Die Codevervollständigung funktioniert derzeit nicht im Internet Explorer. Für eine komplette Liste von bekannten Problemen schauen Sie bitte in den <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition Bugtracker</a>.';
+	
 	
 	$l_prefs["juplod_not_installed"] = 'JUpload ist nicht installiert!';
 	
