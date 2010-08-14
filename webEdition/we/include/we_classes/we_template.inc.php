@@ -629,7 +629,7 @@ class we_template extends we_document
 		if ($this->ID == 0) {
 			return $paths;
 		}
-		$this->DB_WE->query("SELECT ID, Path FROM ".FILE_TABLE." WHERE temp_template_id='".abs($this->ID)."' OR ((temp_template_id = '' OR temp_template_id = 0) AND TemplateID = '".abs($this->ID)."')");
+		$this->DB_WE->query("SELECT ID, Path FROM ".FILE_TABLE." WHERE temp_template_id='".abs($this->ID)."' OR ((temp_template_id = '' OR temp_template_id = 0) AND TemplateID = '".abs($this->ID)."') ORDER BY Path");
 		while($this->DB_WE->next_record()) {
 			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path');
 
