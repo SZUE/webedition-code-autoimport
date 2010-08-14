@@ -49,4 +49,6 @@ CREATE TABLE `tblversions` (
   `resetFromVersion` bigint(20) NOT NULL,
   `InGlossar` tinyint(1) NOT NULL,
   PRIMARY KEY  (`ID`)
+  KEY `timestamp` (`timestamp`,`CreationDate`),
+  KEY `binaryPath` (`binaryPath`)
 ) ENGINE=MyISAM ;
