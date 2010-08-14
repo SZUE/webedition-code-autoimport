@@ -218,7 +218,7 @@ class Image_Transform
         //include_once 'Image/Transform/Driver/' . basename($driver) . '.php';
 
         $classname = "Image_Transform_Driver_{$driver}";
-        if (!class_exists($classname)) {
+        if (! @class_exists($classname)) {
             return PEAR::raiseError('Image library not supported... aborting.',
                 IMAGE_TRANSFORM_ERROR_UNSUPPORTED);
         }
