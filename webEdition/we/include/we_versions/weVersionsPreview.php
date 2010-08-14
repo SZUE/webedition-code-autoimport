@@ -282,7 +282,7 @@ $contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" s
 		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.$GLOBALS['l_versions']['contentElementsMod'].'</strong></td>';
 
 $contentDiff .= '</tr>';
-
+	$isTemplate=($newDoc['documentTable']==TEMPLATES_TABLE);	
 	$newDocElements = unserialize(html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES));
 	
 	if(isset($oldDoc['documentElements'])) {
@@ -334,15 +334,28 @@ $contentDiff .= '</tr>';
 				$newVal = htmlspecialchars($newVal);
 			}
 
+			//if one of them contains newlines, format it as pre-block
+			if($isTemplate){
+				if(preg_match("/(%0A|%0D|\\n+|\\r+)/i",$newVal)||preg_match("/(%0A|%0D|\\n+|\\r+)/i",$oldVal)){
+					$pre='<pre style="font-size:0.9em;width:400px;overflow:auto;">'.$newDoc['documentTable'];
+					$div='';
+				}else{
+					$pre='';
+					$div='<div style="width:400px;overflow:auto">';
+				}
+			}else{
+				$pre=$div='';
+			}
+
 			$contentDiff .= '<tr>';
 			$contentDiff .= '<td width="33%" style="'.$mark.'"><strong>'.$name.'</strong></td>';
-            $contentDiff .= '<td width="33%" style="'.$mark.'">'.$newVal.'</td>';
+			$contentDiff .= '<td width="33%" style="'.$mark.'">'.$div.$pre.$newVal.($pre==''?'':'</pre>').($div==''?'':'</div>').'</td>';
 			if($oldVersion) {
 				if($oldVal!=getPixel(1,1) && $k!='weInternVariantElement') {
 					if(is_array($oldVal) ) {$oldVal = implode('',$oldVal);}
 					$oldVal = htmlspecialchars($oldVal);
 				}
-				$contentDiff .= '<td width="33%" style="'.$mark.'border-left:1px solid #B8B8B7;">'.$oldVal.'</td>';
+				$contentDiff .= '<td width="33%" style="'.$mark.'border-left:1px solid #B8B8B7;">'.$div.$pre.$oldVal.($pre==''?'':'</pre>').($div==''?'':'</div>').'</td>';
 			}
 			$contentDiff .= '</tr>';
 			
@@ -632,14 +645,14 @@ function previewVersion(ID, newID) {
 <?php print $js;?>
 <style type="text/css" media="screen"> 
 body {margin: 0;padding: 0;}
-td {font-size:11px;}
+td {font-size:11px;vertical-align:top;}
 #tab1 {position:absolute;overflow:auto; }
 #topPrint {display: none;}
 </style>
 
 <style type="text/css" media="print"> 
 body {margin: 0;padding: 0;}
-td {font-size:9px;}
+td {font-size:9px;vertical-align:top;}
 #tab1 {position:relative;overflow: visible;font-size:12px; }
 #tab2 {display: none}
 #tab3 {display: none}
