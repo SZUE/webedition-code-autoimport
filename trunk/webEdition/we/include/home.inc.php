@@ -341,7 +341,7 @@ function resizeIdx(a,id){
 			gel(id+'_res').value=(res==0)?1:0;
 			gel(id+'_icon_resize').title=(res==0)?'<?php
 	echo $l_cockpit["reduce_size"] . '\':\'' . $l_cockpit["increase_size"];
-	?>';
+	?>':'';
 		break;
 		case 'get':
 			return res;
