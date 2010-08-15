@@ -16,5 +16,4 @@ $GLOBALS['weTagWizard']['attribute']['id839_shippingvatrate'] = new weTagData_te
 $GLOBALS['weTagWizard']['attribute']['id840_formtagonly'] = new weTagData_selectAttribute('840', 'formtagonly', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id841_messageredirectAuto'] = new weTagData_textAttribute('841', 'messageredirectAuto', false, '');
 $GLOBALS['weTagWizard']['attribute']['id842_messageredirectMan'] = new weTagData_textAttribute('842', 'messageredirectMan', false, '');
-$GLOBALS['weTagWizard']['attribute']['id865_urlencode'] = new weTagData_selectAttribute('865', 'urlencode', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 ?>
