@@ -63,6 +63,7 @@ function we_tag_paypal($attribs) {
 
 	$useVat = we_getTagAttribute("usevat",$attribs,'true', true,true);
 
+	//FIXME: calcVat is never used -
 	if ($useVat) {
 		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 
@@ -74,11 +75,13 @@ function we_tag_paypal($attribs) {
 
 		$weShopVatRule = weShopVatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
+
+		//FIX: it was meant to write since now we know if a costumer needs to pay tax or the default is true
+		$useVat = $calcVat;
 	}
 
 
 
-    // var_dump($attribs);
      if (isset($GLOBALS[$shopname])) {
      		$basket = $GLOBALS[$shopname];
 
@@ -249,7 +252,7 @@ switch ($_GET['action']) {
 			}
 
 
-	 if($netprices){
+	 if($netprices && $useVat){ //Bug 4549
 	 	  $totalVat = $itemPrice / 100 * $shopVat;
 	 	  $totalVats = number_format($totalVat,2);
 			     // add the polychronic taxes
@@ -294,7 +297,8 @@ switch ($_GET['action']) {
 		        	$shippingCostVat =  $shippingCosts / 100 * $vatRate;
 		        	$shippingFee = $shippingCosts + $shippingCostVat;
 		        	
-					if ($isNet) { // net prices
+					//Bug 4549
+					if ($isNet && $useVat) { // net prices
 						$shippingCostVat =  $shippingCosts / 100 * $vatRate;
 						$shippingFee = $shippingCosts + $shippingCostVat;
 						
@@ -314,7 +318,6 @@ switch ($_GET['action']) {
 
 
 	 //p_r($p);
-	// var_dump($shopVat);
 
 	// exit;
  
