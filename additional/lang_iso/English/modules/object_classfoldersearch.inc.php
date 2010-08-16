@@ -42,6 +42,8 @@ $l_object_classfoldersearch["wirklichveroeffentlichen"] = "This publishes the se
 $l_object_classfoldersearch["wirklichparken"] = "This unpublishes the selected objects! Are you sure?";
 $l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";
 $l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";
+$l_object_classfoldersearch["copyws"] = "Copy the workspaces defined in the class to the selected objects";
+$l_object_classfoldersearch["wirklichcopyws"] = "This overrides the defined workspaces in the selected objects and deletes any extra workspaces! Are you sure?";
 $l_object_classfoldersearch["copychar"] = "Copy the charset defined in the class to the selected objects";
 $l_object_classfoldersearch["wirklichcopychar"] = "This overrides the defined charset in the selected objects! Are you sure?";
 $l_object_classfoldersearch["searchable"] = "Set the selected objects to searchable";
@@ -61,5 +63,4 @@ $l_object_classfoldersearch["isnotsearchable"] = "not searchable";
 $l_object_classfoldersearch["ID"] = "ID";
 $l_object_classfoldersearch["language"] = "Language";
 $l_object_classfoldersearch["charset"] = "Charset";
-
 ?>

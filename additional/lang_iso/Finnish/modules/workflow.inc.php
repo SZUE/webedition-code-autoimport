@@ -163,7 +163,7 @@ if(defined("OBJECT_FILES_TABLE")){
 }
 $l_workflow["auto_approved"] = "Dokumentti on automaattisesti hyväksytty.";
 $l_workflow["auto_declined"] = "Dokumentti on automaattisesti hylätty.";
-$l_workflow["auto_published"]="Document has been automatically published.";// TRANSLATE
+$l_workflow["auto_published"] = "Document has been automatically published.";// TRANSLATE
 
 $l_workflow["doc_deleted"] = "Dokumentti on poistettu!";
 $l_workflow["ask_before_recover"] = "Työnkulussa on yhä dokumentteja/objekteja! Haluatko poistaa ne työnkulkuprosessista?";

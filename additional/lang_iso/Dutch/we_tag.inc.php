@@ -124,7 +124,7 @@ $l_we_tag['ifHasCurrentEntry']['description'] = "we:ifHasCurrentEntry kan gebrui
 $l_we_tag['ifHasCurrentEntry']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifHasEntries']['description'] = "we:ifHasEntries kan gebruikt worden binnen we:navigationEntry om alleen content te tonen indien de navigatie invoer gegevens bevat.";
 $l_we_tag['ifHasEntries']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['ifHasShopVariants']['description'] = "De tag we:ifHasShopVariants kan content tonen afhankelijk van het bestaan van varianten in een object of document. Hiermee kan geregeld worden of een &lt;we:listview type=\"shopVariant\"&gt; getoond moet worden. <b>This tag works in document and object templates attached by object-workspaces, but not inside the we:listview and we:object - tags</b>";
+$l_we_tag['ifHasShopVariants']['description'] = "De tag we:ifHasShopVariants kan content tonen afhankelijk van het bestaan van varianten in een object of document. Hiermee kan geregeld worden of een &lt;we:listview type=\"shopVariant\"&gt; getoond moet worden. <b>This tag works in document and object templates attached by object-workspaces, but not inside the we:listview and we:object - tags</b>";// TRANSLATE
 $l_we_tag['ifHasShopVariants']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifHtmlMail']['description'] = "Content omsloten door deze tag wordt alleen getoond indien het nieuwsbrief formaat HTML is.";
 $l_we_tag['ifHtmlMail']['defaultvalue'] = ""; // TRANSLATE
@@ -354,6 +354,7 @@ $l_we_tag['useShopVariant']['description'] = "De we:shopVariant tag gebruikt de 
 $l_we_tag['var']['description'] = "De we:var tag toont de inhoud van een globaal PHP variable respectief tot de inhoud van een documentveld met onderstaande naam.";
 $l_we_tag['voting']['description'] = "De we:voting tag wordt gebruikt om peilingen weer te geven.";
 $l_we_tag['voting']['defaultvalue'] = ""; // TRANSLATE
+
 $l_we_tag['votingField']['description'] = "The we:votingField-tag is required to display the content of a voting. The attribute \"name\" defines what to show. The attribute \"type\", how to display it. Valid name-type combinations are: question - text; result - count, percent, total; id - answer, select, radio, voting; answer - text,radio,checkbox (select multiple) select, textinput and textarea (free text answer field), image (all we:img attributes such as thumbnail are supported), media (delivers the path utilizing to and nameto); ";// TRANSLATE
 $l_we_tag['votingList']['description'] = "Deze tag genereert automatisch de peiling lijsten.";
 $l_we_tag['votingList']['defaultvalue'] = ""; // TRANSLATE
@@ -396,6 +397,14 @@ $l_we_tag['ifSendMail']['description'] = "Checks if a page is currently sent by 
 $l_we_tag['ifSendMail']['defaultvalue'] = "";
 $l_we_tag['ifNotSendMail']['description'] = "Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page"; // TRANSLATE
 $l_we_tag['ifNotSendMail']['defaultvalue'] = "";
+
+$l_we_tag['ifNotVoteActive']['description'] = "Any content between the start- and endtag is only displayed, if the voting has expired.";// TRANSLATE
+$l_we_tag['ifNotVoteActive']['defaultvalue'] = "";
+$l_we_tag['ifNotVoteIsRequired']['description'] = "Any content between the start- and endtag is only displayed, if the voting ist not required to be filled out.";// TRANSLATE
+$l_we_tag['ifNotVoteIsRequired']['defaultvalue'] = "";
+$l_we_tag['ifVoteIsRequired']['description'] = "Any content between the start- and endtag is only displayed, if the voting is a required field.";// TRANSLATE
+$l_we_tag['ifVoteIsRequired']['defaultvalue'] = "";
+
 $l_we_tag['pageLanguage']['description'] = "Shows the language of the document";// TRANSLATE
 $l_we_tag['pageLanguage']['defaultvalue'] = "";
 $l_we_tag['objectLanguage']['description'] = "Shows the language of the object";// TRANSLATE

@@ -296,6 +296,7 @@ $l_customer['orderTab'] = 'Bestellungen des Kunden';
 $l_customer['default_order'] = 'Vorgegebene Ordnung';
 $l_customer['ASC'] = 'aufsteigend';
 $l_customer['DESC'] = 'absteigend';
+
 $l_customer["connected_with_customer"] = "Verknüpft mit Kunde";
 $l_customer["one_customer"] = "Kunde";
 

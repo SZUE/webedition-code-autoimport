@@ -149,7 +149,7 @@ $l_voting["csv_charset"] = "Export charset";
 $l_voting["imageID_text"] = "Image ID";
 $l_voting["successorID_text"] = "Successor ID";
 $l_voting["mediaID_text"] = "Media-ID";
-$l_voting['AllowMedia'] = 'Allow Media such as Audio or video files';
+$l_voting['AllowMedia'] = 'Erlaube Media-Dateien wie Audio- und Video-Dateien';
 $l_voting['voting-id'] = 'Voting ID';
 $l_voting['voting-session'] = 'Voting Session';
 $l_voting['voting-successor'] = 'successor';
@@ -162,5 +162,4 @@ $l_voting['IsRequired'] = 'This is a required field';
 
 $l_voting['answer_limit'] = 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!';
 $l_voting['folder_path_exists'] = "Folder already exists!";
-
 ?>

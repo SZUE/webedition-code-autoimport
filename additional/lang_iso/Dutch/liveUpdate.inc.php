@@ -98,7 +98,7 @@ $l_liveUpdate['updatelog']['noEntriesMatchFilter'] = 'Er zijn geen invoeren gevo
 $l_liveUpdate['updatelog']['legendMessages'] = 'Berichten';
 $l_liveUpdate['updatelog']['legendNotices'] = 'Meldingen';
 $l_liveUpdate['updatelog']['legendErrors'] = 'Fouten';
-$l_liveUpdate['updatelog']['confirmDelete'] = 'Do you really want to delete all selected entries?';// TRANSLATE
+$l_liveUpdate['updatelog']['confirmDelete'] = 'Do you really want to delete all selected entries?';
 
 $l_liveUpdate['tabs']['beta'] = 'Pre-Release Versions';// TRANSLATE
 $l_liveUpdate['beta']['headline'] = 'Shall Pre-Release Versions be included in the search?';// TRANSLATE

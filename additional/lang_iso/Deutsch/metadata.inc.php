@@ -73,7 +73,6 @@ $l_metadata['meta_field_wrong_chars_messsage'] = "Der Feldname '%s1' ist nicht g
 $l_metadata['meta_field_wrong_name_messsage'] = "Der Feldname '%s1' ist nicht gültig, da er von webEdition intern benutzt wird! Folgende Namen sind nicht zulässig:%s2";
 $l_metadata['file_size_0'] = "Die Dateigröße ist 0 Byte, bitte laden Sie vor dem Speichern ein Dokument auf den Server";
 
-
 /*****************************************************************************
  * INFO TAB
  *****************************************************************************/

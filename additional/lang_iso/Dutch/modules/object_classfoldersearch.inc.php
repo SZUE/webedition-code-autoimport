@@ -61,4 +61,5 @@ $l_object_classfoldersearch["isnotsearchable"] = "not searchable";// TRANSLATE
 $l_object_classfoldersearch["ID"] = "ID";// TRANSLATE
 $l_object_classfoldersearch["language"] = "Language";// TRANSLATE
 $l_object_classfoldersearch["charset"] = "Charset";// TRANSLATE
+
 ?>

@@ -118,7 +118,6 @@ $l_button["saveversion"]["value"] = "Speichere Version";
 $l_button["saveversion"]["alt"]   = "Speichert und legt eine neue Version an";
 $l_button["saveversion"]["width"] = 120;
 
-
 $l_button["delete"]["value"] = "Löschen";
 $l_button["delete"]["alt"]   = "";
 $l_button["delete"]["width"] = 100;

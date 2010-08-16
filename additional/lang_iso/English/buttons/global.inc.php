@@ -112,7 +112,7 @@ $l_button["publish"]["value"] = "Publish";
 $l_button["publish"]["alt"]   = "Save and publish the document";
 $l_button["publish"]["width"] = 100;
 
-$l_button["saveversion"]["value"] = "Save version";
+$l_button["saveversion"]["value"] = "Save Version";
 $l_button["saveversion"]["alt"]   = "Saves the template and creates a new version";
 $l_button["saveversion"]["width"] = 120;
 

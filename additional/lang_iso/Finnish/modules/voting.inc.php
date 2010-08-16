@@ -148,6 +148,7 @@ $l_voting["imageID_text"] = "Image ID";// TRANSLATE
 $l_voting["successorID_text"] = "Successor ID";// TRANSLATE
 $l_voting["mediaID_text"] = "Media-ID";// TRANSLATE
 $l_voting['AllowMedia'] = 'Allow Media such as Audio or video files';// TRANSLATE
+
 $l_voting['voting-id'] = 'Voting ID';// TRANSLATE
 $l_voting['voting-session'] = 'Voting Session';// TRANSLATE
 $l_voting['voting-successor'] = 'successor';// TRANSLATE
@@ -160,5 +161,4 @@ $l_voting['IsRequired'] = 'This is a required field';// TRANSLATE
 
 $l_voting['answer_limit'] = 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!';// TRANSLATE
 $l_voting['folder_path_exists'] = "Folder already exists!";// TRANSLATE
-
 ?>

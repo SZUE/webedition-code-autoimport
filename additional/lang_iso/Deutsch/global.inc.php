@@ -187,4 +187,11 @@ $GLOBALS["l_global"]["beat"] ="Beta";
 $GLOBALS["l_global"]["rc"] ="RC";
 $GLOBALS["l_global"]["preview"] ="Vorschau";
 $GLOBALS["l_global"]["release"] ="offizieller Release";
+
+$GLOBALS["l_global"]["nightly-build"] ="nightly Build";
+$GLOBALS["l_global"]["alpha"] ="Alpha";
+$GLOBALS["l_global"]["beat"] ="Beta";
+$GLOBALS["l_global"]["rc"] ="RC";
+$GLOBALS["l_global"]["preview"] ="Vorschau";
+$GLOBALS["l_global"]["release"] ="offizieller Release";
 ?>

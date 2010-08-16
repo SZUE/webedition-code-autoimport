@@ -112,4 +112,7 @@ $l_button["listview"]["value"] = "Listenansicht";
 $l_button["listview"]["alt"]   = "";
 $l_button["listview"]["width"] = 100;
 
+$l_button["reindent"]["value"] = "Code neu einrücken";
+$l_button["reindent"]["alt"]   = "";
+$l_button["reindent"]["width"] = 130;
 ?>

@@ -20,6 +20,7 @@
 
 $GLOBALS['l_customerFilter'] = array(
 	'mode_off' 					=> 'Suodatin pois k‰ytˆst‰ (kaikilla vierailijoilla on p‰‰syoikeus)',
+	'mode_none' 				=> 'Only not logged in users have access',
 	'mode_all' 					=> 'Kaikilla sis‰‰nkirjautuneilla asiakkailla on p‰‰syoikeus',
 	'mode_specific' 			=> 'Vain valituilla asiakkailla on p‰‰syoikeus',
 	'mode_filter' 				=> 'Vain tietyt kriteerit omaavilla asiakkailla on p‰‰syoikeus',

@@ -559,7 +559,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["versions_create_always"] = "aina";
 	$l_prefs["versioning_templates_text"] = "Define special values for the <b>versioning of templates</b>";// TRANSLATE
 	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";// TRANSLATE
-	$l_prefs["versions_create_tmpl_always"] = "aina";
+	$l_prefs["versions_create_tmpl_always"] = "always";// TRANSLATE
 
 	
 	$l_prefs['use_jeditor'] = "K‰yt‰";
@@ -571,7 +571,16 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["editor_html_attribute_font_color"] = 'HTML m‰‰reet';
 	$l_prefs["editor_pi_tag_font_color"] = 'PHP koodi';
 	$l_prefs["editor_comment_font_color"] = 'Kommentit';
-	$l_prefs["jeditor"] = 'Java koodieditori';
+	$l_prefs['editor_highlight_colors'] = 'Highlighting colors';// TRANSLATE
+	$l_prefs['editor_linenumbers'] = 'Line numbers';// TRANSLATE
+	$l_prefs['editor_completion'] = 'Code Completion';// TRANSLATE
+	$l_prefs['editor_tooltips'] = 'Tooltips on we:tags';// TRANSLATE
+	$l_prefs['editor_docuclick'] = 'Docu integration';// TRANSLATE
+	$l_prefs['editor_enable'] = 'Enable';// TRANSLATE
+	$l_prefs['editor_plaintext'] = 'Plain textarea';// TRANSLATE
+	$l_prefs['editor_java'] = 'Java editor';// TRANSLATE
+	$l_prefs['editor_javascript'] = 'JavaScript editor (beta)';// TRANSLATE
+	$l_prefs['editor_javascript_information'] = 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.';// TRANSLATE
 	
 	
 	$l_prefs["juplod_not_installed"] = 'JUpload ei ole asennettu!';

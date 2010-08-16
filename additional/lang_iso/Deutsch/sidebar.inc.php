@@ -34,10 +34,10 @@ $l_sidebar["default"] = array();
 
 $l_sidebar["default"][0] = array();
 $l_sidebar["default"][0]["headline"] = 'Herzlich Willkommen!';
-$l_sidebar["default"][0]["text"] = 'webEdition ist nun erfolgreich installiert, enthält jedoch zunächst noch keine Inhalte.';
+$l_sidebar["default"][0]["text"] = 'webEdition ist nun erfolgreich installiert, enthält zunächst jedoch noch keine Inhalte.';
 
 $l_sidebar["default"][1] = array();
-$l_sidebar["default"][1]["headline"] = 'Handbücher';
+$l_sidebar["default"][1]["headline"] = 'Dokumentation';
 $l_sidebar["default"][1]["text"] = 'Hier finden Sie grundlegende Informationen zu Bedienung und Aufbau von webEdition.';
 $l_sidebar["default"][1]["link"] = 'http://documentation.webedition.org/wiki/de/start';
 $l_sidebar["default"][1]["icon"] = 'documentation.gif';
@@ -51,6 +51,7 @@ $l_sidebar["default"][2]["icon"] = 'help.gif';
 $l_sidebar["default"][3] = array();
 $l_sidebar["default"][3]["headline"] = 'So geht\'s weiter';
 $l_sidebar["default"][3]["text"] = 'Ihre individuelle Website können Sie von Grund auf neu erstellen oder auf vorhandene Elemente und Basislayouts zugreifen.';
+
 */
 $l_sidebar["default"][3] = array();
 $l_sidebar["default"][3]["headline"] = 'Tagreferenz';

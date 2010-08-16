@@ -71,7 +71,7 @@ $l_workflow["active"] = "Workflow ist aktiv";
 $l_workflow["step"] = "Stufe";
 $l_workflow["and_or"] = "UND&nbsp;/&nbsp;ODER";
 $l_workflow["worktime"] = "Arbeitszeit (Std., 1Min=0<b>.</b>016)";
-$l_workflow["specials"] = "Spezial";
+$l_workflow["specials"] = "Sonderbehandlungen";
 $l_workflow["EmailPath"] = "Zeige den Dokumentenpfad im Betreff von Benachrichtigungs-E-Mails";
 $l_workflow["LastStepAutoPublish"] = "Nach Ablaufen des letzten Schrittes (Nächste Stufe angeklickt), publiziere das Dokument statt es zurückzuweisen";
 
@@ -159,7 +159,7 @@ if(defined("OBJECT_FILES_TABLE")){
 
 $l_workflow["auto_approved"]="Dokument wurde automatisch weitergegeben";
 $l_workflow["auto_declined"]="Dokument wurde automatisch zurückgewiesen";
-$l_workflow["auto_published"]="Dokument wurde automatisch veröffentlicht";
+$l_workflow["auto_published"]="Document wurde automatisch veröffentlicht"; 
 
 $l_workflow["doc_deleted"]="Dokument wurde gelöscht!";
 $l_workflow["ask_before_recover"]="Es befinden sich noch Dokumente/Objekte im Workflow! Möchten Sie diese Dokumente/Objekte aus dem Workflow entfernen?";

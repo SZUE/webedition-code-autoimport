@@ -251,13 +251,13 @@ $l_backup["tools_import_desc"] = "Here you can restore webEdition tools data. Pl
 $l_backup["tools_export_desc"] = "Here you can save webEdition tools data. Please select the desired tools from the list.";
 
 $l_backup['ftp_hint'] = "Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!";
-
-$l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.org/wiki/de/webedition/administration/charset-conversion-of-legacy-sites";
+$l_backup["convert_charset"] = "Attention! Using this option in an existing site can lead to total loss of all data, please follow the instruction in http://documentation.webedition.org/de/webedition/administration/charset-conversion-of-legacy-sites";
 
 $l_backup["convert_charset_data"] = "While importing the backup, convert the site from ISO to UTF-8";
 
 $l_backup["view_log"] = "Backup-Log";
 $l_backup["view_log_not_found"] = "The backup log file was not found! ";
 $l_backup["view_log_no_perm"] = "You do not have the needed permissions to view the backup log file! ";
+
 
 ?>

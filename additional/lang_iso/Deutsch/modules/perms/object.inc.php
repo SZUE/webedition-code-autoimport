@@ -32,4 +32,5 @@ $l_perm["object"]["NEW_OBJECT"] = "Der Benutzer darf Klassen erstellen";
 $l_perm["object"]["DELETE_OBJECT"] = "Der Benutzer darf Klassen löschen";
 $l_perm["object"]["CAN_SELECT_OTHER_USERS_OBJECTS"] = "Der Benutzer darf Objekte außerhalb seines Arbeitsbereichs wählen";
 $l_perm["object"]["CAN_COPY_OBJECTS"] = "Der Benutzer darf ganze Objektverzeichnisse kopieren";
+
 ?>
