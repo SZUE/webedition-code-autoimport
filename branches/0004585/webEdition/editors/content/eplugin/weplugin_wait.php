@@ -58,7 +58,7 @@
 		}
 		
 		function initPlugin() {
-			top.opener.top.plugin.location="' .WEBEDITION_DIR . 'eplugin/weplugin.inc.php";
+			top.opener.top.plugin.location="' .WEBEDITION_DIR . 'editors/content/eplugin/weplugin.inc.php";
 		}
 	
 		self.focus();
