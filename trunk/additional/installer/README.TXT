@@ -36,4 +36,4 @@ When running make.php from your browser, don't forget to change the last line of
 
 Please note:
 --------------------------------------------------------------------------
-The changelog is now located at http://documentation.webedition.de
+The changelog is now located at http://documentation.webedition.org
