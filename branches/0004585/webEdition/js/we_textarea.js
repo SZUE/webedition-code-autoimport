@@ -86,9 +86,9 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 		out += 'onmouseover="'+this.name+'Object.ButtonOverUp(this)"'+"\n";
 		out += 'onmouseout="'+this.name+'Object.ButtonNormal(this)"'+"\n";
 		out += 'onmousedown="'+this.name+'Object.ButtonOverDown(this)"'+"\n";
-		out += 'onclick="window.open(\'/webEdition/wysiwyg/importRtfDialog.php?we_dialog_args[ntxt]=1&we_dialog_args[taname]='+escape(this.name)+'\',\'importRtf\',\'height=600,width=680,scrollbars=1\');"></div></td>';
+		out += 'onclick="window.open(\'/webEdition/editors/content/wysiwyg/importRtfDialog.php?we_dialog_args[ntxt]=1&we_dialog_args[taname]='+escape(this.name)+'\',\'importRtf\',\'height=600,width=680,scrollbars=1\');"></div></td>';
 
-		//out += '<td><a href="#" onclick="window.open(\'/webEdition/wysiwyg/importRtfDialog.php?we_dialog_args[ntxt]=1&we_dialog_args[taname]='+escape(this.name)+'\',\'importRtf\',\'height=600,width=680,scrollbars=1\');">';
+		//out += '<td><a href="#" onclick="window.open(\'/webEdition/editors/content/wysiwyg/importRtfDialog.php?we_dialog_args[ntxt]=1&we_dialog_args[taname]='+escape(this.name)+'\',\'importRtf\',\'height=600,width=680,scrollbars=1\');">';
 		//out += '<div unselectable="on" style="border:1px solid transparent; padding: 1px" onMouseOver="'+this.name+'Object.ButtonOverUp(this)" onMouseOut="'+this.name+'Object.ButtonNormal(this)" onMouseDown="'+this.name+'Object.ButtonOverDown(this)"><img border="0" src="/webEdition/images/wysiwyg/rtf.gif" width="23" height="22"></div>';
 		//out += '</a></td>';
 	}
@@ -100,7 +100,7 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 		out += 'onmouseover="if(self.'+this.name+'Object){'+this.name+'Object.ButtonOverUp(this);}"'+"\n";
 		out += 'onmouseout="if(self.'+this.name+'Object){'+this.name+'Object.ButtonNormal(this);}"'+"\n";
 		out += 'onmousedown="if(self.'+this.name+'Object){'+this.name+'Object.ButtonOverDown(this);}"'+"\n";
-		out += 'onclick="window.open(\'/webEdition/wysiwyg/spellcheck.php?editname=areatmp_'+escape(name)+'\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
+		out += 'onclick="window.open(\'/webEdition/editors/content/wysiwyg/spellcheck.php?editname=areatmp_'+escape(name)+'\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
 
 
 	}

@@ -297,7 +297,7 @@ weWysiwyg.prototype.writeHTMLDocument = function(){
 	this.dom.document.write('<html><head>');
 	this.dom.document.write('<base href="'+this.baseUrl+'">');
 	this.dom.document.write('<title></title><meta http-equiv=Content-Type content=\'text/html;'+(this.charset ? ' charset=iso-8859-1' : '')+'\'>');
-	this.dom.document.write('<link id="wysiwygcss" media="screen" rel="stylesheet" type="text/css" href="/webEdition/wysiwyg/borders.css" />');
+	this.dom.document.write('<link id="wysiwygcss" media="screen" rel="stylesheet" type="text/css" href="/webEdition/editors/content/wysiwyg/borders.css" />');
 	this.dom.document.write('<style type="text/css">'+we_styleString+'</style>');
 	this.dom.document.write('</head>');
 	this.dom.document.write('<body '+(bodystyle ? (' style="'+bodystyle+'"') : '') + ' topMargin="3" leftMargin="2" rightMargin="2" bottomMargin="2"'+(bodyclass ? ' class="'+bodyclass+'"' : '')+(this.bgcolor ? ' bgcolor="'+this.bgcolor+'"' : '')+'>');
@@ -494,7 +494,7 @@ weWysiwyg.prototype.cleanCode = function(code){
 		code = weWysiwyg.removeAlloneEndtags(code,"P")
 	}
 	code = code.replace(/^<br>\n$/,"");
-	code = code.replace(/_$§_WE_AMP_§$_/,"&");
+	code = code.replace(/_$ï¿½_WE_AMP_ï¿½$_/,"&");
 	code = code.replace(/^<br>\r$/,"");
 	code = code.replace(/^<br>\r\n$/,"");
 	code = code.replace(/^<br>$/,"");
@@ -589,7 +589,7 @@ weWysiwyg.prototype.getEditHTML = function(){
 
 
 weWysiwyg.prototype.setEditorCSS = function(showBorders) {
-	this.dom.document.getElementById('wysiwygcss').href = showBorders ? '/webEdition/wysiwyg/borders.css' : '/webEdition/wysiwyg/empty.css';
+	this.dom.document.getElementById('wysiwygcss').href = showBorders ? '/webEdition/editors/content/wysiwyg/borders.css' : '/webEdition/editors/content/wysiwyg/empty.css';
 }
 
 weWysiwyg.prototype.toggleSourceCode = function(){

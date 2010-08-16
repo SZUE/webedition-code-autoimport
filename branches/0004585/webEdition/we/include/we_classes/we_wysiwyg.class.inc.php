@@ -130,7 +130,7 @@ class we_wysiwyg{
 	function getHeaderHTML(){
 		if(!defined("WE_WYSIWG_HEADER")){
 			define("WE_WYSIWG_HEADER",1);
-			return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
+			return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
 				<style type="text/css">
 					.tbButton {
 						border: 1px solid #F4F4F4;
@@ -235,7 +235,7 @@ class we_wysiwyg{
 					var isOpera = '.($GLOBALS['BROWSER']=='OPERA'?'true':'false').';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
-					var weWysiwygFolderPath = "/webEdition/wysiwyg/";
+					var weWysiwygFolderPath = "/webEdition/editors/content/wysiwyg/";
 					var weWysiwygImagesFolderPath = "/webEdition/images/wysiwyg/";
 					var weWysiwygBgGifPath = "' . IMAGE_DIR .'backgrounds/aquaBackground.gif";
 					var weWysiwygIsIntialized = false;
@@ -301,9 +301,9 @@ class we_wysiwyg{
 				'<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>'
 				.
 					($GLOBALS["SAFARI_WYSIWYG"]
-						? '<script language="JavaScript" type="text/javascript" src="/webEdition/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
+						? '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
 						  '<script language="JavaScript" type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
-						  : '<script language="JavaScript" type="text/javascript" src="/webEdition/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
+						  : '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
 		} else {
 			return "";
 		}
@@ -1170,7 +1170,7 @@ class we_wysiwyg{
 	<tr>
 ';
 if (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"]) {
-	$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe src="/webEdition/wysiwyg/empty.html" style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;" contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true"></iframe></td>
+	$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe src="/webEdition/editors/content/wysiwyg/empty.html" style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;" contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true"></iframe></td>
 ';
 } else {
 	$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe style="display: block;color: black;border: 1px solid #A5ACB2;" contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true"></iframe></td>
