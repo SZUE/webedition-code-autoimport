@@ -222,12 +222,13 @@ class we_wizard_import extends we_wizard {
 			"html" => $tblData->getHTMLCode(),
 			"space" => 120,
 			"noline" => 1));
+/* First Step Wizard #4606
 		array_push($parts, array(
 			"headline" => $l_import["import_templates"],
 			"html" => $tblTemplates->getHTMLCode(),
 			"space" => 120,
 			"noline" => 1));
-
+*/
 		return array("\n" .
 			"function we_cmd() {\n" .
 			"	var args = '';\n" .

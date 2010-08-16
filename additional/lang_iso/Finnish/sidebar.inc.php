@@ -39,7 +39,7 @@ $l_sidebar["default"][0]["text"] = 'webEdition on nyt asennettu mutta toistaisek
 $l_sidebar["default"][1] = array();
 $l_sidebar["default"][1]["headline"] = 'Manuaalit';
 $l_sidebar["default"][1]["text"] = 'Täältä löydät tietoa webEditionin toiminnasta ja rakenteesta';
-$l_sidebar["default"][1]["link"] = 'http://www.webedition.de/en/Documentation/index.php';
+$l_sidebar["default"][1]["link"] = 'http://documentation.webedition.org/wiki/en/start';
 $l_sidebar["default"][1]["icon"] = 'documentation.gif';
 
 $l_sidebar["default"][2] = array();
@@ -49,24 +49,22 @@ $l_sidebar["default"][2]["link"] = 'javascript:top.we_cmd(\'help\');';
 $l_sidebar["default"][2]["icon"] = 'help.gif';
 
 $l_sidebar["default"][3] = array();
-$l_sidebar["default"][3]["headline"] = 'Kuinka jatkaa';
-$l_sidebar["default"][3]["text"] = 'Voit luoda yksilöllisen web-sivuston alusta alkaen tai käyttää tarjottuja asetteluelementtejä.';
+$l_sidebar["default"][3]["headline"] = 'Tagi hakemisto';
+$l_sidebar["default"][3]["text"] = 'Here you will find a list of all webEdition we:Tags with attributes and examples. ';
+$l_sidebar["default"][3]["link"] = 'http://tags.webedition.org/wiki/en/';
+$l_sidebar["default"][3]["icon"] = 'firststepswizard.gif';
 
 $l_sidebar["default"][4] = array();
-$l_sidebar["default"][4]["headline"] = 'Aloitusvelho';
-$l_sidebar["default"][4]["text"] = 'Käytä tätä velhoa asentaaksesi käyttövalmiita perussivupohjia. "webEdition Onlinen" avulla voit asentaa sivupohjia erikoistarkoituksiin milloin vain.';
-$l_sidebar["default"][4]["link"] = 'javascript:top.we_cmd(\'openFirstStepsWizardMasterTemplate\');';
-$l_sidebar["default"][4]["icon"] = 'firststepswizard.gif';
+$l_sidebar["default"][4]["headline"] = 'Keskustelufoorumi';
+$l_sidebar["default"][4]["text"] = 'Official webEdition support forum with many Q&A concerning all kind of webEdition problems ';
+$l_sidebar["default"][4]["link"] = 'http://forum.webedition.org/viewforum.php?f=36';
+$l_sidebar["default"][4]["icon"] = 'tutorial.gif';
 
 $l_sidebar["default"][5] = array();
-$l_sidebar["default"][5]["headline"] = 'Demosivut';
-$l_sidebar["default"][5]["text"] = 'Nämä esimerkkisivut sisältävät täydellisen esimerkin perussivuista. Voi täysin vapaasti tuoda täältä osia omiin sivustoihisi ja muokata niitä haluamallasi tavalla.';
-$l_sidebar["default"][5]["link"] = 'http://demo.en.webedition.info/';
+$l_sidebar["default"][5]["headline"] = 'Versiohistoria';
+$l_sidebar["default"][5]["text"] = 'A complete changelog of all webEdition bugfixes and improvements';
+$l_sidebar["default"][5]["link"] = 'http://documentation.webedition.org/wiki/en/webedition/change-log/start';
 $l_sidebar["default"][5]["icon"] = 'demopages.gif';
-
-$l_sidebar["default"][6] = array();
-$l_sidebar["default"][6]["headline"] = 'Econda';
-$l_sidebar["default"][6]["text"] = '<a href="http://webedition.de/en/econda" target="_blank">econda</a> is the leading provider for web controlling solutions and webEdition technology partner.  The econda Shop Monitor makes online-shop analytics accessible, comprehensible and indispensable for optimally informed marketing and business decisions. <a href="http://webedition.de/en/econda-form" target="_blank">Register now</a> for a free 14-day trial! More information regarding the installation can be found in the <a href="http://documentation.webedition.de/200810241003219195" target="_blank">webEdition online documentation</a>.';
 
 // Only shown on the default sidebar page if user has administrator perms
 $l_sidebar["admin"] = array();
