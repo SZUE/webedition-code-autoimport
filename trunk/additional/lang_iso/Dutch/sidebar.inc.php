@@ -34,7 +34,7 @@ $l_sidebar["default"] = array();
 
 $l_sidebar["default"][0] = array();
 $l_sidebar["default"][0]["headline"] = 'Welcome!';
-$l_sidebar["default"][0]["text"] = 'webEdition is succesvol geïnstalleerd, maar bevat nog geen content.';
+$l_sidebar["default"][0]["text"] = 'webEdition is succesvol ge?talleerd, maar bevat nog geen content.';
 
 $l_sidebar["default"][1] = array();
 $l_sidebar["default"][1]["headline"] = 'Manuals';

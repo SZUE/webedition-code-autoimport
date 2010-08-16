@@ -197,6 +197,7 @@ $l_newsletter["edit_file"] = "CSV-Datei bearbeiten";
 $l_newsletter["show"] = "Zeige";
 $l_newsletter["no_file_selected"] = "Keine Datei ausgewählt";
 $l_newsletter["file_is_empty"] = "Die CSV-Datei ist leer";
+$l_newsletter["file_all_ok"] = "Die CSV-Datei enthält keine fehlerhaften Einträge";
 $l_newsletter["del_email_file"] = "Die E-Mail-Adresse '%s' löschen?";
 $l_newsletter["email_missing"] = "Die E-Mail-Adresse fehlt";
 $l_newsletter["yes"] = "Ja";

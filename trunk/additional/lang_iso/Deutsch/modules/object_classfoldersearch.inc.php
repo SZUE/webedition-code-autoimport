@@ -64,5 +64,4 @@ $l_object_classfoldersearch["ID"] = "ID";
 $l_object_classfoldersearch["language"] = "Sprache";
 $l_object_classfoldersearch["charset"] = "Zeichensatz";
 
-
 ?>

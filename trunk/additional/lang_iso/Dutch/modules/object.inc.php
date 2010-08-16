@@ -88,4 +88,5 @@ $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLAT
 $l_object["not_published"] = "The object is not published"; // TRANSLATE
 $l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
 $l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
+
 ?>

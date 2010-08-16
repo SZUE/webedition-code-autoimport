@@ -137,6 +137,7 @@ $l_voting['log_fallback'] = 'Terugvallen';
 $l_voting['new_ip_add'] = 'Voer a.u.b. het nieuwe IP adres in!';
 $l_voting['not_valid_ip'] = 'Het IP adres is niet geldig';
 $l_voting['not_active'] = 'The entered datum is in the past!'; // TRANSLATE
+
 $l_voting['headline_datatype'] = 'Type of Inquiry';// TRANSLATE
 $l_voting['AllowFreeText'] = 'Allow free text';// TRANSLATE
 $l_voting['AllowImages'] = 'Allow images';// TRANSLATE

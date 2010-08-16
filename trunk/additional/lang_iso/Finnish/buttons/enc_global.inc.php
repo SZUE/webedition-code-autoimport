@@ -109,4 +109,8 @@ $l_button["iconview"]["width"] = 100;
 $l_button["listview"]["value"] = "Listview";
 $l_button["listview"]["alt"]   = "Listview";
 $l_button["listview"]["width"] = 100;
+
+$l_button["reindent"]["value"] = "Reindent code";
+$l_button["reindent"]["alt"]   = "";
+$l_button["reindent"]["width"] = 100;
 ?>

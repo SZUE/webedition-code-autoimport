@@ -160,7 +160,7 @@ $l_javaMenu["backup"] = "Backup";
 	$l_javaMenu["make_backup"] = "Backup erstellen";
 	$l_javaMenu["recover_backup"] = "Backup wiederherstellen";
 	$l_javaMenu["view_backuplog"] = "Backup-Log einsehen";
-	
+
 	##################################
 	### SubMenu Datei/Backup ####
 	##################################

@@ -346,6 +346,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 $l_prefs["navigation_directoryindex_description"] = "After a change, rebuild the navigation cache";// TRANSLATE
 	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html')";// TRANSLATE
 
+
 	/**
 	 * DATABASE
 	 */
@@ -572,7 +573,16 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes'; // TRANSLATE
 	$l_prefs["editor_pi_tag_font_color"] = 'PHP code'; // TRANSLATE
 	$l_prefs["editor_comment_font_color"] = 'Comments'; // TRANSLATE
-	$l_prefs["jeditor"] = 'Java source editor'; // TRANSLATE
+	$l_prefs['editor_highlight_colors'] = 'Highlighting colors';// TRANSLATE
+	$l_prefs['editor_linenumbers'] = 'Line numbers';// TRANSLATE
+	$l_prefs['editor_completion'] = 'Code Completion';// TRANSLATE
+	$l_prefs['editor_tooltips'] = 'Tooltips on we:tags';// TRANSLATE
+	$l_prefs['editor_docuclick'] = 'Docu integration';// TRANSLATE
+	$l_prefs['editor_enable'] = 'Enable';// TRANSLATE
+	$l_prefs['editor_plaintext'] = 'Plain textarea';// TRANSLATE
+	$l_prefs['editor_java'] = 'Java editor';// TRANSLATE
+	$l_prefs['editor_javascript'] = 'JavaScript editor (beta)';// TRANSLATE
+	$l_prefs['editor_javascript_information'] = 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.';// TRANSLATE
 	
 	
 	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE

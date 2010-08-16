@@ -46,4 +46,5 @@ $GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Existierendes Objekt überschre
 $GLOBALS["l_copyFolder"]["sameName_rename"] = "Neues Objekt umbenennen";
 $GLOBALS["l_copyFolder"]["sameName_nothing"] = "Objekt nicht kopieren";
 $GLOBALS["l_copyFolder"]["sameName_headline"] = "Was tun bei gleichem Namen?";
+
 ?>

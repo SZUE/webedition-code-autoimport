@@ -347,6 +347,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 $l_prefs["navigation_directoryindex_description"] = "After a change, rebuild the navigation cache";
 	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html')";
 
+
 	/**
 	 * DATABASE
 	 */
@@ -573,7 +574,16 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes';
 	$l_prefs["editor_pi_tag_font_color"] = 'PHP code';
 	$l_prefs["editor_comment_font_color"] = 'Comments';
-	$l_prefs["jeditor"] = 'Java source editor';
+	$l_prefs['editor_highlight_colors'] = 'Highlighting colors';
+	$l_prefs['editor_linenumbers'] = 'Line numbers';
+	$l_prefs['editor_completion'] = 'Code Completion';
+	$l_prefs['editor_tooltips'] = 'Tooltips on we:tags';
+	$l_prefs['editor_docuclick'] = 'Docu integration';
+	$l_prefs['editor_enable'] = 'Enable';
+	$l_prefs['editor_plaintext'] = 'Plain textarea';
+	$l_prefs['editor_java'] = 'Java editor';
+	$l_prefs['editor_javascript'] = 'JavaScript editor (beta)';
+	$l_prefs['editor_javascript_information'] = 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.';
 	
 	
 	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!';
