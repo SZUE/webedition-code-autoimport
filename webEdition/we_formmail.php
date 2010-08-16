@@ -432,7 +432,7 @@ if($recipient){
 				if(isset($file["tmp_name"]) && $file["tmp_name"]){
 					$tempName = TMP_DIR."/".$file["name"];
 					move_uploaded_file($file["tmp_name"],$tempName);
-					$phpmail->doAddAttachment($tempName);
+					$phpmail->doaddAttachment($tempName);
 				}
 			}
 		} 	

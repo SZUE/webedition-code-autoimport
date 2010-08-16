@@ -2952,7 +2952,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			if(!$this->View->settings["use_base_href"]) {$phpmail->setIsUseBaseHref($this->View->settings["use_base_href"]);}
 
 			foreach($atts as $att){ 
-				$phpmail->doAddAttachment($att);
+				$phpmail->doaddAttachment($att);
 			}
 			if($this->View->settings["reject_malformed"])
 			$phpmail->buildMessage();

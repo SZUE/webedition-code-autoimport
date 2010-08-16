@@ -2487,7 +2487,7 @@ class weNewsletterView {
 		if ($hm) {$phpmail->addHTMLPart($content);}
 		$phpmail->addTextPart(trim($plain));
 		foreach ($atts as $att) {
-			$phpmail->doAddAttachment($att);
+			$phpmail->doaddAttachment($att);
 		}
 		$phpmail->buildMessage();
 		$phpmail->Send();
