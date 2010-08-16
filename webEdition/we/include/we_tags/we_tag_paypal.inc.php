@@ -57,6 +57,7 @@ function we_tag_paypal($attribs) {
 
 	$messageRedirectMan = we_getTagAttribute("messageredirectman",$attribs);
 	$formTagOnly = we_getTagAttribute("formtagonly",$attribs,'false', true);
+	$charset = we_getTagAttribute("charset",$attribs);
 
 	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
 
@@ -225,7 +226,9 @@ switch ($_GET['action']) {
 		$p->add_field('email', $sSendEmail);
 		$p->add_field('receiver_email', $sSendEmail);
       }
-      
+      if ($charset!=''){
+	  	$p->add_field('charset',$charset);
+	  }
       //  determine the basket data
       $p->add_field('item_name_'.$i, $itemTitle = (isset($item['serial']['we_shoptitle']) ? $item['serial']['we_shoptitle'] : $item['serial']['shoptitle']) );
       $p->add_field('quantity_'.$i, $item['quantity']);
