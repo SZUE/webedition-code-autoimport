@@ -2322,12 +2322,12 @@ function we_tag_field($attribs, $content)
 				$out = getHtmlTag('img', $_imgAtts);
 			
 			} else {
-				$id = ($isImageDoc && $type == "img") ? $GLOBALS["lv"]->Record["wedoc_ID"] : $GLOBALS["lv"]->f($name);
-				if ($id ==0) {
+				$idd = ($isImageDoc && $type == "img" ) ? $GLOBALS["lv"]->Record["wedoc_ID"] : $GLOBALS["lv"]->f($name);
+				if ($idd ==0) {
 					$out = '';
 				} else {
 					$out = we_document::getFieldByVal(
-						$id, 
+						$idd, 
 						$type, 
 						$attribs, 
 						false, 
