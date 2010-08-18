@@ -29,7 +29,7 @@ if (preg_match('/(ozilla.[23]|MSIE.3)/i', $_SERVER['HTTP_USER_AGENT'])) {
 }
 if (stristr($_SERVER['HTTP_USER_AGENT'], 'safari')) {
 	$BROWSER = "SAFARI";
-	if (preg_match('/AppleWebKit([^ ]+)/i', $_SERVER["HTTP_USER_AGENT"], $regs)) {
+	if (preg_match('#AppleWebKit/([^ ]+)#i', $_SERVER["HTTP_USER_AGENT"], $regs)) {
 		$v = $regs[1];
 		if ((abs($v) > 311 && abs($v) < 400) || (abs($v) > 411)) {
 			$SAFARI_WYSIWYG = true;
