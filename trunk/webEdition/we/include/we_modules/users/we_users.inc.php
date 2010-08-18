@@ -319,7 +319,9 @@ class we_user {
 					}
 				}
 			}
-			$updt = ereg_replace('(.+),$','\1',$updt);
+			//remove last ,
+			//$updt = ereg_replace('(.+),$','\1',$updt);
+			$updt = substr($updt, 0, -1);
 			$q = "UPDATE ".mysql_real_escape_string($this->Table)." SET $updt WHERE ID=".abs($this->ID);
 			$this->DB_WE->query($q);
 		}
@@ -732,7 +734,9 @@ function mapPermissions() {
 					$updt .= $fieldName."='".mysql_real_escape_string($this->Preferences[$fieldName])."',";
 				}
 			}
-			$updt = ereg_replace('(.+),$','\1', $updt);
+			//remove last ,
+			//$updt = ereg_replace('(.+),$','\1', $updt);
+			$updt = substr($updt, 0, -1);
 			$q = 'UPDATE '.PREFS_TABLE.' SET '.$updt.' WHERE userID='.abs($this->ID);
 			$this->DB_WE->query($q);
 		} else {
