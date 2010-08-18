@@ -220,7 +220,8 @@ switch ($_GET['action']) {
       $p->add_field('address1', $sendStreet);
       $p->add_field('zip', $sendZip);
       $p->add_field('city', $sendCity);
-      if ($countrycode=='') {$p->add_field('country', $lc);} else {$p->add_field('country', $countrycode);}
+	//#4615, don't set country code if not specified.
+      if ($countrycode!='') {$p->add_field('country', $countrycode);}
       
       if (isset($sSendEmail) && we_check_email($sSendEmail)) {
 		$p->add_field('email', $sSendEmail);
