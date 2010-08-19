@@ -1114,6 +1114,7 @@ function we_tag_block($attribs, $content)
 	
 	if ($isInListview) {
 		$list = $GLOBALS["lv"]->f($name);
+		$GLOBALS["lv"]->BlockInside = true;
 	} else {
 		$list = $GLOBALS["we_doc"]->getElement($name);
 	}
@@ -1184,7 +1185,9 @@ function we_tag_block($attribs, $content)
 			
 			for ($i = 0; $i < $listlen; $i++) {
 				$listRef = $blkPreName . $listarray[$i];
+				
 				$foo = $content;
+				
 				$foo = str_replace('<we_:_ref>', $listRef, $foo);
 				
 				//	handle we:ifPosition:
@@ -2191,8 +2194,10 @@ function we_tag_field($attribs, $content)
 	$name = we_getTagAttribute("name", $attribs);
 	
 	// quickfix 4192
-	$nameA = explode("blk_",$name);
-	$name = $nameA[0];
+	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
+		$nameA = explode("blk_",$name);
+		$name = $nameA[0];
+	}
 	// quickfix 4192
 	$href = we_getTagAttribute("href", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
@@ -3772,8 +3777,10 @@ function we_tag_ifField($attribs, $content)
 	
 	$match = we_getTagAttribute("match", $attribs);
 	// quickfix 4192
-	$matchA = explode("blk_",$match);
-	$match = $matchA[0];
+	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
+		$matchA = explode("blk_",$match);
+		$match = $matchA[0];
+	}
 	// quickfix 4192
 	$matchArray = makeArrayFromCSV($match);
 	
