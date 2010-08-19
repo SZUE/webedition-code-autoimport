@@ -409,7 +409,10 @@ $l_we_tag['objectLanguage']['defaultvalue'] = "";
 
 $l_we_tag['ifVotingField']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField einen Wert entsprechend dem Attribut match hat, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
 $l_we_tag['ifNotVotingField']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField keinen Wert entsprechend dem Attribut match hat, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
-$l_we_tag['ifVotingFieldEmpty']['description'] = "Uuml;berpr&uuml;ft ob ein VotingField leer ist, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
-$l_we_tag['ifVotingFieldNotEmpty']['description'] = "Uuml;berpr&uuml;ft ob ein VotingField nicht leer ist, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
+$l_we_tag['ifVotingFieldEmpty']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField leer ist, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
+$l_we_tag['ifVotingFieldNotEmpty']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField nicht leer ist, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
+$l_we_tag['ifVotingIsRequired']['description'] = "Gibt des umschlossenen Inhalt nur aus, wenn das Voting-Feld ein Pflichtfeld ist";
+$l_we_tag['ifNotVotingIsRequired']['description'] = "Gibt des umschlossenen Inhalt nur aus, wenn das Voting-Feld kein Pflichtfeld ist";
+$l_we_tag['votingSession']['description'] = "Generiert einen eindeutigen Identifier, der mit ins Voting-Log aufgenommen wird und so erlaubt, die Antworten zu verschienenen Fragen einer Befragung einander zuzuordnen";
 
 ?>
