@@ -7119,10 +7119,22 @@ function we_tag_write($attribs, $content)
 							$objname = 1 + abs(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
 						}					
 					} else {
-						if ($onpredefinedname=='appendto') { 
-							$objname = $GLOBALS["we_$type"][$name]->Text . '_'.$objname;
+						if ($onpredefinedname=='appendto') {
+							if ($objname!='') {
+								$objname = $GLOBALS["we_$type"][$name]->Text . '_'.$objname;
+							} else {
+								$objname = $GLOBALS["we_$type"][$name]->Text;
+							}
 						} elseif($onpredefinedname=='infrontof'){
-							$objname .= '_'.$GLOBALS["we_$type"][$name]->Text;
+							if ($objname!='') {
+								$objname .= '_'.$GLOBALS["we_$type"][$name]->Text;
+							} else {
+								$objname = $GLOBALS["we_$type"][$name]->Text;
+							}
+						} elseif($onpredefinedname=='overwrite')  {
+							if ($objname=='') {
+								$objname = $GLOBALS["we_$type"][$name]->Text;
+							}
 						}
 					}						
 					$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);  

@@ -26,7 +26,7 @@ if(defined("OBJECT_FILES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id640_
 $GLOBALS['weTagWizard']['attribute']['id610_userid'] = new weTagData_textAttribute('610', 'userid', false, '');
 $GLOBALS['weTagWizard']['attribute']['id851_name'] = new weTagData_textAttribute('851', 'name', false, '');
 $GLOBALS['weTagWizard']['attribute']['id852_onduplicate'] = new weTagData_selectAttribute('852', 'onduplicate', array(new weTagDataOption('abort', false, ''), new weTagDataOption('overwrite', false, ''), new weTagDataOption('increment', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id867_onpredefinedname'] = new weTagData_selectAttribute('867', 'onpredefinedname', array(new weTagDataOption('appendto', false, ''), new weTagDataOption('infrontog', false, ''), new weTagDataOption('overwrite', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id867_onpredefinedname'] = new weTagData_selectAttribute('867', 'onpredefinedname', array(new weTagDataOption('appendto', false, ''), new weTagDataOption('infrontof', false, ''), new weTagDataOption('overwrite', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id863_workflowname'] = new weTagData_textAttribute('863', 'workflowname', false, '');
 $GLOBALS['weTagWizard']['attribute']['id864_workflowuserid'] = new weTagData_textAttribute('864', 'workflowuserid', false, '');
 ?>
