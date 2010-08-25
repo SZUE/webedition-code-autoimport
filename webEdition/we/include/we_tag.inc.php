@@ -4639,8 +4639,7 @@ function we_tag_img($attribs, $content)
 	if ($we_editmode && !$showimage) {
 		$out = '';
 	} elseif (!$id) {
-		//if($GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';} no_image war noch in der Vorscha sichtbar
-		$out ='';
+		if($we_editmode && $GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';} //no_image war noch in der Vorscha sichtbar
 	} else {
 		$out = $GLOBALS["we_doc"]->getField($attribs, "img");
 	}
