@@ -2293,14 +2293,8 @@ function we_tag_field($attribs, $content)
 				$href = (empty($href) ? $out : $href);
 				break;
 			}
-		case "href" :
-			if (isset($GLOBALS["lv"]) && ($GLOBALS["lv"]->ClassName == "we_listview_multiobject" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag")) {
-				$hrefArr = $GLOBALS["lv"]->f($name) ? unserialize($GLOBALS["lv"]->f($name)) : array();
-				if (!is_array($hrefArr))
-					$hrefArr = array();
-				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
-				break;
-			}
+		
+			
 		case "date" :
 		case "img" :
 		case "int" :
@@ -2380,15 +2374,22 @@ function we_tag_field($attribs, $content)
 						$GLOBALS["we_doc"]->Path, 
 						$GLOBALS["DB_WE"], 
 						$classid, 
-						'$GLOBALS["lv"]->getElement');
+						'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 				
 				require_once (WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
 			break;
-		
+	case "href" :
+			if (isset($GLOBALS["lv"]) && ($GLOBALS["lv"]->ClassName == "we_listview_multiobject" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag")) {
+				$hrefArr = $GLOBALS["lv"]->f($name) ? unserialize($GLOBALS["lv"]->f($name)) : array();
+				if (!is_array($hrefArr))
+					$hrefArr = array();
+				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
+				break;
+			}	
 		default :
-	
+
 			$normVal = we_document::getFieldByVal(
 					$GLOBALS["lv"]->f($name), 
 					$type, 
@@ -2398,7 +2399,7 @@ function we_tag_field($attribs, $content)
 					$GLOBALS["we_doc"]->Path, 
 					$GLOBALS["DB_WE"], 
 					$classid, 
-					'$GLOBALS["lv"]->getElement');
+					'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht inLV, #4648
 			// bugfix 7557
 			// wenn die Abfrage im Aktuellen Objekt kein Erg�bnis liefert
 			// wird in den eingebundenen Objekten �berpr�ft ob das Feld existiert
@@ -2417,7 +2418,7 @@ function we_tag_field($attribs, $content)
 								$GLOBALS["we_doc"]->Path, 
 								$GLOBALS["DB_WE"], 
 								substr($_glob_key, 13), 
-								'$GLOBALS["lv"]->getElement');
+								'$GLOBALS["lv"]->f');// war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 					
 					if ($normVal != "")
@@ -2439,7 +2440,7 @@ function we_tag_field($attribs, $content)
 							$GLOBALS["we_doc"]->Path, 
 							$GLOBALS["DB_WE"], 
 							$classid, 
-							'$GLOBALS["lv"]->getElement');
+							'$GLOBALS["lv"]->f');// war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					if ($altVal == "")
 						return "";
 					$out = cutText($altVal, $max);
