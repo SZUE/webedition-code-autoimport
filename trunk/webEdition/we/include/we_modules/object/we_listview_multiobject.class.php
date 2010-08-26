@@ -320,10 +320,9 @@ class we_listview_multiobject extends listviewBase {
 		$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID='".$classID."'",$this->DB_WE);
 		$_selFields = "";
 		foreach($_fieldnames as $_key => $_val) {
+			if(empty($_val) || $_val=='_') // bug #4657
+				continue;
 			if (!is_numeric($_key)) {
-				if ($_val == "_") {
-					$_val = "";
-				}
 				if ($_val && $_key == "DefaultDesc") {
 					$_selFields .= OBJECT_X_TABLE . $classID .'.'. $_val . " as we_Description,";
 				} else if ($_key == "DefaultTitle") {
