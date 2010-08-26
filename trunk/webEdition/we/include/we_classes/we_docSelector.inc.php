@@ -764,6 +764,8 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID='".abs($result["TableID"])."'",$this->db);
 					$_selFields = "";
 					foreach($_fieldnames as $_key => $_val) {
+						if(empty($_val) || $_val=='_') // bug #4657
+							continue;
 						if (!is_numeric($_key)) {
 							if ($_val == "_") {
 								$_val = "";
@@ -779,9 +781,9 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					}
 					if ($_selFields) {
 						$_selFields = substr($_selFields, 0, strlen($_selFields)-1);
+						$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . abs($result["ID"]), $this->db);
 					}
 					
-					$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . abs($result["ID"]), $this->db);
 				} elseif ($result['ContentType'] == "folder") {
 					$this->db->query("SELECT ID, Text, IsFolder FROM " . mysql_real_escape_string($this->table) . " WHERE ParentID=".abs($this->id));
 					$folderFolders = array();
