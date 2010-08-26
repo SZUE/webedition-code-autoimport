@@ -175,7 +175,7 @@ for($i=0; $i <= $count && !empty($sort); $i++){
 	$content .= 	'</td>'
 				.	'</tr>'
 				.	'</table>'
-				.	'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>'.getPixel(2,10)
+				.	'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">'.getPixel(1,1).'</div>'.getPixel(2,10)
 				.	'</div>'
 				.	'<script type="text/javascript">'
 				.	'classEntry.add(document, \''.$uniqid.'\', null);'
