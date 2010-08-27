@@ -522,6 +522,7 @@ function we_cmd() {
 		case "delete_single_document_question":
 			var cType    = top.weEditorFrameController.getActiveEditorFrame().getEditorContentType();
 			var eTable   = top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable();
+			var path     = top.weEditorFrameController.getActiveEditorFrame().getEditorDocumentPath();
 			var isFolder = cType == "folder" ? 1 : 0;
 			var hasPerm = 0;
 			
@@ -555,7 +556,7 @@ function we_cmd() {
 			if (weEditorFrameController.getActiveDocumentReference()) {
 				if(!hasPerm) {
 					<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["no_perms_action"], WE_MESSAGE_ERROR); ?>
-				} else if (window.confirm("<?php print $l_alert['delete_single']['confirm_delete'];?>")) {
+				} else if (window.confirm("<?php print $l_alert['delete_single']['confirm_delete'];?>\n"+path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
