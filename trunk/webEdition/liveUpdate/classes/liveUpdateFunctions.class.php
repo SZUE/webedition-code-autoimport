@@ -134,14 +134,10 @@ class liveUpdateFunctions {
 	function getFilesOfDir(&$allFiles, $baseDir) {
 
 		if (file_exists($baseDir)) {
-
 			$dh = opendir($baseDir);
 			while( $entry = readdir($dh) ){
-
 				if( $entry != "" && $entry != "." && $entry != ".." ){
-
 					$_entry = $baseDir . "/" . $entry;
-
 		            if( !is_dir( $_entry ) ){
 		                $allFiles[] = $_entry;
 		            }
@@ -172,19 +168,14 @@ class liveUpdateFunctions {
 
 		$dh = opendir($dir);
 		if ($dh) {
-
 			while( $entry = readdir($dh) ){
-
 				if( $entry != "" && $entry != "." && $entry != ".." ){
-
 					$_entry = $dir . "/" . $entry;
-
 					if (is_dir($_entry)) {
 						$this->deleteDir($_entry);
 					} else {
 						unlink($_entry);
 					}
-
 				}
 			}
 			closedir($dh);
@@ -222,9 +213,7 @@ class liveUpdateFunctions {
 	function filePutContent($filePath, $newContent) {
 
 		if ($this->checkMakeDir( dirname($filePath) )) {
-
 			if ($fh = fopen($filePath, 'wb')) {
-
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
 				return true;
@@ -254,10 +243,8 @@ class liveUpdateFunctions {
 		$path = $preDir;
 
 		for($i=0;$i<sizeof($pathArray); $i++){
-
 			$path .= $pathArray[$i];
 			if($pathArray[$i] != "" && !is_dir($path)){
-
 				if( !(file_exists($path) || mkdir($path, $mod)) ){
 					return false;
 				}
@@ -275,14 +262,13 @@ class liveUpdateFunctions {
 
 	/**
 	 * @param string $file
-	 * @return boolean
+	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file) {
-
-		if ( @unlink($file) ) {
+		if(file_exists($file)){
+			return @unlink($file);
+		}else{
 			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -291,16 +277,25 @@ class liveUpdateFunctions {
 	 *
 	 * @param string $source
 	 * @param string $destination
-	 * @return boolean
+	 * @return boolean false if move was not successful
 	 */
 	function moveFile($source, $destination) {
 
+		if($source==$destination){
+			return true;
+		}
 
 		if ($this->checkMakeDir(dirname($destination))) {
-
-			$this->deleteFile($destination);
-			if (rename($source, $destination)) {
+			if($this->deleteFile($destination)){
+				//rename seems to have problems - we do it old school way: copy, on success delete
+				//return rename($source, $destination);
+				if(copy($source, $destination)){
+					$this->deleteFile($source);
+					//should we handle file deletion?
 				return true;
+				}else{
+					return false;
+				}
 			} else {
 				return false;
 			}
@@ -321,9 +316,7 @@ class liveUpdateFunctions {
 		$pattern = "/\.([^\..]+)$/";
 
 		if (preg_match($pattern, $path, $matches)) {
-
 			$ext = strtolower($matches[1]);
-
 			if ( ($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql') ) {
 				return false;
 			}
@@ -348,13 +341,15 @@ class liveUpdateFunctions {
 		$replace = $this->decodeCode($replace);
 
 		if (file_exists($filePath)) {
-
 			$oldContent = $this->getFileContent($filePath);
-
 			$replace = $this->checkReplaceDocRoot($replace);
-
 			if ($needle) {
+				/*This version is used in OnlineInstaller! which one is correct?
+				$newneedle= preg_quote($needle, '~'); 
+				$newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
+				*/
 				$newContent = ereg_replace($needle, $replace, $oldContent);
+
 			} else {
 				$newContent = $replace;
 			}
@@ -563,13 +558,9 @@ class liveUpdateFunctions {
 	function executeQueriesInFiles($path) {
 
 		if ($this->isInsertQueriesFile($path)) {
-
 			$success = true;
-
 			if ($queryArray = file($path)) {
-
 				foreach ($queryArray as $query) {
-
 					if (trim($query)) {
 						if (!$this->executeUpdateQuery($query)) {
 							$success = false;
@@ -592,7 +583,6 @@ class liveUpdateFunctions {
 		return $success;
 	}
 	
-
 	/**
 	 * updates the database with given dump.
 	 *
@@ -636,11 +626,8 @@ class liveUpdateFunctions {
 	
 			}
 		
-		
 			if ($db->query($query) ) {
-	
 				return true;
-	
 			} else {
 	
 				switch ($db->Errno) {
