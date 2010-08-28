@@ -621,6 +621,12 @@ class liveUpdateFunctions {
 				if(eregi("^CREATE TABLE ", $query)) {
 					$Charset = DB_CHARSET;
 					$Collation = DB_COLLATION;
+					if($Charset == 'UTF-8'){//#4661 
+						$Charset='utf8';
+					}
+					if($Collation == 'UTF-8'){//#4661 
+						$Collation='utf8_general_ci';
+					}
 					$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
 				}
 	
