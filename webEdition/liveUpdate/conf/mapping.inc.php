@@ -30,6 +30,9 @@ $LU_Variables = array(
 	// always needed variables
 	'clientVersion' => WE_VERSION,
 	'clientSubVersion' => WE_SVNREV,
+	'clientVersionSupp' => (defined("WE_VERSION_SUPP")) ? WE_VERSION_SUPP : '',
+	'clientVersionSuppVersion' => (defined("WE_VERSION_SUPP_VERSION")) ? WE_VERSION_SUPP_VERSION : '',
+	'clientVersionBranch' => (defined("WE_VERSION_BRANCH")) ? WE_VERSION_BRANCH : '',
 	'clientPhpVersion' => phpversion(),
 	'clientPhpExtensions' => implode(',',get_loaded_extensions()),
 	'clientPcreVersion' => phpversion('pcre'),
