@@ -61,8 +61,7 @@ class weBrowser {
 				$out = $GLOBALS["l_browser"]["save_link_as_DEFAULT"];
 			}
 			
-			return nl2br(htmlspecialchars(eregi_replace('<br[[:space:]]*/?'. 
-				    '[[:space:]]*>',chr(13),$out)));
+			return nl2br(htmlspecialchars(preg_replace('#<br\s*/?\s*>#i',"\n",,$out)));
 		}
 
 
