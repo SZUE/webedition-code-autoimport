@@ -35,7 +35,7 @@ $LU_Variables = array(
 	'clientVersionBranch' => (defined("WE_VERSION_BRANCH")) ? WE_VERSION_BRANCH : '',
 	'clientPhpVersion' => phpversion(),
 	'clientPhpExtensions' => implode(',',get_loaded_extensions()),
-	'clientPcreVersion' => phpversion('pcre'),
+	'clientPcreVersion' => (defined("PCRE_VERSION")) ? PCRE_VERSION:'',
 	'clientMySQLVersion' => getMysqlVer(false),
 	'clientDBcharset' => (defined("DB_CHARSET") && DB_CHARSET != "") ? DB_CHARSET : '', 
 	'clientDBcollation' => (defined("DB_COLLATION") && DB_COLLATION != "") ? DB_COLLATION : '',
