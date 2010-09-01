@@ -157,7 +157,7 @@ class we_browserDetect {
 								self::$br = "unknown";
 							}
 			if (self::$sys == "unknown") {
-				if (stristr(self::ua, 'webtv')) {
+				if (stristr(self::$ua, 'webtv')) {
 					self::$sys = "webtv";
 				}
 			}
