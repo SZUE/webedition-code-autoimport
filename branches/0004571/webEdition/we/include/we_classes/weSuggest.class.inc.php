@@ -864,7 +864,7 @@ function doDebugResizeH(){
 			}
 			$out .= "
 	$inputfields { width:100%; }
-	$containerfields {position:relative; margin-top:8px; width:100%; z-index:10000 }
+	$containerfields {position:relative; top:0px !important;margin-top:8px; width:100%; z-index:10000 }
 	$yuiAcContent
 	$ysearchquery {position:absolute;right:10px;color:#808080;z-index:10;}
 	$yuiAcShadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
@@ -882,7 +882,7 @@ function doDebugResizeH(){
 			}
 		$out .= "
 	$inputfields {position:absolute;width:100%; margin-top:1px} /* abs for ie quirks */
-	$containerfields {position:absolute;top:30px;}
+	$containerfields {position:absolute;top:30px !important;}
 	$yuiAcContent
 	$ysearchquery {position:absolute;right:10px;color:#808080;z-index:10;}
 	$yuiAcShadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}

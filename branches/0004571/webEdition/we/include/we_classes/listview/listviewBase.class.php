@@ -60,7 +60,7 @@ class listviewBase{
 	var $ClassName = "listviewBase"; /* Name of class */
 	var $close_a = true;   /* close </a> when endtag used */
 	var $customerFilterType = 'off'; // shall we control customer-filter?
-
+	var $BlockInside = false; // set to true if listview is inside a block
 	var $calendar_struct=array();
 	var $id = "";
 

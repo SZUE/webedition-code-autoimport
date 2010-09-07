@@ -16,6 +16,7 @@ class leCheckbox {
 			$_checked .= " checked=\"checked\"";
 		}
 		
+		$BROWSER = "";
 		if(stristr($_SERVER['HTTP_USER_AGENT'], 'safari')) {
 			$BROWSER = "SAFARI";
 		}

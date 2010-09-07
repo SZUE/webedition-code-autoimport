@@ -184,6 +184,7 @@
 		'clientIsOnlineInstaller' => true,
 		'clientPhpVersion' => phpversion(),
 		'clientPhpExtensions' => implode(',',get_loaded_extensions()),
+		'clientPcreVersion' => (defined("PCRE_VERSION")) ? PCRE_VERSION:'',
 		'clientServerSoftware' => $_SERVER["SERVER_SOFTWARE"],
 		'clientHttpHost' => $_SERVER['HTTP_HOST'],
 		'clientLeWizard' => isset($_REQUEST["leWizard"]) ? $_REQUEST["leWizard"] : "",

@@ -315,7 +315,27 @@ class we_listview_multiobject extends listviewBase {
 			}
 		}
 
+		//get Metadata for class (default title, etc.)
+		//BugFix #4629
+		$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID='".$classID."'",$this->DB_WE);
+		$_selFields = "";
+		foreach($_fieldnames as $_key => $_val) {
+			if(empty($_val) || $_val=='_') // bug #4657
+				continue;
+			if (!is_numeric($_key)) {
+				if ($_val && $_key == "DefaultDesc") {
+					$_selFields .= OBJECT_X_TABLE . $classID .'.'. $_val . " as we_Description,";
+				} else if ($_key == "DefaultTitle") {
+					$_selFields .= OBJECT_X_TABLE . $classID .'.'. $_val . " as we_Title,";
+				} else if ($_val && $_key == "DefaultKeywords") {
+					$_selFields .= OBJECT_X_TABLE . $classID .'.'. $_val . " as we_Keywords,";
+				}
+			}
+		}
+
+
 		$f = OBJECT_X_TABLE . $classID . ".ID as ID," . OBJECT_X_TABLE . $classID . ".OF_Templates as OF_Templates," . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text,".OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language,";
+		$f.=$_selFields;
 		foreach($matrix as $n=>$p){
 			$n2 = $n;
 			if(substr($n,0,10) =="we_object_"){

@@ -1114,6 +1114,7 @@ function we_tag_block($attribs, $content)
 	
 	if ($isInListview) {
 		$list = $GLOBALS["lv"]->f($name);
+		$GLOBALS["lv"]->BlockInside = true;
 	} else {
 		$list = $GLOBALS["we_doc"]->getElement($name);
 	}
@@ -1184,7 +1185,9 @@ function we_tag_block($attribs, $content)
 			
 			for ($i = 0; $i < $listlen; $i++) {
 				$listRef = $blkPreName . $listarray[$i];
+				
 				$foo = $content;
+				
 				$foo = str_replace('<we_:_ref>', $listRef, $foo);
 				
 				//	handle we:ifPosition:
@@ -2191,8 +2194,10 @@ function we_tag_field($attribs, $content)
 	$name = we_getTagAttribute("name", $attribs);
 	
 	// quickfix 4192
-	$nameA = explode("blk_",$name);
-	$name = $nameA[0];
+	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
+		$nameA = explode("blk_",$name);
+		$name = $nameA[0];
+	}
 	// quickfix 4192
 	$href = we_getTagAttribute("href", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
@@ -2288,14 +2293,8 @@ function we_tag_field($attribs, $content)
 				$href = (empty($href) ? $out : $href);
 				break;
 			}
-		case "href" :
-			if (isset($GLOBALS["lv"]) && ($GLOBALS["lv"]->ClassName == "we_listview_multiobject" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag")) {
-				$hrefArr = $GLOBALS["lv"]->f($name) ? unserialize($GLOBALS["lv"]->f($name)) : array();
-				if (!is_array($hrefArr))
-					$hrefArr = array();
-				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
-				break;
-			}
+		
+			
 		case "date" :
 		case "img" :
 		case "int" :
@@ -2322,12 +2321,12 @@ function we_tag_field($attribs, $content)
 				$out = getHtmlTag('img', $_imgAtts);
 			
 			} else {
-				$id = ($isImageDoc && $type == "img") ? $GLOBALS["lv"]->Record["wedoc_ID"] : $GLOBALS["lv"]->f($name);
-				if ($id ==0) {
+				$idd = ($isImageDoc && $type == "img" ) ? $GLOBALS["lv"]->Record["wedoc_ID"] : $GLOBALS["lv"]->f($name);
+				if ($idd ==0) {
 					$out = '';
 				} else {
 					$out = we_document::getFieldByVal(
-						$id, 
+						$idd, 
 						$type, 
 						$attribs, 
 						false, 
@@ -2375,15 +2374,22 @@ function we_tag_field($attribs, $content)
 						$GLOBALS["we_doc"]->Path, 
 						$GLOBALS["DB_WE"], 
 						$classid, 
-						'$GLOBALS["lv"]->getElement');
+						'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 				
 				require_once (WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
 			break;
-		
+	case "href" :
+			if (isset($GLOBALS["lv"]) && ($GLOBALS["lv"]->ClassName == "we_listview_multiobject" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag")) {
+				$hrefArr = $GLOBALS["lv"]->f($name) ? unserialize($GLOBALS["lv"]->f($name)) : array();
+				if (!is_array($hrefArr))
+					$hrefArr = array();
+				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
+				break;
+			}	
 		default :
-	
+
 			$normVal = we_document::getFieldByVal(
 					$GLOBALS["lv"]->f($name), 
 					$type, 
@@ -2393,7 +2399,7 @@ function we_tag_field($attribs, $content)
 					$GLOBALS["we_doc"]->Path, 
 					$GLOBALS["DB_WE"], 
 					$classid, 
-					'$GLOBALS["lv"]->getElement');
+					'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht inLV, #4648
 			// bugfix 7557
 			// wenn die Abfrage im Aktuellen Objekt kein Erg�bnis liefert
 			// wird in den eingebundenen Objekten �berpr�ft ob das Feld existiert
@@ -2412,7 +2418,7 @@ function we_tag_field($attribs, $content)
 								$GLOBALS["we_doc"]->Path, 
 								$GLOBALS["DB_WE"], 
 								substr($_glob_key, 13), 
-								'$GLOBALS["lv"]->getElement');
+								'$GLOBALS["lv"]->f');// war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 					
 					if ($normVal != "")
@@ -2434,7 +2440,7 @@ function we_tag_field($attribs, $content)
 							$GLOBALS["we_doc"]->Path, 
 							$GLOBALS["DB_WE"], 
 							$classid, 
-							'$GLOBALS["lv"]->getElement');
+							'$GLOBALS["lv"]->f');// war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					if ($altVal == "")
 						return "";
 					$out = cutText($altVal, $max);
@@ -3772,8 +3778,10 @@ function we_tag_ifField($attribs, $content)
 	
 	$match = we_getTagAttribute("match", $attribs);
 	// quickfix 4192
-	$matchA = explode("blk_",$match);
-	$match = $matchA[0];
+	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
+		$matchA = explode("blk_",$match);
+		$match = $matchA[0];
+	}
 	// quickfix 4192
 	$matchArray = makeArrayFromCSV($match);
 	
@@ -4631,8 +4639,7 @@ function we_tag_img($attribs, $content)
 	if ($we_editmode && !$showimage) {
 		$out = '';
 	} elseif (!$id) {
-		//if($GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';} no_image war noch in der Vorscha sichtbar
-		$out ='';
+		if($we_editmode && $GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';} //no_image war noch in der Vorscha sichtbar
 	} else {
 		$out = $GLOBALS["we_doc"]->getField($attribs, "img");
 	}
@@ -7112,10 +7119,22 @@ function we_tag_write($attribs, $content)
 							$objname = 1 + abs(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
 						}					
 					} else {
-						if ($onpredefinedname=='appendto') { 
-							$objname = $GLOBALS["we_$type"][$name]->Text . '_'.$objname;
+						if ($onpredefinedname=='appendto') {
+							if ($objname!='') {
+								$objname = $GLOBALS["we_$type"][$name]->Text . '_'.$objname;
+							} else {
+								$objname = $GLOBALS["we_$type"][$name]->Text;
+							}
 						} elseif($onpredefinedname=='infrontof'){
-							$objname .= '_'.$GLOBALS["we_$type"][$name]->Text;
+							if ($objname!='') {
+								$objname .= '_'.$GLOBALS["we_$type"][$name]->Text;
+							} else {
+								$objname = $GLOBALS["we_$type"][$name]->Text;
+							}
+						} elseif($onpredefinedname=='overwrite')  {
+							if ($objname=='') {
+								$objname = $GLOBALS["we_$type"][$name]->Text;
+							}
 						}
 					}						
 					$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);  

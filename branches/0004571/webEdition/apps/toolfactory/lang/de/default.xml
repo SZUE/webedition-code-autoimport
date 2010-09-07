@@ -19,7 +19,7 @@
 		<tu tuid="The user is allowed to edit items toolfactory">
 			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungs bearbeiten</seg></tuv>
 		</tu>
-		<tu tuid="The user is allowed to publish items {$TOOLNAME}">
+		<tu tuid="The user is allowed to publish items toolfactory">
 			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendung aktivieren und deaktivieren</seg></tuv>
 		</tu>
 		<tu tuid="Restore toolfactory data">
