@@ -380,7 +380,7 @@ CREATE TABLE tblObject (
   Workspaces varchar(255) NOT NULL default '',
   DefaultWorkspaces varchar(255) NOT NULL default '',
   Templates varchar(255) NOT NULL default '',
-  `CacheType` enum('','none','tag','document','full') NOT NULL default 'none',
+  CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
@@ -575,7 +575,7 @@ CREATE TABLE tblTemplates (
   ModifierID bigint(20) NOT NULL default '0',
   MasterTemplateID bigint(20) NOT NULL default '0',
   IncludedTemplates varchar(255) NOT NULL default '',
-  `CacheType` enum('','none','tag','document','full') NOT NULL default 'none',
+  CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID),
   KEY MasterTemplateID (MasterTemplateID),
