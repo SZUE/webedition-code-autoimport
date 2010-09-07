@@ -60,7 +60,8 @@ class weBrowser {
 			} else {
 				$out = $GLOBALS["l_browser"]["save_link_as_DEFAULT"];
 			}
-			return htmlspecialchars($out);
+			
+			return nl2br(htmlspecialchars(preg_replace('#<br\s*/?\s*>#i',"\n",$out)));
 		}
 
 

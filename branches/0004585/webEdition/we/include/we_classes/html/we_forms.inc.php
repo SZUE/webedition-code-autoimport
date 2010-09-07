@@ -172,9 +172,10 @@ class we_forms {
 		}
 
 		$out = "";
+		$dhtmledit = we_getTagAttribute("dhtmledit",$attribs,"",true); //4614
 		$wysiwyg = we_getTagAttribute("wysiwyg",$attribs,"",true);
 
-		$wysiwyg = $wysiwyg && ($IE55 || $MOZ13 || $BROWSER=="OPERA" || ($SAFARI_WYSIWYG && (defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
+		$wysiwyg = ($dhtmledit || $wysiwyg) && ($IE55 || $MOZ13 || $BROWSER=="OPERA" || ($SAFARI_WYSIWYG && (defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
 		$cols = we_getTagAttribute("cols",$attribs);
 		$rows = we_getTagAttribute("rows",$attribs);
 		$width = we_getTagAttribute("width",$attribs);

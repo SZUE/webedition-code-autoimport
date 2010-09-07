@@ -291,16 +291,13 @@ class liveUpdateFunctions {
 
 	/**
 	 * @param string $file
-	 * @return boolean
+	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file) {
-
-		if ( @unlink($file) ) {
+		if(file_exists($file)){
+			return @unlink($file);
+		}else{
 			return true;
-
-		} else {
-			return false;
-
 		}
 
 	}
@@ -310,22 +307,27 @@ class liveUpdateFunctions {
 	 *
 	 * @param string $source
 	 * @param string $destination
-	 * @return boolean
+	 * @return boolean false if move was not successful
 	 */
 	function moveFile($source, $destination) {
 		
-		if($source==$destination)
+		if($source==$destination){
 			return true;
+		}
 
 		if ($this->checkMakeDir(dirname($destination))) {
-
-			$this->deleteFile($destination);
-			if (rename($source, $destination)) {
-				return true;
-
-			} else {
+			if($this->deleteFile($destination)){
+				//rename seems to have problems - we do it old school way: copy, on success delete
+				//return rename($source, $destination);
+				if(copy($source, $destination)){
+					$this->deleteFile($source);
+					//should we handle file deletion?
+					return true;
+				}else{
+					return false;
+				}
+			}else{
 				return false;
-
 			}
 
 		} else {
@@ -413,7 +415,7 @@ class liveUpdateFunctions {
 		if (file_exists($path)) {
 
 			$code = $this->getFileContent($path);
-			$patchSuccess = eval('?>' . $code);
+			$patchSuccess = eval('?>' . escapeshellcmd($code));
 			if ($patchSuccess === false) {
 				return false;
 			} else {
@@ -871,7 +873,7 @@ class liveUpdateFunctions {
 		//	Look which languages are installed ...
 		$_language_directory = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language");
 
-		while ($entry = $_language_directory->read()) {
+		while (false !== ($entry = $_language_directory->read())) {
 			if ($entry != "." && $entry != "..") {
 				if (is_dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry) &&
 					is_file($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {

@@ -292,7 +292,8 @@ EOF;
 		$dirname .= !eregi("/$", $dirname) ? "/" : "";
 		$d = dir($dirname);
 		while (false !== ($entry = $d->read())) {
-			if($entry != '.' && $entry != '..') {
+			//ignore Tempfiles
+			if($entry != '.' && $entry != '..' && substr($entry,-1)!='~' ) {
 				if(is_dir($dirname.$entry)) {
 					$tmpfiles = self::readFiles($dirname.$entry.'/', $prefix.'/'.$entry,$version);
 					$files = array_merge($files, $tmpfiles);
@@ -522,5 +523,5 @@ EOF;
 
 // code for standalone usage of this script, should be commented out if make.php is not called via http using a web server:
 //$le_OnlineInstaller = new le_OnlineInstaller_Make();
-//$le_OnlineInstaller->execute('./base', './out/', '2.5.0.0');
+//$le_OnlineInstaller->execute('./base', './out/', '2.5.0.1');
 ?>

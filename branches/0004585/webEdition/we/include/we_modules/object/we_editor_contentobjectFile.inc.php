@@ -119,7 +119,7 @@ if($_editMode){
 					.	'</td>'
 					.	'</tr>'
 					.	'<tr>'
-					.	'<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td>'
+					.	'<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">'.getPixel(1,1).'</div></td>'
 					.	'</tr>'
 					.	'</table>'
 					.	'</div>'
