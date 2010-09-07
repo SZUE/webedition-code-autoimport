@@ -106,13 +106,8 @@ public class EPlugin extends JApplet {
 		String SERVER_NAME = codeBase.getHost();
 		int port=(getDocumentBase()).getPort();
 		String protocol=(getDocumentBase()).getProtocol();
-		String url;
-		
-		if(port!=-1)
-			url = protocol+"://"+SERVER_NAME+":"+port+"/webEdition/eplugin/initPlugin.html";
-		else
-			url = protocol+"://"+SERVER_NAME+"/webEdition/eplugin/initPlugin.html";
-		
+		String url = codeBase.toString()+"initPlugin.html";
+				
 		
 		try {
 			this.getAppletContext().showDocument (new URL(url),"load");

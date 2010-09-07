@@ -14,6 +14,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+package com.livinge.eplugin.gui;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
