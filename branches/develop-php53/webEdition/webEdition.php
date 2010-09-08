@@ -1243,7 +1243,7 @@ function we_cmd() {
 			}
 			break;
  		case "initPlugin":
-            	weplugin_wait=new jsWindow("<?php print WEBEDITION_DIR;?>eplugin/weplugin_wait.php?callback="+arguments[1],"weplugin_wait",-1,-1,300,100,true,false,true);
+            	weplugin_wait=new jsWindow("<?php print WEBEDITION_DIR;?>editors/content/eplugin/weplugin_wait.php?callback="+arguments[1],"weplugin_wait",-1,-1,300,100,true,false,true);
 			break;
 		case "edit_settings_newsletter":
 			new jsWindow("<?php print WEBEDITION_DIR;?>we/include/we_modules/newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings","newsletter_settings",-1,-1,600,750,true,false,true);

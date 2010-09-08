@@ -1870,7 +1870,7 @@ class weCustomerEIWizard{
 			}
 		}
 
-		$operators=array("=","&lt;&gt;","&lt;","&lt;=","&gt;","&gt;=","LIKE");
+		$operators=array("=","<>","<","<=",">",">=","LIKE");
 		$logic=array("AND"=>"AND","OR"=>"OR");
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),1,3);
