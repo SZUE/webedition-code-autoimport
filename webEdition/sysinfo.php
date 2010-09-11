@@ -140,12 +140,13 @@
 		
 		$weVersion  = WE_VERSION;
 		if (defined("WE_SVNREV") &&  WE_SVNREV!='0000'){
-			$weVersion  .= ' (SVN-Revision: '.WE_SVNREV.')';
+			
+			$weVersion  .= ' (SVN-Revision: '.WE_SVNREV.((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH!= 'trunk') ? '|'.WE_VERSION_BRANCH : '').')';
 		}
 		if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='') $weVersion .= ' '.$l_global[WE_VERSION_SUPP];
 		if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' ) $weVersion .= WE_VERSION_SUPP_VERSION;
 		
-		// GD_VERSION is mor precise but only available in PHP 5.2.4 or newer
+		// GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 		if(is_callable("gd_info")) {
 			if(defined("GD_VERSION")) {
 				$gdVersion = GD_VERSION;
@@ -158,6 +159,19 @@
 			$gdVersion = "";
 		}
 		
+		$phpextensions = get_loaded_extensions();
+		foreach ($phpextensions as &$extens){
+			$extens= strtolower($extens);
+		}
+		$phpextensionsMissing = array();
+		$phpextensionsMin = array('ctype','date','dom','filter','iconv','libxml','mysql','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
+		foreach ($phpextensionsMin as $exten){
+			if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
+		}
+		
+		if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
+			$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
+		} else { $phpextensionsSDK_DB= getWarning($_sysinfo["sdk_db warning"],'-');	}
 		$_info = array(
 			'webEdition' => array (
 				$_sysinfo['we_version'] => $weVersion,
@@ -194,6 +208,10 @@
 				$_sysinfo['connection_types'] => implode(", ", getConnectionTypes()),
 				$_sysinfo['mbstring'] => (is_callable("mb_get_info") ? $_sysinfo['available'] : "-"),
 				$_sysinfo['gdlib'] => (!empty($gdVersion) ? $_sysinfo['version']." ".$gdVersion : "-"),
+				$_sysinfo['exif'] => (in_array('exif', $phpextensions) ? $_sysinfo['available'] : getWarning($_sysinfo["exif warning"],'-')),
+				$_sysinfo['pcre'] => ((defined("PCRE_VERSION")) ? ( (substr(PCRE_VERSION,0,1)<7)? getWarning($_sysinfo["pcre warning"],$_sysinfo['version'].' '.PCRE_VERSION):$_sysinfo['version'].' '.PCRE_VERSION  ) : getWarning($_sysinfo["pcre warning"],$_sysinfo["pcre_unkown"])) ,
+				$_sysinfo['sdk_db'] => $phpextensionsSDK_DB,
+				$_sysinfo['phpext'] => (!empty($phpextensionsMissing) ? getWarning($_sysinfo["phpext warning2"],$_sysinfo["phpext warning"]. implode(', ', $phpextensionsMissing))  : $_sysinfo['available'] ),
 			),
 				
 		);
