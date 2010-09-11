@@ -161,7 +161,7 @@ echo $yuiSuggest->getYuiJsFiles();
 	<input type="hidden" name="sd" value="0" />
 	<?php
 	 if($user_object){
-		if(isset($_REQUEST["oldtab"])){
+		if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"]) ){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
 			$user_object->preserveState($_REQUEST["oldtab"],$_REQUEST["old_perm_branch"]);
 			$_SESSION["user_session_data"]=$user_object->getState();
 		}
