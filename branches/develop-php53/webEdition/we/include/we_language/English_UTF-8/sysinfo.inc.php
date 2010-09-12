@@ -44,11 +44,20 @@ $_sysinfo["safe_mode warning"] = 'Please deactivate the PHP Safe Mode if you exp
 $_sysinfo["zend_framework warning"] = 'You are currently using a different version of the Zend Framework than the recommended version '.WE_ZFVERSION.'.';
 $_sysinfo["suhosin warning"] = 'Due to the many configuration options of this PHP extension, we cannot guarenty the full functionality of webEdition.';
 $_sysinfo["dbversion warning"] = 'The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required. In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!';
+$_sysinfo["pcre warning"] = 'Versions before 7.0 can lead to severe problems';
+$_sysinfo["pcre_unkown"] = 'Not detectable';
+$_sysinfo["exif warning"] = 'EXIF-Metadata for images are not available';
+$_sysinfo['sdk_db warning'] = 'SDK Operations and WE-APPS with database access are not available';
+$_sysinfo['phpext warning'] = 'not available: ';
+$_sysinfo['phpext warning2'] = 'Most likely, webEdition will not work properly!';
 
 $_sysinfo['connection_types'] = 'Update connection types';
 $_sysinfo['gdlib'] = 'GDlib Support';
 $_sysinfo['mbstring'] = 'Multibyte String Functions';
 $_sysinfo['version'] = 'Version';
 $_sysinfo['available'] = 'available';
-
+$_sysinfo['exif'] = 'EXIF Support';
+$_sysinfo['pcre'] = 'PCRE-Extension';
+$_sysinfo['sdk_db'] = 'SDK/Apps DB support';
+$_sysinfo['phpext'] = 'Required PHP extensions';
 ?>
