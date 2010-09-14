@@ -862,8 +862,6 @@ class we_webEditionDocument extends we_textContentDocument {
 			$base64Object = base64_encode($serialized);
 			$doc='<?php
 
-					//$GLOBALS["weDocumentCache_' . $this->ID.'_'.$this->Table.'"] = unserialize(base64_decode(\'' . $base64Object .'\')); Bug #3496
-
 					$noSess = true;
 					$GLOBALS["WE_IS_DYN"] = 1;
 					$we_transaction = "";
