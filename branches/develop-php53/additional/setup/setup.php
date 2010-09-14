@@ -172,20 +172,29 @@ This webEdition setup script will guide you through the initial configuration st
 function step_requirements() {
 	global $errors;
 	
+	$sdkDbOK = true;
+	$phpExtensionsDetectable = true;
+	
 	$phpextensions = get_loaded_extensions();
 	foreach ($phpextensions as &$extens){
 		$extens= strtolower($extens);
 	}
 	$phpextensionsMissing = array();
 	$phpextensionsMin = array('ctype','date','dom','filter','iconv','libxml','mysql','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
-	foreach ($phpextensionsMin as $exten){
-		if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
-	}
 	
-	if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
-		$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
-	} else { $phpextensionsSDK_DB= '';	}
-
+	if (count($phpextensions)> 3) {
+		foreach ($phpextensionsMin as $exten){
+			if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
+		}
+		if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
+			$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
+		} else { 
+			$phpextensionsSDK_DB= '';	
+			$sdkDbOK = false;
+		}
+	} else {
+		$phpExtensionsDetectable = false;
+	} 
 	
 	$output = "Checking if all system requirements are met. Some additional tests are performed as they are needed for webEdition to be fully functional but are not essential to run webEdition.<br /><br /><b>Basic Requirements:</b><ul style=\"list-style-position:outside;\">";
 	$errors = false;
@@ -246,12 +255,16 @@ function step_requirements() {
 	} else {
 		$output.=tpl_ok("gdlib functions available (Version ".GD_VERSION." found)");
 	}
-	if(!in_array('exif', $phpextensions)) {
+	if(!is_callable("exif_imagetype")) {
 		$output.=tpl_warning("exif extension not available: EXIF-Metadata for images are not available");
 	}
-	if($phpextensionsSDK_DB=='') {
+	if(!$sdkDbOK) {
 		$output.=tpl_warning("SDK Operations and WE-APPS with database access are not available");
-	} 
+	}
+	if(!$phpExtensionsDetectable) {
+		$output.=tpl_warning("Not all requirements could be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start");
+	}
+	
 	if(defined("PCRE_VERSION") && substr(PCRE_VERSION,0,1)<7){
 		$output.=tpl_warning("Your PCRE extension is outdated: ".PCRE_VERSION." detected. Versions before 7.0 can lead to severe problems.");
 	}
