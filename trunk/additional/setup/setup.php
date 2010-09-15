@@ -266,7 +266,7 @@ function step_requirements() {
 	}
 	
 	if(defined("PCRE_VERSION") && substr(PCRE_VERSION,0,1)<7){
-		$output.=tpl_warning("Your PCRE extension is outdated: ".PCRE_VERSION." detected. Versions before 7.0 can lead to severe problems.");
+		$output.=tpl_warning("Your PCRE extension is outdated: ".PCRE_VERSION." detected. This can lead to problems, particularly in future webEdition versions..");
 	}
 	if(!defined("PCRE_VERSION") ){
 		$output.=tpl_warning("Your PCRE extension version can not be determined. Versions before 7.0 can lead to severe problems.");
