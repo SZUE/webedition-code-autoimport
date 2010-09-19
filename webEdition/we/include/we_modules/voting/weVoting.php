@@ -138,7 +138,15 @@ class weVoting extends weModelBase{
 			$this->Scores=@unserialize($this->Scores);
 			$this->Owners=makeArrayFromCSV($this->Owners);
 			$this->BlackList=makeArrayFromCSV($this->BlackList);
-			if (empty($this->LogData)) {$this->LogDB = true;}
+			if (empty($this->LogData)) {
+				$this->LogDB = true;
+			} else {
+				if ($this->LogData=='a:0:{}') {
+					$this->LogDB = true;
+				} else {
+					$this->switchToLogDataDB();				
+				}
+			}
 		}
 	}
 
@@ -430,6 +438,8 @@ class weVoting extends weModelBase{
 	function vote($answers,$addfields=NULL){
 		if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
 		$answerID = makeCSVFromArray($answers);
+		$answertext='';
+		$successor=0;
 		if(!is_array($answers)){
 			if($this->Log) $this->logVoting(VOTING_ERROR,$votingsession,$answerID,$answertext,$successor);
 			return VOTING_ERROR;
@@ -651,9 +661,12 @@ class weVoting extends weModelBase{
 		} else {
 			if($this->LogDB) {
 				$this->deleteLogDataDB();
+				$this->LogData = '';
+				$this->saveField('LogData',false);
 			} else {
-				$this->LogData = array();
-				$this->saveField('LogData',true);
+				$this->LogData = '';
+				$this->saveField('LogData',false);
+				$this->LogDB = true;
 			}
 			return true;
 		}
@@ -764,6 +777,44 @@ class weVoting extends weModelBase{
 	function deleteLogDataDB() {
 		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID);
 		return true;
+	}
+	
+	/**
+	 * switches from storing LogData in table VOTING_TABLE to table VOTING_LOG_TABLE
+	 * @return boolean success or failure of this operation
+	 * @author Dr. Armin Schulz
+	 * @since 6.1.0.2 - 019.09.201
+	 */
+	function switchToLogDataDB() {
+	
+		$LogData = @unserialize($this->LogData);
+		if (is_array($LogData) && !empty($LogData) ){
+			foreach ($LogData as $ld){
+				$myquery = 'INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . 
+					'votingsession = \'\', ' .
+					'voting = \'' . $this->ID . '\', ' .
+					'time = \'' . $ld['time'] . '\', ' .
+					'ip = \'' . $ld['ip'] . '\', ' .
+					'agent = \'' . $ld['agent'] . '\', ' .
+					'userid  = \'0\', ' .
+					'cookie = \'' . $ld['cookie'] . '\', ' .
+					'fallback = \'' . $ld['fallback'] . '\', ' .
+					'answer = \'\', ' .
+					'answertext = \'\', ' .
+					'successor = \'\', ' .
+					'additionalfields = \'\', ' .
+					'status = \'' . $ld['status'] . '\'';
+				$this->db->query($myquery);
+			
+			}
+			$this->LogData='';
+			$this->LogData = '';
+			$this->saveField('LogData',false);
+			$this->LogDB = true;
+			return true;
+		}
+	
+		
 	}
 
 }
