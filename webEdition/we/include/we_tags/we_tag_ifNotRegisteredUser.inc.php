@@ -31,18 +31,19 @@ function we_tag_ifNotRegisteredUser($attribs,$content) {
 
 	} else {
 
-		if ( $cfilter && defined("CUSTOMER_TABLE") && isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
-			if ( $GLOBALS["we_doc"]->documentCustomerFilter->accessForVisitor( $GLOBALS["we_doc"], array(), true ) == WECF_ACCESS ) {
-				return false;
-
+		if ( $cfilter && defined("CUSTOMER_TABLE") ){
+			if (isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
+				if ( $GLOBALS["we_doc"]->documentCustomerFilter->accessForVisitor( $GLOBALS["we_doc"], array(), true ) == WECF_ACCESS ) {
+					return false;	
+				} else {
+					return true;	
+				}
 			} else {
-				return true;
-
+				return false;
 			}
-
 		}
 
-		if (isset($attribs["permission"]) && $attribs["permission"]) {
+		if ($permission) {
 			if(!empty($match)){
 				return !(isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$attribs["permission"]]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match));
 			} else {

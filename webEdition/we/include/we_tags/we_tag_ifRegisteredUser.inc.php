@@ -34,13 +34,16 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 
 	} else {
 
-		if ( $cfilter && defined("CUSTOMER_TABLE") && isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
-			if ( $GLOBALS["we_doc"]->documentCustomerFilter->accessForVisitor( $GLOBALS["we_doc"], array(), true ) == WECF_ACCESS ) {
-				return true;
+		if ( $cfilter && defined("CUSTOMER_TABLE") ){
+			if (isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
+				if ( $GLOBALS["we_doc"]->documentCustomerFilter->accessForVisitor( $GLOBALS["we_doc"], array(), true ) == WECF_ACCESS ) {
+					return true;
+				} else {
+					return false;
+				}
 			} else {
-				return false;
+				return true;
 			}
-
 		}
 
 		if(sizeof($userid) > 0) {
