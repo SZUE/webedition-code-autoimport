@@ -34,6 +34,7 @@ $l_backup["rebuild"] = "Automatische heropbouw";
 $l_backup["select_upload_file"] = "Upload import bestand vanaf lokaal bestand";
 $l_backup["select_server_file"] = "Kies uit deze lijst het backup bestand dat u wilt importeren.";
 $l_backup["charset_warning"] = "If you encounter problems when restoring a backup, please ensure that the <strong>target system uses the same character set as the source system</strong>. This applies both to the character set of the database (collation) as well as for the character set of the user interface language!"; // TRANSLATE
+$l_backup["defaultcharset_warning"] = '<span style="color:ff0000">Attention! The standard charset is not defined.</span> For some server configurations, this can lead to problems while importing backups.!';// TRANSLATE
 $l_backup["finished_success"] = "Het importeren van de backup data is met succes voltooid.";
 $l_backup["finished_fail"] = "Het importeren van de backup data is mislukt.";
 $l_backup["question_taketime"] = "Het exporteren kan enige tijd duren.";
