@@ -34,6 +34,7 @@ $l_backup["rebuild"] = "Rebuild automatique";
 $l_backup["select_upload_file"] = "Restauration d'un fichier local";
 $l_backup["select_server_file"] = "Choisissez le fichier de sauvegarde que vous voulez restaurer.";
 $l_backup["charset_warning"] = "If you encounter problems when restoring a backup, please ensure that the <strong>target system uses the same character set as the source system</strong>. This applies both to the character set of the database (collation) as well as for the character set of the user interface language!"; // TRANSLATE
+$l_backup["defaultcharset_warning"] = '<span style="color:ff0000">Attention! The standard charset is not defined.</span> For some server configurations, this can lead to problems while importing backups.!';// TRANSLATE
 $l_backup["finished_success"] = "La restauration de la sauvegarde a été terminé avec succès.";
 $l_backup["finished_fail"] = "La restauration de la sauvegarde n'a pas été terminé avec succès.";
 $l_backup["question_taketime"] = "L\\'export demande quelques temps.";

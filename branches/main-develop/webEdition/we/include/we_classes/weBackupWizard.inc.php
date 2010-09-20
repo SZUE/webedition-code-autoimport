@@ -450,6 +450,9 @@ class weBackupWizard{
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/newfile.inc.php");
 			if($maxsize){
 				array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["charset_warning"], 1, 600, false),"space"=>0,"noline"=>1));
+				if ( !(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!='') ) {
+					array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["defaultcharset_warning"], 1, 600, false),"space"=>0,"noline"=>1));		
+				}
 				array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(sprintf($l_newFile["max_possible_size"],round($maxsize / (1024*1024),3)."MB"),1,600),"space"=>0,"noline"=>1));
 				array_push($parts,array("headline"=>"","html"=>we_htmlElement::htmlInput(array("name"=>"we_upload_file","type"=>"file","size"=>"35")),"space"=>0,"noline"=>1));
 				array_push($parts,array("headline"=>"","html"=>getPixel(1,1),"space"=>0,"noline"=>1));
@@ -548,6 +551,9 @@ class weBackupWizard{
 			}
 
 			array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["charset_warning"], 1, 600, false),"space"=>0,"noline"=>1));
+			if ( !(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!='') ) {
+					array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["defaultcharset_warning"], 1, 600, false),"space"=>0,"noline"=>1));		
+			}
 			array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["select_server_file"], 2, 600, false),"space"=>0,"noline"=>1));
 			array_push($parts,array("headline"=>"","html"=>$select->getHtmlCode(),"space"=>0,"noline"=>1));
 			//array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "show_all", $l_backup["show_all"], false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1));

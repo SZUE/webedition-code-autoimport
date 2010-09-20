@@ -34,7 +34,7 @@ $l_backup["rebuild"] = "Automaattinen uudelleenrakennus";
 $l_backup["select_upload_file"] = "Läheta tuotava tiedosto työasemalta";
 $l_backup["select_server_file"] = "Valitse tuotava varmistustiedosto tältä listalta.";
 $l_backup["charset_warning"] = "Mikäli varmuuskopion palautuksessa ilmenee ongelmia, tarkista että kohdejärjestelmä käyttää samaa merkistöä kuin lähdejärjestelmä. Tämä koskee tietokannan sekä käyttöliittymän kielimerkistöä!";
-
+$l_backup["defaultcharset_warning"] = '<span style="color:ff0000">Attention! The standard charset is not defined.</span> For some server configurations, this can lead to problems while importing backups.!';// TRANSLATE
 $l_backup["finished_success"] = "Varmistuksen palautus on suoritettu onnistuneesti.";
 $l_backup["finished_fail"] = "Varmistuksen palautus ei onnistunut.";
 $l_backup["question_taketime"] = "Vienti saattaa viedä aikaa.";
