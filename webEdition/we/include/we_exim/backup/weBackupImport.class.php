@@ -57,8 +57,8 @@
 			}
 			
 			$parser = new weXMLParser();
-			if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
-			
+			//if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){ vor 4092
+			if (defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!=''){// Fix für 4092, in Verbindung mit alter Version für bug 3412 löst das beide Situationen
 				$parser->parse($data,DEFAULT_CHARSET);
 			} else {
 				$parser->parse($data);
@@ -118,13 +118,15 @@
 							if(weContentProvider::needCoding($classname,$name)){
 								$object->$name = weContentProvider::decode($parser->getNodeData());
 							} else {
-								//$object->$name = $parser->getNodeData();//original mit Bug #3412
-								if($charset=="UTF-8"){// Fix Bug #3412
+								$object->$name = $parser->getNodeData();//original mit Bug #3412 aber diese Version löst 4092
+								// ehemaliger Fix Bug #3412, nicht mehr notwendig dank fix oben für 4092
+								/*
+								if($charset=="UTF-8"){
 									$object->$name = utf8_encode($parser->getNodeData());
 								} else {
 									$object->$name = $parser->getNodeData();
 								}
-								
+								*/
 							}
 							if(isset($object->persistent_slots) && !in_array($name,$object->persistent_slots)) {
 								$object->persistent_slots[]=$name;
