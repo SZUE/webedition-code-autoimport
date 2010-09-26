@@ -30,6 +30,7 @@ $GLOBALS['l_contentTypes']["all_Types"] = "Kaikki kentät";
 $GLOBALS['l_contentTypes']["text/xml"] = "XML -tiedosto";
 $GLOBALS['l_contentTypes']["text/html"] = "HTML -sivu";
 $GLOBALS['l_contentTypes']["text/plain"] = "Tekstisivu";
+$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess file";//TRANSLATE
 $GLOBALS['l_contentTypes']["text/webedition"] = "webEdition -sivu";
 $GLOBALS['l_contentTypes']["image/*"] = "Kuva";
 $GLOBALS['l_contentTypes']["text/weTmpl"] = "webEdition -sivupohja";

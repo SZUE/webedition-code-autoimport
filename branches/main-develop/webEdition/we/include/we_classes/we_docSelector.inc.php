@@ -546,6 +546,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 						we_hasPerm("NEW_JS") ||
 						we_hasPerm("NEW_CSS") ||
 						we_hasPerm("NEW_TEXT") ||
+						we_hasPerm("NEW_HTACCESS") ||
 						we_hasPerm("NEW_FLASH") ||
 						we_hasPerm("NEW_SONSTIGE")
 					)

@@ -29,6 +29,7 @@ $GLOBALS['l_contentTypes']["all_Types"] = "All files"; // TRANSLATE
 $GLOBALS['l_contentTypes']["text/xml"] = "Plik XML";
 $GLOBALS['l_contentTypes']["text/html"] = "Strona HTML";
 $GLOBALS['l_contentTypes']["text/plain"] = "Strona text";
+$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess file";//TRANSLATE
 $GLOBALS['l_contentTypes']["text/webedition"] = "Strona webEdition";
 $GLOBALS['l_contentTypes']["image/*"] = "Grafika";
 $GLOBALS['l_contentTypes']["text/weTmpl"] = " Szablon webEdition";

@@ -38,6 +38,7 @@ $GLOBALS["l_siteimport"]["importQuicktime"] = "Quicktime -tiedostoja";
 $GLOBALS["l_siteimport"]["importJS"] = "JavaScript -tiedostoja";
 $GLOBALS["l_siteimport"]["importCSS"] = "CSS -tiedostoja";
 $GLOBALS["l_siteimport"]["importText"] = "Tekstitiedostoja";
+$GLOBALS["l_siteimport"]["importHTACCESS"] = ".htaccess files"; //TRANSLATE
 $GLOBALS["l_siteimport"]["importOther"] = "Muita tiedostoja";
 $GLOBALS["l_siteimport"]["depth"] = "Hakemistosyvyys";
 $GLOBALS["l_siteimport"]["maxSize"] = "Tiedoston maksimikoko Mt";

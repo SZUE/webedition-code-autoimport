@@ -34,6 +34,7 @@ $l_perm["workpermissions"]["NEW_FLASH"] = "The user is allowed to upload Flash f
 $l_perm["workpermissions"]["NEW_QUICKTIME"] = "The user is allowed to upload Quicktime movies.";
 $l_perm["workpermissions"]["NEW_JS"] = "The user is allowed to create JavaScript files.";
 $l_perm["workpermissions"]["NEW_CSS"] = "The user is allowed to create CSS files.";
+$l_perm["workpermissions"]["NEW_HTACCESS"] = "The user is allowed to create .htaccess files";
 $l_perm["workpermissions"]["NEW_TEXT"] = "The user is allowed to create plain text files.";
 $l_perm["workpermissions"]["NEW_SONSTIGE"] = "The user is allowed to create other documents.";
 $l_perm["workpermissions"]["NEW_TEMPLATE"] = "The user is allowed to create templates.";

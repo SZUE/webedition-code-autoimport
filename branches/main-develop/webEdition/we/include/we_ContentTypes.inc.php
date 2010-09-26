@@ -118,6 +118,15 @@ $GLOBALS["WE_CONTENT_TYPES"]["text/css"] = array(
 		"IsWebEditionFile" => "1", 
 		"Icon" => "css.gif"
 );
+$GLOBALS["WE_CONTENT_TYPES"]["text/htaccess"] = array(
+	
+		"Extension" => "", 
+		"Permission" => 'NEW_HTACCESS', 
+		"DefaultCode" => '', 
+		"IsRealFile" => "1", 
+		"IsWebEditionFile" => "1", 
+		"Icon" => "htaccess.gif"
+);
 $GLOBALS["WE_CONTENT_TYPES"]["text/plain"] = array(
 	
 		"Extension" => ".txt", 

@@ -61,6 +61,7 @@ $l_javaMenu["new"] = "Nuevo";
 		$l_javaMenu["text_xml"] = "XML Document"; // TRANSLATE
 		$l_javaMenu["javascript"] = "Javascript"; // TRANSLATE
 		$l_javaMenu["css_stylesheet"] = "Hoja de estilo en cascada CSS";
+		$l_javaMenu["htaccess"] = ".htaccess Document"; //TRANSLATE
 		$l_javaMenu["other_files"] = "Otros archivos";
 
 

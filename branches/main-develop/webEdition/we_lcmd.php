@@ -74,6 +74,9 @@ if(isset($_REQUEST["wecmd0"])){ // when calling from applet (we can not call dir
 		case "new_text_xml":
 			print 'top.we_cmd("new","'.FILE_TABLE.'","","text/xml");'."\n";
 			break;
+		case "new_text_htaccess":
+			print 'top.we_cmd("new","'.FILE_TABLE.'","","text/htaccess");'."\n";
+			break;
 		case "new_css_stylesheet":
 			print 'top.we_cmd("new","'.FILE_TABLE.'","","text/css");'."\n";
 			break;

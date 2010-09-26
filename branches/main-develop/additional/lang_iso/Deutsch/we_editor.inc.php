@@ -108,6 +108,16 @@ $l_we_editor["text/plain"]["we_filename_notValid"] = $l_we_editor["text/webediti
 $l_we_editor["text/plain"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["text/plain"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
+$l_we_editor["text/htaccess"]["response_save_ok"] = "Die Datei '%s' wurde erfolgreich gespeichert!";
+$l_we_editor["text/htaccess"]["response_publish_ok"] = "Die Datei '%s' wurde erfolgreich veröffentlicht!";
+$l_we_editor["text/htaccess"]["response_unpublish_ok"] = "Die Datei '%s' wurde erfolgreich geparkt!";
+$l_we_editor["text/htaccess"]["response_save_notok"] = "Fehler beim Speichern der Datei '%s'!";
+$l_we_editor["text/htaccess"]["response_path_exists"] = "Die Datei '%s' konnte nicht gespeichert werden, da es bereits eine andere Datei oder ein anderes Verzeichnis an dieser Stelle gibt!";
+$l_we_editor["text/htaccess"]["filename_empty"] = $l_we_editor["text/webedition"]["filename_empty"];
+$l_we_editor["text/htaccess"]["we_filename_notValid"] = $l_we_editor["text/webedition"]["we_filename_notValid"];
+$l_we_editor["text/htaccess"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
+$l_we_editor["text/htaccess"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
+
 $l_we_editor["text/xml"]["response_save_ok"] = "Die XML-Datei '%s' wurde erfolgreich gespeichert!";
 $l_we_editor["text/xml"]["response_publish_ok"] = "Die XML-Datei '%s' wurde erfolgreich veröffentlicht!";
 $l_we_editor["text/xml"]["response_unpublish_ok"] = "Die XML-Datei '%s' wurde erfolgreich geparkt!";

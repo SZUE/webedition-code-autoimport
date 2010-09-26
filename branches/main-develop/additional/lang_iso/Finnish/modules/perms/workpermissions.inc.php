@@ -34,6 +34,7 @@ $l_perm["workpermissions"]["NEW_FLASH"] = "Käyttäjä voi tuoda Flash -tiedostoja.
 $l_perm["workpermissions"]["NEW_QUICKTIME"] = "Käyttäjä voi tuoda Quicktime -tiedostoja.";
 $l_perm["workpermissions"]["NEW_JS"] = "Käyttäjä voi luoda JavaScript -tiedostoja.";
 $l_perm["workpermissions"]["NEW_CSS"] = "Käyttäjä voi luoda CSS -tiedostoja.";
+$l_perm["workpermissions"]["NEW_HTACCESS"] = "The user is allowed to create .htaccess files";//TRANSLATE
 $l_perm["workpermissions"]["NEW_TEXT"] = "Käyttäjä voi luoda tekstitiedostoja.";
 $l_perm["workpermissions"]["NEW_SONSTIGE"] = "Käyttäjä voi luoda muita tiedostoja.";
 $l_perm["workpermissions"]["NEW_TEMPLATE"] = "Käyttäjä voi luoda sivupohjia.";
