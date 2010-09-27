@@ -876,6 +876,14 @@ class weSiteImport
 				"defaultfont", 
 				"", 
 				!we_hasPerm("NEW_TEXT"));
+		$_htaccess = we_forms::checkboxWithHidden(
+				we_hasPerm("NEW_HTACCESS") ? $this->text : false, 
+				"htacsess", 
+				$GLOBALS["l_siteimport"]["importHTACCESS"], 
+				false, 
+				"defaultfont", 
+				"", 
+				!we_hasPerm("NEW_HTACCESS"));
 		$_others = we_forms::checkboxWithHidden(
 				we_hasPerm("NEW_SONSTIGE") ? $this->other : false, 
 				"other", 

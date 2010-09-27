@@ -29,6 +29,7 @@ $GLOBALS['l_contentTypes']["all_Types"] = "Alle Dateien";
 $GLOBALS['l_contentTypes']["text/xml"] = "XML-Datei";
 $GLOBALS['l_contentTypes']["text/html"] = "HTML-Datei";
 $GLOBALS['l_contentTypes']["text/plain"] = "Text-Datei";
+$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess-Datei";
 $GLOBALS['l_contentTypes']["text/webedition"] = "webEdition-Seite";
 $GLOBALS['l_contentTypes']["image/*"] = "Grafik";
 $GLOBALS['l_contentTypes']["text/weTmpl"] = "webEdition-Vorlage";

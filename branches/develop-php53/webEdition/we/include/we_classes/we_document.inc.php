@@ -286,12 +286,18 @@ class we_document extends we_root {
 	function formPath() {
 		global $l_we_class;
 
-		$disable = (($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published);
+		$disable = ( ($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published);
+		if ($this->ContentType == "text/htaccess"){
+			$this->Filename=".htaccess";
+			$filenameinput = 'disabled="disabled" ';
+		} else {
+			$filenameinput = '';
+		}
 		$content = $disable ? ('<span class="defaultfont">'.$this->Path.'</span>') : '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.$this->formInputField("","Filename",$l_we_class["filename"],30,388,255,'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"').'</td>
+						'.$this->formInputField("","Filename",$l_we_class["filename"],30,388,255,$filenameinput.'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"').'</td>
 					<td></td>
 					<td>
 						'.$this->formExtension2().'</td>

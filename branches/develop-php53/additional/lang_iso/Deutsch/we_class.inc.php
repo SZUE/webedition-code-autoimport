@@ -36,6 +36,7 @@ $l_we_class["copytext/css"] = "CSS-Datei kopieren";
 $l_we_class["copytext/js"] = "Javascript-Datei kopieren";
 $l_we_class["copytext/html"] = "HTML-Datei kopieren";
 $l_we_class["copytext/plain"] = "Text-Datei kopieren";
+$l_we_class["copytext/htaccess"] = ".htaccess-Datei kopieren";
 $l_we_class["copytext/xml"] = "XML-Datei kopieren";
 $l_we_class["copyTemplate"] = "Vorlage kopieren";
 $l_we_class["copyFolder"] = "Verzeichnis kopieren";

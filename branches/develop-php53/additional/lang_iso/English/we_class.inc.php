@@ -37,6 +37,7 @@ $l_we_class["copytext/js"] = "Copy JavaScript";
 $l_we_class["copytext/html"] = "Copy HTML page";
 $l_we_class["copytext/plain"] = "Copy text page";
 $l_we_class["copytext/xml"] = "Copy XML document";
+$l_we_class["copytext/htaccess"] = "Copy .htaccess file";
 $l_we_class["copyTemplate"] = "Copy template";
 $l_we_class["copyFolder"] = "Copy directory";
 $l_we_class["copy_owners_expl"] = "Select a directory whose contents is to be copied to the current directory.";

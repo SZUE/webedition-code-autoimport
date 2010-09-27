@@ -29,6 +29,7 @@ $GLOBALS['l_contentTypes']["all_Types"] = "All files"; // TRANSLATE
 $GLOBALS['l_contentTypes']["text/xml"] = "XML file"; // TRANSLATE
 $GLOBALS['l_contentTypes']["text/html"] = "HTML page"; // TRANSLATE
 $GLOBALS['l_contentTypes']["text/plain"] = "Text page"; // TRANSLATE
+$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess file";//TRANSLATE
 $GLOBALS['l_contentTypes']["text/webedition"] = "webEdition page"; // TRANSLATE
 $GLOBALS['l_contentTypes']["image/*"] = "Image"; // TRANSLATE
 $GLOBALS['l_contentTypes']["text/weTmpl"] = "webEdition template"; // TRANSLATE

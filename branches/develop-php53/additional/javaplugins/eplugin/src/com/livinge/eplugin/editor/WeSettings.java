@@ -117,6 +117,7 @@ public class WeSettings{
 		ContentTypes.add("text/css");
 		ContentTypes.add("text/html");
 		ContentTypes.add("text/xml");
+		ContentTypes.add("text/htaccess");
 		ContentTypes.add("text/webedition");
 		ContentTypes.add("text/weTmpl");
 		ContentTypes.add("image/*");
@@ -129,6 +130,7 @@ public class WeSettings{
 		ContentTypeIcons.add("prog.gif"); //text/css
 		ContentTypeIcons.add("prog.gif"); //text/html
 		ContentTypeIcons.add("link.gif"); //text/xml
+		ContentTypeIcons.add("prog.gif"); //text/htaccess
 		ContentTypeIcons.add("we_dokument.gif"); //text/webedition
 		ContentTypeIcons.add("prog.gif"); //text/weTmpl
 		ContentTypeIcons.add("image.gif"); //image/*

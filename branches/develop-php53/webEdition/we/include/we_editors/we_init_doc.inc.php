@@ -65,6 +65,7 @@ if(isset($we_ContentType) && $we_ContentType!=''){
 		case "text/js":
 		case "text/css":
 		case "text/plain":
+		case "text/htaccess":
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_textDocument.inc.php");
 			$we_doc = new we_textDocument();
 			break;

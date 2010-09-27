@@ -34,7 +34,7 @@ $GLOBALS["l_wysiwyg"]["fontsize"] = "Font size";
 $GLOBALS["l_wysiwyg"]["fontname"] = "Font name";
 $GLOBALS["l_wysiwyg"]["css_style"] = "CSS style";
 
-$GLOBALS["l_wysiwyg"]["normal"] = "Normal";
+$GLOBALS["l_wysiwyg"]["normal"] = "Normal (without)";
 $GLOBALS["l_wysiwyg"]["h1"] = "Heading 1";
 $GLOBALS["l_wysiwyg"]["h2"] = "Heading 2";
 $GLOBALS["l_wysiwyg"]["h3"] = "Heading 3";

@@ -134,13 +134,20 @@ $we_menu["1000000"]["enabled"] = "1";
 			$we_menu["1010307"]["cmd"] = "new_text_xml";
             $we_menu["1010307"]["perm"] = "NEW_TEXT || ADMINISTRATOR";
 			$we_menu["1010307"]["enabled"] = "1";
+			
+			// File > New > Other > htaccess
+			$we_menu["1010308"]["text"] = $l_javaMenu["htaccess"];
+			$we_menu["1010308"]["parent"] = "1010300";
+			$we_menu["1010308"]["cmd"] = "new_text_htaccess";
+            $we_menu["1010308"]["perm"] = "NEW_HTACCESS || ADMINISTRATOR";
+			$we_menu["1010308"]["enabled"] = "1";
 
 			// File > New > Other > Other (Binary)
-			$we_menu["1010308"]["text"] = $l_javaMenu["other_files"];
-			$we_menu["1010308"]["parent"] = "1010300";
-			$we_menu["1010308"]["cmd"] = "new_binary_document";
-            $we_menu["1010308"]["perm"] = "NEW_SONSTIGE || ADMINISTRATOR";
-			$we_menu["1010308"]["enabled"] = "1";
+			$we_menu["1010309"]["text"] = $l_javaMenu["other_files"];
+			$we_menu["1010309"]["parent"] = "1010300";
+			$we_menu["1010309"]["cmd"] = "new_binary_document";
+            $we_menu["1010309"]["perm"] = "NEW_SONSTIGE || ADMINISTRATOR";
+			$we_menu["1010309"]["enabled"] = "1";
 
 		$we_menu["1010400"]["parent"] = "1010000"; // separator
 
@@ -339,7 +346,7 @@ $we_menu["1000000"]["enabled"] = "1";
     $we_menu["1150100"]["cmd"] = "import";
     $we_menu["1150100"]["parent"] = "1150000";
     if(we_hasPerm("FILE_IMPORT") || we_hasPerm("SITE_IMPORT")  || we_hasPerm("GENERICXML_IMPORT")  || we_hasPerm("CSV_IMPORT")  || we_hasPerm("WXML_IMPORT")){
-		$we_menu["1150100"]["perm"] = "NEW_GRAFIK || NEW_WEBEDITIONSITE || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_SONSTIGE || ADMINISTRATOR";
+		$we_menu["1150100"]["perm"] = "NEW_GRAFIK || NEW_WEBEDITIONSITE || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE || ADMINISTRATOR";
 	}else{
 		$we_menu["1150100"]["perm"] = "ADMINISTRATOR";
 	}

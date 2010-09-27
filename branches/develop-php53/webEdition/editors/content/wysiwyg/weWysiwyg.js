@@ -3087,12 +3087,26 @@ function weWysiwygPopupMenu_execCommand(value){
 		return;
 	}
 	this.editor.windowFocus();
-	if(this.cmd == "formatblock" && !isGecko){
+	if(this.cmd == "formatblock"){
 		if(value=="normal"){
-			//value = "Normal";
-			value = "<"+"div"+">";
+			value = "Normal";
+			//value = "<"+"div"+">";
 		}else{
 			value = "<"+value+">";
+		}
+	}
+	if(this.cmd == "formatblock" && value == "Normal"){
+		wert= this.editor.getNodeUnderInsertionPoint2("DIV,P,H1,H,H3,H4,H5,H6,ADDR,PRE",false,false);
+		if (wert != null && wert.hasChildNodes()!= null ){
+			naechster = wert.nextSibling;
+			wertCopy = wert.cloneNode(true);
+			cNcopy =  wertCopy.childNodes;
+			for (var i = 0; i < cNcopy.length; i++){
+				wert.parentNode.insertBefore(cNcopy[i].cloneNode(true),naechster);
+			}
+			wert.parentNode.removeChild(wert);
+			this.editor.setMenuState(this.cmd);
+			return;
 		}
 	}
 	this.editor.eDocument.execCommand(this.cmd, false, value);

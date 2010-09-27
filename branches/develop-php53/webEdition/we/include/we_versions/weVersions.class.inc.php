@@ -974,6 +974,10 @@ class weVersions {
 				if(defined("VERSIONING_TEXT_PLAIN") && !VERSIONING_TEXT_PLAIN) return false;
 				if(!defined("VERSIONING_TEXT_PLAIN")) return false;
 			break;
+			case "text/htaccess":
+				if(defined("VERSIONING_TEXT_HTACCESS") && !VERSIONING_TEXT_HTACCESS) return false;
+				if(!defined("VERSIONING_TEXT_HTACCESS")) return false;
+			break;
 			case "text/weTmpl":
 				if(defined("VERSIONING_TEXT_WETMPL") && !VERSIONING_TEXT_WETMPL) return false;
 				if(!defined("VERSIONING_TEXT_WETMPL")) return false;

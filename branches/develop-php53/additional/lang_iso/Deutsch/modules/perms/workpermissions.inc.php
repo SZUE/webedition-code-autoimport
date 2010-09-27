@@ -29,6 +29,7 @@ $l_perm["workpermissions"]["NEW_FLASH"] = "Der Benutzer darf Flash-Dateien erste
 $l_perm["workpermissions"]["NEW_QUICKTIME"] = "Der Benutzer darf Quicktime-Dateien erstellen";
 $l_perm["workpermissions"]["NEW_JS"] = "Der Benutzer darf JavaScript-Dateien erstellen";
 $l_perm["workpermissions"]["NEW_CSS"] = "Der Benutzer darf CSS-Dateien erstellen";
+$l_perm["workpermissions"]["NEW_HTACCESS"] = "Der Benutzer darf .htaccess-Dateien erstellen";
 $l_perm["workpermissions"]["NEW_TEXT"] = "Der Benutzer darf Text-Dateien erstellen";
 $l_perm["workpermissions"]["NEW_SONSTIGE"] = "Der Benutzer darf sonstige Dateien erstellen";
 $l_perm["workpermissions"]["NEW_TEMPLATE"] = "Der Benutzer darf Vorlagen erstellen";

@@ -34,6 +34,7 @@ $l_perm["workpermissions"]["NEW_FLASH"] = "Право на загрузку Flas
 $l_perm["workpermissions"]["NEW_QUICKTIME"] = "Право на загрузку Quicktime movies";
 $l_perm["workpermissions"]["NEW_JS"] = "Право на создание файлов JavaScript";
 $l_perm["workpermissions"]["NEW_CSS"] = "Право на создание файлов CSS";
+$l_perm["workpermissions"]["NEW_HTACCESS"] = "The user is allowed to create .htaccess files";//TRANSLATE
 $l_perm["workpermissions"]["NEW_TEXT"] = "Право на создание plain text файлов";
 $l_perm["workpermissions"]["NEW_SONSTIGE"] = "Право на создание прочих документов";
 $l_perm["workpermissions"]["NEW_TEMPLATE"] = "Право на создание шаблонов";

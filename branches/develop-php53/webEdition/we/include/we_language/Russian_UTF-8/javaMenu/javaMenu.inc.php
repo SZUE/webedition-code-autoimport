@@ -61,6 +61,7 @@ $l_javaMenu["new"] = "Новый";
 		$l_javaMenu["text_xml"] = "XML Document"; // TRANSLATE
 		$l_javaMenu["javascript"] = "Javascript"; // TRANSLATE
 		$l_javaMenu["css_stylesheet"] = "CSS таблица стилей";
+		$l_javaMenu["htaccess"] = ".htaccess Document"; //TRANSLATE
 		$l_javaMenu["other_files"] = "Другие файлы";
 
 

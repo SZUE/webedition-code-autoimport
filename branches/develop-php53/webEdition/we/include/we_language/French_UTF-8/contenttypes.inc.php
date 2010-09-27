@@ -29,6 +29,7 @@ $GLOBALS['l_contentTypes']["all_Types"] = "All files"; // TRANSLATE
 $GLOBALS['l_contentTypes']["text/xml"] = "Fichier-XML";
 $GLOBALS['l_contentTypes']["text/html"] = "Site-HTML";
 $GLOBALS['l_contentTypes']["text/plain"] = "Texte Clair";
+$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess file";//TRANSLATE
 $GLOBALS['l_contentTypes']["text/webedition"] = "Site-webEdition";
 $GLOBALS['l_contentTypes']["image/*"] = "Graphique";
 $GLOBALS['l_contentTypes']["text/weTmpl"] = "Modèle-webEdition";

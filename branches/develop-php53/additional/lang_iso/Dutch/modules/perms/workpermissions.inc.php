@@ -34,6 +34,7 @@ $l_perm["workpermissions"]["NEW_FLASH"] = "De gebruiker is bevoegd om Flash best
 $l_perm["workpermissions"]["NEW_QUICKTIME"] = "De gebruiker is bevoegd om Quicktime films te uploaden.";
 $l_perm["workpermissions"]["NEW_JS"] = "De gebruiker is bevoegd om Javascript bestanden aan te maken.";
 $l_perm["workpermissions"]["NEW_CSS"] = "De gebruiker is bevoegd om CSS bestanden aan te maken.";
+$l_perm["workpermissions"]["NEW_HTACCESS"] = "The user is allowed to create .htaccess files";//TRANSLATE
 $l_perm["workpermissions"]["NEW_TEXT"] = "De gebruiker is bevoegd om platte tekst bestanden aan te maken.";
 $l_perm["workpermissions"]["NEW_SONSTIGE"] = "De gebruiker is bevoegd om andere documenten aan te maken.";
 $l_perm["workpermissions"]["NEW_TEMPLATE"] = "De gebruiker is bevoegd om andere sjablonen aan te maken.";

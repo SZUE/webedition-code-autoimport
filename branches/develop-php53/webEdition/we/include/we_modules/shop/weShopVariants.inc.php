@@ -383,11 +383,13 @@ class weShopVariants {
 
 				foreach ($variantFields as $realName => $attributes) {
 
-					$fieldInfo = explode('_', $realName);
-
+					$fieldInfo = explode('_', $realName);// Verursacht Bug #4682
 					$type = $fieldInfo[0];
 					$realname = $fieldInfo[1];
-
+					if (preg_match('/(.+?)_(.*)/',$realName,$regs) ){//und hier der fix #4682
+						$type = $regs[1];
+						$realname = $regs[2];
+					}
 					$name = WE_SHOP_VARIANTS_PREFIX . $i . '_' . $realname;
 
 					$content .= '<tr>
