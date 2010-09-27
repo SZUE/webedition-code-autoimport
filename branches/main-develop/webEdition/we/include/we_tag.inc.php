@@ -2380,7 +2380,7 @@ function we_tag_field($attribs, $content)
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
 			break;
-	case "href" :
+		case "href" :
 			if (isset($GLOBALS["lv"]) && ($GLOBALS["lv"]->ClassName == "we_listview_multiobject" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag")) {
 				$hrefArr = $GLOBALS["lv"]->f($name) ? unserialize($GLOBALS["lv"]->f($name)) : array();
 				if (!is_array($hrefArr))
