@@ -75,7 +75,7 @@ $l_thumbnails["saved_successfully"] = "Einstellungen gespeichert";
 	$l_thumbnails["height"] = "Höhe";
 	$l_thumbnails["ratio"] = "Proportionen beibehalten";
 	$l_thumbnails["maximize"] = "Bei Bedarf maximieren";
-	$l_thumbnails["interlace"] = "Interlace Ja / Nein";
+	$l_thumbnails["interlace"] = "Interlace Ja";
 	$l_thumbnails["quality"] = "Qualität";
 
 	/**
