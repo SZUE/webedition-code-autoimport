@@ -455,7 +455,7 @@ function findChar($in, $searchChar)
 	return -1;
 }
 
-function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchange = "", $class = "weSelect", $xml = "", $minyear = "", $maxyear = "")
+function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchange = "", $class = "weSelect", $xml = "", $minyear = "", $maxyear = "",$style="")
 {
 	global $l_global;
 	
@@ -469,7 +469,10 @@ function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchan
 		$_attsHidden['xml'] = $xml;
 	}
 	if ($class != '') {
-		$_attsSelect['class'] = 'weSelect';
+		$_attsSelect['class'] = $class;
+	}
+    if ($style != '') {
+		$_attsSelect['style'] = $style;
 	}
 	$_attsSelect['size'] = '1';
 	

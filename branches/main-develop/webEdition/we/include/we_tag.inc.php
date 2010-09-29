@@ -1875,6 +1875,7 @@ function we_tag_dateSelect($attribs, $content)
 		return $foo;
 	$name = we_getTagAttribute("name", $attribs);
 	$class = we_getTagAttribute("class", $attribs);
+	$style = we_getTagAttribute("style", $attribs);
 	
 	$tmp_from = we_getTagAttribute("start", $attribs, "");
 	$tmp_to = we_getTagAttribute("end", $attribs, "");
@@ -2017,7 +2018,8 @@ WE_checkDate_' . $name . '();
 			$class, 
 			"", 
 			$minyear, 
-			$maxyear) . $js;
+			$maxyear,
+			$style) . $js;
 }
 
 function we_tag_delete($attribs, $content)
