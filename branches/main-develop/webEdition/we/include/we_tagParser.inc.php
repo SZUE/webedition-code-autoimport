@@ -956,7 +956,7 @@ if(isset($weTagListviewCache)) {
 		$id = we_getTagAttributeTagParser("id", $arr);
 		$path = we_getTagAttributeTagParser("path", $arr);
 		$name = we_getTagAttributeTagParser("name", $arr, '');
-		
+		$rootdir = we_getTagAttributeTagParser("rootdir", $arr, '/');
 		$php = '';
 		
 		if ((!$id) && (!$path) && (!$name)) {
@@ -975,11 +975,11 @@ if(isset($weTagListviewCache)) {
 								$GLOBALS["l_css"]["font_family"].\';">\';
 
     		print "<table style=\"background: #006DB8;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding: 3px;\">" . $_tmpspan . "&nbsp;" . $GLOBALS["l_tags"]["include_file"] . "</span></td></tr><tr><td>";
-    		printElement( we_tag("href", array("name"=>"' . $name . '"), ""));
+    		printElement( we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), ""));
     		print  "</td></tr></table>";
-
+			$path ="";//Bug #4742
     	} else {
-    		$path = we_tag("href", array("name"=>"' . $name . '"), "");
+    		$path = we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), "");
     	}
     	?>';
 		}
