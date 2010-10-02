@@ -258,6 +258,12 @@ function we_tag_votingField($attribs, $content) {
 		case "request" :
 			$_REQUEST[$nameTo] = $returnvalue;
 			break;
+		case "post" :
+			$_POST[$nameTo] = $returnvalue;
+			break;
+		case "get" :
+			$_GET[$nameTo] = $returnvalue;
+			break;
 		case "global" :
 			$GLOBALS[$nameTo] = $returnvalue;
 			break;
