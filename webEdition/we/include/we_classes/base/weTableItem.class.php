@@ -102,6 +102,7 @@
 			}
 			if(defined("SHOP_TABLE")) {
 				$tables[ANZEIGE_PREFS_TABLE] = array('strDateiname','strFelder');
+				$tables[SHOP_TABLE] = array('strSerial','strSerialOrder');
 			}
 			if (array_key_exists($this->table , $tables)){
 				if ( in_array($was,$tables[$this->table]) ) {return true;}			
@@ -186,9 +187,27 @@
 						$mydataUS = unserialize($mydata);
 						if (is_array($mydataUS)){
 							foreach ($mydataUS as &$ad){
-								$ad = convertCharsetEncoding($fromC,$toC,$ad);
-								$ad = convertExactCharsetString($fromC,$toC,$ad);
-								$ad = convertCharsetString($fromC,$toC,$ad);
+								if (is_array($ad)){
+									foreach ($ad as &$add){
+									
+										if (is_array($add)){
+											foreach ($add as &$addd){
+												$addd = convertCharsetEncoding($fromC,$toC,$addd);
+												$addd = convertExactCharsetString($fromC,$toC,$addd);
+												$addd = convertCharsetString($fromC,$toC,$addd);										
+											}
+										} else {
+									
+											$add = convertCharsetEncoding($fromC,$toC,$add);
+											$add = convertExactCharsetString($fromC,$toC,$add);
+											$add = convertCharsetString($fromC,$toC,$add);
+										}
+									}							
+								} else {							
+									$ad = convertCharsetEncoding($fromC,$toC,$ad);
+									$ad = convertExactCharsetString($fromC,$toC,$ad);
+									$ad = convertCharsetString($fromC,$toC,$ad);
+								}
 							}
 							$val = serialize($mydataUS);
 						}
