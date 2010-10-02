@@ -128,7 +128,11 @@ class weNavigationItem
 		$this->customers = $customers;
 		
 		if ($this->table == FILE_TABLE) {
-			$__parts = explode("?", $this->href);
+			if (strpos($this->href,'#') !== false && strpos($this->href,'?') === false){
+				$__parts = explode("#", $this->href);
+			} else {
+				$__parts = explode("?", $this->href);
+			}
 			$__path = $__parts[0];
 			$__id = path_to_id($__path, FILE_TABLE);
 			if ($__id) {
@@ -265,7 +269,7 @@ class weNavigationItem
 	{
 		if (!($depth === false || $this->level <= $depth)) {
 			return '';
-		}
+		} 
 		if (!$this->isVisible()) {
 			return false;
 		}
