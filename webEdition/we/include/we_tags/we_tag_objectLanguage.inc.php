@@ -59,6 +59,12 @@ function we_tag_objectLanguage($attribs, $content)
 		case "request" :
 			$_REQUEST[$nameTo] = $out;
 			break;
+		case "post" :
+			$_POST[$nameTo] = $out;
+			break;
+		case "get" :
+			$_GET[$nameTo] = $out;
+			break;
 		case "global" :
 			$GLOBALS[$nameTo] = $out;
 			break;

@@ -441,6 +441,12 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = "", 
 		case "request" :
 			return isset($_REQUEST[$name]);
 			break;
+		case "post" :
+			return isset($_POST[$name]);
+			break;
+		case "get" :
+			return isset($_GET[$name]);
+			break;
 		case "global" :
 			return isset($GLOBALS[$name]);
 			break;
@@ -510,6 +516,12 @@ function we_isVarNotEmpty($attribs)
 	switch ($type) {
 		case "request" :
 			return (strlen($_REQUEST[$match]) > 0);
+			break;
+		case "post" :
+			return (strlen($_POST[$match]) > 0);
+			break;
+		case "get" :
+			return (strlen($_GET[$match]) > 0);
 			break;
 		case "global" :
 			return (strlen($GLOBALS[$match]) > 0);
@@ -4474,6 +4486,18 @@ function we_tag_ifVar($attribs, $content)
 			} else {
 				return "";
 			}
+		case "post" :
+			if (isset($_POST[$name])) {
+				return (isset($_POST[$name]) && in_array($_POST[$name], $matchArray));
+			} else {
+				return "";
+			}
+		case "get" :
+			if (isset($_GET[$name])) {
+				return (isset($_GET[$name]) && in_array($_GET[$name], $matchArray));
+			} else {
+				return "";
+			}
 		case "session" :
 			if (isset($_SESSION[$name])) {
 				return (isset($_SESSION[$name]) && in_array($_SESSION[$name], $matchArray));
@@ -6107,6 +6131,12 @@ function we_tag_setVar($attribs, $content)
 			case "request" :
 				$valueFrom = isset($_REQUEST[$nameFrom]) ? $_REQUEST[$nameFrom] : "";
 				break;
+			case "post" :
+				$valueFrom = isset($_POST[$nameFrom]) ? $_POST[$nameFrom] : "";
+				break;
+			case "get" :
+				$valueFrom = isset($_GET[$nameFrom]) ? $_GET[$nameFrom] : "";
+				break;
 			case "global" :
 				$valueFrom = isset($GLOBALS[$nameFrom]) ? $GLOBALS[$nameFrom] : "";
 				break;
@@ -6206,6 +6236,12 @@ function we_tag_setVar($attribs, $content)
 	switch ($to) {
 		case "request" :
 			$_REQUEST[$nameTo] = $valueFrom;
+			break;
+		case "post" :
+			$_POST[$nameTo] = $valueFrom;
+			break;
+		case "get" :
+			$_GET[$nameTo] = $valueFrom;
 			break;
 		case "global" :
 			$GLOBALS[$nameTo] = $valueFrom;
@@ -6922,6 +6958,14 @@ function we_tag_var($attribs, $content)
 			return $return;
 		case "request" :
 			$return = removePHP(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
+		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
+			return $return;
+		case "post" :
+			$return = removePHP(isset($_POST[$name]) ? $_POST[$name] : "");
+		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
+			return $return;
+		case "get" :
+			$return = removePHP(isset($_GET[$name]) ? $_GET[$name] : "");
 		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
 			return $return;
 		case "global" :
