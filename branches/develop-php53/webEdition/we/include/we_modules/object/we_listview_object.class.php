@@ -234,7 +234,7 @@ class we_listview_object extends listviewBase {
 		if(!$db) $db = new DB_WE();
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = "";
-		$tableInfo = we_objectFile::getSortedTableInfo($classID,true,$db);
+		$tableInfo = we_objectFile::getSortedTableInfo($classID,true,$db,true);
 		foreach($tableInfo as $fieldInfo){
 			if(preg_match('/(.+?)_(.*)/',$fieldInfo["name"],$regs)){
 				$type = $regs[1];
@@ -415,6 +415,13 @@ class we_listview_object extends listviewBase {
 				$this->DB_WE->Record["we_WE_TEXT"] = isset($this->DB_WE->Record["OF_Text"]) ? $this->DB_WE->Record["OF_Text"] : '';
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->Record["OF_ID"];
 				$this->DB_WE->Record["we_wedoc_Category"] = isset($this->DB_WE->Record["OF_Category"]) ? $this->DB_WE->Record["OF_Category"] : '';
+				$this->DB_WE->Record["we_WE_SHOPVARIANTS"]=0;
+				if(isset($this->DB_WE->Record["we_weInternVariantElement"]) ){
+					$ShopVariants = @unserialize ($this->DB_WE->Record["we_weInternVariantElement"]);
+					if(is_array($ShopVariants) && count($ShopVariants)>0){
+						$this->DB_WE->Record["we_WE_SHOPVARIANTS"]= count($ShopVariants);
+					}				
+				}
 				// for seeMode #5317
 				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?$paramName=".$this->DB_WE->Record["OF_ID"];
 				if ($this->customers && $this->DB_WE->Record["we_wedoc_WebUserID"]) {

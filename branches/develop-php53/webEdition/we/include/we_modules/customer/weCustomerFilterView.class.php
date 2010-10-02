@@ -211,7 +211,7 @@ EO_SCRIPT;
 
 		$_space = '<div style="height:4px;"></div>';
 
-		return $_script.$_modeRadioOff . $_space . $_modeRadioNone . $_space . $_modeRadioAll . $_space . $_modeRadioSpecific . $_space . $_specificCustomersSelect . $_space . $_modeRadioFilter . $_filterCustomers .$_blackListSelect . $_whiteListSelect;
+		return $_script.$_modeRadioOff .  $_space . $_modeRadioAll . $_space . $_modeRadioSpecific . $_space . $_specificCustomersSelect . $_space . $_modeRadioFilter . $_filterCustomers .$_blackListSelect . $_whiteListSelect . $_space . $_modeRadioNone ;
 	}
 
 	/**

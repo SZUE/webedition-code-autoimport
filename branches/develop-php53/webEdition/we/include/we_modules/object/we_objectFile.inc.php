@@ -635,13 +635,13 @@ class we_objectFile extends we_document
 		return '<span class="defaultfont">' . $this->TableID . "</span>";
 	}
 
-	function getSortedTableInfo($tableID,$contentOnly=false,$db=""){
+	function getSortedTableInfo($tableID,$contentOnly=false,$db="",$checkVariants=false){
 		if(!$tableID) return array();
 		if(!$db) $db = new DB_WE();
 
 		$ctable = OBJECT_X_TABLE.$tableID;
 		$tableInfo = $db->metadata($ctable);
-		$tableInfo2 = array();
+		$tableInfo2 = array(); 
 		foreach($tableInfo as $i=>$arr){
 			if(	$arr["name"] != "input_" &&
 				$arr["name"] != "text_" &&
@@ -652,9 +652,11 @@ class we_objectFile extends we_document
 				$arr["name"] != "object_" &&
 				$arr["name"] != "multiobject_" &&
 				$arr["name"] != "meta_" &&
-				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr["name"] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME)
+				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr["name"] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME )
 				){
 					array_push($tableInfo2,$arr);
+			} elseif($checkVariants && $arr["name"] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
+				$variantdata = $arr;
 			}
 		}
 		if($contentOnly==false){
@@ -667,6 +669,9 @@ class we_objectFile extends we_document
 		$start = we_objectFile::getFirstTableInfoEntry($tableInfo2);
 		foreach($order as $o){
 			array_push($tableInfo_sorted,$tableInfo2[$start+$o]);
+		}
+		if($checkVariants && isset($variantdata) && is_array($variantdata)){
+			$tableInfo_sorted[] = $variantdata;
 		}
 
 		return $tableInfo_sorted;

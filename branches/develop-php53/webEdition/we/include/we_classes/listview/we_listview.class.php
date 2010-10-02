@@ -345,6 +345,13 @@ class we_listview extends listviewBase {
 					}
 				}
 
+				$this->Record["WE_SHOPVARIANTS"]=0;
+				if(isset($this->Record["weInternVariantElement"]) ){
+					$ShopVariants = @unserialize ($this->Record["weInternVariantElement"]);
+					if(is_array($ShopVariants) && count($ShopVariants)>0){
+						$this->Record["WE_SHOPVARIANTS"]= count($ShopVariants);
+					}				
+				}
 
 				$this->Record["WE_PATH"] = $this->Record["wedoc_Path"];
 				$this->Record["WE_TEXT"] = f("SELECT Text FROM " . INDEX_TABLE . " WHERE DID=".abs($id)."","Text",$this->DB_WE);

@@ -97,7 +97,7 @@ class we_listview_shopVariants extends listviewBase {
 		$this->VariantData['Record'] = $variantData;
 		
 		$this->anz_all = sizeof($this->VariantData['Record']);
-		$this->anz = $this->rows;
+		$this->anz = min($this->rows,$this->anz_all) ;
 	}
 	
 	
