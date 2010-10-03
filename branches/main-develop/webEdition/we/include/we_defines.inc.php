@@ -79,6 +79,7 @@ define("ICON_DIR", TREE_IMAGE_DIR . "icons/");
 define("EDIT_IMAGE_DIR", IMAGE_DIR . "edit/");
 define("BACKUP_DIR", WEBEDITION_DIR . "we_backup/");
 define("VERSION_DIR", WEBEDITION_DIR . "we/versions/");
+define("ZENDCACHE_DIR", WEBEDITION_DIR . "we/zendcache/");
 
 define("BUTTONS_DIR", IMAGE_DIR . "button/");
 

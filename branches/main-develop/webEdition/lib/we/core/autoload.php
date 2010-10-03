@@ -68,3 +68,6 @@ if (!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if
 	}
 	define("DATETIME_INITIALIZED","1"); 
 }
+if (!isset($_SERVER['TMP'])){
+	$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR .'zendcache';
+}
