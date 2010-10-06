@@ -1,4 +1,4 @@
-CREATE TABLE tblAnzeigePrefs (
+﻿CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -436,6 +436,15 @@ CREATE TABLE tblOrders (
   DatePayment datetime default NULL,
   DateCancellation datetime default NULL,
   DateFinished datetime default NULL,
+  MailOrder DATETIME NULL,
+  MailConfirmation DATETIME NULL,
+  MailCustomA DATETIME NULL,
+  MailCustomB DATETIME NULL,
+  MailCustomC DATETIME NULL,
+  MailShipping DATETIME NULL,
+  MailPayment DATETIME NULL,
+  MailCancellation DATETIME NULL,
+  MailFinished DATETIME NULL,
   Price varchar(20) default NULL,
   IntPayment_Type tinyint(4) default NULL,
   strSerial longtext NOT NULL,
