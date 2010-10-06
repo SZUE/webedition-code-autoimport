@@ -86,7 +86,36 @@ function we_tag_sessionField($attribs,$content) {
 			}	
 					
 			return getHtmlTag('select', $newAtts, $content, true);
-		
+			
+		case "languageselect":
+            $newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
+			$newAtts['name']='s['.$name.']';
+			$docAttr = we_getTagAttribute("doc", $attribs, "self");
+			$doc = we_getDocForTag($docAttr);
+			$lang=$doc->Language;
+			$langcode= substr($lang,0,2);
+			if ($lang==''){
+				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			}
+			$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+			foreach ($frontendL as $lc => &$lcvalue){
+				$lccode = explode('_', $lcvalue);
+				$lcvalue= $lccode[0];
+			}
+			foreach ($frontendL as &$lcvalue){
+				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue,'language',$langcode);
+			}
+			
+			$oldLocale= setlocale(LC_ALL, NULL);
+            setlocale(LC_ALL, $lang.'.UTF-8');
+            asort($frontendLL,SORT_LOCALE_STRING );
+            setlocale(LC_ALL, $oldLocale);
+			$content='';
+			foreach ($frontendLL as $langkey => &$langvalue){
+				$content.='<option value="'.$langkey.'" '. ($orgVal == $langkey ? ' selected="selected">': '>').$langvalue.'</option>'."\n";
+			}
+			return getHtmlTag('select', $newAtts, $content, true);
 		case "select":
 
             $newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
@@ -180,10 +209,10 @@ function we_tag_sessionField($attribs,$content) {
 					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
 				}
 				if ($ascountry){
-					return Zend_Locale::getTranslation($orgVal,'territory',$langcode)
+					return Zend_Locale::getTranslation($orgVal,'territory',$langcode);
 				}
 				if ($aslanguage){
-					return Zend_Locale::getTranslation($orgVal,'langugage',$langcode)
+					return Zend_Locale::getTranslation($orgVal,'langugage',$langcode);
 				}
 			}
 			return $orgVal;
