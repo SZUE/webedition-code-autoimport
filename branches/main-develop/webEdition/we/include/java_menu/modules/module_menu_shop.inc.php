@@ -69,58 +69,64 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $
 		$we_menu_shop["210000"]["enabled"] = "1";
 
 		$we_menu_shop["220000"]["parent"] = "200000"; // separator
-
-		$we_menu_shop["230000"]["text"] = $l_javaMenu["shop"]["country_vat"].'...';
+		
+		$we_menu_shop["230000"]["text"] = $l_javaMenu["shop"]["shop_status"].'...';
 		$we_menu_shop["230000"]["parent"] = "200000";
-		$we_menu_shop["230000"]["cmd"] = "edit_shop_vat_country";
+		$we_menu_shop["230000"]["cmd"] = "edit_shop_status";
 		$we_menu_shop["230000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
 		$we_menu_shop["230000"]["enabled"] = "1";
 
-		$we_menu_shop["240000"]["text"] = $l_javaMenu["shop"]["edit_vats"].'...';
+		$we_menu_shop["240000"]["text"] = $l_javaMenu["shop"]["country_vat"].'...';
 		$we_menu_shop["240000"]["parent"] = "200000";
-		$we_menu_shop["240000"]["cmd"] = "edit_shop_vats";
+		$we_menu_shop["240000"]["cmd"] = "edit_shop_vat_country";
 		$we_menu_shop["240000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
 		$we_menu_shop["240000"]["enabled"] = "1";
 
-		$we_menu_shop["250000"]["text"] = $l_shop['shipping']['shipping_package'].'...';
+		$we_menu_shop["250000"]["text"] = $l_javaMenu["shop"]["edit_vats"].'...';
 		$we_menu_shop["250000"]["parent"] = "200000";
-		$we_menu_shop["250000"]["cmd"] = "edit_shop_shipping";
+		$we_menu_shop["250000"]["cmd"] = "edit_shop_vats";
 		$we_menu_shop["250000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
 		$we_menu_shop["250000"]["enabled"] = "1";
 
-		$we_menu_shop["251000"]["text"] = $l_shop['shipping']['payment_provider'].'...';
-		$we_menu_shop["251000"]["parent"] = "200000";
-		$we_menu_shop["251000"]["cmd"] = "payment_val";
-		$we_menu_shop["251000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
-		$we_menu_shop["251000"]["enabled"] = "1";
+		$we_menu_shop["260000"]["text"] = $l_shop['shipping']['shipping_package'].'...';
+		$we_menu_shop["260000"]["parent"] = "200000";
+		$we_menu_shop["260000"]["cmd"] = "edit_shop_shipping";
+		$we_menu_shop["260000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
+		$we_menu_shop["260000"]["enabled"] = "1";
 
-		$we_menu_shop["251001"]["parent"] = "200000"; // separator
+		$we_menu_shop["261000"]["text"] = $l_shop['shipping']['payment_provider'].'...';
+		$we_menu_shop["261000"]["parent"] = "200000";
+		$we_menu_shop["261000"]["cmd"] = "payment_val";
+		$we_menu_shop["261000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
+		$we_menu_shop["261000"]["enabled"] = "1";
 
-		$we_menu_shop["252000"]["text"] =  $l_shop['shipping']['revenue_view'];
-		$we_menu_shop["252000"]["parent"] = "200000";
-		$we_menu_shop["252000"]["cmd"] = "revenue_view";
-		$we_menu_shop["252000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
-		$we_menu_shop["252000"]["enabled"] = "1";
+		$we_menu_shop["261001"]["parent"] = "200000"; // separator
 
-		$we_menu_shop["260000"]["parent"] = "200000"; // separator
+		$we_menu_shop["262000"]["text"] =  $l_shop['shipping']['revenue_view'];
+		$we_menu_shop["262000"]["parent"] = "200000";
+		$we_menu_shop["262000"]["cmd"] = "revenue_view";
+		$we_menu_shop["262000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
+		$we_menu_shop["262000"]["enabled"] = "1";
 
-		$we_menu_shop["270000"]["text"] = $l_javaMenu["shop"]["order"];
-		$we_menu_shop["270000"]["parent"] = "200000";
-		$we_menu_shop["270000"]["perm"] = "";
-		$we_menu_shop["270000"]["enabled"] = "1";
+		$we_menu_shop["270000"]["parent"] = "200000"; // separator
+
+		$we_menu_shop["280000"]["text"] = $l_javaMenu["shop"]["order"];
+		$we_menu_shop["280000"]["parent"] = "200000";
+		$we_menu_shop["280000"]["perm"] = "";
+		$we_menu_shop["280000"]["enabled"] = "1";
 
 
-			$we_menu_shop["271000"]["text"] = $l_javaMenu["shop"]["add_article_to_order"];
-			$we_menu_shop["271000"]["parent"] = "270000";
-			$we_menu_shop["271000"]["cmd"] = "new_article";
-			$we_menu_shop["271000"]["perm"] = "NEW_SHOP_ARTICLE || ADMINISTRATOR";
-			$we_menu_shop["271000"]["enabled"] = "1";
+			$we_menu_shop["281000"]["text"] = $l_javaMenu["shop"]["add_article_to_order"];
+			$we_menu_shop["281000"]["parent"] = "280000";
+			$we_menu_shop["281000"]["cmd"] = "new_article";
+			$we_menu_shop["281000"]["perm"] = "NEW_SHOP_ARTICLE || ADMINISTRATOR";
+			$we_menu_shop["281000"]["enabled"] = "1";
 
-			$we_menu_shop["272000"]["text"] = $l_javaMenu["shop"]["delete_order"];
-			$we_menu_shop["272000"]["parent"] = "270000";
-			$we_menu_shop["272000"]["cmd"] = "delete_shop";
-			$we_menu_shop["272000"]["perm"] = "DELETE_SHOP_ARTICLE || ADMINISTRATOR";;
-			$we_menu_shop["272000"]["enabled"] = "1";
+			$we_menu_shop["282000"]["text"] = $l_javaMenu["shop"]["delete_order"];
+			$we_menu_shop["282000"]["parent"] = "280000";
+			$we_menu_shop["282000"]["cmd"] = "delete_shop";
+			$we_menu_shop["282000"]["perm"] = "DELETE_SHOP_ARTICLE || ADMINISTRATOR";;
+			$we_menu_shop["282000"]["enabled"] = "1";
 
 	// menu add
 	$we_menu_shop["300000"]["text"] = $l_javaMenu["shop"]["menu_help"];

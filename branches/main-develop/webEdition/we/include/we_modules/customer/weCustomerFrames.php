@@ -140,6 +140,60 @@ class weCustomerFrames extends weModuleFrames {
 			case "input":
 				return htmlTextInput($field,32,stripslashes($value),"","onchange=\"top.content.setHot();\" style='{width:240}'");
 			break;
+			case "country":
+				//p_r($GLOBALS['l_countries']);
+				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				$countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+				$countryselect=new we_htmlSelect(array("name"=>$field,"size"=>"1","style"=>"{width:240;}","class"=>"wetextinput","onblur"=>"this.className='wetextinput'","onfocus"=>"this.className='wetextinputselected'", "id"=>($field=="Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange"=> ($field=="Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+				
+				$topCountries = explode(',',WE_COUNTRIES_TOP);
+				$topCountries = array_flip($topCountries);
+				foreach ($topCountries as $countrykey => &$countryvalue){
+					$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+				}
+				$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+				$shownCountries = array_flip($shownCountries);
+				foreach ($shownCountries as $countrykey => &$countryvalue){
+					$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+				}
+				$oldLocale= setlocale(LC_ALL, NULL);
+				setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
+				asort($topCountries,SORT_LOCALE_STRING );
+				asort($shownCountries,SORT_LOCALE_STRING );
+				setlocale(LC_ALL, $oldLocale);
+				
+				$content='';
+				
+				foreach ($topCountries as $countrykey => &$countryvalue){
+					$countryselect->addOption($countrykey,$countryvalue);
+				}
+				$countryselect->addOption('-','----',array("disabled"=>"disabled"));
+				//$content.='<option value="-" disabled="disabled">----</option>'."\n";
+				foreach ($shownCountries as $countrykey => &$countryvalue){
+					$countryselect->addOption($countrykey,$countryvalue);
+				}	
+				
+				$countryselect->selectOption($value);
+				return $countryselect->getHtmlCode();
+				//return htmlTextInput($field,2,stripslashes($value),"","onchange=\"top.content.setHot();\" style='{width:40}'");
+			break;
+			case "language":
+				$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+				foreach ($frontendL as $lc => &$lcvalue){
+					$lccode = explode('_', $lcvalue);
+					$lcvalue= $lccode[0];
+				}
+				$languageselect=new we_htmlSelect(array("name"=>$field,"size"=>"1","style"=>"{width:240;}","class"=>"wetextinput","onblur"=>"this.className='wetextinput'","onfocus"=>"this.className='wetextinputselected'", "id"=>($field=="Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange"=> ($field=="Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+				foreach($GLOBALS['l_languages'] as $languagekey => $languagevalue){
+					if(in_array($languagekey,$frontendL)){
+						$languageselect->addOption($languagekey,$languagevalue);
+					}
+				}
+				$languageselect->selectOption($value);
+				return $languageselect->getHtmlCode();
+				
+			break;
 			case "select":
 
 				$defs=explode(',',$props['default']);

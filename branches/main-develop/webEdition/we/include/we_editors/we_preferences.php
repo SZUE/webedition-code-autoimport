@@ -146,6 +146,9 @@ $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_NAMES",', '// Comma 
 //default charset
 $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
 
+//countries
+$global_config[] = array('define("WE_COUNTRIES_TOP",', '// top countries' . "\n" . 'define("WE_COUNTRIES_TOP", "DE,AT,CH");');
+$global_config[] = array('define("WE_COUNTRIES_SHOWN",', '// other shown countries' . "\n" . 'define("WE_COUNTRIES_SHOWN", "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");');
 
 /*****************************************************************************
  * FUNCTIONS
@@ -291,6 +294,18 @@ function get_value($settingvalue) {
 		case "locale_default":
 			we_loadLanguageConfig();
 			return $GLOBALS['weDefaultFrontendLanguage'];
+			break;
+
+		/*********************************************************************
+		 * COUNRIES
+		 *********************************************************************/
+
+		case "countries_top":		
+			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
+			break;
+
+		case "countries_shown":
+			return defined("WE_COUNTRIES_SHOWN") ? WE_COUNTRIES_SHOWN : "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY";
 			break;
 
 		/*********************************************************************
@@ -817,6 +832,29 @@ function remember_value($settingvalue, $settingname) {
 	$_update_prefs = false;
 	if (isset($settingvalue) && ($settingvalue !== null || $settingname=='$_REQUEST["we_tracker_dir"]' || $settingname=='$_REQUEST["ui_sidebar_disable"]' || $settingname=='$_REQUEST["smtp_halo"]' || $settingname=='$_REQUEST["smtp_timeout"]')) {
 		switch ($settingname) {
+		
+		
+			/*****************************************************************
+			 * Countries
+			 *****************************************************************/
+
+			case '$_REQUEST["countries_top"]':
+				
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_TOP", $settingvalue);
+
+				$_update_prefs = true;
+				break;
+			
+			case '$_REQUEST["countries_shown"]':
+				
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_SHOWN", $settingvalue);
+
+				$_update_prefs = true;
+				break;
+
+
 			/*****************************************************************
 			 * WINDOW DIMENSIONS
 			 *****************************************************************/
@@ -2505,6 +2543,18 @@ function save_all_values() {
 		we_writeLanguageConfig($_REQUEST['locale_default'], explode(",", $_REQUEST['locale_locales']));
 
 	}
+	
+	/*************************************************************************
+	 * Countries
+	 *************************************************************************/
+
+	if(isset($_REQUEST['countries']) ) {
+	    $countries_top=array_keys($_REQUEST['countries'],2);
+		$countries_shown=array_keys($_REQUEST['countries'],1);
+		remember_value(implode(',',$countries_top), '$_REQUEST["countries_top"]');
+		remember_value(implode(',',$countries_shown), '$_REQUEST["countries_shown"]');
+	}
+	
 	/*************************************************************************
 	 * DEFAULT_CHARSET
 	 *************************************************************************/
@@ -3513,7 +3563,44 @@ function build_dialog($selected_setting = "ui") {
 			$_dialog = create_dialog("", $l_prefs["tab_cache"], $_settings);
 
 			break;
+		case "countries":
+        	$_settings = array();
+            $_information = htmlAlertAttentionBox($l_prefs["countries_information"], 2, 450, false);
 
+			array_push($_settings, array("headline" => $l_prefs["countries_headline"], "html" => $_information, "space" => 0,'noline'=>1));
+            $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+            $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+            $zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
+            $oldLocale= setlocale(LC_ALL, NULL);
+            setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
+            asort($zendsupported,SORT_LOCALE_STRING );
+            setlocale(LC_ALL, $oldLocale);
+            $countries_top = explode(',',get_value('countries_top'));
+            $countries_shown = explode(',',get_value('countries_shown'));
+            $tabC = new we_htmlTable(array("border"=>"1", "cellpadding"=>"2", "cellspacing"=>"0"), $rows_num = 1, $cols_num = 4);
+            $i=0;
+            $tabC->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_country"]);
+            $tabC->setCol($i, 1, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_top"]);
+            $tabC->setCol($i, 2, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_show"]);
+            $tabC->setCol($i, 3, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_noshow"]);
+            foreach ($zendsupported as $countrycode => $country) {
+            	$i++;
+            	$tabC->addRow();
+                $tabC->setCol($i, 0, array("class"=>"defaultfont"), $country);
+                $tabC->setCol($i, 1, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="2" '.(in_array($countrycode,$countries_top) ? 'checked':'').' > ');
+                $tabC->setCol($i, 2, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="1" '.(in_array($countrycode,$countries_shown) ? 'checked':'').' > ');
+            	$tabC->setCol($i, 3, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="0" '.(!in_array($countrycode,$countries_top)&& !in_array($countrycode,$countries_shown)  ? 'checked':'').' > ');
+            }
+            
+
+			array_push($_settings, array("headline" => "", "html" => $tabC->getHtmlCode(), "space" => 0,'noline'=>1));
+        
+        	// Build dialog element if user has permission
+			if (we_hasPerm("EDIT_SETTINGS_DEF_EXT")) {
+				$_dialog = create_dialog("", $l_prefs["tab_countries"], $_settings);
+			}
+			break;
 
 
 		case "language":
@@ -3795,7 +3882,7 @@ EOF;
 			}
 
 			break;
-
+        
 		case "extensions":
 
 			/*****************************************************************
@@ -5970,6 +6057,9 @@ function render_dialog() {
 
 	if($tabname=="setting_language") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_language"), build_dialog("language"));
 	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_language", "style" => "display: none;"), build_dialog("language"));
+	
+	if($tabname=="setting_countries") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_countries"), build_dialog("countries"));
+	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_countries", "style" => "display: none;"), build_dialog("countries"));
 
 	if($tabname=="setting_message_reporting") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_message_reporting"), build_dialog("message_reporting"));
 	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_message_reporting", "style" => "display: none;"), build_dialog("message_reporting"));

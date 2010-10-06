@@ -4,7 +4,8 @@
     case "edit_shop":
 		new jsWindow(url,"edit_module",-1,-1,970,760,true,true,true,true);
 	break;		
-		case "pref_shop":
+	
+    case "pref_shop":
 		var fo=false;
 		for(var k=jsWindow_count-1;k>-1;k--){
 			eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
@@ -15,7 +16,18 @@
 		new jsWindow(url,"shoppref",-1,-1,470,600,true,true,true,false);
 		break;
 		
-		case "edit_shop_vat_country":
+    case "edit_shop_status":
+		var fo=false;
+		for(var k=jsWindow_count-1;k>-1;k--){
+			eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
+			if(fo) break;
+		}
+		wind.focus();
+		url="<?php print WE_SHOP_MODULE_PATH ?>edit_shop_status.php";
+		new jsWindow(url,"edit_shop_status",-1,-1,700,780,true,true,true,false);
+	break;
+        
+	case "edit_shop_vat_country":
 		var fo=false;
 		for(var k=jsWindow_count-1;k>-1;k--){
 			eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
@@ -24,9 +36,9 @@
 		wind.focus();
 		url="<?php print WE_SHOP_MODULE_PATH ?>edit_shop_vat_country.php";
 		new jsWindow(url,"edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
-		break;
+	break;
 		
-		case "edit_shop_vats":
+	case "edit_shop_vats":
 		var fo=false;
 		for(var k=jsWindow_count-1;k>-1;k--){
 			eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
@@ -35,9 +47,9 @@
 		wind.focus();
 		url="<?php print WE_SHOP_MODULE_PATH ?>edit_shop_vats.php";
 		new jsWindow(url,"edit_shop_vats",-1,-1,500,450,true,false,true,false);
-		break;
+	break;
 		
-		case "edit_shop_shipping":
+	case "edit_shop_shipping":
 		var fo=false;
 		for(var k=jsWindow_count-1;k>-1;k--){
 			eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
@@ -46,9 +58,9 @@
 		wind.focus();
 		url="<?php print WE_SHOP_MODULE_PATH ?>edit_shop_shipping.php";
 		new jsWindow(url,"edit_shop_shipping",-1,-1,700,600,true,false,true,false);
-		break;
+	break;
 		
-		case "payment_val":
+	case "payment_val":
 		var fo=false;
 		for(var k=jsWindow_count-1;k>-1;k--){
 			eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
@@ -57,7 +69,7 @@
 		wind.focus();
 		url="<?php print WE_SHOP_MODULE_PATH ?>edit_shop_payment.inc.php";
 		new jsWindow(url,"edit_shop_payment",-1,-1,520,720,true,false,true,false);
-		break;
+	break;
 				
 <?php
     $yearshop = "2010";

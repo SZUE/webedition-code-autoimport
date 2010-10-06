@@ -70,6 +70,7 @@ if (we_hasPerm("ADMINISTRATOR")) {
     $we_tabs->addTab(new we_tab("#", $l_prefs["tab_system"], ($tabname=="setting_system" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('system');"));
     $we_tabs->addTab(new we_tab("#", $l_prefs["module_activation"]["headline"], ($tabname=="setting_active_integrated_modules" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('active_integrated_modules');"));
 	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_language"], ($tabname=="setting_language" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('language');"));
+	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_countries"], ($tabname=="setting_countries" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('countries');"));
 
  	if( !(defined("ISP_VERSION") && ISP_VERSION) ){
 		$we_tabs->addTab(new we_tab("#", $l_prefs["tab_error_handling"], ($tabname=="tab_error_handling" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('error_handling');"));

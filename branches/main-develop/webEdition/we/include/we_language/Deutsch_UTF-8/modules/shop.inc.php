@@ -205,6 +205,12 @@ $l_shop["includedVat"] = "enthaltene Mehrwertsteuer";
 $l_shop["bestellnr"] = "Bestellnummer:";
 $l_shop["bearbeitet"] = "Bearbeitet am:";
 $l_shop["bezahlt"] = "Bezahlt am:";
+$l_shop["bestaetigt"] = "Bestätigt am:";
+$l_shop["customA"] = "Status A am:";
+$l_shop["customB"] = "Status B am:";
+$l_shop["customC"] = "Status C am:";
+$l_shop["storniert"] = "Storniert am:";
+$l_shop["beendet"] = "Abgeschlossen am:";
 $l_shop["datumeingabe"] = "Sie muessen das Datum im format dd.mm.yy angeben.";
 
 $l_shop["order_data"] = "Bestell- und<br />Kundendaten";
@@ -250,6 +256,29 @@ $l_shop['vat_country']['statesSpecialRules_result'] = 'Ergebnis';
 $l_shop['vat_country']['condition_is_empty'] = 'Leer';
 $l_shop['vat_country']['condition_is_set'] = 'Gesetzt';
 
+// statusmails
+$l_shop['statusmails']['box_headline'] = 'Statusanzeigen und Verhalten beim E-Mail Versand';
+$l_shop['statusmails']['AnzeigeDaten'] = 'Anzeige Daten';
+$l_shop['statusmails']['fieldname'] = 'Feld-ID';
+$l_shop['statusmails']['hidefield'] = 'Feld Anzeige';
+$l_shop['statusmails']['hidefieldNein'] = 'anzeigen';
+$l_shop['statusmails']['hidefieldJa'] = 'nicht anzeigen';
+$l_shop['statusmails']['fieldtext'] = 'Feldbezeichnung';
+$l_shop['statusmails']['EMailssenden'] = 'E-Mail-Versand';
+$l_shop['statusmails']['EMailssendenNein'] = 'keine';
+$l_shop['statusmails']['EMailssendenHand'] = 'Button';
+$l_shop['statusmails']['EMailssendenAuto'] = 'automatisch';
+$l_shop['statusmails']['EMailDaten'] = 'E-Mail Daten';
+$l_shop['statusmails']['AbsenderAdresse'] = 'Absender E-Mail Adresse';
+$l_shop['statusmails']['AbsenderName'] = 'Absender Name';
+$l_shop['statusmails']['DocumentSubjectField'] = 'Feldname im Dokument für E-Mail Betreff';
+$l_shop['statusmails']['Spracheinstellungen'] = 'Sprachen';
+$l_shop['statusmails']['useLanguages'] = 'Nutze verschiedene <br/>Mail-Dokumente je <br/>Sprache (statt den Standard)';
+$l_shop['statusmails']['SprachenFeld'] = 'SprachenFeld';
+$l_shop['statusmails']['hintISO'] = 'Nur bei Nutzung eines ISO kodierten Sprachfeldes ist eine Sprachzuordnung der Mails möglich.';
+$l_shop['statusmails']['Dokumente'] = 'Dokumente';
+$l_shop['statusmails']['defaultDocs'] = 'Standard <br/> (ohne Sp.<br/> Zuordnung)';
+
 $l_shop['shipping']['shipping_package'] = 'Porto und Verpackung';
 $l_shop['shipping']['prices_are_net'] = 'Preise sind Nettoangaben';
 $l_shop['shipping']['insert_packaging'] = 'Eingetragene Versandkosten';
@@ -264,6 +293,9 @@ $l_shop['shipping']['shipping_costs'] = 'Versandkosten';
 
 $l_shop['preferences']['customerFields'] = "Kundenfelder<br />(Kundenverwaltung)";
 $l_shop['preferences']['orderCustomerFields'] = 'Kundenfelder<br />(Bestellung)';
+$l_shop['preferences']['CountryField'] = 'Feld Land';
+$l_shop['preferences']['LanguageField'] = 'Feld Sprache';
+$l_shop['preferences']['ISO-Kodiert'] = 'Feld ist ISO kodiert';
 
 $l_shop['preferences']['customerdata'] = 'Kundendaten';
 $l_shop['preferences']['explanation_customer_odercustomer'] = 'Erklärung: Diese Daten werden nur innerhalb dieser Bestellung gespeichert, die Daten der Kundenverwaltung bleiben erhalten.';

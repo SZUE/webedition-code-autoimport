@@ -41,7 +41,9 @@ class weCustomerSettings{
 							"textarea"=>"text",
 							"date"=>"varchar(24)",
 							"password"=>"varchar(32)",
-							"img"=>"bigint(20)"
+							"img"=>"bigint(20)",
+							"country"=>"varchar(4)",//eigentlich nur 2, aber der Typ wird aus dem Feldtyp der DB-Tabelle abgeleitet und muss deshalb eindeutig sein 
+							"language"=>"varchar(2)"							
 	);
 
 	var $default_fields_settings=array("type"=>"input","default"=>"");

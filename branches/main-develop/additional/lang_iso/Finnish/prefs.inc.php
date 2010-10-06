@@ -59,12 +59,22 @@ $l_prefs["tab_error_handling"] = 'Virhekäsittely';
 $l_prefs["tab_cockpit"] = 'Pika-aloitus';
 $l_prefs["tab_cache"] = 'Välimuisti';
 $l_prefs["tab_language"] = 'Kielet';
+$l_prefs["tab_countries"] = 'Countries';// TRANSLATE
 $l_prefs["tab_modules"] = 'Moduulit';
 $l_prefs["tab_versions"] = 'Versiointi';
 
 /*****************************************************************************
  * USER INTERFACE
  *****************************************************************************/
+	/**
+	 * Countries
+	 */
+	$l_prefs["countries_information"]= "Select the countries, which are available in the customer module, shop-module and so on.";// TRANSLATE
+	$l_prefs["countries_headline"] = "Country selection";// TRANSLATE
+	$l_prefs["countries_country"] = "Country";// TRANSLATE
+    $l_prefs["countries_top"] = "top list";// TRANSLATE
+    $l_prefs["countries_show"] = "display";// TRANSLATE
+    $l_prefs["countries_noshow"] = "no display";// TRANSLATE
 
 	/**
 	 * LANGUAGE

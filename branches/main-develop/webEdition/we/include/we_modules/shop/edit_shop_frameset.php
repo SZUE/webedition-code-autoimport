@@ -160,7 +160,9 @@ function doUnload() {
 		case 'edit_shop_shipping':
 			//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
 		break;
-
+		case 'edit_shop_status':
+			//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
+		break;
 		case 'edit_shop_vat_country':
 			//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
 		break;
@@ -445,9 +447,9 @@ fr.write("&nbsp;");
 					print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto>';
 				}
 				?>
-		</frameset>
+		<frame src="UntitledFrame-5"></frameset>
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize>
-	</frameset>
+	</frameset><noframes></noframes>
 <?php } else { ?>
 	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize>
