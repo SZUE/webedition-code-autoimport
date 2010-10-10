@@ -76,6 +76,7 @@ if (we_hasPerm("ADMINISTRATOR")) {
 		case \"backup\":
 		case \"validation\":
 		case \"language\":
+		case \"countries\":
 		case \"active_integrated_modules\":
 		case \"versions\":
 		case \"email\":";
@@ -106,6 +107,7 @@ $_javascript .= <<< END_OF_SCRIPT
 			we_preferences.document.getElementById('setting_validation').style.display = 'none';
 			we_preferences.document.getElementById('setting_cache').style.display = 'none';
 			we_preferences.document.getElementById('setting_language').style.display = 'none';
+			we_preferences.document.getElementById('setting_countries').style.display = 'none';
 			we_preferences.document.getElementById('setting_message_reporting').style.display = 'none';
 			we_preferences.document.getElementById('setting_active_integrated_modules').style.display = 'none';
 			we_preferences.document.getElementById('setting_email').style.display = 'none';

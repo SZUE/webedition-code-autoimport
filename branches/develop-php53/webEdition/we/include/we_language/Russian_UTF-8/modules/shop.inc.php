@@ -102,6 +102,12 @@ $l_shop["includedVat"] = "с НДС";
 $l_shop["bestellnr"] = "Заказ №:";
 $l_shop["bearbeitet"] = "Дата обработки:";
 $l_shop["bezahlt"] = "Дата оплаты:";
+$l_shop["bestaetigt"] = "Confirmed on:";// TRANSLATE
+$l_shop["customA"] = "Status A on:";// TRANSLATE
+$l_shop["customB"] = "Status B on:";// TRANSLATE
+$l_shop["customC"] = "Status C on:";// TRANSLATE
+$l_shop["storniert"] = "Cancelled on:";// TRANSLATE
+$l_shop["beendet"] = "Finished on:";// TRANSLATE
 $l_shop["datumeingabe"] = "Дата вводится в следующем формате: мм/дд/гг.";
 
 $l_shop["order_data"] = "Данные о<br>заказе и пользователе";
@@ -252,6 +258,33 @@ $l_shop['vat_country']['statesSpecialRules_result'] = 'Результат';
 $l_shop['vat_country']['condition_is_empty'] = 'не заполнено';
 $l_shop['vat_country']['condition_is_set'] = 'заполнено';
 
+// statusmails
+$l_shop['statusmails']['box_headline'] = 'Status display and behavior with E-Mails';// TRANSLATE
+$l_shop['statusmails']['AnzeigeDaten'] = 'Dosplay data';// TRANSLATE
+$l_shop['statusmails']['fieldname'] = 'Field ID';// TRANSLATE
+$l_shop['statusmails']['hidefield'] = 'Field display';// TRANSLATE
+$l_shop['statusmails']['hidefieldNein'] = 'display';// TRANSLATE
+$l_shop['statusmails']['hidefieldJa'] = 'hidden';// TRANSLATE
+$l_shop['statusmails']['fieldtext'] = 'Field name';// TRANSLATE
+$l_shop['statusmails']['EMailssenden'] = 'Send e-mails';// TRANSLATE
+$l_shop['statusmails']['EMailssendenNein'] = 'no';// TRANSLATE
+$l_shop['statusmails']['EMailssendenHand'] = 'Button';// TRANSLATE
+$l_shop['statusmails']['EMailssendenAuto'] = 'automatically';// TRANSLATE
+$l_shop['statusmails']['EMailDaten'] = 'E-Mail Data';// TRANSLATE
+$l_shop['statusmails']['AbsenderAdresse'] = 'Senders e-mail addresse';// TRANSLATE
+$l_shop['statusmails']['AbsenderName'] = 'Senders name';// TRANSLATE
+$l_shop['statusmails']['EMailFeld'] = 'CM e-mail field';// TRANSLATE
+$l_shop['statusmails']['DocumentSubjectField'] = 'Field name within the document for subject';// TRANSLATE
+$l_shop['statusmails']['Spracheinstellungen'] = 'Lanugages';// TRANSLATE
+$l_shop['statusmails']['useLanguages'] = 'Use documents<br/> depending on language <br/>(instead of default)';// TRANSLATE
+$l_shop['statusmails']['SprachenFeld'] = 'CM language field';// TRANSLATE
+$l_shop['statusmails']['hintISO'] = 'Only using ISO coded langauges, one can send documents depending on language.';// TRANSLATE
+$l_shop['statusmails']['Dokumente'] = 'Documents';// TRANSLATE
+$l_shop['statusmails']['defaultDocs'] = 'Default <br/> (no lang.<br/> support)';// TRANSLATE
+$l_shop['statusmails']['EMail'] = 'e-mail';// TRANSLATE
+$l_shop['statusmails']['TitelFeld'] = 'CM title field';// TRANSLATE
+$l_shop['statusmails']['bcc'] = 'blind copy to address';// TRANSLATE
+
 $l_shop['shipping']['shipping_package'] = 'Доставка и упаковка';
 $l_shop['shipping']['prices_are_net'] = 'Цены нетто';
 $l_shop['shipping']['insert_packaging'] = 'Расходы на доставку';
@@ -266,6 +299,9 @@ $l_shop['shipping']['shipping_costs'] = 'Shipping_costs'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Поля клиентов<br />(модуль управления клиентами)";
 $l_shop['preferences']['orderCustomerFields'] = 'Поля клиентов<br />(заказ)';
+$l_shop['preferences']['CountryField'] = 'Field country';// TRANSLATE
+$l_shop['preferences']['LanguageField'] = 'Field Language';// TRANSLATE
+$l_shop['preferences']['ISO-Kodiert'] = 'Field is ISO coded';// TRANSLATE
 
 $l_shop['preferences']['customerdata'] = 'Данные клиентов';
 $l_shop['preferences']['explanation_customer_odercustomer'] = 'Пояснение: данные сохраняются только в рамках этого заказа без изменения первичных данных модуля управления клиентами.';

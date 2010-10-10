@@ -60,12 +60,22 @@ $l_prefs["tab_error_handling"] = 'Fehlerbehandlung';
 $l_prefs["tab_cockpit"] = 'Cockpit';
 $l_prefs["tab_cache"] = 'Cache';
 $l_prefs["tab_language"] = 'Sprachen';
+$l_prefs["tab_countries"] = 'Länder';
 $l_prefs["tab_modules"] = 'Module';
 $l_prefs["tab_versions"] = 'Versionierung';
 
 /*****************************************************************************
  * USER INTERFACE
  *****************************************************************************/
+	/**
+	 * Countries
+	 */
+	$l_prefs["countries_information"]= "Wählen Sie hier die Länder aus, die in der Kundenverwaltung, im Shop usw. ausgewählt werden können.";
+	$l_prefs["countries_headline"] = "Länderauswahl";
+	$l_prefs["countries_country"] = "Land";
+    $l_prefs["countries_top"] = "Top-Liste";
+    $l_prefs["countries_show"] = "anzeigen";
+    $l_prefs["countries_noshow"] = "keine Anzeige";
 
 	/**
 	 * LANGUAGE

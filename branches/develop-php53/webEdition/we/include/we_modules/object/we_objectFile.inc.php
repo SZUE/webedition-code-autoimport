@@ -691,6 +691,10 @@ class we_objectFile extends we_document
 		switch($type){
 			case "input":
 			return $this->getInputFieldHTML($name,$attribs,$editable,$variant);
+			case "country":
+			return $this->getCountryFieldHTML($name,$attribs,$editable,$variant);
+			case "language":
+			return $this->getLanguageFieldHTML($name,$attribs,$editable,$variant);
 			case "href":
 			return $this->getHrefFieldHTML($name,$attribs,$editable);
 			case "link":
@@ -725,6 +729,8 @@ class we_objectFile extends we_document
 		switch($type){
 			case "text":
 			case "input":
+			case "country":
+			case "language":
 				return $this->getElement($name);
 			case "href":
 				$hrefArr = $this->getElement($name) ? unserialize($this->getElement($name)) : array();
@@ -1263,6 +1269,95 @@ class we_objectFile extends we_document
 			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["input_".$name]["required"] ? "*" : "")."</span>" .  (isset($this->DefArray["input_".$name]['editdescription']) && $this->DefArray["input_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["input_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
 		}else{
 			return $this->getPreviewView($name,$this->getElement($name));
+		}
+	}
+	function getCountryFieldHTML($name,$attribs,$editable=true,$variant=false){
+
+		if($editable){
+			$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			$countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+			$countryselect=new we_htmlSelect(array("name"=>"we_".$this->Name."_language[$name]","size"=>"1","style"=>"{width:620;}","class"=>"wetextinput","onChange"=>"_EditorFrame.setEditorIsHot(true);" ));
+			
+			$topCountries = explode(',',WE_COUNTRIES_TOP);
+			$topCountries = array_flip($topCountries);
+			foreach ($topCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+			}
+			$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+			$shownCountries = array_flip($shownCountries);
+			foreach ($shownCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+			}
+			$oldLocale= setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
+			asort($topCountries,SORT_LOCALE_STRING );
+			asort($shownCountries,SORT_LOCALE_STRING );
+			setlocale(LC_ALL, $oldLocale);
+			
+			$content='';
+			if (!$this->DefArray["country_".$name]["required"]){
+				$countryselect->addOption('--','');
+			}
+			foreach ($topCountries as $countrykey => &$countryvalue){
+				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
+			}
+			$countryselect->addOption('-','----',array("disabled"=>"disabled"));
+			//$content.='<option value="-" disabled="disabled">----</option>'."\n";
+			foreach ($shownCountries as $countrykey => &$countryvalue){
+				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
+			}	
+			
+			$countryselect->selectOption($this->getElement($name));
+			$content = $countryselect->getHtmlCode();
+
+			//$content = $this->htmlTextInput("we_".$this->Name."_country[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
+			if ($variant) {
+				return $content;
+			}
+
+			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["country_".$name]["required"] ? "*" : "")."</span>" .  (isset($this->DefArray["country_".$name]['editdescription']) && $this->DefArray["country_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["country_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
+		} else {		
+			if ($this->getElement($name)!='--' || $this->getElement($name)!=''){
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div><div class="defaultfont">'.CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name),'territory',$langcode) ).'</div>';
+			} else {
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div>';
+			}
+		}
+	}
+	function getLanguageFieldHTML($name,$attribs,$editable=true,$variant=false){
+
+		if($editable){
+			$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+			foreach ($frontendL as $lc => &$lcvalue){
+				$lccode = explode('_', $lcvalue);
+				$lcvalue= $lccode[0];
+			}
+			$languageselect=new we_htmlSelect(array("name"=>"we_".$this->Name."_language[$name]","size"=>"1","style"=>"{width:620;}","class"=>"wetextinput","onChange"=>"_EditorFrame.setEditorIsHot(true);" ));
+			if (!$this->DefArray["language_".$name]["required"]){
+				$languageselect->addOption('--','');
+			}
+			
+			foreach($GLOBALS['l_languages'] as $languagekey => $languagevalue){
+				if(in_array($languagekey,$frontendL)){
+					$languageselect->addOption($languagekey,$languagevalue);
+				}
+			}
+			$languageselect->selectOption($this->getElement($name));
+			$content = $languageselect->getHtmlCode();
+			//$content = $this->htmlTextInput("we_".$this->Name."_language[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
+			if ($variant) {
+				return $content;
+			}
+
+			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["language_".$name]["required"] ? "*" : "")."</span>" .  (isset($this->DefArray["language_".$name]['editdescription']) && $this->DefArray["language_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["language_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
+		}else{
+			if ($this->getElement($name)!='--' || $this->getElement($name)!=''){
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div><div class="defaultfont">'.CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name),'language',$langcode) ).'</div>';
+			} else {
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div>';
+			}
+
 		}
 	}
 	function getCheckboxFieldHTML($name,$attribs,$editable=true){

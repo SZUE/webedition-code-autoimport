@@ -79,6 +79,7 @@ define("ICON_DIR", TREE_IMAGE_DIR . "icons/");
 define("EDIT_IMAGE_DIR", IMAGE_DIR . "edit/");
 define("BACKUP_DIR", WEBEDITION_DIR . "we_backup/");
 define("VERSION_DIR", WEBEDITION_DIR . "we/versions/");
+define("ZENDCACHE_DIR", WEBEDITION_DIR . "we/zendcache/");
 
 define("BUTTONS_DIR", IMAGE_DIR . "button/");
 
@@ -243,6 +244,17 @@ $GLOBALS['WE_LANGS'] = array(
 		"es" => "Spanish", 
 		"pl" => "Polish", 
 		"fr" => "French"
+);
+$GLOBALS['WE_LANGS_COUNTRIES'] = array(
+	
+		"DE" => "de", 
+		"GB" => "en", 
+		"NL" => "nl", 
+		"FI" => "fi", 
+		"RU" => "ru", 
+		"ES" => "es", 
+		"PL" => "pl", 
+		"FR" => "fr"
 );
 if (!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in autoload, this also allows later to make that an settings-item
 	if (!date_default_timezone_set(@date_default_timezone_get())){

@@ -24,7 +24,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_class.inc.php');
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 
@@ -48,7 +48,16 @@ htmlTop();
 
 print STYLESHEET;
 
+
 $we_button = new we_button();
+$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path' ,'IsFolder', 'Icon', 'Text');
+$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
+$selectFields['-'] = '-';
+foreach ($customerTableFields as $tblField) {
+	if (!in_array($tblField['name'], $ignoreFields)) {
+		$selectFields[$tblField['name']] = $tblField['name'];
+	}
+}
 
 if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 
@@ -76,9 +85,49 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	} else {
 		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . mysql_real_escape_string(serialize($fields)) . "','edit_shop_properties')") ;
 	}
+	
+	$CLFields['stateField'] = isset($_REQUEST['stateField']) ? $_REQUEST['stateField'] : '-';
+	$CLFields['stateFieldIsISO'] = isset($_REQUEST['stateFieldIsISO']) ? $_REQUEST['stateFieldIsISO'] : 0;
+	$CLFields['languageField'] = isset($_REQUEST['languageField']) ? $_REQUEST['languageField'] : '-';
+	$CLFields['languageFieldIsISO'] = isset($_REQUEST['languageFieldIsISO']) ? $_REQUEST['languageFieldIsISO'] : 0;
+	
+	// check if field exists
+	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+	$DB_WE->query($q);
+	if ( $DB_WE->num_rows() > 0) {
+		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . mysql_real_escape_string(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
+	} else {
+		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . mysql_real_escape_string(serialize($CLFields)) . "','shop_CountryLangauge')") ;
+	}
+	// Update Country Field in weShopVatRule
+	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
+	$weShopVatRule = weShopVatRule::getShopVatRule();
+	$weShopVatRule->stateField = $CLFields['stateField'];
+	$weShopVatRule->stateFieldIsISO = $CLFields['stateFieldIsISO'];
+	$weShopVatRule->save();
+	// Update Language Field in weShopStatusMails
+	require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
+	$weShopStatusMails = weShopStatusMails::getShopStatusMails();
+	$weShopStatusMails->LanguageData['languageField'] = $CLFields['languageField'];
+	$weShopStatusMails->LanguageData['languageFieldIsISO'] = $CLFields['languageFieldIsISO'];
+	$weShopStatusMails->save();
+	
 	//	Close window when finished
 	echo '<script type="text/javascript">self.close();</script>';
 	exit;
+} else {
+	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+	$DB_WE->query($q);
+	if ( $DB_WE->num_rows() > 0) {
+		$DB_WE->next_record();
+		$CLFields = unserialize($DB_WE->f("strFelder"));
+	} else {
+		$CLFields['stateField'] =  '-';
+		$CLFields['stateFieldIsISO'] =  0;
+		$CLFields['languageField'] =  '-';
+		$CLFields['languageFieldIsISO'] =  0;
+	}
+	
 }
 
 	//	generate html-output table
@@ -152,7 +201,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	// look for all available fields in tblCustomer
 	$DB_WE->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 	$_availFields = array();
-	$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path' ,'IsFolder', 'Icon', 'Text');
+	
 	while ($DB_WE->next_record()) {
 
 		if (!in_array($DB_WE->f('Field'), $ignoreFields)) {
@@ -205,19 +254,27 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('orderfields[]', $_availFields, (sizeof($_availFields) > 5 ? '5' : sizeof($_availFields)), implode(",", $fields['customerFields']), true, "", "value", 280 ) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
 
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
-
-
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), $l_shop['preferences']['orderCustomerFields']);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('ordercustomerfields[]', $_availFields, (sizeof($_availFields) > 5 ? '5' : sizeof($_availFields)), implode(",", $fields['orderCustomerFields']), true, "", "value", 280 ) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
 
-
-
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), $l_shop['preferences']['CountryField']);
+	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
+	
+	$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
+	$countrySelectISO = we_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', $l_shop['preferences']['ISO-Kodiert'],false,"defaultfont");
+	$_htmlTable->setColContent($_row++, 2, $countrySelect.'<br/>'.$countrySelectISO  );
+	
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
-
-
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), $l_shop['preferences']['LanguageField']);
+	$languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
+	$languageSelectISO = we_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', $l_shop['preferences']['ISO-Kodiert'],false,"defaultfont");
+	$_htmlTable->setColContent($_row++, 2, $languageSelect.'<br/>'.$languageSelectISO  );
+	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
+	
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,25));
+	
 
 
 	$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:document.we_form.submit();"),

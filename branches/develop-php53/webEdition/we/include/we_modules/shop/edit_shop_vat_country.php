@@ -23,6 +23,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
+include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_class.inc.php');
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
@@ -110,10 +111,11 @@ $parts = array();
 
 // select field containing land
 	$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $weShopVatRule->stateField);
+	$countrySelectISO = we_forms::checkboxWithHidden($weShopVatRule->stateFieldIsISO, 'stateFieldIsISO', $l_shop['preferences']['ISO-Kodiert'],false,"defaultfont");
 	array_push($parts, array(
 			'headline' => $l_shop['vat_country']['stateField']. ':',
 			'space' => 300,
-			'html' => $countrySelect,
+			'html' => $countrySelect.$countrySelectISO,
 			'noline' => 1
 		)
 	);

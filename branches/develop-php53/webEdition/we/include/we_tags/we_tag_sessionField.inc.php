@@ -47,10 +47,80 @@ function we_tag_sessionField($attribs,$content) {
     }
 
     switch($type) {
+		case "country":
+            $newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
+			$newAtts['name']='s['.$name.']';
+			$docAttr = we_getTagAttribute("doc", $attribs, "self");
+			$doc = we_getDocForTag($docAttr);
+			$lang=$doc->Language;
+			$langcode= substr($lang,0,2);
+			if ($lang==''){
+				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			}
+			
+			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
+			$topCountries = explode(',',WE_COUNTRIES_TOP);
+			$topCountries = array_flip($topCountries);
+			foreach ($topCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+			}
+			$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+			$shownCountries = array_flip($shownCountries);
+			foreach ($shownCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+			}
+			$oldLocale= setlocale(LC_ALL, NULL);
+            setlocale(LC_ALL, $lang.'.UTF-8');
+            asort($topCountries,SORT_LOCALE_STRING );
+			asort($shownCountries,SORT_LOCALE_STRING );
+            setlocale(LC_ALL, $oldLocale);
+			
+			$content='';
+			foreach ($topCountries as $countrykey => &$countryvalue){
+				$content.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
+			}
+			$content.='<option value="-" disabled="disabled">----</option>'."\n";
+			foreach ($shownCountries as $countrykey2 => &$countryvalue2){
+				$content.='<option value="'.$countrykey2.'" '. ($orgVal == $countrykey2 ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue2).'</option>'."\n";
+			}	
+					
+			return getHtmlTag('select', $newAtts, $content, true);
+			
+		case "language":
+            $newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
+			$newAtts['name']='s['.$name.']';
+			$docAttr = we_getTagAttribute("doc", $attribs, "self");
+			$doc = we_getDocForTag($docAttr);
+			$lang=$doc->Language;
+			$langcode= substr($lang,0,2);
+			if ($lang==''){
+				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			}
+			$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+			foreach ($frontendL as $lc => &$lcvalue){
+				$lccode = explode('_', $lcvalue);
+				$lcvalue= $lccode[0];
+			}
+			foreach ($frontendL as &$lcvalue){
+				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue,'language',$langcode);
+			}
+			
+			$oldLocale= setlocale(LC_ALL, NULL);
+            setlocale(LC_ALL, $lang.'.UTF-8');
+            asort($frontendLL,SORT_LOCALE_STRING );
+            setlocale(LC_ALL, $oldLocale);
+			$content='';
+			foreach ($frontendLL as $langkey => &$langvalue){
+				$content.='<option value="'.$langkey.'" '. ($orgVal == $langkey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($langvalue).'</option>'."\n";
+			}
+			return getHtmlTag('select', $newAtts, $content, true);
 		case "select":
 
             $newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
 			return we_getSelectField('s['.$name.']',$orgVal,$values,$newAtts,true);
+			
 		case "choice":
 
         	$newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','maxlength','rows','cols','wysiwyg'));
@@ -121,17 +191,49 @@ function we_tag_sessionField($attribs,$content) {
             $newAtts['value'] = htmlspecialchars($orgVal);
             return getHtmlTag('input',$newAtts);
 		case "print":
-			if (is_numeric($orgVal) && !empty($dateformat)) {
-				return date($dateformat, $orgVal);
-			} elseif (!empty($dateformat) && $weTimestemp=strtotime($orgVal)) {
-				return date($dateformat, $weTimestemp);
+			$ascountry = we_getTagAttribute("ascountry", $attribs, "false");
+			$aslanguage = we_getTagAttribute("aslanguage", $attribs, "false");
+			$nameTo = we_getTagAttribute("nameto", $attribs);
+			$to = we_getTagAttribute("to", $attribs,'screen');
+			if (!$ascountry && !$aslanguage){
+				if (is_numeric($orgVal) && !empty($dateformat)) {
+					return we_redirect_tagoutput(date($dateformat, $orgVal),$nameTo,$to); 
+				} elseif (!empty($dateformat) && $weTimestemp=strtotime($orgVal)) {
+					return we_redirect_tagoutput(date($dateformat, $weTimestemp),$nameTo,$to);
+				}
+			} else {
+				$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+				if ($lang=='')
+					$docAttr = we_getTagAttribute("doc", $attribs, "self");
+					$doc = we_getDocForTag($docAttr);
+					$lang=$doc->Language;
+				}
+				$langcode= substr($lang,0,2);
+				if ($lang==''){
+					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				}
+				if ($ascountry){
+					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal,'territory',$langcode)), $weTimestemp),$nameTo,$to);
+				}
+				if ($aslanguage){
+					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal,'langugage',$langcode)), $weTimestemp),$nameTo,$to);
+				}
 			}
-			return $orgVal;
+			return we_redirect_tagoutput($orgVal,$nameTo,$to);
 		case "hidden":
-            $_hidden['type'] = 'hidden';
+			$_hidden['type'] = 'hidden';
             $_hidden['name'] = 's['.$name.']';
             $_hidden['value'] = $orgVal;
             $_hidden['xml'] = $xml;
+			$languageautofill = we_getTagAttribute("languageautofill", $attribs, "false");
+			if ($languageautofill){
+				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$doc = we_getDocForTag($docAttr);
+				$lang=$doc->Language;
+				$langcode= substr($lang,0,2);
+				$_hidden['value'] = $langcode;
+			}			
             return getHtmlTag('input', $_hidden);
 
 		case "img":

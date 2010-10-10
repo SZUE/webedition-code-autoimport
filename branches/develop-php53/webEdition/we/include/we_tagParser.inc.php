@@ -383,6 +383,16 @@ class we_tagParser
 					$this->ipos++;
 					$this->lastpos = 0;
 					break;
+				case "order" :
+					$code = $this->parseOrderTag($tag, $code, $attribs, $postName);
+					$this->ipos++;
+					$this->lastpos = 0;
+					break;
+				case "orderitem" :
+					$code = $this->parseOrderItemTag($tag, $code, $attribs, $postName);
+					$this->ipos++;
+					$this->lastpos = 0;
+					break;
 				case "repeatShopItem" :
 					$code = $this->parserepeatShopitem($tag, $code, $attribs);
 					$this->ipos++;
@@ -757,7 +767,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 													$code,1);
 										
 										} else 
-											if ($tagname == "object" || $tagname == "customer" || $tagname == "metadata") {
+											if ($tagname == "object" || $tagname == "customer" || $tagname == "order" || $tagname == "orderitem" || $tagname == "metadata") {
 												$code = str_replace(
 														$tag, 
 														'<?php endif ?><?php
@@ -1179,6 +1189,10 @@ EOF;
 		$offset = we_getTagAttributeTagParser("offset", $arr);
 		$workspaceID = we_getTagAttributeTagParser("workspaceID", $arr);
 		$workspaceID = $workspaceID ? $workspaceID : we_getTagAttributeTagParser("workspaceid", $arr, "");
+        $orderid = we_getTagAttributeTagParser("orderid", $arr, "");
+        if ($orderid !='' ) {
+        	$name = $orderid;
+        }
 		
         $languages = we_getTagAttributeTagParser("languages", $arr,'');
         
@@ -1294,7 +1308,26 @@ $GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset,
 ';
 						
 						}
-					} else 
+					} else
+					  if ($type == "order") {
+						if (defined("SHOP_TABLE")) {
+							$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_order.class.php");
+$GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+';
+						
+						}
+					  } else
+					  if ($type == "orderitem") {
+						if (defined("SHOP_TABLE")) {
+							$foo = attributFehltError($arr, "orderid", "listview");
+								if ($foo)
+									return str_replace($tag, $foo, $code);
+							$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php");
+$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+';
+						
+						}
+					  } else  
 						if ($type == "multiobject") {
 							if (defined("OBJECT_TABLE")) {
 								$foo = attributFehltError($arr, "name", "listview");
@@ -1579,6 +1612,167 @@ $we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] 
 			}
 			
 			$php .= '$GLOBALS["lv"] = new we_customertag($we_cid,"' . $condition . '");
+$lv = clone($GLOBALS["lv"]); // for backwards compatibility
+if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
+?><?php if($GLOBALS["lv"]->avail): ?>';
+			
+			if ($postName != "") {
+				$content = str_replace('$', '\$', $php); //	to test with blocks ...
+			}
+			
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+		}
+	}
+
+	##########################################################################################
+	##########################################################################################
+
+	function parseOrderTag($tag, $code, $attribs = "", $postName = "")
+	{
+		
+		if (defined("WE_SHOP_MODULE_DIR")) {
+			
+			eval('$arr = array(' . $attribs . ');');
+			
+			$we_button = new we_button();
+			
+			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
+			$we_orderid = we_getTagAttributeTagParser("id", $arr, 0);
+			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
+			//$_showName = we_getTagAttributeTagParser("name", $arr);
+			//$size = we_getTagAttributeTagParser("size", $arr, 30);
+			
+			$php = '<?php
+
+if (!isset($GLOBALS["we_lv_array"])) {
+	$GLOBALS["we_lv_array"] = array();
+}
+
+include_once(WE_SHOP_MODULE_DIR . "we_ordertag.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+';
+			
+			if ($name) {
+				if (strpos($name, " ") !== false) {
+					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+				}
+				
+				$php .= '
+		$we_doc = $GLOBALS["we_doc"];
+		$we_orderid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderid . ';
+		$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
+		$path = "/".$we_orderid;
+		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
+		$idname = \'we_\'.$we_doc->Name.\'_txt[' . $name . ']\';
+		$table = SHOP_TABLE;
+		$we_button = new we_button();
+		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
+		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openSelector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',0,\'\',1)");
+
+?><?php if($GLOBALS["we_editmode"]): ?>
+<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
+	<tr>
+		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
+		<td><?php print hidden($idname,$we_orderid) ?></td>
+		<td><?php print htmlTextInput($textname,' . $size . ',$path,"",\' readonly\',"text",0,0); ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $button; ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $delbutton; ?></td>
+	</tr>
+</table><?php endif ?><?php
+';
+			} else {
+				$php .= '$we_orderid=' . $we_orderid . ';
+$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
+';
+			}
+			
+			$php .= '$GLOBALS["lv"] = new we_ordertag($we_orderid,"' . $condition . '");
+$lv = clone($GLOBALS["lv"]); // for backwards compatibility
+if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
+?><?php if($GLOBALS["lv"]->avail): ?>';
+			
+			if ($postName != "") {
+				$content = str_replace('$', '\$', $php); //	to test with blocks ...
+			}
+			
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+		}
+	}
+
+function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
+	{
+		
+		if (defined("WE_SHOP_MODULE_DIR")) {
+			
+			eval('$arr = array(' . $attribs . ');');
+			
+			$we_button = new we_button();
+			
+			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
+			$we_orderitemid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we_orderid = we_getTagAttributeTagParser("orderid", $arr, 0);
+			//$name = we_getTagAttributeTagParser("name", $arr) . $postName;
+			//$_showName = we_getTagAttributeTagParser("name", $arr);
+			//$size = we_getTagAttributeTagParser("size", $arr, 30);
+			if ($condition) {
+				$condition = $condition.' AND '."IntID = ".$we_orderitemid;
+			} else {
+				$condition = "IntID = ".$we_orderitemid;
+			}
+			
+			$php = '<?php
+
+if (!isset($GLOBALS["we_lv_array"])) {
+	$GLOBALS["we_lv_array"] = array();
+}
+
+include_once(WE_SHOP_MODULE_DIR . "we_orderitemtag.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+';
+			
+			if ($name) {
+				if (strpos($name, " ") !== false) {
+					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+				}
+				
+				$php .= '
+		$we_doc = $GLOBALS["we_doc"];
+		$we_orderitemid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderitemid . ';
+		$we_ordeitemrid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
+		$path = "/".$we_orderitemid;
+		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
+		$idname = \'we_\'.$we_doc->Name.\'_txt[' . $name . ']\';
+		$table = SHOP_TABLE;
+		$we_button = new we_button();
+		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
+		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openSelector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',0,\'\',1)");
+
+?><?php if($GLOBALS["we_editmode"]): ?>
+<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
+	<tr>
+		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
+		<td><?php print hidden($idname,$we_orderitemid) ?></td>
+		<td><?php print htmlTextInput($textname,' . $size . ',$path,"",\' readonly\',"text",0,0); ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $button; ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $delbutton; ?></td>
+	</tr>
+</table><?php endif ?><?php
+';
+			} else {
+				$php .= '$we_orderitemid=' . $we_orderitemid . ';
+$we_orderitemid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
+';
+			}
+			
+			$php .= '$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid,"' . $condition . '");
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';

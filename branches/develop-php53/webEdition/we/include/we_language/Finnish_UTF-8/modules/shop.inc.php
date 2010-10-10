@@ -102,6 +102,12 @@ $l_shop["includedVat"] = "sisältää ALV:n";
 $l_shop["bestellnr"] = "Tilausnumero.:";
 $l_shop["bearbeitet"] = "Käsittelypäivämäärä:";
 $l_shop["bezahlt"] = "Maksettu:";
+$l_shop["bestaetigt"] = "Confirmed on:";// TRANSLATE
+$l_shop["customA"] = "Status A on:";// TRANSLATE
+$l_shop["customB"] = "Status B on:";// TRANSLATE
+$l_shop["customC"] = "Status C on:";// TRANSLATE
+$l_shop["storniert"] = "Cancelled on:";// TRANSLATE
+$l_shop["beendet"] = "Finished on:";// TRANSLATE
 $l_shop["datumeingabe"] = "Päivämäärä täytyy syöttää muodossa kk/pp/vv.";
 
 $l_shop["order_data"] = "Tilauksen ja<br>käyttäjän tiedot";
@@ -250,6 +256,33 @@ $l_shop['vat_country']['statesSpecialRules_result'] = 'Tulos';
 $l_shop['vat_country']['condition_is_empty'] = 'Tyhjä';
 $l_shop['vat_country']['condition_is_set'] = 'Täytetty';
 
+// statusmails
+$l_shop['statusmails']['box_headline'] = 'Status display and behavior with E-Mails';// TRANSLATE
+$l_shop['statusmails']['AnzeigeDaten'] = 'Dosplay data';// TRANSLATE
+$l_shop['statusmails']['fieldname'] = 'Field ID';// TRANSLATE
+$l_shop['statusmails']['hidefield'] = 'Field display';// TRANSLATE
+$l_shop['statusmails']['hidefieldNein'] = 'display';// TRANSLATE
+$l_shop['statusmails']['hidefieldJa'] = 'hidden';// TRANSLATE
+$l_shop['statusmails']['fieldtext'] = 'Field name';// TRANSLATE
+$l_shop['statusmails']['EMailssenden'] = 'Send e-mails';// TRANSLATE
+$l_shop['statusmails']['EMailssendenNein'] = 'no';// TRANSLATE
+$l_shop['statusmails']['EMailssendenHand'] = 'Button';// TRANSLATE
+$l_shop['statusmails']['EMailssendenAuto'] = 'automatically';// TRANSLATE
+$l_shop['statusmails']['EMailDaten'] = 'E-Mail Data';// TRANSLATE
+$l_shop['statusmails']['AbsenderAdresse'] = 'Senders e-mail addresse';// TRANSLATE
+$l_shop['statusmails']['AbsenderName'] = 'Senders name';// TRANSLATE
+$l_shop['statusmails']['EMailFeld'] = 'CM e-mail field';// TRANSLATE
+$l_shop['statusmails']['DocumentSubjectField'] = 'Field name within the document for subject';// TRANSLATE
+$l_shop['statusmails']['Spracheinstellungen'] = 'Lanugages';// TRANSLATE
+$l_shop['statusmails']['useLanguages'] = 'Use documents<br/> depending on language <br/>(instead of default)';// TRANSLATE
+$l_shop['statusmails']['SprachenFeld'] = 'CM language field';// TRANSLATE
+$l_shop['statusmails']['hintISO'] = 'Only using ISO coded langauges, one can send documents depending on language.';// TRANSLATE
+$l_shop['statusmails']['Dokumente'] = 'Documents';// TRANSLATE
+$l_shop['statusmails']['defaultDocs'] = 'Default <br/> (no lang.<br/> support)';// TRANSLATE
+$l_shop['statusmails']['EMail'] = 'e-mail';// TRANSLATE
+$l_shop['statusmails']['TitelFeld'] = 'CM title field';// TRANSLATE
+$l_shop['statusmails']['bcc'] = 'blind copy to address';// TRANSLATE
+
 $l_shop['shipping']['shipping_package'] = 'Lähetys ja käsittely';
 $l_shop['shipping']['prices_are_net'] = 'Hinnat ovat nettohintoja';
 $l_shop['shipping']['insert_packaging'] = 'Voimassaolevat käsittely- ja lähetyshinnat';
@@ -264,6 +297,9 @@ $l_shop['shipping']['shipping_costs'] = 'Shipping_costs'; // TRANSLATE
 
 $l_shop['preferences']['customerFields'] = "Asiakaskentät<br />(Asiakashallintamoduuli)";
 $l_shop['preferences']['orderCustomerFields'] = 'Asiakaskentät<br />(Tilaus)';
+$l_shop['preferences']['CountryField'] = 'Field country';// TRANSLATE
+$l_shop['preferences']['LanguageField'] = 'Field Language';// TRANSLATE
+$l_shop['preferences']['ISO-Kodiert'] = 'Field is ISO coded';// TRANSLATE
 
 $l_shop['preferences']['customerdata'] = 'Asiakastiedot';
 $l_shop['preferences']['explanation_customer_odercustomer'] = 'Selitys: Nämä tiedot tallennetaan vain tilauksen yhteyteen. Asiakashallinnan tietoihin ei kosketa.';

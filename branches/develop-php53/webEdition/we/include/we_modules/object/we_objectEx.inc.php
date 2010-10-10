@@ -166,6 +166,8 @@
 		function getFieldType($type) {
 	    	$q = "";
 			switch($type){
+				case "country":
+				case "language":
 				case "meta":
 				case "input":
 				case "link":
@@ -202,6 +204,10 @@
 				break;
 				case "input":
 					$q .= " VARCHAR(".(($len>0 && ($len < 256))?$len:"255").") NOT NULL ";
+				break;
+				case "country":
+				case "language":
+				$q .= " VARCHAR(2) NOT NULL ";
 				break;
 				case "link":
 				case "href":
