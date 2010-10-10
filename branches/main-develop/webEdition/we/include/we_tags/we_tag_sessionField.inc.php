@@ -47,7 +47,7 @@ function we_tag_sessionField($attribs,$content) {
     }
 
     switch($type) {
-		case "countryselect":
+		case "country":
             $newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
 			$newAtts['name']='s['.$name.']';
 			$docAttr = we_getTagAttribute("doc", $attribs, "self");
@@ -87,7 +87,7 @@ function we_tag_sessionField($attribs,$content) {
 					
 			return getHtmlTag('select', $newAtts, $content, true);
 			
-		case "languageselect":
+		case "language":
             $newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
 			$newAtts['name']='s['.$name.']';
 			$docAttr = we_getTagAttribute("doc", $attribs, "self");
