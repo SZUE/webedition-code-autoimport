@@ -3512,4 +3512,23 @@ function convertCharsetString($fromC,$toC,$string){
 	
 }
 
+function CheckAndConvertISOfrontend($utf8data){
+	global $CHARSET;
+	if(isset($CHARSET) && $CHARSET!= '' && $CHARSET!= 'UTF-8'){
+		return iconv("UTF-8", $CHARSET."//TRANSLIT", $utf8data);
+	} else {
+		return $utf8data;
+	}
+
+}
+function CheckAndConvertISObackend($utf8data){
+
+	if($GLOBALS["_language"]["charset"]!= 'UTF-8'){
+		return iconv("UTF-8", $GLOBALS["_language"]["charset"]."//TRANSLIT", $utf8data);
+	} else {
+		return $utf8data;
+	}
+}
+
+
 ?>

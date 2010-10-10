@@ -3587,7 +3587,7 @@ function build_dialog($selected_setting = "ui") {
             foreach ($zendsupported as $countrycode => $country) {
             	$i++;
             	$tabC->addRow();
-                $tabC->setCol($i, 0, array("class"=>"defaultfont"), $country);
+                $tabC->setCol($i, 0, array("class"=>"defaultfont"), CheckAndConvertISObackend($country));
                 $tabC->setCol($i, 1, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="2" '.(in_array($countrycode,$countries_top) ? 'checked':'').' > ');
                 $tabC->setCol($i, 2, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="1" '.(in_array($countrycode,$countries_shown) ? 'checked':'').' > ');
             	$tabC->setCol($i, 3, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="0" '.(!in_array($countrycode,$countries_top)&& !in_array($countrycode,$countries_shown)  ? 'checked':'').' > ');

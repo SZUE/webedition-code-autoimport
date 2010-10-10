@@ -78,11 +78,11 @@ function we_tag_sessionField($attribs,$content) {
 			
 			$content='';
 			foreach ($topCountries as $countrykey => &$countryvalue){
-				$content.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').$countryvalue.'</option>'."\n";
+				$content.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
 			}
 			$content.='<option value="-" disabled="disabled">----</option>'."\n";
 			foreach ($shownCountries as $countrykey2 => &$countryvalue2){
-				$content.='<option value="'.$countrykey2.'" '. ($orgVal == $countrykey2 ? ' selected="selected">': '>').$countryvalue2.'</option>'."\n";
+				$content.='<option value="'.$countrykey2.'" '. ($orgVal == $countrykey2 ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue2).'</option>'."\n";
 			}	
 					
 			return getHtmlTag('select', $newAtts, $content, true);
@@ -113,7 +113,7 @@ function we_tag_sessionField($attribs,$content) {
             setlocale(LC_ALL, $oldLocale);
 			$content='';
 			foreach ($frontendLL as $langkey => &$langvalue){
-				$content.='<option value="'.$langkey.'" '. ($orgVal == $langkey ? ' selected="selected">': '>').$langvalue.'</option>'."\n";
+				$content.='<option value="'.$langkey.'" '. ($orgVal == $langkey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($langvalue).'</option>'."\n";
 			}
 			return getHtmlTag('select', $newAtts, $content, true);
 		case "select":
@@ -193,29 +193,34 @@ function we_tag_sessionField($attribs,$content) {
 		case "print":
 			$ascountry = we_getTagAttribute("ascountry", $attribs, "false");
 			$aslanguage = we_getTagAttribute("aslanguage", $attribs, "false");
+			$nameTo = we_getTagAttribute("nameto", $attribs);
+			$to = we_getTagAttribute("to", $attribs,'screen');
 			if (!$ascountry && !$aslanguage){
 				if (is_numeric($orgVal) && !empty($dateformat)) {
-					return date($dateformat, $orgVal);
+					return we_redirect_tagoutput(date($dateformat, $orgVal),$nameTo,$to); 
 				} elseif (!empty($dateformat) && $weTimestemp=strtotime($orgVal)) {
-					return date($dateformat, $weTimestemp);
+					return we_redirect_tagoutput(date($dateformat, $weTimestemp),$nameTo,$to);
 				}
 			} else {
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
-				$doc = we_getDocForTag($docAttr);
-				$lang=$doc->Language;
+				$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+				if ($lang=='')
+					$docAttr = we_getTagAttribute("doc", $attribs, "self");
+					$doc = we_getDocForTag($docAttr);
+					$lang=$doc->Language;
+				}
 				$langcode= substr($lang,0,2);
 				if ($lang==''){
 					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
 				}
 				if ($ascountry){
-					return Zend_Locale::getTranslation($orgVal,'territory',$langcode);
+					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal,'territory',$langcode)), $weTimestemp),$nameTo,$to);
 				}
 				if ($aslanguage){
-					return Zend_Locale::getTranslation($orgVal,'langugage',$langcode);
+					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal,'langugage',$langcode)), $weTimestemp),$nameTo,$to);
 				}
 			}
-			return $orgVal;
+			return we_redirect_tagoutput($orgVal,$nameTo,$to);
 		case "hidden":
 			$_hidden['type'] = 'hidden';
             $_hidden['name'] = 's['.$name.']';

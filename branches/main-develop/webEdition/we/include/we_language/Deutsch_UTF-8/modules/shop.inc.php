@@ -271,13 +271,18 @@ $l_shop['statusmails']['EMailssendenAuto'] = 'automatisch';
 $l_shop['statusmails']['EMailDaten'] = 'E-Mail Daten';
 $l_shop['statusmails']['AbsenderAdresse'] = 'Absender E-Mail Adresse';
 $l_shop['statusmails']['AbsenderName'] = 'Absender Name';
+$l_shop['statusmails']['EMailFeld'] = 'KV E-Mail Feld';
 $l_shop['statusmails']['DocumentSubjectField'] = 'Feldname im Dokument für E-Mail Betreff';
 $l_shop['statusmails']['Spracheinstellungen'] = 'Sprachen';
 $l_shop['statusmails']['useLanguages'] = 'Nutze verschiedene <br/>Mail-Dokumente je <br/>Sprache (statt den Standard)';
-$l_shop['statusmails']['SprachenFeld'] = 'SprachenFeld';
+$l_shop['statusmails']['SprachenFeld'] = 'KV Sprachen Feld';
 $l_shop['statusmails']['hintISO'] = 'Nur bei Nutzung eines ISO kodierten Sprachfeldes ist eine Sprachzuordnung der Mails möglich.';
 $l_shop['statusmails']['Dokumente'] = 'Dokumente';
 $l_shop['statusmails']['defaultDocs'] = 'Standard <br/> (ohne Sp.<br/> Zuordnung)';
+$l_shop['statusmails']['EMail'] = 'E-Mail';
+$l_shop['statusmails']['TitelFeld'] = 'KV Titel Feld';
+$l_shop['statusmails']['bcc'] = 'Blindcopy an Adresse';
+
 
 $l_shop['shipping']['shipping_package'] = 'Porto und Verpackung';
 $l_shop['shipping']['prices_are_net'] = 'Preise sind Nettoangaben';

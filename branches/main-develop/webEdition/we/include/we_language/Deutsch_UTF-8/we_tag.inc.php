@@ -406,6 +406,10 @@ $l_we_tag['pageLanguage']['description'] = "Gibt die dem Dokument zugewiesene Sp
 $l_we_tag['pageLanguage']['defaultvalue'] = "";
 $l_we_tag['objectLanguage']['description'] = "Gibt die dem Objekt zugewiesene Sprache aus";
 $l_we_tag['objectLanguage']['defaultvalue'] = "";
+$l_we_tag['order']['description'] = "Mit Hilfe dieses Tags kann man eine Bestellung auf einer webEdition darstellen. Die Felder der Bestellung werden wie bei einer Listview und beim <we:object> Tag mit dem Tag <we:field> dargestellt.";
+$l_we_tag['order']['defaultvalue'] = "";
+$l_we_tag['orderitem']['description'] = "Mit Hilfe dieses Tags kann man einen einzelnen Artikel einer Bestellung auf einer webEdition darstellen. Die Felder des Artikels werden wie bei einer Listview und beim <we:object> Tag mit dem Tag <we:field> dargestellt.";
+$l_we_tag['orderitem']['defaultvalue'] = "";
 
 $l_we_tag['ifVotingField']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField einen Wert entsprechend dem Attribut match hat, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";
 $l_we_tag['ifNotVotingField']['description'] = "&Uuml;berpr&uuml;ft ob ein VotingField keinen Wert entsprechend dem Attribut match hat, die Kombinationen von name und type Attributen entsprechen denen des we:votingFiled-Tags";

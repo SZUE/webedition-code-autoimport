@@ -166,12 +166,12 @@ class weCustomerFrames extends weModuleFrames {
 				$content='';
 				
 				foreach ($topCountries as $countrykey => &$countryvalue){
-					$countryselect->addOption($countrykey,$countryvalue);
+					$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
 				}
 				$countryselect->addOption('-','----',array("disabled"=>"disabled"));
 				//$content.='<option value="-" disabled="disabled">----</option>'."\n";
 				foreach ($shownCountries as $countrykey => &$countryvalue){
-					$countryselect->addOption($countrykey,$countryvalue);
+					$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
 				}	
 				
 				$countryselect->selectOption($value);

@@ -249,6 +249,42 @@ function we_tag($name, $attribs, $content = "")
 }
 
 ### tag utility functions ###
+
+function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
+	switch ($to) {
+		case "request" :
+			$_REQUEST[$nameTo] = $returnvalue;
+			break;
+		case "post" :
+			$_POST[$nameTo] = $returnvalue;
+			break;
+		case "get" :
+			$_GET[$nameTo] = $returnvalue;
+			break;
+		case "global" :
+			$GLOBALS[$nameTo] = $returnvalue;
+			break;
+		case "session" :
+			$_SESSION[$nameTo] = $returnvalue;
+			break;
+		case "top" :
+			$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $returnvalue);
+			break;
+		case "block" :
+		case "self" :
+			$GLOBALS["we_doc"]->setElement($nameTo, $returnvalue);
+			break;		
+		case "sessionfield" :
+			if (isset($_SESSION["webuser"][$nameTo])){
+				$_SESSION["webuser"][$nameTo] = $returnvalue;
+			}
+			break;
+		case "screen": return $returnvalue;
+	}
+	return null;
+
+}
+
 function mta($hash, $key)
 {
 	return (isset($hash[$key]) && ($hash[$key] != "" || $key == "alt")) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
@@ -2232,6 +2268,9 @@ function we_tag_field($attribs, $content)
 	$striphtml = we_getTagAttribute("striphtml", $attribs, false, true);
 	$only = we_getTagAttribute("only", $attribs);
 	
+	$nameTo = we_getTagAttribute("nameto", $attribs);
+	$to = we_getTagAttribute("to", $attribs,'screen');
+	
 	$out = "";
 	
 	$seeMode = we_getTagAttribute("seeMode", $attribs, true, true, true);
@@ -2268,7 +2307,7 @@ function we_tag_field($attribs, $content)
 	}
 	
 	if (!$GLOBALS["lv"]->f("WE_ID") && $GLOBALS["lv"]->calendar_struct["calendar"] == "") {
-		return "";
+		return we_redirect_tagoutput("",$nameTo,$to);
 	}
 	
 	switch ($type) {
@@ -2374,7 +2413,34 @@ function we_tag_field($attribs, $content)
 				$out = "";
 			}
 			break;
-		
+		case 'country' :
+			$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+			if ($lang==''){
+				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$doc = we_getDocForTag($docAttr);
+				$lang=$doc->Language;
+			}
+			$langcode= substr($lang,0,2);
+			if ($lang==''){
+				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			}
+			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'territory',$langcode));
+		break;
+		case 'language' :
+			$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+			if ($lang==''){
+				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$doc = we_getDocForTag($docAttr);
+				$lang=$doc->Language;
+			}
+			$langcode= substr($lang,0,2);
+			if ($lang==''){
+				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			}
+			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'langugage',$langcode));		
+		break;
 		case 'shopVat' :
 			
 			if (defined('SHOP_TABLE')) {
@@ -2681,7 +2747,7 @@ function we_tag_field($attribs, $content)
 		' . $out;
 	
 	}
-	return $out;
+	return we_redirect_tagoutput($out,$nameTo,$to);
 }
 
 function we_tag_flashmovie($attribs, $content)
