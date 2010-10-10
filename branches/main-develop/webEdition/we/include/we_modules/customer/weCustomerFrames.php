@@ -169,14 +169,14 @@ class weCustomerFrames extends weModuleFrames {
 					$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
 				}
 				$countryselect->addOption('-','----',array("disabled"=>"disabled"));
-				//$content.='<option value="-" disabled="disabled">----</option>'."\n";
+				
 				foreach ($shownCountries as $countrykey => &$countryvalue){
 					$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
 				}	
 				
 				$countryselect->selectOption($value);
 				return $countryselect->getHtmlCode();
-				//return htmlTextInput($field,2,stripslashes($value),"","onchange=\"top.content.setHot();\" style='{width:40}'");
+				
 			break;
 			case "language":
 				$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);

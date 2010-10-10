@@ -125,14 +125,21 @@ class weShopStatusMails {
 			$recipientOK = true;
 		} else $recipientOK = false;
 		$docID=0;
+		$UserLang='';
 		if (isset($this->LanguageData['useLanguages']) && $this->LanguageData['useLanguages'] && isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']]!='' ){
 			if (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date'.$was]) ){
 				$docID= $this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date'.$was];
 			} else {
 				$docID = $this->FieldsDocuments['default']['Date'.$was];
 			}
+			if (isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']]!=''){
+				$UserLang= $cdata[$this->LanguageData['languageField']];
+			}
 		} else {
 			$docID = $this->FieldsDocuments['default']['Date'.$was];
+			if (isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']]!=''){
+				$UserLang= $cdata[$this->LanguageData['languageField']];
+			}
 		} 
 		
 		if ($docID && $docID!=''){

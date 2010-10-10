@@ -473,6 +473,10 @@ class we_object extends we_document
 			case "input":
 			$q .= " VARCHAR(".(($this->getElement($name."length","dat")>0 && ($this->getElement($name."length","dat") < 256))?$this->getElement($name."length","dat"):"255").") NOT NULL ";
 			break;
+			case "country":
+			case "language":
+			$q .= " VARCHAR(2) NOT NULL ";
+			break;
 			case "link":
 			case "href":
 			$q .= " TEXT NOT NULL ";
@@ -879,6 +883,8 @@ class we_object extends we_document
 		$content .= '<td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["type"].'</td>';
 		$content .= '<td width="170" class="defaultfont"  valign="top">';
 		$val["input"] = $GLOBALS["l_object"]["input_field"];
+		$val["country"] = $GLOBALS["l_object"]["country_field"];
+		$val["language"] = $GLOBALS["l_object"]["language_field"];
 		$val["text"] = $GLOBALS["l_object"]["textarea_field"];
 		$val["date"] = $GLOBALS["l_object"]["date_field"];
 		$val["img"] = $GLOBALS["l_object"]["img_field"];
@@ -897,7 +903,7 @@ class we_object extends we_document
 		$content .= $this->htmlSelect("we_".$this->Name."_input[".$name."dtype]",$val,1,$type,"",'onChange="if(this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\']){this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.$identifier.'\'); "',"value",388);
 		$content .= '</td></tr>';
 
-		if($type != 'shopVat' && $type!="float" && $type!="text" && $type!="img"&& $type!="binary" && $type!="date" && $type!="meta" && $type!="object" && $type!="link" && $type!="href" && $type!="checkbox" && $type!="multiobject"){
+		if($type != 'shopVat' && $type!="float" && $type!="text" && $type!="country" && $type!="language" && $type!="img"&& $type!="binary" && $type!="date" && $type!="meta" && $type!="object" && $type!="link" && $type!="href" && $type!="checkbox" && $type!="multiobject"){
 			// Length
 			$maxLengthVal = $type == 'int' ? 10 : 255;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["length"].'</td>';
@@ -1083,7 +1089,16 @@ class we_object extends we_document
 
 			$content .=	'</tr></table></td></tr>';
 
-
+		}else if($type=="country"){
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<td width="170" class="defaultfont">';
+			$content .= $this->htmlTextInput("we_".$this->Name."_country[".$name."default]",40,$this->getElement($name."default","dat"),10,'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"',"text",388);
+			$content .= '</td></tr>';
+		}else if($type=="language"){
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<td width="170" class="defaultfont">';
+			$content .= $this->htmlTextInput("we_".$this->Name."_language[".$name."default]",40,$this->getElement($name."default","dat"),15,'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"',"text",388);
+			$content .= '</td></tr>';
 		}else if($type=="link"){
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
 			$content .= '<td width="170" class="defaultfont">';
