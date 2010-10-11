@@ -1279,12 +1279,20 @@ class we_objectFile extends we_document
 			$countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
 			$countryselect=new we_htmlSelect(array("name"=>"we_".$this->Name."_language[$name]","size"=>"1","style"=>"{width:620;}","class"=>"wetextinput","onChange"=>"_EditorFrame.setEditorIsHot(true);" ));
 			
-			$topCountries = explode(',',WE_COUNTRIES_TOP);
+			if(defined("WE_COUNTRIES_TOP")) {
+				$topCountries = explode(',',WE_COUNTRIES_TOP);
+			} else {
+				$topCountries = explode(',',"DE,AT,CH");
+			}
 			$topCountries = array_flip($topCountries);
 			foreach ($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
 			}
-			$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+			if(defined("WE_COUNTRIES_SHOWN")){
+				$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+			} else {
+				$shownCountries = explode(',',"BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
+			}
 			$shownCountries = array_flip($shownCountries);
 			foreach ($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);

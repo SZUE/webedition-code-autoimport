@@ -166,7 +166,7 @@ class weShopStatusMails {
 			$phpmail->buildMessage();
 			if ($phpmail->Send()){
 				$dasDatum = date('Y-m-d H:i:s');
-				$DB_WE->query("update ".SHOP_TABLE." SET Mail".$was."='". mysql_real_escape_string($dasDatum) . "' where IntOrderID = ".abs($order));
+				$DB_WE->query("UPDATE ".SHOP_TABLE." SET Mail".mysql_real_escape_string($was)."='". mysql_real_escape_string($dasDatum) . "' WHERE IntOrderID = ".abs($order));
 
 				return true;
 			}
