@@ -689,6 +689,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 	}
 	
 	checkAndPrepareImage($formname, "we_object");
+	checkAndPrepareBinary($formname, "we_object");
 	
 	if ($session) {
 		$GLOBALS["we_object"][$formname]->saveInSession($_SESSION["we_object_session_$formname"]);
@@ -781,6 +782,7 @@ function initDocument($formname = "we_global_form", $tid = "", $doctype = "", $c
 	}
 	
 	checkAndPrepareImage($formname, "we_document");
+	checkAndPrepareBinary($formname, "we_document");
 	
 	if ($session) {
 		$GLOBALS["we_document"][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
@@ -898,7 +900,74 @@ function checkAndPrepareImage($formname, $key = "we_document")
 		}
 	}
 }
-
+function checkAndPrepareBinary($formname, $key = "we_document")
+{
+	// check to see if there is an image to create or to change
+	if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
+		
+		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+		
+		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_otherDocument.inc.php");
+		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
+			foreach ($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename) {
+				
+				$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName] : false;
+				
+				if ($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])) {
+					
+					$_SESSION[$_binaryDataId]['doDelete'] = false;
+					
+					if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName] == 1) {
+						$_SESSION[$_binaryDataId]['doDelete'] = true;
+					} else 
+						if ($filename) {
+							// file is selected, check to see if it is an image
+							$ct = getContentTypeFromFile($filename);
+							if ($ct == "application/*") {
+								$binaryId = abs($GLOBALS[$key][$formname]->getElement($binaryName));
+								
+								// move document from upload location to tmp dir
+								$_SESSION[$_binaryDataId]["serverPath"] = TMP_DIR . "/" . md5(
+										uniqid(rand(), 1));
+								move_uploaded_file(
+										$_FILES["we_ui_$formname"]["tmp_name"][$binaryName], 
+										$_SESSION[$_binaryDataId]["serverPath"]);
+								
+							
+								
+								$tmp_Filename = $binaryName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
+										"/[^A-Za-z0-9._-]/", 
+										"", 
+										$_FILES["we_ui_$formname"]["name"][$binaryName]);
+								
+								if ($binaryId) {
+									$_SESSION[$_binaryDataId]["id"] = $binaryId;
+								}
+								
+								$_SESSION[$_binaryDataId]["fileName"] = eregi_replace(
+										'^(.+)\..+$', 
+										"\\1", 
+										$tmp_Filename);
+								$_SESSION[$_binaryDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
+										'^.+(\..+)$', 
+										"\\1", 
+										$tmp_Filename) : "";
+								$_SESSION[$_binaryDataId]["text"] = $_SESSION[$_binaryDataId]["fileName"] . $_SESSION[$_binaryDataId]["extension"];
+								
+								
+								
+								
+								$_SESSION[$_binaryDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$binaryName];
+								$_SESSION[$_binaryDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$binaryName];
+							
+							}
+						}
+				}
+			
+			}
+		}
+	}
+}
 function checkAndCreateImage($formname, $type = "we_document")
 {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
@@ -959,6 +1028,14 @@ function checkAndCreateImage($formname, $type = "we_document")
 						$imgDocument->WebUserID = $webuserId;
 						$imgDocument->we_save();
 						$newId = $imgDocument->ID;
+						
+						$t=explode('_',$imgDocument->Filename);
+						$t[1]=$newId ;
+						$fn=implode('_',$t);
+						$imgDocument->Filename = $fn;
+						$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != "/") ? "/" : "") . $imgDocument->Filename.$imgDocument->Extension;
+						$imgDocument->we_save();
+						
 						$GLOBALS[$type][$formname]->setElement($_imgName, $newId);
 					}
 				
@@ -969,7 +1046,81 @@ function checkAndCreateImage($formname, $type = "we_document")
 		}
 	}
 }
-
+function checkAndCreateBinary($formname, $type = "we_document")
+{
+	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_otherDocument.inc.php");
+	
+	foreach ($_REQUEST as $key => $_binaryDataId) {
+		if (preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)) {
+			$_binaryName = $regs[1];
+			$binaryId = isset($_SESSION[$_binaryDataId]["id"]) ? $_SESSION[$_binaryDataId]["id"] : 0;
+			if (isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] == 1) {
+				
+				if ($binaryId) {
+					$binaryDocument = new we_otherDocument();
+					$binaryDocument->initByID($binaryId);
+					if ($binaryDocument->WebUserID == $webuserId) {
+						//everything ok, now delete
+						$GLOBALS["NOT_PROTECT"] = true;
+						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+						deleteEntry($binaryId, FILE_TABLE);
+						$GLOBALS["NOT_PROTECT"] = false;
+						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);
+					}
+				}
+			} else 
+				if (isset($_SESSION[$_binaryDataId]['serverPath'])) {
+					if (substr($_SESSION[$_binaryDataId]['type'], 0, 12) == "application/") {
+						$binaryDocument = new we_otherDocument();
+						
+						if ($binaryId) {
+							// document has already an image
+							// so change binary data
+							$binaryDocument->initByID(
+									$binaryId);
+						}
+						
+						$binaryDocument->Filename = $_SESSION[$_binaryDataId]['fileName'];
+						$binaryDocument->Extension = $_SESSION[$_binaryDataId]['extension'];
+						$binaryDocument->Text = $_SESSION[$_binaryDataId]['text'];
+						
+						if (!$binaryId) {
+							$binaryDocument->setParentID($_SESSION[$_binaryDataId]['parentid']);
+						}
+						$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Text;
+						
+						
+						$binaryDocument->setElement("type", 'application/*', "attrib");
+						
+						$binaryDocument->setElement("data", $_SESSION[$_binaryDataId]["serverPath"], "application");
+						
+						$binaryDocument->setElement("filesize", $_SESSION[$_binaryDataId]["size"], "attrib");
+						
+						$binaryDocument->Table = FILE_TABLE;
+						$binaryDocument->Published = time();
+						$binaryDocument->WebUserID = $webuserId;
+						$binaryDocument->we_save();
+						
+						$newId = $binaryDocument->ID;
+						
+						$t=explode('_',$binaryDocument->Filename);
+						$t[1]=$newId ;
+						$fn=implode('_',$t);
+						$binaryDocument->Filename = $fn;
+						$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Filename.$binaryDocument->Extension;
+						$binaryDocument->we_save();
+						
+						$GLOBALS[$type][$formname]->setElement($_binaryName, $newId);
+					}
+				
+				}
+			if (isset($_SESSION[$_binaryDataId])) {
+				unset($_SESSION[$_binaryDataId]);
+			}
+		}
+	}
+}
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true)
 {
 	if (strlen($paths) == 0 || strlen($table) == 0)
