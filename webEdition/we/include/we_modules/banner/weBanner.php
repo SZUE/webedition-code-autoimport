@@ -253,7 +253,7 @@ class weBanner extends weBannerBase{
 		$foo = "";
 		$filter = new Zend_Filter_Digits();
 		foreach($catArr as $c){
-			$foo .= " CategoryIDs LIKE '%,".$filter->filter($c).",%' OR ";
+			$foo .= " CategoryIDs LIKE '%,".mysql_real_escape_string($filter->filter($c)).",%' OR ";
 		}
 		$where = " $where AND (  $foo  CategoryIDs='' ) ";
 
