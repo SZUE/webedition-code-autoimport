@@ -60,12 +60,20 @@ function we_tag_sessionField($attribs,$content) {
 			}
 			
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
-			$topCountries = explode(',',WE_COUNTRIES_TOP);
+			if(defined("WE_COUNTRIES_TOP")) {
+				$topCountries = explode(',',WE_COUNTRIES_TOP);
+			} else {
+				$topCountries = explode(',',"DE,AT,CH");
+			}
 			$topCountries = array_flip($topCountries);
 			foreach ($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
 			}
-			$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+			if(defined("WE_COUNTRIES_SHOWN")){
+				$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+			} else {
+				$shownCountries = explode(',',"BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
+			}
 			$shownCountries = array_flip($shownCountries);
 			foreach ($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);

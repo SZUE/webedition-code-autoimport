@@ -251,17 +251,18 @@ class weBanner extends weBannerBase{
 		$catArr = makeArrayFromCSV($cats);
 
 		$foo = "";
+		$filter = new Zend_Filter_Digits();
 		foreach($catArr as $c){
-			$foo .= " CategoryIDs LIKE '%,$c,%' OR ";
+			$foo .= " CategoryIDs LIKE '%,".mysql_real_escape_string($filter->filter($c)).",%' OR ";
 		}
 		$where = " $where AND (  $foo  CategoryIDs='' ) ";
 
 		if($paths){
 			$pathsArray = makeArrayFromCsv($paths);
 			foreach($pathsArray as $p){
-				$foo .= " Path LIKE '$p/%' OR Path = '$p' OR ";
+				$foo .= " Path LIKE '".mysql_real_escape_string($p)."/%' OR Path = '$p' OR ";
 			}
-			$foo  =  eregi_replace('(.* )OR $','\1',$foo);
+			$foo  =  rtrim($foo,'OR ');
 			$where = " $where AND ( $foo ) ";
 		}
 

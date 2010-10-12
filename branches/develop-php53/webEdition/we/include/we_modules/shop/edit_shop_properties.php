@@ -168,7 +168,7 @@ function updateFieldFromOrder($orderId, $fieldname, $value) {
 }
 
 // config
-$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'shop_pref'");
+$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'");
 	$DB_WE->next_record();
 	$feldnamen = explode("|",$DB_WE->f("strFelder"));
 
@@ -846,18 +846,26 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			foreach ($_customer as $k => $v) {
 				if (!in_array($k, $dontEdit)) {
-					if ($k == $CLFields['stateField'] && $CLFields['stateFieldIsISO']){
+					if (isset($CLFields['stateField']) && isset($CLFields['stateFieldIsISO']) && $k == $CLFields['stateField'] && $CLFields['stateFieldIsISO']){
 						$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 						$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
 						$countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
 						$countryselect=new we_htmlSelect(array("name"=>"weCustomerOrder[$k]","size"=>"1","style"=>"{width:280;}","class"=>"wetextinput"));
 						
-						$topCountries = explode(',',WE_COUNTRIES_TOP);
+						if(defined("WE_COUNTRIES_TOP")) {
+							$topCountries = explode(',',WE_COUNTRIES_TOP);
+						} else {
+							$topCountries = explode(',',"DE,AT,CH");
+						}
 						$topCountries = array_flip($topCountries);
 						foreach ($topCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
 						}
-						$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+						if(defined("WE_COUNTRIES_SHOWN")){
+							$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+						} else {
+							$shownCountries = explode(',',"BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
+						}
 						$shownCountries = array_flip($shownCountries);
 						foreach ($shownCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
@@ -890,7 +898,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 						);
 
 					
-					} elseif($k == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
+					} elseif((isset($CLFields['languageField']) && isset($CLFields['languageFieldIsISO']) && $k == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
 						$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
 						foreach ($frontendL as $lc => &$lcvalue){
 							$lccode = explode('_', $lcvalue);
@@ -976,7 +984,7 @@ print STYLESHEET;
 
 if(isset($_REQUEST["deletethisorder"])){
 
-	$DB_WE->query("DELETE FROM ".SHOP_TABLE." where IntOrderID = ".$_REQUEST["bid"]);
+	$DB_WE->query("DELETE FROM ".SHOP_TABLE." WHERE IntOrderID = ".$_REQUEST["bid"]);
 	echo '
 	<script language="JavaScript" type="text/javascript">top.content.deleteEntry('.$_REQUEST["bid"].')</script>
 	</head>
@@ -991,8 +999,8 @@ if(isset($_REQUEST["deletethisorder"])){
 
 if(isset($_REQUEST["deleteaartikle"])){
 	
-	$DB_WE->query("DELETE FROM ".SHOP_TABLE." where IntID = ".$_REQUEST["deleteaartikle"]);
-	$DB_WE->query("SELECT IntID from ".SHOP_TABLE." where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("DELETE FROM ".SHOP_TABLE." WHERE IntID = ".$_REQUEST["deleteaartikle"]);
+	$DB_WE->query("SELECT IntID from ".SHOP_TABLE." WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$l=$DB_WE->num_rows();
 	if( $l<1 ) {
 		$letzerartikel=1;
@@ -1065,7 +1073,7 @@ if(isset($_REQUEST["DatePayment"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DatePayment"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("update ".SHOP_TABLE." SET DatePayment='". mysql_real_escape_string($DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DatePayment='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Payment',$_REQUEST["bid"],$_customer);
 	
 }
@@ -1073,42 +1081,42 @@ if(isset($_REQUEST["DateConfirmation"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DateConfirmation"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("update ".SHOP_TABLE." SET DateConfirmation='". mysql_real_escape_string($DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateConfirmation='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Confirmation',$_REQUEST["bid"],$_customer);
 }
 if(isset($_REQUEST["DateCustomA"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomA"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("update ".SHOP_TABLE." SET DateCustomA='". mysql_real_escape_string($DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomA='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomA',$_REQUEST["bid"],$_customer);
 }
 if(isset($_REQUEST["DateCustomB"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomB"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("update ".SHOP_TABLE." SET DateCustomB='". mysql_real_escape_string($DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomB='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomB',$_REQUEST["bid"],$_customer);
 }
 if(isset($_REQUEST["DateCustomC"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomC"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";	
-	$DB_WE->query("update ".SHOP_TABLE." SET DateCustomC='". mysql_real_escape_string($DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomC='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomC',$_REQUEST["bid"],$_customer);
 }
 if(isset($_REQUEST["DateCancellation"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCancellation"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("update ".SHOP_TABLE." SET DateCancellation='". mysql_real_escape_string($DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCancellation='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Cancellation',$_REQUEST["bid"],$_customer);
 }
 if(isset($_REQUEST["DateFinished"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DateFinished"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";	
-	$DB_WE->query("update ".SHOP_TABLE." SET DateFinished='". mysql_real_escape_string($DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateFinished='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Finished',$_REQUEST["bid"],$_customer);
 }
 
@@ -1119,7 +1127,7 @@ if(isset($_REQUEST["DateOrder"])){
 	$DateOrder_ARR = explode(".", $_REQUEST["DateOrder"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
 					
-	$DB_WE->query("update ".SHOP_TABLE." SET DateOrder='".mysql_real_escape_string($DateOrder1)."' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateOrder='".mysql_real_escape_string($DateOrder1)."' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Order',$_REQUEST["bid"],$_customer);
 	
 	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." group by IntOrderID order by intID DESC");
@@ -1132,7 +1140,7 @@ if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
 	$DateOrder_ARR = explode(".", $_REQUEST["DateShipping"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
 	
-	$DB_WE->query("update ".SHOP_TABLE." SET DateShipping='".mysql_real_escape_string( $DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateShipping='".mysql_real_escape_string( $DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Order',$_REQUEST["bid"],$_customer);
 	
 	$DB_WE->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." group by IntOrderID order by intID DESC");
@@ -1140,9 +1148,9 @@ if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
 }
 if(isset($_REQUEST["article"])){
 	if(isset($_REQUEST["preis"])){
-		$DB_WE->query("update ".SHOP_TABLE." SET Price='" . abs($_REQUEST["preis"]) . "' where IntID = ".abs($_REQUEST["article"]));
+		$DB_WE->query("UPDATE ".SHOP_TABLE." SET Price='" . abs($_REQUEST["preis"]) . "' WHERE IntID = ".abs($_REQUEST["article"]));
 	}else if(isset($_REQUEST["anzahl"])){
-		$DB_WE->query("update ".SHOP_TABLE." SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' where IntID = " . abs($_REQUEST["article"]));
+		$DB_WE->query("UPDATE ".SHOP_TABLE." SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' WHERE IntID = " . abs($_REQUEST["article"]));
 	} else if (isset($_REQUEST['vat'])) {
 
 		$DB_WE->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . mysql_real_escape_string($_REQUEST["article"]));
@@ -1155,7 +1163,7 @@ if(isset($_REQUEST["article"])){
 			$tmpDoc = @unserialize($strSerial);
 			$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
 
-			$DB_WE->query("update ".SHOP_TABLE." SET strSerial='" . mysql_real_escape_string(serialize($tmpDoc)) . "' where IntID = " . abs($_REQUEST["article"]));
+			$DB_WE->query("UPDATE ".SHOP_TABLE." SET strSerial='" . mysql_real_escape_string(serialize($tmpDoc)) . "' WHERE IntID = " . abs($_REQUEST["article"]));
 			unset($strSerial);
 			unset($tmpDoc);
 		}

@@ -174,7 +174,7 @@ print '
 $we_button = new we_button();
 
    /* ************* some config  ************** */
-$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'shop_pref'");
+$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'");
 $DB_WE->next_record();
 $feldnamen = explode("|",$DB_WE->f("strFelder"));
 $waehr="&nbsp;".htmlspecialchars($feldnamen[0]);

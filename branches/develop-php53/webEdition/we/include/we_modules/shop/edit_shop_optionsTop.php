@@ -45,7 +45,7 @@ $Bestelldaten = '<table border="0" cellpadding="2" cellspacing="6" width="300">
 				</tr>
 				<tr><td colspan=3></tr>';
 
-$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." where IntCustomerID=" . abs($_REQUEST["cid"]) . " group by IntOrderID order by IntID DESC");
+$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." WHERE IntCustomerID=" . abs($_REQUEST["cid"]) . " group by IntOrderID order by IntID DESC");
 while($DB_WE->next_record()){
 //echo "<br>".$DB_WE->f("Price");
  $Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_PATH . "edit_shop_properties.php?bid=".$DB_WE->f("IntOrderID")."' class=\"defaultfont\"><b>".$DB_WE->f("IntOrderID").".</b></a></td>";
@@ -63,6 +63,6 @@ $Bestelldaten = $l_shop["keinedaten"];
 }
 ?>
 </head>
-<body class="weEditorBody" onunload="doUnload()">
+<body class="weEditorBody" onUnload="doUnload()">
 <?php print  htmlDialogLayout($Bestelldaten,$l_shop["order_liste"]."&nbsp;".$Kundenname);?>   
 </body></html>

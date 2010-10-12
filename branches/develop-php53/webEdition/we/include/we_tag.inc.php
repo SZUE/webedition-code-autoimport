@@ -6591,7 +6591,7 @@ function we_tag_userInput($attribs, $content)
 			$orgVal = time();
 		}
 	}
-	if (!$editable && $type !== "img") {
+	if (!$editable && $type !== "img" && $type !== "binary") {
 		$_hidden = getHtmlTag(
 				'input', 
 				array(
@@ -6712,7 +6712,131 @@ function we_tag_userInput($attribs, $content)
 							return '';
 						}
 				}
-			
+			case "binary" :
+				
+				$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $name] : md5(
+						uniqid(rand()));
+				$we_button = new we_button();
+				
+				if ($editable) {
+					
+					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
+					
+					$foo = attributFehltError($attribs, "parentid", "userInput");
+					if ($foo)
+						return $foo;
+					
+					if (!isset($_SESSION[$_binaryDataId])) {
+						$_SESSION[$_binaryDataId] = array();
+					}
+					$_SESSION[$_binaryDataId]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
+					//$_SESSION[$_binaryDataId]["maxfilesize"] = we_getTagAttribute("maxfilesize",$attribs);
+					
+					$_SESSION[$_binaryDataId]["id"] = $orgVal ? $orgVal : '';
+					
+					$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
+					$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
+					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
+					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
+					$inputclass = we_getTagAttribute("inputclass", $attribs);
+					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+					
+					if ($_SESSION[$_binaryDataId]["id"]) {
+						$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
+					}
+					
+					if (isset($_SESSION[$_binaryDataId]["serverPath"])) {
+						$src = substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
+						if (substr($src, 0, 1) !== "/") {
+							$src = "/" . $src;
+						}
+						
+						//$imgTag = '<img src="' . $src . '" alt=""  />';
+						$imgTag = 'imgTag';
+					} else {
+						
+						//$imgTag = $GLOBALS["we_doc"]->getField($attribs, "img");
+						$binaryTag = $GLOBALS["we_doc"]->getField($attribs, "binary");
+						$t=explode('_',$binaryTag[0]);
+						unset($t[1]);
+						unset($t[0]);
+						$fn=implode('_',$t);
+						$imgTag = '<a href="'.$binaryTag[1].'" target="_blank">'.$fn.'</a>';
+					}
+					
+					if (isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]) {
+						$checked = ' checked';
+					} else {
+						$checked = '';
+					}
+					
+					return '<table border="0" cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
+								<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
+						</tr>
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="left">
+								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+							</td>
+						</tr>
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="left">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td style="padding-right: 5px;">
+											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
+										</td>
+										<td>
+											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>';
+				} else {
+					if (!isset($_SESSION[$_binaryDataId])) {
+						$_SESSION[$_binaryDataId] = array();
+					}
+					$_SESSION[$_binaryDataId]["id"] = $orgVal ? $orgVal : '';
+					if ($_SESSION[$_binaryDataId]["id"]) {
+						$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
+					}
+					$hidden = '<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" />';
+					
+					if (isset($_SESSION[$_binaryDataId]["serverPath"])) {
+						$src = substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
+						if (substr($src, 0, 1) !== "/") {
+							$src = "/" . $src;
+						}
+						
+
+						return "a".$hidden;
+					} else { 
+						if (isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]) {
+
+							
+							if (isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]) {
+								return "b".$hidden;
+							}
+							
+							
+							$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
+							$binaryTag = $GLOBALS["we_doc"]->getField($attribs, "binary");
+							$t=explode('_',$binaryTag[0]);
+							unset($t[1]);
+							unset($t[0]);
+							$fn=implode('_',$t);
+							$imgTag = '<a href="'.$binaryTag[1].'" target="_blank">'.$fn.'</a>';
+							return $imgTag . $hidden;
+						
+						} else {
+							return '';
+						}
+					}
+					return '';
+				}
 			case "textarea" :
 				$attribs['inlineedit'] = "true"; // bugfix: 7276
 				$pure = we_getTagAttribute("pure", $attribs, "", true);
@@ -6815,6 +6939,86 @@ function we_tag_userInput($attribs, $content)
 							'', 
 							$xml);
 				}
+				break;
+			case "country":
+				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
+				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$doc = we_getDocForTag($docAttr);
+				$lang=$doc->Language;
+				$langcode= substr($lang,0,2);
+				if ($lang==''){
+					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				}
+				
+				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
+				if(defined("WE_COUNTRIES_TOP")) {
+					$topCountries = explode(',',WE_COUNTRIES_TOP);
+				} else {
+					$topCountries = explode(',',"DE,AT,CH");
+				}
+				$topCountries = array_flip($topCountries);
+				foreach ($topCountries as $countrykey => &$countryvalue){
+					$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+				}
+				if(defined("WE_COUNTRIES_SHOWN")){
+					$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+				} else {
+					$shownCountries = explode(',',"BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
+				}
+				$shownCountries = array_flip($shownCountries);
+				foreach ($shownCountries as $countrykey => &$countryvalue){
+					$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+				}
+				$oldLocale= setlocale(LC_ALL, NULL);
+				setlocale(LC_ALL, $lang.'.UTF-8');
+				asort($topCountries,SORT_LOCALE_STRING );
+				asort($shownCountries,SORT_LOCALE_STRING );
+				setlocale(LC_ALL, $oldLocale);
+				
+				$options='';
+				foreach ($topCountries as $countrykey => &$countryvalue){
+					$options.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
+				}
+				$options.='<option value="-" disabled="disabled">----</option>'."\n";
+				foreach ($shownCountries as $countrykey2 => &$countryvalue2){
+					$options.='<option value="'.$countrykey2.'" '. ($orgVal == $countrykey2 ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue2).'</option>'."\n";
+				}	
+				$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
+				$newAtts['name'] = $fieldname;	
+				return getHtmlTag('select', $newAtts, $options, true);
+				break;
+			case "language":
+				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
+				
+				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$doc = we_getDocForTag($docAttr);
+				$lang=$doc->Language;
+				$langcode= substr($lang,0,2);
+				if ($lang==''){
+					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				}
+				$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+				foreach ($frontendL as $lc => &$lcvalue){
+					$lccode = explode('_', $lcvalue);
+					$lcvalue= $lccode[0];
+				}
+				foreach ($frontendL as &$lcvalue){
+					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue,'language',$langcode);
+				}
+				
+				$oldLocale= setlocale(LC_ALL, NULL);
+				setlocale(LC_ALL, $lang.'.UTF-8');
+				asort($frontendLL,SORT_LOCALE_STRING );
+				setlocale(LC_ALL, $oldLocale);
+				$options='';
+				foreach ($frontendLL as $langkey => &$langvalue){
+					$options.='<option value="'.$langkey.'" '. ($orgVal == $langkey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($langvalue).'</option>'."\n";
+				}
+				$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
+				$newAtts['name'] = $fieldname;	
+				return getHtmlTag('select', $newAtts, $options, true);
 				break;
 			case "select" :
 				$options = '';
@@ -7155,6 +7359,7 @@ function we_tag_write($attribs, $content)
 	$workspaces = we_getTagAttribute("workspaces", $attribs);
 	$objname = preg_replace('/[^a-z0-9_-]/i','',we_getTagAttribute("name", $attribs));
 	$onduplicate = we_getTagAttribute("onduplicate", $attribs,"increment");
+	if($objname==''){$onduplicate="overwrite";}
 	$onpredefinedname = we_getTagAttribute("onpredefinedname", $attribs,"appendto");
 	$workflowname = we_getTagAttribute("workflowname", $attribs,"");
 	$workflowuserid = we_getTagAttribute("workflowuserid", $attribs,0);
@@ -7205,6 +7410,7 @@ function we_tag_write($attribs, $content)
 					}
 				
 				checkAndCreateImage($name, ($type == "document") ? "we_document" : "we_object");
+				checkAndCreateBinary($name, ($type == "document") ? "we_document" : "we_object");
 				
 				$GLOBALS["we_$type"][$name]->i_checkPathDiffAndCreate();
 				if ($objname=='') {
@@ -7248,7 +7454,7 @@ function we_tag_write($attribs, $content)
 								$objname = $GLOBALS["we_$type"][$name]->Text;
 							}
 						}
-					}						
+					}				
 					$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$objname))."'", "ID", $db);  
 					if($objexists==''){
 						$GLOBALS["we_$type"][$name]->Text = $objname;
