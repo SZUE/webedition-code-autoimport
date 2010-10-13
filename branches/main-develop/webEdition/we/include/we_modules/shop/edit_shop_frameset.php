@@ -397,7 +397,7 @@ fr.write("&nbsp;");
 
    // echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
 
-    $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." group by IntOrderID order by IntID DESC");
+    $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
        while($DB_WE->next_record()){
          print "  menuDaten.add(new urlEntry('link.gif','".$DB_WE->f("IntOrderID")."',".$DB_WE->f("mdate").",'".$DB_WE->f("IntOrderID").". ".$l_shop["bestellung"]." ".$DB_WE->f("orddate")."','shop','".SHOP_TABLE."','".(($DB_WE->f("DateShipping")>0)?0:1)."'));\n";
        	 if($DB_WE->f("DateShipping")<=0){

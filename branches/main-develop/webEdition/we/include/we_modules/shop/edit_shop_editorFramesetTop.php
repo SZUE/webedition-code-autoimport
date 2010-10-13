@@ -31,7 +31,7 @@ $home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
 $mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
 $bid = isset($_REQUEST["bid"]) ? $_REQUEST["bid"] : 0;
 /// config
-$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'shop_pref'");
+$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'");
 	$DB_WE->next_record();
 	$feldnamen = explode("|",$DB_WE->f("strFelder"));
 	for ($i=0;$i<=3;$i++) {
@@ -73,7 +73,7 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
         print "<frame src='edit_shop_article_extend.php?typ=document' name='edbody' scrolling=auto>";
        }
       } ?>
-   </frameset>
+   <frame src="UntitledFrame-11"></frameset><noframes></noframes>
   <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
  </body>
 </html>

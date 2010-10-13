@@ -27,7 +27,7 @@ $variantFields = $we_doc->getVariantFields();
 
 // if editing data the class weShopVariants must do some stuff
 // add, move, delete
-// :TODO: decide where to put this
+// :TODO: decide WHERE to put this
 switch ($_REQUEST['we_cmd'][0]) {
 	case 'shop_insert_variant':
 		weShopVariants::insertVariant($we_doc, $_REQUEST['we_cmd'][1]);

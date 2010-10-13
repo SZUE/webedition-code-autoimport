@@ -64,8 +64,8 @@ print we_htmlElement::jsElement('
 
 $bid = abs(isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0);
 
-$cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".$bid,"IntCustomerID",$DB_WE);
-$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate FROM ".SHOP_TABLE." group by IntOrderID order by IntID DESC");         
+$cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
+$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");         
 
    if ($DB_WE->next_record()){
 	$headline ='<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $DB_WE->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf($l_shop["lastOrder"], $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")) . '</a>';

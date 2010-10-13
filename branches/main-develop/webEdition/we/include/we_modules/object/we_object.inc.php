@@ -485,6 +485,8 @@ class we_object extends we_document
 			$q .= " LONGTEXT NOT NULL ";
 			break;
 			case "img":
+			case "flashmovie":
+			case "quicktime":
 			case "binary":
 			$q .= " BIGINT(22) DEFAULT '0' NOT NULL ";
 			break;
@@ -883,8 +885,6 @@ class we_object extends we_document
 		$content .= '<td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["type"].'</td>';
 		$content .= '<td width="170" class="defaultfont"  valign="top">';
 		$val["input"] = $GLOBALS["l_object"]["input_field"];
-		$val["country"] = $GLOBALS["l_object"]["country_field"];
-		$val["language"] = $GLOBALS["l_object"]["language_field"];
 		$val["text"] = $GLOBALS["l_object"]["textarea_field"];
 		$val["date"] = $GLOBALS["l_object"]["date_field"];
 		$val["img"] = $GLOBALS["l_object"]["img_field"];
@@ -895,6 +895,10 @@ class we_object extends we_document
 		$val["link"] = $GLOBALS["l_object"]["link_field"];
 		$val["href"] = $GLOBALS["l_object"]["href_field"];
 		$val["binary"] = $GLOBALS["l_object"]["binary_field"];
+		$val["flashmovie"] = $GLOBALS["l_object"]["flashmovie_field"];
+		$val["quicktime"] = $GLOBALS["l_object"]["quicktime_field"];
+		$val["country"] = $GLOBALS["l_object"]["country_field"];
+		$val["language"] = $GLOBALS["l_object"]["language_field"];
 		$val["object"] = $GLOBALS["l_object"]["objectFile_field"];
 		$val["multiobject"] = $GLOBALS["l_object"]["multiObjectFile_field"];
 		if (defined('SHOP_TABLE')) {
@@ -903,7 +907,7 @@ class we_object extends we_document
 		$content .= $this->htmlSelect("we_".$this->Name."_input[".$name."dtype]",$val,1,$type,"",'onChange="if(this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\']){this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.$identifier.'\'); "',"value",388);
 		$content .= '</td></tr>';
 
-		if($type != 'shopVat' && $type!="float" && $type!="text" && $type!="country" && $type!="language" && $type!="img"&& $type!="binary" && $type!="date" && $type!="meta" && $type!="object" && $type!="link" && $type!="href" && $type!="checkbox" && $type!="multiobject"){
+		if($type != 'shopVat' && $type!="float" && $type!="text" && $type!="country" && $type!="language" && $type!="img" && $type!="binary"  && $type!="flashmovie" && $type!="quicktime" && $type!="date" && $type!="meta" && $type!="object" && $type!="link" && $type!="href" && $type!="checkbox" && $type!="multiobject"){
 			// Length
 			$maxLengthVal = $type == 'int' ? 10 : 255;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["length"].'</td>';
@@ -1000,7 +1004,51 @@ class we_object extends we_document
 			$content .= $this->getImageHTML($name."default",$this->getElement($name."default","dat"),$identifier);
 			$content .= '</td></tr>';
 
+		}else if($type=="flashmovie"){
+
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["rootdir"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
+			$content .= '</td></tr>';
+
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["defaultdir"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[".$name."defaultdir]", "", $this->getElement($name."defaultdir","dat"),$identifier);
+			$content .= '</td></tr>';
+
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->getFlashmovieHTML($name."default",$this->getElement($name."default","dat"),$identifier);
+			$content .= '</td></tr>';
+
+		}else if($type=="quicktime"){
+
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["rootdir"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
+			$content .= '</td></tr>';
+
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["defaultdir"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[".$name."defaultdir]", "", $this->getElement($name."defaultdir","dat"),$identifier);
+			$content .= '</td></tr>';
+
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->getQuicktimeHTML($name."default",$this->getElement($name."default","dat"),$identifier);
+			$content .= '</td></tr>';
+
 		}else if($type=="binary"){
+		
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["rootdir"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
+			$content .= '</td></tr>';
+
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["defaultdir"].'</td>';
+			$content .= '<td width="170" class="defaultfont"  valign="top">';
+			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[".$name."defaultdir]", "", $this->getElement($name."defaultdir","dat"),$identifier);
+			$content .= '</td></tr>';
 			$content .= '<tr><td  width="100" valign="top" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
 			$content .= '<td width="170" class= "defaultfont"  valign="top">';
 			$content .= $this->getBinaryHTML($name."default",$this->getElement($name."default","dat"),$identifier);
@@ -1621,6 +1669,57 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		}
 		return $content;
 	}
+	
+	function getFlashmovieHTML($name,$defaultname,$i=0){
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
+
+		$we_button = new we_button();
+		$content = "";
+		$img = new we_flashDocument();
+		$id = $defaultname;//$this->getElement($defaultname);
+		if ($id) {
+			$img->initByID($id,FILE_TABLE,false);
+		} else {
+			$img->we_new();
+		}
+		
+		$fname = 'we_'.$this->Name.'_input['.$name.']';
+		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
+		$content .= $we_button->create_button_table(array(
+															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/x-shockwave-flash')"),
+															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."')")
+														 )
+													)
+			;
+		$content .= '<br>'.$img->getHtml();
+		return $content;
+	}
+
+	function getQuicktimeHTML($name,$defaultname,$i=0){
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_quicktimeDocument.inc.php");
+
+		$we_button = new we_button();
+		$content = "";
+		$img = new we_quicktimeDocument();
+		$id = $defaultname;//$this->getElement($defaultname);
+		if ($id) {
+			$img->initByID($id,FILE_TABLE,false);
+		} else {
+			$img->we_new();
+		}
+		
+		$fname = 'we_'.$this->Name.'_input['.$name.']';
+		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
+		$content .= $we_button->create_button_table(array(
+															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'video/quicktime')"),
+															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."')")
+														 )
+													)
+			;
+		$content .= '<br>'.$img->getHtml();
+		return $content;
+	}
+
 
 	function getBinaryHTML($name,$defaultname,$i=0){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_otherDocument.inc.php");

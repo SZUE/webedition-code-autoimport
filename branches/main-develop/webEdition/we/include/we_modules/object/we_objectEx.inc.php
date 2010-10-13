@@ -178,6 +178,8 @@
 					$q = "real";
 				break;
 				case "img":
+				case "flashmovie":
+				case "quicktime":
 				case "binary":
 				case "object":
 				case "date":
@@ -217,6 +219,8 @@
 					$q .= " LONGTEXT NOT NULL ";
 				break;
 				case "img":
+				case "flashmovie":
+				case "quicktime":
 				case "binary":
 					$q .= " BIGINT(22) DEFAULT '0' NOT NULL ";
 				break;

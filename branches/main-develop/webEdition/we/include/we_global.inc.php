@@ -689,6 +689,8 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 	}
 	
 	checkAndPrepareImage($formname, "we_object");
+	checkAndPrepareFlashmovie($formname, "we_object");
+	checkAndPrepareQuicktime($formname, "we_object");
 	checkAndPrepareBinary($formname, "we_object");
 	
 	if ($session) {
@@ -782,6 +784,8 @@ function initDocument($formname = "we_global_form", $tid = "", $doctype = "", $c
 	}
 	
 	checkAndPrepareImage($formname, "we_document");
+	checkAndPrepareFlashmovie($formname, "we_document");
+	checkAndPrepareQuicktime($formname, "we_document");
 	checkAndPrepareBinary($formname, "we_document");
 	
 	if ($session) {
@@ -968,6 +972,142 @@ function checkAndPrepareBinary($formname, $key = "we_document")
 		}
 	}
 }
+function checkAndPrepareFlashmovie($formname, $key = "we_document")
+{
+	// check to see if there is an image to create or to change
+	if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
+		
+		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+		
+		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_flashDocument.inc.php");
+		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
+			foreach ($_FILES["we_ui_$formname"]["name"] as $flashName => $filename) {
+				
+				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName] : false;
+				
+				if ($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])) {
+					
+					$_SESSION[$_flashmovieDataId]['doDelete'] = false;
+					
+					if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1) {
+						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
+					} else 
+						if ($filename) {
+							// file is selected, check to see if it is an image
+							$ct = getContentTypeFromFile($filename);
+							if ($ct == "application/x-shockwave-flash") {
+								$flashId = abs($GLOBALS[$key][$formname]->getElement($flashName));
+								
+								// move document from upload location to tmp dir
+								$_SESSION[$_flashmovieDataId]["serverPath"] = TMP_DIR . "/" . md5(
+										uniqid(rand(), 1));
+								move_uploaded_file(
+										$_FILES["we_ui_$formname"]["tmp_name"][$flashName], 
+										$_SESSION[$_flashmovieDataId]["serverPath"]);
+								
+								
+								
+								$tmp_Filename = $flashName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
+										"/[^A-Za-z0-9._-]/", 
+										"", 
+										$_FILES["we_ui_$formname"]["name"][$flashName]);
+								
+								if ($flashId) {
+									$_SESSION[$_flashmovieDataId]["id"] = $flashId;
+								}
+								
+								$_SESSION[$_flashmovieDataId]["fileName"] = eregi_replace(
+										'^(.+)\..+$', 
+										"\\1", 
+										$tmp_Filename);
+								$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
+										'^.+(\..+)$', 
+										"\\1", 
+										$tmp_Filename) : "";
+								$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
+								
+								$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);					
+								$_SESSION[$_flashmovieDataId]["imgwidth"] = $we_size[0];
+								$_SESSION[$_flashmovieDataId]["imgheight"] = $we_size[1];
+								$_SESSION[$_flashmovieDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$flashName];
+								$_SESSION[$_flashmovieDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$flashName];
+							
+							}
+						}
+				}
+			
+			}
+		}
+	}
+}
+function checkAndPrepareQuicktime($formname, $key = "we_document")
+{
+	// check to see if there is an image to create or to change
+	if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
+		
+		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+		
+		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_quicktimeDocument.inc.php");
+		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
+			foreach ($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename) {
+				
+				$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
+				
+				if ($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])) {
+					
+					$_SESSION[$_quicktimeDataId]['doDelete'] = false;
+					
+					if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1) {
+						$_SESSION[$_quicktimeDataId]['doDelete'] = true;
+					} else 
+						if ($filename) {
+							// file is selected, check to see if it is an image
+							$ct = getContentTypeFromFile($filename);
+							if ($ct == "video/quicktime") {
+								$quicktimeId = abs($GLOBALS[$key][$formname]->getElement($quicktimeName));
+								
+								// move document from upload location to tmp dir
+								$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(
+										uniqid(rand(), 1));
+								move_uploaded_file(
+										$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], 
+										$_SESSION[$_quicktimeDataId]["serverPath"]);
+								
+								
+								
+								$tmp_Filename = $quicktimeName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
+										"/[^A-Za-z0-9._-]/", 
+										"", 
+										$_FILES["we_ui_$formname"]["name"][$quicktimeName]);
+								
+								if ($quicktimeId) {
+									$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
+								}
+								
+								$_SESSION[$_quicktimeDataId]["fileName"] = eregi_replace(
+										'^(.+)\..+$', 
+										"\\1", 
+										$tmp_Filename);
+								$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
+										'^.+(\..+)$', 
+										"\\1", 
+										$tmp_Filename) : "";
+								$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
+								
+																
+								//$_SESSION[$_quicktimeDataId]["imgwidth"] = $we_size[0];
+								//$_SESSION[$_quicktimeDataId]["imgheight"] = $we_size[1];
+								$_SESSION[$_quicktimeDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$quicktimeName];
+								$_SESSION[$_quicktimeDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$quicktimeName];
+							
+							}
+						}
+				}
+			
+			}
+		}
+	}
+}
 function checkAndCreateImage($formname, $type = "we_document")
 {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
@@ -1117,6 +1257,163 @@ function checkAndCreateBinary($formname, $type = "we_document")
 				}
 			if (isset($_SESSION[$_binaryDataId])) {
 				unset($_SESSION[$_binaryDataId]);
+			}
+		}
+	}
+}
+function checkAndCreateFlashmovie($formname, $type = "we_document")
+{
+	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_flashDocument.inc.php");
+	
+	foreach ($_REQUEST as $key => $_flashmovieDataId) {
+		if (preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)) {
+		
+			$_flashName = $regs[1];
+			$flashId = isset($_SESSION[$_flashmovieDataId]["id"]) ? $_SESSION[$_flashmovieDataId]["id"] : 0;
+			if (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] == 1) {
+				
+				if ($flashId) {
+					$flashDocument = new we_flashDocument();
+					$flashDocument->initByID($flashId);
+					if ($flashDocument->WebUserID == $webuserId) {
+						//everything ok, now delete
+						$GLOBALS["NOT_PROTECT"] = true;
+						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+						deleteEntry($flashId, FILE_TABLE);
+						$GLOBALS["NOT_PROTECT"] = false;
+						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
+					}
+				}
+			} else 
+				if (isset($_SESSION[$_flashmovieDataId]['serverPath'])) {
+					if (substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == "application/x-shockwave-flash") {
+						$flashDocument = new we_flashDocument();
+						
+						if ($flashId) {
+							// document has already an image
+							// so change binary data
+							$flashDocument->initByID(
+									$flashId);
+						}
+						
+						$flashDocument->Filename = $_SESSION[$_flashmovieDataId]['fileName'];
+						$flashDocument->Extension = $_SESSION[$_flashmovieDataId]['extension'];
+						$flashDocument->Text = $_SESSION[$_flashmovieDataId]['text'];
+						
+						if (!$flashId) {
+							$flashDocument->setParentID($_SESSION[$_flashmovieDataId]['parentid']);
+						}
+						$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Text;
+						
+						$flashDocument->setElement("width", $_SESSION[$_flashmovieDataId]["imgwidth"], "attrib");
+						$flashDocument->setElement("height", $_SESSION[$_flashmovieDataId]["imgheight"], "attrib");
+						$flashDocument->setElement("origwidth", $_SESSION[$_flashmovieDataId]["imgwidth"]);
+						$flashDocument->setElement("origheight", $_SESSION[$_flashmovieDataId]["imgheight"]);
+						
+						$flashDocument->setElement("type", 'application/x-shockwave-flash', "attrib");
+						
+						$flashDocument->setElement("data", $_SESSION[$_flashmovieDataId]["serverPath"], "image");
+						
+						$flashDocument->setElement("filesize", $_SESSION[$_flashmovieDataId]["size"], "attrib");
+						
+						$flashDocument->Table = FILE_TABLE;
+						$flashDocument->Published = time();
+						$flashDocument->WebUserID = $webuserId;
+						$flashDocument->we_save();
+						$newId = $flashDocument->ID;
+						
+						$t=explode('_',$flashDocument->Filename);
+						$t[1]=$newId ;
+						$fn=implode('_',$t);
+						$flashDocument->Filename = $fn;
+						$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Filename.$flashDocument->Extension;
+						$flashDocument->we_save();
+						
+						$GLOBALS[$type][$formname]->setElement($_flashName, $newId);
+					}
+				
+				}
+			if (isset($_SESSION[$_flashmovieDataId])) {
+				unset($_SESSION[$_flashmovieDataId]);
+			}
+		}
+	}
+}
+function checkAndCreateQuicktime($formname, $type = "we_document")
+{
+	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_quicktimeDocument.inc.php");
+	
+	foreach ($_REQUEST as $key => $_quicktimeDataId) {
+		if (preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)) {
+			$_quicktimeName = $regs[1];
+			$quicktimeId = isset($_SESSION[$_quicktimeDataId]["id"]) ? $_SESSION[$_quicktimeDataId]["id"] : 0;
+			if (isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete'] == 1) {
+				
+				if ($quicktimeId) {
+					$quicktimeDocument = new we_quicktimeDocument();
+					$quicktimeDocument->initByID($quicktimeId);
+					if ($quicktimeDocument->WebUserID == $webuserId) {
+						//everything ok, now delete
+						$GLOBALS["NOT_PROTECT"] = true;
+						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+						deleteEntry($quicktimeId, FILE_TABLE);
+						$GLOBALS["NOT_PROTECT"] = false;
+						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
+					}
+				}
+			} else 
+				if (isset($_SESSION[$_quicktimeDataId]['serverPath'])) {
+					if (substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == "video/quicktime") {
+						$quicktimeDocument = new we_quicktimeDocument();
+						
+						if ($quicktimeId) {
+							// document has already an image
+							// so change binary data
+							$quicktimeDocument->initByID(
+									$quicktimeId);
+						}
+						
+						$quicktimeDocument->Filename = $_SESSION[$_quicktimeDataId]['fileName'];
+						$quicktimeDocument->Extension = $_SESSION[$_quicktimeDataId]['extension'];
+						$quicktimeDocument->Text = $_SESSION[$_quicktimeDataId]['text'];
+						
+						if (!$quicktimeId) {
+							$quicktimeDocument->setParentID($_SESSION[$_quicktimeDataId]['parentid']);
+						}
+						$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Text;
+						
+						//$quicktimeDocument->setElement("width", $_SESSION[$_quicktimeDataId]["imgwidth"], "attrib");
+						//$quicktimeDocument->setElement("height", $_SESSION[$_quicktimeDataId]["imgheight"], "attrib");
+						//$quicktimeDocument->setElement("origwidth", $_SESSION[$_quicktimeDataId]["imgwidth"]);
+						//$quicktimeDocument->setElement("origheight", $_SESSION[$_quicktimeDataId]["imgheight"]);
+						
+						$quicktimeDocument->setElement("type", 'video/quicktime', "attrib");
+						
+						$quicktimeDocument->setElement("data", $_SESSION[$_quicktimeDataId]["serverPath"], "image");
+						
+						$quicktimeDocument->setElement("filesize", $_SESSION[$_quicktimeDataId]["size"], "attrib");
+						
+						$quicktimeDocument->Table = FILE_TABLE;
+						$quicktimeDocument->Published = time();
+						$quicktimeDocument->WebUserID = $webuserId;
+						$quicktimeDocument->we_save();
+						$newId = $quicktimeDocument->ID;
+						
+						$t=explode('_',$quicktimeDocument->Filename);
+						$t[1]=$newId ;
+						$fn=implode('_',$t);
+						$quicktimeDocument->Filename = $fn;
+						$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Filename.$quicktimeDocument->Extension;
+						$quicktimeDocument->we_save();
+						
+						$GLOBALS[$type][$formname]->setElement($_quicktimeName, $newId);
+					}
+				
+				}
+			if (isset($_SESSION[$_quicktimeDataId])) {
+				unset($_SESSION[$_quicktimeDataId]);
 			}
 		}
 	}

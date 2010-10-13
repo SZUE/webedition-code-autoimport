@@ -68,7 +68,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["waehr"]) . "|" . mysql_real_escape_string($_REQUEST["mwst"]) . "|" . mysql_real_escape_string($_REQUEST["format"]) . "|" . mysql_real_escape_string($_REQUEST["classID"]) . "|" . mysql_real_escape_string($_REQUEST["pag"]) . "' where strDateiname = 'shop_pref'");
+		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["waehr"]) . "|" . mysql_real_escape_string($_REQUEST["mwst"]) . "|" . mysql_real_escape_string($_REQUEST["format"]) . "|" . mysql_real_escape_string($_REQUEST["classID"]) . "|" . mysql_real_escape_string($_REQUEST["pag"]) . "' WHERE strDateiname = 'shop_pref'");
 	} else {
 		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (strFelder, strDateiname) VALUES ('" . mysql_real_escape_string($_REQUEST["waehr"]) . "|" . mysql_real_escape_string($_REQUEST["mwst"]) . "|" . mysql_real_escape_string($_REQUEST["format"]) . "|" . mysql_real_escape_string($_REQUEST["classID"]) . "|" . mysql_real_escape_string($_REQUEST["pag"]) . "','shop_pref')" );
 
@@ -140,7 +140,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 
 
 	//	NumberFormat - currency and taxes
-	$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'shop_pref'");
+	$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'");
 	$DB_WE->next_record();
 	$feldnamen = explode("|",$DB_WE->f("strFelder"));
 
@@ -211,7 +211,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	asort($_availFields);
 
 	//	get the already selected fields ...
-	$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'edit_shop_properties'");
+	$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'edit_shop_properties'");
 	$DB_WE->next_record();
 	$_entry = $DB_WE->f("strFelder");
 
