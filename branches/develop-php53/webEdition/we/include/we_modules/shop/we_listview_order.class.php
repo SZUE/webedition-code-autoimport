@@ -42,7 +42,7 @@ class we_listview_order extends listviewBase {
 	 *
 	 * @param   $name          string - name of listview
 	 * @param   $rows          integer - number of rows to display per page
-	 * @param   $order         string - field name(s) to order by
+	 * @param   $order         string - field name(s) to ORDER BY
 	 * @param   $desc		   string - if desc order
 	 * @param   $condition	   string - condition of listview
 	 * @param   $cols		   string - number of cols (default = 1)
@@ -81,7 +81,7 @@ class we_listview_order extends listviewBase {
 			$orderstring = ''; 
 		}
 		
-		$where = $this->condition ? (' where ' . $this->condition) .$group  : $group;
+		$where = $this->condition ? (' WHERE ' . $this->condition) .$group  : $group;
 
 		$q = 'SELECT * FROM ' . SHOP_TABLE . $where;
 		$this->DB_WE->query($q);

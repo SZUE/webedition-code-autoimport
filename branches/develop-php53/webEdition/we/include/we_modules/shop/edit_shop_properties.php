@@ -898,7 +898,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 						);
 
 					
-					} elseif((isset($CLFields['languageField']) && isset($CLFields['languageFieldIsISO']) && $k == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
+					} elseif((isset($CLFields['languageField']) && isset($CLFields['languageFieldIsISO']) && $k == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
 						$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
 						foreach ($frontendL as $lc => &$lcvalue){
 							$lccode = explode('_', $lcvalue);
@@ -1130,7 +1130,7 @@ if(isset($_REQUEST["DateOrder"])){
 	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateOrder='".mysql_real_escape_string($DateOrder1)."' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Order',$_REQUEST["bid"],$_customer);
 	
-	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." group by IntOrderID order by intID DESC");
+	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY intID DESC");
     $DB_WE->next_record();
     
 }
@@ -1143,7 +1143,7 @@ if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
 	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateShipping='".mysql_real_escape_string( $DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Order',$_REQUEST["bid"],$_customer);
 	
-	$DB_WE->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." group by IntOrderID order by intID DESC");
+	$DB_WE->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY intID DESC");
     $DB_WE->next_record();
 }
 if(isset($_REQUEST["article"])){

@@ -250,7 +250,7 @@ if (isset($daten)){
 			if ($val!="") {			
 	            $menu .= "  <option value=\"". $val."\"";
 	            $menu .= (isset($_REQUEST[$select_name])  && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "";
-	            $sql_merge = "SELECT ".OBJECT_TABLE.".Text as ClassIDName, ".OBJECT_TABLE.".ID as SerID FROM ".OBJECT_TABLE." WHERE ".OBJECT_TABLE.".ID = $val";
+	            $sql_merge = "SELECT ".OBJECT_TABLE.".Text as ClassIDName, ".OBJECT_TABLE.".ID as SerID FROM ".OBJECT_TABLE." WHERE ".OBJECT_TABLE.".ID = ".abs($val);
 	            $DB_WE->query($sql_merge);
 	            $DB_WE->next_record();
 	            $menu .= ">" .$DB_WE->f("ClassIDName").  "\n";

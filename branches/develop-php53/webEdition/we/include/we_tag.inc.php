@@ -6591,7 +6591,7 @@ function we_tag_userInput($attribs, $content)
 			$orgVal = time();
 		}
 	}
-	if (!$editable && $type !== "img" && $type !== "binary") {
+	if (!$editable && $type !== "img" && $type !== "binary" && $type !== "flashmovie" && $type !== "quicktime") {
 		$_hidden = getHtmlTag(
 				'input', 
 				array(
@@ -6707,6 +6707,230 @@ function we_tag_userInput($attribs, $content)
 							unset($attribs["height"]);
 							$attribs["id"] = $_SESSION[$_imgDataId]["id"];
 							return $GLOBALS["we_doc"]->getField($attribs, "img") . $hidden;
+						
+						} else {
+							return '';
+						}
+				}
+			case "flashmovie" :
+				
+				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name] : md5(
+						uniqid(rand()));
+				
+				$we_button = new we_button();
+				
+				if ($editable) {
+					
+					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
+					
+					$foo = attributFehltError($attribs, "parentid", "userInput");
+					if ($foo)
+						return $foo;
+					
+					if (!isset($_SESSION[$_flashmovieDataId])) {
+						$_SESSION[$_flashmovieDataId] = array();
+					}
+					$_SESSION[$_flashmovieDataId]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
+					//$_SESSION[$_imgDataId]["maxfilesize"] = we_getTagAttribute("maxfilesize",$attribs);
+					$_SESSION[$_flashmovieDataId]["width"] = we_getTagAttribute("width", $attribs, 	0);
+					$_SESSION[$_flashmovieDataId]["height"] = we_getTagAttribute("height", $attribs, 0);
+					$_SESSION[$_flashmovieDataId]["id"] = $orgVal ? $orgVal : '';
+					
+					$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
+					$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
+					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
+					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
+					$inputclass = we_getTagAttribute("inputclass", $attribs);
+					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+					
+					if ($_SESSION[$_flashmovieDataId]["id"]) {
+						$attribs["id"] = $_SESSION[$_flashmovieDataId]["id"];
+					}
+					
+					if (isset($_SESSION[$_flashmovieDataId]["serverPath"])) {
+						$src = substr($_SESSION[$_flashmovieDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
+						if (substr($src, 0, 1) !== "/") {
+							$src = "/" . $src;
+						}
+						
+						// $flashmovieTag = 'Dadi'.'<img src="' . $src . '" alt="" width="' . $_SESSION[$_flashmovieDataId]["imgwidth"] . '" height="' . $_SESSION[$_flashmovieDataId]["imgheight"] . '" />';
+						$flashmovieTag = '';
+					} else {
+						unset($attribs["width"]);
+						unset($attribs["height"]);
+						
+						// Include Flash class
+						if (isset($attribs["id"]) && $attribs["id"]){
+							$flashmovieTag = $GLOBALS["we_doc"]->getField($attribs, "flashmovie");
+						} else {
+							$flashmovieTag = '<img src="/webEdition/images/icons/no_flashmovie.gif" alt="" width="64" height="64" />';
+						}
+					}
+					
+					if (isset($_SESSION[$_flashmovieDataId]["doDelete"]) && $_SESSION[$_flashmovieDataId]["doDelete"]) {
+						$checked = ' checked';
+					} else {
+						$checked = '';
+					}
+					
+					return '<table border="0" cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="center">' . $flashmovieTag . '
+								<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
+						</tr>
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="left">
+								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+							</td>
+						</tr>
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="left">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td style="padding-right: 5px;">
+											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
+										</td>
+										<td>
+											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>';
+				} else {
+					$hidden = '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" />';
+					
+					if (isset($_SESSION[$_flashmovieDataId]["serverPath"])) {
+						$src = substr($_SESSION[$_flashmovieDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
+						if (substr($src, 0, 1) !== "/") {
+							$src = "/" . $src;
+						}
+						
+						//return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_flashmovieDataId]["imgwidth"] . '" height="' . $_SESSION[$_flashmovieDataId]["imgheight"] . '" />' . $hidden;
+						return $hidden;
+					} else 
+						if (isset($_SESSION[$_flashmovieDataId]["id"]) && $_SESSION[$_flashmovieDataId]["id"]) {
+							
+							if (isset($_SESSION[$_flashmovieDataId]["doDelete"]) && $_SESSION[$_flashmovieDataId]["doDelete"]) {
+								return $hidden;
+							}
+							
+							unset($attribs["width"]);
+							unset($attribs["height"]);
+							$attribs["id"] = $_SESSION[$_flashmovieDataId]["id"];
+							return $GLOBALS["we_doc"]->getField($attribs, "flashmovie") . $hidden;
+						
+						} else {
+							return '';
+						}
+				}
+			case "quicktime" :
+				
+				$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name] : md5(
+						uniqid(rand()));
+				
+				$we_button = new we_button();
+				
+				if ($editable) {
+					
+					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
+					
+					$foo = attributFehltError($attribs, "parentid", "userInput");
+					if ($foo)
+						return $foo;
+					
+					if (!isset($_SESSION[$_quicktimeDataId])) {
+						$_SESSION[$_quicktimeDataId] = array();
+					}
+					$_SESSION[$_quicktimeDataId]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
+					//$_SESSION[$_quicktimeDataId]["maxfilesize"] = we_getTagAttribute("maxfilesize",$attribs);
+					$_SESSION[$_quicktimeDataId]["width"] = we_getTagAttribute("width", $attribs, 0);
+					$_SESSION[$_quicktimeDataId]["height"] = we_getTagAttribute("height", $attribs, 0);
+					$_SESSION[$_quicktimeDataId]["id"] = $orgVal ? $orgVal : '';
+					
+					$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
+					$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
+					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
+					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
+					$inputclass = we_getTagAttribute("inputclass", $attribs);
+					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+					
+					if ($_SESSION[$_quicktimeDataId]["id"]) {
+						$attribs["id"] = $_SESSION[$_quicktimeDataId]["id"];
+					}
+					
+					if (isset($_SESSION[$_quicktimeDataId]["serverPath"])) {
+						$src = substr($_SESSION[$_quicktimeDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
+						if (substr($src, 0, 1) !== "/") {
+							$src = "/" . $src;
+						}
+						
+						//$quicktimeTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_quicktimeDataId]["imgwidth"] . '" height="' . $_SESSION[$_quicktimeDataId]["imgheight"] . '" />';
+						$quicktimeTag = '';
+					} else {
+						unset($attribs["width"]);
+						unset($attribs["height"]);
+						if (isset($attribs["id"]) && $attribs["id"]){
+							$quicktimeTag = $GLOBALS["we_doc"]->getField($attribs, "quicktime");
+						} else {
+							$quicktimeTag = '<img src="/webEdition/images/icons/no_quicktime.gif" alt="" width="64" height="64" />';
+						}
+					}
+					
+					if (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"]) {
+						$checked = ' checked';
+					} else {
+						$checked = '';
+					}
+					
+					return '<table border="0" cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="center">' . $quicktimeTag . '
+								<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
+						</tr>
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="left">
+								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+							</td>
+						</tr>
+						<tr>
+							<td class="weEditmodeStyle" colspan="2" align="left">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td style="padding-right: 5px;">
+											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
+										</td>
+										<td>
+											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>';
+				} else {
+					$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" />';
+					
+					if (isset($_SESSION[$_quicktimeDataId]["serverPath"])) {
+						$src = substr($_SESSION[$_quicktimeDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
+						if (substr($src, 0, 1) !== "/") {
+							$src = "/" . $src;
+						}
+						
+						//return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_quicktimeDataId]["imgwidth"] . '" height="' . $_SESSION[$_quicktimeDataId]["imgheight"] . '" />' . $hidden;
+						return $hidden;
+					} else 
+						if (isset($_SESSION[$_quicktimeDataId]["id"]) && $_SESSION[$_quicktimeDataId]["id"]) {
+							
+							if (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"]) {
+								return $hidden;
+							}
+							
+							unset($attribs["width"]);
+							unset($attribs["height"]);
+							$attribs["id"] = $_SESSION[$_quicktimeDataId]["id"];
+							return $GLOBALS["we_doc"]->getField($attribs, "quicktime") . $hidden;
 						
 						} else {
 							return '';
@@ -7410,6 +7634,8 @@ function we_tag_write($attribs, $content)
 					}
 				
 				checkAndCreateImage($name, ($type == "document") ? "we_document" : "we_object");
+				checkAndCreateFlashmovie($name, ($type == "document") ? "we_document" : "we_object");
+				checkAndCreateQuicktime($name, ($type == "document") ? "we_document" : "we_object");
 				checkAndCreateBinary($name, ($type == "document") ? "we_document" : "we_object");
 				
 				$GLOBALS["we_$type"][$name]->i_checkPathDiffAndCreate();

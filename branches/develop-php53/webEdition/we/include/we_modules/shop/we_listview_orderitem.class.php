@@ -42,7 +42,7 @@ class we_listview_orderitem extends listviewBase {
 	 *
 	 * @param   $name          string - name of listview
 	 * @param   $rows          integer - number of rows to display per page
-	 * @param   $order         string - field name(s) to order by
+	 * @param   $order         string - field name(s) to ORDER BY
 	 * @param   $desc		   string - if desc order
 	 * @param   $condition	   string - condition of listview
 	 * @param   $cols		   string - number of cols (default = 1)
@@ -82,9 +82,9 @@ class we_listview_orderitem extends listviewBase {
 		}
 		
 		if ($this->name !=0){
-			$where = $this->condition ? (' where IntOrderID='.$this->name.' AND ' . $this->condition)   : ' where IntOrderID='.$this->name.' ';
+			$where = $this->condition ? (' WHERE IntOrderID='.$this->name.' AND ' . $this->condition)   : ' WHERE IntOrderID='.$this->name.' ';
 		} else {
-			$where = $this->condition ? (' where '. $this->condition)   : ' ';
+			$where = $this->condition ? (' WHERE '. $this->condition)   : ' ';
 		}
 
 		$q = 'SELECT IntID,IntOrderID,IntArticleID,IntQuantity,Price, strSerial FROM ' . SHOP_TABLE . $where;
