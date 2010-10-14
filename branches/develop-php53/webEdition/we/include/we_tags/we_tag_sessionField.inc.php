@@ -225,7 +225,7 @@ function we_tag_sessionField($attribs,$content) {
 					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal,'territory',$langcode)),$nameTo,$to);
 				}
 				if ($aslanguage){
-					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal,'langugage',$langcode)),$nameTo,$to);
+					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal,'language',$langcode)),$nameTo,$to);
 				}
 			}
 			return we_redirect_tagoutput($orgVal,$nameTo,$to);
