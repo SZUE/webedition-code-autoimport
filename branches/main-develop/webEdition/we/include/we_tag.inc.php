@@ -2439,7 +2439,7 @@ function we_tag_field($attribs, $content)
 				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
 			}
-			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'langugage',$langcode));		
+			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'language',$langcode));		
 		break;
 		case 'shopVat' :
 			
@@ -4824,6 +4824,8 @@ function we_tag_input($attribs, $content)
 	$reload = we_getTagAttribute("reload", $attribs, "", true);
 	
 	$spellcheck = we_getTagAttribute('spellcheck', $attribs, 'false');
+	$nameTo = we_getTagAttribute("nameto", $attribs);
+	$to = we_getTagAttribute("to", $attribs,'screen');
 	
 	$val = htmlspecialchars(
 			isset($GLOBALS["we_doc"]->elements[$name]["dat"]) ? $GLOBALS["we_doc"]->getElement($name) : $value);
@@ -4837,7 +4839,7 @@ function we_tag_input($attribs, $content)
 					true, 
 					$format);
 		} else {
-			return $GLOBALS["we_doc"]->getField($attribs, "date");
+			return we_redirect_tagoutput($GLOBALS["we_doc"]->getField($attribs, "date"),$nameTo,$to); 
 		}
 	} else 
 		if ($type == "checkbox") {
@@ -4845,7 +4847,124 @@ function we_tag_input($attribs, $content)
 				$attr = we_make_attribs($attribs, "name,value,type");
 				return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS["we_doc"]->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '" />';
 			} else {
-				return ($GLOBALS["we_doc"]->getElement($name));
+				return we_redirect_tagoutput($GLOBALS["we_doc"]->getElement($name),$nameTo,$to);
+			}
+		} else
+		if ($type == "country") {
+			if ($we_editmode) {
+				
+				$newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
+				$newAtts['name']='we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
+				$newAtts['onclick']='_EditorFrame.setEditorIsHot(true);';
+				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$doc = we_getDocForTag($docAttr);
+				$lang=$doc->Language;
+				$langcode= substr($lang,0,2);
+				if ($lang==''){
+					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				}
+				$orgVal=$GLOBALS["we_doc"]->getElement($name);
+				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
+				if(defined("WE_COUNTRIES_TOP")) {
+					$topCountries = explode(',',WE_COUNTRIES_TOP);
+				} else {
+					$topCountries = explode(',',"DE,AT,CH");
+				}
+				$topCountries = array_flip($topCountries);
+				foreach ($topCountries as $countrykey => &$countryvalue){
+					$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+				}
+				if(defined("WE_COUNTRIES_SHOWN")){
+					$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+				} else {
+					$shownCountries = explode(',',"BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
+				}
+				$shownCountries = array_flip($shownCountries);
+				foreach ($shownCountries as $countrykey => &$countryvalue){
+					$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+				}
+				$oldLocale= setlocale(LC_ALL, NULL);
+				setlocale(LC_ALL, $lang.'.UTF-8');
+				asort($topCountries,SORT_LOCALE_STRING );
+				asort($shownCountries,SORT_LOCALE_STRING );
+				setlocale(LC_ALL, $oldLocale);
+				$orgVal=$GLOBALS["we_doc"]->getElement($name);
+				$content='';
+				foreach ($topCountries as $countrykey => &$countryvalue){
+					$content.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
+				}
+				$content.='<option value="-" disabled="disabled">----</option>'."\n";
+				foreach ($shownCountries as $countrykey2 => &$countryvalue2){
+					$content.='<option value="'.$countrykey2.'" '. ($orgVal == $countrykey2 ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue2).'</option>'."\n";
+				}	
+						
+				return getHtmlTag('select', $newAtts, $content, true);
+				//return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS["we_doc"]->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '" />';
+			} else {
+				$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+				if ($lang==''){
+					$docAttr = we_getTagAttribute("doc", $attribs, "self");
+					$doc = we_getDocForTag($docAttr);
+					$lang=$doc->Language;
+				}
+				$langcode= substr($lang,0,2);
+				if ($lang==''){
+					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				}
+				return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["we_doc"]->getElement($name),'territory',$langcode)),$nameTo,$to);
+				 
+			}
+		} else
+		if ($type == "language") {
+			if ($we_editmode) {
+				
+				$newAtts = removeAttribs($attribs, array('checked','type','options','selected','onchange','onChange','name','value','values','onclick','onClick','mode','choice','pure','rows','cols','maxlength','wysiwyg'));
+				$newAtts['name']='we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
+				$newAtts['onclick']='_EditorFrame.setEditorIsHot(true);';
+				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$doc = we_getDocForTag($docAttr);
+				$lang=$doc->Language;
+				$langcode= substr($lang,0,2);
+				if ($lang==''){
+					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				}
+				$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+				foreach ($frontendL as $lc => &$lcvalue){
+					$lccode = explode('_', $lcvalue);
+					$lcvalue= $lccode[0];
+				}
+				foreach ($frontendL as &$lcvalue){
+					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue,'language',$langcode);
+				}
+				
+				$oldLocale= setlocale(LC_ALL, NULL);
+				setlocale(LC_ALL, $lang.'.UTF-8');
+				asort($frontendLL,SORT_LOCALE_STRING );
+				setlocale(LC_ALL, $oldLocale);
+				$content='';
+				$orgVal=$GLOBALS["we_doc"]->getElement($name);
+				foreach ($frontendLL as $langkey => &$langvalue){
+					$content.='<option value="'.$langkey.'" '. ($orgVal == $langkey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($langvalue).'</option>'."\n";
+				}
+				return getHtmlTag('select', $newAtts, $content, true);
+	
+			} else {
+				$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+				if ($lang==''){
+					$docAttr = we_getTagAttribute("doc", $attribs, "self");
+					$doc = we_getDocForTag($docAttr);
+					$lang=$doc->Language;
+				}
+				$langcode= substr($lang,0,2);
+				if ($lang==''){
+					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+				}
+				return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["we_doc"]->getElement($name),'language',$langcode)),$nameTo,$to);	
+
 			}
 		} else 
 			if ($type == "choice") {
@@ -4876,7 +4995,7 @@ function we_tag_input($attribs, $content)
 					return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" . (isset(
 							$sel) ? $sel : "");
 				} else {
-					return ($GLOBALS["we_doc"]->getElement($name));
+					return we_redirect_tagoutput($GLOBALS["we_doc"]->getElement($name),$nameTo,$to);
 				}
 			} else 
 				if ($type == "select") {
@@ -4897,11 +5016,11 @@ function we_tag_input($attribs, $content)
 	</tr>
 </table>';
 						} else {
-							return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
+							return we_redirect_tagoutput('<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />',$nameTo,$to);
 						}
 					
 					} else {
-						return $GLOBALS["we_doc"]->getField($attribs);
+						return we_redirect_tagoutput($GLOBALS["we_doc"]->getField($attribs),$nameTo,$to);
 					}
 				}
 }
