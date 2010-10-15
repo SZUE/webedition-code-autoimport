@@ -76,15 +76,15 @@ class we_listview_orderitem extends listviewBase {
 		}
 
  		if ($this->order != '') { 
-			$orderstring = " ORDER BY ".$this->order." "; 
+			$orderstring = " ORDER BY ".str_replace('Int','',$this->order)." "; 
 		} else { 
 			$orderstring = ''; 
 		}
 		
 		if ($this->name !=0){
-			$where = $this->condition ? (' WHERE IntOrderID='.$this->name.' AND ' . $this->condition)   : ' WHERE IntOrderID='.$this->name.' ';
+			$where = $this->condition ? (' WHERE IntOrderID='.$this->name.' AND ' .str_replace('Int','',$this->condition) )   : ' WHERE IntOrderID='.$this->name.' ';
 		} else {
-			$where = $this->condition ? (' WHERE '. $this->condition)   : ' ';
+			$where = $this->condition ? (' WHERE '. str_replace('Int','',$this->condition) )   : ' ';
 		}
 
 		$q = 'SELECT IntID,IntOrderID,IntArticleID,IntQuantity,Price, strSerial FROM ' . SHOP_TABLE . $where;
@@ -92,7 +92,7 @@ class we_listview_orderitem extends listviewBase {
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
 
-		$q = 'SELECT IntID,IntOrderID,IntArticleID,IntQuantity,Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($rows > 0) ? (' limit '.$this->start.','.$this->rows) : '');;
+		$q = 'SELECT IntID as ID,IntOrderID as OrderID, IntArticleID as ArticleID, IntQuantity as Quantity, Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($rows > 0) ? (' limit '.$this->start.','.$this->rows) : '');;
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
@@ -105,6 +105,7 @@ class we_listview_orderitem extends listviewBase {
 			unset($this->DB_WE->Record["strSerial"]);
 			if (is_array($strSerial)){
 				if (isset($strSerial['OF_ID'])){//Object based Article
+					$this->DB_WE->Record['articleIsObject']= 1;
 					foreach($strSerial as $key => &$value){
 						if(!is_numeric($key) && $key != 'we_sacf' && $key != 'WE_VARIANT' && (strpos($key, 'we_')!==false)  && (strpos($key,'we_wedoc')===false) && (strpos($key,'we_WE')===false) ){
 							$this->DB_WE->Record[substr($key,3)]= $value;
@@ -117,6 +118,7 @@ class we_listview_orderitem extends listviewBase {
 					unset($value);
 					$this->DB_WE->Record["shopvat"] = $strSerial["shopvat"];
 				} else {//Document based Article
+					$this->DB_WE->Record['articleIsObject']= 0;
 					foreach($strSerial as $key => &$value){
 						if($key != 'we_sacf' && $key != 'Charset' && $key != 'WE_VARIANT' && strpos($key,'wedoc_')===false  ){
 							$this->DB_WE->Record[$key]= $value;
@@ -127,16 +129,17 @@ class we_listview_orderitem extends listviewBase {
 						$this->DB_WE->Record[$key]= $value;
 					}
 					unset($value);
+					$this->DB_WE->Record['VARIANT']= $strSerial['WE_VARIANT'];
 					$this->DB_WE->Record["shopvat"] = $strSerial["shopvat"];
 				}
 			
 			}
 			
-			$this->DB_WE->Record["wedoc_Path"] = $this->Path."?we_orderid=".$this->DB_WE->Record["IntOrderID"]."&we_orderitemid=".$this->DB_WE->Record["IntID"];
-			$this->DB_WE->Record["WE_PATH"] = $this->Path."?we_orderid=".$this->DB_WE->Record["IntOrderID"]."&we_orderitemid=".$this->DB_WE->Record["IntID"];
-			$this->DB_WE->Record["WE_TEXT"] = $this->DB_WE->Record["IntID"];
-			$this->DB_WE->Record["WE_ID"] = $this->DB_WE->Record["IntID"];
-			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?we_orderid=".$this->DB_WE->Record["IntOrderID"]."&we_orderitemid=".$this->DB_WE->Record["IntID"];
+			$this->DB_WE->Record["wedoc_Path"] = $this->Path."?we_orderid=".$this->DB_WE->Record["OrderID"]."&we_orderitemid=".$this->DB_WE->Record["ID"];
+			$this->DB_WE->Record["WE_PATH"] = $this->Path."?we_orderid=".$this->DB_WE->Record["OrderID"]."&we_orderitemid=".$this->DB_WE->Record["ID"];
+			$this->DB_WE->Record["WE_TEXT"] = $this->DB_WE->Record["ID"];
+			$this->DB_WE->Record["WE_ID"] = $this->DB_WE->Record["ID"];
+			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?we_orderid=".$this->DB_WE->Record["OrderID"]."&we_orderitemid=".$this->DB_WE->Record["ID"];
 			$this->count++;
 			return true;
 		}else if($this->cols && ($this->count < $this->rows)){
