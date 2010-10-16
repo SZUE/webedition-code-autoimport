@@ -56,6 +56,19 @@ class we_listview_orderitem extends listviewBase {
 
 		$this->docID = $docID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+		
+		if (strpos($this->condition,'ID') !== false && strpos($this->condition,'IntID') === false ){$this->condition=str_replace('ID','IntID',$this->condition);}
+		// und nun sind alle anderen kaputt und werden repariert
+		if (strpos($this->condition,'OrderIntID') !== false ){$this->condition=str_replace('OrderIntID','OrderID',$this->condition);}
+		if (strpos($this->condition,'CustomerIntID') !== false){$this->condition=str_replace('CustomerIntID','CustomerID',$this->condition);}
+		if (strpos($this->condition,'ArticleIntID') !== false){$this->condition=str_replace('ArticleIntID','ArticleID',$this->condition);}
+		
+		if (strpos($this->condition,'OrderID') !== false && strpos($this->condition,'IntOrderID') === false ){$this->condition=str_replace('OrderID','IntOrderID',$this->condition);}	
+		if (strpos($this->condition,'CustomerID') !== false && strpos($this->condition,'IntCustomerID') === false ){$this->condition=str_replace('CustomerID','IntCustomerID',$this->condition);}
+		if (strpos($this->condition,'ArticleID') !== false && strpos($this->condition,'IntArticleID') === false ){$this->condition=str_replace('ArticleID','IntArticleID',$this->condition);}
+		if (strpos($this->condition,'Quantity') !== false && strpos($this->condition,'IntQuantity') === false ){$this->condition=str_replace('Quantity','IntQuantity',$this->condition);}
+		if (strpos($this->condition,'Payment_Type') !== false && strpos($this->condition,'IntPayment_Type') === false ){$this->condition=str_replace('Payment_Type','Payment_Type',$this->condition);}
+
 
 		if($this->docID){
 			$this->Path = id_to_path($this->docID,FILE_TABLE,$this->DB_WE);
@@ -75,8 +88,10 @@ class we_listview_orderitem extends listviewBase {
 			$this->order .= " DESC";
 		}
 
- 		if ($this->order != '') { 
-			$orderstring = " ORDER BY ".str_replace('Int','',$this->order)." "; 
+ 		if ($this->order != '') {
+			if (trim($this->order) =='ID' || trim($this->order) =='CustomerID' || trim($this->order) =='ArticleID' ||  trim($this->order) =='Quantity' ||  trim($this->order) =='Payment_Type') {$this->order= 'Int'.$this->order;}
+ 
+			$orderstring = " ORDER BY ".$this->order." "; 
 		} else { 
 			$orderstring = ''; 
 		}

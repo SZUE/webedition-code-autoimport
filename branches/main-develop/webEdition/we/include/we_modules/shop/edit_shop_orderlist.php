@@ -34,10 +34,12 @@ htmlTop();
 print STYLESHEET;
 
 $da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" )?"%d.%m.%y":"%m/%d/%y";
-if(isset($_REQUEST["cid"])){
+if(isset($_REQUEST["cid"]) ){
 	
 	$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID='" . abs($_REQUEST["cid"]) . "'",$DB_WE);
-	$Kundenname = $foo["Forename"]." ".$foo["Surname"];
+	if (is_array($foo)){
+		$Kundenname = $foo["Forename"]." ".$foo["Surname"];
+	}
 	$orderList = getCustomersOrderList($_REQUEST["cid"]);
 }
 ?>
