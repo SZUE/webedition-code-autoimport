@@ -665,6 +665,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 				$serialOrder = @unserialize($strSerialOrder);
 				$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = htmlentities($_REQUEST['cartfieldvalue']);
+				$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = $_REQUEST['cartfieldvalue'];
 
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
