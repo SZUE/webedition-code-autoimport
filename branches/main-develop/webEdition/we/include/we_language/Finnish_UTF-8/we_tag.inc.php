@@ -336,6 +336,11 @@ $l_we_tag['sessionStart']['description'] = "Tätä tagia käytetään istunnon a
 $l_we_tag['setVar']['description'] = "Tätä tagia käytetään muuttujien arvojen asetukseen.<br/><strong>Attention:</strong> Without the attribute <strong>striptags=\"true\"</strong>, HTML- and PHP-Code is not filtered, this is a potenzial security risk!</strong>";// TRANSLATE
 $l_we_tag['shipping']['description'] = "we:shipping -tagia käytetään lähetyskulujen määrittelyyn. Nämä kulut perustuvat ostoskorin arvoon, rekisteröityneen käyttäjän kotimaahan ja lähetyskulujen määrittely sääntöjä voidaan muokata Kauppa moduulissa. Parametriin \"summa\" määritellään we:sum -tagin nimi. \"tyyppi\" -parametrilla määritellään joko lähetyskulujen tyyppi.";
 $l_we_tag['shopField']['description'] = "Tämä tagi tallentaa useamman sisältökentän suoraan tuotteesta tai ostoskorista. The pääkäyttäjä voi määrittää tiettyjä arvoja joista käyttäjä voi valita tai syöttää omansa arvonsa. Näin on mahdollista kartoittaa useampia toisintoja tuotteista helposti.";
+$l_we_tag['ifShopFieldEmpty']['description'] = "Content enclosed by this tag is only displayed if the shopField named in attribute \"name\" is empty.";// TRANSLATE
+$l_we_tag['ifShopFieldNotEmpty']['description'] = "Content enclosed by this tag is only displayed if the shopField named in attribute \"name\" is not empty.";// TRANSLATE
+$l_we_tag['ifShopField']['description'] = "Everything between the start and end tags of this tag is displayed only if the value of the attribut \"match\" is identical with the value of the shopField ";// TRANSLATE
+$l_we_tag['ifNotShopField']['description'] = "Everything between the start and end tags of this tag is displayed only if the value of the attribut \"match\" is not identical with the value of the shopField ";// TRANSLATE
+
 $l_we_tag['shopVat']['description'] = "Tätä tagia käytetään alv.:in määrittelemiseksi tuotteelle. Hallitaksesi alv. -arvoja käytä Kauppa moduulia. Annettu id tulostaa suoraan alv.:n kyseiselle tuotteelle.";
 $l_we_tag['showShopItemNumber']['description'] = "we:showShopItemNumber -tagi näyttää määritettyjen nimikkeiden määrän ostoskorissa.";
 $l_we_tag['sidebar']['description'] = ""; 
