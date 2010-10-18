@@ -56,7 +56,7 @@ class we_listview_orderitem extends listviewBase {
 
 		$this->docID = $docID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-		
+
 		if (strpos($this->condition,'ID') !== false && strpos($this->condition,'IntID') === false ){$this->condition=str_replace('ID','IntID',$this->condition);}
 		// und nun sind alle anderen kaputt und werden repariert
 		if (strpos($this->condition,'OrderIntID') !== false ){$this->condition=str_replace('OrderIntID','OrderID',$this->condition);}
@@ -97,13 +97,13 @@ class we_listview_orderitem extends listviewBase {
 		}
 		
 		if ($this->name !=0){
-			$where = $this->condition ? (' WHERE IntOrderID='.$this->name.' AND ' .str_replace('Int','',$this->condition) )   : ' WHERE IntOrderID='.$this->name.' ';
+			$where = $this->condition ? (' WHERE IntOrderID='.$this->name.' AND ' .$this->condition )   : ' WHERE IntOrderID='.$this->name.' ';
 		} else {
-			$where = $this->condition ? (' WHERE '. str_replace('Int','',$this->condition) )   : ' ';
+			$where = $this->condition ? (' WHERE '. $this->condition )   : ' ';
 		}
 
 		$q = 'SELECT IntID,IntOrderID,IntArticleID,IntQuantity,Price, strSerial FROM ' . SHOP_TABLE . $where;
-		
+	
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
 

@@ -211,7 +211,7 @@ function we_tag_sessionField($attribs,$content) {
 				}
 			} else {
 				$lang = we_getTagAttribute("outputlanguage", $attribs, "");
-				if ($lang=='')
+				if ($lang==''){
 					$docAttr = we_getTagAttribute("doc", $attribs, "self");
 					$doc = we_getDocForTag($docAttr);
 					$lang=$doc->Language;
