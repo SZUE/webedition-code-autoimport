@@ -55,9 +55,7 @@ class we_listview_order extends listviewBase {
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
-		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-		
-		
+		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");		
 		
 		if (strpos($this->condition,'ID') !== false && strpos($this->condition,'IntID') === false ){$this->condition=str_replace('ID','IntID',$this->condition);}
 		// und nun sind alle anderen kaputt und werden repariert
