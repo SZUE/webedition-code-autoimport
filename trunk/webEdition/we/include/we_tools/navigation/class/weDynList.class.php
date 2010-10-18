@@ -209,7 +209,7 @@ class weDynList
 		if ($dirpath != '/') {
 			$_where[] = 'OF_Path LIKE "' . mysql_real_escape_string($dirpath) . '%"';
 		}
-		
+		$_where[] = 'OF_Published > 0'; // Bug #4797 
 		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . ' 
 						WHERE OF_ID<>0 ' . (!empty($_where) ? ('AND ' . implode(
 				' AND ', 
