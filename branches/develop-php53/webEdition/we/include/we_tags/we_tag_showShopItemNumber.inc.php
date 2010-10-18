@@ -34,8 +34,11 @@ function we_tag_showShopItemNumber($attribs,$content) {
 	$type = we_getTagAttribute("type",$attribs);
 
 	$xml = we_getTagAttribute("xml", $attribs, "", true);
+	
+	$nameTo = we_getTagAttribute("nameto", $attribs);
+	$to = we_getTagAttribute("to", $attribs,'screen');
 
-	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname'));
+	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname','nameto','to'));
 	
 	// $type of the field
 	$articleType = 'w';
@@ -82,7 +85,7 @@ function we_tag_showShopItemNumber($attribs,$content) {
 		return getHtmlTag('input', $attr) . getHtmlTag('input', array('type'=>'hidden', 'name'=>'t', 'value'=>time()) );
 	}
 	else {
-		return $itemQuantity;
+		return we_redirect_tagoutput($itemQuantity,$nameTo,$to);
 	}
 }
 ?>

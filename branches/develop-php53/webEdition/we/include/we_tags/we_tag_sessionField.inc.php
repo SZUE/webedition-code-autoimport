@@ -199,8 +199,8 @@ function we_tag_sessionField($attribs,$content) {
             $newAtts['value'] = htmlspecialchars($orgVal);
             return getHtmlTag('input',$newAtts);
 		case "print":
-			$ascountry = we_getTagAttribute("ascountry", $attribs, "false");
-			$aslanguage = we_getTagAttribute("aslanguage", $attribs, "false");
+			$ascountry = we_getTagAttribute("ascountry", $attribs, "false",true);
+			$aslanguage = we_getTagAttribute("aslanguage", $attribs, "false",true);		
 			$nameTo = we_getTagAttribute("nameto", $attribs);
 			$to = we_getTagAttribute("to", $attribs,'screen');
 			if (!$ascountry && !$aslanguage){
