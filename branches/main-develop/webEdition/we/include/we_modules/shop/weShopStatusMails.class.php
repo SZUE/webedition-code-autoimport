@@ -149,30 +149,33 @@ class weShopStatusMails {
 			unset($_REQUEST['we_orderid']);
 			unset($_SESSION['WE_SendMail']);
 		} else $docID=0;
-		$phpmail = new we_util_Mailer();
 		
-		$subject = $GLOBALS['we_doc']->getElement($this->EMailData['DocumentSubjectField']);
 		
-		if ($recipientOK && $docID && $subject!='' && $this->EMailData['address']!='' && we_check_email($this->EMailData['address']) ){
-			$phpmail->setSubject($subject);
-			$phpmail->setIsEmbedImages(true);
-			$phpmail->setFrom($this->EMailData['address'],$this->EMailData['name']);
-			$phpmail->addHTMLPart($codes);
-			$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
-			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField']!='' && isset( $cdata[$this->EMailData['titleField']]) &&  $cdata[$this->EMailData['titleField']] !='' ) ? $cdata[$this->EMailData['titleField']].' ': '').  $cdata['Forename'].' '.$cdata['Surname'] );
-			if (isset($this->EMailData['bcc']) && we_check_email($this->EMailData['bcc'])){
-				$phpmail->setBCC($this->EMailData['bcc']);
-			}
-			$phpmail->buildMessage();
-			if ($phpmail->Send()){
-				$dasDatum = date('Y-m-d H:i:s');
-				$DB_WE->query("UPDATE ".SHOP_TABLE." SET Mail".mysql_real_escape_string($was)."='". mysql_real_escape_string($dasDatum) . "' WHERE IntOrderID = ".abs($order));
-
-				return true;
-			}
+		if ($docID){
+			$phpmail = new we_util_Mailer();
 			
-		} 
-		
+			$subject = $GLOBALS['we_doc']->getElement($this->EMailData['DocumentSubjectField']);
+			
+			if ($recipientOK  && $subject!='' && $this->EMailData['address']!='' && we_check_email($this->EMailData['address']) ){
+				$phpmail->setSubject($subject);
+				$phpmail->setIsEmbedImages(true);
+				$phpmail->setFrom($this->EMailData['address'],$this->EMailData['name']);
+				$phpmail->addHTMLPart($codes);
+				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
+				$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField']!='' && isset( $cdata[$this->EMailData['titleField']]) &&  $cdata[$this->EMailData['titleField']] !='' ) ? $cdata[$this->EMailData['titleField']].' ': '').  $cdata['Forename'].' '.$cdata['Surname'] );
+				if (isset($this->EMailData['bcc']) && we_check_email($this->EMailData['bcc'])){
+					$phpmail->setBCC($this->EMailData['bcc']);
+				}
+				$phpmail->buildMessage();
+				if ($phpmail->Send()){
+					$dasDatum = date('Y-m-d H:i:s');
+					$DB_WE->query("UPDATE ".SHOP_TABLE." SET Mail".mysql_real_escape_string($was)."='". mysql_real_escape_string($dasDatum) . "' WHERE IntOrderID = ".abs($order));
+	
+					return true;
+				}
+				
+			} 
+		}
 		return false;
 	}
 	
