@@ -24,7 +24,7 @@
 		}
 		wind.focus();
 		url="<?php print WE_SHOP_MODULE_PATH ?>edit_shop_status.php";
-		new jsWindow(url,"edit_shop_status",-1,-1,700,780,true,true,true,false);
+		new jsWindow(url,"edit_shop_status",-1,-1,700,580,true,true,true,false);
 	break;
         
 	case "edit_shop_vat_country":

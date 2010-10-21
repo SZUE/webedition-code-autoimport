@@ -144,7 +144,9 @@ class weShopStatusMails {
 		
 		if ($docID && $docID!=''){
 			$_SESSION['WE_SendMail']=true;
-			$_REQUEST['we_orderid']= $order;	
+			$_REQUEST['we_orderid']= $order;
+			$_REQUEST['we_userlanguage']= $UserLang;
+			$_REQUEST['we_shopstatus']= $was;	
 			$codes = we_getDocumentByID($docID); 
 			unset($_REQUEST['we_orderid']);
 			unset($_SESSION['WE_SendMail']);

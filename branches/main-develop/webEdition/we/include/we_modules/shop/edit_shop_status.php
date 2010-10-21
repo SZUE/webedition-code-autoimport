@@ -144,9 +144,22 @@ $tabEMail->setCol(0, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=
 $tabEMail->setCol(1, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['TitelFeld'].'<br/>'.we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']) );
 $tabEMail->setCol(2, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentSubjectField'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentSubjectField]",30,$weShopStatusMails->EMailData['DocumentSubjectField']));
 
-	
+
 array_push($parts, array(
 			'headline' => $l_shop['statusmails']['EMailDaten'],
+			'html' =>'',
+			'space' => 110,
+			'noline' => 1
+		)
+	);	
+array_push($parts, array(
+			
+			'html' => htmlAlertAttentionBox($l_shop['statusmails']['hintEMailDaten'],2,650,false),
+			'space' => 0,
+			'noline' => 1
+		)
+	);
+array_push($parts, array(
 			'space' => 110,
 			'html' =>$tabEMail->getHtmlCode(),
 			
@@ -160,12 +173,25 @@ $tabSprache->setCol(0, 2, array("class"=>"defaultfont","nowrap"=>"nowrap","width
 array_push($parts, array(
 			'headline' => $l_shop['statusmails']['Spracheinstellungen'],
 			'space' => 110,
+			'html' =>'',
+			'noline' => 1
+		)
+	);
+array_push($parts, array(
+			'space' => 0,
+			'html' => htmlAlertAttentionBox($l_shop['statusmails']['hintSprache'],2,650,false),
+			'noline' => 1
+		)
+	);
+array_push($parts, array(
+			
+			'space' => 110,
 			'html' =>$tabSprache->getHtmlCode(),
 			'noline' => 1
 		)
 	);
 array_push($parts, array(
-			'html' => htmlAlertAttentionBox($l_shop['statusmails']['hintISO'],2,600),
+			'html' => htmlAlertAttentionBox($l_shop['statusmails']['hintISO'],2,650,false),
 			'space' => 0
 		)
 	);
@@ -203,6 +229,12 @@ array_push($parts, array(
 		)
 	);
 array_push($parts, array(
+			'space' => 0,
+			'html' => htmlAlertAttentionBox($l_shop['statusmails']['hintDokumente'],2,650,false),
+			'noline' => 1
+		)
+	);
+array_push($parts, array(
 			'headline' => '',
 			'space' => 0,
 			'html' =>$tabDokumente->getHtmlCode()
@@ -218,13 +250,13 @@ print "
 
 print '</head>
 <body class="weDialogBody" onload="window.focus();">
-	<form name="we_form" method="post">
+	<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />
 ';
 
 print we_multiIconBox::getHTML(
 	'weShopStatusMails',
-	"1300",
+	"700",
 	$parts,
 	30,
 	$we_button->position_yes_no_cancel(
@@ -236,7 +268,7 @@ print we_multiIconBox::getHTML(
 	'',
 	'',
 	false,
-	$l_shop['statusmails']['box_headline'],'',741
+	$l_shop['statusmails']['box_headline'],'','540','scroll'
 );
 
 
