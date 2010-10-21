@@ -270,6 +270,10 @@ $l_shop['statusmails']['EMailssendenNein'] = 'no';// TRANSLATE
 $l_shop['statusmails']['EMailssendenHand'] = 'Button';// TRANSLATE
 $l_shop['statusmails']['EMailssendenAuto'] = 'automatically';// TRANSLATE
 $l_shop['statusmails']['EMailDaten'] = 'E-Mail Data';// TRANSLATE
+$l_shop['statusmails']['hintEMailDaten'] ="Define the senders e-mail address and the name of the sender for the status e-mails. <br/> The e-mail address of the receiver will be extracted from the field of the customer management choosen below. The name of the receiver will be taken from the title-field choosen below and from forename and surname.<br/> Also define the name of the field (in the webedition document), which holds the subject of the mail to be send. <b>If this field is empty, the mail will not be send.</b> ";// TRANSLATE
+$l_shop['statusmails']['hintSprache'] ='Define here, if different documents for each language should be used. Also define the field from customer management, which holds the language of the customer.<br/> The contents of this field will be available in the status mail document in the REQUEST variable $_REQUEST["we_userlanguage"], so you can distinct different languages (i.e. with &lt;we:ifVar type="request" name="we_userlanguage"&gt;).';// TRANSLATE
+$l_shop['statusmails']['hintDokumente'] ='Please chose for each relevant shop status a document ID, which defines the document to be send. The available languages are defined in the webEdition setting is the tag languages.<br/>The documents (templates) have access to the shop status by the  REQUEST variable $_REQUEST["we_shopstatus"] (in the form "Order", "Confirmation" etc.), so a distinction inside the document is possible.<br/>In the shop status mails, you can access the data of the order with the tag &lt;we:order&gt;, which uses the REQUEST variable $_REQUEST["we_orderid"]. Also see the example in the tag-reference.';// TRANSLATE
+
 $l_shop['statusmails']['AbsenderAdresse'] = 'Senders e-mail addresse';// TRANSLATE
 $l_shop['statusmails']['AbsenderName'] = 'Senders name';// TRANSLATE
 $l_shop['statusmails']['EMailFeld'] = 'CM e-mail field';// TRANSLATE

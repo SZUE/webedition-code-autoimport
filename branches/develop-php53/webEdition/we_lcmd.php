@@ -30,6 +30,9 @@ self.focus();
 if(isset($_REQUEST["wecmd0"])){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
 	$_REQUEST["we_cmd"][0] = $_REQUEST["wecmd0"];
 }
+foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
+	$cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
+}
 	switch($_REQUEST["we_cmd"][0]){
 		case "trigger_save_document":
 			print 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
@@ -131,12 +134,12 @@ if(isset($_REQUEST["wecmd0"])){ // when calling from applet (we can not call dir
 
 
 		default:
-
-			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST['we_cmd'][0],$regs)){
+			
+			if(preg_match('/^new_dtPage(.+)$/', $we_cmd,$regs)){
 				$dt = $regs[1];
 				print 'top.we_cmd("new","'.FILE_TABLE.'","","text/webedition","'.$dt.'");'."\n";
 				break;
-			}else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
+			}else if(preg_match('/^new_ClObjectFile(.+)$/', $we_cmd, $regs)){
 				$clID = $regs[1];
 				print 'top.we_cmd("new","'.OBJECT_FILES_TABLE.'","","objectFile","'.$clID.'");'."\n";
 				break;
