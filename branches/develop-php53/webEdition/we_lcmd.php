@@ -135,11 +135,11 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 
 		default:
 			
-			if(preg_match('/^new_dtPage(.+)$/', $we_cmd,$regs)){
+			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST["we_cmd"][0],$regs)){
 				$dt = $regs[1];
 				print 'top.we_cmd("new","'.FILE_TABLE.'","","text/webedition","'.$dt.'");'."\n";
 				break;
-			}else if(preg_match('/^new_ClObjectFile(.+)$/', $we_cmd, $regs)){
+			}else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST["we_cmd"][0], $regs)){
 				$clID = $regs[1];
 				print 'top.we_cmd("new","'.OBJECT_FILES_TABLE.'","","objectFile","'.$clID.'");'."\n";
 				break;
