@@ -485,6 +485,7 @@ class weVoting extends weModelBase{
 				else $revotetime = $this->RevoteTime;
 				setcookie(md5('_we_voting_'.$this->ID),time(),time()+$revotetime);
 			} else {
+				if(!is_array($this->Revote)) {$this->Revote = array();}
 				$this->Revote[$_SERVER['REMOTE_ADDR']] = time();
 				$this->saveField('Revote',true);
 				if($this->UserAgent){
