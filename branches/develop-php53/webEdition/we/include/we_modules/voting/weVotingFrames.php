@@ -1477,7 +1477,7 @@ class weVotingFrames extends weModuleFrames {
 
 			$parts[]=array(
 					'headline' => '',
-					'html' => htmlDialogBorder3(1000,300,$content,$headline) . $nextprev,
+					'html' => htmlDialogBorder4(1000,300,$content,$headline) . $nextprev,
 					'space' => 0,
 					'noline'=>1
 
