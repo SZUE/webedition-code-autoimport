@@ -75,7 +75,7 @@ $l_thumbnails["saved_successfully"] = "Voorkeuren bewaard";
 	$l_thumbnails["height"] = "Hoogte";
 	$l_thumbnails["ratio"] = "Behoud aspect ratio";
 	$l_thumbnails["maximize"] = "Maximaliseer indien vereist";
-	$l_thumbnails["interlace"] = "Interlace Ja";
+	$l_thumbnails["interlace"] = "Interlace";
 	$l_thumbnails["quality"] = "Quality"; // TRANSLATE
 
 	/**
