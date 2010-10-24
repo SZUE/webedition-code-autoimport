@@ -31,8 +31,9 @@ if(isset($_REQUEST["wecmd0"])){ // when calling from applet (we can not call dir
 	$_REQUEST["we_cmd"][0] = $_REQUEST["wecmd0"];
 }
 foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
-	$cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
+    $cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
 }
+
 	switch($_REQUEST["we_cmd"][0]){
 		case "trigger_save_document":
 			print 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
