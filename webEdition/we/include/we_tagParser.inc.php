@@ -1201,13 +1201,11 @@ EOF;
 		$weekstart = we_getTagAttributeTagParser("weekstart", $arr, "monday");
 		
 		if (isset($arr['recursive'])) {
-			$subfolders = !we_getTagAttributeTagParser("recursive", $arr, "", true);
+			$subfolders = we_getTagAttributeTagParser("recursive", $arr, "true");
 		} else {
 			// deprecated, because subfolders acts the other way arround as it should
-			$subfolders = we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
+			$subfolders = !we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
 		}
-		$subfolders = (strlen($workspaceID) && $subfolders) ? "true" : "false";
-		
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
 
 		$php = '<?php
@@ -1226,7 +1224,8 @@ $we_lv_numorder = (isset($_REQUEST["we_lv_numorder_' . $name . '"]) ? $_REQUEST[
 $we_lv_ws = isset($_REQUEST["we_lv_ws_' . $name . '"]) ? $_REQUEST["we_lv_ws_' . $name . '"] : "' . $workspaceID . '";
 $we_lv_cats = isset($_REQUEST["we_lv_cats_' . $name . '"]) ? $_REQUEST["we_lv_cats_' . $name . '"] : "' . $categories . '";
 $we_lv_categoryids = isset($_REQUEST["we_lv_categoryids_' . $name . '"]) ? $_REQUEST["we_lv_categoryids_' . $name . '"] : "' . $categoryids . '";
-
+$we_lv_subfolders = isset($_REQUEST["we_lv_subfolders_' . $name . '"]) ? $_REQUEST["we_lv_subfolders_' . $name . '"] : "' . $subfolders . '";
+if($we_lv_subfolders == "false"){$we_lv_subfolders = false;}
 $we_lv_languages = isset($_REQUEST["we_lv_languages_' . $name . '"]) ? $_REQUEST["we_lv_languages_' . $name . '"] : "' . $languages . '";
 
 if($we_lv_languages == "self" || $we_lv_languages == "top"){
@@ -1259,7 +1258,7 @@ if($we_lv_doctype=="we_doc"){
 		}
 		if ($type == "document") {
 			$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_listview.class.php");
-$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", ' . $subfolders . ', "' . $customers . '", "' . $id . '", $we_lv_languages, $we_lv_numorder);
+$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '",$we_lv_subfolders, "' . $customers . '", "' . $id . '", $we_lv_languages, $we_lv_numorder);
 ';
 		
 		} else 
