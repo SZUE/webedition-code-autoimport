@@ -36,9 +36,20 @@ class we_tagParser
 	var $tags = array();
 
 	var $ipos = 0;
+	
+	var $ListviewItemsTags = array("object","customer","order","orderitem","metadata");
+	var $AppListviewItemsTags = array();
 
 	function we_tagParser()
 	{
+	}
+
+	function parseAppListviewItemsTags($tagname,$tag, $code, $attribs = "", $postName = ""){
+	
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+	
 	}
 
 	function getNames($tags)
@@ -307,6 +318,7 @@ class we_tagParser
 	function parseTag(&$code, $postName = "")
 	{
 		
+		
 		$tag = $this->tags[$this->ipos];
 		if (!$tag)
 			return;
@@ -344,355 +356,360 @@ class we_tagParser
 			if (!isset($arr)) {
 				$arr = array();
 			}
-			
-			switch ($tagname) {
-				case "content" :
-				case "master" :
-					// don't parse it
-					$code = str_replace($tag, '', $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "form" :
-					$code = $this->parseFormTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "repeat" :
-					$code = $this->parseRepeatTag($tag, $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "listview" :
-					$code = $this->parseListviewTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "object" :
-					$code = $this->parseObjectTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "metadata" :
-					$code = $this->parseMetadataTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "customer" :
-					$code = $this->parseCustomerTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "order" :
-					$code = $this->parseOrderTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "orderitem" :
-					$code = $this->parseOrderItemTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "repeatShopItem" :
-					$code = $this->parserepeatShopitem($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "createShop" :
-					$code = $this->parsecreateShop($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "addDelShopItem" :
-					$code = $this->parseadddelShopitem($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "deleteShop" :
-					$code = $this->parsedeleteShop($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "include" :
-					$code = $this->parseIncludeTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "controlElement" :
-					$code = $this->parseRemoveTags($tag, $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "hidePages" :
-					$code = $this->parseRemoveTags($tag, $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "tr" :
-					$code = $this->parseTrTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "xmlnode" :
-					$code = $this->parseXMLNode($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "answers" :
-					$code = $this->parseAnswersTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "voting" :
-					$code = $this->parseVotingTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "votingList" :
-					$code = $this->parseVotingListTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "captcha" :
-					$code = $this->parseCaptchaTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "formmail" :
-					$code = $this->parseFormmailTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				
-				default :
-					
-					$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
-					$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
-					
-
-					if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
-						$code = str_replace(
-								$tag, 
-								'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>', 
-								$code);
+			if (in_array($tagname,$this->AppListviewItemsTags) ){// for App-Tags of type listviewitems
+				$code = $this->parseAppListviewItemsTags($tagname, $tag, $code, $attribs, $postName);
+				$this->ipos++;
+				$this->lastpos = 0;
+			} else {
+				switch ($tagname) {
+					case "content" :
+					case "master" :
+						// don't parse it
+						$code = str_replace($tag, '', $code);
 						$this->ipos++;
 						$this->lastpos = 0;
+						break;
+					case "form" :
+						$code = $this->parseFormTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "repeat" :
+						$code = $this->parseRepeatTag($tag, $code);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "listview" :
+						$code = $this->parseListviewTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "object" :
+						$code = $this->parseObjectTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "metadata" :
+						$code = $this->parseMetadataTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "customer" :
+						$code = $this->parseCustomerTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "order" :
+						$code = $this->parseOrderTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "orderitem" :
+						$code = $this->parseOrderItemTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "repeatShopItem" :
+						$code = $this->parserepeatShopitem($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "createShop" :
+						$code = $this->parsecreateShop($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "addDelShopItem" :
+						$code = $this->parseadddelShopitem($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "deleteShop" :
+						$code = $this->parsedeleteShop($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "include" :
+						$code = $this->parseIncludeTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "controlElement" :
+						$code = $this->parseRemoveTags($tag, $code);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "hidePages" :
+						$code = $this->parseRemoveTags($tag, $code);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "tr" :
+						$code = $this->parseTrTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "xmlnode" :
+						$code = $this->parseXMLNode($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "answers" :
+						$code = $this->parseAnswersTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "voting" :
+						$code = $this->parseVotingTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "votingList" :
+						$code = $this->parseVotingListTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "captcha" :
+						$code = $this->parseCaptchaTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "formmail" :
+						$code = $this->parseFormmailTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
 					
-					} else 
-						if ($tagname == "ifshopexists") {
-							$code = str_replace($tag, '<?php if(defined("SHOP_TABLE")): ?>', $code);
+					default :
+						
+						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
+						
+	
+						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
+							$code = str_replace(
+									$tag, 
+									'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>', 
+									$code);
 							$this->ipos++;
 							$this->lastpos = 0;
+						
 						} else 
-							if ($tagname == "ifobjektexists") {
-								$code = str_replace($tag, '<?php if(defined("OBJECT_TABLE")): ?>', $code);
+							if ($tagname == "ifshopexists") {
+								$code = str_replace($tag, '<?php if(defined("SHOP_TABLE")): ?>', $code);
 								$this->ipos++;
 								$this->lastpos = 0;
 							} else 
-								if ($tagname == "ifnewsletterexists") {
-									$code = str_replace(
-											$tag, 
-											'<?php if(defined("NEWSLETTER_TABLE")): ?>', 
-											$code);
+								if ($tagname == "ifobjektexists") {
+									$code = str_replace($tag, '<?php if(defined("OBJECT_TABLE")): ?>', $code);
 									$this->ipos++;
 									$this->lastpos = 0;
 								} else 
-									if ($tagname == "ifcustomerexists") {
+									if ($tagname == "ifnewsletterexists") {
 										$code = str_replace(
 												$tag, 
-												'<?php if(defined("CUSTOMER_TABLE")): ?>', 
+												'<?php if(defined("NEWSLETTER_TABLE")): ?>', 
 												$code);
 										$this->ipos++;
 										$this->lastpos = 0;
 									} else 
-										if ($tagname == "ifbannerexists") {
+										if ($tagname == "ifcustomerexists") {
 											$code = str_replace(
 													$tag, 
-													'<?php if(defined("BANNER_TABLE")): ?>', 
+													'<?php if(defined("CUSTOMER_TABLE")): ?>', 
 													$code);
 											$this->ipos++;
 											$this->lastpos = 0;
 										} else 
-											if ($tagname == "ifvotingexists") {
+											if ($tagname == "ifbannerexists") {
 												$code = str_replace(
 														$tag, 
-														'<?php if(defined("VOTING_TABLE")): ?>', 
+														'<?php if(defined("BANNER_TABLE")): ?>', 
 														$code);
 												$this->ipos++;
 												$this->lastpos = 0;
 											} else 
-												if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-													/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
+												if ($tagname == "ifvotingexists") {
 													$code = str_replace(
 															$tag, 
-															$this->parseCacheIfTag(
-																	'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'), 
+															'<?php if(defined("VOTING_TABLE")): ?>', 
 															$code);
 													$this->ipos++;
 													$this->lastpos = 0;
 												} else 
-													if ($tagname == "condition") {
+													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
+														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
 														$code = str_replace(
 																$tag, 
-																'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>', 
+																$this->parseCacheIfTag(
+																		'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'), 
 																$code);
 														$this->ipos++;
 														$this->lastpos = 0;
-													} else {
-														$tagPos = strpos($code, $tag, $this->lastpos);
-														$endeStartTag = $tagPos + strlen($tag);
-														$endTagPos = $this->searchEndtag($code, $tagPos);
-														if ($endTagPos > -1) {
-															$endeEndTagPos = strpos(
-																	$code, 
-																	">", 
-																	$endTagPos) + 1;
-															if ($endTagPos > $endeStartTag) {
-																$content = substr(
+													} else 
+														if ($tagname == "condition") {
+															$code = str_replace(
+																	$tag, 
+																	'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>', 
+																	$code);
+															$this->ipos++;
+															$this->lastpos = 0;
+														} else {
+															$tagPos = strpos($code, $tag, $this->lastpos);
+															$endeStartTag = $tagPos + strlen($tag);
+															$endTagPos = $this->searchEndtag($code, $tagPos);
+															if ($endTagPos > -1) {
+																$endeEndTagPos = strpos(
 																		$code, 
-																		$endeStartTag, 
-																		($endTagPos - $endeStartTag));
-																
-																if ($tagname == "noCache") {
-																	$tp = new we_tagParser();
-																	$tags = $tp->getAllTags($content);
-																	$tp->parseTags($tags, $content);
-																}
-																
-																if ($tagname == "block") {
-																	$content = str_replace(
-																			"\n", 
-																			"\\n", 
-																			$content);
-																	$content = trim(
-																			str_replace(
-																					"\r", 
-																					"\\r", 
-																					$content));
-																	$content = str_replace(
-																			'"', 
-																			'\"', 
-																			$content);
-																} else 
-																	if ($tagname != "noCache") {
+																		">", 
+																		$endTagPos) + 1;
+																if ($endTagPos > $endeStartTag) {
+																	$content = substr(
+																			$code, 
+																			$endeStartTag, 
+																			($endTagPos - $endeStartTag));
+																	
+																	if ($tagname == "noCache") {
+																		$tp = new we_tagParser();
+																		$tags = $tp->getAllTags($content);
+																		$tp->parseTags($tags, $content);
+																	}
+																	
+																	if ($tagname == "block") {
 																		$content = str_replace(
 																				"\n", 
-																				"", 
+																				"\\n", 
 																				$content);
 																		$content = trim(
 																				str_replace(
 																						"\r", 
-																						"", 
+																						"\\r", 
 																						$content));
 																		$content = str_replace(
 																				'"', 
 																				'\"', 
 																				$content);
-																	}
-																$content = str_replace(
-																		'we:', 
-																		'we_:_', 
-																		$content);
-																$content = str_replace(
-																		'$GLOBALS[\"lv\"]', 
-																		'\$GLOBALS[\"lv\"]', 
-																		$content); //	this must be slashed inside blocks (for objects)!!!!
-																$content = str_replace(
-																		'$GLOBALS[\"we_lv_array\"]', 
-																		'\$GLOBALS[\"we_lv_array\"]', 
-																		$content); //	this must be slashed inside blocks (for objects)!!!!
-																$content = str_replace(
-																		'$GLOBALS[\"_we_listview_object_flag\"]', 
-																		'\$GLOBALS[\"_we_listview_object_flag\"]', 
-																		$content); //	this must be slashed inside blocks (for objects)!!!!  # 3479																
-															} else {
-																$content = "";
-															}
-															
-															if ($tagname == "noCache") {
-																// Tag besitzt Endtag
-																$code = substr(
-																		$code, 
-																		0, 
-																		$tagPos) . $this->parseNoCacheTag(
-																		$content) . substr(
-																		$code, 
-																		$endeEndTagPos);
-																//neu
-															} else {
-																// Tag besitzt Endtag
-																$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "' . $content . '")';
-																$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
-																		$code, 
-																		$endeEndTagPos);
-																//neu
-															
-
-															}
-														
-														} else 
-															if ($tagname == "else") {
-																$code = substr($code, 0, $tagPos) . $this->parseCacheIfTag(
-																		'<?php else: ?>') . substr(
-																		$code, 
-																		$endeStartTag);
-															
-															} else 
-																if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
-																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ')';
-																	eval(
-																			'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
+																	} else 
+																		if ($tagname != "noCache") {
+																			$content = str_replace(
+																					"\n", 
+																					"", 
+																					$content);
+																			$content = trim(
+																					str_replace(
+																							"\r", 
+																							"", 
+																							$content));
+																			$content = str_replace(
+																					'"', 
+																					'\"', 
+																					$content);
+																		}
+																	$content = str_replace(
+																			'we:', 
+																			'we_:_', 
+																			$content);
+																	$content = str_replace(
+																			'$GLOBALS[\"lv\"]', 
+																			'\$GLOBALS[\"lv\"]', 
+																			$content); //	this must be slashed inside blocks (for objects)!!!!
+																	$content = str_replace(
+																			'$GLOBALS[\"we_lv_array\"]', 
+																			'\$GLOBALS[\"we_lv_array\"]', 
+																			$content); //	this must be slashed inside blocks (for objects)!!!!
+																	$content = str_replace(
+																			'$GLOBALS[\"_we_listview_object_flag\"]', 
+																			'\$GLOBALS[\"_we_listview_object_flag\"]', 
+																			$content); //	this must be slashed inside blocks (for objects)!!!!  # 3479																
+																} else {
+																	$content = "";
+																}
+																
+																if ($tagname == "noCache") {
+																	// Tag besitzt Endtag
+																	$code = substr(
+																			$code, 
+																			0, 
+																			$tagPos) . $this->parseNoCacheTag(
+																			$content) . substr(
+																			$code, 
+																			$endeEndTagPos);
 																	//neu
 																} else {
-																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "")';
+																	// Tag besitzt Endtag
+																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "' . $content . '")';
 																	$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																			$code, 
-																			$endeStartTag);
+																			$endeEndTagPos);
+																	//neu
+																
+	
 																}
-														$this->lastpos = 0;
-													}
-					if ($postName) {
-						
-						$code = preg_replace(
-								'/("name"=>")(' . (isset($arr["name"]) ? $arr["name"] : "") . ')(")/i', 
-								'\1\2' . $postName . '\3', 
-								$code);
-						if ($tagname == 'setVar') {
-							if (isset($arr['from']) && $arr['from'] == "block") {
+															
+															} else 
+																if ($tagname == "else") {
+																	$code = substr($code, 0, $tagPos) . $this->parseCacheIfTag(
+																			'<?php else: ?>') . substr(
+																			$code, 
+																			$endeStartTag);
+																
+																} else 
+																	if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
+																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ')';
+																		eval(
+																				'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
+																		//neu
+																	} else {
+																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "")';
+																		$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
+																				$code, 
+																				$endeStartTag);
+																	}
+															$this->lastpos = 0;
+														}
+						if ($postName) {
+							
+							$code = preg_replace(
+									'/("name"=>")(' . (isset($arr["name"]) ? $arr["name"] : "") . ')(")/i', 
+									'\1\2' . $postName . '\3', 
+									$code);
+							if ($tagname == 'setVar') {
+								if (isset($arr['from']) && $arr['from'] == "block") {
+									$code = preg_replace(
+											'/("namefrom"=>")(' . (isset($arr["namefrom"]) ? $arr["namefrom"] : "") . ')(")/i', 
+											'\1\2' . $postName . '\3', 
+											$code);
+								}
+								if (isset($arr['to']) && $arr['to'] == "block") {
+									$code = preg_replace(
+											'/("nameto"=>")(' . (isset($arr["nameto"]) ? $arr["nameto"] : "") . ')(")/i', 
+											'\1\2' . $postName . '\3', 
+											$code);
+								}
+							} elseif ($tagname == 'var') {  // #3558
+								if (isset($arr['type']) && in_array($arr['type'], array("global", "session", "request", "property"))) {
+									$code = preg_replace(
+											'/("name"=>")(.*)' . $postName . '(")/i', 
+											'\1\2\3', 
+											$code);
+								}	
+							} else {
 								$code = preg_replace(
 										'/("namefrom"=>")(' . (isset($arr["namefrom"]) ? $arr["namefrom"] : "") . ')(")/i', 
 										'\1\2' . $postName . '\3', 
 										$code);
 							}
-							if (isset($arr['to']) && $arr['to'] == "block") {
+							//$code = preg_replace('/("namefrom"=>")('. ( isset($arr["namefrom"]) ? $arr["namefrom"] : "" ) .')(")/i','\1\2'.$postName.'\3',$code);
+							if (!in_array($tagname, array(
+								'ifVar', 'ifNotVar'
+							))) { // ifVar and ifNotVar contains a value, NO fieldname herefore don't change match!
 								$code = preg_replace(
-										'/("nameto"=>")(' . (isset($arr["nameto"]) ? $arr["nameto"] : "") . ')(")/i', 
+										'/("match"=>")(' . (isset($arr["match"]) ? $arr["match"] : "") . ')(")/i', 
 										'\1\2' . $postName . '\3', 
 										$code);
 							}
-						} elseif ($tagname == 'var') {  // #3558
-							if (isset($arr['type']) && in_array($arr['type'], array("global", "session", "request", "property"))) {
-								$code = preg_replace(
-										'/("name"=>")(.*)' . $postName . '(")/i', 
-										'\1\2\3', 
-										$code);
-							}	
-						} else {
-							$code = preg_replace(
-									'/("namefrom"=>")(' . (isset($arr["namefrom"]) ? $arr["namefrom"] : "") . ')(")/i', 
-									'\1\2' . $postName . '\3', 
-									$code);
 						}
-						//$code = preg_replace('/("namefrom"=>")('. ( isset($arr["namefrom"]) ? $arr["namefrom"] : "" ) .')(")/i','\1\2'.$postName.'\3',$code);
-						if (!in_array($tagname, array(
-							'ifVar', 'ifNotVar'
-						))) { // ifVar and ifNotVar contains a value, NO fieldname herefore don't change match!
-							$code = preg_replace(
-									'/("match"=>")(' . (isset($arr["match"]) ? $arr["match"] : "") . ')(")/i', 
-									'\1\2' . $postName . '\3', 
-									$code);
-						}
-					}
+				}
 			}
 		} else {
 			
@@ -767,7 +784,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 													$code,1);
 										
 										} else 
-											if ($tagname == "object" || $tagname == "customer" || $tagname == "order" || $tagname == "orderitem" || $tagname == "metadata") {
+											if (in_array($tagname,$this->ListviewItemsTags)) {
 												$code = str_replace(
 														$tag, 
 														'<?php endif ?><?php
@@ -1215,13 +1232,11 @@ EOF;
 		$weekstart = we_getTagAttributeTagParser("weekstart", $arr, "monday");
 		
 		if (isset($arr['recursive'])) {
-			$subfolders = !we_getTagAttributeTagParser("recursive", $arr, "", true);
+			$subfolders = we_getTagAttributeTagParser("recursive", $arr, "true");
 		} else {
 			// deprecated, because subfolders acts the other way arround as it should
-			$subfolders = we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
+			$subfolders = !we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
 		}
-		$subfolders = (strlen($workspaceID) && $subfolders) ? "true" : "false";
-		
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
 
 		$php = '<?php
@@ -1240,7 +1255,8 @@ $we_lv_numorder = (isset($_REQUEST["we_lv_numorder_' . $name . '"]) ? $_REQUEST[
 $we_lv_ws = isset($_REQUEST["we_lv_ws_' . $name . '"]) ? $_REQUEST["we_lv_ws_' . $name . '"] : "' . $workspaceID . '";
 $we_lv_cats = isset($_REQUEST["we_lv_cats_' . $name . '"]) ? $_REQUEST["we_lv_cats_' . $name . '"] : "' . $categories . '";
 $we_lv_categoryids = isset($_REQUEST["we_lv_categoryids_' . $name . '"]) ? $_REQUEST["we_lv_categoryids_' . $name . '"] : "' . $categoryids . '";
-
+$we_lv_subfolders = isset($_REQUEST["we_lv_subfolders_' . $name . '"]) ? $_REQUEST["we_lv_subfolders_' . $name . '"] : "' . $subfolders . '";
+if($we_lv_subfolders == "false"){$we_lv_subfolders = false;}
 $we_lv_languages = isset($_REQUEST["we_lv_languages_' . $name . '"]) ? $_REQUEST["we_lv_languages_' . $name . '"] : "' . $languages . '";
 
 if($we_lv_languages == "self" || $we_lv_languages == "top"){
@@ -1273,7 +1289,7 @@ if($we_lv_doctype=="we_doc"){
 		}
 		if ($type == "document") {
 			$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_listview.class.php");
-$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", ' . $subfolders . ', "' . $customers . '", "' . $id . '", $we_lv_languages, $we_lv_numorder);
+$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '",$we_lv_subfolders, "' . $customers . '", "' . $id . '", $we_lv_languages, $we_lv_numorder);
 ';
 		
 		} else 

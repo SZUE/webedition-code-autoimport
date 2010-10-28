@@ -222,7 +222,7 @@ class weVotingFrames extends weModuleFrames {
 
 	function getHTMLVariant() {
 		global $l_voting;
-
+		$prefix='';
 		$we_button = new we_button();
 
 		$del_but = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();#####placeHolder#####','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
@@ -567,7 +567,7 @@ class weVotingFrames extends weModuleFrames {
 		$successor_box=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),2,1);
 
 		$successor_box->setCol(0,0,array(),getPixel(10,10));
-		$successor_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'Successor','/','',''),$l_voting['successor']));
+		$successor_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'Successor','/','',''),$l_voting['voting-successor']));
 								
 						
   		if ($this->View->voting->AllowSuccessor) {$displaySuccessor = 'block';} else {$displaySuccessor = 'none';}
@@ -581,7 +581,7 @@ class weVotingFrames extends weModuleFrames {
 				we_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', $l_voting['AllowImages'],false,'defaultfont','top.content.setHot();answers_edit.toggleImages();') .
 				we_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', $l_voting['AllowMedia'],false,'defaultfont','top.content.setHot();answers_edit.toggleMedia();') .
 				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', $l_voting['AllowSuccessor'],false,'defaultfont','top.content.setHot(); toggle(\'Successor\')') .
-				htmlFormElementTable(htmlTextInput('Successor','',$this->View->voting->Successor,'','style="width: '.$this->_width_size.';display:'.$displaySuccessor.'" id="Successor" onchange="top.content.setHot();" '),$l_voting["successor_id"]) .
+				htmlFormElementTable(htmlTextInput('Successor','',$this->View->voting->Successor,'','style="width: '.$this->_width_size.';display:'.$displaySuccessor.'" id="Successor" onchange="top.content.setHot();" '),'') .
 				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', $l_voting['AllowSuccessors'],false,'defaultfont','top.content.setHot();answers_edit.toggleSuccessors();')
 				,
 				'space'=>$this->_space_size
@@ -793,28 +793,31 @@ class weVotingFrames extends weModuleFrames {
 		$version = isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0;
 
 		$table = new we_htmlTable(array('cellpadding' => 3,'cellspacing' => 0,'border'=>0,'class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'),1,5);
-		$table->setCol(0,0,array('colspan'=>5,'class'=>'defaultfont'),we_htmlElement::htmlB(we_htmlElement::htmlSpan(array('id'=>'question_score'),stripslashes($this->View->voting->QASet[$version]['question']))));
+		if (isset($this->View->voting->QASet[$version])){
+			$table->setCol(0,0,array('colspan'=>5,'class'=>'defaultfont'),we_htmlElement::htmlB(we_htmlElement::htmlSpan(array('id'=>'question_score'),stripslashes($this->View->voting->QASet[$version]['question']))));
+		}
 		$i = 1;
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
-
-	    foreach ($this->View->voting->QASet[$version]['answers'] as $key=>$value){
-	    	if(!isset($this->View->voting->Scores[$key])) $this->View->voting->Scores[$key] = 0;
-
-	    	$percent = weVotingFrames::getPercent($total_score,$this->View->voting->Scores[$key],2);
-
-			$pb=new we_progressBar($percent);
- 			$pb->setName('item'.$key);
- 			$pb->setStudWidth(10);
-            $pb->setStudLen(150);
-
-            $table->addRow();
-			$table->setRow($key+1,array("id"=>"row_scores_$key"));
-	    	$table->setCol($i,0,array('style'=>'width: '.($this->_width_size-150).'px'),we_htmlElement::htmlSpan(array('id'=>'answers_score_' . $key),stripslashes($value)));
-	    	$table->setColContent($i,1,$pb->getJS().$pb->getHTML());
-	    	$table->setColContent($i,2,'&nbsp;');
-	    	$table->setColContent($i,3,htmlTextInput('scores_'.$key,4,$this->View->voting->Scores[$key],'','id="scores_'.$key.'" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value='.$this->View->voting->Scores[$key].'; else{ this.value=r;document.we_form.scores_cahnged.value=1;}refreshTotal();"'));
-			$i++;
-	    }
+		if (isset($this->View->voting->QASet[$version])){
+			foreach ($this->View->voting->QASet[$version]['answers'] as $key=>$value){
+				if(!isset($this->View->voting->Scores[$key])) $this->View->voting->Scores[$key] = 0;
+	
+				$percent = weVotingFrames::getPercent($total_score,$this->View->voting->Scores[$key],2);
+	
+				$pb=new we_progressBar($percent);
+				$pb->setName('item'.$key);
+				$pb->setStudWidth(10);
+				$pb->setStudLen(150);
+	
+				$table->addRow();
+				$table->setRow($key+1,array("id"=>"row_scores_$key"));
+				$table->setCol($i,0,array('style'=>'width: '.($this->_width_size-150).'px'),we_htmlElement::htmlSpan(array('id'=>'answers_score_' . $key),stripslashes($value)));
+				$table->setColContent($i,1,$pb->getJS().$pb->getHTML());
+				$table->setColContent($i,2,'&nbsp;');
+				$table->setColContent($i,3,htmlTextInput('scores_'.$key,4,$this->View->voting->Scores[$key],'','id="scores_'.$key.'" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value='.$this->View->voting->Scores[$key].'; else{ this.value=r;document.we_form.scores_changed.value=1;}refreshTotal();"'));
+				$i++;
+			}
+		}
 	    $table->addRow();
 	    $table->setColContent($i,0,we_htmlElement::htmlB($l_voting['total_voting'].':').hidden("updateScores","false",array("id"=>'updateScores')));
 	    $table->setCol($i,3,array('colspan'=>3),we_htmlElement::htmlB(we_htmlElement::htmlSpan(array('id'=>'total'),$total_score)));
@@ -827,7 +830,7 @@ class weVotingFrames extends weModuleFrames {
 					for(var i=0;i<'.($i-1).';i++){
 						document.we_form.elements["scores_"+i].value = 0;
 					}
-					document.we_form.scores_cahnged.value=1;
+					document.we_form.scores_changed.value=1;
 					refreshTotal();
 				} else {}
 			}
@@ -865,7 +868,7 @@ class weVotingFrames extends weModuleFrames {
 	    array_push($parts,array(
 				"headline"=>$l_voting['inquiry'],
 				"html"=>$js .
-						we_htmlElement::htmlHidden(array('name'=>'scores_cahnged','value'=>'0')).
+						we_htmlElement::htmlHidden(array('name'=>'scores_changed','value'=>'0')).
 						$table->getHTMLCode() .
 						we_htmlElement::htmlBr() .$butt,
 				"space"=>$this->_space_size)
