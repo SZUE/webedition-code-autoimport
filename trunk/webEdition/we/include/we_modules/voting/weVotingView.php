@@ -563,7 +563,7 @@ function processCommands() {
 						$newone=true;
 						if($this->voting->ID) $newone=false;
 
-						$this->voting->save((isset($_REQUEST['scores_cahnged']) && $_REQUEST['scores_cahnged']) ? true : false);
+						$this->voting->save((isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']) ? true : false);
 						
 						if($this->voting->IsFolder && $oldpath!='' && $oldpath!='/' && $oldpath!=$this->voting->Path) {
 							$db_tmp = new DB_WE();
@@ -843,7 +843,7 @@ function processCommands() {
 			$this->voting->Valid = mktime($_REQUEST['Valid_hour'],$_REQUEST['Valid_minute'],0,$_REQUEST['Valid_month'],$_REQUEST['Valid_day'],$_REQUEST['Valid_year']);
 		}
 		
-		if(isset($_REQUEST['scores_0']) && isset($_REQUEST['item_count']) && isset($_REQUEST['scores_cahnged']) && $_REQUEST['scores_cahnged']){
+		if(isset($_REQUEST['scores_0']) && isset($_REQUEST['item_count']) && isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']){
 			$this->voting->Scores = array();
 			for($j=0;$j<$_REQUEST['item_count'];$j++){
 				if(isset($_REQUEST['scores_'.$j])) $this->voting->Scores[] = $_REQUEST['scores_'.$j];
