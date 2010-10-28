@@ -148,13 +148,16 @@
 		}
 		
 		this.showVariant = function (variant){
+			
 			for(var i=0;i<this.itemCount;i++){
-				if(variant!=this.currentVariant && this.editable) this.setItem(this.currentVariant,i,this.form.elements[this.name+"_item"+i].value);
-				if(this.editable) this.form.elements[this.name+"_item"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
-				else {
-					var item = document.getElementById(this.name+"_item_label_"+i);
-					item.innerHTML = this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
-				}
+				if( typeof(this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i])!='undefined'){
+					if(variant!=this.currentVariant && this.editable) this.setItem(this.currentVariant,i,this.form.elements[this.name+"_item"+i].value);
+					if(this.editable) this.form.elements[this.name+"_item"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
+					else {
+						var item = document.getElementById(this.name+"_item_label_"+i);
+						item.innerHTML = this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
+					}
+				} 
 			}
 			this.currentVariant=variant;
 		}

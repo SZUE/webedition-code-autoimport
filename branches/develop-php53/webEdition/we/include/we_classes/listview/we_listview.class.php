@@ -245,7 +245,7 @@ class we_listview extends listviewBase {
 			if($this->workspaceID != ""){
 				$workspaces = makeArrayFromCSV($this->workspaceID);
 				$cond = array();
-				if ($this->subfolders) { // all entries with given parentIds
+				if (!$this->subfolders) { // all entries with given parentIds
 					$ws_where = " AND (ParentID IN (" . implode(", ", $workspaces) . "))";
 
 				} else { // beneath the workspaceids

@@ -290,16 +290,18 @@
 				if(variant!=this.currentVariant && this.editable) {
 					this.setItem(this.currentVariant,i,this.form.elements[this.name+"_item"+i].value);
 				}
-				if(this.editable) {
-					this.form.elements[this.name+"_item"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
-					this.form.elements[this.name+"_itemImageID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+i].value;
-					this.form.elements[this.name+"_itemMediaID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemMediaID"+i].value;
-					this.form.elements[this.name+"_itemSuccessorID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+i].value;
-					
-				}
-				else {
-					var item = document.getElementById(this.name+"_item_label_"+i);
-					item.innerHTML = this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
+				if( typeof(this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i])!='undefined'){
+					if(this.editable) {
+						this.form.elements[this.name+"_item"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
+						this.form.elements[this.name+"_itemImageID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+i].value;
+						this.form.elements[this.name+"_itemMediaID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemMediaID"+i].value;
+						this.form.elements[this.name+"_itemSuccessorID"+i].value=this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+i].value;
+						
+					}
+					else {
+						var item = document.getElementById(this.name+"_item_label_"+i);
+						item.innerHTML = this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_item"+i].value;
+					}
 				}
 			}
 			this.currentVariant=variant;

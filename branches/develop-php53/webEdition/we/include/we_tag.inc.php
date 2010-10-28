@@ -3944,6 +3944,8 @@ function we_tag_ifField($attribs, $content)
 	// quickfix 4192
 	$matchArray = makeArrayFromCSV($match);
 	
+	//Bug #4815
+	if($attribs["type"]=='float' || $attribs["type"]=='int'){$attribs["type"]='text';}
 	$realvalue = we_tag_field($attribs, "");
 	return $realvalue == $match;
 }
