@@ -83,7 +83,7 @@ class we_listview_order extends listviewBase {
 
 		$group = " GROUP BY IntOrderID ";
 
-		if($this->desc && (!eregi(".+ desc$",$this->order))){
+		if($this->desc && $this->order!='' && (!eregi(".+ desc$",$this->order))){
 			$this->order .= " DESC";
 		}
 

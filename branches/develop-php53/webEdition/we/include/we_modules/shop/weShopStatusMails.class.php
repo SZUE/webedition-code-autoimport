@@ -147,7 +147,9 @@ class weShopStatusMails {
 			$_REQUEST['we_orderid']= $order;
 			$_REQUEST['we_userlanguage']= $UserLang;
 			$_REQUEST['we_shopstatus']= $was;	
-			$codes = we_getDocumentByID($docID); 
+			$codes = we_getDocumentByID($docID);
+			$maildoc= new we_webEditionDocument();
+			$maildoc->initByID($docID);
 			unset($_REQUEST['we_orderid']);
 			unset($_SESSION['WE_SendMail']);
 		} else $docID=0;
@@ -156,8 +158,7 @@ class weShopStatusMails {
 		if ($docID){
 			$phpmail = new we_util_Mailer();
 			
-			$subject = $GLOBALS['we_doc']->getElement($this->EMailData['DocumentSubjectField']);
-			
+			$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
 			if ($recipientOK  && $subject!='' && $this->EMailData['address']!='' && we_check_email($this->EMailData['address']) ){
 				$phpmail->setSubject($subject);
 				$phpmail->setIsEmbedImages(true);

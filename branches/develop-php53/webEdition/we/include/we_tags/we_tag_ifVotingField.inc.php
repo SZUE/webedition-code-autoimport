@@ -28,11 +28,20 @@ function we_tag_ifVotingField($attribs,$content) {
 		return "";
 	}    
 	$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
-	
-	$atts = removeAttribs($attribs,array('match'));
+	$operator  = we_getTagAttribute("operator", $attribs);
+
+	$atts = removeAttribs($attribs,array('match','operator'));
 	
 	$realvalue = we_tag_votingField($atts, "");
-	return $realvalue == $match;
+	switch ($operator) {
+		case ("equal"): return $realvalue == $match; break;
+		case ("less"): return $realvalue < $match; break;
+		case ("less|equal"): return $realvalue <= $match; break;
+		case ("greater"): return $realvalue > $match; break;
+		case ("greater|equal"): return $realvalue >= $match; break;
+		default: return $realvalue == $match;
+	}
+
 }
 
 ?>

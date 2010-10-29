@@ -155,7 +155,7 @@ emosBasketPageArray[$articleCount][7]='NULL';
 		}
 
 		// second part: add cart fields to table order.
-		{
+		//{
 			// add shopcartfields to table
 			$cartField[WE_SHOP_CART_CUSTOM_FIELD] = $cartFields; // add custom cart fields to article
 			$cartField[WE_SHOP_PRICE_IS_NET_NAME] = $netprices; // add netprice flag to article
@@ -193,7 +193,7 @@ emosBasketPageArray[$articleCount][7]='NULL';
 				echo "Data Insert Failed";
 				return;
 			}
-		}
+		//}
 		if (isset($_GLOBALS['weEconda'])){
 			$GLOBALS['weEconda']['emosBilling'] .= "
 if(typeof emosBillingPageArray == 'undefined') var emosBillingPageArray = new Array();
@@ -204,11 +204,11 @@ emosBillingPageArray [3]='".$totPrice."';
 			"; 			
 		}
 		
-		
+		require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
+		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
+		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer);	
 	}
-	require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
-	$weShopStatusMails = weShopStatusMails::getShopStatusMails();
-	$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer);
+	
 	return;
 }
 ?>
