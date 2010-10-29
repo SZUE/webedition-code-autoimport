@@ -3944,10 +3944,20 @@ function we_tag_ifField($attribs, $content)
 	// quickfix 4192
 	$matchArray = makeArrayFromCSV($match);
 	
+	$operator  = we_getTagAttribute("operator", $attribs);
+	
 	//Bug #4815
 	if($attribs["type"]=='float' || $attribs["type"]=='int'){$attribs["type"]='text';}
 	$realvalue = we_tag_field($attribs, "");
-	return $realvalue == $match;
+	switch ($operator) {
+		case ("equal"): return $realvalue == $match; break;
+		case ("less"): return $realvalue < $match; break;
+		case ("less|equal"): return $realvalue <= $match; break;
+		case ("greater"): return $realvalue > $match; break;
+		case ("greater|equal"): return $realvalue >= $match; break;
+		default: return $realvalue == $match;
+	}
+
 }
 
 function we_tag_ifNotField($attribs, $content)
@@ -4193,6 +4203,9 @@ function we_tag_ifPosition($attribs, $content)
 	
 	$_size = sizeof($positionArray);
 	
+	$operator  = we_getTagAttribute("operator", $attribs);
+
+	
 	for ($i = 0; $i < $_size; $i++) {
 		
 		$_position = $positionArray[$i];
@@ -4204,14 +4217,33 @@ function we_tag_ifPosition($attribs, $content)
 
 				switch ($_position) {
 					case "first" :
-						if ($lv->count == 1) {
-							return true;
+						if ($_size==1 && $operator!=''){
+							switch ($operator) {
+								case ("equal"): return $lv->count == 1; break;
+								case ("less"): return $lv->count < 1; break;
+								case ("less|equal"): return $lv->count <= 1; break;
+								case ("greater"): return $lv->count > 1; break;
+								case ("greater|equal"): return $lv->count >= 1; break;
+							}
+						} else {
+							if ($lv->count == 1) {
+								return true;
+							}
 						}
-						;
 						break;
 					case "last" :
-						if ($lv->count == $lv->anz) {
-							return true;
+						if ($_size==1 && $operator!=''){
+							switch ($operator) {
+								case ("equal"): return $lv->count == $lv->anz; break;
+								case ("less"): return $lv->count < $lv->anz; break;
+								case ("less|equal"): return $lv->count <= $lv->anz; break;
+								case ("greater"): return $lv->count > $lv->anz; break;
+								case ("greater|equal"): return $lv->count >= $lv->anz; break;
+							}
+						} else {
+							if ($lv->count == $lv->anz) {
+								return true;
+							}
 						}
 						break;
 					case "odd" :
@@ -4227,8 +4259,18 @@ function we_tag_ifPosition($attribs, $content)
 					
 					default :
 						$_position += 0; // Umwandeln in integer
-						if ($lv->count == $_position) {
-							return true;
+						if ($_size==1 && $operator!=''){
+							switch ($operator) {
+								case ("equal"): return $lv->count == $_position; break;
+								case ("less"): return $lv->count < $_position; break;
+								case ("less|equal"): return $lv->count <= $_position; break;
+								case ("greater"): return $lv->count > $_position; break;
+								case ("greater|equal"): return $lv->count >= $_position; break;
+							}
+						} else {
+							if ($lv->count == $_position) {
+								return true;
+							}
 						}
 						break;
 				}
@@ -4259,14 +4301,32 @@ function we_tag_ifPosition($attribs, $content)
 					switch ($_position) {
 						//	$_content is the actual listview object !!!!!!
 						case "first" :
-							if ($_content['position'] == 1) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == 1; break;
+									case ("less|equal"): return $_content['position'] <= 1; break;
+									case ("greater"): return $_content['position'] > 1; break;
+									case ("greater|equal"): return $_content['position'] >= 1; break;
+								}
+							} else {
+								if ($_content['position'] == 1) {
+									return true;
+								}
 							}
 							break;
 						
 						case "last" :
-							if ($_content['position'] == $_content['size']) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == $_content['size']; break;
+									case ("less"): return $_content['position'] < $_content['size']; break;
+									case ("less|equal"): return $_content['position'] <= $_content['size']; break;
+									case ("greater|equal"): return $_content['position'] >= $_content['size']; break;
+								}
+							} else {
+								if ($_content['position'] == $_content['size']) {
+									return true;
+								}
 							}
 							break;
 						
@@ -4284,8 +4344,18 @@ function we_tag_ifPosition($attribs, $content)
 						
 						default :
 							$_position += 0; // Umwandeln in integer
-							if ($_content['position'] == $_position) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == $_position; break;
+									case ("less"): return $_content['position'] < $_position; break;
+									case ("less|equal"): return $_content['position'] <= $_position; break;
+									case ("greater"): return $_content['position'] > $_position; break;
+									case ("greater|equal"): return $_content['position'] >= $_position; break;
+								}
+							} else {
+								if ($_content['position'] == $_position) {
+									return true;
+								}
 							}
 							break;
 					}
@@ -4314,14 +4384,32 @@ function we_tag_ifPosition($attribs, $content)
 					switch ($_position) {
 						//	$_content is an array containing position and size !!!!!!
 						case "first" :
-							if ($_content["position"] == 1) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == 1; break;
+									case ("less|equal"): return $_content['position'] <= 1; break;
+									case ("greater"): return $_content['position'] > 1; break;
+									case ("greater|equal"): return $_content['position'] >= 1; break;
+								}
+							} else {
+								if ($_content["position"] == 1) {
+									return true;
+								}
 							}
 							break;
 						
 						case "last" :
-							if ($_content["position"] == $_content["size"]) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == $_content["size"]; break;
+									case ("less"): return $_content['position'] < $_content["size"]; break;
+									case ("less|equal"): return $_content['position'] <= $_content["size"]; break;
+									case ("greater|equal"): return $_content['position'] >= $_content["size"]; break;
+								}
+							} else {
+								if ($_content["position"] == $_content["size"]) {
+									return true;
+								}
 							}
 							break;
 						
@@ -4339,8 +4427,18 @@ function we_tag_ifPosition($attribs, $content)
 						
 						default :
 							$_position += 0; // Umwandeln in integer
-							if ($_content["position"] == $_position) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == $_position; break;
+									case ("less"): return $_content['position'] < $_position; break;
+									case ("less|equal"): return $_content['position'] <= $_position; break;
+									case ("greater"): return $_content['position'] > $_position; break;
+									case ("greater|equal"): return $_content['position'] >= $$_position; break;
+								}
+							} else {
+								if ($_content["position"] == $_position) {
+									return true;
+								}
 							}
 							break;
 					}
@@ -4355,14 +4453,32 @@ function we_tag_ifPosition($attribs, $content)
 				if (isset($_content) && $_content['position']) {
 					switch ($_position) {
 						case "first" :
-							if ($_content["position"] == 1) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == 1; break;
+									case ("less|equal"): return $_content['position'] <= 1; break;
+									case ("greater"): return $_content['position'] > 1; break;
+									case ("greater|equal"): return $_content['position'] >= 1; break;
+								}
+							} else {
+								if ($_content["position"] == 1) {
+									return true;
+								}
 							}
 							break;
 						
 						case "last" :
-							if ($_content["position"] == $_content["size"]) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == $_content["size"]; break;
+									case ("less"): return $_content['position'] < $_content["size"]; break;
+									case ("less|equal"): return $_content['position'] <= $_content["size"]; break;
+									case ("greater|equal"): return $_content['position'] >= $_content["size"]; break;
+								}
+							} else {
+								if ($_content["position"] == $_content["size"]) {
+									return true;
+								}
 							}
 							break;
 						
@@ -4380,8 +4496,18 @@ function we_tag_ifPosition($attribs, $content)
 						
 						default :
 							$_position += 0; // Umwandeln in integer
-							if ($_content["position"] == $_position) {
-								return true;
+							if ($_size==1 && $operator!=''){
+								switch ($operator) {
+									case ("equal"): return $_content['position'] == $_position; break;
+									case ("less"): return $_content['position'] < $_position; break;
+									case ("less|equal"): return $_content['position'] <= $_position; break;
+									case ("greater"): return $_content['position'] > $_position; break;
+									case ("greater|equal"): return $_content['position'] >= $$_position; break;
+								}
+							} else {
+								if ($_content["position"] == $_position) {
+									return true;
+								}
 							}
 							break;
 					}
@@ -4618,36 +4744,98 @@ function we_tag_ifVar($attribs, $content)
 	$match = we_getTagAttribute("match", $attribs);
 	$name = we_getTagAttribute("name", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
+	$operator  = we_getTagAttribute("operator", $attribs);
 	
 	$matchArray = makeArrayFromCSV($match);
+	$_size = sizeof($matchArray);
 	
 	switch ($type) {
 		case "customer" :
 		case "sessionfield" :
-			return (isset($_SESSION["webuser"][$name]) && in_array($_SESSION["webuser"][$name], $matchArray));
+			if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_SESSION["webuser"][$name]) &&  is_numeric($_SESSION["webuser"][$name])){
+				switch ($operator) {
+					case ("equal"): return $_SESSION["webuser"][$name] == $match; break;
+					case ("less"): return $_SESSION["webuser"][$name] < $match; break;
+					case ("less|equal"): return $_SESSION["webuser"][$name] <= $match; break;
+					case ("greater"): return $_SESSION["webuser"][$name] > $match; break;
+					case ("greater|equal"): return $_SESSION["webuser"][$name] >= $match; break;
+				}
+			} else {
+				return (isset($_SESSION["webuser"][$name]) && in_array($_SESSION["webuser"][$name], $matchArray));
+			}
 		case "global" :
-			return (isset($GLOBALS[$name]) && in_array($GLOBALS[$name], $matchArray));
+			if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($GLOBALS[$name]) &&  is_numeric($GLOBALS[$name])){
+				switch ($operator) {
+					case ("equal"): return $GLOBALS[$name] == $match; break;
+					case ("less"): return $GLOBALS[$name] < $match; break;
+					case ("less|equal"): return $GLOBALS[$name] <= $match; break;
+					case ("greater"): return $GLOBALS[$name] > $match; break;
+					case ("greater|equal"): return $GLOBALS[$name] >= $match; break;
+				}
+			} else {
+				return (isset($GLOBALS[$name]) && in_array($GLOBALS[$name], $matchArray));
+			}
 		case "request" :
 			if (isset($_REQUEST[$name])) {
-				return (isset($_REQUEST[$name]) && in_array($_REQUEST[$name], $matchArray));
+				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_REQUEST[$name]) &&  is_numeric($_REQUEST[$name])){
+					switch ($operator) {
+						case ("equal"): return $_REQUEST[$name] == $match; break;
+						case ("less"): return $_REQUEST[$name] < $match; break;
+						case ("less|equal"): return $_REQUEST[$name] <= $match; break;
+						case ("greater"): return $_REQUEST[$name] > $match; break;
+						case ("greater|equal"): return $_REQUEST[$name] >= $match; break;
+					}
+				} else {
+					return (isset($_REQUEST[$name]) && in_array($_REQUEST[$name], $matchArray));
+				}
 			} else {
 				return "";
 			}
 		case "post" :
 			if (isset($_POST[$name])) {
-				return (isset($_POST[$name]) && in_array($_POST[$name], $matchArray));
+				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_POST[$name]) &&  is_numeric($_POST[$name])){
+					switch ($operator) {
+						case ("equal"): return $_POST[$name] == $match; break;
+						case ("less"): return $_POST[$name] < $match; break;
+						case ("less|equal"): return $_POST[$name] <= $match; break;
+						case ("greater"): return $_POST[$name] > $match; break;
+						case ("greater|equal"): return $_POST[$name] >= $match; break;
+					}
+				} else {
+					return (isset($_POST[$name]) && in_array($_POST[$name], $matchArray));
+				}
 			} else {
 				return "";
 			}
 		case "get" :
 			if (isset($_GET[$name])) {
-				return (isset($_GET[$name]) && in_array($_GET[$name], $matchArray));
+				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_GET[$name]) &&  is_numeric($_GET[$name])){
+					switch ($operator) {
+						case ("equal"): return $_GET[$name] == $match; break;
+						case ("less"): return $_GET[$name] < $match; break;
+						case ("less|equal"): return $_GET[$name] <= $match; break;
+						case ("greater"): return $_GET[$name] > $match; break;
+						case ("greater|equal"): return $_GET[$name] >= $match; break;
+					}
+				} else {
+					return (isset($_GET[$name]) && in_array($_GET[$name], $matchArray));
+				}
 			} else {
 				return "";
 			}
 		case "session" :
 			if (isset($_SESSION[$name])) {
-				return (isset($_SESSION[$name]) && in_array($_SESSION[$name], $matchArray));
+				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_SESSION[$name]) &&  is_numeric($_SESSION[$name])){
+					switch ($operator) {
+						case ("equal"): return $_SESSION[$name] == $match; break;
+						case ("less"): return $_SESSION[$name] < $match; break;
+						case ("less|equal"): return $_SESSION[$name] <= $match; break;
+						case ("greater"): return $_SESSION[$name] > $match; break;
+						case ("greater|equal"): return $_SESSION[$name] >= $match; break;
+					}
+				} else {
+					return (isset($_SESSION[$name]) && in_array($_SESSION[$name], $matchArray));
+				}
 			} else {
 				return "";
 			}
@@ -4655,12 +4843,32 @@ function we_tag_ifVar($attribs, $content)
 			$docAttr = we_getTagAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
 			eval('$var = $doc->' . $name . ';');
-			return in_array($var, $matchArray);
+			if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($var) &&  is_numeric($var)){
+				switch ($operator) {
+					case ("equal"): return $var == $match; break;
+					case ("less"): return $var < $match; break;
+					case ("less|equal"): return $var <= $match; break;
+					case ("greater"): return $var > $match; break;
+					case ("greater|equal"): return $var >= $match; break;
+				}
+			} else {
+				return in_array($var, $matchArray);
+			}
 		case "document" :
 		default :
 			$docAttr = we_getTagAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
-			return in_array($doc->getElement($name), $matchArray);
+			if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($doc->getElement($name)) &&  is_numeric($doc->getElement($name))){
+				switch ($operator) {
+					case ("equal"): return $doc->getElement($name) == $match; break;
+					case ("less"): return $doc->getElement($name) < $match; break;
+					case ("less|equal"): return $doc->getElement($name) <= $match; break;
+					case ("greater"): return $doc->getElement($name) > $match; break;
+					case ("greater|equal"): return $doc->getElement($name) >= $match; break;
+				}
+			} else {
+				return in_array($doc->getElement($name), $matchArray);
+			}
 	}
 }
 

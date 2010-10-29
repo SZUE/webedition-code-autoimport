@@ -84,7 +84,7 @@ class we_listview_orderitem extends listviewBase {
 
 		
 
-		if($this->desc && (!eregi(".+ desc$",$this->order))){
+		if($this->desc && $this->order!='' && (!eregi(".+ desc$",$this->order))){
 			$this->order .= " DESC";
 		}
 

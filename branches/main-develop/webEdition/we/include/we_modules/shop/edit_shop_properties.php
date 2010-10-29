@@ -1060,7 +1060,8 @@ $DB_WE->query(
 	}
 
 	// >>>> Getting customer data
-	$_customer = getOrderCustomerData(0, $orderData, $_REQUEST['cid'], $fields);
+	//$_customer = getOrderCustomerData(0, $orderData, $_REQUEST['cid'], $fields);
+	$_customer = getOrderCustomerData(0, 0, $_REQUEST['cid'], $fields);
 	// <<<< End of getting customer data
 		
 	
@@ -1142,7 +1143,7 @@ if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
 	
 	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateShipping='".mysql_real_escape_string( $DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('Order',$_REQUEST["bid"],$_customer);
+	$weShopStatusMails->checkAutoMailAndSend('Shipping',$_REQUEST["bid"],$_customer);
 	
 	$DB_WE->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY intID DESC");
     $DB_WE->next_record();

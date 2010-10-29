@@ -34,6 +34,7 @@ function we_tag_ifShopField($attribs,$content) {
 	$name      = we_getTagAttribute("name", $attribs);
 	$reference = we_getTagAttribute("reference", $attribs);
 	$shopname  = we_getTagAttribute("shopname", $attribs);
+	$operator  = we_getTagAttribute("operator", $attribs);
 	
 	// quickfix 4192
 	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
@@ -41,10 +42,17 @@ function we_tag_ifShopField($attribs,$content) {
 		$match = $matchA[0];
 	}
 	$attribs['type']='print';
-	unset($attribs['match']);
+	$atts = removeAttribs($attribs,array('match','operator'));
 	
-	$realvalue = we_tag_shopField($attribs, "");
-	return $realvalue == $match;
+	$realvalue = we_tag_shopField($atts, "");
+	switch ($operator) {
+		case ("equal"): return $realvalue == $match; break;
+		case ("less"): return $realvalue < $match; break;
+		case ("less|equal"): return $realvalue <= $match; break;
+		case ("greater"): return $realvalue > $match; break;
+		case ("greater|equal"): return $realvalue >= $match; break;
+		default: return $realvalue == $match;
+	}
 	
 }
 
