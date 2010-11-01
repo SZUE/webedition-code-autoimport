@@ -784,7 +784,7 @@ class weVoting extends weModelBase{
 	 * switches from storing LogData in table VOTING_TABLE to table VOTING_LOG_TABLE
 	 * @return boolean success or failure of this operation
 	 * @author Dr. Armin Schulz
-	 * @since 6.1.0.2 - 019.09.201
+	 * @since 6.1.0.2 - 019.09.2010
 	 */
 	function switchToLogDataDB() {
 	
