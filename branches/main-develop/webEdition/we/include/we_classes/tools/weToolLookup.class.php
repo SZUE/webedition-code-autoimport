@@ -212,7 +212,7 @@
 			return $_inc;
 		}
 		
-		function isActiveTag($filepath){p_r(dirname($filepath));p_r(weToolLookup::getTagDirs());
+		function isActiveTag($filepath){
 			return in_array(dirname($filepath), weToolLookup::getTagDirs());
 		}
 		
@@ -330,6 +330,39 @@
 			}
 			return false;
 		}
+		function getToolListviewTag($name,&$include,$includeDisabled=false) {
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
+			if(!defined('WE_TOOLS_DIR')) {
+				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
+			}
+			else {
+				$toolFolder = WE_TOOLS_DIR;
+			}
+			foreach ($_tools as $_tool) {
+				if(file_exists($toolFolder . $_tool['name'] . '/tags/we_listviewtag_' . $name . '.inc.php')) {
+					$include = $toolFolder . $_tool['name'] . '/tags/we_listviewtag_' . $name . '.inc.php';
+					return true;
+				}
+			}
+			return false;
+		}
+		function getToolListviewItemTag($name,&$include,$includeDisabled=false) {
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
+			if(!defined('WE_TOOLS_DIR')) {
+				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
+			}
+			else {
+				$toolFolder = WE_TOOLS_DIR;
+			}
+			foreach ($_tools as $_tool) {
+				if(file_exists($toolFolder . $_tool['name'] . '/tags/we_listviewitemtag_' . $name . '.inc.php')) {
+					$include = $toolFolder . $_tool['name'] . '/tags/we_listviewitemtag_' . $name . '.inc.php';
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		
 		function getToolTagWizard($name,&$include,$includeDisabled=false) {
 			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
@@ -342,6 +375,22 @@
 			foreach ($_tools as $_tool) {
 				if(file_exists($toolFolder . $_tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php')) {
 					$include = $toolFolder . $_tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php';
+					return true;
+				}
+			}
+			return false;
+		}
+		function getToolListviewTagWizard($name,&$include,$includeDisabled=false) {
+			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
+			if(!defined('WE_TOOLS_DIR')) {
+				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
+			}
+			else {
+				$toolFolder = WE_TOOLS_DIR;
+			}
+			foreach ($_tools as $_tool) {
+				if(file_exists($toolFolder . $_tool['name'] . '/tagwizard/we_listviewtag_' . $name . '.inc.php')) {
+					$include = $toolFolder . $_tool['name'] . '/tagwizard/we_listviewtag_' . $name . '.inc.php';
 					return true;
 				}
 			}

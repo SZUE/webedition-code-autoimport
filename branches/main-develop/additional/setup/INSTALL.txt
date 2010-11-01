@@ -1,4 +1,4 @@
-webEdition Version 6.1.0.0
+webEdition Version 6.1.0.6
 
 SYSTEM REQUIREMENTS
 
