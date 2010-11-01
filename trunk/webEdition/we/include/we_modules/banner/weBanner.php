@@ -260,7 +260,7 @@ class weBanner extends weBannerBase{
 		if($paths){
 			$pathsArray = makeArrayFromCsv($paths);
 			foreach($pathsArray as $p){
-				$foo .= " Path LIKE '".mysql_real_escape_string($p)."/%' OR Path = '$p' OR ";
+				$foo .= " Path LIKE '".mysql_real_escape_string($p)."/%' OR Path = '".mysql_real_escape_string($p)."' OR ";
 			}
 			$foo  =  rtrim($foo,'OR ');
 			$where = " $where AND ( $foo ) ";
