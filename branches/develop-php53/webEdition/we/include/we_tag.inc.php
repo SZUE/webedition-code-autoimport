@@ -740,7 +740,11 @@ function we_isFieldNotEmpty($attribs)
 				if (isset($GLOBALS["lv"]->object)) {
 					$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_' . $match]);
 				} else {
-					$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $match]);
+					if ($GLOBALS["lv"]->ClassName == "we_listview_shoppingCart"){//Bug #4827
+						$data = unserialize($GLOBALS['lv']->f($match));
+					} else {
+						$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $match]);
+					}
 				}
 			} else {
 				$data = unserialize($GLOBALS['we_doc']->getElement($match));
