@@ -100,7 +100,7 @@ $parts = array();
 
 
 
-$tabStatus = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 4, $cols_num = 10);
+$tabStatus = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 5, $cols_num = 17);
 $i=0;
 $tabStatus->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap","width"=>110), $l_shop['statusmails']['fieldname']);
 
@@ -111,6 +111,11 @@ $i++;
 $tabStatus->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_shop['statusmails']['hidefield']);
 foreach ($weShopStatusMails->StatusFields as $fieldkey => $fieldname){
 	$tabStatus->setCol($i, $fieldkey+1, array("class"=>"defaultfont","nowrap"=>"nowrap"), we_forms::checkboxWithHidden($weShopStatusMails->FieldsHidden[$fieldname], 'FieldsHidden['.$fieldname.']', $l_shop['statusmails']['hidefieldJa'],false,"defaultfont") );
+}
+$i++;
+$tabStatus->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_shop['statusmails']['hidefieldCOV']);
+foreach ($weShopStatusMails->StatusFields as $fieldkey => $fieldname){
+	$tabStatus->setCol($i, $fieldkey+1, array("class"=>"defaultfont","nowrap"=>"nowrap"), we_forms::checkboxWithHidden($weShopStatusMails->FieldsHiddenCOV[$fieldname], 'FieldsHiddenCOV['.$fieldname.']', $l_shop['statusmails']['hidefieldJa'],false,"defaultfont") );
 }
 $i++;
 $tabStatus->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_shop['statusmails']['fieldtext']);
@@ -195,7 +200,7 @@ array_push($parts, array(
 			'space' => 0
 		)
 	);
-$tabDokumente = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 2, $cols_num = 10);
+$tabDokumente = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 2, $cols_num = 17);
 $i=0;
 $tabDokumente->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap","width"=>110), $l_shop['statusmails']['fieldname']);
 
@@ -207,6 +212,7 @@ $tabDokumente->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:
 foreach ($weShopStatusMails->StatusFields as $fieldkey => $fieldname){
 	$tabDokumente->setCol($i, $fieldkey+1, array("class"=>"defaultfont","nowrap"=>"nowrap"), we_class::htmlTextInput("FieldsDocuments[default][".$fieldname."]",15,$weShopStatusMails->FieldsDocuments['default'][$fieldname]) );
 }
+
 $frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
 	foreach ($frontendL as $lc => &$lcvalue){
 		$lccode = explode('_', $lcvalue);

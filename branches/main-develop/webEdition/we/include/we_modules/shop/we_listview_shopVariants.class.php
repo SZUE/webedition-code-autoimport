@@ -112,7 +112,7 @@ class we_listview_shopVariants extends listviewBase {
 			list($key, $vardata) = each($ret);
 			foreach ($vardata as $name => $value) {
 				
-				if ($value['type'] == 'img') {
+				if ( isset($value['type']) && $value['type'] == 'img') {
 					// there is a difference between objects and webEdition Documents
 					$ret[$name] = isset($value['bdid']) ? $value['bdid'] : $value['dat'];
 				} else {
@@ -123,7 +123,11 @@ class we_listview_shopVariants extends listviewBase {
 						$ret[$name] = $this->Model->getElement(WE_SHOP_VARIANTS_PREFIX . $this->Position . '_' . $name);
 					}
 					*/
-					$ret[$name]=$value['dat'];
+					if(isset($value['dat'])){
+						$ret[$name]=$value['dat'];
+					} else {
+						$ret[$name]='';
+					}
 				}
 			}
 			

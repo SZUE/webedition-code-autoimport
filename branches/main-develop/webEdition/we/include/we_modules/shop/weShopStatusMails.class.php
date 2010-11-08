@@ -5,18 +5,20 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 class weShopStatusMails {
 	
 	
-	var $FieldsHidden; //an array of statusfield names not to be shown
+	var $FieldsHidden; //an array of statusfield names not to be shown in order
+	var $FieldsHiddenCOV; //an array of statusfield names not to be shown in order
 	var $FieldsText; //an array with keys equal to name of statusfield, and value = text to be shown
 	var $FieldsMails; //an array with keys equal to name of statusfield, and value = 0 for no Mail, 1 for Mail by Hand, 2 for automatic mails
 	var $EMailData; // an array with the E-Mail data, see getShopStatusMails
 	var $LanguageData; // an array with the Language data, see getShopStatusMails
 	var $FieldsDocuments; // an array with dfault values and separate Arrays for each Langauge, see getShopStatusMails
-	var $StatusFields = array('DateOrder','DateConfirmation','DateCustomA','DateCustomB','DateCustomC','DateShipping','DateCancellation','DatePayment','DateFinished');
+	var $StatusFields = array('DateOrder','DateConfirmation','DateCustomA','DateCustomB','DateCustomC','DateShipping','DateCustomD','DateCustomE','DatePayment','DateCustomF','DateCustomG','DateCancellation','DateCustomH','DateCustomI','DateCustomJ','DateFinished');
 
 	
-	function weShopStatusMails( $FieldsHidden, $FieldsText, $FieldsMails,$EMailData,$LanguageData,$FieldsDocuments) {
+	function weShopStatusMails( $FieldsHidden, $FieldsHiddenCOV, $FieldsText, $FieldsMails,$EMailData,$LanguageData,$FieldsDocuments) {
 		
 		$this->FieldsHidden = $FieldsHidden;
+		$this->FieldsHiddenCOV = $FieldsHiddenCOV;
 		$this->FieldsText = $FieldsText; 
 		$this->FieldsMails = $FieldsMails; 
 		$this->EMailData = $EMailData; 
@@ -30,6 +32,7 @@ class weShopStatusMails {
 		
 		return new weShopStatusMails(
 			$req['FieldsHidden'],
+			$req['FieldsHiddenCOV'],
 			$req['FieldsText'],
 			$req['FieldsMails'],
 			$req['EMailData'],
@@ -40,30 +43,72 @@ class weShopStatusMails {
 		
 	}
 	
-	function getShopStatusMails() {
-		
+	function getShopStatusMails() {		
 		global $DB_WE,$l_shop;
-		
-		$query = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"	';
-		
-		$DB_WE->query($query);
-		
-		if ($DB_WE->next_record()) {
-			
-			return unserialize($DB_WE->f('strFelder'));
-			
-		} else {
-			return new weShopStatusMails(
+		$docarray = array(
+						'DateOrder' => '',
+						'DateConfirmation' => '',
+						'DateCustomA' => '',
+						'DateCustomB' => '',
+						'DateCustomC' =>'',
+						'DateShipping' => '',
+						'DateCustomD' =>'',
+						'DateCustomE' =>'',
+						'DateCancellation' => '',
+						'DateCustomF' =>'',
+						'DateCustomG' =>'',
+						'DatePayment' => '',
+						'DateCustomH' =>'',
+						'DateCustomI' =>'',
+						'DateCustomJ' =>'',
+						'DateFinished' => ''
+					);
+		$documentsarray['default']=$docarray;
+		$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+		foreach ($frontendL as $lc => &$lcvalue){
+			$lccode = explode('_', $lcvalue);
+			$lcvalue= $lccode[0];
+		}
+		foreach ($frontendL as $langkey){
+			$documentsarray[$langkey]=$docarray;
+		} 
+		$zw= new weShopStatusMails(
 				array(//Fieldshidden
 					'DateOrder' => 0,
-					'DateConfirmation' => 0,
-					'DateCustomA' => 0,
-					'DateCustomB' => 0,
-					'DateCustomC' => 0,
+					'DateConfirmation' => 1,
+					'DateCustomA' => 1,
+					'DateCustomB' => 1,
+					'DateCustomC' => 1,
 					'DateShipping' => 0,
-					'DateCancellation' => 0,
+					'DateCustomD' => 1,
+					'DateCustomE' => 1,
+					'DateCancellation' => 1,
+					'DateCustomF' => 1,
+					'DateCustomG' => 1,
 					'DatePayment' => 0,
-					'DateFinished' => 0		
+					'DateCustomH' => 1,
+					'DateCustomI' => 1,
+					'DateCustomJ' => 1,
+					'DateFinished' => 1		
+				
+				),
+				array(//FieldshiddenCOV
+					'DateOrder' => 0,
+					'DateConfirmation' => 1,
+					'DateCustomA' => 1,
+					'DateCustomB' => 1,
+					'DateCustomC' => 1,
+					'DateShipping' => 0,
+					'DateCustomD' => 1,
+					'DateCustomE' => 1,
+					'DateCancellation' => 1,
+					'DateCustomF' => 1,
+					'DateCustomG' => 1,
+					'DatePayment' => 0,
+					'DateCustomH' => 1,
+					'DateCustomI' => 1,
+					'DateCustomJ' => 1,
+					'DateFinished' => 1		
 				
 				),
 				array( //FieldsTexts
@@ -73,19 +118,33 @@ class weShopStatusMails {
 					'DateCustomB' => $l_shop["customB"],
 					'DateCustomC' => $l_shop["customC"],
 					'DateShipping' => $l_shop["bearbeitet"],
-					'DateCancellation' => $l_shop["storniert"],
+					'DateCustomD' => $l_shop["customD"],
+					'DateCustomE' => $l_shop["customE"],
 					'DatePayment' => $l_shop["bezahlt"],
+					'DateCustomF' => $l_shop["customF"],
+					'DateCustomG' => $l_shop["customG"],
+					'DateCancellation' => $l_shop["storniert"],
+					'DateCustomH' => $l_shop["customH"],
+					'DateCustomI' => $l_shop["customI"],
+					'DateCustomJ' => $l_shop["customJ"],
 					'DateFinished' => $l_shop["beendet"]				
 				),
 				array( //FieldsMails
-					'DateOrder' => 2,
+					'DateOrder' => 1,
 					'DateConfirmation' => 1,
 					'DateCustomA' => 1,
 					'DateCustomB' => 1,
 					'DateCustomC' =>1,
 					'DateShipping' => 1,
+					'DateCustomD' =>1,
+					'DateCustomE' =>1,
 					'DateCancellation' => 1,
+					'DateCustomF' =>1,
+					'DateCustomG' =>1,
 					'DatePayment' => 1,
+					'DateCustomH' =>1,
+					'DateCustomI' =>1,
+					'DateCustomJ' =>1,
 					'DateFinished' => 0
 				),
 				array(//EMailData
@@ -99,24 +158,55 @@ class weShopStatusMails {
 				array( //LanguageData
 					'useLanguages' => 1,
 					'languageField' => '',
-					'languageFieldIsISO' => 1
+					'languageFieldIsISO' => 0
 									
 				),
-				array(//FieldsDocuments
-					'default' => array(
-						'DateOrder' => '',
-						'DateConfirmation' => '',
-						'DateCustomA' => '',
-						'DateCustomB' => '',
-						'DateCustomC' =>'',
-						'DateShipping' => '',
-						'DateCancellation' => '',
-						'DatePayment' => '',
-						'DateFinished' => ''
-					)
-				)	
-			
+				$documentsarray				
 			);
+				
+		$query = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"	';	
+		$DB_WE->query($query);
+		
+		if ($DB_WE->next_record()) {			
+			$zw2 = unserialize($DB_WE->f('strFelder'));
+			foreach($zw->FieldsHidden as $key => &$value){
+				if( isset($zw2->FieldsHidden[$key])){
+					$zw->FieldsHidden[$key]=$zw2->FieldsHidden[$key];
+				}
+			}
+			foreach($zw->FieldsHiddenCOV as $key => &$value){
+				if( isset($zw2->FieldsHiddenCOV[$key]) ){
+					$zw->FieldsHiddenCOV[$key]=$zw2->FieldsHiddenCOV[$key];
+				}
+			}
+			foreach($zw->FieldsText as $key => &$value){
+				if( isset($zw2->FieldsText[$key]) ){
+					$zw->FieldsText[$key]=$zw2->FieldsText[$key];
+				}
+			}
+			foreach($zw->FieldsMails as $key => &$value){
+				if( isset($zw2->FieldsMails[$key]) ){
+					$zw->FieldsMails[$key]=$zw2->FieldsMails[$key];
+				}
+			}
+			foreach($zw->EMailData as $key => &$value){
+				if( isset($zw2->EMailData[$key]) ){
+					$zw->EMailData[$key]=$zw2->EMailData[$key];
+				}
+			}
+			foreach($zw->LanguageData as $key => &$value){
+				if( isset($zw2->LanguageData[$key]) ){
+					$zw->LanguageData[$key]=$zw2->LanguageData[$key];
+				}
+			}
+			foreach($zw->FieldsDocuments as $key => &$value){
+				if( isset($zw2->FieldsDocuments[$key]) ){
+					$zw->FieldsDocuments[$key]=$zw2->FieldsDocuments[$key];
+				}
+			}
+			return $zw;
+		} else {
+			return $zw;
 		}
 	}
 	function sendEMail($was,$order,$cdata){
@@ -197,7 +287,7 @@ class weShopStatusMails {
 			$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">'.$l_shop['statusmails']['EMail'].': </td>';
 			if ($_REQUEST["Mail".$was] != $datetimeform && $_REQUEST["Mail".$was]!='') {
 				$EMailhandler .= '<td class="defaultfont" width="150">'.$_REQUEST["Mail".$was].'</td>';
-				$but =  $we_button->create_button("image:/mail_resend","javascript:SendMail('".$was."')");
+				$but =  $we_button->create_button("image:/mail_resend","javascript:check=confirm('".$l_shop['statusmails']['resent']."'); if (check){SendMail('".$was."');}");
 			} else {
 				$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
 				$but =  $we_button->create_button("image:/mail_send","javascript:SendMail('".$was."')");

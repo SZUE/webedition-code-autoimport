@@ -120,7 +120,9 @@ function we_tag_saveRegisteredUser($attribs,$content){
 									$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastAccess='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
 								}
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastLogin='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
-								echo '<a name="emos_name" title="register" rel="'.md5($uID).'" rev="0" ></a>';
+								if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
+									echo '<a name="emos_name" title="register" rel="'.md5($uID).'" rev="0" ></a>';
+								}
 
 							}
 						}
@@ -136,7 +138,9 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						if(isset($_REQUEST["s"])){
 							$_SESSION["webuser"]=$_REQUEST["s"];
 						}
-						echo '<a name="emos_name" title="register" rel="'.md5($_REQUEST["s"]["ID"]).'" rev="1" ></a>';
+						if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
+							echo '<a name="emos_name" title="register" rel="'.md5($_REQUEST["s"]["ID"]).'" rev="1" ></a>';
+						}
 
 						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST["s"]["Username"]), WE_MESSAGE_FRONTEND));
 					}
@@ -160,8 +164,9 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						if(!$passempty){
 							$passempty = $l_customer["password_empty"];
 						}
-
-						echo '<a name="emos_name" title="register" rel="noUser" rev="1" ></a>';
+						if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
+							echo '<a name="emos_name" title="register" rel="noUser" rev="1" ></a>';
+						}
 						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($passempty, WE_MESSAGE_FRONTEND));
 					}
 				}
