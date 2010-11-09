@@ -33,6 +33,7 @@ $GLOBALS["l_parser"]["else_start"] = "Er is een <code>&lt;we:else/&gt;</code> ta
 $GLOBALS["l_parser"]["else_end"] = "Er is een <code>&lt;we:else/&gt;</code> tag zonder <code>&lt;/we:if...&gt;</code> een eind tag!";
 $GLOBALS["l_parser"]["attrib_missing"] = "Het attribuut '%s' van de tag <code>&lt;we:%s&gt;</code> ontbreekt of is leeg!";
 $GLOBALS["l_parser"]["attrib_missing2"] = "Het attribuut '%s' van de tag <code>&lt;we:%s&gt;</code> ontbreekt!";
+$GLOBALS["l_parser"]["module_missing"] = "The module '%s' ist deaktivated, cannot execute the tag <code>&lt;we:%s&gt;</code>!";//TRANSLATE
 $GLOBALS["l_parser"]["missing_open_tag"] = "<code>&lt;%s&gt;</code>: De openings tag ontbreekt.";
 $GLOBALS["l_parser"]["missing_close_tag"] = "<code>&lt;%s&gt;</code>: De sluit tag ontbreekt.";
 $GLOBALS["l_parser"]["name_empty"] = "De naam van de tag <code>&lt;we:%s&gt;</code> is leeg!";

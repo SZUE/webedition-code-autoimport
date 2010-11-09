@@ -33,6 +33,7 @@ $GLOBALS["l_parser"]["else_start"] = "Hay un rótulo <código>&lt;we:else/&gt;</
 $GLOBALS["l_parser"]["else_end"] = "Hay un rótulo <código>&lt;we:else/&gt;</código> sin un rótulo final <código>&lt;we:if...&gt;</código>!";
 $GLOBALS["l_parser"]["attrib_missing"] = "El atributo '%s' del rótulo <código>&lt;we:%s&gt;</código> no se encuentra o está vacío!";
 $GLOBALS["l_parser"]["attrib_missing2"] = "El atributo '%s' del rótulo <código>&lt;we:%s&gt;</código> no se encuentra!";
+$GLOBALS["l_parser"]["module_missing"] = "The module '%s' ist deaktivated, cannot execute the tag <code>&lt;we:%s&gt;</code>!";//TRANSLATE
 $GLOBALS["l_parser"]["missing_open_tag"] = "<code>&lt;%s&gt;</code>: The opening tag is missing."; // TRANSLATE
 $GLOBALS["l_parser"]["missing_close_tag"] = "<code>&lt;%s&gt;</code>: The closing tag is missing."; // TRANSLATE
 $GLOBALS["l_parser"]["name_empty"] = "El nombre del rótulo <código>&lt;we:%s&gt;</código> está vacío!";

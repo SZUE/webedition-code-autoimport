@@ -109,10 +109,10 @@ $l_javaMenu["new"] = "Neu";
 	$l_javaMenu["open_template"] = "Vorlage";
 
 	## close documents
-$l_javaMenu["close_single_document"] = "Schließe Dokument";
-$l_javaMenu["close_all_documents"] = "Schließe alle Dokumente";
-$l_javaMenu["close_all_but_active_document"] = "Schließe inaktive Dokumente";
-$l_javaMenu["delete_active_document"] = "Lösche aktuelles Dokument";
+$l_javaMenu["close_single_document"] = "Schließe Tab";
+$l_javaMenu["close_all_documents"] = "Schließe alle Tabs";
+$l_javaMenu["close_all_but_active_document"] = "Schließe inaktive Tabs";
+$l_javaMenu["delete_active_document"] = "Lösche akt. Dokument/Objekt";
 
 
 
