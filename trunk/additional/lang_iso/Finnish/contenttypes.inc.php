@@ -38,6 +38,7 @@ $GLOBALS['l_contentTypes']["text/js"] = "Javascript -tiedosto";
 $GLOBALS['l_contentTypes']["application/x-shockwave-flash"] = "Flash -tiedosto";
 $GLOBALS['l_contentTypes']["application/*"] = "Bin‰‰rinen dokumentti";
 $GLOBALS['l_contentTypes']["folder"] = "Hakemisto";
+$GLOBALS['l_contentTypes']["class_folder"] = "Hakemisto";
 $GLOBALS['l_contentTypes']["object"] = "Luokka";
 $GLOBALS['l_contentTypes']["objectFile"] = "Objekti";
 $GLOBALS['l_contentTypes']["video/quicktime"] = "Quicktime -tiedosto";
