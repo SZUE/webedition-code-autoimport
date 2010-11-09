@@ -3960,6 +3960,7 @@ function we_tag_ifField($attribs, $content)
 		case "less|equal": return $realvalue <= $match; break;
 		case "greater": return $realvalue > $match; break;
 		case "greater|equal": return $realvalue >= $match; break;
+		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
 		default: return $realvalue == $match;
 	}
 
