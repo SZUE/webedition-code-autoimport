@@ -3960,6 +3960,7 @@ function we_tag_ifField($attribs, $content)
 		case "less|equal": return $realvalue <= $match; break;
 		case "greater": return $realvalue > $match; break;
 		case "greater|equal": return $realvalue >= $match; break;
+		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
 		default: return $realvalue == $match;
 	}
 
@@ -4756,38 +4757,41 @@ function we_tag_ifVar($attribs, $content)
 	switch ($type) {
 		case "customer" :
 		case "sessionfield" :
-			if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_SESSION["webuser"][$name]) &&  is_numeric($_SESSION["webuser"][$name])){
+			if ($_size==1 && $operator!=''  && isset($_SESSION["webuser"][$name]) ){
 				switch ($operator) {
 					case "equal": return $_SESSION["webuser"][$name] == $match; break;
 					case "less": return $_SESSION["webuser"][$name] < $match; break;
 					case "less|equal": return $_SESSION["webuser"][$name] <= $match; break;
 					case "greater": return $_SESSION["webuser"][$name] > $match; break;
 					case "greater|equal": return $_SESSION["webuser"][$name] >= $match; break;
+					case "contains": if (strpos($_SESSION["webuser"][$name],$match)!== false) {return true;} else {return false;} break;
 				}
 			} else {
 				return (isset($_SESSION["webuser"][$name]) && in_array($_SESSION["webuser"][$name], $matchArray));
 			}
 		case "global" :
-			if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($GLOBALS[$name]) &&  is_numeric($GLOBALS[$name])){
+			if ($_size==1 && $operator!='' && isset($GLOBALS[$name]) ){
 				switch ($operator) {
 					case "equal": return $GLOBALS[$name] == $match; break;
 					case "less": return $GLOBALS[$name] < $match; break;
 					case "less|equal": return $GLOBALS[$name] <= $match; break;
 					case "greater": return $GLOBALS[$name] > $match; break;
 					case "greater|equal": return $GLOBALS[$name] >= $match; break;
+					case "contains": if (strpos($GLOBALS[$name],$match)!== false) {return true;} else {return false;} break;
 				}
 			} else {
 				return (isset($GLOBALS[$name]) && in_array($GLOBALS[$name], $matchArray));
 			}
 		case "request" :
 			if (isset($_REQUEST[$name])) {
-				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_REQUEST[$name]) &&  is_numeric($_REQUEST[$name])){
+				if ($_size==1 && $operator!=''  && isset($_REQUEST[$name]) ){
 					switch ($operator) {
 						case "equal": return $_REQUEST[$name] == $match; break;
 						case "less": return $_REQUEST[$name] < $match; break;
 						case "less|equal": return $_REQUEST[$name] <= $match; break;
 						case "greater": return $_REQUEST[$name] > $match; break;
 						case "greater|equal": return $_REQUEST[$name] >= $match; break;
+						case "contains": if (strpos($_REQUEST[$name],$match)!== false) {return true;} else {return false;} break;
 					}
 				} else {
 					return (isset($_REQUEST[$name]) && in_array($_REQUEST[$name], $matchArray));
@@ -4797,13 +4801,14 @@ function we_tag_ifVar($attribs, $content)
 			}
 		case "post" :
 			if (isset($_POST[$name])) {
-				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_POST[$name]) &&  is_numeric($_POST[$name])){
+				if ($_size==1 && $operator!='' && isset($_POST[$name]) ){
 					switch ($operator) {
 						case "equal": return $_POST[$name] == $match; break;
 						case "less": return $_POST[$name] < $match; break;
 						case "less|equal": return $_POST[$name] <= $match; break;
 						case "greater": return $_POST[$name] > $match; break;
 						case "greater|equal": return $_POST[$name] >= $match; break;
+						case "contains": if (strpos($_POST[$name],$match)!== false) {return true;} else {return false;} break;
 					}
 				} else {
 					return (isset($_POST[$name]) && in_array($_POST[$name], $matchArray));
@@ -4813,13 +4818,14 @@ function we_tag_ifVar($attribs, $content)
 			}
 		case "get" :
 			if (isset($_GET[$name])) {
-				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_GET[$name]) &&  is_numeric($_GET[$name])){
+				if ($_size==1 && $operator!='' && isset($_GET[$name]) ){
 					switch ($operator) {
 						case "equal": return $_GET[$name] == $match; break;
 						case "less": return $_GET[$name] < $match; break;
 						case "less|equal": return $_GET[$name] <= $match; break;
 						case "greater": return $_GET[$name] > $match; break;
 						case "greater|equal": return $_GET[$name] >= $match; break;
+						case "contains": if (strpos($_GET[$name],$match)!== false) {return true;} else {return false;} break;
 					}
 				} else {
 					return (isset($_GET[$name]) && in_array($_GET[$name], $matchArray));
@@ -4829,13 +4835,14 @@ function we_tag_ifVar($attribs, $content)
 			}
 		case "session" :
 			if (isset($_SESSION[$name])) {
-				if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($_SESSION[$name]) &&  is_numeric($_SESSION[$name])){
+				if ($_size==1 && $operator!='' && isset($_SESSION[$name]) ){
 					switch ($operator) {
 						case "equal": return $_SESSION[$name] == $match; break;
 						case "less": return $_SESSION[$name] < $match; break;
 						case "less|equal": return $_SESSION[$name] <= $match; break;
 						case "greater": return $_SESSION[$name] > $match; break;
 						case "greater|equal": return $_SESSION[$name] >= $match; break;
+						case "contains": if (strpos($_SESSION[$name],$match)!== false) {return true;} else {return false;} break;
 					}
 				} else {
 					return (isset($_SESSION[$name]) && in_array($_SESSION[$name], $matchArray));
@@ -4847,13 +4854,14 @@ function we_tag_ifVar($attribs, $content)
 			$docAttr = we_getTagAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
 			eval('$var = $doc->' . $name . ';');
-			if ($_size==1 && $operator!='' &&  is_numeric($match)  && isset($var) &&  is_numeric($var)){
+			if ($_size==1 && $operator!='' && isset($var) ){
 				switch ($operator) {
 					case "equal": return $var == $match; break;
 					case "less": return $var < $match; break;
 					case "less|equal": return $var <= $match; break;
 					case "greater": return $var > $match; break;
 					case "greater|equal": return $var >= $match; break;
+					case "contains": if (strpos($var,$match)!== false) {return true;} else {return false;} break;
 				}
 			} else {
 				return in_array($var, $matchArray);
@@ -4862,13 +4870,14 @@ function we_tag_ifVar($attribs, $content)
 		default :
 			$docAttr = we_getTagAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
-			if ($_size==1 && $operator!='' &&  is_numeric($match)  &&  is_numeric($doc->getElement($name))){
+			if ($_size==1 && $operator!='' ){
 				switch ($operator) {
 					case "equal": return $doc->getElement($name) == $match; break;
 					case "less": return $doc->getElement($name) < $match; break;
 					case "less|equal": return $doc->getElement($name) <= $match; break;
 					case "greater": return $doc->getElement($name) > $match; break;
 					case "greater|equal": return $doc->getElement($name) >= $match; break;
+					case "contains": if (strpos($doc->getElement($name),$match)!== false) {return true;} else {return false;} break;
 				}
 			} else {
 				return in_array($doc->getElement($name), $matchArray);

@@ -33,6 +33,7 @@ $GLOBALS["l_parser"]["else_start"] = "Для тега <code>&lt;we:else/&gt;</co
 $GLOBALS["l_parser"]["else_end"] = "Для тега <code>&lt;we:else/&gt;</code> не задан конечный тег <code>&lt;we:if...&gt;</code>!";
 $GLOBALS["l_parser"]["attrib_missing"] = "Атрибут '%s' тега <code>&lt;we:%s&gt;</code> не должен быть незаполненным!";
 $GLOBALS["l_parser"]["attrib_missing2"] = "Атрибут '%s' тега <code>&lt;we:%s&gt;</code> не должен отсутствовать!";
+$GLOBALS["l_parser"]["module_missing"] = "The module '%s' ist deaktivated, cannot execute the tag <code>&lt;we:%s&gt;</code>!";//TRANSLATE
 $GLOBALS["l_parser"]["missing_open_tag"] = "<code>&lt;%s&gt;</code>: The opening tag is missing."; // TRANSLATE
 $GLOBALS["l_parser"]["missing_close_tag"] = "<code>&lt;%s&gt;</code>: The closing tag is missing."; // TRANSLATE
 $GLOBALS["l_parser"]["name_empty"] = "Имя тега <code>&lt;we:%s&gt;</code> не заполнено!";

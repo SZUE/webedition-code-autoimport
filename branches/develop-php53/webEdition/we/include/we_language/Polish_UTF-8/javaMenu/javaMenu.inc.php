@@ -110,10 +110,10 @@ $l_javaMenu["new"] = "Nowy";
 	##################################
 
 	// close
-$l_javaMenu["close_single_document"] = "Close Document"; // TRANSLATE
-$l_javaMenu["close_all_documents"] = "Close all Documents"; // TRANSLATE
-$l_javaMenu["close_all_but_active_document"] = "Close inactive documents"; // TRANSLATE
-$l_javaMenu["delete_active_document"] = "Delete active document"; // TRANSLATE
+$l_javaMenu["close_single_document"] = "Close tab";// TRANSLATE
+$l_javaMenu["close_all_documents"] = "Close all tabs";// TRANSLATE
+$l_javaMenu["close_all_but_active_document"] = "Close inactive tabs";// TRANSLATE
+$l_javaMenu["delete_active_document"] = "Delete active document/object";// TRANSLATE
 
 
 

@@ -33,6 +33,7 @@ $GLOBALS["l_parser"]["else_start"] = "Tagi <code>&lt;we:else/&gt;</code> on  <co
 $GLOBALS["l_parser"]["else_end"] = "Tagi <code>&lt;we:else/&gt;</code> <code>&lt;/we:if...&gt;</code> ilman lopetustagia!";
 $GLOBALS["l_parser"]["attrib_missing"] = "M‰‰ritys '%s' tagista <code>&lt;we:%s&gt;</code> puuttuu tai on tyhj‰!";
 $GLOBALS["l_parser"]["attrib_missing2"] = "M‰‰ritys '%s' tagista <code>&lt;we:%s&gt;</code> puuttuu!";
+$GLOBALS["l_parser"]["module_missing"] = "The module '%s' ist deaktivated, cannot execute the tag <code>&lt;we:%s&gt;</code>!";//TRANSLATE
 $GLOBALS["l_parser"]["missing_open_tag"] = "<code>&lt;%s&gt;</code>: Aloitustagi puuttuu.";
 $GLOBALS["l_parser"]["missing_close_tag"] = "<code>&lt;%s&gt;</code>: Lopetustagi puuttuu.";
 $GLOBALS["l_parser"]["name_empty"] = "Tagin nimi <code>&lt;we:%s&gt;</code> on tyhj‰!";

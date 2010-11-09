@@ -38,6 +38,7 @@ $GLOBALS['l_contentTypes']["text/js"] = "JavaScript"; // TRANSLATE
 $GLOBALS['l_contentTypes']["application/x-shockwave-flash"] = "Película Flash";
 $GLOBALS['l_contentTypes']["application/*"] = "Documento binario";
 $GLOBALS['l_contentTypes']["folder"] = "Directorio";
+$GLOBALS['l_contentTypes']["class_folder"] = "Directorio";
 $GLOBALS['l_contentTypes']["object"] = "Clase";
 $GLOBALS['l_contentTypes']["objectFile"] = "Objeto";
 $GLOBALS['l_contentTypes']["video/quicktime"] = "Película Quicktime";

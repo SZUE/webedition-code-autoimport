@@ -38,6 +38,7 @@ $GLOBALS['l_contentTypes']["text/js"] = "JavaScript"; // TRANSLATE
 $GLOBALS['l_contentTypes']["application/x-shockwave-flash"] = "Flash movie"; // TRANSLATE
 $GLOBALS['l_contentTypes']["application/*"] = "Binary document"; // TRANSLATE
 $GLOBALS['l_contentTypes']["folder"] = "Directory"; // TRANSLATE
+$GLOBALS['l_contentTypes']["class_folder"] = "Directory"; // TRANSLATE
 $GLOBALS['l_contentTypes']["object"] = "Class"; // TRANSLATE
 $GLOBALS['l_contentTypes']["objectFile"] = "Object"; // TRANSLATE
 $GLOBALS['l_contentTypes']["video/quicktime"] = "Quicktime movie"; // TRANSLATE

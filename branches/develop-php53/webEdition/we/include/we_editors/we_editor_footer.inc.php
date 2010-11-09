@@ -406,7 +406,7 @@ if(inWorkflow($we_doc)) {
 			}
 		}
 
-		if($we_doc->ContentType != "text/webedition" && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile" && $we_doc->ContentType != "folder") {
+		if($we_doc->ContentType != "text/webedition" && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile" && $we_doc->ContentType != "folder" && $we_doc->ContentType != "class_folder") {
 
 			$_edit_source = '<script language="JavaScript" type="text/javascript">
 					function editSource(){
@@ -448,12 +448,12 @@ if(inWorkflow($we_doc)) {
 			// show save button also for class_folder, if customer_filters are defined
 			if ( isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder ) {
 
-				if (defined("CUSTOMER_TABLE")) {
+				//if (defined("CUSTOMER_TABLE")) {//Bug 4716
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, $we_button->create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 					$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
 
-				}
+				//}
 
 			} else {
 				$_normalTable->addCol(2);

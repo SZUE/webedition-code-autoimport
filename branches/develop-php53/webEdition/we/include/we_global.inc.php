@@ -1693,6 +1693,10 @@ function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false)
 	}
 	return "";
 }
+function modulFehltError($modul, $tag)
+{
+	return parseError(sprintf($GLOBALS["l_parser"]["module_missing"], $modul, $tag));
+}
 
 function parseError($text)
 {

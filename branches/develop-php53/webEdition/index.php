@@ -156,6 +156,15 @@ if (!is_dir($_SERVER["DOCUMENT_ROOT"].SITE_DIR)) {
 if (!is_dir($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'we/include/we_hook/custom_hooks/')) {
 	createLocalFolder($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'we/include/we_hook/custom_hooks/');
 }
+if (!is_dir($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/we_tools/navigation/cache")) {
+	createLocalFolder($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/we_tools/navigation/cache");
+}
+if (!is_dir($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/cache")) {
+	createLocalFolder($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/cache");
+}
+if (!is_dir($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/zendcache")) {
+	createLocalFolder($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/zendcache");
+}
 if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR)) {
 	createLocalFolder($_SERVER["DOCUMENT_ROOT"] . BACKUP_DIR);
 }
@@ -165,12 +174,28 @@ if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/")) {
 if (!is_dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/")) {
 	createLocalFolder($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/");
 }
-if (!file_exists($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/.htaccess") ){
-	if (file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/conf/.htaccess")) {
-		$htaccessdata=file_get_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/conf/.htaccess");
+if (file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/htaccessbase.txt")) {
+	$htaccessdata=file_get_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/htaccessbase.txt");
+	if (!file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/cache/.htaccess") ){
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/cache/.htaccess",$htaccessdata);
+	}
+	if (!file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/zendcache/.htaccess") ){
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/zendcache/.htaccess",$htaccessdata);
+	}
+	if (!file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/tmp/.htaccess") ){
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/tmp/.htaccess",$htaccessdata);
+	}
+	if (!file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/conf/.htaccess") ){
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/conf/.htaccess",$htaccessdata);
+	}
+	if (!file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/we_tools/navigation/cache/.htaccess") ){
+		file_put_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/we_tools/navigation/cache/.htaccess",$htaccessdata);
+	}
+	if (!file_exists($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/.htaccess") ){
 		file_put_contents($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."data/.htaccess",$htaccessdata);
-	} 
+	}	
 }
+
 if (!file_exists($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR.".htaccess") ){
 	if (file_exists($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/we_exim/backup/we_backuphtaccess.txt")) {
 		$htaccessdata=file_get_contents($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR."we/include/we_exim/backup/we_backuphtaccess.txt");
