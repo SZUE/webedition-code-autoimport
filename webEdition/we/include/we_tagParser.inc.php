@@ -2368,78 +2368,82 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 	function parseVotingTag($tag, $code, $attribs)
 	{
-		eval('$arr = array(' . $attribs . ');');
-		
-		$id = we_getTagAttributeTagParser("id", $arr, 0);
-		$name = we_getTagAttributeTagParser("name", $arr, '');
-		$version = we_getTagAttributeTagParser("version", $arr, 0);
-		
-		$foo = attributFehltError($arr, 'name', 'voting');
-		if ($foo)
-			return str_replace($tag, $foo, $code);
-		
-		$version = ($version > 0) ? ($version - 1) : 0;
-		
-		$php = '<?php
-					include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
-
-					$GLOBALS["_we_voting_namespace"] = "' . $name . '";
-					$GLOBALS[\'_we_voting\'] = new weVoting();
-
-					if(isset($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\'])) {
-						$GLOBALS[\'_we_voting\'] = new weVoting($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\']);
-					} else if(' . $id . '!=0) {
-						$GLOBALS[\'_we_voting\'] = new weVoting(' . $id . ');
-					} else {
-						$__voting_matches = array();
-						if(preg_match_all(\'/_we_voting_answer_([0-9]+)_?([0-9]+)?/\', implode(\',\',array_keys($_REQUEST)), $__voting_matches)){
-							$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
-						}
-					}
-					if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion(' . $version . ');
-				?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("VOTING_TABLE")) {
+			eval('$arr = array(' . $attribs . ');');
+			
+			$id = we_getTagAttributeTagParser("id", $arr, 0);
+			$name = we_getTagAttributeTagParser("name", $arr, '');
+			$version = we_getTagAttributeTagParser("version", $arr, 0);
+			
+			$foo = attributFehltError($arr, 'name', 'voting');
+			if ($foo)
+				return str_replace($tag, $foo, $code);
+			
+			$version = ($version > 0) ? ($version - 1) : 0;
+			
+			$php = '<?php
+						include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
 	
+						$GLOBALS["_we_voting_namespace"] = "' . $name . '";
+						$GLOBALS[\'_we_voting\'] = new weVoting();
+	
+						if(isset($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\'])) {
+							$GLOBALS[\'_we_voting\'] = new weVoting($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\']);
+						} else if(' . $id . '!=0) {
+							$GLOBALS[\'_we_voting\'] = new weVoting(' . $id . ');
+						} else {
+							$__voting_matches = array();
+							if(preg_match_all(\'/_we_voting_answer_([0-9]+)_?([0-9]+)?/\', implode(\',\',array_keys($_REQUEST)), $__voting_matches)){
+								$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
+							}
+						}
+						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion(' . $version . ');
+					?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Voting','"Voting"'), $code); }
 	}
 
 	function parseVotingListTag($tag, $code, $attribs)
 	{
-		eval('$arr = array(' . $attribs . ');');
-		
-		$name = we_getTagAttributeTagParser('name', $arr, '');
-		$groupid = we_getTagAttributeTagParser('groupid', $arr, 0);
-		$rows = we_getTagAttributeTagParser('rows', $arr, 0);
-		$desc = we_getTagAttributeTagParser('desc', $arr, "false");
-		$order = we_getTagAttributeTagParser('order', $arr, 'PublishDate');
-		$subgroup = we_getTagAttributeTagParser("subgroup", $arr, "false");
-		$version = we_getTagAttributeTagParser("version", $arr, 1);
-		$offset = we_getTagAttributeTagParser("offset", $arr, 0);
-		
-		$foo = attributFehltError($arr, 'name', 'votingList');
-		if ($foo)
-			return str_replace($tag, $foo, $code);
-		
-		$version = ($version > 0) ? ($version - 1) : 0;
-		$GLOBALS['_we_voting_list_active'] = 1;
-		
-		$php = '<?php
-			include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVotingList.php\');
-			$GLOBALS[\'_we_voting_list\'] = new weVotingList(\'' . $name . '\',' . $groupid . ',' . $version . ',' . $rows . ', ' . $offset . ',' . $desc . ',"' . $order . '",' . $subgroup . ');
-		?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("VOTING_TABLE")) {
+			eval('$arr = array(' . $attribs . ');');
+			
+			$name = we_getTagAttributeTagParser('name', $arr, '');
+			$groupid = we_getTagAttributeTagParser('groupid', $arr, 0);
+			$rows = we_getTagAttributeTagParser('rows', $arr, 0);
+			$desc = we_getTagAttributeTagParser('desc', $arr, "false");
+			$order = we_getTagAttributeTagParser('order', $arr, 'PublishDate');
+			$subgroup = we_getTagAttributeTagParser("subgroup", $arr, "false");
+			$version = we_getTagAttributeTagParser("version", $arr, 1);
+			$offset = we_getTagAttributeTagParser("offset", $arr, 0);
+			
+			$foo = attributFehltError($arr, 'name', 'votingList');
+			if ($foo)
+				return str_replace($tag, $foo, $code);
+			
+			$version = ($version > 0) ? ($version - 1) : 0;
+			$GLOBALS['_we_voting_list_active'] = 1;
+			
+			$php = '<?php
+				include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVotingList.php\');
+				$GLOBALS[\'_we_voting_list\'] = new weVotingList(\'' . $name . '\',' . $groupid . ',' . $version . ',' . $rows . ', ' . $offset . ',' . $desc . ',"' . $order . '",' . $subgroup . ');
+			?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Voting','"VotingList"'), $code); }
 	}
 
 	function parseAnswersTag($tag, $code, $attribs)
 	{
-		
-		$php = '<?php
-			while(isset($GLOBALS["_we_voting"]) && $GLOBALS["_we_voting"]->getNext()){
-
-		?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("VOTING_TABLE")) {
+			$php = '<?php
+				while(isset($GLOBALS["_we_voting"]) && $GLOBALS["_we_voting"]->getNext()){
+	
+			?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Voting','"Answer"'), $code); }
 	}
 
 	##########################################################################################
