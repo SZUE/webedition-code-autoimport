@@ -38,6 +38,7 @@ $GLOBALS['l_contentTypes']["text/js"] = "Javascript";
 $GLOBALS['l_contentTypes']["application/x-shockwave-flash"] = "Flash Movie";
 $GLOBALS['l_contentTypes']["application/*"] = "Прочие данные";
 $GLOBALS['l_contentTypes']["folder"] = "Директория";
+$GLOBALS['l_contentTypes']["class_folder"] = "Директория";
 $GLOBALS['l_contentTypes']["object"] = "Класс";
 $GLOBALS['l_contentTypes']["objectFile"] = "Объект";
 $GLOBALS['l_contentTypes']["video/quicktime"] = "Quicktime Movie";

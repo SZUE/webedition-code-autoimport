@@ -34,11 +34,12 @@ function we_tag_ifVotingField($attribs,$content) {
 	
 	$realvalue = we_tag_votingField($atts, "");
 	switch ($operator) {
-		case ("equal"): return $realvalue == $match; break;
-		case ("less"): return $realvalue < $match; break;
-		case ("less|equal"): return $realvalue <= $match; break;
-		case ("greater"): return $realvalue > $match; break;
-		case ("greater|equal"): return $realvalue >= $match; break;
+		case "equal": return $realvalue == $match; break;
+		case "less": return $realvalue < $match; break;
+		case "less|equal": return $realvalue <= $match; break;
+		case "greater": return $realvalue > $match; break;
+		case "greater|equal": return $realvalue >= $match; break;
+		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
 		default: return $realvalue == $match;
 	}
 

@@ -238,7 +238,7 @@ print STYLESHEET;
 
 ?>
 </head>
-<body id='eHeaderBody' bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()" onresize="setFrameSize()">
+<body id='eHeaderBody' bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
 <div id="main" ><?php
 print getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",$l_contentTypes[$we_doc->ContentType])).': <span id="h_path"></span></div>'.getPixel(100,3);
 

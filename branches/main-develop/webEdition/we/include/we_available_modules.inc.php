@@ -44,7 +44,8 @@ $_we_available_modules["customer"] = array(
 		"text_short" => $l_javaMenu["module_information"]["customer"]["text_short"], 
 		"notInstalled" => $l_javaMenu["module_information"]["customer"]["not_installed"], 
 		"inModuleMenu" => true, 
-		"integrated" => true, 
+		"integrated" => true,
+		"alwaysActive" => false, 
 		"hasSettings" => true
 );
 

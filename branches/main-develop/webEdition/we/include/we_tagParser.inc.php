@@ -1314,7 +1314,7 @@ $GLOBALS["weEconda"]["HTML"] .= \'<a name="emos_name" title="search" rel="\'.$GL
 						$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
 $GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages);
 ';
-					}
+					} else { return str_replace($tag, modulFehltError('Object/DB','listview type="object"'), $code); }
 				
 				} else 
 					if ($type == "customer") {
@@ -1323,7 +1323,7 @@ $GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $
 $GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
 ';
 						
-						}
+						} else { return str_replace($tag, modulFehltError('Customer','listview type="customer"'), $code); }
 					} else
 					  if ($type == "order") {
 						if (defined("SHOP_TABLE")) {
@@ -1331,7 +1331,7 @@ $GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset,
 $GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
 ';
 						
-						}
+						} else { return str_replace($tag, modulFehltError('Shop','listview type="order"'), $code); }
 					  } else
 					  if ($type == "orderitem") {
 						if (defined("SHOP_TABLE")) {
@@ -1342,7 +1342,7 @@ $GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $w
 $GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
 ';
 						
-						}
+						} else { return str_replace($tag, modulFehltError('Shop','listview type="orderitem"'), $code); }
 					  } else  
 						if ($type == "multiobject") {
 							if (defined("OBJECT_TABLE")) {
@@ -1353,7 +1353,7 @@ $GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset
 $GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages");
 ';
 							
-							}
+							} else { return str_replace($tag, modulFehltError('Object/DB','listview type="multiobject"'), $code); }
 						} else 
 							if ($type == "banner") {
 								if (defined("BANNER_TABLE")) {
@@ -1378,7 +1378,7 @@ if($customer && defined("CUSTOMER_TABLE") && (!weBanner::customerOwnsBanner($_SE
 }
 $GLOBALS["lv"] = new we_listview_banner("' . $name . '", $we_rows, "' . $order . '", $bannerid, ("' . $usefilter . '" == "true" || "' . $usefilter . '" == "on" || "' . $usefilter . '" == "1" || "' . $usefilter . '" == "usefilter") ? true : false, ' . $filterdatestart . ', ' . $filterdateend . ');
 ';
-								}
+								} else { return str_replace($tag, modulFehltError('Banner','listview type="banner"'), $code); }
 							} else 
 								if ($type == "shopVariant") {
 									
@@ -1402,7 +1402,7 @@ if($objectId ==""){
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_shopVariants.class.php");
 $GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $defaultname . '", $docId, $objectId, $we_offset);
 ';
-									}
+									} else { return str_replace($tag, modulFehltError('Shop','listview type="shopVariant"'), $code); }
 								
 								} else 
 									if ($type == "category") {
@@ -1532,7 +1532,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$pre = $this->getStartCacheCode($tag, $attribs);
 			
 			return $this->replaceTag($tag, $code, $pre . $php);
-		}
+		} else { return str_replace($tag, modulFehltError('Object/DB','object'), $code); }
 	}
 
 	function parseMetadataTag($tag, $code, $attribs = "", $postName = "")
@@ -1639,7 +1639,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$pre = $this->getStartCacheCode($tag, $attribs);
 			
 			return $this->replaceTag($tag, $code, $pre . $php);
-		}
+		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
 	}
 
 	##########################################################################################
@@ -1718,7 +1718,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$pre = $this->getStartCacheCode($tag, $attribs);
 			
 			return $this->replaceTag($tag, $code, $pre . $php);
-		}
+		} else { return str_replace($tag, modulFehltError('Shop','"order"'), $code); }
 	}
 
 function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
@@ -1800,7 +1800,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$pre = $this->getStartCacheCode($tag, $attribs);
 			
 			return $this->replaceTag($tag, $code, $pre . $php);
-		}
+		} else { return str_replace($tag, modulFehltError('Shop','"orderitem"'), $code); }
 	}
 
 	##########################################################################################
@@ -1809,40 +1809,44 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 
 	function parserepeatShopitem($tag, $code, $attribs = "")
 	{
-		eval('$arr = array(' . $attribs . ');');
-		
-		$shopname = we_getTagAttributeTagParser("shopname", $arr);
-		
-		$php = '<?php
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-	$_SESSION["we_shopname"]="' . $shopname . '";
-
-    if (!isset($GLOBALS["' . $shopname . '"])||empty($GLOBALS["' . $shopname . '"])) {
-    	echo parseError(sprintf($GLOBALS["l_parser"]["missing_createShop"],\'repeatShopItem\'));
-    	return;
-    }
-
-
-	$GLOBALS["lv"] = new shop($GLOBALS["' . $shopname . '"]);
-
-	while($GLOBALS["lv"]->next_record()) {
-?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("SHOP_TABLE")) {
+			eval('$arr = array(' . $attribs . ');');
+			
+			$shopname = we_getTagAttributeTagParser("shopname", $arr);
+			
+			$php = '<?php
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+		$_SESSION["we_shopname"]="' . $shopname . '";
+	
+		if (!isset($GLOBALS["' . $shopname . '"])||empty($GLOBALS["' . $shopname . '"])) {
+			echo parseError(sprintf($GLOBALS["l_parser"]["missing_createShop"],\'repeatShopItem\'));
+			return;
+		}
+	
+	
+		$GLOBALS["lv"] = new shop($GLOBALS["' . $shopname . '"]);
+	
+		while($GLOBALS["lv"]->next_record()) {
+	?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Shop','"repeatShopitem"'), $code); }
 	}
 
 	##########################################################################################
 	##########################################################################################
 	function parsedeleteShop($tag, $code, $attribs = "")
 	{
-		eval('$arr = array(' . $attribs . ');');
-		$shopname = we_getTagAttributeTagParser("shopname", $arr);
-		
-		$php = '<?php
-			unset($_SESSION["' . $shopname . '_save"]);
-		?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("SHOP_TABLE")) {
+			eval('$arr = array(' . $attribs . ');');
+			$shopname = we_getTagAttributeTagParser("shopname", $arr);
+			
+			$php = '<?php
+				unset($_SESSION["' . $shopname . '_save"]);
+			?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Shop','"deleteShop"'), $code); }
 	}
 
 	##########################################################################################
@@ -1851,107 +1855,110 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 
 	function parsecreateShop($tag, $code, $attribs = "")
 	{
-		eval('$arr = array(' . $attribs . ');');
-		$deleteshop = we_getTagAttributeTagParser("deleteshop", $arr);
-		$shopname = we_getTagAttributeTagParser("shopname", $arr);
-		
-		$php = '<?php
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-
-			$deleteshop_now = "' . $deleteshop . '";
-			if(!isset($_SESSION)) @session_start();
-
-			if(isset($_SESSION["' . $shopname . '_save"]) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"]==1 || $deleteshop_now =="1")) { // delete shop
-				unset($_SESSION["' . $shopname . '_save"]);
-				if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ????
-					header("Location: ".$follow);
-					exit;
+		if (defined("SHOP_TABLE")) {
+			eval('$arr = array(' . $attribs . ');');
+			$deleteshop = we_getTagAttributeTagParser("deleteshop", $arr);
+			$shopname = we_getTagAttributeTagParser("shopname", $arr);
+			
+			$php = '<?php
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+	
+				$deleteshop_now = "' . $deleteshop . '";
+				if(!isset($_SESSION)) @session_start();
+	
+				if(isset($_SESSION["' . $shopname . '_save"]) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"]==1 || $deleteshop_now =="1")) { // delete shop
+					unset($_SESSION["' . $shopname . '_save"]);
+					if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ????
+						header("Location: ".$follow);
+						exit;
+					}
 				}
-			}
-
-			$GLOBALS["' . $shopname . '"] = new Basket;
-			$GLOBALS["' . $shopname . '"]->Basket();
-			$GLOBALS["' . $shopname . '"]->setCartProperties( (isset($_SESSION["' . $shopname . '_save"]) ? $_SESSION["' . $shopname . '_save"] : array() ) );
-			$GLOBALS["' . $shopname . '"]->initCartFields();
-			$' . $shopname . ' = $GLOBALS["' . $shopname . '"];
-			$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
-		?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+	
+				$GLOBALS["' . $shopname . '"] = new Basket;
+				$GLOBALS["' . $shopname . '"]->Basket();
+				$GLOBALS["' . $shopname . '"]->setCartProperties( (isset($_SESSION["' . $shopname . '_save"]) ? $_SESSION["' . $shopname . '_save"] : array() ) );
+				$GLOBALS["' . $shopname . '"]->initCartFields();
+				$' . $shopname . ' = $GLOBALS["' . $shopname . '"];
+				$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
+			?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Shop','"createShop"'), $code); }
 	}
 
 	##########################################################################################
 	##########################################################################################
 	function parseadddelShopitem($tag, $code, $attribs = "")
 	{
-		
-		$php = '';
-		
-		if (defined('SHOP_TABLE')) {
+	if (defined("SHOP_TABLE")) {
 			
-			eval('$arr = array(' . $attribs . ');');
+			$php = '';
 			
-			$shopname = we_getTagAttributeTagParser("shopname", $arr);
+			if (defined('SHOP_TABLE')) {
+				
+				eval('$arr = array(' . $attribs . ');');
+				
+				$shopname = we_getTagAttributeTagParser("shopname", $arr);
+				
+				$php = '<?php
 			
-			$php = '<?php
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 		
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-	
-			if((isset($_REQUEST["shopname"]) && $_REQUEST["shopname"]=="' . $shopname . '") || !isset($_REQUEST["shopname"]) || $_REQUEST["shopname"]==""){
-				if ( isset($_REQUEST["shop_cart_id"]) && is_array($_REQUEST["shop_cart_id"]) ) {
-					if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
-						if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
-							foreach ($_REQUEST["shop_cart_id"] as $cart_id => $cart_amount) {
-								$' . $shopname . '->Set_Cart_Item($cart_id, $cart_amount);
-								$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
+				if((isset($_REQUEST["shopname"]) && $_REQUEST["shopname"]=="' . $shopname . '") || !isset($_REQUEST["shopname"]) || $_REQUEST["shopname"]==""){
+					if ( isset($_REQUEST["shop_cart_id"]) && is_array($_REQUEST["shop_cart_id"]) ) {
+						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
+							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
+								foreach ($_REQUEST["shop_cart_id"] as $cart_id => $cart_amount) {
+									$' . $shopname . '->Set_Cart_Item($cart_id, $cart_amount);
+									$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
+								}
 							}
 						}
 					}
-				}
-				else if(isset($_REQUEST["shop_anzahl_und_id"]) && is_array($_REQUEST["shop_anzahl_und_id"])) {
-					if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
-						if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
-							//	reset the Array
-							reset($_REQUEST["shop_anzahl_und_id"]);
-							while(list($shop_articleid_variant,$shop_anzahl)=each($_REQUEST["shop_anzahl_und_id"])) {
-								$articleInfo = explode("_",$shop_articleid_variant);
-								$shop_artikelid = $articleInfo[0];
-								$shop_artikeltype = $articleInfo[1];
-								$shop_variant = (isset($articleInfo[2]) ? $articleInfo[2] : "");
-								$' . $shopname . '->Set_Item($shop_artikelid,$shop_anzahl,$shop_artikeltype, $shop_variant);
-								$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
-								unset($articleInfo);
+					else if(isset($_REQUEST["shop_anzahl_und_id"]) && is_array($_REQUEST["shop_anzahl_und_id"])) {
+						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
+							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
+								//	reset the Array
+								reset($_REQUEST["shop_anzahl_und_id"]);
+								while(list($shop_articleid_variant,$shop_anzahl)=each($_REQUEST["shop_anzahl_und_id"])) {
+									$articleInfo = explode("_",$shop_articleid_variant);
+									$shop_artikelid = $articleInfo[0];
+									$shop_artikeltype = $articleInfo[1];
+									$shop_variant = (isset($articleInfo[2]) ? $articleInfo[2] : "");
+									$' . $shopname . '->Set_Item($shop_artikelid,$shop_anzahl,$shop_artikeltype, $shop_variant);
+									$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
+									unset($articleInfo);
+								}
 							}
+							$_SESSION["tb"]=$_REQUEST["t"];
 						}
-						$_SESSION["tb"]=$_REQUEST["t"];
+					}
+					else if(isset($_REQUEST["shop_artikelid"]) && $_REQUEST["shop_artikelid"] != "" && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != 0) {
+						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
+							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
+								$' . $shopname . '->Add_Item($_REQUEST["shop_artikelid"],$_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
+								$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
+							}
+							$_SESSION["tb"]=$_REQUEST["t"];
+						}
+					}
+					else if(isset($_REQUEST["del_shop_artikelid"]) && $_REQUEST["del_shop_artikelid"] != "") {
+						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
+							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
+								$' . $shopname . '->Del_Item($_REQUEST["del_shop_artikelid"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
+								$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
+							}
+							$_SESSION["tb"]=$_REQUEST["t"];
+						}
 					}
 				}
-				else if(isset($_REQUEST["shop_artikelid"]) && $_REQUEST["shop_artikelid"] != "" && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != 0) {
-					if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
-						if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
-							$' . $shopname . '->Add_Item($_REQUEST["shop_artikelid"],$_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
-							$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
-						}
-						$_SESSION["tb"]=$_REQUEST["t"];
-					}
-				}
-				else if(isset($_REQUEST["del_shop_artikelid"]) && $_REQUEST["del_shop_artikelid"] != "") {
-					if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
-						if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
-							$' . $shopname . '->Del_Item($_REQUEST["del_shop_artikelid"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
-							$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
-						}
-						$_SESSION["tb"]=$_REQUEST["t"];
-					}
-				}
+				?>';
 			}
-			?>';
-		}
-		
-		return $this->replaceTag($tag, $code, $php);
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Shop','"adddelShopitem"'), $code); }
 	}
-
 	##########################################################################################
 	##########################################################################################
 	
@@ -2572,78 +2579,82 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 	function parseVotingTag($tag, $code, $attribs)
 	{
-		eval('$arr = array(' . $attribs . ');');
-		
-		$id = we_getTagAttributeTagParser("id", $arr, 0);
-		$name = we_getTagAttributeTagParser("name", $arr, '');
-		$version = we_getTagAttributeTagParser("version", $arr, 0);
-		
-		$foo = attributFehltError($arr, 'name', 'voting');
-		if ($foo)
-			return str_replace($tag, $foo, $code);
-		
-		$version = ($version > 0) ? ($version - 1) : 0;
-		
-		$php = '<?php
-					include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
-
-					$GLOBALS["_we_voting_namespace"] = "' . $name . '";
-					$GLOBALS[\'_we_voting\'] = new weVoting();
-
-					if(isset($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\'])) {
-						$GLOBALS[\'_we_voting\'] = new weVoting($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\']);
-					} else if(' . $id . '!=0) {
-						$GLOBALS[\'_we_voting\'] = new weVoting(' . $id . ');
-					} else {
-						$__voting_matches = array();
-						if(preg_match_all(\'/_we_voting_answer_([0-9]+)_?([0-9]+)?/\', implode(\',\',array_keys($_REQUEST)), $__voting_matches)){
-							$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
-						}
-					}
-					if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion(' . $version . ');
-				?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("VOTING_TABLE")) {
+			eval('$arr = array(' . $attribs . ');');
+			
+			$id = we_getTagAttributeTagParser("id", $arr, 0);
+			$name = we_getTagAttributeTagParser("name", $arr, '');
+			$version = we_getTagAttributeTagParser("version", $arr, 0);
+			
+			$foo = attributFehltError($arr, 'name', 'voting');
+			if ($foo)
+				return str_replace($tag, $foo, $code);
+			
+			$version = ($version > 0) ? ($version - 1) : 0;
+			
+			$php = '<?php
+						include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
 	
+						$GLOBALS["_we_voting_namespace"] = "' . $name . '";
+						$GLOBALS[\'_we_voting\'] = new weVoting();
+	
+						if(isset($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\'])) {
+							$GLOBALS[\'_we_voting\'] = new weVoting($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\']);
+						} else if(' . $id . '!=0) {
+							$GLOBALS[\'_we_voting\'] = new weVoting(' . $id . ');
+						} else {
+							$__voting_matches = array();
+							if(preg_match_all(\'/_we_voting_answer_([0-9]+)_?([0-9]+)?/\', implode(\',\',array_keys($_REQUEST)), $__voting_matches)){
+								$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
+							}
+						}
+						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion(' . $version . ');
+					?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Voting','"Voting"'), $code); }
 	}
 
 	function parseVotingListTag($tag, $code, $attribs)
 	{
-		eval('$arr = array(' . $attribs . ');');
-		
-		$name = we_getTagAttributeTagParser('name', $arr, '');
-		$groupid = we_getTagAttributeTagParser('groupid', $arr, 0);
-		$rows = we_getTagAttributeTagParser('rows', $arr, 0);
-		$desc = we_getTagAttributeTagParser('desc', $arr, "false");
-		$order = we_getTagAttributeTagParser('order', $arr, 'PublishDate');
-		$subgroup = we_getTagAttributeTagParser("subgroup", $arr, "false");
-		$version = we_getTagAttributeTagParser("version", $arr, 1);
-		$offset = we_getTagAttributeTagParser("offset", $arr, 0);
-		
-		$foo = attributFehltError($arr, 'name', 'votingList');
-		if ($foo)
-			return str_replace($tag, $foo, $code);
-		
-		$version = ($version > 0) ? ($version - 1) : 0;
-		$GLOBALS['_we_voting_list_active'] = 1;
-		
-		$php = '<?php
-			include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVotingList.php\');
-			$GLOBALS[\'_we_voting_list\'] = new weVotingList(\'' . $name . '\',' . $groupid . ',' . $version . ',' . $rows . ', ' . $offset . ',' . $desc . ',"' . $order . '",' . $subgroup . ');
-		?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("VOTING_TABLE")) {
+			eval('$arr = array(' . $attribs . ');');
+			
+			$name = we_getTagAttributeTagParser('name', $arr, '');
+			$groupid = we_getTagAttributeTagParser('groupid', $arr, 0);
+			$rows = we_getTagAttributeTagParser('rows', $arr, 0);
+			$desc = we_getTagAttributeTagParser('desc', $arr, "false");
+			$order = we_getTagAttributeTagParser('order', $arr, 'PublishDate');
+			$subgroup = we_getTagAttributeTagParser("subgroup", $arr, "false");
+			$version = we_getTagAttributeTagParser("version", $arr, 1);
+			$offset = we_getTagAttributeTagParser("offset", $arr, 0);
+			
+			$foo = attributFehltError($arr, 'name', 'votingList');
+			if ($foo)
+				return str_replace($tag, $foo, $code);
+			
+			$version = ($version > 0) ? ($version - 1) : 0;
+			$GLOBALS['_we_voting_list_active'] = 1;
+			
+			$php = '<?php
+				include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVotingList.php\');
+				$GLOBALS[\'_we_voting_list\'] = new weVotingList(\'' . $name . '\',' . $groupid . ',' . $version . ',' . $rows . ', ' . $offset . ',' . $desc . ',"' . $order . '",' . $subgroup . ');
+			?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Voting','"VotingList"'), $code); }
 	}
 
 	function parseAnswersTag($tag, $code, $attribs)
 	{
-		
-		$php = '<?php
-			while(isset($GLOBALS["_we_voting"]) && $GLOBALS["_we_voting"]->getNext()){
-
-		?>';
-		
-		return $this->replaceTag($tag, $code, $php);
+		if (defined("VOTING_TABLE")) {
+			$php = '<?php
+				while(isset($GLOBALS["_we_voting"]) && $GLOBALS["_we_voting"]->getNext()){
+	
+			?>';
+			
+			return $this->replaceTag($tag, $code, $php);
+		} else { return str_replace($tag, modulFehltError('Voting','"Answer"'), $code); }
 	}
 
 	##########################################################################################
