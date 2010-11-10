@@ -514,7 +514,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition.<br /><br />For some modules, you have to restart webEdition to activate.<br /><br />";
+	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition.<br /><br />For some modules, you have to restart webEdition to activate.<br /><br />the Shop module requires the Customer module, the Workflow module requires the ToDo-Messaging module.";
 	
 	$l_prefs["module_activation"]["headline"] = "Module activation";
 
