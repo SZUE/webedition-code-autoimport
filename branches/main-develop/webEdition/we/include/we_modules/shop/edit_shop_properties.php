@@ -1757,7 +1757,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
                                             	<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . $l_shop['order']['edit_order_customer'] . '</a></td>
                                             </tr>
                                             <tr>
-                                            	<td colspan="9"><a href="javascript:we_cmd(\'edit_customer\');">' . $l_shop['order']['open_customer'] . '</a> </td>
+                                            	<td colspan="9">'.(we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . $l_shop['order']['open_customer'] . '</a>':'').' </td>
                                             </tr>
 										</table>';
 	//

@@ -33,7 +33,9 @@ $_we_available_modules["users"] = array(
 		"inModuleMenu" => true, 
 		"integrated" => true, 
 		"alwaysActive" => true, 
-		"hasSettings" => false
+		"hasSettings" => false,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["customer"] = array(
@@ -46,19 +48,9 @@ $_we_available_modules["customer"] = array(
 		"inModuleMenu" => true, 
 		"integrated" => true,
 		"alwaysActive" => false, 
-		"hasSettings" => true
-);
-
-$_we_available_modules["schedule"] = array(
-	
-		"name" => "schedule", 
-		"text" => $l_javaMenu["module_information"]["schedule"]["text"], 
-		"text_short" => $l_javaMenu["module_information"]["schedule"]["text_short"], 
-		"notInstalled" => $l_javaMenu["module_information"]["schedule"]["not_installed"], 
-		"inModuleMenu" => false, 
-		"integrated" => true, 
-		"alwaysActive" => false, 
-		"hasSettings" => false
+		"hasSettings" => true,
+		"dependson" => "",
+		"childmodule" =>"shop"
 );
 
 $_we_available_modules["shop"] = array(
@@ -70,7 +62,23 @@ $_we_available_modules["shop"] = array(
 		"perm" => "NEW_SHOP_ARTICLE || DELETE_SHOP_ARTICLE || EDIT_SHOP_ORDER || DELETE_SHOP_ORDER || EDIT_SHOP_PREFS || ADMINISTRATOR", 
 		"inModuleMenu" => true, 
 		"integrated" => true, 
-		"hasSettings" => true
+		"hasSettings" => true,
+		"dependson" => "customer",
+		"childmodule" =>""
+);
+
+$_we_available_modules["schedule"] = array(
+	
+		"name" => "schedule", 
+		"text" => $l_javaMenu["module_information"]["schedule"]["text"], 
+		"text_short" => $l_javaMenu["module_information"]["schedule"]["text_short"], 
+		"notInstalled" => $l_javaMenu["module_information"]["schedule"]["not_installed"], 
+		"inModuleMenu" => false, 
+		"integrated" => true, 
+		"alwaysActive" => false, 
+		"hasSettings" => false,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["editor"] = array(
@@ -83,7 +91,9 @@ $_we_available_modules["editor"] = array(
 		"inModuleMenu" => false, 
 		"integrated" => true, 
 		"alwaysActive" => false, 
-		"hasSettings" => true
+		"hasSettings" => true,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["object"] = array(
@@ -94,7 +104,9 @@ $_we_available_modules["object"] = array(
 		"notInstalled" => $l_javaMenu["module_information"]["object"]["not_installed"], 
 		"inModuleMenu" => false, 
 		"integrated" => true, 
-		"hasSettings" => false
+		"hasSettings" => false,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["messaging"] = array(
@@ -105,7 +117,9 @@ $_we_available_modules["messaging"] = array(
 		"notInstalled" => $l_javaMenu["module_information"]["messaging"]["not_installed"], 
 		"inModuleMenu" => true, 
 		"integrated" => true, 
-		"hasSettings" => true
+		"hasSettings" => true,
+		"dependson" => "",
+		"childmodule" =>"workflow"
 );
 
 $_we_available_modules["workflow"] = array(
@@ -117,7 +131,9 @@ $_we_available_modules["workflow"] = array(
 		"perm" => "NEW_WORKFLOW || DELETE_WORKFLOW || EDIT_WORKFLOW || EMPTY_LOG || ADMINISTRATOR", 
 		"inModuleMenu" => true, 
 		"integrated" => true, 
-		"hasSettings" => false
+		"hasSettings" => false,
+		"dependson" => "messaging",
+		"childmodule" =>""
 );
 
 $_we_available_modules["newsletter"] = array(
@@ -129,7 +145,9 @@ $_we_available_modules["newsletter"] = array(
 		"perm" => "NEW_NEWSLETTER || DELETE_NEWSLETTER || EDIT_NEWSLETTER || SEND_NEWSLETTER || SEND_TEST_EMAIL || ADMINISTRATOR", 
 		"inModuleMenu" => true, 
 		"integrated" => true, 
-		"hasSettings" => true
+		"hasSettings" => true,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["banner"] = array(
@@ -142,7 +160,9 @@ $_we_available_modules["banner"] = array(
 		"inModuleMenu" => true, 
 		"integrated" => true, 
 		"alwaysActive" => false, 
-		"hasSettings" => true
+		"hasSettings" => true,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["export"] = array(
@@ -156,7 +176,9 @@ $_we_available_modules["export"] = array(
 		"integrated" => true, 
 		"alwaysActive" => true, 
 		"hasSettings" => false, 
-		"inModuleWindow" => true
+		"inModuleWindow" => true,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["voting"] = array(
@@ -169,7 +191,9 @@ $_we_available_modules["voting"] = array(
 		"inModuleMenu" => true, 
 		"integrated" => true, 
 		"alwaysActive" => false, 
-		"hasSettings" => false
+		"hasSettings" => false,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["spellchecker"] = array(
@@ -182,7 +206,9 @@ $_we_available_modules["spellchecker"] = array(
 		"inModuleMenu" => false, 
 		"integrated" => true, 
 		"alwaysActive" => false, 
-		"hasSettings" => true
+		"hasSettings" => true,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 $_we_available_modules["glossary"] = array(
@@ -195,7 +221,9 @@ $_we_available_modules["glossary"] = array(
 		"inModuleMenu" => true, 
 		"integrated" => true, 
 		"alwaysActive" => false, 
-		"hasSettings" => true
+		"hasSettings" => true,
+		"dependson" => "",
+		"childmodule" =>""
 );
 
 // as default installed pro-modules

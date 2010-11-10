@@ -109,12 +109,16 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 			
 			$orderStr .= '
 		<tr>';
-		$orderStr .=  
+		if (we_hasPerm("EDIT_SHOP_ORDER")){
+			$orderStr .=  
 			($sameModul ?
 					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $DB_WE->f('IntOrderID') . '\';' ) . '</td>') :
 					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULE_PATH . 'show_frameset.php?mod=shop&bid=' . $DB_WE->f('IntOrderID') . '\';' ) . '</td>')
-              	).'
-			<td>' . $DB_WE->f('IntOrderID') . '. ' . $l_shop['orderList']['order'] . '</td>';
+              	);
+		} else {
+			$orderStr .='<td></td>';
+		}
+			$orderStr .= '<td>' . $DB_WE->f('IntOrderID') . '. ' . $l_shop['orderList']['order'] . '</td>';
 			if(!$weShopStatusMails->FieldsHidden['DateOrder']){	
 				$orderStr .='<td>' . ( $DB_WE->f('DateOrder') > 0 ? $DB_WE->f('formatDateOrder') : '-'  ) . '</td>';
 			}
