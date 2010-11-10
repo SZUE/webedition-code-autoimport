@@ -4,5 +4,8 @@ CREATE TABLE tblLink (
   `Type` varchar(16) NOT NULL default '',
   Name varchar(255) NOT NULL default '',
   DocumentTable varchar(64) NOT NULL default '',
-  KEY DID (DID)
+  PRIMARY KEY (CID,DocumentTable),
+  KEY DID (DID),
+  KEY Name (Name(4)),
+  KEY `Type` (`Type`)
 ) ENGINE=MyISAM;

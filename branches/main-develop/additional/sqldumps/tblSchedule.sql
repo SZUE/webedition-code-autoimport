@@ -6,5 +6,8 @@ CREATE TABLE tblSchedule (
   SerializedData longblob,
   Schedpro longtext,
   `Type` tinyint(3) NOT NULL default '0',
-  Active tinyint(1) default NULL
+  Active tinyint(1) default NULL,
+  PRIMARY KEY (DID),
+  KEY Wann (Wann),
+  KEY Active (Active,Schedpro(1))
 ) ENGINE=MyISAM;

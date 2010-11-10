@@ -43,5 +43,8 @@ CREATE TABLE tblnavigation (
   BlackList text NOT NULL,
   WhiteList text NOT NULL,
   UseDocumentFilter tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY ParentID (ParentID),
+  KEY LinkID (LinkID),
+  KEY Path (Path)
 ) Type=MyISAM;

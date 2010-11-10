@@ -1,4 +1,4 @@
-﻿CREATE TABLE tblAnzeigePrefs (
+CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -19,7 +19,8 @@ CREATE TABLE tblCategorys (
   IsFolder tinyint(1) default NULL,
   Icon varchar(64) default NULL,
   Catfields longtext NOT NULL,
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY Path (Path)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblCleanUp (
@@ -34,7 +35,8 @@ CREATE TABLE tblContent (
   IsBinary tinyint(4) NOT NULL default '0',
   AutoBR char(3) NOT NULL default '',
   LanguageID int(11) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY BDID (BDID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblContentTypes (
@@ -140,7 +142,8 @@ CREATE TABLE tblIndex (
   Description text NOT NULL,
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
-  KEY DID (DID)
+  PRIMARY KEY (`DID`,`OID`),
+  KEY `OID` (`OID`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblLink (
@@ -149,13 +152,18 @@ CREATE TABLE tblLink (
   `Type` varchar(16) NOT NULL default '',
   Name varchar(255) NOT NULL default '',
   DocumentTable varchar(64) NOT NULL default '',
-  KEY DID (DID)
+  PRIMARY KEY (CID,DocumentTable),
+  KEY DID (DID),
+  KEY Name (Name(4)),
+  KEY `Type` (`Type`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblLock (
   ID bigint(20) NOT NULL default '0',
   UserID bigint(20) NOT NULL default '0',
-  tbl varchar(32) NOT NULL default ''
+  tbl varchar(32) NOT NULL default '',
+  PRIMARY KEY (ID,tbl),
+  KEY UserID (UserID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblMessages (
@@ -173,7 +181,8 @@ CREATE TABLE tblMessages (
   seenStatus tinyint(4) unsigned default NULL,
   MessageText text,
   tag tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY `query` (`obj_type`,`msg_type`,`ParentID`,`UserID`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblMetadata` (
@@ -418,7 +427,8 @@ CREATE TABLE tblObjectFiles (
   WebUserID bigint(20) NOT NULL,
   PRIMARY KEY  (ID),
   KEY Path (Path),
-  KEY WebUserID (WebUserID)
+  KEY WebUserID (WebUserID),
+  KEY TableID (TableID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblOrders (
@@ -545,7 +555,10 @@ CREATE TABLE tblSchedule (
   SerializedData longblob,
   Schedpro longtext,
   `Type` tinyint(3) NOT NULL default '0',
-  Active tinyint(1) default NULL
+  Active tinyint(1) default NULL,
+  PRIMARY KEY (DID),
+  KEY Wann (Wann),
+  KEY Active (Active,Schedpro(1))
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblTODO (
@@ -607,6 +620,7 @@ CREATE TABLE tblTemplates (
   CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID),
+  KEY ParentID (ParentID,Filename(3)),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
 ) ENGINE=MyISAM;
@@ -618,7 +632,9 @@ CREATE TABLE tblTemporaryDoc (
   DocTable varchar(64) NOT NULL default '',
   UnixTimestamp bigint(20) NOT NULL default '0',
   Active tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY DocumentID (DocumentID),
+  KEY DocTable (DocTable,Active)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblUpdateLog (
@@ -681,7 +697,10 @@ CREATE TABLE tblUser (
   Salutation varchar(32) NOT NULL default '',
   LoginDenied tinyint(4) NOT NULL default '0',
   UseSalt tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY Ping (Ping),
+  KEY Alias (Alias),
+  KEY username (username) 
 ) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblUser VALUES (1,0,'admin','/admin','user.gif',0,0,'webEdition','','','','',0,'','','','','','','','','','admin','c0e024d9200b5705bc4804722636378a','a:55:{s:13:\"ADMINISTRATOR\";s:1:\"1\";s:18:\"NEW_WEBEDITIONSITE\";s:1:\"1\";s:10:\"NEW_GRAFIK\";s:1:\"1\";s:8:\"NEW_HTML\";s:1:\"1\";s:9:\"NEW_FLASH\";s:1:\"1\";s:6:\"NEW_JS\";s:1:\"1\";s:7:\"NEW_CSS\";s:1:\"1\";s:12:\"NEW_SONSTIGE\";s:1:\"1\";s:12:\"NEW_TEMPLATE\";s:1:\"1\";s:14:\"NEW_DOC_FOLDER\";s:1:\"1\";s:22:\"CHANGE_DOC_FOLDER_PATH\";s:1:\"0\";s:15:\"NEW_TEMP_FOLDER\";s:1:\"1\";s:17:\"CAN_SEE_DOCUMENTS\";s:1:\"1\";s:17:\"CAN_SEE_TEMPLATES\";s:1:\"1\";s:22:\"SAVE_DOCUMENT_TEMPLATE\";s:1:\"1\";s:17:\"DELETE_DOC_FOLDER\";s:1:\"1\";s:18:\"DELETE_TEMP_FOLDER\";s:1:\"1\";s:15:\"DELETE_DOCUMENT\";s:1:\"1\";s:15:\"DELETE_TEMPLATE\";s:1:\"1\";s:13:\"BROWSE_SERVER\";s:1:\"1\";s:12:\"EDIT_DOCTYPE\";s:1:\"1\";s:14:\"EDIT_KATEGORIE\";s:1:\"1\";s:7:\"REBUILD\";s:1:\"1\";s:6:\"EXPORT\";s:1:\"1\";s:6:\"IMPORT\";s:1:\"1\";s:9:\"NEW_GROUP\";s:1:\"1\";s:8:\"NEW_USER\";s:1:\"1\";s:10:\"SAVE_GROUP\";s:1:\"1\";s:9:\"SAVE_USER\";s:1:\"1\";s:12:\"DELETE_GROUP\";s:1:\"1\";s:11:\"DELETE_USER\";s:1:\"1\";s:7:\"PUBLISH\";s:1:\"1\";s:21:\"EDIT_SETTINGS_DEF_EXT\";s:1:\"1\";s:13:\"EDIT_SETTINGS\";s:1:\"1\";s:11:\"EDIT_PASSWD\";s:1:\"1\";s:12:\"NEW_CUSTOMER\";s:1:\"0\";s:15:\"DELETE_CUSTOMER\";s:1:\"0\";s:13:\"EDIT_CUSTOMER\";s:1:\"0\";s:19:\"SHOW_CUSTOMER_ADMIN\";s:1:\"0\";s:16:\"NEW_SHOP_ARTICLE\";s:1:\"0\";s:19:\"DELETE_SHOP_ARTICLE\";s:1:\"0\";s:15:\"EDIT_SHOP_ORDER\";s:1:\"0\";s:17:\"DELETE_SHOP_ORDER\";s:1:\"0\";s:15:\"EDIT_SHOP_PREFS\";s:1:\"0\";s:19:\"CAN_SEE_OBJECTFILES\";s:1:\"1\";s:14:\"NEW_OBJECTFILE\";s:1:\"1\";s:21:\"NEW_OBJECTFILE_FOLDER\";s:1:\"1\";s:17:\"DELETE_OBJECTFILE\";s:1:\"1\";s:15:\"CAN_SEE_OBJECTS\";s:1:\"0\";s:10:\"NEW_OBJECT\";s:1:\"0\";s:13:\"DELETE_OBJECT\";s:1:\"0\";s:12:\"NEW_WORKFLOW\";s:1:\"0\";s:15:\"DELETE_WORKFLOW\";s:1:\"0\";s:13:\"EDIT_WORKFLOW\";s:1:\"0\";s:9:\"EMPTY_LOG\";s:1:\"0\";}',0,0,0,0,0,0,1146233940,'','','','','','','',0,0,0,0,0,'',0,1);
@@ -964,7 +983,9 @@ CREATE TABLE tblhistory (
   ModDate bigint(20) NOT NULL default '0',
   Act varchar(16) NOT NULL default '',
   UserName varchar(64) NOT NULL default '',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY UserName (UserName,DocumentTable),
+  KEY DID (DID,DocumentTable)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblnavigation (
@@ -1012,7 +1033,10 @@ CREATE TABLE tblnavigation (
   BlackList text NOT NULL,
   WhiteList text NOT NULL,
   UseDocumentFilter tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY ParentID (ParentID),
+  KEY LinkID (LinkID),
+  KEY Path (Path)
 ) Type=MyISAM;
 /* query separator */
 CREATE TABLE tblnavigationrules (
@@ -1175,6 +1199,7 @@ CREATE TABLE `tblversions` (
   `resetFromVersion` bigint(20) NOT NULL,
   `InGlossar` tinyint(1) NOT NULL,
   PRIMARY KEY  (`ID`),
+  KEY documentID (documentID),
   KEY `timestamp` (`timestamp`,`CreationDate`),
   KEY `binaryPath` (`binaryPath`)
 ) ENGINE=MyISAM ;

@@ -13,5 +13,6 @@ CREATE TABLE tblIndex (
   Description text NOT NULL,
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
-  KEY DID (DID)
+  PRIMARY KEY (`DID`,`OID`),
+  KEY `OID` (`OID`)
 ) ENGINE=MyISAM;
