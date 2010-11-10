@@ -1,6 +1,7 @@
 <?php
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_global.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
+
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 class weShopStatusMails {
 	
@@ -112,22 +113,22 @@ class weShopStatusMails {
 				
 				),
 				array( //FieldsTexts
-					'DateOrder' => $l_shop["bestelldatum"],
-					'DateConfirmation' => $l_shop["bestaetigt"],
-					'DateCustomA' => $l_shop["customA"],
-					'DateCustomB' => $l_shop["customB"],
-					'DateCustomC' => $l_shop["customC"],
-					'DateShipping' => $l_shop["bearbeitet"],
-					'DateCustomD' => $l_shop["customD"],
-					'DateCustomE' => $l_shop["customE"],
-					'DatePayment' => $l_shop["bezahlt"],
-					'DateCustomF' => $l_shop["customF"],
-					'DateCustomG' => $l_shop["customG"],
-					'DateCancellation' => $l_shop["storniert"],
-					'DateCustomH' => $l_shop["customH"],
-					'DateCustomI' => $l_shop["customI"],
-					'DateCustomJ' => $l_shop["customJ"],
-					'DateFinished' => $l_shop["beendet"]				
+					'DateOrder' => $l_shop['bestelldatum'],
+					'DateConfirmation' => $l_shop['bestaetigt'],
+					'DateCustomA' => $l_shop['customA'],
+					'DateCustomB' => $l_shop['customB'],
+					'DateCustomC' => $l_shop['customC'],
+					'DateShipping' => $l_shop['bearbeitet'],
+					'DateCustomD' => $l_shop['customD'],
+					'DateCustomE' => $l_shop['customE'],
+					'DatePayment' => $l_shop['bezahlt'],
+					'DateCustomF' => $l_shop['customF'],
+					'DateCustomG' => $l_shop['customG'],
+					'DateCancellation' => $l_shop['storniert'],
+					'DateCustomH' => $l_shop['customH'],
+					'DateCustomI' => $l_shop['customI'],
+					'DateCustomJ' => $l_shop['customJ'],
+					'DateFinished' => $l_shop['beendet']				
 				),
 				array( //FieldsMails
 					'DateOrder' => 1,

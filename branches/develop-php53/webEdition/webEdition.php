@@ -533,8 +533,8 @@ function we_cmd() {
 					hasPerm = 1;
 				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMP_FOLDER) {
 					hasPerm = 1;
-				} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
-					hasPerm = 1;
+				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
+					hasPerm = 1; <?php } ?>
 				} else {
 					hasPerm = 0;
 				}
@@ -543,10 +543,10 @@ function we_cmd() {
 					hasPerm = 1;
 				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMPLATE) {
 					hasPerm = 1;
-				} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
+				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
 					hasPerm = 1;
 				} else if(eTable == "<?php echo OBJECT_TABLE; ?>"  && wePerms.DELETE_OBJECT) {
-					hasPerm = 1;
+					hasPerm = 1; <?php } ?>
 				} else {
 					hasPerm = 0;
 				}
@@ -578,8 +578,8 @@ function we_cmd() {
 					hasPerm = 1;
 				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMP_FOLDER) {
 					hasPerm = 1;
-				} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
-					hasPerm = 1;
+				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
+					hasPerm = 1; <?php } ?>
 				} else {
 					hasPerm = 0;
 				}
@@ -588,10 +588,10 @@ function we_cmd() {
 					hasPerm = 1;
 				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMPLATE) {
 					hasPerm = 1;
-				} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
+				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
 					hasPerm = 1;
 				} else if(eTable == "<?php echo OBJECT_TABLE; ?>"  && wePerms.DELETE_OBJECT) {
-					hasPerm = 1;
+					hasPerm = 1; <?php } ?>
 				} else {
 					hasPerm = 0;
 				}
