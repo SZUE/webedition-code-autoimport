@@ -5,5 +5,7 @@ CREATE TABLE tblTemporaryDoc (
   DocTable varchar(64) NOT NULL default '',
   UnixTimestamp bigint(20) NOT NULL default '0',
   Active tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY DocumentID (DocumentID),
+  KEY DocTable (DocTable,Active)
 ) ENGINE=MyISAM;

@@ -22,6 +22,7 @@ CREATE TABLE tblTemplates (
   CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID),
+  KEY ParentID (ParentID,Filename(3)),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
 ) ENGINE=MyISAM;
