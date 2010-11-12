@@ -124,7 +124,7 @@ class we_util_Mailer extends Zend_Mail
 						if (defined('SMTP_PORT')) {
 							$smtp_config['port'] = SMTP_PORT;
 						}
-						if (defined('SMTP_AUTH')) {
+						if (defined('SMTP_AUTH') && SMTP_AUTH) {
 							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterstützte Version - Zend kann auch plain und crammd5
 							if (defined('SMTP_USERNAME')) {
 								$smtp_config['username'] = SMTP_USERNAME;
