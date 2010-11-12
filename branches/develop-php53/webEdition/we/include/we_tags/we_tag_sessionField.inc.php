@@ -234,7 +234,7 @@ function we_tag_sessionField($attribs,$content) {
             $_hidden['name'] = 's['.$name.']';
             $_hidden['value'] = $orgVal;
             $_hidden['xml'] = $xml;
-			$languageautofill = we_getTagAttribute("languageautofill", $attribs, "false");
+			$languageautofill = we_getTagAttribute("languageautofill", $attribs, "false",true);
 			if ($languageautofill){
 				$docAttr = we_getTagAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
