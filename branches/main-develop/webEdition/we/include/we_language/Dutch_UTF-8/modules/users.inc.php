@@ -132,5 +132,11 @@ $l_users["delete_group_user_same"] = "U kunt niet uw eigen groep verwijderen.";
 $l_users["login_denied"] = "Login denied"; // TRANSLATE
 $l_users["workspaceFieldError"] = "FOUT: Ongeldige workspace invoer!";
 $l_users["noGroupError"] = "FOUT: Ongeldige invoer in field groep!";
-
+$l_users["CreatorID"] = "Created by: ";// TRANSLATE
+$l_users["CreateDate"] = "Created at: ";// TRANSLATE
+$l_users["ModifierID"] = "Modified by: ";// TRANSLATE
+$l_users["ModifyDate"] = "Modified at: ";// TRANSLATE
+$l_users["lastPing"] = "Last Ping: ";// TRANSLATE
+$l_users["lostID"] = "ID: ";// TRANSLATE
+$l_users["lostID2"] = " (deleted)";// TRANSLATE
 ?>
