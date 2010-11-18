@@ -1852,7 +1852,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				$php = '<?php $__id__ = ' . $id . ';$GLOBALS["we_form_action"] = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS["DB_WE"]); ?>
 ';
 			} else {
-				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["PHP_SELF"]; ?>
+				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["SCRIPT_NAME"]; ?>
 ';
 			}
 		} else 
@@ -1860,7 +1860,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				$php = '<?php $GLOBALS["we_form_action"] = "' . $action . '"; ?>
 ';
 			} else {
-				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["PHP_SELF"]; ?>
+				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["SCRIPT_NAME"]; ?>
 ';
 			}
 		if ($type != "search") {
@@ -2005,7 +2005,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 						
 						$formAttribs['action'] = '<?php print(f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\'' . $id . '\'","Path",$GLOBALS["DB_WE"])); ?>';
 					} else {
-						$formAttribs['action'] = '<?php print $_SERVER["PHP_SELF"]; ?>';
+						$formAttribs['action'] = '<?php print $_SERVER["SCRIPT_NAME"]; ?>';
 					}
 				}
 				
