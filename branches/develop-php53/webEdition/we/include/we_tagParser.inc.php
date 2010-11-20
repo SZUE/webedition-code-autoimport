@@ -1206,10 +1206,7 @@ EOF;
 		$offset = we_getTagAttributeTagParser("offset", $arr);
 		$workspaceID = we_getTagAttributeTagParser("workspaceID", $arr);
 		$workspaceID = $workspaceID ? $workspaceID : we_getTagAttributeTagParser("workspaceid", $arr, "");
-        $orderid = we_getTagAttributeTagParser("orderid", $arr, "");
-        if ($orderid !='' ) {
-        	$name = $orderid;
-        }
+        $orderid = we_getTagAttributeTagParser("orderid", $arr, "0");
 		
         $languages = we_getTagAttributeTagParser("languages", $arr,'');
         
@@ -1238,9 +1235,8 @@ EOF;
 			$subfolders = !we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
 		}
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
-
+		
 		$php = '<?php
-
 
 if (!isset($GLOBALS["we_lv_array"])) {
 	$GLOBALS["we_lv_array"] = array();
@@ -1338,8 +1334,11 @@ $GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $w
 							$foo = attributFehltError($arr, "orderid", "listview");
 								if ($foo)
 									return str_replace($tag, $foo, $code);
+							if (strpos($orderid,'$')===false ){$php.='$orderid='.$orderid.';';} else {$php.='$orderid = isset('.$orderid.') ? "'.$orderid.'" : $GLOBALS["'.str_replace('$','', $orderid). '"];'; }
+							$php .= '
+							';
 							$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php");
-$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid");
 ';
 						
 						} else { return str_replace($tag, modulFehltError('Shop','listview type="orderitem"'), $code); }
@@ -1455,6 +1454,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$classid = we_getTagAttributeTagParser("classid", $arr);
 			$we_oid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__oid = str_replace('$','',$we_oid);//Bug 4848
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1508,7 +1508,15 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 </table><?php endif ?><?php
 ';
 			} else {
-				$php .= '$we_oid=' . $we_oid . ';
+				if ($we_oid!=0){//Bug 4848
+					$php .='if(isset('. $we_oid .')){ $we_oid = ' . $we_oid . ';} else { if (isset($GLOBALS["' . $we__oid .'"]) ) { $we_oid = $GLOBALS["' . $we__oid .'"];} else {$we_oid=0; } }';
+				} else {
+					$php .='$we_oid=' . $we_oid . '	;
+					';
+				}
+			
+				$php .='
+				
 $we_oid = $we_oid ? $we_oid : (isset($_REQUEST["we_oid"]) ? $_REQUEST["we_oid"] : 0);
 ';
 			}
@@ -1577,6 +1585,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_cid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__cid = str_replace('$','',$we_cid);//Bug 4848
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1622,8 +1631,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 </table><?php endif ?><?php
 ';
 			} else {
-				$php .= '$we_cid=' . $we_cid . ';
-$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
+			if ($we_cid!=0){//Bug 4848
+				$php .='if(isset('. $we_cid .')){$we_cid=' . $we_cid . ';} else { if (isset($GLOBALS["' . $we__cid .'"]) ) { $we_cid = $GLOBALS["' . $we__cid .'"];} else {$we_cid=0; } }';
+			} else {
+				$php .='$we_cid=' . $we_cid . '	;
+				';
+			}
+				
+$php .='$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
 ';
 			}
 			
@@ -1656,6 +1671,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_orderid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__orderid = str_replace('$','',$we_orderid);//Bug 4848
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1701,8 +1717,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 </table><?php endif ?><?php
 ';
 			} else {
-				$php .= '$we_orderid=' . $we_orderid . ';
-$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
+				if ($we_orderid!=0){//Bug 4848
+					$php .='if(isset('. $we_orderid .')){ $we_orderid = ' . $we_orderid . ';} else { if (isset($GLOBALS["' . $we__orderid .'"]) ) { $we_oid = $GLOBALS["' . $we__orderid .'"];} else {$we_orderid=0; } }';
+				} else {
+					$php .='$we_orderid=' . $we_orderid . '	;
+					';
+				}
+				
+				$php .= '$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
 ';
 			}
 			
@@ -1732,7 +1754,9 @@ function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
 			
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_orderitemid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__orderitemid = str_replace('$','',orderitemid);//Bug 4848
 			$we_orderid = we_getTagAttributeTagParser("orderid", $arr, 0);
+			$we__orderid = str_replace('$','',$we_orderid);//Bug 4848
 			//$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1783,7 +1807,13 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 </table><?php endif ?><?php
 ';
 			} else {
-				$php .= '$we_orderitemid=' . $we_orderitemid . ';
+				if ($we_orderitemid!=0){//Bug 4848
+					$php .='if(isset('. $we_orderitemid .')){ $we_orderitemid = ' . $we_orderitemid . ';} else { if (isset($GLOBALS["' . $we__orderitemid .'"]) ) { $we_oid = $GLOBALS["' . $we__orderitemid .'"];} else {$we_orderitemid=0; } }';
+				} else {
+					$php .='$we_orderitemid=' . $we_orderitemid . ';
+					';
+				}
+				$php .= '
 $we_orderitemid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
 ';
 			}
@@ -2063,7 +2093,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				$php = '<?php $__id__ = ' . $id . ';$GLOBALS["we_form_action"] = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS["DB_WE"]); ?>
 ';
 			} else {
-				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["PHP_SELF"]; ?>
+				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["SCRIPT_NAME"]; ?>
 ';
 			}
 		} else 
@@ -2071,7 +2101,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				$php = '<?php $GLOBALS["we_form_action"] = "' . $action . '"; ?>
 ';
 			} else {
-				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["PHP_SELF"]; ?>
+				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["SCRIPT_NAME"]; ?>
 ';
 			}
 		if ($type != "search") {
@@ -2216,7 +2246,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 						
 						$formAttribs['action'] = '<?php print(f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\'' . $id . '\'","Path",$GLOBALS["DB_WE"])); ?>';
 					} else {
-						$formAttribs['action'] = '<?php print $_SERVER["PHP_SELF"]; ?>';
+						$formAttribs['action'] = '<?php print $_SERVER["SCRIPT_NAME"]; ?>';
 					}
 				}
 				
