@@ -90,7 +90,7 @@ function we_getTagAttributeTagParser($name, $attribs, $default = "", $isFlag = f
 			$out = (isset($attribs[$name]) && ($attribs[$name] == "true" || $attribs[$name] == "on" || $attribs[$name] == $name || $attribs[$name] == "1")) ? true : false;
 		}
 	} else {
-		$out = isset($attribs[$name]) ? $attribs[$name] : $default;
+		$out = isset($attribs[$name]) ? $attribs[$name] :  $default;
 	}
 	if ($removeblk){
 		$outA = explode("blk_",$out);

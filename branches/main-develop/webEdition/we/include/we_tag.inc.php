@@ -3951,9 +3951,20 @@ function we_tag_ifField($attribs, $content)
 	
 	$operator  = we_getTagAttribute("operator", $attribs);
 	
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+    	$match = (int) $match;
+	} 
+	
 	//Bug #4815
 	if($attribs["type"]=='float' || $attribs["type"]=='int'){$attribs["type"]='text';}
-	$realvalue = we_tag_field($attribs, "");
+	
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+        $realvalue = (int) we_tag_field($attribs, "");;
+    }
+    else {
+        $realvalue = we_tag_field($attribs, "");;
+    }
+	
 	switch ($operator) {
 		case "equal": return $realvalue == $match; break;
 		case "less": return $realvalue < $match; break;

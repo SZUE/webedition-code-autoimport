@@ -41,10 +41,18 @@ function we_tag_ifShopField($attribs,$content) {
 		$matchA = explode("blk_",$match);
 		$match = $matchA[0];
 	}
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+    	$match = (int) $match;
+	} 
 	$attribs['type']='print';
 	$atts = removeAttribs($attribs,array('match','operator'));
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+        $realvalue = (int) we_tag_shopField($atts, "");
+    }
+    else {
+        $realvalue = we_tag_shopField($atts, "");
+    } 
 	
-	$realvalue = we_tag_shopField($atts, "");
 	switch ($operator) {
 		case "equal": return $realvalue == $match; break;
 		case "less": return $realvalue < $match; break;

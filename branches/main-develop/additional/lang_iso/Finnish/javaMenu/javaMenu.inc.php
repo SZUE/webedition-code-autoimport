@@ -1,7 +1,7 @@
 <?php
 
 /**
- * webEdition CMS
+ * webEdition CMS 
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify

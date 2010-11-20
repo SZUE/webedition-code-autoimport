@@ -35,6 +35,7 @@ class we_listview_orderitem extends listviewBase {
 	var $condition="";
 	var $Path="";
 	var	$docID=0;
+	var	$orderID=0;
 
 	/**
 	 * we_listview_object()
@@ -50,11 +51,12 @@ class we_listview_orderitem extends listviewBase {
 	 *
 	 */
 
-	function we_listview_orderitem($name="0", $rows=999999, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0){
+	function we_listview_orderitem($name="0", $rows=999999, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$orderID=0){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
+		$this->orderID = $orderID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
 
 		if (strpos($this->condition,'ID') !== false && strpos($this->condition,'IntID') === false ){$this->condition=str_replace('ID','IntID',$this->condition);}
@@ -96,8 +98,8 @@ class we_listview_orderitem extends listviewBase {
 			$orderstring = ''; 
 		}
 		
-		if ($this->name !=0){
-			$where = $this->condition ? (' WHERE IntOrderID='.$this->name.' AND ' .$this->condition )   : ' WHERE IntOrderID='.$this->name.' ';
+		if ($this->orderID !=0){
+			$where = $this->condition ? (' WHERE IntOrderID='.$this->name.' AND ' .$this->condition )   : ' WHERE IntOrderID='.$this->orderID.' ';
 		} else {
 			$where = $this->condition ? (' WHERE '. $this->condition )   : ' ';
 		}

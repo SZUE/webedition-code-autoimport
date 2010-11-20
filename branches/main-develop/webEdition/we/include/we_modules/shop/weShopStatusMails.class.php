@@ -45,7 +45,8 @@ class weShopStatusMails {
 	}
 	
 	function getShopStatusMails() {		
-		global $DB_WE,$l_shop;
+		global $DB_WE;
+		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
 		$docarray = array(
 						'DateOrder' => '',
 						'DateConfirmation' => '',

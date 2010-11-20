@@ -26,13 +26,21 @@ function we_tag_ifVotingField($attribs,$content) {
 	if ($foo) {
 		print($foo);
 		return "";
-	}    
-	$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
-	$operator  = we_getTagAttribute("operator", $attribs);
-
-	$atts = removeAttribs($attribs,array('match','operator'));
+	}
 	
-	$realvalue = we_tag_votingField($atts, "");
+	$operator  = we_getTagAttribute("operator", $attribs);
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+    	$match = (int) we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
+	} else {
+		$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
+	}
+	$atts = removeAttribs($attribs,array('match','operator'));
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+		$realvalue = (int) we_tag_votingField($atts, "");
+	} else {
+		$realvalue = we_tag_votingField($atts, "");
+	}
+	
 	switch ($operator) {
 		case "equal": return $realvalue == $match; break;
 		case "less": return $realvalue < $match; break;
