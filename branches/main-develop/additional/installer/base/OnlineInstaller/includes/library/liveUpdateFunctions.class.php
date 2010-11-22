@@ -452,17 +452,10 @@ class liveUpdateFunctions {
 	 * @return array
 	 */
 	function getKeysFromTable($tableName) {
-
 		$db = new le_MySQL_DB();
-
 		$keysOfTable = array();
-
 		$db->query("SHOW INDEX FROM $tableName");
-
 		while ($db->next_record()) {
-
-			$indexType = '';
-
 			if ($db->f('Key_name') == 'PRIMARY') {
 				$indexType = 'PRIMARY';
 			} else if ( $db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT' ) {// this also depends from mysqlVersion
@@ -473,9 +466,10 @@ class liveUpdateFunctions {
 				$indexType = 'INDEX';
 			}
 
-			if (!isset($keysOfTable[$db->f('Column_name')]) || !in_array($indexType, $keysOfTable[$db->f('Column_name')])) {
-				$keysOfTable[$db->f('Column_name')][] = $indexType;
+			if (!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])) {
+				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
 			}
+			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')]=$db->f('Column_name');
 		}
 
 		return $keysOfTable;
@@ -534,26 +528,21 @@ class liveUpdateFunctions {
 	 * @param boolean $isNew
 	 * @return array
 	 */
-	function getAlterTableForKeys($fields, $tableName, $isNew=true) {
-
+	function getAlterTableForKeys($fields, $tableName, $isNew) {
 		$queries = array();
 
 		foreach ($fields as $key => $indexes) {
 
-			for ($i=0; $i<sizeof($indexes); $i++) {
+			array_walk($indexes,'addslashes');
 
-				$index = '';
-				switch ($indexes[$i]) {
-					case 'PRIMARY':
-						$index = 'PRIMARY KEY';
-					break;
-					default:
-						$index = strtoupper($indexes[$i]);
-					break;
+			$type=$indexes['index'];
+			if($type=='PRIMARY'){
+				$key='KEY';
 				}
 
-				$queries[] = "ALTER TABLE $tableName ADD " . $index . " ($key)";
-			}
+			unset($indexes['index']);
+
+			$queries[] = "ALTER TABLE $tableName ".($isNew?'':'DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$key.' , ')." ADD " . $type. ' '.$key . " (".implode(',',$indexes).")";
 		}
 		return $queries;
 	}
@@ -753,13 +742,20 @@ class liveUpdateFunctions {
 		
 									// determine new keys
 									$addKeys = array();
+							$changedKeys = array();
 									foreach ($newTableKeys as $keyName => $indexes) {
 		
 										if (isset($origTableKeys[$keyName])) {
 		
-											for ($i=0;$i<sizeof($indexes);$i++) {
+									if($origTableKeys[$keyName]['index'] != $indexes['index']){
+										$changedKeys[$keyName] = $indexes;
+										continue;
+									}
+
+									for ($i=1;$i<sizeof($indexes);$i++) {
 												if (!in_array($indexes[$i], $origTableKeys[$keyName])) {
-													$addKeys[$keyName][] = $indexes[$i];
+											$changedKeys[$keyName] = $indexes;
+											break;
 												}
 											}
 										} else {
@@ -783,6 +779,10 @@ class liveUpdateFunctions {
 										$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 									}
 		
+							if (sizeof($changedKeys)) {
+								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
+							}
+
 									if (sizeof($alterQueries)) {
 										// execute all queries
 										$success = true;
