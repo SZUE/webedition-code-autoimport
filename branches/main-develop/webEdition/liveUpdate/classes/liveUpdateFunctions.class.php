@@ -216,8 +216,14 @@ class liveUpdateFunctions {
 			if ($fh = fopen($filePath, 'wb')) {
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
+				if(!chmod($filePath, 0755)) {
+					return false;
+					
+				}
 				return true;
+
 			}
+
 		}
 		return false;
 	}
@@ -706,6 +712,9 @@ class liveUpdateFunctions {
 							$alterQueries = array();
 	
 							// get all queries to change existing fields
+							if (sizeof($changeFields)) {
+								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+							}
 							if (sizeof($addFields)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 							}
@@ -713,10 +722,6 @@ class liveUpdateFunctions {
 							// get all queries to change existing keys
 							if (sizeof($addKeys)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
-							}
-	
-							if (sizeof($changeFields)) {
-								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 							}
 	
 							if (sizeof($alterQueries)) {
