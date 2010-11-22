@@ -18,7 +18,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
+/**
+ * This class contains all functions needed for the update process
+ * TBD if we divide this class in several classes
+ */
 class liveUpdateFunctions {
 
 
@@ -47,7 +50,6 @@ class liveUpdateFunctions {
 		$content = $this->checkReplaceDocRoot($content);
 
 		return $content;
-
 	}
 
 
@@ -63,7 +65,6 @@ class liveUpdateFunctions {
 
 		$content = str_replace($needle, $replace, $content);
 		return $content;
-
 	}
 
 	/**
@@ -83,7 +84,6 @@ class liveUpdateFunctions {
 			$content = str_replace('$GLOBALS["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
-
 	}
 
 	/*
@@ -98,14 +98,10 @@ class liveUpdateFunctions {
 	function getFilesOfDir(&$allFiles, $baseDir) {
 
 		if (file_exists($baseDir)) {
-
 			$dh = opendir($baseDir);
 			while( $entry = readdir($dh) ){
-
 				if( $entry != "" && $entry != "." && $entry != ".." ){
-
 					$_entry = $baseDir . "/" . $entry;
-
 		            if( !is_dir( $_entry ) ){
 		                $allFiles[] = $_entry;
 		            }
@@ -117,7 +113,6 @@ class liveUpdateFunctions {
 			}
 			closedir($dh);
 		}
-
 	}
 
 	/**
@@ -137,19 +132,14 @@ class liveUpdateFunctions {
 
 		$dh = opendir($dir);
 		if ($dh) {
-
 			while( $entry = readdir($dh) ){
-
 				if( $entry != "" && $entry != "." && $entry != ".." ){
-
 					$_entry = $dir . "/" . $entry;
-
 					if (is_dir($_entry)) {
 						$this->deleteDir($_entry);
 					} else {
 						unlink($_entry);
 					}
-
 				}
 			}
 			closedir($dh);
@@ -175,7 +165,6 @@ class liveUpdateFunctions {
 		}
 
 		return $content;
-
 	}
 
 	/**
@@ -188,16 +177,13 @@ class liveUpdateFunctions {
 	function filePutContent($filePath, $newContent) {
 
 		if ($this->checkMakeDir( dirname($filePath) )) {
-
 			if ($fh = fopen($filePath, 'wb')) {
-
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
 				return true;
 			}
 		}
 		return false;
-
 	}
 
 	/**
@@ -227,7 +213,6 @@ class liveUpdateFunctions {
 		} else {
 			$preDir = '';
 			$dir = $dirPath;
-
 		}
 
 		$pathArray = explode('/', $dir);
@@ -238,35 +223,29 @@ class liveUpdateFunctions {
 			if($pathArray[$i] != "" && !is_dir($path)){
 				if( !(file_exists($path) || mkdir($path, $mod)) ){
 					return false;
-
 				}
-
 			}
 			$path .= "/";
-
 		}
+		
+		if(!is_writable($dirPath)) {
 		if(!chmod($dirPath, $mod)) {
 			return false;
-
+		}
 		}
 		return true;
-
 	}
 
 	/**
 	 * @param string $file
-	 * @return boolean
+	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file) {
-
-		if ( @unlink($file) ) {
-			return true;
-
+		if(file_exists($file)){
+			return @unlink($file);
 		} else {
-			return false;
-
+			return true;
 		}
-
 	}
 
 	/**
@@ -274,26 +253,32 @@ class liveUpdateFunctions {
 	 *
 	 * @param string $source
 	 * @param string $destination
-	 * @return boolean
+	 * @return boolean false if move was not successful
 	 */
 	function moveFile($source, $destination) {
 
+		if($source==$destination){
+			return true;
+		}
+
 		if ($this->checkMakeDir(dirname($destination))) {
-
-			$this->deleteFile($destination);
-			if (rename($source, $destination)) {
+			if($this->deleteFile($destination)){
+				//rename seems to have problems - we do it old school way: copy, on success delete
+				//return rename($source, $destination);
+				if(copy($source, $destination)){
+					$this->deleteFile($source);
+					//should we handle file deletion?
 				return true;
-
+				}else{
+					return false;
+				}
 			} else {
 				return false;
-
 			}
 
 		} else {
 			return false;
-
 		}
-
 	}
 
 	/**
@@ -307,19 +292,13 @@ class liveUpdateFunctions {
 		$pattern = "/\.([^\..]+)$/";
 
 		if (preg_match($pattern, $path, $matches)) {
-
 			$ext = strtolower($matches[1]);
-
 			if ( ($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql') ) {
 				return false;
-
 			}
-
 		}
 		return true;
-
 	}
-
 
 	/**
 	 * This file searchs $needle in given file and replaces it with $replace
@@ -338,13 +317,11 @@ class liveUpdateFunctions {
 		$replace = $this->decodeCode($replace);
 
 		if (file_exists($filePath)) {
-
 			$oldContent = $this->getFileContent($filePath);
-
 			$replace = $this->checkReplaceDocRoot($replace);
-
 			if ($needle) {
 				$newContent = ereg_replace($needle, $replace, $oldContent);
+
 			} else {
 				$newContent = $replace;
 			}
@@ -522,7 +499,7 @@ class liveUpdateFunctions {
 					break;
 				}
 
-				$queries[] = "ALTER TABLE ".mysql_real_escape_string($tableName)." ADD " . $index . " ($key)";
+				$queries[] = "ALTER TABLE ".mysql_real_escape_string($tableName)." ADD " . addslashes($index) . " (".addslashes($key).")";
 			}
 		}
 		return $queries;
@@ -582,13 +559,9 @@ class liveUpdateFunctions {
 	function executeQueriesInFiles($path) {
 
 		if ($this->isInsertQueriesFile($path)) {
-
 			$success = true;
-
 			if ($queryArray = file($path)) {
-
 				foreach ($queryArray as $query) {
-
 					if (trim($query)) {
 						if (!$this->executeUpdateQuery($query)) {
 							$success = false;
@@ -623,13 +596,17 @@ class liveUpdateFunctions {
 
 			$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+
+			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
-
-
 
 		if ($db->query($query) ) {
 			return true;
-
 		} else {
 
 			switch ($db->Errno) {

@@ -657,7 +657,7 @@ class liveUpdateFunctions {
 							$tmpName = '__we_delete_update_temp_table__';
 	
 							$db->query("DROP TABLE IF EXISTS $tmpName;"); // delete table if already exists
-	
+
 							// create temptable
 							$tmpQuery = preg_replace($namePattern, "CREATE TABLE $tmpName (", $query);
 							$db->query(trim($tmpQuery));
