@@ -449,7 +449,7 @@ class liveUpdateFunctions {
 			if (!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])) {
 				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
 			}
-			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')]=$db->f('Column_name');
+			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')]=$db->f('Column_name').($db->f('Sub_part')?'('.$db->f('Sub_part').')':'');
 		}
 
 		return $keysOfTable;
