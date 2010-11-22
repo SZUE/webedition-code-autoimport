@@ -2229,18 +2229,21 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = "")
 		return true;
 	if (!$db)
 		$db = new DB_WE();
-	$p = f("
-		SELECT ParentID
-		FROM $table
-		WHERE ID=".abs($id), "ParentID", $db);
-	while ($p) {
-		if ($p == $pid)
+	$found=array();
+	$p = abs($id);
+	do {
+		if ($p == $pid){
 			return true;
+		}
+		if(in_array($p,$found)){
+			return false;
+		}
+		array_push($found,$p);
 		$p = f("
 			SELECT ParentID
 			FROM $table
 			WHERE ID=".abs($p), "ParentID", $db);
-	}
+	}while($p);
 	return false;
 }
 
