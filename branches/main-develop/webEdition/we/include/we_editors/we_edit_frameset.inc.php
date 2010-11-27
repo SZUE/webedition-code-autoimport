@@ -238,29 +238,14 @@ if($we_doc->EditPageNr === -1 ){	//	there is no view available for this document
 
 if(!isset($we_doc->IsClassFolder)) {
 
-	$_filelocked = false;
 	$_userID = $we_doc->isLockedByUser();	//	Check if file is locked.
 
-	//	#####	Now check if file can be edited.
-	if($_userID != 0 && $_userID != $_SESSION["user"]["ID"]){	// file is locked
+	//update already offline users
+	$DB_WE2->query('UPDATE '.USER_TABLE.' SET Ping=0 WHERE Ping+'.(PING_TIME+PING_TOLERANZ).'<UNIX_TIMESTAMP(NOW())');
 
-		//	#####	Check if user is  still online.
-		$DB_WE2 = new DB_WE;
-		if(f("SELECT ID FROM ".USER_TABLE." WHERE ID='".abs($_userID)."'","ID",$DB_WE2)){
-			$DB_WE2->query("SELECT Ping,ID FROM ".USER_TABLE." WHERE ID='".abs($_userID)."'");
-			if($DB_WE2->next_record()){
-				if($DB_WE2->f("Ping") < (time() - (PING_TIME+PING_TOLERANZ))) {
-					//	#####	user ist not online any more
-					$DB_WE2->query("DELETE FROM " . LOCK_TABLE . " WHERE ID='".abs($we_doc->ID)."' AND tbl='".mysql_real_escape_string($we_doc->Table)."'");
-					$DB_WE2->query("UPDATE ".USER_TABLE." SET Ping='0' WHERE ID='".abs($_userID)."'");
-				} else {	// file is locked
-					$_filelocked = true;
-				}
-			}
-		}else{
-			$DB_WE2->query("DELETE FROM " . LOCK_TABLE . " WHERE ID='".abs($we_doc->ID)."' AND tbl='".mysql_real_escape_string($we_doc->Table)."'");
-		}
-	} else {		// file can be edited
+	$_filelocked = ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]);
+
+	if(!$_filelocked){	// file can be edited
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
 		if($we_doc->userHasAccess() == 1){	//	only when user has access to file

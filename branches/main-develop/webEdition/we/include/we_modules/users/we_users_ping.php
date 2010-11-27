@@ -26,7 +26,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 
 		
 htmlTop();
-if($_SESSION["user"]["ID"]) $DB_WE->query("UPDATE ".USER_TABLE." SET Ping=".time()." WHERE ID=".$_SESSION["user"]["ID"]);
+if($_SESSION["user"]["ID"]) $DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
 ?>
 
 <script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
