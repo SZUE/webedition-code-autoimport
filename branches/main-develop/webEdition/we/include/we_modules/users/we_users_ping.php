@@ -26,7 +26,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 
 		
 htmlTop();
-if($_SESSION["user"]["ID"]) $DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
+if($_SESSION["user"]["ID"]){
+	$DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
+	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET `lock`=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID="'.abs($_SESSION["user"]["ID"]).'" AND sessionID="'.session_id().'"');
+}
+
 ?>
 
 <script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
@@ -71,6 +75,7 @@ var ajaxCallback = {
 	},
 	failure: function(o) {
 		alert("<?php echo $GLOBALS["l_global"]["unable_to_call_ping"];?>");
+		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
 	}
 }
 

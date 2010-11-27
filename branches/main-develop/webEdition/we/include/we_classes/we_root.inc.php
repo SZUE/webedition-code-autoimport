@@ -1183,7 +1183,8 @@ class we_root extends we_class
 	function isLockedByUser(){
 
 		$DB_WE = new DB_WE();
-		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.mysql_real_escape_string($this->Table).'" AND lock>NOW()');
+		//select only own ID if not in same session
+		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.mysql_real_escape_string($this->Table).'" AND sessionID!="'.session_id().'" AND `lock`>NOW()');
 		$_userId = 0;
 		while($DB_WE->next_record()) {
 			$_userId = $DB_WE->f("UserID");
@@ -1197,8 +1198,8 @@ class we_root extends we_class
 
 			$DB_WE = new DB_WE();
 			//if lock is used by other user and time is up, update table
-			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.mysql_real_escape_string($this->Table).'",sessionID="'.session_id().'",lock=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
-				ON DUPLICATE KEY UPDATE UserID="'.abs($_SESSION["user"]["ID"]).'",sessionID="'.session_id().'",lock=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)');
+			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.mysql_real_escape_string($this->Table).'",sessionID="'.session_id().'",`lock`=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
+				ON DUPLICATE KEY UPDATE UserID="'.abs($_SESSION["user"]["ID"]).'",sessionID="'.session_id().'",`lock`=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)');
 		}
 	}
 
