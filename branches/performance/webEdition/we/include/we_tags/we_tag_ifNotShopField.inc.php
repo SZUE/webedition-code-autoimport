@@ -18,23 +18,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_shopField.inc.php');
+
 function we_tag_ifNotShopField($attribs,$content) {
-    
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_shopField.inc.php');
-	
 	$foo = attributFehltError($attribs, "name", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "reference", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "match", "ifShopField", true);if($foo) return $foo;
-	
-	
-	
+
+
+
 	$match = we_getTagAttribute("match", $attribs);
-	
+
 	$name      = we_getTagAttribute("name", $attribs);
 	$reference = we_getTagAttribute("reference", $attribs);
 	$shopname  = we_getTagAttribute("shopname", $attribs);
-	
+
 	// quickfix 4192
 	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
 		$matchA = explode("blk_",$match);
@@ -42,10 +41,10 @@ function we_tag_ifNotShopField($attribs,$content) {
 	}
 	$attribs['type']='print';
 	unset($attribs['match']);
-	
+
 	$realvalue = we_tag_shopField($attribs, "");
 	return $realvalue != $match;
-	
+
 }
 
 ?>

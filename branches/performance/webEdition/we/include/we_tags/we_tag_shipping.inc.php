@@ -21,16 +21,15 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_ifShopPayVat.inc.php');
 
 function we_tag_shipping($attribs, $content) {
-
 	$foo = attributFehltError($attribs,"sum","shipping");if($foo) return $foo;
 
 	$sumName = we_getTagAttribute('sum', $attribs);
 	$num_format = we_getTagAttribute('num_format', $attribs);
 	$type = we_getTagAttribute('type', $attribs, '');
-	
+
 	$nameTo = we_getTagAttribute("nameto", $attribs);
 	$to = we_getTagAttribute("to", $attribs,'screen');
-	
+
 	$shippingCost = 0;
 
 	// shipping depends on total value of basket
@@ -118,5 +117,4 @@ function we_tag_shipping($attribs, $content) {
 		return we_redirect_tagoutput($shippingCost,$nameTo,$to);
 	}
 	return 0;
-}
-?>
+}?>
