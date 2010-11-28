@@ -130,5 +130,3 @@ function we_tag_shopField($attribs,$content) {
 		break;
 	}
 }
-
-?>

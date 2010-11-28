@@ -34,5 +34,3 @@ function we_tag_ifPageLanguage($attribs, $content){
 	}
 	return false;
 }
-
-?>

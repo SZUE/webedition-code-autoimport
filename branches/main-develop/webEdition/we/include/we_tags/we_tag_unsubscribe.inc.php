@@ -32,4 +32,3 @@ function we_tag_unsubscribe($attribs, $content){
 
 	return getHtmlTag('input', $attribs);
 }
-?>

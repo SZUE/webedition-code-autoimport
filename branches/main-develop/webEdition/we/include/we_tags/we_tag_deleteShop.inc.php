@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * webEdition CMS
  *
@@ -22,5 +22,3 @@
 function we_tag_deleteShop($attribs,$content){
 		$foo = attributFehltError($attribs,"shopname","deleteShop");if($foo) return $foo;
 }
-
-?>

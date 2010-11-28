@@ -66,4 +66,3 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 		}
 	}
 }
-?>

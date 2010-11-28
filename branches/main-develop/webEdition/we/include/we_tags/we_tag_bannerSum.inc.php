@@ -35,7 +35,4 @@ function we_tag_bannerSum($attribs,$content){
 			return $GLOBALS["lv"]->getAllrate();
 			break;
 	}
-			
 }
-
-?>

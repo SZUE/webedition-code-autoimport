@@ -318,4 +318,3 @@ if($payinit_url){
  	}
 	return;
 }
-?>

@@ -114,4 +114,4 @@ function we_tag_shipping($attribs, $content) {
 		return we_redirect_tagoutput($shippingCost,$nameTo,$to);
 	}
 	return 0;
-}?>
+}

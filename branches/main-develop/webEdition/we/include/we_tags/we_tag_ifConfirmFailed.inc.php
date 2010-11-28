@@ -24,5 +24,3 @@ function we_tag_ifConfirmFailed($attribs, $content){
 		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==3);
 	}else return false;
 }
-
-?>

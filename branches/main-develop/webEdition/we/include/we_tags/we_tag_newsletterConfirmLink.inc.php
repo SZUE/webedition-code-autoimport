@@ -20,15 +20,15 @@
 
 
 function we_tag_newsletterConfirmLink($attribs, $content="") {
-	
+
 	$plain = we_getTagAttribute("plain",$attribs,false,true);
-	
+
 	$content = trim($content);
 	$link = isset($GLOBALS["WE_CONFIRMLINK"]) ? $GLOBALS["WE_CONFIRMLINK"] : "";
 	if (strlen($content) < 1) {
 		$content = $link;
 	}
-	
+
 	if (strlen($link) > 0) {
 		if(!$plain) {
 			$attribs["href"] = $link;
@@ -40,4 +40,3 @@ function we_tag_newsletterConfirmLink($attribs, $content="") {
 		return "";
 	}
 }
-?>

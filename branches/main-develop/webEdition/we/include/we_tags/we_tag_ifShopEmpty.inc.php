@@ -43,4 +43,3 @@ function we_tag_ifShopEmpty($attribs) {
 		return true;
 	}
 }
-?>

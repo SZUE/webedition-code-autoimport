@@ -24,5 +24,3 @@ function we_tag_ifEmailNotExists($attribs, $content){
 		return ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==1);
 	}else return false;
 }
-
-?>

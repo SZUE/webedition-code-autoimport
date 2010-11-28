@@ -26,5 +26,3 @@ function we_tag_ifMailingListEmpty($attribs, $content) {
 		return false;
 	}
 }
-
-?>

@@ -21,7 +21,7 @@
 function we_tag_ifEmailExists($attribs, $content){
 	if(isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])){
 		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==1);
+	}else{
+		return false;
 	}
-	else return false;
 }
-?>

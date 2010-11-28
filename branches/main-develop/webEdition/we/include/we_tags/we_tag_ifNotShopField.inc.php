@@ -40,4 +40,4 @@ function we_tag_ifNotShopField($attribs,$content) {
 
 	$realvalue = we_tag('shopField',$attribs, "");
 	return $realvalue != $match;
-}?>
+}

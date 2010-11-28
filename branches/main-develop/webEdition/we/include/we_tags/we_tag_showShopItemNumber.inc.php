@@ -22,7 +22,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 
 function we_tag_showShopItemNumber($attribs,$content) {
-	
+
 	$foo = attributFehltError($attribs,"shopname","showShopItemNumber");if($foo) return $foo;
 
 	$shopname = we_getTagAttribute("shopname",$attribs);
@@ -34,38 +34,38 @@ function we_tag_showShopItemNumber($attribs,$content) {
 	$type = we_getTagAttribute("type",$attribs);
 
 	$xml = we_getTagAttribute("xml", $attribs, "", true);
-	
+
 	$nameTo = we_getTagAttribute("nameto", $attribs);
 	$to = we_getTagAttribute("to", $attribs,'screen');
 
 	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname','nameto','to'));
-	
+
 	// $type of the field
 	$articleType = 'w';
-	
+
 	if (isset($GLOBALS["lv"]->Record['OF_ID'])) {
 		$articleType = 'o';
 	}
-	
+
 	if (isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->ShoppingCartKey) ) {
 		$itemQuantity = $GLOBALS[$shopname]->Get_Item_Quantity($GLOBALS["lv"]->ShoppingCartKey);
 	} else {
 		$itemQuantity = 0;
 	}
-	
-	
+
+
 	if($option || ($type=="select")) {
-		
+
 		$start = we_getTagAttribute("start",$attribs,0);
 		$stop = we_getTagAttribute("stop",$attribs,10);
-		
+
 		$stop=( intval($stop) > intval($itemQuantity) ) ? $stop : $itemQuantity;
-		
+
 		$out = '';
-		
-		
+
+
 		$attr['name'] = 'shop_cart_id[' . $GLOBALS["lv"]->ShoppingCartKey . ']';
-		
+
 		$attr['size'] = 1;
 		$attr['xml']  = $xml;
 
@@ -88,4 +88,3 @@ function we_tag_showShopItemNumber($attribs,$content) {
 		return we_redirect_tagoutput($itemQuantity,$nameTo,$to);
 	}
 }
-?>

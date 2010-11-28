@@ -50,5 +50,3 @@ function we_tag_ifVotingField($attribs,$content) {
 	}
 
 }
-
-?>

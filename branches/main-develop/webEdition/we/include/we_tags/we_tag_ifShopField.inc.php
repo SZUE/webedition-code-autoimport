@@ -56,4 +56,4 @@ function we_tag_ifShopField($attribs,$content) {
 		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
 		default: return $realvalue == $match;
 	}
-}?>
+}

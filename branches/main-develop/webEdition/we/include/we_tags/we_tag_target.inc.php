@@ -22,4 +22,3 @@
 function we_tag_target($attribs,$content){
 	return "";
 }
-?>

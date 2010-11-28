@@ -38,4 +38,4 @@ function we_tag_ifShopVat($attribs,$content) {
 		}
 	}
 	return ($id == $vatId);
-}?>
+}

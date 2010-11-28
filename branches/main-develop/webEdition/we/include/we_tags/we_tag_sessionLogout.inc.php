@@ -44,4 +44,3 @@ function we_tag_sessionLogout($attribs,$content){
 
 	return '<a href="'.$url.'?we_webUser_logout=1" '.($attr ? $attr : '').'>'.$content."</a>";
 }
-?>

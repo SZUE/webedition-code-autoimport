@@ -277,6 +277,3 @@ class weCustomer extends weModelBase{
 	}
 
 }
-
-
-?>

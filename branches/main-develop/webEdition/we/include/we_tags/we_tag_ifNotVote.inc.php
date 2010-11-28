@@ -43,4 +43,4 @@ function we_tag_ifNotVote($attribs, $content){
 		}
 	}
 	return false;
-}?>
+}

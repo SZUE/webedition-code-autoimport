@@ -28,4 +28,3 @@ function we_tag_ifEmailInvalid($attribs, $content){
 		return false;
 	}
 }
-?>

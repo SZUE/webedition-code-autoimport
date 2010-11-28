@@ -28,4 +28,4 @@ function we_tag_ifShopFieldEmpty($attribs,$content) {
 	$shopname  = we_getTagAttribute("shopname", $attribs);
 
 	return (we_tag('shopField',$attribs, "") == '');
-}?>
+}

@@ -22,4 +22,3 @@
 function we_tag_addDelShopItem($attribs,$content) {
 	$foo = attributFehltError($attribs,"shopname","addDelShopItem");if($foo) return $foo;
 }
-?>

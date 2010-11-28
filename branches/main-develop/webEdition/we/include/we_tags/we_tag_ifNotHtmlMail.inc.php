@@ -34,5 +34,3 @@ function we_tag_ifNotHtmlMail($attribs, $content) {
 		return false;
 	}
 }
-
-?>

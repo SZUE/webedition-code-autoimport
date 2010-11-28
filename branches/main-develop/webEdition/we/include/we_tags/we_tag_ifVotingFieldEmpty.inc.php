@@ -26,4 +26,4 @@ function we_tag_ifVotingFieldEmpty($attribs,$content) {
 	} else {
 		return false;
 	}
-}?>
+}

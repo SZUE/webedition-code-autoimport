@@ -203,4 +203,3 @@ function we_tag_subscribe($attribs, $content){
 
 	return "";
 }
-?>

@@ -352,5 +352,3 @@ function we_saveCustomerImages() {
 
 	}
 }
-
-?>

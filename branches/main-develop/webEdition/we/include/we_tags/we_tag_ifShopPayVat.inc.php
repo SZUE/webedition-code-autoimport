@@ -32,5 +32,3 @@ function we_tag_ifShopPayVat($attribs,$content) {
 	return $weShopVatRule->executeVatRule($customer);
 
 }
-
-?>

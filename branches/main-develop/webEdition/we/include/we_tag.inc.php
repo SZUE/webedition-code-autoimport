@@ -1220,4 +1220,4 @@ function we_tag_next($attribs, $content){
 	}else{
 		return $GLOBALS["lv"]->getNextLink($attribs);
 	}
-}?>
+}
