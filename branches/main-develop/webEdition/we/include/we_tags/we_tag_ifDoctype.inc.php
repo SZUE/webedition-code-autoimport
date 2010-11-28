@@ -30,4 +30,4 @@ function we_tag_ifDoctype($attribs, $content){
 		}
 	}
 	return false;
-}>?
+}?>
