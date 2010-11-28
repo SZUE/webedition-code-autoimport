@@ -1682,8 +1682,7 @@ function getHTTP($server, $url, $port = "", $username = "", $password = "")
 		}
 }
 
-function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false)
-{
+function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
 	if ($canBeEmpty) {
 		if (!isset($attribs[$attr]))
 			return parseError(sprintf($GLOBALS["l_parser"]["attrib_missing2"], $attr, $tag));
@@ -1693,13 +1692,11 @@ function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false)
 	}
 	return "";
 }
-function modulFehltError($modul, $tag)
-{
+function modulFehltError($modul, $tag){
 	return parseError(sprintf($GLOBALS["l_parser"]["module_missing"], $modul, $tag));
 }
 
-function parseError($text)
-{
+function parseError($text){
 	return "<b>" . $GLOBALS["l_parser"]["error_in_template"] . ":</b> $text<br>\n";
 }
 
