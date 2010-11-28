@@ -120,7 +120,11 @@ class we_browserDetect {
 													} else 
 														if (preg_match('/opera ([^ ]+)/i', $post, $regs)) {
 															self::$br = "opera";
-															self::$v = $regs[1];
+															if (preg_match('/version\/([^ ]+)/i', $post, $reg)) {
+																self::$v = $reg[1];
+															}else{
+																self::$v = $regs[1];
+															}
 															$this->_getSys($bracket);
 														} else 
 															if ($brArr[0] == "compatible") {
@@ -146,7 +150,11 @@ class we_browserDetect {
 				} else 
 					if (strtolower($bez) == "opera") {
 						self::$br = "opera";
-						self::$v = $prever;
+						if (preg_match('/version\/([^ ]+)/i', $post, $reg)) {
+							self::$v = $reg[1];
+						}else{
+							self::$v = $prever;
+						}
 						$this->_getSys($bracket);
 					} else 
 						if (strtolower($bez) == "googlebot") {
@@ -222,5 +230,3 @@ class we_browserDetect {
 		return self::$ua;
 	}
 }
-
-?>
