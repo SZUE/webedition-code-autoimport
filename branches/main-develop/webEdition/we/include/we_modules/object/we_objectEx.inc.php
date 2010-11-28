@@ -51,8 +51,7 @@
 				$q .= " OF_WebUserID BIGINT NOT NULL, ";
 				$q .= " OF_Language VARCHAR(5) default 'NULL', ";
 
-				$indexe = "";
-				$indexe .= ', KEY OF_WebUserID (OF_WebUserID)';
+				$indexe = ', KEY OF_WebUserID (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY `OF_IsSearchable` (`OF_IsSearchable`)';
 
 				$this->SerializedArray = unserialize($this->DefaultValues);
 
@@ -65,6 +64,10 @@
 						$type = $this->switchtypes2($arr[0],$len);
 						if(!empty($type)){
 							$qarr[] = $key . $type;
+							//add index for complex queries
+							if($arr[0]=='object'){
+								$indexe .= ', KEY '.$key.' ('.$key.')';
+							}
 						}
 					}
 				}
@@ -81,7 +84,7 @@
 				}
 
 				$this->DB_WE->query("DROP TABLE IF EXISTS $ctable");
-				$this->DB_WE->query("CREATE TABLE $ctable ($q, UNIQUE (ID)$indexe)$charset_collation");
+				$this->DB_WE->query("CREATE TABLE $ctable ($q, PRIMARY KEY (ID)$indexe)$charset_collation");
 
 				//dummy eintrag schreiben
 				$this->DB_WE->query("INSERT INTO $ctable (OF_ID) VALUES (0)");
@@ -114,9 +117,13 @@
 					if(!isset($arr[0])) continue;
 
 					$fieldtype = $this->getFieldType($arr[0]);
-					if(isset($value['length'])) $len = ($fieldtype == 'string') ? ($value['length']>255 ? 255 : $value['length']) : $value['length'];
-					else $len=0;
+					if(isset($value['length'])){
+						$len = ($fieldtype == 'string') ? ($value['length']>255 ? 255 : $value['length']) : $value['length'];
+					}else{
+						$len=0;
+					}
 					$type = $this->switchtypes2($arr[0],$len);
+					$isObject = ($arr[0]=='object');
 
 					if(isset($tableInfo['meta'][$fieldname])){
 						$props = $tableInfo[$tableInfo['meta'][$fieldname]];
@@ -129,6 +136,9 @@
 					} else {
 						if(!empty($type)){
 							$add[$fieldname] = $fieldname . $type;
+							if($isObject){
+								$add[$fieldname.'_key'] = ' INDEX ('.$fieldname.')';
+							}
 						}
 					}
 
@@ -164,7 +174,6 @@
 
 
 		function getFieldType($type) {
-	    	$q = "";
 			switch($type){
 				case "country":
 				case "language":
@@ -172,11 +181,9 @@
 				case "input":
 				case "link":
 				case "href":
-					$q = "string";
-				break;
+					return "string";
 				case "float":
-					$q = "real";
-				break;
+					return "real";
 				case "img":
 				case "flashmovie":
 				case "quicktime":
@@ -184,65 +191,46 @@
 				case "object":
 				case "date":
 				case "int":
-					$q = "int";
-				break;
+					return  "int";
 				case "text":
-					$q = "blob";
-				break;
+					return "blob";
 			}
-			return $q;
-
+			return '';
 		}
 
 		function switchtypes2($type,$len){
-
-		    $q = "";
 			switch($type){
 				case "meta":
-					$q .= " VARCHAR(".(($len>0 && ($len < 256))?$len:"255").") NOT NULL ";
-				break;
+					return " VARCHAR(".(($len>0 && ($len < 256))?$len:"255").") NOT NULL ";
 				case "date":
-					$q .= " INT(11) NOT NULL ";
-				break;
+					return " INT(11) NOT NULL ";
 				case "input":
-					$q .= " VARCHAR(".(($len>0 && ($len < 256))?$len:"255").") NOT NULL ";
-				break;
+					return  " VARCHAR(".(($len>0 && ($len < 256))?$len:"255").") NOT NULL ";
 				case "country":
 				case "language":
-				$q .= " VARCHAR(2) NOT NULL ";
-				break;
+				return " VARCHAR(2) NOT NULL ";
 				case "link":
 				case "href":
-					$q .= " TEXT NOT NULL ";
-				break;
+					return " TEXT NOT NULL ";
 				case "text":
-					$q .= " LONGTEXT NOT NULL ";
-				break;
+					return " LONGTEXT NOT NULL ";
 				case "img":
 				case "flashmovie":
 				case "quicktime":
 				case "binary":
-					$q .= " BIGINT(22) DEFAULT '0' NOT NULL ";
-				break;
+					return  " INT(11) DEFAULT '0' NOT NULL ";
 				case "int":
-					$q .= " INT(".(($len>0  && ($len < 256))?$len:"11").") DEFAULT NULL ";
-				break;
+					return " INT(".(($len>0  && ($len < 256))?$len:"11").") DEFAULT NULL ";
 				case "float":
-					$q .= " DOUBLE DEFAULT NULL ";
-				break;
+					return " DOUBLE DEFAULT NULL ";
 				case "object":
-					$q .= " BIGINT(22) DEFAULT '0' NOT NULL ";
-				break;
+					return " BIGINT(20) DEFAULT '0' NOT NULL ";
 				case "multiobject":
-					$q .= " TEXT NOT NULL ";
-				break;
+					return " TEXT NOT NULL ";
 				case 'shopVat':
-					$q .= ' TEXT NOT NULL';
-				break;
+					return ' TEXT NOT NULL';
 			}
-			return $q;
+			return '';
 		}
-
-
 	}
 ?>

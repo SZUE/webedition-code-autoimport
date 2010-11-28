@@ -191,13 +191,10 @@ class we_class_folder extends we_folder
 
 			case WE_EDITPAGE_CFWORKSPACE:
 			    return "we_modules/object/we_classFolder_properties.inc.php";
-			    break;
 			case WE_EDITPAGE_FIELDS:
 			    return "we_modules/object/we_classFolder_fields.inc.php";
-			    break;
 			case WE_EDITPAGE_WEBUSER:
 				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
-				break;
 			/*
 			case WE_EDITPAGE_CFSEARCH:
 			    return "we_modules/object/we_classFolder_search.inc.php";
