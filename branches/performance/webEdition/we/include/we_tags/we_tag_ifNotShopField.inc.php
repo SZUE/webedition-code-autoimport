@@ -18,15 +18,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_shopField.inc.php');
-
 function we_tag_ifNotShopField($attribs,$content) {
 	$foo = attributFehltError($attribs, "name", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "reference", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "match", "ifShopField", true);if($foo) return $foo;
-
-
 
 	$match = we_getTagAttribute("match", $attribs);
 
@@ -42,9 +38,6 @@ function we_tag_ifNotShopField($attribs,$content) {
 	$attribs['type']='print';
 	unset($attribs['match']);
 
-	$realvalue = we_tag_shopField($attribs, "");
+	$realvalue = we_tag('shopField',$attribs, "");
 	return $realvalue != $match;
-
-}
-
-?>
+}?>

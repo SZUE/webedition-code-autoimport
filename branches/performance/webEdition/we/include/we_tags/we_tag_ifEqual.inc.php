@@ -33,5 +33,4 @@ function we_tag_ifEqual($attribs, $content){
 			return false;
 		}
 	}
-
 }?>

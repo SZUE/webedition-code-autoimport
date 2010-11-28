@@ -2,7 +2,7 @@
 function we_tag_sidebar($attribs, $content){
 	$_out = "";
 
-	if (we_tag_ifNotSidebar($attribs, $content) && we_tag_ifEditmode($attribs, $content)) {
+	if (we_tag('ifNotSidebar',$attribs, $content) && we_tag('ifEditmode',$attribs, $content)) {
 
 		$id = we_getTagAttribute("id", $attribs, 0);
 		$file = we_getTagAttribute("file", $attribs, "");

@@ -102,7 +102,7 @@ function we_tag_setVar($attribs, $content){
 				if (!isset($GLOBALS["lv"])) {
 					return parseError($GLOBALS["l_parser"]["setVar_lv_not_in_lv"]);
 				}
-				$valueFrom = we_tag_field(array(
+				$valueFrom = we_tag('field',array(
 					'name' => $nameFrom, 'type' => $typeFrom
 				), "");
 				break;

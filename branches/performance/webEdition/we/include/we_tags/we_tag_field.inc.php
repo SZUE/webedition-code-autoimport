@@ -1,6 +1,5 @@
 <?php
 function we_tag_field($attribs, $content){
-
 	$name = we_getTagAttribute("name", $attribs);
 
 	// quickfix 4192
@@ -450,7 +449,7 @@ function we_tag_field($attribs, $content){
 							$out = getHtmlTag('a', $_linkAttribs, $out); //  output of link-tag
 						}
 					} else
-						if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_catListview" && we_tag_ifHasChildren(
+						if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_catListview" && we_tag('ifHasChildren',
 								array(),
 								"")) {
 							$parentidname = we_getTagAttribute('parentidname', $attribs, 'we_parentid');

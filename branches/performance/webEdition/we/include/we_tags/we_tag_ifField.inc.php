@@ -1,6 +1,5 @@
 <?php
 function we_tag_ifField($attribs, $content){
-
 	$foo = attributFehltError($attribs, "name", "ifField");
 	if ($foo) {
 		print($foo);
@@ -36,11 +35,10 @@ function we_tag_ifField($attribs, $content){
 	if($attribs["type"]=='float' || $attribs["type"]=='int'){$attribs["type"]='text';}
 
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-        $realvalue = (int) we_tag_field($attribs, "");;
-    }
-    else {
-        $realvalue = we_tag_field($attribs, "");;
-    }
+		$realvalue = (int) we_tag('field',$attribs, "");;
+	}else {
+		$realvalue = we_tag('field',$attribs, "");;
+	}
 
 	switch ($operator) {
 		case "equal": return $realvalue == $match; break;

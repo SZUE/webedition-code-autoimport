@@ -6,7 +6,6 @@
  * @desc Beschreibung eingeben...
  */
 function we_tag_checkForm($attribs, $content){
-
 	//  dont make this in editMode
 	if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) {
 		return "";
@@ -95,7 +94,7 @@ function we_tag_checkForm($attribs, $content){
 	if ($jsIncludePath) {
 
 		if (is_numeric($jsIncludePath)) {
-			$jsTag = we_tag_js(array(
+			$jsTag = we_tag('js',array(
 				'id' => $jsIncludePath, 'xml' => $xml
 			));
 			if ($jsTag) {

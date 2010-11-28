@@ -18,8 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_ifShopPayVat.inc.php');
-
 function we_tag_shipping($attribs, $content) {
 	$foo = attributFehltError($attribs,"sum","shipping");if($foo) return $foo;
 
@@ -36,13 +34,11 @@ function we_tag_shipping($attribs, $content) {
 	if (isset($GLOBALS['summe'][$sumName])) {
 
 		require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_ifRegisteredUser.inc.php');
 
 		$orderVal = $GLOBALS['summe'][$sumName];
-
 		$weShippingControl = weShippingControl::getShippingControl();
 
-		if (we_tag_ifRegisteredUser(array(), '')) { // check if user is registered
+		if (we_tag('ifRegisteredUser',array(), '')) { // check if user is registered
 			$customer = $_SESSION['webuser'];
 		} else {
 			$customer = false;
@@ -52,9 +48,8 @@ function we_tag_shipping($attribs, $content) {
 
 		// get calculated value if needed
 		if ($type) {
-
 			// if user must NOT pay vat always return net prices
-			$mustPayVat = we_tag_ifShopPayVat(array(), ''); // alayways return net prices
+			$mustPayVat = we_tag('ifShopPayVat',array(), ''); // alayways return net prices
 
 			if ($mustPayVat) {
 
@@ -95,24 +90,26 @@ function we_tag_shipping($attribs, $content) {
 							$shippingCost = $shippingCost * (100/ ((1 + ($weShippingControl->vatRate/100)) * 100) );
 						}
 					break;
-
 					case 'vat':
 						$shippingCost = 0;
 					break;
 				}
 			}
-
-
 		}
 
-		if($num_format=="german"){
-			$shippingCost=number_format($shippingCost,2,",",".");
-		}else if($num_format=="french"){
+		switch($num_format){
+		case 'french':
 			$shippingCost=number_format($shippingCost,2,","," ");
-		}else if($num_format=="english"){
+			break;
+		case 'english':
 			$shippingCost=number_format($shippingCost,2,".","");
-		}else if($num_format=="swiss"){
+			break;
+		case 'swiss':
 			$shippingCost=number_format($shippingCost,2,".", "'");
+			break;
+		case 'german':
+		default:
+			$shippingCost=number_format($shippingCost,2,",",".");
 		}
 		return we_redirect_tagoutput($shippingCost,$nameTo,$to);
 	}
