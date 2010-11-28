@@ -139,9 +139,7 @@ function pWebEdition_JSwe_cmds()
  * @return void
  * @desc the frameset for the SeeMode
  */
-function pWebEdition_Frameset()
-{
-	
+function pWebEdition_Frameset(){	
 	if (isset($GLOBALS["SEEM_edit_include"]) && $GLOBALS["SEEM_edit_include"]) { // edit include file
 		$we_cmds = "we_cmd[0]=edit_document&";
 		
@@ -153,12 +151,11 @@ function pWebEdition_Frameset()
 		print (isset($_SESSION["prefs"]["debug_seem"]) && $_SESSION["prefs"]["debug_seem"] != 0) ? "100,100" : "0,0";
 		?>" framespacing="0" border="0" frameborder="no" onUnload="doUnload('include')">
 	<frame src="header.php?SEEM_edit_include=true" name="header" scrolling="no" noresize>
-	<frame src="resizeframe.php?<?php
-		print $we_cmds?>SEEM_edit_include=true" name="rframe" scrolling="no" noresize>
-	<frame src="<?php
-		print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
-	<frame src="<?php
-		print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
+	<frame src="resizeframe.php?<?php	print $we_cmds?>SEEM_edit_include=true" name="rframe" scrolling="no" noresize>
+	<frame src="<?php	print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
+	<frame src="<?php	print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
+	<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+	<frame src="<?php	print HTML_DIR?>white.html" name="ad" scrolling="no" noresize>
 </frameset>
 			<?php
 	
@@ -171,16 +168,13 @@ function pWebEdition_Frameset()
 	<frame src="header.php" name="header" scrolling="no" noresize>
 	<frame src="resizeframe.php" name="rframe" scrolling="no" noresize>
 	<frameset cols="25%,25%,30%,10%,10%" framespacing="0" border="0" frameborder="no">
-		<frame src="<?php
-			print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
-		<frame src="<?php
-			print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
-		<frame src="<?php
-			print WE_USERS_MODULE_PATH?>we_users_ping.php" name="ping" scrolling="no" noresize>
-        <frame src="<?php
-			print HTML_DIR?>white.html" name="postframe" scrolling="no" noresize>
-        <frame src="<?php
-			print HTML_DIR?>white.html" name="plugin" scrolling="no" noresize>
+		<frame src="<?php	print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
+		<frame src="<?php	print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
+			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+		<frame src="<?php	print HTML_DIR?>white.html" name="ad" scrolling="no" noresize>
+		<frame src="<?php	print WE_USERS_MODULE_PATH?>we_users_ping.php" name="ping" scrolling="no" noresize>
+    <frame src="<?php	print HTML_DIR?>white.html" name="postframe" scrolling="no" noresize>
+    <frame src="<?php	print HTML_DIR?>white.html" name="plugin" scrolling="no" noresize>
 	</frameset>
 </frameset>
 <?php
