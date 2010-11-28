@@ -48,6 +48,4 @@ function we_tag_ifShopNotEmpty($attribs) {
 	} else {
 		return false;
 	}
-}
-
-?>
+}?>

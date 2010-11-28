@@ -19,40 +19,34 @@
  */
 
 function we_tag_ifShopField($attribs,$content) {
-    
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_shopField.inc.php');
-	
 	$foo = attributFehltError($attribs, "name", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "reference", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "match", "ifShopField", true);if($foo) return $foo;
-	
-	
-	
+
 	$match = we_getTagAttribute("match", $attribs);
-	
+
 	$name      = we_getTagAttribute("name", $attribs);
 	$reference = we_getTagAttribute("reference", $attribs);
 	$shopname  = we_getTagAttribute("shopname", $attribs);
 	$operator  = we_getTagAttribute("operator", $attribs);
-	
+
 	// quickfix 4192
 	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
 		$matchA = explode("blk_",$match);
 		$match = $matchA[0];
 	}
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-    	$match = (int) $match;
-	} 
+		$match = (int) $match;
+	}
 	$attribs['type']='print';
 	$atts = removeAttribs($attribs,array('match','operator'));
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-        $realvalue = (int) we_tag_shopField($atts, "");
-    }
-    else {
-        $realvalue = we_tag_shopField($atts, "");
-    } 
-	
+		$realvalue = (int) we_tag('shopField',$atts, "");
+	}else {
+		$realvalue = we_tag('shopField',$atts, "");
+	}
+
 	switch ($operator) {
 		case "equal": return $realvalue == $match; break;
 		case "less": return $realvalue < $match; break;
@@ -62,7 +56,4 @@ function we_tag_ifShopField($attribs,$content) {
 		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
 		default: return $realvalue == $match;
 	}
-	
-}
-
-?>
+}?>
