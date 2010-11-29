@@ -97,28 +97,9 @@ function we_tag_saveRegisteredUser($attribs,$content){
 								$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE ID='".abs($uID)."'",$GLOBALS["DB_WE"]);
 								$_SESSION["webuser"]=$u;
 								$_SESSION["webuser"]["registered"] = true;
-
-								$memberSinceExists=false;
-								$foo = $GLOBALS["DB_WE"]->metadata(CUSTOMER_TABLE);
-								for($i=0;$i<sizeof($foo);$i++){
-									if($foo[$i]["name"] == "MemberSince"){
-										$memberSinceExists=true;
-										break;
-									}
-								}
-								if($memberSinceExists){
-									$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
-								}
-								$lastAccessExists=false;
-								for($i=0;$i<sizeof($foo);$i++){
-									if($foo[$i]["name"] == "LastAccess"){
-										$lastAccessExists=true;
-										break;
-									}
-								}
-								if($lastAccessExists){
-									$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastAccess='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
-								}
+								
+								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
+								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastAccess='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastLogin='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
 								if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 									echo '<a name="emos_name" title="register" rel="'.md5($uID).'" rev="0" ></a>';
@@ -210,7 +191,9 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							}
 
 						}
-
+						if(isset($_REQUEST["s"]["Password"]) && $_REQUEST["s"]["Password"] != $_SESSION["webuser"]["Password"]){//bei Passwordänderungen müssen die Autologins des Users gelöscht werden
+							$GLOBALS["DB_WE"]->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE UserID='".abs($_REQUEST["s"]["ID"])."'");
+						}
 						if(sizeof($set_a)){
 							$set=implode(",",$set_a);
 							$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET ".$set." WHERE ID='".abs($_REQUEST["s"]["ID"])."'");

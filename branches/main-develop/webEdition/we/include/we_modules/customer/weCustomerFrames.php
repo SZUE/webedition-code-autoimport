@@ -478,6 +478,10 @@ class weCustomerFrames extends weModuleFrames {
 					$table->setCol($r,$c,array("class"=>"defaultfont"),"");
 				}else if($pk=="LoginDenied"){
 					$table->setCol($r,$c,array("class"=>"defaultfont"),htmlFormElementTable(we_htmlElement::htmlDiv(array("class"=>"defaultgray"), we_forms::checkbox(1, $pv, "LoginDenied", $GLOBALS['l_customer']['login_denied'],false,"defaultfont","top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
+				}else if($pk=="AutoLoginDenied"){
+					$table->setCol($r,$c,array("class"=>"defaultfont"),htmlFormElementTable(we_htmlElement::htmlDiv(array("class"=>"defaultgray"), we_forms::checkbox(1, $pv, "AutoLoginDenied", $GLOBALS['l_customer']['login_denied'],false,"defaultfont","top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
+				}else if($pk=="AutoLogin"){
+					$table->setCol($r,$c,array("class"=>"defaultfont"),htmlFormElementTable(we_htmlElement::htmlDiv(array("class"=>"defaultgray"), we_forms::checkbox(1, $pv, "AutoLogin", $GLOBALS['l_customer']['autologin_request'],false,"defaultfont","top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
 				}else if($pk=="Password"){
 					$table->setCol($r,$c,array(),htmlFormElementTable(htmlTextInput($pk,32,$pv,"","onchange=\"top.content.setHot();\" ",(we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? 'text' : 'password' ),"240px"),$this->View->settings->getPropertyTitle($pk)));
 				}else{

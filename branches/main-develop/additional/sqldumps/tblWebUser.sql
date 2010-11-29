@@ -19,6 +19,8 @@ CREATE TABLE tblWebUser (
   MemberSince varchar(24) NOT NULL default '',
   LastLogin varchar(24) NOT NULL default '',
   LastAccess varchar(24) NOT NULL default '',
+  AutoLoginDenied tinyint(1) NOT NULL default '0',
+  AutoLogin tinyint(1) NOT NULL default '0',
   ParentID bigint(20) NOT NULL default '0',
   Path varchar(255) default NULL,
   IsFolder tinyint(1) default NULL,

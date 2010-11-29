@@ -623,6 +623,10 @@ function processCommands() {
 							print we_htmlElement::jsElement($js);
 							break;
 						}
+						$c = unserialize($_SESSION["customer_session"]);
+						if ($c->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied ){//bei Passwordänderungen die persistentlogins löschen
+							$this->db->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE WebUserID='".abs($this->customer->ID)."'");
+						}
 						$this->customer->save();
 
 						$tt="";

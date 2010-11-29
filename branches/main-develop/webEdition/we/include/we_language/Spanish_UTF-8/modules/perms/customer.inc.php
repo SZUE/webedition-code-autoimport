@@ -33,6 +33,7 @@ $l_perm['customer']['DELETE_CUSTOMER'] = 'El usuario puede borrar clientes';
 $l_perm['customer']['EDIT_CUSTOMER'] = 'El usuario puede editar clientes existentes';
 $l_perm['customer']['SHOW_CUSTOMER_ADMIN'] = 'El usuario puede editar campos de clientes';
 $l_perm['customer']['CUSTOMER_PASSWORD_VISIBLE'] = 'The user is allowed to see the passwords of the customers.'; // TRANSLATE
+$l_perm['customer']['CUSTOMER_AUTOLOGINID_VISIBLE'] = 'The user is allowed to see the auto login ID of the customers';// TRANSLATE
 $l_perm['customer']['CAN_EDIT_CUSTOMERFILTER'] = 'The user is allowed to edit the customer filter.'; // TRANSLATE
 $l_perm['customer']['CAN_CHANGE_DOCS_CUSTOMER'] = 'The user is allowed to assign customers to documents and objects.'; // TRANSLATE
 ?>

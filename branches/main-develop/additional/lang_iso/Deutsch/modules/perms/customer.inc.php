@@ -27,6 +27,7 @@ $l_perm['customer']['DELETE_CUSTOMER'] = 'Der Benutzer darf Kunden löschen';
 $l_perm['customer']['EDIT_CUSTOMER'] = 'Der Benutzer darf bestehende Kunden bearbeiten';
 $l_perm['customer']['SHOW_CUSTOMER_ADMIN'] = 'Der Benutzer darf Kundenfelder bearbeiten';
 $l_perm['customer']['CUSTOMER_PASSWORD_VISIBLE'] = 'Der Benutzer darf die Kennwörter der Kunden sehen';
+$l_perm['customer']['CUSTOMER_AUTOLOGINID_VISIBLE'] = 'Der Benutzer darf die Auto-Login-ID der Kunden sehen';
 $l_perm['customer']['CAN_EDIT_CUSTOMERFILTER'] = 'Der Benutzer darf den Kundenfilter ändern';
 $l_perm['customer']['CAN_CHANGE_DOCS_CUSTOMER'] = 'Der Benutzer darf Dokumenten und Objekten Kunden zuweisen';
 ?>

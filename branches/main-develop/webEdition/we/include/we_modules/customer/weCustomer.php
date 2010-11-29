@@ -47,13 +47,13 @@ class weCustomer extends weModelBase{
 	var $LastAccess;
 
 	var $protected=array("ID","ParentID","Icon","IsFolder","Path","Text");
-	var $properties=array("Username","Password","Forename","LoginDenied","Surname","MemberSince","LastLogin","LastAccess");
+	var $properties=array("Username","Password","Forename","Surname","LoginDenied","MemberSince","LastLogin","LastAccess","AutoLoginDenied","AutoLogin");
 	var $udates=array("MemberSince","LastLogin","LastAccess");
 
 
 	/**
 	* Default Constructor
-	* Can load or create new Newsletter depends of parameter
+	* Can load or create new Customer depends of parameter
 	*/
 
 	function weCustomer($customerID = 0){

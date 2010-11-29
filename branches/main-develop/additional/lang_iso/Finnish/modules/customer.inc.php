@@ -56,6 +56,9 @@ $l_customer["password"] = "Salasana";
 
 $l_customer["login"] = "Kirjaudu";
 $l_customer["login_denied"] = "P‰‰sy kielletty";
+$l_customer["autologin"] = "Auto-Login";// TRANSLATE
+$l_customer["autologin_request"] = "requested";// TRANSLATE
+
 
 $l_customer["permissions"] = "Oikeudet";
 
