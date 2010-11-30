@@ -3,7 +3,7 @@ CREATE TABLE tblOrders (
   IntOrderID int(11) default NULL,
   IntCustomerID int(11) default NULL,
   IntArticleID int(11) default NULL,
-  IntQuantity int(11) default NULL,
+  IntQuantity float default NULL,
   DateOrder datetime default NULL,
   DateConfirmation datetime default NULL,
   DateCustomA datetime default NULL,

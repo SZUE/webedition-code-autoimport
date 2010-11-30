@@ -201,6 +201,22 @@ function numfom($result){
 	}
 	return $result;
 }
+function numfom2($result){
+	global $numberformat;
+	$result = we_util::std_numberformat($result);
+	if($numberformat=="german"){
+		$result=number_format($result,2,",",".");
+	}else if($numberformat=="french"){
+		$result=number_format($result,2,",","&nbsp;");
+	}else if($numberformat=="english"){
+		$result=number_format($result,2,".","");
+	}else if($numberformat=="swiss"){
+	    $result=number_format($result,2,".","'");
+	}
+	$result = rtrim($result,'.00');
+	$result = rtrim($result,',00');
+	return $result;
+}
 if (isset($_REQUEST['we_cmd'][0])) {
 
 	switch ($_REQUEST['we_cmd'][0]) {
@@ -1840,7 +1856,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".$l_shop["jsanz"]."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".$l_shop["jsanz"]."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
 		<td></td>
