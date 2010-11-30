@@ -255,7 +255,7 @@ class listviewBase{
 	function getBackLink($attribs){
 
 	    $only = we_getTagAttribute("only", $attribs, "");
-
+			$urlID = we_getTagAttribute("id", $attribs, "");
 		if(isset($this->calendar_struct["calendar"]) && $this->calendar_struct["calendar"]!=""){
 
 			$month=$this->calendar_struct["month_human"];
@@ -286,7 +286,7 @@ class listviewBase{
 				}
 				$newdate=$year."-".$month."-".$day;
 			}
-			$attribs["href"] = $_SERVER["SCRIPT_NAME"].'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_".$this->name."=".$this->calendar_struct["calendar"]."&we_lv_datefield_".$this->name."=".$this->calendar_struct["datefield"]."&we_lv_date_".$this->name."=$newdate"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_".$this->name."=".$this->calendar_struct["calendar"]."&we_lv_datefield_".$this->name."=".$this->calendar_struct["datefield"]."&we_lv_date_".$this->name."=$newdate"));
 			if($only){
 			    $this->close_a = false;
 			    return (isset($attribs[$only]) ? $attribs[$only] : "");
@@ -297,7 +297,7 @@ class listviewBase{
 		else if($this->hasPrevPage()){
 
 			$foo = $this->start - $this->rows;
-			$attribs["href"] = $_SERVER["SCRIPT_NAME"].'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_".$this->name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_".$this->name."=$foo"));
 
 			if($only){
 			    $this->close_a = false;
@@ -378,7 +378,7 @@ class listviewBase{
 	function getNextLink($attribs){
 
 	    $only = we_getTagAttribute("only", $attribs, "");
-
+			$urlID = we_getTagAttribute("id", $attribs, "");
 		if(isset($this->calendar_struct["calendar"]) && $this->calendar_struct["calendar"]!=""){
 
 			$month=$this->calendar_struct["month_human"];
@@ -410,7 +410,7 @@ class listviewBase{
 				}
 				$newdate=$year."-".$month."-".$day;
 			}
-			$attribs["href"] = $_SERVER["SCRIPT_NAME"].'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_".$this->name."=".$this->calendar_struct["calendar"]."&we_lv_datefield_".$this->name."=".$this->calendar_struct["datefield"]."&we_lv_date_".$this->name."=$newdate"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_".$this->name."=".$this->calendar_struct["calendar"]."&we_lv_datefield_".$this->name."=".$this->calendar_struct["datefield"]."&we_lv_date_".$this->name."=$newdate"));
 			if($only){
 			    $this->close_a = false;
 			    return (isset($attribs[$only]) ? $attribs[$only] : "");
@@ -421,7 +421,7 @@ class listviewBase{
 		else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->rows;
-			$attribs["href"] = $_SERVER["SCRIPT_NAME"].'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_".$this->name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_".$this->name."=$foo"));
 			if($only){
 			    $this->close_a = false;
 			    return (isset($attribs[$only]) ? $attribs[$only] : "");
