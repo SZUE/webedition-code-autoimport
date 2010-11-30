@@ -5,7 +5,7 @@
 	<creator>
 		<company>webEdition project</company>
 		<name>webEdition e.V.</name>
-		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+		<address>Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
 		<fax>+49 30 766835-85</fax>
@@ -39,7 +39,7 @@
 	
 	<dependencies>
 		<version>6100</version>
-		<sdkversion>6100</version>
+		<sdkversion>6100</sdkversion>
 	</dependencies>
 	
 </manifest>
