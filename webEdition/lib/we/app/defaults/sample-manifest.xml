@@ -49,7 +49,7 @@
 		<company>webEdition project</company>
 		<name>webEdition e.V.</name>
 		<authornames>misc.</authornames>
-		<address>c/o Löwi & Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+		<address>Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
 		<fax>+49 30 766835-85</fax>
@@ -106,11 +106,11 @@
 		<!-- min. webEdition Version -->
 		<version>6100</version>
 		<!-- Version of the webEdition SDK -->
-		<sdkversion>6100</version>
+		<sdkversion>6100</sdkversion>
 		<!-- max. webEdition Version if already known, otherwise empty-->
 		<versionmax></versionmax>
 		<!-- max. Version of the webEdition SDK if already known, otherwise empty, if set, WE expects the application to be compatible with all versions in between -->
-		<sdkversionmax></versionmax>
+		<sdkversionmax></sdkversionmax>
 	</dependencies>
 	
 </manifest>
