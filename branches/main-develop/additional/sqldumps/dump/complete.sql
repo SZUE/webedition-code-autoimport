@@ -1,4 +1,4 @@
-﻿CREATE TABLE tblAnzeigePrefs (
+CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -163,6 +163,7 @@ CREATE TABLE tblLock (
   UserID bigint(20) NOT NULL default '0',
   sessionID varchar(64) NOT NULL default '',
   `lock` datetime NOT NULL,
+  tbl varchar(32) NOT NULL default '',
   PRIMARY KEY (ID,tbl),
   KEY UserID (UserID,sessionID),
   KEY `lock` (`lock`)
