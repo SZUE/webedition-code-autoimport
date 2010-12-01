@@ -1149,8 +1149,7 @@ function we_tag_ifUserInputEmpty($attribs, $content){
 	return !we_isUserInputNotEmpty($attribs);
 }
 
-function we_tag_ifUserInputNotEmpty($attribs, $content)
-{
+function we_tag_ifUserInputNotEmpty($attribs, $content){
 	$foo = attributFehltError($attribs, "match", "ifUserInputNotEmpty");
 	if ($foo) {
 		print($foo);
@@ -1212,12 +1211,4 @@ function we_tag_listviewStart($attribs, $content){
 
 function we_tag_makeMail($attribs, $content){
 	return "";
-}
-
-function we_tag_next($attribs, $content){
-	if (isset($GLOBALS["_we_voting_list"])){
-		return $GLOBALS["_we_voting_list"]->getNextLink($attribs);
-	}else{
-		return $GLOBALS["lv"]->getNextLink($attribs);
-	}
 }

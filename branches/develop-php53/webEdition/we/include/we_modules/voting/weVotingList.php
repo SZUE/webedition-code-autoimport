@@ -97,11 +97,10 @@ class weVotingList{
 	}
 	
 	function getNextLink($attribs){
-	    
 		if($this->hasNextPage()){
-		    		    
+			$urlID = we_getTagAttribute("id", $attribs, "");
 			$foo = $this->Start + $this->Rows;
-			$attribs["href"] = $_SERVER["PHP_SELF"].'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
 
             return getHtmlTag("a", $attribs, "", false, true);
 
@@ -118,11 +117,10 @@ class weVotingList{
 
 	
 	function getBackLink($attribs){
-	    
 		if($this->hasPrevPage()){
-		    		    
+			$urlID = we_getTagAttribute("id", $attribs, "");
 			$foo = $this->Start - $this->Rows;
-			$attribs["href"] = $_SERVER["PHP_SELF"].'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
 			
 			return getHtmlTag("a", $attribs, "", false, true);
 
