@@ -989,8 +989,8 @@ function we_tag_ifNotDoctype($attribs,$content){
 	return !we_tag('ifDoctype',$attribs,$content);
 }
 
-function we_tag_ifNotEditmode($attribs, $content){
-	!we_tag('ifEditmode',$attribs,$content);
+function we_tag_ifNotEditmode($attribs, $content) {
+	return !we_tag('ifEditmode', $attribs, $content);
 }
 
 function we_tag_ifNotEmpty($attribs, $content){
