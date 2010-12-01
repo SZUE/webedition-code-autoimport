@@ -92,9 +92,9 @@ function we_tag_writeShopData($attribs) {
 		$maxOrderID = $DB_WE->f('max');
 
 		$totPrice = 0;
-		
+
 		if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT  && WE_ECONDA_PATH !="" && !$GLOBALS["we_doc"]->InWebEdition){
-			$_GLOBALS['weEconda'] = array('emosBasket'=>""); 
+			$_GLOBALS['weEconda'] = array('emosBasket'=>"");
 			$GLOBALS['weEconda']  = array('emosBilling'=>"");
 		}
 		$articleCount = 0;
@@ -103,7 +103,7 @@ function we_tag_writeShopData($attribs) {
 			$preis = ((isset($shoppingItem['serial']["we_".$pricename])) ? $shoppingItem['serial']["we_".$pricename] : $shoppingItem['serial'][$pricename]);
 
 			$preis = we_util::std_numberformat($preis);
-			
+
 			$totPrice += $preis * $shoppingItem['quantity'];
 
 			$additionalFields = array();
@@ -136,7 +136,7 @@ function we_tag_writeShopData($attribs) {
 				echo "Data Insert Failed";
 				return;
 			}
-			
+
 			if (isset($_GLOBALS['weEconda'])){
 				$_GLOBALS['weEconda']['emosBasket'] .= "
 if(typeof emosBasketPageArray == 'undefined') var emosBasketPageArray = new Array();
@@ -164,19 +164,19 @@ emosBasketPageArray[$articleCount][7]='NULL';
 			require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 			$weShippingControl = weShippingControl::getShippingControl();
 
-			if ($shipping==''){ 
+			if ($shipping==''){
 			$cartField[WE_SHOP_SHIPPING] = array(
 				'costs'   => $weShippingControl->getShippingCostByOrderValue($totPrice, $_customer),
 				'isNet'   => $weShippingControl->isNet,
 				'vatRate' => $weShippingControl->vatRate
 			);
-			} else { 
+			} else {
 				$cartField[WE_SHOP_SHIPPING] = array(
 					'costs'   => $shipping,
 					'isNet'   => $shippingIsNet,
 					'vatRate' => $shippingVatRate
 			    );
-				
+
 			}
 
 			if ($useVat) {
@@ -201,14 +201,13 @@ emosBillingPageArray [0]='".($maxOrderID+1)."';
 emosBillingPageArray [1]='".md5($_SESSION["webuser"]["ID"])."';
 emosBillingPageArray [2]='".rawurlencode($_SESSION["webuser"]["Contact_Country"])."/".rawurlencode($_SESSION["webuser"]["Contact_Address2"])."/".rawurlencode($_SESSION["webuser"]["Contact_Address1"])."';
 emosBillingPageArray [3]='".$totPrice."';
-			"; 			
+			";
 		}
-		
+
 		require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
-		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer);	
+		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer);
 	}
-	
+
 	return;
 }
-?>

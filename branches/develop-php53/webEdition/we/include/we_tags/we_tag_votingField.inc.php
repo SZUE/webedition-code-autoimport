@@ -48,7 +48,7 @@ function we_tag_votingField($attribs, $content) {
 					case 'voting':
 					default:
 						$returnvalue =  $GLOBALS['_we_voting']->ID;
-					break;					
+					break;
 				}
 			break;
 			case 'question':
@@ -71,8 +71,8 @@ function we_tag_votingField($attribs, $content) {
 							$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
 							$atts['value'] = $GLOBALS['_we_voting']->answerCount;
 							$atts['type'] = 'radio';
-							if (isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){							
-								$selItem = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][0];								
+							if (isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){
+								$selItem = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][0];
 								if (is_numeric($selItem) && $selItem == $GLOBALS['_we_voting']->answerCount) {
 									$atts['checked'] = 'checked';
 								}
@@ -81,7 +81,7 @@ function we_tag_votingField($attribs, $content) {
 								$countanswers--;
 								$atts['onclick']=  "_we_voting_answer_". $GLOBALS['_we_voting']->ID . "_".$countanswers.".value='';";
 							}
-	
+
 							$code .=  getHtmlTag('input',$atts,'');
 						}
 						$returnvalue =  $code;
@@ -106,7 +106,7 @@ function we_tag_votingField($attribs, $content) {
 								foreach ($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'] as $kk => $wert) {
 									$selItem = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$kk];
 									$selItem = $wert;
-									
+
 									if (is_numeric($selItem) &&  $selItem == $GLOBALS['_we_voting']->answerCount) {
 										$atts['checked'] = 'checked';
 									}
@@ -145,9 +145,9 @@ function we_tag_votingField($attribs, $content) {
 							if (is_numeric($myImageID)) {
 								$myImage= new we_imageDocument();
 								$myImage->initByID($myImageID);
-								
+
 								$atts = removeAttribs($attribs,array('name','type','precision','num_format','nameto','to'));
-								$myImage->initByAttribs($atts);								
+								$myImage->initByAttribs($atts);
 								$code = $myImage->getHtml();
 							}
 						}
@@ -163,7 +163,7 @@ function we_tag_votingField($attribs, $content) {
 					case 'textinput':
 						$code = '';
 						if ($GLOBALS['_we_voting']['AllowFreeText']) {
-							
+
 							$atts = removeAttribs($attribs,array('name','type'));
 							$countanswers= count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 							if ($GLOBALS['_we_voting']->answerCount == $countanswers-1){
@@ -178,19 +178,19 @@ function we_tag_votingField($attribs, $content) {
 										if ($GLOBALS['_we_voting']->IsCheckbox) {
 											$mycount = count($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value']);
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$mycount-1];
-											
+
 										} else {
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$GLOBALS['_we_voting']->answerCount];
 										}
-									}							
-									
+									}
+
 								}
 								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio) {
 									$atts['onkeydown'] ='';
 									for ($i = 0;$i < $countanswers - 1;$i++) {
 										$atts['onkeydown'] .= "_we_voting_answer_". $GLOBALS['_we_voting']->ID . "_".$i.".checked=0;";
 									}
-									
+
 								}
 								$code .= getHtmlTag('input',$atts,$value);
 							}
@@ -213,19 +213,19 @@ function we_tag_votingField($attribs, $content) {
 										if ($GLOBALS['_we_voting']->IsCheckbox) {
 											$mycount = count($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value']);
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$mycount-1];
-											
+
 										} else {
 											$value = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$GLOBALS['_we_voting']->answerCount];
 										}
-									}								
-									
+									}
+
 								}
 								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio) {
 									$atts['onkeydown'] ='';
 									for ($i = 0;$i < $countanswers - 1;$i++) {
 										$atts['onkeydown'] .= "_we_voting_answer_". $GLOBALS['_we_voting']->ID . "_".$i.".checked=0;";
 									}
-									
+
 								}
 								$code = getHtmlTag('textarea',$atts,$value,true);
 							}
@@ -276,7 +276,7 @@ function we_tag_votingField($attribs, $content) {
 		case "block" :
 		case "self" :
 			$GLOBALS["we_doc"]->setElement($nameTo, $returnvalue);
-			break;		
+			break;
 		case "sessionfield" :
 			if (isset($_SESSION["webuser"][$nameTo])){
 				$_SESSION["webuser"][$nameTo] = $returnvalue;
@@ -286,4 +286,3 @@ function we_tag_votingField($attribs, $content) {
 	}
 	return null;
 }
-?>

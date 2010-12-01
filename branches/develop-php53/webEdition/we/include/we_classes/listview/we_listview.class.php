@@ -88,7 +88,7 @@ class we_listview extends listviewBase {
 		
 		$cond_where = ""; // #3763
 		if($this->condition!=""){
-			$condition_sql=$this->makeConditionSql($this->condition);			
+			$condition_sql=$this->makeConditionSql($this->condition);		
 			if(!empty($condition_sql)) $cond_where .= " AND (".$condition_sql.")";
 		}
 		
@@ -385,7 +385,12 @@ class we_listview extends listviewBase {
 			$exparr=array();
 
 			$arr = explode(" ",$cond);
-
+			$arrr=array();
+			$rep= array(' (','(',' )',')');
+			foreach ($arr as $key => $value){
+				if($value !=')' && $value!='('){$arrr[]=trim(str_replace($rep,'',$value));}
+			}
+			$arr=$arrr;
 			$logic=array();
 			$logic["and"]=array();
 			$logic["or"]=array();
@@ -413,7 +418,7 @@ class we_listview extends listviewBase {
 					foreach($patterns as $pattern){
 						$match=preg_split("/$pattern/", $exp, -1, PREG_SPLIT_NO_EMPTY);
 						if(count($match)>1){
-							$sqlarr = (($sqlarr!="") ? $sqlarr." AND " : "").$this->makeFieldCondition($match[0],$pattern,$match[1]);//"(".LINK_TABLE.".Name='".$match[0]."' AND ".CONTENT_TABLE.".Dat ".$pattern." ".$match[1].")";
+							$sqlarr = (($sqlarr!="") ? $sqlarr." ".strtoupper($oper). " " : "").$this->makeFieldCondition($match[0],$pattern,$match[1]);//"(".LINK_TABLE.".Name='".$match[0]."' AND ".CONTENT_TABLE.".Dat ".$pattern." ".$match[1].")";
 							break;
 						}
 					}

@@ -1164,7 +1164,8 @@ class we_root extends we_class
 
 		if($this->userHasPerms()) {									//	access to doc is not restricted, check workspaces of user
 			if($GLOBALS["we_doc"]->ID) {		//	userModule installed
-				if($ws = get_ws($GLOBALS["we_doc"]->Table)) {		//	doc has workspaces
+				$ws = get_ws($GLOBALS["we_doc"]->Table);
+				if($ws) {		//	doc has workspaces
 					if(!(in_workspace($GLOBALS["we_doc"]->ID,$ws,$GLOBALS["we_doc"]->Table,$GLOBALS["DB_WE"]))) {
 						return -1;
 					}
@@ -1182,7 +1183,8 @@ class we_root extends we_class
 	function isLockedByUser(){
 
 		$DB_WE = new DB_WE();
-		$DB_WE->query("SELECT * FROM " . LOCK_TABLE . " WHERE ID='".abs($this->ID)."' AND tbl='".mysql_real_escape_string($this->Table)."'");
+		//select only own ID if not in same session
+		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.mysql_real_escape_string($this->Table).'" AND sessionID!="'.session_id().'" AND `lock`>NOW()');
 		$_userId = 0;
 		while($DB_WE->next_record()) {
 			$_userId = $DB_WE->f("UserID");
@@ -1195,7 +1197,9 @@ class we_root extends we_class
 		if ($_SESSION['user']['ID']) { // only if user->id != 0
 
 			$DB_WE = new DB_WE();
-			$DB_WE->query("INSERT INTO " . LOCK_TABLE . " (ID,UserID,tbl) VALUES('".abs($this->ID)."','".abs($_SESSION["user"]["ID"])."','".mysql_real_escape_string($this->Table)."')");
+			//if lock is used by other user and time is up, update table
+			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.mysql_real_escape_string($this->Table).'",sessionID="'.session_id().'",`lock`=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
+				ON DUPLICATE KEY UPDATE UserID="'.abs($_SESSION["user"]["ID"]).'",sessionID="'.session_id().'",`lock`=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)');
 		}
 	}
 

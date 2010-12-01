@@ -19,16 +19,12 @@
  */
 
 
-function we_tag_ifEmailInvalid($attribs, $content)
-{
+function we_tag_ifEmailInvalid($attribs, $content){
 	if(isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])){
-		if($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==2) return true;
-		else return false;
+		return ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==2);
 	}else if(isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])){
-		if($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==2) return true;
-		else return false;
+		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==2);
 	}else{
 		return false;
 	}
 }
-?>

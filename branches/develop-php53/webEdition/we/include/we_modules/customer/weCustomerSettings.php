@@ -103,7 +103,7 @@ class weCustomerSettings{
        "key","set","default","where","group","by","order","add","column","table","index","constraint","primary",
        "unique","foreign","change","modify","drop","disable","enable","charachter","collate","first","rename",
        "fulltext","quick","using","truncate",
-       "id","username","isfolder","icon","parentid","membersince","lastlogin","lastaccess","path","text","forename","surname","logindenied"
+       "id","username","isfolder","icon","parentid","membersince","lastlogin","lastaccess","path","text","forename","surname","logindenied,autologin,autologindenied"
        );
 
     var $treeTextFormat="#Text";
@@ -123,6 +123,8 @@ class weCustomerSettings{
 			"Forename"=>$l_customer["Forname"],
 			"Surname"=>$l_customer["Surname"],
 			"LoginDenied"=>$l_customer["login"],
+			"AutoLoginDenied"=>$l_customer["autologin"],
+			"AutoLogin"=>$l_customer["autologin"],
 			"MemberSince"=>$l_customer["MemeberSince"],
 			"LastLogin"=>$l_customer["LastLogin"],
 			"LastAccess"=>$l_customer["LastAccess"],

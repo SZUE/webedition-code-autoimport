@@ -49,5 +49,3 @@ function we_tag_ifShopNotEmpty($attribs) {
 		return false;
 	}
 }
-
-?>

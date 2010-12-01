@@ -119,7 +119,7 @@ function checkAndMakeFolder($path)
 		$mod = 0755;
 	}
 	
-	if (!@mkdir($path, $mod)) {
+	if (!@mkdir($path, $mod,true)) {
 		@umask($oldumask);
 		insertIntoErrorLog("Could not create local Folder at we_live_tools.inc.php/checkAndMakeFolder(): '" . $path . "'");
 		return false;

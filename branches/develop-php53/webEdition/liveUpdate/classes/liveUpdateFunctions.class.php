@@ -216,8 +216,14 @@ class liveUpdateFunctions {
 			if ($fh = fopen($filePath, 'wb')) {
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
+				if(!chmod($filePath, 0755)) {
+					return false;
+					
+				}
 				return true;
+
 			}
+
 		}
 		return false;
 	}
@@ -426,17 +432,10 @@ class liveUpdateFunctions {
 	 * @return array
 	 */
 	function getKeysFromTable($tableName) {
-
 		$db = new DB_WE();
-
 		$keysOfTable = array();
-
 		$db->query("SHOW INDEX FROM $tableName");
-
 		while ($db->next_record()) {
-
-			$indexType = '';
-
 			if ($db->f('Key_name') == 'PRIMARY') {
 				$indexType = 'PRIMARY';
 			} else if ( $db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT' ) {// this also depends from mysqlVersion
@@ -447,9 +446,10 @@ class liveUpdateFunctions {
 				$indexType = 'INDEX';
 			}
 
-			if (!isset($keysOfTable[$db->f('Column_name')]) || !in_array($indexType, $keysOfTable[$db->f('Column_name')])) {
-				$keysOfTable[$db->f('Column_name')][] = $indexType;
+			if (!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])) {
+				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
 			}
+			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')]=$db->f('Column_name').($db->f('Sub_part')?'('.$db->f('Sub_part').')':'');
 		}
 
 		return $keysOfTable;
@@ -496,7 +496,7 @@ class liveUpdateFunctions {
            } else {
 				//Bug #4431
                //$queries[] = "ALTER TABLE $tableName CHANGE " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Type']) . " $null $default $extra";
-			   // das  mysql_real_escape_string bei $fieldInfo['Type'] führt für enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
+			   // das  mysql_real_escape_string bei $fieldInfo['Type'] fï¿½hrt fï¿½r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
 			   $queries[] = "ALTER TABLE $tableName CHANGE " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Field']) . " " .$fieldInfo['Type'] . " $null $default $extra";
            }
        }
@@ -511,26 +511,21 @@ class liveUpdateFunctions {
 	 * @param boolean $isNew
 	 * @return array
 	 */
-	function getAlterTableForKeys($fields, $tableName, $isNew=true) {
-
+	function getAlterTableForKeys($fields, $tableName, $isNew) {
 		$queries = array();
 
 		foreach ($fields as $key => $indexes) {
+			//escape all index fields
+			array_walk($indexes,'addslashes');
 
-			for ($i=0; $i<sizeof($indexes); $i++) {
-
-				$index = '';
-				switch ($indexes[$i]) {
-					case 'PRIMARY':
-						$index = 'PRIMARY KEY';
-					break;
-					default:
-						$index = strtoupper($indexes[$i]);
-					break;
-				}
-
-				$queries[] = "ALTER TABLE $tableName ADD " . addslashes($index) . " (".addslashes($key).")";
+			$type=$indexes['index'];
+			if($type=='PRIMARY'){
+				$key='KEY';
 			}
+			//index is not needed any more and disturbs implode
+			unset($indexes['index']);
+
+			$queries[] = "ALTER TABLE $tableName ".($isNew?'':'DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$key.' , ')." ADD " . $type. ' '.$key . " (".implode(',',$indexes).")";
 		}
 		return $queries;
 	}
@@ -598,7 +593,7 @@ class liveUpdateFunctions {
 		$query = trim($query);
 		
 		$doquery = true;
-		if (strpos($query,'INSERT INTO tblUser')){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausführen
+		if (strpos($query,'INSERT INTO tblUser')){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausfï¿½hren
 			$doquery = false;
 		}
 		if ($doquery) {
@@ -657,7 +652,7 @@ class liveUpdateFunctions {
 							$tmpName = '__we_delete_update_temp_table__';
 	
 							$db->query("DROP TABLE IF EXISTS $tmpName;"); // delete table if already exists
-	
+
 							// create temptable
 							$tmpQuery = preg_replace($namePattern, "CREATE TABLE $tmpName (", $query);
 							$db->query(trim($tmpQuery));
@@ -688,24 +683,34 @@ class liveUpdateFunctions {
 	
 							// determine new keys
 							$addKeys = array();
+							$changedKeys = array();
 							foreach ($newTableKeys as $keyName => $indexes) {
-	
+
 								if (isset($origTableKeys[$keyName])) {
-	
-									for ($i=0;$i<sizeof($indexes);$i++) {
+									//index-type changed
+									if($origTableKeys[$keyName]['index'] != $indexes['index']){
+										$changedKeys[$keyName] = $indexes;
+										continue;
+									}
+
+									for ($i=1;$i<sizeof($indexes);$i++) {
 										if (!in_array($indexes[$i], $origTableKeys[$keyName])) {
-											$addKeys[$keyName][] = $indexes[$i];
+											$changedKeys[$keyName] = $indexes;
+											break;
 										}
 									}
 								} else {
 									$addKeys[$keyName] = $indexes;
 								}
 							}
-	
+
 							// get all queries to add/change fields, keys
 							$alterQueries = array();
 	
 							// get all queries to change existing fields
+							if (sizeof($changeFields)) {
+								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+							}
 							if (sizeof($addFields)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 							}
@@ -714,11 +719,11 @@ class liveUpdateFunctions {
 							if (sizeof($addKeys)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 							}
-	
-							if (sizeof($changeFields)) {
-								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+
+							if (sizeof($changedKeys)) {
+								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 							}
-	
+
 							if (sizeof($alterQueries)) {
 								// execute all queries
 								$success = true;

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * webEdition CMS
  *
@@ -45,5 +45,3 @@ function we_tag_addPercent($attribs,$content){
 	}
 	return $result;
 }
-
-?>

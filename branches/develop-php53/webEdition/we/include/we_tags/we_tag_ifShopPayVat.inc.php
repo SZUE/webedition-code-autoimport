@@ -19,21 +19,16 @@
  */
 
 function we_tag_ifShopPayVat($attribs,$content) {
-    
 	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_ifRegisteredUser.inc.php');
-	
+
 	$weShopVatRule = weShopVatRule::getShopVatRule();
-	
-	if (we_tag_ifRegisteredUser(array(), '')) {
+	if (we_tag('ifRegisteredUser',array(), '')) {
 		$customer = $_SESSION['webuser'];
 	} else {
 		$customer = false;
 	}
-	
-	
-	return $weShopVatRule->executeVatRule($customer);
-	
-}
 
-?>
+
+	return $weShopVatRule->executeVatRule($customer);
+
+}

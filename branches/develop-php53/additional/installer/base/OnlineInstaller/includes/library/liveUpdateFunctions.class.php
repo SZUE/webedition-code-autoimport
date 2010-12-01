@@ -1,5 +1,24 @@
 <?php
 /**
+ * webEdition CMS
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_update
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+/**
  * This class contains all functions needed for the update process
  * TBD if we divide this class in several classes
  */
@@ -122,21 +141,15 @@ class liveUpdateFunctions {
 					$_entry = $baseDir . "/" . $entry;
 		            if( !is_dir( $_entry ) ){
 		                $allFiles[] = $_entry;
-
 		            }
 
 					if(is_dir( $_entry )){
 						$this->getFilesOfDir( $allFiles, $_entry);
-
 					}
-
 				}
-
 			}
 			closedir($dh);
-
 		}
-
 	}
 
 	/**
@@ -148,12 +161,10 @@ class liveUpdateFunctions {
 
 		if (strpos($dir, './') !== false) {
 			return true;
-
 		}
 
 		if (!file_exists($dir)) {
 			return true;
-
 		}
 
 		$dh = opendir($dir);
@@ -163,23 +174,16 @@ class liveUpdateFunctions {
 					$_entry = $dir . "/" . $entry;
 					if (is_dir($_entry)) {
 						$this->deleteDir($_entry);
-
 					} else {
 						unlink($_entry);
-
 					}
-
 				}
-
 			}
 			closedir($dh);
 			return rmdir($dir);
-
 		} else {
 			return true;
-
 		}
-
 	}
 
 	/**
@@ -191,13 +195,13 @@ class liveUpdateFunctions {
 	function getFileContent($filePath) {
 
 		$content = '';
+
 		if ($fh = fopen($filePath, 'rb')) {
 			$content = fread($fh, filesize($filePath));
 			fclose($fh);
-
 		}
-		return $content;
 
+		return $content;
 	}
 
 	/**
@@ -223,7 +227,6 @@ class liveUpdateFunctions {
 
 		}
 		return false;
-
 	}
 
 	/**
@@ -262,7 +265,6 @@ class liveUpdateFunctions {
 		} else {
 			$preDir = '';
 			$dir = $dirPath;
-
 		}
 
 		$pathArray = explode('/', $dir);
@@ -273,20 +275,17 @@ class liveUpdateFunctions {
 			if($pathArray[$i] != "" && !is_dir($path)){
 				if( !(file_exists($path) || mkdir($path, $mod)) ){
 					return false;
-
 				}
-
 			}
 			$path .= "/";
-
 		}
+
 		if(!is_writable($dirPath)) {
 			if(!chmod($dirPath, $mod)) {
 				return false;
 			}
 		}
 		return true;
-
 	}
 
 	/**
@@ -299,7 +298,6 @@ class liveUpdateFunctions {
 		}else{
 			return true;
 		}
-
 	}
 
 	/**
@@ -332,9 +330,7 @@ class liveUpdateFunctions {
 
 		} else {
 			return false;
-
 		}
-
 	}
 
 	/**
@@ -351,12 +347,9 @@ class liveUpdateFunctions {
 			$ext = strtolower($matches[1]);
 			if ( ($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql') ) {
 				return false;
-
 			}
-
 		}
 		return true;
-
 	}
 
 	/**
@@ -385,19 +378,15 @@ class liveUpdateFunctions {
 
 			} else {
 				$newContent = $replace;
-
 			}
 
 			if (!$this->filePutContent($filePath, $newContent)) {
 				return false;
-
 			}
 		} else {
 			return false;
-
 		}
 		return true;
-
 	}
 
 	/*
@@ -423,7 +412,6 @@ class liveUpdateFunctions {
 			}
 		}
 		return true;
-
 	}
 
 	/*
@@ -464,17 +452,10 @@ class liveUpdateFunctions {
 	 * @return array
 	 */
 	function getKeysFromTable($tableName) {
-
 		$db = new le_MySQL_DB();
-
 		$keysOfTable = array();
-
 		$db->query("SHOW INDEX FROM $tableName");
-
 		while ($db->next_record()) {
-
-			$indexType = '';
-
 			if ($db->f('Key_name') == 'PRIMARY') {
 				$indexType = 'PRIMARY';
 			} else if ( $db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT' ) {// this also depends from mysqlVersion
@@ -485,9 +466,10 @@ class liveUpdateFunctions {
 				$indexType = 'INDEX';
 			}
 
-			if (!isset($keysOfTable[$db->f('Column_name')]) || !in_array($indexType, $keysOfTable[$db->f('Column_name')])) {
-				$keysOfTable[$db->f('Column_name')][] = $indexType;
+			if (!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])) {
+				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
 			}
+			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')]=$db->f('Column_name').($db->f('Sub_part')?'('.$db->f('Sub_part').')':'');
 		}
 
 		return $keysOfTable;
@@ -546,26 +528,21 @@ class liveUpdateFunctions {
 	 * @param boolean $isNew
 	 * @return array
 	 */
-	function getAlterTableForKeys($fields, $tableName, $isNew=true) {
-
+	function getAlterTableForKeys($fields, $tableName, $isNew) {
 		$queries = array();
 
 		foreach ($fields as $key => $indexes) {
 
-			for ($i=0; $i<sizeof($indexes); $i++) {
+			array_walk($indexes,'addslashes');
 
-				$index = '';
-				switch ($indexes[$i]) {
-					case 'PRIMARY':
-						$index = 'PRIMARY KEY';
-					break;
-					default:
-						$index = strtoupper($indexes[$i]);
-					break;
+			$type=$indexes['index'];
+			if($type=='PRIMARY'){
+				$key='KEY';
 				}
 
-				$queries[] = "ALTER TABLE $tableName ADD " . $index . " ($key)";
-			}
+			unset($indexes['index']);
+
+			$queries[] = "ALTER TABLE $tableName ".($isNew?'':'DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$key.' , ')." ADD " . $type. ' '.$key . " (".implode(',',$indexes).")";
 		}
 		return $queries;
 	}
@@ -629,13 +606,9 @@ class liveUpdateFunctions {
 					if (trim($query)) {
 						if (!$this->executeUpdateQuery($query)) {
 							$success = false;
-
 						}
-
 					}
-
 				}
-
 			}
 
 		} else {
@@ -663,7 +636,7 @@ class liveUpdateFunctions {
 		if(is_array($queries) && !empty($queries)) {
 			foreach($queries as $query) {
 				$query = trim($query);
-				$query = str_replace("`","",$query);
+
 				// first of all we need to check if there is a tblPrefix
 				if (isset($_SESSION['le_db_prefix'])) {
 					$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . $_SESSION['le_db_prefix'], $query, 1);
@@ -673,6 +646,8 @@ class liveUpdateFunctions {
 					$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . $_SESSION['le_db_prefix'], $query, 1);
 					$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . $_SESSION['le_db_prefix'], $query, 1);
 					$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . $_SESSION['le_db_prefix'], $query, 1);
+
+				$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		
 				}
 				$query = str_replace("\n","",$query);
@@ -694,8 +669,8 @@ class liveUpdateFunctions {
 		
 				if ($db->query($query) ) {
 					$success = true;
-		
 				} else {
+	
 					switch ($db->Errno) {
 		
 						case '1050': // this table already exists
@@ -767,13 +742,20 @@ class liveUpdateFunctions {
 		
 									// determine new keys
 									$addKeys = array();
+							$changedKeys = array();
 									foreach ($newTableKeys as $keyName => $indexes) {
 		
 										if (isset($origTableKeys[$keyName])) {
 		
-											for ($i=0;$i<sizeof($indexes);$i++) {
+									if($origTableKeys[$keyName]['index'] != $indexes['index']){
+										$changedKeys[$keyName] = $indexes;
+										continue;
+									}
+
+									for ($i=1;$i<sizeof($indexes);$i++) {
 												if (!in_array($indexes[$i], $origTableKeys[$keyName])) {
-													$addKeys[$keyName][] = $indexes[$i];
+											$changedKeys[$keyName] = $indexes;
+											break;
 												}
 											}
 										} else {
@@ -797,6 +779,10 @@ class liveUpdateFunctions {
 										$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 									}
 		
+							if (sizeof($changedKeys)) {
+								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
+							}
+
 									if (sizeof($alterQueries)) {
 										// execute all queries
 										$success = true;

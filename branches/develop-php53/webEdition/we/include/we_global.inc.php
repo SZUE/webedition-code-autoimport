@@ -1682,8 +1682,7 @@ function getHTTP($server, $url, $port = "", $username = "", $password = "")
 		}
 }
 
-function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false)
-{
+function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
 	if ($canBeEmpty) {
 		if (!isset($attribs[$attr]))
 			return parseError(sprintf($GLOBALS["l_parser"]["attrib_missing2"], $attr, $tag));
@@ -1693,13 +1692,11 @@ function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false)
 	}
 	return "";
 }
-function modulFehltError($modul, $tag)
-{
+function modulFehltError($modul, $tag){
 	return parseError(sprintf($GLOBALS["l_parser"]["module_missing"], $modul, $tag));
 }
 
-function parseError($text)
-{
+function parseError($text){
 	return "<b>" . $GLOBALS["l_parser"]["error_in_template"] . ":</b> $text<br>\n";
 }
 
@@ -2229,18 +2226,21 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = "")
 		return true;
 	if (!$db)
 		$db = new DB_WE();
-	$p = f("
-		SELECT ParentID
-		FROM $table
-		WHERE ID=".abs($id), "ParentID", $db);
-	while ($p) {
-		if ($p == $pid)
+	$found=array();
+	$p = abs($id);
+	do {
+		if ($p == $pid){
 			return true;
+		}
+		if(in_array($p,$found)){
+			return false;
+		}
+		array_push($found,$p);
 		$p = f("
 			SELECT ParentID
 			FROM $table
 			WHERE ID=".abs($p), "ParentID", $db);
-	}
+	}while($p);
 	return false;
 }
 

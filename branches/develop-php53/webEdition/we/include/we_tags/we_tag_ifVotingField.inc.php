@@ -17,17 +17,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
 
 function we_tag_ifVotingField($attribs,$content) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_votingField.inc.php');
-	
 	$foo = attributFehltError($attribs, "match", "ifVotingField");
 	if ($foo) {
 		print($foo);
 		return "";
 	}
-	
+
 	$operator  = we_getTagAttribute("operator", $attribs);
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
     	$match = (int) we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
@@ -36,11 +34,11 @@ function we_tag_ifVotingField($attribs,$content) {
 	}
 	$atts = removeAttribs($attribs,array('match','operator'));
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-		$realvalue = (int) we_tag_votingField($atts, "");
+		$realvalue = (int) we_tag('votingField',$atts, "");
 	} else {
-		$realvalue = we_tag_votingField($atts, "");
+		$realvalue = we_tag('votingField',$atts, "");
 	}
-	
+
 	switch ($operator) {
 		case "equal": return $realvalue == $match; break;
 		case "less": return $realvalue < $match; break;
@@ -52,5 +50,3 @@ function we_tag_ifVotingField($attribs,$content) {
 	}
 
 }
-
-?>

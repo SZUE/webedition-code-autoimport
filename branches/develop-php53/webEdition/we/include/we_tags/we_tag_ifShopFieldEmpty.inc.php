@@ -19,20 +19,13 @@
  */
 
 function we_tag_ifShopFieldEmpty($attribs,$content) {
-    
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_shopField.inc.php');
-	
 	$foo = attributFehltError($attribs, "name", "ifShopFieldEmpty");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "reference", "ifShopFieldEmpty");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "shopname", "ifShopFieldEmpty");if($foo) return $foo;
-	
+
 	$name      = we_getTagAttribute("name", $attribs);
 	$reference = we_getTagAttribute("reference", $attribs);
 	$shopname  = we_getTagAttribute("shopname", $attribs);
-	
-	$realvalue = we_tag_shopField($attribs, "");
-	return $realvalue == '';
-	
-}
 
-?>
+	return (we_tag('shopField',$attribs, "") == '');
+}

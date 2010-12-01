@@ -25,5 +25,3 @@ function we_tag_createShop($attribs, $content) {
 		return $foo;
 	}
 }
-
-?>

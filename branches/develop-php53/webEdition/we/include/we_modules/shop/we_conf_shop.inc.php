@@ -127,7 +127,7 @@ class Basket {
 	 *	'id'       => integer
 	 *	'type'     => w | o
 	 *	'variant'  => string
-	 *	'quantity' => integer
+	 *	'quantity' => integer //früher - jetzt umstellung auf float, feature #4875
 	 *	'serial'   => string
 	 *  'customFields' => array
 	 *

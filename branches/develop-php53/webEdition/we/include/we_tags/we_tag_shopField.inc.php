@@ -20,58 +20,57 @@
 
 
 function we_tag_shopField($attribs,$content) {
-    
 	$foo = attributFehltError($attribs, "name", "shopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "reference", "shopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "shopname", "shopField");if($foo) return $foo;
-	
-	
+
+
 	$name      = we_getTagAttribute("name", $attribs);
 	$reference = we_getTagAttribute("reference", $attribs);
 	$shopname  = we_getTagAttribute("shopname", $attribs);
-	
+
 	$type = we_getTagAttribute("type", $attribs);
-	
+
 	$values = we_getTagAttribute("values", $attribs); // select, choice
 	$value = we_getTagAttribute("value", $attribs); // checkbox
 	$checked = we_getTagAttribute("checked", $attribs, "", true); // checkbox
 	$mode = we_getTagAttribute("mode",$attribs);
-	
+
 	$xml = we_getTagAttribute("xml",$attribs,"");
-	
+
 	$nameTo = we_getTagAttribute("nameto", $attribs);
 	$to = we_getTagAttribute("to", $attribs,'screen');
-	
+
 	if ( $reference == 'article' ) { // name depends on value
-	
+
 		$fieldname = WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]";
-		
+
 		if (!$shopname) {
 			$savedVal = isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) ? $_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name] : '';
 		} else {
 			$savedVal = '';
 		}
-		
-		
+
+
 		// does not exist here - we are only in article - custom fields are not stored on documents
 		$isFieldForCheckBox = false;
-		
-		if (isset($GLOBALS['lv']) && ($tmpVal = we_tag_field(array('name'=>$name),'')) ) {
+
+		if (isset($GLOBALS['lv']) && ($tmpVal = we_tag('field',array('name'=>$name),'')) ) {
 			$savedVal = $tmpVal;
 			unset($tmpVal);
 		}
-		
+
 	} else {
-		
+
 		$fieldname = WE_SHOP_CART_CUSTOM_FIELD . "[$name]";
 		$savedVal = isset($GLOBALS[$shopname]) && isset($GLOBALS[$shopname]->CartFields[$name]) ? $GLOBALS[$shopname]->CartFields[$name] : '';
-		
+
 		$isFieldForCheckBox = isset($GLOBALS[$shopname]->CartFields[$name]);
-		
+
 	}
-	
+
 	$atts = removeAttribs($attribs, array('name','reference','shopname','type','values','value','checked','mode'));
-	
+
 	if ($type != 'checkbox' && $type != 'choice' && $type != 'radio' && $value) {
 		// value is compared to saved value in some cases
 		// be careful with different behaviour when using value and values
@@ -79,57 +78,55 @@ function we_tag_shopField($attribs,$content) {
 			$savedVal = $value;
 		}
 	}
-	
+
 	switch ($type) {
-		
+
 		case "checkbox":
-			
+
 			$atts = removeAttribs($atts, array('size'));
-			
+
 			$atts['name'] = $fieldname;
 			$atts['type'] = 'checkbox';
 			$atts['value'] = $value;
 			if( ($savedVal == $value) || (!$isFieldForCheckBox) && $checked ) {
 				$atts['checked'] = 'checked';
 			}
-			
+
 			return getHtmlTag('input', $atts);
 		break;
-		
+
 		case 'choice':
-		
+
 			$reference = we_getTagAttribute("mode",$attribs);
-			
+
 			return we_getInputChoiceField($fieldname,$savedVal,$values,$atts,$mode);
-			
+
 		break;
-		
+
 		case 'hidden':
 			return hidden($fieldname, $savedVal);
 		break;
-		
+
 		case 'print':
 			return we_redirect_tagoutput($savedVal,$nameTo,$to);
 		break;
-		
+
 		case 'select':
 			return we_getSelectField($fieldname,$savedVal,$values,$atts,false);
 		break;
-		
+
 		case 'textarea':
 			return we_getTextareaField($fieldname,$savedVal,$atts);
 		break;
-		
+
 		case 'radio':
-			if ($checked && $savedVal==''){$atts['checked'] = 'checked';} 
+			if ($checked && $savedVal==''){$atts['checked'] = 'checked';}
 			return we_getInputRadioField($fieldname,$savedVal,$value,$atts);
 		break;
-		
+
 		case 'textinput':
 		default:
 			return we_getInputTextInputField($fieldname,$savedVal,$atts);
 		break;
 	}
 }
-
-?>

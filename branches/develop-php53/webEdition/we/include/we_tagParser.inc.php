@@ -1930,17 +1930,18 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				eval('$arr = array(' . $attribs . ');');
 				
 				$shopname = we_getTagAttributeTagParser("shopname", $arr);
-				
+				$floatquantities = we_getTagAttributeTagParser("floatquantities", $arr,'',true);
+				$floatquantities = empty($floatquantities) ? 'false' : $floatquantities;
 				$php = '<?php
-			
+				$floatquantities='.$floatquantities.';
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-		
+				$floatfilter = new Zend_Filter_LocalizedToNormalized();
 				if((isset($_REQUEST["shopname"]) && $_REQUEST["shopname"]=="' . $shopname . '") || !isset($_REQUEST["shopname"]) || $_REQUEST["shopname"]==""){
 					if ( isset($_REQUEST["shop_cart_id"]) && is_array($_REQUEST["shop_cart_id"]) ) {
 						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
 							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
 								foreach ($_REQUEST["shop_cart_id"] as $cart_id => $cart_amount) {
-									$' . $shopname . '->Set_Cart_Item($cart_id, $cart_amount);
+									$' . $shopname . '->Set_Cart_Item($cart_id, $floatquantities ? $floatfilter->filter($cart_amount):$cart_amount);
 									$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
 								}
 							}
@@ -1956,7 +1957,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 									$shop_artikelid = $articleInfo[0];
 									$shop_artikeltype = $articleInfo[1];
 									$shop_variant = (isset($articleInfo[2]) ? $articleInfo[2] : "");
-									$' . $shopname . '->Set_Item($shop_artikelid,$shop_anzahl,$shop_artikeltype, $shop_variant);
+									$' . $shopname . '->Set_Item($shop_artikelid,$floatquantities ? $floatfilter->filter($shop_anzahl):$shop_anzahl ,$shop_artikeltype, $shop_variant);
 									$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
 									unset($articleInfo);
 								}
@@ -1967,7 +1968,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 					else if(isset($_REQUEST["shop_artikelid"]) && $_REQUEST["shop_artikelid"] != "" && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != 0) {
 						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
 							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
-								$' . $shopname . '->Add_Item($_REQUEST["shop_artikelid"],$_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
+								$' . $shopname . '->Add_Item($_REQUEST["shop_artikelid"],$floatquantities ? $floatfilter->filter($_REQUEST["shop_anzahl"]):$_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
 								$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
 							}
 							$_SESSION["tb"]=$_REQUEST["t"];
