@@ -47,6 +47,7 @@ function we_tag_conditionAdd($attribs, $content){
 	$var = we_getTagAttribute("var", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
 	$property = we_getTagAttribute("property", $attribs, "", true);
+	$exactmatch = we_getTagAttribute("exactmatch", $attribs, "", true);
 	$docAttr = we_getTagAttribute("doc", $attribs);
 	// end initialize possible Attributes
 
@@ -88,7 +89,14 @@ function we_tag_conditionAdd($attribs, $content){
 				$value = $GLOBALS[$var];
 			}
 	}
-
+	if($exactmatch && defined('DB_COLLATION') && DB_COLLATION!=''){
+		if(strpos(DB_COLLATION,'latin1') !== false ) {
+			$compare = "COLLATE latin1_bin ".$compare;
+		} elseif(strpos(DB_COLLATION,'utf') !== false) {
+			$compare = "COLLATE utf8_bin ".$compare;
+		}  
+	
+	}
 	$value = (isset($regs[1]) ? $regs[1] : "") . $value . (isset($regs[3]) ? $regs[3] : "");
 
 	if (strlen($field) && isset($GLOBALS["we_lv_conditionName"]) && isset($GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
