@@ -642,6 +642,8 @@ function we_tag_userInput($attribs, $content){
 				return we_getInputCheckboxField($fieldname, $content, $atts);
 			case "date" :
 				$currentdate = we_getTagAttribute("currentdate", $attribs, "", true);
+				$minyear = we_getTagAttribute("minyear", $attribs, "");
+				$maxyear = we_getTagAttribute("maxyear", $attribs, "");
 				if ($currentdate) {
 					$orgVal = time();
 				}
@@ -660,12 +662,15 @@ function we_tag_userInput($attribs, $content){
 							$format,
 							'',
 							'',
-							$xml);
+							$xml,
+							$minyear,
+							$maxyear);
 				}
 				break;
 			case "country":
 				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
 				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 				$langcode= substr($lang,0,2);

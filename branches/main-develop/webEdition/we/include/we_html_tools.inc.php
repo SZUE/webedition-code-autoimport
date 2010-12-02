@@ -631,7 +631,6 @@ function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchan
 						)));
 		$_showMonth = false;
 	}
-	
 	if (($format == "") || $_yearPos > -1) {
 		$years = '';
 		if ($minyear == "") {
