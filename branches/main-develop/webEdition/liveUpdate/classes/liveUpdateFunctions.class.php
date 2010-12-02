@@ -194,8 +194,8 @@ class liveUpdateFunctions {
 	function getFileContent($filePath) {
 
 		$content = '';
-
-		if ($fh = fopen($filePath, 'rb')) {
+		$fh = fopen($filePath, 'rb');
+		if ($fh) {
 			$content = fread($fh, filesize($filePath));
 			fclose($fh);
 		}
@@ -213,7 +213,8 @@ class liveUpdateFunctions {
 	function filePutContent($filePath, $newContent) {
 
 		if ($this->checkMakeDir( dirname($filePath) )) {
-			if ($fh = fopen($filePath, 'wb')) {
+			$fh = fopen($filePath, 'wb');
+			if ($fh) {
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
 				if(!chmod($filePath, 0755)) {
@@ -491,13 +492,11 @@ class liveUpdateFunctions {
 
            if ($isNew) {
 				//Bug #4431, siehe unten
-               //$queries[] = "ALTER TABLE $tableName ADD " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Type']) . " $null $default $extra";
-			   $queries[] = "ALTER TABLE $tableName ADD " . mysql_real_escape_string($fieldInfo['Field']) . " " . $fieldInfo['Type'] . " $null $default $extra";
+			   $queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . "` " . $fieldInfo['Type'] . " $null $default $extra";
            } else {
 				//Bug #4431
-               //$queries[] = "ALTER TABLE $tableName CHANGE " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Type']) . " $null $default $extra";
 			   // das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
-			   $queries[] = "ALTER TABLE $tableName CHANGE " . mysql_real_escape_string($fieldInfo['Field']) . " " . mysql_real_escape_string($fieldInfo['Field']) . " " .$fieldInfo['Type'] . " $null $default $extra";
+			   $queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . "` `" . $fieldInfo['Field'] . '` ' .$fieldInfo['Type'] . " $null $default $extra";
            }
        }
        return $queries;
@@ -525,7 +524,7 @@ class liveUpdateFunctions {
 			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
 
-			$queries[] = "ALTER TABLE $tableName ".($isNew?'':'DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$key.' , ')." ADD " . $type. ' '.$key . " (".implode(',',$indexes).")";
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
 		}
 		return $queries;
 	}
@@ -554,7 +553,8 @@ class liveUpdateFunctions {
 
 		if ($this->isInsertQueriesFile($path)) {
 			$success = true;
-			if ($queryArray = file($path)) {
+			$queryArray = file($path);
+			if ($queryArray) {
 				foreach ($queryArray as $query) {
 					if (trim($query)) {
 						if (!$this->executeUpdateQuery($query)) {
@@ -833,4 +833,3 @@ class liveUpdateFunctions {
 //		ob_end_clean();
 	}
 }
-?>

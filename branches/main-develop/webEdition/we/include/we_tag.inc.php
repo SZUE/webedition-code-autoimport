@@ -1113,7 +1113,7 @@ function we_tag_ifVotingFieldNotEmpty($attribs,$content) {
 }
 
 function we_tag_ifNotWebEdition($attribs, $content){
-	return !$GLOBALS["WE_MAIN_DOC"]->InWebEdition;
+	return !we_tag('ifWebEdition',$attribs, $content);
 }
 
 function we_tag_ifNotWorkspace($attribs, $content){
