@@ -560,16 +560,20 @@ class liveUpdateFunctions {
 			if ($queryArray) {
 				foreach ($queryArray as $query) {
 					if (trim($query)) {
-						if (!$this->executeUpdateQuery($query)) {
-							$success = false;
-						}
+						$success &= $this->executeUpdateQuery($query);
 					}
 				}
 			}
 
 		} else {
 			$content = $this->getFileContent($path);
-			$success = $this->executeUpdateQuery($content);
+			$content = $this->getFileContent($path);
+			$queries = explode("/* query separator */",$content);
+			//$success = $this->executeUpdateQuery($content);
+			$success = true;
+			foreach($queries as $query) {
+				$success &= $this->executeUpdateQuery($query);
+			}
 		}
 		return $success;
 	}
