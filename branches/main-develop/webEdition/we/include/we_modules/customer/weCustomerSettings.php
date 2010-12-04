@@ -25,6 +25,7 @@ include_once(WE_CUSTOMER_MODULE_DIR . 'weCustomer.php');
  *
  */
 define('DATE_FORMAT', 'Y-m-d H:i:s');
+define('DATE_ONLY_FORMAT', 'Y-m-d');
 
 class weCustomerSettings {
 
@@ -32,11 +33,15 @@ class weCustomerSettings {
 	var $table = CUSTOMER_ADMIN_TABLE;
 	var $customer;
 	var $properties = array();
+	var $changedFieldTypes = array(
+			'dateTime' => 'varchar(24)',
+	);
 	var $field_types = array(
 			'input' => 'varchar(255)',
 			'select' => 'varchar(200)',
 			'textarea' => 'text',
-			'date' => 'varchar(24)',
+			'dateTime' => 'datetime',
+			'date' => 'date',
 			'password' => 'varchar(32)',
 			'img' => 'bigint(20)',
 			'country' => 'varchar(4)', //eigentlich nur 2, aber der Typ wird aus dem Feldtyp der DB-Tabelle abgeleitet und muss deshalb eindeutig sein
@@ -252,22 +257,25 @@ class weCustomerSettings {
 	//returns predefined  field type
 	function getFieldType($field_type) {
 		foreach ($this->field_types as $k => $v) {
-			if ($v == $field_type){
+			if ($v == $field_type) {
 				return $k;
 			}
 		}
+		foreach ($this->changedFieldTypes as $k => $v) {
+			if ($v == $field_type) {
+				return $k;
+			}
+		}
+
 		return 'input';
 	}
 
 	function getPropertyTitle($prop) {
-		if (isset($this->PropertyTitle[$prop]))
-			return $this->PropertyTitle[$prop];
-		else
-			return $prop;
+		return (isset($this->PropertyTitle[$prop]) ? $this->PropertyTitle[$prop] : $prop);
 	}
 
 	function initCustomerWithDefaults(&$customer) {
-		if (is_array($this->FieldAdds))
+		if (is_array($this->FieldAdds)) {
 			foreach ($this->FieldAdds as $k => $v) {
 				if (in_array($k, $customer->persistent_slots) && isset($v['default'])) {
 					$value = $v['default'];
@@ -281,6 +289,7 @@ class weCustomerSettings {
 					eval('$customer->' . $k . '=$value;');
 				}
 			}
+		}
 	}
 
 	//field adds operations
