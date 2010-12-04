@@ -195,8 +195,8 @@ class liveUpdateFunctions {
 	function getFileContent($filePath) {
 
 		$content = '';
-
-		if ($fh = fopen($filePath, 'rb')) {
+		$fh = fopen($filePath, 'rb');
+		if ($fh) {
 			$content = fread($fh, filesize($filePath));
 			fclose($fh);
 		}
@@ -214,12 +214,13 @@ class liveUpdateFunctions {
 	function filePutContent($filePath, $newContent) {
 
 		if ($this->checkMakeDir( dirname($filePath) )) {
-			if ($fh = fopen($filePath, 'wb')) {
+			$fh = fopen($filePath, 'wb');
+			if ($fh) {
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
 				if(!chmod($filePath, 0755)) {
 					return false;
-					
+
 				}
 				return true;
 
@@ -240,18 +241,18 @@ class liveUpdateFunctions {
 		// open_base_dir - seperate document-root from rest
 		$dirPath = str_replace("///", "/", $dirPath);
 		$dirPath = str_replace("//", "/", $dirPath);
-		
+
 		// remove trailing slash
 		$dirPath = rtrim($dirPath,'/');
-				
+
 		// remove trailing slash
 		$le_installer_path = LE_INSTALLER_PATH;
 		$le_installer_path = rtrim($le_installer_path,'/');
-				
+
 		// remove trailing slash
 		if(isset($_SESSION["le_installationDirectory"])) {
 			$le_installation_dir = $_SESSION["le_installationDirectory"];
-			$le_installation_dir = rtrim($le_installation_dir,'/');			
+			$le_installation_dir = rtrim($le_installation_dir,'/');
 		}
 
 		if (strpos($dirPath, $le_installer_path) === 0) {
@@ -308,7 +309,7 @@ class liveUpdateFunctions {
 	 * @return boolean false if move was not successful
 	 */
 	function moveFile($source, $destination) {
-		
+
 		if($source==$destination){
 			return true;
 		}
@@ -372,7 +373,7 @@ class liveUpdateFunctions {
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
 			if ($needle) {
-				$newneedle= preg_quote($needle, '~'); 
+				$newneedle= preg_quote($needle, '~');
 				$newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
 				//$newContent = ereg_replace($needle, $replace, $oldContent);
 
@@ -511,10 +512,9 @@ class liveUpdateFunctions {
 
 			if ($isNew) {
 
-				$queries[] = "ALTER TABLE $tableName ADD " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
-
-				$queries[] = "ALTER TABLE $tableName CHANGE " . $fieldInfo['Field'] . " " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
 		return $queries;
@@ -542,7 +542,7 @@ class liveUpdateFunctions {
 
 			unset($indexes['index']);
 
-			$queries[] = "ALTER TABLE $tableName ".($isNew?'':'DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$key.' , ')." ADD " . $type. ' '.$key . " (".implode(',',$indexes).")";
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
 		}
 		return $queries;
 	}
@@ -601,12 +601,11 @@ class liveUpdateFunctions {
 
 		if ($this->isInsertQueriesFile($path)) {
 			$success = true;
-			if ($queryArray = file($path)) {
+			$queryArray = file($path);
+			if ($queryArray) {
 				foreach ($queryArray as $query) {
 					if (trim($query)) {
-						if (!$this->executeUpdateQuery($query)) {
-							$success = false;
-						}
+						success &= $this->executeUpdateQuery($query);
 					}
 				}
 			}
@@ -630,7 +629,7 @@ class liveUpdateFunctions {
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.
-		
+
 		// check for multiple queries within one query file:
 		$queries = explode("/* query separator */",$query);
 		if(is_array($queries) && !empty($queries)) {
@@ -648,13 +647,13 @@ class liveUpdateFunctions {
 					$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . $_SESSION['le_db_prefix'], $query, 1);
 
 				$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
-		
+
 				}
 				$query = str_replace("\n","",$query);
 				$query = str_replace("\r","",$query);
 				$query = str_replace("\t","",$query);
 				//error_log($query);
-				
+
 				if(empty($query)) continue;
 				// second, we need to check if there is a collation
 				if (isset($_SESSION['le_db_collation']) && $_SESSION['le_db_collation'] != "") {
@@ -664,73 +663,73 @@ class liveUpdateFunctions {
 						$Collation = $_SESSION['le_db_collation'];
 						$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
 					}
-		
+
 				}
-		
+
 				if ($db->query($query) ) {
 					$success = true;
 				} else {
-	
+
 					switch ($db->Errno) {
-		
+
 						case '1050': // this table already exists
-		
+
 							// the table already exists,
 							// make tmptable and check these tables ...
 							$namePattern = "/CREATE TABLE (\w+) \(/";
 							preg_match($namePattern, $query, $matches);
-		
+
 							if ($matches[1]) {
-		
+
 								// get name of table and build name of temptable
-		
+
 								// realname of the new table
 								$tableName = $matches[1];
-		
+
 								// clean installation drop tables if exist
 								if (isset($_SESSION["DatabaseAction"]) && $_SESSION["DatabaseAction"] == "Install") {
-		
+
 									// 1st drop table,
 									$dropQuery = "DROP TABLE IF EXISTS $tableName";
 									$db->query($dropQuery);
-		
+
 									// 2nd reinstall table
 									if ($db->query(trim($query))) {
-		
+
 										$this->QueryLog['tableReCreated'][] = $tableName;
 									} else {
-		
+
 										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $_query -->";
 										$success = false;
 									}
-		
+
 								} else { // use update stuff
-		
+
 									// tmpname - this table is to compare the incoming dump
 									// with existing table
 									$tmpName = '__we_delete_update_temp_table__';
-		
+
 									$db->query("DROP TABLE IF EXISTS $tmpName;"); // delete table if already exists
-		
+
 									// create temptable
 									$tmpQuery = preg_replace($namePattern, "CREATE TABLE $tmpName (", $query);
 									$db->query(trim($tmpQuery));
-		
+
 									// get information from existing and new table
 									$origTable = $this->getFieldsOfTable($tableName);
 									$newTable = $this->getFieldsOfTable($tmpName);
-		
+
 									// get keys from existing and new table
 									$origTableKeys = $this->getKeysFromTable($tableName);
 									$newTableKeys = $this->getKeysFromTable($tmpName);
-		
-		
+
+
 									// determine changed and new fields.
 									$changeFields = array(); // array with changed fields
 									$addFields = array(); // array with new fields
-		
+
 									foreach ($newTable as $fieldName => $newField) {
-		
+
 										if (isset($origTable[$fieldName])) { // field exists
 											if ( !($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra']) ) {
 												$changeFields[$fieldName] = $newField;
@@ -739,14 +738,14 @@ class liveUpdateFunctions {
 											$addFields[$fieldName] = $newField;
 										}
 									}
-		
+
 									// determine new keys
 									$addKeys = array();
 							$changedKeys = array();
 									foreach ($newTableKeys as $keyName => $indexes) {
-		
+
 										if (isset($origTableKeys[$keyName])) {
-		
+
 									if($origTableKeys[$keyName]['index'] != $indexes['index']){
 										$changedKeys[$keyName] = $indexes;
 										continue;
@@ -762,10 +761,10 @@ class liveUpdateFunctions {
 											$addKeys[$keyName] = $indexes;
 										}
 									}
-		
+
 									// get all queries to add/change fields, keys
 									$alterQueries = array();
-		
+
 									// get all queries to change existing fields
 									if (sizeof($changeFields)) {
 										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
@@ -773,12 +772,12 @@ class liveUpdateFunctions {
 									if (sizeof($addFields)) {
 										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 									}
-		
+
 									// get all queries to change existing keys
 									if (sizeof($addKeys)) {
 										$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 									}
-		
+
 							if (sizeof($changedKeys)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 							}
@@ -787,7 +786,7 @@ class liveUpdateFunctions {
 										// execute all queries
 										$success = true;
 										foreach ($alterQueries as $_query) {
-		
+
 											if ($db->query(trim($_query))) {
 												$this->QueryLog['success'][] = $_query;
 											} else {
@@ -798,11 +797,11 @@ class liveUpdateFunctions {
 										if ($success) {
 											$this->QueryLog['tableChanged'][] = $tableName . "\n<!--$query-->";
 										}
-		
+
 									} else {
 										$this->QueryLog['tableExists'][] = $tableName;
 									}
-		
+
 									$db->query("DROP TABLE $tmpName");
 								}
 							}

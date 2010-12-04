@@ -26,8 +26,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagCache.class.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagListviewCache.class.php");
 
-class we_tagParser
-{
+class we_tagParser{
 
 	var $DB_WE;
 
@@ -40,8 +39,7 @@ class we_tagParser
 	var $ListviewItemsTags = array("object","customer","order","orderitem","metadata");
 	var $AppListviewItemsTags = array();
 
-	function we_tagParser()
-	{
+	function we_tagParser()	{
 	}
 
 	function parseAppListviewItemsTags($tagname,$tag, $code, $attribs = "", $postName = ""){

@@ -1,4 +1,4 @@
-﻿CREATE TABLE tblAnzeigePrefs (
+CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -163,6 +163,7 @@ CREATE TABLE tblLock (
   UserID bigint(20) NOT NULL default '0',
   sessionID varchar(64) NOT NULL default '',
   `lock` datetime NOT NULL,
+  tbl varchar(32) NOT NULL default '',
   PRIMARY KEY (ID,tbl),
   KEY UserID (UserID,sessionID),
   KEY `lock` (`lock`)
@@ -761,7 +762,7 @@ CREATE TABLE tblWebUserAutoLogin (
   AutoLoginID varchar(64) NOT NULL default '',
   WebUserID bigint(20) NOT NULL default '0',
   LastIp varchar(40)NOT NULL DEFAULT '',
-  LastLogin varchar(24) NOT NULL default '',
+  LastLogin timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY  (AutoLoginID,WebUserID),
   KEY `LastLogin` (`LastLogin`)
 ) ENGINE=MyISAM;
@@ -773,12 +774,15 @@ CREATE TABLE tblWebUserSessions (
   WebUserGroup varchar(255) NOT NULL DEFAULT '',
   WebUserDescription varchar(255) NOT NULL DEFAULT '',
   Browser varchar(255) NOT NULL DEFAULT '',
-  LastLogin varchar(24) NOT NULL default '',
-  LastAccess varchar(24) NOT NULL default '',
+  Referrer varchar(255) NOT NULL DEFAULT '',
+  LastLogin timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  LastAccess timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PageID bigint(20) NOT NULL default '0',
+  ObjectID bigint(20) NOT NULL DEFAULT '0',
   SessionAutologin tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY  (SessionID),
-  KEY `WebUserID` (`WebUserID`)
+  KEY `WebUserID` (`WebUserID`),
+  KEY `LastAccess` (`LastAccess`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowDef (

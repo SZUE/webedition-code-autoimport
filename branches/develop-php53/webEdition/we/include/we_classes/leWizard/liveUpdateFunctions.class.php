@@ -158,8 +158,8 @@ class liveUpdateFunctions {
 	function getFileContent($filePath) {
 
 		$content = '';
-
-		if ($fh = fopen($filePath, 'rb')) {
+		$fh = fopen($filePath, 'rb');
+		if ($fh) {
 			$content = fread($fh, filesize($filePath));
 			fclose($fh);
 		}
@@ -177,7 +177,8 @@ class liveUpdateFunctions {
 	function filePutContent($filePath, $newContent) {
 
 		if ($this->checkMakeDir( dirname($filePath) )) {
-			if ($fh = fopen($filePath, 'wb')) {
+			$fh = fopen($filePath, 'wb');
+			if ($fh) {
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
 				if(!chmod($filePath, 0755)) {
@@ -464,10 +465,10 @@ class liveUpdateFunctions {
 
 			if ($isNew) {
 
-				$queries[] = "ALTER TABLE ".mysql_real_escape_string($tableName)." ADD " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
 
-				$queries[] = "ALTER TABLE ".mysql_real_escape_string($tableName)." CHANGE " . $fieldInfo['Field'] . " " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
 		return $queries;
@@ -495,7 +496,7 @@ class liveUpdateFunctions {
 
 			unset($indexes['index']);
 
-			$queries[] = "ALTER TABLE $tableName ".($isNew?'':'DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$key.' , ')." ADD " . $type. ' '.$key . " (".implode(',',$indexes).")";
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
 		}
 		return $queries;
 	}
@@ -555,19 +556,24 @@ class liveUpdateFunctions {
 
 		if ($this->isInsertQueriesFile($path)) {
 			$success = true;
-			if ($queryArray = file($path)) {
+			$queryArray = file($path);
+			if ($queryArray) {
 				foreach ($queryArray as $query) {
 					if (trim($query)) {
-						if (!$this->executeUpdateQuery($query)) {
-							$success = false;
-						}
+						$success &= $this->executeUpdateQuery($query);
 					}
 				}
 			}
 
 		} else {
 			$content = $this->getFileContent($path);
-			$success = $this->executeUpdateQuery($content);
+			$content = $this->getFileContent($path);
+			$queries = explode("/* query separator */",$content);
+			//$success = $this->executeUpdateQuery($content);
+			$success = true;
+			foreach($queries as $query) {
+				$success &= $this->executeUpdateQuery($query);
+			}
 		}
 		return $success;
 	}
@@ -841,4 +847,3 @@ class liveUpdateFunctions {
 //		ob_end_clean();
 	}
 }
-?>

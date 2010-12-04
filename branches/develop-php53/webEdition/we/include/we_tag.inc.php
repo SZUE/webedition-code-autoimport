@@ -989,8 +989,8 @@ function we_tag_ifNotDoctype($attribs,$content){
 	return !we_tag('ifDoctype',$attribs,$content);
 }
 
-function we_tag_ifNotEditmode($attribs, $content){
-	!we_tag('ifEditmode',$attribs,$content);
+function we_tag_ifNotEditmode($attribs, $content) {
+	return !we_tag('ifEditmode', $attribs, $content);
 }
 
 function we_tag_ifNotEmpty($attribs, $content){
@@ -1113,7 +1113,7 @@ function we_tag_ifVotingFieldNotEmpty($attribs,$content) {
 }
 
 function we_tag_ifNotWebEdition($attribs, $content){
-	return !$GLOBALS["WE_MAIN_DOC"]->InWebEdition;
+	return !we_tag('ifWebEdition',$attribs, $content);
 }
 
 function we_tag_ifNotWorkspace($attribs, $content){
