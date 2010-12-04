@@ -18,31 +18,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/utils/" . "rndGenPass.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/utils/rndGenPass.inc.php');
 
 function we_tag_sessionField($attribs, $content) {
-	$foo = attributFehltError($attribs, "name", "sessionField");
+	$foo = attributFehltError($attribs, 'name', 'sessionField');
 	if ($foo){
 		return $foo;
 	}
 
-	$name = we_getTagAttribute("name", $attribs);
-	$xml = we_getTagAttribute("xml", $attribs, "", true);
-	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, true);
-	$autobrAttr = we_getTagAttribute("autobr", $attribs, "", true);
-	$checked = we_getTagAttribute("checked", $attribs, "", true);
-	$values = we_getTagAttribute("values", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$size = we_getTagAttribute("size", $attribs);
-	$dateformat = we_getTagAttribute("dateformat", $attribs);
-	$value = we_getTagAttribute("value", $attribs);
-	$orgVal = (isset($_SESSION["webuser"][$name]) && (strlen($_SESSION["webuser"][$name]) > 0)) ? $_SESSION["webuser"][$name] : (($type == "radio") ? "" : $value);
+	$name = we_getTagAttribute('name', $attribs);
+	$xml = we_getTagAttribute('xml', $attribs, '', true);
+	$removeFirstParagraph = we_getTagAttribute('removefirstparagraph', $attribs, 0, true, true);
+	$autobrAttr = we_getTagAttribute('autobr', $attribs, '', true);
+	$checked = we_getTagAttribute('checked', $attribs, '', true);
+	$values = we_getTagAttribute('values', $attribs);
+	$type = we_getTagAttribute('type', $attribs);
+	$size = we_getTagAttribute('size', $attribs);
+	$dateformat = we_getTagAttribute('dateformat', $attribs);
+	$value = we_getTagAttribute('value', $attribs);
+	$orgVal = (isset($_SESSION['webuser'][$name]) && (strlen($_SESSION['webuser'][$name]) > 0)) ? $_SESSION['webuser'][$name] : (($type == 'radio') ? '' : $value);
 
 
-	$autofill = we_getTagAttribute("autofill", $attribs, false);
+	$autofill = we_getTagAttribute('autofill', $attribs, false);
 	if ($autofill) {
 		//$condition = array('caps'=>3, 'small'=>4, 'nums'=>3, 'specs'=>2);
-		if ($name == "Username") {
+		if ($name == 'Username') {
 			$condition = array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0);
 		} else {
 			$condition = array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2);
@@ -56,23 +56,23 @@ function we_tag_sessionField($attribs, $content) {
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$docAttr = we_getTagAttribute("doc", $attribs, "self");
+			$docAttr = we_getTagAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = substr($lang, 0, 2);
 			if ($lang == '') {
-				$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
+				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 			}
 
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-			$topCountries = (defined("WE_COUNTRIES_TOP") ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH"));
+			$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', 'DE,AT,CH'));
 			$topCountries = array_flip($topCountries);
 			foreach ($topCountries as $countrykey => &$countryvalue) {
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
 
-			$shownCountries = (defined("WE_COUNTRIES_SHOWN") ? explode(',', WE_COUNTRIES_SHOWN) : explode(',', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY"));
+			$shownCountries = (defined('WE_COUNTRIES_SHOWN') ? explode(',', WE_COUNTRIES_SHOWN) : explode(',', 'BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY'));
 			$shownCountries = array_flip($shownCountries);
 			foreach ($shownCountries as $countrykey => &$countryvalue) {
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
@@ -97,15 +97,15 @@ function we_tag_sessionField($attribs, $content) {
 		case 'language':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$docAttr = we_getTagAttribute("doc", $attribs, "self");
+			$docAttr = we_getTagAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = substr($lang, 0, 2);
 			if ($lang == '') {
-				$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
+				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 			}
-			$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+			$frontendL = array_keys($GLOBALS['weFrontendLanguages']);
 			foreach ($frontendL as $lc => &$lcvalue) {
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
@@ -130,18 +130,18 @@ function we_tag_sessionField($attribs, $content) {
 
 		case 'choice':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'maxlength', 'rows', 'cols', 'wysiwyg'));
-			$mode = we_getTagAttribute("mode", $attribs);
+			$mode = we_getTagAttribute('mode', $attribs);
 			return we_getInputChoiceField('s[' . $name . ']', $orgVal, $values, $newAtts, $mode);
 
 		case 'textinput':
-			$choice = we_getTagAttribute("choice", $attribs, "", true);
+			$choice = we_getTagAttribute('choice', $attribs, '', true);
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'wysiwyg', 'rows', 'cols'));
 			//FIXME: can't this be done by calling the 'choice' switch?
 			if ($choice) { // because of backwards compatibility
 				$newAtts = removeAttribs($newAtts, array('maxlength'));
 				$newAtts['name'] = 's[' . $name . ']';
 
-				$optionsAr = makeArrayFromCSV(we_getTagAttribute("options", $attribs));
+				$optionsAr = makeArrayFromCSV(we_getTagAttribute('options', $attribs));
 				$isin = 0;
 				$options = '';
 				for ($i = 0; $i < sizeof($optionsAr); $i++) {
@@ -160,20 +160,20 @@ function we_tag_sessionField($attribs, $content) {
 				return we_getInputTextInputField('s[' . $name . ']', $orgVal, $newAtts);
 			}
 		case 'textarea':
-			$pure = we_getTagAttribute("pure", $attribs, "", true);
+			$pure = we_getTagAttribute('pure', $attribs, '', true);
 			if ($pure) {
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $newAtts);
 			} else {
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/js/we_textarea_include.inc.php");
-				$pure = we_getTagAttribute("pure", $attribs, "", true);
-				$autobr = $autobrAttr ? "on" : "off";
-				$showAutobr = isset($attribs["autobr"]);
-				return we_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS["we_doc"]->getHttpPath(), false, false, $xml, $removeFirstParagraph, "");
+				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
+				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/js/we_textarea_include.inc.php');
+				$pure = we_getTagAttribute('pure', $attribs, '', true);
+				$autobr = $autobrAttr ? 'on' : 'off';
+				$showAutobr = isset($attribs['autobr']);
+				return we_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
 			}
 		case 'radio':
-			if ((!isset($_SESSION["webuser"][$name])) && $checked) {
+			if ((!isset($_SESSION['webuser'][$name])) && $checked) {
 				$orgVal = $value;
 			}
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg'));
@@ -182,7 +182,7 @@ function we_tag_sessionField($attribs, $content) {
 		case 'checkbox':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg'));
 
-			if ((!isset($_SESSION["webuser"][$name])) && $checked) {
+			if ((!isset($_SESSION['webuser'][$name])) && $checked) {
 				$orgVal = 1;
 			}
 			return we_getInputCheckboxField('s[' . $name . ']', $orgVal, $newAtts);
@@ -192,26 +192,26 @@ function we_tag_sessionField($attribs, $content) {
 			$newAtts['value'] = htmlspecialchars($orgVal);
 			return getHtmlTag('input', $newAtts);
 		case 'print':
-			$ascountry = we_getTagAttribute("ascountry", $attribs, "false", true);
-			$aslanguage = we_getTagAttribute("aslanguage", $attribs, "false", true);
-			$nameTo = we_getTagAttribute("nameto", $attribs);
-			$to = we_getTagAttribute("to", $attribs, 'screen');
+			$ascountry = we_getTagAttribute('ascountry', $attribs, 'false', true);
+			$aslanguage = we_getTagAttribute('aslanguage', $attribs, 'false', true);
+			$nameTo = we_getTagAttribute('nameto', $attribs);
+			$to = we_getTagAttribute('to', $attribs, 'screen');
 			if (!$ascountry && !$aslanguage) {
 				if (is_numeric($orgVal) && !empty($dateformat)) {
 					return we_redirect_tagoutput(date($dateformat, $orgVal), $nameTo, $to);
-				} elseif (!empty($dateformat) && $weTimestemp = strtotime($orgVal)) {
-					return we_redirect_tagoutput(date($dateformat, $weTimestemp), $nameTo, $to);
+				} elseif (!empty($dateformat) && $weTimestemp = new DateTime($orgVal)) {
+					return we_redirect_tagoutput($weTimestemp->format($dateformat), $nameTo, $to);
 				}
 			} else {
-				$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+				$lang = we_getTagAttribute('outputlanguage', $attribs, '');
 				if ($lang == '') {
-					$docAttr = we_getTagAttribute("doc", $attribs, "self");
+					$docAttr = we_getTagAttribute('doc', $attribs, 'self');
 					$doc = we_getDocForTag($docAttr);
 					$lang = $doc->Language;
 				}
 				$langcode = substr($lang, 0, 2);
 				if ($lang == '') {
-					$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
+					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				}
 				if ($ascountry) {
@@ -227,9 +227,9 @@ function we_tag_sessionField($attribs, $content) {
 			$_hidden['name'] = 's[' . $name . ']';
 			$_hidden['value'] = $orgVal;
 			$_hidden['xml'] = $xml;
-			$languageautofill = we_getTagAttribute("languageautofill", $attribs, "false", true);
+			$languageautofill = we_getTagAttribute('languageautofill', $attribs, 'false', true);
 			if ($languageautofill) {
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$docAttr = we_getTagAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
 				$langcode = substr($lang, 0, 2);
@@ -237,58 +237,58 @@ function we_tag_sessionField($attribs, $content) {
 			}
 			return getHtmlTag('input', $_hidden);
 		case 'img':
-			if (!isset($_SESSION["webuser"]['imgtmp'])) {
-				$_SESSION["webuser"]['imgtmp'] = array();
+			if (!isset($_SESSION['webuser']['imgtmp'])) {
+				$_SESSION['webuser']['imgtmp'] = array();
 			}
-			if (!isset($_SESSION["webuser"]['imgtmp'][$name])) {
-				$_SESSION["webuser"]['imgtmp'][$name] = array();
+			if (!isset($_SESSION['webuser']['imgtmp'][$name])) {
+				$_SESSION['webuser']['imgtmp'][$name] = array();
 			}
 
-			$_SESSION["webuser"]['imgtmp'][$name]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
-			$_SESSION["webuser"]['imgtmp'][$name]["width"] = we_getTagAttribute("width", $attribs, 0);
-			$_SESSION["webuser"]['imgtmp'][$name]["height"] = we_getTagAttribute("height", $attribs, 0);
-			$_SESSION["webuser"]['imgtmp'][$name]["quality"] = we_getTagAttribute("quality", $attribs, "8");
-			$_SESSION["webuser"]['imgtmp'][$name]["keepratio"] = we_getTagAttribute("keepratio", $attribs, "", true, true);
-			$_SESSION["webuser"]['imgtmp'][$name]["maximize"] = we_getTagAttribute("maximize", $attribs, "", true);
-			$_SESSION["webuser"]['imgtmp'][$name]["id"] = $orgVal ? $orgVal : '';
+			$_SESSION['webuser']['imgtmp'][$name]['parentid'] = we_getTagAttribute('parentid', $attribs, '0');
+			$_SESSION['webuser']['imgtmp'][$name]['width'] = we_getTagAttribute('width', $attribs, 0);
+			$_SESSION['webuser']['imgtmp'][$name]['height'] = we_getTagAttribute('height', $attribs, 0);
+			$_SESSION['webuser']['imgtmp'][$name]['quality'] = we_getTagAttribute('quality', $attribs, '8');
+			$_SESSION['webuser']['imgtmp'][$name]['keepratio'] = we_getTagAttribute('keepratio', $attribs, '', true, true);
+			$_SESSION['webuser']['imgtmp'][$name]['maximize'] = we_getTagAttribute('maximize', $attribs, '', true);
+			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ? $orgVal : '';
 
-			$_foo = id_to_path($_SESSION["webuser"]['imgtmp'][$name]["id"]);
+			$_foo = id_to_path($_SESSION['webuser']['imgtmp'][$name]['id']);
 			if (!$_foo) {
-				$_SESSION["webuser"]['imgtmp'][$name]["id"] = 0;
+				$_SESSION['webuser']['imgtmp'][$name]['id'] = 0;
 			}
 
-			$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
-			$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
-			$inputstyle = we_getTagAttribute("inputstyle", $attribs);
-			$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
-			$inputclass = we_getTagAttribute("inputclass", $attribs);
-			$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+			$bordercolor = we_getTagAttribute('bordercolor', $attribs, '#006DB8');
+			$checkboxstyle = we_getTagAttribute('checkboxstyle', $attribs);
+			$inputstyle = we_getTagAttribute('inputstyle', $attribs);
+			$checkboxclass = we_getTagAttribute('checkboxclass', $attribs);
+			$inputclass = we_getTagAttribute('inputclass', $attribs);
+			$checkboxtext = we_getTagAttribute('checkboxtext', $attribs, $GLOBALS['l_parser']['delete']);
 
-			if ($_SESSION["webuser"]['imgtmp'][$name]["id"]) {
-				$attribs["id"] = $_SESSION["webuser"]['imgtmp'][$name];
+			if ($_SESSION['webuser']['imgtmp'][$name]['id']) {
+				$attribs['id'] = $_SESSION['webuser']['imgtmp'][$name];
 			}
 
-			unset($attribs["width"]);
-			unset($attribs["height"]);
+			unset($attribs['width']);
+			unset($attribs['height']);
 
-			$showcontrol = we_getTagAttribute("showcontrol", $attribs, "", true, true);
+			$showcontrol = we_getTagAttribute('showcontrol', $attribs, '', true, true);
 			if ($showcontrol) {
 				$we_button = new we_button();
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
 
-				$foo = attributFehltError($attribs, "parentid", "sessionField");
+				$foo = attributFehltError($attribs, 'parentid', 'sessionField');
 				if ($foo)
 					return $foo;
 			}
 
-			$imgId = $_SESSION["webuser"]['imgtmp'][$name]["id"];
+			$imgId = $_SESSION['webuser']['imgtmp'][$name]['id'];
 
-			include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_document.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . 'we_classes/we_document.inc.php');
 
-			$thumbnail = we_getTagAttribute("thumbnail", $attribs, "");
+			$thumbnail = we_getTagAttribute('thumbnail', $attribs, '');
 			if ($thumbnail != '') {
 				$attr['thumbnail'] = $thumbnail;
-				$imgTag = we_document::getFieldByVal($imgId, "img", $attr);
+				$imgTag = we_document::getFieldByVal($imgId, 'img', $attr);
 			} else {
 				$imgTag = we_document::getFieldByVal($imgId, 'img');
 			}
