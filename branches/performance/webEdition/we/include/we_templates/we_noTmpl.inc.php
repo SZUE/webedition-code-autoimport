@@ -77,9 +77,8 @@ $foo .= '		&lt;title&gt;'.$we_doc->getElement("Title").'&lt;/title&gt;
 </form>
 </body>
 <?php else: ?>
-	<body<?php print " ".we_tag("input", array("name"=>"BODYTAG")); ?>>
-<?php printElement( we_tag("textarea", array("name"=>"BODY"), "")); ?>
+	<body<?php print ' '.we_tag('input', array('name'=>'BODYTAG')); ?>>
+<?php printElement( we_tag('textarea', array('name'=>'BODY'), '')); ?>
 	</body>
 <?php endif ?>
 </html>
-

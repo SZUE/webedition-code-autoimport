@@ -18,15 +18,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/"."we_classes/we_textContentDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_textContentDocument.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/charsetHandler.class.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 class we_webEditionDocument extends we_textContentDocument {
 
 	// Name of the class => important for reconstructing the class from outside the class
-	var $ClassName="we_webEditionDocument";
+	var $ClassName='we_webEditionDocument';
 
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_CONTENT,WE_EDITPAGE_INFO,WE_EDITPAGE_PREVIEW,WE_EDITPAGE_VALIDATION);
 
@@ -37,19 +37,19 @@ class we_webEditionDocument extends we_textContentDocument {
 	var $temp_template_id=0;
 
 	// Categories of the parked document (Bug Fix #6615)
-	var $temp_category="";
+	var $temp_category='';
 
 	// Doc-Type of the parked document (Bug Fix #6615)
-	var $temp_doc_type="";
+	var $temp_doc_type='';
 
 	// Path from the template
-	var $TemplatePath = "";
-	var $Icon = "we_dokument.gif";
+	var $TemplatePath = '';
+	var $Icon = 'we_dokument.gif';
 	var $Table = FILE_TABLE;
-	var $ContentType="text/webedition";
+	var $ContentType='text/webedition';
 
 	// Only needed for output
-	var $CacheType = "none";
+	var $CacheType = 'none';
 	var $CacheLifeTime = 0;
 
 	var $hasVariants=null;
@@ -57,23 +57,23 @@ class we_webEditionDocument extends we_textContentDocument {
 	/**
 	 * @var weDocumentCustomerFilter
 	 */
-	var $documentCustomerFilter = ""; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
 
 	function we_webEditionDocument() {
-		if(defined("SHOP_TABLE")) {
+		if(defined('SHOP_TABLE')) {
 			array_push($this->EditPageNrs, WE_EDITPAGE_VARIANTS);
 		}
 
-		if (defined("CUSTOMER_TABLE")) {
+		if (defined('CUSTOMER_TABLE')) {
 			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
 		}
 		
 		$this->we_textContentDocument();
-		if(isset($_SESSION["prefs"]["DefaultTemplateID"])){
-			$this->TemplateID = $_SESSION["prefs"]["DefaultTemplateID"];
+		if(isset($_SESSION['prefs']['DefaultTemplateID'])){
+			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
-		array_push($this->persistent_slots,"TemplateID","TemplatePath","hidePages","controlElement","temp_template_id","temp_doc_type","temp_category");
+		array_push($this->persistent_slots,'TemplateID','TemplatePath','hidePages','controlElement','temp_template_id','temp_doc_type','temp_category');
 	}
 
 	function makeSameNew() {
@@ -89,40 +89,40 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function wait($usecs) {
 		$temp=gettimeofday();
-		$start=(int)$temp["usec"];
+		$start=(int)$temp['usec'];
 		while(1) {
 			$temp=gettimeofday();
-			$stop=(int)$temp["usec"];
+			$stop=(int)$temp['usec'];
 			if ($stop-$start >= $usecs)
 				break;
 		}
 	}
 
 	function editor($baseHref=true) {
-		$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
+		$port = (defined('HTTP_PORT')) ? (':'.HTTP_PORT) : '';
 		$prot = getServerProtocol();
-		$GLOBALS["we_baseHref"] = $baseHref ? $prot."://".SERVER_NAME.$port.$this->Path : "";
+		$GLOBALS['we_baseHref'] = $baseHref ? $prot.'://'.SERVER_NAME.$port.$this->Path : '';
 		switch($this->EditPageNr) {
 			case WE_EDITPAGE_PROPERTIES:
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
-				$GLOBALS["WE_MAIN_DOC"]->InWebEdition=true;//Bug 3417
-				return "we_templates/we_editor_info.inc.php";
+				$GLOBALS['WE_MAIN_DOC']->InWebEdition=true;//Bug 3417
+				return 'we_templates/we_editor_info.inc.php';
 				
 			case WE_EDITPAGE_CONTENT:
-				$GLOBALS["we_editmode"] = true;
+				$GLOBALS['we_editmode'] = true;
 				break;
 			case WE_EDITPAGE_PREVIEW:
-				$GLOBALS["we_editmode"] = false;
+				$GLOBALS['we_editmode'] = false;
 				break;
             case WE_EDITPAGE_VALIDATION:
-				return "we_templates/validateDocument.inc.php";
+				return 'we_templates/validateDocument.inc.php';
 				break;
 			case WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
 				break;
 			case WE_EDITPAGE_WEBUSER:
-				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
+				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 			break;
 			default:
 				return parent::editor($baseHref);
@@ -136,15 +136,15 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function formIsDynamic($leftwidth=100,$disabled=false) {
 		global $l_we_class;
-		if( (defined("ISP_VERSION") && ISP_VERSION) && ISP_TYPE == "small" ){
+		if( (defined('ISP_VERSION') && ISP_VERSION) && ISP_TYPE == 'small' ){
 		    return '<input type="hidden" name="we_' . $this->Name . '_IsDynamic" value="0" />';
 		}
 
-		$n = "";
-		$out = "";
+		$n = '';
+		$out = '';
 		if (!$disabled) {
 			$isDyn = $this->IsDynamic ? 1 : 0;
-			$n = "we_".$this->Name."_IsDynamic";
+			$n = 'we_'.$this->Name.'_IsDynamic';
 			$v = $this->IsDynamic;
 			$out="\nfunction switchExt() {\n";
 			if(!$this->Published) {
@@ -170,7 +170,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	function formDocTypeTempl() {
 		global $l_we_class;
 
-		$disable = (($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published);
+		$disable = (($this->ContentType == 'text/html' || $this->ContentType == 'text/webedition') && $this->Published);
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -226,31 +226,31 @@ class we_webEditionDocument extends we_textContentDocument {
 		$table = TEMPLATES_TABLE;
 		$textname = 'we_'.$this->Name.'_TemplateName';
 		$idname = 'we_'.$this->Name.'_TemplateID';
-		$ueberschrift=$l_we_class["template"];
-		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION["we_mode"] != "seem") {
+		$ueberschrift=$l_we_class['template'];
+		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['we_mode'] != 'seem') {
 			$ueberschriftLink='<a href="javascript:goTemplate(document.we_form.elements[\''.$idname.'\'].value)">'.$l_we_class["template"].'</a>';
 		} else {
 			$ueberschriftLink = $ueberschrift;
 		}
 		if($this->TemplateID > 0) {
-			$styleTemplateLabel = "display:none";
-			$styleTemplateLabelLink = "display:inline";
+			$styleTemplateLabel = 'display:none';
+			$styleTemplateLabelLink = 'display:inline';
 		}
 		else {
-			$styleTemplateLabel = "display:inline";
-			$styleTemplateLabelLink = "display:none";
+			$styleTemplateLabel = 'display:inline';
+			$styleTemplateLabelLink = 'display:none';
 		}
-		$myid = $this->TemplateID ? $this->TemplateID : "";
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);;opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
-		$yuiSuggest->setAcId("Template");
-		$yuiSuggest->setContentType("folder,text/weTmpl");
+		$myid = $this->TemplateID ? $this->TemplateID : '';
+		$path = f('SELECT Path FROM '.mysql_real_escape_string($table).' WHERE ID=\''.abs($myid).'\'','Path',$this->DB_WE);
+		$button = $we_button->create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);;opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
+		$yuiSuggest->setAcId('Template');
+		$yuiSuggest->setContentType('folder,text/weTmpl');
 		$yuiSuggest->setInput($textname,$path);
 		$yuiSuggest->setLabel("<span id='TemplateLabel' style='".$styleTemplateLabel."'>".$ueberschrift."</span><span id='TemplateLabelLink' style='".$styleTemplateLabelLink."'>".$ueberschriftLink."</span>");
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname,$myid);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
@@ -265,11 +265,11 @@ class we_webEditionDocument extends we_textContentDocument {
 		global $l_we_class;
 
 		if($this->DocType) {
-			$sql = "SELECT Templates FROM ".DOC_TYPES_TABLE." WHERE ID = ".abs($this->DocType)."";
+			$sql = 'SELECT Templates FROM '.DOC_TYPES_TABLE.' WHERE ID = '.abs($this->DocType);
 			$this->DB_WE->query($sql);
 			$templateFromDoctype = false;
 			while($this->DB_WE->next_record()) {
-				$templateFromDoctype = $this->DB_WE->f("Templates");
+				$templateFromDoctype = $this->DB_WE->f('Templates');
 			}
 
 			// if a Doctype is set and this Doctype has defined some templates, just show a select box
@@ -290,20 +290,20 @@ class we_webEditionDocument extends we_textContentDocument {
 
 		$fieldname = 'we_'.$this->Name.'_TemplateID';
 
-		$Templates="";
+		$Templates='';
 		$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID ='".abs($this->DocType)."'",$this->DB_WE);
 		$TID=$foo["TemplateID"];
 		$Templates=$foo["Templates"];
-		$tlist="";
-		if($TID!="")
+		$tlist='';
+		if($TID!='')
 			$tlist=$TID;
-		if($Templates!="")
-			$tlist.=",".$Templates;
+		if($Templates!='')
+			$tlist.=','.$Templates;
 		if($tlist) {
-			$temps=explode(",",$tlist);
+			$temps=explode(',',$tlist);
 			if(in_array($this->TemplateID,$temps))
 				$TID=$this->TemplateID;
-			$tlist=implode(",",array_unique($temps));
+			$tlist=implode(',',array_unique($temps));
 		}
 		else {
 			$foo = array();
@@ -324,7 +324,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		else {
 			$ueberschrift=$l_we_class["template"];
 		}
-		if($tlist!="") {
+		if($tlist!='') {
 			$foo = array();
 			$arr= makeArrayFromCSV($tlist);
 			foreach($arr as $tid) {
@@ -334,10 +334,10 @@ class we_webEditionDocument extends we_textContentDocument {
 			}
 			$tlist=makeCSVFromArray($foo);
 			$tlist = $tlist ? $tlist : -1;
-			return $this->formSelect4("",$width,"TemplateID",TEMPLATES_TABLE,"ID","Path",$ueberschrift," WHERE ID IN ($tlist) AND IsFolder=0 ORDER BY Path",1,$TID,false,"we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);","","left","defaultfont","","",array(0,""));
+			return $this->formSelect4('',$width,'TemplateID',TEMPLATES_TABLE,"ID","Path",$ueberschrift," WHERE ID IN ($tlist) AND IsFolder=0 ORDER BY Path",1,$TID,false,"we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);","","left","defaultfont","","",array(0,""));
 		}
 		else {
-			return $this->formSelect2("",$width,"TemplateID",TEMPLATES_TABLE,"ID","Path",$ueberschrift,"WHERE IsFolder=0 ORDER BY Path ",1,$this->TemplateID,false,"_EditorFrame.setEditorIsHot(true);");
+			return $this->formSelect2('',$width,'TemplateID',TEMPLATES_TABLE,"ID","Path",$ueberschrift,"WHERE IsFolder=0 ORDER BY Path ",1,$this->TemplateID,false,"_EditorFrame.setEditorIsHot(true);");
 		}
 	}
 
@@ -483,9 +483,9 @@ class we_webEditionDocument extends we_textContentDocument {
 	// for internal use
 	function setTemplatePath() {
 		if($this->TemplateID)
-			$this->TemplatePath= TEMPLATE_DIR.f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"Path",$this->DB_WE);
+			$this->TemplatePath= TEMPLATE_DIR.f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID='.abs($this->TemplateID),'Path',$this->DB_WE);
 		else
-			$this->TemplatePath = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_noTmpl.inc.php";
+			$this->TemplatePath = $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_templates/we_noTmpl.inc.php';
 	}
 
 	function setTemplateID($templID) {
@@ -863,32 +863,31 @@ class we_webEditionDocument extends we_textContentDocument {
 			$doc='<?php
 
 					$noSess = true;
-					$GLOBALS["WE_IS_DYN"] = 1;
-					$we_transaction = "";
-					$we_ContentType = "text/webedition";
-					$_REQUEST["we_cmd"] = array();
+					$GLOBALS[\'WE_IS_DYN\'] = 1;
+					$we_transaction = \'\';
+					$we_ContentType = \'text/webedition\';
+					$_REQUEST[\'we_cmd\'] = array();
 
-					if (isset($_REQUEST["pv_id"]) && isset($_REQUEST["pv_tid"])) {
-						$_REQUEST["we_cmd"][1] = $_REQUEST["pv_id"];
-						$_REQUEST["we_cmd"][4] = $_REQUEST["pv_tid"];
+					if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
+						$_REQUEST[\'we_cmd\'][1] = $_REQUEST[\'pv_id\'];
+						$_REQUEST[\'we_cmd\'][4] = $_REQUEST[\'pv_tid\'];
 					} else {
-						$_REQUEST["we_cmd"][1] = ' . $this->ID . ';
+						$_REQUEST[\'we_cmd\'][1] = ' . $this->ID . ';
 					}
 
 					$FROM_WE_SHOW_DOC = true;
 
-					if (!isset($GLOBALS["WE_MAIN_DOC"]) && isset($_REQUEST["we_objectID"])) {
-						include($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_object_showDocument.inc.php");
+					if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
+						include($_SERVER[\'DOCUMENT_ROOT\'] . \'/webEdition/we/include/we_modules/object/we_object_showDocument.inc.php\');
 					} else {
-						include($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_showDocument.inc.php");
-					}
-				?>';
+						include($_SERVER[\'DOCUMENT_ROOT\'] . \'/webEdition/we/include/we_showDocument.inc.php\');
+					}';
 		} else {
-			if (isset($GLOBALS["DocStream"]) && isset($GLOBALS["DocStream"][$this->ID])) {
-				$doc = $GLOBALS["DocStream"][$this->ID];
+			if (isset($GLOBALS['DocStream']) && isset($GLOBALS['DocStream'][$this->ID])) {
+				$doc = $GLOBALS['DocStream'][$this->ID];
 			} else {
-				if (!isset($GLOBALS["DocStream"])) {
-					$GLOBALS["DocStream"] = array();
+				if (!isset($GLOBALS['DocStream'])) {
+					$GLOBALS['DocStream'] = array();
 				}
 
 				$doc = $this->i_getDocument();
@@ -1227,5 +1226,3 @@ class we_webEditionDocument extends we_textContentDocument {
 	*/
 
 }
-
-?>

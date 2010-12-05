@@ -667,7 +667,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 
 function initDocument($formname = "we_global_form", $tid = "", $doctype = "", $categories = "") {
 
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_webEditionDocument.inc.php");
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 	//  check if a <we:sessionStart> Tag was before
 	$session = isset($GLOBALS["WE_SESSION_START"]) && $GLOBALS["WE_SESSION_START"];
 

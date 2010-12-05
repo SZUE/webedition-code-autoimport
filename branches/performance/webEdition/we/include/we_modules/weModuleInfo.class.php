@@ -128,4 +128,3 @@ class weModuleInfo {
 		return in_array($modul,$_we_active_integrated_modules);
 	}
 }
-?>

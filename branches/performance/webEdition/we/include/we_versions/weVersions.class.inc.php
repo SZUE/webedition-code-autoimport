@@ -1660,23 +1660,23 @@ class weVersions {
 		else {				
 			ob_start();
 			$noSess = true;
-			$GLOBALS["WE_IS_DYN"] = 1;
-			$we_transaction = "";
+			$GLOBALS['WE_IS_DYN'] = 1;
+			$we_transaction = '';
 			$we_ContentType = $we_doc->ContentType;
-			$_REQUEST["we_cmd"] = array();
-			$_REQUEST["we_cmd"][1] = $we_doc->ID;
+			$_REQUEST['we_cmd'] = array();
+			$_REQUEST['we_cmd'][1] = $we_doc->ID;
 			$FROM_WE_SHOW_DOC = true;
-			@include($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_showDocument.inc.php");
+			@include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_showDocument.inc.php');
 			$contents = ob_get_contents();
     		ob_end_clean();
 		}
 
-		$GLOBALS["we_doc"] = $docBackup;
+		$GLOBALS['we_doc'] = $docBackup;
 		$_REQUEST = $requestBackup;
 		
 		if($isdyn=='notSet') {
-			if(isset($GLOBALS["WE_IS_DYN"])) {
-				unset($GLOBALS["WE_IS_DYN"]);
+			if(isset($GLOBALS['WE_IS_DYN'])) {
+				unset($GLOBALS['WE_IS_DYN']);
 			}
 		}
 		else {

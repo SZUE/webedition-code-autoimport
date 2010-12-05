@@ -341,14 +341,14 @@ class we_tagParser{
 				}
 		}
 		
-		$attribs = "";
+		$attribs = '';
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
 		for ($i = 0; $i < sizeof($foo); $i++) {
-			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+			$attribs .= '\'' . trim($foo[$i][1]) . '\'=>' . trim($foo[$i][2]) . ',';
 		}
 		
 		if (!$endTag) {
-			$arrstr = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+			$arrstr = 'array(' . ereg_replace('(.+),$', "\\1", $attribs) . ')';
 			
 			@eval('$arr = ' . ereg_replace('"\$([^"]+)"', '"$GLOBALS[\1]"', $arrstr) . ';');
 			if (!isset($arr)) {
@@ -480,14 +480,14 @@ class we_tagParser{
 					
 					default :
 						
-						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+						$attribs = 'array(' . ereg_replace('(.+),$', "\\1", $attribs) . ')';
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 						
 	
 						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
 							$code = str_replace(
 									$tag, 
-									'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>', 
+									'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>',
 									$code);
 							$this->ipos++;
 							$this->lastpos = 0;
@@ -540,7 +540,7 @@ class we_tagParser{
 														$code = str_replace(
 																$tag, 
 																$this->parseCacheIfTag(
-																		'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'), 
+																		'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>'),
 																$code);
 														$this->ipos++;
 														$this->lastpos = 0;
@@ -548,7 +548,7 @@ class we_tagParser{
 														if ($tagname == "condition") {
 															$code = str_replace(
 																	$tag, 
-																	'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>', 
+																	'<?php we_tag(\'' . $tagname . '\', ' . $attribs . '); ?>',
 																	$code);
 															$this->ipos++;
 															$this->lastpos = 0;
@@ -635,7 +635,7 @@ class we_tagParser{
 																	//neu
 																} else {
 																	// Tag besitzt Endtag
-																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "' . $content . '")';
+																	$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', "' . $content . '")';
 																	$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																			$code, 
 																			$endeEndTagPos);
@@ -653,12 +653,12 @@ class we_tagParser{
 																
 																} else 
 																	if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
-																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ')';
+																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ')';
 																		eval(
 																				'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
 																		//neu
 																	} else {
-																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "")';
+																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', "")';
 																		$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																				$code, 
 																				$endeStartTag);
@@ -993,18 +993,18 @@ if(isset($weTagListviewCache)) {
 			
 			$php .= '<?php
 
-    	if ( isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])  {
+    	if ( isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])  {
 
     		$_tmpspan = \'<span style="color: white;font-size:\'.
 								(($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")). \';font-family:\'.
 								$GLOBALS["l_css"]["font_family"].\';">\';
 
     		print "<table style=\"background: #006DB8;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding: 3px;\">" . $_tmpspan . "&nbsp;" . $GLOBALS["l_tags"]["include_file"] . "</span></td></tr><tr><td>";
-    		printElement( we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), ""));
-    		print  "</td></tr></table>";
-			$path ="";//Bug #4742
+    		printElement( we_tag(\'href\', array(\'name\'=>\'' . $name . '\',\'rootdir\'=>\''.$rootdir.'\'), \'\'));
+    		print  \'</td></tr></table>\';
+			$path =\'\';//Bug #4742
     	} else {
-    		$path = we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), "");
+    		$path = we_tag(\'href\', array(\'name\'=>\'' . $name . '\',\'rootdir\'=>\''.$rootdir.'\'), \'\');
     	}
     	?>';
 		}
@@ -2811,5 +2811,3 @@ we_tag(\"noCache\", array(), \$temp);
 	}
 
 }
-
-?>

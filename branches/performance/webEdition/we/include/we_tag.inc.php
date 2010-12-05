@@ -18,27 +18,27 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-if (!isset($GLOBALS["WE_IS_DYN"])) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/global.inc.php");
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/linklist_edit.inc.php");
+if (!isset($GLOBALS['WE_IS_DYN'])) {
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/global.inc.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/linklist_edit.inc.php');
 }
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/date.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
 
 // Tag and TagBlock Cache
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCache.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagCache.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagBlockCache.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCache.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weTagCache.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weTagBlockCache.class.php');
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
-include_once (WE_USERS_MODULE_DIR . "we_users_util.php");
+include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
-function we_tag($name, $attribs, $content = ""){
+function we_tag($name, $attribs, $content = ''){
 	
 	if ($content) {
 		$content = str_replace("we_:_", "we:", $content);
