@@ -262,7 +262,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_thumbnails, $DB_WE, $BROWSER, $SYSTEM, $MOZ_AX, $MOZ13, $NET6;
+	global $l_alert, $l_thumbnails, $DB_WE, $BROWSER, $SYSTEM, $MOZ13, $NET6;
 
 	$we_button = new we_button();
 
