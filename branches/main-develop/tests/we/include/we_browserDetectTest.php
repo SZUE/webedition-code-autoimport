@@ -28,6 +28,11 @@ class we_browserDetectTest extends PHPUnit_Framework_TestCase {
 			//Chrome
 			array('str' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.3 (KHTML, like Gecko) Chrome/6.0.472.63 Safari/534.3', 'name' => 'chrome', 'version' => '6.0', 'os' => 'win'),
 			array('str' => 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/532.4 (KHTML, like Gecko) Chrome/4.0.233.0 Safari/532.4', 'name' => 'chrome', 'version' => '4.0', 'os' => 'unix'),
+			//FF
+			array('str' => 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8) Gecko/20051111 Firefox/1.5 BAVM/1.0.0', 'name' => 'firefox', 'version' => '1.5', 'os' => 'unix'),
+			array('str' => 'Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.2.11) Gecko/20101012 Firefox/3.6.11', 'name' => 'firefox', 'version' => '3.6', 'os' => 'win'),
+			array('str' => 'Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10.5; en-US; rv:1.9.0.3) Gecko/2008092414 Firefox/3.0.3', 'name' => 'firefox', 'version' => '3.0', 'os' => 'mac'),
+			array('str' => 'Mozilla/5.0 (X11; U; Darwin Power Macintosh; en-US; rv:1.8.0.12) Gecko/20070803 Firefox/1.5.0.12 Fink Community Edition', 'name' => 'firefox', 'version' => '1.5', 'os' => 'mac'),
 	);
 	/**
 	 * @var    we_browserDetect

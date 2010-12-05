@@ -110,7 +110,7 @@ class we_browserDetect {
 								self::$br = 'safari';
 
 							}} else
-							if (preg_match('/firefox\/([0-9.]+)/i', $post, $regs)) {
+							if (preg_match('/firefox\/([0-9]+.[0-9]+)/i', $post, $regs)) {
 								self::$v = $regs[1];
 								self::$br = 'firefox';
 							} else
@@ -234,6 +234,17 @@ class we_browserDetect {
 
 	function getUserAgent() {
 		return self::$ua;
+	}
+
+	function getWebKitVersion(){
+		if (preg_match('#AppleWebKit/([^ ]+)#i', self::$ua, $regs)) {
+			return abs($regs[1]);
+		}
+		return 0;
+	}
+
+	function isGecko(){
+		return stristr(self::$ua, 'gecko');
 	}
 
 }
