@@ -29,12 +29,20 @@ function we_broser_check() {
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
 									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
 
+	$SYSTEM = strtoupper($_BROWSER->getSystem());
+	//renaming
+	if($SYSTEM=='UNIX'){
+		$SYSTEM='X11';
+	}
+
 	switch($_BROWSER->getBrowser()){
 		case 'opera':
 			$BROWSER = 'OPERA';
 			break;
 		case 'ie':
 			$BROWSER = "IE";
+			$IE55 =($_BROWSER->getBrowserVersion()>=5.5);
+			$IE4 = ($_BROWSER->getBrowserVersion()<5);
 			break;
 		case 'appleWebKit':
 		case 'safari':
@@ -50,11 +58,6 @@ function we_broser_check() {
 		default:
 			$BROWSER = "UNKNOWN";
 
-	}
-	$SYSTEM = strtoupper($_BROWSER->getSystem());
-	//renaming
-	if($SYSTEM=='UNIX'){
-		$SYSTEM='X11';
 	}
 
 
