@@ -24,10 +24,10 @@ function we_broser_check() {
 	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $MOZ13;
 	$SAFARI_WYSIWYG = false;
 
-	$_BROWSER = new we_browserDetect();
-
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
 									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
+
+	$_BROWSER = new we_browserDetect();
 
 	$SYSTEM = strtoupper($_BROWSER->getSystem());
 	//renaming
