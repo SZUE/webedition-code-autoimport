@@ -20,7 +20,7 @@
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
-function we_broser_check() {
+function we_browser_check() {
 	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $MOZ13;
 	$SAFARI_WYSIWYG = false;
 
@@ -86,5 +86,5 @@ function we_broser_check() {
 }
 
 if(!isset($BROWSER)){
-	we_broser_check();
+	we_browser_check();
 }
