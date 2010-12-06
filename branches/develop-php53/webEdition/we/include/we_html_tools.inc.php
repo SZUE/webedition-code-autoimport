@@ -18,15 +18,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_browser_check.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/global.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/charset/charset.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/global.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/charset/charset.inc.php');
 
 /**
  * This function creates a table.
@@ -993,5 +993,3 @@ function htmlAlertAttentionBox($text, $type = 0, $width = 0, $useHtmlSpecialChar
 	
 	return $js . '<div style="background-color:#dddddd;padding:5px;' . ($width ? ' width:' . $width . 'px;' : '') . '"><table border="0" cellpadding="2" width="100%">' . '<tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . IMAGE_DIR . 'button/btn_direction_right.gif" border="0" /></a><td>' : '') . '</tr></table></div>';
 }
-
-?>

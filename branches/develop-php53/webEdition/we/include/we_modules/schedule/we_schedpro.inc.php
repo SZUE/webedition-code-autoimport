@@ -733,6 +733,3 @@ function weCmpSchedLast ($a, $b) {
     if ($a["lasttime"] == $b["lasttime"]) return 0;
     return ($a["lasttime"] < $b["lasttime"]) ? -1 : 1;
 }
-
-
-?>

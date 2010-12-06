@@ -126,6 +126,10 @@ function _getIcon(contentType, extension) {
 		return "prog.gif";
 
 	} else {
+		tmp=_Contentypes[contentType];
+		if(tmp==undefined){
+			return "prog.gif";
+		}
 		return _Contentypes[contentType];
 	}
 }

@@ -36,7 +36,7 @@ class we_tagParser{
 
 	var $ipos = 0;
 	
-	var $ListviewItemsTags = array("object","customer","order","orderitem","metadata");
+	var $ListviewItemsTags = array("object","customer","onlinemonitor","order","orderitem","metadata");
 	var $AppListviewItemsTags = array();
 
 	function we_tagParser()	{
@@ -394,6 +394,11 @@ class we_tagParser{
 						break;
 					case "customer" :
 						$code = $this->parseCustomerTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "onlinemonitor" :
+						$code = $this->parseOnlinemonitorTag($tag, $code, $attribs, $postName);
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
@@ -1225,7 +1230,8 @@ EOF;
 		$datefield = we_getTagAttributeTagParser("datefield", $arr, "");
 		$date = we_getTagAttributeTagParser("date", $arr, "");
 		$weekstart = we_getTagAttributeTagParser("weekstart", $arr, "monday");
-		
+		$lastaccesslimit = we_getTagAttributeTagParser("lastaccesslimit", $arr, "300");
+        $lastloginlimit = we_getTagAttributeTagParser("lastloginlimit", $arr, "");
 		if (isset($arr['recursive'])) {
 			$subfolders = we_getTagAttributeTagParser("recursive", $arr, "true");
 		} else {
@@ -1319,6 +1325,14 @@ $GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset,
 						
 						} else { return str_replace($tag, modulFehltError('Customer','listview type="customer"'), $code); }
 					} else
+					  if ($type == "onlinemonitor") {
+						if (defined("CUSTOMER_SESSION_TABLE")) {
+							$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_onlinemonitor.class.php");
+$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '");
+';
+						
+						} else { return str_replace($tag, modulFehltError('Customer','listview type="onlinemonitor"'), $code); }
+					  } else
 					  if ($type == "order") {
 						if (defined("SHOP_TABLE")) {
 							$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_order.class.php");
@@ -1327,7 +1341,7 @@ $GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $w
 						
 						} else { return str_replace($tag, modulFehltError('Shop','listview type="order"'), $code); }
 					  } else
-					  if ($type == "orderitem") {
+					   if ($type == "orderitem") {
 						if (defined("SHOP_TABLE")) {
 							$foo = attributFehltError($arr, "orderid", "listview");
 								if ($foo)
@@ -1654,6 +1668,57 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			return $this->replaceTag($tag, $code, $pre . $php);
 		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
 	}
+
+	function parseOnlinemonitorTag($tag, $code, $attribs = "", $postName = "")
+	{
+		
+		if (defined("WE_CUSTOMER_MODULE_DIR")) {
+			
+			eval('$arr = array(' . $attribs . ');');
+			
+			$we_button = new we_button();
+			
+			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
+			$we_omid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__omid = str_replace('$','',$we_omid);//Bug 4848
+			
+			$php = '<?php
+
+if (!isset($GLOBALS["we_lv_array"])) {
+	$GLOBALS["we_lv_array"] = array();
+}
+
+include_once(WE_CUSTOMER_MODULE_DIR . "we_onlinemonitortag.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+';
+			
+		
+			if ($we_omid!=0){//Bug 4848
+				$php .='if(isset('. $we_omid .')){$we_omid=' . $we_omid . ';} else { if (isset($GLOBALS["' . $we__omid .'"]) ) { $we_omid = $GLOBALS["' . $we__omid .'"];} else {$we_omid=0; } }';
+			} else {
+				$php .='$we_omid=' . $we_omid . '	;
+				';
+			}
+				
+$php .='$we_omid = $we_omid ? $we_omid : (isset($_REQUEST["we_omid"]) ? $_REQUEST["we_omid"] : 0);
+';
+			
+			
+			$php .= '$GLOBALS["lv"] = new we_onlinemonitortag($we_omid,"' . $condition . '");
+$lv = clone($GLOBALS["lv"]); // for backwards compatibility
+if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
+?><?php if($GLOBALS["lv"]->avail): ?>';
+			
+			if ($postName != "") {
+				$content = str_replace('$', '\$', $php); //	to test with blocks ...
+			}
+			
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
+	}
+
 
 	##########################################################################################
 	##########################################################################################

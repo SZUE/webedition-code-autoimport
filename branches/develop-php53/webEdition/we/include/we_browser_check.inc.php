@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,107 +18,73 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
-$SAFARI_WYSIWYG = false;
-$SAFARI_3 = false;
+function we_browser_check() {
+	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $MOZ13;
+	$SAFARI_WYSIWYG = false;
 
-$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
-		$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
+	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
+									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
 
-if (preg_match('/(ozilla.[23]|MSIE.3)/i', $_SERVER['HTTP_USER_AGENT'])) {
-	$BROWSER3 = true;
-}
-if (stristr($_SERVER['HTTP_USER_AGENT'], 'safari')) {
-	$BROWSER = "SAFARI";
-	if (preg_match('#AppleWebKit/([^ ]+)#i', $_SERVER["HTTP_USER_AGENT"], $regs)) {
-		$v = $regs[1];
-		if ((abs($v) > 311 && abs($v) < 400) || (abs($v) > 411)) {
-			$SAFARI_WYSIWYG = true;
-		}
-		if (abs($v) > 522) {
-			$SAFARI_3 = true;
-		}
+	$_BROWSER = new we_browserDetect();
+
+	$SYSTEM = strtoupper($_BROWSER->getSystem());
+	//renaming
+	if($SYSTEM=='UNIX'){
+		$SYSTEM='X11';
 	}
-} else 
-	if (stristr($_SERVER['HTTP_USER_AGENT'], 'opera')) {
-		$BROWSER = 'OPERA';
-	} else 
-		if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
+
+	switch($_BROWSER->getBrowser()){
+		case 'opera':
+			$BROWSER = 'OPERA';
+			break;
+		case 'ie':
 			$BROWSER = "IE";
-		} else 
-			if (stristr($_SERVER['HTTP_USER_AGENT'], 'mozilla')) {
-				$BROWSER = "NN";
-				if (stristr($_SERVER['HTTP_USER_AGENT'], 'gecko')) {
-					$BROWSER = "NN6";
-				}
-			} else {
-				$BROWSER = "UNKNOWN";
-			}
-$OSX = false;
-if (stristr($_SERVER['HTTP_USER_AGENT'], 'X11')) {
-	$SYSTEM = "X11";
-} else 
-	if (stristr($_SERVER['HTTP_USER_AGENT'], 'Win')) {
-		$SYSTEM = "WIN";
-	} else 
-		if (stristr($_SERVER['HTTP_USER_AGENT'], 'Mac')) {
-			$SYSTEM = "MAC";
-			if (stristr($_SERVER['HTTP_USER_AGENT'], 'os x')) {
-				$OSX = true;
-			}
-		} else {
-			$SYSTEM = "UNKNOWN";
-		}
+			$IE55 =($_BROWSER->getBrowserVersion()>=5.5);
+			$IE4 = ($_BROWSER->getBrowserVersion()<5);
+			break;
+		case 'appleWebKit':
+		case 'safari':
+			$BROWSER = "SAFARI";
+			$wkV=$_BROWSER->getWebKitVersion();
+			$SAFARI_WYSIWYG = (($wkV > 311 && $wkV < 400) || ($wkV > 411));
+			break;
+		case 'mozilla':
+		case 'firefox':
+		case 'nn':
+			$BROWSER = ($_BROWSER->isGecko()?'NN6':'NN');
+			break;
+		default:
+			$BROWSER = "UNKNOWN";
 
-if (($BROWSER == "IE") && ($SYSTEM == "WIN")) {
-	$foo = explode(";", $_SERVER["HTTP_USER_AGENT"]);
-	$foo = abs(preg_replace('/[^\d.]/', '', $foo[1]));
-	if ($foo >= 5.5) {
-		$IE55 = true;
 	}
-	if ($foo < 5) {
-		$IE4 = true;
+
+
+	if (($BROWSER == "IE") && ($SYSTEM == "WIN")) {
+		$foo = explode(";", $_SERVER["HTTP_USER_AGENT"]);
+		$foo = abs(preg_replace('/[^\d.]/', '', $foo[1]));
+		if ($foo >= 5.5) {
+			$IE55 = true;
+		}
+		if ($foo < 5) {
+			$IE4 = true;
+		}
 	}
-}
 
 #### Erkennung fuer Mozilla >= 1.3
 
 
-$MOZ13 = false;
-
-if (($BROWSER == "NN6")) {
-	if (preg_match('/.*; ?rv:([\d.]+).*/', $_SERVER['HTTP_USER_AGENT'], $regs)) {
-		if (abs($regs[1]) >= 1.3) {
-			$MOZ13 = true;
-		}
-	}
-}
-
-#### Gecko stuff
-	$isGecko=(preg_match('@gecko/([^ ]+)@i',$_SERVER["HTTP_USER_AGENT"],$regs)>0);
-	if ($isGecko) {
-		$geckoVersion=abs($regs[1]);
-	}
-
+	$MOZ13 = ($BROWSER == 'NN6' && $_BROWSER->getBrowserVersion()>=1.3);
 
 #### Erkennung fuer Netscape >= 6.0
 
+	//nobody is using netscape - this browser is really dead.
+	$NET6 = false;
 
-$NET6 = false;
-$FF = ""; 
-if (($BROWSER == "NN6")) {
-	if (stristr($_SERVER['HTTP_USER_AGENT'], 'Netscape')) {
-		$NET6 = true;
-	} elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'Firefox')) {
-		$BROWSERVERSION = substr(strstr($_SERVER["HTTP_USER_AGENT"], "Firefox/"),8);
-		$_bvArray=explode(".",$BROWSERVERSION);
-		$FF = $_bvArray[0];		
-	}
+	$FF = ($_BROWSER->getBrowser()=='firefox'?abs($_BROWSER->getBrowserVersion()):'');
 }
 
-#### Erkennung fuer ActiveX kompatible Mozilla Browser
-
-
-$MOZ_AX = false;
-
-?>
+if(!isset($BROWSER)){
+	we_browser_check();
+}

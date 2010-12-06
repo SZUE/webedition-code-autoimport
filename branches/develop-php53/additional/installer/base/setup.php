@@ -37,6 +37,9 @@
  	
  	$LU_Version = "###VERSION###";
 	
+	ini_set("display_errors", "Off");
+	ini_set("error_reporting", 0);
+	
 	if (isset($_REQUEST["phpinfo"])) {
 		echo '<body style="margin:0px; padding:0px;"><div style="background:transparent url(./OnlineInstaller/img/leLayout/bgcontent.gif);">';
 		phpinfo();
