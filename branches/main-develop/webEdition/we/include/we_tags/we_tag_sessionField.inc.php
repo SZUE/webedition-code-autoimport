@@ -53,6 +53,26 @@ function we_tag_sessionField($attribs, $content) {
 	}
 
 	switch ($type) {
+		case "date" :
+			$currentdate = we_getTagAttribute("currentdate", $attribs, "", true);
+			$minyear = we_getTagAttribute("minyear", $attribs, "");
+			$maxyear = we_getTagAttribute("maxyear", $attribs, "");
+			$format = we_getTagAttribute("format", $attribs, "");
+			if ($currentdate) {
+				$orgVal = time();
+			}
+
+			return getDateInput2(
+					"s[we_date_" . $name . "]",
+					($orgVal ? $orgVal : time()),
+					false,
+					$format,
+					'',
+					'',
+					$xml,
+					$minyear,
+					$maxyear);
+			break;
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
@@ -227,6 +247,10 @@ function we_tag_sessionField($attribs, $content) {
 			$_hidden['name'] = 's[' . $name . ']';
 			$_hidden['value'] = $orgVal;
 			$_hidden['xml'] = $xml;
+			$usevalue = we_getTagAttribute("usevalue",$attribs,"false",true);
+			if ($usevalue){
+				$_hidden['value'] = $value;
+			}
 			$languageautofill = we_getTagAttribute('languageautofill', $attribs, 'false', true);
 			if ($languageautofill) {
 				$docAttr = we_getTagAttribute('doc', $attribs, 'self');

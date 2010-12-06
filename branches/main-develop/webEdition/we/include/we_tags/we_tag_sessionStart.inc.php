@@ -122,6 +122,7 @@ function we_tag_sessionStart($attribs, $content)
 		}
 		if($onlinemonitor && isset($_SESSION["webuser"]["registered"])){
 			$q = "DELETE FROM ".CUSTOMER_SESSION_TABLE." WHERE LastAccess < DATE_SUB(NOW(), INTERVAL 1 HOUR)";
+			$GLOBALS["DB_WE"]->query($q);
 			$monitorgroupfield = we_getTagAttribute("monitorgroupfield",$attribs);
 			$docAttr = we_getTagAttribute("monitordoc", $attribs);
 			$doc = we_getDocForTag($docAttr, false);
@@ -131,14 +132,14 @@ function we_tag_sessionStart($attribs, $content)
 			$SessionIp = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars((string) $_SERVER['REMOTE_ADDR']) : '';
 			
 			$Browser = (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-			$Referer = (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
+			$Referrer = (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
 			if ($_SESSION["webuser"]["registered"]){
 				$WebUserID = $_SESSION["webuser"]["ID"];
-				if ($monitorgroupfield!=''){ $WebUserGroup = $_SESSION["webuser"][$monitorgroupfield];} else {$WebUserGroup='';}
+				if ($monitorgroupfield!=''){ $WebUserGroup = $_SESSION["webuser"][$monitorgroupfield];} else {$WebUserGroup='we_guest';}
 				$WebUserDescription = '';
 			} else {
 				$WebUserID = 0;
-				$WebUserGroup = 'guest';
+				$WebUserGroup = 'we_guest';
 				$WebUserDescription = '';
 			}
 			$q = "UPDATE ".CUSTOMER_SESSION_TABLE." SET PageID='".$PageID."',LastAccess=NOW(),WebUserID='".$WebUserID."',WebUserGroup='".$WebUserGroup."',WebUserDescription='".$WebUserDescription."'  WHERE SessionID='".$SessionID."'";
