@@ -1203,12 +1203,36 @@ function we_tag_listviewPages($attribs, $content){
 
 function we_tag_listviewRows($attribs, $content){
 	return $GLOBALS["lv"]->anz_all - abs($GLOBALS["lv"]->offset);
-}
+ }
 
-function we_tag_listviewStart($attribs, $content){
+function we_tag_listviewStart($attribs, $content) {
 	return $GLOBALS["lv"]->start + 1 - abs($GLOBALS["lv"]->offset);
 }
 
-function we_tag_makeMail($attribs, $content){
+function we_tag_makeMail($attribs, $content) {
 	return "";
+}
+
+function we_tag_ifshopexists($attribs, $content) {
+	return defined("SHOP_TABLE");
+}
+
+function we_tag_ifobjektexists($attribs, $content) {
+	return defined("OBJECT_TABLE");
+}
+
+function we_tag_ifnewsletterexists($attribs, $content) {
+	return defined("NEWSLETTER_TABLE");
+}
+
+function we_tag_ifcustomerexists($attribs, $content) {
+	return defined("CUSTOMER_TABLE");
+}
+
+function we_tag_ifbannerexists($attribs, $content) {
+	return defined("BANNER_TABLE");
+}
+
+function we_tag_ifvotingexists($attribs, $content) {
+	return defined("VOTING_TABLE");
 }

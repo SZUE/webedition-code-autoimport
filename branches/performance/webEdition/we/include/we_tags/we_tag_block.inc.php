@@ -28,7 +28,7 @@ function we_tag_block($attribs, $content){
 	$foo = attributFehltError($attribs, "name", "block");
 	if ($foo)
 		return $foo;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_tagParser.inc.php");
+	include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_tagParser.inc.php');
 
 	$name = we_getTagAttribute("name", $attribs);
 	$showselect = we_getTagAttribute("showselect", $attribs, "", true, true);
