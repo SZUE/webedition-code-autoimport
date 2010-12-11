@@ -57,7 +57,7 @@ function we_tag_sessionField($attribs, $content) {
 			$currentdate = we_getTagAttribute("currentdate", $attribs, "", true);
 			$minyear = we_getTagAttribute("minyear", $attribs, "");
 			$maxyear = we_getTagAttribute("maxyear", $attribs, "");
-			$format = we_getTagAttribute("format", $attribs, "");
+			$format = we_getTagAttribute("dateformat", $attribs, "");
 			if ($currentdate) {
 				$orgVal = time();
 			}
