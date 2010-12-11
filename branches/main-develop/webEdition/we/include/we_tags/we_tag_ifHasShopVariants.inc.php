@@ -26,7 +26,7 @@
  *
  * @return	boolean
  */
-function we_tag_ifHasShopVariants($attribs) {
+function we_tag_ifHasShopVariants($attribs,$content) {
 
 	global $we_doc;
 
