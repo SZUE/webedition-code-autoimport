@@ -216,9 +216,12 @@ cleanTempFiles(1);
  * CHECK FOR FAILED LOGIN ATTEMPTS
  *****************************************************************************/
 
-$DB_WE->query("SELECT ID FROM ".FAILED_LOGINS_TABLE." WHERE IP='".addslashes($_SERVER["REMOTE_ADDR"])."' AND LoginDate > (".(time() - (60 * abs(LOGIN_FAILED_TIME))).")");
+$DB_WE->query('DELETE FROM '.FAILED_LOGINS_TABLE.' WHERE LoginDate < DATE_SUB(NOW(), INTERVAL '.LOGIN_FAILED_HOLDTIME.' DAY)');
 
-if ($DB_WE->num_rows() >= LOGIN_FAILED_NR) {
+$DB_WE->query('SELECT COUNT(ID) AS count FROM '.FAILED_LOGINS_TABLE.' WHERE IP="'.addslashes($_SERVER['REMOTE_ADDR']).'" AND LoginDate > DATE_SUB(NOW(). INTERVAL '.abs(LOGIN_FAILED_TIME).' HOUR)');
+$DB_WE->next_record();
+
+if ($DB_WE->f("count") >= LOGIN_FAILED_NR) {
 	htmlTop("webEdition " . WE_VERSION);
 	print we_htmlElement::jsElement(
 		we_message_reporting::getShowMessageCall( sprintf($l_alert["3timesLoginError"], LOGIN_FAILED_NR,LOGIN_FAILED_TIME), WE_MESSAGE_ERROR )
@@ -597,15 +600,17 @@ if (isset($_POST["checkLogin"]) && !count($_COOKIE)) {
 
 		$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . $l_alert["popupLoginError"] . "', '/webEdition/index.php'); }";
 	} else if ($login == 1) {
-		$DB_WE->query("INSERT INTO ".FAILED_LOGINS_TABLE." (Username, Password, IP, LoginDate) VALUES('" . $_POST["username"] . "', '*****', '" . $_SERVER["REMOTE_ADDR"] . "', '" . time() . "')");
+		$DB_WE->query('INSERT INTO '.FAILED_LOGINS_TABLE.' SET Username="' . $_POST['username'] . '", IP="' . $_SERVER['REMOTE_ADDR'] . '"');
 
 		/*****************************************************************************
 		 * CHECK FOR FAILED LOGIN ATTEMPTS
 		 *****************************************************************************/
+		$DB_WE->query('DELETE FROM '.FAILED_LOGINS_TABLE.' WHERE LoginDate < DATE_SUB(NOW(), INTERVAL '.LOGIN_FAILED_HOLDTIME.' DAY)');
 
-		$DB_WE->query("SELECT ID FROM ".FAILED_LOGINS_TABLE." WHERE IP='".mysql_real_escape_string($_SERVER["REMOTE_ADDR"])."' AND LoginDate > (".(time() - (60 * abs(LOGIN_FAILED_TIME))).")");
+		$DB_WE->query('SELECT COUNT(ID) AS count FROM '.FAILED_LOGINS_TABLE.' WHERE IP="'.addslashes($_SERVER['REMOTE_ADDR']).'" AND LoginDate > DATE_SUB(NOW(), INTERVAL '.abs(LOGIN_FAILED_TIME).' MINUTE)');
+		$DB_WE->next_record();
 
-		if ($DB_WE->num_rows() >= LOGIN_FAILED_NR) {
+		if ($DB_WE->f("count") >= LOGIN_FAILED_NR) {
 			$_body_javascript =	we_message_reporting::getShowMessageCall(sprintf($l_alert["3timesLoginError"], LOGIN_FAILED_NR,LOGIN_FAILED_TIME), WE_MESSAGE_ERROR);
 		}else{
 			$_body_javascript =	we_message_reporting::getShowMessageCall($l_alert["login_failed"], WE_MESSAGE_ERROR);
