@@ -128,11 +128,9 @@ function checkAndMakeFolder($path)
 	return true;
 }
 
-function insertIntoErrorLog($text)
-{
+function insertIntoErrorLog($text){
 	$DB_WE = new DB_WE();
-	$time = time();
-	$DB_WE->query("INSERT INTO " . ERROR_LOG_TABLE . " (Text,Date) VALUES('" . mysql_real_escape_string($text) . "','$time')");
+	$DB_WE->query('INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES(\'' . mysql_real_escape_string($text) . '\')');
 
 }
 

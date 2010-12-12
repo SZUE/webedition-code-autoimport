@@ -232,7 +232,7 @@ function log_error_message($type, $message, $file, $line) {
 
 		mysql_select_db(DB_DATABASE) or die("Cannot log error! Could not select database.");
 
-		$_query = "INSERT INTO " . (defined("TBL_PREFIX") ? TBL_PREFIX : "") . "tblErrorLog (Text, Date) VALUES ('" . mysql_real_escape_string($_detailedError) . "', '" . time() . "');";
+		$_query = 'INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES (\'' . mysql_real_escape_string($_detailedError) . '\');';
 
 		mysql_query($_query);
 
