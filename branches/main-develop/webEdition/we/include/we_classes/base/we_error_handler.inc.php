@@ -33,6 +33,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf_glob
  *************************************************************************/
 
 $_error_notice = false;
+$_error_deprecated = false;
 $_error_warning = false;
 $_error_error = true;
 
@@ -47,16 +48,18 @@ $_send_address = "";
  *************************************************************************/
 
 function we_error_handler($in_webEdition = true) {
-	global $_error_notice, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 
 	// Get error types to be handled
 	$_error_notice = defined("WE_ERROR_NOTICES") ? (WE_ERROR_NOTICES == 1 ? true : false) : false;
+	$_error_deprecated = defined("WE_ERROR_DEPRECATED") ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false;
 	$_error_warning = defined("WE_ERROR_WARNINGS") ? (WE_ERROR_WARNINGS == 1 ? true : false) : false;
 	$_error_error = defined("WE_ERROR_ERRORS") ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
 
 	// Get way of how to show errors
 	if ($in_webEdition) {
 		$_display_error = false;
+		if (!defined("WE_ERROR_HANDLER_SET")){define("WE_ERROR_HANDLER_SET",1); }
 	} else {
 		$_display_error = defined("WE_ERROR_SHOW") ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
@@ -70,13 +73,24 @@ function we_error_handler($in_webEdition = true) {
 		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', "/webEdition/we/we_classes/base/we_error_handler.inc.php", 69);
 		exit();
 	}
-
+	
 	if (defined("WE_ERROR_HANDLER") && (WE_ERROR_HANDLER == 1)) {
-		$_error_level = 0 + ($_error_notice ? 8 : 0) + ($_error_warning ? 2 : 0) + ($_error_error ? 1 : 0);
-
+		if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+			$_error_level = 0 + ($_error_deprecated ? 8192 : 0) + ($_error_notice ? 8 : 0) + ($_error_warning ? 2 : 0) + ($_error_error ? 1 : 0);
+		} else {
+			$_error_level = 0 + ($_error_notice ? 8 : 0) + ($_error_warning ? 2 : 0) + ($_error_error ? 1 : 0);
+		}
 		error_reporting($_error_level);
 		ini_set('display_errors', $_display_error);
 		set_error_handler("error_handler");
+	} else {
+		if (version_compare(PHP_VERSION, '5.3.0') >= 0){
+			$cur_error = error_reporting();
+			if (($cur_error & E_DEPRECATED ) == E_DEPRECATED ) {
+				$new_error = $cur_error ^ E_DEPRECATED;
+				$old_error = error_reporting($new_error);
+			}
+		}
 	}
 }
 
@@ -129,6 +143,15 @@ function translate_error_type($type) {
 		$_error .= " User notice ";
 	}
 
+	if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+		if (($type & E_DEPRECATED ) == E_DEPRECATED ) {
+			$_error .= " Deprecated notice ";
+		}
+		if (($type & E_USER_DEPRECATED ) == E_USER_DEPRECATED ) {
+			$_error .= " User deprecated notice ";
+		}
+	}
+
 	if (($type & E_ALL) == E_ALL) {
 		$_error .=" Error ";
 	}
@@ -145,7 +168,7 @@ function translate_error_type($type) {
  */
 
 function display_error_message($type, $message, $file, $line) {
-	global $_error_notice, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 
 	// Build the error table
 	$_detailedError  = '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%">';
@@ -185,7 +208,7 @@ function display_error_message($type, $message, $file, $line) {
 }
 
 function log_error_message($type, $message, $file, $line) {
-	global $_error_notice, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 
 	// Build the error table
 	$_detailedError  = 'An error occurred while executing a script. ';
@@ -222,7 +245,7 @@ function log_error_message($type, $message, $file, $line) {
 }
 
 function mail_error_message($type, $message, $file, $line) {
-	global $_error_notice, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 
 	// Build the error table
 	$_detailedError  = "An error occurred while executing a script in webEdition.\n\n\n";
@@ -250,12 +273,12 @@ function mail_error_message($type, $message, $file, $line) {
 			die("Cannot log error! Could not send e-mail.");
 		}
 	} else {
-		die("Cannot log error! Could not send e-mail due to no know recipient.");
+		die("Cannot log error! Could not send e-mail due to no known recipient.");
 	}
 }
 
 function error_handler($type, $message, $file, $line, $context) {
-	global $_error_notice, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 
 	// Don't respond to the error if it was suppressed with a '@'
 	if (error_reporting() == 0) {
@@ -325,6 +348,28 @@ function error_handler($type, $message, $file, $line, $context) {
 
 			// Stop execution
 			break;
+		default:
+			if ((version_compare(PHP_VERSION, '5.3.0') >= 0) && defined('E_DEPRECATED') && $type==E_DEPRECATED ) {
+				if ($_error_deprecated) {
+					// Display error?
+					if ($_display_error) {
+						display_error_message($type, $message, $file, $line);
+					}
+	
+					// Log error?
+					if ($_log_error) {
+						log_error_message($type, $message, $file, $line);
+					}
+	
+					// Mail error?
+					if (isset($_send_error) && $_send_error) {
+						mail_error_message($type, $message, $file, $line);
+					}
+				}
+			
+			}
+		
+		
 	}
 }
 

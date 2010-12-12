@@ -77,6 +77,7 @@ $global_config[] = array('define("WE_THUMBNAIL_DIRECTORY",', '// Directory in wh
 // Variables for error handling
 $global_config[] = array('define("WE_ERROR_HANDLER",', '// Show errors that occur in webEdition' . "\n" . 'define("WE_ERROR_HANDLER", 0);');
 $global_config[] = array('define("WE_ERROR_NOTICES",', '// Handle notices' . "\n" . 'define("WE_ERROR_NOTICES", 0);');
+$global_config[] = array('define("WE_ERROR_DEPRECATED",', '// Handle deprecated warnings' . "\n" . 'define("WE_ERROR_DEPRECATED", 0);');
 $global_config[] = array('define("WE_ERROR_WARNINGS",', '// Handle warnings' . "\n" . 'define("WE_ERROR_WARNINGS", 0);');
 $global_config[] = array('define("WE_ERROR_ERRORS",', '// Handle errors' . "\n" . 'define("WE_ERROR_ERRORS", 0);');
 $global_config[] = array('define("WE_ERROR_SHOW",', '// Show errors' . "\n" . 'define("WE_ERROR_SHOW", 0);');
@@ -440,6 +441,10 @@ function get_value($settingvalue) {
 
 		case "error_handling_notices":
 			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : false;
+			break;
+		
+		case "error_handling_deprecated":
+			return defined("WE_ERROR_DEPRECATED") ? WE_ERROR_DEPRECATED : false;
 			break;
 
 		case "error_handling_warnings":
@@ -1405,6 +1410,23 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = true;
 				break;
+				
+			case '$_REQUEST["error_handling_deprecated"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+				if ($settingvalue == 0) {
+					if (WE_ERROR_DEPRECATED == 1) {
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 0);
+					}
+				} else if ($settingvalue == 1) {
+					if (WE_ERROR_DEPRECATED == 0) {
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 1);
+					}
+				}
+
+				$_update_prefs = true;
+				break;
 
 			case '$_REQUEST["error_handling_warnings"]':
 
@@ -2354,6 +2376,14 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = true;
 				break;
+			
+			case '$_REQUEST["error_handling_deprecated"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 0);
+
+				$_update_prefs = true;
+				break;
 
 			case '$_REQUEST["we_error_handler"]':
 
@@ -2668,6 +2698,7 @@ function save_all_values() {
 			$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, '$_REQUEST["error_handling_errors"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_handling_warnings"]) ? $_REQUEST["error_handling_warnings"] : null, '$_REQUEST["error_handling_warnings"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_handling_notices"]) ? $_REQUEST["error_handling_notices"] : null, '$_REQUEST["error_handling_notices"]') || $_update_prefs;
+			$_update_prefs = remember_value(isset($_REQUEST["error_handling_deprecated"]) ? $_REQUEST["error_handling_deprecated"] : null, '$_REQUEST["error_handling_deprecated"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_display_errors"]) ? $_REQUEST["error_display_errors"] : null, '$_REQUEST["error_display_errors"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_log_errors"]) ? $_REQUEST["error_log_errors"] : null, '$_REQUEST["error_log_errors"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_mail_errors"]) ? $_REQUEST["error_mail_errors"] : null, '$_REQUEST["error_mail_errors"]') || $_update_prefs;
@@ -5250,14 +5281,17 @@ else {
 								}
 
 								document.getElementsByName('error_handling_notices')[0].disabled = _new_state;
+								document.getElementsByName('error_handling_deprecated')[0].disabled = _new_state;
 								document.getElementsByName('error_handling_warnings')[0].disabled = _new_state;
 								document.getElementsByName('error_handling_errors')[0].disabled = _new_state;
 
 								document.getElementById('label_error_handling_notices').style.color = _new_style;
+								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
 								document.getElementById('label_error_handling_warnings').style.color = _new_style;
 								document.getElementById('label_error_handling_errors').style.color = _new_style;
 
 								document.getElementById('label_error_handling_notices').style.cursor = _new_cursor;
+								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;
 								document.getElementById('label_error_handling_warnings').style.cursor = _new_cursor;
 								document.getElementById('label_error_handling_errors').style.cursor = _new_cursor;
 
@@ -5323,7 +5357,7 @@ else {
 			 */
 
 			// Create checkboxes
-			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 7, 1);
+			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 9, 1);
 
 			$_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_handling_errors"), "error_handling_errors", $l_prefs["error_errors"], false, "defaultfont", "", !get_value("we_error_handler")));
 			$_error_handling_table->setCol(1, 0, null, getPixel(1, 5));
@@ -5331,7 +5365,11 @@ else {
 			$_error_handling_table->setCol(3, 0, null, getPixel(1, 5));
 			$_error_handling_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("error_handling_notices"), "error_handling_notices", $l_prefs["error_notices"], false, "defaultfont", "", !get_value("we_error_handler")));
 			$_error_handling_table->setCol(5, 0, null, getPixel(1, 5));
-			$_error_handling_table->setCol(6, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox($l_prefs['error_notices_warning'],1,220));
+			if (version_compare(PHP_VERSION, '5.3.0') >= 0){
+				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", $l_prefs["error_deprecated"], false, "defaultfont", "", !get_value("we_error_handler")));
+				$_error_handling_table->setCol(7, 0, null, getPixel(1, 5));
+			}
+			$_error_handling_table->setCol(8, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox($l_prefs['error_notices_warning'],1,220));
 
 
 			// Build dialog if user has permission
