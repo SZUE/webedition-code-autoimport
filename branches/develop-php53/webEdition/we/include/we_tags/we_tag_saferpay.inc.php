@@ -18,10 +18,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_util.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_util.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/shop.inc.php');
 
 
 
@@ -32,32 +32,32 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
  *
  * @return         void
  */
-function we_tag_saferpay($attribs) {
+function we_tag_saferpay($attribs,$content) {
 	global $DB_WE;
-	$name = we_getTagAttribute("name",$attribs);
-	$foo = attributFehltError($attribs,"pricename","saferpay");
+	$name = we_getTagAttribute('name',$attribs);
+	$foo = attributFehltError($attribs,'pricename','saferpay');
 	if($foo)
 	    return $foo;
 	if(!$name)
-		$foo = attributFehltError($attribs,"shopname","saferpay");
+		$foo = attributFehltError($attribs,'shopname','saferpay');
 	if($foo)
 		return $foo;
 
-	$shopname = we_getTagAttribute("shopname",$attribs);
+	$shopname = we_getTagAttribute('shopname',$attribs);
 	$shopname = $shopname ? $shopname : $name;
-	$pricename = we_getTagAttribute("pricename",$attribs);
-	$shipping = we_getTagAttribute("shipping",$attribs);
-	$shippingIsNet = we_getTagAttribute("shippingisnet",$attribs);
-	$shippingVatRate = we_getTagAttribute("shippingvatrate",$attribs);
-	$languagecode = we_getTagAttribute("languagecode",$attribs);
+	$pricename = we_getTagAttribute('pricename',$attribs);
+	$shipping = we_getTagAttribute('shipping',$attribs);
+	$shippingIsNet = we_getTagAttribute('shippingisnet',$attribs);
+	$shippingVatRate = we_getTagAttribute('shippingvatrate',$attribs);
+	$languagecode = we_getTagAttribute('languagecode',$attribs);
 
-	$onsuccess = we_getTagAttribute("onsuccess",$attribs);
-	$onfailure = we_getTagAttribute("onfailure",$attribs);
-	$onabortion = we_getTagAttribute("onabortion",$attribs);
+	$onsuccess = we_getTagAttribute('onsuccess',$attribs);
+	$onfailure = we_getTagAttribute('onfailure',$attribs);
+	$onabortion = we_getTagAttribute('onabortion',$attribs);
 
 
-	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
-	$useVat = we_getTagAttribute("usevat",$attribs,'true', true);
+	$netprices = we_getTagAttribute('netprices',$attribs,'true', true, true);
+	$useVat = we_getTagAttribute('usevat',$attribs,'true', true);
 
 	if ($useVat) {
 		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');

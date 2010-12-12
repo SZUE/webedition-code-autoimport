@@ -420,6 +420,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 
 	$l_prefs["error_types"] = "Tratar estos errores";
 	$l_prefs["error_notices"] = "Avisos";
+	$l_prefs["error_deprecated"] = "deprecated Notices";//TRANSLATE
 	$l_prefs["error_warnings"] = "Advertencias";
 	$l_prefs["error_errors"] = "Errores";
 

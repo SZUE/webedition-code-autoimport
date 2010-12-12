@@ -38,6 +38,17 @@ function we_tag_saveRegisteredUser($attribs,$content){
 		if(isset($_REQUEST["s"]["Password2"])) {
 			unset($_REQUEST["s"]["Password2"]);
 		}
+		
+		$dates = array();//type date 
+		foreach ($_REQUEST["s"] as $n => $v) {
+			if (preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)) {
+				$dates[$regs[1]][$regs[2]] = $v;
+				unset($_REQUEST["s"][$n]);
+			} 
+		}
+		foreach ($dates as $k => $vv) {
+			$_REQUEST["s"][$k] = mktime($vv['hour'],$vv['minute'],0,$vv['month'],$vv['day'],$vv['year']);
+		}	
 
                                            // new user ...                    || existing user
 		if(isset($_REQUEST["s"]["ID"]) && (!isset($_SESSION["webuser"]["ID"]) || $_REQUEST["s"]["ID"] == $_SESSION["webuser"]["ID"])){

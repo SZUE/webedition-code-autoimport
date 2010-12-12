@@ -18,35 +18,35 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-if (!isset($GLOBALS["WE_IS_DYN"])) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/global.inc.php");
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/linklist_edit.inc.php");
+if (!isset($GLOBALS['WE_IS_DYN'])) {
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/global.inc.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/linklist_edit.inc.php');
 }
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/date.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
 
 // Tag and TagBlock Cache
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCache.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagCache.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagBlockCache.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCache.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weTagCache.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weTagBlockCache.class.php');
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
-include_once (WE_USERS_MODULE_DIR . "we_users_util.php");
+include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
-function we_tag($name, $attribs, $content = ""){
+function we_tag($name, $attribs, $content = ''){
 	
 	if ($content) {
-		$content = str_replace("we_:_", "we:", $content);
+		$content = str_replace('we_:_', 'we:', $content);
 	}
-	$edMerk = isset($GLOBALS["we_editmode"]) ? $GLOBALS["we_editmode"] : "";
-	if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) {
-		if (isset($attribs["user"]) && $attribs["user"]) {
-			$uAr = makeArrayFromCSV($attribs["user"]);
+	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
+	if (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) {
+		if (isset($attribs['user']) && $attribs['user']) {
+			$uAr = makeArrayFromCSV($attribs['user']);
 			$userIds = array();
 			foreach ($uAr as $u) {
 				$i = f("SELECT ID FROM " . USER_TABLE . " WHERE Username='" . mysql_real_escape_string($u) . "'", "ID", $GLOBALS["DB_WE"]);
@@ -54,8 +54,8 @@ function we_tag($name, $attribs, $content = ""){
 					array_push($userIds, $i);
 				}
 			}
-			if (!isUserInUsers($_SESSION["user"]["ID"], $userIds) && (!$_SESSION["perms"]["ADMINISTRATOR"])) {
-				$GLOBALS["we_editmode"] = false;
+			if (!isUserInUsers($_SESSION['user']['ID'], $userIds) && (!$_SESSION['perms']['ADMINISTRATOR'])) {
+				$GLOBALS['we_editmode'] = false;
 			}
 		}
 	}
@@ -66,70 +66,70 @@ function we_tag($name, $attribs, $content = ""){
 		$attribs['cachelifetime'] = 0;
 		$CacheType = 'none';
 	} else {
-		if (isset($GLOBALS["we_doc"]->CacheType) ){
-			$CacheType = $GLOBALS["we_doc"]->CacheType;
+		if (isset($GLOBALS['we_doc']->CacheType) ){
+			$CacheType = $GLOBALS['we_doc']->CacheType;
 		} else {
 			$CacheType = 'none';
 			$attribs['cachelifetime'] = 0;
 		}
 	}
 	
-	if ($name == "navigation") {
-		$configFile = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+	if ($name == 'navigation') {
+		$configFile = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php';
 		if (!file_exists($configFile) || !is_file($configFile)) {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php');
 			weNavigationSettingControl::saveSettings(true);
 		}
 		include ($configFile);
-		$lifeTime = isset($attribs['cachelifetime']) ? $attribs['cachelifetime'] : ($GLOBALS['weDefaultNavigationCacheLifetime'] != '' && $GLOBALS['weDefaultNavigationCacheLifetime'] != '0' ? $GLOBALS['weDefaultNavigationCacheLifetime'] : $GLOBALS["we_doc"]->CacheLifeTime);
+		$lifeTime = isset($attribs['cachelifetime']) ? $attribs['cachelifetime'] : ($GLOBALS['weDefaultNavigationCacheLifetime'] != '' && $GLOBALS['weDefaultNavigationCacheLifetime'] != '0' ? $GLOBALS['weDefaultNavigationCacheLifetime'] : $GLOBALS['we_doc']->CacheLifeTime);
 	} else {
-		$lifeTime = isset($attribs['cachelifetime']) ? $attribs['cachelifetime'] : $GLOBALS["we_doc"]->CacheLifeTime;
+		$lifeTime = isset($attribs['cachelifetime']) ? $attribs['cachelifetime'] : $GLOBALS['we_doc']->CacheLifeTime;
 	}
 	
 	$attribs = removeAttribs($attribs, array(
 		'cachelifetime'
 	));
-	$OtherCacheActive = (isset($GLOBALS["weTagListviewCacheActive"]) && $GLOBALS["weTagListviewCacheActive"]) || (isset(
-			$GLOBALS["weTagBlockCache"]) && $GLOBALS["weTagBlockCache"] >= 1);
+	$OtherCacheActive = (isset($GLOBALS['weTagListviewCacheActive']) && $GLOBALS['weTagListviewCacheActive']) || (isset(
+			$GLOBALS['weTagBlockCache']) && $GLOBALS['weTagBlockCache'] >= 1);
 	$toolinc = '';
 	
 	if (function_exists($fn)) {
 		// do noting
 	} else 
-		if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tags/" . "we_tag_$name.inc.php")) {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tags/" . "we_tag_$name.inc.php");
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_$name.inc.php")) {
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_$name.inc.php");
 		
 		} else 
-			if ($fn == "we_tag_noCache") {
+			if ($fn == 'we_tag_noCache') {
 			
 			} else 
 				if (file_exists(
 						$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . "we_tag_$name.inc.php")) {
 					include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . "we_tag_$name.inc.php");
 				} else {
-					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
+					include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 					if (weToolLookup::getToolTag($name, $toolinc,true)) {
 						include_once ($toolinc);
 					} else {
-						if (strpos(trim($name), "if") === 0) { // this ifTag does not exist
-							print parseError(sprintf($GLOBALS["l_parser"]["tag_not_known"], trim($name)));
+						if (strpos(trim($name), 'if') === 0) { // this ifTag does not exist
+							print parseError(sprintf($GLOBALS['l_parser']['tag_not_known'], trim($name)));
 							return false;
 						}
-						return parseError(sprintf($GLOBALS["l_parser"]["tag_not_known"], trim($name)));
+						return parseError(sprintf($GLOBALS['l_parser']['tag_not_known'], trim($name)));
 					}
 				
 				}
 	
-	if ($name == "block" || $name == "list" || $name == "linklist") {
+	if ($name == 'block' || $name == 'list' || $name == 'linklist') {
 		$weTagCache = new weTagBlockCache($name, $attribs, $content, $lifeTime);
 	
 	} else {
 		$weTagCache = new weTagCache($name, $attribs, $content, $lifeTime);
 	}
 	
-	$foo = "";
+	$foo = '';
 	
-	if ($fn == "we_tag_setVar") {
+	if ($fn == 'we_tag_setVar') {
 		$fn($attribs, $content);
 	}
 	
@@ -138,13 +138,13 @@ function we_tag($name, $attribs, $content = ""){
 			$GLOBALS['weCacheOutput']) || !$GLOBALS['weCacheOutput'])) {
 		
 		// Cache LifeTime > 0
-		if ($GLOBALS["we_doc"]->CacheLifeTime > 0 && get_class($weTagCache) != "weTagBlockCache") {
+		if ($GLOBALS['we_doc']->CacheLifeTime > 0 && get_class($weTagCache) != 'weTagBlockCache') {
 			
-			if ($fn == "we_tag_noCache") {
+			if ($fn == 'we_tag_noCache') {
 				echo $content;
 				ob_start();
 				$GLOBALS['weNoCache'] = true;
-				eval("?>" . $content);
+				eval('?>' . $content);
 				$GLOBALS['weNoCache'] = false;
 				ob_end_clean();
 				
@@ -157,8 +157,8 @@ function we_tag($name, $attribs, $content = ""){
 
 				// Tag is not cacheable
 				} else {
-					if (eregi("^we_tag_if", $fn)) {
-						if (isset($GLOBALS["weTagListviewCacheActive"]) && $GLOBALS["weTagListviewCacheActive"] == true) {
+					if (eregi('^we_tag_if', $fn)) {
+						if (isset($GLOBALS['weTagListviewCacheActive']) && $GLOBALS['weTagListviewCacheActive'] == true) {
 							$foo = $fn($attribs, $content);
 						
 						} else {
@@ -175,9 +175,9 @@ function we_tag($name, $attribs, $content = ""){
 			
 		// normal use
 		} else {
-			if ($fn == "we_tag_noCache") {
+			if ($fn == 'we_tag_noCache') {
 				$GLOBALS['weNoCache'] = true;
-				$foo = eval("?>" . $content);
+				$foo = eval('?>' . $content);
 				$GLOBALS['weNoCache'] = false;
 			
 			} else {
@@ -211,11 +211,11 @@ function we_tag($name, $attribs, $content = ""){
 				// Tag is not cacheable
 				} else {
 					
-					if ($fn == "we_tag_noCache") {
+					if ($fn == 'we_tag_noCache') {
 						echo $content;
 						ob_start();
 						$GLOBALS['weNoCache'] = true;
-						eval("?>" . $content);
+						eval('?>' . $content);
 						$GLOBALS['weNoCache'] = false;
 						ob_end_clean();
 					
@@ -228,9 +228,9 @@ function we_tag($name, $attribs, $content = ""){
 				
 			// Do not use Cache
 			} else {
-				if ($fn == "we_tag_noCache") {
+				if ($fn == 'we_tag_noCache') {
 					$GLOBALS['weNoCache'] = true;
-					$foo = eval("?>" . $content);
+					$foo = eval('?>' . $content);
 					$GLOBALS['weNoCache'] = false;
 				
 				} else {
@@ -241,7 +241,7 @@ function we_tag($name, $attribs, $content = ""){
 			}
 		
 		}
-	$GLOBALS["we_editmode"] = $edMerk;
+	$GLOBALS['we_editmode'] = $edMerk;
 	
 	return $foo;
 
@@ -251,61 +251,62 @@ function we_tag($name, $attribs, $content = ""){
 
 function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
 	switch ($to) {
-		case "request" :
+		case 'request' :
 			$_REQUEST[$nameTo] = $returnvalue;
 			break;
-		case "post" :
+		case 'post' :
 			$_POST[$nameTo] = $returnvalue;
 			break;
-		case "get" :
+		case 'get' :
 			$_GET[$nameTo] = $returnvalue;
 			break;
-		case "global" :
+		case 'global' :
 			$GLOBALS[$nameTo] = $returnvalue;
 			break;
-		case "session" :
+		case 'session' :
 			$_SESSION[$nameTo] = $returnvalue;
 			break;
-		case "top" :
-			$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $returnvalue);
+		case 'top' :
+			$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $returnvalue);
 			break;
-		case "block" :
-		case "self" :
-			$GLOBALS["we_doc"]->setElement($nameTo, $returnvalue);
+		case 'block' :
+		case 'self' :
+			$GLOBALS['we_doc']->setElement($nameTo, $returnvalue);
 			break;		
-		case "sessionfield" :
-			if (isset($_SESSION["webuser"][$nameTo])){
-				$_SESSION["webuser"][$nameTo] = $returnvalue;
+		case 'sessionfield' :
+			if (isset($_SESSION['webuser'][$nameTo])){
+				$_SESSION['webuser'][$nameTo] = $returnvalue;
 			}
 			break;
-		case "screen": return $returnvalue;
+		case 'screen':
+			return $returnvalue;
 	}
 	return null;
 
 }
 
 function mta($hash, $key){
-	return (isset($hash[$key]) && ($hash[$key] != "" || $key == "alt")) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
+	return (isset($hash[$key]) && ($hash[$key] != '' || $key == 'alt')) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
 }
 
 function printElement($code){
 	if (isset($code)) {
-		$code = str_replace("<?php", "<?php ", $code);
-		$code = str_replace("?>", " ?>", $code);
+		$code = str_replace('<?php', '<?php ', $code);
+		$code = str_replace('?>', ' ?>', $code);
 		eval('?>' . $code);
 	}
 }
 
 function makeEmptyTable($in){
-	preg_match_all("/<[^>]+>/i", $in, $result, PREG_SET_ORDER);
+	preg_match_all('/<[^>]+>/i', $in, $result, PREG_SET_ORDER);
 	
-	$out = "";
+	$out = '';
 	for ($i = 0; $i < sizeof($result); $i++) {
 		$tag = $result[$i][0];
 		
-		if (eregi("< ?td", $tag) || eregi("< ?/ ?td", $tag) || eregi("< ?tr", $tag) || eregi("< ?/ ?tr", $tag) || eregi(
-				"< ?table", 
-				$tag) || eregi("< ?/ ?table", $tag) || eregi("< ?tbody", $tag) || eregi("< ?/ ?tbody", $tag)) {
+		if (eregi('< ?td', $tag) || eregi('< ?/ ?td', $tag) || eregi('< ?tr', $tag) || eregi('< ?/ ?tr', $tag) || eregi(
+				'< ?table',
+				$tag) || eregi('< ?/ ?table', $tag) || eregi('< ?tbody', $tag) || eregi('< ?/ ?tbody', $tag)) {
 			$out .= $tag;
 		}
 	
@@ -314,32 +315,32 @@ function makeEmptyTable($in){
 }
 
 function we_cmpText($a, $b){
-	$x = strtolower(correctUml($a["properties"]["Text"]));
-	$y = strtolower(correctUml($b["properties"]["Text"]));
+	$x = strtolower(correctUml($a['properties']['Text']));
+	$y = strtolower(correctUml($b['properties']['Text']));
 	if ($x == $y)
 		return 0;
 	return ($x < $y) ? -1 : 1;
 }
 
 function we_cmpTextDesc($a, $b){
-	$x = strtolower(correctUml($a["properties"]["Text"]));
-	$y = strtolower(correctUml($b["properties"]["Text"]));
+	$x = strtolower(correctUml($a['properties']['Text']));
+	$y = strtolower(correctUml($b['properties']['Text']));
 	if ($x == $y)
 		return 0;
 	return ($x > $y) ? -1 : 1;
 }
 
 function we_cmpField($a, $b){
-	$x = strtolower(correctUml($a["sort"]));
-	$y = strtolower(correctUml($b["sort"]));
+	$x = strtolower(correctUml($a['sort']));
+	$y = strtolower(correctUml($b['sort']));
 	if ($x == $y)
 		return 0;
 	return ($x < $y) ? -1 : 1;
 }
 
 function we_cmpFieldDesc($a, $b){
-	$x = strtolower(correctUml($a["sort"]));
-	$y = strtolower(correctUml($b["sort"]));
+	$x = strtolower(correctUml($a['sort']));
+	$y = strtolower(correctUml($b['sort']));
 	if ($x == $y)
 		return 0;
 	return ($x > $y) ? -1 : 1;
@@ -355,17 +356,17 @@ function we_tag_path_hasIndex($path, $indexArray){
 }
 
 function makeArrayFromAttribs($attr){
-	$attribs = "";
+	$attribs = '';
 	preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
 	for ($i = 0; $i < sizeof($foo); $i++) {
 		$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 	}
-	$arrstr = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+	$arrstr = 'array(' . ereg_replace('(.+),$', '\\1', $attribs) . ')';
 	eval('$arr = ' . $arrstr . ';');
 	return $arr;
 }
 
-function correctDateFormat($format, $t = ""){
+function correctDateFormat($format, $t = ''){
 	global $l_dayShort, $l_monthLong, $l_dayLong, $l_monthShort;
 	if (!$t)
 		$t = time();
@@ -396,16 +397,16 @@ function correctDateFormat($format, $t = ""){
 	$format = str_replace('l', '%%%2%%%', $format);
 	$format = str_replace('M', '%%%3%%%', $format);
 	
-	$foo = $l_dayShort[date("w", $t)];
+	$foo = $l_dayShort[date('w', $t)];
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%0%%%', $foo, $format);
-	$foo = $l_monthLong[date("n", $t) - 1];
+	$foo = $l_monthLong[date('n', $t) - 1];
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%1%%%', $foo, $format);
-	$foo = $l_dayLong[date("w", $t)];
+	$foo = $l_dayLong[date('w', $t)];
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%2%%%', $foo, $format);
-	$foo = $l_monthShort[date("n", $t) - 1];
+	$foo = $l_monthShort[date('n', $t) - 1];
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%3%%%', $foo, $format);
 	return $format;
@@ -415,7 +416,7 @@ function cutText($text, $max = 0){
 	if (!$max)
 		return $text;
 	if (!strlen($text))
-		return "";
+		return '';
 	if (strlen($text) <= $max)
 		return $text;
 	
@@ -447,32 +448,32 @@ function cutText($text, $max = 0){
 		if (eregi('^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$', $text, $regs)) {
 			$text = $regs[1];
 		}
-	return $text . "...";
+	return $text . '...';
 }
 
 function arrayKeyExists($key, $search){
 	return (in_array($key, array_keys($search)));
 }
 
-function we_isVarSet($name, $type, $docAttr, $property = false, $formname = "", $shopname = ''){
+function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', $shopname = ''){
 	switch ($type) {
-		case "request" :
+		case 'request' :
 			return isset($_REQUEST[$name]);
 			break;
-		case "post" :
+		case 'post' :
 			return isset($_POST[$name]);
 			break;
-		case "get" :
+		case 'get' :
 			return isset($_GET[$name]);
 			break;
-		case "global" :
+		case 'global' :
 			return isset($GLOBALS[$name]);
 			break;
-		case "session" :
+		case 'session' :
 			return isset($_SESSION[$name]);
 			break;
-		case "sessionfield" :
-			return isset($_SESSION["webuser"][$name]);
+		case 'sessionfield' :
+			return isset($_SESSION['webuser'][$name]);
 			break;
 		case 'shopField' :
 			if (isset($GLOBALS[$shopname])) {
@@ -485,29 +486,29 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = "", 
 		default :
 			$doc = false;
 			switch ($docAttr) {
-				case "object" :
-				case "document" :
-					$doc = isset($GLOBALS["we_" . $docAttr][$formname]) ? $GLOBALS["we_" . $docAttr][$formname] : false;
+				case 'object' :
+				case 'document' :
+					$doc = isset($GLOBALS['we_' . $docAttr][$formname]) ? $GLOBALS['we_' . $docAttr][$formname] : false;
 					break;
-				case "top" :
-					$doc = isset($GLOBALS["WE_MAIN_DOC"]) ? $GLOBALS["WE_MAIN_DOC"] : false;
+				case 'top' :
+					$doc = isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC'] : false;
 					break;
 				default :
-					$doc = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : false;
+					$doc = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
 			}
 			if ($doc) {
 				if ($property) {
 					eval('$retval = isset($doc->' . $name . ');');
 					return $retval;
 				} else {
-					if ($type == "href") {
-						if ($doc->elements[$name . "_we_jkhdsf_int"]["dat"]) {
-							return isset($doc->elements[$name . "_we_jkhdsf_intPath"]["dat"]);
+					if ($type == 'href') {
+						if ($doc->elements[$name . '_we_jkhdsf_int']['dat']) {
+							return isset($doc->elements[$name . '_we_jkhdsf_intPath']['dat']);
 						}
 					}
-					$fieldType = isset($doc->elements[$name]["type"]) ? $doc->elements[$name]["type"] : "";
-					$issetElemNameDat = isset($doc->elements[$name]["dat"]);
-					if ($fieldType == "checkbox_feld" && $issetElemNameDat && $doc->elements[$name]["dat"] == 0)
+					$fieldType = isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : '';
+					$issetElemNameDat = isset($doc->elements[$name]['dat']);
+					if ($fieldType == 'checkbox_feld' && $issetElemNameDat && $doc->elements[$name]['dat'] == 0)
 						return false;
 					return $issetElemNameDat;
 				}
@@ -518,49 +519,49 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = "", 
 }
 
 function we_isVarNotEmpty($attribs){	
-	$docAttr = we_getTagAttribute("doc", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$match = we_getTagAttribute("match", $attribs);
-	$name = we_getTagAttribute("name", $attribs);
-	$type = we_getTagAttribute("type", $attribs, "txt");
-	$formname = we_getTagAttribute("formname", $attribs, "we_global_form");
-	$property = we_getTagAttribute("property", $attribs, "", true);
+	$docAttr = we_getTagAttribute('doc', $attribs);
+	$type = we_getTagAttribute('type', $attribs);
+	$match = we_getTagAttribute('match', $attribs);
+	$name = we_getTagAttribute('name', $attribs);
+	$type = we_getTagAttribute('type', $attribs, 'txt');
+	$formname = we_getTagAttribute('formname', $attribs, 'we_global_form');
+	$property = we_getTagAttribute('property', $attribs, '', true);
 	
 	if (!we_isVarSet($match, $type, $docAttr, $property, $formname))
 		return false;
 	
 	switch ($type) {
-		case "request" :
+		case 'request' :
 			return (strlen($_REQUEST[$match]) > 0);
 			break;
-		case "post" :
+		case 'post' :
 			return (strlen($_POST[$match]) > 0);
 			break;
-		case "get" :
+		case 'get' :
 			return (strlen($_GET[$match]) > 0);
 			break;
-		case "global" :
+		case 'global' :
 			return (strlen($GLOBALS[$match]) > 0);
 			break;
-		case "session" :
-			$foo = isset($_SESSION[$match]) ? $_SESSION[$match] : "";
+		case 'session' :
+			$foo = isset($_SESSION[$match]) ? $_SESSION[$match] : '';
 			return (strlen($foo) > 0);
 			break;
-		case "sessionfield" :
-			return (strlen($_SESSION["webuser"][$match]) > 0);
+		case 'sessionfield' :
+			return (strlen($_SESSION['webuser'][$match]) > 0);
 			break;
 		default :
 			$doc = false;
 			switch ($docAttr) {
-				case "object" :
-				case "document" :
-					$doc = isset($GLOBALS["we_" . $docAttr][$formname]) ? $GLOBALS["we_" . $docAttr][$formname] : false;
+				case 'object' :
+				case 'document' :
+					$doc = isset($GLOBALS['we_' . $docAttr][$formname]) ? $GLOBALS['we_' . $docAttr][$formname] : false;
 					break;
-				case "top" :
-					$doc = isset($GLOBALS["WE_MAIN_DOC"]) ? $GLOBALS["WE_MAIN_DOC"] : false;
+				case 'top' :
+					$doc = isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC'] : false;
 					break;
 				default :
-					$doc = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : false;
+					$doc = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
 			}
 			if ($doc) {
 				if ($property) {
@@ -569,17 +570,17 @@ function we_isVarNotEmpty($attribs){
 				} else {
 					$name = $match;
 					switch ($type) {
-						case "href" :
-							$attribs["name"] = $match;
+						case 'href' :
+							$attribs['name'] = $match;
 							$foo = $doc->getField($attribs, $type, true);
 							break;
-						case "multiobject" :
-							$attribs["name"] = $match;
+						case 'multiobject' :
+							$attribs['name'] = $match;
 							$data = unserialize($doc->getField($attribs, $type, true));
 							if (!is_array($data['objects'])) {
 								$data['objects'] = array();
 							}
-							include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php");
+							include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php');
 							$temp = new we_listview_multiobject($match);
 							if (sizeof($temp->Record) > 0) {
 								return true;
@@ -598,40 +599,40 @@ function we_isVarNotEmpty($attribs){
 }
 
 function we_isNotEmpty($attribs){
-	$docAttr = we_getTagAttribute("doc", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$match = we_getTagAttribute("match", $attribs);
+	$docAttr = we_getTagAttribute('doc', $attribs);
+	$type = we_getTagAttribute('type', $attribs);
+	$match = we_getTagAttribute('match', $attribs);
 	$doc = we_getDocForTag($docAttr, false);
 	
 	switch ($type) {
-		case "object" :
+		case 'object' :
 			return $doc->getElement($match);
-		case "binary" :
-		case "img" :
-		case "flashmovie" :
-			return $doc->getElement($match, "bdid");
-		case "href" :
+		case 'binary' :
+		case 'img' :
+		case 'flashmovie' :
+			return $doc->getElement($match, 'bdid');
+		case 'href' :
 			if (isset($doc->TableID) && $doc->TableID) {
 				$hrefArr = $doc->getElement($match) ? unserialize($doc->getElement($match)) : array();
 				if (!is_array($hrefArr))
 					$hrefArr = array();
 				$hreftmp = trim(we_document::getHrefByArray($hrefArr));
-				if (substr($hreftmp, 0, 1) == "/" && (!file_exists($_SERVER["DOCUMENT_ROOT"] . $hreftmp))) {
+				if (substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))) {
 					return false;
 				}
 				return $hreftmp ? true : false;
 			}
-			$int = ($doc->getElement($match . "_we_jkhdsf_int") == "") ? 0 : $doc->getElement(
-					$match . "_we_jkhdsf_int");
+			$int = ($doc->getElement($match . '_we_jkhdsf_int') == '') ? 0 : $doc->getElement(
+					$match . '_we_jkhdsf_int');
 			if ($int) { // for type = href int
-				$intID = $doc->getElement($match . "_we_jkhdsf_intID");
+				$intID = $doc->getElement($match . '_we_jkhdsf_intID');
 				if ($intID > 0) {
 					return strlen(id_to_path($intID)) > 0;
 				}
 				return false;
 			} else {
 				$hreftmp = $doc->getElement($match);
-				if (substr($hreftmp, 0, 1) == "/" && (!file_exists($_SERVER["DOCUMENT_ROOT"] . $hreftmp))) {
+				if (substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))) {
 					return false;
 				}
 			}
@@ -641,7 +642,7 @@ function we_isNotEmpty($attribs){
 				//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
 				
 
-				if ((substr($doc->getElement($match), 0, 2) == "a:")) { //  only unserialize, when $match cluld be an array
+				if ((substr($doc->getElement($match), 0, 2) == 'a:')) { //  only unserialize, when $match cluld be an array
 					// Added @-operator in front of the unserialze function because there
 					// were some PHP notices that had no effect on the output of the function
 					// remark holeg: when it is a serialized array, the function looks if it is not empty
@@ -654,57 +655,57 @@ function we_isNotEmpty($attribs){
 			}
 	
 	}
-	return ($doc->getElement($match) != "") || $doc->getElement($match, "bdid");
+	return ($doc->getElement($match) != '') || $doc->getElement($match, 'bdid');
 }
 
 function we_isFieldNotEmpty($attribs){
-	$type = we_getTagAttribute("type", $attribs);
-	$match = we_getTagAttribute("match", $attribs);
+	$type = we_getTagAttribute('type', $attribs);
+	$match = we_getTagAttribute('match', $attribs);
 	switch ($type) {
-		case "calendar" :
-			if (isset($GLOBALS["lv"]->calendar_struct)) {
-				if ($GLOBALS["lv"]->calendar_struct["date"] < 0)
+		case 'calendar' :
+			if (isset($GLOBALS['lv']->calendar_struct)) {
+				if ($GLOBALS['lv']->calendar_struct['date'] < 0)
 					return false;
-				if (count($GLOBALS["lv"]->calendar_struct["storage"]) < 1)
+				if (count($GLOBALS['lv']->calendar_struct['storage']) < 1)
 					return false;
-				if ($match == "day") {
+				if ($match == 'day') {
 					$sd = mktime(
 							0, 
 							0, 
 							0, 
-							$GLOBALS["lv"]->calendar_struct["month_human"], 
-							$GLOBALS["lv"]->calendar_struct["day_human"], 
-							$GLOBALS["lv"]->calendar_struct["year_human"]);
+							$GLOBALS['lv']->calendar_struct['month_human'],
+							$GLOBALS['lv']->calendar_struct['day_human'],
+							$GLOBALS['lv']->calendar_struct['year_human']);
 					$ed = mktime(
 							23, 
 							59, 
 							59, 
-							$GLOBALS["lv"]->calendar_struct["month_human"], 
-							$GLOBALS["lv"]->calendar_struct["day_human"], 
-							$GLOBALS["lv"]->calendar_struct["year_human"]);
+							$GLOBALS['lv']->calendar_struct['month_human'],
+							$GLOBALS['lv']->calendar_struct['day_human'],
+							$GLOBALS['lv']->calendar_struct['year_human']);
 				} else 
-					if ($match == "month") {
+					if ($match == 'month') {
 						$sd = mktime(
 								0, 
 								0, 
 								0, 
-								$GLOBALS["lv"]->calendar_struct["month_human"], 
+								$GLOBALS['lv']->calendar_struct['month_human'],
 								1, 
-								$GLOBALS["lv"]->calendar_struct["year_human"]);
+								$GLOBALS['lv']->calendar_struct['year_human']);
 						$ed = mktime(
 								23, 
 								59, 
 								59, 
-								$GLOBALS["lv"]->calendar_struct["month_human"], 
-								$GLOBALS["lv"]->calendar_struct["numofentries"], 
-								$GLOBALS["lv"]->calendar_struct["year_human"]);
+								$GLOBALS['lv']->calendar_struct['month_human'],
+								$GLOBALS['lv']->calendar_struct['numofentries'],
+								$GLOBALS['lv']->calendar_struct['year_human']);
 					} else 
-						if ($match == "year") {
-							$sd = mktime(0, 0, 0, 1, 1, $GLOBALS["lv"]->calendar_struct["year_human"]);
-							$sd = mktime(23, 59, 59, 12, 31, $GLOBALS["lv"]->calendar_struct["year_human"]);
+						if ($match == 'year') {
+							$sd = mktime(0, 0, 0, 1, 1, $GLOBALS['lv']->calendar_struct['year_human']);
+							$sd = mktime(23, 59, 59, 12, 31, $GLOBALS['lv']->calendar_struct['year_human']);
 						}
 				if (isset($sd) && isset($ed)) {
-					foreach ($GLOBALS["lv"]->calendar_struct["storage"] as $entry) {
+					foreach ($GLOBALS['lv']->calendar_struct['storage'] as $entry) {
 						if ($sd < $entry && $ed > $entry)
 							return true;
 					}
@@ -713,12 +714,12 @@ function we_isFieldNotEmpty($attribs){
 			}
 			return false;
 			break;
-		case "multiobject" :
-			if (isset($GLOBALS["lv"])) {
-				if (isset($GLOBALS["lv"]->object)) {
+		case 'multiobject' :
+			if (isset($GLOBALS['lv'])) {
+				if (isset($GLOBALS['lv']->object)) {
 					$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_' . $match]);
 				} else {
-					if ($GLOBALS["lv"]->ClassName == "we_listview_shoppingCart"){//Bug #4827
+					if ($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart'){//Bug #4827
 						$data = unserialize($GLOBALS['lv']->f($match));
 					} else {
 						$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $match]);
@@ -738,72 +739,72 @@ function we_isFieldNotEmpty($attribs){
 				return false;
 			}
 		
-		case "object" : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
+		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
 			$objectdb= new DB_WE();
-			$objectid= f("SELECT ID FROM ".OBJECT_TABLE. " WHERE Text='".$match."'", 'ID', $objectdb); 
+			$objectid= f('SELECT ID FROM '.OBJECT_TABLE. " WHERE Text='".$match."'", 'ID', $objectdb);
 			$objectdb->close();
-			return $GLOBALS["lv"]->f("we_object_".$objectid);
-		case "checkbox" :
-		case "binary" :
-		case "img" :
-		case "flashmovie" :
-		case "quicktime" :
-			return $GLOBALS["lv"]->f($match);
-		case "href" :
-			if ($GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_objecttag") {
-				$hrefArr = $GLOBALS["lv"]->f($match) ? unserialize($GLOBALS["lv"]->f($match)) : array();
+			return $GLOBALS['lv']->f('we_object_'.$objectid);
+		case 'checkbox' :
+		case 'binary' :
+		case 'img' :
+		case 'flashmovie' :
+		case 'quicktime' :
+			return $GLOBALS['lv']->f($match);
+		case 'href' :
+			if ($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag') {
+				$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
 				if (!is_array($hrefArr))
 					$hrefArr = array();
 				$hreftmp = trim(we_document::getHrefByArray($hrefArr));
-				if (substr($hreftmp, 0, 1) == "/" && (!file_exists($_SERVER["DOCUMENT_ROOT"] . $hreftmp))) {
+				if (substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))) {
 					return false;
 				}
 				return $hreftmp ? true : false;
 			}
-			$int = ($GLOBALS["lv"]->f($match . "_we_jkhdsf_int") == "") ? 0 : $GLOBALS["lv"]->f(
-					$match . "_we_jkhdsf_int");
+			$int = ($GLOBALS['lv']->f($match . '_we_jkhdsf_int') == '') ? 0 : $GLOBALS['lv']->f(
+					$match . '_we_jkhdsf_int');
 			if ($int) { // for type = href int
-				$intID = $GLOBALS["lv"]->f($match . "_we_jkhdsf_intID");
+				$intID = $GLOBALS['lv']->f($match . '_we_jkhdsf_intID');
 				if ($intID > 0) {
 					return strlen(id_to_path($intID)) > 0;
 				}
 				return false;
 			} else {
-				$hreftmp = $GLOBALS["lv"]->f($match);
-				if (substr($hreftmp, 0, 1) == "/" && (!file_exists($_SERVER["DOCUMENT_ROOT"] . $hreftmp))) {
+				$hreftmp = $GLOBALS['lv']->f($match);
+				if (substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))) {
 					return false;
 				}
 			}
 		default :
-			$_tmp = @unserialize($GLOBALS["lv"]->f($match));
+			$_tmp = @unserialize($GLOBALS['lv']->f($match));
 			if (is_array($_tmp)) {
 				return sizeof($_tmp) > 0;
 			}
 	}
-	return $GLOBALS["lv"]->f($match) != "";
+	return $GLOBALS['lv']->f($match) != '';
 }
 
 function we_isUserInputNotEmpty($attribs){
-	$formname = we_getTagAttribute("formname", $attribs, "we_global_form");
-	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
-	return (isset($_REQUEST["we_ui_" . $formname][$match]) && strlen($_REQUEST["we_ui_" . $formname][$match]));
+	$formname = we_getTagAttribute('formname', $attribs, 'we_global_form');
+	$match = we_getTagAttribute('match', $attribs,'',false,false,true);
+	return (isset($_REQUEST['we_ui_' . $formname][$match]) && strlen($_REQUEST['we_ui_' . $formname][$match]));
 
 }
 
 function we_getDocForTag($docAttr, $maindefault = false){
 	if ($maindefault) {
 		switch ($docAttr) {
-			case "self" :
-				return $GLOBALS["we_doc"];
+			case 'self' :
+				return $GLOBALS['we_doc'];
 			default :
-				return $GLOBALS["WE_MAIN_DOC"];
+				return $GLOBALS['WE_MAIN_DOC'];
 		}
 	} else {
 		switch ($docAttr) {
-			case "top" :
-				return $GLOBALS["WE_MAIN_DOC"];
+			case 'top' :
+				return $GLOBALS['WE_MAIN_DOC'];
 			default :
-				return $GLOBALS["we_doc"];
+				return $GLOBALS['we_doc'];
 		}
 	}
 }
@@ -817,7 +818,7 @@ function we_getDocForTag($docAttr, $maindefault = false){
 //
 
 function we_tag_ifSidebar($attribs, $content){
-	return defined("WE_SIDEBAR");
+	return defined('WE_SIDEBAR');
 }
 
 function we_tag_ifNotSidebar($attribs, $content){
@@ -830,35 +831,35 @@ function we_tag_ifNotSidebar($attribs, $content){
 
 
 function we_tag_ifDeleted($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "document");
-	return isset($GLOBALS["we_" . $type . "_delete_ok"]) && ($GLOBALS["we_" . $type . "_delete_ok"] == true);
+	$type = we_getTagAttribute('type', $attribs, 'document');
+	return isset($GLOBALS['we_' . $type . '_delete_ok']) && ($GLOBALS['we_' . $type . '_delete_ok'] == true);
 }
 
 function we_tag_ifDemo($attribs, $content){
-	return !defined("UID");
+	return !defined('UID');
 }
 
 function we_tag_ifEditmode($attribs, $content){
 	global $we_editmode, $WE_MAIN_EDITMODE, $we_doc, $WE_MAIN_DOC;
-	$doc = we_getTagAttribute("doc", $attribs);
+	$doc = we_getTagAttribute('doc', $attribs);
 	switch ($doc) {
-		case "self" :
+		case 'self' :
 			return $WE_MAIN_DOC == $we_doc && $we_editmode;
 		default :
-			return $we_editmode || $WE_MAIN_EDITMODE/* || (isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem")*/;
+			return $we_editmode || $WE_MAIN_EDITMODE/* || (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem')*/;
 	}
 }
 
 function we_tag_ifSeeMode($attribs, $content){	
 	if (we_tag('ifWebEdition',$attribs, $content)) {
-		return (isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem");
+		return (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem');
 	} else {
 		return false;
 	}
 }
 
 function we_tag_ifTdEmpty($attribs, $content){
-	return $GLOBALS["lv"]->tdEmpty();
+	return $GLOBALS['lv']->tdEmpty();
 }
 
 function we_tag_ifTdNotEmpty($attribs, $content){
@@ -866,7 +867,7 @@ function we_tag_ifTdNotEmpty($attribs, $content){
 }
 
 function we_tag_ifTop($attribs, $content){
-	return ($GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"]);
+	return ($GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc']);
 }
 
 function we_tag_ifNotSeeMode($attribs, $content){
@@ -878,12 +879,12 @@ function we_tag_ifNotSeeMode($attribs, $content){
 }
 
 function we_tag_ifEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, "match", "ifEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
-	if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) {
+	if (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) {
 		return true;
 	}
 	return !we_isNotEmpty($attribs);
@@ -891,10 +892,10 @@ function we_tag_ifEmpty($attribs, $content){
 
 function we_tag_ifFieldEmpty($attribs, $content){
 	global $we_editmode;
-	$foo = attributFehltError($attribs, "match", "ifFieldNotEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifFieldNotEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
 	return !we_isFieldNotEmpty($attribs);
 
@@ -903,10 +904,10 @@ function we_tag_ifFieldEmpty($attribs, $content){
 function we_tag_ifFieldNotEmpty($attribs, $content){
 	global $we_editmode;
 	
-	$foo = attributFehltError($attribs, "match", "ifFieldNotEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifFieldNotEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
 	
 	return we_isFieldNotEmpty($attribs);
@@ -918,57 +919,57 @@ function we_tag_ifNotField($attribs, $content){
 }
 
 function we_tag_ifFound($attribs, $content){
-	return $GLOBALS["lv"]->anz ? true : false;
+	return $GLOBALS['lv']->anz ? true : false;
 }
 
 function we_tag_ifIsDomain($attribs, $content){
 	global $we_editmode;
-	$foo = attributFehltError($attribs, "domain", "ifIsDomain");
+	$foo = attributFehltError($attribs, 'domain', 'ifIsDomain');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
-	$domain = we_getTagAttribute("domain", $attribs);
-	return $we_editmode || ($domain == $_SERVER["SERVER_NAME"]);
+	$domain = we_getTagAttribute('domain', $attribs);
+	return $we_editmode || ($domain == $_SERVER['SERVER_NAME']);
 }
 
 function we_tag_ifIsNotDomain($attribs, $content){
 	global $we_editmode;
-	$foo = attributFehltError($attribs, "domain", "ifIsNotDomain");
+	$foo = attributFehltError($attribs, 'domain', 'ifIsNotDomain');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
-	$domain = we_getTagAttribute("domain", $attribs);
-	return $we_editmode || (!($domain == $_SERVER["SERVER_NAME"]));
+	$domain = we_getTagAttribute('domain', $attribs);
+	return $we_editmode || (!($domain == $_SERVER['SERVER_NAME']));
 }
 
 function we_tag_ifLastCol($attribs, $content){
-	return $GLOBALS["lv"]->shouldPrintEndTR();
+	return $GLOBALS['lv']->shouldPrintEndTR();
 }
 
 function we_tag_ifNew($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs);
-	return !(isset($_REQUEST["we_edit" . (($type == "object") ? "Object" : "Document") . "_ID"]) && $_REQUEST["we_edit" . (($type == "object") ? "Object" : "Document") . "_ID"]);
+	$type = we_getTagAttribute('type', $attribs);
+	return !(isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
 }
 
 function we_tag_ifNext($attribs, $content){
 	if (isset($GLOBALS['_we_voting_list']))
 		return $GLOBALS['_we_voting_list']->hasNextPage();
-	$useparent = we_getTagAttribute("useparent", $attribs, '', true);
-	return $GLOBALS["lv"]->hasNextPage($useparent);
+	$useparent = we_getTagAttribute('useparent', $attribs, '', true);
+	return $GLOBALS['lv']->hasNextPage($useparent);
 }
 
 function we_tag_ifNoJavaScript($attribs, $content){
-	$foo = attributFehltError($attribs, "id", "ifNoJavaScript");
+	$foo = attributFehltError($attribs, 'id', 'ifNoJavaScript');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
-	$id = we_getTagAttribute("id", $attribs);
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());
-	$url = $row["Path"] . ($row["IsFolder"] ? "/" : "");
-	$attr = we_make_attribs($attribs, "id");
+	$id = we_getTagAttribute('id', $attribs);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.abs($id), new DB_WE());
+	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
+	$attr = we_make_attribs($attribs, 'id');
 	return '<noscript><meta http-equiv="refresh" content="0;URL=' . $url . '"></noscript>';
 }
 
@@ -981,8 +982,8 @@ function we_tag_ifNotCaptcha($attribs, $content){
 }
 
 function we_tag_ifNotDeleted($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "document");
-	return isset($GLOBALS["we_" . $type . "_delete_ok"]) && ($GLOBALS["we_" . $type . "_delete_ok"] == false);
+	$type = we_getTagAttribute('type', $attribs, 'document');
+	return isset($GLOBALS['we_' . $type . '_delete_ok']) && ($GLOBALS['we_' . $type . '_delete_ok'] == false);
 }
 
 function we_tag_ifNotDoctype($attribs,$content){
@@ -994,12 +995,12 @@ function we_tag_ifNotEditmode($attribs, $content) {
 }
 
 function we_tag_ifNotEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, "match", "ifNotEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifNotEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
-	if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) {
+	if (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) {
 		return true;
 	}
 	return we_isNotEmpty($attribs);
@@ -1010,7 +1011,7 @@ function we_tag_ifNotEqual($attribs, $content){
 }
 
 function we_tag_ifNotFound($attribs, $content){
-	return $GLOBALS["lv"]->anz ? false : true;
+	return $GLOBALS['lv']->anz ? false : true;
 }
 
 function we_tag_ifNotObject($attribs,$content) {
@@ -1025,8 +1026,8 @@ function we_tag_ifNotPageLanguage($attribs, $content){
 	return !(we_tag('ifPageLanguage',$attribs, $content));
 }
 
-function we_tag_ifNotHasShopVariants($attribs) {
-	return !we_tag('ifHasShopVariants',$attribs);
+function we_tag_ifNotHasShopVariants($attribs,$content) {
+	return !we_tag('ifHasShopVariants',$attribs,$content);
 }
 
 function we_tag_ifNotSendMail($attribs, $content){
@@ -1047,20 +1048,20 @@ function we_tag_ifNotHasChildren($attribs = array(), $content = ''){
 }
 
 function we_tag_ifNotHasEntries($attribs = array(), $content = ''){
-	return !we_tag('ifHasEntries');
+	return !we_tag('ifHasEntries',$attribs,$content);
 }
 
 function we_tag_ifNotHasCurrentEntry($attribs = array(), $content = ''){
-	return !we_tag('ifHasCurrentEntry');
+	return !we_tag('ifHasCurrentEntry',$attribs,$content);
 }
 
 function we_tag_ifNotNew($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs);
-	return (isset($_REQUEST["we_edit" . (($type == "object") ? "Object" : "Document") . "_ID"]) && $_REQUEST["we_edit" . (($type == "object") ? "Object" : "Document") . "_ID"]);
+	$type = we_getTagAttribute('type', $attribs,$content);
+	return (isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
 }
 
 function we_tag_ifNotReturnPage($attribs, $content){
-	return !(isset($_REQUEST["we_returnpage"]) && ($_REQUEST["we_returnpage"]));
+	return !(isset($_REQUEST['we_returnpage']) && ($_REQUEST['we_returnpage']));
 }
 
 function we_tag_ifNotSearch($attribs, $content){
@@ -1084,18 +1085,18 @@ function we_tag_ifNotVar($attribs, $content){
 }
 
 function we_tag_ifNotVarSet($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "ifNotVarSet");
+	$foo = attributFehltError($attribs, 'name', 'ifNotVarSet');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
-	$type = we_getTagAttribute("var", $attribs);
-	$type = $type ? $type : we_getTagAttribute("type", $attribs);
-	$doc = we_getTagAttribute("doc", $attribs);
-	$name = we_getTagAttribute("name", $attribs);
-	$formname = we_getTagAttribute("formname", $attribs, "we_global_form");
-	$property = we_getTagAttribute("property", $attribs, "", true);
-	$shopname = we_getTagAttribute("shopname", $attribs, "");
+	$type = we_getTagAttribute('var', $attribs);
+	$type = $type ? $type : we_getTagAttribute('type', $attribs);
+	$doc = we_getTagAttribute('doc', $attribs);
+	$name = we_getTagAttribute('name', $attribs);
+	$formname = we_getTagAttribute('formname', $attribs, 'we_global_form');
+	$property = we_getTagAttribute('property', $attribs, '', true);
+	$shopname = we_getTagAttribute('shopname', $attribs, '');
 	
 	return !we_isVarSet($name, $type, $doc, $property, $formname, $shopname);
 }
@@ -1121,10 +1122,10 @@ function we_tag_ifNotWorkspace($attribs, $content){
 }
 
 function we_tag_ifNotWritten($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "");
-	$type = $type ? $type : we_getTagAttribute("var", $attribs, "");
-	$type = $type ? $type : we_getTagAttribute("doc", $attribs, "document");
-	return isset($GLOBALS["we_" . $type . "_write_ok"]) && ($GLOBALS["we_" . $type . "_write_ok"] == false);
+	$type = we_getTagAttribute('type', $attribs, '');
+	$type = $type ? $type : we_getTagAttribute('var', $attribs, '');
+	$type = $type ? $type : we_getTagAttribute('doc', $attribs, 'document');
+	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == false);
 }
 
 
@@ -1137,54 +1138,54 @@ function we_tag_pagelogger($attribs, $content){
 }
 
 function we_tag_ifReturnPage($attribs, $content){
-	return isset($_REQUEST["we_returnpage"]) && ($_REQUEST["we_returnpage"]);
+	return isset($_REQUEST['we_returnpage']) && ($_REQUEST['we_returnpage']);
 }
 
 function we_tag_ifUserInputEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, "match", "ifUserInputEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifUserInputEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
 	return !we_isUserInputNotEmpty($attribs);
 }
 
 function we_tag_ifUserInputNotEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, "match", "ifUserInputNotEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifUserInputNotEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
 	return we_isUserInputNotEmpty($attribs);
 }
 
 
 function we_tag_ifVarEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, "match", "ifVarEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifVarEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
 	return !we_isVarNotEmpty($attribs);
 }
 
 function we_tag_ifVarNotEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, "match", "ifVarNotEmpty");
+	$foo = attributFehltError($attribs, 'match', 'ifVarNotEmpty');
 	if ($foo) {
 		print($foo);
-		return "";
+		return '';
 	}
 	return we_isVarNotEmpty($attribs);
 }
 
 function we_tag_ifWebEdition($attribs, $content){
-	return $GLOBALS["WE_MAIN_DOC"]->InWebEdition;
+	return $GLOBALS['WE_MAIN_DOC']->InWebEdition;
 }
 
 function we_tag_ifWritten($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "");
-	$type = $type ? $type : we_getTagAttribute("var", $attribs, "document");
-	return isset($GLOBALS["we_" . $type . "_write_ok"]) && ($GLOBALS["we_" . $type . "_write_ok"] == true);
+	$type = we_getTagAttribute('type', $attribs, '');
+	$type = $type ? $type : we_getTagAttribute('var', $attribs, 'document');
+	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == true);
 }
 
 
@@ -1193,22 +1194,22 @@ function we_tag_linkToSEEM($attribs, $content){
 }
 
 function we_tag_listviewPageNr($attribs, $content){
-	return $GLOBALS["lv"]->rows ? (((abs($GLOBALS["lv"]->start) - abs($GLOBALS["lv"]->offset)) / $GLOBALS["lv"]->rows) + 1) : 1;
+	return $GLOBALS['lv']->rows ? (((abs($GLOBALS['lv']->start) - abs($GLOBALS['lv']->offset)) / $GLOBALS['lv']->rows) + 1) : 1;
 }
 
 function we_tag_listviewPages($attribs, $content){
-	return $GLOBALS["lv"]->rows ? ceil(
-			((float)$GLOBALS["lv"]->anz_all - abs($GLOBALS["lv"]->offset)) / (float)$GLOBALS["lv"]->rows) : 1;
+	return $GLOBALS['lv']->rows ? ceil(
+			((float)$GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / (float)$GLOBALS['lv']->rows) : 1;
 }
 
 function we_tag_listviewRows($attribs, $content){
-	return $GLOBALS["lv"]->anz_all - abs($GLOBALS["lv"]->offset);
+	return $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset);
 }
 
 function we_tag_listviewStart($attribs, $content){
-	return $GLOBALS["lv"]->start + 1 - abs($GLOBALS["lv"]->offset);
+	return $GLOBALS['lv']->start + 1 - abs($GLOBALS['lv']->offset);
 }
 
 function we_tag_makeMail($attribs, $content){
-	return "";
+	return '';
 }

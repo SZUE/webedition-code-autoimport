@@ -414,6 +414,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 
 	$l_prefs["error_types"] = "Käsittele virhetyypit";
 	$l_prefs["error_notices"] = "Ilmoitukset";
+	$l_prefs["error_deprecated"] = "deprecated Notices";//TRANSLATE
 	$l_prefs["error_warnings"] = "Varoitukset";
 	$l_prefs["error_errors"] = "Virheet";
 

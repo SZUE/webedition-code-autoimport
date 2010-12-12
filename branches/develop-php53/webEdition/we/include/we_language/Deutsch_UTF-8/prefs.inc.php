@@ -417,6 +417,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 
 	$l_prefs["error_types"] = "Zu behandelnde Fehler";
 	$l_prefs["error_notices"] = "Hinweise";
+	$l_prefs["error_deprecated"] = "veraltet Hinweise";
 	$l_prefs["error_warnings"] = "Warnungen";
 	$l_prefs["error_errors"] = "Fehler";
 

@@ -418,6 +418,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 
 	$l_prefs["error_types"] = "Ошибки для устранения";
 	$l_prefs["error_notices"] = "Примечания";
+	$l_prefs["error_deprecated"] = "deprecated Notices";//TRANSLATE
 	$l_prefs["error_warnings"] = "Предостережения";
 	$l_prefs["error_errors"] = "Ошибки";
 
