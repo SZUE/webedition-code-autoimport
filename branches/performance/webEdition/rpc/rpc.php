@@ -91,5 +91,3 @@
 	unset($_shell);
 	
 	//include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/rpc/navi.php');
-
-?>

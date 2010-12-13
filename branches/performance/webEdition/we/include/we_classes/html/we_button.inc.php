@@ -25,21 +25,23 @@
  * Provides functions for creating webEdition buttons.
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$langDir = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"];
-include_once($langDir."/css/css.inc.php");
-include_once($langDir."/buttons/global.inc.php");
-include_once($langDir."/buttons/buttons.inc.php");
+$langDir = $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'];
+include_once($langDir.'/css/css.inc.php');
+include_once($langDir.'/buttons/global.inc.php');
+include_once($langDir.'/buttons/buttons.inc.php');
 
-if (is_dir($langDir."/buttons/modules")) {
+if (is_dir($langDir.'/buttons/modules')) {
 
 	// Include language files of buttons used in modules
-	$d = dir($langDir."/buttons/modules");
+	$d = dir($langDir.'/buttons/modules');
 	while (false !== ($entry = $d->read())) {
-		if ($entry[0] != "." && substr($entry,(-1 * strlen(".php"))) == ".php") {
-			include_once($langDir."/buttons/modules/".$entry);
+		if ($entry[0] != '.' && substr($entry,(-1 * strlen('.php'))) == '.php') {
+			include_once($langDir.'/buttons/modules/'.$entry);
 		}
 	}
 	$d->close();
+
+
 }
 
 define('WE_BUTTON_LEFT_WIDTH',5);
@@ -197,9 +199,9 @@ class we_button {
 	 * @return     string
 	 */
 
-	function create_button($name, $href, $alt = true, $width = 100, $height = 22, $on_click = "", $target = "", $disabled = false, $uniqid = true, $suffix = "", $opensDialog=false) {
+	function create_button($name, $href, $alt = true, $width = 100, $height = 22, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog=false) {
 
-		$cmd = "";
+		$cmd = '';
 		// Initialize variable for Form:Submit behaviour
 		$_add_form_submit_dummy = false;
 
@@ -223,11 +225,11 @@ class we_button {
 
 		// Check if the button is a text button or an image button
 		if (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) { // Button is NOT an image
-			$_button_name = ($uniqid ? uniqid($name . "_") : $name);
+			$_button_name = ($uniqid ? uniqid($name . '_') : $name);
 			$_button_name .= $suffix;
 		} else { // Button is an image - create a unique name
 			$_button_pure_name = substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY)));
-			$_button_name = ($uniqid ? uniqid(substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . "_") : substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
+			$_button_name = ($uniqid ? uniqid(substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . '_') : substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
 		}
 		/**
 		 * CHECK IF THE LANGUAGE FILE DEFINES ANOTHER WIDTH FOR THE BUTTON
@@ -235,8 +237,8 @@ class we_button {
 
 		// Check if the button will a text button or a image button
 		if (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) { // Button will NOT be an image
-			if (($GLOBALS["l_button"][$name]["width"] != "") && ($width == 100)) {
-				$width = $GLOBALS["l_button"][$name]["width"];
+			if (($GLOBALS['l_button'][$name]['width'] != '') && ($width == 100)) {
+				$width = $GLOBALS['l_button'][$name]['width'];
 			}
 		} else {
 			//quickfix for image button width;
@@ -256,7 +258,7 @@ class we_button {
 				if ($target) { // The link will be opened in a different frame or in a new window
 
 					// Check if the link has to be opend in a frame or a window
-					if ($target == "_blank") { // The link will be opened in a new window
+					if ($target == '_blank') { // The link will be opened in a new window
 						$_button_link = "window.open('" . $href . "', '" . $target . "');";
 					} else { // The link will be opened in a different frame
 						$_button_link = "target_frame = eval('parent.' + ". $target . ");target_frame.location.href='" . $href . "';";
@@ -331,7 +333,7 @@ class we_button {
 	 * @return     string
 	 */
 
-	function create_button_table($buttons, $gap = 10, $attribs = "") {
+	function create_button_table($buttons, $gap = 10, $attribs = '') {
 		// Get number of buttons
 		$_count_button = count($buttons);
 
@@ -339,7 +341,7 @@ class we_button {
 		$_cols_to_create = ($_count_button > 1) ? (($_count_button * 2) - 1) : $_count_button;
 
 		// Create array for table attributes
-		$attr = array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0");
+		$attr = array('border'=>'0', 'cellpadding'=>'0', 'cellspacing'=>'0');
 
 		// Check for attribute parameters
 		if ($attribs && is_array($attribs)) {
@@ -353,11 +355,11 @@ class we_button {
 
 		// Build cols for every button
 		for ($i = 0; $i < $_count_button; $i++) {
-			$_button_table->setCol(0, ($i * 2), array("class"=>"weEditmodeStyle"), $buttons[$i]);
+			$_button_table->setCol(0, ($i * 2), array('class'=>'weEditmodeStyle'), $buttons[$i]);
 
 			// Check if we have to create a gap
 			if (($i > 0) && ($i < $_count_button)) {
-				$_button_table->setCol(0, (($i * 2) - 1), array("class"=>"weEditmodeStyle"), getPixel($gap, 1));
+				$_button_table->setCol(0, (($i * 2) - 1), array('class'=>'weEditmodeStyle'), getPixel($gap, 1));
 			}
 		}
 
@@ -388,9 +390,9 @@ class we_button {
 	 * @return     string
 	 */
 
-	function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = "", $attribs = array(), $aligngap = 0) {
+	function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = '', $attribs = array(), $aligngap = 0) {
 		//	Create default attributes for table
-		$attr = array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "align" => $align);
+		$attr = array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'align' => $align);
 
 		// Check for attribute parameters
 		if ($attribs && is_array($attribs)) {
@@ -401,17 +403,17 @@ class we_button {
 
 		//	Create button array
 		$_buttons = array();
-		if($align=="") $attr["align"]="right";
+		if($align=='') $attr['align']='right';
 		//	button order depends on OS
-		if($GLOBALS['SYSTEM'] == "MAC"){
-			$_order = array("no_button", "cancel_button", "yes_button");
+		if($GLOBALS['SYSTEM'] == 'MAC'){
+			$_order = array('no_button', 'cancel_button', 'yes_button');
 		} else {
-			$_order = array("yes_button", "no_button", "cancel_button");
+			$_order = array('yes_button', 'no_button', 'cancel_button');
 		}
 
 		//	Existing buttons are added to array
 		for ($_i = 0; $_i < sizeof($_order); $_i++) {
-			if (isset($$_order[$_i]) && $$_order[$_i] != "") {
+			if (isset($$_order[$_i]) && $$_order[$_i] != '') {
 				array_push($_buttons, $$_order[$_i]);
 			}
 		}
@@ -419,27 +421,27 @@ class we_button {
 		$_cols = (sizeof($_buttons) * 2) - 1;
 
 		//	Create_table
-		$_button_table = new we_htmlTable($attr, 1, ((($aligngap > 0) && ($attr["align"] == "left")) ? $_cols + 1 : $_cols));
+		$_button_table = new we_htmlTable($attr, 1, ((($aligngap > 0) && ($attr['align'] == 'left')) ? $_cols + 1 : $_cols));
 
 		//	Extra gap at left side?
-		if (($aligngap > 0) && ($attr["align"] == "left")) {
+		if (($aligngap > 0) && ($attr['align'] == 'left')) {
 			$_button_table->addCol(1);
-			$_button_table->setCol(0, 0,  array("class"=>"weEditmodeStyle"), getPixel($aligngap, 1));
+			$_button_table->setCol(0, 0,  array('class'=>'weEditmodeStyle'), getPixel($aligngap, 1));
 		}
 
 		//	Write buttons
-		for ($i = 0, $j = 0; $i < ((($aligngap > 0) && ($attr["align"] == "left")) ? $_cols + 1 : $_cols); $i++) {
+		for ($i = 0, $j = 0; $i < ((($aligngap > 0) && ($attr['align'] == 'left')) ? $_cols + 1 : $_cols); $i++) {
 			if ($i % 2 == 0){ // Set button
-				$_button_table->setCol(0, ((($aligngap > 0) && ($attr["align"] == "left")) ? $i + 1 : $i), array("class"=>"weEditmodeStyle"), $_buttons[$j++]);
+				$_button_table->setCol(0, ((($aligngap > 0) && ($attr['align'] == 'left')) ? $i + 1 : $i), array('class'=>'weEditmodeStyle'), $_buttons[$j++]);
 			} else { // Set gap
-				$_button_table->setCol(0, ((($aligngap > 0) && ($attr["align"] == "left")) ? $i + 1 : $i), array("class"=>"weEditmodeStyle"), getPixel($gap, 1));
+				$_button_table->setCol(0, ((($aligngap > 0) && ($attr['align'] == 'left')) ? $i + 1 : $i), array('class'=>'weEditmodeStyle'), getPixel($gap, 1));
 			}
 		}
 
 		//	Extra gap at left or right side?
-		if (($aligngap > 0) && ($attr["align"] == "right")) {
+		if (($aligngap > 0) && ($attr['align'] == 'right')) {
 			$_button_table->addCol(1);
-			$_button_table->setCol(0, $_cols, array("class"=>"weEditmodeStyle"), getPixel($aligngap, 1));
+			$_button_table->setCol(0, $_cols, array('class'=>'weEditmodeStyle'), getPixel($aligngap, 1));
 		}
 
 		// Return created HTML

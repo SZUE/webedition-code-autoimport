@@ -18,19 +18,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == "/we_global.inc.php") {
+if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == '/we_global.inc.php') {
 	exit();
 }
-if (!isset($GLOBALS["WE_IS_DYN"])) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_live_tools.inc.php');
-	include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
+if (!isset($GLOBALS['WE_IS_DYN'])) {
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 }
-include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/lib/we/core/autoload.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
 function we_getModuleNameByContentType($ctype) {
 	global $_we_active_modules;
 
-	$_moduleDir = "";
+	$_moduleDir = '';
 	for ($i = 0; $i < sizeof($_we_active_modules); $i++) {
 
 		if (strstr($ctype, $_we_active_modules[$i])) {
@@ -41,24 +41,24 @@ function we_getModuleNameByContentType($ctype) {
 }
 
 function we_getGlobalPath() {
-	if (isset($GLOBALS["WE_MAIN_DOC"]) && isset($GLOBALS["WE_MAIN_DOC"]->Path)) {
-		return $GLOBALS["WE_MAIN_DOC"]->Path;
+	if (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)) {
+		return $GLOBALS['WE_MAIN_DOC']->Path;
 	} else {
-		return "";
+		return '';
 	}
 }
 
 function rmPhp($in) {
-	$out = "";
-	$starttag = strpos($in, "<?");
+	$out = '';
+	$starttag = strpos($in, '<?');
 	if ($starttag === false)
 		return $in;
 	$lastStart = 0;
 	while (!($starttag === false)) {
-		$endtag = strpos($in, "?" . ">", $starttag);
+		$endtag = strpos($in, '?' . '>', $starttag);
 		$out .= substr($in, $lastStart, ($starttag - $lastStart));
 		$lastStart = $endtag + 2;
-		$starttag = strpos($in, "<?", $lastStart);
+		$starttag = strpos($in, '<?', $lastStart);
 	}
 	if ($lastStart < strlen($in))
 		$out .= substr($in, $lastStart, (strlen($in) - $lastStart));
@@ -66,66 +66,66 @@ function rmPhp($in) {
 }
 
 function decodetmlSpecialChars($in) {
-	$out = str_replace("&lt;", "<", $in);
-	$out = str_replace("&gt;", ">", $out);
-	$out = str_replace("&quot;", '"', $out);
-	$out = str_replace("&#039;", "'", $out);
-	$out = str_replace("&amp;", "&", $out);
+	$out = str_replace('&lt;', '<', $in);
+	$out = str_replace('&gt;', '>', $out);
+	$out = str_replace('&quot;', '"', $out);
+	$out = str_replace('&#039;', '\'', $out);
+	$out = str_replace('&amp;', '&', $out);
 	return $out;
 }
 
-function we_getTagAttributeTagParser($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false, $removeblk=false) {
-	$out = "";
+function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false) {
+	$out = '';
 	if ($isFlag) {
 		if ($checkForFalse) {
-			$out = (isset($attribs[$name]) && ($attribs[$name] == "false" || $attribs[$name] == "off" || $attribs[$name] == "0")) ? false : true;
+			$out = (isset($attribs[$name]) && ($attribs[$name] == 'false' || $attribs[$name] == 'off' || $attribs[$name] == '0')) ? false : true;
 		} else {
-			$out = (isset($attribs[$name]) && ($attribs[$name] == "true" || $attribs[$name] == "on" || $attribs[$name] == $name || $attribs[$name] == "1")) ? true : false;
+			$out = (isset($attribs[$name]) && ($attribs[$name] == 'true' || $attribs[$name] == 'on' || $attribs[$name] == $name || $attribs[$name] == '1')) ? true : false;
 		}
 	} else {
 		$out = isset($attribs[$name]) ? $attribs[$name] : $default;
 	}
 	if ($removeblk) {
-		$outA = explode("blk_", $out);
+		$outA = explode('blk_', $out);
 		$out = $outA[0];
 	}
 	return decodetmlSpecialChars($out);
 }
 
-function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false, $removeblk=false) {
-	$value = isset($attribs[$name]) ? $attribs[$name] : "";
+function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false) {
+	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
-		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : "";
+		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
-	$out = "";
+	$out = '';
 	if ($isFlag) {
 		if ($checkForFalse) {
-			$out = ($value == "false" || $value == "off" || $value == "0") ? false : true;
+			$out = ($value == 'false' || $value == 'off' || $value == '0') ? false : true;
 		} else {
-			$out = ($value == "true" || $value == "on" || $value == $name || $value == "1") ? true : false;
+			$out = ($value == 'true' || $value == 'on' || $value == $name || $value == '1') ? true : false;
 		}
 	} else {
 		$out = strlen($value) ? $value : $default;
 	}
 	if ($removeblk) {
-		$outA = explode("blk_", $out);
+		$outA = explode('blk_', $out);
 		$out = $outA[0];
 	}
 	return decodetmlSpecialChars($out);
 }
 
 // Entwickelt für #Bug 3386, wobei nicht die id, sondern die anderen Attribute dynamisiert wurden
-function we_getTagAttributeForParsingLater($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false) {
-	$value = isset($attribs[$name]) ? $attribs[$name] : "";
+function we_getTagAttributeForParsingLater($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
+	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
 		$value = '<?php echo isset($GLOBALS["' . $regs[1] . '"]) ? $GLOBALS["' . $regs[1] . '"] : "' . $default . '";' . '?' . '>';
 	}
-	$out = "";
+	$out = '';
 	if ($isFlag) {
 		if ($checkForFalse) {
-			$out = ($value == "false" || $value == "off" || $value == "0") ? false : true;
+			$out = ($value == 'false' || $value == 'off' || $value == '0') ? false : true;
 		} else {
-			$out = ($value == "true" || $value == "on" || $value == $name || $value == "1") ? true : false;
+			$out = ($value == 'true' || $value == 'on' || $value == $name || $value == '1') ? true : false;
 		}
 	} else {
 		$out = strlen($value) ? $value : $default;
@@ -135,71 +135,71 @@ function we_getTagAttributeForParsingLater($name, $attribs, $default = "", $isFl
 
 function we_getIndexFileIDs($db) {
 	$db->query(
-					"
+					'
 		SELECT ID
-		FROM " . FILE_TABLE . "
+		FROM ' . FILE_TABLE . "
 		WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType='text/html' OR ContentType='text/webedition')) OR (ContentType='application/*') )");
 	$anz = $db->num_rows();
-	$list = "";
+	$list = '';
 	while ($db->next_record())
-		$list .= $db->f("ID") . ",";
+		$list .= $db->f('ID') . ',';
 	$list = rtrim($list, ',');
 	return $list;
 }
 
 function we_getIndexObjectIDs($db) {
-	$db->query("
+	$db->query('
 		SELECT ID
-		FROM " . OBJECT_FILES_TABLE . "
-		WHERE Published > 0 AND Workspaces != ''");
+		FROM ' . OBJECT_FILES_TABLE . '
+		WHERE Published > 0 AND Workspaces != ""');
 	$anz = $db->num_rows();
-	$list = "";
+	$list = '';
 	while ($db->next_record())
-		$list .= $db->f("ID") . ",";
+		$list .= $db->f('ID') . ',';
 	$list = rtrim($list, ',');
 	return $list;
 }
 
 function correctUml($in) {
-	$in = str_replace("ä", "ae", $in);
-	$in = str_replace("ö", "oe", $in);
-	$in = str_replace("ü", "ue", $in);
-	$in = str_replace("Ä", "Ae", $in);
-	$in = str_replace("Ö", "Oe", $in);
-	$in = str_replace("Ü", "Ue", $in);
-	return str_replace("ß", "ss", $in);
+	$in = str_replace('ä', 'ae', $in);
+	$in = str_replace('ö', 'oe', $in);
+	$in = str_replace('ü', 'ue', $in);
+	$in = str_replace('Ä', 'Ae', $in);
+	$in = str_replace('Ö', 'Oe', $in);
+	$in = str_replace('Ü', 'Ue', $in);
+	return str_replace('ß', 'ss', $in);
 }
 
 function we_html2uml($text) {
 
-	$text = str_replace("&uuml;", "ü", $text);
-	$text = str_replace("&Uuml;", "Ü", $text);
-	$text = str_replace("&auml;", "ä", $text);
-	$text = str_replace("&Auml;", "Ä", $text);
-	$text = str_replace("&ouml;", "ö", $text);
-	$text = str_replace("&Ouml;", "Ö", $text);
-	$text = str_replace("&szlig;", "ß", $text);
+	$text = str_replace('&uuml;', 'ü', $text);
+	$text = str_replace('&Uuml;', 'Ü', $text);
+	$text = str_replace('&auml;', 'ä', $text);
+	$text = str_replace('&Auml;', 'Ä', $text);
+	$text = str_replace('&ouml;', 'ö', $text);
+	$text = str_replace('&Ouml;', 'Ö', $text);
+	$text = str_replace('&szlig;', 'ß', $text);
 
 	return $text;
 }
 
 function inWorkflow($doc) {
-	if (!defined("WORKFLOW_TABLE"))
+	if (!defined('WORKFLOW_TABLE'))
 		return false;
 	if (!$doc->IsTextContentDoc)
 		return false;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php');
 	if (!$doc->ID)
 		return false;
 	return weWorkflowUtility::inWorkflow($doc->ID, $doc->Table);
 }
 
-function getAllowedClasses($db = "") {
+function getAllowedClasses($db = '') {
 	if (!$db) {
 		$db = new DB_WE();
 	}
 	$out = array();
-	if (defined("OBJECT_TABLE")) {
+	if (defined('OBJECT_TABLE')) {
 		$ws = get_ws();
 		$ofWs = get_ws(OBJECT_FILES_TABLE);
 		$ofWsArray = makeArrayFromCSV(id_to_path($ofWs, OBJECT_FILES_TABLE));
@@ -210,29 +210,29 @@ function getAllowedClasses($db = "") {
 		if (abs($ws) == 0) {
 			$ws = 0;
 		}
-		$db->query("
+		$db->query('
 			SELECT ID,Workspaces,Path
-			FROM " . OBJECT_TABLE . "
-			WHERE IsFolder=0");
+			FROM ' . OBJECT_TABLE . '
+			WHERE IsFolder=0');
 
 		while ($db->next_record()) {
-			$path = $db->f("Path");
-			if (!$ws || $_SESSION["perms"]["ADMINISTRATOR"] || (!$db->f("Workspaces")) || in_workspace(
-											$db->f("Workspaces"),
+			$path = $db->f('Path');
+			if (!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace(
+											$db->f('Workspaces'),
 											$ws,
 											FILE_TABLE,
-											"",
+											'',
 											true)) {
 
-				$path2 = $path . "/";
-				if (!$ofWs || $_SESSION["perms"]["ADMINISTRATOR"]) {
-					array_push($out, $db->f("ID"));
+				$path2 = $path . '/';
+				if (!$ofWs || $_SESSION['perms']['ADMINISTRATOR']) {
+					array_push($out, $db->f('ID'));
 				} else {
 
 					// object Workspace check (New since Version 4.x)
 					foreach ($ofWsArray as $w) {
-						if ($w == $db->f("Path") || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))) {
-							array_push($out, $db->f("ID"));
+						if ($w == $db->f('Path') || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))) {
+							array_push($out, $db->f('ID'));
 							break;
 						}
 					}
@@ -243,27 +243,27 @@ function getAllowedClasses($db = "") {
 	return $out;
 }
 
-function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = "") {
+function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = '') {
 	if (!$db) {
 		$db = new DB_WE();
 	}
-	$rootPath = "/";
+	$rootPath = '/';
 	$rootId = $classId;
-	if (defined("OBJECT_TABLE")) {
+	if (defined('OBJECT_TABLE')) {
 		$ws = get_ws(OBJECT_FILES_TABLE);
 		if (abs($ws) == 0) {
 			$ws = 0;
 		}
 		$db->query(
-						"
+						'
 			SELECT ID,Path
-			FROM " . OBJECT_FILES_TABLE . "
+			FROM ' . OBJECT_FILES_TABLE . "
 			WHERE IsFolder=1 AND Path LIKE '" . mysql_real_escape_string($classDir) . "%'");
 		while ($db->next_record()) {
-			if (!$ws || in_workspace($db->f("ID"), $ws, OBJECT_FILES_TABLE, "", true)) {
-				if ($rootPath == "/" || strlen($db->f("Path")) < strlen($rootPath)) {
-					$rootPath = $db->f("Path");
-					$rootId = $db->f("ID");
+			if (!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)) {
+				if ($rootPath == '/' || strlen($db->f('Path')) < strlen($rootPath)) {
+					$rootPath = $db->f('Path');
+					$rootId = $db->f('ID');
 				}
 			}
 		}
@@ -271,50 +271,50 @@ function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = "") {
 	return $rootId;
 }
 
-function weFileExists($id, $table = FILE_TABLE, $db = "") {
-	if ($id == "0")
+function weFileExists($id, $table = FILE_TABLE, $db = '') {
+	if ($id == '0')
 		return true;
 	if (!$db)
 		$db = new DB_WE();
 
 
-	return f("SELECT ID FROM $table WHERE ID=" . abs($id), "ID", $db);
+	return f("SELECT ID FROM $table WHERE ID=" . abs($id), 'ID', $db);
 }
 
-function makePIDTail($pid, $cid, $db = "", $table = FILE_TABLE) {
-	$pid_tail = "";
+function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE) {
+	$pid_tail = '';
 	if (!$db)
 		$db = new DB_WE();
 	if ($table == FILE_TABLE) {
 		$parentIDs = array();
 		array_push($parentIDs, $pid);
 		while ($pid != 0) {
-			$pid = f("
+			$pid = f('
 				SELECT ParentID
-				FROM " . FILE_TABLE . "
-				WHERE ID=" . abs($pid), "ParentID", $db);
+				FROM ' . FILE_TABLE . '
+				WHERE ID=' . abs($pid), 'ParentID', $db);
 			array_push($parentIDs, $pid);
 		}
-		$foo = f("
+		$foo = f('
 			SELECT DefaultValues
-			FROM " . OBJECT_TABLE . "
-			WHERE ID=" . abs($cid), "DefaultValues", $db);
+			FROM ' . OBJECT_TABLE . '
+			WHERE ID=' . abs($cid), 'DefaultValues', $db);
 		$fooArr = unserialize($foo);
-		if (isset($fooArr["WorkspaceFlag"]))
-			$flag = $fooArr["WorkspaceFlag"];
+		if (isset($fooArr['WorkspaceFlag']))
+			$flag = $fooArr['WorkspaceFlag'];
 		else
 			$flag = 1;
 		if ($flag)
-			$pid_tail = " ( " . OBJECT_X_TABLE . $cid . ".OF_Workspaces='' OR ";
+			$pid_tail = ' ( ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ';
 		else
-			$pid_tail = " ( ";
+			$pid_tail = ' ( ';
 		foreach ($parentIDs as $pid)
-			$pid_tail .= " " . OBJECT_X_TABLE . $cid . ".OF_Workspaces like '%," . abs($pid) . ",%' OR " . OBJECT_X_TABLE . abs($cid) . ".OF_ExtraWorkspacesSelected like '%," . abs($pid) . ",%' OR ";
-		$pid_tail = ereg_replace('^(.*)OR ', '\1', $pid_tail) . ")";
-		if (trim($pid_tail) == "( )")
-			return "1";
+			$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces like "%,' . abs($pid) . ',%" OR ' . OBJECT_X_TABLE . abs($cid) . '.OF_ExtraWorkspacesSelected like "%,' . abs($pid) . ',%" OR ';
+		$pid_tail = ereg_replace('^(.*)OR ', '\1', $pid_tail) . ')';
+		if (trim($pid_tail) == '( )')
+			return '1';
 	} else {
-		return "1";
+		return '1';
 	}
 	return $pid_tail;
 }
@@ -361,7 +361,7 @@ function we_getInputPasswordField($name, $value, $atts) {
 }
 
 function we_getHiddenField($name, $value, $xml = false) {
-	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? " /" : "") . ' />';
+	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . ' />';
 }
 
 function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false) {
@@ -400,7 +400,7 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 	}
 
 	// select menu
-	if ($mode == "add") {
+	if ($mode == 'add') {
 		$onchange = 'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);';
 	} else {
 		$onchange = 'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;';

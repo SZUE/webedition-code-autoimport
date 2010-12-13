@@ -21,17 +21,19 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
-if ( !( (isset($_POST["username"]) && isset($_POST["md5password"])) )) { // don't include during login
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/javaMenu/javaMenu_users.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/we_tabs.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/prefs.inc.php");
+if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don't include during login
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/users.inc.php');
+	if($GLOBALS['WE_MAIN_DOC']->InWebEdition){
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/we_tabs.inc.php');
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/prefs.inc.php');
+	}
 }
 
 
@@ -42,13 +44,13 @@ class we_user {
 	 */
 
 	// Name of the class => important for reconstructing the class from outside the class
-	var $ClassName="we_user";
+	var $ClassName='we_user';
 
 	// In this array are all storagable class variables
 	var $persistent_slots=array();
 
 	// Name of the Object that was createt from this class
-	var $Name="";
+	var $Name='';
 
 	// ID from the database record
 	var $ID=0;
@@ -69,98 +71,98 @@ class we_user {
 	var $IsFolder=0;
 
 	// Salutation
-	var $Salutation="";
+	var $Salutation='';
 
 	// User first name
-	var $First="";
+	var $First='';
 
 	// User second name
-	var $Second="";
+	var $Second='';
 
 	// Address
-	var $Address="";
+	var $Address='';
 
 	// House number
-	var $HouseNo="";
+	var $HouseNo='';
 
 	// City
-	var $City="";
+	var $City='';
 
 	// ZIP Code
-	var $PLZ="";
+	var $PLZ='';
 
 	// Country
-	var $Country="";
+	var $Country='';
 
 	// Telephone preselection
-	var $Tel_preselection="";
+	var $Tel_preselection='';
 
 	// Telephone
-	var $Telephone="";
+	var $Telephone='';
 
 	// Fax preselection
-	var $Fax_preselection="";
+	var $Fax_preselection='';
 
 	// Fax
-	var $Fax="";
+	var $Fax='';
 
 	// Cell phone
-	var $Handy="";
+	var $Handy='';
 
 	// Email
-	var $Email="";
+	var $Email='';
 
 	// Username
-	var $username="";
+	var $username='';
 
 	// User password (md5 salted)
-	var $passwd="";
+	var $passwd='';
 	
 	// User password
-	var $clearpasswd="";
+	var $clearpasswd='';
 	
 	// User permissions
-	var $Permissions="";
+	var $Permissions='';
 
 	// Flag which indicated if user inherits permissions from parent
 	var $ParentPerms=0;
 
 	// Description
-	var $Description="";
+	var $Description='';
 
 	// User Prefrences
 	var $Preferences=array();
 
-	var $Text="";
-	var $Path="";
-	var $Alias="";
-	var $Icon="user.gif";
+	var $Text='';
+	var $Path='';
+	var $Alias='';
+	var $Icon='user.gif';
 	
-	var $CreatorID = "";
-	var $CreateDate = "";
-	var $ModifierID = "";
-	var $ModifyDate = "";
+	var $CreatorID = '';
+	var $CreateDate = '';
+	var $ModifierID = '';
+	var $ModifyDate = '';
 
 	// Ping flag
 	var $Ping=0;
 
 	// Documents workspaces
-	var $workSpace="";
+	var $workSpace='';
 
 	// Default documents workspaces
-	var $workSpaceDef="";
+	var $workSpaceDef='';
 
 	// Templpates workspaces
-	var $workSpaceTmp="";
+	var $workSpaceTmp='';
 
 	// Navigation workspaces
-	var $workSpaceNav="";
+	var $workSpaceNav='';
 
 	// Objects workspaces
-	var $workSpaceObj="";
+	var $workSpaceObj='';
 
 	// Newsletter workspaces
-	var $workSpaceNwl="";
+	var $workSpaceNwl='';
 
 	// Flag which indicated if user inherits files workspaces from parent
 	var $ParentWs=0;
@@ -219,18 +221,18 @@ class we_user {
 
 	// Constructor
 	function we_user() {
-		$this->ClassName="we_user";
-		$this->Name = "user_".md5(uniqid(rand()));
-		array_push($this->persistent_slots,"ID","Type","ParentID","Salutation","First","Second","Address","HouseNo","City","PLZ","State","Country","Tel_preselection","Telephone","Fax","Fax_preselection","Handy","Email","username","passwd","clearpasswd", "Text","Path","Permissions","ParentPerms","Description","Alias","Icon","IsFolder","CreatorID","CreateDate","ModifierID","ModifyDate","Ping","workSpace","workSpaceDef","workSpaceTmp","workSpaceNav","workSpaceNwl","workSpaceObj","ParentWs","ParentWst","ParentWsn","ParentWso","ParentWsnl","altID", "LoginDenied", "UseSalt");
+		$this->ClassName='we_user';
+		$this->Name = 'user_'.md5(uniqid(rand()));
+		array_push($this->persistent_slots,'ID','Type','ParentID','Salutation','First','Second','Address','HouseNo','City','PLZ','State','Country','Tel_preselection','Telephone','Fax','Fax_preselection','Handy','Email','username','passwd','clearpasswd', 'Text','Path','Permissions','ParentPerms','Description','Alias','Icon','IsFolder','CreatorID','CreateDate','ModifierID','ModifyDate','Ping','workSpace','workSpaceDef','workSpaceTmp','workSpaceNav','workSpaceNwl','workSpaceObj','ParentWs','ParentWst','ParentWsn','ParentWso','ParentWsnl','altID', 'LoginDenied', 'UseSalt');
 
-		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","seem_start_file","seem_start_type","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
+		array_push($this->preference_slots,'sizeOpt','weWidth','weHeight','usePlugin','autostartPlugin','promptPlugin','Language','seem_start_file','seem_start_type','editorSizeOpt','editorWidth','editorHeight','editorFontname','editorFontsize','editorFont','default_tree_count','force_glossary_action','force_glossary_check','cockpit_amount_columns','cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
 
 		$this->DB_WE = new DB_WE;
 
 		$this->workspaces[FILE_TABLE]=array();
 		$this->workspaces[TEMPLATES_TABLE]=array();
 		$this->workspaces[NAVIGATION_TABLE]=array();
-		if(defined("OBJECT_TABLE")) {
+		if(defined('OBJECT_TABLE')) {
 			$this->workspaces[OBJECT_FILES_TABLE]=array();
 		}
 		if(defined('NEWSLETTER_TABLE')) {
@@ -240,14 +242,14 @@ class we_user {
 		$this->workspaces_defaults[FILE_TABLE]=array();
 		$this->workspaces_defaults[TEMPLATES_TABLE]=array();
 		$this->workspaces_defaults[NAVIGATION_TABLE]=array();
-		if(defined("OBJECT_TABLE")) {
+		if(defined('OBJECT_TABLE')) {
 			$this->workspaces_defaults[OBJECT_FILES_TABLE]=array();
 		}
 		if(defined('NEWSLETTER_TABLE')) {
 			$this->workspaces_defaults[NEWSLETTER_TABLE]=array();
 		}
 
-		$this->Preferences['use_jupload'] = f("SELECT MAX(use_jupload) as mju FROM " . PREFS_TABLE . ";",'mju',$this->DB_WE); //WTF?!?
+		$this->Preferences['use_jupload'] = f('SELECT MAX(use_jupload) as mju FROM ' . PREFS_TABLE . ';','mju',$this->DB_WE); //WTF?!?
 		
 		foreach($this->preference_slots as $key => $val) {
 			$value = null;
@@ -262,11 +264,11 @@ class we_user {
 	function initType($typ,$ext=0) {
 		$this->Type=$typ;
 		if($typ==2)
-			$this->Icon="user_alias.gif";
+			$this->Icon='user_alias.gif';
 		else if($typ==1)
-			$this->Icon="usergroup.gif";
+			$this->Icon='usergroup.gif';
 		else
-			$this->Icon="user.gif";
+			$this->Icon='user.gif';
 		$this->mapPermissions();
 		if($ext) {
 			$this->initExt=$ext;
@@ -281,7 +283,7 @@ class we_user {
 	function initFromDB($id) {
 		$ret=false;
 		if($id) {
-			$this->DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE ID=".abs($id));
+			$this->DB_WE->query('SELECT * FROM '.USER_TABLE.' WHERE ID='.abs($id));
 			if($this->DB_WE->next_record()) {
 				$this->ID=$id;
 				$this->getPersistentSlotsFromDB();
@@ -305,10 +307,10 @@ class we_user {
 		}
 		
 		if($this->ID) {
-			$updt = "";
+			$updt = '';
 			for($i=0;$i<sizeof($tableInfo);$i++) {
-				$fieldName = $tableInfo[$i]["name"];
-				if ($fieldName == "UseSalt") {
+				$fieldName = $tableInfo[$i]['name'];
+				if ($fieldName == 'UseSalt') {
 					$val = 1;
 				} else {
 					$val = isset($this->$fieldName) ? $this->$fieldName : '0';
@@ -319,36 +321,36 @@ class we_user {
 					} elseif($fieldName == 'editorFontsize' && $this->Preferences['editorFont'] == '0') {
 						$val = '-1';
 					}
-					if ($fieldName !== 'passwd' || $val !== "") {
-						$updt .= $fieldName."='".mysql_real_escape_string($val)."',";
+					if ($fieldName !== 'passwd' || $val !== '') {
+						$updt .= $fieldName.'="'.mysql_real_escape_string($val).'",';
 					}
 				}
 			}
 			//remove last ,
 			//$updt = ereg_replace('(.+),$','\1',$updt);
 			$updt = substr($updt, 0, -1);
-			$q = "UPDATE ".mysql_real_escape_string($this->Table)." SET $updt WHERE ID=".abs($this->ID);
+			$q = 'UPDATE '.mysql_real_escape_string($this->Table)." SET $updt WHERE ID=".abs($this->ID);
 			$this->DB_WE->query($q);
 		}
 		else {
-			$keys = "";
-			$vals = "";
+			$keys = '';
+			$vals = '';
 			for($i=0;$i<sizeof($tableInfo);$i++) {
-				$fieldName = $tableInfo[$i]["name"];
+				$fieldName = $tableInfo[$i]['name'];
 				eval('$val = isset($this->'.$fieldName.') ? $this->'.$fieldName.' : "" ;');
-				if($fieldName != "ID") {
-					if ($fieldName !== 'passwd' || $val !== "") {
-						$keys .= $fieldName.",";
+				if($fieldName != 'ID') {
+					if ($fieldName !== 'passwd' || $val !== '') {
+						$keys .= $fieldName.',';
 						$vals .= "'".mysql_real_escape_string($val)."',";
 					}
 				}
 			}
 			if($keys) {
-				$keys = "(".substr($keys,0,strlen($keys)-1).")";
-				$vals = "VALUES(".substr($vals,0,strlen($vals)-1).")";
-				$q = "INSERT INTO ".mysql_real_escape_string($this->Table)." $keys $vals";
+				$keys = '('.substr($keys,0,strlen($keys)-1).')';
+				$vals = 'VALUES('.substr($vals,0,strlen($vals)-1).')';
+				$q = 'INSERT INTO '.mysql_real_escape_string($this->Table)." $keys $vals";
 				$this->DB_WE->query($q);
-				$this->ID = f("SELECT max(ID) as ID from ".mysql_real_escape_string($this->Table),"ID",$this->DB_WE);
+				$this->ID = f('SELECT max(ID) as ID from '.mysql_real_escape_string($this->Table),'ID',$this->DB_WE);
 			}
 		}
 	}
@@ -376,9 +378,9 @@ class we_user {
 
 	function getPersistentSlotsFromDB() {
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		$this->DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE ID=".abs($this->ID));
+		$this->DB_WE->query('SELECT * FROM '.USER_TABLE.' WHERE ID='.abs($this->ID));
 		for($i=0;$i<sizeof($tableInfo);$i++) {
-			$fieldName = $tableInfo[$i]["name"];
+			$fieldName = $tableInfo[$i]['name'];
 			if(in_array($fieldName,$this->persistent_slots)) {
 				$foo = $this->DB_WE->f($fieldName);
 				eval('$this->'.$fieldName.'=$foo;');
@@ -393,7 +395,7 @@ class we_user {
 		$isnew=$this->ID ? false : true;
 		if($this->Type==1 && $this->ID!=0) {
 			if($this->ParentID==0)
-				$ppath="/";
+				$ppath='/';
 			else
 				$ppath=$this->getPath($this->ParentID);
 			$dpath=$this->getPath($this->ID);
@@ -401,20 +403,20 @@ class we_user {
 				return -5;
 		}
 		if($this->Type==2) {
-			$foo=getHash("SELECT ID,username FROM ".USER_TABLE." WHERE ID=".abs($this->Alias),$this->DB_WE);
-			$uorginal=$foo["ID"];
+			$foo=getHash('SELECT ID,username FROM '.USER_TABLE.' WHERE ID='.abs($this->Alias),$this->DB_WE);
+			$uorginal=$foo['ID'];
 			$search=true;
 			$ount=0;
-			$try_name="@".$foo["username"];
-			$try_text=$foo["username"];
+			$try_name='@'.$foo['username'];
+			$try_text=$foo['username'];
 			while($search) {
-				$this->DB_WE->query("SELECT username FROM ".USER_TABLE." WHERE ID<>".abs($this->ID)."' AND ID<>".abs($uorginal)." AND username='".mysql_real_escape_string($try_name)."'");
+				$this->DB_WE->query('SELECT username FROM '.USER_TABLE.' WHERE ID<>'.abs($this->ID).' AND ID<>'.abs($uorginal).' AND username="'.mysql_real_escape_string($try_name).'"');
 				if(!$this->DB_WE->next_record()) {
 					$search=false;
 				}
 				else {
 					$ount++;
-					$try_name=$try_name."_".$ount;
+					$try_name=$try_name.'_'.$ount;
 				}
 			}
 			$this->username=$try_name;
@@ -442,15 +444,15 @@ class we_user {
 		}
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
-		if($oldpath!="" && $oldpath!="/" && isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
-			$this->DB_WE->query("SELECT ID,username FROM ".USER_TABLE." WHERE Path LIKE '".mysql_real_escape_string($oldpath)."%'");
+		if($oldpath!='' && $oldpath!='/' && isset($GLOBALS['BIG_USER_MODULE']) && $GLOBALS['BIG_USER_MODULE'] && in_array('busers',$GLOBALS['_pro_modules'])) {
+			$this->DB_WE->query('SELECT ID,username FROM '.USER_TABLE." WHERE Path LIKE '".mysql_real_escape_string($oldpath)."%'");
 			while($this->DB_WE->next_record()) {
-				$db_tmp->query("UPDATE ".USER_TABLE." SET Path='".$this->getPath($this->DB_WE->f("ID"))."' WHERE ID='".$this->DB_WE->f("ID")."'");
+				$db_tmp->query('UPDATE '.USER_TABLE." SET Path='".$this->getPath($this->DB_WE->f('ID'))."' WHERE ID='".$this->DB_WE->f('ID')."'");
 			}
 		}
 		$this->savePreferenceSlotsInDB($isnew);
 
-		$_REQUEST["uid"]=$this->ID;
+		$_REQUEST['uid']=$this->ID;
 
 		return $this->saveToSession();
 	}
@@ -460,25 +462,25 @@ class we_user {
 	function saveToSession() {
 
 		if($this->ID != $_SESSION['user']['ID']) {
-			return "";
+			return '';
 		}
 
-		$save_javascript = "
+		$save_javascript = '
 		var _multiEditorreload = false;
-		";
+		';
 
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
 		if(isset($this->Preferences['seem_start_type'])) {
-			if($this->Preferences['seem_start_type'] == "cockpit") {
+			if($this->Preferences['seem_start_type'] == 'cockpit') {
 				$save_javascript .= $this->rememberPreference(0, 'seem_start_file');
-				$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
-			} elseif($this->Preferences['seem_start_type'] == "object") {
+				$save_javascript .= $this->rememberPreference('cockpit', 'seem_start_type');
+			} elseif($this->Preferences['seem_start_type'] == 'object') {
 				$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file');
-				$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
+				$save_javascript .= $this->rememberPreference('cockpit', 'seem_start_type');
 			} else {
 				$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file');
-				$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
+				$save_javascript .= $this->rememberPreference('cockpit', 'seem_start_type');
 			}
 		}
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt');
@@ -489,7 +491,7 @@ class we_user {
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, '$_POST["editorSizeOpt');
+		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, $_POST['editorSizeOpt']);
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight');
 
@@ -512,41 +514,41 @@ function mapPermissions() {
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 		$entries = weToolLookup::getPermissionIncludes();
 
-		$d = dir(WE_USERS_MODULE_DIR."perms");
+		$d = dir(WE_USERS_MODULE_DIR.'perms');
 		while($file=$d->read()) {
 			if(substr($file, 0, 9)=='we_perms_') {
-				$entries[] = WE_USERS_MODULE_DIR . "perms/" . $file;
+				$entries[] = WE_USERS_MODULE_DIR . 'perms/' . $file;
 			}
 		}
 		$d->close();
 
 		foreach($entries as $entry) {
 
-				$perm_group_name="";
+				$perm_group_name='';
 				$perm_values=array();
 				$perm_titles=array();
 				$perm_group_title=array();
 				include($entry);
-				if(!($perm_group_name=="administrator" && $this->Type!=0)) {
+				if(!($perm_group_name=='administrator' && $this->Type!=0)) {
 					if($perm_group_name) {
 						if(!isset($this->permissions_main_titles[$perm_group_name]))
-							$this->permissions_main_titles[$perm_group_name] = "";
+							$this->permissions_main_titles[$perm_group_name] = '';
 						if(!isset($this->permissions_slots[$perm_group_name]))
 							$this->permissions_slots[$perm_group_name]=array();
 						if(!isset($this->permissions_titles[$perm_group_name]))
-							$this->permissions_titles[$perm_group_name] = "";
+							$this->permissions_titles[$perm_group_name] = '';
 						if(is_array($perm_values[$perm_group_name]))
 							foreach($perm_values[$perm_group_name] as $k=>$v) {
 								$set=false;
 								if(is_array($permissions)) {
 									foreach($permissions as $pk=>$pv) {
 										if($v==$pk) {
-											if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])) {
+											if(defined('BIG_USER_MODULE') && in_array('busers',$GLOBALS['_pro_modules'])) {
 												$set=true;
 												$this->permissions_slots[$perm_group_name][$pk]=$pv;
 											}
 											else {
-												if($pk=="PUBLISH" || $pk=="ADMINISTRATOR") {
+												if($pk=='PUBLISH' || $pk=='ADMINISTRATOR') {
 													$set=true;
 													$this->permissions_slots[$perm_group_name][$pk]=$pv;
 												}
@@ -616,11 +618,11 @@ function mapPermissions() {
 			$this->workspaces[TEMPLATES_TABLE]=makeArrayFromCSV($this->workSpaceTmp);
 		if($this->workSpaceNav)
 			$this->workspaces[NAVIGATION_TABLE]=makeArrayFromCSV($this->workSpaceNav);
-		if(defined("OBJECT_TABLE")) {
+		if(defined('OBJECT_TABLE')) {
 			if($this->workSpaceObj)
 				$this->workspaces[OBJECT_FILES_TABLE]=makeArrayFromCSV($this->workSpaceObj);
 		}
-		if(defined("NEWSLETTER_TABLE")) {
+		if(defined('NEWSLETTER_TABLE')) {
 			if($this->workSpaceNwl)
 				$this->workspaces[NEWSLETTER_TABLE]=makeArrayFromCSV($this->workSpaceNwl);
 		}
@@ -640,14 +642,14 @@ function mapPermissions() {
 			$this->workspaces[$k]=$new_array;
 		}
 
-		$this->workSpace=makeCSVFromArray($this->workspaces[FILE_TABLE],true,",");
-		$this->workSpaceTmp=makeCSVFromArray($this->workspaces[TEMPLATES_TABLE],true,",");
-		$this->workSpaceNav=makeCSVFromArray($this->workspaces[NAVIGATION_TABLE],true,",");
-		if(defined("OBJECT_TABLE")) {
-			$this->workSpaceObj=makeCSVFromArray($this->workspaces[OBJECT_FILES_TABLE],true,",");
+		$this->workSpace=makeCSVFromArray($this->workspaces[FILE_TABLE],true,',');
+		$this->workSpaceTmp=makeCSVFromArray($this->workspaces[TEMPLATES_TABLE],true,',');
+		$this->workSpaceNav=makeCSVFromArray($this->workspaces[NAVIGATION_TABLE],true,',');
+		if(defined('OBJECT_TABLE')) {
+			$this->workSpaceObj=makeCSVFromArray($this->workspaces[OBJECT_FILES_TABLE],true,',');
 		}
-		if(defined("NEWSLETTER_TABLE")) {
-			$this->workSpaceNwl=makeCSVFromArray($this->workspaces[NEWSLETTER_TABLE],true,",");
+		if(defined('NEWSLETTER_TABLE')) {
+			$this->workSpaceNwl=makeCSVFromArray($this->workspaces[NEWSLETTER_TABLE],true,',');
 		}
 		foreach($this->workspaces_defaults as $k=>$v) {
 			$new_array=array();
@@ -657,9 +659,9 @@ function mapPermissions() {
 			$this->workspaces_defaults[$k]=$new_array;
 		}
 		if(count($this->workspaces[FILE_TABLE])!=0) {
-			$this->workSpaceDef=makeCSVFromArray($this->workspaces_defaults[FILE_TABLE],true,",");
+			$this->workSpaceDef=makeCSVFromArray($this->workspaces_defaults[FILE_TABLE],true,',');
 		}else{
-			$this->workSpaceDef="";
+			$this->workSpaceDef='';
 		}
 
 		// if no workspaces are set, take workspaces from creator
@@ -706,10 +708,10 @@ function mapPermissions() {
 
 	function getPreferenceSlotsFromDB() {
 		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
-		$this->DB_WE->query("SELECT * FROM ".PREFS_TABLE." WHERE userID=".abs($this->ID));
+		$this->DB_WE->query('SELECT * FROM '.PREFS_TABLE.' WHERE userID='.abs($this->ID));
 		$this->DB_WE->next_record();
 		for($i=0;$i<sizeof($tableInfo);$i++) {
-			$fieldName = $tableInfo[$i]["name"];
+			$fieldName = $tableInfo[$i]['name'];
 			if(in_array($fieldName,$this->preference_slots)) {
 				$this->Preferences[$fieldName] = $this->DB_WE->f($fieldName);
 			}
@@ -736,14 +738,14 @@ function mapPermissions() {
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
 		if(!$isnew) {
-			$updt = "";
+			$updt = '';
 			for($i = 0; $i < sizeof($tableInfo); $i++) {
-				$fieldName = $tableInfo[$i]["name"];
-				if(in_array($fieldName, $this->preference_slots) && $fieldName != "userID") {
-					if($fieldName == "editorFontsize" && $this->Preferences['editorFont'] != "1") {
-						$this->Preferences[$fieldName] = "-1";
-					} elseif($fieldName == "editorFontname" && $this->Preferences['editorFont'] != "1") {
-						$this->Preferences[$fieldName] = "none";
+				$fieldName = $tableInfo[$i]['name'];
+				if(in_array($fieldName, $this->preference_slots) && $fieldName != 'userID') {
+					if($fieldName == 'editorFontsize' && $this->Preferences['editorFont'] != '1') {
+						$this->Preferences[$fieldName] = '-1';
+					} elseif($fieldName == 'editorFontname' && $this->Preferences['editorFont'] != '1') {
+						$this->Preferences[$fieldName] = 'none';
 					}
 					$updt .= $fieldName."='".mysql_real_escape_string($this->Preferences[$fieldName])."',";
 				}
@@ -754,37 +756,37 @@ function mapPermissions() {
 			$q = 'UPDATE '.PREFS_TABLE.' SET '.$updt.' WHERE userID='.abs($this->ID);
 			$this->DB_WE->query($q);
 		} else {
-			$q = 		"INSERT INTO ".PREFS_TABLE." ("
-					.	"userID, "
-					.	"FileFilter, "
-					.	"openFolders_tblFile, "
-					.	"openFolders_tblTemplates, "
-					.	"DefaultTemplateID, "
-					.	"sizeOpt, "
-					.	"weWidth, "
-					.	"weHeight, "
-					.	"usePlugin, "
-					.	"autostartPlugin, "
-					.	"promptPlugin, "
-					.	"Language,"
-					.	"seem_start_file,"
-					.	"seem_start_type,"
-					.	"editorSizeOpt,"
-					.	"editorWidth,"
-					.	"editorHeight,"
-					.	"editorFontname,"
-					.	"editorFontsize,"
-					.	"editorFont,"
-					.	"default_tree_count,"
-					.	"force_glossary_check,"
-					.	"force_glossary_action,"
-					.	"cockpit_amount_columns,"
-					.	"cockpit_amount_last_documents,"
-					.	"cockpit_rss_feed_url,"
-					.	"use_jupload,"
-					.	"editorMode"
-					.	") VALUES ("
-					.	abs($this->ID).", "
+			$q = 		'INSERT INTO '.PREFS_TABLE.' ('
+					.	'userID, '
+					.	'FileFilter, '
+					.	'openFolders_tblFile, '
+					.	'openFolders_tblTemplates, '
+					.	'DefaultTemplateID, '
+					.	'sizeOpt, '
+					.	'weWidth, '
+					.	'weHeight, '
+					.	'usePlugin, '
+					.	'autostartPlugin, '
+					.	'promptPlugin, '
+					.	'Language,'
+					.	'seem_start_file,'
+					.	'seem_start_type,'
+					.	'editorSizeOpt,'
+					.	'editorWidth,'
+					.	'editorHeight,'
+					.	'editorFontname,'
+					.	'editorFontsize,'
+					.	'editorFont,'
+					.	'default_tree_count,'
+					.	'force_glossary_check,'
+					.	'force_glossary_action,'
+					.	'cockpit_amount_columns,'
+					.	'cockpit_amount_last_documents,'
+					.	'cockpit_rss_feed_url,'
+					.	'use_jupload,'
+					.	'editorMode'
+					.	') VALUES ('
+					.	abs($this->ID).', '
 					.	"'0', "
 					.	"'', "
 					.	"'', "
@@ -821,14 +823,14 @@ function mapPermissions() {
 
 	function rememberPreference($settingvalue, $settingname) {
 
-		$save_javascript = "";
+		$save_javascript = '';
 
 		if (isset($settingvalue) && ($settingvalue != null)) {
 			switch ($settingname) {
 				case 'Language':
-					$_SESSION["prefs"]["Language"] = $settingvalue;
+					$_SESSION['prefs']['Language'] = $settingvalue;
 
-					if ($settingvalue != $GLOBALS["WE_LANGUAGE"]) {
+					if ($settingvalue != $GLOBALS['WE_LANGUAGE']) {
 						$save_javascript .= "
 							if (top.frames[0]) {
 								top.frames[0].location.reload();
@@ -883,40 +885,40 @@ function mapPermissions() {
 					break;
 
 				case 'seem_start_type':
-					if($settingvalue == "cockpit") {
-						$_SESSION["prefs"]["seem_start_file"] = 0;
-						$_SESSION["prefs"]["seem_start_type"] = "cockpit";
+					if($settingvalue == 'cockpit') {
+						$_SESSION['prefs']['seem_start_file'] = 0;
+						$_SESSION['prefs']['seem_start_type'] = 'cockpit';
 
-					} elseif($settingvalue == "object") {
-						$_SESSION["prefs"]["seem_start_file"] = $_REQUEST["seem_start_object"];
-						$_SESSION["prefs"]["seem_start_type"] = "object";
+					} elseif($settingvalue == 'object') {
+						$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+						$_SESSION['prefs']['seem_start_type'] = 'object';
 
 					} else {
-						$_SESSION["prefs"]["seem_start_file"] = $_REQUEST["seem_start_document"];
-						$_SESSION["prefs"]["seem_start_type"] = "document";
+						$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+						$_SESSION['prefs']['seem_start_type'] = 'document';
 
 					}
 					break;
 
 				case 'sizeOpt':
 					if ($settingvalue == 0) {
-						$_SESSION["prefs"]["weWidth"] = 0;
-						$_SESSION["prefs"]["weHeight"] = 0;
-						$_SESSION["prefs"]["sizeOpt"] = 0;
-					} else if (($settingvalue == 1) && (isset($_POST["weWidth"]) && is_numeric($_POST["weWidth"])) && (isset($_POST["weHeight"]) && is_numeric($_POST["weHeight"]))) {
-						$_SESSION["prefs"]["sizeOpt"] = 1;
+						$_SESSION['prefs']['weWidth'] = 0;
+						$_SESSION['prefs']['weHeight'] = 0;
+						$_SESSION['prefs']['sizeOpt'] = 0;
+					} else if (($settingvalue == 1) && (isset($_POST['weWidth']) && is_numeric($_POST['weWidth'])) && (isset($_POST['weHeight']) && is_numeric($_POST['weHeight']))) {
+						$_SESSION['prefs']['sizeOpt'] = 1;
 					}
 					break;
 
 				case 'weWidth':
-					if ($_SESSION["prefs"]["sizeOpt"] == 1) {
+					if ($_SESSION['prefs']['sizeOpt'] == 1) {
 						$_generate_java_script = false;
 
-						if ($_SESSION["prefs"]["weWidth"] != $settingvalue) {
+						if ($_SESSION['prefs']['weWidth'] != $settingvalue) {
 							$_generate_java_script = true;
 						}
 
-						$_SESSION["prefs"]["weWidth"] = $settingvalue;
+						$_SESSION['prefs']['weWidth'] = $settingvalue;
 
 						if ($_generate_java_script) {
 							$save_javascript .= "
@@ -928,24 +930,24 @@ function mapPermissions() {
 					break;
 
 				case 'weHeight':
-					if ($_SESSION["prefs"]["sizeOpt"] == 1) {
-						$_SESSION["prefs"]["weHeight"] = $settingvalue;
+					if ($_SESSION['prefs']['sizeOpt'] == 1) {
+						$_SESSION['prefs']['weHeight'] = $settingvalue;
 					}
 					break;
 
 
 				case 'editorMode':
-					$_SESSION["prefs"]["editorMode"] = $settingvalue;
+					$_SESSION['prefs']['editorMode'] = $settingvalue;
 					break;
 
 
 				case 'editorFont':
 					if ($settingvalue == 0) {
-						$_SESSION["prefs"]["editorFontname"] = "none";
-						$_SESSION["prefs"]["editorFontsize"] = -1;
-						$_SESSION["prefs"]["editorFont"] = 0;
-					} else if (($settingvalue == 1) && isset($_POST["editorFontname"]) && isset($_POST["editorFontsize"])) {
-						$_SESSION["prefs"]["editorFont"] = 1;
+						$_SESSION['prefs']['editorFontname'] = 'none';
+						$_SESSION['prefs']['editorFontsize'] = -1;
+						$_SESSION['prefs']['editorFont'] = 0;
+					} else if (($settingvalue == 1) && isset($_POST['editorFontname']) && isset($_POST['editorFontsize'])) {
+						$_SESSION['prefs']['editorFont'] = 1;
 					}
 
 					$save_javascript .= "
@@ -971,24 +973,24 @@ function mapPermissions() {
 					break;
 
 				case 'editorFontname':
-					if ($_SESSION["prefs"]["editorFont"] == 1) {
-						$_SESSION["prefs"]["editorFontname"] = $settingvalue;
+					if ($_SESSION['prefs']['editorFont'] == 1) {
+						$_SESSION['prefs']['editorFontname'] = $settingvalue;
 					}
 					break;
 
 				case 'editorFontsize':
-					if ($_SESSION["prefs"]["editorFont"] == 1) {
-						$_SESSION["prefs"]["editorFontsize"] = $settingvalue;
+					if ($_SESSION['prefs']['editorFont'] == 1) {
+						$_SESSION['prefs']['editorFontsize'] = $settingvalue;
 					}
 					break;
 
 				case 'editorSizeOpt':
 					if ($settingvalue == 0) {
-						$_SESSION["prefs"]["editorWidth"] = 0;
-						$_SESSION["prefs"]["editorHeight"] = 0;
-						$_SESSION["prefs"]["editorSizeOpt"] = 0;
-					} else if (($settingvalue == 1) && isset($_POST["editorWidth"]) && isset($_POST["editorHeight"])) {
-						$_SESSION["prefs"]["editorSizeOpt"] = 1;
+						$_SESSION['prefs']['editorWidth'] = 0;
+						$_SESSION['prefs']['editorHeight'] = 0;
+						$_SESSION['prefs']['editorSizeOpt'] = 0;
+					} else if (($settingvalue == 1) && isset($_POST['editorWidth']) && isset($_POST['editorHeight'])) {
+						$_SESSION['prefs']['editorSizeOpt'] = 1;
 					}
 
 					if (!$editor_reloaded) {
@@ -1018,31 +1020,31 @@ function mapPermissions() {
 					break;
 
 				case 'editorWidth':
-					if ($_SESSION["prefs"]["editorSizeOpt"] == 1) {
-						$_SESSION["prefs"]["editorWidth"] = $settingvalue;
+					if ($_SESSION['prefs']['editorSizeOpt'] == 1) {
+						$_SESSION['prefs']['editorWidth'] = $settingvalue;
 					}
 					break;
 
 				case 'editorHeight':
-					if ($_SESSION["prefs"]["editorSizeOpt"] == 1) {
-						$_SESSION["prefs"]["editorHeight"] = $settingvalue;
+					if ($_SESSION['prefs']['editorSizeOpt'] == 1) {
+						$_SESSION['prefs']['editorHeight'] = $settingvalue;
 					}
 					break;
 
 				case 'default_tree_count':
-					$_SESSION["prefs"]["default_tree_count"] = $settingvalue;
+					$_SESSION['prefs']['default_tree_count'] = $settingvalue;
 					break;
 
 				case 'force_glossary_check':
-					$_SESSION["prefs"]["force_glossary_check"] = $settingvalue;
+					$_SESSION['prefs']['force_glossary_check'] = $settingvalue;
 					break;
 
 				case 'force_glossary_action':
-					$_SESSION["prefs"]["force_glossary_action"] = $settingvalue;
+					$_SESSION['prefs']['force_glossary_action'] = $settingvalue;
 					break;
 
 				case 'cockpit_amount_columns':
-					$_SESSION["prefs"]["cockpit_amount_columns"] = $settingvalue;
+					$_SESSION['prefs']['cockpit_amount_columns'] = $settingvalue;
 					break;
 
 				default:
@@ -1054,9 +1056,9 @@ function mapPermissions() {
 			switch ($settingname) {
 
 				case 'editorFont':
-					$_SESSION["prefs"]["editorFontname"] = "none";
-					$_SESSION["prefs"]["editorFontsize"] = -1;
-					$_SESSION["prefs"]["editorFont"] = 0;
+					$_SESSION['prefs']['editorFontname'] = 'none';
+					$_SESSION['prefs']['editorFontsize'] = -1;
+					$_SESSION['prefs']['editorFont'] = 0;
 
 					$save_javascript .= "
 					if ( !_multiEditorreload ) {
@@ -1081,11 +1083,11 @@ function mapPermissions() {
 					break;
 
 				case 'force_glossary_check':
-					$_SESSION["prefs"]["force_glossary_check"] = 0;
+					$_SESSION['prefs']['force_glossary_check'] = 0;
 					break;
 
 				case 'force_glossary_action':
-					$_SESSION["prefs"]["force_glossary_action"] = 0;
+					$_SESSION['prefs']['force_glossary_action'] = 0;
 					break;
 
 				default:
@@ -1104,7 +1106,7 @@ function mapPermissions() {
 
 		if($tab==0) {
 			foreach($this->persistent_slots as $pkey=>$pval) {
-				$obj=$this->Name."_".$pval;
+				$obj=$this->Name.'_'.$pval;
 				if(isset($_POST[$obj])) {
 					$this->$pval = $_POST[$obj];
 				}
@@ -1147,16 +1149,16 @@ function mapPermissions() {
 
 			}
 		}
-		if($tab==0 && !(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"]))) {
+		if($tab==0 && !(isset($GLOBALS['BIG_USER_MODULE']) && $GLOBALS['BIG_USER_MODULE'] && in_array('busers',$GLOBALS['_pro_modules']))) {
 			if(isset($_POST[$this->Name.'_ADMIN']) && $_POST[$this->Name.'_ADMIN']){
-				$this->setPermission("ADMINISTRATOR",1);
+				$this->setPermission('ADMINISTRATOR',1);
 			}else{
-				$this->setPermission("ADMINISTRATOR",0);
+				$this->setPermission('ADMINISTRATOR',0);
 			}
 			if(isset($_POST[$this->Name.'_PUBLISH']) && $_POST[$this->Name.'_PUBLISH']){
-				$this->setPermission("PUBLISH",1);
+				$this->setPermission('PUBLISH',1);
 			}else{
-				$this->setPermission("PUBLISH",0);
+				$this->setPermission('PUBLISH',0);
 			}
 			$obj=$this->Name.'_workSpace';
 			if(isset($_POST[$obj])){
@@ -1187,15 +1189,15 @@ function mapPermissions() {
 			foreach($this->workspaces as $k=>$v) {
 				$obj=$this->Name.'_Workspace_'.$k.'_Values';
 				if(isset($_POST[$obj])) {
-					if($_POST[$obj]!="")
-						$this->workspaces[$k]=explode(",",$_POST[$obj]);
+					if($_POST[$obj]!='')
+						$this->workspaces[$k]=explode(',',$_POST[$obj]);
 					else
 						$this->workspaces[$k]=array();
 				}
 				$obj=$this->Name.'_defWorkspace_'.$k.'_Values';
 				if(isset($_POST[$obj])) {
-					if($_POST[$obj]!="") {
-						$this->workspaces_defaults[$k]=explode(",",$_POST[$obj]);
+					if($_POST[$obj]!='') {
+						$this->workspaces_defaults[$k]=explode(',',$_POST[$obj]);
 					}
 					else
 						$this->workspaces_defaults[$k]=array();
@@ -1232,7 +1234,7 @@ function mapPermissions() {
 		}
 		if($tab==3) {
 			foreach($this->preference_slots as $key => $val) {
-				if($val == "seem_start_file" || $val == "seem_start_type") {
+				if($val == 'seem_start_file' || $val == 'seem_start_type') {
 				} else {
 					$obj=$this->Name.'_Preference_'.$val;
 				}
@@ -1242,17 +1244,17 @@ function mapPermissions() {
 					$this->setPreference($val,0);
 				}
 			}
-			if($_REQUEST['seem_start_type'] == "cockpit") {
-				$this->setPreference("seem_start_file", 0);
-				$this->setPreference("seem_start_type", "cockpit");
+			if($_REQUEST['seem_start_type'] == 'cockpit') {
+				$this->setPreference('seem_start_file', 0);
+				$this->setPreference('seem_start_type', 'cockpit');
 
-			} elseif($_REQUEST['seem_start_type'] == "object") {
-				$this->setPreference("seem_start_file", $_REQUEST["seem_start_object"]);
-				$this->setPreference("seem_start_type", "object");
+			} elseif($_REQUEST['seem_start_type'] == 'object') {
+				$this->setPreference('seem_start_file', $_REQUEST['seem_start_object']);
+				$this->setPreference('seem_start_type', 'object');
 
 			} else {
-				$this->setPreference("seem_start_file", $_REQUEST["seem_start_document"]);
-				$this->setPreference("seem_start_type", "document");
+				$this->setPreference('seem_start_file', $_REQUEST['seem_start_document']);
+				$this->setPreference('seem_start_type', 'document');
 
 			}
 		}
@@ -1282,28 +1284,28 @@ function mapPermissions() {
 	#--------------------------------------------------------------------------#
 
 	function resetOwnersCreatorModifier() {
-		$newID = abs($_SESSION["user"]["ID"]);
+		$newID = abs($_SESSION['user']['ID']);
 		$this->ID = abs($this->ID);
-		$this->DB_WE->query("UPDATE ".FILE_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
-		$this->DB_WE->query("UPDATE ".FILE_TABLE." SET Owners='' WHERE Owners=','");
-		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
-		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET Owners='' WHERE Owners=','");
-		$this->DB_WE->query("UPDATE ".FILE_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
-		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
-		$this->DB_WE->query("UPDATE ".FILE_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
-		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
-		$this->DB_WE->query("UPDATE ".USER_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
-		$this->DB_WE->query("UPDATE ".USER_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
+		$this->DB_WE->query('UPDATE '.FILE_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
+		$this->DB_WE->query('UPDATE '.FILE_TABLE." SET Owners='' WHERE Owners=','");
+		$this->DB_WE->query('UPDATE '.TEMPLATES_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
+		$this->DB_WE->query('UPDATE '.TEMPLATES_TABLE." SET Owners='' WHERE Owners=','");
+		$this->DB_WE->query('UPDATE '.FILE_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
+		$this->DB_WE->query('UPDATE '.TEMPLATES_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
+		$this->DB_WE->query('UPDATE '.FILE_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
+		$this->DB_WE->query('UPDATE '.TEMPLATES_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
+		$this->DB_WE->query('UPDATE '.USER_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
+		$this->DB_WE->query('UPDATE '.USER_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
 		
-		if(defined("OBJECT_TABLE")) {
-			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
-			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET Owners='' WHERE Owners=','");
-			$this->DB_WE->query("UPDATE ".OBJECT_FILES_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
-			$this->DB_WE->query("UPDATE ".OBJECT_FILES_TABLE." SET Owners='' WHERE Owners=','");
-			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
-			$this->DB_WE->query("UPDATE ".OBJECT_FILES_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
-			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
-			$this->DB_WE->query("UPDATE ".OBJECT_FILES_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
+		if(defined('OBJECT_TABLE')) {
+			$this->DB_WE->query('UPDATE '.OBJECT_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
+			$this->DB_WE->query('UPDATE '.OBJECT_TABLE." SET Owners='' WHERE Owners=','");
+			$this->DB_WE->query('UPDATE '.OBJECT_FILES_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
+			$this->DB_WE->query('UPDATE '.OBJECT_FILES_TABLE." SET Owners='' WHERE Owners=','");
+			$this->DB_WE->query('UPDATE '.OBJECT_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
+			$this->DB_WE->query('UPDATE '.OBJECT_FILES_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
+			$this->DB_WE->query('UPDATE '.OBJECT_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
+			$this->DB_WE->query('UPDATE '.OBJECT_FILES_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
 		}
 	}
 
@@ -1313,25 +1315,25 @@ function mapPermissions() {
 		}
 		$this->ID = abs($this->ID);
 		if($this->Type==0) {
-			$this->DB_WE->query("DELETE FROM ".USER_TABLE." WHERE ID=".$this->ID);
-			$this->DB_WE->query("DELETE FROM ".PREFS_TABLE." WHERE userID=".$this->ID);
+			$this->DB_WE->query('DELETE FROM '.USER_TABLE.' WHERE ID='.$this->ID);
+			$this->DB_WE->query('DELETE FROM '.PREFS_TABLE.' WHERE userID='.$this->ID);
 			$this->resetOwnersCreatorModifier();
 			$this->removeAccount();
 			return true;
 		}
 		if($this->Type==1) {
-			$this->DB_WE->query("SELECT ID FROM ".USER_TABLE." WHERE ParentID=".$this->ID);
+			$this->DB_WE->query('SELECT ID FROM '.USER_TABLE.' WHERE ParentID='.$this->ID);
 			while($this->DB_WE->next_record()) {
 				$tmpobj=new we_user();
-				$tmpobj->initFromDB($this->DB_WE->f("ID"));
+				$tmpobj->initFromDB($this->DB_WE->f('ID'));
 				$tmpobj->deleteMe();
 			}
-			$this->DB_WE->query("DELETE FROM ".USER_TABLE." WHERE ID=".$this->ID);
+			$this->DB_WE->query('DELETE FROM '.USER_TABLE.' WHERE ID='.$this->ID);
 			$this->resetOwnersCreatorModifier();
 			return true;
 		}
 		if($this->Type==2) {
-			$this->DB_WE->query("DELETE FROM ".USER_TABLE." WHERE ID=".$this->ID);
+			$this->DB_WE->query('DELETE FROM '.USER_TABLE.' WHERE ID='.$this->ID);
 			return true;
 		}
 		return false;
@@ -1341,14 +1343,14 @@ function mapPermissions() {
 
 	function isLastAdmin() {
 		$this->ID = abs($this->ID);
-		$this->DB_WE->query("SELECT ID FROM ".USER_TABLE." WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID<>".$this->ID);
+		$this->DB_WE->query('SELECT ID FROM '.USER_TABLE." WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID<>".$this->ID);
 		if($this->DB_WE->next_record()) {
 			return false;
 		}
 		else {
-			$this->DB_WE->query("SELECT ID FROM ".USER_TABLE." WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID<>".$this->ID);
+			$this->DB_WE->query('SELECT ID FROM '.USER_TABLE." WHERE Permissions LIKE ('%\"ADMINISTRATOR\";s:1:\"1\";%') AND ID<>".$this->ID);
 			if($this->DB_WE->next_record()) {
-				print $this->DB_WE->f("ID")."<br>";
+				print $this->DB_WE->f('ID').'<br>';
 				return false;
 			}
 			else {
@@ -1362,28 +1364,28 @@ function mapPermissions() {
 
 	function getPath($id=0) {
 		$db_tmp=new DB_WE();
-		$path = "";
+		$path = '';
 		if($id==0) {
 			$id=abs($this->ParentID);
 			$path=mysql_real_escape_string($this->username);
 		}
-		if (isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
-			$foo=getHash("SELECT username,ParentID FROM ".USER_TABLE." WHERE ID='".$id."';",$db_tmp);
-			$path="/". (isset($foo["username"]) ? $foo["username"] : "") .$path;
+		if (isset($GLOBALS['BIG_USER_MODULE']) && $GLOBALS['BIG_USER_MODULE'] && in_array('busers',$GLOBALS['_pro_modules'])) {
+			$foo=getHash('SELECT username,ParentID FROM '.USER_TABLE." WHERE ID='".$id."';",$db_tmp);
+			$path='/'. (isset($foo['username']) ? $foo['username'] : '') .$path;
 		} else {
 			if ($id) {
-				$foo=getHash("SELECT username FROM ".USER_TABLE." WHERE ID='".$id."';",$db_tmp);
-				return "/".(isset($foo["username"]) ? $foo["username"] : "");
+				$foo=getHash('SELECT username FROM '.USER_TABLE." WHERE ID='".$id."';",$db_tmp);
+				return '/'.(isset($foo['username']) ? $foo['username'] : '');
 			} else {
-				return "/" . $this->username;
+				return '/' . $this->username;
 			}
 		}
-		$pid=isset($foo["ParentID"]) ? $foo["ParentID"] : "";
+		$pid=isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0) {
-				$db_tmp->query("SELECT username,ParentID FROM ".USER_TABLE." WHERE ID='$pid'");
+				$db_tmp->query('SELECT username,ParentID FROM '.USER_TABLE." WHERE ID='$pid'");
 				while($db_tmp->next_record()) {
-					$path = "/".$db_tmp->f("username").$path;
-					$pid = $db_tmp->f("ParentID");
+					$path = '/'.$db_tmp->f('username').$path;
+					$pid = $db_tmp->f('ParentID');
 				}
 		}
 		return $path;
@@ -1399,11 +1401,11 @@ function mapPermissions() {
 			}
 		}
 		$db_tmp=new DB_WE;
-		$this->DB_WE->query((isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) ? ("SELECT ParentID,ParentPerms,Permissions,Alias FROM ".USER_TABLE." WHERE ID=".abs($this->ID)." OR Alias=".abs($this->ID)) : ("SELECT Permissions FROM ".USER_TABLE." WHERE ID=".abs($this->ID)));
+		$this->DB_WE->query((isset($GLOBALS['BIG_USER_MODULE']) && $GLOBALS['BIG_USER_MODULE'] && in_array('busers',$GLOBALS['_pro_modules'])) ? ('SELECT ParentID,ParentPerms,Permissions,Alias FROM '.USER_TABLE." WHERE ID=".abs($this->ID)." OR Alias=".abs($this->ID)) : ("SELECT Permissions FROM ".USER_TABLE." WHERE ID=".abs($this->ID)));
 		$group_permissions=array();
 		while($this->DB_WE->next_record()) {
-			if($this->DB_WE->f("Alias")!=$this->ID) {
-				$group_permissions=unserialize($this->DB_WE->f("Permissions"));
+			if($this->DB_WE->f('Alias')!=$this->ID) {
+				$group_permissions=unserialize($this->DB_WE->f('Permissions'));
 				if(is_array($group_permissions)) {
 					foreach($user_permissions as $key=>$val) {
 						if (isset($group_permissions[$key])) {
@@ -1412,20 +1414,20 @@ function mapPermissions() {
 					}
 				}
 			}
-			$lpid=$this->DB_WE->f("ParentID");
-			if($this->DB_WE->f("ParentPerms")) {
+			$lpid=$this->DB_WE->f('ParentID');
+			if($this->DB_WE->f('ParentPerms')) {
 				while($lpid) {
-					$db_tmp->query("SELECT ParentID,ParentPerms,Permissions FROM ".USER_TABLE." WHERE ID='".$lpid."'");
+					$db_tmp->query('SELECT ParentID,ParentPerms,Permissions FROM '.USER_TABLE." WHERE ID='".$lpid."'");
 					if($db_tmp->next_record()) {
-						$group_permissions=unserialize($db_tmp->f("Permissions"));
+						$group_permissions=unserialize($db_tmp->f('Permissions'));
 						if(is_array($group_permissions)) {
 							foreach($user_permissions as $key=>$val) {
 								if (isset($group_permissions[$key])) {
 									$user_permissions[$key]=$user_permissions[$key] | $group_permissions[$key];
 								}
 							}
-							if($db_tmp->f("ParentPerms")) {
-								$lpid=$db_tmp->f("ParentID");
+							if($db_tmp->f('ParentPerms')) {
+								$lpid=$db_tmp->f('ParentID');
 							}
 							else {
 								$lpid=0;
@@ -1447,7 +1449,7 @@ function mapPermissions() {
 	#--------------------------------------------------------------------------#
 
 	function getState() {
-		$state="";
+		$state='';
 		$state.='$this->Name="'.$this->Name.'";';
 		$state.='$this->Table="'.$this->Table.'";';
 
@@ -3089,5 +3091,3 @@ function mapPermissions() {
 		return $out;
 	}
 }
-
-?>

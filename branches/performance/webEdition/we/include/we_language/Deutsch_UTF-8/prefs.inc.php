@@ -599,5 +599,3 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	
 	$l_prefs["juplod_not_installed"] = 'JUpload ist nicht installiert!';
 	
-
-?>

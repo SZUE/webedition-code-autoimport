@@ -19,13 +19,13 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
-if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/'.'we_class.inc.php');
+if(!isset($GLOBALS['WE_IS_DYN'])){
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/'.'we_button.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_ContentTypes.inc.php');
 /* the parent class for tree-objects */
 class we_root extends we_class
 {

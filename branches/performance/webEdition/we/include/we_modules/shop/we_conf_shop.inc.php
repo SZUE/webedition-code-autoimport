@@ -20,14 +20,14 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
 
-define("SHOP_TABLE", TBL_PREFIX . "tblOrders");
-define("ANZEIGE_PREFS_TABLE", TBL_PREFIX . "tblAnzeigePrefs");
+define('SHOP_TABLE', TBL_PREFIX . 'tblOrders');
+define('ANZEIGE_PREFS_TABLE', TBL_PREFIX . 'tblAnzeigePrefs');
 define('WE_SHOP_VAT_TABLE', TBL_PREFIX . 'tblshopvats');
-define("WE_SHOP_MODULE_DIR",$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/");
-define("WE_SHOP_MODULE_PATH","/webEdition/we/include/we_modules/shop/");
+define('WE_SHOP_MODULE_DIR',$_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/');
+define('WE_SHOP_MODULE_PATH','/webEdition/we/include/we_modules/shop/');
 
 define('WE_SHOP_VARIANTS_PREFIX', 'we__intern_variant___');
 define('WE_SHOP_VARIANTS_ELEMENT_NAME', 'weInternVariantElement');
@@ -44,7 +44,7 @@ define('WE_SHOP_CALC_VAT', 'we_shopCalcVat');
 
 class shop{
 	
-	var $ClassName = "we_listview_shoppingCart";
+	var $ClassName = 'we_listview_shoppingCart';
 	
 	var $DB_WE;
 	var $IDs = array();
@@ -87,7 +87,7 @@ class shop{
 					if ($key == WE_SHOP_VAT_FIELD_NAME) {
 						$this->Record[$key] = $value;
 					} else {
-						$this->Record[ereg_replace("^we_","",$key)] = $value;
+						$this->Record[ereg_replace('^we_','',$key)] = $value;
 					}
 					
 				}
@@ -110,7 +110,7 @@ class shop{
 		$ret = '';
 		
 		foreach ($this->ActItem['customFields'] as $key => $value) {
-			$ret .= "&" . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$key]=$value";
+			$ret .= '&' . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$key]=$value";
 		}
 		
 		return $ret;
@@ -127,7 +127,7 @@ class Basket {
 	 *	'id'       => integer
 	 *	'type'     => w | o
 	 *	'variant'  => string
-	 *	'quantity' => integer //früher - jetzt umstellung auf float, feature #4875
+	 *	'quantity' => integer //frï¿½her - jetzt umstellung auf float, feature #4875
 	 *	'serial'   => string
 	 *  'customFields' => array
 	 *
@@ -281,16 +281,16 @@ class Basket {
 		
 		$Record = array();
 		
-			if($type == "w"){
+			if($type == 'w'){
 				
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
-			$DB_WE->query("SELECT ".CONTENT_TABLE.".BDID as BDID, ".CONTENT_TABLE.".Dat as Dat, ".LINK_TABLE.".Name as Name FROM ".LINK_TABLE.",".CONTENT_TABLE." WHERE ".LINK_TABLE.".DID=$id AND ".LINK_TABLE.".CID=".CONTENT_TABLE.".ID AND ".LINK_TABLE.".DocumentTable='".substr(FILE_TABLE, strlen(TBL_PREFIX))."'");
+			$DB_WE->query('SELECT '.CONTENT_TABLE.'.BDID as BDID, '.CONTENT_TABLE.'.Dat as Dat, '.LINK_TABLE.'.Name as Name FROM '.LINK_TABLE.','.CONTENT_TABLE.' WHERE '.LINK_TABLE.".DID=$id AND ".LINK_TABLE.'.CID='.CONTENT_TABLE.'.ID AND '.LINK_TABLE.".DocumentTable='".substr(FILE_TABLE, strlen(TBL_PREFIX))."'");
 			while($DB_WE->next_record()){
-				if($DB_WE->f("BDID")){
-						$Record[$DB_WE->f("Name")] = $DB_WE->f("BDID");
+				if($DB_WE->f('BDID')){
+						$Record[$DB_WE->f('Name')] = $DB_WE->f('BDID');
 				}else{
-					$Record[$DB_WE->f("Name")] = $DB_WE->f("Dat");
+					$Record[$DB_WE->f('Name')] = $DB_WE->f('Dat');
 				}
 			}
 			
@@ -300,17 +300,17 @@ class Basket {
 			}
 			
 			
-			$DB_WE->query("SELECT * FROM ".FILE_TABLE." WHERE ID=".abs($id));
+			$DB_WE->query('SELECT * FROM '.FILE_TABLE.' WHERE ID='.abs($id));
 			if($DB_WE->next_record()){
 				foreach($DB_WE->Record as $key=>$val){
 					$Record["wedoc_$key"] = $val;
 				}
 			}
 			
-			$Record["WE_PATH"] = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($id),"Path",$DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-			$Record["WE_TEXT"] = f("SELECT Text FROM ".INDEX_TABLE." WHERE DID=".abs($id),"Text",$DB_WE);
-			$Record["WE_VARIANT"] = $variant;
-			$Record["WE_ID"] = $id;
+			$Record['WE_PATH'] = f('SELECT Path FROM '.FILE_TABLE.' WHERE ID='.abs($id),'Path',$DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
+			$Record['WE_TEXT'] = f('SELECT Text FROM '.INDEX_TABLE.' WHERE DID='.abs($id),'Text',$DB_WE);
+			$Record['WE_VARIANT'] = $variant;
+			$Record['WE_ID'] = $id;
 			
 			// at last add custom fields to record and to path
 			if (sizeof($customFields)) {
@@ -327,13 +327,13 @@ class Basket {
 				}
 			}
 			
-		} else if($type == "o") {
+		} else if($type == 'o') {
 			
-			include_once(WE_OBJECT_MODULE_DIR."we_listview_object.class.php");
+			include_once(WE_OBJECT_MODULE_DIR.'we_listview_object.class.php');
 			
-			$classArray = getHash("SELECT * FROM ".OBJECT_FILES_TABLE." WHERE ID=".abs($id),$DB_WE);
+			$classArray = getHash('SELECT * FROM '.OBJECT_FILES_TABLE.' WHERE ID='.abs($id),$DB_WE);
 			
-			$olv = new we_listview_object("0",1,0,"",0,$classArray["TableID"],"",""," ".OBJECT_X_TABLE.$classArray["TableID"].".ID=".$classArray["ObjectID"]);
+			$olv = new we_listview_object('0',1,0,'',0,$classArray['TableID'],'','',' '.OBJECT_X_TABLE.$classArray['TableID'].'.ID='.$classArray['ObjectID']);
 			$olv->next_record();
 			
 			$Record = $olv->DB_WE->Record;
@@ -419,7 +419,7 @@ class Basket {
   	 * @param string $type
   	 * @param string $variant
   	 */
-  	function Set_Item($id, $quantity=1, $type="w", $variant='', $customFields=array()) {
+  	function Set_Item($id, $quantity=1, $type='w', $variant='', $customFields=array()) {
   		
   		if ($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields)) { // item already in cart
   			
@@ -468,4 +468,3 @@ class Basket {
 		return false;
 	}
 }
-?>

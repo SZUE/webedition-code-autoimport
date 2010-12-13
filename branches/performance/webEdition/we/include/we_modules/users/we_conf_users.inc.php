@@ -20,16 +20,14 @@
  */
 
 
-define("USER_TABLE",TBL_PREFIX .  "tblUser");
-define("LOCK_TABLE",TBL_PREFIX . "tblLock");
+define('USER_TABLE',TBL_PREFIX .  'tblUser');
+define('LOCK_TABLE',TBL_PREFIX . 'tblLock');
 
-define("WE_LANGUAGE_ID","0");
-define("PING_TIME","30"); // 30 sec
-define("PING_TOLERANZ","40"); // 40 sec - allows 1 Ping missing
+define('WE_LANGUAGE_ID','0');
+define('PING_TIME','30'); // 30 sec
+define('PING_TOLERANZ','40'); // 40 sec - allows 1 Ping missing
 
-define("WE_USERS_MODULE_DIR", $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/users/");
-define("WE_USERS_MODULE_PATH","/webEdition/we/include/we_modules/users/");
+define('WE_USERS_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/users/');
+define('WE_USERS_MODULE_PATH','/webEdition/we/include/we_modules/users/');
 
-@include(WE_USERS_MODULE_DIR."we_conf_userpro.inc.php");
-
-?>
+define('BIG_USER_MODULE','1');
