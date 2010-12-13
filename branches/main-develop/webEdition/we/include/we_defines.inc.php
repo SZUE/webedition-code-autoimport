@@ -196,6 +196,11 @@ if (!defined('LOGIN_FAILED_HOLDTIME')) {
 //define how long Errors hold in DB
 define('ERROR_LOG_HOLDTIME', 30); // in days
 
+//FIXME: remove in next Versions
+if(!defined('NO_INCLUDE_ALL_WE_TAGS')){
+	define('INCLUDE_ALL_WE_TAGS',1);
+}
+
 define(
 		'WE_WYSIWYG_COMMANDS',
 		'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
