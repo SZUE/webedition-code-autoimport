@@ -18,13 +18,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/captcha/captchaImage.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/captcha/captchaMemory.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/captcha/captcha.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captchaImage.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captchaMemory.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captcha.class.php');
 
 function we_tag_ifCaptcha($attribs, $content){
-	$name = we_getTagAttribute("name", $attribs);
-	$formname = we_getTagAttribute("formname", $attribs, "");
+	$name = we_getTagAttribute('name', $attribs);
+	$formname = we_getTagAttribute('formname', $attribs, '');
 
 	if (!empty($formname) && isset($_REQUEST['we_ui_' . $formname][$name])) {
 		return Captcha::check($_REQUEST['we_ui_' . $formname][$name]);

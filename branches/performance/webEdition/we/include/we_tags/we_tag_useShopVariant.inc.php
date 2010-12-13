@@ -26,7 +26,7 @@
  *
  * @return	void
  */
-function we_tag_useShopVariant($attribs) {
+function we_tag_useShopVariant($attribs,$content) {
 
 	global $we_doc;
 

@@ -45,7 +45,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/conf/we_conf_glob
 // Activate the webEdition error handler
 if (defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)) {
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_error_handler.inc.php');
-	we_error_handler();
+	if (!defined("WE_ERROR_HANDLER_SET")){ we_error_handler();}
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');

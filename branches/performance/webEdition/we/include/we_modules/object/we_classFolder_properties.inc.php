@@ -18,33 +18,44 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_delete_fn.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_classfoldersearch.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/date.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/object.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/object_classfoldersearch.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 
-include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
+include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
 
-$javascript = "";
-if(isset($_REQUEST["do"]) && $_REQUEST["do"] == "delete") {
-	$javascript .= $we_doc->deleteObjects();
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "unpublish") {
-	$javascript .= $we_doc->publishObjects(false);
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "publish") {
-	$javascript .= $we_doc->publishObjects();
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "unsearchable") {
-	$javascript .= $we_doc->searchableObjects(false);
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "searchable") {
-	$javascript .= $we_doc->searchableObjects();
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "copychar") {
-	$javascript .= $we_doc->copyCharsetfromClass();
-} elseif(isset($_REQUEST["do"]) && $_REQUEST["do"] == "copyws") {
-	$javascript .= $we_doc->copyWSfromClass();
+$javascript = '';
+
+if (isset($_REQUEST['do'])) {
+	switch ($_REQUEST['do']) {
+		case 'delete':
+			$javascript .= $we_doc->deleteObjects();
+			break;
+		case 'unpublish':
+			$javascript .= $we_doc->publishObjects(false);
+			break;
+		case 'publish':
+			$javascript .= $we_doc->publishObjects();
+			break;
+		case 'unsearchable':
+			$javascript .= $we_doc->searchableObjects(false);
+			break;
+		case 'searchable':
+			$javascript .= $we_doc->searchableObjects();
+			break;
+		case 'copychar':
+			$javascript .= $we_doc->copyCharsetfromClass();
+			break;
+		case 'copyws':
+			$javascript .= $we_doc->copyWSfromClass();
+			break;
+	}
 }
 
 protect();
@@ -56,7 +67,7 @@ echo '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'window
 
 echo $we_doc->getSearchJS();
 
-if($javascript != "") {
+if($javascript != '') {
 	echo '<script language="JavaScript" type="text/javascript">'.$javascript.'</script>';
 }
 
@@ -70,10 +81,10 @@ echo '</head>
 
 
 $_parts = array();
-$_parts[] = array("html"=>$we_doc->getSearchDialog());
-$_parts[] = array("html"=>$we_doc->searchProperties());
+$_parts[] = array('html'=>$we_doc->getSearchDialog());
+$_parts[] = array('html'=>$we_doc->searchProperties());
 
-echo we_multiIconBox::getHTML("","100%",$_parts,"30","",-1,"","",false);
+echo we_multiIconBox::getHTML('','100%',$_parts,'30','',-1,'','',false);
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -83,5 +94,3 @@ echo '
 
 </body>
 </html>';
-
-?>

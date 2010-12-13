@@ -88,7 +88,7 @@ class weTagCache extends weCache
 		// the corresponding we:navigation-tag
 		if (strtolower($weTag) == 'navigationwrite' || strtolower($weTag) == 'navigationentry') {
 			$GLOBALS['weTagCache']['navigation']['navigationname'] = isset($params['navigationname']) ? $params['navigationname'] : "default";
-			$lifeTime = $GLOBALS['weTagCache']['navigation'][$GLOBALS['weTagCache']['navigation']['navigationname']]['cachelifetime'];
+			$lifeTime = (isset($GLOBALS['weTagCache']['navigation'][$GLOBALS['weTagCache']['navigation']['navigationname']])?$GLOBALS['weTagCache']['navigation'][$GLOBALS['weTagCache']['navigation']['navigationname']]['cachelifetime']:0);
 			
 		// override the cachelifetime of the actual we:tag with the cachelifetime of
 		// the corresponding we:navigation-tag

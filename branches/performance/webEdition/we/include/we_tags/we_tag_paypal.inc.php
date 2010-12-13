@@ -20,12 +20,12 @@
 
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_util.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_util.inc.php');
 
 // Setup class
-require_once(WE_SHOP_MODULE_DIR . "paypal.class.php");  // include the class file
+require_once(WE_SHOP_MODULE_DIR . 'paypal.class.php');  // include the class file
 
 /**
  * This function writes the shop data (order) to the database and send values to paypal
@@ -34,34 +34,34 @@ require_once(WE_SHOP_MODULE_DIR . "paypal.class.php");  // include the class fil
  *
  * @return			void
  */
-function we_tag_paypal($attribs) {
+function we_tag_paypal($attribs,$content) {
 	global $DB_WE;
-	$name = we_getTagAttribute("name",$attribs);
-	$foo = attributFehltError($attribs,"pricename","PayPal");
+	$name = we_getTagAttribute('name',$attribs);
+	$foo = attributFehltError($attribs,'pricename','PayPal');
 	if($foo)
 		 return $foo;
 	if(!$name)
-		$foo = attributFehltError($attribs,"shopname","PayPal");
+		$foo = attributFehltError($attribs,'shopname','PayPal');
 	if($foo)
 		return $foo;
-	$shopname = we_getTagAttribute("shopname",$attribs);
+	$shopname = we_getTagAttribute('shopname',$attribs);
 	$shopname = $shopname ? $shopname : $name;
-	$pricename = we_getTagAttribute("pricename",$attribs);
+	$pricename = we_getTagAttribute('pricename',$attribs);
 
-	$countrycode = we_getTagAttribute("countrycode",$attribs);
-	$languagecode = we_getTagAttribute("languagecode",$attribs);
-	$shipping = we_getTagAttribute("shipping",$attribs);
-	$shippingIsNet = we_getTagAttribute("shippingisnet",$attribs);
-	$shippingVatRate = we_getTagAttribute("shippingvatrate",$attribs);
-	$messageRedirectAuto = we_getTagAttribute("messageredirectauto",$attribs);
+	$countrycode = we_getTagAttribute('countrycode',$attribs);
+	$languagecode = we_getTagAttribute('languagecode',$attribs);
+	$shipping = we_getTagAttribute('shipping',$attribs);
+	$shippingIsNet = we_getTagAttribute('shippingisnet',$attribs);
+	$shippingVatRate = we_getTagAttribute('shippingvatrate',$attribs);
+	$messageRedirectAuto = we_getTagAttribute('messageredirectauto',$attribs);
 
-	$messageRedirectMan = we_getTagAttribute("messageredirectman",$attribs);
-	$formTagOnly = we_getTagAttribute("formtagonly",$attribs,'false', true);
-	$charset = we_getTagAttribute("charset",$attribs);
+	$messageRedirectMan = we_getTagAttribute('messageredirectman',$attribs);
+	$formTagOnly = we_getTagAttribute('formtagonly',$attribs,'false', true);
+	$charset = we_getTagAttribute('charset',$attribs);
 
-	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
+	$netprices = we_getTagAttribute('netprices',$attribs,'true', true, true);
 
-	$useVat = we_getTagAttribute("usevat",$attribs,'true', true,true);
+	$useVat = we_getTagAttribute('usevat',$attribs,'true', true,true);
 
 	//FIXME: calcVat is never used -
 	if ($useVat) {
@@ -108,28 +108,28 @@ function we_tag_paypal($attribs) {
 	  $DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
 
 	//	NumberFormat - currency and taxes
-	$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'shop_pref'");
+	$DB_WE->query('SELECT strFelder FROM '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "shop_pref"');
 	$DB_WE->next_record();
-	$feldnamen = explode("|",$DB_WE->f("strFelder"));
+	$feldnamen = explode('|',$DB_WE->f('strFelder'));
 	if( isset($feldnamen[0])){  // determine the currency
-		if($feldnamen[0]=="$" || $feldnamen[0]=="USD"){
-			$currency = "USD";
-		 }elseif ($feldnamen[0]=="?" || $feldnamen[0]=="EUR"){
-			$currency = "EUR";
-		 }elseif ($feldnamen[0]=="�" || $feldnamen[0]=="GBP"){
-			$currency = "GBP";
-		}elseif ($feldnamen[0]=="AUD"){
-			$currency = "AUD";
+		if($feldnamen[0]=='$' || $feldnamen[0]=='USD'){
+			$currency = 'USD';
+		 }elseif ($feldnamen[0]=='?' || $feldnamen[0]=='EUR'){
+			$currency = 'EUR';
+		 }elseif ($feldnamen[0]=='�' || $feldnamen[0]=='GBP'){
+			$currency = 'GBP';
+		}elseif ($feldnamen[0]=='AUD'){
+			$currency = 'AUD';
 		 }else{
-			 $currency = "EUR";
+			 $currency = 'EUR';
 		 }
 	}else{
-		$currency = "EUR";
+		$currency = 'EUR';
 	}
 
-	$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'payment_details'");
+	$DB_WE->query('SELECT strFelder FROM '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "payment_details"');
 	$DB_WE->next_record();
-	$formField = explode("|",$DB_WE->f("strFelder"));
+	$formField = explode('|',$DB_WE->f('strFelder'));
 	if( isset($formField[0])){  // determine the Forename
 		$sendForename = $_SESSION['webuser'][$formField[0]];
 	}
@@ -158,14 +158,14 @@ function we_tag_paypal($attribs) {
 	}
 	if( isset($formField[7])){  // todo
 
-		if ($formField[7]=="default"){
-			$paypalURL = "https://www.paypal.com/cgi-bin/webscr";
+		if ($formField[7]=='default'){
+			$paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
 
 		}else{
-			$paypalURL = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+			$paypalURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 		}
 	}else{
-			 $paypalURL = "https://www.paypal.com/cgi-bin/webscr";
+			 $paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
 	}
 
 // Setup class
@@ -234,7 +234,7 @@ switch ($_GET['action']) {
 		$p->add_field('item_name_'.$i, $itemTitle = (isset($item['serial']['we_shoptitle']) ? $item['serial']['we_shoptitle'] : $item['serial']['shoptitle']) );
 		$p->add_field('quantity_'.$i, $item['quantity']);
 
-		$itemPrice = (isset($item['serial']["we_".$pricename]) ? $item['serial']["we_".$pricename] : $item['serial'][$pricename]);
+		$itemPrice = (isset($item['serial']['we_'.$pricename]) ? $item['serial']['we_'.$pricename] : $item['serial'][$pricename]);
 
 		// correct price, if it has more than one "."
 		// bug #8717

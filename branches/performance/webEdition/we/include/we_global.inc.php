@@ -618,7 +618,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 		$dates = array();
 
 		foreach ($_REQUEST["we_ui_$formname"] as $n => $v) {
-			if (ereg('^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$', $n, $regs)) {
+			if (preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)) {
 				$dates[$regs[1]][$regs[2]] = $v;
 			} else {
 				$v = removePHP($v);
@@ -713,7 +713,7 @@ function initDocument($formname = "we_global_form", $tid = "", $doctype = "", $c
 	if (isset($_REQUEST["we_ui_$formname"]) && is_array($_REQUEST["we_ui_$formname"])) {
 		$dates = array();
 		foreach ($_REQUEST["we_ui_$formname"] as $n => $v) {
-			if (ereg('^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$', $n, $regs)) {
+			if (preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)) {
 				$dates[$regs[1]][$regs[2]] = $v;
 			} else {
 				$v = removePHP($v);

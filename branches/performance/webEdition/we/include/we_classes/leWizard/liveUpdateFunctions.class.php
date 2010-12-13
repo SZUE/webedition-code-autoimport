@@ -444,21 +444,16 @@ class liveUpdateFunctions {
 
 		foreach ($fields as $fieldName => $fieldInfo) {
 
-			$null = '';
 			$extra = '';
 			$default = '';
 
-			if ($fieldInfo['Null']) {
-				$null = ' NULL';
-			} else {
-				$null = ' NOT NULL';
-			}
+           $null = (strtoupper($fieldInfo['Null']) == "YES"?' NULL':' NOT NULL');
 
-			if ($fieldInfo['Default']) {
-				$default = ' default \'' . $fieldInfo['Default'] . '\'';
+           if (($fieldInfo['Default']) != "") {
+						 $default ='DEFAULT '.(($fieldInfo['Default']) == 'CURRENT_TIMESTAMP'?'CURRENT_TIMESTAMP':'\'' . $fieldInfo['Default'] . '\'');
 			} else {
-				if ($fieldInfo['Null']) {
-					$default = ' default NULL';
+               if (strtoupper($fieldInfo['Null']) == "YES") {
+                   $default = ' DEFAULT NULL';
 				}
 			}
 			$extra = strtoupper($fieldInfo['Extra']);

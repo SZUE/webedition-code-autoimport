@@ -19,8 +19,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_util.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_util.inc.php');
 
 /**
  * This function writes the shop data (order) to the database
@@ -29,29 +29,29 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_uti
  *
  * @return         void
  */
-function we_tag_writeShopData($attribs) {
+function we_tag_writeShopData($attribs,$content) {
 	global $DB_WE;
 
-	$name = we_getTagAttribute("name",$attribs);
-	$foo = attributFehltError($attribs,"pricename","writeShopData");
+	$name = we_getTagAttribute('name',$attribs);
+	$foo = attributFehltError($attribs,'pricename','writeShopData');
 	if($foo)
 		return $foo;
 	if(!$name)
-		$foo = attributFehltError($attribs,"shopname","writeShopData");
+		$foo = attributFehltError($attribs,'shopname','writeShopData');
 	if($foo)
 		return $foo;
 
-	$shopname = we_getTagAttribute("shopname",$attribs);
+	$shopname = we_getTagAttribute('shopname',$attribs);
 	$shopname = $shopname ? $shopname : $name;
-	$pricename = we_getTagAttribute("pricename",$attribs);
-	$shipping = we_getTagAttribute("shipping",$attribs);
-	$shippingIsNet = we_getTagAttribute("shippingisnet",$attribs);
-	$shippingVatRate = we_getTagAttribute("shippingvatrate",$attribs);
+	$pricename = we_getTagAttribute('pricename',$attribs);
+	$shipping = we_getTagAttribute('shipping',$attribs);
+	$shippingIsNet = we_getTagAttribute('shippingisnet',$attribs);
+	$shippingVatRate = we_getTagAttribute('shippingvatrate',$attribs);
 
 
-	$netprices = we_getTagAttribute("netprices",$attribs,'true', true, true);
+	$netprices = we_getTagAttribute('netprices',$attribs,'true', true, true);
 
-	$useVat = we_getTagAttribute("usevat",$attribs,'true', true);
+	$useVat = we_getTagAttribute('usevat',$attribs,'true', true);
 
 	if (isset($_SESSION['webuser'])) {
 		$_customer = $_SESSION['webuser'];
@@ -80,7 +80,7 @@ function we_tag_writeShopData($attribs) {
 
 		$DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
 
-		$sql = "SELECT max(IntOrderID) as max from " . SHOP_TABLE;
+		$sql = "SELECT MAX(IntOrderID) AS max FROM " . SHOP_TABLE;
 		$DB_WE->connect();
 
 		if (!$DB_WE->query($sql)) {
