@@ -742,6 +742,3 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 
 }
-
-
-?>

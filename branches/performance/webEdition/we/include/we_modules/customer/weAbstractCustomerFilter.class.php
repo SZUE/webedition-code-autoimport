@@ -18,11 +18,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define("WECF_OFF", 0);
-define("WECF_ALL", 1);
-define("WECF_SPECIFIC", 2);
-define("WECF_FILTER", 3);
-define("WECF_NONE", 4);
+define('WECF_OFF', 0);
+define('WECF_ALL', 1);
+define('WECF_SPECIFIC', 2);
+define('WECF_FILTER', 3);
+define('WECF_NONE', 4);
 
 /**
  * Base Class for all Customer Filters (Model)
@@ -118,9 +118,9 @@ class weAbstractCustomerFilter {
 				if (!weAbstractCustomerFilter::customerIsLogedIn()) {
 					return false;
 				}
-				return in_array($_SESSION["webuser"]["ID"], $this->_specificCustomers);
+				return in_array($_SESSION['webuser']['ID'], $this->_specificCustomers);
 			case WECF_FILTER:
-				if (!( isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]) )) {
+				if (!( isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) )) {
 					return false;
 				}
 				return weAbstractCustomerFilter::customerHasFilterAccess();
@@ -135,9 +135,9 @@ class weAbstractCustomerFilter {
 	 */
 	function customerHasFilterAccess() {
 
-		if (in_array($_SESSION["webuser"]["ID"], $this->_blackList)) {
+		if (in_array($_SESSION['webuser']['ID'], $this->_blackList)) {
 			return false;
-		} else if (in_array($_SESSION["webuser"]["ID"], $this->_whiteList)) {
+		} else if (in_array($_SESSION['webuser']['ID'], $this->_whiteList)) {
 			return true;
 		}
 
@@ -159,16 +159,16 @@ class weAbstractCustomerFilter {
 
 		$_flag = false;
 		foreach ( $this->_filter as $_filter ) {
-			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"]=="AND" ? " && " : " || ") : "") . sprintf(
-				$_filter_op[$_filter["operation"]],
-				weAbstractCustomerFilter::quote4Eval($_SESSION["webuser"][$_filter["field"]]),
-				weAbstractCustomerFilter::quote4Eval($_filter["value"])
+			$_conditions[] = (($_filter['logic'] && $_flag) ? ($_filter['logic']=='AND' ? ' && ' : ' || ') : '') . sprintf(
+				$_filter_op[$_filter['operation']],
+				weAbstractCustomerFilter::quote4Eval($_SESSION['webuser'][$_filter['field']]),
+				weAbstractCustomerFilter::quote4Eval($_filter['value'])
 			);
 			$_flag = true;
 		}
 
 		$_hasPermission = false;
-		$_cond = "if (" . implode("", $_conditions) . ") { \$_hasPermission = true; }";
+		$_cond = 'if (' . implode('', $_conditions) . ') { \$_hasPermission = true; }';
 		eval( $_cond );
 
 		return $_hasPermission;
@@ -334,11 +334,11 @@ class weAbstractCustomerFilter {
 	 * @return boolean
 	 */
 	function in($value, $comp) {
-		$comp = str_replace("\\,", "__WE_COMMA__", $comp);
-		$arr = explode(",", $comp);
+		$comp = str_replace('\\,', '__WE_COMMA__', $comp);
+		$arr = explode(',', $comp);
 		$l = count($arr);
 		for ($i=0; $i<$l; $i++) {
-			$arr[$i] = str_replace("__WE_COMMA__", ",", $arr[$i]);
+			$arr[$i] = str_replace('__WE_COMMA__', ',', $arr[$i]);
 		}
 		return in_array($value, $arr);
 	}
@@ -349,7 +349,7 @@ class weAbstractCustomerFilter {
 	 * @return boolean
 	 */
 	function customerIsLogedIn() {
-		return isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]);
+		return isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']);
 	}
 
 	/**
@@ -463,6 +463,3 @@ class weAbstractCustomerFilter {
 
 
 }
-
-
-?>

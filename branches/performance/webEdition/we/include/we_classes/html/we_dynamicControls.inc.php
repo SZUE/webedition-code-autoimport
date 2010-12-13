@@ -584,5 +584,3 @@ class we_dynamicControls {
 	}
 
 }
-
-?>
