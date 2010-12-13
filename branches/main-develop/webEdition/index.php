@@ -210,6 +210,8 @@ if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_t
  *****************************************************************************/
 
 cleanTempFiles(1);
+//clean Error-Log-Table
+$DB_WE->query('DELETE FROM '.ERROR_LOG_TABLE.' WHERE `Date` < DATE_SUB(NOW(), INTERVAL '.ERROR_LOG_HOLDTIME.' DAY)');
 
 
 /*****************************************************************************
