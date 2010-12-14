@@ -861,7 +861,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			$serialized = serialize($data);
 			$base64Object = base64_encode($serialized);
 			$doc='<?php
-
+					$GLOBALS[\'start\']=microtime(true);
 					$noSess = true;
 					$GLOBALS[\'WE_IS_DYN\'] = 1;
 					$we_transaction = \'\';
@@ -881,7 +881,8 @@ class we_webEditionDocument extends we_textContentDocument {
 						include($_SERVER[\'DOCUMENT_ROOT\'] . \'/webEdition/we/include/we_modules/object/we_object_showDocument.inc.php\');
 					} else {
 						include($_SERVER[\'DOCUMENT_ROOT\'] . \'/webEdition/we/include/we_showDocument.inc.php\');
-					}';
+					}
+					echo \'time: \'.(microtime(true)-$GLOBALS[\'start\']);';
 		} else {
 			if (isset($GLOBALS['DocStream']) && isset($GLOBALS['DocStream'][$this->ID])) {
 				$doc = $GLOBALS['DocStream'][$this->ID];
