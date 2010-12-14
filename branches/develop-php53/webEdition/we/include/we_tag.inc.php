@@ -1213,3 +1213,17 @@ function we_tag_listviewStart($attribs, $content){
 function we_tag_makeMail($attribs, $content){
 	return '';
 }
+
+//FIXME: remove in next Versions
+function include_all_we_tags(){
+	if(defined('INCLUDE_ALL_WE_TAGS')){
+		$_files=scandir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/',1);
+		foreach($_files AS $file){
+			$fn=str_replace('.inc.php','',$file);
+			$file=$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/'.$file;
+			if(is_file($file)&&!function_exists($fn)){
+				include_once ($file);
+			}
+		}
+	}
+}

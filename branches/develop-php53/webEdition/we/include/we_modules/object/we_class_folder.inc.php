@@ -19,30 +19,29 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once(WE_OBJECT_MODULE_DIR . "we_searchobject_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/'.'we_classes/we_folder.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/we_objectFile.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
+include_once(WE_OBJECT_MODULE_DIR . 'we_searchobject_class.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 $yuiSuggest =& weSuggest::getInstance();
 
 /* a class for handling templates */
-class we_class_folder extends we_folder
-{
+class we_class_folder extends we_folder{
 
 	//######################################################################################################################################################
 	//##################################################################### Variables ######################################################################
 	//######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_class_folder";
+	var $ClassName='we_class_folder';
 
 	//var $EditPageNrs = array(WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS);//,WE_EDITPAGE_CFSEARCH); #4076 orig
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS,WE_EDITPAGE_INFO);
-	var $Icon = "class_folder.gif";
-	var $IsClassFolder = "1";
+	var $Icon = 'class_folder.gif';
+	var $IsClassFolder = '1';
 	var $InWebEdition = false;
 	var $ClassPath =''; //#4076
 	var $ClassID =''; //#4076
@@ -51,26 +50,26 @@ class we_class_folder extends we_folder
 	var $searchclass_class;
 
 	var $GreenOnly = 0;
-	var $Order = "OF_Path";
-	var $Search="";
-	var $SearchField="";
+	var $Order = 'OF_Path';
+	var $Search='';
+	var $SearchField='';
 	var $SearchStart = 0;
 	/* Constructor */
 	function we_class_folder(){
 		$this->we_folder();
-		array_push($this->persistent_slots,"searchclass","searchclass_class");
-		$this->ContentType= "folder";
+		array_push($this->persistent_slots,'searchclass','searchclass_class');
+		$this->ContentType= 'folder';
 
 	}
 	function setClassProp(){
 		$DB_WE = new DB_WE();
-		$sp = explode("/",$this->Path);
-		$this->ClassPath="/".$sp[1];
-		$this->ClassID = f("SELECT ID FROM " . OBJECT_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
+		$sp = explode('/',$this->Path);
+		$this->ClassPath='/'.$sp[1];
+		$this->ClassID = f('SELECT ID FROM ' . OBJECT_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
 		$this->RootfolderID = f("SELECT ID FROM " . OBJECT_FILES_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
 	}
 	function we_rewrite(){
-		$this->ClassName="we_class_folder";
+		$this->ClassName='we_class_folder';
 		$this->IsNotEditable = 0;
 		$this->we_save(0,1);
 	}
@@ -104,7 +103,7 @@ class we_class_folder extends we_folder
 	}
 
 	function we_save($resave=0,$skipHook=0) {
-		$sp = explode("/",$this->Path);
+		$sp = explode('/',$this->Path);
 		if ( isset($sp[2]) && $sp[2] != '') {$this->IsClassFolder = 0;}
 		parent::we_save($resave,$skipHook);
 		return true;
@@ -112,18 +111,18 @@ class we_class_folder extends we_folder
 
 	function initByPath($path,$tblName=OBJECT_FILES_TABLE,$IsClassFolder=0,$IsNotEditable=0,$skipHook=0){
 		$id = f("SELECT ID FROM ".$tblName." WHERE Path='$path' AND IsFolder=1","ID",$this->DB_WE);
-		if($id != ""){
+		if($id != ''){
 			$this->initByID($id,$tblName);
 		}else{
 			## Folder does not exist, so we have to create it (if user has permissons to create folders)	
-			$spl = explode("/",$path);
+			$spl = explode('/',$path);
 			$folderName = array_pop($spl);
 			$p = array();
 			$anz = sizeof($spl);
 			$last_pid = 0;
 			for($i=0;$i<$anz;$i++){
 				array_push($p,array_shift($spl));
-				$pa = mysql_real_escape_string(implode("/",$p));
+				$pa = mysql_real_escape_string(implode('/',$p));
 				if($pa){
 					$pid = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='$pa'","ID",new DB_WE());
 					if(!$pid){
@@ -140,9 +139,9 @@ class we_class_folder extends we_folder
 						$this->IsClassFolder=$IsClassFolder;
 						*/
 						$folder->IsNotEditable = 0;
-						$folder->ClassName="we_class_folder";
+						$folder->ClassName='we_class_folder';
 						$folder->IsClassFolder=$IsClassFolder;
-						$folder->Icon = ($IsClassFolder)?"we_class_folder.gif":"we_folder.gif";
+						$folder->Icon = ($IsClassFolder)?'we_class_folder.gif':'we_folder.gif';
 						
 						$folder->Path=$pa;
 						$folder->save($skipHook);
@@ -159,9 +158,9 @@ class we_class_folder extends we_folder
 			$this->ClassName=($IsClassFolder)?"we_class_folder":"we_folder";
 			
 			*/
-			$this->ClassName="we_class_folder";
+			$this->ClassName='we_class_folder';
 			$this->IsClassFolder=$IsClassFolder;
-			$this->Icon = $IsClassFolder ? "class_folder.gif" : "folder.gif";
+			$this->Icon = $IsClassFolder ? 'class_folder.gif' : 'folder.gif';
 			
 			$this->ParentID=$last_pid;
 			$this->Text = $folderName;
@@ -180,30 +179,30 @@ class we_class_folder extends we_folder
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor(){
-		$this->ContentType = "folder";
+		$this->ContentType = 'folder';
 
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
-                return "we_templates/we_editor_properties.inc.php";
+                return 'we_templates/we_editor_properties.inc.php';
 
 			case WE_EDITPAGE_INFO:
-                return "we_templates/we_editor_info.inc.php";
+                return 'we_templates/we_editor_info.inc.php';
 
 			case WE_EDITPAGE_CFWORKSPACE:
-			    return "we_modules/object/we_classFolder_properties.inc.php";
+			    return 'we_modules/object/we_classFolder_properties.inc.php';
 			case WE_EDITPAGE_FIELDS:
-			    return "we_modules/object/we_classFolder_fields.inc.php";
+			    return 'we_modules/object/we_classFolder_fields.inc.php';
 			case WE_EDITPAGE_WEBUSER:
-				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
+				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 			/*
 			case WE_EDITPAGE_CFSEARCH:
-			    return "we_modules/object/we_classFolder_search.inc.php";
+			    return 'we_modules/object/we_classFolder_search.inc.php';
 			    break;
 			*/
 			default:
 			    $this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-			    $_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
-			    return "we_templates/we_editor_properties.inc.php";
+			    $_SESSION['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+			    return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
 
@@ -213,9 +212,9 @@ class we_class_folder extends we_folder
 
 		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
 		if(abs($userDefaultWsID) != 0){
-			$userDefaultWsPath = id_to_path($userDefaultWsID,FILE_TABLE,$GLOBALS["DB_WE"]);
+			$userDefaultWsPath = id_to_path($userDefaultWsID,FILE_TABLE,$GLOBALS['DB_WE']);
 		}else{
-			$userDefaultWsPath = "/";
+			$userDefaultWsPath = '/';
 		}
 
 		return $userDefaultWsPath;
@@ -230,14 +229,14 @@ class we_class_folder extends we_folder
 		$ParentsCSV  = makeCSVFromArray($parents,true);
 		if ($this->ID) {
 			$_disabled = false;
-			$_disabledNote = "";
+			$_disabledNote = '';
 		} else {
 			$_disabled = true;
-			$_disabledNote = " ".$GLOBALS["l_we_class"]["availableAfterSave"];
+			$_disabledNote = ' '.$GLOBALS['l_we_class']['availableAfterSave'];
 		}
 
 		$we_button = new we_button();
-		$but = $we_button->create_button("select", $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->RootfolderID.");" : "javascript:" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folders_no_id"], WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
+		$but = $we_button->create_button('select', $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->RootfolderID.");" : "javascript:" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folders_no_id"], WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox($GLOBALS["l_we_class"]["copy_owners_expl"].$_disabledNote,2,388,false).'</td><td>'.
 						$this->htmlHidden($idname,$this->CopyID).$but . '</td></tr>
@@ -260,23 +259,23 @@ class we_class_folder extends we_folder
 				$_REQUEST['Order'] = 'ModDate DESC';
 			}
 		} else {
-			$this->searchclass->Order = $_REQUEST["Order"];
+			$this->searchclass->Order = $_REQUEST['Order'];
 		}
-		$this->Order = $_REQUEST["Order"];
+		$this->Order = $_REQUEST['Order'];
 
-		if(isset($_POST["SearchStart"])){
-			$this->searchclass->searchstart = $_POST["SearchStart"];
+		if(isset($_POST['SearchStart'])){
+			$this->searchclass->searchstart = $_POST['SearchStart'];
 		}
 
-		if(isset($_REQUEST["Anzahl"])){
-			$this->searchclass->anzahl = $_REQUEST["Anzahl"];
+		if(isset($_REQUEST['Anzahl'])){
+			$this->searchclass->anzahl = $_REQUEST['Anzahl'];
 		}
 
 		//$this->searchclass->setlimit(1);
 		$we_obectPathLength = 32;
 
 		if(!isset($javascript)) {
-			$javascript = "";
+			$javascript = '';
 		}
 
 		//$this->searchclass->setlimit(2);
@@ -289,7 +288,7 @@ class we_class_folder extends we_folder
 		if(abs($userDefaultWsID) != 0){
 			$userDefaultWsPath = id_to_path($userDefaultWsID,FILE_TABLE,$DB_WE);
 		}else{
-			$userDefaultWsPath = "/";
+			$userDefaultWsPath = '/';
 		}
 
 		//#4076
@@ -301,11 +300,11 @@ class we_class_folder extends we_folder
 		
 
 		$userDefaultWsPath = $this->getUserDefaultWsPath();
-		$this->WorkspacePath = ($this->WorkspacePath != "") ? $this->WorkspacePath : $userDefaultWsPath;
-		$this->WorkspaceID = ($this->WorkspaceID != "") ? $this->WorkspaceID : $userDefaultWsID;
+		$this->WorkspacePath = ($this->WorkspacePath != '') ? $this->WorkspacePath : $userDefaultWsPath;
+		$this->WorkspaceID = ($this->WorkspaceID != '') ? $this->WorkspaceID : $userDefaultWsID;
 
 		if(isset($this->searchclass->searchname) ){
-			$where = "1 ".$this->searchclass->searchfor($this->searchclass->searchname,$this->searchclass->searchfield,$this->searchclass->searchlocation,OBJECT_X_TABLE.$classArray["ID"],$rows=-1,$start=0,$order="",$desc=0);
+			$where = '1 '.$this->searchclass->searchfor($this->searchclass->searchname,$this->searchclass->searchfield,$this->searchclass->searchlocation,OBJECT_X_TABLE.$classArray["ID"],$rows=-1,$start=0,$order="",$desc=0);
 			$where .= $this->searchclass->greenOnly($this->GreenOnly,$this->WorkspaceID,$classArray["ID"]);
 		} else {
 			$where = "1".$this->searchclass->greenOnly($this->GreenOnly,$this->WorkspaceID,$classArray["ID"]);
