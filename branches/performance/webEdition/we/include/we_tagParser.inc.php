@@ -490,63 +490,24 @@ class we_tagParser{
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 						
 	
-						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
+						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry"||
+										$tagname == "ifshopexists" || $tagname == "ifobjektexists" || $tagname == "ifnewsletterexists" || $tagname == "ifcustomerexists"
+										|| $tagname == "ifbannerexists" || $tagname == "ifvotingexists"
+										) {
 							$code = str_replace(
 									$tag, 
-									'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>', 
+									'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>',
 									$code);
 							$this->ipos++;
 							$this->lastpos = 0;
 						
 						} else 
-							if ($tagname == "ifshopexists") {
-								$code = str_replace($tag, '<?php if(defined("SHOP_TABLE")): ?>', $code);
-								$this->ipos++;
-								$this->lastpos = 0;
-							} else 
-								if ($tagname == "ifobjektexists") {
-									$code = str_replace($tag, '<?php if(defined("OBJECT_TABLE")): ?>', $code);
-									$this->ipos++;
-									$this->lastpos = 0;
-								} else 
-									if ($tagname == "ifnewsletterexists") {
-										$code = str_replace(
-												$tag, 
-												'<?php if(defined("NEWSLETTER_TABLE")): ?>', 
-												$code);
-										$this->ipos++;
-										$this->lastpos = 0;
-									} else 
-										if ($tagname == "ifcustomerexists") {
-											$code = str_replace(
-													$tag, 
-													'<?php if(defined("CUSTOMER_TABLE")): ?>', 
-													$code);
-											$this->ipos++;
-											$this->lastpos = 0;
-										} else 
-											if ($tagname == "ifbannerexists") {
-												$code = str_replace(
-														$tag, 
-														'<?php if(defined("BANNER_TABLE")): ?>', 
-														$code);
-												$this->ipos++;
-												$this->lastpos = 0;
-											} else 
-												if ($tagname == "ifvotingexists") {
-													$code = str_replace(
-															$tag, 
-															'<?php if(defined("VOTING_TABLE")): ?>', 
-															$code);
-													$this->ipos++;
-													$this->lastpos = 0;
-												} else 
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
 														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
 														$code = str_replace(
 																$tag, 
 																$this->parseCacheIfTag(
-																		'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'), 
+																		'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>'),
 																$code);
 														$this->ipos++;
 														$this->lastpos = 0;
@@ -554,7 +515,7 @@ class we_tagParser{
 														if ($tagname == "condition") {
 															$code = str_replace(
 																	$tag, 
-																	'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>', 
+																	'<?php we_tag(\'' . $tagname . '\', ' . $attribs . '); ?>',
 																	$code);
 															$this->ipos++;
 															$this->lastpos = 0;
@@ -641,8 +602,8 @@ class we_tagParser{
 																	//neu
 																} else {
 																	// Tag besitzt Endtag
-																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "' . $content . '")';
-																	$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
+																	$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', "' . $content . '")';
+																	$code = substr($code, 0, $tagPos) . '<?php printElement(' . $we_tag . '); ?>' . substr(
 																			$code, 
 																			$endeEndTagPos);
 																	//neu
@@ -659,12 +620,12 @@ class we_tagParser{
 																
 																} else 
 																	if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
-																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ')';
+																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ')';
 																		eval(
 																				'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
 																		//neu
 																	} else {
-																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "")';
+																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', \'\')';
 																		$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																				$code, 
 																				$endeStartTag);
@@ -1006,11 +967,11 @@ if(isset($weTagListviewCache)) {
 								$GLOBALS["l_css"]["font_family"].\';">\';
 
     		print "<table style=\"background: #006DB8;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding: 3px;\">" . $_tmpspan . "&nbsp;" . $GLOBALS["l_tags"]["include_file"] . "</span></td></tr><tr><td>";
-    		printElement( we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), ""));
+    		printElement( we_tag(\'href\', array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), ""));
     		print  "</td></tr></table>";
 			$path ="";//Bug #4742
     	} else {
-    		$path = we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), "");
+    		$path = we_tag(\'href\', array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), "");
     	}
     	?>';
 		}

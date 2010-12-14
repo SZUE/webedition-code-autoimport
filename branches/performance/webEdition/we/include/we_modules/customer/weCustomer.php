@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/"."weModelBase.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php");
 
 /**
 * General Definition of WebEdition Customer
@@ -31,7 +30,7 @@ class weCustomer extends weModelBase{
 	//properties
 	var $ID;
 	var $Text;
-    var $ParentID;
+	var $ParentID;
 	var $Icon;
 	var $IsFolder;
 	var $Path;
@@ -110,6 +109,7 @@ class weCustomer extends weModelBase{
 	 * delete entry from database
 	 */
 	function delete(){
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php");
 		if (weModelBase::delete()) {
 			weDocumentCustomerFilter::deleteWebUser($this);
 			return true;

@@ -29,8 +29,6 @@ if(!isset($GLOBALS["WE_IS_DYN"])){
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
@@ -262,6 +260,7 @@ class we_objectFile extends we_document
 
 	function setRootDirID($doit=false){
 		if($this->InWebEdition || $doit){
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 			$foo = f("SELECT Path FROM " .OBJECT_TABLE . " WHERE ID=".$this->TableID,"Path",$this->DB_WE);
 			$folder = new we_folder();
 			$folderID = f("SELECT ID FROM " .OBJECT_FILES_TABLE . " WHERE Path='".$foo."'","ID",$this->DB_WE);
@@ -1478,6 +1477,7 @@ class we_objectFile extends we_document
 		array_unshift($thumbs,"");
 		if(!empty($thumbID) && isset($thumbs[$thumbID]["ID"]) &&  $thumbID <= count($thumbs)){
 			if($img->ID>0){
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByThumbID($thumbs[$thumbID]["ID"],$img->ID,$img->Filename,$img->Path,$img->Extension,$img->getElement("origwidth"),$img->getElement("origheight"),$img->getDocument());
 				$thumbObj->createThumb();
@@ -2446,6 +2446,7 @@ class we_objectFile extends we_document
 */
 $this->checkAndCorrectParent();
 			if ($_initWeDocumentCustomerFilter) {
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 				// get customerFilter of parent Folder
 				$_tmpFolder = new we_class_folder();
 				$_tmpFolder->initByID($this->rootDirID, $this->Table);

@@ -24,7 +24,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don't include during login
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
@@ -1968,6 +1967,7 @@ function mapPermissions() {
 
 	function formPermissions($branch) {
 		global $perm_defaults;
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php');
 
 		// Set output text
 
@@ -2362,6 +2362,7 @@ function mapPermissions() {
 
 	function formPreferences($branch = "") {
 
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php');
 		$dynamic_controls = new we_dynamicControls();
 
 		$groups = array(

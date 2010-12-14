@@ -23,7 +23,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tagParser.i
 if (!isset($GLOBALS["WE_IS_DYN"])) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 }
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 class we_linklist
 {
@@ -868,8 +867,8 @@ class we_linklist
 		return "";
 	}
 
-	function makeImgTag($nr, $attribs = "")
-	{
+	function makeImgTag($nr, $attribs = ""){
+		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$id = $this->getImageID($nr);
 		if (!$attribs)
 			$attribs = $this->getImageAttribs($nr);

@@ -26,10 +26,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
 
-if(defined("WORKFLOW_TABLE")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-}
-
 if(!isset($GLOBALS["WE_IS_DYN"])){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 }
@@ -498,6 +494,9 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 	function revert_published() {
+		if(defined("WORKFLOW_TABLE")) {
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+		}
 		we_temporaryDocument::delete($this->ID,$this->Table);
 		$this->initByID($this->ID);
 		$this->ModDate = $this->Published;

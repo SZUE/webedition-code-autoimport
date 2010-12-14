@@ -20,8 +20,8 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/versions.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_ContentTypes.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/weFile.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/customerFilter.inc.php');
 
@@ -748,8 +748,8 @@ class weVersions {
 			
 		$this->contentTypes = $this->getContentTypesVersioning();
 		
-		if (!is_dir($_SERVER["DOCUMENT_ROOT"].VERSION_DIR)) {
-			createLocalFolder($_SERVER["DOCUMENT_ROOT"], VERSION_DIR);
+		if (!is_dir($_SERVER['DOCUMENT_ROOT'].VERSION_DIR)) {
+			createLocalFolder($_SERVER['DOCUMENT_ROOT'], VERSION_DIR);
 		}
 		
 		/**
@@ -795,7 +795,7 @@ class weVersions {
 		
 		$contentTypes = array();
 		$contentTypes[] = 'all';
-		foreach($GLOBALS["WE_CONTENT_TYPES"] as $k => $v) {
+		foreach($GLOBALS['WE_CONTENT_TYPES'] as $k => $v) {
 			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
 			if($k != "object"  && $k != "folder" && $k != "class_folder") {
 				$contentTypes[] = $k;
@@ -2490,5 +2490,3 @@ class weVersions {
 	}
 
 }
-
-?>

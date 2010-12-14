@@ -27,7 +27,6 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 }
 if(!isset($GLOBALS['WE_IS_IMG'])){
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/charsetHandler.class.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/date.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/weModuleInfo.class.php');
@@ -557,6 +556,7 @@ class we_document extends we_root {
 	*/
 
 	function getParentIDFromParentPath() {
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
 		$f = new we_folder();
 		if(!$f->initByPath($this->ParentPath))
 			return -1;
