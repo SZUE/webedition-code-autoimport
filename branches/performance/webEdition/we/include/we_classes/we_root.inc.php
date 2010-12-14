@@ -1272,7 +1272,3 @@ class we_root extends we_class
 
 	}
 }
-
-
-
-?>
