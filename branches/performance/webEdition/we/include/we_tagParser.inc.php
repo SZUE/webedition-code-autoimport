@@ -39,11 +39,7 @@ class we_tagParser{
 	}
 
 	function parseAppListviewItemsTags($tagname,$tag, $code, $attribs = '', $postName = ''){
-	
-			$pre = $this->getStartCacheCode($tag, $attribs);
-			
-			return $this->replaceTag($tag, $code, $pre . $php);
-	
+			return $this->replaceTag($tag, $code, $php);
 	}
 
 	function getNames($tags)
@@ -740,7 +736,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	} else {
 		unset($GLOBALS["lv"]);unset($GLOBALS["we_lv_array"]);
 	}
-}?>' . $this->getEndCacheCode($tag), 
+}?>', 
 													$code,1);
 										
 										} else 
@@ -755,7 +751,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	} else {
 		unset($GLOBALS["lv"]);unset($GLOBALS["we_lv_array"]);
 	}
-} ?>' . $this->getEndCacheCode($tag), $code);
+} ?>', $code);
 											
 											} else 
 												if ($tagname == "listviewOrder") {
@@ -818,107 +814,6 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 
 	/* ############### parse individual Tags ########## */
 	
-	##########################################################################################
-	##########################################################################################
-	
-
-	function getStartCacheCode($tag, $attribs)
-	{
-		
-		if (!isset($GLOBALS['weListviewCacheStarted'])) {
-			$GLOBALS['weListviewCacheStarted'] = array();
-		}
-		
-		eregi("<we:(.+)>?", $tag, $regs);
-		$foo = $regs[1] . "/";
-		eregi("([^ >/]+) ?(.*)", $foo, $regs);
-		$tagname = $regs[1];
-		
-		eval('$arr = array(' . $attribs . ');');
-		$lifeTime = we_getTagAttributeTagParser("cachelifetime", $arr, 0);
-		$type = we_getTagAttributeTagParser("type", $arr, '');
-		
-		$code = "";
-		if (!$GLOBALS['we_doc']->IsFolder && ($GLOBALS['we_doc']->CacheLifeTime <= 0 || $GLOBALS['we_doc']->CacheType == "none") && $lifeTime == 0) {
-			$GLOBALS['weListviewCacheStarted'][] = false;
-			return $code;
-		
-		}
-		
-		switch ($tagname) {
-			case 'listview' :
-				if ($type == 'search') {
-					$GLOBALS['weListviewCacheStarted'][] = false;
-					break;
-				}
-			case 'object' :
-				$code .= '<?php
-
-// initialize the cache
-weTagListviewCache::init($weTagListviewCache, "' . $tagname . '", unserialize(\'' . serialize(
-						$attribs) . '\'), \'\', $GLOBALS[\'we_doc\']->CacheType == \'document\' ? $GLOBALS[\'we_doc\']->CacheLifeTime : ' . $lifeTime . ');
-
-// check if the followed code must be executed or could come from cache
-if(!$weTagListviewCache->isCacheable() || ($weTagListviewCache->isCacheable() && $weTagListviewCache->start())) {
-?>';
-				if (!isset($GLOBALS["weListviewCacheActiveIf"])) {
-					$GLOBALS["weListviewCacheActiveIf"] = 0;
-				
-				}
-				$GLOBALS["weListviewCacheActiveIf"]++;
-				$GLOBALS['weListviewCacheStarted'][] = true;
-				break;
-			
-			case 'form' : // not needed
-			case 'repeat' : // not needed
-			case 'tr' : // not needed
-				break;
-			
-			default :
-				$GLOBALS['weListviewCacheStarted'][] = false;
-				break;
-		
-		}
-		
-		return $code;
-	
-	}
-
-	##########################################################################################
-	##########################################################################################
-	
-
-	function getEndCacheCode($tag)
-	{
-		$temp = isset($GLOBALS['weListviewCacheStarted']) && is_array($GLOBALS['weListviewCacheStarted']) ? array_pop(
-				$GLOBALS['weListviewCacheStarted']) : false;
-		$code = "";
-		if (!$temp) {
-			return $code;
-		
-		}
-		$GLOBALS["weListviewCacheActiveIf"]--;
-		
-		$code = '<?php
-
-	// write the cache file if needed
-	if(isset($weTagListviewCache)) {
-		$weTagListviewCache->end();
-	}
-}
-// Output the cached content
-if(isset($weTagListviewCache)) {
-	if(file_exists($weTagListviewCache->getCacheFilename()) && $weTagListviewCache->isValid()) {
-		include($weTagListviewCache->getCacheFilename());
-		unset($weTagListviewCache);
-	}
-}
-
-?>';
-		
-		return $code;
-	
-	}
 
 	##########################################################################################
 	##########################################################################################
@@ -1384,8 +1279,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 ?>
 ';
 		
-		$pre = $this->getStartCacheCode($tag, $attribs);
-		$ret = $this->replaceTag($tag, $code, $pre . $php) ;
+		$ret = $this->replaceTag($tag, $code, $php) ;
 		return $ret;
 	}
 
@@ -1458,8 +1352,7 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 				if ($we_oid!=0){//Bug 4848
 					$php .='if(isset('. $we_oid .')){ $we_oid = ' . $we_oid . ';} else { if (isset($GLOBALS["' . $we__oid .'"]) ) { $we_oid = $GLOBALS["' . $we__oid .'"];} else {$we_oid=0; } }';
 				} else {
-					$php .='$we_oid=' . $we_oid . '	;
-					';
+					$php .='$we_oid = 0	;';
 				}
 			
 				$php .='
@@ -1484,9 +1377,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
 			
-			$pre = $this->getStartCacheCode($tag, $attribs);
-			
-			return $this->replaceTag($tag, $code, $pre . $php);
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Object/DB','object'), $code); }
 	}
 
@@ -1514,10 +1405,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listvi
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
-		
-		$pre = $this->getStartCacheCode($tag, $attribs);
-		
-		return $this->replaceTag($tag, $code, $pre . $php);
+				
+		return $this->replaceTag($tag, $code, $php);
 	
 	}
 
@@ -1597,10 +1486,8 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			if ($postName != "") {
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
-			
-			$pre = $this->getStartCacheCode($tag, $attribs);
-			
-			return $this->replaceTag($tag, $code, $pre . $php);
+						
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
 	}
 
@@ -1647,10 +1534,8 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			if ($postName != "") {
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
-			
-			$pre = $this->getStartCacheCode($tag, $attribs);
-			
-			return $this->replaceTag($tag, $code, $pre . $php);
+						
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
 	}
 
@@ -1734,10 +1619,8 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			if ($postName != "") {
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
-			
-			$pre = $this->getStartCacheCode($tag, $attribs);
-			
-			return $this->replaceTag($tag, $code, $pre . $php);
+						
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Shop','"order"'), $code); }
 	}
 
@@ -1824,10 +1707,8 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			if ($postName != "") {
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
-			
-			$pre = $this->getStartCacheCode($tag, $attribs);
-			
-			return $this->replaceTag($tag, $code, $pre . $php);
+						
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Shop','"orderitem"'), $code); }
 	}
 
@@ -2450,9 +2331,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 						true) . "<?php endif ?>\n";
 		}
 		
-		$pre = $this->getStartCacheCode($tag, $attribs);
-		
-		return $this->replaceTag($tag, $code, $pre . $php);
+		return $this->replaceTag($tag, $code, $php);
 	}
 
 	/**
@@ -2474,9 +2353,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 		
 		$php = '<?php if($GLOBALS["lv"]->shouldPrintStartTR()): ?>' . getHtmlTag('tr', $arr, "", false, true) . '<?php endif ?>';
 		
-		$pre = $this->getStartCacheCode($tag, $attribs);
-		
-		return $this->replaceTag($tag, $code, $pre . $php);
+		return $this->replaceTag($tag, $code, $php);
 	
 	}
 

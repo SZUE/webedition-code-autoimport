@@ -25,7 +25,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_delete
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/newfile.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_history.class.php");
 
 protect();
@@ -321,33 +320,10 @@ if (!$wfchk) {
 
 										$GLOBALS["we_folder_not_del"] = array();
 										
-										if ($table == FILE_TABLE . "_cache" || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache")) {
-											
-											if ($table == FILE_TABLE . "_cache") {
-												foreach ($selectedItems as $k => $v) {
-													$cacheDir = weCacheHelper::getDocumentCacheDir($v);
-													if (!weCacheHelper::clearCache($cacheDir)) {
-													
-													}
-												}
-											
-											} elseif (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") {
-												foreach ($selectedItems as $k => $v) {
-													$cacheDir = weCacheHelper::getObjectCacheDir($v);
-													if (!weCacheHelper::clearCache($cacheDir)) {
-													
-													}
-												}
-											
-											}
-										
-										} else {
-											
 											$deletedItems = array();
 											
-											for ($i = 0; $i < sizeof($selectedItems); $i++) {
-												deleteEntry($selectedItems[$i], $table);
-											
+											foreach ($selectedItems AS $item) {
+												deleteEntry($item, $table);
 											}
 											
 											if (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) {
@@ -432,8 +408,6 @@ if (!$wfchk) {
 						}
 					';
 											}
-										
-										}
 										
 										$script .= "\ntop.toggleBusy(0);\n";
 										

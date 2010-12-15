@@ -20,7 +20,6 @@
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_exim/weContentProvider.class.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_versions/weVersions.class.inc.php");
@@ -213,9 +212,6 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		$DB_WE->query(
 				'DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID="' . abs($id) . '";');
 		
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
 	}
 	
 	if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) {
@@ -230,7 +226,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 			foreach ($foo as $testclass) {
 				if(isColExistForDelete(OBJECT_X_TABLE.$testclass['ID'],"object_".$tableID)){
 								
-					//das löschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
+					//das lï¿½schen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
 					$qtest = "SELECT OF_ID FROM " .OBJECT_X_TABLE.$testclass['ID']. " WHERE object_".$tableID."= '".abs($id)."'";
 					$DB_WE->query($qtest);
 					$foos = $DB_WE->getAll();
@@ -256,9 +252,6 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 			$DB_WE->query(
 					'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID="' . abs($id) . ' " AND ClassName="we_objectFile"');
 		}
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getObjectCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
 	}
 	$DB_WE->query("DELETE FROM $table WHERE ID=$id");
 	if (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) {

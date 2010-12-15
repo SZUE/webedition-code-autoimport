@@ -30,14 +30,12 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php'
 function we_getModuleNameByContentType($ctype) {
 	global $_we_active_modules;
 
-	$_moduleDir = '';
-	for ($i = 0; $i < sizeof($_we_active_modules); $i++) {
-
-		if (strstr($ctype, $_we_active_modules[$i])) {
-			$_moduleDir = $_we_active_modules[$i];
+	foreach($_we_active_modules AS $mod){
+		if (strstr($ctype, $mod)) {
+			return $mod;
 		}
 	}
-	return $_moduleDir;
+	return '';
 }
 
 function we_getGlobalPath() {
@@ -66,12 +64,13 @@ function rmPhp($in) {
 }
 
 function decodetmlSpecialChars($in) {
-	$out = str_replace('&lt;', '<', $in);
+/*FIXME:remove
+ * 	$out = str_replace('&lt;', '<', $in);
 	$out = str_replace('&gt;', '>', $out);
 	$out = str_replace('&quot;', '"', $out);
 	$out = str_replace('&#039;', '\'', $out);
-	$out = str_replace('&amp;', '&', $out);
-	return $out;
+	$out = str_replace('&amp;', '&', $out);*/
+	return htmlspecialchars_decode($in);
 }
 
 function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false) {
@@ -97,12 +96,12 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
-	$out = '';
+	
 	if ($isFlag) {
 		if ($checkForFalse) {
-			$out = ($value == 'false' || $value == 'off' || $value == '0') ? false : true;
+			return ($value == 'false' || $value == 'off' || $value == '0') ? false : true;
 		} else {
-			$out = ($value == 'true' || $value == 'on' || $value == $name || $value == '1') ? true : false;
+			return ($value == 'true' || $value == 'on' || $value == $name || $value == '1') ? true : false;
 		}
 	} else {
 		$out = strlen($value) ? $value : $default;
@@ -393,9 +392,9 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 			$attsOpts['xml'] = $atts['xml'];
 		}
 
-		for ($i = 0; $i < sizeof($options); $i++) {
-			$attsOpts['value'] = htmlspecialchars($options[$i]);
-			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($options[$i])) . "\n";
+		foreach($options AS $option){
+			$attsOpts['value'] = htmlspecialchars($option);
+			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
 		}
 	}
 
@@ -537,9 +536,9 @@ function we_getCatsFromIDs($catIDs, $tokken = ",", $showpath = false, $db = "", 
 			}
 		}
 		if (($showpath || $catfield == "Path") && strlen($rootdir)) {
-			for ($i = 0; $i < sizeof($cats); $i++) {
-				if (substr($cats[$i], 0, strlen($rootdir)) == $rootdir) {
-					$cats[$i] = substr($cats[$i], strlen($rootdir));
+			foreach($cats AS &$cat){
+				if (substr($cat, 0, strlen($rootdir)) == $rootdir) {
+					$cat = substr($cat, strlen($rootdir));
 				}
 			}
 		}
@@ -1925,8 +1924,9 @@ function we_makeHiddenFields($filter = "") {
 		while (list($key, $val) = each($_REQUEST))
 			if (!in_array($key, $filterArr)) {
 				if (is_array($val)) {
-					for ($i = 0; $i < sizeof($val); $i++)
-						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val[$i]) . '" />';
+					foreach($val AS $v){
+						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($v) . '" />';
+					}
 				} else
 					$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val) . '" />';
 			}
@@ -2091,23 +2091,22 @@ function makeArrayFromCSV($csv) {
 
 		$foo = explode(",", $csv);
 
-		for ($i = 0; $i < sizeof($foo); $i++) {
-
-			$foo[$i] = str_replace("###komma###", ",", $foo[$i]);
+		foreach($foo AS &$var){
+			$var = str_replace("###komma###", ",", $var);
 		}
 	}
 	return $foo;
 }
 
 function makeCSVFromArray($arr, $prePostKomma = false, $sep = ",") {
-	if (!sizeof($arr))
-		return "";
+	if (empty($arr))
+		return '';
 
 	$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
 
 	if ($replaceKomma) {
-		for ($i = 0; $i < sizeof($arr); $i++) {
-			$arr[$i] = str_replace($sep, "###komma###", $arr[$i]);
+		foreach($arr AS &$var){
+			$var = str_replace($sep, "###komma###", $var);
 		}
 	}
 	$out = implode($sep, $arr);
@@ -2169,10 +2168,10 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = "", $objcheck = f
 	if (!is_array($wsIDs)) {
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
-	if (!sizeof($wsIDs)) {
+	if (empty($wsIDs)) {
 		return true;
 	}
-	if (!sizeof($IDs)) {
+	if (empty($IDs)) {
 		return true;
 	}
 	if (in_array(0, $wsIDs)) {
@@ -2502,7 +2501,7 @@ function getWsFileList($table, $childsOnly = false) {
 	$wsFileList = "";
 
 	$workspaces = makeArrayFromCSV(get_ws($table));
-	if (sizeof($workspaces)) {
+	if (!empty($workspaces)) {
 		$childList = array();
 		foreach ($workspaces as $value) {
 			array_push($childList, $value);
@@ -2525,7 +2524,7 @@ function getWsFileList($table, $childsOnly = false) {
 				array_push($childList, $db->f("ID"));
 			}
 		}
-		if (sizeof($wsFileList)) {
+		if (!empty($wsFileList)) {
 			$wsFileList = implode(",", $childList);
 		}
 	}
@@ -2551,7 +2550,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false) {
 	}
 	if ($ws == "") {
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
-		if (sizeof($wsA))
+		if (!empty($wsA))
 			return $wsA[0];
 		else
 			return "";
@@ -3390,10 +3389,9 @@ function getXmlAttributeValueAsBoolean($xml) {
 function removeAttribs($attribs, $remove = array()) {
 
 	array_push($remove, "user");
-
-	for ($i = 0; $i < sizeof($remove); $i++) {
-		if (array_key_exists($remove[$i], $attribs)) {
-			unset($attribs[$remove[$i]]);
+	foreach($remove AS $rem){
+		if (array_key_exists($rem, $attribs)) {
+			unset($attribs[$rem]);
 		}
 	}
 	return $attribs;

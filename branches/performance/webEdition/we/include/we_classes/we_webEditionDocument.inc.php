@@ -492,20 +492,6 @@ class we_webEditionDocument extends we_textContentDocument {
 		$this->setTemplatePath();
 	}
 
-	function setCache() {
-		if($this->TemplateID) {
-			$this->CacheLifeTime = f("SELECT CacheLifeTime FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"CacheLifeTime",$this->DB_WE);
-			if($this->CacheLifeTime > 0) {
-				$this->CacheType = f("SELECT CacheType FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"CacheType",$this->DB_WE);
-			} else {
-				$this->CacheType = "none";
-			}
-		} else {
-			$this->CacheType = "none";
-			$this->CacheLifeTime = 0;
-		}
-	}
-
 	function we_new() {
 		we_textContentDocument::we_new();
 		$this->setTemplatePath();
@@ -684,27 +670,17 @@ class we_webEditionDocument extends we_textContentDocument {
 	}
 
 	function we_publish($DoNotMark=false,$saveinMainDB=true) {
-		$this->we_clearCache($this->ID);
 		return we_textContentDocument::we_publish($DoNotMark, $saveinMainDB);
 	}
 
 	function we_unpublish(){
 		if(!$this->ID) return false;
-		$this->we_clearCache($this->ID);
 		return we_textContentDocument::we_unpublish();
 	}
 
 	function we_delete() {
 		if(!$this->ID) return false;
-		$this->we_clearCache($this->ID);
 		return we_document::we_delete();
-	}
-
-	function we_clearCache($id) {
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
-
 	}
 
 	function we_load($from=LOAD_MAID_DB) {

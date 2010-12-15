@@ -23,13 +23,13 @@ class DB_Sql
 {
 
 	/* public: connection parameters */
-	var $Host = "";
+	var $Host = '';
 
-	var $Database = "";
+	var $Database = '';
 
-	var $User = "";
+	var $User = '';
 
-	var $Password = "";
+	var $Password = '';
 
 	/* public: configuration parameters */
 	var $Auto_Free = 0; ## Set to 1 for automatic mysql_free_result()
@@ -50,7 +50,7 @@ class DB_Sql
 	/* public: current error number and error text */
 	var $Errno = 0;
 
-	var $Error = "";
+	var $Error = '';
 
 	/* public: this is an api revision, not a CVS revision. */
 	var $type = "mysql";
@@ -63,7 +63,7 @@ class DB_Sql
 	var $Query_ID = 0;
 
 	/* public: constructor */
-	function DB_Sql($query = "")
+	function DB_Sql($query = '')
 	{
 		$this->query($query);
 	}
@@ -80,16 +80,16 @@ class DB_Sql
 	}
 
 	/* public: connection management */
-	function connect($Database = "", $Host = "", $User = "", $Password = "")
+	function connect($Database = '', $Host = '', $User = '', $Password = '')
 	{
 		/* Handle defaults */
-		if ("" == $Database)
+		if ('' == $Database)
 			$Database = $this->Database;
-		if ("" == $Host)
+		if ('' == $Host)
 			$Host = $this->Host;
-		if ("" == $User)
+		if ('' == $User)
 			$User = $this->User;
-		if ("" == $Password)
+		if ('' == $Password)
 			$Password = $this->Password;
 			
 		/* establish connection, select database */
@@ -121,7 +121,7 @@ class DB_Sql
 	function query($Query_String)
 	{
 		/* No empty queries, please, since PHP4 chokes on them. */
-		if ($Query_String == "")
+		if ($Query_String == '')
 		/* The empty query string is passed on from the constructor,
 		* when calling the class without a query, e.g. in situations
 		* like these: '$db = new DB_Sql_Subclass;'
@@ -287,7 +287,7 @@ class DB_Sql
 
 	function f($Name)
 	{
-		return isset($this->Record[$Name]) ? $this->Record[$Name] : "";
+		return isset($this->Record[$Name]) ? $this->Record[$Name] : '';
 	}
 
 	function p($Name)
@@ -421,9 +421,9 @@ class DB_Sql
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
 
-	function table_names($like = "")
+	function table_names($like = '')
 	{
-		$this->query("SHOW TABLES" . (($like != "") ? " LIKE '" . $like . "' " : ""));
+		$this->query("SHOW TABLES" . (($like != '') ? " LIKE '" . $like . "' " : ''));
 		$i = 0;
 		while ($info = mysql_fetch_row($this->Query_ID)) {
 			$return[$i]["table_name"] = $info[0];
@@ -452,4 +452,3 @@ class DB_Sql
 	}
 
 }
-?>

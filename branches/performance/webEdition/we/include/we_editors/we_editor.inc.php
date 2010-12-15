@@ -710,19 +710,6 @@ else {
                     $contents = ob_get_contents();
                     ob_end_clean();
 
-                    // if document cache we must eval the template code, because there is some
-                    // PHP-Code inside which first is printed out and now have to be executed
-                    if($cacheType == "document" && $cacheLifeTime > 0) {
-                    	$GLOBALS['weCacheOutput'] = true;
-                    	ob_start();
-                    	$contents = str_replace("<?xml",'<?php print "<?xml"; ?>',$contents);
-                    	eval("?>".$contents);
-                   		$contents = ob_get_contents();
-                    	ob_end_clean();
-                    	$GLOBALS['weCacheOutput'] = false;
-                    }
-                    weCacheHelper::clearCache(weCacheHelper::getCacheDir());
-
 				    //  SEEM the file
 				    //  but only, if we are not in the template-editor
 				    if($we_doc->ContentType != "text/weTmpl" || ($we_doc->ContentType == "text/weTmpl" && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE)){
