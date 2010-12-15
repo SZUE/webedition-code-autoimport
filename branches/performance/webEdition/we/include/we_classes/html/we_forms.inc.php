@@ -51,11 +51,7 @@ class we_forms {
 		global $l_html_forms;
 
 		// Check if we have to create a uniqe id
-		if ($uniqid) {
-			$_id = uniqid($name . "_");
-		} else {
-			$_id = $name;
-		}
+		$_id = ($uniqid?uniqid($name . "_"):$name);
 
 		$labelonclick = "";
 		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
