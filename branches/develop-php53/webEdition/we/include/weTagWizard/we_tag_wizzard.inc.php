@@ -282,7 +282,7 @@ if ($defaultValueCode) {
 $code = "
 	<fieldset>
 		<div class='legend'><strong>" . $GLOBALS['l_taged']['description'] . "</strong></div>
-		" . $l_we_tag[$weTag->getName()]['description'] . "
+		" . (isset($l_we_tag[$weTag->getName()]) ? $l_we_tag[$weTag->getName()]['description'] :$weTag->getDescription() )."
 	</fieldset>
 	$typeAttribCode
 	$attributesCode

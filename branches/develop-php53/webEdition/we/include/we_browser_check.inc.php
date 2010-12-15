@@ -21,7 +21,7 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 function we_browser_check() {
-	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $MOZ13;
+	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $MOZ13,$SAFARI_3;
 	$SAFARI_WYSIWYG = false;
 
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
@@ -49,6 +49,7 @@ function we_browser_check() {
 			$BROWSER = "SAFARI";
 			$wkV=$_BROWSER->getWebKitVersion();
 			$SAFARI_WYSIWYG = (($wkV > 311 && $wkV < 400) || ($wkV > 411));
+      $SAFARI_3 = ($wkV > 522);
 			break;
 		case 'mozilla':
 		case 'firefox':
