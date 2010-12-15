@@ -70,7 +70,7 @@
 
 			foreach ($_toolsDirs as $_toolDir) {
 				$_metaFile = $_toolDir . '/conf/meta.conf.php';
-				if(file_exists($_metaFile)) {
+				if(is_dir($_toolDir) && file_exists($_metaFile)) {
 					include($_metaFile);
 					if(isset($metaInfo)) {
 						$langStr = '';
