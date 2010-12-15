@@ -160,7 +160,7 @@ class weTagData
 		return new weTagData(
 				$tagName, 
 				isset($GLOBALS['weTagWizard']['attribute']) ? $GLOBALS['weTagWizard']['attribute'] : array(), 
-				$GLOBALS['l_we_tag'][$tagName]['description'], 
+				isset($GLOBALS['l_we_tag'][$tagName]['description']) ? $GLOBALS['l_we_tag'][$tagName]['description'] : isset($GLOBALS['weTagWizard']['weTagData']['description']) ? $GLOBALS['weTagWizard']['weTagData']['description'] : '', 
 				$GLOBALS['weTagWizard']['weTagData']['needsEndtag'], 
 				isset($GLOBALS['l_we_tag'][$tagName]['defaultvalue']) ? $GLOBALS['l_we_tag'][$tagName]['defaultvalue'] : '',
 				isset($GLOBALS['weTagWizard']['weTagData']['noDocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['noDocuLink']:'',
