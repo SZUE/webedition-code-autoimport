@@ -1228,7 +1228,7 @@ function include_all_we_tags(){
 			'setVar','sidebar','textarea','title','tracker','url','userInput','var','write','xmlfeed'
 		);
 		foreach($taginclude AS $fn){
-			$file=$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_'.$file.'.inc.php';
+			$file=$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_'.$fn.'.inc.php';
 			if(!function_exists($fn) && is_file($file)){
 				include_once ($file);
 			}
