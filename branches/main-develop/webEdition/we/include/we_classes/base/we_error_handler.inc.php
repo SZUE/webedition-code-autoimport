@@ -59,7 +59,9 @@ function we_error_handler($in_webEdition = true) {
 	// Get way of how to show errors
 	if ($in_webEdition) {
 		$_display_error = false;
-		if (!defined('WE_ERROR_HANDLER_SET')){define('WE_ERROR_HANDLER_SET',1); }
+		if (!defined('WE_ERROR_HANDLER_SET')){
+			define('WE_ERROR_HANDLER_SET',1);
+		}
 	} else {
 		$_display_error = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
@@ -331,8 +333,6 @@ function error_handler($type, $message, $file, $line, $context) {
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
-
-			// Stop execution
 			break;
 
 		case E_WARNING:
@@ -356,7 +356,6 @@ function error_handler($type, $message, $file, $line, $context) {
 				}
 			}
 
-			// Stop execution
 			break;
 
 		case E_ERROR:
@@ -383,6 +382,7 @@ function error_handler($type, $message, $file, $line, $context) {
 			}
 
 			// Stop execution
+			die();
 			break;
 		case E_DEPRECATED:
 		case E_USER_DEPRECATED:
@@ -405,6 +405,6 @@ function error_handler($type, $message, $file, $line, $context) {
 				break;
 		default:		
 	}
-	//allow php itself to handle the error
-	return false;
+	//Error handled
+	return true;
 }
