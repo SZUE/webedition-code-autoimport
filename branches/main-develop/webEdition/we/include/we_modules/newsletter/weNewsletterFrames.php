@@ -1129,7 +1129,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	}
 
 	function getHTMLNewsletterBlocks() {
-		global $l_newsletter,$IE55,$MOZ13;
+		global $l_newsletter;
 
 		$out = "";
 		$counter = 0;
