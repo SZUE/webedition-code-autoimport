@@ -432,11 +432,12 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "include" :
+						/*BugFix #3514
+  					case "include" :
 						$code = $this->parseIncludeTag($tag, $code, $attribs);
 						$this->ipos++;
 						$this->lastpos = 0;
-						break;
+						break;*/
 					case "controlElement" :
 						$code = $this->parseRemoveTags($tag, $code);
 						$this->ipos++;
@@ -977,7 +978,7 @@ if(isset($weTagListviewCache)) {
 	##########################################################################################
 	##########################################################################################
 	
-
+/*BugFix #3514
 	function parseIncludeTag($tag, $code, $attribs = "")
 	{
 		
@@ -1155,7 +1156,7 @@ EOF;
 		}
 		
 		return $this->replaceTag($tag, $code, $php);
-	}
+	}*/
 
 	##########################################################################################
 	##########################################################################################
