@@ -584,9 +584,8 @@ class liveUpdateFunctions {
 
 		$query = trim($query);
 		
-		$doquery = true;
-		if (strpos($query,'INSERT INTO tblUser')){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
-			$doquery = false;
+		if (strpos($query,'tblUser')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+			return true;
 		}
 		if ($doquery) {
 			// first of all we need to check if there is a tblPrefix
