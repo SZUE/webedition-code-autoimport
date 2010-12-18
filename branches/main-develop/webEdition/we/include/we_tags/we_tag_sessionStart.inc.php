@@ -31,8 +31,7 @@ function we_tag_sessionStart($attribs, $content)
 			
 			if (!isset($_SESSION)) 
 				@session_start();
-			
-			
+						
 			if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["ID"] && ( (isset($_REQUEST["s"]["AutoLogin"]) && !$_REQUEST["s"]["AutoLogin"]) || (isset($_SESSION["webuser"]["AutoLogin"]) && !$_SESSION["webuser"]["AutoLogin"])) ){
 				$GLOBALS["DB_WE"]->query("DELETE FROM " . CUSTOMER_AUTOLOGIN_TABLE . " WHERE AutoLoginID='" . mysql_real_escape_string($_SESSION["webuser"]["AutoLoginID"]) . "'");
 				setcookie("_we_autologin", '',($currenttime-3600),'/');;
@@ -40,9 +39,9 @@ function we_tag_sessionStart($attribs, $content)
 			unset($_SESSION["webuser"]);
 			unset($_SESSION["s"]);
 			unset($_REQUEST["s"]);
-			$_SESSION["webuser"] = array(
-				"registered" => false
-			);
+			$_SESSION["webuser"] = array("registered" => false);
+			
+			$GLOBALS["WE_LOGOUT"] = true;
 		
 		} else {
 			if (!isset($_SESSION))
@@ -73,7 +72,8 @@ function we_tag_sessionStart($attribs, $content)
 									$GLOBALS["DB_WE"]->query("UPDATE " . CUSTOMER_TABLE . " SET AutoLogin='1' WHERE ID='" . abs($_SESSION["webuser"]["ID"]) . "'");
 									$_SESSION["webuser"]["AutoLogin"]=1;
 									$SessionAutologin=1;
-								} 
+								}
+								$GLOBALS["WE_LOGIN"] = true;
 							} else {
 								$_SESSION["webuser"] = array(
 									"registered" => false, "loginfailed" => true
@@ -104,6 +104,7 @@ function we_tag_sessionStart($attribs, $content)
 								$q = "UPDATE ".CUSTOMER_AUTOLOGIN_TABLE." SET AutoLoginID=".mysql_real_escape_string(sha1($_SESSION["webuser"]["AutoLoginID"])).",LastIp=".htmlspecialchars((string) $_SERVER['REMOTE_ADDR']).",LastLogin=NOW() WHERE WebUserID=".abs($_SESSION["webuser"]["ID"])." AND AutoLoginID=".mysql_real_escape_string(sha1($autologinSeek));
 								$GLOBALS["DB_WE"]->query($q);
 								setcookie("_we_autologin", $_SESSION["webuser"]["AutoLoginID"],($currenttime+CUSTOMER_AUTOLOGIN_LIFETIME),'/');
+								$GLOBALS["WE_LOGIN"] = true;
 							} else {
 								$_SESSION["webuser"] = array("registered" => false);
 							}

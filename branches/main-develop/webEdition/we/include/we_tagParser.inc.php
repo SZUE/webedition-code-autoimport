@@ -1930,6 +1930,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 		if (defined("SHOP_TABLE")) {
 			eval('$arr = array(' . $attribs . ');');
 			$deleteshop = we_getTagAttributeTagParser("deleteshop", $arr);
+			$deleteshoponlogout = we_getTagAttributeTagParser("deleteshoponlogout", $arr,"false",true);
 			$shopname = we_getTagAttributeTagParser("shopname", $arr);
 			
 			$php = '<?php
@@ -1937,16 +1938,24 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 	
 				$deleteshop_now = "' . $deleteshop . '";
+				$deleteshoponlogout = "' . $deleteshoponlogout . '";
 				if(!isset($_SESSION)) @session_start();
 	
 				if(isset($_SESSION["' . $shopname . '_save"]) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"]==1 || $deleteshop_now =="1")) { // delete shop
 					unset($_SESSION["' . $shopname . '_save"]);
-					if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ????
+					if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ???? - nowhere
 						header("Location: ".$follow);
 						exit;
 					}
 				}
-	
+				if(isset($GLOBALS["WE_LOGOUT"]) && $GLOBALS["WE_LOGOUT"] && $deleteshoponlogout){
+					unset($_SESSION["' . $shopname . '_save"]);
+					if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ???? - nowhere
+						header("Location: ".$follow);
+						exit;
+					}
+				}
+				
 				$GLOBALS["' . $shopname . '"] = new Basket;
 				$GLOBALS["' . $shopname . '"]->Basket();
 				$GLOBALS["' . $shopname . '"]->setCartProperties( (isset($_SESSION["' . $shopname . '_save"]) ? $_SESSION["' . $shopname . '_save"] : array() ) );

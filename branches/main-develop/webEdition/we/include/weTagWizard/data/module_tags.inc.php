@@ -7,5 +7,5 @@ $GLOBALS['module_tags']['voting'] = array('answers', 'cookie', 'ifNotVote', 'ifN
 $GLOBALS['module_tags']['users'] = array('author');
 $GLOBALS['module_tags']['banner'] = array('banner', 'bannerSelect', 'bannerSum','ifbannerexists');
 $GLOBALS['module_tags']['object'] = array('condition', 'conditionAdd', 'conditionAnd', 'conditionOr', 'ifField', 'ifNotField', 'ifNotObject','ifNotObjectLanguage', 'ifObject', 'ifObjectLanguage','objectLanguage','object','ifobjektexists');
-$GLOBALS['module_tags']['customer'] = array('customer', 'ifLoginFailed', 'ifNotRegisteredUser', 'ifRegisteredUser', 'ifRegisteredUserCanChange', 'registeredUser', 'registerSwitch', 'saveRegisteredUser', 'sessionField', 'sessionLogout','ifcustomerexists');
+$GLOBALS['module_tags']['customer'] = array('customer', 'ifLoginFailed','ifLogin','ifLogout', 'ifNotRegisteredUser', 'ifRegisteredUser', 'ifRegisteredUserCanChange', 'registeredUser', 'registerSwitch', 'saveRegisteredUser', 'sessionField', 'sessionLogout','ifcustomerexists');
 ?>
