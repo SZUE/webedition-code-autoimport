@@ -235,7 +235,7 @@ define("FORMMAIL_VIAWEDOC", 0);
 // Flag if new NAV- entries added from Dokument should be items or folders
 define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "0");
 
-// Default Charset wichtig: klein Leerzeichen nach/vor Komma im define, für Tarball-Setup exakt so stehen lassen
+// Default Charset wichtig: klein Leerzeichen nach/vor Komma im define, fï¿½r Tarball-Setup exakt so stehen lassen
 define("DEFAULT_CHARSET","UTF-8");
 
 // Default setting for hook execution
@@ -293,5 +293,3 @@ define("VERSIONS_ANZAHL", "");
 
 //Versioning Save version only if publishing
 define("VERSIONS_CREATE", 0);
-
-?>
