@@ -21,7 +21,7 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 function we_browser_check() {
-	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $MOZ13,$SAFARI_3;
+	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $IE55, $MOZ13,$SAFARI_3;
 	$SAFARI_WYSIWYG = false;
 
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
@@ -42,7 +42,6 @@ function we_browser_check() {
 		case 'ie':
 			$BROWSER = "IE";
 			$IE55 =($_BROWSER->getBrowserVersion()>=5.5);
-			$IE4 = ($_BROWSER->getBrowserVersion()<5);
 			break;
 		case 'appleWebKit':
 		case 'safari':
@@ -62,17 +61,6 @@ function we_browser_check() {
 	}
 
 
-	if (($BROWSER == "IE") && ($SYSTEM == "WIN")) {
-		$foo = explode(";", $_SERVER["HTTP_USER_AGENT"]);
-		$foo = abs(preg_replace('/[^\d.]/', '', $foo[1]));
-		if ($foo >= 5.5) {
-			$IE55 = true;
-		}
-		if ($foo < 5) {
-			$IE4 = true;
-		}
-	}
-
 #### Erkennung fuer Mozilla >= 1.3
 
 
@@ -86,6 +74,65 @@ function we_browser_check() {
 	$FF = ($_BROWSER->getBrowser()=='firefox'?abs($_BROWSER->getBrowserVersion()):'');
 }
 
-if(!isset($BROWSER)){
+function checkSupportedBrowser() {
+	global $SYSTEM, $BROWSER, $IE55;
+	we_browser_check();
+
+	switch ($SYSTEM) {
+		case 'WIN' :
+			switch ($BROWSER) {
+				case 'IE':
+					if ($IE55) {
+						return true;
+					}
+					break;
+
+				case 'OPERA':
+				case 'SAFARI':
+				case 'NN6':
+					return true;
+			}
+			break;
+
+		case 'MAC':
+			switch ($BROWSER) {
+				case 'OPERA':
+				case 'NN6':
+				case 'SAFARI':
+					return true;
+			}
+			break;
+
+		case 'X11':
+			switch ($BROWSER) {
+				case 'OPERA':
+				case 'NN6':
+					return true;
+			}
+
+			break;
+
+		case 'UNKNOWN':
+			switch ($BROWSER) {
+				case 'IE':
+					if ($IE55) {
+						return true;
+					}
+					break;
+
+				case 'OPERA':
+				case 'NN6':
+				case 'SAFARI':
+					return true;
+			}
+
+			break;
+	}
+
+	return false;
+}
+
+
+if(!isset($BROWSER)||$BROWSER==''){
 	we_browser_check();
 }

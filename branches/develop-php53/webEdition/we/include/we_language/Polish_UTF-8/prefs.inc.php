@@ -388,9 +388,16 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	/**
 	 * HOOKS
 	 */
-	$l_prefs["hooks"] = "Hooks"; // TRANSLATE //TRANSLATE
+	$l_prefs["hooks"] = "Hooks"; // TRANSLATE 
 	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
-	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; 
+	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; //TRANSLATE
+
+	/**
+	 * Backward compatibility
+	 */
+	$l_prefs["backwardcompatibility"] = "Backward compatibility";//TRANSLATE
+	$l_prefs["backwardcompatibility_tagloading"] = "Load all 'old' we_tag functions";//TRANSLATE
+	$l_prefs["backwardcompatibility_tagloading_message"] = "Only necessary if in custom_tags or in PHP code inside templates we_tags are called in the form we_tag_tagname().<br/> Recommended call: we_tag<br/>('tagname',&#36;attribs,&#36;content)";//TRANSLATE
 
 /*****************************************************************************
  * ERROR HANDLING
@@ -527,7 +534,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br /><br />Deactivated modules improve the overall performance of webEdition. <br /><br />For some modules, you have to restart webEdition to activate.<br /><br />the Shop module requires the Customer module, the Workflow module requires the ToDo-Messaging module.";
+	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br />Deactivated modules improve the overall performance of webEdition. <br />For some modules, you have to restart webEdition to activate.<br />The Shop module requires the Customer module, the Workflow module requires the ToDo-Messaging module.";
 
 	
 	$l_prefs["module_activation"]["headline"] = "Module activation"; // TRANSLATE
