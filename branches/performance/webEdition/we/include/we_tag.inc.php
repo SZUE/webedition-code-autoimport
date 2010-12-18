@@ -1070,28 +1070,6 @@ function we_tag_makeMail($attribs, $content) {
 	return '';
 }
 
-//FIXME: remove in next Versions
-function include_all_we_tags(){
-	if(defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS){
-		$taginclude= array('DID','a','author','back','block','calculate','category','categorySelect','checkForm','condition','css','date','dateSelect',
-			'delete','description','docType','field','flashmovie','formfield','hidden','href','icon','ifBack','ifCaptcha','ifCat','ifClient',
-			'ifCurrentDate','ifDoctype','ifEqual','ifField','ifHasChildren','ifHasCurrentEntry','ifHasEntries','ifNotShopField','ifPosition',
-			'ifSearch','ifSelf','ifRegisteredUserCanChange','ifShopField','ifShopFieldEmpty','ifTemplate',
-			'ifVar','ifVarSet','ifWorkspace','img','input','js','keywords','link','linkToSeeMode',
-			'linklist','list','listdir','listviewEnd','navigation','navigationEntries','navigationEntry',
-			'navigationField','navigationWrite','next','options','path','position','printVersion','processDateSelect',
-			'quicktime','registeredUser','returnPage','search','select','sendMail','sessionStart',
-			'setVar','sidebar','textarea','title','tracker','url','userInput','var','write','xmlfeed'
-		);
-		foreach($taginclude AS $fn){
-			$file=$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_'.$fn.'.inc.php';
-			if(!function_exists($fn) && is_file($file)){
-				include_once ($file);
-			}
-		}
-	}
-}
-
 function we_tag_ifshopexists($attribs, $content) {
 	return defined("SHOP_TABLE");
 }
@@ -1114,4 +1092,27 @@ function we_tag_ifbannerexists($attribs, $content) {
 
 function we_tag_ifvotingexists($attribs, $content) {
 	return defined("VOTING_TABLE");
+}
+
+
+//FIXME: remove in next Versions
+function include_all_we_tags(){
+	if(defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS){
+		$taginclude= array('DID','a','author','back','block','calculate','category','categorySelect','checkForm','condition','css','date','dateSelect',
+			'delete','description','docType','field','flashmovie','formfield','hidden','href','icon','ifBack','ifCaptcha','ifCat','ifClient',
+			'ifCurrentDate','ifDoctype','ifEqual','ifField','ifHasChildren','ifHasCurrentEntry','ifHasEntries','ifNotShopField','ifPosition',
+			'ifSearch','ifSelf','ifRegisteredUserCanChange','ifShopField','ifShopFieldEmpty','ifTemplate',
+			'ifVar','ifVarSet','ifWorkspace','img','input','js','keywords','link','linkToSeeMode',
+			'linklist','list','listdir','listviewEnd','navigation','navigationEntries','navigationEntry',
+			'navigationField','navigationWrite','next','options','path','position','printVersion','processDateSelect',
+			'quicktime','registeredUser','returnPage','search','select','sendMail','sessionStart',
+			'setVar','sidebar','textarea','title','tracker','url','userInput','var','write','xmlfeed'
+		);
+		foreach($taginclude AS $fn){
+			$file=$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_'.$fn.'.inc.php';
+			if(!function_exists($fn) && is_file($file)){
+				include_once ($file);
+			}
+		}
+	}
 }

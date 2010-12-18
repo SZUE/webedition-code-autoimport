@@ -480,20 +480,7 @@ class we_tagParser{
 						
 						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
-						
-	
-						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry"||
-										$tagname == "ifshopexists" || $tagname == "ifobjektexists" || $tagname == "ifnewsletterexists" || $tagname == "ifcustomerexists"
-										|| $tagname == "ifbannerexists" || $tagname == "ifvotingexists"
-										) {
-							$code = str_replace(
-									$tag, 
-									'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>',
-									$code);
-							$this->ipos++;
-							$this->lastpos = 0;
-						
-						} else 
+
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
 														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
 														$code = str_replace(
