@@ -1618,7 +1618,7 @@ function mapPermissions() {
 			</script>';
 
 		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',$GLOBALS['l_users']["username"]) : $this->getUserfield("username","username");
-		$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()"','password',240);
+		$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()" autocomplete="off"','password',240);
 
 
 
@@ -1881,7 +1881,7 @@ function mapPermissions() {
 		if(isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["ID"] && $_SESSION["user"]["ID"]==$this->ID && !we_hasPerm("EDIT_PASSWD"))
 			$_password="****************";
 		else
-			$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()"','password',240);
+			$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()" autocomplete="off"','password',240);
 
 		$this->DB_WE->query("SELECT Path FROM ".USER_TABLE." WHERE ID='".$this->ParentID."'");
 
