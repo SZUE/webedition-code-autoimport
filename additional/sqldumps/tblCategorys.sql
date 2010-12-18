@@ -7,5 +7,6 @@ CREATE TABLE tblCategorys (
   IsFolder tinyint(1) default NULL,
   Icon varchar(64) default NULL,
   Catfields longtext NOT NULL,
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY Path (Path)
 ) ENGINE=MyISAM;

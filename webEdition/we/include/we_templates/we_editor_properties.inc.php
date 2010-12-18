@@ -51,6 +51,7 @@ htmlTop();
 		case "text/xml":
 		case "text/css":
 		case "text/js":
+		case "text/htaccess":
 		case "text/plain":
 			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_templates/we_textfile_properties.inc.php");
 			break;

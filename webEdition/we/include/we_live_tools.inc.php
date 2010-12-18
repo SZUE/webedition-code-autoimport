@@ -119,7 +119,7 @@ function checkAndMakeFolder($path)
 		$mod = 0755;
 	}
 	
-	if (!@mkdir($path, $mod)) {
+	if (!@mkdir($path, $mod,true)) {
 		@umask($oldumask);
 		insertIntoErrorLog("Could not create local Folder at we_live_tools.inc.php/checkAndMakeFolder(): '" . $path . "'");
 		return false;
@@ -128,11 +128,9 @@ function checkAndMakeFolder($path)
 	return true;
 }
 
-function insertIntoErrorLog($text)
-{
+function insertIntoErrorLog($text){
 	$DB_WE = new DB_WE();
-	$time = time();
-	$DB_WE->query("INSERT INTO " . ERROR_LOG_TABLE . " (Text,Date) VALUES('" . mysql_real_escape_string($text) . "','$time')");
+	$DB_WE->query('INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES(\'' . mysql_real_escape_string($text) . '\')');
 
 }
 

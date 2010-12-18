@@ -18,8 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_objectLanguage($attribs, $content)
-{
+function we_tag_objectLanguage($attribs, $content){
 	$type = we_getTagAttribute("type", $attribs, "complete");
 	$case = we_getTagAttribute("case", $attribs, "unchanged");
 	$nameTo = we_getTagAttribute("nameto", $attribs);
@@ -33,7 +32,7 @@ function we_tag_objectLanguage($attribs, $content)
 		$lang='';
 	}
 	$out="";
-	
+
 	switch ($type){
 		case "language":
 			$out=substr($lang,0,2);
@@ -52,7 +51,7 @@ function we_tag_objectLanguage($attribs, $content)
 			$out= strtolower ($out);
 			break;
 		default:
-			$out=$out;	
+			$out=$out;
 	}
 
 	switch ($to) {
@@ -77,7 +76,7 @@ function we_tag_objectLanguage($attribs, $content)
 		case "block" :
 		case "self" :
 			$GLOBALS["we_doc"]->setElement($nameTo, $out);
-			break;		
+			break;
 		case "sessionfield" :
 			if (isset($_SESSION["webuser"][$nameTo])){
 				$_SESSION["webuser"][$nameTo] = $out;
@@ -86,8 +85,6 @@ function we_tag_objectLanguage($attribs, $content)
 		case "screen": return $out;
 	}
 	return null;
-	
+
 
 }
-
-?>

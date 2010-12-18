@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * webEdition CMS
  *
@@ -25,16 +25,16 @@ function we_tag_writeVoting($attribs, $content) {
 	$allowredirect = we_getTagAttributeTagParser("allowredirect", $attribs, "", true);
 	$deletesessiondata = we_getTagAttributeTagParser("deletesessiondata", $attribs, "true", true);
 	$writeto = we_getTagAttributeTagParser("writeto", $attribs, "voting");
-	
+
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-	
+
 	if($id) $pattern = '/_we_voting_answer_(' . $id . ')_?([0-9]+)?/';
 	else $pattern = '/_we_voting_answer_([0-9]+)_?([0-9]+)?/';
 
 	$vars = implode(',',array_keys($_REQUEST));
 
 	$_voting = array();
-	
+
 	if(preg_match_all($pattern, $vars, $matches)){
 		foreach ($matches[0] as $key=>$value){
 			$id = $matches[1][$key];
@@ -49,16 +49,16 @@ function we_tag_writeVoting($attribs, $content) {
 			$addFields[$field] = $_REQUEST[$field];
 		}
 	}
-	
-	
+
+
 	if ($deletesessiondata){	unset($_SESSION['_we_voting_sessionData']);}
-	
+
 
 	foreach($_voting as $id=>$value){
 		if(	$writeto =='voting'){
 			$voting = new weVoting($id);
 			if ($voting->IsRequired && implode('',$value) =='') {
-		
+
 				$GLOBALS['_we_voting_status'] = VOTING_ERROR;
 				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
 				if($voting->Log) $voting->logVoting(VOTING_ERROR,$votingsession,'','','');
@@ -72,7 +72,7 @@ function we_tag_writeVoting($attribs, $content) {
 		} else {
 			$voting = new weVoting($id);
 			if ($voting->IsRequired && implode('',$value) =='') {
-				
+
 				$GLOBALS['_we_voting_status'] = VOTING_ERROR;
 				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
 				if($voting->Log) $voting->logVoting(VOTING_ERROR,$votingsession,'','','');
@@ -84,10 +84,10 @@ function we_tag_writeVoting($attribs, $content) {
 				break;
 			}
 			$_SESSION['_we_voting_sessionData'][$id] = array ('value' => $value,'addFields' => $addFields );
-		
+
 		}
-			
-		
+
+
 	}
 	if ($allowredirect && !$GLOBALS["WE_MAIN_DOC"]->InWebEdition && isset($GLOBALS['_we_voting_SuccessorID']) && $GLOBALS['_we_voting_SuccessorID'] > 0) {
 		$mypath = id_to_path($GLOBALS['_we_voting_SuccessorID']);
@@ -101,4 +101,3 @@ function we_tag_writeVoting($attribs, $content) {
 	}
 
 }
-?>

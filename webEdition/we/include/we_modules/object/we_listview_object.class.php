@@ -153,7 +153,7 @@ class we_listview_object extends listviewBase {
 					
 				}
 				else {
-					$_idTail = $this->getIdQuery($_obxTable . ".ID");
+					$_idTail = $this->getIdQuery($_obxTable . ".OF_ID");
 					
 					$ws_tail = "";
 					
@@ -179,7 +179,6 @@ class we_listview_object extends listviewBase {
 					}
 					$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE ".($this->searchable ? " ". $_obxTable . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . $_obxTable.".OF_ID != 0 ".$where_lang.($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$ws_tail.$weDocumentCustomerFilter_tail.$webUserID_tail.$_idTail.$sqlParts['groupBy'].$sqlParts["order"].(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
 				}
-
 				$this->DB_WE->query($q);
 				$this->anz = $this->DB_WE->num_rows();
 	
@@ -234,7 +233,7 @@ class we_listview_object extends listviewBase {
 		if(!$db) $db = new DB_WE();
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = "";
-		$tableInfo = we_objectFile::getSortedTableInfo($classID,true,$db);
+		$tableInfo = we_objectFile::getSortedTableInfo($classID,true,$db,true);
 		foreach($tableInfo as $fieldInfo){
 			if(preg_match('/(.+?)_(.*)/',$fieldInfo["name"],$regs)){
 				$type = $regs[1];
@@ -415,6 +414,13 @@ class we_listview_object extends listviewBase {
 				$this->DB_WE->Record["we_WE_TEXT"] = isset($this->DB_WE->Record["OF_Text"]) ? $this->DB_WE->Record["OF_Text"] : '';
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->Record["OF_ID"];
 				$this->DB_WE->Record["we_wedoc_Category"] = isset($this->DB_WE->Record["OF_Category"]) ? $this->DB_WE->Record["OF_Category"] : '';
+				$this->DB_WE->Record["we_WE_SHOPVARIANTS"]=0;
+				if(isset($this->DB_WE->Record["we_weInternVariantElement"]) ){
+					$ShopVariants = @unserialize ($this->DB_WE->Record["we_weInternVariantElement"]);
+					if(is_array($ShopVariants) && count($ShopVariants)>0){
+						$this->DB_WE->Record["we_WE_SHOPVARIANTS"]= count($ShopVariants);
+					}				
+				}
 				// for seeMode #5317
 				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?$paramName=".$this->DB_WE->Record["OF_ID"];
 				if ($this->customers && $this->DB_WE->Record["we_wedoc_WebUserID"]) {

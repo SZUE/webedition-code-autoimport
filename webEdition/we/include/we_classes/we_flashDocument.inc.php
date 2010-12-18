@@ -405,6 +405,9 @@ class we_flashDocument extends we_binaryDocument
 		//if ($origw != $this->getElement("origwidth")){$this->DocChanged = true;}
 		if($this->getElement("width") =="") {$this->setElement("width",$this->getElement("origwidth"));}
 		if($this->getElement("height")=="") {$this->setElement("height",$this->getElement("origheight"));}
+		if ($this->Icon =='') {
+			$this->Icon = $GLOBALS["WE_CONTENT_TYPES"][$this->ContentType]["Icon"];
+		}
 
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if (parent::we_save($resave)) {

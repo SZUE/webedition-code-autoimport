@@ -65,21 +65,14 @@ if(strstr($sn, '@')) {
 	list($foo,$sn) = explode('@',$sn);
 }
 
-//	unlock everything, when a new window is opened.
+//	unlock everything old, when a new window is opened.
 if(!isset($_REQUEST["we_cmd"][0]) || $_REQUEST["we_cmd"][0] != "edit_include_document"){
-	$DB_WE->query("
-		DELETE
-		FROM ".LOCK_TABLE."
-		WHERE UserID='".abs($_SESSION["user"]["ID"])."'
-	");
+	$DB_WE->query('DELETE FROM '.LOCK_TABLE.'	WHERE `lock`<NOW()');
 }
-$DB_WE->query("
-	UPDATE ".USER_TABLE."
-	SET Ping=0
-	WHERE Ping < ".(time() - (PING_TIME+PING_TOLERANZ))
+$DB_WE->query('
+	UPDATE '.USER_TABLE.'	SET Ping=0
+	WHERE (Ping-'.(PING_TIME + PING_TOLERANZ).')<UNIX_TIMESTAMP(NOW())'
 );
-
-
 
 htmlTop("webEdition - ".$sn." - ".$_SESSION["user"]["Username"]);
 
@@ -1243,7 +1236,7 @@ function we_cmd() {
 			}
 			break;
  		case "initPlugin":
-            	weplugin_wait=new jsWindow("<?php print WEBEDITION_DIR;?>eplugin/weplugin_wait.php?callback="+arguments[1],"weplugin_wait",-1,-1,300,100,true,false,true);
+            	weplugin_wait=new jsWindow("<?php print WEBEDITION_DIR;?>editors/content/eplugin/weplugin_wait.php?callback="+arguments[1],"weplugin_wait",-1,-1,300,100,true,false,true);
 			break;
 		case "edit_settings_newsletter":
 			new jsWindow("<?php print WEBEDITION_DIR;?>we/include/we_modules/newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings","newsletter_settings",-1,-1,600,750,true,false,true);

@@ -29,6 +29,7 @@ $GLOBALS['l_contentTypes']["all_Types"] = "Все файлы";
 $GLOBALS['l_contentTypes']["text/xml"] = "Файлы XML";
 $GLOBALS['l_contentTypes']["text/html"] = "Страница HTML ";
 $GLOBALS['l_contentTypes']["text/plain"] = "Текстовая страница";
+$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess file";//TRANSLATE
 $GLOBALS['l_contentTypes']["text/webedition"] = "Страница webEdition";
 $GLOBALS['l_contentTypes']["image/*"] = "Графика";
 $GLOBALS['l_contentTypes']["text/weTmpl"] = "Шаблон webEdition";

@@ -27,5 +27,3 @@ function we_tag_ifSendMail($attribs, $content)
 		return false;
 	}
 }
-
-?>

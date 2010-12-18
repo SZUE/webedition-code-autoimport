@@ -33,6 +33,7 @@ $l_perm["workpermissions"]["NEW_HTML"] = "L'utilisateur a le droit de créer des
 $l_perm["workpermissions"]["NEW_FLASH"] = "L'utilisateur a le droit de créer des vidéos Flash";
 $l_perm["workpermissions"]["NEW_QUICKTIME"] = "L'utilisateur a le droit de créer des films quicktime";
 $l_perm["workpermissions"]["NEW_JS"] = "L'utilisateur a le droit de créer des fichiers-JavaScript";
+$l_perm["workpermissions"]["NEW_HTACCESS"] = "The user is allowed to create .htaccess files";//TRANSLATE
 $l_perm["workpermissions"]["NEW_CSS"] = "L'utilisateur a le droit de créer des feuilles de style CSS";
 $l_perm["workpermissions"]["NEW_TEXT"] = "L'utilisateur a le droit de créer des Textes Clair";
 $l_perm["workpermissions"]["NEW_SONSTIGE"] = "L'utilisateur a le droit de créer des document divers";

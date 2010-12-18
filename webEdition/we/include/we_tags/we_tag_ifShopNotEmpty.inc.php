@@ -19,7 +19,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
 
 /**
  * This functions checks if the shops basket is not empty
@@ -29,16 +29,16 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/w
  * @return         bool
  */
 
-function we_tag_ifShopNotEmpty($attribs) {
-	$foo = attributFehltError($attribs,"shopname","ifShopNotEmpty");
+function we_tag_ifShopNotEmpty($attribs,$content) {
+	$foo = attributFehltError($attribs,'shopname','ifShopNotEmpty');
 
 	if ($foo) {
 		return $foo;
 	}
 
-	$shopname = we_getTagAttribute("shopname",$attribs);
+	$shopname = we_getTagAttribute('shopname',$attribs);
 
-	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : "";
+	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : '';
 
 	if ($basket) {
 		$shoppingItems = $basket->getShoppingItems();
@@ -49,5 +49,3 @@ function we_tag_ifShopNotEmpty($attribs) {
 		return false;
 	}
 }
-
-?>

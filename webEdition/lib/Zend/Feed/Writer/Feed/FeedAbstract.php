@@ -16,7 +16,7 @@
  * @package    Zend_Feed_Writer
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Feed.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @version    $Id: FeedAbstract.php 23090 2010-10-12 17:28:16Z padraic $
  */
 
 /**
@@ -48,6 +48,9 @@ require_once 'Zend/Feed/Writer/Renderer/Feed/Atom.php';
  * @see Zend_Feed_Writer_Renderer_Feed_Rss
  */
 require_once 'Zend/Feed/Writer/Renderer/Feed/Rss.php';
+
+require_once 'Zend/Validate/EmailAddress.php';
+
 
 /**
  * @category   Zend
@@ -171,7 +174,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     public function setDateCreated($date = null)
     {
         $zdate = null;
-        if (is_null($date)) {
+        if ($date === null) {
             $zdate = new Zend_Date;
         } elseif (ctype_digit($date) && strlen($date) == 10) {
             $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
@@ -192,7 +195,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     public function setDateModified($date = null)
     {
         $zdate = null;
-        if (is_null($date)) {
+        if ($date === null) {
             $zdate = new Zend_Date;
         } elseif (ctype_digit($date) && strlen($date) == 10) {
             $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
@@ -213,7 +216,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     public function setLastBuildDate($date = null)
     {
         $zdate = null;
-        if (is_null($date)) {
+        if ($date === null) {
             $zdate = new Zend_Date;
         } elseif (ctype_digit($date) && strlen($date) == 10) {
             $zdate = new Zend_Date($date, Zend_Date::TIMESTAMP);
@@ -300,11 +303,44 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     public function setId($id)
     {
         if ((empty($id) || !is_string($id) || !Zend_Uri::check($id)) &&
-        !preg_match("#^urn:[a-zA-Z0-9][a-zA-Z0-9\-]{1,31}:([a-zA-Z0-9\(\)\+\,\.\:\=\@\;\$\_\!\*\-]|%[0-9a-fA-F]{2})*#", $id)) {
+        !preg_match("#^urn:[a-zA-Z0-9][a-zA-Z0-9\-]{1,31}:([a-zA-Z0-9\(\)\+\,\.\:\=\@\;\$\_\!\*\-]|%[0-9a-fA-F]{2})*#", $id)
+        && !$this->_validateTagUri($id)) {
             require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('Invalid parameter: parameter must be a non-empty string and valid URI/IRI');
         }
         $this->_data['id'] = $id;
+    }
+    
+    /**
+     * Validate a URI using the tag scheme (RFC 4151)
+     *
+     * @param string $id
+     * @return bool
+     */
+    protected function _validateTagUri($id)
+    {
+        if (preg_match('/^tag:(?<name>.*),(?<date>\d{4}-?\d{0,2}-?\d{0,2}):(?<specific>.*)(.*:)*$/', $id, $matches)) {
+            $dvalid = false;
+            $nvalid = false;
+            $date = $matches['date'];
+            $d6 = strtotime($date);
+            if ((strlen($date) == 4) && $date <= date('Y')) {
+                $dvalid = true;
+            } elseif ((strlen($date) == 7) && ($d6 < strtotime("now"))) {
+                $dvalid = true;
+            } elseif ((strlen($date) == 10) && ($d6 < strtotime("now"))) {
+                $dvalid = true;
+            }
+            $validator = new Zend_Validate_EmailAddress;
+            if ($validator->isValid($matches['name'])) {
+                $nvalid = true;
+            } else {
+                $nvalid = $validator->isValid('info@' . $matches['name']);
+            }
+            return $dvalid && $nvalid;
+
+        }
+        return false;
     }
 
     /**
@@ -324,6 +360,24 @@ class Zend_Feed_Writer_Feed_FeedAbstract
             . ' must be a non-empty string and valid URI/IRI');
         }
         $this->_data['image'] = $data;  
+    }
+    
+    /**
+     * Set a feed icon (URI at minimum). Parameter is a single array with the
+     * required key 'uri'. Only 'uri' is required and used for Atom rendering.
+     * RSS does not support an Icon tag except via Atom 1.0 as an extension.
+     *
+     * @param array $data
+     */
+    public function setIcon(array $data)
+    {
+        if (empty($data['uri']) || !is_string($data['uri'])
+        || !Zend_Uri::check($data['uri'])) {
+            require_once 'Zend/Feed/Exception.php';
+            throw new Zend_Feed_Exception('Invalid parameter: parameter \'uri\''
+            . ' must be a non-empty string and valid URI/IRI');
+        }
+        $this->_data['icon'] = $data;  
     }
 
     /**
@@ -616,6 +670,19 @@ class Zend_Feed_Writer_Feed_FeedAbstract
             return null;
         }
         return $this->_data['image'];
+    }
+    
+    /**
+     * Get the feed icon URI
+     *
+     * @return array
+     */
+    public function getIcon()
+    {
+        if (!array_key_exists('icon', $this->_data)) {
+            return null;
+        }
+        return $this->_data['icon'];
     }
 
     /**

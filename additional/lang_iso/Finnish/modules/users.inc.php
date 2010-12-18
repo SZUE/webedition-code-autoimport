@@ -132,5 +132,11 @@ $l_users["delete_group_user_same"] = "Et voi poistaa omaa käyttäjäryhmääsi";
 $l_users["login_denied"] = "Pääsy kielletty";
 $l_users["workspaceFieldError"] = "VIRHE: Virheellinen työtilamerkintä!";
 $l_users["noGroupError"] = "Virhe: Virheellinen merkintä ryhmän kentässä!";
-
+$l_users["CreatorID"] = "Created by: ";// TRANSLATE
+$l_users["CreateDate"] = "Created at: ";// TRANSLATE
+$l_users["ModifierID"] = "Modified by: ";// TRANSLATE
+$l_users["ModifyDate"] = "Modified at: ";// TRANSLATE
+$l_users["lastPing"] = "Last Ping: ";// TRANSLATE
+$l_users["lostID"] = "ID: ";// TRANSLATE
+$l_users["lostID2"] = " (deleted)";// TRANSLATE
 ?>

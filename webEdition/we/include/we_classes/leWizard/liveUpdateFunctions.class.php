@@ -18,7 +18,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
+/**
+ * This class contains all functions needed for the update process
+ * TBD if we divide this class in several classes
+ */
 class liveUpdateFunctions {
 
 
@@ -47,7 +50,6 @@ class liveUpdateFunctions {
 		$content = $this->checkReplaceDocRoot($content);
 
 		return $content;
-
 	}
 
 
@@ -63,7 +65,6 @@ class liveUpdateFunctions {
 
 		$content = str_replace($needle, $replace, $content);
 		return $content;
-
 	}
 
 	/**
@@ -83,7 +84,6 @@ class liveUpdateFunctions {
 			$content = str_replace('$GLOBALS["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
-
 	}
 
 	/*
@@ -98,14 +98,10 @@ class liveUpdateFunctions {
 	function getFilesOfDir(&$allFiles, $baseDir) {
 
 		if (file_exists($baseDir)) {
-
 			$dh = opendir($baseDir);
 			while( $entry = readdir($dh) ){
-
 				if( $entry != "" && $entry != "." && $entry != ".." ){
-
 					$_entry = $baseDir . "/" . $entry;
-
 		            if( !is_dir( $_entry ) ){
 		                $allFiles[] = $_entry;
 		            }
@@ -117,7 +113,6 @@ class liveUpdateFunctions {
 			}
 			closedir($dh);
 		}
-
 	}
 
 	/**
@@ -137,19 +132,14 @@ class liveUpdateFunctions {
 
 		$dh = opendir($dir);
 		if ($dh) {
-
 			while( $entry = readdir($dh) ){
-
 				if( $entry != "" && $entry != "." && $entry != ".." ){
-
 					$_entry = $dir . "/" . $entry;
-
 					if (is_dir($_entry)) {
 						$this->deleteDir($_entry);
 					} else {
 						unlink($_entry);
 					}
-
 				}
 			}
 			closedir($dh);
@@ -168,14 +158,13 @@ class liveUpdateFunctions {
 	function getFileContent($filePath) {
 
 		$content = '';
-
-		if ($fh = fopen($filePath, 'rb')) {
+		$fh = fopen($filePath, 'rb');
+		if ($fh) {
 			$content = fread($fh, filesize($filePath));
 			fclose($fh);
 		}
 
 		return $content;
-
 	}
 
 	/**
@@ -188,16 +177,20 @@ class liveUpdateFunctions {
 	function filePutContent($filePath, $newContent) {
 
 		if ($this->checkMakeDir( dirname($filePath) )) {
-
-			if ($fh = fopen($filePath, 'wb')) {
-
+			$fh = fopen($filePath, 'wb');
+			if ($fh) {
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
+				if(!chmod($filePath, 0755)) {
+					return false;
+					
+				}
 				return true;
+
 			}
+
 		}
 		return false;
-
 	}
 
 	/**
@@ -227,7 +220,6 @@ class liveUpdateFunctions {
 		} else {
 			$preDir = '';
 			$dir = $dirPath;
-
 		}
 
 		$pathArray = explode('/', $dir);
@@ -238,35 +230,29 @@ class liveUpdateFunctions {
 			if($pathArray[$i] != "" && !is_dir($path)){
 				if( !(file_exists($path) || mkdir($path, $mod)) ){
 					return false;
-
 				}
-
 			}
 			$path .= "/";
-
 		}
+		
+		if(!is_writable($dirPath)) {
 		if(!chmod($dirPath, $mod)) {
 			return false;
-
+		}
 		}
 		return true;
-
 	}
 
 	/**
 	 * @param string $file
-	 * @return boolean
+	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file) {
-
-		if ( @unlink($file) ) {
-			return true;
-
+		if(file_exists($file)){
+			return @unlink($file);
 		} else {
-			return false;
-
+			return true;
 		}
-
 	}
 
 	/**
@@ -274,26 +260,32 @@ class liveUpdateFunctions {
 	 *
 	 * @param string $source
 	 * @param string $destination
-	 * @return boolean
+	 * @return boolean false if move was not successful
 	 */
 	function moveFile($source, $destination) {
 
+		if($source==$destination){
+			return true;
+		}
+
 		if ($this->checkMakeDir(dirname($destination))) {
-
-			$this->deleteFile($destination);
-			if (rename($source, $destination)) {
+			if($this->deleteFile($destination)){
+				//rename seems to have problems - we do it old school way: copy, on success delete
+				//return rename($source, $destination);
+				if(copy($source, $destination)){
+					$this->deleteFile($source);
+					//should we handle file deletion?
 				return true;
-
+				}else{
+					return false;
+				}
 			} else {
 				return false;
-
 			}
 
 		} else {
 			return false;
-
 		}
-
 	}
 
 	/**
@@ -307,19 +299,13 @@ class liveUpdateFunctions {
 		$pattern = "/\.([^\..]+)$/";
 
 		if (preg_match($pattern, $path, $matches)) {
-
 			$ext = strtolower($matches[1]);
-
 			if ( ($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql') ) {
 				return false;
-
 			}
-
 		}
 		return true;
-
 	}
-
 
 	/**
 	 * This file searchs $needle in given file and replaces it with $replace
@@ -338,13 +324,11 @@ class liveUpdateFunctions {
 		$replace = $this->decodeCode($replace);
 
 		if (file_exists($filePath)) {
-
 			$oldContent = $this->getFileContent($filePath);
-
 			$replace = $this->checkReplaceDocRoot($replace);
-
 			if ($needle) {
 				$newContent = ereg_replace($needle, $replace, $oldContent);
+
 			} else {
 				$newContent = $replace;
 			}
@@ -422,17 +406,10 @@ class liveUpdateFunctions {
 	 * @return array
 	 */
 	function getKeysFromTable($tableName) {
-
 		$db = new le_MySQL_DB();
-
 		$keysOfTable = array();
-
-		$db->query("SHOW INDEX FROM ".mysql_real_escape_string($tableName)."");
-
+		$db->query("SHOW INDEX FROM $tableName");
 		while ($db->next_record()) {
-
-			$indexType = '';
-
 			if ($db->f('Key_name') == 'PRIMARY') {
 				$indexType = 'PRIMARY';
 			} else if ( $db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT' ) {// this also depends from mysqlVersion
@@ -443,9 +420,10 @@ class liveUpdateFunctions {
 				$indexType = 'INDEX';
 			}
 
-			if (!isset($keysOfTable[$db->f('Column_name')]) || !in_array($indexType, $keysOfTable[$db->f('Column_name')])) {
-				$keysOfTable[$db->f('Column_name')][] = $indexType;
+			if (!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])) {
+				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
 			}
+			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')]=$db->f('Column_name').($db->f('Sub_part')?'('.$db->f('Sub_part').')':'');
 		}
 
 		return $keysOfTable;
@@ -466,31 +444,26 @@ class liveUpdateFunctions {
 
 		foreach ($fields as $fieldName => $fieldInfo) {
 
-			$null = '';
 			$extra = '';
 			$default = '';
 
-			if ($fieldInfo['Null']) {
-				$null = ' NULL';
-			} else {
-				$null = ' NOT NULL';
-			}
+           $null = (strtoupper($fieldInfo['Null']) == "YES"?' NULL':' NOT NULL');
 
-			if ($fieldInfo['Default']) {
-				$default = ' default \'' . $fieldInfo['Default'] . '\'';
+           if (($fieldInfo['Default']) != "") {
+						 $default ='DEFAULT '.(($fieldInfo['Default']) == 'CURRENT_TIMESTAMP'?'CURRENT_TIMESTAMP':'\'' . $fieldInfo['Default'] . '\'');
 			} else {
-				if ($fieldInfo['Null']) {
-					$default = ' default NULL';
+               if (strtoupper($fieldInfo['Null']) == "YES") {
+                   $default = ' DEFAULT NULL';
 				}
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
 
 			if ($isNew) {
 
-				$queries[] = "ALTER TABLE ".mysql_real_escape_string($tableName)." ADD " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
 
-				$queries[] = "ALTER TABLE ".mysql_real_escape_string($tableName)." CHANGE " . $fieldInfo['Field'] . " " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
+				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
 		return $queries;
@@ -504,26 +477,21 @@ class liveUpdateFunctions {
 	 * @param boolean $isNew
 	 * @return array
 	 */
-	function getAlterTableForKeys($fields, $tableName, $isNew=true) {
-
+	function getAlterTableForKeys($fields, $tableName, $isNew) {
 		$queries = array();
 
 		foreach ($fields as $key => $indexes) {
 
-			for ($i=0; $i<sizeof($indexes); $i++) {
+			array_walk($indexes,'addslashes');
 
-				$index = '';
-				switch ($indexes[$i]) {
-					case 'PRIMARY':
-						$index = 'PRIMARY KEY';
-					break;
-					default:
-						$index = strtoupper($indexes[$i]);
-					break;
+			$type=$indexes['index'];
+			if($type=='PRIMARY'){
+				$key='KEY';
 				}
 
-				$queries[] = "ALTER TABLE ".mysql_real_escape_string($tableName)." ADD " . $index . " ($key)";
-			}
+			unset($indexes['index']);
+
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
 		}
 		return $queries;
 	}
@@ -582,24 +550,25 @@ class liveUpdateFunctions {
 	function executeQueriesInFiles($path) {
 
 		if ($this->isInsertQueriesFile($path)) {
-
 			$success = true;
-
-			if ($queryArray = file($path)) {
-
+			$queryArray = file($path);
+			if ($queryArray) {
 				foreach ($queryArray as $query) {
-
 					if (trim($query)) {
-						if (!$this->executeUpdateQuery($query)) {
-							$success = false;
-						}
+						$success &= $this->executeUpdateQuery($query);
 					}
 				}
 			}
 
 		} else {
 			$content = $this->getFileContent($path);
-			$success = $this->executeUpdateQuery($content);
+			$content = $this->getFileContent($path);
+			$queries = explode("/* query separator */",$content);
+			//$success = $this->executeUpdateQuery($content);
+			$success = true;
+			foreach($queries as $query) {
+				$success &= $this->executeUpdateQuery($query);
+			}
 		}
 		return $success;
 	}
@@ -623,13 +592,33 @@ class liveUpdateFunctions {
 
 			$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+
+			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
 
-
-
+			// second, we need to check if there is a collation
+			if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
+				if(eregi("^CREATE TABLE ", $query)) {
+					$Charset = DB_CHARSET;
+					$Collation = DB_COLLATION;
+					if($Charset == 'UTF-8'){//#4661 
+						$Charset='utf8';
+					}
+					if($Collation == 'UTF-8'){//#4661 
+						$Collation='utf8_general_ci';
+					}
+					$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
+				}
+	
+			}
+		
 		if ($db->query($query) ) {
 			return true;
-
 		} else {
 
 			switch ($db->Errno) {
@@ -703,13 +692,20 @@ class liveUpdateFunctions {
 
 							// determine new keys
 							$addKeys = array();
+							$changedKeys = array();
 							foreach ($newTableKeys as $keyName => $indexes) {
 
 								if (isset($origTableKeys[$keyName])) {
 
-									for ($i=0;$i<sizeof($indexes);$i++) {
+									if($origTableKeys[$keyName]['index'] != $indexes['index']){
+										$changedKeys[$keyName] = $indexes;
+										continue;
+									}
+
+									for ($i=1;$i<sizeof($indexes);$i++) {
 										if (!in_array($indexes[$i], $origTableKeys[$keyName])) {
-											$addKeys[$keyName][] = $indexes[$i];
+											$changedKeys[$keyName] = $indexes;
+											break;
 										}
 									}
 								} else {
@@ -731,6 +727,10 @@ class liveUpdateFunctions {
 							// get all queries to change existing keys
 							if (sizeof($addKeys)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
+							}
+
+							if (sizeof($changedKeys)) {
+								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 							}
 
 							if (sizeof($alterQueries)) {
@@ -842,4 +842,3 @@ class liveUpdateFunctions {
 //		ob_end_clean();
 	}
 }
-?>

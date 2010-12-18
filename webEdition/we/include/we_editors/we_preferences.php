@@ -77,6 +77,7 @@ $global_config[] = array('define("WE_THUMBNAIL_DIRECTORY",', '// Directory in wh
 // Variables for error handling
 $global_config[] = array('define("WE_ERROR_HANDLER",', '// Show errors that occur in webEdition' . "\n" . 'define("WE_ERROR_HANDLER", 0);');
 $global_config[] = array('define("WE_ERROR_NOTICES",', '// Handle notices' . "\n" . 'define("WE_ERROR_NOTICES", 0);');
+$global_config[] = array('define("WE_ERROR_DEPRECATED",', '// Handle deprecated warnings' . "\n" . 'define("WE_ERROR_DEPRECATED", 0);');
 $global_config[] = array('define("WE_ERROR_WARNINGS",', '// Handle warnings' . "\n" . 'define("WE_ERROR_WARNINGS", 0);');
 $global_config[] = array('define("WE_ERROR_ERRORS",', '// Handle errors' . "\n" . 'define("WE_ERROR_ERRORS", 0);');
 $global_config[] = array('define("WE_ERROR_SHOW",', '// Show errors' . "\n" . 'define("WE_ERROR_SHOW", 0);');
@@ -95,6 +96,7 @@ $global_config[] = array('define("WE_PHP_DEFAULT",', '// Default setting for php
 // hooks
 $global_config[] = array('define("EXECUTE_HOOKS",', '// Default setting for hook execution' . "\n" . 'define("EXECUTE_HOOKS", false);');
 
+$global_config[] = array('define("INCLUDE_ALL_WE_TAGS",', '// Default setting for tag inclusion' . "\n" . 'define("INCLUDE_ALL_WE_TAGS", false);');
 // xhtml
 $global_config[] = array('define("XHTML_DEFAULT",', '// Default setting for xml attribute' . "\n" . 'define("XHTML_DEFAULT", false);');
 $global_config[] = array('define("XHTML_DEBUG",', '// Enable XHTML debug' . "\n" . 'define("XHTML_DEBUG", false);');
@@ -146,6 +148,9 @@ $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_NAMES",', '// Comma 
 //default charset
 $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
 
+//countries
+$global_config[] = array('define("WE_COUNTRIES_TOP",', '// top countries' . "\n" . 'define("WE_COUNTRIES_TOP", "DE,AT,CH");');
+$global_config[] = array('define("WE_COUNTRIES_SHOWN",', '// other shown countries' . "\n" . 'define("WE_COUNTRIES_SHOWN", "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");');
 
 /*****************************************************************************
  * FUNCTIONS
@@ -294,6 +299,18 @@ function get_value($settingvalue) {
 			break;
 
 		/*********************************************************************
+		 * COUNRIES
+		 *********************************************************************/
+
+		case "countries_top":		
+			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
+			break;
+
+		case "countries_shown":
+			return defined("WE_COUNTRIES_SHOWN") ? WE_COUNTRIES_SHOWN : "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY";
+			break;
+
+		/*********************************************************************
 		 * COCKPIT
 		 *********************************************************************/
 
@@ -414,6 +431,9 @@ function get_value($settingvalue) {
 		case "auth_password":
 			return defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "";
 			break;
+			
+		case "backwardcompatibility_tagloading":
+			return defined("INCLUDE_ALL_WE_TAGS") ? INCLUDE_ALL_WE_TAGS : 0;
 
 		/*********************************************************************
 		 * ERROR HANDLING
@@ -425,6 +445,10 @@ function get_value($settingvalue) {
 
 		case "error_handling_notices":
 			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : false;
+			break;
+		
+		case "error_handling_deprecated":
+			return defined("WE_ERROR_DEPRECATED") ? WE_ERROR_DEPRECATED : false;
 			break;
 
 		case "error_handling_warnings":
@@ -745,6 +769,9 @@ function get_value($settingvalue) {
 		case "version_text/plain":
 			return (defined("VERSIONING_TEXT_PLAIN")) ? VERSIONING_TEXT_PLAIN : 0;
 			break;
+		case "version_text/htaccess":
+			return (defined("VERSIONING_TEXT_HTACCESS")) ? VERSIONING_TEXT_HTACCESS : 0;
+			break;
 		case "version_text/weTmpl": //#4120
 			return (defined("VERSIONING_TEXT_WETMPL")) ? VERSIONING_TEXT_WETMPL : 0;
 			break;
@@ -814,6 +841,29 @@ function remember_value($settingvalue, $settingname) {
 	$_update_prefs = false;
 	if (isset($settingvalue) && ($settingvalue !== null || $settingname=='$_REQUEST["we_tracker_dir"]' || $settingname=='$_REQUEST["ui_sidebar_disable"]' || $settingname=='$_REQUEST["smtp_halo"]' || $settingname=='$_REQUEST["smtp_timeout"]')) {
 		switch ($settingname) {
+		
+		
+			/*****************************************************************
+			 * Countries
+			 *****************************************************************/
+
+			case '$_REQUEST["countries_top"]':
+				
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_TOP", $settingvalue);
+
+				$_update_prefs = true;
+				break;
+			
+			case '$_REQUEST["countries_shown"]':
+				
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_SHOWN", $settingvalue);
+
+				$_update_prefs = true;
+				break;
+
+
 			/*****************************************************************
 			 * WINDOW DIMENSIONS
 			 *****************************************************************/
@@ -1364,6 +1414,23 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = true;
 				break;
+				
+			case '$_REQUEST["error_handling_deprecated"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+				if ($settingvalue == 0) {
+					if (WE_ERROR_DEPRECATED == 1) {
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 0);
+					}
+				} else if ($settingvalue == 1) {
+					if (WE_ERROR_DEPRECATED == 0) {
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 1);
+					}
+				}
+
+				$_update_prefs = true;
+				break;
 
 			case '$_REQUEST["error_handling_warnings"]':
 
@@ -1727,6 +1794,14 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+			
+			case '$_REQUEST["backwardcompatibility_tagloading"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "INCLUDE_ALL_WE_TAGS", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 				
 			/*****************************************************************
 			 * Validation
@@ -1973,6 +2048,12 @@ $_we_active_integrated_modules = array();
 			case '$_REQUEST["version_text/plain"]':
 				$_update_prefs = false;
 				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_PLAIN", $settingvalue,'Versioning status for ContentType text/plain ')) {
+					$_update_prefs = true;
+				}
+				break;
+			case '$_REQUEST["version_text/htaccess"]':
+				$_update_prefs = false;
+				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_HTACCESS", $settingvalue,'Versioning status for ContentType text/htaccess ')) {
 					$_update_prefs = true;
 				}
 				break;
@@ -2307,6 +2388,14 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = true;
 				break;
+			
+			case '$_REQUEST["error_handling_deprecated"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 0);
+
+				$_update_prefs = true;
+				break;
 
 			case '$_REQUEST["we_error_handler"]':
 
@@ -2496,6 +2585,18 @@ function save_all_values() {
 		we_writeLanguageConfig($_REQUEST['locale_default'], explode(",", $_REQUEST['locale_locales']));
 
 	}
+	
+	/*************************************************************************
+	 * Countries
+	 *************************************************************************/
+
+	if(isset($_REQUEST['countries']) ) {
+	    $countries_top=array_keys($_REQUEST['countries'],2);
+		$countries_shown=array_keys($_REQUEST['countries'],1);
+		remember_value(implode(',',$countries_top), '$_REQUEST["countries_top"]');
+		remember_value(implode(',',$countries_shown), '$_REQUEST["countries_shown"]');
+	}
+	
 	/*************************************************************************
 	 * DEFAULT_CHARSET
 	 *************************************************************************/
@@ -2578,6 +2679,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["thumbnail_dir"]) ? $_REQUEST["thumbnail_dir"] : null, '$_REQUEST["thumbnail_dir"]') || $_update_prefs;
         $_update_prefs = remember_value(isset($_REQUEST["we_tracker_dir"]) ? $_REQUEST["we_tracker_dir"] : null, '$_REQUEST["we_tracker_dir"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, '$_REQUEST["execute_hooks"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["backwardcompatibility_tagloading"]) ? $_REQUEST["backwardcompatibility_tagloading"] : null, '$_REQUEST["backwardcompatibility_tagloading"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_entries_from_document"]) ? $_REQUEST["navigation_entries_from_document"] : null, '$_REQUEST["navigation_entries_from_document"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, '$_REQUEST["navigation_rules_continue_after_first_match"]') || $_update_prefs;
@@ -2609,6 +2711,7 @@ function save_all_values() {
 			$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, '$_REQUEST["error_handling_errors"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_handling_warnings"]) ? $_REQUEST["error_handling_warnings"] : null, '$_REQUEST["error_handling_warnings"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_handling_notices"]) ? $_REQUEST["error_handling_notices"] : null, '$_REQUEST["error_handling_notices"]') || $_update_prefs;
+			$_update_prefs = remember_value(isset($_REQUEST["error_handling_deprecated"]) ? $_REQUEST["error_handling_deprecated"] : null, '$_REQUEST["error_handling_deprecated"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_display_errors"]) ? $_REQUEST["error_display_errors"] : null, '$_REQUEST["error_display_errors"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_log_errors"]) ? $_REQUEST["error_log_errors"] : null, '$_REQUEST["error_log_errors"]') || $_update_prefs;
 			$_update_prefs = remember_value(isset($_REQUEST["error_mail_errors"]) ? $_REQUEST["error_mail_errors"] : null, '$_REQUEST["error_mail_errors"]') || $_update_prefs;
@@ -2694,6 +2797,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/js"]) ? $_REQUEST["version_text/js"] : '0', '$_REQUEST["version_text/js"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/css"]) ? $_REQUEST["version_text/css"] : '0', '$_REQUEST["version_text/css"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/plain"]) ? $_REQUEST["version_text/plain"] : '0', '$_REQUEST["version_text/plain"]');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/htaccess"]) ? $_REQUEST["version_text/htaccess"] : '0', '$_REQUEST["version_text/htaccess"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/weTmpl"]) ? $_REQUEST["version_text/weTmpl"] : '0', '$_REQUEST["version_text/weTmpl"]');//#4120
 		$_update_prefs = remember_value(isset($_REQUEST["version_application/x-shockwave-flash"]) ? $_REQUEST["version_application/x-shockwave-flash"] : '0', '$_REQUEST["version_application/x-shockwave-flash"]');
 		$_update_prefs = remember_value(isset($_REQUEST["version_video/quicktime"]) ? $_REQUEST["version_video/quicktime"] : '0', '$_REQUEST["version_video/quicktime"]');
@@ -2813,7 +2917,7 @@ function check_global_config($values) {
  */
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_prefs, $DB_WE, $BROWSER, $SYSTEM, $MOZ_AX, $MOZ13, $NET6;
+	global $l_alert, $l_prefs, $DB_WE, $BROWSER, $SYSTEM, $MOZ13, $NET6;
 	$yuiSuggest =& weSuggest::getInstance();
 
 	$we_button = new we_button();
@@ -3503,7 +3607,44 @@ function build_dialog($selected_setting = "ui") {
 			$_dialog = create_dialog("", $l_prefs["tab_cache"], $_settings);
 
 			break;
+		case "countries":
+        	$_settings = array();
+            $_information = htmlAlertAttentionBox($l_prefs["countries_information"], 2, 450, false);
 
+			array_push($_settings, array("headline" => $l_prefs["countries_headline"], "html" => $_information, "space" => 0,'noline'=>1));
+            $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+            $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+            $zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
+            $oldLocale= setlocale(LC_ALL, NULL);
+            setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
+            asort($zendsupported,SORT_LOCALE_STRING );
+            setlocale(LC_ALL, $oldLocale);
+            $countries_top = explode(',',get_value('countries_top'));
+            $countries_shown = explode(',',get_value('countries_shown'));
+            $tabC = new we_htmlTable(array("border"=>"1", "cellpadding"=>"2", "cellspacing"=>"0"), $rows_num = 1, $cols_num = 4);
+            $i=0;
+            $tabC->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_country"]);
+            $tabC->setCol($i, 1, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_top"]);
+            $tabC->setCol($i, 2, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_show"]);
+            $tabC->setCol($i, 3, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $l_prefs["countries_noshow"]);
+            foreach ($zendsupported as $countrycode => $country) {
+            	$i++;
+            	$tabC->addRow();
+                $tabC->setCol($i, 0, array("class"=>"defaultfont"), CheckAndConvertISObackend($country));
+                $tabC->setCol($i, 1, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="2" '.(in_array($countrycode,$countries_top) ? 'checked':'').' > ');
+                $tabC->setCol($i, 2, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="1" '.(in_array($countrycode,$countries_shown) ? 'checked':'').' > ');
+            	$tabC->setCol($i, 3, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="0" '.(!in_array($countrycode,$countries_top)&& !in_array($countrycode,$countries_shown)  ? 'checked':'').' > ');
+            }
+            
+
+			array_push($_settings, array("headline" => "", "html" => $tabC->getHtmlCode(), "space" => 0,'noline'=>1));
+        
+        	// Build dialog element if user has permission
+			if (we_hasPerm("EDIT_SETTINGS_DEF_EXT")) {
+				$_dialog = create_dialog("", $l_prefs["tab_countries"], $_settings);
+			}
+			break;
 
 
 		case "language":
@@ -3785,7 +3926,7 @@ EOF;
 			}
 
 			break;
-
+        
 		case "extensions":
 
 			/*****************************************************************
@@ -5111,6 +5252,18 @@ else {
 				$hooksHtml .= $_php_setting->getHtmlCode();
 				
 				array_push($_settings, array("headline" => $l_prefs["hooks"], "html" => $hooksHtml, "space" => 200));
+				
+				$_backwardcompatibility_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
+
+				$_backwardcompatibility_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("backwardcompatibility_tagloading"), "backwardcompatibility_tagloading", $l_prefs["backwardcompatibility_tagloading"], false, "defaultfont"));
+				$_backwardcompatibility_table->setCol(1, 0, null, getPixel(1, 5));
+			
+				$_backwardcompatibility_table->setCol(2, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 0px;'), htmlAlertAttentionBox($l_prefs['backwardcompatibility_tagloading_message'],1,245,false));
+
+				
+				if (we_hasPerm("ADMINISTRATOR")) {
+					array_push($_settings, array("headline" => $l_prefs["backwardcompatibility"], "html" => $_backwardcompatibility_table->getHtmlCode(), "space" => 200));
+				}
 			    		    
 				// Build dialog element if user has permission
 				$_dialog = create_dialog("", $l_prefs["tab_system"], $_settings, -1, "", "", null, $_needed_JavaScript);
@@ -5153,14 +5306,17 @@ else {
 								}
 
 								document.getElementsByName('error_handling_notices')[0].disabled = _new_state;
+								document.getElementsByName('error_handling_deprecated')[0].disabled = _new_state;
 								document.getElementsByName('error_handling_warnings')[0].disabled = _new_state;
 								document.getElementsByName('error_handling_errors')[0].disabled = _new_state;
 
 								document.getElementById('label_error_handling_notices').style.color = _new_style;
+								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
 								document.getElementById('label_error_handling_warnings').style.color = _new_style;
 								document.getElementById('label_error_handling_errors').style.color = _new_style;
 
 								document.getElementById('label_error_handling_notices').style.cursor = _new_cursor;
+								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;
 								document.getElementById('label_error_handling_warnings').style.cursor = _new_cursor;
 								document.getElementById('label_error_handling_errors').style.cursor = _new_cursor;
 
@@ -5226,7 +5382,7 @@ else {
 			 */
 
 			// Create checkboxes
-			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 7, 1);
+			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 9, 1);
 
 			$_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_handling_errors"), "error_handling_errors", $l_prefs["error_errors"], false, "defaultfont", "", !get_value("we_error_handler")));
 			$_error_handling_table->setCol(1, 0, null, getPixel(1, 5));
@@ -5234,7 +5390,11 @@ else {
 			$_error_handling_table->setCol(3, 0, null, getPixel(1, 5));
 			$_error_handling_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("error_handling_notices"), "error_handling_notices", $l_prefs["error_notices"], false, "defaultfont", "", !get_value("we_error_handler")));
 			$_error_handling_table->setCol(5, 0, null, getPixel(1, 5));
-			$_error_handling_table->setCol(6, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox($l_prefs['error_notices_warning'],1,220));
+			if (version_compare(PHP_VERSION, '5.3.0') >= 0){
+				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", $l_prefs["error_deprecated"], false, "defaultfont", "", !get_value("we_error_handler")));
+				$_error_handling_table->setCol(7, 0, null, getPixel(1, 5));
+			}
+			$_error_handling_table->setCol(8, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox($l_prefs['error_notices_warning'],1,220));
 
 
 			// Build dialog if user has permission
@@ -5649,6 +5809,7 @@ else {
 	            	"version_text/js",
 	            	"version_text/css",
 	            	"version_text/plain",
+					"version_text/htaccess",
 					"version_text/weTmpl",
 	            	"version_application/x-shockwave-flash",
 	            	"version_video/quicktime",
@@ -5962,6 +6123,9 @@ function render_dialog() {
 
 	if($tabname=="setting_language") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_language"), build_dialog("language"));
 	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_language", "style" => "display: none;"), build_dialog("language"));
+	
+	if($tabname=="setting_countries") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_countries"), build_dialog("countries"));
+	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_countries", "style" => "display: none;"), build_dialog("countries"));
 
 	if($tabname=="setting_message_reporting") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_message_reporting"), build_dialog("message_reporting"));
 	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_message_reporting", "style" => "display: none;"), build_dialog("message_reporting"));

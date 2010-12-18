@@ -18,14 +18,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-		include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/prefs.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+		include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_editor_info.inc.php');
+		include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/prefs.inc.php');
 
 		protect();
-		if (we_hasPerm("administrator")) {
+		if (we_hasPerm('administrator')) {
 
 			if (isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1) {
 				$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_LOG_TABLE);
@@ -138,4 +138,3 @@ function clearLog() {
 					$body
 				);
 	}
-?>

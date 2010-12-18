@@ -19,13 +19,8 @@
  */
 
 
-function we_tag_ifEmailNotExists($attribs, $content)
-{
+function we_tag_ifEmailNotExists($attribs, $content){
 	if(isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])){
-		if($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==1) return true;
-		else return false;
-	}
-	else return false;
+		return ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==1);
+	}else return false;
 }
-
-?>

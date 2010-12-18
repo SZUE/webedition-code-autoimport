@@ -40,4 +40,3 @@ function trigger_schedule() {
 function check_and_convert_to_sched_pro() {
 	we_schedpro::check_and_convert_to_sched_pro();
 }
-?>

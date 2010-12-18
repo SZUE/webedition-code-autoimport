@@ -34,14 +34,16 @@ htmlTop();
 print STYLESHEET;
 
 $da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" )?"%d.%m.%y":"%m/%d/%y";
-if(isset($_REQUEST["cid"])){
+if(isset($_REQUEST["cid"]) ){
 	
-	$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID='" . $_REQUEST["cid"] . "'",$DB_WE);
-	$Kundenname = $foo["Forename"]." ".$foo["Surname"];
+	$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID='" . abs($_REQUEST["cid"]) . "'",$DB_WE);
+	if (is_array($foo)){
+		$Kundenname = $foo["Forename"]." ".$foo["Surname"];
+	}
 	$orderList = getCustomersOrderList($_REQUEST["cid"]);
 }
 ?>
 </head>
-<body class="weEditorBody" onunload="doUnload()">
+<body class="weEditorBody" onUnload="doUnload()">
 <?php print  htmlDialogLayout($orderList,$l_shop["order_liste"]."&nbsp;".$Kundenname);?>   
 </body></html>

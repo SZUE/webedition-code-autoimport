@@ -35,5 +35,3 @@ function we_tag_ifMale($attribs, $content){
 		return false;
 	}
 }
-
-?>

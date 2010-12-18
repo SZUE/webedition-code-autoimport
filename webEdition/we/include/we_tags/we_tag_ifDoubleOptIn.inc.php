@@ -22,5 +22,3 @@
 function we_tag_ifDoubleOptIn($attribs, $content){
 	return isset($GLOBALS["WE_DOUBLEOPTIN"]) && $GLOBALS["WE_DOUBLEOPTIN"];
 }
-
-?>

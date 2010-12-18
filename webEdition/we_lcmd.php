@@ -78,6 +78,9 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 		case "new_text_xml":
 			print 'top.we_cmd("new","'.FILE_TABLE.'","","text/xml");'."\n";
 			break;
+		case "new_text_htaccess":
+			print 'top.we_cmd("new","'.FILE_TABLE.'","","text/htaccess");'."\n";
+			break;
 		case "new_css_stylesheet":
 			print 'top.we_cmd("new","'.FILE_TABLE.'","","text/css");'."\n";
 			break;
@@ -132,12 +135,12 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 
 
 		default:
-
-			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST['we_cmd'][0],$regs)){
+			
+			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST["we_cmd"][0],$regs)){
 				$dt = $regs[1];
 				print 'top.we_cmd("new","'.FILE_TABLE.'","","text/webedition","'.$dt.'");'."\n";
 				break;
-			}else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
+			}else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST["we_cmd"][0], $regs)){
 				$clID = $regs[1];
 				print 'top.we_cmd("new","'.OBJECT_FILES_TABLE.'","","objectFile","'.$clID.'");'."\n";
 				break;

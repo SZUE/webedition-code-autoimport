@@ -156,11 +156,19 @@ class weTagData
 					return false;
 				}
 			}
-		
+		if (isset($GLOBALS['l_we_tag'][$tagName]['description'])){
+			$description = isset($GLOBALS['l_we_tag'][$tagName]['description']);
+		} else {
+			if (isset($GLOBALS['weTagWizard']['weTagData']['description'])){
+				$description = $GLOBALS['weTagWizard']['weTagData']['description'];
+			} else {
+				$description = '';
+			}
+		}
 		return new weTagData(
 				$tagName, 
 				isset($GLOBALS['weTagWizard']['attribute']) ? $GLOBALS['weTagWizard']['attribute'] : array(), 
-				$GLOBALS['l_we_tag'][$tagName]['description'], 
+				$description, 
 				$GLOBALS['weTagWizard']['weTagData']['needsEndtag'], 
 				isset($GLOBALS['l_we_tag'][$tagName]['defaultvalue']) ? $GLOBALS['l_we_tag'][$tagName]['defaultvalue'] : '',
 				isset($GLOBALS['weTagWizard']['weTagData']['noDocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['noDocuLink']:'',

@@ -27,6 +27,7 @@ $l_javaMenu["shop"]["menu_user"] = "Интернет-магазин";
 
 $l_javaMenu["shop"]["shop_edit"] = "Редактировать";
 	$l_javaMenu["shop"]["shop_pref"] = "Настройки";
+	$l_javaMenu["shop"]["shop_status"] = "Status mails"; //TRANSLATE
 	$l_javaMenu["shop"]["country_vat"] = "Страны";
 	$l_javaMenu["shop"]["edit_vats"] = "ставки НДС";
 	$l_javaMenu["shop"]["order"] = "заказ";

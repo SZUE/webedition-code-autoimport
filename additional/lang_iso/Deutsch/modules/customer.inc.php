@@ -50,6 +50,8 @@ $l_customer["password"] = "Kennwort";
 
 $l_customer["login"] = "Login";
 $l_customer["login_denied"] = "Zugang gesperrt";
+$l_customer["autologin"] = "Auto-Login";
+$l_customer["autologin_request"] = "gewünscht";
 
 $l_customer["permissions"] = "Rechte";
 

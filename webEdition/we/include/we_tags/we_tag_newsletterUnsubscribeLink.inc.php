@@ -34,9 +34,7 @@ function we_tag_newsletterUnsubscribeLink($attribs, $content){
 	else $port = "";
 	if(isset($settings["use_https_refer"]) && $settings["use_https_refer"]) $protocol="https://";
 	else $protocol="http://";
-	
-	return $protocol.SERVER_NAME.$port.id_to_path($id,FILE_TABLE)."?we_unsubscribe_email__=###EMAIL###";
-	
-}
 
-?>
+	return $protocol.SERVER_NAME.$port.id_to_path($id,FILE_TABLE)."?we_unsubscribe_email__=###EMAIL###";
+
+}

@@ -59,12 +59,22 @@ $l_prefs["tab_error_handling"] = 'Fout afhandeling';
 $l_prefs["tab_cockpit"] = 'Cockpit'; // TRANSLATE
 $l_prefs["tab_cache"] = 'Cache'; // TRANSLATE
 $l_prefs["tab_language"] = 'Talen';
+$l_prefs["tab_countries"] = 'Countries';// TRANSLATE
 $l_prefs["tab_modules"] = 'Modules'; // TRANSLATE
 $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 
 /*****************************************************************************
  * USER INTERFACE
  *****************************************************************************/
+	/**
+	 * Countries
+	 */
+	$l_prefs["countries_information"]= "Select the countries, which are available in the customer module, shop-module and so on.";// TRANSLATE
+	$l_prefs["countries_headline"] = "Country selection";// TRANSLATE
+	$l_prefs["countries_country"] = "Country";// TRANSLATE
+    $l_prefs["countries_top"] = "top list";// TRANSLATE
+    $l_prefs["countries_show"] = "display";// TRANSLATE
+    $l_prefs["countries_noshow"] = "no display";// TRANSLATE
 
 	/**
 	 * LANGUAGE
@@ -376,9 +386,17 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	/**
 	 * HOOKS
 	 */
-	$l_prefs["hooks"] = "Hooks"; // TRANSLATE //TRANSLATE
+	$l_prefs["hooks"] = "Hooks"; // TRANSLATE 
 	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
-	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; 
+	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; //TRANSLATE
+
+	/**
+	 * Backward compatibility
+	 */
+	$l_prefs["backwardcompatibility"] = "Backward compatibility";//TRANSLATE
+	$l_prefs["backwardcompatibility_tagloading"] = "Load all 'old' we_tag functions";//TRANSLATE
+	$l_prefs["backwardcompatibility_tagloading_message"] = "Only necessary if in custom_tags or in PHP code inside templates we_tags are called in the form we_tag_tagname().<br/> Recommended call: we_tag<br/>('tagname',&#36;attribs,&#36;content)";//TRANSLATE
+
 
 /*****************************************************************************
  * ERROR HANDLING
@@ -406,6 +424,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 
 	$l_prefs["error_types"] = "Behandel deze fouten";
 	$l_prefs["error_notices"] = "Notities";
+	$l_prefs["error_deprecated"] = "deprecated Notities";//TRANSLATE
 	$l_prefs["error_warnings"] = "Waarschuwingen";
 	$l_prefs["error_errors"] = "Fouten";
 
@@ -513,7 +532,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Hier kunt u uw modules activeren of deactiveren als u ze niet nodig heeft.<br /><br />Het deactiveren van modules verbetert de prestaties van webEdition.";
+	$l_prefs["module_activation"]["information"] = "Hier kunt u uw modules activeren of deactiveren als u ze niet nodig heeft.<br />Het deactiveren van modules verbetert de prestaties van webEdition.";
 	
 	$l_prefs["module_activation"]["headline"] = "Module activatie";
 

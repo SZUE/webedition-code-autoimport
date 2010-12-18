@@ -65,8 +65,13 @@ class we_htmlSelect extends we_baseCollection {
 	*
 	* @return		void
 	*/	
-	function addOption($value,$text){
-		$this->childs[]=new we_baseElement("option",true,array("value"=>$value),$text);
+	function addOption($value,$text,$attribs=array()){
+		if (empty($attribs)){
+			$this->childs[]=new we_baseElement("option",true,array("value"=>$value),$text);
+		} else {
+			$attribs["value"]=$value;
+			$this->childs[]=new we_baseElement("option",true,$attribs,$text);		
+		}
 	}
 		
 	/**

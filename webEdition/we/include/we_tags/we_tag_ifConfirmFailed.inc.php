@@ -19,13 +19,8 @@
  */
 
 
-function we_tag_ifConfirmFailed($attribs, $content)
-{
+function we_tag_ifConfirmFailed($attribs, $content){
 	if(isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])){
-		if($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==3) return true;
-		else return false;
-	}
-	else return false;
+		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==3);
+	}else return false;
 }
-
-?>

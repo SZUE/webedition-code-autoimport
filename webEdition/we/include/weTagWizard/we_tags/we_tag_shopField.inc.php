@@ -14,4 +14,6 @@ $GLOBALS['weTagWizard']['attribute']['id496_values'] = new weTagData_textAttribu
 $GLOBALS['weTagWizard']['attribute']['id497_checked'] = new weTagData_choiceAttribute('497', 'checked', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false,false, '');
 $GLOBALS['weTagWizard']['attribute']['id498_mode'] = new weTagData_choiceAttribute('498', 'mode', array(new weTagDataOption('add', false, '')), false,false, '');
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id478_to'] = new weTagData_selectAttribute('478', 'to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id479_nameto'] = new weTagData_textAttribute('479', 'nameto', false, '');
 ?>

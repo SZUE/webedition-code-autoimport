@@ -135,6 +135,11 @@ class we_user {
 	var $Path="";
 	var $Alias="";
 	var $Icon="user.gif";
+	
+	var $CreatorID = "";
+	var $CreateDate = "";
+	var $ModifierID = "";
+	var $ModifyDate = "";
 
 	// Ping flag
 	var $Ping=0;
@@ -216,7 +221,7 @@ class we_user {
 	function we_user() {
 		$this->ClassName="we_user";
 		$this->Name = "user_".md5(uniqid(rand()));
-		array_push($this->persistent_slots,"ID","Type","ParentID","Salutation","First","Second","Address","HouseNo","City","PLZ","State","Country","Tel_preselection","Telephone","Fax","Fax_preselection","Handy","Email","username","passwd","clearpasswd", "Text","Path","Permissions","ParentPerms","Description","Alias","Icon","IsFolder","Ping","workSpace","workSpaceDef","workSpaceTmp","workSpaceNav","workSpaceNwl","workSpaceObj","ParentWs","ParentWst","ParentWsn","ParentWso","ParentWsnl","altID", "LoginDenied", "UseSalt");
+		array_push($this->persistent_slots,"ID","Type","ParentID","Salutation","First","Second","Address","HouseNo","City","PLZ","State","Country","Tel_preselection","Telephone","Fax","Fax_preselection","Handy","Email","username","passwd","clearpasswd", "Text","Path","Permissions","ParentPerms","Description","Alias","Icon","IsFolder","CreatorID","CreateDate","ModifierID","ModifyDate","Ping","workSpace","workSpaceDef","workSpaceTmp","workSpaceNav","workSpaceNwl","workSpaceObj","ParentWs","ParentWst","ParentWsn","ParentWso","ParentWsnl","altID", "LoginDenied", "UseSalt");
 
 		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","seem_start_file","seem_start_type","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
 
@@ -426,6 +431,15 @@ class we_user {
 		$oldpath=$this->Path;
 		$this->saveWorkspaces();
 		$this->savePermissions();
+		if ($isnew){
+			$this->CreatorID = $_SESSION['user']['ID'];
+			$this->ModifierID = $_SESSION['user']['ID'];
+			$this->CreateDate = time();
+			$this->ModifyDate = time();
+		} else {
+			$this->ModifierID = $_SESSION['user']['ID'];
+			$this->ModifyDate = time();
+		}
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
 		if($oldpath!="" && $oldpath!="/" && isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
@@ -1278,7 +1292,9 @@ function mapPermissions() {
 		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
 		$this->DB_WE->query("UPDATE ".FILE_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
 		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
-
+		$this->DB_WE->query("UPDATE ".USER_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
+		$this->DB_WE->query("UPDATE ".USER_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
+		
 		if(defined("OBJECT_TABLE")) {
 			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
 			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET Owners='' WHERE Owners=','");
@@ -1858,7 +1874,7 @@ function mapPermissions() {
 
 
 
-		$_tableObj = new we_htmlTable($_attr, 5, 2);
+		$_tableObj = new we_htmlTable($_attr, 8, 2);
 
 		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',$GLOBALS['l_users']["username"]) : $this->getUserfield("username","username","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 
@@ -1894,10 +1910,38 @@ function mapPermissions() {
 		$_tableObj->setCol(1, 0, null, getPixel(280,10));
 		$_tableObj->setCol(1, 1, null, getPixel(280,5));
 		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name.'_LoginDenied', $GLOBALS["l_users"]["login_denied"], false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"]==$this->ID || !we_hasPerm("ADMINISTRATOR")) ));
+		$_tableObj->setCol(2, 1, array("class"=>"defaultfont"), $GLOBALS['l_users']["lastPing"].' '.(($this->Ping) ? date('d.m.Y H:i:s',$this->Ping):'-'));
 		$_tableObj->setCol(3, 0, null, getPixel(280,10));
 		$_tableObj->setCol(3, 1, null, getPixel(280,5));
 		$_tableObj->setCol(4, 0, array("colspan"=>"2"), htmlFormElementTable($weAcSelector,$GLOBALS['l_users']["group"]));
+		$_tableObj->setCol(5, 0, null, getPixel(280,10));
+		$_tableObj->setCol(5, 1, null, getPixel(280,5));
+		if($this->CreatorID){
+			$this->DB_WE->query("SELECT username,first,second FROM ".USER_TABLE." WHERE ID='".$this->CreatorID."'");
+			if ($this->DB_WE->next_record()) {
+				$CreatorIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('first').' '.$this->DB_WE->f('second').')';
+			} else {
+				$CreatorIDtext=$GLOBALS['l_users']["lostID"].$this->CreatorID.$GLOBALS['l_users']["lostID2"];
+			}
+		 
+		} else {$CreatorIDtext = '-'; }
+		if($this->ModifierID){
+			if($this->ModifierID == $this->ID){
+				$ModifierIDtext = $this->username .' ('.$this->first.' '.$this->second.')';
+			} else {
+				$this->DB_WE->query("SELECT username,first,second FROM ".USER_TABLE." WHERE ID='".$this->ModifierID."'");
+				if ($this->DB_WE->next_record()) {
+					$ModifierIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('first').' '.$this->DB_WE->f('second').')';
+				} else {
+					$ModifierIDtext=$GLOBALS['l_users']["lostID"].$this->ModifierID.$GLOBALS['l_users']["lostID2"];
+				}
 
+			}
+		} else {$ModifierIDtext = '-'; }
+		$_tableObj->setCol(6, 0, array("class"=>"defaultfont"), $GLOBALS['l_users']["CreatorID"].' '. $CreatorIDtext);
+		$_tableObj->setCol(6, 1, array("class"=>"defaultfont"), $GLOBALS['l_users']["CreateDate"].' '. (($this->CreateDate) ? date('d.m.Y H:i:s',$this->CreateDate):'-'));
+		$_tableObj->setCol(7, 0, array("class"=>"defaultfont"), $GLOBALS['l_users']["ModifierID"].' '. $ModifierIDtext);
+		$_tableObj->setCol(7, 1, array("class"=>"defaultfont"), $GLOBALS['l_users']["ModifyDate"].' '. (($this->ModifyDate) ? date('d.m.Y H:i:s',$this->ModifyDate):'-'));
 		array_push($parts,
 							array(
 								"headline"=>$GLOBALS['l_users']["user_data"],
@@ -1906,7 +1950,7 @@ function mapPermissions() {
 								)
 						);
 
-
+		
 
 		return we_multiIconBox::getHTML("","100%",$parts,30);
 

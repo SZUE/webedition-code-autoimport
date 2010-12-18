@@ -134,6 +134,7 @@ if(  ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]) || (isset($_REQUEST[
 
 	$GLOBALS["we_obj"] = new we_objectFile();
 	$GLOBALS["we_obj"]->initByID(abs($_REQUEST["we_objectID"]),OBJECT_FILES_TABLE);
+	$GLOBALS["we_obj"]->setTitleAndDescription();
 
 	if(!$GLOBALS["we_obj"]->Published){
 
@@ -165,6 +166,9 @@ if(  ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]) || (isset($_REQUEST[
 	$GLOBALS["we_doc"]->OF_ID=$GLOBALS["we_obj"]->ID;
 	$GLOBALS["we_doc"]->Charset=$GLOBALS["we_obj"]->Charset;
 	$GLOBALS["we_doc"]->elements['Charset']['dat'] = $GLOBALS["we_obj"]->Charset; // for charset-tag
+	$GLOBALS["TITLE"] = $GLOBALS["we_doc"]->getElement("Title");
+	$GLOBALS["KEYWORDS"] = $GLOBALS["we_doc"]->getElement("Keywords");
+	$GLOBALS["DESCRIPTION"] = $GLOBALS["we_doc"]->getElement("Description");
 
 }
 
@@ -349,5 +353,3 @@ if(isset($_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]) && $_SESSIO
 	}
 
 }
-
-?>

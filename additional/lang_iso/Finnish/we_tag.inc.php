@@ -136,6 +136,14 @@ $l_we_tag['ifLastCol']['description'] = "T‰m‰n tagi havaitsee taulukosta rivin v
 $l_we_tag['ifLastCol']['defaultvalue'] = ""; 
 $l_we_tag['ifLoginFailed']['description'] = "T‰m‰n tagin sis‰ll‰ oleva tieto n‰ytet‰‰n vain jos sis‰‰nkirjautuminen ep‰onnistui.";
 $l_we_tag['ifLoginFailed']['defaultvalue'] = ""; 
+$l_we_tag['ifLogin']['description'] = "Content enclosed by this tag is only displayed if a login occured on the page and allows for initialisation.";// TRANSLATE
+$l_we_tag['ifLogin']['defaultvalue'] = "";
+$l_we_tag['ifLogout']['description'] = "Content enclosed by this tag is only displayed if a logout occured on the page and allows for cleaning up.";// TRANSLATE
+$l_we_tag['ifLogout']['defaultvalue'] = "";
+$l_we_tag['ifTdEmpty']['description'] = "Content enclosed by this tag is only displayed if a table cell is empty (has no contents in a listview).";// TRANSLATE
+$l_we_tag['ifTdEmpty']['defaultvalue'] = "";
+$l_we_tag['ifTdNotEmpty']['description'] = "Content enclosed by this tag is only displayed if a table cell is not empty (has contents in a listview).";// TRANSLATE
+$l_we_tag['ifTdNotEmpty']['defaultvalue'] = "";
 $l_we_tag['ifMailingListEmpty']['description'] = "T‰m‰n tagin sis‰ll‰ oleva tieto n‰ytet‰‰n vain jos k‰ytt‰j‰ ei ole valinnut yht‰‰n uutiskirjett‰.";
 $l_we_tag['ifMailingListEmpty']['defaultvalue'] = ""; 
 $l_we_tag['ifMale']['description'] = "T‰m‰n tagin sis‰ll‰ oleva tieto n‰ytet‰‰n vain jos k‰ytt‰j‰ on mies. T‰t‰ tagia k‰ytet‰‰n uutiskirjeiden k‰yttjien sukupuolen tunnistuksessa."; 
@@ -336,6 +344,11 @@ $l_we_tag['sessionStart']['description'] = "T‰t‰ tagia k‰ytet‰‰n istunnon aloitt
 $l_we_tag['setVar']['description'] = "T‰t‰ tagia k‰ytet‰‰n muuttujien arvojen asetukseen.<br/><strong>Attention:</strong> Without the attribute <strong>striptags=\"true\"</strong>, HTML- and PHP-Code is not filtered, this is a potenzial security risk!</strong>";// TRANSLATE
 $l_we_tag['shipping']['description'] = "we:shipping -tagia k‰ytet‰‰n l‰hetyskulujen m‰‰rittelyyn. N‰m‰ kulut perustuvat ostoskorin arvoon, rekisterˆityneen k‰ytt‰j‰n kotimaahan ja l‰hetyskulujen m‰‰rittely s‰‰ntˆj‰ voidaan muokata Kauppa moduulissa. Parametriin \"summa\" m‰‰ritell‰‰n we:sum -tagin nimi. \"tyyppi\" -parametrilla m‰‰ritell‰‰n joko l‰hetyskulujen tyyppi.";
 $l_we_tag['shopField']['description'] = "T‰m‰ tagi tallentaa useamman sis‰ltˆkent‰n suoraan tuotteesta tai ostoskorista. The p‰‰k‰ytt‰j‰ voi m‰‰ritt‰‰ tiettyj‰ arvoja joista k‰ytt‰j‰ voi valita tai syˆtt‰‰ omansa arvonsa. N‰in on mahdollista kartoittaa useampia toisintoja tuotteista helposti.";
+$l_we_tag['ifShopFieldEmpty']['description'] = "Content enclosed by this tag is only displayed if the shopField named in attribute \"name\" is empty.";// TRANSLATE
+$l_we_tag['ifShopFieldNotEmpty']['description'] = "Content enclosed by this tag is only displayed if the shopField named in attribute \"name\" is not empty.";// TRANSLATE
+$l_we_tag['ifShopField']['description'] = "Everything between the start and end tags of this tag is displayed only if the value of the attribut \"match\" is identical with the value of the shopField ";// TRANSLATE
+$l_we_tag['ifNotShopField']['description'] = "Everything between the start and end tags of this tag is displayed only if the value of the attribut \"match\" is not identical with the value of the shopField ";// TRANSLATE
+
 $l_we_tag['shopVat']['description'] = "T‰t‰ tagia k‰ytet‰‰n alv.:in m‰‰rittelemiseksi tuotteelle. Hallitaksesi alv. -arvoja k‰yt‰ Kauppa moduulia. Annettu id tulostaa suoraan alv.:n kyseiselle tuotteelle.";
 $l_we_tag['showShopItemNumber']['description'] = "we:showShopItemNumber -tagi n‰ytt‰‰ m‰‰ritettyjen nimikkeiden m‰‰r‰n ostoskorissa.";
 $l_we_tag['sidebar']['description'] = ""; 
@@ -409,6 +422,11 @@ $l_we_tag['pageLanguage']['description'] = "Shows the language of the document";
 $l_we_tag['pageLanguage']['defaultvalue'] = "";
 $l_we_tag['objectLanguage']['description'] = "Shows the language of the object";// TRANSLATE
 $l_we_tag['objectLanguage']['defaultvalue'] = "";
+$l_we_tag['order']['description'] = "Using this tag, one can display an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.";// TRANSLATE
+$l_we_tag['order']['defaultvalue'] = "";
+$l_we_tag['orderitem']['description'] = "Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.";// TRANSLATE
+$l_we_tag['orderitem']['defaultvalue'] = "";
+
 
 $l_we_tag['ifVotingField']['description'] = "Checks if a votingField has a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE
 $l_we_tag['ifNotVotingField']['description'] = "Checks if a votingField has not a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE

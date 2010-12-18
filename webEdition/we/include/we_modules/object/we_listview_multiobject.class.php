@@ -76,7 +76,11 @@ class we_listview_multiobject extends listviewBase {
 			if(isset($GLOBALS["lv"]->object)) {
 				$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_'.$name]);
 			} else {
-				$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_'.$name]);
+				if ($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart') {
+					$data = unserialize($GLOBALS['lv']->Record[$name]);
+				} else {
+					$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_'.$name]);
+				}
 			}
 		} else {
 			$data = unserialize($GLOBALS['we_doc']->getElement($name));

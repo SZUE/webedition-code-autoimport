@@ -56,6 +56,8 @@ $l_customer["password"] = "Password";
 
 $l_customer["login"] = "Login";
 $l_customer["login_denied"] = "Access denied";
+$l_customer["autologin"] = "Auto-Login";
+$l_customer["autologin_request"] = "requested";
 
 $l_customer["permissions"] = "Permissions";
 

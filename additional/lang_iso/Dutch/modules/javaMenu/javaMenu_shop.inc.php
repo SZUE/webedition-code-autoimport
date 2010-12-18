@@ -27,6 +27,7 @@ $l_javaMenu["shop"]["menu_user"] = "Winkel";
 
 $l_javaMenu["shop"]["shop_edit"] = "Wijzig";
 	$l_javaMenu["shop"]["shop_pref"] = "Voorkeuren";
+	$l_javaMenu["shop"]["shop_status"] = "Status mails"; //TRANSLATE
 	$l_javaMenu["shop"]["country_vat"] = "Landen";
 	$l_javaMenu["shop"]["edit_vats"] = "BTW waardes";
 	$l_javaMenu["shop"]["order"] = "Bestelling";

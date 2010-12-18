@@ -395,6 +395,7 @@ class copyFolderFrag extends taskFragment
 				case "text/html" :
 				case "text/plain" :
 				case "text/css" :
+				case "text/htaccess" :
 				case "text/js" :
 					$this->parseTextDocument($we_doc);
 					break;

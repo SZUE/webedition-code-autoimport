@@ -132,5 +132,11 @@ $l_users["delete_group_user_same"] = "Sie können nicht Ihre eigene Gruppe lösc
 $l_users["login_denied"] = "Login denied"; // TRANSLATE
 $l_users["workspaceFieldError"] = "ERROR: Invalid workspace entry!"; // TRANSLATE
 $l_users["noGroupError"] = "Error: Invalid entry in field group!"; // TRANSLATE
-
+$l_users["CreatorID"] = "Created by: ";// TRANSLATE
+$l_users["CreateDate"] = "Created at: ";// TRANSLATE
+$l_users["ModifierID"] = "Modified by: ";// TRANSLATE
+$l_users["ModifyDate"] = "Modified at: ";// TRANSLATE
+$l_users["lastPing"] = "Last Ping: ";// TRANSLATE
+$l_users["lostID"] = "ID: ";// TRANSLATE
+$l_users["lostID2"] = " (deleted)";// TRANSLATE
 ?>

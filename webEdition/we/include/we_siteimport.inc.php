@@ -96,6 +96,8 @@ class weSiteImport
 	var $degrees = 0;
 
 	var $_postProcess;
+	
+	var $excludeddirs = array('/webEdition');
 
 	/**
 	 * Constructor of Class
@@ -876,6 +878,14 @@ class weSiteImport
 				"defaultfont", 
 				"", 
 				!we_hasPerm("NEW_TEXT"));
+		$_htaccess = we_forms::checkboxWithHidden(
+				we_hasPerm("NEW_HTACCESS") ? $this->text : false, 
+				"htacsess", 
+				$GLOBALS["l_siteimport"]["importHTACCESS"], 
+				false, 
+				"defaultfont", 
+				"", 
+				!we_hasPerm("NEW_HTACCESS"));
 		$_others = we_forms::checkboxWithHidden(
 				we_hasPerm("NEW_SONSTIGE") ? $this->other : false, 
 				"other", 
@@ -1997,7 +2007,7 @@ class weSiteImport
 	}
 
 	/**
-	 * this routine is called from task fragment class eaxch time a document/filder is imported
+	 * this routine is called from task fragment class each time a document/filder is imported
 	 *
 	 * @param $path string
 	 * @param $contentType string
@@ -2241,6 +2251,7 @@ class weSiteImport
 		@set_time_limit(60);
 		
 		$weDirectory = ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"]) . "/webEdition";
+		
 		if ($importDirectory == $weDirectory) { // we do not import stuff from the webEdition home dir
 			return;
 		}
@@ -2252,6 +2263,9 @@ class weSiteImport
 				continue;
 				// now we have to check if the file should be imported
 			$PathOfEntry = $importDirectory . $this->_slash . $entry;
+			
+			if (strpos($PathOfEntry,$weDirectory)!== false) 
+				continue;
 			if (!is_dir($PathOfEntry) && ($this->maxSize && (filesize($PathOfEntry) > (abs($this->maxSize) * 1024 * 1024))))
 				continue;
 			$contentType = getContentTypeFromFile($PathOfEntry);

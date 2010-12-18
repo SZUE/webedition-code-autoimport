@@ -34,5 +34,3 @@ function we_tag_ifFemale($attribs, $content){
 		return false;
 	}
 }
-
-?>

@@ -22,10 +22,12 @@ if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/
 }
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
 
-$DB_WE->query("
+$DB_WE->query('
 	DELETE
-	FROM " . LOCK_TABLE . "
-	WHERE UserID='" . abs($_SESSION["user"]["ID"]) . "'");
+	FROM ' . LOCK_TABLE . '
+	WHERE UserID="' . abs($_SESSION["user"]["ID"]) . '" AND sessionID="'.session_id().'"');
+//FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
+//TODO: update to time if still locked files open
 $DB_WE->query("
 	UPDATE " . USER_TABLE . "
 	SET Ping=0

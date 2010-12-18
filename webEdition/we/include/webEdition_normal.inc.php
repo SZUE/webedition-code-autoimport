@@ -211,9 +211,11 @@ var widthBeforeDeleteModeSidebar = 0;
 <frameset rows="32,*,<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="no" onUnload="doUnload()">
 	<frame src="header.php" name="header" scrolling="no" noresize>
 	<frame src="resizeframe.php" name="rframe" scrolling="no" noresize>
-	<frameset cols="25%,25%,10%,10%,*" framespacing="0" border="0" frameborder="no">
+	<frameset cols="25%,25%,10%,10%,10%,*" framespacing="0" border="0" frameborder="no">
 		<frame src="<?php print HTML_DIR ?>white.html" name="load" scrolling="no" noresize>
 		<frame src="<?php print HTML_DIR ?>white.html" name="load2" scrolling="no" noresize>
+			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+		<frame src="<?php print HTML_DIR ?>white.html" name="ad" scrolling="no" noresize>
 		<frame src="<?php print WE_USERS_MODULE_PATH; ?>we_users_ping.php" name="ping" scrolling="no" noresize>
         <frame src="<?php print HTML_DIR ?>white.html" name="postframe" scrolling="no" noresize>
         <frame src="<?php print HTML_DIR ?>white.html" name="plugin" scrolling="no" noresize>

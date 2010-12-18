@@ -31,5 +31,6 @@ CREATE TABLE tblObjectFiles (
   WebUserID bigint(20) NOT NULL,
   PRIMARY KEY  (ID),
   KEY Path (Path),
-  KEY WebUserID (WebUserID)
+  KEY WebUserID (WebUserID),
+  KEY TableID (TableID)
 ) ENGINE=MyISAM;

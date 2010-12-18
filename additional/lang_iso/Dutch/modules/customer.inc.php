@@ -56,6 +56,8 @@ $l_customer["password"] = "Wachtwoord";
 
 $l_customer["login"] = "Login"; // TRANSLATE
 $l_customer["login_denied"] = "Toegang geweigerd";
+$l_customer["autologin"] = "Auto-Login";// TRANSLATE
+$l_customer["autologin_request"] = "requested";// TRANSLATE
 
 $l_customer["permissions"] = "Rechten";
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * webEdition CMS
  *
@@ -20,6 +20,5 @@
 
 
 function we_tag_repeatShopItem($attribs,$content){
-	$foo = attributFehltError($attribs,"shopname","repeatShopItem");if($foo) return $foo;	
+	$foo = attributFehltError($attribs,"shopname","repeatShopItem");if($foo) return $foo;
 }
-?>

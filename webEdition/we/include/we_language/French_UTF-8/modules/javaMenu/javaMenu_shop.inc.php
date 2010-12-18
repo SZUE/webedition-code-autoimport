@@ -27,6 +27,7 @@ $l_javaMenu["shop"]["menu_user"] = "Ordonnaceur";
 
 $l_javaMenu["shop"]["shop_edit"] = "Éditer";
 	$l_javaMenu["shop"]["shop_pref"] = "Préférences";
+	$l_javaMenu["shop"]["shop_status"] = "Status mails"; //TRANSLATE
 	$l_javaMenu["shop"]["country_vat"] = "Pays";
 	$l_javaMenu["shop"]["edit_vats"] = "Taux de TVA";
 	$l_javaMenu["shop"]["order"] = "Commande";
