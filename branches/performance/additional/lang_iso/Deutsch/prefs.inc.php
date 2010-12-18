@@ -390,6 +390,13 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs["hooks"] = "Hooks";
 	$l_prefs["hooks_information"] = "Die Verwendung von Hooks ermöglicht die Ausführung von beliebigem PHP-Code während dem Speichern, Parken, Veröffentlichen und Löschen jeglicher Inhaltstypen in webEdition.<br/>
 	Nähere Infos finden Sie in der Online-Dokumentation.<br/><br/>Möchten Sie die Ausführung von Hooks zulassen?";
+
+	/**
+	 * Backward compatibility
+	 */
+	$l_prefs["backwardcompatibility"] = "Abwärtskompatibilität";
+	$l_prefs["backwardcompatibility_tagloading"] = "Lade alle 'alten' we_tag Funktionen";
+	$l_prefs["backwardcompatibility_tagloading_message"] = "Wird nur benötigt, wenn in custom_tags oder Vorlagen we_tags in der Form we_tag_tagname() aufgerufen werden.<br/> Empfohlen wird ein Aufruf in der Form we_tag<br/>('tagname',&#36;attribs,&#36;content)";
 	
 	
 /*****************************************************************************
@@ -526,7 +533,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Hier können Sie die Module aktivieren bzw. deaktivieren wenn Sie diese nicht benötigen.<br /><br />Nicht aktivierte Module verbessern die Performance von webEdition.<br /><br />Gegebenenfalls müssen Sie webEdition neu starten, um Module zu aktivieren.<br /><br />Das Shop-Modul benötigt das Kundenverwaltungs-Modul, das Workflow-Modul benötigt das ToDo-Messaging-Modul.";
+	$l_prefs["module_activation"]["information"] = "Hier können Sie die Module aktivieren bzw. deaktivieren wenn Sie diese nicht benötigen.<br />Nicht aktivierte Module verbessern die Performance von webEdition.<br />Gegebenenfalls müssen Sie webEdition neu starten, um Module zu aktivieren.<br />Das Shop-Modul benötigt das Kundenverwaltungs-Modul, das Workflow-Modul benötigt das ToDo-Messaging-Modul.";
 
 	$l_prefs["module_activation"]["headline"] = "Modulaktivierung";
 

@@ -388,6 +388,14 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["hooks_information"] = "\"Koukkujen\" käyttö mahdollistaa mielivaltaisen PHP-koodin suorittamisen webEditionissa tallennuksen, julkaisun, julkaisun poiston sekä minkä tahansa sisältötyypin poiston yhteydessä.<br />
 	Lisää tietoa löytyy Online-dokumentaatiosta.<br /><br />Salli koukkujen käyttö?"; 
 
+	/**
+	 * Backward compatibility
+	 */
+	$l_prefs["backwardcompatibility"] = "Backward compatibility";//TRANSLATE
+	$l_prefs["backwardcompatibility_tagloading"] = "Load all 'old' we_tag functions";//TRANSLATE
+	$l_prefs["backwardcompatibility_tagloading_message"] = "Only necessary if in custom_tags or in PHP code inside templates we_tags are called in the form we_tag_tagname().<br/> Recommended call: we_tag<br/>('tagname',&#36;attribs,&#36;content)";//TRANSLATE
+
+
 /*****************************************************************************
  * ERROR HANDLING
  *****************************************************************************/
@@ -522,7 +530,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 /*****************************************************************************
  * Module Activation
  *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Täällä voit aktivoida ja deaktivoida moduuleja tarpeesi mukaan.<br /><br />Deaktivoidut moduulit voivat parantaa webEditionin yleistä suorituskykyä.";
+	$l_prefs["module_activation"]["information"] = "Täällä voit aktivoida ja deaktivoida moduuleja tarpeesi mukaan.<br />Deaktivoidut moduulit voivat parantaa webEditionin yleistä suorituskykyä.";
 	
 	$l_prefs["module_activation"]["headline"] = "Moduulien aktivointi";
 

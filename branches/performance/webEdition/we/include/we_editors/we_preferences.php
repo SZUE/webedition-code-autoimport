@@ -96,6 +96,7 @@ $global_config[] = array('define("WE_PHP_DEFAULT",', '// Default setting for php
 // hooks
 $global_config[] = array('define("EXECUTE_HOOKS",', '// Default setting for hook execution' . "\n" . 'define("EXECUTE_HOOKS", false);');
 
+$global_config[] = array('define("INCLUDE_ALL_WE_TAGS",', '// Default setting for tag inclusion' . "\n" . 'define("INCLUDE_ALL_WE_TAGS", false);');
 // xhtml
 $global_config[] = array('define("XHTML_DEFAULT",', '// Default setting for xml attribute' . "\n" . 'define("XHTML_DEFAULT", false);');
 $global_config[] = array('define("XHTML_DEBUG",', '// Enable XHTML debug' . "\n" . 'define("XHTML_DEBUG", false);');
@@ -430,6 +431,9 @@ function get_value($settingvalue) {
 		case "auth_password":
 			return defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "";
 			break;
+			
+		case "backwardcompatibility_tagloading":
+			return defined("INCLUDE_ALL_WE_TAGS") ? INCLUDE_ALL_WE_TAGS : 0;
 
 		/*********************************************************************
 		 * ERROR HANDLING
@@ -1790,6 +1794,14 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+			
+			case '$_REQUEST["backwardcompatibility_tagloading"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "INCLUDE_ALL_WE_TAGS", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 				
 			/*****************************************************************
 			 * Validation
@@ -2667,6 +2679,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["thumbnail_dir"]) ? $_REQUEST["thumbnail_dir"] : null, '$_REQUEST["thumbnail_dir"]') || $_update_prefs;
         $_update_prefs = remember_value(isset($_REQUEST["we_tracker_dir"]) ? $_REQUEST["we_tracker_dir"] : null, '$_REQUEST["we_tracker_dir"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, '$_REQUEST["execute_hooks"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["backwardcompatibility_tagloading"]) ? $_REQUEST["backwardcompatibility_tagloading"] : null, '$_REQUEST["backwardcompatibility_tagloading"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_entries_from_document"]) ? $_REQUEST["navigation_entries_from_document"] : null, '$_REQUEST["navigation_entries_from_document"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, '$_REQUEST["navigation_rules_continue_after_first_match"]') || $_update_prefs;
@@ -5239,6 +5252,18 @@ else {
 				$hooksHtml .= $_php_setting->getHtmlCode();
 				
 				array_push($_settings, array("headline" => $l_prefs["hooks"], "html" => $hooksHtml, "space" => 200));
+				
+				$_backwardcompatibility_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
+
+				$_backwardcompatibility_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("backwardcompatibility_tagloading"), "backwardcompatibility_tagloading", $l_prefs["backwardcompatibility_tagloading"], false, "defaultfont"));
+				$_backwardcompatibility_table->setCol(1, 0, null, getPixel(1, 5));
+			
+				$_backwardcompatibility_table->setCol(2, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 0px;'), htmlAlertAttentionBox($l_prefs['backwardcompatibility_tagloading_message'],1,245,false));
+
+				
+				if (we_hasPerm("ADMINISTRATOR")) {
+					array_push($_settings, array("headline" => $l_prefs["backwardcompatibility"], "html" => $_backwardcompatibility_table->getHtmlCode(), "space" => 200));
+				}
 			    		    
 				// Build dialog element if user has permission
 				$_dialog = create_dialog("", $l_prefs["tab_system"], $_settings, -1, "", "", null, $_needed_JavaScript);

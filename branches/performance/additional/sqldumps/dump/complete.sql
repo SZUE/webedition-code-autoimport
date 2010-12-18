@@ -556,7 +556,8 @@ INSERT INTO tblPrefs (userID, FileFilter, openFolders_tblFile, openFolders_tblTe
 CREATE TABLE tblRecipients (
   ID bigint(20) NOT NULL auto_increment,
   Email varchar(255) NOT NULL default '',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  UNIQUE KEY Email (Email)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblSchedule (

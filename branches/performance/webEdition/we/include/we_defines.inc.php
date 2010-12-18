@@ -196,11 +196,6 @@ if (!defined('LOGIN_FAILED_HOLDTIME')) {
 //define how long Errors hold in DB
 define('ERROR_LOG_HOLDTIME', 30); // in days
 
-//FIXME: remove in next Versions
-define('NO_INCLUDE_ALL_WE_TAGS',1);
-if(!defined('NO_INCLUDE_ALL_WE_TAGS')){
-	define('INCLUDE_ALL_WE_TAGS',1);
-}
 
 define(
 		'WE_WYSIWYG_COMMANDS',
