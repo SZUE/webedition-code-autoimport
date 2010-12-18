@@ -257,7 +257,7 @@ class weCustomerFrames extends weModuleFrames {
 				return $out;
 				break;
 			case 'password':
-				return htmlTextInput($field, 32, $value, "", "onchange=\"top.content.setHot();\" style='{width:240}'", "password");
+				return htmlTextInput($field, 32, $value, '', 'onchange="top.content.setHot();" style="{width:240}" autocomplete="off" ', "password");
 				break;
 			case 'img':
 
@@ -474,7 +474,7 @@ class weCustomerFrames extends weModuleFrames {
 							$table->setCol($r, $c, array("class" => "defaultfont"), htmlFormElementTable(we_htmlElement::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "AutoLogin", $GLOBALS['l_customer']['autologin_request'], false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
 							break;
 						case 'Password':
-							$table->setCol($r, $c, array(), htmlFormElementTable(htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" ", (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? 'text' : 'password'), "240px"), $this->View->settings->getPropertyTitle($pk)));
+							$table->setCol($r, $c, array(), htmlFormElementTable(htmlTextInput($pk, 32, $pv, "", 'onchange="top.content.setHot();" autocomplete="off" ', (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? 'text' : 'password'), "240px"), $this->View->settings->getPropertyTitle($pk)));
 							break;
 						case 'Username':
 							$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
