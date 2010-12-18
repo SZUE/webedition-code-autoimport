@@ -160,7 +160,9 @@ function doUnload() {
 		case 'edit_shop_shipping':
 			//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
 		break;
-
+		case 'edit_shop_status':
+			//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
+		break;
 		case 'edit_shop_vat_country':
 			//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
 		break;
@@ -395,7 +397,7 @@ fr.write("&nbsp;");
 
    // echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
 
-    $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." group by IntOrderID order by IntID DESC");
+    $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
        while($DB_WE->next_record()){
          print "  menuDaten.add(new urlEntry('link.gif','".$DB_WE->f("IntOrderID")."',".$DB_WE->f("mdate").",'".$DB_WE->f("IntOrderID").". ".$l_shop["bestellung"]." ".$DB_WE->f("orddate")."','shop','".SHOP_TABLE."','".(($DB_WE->f("DateShipping")>0)?0:1)."'));\n";
        	 if($DB_WE->f("DateShipping")<=0){
@@ -445,9 +447,9 @@ fr.write("&nbsp;");
 					print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto>';
 				}
 				?>
-		</frameset>
+		<frame src="UntitledFrame-5"></frameset>
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize>
-	</frameset>
+	</frameset><noframes></noframes>
 <?php } else { ?>
 	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize>

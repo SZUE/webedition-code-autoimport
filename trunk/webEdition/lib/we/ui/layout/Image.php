@@ -381,6 +381,9 @@ class we_ui_layout_Image
 			case "text/plain" :
 				return "text_plain";
 				break;
+			case "text/htaccess" :
+				return "text_htaccess";
+				break;
 			case "text/xml" :
 				return "text_xml";
 				break;

@@ -21,19 +21,19 @@
 
 
 // Document-Type/Category based Workflow Type
-define ("WE_WORKFLOW_DOCTYPE_CATEGORY", 0);
+define ('WE_WORKFLOW_DOCTYPE_CATEGORY', 0);
 // Directory based Workflow Type
-define ("WE_WORKFLOW_FOLDER", 1);
+define ('WE_WORKFLOW_FOLDER', 1);
 // Object based Workflow Type
-define ("WE_WORKFLOW_OBJECT", 2);
+define ('WE_WORKFLOW_OBJECT', 2);
 
-define ("WE_WORKFLOW_STATE_INACTIVE", 0);
-define ("WE_WORKFLOW_STATE_ACTIVE", 1);
+define ('WE_WORKFLOW_STATE_INACTIVE', 0);
+define ('WE_WORKFLOW_STATE_ACTIVE', 1);
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/workflow.inc.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowStep.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowTask.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/workflow.inc.php');
+include_once(WE_WORKFLOW_MODULE_DIR.'weWorkflowStep.php');
+include_once(WE_WORKFLOW_MODULE_DIR.'weWorkflowTask.php');
 
 /**
 * General Definition of WebEdition Workflow
@@ -77,30 +77,30 @@ class weWorkflow extends weWorkflowBase{
         parent::weWorkflowBase();
         $this->table=WORKFLOW_TABLE;
 
-		$this->persistents[]="ID";
-		$this->persistents[]="Text";
-		$this->persistents[]="Type";
-		$this->persistents[]="DocType";
-		$this->persistents[]="Folders";
-		$this->persistents[]="ObjectFileFolders";
-		$this->persistents[]="Objects";
-		$this->persistents[]="Categories";
-		$this->persistents[]="ObjCategories";
-		$this->persistents[]="Status";
-		$this->persistents[]="EmailPath";
-		$this->persistents[]="LastStepAutoPublish";
+		$this->persistents[]='ID';
+		$this->persistents[]='Text';
+		$this->persistents[]='Type';
+		$this->persistents[]='DocType';
+		$this->persistents[]='Folders';
+		$this->persistents[]='ObjectFileFolders';
+		$this->persistents[]='Objects';
+		$this->persistents[]='Categories';
+		$this->persistents[]='ObjCategories';
+		$this->persistents[]='Status';
+		$this->persistents[]='EmailPath';
+		$this->persistents[]='LastStepAutoPublish';
 
 
 		$this->ID = 0;
-		$this->Text = $l_workflow["new_workflow"];
+		$this->Text = $l_workflow['new_workflow'];
 		$this->Type = WE_WORKFLOW_FOLDER;
-		$this->Folders = ",0,";
-		$this->ObjectFileFolders = ",0,";
-		$this->FolderPath = "";
+		$this->Folders = ',0,';
+		$this->ObjectFileFolders = ',0,';
+		$this->FolderPath = '';
 		$this->DocType = '0';
-		$this->Objects = "";
-		$this->Categories = "";
-		$this->ObjCategories = "";
+		$this->Objects = '';
+		$this->Categories = '';
+		$this->ObjCategories = '';
 		$this->Status = WE_WORKFLOW_STATE_INACTIVE;
 		$this->EmailPath = 0;
 		$this->LastStepAutoPublish = 0;
@@ -144,15 +144,15 @@ class weWorkflow extends weWorkflowBase{
 	*/
 	function loadDocuments(){
 			$db_tmp = new DB_WE();
-			$this->db->query("SELECT ID,documentID FROM ".WORKFLOW_DOC_TABLE." WHERE workflowID=".abs($this->ID)." AND Status=0");
+			$this->db->query('SELECT ID,documentID FROM '.WORKFLOW_DOC_TABLE.' WHERE workflowID='.abs($this->ID).' AND Status=0');
 			$docTable=($this->Type==WE_WORKFLOW_OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE );
 			while($this->db->next_record()){
-				$db_tmp->query("SELECT ID,Text,Icon FROM $docTable WHERE ID='".$this->db->f("documentID")."'");
+				$db_tmp->query('SELECT ID,Text,Icon FROM '.$docTable.' WHERE ID=\''.$this->db->f('documentID').'\'');
 				if($db_tmp->next_record()){
 					$newdoc=array();
-					$newdoc["ID"]=$this->db->f("ID");
-					$newdoc["Text"]=$db_tmp->f("Text");
-					$newdoc["Icon"]=$db_tmp->f("Icon");
+					$newdoc['ID']=$this->db->f('ID');
+					$newdoc['Text']=$db_tmp->f('Text');
+					$newdoc['Icon']=$db_tmp->f('Icon');
 					$this->documents[]=$newdoc;
 				}
 			}
@@ -163,12 +163,12 @@ class weWorkflow extends weWorkflowBase{
 	*/
 	function getAllWorkflows() {
 
-		$this->db->query("SELECT ID FROM " .WORKFLOW_TABLE. " ORDER BY Text");
+		$this->db->query('SELECT ID FROM ' .WORKFLOW_TABLE. ' ORDER BY Text');
 
 		$wfs = array();
 		while ($this->db->next_record())
 		{
-			$wfs[] = new weWorkflow($this->db->f("ID"));
+			$wfs[] = new weWorkflow($this->db->f('ID'));
 		}
 		return $wfs;
 	}
@@ -181,11 +181,11 @@ class weWorkflow extends weWorkflowBase{
 		
 		$db=new DB_WE();
 
-		$db->query("SELECT ID,Text FROM " . WORKFLOW_TABLE . " WHERE Status IN (".$status.") AND Type IN (".$type.") ORDER BY Text");
+		$db->query('SELECT ID,Text FROM ' . WORKFLOW_TABLE . ' WHERE Status IN ('.$status.') AND Type IN ('.$type.') ORDER BY Text');
 		$wfs = array();
 		while ($db->next_record())
 		{
-			$wfs[$db->f("ID")] = $db->f("Text") ;
+			$wfs[$db->f('ID')] = $db->f('Text') ;
 		}
 		return $wfs;
 	}
@@ -216,13 +216,13 @@ class weWorkflow extends weWorkflowBase{
 		// !!! here we have to delete all other steps in database except this in array
 		if ( count($stepsList) >0 )
 		{
-			$deletequery = 'DELETE FROM '.WORKFLOW_STEP_TABLE.' WHERE workflowID=' . abs($this->ID) . ' AND ID NOT IN (' . join(",",$stepsList) . ')';
+			$deletequery = 'DELETE FROM '.WORKFLOW_STEP_TABLE.' WHERE workflowID=' . abs($this->ID) . ' AND ID NOT IN (' . join(',',$stepsList) . ')';
 			$afectedRows = $this->db->query($deletequery);
 		}
 		
 		//remove all documents from workflow
 		foreach($this->documents as $k=>$val){
-			$this->documentDef=new weWorkflowDocument($val["ID"]);
+			$this->documentDef=new weWorkflowDocument($val['ID']);
 			$this->documentDef->finishWorkflow(1);
 			$this->documentDef->save();
 		}
@@ -249,7 +249,7 @@ class weWorkflow extends weWorkflowBase{
 		}
 
 		foreach($this->documents as $key=>$val){
-			$this->documentDef = new weWorkflowDocument($val["ID"]);
+			$this->documentDef = new weWorkflowDocument($val['ID']);
 			$this->documentDef->delete();
 		}
 
@@ -263,15 +263,15 @@ class weWorkflow extends weWorkflowBase{
 	
 	function isDocInWorkflow($docID,$type){
 		$db = new DB_WE;
-		$db->query('SELECT ID FROM '.WORKFLOW_DOC_TABLE.' WHERE documentID=' . abs($docID) . '" AND Type IN(0,1) AND Status=0');
-		if($db->next_record()) return $db->f("ID");
+		$db->query('SELECT ID FROM '.WORKFLOW_DOC_TABLE.' WHERE documentID=' . abs($docID) . ' AND Type IN(0,1) AND Status=0');
+		if($db->next_record()) return $db->f('ID');
 		else false;
 	}
 
 	function isObjectInWorkflow($docID){
 		$db = new DB_WE;
-		$db->query('SELECT ID FROM '.WORKFLOW_DOC_TABLE.' WHERE documentID=' . abs($docID) . '" AND Type=2 AND Status=0');
-		if($db->next_record()) return $db->f("ID");
+		$db->query('SELECT ID FROM '.WORKFLOW_DOC_TABLE.' WHERE documentID=' . abs($docID) . ' AND Type=2 AND Status=0');
+		if($db->next_record()) return $db->f('ID');
 		else false;
 	}
 
@@ -289,12 +289,12 @@ class weWorkflow extends weWorkflowBase{
 		*/
 
 		if ($doctype){
-			$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType LIKE '%,".$doctype.",%' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+			$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE DocType LIKE \'%,'.$doctype.',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 			while ($db->next_record()){
-				if(isset($wfIDs[$db->f("ID")])){
-					$wfIDs[$db->f("ID")]++;
+				if(isset($wfIDs[$db->f('ID')])){
+					$wfIDs[$db->f('ID')]++;
 				}else{
-					$wfIDs[$db->f("ID")] = 1;
+					$wfIDs[$db->f('ID')] = 1;
 				}
 			}
 		}
@@ -306,15 +306,15 @@ class weWorkflow extends weWorkflowBase{
 		{
 			$cats=makeArrayFromCSV($categories);
 			foreach($cats as $k=>$v){
-				if ($doctype!="")
-					$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE DocType IN (".$doctype.") AND Categories LIKE '%,".mysql_real_escape_string($v).",%' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+				if ($doctype!='')
+					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE DocType IN ('.$doctype.') AND Categories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				else
-					$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE Categories LIKE '%,".mysql_real_escape_string($v).",%' AND Type=".WE_WORKFLOW_DOCTYPE_CATEGORY." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Categories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				while ($db->next_record()){
-					if(isset($wfIDs[$db->f("ID")])){
-						$wfIDs[$db->f("ID")]++;
+					if(isset($wfIDs[$db->f('ID')])){
+						$wfIDs[$db->f('ID')]++;
 					}else{
-						$wfIDs[$db->f("ID")] = 1;
+						$wfIDs[$db->f('ID')] = 1;
 					}
 				}
 			}
@@ -343,9 +343,9 @@ class weWorkflow extends weWorkflowBase{
 	
 	function findWfIdForFolder($folderID){
 		$db = new DB_WE();
-		$wfID = f("SELECT ID FROM ".WORKFLOW_TABLE." WHERE Folders LIKE '%,".abs($folderID).",%' AND Type=".WE_WORKFLOW_FOLDER." AND Status=".WE_WORKFLOW_STATE_ACTIVE,"ID",$db);
+		$wfID = f('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Folders LIKE \'%,'.abs($folderID).',%\' AND Type='.WE_WORKFLOW_FOLDER.' AND Status='.WE_WORKFLOW_STATE_ACTIVE,'ID',$db);
 		if($folderID > 0 && (!$wfID)){
-			$pid = f("SELECT ParentID FROM ".FILE_TABLE." WHERE ID=".abs($folderID),"ParentID",$db);
+			$pid = f('SELECT ParentID FROM '.FILE_TABLE.' WHERE ID='.abs($folderID),'ParentID',$db);
 			return weWorkflow::findWfIdForFolder($pid);
 		}else{
 			return $wfID;
@@ -355,25 +355,25 @@ class weWorkflow extends weWorkflowBase{
 	/**
 	* Get workflow for object
 	*/
-	function getObjectWorkflow($object,$categories="",$folderID=0){
+	function getObjectWorkflow($object,$categories='',$folderID=0){
 		$db = new DB_WE;
 		$workflowID = 0;
 		
 		$wfIDs = array();
 
-		$tail = "";
+		$tail = '';
 		
 		if ($folderID != 0)
 		{
-			$tail = " AND ObjectFileFolders LIKE '%,".abs($folderID).",%'";
+			$tail = ' AND ObjectFileFolders LIKE \'%,'.abs($folderID).',%\'';
 		}
 
-		$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE Objects LIKE '%,".mysql_real_escape_string($object).",%' AND Type=".WE_WORKFLOW_OBJECT." AND Status=".WE_WORKFLOW_STATE_ACTIVE.$tail);
+		$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.mysql_real_escape_string($object).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE.$tail);
 		while ($db->next_record()){
-			if(isset($wfIDs[$db->f("ID")])){
-				$wfIDs[$db->f("ID")]++;
+			if(isset($wfIDs[$db->f('ID')])){
+				$wfIDs[$db->f('ID')]++;
 			}else{
-				$wfIDs[$db->f("ID")] = 1;
+				$wfIDs[$db->f('ID')] = 1;
 			}
 		}
 
@@ -384,12 +384,12 @@ class weWorkflow extends weWorkflowBase{
 		{
 			$cats=makeArrayFromCSV($categories);
 			foreach($cats as $k=>$v){
-				$db->query("SELECT ID FROM ".WORKFLOW_TABLE." WHERE Objects LIKE '%,".mysql_real_escape_string($object).",%' AND ObjCategories LIKE '%,".mysql_real_escape_string($v).",%' AND Type=".WE_WORKFLOW_OBJECT." AND Status=".WE_WORKFLOW_STATE_ACTIVE);
+				$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.mysql_real_escape_string($object).',%\' AND ObjCategories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				while ($db->next_record()){
-					if(isset($wfIDs[$db->f("ID")])){
-						$wfIDs[$db->f("ID")]++;
+					if(isset($wfIDs[$db->f('ID')])){
+						$wfIDs[$db->f('ID')]++;
 					}else{
-						$wfIDs[$db->f("ID")] = 1;
+						$wfIDs[$db->f('ID')] = 1;
 					}
 				}
 			}

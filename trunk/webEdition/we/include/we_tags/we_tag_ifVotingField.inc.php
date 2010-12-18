@@ -17,22 +17,36 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
 
 function we_tag_ifVotingField($attribs,$content) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_votingField.inc.php');
-	
 	$foo = attributFehltError($attribs, "match", "ifVotingField");
 	if ($foo) {
 		print($foo);
 		return "";
-	}    
-	$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
-	
-	$atts = removeAttribs($attribs,array('match'));
-	
-	$realvalue = we_tag_votingField($atts, "");
-	return $realvalue == $match;
-}
+	}
 
-?>
+	$operator  = we_getTagAttribute("operator", $attribs);
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+    	$match = (int) we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
+	} else {
+		$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
+	}
+	$atts = removeAttribs($attribs,array('match','operator'));
+	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
+		$realvalue = (int) we_tag('votingField',$atts, "");
+	} else {
+		$realvalue = we_tag('votingField',$atts, "");
+	}
+
+	switch ($operator) {
+		case "equal": return $realvalue == $match; break;
+		case "less": return $realvalue < $match; break;
+		case "less|equal": return $realvalue <= $match; break;
+		case "greater": return $realvalue > $match; break;
+		case "greater|equal": return $realvalue >= $match; break;
+		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
+		default: return $realvalue == $match;
+	}
+
+}

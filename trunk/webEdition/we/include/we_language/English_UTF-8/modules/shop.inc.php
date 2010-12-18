@@ -102,6 +102,19 @@ $l_shop["includedVat"] = "contains VAT";
 $l_shop["bestellnr"] = "Order no.:";
 $l_shop["bearbeitet"] = "Processed on:";
 $l_shop["bezahlt"] = "Paid on:";
+$l_shop["bestaetigt"] = "Confirmed on:";// TRANSLATE
+$l_shop["customA"] = "Status A on:";// TRANSLATE
+$l_shop["customB"] = "Status B on:";// TRANSLATE
+$l_shop["customC"] = "Status C on:";// TRANSLATE
+$l_shop["customD"] = "Status D on:";// TRANSLATE
+$l_shop["customE"] = "Status E on:";// TRANSLATE
+$l_shop["customF"] = "Status F on:";// TRANSLATE
+$l_shop["customG"] = "Status G on:";// TRANSLATE
+$l_shop["customH"] = "Status H on:";// TRANSLATE
+$l_shop["customI"] = "Status I on:";// TRANSLATE
+$l_shop["customJ"] = "Status J on:";// TRANSLATE
+$l_shop["storniert"] = "Cancelled on:";// TRANSLATE
+$l_shop["beendet"] = "Finished on:";// TRANSLATE
 $l_shop["datumeingabe"] = "You must enter the date in the format mm/dd/yy.";
 
 $l_shop["order_data"] = "Order and<br>user details";
@@ -250,6 +263,38 @@ $l_shop['vat_country']['statesSpecialRules_result'] = 'Result';
 $l_shop['vat_country']['condition_is_empty'] = 'Empty';
 $l_shop['vat_country']['condition_is_set'] = 'Filled';
 
+// statusmails
+$l_shop['statusmails']['box_headline'] = 'Status display and behavior with E-Mails';// TRANSLATE
+$l_shop['statusmails']['AnzeigeDaten'] = 'Dosplay data';// TRANSLATE
+$l_shop['statusmails']['fieldname'] = 'Field ID';// TRANSLATE
+$l_shop['statusmails']['hidefield'] = 'Field display';// TRANSLATE
+$l_shop['statusmails']['hidefieldCOV'] = 'Customer overview';// TRANSLATE
+$l_shop['statusmails']['hidefieldNein'] = 'display';// TRANSLATE
+$l_shop['statusmails']['hidefieldJa'] = 'hidden';// TRANSLATE
+$l_shop['statusmails']['fieldtext'] = 'Field name';// TRANSLATE
+$l_shop['statusmails']['EMailssenden'] = 'Send e-mails';// TRANSLATE
+$l_shop['statusmails']['EMailssendenNein'] = 'no';// TRANSLATE
+$l_shop['statusmails']['EMailssendenHand'] = 'Button';// TRANSLATE
+$l_shop['statusmails']['EMailssendenAuto'] = 'automatically';// TRANSLATE
+$l_shop['statusmails']['EMailDaten'] = 'E-Mail Data';// TRANSLATE
+$l_shop['statusmails']['hintEMailDaten'] ="Define the senders e-mail address and the name of the sender for the status e-mails. <br/> The e-mail address of the receiver will be extracted from the field of the customer management choosen below. The name of the receiver will be taken from the title-field choosen below and from forename and surname.<br/> Also define the name of the field (in the webedition document), which holds the subject of the mail to be send. <b>If this field is empty, the mail will not be send.</b> ";// TRANSLATE
+$l_shop['statusmails']['hintSprache'] ='Define here, if different documents for each language should be used. Also define the field from customer management, which holds the language of the customer.<br/> The contents of this field will be available in the status mail document in the REQUEST variable $_REQUEST["we_userlanguage"], so you can distinct different languages (i.e. with &lt;we:ifVar type="request" name="we_userlanguage"&gt;).';// TRANSLATE
+$l_shop['statusmails']['hintDokumente'] ='Please chose for each relevant shop status a document ID, which defines the document to be send. The available languages are defined in the webEdition setting is the tag languages.<br/>The documents (templates) have access to the shop status by the  REQUEST variable $_REQUEST["we_shopstatus"] (in the form "Order", "Confirmation" etc.), so a distinction inside the document is possible.<br/>In the shop status mails, you can access the data of the order with the tag &lt;we:order&gt;, which uses the REQUEST variable $_REQUEST["we_orderid"]. Also see the example in the tag-reference.';// TRANSLATE
+
+$l_shop['statusmails']['AbsenderAdresse'] = 'Senders e-mail addresse';// TRANSLATE
+$l_shop['statusmails']['AbsenderName'] = 'Senders name';// TRANSLATE
+$l_shop['statusmails']['EMailFeld'] = 'CM e-mail field';// TRANSLATE
+$l_shop['statusmails']['DocumentSubjectField'] = 'Field name within the document for subject';// TRANSLATE
+$l_shop['statusmails']['Spracheinstellungen'] = 'Lanugages';// TRANSLATE
+$l_shop['statusmails']['useLanguages'] = 'Use documents<br/> depending on language <br/>(instead of default)';// TRANSLATE
+$l_shop['statusmails']['SprachenFeld'] = 'CM language field';// TRANSLATE
+$l_shop['statusmails']['hintISO'] = 'Only using ISO coded langauges, one can send documents depending on language.';// TRANSLATE
+$l_shop['statusmails']['Dokumente'] = 'Documents';// TRANSLATE
+$l_shop['statusmails']['defaultDocs'] = 'Default <br/> (no lang.<br/> support)';// TRANSLATE
+$l_shop['statusmails']['EMail'] = 'e-mail';// TRANSLATE
+$l_shop['statusmails']['TitelFeld'] = 'CM title field';// TRANSLATE
+$l_shop['statusmails']['bcc'] = 'blind copy to address';// TRANSLATE
+$l_shop['statusmails']['resent'] = 'Are you sure, that the e-mail should be send again?';// TRANSLATE
 $l_shop['shipping']['shipping_package'] = 'Shipping and handling';
 $l_shop['shipping']['prices_are_net'] = 'Prices are net';
 $l_shop['shipping']['insert_packaging'] = 'Existing rates';
@@ -264,6 +309,9 @@ $l_shop['shipping']['shipping_costs'] = 'Shipping_costs';
 
 $l_shop['preferences']['customerFields'] = "Customer fields<br />(Customer Module)";
 $l_shop['preferences']['orderCustomerFields'] = 'Customer fields<br />(Order)';
+$l_shop['preferences']['CountryField'] = 'Field country';
+$l_shop['preferences']['LanguageField'] = 'Field Language';
+$l_shop['preferences']['ISO-Kodiert'] = 'Field is ISO coded';
 
 $l_shop['preferences']['customerdata'] = 'Customer Data';
 $l_shop['preferences']['explanation_customer_odercustomer'] = 'Explanation: These data is only saved within the order, the data of the Customer Module will not be touched.';

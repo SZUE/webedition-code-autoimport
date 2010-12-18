@@ -174,9 +174,10 @@ class we_util_Mailer extends Zend_Mail
 			$this->setReplyTo($_reply['email'], $_reply['name']);
 		}
 		
-		$_sender = $this->parseEmailUser($sender);
-		$this->setFrom($_sender['email'],$_sender['name']);
-		
+		if ($sender !=''){
+			$_sender = $this->parseEmailUser($sender);
+			$this->setFrom($_sender['email'],$_sender['name']);
+		}
 		$this->setSubject($subject);
 		$this->setIsEmbedImages($isEmbedImages);
 		$this->setIsUseBaseHref(true);

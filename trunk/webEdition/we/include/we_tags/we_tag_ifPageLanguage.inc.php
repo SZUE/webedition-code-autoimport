@@ -18,14 +18,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_ifPageLanguage($attribs, $content)
-{
+function we_tag_ifPageLanguage($attribs, $content){
 	$foo = attributFehltError($attribs, "match", "ifPageLanguage", true);
 	if ($foo) {
 		print($foo);
 		return "";
 	}
-	
+
 	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
 	$docAttr = we_getTagAttribute("doc", $attribs, "self");
 	$doc = we_getDocForTag($docAttr);
@@ -35,5 +34,3 @@ function we_tag_ifPageLanguage($attribs, $content)
 	}
 	return false;
 }
-
-?>

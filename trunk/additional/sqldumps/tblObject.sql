@@ -30,5 +30,7 @@ CREATE TABLE tblObject (
   Templates varchar(255) NOT NULL default '',
   CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY Path (Path),
+  KEY IsFolder (IsFolder)
 ) ENGINE=MyISAM;

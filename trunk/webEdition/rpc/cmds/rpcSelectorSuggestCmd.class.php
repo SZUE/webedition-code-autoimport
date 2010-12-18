@@ -39,5 +39,3 @@ class rpcSelectorSuggestCmd extends rpcCmd {
 		return $resp;
 	}
 }
-
-?>

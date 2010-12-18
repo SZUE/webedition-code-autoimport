@@ -19,11 +19,11 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
-define("WE_DEFAULT_EMAIL","mailserver@".SERVER_NAME);
-define("WE_DEFAULT_SUBJECT","webEdition mailform");
+define('WE_DEFAULT_EMAIL','mailserver@'.SERVER_NAME);
+define('WE_DEFAULT_SUBJECT','webEdition mailform');
 
 
 $_blocked = false;
@@ -31,41 +31,41 @@ $_blocked = false;
 
 // check to see if we need to lock or block the formmail request
 
-if (defined("FORMMAIL_LOG") && FORMMAIL_LOG) {
+if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 	$_ip = $_SERVER['REMOTE_ADDR'];
 	$_now = time();
 
 	// insert into log
-	$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_LOG_TABLE . " (ip, unixTime) VALUES('".mysql_real_escape_string($_ip)."', " . abs($_now) . ")" );
-	if (defined("FORMMAIL_EMPTYLOG") && (FORMMAIL_EMPTYLOG > -1)) {
-		$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime < " . abs($_now - FORMMAIL_EMPTYLOG));
+	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("'.mysql_real_escape_string($_ip).'", ' . abs($_now) . ')' );
+	if (defined('FORMMAIL_EMPTYLOG') && (FORMMAIL_EMPTYLOG > -1)) {
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime < ' . abs($_now - FORMMAIL_EMPTYLOG));
 	}
 
-	if (defined("FORMMAIL_BLOCK") && FORMMAIL_BLOCK) {
+	if (defined('FORMMAIL_BLOCK') && FORMMAIL_BLOCK) {
 
 		$_num = 0;
-		$_trials = (defined("FORMMAIL_TRIALS") ? FORMMAIL_TRIALS : 3);
-		$_blocktime = (defined("FORMMAIL_BLOCKTIME") ? FORMMAIL_BLOCKTIME : 86400);
+		$_trials = (defined('FORMMAIL_TRIALS') ? FORMMAIL_TRIALS : 3);
+		$_blocktime = (defined('FORMMAIL_BLOCKTIME') ? FORMMAIL_BLOCKTIME : 86400);
 
 		// first delete all entries from blocktable which are older then now - blocktime
-		$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE blockedUntil != -1 AND blockedUntil < " . abs($_now));
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < ' . abs($_now));
 
 		// check if ip is allready blocked
-		if (f("SELECT id FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . mysql_real_escape_string($_ip) . "'","id",$GLOBALS["DB_WE"])) {
+		if (f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . mysql_real_escape_string($_ip) . '"','id',$GLOBALS['DB_WE'])) {
 			$_blocked = true;
 		} else {
 
 			// ip is not blocked, so see if we need to block it
-			$GLOBALS["DB_WE"]->query("SELECT * FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime > " . abs($_now - FORMMAIL_SPAN) . " AND ip='". mysql_real_escape_string($_ip) . "'");
-			if ($GLOBALS["DB_WE"]->next_record()) {
-				$_num = $GLOBALS["DB_WE"]->num_rows();
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime > ' . abs($_now - FORMMAIL_SPAN) . ' AND ip="'. mysql_real_escape_string($_ip) . '"');
+			if ($GLOBALS['DB_WE']->next_record()) {
+				$_num = $GLOBALS['DB_WE']->num_rows();
 				if ($_num > $_trials) {
 					$_blocked = true;
 					// cleanup
-					$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . mysql_real_escape_string($_ip) . "'" );
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . mysql_real_escape_string($_ip) . '"' );
 					// insert in block table
 					$blockedUntil = ($_blocktime == -1) ? -1 : abs($_now + $_blocktime);
-					$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".mysql_real_escape_string($_ip)."', " . $blockedUntil . ")" );
+					$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".mysql_real_escape_string($_ip)."', " . $blockedUntil . ")" );
 				}
 			}
 		}
@@ -79,46 +79,46 @@ if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC){
 }
 
 if ($_blocked) {
-	print_error("Email dispatch blocked / Email Versand blockiert!");
+	print_error('Email dispatch blocked / Email Versand blockiert!');
 }
 	
 
 
 function is_valid_email($email) {
-	return preg_match('#^[a-z0-9.!\#$%&\'*+-/=?^_`{|}~]+@([0-9.]+|([^\s]+\.+[a-z]{2,6}))$#si', $email);
+	return (filter_var($email, FILTER_VALIDATE_EMAIL)!== false);
 }
 
 function contains_bad_str($str_to_test) {
 	$str_to_test = trim($str_to_test);
 	$bad_strings = array(
-				"content-type:"
-				,"mime-version:"
-				,"Content-Transfer-Encoding:"
-				,"bcc:"
-				,"cc:"
-				,"to:"
+				'content-type:'
+				,'mime-version:'
+				,'Content-Transfer-Encoding:'
+				,'bcc:'
+				,'cc:'
+				,'to:'
 	);
 
 	foreach($bad_strings as $bad_string) {
 		if (preg_match('|^' . preg_quote($bad_string,"|").'|i',$str_to_test) || preg_match('|[\n\r]' . preg_quote($bad_string,"|").'|i',$str_to_test)) {
-			print_error("Email dispatch blocked / Email Versand blockiert!");
+			print_error('Email dispatch blocked / Email Versand blockiert!');
 		}
 	}
 	if (preg_match('|multipart/mixed|i', $str_to_test)) {
-		print_error("Email dispatch blocked / Email Versand blockiert!");
+		print_error('Email dispatch blocked / Email Versand blockiert!');
 	}
 }
 
 function replace_bad_str($str_to_test) {
 	$out = $str_to_test;
 	$bad_strings = array(
-				"(content-type)(:)"
-				,"(mime-version)(:)"
-				,"(multipart/mixed)"
-				,"(Content-Transfer-Encoding)(:)"
-				,"(bcc)(:)"
-				,"(cc)(:)"
-				,"(to)(:)"
+				'(content-type)(:)'
+				,'(mime-version)(:)'
+				,'(multipart/mixed)'
+				,'(Content-Transfer-Encoding)(:)'
+				,'(bcc)(:)'
+				,'(cc)(:)'
+				,'(to)(:)'
 	);
 
 
@@ -129,31 +129,31 @@ function replace_bad_str($str_to_test) {
 }
 
 function contains_newlines($str_to_test) {
-	if(preg_match("/(%0A|%0D|\\n+|\\r+)/i", $str_to_test) != 0) {
+	if(preg_match("/(\\n+|\\r+)/", $str_to_test) != 0) {
 		print_error("newline found in $str_to_test. Suspected injection attempt - mail not being sent.");
 	}
 }
 
 function print_error($errortext){
 
-	$headline = "Fehler / Error";
-	$content =		$GLOBALS["l_global"]["formmailerror"].getHtmlTag("br")
-				.	"&#8226; ".$errortext;
+	$headline = 'Fehler / Error';
+	$content =		$GLOBALS['l_global']['formmailerror'].getHtmlTag('br')
+				.	'&#8226; '.$errortext;
 
 	$css = array(
 		'media' => 'screen',
 		'rel'	=> 'stylesheet',
 		'type'	=> 'text/css',
-		'href'	=> WEBEDITION_DIR."css/global.php?WE_LANGUAGE=".$GLOBALS["WE_LANGUAGE"],
+		'href'	=> WEBEDITION_DIR.'css/global.php?WE_LANGUAGE='.$GLOBALS['WE_LANGUAGE'],
 	);
 
 	print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
 	print htmlTop();
-	print getHtmlTag("link", $css);
-	print "</head>";
-	print getHtmlTag("body", array("class"=>"weEditorBody"), "", false, true);
-	print htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content),$headline);
-	print "</body></html>";
+	print getHtmlTag('link', $css);
+	print '</head>';
+	print getHtmlTag('body', array('class'=>'weEditorBody'), '', false, true);
+	print htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content),$headline);
+	print '</body></html>';
 
 	exit;
 
@@ -161,7 +161,7 @@ function print_error($errortext){
 
 function check_required($required){
 	if($required){
-		$we_requiredarray = explode(",",$required);
+		$we_requiredarray = explode(',',$required);
 		for($i=0;$i<sizeof($we_requiredarray);$i++){
 			if(!$_REQUEST[$we_requiredarray[$i]]){
 				return false;
@@ -172,43 +172,43 @@ function check_required($required){
 }
 
 function error_page(){
-	if($_REQUEST["error_page"]){
-		$errorpage = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST["error_page"]) : $_REQUEST["error_page"];
+	if($_REQUEST['error_page']){
+		$errorpage = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['error_page']) : $_REQUEST['error_page'];
 		redirect($errorpage);
 	}else{
-		print_error($GLOBALS["l_global"]["email_notallfields"]);
+		print_error($GLOBALS['l_global']['email_notallfields']);
 	}
 }
 
-function ok_page($_subject=""){
-	if($_REQUEST["ok_page"]){
-		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST["ok_page"]) : $_REQUEST["ok_page"];
-		if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {
+function ok_page($_subject=''){
+	if($_REQUEST['ok_page']){
+		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
+		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT) {
 			redirect($ok_page, $_subject);
 		} else {
 			redirect($ok_page);
 		}		
 	}else{
-		print "Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!";
-		if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {
+		print 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
+		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT) {
 			print "<a name='emos_name' title='scontact' rel='$_subject' rev=''></a>\n";
 		}
 		exit;
 	}
 }
 
-function redirect($url,$_emosScontact=""){
-    $prot = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on') ? "https://"  : "http://";
-    if ($_emosScontact!="") {
-    	$url = $url . (strpos($url,"?") ? "&" : "?") . "emosScontact=" . urlencode($_emosScontact);
+function redirect($url,$_emosScontact=''){
+    $prot = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on') ? 'https://'  : 'http://';
+    if ($_emosScontact!='') {
+    	$url = $url . (strpos($url,'?') ? '&' : '?') . 'emosScontact=' . urlencode($_emosScontact);
     }
-    header("Location: " . $prot . $_SERVER['HTTP_HOST'] . $url);
+    header('Location: ' . $prot . $_SERVER['HTTP_HOST'] . $url);
     exit;
 }
 
 
 function check_recipient($email){
-	if(f("SELECT ID FROM ".RECIPIENTS_TABLE." WHERE Email='".mysql_real_escape_string($email)."'","ID",$GLOBALS["DB_WE"])){
+	if(f('SELECT ID FROM '.RECIPIENTS_TABLE." WHERE Email='".mysql_real_escape_string($email)."'",'ID',$GLOBALS['DB_WE'])){
 	   return true;
 	}else{
 		return false;
@@ -216,9 +216,9 @@ function check_recipient($email){
 }
 
 function check_captcha(){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/captcha/captchaImage.class.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/captcha/captchaMemory.class.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/captcha/captcha.class.php");
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/captcha/captchaImage.class.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/captcha/captchaMemory.class.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/captcha/captcha.class.php');
 
 	$name = $_REQUEST['captchaname'];
 
@@ -229,29 +229,29 @@ function check_captcha(){
 	}	
 }
 
-$_req = isset($_REQUEST["required"]) ? $_REQUEST["required"] : "";
+$_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
 
 if(!check_required($_req)){
 	error_page();
 }
 
-if(isset($_REQUEST["email"]) && $_REQUEST["email"]){
-	if(!we_check_email($_REQUEST["email"])){
-		if($_REQUEST["mail_error_page"]){
-			$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST["mail_error_page"]) : $_REQUEST["mail_error_page"];
+if(isset($_REQUEST['email']) && $_REQUEST['email']){
+	if(!we_check_email($_REQUEST['email'])){
+		if($_REQUEST['mail_error_page']){
+			$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['mail_error_page']) : $_REQUEST['mail_error_page'];
 			redirect($foo);
 		}else{
-			print_error($GLOBALS["l_global"]["email_invalid"]);
+			print_error($GLOBALS['l_global']['email_invalid']);
 		}
 	}
 }
 
 $output = array();
 
-$we_reserved=array("from","we_remove","captchaname","we_mode","charset","required","order","ok_page","error_page","captcha_error_page","mail_error_page","recipient","subject","mimetype","confirm_mail","pre_confirm","post_confirm","MAX_FILE_SIZE",session_name(),"cookie","recipient_error_page","forcefrom");
+$we_reserved=array('from','we_remove','captchaname','we_mode','charset','required','order','ok_page','error_page','captcha_error_page','mail_error_page','recipient','subject','mimetype','confirm_mail','pre_confirm','post_confirm','MAX_FILE_SIZE',session_name(),'cookie','recipient_error_page','forcefrom');
 
-if(isset($_REQUEST["we_remove"])){
-	$removeArr = makeArrayFromCSV($_REQUEST["we_remove"]);
+if(isset($_REQUEST['we_remove'])){
+	$removeArr = makeArrayFromCSV($_REQUEST['we_remove']);
 	foreach($removeArr as $val){
 		array_push($we_reserved,$val);
 	}
@@ -261,10 +261,10 @@ $we_txt = '';
 $we_html = '<table>
 ';
 
-$_order = isset($_REQUEST["order"]) ? $_REQUEST["order"] : "";
+$_order = isset($_REQUEST['order']) ? $_REQUEST['order'] : '';
 $we_orderarray = array();
 if($_order){
-	$we_orderarray = explode(",",$_order);
+	$we_orderarray = explode(',',$_order);
 	for($i=0;$i<sizeof($we_orderarray);$i++){
 		if(!in_array($we_orderarray[$i],$we_reserved)){
 			$output[$we_orderarray[$i]] = $_REQUEST[$we_orderarray[$i]];
@@ -296,7 +296,7 @@ foreach($output as $n=>$v){
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
 				$foo = replace_bad_str($foo);
-				$we_txt .= "$n"."[".$n2."]: $foo\n".($foo ? "" : "\n");
+				$we_txt .= $n.'['.$n2."]: $foo\n".($foo ? '' : "\n");
 				$we_html .= '<tr><td align="right"><b>'.$n.'['.$n2.']:</b></td><td>'.$foo.'</td></tr>
 ';
 			}
@@ -305,8 +305,8 @@ foreach($output as $n=>$v){
 			$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
 			$n = replace_bad_str($n);
 			$foo = replace_bad_str($foo);
-			$we_txt .= "$n: $foo\n".($foo ? "" : "\n");
-			if($n=="email"){
+			$we_txt .= "$n: $foo\n".($foo ? '' : "\n");
+			if($n=='email'){
 				$we_html .= '<tr><td align="right"><b>'.$n.':</b></td><td><a href="mailto:'.$foo.'">'.$foo.'</a></td></tr>
 ';
 			}else{
@@ -320,63 +320,63 @@ $we_html .= '</table>
 ';
 
 
-$we_html_confirm = "";
-$we_txt_confirm = "";
+$we_html_confirm = '';
+$we_txt_confirm = '';
 
-if(isset($_REQUEST["email"]) && $_REQUEST["email"]){
-	if(isset($_REQUEST["confirm_mail"]) && $_REQUEST["confirm_mail"]){
+if(isset($_REQUEST['email']) && $_REQUEST['email']){
+	if(isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']){
 		$we_html_confirm = $we_html;
 		$we_txt_confirm = $we_txt;
-		if(isset($_REQUEST["pre_confirm"]) && $_REQUEST["pre_confirm"]){
-			contains_bad_str($_REQUEST["pre_confirm"]);
-			$we_html_confirm = $_REQUEST["pre_confirm"] . "<br>" . $we_html_confirm;
-			$we_txt_confirm = $_REQUEST["pre_confirm"] . "\n\n" . $we_txt_confirm;
+		if(isset($_REQUEST['pre_confirm']) && $_REQUEST['pre_confirm']){
+			contains_bad_str($_REQUEST['pre_confirm']);
+			$we_html_confirm = $_REQUEST['pre_confirm'] . '<br>' . $we_html_confirm;
+			$we_txt_confirm = $_REQUEST['pre_confirm'] . "\n\n" . $we_txt_confirm;
 		}
-		if(isset($_REQUEST["post_confirm"]) && $_REQUEST["post_confirm"]){
-			contains_bad_str($_REQUEST["post_confirm"]);
-			$we_html_confirm = $we_html_confirm . "<br>" . $_REQUEST["post_confirm"];
-			$we_txt_confirm = $we_txt_confirm . "\n\n" . $_REQUEST["post_confirm"];
+		if(isset($_REQUEST['post_confirm']) && $_REQUEST['post_confirm']){
+			contains_bad_str($_REQUEST['post_confirm']);
+			$we_html_confirm = $we_html_confirm . '<br>' . $_REQUEST['post_confirm'];
+			$we_txt_confirm = $we_txt_confirm . "\n\n" . $_REQUEST['post_confirm'];
 		}
 	}
 }
 
-$email = (isset($_REQUEST["email"]) && $_REQUEST["email"]) ?
-			$_REQUEST["email"] :
-			((isset($_REQUEST["from"]) && $_REQUEST["from"])  ?
-				$_REQUEST["from"] :
+$email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
+			$_REQUEST['email'] :
+			((isset($_REQUEST['from']) && $_REQUEST['from'])  ?
+				$_REQUEST['from'] :
 				WE_DEFAULT_EMAIL);
 
-$subject = (isset($_REQUEST["subject"]) && $_REQUEST["subject"]) ?
-			$_REQUEST["subject"] :
+$subject = (isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
+			$_REQUEST['subject'] :
 			WE_DEFAULT_SUBJECT;
 
 $subject = strip_tags($subject);			
 
-$charset = (isset($_REQUEST["charset"]) && $_REQUEST["charset"]) ?
-			ereg_replace("[\r\n]","",$_REQUEST["charset"]) :
-			$GLOBALS["_language"]["charset"];
-$recipient = (isset($_REQUEST["recipient"]) && $_REQUEST["recipient"]) ?
-			$_REQUEST["recipient"] :
-			"";
-$from = (isset($_REQUEST["from"]) && $_REQUEST["from"]) ?
-			$_REQUEST["from"] :
+$charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
+			ereg_replace("[\r\n]",'',$_REQUEST['charset']) :
+			$GLOBALS['_language']['charset'];
+$recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
+			$_REQUEST['recipient'] :
+			'';
+$from = (isset($_REQUEST['from']) && $_REQUEST['from']) ?
+			$_REQUEST['from'] :
 			WE_DEFAULT_EMAIL;
 
-$mimetype = (isset($_REQUEST["mimetype"]) && $_REQUEST["mimetype"]) ? $_REQUEST["mimetype"] : "";
+$mimetype = (isset($_REQUEST['mimetype']) && $_REQUEST['mimetype']) ? $_REQUEST['mimetype'] : '';
 
 $wasSent = false;
 
 if($recipient){
-    if (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == "true"){
+    if (isset($_REQUEST['forcefrom']) && $_REQUEST['forcefrom'] == 'true'){
         $fromMail = $from;
     } else {
         $fromMail = $email;
     }
-    $subject = preg_replace("/(%0A|%0D|\\n+|\\r+)/i","",$subject);
-	$charset = preg_replace("/(%0A|%0D|\\n+|\\r+)/i","",$charset);
-	$fromMail = preg_replace("/(%0A|%0D|\\n+|\\r+)/i","",$fromMail);
-	$email = preg_replace("/(%0A|%0D|\\n+|\\r+)/i","",$email);
-	$from = preg_replace("/(%0A|%0D|\\n+|\\r+)/i","",$from);
+    $subject = preg_replace("/(\\n+|\\r+)/","",$subject);
+	$charset = preg_replace("/(\\n+|\\r+)/","",$charset);
+	$fromMail = preg_replace("/(\\n+|\\r+)/","",$fromMail);
+	$email = preg_replace("/(\\n+|\\r+)/","",$email);
+	$from = preg_replace("/(\\n+|\\r+)/","",$from);
 	
 	contains_bad_str($email);
 	contains_bad_str($from);
@@ -385,19 +385,19 @@ if($recipient){
 	contains_bad_str($charset);
 
 	if (!is_valid_email($fromMail)) {
-		print_error($GLOBALS["l_global"]["email_invalid"]);
+		print_error($GLOBALS['l_global']['email_invalid']);
 	}
 
 	$recipients = makeArrayFromCSV($recipient);
-	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] !="" ? $_REQUEST['forename'] : "";
-	$senderSurname  = isset($_REQUEST['surname'])  && $_REQUEST['surname']  !="" ? $_REQUEST['surname']  : "";
-	if ($senderForename !="" || $senderSurname!="") {
+	$senderForename = isset($_REQUEST['forename']) && $_REQUEST['forename'] !='' ? $_REQUEST['forename'] : '';
+	$senderSurname  = isset($_REQUEST['surname'])  && $_REQUEST['surname']  !='' ? $_REQUEST['surname']  : '';
+	if ($senderForename !='' || $senderSurname!='') {
 		$sender = "$senderForename $senderSurname<$fromMail>";
 	} else{
 		$sender = $fromMail;
 	}
 	
-	$phpmail = new we_util_Mailer("",$subject,$sender);
+	$phpmail = new we_util_Mailer('',$subject,$sender);
 	$phpmail->setCharSet($charset);
 
 	$recipientsList = array();
@@ -405,39 +405,39 @@ if($recipient){
 	foreach($recipients as $recipientID){
 		
 		if (is_numeric($recipientID)) {
-			$recipient = f("SELECT Email FROM " . RECIPIENTS_TABLE . " WHERE ID=" . abs($recipientID), "Email", $GLOBALS["DB_WE"]);
+			$recipient = f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . abs($recipientID), 'Email', $GLOBALS['DB_WE']);
 		} else {
 			// backward compatible
 			$recipient = $recipientID;
 		}
 		if (!$recipient) {
-			print_error($GLOBALS["l_global"]["email_no_recipient"]);
+			print_error($GLOBALS['l_global']['email_no_recipient']);
 		}
 		if (!is_valid_email($recipient)) {
-			print_error($GLOBALS["l_global"]["email_invalid"]);
+			print_error($GLOBALS['l_global']['email_invalid']);
 		}
 
-  		$recipient = preg_replace("/(%0A|%0D|\\n+|\\r+)/i","",$recipient);
+  		$recipient = preg_replace("/(\\n+|\\r+)/","",$recipient);
 
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;
 		}else{
-			print_error($GLOBALS["l_global"]["email_recipient_invalid"]);
+			print_error($GLOBALS['l_global']['email_recipient_invalid']);
 		}
 	}
 	
 	if (count($recipientsList)>0) {
 		if(sizeof($_FILES)){
 			foreach($_FILES as $name => $file){
-				if(isset($file["tmp_name"]) && $file["tmp_name"]){
-					$tempName = TMP_DIR."/".$file["name"];
-					move_uploaded_file($file["tmp_name"],$tempName);
+				if(isset($file['tmp_name']) && $file['tmp_name']){
+					$tempName = TMP_DIR.'/'.$file['name'];
+					move_uploaded_file($file['tmp_name'],$tempName);
 					$phpmail->doaddAttachment($tempName);
 				}
 			}
 		} 	
 		$phpmail->addAddressList($recipientsList);
-		if($mimetype == "text/html"){
+		if($mimetype == 'text/html'){
 			$phpmail->addHTMLPart($we_html);
 		} else {
 			$phpmail->addTextPart($we_txt);
@@ -451,15 +451,15 @@ if($recipient){
 	
 	
 	
-	if ((isset($_REQUEST["confirm_mail"]) && $_REQUEST["confirm_mail"]) && (!defined("FORMMAIL_CONFIRM") || FORMMAIL_CONFIRM)) {
+	if ((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && (!defined('FORMMAIL_CONFIRM') || FORMMAIL_CONFIRM)) {
 		if($wasSent){
 			// validation
 			if (!is_valid_email($email)) {
-				print_error($GLOBALS["l_global"]["email_invalid"]);
+				print_error($GLOBALS['l_global']['email_invalid']);
 			}
 			$phpmail = new we_util_Mailer($email,$subject,$from);
 			$phpmail->setCharSet($charset);
-			if($mimetype == "text/html"){
+			if($mimetype == 'text/html'){
 				$phpmail->addHTMLPart($we_html_confirm);
 			} else {
 				$phpmail->addTextPart($we_txt_confirm);
@@ -470,9 +470,7 @@ if($recipient){
 	}
 
 }else{
-	print_error($GLOBALS["l_global"]["email_no_recipient"]);
+	print_error($GLOBALS['l_global']['email_no_recipient']);
 }
 
 ok_page($subject);
-
-?>

@@ -635,13 +635,13 @@ class we_objectFile extends we_document
 		return '<span class="defaultfont">' . $this->TableID . "</span>";
 	}
 
-	function getSortedTableInfo($tableID,$contentOnly=false,$db=""){
+	function getSortedTableInfo($tableID,$contentOnly=false,$db="",$checkVariants=false){
 		if(!$tableID) return array();
 		if(!$db) $db = new DB_WE();
 
 		$ctable = OBJECT_X_TABLE.$tableID;
 		$tableInfo = $db->metadata($ctable);
-		$tableInfo2 = array();
+		$tableInfo2 = array(); 
 		foreach($tableInfo as $i=>$arr){
 			if(	$arr["name"] != "input_" &&
 				$arr["name"] != "text_" &&
@@ -652,9 +652,11 @@ class we_objectFile extends we_document
 				$arr["name"] != "object_" &&
 				$arr["name"] != "multiobject_" &&
 				$arr["name"] != "meta_" &&
-				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr["name"] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME)
+				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr["name"] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME )
 				){
 					array_push($tableInfo2,$arr);
+			} elseif($checkVariants && $arr["name"] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
+				$variantdata = $arr;
 			}
 		}
 		if($contentOnly==false){
@@ -667,6 +669,9 @@ class we_objectFile extends we_document
 		$start = we_objectFile::getFirstTableInfoEntry($tableInfo2);
 		foreach($order as $o){
 			array_push($tableInfo_sorted,$tableInfo2[$start+$o]);
+		}
+		if($checkVariants && isset($variantdata) && is_array($variantdata)){
+			$tableInfo_sorted[] = $variantdata;
 		}
 
 		return $tableInfo_sorted;
@@ -686,6 +691,10 @@ class we_objectFile extends we_document
 		switch($type){
 			case "input":
 			return $this->getInputFieldHTML($name,$attribs,$editable,$variant);
+			case "country":
+			return $this->getCountryFieldHTML($name,$attribs,$editable,$variant);
+			case "language":
+			return $this->getLanguageFieldHTML($name,$attribs,$editable,$variant);
 			case "href":
 			return $this->getHrefFieldHTML($name,$attribs,$editable);
 			case "link":
@@ -696,6 +705,10 @@ class we_objectFile extends we_document
 			return $this->getImageHTML($name,$attribs,$editable,$variant);
 			case "binary":
 			return $this->getBinaryHTML($name,$attribs,$editable);
+			case "flashmovie":
+			return $this->getFlashmovieHTML($name,$attribs,$editable);
+			case "quicktime":
+			return $this->getQuicktimeHTML($name,$attribs,$editable);
 			case "date":
 			return $this->getDateFieldHTML($name,$attribs,$editable);
 			case "checkbox":
@@ -720,6 +733,8 @@ class we_objectFile extends we_document
 		switch($type){
 			case "text":
 			case "input":
+			case "country":
+			case "language":
 				return $this->getElement($name);
 			case "href":
 				$hrefArr = $this->getElement($name) ? unserialize($this->getElement($name)) : array();
@@ -1260,6 +1275,103 @@ class we_objectFile extends we_document
 			return $this->getPreviewView($name,$this->getElement($name));
 		}
 	}
+	function getCountryFieldHTML($name,$attribs,$editable=true,$variant=false){
+
+		if($editable){
+			$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			$countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+			$countryselect=new we_htmlSelect(array("name"=>"we_".$this->Name."_language[$name]","size"=>"1","style"=>"{width:620;}","class"=>"wetextinput","onChange"=>"_EditorFrame.setEditorIsHot(true);" ));
+			
+			if(defined("WE_COUNTRIES_TOP")) {
+				$topCountries = explode(',',WE_COUNTRIES_TOP);
+			} else {
+				$topCountries = explode(',',"DE,AT,CH");
+			}
+			$topCountries = array_flip($topCountries);
+			foreach ($topCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+			}
+			if(defined("WE_COUNTRIES_SHOWN")){
+				$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+			} else {
+				$shownCountries = explode(',',"BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
+			}
+			$shownCountries = array_flip($shownCountries);
+			foreach ($shownCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+			}
+			$oldLocale= setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
+			asort($topCountries,SORT_LOCALE_STRING );
+			asort($shownCountries,SORT_LOCALE_STRING );
+			setlocale(LC_ALL, $oldLocale);
+			
+			$content='';
+			if (!$this->DefArray["country_".$name]["required"]){
+				$countryselect->addOption('--','');
+			}
+			foreach ($topCountries as $countrykey => &$countryvalue){
+				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
+			}
+			$countryselect->addOption('-','----',array("disabled"=>"disabled"));
+			//$content.='<option value="-" disabled="disabled">----</option>'."\n";
+			foreach ($shownCountries as $countrykey => &$countryvalue){
+				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
+			}	
+			
+			$countryselect->selectOption($this->getElement($name));
+			$content = $countryselect->getHtmlCode();
+
+			//$content = $this->htmlTextInput("we_".$this->Name."_country[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
+			if ($variant) {
+				return $content;
+			}
+
+			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["country_".$name]["required"] ? "*" : "")."</span>" .  (isset($this->DefArray["country_".$name]['editdescription']) && $this->DefArray["country_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["country_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
+		} else {		
+			if ($this->getElement($name)!='--' || $this->getElement($name)!=''){
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div><div class="defaultfont">'.CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name),'territory',$langcode) ).'</div>';
+			} else {
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div>';
+			}
+		}
+	}
+	function getLanguageFieldHTML($name,$attribs,$editable=true,$variant=false){
+
+		if($editable){
+			$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+			foreach ($frontendL as $lc => &$lcvalue){
+				$lccode = explode('_', $lcvalue);
+				$lcvalue= $lccode[0];
+			}
+			$languageselect=new we_htmlSelect(array("name"=>"we_".$this->Name."_language[$name]","size"=>"1","style"=>"{width:620;}","class"=>"wetextinput","onChange"=>"_EditorFrame.setEditorIsHot(true);" ));
+			if (!$this->DefArray["language_".$name]["required"]){
+				$languageselect->addOption('--','');
+			}
+			
+			foreach($GLOBALS['l_languages'] as $languagekey => $languagevalue){
+				if(in_array($languagekey,$frontendL)){
+					$languageselect->addOption($languagekey,$languagevalue);
+				}
+			}
+			$languageselect->selectOption($this->getElement($name));
+			$content = $languageselect->getHtmlCode();
+			//$content = $this->htmlTextInput("we_".$this->Name."_language[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
+			if ($variant) {
+				return $content;
+			}
+
+			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["language_".$name]["required"] ? "*" : "")."</span>" .  (isset($this->DefArray["language_".$name]['editdescription']) && $this->DefArray["language_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["language_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
+		}else{
+			if ($this->getElement($name)!='--' || $this->getElement($name)!=''){
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div><div class="defaultfont">'.CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name),'language',$langcode) ).'</div>';
+			} else {
+				return '<div class="weObjectPreviewHeadline">'.$name. '</div>';
+			}
+
+		}
+	}
 	function getCheckboxFieldHTML($name,$attribs,$editable=true){
 		if($editable){
 			$content = we_forms::checkboxWithHidden(($this->getElement($name)?true:false), "we_".$this->Name."_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
@@ -1418,9 +1530,53 @@ class we_objectFile extends we_document
 			$fname = 'we_'.$this->Name.'_img['.$name.']';
 			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
 			$content .= $img->getHtml();
-			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'binary_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')"),
+			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["binary_$name"]['defaultdir'])?$this->DefArray["binary_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'binary_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."', ".(isset($this->DefArray["binary_$name"]['rootdir'])&&$this->DefArray["binary_$name"]['rootdir']!=""?$this->DefArray["binary_$name"]['rootdir']:0).",'application/*')"),
 																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."','binary_".$name."')")));
 			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["binary_".$name]["required"] ? "*" : "")."</span>" . ( isset($this->DefArray["binary_$name"]['editdescription']) && $this->DefArray["binary_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["binary_$name"]['editdescription'] . '</div>' : '<br />' ) . $content;
+		}else{
+			$content .= $img->getHtml();
+			return $this->getPreviewView($name,$content);
+		}
+	}
+	function getFlashmovieHTML($name,$attribs,$editable=true){
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
+		$we_button = new we_button();
+		$img = new we_flashDocument();
+		$id = $this->getElement($name);
+		$img->initByID($id,FILE_TABLE,false);
+
+		$content = "";
+
+		if($editable){
+			$content = "";
+			$fname = 'we_'.$this->Name.'_img['.$name.']';
+			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
+			$content .= $img->getHtml();
+			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["flashmovie_$name"]['defaultdir'])?$this->DefArray["flashmovie_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'flashmovie_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."', ".(isset($this->DefArray["flashmovie_$name"]['rootdir'])&&$this->DefArray["flashmovie_$name"]['rootdir']!=""?$this->DefArray["flashmovie_$name"]['rootdir']:0).",'application/x-shockwave-flash')"),
+																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."','flashmovie_".$name."')")));
+			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["flashmovie_".$name]["required"] ? "*" : "")."</span>" . ( isset($this->DefArray["flashmovie_$name"]['editdescription']) && $this->DefArray["flashmovie_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["flashmovie_$name"]['editdescription'] . '</div>' : '<br />' ) . $content;
+		}else{
+			$content .= $img->getHtml();
+			return $this->getPreviewView($name,$content);
+		}
+	}
+	function getQuicktimeHTML($name,$attribs,$editable=true){
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_quicktimeDocument.inc.php");
+		$we_button = new we_button();
+		$img = new we_quicktimeDocument();
+		$id = $this->getElement($name);
+		$img->initByID($id,FILE_TABLE,false);
+
+		$content = "";
+
+		if($editable){
+			$content = "";
+			$fname = 'we_'.$this->Name.'_img['.$name.']';
+			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
+			$content .= $img->getHtml();
+			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["quicktime_$name"]['defaultdir'])?$this->DefArray["quicktime_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'quicktime_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."', ".(isset($this->DefArray["quicktime_$name"]['rootdir'])&&$this->DefArray["quicktime_$name"]['rootdir']!=""?$this->DefArray["quicktime_$name"]['rootdir']:0).",'video/quicktime')"),
+																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."',quicktime_".$name."')")));
+			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["quicktime_".$name]["required"] ? "*" : "")."</span>" . ( isset($this->DefArray["quicktime_$name"]['editdescription']) && $this->DefArray["quicktime_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["quicktime_$name"]['editdescription'] . '</div>' : '<br />' ) . $content;
 		}else{
 			$content .= $img->getHtml();
 			return $this->getPreviewView($name,$content);
@@ -2863,4 +3019,3 @@ $this->checkAndCorrectParent();
 		}
 	}
 }
-?>

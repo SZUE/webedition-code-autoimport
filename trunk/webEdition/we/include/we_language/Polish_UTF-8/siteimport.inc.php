@@ -38,6 +38,7 @@ $GLOBALS["l_siteimport"]["importQuicktime"] = "Filmy Quicktime";
 $GLOBALS["l_siteimport"]["importJS"] = "JavaScripts";
 $GLOBALS["l_siteimport"]["importCSS"] = "CSS Stylesheets";
 $GLOBALS["l_siteimport"]["importText"] = "Dokumenty Plain-Text";
+$GLOBALS["l_siteimport"]["importHTACCESS"] = ".htaccess files"; //TRANSLATE
 $GLOBALS["l_siteimport"]["importOther"] = "Pozostałe pliki";
 $GLOBALS["l_siteimport"]["depth"] = "Głębia";
 $GLOBALS["l_siteimport"]["maxSize"] = "Maksymalna wilekość pliku w MB";

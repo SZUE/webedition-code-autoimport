@@ -136,6 +136,14 @@ $l_we_tag['ifLastCol']['description'] = "&lt;we:ifLastCol&gt; kan de laatste kol
 $l_we_tag['ifLastCol']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifLoginFailed']['description'] = "Content omsloten door deze tag wordt alleen getoond indien het inloggen is mislukt.";
 $l_we_tag['ifLoginFailed']['defaultvalue'] = ""; // TRANSLATE
+$l_we_tag['ifLogin']['description'] = "Content enclosed by this tag is only displayed if a login occured on the page and allows for initialisation.";// TRANSLATE
+$l_we_tag['ifLogin']['defaultvalue'] = "";
+$l_we_tag['ifLogout']['description'] = "Content enclosed by this tag is only displayed if a logout occured on the page and allows for cleaning up.";// TRANSLATE
+$l_we_tag['ifLogout']['defaultvalue'] = "";
+$l_we_tag['ifTdEmpty']['description'] = "Content enclosed by this tag is only displayed if a table cell is empty (has no contents in a listview).";// TRANSLATE
+$l_we_tag['ifTdEmpty']['defaultvalue'] = "";
+$l_we_tag['ifTdNotEmpty']['description'] = "Content enclosed by this tag is only displayed if a table cell is not empty (has contents in a listview).";// TRANSLATE
+$l_we_tag['ifTdNotEmpty']['defaultvalue'] = "";
 $l_we_tag['ifMailingListEmpty']['description'] = "Content omsloten door deze tag wordt alleen getoond indien de gebruiker geen nieuwsbrief heeft geselecteerd.";
 $l_we_tag['ifMailingListEmpty']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifMale']['description'] = "Content omsloten door deze tag wordt alleen getoond indien de gebruiker mannelijk is. Deze tag wordt gebruikt voor de aanhef in nieuwsbrieven.";
@@ -336,6 +344,11 @@ $l_we_tag['sessionStart']['description'] = "Deze tag wordt gebruikt om een sessi
 $l_we_tag['setVar']['description'] = "De we:setVar tag wordt gebruikt om de waardes van verschillende types variabelen in te stellen.<br/><strong>Attention:</strong> Without the attribute <strong>striptags=\"true\"</strong>, HTML- and PHP-Code is not filtered, this is a potenzial security risk!</strong>";// TRANSLATE
 $l_we_tag['shipping']['description'] = "Met betrekking tot de aankoop wordt we:shipping gebruikt om de verzend kosten te bepalen. Deze kosten zijn gebaseerd op de waarde van de winkelwagen, het land van herkomst van de geregistreerde gebruiker en de verzend overeenkomsten, te wijzigen in de Winkel module. De parameter \"sum\" bevat de naam van een met we:sum berekende som. De parameter type wordt gebruikt bij het bepalen van de netto waarde, bruto waarde of het aantal van de BTW toebehorend aan de verzendkosten.";
 $l_we_tag['shopField']['description'] = "Deze tag geeft de mogelijkheid om meerdere invoervelden direct aan een artikel/winkelwagen (bestelling) toe te voegen. De beheerder kan sommige waardes vooraf definiëren waaruit de klant een eigen waarde kan selecteren of invoeren. Hierdoor is het mogelijk om meerdere artikel varianten eenvoudig in kaart te brengen.";
+$l_we_tag['ifShopFieldEmpty']['description'] = "Content enclosed by this tag is only displayed if the shopField named in attribute \"name\" is empty.";// TRANSLATE
+$l_we_tag['ifShopFieldNotEmpty']['description'] = "Content enclosed by this tag is only displayed if the shopField named in attribute \"name\" is not empty.";// TRANSLATE
+$l_we_tag['ifShopField']['description'] = "Everything between the start and end tags of this tag is displayed only if the value of the attribut \"match\" is identical with the value of the shopField ";// TRANSLATE
+$l_we_tag['ifNotShopField']['description'] = "Everything between the start and end tags of this tag is displayed only if the value of the attribut \"match\" is not identical with the value of the shopField ";// TRANSLATE
+
 $l_we_tag['shopVat']['description'] = "Deze tag wordt gebruikt voor het bepalen van de BTW van een artikel. Gebruik om verschillende BTW waardes te beheren de Winkel module. Een opgegeven Id geeft direct de BTW waarde van dit artikel weer.";
 $l_we_tag['showShopItemNumber']['description'] = "De we:showShopItemNumber tag toont het aantal gespecificeerde onderdelen in de winkelmand.";
 $l_we_tag['sidebar']['description'] = ""; // TRANSLATE
@@ -409,6 +422,11 @@ $l_we_tag['pageLanguage']['description'] = "Shows the language of the document";
 $l_we_tag['pageLanguage']['defaultvalue'] = "";
 $l_we_tag['objectLanguage']['description'] = "Shows the language of the object";// TRANSLATE
 $l_we_tag['objectLanguage']['defaultvalue'] = "";
+$l_we_tag['order']['description'] = "Using this tag, one can display an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.";// TRANSLATE
+$l_we_tag['order']['defaultvalue'] = "";
+$l_we_tag['orderitem']['description'] = "Using this tag, one can display a single item on an order on a webEdition page. Similar to the Listview or the <we:object> tag, the fields are displayed with the <we:field> tag.";// TRANSLATE
+$l_we_tag['orderitem']['defaultvalue'] = "";
+
 
 $l_we_tag['ifVotingField']['description'] = "Checks if a votingField has a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE
 $l_we_tag['ifNotVotingField']['description'] = "Checks if a votingField has not a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag";// TRANSLATE

@@ -23,21 +23,21 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner
 function we_tag_bannerSelect($attribs, $content){
  	global $DB_WE;
 	$foo = attributFehltError($attribs,"name","banner");if($foo) return $foo;
- 	
+
 	$name = we_getTagAttribute("name",$attribs);
 	$customer = we_getTagAttribute("customer",$attribs,"",true);
 	$rootdir = we_getTagAttribute("rootdir",$attribs,"/");
 	$firstentry = we_getTagAttribute("firstentry",$attribs);
 	$showpath = we_getTagAttribute("showpath",$attribs,"",true);
 	$submitonchange = we_getTagAttribute("submitonchange",$attribs,"",true);
-	
+
 	$where = " WHERE IsFolder=0 ";
-	
+
 	$newAttribs = removeAttribs($attribs,array('showpath','rootdir','firstentry','submitonchange','customer'));
 	if($submitonchange){
 	    $newAttribs['onchange'] = 'we_submitForm();';
 	}
-	
+
 	$options = '';
 	if($firstentry){
 	    $options = getHtmlTag('option',array('value'=>''),$firstentry,true);
@@ -56,10 +56,9 @@ function we_tag_bannerSelect($attribs, $content){
 			}
 		}
 	}
-	
+
 	if(isset($_REQUEST[$name])){
 		 $GLOBALS[$name] = $_REQUEST[$name];
 	}
 	return getHtmlTag('select',$newAttribs,$options,true);
 }
-?>

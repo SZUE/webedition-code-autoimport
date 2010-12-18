@@ -205,6 +205,19 @@ $l_shop["includedVat"] = "enthaltene Mehrwertsteuer";
 $l_shop["bestellnr"] = "Bestellnummer:";
 $l_shop["bearbeitet"] = "Bearbeitet am:";
 $l_shop["bezahlt"] = "Bezahlt am:";
+$l_shop["bestaetigt"] = "Bestätigt am:";
+$l_shop["customA"] = "Status A am:";
+$l_shop["customB"] = "Status B am:";
+$l_shop["customC"] = "Status C am:";
+$l_shop["customD"] = "Status D am:";
+$l_shop["customE"] = "Status E am:";
+$l_shop["customF"] = "Status F am:";
+$l_shop["customG"] = "Status G am:";
+$l_shop["customH"] = "Status H am:";
+$l_shop["customI"] = "Status I am:";
+$l_shop["customJ"] = "Status J am:";
+$l_shop["storniert"] = "Storniert am:";
+$l_shop["beendet"] = "Abgeschlossen am:";
 $l_shop["datumeingabe"] = "Sie muessen das Datum im format dd.mm.yy angeben.";
 
 $l_shop["order_data"] = "Bestell- und<br />Kundendaten";
@@ -249,6 +262,38 @@ $l_shop['vat_country']['statesSpecialRules_result'] = 'Ergebnis';
 
 $l_shop['vat_country']['condition_is_empty'] = 'Leer';
 $l_shop['vat_country']['condition_is_set'] = 'Gesetzt';
+
+// statusmails
+$l_shop['statusmails']['box_headline'] = 'Statusanzeigen und Verhalten beim E-Mail Versand';
+$l_shop['statusmails']['AnzeigeDaten'] = 'Anzeige Daten';
+$l_shop['statusmails']['fieldname'] = 'Feld-ID';
+$l_shop['statusmails']['hidefield'] = 'Feld Anzeige';
+$l_shop['statusmails']['hidefieldCOV'] = 'Kundenübersicht';// TRANSLATE
+$l_shop['statusmails']['hidefieldNein'] = 'anzeigen';
+$l_shop['statusmails']['hidefieldJa'] = 'nicht anzeigen';
+$l_shop['statusmails']['fieldtext'] = 'Feldbezeichnung';
+$l_shop['statusmails']['EMailssenden'] = 'E-Mail-Versand';
+$l_shop['statusmails']['EMailssendenNein'] = 'keine';
+$l_shop['statusmails']['EMailssendenHand'] = 'Button';
+$l_shop['statusmails']['EMailssendenAuto'] = 'automatisch';
+$l_shop['statusmails']['EMailDaten'] = 'E-Mail Daten';
+$l_shop['statusmails']['hintEMailDaten'] ="Definieren Sie hier die Absender E-Mail-Adresse und den Namen des Absenders für die Statusmails. <br/> Die E-Mail Adresse des Empfängers wird aus dem unten zu wählenden Feld aus der Kundenverwaltung entnommen. Der Empfängername dann aus dem unten zu wählenden Feld für den Titel sowie aus Vor- und Nachnahme gebildet.<br/> Definieren Sie außerdem den Feldnamen im zu versenden Dokument, dessen Inhalt für den Betreff des E-Mails verwendet wird. <b>Dieses Feld darf im zu versendenden Dokument nicht leer sein.</b> ";
+$l_shop['statusmails']['hintSprache'] ='Wählen Sie hier, ob Sie verschiedene Dokumente für jede Sprache nutzen wollen, und das Feld der Kundenverwaltung, das die Sprache des Nutzers enthält.<br/> Der Inhalt dieses Feldes wird dem Status-Mail Dokument in der REQUEST-Variablen $_REQUEST["we_userlanguage"] übermittelt, sodass Sie dort (z.B. mit &lt;we:ifVar type="request" name="we_userlanguage"&gt;) eine Fallunterscheidung treffen können.';
+$l_shop['statusmails']['hintDokumente'] ='Wählen Sie hier für jeden relevanten Shopstatus eine Dokumenten-ID aus, die das zu versendende Dokument definiert. Die zur Verfügung stehenden Sprachen werden in den webEdition Einstellungen im Tab Sprachen definiert.<br/>Die Dokumente (besser Vorlagen) bekommen den Shop-Status in der REQUEST-Variablen $_REQUEST["we_shopstatus"] (in der Form "Order", "Confirmation" usw.) übermittelt, so dass auch in einem Dokument eine Fallunterscheidung möglich ist.<br/> In den Status-Mail Dokumenten haben Sie Zugriff auf die Daten der Bestellung über das Tag &lt;we:order&gt;, welches die REQUEST-Variable $_REQUEST["we_orderid"] auswertet. Siehe auch das Beispiel in der Tag-Referenz.';
+$l_shop['statusmails']['AbsenderAdresse'] = 'Absender E-Mail Adresse';
+$l_shop['statusmails']['AbsenderName'] = 'Absender Name';
+$l_shop['statusmails']['EMailFeld'] = 'KV E-Mail Feld';
+$l_shop['statusmails']['DocumentSubjectField'] = 'Feldname im Dokument für E-Mail Betreff';
+$l_shop['statusmails']['Spracheinstellungen'] = 'Sprachen';
+$l_shop['statusmails']['useLanguages'] = 'Nutze verschiedene <br/>Mail-Dokumente je <br/>Sprache (statt den Standard)';
+$l_shop['statusmails']['SprachenFeld'] = 'SprachenFeld';
+$l_shop['statusmails']['hintISO'] = 'Nur bei Nutzung eines ISO kodierten Sprachfeldes ist eine Sprachzuordnung der Mails möglich.';
+$l_shop['statusmails']['Dokumente'] = 'Dokumente';
+$l_shop['statusmails']['defaultDocs'] = 'Standard <br/> (ohne Sp.<br/> Zuordnung)';
+$l_shop['statusmails']['EMail'] = 'E-Mail';
+$l_shop['statusmails']['TitelFeld'] = 'KV Titel Feld';
+$l_shop['statusmails']['bcc'] = 'Blindcopy an Adresse';
+$l_shop['statusmails']['resent'] = 'Sind Sie sicher, dass die E-Mail erneut gesendet werden soll?';
 
 $l_shop['shipping']['shipping_package'] = 'Porto und Verpackung';
 $l_shop['shipping']['prices_are_net'] = 'Preise sind Nettoangaben';

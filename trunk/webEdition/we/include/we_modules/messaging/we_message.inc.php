@@ -25,7 +25,7 @@ include_once(WE_MESSAGING_MODULE_DIR . "messaging_defs.inc.php");
 
 // Activate the webEdition error handler
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
-we_error_handler();
+if (!defined("WE_ERROR_HANDLER_SET")){ we_error_handler();}
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 

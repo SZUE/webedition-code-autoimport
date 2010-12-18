@@ -26,6 +26,9 @@
  */
 
 // some utility features:
+ini_set("display_errors", "Off");
+ini_set("error_reporting", 0);
+
 if(isset($_REQUEST["phpinfo"])) {
 	phpinfo();
 	exit();
@@ -296,7 +299,7 @@ function step_requirements() {
 
 function step_filesystem() {
 	global $errors;
-	$output = "Some Directories have to be writable by the webserver for running webEdition:<ul>";
+	$output = "Some Directories and files have to be writable by the webserver for running webEdition:<ul>";
 	if(!is_writable('./')) {
 		$output .= tpl_error("DOCUMENT ROOT is not writable!");
 		$errors = true;
@@ -304,51 +307,51 @@ function step_filesystem() {
 		$output .= tpl_ok("./ (DOCUMENT_ROOT)");
 	}
 	if(!is_writable('./webEdition/')) {
-		$output .= tpl_error("webEdition directory is not writable!");
+		$output .= tpl_error("The directory webEdition/ is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("./webEdition");
 	}
-	/*
+	
 	if(!is_writable('./webEdition/site')) {
-		$output .= tpl_error("webEdition/site is not writable!");
+		$output .= tpl_error("The directory webEdition/site is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("webEdition/site");
 	}
 	if(!is_writable('./webEdition/we/templates')) {
-		$output .= tpl_error("webEdition/we/templates is not writable!");
+		$output .= tpl_error("The directory webEdition/we/templates is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("webEdition/we/templates");
 	}
-	*/
+	
 	if(!is_writable('./webEdition/we/include/conf')) {
-		$output .= tpl_error("The webEdition configuration file is not writable!");
+		$output .= tpl_error("The webEdition configuration directory webEdition/we/include/conf is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("webEdition/we/include/conf");
 	}
 	if(!is_writable('./webEdition/we/include/conf/we_conf.inc.php')) {
-		$output .= tpl_error("The webEdition configuration file is not writable!");
+		$output .= tpl_error("The webEdition configuration file webEdition/we/include/conf/we_conf.inc.php is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("webEdition/we/include/conf/we_conf.inc.php");
 	}
 	
-	/*
+	
 	if(!is_writable('./webEdition/we/tmp')) {
-		$output .= tpl_error("The webEdition temporary directory file is not writable!");
+		$output .= tpl_error("The webEdition temporary directory webEdition/we/tmp is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("webEdition/we/tmp");
 	}
 	if(!is_writable('./webEdition/liveUpdate/tmp')) {
-		$output .= tpl_warning("The webEdition liveUpdate temporary directory file is not writable! You will not be able to use this feature.");
+		$output .= tpl_warning("The webEdition liveUpdate temporary directory webEdition/liveUpdate/tmp is not writable! You will not be able to use this feature.");
 	} else {
 		$output .= tpl_ok("webEdition/liveUpdate/tmp");
 	}
-	*/
+	
 	$output .= "</ul>";
 	if($errors === true) {
 		$output .= tpl_errorbox("There were some errors regarding file access privileges. Please fix these issues (i.e. via ftp) and try again.");

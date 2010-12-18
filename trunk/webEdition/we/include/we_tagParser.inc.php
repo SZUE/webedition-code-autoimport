@@ -26,8 +26,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagCache.class.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagListviewCache.class.php");
 
-class we_tagParser
-{
+class we_tagParser{
 
 	var $DB_WE;
 
@@ -36,9 +35,19 @@ class we_tagParser
 	var $tags = array();
 
 	var $ipos = 0;
+	
+	var $ListviewItemsTags = array("object","customer","order","orderitem","metadata");
+	var $AppListviewItemsTags = array();
 
-	function we_tagParser()
-	{
+	function we_tagParser()	{
+	}
+
+	function parseAppListviewItemsTags($tagname,$tag, $code, $attribs = "", $postName = ""){
+	
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+	
 	}
 
 	function getNames($tags)
@@ -307,6 +316,7 @@ class we_tagParser
 	function parseTag(&$code, $postName = "")
 	{
 		
+		
 		$tag = $this->tags[$this->ipos];
 		if (!$tag)
 			return;
@@ -344,345 +354,366 @@ class we_tagParser
 			if (!isset($arr)) {
 				$arr = array();
 			}
-			
-			switch ($tagname) {
-				case "content" :
-				case "master" :
-					// don't parse it
-					$code = str_replace($tag, '', $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "form" :
-					$code = $this->parseFormTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "repeat" :
-					$code = $this->parseRepeatTag($tag, $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "listview" :
-					$code = $this->parseListviewTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "object" :
-					$code = $this->parseObjectTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "metadata" :
-					$code = $this->parseMetadataTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "customer" :
-					$code = $this->parseCustomerTag($tag, $code, $attribs, $postName);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "repeatShopItem" :
-					$code = $this->parserepeatShopitem($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "createShop" :
-					$code = $this->parsecreateShop($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "addDelShopItem" :
-					$code = $this->parseadddelShopitem($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "deleteShop" :
-					$code = $this->parsedeleteShop($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "include" :
-					$code = $this->parseIncludeTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "controlElement" :
-					$code = $this->parseRemoveTags($tag, $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "hidePages" :
-					$code = $this->parseRemoveTags($tag, $code);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "tr" :
-					$code = $this->parseTrTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "xmlnode" :
-					$code = $this->parseXMLNode($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "answers" :
-					$code = $this->parseAnswersTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "voting" :
-					$code = $this->parseVotingTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "votingList" :
-					$code = $this->parseVotingListTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "captcha" :
-					$code = $this->parseCaptchaTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				case "formmail" :
-					$code = $this->parseFormmailTag($tag, $code, $attribs);
-					$this->ipos++;
-					$this->lastpos = 0;
-					break;
-				
-				default :
-					
-					$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
-					$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
-					
-
-					if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
-						$code = str_replace(
-								$tag, 
-								'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>', 
-								$code);
+			if (in_array($tagname,$this->AppListviewItemsTags) ){// for App-Tags of type listviewitems
+				$code = $this->parseAppListviewItemsTags($tagname, $tag, $code, $attribs, $postName);
+				$this->ipos++;
+				$this->lastpos = 0;
+			} else {
+				switch ($tagname) {
+					case "content" :
+					case "master" :
+						// don't parse it
+						$code = str_replace($tag, '', $code);
 						$this->ipos++;
 						$this->lastpos = 0;
+						break;
+					case "form" :
+						$code = $this->parseFormTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "repeat" :
+						$code = $this->parseRepeatTag($tag, $code);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "listview" :
+						$code = $this->parseListviewTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "object" :
+						$code = $this->parseObjectTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "metadata" :
+						$code = $this->parseMetadataTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "customer" :
+						$code = $this->parseCustomerTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "onlinemonitor" :
+						$code = $this->parseOnlinemonitorTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "order" :
+						$code = $this->parseOrderTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "orderitem" :
+						$code = $this->parseOrderItemTag($tag, $code, $attribs, $postName);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "repeatShopItem" :
+						$code = $this->parserepeatShopitem($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "createShop" :
+						$code = $this->parsecreateShop($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "addDelShopItem" :
+						$code = $this->parseadddelShopitem($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "deleteShop" :
+						$code = $this->parsedeleteShop($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+						/*BugFix #3514
+  					case "include" :
+						$code = $this->parseIncludeTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;*/
+					case "controlElement" :
+						$code = $this->parseRemoveTags($tag, $code);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "hidePages" :
+						$code = $this->parseRemoveTags($tag, $code);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "tr" :
+						$code = $this->parseTrTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "xmlnode" :
+						$code = $this->parseXMLNode($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "answers" :
+						$code = $this->parseAnswersTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "voting" :
+						$code = $this->parseVotingTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "votingList" :
+						$code = $this->parseVotingListTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "captcha" :
+						$code = $this->parseCaptchaTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
+					case "formmail" :
+						$code = $this->parseFormmailTag($tag, $code, $attribs);
+						$this->ipos++;
+						$this->lastpos = 0;
+						break;
 					
-					} else 
-						if ($tagname == "ifshopexists") {
-							$code = str_replace($tag, '<?php if(defined("SHOP_TABLE")): ?>', $code);
+					default :
+						
+						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
+						
+	
+						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
+							$code = str_replace(
+									$tag, 
+									'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>', 
+									$code);
 							$this->ipos++;
 							$this->lastpos = 0;
+						
 						} else 
-							if ($tagname == "ifobjektexists") {
-								$code = str_replace($tag, '<?php if(defined("OBJECT_TABLE")): ?>', $code);
+							if ($tagname == "ifshopexists") {
+								$code = str_replace($tag, '<?php if(defined("SHOP_TABLE")): ?>', $code);
 								$this->ipos++;
 								$this->lastpos = 0;
 							} else 
-								if ($tagname == "ifnewsletterexists") {
-									$code = str_replace(
-											$tag, 
-											'<?php if(defined("NEWSLETTER_TABLE")): ?>', 
-											$code);
+								if ($tagname == "ifobjektexists") {
+									$code = str_replace($tag, '<?php if(defined("OBJECT_TABLE")): ?>', $code);
 									$this->ipos++;
 									$this->lastpos = 0;
 								} else 
-									if ($tagname == "ifcustomerexists") {
+									if ($tagname == "ifnewsletterexists") {
 										$code = str_replace(
 												$tag, 
-												'<?php if(defined("CUSTOMER_TABLE")): ?>', 
+												'<?php if(defined("NEWSLETTER_TABLE")): ?>', 
 												$code);
 										$this->ipos++;
 										$this->lastpos = 0;
 									} else 
-										if ($tagname == "ifbannerexists") {
+										if ($tagname == "ifcustomerexists") {
 											$code = str_replace(
 													$tag, 
-													'<?php if(defined("BANNER_TABLE")): ?>', 
+													'<?php if(defined("CUSTOMER_TABLE")): ?>', 
 													$code);
 											$this->ipos++;
 											$this->lastpos = 0;
 										} else 
-											if ($tagname == "ifvotingexists") {
+											if ($tagname == "ifbannerexists") {
 												$code = str_replace(
 														$tag, 
-														'<?php if(defined("VOTING_TABLE")): ?>', 
+														'<?php if(defined("BANNER_TABLE")): ?>', 
 														$code);
 												$this->ipos++;
 												$this->lastpos = 0;
 											} else 
-												if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-													/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
+												if ($tagname == "ifvotingexists") {
 													$code = str_replace(
 															$tag, 
-															$this->parseCacheIfTag(
-																	'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'), 
+															'<?php if(defined("VOTING_TABLE")): ?>', 
 															$code);
 													$this->ipos++;
 													$this->lastpos = 0;
 												} else 
-													if ($tagname == "condition") {
+													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
+														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
 														$code = str_replace(
 																$tag, 
-																'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>', 
+																$this->parseCacheIfTag(
+																		'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'), 
 																$code);
 														$this->ipos++;
 														$this->lastpos = 0;
-													} else {
-														$tagPos = strpos($code, $tag, $this->lastpos);
-														$endeStartTag = $tagPos + strlen($tag);
-														$endTagPos = $this->searchEndtag($code, $tagPos);
-														if ($endTagPos > -1) {
-															$endeEndTagPos = strpos(
-																	$code, 
-																	">", 
-																	$endTagPos) + 1;
-															if ($endTagPos > $endeStartTag) {
-																$content = substr(
+													} else 
+														if ($tagname == "condition") {
+															$code = str_replace(
+																	$tag, 
+																	'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>', 
+																	$code);
+															$this->ipos++;
+															$this->lastpos = 0;
+														} else {
+															$tagPos = strpos($code, $tag, $this->lastpos);
+															$endeStartTag = $tagPos + strlen($tag);
+															$endTagPos = $this->searchEndtag($code, $tagPos);
+															if ($endTagPos > -1) {
+																$endeEndTagPos = strpos(
 																		$code, 
-																		$endeStartTag, 
-																		($endTagPos - $endeStartTag));
-																
-																if ($tagname == "noCache") {
-																	$tp = new we_tagParser();
-																	$tags = $tp->getAllTags($content);
-																	$tp->parseTags($tags, $content);
-																}
-																
-																if ($tagname == "block") {
-																	$content = str_replace(
-																			"\n", 
-																			"\\n", 
-																			$content);
-																	$content = trim(
-																			str_replace(
-																					"\r", 
-																					"\\r", 
-																					$content));
-																	$content = str_replace(
-																			'"', 
-																			'\"', 
-																			$content);
-																} else 
-																	if ($tagname != "noCache") {
+																		">", 
+																		$endTagPos) + 1;
+																if ($endTagPos > $endeStartTag) {
+																	$content = substr(
+																			$code, 
+																			$endeStartTag, 
+																			($endTagPos - $endeStartTag));
+																	
+																	if ($tagname == "noCache") {
+																		$tp = new we_tagParser();
+																		$tags = $tp->getAllTags($content);
+																		$tp->parseTags($tags, $content);
+																	}
+																	
+																	if ($tagname == "block") {
 																		$content = str_replace(
 																				"\n", 
-																				"", 
+																				"\\n", 
 																				$content);
 																		$content = trim(
 																				str_replace(
 																						"\r", 
-																						"", 
+																						"\\r", 
 																						$content));
 																		$content = str_replace(
 																				'"', 
 																				'\"', 
 																				$content);
-																	}
-																$content = str_replace(
-																		'we:', 
-																		'we_:_', 
-																		$content);
-																$content = str_replace(
-																		'$GLOBALS[\"lv\"]', 
-																		'\$GLOBALS[\"lv\"]', 
-																		$content); //	this must be slashed inside blocks (for objects)!!!!
-																$content = str_replace(
-																		'$GLOBALS[\"we_lv_array\"]', 
-																		'\$GLOBALS[\"we_lv_array\"]', 
-																		$content); //	this must be slashed inside blocks (for objects)!!!!
-																$content = str_replace(
-																		'$GLOBALS[\"_we_listview_object_flag\"]', 
-																		'\$GLOBALS[\"_we_listview_object_flag\"]', 
-																		$content); //	this must be slashed inside blocks (for objects)!!!!  # 3479																
-															} else {
-																$content = "";
-															}
-															
-															if ($tagname == "noCache") {
-																// Tag besitzt Endtag
-																$code = substr(
-																		$code, 
-																		0, 
-																		$tagPos) . $this->parseNoCacheTag(
-																		$content) . substr(
-																		$code, 
-																		$endeEndTagPos);
-																//neu
-															} else {
-																// Tag besitzt Endtag
-																$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "' . $content . '")';
-																$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
-																		$code, 
-																		$endeEndTagPos);
-																//neu
-															
-
-															}
-														
-														} else 
-															if ($tagname == "else") {
-																$code = substr($code, 0, $tagPos) . $this->parseCacheIfTag(
-																		'<?php else: ?>') . substr(
-																		$code, 
-																		$endeStartTag);
-															
-															} else 
-																if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
-																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ')';
-																	eval(
-																			'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
+																	} else 
+																		if ($tagname != "noCache") {
+																			$content = str_replace(
+																					"\n", 
+																					"", 
+																					$content);
+																			$content = trim(
+																					str_replace(
+																							"\r", 
+																							"", 
+																							$content));
+																			$content = str_replace(
+																					'"', 
+																					'\"', 
+																					$content);
+																		}
+																	$content = str_replace(
+																			'we:', 
+																			'we_:_', 
+																			$content);
+																	$content = str_replace(
+																			'$GLOBALS[\"lv\"]', 
+																			'\$GLOBALS[\"lv\"]', 
+																			$content); //	this must be slashed inside blocks (for objects)!!!!
+																	$content = str_replace(
+																			'$GLOBALS[\"we_lv_array\"]', 
+																			'\$GLOBALS[\"we_lv_array\"]', 
+																			$content); //	this must be slashed inside blocks (for objects)!!!!
+																	$content = str_replace(
+																			'$GLOBALS[\"_we_listview_object_flag\"]', 
+																			'\$GLOBALS[\"_we_listview_object_flag\"]', 
+																			$content); //	this must be slashed inside blocks (for objects)!!!!  # 3479																
+																} else {
+																	$content = "";
+																}
+																
+																if ($tagname == "noCache") {
+																	// Tag besitzt Endtag
+																	$code = substr(
+																			$code, 
+																			0, 
+																			$tagPos) . $this->parseNoCacheTag(
+																			$content) . substr(
+																			$code, 
+																			$endeEndTagPos);
 																	//neu
 																} else {
-																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "")';
+																	// Tag besitzt Endtag
+																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "' . $content . '")';
 																	$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																			$code, 
-																			$endeStartTag);
+																			$endeEndTagPos);
+																	//neu
+																
+	
 																}
-														$this->lastpos = 0;
-													}
-					if ($postName) {
-						
-						$code = preg_replace(
-								'/("name"=>")(' . (isset($arr["name"]) ? $arr["name"] : "") . ')(")/i', 
-								'\1\2' . $postName . '\3', 
-								$code);
-						if ($tagname == 'setVar') {
-							if (isset($arr['from']) && $arr['from'] == "block") {
+															
+															} else 
+																if ($tagname == "else") {
+																	$code = substr($code, 0, $tagPos) . $this->parseCacheIfTag(
+																			'<?php else: ?>') . substr(
+																			$code, 
+																			$endeStartTag);
+																
+																} else 
+																	if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
+																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ')';
+																		eval(
+																				'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
+																		//neu
+																	} else {
+																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "")';
+																		$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
+																				$code, 
+																				$endeStartTag);
+																	}
+															$this->lastpos = 0;
+														}
+						if ($postName) {
+							
+							$code = preg_replace(
+									'/("name"=>")(' . (isset($arr["name"]) ? $arr["name"] : "") . ')(")/i', 
+									'\1\2' . $postName . '\3', 
+									$code);
+							if ($tagname == 'setVar') {
+								if (isset($arr['from']) && $arr['from'] == "block") {
+									$code = preg_replace(
+											'/("namefrom"=>")(' . (isset($arr["namefrom"]) ? $arr["namefrom"] : "") . ')(")/i', 
+											'\1\2' . $postName . '\3', 
+											$code);
+								}
+								if (isset($arr['to']) && $arr['to'] == "block") {
+									$code = preg_replace(
+											'/("nameto"=>")(' . (isset($arr["nameto"]) ? $arr["nameto"] : "") . ')(")/i', 
+											'\1\2' . $postName . '\3', 
+											$code);
+								}
+							} elseif ($tagname == 'var') {  // #3558
+								if (isset($arr['type']) && in_array($arr['type'], array("global", "session", "request", "property"))) {
+									$code = preg_replace(
+											'/("name"=>")(.*)' . $postName . '(")/i', 
+											'\1\2\3', 
+											$code);
+								}	
+							} else {
 								$code = preg_replace(
 										'/("namefrom"=>")(' . (isset($arr["namefrom"]) ? $arr["namefrom"] : "") . ')(")/i', 
 										'\1\2' . $postName . '\3', 
 										$code);
 							}
-							if (isset($arr['to']) && $arr['to'] == "block") {
+							//$code = preg_replace('/("namefrom"=>")('. ( isset($arr["namefrom"]) ? $arr["namefrom"] : "" ) .')(")/i','\1\2'.$postName.'\3',$code);
+							if (!in_array($tagname, array(
+								'ifVar', 'ifNotVar'
+							))) { // ifVar and ifNotVar contains a value, NO fieldname herefore don't change match!
 								$code = preg_replace(
-										'/("nameto"=>")(' . (isset($arr["nameto"]) ? $arr["nameto"] : "") . ')(")/i', 
+										'/("match"=>")(' . (isset($arr["match"]) ? $arr["match"] : "") . ')(")/i', 
 										'\1\2' . $postName . '\3', 
 										$code);
 							}
-						} elseif ($tagname == 'var') {  // #3558
-							if (isset($arr['type']) && in_array($arr['type'], array("global", "session", "request", "property"))) {
-								$code = preg_replace(
-										'/("name"=>")(.*)' . $postName . '(")/i', 
-										'\1\2\3', 
-										$code);
-							}	
-						} else {
-							$code = preg_replace(
-									'/("namefrom"=>")(' . (isset($arr["namefrom"]) ? $arr["namefrom"] : "") . ')(")/i', 
-									'\1\2' . $postName . '\3', 
-									$code);
 						}
-						//$code = preg_replace('/("namefrom"=>")('. ( isset($arr["namefrom"]) ? $arr["namefrom"] : "" ) .')(")/i','\1\2'.$postName.'\3',$code);
-						if (!in_array($tagname, array(
-							'ifVar', 'ifNotVar'
-						))) { // ifVar and ifNotVar contains a value, NO fieldname herefore don't change match!
-							$code = preg_replace(
-									'/("match"=>")(' . (isset($arr["match"]) ? $arr["match"] : "") . ')(")/i', 
-									'\1\2' . $postName . '\3', 
-									$code);
-						}
-					}
+				}
 			}
 		} else {
 			
@@ -757,7 +788,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 													$code,1);
 										
 										} else 
-											if ($tagname == "object" || $tagname == "customer" || $tagname == "metadata") {
+											if (in_array($tagname,$this->ListviewItemsTags)) {
 												$code = str_replace(
 														$tag, 
 														'<?php endif ?><?php
@@ -947,7 +978,7 @@ if(isset($weTagListviewCache)) {
 	##########################################################################################
 	##########################################################################################
 	
-
+/*BugFix #3514
 	function parseIncludeTag($tag, $code, $attribs = "")
 	{
 		
@@ -956,7 +987,7 @@ if(isset($weTagListviewCache)) {
 		$id = we_getTagAttributeTagParser("id", $arr);
 		$path = we_getTagAttributeTagParser("path", $arr);
 		$name = we_getTagAttributeTagParser("name", $arr, '');
-		
+		$rootdir = we_getTagAttributeTagParser("rootdir", $arr, '/');
 		$php = '';
 		
 		if ((!$id) && (!$path) && (!$name)) {
@@ -975,11 +1006,11 @@ if(isset($weTagListviewCache)) {
 								$GLOBALS["l_css"]["font_family"].\';">\';
 
     		print "<table style=\"background: #006DB8;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding: 3px;\">" . $_tmpspan . "&nbsp;" . $GLOBALS["l_tags"]["include_file"] . "</span></td></tr><tr><td>";
-    		printElement( we_tag("href", array("name"=>"' . $name . '"), ""));
+    		printElement( we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), ""));
     		print  "</td></tr></table>";
-
+			$path ="";//Bug #4742
     	} else {
-    		$path = we_tag("href", array("name"=>"' . $name . '"), "");
+    		$path = we_tag("href", array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), "");
     	}
     	?>';
 		}
@@ -1125,7 +1156,7 @@ EOF;
 		}
 		
 		return $this->replaceTag($tag, $code, $php);
-	}
+	}*/
 
 	##########################################################################################
 	##########################################################################################
@@ -1179,6 +1210,7 @@ EOF;
 		$offset = we_getTagAttributeTagParser("offset", $arr);
 		$workspaceID = we_getTagAttributeTagParser("workspaceID", $arr);
 		$workspaceID = $workspaceID ? $workspaceID : we_getTagAttributeTagParser("workspaceid", $arr, "");
+        $orderid = we_getTagAttributeTagParser("orderid", $arr, "0");
 		
         $languages = we_getTagAttributeTagParser("languages", $arr,'');
         
@@ -1199,7 +1231,8 @@ EOF;
 		$datefield = we_getTagAttributeTagParser("datefield", $arr, "");
 		$date = we_getTagAttributeTagParser("date", $arr, "");
 		$weekstart = we_getTagAttributeTagParser("weekstart", $arr, "monday");
-		
+		$lastaccesslimit = we_getTagAttributeTagParser("lastaccesslimit", $arr, "300");
+        $lastloginlimit = we_getTagAttributeTagParser("lastloginlimit", $arr, "");
 		if (isset($arr['recursive'])) {
 			$subfolders = we_getTagAttributeTagParser("recursive", $arr, "true");
 		} else {
@@ -1207,9 +1240,8 @@ EOF;
 			$subfolders = !we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
 		}
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
-
+		
 		$php = '<?php
-
 
 if (!isset($GLOBALS["we_lv_array"])) {
 	$GLOBALS["we_lv_array"] = array();
@@ -1256,13 +1288,14 @@ if($we_lv_doctype=="we_doc"){
 }
 ';
 		}
-		if ($type == "document") {
-			$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_listview.class.php");
+		
+		switch($type){
+			case "document":
+				$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_listview.class.php");
 $GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '",$we_lv_subfolders, "' . $customers . '", "' . $id . '", $we_lv_languages, $we_lv_numorder);
 ';
-		
-		} else 
-			if ($type == "search") {
+				break;
+			case "search":
 				$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_search_listview.class.php");
 $GLOBALS["lv"] = new we_search_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", "' . $class . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, "' . $cols . '", "' . $cfilter . '", $we_lv_languages, $we_lv_numorder);
 if(!isset($GLOBALS["weEconda"])) {
@@ -1274,109 +1307,116 @@ if(!isset($GLOBALS["weEconda"]["HTML"])) {
 
 $GLOBALS["weEconda"]["HTML"] .= \'<a name="emos_name" title="search" rel="\'.$GLOBALS["lv"]->search.\'" rev="\'.$GLOBALS["lv"]->anz_all.\'" >\';
 ';
-			} else 
-				if ($type == "object") {
-					if (defined("OBJECT_TABLE")) {
-						$foo = attributFehltError($arr, "classid", "listview");
-						if ($foo && $predefinedSQL=="")
-							return str_replace($tag, $foo, $code);
-						$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
+				break;
+			case "object":
+				if (defined("OBJECT_TABLE")) {
+					$foo = attributFehltError($arr, "classid", "listview");
+					if ($foo && $predefinedSQL=="")
+						return str_replace($tag, $foo, $code);
+					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
 $GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages);
 ';
-					} else { return str_replace($tag, modulFehltError('Object/DB','listview type="object"'), $code); }
-				
-				} else 
-					if ($type == "customer") {
-						if (defined("CUSTOMER_TABLE")) {
-							$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_customer.class.php");
+				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="object"'), $code); }
+				break;	
+			case "customer":
+				if (defined("CUSTOMER_TABLE")) {
+					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_customer.class.php");
 $GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
 ';
-						
-						} else { return str_replace($tag, modulFehltError('Customer','listview type="customer"'), $code); }
-					} else 
-						if ($type == "multiobject") {
-							if (defined("OBJECT_TABLE")) {
-								$foo = attributFehltError($arr, "name", "listview");
-								if ($foo)
-									return str_replace($tag, $foo, $code);
-								$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php");
+				} else { return str_replace($tag, modulFehltError('Customer','listview type="customer"'), $code); }
+				break;
+			case "onlinemonitor":
+				if (defined("CUSTOMER_SESSION_TABLE")) {
+					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_onlinemonitor.class.php");
+$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '");
+';						
+				} else { return str_replace($tag, modulFehltError('Customer','listview type="onlinemonitor"'), $code); }
+				break;
+			case "order":
+				if (defined("SHOP_TABLE")) {
+					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_order.class.php");
+$GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+';						
+				} else { return str_replace($tag, modulFehltError('Shop','listview type="order"'), $code); }
+				break;
+			case "orderitem":	   	
+				if (defined("SHOP_TABLE")) {
+					$foo = attributFehltError($arr, "orderid", "listview");
+					if ($foo) return str_replace($tag, $foo, $code);
+					if (strpos($orderid,'$')===false ){$php.='$orderid='.$orderid.';';} else {$php.='$orderid = isset('.$orderid.') ? "'.$orderid.'" : $GLOBALS["'.str_replace('$','', $orderid). '"];'; }
+					$php .= '
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php");
+$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid");
+';						
+				} else { return str_replace($tag, modulFehltError('Shop','listview type="orderitem"'), $code); }
+				break;
+			case "multiobject":
+				if (defined("OBJECT_TABLE")) {
+					$foo = attributFehltError($arr, "name", "listview");
+					if ($foo) return str_replace($tag, $foo, $code);
+					$php .= '
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php");
 $GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages");
+';				
+				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="multiobject"'), $code); }
+				break;
+			case "banner":				
+				if (defined("BANNER_TABLE")) {
+					$foo = attributFehltError($arr, "path", "listview");
+					if ($foo) return $foo;
+					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php");
 ';
-							
-							} else { return str_replace($tag, modulFehltError('Object/DB','listview type="multiobject"'), $code); }
-						} else 
-							if ($type == "banner") {
-								if (defined("BANNER_TABLE")) {
-									$foo = attributFehltError($arr, "path", "listview");
-									if ($foo)
-										return $foo;
-									$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php");
-';
-									$usefilter = we_getTagAttributeTagParser("usefilter", $arr);
-									$path = we_getTagAttributeTagParser("path", $arr);
-									$filterdatestart = we_getTagAttributeTagParser(
-											"filterdatestart", 
-											$arr, 
-											"-1");
-									$filterdateend = we_getTagAttributeTagParser("filterdateend", $arr, "-1");
-									
-									$php .= '$customer=' . ($customer ? "true" : "false") . ';
+					$usefilter = we_getTagAttributeTagParser("usefilter", $arr);
+					$path = we_getTagAttributeTagParser("path", $arr);
+					$filterdatestart = we_getTagAttributeTagParser("filterdatestart", $arr, "-1");
+					$filterdateend = we_getTagAttributeTagParser("filterdateend", $arr, "-1");				
+					$php .= '$customer=' . ($customer ? "true" : "false") . ';
 $bannerid = f("SELECT ID FROM ".BANNER_TABLE." WHERE PATH=\'' . mysql_real_escape_string($path) . '\'","ID",new DB_WE());
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/weBanner.php");
 if($customer && defined("CUSTOMER_TABLE") && (!weBanner::customerOwnsBanner($_SESSION["webuser"]["ID"],$bannerid))){
-	$bannerid=0;
+$bannerid=0;
 }
 $GLOBALS["lv"] = new we_listview_banner("' . $name . '", $we_rows, "' . $order . '", $bannerid, ("' . $usefilter . '" == "true" || "' . $usefilter . '" == "on" || "' . $usefilter . '" == "1" || "' . $usefilter . '" == "usefilter") ? true : false, ' . $filterdatestart . ', ' . $filterdateend . ');
 ';
-								} else { return str_replace($tag, modulFehltError('Banner','listview type="banner"'), $code); }
-							} else 
-								if ($type == "shopVariant") {
-									
-									if (defined("SHOP_TABLE")) {
-										
-										$defaultname = we_getTagAttributeTagParser("defaultname", $arr, '');
-										$docId = we_getTagAttributeTagParser("documentid", $arr, '');
-										$objId = we_getTagAttributeTagParser("objectid", $arr, '');
-										
-										$php .= '
+				} else { return str_replace($tag, modulFehltError('Banner','listview type="banner"'), $code); }
+				break;
+			case "shopVariant":						
+				if (defined("SHOP_TABLE")) {				
+					$defaultname = we_getTagAttributeTagParser("defaultname", $arr, '');
+					$docId = we_getTagAttributeTagParser("documentid", $arr, '');
+					$objId = we_getTagAttributeTagParser("objectid", $arr, '');					
+					$php .= '
 $docId = "' . $docId . '";
 $objectId = "' . $objId . '";
 if($objectId ==""){
-	if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_objecttag"){
-		$objectId = $GLOBALS["lv"]->object->DB_WE->f("OF_ID");	
-	}
-	if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_listview_object"){
-		$objectId = $GLOBALS["lv"]->DB_WE->f("OF_ID");
-	}
+if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_objecttag"){
+$objectId = $GLOBALS["lv"]->object->DB_WE->f("OF_ID");	
+}
+if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_listview_object"){
+$objectId = $GLOBALS["lv"]->DB_WE->f("OF_ID");
+}
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_shopVariants.class.php");
 $GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $defaultname . '", $docId, $objectId, $we_offset);
 ';
-									} else { return str_replace($tag, modulFehltError('Shop','listview type="shopVariant"'), $code); }
-								
-								} else 
-									if ($type == "category") {
-										
-										$categoryids = we_getTagAttributeTagParser("categoryids", $arr, 0);
-										$parentid = we_getTagAttributeTagParser("parentid", $arr, 0);
-										$parentidname = we_getTagAttributeTagParser('parentidname', $arr);
-										
-										$php .= '
+				} else { return str_replace($tag, modulFehltError('Shop','listview type="shopVariant"'), $code); }
+				break;
+			case "category":									
+				$categoryids = we_getTagAttributeTagParser("categoryids", $arr, 0);
+				$parentid = we_getTagAttributeTagParser("parentid", $arr, 0);
+				$parentidname = we_getTagAttributeTagParser('parentidname', $arr);
+				$php .= '
 $categoryids="' . $categoryids . '";
 $parentid="' . $parentid . '";
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_catListview.class.php");
 $GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ');
 ';
-									
-									} else {
-										return $this->replaceTag(
-												$tag, 
-												$code, 
-												parseError(
-														sprintf(
-																$GLOBALS["l_parser"]["wrong_type"], 
-																"listview")));
-									}
+				break;
+			default:			
+				
+				return $this->replaceTag($tag, $code, parseError(sprintf($GLOBALS["l_parser"]["wrong_type"], "listview")));
+			
+		}	
 		$php .= '$lv = clone($GLOBALS["lv"]); // for backwards compatibility
 		//prevent error if $GLOBALS["we_lv_array"] is no array
 		if (!isset($GLOBALS["we_lv_array"]) || !is_array($GLOBALS["we_lv_array"])) {
@@ -1405,6 +1445,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$classid = we_getTagAttributeTagParser("classid", $arr);
 			$we_oid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__oid = str_replace('$','',$we_oid);//Bug 4848
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1458,7 +1499,15 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 </table><?php endif ?><?php
 ';
 			} else {
-				$php .= '$we_oid=' . $we_oid . ';
+				if ($we_oid!=0){//Bug 4848
+					$php .='if(isset('. $we_oid .')){ $we_oid = ' . $we_oid . ';} else { if (isset($GLOBALS["' . $we__oid .'"]) ) { $we_oid = $GLOBALS["' . $we__oid .'"];} else {$we_oid=0; } }';
+				} else {
+					$php .='$we_oid=' . $we_oid . '	;
+					';
+				}
+			
+				$php .='
+				
 $we_oid = $we_oid ? $we_oid : (isset($_REQUEST["we_oid"]) ? $_REQUEST["we_oid"] : 0);
 ';
 			}
@@ -1527,6 +1576,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_cid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__cid = str_replace('$','',$we_cid);//Bug 4848
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1572,8 +1622,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 </table><?php endif ?><?php
 ';
 			} else {
-				$php .= '$we_cid=' . $we_cid . ';
-$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
+			if ($we_cid!=0){//Bug 4848
+				$php .='if(isset('. $we_cid .')){$we_cid=' . $we_cid . ';} else { if (isset($GLOBALS["' . $we__cid .'"]) ) { $we_cid = $GLOBALS["' . $we__cid .'"];} else {$we_cid=0; } }';
+			} else {
+				$php .='$we_cid=' . $we_cid . '	;
+				';
+			}
+				
+$php .='$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
 ';
 			}
 			
@@ -1590,6 +1646,233 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			
 			return $this->replaceTag($tag, $code, $pre . $php);
 		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
+	}
+
+	function parseOnlinemonitorTag($tag, $code, $attribs = "", $postName = "")
+	{
+		
+		if (defined("WE_CUSTOMER_MODULE_DIR")) {
+			
+			eval('$arr = array(' . $attribs . ');');
+			
+			$we_button = new we_button();
+			
+			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
+			$we_omid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__omid = str_replace('$','',$we_omid);//Bug 4848
+			
+			$php = '<?php
+
+if (!isset($GLOBALS["we_lv_array"])) {
+	$GLOBALS["we_lv_array"] = array();
+}
+
+include_once(WE_CUSTOMER_MODULE_DIR . "we_onlinemonitortag.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+';
+			
+		
+			if ($we_omid!=0){//Bug 4848
+				$php .='if(isset('. $we_omid .')){$we_omid=' . $we_omid . ';} else { if (isset($GLOBALS["' . $we__omid .'"]) ) { $we_omid = $GLOBALS["' . $we__omid .'"];} else {$we_omid=0; } }';
+			} else {
+				$php .='$we_omid=' . $we_omid . '	;
+				';
+			}
+				
+$php .='$we_omid = $we_omid ? $we_omid : (isset($_REQUEST["we_omid"]) ? $_REQUEST["we_omid"] : 0);
+';
+			
+			
+			$php .= '$GLOBALS["lv"] = new we_onlinemonitortag($we_omid,"' . $condition . '");
+$lv = clone($GLOBALS["lv"]); // for backwards compatibility
+if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
+?><?php if($GLOBALS["lv"]->avail): ?>';
+			
+			if ($postName != "") {
+				$content = str_replace('$', '\$', $php); //	to test with blocks ...
+			}
+			
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
+	}
+
+
+	##########################################################################################
+	##########################################################################################
+
+	function parseOrderTag($tag, $code, $attribs = "", $postName = "")
+	{
+		
+		if (defined("WE_SHOP_MODULE_DIR")) {
+			
+			eval('$arr = array(' . $attribs . ');');
+			
+			$we_button = new we_button();
+			
+			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
+			$we_orderid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__orderid = str_replace('$','',$we_orderid);//Bug 4848
+			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
+			//$_showName = we_getTagAttributeTagParser("name", $arr);
+			//$size = we_getTagAttributeTagParser("size", $arr, 30);
+			
+			$php = '<?php
+
+if (!isset($GLOBALS["we_lv_array"])) {
+	$GLOBALS["we_lv_array"] = array();
+}
+
+include_once(WE_SHOP_MODULE_DIR . "we_ordertag.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+';
+			
+			if ($name) {
+				if (strpos($name, " ") !== false) {
+					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+				}
+				
+				$php .= '
+		$we_doc = $GLOBALS["we_doc"];
+		$we_orderid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderid . ';
+		$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
+		$path = "/".$we_orderid;
+		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
+		$idname = \'we_\'.$we_doc->Name.\'_txt[' . $name . ']\';
+		$table = SHOP_TABLE;
+		$we_button = new we_button();
+		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
+		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openSelector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',0,\'\',1)");
+
+?><?php if($GLOBALS["we_editmode"]): ?>
+<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
+	<tr>
+		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
+		<td><?php print hidden($idname,$we_orderid) ?></td>
+		<td><?php print htmlTextInput($textname,' . $size . ',$path,"",\' readonly\',"text",0,0); ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $button; ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $delbutton; ?></td>
+	</tr>
+</table><?php endif ?><?php
+';
+			} else {
+				if ($we_orderid!=0){//Bug 4848
+					$php .='if(isset('. $we_orderid .')){ $we_orderid = ' . $we_orderid . ';} else { if (isset($GLOBALS["' . $we__orderid .'"]) ) { $we_oid = $GLOBALS["' . $we__orderid .'"];} else {$we_orderid=0; } }';
+				} else {
+					$php .='$we_orderid=' . $we_orderid . '	;
+					';
+				}
+				
+				$php .= '$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
+';
+			}
+			
+			$php .= '$GLOBALS["lv"] = new we_ordertag($we_orderid,"' . $condition . '");
+$lv = clone($GLOBALS["lv"]); // for backwards compatibility
+if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
+?><?php if($GLOBALS["lv"]->avail): ?>';
+			
+			if ($postName != "") {
+				$content = str_replace('$', '\$', $php); //	to test with blocks ...
+			}
+			
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+		} else { return str_replace($tag, modulFehltError('Shop','"order"'), $code); }
+	}
+
+function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
+	{
+		
+		if (defined("WE_SHOP_MODULE_DIR")) {
+			
+			eval('$arr = array(' . $attribs . ');');
+			
+			$we_button = new we_button();
+			
+			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
+			$we_orderitemid = we_getTagAttributeTagParser("id", $arr, 0);
+			$we__orderitemid = str_replace('$','',orderitemid);//Bug 4848
+			$we_orderid = we_getTagAttributeTagParser("orderid", $arr, 0);
+			$we__orderid = str_replace('$','',$we_orderid);//Bug 4848
+			//$name = we_getTagAttributeTagParser("name", $arr) . $postName;
+			//$_showName = we_getTagAttributeTagParser("name", $arr);
+			//$size = we_getTagAttributeTagParser("size", $arr, 30);
+			if ($condition) {
+				$condition = $condition.' AND '."IntID = ".$we_orderitemid;
+			} else {
+				$condition = "IntID = ".$we_orderitemid;
+			}
+			
+			$php = '<?php
+
+if (!isset($GLOBALS["we_lv_array"])) {
+	$GLOBALS["we_lv_array"] = array();
+}
+
+include_once(WE_SHOP_MODULE_DIR . "we_orderitemtag.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+';
+			
+			if ($name) {
+				if (strpos($name, " ") !== false) {
+					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+				}
+				
+				$php .= '
+		$we_doc = $GLOBALS["we_doc"];
+		$we_orderitemid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderitemid . ';
+		$we_ordeitemrid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
+		$path = "/".$we_orderitemid;
+		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
+		$idname = \'we_\'.$we_doc->Name.\'_txt[' . $name . ']\';
+		$table = SHOP_TABLE;
+		$we_button = new we_button();
+		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
+		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openSelector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',0,\'\',1)");
+
+?><?php if($GLOBALS["we_editmode"]): ?>
+<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
+	<tr>
+		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
+		<td><?php print hidden($idname,$we_orderitemid) ?></td>
+		<td><?php print htmlTextInput($textname,' . $size . ',$path,"",\' readonly\',"text",0,0); ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $button; ?></td>
+		<td>' . getPixel(6, 4) . '</td>
+		<td><?php print $delbutton; ?></td>
+	</tr>
+</table><?php endif ?><?php
+';
+			} else {
+				if ($we_orderitemid!=0){//Bug 4848
+					$php .='if(isset('. $we_orderitemid .')){ $we_orderitemid = ' . $we_orderitemid . ';} else { if (isset($GLOBALS["' . $we__orderitemid .'"]) ) { $we_oid = $GLOBALS["' . $we__orderitemid .'"];} else {$we_orderitemid=0; } }';
+				} else {
+					$php .='$we_orderitemid=' . $we_orderitemid . ';
+					';
+				}
+				$php .= '
+$we_orderitemid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
+';
+			}
+			
+			$php .= '$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid,"' . $condition . '");
+$lv = clone($GLOBALS["lv"]); // for backwards compatibility
+if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
+?><?php if($GLOBALS["lv"]->avail): ?>';
+			
+			if ($postName != "") {
+				$content = str_replace('$', '\$', $php); //	to test with blocks ...
+			}
+			
+			$pre = $this->getStartCacheCode($tag, $attribs);
+			
+			return $this->replaceTag($tag, $code, $pre . $php);
+		} else { return str_replace($tag, modulFehltError('Shop','"orderitem"'), $code); }
 	}
 
 	##########################################################################################
@@ -1647,6 +1930,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 		if (defined("SHOP_TABLE")) {
 			eval('$arr = array(' . $attribs . ');');
 			$deleteshop = we_getTagAttributeTagParser("deleteshop", $arr);
+			$deleteshoponlogout = we_getTagAttributeTagParser("deleteshoponlogout", $arr,"false",true);
 			$shopname = we_getTagAttributeTagParser("shopname", $arr);
 			
 			$php = '<?php
@@ -1654,16 +1938,24 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 	
 				$deleteshop_now = "' . $deleteshop . '";
+				$deleteshoponlogout = "' . $deleteshoponlogout . '";
 				if(!isset($_SESSION)) @session_start();
 	
 				if(isset($_SESSION["' . $shopname . '_save"]) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"]==1 || $deleteshop_now =="1")) { // delete shop
 					unset($_SESSION["' . $shopname . '_save"]);
-					if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ????
+					if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ???? - nowhere
 						header("Location: ".$follow);
 						exit;
 					}
 				}
-	
+				if(isset($GLOBALS["WE_LOGOUT"]) && $GLOBALS["WE_LOGOUT"] && $deleteshoponlogout){
+					unset($_SESSION["' . $shopname . '_save"]);
+					if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ???? - nowhere
+						header("Location: ".$follow);
+						exit;
+					}
+				}
+				
 				$GLOBALS["' . $shopname . '"] = new Basket;
 				$GLOBALS["' . $shopname . '"]->Basket();
 				$GLOBALS["' . $shopname . '"]->setCartProperties( (isset($_SESSION["' . $shopname . '_save"]) ? $_SESSION["' . $shopname . '_save"] : array() ) );
@@ -1689,17 +1981,18 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 				eval('$arr = array(' . $attribs . ');');
 				
 				$shopname = we_getTagAttributeTagParser("shopname", $arr);
-				
+				$floatquantities = we_getTagAttributeTagParser("floatquantities", $arr,'',true);
+				$floatquantities = empty($floatquantities) ? 'false' : $floatquantities;
 				$php = '<?php
-			
+				$floatquantities='.$floatquantities.';
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-		
+				$floatfilter = new Zend_Filter_LocalizedToNormalized();
 				if((isset($_REQUEST["shopname"]) && $_REQUEST["shopname"]=="' . $shopname . '") || !isset($_REQUEST["shopname"]) || $_REQUEST["shopname"]==""){
 					if ( isset($_REQUEST["shop_cart_id"]) && is_array($_REQUEST["shop_cart_id"]) ) {
 						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
 							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 ) ) {
 								foreach ($_REQUEST["shop_cart_id"] as $cart_id => $cart_amount) {
-									$' . $shopname . '->Set_Cart_Item($cart_id, $cart_amount);
+									$' . $shopname . '->Set_Cart_Item($cart_id, $floatquantities ? $floatfilter->filter($cart_amount):$cart_amount);
 									$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
 								}
 							}
@@ -1715,7 +2008,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 									$shop_artikelid = $articleInfo[0];
 									$shop_artikeltype = $articleInfo[1];
 									$shop_variant = (isset($articleInfo[2]) ? $articleInfo[2] : "");
-									$' . $shopname . '->Set_Item($shop_artikelid,$shop_anzahl,$shop_artikeltype, $shop_variant);
+									$' . $shopname . '->Set_Item($shop_artikelid,$floatquantities ? $floatfilter->filter($shop_anzahl):$shop_anzahl ,$shop_artikeltype, $shop_variant);
 									$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
 									unset($articleInfo);
 								}
@@ -1726,7 +2019,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 					else if(isset($_REQUEST["shop_artikelid"]) && $_REQUEST["shop_artikelid"] != "" && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != 0) {
 						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
 							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
-								$' . $shopname . '->Add_Item($_REQUEST["shop_artikelid"],$_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
+								$' . $shopname . '->Add_Item($_REQUEST["shop_artikelid"],$floatquantities ? $floatfilter->filter($_REQUEST["shop_anzahl"]):$_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
 								$_SESSION["' . $shopname . '_save"] = $' . $shopname . '->getCartProperties();
 							}
 							$_SESSION["tb"]=$_REQUEST["t"];

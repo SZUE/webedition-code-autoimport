@@ -18,7 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
@@ -39,7 +38,6 @@ $jmenu = null;
 $navigationButtons = array();
 
 if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not in seem_edit_include!
-
 
 	if( // menu for normalmode
 		isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal" ){
@@ -101,12 +99,13 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 				if((!(isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]))) { ?>
 
 				try {
-					if(document.weJavaMenuApplet == undefined || document.weJavaMenuApplet.getBgImage()=="") {
+					if(document.applets["weJavaMenuApplet"]==undefined || !document.applets["weJavaMenuApplet"].isActive() /*|| document.weJavaMenuApplet == undefined || document.weJavaMenuApplet.getBgImage()==""*/) {
 						checkAndLoadAltMenu();
 					}
 				} catch (e) {
 					checkAndLoadAltMenu();
 				}
+
 				appletTrys += 1;
 				
 				<?php } ?>
@@ -136,7 +135,8 @@ if ($jmenu) {
 ";
 }
 
-if ($amount = sizeof($navigationButtons)) {
+$amount = sizeof($navigationButtons);
+if($amount) {
 
 	print '
 	<td>
@@ -169,16 +169,16 @@ if ($amount = sizeof($navigationButtons)) {
 				?>
 			</td>
 			<td valign="middle">
-				<img src="<?php print IMAGE_DIR ?>pixel.gif" name="busy" width="20" height="19">
+				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
 			</td>
 			<td>
-				<img src="<?php print IMAGE_DIR ?>pixel.gif" width="10" height="19">
+				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" width="10" height="19">
 			</td>
 			<td valign="bottom">
-				<img src="<?php print IMAGE_DIR ?>webedition.gif" width="78" height="25">
+				<img src="<?php print IMAGE_DIR ?>webedition.gif" alt="" width="78" height="25">
 			</td>
 			<td>
-				<img src="<?php print IMAGE_DIR ?>pixel.gif" width="5" height="19">
+				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" width="5" height="19">
 			</td>
 		</tr>
 	</table>

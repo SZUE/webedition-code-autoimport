@@ -106,5 +106,3 @@ class we_errorHandling {
 	}
 
 }
-
-?>

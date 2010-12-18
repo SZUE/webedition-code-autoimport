@@ -26,5 +26,3 @@ function we_tag_ifUnsubscribe($attribs, $content) {
 		return false;
 	}
 }
-
-?>

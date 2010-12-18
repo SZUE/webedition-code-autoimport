@@ -34,9 +34,9 @@ function we_tag_ifNotRegisteredUser($attribs,$content) {
 		if ( $cfilter && defined("CUSTOMER_TABLE") ){
 			if (isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
 				if ( $GLOBALS["we_doc"]->documentCustomerFilter->accessForVisitor( $GLOBALS["we_doc"], array(), true ) == WECF_ACCESS ) {
-					return false;	
+					return false;
 				} else {
-					return true;	
+					return true;
 				}
 			} else {
 				return false;
@@ -54,4 +54,3 @@ function we_tag_ifNotRegisteredUser($attribs,$content) {
 		}
 	}
 }
-?>

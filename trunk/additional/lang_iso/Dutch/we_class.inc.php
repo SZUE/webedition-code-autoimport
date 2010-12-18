@@ -36,6 +36,7 @@ $l_we_class["copytext/css"] = "Kopieer CSS style sheet";
 $l_we_class["copytext/js"] = "Kopieer JavaScript";
 $l_we_class["copytext/html"] = "Kopieer HTML pagina";
 $l_we_class["copytext/plain"] = "Kopieer tekst pagina";
+$l_we_class["copytext/htaccess"] = "Copy .htaccess file";//TRANSLATE
 $l_we_class["copytext/xml"] = "Kopieer XML document";
 $l_we_class["copyTemplate"] = "Kopieer sjabloon";
 $l_we_class["copyFolder"] = "Kopieer directory";

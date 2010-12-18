@@ -19,9 +19,7 @@
  */
 
 function we_tag_ifVoteActive($attribs,$content) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');    
-	
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
+
 	return $GLOBALS['_we_voting']->Active;
 }
-
-?>

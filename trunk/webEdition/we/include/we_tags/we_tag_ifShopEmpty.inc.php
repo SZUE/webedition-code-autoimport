@@ -29,7 +29,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/w
  * @return         bool
  */
 
-function we_tag_ifShopEmpty($attribs) {
+function we_tag_ifShopEmpty($attribs,$content) {
 	$foo = attributFehltError($attribs,"shopname","ifShopEmpty");if($foo) return $foo;
 	$shopname = we_getTagAttribute("shopname",$attribs);
 
@@ -43,4 +43,3 @@ function we_tag_ifShopEmpty($attribs) {
 		return true;
 	}
 }
-?>

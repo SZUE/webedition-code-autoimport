@@ -133,5 +133,12 @@ $l_users["login_denied"] = "Login gesperrt";
 
 $l_users["workspaceFieldError"] = "FEHLER: Falscher Wert für einen Arbeitsbereich!";
 $l_users["noGroupError"] = "FEHLER: Gruppe existiert nicht!";
+$l_users["CreatorID"] = "Erstellt durch: ";
+$l_users["CreateDate"] = "Erstellt am: ";
+$l_users["ModifierID"] = "Geändert durch: ";
+$l_users["ModifyDate"] = "Geändert am: ";
+$l_users["lastPing"] = "Letzter Ping: ";
+$l_users["lostID"] = "ID: ";
+$l_users["lostID2"] = " (gelöscht)";
 
 ?>

@@ -13,5 +13,6 @@ CREATE TABLE tblMessages (
   seenStatus tinyint(4) unsigned default NULL,
   MessageText text,
   tag tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY `query` (`obj_type`,`msg_type`,`ParentID`,`UserID`)
 ) ENGINE=MyISAM;

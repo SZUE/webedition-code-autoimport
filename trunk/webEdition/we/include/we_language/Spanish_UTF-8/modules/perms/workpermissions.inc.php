@@ -34,6 +34,7 @@ $l_perm["workpermissions"]["NEW_FLASH"] = "El usuario puede cargar archivos Flas
 $l_perm["workpermissions"]["NEW_QUICKTIME"] = "El usuario puede cargar películas Quicktime";
 $l_perm["workpermissions"]["NEW_JS"] = "El usuario puede crear archivos JavaScript";
 $l_perm["workpermissions"]["NEW_CSS"] = "El usuario puede crear archivos CSS";
+$l_perm["workpermissions"]["NEW_HTACCESS"] = "The user is allowed to create .htaccess files";//TRANSLATE
 $l_perm["workpermissions"]["NEW_TEXT"] = "El usuario puede crear documentos de texto simple";
 $l_perm["workpermissions"]["NEW_SONSTIGE"] = "El usuario puede crear otros documentos";
 $l_perm["workpermissions"]["NEW_TEMPLATE"] = "El usuario puede crear plantillas";

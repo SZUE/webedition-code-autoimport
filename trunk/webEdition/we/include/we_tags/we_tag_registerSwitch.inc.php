@@ -19,11 +19,11 @@
  */
 
 function we_tag_registerSwitch($attribs,$content) {
-	
+
 	if ($GLOBALS["we_editmode"]) {
-		
+
 		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
-		
+
 		return '
 			<table border="0" cellpadding="4" cellspacing="0" bgcolor="silver">
 				<tr>
@@ -46,4 +46,3 @@ function we_tag_registerSwitch($attribs,$content) {
 		return "";
 	}
 }
-?>

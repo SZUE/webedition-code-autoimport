@@ -38,33 +38,34 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 //
-public class Editor extends JApplet
- {
-	
+public class Editor extends JApplet{
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private EditorPanel editor;
 	private Vector<String> tags = new Vector<String>();
-	
+
 	private String php_ext;
-	
+
 	public URL codeBase;
 	public String SERVER_NAME;
 	public int port;
 	public String protocol;
 	public String cmpCode = "";
-	
+
 	protected boolean isHot = false;
-	
+
 	private Parameter parameter;
-	
+
 	public boolean isCodeSet = false;
-	
+
 	private Map<String, Vector<String>> attribs = new HashMap<String, Vector<String>>();
-		
+//	private static String webPath="/webEdition/editor/"; // new: /editors/template/editor/
+
 	public void init() {
-		
+
 		codeBase = getCodeBase();
+
 		SERVER_NAME = codeBase.getHost();
 
 		port=(getDocumentBase()).getPort();
@@ -72,14 +73,10 @@ public class Editor extends JApplet
 		String url;
 
 		if (SERVER_NAME.length() > 0) {
-			if(port!=-1) {
-				url = protocol+"://"+SERVER_NAME+":"+port+"/webEdition/editor/initEditor.html";
-			} else {
-				url = protocol+"://"+SERVER_NAME+"/webEdition/editor/initEditor.html";
-			}
+			url = codeBase.toString()+"initEditor.html";
 			showUrl(url);
 		}
-		
+
 		parameter = Parameter.getInstance();
 
 		String p = getParameter("weTagColor");
@@ -116,45 +113,41 @@ public class Editor extends JApplet
 		if (p != null && p.length() > 0) {
 			parameter.setNormalColor(p);
 		}
-				
+
 		p = getParameter("fontName");
 		if (p != null && p.length() > 0) {
 			parameter.setFontName(p);
 		}
-				
+
 		p = getParameter("fontSize");
 		if (p != null && p.length() > 0) {
 			parameter.setFontSize(Integer.valueOf(p));
 		}
-		
+
 		p = getParameter("contentType");
 		if (p != null && p.length() > 0) {
 			parameter.setContentType(p);
 		}
-		
+
 		php_ext=getParameter("phpext");
 		if(php_ext==null) php_ext=".php";
-		
+
 		if (SERVER_NAME.length() > 0) {
-			if(port!=-1) {
-				url = protocol + "://" + SERVER_NAME + ":" + port + "/webEdition/editor/getAllTags" + php_ext;
-			} else {
-				url = protocol + "://" + SERVER_NAME + "/webEdition/editor/getAllTags" + php_ext;
-			}
+			url = codeBase.toString()+"getAllTags" + php_ext;
 		} else {
-			url = "http://localhost/webEdition/editor/getAllTags.php";
+			url = "http://localhost/getAllTags.php";
 		}
 		tags = getFromServer(url, "tag");
-		
+
 		editor = new EditorPanel(this);
 		getContentPane().add(editor, BorderLayout.CENTER);
 	}
 
 	private Vector<String> getFromServer(String urlString, String nodeName) {
 		URL url = null;
-		
+
 		Vector<String> out = new Vector<String>();
-		
+
 		try {
 			url = new URL(urlString);
 		} catch (MalformedURLException e1) {
@@ -169,7 +162,7 @@ public class Editor extends JApplet
 			  while ((line = URLinput.readLine()) != null) {
 				  xmlContent += (line + "\n");
 			  }
-		
+
 			DocumentBuilder parser = null;
 			try {
 				parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -183,7 +176,7 @@ public class Editor extends JApplet
 			       Element element = (Element) nodes.item(i);
 			       out.addElement(element.getAttribute("name")+"/"+element.getAttribute("needsEndtag"));
 			    }
-			    
+
 			} catch (SAXException e) {
 				System.out.println("Error parsing XML");
 			}
@@ -191,11 +184,11 @@ public class Editor extends JApplet
 		} catch (IOException e1) {
 			System.out.println("Error connecting to url: " + urlString);
 		}
-		
-		return out;	
+
+		return out;
 	}
-	
- 
+
+
   	public Vector<String> getTags(){
 		return tags;
  	}
@@ -204,52 +197,48 @@ public class Editor extends JApplet
 		if (!attribs.containsKey(tagName)) {
 			String url;
 			if (SERVER_NAME.length() > 0) {
-				if(port!=-1) {
-					url = protocol + "://" + SERVER_NAME + ":" + port + "/webEdition/editor/getAttribsForTag" + php_ext + "?tagName="+tagName;
-				} else {
-					url = protocol + "://" + SERVER_NAME + "/webEdition/editor/getAttribsForTag" + php_ext + "?tagName="+tagName;
-				}
+				url = codeBase.toString()+"getAttribsForTag" + php_ext + "?tagName="+tagName;
 			} else {
-				url = "http://wetrunk.holeg.intra/webEdition/editor/getAttribsForTag.php?tagName="+tagName;
+				url = "http://localhost/getAttribsForTag.php?tagName="+tagName;
 			}
 			Vector<String> attr = getFromServer(url, "attribute");
 			attribs.put(tagName, attr);
 		}
 		return attribs.get(tagName);
 	}
-	
+
 	public void setCode(String code) {
 		editor.setCode(code);
 		cmpCode = code;
 		isCodeSet = true;
 	}
-	
+
 	public void initUndoManager() {
 		editor.initUndoManager();
 	}
-	
+
 	public String getCode() {
 		return editor.getCode();
 	}
-	
+
 	public void setSize(int width, int height) {
 	   super.setSize(width,height);
 	   validate();
 	}
 
 	public void sendCtrlS() {
-		
+
 		if (SERVER_NAME.length() > 0) {
 			String url;
 			if(port!=-1) {
 				url = protocol + "://" + SERVER_NAME + ":" + port + "/webEdition/we_lcmd" + php_ext + "?wecmd0=trigger_save_document";
 			} else {
-				url = protocol + "://" + SERVER_NAME + "/webEdition/we_lcmd" + php_ext + "?wecmd0=trigger_save_document"; 
+				url = protocol + "://" + SERVER_NAME + "/webEdition/we_lcmd" + php_ext + "?wecmd0=trigger_save_document";
 			}
 			showUrl(url);
 		}
 	}
-	
+
 	public void showUrl(String url) {
 		try {
 			this.getAppletContext().showDocument (new URL(url),"load");
@@ -266,24 +255,23 @@ public class Editor extends JApplet
 	public boolean isHot() {
 		return isHot;
 	}
-	
+
 	public void setHot(boolean isHot) {
 		this.isHot = isHot;
 	}
-	
+
 	public void replaceSelection(String txt) {
 		editor.pane.replaceSelection(txt);
 	}
-	
+
 	public void insertAtStart(String txt) {
 		editor.pane.setCaretPosition(0);
 		editor.pane.replaceSelection(txt);
 	}
-	
+
 	public void insertAtEnd(String txt) {
 		editor.pane.setCaretPosition(editor.pane.getDocument().getEndPosition().getOffset()-1);
 		editor.pane.replaceSelection(txt);
 	}
 
 }
-

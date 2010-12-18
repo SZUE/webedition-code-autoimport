@@ -18,15 +18,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_browser_check.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/global.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/charset/charset.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/global.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/charset/charset.inc.php');
 
 /**
  * This function creates a table.
@@ -341,6 +341,69 @@ function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $
 		return $out;
 	}
 }
+function htmlDialogBorder4Row($content, $class = "middlefont", $bgColor = "")
+{
+	$anz = sizeof($content);
+	$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' . getPixel(
+			8, 
+			isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+	
+	for ($f = 0; $f < $anz; $f++) {
+		$bgcol = $bgColor ? $bgColor : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
+		$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' . ((isset(
+				$content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' . ((isset(
+				$content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' . ((isset(
+				$content[$f]["dat"]) && $content[$f]["dat"]!='') ? $content[$f]["dat"] : "&nbsp;") . '</td>';
+	}
+	$out .= '
+					<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' . getPixel(
+			8, 
+			isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>
+
+				';
+	return $out;
+}
+
+function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = "")
+{ //content && headline are arrays
+	$anz = sizeof($headline);
+	$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
+		<tr>
+		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . getPixel(
+			8, 
+			21) . '</td>';
+	// HEADLINE
+	for ($f = 0; $f < $anz; $f++) {
+		$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $headline[$f]["dat"] . '</td>';
+	}
+	$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . getPixel(8, 21) . '</td>
+				</tr>';
+	
+	//CONTENT
+	$zn1 = sizeof($content);
+	for ($i = 0; $i < $zn1; $i++) {
+		$out .= '<tr>' . htmlDialogBorder4Row($content[$i], $class, $bgColor) . '</tr>';
+	}
+	
+	$out .= '</table>';
+	
+	if ($buttons) {
+		$attribs = array(
+			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
+		);
+		$_table = new we_htmlTable($attribs, 3, 1);
+		$_table->setCol(0, 0, array(
+			"colspan" => "2"
+		), $out);
+		$_table->setCol(1, 0, null, getPixel($w, 5)); // row for gap between buttons and dialogborder
+		$_table->setCol(2, 0, array(
+			"align" => "right"
+		), $buttons);
+		return $_table->getHtmlCode();
+	} else {
+		return $out;
+	}
+}
 
 function html_select($name, $size, $vals, $value = "", $onchange = "")
 {
@@ -568,7 +631,6 @@ function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchan
 						)));
 		$_showMonth = false;
 	}
-	
 	if (($format == "") || $_yearPos > -1) {
 		$years = '';
 		if ($minyear == "") {
@@ -931,5 +993,3 @@ function htmlAlertAttentionBox($text, $type = 0, $width = 0, $useHtmlSpecialChar
 	
 	return $js . '<div style="background-color:#dddddd;padding:5px;' . ($width ? ' width:' . $width . 'px;' : '') . '"><table border="0" cellpadding="2" width="100%">' . '<tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . IMAGE_DIR . 'button/btn_direction_right.gif" border="0" /></a><td>' : '') . '</tr></table></div>';
 }
-
-?>

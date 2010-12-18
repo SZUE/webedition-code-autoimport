@@ -93,7 +93,7 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move)
 		
 		if (defined("OBJECT_TABLE") && $table == OBJECT_FILES_TABLE) {
 			// check if class directory is the same
-			if (substr($DB_WE->f('Path'), 0, strlen($rootdir)) != $rootdir) {
+			if (substr($DB_WE->f('Path'), 0, strlen($rootdir)+1) != $rootdir."/") {
 				return -3;
 			}
 		}

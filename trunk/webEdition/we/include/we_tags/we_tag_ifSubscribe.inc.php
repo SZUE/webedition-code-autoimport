@@ -26,5 +26,3 @@ function we_tag_ifSubscribe($attribs, $content) {
 		return false;
 	}
 }
-
-?>

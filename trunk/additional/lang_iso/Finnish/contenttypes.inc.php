@@ -30,6 +30,7 @@ $GLOBALS['l_contentTypes']["all_Types"] = "Kaikki kentät";
 $GLOBALS['l_contentTypes']["text/xml"] = "XML -tiedosto";
 $GLOBALS['l_contentTypes']["text/html"] = "HTML -sivu";
 $GLOBALS['l_contentTypes']["text/plain"] = "Tekstisivu";
+$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess sivu";//TRANSLATE
 $GLOBALS['l_contentTypes']["text/webedition"] = "webEdition -sivu";
 $GLOBALS['l_contentTypes']["image/*"] = "Kuva";
 $GLOBALS['l_contentTypes']["text/weTmpl"] = "webEdition -sivupohja";
@@ -42,4 +43,5 @@ $GLOBALS['l_contentTypes']["class_folder"] = "Hakemisto";
 $GLOBALS['l_contentTypes']["object"] = "Luokka";
 $GLOBALS['l_contentTypes']["objectFile"] = "Objekti";
 $GLOBALS['l_contentTypes']["video/quicktime"] = "Quicktime -tiedosto";
+
 ?>

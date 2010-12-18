@@ -27,6 +27,7 @@ $l_javaMenu["shop"]["menu_user"] = "Kauppamoduuli";
 
 $l_javaMenu["shop"]["shop_edit"] = "Muokkaa";
 	$l_javaMenu["shop"]["shop_pref"] = "Asetukset";
+	$l_javaMenu["shop"]["shop_status"] = "Status mails"; //TRANSLATE
 	$l_javaMenu["shop"]["country_vat"] = "Maat";
 	$l_javaMenu["shop"]["edit_vats"] = "ALV arvot";
 	$l_javaMenu["shop"]["order"] = "Tilaus";

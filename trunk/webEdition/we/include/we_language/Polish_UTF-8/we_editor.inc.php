@@ -108,6 +108,16 @@ $l_we_editor["text/plain"]["we_filename_notValid"] = $l_we_editor["text/webediti
 $l_we_editor["text/plain"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"];
 $l_we_editor["text/plain"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
 
+$l_we_editor["text/htaccess"]["response_save_ok"] = "The file '%s' has been successfully saved!"; //TRANSLATE
+$l_we_editor["text/htaccess"]["response_publish_ok"] = "The file '%s' has been successfully published!"; //TRANSLATE
+$l_we_editor["text/htaccess"]["response_unpublish_ok"] = "The file '%s' has been successfully unpublished!"; //TRANSLATE
+$l_we_editor["text/htaccess"]["response_save_notok"] = "Error while saving the file '%s'!"; //TRANSLATE
+$l_we_editor["text/htaccess"]["response_path_exists"] = "The file '%s' could not be saved because another document or directory is positioned at the same location!"; //TRANSLATE
+$l_we_editor["text/htaccess"]["filename_empty"] = $l_we_editor["text/webedition"]["filename_empty"];
+$l_we_editor["text/htaccess"]["we_filename_notValid"] = $l_we_editor["text/webedition"]["we_filename_notValid"]; 
+$l_we_editor["text/htaccess"]["we_filename_notAllowed"] = $l_we_editor["text/webedition"]["we_filename_notAllowed"]; 
+$l_we_editor["text/htaccess"]["response_save_noperms_to_create_folders"] = $l_we_editor["text/webedition"]["response_save_noperms_to_create_folders"];
+
 $l_we_editor["text/xml"]["response_save_ok"] = "The XML file '%s' has been successfully saved!";
 $l_we_editor["text/xml"]["response_publish_ok"] = "The XML file '%s' has been successfully published!"; // TRANSLATE
 $l_we_editor["text/xml"]["response_unpublish_ok"] = "The XML file '%s' has been successfully unpublished!"; // TRANSLATE

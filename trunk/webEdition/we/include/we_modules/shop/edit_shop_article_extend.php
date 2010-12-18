@@ -174,7 +174,7 @@ print '
 $we_button = new we_button();
 
    /* ************* some config  ************** */
-$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'shop_pref'");
+$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'");
 $DB_WE->next_record();
 $feldnamen = explode("|",$DB_WE->f("strFelder"));
 $waehr="&nbsp;".htmlspecialchars($feldnamen[0]);
@@ -250,7 +250,7 @@ if (isset($daten)){
 			if ($val!="") {			
 	            $menu .= "  <option value=\"". $val."\"";
 	            $menu .= (isset($_REQUEST[$select_name])  && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "";
-	            $sql_merge = "SELECT ".OBJECT_TABLE.".Text as ClassIDName, ".OBJECT_TABLE.".ID as SerID FROM ".OBJECT_TABLE." WHERE ".OBJECT_TABLE.".ID = $val";
+	            $sql_merge = "SELECT ".OBJECT_TABLE.".Text as ClassIDName, ".OBJECT_TABLE.".ID as SerID FROM ".OBJECT_TABLE." WHERE ".OBJECT_TABLE.".ID = ".abs($val);
 	            $DB_WE->query($sql_merge);
 	            $DB_WE->next_record();
 	            $menu .= ">" .$DB_WE->f("ClassIDName").  "\n";

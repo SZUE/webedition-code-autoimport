@@ -24,4 +24,3 @@ function we_tag_ifLoginFailed($attribs,$content) {
 	$_SESSION["webuser"]["loginfailed"]="";
 	return $foo;
 }
-?>

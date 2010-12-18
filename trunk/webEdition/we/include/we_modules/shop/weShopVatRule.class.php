@@ -3,6 +3,7 @@
 class weShopVatRule {
 	
 	var $stateField;
+	var $stateFieldIsISO;
 	var $liableToVat;
 	var $notLiableToVat;
 	// a rule is an array containing 
@@ -14,10 +15,11 @@ class weShopVatRule {
 	
 	var $defaultValue = true;
 	
-	function weShopVatRule( $defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules ) {
+	function weShopVatRule( $defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules,$stateFieldIsISO='0' ) {
 		
 		$this->defaultValue = $defaultValue;
 		$this->stateField = $stateField;
+		$this->stateFieldIsISO = $stateFieldIsISO;
 		$this->liableToVat = $liableToVat;
 		$this->notLiableToVat = $notLiableToVat;
 		$this->conditionalRules = $conditionalRules;
@@ -76,7 +78,7 @@ class weShopVatRule {
 			weShopVatRule::makeArrayFromReq($req['liableToVat']),
 			weShopVatRule::makeArrayFromReq($req['notLiableToVat']),
 			weShopVatRule::makeArrayFromConditionField($req),
-			array()
+			$req['stateFieldIsISO']
 		);
 	}
 	
@@ -106,7 +108,8 @@ class weShopVatRule {
 						'condition' => '',
 						'returnValue' => 1
 					)
-				)
+				),
+				0
 			);
 		}
 	}
@@ -158,6 +161,16 @@ class weShopVatRule {
 		}
 		
 		if ($DB_WE->query($query)) {
+			$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+			$DB_WE->query($q);
+			if ( $DB_WE->num_rows() > 0) {
+				$DB_WE->next_record();
+				$CLFields = unserialize($DB_WE->f("strFelder"));
+				$CLFields['stateField'] =  $this->stateField;
+				$CLFields['stateFieldIsISO'] =  $this->stateFieldIsISO;
+				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . mysql_real_escape_string(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
+			}
+		
 			return true;
 		} else {
 			return false;

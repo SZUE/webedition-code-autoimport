@@ -179,7 +179,7 @@ print '
 <form>';
 
 // get some preferences!
-$query = 'SELECT strFelder from '.ANZEIGE_PREFS_TABLE.' where strDateiname = "shop_pref"';
+$query = 'SELECT strFelder from '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "shop_pref"';
 	$DB_WE->query($query);
 	$DB_WE->next_record();
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * webEdition CMS
  *
@@ -21,4 +21,3 @@
 function we_tag_cookie($attribs, $content) {
 	setcookie('_we_cookie_',time(),(time()+630720000));
 }
-?>

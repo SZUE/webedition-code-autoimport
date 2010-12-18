@@ -24,7 +24,7 @@ $show_stylesheet = true;
 
 // Activate the webEdition error handler
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
-we_error_handler();
+if (!defined("WE_ERROR_HANDLER_SET")){ we_error_handler();}
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");

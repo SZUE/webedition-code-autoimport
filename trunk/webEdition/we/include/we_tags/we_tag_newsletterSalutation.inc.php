@@ -34,4 +34,3 @@ function we_tag_newsletterSalutation($attribs, $content){
 			return isset($GLOBALS["WE_SALUTATION"]) ? $GLOBALS["WE_SALUTATION"] : "";
 	}
 }
-?>

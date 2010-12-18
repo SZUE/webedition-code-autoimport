@@ -19,7 +19,8 @@ CREATE TABLE tblCategorys (
   IsFolder tinyint(1) default NULL,
   Icon varchar(64) default NULL,
   Catfields longtext NOT NULL,
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY Path (Path)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblCleanUp (
@@ -34,7 +35,8 @@ CREATE TABLE tblContent (
   IsBinary tinyint(4) NOT NULL default '0',
   AutoBR char(3) NOT NULL default '',
   LanguageID int(11) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY BDID (BDID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblContentTypes (
@@ -74,17 +76,24 @@ CREATE TABLE tblDocTypes (
 /* query separator */
 CREATE TABLE tblErrorLog (
   ID int(11) NOT NULL auto_increment,
+  `Type` enum('Error','Warning','Parse error','Notice','Core error','Core warning','Compile error','Compile warning','User error','User warning','User notice','Deprecated notice','User deprecated notice','unknown Error') NOT NULL,
+  `Function` varchar(255) NOT NULL default '',
+  `File` varchar(255) NOT NULL default '',
+  `Line` int(11) NOT NULL,
   `Text` text NOT NULL,
-  `Date` int(11) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  `Backtrace` text NOT NULL,
+  `Date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (ID),
+  KEY `Date` (`Date`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblFailedLogins (
-  ID bigint(20) NOT NULL default '0',
+  ID  bigint(20) NOT NULL AUTO_INCREMENT,
   Username varchar(64) NOT NULL default '',
-  `Password` varchar(32) NOT NULL default '',
-  IP varchar(15) NOT NULL default '',
-  LoginDate int(11) NOT NULL default '0'
+  IP varchar(40) NOT NULL default '',
+  LoginDate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`),
+  KEY IP (IP,LoginDate)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblFile (
@@ -92,7 +101,7 @@ CREATE TABLE tblFile (
   ParentID int(11) NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
   Icon varchar(64) NOT NULL default '',
-  IsFolder tinyint(4) NOT NULL default '0',
+  IsFolder tinyint(1) NOT NULL default '0',
   ContentType varchar(32) NOT NULL default '',
   CreationDate int(11) NOT NULL default '0',
   ModDate int(11) NOT NULL default '0',
@@ -101,7 +110,7 @@ CREATE TABLE tblFile (
   temp_template_id int(11) NOT NULL default '0',
   Filename varchar(255) NOT NULL default '',
   Extension varchar(16) NOT NULL default '',
-  IsDynamic tinyint(4) NOT NULL default '0',
+  IsDynamic tinyint(1) NOT NULL default '0',
   IsSearchable tinyint(1) NOT NULL default '0',
   DocType varchar(64) NOT NULL default '',
   temp_doc_type varchar(32) NOT NULL default '',
@@ -140,7 +149,8 @@ CREATE TABLE tblIndex (
   Description text NOT NULL,
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
-  KEY DID (DID)
+  PRIMARY KEY (`DID`,`OID`),
+  KEY `OID` (`OID`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblLink (
@@ -149,13 +159,21 @@ CREATE TABLE tblLink (
   `Type` varchar(16) NOT NULL default '',
   Name varchar(255) NOT NULL default '',
   DocumentTable varchar(64) NOT NULL default '',
-  KEY DID (DID)
+  PRIMARY KEY (CID,DocumentTable),
+  KEY DID (DID),
+  KEY Name (Name(4)),
+  KEY `Type` (`Type`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblLock (
   ID bigint(20) NOT NULL default '0',
   UserID bigint(20) NOT NULL default '0',
-  tbl varchar(32) NOT NULL default ''
+  sessionID varchar(64) NOT NULL default '',
+  `lock` datetime NOT NULL,
+  tbl varchar(32) NOT NULL default '',
+  PRIMARY KEY (ID,tbl),
+  KEY UserID (UserID,sessionID),
+  KEY `lock` (`lock`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblMessages (
@@ -173,7 +191,8 @@ CREATE TABLE tblMessages (
   seenStatus tinyint(4) unsigned default NULL,
   MessageText text,
   tag tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY `query` (`obj_type`,`msg_type`,`ParentID`,`UserID`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE `tblMetadata` (
@@ -382,7 +401,9 @@ CREATE TABLE tblObject (
   Templates varchar(255) NOT NULL default '',
   CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY Path (Path),
+  KEY IsFolder (IsFolder)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblObjectFiles (
@@ -418,7 +439,8 @@ CREATE TABLE tblObjectFiles (
   WebUserID bigint(20) NOT NULL,
   PRIMARY KEY  (ID),
   KEY Path (Path),
-  KEY WebUserID (WebUserID)
+  KEY WebUserID (WebUserID),
+  KEY TableID (TableID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblOrders (
@@ -426,10 +448,39 @@ CREATE TABLE tblOrders (
   IntOrderID int(11) default NULL,
   IntCustomerID int(11) default NULL,
   IntArticleID int(11) default NULL,
-  IntQuantity int(11) default NULL,
+  IntQuantity float default NULL,
   DateOrder datetime default NULL,
+  DateConfirmation datetime default NULL,
+  DateCustomA datetime default NULL,
+  DateCustomB datetime default NULL,
+  DateCustomC datetime default NULL,
   DateShipping datetime default NULL,
+  DateCustomD datetime default NULL,
+  DateCustomE datetime default NULL,
   DatePayment datetime default NULL,
+  DateCustomF datetime default NULL,
+  DateCustomG datetime default NULL,
+  DateCancellation datetime default NULL,
+  DateCustomH datetime default NULL,
+  DateCustomI datetime default NULL,
+  DateCustomJ datetime default NULL,
+  DateFinished datetime default NULL,
+  MailOrder DATETIME NULL,
+  MailConfirmation DATETIME NULL,
+  MailCustomA DATETIME NULL,
+  MailCustomB DATETIME NULL,
+  MailCustomC DATETIME NULL,
+  MailShipping DATETIME NULL,
+  MailCustomD DATETIME NULL,
+  MailCustomE DATETIME NULL,
+  MailPayment DATETIME NULL,
+  MailCustomF DATETIME NULL,
+  MailCustomG DATETIME NULL,
+  MailCancellation DATETIME NULL,
+  MailCustomH DATETIME NULL,
+  MailCustomI DATETIME NULL,
+  MailCustomJ DATETIME NULL,
+  MailFinished DATETIME NULL,
   Price varchar(20) default NULL,
   IntPayment_Type tinyint(4) default NULL,
   strSerial longtext NOT NULL,
@@ -505,7 +556,8 @@ INSERT INTO tblPrefs (userID, FileFilter, openFolders_tblFile, openFolders_tblTe
 CREATE TABLE tblRecipients (
   ID bigint(20) NOT NULL auto_increment,
   Email varchar(255) NOT NULL default '',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  UNIQUE KEY Email (Email)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblSchedule (
@@ -516,7 +568,10 @@ CREATE TABLE tblSchedule (
   SerializedData longblob,
   Schedpro longtext,
   `Type` tinyint(3) NOT NULL default '0',
-  Active tinyint(1) default NULL
+  Active tinyint(1) default NULL,
+  PRIMARY KEY (DID,Wann,Was,`Type`,Active),
+  KEY Wann (Wann),
+  KEY Active (Active,Schedpro(1))
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblTODO (
@@ -578,6 +633,7 @@ CREATE TABLE tblTemplates (
   CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int(5) NOT NULL default '0',
   PRIMARY KEY  (ID),
+  KEY ParentID (ParentID,Filename(3)),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
 ) ENGINE=MyISAM;
@@ -589,7 +645,9 @@ CREATE TABLE tblTemporaryDoc (
   DocTable varchar(64) NOT NULL default '',
   UnixTimestamp bigint(20) NOT NULL default '0',
   Active tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY DocumentID (DocumentID),
+  KEY DocTable (DocTable,Active)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblUpdateLog (
@@ -652,14 +710,18 @@ CREATE TABLE tblUser (
   Salutation varchar(32) NOT NULL default '',
   LoginDenied tinyint(4) NOT NULL default '0',
   UseSalt tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY Ping (Ping),
+  KEY Alias (Alias),
+  KEY username (username) 
 ) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblUser VALUES (1,0,'admin','/admin','user.gif',0,0,'webEdition','','','','',0,'','','','','','','','','','admin','c0e024d9200b5705bc4804722636378a','a:55:{s:13:\"ADMINISTRATOR\";s:1:\"1\";s:18:\"NEW_WEBEDITIONSITE\";s:1:\"1\";s:10:\"NEW_GRAFIK\";s:1:\"1\";s:8:\"NEW_HTML\";s:1:\"1\";s:9:\"NEW_FLASH\";s:1:\"1\";s:6:\"NEW_JS\";s:1:\"1\";s:7:\"NEW_CSS\";s:1:\"1\";s:12:\"NEW_SONSTIGE\";s:1:\"1\";s:12:\"NEW_TEMPLATE\";s:1:\"1\";s:14:\"NEW_DOC_FOLDER\";s:1:\"1\";s:22:\"CHANGE_DOC_FOLDER_PATH\";s:1:\"0\";s:15:\"NEW_TEMP_FOLDER\";s:1:\"1\";s:17:\"CAN_SEE_DOCUMENTS\";s:1:\"1\";s:17:\"CAN_SEE_TEMPLATES\";s:1:\"1\";s:22:\"SAVE_DOCUMENT_TEMPLATE\";s:1:\"1\";s:17:\"DELETE_DOC_FOLDER\";s:1:\"1\";s:18:\"DELETE_TEMP_FOLDER\";s:1:\"1\";s:15:\"DELETE_DOCUMENT\";s:1:\"1\";s:15:\"DELETE_TEMPLATE\";s:1:\"1\";s:13:\"BROWSE_SERVER\";s:1:\"1\";s:12:\"EDIT_DOCTYPE\";s:1:\"1\";s:14:\"EDIT_KATEGORIE\";s:1:\"1\";s:7:\"REBUILD\";s:1:\"1\";s:6:\"EXPORT\";s:1:\"1\";s:6:\"IMPORT\";s:1:\"1\";s:9:\"NEW_GROUP\";s:1:\"1\";s:8:\"NEW_USER\";s:1:\"1\";s:10:\"SAVE_GROUP\";s:1:\"1\";s:9:\"SAVE_USER\";s:1:\"1\";s:12:\"DELETE_GROUP\";s:1:\"1\";s:11:\"DELETE_USER\";s:1:\"1\";s:7:\"PUBLISH\";s:1:\"1\";s:21:\"EDIT_SETTINGS_DEF_EXT\";s:1:\"1\";s:13:\"EDIT_SETTINGS\";s:1:\"1\";s:11:\"EDIT_PASSWD\";s:1:\"1\";s:12:\"NEW_CUSTOMER\";s:1:\"0\";s:15:\"DELETE_CUSTOMER\";s:1:\"0\";s:13:\"EDIT_CUSTOMER\";s:1:\"0\";s:19:\"SHOW_CUSTOMER_ADMIN\";s:1:\"0\";s:16:\"NEW_SHOP_ARTICLE\";s:1:\"0\";s:19:\"DELETE_SHOP_ARTICLE\";s:1:\"0\";s:15:\"EDIT_SHOP_ORDER\";s:1:\"0\";s:17:\"DELETE_SHOP_ORDER\";s:1:\"0\";s:15:\"EDIT_SHOP_PREFS\";s:1:\"0\";s:19:\"CAN_SEE_OBJECTFILES\";s:1:\"1\";s:14:\"NEW_OBJECTFILE\";s:1:\"1\";s:21:\"NEW_OBJECTFILE_FOLDER\";s:1:\"1\";s:17:\"DELETE_OBJECTFILE\";s:1:\"1\";s:15:\"CAN_SEE_OBJECTS\";s:1:\"0\";s:10:\"NEW_OBJECT\";s:1:\"0\";s:13:\"DELETE_OBJECT\";s:1:\"0\";s:12:\"NEW_WORKFLOW\";s:1:\"0\";s:15:\"DELETE_WORKFLOW\";s:1:\"0\";s:13:\"EDIT_WORKFLOW\";s:1:\"0\";s:9:\"EMPTY_LOG\";s:1:\"0\";}',0,0,0,0,0,0,1146233940,'','','','','','','',0,0,0,0,0,'',0,1);
 /* query separator */
 CREATE TABLE tblWebAdmin (
   Name varchar(255) NOT NULL default '',
-  `Value` text NOT NULL
+  `Value` text NOT NULL,
+  PRIMARY KEY (Name)
 ) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblWebAdmin VALUES ('FieldAdds','a:9:{s:13:\"Newsletter_Ok\";a:1:{s:7:\"default\";s:3:\",ja\";}s:25:\"Newsletter_HTMLNewsletter\";a:1:{s:7:\"default\";s:3:\",ja\";}s:17:\"Kontakt_Addresse1\";a:1:{s:7:\"default\";s:0:\"\";}s:17:\"Kontakt_Addresse2\";a:1:{s:7:\"default\";s:0:\"\";}s:18:\"Kontakt_Bundesland\";a:1:{s:7:\"default\";s:214:\"Baden-Württemberg,Bayern,Berlin,Brandenburg,Bremen,Hamburg,Hessen,Mecklenburg-Vorpommern,Niedersachsen,Nordrhein-Westfalen,Rheinland-PfalzRheinland-Pfalz,Saarland,Sachsen,Sachsen-Anhalt,Schleswig-Holstein,Thüringen\";}s:12:\"Kontakt_Land\";a:1:{s:7:\"default\";s:0:\"\";}s:13:\"Anrede_Anrede\";a:1:{s:7:\"default\";s:10:\",Herr,Frau\";}s:12:\"Anrede_Titel\";a:1:{s:7:\"default\";s:11:\",Dr., Prof.\";}s:6:\"Gruppe\";a:1:{s:7:\"default\";s:22:\"Administratoren,Kunden\";}}');
@@ -687,9 +749,11 @@ CREATE TABLE tblWebUser (
   Kontakt_Email varchar(128) NOT NULL default '',
   Kontakt_Homepage varchar(128) NOT NULL default '',
   LoginDenied tinyint(1) NOT NULL default '0',
-  MemberSince varchar(24) NOT NULL default '',
-  LastLogin varchar(24) NOT NULL default '',
-  LastAccess varchar(24) NOT NULL default '',
+  MemberSince int(10) NOT NULL default '',
+  LastLogin int(10) NOT NULL default '',
+  LastAccess int(10) NOT NULL default '',
+  AutoLoginDenied tinyint(1) NOT NULL default '0',
+  AutoLogin tinyint(1) NOT NULL default '0',
   ParentID bigint(20) NOT NULL default '0',
   Path varchar(255) default NULL,
   IsFolder tinyint(1) default NULL,
@@ -700,6 +764,33 @@ CREATE TABLE tblWebUser (
   Gruppe varchar(200) NOT NULL default '',
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`)
+) ENGINE=MyISAM;
+/* query separator */
+CREATE TABLE tblWebUserAutoLogin (
+  AutoLoginID varchar(64) NOT NULL default '',
+  WebUserID bigint(20) NOT NULL default '0',
+  LastIp varchar(40)NOT NULL DEFAULT '',
+  LastLogin timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY  (AutoLoginID,WebUserID),
+  KEY `LastLogin` (`LastLogin`)
+) ENGINE=MyISAM;
+/* query separator */
+CREATE TABLE tblWebUserSessions (
+  SessionID varchar(32) NOT NULL default '',
+  SessionIp varchar(40)NOT NULL DEFAULT '',
+  WebUserID bigint(20) NOT NULL default '0',
+  WebUserGroup varchar(255) NOT NULL DEFAULT '',
+  WebUserDescription varchar(255) NOT NULL DEFAULT '',
+  Browser varchar(255) NOT NULL DEFAULT '',
+  Referrer varchar(255) NOT NULL DEFAULT '',
+  LastLogin timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  LastAccess timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  PageID bigint(20) NOT NULL default '0',
+  ObjectID bigint(20) NOT NULL DEFAULT '0',
+  SessionAutologin tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY  (SessionID),
+  KEY `WebUserID` (`WebUserID`),
+  KEY `LastAccess` (`LastAccess`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblWorkflowDef (
@@ -935,7 +1026,9 @@ CREATE TABLE tblhistory (
   ModDate bigint(20) NOT NULL default '0',
   Act varchar(16) NOT NULL default '',
   UserName varchar(64) NOT NULL default '',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY UserName (UserName,DocumentTable),
+  KEY DID (DID,DocumentTable)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblnavigation (
@@ -983,7 +1076,10 @@ CREATE TABLE tblnavigation (
   BlackList text NOT NULL,
   WhiteList text NOT NULL,
   UseDocumentFilter tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY ParentID (ParentID),
+  KEY LinkID (LinkID),
+  KEY Path (Path)
 ) Type=MyISAM;
 /* query separator */
 CREATE TABLE tblnavigationrules (
@@ -1146,6 +1242,7 @@ CREATE TABLE `tblversions` (
   `resetFromVersion` bigint(20) NOT NULL,
   `InGlossar` tinyint(1) NOT NULL,
   PRIMARY KEY  (`ID`),
+  KEY documentID (documentID),
   KEY `timestamp` (`timestamp`,`CreationDate`),
   KEY `binaryPath` (`binaryPath`)
 ) ENGINE=MyISAM ;

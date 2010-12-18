@@ -27,7 +27,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
-
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/countries.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/languages.inc.php');
 if(defined("SHOP_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 }
@@ -38,6 +39,25 @@ if(defined("SHOP_TABLE")){
 	print STYLESHEET;
 
 $we_button = new we_button();
+
+require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
+$weShopVatRule = weShopVatRule::getShopVatRule();
+	
+require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
+$weShopStatusMails = weShopStatusMails::getShopStatusMails();
+
+// Get Country and Lanfield Data
+$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+$DB_WE->query($q);
+if ( $DB_WE->num_rows() > 0) {
+	$DB_WE->next_record();
+	$CLFields = unserialize($DB_WE->f("strFelder"));
+} else {
+	$CLFields['stateField'] =  '-';
+	$CLFields['stateFieldIsISO'] =  0;
+	$CLFields['languageField'] =  '-';
+	$CLFields['languageFieldIsISO'] =  0;
+}
 
 function getFieldFromShoparticle($array, $name, $length=0) {
 
@@ -148,7 +168,7 @@ function updateFieldFromOrder($orderId, $fieldname, $value) {
 }
 
 // config
-$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname = 'shop_pref'");
+$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'");
 	$DB_WE->next_record();
 	$feldnamen = explode("|",$DB_WE->f("strFelder"));
 
@@ -163,6 +183,8 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
 
 		$da = "%d.%m.%Y";
 		$dateform = "00.00.0000";
+		$db = "%d.%m.%Y %H:%i";
+		$datetimeform = "00.00.0000 00:00";
 
 // determine the number format
 function numfom($result){
@@ -177,6 +199,22 @@ function numfom($result){
 	}else if($numberformat=="swiss"){
 	    $result=number_format($result,2,".","'");
 	}
+	return $result;
+}
+function numfom2($result){
+	global $numberformat;
+	$result = we_util::std_numberformat($result);
+	if($numberformat=="german"){
+		$result=number_format($result,2,",",".");
+	}else if($numberformat=="french"){
+		$result=number_format($result,2,",","&nbsp;");
+	}else if($numberformat=="english"){
+		$result=number_format($result,2,".","");
+	}else if($numberformat=="swiss"){
+	    $result=number_format($result,2,".","'");
+	}
+	$result = rtrim($result,'.00');
+	$result = rtrim($result,',00');
 	return $result;
 }
 if (isset($_REQUEST['we_cmd'][0])) {
@@ -643,6 +681,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 				$serialOrder = @unserialize($strSerialOrder);
 				$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = htmlentities($_REQUEST['cartfieldvalue']);
+				$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = $_REQUEST['cartfieldvalue'];
 
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
@@ -824,13 +863,89 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			foreach ($_customer as $k => $v) {
 				if (!in_array($k, $dontEdit)) {
-					array_push($parts,array(
-							'headline' => "$k: ",
-							'space' => 150,
-							'html' => we_class::htmlTextInput("weCustomerOrder[$k]", 44, $v),
-							'noline' => 1
-						)
-					);
+					if (isset($CLFields['stateField']) && isset($CLFields['stateFieldIsISO']) && $k == $CLFields['stateField'] && $CLFields['stateFieldIsISO']){
+						$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+						$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+						$countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+						$countryselect=new we_htmlSelect(array("name"=>"weCustomerOrder[$k]","size"=>"1","style"=>"{width:280;}","class"=>"wetextinput"));
+						
+						if(defined("WE_COUNTRIES_TOP")) {
+							$topCountries = explode(',',WE_COUNTRIES_TOP);
+						} else {
+							$topCountries = explode(',',"DE,AT,CH");
+						}
+						$topCountries = array_flip($topCountries);
+						foreach ($topCountries as $countrykey => &$countryvalue){
+							$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+						}
+						if(defined("WE_COUNTRIES_SHOWN")){
+							$shownCountries = explode(',',WE_COUNTRIES_SHOWN);
+						} else {
+							$shownCountries = explode(',',"BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
+						}
+						$shownCountries = array_flip($shownCountries);
+						foreach ($shownCountries as $countrykey => &$countryvalue){
+							$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
+						}
+						$oldLocale= setlocale(LC_ALL, NULL);
+						setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
+						asort($topCountries,SORT_LOCALE_STRING );
+						asort($shownCountries,SORT_LOCALE_STRING );
+						setlocale(LC_ALL, $oldLocale);
+						
+						$content='';
+						
+						foreach ($topCountries as $countrykey => &$countryvalue){
+							$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
+						}
+						$countryselect->addOption('-','----',array("disabled"=>"disabled"));
+						//$content.='<option value="-" disabled="disabled">----</option>'."\n";
+						foreach ($shownCountries as $countrykey => &$countryvalue){
+							$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
+						}	
+						
+						$countryselect->selectOption($v);
+						
+						array_push($parts,array(
+								'headline' => "$k: ",
+								'space' => 150,
+								'html' =>  $countryselect->getHtmlCode(),
+								'noline' => 1
+							)
+						);
+
+					
+					} elseif((isset($CLFields['languageField']) && isset($CLFields['languageFieldIsISO']) && $k == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
+						$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+						foreach ($frontendL as $lc => &$lcvalue){
+							$lccode = explode('_', $lcvalue);
+							$lcvalue= $lccode[0];
+						}
+						$languageselect=new we_htmlSelect(array("name"=>"weCustomerOrder[$k]","size"=>"1","style"=>"{width:280;}","class"=>"wetextinput"));
+						foreach($GLOBALS['l_languages'] as $languagekey => $languagevalue){
+							if(in_array($languagekey,$frontendL)){
+								$languageselect->addOption($languagekey,$languagevalue);
+							}
+						}
+						$languageselect->selectOption($v);
+						
+						array_push($parts,array(
+								'headline' => "$k: ",
+								'space' => 150,
+								'html' => $languageselect->getHtmlCode(),
+								'noline' => 1
+							)
+						);
+					
+					} else {
+						array_push($parts,array(
+								'headline' => "$k: ",
+								'space' => 150,
+								'html' => we_class::htmlTextInput("weCustomerOrder[$k]", 44, $v),
+								'noline' => 1
+							)
+						);
+					}
 					$editFields[] = $k;
 				}
 			}
@@ -886,7 +1001,7 @@ print STYLESHEET;
 
 if(isset($_REQUEST["deletethisorder"])){
 
-	$DB_WE->query("DELETE FROM ".SHOP_TABLE." where IntOrderID = ".$_REQUEST["bid"]);
+	$DB_WE->query("DELETE FROM ".SHOP_TABLE." WHERE IntOrderID = ".$_REQUEST["bid"]);
 	echo '
 	<script language="JavaScript" type="text/javascript">top.content.deleteEntry('.$_REQUEST["bid"].')</script>
 	</head>
@@ -901,28 +1016,209 @@ if(isset($_REQUEST["deletethisorder"])){
 
 if(isset($_REQUEST["deleteaartikle"])){
 	
-	$DB_WE->query("DELETE FROM ".SHOP_TABLE." where IntID = ".$_REQUEST["deleteaartikle"]);
-	$DB_WE->query("SELECT IntID from ".SHOP_TABLE." where IntOrderID = ".$_REQUEST["bid"]);
+	$DB_WE->query("DELETE FROM ".SHOP_TABLE." WHERE IntID = ".$_REQUEST["deleteaartikle"]);
+	$DB_WE->query("SELECT IntID from ".SHOP_TABLE." WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 	$l=$DB_WE->num_rows();
 	if( $l<1 ) {
 		$letzerartikel=1;
 	}
+}
+// Get Customer data
+$query = "SELECT IntID, IntCustomerID	FROM ".SHOP_TABLE."	WHERE IntOrderID = ".abs($_REQUEST["bid"]);
+
+$DB_WE->query($query);
+$DB_WE->next_record();
+
+// get all needed information for order-data
+$_REQUEST["cid"] = $DB_WE->f("IntCustomerID");
+
+$DB_WE->query(
+		'SELECT strFelder
+		FROM ' . ANZEIGE_PREFS_TABLE . '
+		WHERE strDateiname = "edit_shop_properties"'
+	);
+
+	$DB_WE->next_record();
+
+	$strFelder = $DB_WE->f("strFelder");
+
+	if ($fields = @unserialize($strFelder)) {
+		// we have an array with following syntax:
+		// array ( 'customerFields' => array('fieldname ...',...)
+		//         'orderCustomerFields' => array('fieldname', ...) )
+
+	} else {
+
+		$fields['customerFields'] = array();
+		$fields['orderCustomerFields'] = array();
+
+		// the save format used to be ...
+		// Vorname:tblWebUser||Forename,Nachname:tblWebUser||Surname,Contact/Address1:tblWebUser||Contact_Address1,Contact/Address1:tblWebUser||Contact_Address1,...
+		$_fieldInfos = explode(",",$strFelder);
+
+		foreach ($_fieldInfos as $_fieldInfo) {
+
+			$tmp1 = explode('||', $_fieldInfo);
+			$tmp2 = explode(':',$tmp1[0]);
+
+			$_fieldname = $tmp1[1];
+			$_titel = $tmp2[0];
+			$_tbl = $tmp2[1];
+
+			if ($_tbl != 'webE') {
+				$fields['customerFields'][] = $_fieldname;
+			}
+
+		}
+		$fields['customerFields'] = array_unique($fields['customerFields']);
+
+		unset($_tmpEntries);
+	}
+
+	// >>>> Getting customer data
+	//$_customer = getOrderCustomerData(0, $orderData, $_REQUEST['cid'], $fields);
+	$_customer = getOrderCustomerData(0, 0, $_REQUEST['cid'], $fields);
+	// <<<< End of getting customer data
+		
+	
+
+
+if(isset($_REQUEST["SendMail"])){
+	$weShopStatusMails->sendEMail($_REQUEST["SendMail"],$_REQUEST["bid"],$_customer); 	
 }
 
 if(isset($_REQUEST["DatePayment"])){
 	
 	$DateOrder_ARR = explode(".", $_REQUEST["DatePayment"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DatePayment='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('Payment',$_REQUEST["bid"],$_customer);
 	
-	$DB_WE->query("update ".SHOP_TABLE." SET DatePayment='". $DateOrder1 . "' where IntOrderID = ".abs($_REQUEST["bid"]));
+}
+if(isset($_REQUEST["DateConfirmation"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateConfirmation"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateConfirmation='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('Confirmation',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomA"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomA"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomA='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomA',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomB"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomB"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomB='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomB',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomC"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomC"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";	
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomC='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomC',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomD"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomD"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomD='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomD',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomE"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomE"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomE='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomE',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomF"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomF"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";	
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomF='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomF',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomG"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomG"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomG='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomG',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomH"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomH"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomH='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomH',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomI"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomI"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";	
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomI='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomI',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateCustomJ"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomJ"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCustomJ='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('CustomJ',$_REQUEST["bid"],$_customer);
+}
+
+if(isset($_REQUEST["DateCancellation"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateCancellation"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateCancellation='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('Cancellation',$_REQUEST["bid"],$_customer);
+}
+if(isset($_REQUEST["DateFinished"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateFinished"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";	
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateFinished='". mysql_real_escape_string($DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('Finished',$_REQUEST["bid"],$_customer);
 }
 
 
+
+if(isset($_REQUEST["DateOrder"])){
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateOrder"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+					
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateOrder='".mysql_real_escape_string($DateOrder1)."' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('Order',$_REQUEST["bid"],$_customer);
+	
+	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY intID DESC");
+    $DB_WE->next_record();
+    
+}
+
+if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
+	
+	$DateOrder_ARR = explode(".", $_REQUEST["DateShipping"]);
+	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
+	
+	$DB_WE->query("UPDATE ".SHOP_TABLE." SET DateShipping='".mysql_real_escape_string( $DateOrder1) . "' WHERE IntOrderID = ".abs($_REQUEST["bid"]));
+	$weShopStatusMails->checkAutoMailAndSend('Shipping',$_REQUEST["bid"],$_customer);
+	
+	$DB_WE->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY intID DESC");
+    $DB_WE->next_record();
+}
 if(isset($_REQUEST["article"])){
 	if(isset($_REQUEST["preis"])){
-		$DB_WE->query("update ".SHOP_TABLE." SET Price='" . abs($_REQUEST["preis"]) . "' where IntID = ".abs($_REQUEST["article"]));
+		$DB_WE->query("UPDATE ".SHOP_TABLE." SET Price='" . abs($_REQUEST["preis"]) . "' WHERE IntID = ".abs($_REQUEST["article"]));
 	}else if(isset($_REQUEST["anzahl"])){
-		$DB_WE->query("update ".SHOP_TABLE." SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' where IntID = " . abs($_REQUEST["article"]));
+		$DB_WE->query("UPDATE ".SHOP_TABLE." SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' WHERE IntID = " . abs($_REQUEST["article"]));
 	} else if (isset($_REQUEST['vat'])) {
 
 		$DB_WE->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . mysql_real_escape_string($_REQUEST["article"]));
@@ -935,34 +1231,12 @@ if(isset($_REQUEST["article"])){
 			$tmpDoc = @unserialize($strSerial);
 			$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
 
-			$DB_WE->query("update ".SHOP_TABLE." SET strSerial='" . mysql_real_escape_string(serialize($tmpDoc)) . "' where IntID = " . abs($_REQUEST["article"]));
+			$DB_WE->query("UPDATE ".SHOP_TABLE." SET strSerial='" . mysql_real_escape_string(serialize($tmpDoc)) . "' WHERE IntID = " . abs($_REQUEST["article"]));
 			unset($strSerial);
 			unset($tmpDoc);
 		}
 	}
 }
-
-if(isset($_REQUEST["DateOrder"])){
-	
-	$DateOrder_ARR = explode(".", $_REQUEST["DateOrder"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-					
-	$DB_WE->query("update ".SHOP_TABLE." SET DateOrder='".mysql_real_escape_string($DateOrder1)."' where IntOrderID = ".abs($_REQUEST["bid"]));
-	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." group by IntOrderID order by intID DESC");
-    $DB_WE->next_record();
-    
-}
-
-if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
-	
-	$DateOrder_ARR = explode(".", $_REQUEST["DateShipping"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	
-	$DB_WE->query("update ".SHOP_TABLE." SET DateShipping='".mysql_real_escape_string( $DateOrder1) . "' where IntOrderID = ".abs($_REQUEST["bid"]));
-	$DB_WE->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'".$da."') as orddate FROM ".SHOP_TABLE." group by IntOrderID order by intID DESC");
-    $DB_WE->next_record();
-}
-
 
 if( !isset($letzerartikel) ){ // order has still articles - get them all
 
@@ -970,9 +1244,10 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	// first get all information about orders, we need this for the rest of the page
 	//
 	$query = "
-		SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, DATE_FORMAT(DateShipping,'".$da."') as DateShipping, DATE_FORMAT(DatePayment,'".$da."') as DatePayment, DATE_FORMAT(DateOrder,'".$da."') as DateOrder
+		SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, DATE_FORMAT(DateShipping,'".$da."') as DateShipping, DATE_FORMAT(DatePayment,'".$da."') as DatePayment, DATE_FORMAT(DateOrder,'".$da."') as DateOrder, DATE_FORMAT(DateConfirmation,'".$da."') as DateConfirmation, DATE_FORMAT(DateCustomA,'".$da."') as DateCustomA, DATE_FORMAT(DateCustomB,'".$da."') as DateCustomB, DATE_FORMAT(DateCustomC,'".$da."') as DateCustomC, DATE_FORMAT(DateCustomD,'".$da."') as DateCustomD, DATE_FORMAT(DateCustomE,'".$da."') as DateCustomE, DATE_FORMAT(DateCustomF,'".$da."') as DateCustomF, DATE_FORMAT(DateCustomG,'".$da."') as DateCustomG, DATE_FORMAT(DateCustomH,'".$da."') as DateCustomH, DATE_FORMAT(DateCustomI,'".$da."') as DateCustomI, DATE_FORMAT(DateCustomJ,'".$da."') as DateCustomJ, DATE_FORMAT(DateCancellation,'".$da."') as DateCancellation, DATE_FORMAT(DateFinished,'".$da."') as DateFinished,
+		DATE_FORMAT(MailShipping,'".$db."') as MailShipping, DATE_FORMAT(MailPayment,'".$db."') as MailPayment, DATE_FORMAT(MailOrder,'".$db."') as MailOrder, DATE_FORMAT(MailConfirmation,'".$db."') as MailConfirmation, DATE_FORMAT(MailCustomA,'".$db."') as MailCustomA, DATE_FORMAT(MailCustomB,'".$db."') as MailCustomB, DATE_FORMAT(MailCustomC,'".$db."') as MailCustomC, DATE_FORMAT(MailCustomD,'".$db."') as MailCustomD, DATE_FORMAT(MailCustomE,'".$db."') as MailCustomE, DATE_FORMAT(MailCustomF,'".$db."') as MailCustomF, DATE_FORMAT(MailCustomG,'".$db."') as MailCustomG, DATE_FORMAT(MailCustomH,'".$db."') as MailCustomH, DATE_FORMAT(MailCustomI,'".$db."') as MailCustomI, DATE_FORMAT(MailCustomJ,'".$db."') as MailCustomJ, DATE_FORMAT(MailCancellation,'".$db."') as MailCancellation, DATE_FORMAT(MailFinished,'".$db."') as MailFinished 
 		FROM ".SHOP_TABLE."
-		WHERE IntOrderID = ".$_REQUEST["bid"];
+		WHERE IntOrderID = ".abs($_REQUEST["bid"]);
 
     $DB_WE->query($query);
 
@@ -983,8 +1258,37 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		$_REQUEST["cid"] = $DB_WE->f("IntCustomerID");
 		$SerialOrder[] = $DB_WE->f("strSerialOrder");
 		$_REQUEST["DateOrder"] = $DB_WE->f("DateOrder");
+		$_REQUEST["DateConfirmation"] = $DB_WE->f("DateConfirmation");
+		$_REQUEST["DateCustomA"] = $DB_WE->f("DateCustomA");
+		$_REQUEST["DateCustomB"] = $DB_WE->f("DateCustomB");
+		$_REQUEST["DateCustomC"] = $DB_WE->f("DateCustomC");
+		$_REQUEST["DateCustomD"] = $DB_WE->f("DateCustomD");
+		$_REQUEST["DateCustomE"] = $DB_WE->f("DateCustomE");
+		$_REQUEST["DateCustomF"] = $DB_WE->f("DateCustomF");
+		$_REQUEST["DateCustomG"] = $DB_WE->f("DateCustomG");
+		$_REQUEST["DateCustomH"] = $DB_WE->f("DateCustomH");
+		$_REQUEST["DateCustomI"] = $DB_WE->f("DateCustomI");
+		$_REQUEST["DateCustomJ"] = $DB_WE->f("DateCustomJ");
 		$_REQUEST["DatePayment"] = $DB_WE->f("DatePayment");
 		$_REQUEST["DateShipping"] = $DB_WE->f("DateShipping");
+		$_REQUEST["DateCancellation"] = $DB_WE->f("DateCancellation");
+		$_REQUEST["DateFinished"] = $DB_WE->f("DateFinished");
+		$_REQUEST["MailOrder"] = $DB_WE->f("MailOrder");
+		$_REQUEST["MailConfirmation"] = $DB_WE->f("MailConfirmation");
+		$_REQUEST["MailCustomA"] = $DB_WE->f("MailCustomA");
+		$_REQUEST["MailCustomB"] = $DB_WE->f("MailCustomB");
+		$_REQUEST["MailCustomC"] = $DB_WE->f("MailCustomC");
+		$_REQUEST["MailCustomD"] = $DB_WE->f("MailCustomD");
+		$_REQUEST["MailCustomE"] = $DB_WE->f("MailCustomE");
+		$_REQUEST["MailCustomF"] = $DB_WE->f("MailCustomF");
+		$_REQUEST["MailCustomG"] = $DB_WE->f("MailCustomG");
+		$_REQUEST["MailCustomH"] = $DB_WE->f("MailCustomH");
+		$_REQUEST["MailCustomI"] = $DB_WE->f("MailCustomI");
+		$_REQUEST["MailCustomJ"] = $DB_WE->f("MailCustomJ");
+		$_REQUEST["MailPayment"] = $DB_WE->f("MailPayment");
+		$_REQUEST["MailShipping"] = $DB_WE->f("MailShipping");
+		$_REQUEST["MailCancellation"] = $DB_WE->f("MailCancellation");
+		$_REQUEST["MailFinished"] = $DB_WE->f("MailFinished");
 
 		// all information for article
 		$ArticleId[] = $DB_WE->f("IntArticleID"); // id of article (object or document) in shopping cart
@@ -1053,53 +1357,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 
 	// determine all fields for order head
 
-	$DB_WE->query(
-		'SELECT strFelder
-		FROM ' . ANZEIGE_PREFS_TABLE . '
-		WHERE strDateiname = "edit_shop_properties"'
-	);
-
-	$DB_WE->next_record();
-
-	$strFelder = $DB_WE->f("strFelder");
-
-	if ($fields = @unserialize($strFelder)) {
-		// we have an array with following syntax:
-		// array ( 'customerFields' => array('fieldname ...',...)
-		//         'orderCustomerFields' => array('fieldname', ...) )
-
-	} else {
-
-		$fields['customerFields'] = array();
-		$fields['orderCustomerFields'] = array();
-
-		// the save format used to be ...
-		// Vorname:tblWebUser||Forename,Nachname:tblWebUser||Surname,Contact/Address1:tblWebUser||Contact_Address1,Contact/Address1:tblWebUser||Contact_Address1,...
-		$_fieldInfos = explode(",",$strFelder);
-
-		foreach ($_fieldInfos as $_fieldInfo) {
-
-			$tmp1 = explode('||', $_fieldInfo);
-			$tmp2 = explode(':',$tmp1[0]);
-
-			$_fieldname = $tmp1[1];
-			$_titel = $tmp2[0];
-			$_tbl = $tmp2[1];
-
-			if ($_tbl != 'webE') {
-				$fields['customerFields'][] = $_fieldname;
-			}
-
-		}
-		$fields['customerFields'] = array_unique($fields['customerFields']);
-
-		unset($_tmpEntries);
-	}
-
-	// >>>> Getting customer data
-	$_customer = getOrderCustomerData(0, $orderData, $_REQUEST['cid'], $fields);
-	// <<<< End of getting customer data
-
+	
     $fl=0;
 
 
@@ -1126,7 +1384,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
     foreach ($_customer as $key => $value) {
 
     	if (in_array($key, $fields['customerFields']) || in_array($key, $fields['orderCustomerFields'])) {
-
+			if ($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO']){
+				$value = $GLOBALS['l_countries'][$value];
+			}
+			if ($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
+				$value = $GLOBALS['l_languages'][$value];
+			}
     		$customerFieldTable .=
     		'	<tr height="25">
 											<td class="defaultfont" width="86" valign="top" height="25">'.$key.':</td>
@@ -1142,13 +1405,16 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 
 
 	$orderDataTable = '
-	<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">
+	<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
+	if(!$weShopStatusMails->FieldsHidden['DateOrder']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Order',$_REQUEST["DateOrder"]);
+		$orderDataTable .= '
 											<tr height="25">
 
 												<td class="defaultfont" width="86" valign="top" height="25">'.$l_shop["bestellnr"].'</td>
 												<td class="defaultfont" valign="top" width="40" height="25"><b>'.$_REQUEST["bid"].'</b></td>
 												<td width="20" height="25">'.getPixel(34,15).'</td>
-												<td width="98" class="defaultfont" height="25">'.$l_shop["bestelldatum"].'</td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateOrder'].'</td>
 												<td height="25">'.getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateOrder">' . (($_REQUEST["DateOrder"]==$dateform) ? "-" : $_REQUEST["DateOrder"]) . '</div>
@@ -1158,14 +1424,102 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td width="102" valign="top" height="25">
 													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateOrder") . '
 												</td>
-												<td width="300" height="25">'.getPixel(30,15).'</td>
-											</tr>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateConfirmation']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Confirmation',$_REQUEST["DateConfirmation"]);
+		$orderDataTable .= '
 											<tr height="25">
 
 												<td class="defaultfont" width="86"  height="25"></td>
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">'.$l_shop["bearbeitet"].'</td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateConfirmation'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateConfirmation">' . (($_REQUEST["DateConfirmation"]==$dateform) ? "-" : $_REQUEST["DateConfirmation"]) . '</div>
+													<input type="hidden" name="DateConfirmation" id="hidden_Calendar_DateConfirmation" value="' . (($_REQUEST["DateConfirmation"]==$dateform) ? "-" : $_REQUEST["DateConfirmation"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateConfirmation") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomA']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomA',$_REQUEST["DateCustomA"]);
+		$orderDataTable .= '
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomA'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomA">' . (($_REQUEST["DateCustomA"]==$dateform) ? "-" : $_REQUEST["DateCustomA"]) . '</div>
+													<input type="hidden" name="DateCustomA" id="hidden_Calendar_DateCustomA" value="' . (($_REQUEST["DateCustomA"]==$dateform) ? "-" : $_REQUEST["DateCustomA"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomA") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomB']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomB',$_REQUEST["DateCustomB"]);
+		$orderDataTable .= '
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomB'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomB">' . (($_REQUEST["DateCustomB"]==$dateform) ? "-" : $_REQUEST["DateCustomB"]) . '</div>
+													<input type="hidden" name="DateCustomB" id="hidden_Calendar_DateCustomB" value="' . (($_REQUEST["DateCustomB"]==$dateform) ? "-" : $_REQUEST["DateCustomB"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomB") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomC']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomC',$_REQUEST["DateCustomC"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomC'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomC">' . (($_REQUEST["DateCustomC"]==$dateform) ? "-" : $_REQUEST["DateCustomC"]) . '</div>
+													<input type="hidden" name="DateCustomC" id="hidden_Calendar_DateCustomC" value="' . (($_REQUEST["DateCustomC"]==$dateform) ? "-" : $_REQUEST["DateCustomC"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomC") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateShipping']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Shipping',$_REQUEST["DateShipping"]);
+		$orderDataTable .= '
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateShipping'].'</td>
 												<td height="25">'.getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateShipping">' . (($_REQUEST["DateShipping"]==$dateform) ? "-" : $_REQUEST["DateShipping"]) . '</div>
@@ -1175,14 +1529,60 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td width="102" valign="top" height="25">
 													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateShipping") . '
 												</td>
-												<td width="30" height="25">'.getPixel(30,15).'</td>
-											</tr>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomD']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomD',$_REQUEST["DateCustomD"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomD'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomD">' . (($_REQUEST["DateCustomD"]==$dateform) ? "-" : $_REQUEST["DateCustomD"]) . '</div>
+													<input type="hidden" name="DateCustomD" id="hidden_Calendar_DateCustomD" value="' . (($_REQUEST["DateCustomD"]==$dateform) ? "-" : $_REQUEST["DateCustomD"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomD") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomE']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomE',$_REQUEST["DateCustomE"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomE'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomE">' . (($_REQUEST["DateCustomE"]==$dateform) ? "-" : $_REQUEST["DateCustomE"]) . '</div>
+													<input type="hidden" name="DateCustomE" id="hidden_Calendar_DateCustomE" value="' . (($_REQUEST["DateCustomE"]==$dateform) ? "-" : $_REQUEST["DateCustomE"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomE") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DatePayment']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Payment',$_REQUEST["DatePayment"]);
+		$orderDataTable .= '											
 											<tr height="25">
 
 												<td class="defaultfont" width="86" valign="top" height="25"></td>
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">'.$l_shop["bezahlt"].'</td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DatePayment'].'</td>
 												<td height="25">'.getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DatePayment">' . (($_REQUEST["DatePayment"]==$dateform) ? "-" : $_REQUEST["DatePayment"]) . '</div>
@@ -1191,8 +1591,157 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td width="102" valign="top" height="25">
 													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DatePayment") . '
 												</td>
-												<td width="30" height="25">'.getPixel(30,15).'</td>
-											</tr>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomF']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomF',$_REQUEST["DateCustomF"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomF'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomF">' . (($_REQUEST["DateCustomF"]==$dateform) ? "-" : $_REQUEST["DateCustomF"]) . '</div>
+													<input type="hidden" name="DateCustomF" id="hidden_Calendar_DateCustomF" value="' . (($_REQUEST["DateCustomF"]==$dateform) ? "-" : $_REQUEST["DateCustomF"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomF") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomG']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomG',$_REQUEST["DateCustomG"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomG'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomG">' . (($_REQUEST["DateCustomG"]==$dateform) ? "-" : $_REQUEST["DateCustomG"]) . '</div>
+													<input type="hidden" name="DateCustomG" id="hidden_Calendar_DateCustomG" value="' . (($_REQUEST["DateCustomG"]==$dateform) ? "-" : $_REQUEST["DateCustomG"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomG") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCancellation']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Cancellation',$_REQUEST["DateCancellation"]);
+		$orderDataTable .= '
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCancellation'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCancellation">' . (($_REQUEST["DateCancellation"]==$dateform) ? "-" : $_REQUEST["DateCancellation"]) . '</div>
+													<input type="hidden" name="DateCancellation" id="hidden_Calendar_DateCancellation" value="' . (($_REQUEST["DateCancellation"]==$dateform) ? "-" : $_REQUEST["DateCancellation"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCancellation") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomH']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomH',$_REQUEST["DateCustomH"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomH'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomH">' . (($_REQUEST["DateCustomH"]==$dateform) ? "-" : $_REQUEST["DateCustomH"]) . '</div>
+													<input type="hidden" name="DateCustomH" id="hidden_Calendar_DateCustomH" value="' . (($_REQUEST["DateCustomH"]==$dateform) ? "-" : $_REQUEST["DateCustomH"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomH") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomI']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomI',$_REQUEST["DateCustomI"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomI'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomI">' . (($_REQUEST["DateCustomI"]==$dateform) ? "-" : $_REQUEST["DateCustomI"]) . '</div>
+													<input type="hidden" name="DateCustomI" id="hidden_Calendar_DateCustomI" value="' . (($_REQUEST["DateCustomI"]==$dateform) ? "-" : $_REQUEST["DateCustomI"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomI") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateCustomJ']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomJ',$_REQUEST["DateCustomJ"]);
+		$orderDataTable .= '											
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomJ'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateCustomJ">' . (($_REQUEST["DateCustomJ"]==$dateform) ? "-" : $_REQUEST["DateCustomJ"]) . '</div>
+													<input type="hidden" name="DateCustomJ" id="hidden_Calendar_DateCustomJ" value="' . (($_REQUEST["DateCustomJ"]==$dateform) ? "-" : $_REQUEST["DateCustomJ"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomJ") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	if(!$weShopStatusMails->FieldsHidden['DateFinished']){
+		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Finished',$_REQUEST["DateFinished"]);
+		$orderDataTable .= '
+											<tr height="25">
+
+												<td class="defaultfont" width="86"  height="25"></td>
+												<td class="defaultfont" valign="top" width="40" height="25"></td>
+												<td width="20" height="25"></td>
+												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateFinished'].'</td>
+												<td height="25">'.getPixel(14,15).'</td>
+												<td width="14" class="defaultfont" align="right" height="25">
+													<div id="div_Calendar_DateFinished">' . (($_REQUEST["DateFinished"]==$dateform) ? "-" : $_REQUEST["DateFinished"]) . '</div>
+													<input type="hidden" name="DateFinished" id="hidden_Calendar_DateFinished" value="' . (($_REQUEST["DateFinished"]==$dateform) ? "-" : $_REQUEST["DateFinished"]) . '" />
+												</td>
+												<td height="25">'.getPixel(10,15).'</td>
+												<td width="102" valign="top" height="25">
+													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateFinished") . '
+												</td>
+												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
+											</tr>';
+	}
+	$orderDataTable .= '
 											<tr height="5">
 												<td class="defaultfont" width="86" valign="top" height="5"></td>
 												<td class="defaultfont" valign="top" height="5" width="40"></td>
@@ -1224,7 +1773,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
                                             	<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . $l_shop['order']['edit_order_customer'] . '</a></td>
                                             </tr>
                                             <tr>
-                                            	<td colspan="9"><a href="javascript:we_cmd(\'edit_customer\');">' . $l_shop['order']['open_customer'] . '</a> </td>
+                                            	<td colspan="9">'.(we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . $l_shop['order']['open_customer'] . '</a>':'').' </td>
                                             </tr>
 										</table>';
 	//
@@ -1307,7 +1856,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".$l_shop["jsanz"]."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".$l_shop["jsanz"]."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
 		<td></td>
@@ -1603,6 +2152,9 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
     <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
 	<script language="JavaScript" type="text/javascript">
 
+	function SendMail(was){		
+		document.location = "<?php print $_SERVER["PHP_SELF"] . "?bid=".$_REQUEST["bid"]; ?>&SendMail=" + was ;
+	}
 	function doUnload() {
 		if (!!jsWindow_count) {
 			for (i = 0; i < jsWindow_count; i++) {
@@ -1721,7 +2273,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		document.location = "<?php print $_SERVER["PHP_SELF"] . "?bid=".$_REQUEST["bid"]; ?>&" + _field.name + "=" + _field.value;
 		
 	}
-	
+<?php if(!$weShopStatusMails->FieldsHidden['DateOrder']){ ?>	
 	// Calender for order date
 	Calendar.setup(
 		{
@@ -1733,7 +2285,61 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 			"onUpdate" : CalendarChanged
 		}
 	);
-	
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateConfirmation']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateConfirmation",
+			"displayArea" : "div_Calendar_DateConfirmation",
+			"button" : "date_pickerbutton_Calendar_DateConfirmation",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomA']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomA",
+			"displayArea" : "div_Calendar_DateCustomA",
+			"button" : "date_pickerbutton_Calendar_DateCustomA",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomB']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomB",
+			"displayArea" : "div_Calendar_DateCustomB",
+			"button" : "date_pickerbutton_Calendar_DateCustomB",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomC']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomC",
+			"displayArea" : "div_Calendar_DateCustomC",
+			"button" : "date_pickerbutton_Calendar_DateCustomC",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateShipping']){ ?>	
 	Calendar.setup(
 		{
 			"inputField" : "hidden_Calendar_DateShipping",
@@ -1744,7 +2350,35 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 			"onUpdate" : CalendarChanged
 		}
 	);
-	
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomD']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomD",
+			"displayArea" : "div_Calendar_DateCustomD",
+			"button" : "date_pickerbutton_Calendar_DateCustomD",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomE']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomE",
+			"displayArea" : "div_Calendar_DateCustomE",
+			"button" : "date_pickerbutton_Calendar_DateCustomE",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DatePayment']){ ?>	
 	Calendar.setup(
 		{
 			"inputField" : "hidden_Calendar_DatePayment",
@@ -1755,7 +2389,98 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 			"onUpdate" : CalendarChanged
 		}
 	);
-	
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomF']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomF",
+			"displayArea" : "div_Calendar_DateCustomF",
+			"button" : "date_pickerbutton_Calendar_DateCustomF",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomG']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomG",
+			"displayArea" : "div_Calendar_DateCustomG",
+			"button" : "date_pickerbutton_Calendar_DateCustomG",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCancellation']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCancellation",
+			"displayArea" : "div_Calendar_DateCancellation",
+			"button" : "date_pickerbutton_Calendar_DateCancellation",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomH']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomH",
+			"displayArea" : "div_Calendar_DateCustomH",
+			"button" : "date_pickerbutton_Calendar_DateCustomH",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomI']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomI",
+			"displayArea" : "div_Calendar_DateCustomI",
+			"button" : "date_pickerbutton_Calendar_DateCustomI",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateCustomJ']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateCustomJ",
+			"displayArea" : "div_Calendar_DateCustomJ",
+			"button" : "date_pickerbutton_Calendar_DateCustomJ",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php 
+}
+if(!$weShopStatusMails->FieldsHidden['DateFinished']){ ?>	
+	Calendar.setup(
+		{
+			"inputField" : "hidden_Calendar_DateFinished",
+			"displayArea" : "div_Calendar_DateFinished",
+			"button" : "date_pickerbutton_Calendar_DateFinished",
+			"ifFormat" : "<?php print $da; ?>",
+			"daFormat" : "<?php print $da; ?>",
+			"onUpdate" : CalendarChanged
+		}
+	);
+<?php } ?>	
 	
 	</script>
 </body>

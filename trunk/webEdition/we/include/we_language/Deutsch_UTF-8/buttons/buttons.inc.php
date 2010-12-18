@@ -51,6 +51,7 @@ $l_button["btn_task_status"]["alt"] = "Status aktualisieren";
 $l_button["btn_task_trash"]["alt"] = "ToDo(s) löschen";
 $l_button["btn_task_update"]["alt"] = "Nach neuen ToDos schauen";
 
-
+$l_button["btn_mail_send"]["alt"] = "E-Mail versenden";
+$l_button["btn_mail_resend"]["alt"] = "E-Mail nochmals versenden";
 
 ?>

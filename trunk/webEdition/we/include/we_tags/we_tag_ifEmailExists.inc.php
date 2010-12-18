@@ -18,12 +18,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_ifEmailExists($attribs, $content)
-{
+function we_tag_ifEmailExists($attribs, $content){
 	if(isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])){
-		if($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==1) return true;
-		else return false;
+		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==1);
+	}else{
+		return false;
 	}
-	else return false;
 }
-?>

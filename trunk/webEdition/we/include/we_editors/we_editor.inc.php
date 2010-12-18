@@ -796,4 +796,3 @@ else {
 
 // prevent persmissions overriding
 $_SESSION["perms"]=$perms;
-?>
