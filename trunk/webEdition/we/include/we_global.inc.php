@@ -18,9 +18,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- print_r('ttesttt');
+
 if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == "/we_global.inc.php") {
-print_r('testtt');	exit();
+	exit();
 }
 if (!isset($GLOBALS["WE_IS_DYN"])) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_live_tools.inc.php');
