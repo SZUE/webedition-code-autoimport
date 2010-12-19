@@ -124,24 +124,22 @@ class we_tagParser{
 		$_rettags = array();
 		
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $_foo, PREG_SET_ORDER);
-		
-		for ($_i = 0; $_i < sizeof($_foo); $_i++) {
-			if (substr($_foo[$_i][1], -1) == '<') {
-				$_foo[$_i][1] = substr($_foo[$_i][1], 0, strlen($_foo[$_i][1]) - 1);
+		foreach($_foo AS &$_tag){
+			if (substr($_tag[1], -1) == '<') {
+				$_tag[1] = substr($_tag[1], 0, strlen($_tag[1]) - 1);
 			}
-			array_push($_tmpTags, $_foo[$_i][1]);
+			array_push($_tmpTags, $_tag[1]);
 		}
 		
 		//	only Meta-tags, description, keywords, title and charset
 		$_tags = array();
-		for ($_i = 0; $_i < sizeof($_tmpTags); $_i++) {
-			
-			if (strpos($_tmpTags[$_i], 'we:title') || strpos($_tmpTags[$_i], 'we:description') || strpos(
-					$_tmpTags[$_i], 
-					'we:keywords') || strpos($_tmpTags[$_i], 'we:charset')) {
-				
-				$_tags[] = $_tmpTags[$_i];
+		foreach($_tmpTags AS $_tag){
+			if (strpos($_tag, 'we:title') || strpos($_tag, 'we:description') || strpos(
+					$_tag,
+					'we:keywords') || strpos($_tag, 'we:charset')) {
+				$_tags[] = $_tag;
 			}
+
 		}
 		//	now we need all between these tags - beware of selfclosing tags
 		
@@ -352,6 +350,7 @@ class we_tagParser{
 				$this->lastpos = 0;
 			} else {
 				switch ($tagname) {
+					case 'noCache': //deprecated
 					case "content" :
 					case "master" :
 						// don't parse it
@@ -482,14 +481,7 @@ class we_tagParser{
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
-														$code = str_replace(
-																$tag, 
-																$this->parseCacheIfTag(
-																		'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>'),
-																$code);
-														$this->ipos++;
-														$this->lastpos = 0;
+														$code = str_replace($tag,'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>',$code);
 													} else 
 														if ($tagname == "condition") {
 															$code = str_replace(
@@ -513,11 +505,6 @@ class we_tagParser{
 																			$endeStartTag, 
 																			($endTagPos - $endeStartTag));
 																	
-																	if ($tagname == "noCache") {
-																		$tp = new we_tagParser();
-																		$tags = $tp->getAllTags($content);
-																		$tp->parseTags($tags, $content);
-																	}
 																	
 																	if ($tagname == "block") {
 																		$content = str_replace(
@@ -533,8 +520,7 @@ class we_tagParser{
 																				'"', 
 																				'\"', 
 																				$content);
-																	} else 
-																		if ($tagname != "noCache") {
+																	} else {
 																			$content = str_replace(
 																					"\n", 
 																					"", 
@@ -569,17 +555,7 @@ class we_tagParser{
 																	$content = "";
 																}
 																
-																if ($tagname == "noCache") {
-																	// Tag besitzt Endtag
-																	$code = substr(
-																			$code, 
-																			0, 
-																			$tagPos) . $this->parseNoCacheTag(
-																			$content) . substr(
-																			$code, 
-																			$endeEndTagPos);
-																	//neu
-																} else {
+																 
 																	// Tag besitzt Endtag
 																	$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', "' . $content . '")';
 																	$code = substr($code, 0, $tagPos) . '<?php printElement(' . $we_tag . '); ?>' . substr(
@@ -588,14 +564,11 @@ class we_tagParser{
 																	//neu
 																
 	
-																}
+																
 															
 															} else 
 																if ($tagname == "else") {
-																	$code = substr($code, 0, $tagPos) . $this->parseCacheIfTag(
-																			'<?php else: ?>') . substr(
-																			$code, 
-																			$endeStartTag);
+																	$code = substr($code, 0, $tagPos).'<?php else: ?>' . substr($code, $endeStartTag);
 																
 																} else 
 																	if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
@@ -658,13 +631,8 @@ class we_tagParser{
 		} else {
 			
 			$this->ipos++;
-			if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry" || $tagname == "ifshopexists" || $tagname == "ifobjektexists" || $tagname == "ifnewsletterexists" || $tagname == "ifcustomerexists" || $tagname == "ifbannerexists" || $tagname == "ifvotingexists") {
-				$code = str_replace($tag, '<?php endif ?>', $code);
-			
-			} else 
 				if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-					/*$code = str_replace($tag,'<?php echo "<?php endif ?>"; ?>',$code);*/
-					$code = str_replace($tag, $this->parseCacheIfTag('<?php endif ?>'), $code);
+					$code = str_replace($tag,'<?php endif ?>',$code);
 				} else 
 					if ($tagname == "printVersion") {
 						$code = str_replace(
@@ -813,189 +781,6 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 		$endeEndTagPos = $tagPos + strlen($tag);
 		return substr($code, 0, $tagPos) . $str . substr($code, $endeEndTagPos);
 	}
-
-	##########################################################################################
-	##########################################################################################
-	
-/*BugFix #3514
-	function parseIncludeTag($tag, $code, $attribs = "")
-	{
-		
-		eval('$arr = array(' . $attribs . ');');
-		
-		$id = we_getTagAttributeTagParser("id", $arr);
-		$path = we_getTagAttributeTagParser("path", $arr);
-		$name = we_getTagAttributeTagParser("name", $arr, '');
-		$rootdir = we_getTagAttributeTagParser("rootdir", $arr, '/');
-		$php = '';
-		
-		if ((!$id) && (!$path) && (!$name)) {
-			$php = "<!-- we:include - missing id, path or name !!-->";
-			return str_replace($tag, $php, $code);
-		}
-		
-		if ($name && !($id || $path)) {
-			
-			$php .= '<?php
-
-    	if ( isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])  {
-
-    		$_tmpspan = \'<span style="color: white;font-size:\'.
-								(($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")). \';font-family:\'.
-								$GLOBALS["l_css"]["font_family"].\';">\';
-
-    		print "<table style=\"background: #006DB8;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"padding: 3px;\">" . $_tmpspan . "&nbsp;" . $GLOBALS["l_tags"]["include_file"] . "</span></td></tr><tr><td>";
-    		printElement( we_tag(\'href\', array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), ""));
-    		print  "</td></tr></table>";
-			$path ="";//Bug #4742
-    	} else {
-    		$path = we_tag(\'href\', array("name"=>"' . $name . '","rootdir"=>"'.$rootdir.'"), "");
-    	}
-    	?>';
-		}
-		
-		$gethttp = we_getTagAttributeTagParser("gethttp", $arr, "", true);
-		if (isset($arr["seem"])) {
-			$seeMode = we_getTagAttributeTagParser("seem", $arr, "", true, true); //	backwards compatibility
-		} else {
-			$seeMode = we_getTagAttributeTagParser("seeMode", $arr, "", true, true);
-		}
-		
-		$we_unique = md5(uniqid(rand(), 1));
-		if ($id || $path || $name) {
-			$php .= '<?php
-				if( ("' . $id . '" && ($GLOBALS["we_doc"]->ContentType != "text/webedition" || $GLOBALS["WE_MAIN_DOC"]->ID != "' . $id . '")) || "' . $path . '" != "" || "$path" != "" ){
-					if (!isset($we_backVars) || !is_array($we_backVars)) {
-						$we_backVars = array();
-					}
-
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["we_doc"] = clone($GLOBALS["we_doc"]);
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_IS_DYN"] = isset($GLOBALS["WE_IS_DYN"]) ? 1 : 0;
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_ID"] = $GLOBALS["WE_DOC_ID"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_ParentID"] = $GLOBALS["WE_DOC_ParentID"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_Path"] = $GLOBALS["WE_DOC_Path"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_IsDynamic"] = $GLOBALS["WE_DOC_IsDynamic"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_FILENAME"] = $GLOBALS["WE_DOC_FILENAME"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_Category"] = $GLOBALS["WE_DOC_Category"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_EXTENSION"] = $GLOBALS["WE_DOC_EXTENSION"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["TITLE"] = $GLOBALS["TITLE"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["KEYWORDS"] = $GLOBALS["KEYWORDS"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["DESCRIPTION"] = $GLOBALS["DESCRIPTION"];
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["we_cmd"] = isset($_REQUEST["we_cmd"]) ? $_REQUEST["we_cmd"] : "";
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["FROM_WE_SHOW_DOC"] = isset($GLOBALS["FROM_WE_SHOW_DOC"]) ? $GLOBALS["FROM_WE_SHOW_DOC"] : "";
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["we_transaction"] = isset($GLOBALS["we_transaction"]) ? $GLOBALS["we_transaction"] : "";
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["we_editmode"] = isset($GLOBALS["we_editmode"]) ? $GLOBALS["we_editmode"] : null;
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["we_ContentType"] = isset($GLOBALS["we_ContentType"]) ? $GLOBALS["we_ContentType"] : "text/webedition";
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["pv_id"] = isset($_REQUEST["pv_id"]) ? $_REQUEST["pv_id"] : "";
-					$GLOBALS["we_backVars"]["' . $we_unique . '"]["pv_tid"] = isset($_REQUEST["pv_tid"]) ? $_REQUEST["pv_tid"] : "";
-					if(isset($GLOBALS["WE_IS_DYN"])){
-						unset($GLOBALS["WE_IS_DYN"]);
-					}
-					unset($_REQUEST["pv_id"]);
-					unset($_REQUEST["pv_tid"]);
-
-					if("' . $path . '"){
-						$foo = "' . $path . '";
-					}else if("' . $id . '"){
-						$__id__ = ' . ($id==""?'""':$id) . ';
-						$GLOBALS["DB_WE"]->query("SELECT Path,IsDynamic FROM ".FILE_TABLE." WHERE ID=".abs($__id__));
-						$GLOBALS["DB_WE"]->next_record();
-						$foo = $GLOBALS["DB_WE"]->f("Path");
-					}elseif("' . $name . '"){
-						$foo = $path;
-					}else{
-						$foo = "";
-					}
-					if ($foo) {
-						if ("' . $gethttp . '") {
-							$foo = getHTTP(SERVER_NAME, $foo, "", defined("HTTP_USERNAME") ? HTTP_USERNAME : "", defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "");
-						} else {
-							$foo = $_SERVER["DOCUMENT_ROOT"] . $foo;
-							if (file_exists($foo) && filesize($foo) > 0) {
-								$fp = fopen($foo, "rb");
-								$foo = fread($fp, filesize($foo));
-								fclose($fp);
-							} else {
-								$foo = "";
-							}
-						}
-						if (isset($_SESSION["we_mode"]) && ($_SESSION["we_mode"] == "seem") && isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition) {
-                        ';
-			
-			if ($seeMode) { //	only show link to seeMode, when id is given
-				if ($id) {
-					$php .= '
-                            $foo .= <<< ENDOF_OF_FILE
-<a href="' . $id . '" seem="include"></a>
-ENDOF_OF_FILE;
-';
-				}
-				if ($path) {
-					$_tmpID = path_to_id($path);
-					$php .= '
-                            $foo .= "<a href=\"' . $_tmpID . '\" seem=\"include\"></a>";';
-				}
-			}
-			$php .= '
-                            if (eregi(\'< ?form\', $foo)) {
-								$foo = eregi_replace(\'< ?form[^>]*>\',\'\', $foo);
-								$foo = eregi_replace(\'< ?/ ?form[^>]*>\',\'\', $foo);
-							}
-						}
-						eval("?>".$foo);
-					}
-
-					$GLOBALS["we_doc"] = clone($GLOBALS["we_backVars"]["' . $we_unique . '"]["we_doc"]);
-					$GLOBALS["WE_DOC_ID"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_ID"];
-					$GLOBALS["WE_DOC_ParentID"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_ParentID"];
-					$GLOBALS["WE_DOC_Path"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_Path"];
-					$GLOBALS["WE_DOC_IsDynamic"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_IsDynamic"];
-					$GLOBALS["WE_DOC_FILENAME"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_FILENAME"];
-					$GLOBALS["WE_DOC_Category"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_Category"];
-					$GLOBALS["WE_DOC_EXTENSION"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_DOC_EXTENSION"];
-					$GLOBALS["TITLE"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["TITLE"];
-					$GLOBALS["KEYWORDS"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["KEYWORDS"];
-					$GLOBALS["DESCRIPTION"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["DESCRIPTION"];
-					$_REQUEST["we_cmd"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["we_cmd"];
-					$GLOBALS["we_cmd"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["we_cmd"];
-					$GLOBALS["FROM_WE_SHOW_DOC"]= $GLOBALS["we_backVars"]["' . $we_unique . '"]["FROM_WE_SHOW_DOC"];
-					$GLOBALS["we_transaction"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["we_transaction"];
-					$GLOBALS["we_editmode"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["we_editmode"];
-					$GLOBALS["we_ContentType"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["we_ContentType"];
-					$_REQUEST["pv_id"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["pv_id"];
-					$_REQUEST["pv_tid"] = $GLOBALS["we_backVars"]["' . $we_unique . '"]["pv_tid"];
-
-					if(isset($GLOBALS["WE_IS_DYN"])){
-						unset($GLOBALS["WE_IS_DYN"]);
-					}
-					if($GLOBALS["we_backVars"]["' . $we_unique . '"]["WE_IS_DYN"]){
-						$GLOBALS["WE_IS_DYN"] = 1;
-					}
-					unset($GLOBALS["we_backVars"]["' . $we_unique . '"]);
-				}
-			?>';
-		} else {
-			$php = "";
-		}
-		
-		if (isset($GLOBALS['we_doc']) && !$GLOBALS['we_doc']->IsFolder && $GLOBALS['we_doc']->CacheType == "document" && $GLOBALS['we_doc']->CacheLifeTime > 0) {
-			$slashedPHP = str_replace("'", "\'", $php);
-			//$slashedPHP = str_replace("\$", "\\\$", $slashedPHP);
-			$php = <<<EOF
-<?php
-ob_start();
-?>
-{$php}
-<?php
-ob_end_clean();
-echo '{$slashedPHP}';
-?>
-EOF;
-		
-		}
-		
-		return $this->replaceTag($tag, $code, $php);
-	}*/
 
 	##########################################################################################
 	##########################################################################################
@@ -2645,45 +2430,4 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 	
 	}
 
-	function parseCacheIfTag($content)
-	{
-		
-		$notInListview = !isset($GLOBALS["weListviewCacheActiveIf"]) || $GLOBALS["weListviewCacheActiveIf"] <= 0;
-		
-		// caching type
-		if (isset($GLOBALS['we_doc']) && $notInListview && isset($GLOBALS['we_doc']->CacheType) && $GLOBALS['we_doc']->CacheType == "document" && $GLOBALS['we_doc']->CacheLifeTime > 0) {
-			return "<?php echo '" . $content . "'; ?>";
-			
-		// caching disabled
-		} else {
-			return $content;
-		
-		}
-	
-	}
-
-	function parseNoCacheTag($content)
-	{
-		
-		if ($GLOBALS['we_doc']->CacheType == "document" && $GLOBALS['we_doc']->CacheLifeTime > 0) {
-			$content = str_replace("\$", "\\\$", $content);
-			
-			return "<?php
-\$temp = <<<NOCACHE
-$content
-NOCACHE;
-
-we_tag(\"noCache\", array(), \$temp);
-
-?>
-";
-		} else {
-			return $content;
-		
-		}
-	
-	}
-
 }
-
-?>
