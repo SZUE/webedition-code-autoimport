@@ -479,9 +479,10 @@ class we_tagParser{
 						
 						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
-
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
 														$code = str_replace($tag,'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>',$code);
+														$this->ipos++;
+														$this->lastpos = 0;
 													} else 
 														if ($tagname == "condition") {
 															$code = str_replace(
@@ -562,11 +563,11 @@ class we_tagParser{
 																			$code, 
 																			$endeEndTagPos);
 																	//neu
+																} else {
 																
 	
 																
 															
-															} else 
 																if ($tagname == "else") {
 																	$code = substr($code, 0, $tagPos).'<?php else: ?>' . substr($code, $endeStartTag);
 																

@@ -33,7 +33,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
-function we_tag($name, $attribs, $content = ''){
+function we_tag($name, $attribs=array(), $content = ''){
 	$fn = "we_tag_$name";
 	$attribs = removeAttribs($attribs, array(
 		'cachelifetime'
