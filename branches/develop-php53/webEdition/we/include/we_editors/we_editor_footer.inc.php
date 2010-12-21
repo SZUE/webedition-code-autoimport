@@ -87,7 +87,7 @@ switch ($we_doc->userHasAccess()){
 htmlTop();
 
 $showPubl = we_hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
-$reloadPage = ($showPubl && (!$we_doc->ID)) ? true : false;
+$reloadPage = (($showPubl || $we_doc->ContentType=='text/weTmpl') && (!$we_doc->ID)) ? true : false;
 $haspermNew = false;
 
 //	Check permissions for buttons

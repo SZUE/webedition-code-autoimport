@@ -129,7 +129,7 @@ function replace_bad_str($str_to_test) {
 }
 
 function contains_newlines($str_to_test) {
-	if(preg_match("/(%0A|%0D|\\n+|\\r+)/i", $str_to_test) != 0) {
+	if(preg_match("/(\\n+|\\r+)/", $str_to_test) != 0) {
 		print_error("newline found in $str_to_test. Suspected injection attempt - mail not being sent.");
 	}
 }
@@ -372,11 +372,11 @@ if($recipient){
     } else {
         $fromMail = $email;
     }
-    $subject = trim($subject,"\n\r");
-	$charset = trim($charset,"\n\r");
-	$fromMail = trim($fromMail,"\n\r");
-	$email = trim($email,"\n\r");
-	$from = trim($from,"\n\r");
+    $subject = preg_replace("/(\\n+|\\r+)/","",$subject);
+	$charset = preg_replace("/(\\n+|\\r+)/","",$charset);
+	$fromMail = preg_replace("/(\\n+|\\r+)/","",$fromMail);
+	$email = preg_replace("/(\\n+|\\r+)/","",$email);
+	$from = preg_replace("/(\\n+|\\r+)/","",$from);
 	
 	contains_bad_str($email);
 	contains_bad_str($from);
@@ -417,7 +417,7 @@ if($recipient){
 			print_error($GLOBALS['l_global']['email_invalid']);
 		}
 
-  		$recipient = trim($recipient,"\n\r");
+  		$recipient = preg_replace("/(\\n+|\\r+)/","",$recipient);
 
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;

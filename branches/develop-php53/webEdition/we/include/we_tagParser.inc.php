@@ -36,7 +36,8 @@ class we_tagParser{
 
 	var $ipos = 0;
 	
-	var $ListviewItemsTags = array("object","customer","order","orderitem","metadata");
+	var $ListviewItemsTags = array('object', 'customer', 'onlinemonitor', 'order', 'orderitem', 'metadata');
+
 	var $AppListviewItemsTags = array();
 
 	function we_tagParser()	{
@@ -91,7 +92,7 @@ class we_tagParser{
 		$foo = array();
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $foo, PREG_SET_ORDER);
 		for ($i = 0; $i < sizeof($foo); $i++) {
-			if (substr($foo[$i][1], -1) == "<") {
+			if (substr($foo[$i][1], -1) == '<') {
 				$foo[$i][1] = substr($foo[$i][1], 0, strlen($foo[$i][1]) - 1);
 			}
 			array_push($tags, $foo[$i][1]);
@@ -134,7 +135,7 @@ class we_tagParser{
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $_foo, PREG_SET_ORDER);
 		
 		for ($_i = 0; $_i < sizeof($_foo); $_i++) {
-			if (substr($_foo[$_i][1], -1) == "<") {
+			if (substr($_foo[$_i][1], -1) == '<') {
 				$_foo[$_i][1] = substr($_foo[$_i][1], 0, strlen($_foo[$_i][1]) - 1);
 			}
 			array_push($_tmpTags, $_foo[$_i][1]);
@@ -162,7 +163,7 @@ class we_tagParser{
 				$_start = strpos($code, $_tags[$i]);
 				$_starttag = $_tags[$i];
 				
-				$_endtag = "";
+				$_endtag = '';
 				$i++;
 			
 			} else { //  "normal" we:tag
@@ -171,22 +172,22 @@ class we_tagParser{
 				$i++;
 				
 				$_end = strpos($code, $_tags[$i]) - $_start + strlen($_tags[$i]);
-				$_endtag = isset($_tags[$i]) ? $_tags[$i] : "";
+				$_endtag = isset($_tags[$i]) ? $_tags[$i] : '';
 				$i++;
 			}
 			array_push($_rettags, array(
 				array(
 				$_starttag, $_endtag
-			), $_endtag ? substr($code, $_start, $_end) : ""
+			), $_endtag ? substr($code, $_start, $_end) : ''
 			));
 		}
 		return $_rettags;
 	}
 
-	function parseTags($tags, &$code, $postName = "", $ignore = array())
+	function parseTags($tags, &$code, $postName = '', $ignore = array())
 	{
 		
-		if (!defined("DISABLE_TEMPLATE_TAG_CHECK") || !DISABLE_TEMPLATE_TAG_CHECK) {
+		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
 			if (!$this->checkOpenCloseTags($tags, $code)) {
 				return;
 			}
@@ -198,7 +199,7 @@ class we_tagParser{
 		while ($this->ipos < sizeof($this->tags)) {
 			$this->lastpos = 0;
 			
-			if (in_array(substr(ereg_replace("[>/ ].*", "", $this->tags[$this->ipos]), 1), $ignore)) {
+			if (in_array(substr(ereg_replace("[>/ ].*", '', $this->tags[$this->ipos]), 1), $ignore)) {
 				$this->parseTag($code); //	dont add postname tagname in ignorearray
 			} else {
 				$this->parseTag($code, $postName);
@@ -222,7 +223,7 @@ class we_tagParser{
 					if (!isset($Counter[$_matches[2][0]])) {
 						$Counter[$_matches[2][0]] = 0;
 					}
-					if ($_matches[1][0] == "/") {
+					if ($_matches[1][0] == '/') {
 						$Counter[$_matches[2][0]]--;
 					
 					} else {
@@ -233,16 +234,16 @@ class we_tagParser{
 			}
 		}
 		
-		$ErrorMsg = "";
+		$ErrorMsg = '';
 		$isError = false;
 		foreach ($Counter as $_tag => $_counter) {
 			if ($_counter < 0) {
-				$ErrorMsg .= parseError(sprintf($GLOBALS["l_parser"]["missing_open_tag"], 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf($GLOBALS['l_parser']['missing_open_tag'], 'we:' . $_tag));
 				$isError = true;
 			
 			} else 
 				if ($_counter > 0) {
-					$ErrorMsg .= parseError(sprintf($GLOBALS["l_parser"]["missing_close_tag"], 'we:' . $_tag));
+					$ErrorMsg .= parseError(sprintf($GLOBALS['l_parser']['missing_close_tag'], 'we:' . $_tag));
 					$isError = true;
 				
 				}
@@ -261,7 +262,7 @@ class we_tagParser{
 		eregi("we:([^ >]+)", $this->tags[$this->ipos], $regs);
 		$tagname = $regs[1];
 		
-		if ($tagname != "back" && $tagname != "next" && $tagname != "printVersion" && $tagname != "listviewOrder") {
+		if ($tagname != 'back' && $tagname != 'next' && $tagname != 'printVersion' && $tagname != 'listviewOrder') {
 			$tagcount = 0;
 			$endtags = array();
 			
@@ -298,7 +299,7 @@ class we_tagParser{
 	{
 		if (preg_match('/<we:([^ ]+) ([^>]+)>/i', $tag, $_regs)) {
 			$_attribsString = $_regs[2];
-			$_tmpAttribs = "";
+			$_tmpAttribs = '';
 			$_attribs = array();
 			if (preg_match_all('/([^=]+)= *("[^"]*")/', $_attribsString, $foo, PREG_SET_ORDER)) {
 				for ($i = 0; $i < sizeof($foo); $i++) {
@@ -313,7 +314,7 @@ class we_tagParser{
 		return null;
 	}
 
-	function parseTag(&$code, $postName = "")
+	function parseTag(&$code, $postName = '')
 	{
 		
 		
@@ -327,21 +328,21 @@ class we_tagParser{
 		if ($regs[1]) { ### its an end-tag
 			$endTag = true;
 		}
-		$foo = $regs[2] . "/";
+		$foo = $regs[2] . '/';
 		eregi("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
 		$attr = trim(ereg_replace("(.*)/$", "\\1", $regs[2]));
 		
 		if (eregi('name="([^"]*)"', $attr, $regs)) {
 			if (!$regs[1]) {
-				print parseError(sprintf($GLOBALS["l_parser"]["name_empty"], $tagname));
+				print parseError(sprintf($GLOBALS['l_parser']['name_empty'], $tagname));
 			} else 
 				if (strlen($regs[1]) > 255) {
-					print parseError(sprintf($GLOBALS["l_parser"]["name_to_long"], $tagname));
+					print parseError(sprintf($GLOBALS['l_parser']['name_to_long'], $tagname));
 				}
 		}
 		
-		$attribs = "";
+		$attribs = '';
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
 		for ($i = 0; $i < sizeof($foo); $i++) {
 			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
@@ -489,64 +490,12 @@ class we_tagParser{
 						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 						
-	
-						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
-							$code = str_replace(
-									$tag, 
-									'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>', 
-									$code);
-							$this->ipos++;
-							$this->lastpos = 0;
-						
-						} else 
-							if ($tagname == "ifshopexists") {
-								$code = str_replace($tag, '<?php if(defined("SHOP_TABLE")): ?>', $code);
-								$this->ipos++;
-								$this->lastpos = 0;
-							} else 
-								if ($tagname == "ifobjektexists") {
-									$code = str_replace($tag, '<?php if(defined("OBJECT_TABLE")): ?>', $code);
-									$this->ipos++;
-									$this->lastpos = 0;
-								} else 
-									if ($tagname == "ifnewsletterexists") {
-										$code = str_replace(
-												$tag, 
-												'<?php if(defined("NEWSLETTER_TABLE")): ?>', 
-												$code);
-										$this->ipos++;
-										$this->lastpos = 0;
-									} else 
-										if ($tagname == "ifcustomerexists") {
-											$code = str_replace(
-													$tag, 
-													'<?php if(defined("CUSTOMER_TABLE")): ?>', 
-													$code);
-											$this->ipos++;
-											$this->lastpos = 0;
-										} else 
-											if ($tagname == "ifbannerexists") {
-												$code = str_replace(
-														$tag, 
-														'<?php if(defined("BANNER_TABLE")): ?>', 
-														$code);
-												$this->ipos++;
-												$this->lastpos = 0;
-											} else 
-												if ($tagname == "ifvotingexists") {
-													$code = str_replace(
-															$tag, 
-															'<?php if(defined("VOTING_TABLE")): ?>', 
-															$code);
-													$this->ipos++;
-													$this->lastpos = 0;
-												} else 
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
 														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
 														$code = str_replace(
 																$tag, 
 																$this->parseCacheIfTag(
-																		'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'), 
+																		'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>'),
 																$code);
 														$this->ipos++;
 														$this->lastpos = 0;
@@ -554,7 +503,7 @@ class we_tagParser{
 														if ($tagname == "condition") {
 															$code = str_replace(
 																	$tag, 
-																	'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>', 
+																	'<?php we_tag(\'' . $tagname . '\', ' . $attribs . '); ?>',
 																	$code);
 															$this->ipos++;
 															$this->lastpos = 0;
@@ -641,7 +590,7 @@ class we_tagParser{
 																	//neu
 																} else {
 																	// Tag besitzt Endtag
-																	$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "' . $content . '")';
+																	$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', "' . $content . '")';
 																	$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																			$code, 
 																			$endeEndTagPos);
@@ -659,12 +608,12 @@ class we_tagParser{
 																
 																} else 
 																	if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
-																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ')';
+																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ')';
 																		eval(
 																				'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
 																		//neu
 																	} else {
-																		$we_tag = 'we_tag("' . $tagname . '", ' . $attribs . ', "")';
+																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', \'\')';
 																		$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																				$code, 
 																				$endeStartTag);
@@ -2864,5 +2813,3 @@ we_tag(\"noCache\", array(), \$temp);
 	}
 
 }
-
-?>
