@@ -564,9 +564,6 @@ class we_tagParser{
 																			$endeEndTagPos);
 																	//neu
 																} else {
-																
-	
-																
 															
 																if ($tagname == "else") {
 																	$code = substr($code, 0, $tagPos).'<?php else: ?>' . substr($code, $endeStartTag);
