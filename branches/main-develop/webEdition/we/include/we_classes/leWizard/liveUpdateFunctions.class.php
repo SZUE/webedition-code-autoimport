@@ -481,17 +481,26 @@ class liveUpdateFunctions {
 		$queries = array();
 
 		foreach ($fields as $key => $indexes) {
-
+			//escape all index fields
 			array_walk($indexes,'addslashes');
 
 			$type=$indexes['index'];
+			$mysl='`';
 			if($type=='PRIMARY'){
 				$key='KEY';
-				}
-
+				$mysl='';
+			}
+			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
-
-			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
+			$myindexes=array();
+			foreach ($indexes as $index){
+				if (strpos($index,'(') === false){
+					$myindexes[] = '`'.$index.'`';
+				} else {
+					$myindexes[] = $index;
+				}
+			}
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' ('.implode(',',$myindexes).')';
 		}
 		return $queries;
 	}
