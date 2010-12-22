@@ -513,13 +513,15 @@ class liveUpdateFunctions {
 			array_walk($indexes,'addslashes');
 
 			$type=$indexes['index'];
+			$mysl='`';
 			if($type=='PRIMARY'){
 				$key='KEY';
+				$mysl='';
 			}
 			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
 
-			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' (`'.implode('`,`',$indexes).'`)';
 		}
 		return $queries;
 	}
