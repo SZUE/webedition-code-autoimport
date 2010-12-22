@@ -19,9 +19,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/customer.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 
 class weCustomerAdd{
 
@@ -29,8 +29,6 @@ class weCustomerAdd{
 
 	function weCustomerAdd(){
 		global $l_customer;
-
-
 	}
 
 	function getHTMLSortEditor(&$pob){
@@ -38,29 +36,29 @@ class weCustomerAdd{
 
 		$we_button=new we_button();
 		$branch=$pob->getHTMLBranchSelect();
-		$branch->setOptionVT(1,$l_customer["other"],$l_customer["other"]);
+		$branch->setOptionVT(1,$l_customer['other'],$l_customer['other']);
 
 
-		$order=new we_htmlSelect(array("name"=>"order","style"=>"width:90"));
+		$order=new we_htmlSelect(array('name'=>'order','style'=>'width:90'));
 		foreach($pob->View->settings->OrderTable as $ord) $order->addOption($ord,$ord);
 
-		$function=new we_htmlSelect(array("name"=>"function","style"=>"width:130"));
+		$function=new we_htmlSelect(array('name'=>'function','style'=>'width:130'));
 
 		$counter=0;
-		$fhidden="";
-		$sort_code="";
+		$fhidden='';
+		$sort_code='';
 
 		$_parts = array();
 		foreach($pob->View->settings->SortView as $k=>$sorts){
 			$fcounter=0;
 			$row_num=0;
-			$sort_field_code="";
+			$sort_field_code='';
 
-			$sort_table=new we_htmlTable(array("border"=>"0","cellpadding"=>"2","cellspacing"=>"1","width"=>"400","height"=>"50"),1,5);
-			$sort_table->setCol(0,0,array("class"=>"defaultfont"),we_htmlElement::htmlB($l_customer["sort_branch"]));
-			$sort_table->setCol(0,1,array("class"=>"defaultfont"),we_htmlElement::htmlB($l_customer["sort_field"]));
-			$sort_table->setCol(0,2,array("class"=>"defaultfont"),we_htmlElement::htmlB($l_customer["sort_function"]));
-			$sort_table->setCol(0,3,array("class"=>"defaultfont"),we_htmlElement::htmlB($l_customer["sort_order"]));
+			$sort_table=new we_htmlTable(array('border'=>'0','cellpadding'=>'2','cellspacing'=>'1','width'=>'400','height'=>'50'),1,5);
+			$sort_table->setCol(0,0,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_branch']));
+			$sort_table->setCol(0,1,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_field']));
+			$sort_table->setCol(0,2,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_function']));
+			$sort_table->setCol(0,3,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_order']));
 
 
 			foreach($sorts as $sort){
@@ -186,7 +184,7 @@ class weCustomerAdd{
 					}
 				}
 			}
-			
+
 			function we_cmd(){
 				var args = "";
 				var url = "'.$pob->frameset.'?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -237,7 +235,7 @@ class weCustomerAdd{
 			}
 
 			function setScrollTo(){
-   				opener.'.$this->topFrame.'.scrollToVal='.(($GLOBALS["BROWSER"] == "IE") ? 'document.body.scrollTop' : 'pageYOffset').';
+   				opener.'.$this->topFrame.'.scrollToVal='.(($GLOBALS['BROWSER'] == 'IE') ? 'document.body.scrollTop' : 'pageYOffset').';
 			}
 
 			'.$pob->getJSSubmitFunction("sort_admin");
@@ -256,7 +254,7 @@ class weCustomerAdd{
 					}
 				}
 			}
-			
+
 			function we_cmd(){
 				var args = "";
 				var url = "'.$pob->frameset.'?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -301,10 +299,10 @@ class weCustomerAdd{
 	function getHTMLSearch(&$pob,&$search,&$select){
 			global $l_customer;
 
-			$count=$_REQUEST["count"];
+			$count=$_REQUEST['count'];
 
-			$operators=array("=","<>","<","<=",">",">=","LIKE");
-			$logic=array("AND"=>"AND","OR"=>"OR");
+			$operators=array('=','<>','<','<=','>','>=','LIKE');
+			$logic=array('AND'=>'AND','OR'=>'OR');
 
 			$search_arr=array();
 
@@ -313,11 +311,11 @@ class weCustomerAdd{
 		 	$colspan=4;
 
 			for($i=0;$i<$count;$i++){
-				if(isset($_REQUEST["branch_".$i])) $search_arr["branch_".$i]=$_REQUEST["branch_".$i];
-				if(isset($_REQUEST["field_".$i])) $search_arr["field_".$i]=$_REQUEST["field_".$i];
-				if(isset($_REQUEST["operator_".$i])) $search_arr["operator_".$i]=$_REQUEST["operator_".$i];
-				if(isset($_REQUEST["value_".$i])) $search_arr["value_".$i]=$_REQUEST["value_".$i];
-				if(isset($_REQUEST["logic_".$i])) $search_arr["logic_".$i]=$_REQUEST["logic_".$i];
+				if(isset($_REQUEST['branch_'.$i])) $search_arr['branch_'.$i]=$_REQUEST['branch_'.$i];
+				if(isset($_REQUEST['field_'.$i])) $search_arr['field_'.$i]=$_REQUEST['field_'.$i];
+				if(isset($_REQUEST['operator_'.$i])) $search_arr['operator_'.$i]=$_REQUEST['operator_'.$i];
+				if(isset($_REQUEST['value_'.$i])) $search_arr['value_'.$i]=$_REQUEST['value_'.$i];
+				if(isset($_REQUEST['logic_'.$i])) $search_arr['logic_'.$i]=$_REQUEST['logic_'.$i];
 			}
 
 

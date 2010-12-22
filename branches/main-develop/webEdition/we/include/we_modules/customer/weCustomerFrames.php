@@ -221,7 +221,7 @@ class weCustomerFrames extends weModuleFrames {
 			case 'dateTime':
 			case 'date':
 				include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_editor_info.inc.php');
-				$out = "";
+				$out = '';
 				$out = we_htmlElement::htmlHidden(array('name' => $field, 'value' => $value));
 
 				if (empty($value)) {
