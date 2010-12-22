@@ -19,8 +19,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/"."weModelBase.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModelBase.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
 
 /**
 * General Definition of WebEdition Customer
@@ -31,7 +31,7 @@ class weCustomer extends weModelBase{
 	//properties
 	var $ID;
 	var $Text;
-    var $ParentID;
+	var $ParentID;
 	var $Icon;
 	var $IsFolder;
 	var $Path;
@@ -46,9 +46,9 @@ class weCustomer extends weModelBase{
 	var $LastLogin;
 	var $LastAccess;
 
-	var $protected=array("ID","ParentID","Icon","IsFolder","Path","Text");
-	var $properties=array("Username","Password","Forename","Surname","LoginDenied","MemberSince","LastLogin","LastAccess","AutoLoginDenied","AutoLogin");
-	var $udates=array("MemberSince","LastLogin","LastAccess");
+	var $protected=array('ID','ParentID','Icon','IsFolder','Path','Text');
+	var $properties=array('Username','Password','Forename','Surname','LoginDenied','MemberSince','LastLogin','LastAccess','AutoLoginDenied','AutoLogin');
+	var $udates=array('MemberSince','LastLogin','LastAccess');
 
 
 	/**
@@ -78,7 +78,7 @@ class weCustomer extends weModelBase{
 		for($i=0;$i<sizeof($tableInfo);$i++){
 				$fname=$tableInfo[$i]["name"];
 				$this->persistent_slots[] = $fname;
-				if(!isset($this->$fname)) $this->$fname="";
+				if(!isset($this->$fname)) $this->$fname='';
 		}
 	}
 
@@ -96,8 +96,8 @@ class weCustomer extends weModelBase{
 		}
 
 		// Start Schnittstelle fuer change-Funktion
-		if(file_exists($_SERVER["DOCUMENT_ROOT"]."/WE_CUSTOMER_EXTERNAL_FN.php")){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/WE_CUSTOMER_EXTERNAL_FN.php");
+		if(file_exists($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php')){
+			include_once($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php');
 			we_customer_saveFN($s);
 		}
 		// Ende Schnittstelle fuer change-Funktion
@@ -121,7 +121,7 @@ class weCustomer extends weModelBase{
 			global $l_customer;
 			if(ereg($l_customer["other"],$real_name)){
 				return $real_name;
-				return str_replace($l_customer["other"]."_","",$real_name);
+				return str_replace($l_customer["other"]."_",'',$real_name);
 			}
 			$pre=explode("_",$real_name);
 			if(($pre[0]!=$real_name) && (!in_array($pre[0],$this->protected)) && (!in_array($pre[0],$this->properties))){
@@ -132,29 +132,29 @@ class weCustomer extends weModelBase{
 			return $real_name;
 	}
 
-	function getBranches(&$banches,&$fixed,&$other,$mysort=""){
+	function getBranches(&$banches,&$fixed,&$other,$mysort=''){
 
 		$fixed["ID"]=$this->ID; // Bug Fix #8413 + #8520
 		if(isset($this->persistent_slots)){
 			$orderedarray=$this->persistent_slots;
 			//$sortarray = array_map('strtolower', $orderedarray);
-			if ($mysort!=""){
-				$sortarray= makeArrayFromCSV($mysort); 
+			if ($mysort!=''){
+				$sortarray= makeArrayFromCSV($mysort);
 			} else {
  				$sortarray= range(0,count($orderedarray)-1);
 			}
-			
+
 			if (count($sortarray) != count($orderedarray)){
 
 				if (count($sortarray) == count($orderedarray)-1){
 					$sortarray[] = max($sortarray)+1;
-				} else {$sortarray= range(0,count($orderedarray)-1);}				
+				} else {$sortarray= range(0,count($orderedarray)-1);}
 			}
 			$orderedarray= array_combine($sortarray,$orderedarray);
 			ksort($orderedarray);
-			
+
 			foreach($orderedarray as $per){
-				$var_value="";
+				$var_value='';
 				eval('if(isset($this->'.$per.')) $var_value=$this->'.$per.';');
 
 				$filed=$this->transFieldName($per,$branche);
@@ -184,7 +184,7 @@ class weCustomer extends weModelBase{
 
 	}
 
-	function getFieldsNames($branch,$mysort=""){
+	function getFieldsNames($branch,$mysort=''){
 		global $l_customer;
 
 		$branches=array();
@@ -195,7 +195,7 @@ class weCustomer extends weModelBase{
 
 		$arr=array();
 
-		if($branch=="") $branch=$l_customer["other"];
+		if($branch=='') $branch=$l_customer["other"];
 
 		if($branch==$l_customer["common"]){
 			if(is_array($common)) $arr=$common;
@@ -218,7 +218,9 @@ class weCustomer extends weModelBase{
 
 	function getFieldDbProperties($field_name,$buff=array()){
 
-		if(!count($buff)) $buff=$this->getFieldsDbProperties();
+		if(empty($buff)){
+			$buff=$this->getFieldsDbProperties();
+		}
 
 		foreach($buff as $b)
 			if($b["Field"]==$field_name) return $b;
@@ -264,8 +266,8 @@ class weCustomer extends weModelBase{
 
 	function getFieldset(){
 		$result=array();
-		$fileds=$this->getFieldsDbProperties();
-		foreach($fileds as $k=>$v){
+		$fields=$this->getFieldsDbProperties();
+		foreach($fields as $k=>$v){
 			if(!$this->isProtected($k)) $result[]=$k;
 		}
 		return $result;

@@ -29,34 +29,36 @@ define('DATE_ONLY_FORMAT', 'Y-m-d');
 
 class weCustomerSettings {
 
-	var $db;
-	var $table = CUSTOMER_ADMIN_TABLE;
-	var $customer;
-	var $properties = array();
-	var $changedFieldTypes = array(
+	private $db;
+	private $table = CUSTOMER_ADMIN_TABLE;
+	public $customer;
+	private $properties = array();
+	private $changedFieldTypes = array(
 			'dateTime' => 'varchar(24)',
+			'country' => 'varchar(4)',
+			'language' => 'varchar(2)'
 	);
-	var $field_types = array(
+	public $field_types = array(
 			'input' => 'varchar(255)',
+			'number'=>'int(11)',
 			'select' => 'varchar(200)',
 			'textarea' => 'text',
 			'dateTime' => 'datetime',
 			'date' => 'date',
 			'password' => 'varchar(32)',
 			'img' => 'bigint(20)',
-			'country' => 'varchar(4)', //eigentlich nur 2, aber der Typ wird aus dem Feldtyp der DB-Tabelle abgeleitet und muss deshalb eindeutig sein
-			'language' => 'varchar(2)'
+			'country' => "enum('AF','AX','AL','DZ','AS','AD','AO','AI','AQ','AG','AR','AM','AW','AU','AT','AZ','BS','BH','BD','BB','BY','BE','BZ','BJ','BM','BT','BO','BQ','BA','BW','BV','BR','IO','BN','BG','BF','BI','KH','CM','CA','CV','KY','CF','TD','CL','CN','CX','CC','CO','KM','CG','CD','CK','CR','CI','HR','CU','CW','CY','CZ','DK','DJ','DM','DO','EC','EG','SV','GQ','ER','EE','ET','FK','FO','FJ','FI','FR','GF','PF','TF','GA','GM','GE','DE','GH','GI','GR','GL','GD','GP','GU','GT','GG','GN','GW','GY','HT','HM','VA','HN','HK','HU','IS','IN','ID','IR','IQ','IE','IM','IL','IT','JM','JP','JE','JO','KZ','KE','KI','KP','KR','KW','KG','LA','LV','LB','LS','LR','LY','LI','LT','LU','MO','MK','MG','MW','MY','MV','ML','MT','MH','MQ','MR','MU','YT','MX','FM','MD','MC','MN','ME','MS','MA','MZ','MM','NA','NR','NP','NL','NC','NZ','NI','NE','NG','NU','NF','MP','NO','OM','PK','PW','PS','PA','PG','PY','PE','PH','PN','PL','PT','PR','QA','RE','RO','RU','RW','BL','SH','KN','LC','MT','PM','VC','WS','SM','ST','SA','SN','RS','SC','SL','SG','SX','SK','SI','SB','SO','ZA','GS','ES','LK','SD','SR','SJ','SZ','SE','CH','SY','TW','TJ','TZ','TH','TL','TG','TK','TO','TT','TN','TR','TM','TC','TV','UG','UA','AE','GB','US','UM','UY','UZ','VU','VA','VE','VN','VG','VI','WF','EH','YE','YU','ZM','ZW')",
+			'language' => "enum('ab','af','an','ar','as','az','be','bg','bn','bo','br','bs','ca','ce','co','cs','cu','cy','da','de','el','en','eo','es','et','eu','fa','fi','fj','fo','fr','fy','ga','gd','gl','gv','he','hi','hr','ht','hu','hy','id','is','it','ja','jv','ka','kg','ko','ku','kw','ky','la','lb','li','ln','lt','lv','mg','mk','mn','mo','ms','mt','my','nb','ne','nl','nn','no','oc','pl','pt','rm','ro','ru','sc','se','sk','sl','so','sq','sr','sv','sw','tk','tr','ty','uk','ur','uz','vi','vo','yi','zh')",
 	);
-	var $default_fields_settings = array('type' => 'input', 'default' => '');
-	var $FieldAdds = array();
-	var $SortView = array();
-	var $Prefs = array();
-	var $EditSort = '';
-	var $OrderTable = array(
+	public $FieldAdds = array();
+	public $SortView = array();
+	public $Prefs = array();
+	private $EditSort = '';
+	public $OrderTable = array(
 			'ASC' => 'ASC',
 			'DESC' => 'DESC'
 	);
-	var $FunctionTable = array(
+	public $FunctionTable = array(
 			'ALPH1' => 'UPPER(SUBSTRING(%s,1,1))',
 			'ALPH2' => 'UPPER(SUBSTRING(%s,1,2))',
 			'ALPH3' => 'UPPER(SUBSTRING(%s,1,3))',
@@ -72,7 +74,7 @@ class weCustomerSettings {
 			'MONTHNAME' => 'MONTHNAME(%s)',
 			'QUARTER' => 'QUARTER(%s)'
 	);
-	var $TypeFunction = array(
+	private $TypeFunction = array(
 			'ALPH1' => 'input,select,textarea,password',
 			'ALPH2' => 'input,select,textarea,password',
 			'ALPH3' => 'input,select,textarea,password',
@@ -88,26 +90,26 @@ class weCustomerSettings {
 			'MONTHNAME' => 'date',
 			'QUARTER' => 'date'
 	);
-	var $PropertyTitle = array();
-	var $MaxSearchResults = 99999;
-	var $reservedWords = array('select', 'straight_join', 'sql_small_result', 'sql_buffer_result',
+	private $PropertyTitle = array();
+	private $MaxSearchResults = 99999;
+	private $reservedWords = array('select', 'straight_join', 'sql_small_result', 'sql_buffer_result',
 			'sql_cache', 'sql_no_cache', 'sql_cals_found_rows', 'high_priority', 'distinct', 'distinctrow', 'all', 'into',
 			'outfile', 'dumpfile', 'from', 'where', 'group', 'by', 'asc', 'desc', 'with', 'rollup', 'having', 'order', 'limit',
 			'procedure', 'for', 'update', 'lock', 'in', 'share', 'mode', 'insert', 'alter', 'grant', 'option', 'to', 'require',
 			'none', 'revoke', 'privileges', 'password', 'low_priority', 'delayed', 'ignore', 'values', 'on', 'duplicate',
-			'key', 'set', 'default', 'where', 'group', 'by', 'order', 'add', 'column', 'table', 'index', 'constraint', 'primary',
+			'key', 'set', 'enum', 'default', 'where', 'group', 'by', 'order', 'add', 'column', 'table', 'index', 'constraint', 'primary',
 			'unique', 'foreign', 'change', 'modify', 'drop', 'disable', 'enable', 'charachter', 'collate', 'first', 'rename',
 			'fulltext', 'quick', 'using', 'truncate',
 			'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied,autologin,autologindenied'
 	);
-	var $treeTextFormat = '#Text';
-	var $formatFields = array();
+	public $treeTextFormat = '#Text';
+	public $formatFields = array();
 
 	function weCustomerSettings() {
 		global $l_customer;
 
 		$this->db = new DB_WE();
-		$this->table = CUSTOMER_ADMIN_TABLE;
+		//$this->table = CUSTOMER_ADMIN_TABLE;
 		$this->customer = new weCustomer();
 		$this->properties = array();
 
@@ -146,6 +148,7 @@ class weCustomerSettings {
 	}
 
 	function load($tryFromSession=true) {
+		$modified=false;
 
 		$this->db->query('SELECT * FROM ' . mysql_real_escape_string($this->table) . ';');
 		while ($this->db->next_record()) {
@@ -170,6 +173,15 @@ class weCustomerSettings {
 
 		if (isset($this->properties['FieldAdds'])) {
 			$this->FieldAdds = @unserialize($this->properties['FieldAdds']);
+			//check if all fields are set
+			$fields=$this->customer->getFieldset();
+			foreach ($fields as $name) {
+				if(!isset($this->FieldAdds[$name]['type'])){
+					$modified=true;
+					$tmp=$props=$this->customer->getFieldDbProperties($name);
+					$this->FieldAdds[$name]['type']=$this->getOldFieldType($tmp['Type']);
+				}
+			}
 		}
 
 		$defprefs = $this->Prefs;
@@ -193,6 +205,10 @@ class weCustomerSettings {
 				$this->formatFields[] = $fieldname;
 			}
 			$this->treeTextFormat = str_replace('#' . $fieldname, '".$ttrow["' . $fieldname . '"]."', $this->treeTextFormat);
+		}
+
+		if($modified){
+				$this->save();
 		}
 	}
 
@@ -254,8 +270,12 @@ class weCustomerSettings {
 		return $this->field_types[$field_type];
 	}
 
-	//returns predefined  field type
-	function getFieldType($field_type) {
+	function getFieldType($name){
+		return $this->FieldAdds[$name]['type'];
+	}
+
+//returns predefined  field type
+	private function getOldFieldType($field_type) {
 		foreach ($this->field_types as $k => $v) {
 			if ($v == $field_type) {
 				return $k;
@@ -279,12 +299,9 @@ class weCustomerSettings {
 			foreach ($this->FieldAdds as $k => $v) {
 				if (in_array($k, $customer->persistent_slots) && isset($v['default'])) {
 					$value = $v['default'];
-					$props = $customer->getFieldDbProperties($k);
-					if (isset($props['Type'])) {
-						if ($this->getFieldType($props['Type']) == 'select') {
-							$tmp = explode(',', $value);
-							$value = $tmp[0];
-						}
+					if ($this->getFieldType($k) == 'select') {
+						$tmp = explode(',', $value);
+						$value = $tmp[0];
 					}
 					eval('$customer->' . $k . '=$value;');
 				}
@@ -316,7 +333,7 @@ class weCustomerSettings {
 	}
 
 	//field adds operations ends
-	function new_array_splice(&$a, $start, $len=1) {
+	private function new_array_splice(&$a, $start, $len=1) {
 		$ks = array_keys($a);
 		$k = array_search($start, $ks);
 		if ($k !== false) {

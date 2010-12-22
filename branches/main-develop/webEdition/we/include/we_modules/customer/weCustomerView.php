@@ -81,7 +81,7 @@ class weCustomerView {
 
 	function getJSTop(){
 		global $l_customer;
-		
+
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS['_we_available_modules'] as $modData){
@@ -96,17 +96,17 @@ class weCustomerView {
 			var activ_tab = 0;
 			var hot= 0;
 			var scrollToVal=0;
-			
+
 			function setHot() {
 				hot = "1";
 			}
-						
+
 			parent.document.title = "'.$title.'";
-			
+
 			function usetHot() {
 				hot = "0";
 			}
-			
+
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -610,12 +610,8 @@ function processCommands() {
 						if($this->customer->ID){
 							$newone=false;
 						}
-						
-						if ($newone) {
-							$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.mysql_real_escape_string($this->customer->Username)."'","ID",$this->db);
-						} else {
-							$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.mysql_real_escape_string($this->customer->Username)."' AND ID<>".$this->customer->ID,"ID",$this->db);
-						} 
+
+						$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.mysql_real_escape_string($this->customer->Username).'\''.($newone?'':' AND ID!='.$this->customer->ID),'ID',$this->db);
 						if($exists){
 							$js = we_message_reporting::getShowMessageCall(sprintf($l_customer["username_exists"],$this->customer->Username), WE_MESSAGE_ERROR);
 							print we_htmlElement::jsElement($js);
@@ -748,7 +744,7 @@ function processCommands() {
 					$orderedarray= $this->customer->persistent_slots;
 					if (count($sortarray) != count($orderedarray)){$sortarray= range(0,count($orderedarray)-1);}
 					$orderedarray= array_combine($sortarray,$orderedarray);
-					ksort($orderedarray);					
+					ksort($orderedarray);
 					$curpos= array_search($field,$orderedarray);
 					$curposS = array_search($curpos,$sortarray);
 					unset($sortarray[$curposS]);
@@ -758,7 +754,7 @@ function processCommands() {
 					if ($sortarray[count($sortarray)-1]==''){array_pop ($sortarray );}
 					$this->settings->setEditSort(makeCSVFromArray($sortarray,true));
 					$this->settings->save();
-				
+
 					$ber='';
 					$fname=$this->customer->transFieldName($field,$ber);
 
@@ -789,12 +785,12 @@ function processCommands() {
 					if (count($sortarray) != count($orderedarray)){
 						if (count($sortarray) < count($orderedarray)) {
 							$sortarray[] = max ($sortarray)+1;
-						} 
+						}
 						if (count($sortarray) != count($orderedarray)){	$sortarray= range(0,count($orderedarray)-1);						}
 					}
 					$orderedarray= array_combine($sortarray,$orderedarray);
 					ksort($orderedarray);
-					
+
 					$curpos= array_search($field,$orderedarray);
 					$curpos1 = $curpos - 1;
 					if ($curpos!=0){
@@ -802,13 +798,13 @@ function processCommands() {
 						$sort=str_replace(",".$curpos1.",",',YY,',$sort);
 						$sort=str_replace(',XX,',",".$curpos1.",",$sort);
 						$sort=str_replace(',YY,',",".$curpos.",",$sort);
-						
+
 						$this->settings->setEditSort($sort);
 						$this->settings->save();
 						$this->customer->loadPresistents();
 					}
-					$js = 
-						
+					$js =
+
 						'opener.refreshForm();
 					';
 					print we_htmlElement::jsElement($js);
@@ -822,12 +818,12 @@ function processCommands() {
 					if (count($sortarray) != count($orderedarray)){
 						if (count($sortarray) < count($orderedarray)) {
 							$sortarray[] = max ($sortarray)+1;
-						} 
+						}
 						if (count($sortarray) != count($orderedarray)){	$sortarray= range(0,count($orderedarray)-1);						}
 					}
 					$orderedarray= array_combine($sortarray,$orderedarray);
 					ksort($orderedarray);
-					
+
 					$curpos= array_search($field,$orderedarray);
 					$curpos1 = $curpos + 1;
 					if ($curpos!=count($orderedarray)-1){
@@ -839,8 +835,8 @@ function processCommands() {
 						$this->settings->save();
 						$this->customer->loadPresistents();
 					}
-					$js = 
-						
+					$js =
+
 						'opener.refreshForm();
 					';
 					print we_htmlElement::jsElement($js);
@@ -1097,7 +1093,7 @@ function processCommands() {
 			$ret['name']=$this->customer->transFieldName($props['Field'],$branch);
 		}
 		if(isset($props['Type'])){
-			$ret['type']=$this->settings->getFieldType($props['Type']);
+			$ret['type']=$this->settings->getFieldType($props['Field']);
 		}
 
 		$ret['default']=(isset($this->settings->FieldAdds[$field]['default']) ? $this->settings->FieldAdds[$field]['default'] : '');
@@ -1151,6 +1147,7 @@ function processCommands() {
 			$this->settings->removeFieldAdd($field);
 		}
 		$this->settings->storeFieldAdd($new_field_name,'default',$field_default);
+		$this->settings->storeFieldAdd($new_field_name,'type',$field_type);
 
 		$this->settings->save();
 	}

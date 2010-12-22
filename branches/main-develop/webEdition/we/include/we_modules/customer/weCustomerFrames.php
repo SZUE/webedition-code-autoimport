@@ -140,8 +140,9 @@ class weCustomerFrames extends weModuleFrames {
 		}
 		switch ($props['type']) {
 			case 'input':
-				return htmlTextInput($field, 32, stripslashes($value), "", "onchange=\"top.content.setHot();\" style='{width:240}'");
-				break;
+				return htmlTextInput($field, 32, stripslashes($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'");
+			case 'number':
+				return htmlTextInput($field, 32, stripslashes($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'",'number');
 			case 'country':
 				//p_r($GLOBALS['l_countries']);
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
@@ -257,7 +258,7 @@ class weCustomerFrames extends weModuleFrames {
 				return $out;
 				break;
 			case 'password':
-				return htmlTextInput($field, 32, $value, "", "onchange=\"top.content.setHot();\" style='{width:240}'", "password");
+				return htmlTextInput($field, 32, $value, '', 'onchange="top.content.setHot();" style="{width:240}" autocomplete="off" ', 'password');
 				break;
 			case 'img':
 

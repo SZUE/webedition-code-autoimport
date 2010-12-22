@@ -284,7 +284,7 @@
 
 		if(!$this->isColExist(USER_TABLE,"LoginDenied")) $this->addCol(USER_TABLE,"LoginDenied","TINYINT(1) DEFAULT '0' NOT NULL");
 		if(!$this->isColExist(USER_TABLE,"UseSalt")) $this->addCol(USER_TABLE,"UseSalt","TINYINT(1) DEFAULT '0' NOT NULL");
-		
+
 
 		if($this->isColExist(USER_TABLE,"workSpace")){
 			$this->changeColTyp(USER_TABLE,"workSpace","VARCHAR(255)");
@@ -491,4 +491,3 @@
 	}
 
 }
-?>
