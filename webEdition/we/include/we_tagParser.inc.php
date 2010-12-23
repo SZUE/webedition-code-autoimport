@@ -2016,7 +2016,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 							$_SESSION["tb"]=$_REQUEST["t"];
 						}
 					}
-					else if(isset($_REQUEST["shop_artikelid"]) && $_REQUEST["shop_artikelid"] != "" && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != 0) {
+					else if(isset($_REQUEST["shop_artikelid"]) && $_REQUEST["shop_artikelid"] != "" && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != "0") {
 						if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
 							if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0) ) {
 								$' . $shopname . '->Add_Item($_REQUEST["shop_artikelid"],$floatquantities ? $floatfilter->filter($_REQUEST["shop_anzahl"]):$_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array() ) );
