@@ -44,6 +44,7 @@ class weCustomerSettings {
 			'input' => 'varchar(255)',
 			'number'=>'int(11)',
 			'select' => 'enum',
+			'multiselect' => 'set',
 			'textarea' => 'text',
 			'dateTime' => 'datetime',
 			'date' => 'date',
@@ -55,6 +56,7 @@ class weCustomerSettings {
 
 	private $special_field_types = array(
 			'select' => 'enum',
+			'multiselect' => 'set',
 			);
 	public $FieldAdds = array();
 	public $SortView = array();

@@ -264,6 +264,19 @@ class weCustomerView {
 				}
 			}
 
+			function setMultiSelectData(name,max){
+				var tmp="";
+				for (var i=0; i<max; ++i){
+					var val=document.getElementsByName(name+"_multi_"+i)[0];
+					if(val.checked){
+						tmp+=val.value+",";
+					}
+				}
+				tmp=tmp.substr(0,tmp.length-1);
+				document.getElementsByName(name)[0].value=tmp;
+				top.content.setHot();
+			}
+
 			function formatDate(date,format){
 
 				var daynum=date.getDate();
