@@ -609,7 +609,7 @@ class liveUpdateFunctions {
 			if ($queryArray) {
 				foreach ($queryArray as $query) {
 					if (trim($query)) {
-						success &= $this->executeUpdateQuery($query);
+						$success &= $this->executeUpdateQuery($query);
 					}
 				}
 			}
