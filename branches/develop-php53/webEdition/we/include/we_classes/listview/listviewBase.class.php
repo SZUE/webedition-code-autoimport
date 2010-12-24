@@ -330,17 +330,15 @@ class listviewBase{
 				array_push($usedKeys,$key);
 				$queryString .= $key."=".rawurlencode($val)."&";
 			}
-			$queryString = ereg_replace('(.*)&$','\1',$queryString);
+			$queryString = rtrim($queryString,'&');
 		}
 		$url_tail = "";
 		if(isset($_GET)) {
 			foreach($_GET as $key => $val){
 				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (!ereg("^we_ui_",$key))) {
 					if (is_array($val)) {
-						for($i=0;$i<sizeof($val);$i++){
-						    if(isset($key[$i])){
-						        $url_tail .= "$key"."[".$i."]=". (isset($val) && isset($val[$i]) ? rawurlencode($val[$i]) : "") ."&";
-						    }
+						foreach($val as $ikey => $ival){
+							$url_tail .= "$key"."[".$ikey."]=". rawurlencode($ival) ."&";
 						}
 					} else {
 						$url_tail .= "$key=".rawurlencode($val)."&";
@@ -352,10 +350,8 @@ class listviewBase{
 			foreach($_POST as $key => $val){
 				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (!ereg("^we_ui_",$key))) {
 					if (is_array($val)) {
-						for($i=0;$i<sizeof($val);$i++){
-						    if(isset($key[$i])){
-						        $url_tail .= "$key"."[".$i."]=". (isset($val) && isset($val[$i]) ? rawurlencode($val[$i]) : "") ."&";
-						    }
+						foreach($val as $ikey => $ival){
+							$url_tail .= "$key"."[".$ikey."]=". rawurlencode($ival) ."&";
 						}
 					} else {
 						$url_tail .= "$key=".rawurlencode($val)."&";
@@ -364,7 +360,7 @@ class listviewBase{
 			}
 		}
 		$url_tail .= $queryString;
-		$url_tail = ereg_replace('(.*)&$','\1',$url_tail);
+		$url_tail = rtrim($url_tail,'&');
 		return $url_tail;
 	}
 

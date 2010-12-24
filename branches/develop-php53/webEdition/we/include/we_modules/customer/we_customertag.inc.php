@@ -57,5 +57,3 @@ class we_customertag{
 	}
 
 }
-
-?>

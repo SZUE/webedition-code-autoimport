@@ -513,13 +513,22 @@ class liveUpdateFunctions {
 			array_walk($indexes,'addslashes');
 
 			$type=$indexes['index'];
+			$mysl='`';
 			if($type=='PRIMARY'){
 				$key='KEY';
+				$mysl='';
 			}
 			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
-
-			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
+			$myindexes=array();
+			foreach ($indexes as $index){
+				if (strpos($index,'(') === false){
+					$myindexes[] = '`'.$index.'`';
+				} else {
+					$myindexes[] = $index;
+				}
+			}
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' ('.implode(',',$myindexes).')';
 		}
 		return $queries;
 	}
@@ -723,12 +732,12 @@ class liveUpdateFunctions {
 								if ($db->query(trim($_query))) {
 									$this->QueryLog['success'][] = $_query;
 								} else {
-									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $_query -->";
+									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
 									$success = false;
 								}
 							}
 							if ($success) {
-								$this->QueryLog['tableChanged'][] = $tableName . "\n<!--$query-->";
+								$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
 							}
 
 						} else {
@@ -742,7 +751,7 @@ class liveUpdateFunctions {
 					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 				break;
 				default:
-					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 					return false;
 				break;
 			}
