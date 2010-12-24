@@ -26,6 +26,7 @@ function we_tag_ifShopFieldEmpty($attribs,$content) {
 	$name      = we_getTagAttribute("name", $attribs);
 	$reference = we_getTagAttribute("reference", $attribs);
 	$shopname  = we_getTagAttribute("shopname", $attribs);
+	$attribs['type']='print';//Bug #4895
 
 	return (we_tag('shopField',$attribs, "") == '');
 }

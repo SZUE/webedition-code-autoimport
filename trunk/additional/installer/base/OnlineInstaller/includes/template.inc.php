@@ -107,7 +107,7 @@
 
 			</div>
 			<div id="leProduct">
-				<img src="<?php echo leEmbeddedImage::get(LE_ONLINE_INSTALLER_PATH . "/img/leLayout/product.gif"); ?>" alt="" id="leProductImg" />
+				<a href="http://www.webedition.org" target="_blank" title="www.webedition.org"><img src="<?php echo leEmbeddedImage::get(LE_ONLINE_INSTALLER_PATH . "/img/leLayout/product.gif"); ?>" border="0" alt="" id="leProductImg" /></a>
 			</div>
 		</div>
 		<div id="leFoot">
