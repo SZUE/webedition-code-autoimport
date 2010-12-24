@@ -737,7 +737,7 @@ class liveUpdateFunctions {
 								}
 							}
 							if ($success) {
-								$this->QueryLog['tableChanged'][] = $tableName . "\n-- $query --";
+								$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
 							}
 
 						} else {
@@ -748,7 +748,7 @@ class liveUpdateFunctions {
 					}
 				break;
 				case '1062':
-					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
+					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 				break;
 				default:
 					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
