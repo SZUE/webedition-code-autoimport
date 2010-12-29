@@ -1189,7 +1189,7 @@ EOF;
 			$subfolders = !we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
 		}
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
-		
+		$seourls = we_getTagAttributeTagParser("seourls", $arr, "false", true);
 		$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1263,7 +1263,7 @@ $GLOBALS["weEconda"]["HTML"] .= \'<a name="emos_name" title="search" rel="\'.$GL
 					if ($foo && $predefinedSQL=="")
 						return str_replace($tag, $foo, $code);
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
-$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages);
+$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages,"'.$seourls.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="object"'), $code); }
 				break;	
@@ -1305,7 +1305,7 @@ $GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset
 					if ($foo) return str_replace($tag, $foo, $code);
 					$php .= '
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php");
-$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages");
+$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages","'.$seourls.'");
 ';				
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="multiobject"'), $code); }
 				break;
@@ -1354,9 +1354,10 @@ $GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $d
 				$categoryids = we_getTagAttributeTagParser("categoryids", $arr, 0);
 				$parentid = we_getTagAttributeTagParser("parentid", $arr, 0);
 				$parentidname = we_getTagAttributeTagParser('parentidname', $arr);
+				if (strpos($parentid,'$')===false ){$php.='$parentid="'.$parentid.'";';} else {$php.='$parentid = isset('.$parentid.') ? "'.$parentid.'" : $GLOBALS["'.str_replace('$','', $parentid). '"];'; }
 				$php .= '
 $categoryids="' . $categoryids . '";
-$parentid="' . $parentid . '";
+//$parentid="' . $parentid . '";
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_catListview.class.php");
 $GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ');
 ';

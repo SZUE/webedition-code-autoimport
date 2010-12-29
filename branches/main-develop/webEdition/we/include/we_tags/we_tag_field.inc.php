@@ -452,8 +452,7 @@ function we_tag_field($attribs, $content){
 						$GLOBALS["lv"]->tid = $tid;
 					}
 
-					if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_search_listview" && $GLOBALS["lv"]->f(
-							"OID")) {
+					if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_search_listview" && $GLOBALS["lv"]->f("OID")) {
 						if ($tid) {
 							$tail = "&amp;we_objectTID=" . $tid;
 						} else {

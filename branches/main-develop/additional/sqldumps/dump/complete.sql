@@ -1,4 +1,4 @@
-CREATE TABLE tblAnzeigePrefs (
+﻿CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -399,6 +399,11 @@ CREATE TABLE tblObject (
   DefaultDesc varchar(255) NOT NULL default '',
   DefaultTitle varchar(255) NOT NULL default '',
   DefaultKeywords varchar(255) NOT NULL default '',
+  DefaultUrl varchar(255) NOT NULL default '',
+  DefaultUrlfield0 varchar(255) NOT NULL DEFAULT '_',
+  DefaultUrlfield1 varchar(255) NOT NULL DEFAULT '_',
+  DefaultUrlfield2 varchar(255) NOT NULL DEFAULT '_',
+  DefaultUrlfield3 varchar(255) NOT NULL DEFAULT '_',
   ClassName varchar(64) NOT NULL default '',
   Workspaces varchar(255) NOT NULL default '',
   DefaultWorkspaces varchar(255) NOT NULL default '',
@@ -420,6 +425,7 @@ CREATE TABLE tblObjectFiles (
   CreationDate int(11) NOT NULL default '0',
   ModDate int(11) NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
+  Url varchar(255) NOT NULL default '',
   CreatorID bigint(20) NOT NULL default '0',
   ModifierID bigint(20) NOT NULL default '0',
   RestrictOwners tinyint(1) NOT NULL default '0',
@@ -444,7 +450,8 @@ CREATE TABLE tblObjectFiles (
   PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID),
-  KEY TableID (TableID)
+  KEY TableID (TableID),
+  KEY Url (Url)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblOrders (

@@ -39,6 +39,7 @@
 				$q .= " OF_ParentID BIGINT NOT NULL, ";
 				$q .= " OF_Text VARCHAR(255) NOT NULL, ";
 				$q .= " OF_Path VARCHAR(255) NOT NULL, ";
+				$q .= " OF_Url VARCHAR(255) NOT NULL, ";
 				$q .= " OF_Workspaces VARCHAR(255) NOT NULL, ";
 				$q .= " OF_ExtraWorkspaces VARCHAR(255) NOT NULL, ";
 				$q .= " OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL, ";

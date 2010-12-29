@@ -2590,22 +2590,14 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
 	if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 		// check if object is published.
-		$published = f(
-										"SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),
-										"Published",
-										$DB_WE);
+		$published = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),"Published",$DB_WE);
 		if (!$published) {
 			$GLOBALS["we_link_not_published"] = 1;
 			return "";
 		}
 	}
 
-	$foo = getHash(
-									"
-		SELECT Workspaces, ExtraWorkspacesSelected
-		FROM " . OBJECT_FILES_TABLE . "
-		WHERE ID=" . abs($id),
-									$DB_WE);
+	$foo = getHash("SELECT Workspaces, ExtraWorkspacesSelected FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),$DB_WE);
 	if (count($foo) == 0)
 		return "";
 	$showLink = false;
@@ -2629,13 +2621,7 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
 		if ($foo["Workspaces"]) {
 			$fooArr = makeArrayFromCSV($foo["Workspaces"]);
 			$path = id_to_path($fooArr[0], FILE_TABLE, $DB_WE);
-			$path = f(
-											"
-				SELECT Path
-				FROM " . FILE_TABLE . "
-				WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . mysql_real_escape_string($path) . "%'",
-											"Path",
-											$DB_WE);
+			$path = f("SELECT Path FROM " . FILE_TABLE . " WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . mysql_real_escape_string($path) . "%'","Path",$DB_WE);
 			if (!$path)
 				return "";
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
