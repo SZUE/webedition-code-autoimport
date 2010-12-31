@@ -14,4 +14,8 @@ $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribut
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id712_id'] = new weTagData_selectorAttribute('712', 'id',FILE_TABLE, 'text/webedition', false, ''); }
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id713_imageid'] = new weTagData_selectorAttribute('713', 'imageid',FILE_TABLE, 'image/*', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+$GLOBALS['weTagWizard']['attribute']['id884_hidedirindex'] = new weTagData_selectAttribute('884', 'hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id885_seourls'] = new weTagData_selectAttribute('885', 'seourls', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+
+
 ?>

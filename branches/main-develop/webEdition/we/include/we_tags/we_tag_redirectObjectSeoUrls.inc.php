@@ -28,7 +28,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 
 	// get attributes
 	$error404doc = we_getTagAttribute("error404doc", $attribs);
-	$hiddendirindex = we_getTagAttribute("hiddendirindex", $attribs,"false",true);$hiddendirindex=true;
+	$hiddendirindex = we_getTagAttribute("hiddendirindex", $attribs,"false",true);
 	if($hiddendirindex){
 		if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
 			$dirindexarray = explode(',',NAVIGATION_DIRECTORYINDEX_NAMES);

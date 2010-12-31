@@ -44,7 +44,7 @@ class we_listview_object extends listviewBase {
 	var $seourls = false;
 	var $hidedirindex = false;
 
-	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="",$languages='',$seourls=false,$hidedirindex=false){
+	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="",$languages='',$hidedirindex=false,$seourls=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 

@@ -59,7 +59,7 @@ class we_search_listview extends listviewBase {
 	 *
 	 */
 
-	function we_search_listview($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off',$languages='',$seourls=false,$hidedirindex=false){
+	function we_search_listview($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off',$languages='',$hidedirindex=false,$seourls=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 		$this->customerFilterType = $customerFilterType;
