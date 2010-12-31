@@ -513,7 +513,12 @@ function we_tag_field($attribs, $content){
 								if (($GLOBALS['we_doc']->ClassName == 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)) {
 									$_linkAttribs['href'] = $GLOBALS["lv"]->f("wedoc_lastPath") . $tail;
 								} else {
-									$_linkAttribs['href'] = $GLOBALS["lv"]->f("WE_PATH") . $tail;
+									$path_parts = pathinfo($GLOBALS["lv"]->f("WE_PATH"));
+									if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+										$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+									} else {
+										$_linkAttribs['href'] = $GLOBALS["lv"]->f("WE_PATH") . $tail;
+									}
 								}
 
 								if ($name == 'we_href') { //  return href for this object
