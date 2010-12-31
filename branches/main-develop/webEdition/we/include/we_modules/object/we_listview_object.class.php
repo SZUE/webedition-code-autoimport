@@ -42,8 +42,9 @@ class we_listview_object extends listviewBase {
 	var $we_predefinedSQL = "";
 	var $languages = ""; //string of Languages, separated by ,
 	var $seourls = false;
+	var $hidedirindex = false;
 
-	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="",$languages='',$seourls=false){
+	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="",$languages='',$seourls=false,$hidedirindex=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
@@ -63,6 +64,7 @@ class we_listview_object extends listviewBase {
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
 		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 		$this->seourls=$seourls;
+		$this->hidedirindex=$hidedirindex;
 
 		$_obxTable = OBJECT_X_TABLE.$this->classID;
 		
@@ -411,11 +413,19 @@ class we_listview_object extends listviewBase {
 				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 				$this->DB_WE->Record["we_wedoc_WebUserID"] = isset($this->DB_WE->Record["OF_WebUserID"]) ? $this->DB_WE->Record["OF_WebUserID"] : 0; // needed for ifRegisteredUserCanChange tag
 				$this->DB_WE->Record["we_WE_CUSTOMER_ID"] = $this->DB_WE->Record["we_wedoc_WebUserID"];
-				if ($this->seourls && $this->DB_WE->Record['OF_Url']!=''){
-					$path_parts = pathinfo($this->Path);
-					$this->DB_WE->Record["we_WE_PATH"] = $path_parts['dirname'].DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR. $this->DB_WE->Record['OF_Url'];
+				$path_parts = pathinfo($this->Path);
+				if ($this->seourls && $this->DB_WE->Record['OF_Url']!=''){		
+					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR. $this->DB_WE->Record['OF_Url'];
+					} else {
+						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR. $this->DB_WE->Record['OF_Url'];
+					}				
 				} else {
-					$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
+					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						$this->DB_WE->Record["we_WE_PATH"] = $this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR."?$paramName=".$this->DB_WE->Record["OF_ID"];
+					} else {
+						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];					
+					}
 				}
 				
 				$this->DB_WE->Record["we_WE_TEXT"] = isset($this->DB_WE->Record["OF_Text"]) ? $this->DB_WE->Record["OF_Text"] : '';

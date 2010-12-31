@@ -28,6 +28,14 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 
 	// get attributes
 	$error404doc = we_getTagAttribute("error404doc", $attribs);
+	$hiddendirindex = we_getTagAttribute("hiddendirindex", $attribs,"false",true);$hiddendirindex=true;
+	if($hiddendirindex){
+		if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
+			$dirindexarray = explode(',',NAVIGATION_DIRECTORYINDEX_NAMES);
+		} else {
+			$hiddendirindex = false;
+		}
+	}
 	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
 	
 	if(!$we_editmode){
@@ -41,7 +49,14 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 			if ($searchfor){
 				$searchfor = $path_parts['filename'].DIRECTORY_SEPARATOR.$searchfor;
-			} else $searchfor = $path_parts['filename'];		
+			} else $searchfor = $path_parts['filename'];
+			if(!$displayid && $hiddendirindex){
+				foreach($dirindexarray as $dirindex){
+					$display=$path_parts['dirname'].DIRECTORY_SEPARATOR.$dirindex;
+					$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+					if($displayidtest)$displayid = $displayidtest;
+				}
+			}		
 			if($displayid){		
 				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchfor) . "' LIMIT 1", "ID", $db));
 				if ($objectid){
@@ -51,6 +66,21 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 				}
 			} else {
 				$path_parts = pathinfo($path_parts['dirname']);
+			}
+		}
+		if($notfound && $path_parts['dirname']=='/' && $hiddendirindex){
+			if ($searchfor){
+				$searchfor = $path_parts['filename'].DIRECTORY_SEPARATOR.$searchfor;
+			} else $searchfor = $path_parts['filename'];
+			
+			foreach($dirindexarray as $dirindex){
+				$display=$path_parts['dirname'].$dirindex;
+				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+				if($displayidtest)$displayid = $displayidtest;
+			}
+			if($displayid){		
+				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchfor) . "' LIMIT 1", "ID", $db));
+				if ($objectid){$notfound=false;}
 			}
 		}
 		if(!$notfound){
@@ -65,7 +95,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		} elseif($error404doc) {
 			header("HTTP/1.0 404 Not Found", true,404);
 			header("Status: 404 Not Found", true,404);
-			we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
+			//we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
 			exit;
 		}
 	} 	
