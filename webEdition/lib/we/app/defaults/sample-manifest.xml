@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- exsample manifest for webEdition applications showing all supported values -->
+<!-- example manifest for webEdition applications showing all supported values -->
 <manifest>
 	
 	<!-- the creator develloped the application  -->
@@ -34,7 +34,7 @@
 		<authorlinks>
 			<www>http://xyz</www>
 		</authorlinks>
-		<address>c/o Löwi &amp Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
         <country>DE</country>
 		<phone>+49 30 766835-79</phone>
 		<fax>+49 30 766835-85</fax>
