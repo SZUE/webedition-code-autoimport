@@ -219,7 +219,7 @@ class liveUpdateFunctions {
 				fclose($fh);
 				if(!chmod($filePath, 0755)) {
 					return false;
-					
+
 				}
 				return true;
 
@@ -258,7 +258,7 @@ class liveUpdateFunctions {
 			}
 			$path .= "/";
 		}
-		
+
 		if(!is_writable($dirPath)) {
 			if(!chmod($dirPath, $mod)) {
 				return false;
@@ -352,7 +352,7 @@ class liveUpdateFunctions {
 			$replace = $this->checkReplaceDocRoot($replace);
 			if ($needle) {
 				/*This version is used in OnlineInstaller! which one is correct?
-				$newneedle= preg_quote($needle, '~'); 
+				$newneedle= preg_quote($needle, '~');
 				$newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
 				*/
 				$newContent = ereg_replace($needle, $replace, $oldContent);
@@ -525,7 +525,7 @@ class liveUpdateFunctions {
 				if (strpos($index,'(') === false){
 					$myindexes[] = '`'.$index.'`';
 				} else {
-					$myindexes[] = $index;
+					$myindexes[] = '`'.str_replace('(','`(',$index);
 				}
 			}
 			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' ('.implode(',',$myindexes).')';
@@ -574,11 +574,11 @@ class liveUpdateFunctions {
 			foreach($queries as $query) {
 				$success &= $this->executeUpdateQuery($query);
 			}
-			
+
 		}
 		return $success;
 	}
-	
+
 	/**
 	 * updates the database with given dump.
 	 *
@@ -592,11 +592,11 @@ class liveUpdateFunctions {
 		// change fields when needed.
 
 		$query = trim($query);
-		
+
 		if (strpos($query,'tblUser')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
 			return true;
 		}
-	
+
 		// first of all we need to check if there is a tblPrefix
 		if (LIVEUPDATE_TABLE_PREFIX) {
 
@@ -607,7 +607,7 @@ class liveUpdateFunctions {
 			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			
+
 			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
 
@@ -616,17 +616,17 @@ class liveUpdateFunctions {
 			if(eregi("^CREATE TABLE ", $query)) {
 				$Charset = DB_CHARSET;
 				$Collation = DB_COLLATION;
-				if($Charset == 'UTF-8'){//#4661 
+				if($Charset == 'UTF-8'){//#4661
 					$Charset='utf8';
 				}
-				if($Collation == 'UTF-8'){//#4661 
+				if($Collation == 'UTF-8'){//#4661
 					$Collation='utf8_general_ci';
 				}
 				$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
 			}
 
 		}
-	
+
 		if ($db->query($query) ) {
 			return true;
 		} else {

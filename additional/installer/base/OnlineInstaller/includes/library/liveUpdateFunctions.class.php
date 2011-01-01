@@ -543,7 +543,7 @@ class liveUpdateFunctions {
 				if (strpos($index,'(') === false){
 					$myindexes[] = '`'.$index.'`';
 				} else {
-					$myindexes[] = $index;
+					$myindexes[] = '`'.str_replace('(','`(',$index);
 				}
 			}
 			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' ('.implode(',',$myindexes).')';
