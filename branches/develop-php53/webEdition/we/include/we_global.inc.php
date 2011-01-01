@@ -2577,7 +2577,7 @@ function p_r($val) {
 	print "</pre>";
 }
 
-function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
+function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false,$seourls=false) {
 
 	if (!$path)
 		$path = $_SERVER["PHP_SELF"];
@@ -2590,22 +2590,14 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
 	if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 		// check if object is published.
-		$published = f(
-										"SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),
-										"Published",
-										$DB_WE);
+		$published = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),"Published",$DB_WE);
 		if (!$published) {
 			$GLOBALS["we_link_not_published"] = 1;
 			return "";
 		}
 	}
 
-	$foo = getHash(
-									"
-		SELECT Workspaces, ExtraWorkspacesSelected
-		FROM " . OBJECT_FILES_TABLE . "
-		WHERE ID=" . abs($id),
-									$DB_WE);
+	$foo = getHash("SELECT Workspaces, ExtraWorkspacesSelected FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),$DB_WE);
 	if (count($foo) == 0)
 		return "";
 	$showLink = false;
@@ -2622,20 +2614,28 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
 	if ($showLink) {
 
 		$path = getNextDynDoc($path, $pid, $foo["Workspaces"], $foo["ExtraWorkspacesSelected"], $DB_WE);
-		if (!$path)
-			return "";
-		return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
+		if (!$path) 
+			return "";		
+			
+		if ($hidedirindex){
+			$path_parts = pathinfo($path);
+			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+				$path= ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+			} 			
+		}
+		if ($seourls){
+			$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", "Url", $DB_WE);
+		}
+		if ($seourls && $objecturl!=''){
+			return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+		} else { 
+			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
+		}
 	} else {
 		if ($foo["Workspaces"]) {
 			$fooArr = makeArrayFromCSV($foo["Workspaces"]);
 			$path = id_to_path($fooArr[0], FILE_TABLE, $DB_WE);
-			$path = f(
-											"
-				SELECT Path
-				FROM " . FILE_TABLE . "
-				WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . mysql_real_escape_string($path) . "%'",
-											"Path",
-											$DB_WE);
+			$path = f("SELECT Path FROM " . FILE_TABLE . " WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . mysql_real_escape_string($path) . "%'","Path",$DB_WE);
 			if (!$path)
 				return "";
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);

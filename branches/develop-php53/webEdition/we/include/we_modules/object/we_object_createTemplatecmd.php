@@ -71,6 +71,8 @@ if($GLOBALS['we_doc']->i_filenameEmpty()){
 	$we_responseText = sprintf($l_we_editor[$GLOBALS['we_doc']->ContentType]["we_filename_notAllowed"],$GLOBALS['we_doc']->Path);
 }else if($GLOBALS['we_doc']->i_filenameDouble()){
 	$we_responseText = sprintf($l_we_editor[$GLOBALS['we_doc']->ContentType]["response_path_exists"],$GLOBALS['we_doc']->Path);
+}else if($GLOBALS['we_doc']->i_urlDouble()){
+	$we_responseText = "qwer".sprintf($l_we_editor[$GLOBALS['we_doc']->ContentType]["we_objecturl_exists"],$GLOBALS['we_doc']->Url);
 }
 if(isset($we_responseText)){
 	echo '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR) . '</script>

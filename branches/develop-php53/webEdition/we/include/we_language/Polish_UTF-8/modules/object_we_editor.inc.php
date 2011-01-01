@@ -44,6 +44,7 @@ $l_we_editor["objectFile"]["response_unpublish_notok"] = "Błąd przy wycofywani
 $l_we_editor["objectFile"]["response_not_published"] = "Nie opublikowano obiektu '%s' !";
 $l_we_editor["objectFile"]["response_save_notok"] = "Błąd przy zapisywaniu obiektu '%s'!";
 $l_we_editor["objectFile"]["response_path_exists"] = "Nie można było zapisać obiektu '%s', ponieważ w tym miejscu znajduje się już inny obiekt bądź katalog!";
+$l_we_editor["objectFile"]["we_objecturl_exists"] = "The object '%s' could not be saved, because another object with the same URL already exists";//TRANSLATE
 $l_we_editor["objectFile"]["filename_empty"] = "Nie wprowadzono nazwy dla obiektu!";
 $l_we_editor["objectFile"]["we_filename_notValid"] = "Nieprawidłowa nazwa obiektu!\\nDozwolone znaki to litery od a do z (wielkie i małe), cyfry, znak podkreślenia (_), minus (-) i kropka (.).";
 $l_we_editor["objectFile"]["we_filename_notAllowed"] = "Wprowadzona nazwa obiektu jest nieprawidłowa!";

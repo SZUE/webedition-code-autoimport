@@ -44,6 +44,7 @@ $l_we_editor["objectFile"]["response_unpublish_notok"] = "Virhe poistettaessa ob
 $l_we_editor["objectFile"]["response_not_published"] = "Objektia '%s' ei ole julkaistu!";
 $l_we_editor["objectFile"]["response_save_notok"] = "Virhe tallennettaessa objektia '%s'!";
 $l_we_editor["objectFile"]["response_path_exists"] = "Objektia '%s' ei voitu tallentaa, koska toinen dokumentti tai hakemisto sijaitsee samassa kohteessa!";
+$l_we_editor["objectFile"]["we_objecturl_exists"] = "The object '%s' could not be saved, because another object with the same URL already exists";//TRANSLATE
 $l_we_editor["objectFile"]["filename_empty"] = "Objektilla ei ole nimeä!";
 $l_we_editor["objectFile"]["we_filename_notValid"] = "Virheellinen objektin nimi\\nSallitut kirjaimet ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)";
 $l_we_editor["objectFile"]["we_filename_notAllowed"] = "Syöttämäsi objektin nimi ei ole sallittu!";

@@ -77,6 +77,9 @@ class we_objectFile extends we_document
 	var $IsTextContentDoc = true;
 
 	var $documentCustomerFilter = ""; // DON'T SET TO NULL !!!!
+	
+	
+	var $Url='';
 
 
 	//######################################################################################################################################################
@@ -90,7 +93,7 @@ class we_objectFile extends we_document
 	function we_objectFile()
 	{
 		$this->we_document();
-		array_push($this->persistent_slots,"CSS","DefArray","Text","AllowedClasses","Templates","ExtraTemplates","Workspaces","ExtraWorkspaces","ExtraWorkspacesSelected","RootDirPath","rootDirID","TableID","ObjectID","Category","IsSearchable","Charset","Language");
+		array_push($this->persistent_slots,"CSS","DefArray","Text","AllowedClasses","Templates","ExtraTemplates","Workspaces","ExtraWorkspaces","ExtraWorkspacesSelected","RootDirPath","rootDirID","TableID","ObjectID","Category","IsSearchable","Charset","Language","Url");
 		if(defined("SCHEDULE_TABLE")){
 			array_push($this->persistent_slots,"FromOk","ToOk","From","To");
 		}
@@ -115,6 +118,7 @@ class we_objectFile extends we_document
 		$ExtraWorkspacesSelected = $this->ExtraWorkspacesSelected;
 		$IsSearchable = $this->IsSearchable;
 		$Charset = $this->Charset;
+		$Url =  $this->Url;
 		we_root::makeSameNew();
 		$this->Category = $Category;
 		$this->TableID = $TableID;
@@ -123,7 +127,8 @@ class we_objectFile extends we_document
 		$this->DefaultInit=false;
 
 		$this->i_objectFileInit(true);
-
+		
+		$this->Url = $Url; 
 		$this->Workspaces = $Workspaces;
 		$this->ExtraWorkspaces = $ExtraWorkspaces;
 		$this->ExtraWorkspacesSelected = $ExtraWorkspacesSelected;
@@ -313,36 +318,36 @@ class we_objectFile extends we_document
 			}
 			if($this->DB_WE->f("DefaultText")){
 				$text = $this->DB_WE->f("DefaultText");
-				if(ereg('%unique([^%]*)%',$text,$regs)){
+				if(preg_match('/%unique([^%]*)%/',$text,$regs)){
 					if(!$regs[1]){
 						$anz = 16;
 					}else{
 						$anz = abs($regs[1]);
 					}
 					$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
-					$text = ereg_replace('%unique[^%]*%',$unique,$text);
+					$text = preg_replace('/%unique[^%]*%/',$unique,$text);
 				}
-				if(ereg('%ID%',$text)){
+				if(strpos($text,'%ID%')!==false){
 					$id = 1 + abs(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE ,"ID",new DB_WE()));
 					$text = str_replace('%ID%',"".$id,$text);
 				}
-				if(ereg('%d%',$text,$regs)){
+				if(strpos($text,'%d%')!==false){
 					$text = str_replace('%d%',date("d"),$text);
 				}
-				if(ereg('%m%',$text,$regs)){
+				if(strpos($text,'%m%')!==false){
 					$text = str_replace('%m%',date("m"),$text);
 				}
-				if(ereg('%y%',$text,$regs)){
+				if(strpos($text,'%y%')!==false){
 					$text = str_replace('%y%',date("y"),$text);
 				}
-				if(ereg('%Y%',$text,$regs)){
+				if(strpos($text,'%Y%')!==false){
 					$text = str_replace('%Y%',date("Y"),$text);
 				}
-				if(ereg('%n%',$text,$regs)){
+				if(strpos($text,'%n%')!==false){
 					$text = str_replace('%n%',date("n"),$text);
 				}
-				if(ereg('%h%',$text,$regs)){
-					$text = ereg_replace('%h%',date("h"),$text);
+				if(strpos($text,'%h%')!==false){
+					$text = str_replace('%h%',date("h"),$text);
 				}
 				$this->Text=$text;
 			}
@@ -555,10 +560,10 @@ class we_objectFile extends we_document
 				<tr>
 					<td>
 						'.$this->formIsSearchable().'</td>
-					<td class="defaultfont">
-						&nbsp;</td>
-					<td>
-						&nbsp;</td>
+					<td class="defaultfont">&nbsp;
+						</td>
+					<td>&nbsp;
+						</td>
 				</tr>
 			</table></td>
 	</tr>
@@ -2017,6 +2022,80 @@ class we_objectFile extends we_document
 			}	
 		}
 	}
+	
+	function setUrl(){
+
+		$foo = getHash("SELECT DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3 FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
+		if(isset($foo["DefaultUrl"]) && $foo["DefaultUrl"]){		
+			if (isset($foo["DefaultUrlfield0"]) && $foo["DefaultUrlfield0"]) {
+				list($f,$d) = explode("_", $foo["DefaultUrlfield0"]);
+				if ($f !== '' && $d !== '') {
+					$urlfield0 = $this->geFieldValue($d, $f);
+				}
+			}
+			if (isset($foo["DefaultUrlfield1"]) && $foo["DefaultUrlfield1"]) {
+				list($f,$d) = explode("_", $foo["DefaultUrlfield1"]);
+				if ($f !== '' && $d !== '') {
+					$urlfield1 = $this->geFieldValue($d, $f);
+				}
+			}
+			if (isset($foo["DefaultUrlfield2"]) && $foo["DefaultUrlfield2"]) {
+				list($f,$d) = explode("_", $foo["DefaultUrlfield2"]);
+				if ($f !== '' && $d !== '') {
+					$urlfield2 = $this->geFieldValue($d, $f);
+				}
+			}
+			if (isset($foo["DefaultUrlfield3"]) && $foo["DefaultUrlfield3"]) {
+				list($f,$d) = explode("_", $foo["DefaultUrlfield3"]);
+				if ($f !== '' && $d !== '') {
+					$urlfield3 = $this->geFieldValue($d, $f);
+				}
+			}
+			$text = $foo["DefaultUrl"];
+			if(preg_match('/%unique([^%]*)%/',$text,$regs)){
+				if(!$regs[1]){
+					$anz = 16;
+				}else{
+					$anz = abs($regs[1]);
+				}
+				$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
+				$text = preg_replace('/%unique[^%]*%/',$unique,$text);
+			}
+			if(strpos($text,'%ID%')!==false){
+				$text = str_replace('%ID%',"".$this->ID,$text);
+			}
+			if(strpos($text,'%d%')!==false){$text = str_replace('%d%',date("d",$this->CreationDate),$text);}
+			if(strpos($text,'%m%')!==false){$text = str_replace('%m%',date("m",$this->CreationDate),$text);}
+			if(strpos($text,'%y%')!==false){$text = str_replace('%y%',date("y",$this->CreationDate),$text);}
+			if(strpos($text,'%Y%')!==false){$text = str_replace('%Y%',date("Y",$this->CreationDate),$text);}
+			if(strpos($text,'%n%')!==false){$text = str_replace('%n%',date("n",$this->CreationDate),$text);}
+			if(strpos($text,'%h%')!==false){$text = str_replace('%h%',date("h",$this->CreationDate),$text);}
+			if(strpos($text,'%Md%')!==false){$text = str_replace('%Md%',date("d",$this->ModDate),$text);}
+			if(strpos($text,'%Mm%')!==false){$text = str_replace('%Mm%',date("m",$this->ModDate),$text);}
+			if(strpos($text,'%My%')!==false){$text = str_replace('%My%',date("y",$this->ModDate),$text);}
+			if(strpos($text,'%MY%')!==false){$text = str_replace('%MY%',date("Y",$this->ModDate),$text);}
+			if(strpos($text,'%Mn%')!==false){$text = str_replace('%Mn%',date("n",$this->ModDate),$text);}
+			if(strpos($text,'%Mh%')!==false){$text = str_replace('%Mh%',date("h",$this->ModDate),$text);}
+			if(strpos($text,'%Fd%')!==false){$text = str_replace('%Fd%',date("d",$urlfield0),$text);}
+			if(strpos($text,'%Fm%')!==false){$text = str_replace('%Fm%',date("m",$urlfield0),$text);}
+			if(strpos($text,'%Fy%')!==false){$text = str_replace('%Fy%',date("y",$urlfield0),$text);}
+			if(strpos($text,'%FY%')!==false){$text = str_replace('%FY%',date("Y",$urlfield0),$text);}
+			if(strpos($text,'%Fn%')!==false){$text = str_replace('%Fn%',date("n",$urlfield0),$text);}
+			if(strpos($text,'%Fh%')!==false){$text = str_replace('%Fh%',date("h",$urlfield0),$text);}
+			if(strpos($text,'%urlfield1%')!==false){$text = str_replace('%urlfield1%',$urlfield1,$text);}
+			if(strpos($text,'%urlfield2%')!==false){$text = str_replace('%urlfield2%',$urlfield2,$text);}
+			if(strpos($text,'%urlfield3%')!==false){$text = str_replace('%urlfield3%',$urlfield3,$text);}
+			
+			if(strpos($text,'%DirSep%')!==false){$text = str_replace('%DirSep%','/',$text);}
+			
+			$text=correctUml($text);
+			$text=str_replace(" ", "-", $text);
+			$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
+			$this->Url=$text; 
+		}
+		
+		
+	}
 
 
 	function insertAtIndex(){
@@ -2182,7 +2261,9 @@ class we_objectFile extends we_document
 		$this->ModDate = time();
 		$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		$this->wasUpdate=1;
-
+		
+		$this->setUrl();
+		
 		if($resave==0 && $this->ID) {
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
@@ -2245,41 +2326,41 @@ class we_objectFile extends we_document
 	function we_load($from=LOAD_MAID_DB){
 		switch($from){
 			case LOAD_SCHEDULE_DB:
-			$sessDat = unserialize(f("SELECT SerializedData FROM ".SCHEDULE_TABLE." WHERE DID=".$this->ID." AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
-
-			if($sessDat){
-				$this->i_initSerializedDat($sessDat);
-				$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset");
-				$this->i_getUniqueIDsAndFixNames();
-				break;
-			}else{
-				$from = LOAD_MAID_DB;
-			}
+				$sessDat = unserialize(f("SELECT SerializedData FROM ".SCHEDULE_TABLE." WHERE DID=".$this->ID." AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
+	
+				if($sessDat){
+					$this->i_initSerializedDat($sessDat);
+					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url");
+					$this->i_getUniqueIDsAndFixNames();
+					break;
+				}else{
+					$from = LOAD_MAID_DB;
+				}
 			case LOAD_MAID_DB:
-			we_document::we_load($from);
-			break;
+				we_document::we_load($from);
+				break;
 			case LOAD_TEMP_DB:
-			$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
-			if($sessDat){
-				$this->i_initSerializedDat($sessDat,false);
-				$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset");
-				$this->i_getUniqueIDsAndFixNames();
-			}else{
-				$this->we_load(LOAD_MAID_DB);
-			}
-			$this->setTypeAndLength();
-			break;
+				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
+				if($sessDat){
+					$this->i_initSerializedDat($sessDat,false);
+					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url");
+					$this->i_getUniqueIDsAndFixNames();
+				}else{
+					$this->we_load(LOAD_MAID_DB);
+				}
+				$this->setTypeAndLength();
+				break;
 			case LOAD_REVERT_DB:
-			$sessDat = we_temporaryDocument::revert($this->ID, $this->Table, $this->DB_WE);
-			if($sessDat){
-				$this->i_initSerializedDat($sessDat,false);
-				$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset");
-				$this->i_getUniqueIDsAndFixNames();
-			}else{
-				$this->we_load(LOAD_TEMP_DB);
-			}
-			$this->setTypeAndLength();
-			break;
+				$sessDat = we_temporaryDocument::revert($this->ID, $this->Table, $this->DB_WE);
+				if($sessDat){
+					$this->i_initSerializedDat($sessDat,false);
+					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url");
+					$this->i_getUniqueIDsAndFixNames();
+				}else{
+					$this->we_load(LOAD_TEMP_DB);
+				}
+				$this->setTypeAndLength();
+				break;
 		}
 		$this->loadSchedule();
 		$this->setTitleAndDescription();
@@ -2443,8 +2524,8 @@ class we_objectFile extends we_document
 			if(!isset($this->ParentID)) {
 				$this->resetParentID();
 			}
-*/
-$this->checkAndCorrectParent();
+			*/
+			$this->checkAndCorrectParent();
 			if ($_initWeDocumentCustomerFilter) {
 				// get customerFilter of parent Folder
 				$_tmpFolder = new we_class_folder();
@@ -2574,7 +2655,10 @@ $this->checkAndCorrectParent();
 	function i_filenameDouble(){
 		return f("SELECT ID FROM ".$this->Table." WHERE ParentID=".$this->ParentID." AND Text='".mysql_real_escape_string($this->Text)."' AND ID!='".$this->ID."'","ID",new DB_WE());
 	}
-
+	function i_urlDouble(){
+		$this->setUrl();
+		return f("SELECT ID FROM ".$this->Table." WHERE Url='".mysql_real_escape_string($this->Url)."' AND ID!='".$this->ID."'","ID",new DB_WE());
+	}
 
 	function i_checkPathDiffAndCreate(){
 		return true;
@@ -2657,6 +2741,7 @@ $this->checkAndCorrectParent();
 		$ctable = OBJECT_X_TABLE.$this->TableID;
 
 		// updater
+		if(!$this->isColExist($ctable,"OF_Url")) $this->addCol($ctable,"OF_Url","varchar(255) NOT NULL ", "OF_Path");
 		if(!$this->isColExist($ctable,"OF_IsSearchable")) $this->addCol($ctable,"OF_IsSearchable","tinyint(1) DEFAULT '1' ", "OF_Published");
 		if(!$this->isColExist($ctable,"OF_Charset")) $this->addCol($ctable,"OF_Charset","varchar(64) NOT NULL", "OF_IsSearchable");
 		if(!$this->isColExist($ctable,"OF_WebUserID")) $this->addCol($ctable,"OF_WebUserID","BIGINT DEFAULT '0' NOT NULL", "AFTER OF_Charset");
@@ -2735,7 +2820,7 @@ $this->checkAndCorrectParent();
 		$this->saveInSession($saveArr);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
 		if($this->ID) $this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_TEXT='".$this->Text."',OF_PATH='".$this->Path."' WHERE OF_ID=".$this->ID);
-		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset");
+		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url");
 	}
 
 	function i_getDocument($includepath="") {

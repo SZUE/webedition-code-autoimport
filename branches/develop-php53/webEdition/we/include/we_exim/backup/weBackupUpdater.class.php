@@ -390,6 +390,11 @@
 			$_db = new DB_WE();
 
 			$_table = OBJECT_FILES_TABLE;
+			if($this->isColExist($_table,'Url')){
+				$this->changeColTyp($_table,'Url','VARCHAR(255) NOT NULL');
+			} else {
+				$this->addCol($_table,'Url','VARCHAR(255) NOT NULL',' AFTER Path ');
+			}
 			if($this->isColExist($_table,'IsSearchable')){
 				$this->changeColTyp($_table,'IsSearchable','TINYINT(1) DEFAULT 1');
 			} else {
@@ -416,6 +421,11 @@
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
 				if ($this->isTabExist($_table)) {
+					if($this->isColExist($_table,'OF_Url')){
+						$this->changeColTyp($_table,'OF_Url','VARCHAR(255) NOT NULL');
+					} else {
+						$this->addCol($_table,'OF_Url','VARCHAR(255) NOT NULL',' AFTER OF_Path ');
+					}
 					if($this->isColExist($_table,'OF_IsSearchable')){
 						$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
 					} else {

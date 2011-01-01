@@ -1074,10 +1074,12 @@ class we_document extends we_root {
 				$link = $val ? unserialize($val) : array();
 
 				$only = we_getTagAttribute('only',$attribs,'');
+				$seourls = we_getTagAttribute("seourls", $attribs, "false", true);
+				$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
 
 				if($pathOnly || $only == 'href'){
 
-					$return = we_document::getLinkHref($link,$parentID,$path,$db);
+					$return = we_document::getLinkHref($link,$parentID,$path,$db,$hidedirindex,$seourls);
 
 				    if ((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])) {
 						unset($GLOBALS['we_link_not_published']);
@@ -1103,15 +1105,15 @@ class we_document extends we_root {
 					$htmlspecialchars = we_getTagAttribute('htmlspecialchars',$attribs,'',true);
 					if ($only) {
 					    if($only == 'content'){
-					        return we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars);
+					        return we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars,$hidedirindex,$seourls);
 					    } else {
 					        return isset($link[$only]) ? $link[$only] : '';  // #3636
 					    }
 					} else {
 
-    					if($content = we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars)) {
+    					if($content = we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars,$hidedirindex,$seourls)) {
 
-    						if( $startTag = we_document::getLinkStartTag($link,$attribs,$parentID,$path,$db,$img,$_useName)) {
+    						if( $startTag = we_document::getLinkStartTag($link,$attribs,$parentID,$path,$db,$img,$_useName,$hidedirindex,$seourls)) {
     							return $startTag.$content.'</a>';
     						}
     						else {
@@ -1303,7 +1305,7 @@ class we_document extends we_root {
 		}
 	}
 
-	function getLinkHref($link,$parentID,$path,$db=''){
+	function getLinkHref($link,$parentID,$path,$db='',$hidedirindex=false,$seourls=false){
 		if (!$db){
 			$db = new DB_WE();
 		}
@@ -1339,7 +1341,7 @@ class we_document extends we_root {
 			}
 		} else if (isset($link['type']) && ($link['type'] == 'obj')) {
 
-			return getHrefForObject($link['obj_id'],$parentID,$path,$db);
+			return getHrefForObject($link['obj_id'],$parentID,$path,$db,$hidedirindex,$seourls);
 		} else if (isset($link['type'])) {
 
 			if ($link['href'] == 'http://' ) {
@@ -1352,9 +1354,9 @@ class we_document extends we_root {
 		}
 	}
 
-	function getLinkContent($link,$parentID=0,$path='',$db='',$img='',$xml='', $_useName='',$htmlspecialchars=false) {
+	function getLinkContent($link,$parentID=0,$path='',$db='',$img='',$xml='', $_useName='',$htmlspecialchars=false,$hidedirindex=false,$seourls=false) {
 
-		$l_href = we_document::getLinkHref($link,$parentID,$path,$db);
+		$l_href = we_document::getLinkHref($link,$parentID,$path,$db,$hidedirindex,$seourls);
 
 		if ( isset($GLOBALS['we_link_not_published']) && $GLOBALS['we_link_not_published']) {
 			unset($GLOBALS['we_link_not_published']);
@@ -1414,9 +1416,9 @@ class we_document extends we_root {
 
 	}
 
-	function getLinkStartTag($link,$attribs,$parentID=0,$path='',$db='',$img='',$_useName='') {
+	function getLinkStartTag($link,$attribs,$parentID=0,$path='',$db='',$img='',$_useName='',$hidedirindex=false,$seourls=false) {
 
-		if ($l_href = we_document::getLinkHref($link, $parentID, $path, $db)) {
+		if ($l_href = we_document::getLinkHref($link, $parentID, $path, $db,$hidedirindex,$seourls)) {
 
 		    include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 
