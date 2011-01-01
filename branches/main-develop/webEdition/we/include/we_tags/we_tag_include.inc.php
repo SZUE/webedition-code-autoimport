@@ -33,7 +33,7 @@ function we_tag_include($attribs, $content) {
 
 
 	if ((!$id) && (!$path) && (!$name)) {
-		return '<!-- we:include - missing id, path or name !!-->';
+		return '?><!-- we:include - missing id, path or name !!-->';
 	}
 
 
@@ -44,7 +44,7 @@ function we_tag_include($attribs, $content) {
 							(($GLOBALS['SYSTEM'] == 'MAC') ? '11px' : (($GLOBALS['SYSTEM'] == 'X11') ? '13px' : '12px')) . ';font-family:' .
 							$GLOBALS['l_css']['font_family'] . ';">';
 
-			$ret = '<table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . $GLOBALS['l_tags']['include_file'] . '</span></td></tr><tr><td>';
+			$ret = '?><table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . $GLOBALS['l_tags']['include_file'] . '</span></td></tr><tr><td>';
 			$ret.= we_tag('href', array('name' => $name, 'rootdir' => $rootdir, 'type' => $type));
 			$ret.='</td></tr></table>';
 			return $ret;
@@ -155,6 +155,7 @@ function we_tag_include($attribs, $content) {
 			$ret .= '$GLOBALS[\'WE_IS_DYN\'] = 1;';
 		}
 		$ret .= 'unset($GLOBALS[\'we_backVars\']['.$we_unique.']);';
+		return $ret;
 	}
-	return $ret;
+	return '';
 }
