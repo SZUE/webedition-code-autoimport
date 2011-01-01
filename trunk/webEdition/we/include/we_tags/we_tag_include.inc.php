@@ -125,7 +125,7 @@ function we_tag_include($attribs, $content) {
 			$content = eregi_replace('< ?/ ?form[^>]*>', '', $content);
 		}
 
-		$ret .= 'eval(\'?>' . $content.'\');';
+		$ret .= 'eval(\'?>' . str_replace('\'',"\'",$content).'\');';
 
 		$ret .= '
 		$GLOBALS[\'we_doc\'] = clone($GLOBALS[\'we_backVars\'][$we_unique][\'we_doc\']);
