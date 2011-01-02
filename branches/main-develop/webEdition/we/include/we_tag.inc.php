@@ -858,14 +858,6 @@ function we_tag_ifSeeMode($attribs, $content){
 	}
 }
 
-function we_tag_ifTdEmpty($attribs, $content){
-	return $GLOBALS['lv']->tdEmpty();
-}
-
-function we_tag_ifTdNotEmpty($attribs, $content){
-	return !we_tag('ifTdEmpty',$attribs, $content);
-}
-
 function we_tag_ifTop($attribs, $content){
 	return ($GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc']);
 }
