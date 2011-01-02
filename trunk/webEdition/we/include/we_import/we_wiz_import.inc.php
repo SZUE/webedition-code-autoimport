@@ -86,6 +86,7 @@ class we_wizard_import extends we_wizard {
 			case "input":
 			case "text":
 			case "meta":
+			case "checkbox": //Bugfix #4733
 				return true;
 			default:
 				return false;
