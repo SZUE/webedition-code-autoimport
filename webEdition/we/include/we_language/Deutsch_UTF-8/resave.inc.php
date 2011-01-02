@@ -25,8 +25,7 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$l_resave["saving_doc"] = "Speichere Dokument";
-$l_resave["saving_template"] = "Speichere Vorlage";
-$l_resave["of"] = "von";
-$l_resave["saving_obj"] = "Speichere Objekt";
-?>
+$l_resave['saving_doc'] = 'Speichere Dokument';
+$l_resave['saving_template'] = 'Speichere Vorlage';
+$l_resave['of'] = 'von';
+$l_resave['saving_obj'] = 'Speichere Objekt';

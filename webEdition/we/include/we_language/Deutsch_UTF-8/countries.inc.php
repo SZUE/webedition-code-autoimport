@@ -276,5 +276,3 @@ $GLOBALS['l_countries']['YT'] = 'Mayotte';
 $GLOBALS['l_countries']['ZA'] = 'Südafrika';
 $GLOBALS['l_countries']['ZM'] = 'Sambia';
 $GLOBALS['l_countries']['ZW'] = 'Simbabwe';
-
-?>
