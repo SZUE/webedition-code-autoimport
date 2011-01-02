@@ -25,6 +25,5 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$l_dynamic_controls["expand_group"] = 'Hier klicken, um diese Gruppe zu öffnen ...';
-$l_dynamic_controls["fold_group"] = 'Hier klicken, um diese Gruppe zu schließen ...';
-?>
+$l_dynamic_controls['expand_group'] = 'Hier klicken, um diese Gruppe zu öffnen ...';
+$l_dynamic_controls['fold_group'] = 'Hier klicken, um diese Gruppe zu schließen ...';

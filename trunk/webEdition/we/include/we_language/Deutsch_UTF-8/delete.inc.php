@@ -25,6 +25,5 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$GLOBALS["l_delete"]["delete"] = "Löschen";
-$GLOBALS["l_delete"]["delete_entry"] = "Lösche %s";
-?>
+$GLOBALS['l_delete']['delete'] = 'Löschen';
+$GLOBALS['l_delete']['delete_entry'] = 'Lösche %s';

@@ -77,4 +77,3 @@ $l_validation['service_css_upload'] = 'CSS Validierung per Datei-Upload';
 $l_validation['service_css_url'] = 'CSS Validierung per URL-Übergabe';
 
 $l_validation['connection_problems'] = '<strong>Bei der Verbindung zu dem gewählten Dienst ist ein Fehler aufgetreten.</strong><br /><br />Bitte beachten Sie: Die Option "URL-Übergabe" kann nur verwendet werden, wenn Ihre webEdition-Installation vom Internet (also auch ausserhalb ihres lokalen Netzwerks) aus zu erreichen ist. Dies ist nicht der Fall bei einer lokalen Installation (Localhost).<br /><br />Ebenso können Probleme mit Firewalls und Proxy-Servern auftreten. Überprüfen Sie in diesen Fällen bitte Ihre Konfiguration.<br /><br />HTTP-Antwort: %s';
-?>
