@@ -19,38 +19,37 @@
  */
 
 	define('TOOL_REGISTRY_NAME','weToolsRegistry');
-		
+
 	class weToolLookup {
-		
-		
+
+
 		function weToolLookup() {
-			
 		}
-		
+
 		function getAllTools($force=false, $addInternTools=false, $includeDisabled=false) {
 
-			if(!$force && !$includeDisabled && !defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['meta'])) {
+			if(!$force && !$includeDisabled && !defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['meta'])) {
 				return $_SESSION[TOOL_REGISTRY_NAME]['meta'];
 			}
-			if(!$force && $includeDisabled && !defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'])) {
+			if(!$force && $includeDisabled && !defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'])) {
 				return $_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'];
 			}
 
 			$_tools = array();
-			
+
 			$_toolsDirs = array();
 
 			//$_ignore = array('','.','..','cvs','cache','search','first_steps_wizard','weSearch','navigation');
-			
+
 			/*
 			if($addInternTools) {
-				$addSearch = current(array_keys($_ignore, 'weSearch'));	
+				$addSearch = current(array_keys($_ignore, 'weSearch'));
 				unset($_ignore[$addSearch]);
-				$addNavigation = current(array_keys($_ignore, 'navigation'));	
+				$addNavigation = current(array_keys($_ignore, 'navigation'));
 				unset($_ignore[$addNavigation]);
 			}
 			*/
-			
+
 			$_bd = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps';
 			$_d = opendir($_bd);
 
@@ -60,10 +59,10 @@
 				//}
 			}
 			closedir($_d);
-			
+
 			// include autoload function
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
-		
+
 			$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
 			Zend_Loader::loadClass('we_core_Local');
 
@@ -80,19 +79,19 @@
 						}
 						$metaInfo['text'] = htmlspecialchars($langStr);
 						if (!$includeDisabled && isset($metaInfo['appdisabled']) && $metaInfo['appdisabled'] ){
-							
+
 						} else {
 							$_tools[] = $metaInfo;
-						}				
+						}
 						unset($metaInfo);
 					}
 				}
 			}
 			if($addInternTools) {
-				
+
 				$internToolDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/';
 				$internTools = array('weSearch', 'navigation');
-				
+
 				foreach ($internTools as $_toolName) {
 					$_metaFile = $internToolDir . $_toolName . '/conf/meta.conf.php';
 					if(file_exists($_metaFile)) {
@@ -104,43 +103,43 @@
 						}
 					}
 				}
-			
+
 			}
-			
-			if(!defined("NO_SESS") && !$includeDisabled) {
+
+			if(!defined('NO_SESS') && !$includeDisabled) {
 				$_SESSION[TOOL_REGISTRY_NAME]['meta'] = $_tools;
 			}
-			if(!defined("NO_SESS") && $includeDisabled) {
+			if(!defined('NO_SESS') && $includeDisabled) {
 				$_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'] = $_tools;
 			}
-	
+
 			return $_tools;
-			
+
 		}
-				
-		
+
+
 		function getToolProperties($name) {
-			
+
 			$_tools = weToolLookup::getAllTools(true,false,true);
-			
+
 			foreach ($_tools as $_tool) {
 				if($_tool['name']==$name) {
 					return $_tool;
 				}
 			}
 			return array();
-			
-			
+
+
 		}
-		
-		
+
+
 		function getPhpCmdInclude() {
-						
+
 			$_inc = '';
 			if(isset($_REQUEST['we_cmd'][0])) {
 				$_tools = weToolLookup::getAllTools(true,true);
 				foreach($_tools as $_tool){
-					if(eregi("^tool_" . $_tool['name'] . "_",$_REQUEST['we_cmd'][0])){
+					if(eregi('^tool_' . $_tool['name'] . '_',$_REQUEST['we_cmd'][0])){
 						$_REQUEST['tool'] = $_tool['name'];
 						if($_REQUEST['tool']=='weSearch' || $_REQUEST['tool']=='navigation') {
 							$_inc='we_tools/'.$_tool['name'].'/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
@@ -155,7 +154,7 @@
 
 			return $_inc;
 		}
-		
+
 		function getJsCmdInclude() {
 
 			$_inc = array();
@@ -171,13 +170,13 @@
 
 			return $_inc;
 		}
-		
+
 		function getDefineInclude() {
-			
-			if(!defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['defineinclude'])) {
+
+			if(!defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['defineinclude'])) {
 				return $_SESSION[TOOL_REGISTRY_NAME]['defineinclude'];
 			}
-			
+
 			$_inc = array();
 			$_tools = weToolLookup::getAllTools();
 			foreach($_tools as $_tool){
@@ -185,19 +184,19 @@
 					$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/conf/define.conf.php';
 				}
 			}
-			if(!defined("NO_SESS")) {
+			if(!defined('NO_SESS')) {
 				$_SESSION[TOOL_REGISTRY_NAME]['defineinclude'] = $_inc;
 			}
-				
+
 			return $_inc;
 		}
-		
+
 		function getTagDirs() {
-			
-			if(!defined("NO_SESS") && isset($_SESSION[TOOL_REGISTRY_NAME]['tagdirs'])) {
+
+			if(!defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['tagdirs'])) {
 				return $_SESSION[TOOL_REGISTRY_NAME]['tagdirs'];
 			}
-			
+
 			$_inc = array();
 			$_tools = weToolLookup::getAllTools();
 			foreach($_tools as $_tool){
@@ -205,17 +204,17 @@
 					$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/tags';
 				}
 			}
-			if(!defined("NO_SESS")) {
+			if(!defined('NO_SESS')) {
 				$_SESSION[TOOL_REGISTRY_NAME]['tagdirs'] = $_inc;
 			}
-				
+
 			return $_inc;
 		}
-		
+
 		function isActiveTag($filepath){
 			return in_array(dirname($filepath), weToolLookup::getTagDirs());
 		}
-		
+
 		function isTool($name,$includeDisabled=false) {
 			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			foreach ($_tools as $_tool) {
@@ -224,9 +223,9 @@
 				}
 			}
 			return in_array($name,$_tools);
-			
+
 		}
-		
+
 		function getCmdInclude($namespace,$name,$cmd) {
 			if(!defined('WE_TOOLS_DIR')) {
 				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
@@ -236,7 +235,7 @@
 			}
 			return $toolFolder . $name . '/service/cmds'. $namespace . 'rpc' . $cmd . 'Cmd.class.php';
 		}
-		
+
 		function getViewInclude($protocol,$namespace,$name,$view) {
 			if(!defined('WE_TOOLS_DIR')) {
 				$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
@@ -245,33 +244,33 @@
 				$toolFolder = WE_TOOLS_DIR;
 			}
 			return $toolFolder . $name . '/service/views/' . $this->Protocol . $namespace . 'rpc' . $view . 'View.class.php';
-			
+
 		}
-		
+
 		function getAllToolTags($toolname,$includeDisabled=false) {
-			
-			return weToolLookup::getFileRegister($toolname,'/tags',"^we_tag_",'we_tag_','.inc.php',$includeDisabled);
-						
+
+			return weToolLookup::getFileRegister($toolname,'/tags','^we_tag_','we_tag_','.inc.php',$includeDisabled);
+
 		}
-		
+
 		function getAllToolTagWizards($toolname,$includeDisabled=false) {
-			
-			return weToolLookup::getFileRegister($toolname,'/tagwizard',"^we_tag_",'we_tag_','.inc.php',$includeDisabled);
-						
+
+			return weToolLookup::getFileRegister($toolname,'/tagwizard','^we_tag_','we_tag_','.inc.php',$includeDisabled);
+
 		}
-		
-		
+
+
 		function getAllToolServices($toolname,$includeDisabled=false) {
 
-			return weToolLookup::getFileRegister($toolname,'/service/cmds',"^rpc",'rpc','Cmd.class.php',$includeDisabled);
-			
+			return weToolLookup::getFileRegister($toolname,'/service/cmds','^rpc','rpc','Cmd.class.php',$includeDisabled);
+
 		}
-		
+
 		function getAllToolLanguages($toolname, $subdir='/lang',$includeDisabled=false) {
-			
+
 			$_founds = array();
 			if(!defined('WE_TOOLS_DIR')) {
-				$toolFolder = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['__WE_APP_URL__'].'/';
+				$toolFolder = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'].'/';
 			}
 			else {
 				$toolFolder = WE_TOOLS_DIR;
@@ -289,11 +288,11 @@
 			}
 			return $_founds;
 		}
-		
+
 		function getFileRegister($toolname,$subdir,$filematch,$rem_before='',$rem_after='',$includeDisabled=false) {
 			$_founds = array();
 			if(!defined('WE_TOOLS_DIR')) {
-				$toolFolder = $_SERVER["DOCUMENT_ROOT"].$GLOBALS['__WE_APP_URL__'].'/';
+				$toolFolder = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'].'/';
 			}
 			else {
 				$toolFolder = WE_TOOLS_DIR;
@@ -312,8 +311,8 @@
 			}
 			return $_founds;
 		}
-		
-		
+
+
 		function getToolTag($name,&$include,$includeDisabled=false) {
 			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			if(!defined('WE_TOOLS_DIR')) {
@@ -362,8 +361,8 @@
 			}
 			return false;
 		}
-		
-		
+
+
 		function getToolTagWizard($name,&$include,$includeDisabled=false) {
 			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
 			if(!defined('WE_TOOLS_DIR')) {
@@ -396,7 +395,7 @@
 			}
 			return false;
 		}
-		
+
 		function getPermissionIncludes($includeDisabled=false) {
 			$_inc = array();
 			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
@@ -429,7 +428,7 @@
 			}
 
 		}
-		
+
 		function getToolsForBackup($includeDisabled=false) {
 			$_inc = array();
 			$_tools = weToolLookup::getAllTools(false,false,$includeDisabled);
@@ -442,10 +441,10 @@
 			}
 			$_inc[] = 'weSearch';
 
-			
+
 			return $_inc;
 		}
-		
+
 		function getBackupTables($name) {
 			if($name=='weSearch' || $name=='navigation') {
 				$toolFolder = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/';
@@ -466,24 +465,24 @@
 			}
 			return array();
 		}
-		
-		
+
+
 		function getFilesOfDir(&$allFiles, $baseDir) {
 
 			if (file_exists($baseDir)) {
-	
+
 				$dh = opendir($baseDir);
 				while( $entry = readdir($dh) ){
-	
-					if( $entry != "" && $entry != "." && $entry != ".."){
-	
-						$_entry = $baseDir . "/" . $entry;
-	
+
+					if( $entry != '' && $entry != '.' && $entry != '..'){
+
+						$_entry = $baseDir . '/' . $entry;
+
 			            if( !is_dir( $_entry ) ){
 			                $allFiles[] = $_entry;
 			            }
-	
-						if(is_dir( $_entry ) && strtolower(strtolower($entry)!="cvs") ){
+
+						if(is_dir( $_entry ) && strtolower(strtolower($entry)!='cvs') ){
 							weToolLookup::getFilesOfDir( $allFiles, $_entry);
 						}
 					}
@@ -492,18 +491,18 @@
 			}
 
 		}
-		
+
 		function getDirsOfDir(&$allDirs, $baseDir) {
 
 			if (file_exists($baseDir)) {
-	
+
 				$dh = opendir($baseDir);
 				while( $entry = readdir($dh) ){
-	
-					if( $entry != "" && $entry != "." && $entry != ".."  && strtolower($entry!="cvs")){
-	
-						$_entry = $baseDir . "/" . $entry;
-	
+
+					if( $entry != '' && $entry != '.' && $entry != '..'  && strtolower($entry!='cvs')){
+
+						$_entry = $baseDir . '/' . $entry;
+
 			            if( is_dir( $_entry ) ){
 			                $allDirs[] = $_entry;
 			                weToolLookup::getDirsOfDir( $allDirs, $_entry);
@@ -514,33 +513,30 @@
 				closedir($dh);
 			}
 
-		}		
-		
+		}
+
 		function getIgnoreList() {
 			return  array('doctype','category','navigation','toolfactory','weSearch');
 		}
-		
+
 		function isInIgnoreList($toolname) {
 			$_ignore = weToolLookup::getIgnoreList();
 			return in_array($toolname,$_ignore);
-			
+
 		}
-		
+
 		function getModelClassName($name) {
 			if($name=='weSearch' || $name=='navigation') {
-				include($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/".$name."/conf/meta.conf.php");
+				include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/'.$name.'/conf/meta.conf.php');
 				return $metaInfo['classname'];
 			}
-			
+
 			$_tool = weToolLookup::getToolProperties($name);
 			if(!empty($_tool)) {
 				return $_tool['classname'];
 			}
-			
-			return '';			
+
+			return '';
 		}
 
 	}
-
-
-?>
