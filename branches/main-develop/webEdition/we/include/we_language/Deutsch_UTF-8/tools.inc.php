@@ -30,11 +30,11 @@ $l_tools = array();
 $l_tools['tools'] = 'Werkzeuge';
 $l_tools['no_perms'] = 'Sie haben nicht die Berechtigung diese Option auszuwählen.';
 $l_tools['no_tablename'] = 'Sie haben keinen Tabellennamen angegeben.';
-$l_tools['delete_alert'] = 'Aktuelle Eintrag/Ordner löschen.\\n Sind Sie sich sicher?';
+$l_tools['delete_alert'] = 'Aktuelle Eintrag/Ordner löschen.'."\n".'Sind Sie sich sicher?';
 $l_tools['nothing_to_delete'] = 'Der Eintrag kann nicht gelöscht werden!';
 $l_tools['nothing_to_save'] = 'Der Eintrag kann nicht gespeichert werden!';
 $l_tools['nothing_selected'] = 'Bitte wählen Sie den Eintrag/Ordner aus, der gelöscht werden soll.';
-$l_tools['we_filename_notValid'] = 'Der Benutzername ist nicht korrekt!\\nZugelassen sind alphanumerische Zeichen, Groß- und Kleinschreibung, ebenso wie Unterstrich, Bindestrich, Punkt und Leerzeichen (a-z, A-Z, 0-9, _, -, ., )';
+$l_tools['we_filename_notValid'] = 'Der Benutzername ist nicht korrekt!'."\n".'Zugelassen sind alphanumerische Zeichen, Groß- und Kleinschreibung, ebenso wie Unterstrich, Bindestrich, Punkt und Leerzeichen (a-z, A-Z, 0-9, _, -, ., )';
 
 $l_tools['menu_new'] = 'Neu';
 $l_tools['menu_save'] = 'Speichern';
@@ -67,9 +67,9 @@ $l_tools['path_nok'] = 'Der Pfad ist nicht korrekt!';
 $l_tools['name_empty'] = 'Der Name darf nicht leer sein!';
 $l_tools['no_required'] = 'Die Pflichtfelder dürfen nicht leer sein!';
 $l_tools['name_exists'] = 'Der Name existiert bereits!';
-$l_tools['wrongtext'] = 'Der Name ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung) und Zahlen.';
-$l_tools['cls_wrongtext'] = 'Der Name der Modelklasse ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung) und Zahlen.';
-$l_tools['tbl_wrongtext'] = 'Der Name der Haupttabelle ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung) und Zahlen.';
+$l_tools['wrongtext'] = 'Der Name ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung) und Zahlen.';
+$l_tools['cls_wrongtext'] = 'Der Name der Modelklasse ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung) und Zahlen.';
+$l_tools['tbl_wrongtext'] = 'Der Name der Haupttabelle ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung) und Zahlen.';
 $l_tools['cls_exists'] = 'Die Model-Klasse existiert bereits!';
 $l_tools['tbl_exists'] = 'Die Tabelle existiert bereits!';
 $l_tools['folder_path_exists'] = 'Dieser Name ist bereits vergeben.';
@@ -89,5 +89,3 @@ $l_tools['default'] = 'Standard';
 
 $l_tools['item_deleted'] = 'Der Eintrag wurde gelöscht';
 $l_tools['group_deleted'] = 'Die Gruppe wurde gelöscht';
-
-?>

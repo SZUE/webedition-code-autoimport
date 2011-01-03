@@ -71,7 +71,6 @@ function we_tag_include($attribs, $content) {
 			return '';
 		}
 
-		//$we_unique = md5(uniqid(rand(), true));
 		$we_unique = isset($GLOBALS['we_unique']) ? ++$GLOBALS['we_unique'] : ($GLOBALS['we_unique'] = 1);
 		$ret='
 		$GLOBALS[\'we_backVars\']['.$we_unique.'][\'we_doc\'] = clone($GLOBALS[\'we_doc\']);

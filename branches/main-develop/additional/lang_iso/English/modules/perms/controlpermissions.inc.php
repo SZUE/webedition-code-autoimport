@@ -35,7 +35,7 @@ $l_perm["controlpermissions"]["SAVE_USER"] = "The user is allowed to save users.
 $l_perm["controlpermissions"]["DELETE_GROUP"] = "The user is allowed to delete groups.";
 $l_perm["controlpermissions"]["DELETE_USER"] = "The user is allowed to delete other users.";
 $l_perm["controlpermissions"]["PUBLISH"] = "The user is allowed to publish.";
-$l_perm["controlpermissions"]["EDIT_SETTINGS_DEF_EXT"] = "The user is allowed to change the default extensions.";
+$l_perm["controlpermissions"]["EDIT_SETTINGS_DEF_EXT"] = "The user is allowed to change the default extensions in the settings dialog.";
 $l_perm["controlpermissions"]["EDIT_SETTINGS"] = "The user is allowed to change the webEdition properties.";
 $l_perm["controlpermissions"]["EDIT_PASSWD"] = "The user is allowed to change passwords.";
 ?>

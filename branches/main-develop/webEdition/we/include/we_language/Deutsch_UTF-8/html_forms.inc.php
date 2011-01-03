@@ -25,5 +25,4 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$l_html_forms["click_here"] = 'Hier klicken, um die Option &raquo;%s&laquo; an- bzw. abzuwählen ...';
-?>
+$l_html_forms['click_here'] = 'Hier klicken, um die Option &raquo;%s&laquo; an- bzw. abzuwählen ...';
