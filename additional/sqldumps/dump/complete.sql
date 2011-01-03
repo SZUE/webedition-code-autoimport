@@ -1,4 +1,4 @@
-CREATE TABLE tblAnzeigePrefs (
+﻿CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE tblMessages (
   KEY `query` (`obj_type`,`msg_type`,`ParentID`,`UserID`)
 ) ENGINE=MyISAM;
 /* query separator */
-CREATE TABLE `tblMetadata` (
+CREATE TABLE tblMetadata (
   `id` int(11) NOT NULL auto_increment,
   `tag` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
@@ -927,7 +927,7 @@ CREATE TABLE tblbannerviews (
   Page varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM;
 /* query separator */
-CREATE TABLE `tblcustomerfilter` (
+CREATE TABLE tblcustomerfilter (
   `id` bigint(20) NOT NULL auto_increment,
   `modelId` bigint(20) NOT NULL,
   `modelType` varchar(32) NOT NULL,
@@ -998,7 +998,7 @@ CREATE TABLE tblformmaillog (
   KEY ipwhen (ip,unixTime)
 ) ENGINE=MyISAM;
 /* query separator */
-CREATE TABLE `tblglossary` (
+CREATE TABLE tblglossary (
   `ID` int(10) NOT NULL auto_increment,
   `Path` varchar(255) default NULL,
   `IsFolder` tinyint(1) default NULL,
@@ -1095,7 +1095,7 @@ CREATE TABLE tblnavigationrules (
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
 /* query separator */
-CREATE TABLE `tblsearchtool` (
+CREATE TABLE tblsearchtool (
   `ID` bigint(20) NOT NULL auto_increment,
   `ParentID` bigint(20) NOT NULL default '0',
   `IsFolder` tinyint(4) NOT NULL default '0',
@@ -1129,7 +1129,7 @@ CREATE TABLE `tblsearchtool` (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM ;
 /* query separator */
-INSERT INTO `tblsearchtool` (`ID`, `ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
+INSERT INTO tblsearchtool (`ID`, `ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
 (1, 0, 1, 'folder.gif', '/Vordefinierte Suchanfragen', 'Vordefinierte Suchanfragen', 1, 0, 0, '', '', '', 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '',4),
 (2, 1, 1, 'folder.gif', '/Vordefinierte Suchanfragen/Dokumente', 'Dokumente', 1, 0, 0, '', '', '', 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '',4),
 (3, 1, 1, 'folder.gif', '/Vordefinierte Suchanfragen/Objekte', 'Objekte', 1, 0, 0, '', '', '', 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '',4),
@@ -1139,17 +1139,17 @@ INSERT INTO `tblsearchtool` (`ID`, `ParentID`, `IsFolder`, `Icon`, `Path`, `Text
 (7, 3, 0, 'Suche.gif', '/Vordefinierte Suchanfragen/Objekte/Unveröffentlichte Objekte', 'Unveröffentlichte Objekte', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '1', 1, '1', '1', '1', 25, 25, 25, 0, 0, 0, 'Text', 'Text', 'Text', 'a:1:{i:0;s:17:"geparkt_geaendert";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:6:"Status";}', 'a:4:{s:7:"tblFile";s:1:"0";s:14:"tblObjectFiles";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblObject";s:1:"0";}',3),
 (8, 0, 1, 'folder.gif', '/Eigene Suchanfragen', 'Eigene Suchanfragen', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '0', 0, '0', '0', '0', 10, 10, 10, 0, 0, 0, '', '', '', 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:2:"ID";}', 'a:4:{s:7:"tblFile";s:1:"1";s:14:"tblobjectFiles";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblobject";s:1:"0";}', 4);
 /* query separator */
-INSERT INTO `tblsearchtool` (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
+INSERT INTO tblsearchtool (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
 (0, 1, 'folder.gif', '/Versionen', 'Versionen', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '0', 0, '0', '0', '0', 10, 10, 10, 0, 0, 0, '', '', '', 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:2:"ID";}', 'a:4:{s:7:"tblFile";s:1:"1";s:14:"tblobjectFiles";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblobject";s:1:"0";}',4);
 /* query separator */
-INSERT INTO `tblsearchtool` (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
+INSERT INTO tblsearchtool (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
 ((LAST_INSERT_ID()), 1, 'folder.gif', '/Versionen/Dokumente', 'Dokumente', 1, 0, 0, '', '', '', 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '',4),
 ((LAST_INSERT_ID()), 1, 'folder.gif', '/Versionen/Objekte', 'Objekte', 1, 0, 0, '', '', '', 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '',4);
 /* query separator */
-INSERT INTO `tblsearchtool` (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
+INSERT INTO tblsearchtool (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
 ((LAST_INSERT_ID()), 0, 'Suche.gif', '/Versionen/Dokumente/gelöschte Dokumente', 'gelöschte Dokumente', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '1', 1, '1', '1', '1', 10, 10, 10, 0, 0, 0, 'Text', 'Text', 'Text', 'a:1:{i:0;s:7:"deleted";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:6:"Status";}', 'a:5:{s:7:"tblFile";s:1:"1";s:14:"tblObjectFiles";s:1:"0";s:11:"tblversions";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblObject";s:1:"0";}',3);
 /* query separator */
-INSERT INTO `tblsearchtool` (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
+INSERT INTO tblsearchtool (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
 ((LAST_INSERT_ID()-1), 0, 'Suche.gif', '/Versionen/Objekte/gelöschte Objekte', 'gelöschte Objekte', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '1', 1, '1', '1', '1', 10, 10, 10, 0, 0, 0, 'Text', 'Text', 'Text', 'a:1:{i:0;s:7:"deleted";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:6:"Status";}', 'a:5:{s:7:"tblFile";s:1:"0";s:14:"tblObjectFiles";s:1:"1";s:11:"tblversions";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblObject";s:1:"0";}',3);/* query separator */
 CREATE TABLE tblshopvats (
   id int(11) NOT NULL auto_increment,
@@ -1191,7 +1191,7 @@ CREATE TABLE tblvalidationservices (
   PRIMARY KEY  (PK_tblvalidationservices)
 ) ENGINE=MyISAM;
 /* query separator */
-CREATE TABLE `tblversions` (
+CREATE TABLE tblversions (
   `ID` bigint(20) NOT NULL auto_increment,
   `documentID` bigint(20) NOT NULL,
   `documentTable` varchar(64) NOT NULL,
@@ -1247,7 +1247,7 @@ CREATE TABLE `tblversions` (
   KEY `binaryPath` (`binaryPath`)
 ) ENGINE=MyISAM ;
 /* query separator */
-CREATE TABLE `tblversionslog` (
+CREATE TABLE tblversionslog (
   `ID` bigint(20) NOT NULL auto_increment,
   `timestamp` int(11) NOT NULL,
   `action` int(11) NOT NULL,
@@ -1293,7 +1293,7 @@ CREATE TABLE tblvoting (
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
 /* query separator */
-CREATE TABLE `tblvotinglog` (
+CREATE TABLE tblvotinglog (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `votingsession` varchar(255) NOT NULL,
   `voting` bigint(20) NOT NULL,
@@ -1311,7 +1311,7 @@ CREATE TABLE `tblvotinglog` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM ;
 /* query separator */
-CREATE TABLE `tblwidgetnotepad` (
+CREATE TABLE tblwidgetnotepad (
   `ID` bigint(20) NOT NULL auto_increment,
   `WidgetName` varchar(100) NOT NULL default '',
   `UserID` bigint(20) NOT NULL default '0',
@@ -1325,4 +1325,4 @@ CREATE TABLE `tblwidgetnotepad` (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT INTO `tblwidgetnotepad` VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');/* query separator */
+INSERT INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');/* query separator */

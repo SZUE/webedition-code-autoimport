@@ -703,7 +703,7 @@ class liveUpdateFunctions {
 										$this->QueryLog['tableReCreated'][] = $tableName;
 									} else {
 
-										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $_query -->";
+										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
 										$success = false;
 									}
 
