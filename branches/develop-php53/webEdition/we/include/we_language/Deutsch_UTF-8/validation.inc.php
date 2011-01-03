@@ -33,5 +33,3 @@ $l_xhtml_debug['wrong_element']['js']        = 'Das Element \"<%s>\" existiert n
 $l_xhtml_debug['wrong_element']['error_log'] = 'Das Element "<%s>" existiert nicht.';
 
 $l_xhtml_debug['removed_element']['text'] = 'Es wurde entfernt.';
-
-?>

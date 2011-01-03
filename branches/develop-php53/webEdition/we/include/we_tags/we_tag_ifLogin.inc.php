@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -15,19 +14,15 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_language
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
 
-/**
- * Language file: importrtf.inc.php
- * Provides language strings.
- * Language: Deutsch
- */
-$l_importrtf['chose'] = 'Datei wählen';
-$l_importrtf['import_rtf'] = 'RTF Datei importieren';
-$l_importrtf['use_fontname']='Schriftarten übernehmen';
-$l_importrtf['use_fontsize']='Schriftgröße übernehmen';
-$l_importrtf['use_fontcolor']='Schriftfarbe übernehmen';
-$l_importrtf['no_file']='Sie haben keine Datei ausgewählt!';
+function we_tag_ifLogin($attribs,$content) {
+	if (isset($GLOBALS["WE_LOGIN"]) && $GLOBALS["WE_LOGIN"]) {
+		return true; 
+	} else {
+		return false;
+	}
+}

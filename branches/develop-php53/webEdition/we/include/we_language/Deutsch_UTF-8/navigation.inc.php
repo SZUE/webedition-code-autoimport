@@ -28,11 +28,11 @@
 
 $l_navigation = array();
 $l_navigation['no_perms'] = 'Sie haben nicht die Berechtigung diese Option auszuwählen.';
-$l_navigation['delete_alert'] = 'Aktuelle Eintrag/Ordner löschen.\\n Sind Sie sich sicher?';
+$l_navigation['delete_alert'] = 'Aktuelle Eintrag/Ordner löschen.'."\n".'Sind Sie sich sicher?';
 $l_navigation['nothing_to_delete'] = 'Der Eintrag kann nicht gelöscht werden!';
 $l_navigation['nothing_to_save'] = 'Der Eintrag kann nicht gespeichert werden!';
 $l_navigation['nothing_selected'] = 'Bitte wählen Sie den Eintrag/Ordner aus, der gelöscht werden soll.';
-$l_navigation['we_filename_notValid'] = 'Der Benutzername ist nicht korrekt!\\nZugelassen sind alphanumerische Zeichen, Groß- und Kleinschreibung, ebenso wie Unterstrich, Bindestrich, Punkt und Leerzeichen (a-z, A-Z, 0-9, _, -, ., )';
+$l_navigation['we_filename_notValid'] = 'Der Benutzername ist nicht korrekt!'."\n".'Zugelassen sind alphanumerische Zeichen, Groß- und Kleinschreibung, ebenso wie Unterstrich, Bindestrich, Punkt und Leerzeichen (a-z, A-Z, 0-9, _, -, ., )';
 
 $l_navigation['menu_new'] = 'Neu';
 $l_navigation['menu_save'] = 'Speichern';
@@ -62,8 +62,8 @@ $l_navigation['save_ok'] = 'Die Navigation wurde gespeichert.';
 $l_navigation['path_nok'] = 'Der Pfad ist nicht korrekt!';
 $l_navigation['name_empty'] = 'Der Name darf nicht leer sein!';
 $l_navigation['name_exists'] = 'Der Name existiert bereits!';
-$l_navigation['wrongTitleField'] = 'Der Navigationsordner konnte nicht gespeichert werden, da das angegebene Titel-Feld nicht existiert. Korrigieren Sie dieses auf dem Tab "Inhalt" und speichern Sie erneut.';
-$l_navigation['wrongtext'] = 'Der Name ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.), Leerzeichen ( ) und Klammeraffen (@).';
+$l_navigation['wrongTitleField'] = 'Der Navigationsordner konnte nicht gespeichert werden, da das angegebene Titel-Feld nicht existiert. Korrigieren Sie dieses auf dem Tab \'Inhalt\' und speichern Sie erneut.';
+$l_navigation['wrongtext'] = 'Der Name ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.), Leerzeichen ( ) und Klammeraffen (@).';
 $l_navigation['folder_path_exists'] = 'Dieser Name ist bereits vergeben.';
 $l_navigation['navigation_deleted'] = 'Der Eintrag/Ordner wurde erfolgreich gelöscht.';
 $l_navigation['group_deleted'] = 'Der Ordner wurde erfolgreich gelöscht.';
@@ -126,19 +126,19 @@ $l_navigation['extern'] = 'Externer Link';
 $l_navigation['linkSelection'] = 'Link Auswahl';
 $l_navigation['catParameter'] = 'Name des Kategorieparameters';
 
-$l_navigation['rules']['navigation_rules'] = "Navigationsregeln";
-$l_navigation['rules']['available_rules'] = "Eingetragene Regeln";
-$l_navigation['rules']['rule_name'] = "Name der Regel";
-$l_navigation['rules']['rule_navigation_link'] = "Aktiver Navigationspunkt";
-$l_navigation['rules']['rule_applies_for'] = "Regel gilt für";
-$l_navigation['rules']['rule_folder'] = "Im Ordner";
-$l_navigation['rules']['rule_doctype'] = "Dokument-Typ";
-$l_navigation['rules']['rule_categories'] = "Kategorien";
-$l_navigation['rules']['rule_class'] = "Der Klasse";
-$l_navigation['rules']['rule_workspace'] = "Arbeitsbereich";
-$l_navigation['rules']['invalid_name'] = "Der Name darf nur aus Buchstaben, Zahlen, Binde- und Unterstrich bestehen.";
-$l_navigation['rules']['name_exists'] = "Der Name \"%s\" existiert bereits, bitte geben Sie einen anderen Namen ein.";
-$l_navigation['rules']['saved_successful'] = "Der Eintrag \"%s\" wurde gespeichert.";
+$l_navigation['rules']['navigation_rules'] = 'Navigationsregeln';
+$l_navigation['rules']['available_rules'] = 'Eingetragene Regeln';
+$l_navigation['rules']['rule_name'] = 'Name der Regel';
+$l_navigation['rules']['rule_navigation_link'] = 'Aktiver Navigationspunkt';
+$l_navigation['rules']['rule_applies_for'] = 'Regel gilt für';
+$l_navigation['rules']['rule_folder'] = 'Im Ordner';
+$l_navigation['rules']['rule_doctype'] = 'Dokument-Typ';
+$l_navigation['rules']['rule_categories'] = 'Kategorien';
+$l_navigation['rules']['rule_class'] = 'Der Klasse';
+$l_navigation['rules']['rule_workspace'] = 'Arbeitsbereich';
+$l_navigation['rules']['invalid_name'] = 'Der Name darf nur aus Buchstaben, Zahlen, Binde- und Unterstrich bestehen.';
+$l_navigation['rules']['name_exists'] = 'Der Name \'%s\' existiert bereits, bitte geben Sie einen anderen Namen ein.';
+$l_navigation['rules']['saved_successful'] = 'Der Eintrag \'%s\' wurde gespeichert.';
 
 $l_navigation['exit_doc_question'] = 'Es scheint, als ob Sie die Navigation verändert haben.<br>Möchten Sie Ihre &Auml;nderungen speichern?';
 $l_navigation['add_navigation'] = 'Navigation hinzufügen';
@@ -203,7 +203,6 @@ $l_navigation['reset_customer_filter'] = 'Alle Kundenfilter zurücksetzen';
 $l_navigation['reset_customerfilter_done_message'] = 'Die Kundenfilter wurden erfolgreich zurückgesetzt!';
 $l_navigation['reset_customerfilter_question'] = 'Möchten Sie wirklich alle Kundenfilter zurücksetzen?';
 
-$l_navigation['NoDeleteFromDocument'] = "Navigationseintrag mit Unterpunkten, kann hier editiert, jedoch nur im Navigationstool gel&ouml;scht werden.";
-$l_navigation['current_on_urlpar'] = "Beim Highlighting ber&uuml;cksichtigen";
-$l_navigation['current_on_anker'] = "Beim Highlighting ber&uuml;cksichtigen (&uuml;ber zus. URL-Par. we_anchor)";
-?>
+$l_navigation['NoDeleteFromDocument'] = 'Navigationseintrag mit Unterpunkten, kann hier editiert, jedoch nur im Navigationstool gel&ouml;scht werden.';
+$l_navigation['current_on_urlpar'] = 'Beim Highlighting ber&uuml;cksichtigen';
+$l_navigation['current_on_anker'] = 'Beim Highlighting ber&uuml;cksichtigen (&uuml;ber zus. URL-Par. we_anchor)';
