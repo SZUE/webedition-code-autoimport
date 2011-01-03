@@ -1,4 +1,4 @@
-﻿CREATE TABLE tblsearchtool (
+CREATE TABLE tblsearchtool (
   `ID` bigint(20) NOT NULL auto_increment,
   `ParentID` bigint(20) NOT NULL default '0',
   `IsFolder` tinyint(4) NOT NULL default '0',
