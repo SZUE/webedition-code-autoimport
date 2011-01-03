@@ -1,4 +1,4 @@
-CREATE TABLE `tblwidgetnotepad` (
+CREATE TABLE tblwidgetnotepad (
   `ID` bigint(20) NOT NULL auto_increment,
   `WidgetName` varchar(100) NOT NULL default '',
   `UserID` bigint(20) NOT NULL default '0',
