@@ -52,6 +52,7 @@ $l_perm["workpermissions"]["MOVE_DOCUMENT"] = "The user is allowed to move docum
 $l_perm["workpermissions"]["MOVE_TEMPLATE"] = "The user is allowed to move templates.";
 $l_perm["workpermissions"]["BROWSE_SERVER"] = "The user is allowed to use the Browse server function.";
 $l_perm["workpermissions"]["EDIT_DOCTYPE"] = "The user is allowed to change document types.";
+$l_perm["workpermissions"]["EDIT_DOCEXTENSION"] = "The user is allowed to change the file extension of a document";
 $l_perm["workpermissions"]["EDIT_KATEGORIE"] = "The user is allowed to change categories.";
 $l_perm["workpermissions"]["EXPORT"] = "The user is allowed to make backups on the server and the local hard drive.";
 $l_perm["workpermissions"]["EXPORTNODOWNLOAD"] = "The user is allowed to make backups on the server";

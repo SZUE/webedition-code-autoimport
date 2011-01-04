@@ -52,6 +52,7 @@ $l_perm["workpermissions"]["MOVE_DOCUMENT"] = "Käyttäjä voi siirtää objekte
 $l_perm["workpermissions"]["MOVE_TEMPLATE"] = "Käyttäjä voi siirtää sivupohjia.";
 $l_perm["workpermissions"]["BROWSE_SERVER"] = "Käyttäjä voi käyttää \"Selaa palvelinta\" toimintoa.";
 $l_perm["workpermissions"]["EDIT_DOCTYPE"] = "Käyttäjä voi muuttaa dokumenttityyppiä.";
+$l_perm["workpermissions"]["EDIT_DOCEXTENSION"] = "The user is allowed to change the file extension of a document";//TRANSLATE
 $l_perm["workpermissions"]["EDIT_KATEGORIE"] = "Käyttäjä voi muuttaa kategorioita.";
 $l_perm["workpermissions"]["EXPORT"] = "The user is allowed to make backups on the server and the local hard drive.";//TRANSLATE
 $l_perm["workpermissions"]["EXPORTNODOWNLOAD"] = "The user is allowed to make backups on the server";//TRANSLATE
