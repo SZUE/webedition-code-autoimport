@@ -52,6 +52,7 @@ $l_perm["workpermissions"]["MOVE_DOCUMENT"] = "De gebruiker is bevoegd om docume
 $l_perm["workpermissions"]["MOVE_TEMPLATE"] = "De gebruiker is bevoegd om sjablonen te verplaatsen.";
 $l_perm["workpermissions"]["BROWSE_SERVER"] = "De gebruiker is bevoegd om de Doorzoek server functie te gebruiken.";
 $l_perm["workpermissions"]["EDIT_DOCTYPE"] = "De gebruiker is bevoegd om document types te wijzigen.";
+$l_perm["workpermissions"]["EDIT_DOCEXTENSION"] = "The user is allowed to change the file extension of a document";//TRANSLATE
 $l_perm["workpermissions"]["EDIT_KATEGORIE"] = "De gebruiker is bevoegd om categorieën te wijzigen.";
 $l_perm["workpermissions"]["EXPORT"] = "The user is allowed to make backups on the server and the local hard drive.";//TRANSLATE
 $l_perm["workpermissions"]["EXPORTNODOWNLOAD"] = "The user is allowed to make backups on the server";//TRANSLATE
