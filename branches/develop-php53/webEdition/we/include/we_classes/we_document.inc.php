@@ -284,7 +284,7 @@ class we_document extends we_root {
 		} else {	//	bestehendes Dokument oder Dokument mit DocType
             $selected=$this->Extension;
 		}
-		return $this->htmlFormElementTable(getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"'),$l_we_class["extension"]);
+		return $this->htmlFormElementTable(getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')),$l_we_class["extension"]);
 	}
 
 	function formPath() {

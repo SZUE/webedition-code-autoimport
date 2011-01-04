@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE manifest SYSTEM "manifest.dtd">
 <!-- default manifest for webEdition applications -->
 <manifest>
-	
+
 	<creator>
 		<company>webEdition project</company>
 		<name>webEdition e.V.</name>
 		<address>Innsbrucker Str. 35, 10825 Berlin</address>
-        <country>DE</country>
+    <country>DE</country>
 		<phone>+49 30 766835-79</phone>
 		<fax>+49 30 766835-85</fax>
 		<email>info@webedition.org</email>
 		<www>http://www.webedition.org</www>
 		<year>2010</year>
 	</creator>
-	
+
 	<info>
 		<implementation>tool</implementation>
 		<name>exampleApplication</name>
@@ -30,16 +31,16 @@
 			<category>miscellaneous</category>
 		</categories>
 	</info>
-	
+
 	<requirements>
       <php-version>5.2.4</php-version>
       <php-ext>simplexml</php-ext>
       <php-ext>gdlib</php-ext>
 	</requirements>
-	
+
 	<dependencies>
 		<version>6100</version>
 		<sdkversion>6100</sdkversion>
 	</dependencies>
-	
+
 </manifest>
