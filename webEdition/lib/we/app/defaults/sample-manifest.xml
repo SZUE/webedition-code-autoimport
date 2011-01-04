@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE manifest SYSTEM "manifest.dtd">
+<!DOCTYPE manifest SYSTEM "applications.dtd">
 <!-- example manifest for webEdition applications showing examples of all supported values -->
 <manifest>
 	<creator>
