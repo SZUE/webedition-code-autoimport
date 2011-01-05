@@ -25,7 +25,7 @@
  * Provides language strings.
  * Language: DeutschF
  */
-$l_export['save_changed_export'] = 'Der Export wurde geändert.'."\n".'Möchten Sie Ihre Änderungen speichern?';
+$l_export["save_changed_export"] = "Der Export wurde geändert.\\nMöchten Sie Ihre Änderungen speichern?";
 $l_export['auto_selection'] = 'Automatische Auswahl';
 $l_export['txt_auto_selection'] = 'Exportiert automatisch - nach Dokument-Typ oder Klasse - ausgewählte Dokumente oder Objekte.';
 $l_export['txt_auto_selection_csv'] = 'Exportiert automatisch - nach Klasse - ausgewählte Objekte.';
@@ -141,7 +141,7 @@ $l_export['end_export'] = 'Export beendet';
 $l_export['newFolder'] = 'Neue Gruppe';
 $l_export['folder_empty'] = 'Die Gruppe ist leer';
 $l_export['folder_path_exists'] = 'Diese Gruppe existiert schon!';
-$l_export['wrongtext'] = 'Der Name ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.), Leerzeichen ( ) und Klammeraffen (@).';
+$l_export['wrongtext'] = 'Der Name ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.), Leerzeichen ( ) und Klammeraffen (@).';
 $l_export['wrongfilename'] = 'Der Dateiname ist nicht gültig!';
 $l_export['folder_exists'] = 'Diese Gruppe existiert schon!';
 $l_export['delete_ok'] = 'Der Export wurde gelöscht.';
@@ -164,7 +164,7 @@ $l_export['help'] = 'Hilfe';
 $l_export['info'] = 'Info';
 $l_export['path_nok'] = 'Der Pfad ist nicht korrekt!';
 
-$l_export['must_save'] = 'Der Export wurde verändert.'."\n".'Bevor Sie exportieren können, müssen Sie den Export speichern!';
+$l_export['must_save'] = 'Der Export wurde verändert.\\nBevor Sie exportieren können, müssen Sie den Export speichern!';
 $l_export['handle_owners_option'] = 'Besitzerdaten';
 $l_export['handle_owners'] = 'Besitzerdaten exportieren';
 $l_export['txt_owners'] = 'Die verlinkten Benutzerdaten mit exportieren.';
