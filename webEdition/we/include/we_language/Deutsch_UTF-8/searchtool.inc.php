@@ -146,12 +146,12 @@ $GLOBALS['l_weSearch']['predefinedSearchmodify'] = "Eine vordefinierte Suche kö
 $GLOBALS['l_weSearch']['predefinedSearchdelete'] = "Eine vordefinierte Suche können Sie nicht löschen!";
 $GLOBALS['l_weSearch']['nameForSearch'] = "Bitte geben Sie einen Namen für Ihre Suche ein:";
 $GLOBALS['l_weSearch']["no_hochkomma"] = "Der Name einer Suche darf kein ' (Hochkomma) oder \" (Anführungszeichen) enthalten!";
-$GLOBALS['l_weSearch']['confirmDel'] = 'Aktuellen Eintrag löschen.'."\n".'Sind Sie sicher?';
+$GLOBALS['l_weSearch']['confirmDel'] = 'Aktuellen Eintrag löschen.\\nSind Sie sicher?';
 $GLOBALS['l_weSearch']['nameTooLong'] = 'Der Name darf nicht mehr als 30 Zeichen enthalten!';
 $GLOBALS['l_weSearch']['nothingCheckedAdv'] = 'Bitte geben Sie im Bereich "Anzeigen" an nach was gesucht werden soll!';
 $GLOBALS['l_weSearch']['nothingCheckedTmplDoc'] = 'Bitte geben Sie im Bereich "Optionen" an nach was gesucht werden soll!';
-$GLOBALS['l_weSearch']['noTempTableRightsSearch'] = 'Sie besitzen in Ihrer MySQL-Datenbank nicht das Recht temporäre Tabellen zu erstellen bzw. Tabellen zu löschen. Aus diesem Grund ist die Suche nicht möglich.'."\n".'Wenn Sie die Suche benutzen möchten, richten Sie sich diese Rechte auf Ihrem MySql-Account ein.';
-$GLOBALS['l_weSearch']['noTempTableRightsDoclist'] = 'Sie besitzen in Ihrer MySQL-Datenbank nicht das Recht temporäre Tabellen zu erstellen bzw. Tabellen zu löschen. Aus diesem Grund ist die Auflistung von Dokumenten nicht möglich.'."\n".'Wenn Sie die Auflistung von Dokumenten sehen möchten, richten Sie sich diese Rechte auf Ihrem MySql-Account ein.';
+$GLOBALS['l_weSearch']['noTempTableRightsSearch'] = 'Sie besitzen in Ihrer MySQL-Datenbank nicht das Recht temporäre Tabellen zu erstellen bzw. Tabellen zu löschen. Aus diesem Grund ist die Suche nicht möglich.\nWenn Sie die Suche benutzen möchten, richten Sie sich diese Rechte auf Ihrem MySql-Account ein.';
+$GLOBALS['l_weSearch']['noTempTableRightsDoclist'] = 'Sie besitzen in Ihrer MySQL-Datenbank nicht das Recht temporäre Tabellen zu erstellen bzw. Tabellen zu löschen. Aus diesem Grund ist die Auflistung von Dokumenten nicht möglich.\nWenn Sie die Auflistung von Dokumenten sehen möchten, richten Sie sich diese Rechte auf Ihrem MySql-Account ein.';
 
 $GLOBALS['l_weSearch']["date_format"] = 'd.m.Y';
 

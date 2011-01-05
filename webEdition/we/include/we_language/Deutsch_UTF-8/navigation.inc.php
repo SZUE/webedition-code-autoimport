@@ -28,11 +28,11 @@
 
 $l_navigation = array();
 $l_navigation['no_perms'] = 'Sie haben nicht die Berechtigung diese Option auszuwählen.';
-$l_navigation['delete_alert'] = 'Aktuelle Eintrag/Ordner löschen.'."\n".'Sind Sie sich sicher?';
+$l_navigation['delete_alert'] = 'Aktuelle Eintrag/Ordner löschen.\\n Sind Sie sich sicher?';
 $l_navigation['nothing_to_delete'] = 'Der Eintrag kann nicht gelöscht werden!';
 $l_navigation['nothing_to_save'] = 'Der Eintrag kann nicht gespeichert werden!';
 $l_navigation['nothing_selected'] = 'Bitte wählen Sie den Eintrag/Ordner aus, der gelöscht werden soll.';
-$l_navigation['we_filename_notValid'] = 'Der Benutzername ist nicht korrekt!'."\n".'Zugelassen sind alphanumerische Zeichen, Groß- und Kleinschreibung, ebenso wie Unterstrich, Bindestrich, Punkt und Leerzeichen (a-z, A-Z, 0-9, _, -, ., )';
+$l_navigation['we_filename_notValid'] = 'Der Benutzername ist nicht korrekt!\\nZugelassen sind alphanumerische Zeichen, Groß- und Kleinschreibung, ebenso wie Unterstrich, Bindestrich, Punkt und Leerzeichen (a-z, A-Z, 0-9, _, -, ., )';
 
 $l_navigation['menu_new'] = 'Neu';
 $l_navigation['menu_save'] = 'Speichern';
@@ -63,7 +63,7 @@ $l_navigation['path_nok'] = 'Der Pfad ist nicht korrekt!';
 $l_navigation['name_empty'] = 'Der Name darf nicht leer sein!';
 $l_navigation['name_exists'] = 'Der Name existiert bereits!';
 $l_navigation['wrongTitleField'] = 'Der Navigationsordner konnte nicht gespeichert werden, da das angegebene Titel-Feld nicht existiert. Korrigieren Sie dieses auf dem Tab \'Inhalt\' und speichern Sie erneut.';
-$l_navigation['wrongtext'] = 'Der Name ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.), Leerzeichen ( ) und Klammeraffen (@).';
+$l_navigation['wrongtext'] = 'Der Name ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.), Leerzeichen ( ) und Klammeraffen (@).';
 $l_navigation['folder_path_exists'] = 'Dieser Name ist bereits vergeben.';
 $l_navigation['navigation_deleted'] = 'Der Eintrag/Ordner wurde erfolgreich gelöscht.';
 $l_navigation['group_deleted'] = 'Der Ordner wurde erfolgreich gelöscht.';
