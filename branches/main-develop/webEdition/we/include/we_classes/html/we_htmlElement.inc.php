@@ -281,7 +281,7 @@ class we_htmlElement {
 	* @return		string
 	*/
 	function htmlComment($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('!-- $content --',false));
+		return we_baseElement::getHtmlCode(new we_baseElement('!--'. $content.' --',false));
 	}
 
 	/**
