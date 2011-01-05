@@ -35,8 +35,8 @@ $l_we_editor['required_field_alert'] = 'Das Feld \'%s\' ist ein Pflichtfeld und 
 $l_we_editor['category']['response_save_ok'] = 'Die Kategorie \'%s\' wurde erfolgreich gespeichert!';
 $l_we_editor['category']['response_save_notok'] = 'Fehler beim Speichern der Kategorie \'%s\'!';
 $l_we_editor['category']['response_path_exists'] = 'Die Kategorie \'%s\' konnte nicht gespeichert werden, da es bereits eine andere Kategorie an dieser Stelle gibt!';
-$l_we_editor['category']['we_filename_notValid'] = 'Der eingegebene Name ist nicht gültig!'."\n".'Erlaubt sind alle Zeichen außer \', " / < > und \\';
-$l_we_editor['category']['name_komma'] = 'Der eingegebene Name ist nicht gültig!'."\n".'Kommas sind nicht erlaubt';
+$l_we_editor["category"]["we_filename_notValid"] = 'Der eingegebene Name ist nicht gültig!\nErlaubt sind alle Zeichen außer ", \' / < > und \\\\';
+$l_we_editor["category"]["name_komma"] = "Der eingegebene Name ist nicht gültig!\\nKommas sind nicht erlaubt";
 $l_we_editor['category']['filename_empty']       = 'Der Name darf nicht leer sein';
 
 $l_we_editor['text/webedition']['response_save_ok'] = 'Die webEdition-Seite \'%s\' wurde erfolgreich gespeichert!';
@@ -48,7 +48,7 @@ $l_we_editor['text/webedition']['response_not_published'] = 'Die webEdition-Seit
 $l_we_editor['text/webedition']['response_save_notok'] = 'Fehler beim Speichern der webEdition-Seite \'%s\'!';
 $l_we_editor['text/webedition']['response_path_exists'] = 'Die webEdition-Seite \'%s\' konnte nicht gespeichert werden, da es bereits eine andere Datei oder ein anderes Verzeichnis an dieser Stelle gibt!';
 $l_we_editor['text/webedition']['filename_empty'] = 'Sie haben noch keinen Dateinamen eingegeben!';
-$l_we_editor['text/webedition']['we_filename_notValid'] = 'Der eingegebene Dateiname ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).';
+$l_we_editor["text/webedition"]["we_filename_notValid"] = "Der eingegebene Dateiname ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).";
 $l_we_editor['text/webedition']['we_filename_notAllowed'] = 'Der eingegebene Dateiname ist nicht erlaubt!';
 $l_we_editor['text/webedition']['response_save_noperms_to_create_folders'] = 'Die Datei konnte nicht gespeichert werden, da Sie nicht die notwendigen Rechte besitzen, um neue Verzeichnisse (%s) anzulegen!';
 $l_we_editor['text/webedition']['autoschedule'] = 'Die webEdition-Seite wird am %s automatisch veröffentlicht!';
@@ -134,7 +134,7 @@ $l_we_editor['folder']['response_unpublish_ok'] = 'Das Verzeichnis \'%s\' wurde 
 $l_we_editor['folder']['response_save_notok'] = 'Fehler beim Speichern des Verzeichnisses \'%s\'!';
 $l_we_editor['folder']['response_path_exists'] = 'Das Verzeichnis \'%s\' konnte nicht gespeichert werden, da es bereits eine andere Datei oder ein anderes Verzeichnis an dieser Stelle gibt!';
 $l_we_editor['folder']['filename_empty'] = 'Sie haben noch keinen Namen für das Verzeichnis eingegeben!';
-$l_we_editor['folder']['we_filename_notValid'] = 'Der eingegebene Name für das Verzeichnis ist nicht gültig!'."\n".'Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).';
+$l_we_editor["folder"]["we_filename_notValid"] = "Der eingegebene Name für das Verzeichnis ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).";
 $l_we_editor['folder']['we_filename_notAllowed'] = 'Der eingegebene Name für das Verzeichnis ist nicht erlaubt!';
 $l_we_editor['folder']['response_save_noperms_to_create_folders'] = 'Das Verzeichnis konnte nicht gespeichert werden, da Sie nicht die notwendigen Rechte besitzen, um neue Verzeichnisse (%s) anzulegen!';
 
@@ -158,7 +158,7 @@ $l_we_editor['application/*']['we_filename_notValid'] = $l_we_editor['text/webed
 $l_we_editor['application/*']['we_filename_notAllowed'] = $l_we_editor['text/webedition']['we_filename_notAllowed'];
 $l_we_editor['application/*']['response_save_noperms_to_create_folders'] = $l_we_editor['text/webedition']['response_save_noperms_to_create_folders'];
 $l_we_editor['application/*']['we_description_missing'] = 'Bitte geben Sie eine Beschreibung im Feld \'Beschreibung\' an!';
-$l_we_editor['application/*']['response_save_wrongExtension'] = 'Fehler beim Speichern von \'%s\''."\n".'Die Dateierweiterung \'%s\' ist bei sonstigen Dateien nicht erlaubt!'."\n".'Bitte legen Sie dafür eine HTML-Datei an!';
+$l_we_editor["application/*"]["response_save_wrongExtension"] = "Fehler beim Speichern von '%s' \\nDie Dateierweiterung '%s' ist bei sonstigen Dateien nicht erlaubt!\\nBitte legen Sie dafür eine HTML-Datei an!";
 
 $l_we_editor['application/x-shockwave-flash']['response_save_ok'] = 'Die Flash-Datei \'%s\' wurde erfolgreich gespeichert!';
 $l_we_editor['application/x-shockwave-flash']['response_publish_ok'] = 'Die Flash-Datei \'%s\' wurde erfolgreich veröffentlicht!';

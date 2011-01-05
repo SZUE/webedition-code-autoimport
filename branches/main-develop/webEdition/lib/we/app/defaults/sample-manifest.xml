@@ -1,117 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE manifest SYSTEM "manifest.dtd">
-<!-- example manifest for webEdition applications showing all supported values -->
+<!DOCTYPE manifest SYSTEM "applications.dtd">
+<!-- example manifest for webEdition applications showing examples of all supported values -->
 <manifest>
-
-	<!-- the creator develloped the application  -->
 	<creator>
-		<company>webEdition project</company>
-		<name>webEdition e.V.</name>
-		<!-- list of the authors  -->
-		<authors>
-			<author>misc.</author>
-		</authors>
-		<authorlinks>
-			<www>http://xyz</www>
-		</authorlinks>
-		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
-        <country>DE</country>
-		<phone>+49 30 766835-79</phone>
-		<fax>+49 30 766835-85</fax>
-		<email>info@webedition.org</email>
-		<www>http://www.webedition.org</www>
-		<linktext>webEdition-Site</linktext>
-		<year>2010</year>
+		<company name="webEdition e.V.">
+			<authors>
+				<author name="myname" email="contact@direct.de"/>
+				<author name="another author's name" url="http://www.myHomepage.de"/>
+			</authors>
+			<location country="DE">
+				<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
+				<phone>+49 30 766835-79</phone>
+				<fax>+49 30 766835-85</fax>
+				<email>info@webedition.org</email>
+				<www url="http://www.webedition.org">webEdition-Site</www>
+			</location>
+			<location country="FR">
+				<address>somewhere in france</address>
+				<phone>+33 1234556</phone>
+				<fax>+33 1234557</fax>
+				<email>email@url.fr</email>
+				<www url="http://www.xyz.fr">we speak french</www>
+			</location>
+			<year>2010</year>
+		</company>
+		<person>
+			<author name="me"/>
+			<location country="DE">
+				<email>me@my.de</email>
+			</location>
+			<year>2011</year>
+		</person>
+
 	</creator>
 
-	<!-- the maintainer maintains an application, include if somebody else wrote it for webEdition or if it is an externally develloped, third party application  -->
 	<maintainer>
-		<company>webEdition project</company>
-		<name>webEdition e.V.</name>
-		<!-- list of the authors who maintain it -->
-		<authors>
-			<author>misc.</author>
-		</authors>
-		<authorlinks>
-			<www>http://xyz</www>
-		</authorlinks>
-		<address>c/o Löwi &amp; Partner, Innsbrucker Str. 35, 10825 Berlin</address>
-        <country>DE</country>
-		<phone>+49 30 766835-79</phone>
-		<fax>+49 30 766835-85</fax>
-		<email>info@webedition.org</email>
-		<www>http://www.webedition.org</www>
-		<linktext>webEdition-Site</linktext>
-		<year>2010</year>
+		<person>
+			<author name="my-author"/>
+			<location country="DE">
+		<!-- no adress provided -->
+				<email>info@webedition.org</email>
+			</location>
+			<year>2010</year>
+		</person>
 	</maintainer>
 
-	<!-- this should be included if the application is an wrapper to a third-party application such as phpMyAdmin -->
-	<thirdparty>
-		<company>webEdition project</company>
-		<name>webEdition e.V.</name>
-		<authornames>misc.</authornames>
-		<address>Innsbrucker Str. 35, 10825 Berlin</address>
-        <country>DE</country>
-		<phone>+49 30 766835-79</phone>
-		<fax>+49 30 766835-85</fax>
-		<email>info@webedition.org</email>
-		<www>http://www.webedition.org</www>
-		<year>2010</year>
-		<version>6100</version>
-		<license>GPL3</license>
-		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>
+	<thirdparty name="external Aplication" version="1.0">
+		<company name="someComp">
+			<author name="who ever" />
+			<location country="DE">
+				<email>test@test.de</email>
+			</location>
+			<year>2011</year>
+		</company>
+		<license name="GPL" version="2" url="http://www.gnu.org/licenses/gpl.html"/>
 	</thirdparty>
 
-	<info>
-		<implementation>tool</implementation>
-		<name>exampleApplication</name>
-		<classname>exampleapplication</classname>
-		<!-- name of the copyrightholder of the app -->
-		<copyright>copyright owner</copyright>
-		<!-- name of the app, at least de and en should be supplied -->
-		<title>
-			<de>App Name</de>
-			<en>app name</en>
-		</title>
-		<!-- a small description of the app, at least de and en should be supplied -->
-		<description>
-			<de>Beschreibung</de>
-			<en>description</en>
-		</description>
-
-		<version>0.01</version>
-		<license>GPL3</license>
-		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>
-		<encoding>none</encoding>
-		<supportshooks>true</supportshooks>
-		<deactivatable>true</deactivatable>
-		<deinstallable>true</deinstallable>
-		<updatable>true</updatable>
-		<!-- list of categories, here showing all currently supported catagories -->
+	<info appName="testApp" encoding="ISO8859-15">
+		<class>myClass</class>
+		<license name="GPL" version="3" url="http://www.gnu.org/licenses/gpl.html" />
+		<title lang="de">meine erste Applikation</title>
+		<title lang="en">my first application</title>
+		<description lang="de">sie macht irgendwas keine Ahnung was</description>
+		<description lang="en">I don't exactly know what it is supposed to do</description>
+		<features supportshooks="true" deactivatable="false" deinstallable="false" updatable="false"/>
 		<categories>
-			<category>miscellaneous</category>
-			<category>backend</category>
-			<category>frontend</category>
-			<category>third-party</category>
+			<category>simpleTool</category>
+			<category>complexTool</category>
 		</categories>
 	</info>
 
 	<requirements>
-      <php-version>5.2.4</php-version>
-	  <!-- list of all requird php extensions -->
-      <php-ext>simplexml</php-ext>
-      <php-ext>gdlib</php-ext>
+		<php minVersion="5.2.0">
+			<extension minVersion="1.0">simplexml</extension>
+			<extension maxVersion="2.0">gdlib</extension>
+		</php>
+		<webedition minVersion="6.1.0">
+			<sdk minVersion="6.1.0" maxVersion="6.3.0"></sdk>
+			<module>customer</module>
+			<module>shop</module>
+			<application minVersion="0.9">anotherApplication</application>
+		</webedition>
 	</requirements>
-
-	<dependencies>
-		<!-- min. webEdition Version -->
-		<version>6100</version>
-		<!-- Version of the webEdition SDK -->
-		<sdkversion>6100</sdkversion>
-		<!-- max. webEdition Version if already known, otherwise empty-->
-		<versionmax></versionmax>
-		<!-- max. Version of the webEdition SDK if already known, otherwise empty, if set, WE expects the application to be compatible with all versions in between -->
-		<sdkversionmax></sdkversionmax>
-	</dependencies>
 
 </manifest>
