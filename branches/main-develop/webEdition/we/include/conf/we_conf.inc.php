@@ -68,13 +68,13 @@ define("SERVER_NAME", $SERVER_NAME);
 define("DB_HOST","localhost");
 
 // Name of database being used by webEdition
-define("DB_DATABASE","mokraemer_alex");
+define("DB_DATABASE","webedition");
 
 // Username to access the database
-define("DB_USER",base64_decode('YWxleA=='));
+define("DB_USER","root");
 
 // Password to access the database
-define("DB_PASSWORD",base64_decode('akVSV1NuR0xaNDQ1NmVxSg=='));
+define("DB_PASSWORD","root");
 
 // Mode how to access the database
 //
@@ -88,9 +88,9 @@ define("DB_PASSWORD",base64_decode('akVSV1NuR0xaNDQ1NmVxSg=='));
 //             link will remain open for future use.
 
 // Don't change this line!!!
-define("DB_CONNECT", "pconnect");
+define("DB_CONNECT","connect");
 
-// Prefix of tables in database for this webEdition.
+// Prefix of tables in database for this webEdition..
 define("TBL_PREFIX","");
 
 // Charset of tables in database for this webEdition.
@@ -109,14 +109,14 @@ define("WE_LIZENZ","GPL");
 // Path to the templates directory
 define("TEMPLATE_DIR",$_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/templates");
 
-// Path to the temporary files directory
+// Path to the log directory
 define("LOG_DIR",$_SERVER["DOCUMENT_ROOT"] . "/webEdition/log");
 
 // Path to the temporary files directory
 define("TMP_DIR",$_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/tmp");
 
 // Original language of this version of webEdition, used for login-screen
-define("WE_LANGUAGE","Deutsch_UTF-8");
+define("WE_LANGUAGE","English_UTF-8");
 
 if (!isset($GLOBALS["WE_LANGUAGE"])) {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
@@ -128,5 +128,5 @@ if (!date_default_timezone_set(@date_default_timezone_get())){
 }
 define("DATETIME_INITIALIZED","1"); // to prevent additional initialization in we_defines und autoload, this allows later to make that an settings-item
 
-
+//define ("WE_SQL_DEBUG", 1);
 ?>
