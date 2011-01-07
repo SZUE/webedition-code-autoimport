@@ -159,7 +159,7 @@
 							}
 						}
 						$_prefix = 'Saving object ';
-						if($classname=='weTable') {
+						if($classname=='weTable' || $classname=='weTableAdv') {
 							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
 						} else if($classname=='weTableItem'){
 							$_id_val = '';
@@ -216,6 +216,17 @@
 						weBackupUtil::setBackupVar('current_table',$table);
 						$object = new weTable($table);
 						$classname = 'weTable';
+						return true;
+					}
+				break;
+				
+				case 'we:tableadv':
+					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTable.class.php');
+					$table = weBackupUtil::getRealTableName($attribs['name']);
+					if($table !== false) {
+						weBackupUtil::setBackupVar('current_table',$table);
+						$object = new weTableAdv($table);
+						$classname = 'weTableAdv';
 						return true;
 					}
 				break;

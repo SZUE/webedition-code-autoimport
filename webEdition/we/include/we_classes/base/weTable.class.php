@@ -149,5 +149,48 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 		
 
 	}
+	
+	class weTableAdv extends weTable
+	{
+		var $ClassName="weTableAdv";
+		function getColumns(){
+			if(weDBUtil::isTabExist($this->table)){
+				$metadata=$this->db->query("SHOW CREATE TABLE $this->table;");
+				while($this->db->next_record()){
+					$this->elements[$this->db->f("Table")]=explode("\n",$this->db->f("Create Table"));
+				}
+			}
+		}
+		
+		function save(){
+			global $DB_WE;	
+			
+			weDBUtil::delTable($this->table);	
+			$this->elements[0]= str_replace('`','',$this->elements[0]);
+			
+			// Charset and Collation
+			$charset_collation = "";
+			if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
+				$Charset = DB_CHARSET;
+				$Collation = DB_COLLATION;
+				$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+			}
+			
+			$this->elements[count($this->elements)-1]=' ) '. $charset_collation .' ENGINE=MyISAM;';			
+			$query = implode("",$this->elements);
+			if ($DB_WE->query($query)) {
+				p_r($query);
+				sleep(3);
+				return true;
+			
+			} else {
+				p_r($query);
+				sleep(30);
+				return false;
+			
+			}
+		}
+		
+	}
 
 ?>

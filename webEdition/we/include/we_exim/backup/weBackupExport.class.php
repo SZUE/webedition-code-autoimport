@@ -39,11 +39,13 @@
 					}
 					
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTable.class.php');
-					$_object=new weTable($_table,true);					
+					$_object=new weTableAdv($_table,true);					
 					
 					$_attributes = array(
-						'name' => weBackupUtil::getDefaultTableName($_table)
+						'name' => weBackupUtil::getDefaultTableName($_table),
+						'type' => 'create'
 					);
+					
 					
 					weContentProvider::object2xml($_object,$_fh,$_attributes);
 					

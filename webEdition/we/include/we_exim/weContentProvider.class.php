@@ -131,6 +131,7 @@
 				case "we_docTypes": return "we:doctype";
 				case "we_category": return "we:category";
 				case "weTable": return "we:table";
+				case "weTableAdv": return "we:tableadv";
 				case "weTableItem": return "we:tableitem";
 				case "weBinary": return "we:binary";
 				case "weNavigation": return "we:navigation";
@@ -392,8 +393,15 @@
 					$elements_ids=array_keys($object->elements);
 
 					foreach($elements_ids as $ck){
-						if($object->ClassName=="weTable"){
-							$contentObj=new we_element(false,$object->elements[$ck]);
+						if($object->ClassName=="weTable" || $object->ClassName=="weTableAdv"){
+							if($object->ClassName=="weTablea"){
+								$contentObj=new we_element(false,$object->elements[$ck]);p_r($contentObj);
+							} else {
+								array_unshift($object->elements[$ck],' ');
+								$contentObj=new we_element(false,$object->elements[$ck]);
+								foreach($object->elements[$ck] as $okey => $ov) {$contentObj->$okey=trim($ov);};
+							}
+							
 						}
 						else{
 							$options=array(
