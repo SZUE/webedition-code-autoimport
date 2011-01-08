@@ -1927,11 +1927,11 @@ function mapPermissions() {
 		} else {$CreatorIDtext = '-'; }
 		if($this->ModifierID){
 			if($this->ModifierID == $this->ID){
-				$ModifierIDtext = $this->username .' ('.$this->first.' '.$this->second.')';
+				$ModifierIDtext = $this->username .' ('.$this->First.' '.$this->Second.')';
 			} else {
-				$this->DB_WE->query("SELECT username,first,second FROM ".USER_TABLE." WHERE ID='".$this->ModifierID."'");
+				$this->DB_WE->query("SELECT username,First,Second FROM ".USER_TABLE." WHERE ID='".$this->ModifierID."'");
 				if ($this->DB_WE->next_record()) {
-					$ModifierIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('first').' '.$this->DB_WE->f('second').')';
+					$ModifierIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('First').' '.$this->DB_WE->f('Second').')';
 				} else {
 					$ModifierIDtext=$GLOBALS['l_users']["lostID"].$this->ModifierID.$GLOBALS['l_users']["lostID2"];
 				}

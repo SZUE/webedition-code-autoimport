@@ -458,6 +458,12 @@ class liveUpdateFunctions {
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
 
+					 if((strpos($extra,'AUTO_INCREMENT') !== false)&& ($fieldInfo['Key']=='')){
+						 //set an index, if there is none - this prevents from failing the query
+						 //temporary index is dropped on next update
+						 $extra .= ', ADD INDEX _temp ('.$fieldInfo['Field'].')';
+					 }
+
 			if ($isNew) {
 
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
@@ -741,6 +747,11 @@ class liveUpdateFunctions {
 							if (sizeof($changedKeys)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 							}
+
+						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
+						if (isset($origTableKeys['_temp'])) {
+							$alterQueries = array_merge(array('ALTER TABLE `'.$tableName.'` DROP INDEX _temp'),$alterQueries);
+						}
 
 							if (sizeof($alterQueries)) {
 								// execute all queries

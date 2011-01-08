@@ -38,7 +38,7 @@ $GLOBALS['l_import_files']['step3'] = 'Lokale Dateien importieren - Schritt 3 vo
 $GLOBALS['l_import_files']['import_expl'] = 'Durch Klick auf den Button neben dem Eingabefeld können Sie eine Datei auf Ihrer Festplatte auswählen. Nach der Auswahl erscheint ein neues Eingabefeld mit dem Sie eine weitere Datei auswählen können. Beachten Sie, daß pro Datei die maximale Größe von %s auf Grund von PHP-Einschränkungen nicht überschritten werden darf!<br><br>Klicken Sie auf \'Weiter\', um den Import zu starten.';
 $GLOBALS['l_import_files']['import_expl_jupload'] = 'Durch Klick auf den Button im Java-Applet können Sie mehrere Dateien auf Ihrer Festplatte auswählen. Alternativ können Sie die Dateien aus dem File Manager per "Drag and Drop" in das Applet ziehen. Beachten Sie, daß pro Datei die maximale Größe von %s auf Grund von PHP-Einschränkungen nicht überschritten werden darf!<br><br>Klicken Sie auf \'Hochladen\' im Applet, um den Import zu starten.';
 
-$GLOBALS['l_import_files']['error'] = 'Es sind Fehler beim Import aufgetreten!'."\n\n".'Folgende Dateien konnten nicht importiert werden:'."\n".'%s';
+$GLOBALS["l_import_files"]["error"] = "Es sind Fehler beim Import aufgetreten!\\n\\nFolgende Dateien konnten nicht importiert werden:\\n%s";
 $GLOBALS['l_import_files']['finished'] = 'Der Import wurde erfolgreich beendet!';
 $GLOBALS['l_import_files']['import_file'] = 'Importiere Datei %s';
 
