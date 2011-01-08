@@ -5306,17 +5306,17 @@ else {
 								}
 
 								document.getElementsByName('error_handling_notices')[0].disabled = _new_state;
-								document.getElementsByName('error_handling_deprecated')[0].disabled = _new_state;
+								
 								document.getElementsByName('error_handling_warnings')[0].disabled = _new_state;
 								document.getElementsByName('error_handling_errors')[0].disabled = _new_state;
 
 								document.getElementById('label_error_handling_notices').style.color = _new_style;
-								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
+								
 								document.getElementById('label_error_handling_warnings').style.color = _new_style;
 								document.getElementById('label_error_handling_errors').style.color = _new_style;
 
 								document.getElementById('label_error_handling_notices').style.cursor = _new_cursor;
-								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;
+								
 								document.getElementById('label_error_handling_warnings').style.cursor = _new_cursor;
 								document.getElementById('label_error_handling_errors').style.cursor = _new_cursor;
 
@@ -5330,8 +5330,14 @@ else {
 
 								document.getElementById('label_error_display_errors').style.cursor = _new_cursor;
 								document.getElementById('label_error_log_errors').style.cursor = _new_cursor;
-								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;
-
+								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;";
+if (version_compare(PHP_VERSION, '5.3.0') >= 0){
+$_needed_JavaScript .= "								
+								document.getElementsByName('error_handling_deprecated')[0].disabled = _new_state;
+								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
+								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;";
+}
+$_needed_JavaScript .= "	
 								set_state_mail();
 							}
 						//-->
