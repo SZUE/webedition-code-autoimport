@@ -95,5 +95,52 @@
 			   global $DB_WE;
 			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP $col;");
 		}
+		
+		function getTableCreateArray($tab){
+			global $DB_WE;
+			$DB_WE->query("SHOW CREATE TABLE ".mysql_real_escape_string($tab));
+			if($DB_WE->next_record()) {
+				return explode("\n",$DB_WE->f("Create Table"));
+			} else {
+				return false;
+			}
+		}
+		
+		function getTableKeyArray($tab){
+			global $DB_WE;
+			$myarray = array();
+			$DB_WE->query("SHOW CREATE TABLE ".mysql_real_escape_string($tab));
+			if($DB_WE->next_record()) {
+				$zw=explode("\n",$DB_WE->f("Create Table"));
+				foreach ($zw as $k => $v){
+					$vv = trim($v);
+					$posP = strpos($vv,'PRIMARY KEY');
+					$posU = strpos($vv,'UNIQUE KEY');
+					$posK = strpos($vv,'KEY');
+					if( ($posP !== false && $posP == 0) || ($posU !== false && $posU == 0) || ($posK !== false && $posK == 0) ){
+						$myarray[] = trim(rtrim($v,','));
+					}	
+				}
+				return $myarray;
+			} else {
+				return false;
+			}
+			
+		}
+		function isKeyExist($tab,$key){
+			global $DB_WE;
+			$DB_WE->query("SHOW CREATE TABLE ".mysql_real_escape_string($tab));
+			if($DB_WE->next_record()) {
+				$zw=explode("\n",$DB_WE->f("Create Table"));
+				foreach ($zw as $k => $v){
+					if (trim(rtrim($v,','))==$key) return true;
+				}
+			}
+			return false;
+		}
+		function addKey($tab,$key){
+			global $DB_WE;
+			$DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$key.";");
+		}
 	
 	}

@@ -79,7 +79,10 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 		}
 
 		function save(){
-
+			if( !(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) ){
+				$_SESSION['weBackupVars']['tablekeys']=array();
+			}
+			$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
 			weDBUtil::delTable($this->table);
 			$cols=array();
 			$keys=array();
@@ -173,11 +176,15 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 		
 		function save(){
 			global $DB_WE;	
-			
+			if( !(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) ){
+				$_SESSION['weBackupVars']['tablekeys']=array();
+			}
+			$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
 			weDBUtil::delTable($this->table);	
 			$myarray=$this->elements['create'];
-			array_shift($myarray);//get dird of 'create'
-			$myarray['line0']= str_replace('`','',$myarray['line0']);
+			array_shift($myarray);//get rid of 'create'
+			array_shift($myarray);//get rid of old create Statement'
+			array_unshift($myarray,'CREATE TABLE '.$this->table.' (' );
 
 			// Charset and Collation
 			$charset_collation = "";
