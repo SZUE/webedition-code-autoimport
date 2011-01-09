@@ -779,7 +779,7 @@ class we_imageDocument extends we_binaryDocument {
 	function getThumbnail() {
 		if ($this->getElement("data") && is_readable($this->getElement("data"))) {
 			$_thumbSrc = we_image_edit::createPreviewThumb($this->getElement("data"), 0, 150, 200, substr($this->Extension,1), 75, $GLOBALS['we_transaction']);
-			return '<img src="'.$_thumbSrc.'" alt="" border="0" />';
+			return '<img src="'.WEBEDITION_DIR.'showTempFile.php?file='.$_thumbSrc.'" alt="" border="0" />';
 		} else {
 			return $this->getHtml();
 		}
