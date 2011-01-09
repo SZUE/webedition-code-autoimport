@@ -21,6 +21,7 @@
 
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."weDBUtil.class.php");
 
 	class weBackupUpdater{
 
@@ -58,6 +59,10 @@
 			$DB_WE->query("DROP TABLE tblOwner");
 		}
 		//$DB_WE->query("ALTER TABLE " . INDEX_TABLE . " DROP PRIMARY KEY");
+		
+		if(!$this->isColExist(INDEX_TABLE,'Language')) $this->addCol(INDEX_TABLE,'Language',"varchar(5) default NULL");
+		
+		
 		if(!$this->isColExist(FILE_TABLE,"Owners")) $this->addCol(FILE_TABLE,"Owners","VARCHAR(255)  DEFAULT ''");
 		if(!$this->isColExist(FILE_TABLE,"RestrictOwners")) $this->addCol(FILE_TABLE,"RestrictOwners","TINYINT(1)  DEFAULT ''");
 		if(!$this->isColExist(FILE_TABLE,"OwnersReadOnly")) $this->addCol(FILE_TABLE,"OwnersReadOnly","TEXT DEFAULT ''");
@@ -95,6 +100,7 @@
   		if(!$this->isColExist(PREFS_TABLE,"default_tree_count")) $this->addCol(PREFS_TABLE,"default_tree_count","INT(11) DEFAULT '0' NOT NULL");
 		
 		
+		if(!$this->isColExist(PREFS_TABLE,"editorMode")) $this->addCol(PREFS_TABLE,"editorMode","  varchar(64) NOT NULL DEFAULT 'textarea'",' AFTER  specify_jeditor_colors ');
 		if(!$this->isColExist(PREFS_TABLE,"editorLinenumbers")) $this->addCol(PREFS_TABLE,"editorLinenumbers"," tinyint(1) NOT NULL default '1'",' AFTER editorMode ');
 		if(!$this->isColExist(PREFS_TABLE,"editorCodecompletion")) $this->addCol(PREFS_TABLE,"editorCodecompletion"," tinyint(1) NOT NULL default '0'",' AFTER editorLinenumbers ');
 		if(!$this->isColExist(PREFS_TABLE,"editorTooltips")) $this->addCol(PREFS_TABLE,"editorTooltips"," tinyint(1) NOT NULL default '1'",' AFTER editorCodecompletion ');
@@ -368,19 +374,25 @@
 			if(!$this->isColExist(CUSTOMER_TABLE,"Forename")) $this->addCol(CUSTOMER_TABLE,"Forename","VARCHAR(255) DEFAULT '' NOT NULL");
 			if(!$this->isColExist(CUSTOMER_TABLE,"Surname")) $this->addCol(CUSTOMER_TABLE,"Surname","VARCHAR(255) DEFAULT '' NOT NULL");
 
+
+			if(!$this->isColExist(CUSTOMER_TABLE,"LoginDenied")) $this->addCol(CUSTOMER_TABLE,"LoginDenied","TINYINT DEFAULT '0' NOT NULL");
 			if(!$this->isColExist(CUSTOMER_TABLE,"MemberSince")){
 				$this->addCol(CUSTOMER_TABLE,"MemberSince","int(10) NOT NULL default 0");
 				$DB_WE->query("UPDATE " . CUSTOMER_ADMIN_TABLE . " SET MemberSince='".time()."';");
 			}
 			else $this->changeColTyp(CUSTOMER_TABLE,"MemberSince","int(10) NOT NULL default 0");
 
-			if(!$this->isColExist(CUSTOMER_TABLE,"LastLogin")) $this->addCol(CUSTOMER_TABLE,"LastLogin","int(10) NOT NULL default 0");
+			if(!$this->isColExist(CUSTOMER_TABLE,"LastLogin")) $this->addCol(CUSTOMER_TABLE,"LastLogin","int(10) NOT NULL default 0",' AFTER MemberSince ');
 			else $this->changeColTyp(CUSTOMER_TABLE,"LastLogin","int(10) NOT NULL default 0");
 
-			if(!$this->isColExist(CUSTOMER_TABLE,"LastAccess")) $this->addCol(CUSTOMER_TABLE,"LastAccess","int(10) NOT NULL default 0");
+			if(!$this->isColExist(CUSTOMER_TABLE,"LastAccess")) $this->addCol(CUSTOMER_TABLE,"LastAccess","int(10) NOT NULL default 0",' AFTER LastLogin ');
 			else $this->changeColTyp(CUSTOMER_TABLE,"LastAccess","int(10) NOT NULL default 0");
 
-			if(!$this->isColExist(CUSTOMER_TABLE,"LoginDenied")) $this->addCol(CUSTOMER_TABLE,"LoginDenied","TINYINT DEFAULT '0' NOT NULL");
+			
+			
+			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLoginDenied")) $this->addCol(CUSTOMER_TABLE,"AutoLoginDenied","tinyint(1) NOT NULL default '0'", " AFTER LastAccess ");
+			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLogin")) $this->addCol(CUSTOMER_TABLE,"AutoLogin","tinyint(1) NOT NULL default '0'", " AFTER AutoLoginDenied ");
+			
 
 		}
 	}
@@ -558,7 +570,7 @@
 	}
 
 	function updateVoting(){
-		if(defined('OBJECT_X_TABLE')){
+		if(defined('VOTING_TABLE')){
 			if(!$this->isColExist(VOTING_TABLE,'QASetAdditions')){
 				$this->addCol(VOTING_TABLE,'QASetAdditions','text',' AFTER QASet ');
 			}
@@ -618,6 +630,8 @@
 			if($this->isColExist(WORKFLOW_STEP_TABLE,'Worktime')) $this->changeColTyp(WORKFLOW_STEP_TABLE,'Worktime','float NOT NULL default 0');
 		}
 		if(defined('WORKFLOW_TABLE')){
+			if(!$this->isColExist(WORKFLOW_TABLE,'DocType')) $this->changeColTyp(WORKFLOW_TABLE,'DocType',"varchar(255) NOT NULL default '0'");
+			if(!$this->isColExist(WORKFLOW_TABLE,'ObjectFileFolders')) $this->addCol(WORKFLOW_TABLE,'ObjectFileFolders',"varchar(255) NOT NULL default ''",' AFTER Objects ');
 			if(!$this->isColExist(WORKFLOW_TABLE,'EmailPath')) $this->addCol(WORKFLOW_TABLE,'EmailPath','tinyint(1) NOT NULL DEFAULT 0',' AFTER Status ');
 			if(!$this->isColExist(WORKFLOW_TABLE,'LastStepAutoPublish')) $this->addCol(WORKFLOW_TABLE,'LastStepAutoPublish','tinyint(1) NOT NULL DEFAULT 0',' AFTER EmailPath ');
 		}
@@ -626,6 +640,19 @@
 	function updateLock(){
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
 		if(!$this->isColExist(LOCK_TABLE,'lock'))  $this->addCol(LOCK_TABLE,'lock',"datetime NOT NULL",' AFTER sessionID ');
+	}
+	
+	function updateTableKeys(){
+		if (isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) {
+			$myarray= $_SESSION['weBackupVars']['tablekeys'];
+			foreach($myarray as $k => $v){
+				foreach($v as $tabkey){
+					if(!weDBUtil::isKeyExist($k,$tabkey)) {
+						weDBUtil::addKey($k,$tabkey);
+					}
+				}
+			}					
+		}	
 	}
 	
 	function doUpdate(){
@@ -640,6 +667,7 @@
 		$this->updateVersions();
 		$this->updateWorkflow();
 		$this->updateLock();
+		$this->updateTableKeys();
 	}
 
 }
