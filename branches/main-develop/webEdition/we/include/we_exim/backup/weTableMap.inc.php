@@ -66,7 +66,8 @@
 		$tableMap['customer']=array(
 				'tblwebuser'			=>	CUSTOMER_TABLE,
 				'tblwebadmin'			=>	CUSTOMER_ADMIN_TABLE,
-				'tblcustomerfilter'		=>  CUSTOMER_FILTER_TABLE
+				'tblcustomerfilter'		=>  CUSTOMER_FILTER_TABLE,
+				'tblwebuserautologin'	=>	CUSTOMER_AUTOLOGIN_TABLE
 		);
 	}
 
@@ -140,7 +141,8 @@
 
 	if(defined('VOTING_TABLE')) {
 		$tableMap['voting']=array(
-				'tblvoting'				=>	VOTING_TABLE
+				'tblvoting'				=>	VOTING_TABLE,
+				'tblvotinglog'			=>	VOTING_LOG_TABLE
 		);
 	}
 
