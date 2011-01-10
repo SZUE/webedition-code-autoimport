@@ -187,3 +187,4 @@ $l_alert['field_in_tab_notvalid_pre'] = "Die Einstellungen konnten nicht gespeic
 $l_alert['field_in_tab_notvalid'] = ' - Feld %s im Tab %s';
 $l_alert['field_in_tab_notvalid_post'] = 'Bitte korrigieren Sie die Felder und speichern Sie die Einstellungen erneut.';
 $l_alert['discard_changed_data'] = 'Es gibt nicht gespeicherte Änderungen, die verloren gehen. Sind sie sicher?';
+?>

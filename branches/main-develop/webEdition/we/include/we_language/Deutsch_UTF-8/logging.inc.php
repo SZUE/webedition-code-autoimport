@@ -44,4 +44,7 @@ $GLOBALS['l_logging'] = array(
 	'back' 						=> 'Zurück',
 	'next' 						=> 'Weiter',
 	'prefsVersionChanged' 		=> 'Versionierungs-Einstellungen geändert'
-);
+)
+	
+	
+?>

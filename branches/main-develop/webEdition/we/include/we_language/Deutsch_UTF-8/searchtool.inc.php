@@ -171,3 +171,5 @@ $GLOBALS['l_weSearch']['idDiv'] = 'ID';
 $GLOBALS['l_weSearch']['publish_docs'] = 'Wollen sie die markierten Dokumente wirklich veröffentlichen?';
 $GLOBALS['l_weSearch']['notChecked'] = 'Es sind keine Dokumente ausgewählt.';
 $GLOBALS['l_weSearch']['publishOK'] = 'Dokumente wurden veröffentlicht.';
+
+?>

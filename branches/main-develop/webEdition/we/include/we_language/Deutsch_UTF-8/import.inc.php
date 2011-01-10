@@ -224,7 +224,7 @@ $l_import['import_files'] = 'Dateien importieren';
 $l_import['weBinary'] = 'Datei';
 
 $l_import['format_unknown'] = 'Das Format der Datei ist unbekannt!';
-$l_import['customer_import_file_found'] = 'Hier handelt es sich um eine Import-Datei aus der Kundenverwaltung. Nutzen Sie bitte die Option "Import/Export" aus der Kundenverwaltung (PRO) um die Datei zu importieren.';
+$l_import['customer_import_file_found'] = 'Hier handelt es sich um eine Import-Datei aus der Kundenverwaltung. Nutzen Sie bitte die Option \"Import/Export\" aus der Kundenverwaltung (PRO) um die Datei zu importieren.';
 $l_import['upload_failed'] = 'Die Datei kann nicht hochgeladen werden! Prüfen Sie bitte ob die Größe der Datei %s überschreitet';
 
 $l_import['import_navigation'] = 'Navigation importieren';
@@ -238,7 +238,8 @@ $l_import['rebuild_txt'] = 'Automatischer Rebuild';
 $l_import['finished_success'] = 'Der Import der Daten wurde erfolgreich beendet.';
 $l_import['encoding_headline'] = 'Zeichensatz';
 $l_import['encoding_noway'] = 'Konvertierung nur möglich zwischen ISO-8859-1 und UTF-8 <br/>und bei gesetztem Standardzeichensatz (Einstellungsdialog)';
-$l_import['encoding_change'] = 'Ändern, von \'';
+$l_import['encoding_change'] = "Ändern, von '";
 $l_import['encoding_XML'] = '';
-$l_import['encoding_to'] = '\' (XML-Datei) zu \'';
-$l_import['encoding_default'] = '\' (Standard)';
+$l_import['encoding_to'] = "' (XML-Datei) zu '";
+$l_import['encoding_default'] = "' (Standard)";
+?>
