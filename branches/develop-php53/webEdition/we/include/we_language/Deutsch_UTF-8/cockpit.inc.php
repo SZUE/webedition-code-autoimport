@@ -39,7 +39,7 @@ $l_cockpit['sct_rem'] = 'Sie können sich Ihre Shortcut-Schaltflächen in zwei S
 $l_cockpit['rss_feed'] = 'RSS-Feed';
 $l_cockpit['rss_reader'] = 'RSS Reader';
 $l_cockpit['more'] = 'mehr...';
-$l_cockpit['invalid_url'] = 'Bitte geben Sie in das Feld URL eine gültige URL für den RSS-Feed ein.\nBsp.: http://www.webedition.org/de/feeds/aktuelles.xml';
+$l_cockpit['invalid_url'] = 'Bitte geben Sie in das Feld URL eine gültige URL für den RSS-Feed ein.\nBsp: http://www.webedition.org/de/feeds/aktuelles.xml';
 $l_cockpit['title'] = 'Titel';
 $l_cockpit['note'] = 'Notiz';
 $l_cockpit['url'] = 'URL';
@@ -190,3 +190,4 @@ $l_cockpit['date_empty'] = 'Bitte geben das Gültigkeitsdatum an!';
 $l_cockpit['title_empty'] = 'Bitte geben Sie einen Titel an!';
 $l_cockpit['notepad_defaultTitle_DO_NOT_TOUCH'] = 'Sonstiges';
 $l_cockpit['no_type_selected'] = 'Die Einstellungen konnten nicht gespeichert werden, da Sie keinen anzuzeigenden Typ ausgewählt haben. Wählen Sie mindestens einen Typ aus.';
+?>

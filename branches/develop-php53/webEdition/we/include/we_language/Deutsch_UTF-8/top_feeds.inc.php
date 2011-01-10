@@ -21,6 +21,8 @@
 
 
 $aTopRssFeeds = array(
-	array('webEdition News','http://www.webedition.org/de/feeds/aktuelles.xml'),
-	array('webEdition @ Twitter','http://twitter.com/statuses/user_timeline/16922820.rss'),
+	array("webEdition News","http://www.webedition.org/de/feeds/aktuelles.xml"),
+	array("webEdition @ Twitter","http://twitter.com/statuses/user_timeline/16922820.rss"),
 );
+
+?>

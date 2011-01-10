@@ -89,3 +89,5 @@ $l_tools['default'] = 'Standard';
 
 $l_tools['item_deleted'] = 'Der Eintrag wurde gelöscht';
 $l_tools['group_deleted'] = 'Die Gruppe wurde gelöscht';
+
+?>

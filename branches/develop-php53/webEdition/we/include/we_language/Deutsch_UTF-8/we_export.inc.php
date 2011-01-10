@@ -58,3 +58,4 @@ $l_export['export_progress'] = 'Exportiere';
 $l_export['prepare_progress'] = 'Vorbereitung';
 $l_export['finish_progress'] = 'Fertig';
 $l_export['finish_export'] = 'Der Export wurde erfolgreich beendet!';
+?>

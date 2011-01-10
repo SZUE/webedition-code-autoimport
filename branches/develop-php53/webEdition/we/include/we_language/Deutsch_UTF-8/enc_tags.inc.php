@@ -25,7 +25,8 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$GLOBALS['l_tags']['int_href'] = 'Intern';
-$GLOBALS['l_tags']['ext_href'] = 'Extern';
-$GLOBALS['l_tags']['include_file'] = 'Datei für we:include auswählen';
-$GLOBALS['l_tags']['open_sidebar'] = 'Sidebar öffnen';
+$GLOBALS["l_tags"]["int_href"] = "Intern";
+$GLOBALS["l_tags"]["ext_href"] = "Extern";
+$GLOBALS["l_tags"]["include_file"] = "Datei für we:include auswählen";
+$GLOBALS["l_tags"]["open_sidebar"] = "Sidebar öffnen";
+?>
