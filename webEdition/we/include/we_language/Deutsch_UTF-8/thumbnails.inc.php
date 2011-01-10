@@ -52,7 +52,7 @@ $l_thumbnails['saved_successfully'] = 'Einstellungen gespeichert';
 	 */
 
 	$l_thumbnails['new'] = 'Bitte geben Sie den Namen der neuen Miniaturansicht ein!';
-	$l_thumbnails['delete_prompt'] = 'Miniaturansicht \'%s\' löschen! Sind Sie sicher?';
+	$l_thumbnails['delete_prompt'] = "Miniaturansicht \'%s\' löschen! Sind Sie sicher?";
 
 	/**
 	 * CAPTION
