@@ -25,9 +25,10 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$l_importrtf['chose'] = 'Datei wählen';
-$l_importrtf['import_rtf'] = 'RTF Datei importieren';
-$l_importrtf['use_fontname']='Schriftarten übernehmen';
-$l_importrtf['use_fontsize']='Schriftgröße übernehmen';
-$l_importrtf['use_fontcolor']='Schriftfarbe übernehmen';
-$l_importrtf['no_file']='Sie haben keine Datei ausgewählt!';
+$l_importrtf["chose"] = "Datei wählen";
+$l_importrtf["import_rtf"] = "RTF Datei importieren";
+$l_importrtf["use_fontname"]="Schriftarten übernehmen";
+$l_importrtf["use_fontsize"]="Schriftgröße übernehmen";
+$l_importrtf["use_fontcolor"]="Schriftfarbe übernehmen";
+$l_importrtf["no_file"]="Sie haben keine Datei ausgewählt!";
+?>

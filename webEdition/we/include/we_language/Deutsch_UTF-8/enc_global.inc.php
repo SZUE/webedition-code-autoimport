@@ -25,5 +25,7 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$GLOBALS['l_global']['categorys'] = 'Kategorien';
-$GLOBALS['l_global']['navigation'] = 'Navigation';
+$GLOBALS["l_global"]["categorys"] = "Kategorien";
+$GLOBALS["l_global"]["navigation"] = "Navigation";
+
+?>

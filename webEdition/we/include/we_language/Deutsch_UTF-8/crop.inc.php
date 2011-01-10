@@ -32,5 +32,7 @@ $l_crop["invalid_value_width"] = "Werte die größer sind als die Bildbreite sin
 $l_crop["zero_to_height"] = "Bitte geben Sie eine Ganzzahl zwischen 0 und der Bildhöhe an.\\nDie Einstellungen wurden zurückgesetzt.";
 $l_crop["invalid_value_height"] = "Werte die größer sind als die Bildhöhe sind ungültig.\\nDie Einstellungen wurden zurückgesetzt.";
 
-$l_crop['enlarge_crop_area'] = 'Selektierten Bereich vergrößern';
-$l_crop['reduce_crop_area'] = 'Selektierten Bereich verkleinern';
+$l_crop["enlarge_crop_area"] = "Selektierten Bereich vergrößern";
+$l_crop["reduce_crop_area"] = "Selektierten Bereich verkleinern";
+
+?>
