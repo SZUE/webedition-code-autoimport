@@ -206,3 +206,5 @@ $GLOBALS['l_languages']['yo'] = 'Joruba';
 $GLOBALS['l_languages']['za'] = 'Zhuang';
 $GLOBALS['l_languages']['zh'] = 'Chinesisch';
 $GLOBALS['l_languages']['zu'] = 'Zulu';
+
+?>

@@ -25,7 +25,8 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$l_tree['edit_statustext'] = 'Bearbeiten';
-$l_tree['select_statustext'] = 'Auswählen';
-$l_tree['open_statustext'] = 'Öffnen';
-$l_tree['close_statustext'] = 'Schließen';
+$l_tree["edit_statustext"] = "Bearbeiten";
+$l_tree["select_statustext"] = "Auswählen";
+$l_tree["open_statustext"] = "Öffnen";
+$l_tree["close_statustext"] = "Schließen";
+?>
