@@ -61,14 +61,27 @@ function we_tag_include($attribs, $content) {
 		}
 		if ($id) {
 			$__id__ = ($id == '' ? '' : $id);
-			$GLOBALS['DB_WE']->query('SELECT Path,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id));
-			$GLOBALS['DB_WE']->next_record();
+			$GLOBALS['DB_WE']->query('SELECT Path,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id)).' AND Published>0';
+			if($GLOBALS['DB_WE']->next_record()===false){
+				return '';
+			}
 			$realPath = $GLOBALS['DB_WE']->f('Path');
 		} else {
 			$realPath = $path;
 		}
 		if ($realPath == '') {
 			return '';
+		}
+
+		/*check early if there is a document - if not the rest is never needed*/
+		if ($gethttp) {
+			$content = getHTTP(SERVER_NAME, $realPath, '', defined('HTTP_USERNAME') ? HTTP_USERNAME : '', defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '');
+		} else {
+			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
+			$content = @file_get_contents($realPath);
+			if ($content === false) {
+				return '';
+			}
 		}
 
 		$we_unique = isset($GLOBALS['we_unique']) ? ++$GLOBALS['we_unique'] : ($GLOBALS['we_unique'] = 1);
@@ -97,17 +110,6 @@ function we_tag_include($attribs, $content) {
 		}
 		$ret .= 'unset($_REQUEST[\'pv_id\']);
 						unset($_REQUEST[\'pv_tid\']);';
-
-		if ($gethttp) {
-			$content = getHTTP(SERVER_NAME, $realPath, '', defined('HTTP_USERNAME') ? HTTP_USERNAME : '', defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '');
-		} else {
-			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
-			$content = file_get_contents($realPath);
-			if ($content === false) {
-				$content = '';
-			}
-		}
-
 
 		if (we_tag('ifSeeMode', array())) {
 			if ($seeMode) { //	only show link to seeMode, when id is given
