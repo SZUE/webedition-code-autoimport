@@ -355,6 +355,10 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 $l_prefs["navigation_directoryindex_hide"] = "Verstecke DirectoryIndex-Dateinamen in der Navigationsausgabe";
 	 $l_prefs["navigation_directoryindex_description"] = "Nach einer Änderung muss ein Rebuild des Navigation Cache durchgeführt werden";
 	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex-Dateinamen (Komma-separiert, einschl. Datei-Extensions, z.B. 'index.php,index.html')";
+	 $l_prefs["navigation_objectseourls"] = "Erzeuge Objekt SEO-Urls in der Navigation";
+	 $l_prefs["navigation_objectseourls_no"] = "keine";
+	 $l_prefs["navigation_objectseourls_yes"] = "immer";
+	 $l_prefs["navigation_objectseourls_ask"] = "individuell";
 
 	 /**
 	 * DATABASE

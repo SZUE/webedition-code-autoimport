@@ -355,6 +355,10 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 $l_prefs["navigation_directoryindex_hide"] = "Hide DirectoryIndex- file names in navigation output";// TRANSLATE
 	 $l_prefs["navigation_directoryindex_description"] = "After a change, rebuild the navigation cache";// TRANSLATE
 	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html')";// TRANSLATE
+	 $l_prefs["navigation_objectseourls"] = "Generate object SEO urls in the navigation";// TRANSLATE
+	 $l_prefs["navigation_objectseourls_no"] = "no";// TRANSLATE
+	 $l_prefs["navigation_objectseourls_yes"] = "always";// TRANSLATE
+	 $l_prefs["navigation_objectseourls_ask"] = "ask";// TRANSLATE
 
 	/**
 	 * DATABASE

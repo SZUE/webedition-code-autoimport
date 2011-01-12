@@ -844,13 +844,31 @@ class weNavigation extends weModelBase
 			if ($this->FolderSelection == 'urlLink') {
 				$_path = $this->FolderUrl;
 			} else {
+				$objecturl='';
 				if ($this->FolderSelection == 'objLink') {
-					$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
+					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no'){
+						$_db = new DB_WE();
+						$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", "Url", $_db);
+						if($objecturl==''){
+							$_param = 'we_objectID='. $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
+						}
+					} else {
+						$_param = 'we_objectID='. $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
+					}
 					$_id = weDynList::getFirstDynDocument($this->FolderWsID);
 				} else {
 					$_id = $this->LinkID;
 				}
 				$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
+				if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no' && $objecturl!='' ){
+					$path_parts = pathinfo($_path);
+					if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;
+					} else {
+						$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl;
+					}						
+				}
+				
 			}
 		} else {
 			
@@ -875,11 +893,28 @@ class weNavigation extends weModelBase
 					}
 				} else {
 					if ($this->SelectionType == 'classname' || $this->SelectionType == 'objLink') {
-						$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+						$objecturl='';
+						if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no'){
+							$_db = new DB_WE();
+							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($_id) . "' LIMIT 1", "Url", $_db);
+							if($objecturl==''){
+								$_param = 'we_objectID='. $_id . (!empty($_param) ? '&' : '') . $_param;
+							}
+						} else {
+							$_param = 'we_objectID='. $_id . (!empty($_param) ? '&' : '') . $_param;
+						}
 						$_id = weDynList::getFirstDynDocument($this->WorkspaceID);
 					}
 					
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
+					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no' && $objecturl!='' ){
+						$path_parts = pathinfo($_path);
+						if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;
+						} else {
+							$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl;
+						}						
+					}
 				
 				}
 		}
