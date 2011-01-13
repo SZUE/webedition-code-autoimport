@@ -6,6 +6,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cla
 $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
 $GLOBALS['weTagWizard']['attribute']['id883_hiddendirindex'] = new weTagData_selectAttribute('883', 'hiddendirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id882_error404doc'] = new weTagData_selectorAttribute('882', 'error404doc',FILE_TABLE, 'text/webedition', true, ''); }
+if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id882_error404doc'] = new weTagData_selectorAttribute('882', 'error404doc',FILE_TABLE, 'text/webedition', false, ''); }
 
 ?>

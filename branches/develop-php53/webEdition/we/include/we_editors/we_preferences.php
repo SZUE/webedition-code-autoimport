@@ -144,6 +144,8 @@ $global_config[] = array('define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH",'
 $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in Nav-output' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_HIDE", false);');
 $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_NAMES",', '// Comma seperated list such as index.php,index.html' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_NAMES", "");');
 
+$global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Either no, yes or ask' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", "no");');
+
 
 //default charset
 $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
@@ -536,6 +538,10 @@ function get_value($settingvalue) {
 			break;
 		case "navigation_directoryindex_names":
 			return defined("NAVIGATION_DIRECTORYINDEX_NAMES") ? NAVIGATION_DIRECTORYINDEX_NAMES : '';
+			break;
+			
+		case "navigation_objectseourls":
+			return defined("NAVIGATION_OBJECTSEOURLS") ? NAVIGATION_DIRECTORYINDEX_HIDE : 'no';
 			break;
 
 
@@ -1642,7 +1648,14 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+			
+			case '$_REQUEST["navigation_objectseourls"]':
 
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_OBJECTSEOURLS", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 
 			/*****************************************************************
 			 * DEFAULT CHARSET
@@ -2685,6 +2698,8 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, '$_REQUEST["navigation_rules_continue_after_first_match"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_hide"]) ? $_REQUEST["navigation_directoryindex_hide"] : null, '$_REQUEST["navigation_directoryindex_hide"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_names"]) ? $_REQUEST["navigation_directoryindex_names"] : null, '$_REQUEST["navigation_directoryindex_names"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_objectseourls"]) ? $_REQUEST["navigation_objectseourls"] : null, '$_REQUEST["navigation_objectseourls"]') || $_update_prefs;
+		
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
@@ -5068,11 +5083,19 @@ else {
 						$_php_setting->selectOption($i);
 					}
 				}
-				array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_hide"], "html" => htmlAlertAttentionBox($l_prefs["navigation_directoryindex_description"],2,200)."<br>".$_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
+				array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_hide"], "html" => htmlAlertAttentionBox($l_prefs["navigation_directoryindex_description"],2,240)."<br>".$_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
 				
 				$_navigation_directoryindex_names = htmlTextInput("navigation_directoryindex_names", 22,get_value("navigation_directoryindex_names"), "", "", "text", 225);
     			array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_names"], "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1));
 				
+				$_php_setting = new we_htmlSelect(array("name" => "navigation_objectseourls","class"=>"weSelect"));
+				$_php_setting->addOption('no',$l_prefs["navigation_objectseourls_no"]);
+				$_php_setting->addOption('yes',$l_prefs["navigation_objectseourls_yes"]);
+				$_php_setting->addOption('ask',$l_prefs["navigation_objectseourls_ask"]);
+				$_php_setting->selectOption(get_value("navigation_objectseourls"));
+				
+
+				array_push($_settings, array("headline" => $l_prefs["navigation_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 			}
 
