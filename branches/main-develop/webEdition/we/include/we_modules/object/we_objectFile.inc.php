@@ -2657,7 +2657,9 @@ class we_objectFile extends we_document
 	}
 	function i_urlDouble(){
 		$this->setUrl();
-		return f("SELECT ID FROM ".$this->Table." WHERE Url='".mysql_real_escape_string($this->Url)."' AND ID!='".$this->ID."'","ID",new DB_WE());
+		if ($this->Url !=''){
+			return f("SELECT ID FROM ".$this->Table." WHERE Url='".mysql_real_escape_string($this->Url)."' AND ID!='".$this->ID."'","ID",new DB_WE());
+		} else return false;
 	}
 
 	function i_checkPathDiffAndCreate(){
