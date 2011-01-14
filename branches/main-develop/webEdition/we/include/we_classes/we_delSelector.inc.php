@@ -344,19 +344,12 @@ function setDir(id){
 	
 	function query(){
 		
-		global $_isp_hide_files;	//	ISP_VERSION
-		
-		//	Changes for ISP_VERSION
-		//	dont look for files in array . $_isp_hide_files
-		
 		$wsQuery = getWsQueryForSelector($this->table, false);
 		
 		$_query = "	SELECT ".$this->fields."
 					FROM ".mysql_real_escape_string($this->table)."
 					WHERE ParentID='".abs($this->dir)."'".makeOwnersSql().
-					$wsQuery .
-					((defined('ISP_VERSION') && ISP_VERSION && is_array($_isp_hide_files) && sizeof($_isp_hide_files) > 0) ? "AND Path NOT IN ('" . implode("','", $_isp_hide_files) . "')" : '').
-					($this->order ? (' ORDER BY '.$this->order) : '');
+					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
 		
 		$this->db->query($_query);
 

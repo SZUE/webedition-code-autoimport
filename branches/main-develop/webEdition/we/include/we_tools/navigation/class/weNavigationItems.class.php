@@ -824,8 +824,8 @@ class weNavigationItems
 						$_item['attributes'], 
 						$_item['limitaccess'], 
 						$_item['customers'],
-						$_item['currentonurlpar'],
-						$_item['currentonanker']);
+						isset($_item['currentonurlpar']) ? $_item['currentonurlpar']:'',
+						isset($_item['currentonanker']) ? $_item['currentonanker']:'');
 				
 				if (isset($this->items['id' . $_item['parentid']])) {
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);

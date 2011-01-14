@@ -143,9 +143,11 @@ $global_config[] = array('define("NAVIGATION_ENTRIES_FROM_DOCUMENT",', '// Flag 
 $global_config[] = array('define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH",', '// Flag if NAV- rules should be evaluated even after a first match' . "\n" . 'define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH", false);');
 $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in Nav-output' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_HIDE", false);');
 $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_NAMES",', '// Comma seperated list such as index.php,index.html' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_NAMES", "");');
-
-$global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Either no, yes or ask' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", "no");');
-
+$global_config[] = array('define("WYSIWYGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in Wysiwyg-editor output' . "\n" . 'define("WYSIWYGLINKS_DIRECTORYINDEX_HIDE", false);');
+$global_config[] = array('define("TAGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in tag output' . "\n" . 'define("TAGLINKS_DIRECTORYINDEX_HIDE", false);');
+$global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of navigation' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", "no");');
+$global_config[] = array('define("WYSIWYGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of wysiwyg editior' . "\n" . 'define("WYSIWYGLINKS_OBJECTSEOURLS", "no");');
+$global_config[] = array('define("TAGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("TAGLINKS_OBJECTSEOURLS", "no");');
 
 //default charset
 $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
@@ -539,9 +541,20 @@ function get_value($settingvalue) {
 		case "navigation_directoryindex_names":
 			return defined("NAVIGATION_DIRECTORYINDEX_NAMES") ? NAVIGATION_DIRECTORYINDEX_NAMES : '';
 			break;
-			
+		case "wysiwyglinks_directoryindex_hide":
+			return defined("WYSIWYGLINKS_DIRECTORYINDEX_HIDE") ? WYSIWYGLINKS_DIRECTORYINDEX_HIDE : false;
+			break;
+		case "taglinks_directoryindex_hide":
+			return defined("TAGLINKS_DIRECTORYINDEX_HIDE") ? TAGLINKS_DIRECTORYINDEX_HIDE : false;
+			break;
 		case "navigation_objectseourls":
-			return defined("NAVIGATION_OBJECTSEOURLS") ? NAVIGATION_DIRECTORYINDEX_HIDE : 'no';
+			return defined("NAVIGATION_OBJECTSEOURLS") ? NAVIGATION_DIRECTORYINDEX_HIDE : false;
+			break;		
+		case "wysiwyglinks_objectseourls":
+			return defined("WYSIWYGLINKS_OBJECTSEOURLS") ? WYSIWYGLINKS_OBJECTSEOURLS : false;
+			break;
+		case "taglinks_objectseourls":
+			return defined("TAGLINKS_OBJECTSEOURLS") ? TAGLINKS_OBJECTSEOURLS : false;
 			break;
 
 
@@ -1648,11 +1661,43 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+				
+			case '$_REQUEST["wysiwyglinks_directoryindex_hide"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WYSIWYGLINKS_DIRECTORYINDEX_HIDE", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+			
+			case '$_REQUEST["taglinks_directoryindex_hide"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "TAGLINKS_DIRECTORYINDEX_HIDE", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 			
 			case '$_REQUEST["navigation_objectseourls"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_OBJECTSEOURLS", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+				
+			case '$_REQUEST["wysiwyglinks_objectseourls"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WYSIWYGLINKS_OBJECTSEOURLS", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+				
+			case '$_REQUEST["taglinks_objectseourls"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "TAGLINKS_OBJECTSEOURLS", $settingvalue);
 
 				$_update_prefs = false;
 				break;
@@ -2550,25 +2595,25 @@ function save_all_values() {
 	 *************************************************************************/
 
 	$_update_prefs = remember_value(isset($_REQUEST["Language"]) ? $_REQUEST["Language"] : null, '$_REQUEST["Language"]');
-	if(!(defined("ISP_VERSION") && ISP_VERSION)){
-		$_update_prefs = remember_value(isset($_REQUEST["default_tree_count"]) ? $_REQUEST["default_tree_count"] : null, '$_REQUEST["default_tree_count"]') || $_update_prefs;
-		if($_REQUEST["seem_start_type"]=="cockpit") {
-			$_update_prefs = remember_value("cockpit", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-			$_update_prefs = remember_value(0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
-		} elseif($_REQUEST["seem_start_type"]=="object") {
-			$_update_prefs = remember_value("object", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["seem_start_object"]) ? $_REQUEST["seem_start_object"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
-		} elseif($_REQUEST["seem_start_type"]=="document") {
-			$_update_prefs = remember_value("document", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["seem_start_document"]) ? $_REQUEST["seem_start_document"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
-		} else {
-			$_update_prefs = remember_value("", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-		}
-		if (we_hasPerm("ADMINISTRATOR")) {
-			$_disableSeem = isset($_REQUEST["disable_seem"]) && $_REQUEST["disable_seem"] ? 1 : 0;
-			$_update_prefs = remember_value($_disableSeem, '$_REQUEST["disable_seem"]') || $_update_prefs;
-		}
+	
+	$_update_prefs = remember_value(isset($_REQUEST["default_tree_count"]) ? $_REQUEST["default_tree_count"] : null, '$_REQUEST["default_tree_count"]') || $_update_prefs;
+	if($_REQUEST["seem_start_type"]=="cockpit") {
+		$_update_prefs = remember_value("cockpit", '$_REQUEST["seem_start_type"]') || $_update_prefs;
+		$_update_prefs = remember_value(0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
+	} elseif($_REQUEST["seem_start_type"]=="object") {
+		$_update_prefs = remember_value("object", '$_REQUEST["seem_start_type"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["seem_start_object"]) ? $_REQUEST["seem_start_object"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
+	} elseif($_REQUEST["seem_start_type"]=="document") {
+		$_update_prefs = remember_value("document", '$_REQUEST["seem_start_type"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["seem_start_document"]) ? $_REQUEST["seem_start_document"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
+	} else {
+		$_update_prefs = remember_value("", '$_REQUEST["seem_start_type"]') || $_update_prefs;
 	}
+	if (we_hasPerm("ADMINISTRATOR")) {
+		$_disableSeem = isset($_REQUEST["disable_seem"]) && $_REQUEST["disable_seem"] ? 1 : 0;
+		$_update_prefs = remember_value($_disableSeem, '$_REQUEST["disable_seem"]') || $_update_prefs;
+	}
+	
 	$_update_prefs = remember_value(isset($_REQUEST["sizeOpt"]) ? $_REQUEST["sizeOpt"] : null, '$_REQUEST["sizeOpt"]') || $_update_prefs;
 	$_update_prefs = remember_value(isset($_REQUEST["weWidth"]) ? $_REQUEST["weWidth"] : null, '$_REQUEST["weWidth"]') || $_update_prefs;
 	$_update_prefs = remember_value(isset($_REQUEST["weHeight"]) ? $_REQUEST["weHeight"] : null, '$_REQUEST["weHeight"]') || $_update_prefs;
@@ -2622,13 +2667,13 @@ function save_all_values() {
 	 * FILE EXTENSIONS
 	 *************************************************************************/
 	// Save settings if users has permission
-	if(!(defined("ISP_VERSION") && ISP_VERSION)){
-		if (we_hasPerm("EDIT_SETTINGS_DEF_EXT")) {
-			$_update_prefs = remember_value(isset($_REQUEST["DefaultStaticExt"]) ? $_REQUEST["DefaultStaticExt"] : null, '$_REQUEST["DefaultStaticExt"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["DefaultDynamicExt"]) ? $_REQUEST["DefaultDynamicExt"] : null, '$_REQUEST["DefaultDynamicExt"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["DefaultHTMLExt"]) ? $_REQUEST["DefaultHTMLExt"] : null, '$_REQUEST["DefaultHTMLExt"]') || $_update_prefs;
-		}
+
+	if (we_hasPerm("EDIT_SETTINGS_DEF_EXT")) {
+		$_update_prefs = remember_value(isset($_REQUEST["DefaultStaticExt"]) ? $_REQUEST["DefaultStaticExt"] : null, '$_REQUEST["DefaultStaticExt"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["DefaultDynamicExt"]) ? $_REQUEST["DefaultDynamicExt"] : null, '$_REQUEST["DefaultDynamicExt"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["DefaultHTMLExt"]) ? $_REQUEST["DefaultHTMLExt"] : null, '$_REQUEST["DefaultHTMLExt"]') || $_update_prefs;
 	}
+	
 	/*************************************************************************
 	 * TEMPLATE EDITOR
 	 *************************************************************************/
@@ -2698,7 +2743,11 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, '$_REQUEST["navigation_rules_continue_after_first_match"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_hide"]) ? $_REQUEST["navigation_directoryindex_hide"] : null, '$_REQUEST["navigation_directoryindex_hide"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_names"]) ? $_REQUEST["navigation_directoryindex_names"] : null, '$_REQUEST["navigation_directoryindex_names"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_directoryindex_hide"]) ? $_REQUEST["wysiwyglinks_directoryindex_hide"] : null, '$_REQUEST["wysiwyglinks_directoryindex_hide"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["taglinks_directoryindex_hide"]) ? $_REQUEST["taglinks_directoryindex_hide"] : null, '$_REQUEST["taglinks_directoryindex_hide"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_objectseourls"]) ? $_REQUEST["navigation_objectseourls"] : null, '$_REQUEST["navigation_objectseourls"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_objectseourls"]) ? $_REQUEST["wysiwyglinks_objectseourls"] : null, '$_REQUEST["wysiwyglinks_objectseourls"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["taglinks_objectseourls"]) ? $_REQUEST["taglinks_objectseourls"] : null, '$_REQUEST["taglinks_objectseourls"]') || $_update_prefs;
 		
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
@@ -2718,22 +2767,21 @@ function save_all_values() {
 
 
 	// Save settings if users has permission
-	if(!(defined("ISP_VERSION") && ISP_VERSION)){
-		if (we_hasPerm("ADMINISTRATOR")) {
-			$_update_prefs = remember_value(isset($_REQUEST["error_document_no_objectfile"]) ? $_REQUEST["error_document_no_objectfile"] : null, '$_REQUEST["error_document_no_objectfile"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["disable_template_tag_check"]) ? $_REQUEST["disable_template_tag_check"] : null, '$_REQUEST["disable_template_tag_check"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["we_error_handler"]) ? $_REQUEST["we_error_handler"] : null, '$_REQUEST["we_error_handler"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, '$_REQUEST["error_handling_errors"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_handling_warnings"]) ? $_REQUEST["error_handling_warnings"] : null, '$_REQUEST["error_handling_warnings"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_handling_notices"]) ? $_REQUEST["error_handling_notices"] : null, '$_REQUEST["error_handling_notices"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_handling_deprecated"]) ? $_REQUEST["error_handling_deprecated"] : null, '$_REQUEST["error_handling_deprecated"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_display_errors"]) ? $_REQUEST["error_display_errors"] : null, '$_REQUEST["error_display_errors"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_log_errors"]) ? $_REQUEST["error_log_errors"] : null, '$_REQUEST["error_log_errors"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_mail_errors"]) ? $_REQUEST["error_mail_errors"] : null, '$_REQUEST["error_mail_errors"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["error_mail_address"]) ? $_REQUEST["error_mail_address"] : null, '$_REQUEST["error_mail_address"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["debug_normal"]) ? $_REQUEST["debug_normal"] : null, '$_REQUEST["debug_normal"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["debug_seem"]) ? $_REQUEST["debug_seem"] : null, '$_REQUEST["debug_seem"]') || $_update_prefs;
-		}
+	
+	if (we_hasPerm("ADMINISTRATOR")) {
+		$_update_prefs = remember_value(isset($_REQUEST["error_document_no_objectfile"]) ? $_REQUEST["error_document_no_objectfile"] : null, '$_REQUEST["error_document_no_objectfile"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["disable_template_tag_check"]) ? $_REQUEST["disable_template_tag_check"] : null, '$_REQUEST["disable_template_tag_check"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_error_handler"]) ? $_REQUEST["we_error_handler"] : null, '$_REQUEST["we_error_handler"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, '$_REQUEST["error_handling_errors"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_warnings"]) ? $_REQUEST["error_handling_warnings"] : null, '$_REQUEST["error_handling_warnings"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_notices"]) ? $_REQUEST["error_handling_notices"] : null, '$_REQUEST["error_handling_notices"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_deprecated"]) ? $_REQUEST["error_handling_deprecated"] : null, '$_REQUEST["error_handling_deprecated"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_display_errors"]) ? $_REQUEST["error_display_errors"] : null, '$_REQUEST["error_display_errors"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_log_errors"]) ? $_REQUEST["error_log_errors"] : null, '$_REQUEST["error_log_errors"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_mail_errors"]) ? $_REQUEST["error_mail_errors"] : null, '$_REQUEST["error_mail_errors"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_mail_address"]) ? $_REQUEST["error_mail_address"] : null, '$_REQUEST["error_mail_address"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["debug_normal"]) ? $_REQUEST["debug_normal"] : null, '$_REQUEST["debug_normal"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["debug_seem"]) ? $_REQUEST["debug_seem"] : null, '$_REQUEST["debug_seem"]') || $_update_prefs;
 	}
 
 	/*************************************************************************
@@ -3088,358 +3136,354 @@ function build_dialog($selected_setting = "ui") {
 			/*****************************************************************
 			 * SEEM
 			 *****************************************************************/
-			if( !(defined("ISP_VERSION") && ISP_VERSION )){
-				/**
-				 * Disable SEEM
-				 */
 
+			// Generate needed JS
+			$_needed_JavaScript = "
+						<script language=\"JavaScript\" type=\"text/javascript\"><!--
+							" . $we_button->create_state_changer(false) . "
+						//-->
+						</script>";
+
+			// Build maximize window
+			$_seem_disabler = we_forms::checkbox(1, get_value("ui_disable_seem"), "disable_seem", $l_prefs["seem_deactivate"]);
+
+			// Build dialog if user has permission
+			if (we_hasPerm("ADMINISTRATOR")) {
+				array_push($_settings, array("headline" => $l_prefs["seem"], "html" => $_seem_disabler, "space" => 200));
+			}
+
+			/***************************************************
+			 * SEEM start document
+			 ***************************************************/
+
+			if (we_hasPerm("CHANGE_START_DOCUMENT")) {
 				// Generate needed JS
-				$_needed_JavaScript = "
-							<script language=\"JavaScript\" type=\"text/javascript\"><!--
-								" . $we_button->create_state_changer(false) . "
-							//-->
-							</script>";
+				$_needed_JavaScript .= "
+						<script language=\"JavaScript\" type=\"text/javascript\"><!--
+							function selectSidebarDoc() {
+								myWind = false;
 
-				// Build maximize window
-				$_seem_disabler = we_forms::checkbox(1, get_value("ui_disable_seem"), "disable_seem", $l_prefs["seem_deactivate"]);
+								for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
+									eval(\"if (parent.opener.top.jsWindow\" + k + \"Object) {\" +
+										 \" if (parent.opener.top.jsWindow\" + k + \"Object.ref == 'preferences') {\" +
+										 \"     myWind = parent.opener.top.jsWindow\" + k + \"Object.wind;\" +
+										 \"     myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
+										 \" }\" +
+										 \"}\");
 
-				// Build dialog if user has permission
-				if (we_hasPerm("ADMINISTRATOR")) {
-					array_push($_settings, array("headline" => $l_prefs["seem"], "html" => $_seem_disabler, "space" => 200));
-				}
-
-				/***************************************************
-				 * SEEM start document
-				 ***************************************************/
-
-				if (we_hasPerm("CHANGE_START_DOCUMENT")) {
-					// Generate needed JS
-					$_needed_JavaScript .= "
-							<script language=\"JavaScript\" type=\"text/javascript\"><!--
-                                function selectSidebarDoc() {
-                                    myWind = false;
-
-                                    for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-                                        eval(\"if (parent.opener.top.jsWindow\" + k + \"Object) {\" +
-                                             \" if (parent.opener.top.jsWindow\" + k + \"Object.ref == 'preferences') {\" +
-                                             \"     myWind = parent.opener.top.jsWindow\" + k + \"Object.wind;\" +
-                                             \"     myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-                                             \" }\" +
-                                             \"}\");
-
-                                        if (myWind) {
-                                            break;
-                                        }
-                                    }
-                                    parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['ui_sidebar_file'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file_name\'].value', '', '" . session_id() . "', '', 'text/webedition',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
-                                }
-                                
-                                function select_seem_start() {
-									myWind = false;
-
-									for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-										eval(\"if (parent.opener.top.jsWindow\" + k + \"Object) {\" +
-											 \"	if (parent.opener.top.jsWindow\" + k + \"Object.ref == 'preferences') {\" +
-											 \"		myWind = parent.opener.top.jsWindow\" + k + \"Object.wind;\" +
-											 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-											 \"	}\" +
-											 \"}\");
-
-					 					if (myWind) {
-											break;
-										}
-									}
-									if(document.getElementById('seem_start_type').value == 'object') {
-									";
-					if(defined("OBJECT_FILES_TABLE")) {
-						//$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");";
-						$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);";
-					}
-					$_needed_JavaScript .= "
-									} else {
-										parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
+									if (myWind) {
+										break;
 									}
 								}
-								function show_seem_chooser(val) {
-									if(val == 'document') {
-										if(!!document.getElementById('selectordummy')) {
-											document.getElementById('selectordummy').style.display = 'none';
-										}
-										if(!!document.getElementById('seem_start_object')) {
-											document.getElementById('seem_start_object').style.display = 'none';
-										}
-										if(!!document.getElementById('seem_start_document')) {
-											document.getElementById('seem_start_document').style.display = 'block';
-										}
-								";
-					if(defined("OBJECT_FILES_TABLE")) {
-						$_needed_JavaScript .= "
-									} else if(val == 'object') {
-										if(!!document.getElementById('selectordummy')) {
-											document.getElementById('selectordummy').style.display = 'none';
-										}
-										if(!!document.getElementById('seem_start_document')) {
-											document.getElementById('seem_start_document').style.display = 'none';
-										}
-										if(!!document.getElementById('seem_start_object')) {
-											document.getElementById('seem_start_object').style.display = 'block';
-										}
-								";
-					}
-					$_needed_JavaScript .= "
-									} else {
-										if(!!document.getElementById('selectordummy')) {
-											document.getElementById('selectordummy').style.display = 'block';
-										}
-										if(!!document.getElementById('seem_start_document')) {
-											document.getElementById('seem_start_document').style.display = 'none';
-										}
-										if(!!document.getElementById('seem_start_object')) {
-											document.getElementById('seem_start_object').style.display = 'none';
-										}
+								parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['ui_sidebar_file'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file_name\'].value', '', '" . session_id() . "', '', 'text/webedition',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
+							}
+							
+							function select_seem_start() {
+								myWind = false;
 
+								for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
+									eval(\"if (parent.opener.top.jsWindow\" + k + \"Object) {\" +
+										 \"	if (parent.opener.top.jsWindow\" + k + \"Object.ref == 'preferences') {\" +
+										 \"		myWind = parent.opener.top.jsWindow\" + k + \"Object.wind;\" +
+										 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
+										 \"	}\" +
+										 \"}\");
+
+									if (myWind) {
+										break;
 									}
 								}
-							//-->
-							</script>";
-
-					// Cockpit
-					$_object_path = "";
-					$_object_id = 0;
-					$_document_path = "";
-					$_document_id = 0;
-					$_seem_start_type = "";
-					if(get_value("ui_seem_start_type") == "cockpit") {
-						$_SESSION["prefs"]["seem_start_file"] = 0;
-						$_seem_start_type = "cockpit";
-
-
-					// Object
-					} else if(get_value("ui_seem_start_type") == "object") {
-						$_seem_start_type = "object";
-						if (get_value("ui_seem_start_file") != 0) {
-							$_object_id = get_value("ui_seem_start_file");
-							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, "", FILE_ONLY, $_object_id);
-
-							if(isset($_get_object_paths[$_object_id])){	//	seeMode start file exists
-								$_object_path = $_get_object_paths[$_object_id];
-
+								if(document.getElementById('seem_start_type').value == 'object') {
+								";
+				if(defined("OBJECT_FILES_TABLE")) {
+					//$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");";
+					$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);";
+				}
+				$_needed_JavaScript .= "
+								} else {
+									parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
+								}
 							}
+							function show_seem_chooser(val) {
+								if(val == 'document') {
+									if(!!document.getElementById('selectordummy')) {
+										document.getElementById('selectordummy').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_object')) {
+										document.getElementById('seem_start_object').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_document')) {
+										document.getElementById('seem_start_document').style.display = 'block';
+									}
+							";
+				if(defined("OBJECT_FILES_TABLE")) {
+					$_needed_JavaScript .= "
+								} else if(val == 'object') {
+									if(!!document.getElementById('selectordummy')) {
+										document.getElementById('selectordummy').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_document')) {
+										document.getElementById('seem_start_document').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_object')) {
+										document.getElementById('seem_start_object').style.display = 'block';
+									}
+							";
+				}
+				$_needed_JavaScript .= "
+								} else {
+									if(!!document.getElementById('selectordummy')) {
+										document.getElementById('selectordummy').style.display = 'block';
+									}
+									if(!!document.getElementById('seem_start_document')) {
+										document.getElementById('seem_start_document').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_object')) {
+										document.getElementById('seem_start_object').style.display = 'none';
+									}
 
-						}
-
-					// Document
-					} else if(get_value("ui_seem_start_type") == "document") {
-						$_seem_start_type = "document";
-						if (get_value("ui_seem_start_file") != 0) {
-							$_document_id = get_value("ui_seem_start_file");
-							$_get_document_paths = getPathsFromTable(FILE_TABLE, "", FILE_ONLY, $_document_id);
-
-							if(isset($_get_document_paths[$_document_id])){	//	seeMode start file exists
-								$_document_path = $_get_document_paths[$_document_id];
-
+								}
 							}
+						//-->
+						</script>";
+
+				// Cockpit
+				$_object_path = "";
+				$_object_id = 0;
+				$_document_path = "";
+				$_document_id = 0;
+				$_seem_start_type = "";
+				if(get_value("ui_seem_start_type") == "cockpit") {
+					$_SESSION["prefs"]["seem_start_file"] = 0;
+					$_seem_start_type = "cockpit";
+
+
+				// Object
+				} else if(get_value("ui_seem_start_type") == "object") {
+					$_seem_start_type = "object";
+					if (get_value("ui_seem_start_file") != 0) {
+						$_object_id = get_value("ui_seem_start_file");
+						$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, "", FILE_ONLY, $_object_id);
+
+						if(isset($_get_object_paths[$_object_id])){	//	seeMode start file exists
+							$_object_path = $_get_object_paths[$_object_id];
 
 						}
 
 					}
 
-					$_start_type = new we_htmlSelect(array("name" => "seem_start_type","class" => "weSelect", "id" => "seem_start_type", "onchange" => "show_seem_chooser(this.value);"));
+				// Document
+				} else if(get_value("ui_seem_start_type") == "document") {
+					$_seem_start_type = "document";
+					if (get_value("ui_seem_start_file") != 0) {
+						$_document_id = get_value("ui_seem_start_file");
+						$_get_document_paths = getPathsFromTable(FILE_TABLE, "", FILE_ONLY, $_document_id);
 
-					$showStartType = false;
-					$permitedStartTypes = array("");
-					$_start_type->addOption("", "-");
-					$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:".($BROWSER=="IE"?"33px":"24px").";'>&nbsp;</div>";
-					if (we_hasPerm("CAN_SEE_QUICKSTART")) {
-						$_start_type->addOption("cockpit", $l_prefs["seem_start_type_cockpit"]);
-						$showStartType = true;
-						$permitedStartTypes[] = "cockpit";
-					}
+						if(isset($_get_document_paths[$_document_id])){	//	seeMode start file exists
+							$_document_path = $_get_document_paths[$_document_id];
 
-					$selectorSpace = $BROWSER == "IE" ? 8 : 160;
-
-					$_seem_document_chooser = "";
-					if (we_hasPerm("CAN_SEE_DOCUMENTS")) {
-						$_start_type->addOption("document", $l_prefs["seem_start_type_document"]);
-						$showStartType = true;
-						// Build SEEM select start document chooser
-
-						$yuiSuggest->setAcId("Doc");
-						$yuiSuggest->setContentType("folder,text/webEdition,text/html,image/*");
-						$yuiSuggest->setInput("seem_start_document_name", $_document_path,"",get_value("ui_disable_seem"));
-						$yuiSuggest->setMaxResults(20);
-						$yuiSuggest->setMayBeEmpty(false);
-						$yuiSuggest->setResult("seem_start_document", $_document_id);
-						$yuiSuggest->setSelector("Docselector");
-						$yuiSuggest->setWidth(150);
-						$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
-						$yuiSuggest->setContainerWidth(259);
-						
-						$_seem_document_chooser = $we_button->create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_document", "style"=>"display:none"));
-						$permitedStartTypes[] =	"document";
-					}
-					$_seem_object_chooser = "";
-					if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")) {
-						$_start_type->addOption("object", $l_prefs["seem_start_type_object"]);
-						$showStartType = true;
-					// Build SEEM select start object chooser
-
-						$yuiSuggest->setAcId("Obj");
-						$yuiSuggest->setContentType("folder,objectFile");
-						$yuiSuggest->setInput("seem_start_object_name", $_object_path,"",get_value("ui_disable_seem"));
-						$yuiSuggest->setMaxResults(20);
-						$yuiSuggest->setMayBeEmpty(false);
-						$yuiSuggest->setResult("seem_start_object", $_object_id);
-						$yuiSuggest->setSelector("Docselector");
-						$yuiSuggest->setTable(OBJECT_FILES_TABLE);
-						$yuiSuggest->setWidth(150);
-						$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
-						$yuiSuggest->setContainerWidth(259);
-
-						$_seem_object_chooser = $we_button->create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_object", "style"=>"display:none"));
-						$permitedStartTypes[] = "object";
-					}
-
-					// Build final HTML code
-					if ($showStartType) {
-						if (in_array($_seem_start_type,$permitedStartTypes)) {
-							$_start_type->selectOption($_seem_start_type);
-						} else {
-							$_seem_start_type = $permitedStartTypes[0];
 						}
-						$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
-						$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode());
-						$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser);
-						array_push($_settings, array("headline" => $l_prefs["seem_startdocument"], "html" => $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>', "space" => 200));
+
 					}
 
-					// Build dialog if user has permission
 				}
 
-				/*********************************************************
-				 *Sidebar
-				 *********************************************************/
-				if (we_hasPerm("ADMINISTRATOR")) {
+				$_start_type = new we_htmlSelect(array("name" => "seem_start_type","class" => "weSelect", "id" => "seem_start_type", "onchange" => "show_seem_chooser(this.value);"));
 
-					// Settings
-					$_sidebar_disable = get_value("ui_sidebar_disable");
-					if($_sidebar_disable) {
-						$_sidebar_show = "none";
-					} else {
-						$_sidebar_show = "block";
-					}
-					$_sidebar_show_on_startup = get_value("ui_sidebar_show_on_startup");
-					$_sidebar_width = get_value("ui_sidebar_width");
-					$_sidebar_id = get_value("ui_sidebar_file");
-					$_sidebar_paths = getPathsFromTable(FILE_TABLE, "", FILE_ONLY, $_sidebar_id);
-					$_sidebar_path = "";
-					if(isset($_sidebar_paths[$_sidebar_id])) {
-						$_sidebar_path = $_sidebar_paths[$_sidebar_id];
+				$showStartType = false;
+				$permitedStartTypes = array("");
+				$_start_type->addOption("", "-");
+				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:".($BROWSER=="IE"?"33px":"24px").";'>&nbsp;</div>";
+				if (we_hasPerm("CAN_SEE_QUICKSTART")) {
+					$_start_type->addOption("cockpit", $l_prefs["seem_start_type_cockpit"]);
+					$showStartType = true;
+					$permitedStartTypes[] = "cockpit";
+				}
 
-					}
+				$selectorSpace = $BROWSER == "IE" ? 8 : 160;
 
-					// Enable / disable sidebar
-					$_sidebar_disabler = we_forms::checkbox(0, $_sidebar_disable, "ui_sidebar_disable", $l_prefs["sidebar_deactivate"], false, "defaultfont", "document.getElementById('sidebar_options').style.display=(this.checked?'none':'block');");
+				$_seem_document_chooser = "";
+				if (we_hasPerm("CAN_SEE_DOCUMENTS")) {
+					$_start_type->addOption("document", $l_prefs["seem_start_type_document"]);
+					$showStartType = true;
+					// Build SEEM select start document chooser
 
-					// Show on Startup
-					$_sidebar_show_on_startup = we_forms::checkbox(1, $_sidebar_show_on_startup, "ui_sidebar_show_on_startup", $l_prefs["sidebar_show_on_startup"], false, "defaultfont", "");
-
-					// Sidebar width
-					$_sidebar_width = htmlTextInput('ui_sidebar_width', 8, $_sidebar_width, 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", "text", 150);
-					$_sidebar_width_chooser = htmlSelect("tmp_sidebar_width", array(''=>'',100=>100,150=>150,200=>200,250=>250,300=>300,350=>350,400=>400), 1, "", false,"onChange=\"document.forms[0].elements['ui_sidebar_width'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont");
-
-					// Sidebar document
-					//$_sidebar_hidden = we_htmlElement::htmlHidden(array("name" => "ui_sidebar_file", "value" => $_sidebar_id, "id"=>"yuiAcResultSidebarDoc"));
-					$_sidebar_document_button = $we_button->create_button("select", "javascript:selectSidebarDoc()");
-
-					$yuiSuggest->setAcId("SidebarDoc");
-					$yuiSuggest->setContentType("folder,text/webEdition");
-					$yuiSuggest->setInput("ui_sidebar_file_name", $_sidebar_path);
+					$yuiSuggest->setAcId("Doc");
+					$yuiSuggest->setContentType("folder,text/webEdition,text/html,image/*");
+					$yuiSuggest->setInput("seem_start_document_name", $_document_path,"",get_value("ui_disable_seem"));
 					$yuiSuggest->setMaxResults(20);
-					$yuiSuggest->setMayBeEmpty(true);
-					$yuiSuggest->setResult("ui_sidebar_file", $_sidebar_id);
+					$yuiSuggest->setMayBeEmpty(false);
+					$yuiSuggest->setResult("seem_start_document", $_document_id);
 					$yuiSuggest->setSelector("Docselector");
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton($_sidebar_document_button,10);
+					$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
+					$yuiSuggest->setContainerWidth(259);
+					
+					$_seem_document_chooser = $we_button->create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_document", "style"=>"display:none"));
+					$permitedStartTypes[] =	"document";
+				}
+				$_seem_object_chooser = "";
+				if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")) {
+					$_start_type->addOption("object", $l_prefs["seem_start_type_object"]);
+					$showStartType = true;
+				// Build SEEM select start object chooser
+
+					$yuiSuggest->setAcId("Obj");
+					$yuiSuggest->setContentType("folder,objectFile");
+					$yuiSuggest->setInput("seem_start_object_name", $_object_path,"",get_value("ui_disable_seem"));
+					$yuiSuggest->setMaxResults(20);
+					$yuiSuggest->setMayBeEmpty(false);
+					$yuiSuggest->setResult("seem_start_object", $_object_id);
+					$yuiSuggest->setSelector("Docselector");
+					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+					$yuiSuggest->setWidth(150);
+					$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
 					$yuiSuggest->setContainerWidth(259);
 
-					// build html
-					$_sidebar_html1 = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 1);
-
-					$_sidebar_html1->setCol(0, 0, null, $_sidebar_disabler);
-
-					// build html
-					$_sidebar_html2 = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0", "id"=>"sidebar_options", "style"=>"display:" . $_sidebar_show), 8, 3);
-
-					$_sidebar_html2->setCol(0, 0, array("colspan"=>3,"height"=>10), "");
-
-					$_sidebar_html2->setCol(1, 0, array("colspan"=>3,"height"=>10), $_sidebar_show_on_startup);
-
-					$_sidebar_html2->setCol(2, 0, array("colspan"=>3,"height"=>10), "");
-
-					$_sidebar_html2->setCol(3, 0, array("colspan"=>3,"class"=>"defaultfont"), $l_prefs["sidebar_width"]);
-
-					$_sidebar_html2->setCol(4, 0, null, $_sidebar_width);
-					$_sidebar_html2->setCol(4, 1, null, getPixel(10,1));
-					$_sidebar_html2->setCol(4, 2, null, $_sidebar_width_chooser);
-
-					$_sidebar_html2->setCol(5, 0, array("colspan"=>3,"height"=>10), "");
-
-					$_sidebar_html2->setCol(6, 0, array("colspan"=>3,"class"=>"defaultfont"), $l_prefs["sidebar_document"]);
-
-					$_sidebar_html2->setCol(7, 0, array("colspan"=>3), $yuiSuggest->getHTML());
-
-					// Build dialog if user has permission
-					array_push($_settings, array("headline" => $l_prefs["sidebar"], "html" => $_sidebar_html1->getHtmlCode() . $_sidebar_html2->getHtmlCode(), "space" => 200));
+					$_seem_object_chooser = $we_button->create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_object", "style"=>"display:none"));
+					$permitedStartTypes[] = "object";
 				}
 
+				// Build final HTML code
+				if ($showStartType) {
+					if (in_array($_seem_start_type,$permitedStartTypes)) {
+						$_start_type->selectOption($_seem_start_type);
+					} else {
+						$_seem_start_type = $permitedStartTypes[0];
+					}
+					$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
+					$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode());
+					$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser);
+					array_push($_settings, array("headline" => $l_prefs["seem_startdocument"], "html" => $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>', "space" => 200));
+				}
+
+				// Build dialog if user has permission
 			}
+
+			/*********************************************************
+			 *Sidebar
+			 *********************************************************/
+			if (we_hasPerm("ADMINISTRATOR")) {
+
+				// Settings
+				$_sidebar_disable = get_value("ui_sidebar_disable");
+				if($_sidebar_disable) {
+					$_sidebar_show = "none";
+				} else {
+					$_sidebar_show = "block";
+				}
+				$_sidebar_show_on_startup = get_value("ui_sidebar_show_on_startup");
+				$_sidebar_width = get_value("ui_sidebar_width");
+				$_sidebar_id = get_value("ui_sidebar_file");
+				$_sidebar_paths = getPathsFromTable(FILE_TABLE, "", FILE_ONLY, $_sidebar_id);
+				$_sidebar_path = "";
+				if(isset($_sidebar_paths[$_sidebar_id])) {
+					$_sidebar_path = $_sidebar_paths[$_sidebar_id];
+
+				}
+
+				// Enable / disable sidebar
+				$_sidebar_disabler = we_forms::checkbox(0, $_sidebar_disable, "ui_sidebar_disable", $l_prefs["sidebar_deactivate"], false, "defaultfont", "document.getElementById('sidebar_options').style.display=(this.checked?'none':'block');");
+
+				// Show on Startup
+				$_sidebar_show_on_startup = we_forms::checkbox(1, $_sidebar_show_on_startup, "ui_sidebar_show_on_startup", $l_prefs["sidebar_show_on_startup"], false, "defaultfont", "");
+
+				// Sidebar width
+				$_sidebar_width = htmlTextInput('ui_sidebar_width', 8, $_sidebar_width, 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", "text", 150);
+				$_sidebar_width_chooser = htmlSelect("tmp_sidebar_width", array(''=>'',100=>100,150=>150,200=>200,250=>250,300=>300,350=>350,400=>400), 1, "", false,"onChange=\"document.forms[0].elements['ui_sidebar_width'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont");
+
+				// Sidebar document
+				//$_sidebar_hidden = we_htmlElement::htmlHidden(array("name" => "ui_sidebar_file", "value" => $_sidebar_id, "id"=>"yuiAcResultSidebarDoc"));
+				$_sidebar_document_button = $we_button->create_button("select", "javascript:selectSidebarDoc()");
+
+				$yuiSuggest->setAcId("SidebarDoc");
+				$yuiSuggest->setContentType("folder,text/webEdition");
+				$yuiSuggest->setInput("ui_sidebar_file_name", $_sidebar_path);
+				$yuiSuggest->setMaxResults(20);
+				$yuiSuggest->setMayBeEmpty(true);
+				$yuiSuggest->setResult("ui_sidebar_file", $_sidebar_id);
+				$yuiSuggest->setSelector("Docselector");
+				$yuiSuggest->setWidth(150);
+				$yuiSuggest->setSelectButton($_sidebar_document_button,10);
+				$yuiSuggest->setContainerWidth(259);
+
+				// build html
+				$_sidebar_html1 = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 1);
+
+				$_sidebar_html1->setCol(0, 0, null, $_sidebar_disabler);
+
+				// build html
+				$_sidebar_html2 = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0", "id"=>"sidebar_options", "style"=>"display:" . $_sidebar_show), 8, 3);
+
+				$_sidebar_html2->setCol(0, 0, array("colspan"=>3,"height"=>10), "");
+
+				$_sidebar_html2->setCol(1, 0, array("colspan"=>3,"height"=>10), $_sidebar_show_on_startup);
+
+				$_sidebar_html2->setCol(2, 0, array("colspan"=>3,"height"=>10), "");
+
+				$_sidebar_html2->setCol(3, 0, array("colspan"=>3,"class"=>"defaultfont"), $l_prefs["sidebar_width"]);
+
+				$_sidebar_html2->setCol(4, 0, null, $_sidebar_width);
+				$_sidebar_html2->setCol(4, 1, null, getPixel(10,1));
+				$_sidebar_html2->setCol(4, 2, null, $_sidebar_width_chooser);
+
+				$_sidebar_html2->setCol(5, 0, array("colspan"=>3,"height"=>10), "");
+
+				$_sidebar_html2->setCol(6, 0, array("colspan"=>3,"class"=>"defaultfont"), $l_prefs["sidebar_document"]);
+
+				$_sidebar_html2->setCol(7, 0, array("colspan"=>3), $yuiSuggest->getHTML());
+
+				// Build dialog if user has permission
+				array_push($_settings, array("headline" => $l_prefs["sidebar"], "html" => $_sidebar_html1->getHtmlCode() . $_sidebar_html2->getHtmlCode(), "space" => 200));
+			}
+
+		
 
 			/*****************************************************************
 			 * TREE
 			 *****************************************************************/
-			 if(!( defined("ISP_VERSION") && ISP_VERSION )){
-				$_value_selected=false;
-				$_tree_count=get_value("default_tree_count");
+			
+			$_value_selected=false;
+			$_tree_count=get_value("default_tree_count");
 
-				$_file_tree_count = new we_htmlSelect(array("name" => "default_tree_count","class"=>"weSelect"));
+			$_file_tree_count = new we_htmlSelect(array("name" => "default_tree_count","class"=>"weSelect"));
 
-				$_file_tree_count->addOption(0, $l_prefs["all"]);
-				if (0 == $_tree_count) {
-						$_file_tree_count->selectOption(0);
-						$_value_selected = true;
+			$_file_tree_count->addOption(0, $l_prefs["all"]);
+			if (0 == $_tree_count) {
+					$_file_tree_count->selectOption(0);
+					$_value_selected = true;
+			}
+
+			for ($i = 10; $i < 51; $i+=10) {
+				$_file_tree_count->addOption($i, $i);
+
+				// Set selected extension
+				if ($i == $_tree_count) {
+					$_file_tree_count->selectOption($i);
+					$_value_selected = true;
 				}
+			}
 
-				for ($i = 10; $i < 51; $i+=10) {
-					$_file_tree_count->addOption($i, $i);
+			for ($i = 100; $i < 501; $i+=100) {
+				$_file_tree_count->addOption($i, $i);
 
+				// Set selected extension
+				if ($i == $_tree_count) {
+					$_file_tree_count->selectOption($i);
+					$_value_selected = true;
+				}
+			}
+
+			if (!$_value_selected) {
+				$_file_tree_count->addOption($_tree_count, $_tree_count);
 					// Set selected extension
-					if ($i == $_tree_count) {
-						$_file_tree_count->selectOption($i);
-						$_value_selected = true;
-					}
-				}
+				$_file_tree_count->selectOption($_tree_count);
+			}
 
-				for ($i = 100; $i < 501; $i+=100) {
-					$_file_tree_count->addOption($i, $i);
+			$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
+			array_push($_settings, array('headline' => $l_prefs['use_jupload'], 'html' => htmlSelect('use_jupload',array($l_prefs["no"],$l_prefs["yes"]),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.$l_prefs['juplod_not_installed'].')</span>' : ""), "space" => 200));
+			array_push($_settings, array("headline" => $l_prefs["tree_title"], "html" => htmlAlertAttentionBox($l_prefs["tree_count_description"],2,200)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
 
-					// Set selected extension
-					if ($i == $_tree_count) {
-						$_file_tree_count->selectOption($i);
-						$_value_selected = true;
-					}
-				}
-
-				if (!$_value_selected) {
-					$_file_tree_count->addOption($_tree_count, $_tree_count);
-						// Set selected extension
-					$_file_tree_count->selectOption($_tree_count);
-				}
-
-				$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
-				array_push($_settings, array('headline' => $l_prefs['use_jupload'], 'html' => htmlSelect('use_jupload',array($l_prefs["no"],$l_prefs["yes"]),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.$l_prefs['juplod_not_installed'].')</span>' : ""), "space" => 200));
-				array_push($_settings, array("headline" => $l_prefs["tree_title"], "html" => htmlAlertAttentionBox($l_prefs["tree_count_description"],2,200)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
-			 }
 
 			/*****************************************************************
 			 * WINDOW DIMENSIONS
@@ -4989,7 +5033,7 @@ else {
 					}
 				}
 
-				array_push($_settings, array("headline" => ( (defined('ISP_VERSION') && ISP_VERSION) ? $l_prefs["inlineedit_default_isp"] : $l_prefs["inlineedit_default"]), "html" => $_php_setting->getHtmlCode(), "space" => ( (defined('ISP_VERSION') && ISP_VERSION) ? 350 : 200)));
+				array_push($_settings, array("headline" => $l_prefs["inlineedit_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 			}
 
 			// Build dialog if user has permission
@@ -5038,68 +5082,6 @@ else {
 				array_push($_settings, array("headline" => $l_prefs["we_doctype_workspace_behavior"], "html" => $_we_doctype_workspace_behavior_table, "space" => 200));
 			}
 
-			/**
-			 * inlineedit setting
-			 */
-
-			// Build dialog if user has permission
-			if (we_hasPerm("ADMINISTRATOR")) {
-				// Build select box
-				$_php_setting = new we_htmlSelect(array("name" => "navigation_entries_from_document","class"=>"weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? $l_prefs["navigation_entries_from_document_folder"] : $l_prefs["navigation_entries_from_document_item"]);
-
-					// Set selected setting
-					if ($i == 0 && !get_value("navigation_entries_from_document")) {
-						$_php_setting->selectOption($i);
-					} else if ($i == 1 && get_value("navigation_entries_from_document")) {
-						$_php_setting->selectOption($i);
-					}
-				}
-
-				array_push($_settings, array("headline" => $l_prefs["navigation_entries_from_document"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
-
-				$_php_setting = new we_htmlSelect(array("name" => "navigation_rules_continue_after_first_match","class"=>"weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
-
-					// Set selected setting
-					if ($i == 0 && !get_value("navigation_rules_continue_after_first_match")) {
-						$_php_setting->selectOption($i);
-					} else if ($i == 1 && get_value("navigation_rules_continue_after_first_match")) {
-						$_php_setting->selectOption($i);
-					}
-				}
-				array_push($_settings, array("headline" => $l_prefs["navigation_rules_continue"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
-
-				$_php_setting = new we_htmlSelect(array("name" => "navigation_directoryindex_hide","class"=>"weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
-
-					// Set selected setting
-					if ($i == 0 && !get_value("navigation_directoryindex_hide")) {
-						$_php_setting->selectOption($i);
-					} else if ($i == 1 && get_value("navigation_directoryindex_hide")) {
-						$_php_setting->selectOption($i);
-					}
-				}
-				array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_hide"], "html" => htmlAlertAttentionBox($l_prefs["navigation_directoryindex_description"],2,240)."<br>".$_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
-				
-				$_navigation_directoryindex_names = htmlTextInput("navigation_directoryindex_names", 22,get_value("navigation_directoryindex_names"), "", "", "text", 225);
-    			array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_names"], "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1));
-				
-				$_php_setting = new we_htmlSelect(array("name" => "navigation_objectseourls","class"=>"weSelect"));
-				$_php_setting->addOption('no',$l_prefs["navigation_objectseourls_no"]);
-				$_php_setting->addOption('yes',$l_prefs["navigation_objectseourls_yes"]);
-				$_php_setting->addOption('ask',$l_prefs["navigation_objectseourls_ask"]);
-				$_php_setting->selectOption(get_value("navigation_objectseourls"));
-				
-
-				array_push($_settings, array("headline" => $l_prefs["navigation_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
-
-			}
-
-
 
 			/**
 			 * BUILD FINAL DIALOG
@@ -5117,7 +5099,7 @@ else {
 			 * ATTRIBS
 			 *********************************************************************/
 
-			if (we_hasPerm("ADMINISTRATOR") && !(defined("ISP_VERSION") && ISP_VERSION) ) {
+			if (we_hasPerm("ADMINISTRATOR") ) {
 				$_settings = array();
 				$_needed_JavaScript = "";
 
@@ -5293,6 +5275,120 @@ else {
 			}
 
 			break;
+			
+		case "seolinks":
+			/*********************************************************************
+			 * ATTRIBS
+			 *********************************************************************/
+			$_settings = array();
+			$_needed_JavaScript="";
+						// Build dialog if user has permission
+			if (we_hasPerm("ADMINISTRATOR")) {
+				// Build select box
+				$_php_setting = new we_htmlSelect(array("name" => "navigation_entries_from_document","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? $l_prefs["navigation_entries_from_document_folder"] : $l_prefs["navigation_entries_from_document_item"]);
+
+					// Set selected setting
+					if ($i == 0 && !get_value("navigation_entries_from_document")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("navigation_entries_from_document")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+
+				array_push($_settings, array("headline" => $l_prefs["navigation_entries_from_document"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+
+				$_php_setting = new we_htmlSelect(array("name" => "navigation_rules_continue_after_first_match","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("navigation_rules_continue_after_first_match")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("navigation_rules_continue_after_first_match")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+				array_push($_settings, array("headline" => $l_prefs["navigation_rules_continue"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+
+				array_push($_settings, array("headline" => $l_prefs["general_directoryindex_hide"], "html" => "", "space" => 480, "noline" => 1));
+				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["navigation_directoryindex_description"],2,480),  "noline" => 1));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "navigation_directoryindex_hide","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("navigation_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("navigation_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+				array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_hide"], "html" => $_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "wysiwyglinks_directoryindex_hide","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("wysiwyglinks_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("wysiwyglinks_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+				array_push($_settings, array("headline" => $l_prefs["wysiwyglinks_directoryindex_hide"], "html" => $_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));	
+				
+				$_navigation_directoryindex_names = htmlTextInput("navigation_directoryindex_names", 22,get_value("navigation_directoryindex_names"), "", "", "text", 225);
+    			array_push($_settings, array("headline" => $l_prefs["navigation_directoryindex_names"], "html" => $_navigation_directoryindex_names, "space" => 200,"noline" => 1));
+				
+				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["general_directoryindex_hide_description"],2,480),"noline" => 1));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "taglinks_directoryindex_hide","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("taglinks_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("taglinks_directoryindex_hide")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+				array_push($_settings, array("headline" => $l_prefs["taglinks_directoryindex_hide"], "html" => $_php_setting->getHtmlCode(), "space" => 200));	
+
+				
+				array_push($_settings, array("headline" => $l_prefs["general_objectseourls"], "noline" => 1));
+				$_php_setting = new we_htmlSelect(array("name" => "navigation_objectseourls","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("navigation_objectseourls"));			
+
+				array_push($_settings, array("headline" => $l_prefs["navigation_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "wysiwyglinks_objectseourls","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("wysiwyglinks_objectseourls"));			
+
+				array_push($_settings, array("headline" => $l_prefs["wysiwyglinks_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["general_objectseourls_description"],2,480)));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "taglinks_objectseourls","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("taglinks_objectseourls"));			
+
+				array_push($_settings, array("headline" => $l_prefs["taglinks_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+
+				
+				$_dialog = create_dialog("", $l_prefs["tab_seolinks"], $_settings, -1, "", "", null, $_needed_JavaScript);
+			}
+
+			break;
+			
 		case "error_handling":
 			/*********************************************************************
 			 * ERROR TYPES
@@ -6137,6 +6233,9 @@ function render_dialog() {
 
 	if($tabname=="setting_system") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_system"), build_dialog("system"));
 	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_system", "style" => "display: none;"), build_dialog("system"));
+	
+	if($tabname=="setting_seolinks") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_seolinks"), build_dialog("seolinks"));
+	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_seolinks", "style" => "display: none;"), build_dialog("seolinks"));
 
 	if($tabname=="setting_error_handling") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_error_handling"), build_dialog("error_handling"));
 	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_error_handling", "style" => "display: none;"), build_dialog("error_handling"));

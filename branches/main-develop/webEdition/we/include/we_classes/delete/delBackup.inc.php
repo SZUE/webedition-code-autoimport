@@ -35,23 +35,16 @@ class delBackup extends taskFragment{
 	function init(){
 		if(isset($_SESSION["backup_delete"]) && $_SESSION["backup_delete"]){
 
-			if(defined("ISP_VERSION") && ISP_VERSION){
-				$where=array();
-				foreach($GLOBALS["_isp_hide_files"] as $hiden) $where[]=" Path NOT LIKE '$hiden%'";
-				$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM ".FILE_TABLE." WHERE ".implode(" AND",$where)." ORDER BY IsFolder, Plen DESC;");
-				while($this->db->next_record()) $this->alldata[]=$_SERVER["DOCUMENT_ROOT"].$this->db->f("Path").",".$this->db->f("Icon");
+			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM ".FILE_TABLE." ORDER BY IsFolder, Plen DESC;");
+			while($this->db->next_record()) {
+				$this->alldata[]=$_SERVER["DOCUMENT_ROOT"].$this->db->f("Path").",".$this->db->f("Icon");
+				$this->alldata[]=$_SERVER["DOCUMENT_ROOT"]. SITE_DIR .$this->db->f("Path").",".$this->db->f("Icon");
 			}
-			else{
-				$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM ".FILE_TABLE." ORDER BY IsFolder, Plen DESC;");
-				while($this->db->next_record()) {
-					$this->alldata[]=$_SERVER["DOCUMENT_ROOT"].$this->db->f("Path").",".$this->db->f("Icon");
-					$this->alldata[]=$_SERVER["DOCUMENT_ROOT"]. SITE_DIR .$this->db->f("Path").",".$this->db->f("Icon");
-				}
-				$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM ".TEMPLATES_TABLE." ORDER BY IsFolder, Plen DESC;");
-				while($this->db->next_record()){
-					$this->alldata[]=TEMPLATE_DIR . "/".preg_replace('/\.tmpl$/i','.php',$this->db->f("Path")).",".$this->db->f("Icon");
-				}
+			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM ".TEMPLATES_TABLE." ORDER BY IsFolder, Plen DESC;");
+			while($this->db->next_record()){
+				$this->alldata[]=TEMPLATE_DIR . "/".preg_replace('/\.tmpl$/i','.php',$this->db->f("Path")).",".$this->db->f("Icon");
 			}
+		
 			if(!count($this->alldata)){
 				print we_htmlElement::jsElement(
 					we_message_reporting::getShowMessageCall($GLOBALS["l_backup"]["nothing_to_delete"], WE_MESSAGE_WARNING)

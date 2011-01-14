@@ -1001,8 +1001,17 @@ if(isset($weTagListviewCache)) {
 			$subfolders = !we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
 		}
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
-		$seourls = we_getTagAttributeTagParser("seourls", $arr, "false", true);
-		$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+		if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+			$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $attribs, "true", false);
+		} else {
+			$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $attribs, "false", true);
+		}
+		if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
+			$objectseourls = we_getTagAttributeTagParser("objectseourls", $attribs, "true", false);
+		} else {
+			$objectseourls = we_getTagAttributeTagParser("objectseourls", $attribs, "false", true);
+		}
+		
 		$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1059,7 +1068,7 @@ $GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_o
 				break;
 			case "search":
 				$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_search_listview.class.php");
-$GLOBALS["lv"] = new we_search_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", "' . $class . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, "' . $cols . '", "' . $cfilter . '", $we_lv_languages,"'.$hidedirindex.'","'.$seourls.'");
+$GLOBALS["lv"] = new we_search_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", "' . $class . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, "' . $cols . '", "' . $cfilter . '", $we_lv_languages,"'.$hidedirindex.'","'.$objectseourls.'");
 if(!isset($GLOBALS["weEconda"])) {
 	$GLOBALS["weEconda"] = "";
 }
@@ -1076,7 +1085,7 @@ $GLOBALS["weEconda"]["HTML"] .= \'<a name="emos_name" title="search" rel="\'.$GL
 					if ($foo && $predefinedSQL=="")
 						return str_replace($tag, $foo, $code);
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
-$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages,"'.$hidedirindex.'","'.$seourls.'");
+$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages,"'.$hidedirindex.'","'.$objectseourls.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="object"'), $code); }
 				break;
@@ -1118,7 +1127,7 @@ $GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset
 					if ($foo) return str_replace($tag, $foo, $code);
 					$php .= '
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php");
-$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages","'.$hidedirindex.'","'.$seourls.'");
+$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages","'.$hidedirindex.'","'.$objectseourls.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="multiobject"'), $code); }
 				break;
@@ -1214,6 +1223,16 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
 			$triggerid = we_getTagAttributeTagParser("triggerid", $arr, "0");
 			$searchable = we_getTagAttributeTagParser("searchable", $arr, "", true);
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
+			if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
+				$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "true", false);
+			} else {
+				$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", true);
+			}
 
 			$php = '<?php
 
@@ -1275,7 +1294,7 @@ $we_oid = $we_oid ? $we_oid : (isset($_REQUEST["we_oid"]) ? $_REQUEST["we_oid"] 
 ';
 			}
 			$searchable = empty($searchable) ? 'false' : $searchable;
-			$php .= '$GLOBALS["lv"] = new we_objecttag("' . $classid . '",$we_oid,' . $triggerid . ',' . $searchable . ', "' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_objecttag("' . $classid . '",$we_oid,' . $triggerid . ',' . $searchable . ', "' . $condition . '","'.$hidedirindex.'","'.$objectseourls.'");
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';

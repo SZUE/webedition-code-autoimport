@@ -458,19 +458,19 @@ function we_tag_field($attribs, $content){
 						} else {
 							$tail = "";
 						}
-						if ($GLOBALS["lv"]->seourls){
+						if ($GLOBALS["lv"]->objectseourls){
 							$db = new DB_WE();
 							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($GLOBALS["lv"]->f("OID")) . "' LIMIT 1", "Url", $db);
 						}
 						$path_parts = pathinfo($_SERVER["PHP_SELF"]);
 						if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-							if($GLOBALS["lv"]->seourls && $objecturl!=''){
+							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
 								$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
 							} else {
 								$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.  '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");
 							 }
 						} else {
-							if($GLOBALS["lv"]->seourls && $objecturl!=''){
+							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
 								$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl. '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
 							} else {
 								$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");

@@ -55,6 +55,7 @@ $l_prefs["formmail_recipients"] = 'Odbiorca formularza poczty';
 $l_prefs["tab_proxy"] = 'Serwer Proxy';
 $l_prefs["tab_advanced"] = 'Zaawansowane';
 $l_prefs["tab_system"] = 'System'; // TRANSLATE
+$l_prefs["tab_seolinks"] = 'SEO links';// TRANSLATE
 $l_prefs["tab_error_handling"] = 'Obsługa błędów';
 $l_prefs["tab_cockpit"] = 'Cockpit'; // TRANSLATE
 $l_prefs["tab_cache"] = 'Cache'; // TRANSLATE
@@ -335,7 +336,6 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 
 	 $l_prefs["inlineedit_default"] = "Standardowe ustawienie dla<br>atrybutu <em>inlineedit</em> w<br>&lt;we:textarea&gt;";
-	 $l_prefs["inlineedit_default_isp"] = "Pola tekstowe otwierać w obrębie strony (true) lub w <br />nowym oknie (false)";
 
 	/**
 	 * SAFARI WYSIWYG
@@ -354,13 +354,19 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_item"] = "item"; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_folder"] = "folder"; // TRANSLATE
 	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_hide"] = "Hide DirectoryIndex- file names in navigation output";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_description"] = "After a change, rebuild the navigation cache";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html')";// TRANSLATE
-	 $l_prefs["navigation_objectseourls"] = "Generate object SEO urls in the navigation";// TRANSLATE
-	 $l_prefs["navigation_objectseourls_no"] = "no";// TRANSLATE
-	 $l_prefs["navigation_objectseourls_yes"] = "always";// TRANSLATE
-	 $l_prefs["navigation_objectseourls_ask"] = "ask";// TRANSLATE
+	 $l_prefs["general_directoryindex_hide"] = "Hide DirectoryIndex- file names";// TRANSLATE
+	 $l_prefs["general_directoryindex_hide_description"] = "For the tags <we:link>, <we:linklist>, <we:listview> you can use the attribute 'hidedirindex'";// TRANSLATE
+	 $l_prefs["navigation_directoryindex_hide"] = "in the navigation output";// TRANSLATE
+ 	 $l_prefs["wysiwyglinks_directoryindex_hide"] = "in links from the WYSIWYG editor";// TRANSLATE
+	 $l_prefs["objectlinks_directoryindex_hide"] = "in links to objects";// TRANSLATE
+	 $l_prefs["navigation_directoryindex_description"] = "After a change, a rebuild is required (i.e. navigation cache, objects ...)";// TRANSLATE
+	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html'";// TRANSLATE
+	 $l_prefs["general_objectseourls"] = "Generate object SEO urls ";// TRANSLATE
+	 $l_prefs["navigation_objectseourls"] = "in the navigation output";// TRANSLATE
+	 $l_prefs["wysiwyglinks_objectseourls"] = "in links from the WYSIWYG editor";// TRANSLATE
+	 $l_prefs["general_objectseourls_description"] = "For the tags <we:link>, <we:linklist>, <we:listview>, <we:object> you can use the attribute 'objectseourls'";// TRANSLATE
+	 $l_prefs["taglinks_directoryindex_hide"] = "preset value for tags";// TRANSLATE
+	 $l_prefs["taglinks_objectseourls"] = "preset value for tags";// TRANSLATE
 
 
 	/**

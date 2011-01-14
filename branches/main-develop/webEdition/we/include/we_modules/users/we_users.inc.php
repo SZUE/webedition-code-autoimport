@@ -1683,7 +1683,6 @@ function mapPermissions() {
 							)
 					);
 
-		// Permission, if user can change seem-startdocument of other users not in ISP_VERSION
 		if (we_hasPerm("ADMINISTRATOR")){
 
 			//	First get the startdocument of the selected User!

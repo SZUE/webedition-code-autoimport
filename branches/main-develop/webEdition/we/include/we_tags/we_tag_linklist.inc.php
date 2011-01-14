@@ -23,6 +23,16 @@ function we_tag_linklist($attribs, $content){
 	$name = we_getTagAttribute("name", $attribs);
 	$content = str_replace("we:link", "we_:_link", $content);
 	$foo = attributFehltError($attribs, "name", "linklist");
+	if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", false);
+	} else {
+		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
+	}
+	if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
+		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", false);
+	} else {
+		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
+	}
 	if ($foo)
 		return $foo;
 	$isInListview = isset($GLOBALS["lv"]);
@@ -33,7 +43,7 @@ function we_tag_linklist($attribs, $content){
 		if (isset($GLOBALS["we_doc"])) {
 			$linklist = $GLOBALS["we_doc"]->getElement($name);
 		}
-	$ll = new we_linklist($linklist);
+	$ll = new we_linklist($linklist,$hidedirindex,$objectseourls);
 	$ll->name = $name;
 
 	$out = $ll->getHTML(
