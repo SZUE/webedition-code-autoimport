@@ -433,14 +433,14 @@ class listviewBase{
 
 	function shouldPrintEndTR(){
 		if($this->cols){
-			return (($this->count) % $this->cols == 0) || ($this->count == $this->anz);
+			return ( (($this->count) % $this->cols) == 0) || ($this->count == $this->anz);
 		}
 		return false;
 	}
 
 	function shouldPrintStartTR(){
 		if($this->cols){
-			return ($this->count-1) % $this->cols == 0;
+			return (($this->count-1) % $this->cols) == 0;
 		}
 		return false;
 	}
