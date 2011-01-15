@@ -2457,8 +2457,10 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 			$version = ($version > 0) ? ($version - 1) : 0;
 
 			$php = '<?php
+						
 						include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
-
+						$version = "' . $version . '";
+						$version = ($version > 0) ? ($version - 1) : 0;
 						$GLOBALS["_we_voting_namespace"] = "' . $name . '";
 						$GLOBALS[\'_we_voting\'] = new weVoting();
 
@@ -2472,7 +2474,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 								$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
 							}
 						}
-						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion(' . $version . ');
+						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion("  $version  ");
 					?>';
 
 			return $this->replaceTag($tag, $code, $php);
