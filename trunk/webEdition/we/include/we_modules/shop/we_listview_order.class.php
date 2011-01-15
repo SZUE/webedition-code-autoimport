@@ -50,7 +50,7 @@ class we_listview_order extends listviewBase {
 	 *
 	 */
 
-	function we_listview_order($name="0", $rows=999999, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0){
+	function we_listview_order($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
@@ -105,6 +105,13 @@ class we_listview_order extends listviewBase {
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
+		if ($this->cols && $this->anz_all) {
+			// Bugfix #1715 und auch #4965
+			$_rows = floor($this->anz_all / $this->cols);
+			$_rest = ($this->anz_all % $this->cols);
+			$_add = $_rest ? $this->cols - $_rest : 0;
+			$this->rows = min($this->rows, $_rows+$_add);
+		}
 	}
 
 	function next_record(){
