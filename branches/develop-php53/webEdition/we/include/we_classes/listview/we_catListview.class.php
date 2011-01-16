@@ -33,7 +33,7 @@ class we_catListview extends listviewBase {
 	var $catID=0;
 	var $variant='default';
 	var $ClassName = "we_catListview";
-
+	var $hidedirindex = false;
 	/**
 	 * we_listview()
 	 * constructor of class
@@ -49,7 +49,7 @@ class we_catListview extends listviewBase {
 	 *
 	 */
 
-	function we_catListview($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $parentID=0, $catID=0, $variant="default", $cols="", $parentidname='we_parentid'){
+	function we_catListview($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $parentID=0, $catID=0, $variant="default", $cols="", $parentidname='we_parentid',$hidedirindex=false){
 
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, "", $cols);
@@ -66,6 +66,7 @@ class we_catListview extends listviewBase {
 
 		$orderstring = $this->order ? (" ORDER BY " . $this->order . ($this->desc ? " DESC" : "")) : '' ;
 
+		$this->hidedirindex=$hidedirindex;
 
 		if ($this->catID) {
 			$cids = explode(",",$this->catID);
@@ -98,6 +99,7 @@ class we_catListview extends listviewBase {
 		$this->anz = $this->DB_WE->num_rows();
 
 		$this->count = 0;
+		$this->adjustRows();
 
 
 	}
@@ -119,6 +121,13 @@ class we_catListview extends listviewBase {
 			$this->Record["Title"] = $this->Record["WE_TITLE"];
 			$this->Record["Description"] = $this->Record["WE_DESCRIPTION"];
 
+			$this->count++;
+			return true;
+		} else if($this->cols && ($this->count < $this->rows)){
+			$this->DB_WE->Record = array();
+			$this->DB_WE->Record["WE_PATH"] = "";
+			$this->DB_WE->Record["WE_TEXT"] = "";
+			$this->DB_WE->Record["WE_ID"] = "";
 			$this->count++;
 			return true;
 		}

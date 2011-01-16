@@ -312,8 +312,7 @@ class we_listview extends listviewBase {
 
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
-
-
+		$this->adjustRows();
 		if($calendar!="") $this->postFetchCalendar();
 
 	}
@@ -371,6 +370,13 @@ class we_listview extends listviewBase {
 
 			return true;
 
+		} else if($this->cols && ($this->count < $this->rows)){
+			$this->DB_WE->Record = array();
+			$this->DB_WE->Record["WE_PATH"] = "";
+			$this->DB_WE->Record["WE_TEXT"] = "";
+			$this->DB_WE->Record["WE_ID"] = "";
+			$this->count++;
+			return true;
 		}
 		return false;
 	}

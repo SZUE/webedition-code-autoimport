@@ -846,7 +846,7 @@ class weNavigation extends weModelBase
 			} else {
 				$objecturl='';
 				if ($this->FolderSelection == 'objLink') {
-					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no'){
+					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS ){
 						$_db = new DB_WE();
 						$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", "Url", $_db);
 						if($objecturl==''){
@@ -860,7 +860,7 @@ class weNavigation extends weModelBase
 					$_id = $this->LinkID;
 				}
 				$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-				if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no' && $objecturl!='' ){
+				if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && $objecturl!='' ){
 					$path_parts = pathinfo($_path);
 					if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;
@@ -894,7 +894,7 @@ class weNavigation extends weModelBase
 				} else {
 					if ($this->SelectionType == 'classname' || $this->SelectionType == 'objLink') {
 						$objecturl='';
-						if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no'){
+						if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
 							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($_id) . "' LIMIT 1", "Url", $_db);
 							if($objecturl==''){
@@ -907,7 +907,7 @@ class weNavigation extends weModelBase
 					}
 					
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_DIRECTORYINDEX_HIDE!='no' && $objecturl!='' ){
+					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl!='' ){
 						$path_parts = pathinfo($_path);
 						if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;

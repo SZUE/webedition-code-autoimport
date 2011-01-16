@@ -30,14 +30,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 protect();
 $parts = array();
 
-
-if(defined('ISP_VERSION') && ISP_VERSION){	//	for isp version we use derived class and overwrite some functions
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_docTypes_isp.inc.php");
-	$we_doc = new we_docTypes_isp();
-} else {
-	$we_doc = new we_docTypes();
-}
-
+$we_doc = new we_docTypes();
 
 // Initialize variables
 $we_show_response = 0;

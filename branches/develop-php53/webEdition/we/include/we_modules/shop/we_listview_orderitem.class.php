@@ -36,6 +36,7 @@ class we_listview_orderitem extends listviewBase {
 	var $Path="";
 	var	$docID=0;
 	var	$orderID=0;
+	var $hidedirindex = false;
 
 	/**
 	 * we_listview_object()
@@ -51,7 +52,7 @@ class we_listview_orderitem extends listviewBase {
 	 *
 	 */
 
-	function we_listview_orderitem($name="0", $rows=999999, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$orderID=0){
+	function we_listview_orderitem($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$orderID=0,$hidedirindex=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
@@ -77,7 +78,7 @@ class we_listview_orderitem extends listviewBase {
 		}else{
 			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
 		}
-
+		$this->hidedirindex=$hidedirindex;
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = '';
 		if (isset($_SESSION['last_webEdition_document'])) {
@@ -113,6 +114,7 @@ class we_listview_orderitem extends listviewBase {
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
+		$this->adjustRows();
 	}
 
 	function next_record(){

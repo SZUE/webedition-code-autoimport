@@ -230,7 +230,7 @@ class we_textContentDocument extends we_textDocument{
 								  	"if(confirm('".$GLOBALS['l_we_class']['doctype_changed_question']."')){we_cmd('doctype_changed');};" :
 								  	"we_cmd('doctype_changed');") .
 								  	"_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", $we_button->create_button("edit", "javascript:top.we_cmd('doctypes')", false, -1, -1, "", "", (!we_hasPerm("EDIT_DOCTYPE"))),
-		 						  ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) && !(defined('ISP_VERSION') && ISP_VERSION)) ? array("", $l_we_class["nodoctype"])  : "");
+		 						  ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", $l_we_class["nodoctype"])  : "");
 	}
 
 	function formDocTypeTempl(){

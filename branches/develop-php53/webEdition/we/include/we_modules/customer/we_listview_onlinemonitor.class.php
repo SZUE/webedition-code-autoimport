@@ -37,7 +37,7 @@ class we_listview_onlinemonitor extends listviewBase {
 	var	$docID=0;
 	var $lastaccesslimit="";
 	var $lastloginlimit="";
-
+	var $hidedirindex = false;
 	/**
 	 * we_listview_object()
 	 * @desc    constructor of class
@@ -52,7 +52,7 @@ class we_listview_onlinemonitor extends listviewBase {
 	 *
 	 */
 
-	function we_listview_onlinemonitor($name="0", $rows=999999, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$lastaccesslimit='',$lastloginlimit=''){
+	function we_listview_onlinemonitor($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$lastaccesslimit='',$lastloginlimit='',$hidedirindex=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
@@ -66,7 +66,7 @@ class we_listview_onlinemonitor extends listviewBase {
 		}else{
 			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
 		}
-		
+		$this->hidedirindex=$hidedirindex;
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = '';
 		if (isset($_SESSION['last_webEdition_document'])) {
@@ -104,6 +104,8 @@ class we_listview_onlinemonitor extends listviewBase {
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
+		
+		$this->adjustRows();
 	}
 
 	function next_record(){

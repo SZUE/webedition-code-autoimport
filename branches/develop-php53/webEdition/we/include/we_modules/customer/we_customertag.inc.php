@@ -33,15 +33,16 @@ class we_customertag{
 	var $ClassName = "we_customertag";
 	var $object = "";
 	var $avail = false;
+	var $hidedirindex=false
 
-	function we_customertag($id=0, $condition=""){
+	function we_customertag($id=0, $condition="",$hidedirindex=false){
 		$this->DB_WE = new DB_WE;
 		$this->id = $id;
-
+		$this->hidedirindex=$hidedirindex;
 		$unique = md5(uniqid(rand()));
 
 		if($this->id){
-			$this->object = new we_listview_customer($unique, 1, 0, "", 0, "(ID='".abs($this->id)."')" .  ($condition ? " AND $condition" : ""));
+			$this->object = new we_listview_customer($unique, 1, 0, "", 0, "(ID='".abs($this->id)."')" .  ($condition ? " AND $condition" : ""),"", 0,$hidedirindex);
 			if($this->object->next_record()){
 				$this->avail = true;
 			}

@@ -519,7 +519,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 
 
-			$but     = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES") && !(defined("ISP_VERSION") && ISP_VERSION) )? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.we_form.href.value', '', document.we_form.href.value, '')") : "";
+			$but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.we_form.href.value', '', document.we_form.href.value, '')") : "";
 			if ($BROWSER == "SAFARI") {
 				$butspace = 8;
 			} else {

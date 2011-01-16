@@ -41,10 +41,10 @@ class we_listview_object extends listviewBase {
 	var $customers = "";
 	var $we_predefinedSQL = "";
 	var $languages = ""; //string of Languages, separated by ,
-	var $seourls = false;
+	var $objectseourls = false;
 	var $hidedirindex = false;
 
-	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="",$languages='',$hidedirindex=false,$seourls=false){
+	function we_listview_object($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="",$languages='',$hidedirindex=false,$objectseourls=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
@@ -63,7 +63,7 @@ class we_listview_object extends listviewBase {
 
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
 		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
-		$this->seourls=$seourls;
+		$this->objectseourls=$objectseourls;
 		$this->hidedirindex=$hidedirindex;
 
 		$_obxTable = OBJECT_X_TABLE.$this->classID;
@@ -214,13 +214,7 @@ class we_listview_object extends listviewBase {
 		}
 		if($calendar!="") $this->postFetchCalendar();
 
-		if ($this->cols && $this->anz_all) {
-			// Bugfix #1715
-			$_rows = floor($this->anz_all / $this->cols);
-			$_rest = ($this->anz_all % $this->cols);
-			$_add = $_rest ? $this->cols - $_rest : 0;
-			$this->rows = min($this->rows, $_rows+$_add);
-		}
+		$this->adjustRows();
 
 	}
 
@@ -414,7 +408,7 @@ class we_listview_object extends listviewBase {
 				$this->DB_WE->Record["we_wedoc_WebUserID"] = isset($this->DB_WE->Record["OF_WebUserID"]) ? $this->DB_WE->Record["OF_WebUserID"] : 0; // needed for ifRegisteredUserCanChange tag
 				$this->DB_WE->Record["we_WE_CUSTOMER_ID"] = $this->DB_WE->Record["we_wedoc_WebUserID"];
 				$path_parts = pathinfo($this->Path);
-				if ($this->seourls && $this->DB_WE->Record['OF_Url']!=''){		
+				if ($this->objectseourls && $this->DB_WE->Record['OF_Url']!=''){		
 					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR. $this->DB_WE->Record['OF_Url'];
 					} else {

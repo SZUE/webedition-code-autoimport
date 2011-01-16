@@ -302,11 +302,10 @@ class weExportFrames extends weModuleFrames {
 		);
 
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),3,1);
-		$table->setColContent(0,0,htmlSelect('ExportTo',((!(defined("ISP_VERSION") && ISP_VERSION)) ? array('local'=>$l_export['export_to_local'],"server"=>$l_export["export_to_server"]) : array('local'=>$l_export['export_to_local'])),1,$this->View->export->ExportTo,false,'onChange="toggle(\'save_to\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
+		$table->setColContent(0,0,htmlSelect('ExportTo',array('local'=>$l_export['export_to_local'],"server"=>$l_export["export_to_server"]),1,$this->View->export->ExportTo,false,'onChange="toggle(\'save_to\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
 		$table->setColContent(1,0,getPixel(10,10));
-		if(!(defined("ISP_VERSION") && ISP_VERSION)){
-			$table->setCol(2,0,array("id"=>"save_to","style"=>($this->View->export->ExportTo=='server' ? 'display: ""' : 'display: none')),htmlFormElementTable($this->formFileChooser(($this->_width_size - 120),"ServerPath",$this->View->export->ServerPath,"","folder"),$l_export["save_to"]));
-		}
+		$table->setCol(2,0,array("id"=>"save_to","style"=>($this->View->export->ExportTo=='server' ? 'display: ""' : 'display: none')),htmlFormElementTable($this->formFileChooser(($this->_width_size - 120),"ServerPath",$this->View->export->ServerPath,"","folder"),$l_export["save_to"]));
+		
 
 		array_push($parts,array(
 					"headline" => "",

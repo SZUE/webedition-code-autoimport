@@ -56,6 +56,7 @@ $l_prefs["formmail_recipients"] = 'Formmail Empfänger';
 $l_prefs["tab_proxy"] = 'Proxy Server';
 $l_prefs["tab_advanced"] = 'Erweitert';
 $l_prefs["tab_system"] = 'System';
+$l_prefs["tab_seolinks"] = 'SEO-Links';
 $l_prefs["tab_error_handling"] = 'Fehlerbehandlung';
 $l_prefs["tab_cockpit"] = 'Cockpit';
 $l_prefs["tab_cache"] = 'Cache';
@@ -333,7 +334,6 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 */
 
 	 $l_prefs["inlineedit_default"] = "Standard Einstellung für<br><em>inlineedit</em>-Attribut in<br>&lt;we:textarea&gt;";
-	 $l_prefs["inlineedit_default_isp"] = "Textfelder innerhalb der Seite (true) oder in einem<br />neuen Fenster (false) öffnen";
 
 	/**
 	 * SAFARI WYSIWYG
@@ -352,14 +352,20 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 $l_prefs["navigation_entries_from_document_item"] = "Eintrag";
 	 $l_prefs["navigation_entries_from_document_folder"] = "Ordner";
 	 $l_prefs["navigation_rules_continue"] = "Werte Navigationsregeln auch nach einem ersten Match aus";
-	 $l_prefs["navigation_directoryindex_hide"] = "Verstecke DirectoryIndex-Dateinamen in der Navigationsausgabe";
-	 $l_prefs["navigation_directoryindex_description"] = "Nach einer Änderung muss ein Rebuild des Navigation Cache durchgeführt werden";
+	 $l_prefs["general_directoryindex_hide"] = "Verstecke DirectoryIndex-Dateinamen in der Ausgabe";
+	 $l_prefs["general_directoryindex_hide_description"] = "Für die Tags <we:link>, <we:linklist>, <we:listview> kann das Attribut 'hidedirindex' verwendet, oder die folgende Voreinstellung verwendet werden";
+	 $l_prefs["navigation_directoryindex_hide"] = "der Navigation";
+ 	 $l_prefs["wysiwyglinks_directoryindex_hide"] = "von Links aus dem WYSIWYG-Editor";
+	 $l_prefs["taglinks_directoryindex_hide"] = "Voreinstellung für Tags";
+	 $l_prefs["objectlinks_directoryindex_hide"] = "von Links auf Objekte";
+	 $l_prefs["navigation_directoryindex_description"] = "Nach einer Änderung muss ein Rebuild durchgeführt werden (z.B. Navigation Cache, Objekte usw.)";
 	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex-Dateinamen (Komma-separiert, einschl. Datei-Extensions, z.B. 'index.php,index.html')";
-	 $l_prefs["navigation_objectseourls"] = "Erzeuge Objekt SEO-Urls in der Navigation";
-	 $l_prefs["navigation_objectseourls_no"] = "keine";
-	 $l_prefs["navigation_objectseourls_yes"] = "immer";
-	 $l_prefs["navigation_objectseourls_ask"] = "individuell";
-
+	 $l_prefs["general_objectseourls"] = "Erzeuge Objekt SEO-Urls ";
+	 $l_prefs["navigation_objectseourls"] = "in der Navigation";
+	 $l_prefs["wysiwyglinks_objectseourls"] = "bei Links aus dem WYSIWYG-Editor";
+	 $l_prefs["general_objectseourls_description"] = "Für die Tags <we:link>, <we:linklist>, <we:listview>, <we:object> kann das Attribut 'objectseourls' verwendet, oder die folgende Voreinstallung vorgenommen werden:";
+	 $l_prefs["taglinks_directoryindex_hide"] = "Voreinstellung für Tags";
+	 $l_prefs["taglinks_objectseourls"] = "Voreinstellung für Tags";
 	 /**
 	 * DATABASE
 	 */

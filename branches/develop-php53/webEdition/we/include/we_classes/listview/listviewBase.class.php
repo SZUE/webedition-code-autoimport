@@ -433,16 +433,29 @@ class listviewBase{
 
 	function shouldPrintEndTR(){
 		if($this->cols){
-			return (($this->count) % $this->cols == 0) || ($this->count == $this->anz);
+			return ( (($this->count) % $this->cols) == 0) || ($this->count == $this->anz);
 		}
 		return false;
 	}
 
 	function shouldPrintStartTR(){
 		if($this->cols){
-			return ($this->count-1) % $this->cols == 0;
+			return (($this->count-1) % $this->cols) == 0;
 		}
 		return false;
+	}
+	
+	function tdEmpty(){
+		return ($this->count > $this->anz);
+	}
+	function adjustRows(){
+		if ($this->cols && $this->anz_all) {
+			// Bugfix #1715 und auch #4965
+			$_rows = floor($this->anz_all / $this->cols);
+			$_rest = ($this->anz_all % $this->cols);
+			$_add = $_rest ? $this->cols - $_rest : 0;
+			$this->rows = min($this->rows, $_rows+$_add);
+		}
 	}
 
 	function getCalendarField($calendar,$type){
