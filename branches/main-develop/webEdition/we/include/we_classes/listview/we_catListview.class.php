@@ -99,6 +99,7 @@ class we_catListview extends listviewBase {
 		$this->anz = $this->DB_WE->num_rows();
 
 		$this->count = 0;
+		$this->adjustRows();
 
 
 	}
@@ -120,6 +121,13 @@ class we_catListview extends listviewBase {
 			$this->Record["Title"] = $this->Record["WE_TITLE"];
 			$this->Record["Description"] = $this->Record["WE_DESCRIPTION"];
 
+			$this->count++;
+			return true;
+		} else if($this->cols && ($this->count < $this->rows)){
+			$this->DB_WE->Record = array();
+			$this->DB_WE->Record["WE_PATH"] = "";
+			$this->DB_WE->Record["WE_TEXT"] = "";
+			$this->DB_WE->Record["WE_ID"] = "";
 			$this->count++;
 			return true;
 		}

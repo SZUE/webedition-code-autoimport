@@ -1092,21 +1092,21 @@ $GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $
 			case "customer":
 				if (defined("CUSTOMER_TABLE")) {
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_customer.class.php");
-$GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+$GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '",'.$hidedirindex.');
 ';
 				} else { return str_replace($tag, modulFehltError('Customer','listview type="customer"'), $code); }
 				break;
 			case "onlinemonitor":
 				if (defined("CUSTOMER_SESSION_TABLE")) {
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_onlinemonitor.class.php");
-$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '");
+$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '",'.$hidedirindex.');
 ';
 				} else { return str_replace($tag, modulFehltError('Customer','listview type="onlinemonitor"'), $code); }
 				break;
 			case "order":
 				if (defined("SHOP_TABLE")) {
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_order.class.php");
-$GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+$GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '",'.$hidedirindex.');
 ';
 				} else { return str_replace($tag, modulFehltError('Shop','listview type="order"'), $code); }
 				break;
@@ -1117,7 +1117,7 @@ $GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $w
 					if (strpos($orderid,'$')===false ){$php.='$orderid='.$orderid.';';} else {$php.='$orderid = isset('.$orderid.') ? "'.$orderid.'" : $GLOBALS["'.str_replace('$','', $orderid). '"];'; }
 					$php .= '
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php");
-$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid");
+$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid",'.$hidedirindex.');
 ';
 				} else { return str_replace($tag, modulFehltError('Shop','listview type="orderitem"'), $code); }
 				break;
@@ -1181,7 +1181,7 @@ $GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $d
 $categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_catListview.class.php");
-$GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ');
+$GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ','.$hidedirindex.');
 ';
 				break;
 			default:
@@ -1362,7 +1362,11 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
-
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
 			$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1415,7 +1419,7 @@ $php .='$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["w
 ';
 			}
 
-			$php .= '$GLOBALS["lv"] = new we_customertag($we_cid,"' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_customertag($we_cid,"' . $condition . '",'.$hidedirindex.');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
@@ -1499,6 +1503,11 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
 
 			$php = '<?php
 
@@ -1552,7 +1561,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 ';
 			}
 
-			$php .= '$GLOBALS["lv"] = new we_ordertag($we_orderid,"' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_ordertag($we_orderid,"' . $condition . '",'.$hidedirindex.');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
@@ -1589,7 +1598,11 @@ function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
 			} else {
 				$condition = "IntID = ".$we_orderitemid;
 			}
-
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
 			$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1642,7 +1655,7 @@ $we_orderitemid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_order
 ';
 			}
 
-			$php .= '$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid,"' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid,"' . $condition . '",'.$hidedirindex.');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
