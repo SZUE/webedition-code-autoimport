@@ -145,7 +145,7 @@
 			if($prop=="schedArr") return true;			
 			$encoded=array(
 				"we_element"=>array("Dat","dat"),
-				"weTableItem"=>array("Dat","strFelder","strSerial","DocumentObject","QASet","QASetAdditions","Catfields","RevoteUserAgent","LogData","strSerialOrder"),
+				"weTableItem"=>array("Dat","strFelder","strSerial","DocumentObject","QASet","QASetAdditions","Catfields","RevoteUserAgent","agent","LogData","strSerialOrder"),
 				"we_object"=>array("DefaultText","DefaultValues","SerializedArray"),
 				"we_objectFile"=>array("DefArray","schedArr"),
 				"weBinary"=>array("Data"),
@@ -192,7 +192,7 @@
 			$encoded=array(
 				"we_element"=>array("Dat"),
 				"we_object"=>array("DefaultText","DefaultValues"),
-				"weTableItem"=>array("Text","BText"),
+				"weTableItem"=>array("Text","BText","answertext"),
 				"we_category"=>array("Catfields")
 			);
 		
