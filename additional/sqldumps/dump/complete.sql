@@ -905,12 +905,14 @@ CREATE TABLE tblbanner (
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblbannerclicks (
+  clickid bigint(20) NOT NULL AUTO_INCREMENT,
   ID bigint(20) NOT NULL default '0',
   `Timestamp` bigint(20) default NULL,
   IP varchar(30) NOT NULL default '',
   Referer varchar(255) NOT NULL default '',
   DID bigint(20) NOT NULL default '0',
-  Page varchar(255) NOT NULL default ''
+  Page varchar(255) NOT NULL default '',
+  PRIMARY KEY (`clickid`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblbannerprefs (
@@ -919,12 +921,14 @@ CREATE TABLE tblbannerprefs (
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblbannerviews (
+  viewid bigint(20) NOT NULL AUTO_INCREMENT,
   ID bigint(20) NOT NULL default '0',
   `Timestamp` bigint(20) default NULL,
   IP varchar(30) NOT NULL default '',
   Referer varchar(255) NOT NULL default '',
   DID bigint(20) NOT NULL default '0',
-  Page varchar(255) NOT NULL default ''
+  Page varchar(255) NOT NULL default '',
+  PRIMARY KEY (`viewid`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblcustomerfilter (
