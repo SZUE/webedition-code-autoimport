@@ -2467,7 +2467,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 			if ($foo)
 				return str_replace($tag, $foo, $code);
 
-			$version = ($version > 0) ? ($version - 1) : 0;
+			
 
 			$php = '<?php
 						
@@ -2487,7 +2487,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 								$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
 							}
 						}
-						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion("  $version  ");
+						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion("$version");
 					?>';
 
 			return $this->replaceTag($tag, $code, $php);
