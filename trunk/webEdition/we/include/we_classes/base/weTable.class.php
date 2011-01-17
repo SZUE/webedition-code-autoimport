@@ -172,6 +172,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 					$this->elements[$this->db->f("Table")]['line'.$k]=$v;
 				}
 			}
+			$this->fetchNewColumns();
 		}
 		
 		function save(){
