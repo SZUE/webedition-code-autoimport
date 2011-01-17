@@ -17,7 +17,7 @@
  * @package    Zend_Session
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Session.php 22587 2010-07-16 20:14:18Z ralph $
+ * @version    $Id: Session.php 23484 2010-12-10 03:57:59Z mjh_ca $
  * @since      Preview Release 0.2
  */
 
@@ -477,7 +477,10 @@ class Zend_Session extends Zend_Session_Abstract
                 set_error_handler(array('Zend_Session_Exception', 'handleSessionStartError'), $errorLevel);
             }
 
-            $startedCleanly = session_start();
+            $startedCleanly = session_start();				
+			if (!$startedCleanly){$startedCleanly = session_start();} //ZEND_Patch
+			if (!$startedCleanly){$startedCleanly = session_start();}
+			if (!$startedCleanly){$startedCleanly = session_start();}
 
             if (self::$_throwStartupExceptions) {
                 restore_error_handler();
@@ -572,7 +575,7 @@ class Zend_Session extends Zend_Session_Abstract
                         }
                     }
                     if (empty($_SESSION['__ZF'][$namespace]['ENVGH'])) {
-                        unset($_SESSION['__ZF'][$namespace]['ENVGH']);    
+                        unset($_SESSION['__ZF'][$namespace]['ENVGH']);
                     }
                 }
             }
