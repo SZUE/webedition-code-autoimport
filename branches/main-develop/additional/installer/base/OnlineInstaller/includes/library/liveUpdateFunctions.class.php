@@ -504,12 +504,19 @@ class liveUpdateFunctions {
 				}
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
-
-					 if((strpos($extra,'AUTO_INCREMENT') !== false)&& ($fieldInfo['Key']=='')){
-						 //set an index, if there is none - this prevents from failing the query
-						 //temporary index is dropped on next update
-						 $extra .= ', ADD INDEX _temp ('.$fieldInfo['Field'].')';
-					 }
+					//note: auto_increment cols must have an index!
+					if( strpos($extra,'AUTO_INCREMENT') !== false){
+						$keyfound=false;
+						$Currentkeys = $this->getKeysFromTable($tableName);
+						foreach ($Currentkeys as $ckeys){
+							foreach ($ckeys as $k){
+								if (stripos($k,$fieldName)!==false){$keyfound=true;}
+							}
+						}
+						if (!$keyfound){
+							$extra .= ' FIRST, ADD INDEX _temp ('.$fieldInfo['Field'].')';
+						}
+					}
 
 			if ($isNew) {
 
@@ -750,8 +757,28 @@ class liveUpdateFunctions {
 									}
 
 									// determine new keys
+									// moved down after change and addfields 
+
+									// get all queries to add/change fields, keys
+									$alterQueries = array();
+
+									// get all queries to change existing fields
+									if (sizeof($changeFields)) {
+										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+									}
+									if (sizeof($addFields)) {
+										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
+									}
+
+									// get all queries to change existing keys
+									if (sizeof($addKeys)) {
+										$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
+									}
+									
+									
+									//new position to determine new keys
 									$addKeys = array();
-							$changedKeys = array();
+									$changedKeys = array();
 									foreach ($newTableKeys as $keyName => $indexes) {
 
 										if (isset($origTableKeys[$keyName])) {
@@ -770,22 +797,6 @@ class liveUpdateFunctions {
 										} else {
 											$addKeys[$keyName] = $indexes;
 										}
-									}
-
-									// get all queries to add/change fields, keys
-									$alterQueries = array();
-
-									// get all queries to change existing fields
-									if (sizeof($changeFields)) {
-										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
-									}
-									if (sizeof($addFields)) {
-										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
-									}
-
-									// get all queries to change existing keys
-									if (sizeof($addKeys)) {
-										$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 									}
 
 							if (sizeof($changedKeys)) {
@@ -812,7 +823,10 @@ class liveUpdateFunctions {
 										if ($success) {
 											$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
 										}
-
+										$SearchTempTableKeys = $this->getKeysFromTable($tableName);
+										if (isset($SearchTempTableKeys['_temp'])) {
+											$db->query(trim('ALTER TABLE `'.$tableName.'` DROP INDEX _temp'));
+										}
 									} else {
 										$this->QueryLog['tableExists'][] = $tableName;
 									}
