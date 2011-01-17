@@ -29,7 +29,7 @@ function we_tag_votingSelect($attribs, $content){
 		$reload = we_getTagAttribute("reload", $attribs, "", true);
 		if($submitonchange) {$reload=true;}
 
-		$where = ' WHERE  IsFolder=0 ' . weVoting::getOwnersSql();
+		$where = ' WHERE  IsFolder=0 ' . weVoting::getOwnersSql(); //nicht auf Active prüfen, sonst fliegen deaktivierte Votings aus den Dokumenten und man kann nicht einfach wieder aktivieren, bzw. man kann Ergebnisse anzeigen
 
 		$select_name = $GLOBALS['_we_voting_namespace'];
 
