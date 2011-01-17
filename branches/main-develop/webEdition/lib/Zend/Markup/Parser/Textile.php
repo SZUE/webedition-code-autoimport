@@ -44,10 +44,10 @@ class Zend_Markup_Parser_Textile implements Zend_Markup_Parser_ParserInterface
     const STATE_NEW_PARAGRAPH = 1;
     const STATE_NEWLINE       = 2;
 
-    const MATCH_ATTR_CLASSID = '\((?<attr_class>[a-zA-Z0-9_]+)?(?:\#(?<attr_id>[a-zA-Z0-9_]+))?\)';
-    const MATCH_ATTR_STYLE   = "\{(?<attr_style>[^\}\n]+)\}";
-    const MATCH_ATTR_LANG    = '\[(?<attr_lang>[a-zA-Z_]+)\]';
-    const MATCH_ATTR_ALIGN   = '(?<attr_align>\<\>?|\>|=)';
+    const MATCH_ATTR_CLASSID = '\((?P<attr_class>[a-zA-Z0-9_]+)?(?:\#(?P<attr_id>[a-zA-Z0-9_]+))?\)';
+    const MATCH_ATTR_STYLE   = "\{(?P<attr_style>[^\}\n]+)\}";
+    const MATCH_ATTR_LANG    = '\[(?P<attr_lang>[a-zA-Z_]+)\]';
+    const MATCH_ATTR_ALIGN   = '(?P<attr_align>\<\>?|\>|=)';
 
 
 
@@ -192,12 +192,12 @@ class Zend_Markup_Parser_Textile implements Zend_Markup_Parser_ParserInterface
             switch ($state) {
                 case self::STATE_SCAN:
                     $matches = array(); //[^\n*_?+~%@!-]
-                    $acronym = '(?<acronym>[A-Z]{2,})\((?<title>[^\)]+)\)';
-                    $regex   = '#\G(?<text>.*?)(?:'
-                             . "(?:(?<nl_paragraph>\n{2,})|(?<nl_break>\n))|"
-                             . '(?<tag>'
-                             . "(?<name>\*{1,2}|_{1,2}|\?{2}|\-|\+|\~|\^|%|@|!|$|{$acronym}"
-                             . '|":(?<url>[^\s]+)|")'
+                    $acronym = '(?P<acronym>[A-Z]{2,})\((?P<title>[^\)]+)\)';
+                    $regex   = '#\G(?P<text>.*?)(?:'
+                             . "(?:(?P<nl_paragraph>\n{2,})|(?P<nl_break>\n))|"
+                             . '(?P<tag>'
+                             . "(?P<name>\*{1,2}|_{1,2}|\?{2}|\-|\+|\~|\^|%|@|!|$|{$acronym}"
+                             . '|":(?P<url>[^\s]+)|")'
                              . "(?:{$attrsMatch})*)"
                              . ')#si';
                     preg_match($regex, $this->_value, $matches, null, $this->_pointer);
@@ -302,7 +302,7 @@ class Zend_Markup_Parser_Textile implements Zend_Markup_Parser_ParserInterface
                     }
 
                     $matches = array(); //[^\n*_?+~%@!-] (\()? [^()]+ (?(1)\))
-                    $regex   = "#\G(?<name>(h[1-6]|p)|(?:\#|\*))(?:{$attrsMatch})*(?(2)\.\s|\s)#i";
+                    $regex   = "#\G(?P<name>(h[1-6]|p)|(?:\#|\*))(?:{$attrsMatch})*(?(2)\.\s|\s)#i";
                     if (!preg_match($regex, $this->_value, $matches, null, $this->_pointer)) {
                         $this->_tokens[] = $this->_temp;
                         $state    = self::STATE_SCAN;
@@ -343,7 +343,7 @@ class Zend_Markup_Parser_Textile implements Zend_Markup_Parser_ParserInterface
                     break;
                 case self::STATE_NEWLINE:
                     $matches = array(); //[^\n*_?+~%@!-]
-                    $regex   = "#\G(?<name>(h[1-6])|(?:\#|\*))(?:{$attrsMatch})*(?(2)\.\s|\s)#si";
+                    $regex   = "#\G(?P<name>(h[1-6])|(?:\#|\*))(?:{$attrsMatch})*(?(2)\.\s|\s)#si";
                     if (!preg_match($regex, $this->_value, $matches, null, $this->_pointer)) {
                         $state = self::STATE_SCAN;
                         break;
