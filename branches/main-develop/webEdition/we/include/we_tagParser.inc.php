@@ -1099,7 +1099,7 @@ $GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset,
 			case "onlinemonitor":
 				if (defined("CUSTOMER_SESSION_TABLE")) {
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_onlinemonitor.class.php");
-$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '",'.$hidedirindex.');
+$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '","'.$hidedirindex.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Customer','listview type="onlinemonitor"'), $code); }
 				break;
@@ -1117,7 +1117,7 @@ $GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $w
 					if (strpos($orderid,'$')===false ){$php.='$orderid='.$orderid.';';} else {$php.='$orderid = isset('.$orderid.') ? "'.$orderid.'" : $GLOBALS["'.str_replace('$','', $orderid). '"];'; }
 					$php .= '
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php");
-$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid",'.$hidedirindex.');
+$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid","'.$hidedirindex.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Shop','listview type="orderitem"'), $code); }
 				break;
@@ -1156,9 +1156,11 @@ $GLOBALS["lv"] = new we_listview_banner("' . $name . '", $we_rows, "' . $order .
 					$defaultname = we_getTagAttributeTagParser("defaultname", $arr, '');
 					$docId = we_getTagAttributeTagParser("documentid", $arr, '');
 					$objId = we_getTagAttributeTagParser("objectid", $arr, '');
+					if (strpos($docId,'$')===false ){$php.='$docId="'.$docId.'";';} else {$php.='$docId = isset('.$docId.') ? "'.$docId.'" : $GLOBALS["'.str_replace('$','', $docId). '"];'; }
+					if (strpos($objectId,'$')===false ){$php.='$objectId="'.$objectId.'";';} else {$php.='$objectId = isset('.$objectId.') ? "'.$objectId.'" : $GLOBALS["'.str_replace('$','', $objectId). '"];'; }
 					$php .= '
-$docId = "' . $docId . '";
-$objectId = "' . $objId . '";
+//$docId = "' . $docId . '";
+//$objectId = "' . $objId . '";
 if($objectId ==""){
 if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_objecttag"){
 $objectId = $GLOBALS["lv"]->object->DB_WE->f("OF_ID");
@@ -1176,12 +1178,13 @@ $GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $d
 				$categoryids = we_getTagAttributeTagParser("categoryids", $arr, 0);
 				$parentid = we_getTagAttributeTagParser("parentid", $arr, 0);
 				$parentidname = we_getTagAttributeTagParser('parentidname', $arr);
-				//if (strpos($parentid,'$')===false ){$php.='$parentid="'.$parentid.'";';} else {$php.='$parentid = isset('.$parentid.') ? "'.$parentid.'" : $GLOBALS["'.str_replace('$','', $parentid). '"];'; }
+				if (strpos($categoryids,'$')===false ){$php.='$categoryids="'.$categoryids.'";';} else {$php.='$categoryids = isset('.$categoryids.') ? "'.$categoryids.'" : $GLOBALS["'.str_replace('$','', $categoryids). '"];'; }
+				if (strpos($parentid,'$')===false ){$php.='$parentid="'.$parentid.'";';} else {$php.='$parentid = isset('.$parentid.') ? "'.$parentid.'" : $GLOBALS["'.str_replace('$','', $parentid). '"];'; }
 				$php .= '
-$categoryids="' . $categoryids . '";
+//$categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_catListview.class.php");
-$GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ','.$hidedirindex.');
+$GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ',"'.$hidedirindex.'");
 ';
 				break;
 			default:
