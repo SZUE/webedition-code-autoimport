@@ -19,7 +19,23 @@
  */
 
 
-function we_tag_ifRegisteredUser($attribs, $content) {
+	function we_tag_ifRegisteredUser_evalPermission($permission,$match){
+		if(!empty($match)){
+			return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match);
+		} else {
+			return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission];
+		}
+	}
+
+	function we_tag_ifRegisteredUser_evalUserID($userid){
+		if(!isset($_SESSION["webuser"]['ID'])) {
+			return false;
+		} else{
+			return (in_array($_SESSION["webuser"]['ID'], $userid));
+		}
+	}
+
+	function we_tag_ifRegisteredUser($attribs, $content) {
 
 	$permission = we_getTagAttribute("permission", $attribs);
 	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
@@ -33,21 +49,6 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 		return isset($_SESSION["we_set_registered"]) && $_SESSION["we_set_registered"];
 
 	} else {
-		function evalPermission($permission,$match){
-			if(!empty($match)){
-				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match);
-			} else {
-				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission];
-			}
-		}
-
-		function evalUserID($userid){
-			if(!isset($_SESSION["webuser"]['ID'])) {
-				return false;
-			} else{
-				return (in_array($_SESSION["webuser"]['ID'], $userid));
-			}
-		}
 
 		if ( $cfilter && defined("CUSTOMER_TABLE") ){
 			if (isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
@@ -58,10 +59,10 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 				}
 			} else {
 				if($permission) {
-					return evalPermission($permission, $match);
+					return we_tag_ifRegisteredUser_evalPermission($permission, $match);
 				} else {
 					if(sizeof($userid) > 0) {
-						return evalUserID($userid);
+						return we_tag_ifRegisteredUser_evalUserID($userid);
 					}else{
 						return true;
 					}
@@ -70,11 +71,11 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 		}
 
 		if(sizeof($userid) > 0) {
-			return evalUserID($userid);
+			return we_tag_ifRegisteredUser_evalUserID($userid);
 		}
 
 		if($permission) {
-			return evalPermission($permission, $match);
+			return we_tag_ifRegisteredUser_evalPermission($permission, $match);
 		} else {
 			return isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"];
 		}
