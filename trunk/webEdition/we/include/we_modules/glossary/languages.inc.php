@@ -25,9 +25,7 @@
 		'en_US' => 'English (United States)',
 		'fr_FR' => 'French (France)',
 	);
-	
+
 	$GLOBALS['weFrontendDefaultLanguage'] = 'de_DE';
 
 	$GLOBALS['weCheckGlossaryBeforePublishing'] = true;
-
-?>

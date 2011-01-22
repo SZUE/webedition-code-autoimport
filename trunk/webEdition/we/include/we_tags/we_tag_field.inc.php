@@ -452,15 +452,31 @@ function we_tag_field($attribs, $content){
 						$GLOBALS["lv"]->tid = $tid;
 					}
 
-					if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_search_listview" && $GLOBALS["lv"]->f(
-							"OID")) {
+					if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_search_listview" && $GLOBALS["lv"]->f("OID")) {
 						if ($tid) {
 							$tail = "&amp;we_objectTID=" . $tid;
 						} else {
 							$tail = "";
 						}
-						$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f(
-								"WorkspaceID") . $tail;
+						if ($GLOBALS["lv"]->objectseourls){
+							$db = new DB_WE();
+							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($GLOBALS["lv"]->f("OID")) . "' LIMIT 1", "Url", $db);
+						}
+						$path_parts = pathinfo($_SERVER["PHP_SELF"]);
+						if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
+								$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+							} else {
+								$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.  '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+							 }
+						} else {
+							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
+								$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl. '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+							} else {
+								$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+							}
+						}		
+						$_linkAttribs['href'] = $_linkAttribs['href'] . $tail;
 
 						if ($name == 'we_href') {
 							$out = $_linkAttribs['href'];
@@ -497,7 +513,12 @@ function we_tag_field($attribs, $content){
 								if (($GLOBALS['we_doc']->ClassName == 'we_objectFile') && ($GLOBALS['we_doc']->InWebEdition)) {
 									$_linkAttribs['href'] = $GLOBALS["lv"]->f("wedoc_lastPath") . $tail;
 								} else {
-									$_linkAttribs['href'] = $GLOBALS["lv"]->f("WE_PATH") . $tail;
+									$path_parts = pathinfo($GLOBALS["lv"]->f("WE_PATH"));
+									if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+										$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+									} else {
+										$_linkAttribs['href'] = $GLOBALS["lv"]->f("WE_PATH") . $tail;
+									}
 								}
 
 								if ($name == 'we_href') { //  return href for this object

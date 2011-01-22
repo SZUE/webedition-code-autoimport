@@ -152,17 +152,11 @@ class we_fileselector{
 	}
 
 	function query(){
-		global $_isp_hide_files;	//	ISP_VERSION
-
-		//	Changes for ISP_VERSION
-		//	dont show files, folders given in $_isp_hide_files
-
 		$this->db->query(
 			"SELECT ".$this->fields."
 			FROM ". mysql_real_escape_string($this->table) ."
 			WHERE ParentID='".abs($this->dir)."' " .
 			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '".mysql_real_escape_string($this->filter)."' " : "AND ContentType = '".mysql_real_escape_string($this->filter)."' ") : '' ) ).
-			( ((defined('ISP_VERSION') && ISP_VERSION) && is_array($_isp_hide_files) && sizeof($_isp_hide_files) > 0) ? "AND Path NOT IN ('" . implode("','", $_isp_hide_files) . "')" : '').
 			($this->order ? (' ORDER BY '.$this->order) : ''));
 		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
 	}

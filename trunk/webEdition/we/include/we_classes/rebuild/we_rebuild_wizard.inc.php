@@ -434,12 +434,8 @@ class we_rebuild_wizard{
 	* @param boolean $catAnd if the categories should be connected with AND
 	*/
 	function formCategory($categories,$catAnd){
-
 		global $l_global;
 
-		if(defined("ISP_VERSION") && ISP_VERSION){
-			return "";
-		}
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
@@ -462,18 +458,11 @@ class we_rebuild_wizard{
 	*/
 	function formDoctypes($doctypes){
 
-		global $_isp_hide_doctypes;
-
 		$GLOBALS["DB_WE"]->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
 		$DTselect = $GLOBALS["l_global"]["doctypes"]."<br>".getPixel(1,3)."<br>".'<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">'."\n";
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		while($GLOBALS["DB_WE"]->next_record()){
-			if(defined("ISP_VERSION") && ISP_VERSION){
-				if(in_array($GLOBALS["DB_WE"]->f("DocType"), $_isp_hide_doctypes)){
-					continue;
-				}
-			}
 			$DTselect .= '<option value="'.$GLOBALS["DB_WE"]->f("ID").'"'.(in_array($GLOBALS["DB_WE"]->f("ID"),$doctypesArray) ? " selected" : "").'>'.$GLOBALS["DB_WE"]->f("DocType")."</option>\n";
 		}
 		$DTselect .= "</select>\n";

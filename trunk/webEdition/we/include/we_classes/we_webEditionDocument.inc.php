@@ -136,9 +136,6 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function formIsDynamic($leftwidth=100,$disabled=false) {
 		global $l_we_class;
-		if( (defined("ISP_VERSION") && ISP_VERSION) && ISP_TYPE == "small" ){
-		    return '<input type="hidden" name="we_' . $this->Name . '_IsDynamic" value="0" />';
-		}
 
 		$n = "";
 		$out = "";

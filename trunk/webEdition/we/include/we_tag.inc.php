@@ -38,7 +38,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
-function we_tag($name, $attribs, $content = ''){
+function we_tag($name, $attribs=array(), $content = ''){
 	
 	if ($content) {
 		$content = str_replace('we_:_', 'we:', $content);
@@ -1213,6 +1213,30 @@ function we_tag_listviewStart($attribs, $content){
 
 function we_tag_makeMail($attribs, $content){
 	return '';
+}
+
+function we_tag_ifshopexists($attribs, $content) {
+	return defined("SHOP_TABLE");
+}
+
+function we_tag_ifobjektexists($attribs, $content) {
+	return defined("OBJECT_TABLE");
+}
+
+function we_tag_ifnewsletterexists($attribs, $content) {
+	return defined("NEWSLETTER_TABLE");
+}
+
+function we_tag_ifcustomerexists($attribs, $content) {
+	return defined("CUSTOMER_TABLE");
+}
+
+function we_tag_ifbannerexists($attribs, $content) {
+	return defined("BANNER_TABLE");
+}
+
+function we_tag_ifvotingexists($attribs, $content) {
+	return defined("VOTING_TABLE");
 }
 
 //FIXME: remove in next Versions

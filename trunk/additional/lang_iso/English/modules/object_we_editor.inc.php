@@ -44,6 +44,7 @@ $l_we_editor["objectFile"]["response_unpublish_notok"] = "Error while unpublishi
 $l_we_editor["objectFile"]["response_not_published"] = "The object '%s' is not published!";
 $l_we_editor["objectFile"]["response_save_notok"] = "Error while saving object '%s'!";
 $l_we_editor["objectFile"]["response_path_exists"] = "The object '%s' could not be saved, because another document or directory exists in the same location!";
+$l_we_editor["objectFile"]["we_objecturl_exists"] = "The object '%s' could not be saved, because another object with the same URL already exists";
 $l_we_editor["objectFile"]["filename_empty"] = "No name entered for this object!";
 $l_we_editor["objectFile"]["we_filename_notValid"] = "Invalid object name\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)";
 $l_we_editor["objectFile"]["we_filename_notAllowed"] = "The object name you have entered is not allowed!";

@@ -230,7 +230,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 			foreach ($foo as $testclass) {
 				if(isColExistForDelete(OBJECT_X_TABLE.$testclass['ID'],"object_".$tableID)){
 								
-					//das löschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
+					//das lï¿½schen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
 					$qtest = "SELECT OF_ID FROM " .OBJECT_X_TABLE.$testclass['ID']. " WHERE object_".$tableID."= '".abs($id)."'";
 					$DB_WE->query($qtest);
 					$foos = $DB_WE->getAll();
@@ -423,5 +423,3 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 		$deletedItems[] = $id;
 	}
 }
-
-?>

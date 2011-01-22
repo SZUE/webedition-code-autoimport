@@ -413,8 +413,11 @@ else {
 				} else if($we_doc->i_filenameDouble()) {
 					$we_responseText = sprintf($l_we_editor[$we_doc->ContentType]["response_path_exists"],$we_doc->Path);
 					$we_responseTextType = WE_MESSAGE_ERROR;
+				} else if($we_doc->i_urlDouble()) {
+					$we_responseText =  sprintf($l_we_editor[$we_doc->ContentType]["we_objecturl_exists"],$we_doc->Url);
+					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if(!$we_doc->i_checkPathDiffAndCreate()) {
-					$we_responseText = sprintf($GLOBALS["l_we_class"]["notValidFolder"],$we_doc->Path);
+					$we_responseText = sprintf($GLOBALS["l_we_class"]["notValidFolder"],$we_doc->Url);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if($n = $we_doc->i_check_requiredFields()) {
 					$we_responseText = sprintf($l_we_editor["required_field_alert"],$n);

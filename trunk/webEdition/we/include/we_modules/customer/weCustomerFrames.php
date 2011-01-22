@@ -140,8 +140,24 @@ class weCustomerFrames extends weModuleFrames {
 		}
 		switch ($props['type']) {
 			case 'input':
-				return htmlTextInput($field, 32, stripslashes($value), "", "onchange=\"top.content.setHot();\" style='{width:240}'");
-				break;
+				return htmlTextInput($field, 32, stripslashes($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'");
+			case 'number':
+				return htmlTextInput($field, 32, stripslashes($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'",'number');
+			case 'multiselect':
+				$out = we_htmlElement::htmlHidden(array('name' => $field, 'value' => $value));
+				$values=explode(',', $value);
+				$defs = explode(',', $props['default']);
+				$cnt=count($defs);
+				$i=0;
+				foreach ($defs as $def){
+					$attribs=array('type'=>'checkbox','name'=>$field.'_multi_'.($i++),'value'=>$def, 'onchange'=>'setMultiSelectData(\''.$field.'\','.$cnt.');');
+					if(in_array($def,$values)){
+						$attribs['checked']='checked';
+					}
+					$out .= we_htmlElement::htmlInput($attribs).$def.we_htmlElement::htmlBr();
+				}
+
+				return we_htmlElement::htmlDiv(array('style'=>'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'),$out);//we_htmlElement::htmlB('not yet implemented');
 			case 'country':
 				//p_r($GLOBALS['l_countries']);
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
@@ -220,7 +236,6 @@ class weCustomerFrames extends weModuleFrames {
 			case 'dateTime':
 			case 'date':
 				include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_editor_info.inc.php');
-				$out = "";
 				$out = we_htmlElement::htmlHidden(array('name' => $field, 'value' => $value));
 
 				if (empty($value)) {
@@ -257,7 +272,7 @@ class weCustomerFrames extends weModuleFrames {
 				return $out;
 				break;
 			case 'password':
-				return htmlTextInput($field, 32, $value, '', 'onchange="top.content.setHot();" style="{width:240}" autocomplete="off" ', "password");
+				return htmlTextInput($field, 32, $value, '', 'onchange="top.content.setHot();" style="{width:240}" autocomplete="off" ', 'password');
 				break;
 			case 'img':
 

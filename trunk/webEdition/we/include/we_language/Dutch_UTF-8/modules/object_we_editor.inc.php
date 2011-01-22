@@ -44,6 +44,7 @@ $l_we_editor["objectFile"]["response_unpublish_notok"] = "Fout tijdens het depub
 $l_we_editor["objectFile"]["response_not_published"] = "Het object '%s' is niet gepubliceerd!";
 $l_we_editor["objectFile"]["response_save_notok"] = "Fout tijdens het bewaren van object '%s'!";
 $l_we_editor["objectFile"]["response_path_exists"] = "Het object '%s' kon niet bewaard worden, omdat er al een ander document of directory bestaat op dezelfde locatie!";
+$l_we_editor["objectFile"]["we_objecturl_exists"] = "The object '%s' could not be saved, because another object with the same URL already exists";//TRANSLATE
 $l_we_editor["objectFile"]["filename_empty"] = "Er is geen naam opgegeven voor dit object!";
 $l_we_editor["objectFile"]["we_filename_notValid"] = "Ongeldige object naam\\nGeldige karakters zijn alfa-numeriek, boven- en onderkast, eveneens als de underscore, koppelteken en punt (a-z, A-Z, 0-9, _, -, .)";
 $l_we_editor["objectFile"]["we_filename_notAllowed"] = "De object naam die u heeft opgegeven is niet toegestaan!";

@@ -121,7 +121,10 @@
 
 		if($this->isColExist(FAILED_LOGINS_TABLE,"ID")) $this->changeColTyp(FAILED_LOGINS_TABLE,"ID","bigint(20) NOT NULL AUTO_INCREMENT");
 		if($this->isColExist(FAILED_LOGINS_TABLE,"IP")) $this->changeColTyp(FAILED_LOGINS_TABLE,"IP"," varchar(40) NOT NULL");
-		if($this->isColExist(FAILED_LOGINS_TABLE,"LoginDate")) $this->changeColTyp(FAILED_LOGINS_TABLE,"LoginDate"," timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");	
+		if($this->isColExist(FAILED_LOGINS_TABLE,"LoginDate")) $this->changeColTyp(FAILED_LOGINS_TABLE,"LoginDate"," timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
+		
+
+		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
 
 	}
 
@@ -316,7 +319,7 @@
 
 		if(!$this->isColExist(USER_TABLE,"LoginDenied")) $this->addCol(USER_TABLE,"LoginDenied","TINYINT(1) DEFAULT '0' NOT NULL");
 		if(!$this->isColExist(USER_TABLE,"UseSalt")) $this->addCol(USER_TABLE,"UseSalt","TINYINT(1) DEFAULT '0' NOT NULL");
-		
+
 
 		if($this->isColExist(USER_TABLE,"workSpace")){
 			$this->changeColTyp(USER_TABLE,"workSpace","VARCHAR(255)");
@@ -387,12 +390,14 @@
 
 			if(!$this->isColExist(CUSTOMER_TABLE,"LastAccess")) $this->addCol(CUSTOMER_TABLE,"LastAccess","int(10) NOT NULL default 0",' AFTER LastLogin ');
 			else $this->changeColTyp(CUSTOMER_TABLE,"LastAccess","int(10) NOT NULL default 0");
-
-			
 			
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLoginDenied")) $this->addCol(CUSTOMER_TABLE,"AutoLoginDenied","tinyint(1) NOT NULL default '0'", " AFTER LastAccess ");
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLogin")) $this->addCol(CUSTOMER_TABLE,"AutoLogin","tinyint(1) NOT NULL default '0'", " AFTER AutoLoginDenied ");
 			
+			if($this->isColExist(CUSTOMER_TABLE,"Anrede_Anrede")) $this->changeColTyp(CUSTOMER_TABLE,"Anrede_Anrede","enum('','Herr','Frau') NOT NULL");
+			
+			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_Ok")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_Ok","enum('','ja') NOT NULL");
+			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter","enum('','ja') NOT NULL");
 
 		}
 	}
@@ -460,11 +465,31 @@
 		}
 	}
 
+	function updateObject(){
+		if(defined("OBJECT_TABLE")){
+			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrl')) $this->addCol(OBJECT_TABLE,'DefaultUrl',"varchar(255) NOT NULL default ''", ' AFTER  DefaultKeywords ');
+			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrlfield0')) $this->addCol(OBJECT_TABLE,'DefaultUrlfield0',"varchar(255) NOT NULL default ''", ' AFTER  DefaultUrl ');
+			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrlfield1')) $this->addCol(OBJECT_TABLE,'DefaultUrlfield1',"varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield0 ');
+			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrlfield2')) $this->addCol(OBJECT_TABLE,'DefaultUrlfield2',"varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield1 ');
+			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrlfield3')) $this->addCol(OBJECT_TABLE,'DefaultUrlfield3',"varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield2 ');
+		}
+	}
+	function updateObjectFiles(){
+		if(defined("OBJECT_FILES_TABLE")){
+			if(!$this->isColExist(OBJECT_FILES_TABLE,'Url')) $this->addCol(OBJECT_FILES_TABLE,'Url',"varchar(255) NOT NULL default ''", ' AFTER Path ');
+		}
+	}
+	
 	function updateObjectFilesX() {
 		if(defined('OBJECT_X_TABLE')){
 			$_db = new DB_WE();
 
 			$_table = OBJECT_FILES_TABLE;
+			if($this->isColExist($_table,'Url')){
+				$this->changeColTyp($_table,'Url','VARCHAR(255) NOT NULL');
+			} else {
+				$this->addCol($_table,'Url','VARCHAR(255) NOT NULL',' AFTER Path ');
+			}
 			if($this->isColExist($_table,'IsSearchable')){
 				$this->changeColTyp($_table,'IsSearchable','TINYINT(1) DEFAULT 1');
 			} else {
@@ -491,6 +516,11 @@
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
 				if ($this->isTabExist($_table)) {
+					if($this->isColExist($_table,'OF_Url')){
+						$this->changeColTyp($_table,'OF_Url','VARCHAR(255) NOT NULL');
+					} else {
+						$this->addCol($_table,'OF_Url','VARCHAR(255) NOT NULL',' AFTER OF_Path ');
+					}
 					if($this->isColExist($_table,'OF_IsSearchable')){
 						$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
 					} else {
@@ -671,4 +701,3 @@
 	}
 
 }
-?>

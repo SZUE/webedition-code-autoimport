@@ -62,15 +62,9 @@ class weBackup extends we_backup{
 	function weBackup($handle_options=array()){
 		global $_language;
 		$this->nl="\n";
-
-		$isp_header="";
-		if(defined("ISP_VERSION") && ISP_VERSION){
-			if(defined("ISP_VERSION_NUMBER")) $isp_header=' ispversion="'.ISP_VERSION_NUMBER.'"';
-			if(defined("ISP_TYPE")) $isp_header.=(strlen($isp_header)!=0 ? " " : "").'isptype="'.ISP_TYPE.'"';
-		}
-
+	
 		$this->header="<?xml version=\"1.0\" encoding=\"".$_language["charset"]."\" standalone=\"yes\"?>".$this->nl.
-					 "<webEdition version=\"".WE_VERSION."\"$isp_header xmlns:we=\"we-namespace\">".$this->nl;
+					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">".$this->nl;
 		$this->footer=$this->nl."</webEdition>";
 
 		$this->properties[]="mode";
@@ -85,10 +79,6 @@ class weBackup extends we_backup{
 		$this->properties[]="old_objects_deleted";
 
 		we_backup::we_backup($handle_options);
-
-		if(defined("ISP_VERSION") && ISP_VERSION){
-			$this->fixedTable[]="tbltemplates";
-		}
 
 		$this->tables["core"]=array("tblfile","tbllink","tbltemplates","tblindex","tblcontent","tblcategorys","tbldoctypes","tblthumbnails");
 		$this->tables["object"]=array("tblobject","tblobjectfiles","tblobject_");
@@ -243,18 +233,15 @@ class weBackup extends we_backup{
 					}
 				}
 
-				if(!$this->ispRecoverTable($object->table)){
+				if(
+				((defined("OBJECT_TABLE") && $object->table==OBJECT_TABLE) ||
+				(defined("OBJECT_FILES_TABLE") && $object->table==OBJECT_FILES_TABLE))
+				 && $this->old_objects_deleted==0){
+					$this->delOldTables();
+					$this->old_objects_deleted=1;
 
-					if(
-					((defined("OBJECT_TABLE") && $object->table==OBJECT_TABLE) ||
-					(defined("OBJECT_FILES_TABLE") && $object->table==OBJECT_FILES_TABLE))
-					 && $this->old_objects_deleted==0){
-					 	$this->delOldTables();
-						$this->old_objects_deleted=1;
-
-					}
-					$object->save();
 				}
+				$object->save();
 			}
 	}
 
@@ -273,10 +260,6 @@ class weBackup extends we_backup{
 			$tablename=$attributes["table"];
 			if(!$this->isFixed($tablename) && $tablename!=""){
 				$tablename=$this->fixTableName($tablename);
-
-
-				if($tablename==FILE_TABLE && defined("ISP_VERSION") && ISP_VERSION && in_array(substr($content["Path"],0,15),$GLOBALS["_isp_hide_files"]) && !$this->handle_options["configuration"]) return;
-				//if($tablename==DOC_TYPES_TABLE && defined("ISP_VERSION") && ISP_VERSION && in_array($content["DocType"],$GLOBALS["_isp_hide_doctypes"])) return;
 
 				$object=weContentProvider::getInstance($classname,0,$tablename);
 				weContentProvider::populateInstance($object,$content);
@@ -370,9 +353,6 @@ class weBackup extends we_backup{
 				}
 				if($name=="we:binary"){
 					weBackup::recoverBinary($key,$xmlBrowser);
-				}
-				if($name=="we:info" && defined("ISP_VERSION") && ISP_VERSION){
-					weBackup::recoverInfo($key,$xmlBrowser);
 				}
 			}
 			return true;
@@ -646,15 +626,6 @@ class weBackup extends we_backup{
 
 		$d=dir($dir);
 		while (false !== ($entry=$d->read())) {
-			if(defined("ISP_VERSION") && ISP_VERSION && !$this->handle_options["configuration"]){
-				$skip=false;
-				foreach ($GLOBALS["_isp_hide_files"] as $hide){
-					if(strpos("/".$entry,$hide)!==false){
-						$skip=true;
-					}
-				}
-				if($skip) continue;
-			}
 			if($entry != "." && $entry != ".." && $entry != "CVS" && $entry != "webEdition" && $entry != "sql_dumps" && $entry!=".project" && $entry!=".trustudio.dbg.php" && $entry!="LanguageChanges.csv") {
 				$file=$dir."/".$entry;
 				if(!$this->isPathExist(str_replace($_SERVER["DOCUMENT_ROOT"],"",$file))){
@@ -866,118 +837,16 @@ class weBackup extends we_backup{
 
 	function writeFooter(){
 
-		if(defined("ISP_VERSION") && ISP_VERSION){
-			$this->exportInfo($this->dumpfilename,TEMPLATES_TABLE,array("ID","Path"));
-		}
 		if($this->handle_options["settings"]) $this->exportGlobalPrefs();
 		weFile::save($this->dumpfilename,$this->footer,"ab");
 	}
 
 	//---------------------------------------------------------------------------------
 
-	function getISPWheres($kind,$operator="LIKE",$logic="AND"){
-				if(defined("ISP_VERSION") && ISP_VERSION && !$this->handle_options["configuration"]){
-					if($kind=="file"){
-						$_file_sql_arr=array();
-						foreach($GLOBALS["_isp_hide_files"] as $_file){
-							$_file_sql_arr[]=FILE_TABLE.".Path $operator '".$_file."%'";
-						}
-						return implode(" $logic ",$_file_sql_arr);
-					}
-					if($kind=="doctype"){
-						$_doctype_sql_arr=array();
-						foreach($GLOBALS["_isp_hide_doctypes"] as $_doctype) $_doctype_sql_arr[]=DOC_TYPES_TABLE.".DocType $operator '$_doctype'";
-						return implode(" $logic ",$_doctype_sql_arr);
-					}
-				}
-				return "";
-	}
-
 
 	function getBackupQuery($table,$keys){
-				if($table==CONTENT_TABLE && defined("ISP_VERSION") && ISP_VERSION){
-					$_file_sql=$this->getISPWheres("file","NOT LIKE");
-					return
-
-						"SELECT $table.ID as ID FROM $table,".LINK_TABLE.",".FILE_TABLE.
-						" WHERE $table.ID=".LINK_TABLE.".CID AND ".LINK_TABLE.".DID=".FILE_TABLE.".ID AND ".
-						LINK_TABLE.".DocumentTable<>'".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."' ".(!empty($_file_sql) ? " AND ".$_file_sql : "").
-						" LIMIT ".$this->backup_step.",".$this->backup_steps;
-
-				}else if($table==LINK_TABLE && defined("ISP_VERSION") && ISP_VERSION){
-					$_file_sql=$this->getISPWheres("file","NOT LIKE");
-					//$keys=weTableItem::getTableKey($table);
-					return
-						"SELECT ".implode(",",$keys)." FROM $table,".FILE_TABLE.
-						" WHERE $table.DID=".FILE_TABLE.".ID AND DocumentTable<>'".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."' ".
-						(!empty($_file_sql) ? " AND ".$_file_sql : "")." LIMIT ".$this->backup_step.",".$this->backup_steps;
-
-				}else if($table==FILE_TABLE && defined("ISP_VERSION") && ISP_VERSION){
-					$_file_sql=$this->getISPWheres("file","NOT LIKE");
-					return "SELECT ID FROM ".mysql_real_escape_string($table)." WHERE $_file_sql LIMIT ".abs($this->backup_step).",".abs($this->backup_steps);
-				}else{
-					//$keys=weTableItem::getTableKey($table);
-					return "SELECT ".implode(",",$keys)." FROM ".mysql_real_escape_string($table)." LIMIT ".abs($this->backup_step).",".abs($this->backup_steps);
-				}
-	}
-
-
-	function ispRecoverTable($table){
-				if(!defined("ISP_VERSION")) return false;
-				if(!ISP_VERSION) return false;
-
-				if($table==TEMPLATES_TABLE && defined("ISP_VERSION") && ISP_VERSION){
-						return true;
-
-				}
-				/*
-				else if($table==CONTENT_TABLE && defined("ISP_VERSION") && ISP_VERSION && weDBUtil::isTabExist(CONTENT_TABLE)){
-						$_file_sql=$this->getISPWheres("file");
-						$_file_sql="";
-						$this->backup_db->query("SELECT ".CONTENT_TABLE.".ID AS ccid FROM ".CONTENT_TABLE.",".LINK_TABLE.",".FILE_TABLE." WHERE ".CONTENT_TABLE.".ID=".LINK_TABLE.".CID AND ".LINK_TABLE.".DID=".FILE_TABLE.".ID AND ".LINK_TABLE.".DocumentTable='".substr(FILE_TABLE, strlen(TBL_PREFIX))."'".($_file_sql!="" ? " AND ".$_file_sql : ""));
-						$ids="";
-						while($this->backup_db->next_record()){
-							if($ids=="") $ids=$this->backup_db->f("ccid");
-							else $ids.=",".$this->backup_db->f("ccid");
-						}
-						$this->backup_db->query("SELECT ".CONTENT_TABLE.".ID AS ccid FROM ".CONTENT_TABLE.",".LINK_TABLE.",".TEMPLATES_TABLE." WHERE ".CONTENT_TABLE.".ID=".LINK_TABLE.".CID AND ".LINK_TABLE.".DID=".TEMPLATES_TABLE.".ID AND  ".LINK_TABLE.".DocumentTable='".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."';");
-						while($this->backup_db->next_record()){
-							if($ids=="") $ids=$this->backup_db->f("ccid");
-							else $ids.=",".$this->backup_db->f("ccid");
-						}
-						if(!empty($ids)) $this->backup_db->query("DELETE FROM ".CONTENT_TABLE." WHERE ID NOT IN (".$ids.");");
-						return true;
-				}else if($table==LINK_TABLE && defined("ISP_VERSION") && ISP_VERSION && weDBUtil::isTabExist(LINK_TABLE)){
-					$_file_sql=$this->getISPWheres("file");
-					$_file_sql="";
-					$this->backup_db->query("SELECT ".LINK_TABLE.".DID AS did FROM ".LINK_TABLE.",".FILE_TABLE." WHERE ".LINK_TABLE.".DID=".FILE_TABLE.".ID  AND ".LINK_TABLE.".DocumentTable='".substr(FILE_TABLE, strlen(TBL_PREFIX))."'".($_file_sql!="" ? " AND ".$_file_sql : ""));
-					$ids="";
-					while($this->backup_db->next_record()){
-							if($ids=="") $ids=$this->backup_db->f("did");
-							else $ids.=",".$this->backup_db->f("did");
-					}
-					$this->backup_db->query("SELECT ".LINK_TABLE.".DID AS did FROM ".LINK_TABLE.",".TEMPLATES_TABLE." WHERE ".LINK_TABLE.".DID=".TEMPLATES_TABLE.".ID  AND ".LINK_TABLE.".DocumentTable='".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."';");
-					while($this->backup_db->next_record()){
-							if($ids=="") $ids=$this->backup_db->f("did");
-							else $ids.=",".$this->backup_db->f("did");
-					}
-					if(!empty($ids)) $this->backup_db->query("DELETE FROM ".LINK_TABLE." WHERE DID NOT IN (".$ids.");");
-
-					return true;
-				}else if($table==FILE_TABLE && defined("ISP_VERSION") && ISP_VERSION && weDBUtil::isTabExist(FILE_TABLE)){
-						$_file_sql=$this->getISPWheres("file","NOT LIKE");
-						$this->backup_db->query("DELETE FROM ".FILE_TABLE." WHERE $_file_sql;");
-						return true;
-				//}else if($table==DOC_TYPES_TABLE && defined("ISP_VERSION") && ISP_VERSION && weDBUtil::isTabExist(DOC_TYPES_TABLE)){
-				//		$_doctype_sql=$this->getISPWheres("doctype","=");
-				//		$this->backup_db->query("DELETE FROM ".DOC_TYPES_TABLE.($_doctype_sql!="" ? " WHERE $_doctype_sql;" :""));
-				//		return true;
-
-				}
-				*/
-
-				return false;
-
+		//$keys=weTableItem::getTableKey($table);
+		return "SELECT ".implode(",",$keys)." FROM ".mysql_real_escape_string($table)." LIMIT ".abs($this->backup_step).",".abs($this->backup_steps);
 	}
 
 	function delOldTables(){

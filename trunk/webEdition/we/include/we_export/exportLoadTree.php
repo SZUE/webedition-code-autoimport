@@ -98,7 +98,7 @@ function getQueryParents($path){
 }
 
 function getItems($ParentID) {
-	global $prefs,$table,$openFolders,$parentpaths,$wsQuery,$treeItems,$Tree,$_isp_hide_files;
+	global $prefs,$table,$openFolders,$parentpaths,$wsQuery,$treeItems,$Tree;
 
 	if($table == ""){
 		$table = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
@@ -121,11 +121,6 @@ function getItems($ParentID) {
 	$where .= $wsQuery;
 	//if($table==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
 	$elem = "ID,ParentID,Path,Text,Icon,IsFolder,ModDate".(($table==FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE)) ? ",Published" : "").((defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
-
-	//	ISP_VERSION dont show -> files, folders in $_isp_hide_files
-	if($table==FILE_TABLE && defined("ISP_VERSION") && ISP_VERSION){
-		$where .= ( (is_array($_isp_hide_files) && sizeof($_isp_hide_files) > 0) ? ' AND Path NOT IN (\'' . implode("','", $_isp_hide_files) . '\') ' : '');
-	}
 
 	if($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined("OBJECT_TABLE") && $table==OBJECT_TABLE) || (defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE)){
 		$elem .= ",ContentType";

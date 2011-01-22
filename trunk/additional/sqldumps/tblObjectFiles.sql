@@ -8,6 +8,7 @@ CREATE TABLE tblObjectFiles (
   CreationDate int(11) NOT NULL default '0',
   ModDate int(11) NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
+  Url varchar(255) NOT NULL default '',
   CreatorID bigint(20) NOT NULL default '0',
   ModifierID bigint(20) NOT NULL default '0',
   RestrictOwners tinyint(1) NOT NULL default '0',
@@ -32,5 +33,6 @@ CREATE TABLE tblObjectFiles (
   PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID),
-  KEY TableID (TableID)
+  KEY TableID (TableID),
+  KEY Url (Url)
 ) ENGINE=MyISAM;

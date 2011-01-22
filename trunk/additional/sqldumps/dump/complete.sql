@@ -1,4 +1,4 @@
-﻿CREATE TABLE tblAnzeigePrefs (
+CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -24,8 +24,12 @@ CREATE TABLE tblCategorys (
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblCleanUp (
+  ID int(11) NOT NULL auto_increment,
   Path varchar(255) NOT NULL default '',
-  `Date` int(11) NOT NULL default '0'
+  `Date` int(11) NOT NULL default '0',
+  PRIMARY KEY  (ID),
+  KEY Path (Path),
+  KEY `Date` (`Date`)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblContent (
@@ -158,7 +162,7 @@ CREATE TABLE tblLink (
   CID int(11) NOT NULL default '0',
   `Type` varchar(16) NOT NULL default '',
   Name varchar(255) NOT NULL default '',
-  DocumentTable varchar(64) NOT NULL default '',
+  DocumentTable enum('tblFile','tblTemplates') NOT NULL,
   PRIMARY KEY (CID,DocumentTable),
   KEY DID (DID),
   KEY Name (Name(4)),
@@ -395,6 +399,11 @@ CREATE TABLE tblObject (
   DefaultDesc varchar(255) NOT NULL default '',
   DefaultTitle varchar(255) NOT NULL default '',
   DefaultKeywords varchar(255) NOT NULL default '',
+  DefaultUrl varchar(255) NOT NULL default '',
+  DefaultUrlfield0 varchar(255) NOT NULL DEFAULT '_',
+  DefaultUrlfield1 varchar(255) NOT NULL DEFAULT '_',
+  DefaultUrlfield2 varchar(255) NOT NULL DEFAULT '_',
+  DefaultUrlfield3 varchar(255) NOT NULL DEFAULT '_',
   ClassName varchar(64) NOT NULL default '',
   Workspaces varchar(255) NOT NULL default '',
   DefaultWorkspaces varchar(255) NOT NULL default '',
@@ -416,6 +425,7 @@ CREATE TABLE tblObjectFiles (
   CreationDate int(11) NOT NULL default '0',
   ModDate int(11) NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
+  Url varchar(255) NOT NULL default '',
   CreatorID bigint(20) NOT NULL default '0',
   ModifierID bigint(20) NOT NULL default '0',
   RestrictOwners tinyint(1) NOT NULL default '0',
@@ -440,7 +450,8 @@ CREATE TABLE tblObjectFiles (
   PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID),
-  KEY TableID (TableID)
+  KEY TableID (TableID),
+  KEY Url (Url)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblOrders (
@@ -724,30 +735,20 @@ CREATE TABLE tblWebAdmin (
   PRIMARY KEY (Name)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT INTO tblWebAdmin VALUES ('FieldAdds','a:9:{s:13:\"Newsletter_Ok\";a:1:{s:7:\"default\";s:3:\",ja\";}s:25:\"Newsletter_HTMLNewsletter\";a:1:{s:7:\"default\";s:3:\",ja\";}s:17:\"Kontakt_Addresse1\";a:1:{s:7:\"default\";s:0:\"\";}s:17:\"Kontakt_Addresse2\";a:1:{s:7:\"default\";s:0:\"\";}s:18:\"Kontakt_Bundesland\";a:1:{s:7:\"default\";s:214:\"Baden-Württemberg,Bayern,Berlin,Brandenburg,Bremen,Hamburg,Hessen,Mecklenburg-Vorpommern,Niedersachsen,Nordrhein-Westfalen,Rheinland-PfalzRheinland-Pfalz,Saarland,Sachsen,Sachsen-Anhalt,Schleswig-Holstein,Thüringen\";}s:12:\"Kontakt_Land\";a:1:{s:7:\"default\";s:0:\"\";}s:13:\"Anrede_Anrede\";a:1:{s:7:\"default\";s:10:\",Herr,Frau\";}s:12:\"Anrede_Titel\";a:1:{s:7:\"default\";s:11:\",Dr., Prof.\";}s:6:\"Gruppe\";a:1:{s:7:\"default\";s:22:\"Administratoren,Kunden\";}}');
+INSERT INTO tblWebAdmin VALUES ('FieldAdds','a:13:{s:8:"Username";a:1:{s:4:"type";s:5:"input";}s:8:"Password";a:1:{s:4:"type";s:5:"input";}s:8:"Forename";a:1:{s:4:"type";s:5:"input";}s:7:"Surname";a:1:{s:4:"type";s:5:"input";}s:11:"LoginDenied";a:1:{s:4:"type";s:5:"input";}s:11:"MemberSince";a:1:{s:4:"type";s:5:"input";}s:9:"LastLogin";a:1:{s:4:"type";s:5:"input";}s:10:"LastAccess";a:1:{s:4:"type";s:5:"input";}s:15:"AutoLoginDenied";a:1:{s:4:"type";s:5:"input";}s:9:"AutoLogin";a:1:{s:4:"type";s:5:"input";}s:13:"Anrede_Anrede";a:2:{s:7:"default";s:10:",Herr,Frau";s:4:"type";s:6:"select";}s:13:"Newsletter_Ok";a:2:{s:7:"default";s:3:",ja";s:4:"type";s:6:"select";}s:25:"Newsletter_HTMLNewsletter";a:2:{s:7:"default";s:3:",ja";s:4:"type";s:6:"select";}}');
 /* query separator */
-INSERT INTO tblWebAdmin VALUES ('Prefs','a:2:{s:10:\"start_year\";s:4:\"1900\";s:17:\"default_sort_view\";s:6:\"Gruppe\";}');
+INSERT INTO tblWebAdmin VALUES ('Prefs','a:4:{s:10:"start_year";s:4:"1900";s:17:"default_sort_view";s:20:"--Keine Sortierung--";s:15:"treetext_format";s:30:"#Username (#Forename #Surname)";s:13:"default_order";s:0:"";}');
 /* query separator */
-INSERT INTO tblWebAdmin VALUES ('SortView','a:1:{s:6:\"Gruppe\";a:1:{i:0;a:4:{s:6:\"branch\";s:8:\"Sonstige\";s:5:\"field\";s:6:\"Gruppe\";s:8:\"function\";s:0:\"\";s:5:\"order\";s:3:\"ASC\";}}}');
-
+INSERT INTO tblWebAdmin VALUES ('SortView','');
 /* query separator */
 CREATE TABLE tblWebUser (
   ID bigint(20) NOT NULL auto_increment,
   Username varchar(255) NOT NULL default '',
   `Password` varchar(255) NOT NULL default '',
-  Anrede_Anrede varchar(200) NOT NULL default '',
+  `Anrede_Anrede` enum('','Herr','Frau') NOT NULL,
   Anrede_Titel varchar(200) NOT NULL default '',
   Forename varchar(128) NOT NULL default '',
   Surname varchar(128) NOT NULL default '',
-  Kontakt_Addresse1 varchar(255) NOT NULL default '',
-  Kontakt_Addresse2 varchar(255) NOT NULL default '',
-  Kontakt_Bundesland varchar(200) NOT NULL default '',
-  Kontakt_Land varchar(255) NOT NULL default '',
-  Kontakt_Tel1 varchar(64) NOT NULL default '',
-  Kontakt_Tel2 varchar(64) NOT NULL default '',
-  Kontakt_Tel3 varchar(64) NOT NULL default '',
-  Kontakt_Email varchar(128) NOT NULL default '',
-  Kontakt_Homepage varchar(128) NOT NULL default '',
   LoginDenied tinyint(1) NOT NULL default '0',
   MemberSince int(10) NOT NULL default '0',
   LastLogin int(10) NOT NULL default '0',
@@ -759,9 +760,8 @@ CREATE TABLE tblWebUser (
   IsFolder tinyint(1) default NULL,
   Icon varchar(255) default NULL,
   `Text` varchar(255) default NULL,
-  Newsletter_Ok varchar(200) NOT NULL default '',
-  Newsletter_HTMLNewsletter varchar(200) NOT NULL default '',
-  Gruppe varchar(200) NOT NULL default '',
+ `Newsletter_Ok` enum('','ja') NOT NULL,
+ `Newsletter_HTMLNewsletter` enum('','ja') NOT NULL,
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`)
 ) ENGINE=MyISAM;
@@ -1154,8 +1154,7 @@ INSERT INTO tblsearchtool (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `pred
 ((LAST_INSERT_ID()), 0, 'Suche.gif', '/Versionen/Dokumente/gelöschte Dokumente', 'gelöschte Dokumente', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '1', 1, '1', '1', '1', 10, 10, 10, 0, 0, 0, 'Text', 'Text', 'Text', 'a:1:{i:0;s:7:"deleted";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:6:"Status";}', 'a:5:{s:7:"tblFile";s:1:"1";s:14:"tblObjectFiles";s:1:"0";s:11:"tblversions";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblObject";s:1:"0";}',3);
 /* query separator */
 INSERT INTO tblsearchtool (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES
-((LAST_INSERT_ID()-1), 0, 'Suche.gif', '/Versionen/Objekte/gelöschte Objekte', 'gelöschte Objekte', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '1', 1, '1', '1', '1', 10, 10, 10, 0, 0, 0, 'Text', 'Text', 'Text', 'a:1:{i:0;s:7:"deleted";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:6:"Status";}', 'a:5:{s:7:"tblFile";s:1:"0";s:14:"tblObjectFiles";s:1:"1";s:11:"tblversions";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblObject";s:1:"0";}',3);
-/* query separator */
+((LAST_INSERT_ID()-1), 0, 'Suche.gif', '/Versionen/Objekte/gelöschte Objekte', 'gelöschte Objekte', 1, 0, 0, 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', '1', 1, '1', '1', '1', 10, 10, 10, 0, 0, 0, 'Text', 'Text', 'Text', 'a:1:{i:0;s:7:"deleted";}', 'a:1:{i:0;s:7:"CONTAIN";}', 'a:1:{i:0;s:6:"Status";}', 'a:5:{s:7:"tblFile";s:1:"0";s:14:"tblObjectFiles";s:1:"1";s:11:"tblversions";s:1:"1";s:12:"tblTemplates";s:1:"0";s:9:"tblObject";s:1:"0";}',3);/* query separator */
 CREATE TABLE tblshopvats (
   id int(11) NOT NULL auto_increment,
   `text` varchar(255) NOT NULL default '',
@@ -1330,5 +1329,4 @@ CREATE TABLE tblwidgetnotepad (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');
-/* query separator */
+INSERT INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');/* query separator */
