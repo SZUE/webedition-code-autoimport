@@ -33,6 +33,21 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 		return isset($_SESSION["we_set_registered"]) && $_SESSION["we_set_registered"];
 
 	} else {
+		function evalPermission($permission,$match){
+			if(!empty($match)){
+				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match);
+			} else {
+				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission];
+			}
+		}
+
+		function evalUserID($userid){
+			if(!isset($_SESSION["webuser"]['ID'])) {
+				return false;
+			} else{
+				return (in_array($_SESSION["webuser"]['ID'], $userid));
+			}
+		}
 
 		if ( $cfilter && defined("CUSTOMER_TABLE") ){
 			if (isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
@@ -42,25 +57,24 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 					return false;
 				}
 			} else {
-				return true;
+				if($permission) {
+					return evalPermission($permission, $match);
+				} else {
+					if(sizeof($userid) > 0) {
+						return evalUserID($userid);
+					}else{
+						return true;
+					}
+				}
 			}
 		}
 
 		if(sizeof($userid) > 0) {
-			if(!isset($_SESSION["webuser"]['ID'])) {
-				return false;
-			} else if(!in_array($_SESSION["webuser"]['ID'], $userid)) {
-				return false;
-			}
+			return evalUserID($userid);
 		}
 
 		if($permission) {
-			if(!empty($match)){
-				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match);
-			} else {
-				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission];
-			}
-
+			return evalPermission($permission, $match);
 		} else {
 			return isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"];
 		}
