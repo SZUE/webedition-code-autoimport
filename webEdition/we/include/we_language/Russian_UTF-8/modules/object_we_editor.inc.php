@@ -44,6 +44,7 @@ $l_we_editor["objectFile"]["response_unpublish_notok"] = "Ошибка при с
 $l_we_editor["objectFile"]["response_not_published"] = "Объект '%s' не опубликован!";
 $l_we_editor["objectFile"]["response_save_notok"] = "Ошибка при сохранении объекта '%s'!";
 $l_we_editor["objectFile"]["response_path_exists"] = "Объект '%s' не сохранен по указанному пути, так как это местоположение занято другим документом или директорией!";
+$l_we_editor["objectFile"]["we_objecturl_exists"] = "The object '%s' could not be saved, because another object with the same URL already exists";//TRANSLATE
 $l_we_editor["objectFile"]["filename_empty"] = "Не введено имя для данного объекта!";
 $l_we_editor["objectFile"]["we_filename_notValid"] = "Недействительное имя объекта\\nДопустимыми являются большие и малые буквы латинского алфавита, цифры, тире, нижняя черта и точка (a-z, A-Z, 0-9, _, -, .)";
 $l_we_editor["objectFile"]["we_filename_notAllowed"] = "Введенное имя объекта недопустимо!";

@@ -37,6 +37,8 @@ class we_search_listview extends listviewBase {
 	var $ClassName = "we_search_listview";
 	var $customerFilterType = 'off';
 	var $languages = ""; //string of Languages, separated by ,
+	var $objectseourls = false;
+	var $hidedirindex = false;
 	
 	/**
 	 * we_search_listview()
@@ -57,7 +59,7 @@ class we_search_listview extends listviewBase {
 	 *
 	 */
 
-	function we_search_listview($name="0", $rows=100000000, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off',$languages=''){
+	function we_search_listview($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off',$languages='',$hidedirindex=false,$objectseourls=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 		$this->customerFilterType = $customerFilterType;
@@ -76,7 +78,8 @@ class we_search_listview extends listviewBase {
 		} else {
 			$where_lang = '';
 		}
-
+		$this->objectseourls=$objectseourls;
+		$this->hidedirindex=$hidedirindex;
 
 		// correct order
 		$orderArr = array();
@@ -211,7 +214,7 @@ class we_search_listview extends listviewBase {
 		$q = "SELECT ID FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $weDocumentCustomerFilter_tail";
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
-		
+
 		if($this->order == "random()"){
 			$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path, RAND() as RANDOM FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY RANDOM".(($rows > 0) ? (" limit ".abs($this->start).",".abs($this->rows)) : "");
 
@@ -222,6 +225,7 @@ class we_search_listview extends listviewBase {
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();		
 		$this->adjustRows();
+
 	}
 
 	function next_record(){

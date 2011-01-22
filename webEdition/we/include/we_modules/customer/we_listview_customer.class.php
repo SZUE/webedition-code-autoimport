@@ -35,7 +35,7 @@ class we_listview_customer extends listviewBase {
 	var $condition="";
 	var $Path="";
 	var	$docID=0;
-
+	var $hidedirindex = false;
 	/**
 	 * we_listview_object()
 	 * @desc    constructor of class
@@ -50,7 +50,7 @@ class we_listview_customer extends listviewBase {
 	 *
 	 */
 
-	function we_listview_customer($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0){
+	function we_listview_customer($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$hidedirindex=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
@@ -62,7 +62,8 @@ class we_listview_customer extends listviewBase {
 		}else{
 			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
 		}
-
+		$this->hidedirindex=$hidedirindex;
+		
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = '';
 		if (isset($_SESSION['last_webEdition_document'])) {

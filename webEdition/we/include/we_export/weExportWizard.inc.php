@@ -808,9 +808,7 @@ top.close();
 
 		$table->setColContent(0,0,we_forms::radiobutton("local", ($export_to=="local" ? true : false), "export_to", $l_export["export_to_local"],true,"defaultfont",$this->topFrame.".export_to='local'"));
 		$table->setColContent(1,0,getPixel(20,20));
-		if( !(defined("ISP_VERSION") && ISP_VERSION) ){
-			$table->setColContent(2,0,htmlFormElementTable($this->formFileChooser(260,"path",$path,"","folder"),we_forms::radiobutton("server", ($export_to=="server" ? true : false), "export_to", $l_export["export_to_server"],true,"defaultfont",$this->topFrame.".export_to='server'")));
-		}
+		$table->setColContent(2,0,htmlFormElementTable($this->formFileChooser(260,"path",$path,"","folder"),we_forms::radiobutton("server", ($export_to=="server" ? true : false), "export_to", $l_export["export_to_server"],true,"defaultfont",$this->topFrame.".export_to='server'")));
 
 		array_push($parts,array("headline" => $l_export["export_to"], "html" =>$table->getHtmlCode(), "space" => $_space));
 

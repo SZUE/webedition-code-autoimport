@@ -555,7 +555,7 @@ if(inWorkflow($we_doc)) {
 
 
 		//	image-documents have no preview but thumbnailview instead ...
-		if( (!defined("ISP_VERSION") || !ISP_VERSION) && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_THUMBNAILS && in_array(WE_EDITPAGE_THUMBNAILS, $GLOBALS['we_doc']->EditPageNrs)){
+		if( $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_THUMBNAILS && in_array(WE_EDITPAGE_THUMBNAILS, $GLOBALS['we_doc']->EditPageNrs)){
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), $we_button->create_button("thumbnails", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));

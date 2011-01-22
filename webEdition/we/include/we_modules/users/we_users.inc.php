@@ -21,17 +21,17 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
-if ( !( (isset($_POST["username"]) && isset($_POST["md5password"])) )) { // don't include during login
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/javaMenu/javaMenu_users.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/we_tabs.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/prefs.inc.php");
+if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don't include during login
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/users.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/we_tabs.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/prefs.inc.php');
 }
 
 
@@ -42,13 +42,13 @@ class we_user {
 	 */
 
 	// Name of the class => important for reconstructing the class from outside the class
-	var $ClassName="we_user";
+	var $ClassName='we_user';
 
 	// In this array are all storagable class variables
 	var $persistent_slots=array();
 
 	// Name of the Object that was createt from this class
-	var $Name="";
+	var $Name='';
 
 	// ID from the database record
 	var $ID=0;
@@ -69,98 +69,98 @@ class we_user {
 	var $IsFolder=0;
 
 	// Salutation
-	var $Salutation="";
+	var $Salutation='';
 
 	// User first name
-	var $First="";
+	var $First='';
 
 	// User second name
-	var $Second="";
+	var $Second='';
 
 	// Address
-	var $Address="";
+	var $Address='';
 
 	// House number
-	var $HouseNo="";
+	var $HouseNo='';
 
 	// City
-	var $City="";
+	var $City='';
 
 	// ZIP Code
-	var $PLZ="";
+	var $PLZ='';
 
 	// Country
-	var $Country="";
+	var $Country='';
 
 	// Telephone preselection
-	var $Tel_preselection="";
+	var $Tel_preselection='';
 
 	// Telephone
-	var $Telephone="";
+	var $Telephone='';
 
 	// Fax preselection
-	var $Fax_preselection="";
+	var $Fax_preselection='';
 
 	// Fax
-	var $Fax="";
+	var $Fax='';
 
 	// Cell phone
-	var $Handy="";
+	var $Handy='';
 
 	// Email
-	var $Email="";
+	var $Email='';
 
 	// Username
-	var $username="";
+	var $username='';
 
 	// User password (md5 salted)
-	var $passwd="";
-	
+	var $passwd='';
+
 	// User password
-	var $clearpasswd="";
-	
+	var $clearpasswd='';
+
 	// User permissions
-	var $Permissions="";
+	var $Permissions='';
 
 	// Flag which indicated if user inherits permissions from parent
 	var $ParentPerms=0;
 
 	// Description
-	var $Description="";
+	var $Description='';
 
 	// User Prefrences
 	var $Preferences=array();
 
-	var $Text="";
-	var $Path="";
-	var $Alias="";
-	var $Icon="user.gif";
-	
-	var $CreatorID = "";
-	var $CreateDate = "";
-	var $ModifierID = "";
-	var $ModifyDate = "";
+	var $Text='';
+	var $Path='';
+	var $Alias='';
+	var $Icon='user.gif';
+
+	var $CreatorID = '';
+	var $CreateDate = '';
+	var $ModifierID = '';
+	var $ModifyDate = '';
 
 	// Ping flag
 	var $Ping=0;
 
 	// Documents workspaces
-	var $workSpace="";
+	var $workSpace='';
 
 	// Default documents workspaces
-	var $workSpaceDef="";
+	var $workSpaceDef='';
 
 	// Templpates workspaces
-	var $workSpaceTmp="";
+	var $workSpaceTmp='';
 
 	// Navigation workspaces
-	var $workSpaceNav="";
+	var $workSpaceNav='';
 
 	// Objects workspaces
-	var $workSpaceObj="";
+	var $workSpaceObj='';
 
 	// Newsletter workspaces
-	var $workSpaceNwl="";
+	var $workSpaceNwl='';
 
 	// Flag which indicated if user inherits files workspaces from parent
 	var $ParentWs=0;
@@ -210,7 +210,7 @@ class we_user {
 
 	// Preferences array
 	var $preference_slots=array();
-	
+
 	var $UseSalt=1;
 
 	/*
@@ -248,7 +248,7 @@ class we_user {
 		}
 
 		$this->Preferences['use_jupload'] = f("SELECT MAX(use_jupload) as mju FROM " . PREFS_TABLE . ";",'mju',$this->DB_WE); //WTF?!?
-		
+
 		foreach($this->preference_slots as $key => $val) {
 			$value = null;
 			$this->Preferences[$val]	= $value;
@@ -299,11 +299,11 @@ class we_user {
 	function savePersistentSlotsInDB() {
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		
+
 		if ($this->clearpasswd !== '') {
 			$this->passwd = md5($this->clearpasswd . md5($this->username));
 		}
-		
+
 		if($this->ID) {
 			$updt = "";
 			for($i=0;$i<sizeof($tableInfo);$i++) {
@@ -1109,7 +1109,7 @@ function mapPermissions() {
 					$this->$pval = $_POST[$obj];
 				}
 			}
-						
+
 			if($this->Type==2) {
 				$obj=$this->Name.'_ParentPerms';
 				if(isset($_POST[$obj]))
@@ -1294,7 +1294,7 @@ function mapPermissions() {
 		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
 		$this->DB_WE->query("UPDATE ".USER_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
 		$this->DB_WE->query("UPDATE ".USER_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
-		
+
 		if(defined("OBJECT_TABLE")) {
 			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
 			$this->DB_WE->query("UPDATE ".OBJECT_TABLE." SET Owners='' WHERE Owners=','");
@@ -1683,7 +1683,6 @@ function mapPermissions() {
 							)
 					);
 
-		// Permission, if user can change seem-startdocument of other users not in ISP_VERSION
 		if (we_hasPerm("ADMINISTRATOR")){
 
 			//	First get the startdocument of the selected User!
@@ -1780,7 +1779,7 @@ function mapPermissions() {
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(450);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:we_cmd('browse_users','document.we_form.".$this->Name."_ParentID.value','document.we_form.".$this->Name."_ParentID_Text.value','group',document.we_form.".$this->Name."_ParentID.value);"));
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_tableObj->setCol(0, 0, null, $_username);
@@ -1902,9 +1901,9 @@ function mapPermissions() {
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(403);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:we_cmd('browse_users','document.we_form.".$this->Name."_ParentID.value','document.we_form.".$this->Name."_ParentID_Text.value','group',document.we_form.".$this->Name."_ParentID.value);"));
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
-		
+
 		$_tableObj->setCol(0, 0, null, $_username);
 		$_tableObj->setCol(0, 1, null, htmlFormElementTable($_password, $GLOBALS['l_users']["password"]));
 		$_tableObj->setCol(1, 0, null, getPixel(280,10));
@@ -1923,7 +1922,7 @@ function mapPermissions() {
 			} else {
 				$CreatorIDtext=$GLOBALS['l_users']["lostID"].$this->CreatorID.$GLOBALS['l_users']["lostID2"];
 			}
-		 
+
 		} else {$CreatorIDtext = '-'; }
 		if($this->ModifierID){
 			if($this->ModifierID == $this->ID){
@@ -1950,7 +1949,7 @@ function mapPermissions() {
 								)
 						);
 
-		
+
 
 		return we_multiIconBox::getHTML("","100%",$parts,30);
 
@@ -2309,7 +2308,7 @@ function mapPermissions() {
 				$yuiSuggest->setWidth(290);
 				$yuiSuggest->setSelectButton($button,10);
 				$yuiSuggest->setDoOnTextfieldBlur('setValues('.$setValue.');');
-				
+
 				$weAcSelector = $yuiSuggest->getHTML();
 
 				$content1.='
@@ -2615,9 +2614,9 @@ function mapPermissions() {
 		$yuiSuggest->setWidth(191);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),10);
 		$yuiSuggest->setContainerWidth(299);
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
-		
+
 		$_seem_document_chooser = $we_button->create_button_table(array($weAcSelector), 0, array("id"=>"seem_start_document", "style"=>"display:none"));
 
 		// Build SEEM select start object chooser
@@ -2634,9 +2633,9 @@ function mapPermissions() {
 		$yuiSuggest->setWidth(191);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),10);
 		$yuiSuggest->setContainerWidth(299);
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
-		
+
 		$_seem_object_chooser = $we_button->create_button_table(array($weAcSelector), 10, array("id"=>"seem_start_object", "style"=>"display:none"));
 
 		// Build final HTML code
@@ -2783,7 +2782,7 @@ function mapPermissions() {
 		/*********************************************************************
 		 * TEMPLATE EDITOR
 		 *********************************************************************/
-		 
+
 			/**
 			 * Editor Mode
 			 */
@@ -2894,7 +2893,7 @@ function mapPermissions() {
             $parent_text=$foo["Path"];
 		}
 
-		$yuiSuggest =& weSuggest::getInstance(); 
+		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathName");
 		$yuiSuggest->setContentType("0,1"); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
 		$yuiSuggest->setInput($this->Name.'_Alias_Text',$alias_text,array("onChange"=>"top.content.setHot();"));

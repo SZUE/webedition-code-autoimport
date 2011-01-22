@@ -36,7 +36,8 @@ class we_tagParser{
 
 	var $ipos = 0;
 
-	var $ListviewItemsTags = array("object","customer","order","orderitem","metadata");
+	var $ListviewItemsTags = array('object', 'customer', 'onlinemonitor', 'order', 'orderitem', 'metadata');
+
 	var $AppListviewItemsTags = array();
 
 	function we_tagParser()	{
@@ -91,7 +92,7 @@ class we_tagParser{
 		$foo = array();
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $foo, PREG_SET_ORDER);
 		for ($i = 0; $i < sizeof($foo); $i++) {
-			if (substr($foo[$i][1], -1) == "<") {
+			if (substr($foo[$i][1], -1) == '<') {
 				$foo[$i][1] = substr($foo[$i][1], 0, strlen($foo[$i][1]) - 1);
 			}
 			array_push($tags, $foo[$i][1]);
@@ -134,7 +135,7 @@ class we_tagParser{
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $_foo, PREG_SET_ORDER);
 
 		for ($_i = 0; $_i < sizeof($_foo); $_i++) {
-			if (substr($_foo[$_i][1], -1) == "<") {
+			if (substr($_foo[$_i][1], -1) == '<') {
 				$_foo[$_i][1] = substr($_foo[$_i][1], 0, strlen($_foo[$_i][1]) - 1);
 			}
 			array_push($_tmpTags, $_foo[$_i][1]);
@@ -162,7 +163,7 @@ class we_tagParser{
 				$_start = strpos($code, $_tags[$i]);
 				$_starttag = $_tags[$i];
 
-				$_endtag = "";
+				$_endtag = '';
 				$i++;
 
 			} else { //  "normal" we:tag
@@ -171,22 +172,22 @@ class we_tagParser{
 				$i++;
 
 				$_end = strpos($code, $_tags[$i]) - $_start + strlen($_tags[$i]);
-				$_endtag = isset($_tags[$i]) ? $_tags[$i] : "";
+				$_endtag = isset($_tags[$i]) ? $_tags[$i] : '';
 				$i++;
 			}
 			array_push($_rettags, array(
 				array(
 				$_starttag, $_endtag
-			), $_endtag ? substr($code, $_start, $_end) : ""
+			), $_endtag ? substr($code, $_start, $_end) : ''
 			));
 		}
 		return $_rettags;
 	}
 
-	function parseTags($tags, &$code, $postName = "", $ignore = array())
+	function parseTags($tags, &$code, $postName = '', $ignore = array())
 	{
 
-		if (!defined("DISABLE_TEMPLATE_TAG_CHECK") || !DISABLE_TEMPLATE_TAG_CHECK) {
+		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
 			if (!$this->checkOpenCloseTags($tags, $code)) {
 				return;
 			}
@@ -198,7 +199,7 @@ class we_tagParser{
 		while ($this->ipos < sizeof($this->tags)) {
 			$this->lastpos = 0;
 
-			if (in_array(substr(ereg_replace("[>/ ].*", "", $this->tags[$this->ipos]), 1), $ignore)) {
+			if (in_array(substr(ereg_replace("[>/ ].*", '', $this->tags[$this->ipos]), 1), $ignore)) {
 				$this->parseTag($code); //	dont add postname tagname in ignorearray
 			} else {
 				$this->parseTag($code, $postName);
@@ -222,7 +223,7 @@ class we_tagParser{
 					if (!isset($Counter[$_matches[2][0]])) {
 						$Counter[$_matches[2][0]] = 0;
 					}
-					if ($_matches[1][0] == "/") {
+					if ($_matches[1][0] == '/') {
 						$Counter[$_matches[2][0]]--;
 
 					} else {
@@ -233,16 +234,16 @@ class we_tagParser{
 			}
 		}
 
-		$ErrorMsg = "";
+		$ErrorMsg = '';
 		$isError = false;
 		foreach ($Counter as $_tag => $_counter) {
 			if ($_counter < 0) {
-				$ErrorMsg .= parseError(sprintf($GLOBALS["l_parser"]["missing_open_tag"], 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf($GLOBALS['l_parser']['missing_open_tag'], 'we:' . $_tag));
 				$isError = true;
 
 			} else
 				if ($_counter > 0) {
-					$ErrorMsg .= parseError(sprintf($GLOBALS["l_parser"]["missing_close_tag"], 'we:' . $_tag));
+					$ErrorMsg .= parseError(sprintf($GLOBALS['l_parser']['missing_close_tag'], 'we:' . $_tag));
 					$isError = true;
 
 				}
@@ -261,7 +262,7 @@ class we_tagParser{
 		eregi("we:([^ >]+)", $this->tags[$this->ipos], $regs);
 		$tagname = $regs[1];
 
-		if ($tagname != "back" && $tagname != "next" && $tagname != "printVersion" && $tagname != "listviewOrder") {
+		if ($tagname != 'back' && $tagname != 'next' && $tagname != 'printVersion' && $tagname != 'listviewOrder') {
 			$tagcount = 0;
 			$endtags = array();
 
@@ -298,7 +299,7 @@ class we_tagParser{
 	{
 		if (preg_match('/<we:([^ ]+) ([^>]+)>/i', $tag, $_regs)) {
 			$_attribsString = $_regs[2];
-			$_tmpAttribs = "";
+			$_tmpAttribs = '';
 			$_attribs = array();
 			if (preg_match_all('/([^=]+)= *("[^"]*")/', $_attribsString, $foo, PREG_SET_ORDER)) {
 				for ($i = 0; $i < sizeof($foo); $i++) {
@@ -324,21 +325,21 @@ class we_tagParser{
 		if ($regs[1]) { ### its an end-tag
 			$endTag = true;
 		}
-		$foo = $regs[2] . "/";
+		$foo = $regs[2] . '/';
 		eregi("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
 		$attr = trim(ereg_replace("(.*)/$", "\\1", $regs[2]));
 
 		if (eregi('name="([^"]*)"', $attr, $regs)) {
 			if (!$regs[1]) {
-				print parseError(sprintf($GLOBALS["l_parser"]["name_empty"], $tagname));
+				print parseError(sprintf($GLOBALS['l_parser']['name_empty'], $tagname));
 			} else
 				if (strlen($regs[1]) > 255) {
-					print parseError(sprintf($GLOBALS["l_parser"]["name_to_long"], $tagname));
+					print parseError(sprintf($GLOBALS['l_parser']['name_to_long'], $tagname));
 				}
 		}
 
-		$attribs = "";
+		$attribs = '';
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
 		for ($i = 0; $i < sizeof($foo); $i++) {
 			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
@@ -479,65 +480,12 @@ class we_tagParser{
 
 						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
-
-
-						if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry") {
-							$code = str_replace(
-									$tag,
-									'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>',
-									$code);
-							$this->ipos++;
-							$this->lastpos = 0;
-
-						} else
-							if ($tagname == "ifshopexists") {
-								$code = str_replace($tag, '<?php if(defined("SHOP_TABLE")): ?>', $code);
-								$this->ipos++;
-								$this->lastpos = 0;
-							} else
-								if ($tagname == "ifobjektexists") {
-									$code = str_replace($tag, '<?php if(defined("OBJECT_TABLE")): ?>', $code);
-									$this->ipos++;
-									$this->lastpos = 0;
-								} else
-									if ($tagname == "ifnewsletterexists") {
-										$code = str_replace(
-												$tag,
-												'<?php if(defined("NEWSLETTER_TABLE")): ?>',
-												$code);
-										$this->ipos++;
-										$this->lastpos = 0;
-									} else
-										if ($tagname == "ifcustomerexists") {
-											$code = str_replace(
-													$tag,
-													'<?php if(defined("CUSTOMER_TABLE")): ?>',
-													$code);
-											$this->ipos++;
-											$this->lastpos = 0;
-										} else
-											if ($tagname == "ifbannerexists") {
-												$code = str_replace(
-														$tag,
-														'<?php if(defined("BANNER_TABLE")): ?>',
-														$code);
-												$this->ipos++;
-												$this->lastpos = 0;
-											} else
-												if ($tagname == "ifvotingexists") {
-													$code = str_replace(
-															$tag,
-															'<?php if(defined("VOTING_TABLE")): ?>',
-															$code);
-													$this->ipos++;
-													$this->lastpos = 0;
-												} else
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
 														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
 														$code = str_replace(
 																$tag,
 																$this->parseCacheIfTag(
-																		'<?php if(we_tag("' . $tagname . '", ' . $attribs . ')): ?>'),
+																		'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>'),
 																$code);
 														$this->ipos++;
 														$this->lastpos = 0;
@@ -545,7 +493,7 @@ class we_tagParser{
 														if ($tagname == "condition") {
 															$code = str_replace(
 																	$tag,
-																	'<?php we_tag("' . $tagname . '", ' . $attribs . '); ?>',
+																	'<?php we_tag(\'' . $tagname . '\', ' . $attribs . '); ?>',
 																	$code);
 															$this->ipos++;
 															$this->lastpos = 0;
@@ -660,7 +608,7 @@ class we_tagParser{
 																			$code,
 																			$endeStartTag);
 																}else {
-																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', "")';
+																		$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', \'\')';
 																		$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
 																				$code,
 																				$endeStartTag);
@@ -1053,7 +1001,17 @@ if(isset($weTagListviewCache)) {
 			$subfolders = !we_getTagAttributeTagParser("subfolders", $arr, "", true, false);
 		}
 		$cfilter = we_getTagAttributeTagParser("cfilter", $arr, "off");
-
+		if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+			$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $attribs, "true", false);
+		} else {
+			$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $attribs, "false", true);
+		}
+		if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
+			$objectseourls = we_getTagAttributeTagParser("objectseourls", $attribs, "true", false);
+		} else {
+			$objectseourls = we_getTagAttributeTagParser("objectseourls", $attribs, "false", true);
+		}
+		
 		$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1105,12 +1063,12 @@ if($we_lv_doctype=="we_doc"){
 		switch($type){
 			case "document":
 				$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_listview.class.php");
-$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '",$we_lv_subfolders, "' . $customers . '", "' . $id . '", $we_lv_languages, $we_lv_numorder);
+$GLOBALS["lv"] = new we_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, $we_lv_ct, "' . $cols . '", $we_lv_se,"' . $cond . '",$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '",$we_lv_subfolders, "' . $customers . '", "' . $id . '", $we_lv_languages, $we_lv_numorder,"'.$hidedirindex.'");
 ';
 				break;
 			case "search":
 				$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_search_listview.class.php");
-$GLOBALS["lv"] = new we_search_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", "' . $class . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, "' . $cols . '", "' . $cfilter . '", $we_lv_languages, $we_lv_numorder);
+$GLOBALS["lv"] = new we_search_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, "' . $doctype . '", "' . $class . '", $we_lv_cats, $we_lv_catOr, ' . ($casesensitive ? "true" : "false") . ', $we_lv_ws, "' . $cols . '", "' . $cfilter . '", $we_lv_languages,"'.$hidedirindex.'","'.$objectseourls.'");
 if(!isset($GLOBALS["weEconda"])) {
 	$GLOBALS["weEconda"] = "";
 }
@@ -1127,28 +1085,28 @@ $GLOBALS["weEconda"]["HTML"] .= \'<a name="emos_name" title="search" rel="\'.$GL
 					if ($foo && $predefinedSQL=="")
 						return str_replace($tag, $foo, $code);
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
-$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages);
+$GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages,"'.$hidedirindex.'","'.$objectseourls.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="object"'), $code); }
 				break;
 			case "customer":
 				if (defined("CUSTOMER_TABLE")) {
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_customer.class.php");
-$GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+$GLOBALS["lv"] = new we_listview_customer("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '",'.$hidedirindex.');
 ';
 				} else { return str_replace($tag, modulFehltError('Customer','listview type="customer"'), $code); }
 				break;
 			case "onlinemonitor":
 				if (defined("CUSTOMER_SESSION_TABLE")) {
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/we_listview_onlinemonitor.class.php");
-$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '");
+$GLOBALS["lv"] = new we_listview_onlinemonitor("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "' . $lastaccesslimit . '", "' . $lastloginlimit . '","'.$hidedirindex.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Customer','listview type="onlinemonitor"'), $code); }
 				break;
 			case "order":
 				if (defined("SHOP_TABLE")) {
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_order.class.php");
-$GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '");
+$GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '",'.$hidedirindex.');
 ';
 				} else { return str_replace($tag, modulFehltError('Shop','listview type="order"'), $code); }
 				break;
@@ -1159,7 +1117,7 @@ $GLOBALS["lv"] = new we_listview_order("' . $name . '", $we_rows, $we_offset, $w
 					if (strpos($orderid,'$')===false ){$php.='$orderid='.$orderid.';';} else {$php.='$orderid = isset('.$orderid.') ? "'.$orderid.'" : $GLOBALS["'.str_replace('$','', $orderid). '"];'; }
 					$php .= '
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php");
-$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid");
+$GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, "' . $cond . '", "' . $cols . '", "' . $docid . '", "$orderid","'.$hidedirindex.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Shop','listview type="orderitem"'), $code); }
 				break;
@@ -1169,7 +1127,7 @@ $GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset
 					if ($foo) return str_replace($tag, $foo, $code);
 					$php .= '
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php");
-$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages");
+$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages","'.$hidedirindex.'","'.$objectseourls.'");
 ';
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="multiobject"'), $code); }
 				break;
@@ -1226,7 +1184,7 @@ $GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $d
 //$categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_catListview.class.php");
-$GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ');
+$GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_lv_order , $we_lv_desc, $parentid, $categoryids, "default", "' . $cols . '"' . ($parentidname ? ',"' . $parentidname . '"' : '') . ',"'.$hidedirindex.'");
 ';
 				break;
 			default:
@@ -1268,6 +1226,16 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
 			$triggerid = we_getTagAttributeTagParser("triggerid", $arr, "0");
 			$searchable = we_getTagAttributeTagParser("searchable", $arr, "", true);
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
+			if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
+				$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "true", false);
+			} else {
+				$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", true);
+			}
 
 			$php = '<?php
 
@@ -1329,7 +1297,7 @@ $we_oid = $we_oid ? $we_oid : (isset($_REQUEST["we_oid"]) ? $_REQUEST["we_oid"] 
 ';
 			}
 			$searchable = empty($searchable) ? 'false' : $searchable;
-			$php .= '$GLOBALS["lv"] = new we_objecttag("' . $classid . '",$we_oid,' . $triggerid . ',' . $searchable . ', "' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_objecttag("' . $classid . '",$we_oid,' . $triggerid . ',' . $searchable . ', "' . $condition . '","'.$hidedirindex.'","'.$objectseourls.'");
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
@@ -1397,7 +1365,11 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
-
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
 			$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1450,7 +1422,7 @@ $php .='$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["w
 ';
 			}
 
-			$php .= '$GLOBALS["lv"] = new we_customertag($we_cid,"' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_customertag($we_cid,"' . $condition . '",'.$hidedirindex.');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
@@ -1534,6 +1506,11 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
 
 			$php = '<?php
 
@@ -1587,7 +1564,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 ';
 			}
 
-			$php .= '$GLOBALS["lv"] = new we_ordertag($we_orderid,"' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_ordertag($we_orderid,"' . $condition . '",'.$hidedirindex.');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
@@ -1624,7 +1601,11 @@ function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
 			} else {
 				$condition = "IntID = ".$we_orderitemid;
 			}
-
+			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
+			} else {
+				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", true);
+			}
 			$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1677,7 +1658,7 @@ $we_orderitemid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_order
 ';
 			}
 
-			$php .= '$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid,"' . $condition . '");
+			$php .= '$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid,"' . $condition . '",'.$hidedirindex.');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 ?><?php if($GLOBALS["lv"]->avail): ?>';
@@ -2489,11 +2470,13 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 			if ($foo)
 				return str_replace($tag, $foo, $code);
 
-			$version = ($version > 0) ? ($version - 1) : 0;
+			
 
 			$php = '<?php
+						
 						include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
-
+						$version = "' . $version . '";
+						$version = ($version > 0) ? ($version - 1) : 0;
 						$GLOBALS["_we_voting_namespace"] = "' . $name . '";
 						$GLOBALS[\'_we_voting\'] = new weVoting();
 
@@ -2507,7 +2490,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 								$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
 							}
 						}
-						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion(' . $version . ');
+						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion("$version");
 					?>';
 
 			return $this->replaceTag($tag, $code, $php);

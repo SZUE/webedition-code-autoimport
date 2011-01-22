@@ -395,6 +395,11 @@
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
 				if ($this->isTabExist($_table)) {
+					if($this->isColExist($_table,'OF_Url')){
+						$this->changeColTyp($_table,'OF_Url','VARCHAR(255) NOT NULL');
+					} else {
+						$this->addCol($_table,'OF_Url','VARCHAR(255) NOT NULL',' AFTER OF_Path ');
+					}
 					if($this->isColExist($_table,'OF_IsSearchable')){
 						$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
 					} else {

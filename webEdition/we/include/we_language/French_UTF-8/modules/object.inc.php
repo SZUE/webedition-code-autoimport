@@ -32,6 +32,7 @@ $l_object["class_id"] = "ID of the class"; // TRANSLATE
 $l_object["default"] = "Default Value";
 $l_object["checked"] = "checked"; // TRANSLATE
 $l_object["name"] = "Nom automatique";
+$l_object["seourl"] = "SEO-URL";// TRANSLATE
 $l_object["allFields"] = "tous les champs";
 $l_object["search_term"] = "Mot de Recherchee";
 $l_object["search_field"] = "Champ de Recherche";
