@@ -19,7 +19,23 @@
  */
 
 
-function we_tag_ifRegisteredUser($attribs, $content) {
+	function we_tag_ifRegisteredUser_evalPermission($permission,$match){
+		if(!empty($match)){
+			return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match);
+		} else {
+			return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission];
+		}
+	}
+
+	function we_tag_ifRegisteredUser_evalUserID($userid){
+		if(!isset($_SESSION["webuser"]['ID'])) {
+			return false;
+		} else{
+			return (in_array($_SESSION["webuser"]['ID'], $userid));
+		}
+	}
+
+	function we_tag_ifRegisteredUser($attribs, $content) {
 
 	$permission = we_getTagAttribute("permission", $attribs);
 	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
@@ -42,25 +58,24 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 					return false;
 				}
 			} else {
-				return true;
+				if($permission) {
+					return we_tag_ifRegisteredUser_evalPermission($permission, $match);
+				} else {
+					if(sizeof($userid) > 0) {
+						return we_tag_ifRegisteredUser_evalUserID($userid);
+					}else{
+						return true;
+					}
+				}
 			}
 		}
 
 		if(sizeof($userid) > 0) {
-			if(!isset($_SESSION["webuser"]['ID'])) {
-				return false;
-			} else if(!in_array($_SESSION["webuser"]['ID'], $userid)) {
-				return false;
-			}
+			return we_tag_ifRegisteredUser_evalUserID($userid);
 		}
 
 		if($permission) {
-			if(!empty($match)){
-				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match);
-			} else {
-				return isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$permission];
-			}
-
+			return we_tag_ifRegisteredUser_evalPermission($permission, $match);
 		} else {
 			return isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"];
 		}

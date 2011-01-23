@@ -20,37 +20,5 @@
 
 
 function we_tag_ifNotRegisteredUser($attribs,$content) {
-
-	$permission = we_getTagAttribute("permission", $attribs);
-	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
-	$match = makeArrayFromCSV($match);
-	$cfilter = we_getTagAttribute("cfilter", $attribs, "", true, false);
-
-	if ($GLOBALS["we_doc"]->InWebEdition || $GLOBALS["WE_MAIN_DOC"]->InWebEdition) {
-		return !(isset($_SESSION["we_set_registered"]) && $_SESSION["we_set_registered"]);
-
-	} else {
-
-		if ( $cfilter && defined("CUSTOMER_TABLE") ){
-			if (isset($GLOBALS["we_doc"]->documentCustomerFilter) && $GLOBALS["we_doc"]->documentCustomerFilter ) {
-				if ( $GLOBALS["we_doc"]->documentCustomerFilter->accessForVisitor( $GLOBALS["we_doc"], array(), true ) == WECF_ACCESS ) {
-					return false;
-				} else {
-					return true;
-				}
-			} else {
-				return false;
-			}
-		}
-
-		if ($permission) {
-			if(!empty($match)){
-				return !(isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"][$attribs["permission"]]) && $_SESSION["webuser"]["registered"] && in_array ($_SESSION["webuser"][$permission], $match));
-			} else {
-				return  !(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"][$attribs["permission"]]);
-			}
-		} else {
-			return  !(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"]);
-		}
-	}
+	return !we_tag('ifRegisteredUser',$attribs,$content);
 }
