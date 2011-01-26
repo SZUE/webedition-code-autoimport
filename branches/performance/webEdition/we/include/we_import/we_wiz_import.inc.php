@@ -86,6 +86,7 @@ class we_wizard_import extends we_wizard {
 			case "input":
 			case "text":
 			case "meta":
+			case "checkbox": //Bugfix #4733
 				return true;
 			default:
 				return false;
@@ -891,7 +892,7 @@ class we_wizard_import extends we_wizard {
 	 * @return unknown
 	 */
 	function getGXMLImportStep1() {
-		global $DB_WE, $l_import, $_isp_hide_doctypes;
+		global $DB_WE, $l_import;
 
 		$we_button = new we_button();
 		$v = $this->getPostGetVar("v", array());
@@ -968,24 +969,14 @@ class we_wizard_import extends we_wizard {
 			"			top.location.href='".WEBEDITION_DIR."we_cmd.php?we_cmd[0]=import&we_cmd[1]=GXMLImport';\n" .
 			"			break;\n" .
 			"		case 'next':\n" .
-			( !(defined("ISP_VERSION") && ISP_VERSION)
-				?
 			"		var fs = f.elements['v[fserver]'].value;\n" .
-			"		var ISP_VERSION = 0;\n"
-				:
-			"		var fs = '/';\n" .
-			"		var ISP_VERSION = 1;\n"
-				) .
 			"			" .
 			"			var fl = f.elements['uploaded_xml_file'].value;\n" .
 			"			var ext = '';\n" .
-			"			if ( (!ISP_VERSION && f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
+			"			if ( (f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
  			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall($l_import["invalid_path"], WE_MESSAGE_ERROR) . "break; }\n" .
  			"				ext = fs.substr(fs.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fs;\n" .
-			"			} else if ((ISP_VERSION || f.elements['v[rdofloc]'][1].checked==true) && fl!='') {\n" .
-			"				ext = fl.substr(fl.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			} else if (fs=='/' || fl=='') {\n" .
 			"				" . we_message_reporting::getShowMessageCall($l_import["select_source_file"], WE_MESSAGE_ERROR) . "break;\n" .
 			"			}\n".
@@ -1082,12 +1073,10 @@ HTS;
 		$importLocs = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 1);
 
 		$_tblRow = 0;
-		if(defined("ISP_VERSION") && ISP_VERSION){
-			$rdoLLocal  = we_forms::radiobutton("lLocal", 1, "v[rdofloc]", $l_import["fileselect_local"]);
-		} else {
-			$importLocs->setCol($_tblRow++, 0, array(), $rdoLServer);
-			$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
-		}
+
+		$importLocs->setCol($_tblRow++, 0, array(), $rdoLServer);
+		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
+		
 		$importLocs->setCol($_tblRow++, 0, array(), getPixel(1,4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
@@ -1109,12 +1098,6 @@ HTS;
 
 		$v["docType"] = isset($v["docType"]) ? $v["docType"] : -1;
 		while($DB_WE->next_record()) {
-
-			if(defined("ISP_VERSION") && ISP_VERSION){
-				if(in_array($DB_WE->f("DocType"), $_isp_hide_doctypes)){
-					continue;
-				}
-			}
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("DocType"));
 			if ($v["docType"] == $DB_WE->f("ID")) $DTselect->selectOption($DB_WE->f("ID"));
@@ -1267,12 +1250,7 @@ HTS;
 		array_push($parts, array(
 			"headline"	=> (defined("OBJECT_TABLE"))?$radioDocs:$l_import["documents"],
 			"html"		=> $yuiSuggest->getYuiFiles() . $doctypeElement . getPixel(1,4) . $templateElement . getPixel(1,4) . $storeTo . $yuiSuggest->getYuiCode(). getPixel(1,4) . $specifyDoc->getHTMLCode() . getPixel(1,4) .
-							(!(defined("ISP_VERSION") && ISP_VERSION ) ?
-								htmlFormElementTable($docCategories,
-									$l_import["categories"],
-									"left",
-									"defaultfont") :
-									""),
+							htmlFormElementTable($docCategories,$l_import["categories"],"left","defaultfont"),
 			"space"		=> 120,
 			"noline"	=> 1)
 		);
@@ -1723,24 +1701,13 @@ HTS;
 			"			break;\n" .
 			"		case 'next':\n" .
 			"			var fvalid = true;\n" .
-			( !(defined("ISP_VERSION") && ISP_VERSION)
-				?
 			"			var fs = f.elements['v[fserver]'].value;\n" .
-			"			var ISP_VERSION = 0;\n"
-				:
-			"			var fs = '/';\n" .
-			"			var ISP_VERSION = 1;\n"
-				) .
 			"			var fl = f.elements['uploaded_csv_file'].value;\n" .
 			"			var ext = '';\n" .
-			"			if ((!ISP_VERSION && f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
+			"			if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
  			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall($l_import["invalid_path"], WE_MESSAGE_ERROR) . "break; }\n" .
  			"				ext = fs.substr(fs.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fs;\n" .
-			"			}\n" .
-			"			else if ((ISP_VERSION || f.elements['v[rdofloc]'][1].checked==true) && fl!='') {\n" .
-			"				ext = fl.substr(fl.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			}\n" .
 			"			else if (fs=='/' || fl=='') {\n" .
 			"				" . we_message_reporting::getShowMessageCall($l_import["select_source_file"], WE_MESSAGE_ERROR) . "break;\n" .
@@ -1763,7 +1730,7 @@ HTS;
 		$inputLServer = htmlTextInput("v[fserver]", 30, (isset($v["fserver"])? $v["fserver"] : "/"), 255, "readonly onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = htmlFormElementTable($inputLServer, "", "left", "defaultfont", getPixel(10, 1), $importFromButton, "", "", "", 0);
 
-		$inputLLocal = htmlTextInput("uploaded_csv_file", 30, "", 255, "accept=\"text/xml\" onClick=\"" . (!(defined("ISP_VERSION") && ISP_VERSION) ? "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\"" : "") . "\"", "file");
+		$inputLLocal = htmlTextInput("uploaded_csv_file", 30, "", 255, "accept=\"text/xml\" onClick=\"" . "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;\""  . "\"", "file");
 		$importFromLocal = htmlFormElementTable($inputLLocal, "", "left", "defaultfont", getPixel(10, 1), "", "", "", "", 0);
 
 		$rdoLServer = we_forms::radiobutton("lServer",(isset($v["rdofloc"]))? ($v["rdofloc"]=="lServer"):1, "v[rdofloc]", $l_import["fileselect_server"]);
@@ -1773,12 +1740,8 @@ HTS;
 
 		$_tblRow = 0;
 
-		if(defined("ISP_VERSION") && ISP_VERSION){
-			$rdoLLocal  = we_forms::radiobutton("lLocal", 1, "v[rdofloc]", $l_import["fileselect_local"]);
-		} else {
-			$importLocs->setCol($_tblRow++, 0, array(), $rdoLServer);
-			$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
-		}
+		$importLocs->setCol($_tblRow++, 0, array(), $rdoLServer);
+		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
 
 		$importLocs->setCol($_tblRow++, 0, array(), getPixel(1,4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
@@ -1846,7 +1809,7 @@ HTS;
 	}
 
 	function getCSVImportStep2() {
-		global $DB_WE, $l_import, $_isp_hide_doctypes;
+		global $DB_WE, $l_import;
 		$v = $_REQUEST["v"];
 		$we_button = new we_button();
 		if (((isset($_FILES['uploaded_csv_file']) and $_FILES["uploaded_csv_file"]["size"])) || $v["file_format"]=="mac") {
@@ -2040,11 +2003,6 @@ HTS;
 
 		$v["docType"] = isset($v["docType"]) ? $v["docType"] : -1;
 		while($DB_WE->next_record()) {
-			if(defined("ISP_VERSION") && ISP_VERSION){
-				if(in_array($DB_WE->f("DocType"), $_isp_hide_doctypes)){
-					continue;
-				}
-			}
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("DocType"));
 			if ($v["docType"] == $DB_WE->f("ID")) $DTselect->selectOption($DB_WE->f("ID"));
@@ -2198,14 +2156,7 @@ HTS;
 			array_push($parts, array(
 				"headline"	=> (defined("OBJECT_TABLE"))?$radioDocs:$l_import["documents"],
 				"html"		=> $yuiSuggest->getYuiFiles() . $doctypeElement . getPixel(1,4) . $templateElement . getPixel(1,4) . $storeTo . $yuiSuggest->getYuiCode() . getPixel(1,4) . $specifyDoc->getHTMLCode() . getPixel(1,4) .
-								(!(defined("ISP_VERSION") && ISP_VERSION)
-									? htmlFormElementTable($docCategories,
-											$l_import["categories"],
-											"left",
-											"defaultfont")
-									: ""
-								)
-								,
+								htmlFormElementTable($docCategories,$l_import["categories"],"left","defaultfont"),
 				"space"		=> 120,
 				"noline"	=> 1)
 			);

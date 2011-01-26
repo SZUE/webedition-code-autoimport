@@ -39,8 +39,9 @@ class we_listview_shopVariants extends listviewBase {
 	var $DefaultName = 'default';
 	var $Model = null;
 	var $IsObjectFile = false;
+	var $hidedirindex = false;
 
-	function we_listview_shopVariants($name="0", $rows, $defaultname='default', $documentid='', $objectid='', $offset=0) {
+	function we_listview_shopVariants($name="0", $rows, $defaultname='default', $documentid='', $objectid='', $offset=0,$hidedirindex=false) {
 
 		listviewBase::listviewBase($name, $rows, $offset);
 		
@@ -98,6 +99,7 @@ class we_listview_shopVariants extends listviewBase {
 		
 		$this->anz_all = sizeof($this->VariantData['Record']);
 		$this->anz = min($this->rows,$this->anz_all) ;
+		$this->hidedirindex=$hidedirindex;
 	}
 	
 	

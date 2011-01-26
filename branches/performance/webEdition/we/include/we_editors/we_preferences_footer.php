@@ -85,6 +85,7 @@ function we_save() {
 	top.we_preferences.document.getElementById('setting_cache').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_advanced').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_system').style.display = 'none';
+	top.we_preferences.document.getElementById('setting_seolinks').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_error_handling').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_backup').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_validation').style.display = 'none';

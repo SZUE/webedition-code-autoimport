@@ -801,15 +801,6 @@ function we_cmd() {
 			}
 			?>
 			break;
-		case "help_isp":
-			<?php
-			if(defined("ISP_VERSION") && ISP_VERSION){
-			?>
-			we_repl(self.load,"/_configuration/help/index.php",arguments[0]);
-			<?php
-			}
-			?>
-			break;
 		case "openSelector":
 			new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_SELECTOR_WIDTH . ',' .WINDOW_SELECTOR_HEIGHT;?>,true,true,true,true);
 			break;

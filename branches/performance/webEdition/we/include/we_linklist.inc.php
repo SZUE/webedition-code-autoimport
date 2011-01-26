@@ -40,11 +40,16 @@ class we_linklist
 	var $rollAttribs = array();
 
 	var $cache = array();
+	
+	var $hidedirindex=false;
+	
+	var $objectseourls=false;
 
-	function we_linklist($sString)
+	function we_linklist($sString,$hidedirindex=false,$objectseourls=false)
 	{
-		
 		$this->sString = $sString;
+		$this->hidedirindex = $hidedirindex;
+		$this->objectseourls = $objectseourls;
 		$this->listArray = $sString ? unserialize($sString) : array();
 		if (!is_array($this->listArray)) {
 			$this->listArray = array();
@@ -80,7 +85,9 @@ class we_linklist
 								$this->getObjID($nr), 
 								$GLOBALS["WE_MAIN_DOC"]->ParentID, 
 								$GLOBALS["WE_MAIN_DOC"]->Path, 
-								$this->db);
+								$this->db,
+								$this->hidedirindex,
+								$this->objectseourls);
 						if (isset($GLOBALS["we_link_not_published"])) {
 							unset($GLOBALS["we_link_not_published"]);
 						}
@@ -126,6 +133,9 @@ class we_linklist
 		$text = $this->getText($nr);  // #3636
 		$jswinAttribs = $this->getJsWinAttribs($nr);
 		$js = "var we_winOpts = '';";
+		
+		$hidedirindex = $this->getHidedirindex($nr);
+		$objectseourls = $this->getObjectseourls($nr);
 		
 		$lattribs = makeArrayFromAttribs($attribs);
 		
@@ -233,6 +243,14 @@ class we_linklist
 			$row = getHash("SELECT IsDynamic,Path FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", $this->db);
 			$this->cache[$id] = $row;
 		}
+		if (isset($row["Path"]) && $this->hidedirindex){
+			$path_parts = pathinfo($row["Path"]);
+			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+				$row["Path"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+			}
+		
+		}
+		
 		return (isset($row["Path"]) ? $row["Path"] : '') . ($params ? ("?" . $params) : "");
 	
 	}
@@ -308,7 +326,16 @@ class we_linklist
 	{
 		return (isset($this->listArray[$nr]["hreflang"]) ? $this->listArray[$nr]["hreflang"] : "");
 	}
-
+	
+	function getHidedirindex($nr)
+	{
+		return (isset($this->listArray[$nr]["hidedirindex"]) ? $this->listArray[$nr]["hidedirindex"] : "");
+	}
+	
+	function getObjectseourls($nr)
+	{
+		return (isset($this->listArray[$nr]["objectseourls"]) ? $this->listArray[$nr]["objectseourls"] : "");
+	}
 	function getParams($nr)
 	{
 		return (isset($this->listArray[$nr]["params"]) ? $this->listArray[$nr]["params"] : "");

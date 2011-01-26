@@ -209,7 +209,7 @@ class we_user {
 
 	// Preferences array
 	var $preference_slots=array();
-	
+
 	var $UseSalt=1;
 
 	/*
@@ -247,7 +247,7 @@ class we_user {
 		}
 
 		$this->Preferences['use_jupload'] = f('SELECT MAX(use_jupload) as mju FROM ' . PREFS_TABLE . ';','mju',$this->DB_WE); //WTF?!?
-		
+
 		foreach($this->preference_slots as $key => $val) {
 			$value = null;
 			$this->Preferences[$val]	= $value;
@@ -298,11 +298,11 @@ class we_user {
 	function savePersistentSlotsInDB() {
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		
+
 		if ($this->clearpasswd !== '') {
 			$this->passwd = md5($this->clearpasswd . md5($this->username));
 		}
-		
+
 		if($this->ID) {
 			$updt = '';
 			for($i=0;$i<sizeof($tableInfo);$i++) {
@@ -1108,7 +1108,7 @@ function mapPermissions() {
 					$this->$pval = $_POST[$obj];
 				}
 			}
-						
+
 			if($this->Type==2) {
 				$obj=$this->Name.'_ParentPerms';
 				if(isset($_POST[$obj]))
@@ -1293,7 +1293,7 @@ function mapPermissions() {
 		$this->DB_WE->query('UPDATE '.TEMPLATES_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
 		$this->DB_WE->query('UPDATE '.USER_TABLE." SET CreatorID='$newID'  WHERE CreatorID=".$this->ID);
 		$this->DB_WE->query('UPDATE '.USER_TABLE." SET ModifierID='$newID'  WHERE ModifierID=".$this->ID);
-		
+
 		if(defined('OBJECT_TABLE')) {
 			$this->DB_WE->query('UPDATE '.OBJECT_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
 			$this->DB_WE->query('UPDATE '.OBJECT_TABLE." SET Owners='' WHERE Owners=','");
@@ -1682,7 +1682,6 @@ function mapPermissions() {
 							)
 					);
 
-		// Permission, if user can change seem-startdocument of other users not in ISP_VERSION
 		if (we_hasPerm("ADMINISTRATOR")){
 
 			//	First get the startdocument of the selected User!
@@ -1779,7 +1778,7 @@ function mapPermissions() {
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(450);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:we_cmd('browse_users','document.we_form.".$this->Name."_ParentID.value','document.we_form.".$this->Name."_ParentID_Text.value','group',document.we_form.".$this->Name."_ParentID.value);"));
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_tableObj->setCol(0, 0, null, $_username);
@@ -1901,9 +1900,9 @@ function mapPermissions() {
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(403);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:we_cmd('browse_users','document.we_form.".$this->Name."_ParentID.value','document.we_form.".$this->Name."_ParentID_Text.value','group',document.we_form.".$this->Name."_ParentID.value);"));
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
-		
+
 		$_tableObj->setCol(0, 0, null, $_username);
 		$_tableObj->setCol(0, 1, null, htmlFormElementTable($_password, $GLOBALS['l_users']["password"]));
 		$_tableObj->setCol(1, 0, null, getPixel(280,10));
@@ -1922,15 +1921,15 @@ function mapPermissions() {
 			} else {
 				$CreatorIDtext=$GLOBALS['l_users']["lostID"].$this->CreatorID.$GLOBALS['l_users']["lostID2"];
 			}
-		 
+
 		} else {$CreatorIDtext = '-'; }
 		if($this->ModifierID){
 			if($this->ModifierID == $this->ID){
-				$ModifierIDtext = $this->username .' ('.$this->first.' '.$this->second.')';
+				$ModifierIDtext = $this->username .' ('.$this->First.' '.$this->Second.')';
 			} else {
-				$this->DB_WE->query("SELECT username,first,second FROM ".USER_TABLE." WHERE ID='".$this->ModifierID."'");
+				$this->DB_WE->query("SELECT username,First,Second FROM ".USER_TABLE." WHERE ID='".$this->ModifierID."'");
 				if ($this->DB_WE->next_record()) {
-					$ModifierIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('first').' '.$this->DB_WE->f('second').')';
+					$ModifierIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('First').' '.$this->DB_WE->f('Second').')';
 				} else {
 					$ModifierIDtext=$GLOBALS['l_users']["lostID"].$this->ModifierID.$GLOBALS['l_users']["lostID2"];
 				}
@@ -1949,7 +1948,7 @@ function mapPermissions() {
 								)
 						);
 
-		
+
 
 		return we_multiIconBox::getHTML("","100%",$parts,30);
 
@@ -2309,7 +2308,7 @@ function mapPermissions() {
 				$yuiSuggest->setWidth(290);
 				$yuiSuggest->setSelectButton($button,10);
 				$yuiSuggest->setDoOnTextfieldBlur('setValues('.$setValue.');');
-				
+
 				$weAcSelector = $yuiSuggest->getHTML();
 
 				$content1.='
@@ -2616,9 +2615,9 @@ function mapPermissions() {
 		$yuiSuggest->setWidth(191);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),10);
 		$yuiSuggest->setContainerWidth(299);
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
-		
+
 		$_seem_document_chooser = $we_button->create_button_table(array($weAcSelector), 0, array("id"=>"seem_start_document", "style"=>"display:none"));
 
 		// Build SEEM select start object chooser
@@ -2635,9 +2634,9 @@ function mapPermissions() {
 		$yuiSuggest->setWidth(191);
 		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),10);
 		$yuiSuggest->setContainerWidth(299);
-		
+
 		$weAcSelector = $yuiSuggest->getHTML();
-		
+
 		$_seem_object_chooser = $we_button->create_button_table(array($weAcSelector), 10, array("id"=>"seem_start_object", "style"=>"display:none"));
 
 		// Build final HTML code
@@ -2784,7 +2783,7 @@ function mapPermissions() {
 		/*********************************************************************
 		 * TEMPLATE EDITOR
 		 *********************************************************************/
-		 
+
 			/**
 			 * Editor Mode
 			 */
@@ -2895,7 +2894,7 @@ function mapPermissions() {
             $parent_text=$foo["Path"];
 		}
 
-		$yuiSuggest =& weSuggest::getInstance(); 
+		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathName");
 		$yuiSuggest->setContentType("0,1"); // in USER_TABLE is Type 0 folder, Type 1 user and Type 2 alias. Field ContentType is not setted so in weSelectorQuery is a workaroun for USER_TABLE
 		$yuiSuggest->setInput($this->Name.'_Alias_Text',$alias_text,array("onChange"=>"top.content.setHot();"));

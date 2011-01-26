@@ -416,5 +416,3 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 		$deletedItems[] = $id;
 	}
 }
-
-?>

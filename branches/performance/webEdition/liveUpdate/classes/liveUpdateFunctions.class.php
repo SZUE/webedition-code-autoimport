@@ -219,7 +219,7 @@ class liveUpdateFunctions {
 				fclose($fh);
 				if(!chmod($filePath, 0755)) {
 					return false;
-					
+
 				}
 				return true;
 
@@ -258,7 +258,7 @@ class liveUpdateFunctions {
 			}
 			$path .= "/";
 		}
-		
+
 		if(!is_writable($dirPath)) {
 			if(!chmod($dirPath, $mod)) {
 				return false;
@@ -352,7 +352,7 @@ class liveUpdateFunctions {
 			$replace = $this->checkReplaceDocRoot($replace);
 			if ($needle) {
 				/*This version is used in OnlineInstaller! which one is correct?
-				$newneedle= preg_quote($needle, '~'); 
+				$newneedle= preg_quote($needle, '~');
 				$newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
 				*/
 				$newContent = ereg_replace($needle, $replace, $oldContent);
@@ -484,14 +484,27 @@ class liveUpdateFunctions {
                }
            }
            $extra = strtoupper($fieldInfo['Extra']);
+					 //note: auto_increment cols must have an index!
+					 if( strpos($extra,'AUTO_INCREMENT') !== false){
+						$keyfound=false;
+						$Currentkeys = $this->getKeysFromTable($tableName);
+						foreach ($Currentkeys as $ckeys){
+							foreach ($ckeys as $k){
+								if (stripos($k,$fieldName)!==false){$keyfound=true;}
+							}
+						}
+						if (!$keyfound){
+							$extra .= ' FIRST, ADD INDEX _temp ('.$fieldInfo['Field'].')';
+						}
+					}
 
            if ($isNew) {
 				//Bug #4431, siehe unten
-			   $queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . "` " . $fieldInfo['Type'] . " $null $default $extra";
+			   $queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
            } else {
 				//Bug #4431
 			   // das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
-			   $queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . "` `" . $fieldInfo['Field'] . '` ' .$fieldInfo['Type'] . " $null $default $extra";
+			   $queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' .$fieldInfo['Type'] . " $null $default $extra";
            }
        }
        return $queries;
@@ -513,13 +526,22 @@ class liveUpdateFunctions {
 			array_walk($indexes,'addslashes');
 
 			$type=$indexes['index'];
+			$mysl='`';
 			if($type=='PRIMARY'){
 				$key='KEY';
+				$mysl='';
 			}
 			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
-
-			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
+			$myindexes=array();
+			foreach ($indexes as $index){
+				if (strpos($index,'(') === false){
+					$myindexes[] = '`'.$index.'`';
+				} else {
+					$myindexes[] = '`'.str_replace('(','`(',$index);
+				}
+			}
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' ('.implode(',',$myindexes).')';
 		}
 		return $queries;
 	}
@@ -565,11 +587,11 @@ class liveUpdateFunctions {
 			foreach($queries as $query) {
 				$success &= $this->executeUpdateQuery($query);
 			}
-			
+
 		}
 		return $success;
 	}
-	
+
 	/**
 	 * updates the database with given dump.
 	 *
@@ -583,11 +605,11 @@ class liveUpdateFunctions {
 		// change fields when needed.
 
 		$query = trim($query);
-		
+
 		if (strpos($query,'tblUser')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
 			return true;
 		}
-	
+
 		// first of all we need to check if there is a tblPrefix
 		if (LIVEUPDATE_TABLE_PREFIX) {
 
@@ -598,7 +620,7 @@ class liveUpdateFunctions {
 			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			
+
 			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
 
@@ -607,17 +629,17 @@ class liveUpdateFunctions {
 			if(eregi("^CREATE TABLE ", $query)) {
 				$Charset = DB_CHARSET;
 				$Collation = DB_COLLATION;
-				if($Charset == 'UTF-8'){//#4661 
+				if($Charset == 'UTF-8'){//#4661
 					$Charset='utf8';
 				}
-				if($Collation == 'UTF-8'){//#4661 
+				if($Collation == 'UTF-8'){//#4661
 					$Collation='utf8_general_ci';
 				}
 				$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
 			}
 
 		}
-	
+
 		if ($db->query($query) ) {
 			return true;
 		} else {
@@ -673,6 +695,20 @@ class liveUpdateFunctions {
 						}
 
 						// determine new keys
+						// moved down after change and addfields 
+
+						// get all queries to add/change fields, keys
+						$alterQueries = array();
+
+						// get all queries to change existing fields
+						if (sizeof($changeFields)) {
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+						}
+						if (sizeof($addFields)) {
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
+						}
+
+						//new position to determine new keys
 						$addKeys = array();
 						$changedKeys = array();
 						foreach ($newTableKeys as $keyName => $indexes) {
@@ -695,17 +731,6 @@ class liveUpdateFunctions {
 							}
 						}
 
-						// get all queries to add/change fields, keys
-						$alterQueries = array();
-
-						// get all queries to change existing fields
-						if (sizeof($changeFields)) {
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
-						}
-						if (sizeof($addFields)) {
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
-						}
-
 						// get all queries to change existing keys
 						if (sizeof($addKeys)) {
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
@@ -713,6 +738,11 @@ class liveUpdateFunctions {
 
 						if (sizeof($changedKeys)) {
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
+						}
+
+						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
+						if (isset($origTableKeys['_temp'])) {
+							$alterQueries = array_merge(array('ALTER TABLE `'.$tableName.'` DROP INDEX _temp'),$alterQueries);
 						}
 
 						if (sizeof($alterQueries)) {
@@ -723,12 +753,16 @@ class liveUpdateFunctions {
 								if ($db->query(trim($_query))) {
 									$this->QueryLog['success'][] = $_query;
 								} else {
-									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $_query -->";
+									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
 									$success = false;
 								}
 							}
 							if ($success) {
-								$this->QueryLog['tableChanged'][] = $tableName . "\n<!--$query-->";
+								$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
+							}
+							$SearchTempTableKeys = $this->getKeysFromTable($tableName);
+							if (isset($SearchTempTableKeys['_temp'])) {
+								$db->query(trim('ALTER TABLE `'.$tableName.'` DROP INDEX _temp'));
 							}
 
 						} else {
@@ -742,7 +776,7 @@ class liveUpdateFunctions {
 					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 				break;
 				default:
-					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 					return false;
 				break;
 			}

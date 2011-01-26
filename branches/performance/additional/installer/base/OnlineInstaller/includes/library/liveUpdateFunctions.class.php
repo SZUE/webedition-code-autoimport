@@ -504,6 +504,19 @@ class liveUpdateFunctions {
 				}
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
+					//note: auto_increment cols must have an index!
+					if( strpos($extra,'AUTO_INCREMENT') !== false){
+						$keyfound=false;
+						$Currentkeys = $this->getKeysFromTable($tableName);
+						foreach ($Currentkeys as $ckeys){
+							foreach ($ckeys as $k){
+								if (stripos($k,$fieldName)!==false){$keyfound=true;}
+							}
+						}
+						if (!$keyfound){
+							$extra .= ' FIRST, ADD INDEX _temp ('.$fieldInfo['Field'].')';
+						}
+					}
 
 			if ($isNew) {
 
@@ -527,17 +540,26 @@ class liveUpdateFunctions {
 		$queries = array();
 
 		foreach ($fields as $key => $indexes) {
-
+			//escape all index fields
 			array_walk($indexes,'addslashes');
 
 			$type=$indexes['index'];
+			$mysl='`';
 			if($type=='PRIMARY'){
 				$key='KEY';
-				}
-
+				$mysl='';
+			}
+			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
-
-			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' `'.$key.'` , ').' ADD ' . $type. ' `'.$key . '` (`'.implode('`,`',$indexes).'`)';
+			$myindexes=array();
+			foreach ($indexes as $index){
+				if (strpos($index,'(') === false){
+					$myindexes[] = '`'.$index.'`';
+				} else {
+					$myindexes[] = '`'.str_replace('(','`(',$index);
+				}
+			}
+			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' ('.implode(',',$myindexes).')';
 		}
 		return $queries;
 	}
@@ -600,7 +622,7 @@ class liveUpdateFunctions {
 			if ($queryArray) {
 				foreach ($queryArray as $query) {
 					if (trim($query)) {
-						success &= $this->executeUpdateQuery($query);
+						$success &= $this->executeUpdateQuery($query);
 					}
 				}
 			}
@@ -694,7 +716,7 @@ class liveUpdateFunctions {
 										$this->QueryLog['tableReCreated'][] = $tableName;
 									} else {
 
-										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $_query -->";
+										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
 										$success = false;
 									}
 
@@ -735,8 +757,28 @@ class liveUpdateFunctions {
 									}
 
 									// determine new keys
+									// moved down after change and addfields 
+
+									// get all queries to add/change fields, keys
+									$alterQueries = array();
+
+									// get all queries to change existing fields
+									if (sizeof($changeFields)) {
+										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+									}
+									if (sizeof($addFields)) {
+										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
+									}
+
+									// get all queries to change existing keys
+									if (sizeof($addKeys)) {
+										$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
+									}
+									
+									
+									//new position to determine new keys
 									$addKeys = array();
-							$changedKeys = array();
+									$changedKeys = array();
 									foreach ($newTableKeys as $keyName => $indexes) {
 
 										if (isset($origTableKeys[$keyName])) {
@@ -757,25 +799,14 @@ class liveUpdateFunctions {
 										}
 									}
 
-									// get all queries to add/change fields, keys
-									$alterQueries = array();
-
-									// get all queries to change existing fields
-									if (sizeof($changeFields)) {
-										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
-									}
-									if (sizeof($addFields)) {
-										$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
-									}
-
-									// get all queries to change existing keys
-									if (sizeof($addKeys)) {
-										$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
-									}
-
 							if (sizeof($changedKeys)) {
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 							}
+
+						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
+						if (isset($origTableKeys['_temp'])) {
+							$alterQueries = array_merge(array('ALTER TABLE `'.$tableName.'` DROP INDEX _temp'),$alterQueries);
+						}
 
 									if (sizeof($alterQueries)) {
 										// execute all queries
@@ -785,14 +816,17 @@ class liveUpdateFunctions {
 											if ($db->query(trim($_query))) {
 												$this->QueryLog['success'][] = $_query;
 											} else {
-												$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $_query -->";
+												$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
 												$success = false;
 											}
 										}
 										if ($success) {
-											$this->QueryLog['tableChanged'][] = $tableName . "\n<!--$query-->";
+											$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
 										}
-
+										$SearchTempTableKeys = $this->getKeysFromTable($tableName);
+										if (isset($SearchTempTableKeys['_temp'])) {
+											$db->query(trim('ALTER TABLE `'.$tableName.'` DROP INDEX _temp'));
+										}
 									} else {
 										$this->QueryLog['tableExists'][] = $tableName;
 									}
@@ -805,7 +839,7 @@ class liveUpdateFunctions {
 							$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 						break;
 						default:
-							$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+							$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 							$success = false;
 						break;
 					}

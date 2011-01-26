@@ -94,19 +94,19 @@ function EditorFrameController() {
 		var _frames = this.MultiEditorFramesetWindow.document.getElementsByTagName("frame");
 
 		if ( _frames.length ) {
-			
+
 			this.EditorFrames = new Object();
 			this.FreeEditorFrames = new Array();
-			this.EditorWindowsAmount = _frames.length;	
-			
+			this.EditorWindowsAmount = _frames.length;
+
 			for (i=0;i<_frames.length;i++) {
 				this.EditorFrames[_frames[i].id] = new EditorFrame(_frames[i], _frames[i].id);
 				this.FreeEditorFrames.push(_frames[i].id);
-	
+
 			}
 		}
 	}
-	
+
 	//--------------------------------------------------------------------
 	// FUNCTION:
 	//   isInitialized
@@ -282,44 +282,44 @@ function EditorFrameController() {
 		if (!nextCommand) {
 			nextCommand = "";
 		}
-		
+
 		if ( top.we_cmd("eplugin_exit_doc", this.getEditorFrame(editorId).getEditorTransaction() ) ) {
-		
+
 			if (this.EditorFrames[editorId]) {
-				
+
 				// check if there are unsaved changes
 				if (this.getEditorFrame(editorId).getEditorIsHot()) {
 					this.showEditor(editorId);
-					
+
 					if ( !this.getEditorFrame(editorId).EditorExitDocQuestionDialog ) { // open exit_doc_question if not already open
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog = true;
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog = top.we_cmd("exit_doc_question", editorId, this.getEditorFrame(editorId).getEditorContentType(), nextCommand);
-						
+
 					} else {
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog.open();
 					}
-	
+
 				} else {
-	
+
 					// free frame select next active frame
 					this.closeEditorFrame(editorId);
 					top.weMultiTabs.closeTab(editorId);
-					
+
 					if (top.seeMode_edit_include) { // close window in edit_include_mode
 						top.close();
 					}
-					
+
 					if (nextCommand) {
 						eval(nextCommand);
 					}
-	
+
 				}
-				
+
 			} else {
 				top.weMultiTabs.closeTab(editorId);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -341,12 +341,12 @@ function EditorFrameController() {
 		if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
 
 			_UsedEditors = this.getEditorsInUse();
-			
+
 			for (frameId in _UsedEditors) {
-				
+
 				// remove all from editor-plugin
 				top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
-				
+
 				if ( !_UsedEditors[frameId].getEditorIsHot() ) {
 					this.closeDocument(frameId);
 				}
@@ -384,33 +384,33 @@ function EditorFrameController() {
 	 *   nothing
 	 */
 	this.closeAllDocuments = function() {
-		
+
 		if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print $GLOBALS["l_multiEditor"]["eplugin_exit_doc"]; ?>") ) {
-		
+
 			// close all none Hot Editors
 			if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
-	
+
 				_UsedEditors = this.getEditorsInUse();
-	
+
 				for (frameId in _UsedEditors) {
 					// remove from editor plugin
 					top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
 					if ( !_UsedEditors[frameId].getEditorIsHot() ) {
 						this.closeDocument(frameId);
-						
+
 					}
 				}
 			}
-	
+
 			// if all Editors are closed,
 			if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
-	
+
 				if ( (this.EditorWindowsAmount - this.FreeEditorFrames.length) == 1 ) { // only one document open
 					this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("close_all_documents");');
-	
+
 				} else {
 					top.we_cmd("exit_multi_doc_question", 'close_all_documents');
-	
+
 				}
 			} else {
 				return true;
@@ -418,40 +418,40 @@ function EditorFrameController() {
 			return false;
 		}
 	}
-	
+
 	this.closeAllButActiveDocument = function(activeId) {
-		
+
 		if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print $GLOBALS["l_multiEditor"]["eplugin_exit_doc"]; ?>") ) {
-		
+
 			// only do something, if more than one editor is open
 			if ( (this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1  ) {
 				// get active id, if not given
 				if (!activeId) {
 					activeId = this.ActiveEditorFrameId;
-					
+
 				}
-				
+
 				_UsedEditors = this.getEditorsInUse();
 				// remove all from editor plugin
 				for (frameId in _UsedEditors) {
 					if ( frameId != activeId ) {
 						top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
-						
+
 					}
 				}
-				
+
 				_UsedEditors = this.getEditorsInUse();
-				
+
 				// close all none Hot editors
 				for (frameId in _UsedEditors) {
 					if ( frameId != activeId ) {
 						if ( _UsedEditors[frameId].getEditorIsHot() ) {
 							this.closeDocument(frameId, 'top.we_cmd("close_all_but_active_document", "' + activeId + '");');
 							return;
-							
+
 						} else {
 							this.closeDocument(frameId);
-							
+
 						}
 					}
 				}
@@ -487,29 +487,29 @@ function EditorFrameController() {
 				}
 
 			} else if ( this.EditorFrames[frameId].EditorType == "model" ) {
-				
+
 				if ( this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows ) {
 					this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
 				}
 				// unlock document
 				top.we_cmd('unlock',this.EditorFrames[frameId].getEditorDocumentId(),'<?php print $_SESSION["user"]["ID"]; ?>',this.EditorFrames[frameId].getEditorEditorTable(), this.EditorFrames[frameId].getEditorTransaction());
 				top.we_cmd("remove_from_editor_plugin", this.EditorFrames[frameId].getEditorTransaction() );
-				
+
 				if ( this.getEditorFrame(frameId).EditorExitDocQuestionDialog ) {
 					this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 					this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 				}
 			}
-			
+
 			// remove from tree, if possible
 			// deactivate in tree
 			if (	top.treeData
 				&&	top.treeData.table == this.getEditorFrame(frameId).getEditorEditorTable()
 				&&	this.ActiveEditorFrameId == frameId) {
-					
+
 				top.treeData.unselectnode();
 			}
-			
+
 			// about:blank
 			this.EditorFrames[frameId].freeEditor();
 
@@ -595,24 +595,24 @@ function EditorFrameController() {
 			}
 		}
 	}
-	
+
 	this.switchToContentEditor = function() {
 		this.getActiveEditorFrame().switchToContentEditor(2);
 	}
-	
-	
+
+
 	this.switchToNonContentEditor = function() {
 		this.getActiveEditorFrame().switchToContentEditor(1);
 	}
-		
+
 	this.getVisibleEditorFrame = function () {
 		editorFrame = this.getActiveEditorFrame();
 		if (!editorFrame) {
 			return null;
 		}
-		return editorFrame.getContentEditor();	
+		return editorFrame.getContentEditor();
 	}
-	
+
 	this.isEditTab = function () {
 		editorFrame = this.getActiveEditorFrame();
 		if (!editorFrame) {
@@ -717,8 +717,10 @@ function EditorFrameController() {
 	//   integer
 	//--------------------------------------------------------------------
 	this.getNumberOfFreeWindows = function () {
+		if(this.FreeEditorFrames == null){
+			return 0;
+		}
 		return this.FreeEditorFrames.length;
-
 	}
 
 
@@ -958,7 +960,7 @@ function EditorFrame(ref, elementId) {
 	// reload needed?
 	this.EditorReloadNeeded = false;
 	this.EditorReloadAllNeeded = false;
-	
+
 	// exit_doc_question for this document
 	// used in: closeDocument, closeEditorFrame, toggleFrames !!
 	this.EditorExitDocQuestionDialog = false;
@@ -1073,10 +1075,10 @@ function EditorFrame(ref, elementId) {
 	this.getFrameId = function() {
 		return this.FrameId;
 	}
-	
+
 	this.getEditorType = function() {
 		return this.EditorType;
-		
+
 	}
 
 	this.getEditorTransaction = function(){
@@ -1141,7 +1143,7 @@ function EditorFrame(ref, elementId) {
 		return this.EditorDocumentPath;
 
 	}
-	
+
 	this.getEditorDocumentText = function(){
 		return this.EditorDocumentText;
 	}
@@ -1208,23 +1210,23 @@ function EditorFrame(ref, elementId) {
 		this.EditorIsActive = newVal;
 
 		if (newVal) {
-			
+
 			var _theEditorFrame = this.getEditorFrameWindow();
-			
+
 			if ( this.getEditorReloadAllNeeded() ) {
-				
+
 				if (this.getEditorType() == "cockpit") {
 					_theEditorFrame.saveSettings();
 					var _href = _theEditorFrame.location.href;
 					if(_href.charAt(_href.length-1) == "#") _href = _href.substr(0,_href.length-1);
 					_theEditorFrame.location.href=_href;
 					//_theEditorFrame.location.reload();
-					
+
 				} else {
-				
+
 					if ( _theEditorFrame.frames[0] ) {
 						_theEditorFrame.frames[0].location.reload();
-						
+
 					}
 					var contentEditor = editorFrame.getContentEditor();
 					if ( contentEditor ) {
@@ -1239,13 +1241,13 @@ function EditorFrame(ref, elementId) {
 				this.setEditorReloadNeeded(false);
 
 			} else if ( this.getEditorReloadNeeded() ) {
-				
+
 				if (this.getEditorType() == "cockpit") {
 					_theEditorFrame.location.reload();
-					
+
 				} else {
 					top.we_cmd("reload_editpage");
-					
+
 				}
 				this.setEditorReloadNeeded(false);
 			}
@@ -1293,12 +1295,12 @@ function EditorFrame(ref, elementId) {
 	this.setEditorReloadAllNeeded = function(newVal) {
 		this.EditorReloadAllNeeded = newVal;
 	}
-	
+
 	this.switchToContentEditor = function(nr) {
-	
-	
+
+
 		var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
-	
+
 		var frameset = framesets[0]; //this.getEditorFrameWindow().document.getElementById("_editorFrameset");
 		if (!frameset) {
 			return null;
@@ -1317,11 +1319,11 @@ function EditorFrame(ref, elementId) {
 		} else {
 			return;
 		}
-		
+
 		frameset.rows = parts.join(",");
-		
+
 	}
-	
+
 	this.getContentEditorHeightForFrameNr = function(nr) {
 		var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
 		var frameset = framesets[0];
@@ -1335,7 +1337,7 @@ function EditorFrame(ref, elementId) {
 		var parts = rows.split(",");
 		return parts[nr];
 	}
-	
+
 	this.getContentEditor = function() {
 		if (this.getContentEditorHeightForFrameNr(1) == "0") {
 			return this.getEditorFrameWindow().frames[2];

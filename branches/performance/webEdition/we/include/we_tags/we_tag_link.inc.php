@@ -27,7 +27,7 @@ function we_tag_link($attribs, $content){
 	$text = we_getTagAttribute("text", $attribs, "");
 	$imageid = we_getTagAttribute("imageid", $attribs, 0);
 	$id = we_getTagAttribute("id", $attribs);
-
+	
 	// check if target document exists (Bug #7167)
 	if ($id != 0) {
 		$row = getHash("SELECT count(*) as tmp FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());

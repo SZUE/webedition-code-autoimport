@@ -25,6 +25,7 @@ include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/enc_we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_value.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_url.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
@@ -76,7 +77,7 @@ class we_object extends we_document
 		$this->we_document();
         $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
         $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
-		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultDesc","CSS","CacheType","CacheLifeTime");
+		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultDesc","CSS","CacheType","CacheLifeTime");
 		if(defined('DEFAULT_CHARSET')) {
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		}
@@ -146,6 +147,21 @@ class we_object extends we_document
 			}
 
 		}
+		if(isset($this->elements["DefaultanzahlUrl"]["dat"])){
+			$this->DefaultUrl="";
+
+			for($i=0; $i <= $this->elements["DefaultanzahlUrl"]["dat"];$i++){
+				$was = "DefaultUrl_".$i;
+				if($this->elements[$was]["dat"]!=""){ //&& in_array($this->elements[$was]["dat"],$var_flip)
+				if(stristr($this->elements[$was]["dat"], 'unique')){
+					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(($this->elements["unique_".$i]["dat"]>0)?$this->elements["unique_".$i]["dat"]:"16")."%";
+					//echo $this->elements[$was]["dat"];
+				}
+				$this->DefaultUrl .= $this->elements[$was]["dat"];
+				}
+			}
+
+		}
 
 		if(!$this->wasUpdate){
 
@@ -154,6 +170,7 @@ class we_object extends we_document
 			$q .= " OF_ParentID BIGINT NOT NULL, ";
 			$q .= " OF_Text VARCHAR(255) NOT NULL, ";
 			$q .= " OF_Path VARCHAR(255) NOT NULL, ";
+			$q .= " OF_Url VARCHAR(255) NOT NULL, ";
 			$q .= " OF_Workspaces VARCHAR(255) NOT NULL, ";
 			$q .= " OF_ExtraWorkspaces VARCHAR(255) NOT NULL, ";
 			$q .= " OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL, ";
@@ -238,8 +255,14 @@ class we_object extends we_document
 			$this->DefaultValues=serialize($arrt);
 
 			$this->DefaultTitle = isset($this->elements["title"]["dat"]) ? $this->getElement($this->elements["title"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["title"]["dat"],"dat") : "_";
-			$this->DefaultKeywords = isset($this->elements["desc"]["dat"]) ? $this->getElement($this->elements["desc"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["desc"]["dat"],"dat") : "_";
-			$this->DefaultDesc = isset($this->elements["keywords"]["dat"]) ? $this->getElement($this->elements["keywords"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["keywords"]["dat"],"dat") : "_";
+			$this->DefaultDesc = isset($this->elements["desc"]["dat"]) ? $this->getElement($this->elements["desc"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["desc"]["dat"],"dat") : "_";
+			$this->DefaultKeywords = isset($this->elements["keywords"]["dat"]) ? $this->getElement($this->elements["keywords"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["keywords"]["dat"],"dat") : "_";
+
+
+			$this->DefaultUrlfield0 = isset($this->elements["urlfield0"]["dat"]) ? $this->getElement($this->elements["urlfield0"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield0"]["dat"],"dat") : "_";
+			$this->DefaultUrlfield1 = isset($this->elements["urlfield1"]["dat"]) ? $this->getElement($this->elements["urlfield1"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield1"]["dat"],"dat") : "_";
+			$this->DefaultUrlfield2 = isset($this->elements["urlfield2"]["dat"]) ? $this->getElement($this->elements["urlfield2"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield2"]["dat"],"dat") : "_";
+			$this->DefaultUrlfield3 = isset($this->elements["urlfield3"]["dat"]) ? $this->getElement($this->elements["urlfield3"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "_";
 
 			$we_sort = $this->getElement("we_sort");
 
@@ -427,6 +450,12 @@ class we_object extends we_document
 			$this->DefaultTitle=$this->getElement($this->elements["title"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["title"]["dat"],"dat");//$this->elements["title"]["dat"];
 			$this->DefaultDesc=$this->getElement($this->elements["desc"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["desc"]["dat"],"dat");//$this->elements["desc"]["dat"];
 			$this->DefaultKeywords=$this->getElement($this->elements["keywords"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["keywords"]["dat"],"dat");//$this->elements["desc"]["dat"];
+
+
+			$this->DefaultUrlfield0 = isset($this->elements["urlfield0"]["dat"]) ? $this->getElement($this->elements["urlfield0"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield0"]["dat"],"dat") : "_";
+			$this->DefaultUrlfield1 = isset($this->elements["urlfield1"]["dat"]) ? $this->getElement($this->elements["urlfield1"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield1"]["dat"],"dat") : "_";
+			$this->DefaultUrlfield2 = isset($this->elements["urlfield2"]["dat"]) ? $this->getElement($this->elements["urlfield2"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield2"]["dat"],"dat") : "_";
+			$this->DefaultUrlfield3 = isset($this->elements["urlfield3"]["dat"]) ? $this->getElement($this->elements["urlfield3"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "_";
 
 			$arrt["WE_CSS_FOR_CLASS"] = $this->CSS;
 
@@ -1198,6 +1227,21 @@ class we_object extends we_document
 
 			$content .= '</td></tr>';
 		}
+		
+		if($type=="text" || $type=="input" || $type=="date" ){
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>';
+			$content .= '<td width="170" class="defaultfont">';
+			if ($type=="date") {
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield0","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield0]", $GLOBALS["l_we_class"]["urlfield0"], true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+			} else {
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield1","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield1]", $GLOBALS["l_we_class"]["urlfield1"], true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield2","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield2]", $GLOBALS["l_we_class"]["urlfield2"], true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield3","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield3]", $GLOBALS["l_we_class"]["urlfield3"], true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+			}
+			$content .= '</td></tr>';
+		}
+		
+		
 
 		if ($type != "checkbox") {
 			//Pflichtfeld
@@ -1740,7 +1784,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formDefault(){
-		global $l_object, $l_global,$l_object_value;
+		global $l_object, $l_global,$l_object_value,$l_object_url;
 		//$l_global["categorys"]formCategory()
 
 		$var_flip = array_flip($l_object_value);
@@ -1795,6 +1839,64 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$l_object_value,1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 		$select .= '<input type = "hidden" name="we_'.$this->Name.'_input[Defaultanzahl]" value="'.$zahl.'" />';
+		
+		
+		$var_flip = array_flip($l_object_url);
+		$select2 = "";
+		if(isset($this->elements["DefaultanzahlUrl"]["dat"])){
+			$this->DefaultUrl="";
+
+			for($i=0; $i <= $this->elements["DefaultanzahlUrl"]["dat"];$i++){
+				$was = "DefaultUrl_".$i;
+				if($this->elements[$was]["dat"]!=""){ //&& in_array($this->elements[$was]["dat"],$var_flip)
+				if(stristr($this->elements[$was]["dat"], 'unique')){
+					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(( isset($this->elements["unique_".$i]["dat"]) && $this->elements["unique_".$i]["dat"]>0 )?$this->elements["unique_".$i]["dat"]:"16")."%";
+					//echo $this->elements[$was]["dat"];
+				}
+				$this->DefaultUrl .= $this->elements[$was]["dat"];
+				}
+			}
+
+		}
+
+		$all = $this->DefaultUrl;
+		$text1=0;
+		$zahl=0;
+
+		while(!empty($all)){
+			if(preg_match('/^%([^%]+)%/', $all, $regs)){
+				$all = substr($all,strlen($regs[1])+2);
+				$key = $regs[1];
+				if(preg_match('/unique([^%]*)/', $key, $regs)){
+					if(!$regs[1]){
+						$anz = 16;
+					}else{
+						$anz = abs($regs[1]);
+					}
+					$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
+					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
+					$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%unique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+					$select2 .= $this->htmlTextInput("we_".$this->Name."_input[unique_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
+				}else{
+				
+					$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+				}
+			}else if(preg_match('/^([^%]+)/', $all, $regs)){
+				$all = substr($all,strlen($regs[1]));
+				$key = $regs[1];
+				$select2 .= $this->htmlSelect("textwert_".$zahl,$l_object_url,1,"Text","",'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_'.$this->Name.'_input[DefaultUrl_'.$zahl.']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+				$select2 .= $this->htmlTextInput("we_".$this->Name."_input[DefaultUrl_".$zahl."]",40,$key,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
+			}
+
+			$select2 .= "<br>";
+			$zahl ++;
+		}
+
+		$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+		$select2 .= '<input type = "hidden" name="we_'.$this->Name.'_input[DefaultanzahlUrl]" value="'.$zahl.'" />';
+		
+		
+		
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 
 	<tr>
@@ -1803,8 +1905,17 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	<tr>
 		<td colspan="3" >'.$select.'</td>
 	</tr>
-
-
+	
+	<tr>
+		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" class="defaultfont" valign=top>'.$l_object["seourl"].'</td><td>'.getPixel(20,20).'</td>
+	</tr>
+	<tr>
+		<td colspan="3" >'.$select2.'</td>
+	</tr>
 	<tr>
 		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
 	</tr>
@@ -2085,7 +2196,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$f=0;
 
 		if($this->ID){
-			$this->DB_WE->query("SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultKeywords,DefaultValues FROM " . OBJECT_TABLE . " WHERE ID = ".$this->ID);
+			$this->DB_WE->query("SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultKeywords,DefaultValues FROM " . OBJECT_TABLE . " WHERE ID = ".$this->ID);
 
 			$this->DB_WE->next_record();
 
@@ -2131,6 +2242,12 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$this->elements["keywords"]["dat"]=$this->DB_WE->f("DefaultKeywords");
 
 			$this->DefaultText = $this->DB_WE->f("DefaultText");
+			$this->DefaultUrl = $this->DB_WE->f("DefaultUrl");
+			
+			$this->elements["urlfield0"]["dat"]=$this->DB_WE->f("DefaultUrlfield0");
+			$this->elements["urlfield1"]["dat"]=$this->DB_WE->f("DefaultUrlfield1");
+			$this->elements["urlfield2"]["dat"]=$this->DB_WE->f("DefaultUrlfield2");
+			$this->elements["urlfield3"]["dat"]=$this->DB_WE->f("DefaultUrlfield3");
 
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);

@@ -370,19 +370,16 @@ class we_import_files
 							$GLOBALS["DB_WE"]->f("ID"), 
 							$thumbsArray) ? " selected" : "") . '>' . $GLOBALS["DB_WE"]->f("Name") . "</option>\n";
 				}
-				$Thselect .= "</select>\n" . '<input type="hidden" name="thumbs" value="' . $this->thumbs . '" />' . "\n";
-				
-				if (!(defined("ISP_VERSION") && ISP_VERSION)) {
+				$Thselect .= "</select>\n" . '<input type="hidden" name="thumbs" value="' . $this->thumbs . '" />' . "\n";		
 					
-					array_push(
-							$parts, 
-							array(
-								
-									"headline" => $GLOBALS["l_import_files"]["make_thumbs"], 
-									"html" => $Thselect, 
-									"space" => 150
-							));
-				}
+				array_push(
+						$parts, 
+						array(
+							
+								"headline" => $GLOBALS["l_import_files"]["make_thumbs"], 
+								"html" => $Thselect, 
+								"space" => 150
+						));
 				
 				$widthInput = htmlTextInput("width", "10", $this->width, "", '', "text", 60);
 				$heightInput = htmlTextInput("height", "10", $this->height, "", '', "text", 60);

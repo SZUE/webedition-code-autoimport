@@ -44,6 +44,7 @@ $l_we_editor["objectFile"]["response_unpublish_notok"] = "Erreur en deplubliant 
 $l_we_editor["objectFile"]["response_not_published"] = "L'object '%s'n'est pas publié!";
 $l_we_editor["objectFile"]["response_save_notok"] = "Erreur en enregistrant l'object '%s'!";
 $l_we_editor["objectFile"]["response_path_exists"] = "L'object '%s' n'a pas pu être enregistré, parce que qu'il y a déjà un autre object ou répertoire a cet endroit!";
+$l_we_editor["objectFile"]["we_objecturl_exists"] = "The object '%s' could not be saved, because another object with the same URL already exists";//TRANSLATE
 $l_we_editor["objectFile"]["filename_empty"] = "Vous avez pas encore saisi un nom au object!";
 $l_we_editor["objectFile"]["we_filename_notValid"] = "Le nom de l'object indiqué n'est pas valide!\\nPermis sont les lettres de a à z (minuscule et majuscule), les nombre, le soulignage (_), le signe moins (-), le signe plus (-) et le point (.).";
 $l_we_editor["objectFile"]["we_filename_notAllowed"] = "Le nom de l'object indiqué n'est pas permis!";

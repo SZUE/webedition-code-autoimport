@@ -2575,7 +2575,7 @@ function p_r($val) {
 	print "</pre>";
 }
 
-function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
+function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false,$objectseourls=false) {
 
 	if (!$path)
 		$path = $_SERVER["PHP_SELF"];
@@ -2588,22 +2588,14 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
 	if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 		// check if object is published.
-		$published = f(
-										"SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),
-										"Published",
-										$DB_WE);
+		$published = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),"Published",$DB_WE);
 		if (!$published) {
 			$GLOBALS["we_link_not_published"] = 1;
 			return "";
 		}
 	}
 
-	$foo = getHash(
-									"
-		SELECT Workspaces, ExtraWorkspacesSelected
-		FROM " . OBJECT_FILES_TABLE . "
-		WHERE ID=" . abs($id),
-									$DB_WE);
+	$foo = getHash("SELECT Workspaces, ExtraWorkspacesSelected FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id),$DB_WE);
 	if (count($foo) == 0)
 		return "";
 	$showLink = false;
@@ -2620,20 +2612,28 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "") {
 	if ($showLink) {
 
 		$path = getNextDynDoc($path, $pid, $foo["Workspaces"], $foo["ExtraWorkspacesSelected"], $DB_WE);
-		if (!$path)
-			return "";
-		return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
+		if (!$path) 
+			return "";		
+			
+		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
+			$path_parts = pathinfo($path);
+			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+				$path= ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+			} 			
+		}
+		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $objectseourls){
+			$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", "Url", $DB_WE);
+		} else {$objecturl='';}
+		if ($objectseourls && $objecturl!=''){
+			return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+		} else { 
+			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
+		}
 	} else {
 		if ($foo["Workspaces"]) {
 			$fooArr = makeArrayFromCSV($foo["Workspaces"]);
 			$path = id_to_path($fooArr[0], FILE_TABLE, $DB_WE);
-			$path = f(
-											"
-				SELECT Path
-				FROM " . FILE_TABLE . "
-				WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . mysql_real_escape_string($path) . "%'",
-											"Path",
-											$DB_WE);
+			$path = f("SELECT Path FROM " . FILE_TABLE . " WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . mysql_real_escape_string($path) . "%'","Path",$DB_WE);
 			if (!$path)
 				return "";
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
@@ -2683,6 +2683,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = "") {
 }
 
 function parseInternalLinks(&$text, $pid, $path = "") {
+	global $we_editmode, $WE_MAIN_EDITMODE;
 	$DB_WE = new DB_WE();
 
 	if (preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
@@ -2693,19 +2694,22 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 					FROM " . FILE_TABLE . "
 					WHERE ID=" . abs($regs[$i][2]), $DB_WE);
 			} else {
-				$foo = getHash(
-												"
+				$foo = getHash("
 					SELECT Path
 					FROM " . FILE_TABLE . "
-					WHERE ID=" . abs($regs[$i][2]) . " AND Published > 0",
-												$DB_WE);
+					WHERE ID=" . abs($regs[$i][2]) . " AND Published > 0",$DB_WE);
 			}
 
 			if (isset($foo["Path"])) {
+				$_path = $foo["Path"];
+				$path_parts = pathinfo($_path);
+				if(!($we_editmode || $WE_MAIN_EDITMODE) && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+					$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;			
+				}
 				$text = str_replace(
-												$regs[$i][1] . '="document:' . $regs[$i][2] . $regs[$i][3],
-												$regs[$i][1] . '="' . $foo["Path"] . $regs[$i][3],
-												$text);
+							$regs[$i][1] . '="document:' . $regs[$i][2] . $regs[$i][3],
+							$regs[$i][1] . '="' . $_path . $regs[$i][3],
+							$text);
 			} else {
 				$text = eregi_replace('<a [^>]*href="document:' . $regs[$i][2] . '"[^>]*>([^<]+)</a>', '\1', $text);
 				$text = eregi_replace('<a [^>]*href="document:' . $regs[$i][2] . '"[^>]*>', '', $text);
@@ -2730,8 +2734,10 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 	}
 	if (defined("OBJECT_TABLE")) {
 		if (preg_match_all('/href="object:(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
+			$hidedirindex = defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE;
+			$objectseourls = defined('WYSIWYGLINKS_OBJECTSEOURLS') && WYSIWYGLINKS_OBJECTSEOURLS;
 			for ($i = 0; $i < sizeof($regs); $i++) {
-				$href = getHrefForObject($regs[$i][1], $pid, $path);
+				$href = getHrefForObject($regs[$i][1], $pid, $path,"",$hidedirindex,$objectseourls);
 				if (isset($GLOBALS["we_link_not_published"])) {
 					unset($GLOBALS["we_link_not_published"]);
 				}
@@ -3504,13 +3510,6 @@ function getDoctypeQuery($db = "") {
 		$db = new DB_WE();
 	}
 
-	$hideDts = '';
-	if (defined('ISP_VERSION') && ISP_VERSION && $GLOBALS["_isp_hide_doctypes"]) {
-		$hideDts = ' AND DocType NOT IN ("' . implode('","', $GLOBALS["_isp_hide_doctypes"]) . '")';
-	}
-
-	$q = "WHERE 1 $hideDts ORDER BY DocType";
-
 	$paths = array();
 	$ws = get_ws(FILE_TABLE);
 	if ($ws) {
@@ -3533,8 +3532,8 @@ function getDoctypeQuery($db = "") {
 		}
 	}
 	if (is_array($paths) && count($paths) > 0) {
-		$q = "WHERE ((" . implode(" OR ", $paths) . ") OR ParentPath='') $hideDts ORDER BY DocType";
-	}
+		$q = "WHERE ((" . implode(" OR ", $paths) . ") OR ParentPath='') ORDER BY DocType";
+	} else $q='';
 
 	return $q;
 }

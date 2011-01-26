@@ -1030,6 +1030,9 @@ class we_root extends we_class
 	function i_filenameDouble(){
 		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Filename='".$this->Filename."' AND ID != '".$this->ID."'","ID",new DB_WE());
 	}
+	function i_urlDouble(){
+		return false;
+	}
 
 
 	### check if ParentPath is diffrent as ParentID, so we need to look what ParentID it is.

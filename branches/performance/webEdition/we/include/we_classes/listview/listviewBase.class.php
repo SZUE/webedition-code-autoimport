@@ -19,9 +19,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db_tools.inc.php");
-if (defined("CUSTOMER_FILTER_TABLE")) {
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
+if (defined('CUSTOMER_FILTER_TABLE')) {
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
 
 }
@@ -31,7 +31,7 @@ if (defined("CUSTOMER_FILTER_TABLE")) {
 
 */
 
-$GLOBALS["we_listviews_array"] = array();
+$GLOBALS['we_listviews_array'] = array();
 
 /**
 * class    listviewBase
@@ -46,23 +46,23 @@ class listviewBase{
 	var $rows = -1;        /* Number of rows */
 	var $cols = 0;        /* Number of cols */
 	var $start = 0;        /* Where to start output */
-	var $search = "";      /* search words */
+	var $search = '';      /* search words */
 	var $offset = 0;       /* start offset of first page */
-	var $order = "";       /* Order string */
+	var $order = '';       /* Order string */
 	var $desc = false;     /* set to true, if order should be descendend */
-	var $cats = "";        /* category string */
-	var $catOr = false;    /* set to true if it should be an "OR condition" e.g. categories="value1" OR categories="value2" */
+	var $cats = '';        /* category string */
+	var $catOr = false;    /* set to true if it should be an 'OR condition' e.g. categories='value1' OR categories='value2' */
 	var $anz_all = 0;      /* total number of matches */
 	var $anz = 0;          /* number of rows in page */
-	var $workspaceID = ""; /* commaseperated string of id's of workspace */
+	var $workspaceID = ''; /* commaseperated string of id's of workspace */
 	var $count = 0;        /* internal counter */
 	var $Record = array(); /* array to store results */
-	var $ClassName = "listviewBase"; /* Name of class */
+	var $ClassName = 'listviewBase'; /* Name of class */
 	var $close_a = true;   /* close </a> when endtag used */
 	var $customerFilterType = 'off'; // shall we control customer-filter?
 	var $BlockInside = false; // set to true if listview is inside a block
 	var $calendar_struct=array();
-	var $id = "";
+	var $id = '';
 
 
 	/**
@@ -80,11 +80,11 @@ class listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function listviewBase($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $cats="", $catOr=false, $workspaceID="0", $cols=0, $calendar="", $datefield="", $date="",$weekstart="", $categoryids='', $customerFilterType='all', $id=""){
+	function listviewBase($name='0', $rows=999999999, $offset=0, $order='', $desc=false, $cats='', $catOr=false, $workspaceID='0', $cols=0, $calendar='', $datefield='', $date='',$weekstart='', $categoryids='', $customerFilterType='all', $id=''){
 
 		/* triggers scheduler */
-		if(defined("SCHEDULE_TABLE") && !isset($GLOBALS["scheduler_already_triggered"])){
-			$GLOBALS["scheduler_already_triggered"] = 1;
+		if(defined('SCHEDULE_TABLE') && !isset($GLOBALS['scheduler_already_triggered'])){
+			$GLOBALS['scheduler_already_triggered'] = 1;
 			trigger_schedule();
 		}
 		$this->name = $name;
@@ -105,28 +105,28 @@ class listviewBase{
 		$this->workspaceID = $workspaceID ? $workspaceID : "";
 		$this->customerFilterType = $customerFilterType;
 		$this->id = $id;
-		
+
 		$this->calendar_struct=array(
-			"calendar"=>$calendar,
-			"defaultDate"=>"",
-			"date"=>-1,
-			"calendarCount"=>"",
-			"datefield"=>"",
-			"start_date"=>"",
-			"end_date"=>"",
-			"storage"=>array(),
-			"forceFetch"=>false,
-			"count"=>0,
-			"weekstart"=>0
+			'calendar'=>$calendar,
+			'defaultDate'=>'',
+			'date'=>-1,
+			'calendarCount'=>'',
+			'datefield'=>'',
+			'start_date'=>'',
+			'end_date'=>'',
+			'storage'=>array(),
+			'forceFetch'=>false,
+			'count'=>0,
+			'weekstart'=>0
 		);
-		if($calendar!=""){
-			$this->calendar_struct["datefield"]=$datefield!="" ? $datefield : "###Published###";
-			if($date=="") $this->calendar_struct["defaultDate"]=time();
-			else $this->calendar_struct["defaultDate"]=strtotime($date);
-			if($weekstart!=""){
-				$wdays=array("sunday","monday","tuesday","wednesday","thursday","friday","saturday");
+		if($calendar!=''){
+			$this->calendar_struct['datefield']=$datefield!='' ? $datefield : '###Published###';
+			if($date=='') $this->calendar_struct['defaultDate']=time();
+			else $this->calendar_struct['defaultDate']=strtotime($date);
+			if($weekstart!=''){
+				$wdays=array('sunday','monday','tuesday','wednesday','thursday','friday','saturday');
 				$match=array_search($weekstart,$wdays);
-				if($match!==false) $this->calendar_struct["weekstart"]=$match;
+				if($match!==false) $this->calendar_struct['weekstart']=$match;
 			}
 
 
@@ -138,9 +138,9 @@ class listviewBase{
 		if ($this->id) {
 			return " AND $fieldname IN(".$this->id.") ";
 		}
-		return "";		
+		return "";
 	}
-	
+
 	/**
 	 * next_record()
 	 * @desc    selects next row and returns true. if no more row exists, it returns false
@@ -310,18 +310,18 @@ class listviewBase{
 		}
 	}
 
-	function we_makeQueryString($queryString="",$filter="") {
+	function we_makeQueryString($queryString='',$filter='') {
 		$usedKeys = array();
 		if($filter){
-		    $filterArr = explode(",",$filter);
+		    $filterArr = explode(',',$filter);
 		} else {
 		    $filterArr = array();
 		}
-		array_push($filterArr,"edit_object");
-		array_push($filterArr,"edit_document");
-		array_push($filterArr,"we_editObject_ID");
-		array_push($filterArr,"we_editDocument_ID");
-		array_push($filterArr,"we_transaction");
+		array_push($filterArr,'edit_object');
+		array_push($filterArr,'edit_document');
+		array_push($filterArr,'we_editObject_ID');
+		array_push($filterArr,'we_editDocument_ID');
+		array_push($filterArr,'we_transaction');
 		if($queryString) {
 			$foo = explode("&",$queryString);
 			$queryString = "";
@@ -330,17 +330,15 @@ class listviewBase{
 				array_push($usedKeys,$key);
 				$queryString .= $key."=".rawurlencode($val)."&";
 			}
-			$queryString = ereg_replace('(.*)&$','\1',$queryString);
+			$queryString = rtrim($queryString,'&');
 		}
 		$url_tail = "";
 		if(isset($_GET)) {
 			foreach($_GET as $key => $val){
 				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (!ereg("^we_ui_",$key))) {
 					if (is_array($val)) {
-						for($i=0;$i<sizeof($val);$i++){
-						    if(isset($key[$i])){
-						        $url_tail .= "$key"."[".$i."]=". (isset($val) && isset($val[$i]) ? rawurlencode($val[$i]) : "") ."&";
-						    }
+						foreach($val as $ikey => $ival){
+							$url_tail .= "$key"."[".$ikey."]=". rawurlencode($ival) ."&";
 						}
 					} else {
 						$url_tail .= "$key=".rawurlencode($val)."&";
@@ -352,10 +350,8 @@ class listviewBase{
 			foreach($_POST as $key => $val){
 				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (!ereg("^we_ui_",$key))) {
 					if (is_array($val)) {
-						for($i=0;$i<sizeof($val);$i++){
-						    if(isset($key[$i])){
-						        $url_tail .= "$key"."[".$i."]=". (isset($val) && isset($val[$i]) ? rawurlencode($val[$i]) : "") ."&";
-						    }
+						foreach($val as $ikey => $ival){
+							$url_tail .= "$key"."[".$ikey."]=". rawurlencode($ival) ."&";
 						}
 					} else {
 						$url_tail .= "$key=".rawurlencode($val)."&";
@@ -364,7 +360,7 @@ class listviewBase{
 			}
 		}
 		$url_tail .= $queryString;
-		$url_tail = ereg_replace('(.*)&$','\1',$url_tail);
+		$url_tail = rtrim($url_tail,'&');
 		return $url_tail;
 	}
 
@@ -437,20 +433,29 @@ class listviewBase{
 
 	function shouldPrintEndTR(){
 		if($this->cols){
-			return (($this->count) % $this->cols == 0) || ($this->count == $this->anz);
+			return ( (($this->count) % $this->cols) == 0) || ($this->count == $this->anz);
 		}
 		return false;
 	}
 
 	function shouldPrintStartTR(){
 		if($this->cols){
-			return ($this->count-1) % $this->cols == 0;
+			return (($this->count-1) % $this->cols) == 0;
 		}
 		return false;
 	}
-
+	
 	function tdEmpty(){
 		return ($this->count > $this->anz);
+	}
+	function adjustRows(){
+		if ($this->cols && $this->anz_all) {
+			// Bugfix #1715 und auch #4965
+			$_rows = floor($this->anz_all / $this->cols);
+			$_rest = ($this->anz_all % $this->cols);
+			$_add = $_rest ? $this->cols - $_rest : 0;
+			$this->rows = min($this->rows, $_rows+$_add);
+		}
 	}
 
 	function getCalendarField($calendar,$type){
@@ -641,6 +646,3 @@ class listviewBase{
 	}
 
 }
-
-
-?>

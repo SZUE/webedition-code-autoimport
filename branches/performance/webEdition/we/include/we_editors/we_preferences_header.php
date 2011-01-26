@@ -54,36 +54,31 @@ if (we_hasPerm("ADMINISTRATOR") || we_hasPerm("NEW_TEMPLATE")) {
 	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_cache"], ($tabname=="setting_cache" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('cache');"));
 }
 
-if (we_hasPerm("EDIT_SETTINGS_DEF_EXT") && !(defined("ISP_VERSION") && ISP_VERSION)) {
+if (we_hasPerm("EDIT_SETTINGS_DEF_EXT") ) {
 	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_extensions"], ($tabname=="setting_extensions" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('extensions');"));
 }
 
-if( !(defined("ISP_VERSION") && ISP_VERSION) ){
-	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_editor"], ($tabname=="setting_editor" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('editor');"));
-}
+
+$we_tabs->addTab(new we_tab("#", $l_prefs["tab_editor"], ($tabname=="setting_editor" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('editor');"));
+
 
 if (we_hasPerm("ADMINISTRATOR")) {
-    if( !(defined("ISP_VERSION") && ISP_VERSION) ){
-		$we_tabs->addTab(new we_tab("#", $l_prefs["tab_proxy"], ($tabname=="setting_proxy" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('proxy');"));
-    }
+    
+	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_proxy"], ($tabname=="setting_proxy" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('proxy');"));
     $we_tabs->addTab(new we_tab("#", $l_prefs["tab_advanced"], ($tabname=="setting_advanced" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('advanced');"));
     $we_tabs->addTab(new we_tab("#", $l_prefs["tab_system"], ($tabname=="setting_system" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('system');"));
+	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_seolinks"], ($tabname=="setting_seolinks" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('seolinks');"));
     $we_tabs->addTab(new we_tab("#", $l_prefs["module_activation"]["headline"], ($tabname=="setting_active_integrated_modules" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('active_integrated_modules');"));
 	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_language"], ($tabname=="setting_language" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('language');"));
 	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_countries"], ($tabname=="setting_countries" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('countries');"));
 
- 	if( !(defined("ISP_VERSION") && ISP_VERSION) ){
-		$we_tabs->addTab(new we_tab("#", $l_prefs["tab_error_handling"], ($tabname=="tab_error_handling" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('error_handling');"));
-	}
-	if( !(defined("ISP_VERSION") && ISP_VERSION) ){
-		$we_tabs->addTab(new we_tab("#", $l_prefs["backup"], ($tabname=="setting_backup" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('backup');"));
-	}
-	if( !(defined("ISP_VERSION") && ISP_VERSION) ){
-		$we_tabs->addTab(new we_tab("#", $l_prefs["validation"], ($tabname=="setting_validation" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('validation');"));
-	}
-	if(we_hasPerm("ADMINISTRATOR")) {
-    	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_email"], ($tabname=="setting_email" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('email');"));
-	}
+ 	$we_tabs->addTab(new we_tab("#", $l_prefs["tab_error_handling"], ($tabname=="tab_error_handling" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('error_handling');"));
+	$we_tabs->addTab(new we_tab("#", $l_prefs["backup"], ($tabname=="setting_backup" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('backup');"));
+	$we_tabs->addTab(new we_tab("#", $l_prefs["validation"], ($tabname=="setting_validation" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('validation');"));
+	
+
+    $we_tabs->addTab(new we_tab("#", $l_prefs["tab_email"], ($tabname=="setting_email" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('email');"));
+	
 	
 }
 // add message_reporting tab

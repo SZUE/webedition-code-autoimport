@@ -47,6 +47,7 @@ $l_perm["workpermissions"]["MOVE_DOCUMENT"] = "Der Benutzer darf Dokumente versc
 $l_perm["workpermissions"]["MOVE_TEMPLATE"] = "Der Benutzer darf Vorlage verschieben";
 $l_perm["workpermissions"]["BROWSE_SERVER"] = "Der Benutzer darf die Browse Server Funktion nutzen";
 $l_perm["workpermissions"]["EDIT_DOCTYPE"] = "Der Benutzer darf Dokument-Typen ändern";
+$l_perm["workpermissions"]["EDIT_DOCEXTENSION"] = "Der Benutzer darf die Datei-Erweiterung eines Dokumentes ändern";
 $l_perm["workpermissions"]["EDIT_KATEGORIE"] = "Der Benutzer darf Kategorien ändern";
 $l_perm["workpermissions"]["EXPORT"] = "Der Benutzer darf ein Backup auf dem Server und der lokalen Festplatte erstellen";
 $l_perm["workpermissions"]["EXPORTNODOWNLOAD"] = "Der Benutzer darf ein Backup auf dem Server erstellen";

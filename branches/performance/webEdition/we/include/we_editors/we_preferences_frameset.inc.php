@@ -72,6 +72,7 @@ if (we_hasPerm("ADMINISTRATOR")) {
 		case \"proxy\":
 		case \"advanced\":
 		case \"system\":
+		case \"seolinks\":
 		case \"error_handling\":
 		case \"backup\":
 		case \"validation\":
@@ -101,6 +102,7 @@ $_javascript .= <<< END_OF_SCRIPT
 			we_preferences.document.getElementById('setting_proxy').style.display = 'none';
 			we_preferences.document.getElementById('setting_advanced').style.display = 'none';
 			we_preferences.document.getElementById('setting_system').style.display = 'none';
+			we_preferences.document.getElementById('setting_seolinks').style.display = 'none';
 			we_preferences.document.getElementById('setting_error_handling').style.display = 'none';
 			//we_preferences.document.getElementById('setting_modules').style.display = 'none';
 			we_preferences.document.getElementById('setting_backup').style.display = 'none';

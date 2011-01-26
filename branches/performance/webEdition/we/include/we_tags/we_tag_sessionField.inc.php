@@ -243,15 +243,12 @@ function we_tag_sessionField($attribs, $content) {
 			}
 			return we_redirect_tagoutput($orgVal, $nameTo, $to);
 		case 'hidden':
+			$usevalue = we_getTagAttribute('usevalue',$attribs,'false',true);
+			$languageautofill = we_getTagAttribute('languageautofill', $attribs, 'false', true);
 			$_hidden['type'] = 'hidden';
 			$_hidden['name'] = 's[' . $name . ']';
-			$_hidden['value'] = $orgVal;
+			$_hidden['value'] = ($usevalue?$value:$orgVal);
 			$_hidden['xml'] = $xml;
-			$usevalue = we_getTagAttribute("usevalue",$attribs,"false",true);
-			if ($usevalue){
-				$_hidden['value'] = $value;
-			}
-			$languageautofill = we_getTagAttribute('languageautofill', $attribs, 'false', true);
 			if ($languageautofill) {
 				$docAttr = we_getTagAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);

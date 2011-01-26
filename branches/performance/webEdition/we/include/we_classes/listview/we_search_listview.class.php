@@ -37,6 +37,8 @@ class we_search_listview extends listviewBase {
 	var $ClassName = "we_search_listview";
 	var $customerFilterType = 'off';
 	var $languages = ""; //string of Languages, separated by ,
+	var $objectseourls = false;
+	var $hidedirindex = false;
 	
 	/**
 	 * we_search_listview()
@@ -57,7 +59,7 @@ class we_search_listview extends listviewBase {
 	 *
 	 */
 
-	function we_search_listview($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off',$languages=''){
+	function we_search_listview($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off',$languages='',$hidedirindex=false,$objectseourls=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 		$this->customerFilterType = $customerFilterType;
@@ -76,7 +78,8 @@ class we_search_listview extends listviewBase {
 		} else {
 			$where_lang = '';
 		}
-
+		$this->objectseourls=$objectseourls;
+		$this->hidedirindex=$hidedirindex;
 
 		// correct order
 		$orderArr = array();
@@ -220,8 +223,8 @@ class we_search_listview extends listviewBase {
 
 		}
 		$this->DB_WE->query($q);
-		$this->anz = $this->DB_WE->num_rows();
-
+		$this->anz = $this->DB_WE->num_rows();		
+		$this->adjustRows();
 
 	}
 

@@ -429,9 +429,13 @@ function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", 
 	}
 }
 
-function getExtensionPopup($name, $selected, $extensions, $width = "", $attribs = "")
+function getExtensionPopup($name, $selected, $extensions, $width = "", $attribs = "",$permission=true)
 {
-	
+	$disabled='';
+    if (!$permission) {
+    	$disabled .= ' disabled="disabled "';
+        $attribs .= $disabled;
+    }
 	if ((isset($extensions)) && (sizeof($extensions) > 1)) {
 		$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . htmlTextInput(
 				$name, 
@@ -442,7 +446,7 @@ function getExtensionPopup($name, $selected, $extensions, $width = "", $attribs 
 				"text", 
 				$width / 2, 
 				"0", 
-				"top") . '</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onChange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
+				"top") . '</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onChange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 		for ($i = 0; $i < sizeof($extensions); $i++) {
 			$out .= '<option>' . $extensions[$i] . "\n";
 		}
