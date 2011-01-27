@@ -86,9 +86,9 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
  <script language="JavaScript" type="text/javascript">
 
  var hot = 0;
- 
+
  parent.document.title = "<?php print $title; ?>";
- 
+
 function doUnload() {
 	if (!!jsWindow_count) {
 		for (i = 0; i < jsWindow_count; i++) {
@@ -96,7 +96,7 @@ function doUnload() {
 		}
 	}
 }
-			
+
  function we_cmd(){
   var args = "";
 
@@ -447,9 +447,9 @@ fr.write("&nbsp;");
 					print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto>';
 				}
 				?>
-		<frame src="UntitledFrame-5"></frameset>
+		</frameset>
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize>
-	</frameset><noframes></noframes>
+	</frameset>
 <?php } else { ?>
 	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize>
