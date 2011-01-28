@@ -1999,27 +1999,33 @@ class we_objectFile extends we_document
 		$foo = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 
 		if (isset($foo["DefaultTitle"]) && $foo["DefaultTitle"] && strpos($foo["DefaultTitle"], '_')) {
-			list($f,$t) = explode("_", $foo["DefaultTitle"]);
-			if ($f !== '' && isset($t) && $t !== '') {
-				$elem = $this->geFieldValue($t, $f);
+			preg_match('/(.+?)_(.*)/',$foo["DefaultTitle"],$regs);
+			$type= $regs[1];
+			$name= $regs[2];
+			if ($type !== '' && isset($name) && $name !== '') {
+				$elem = $this->geFieldValue($name, $type);
 				$this->setElement("Title", $elem);
 			}
 		}
 
 		if (isset($foo["DefaultDesc"]) && $foo["DefaultDesc"]) {
-			list($f,$d) = explode("_", $foo["DefaultDesc"]);
-			if ($f !== '' && $d !== '') {
-				$elem = $this->geFieldValue($d, $f);
+			preg_match('/(.+?)_(.*)/',$foo["DefaultDesc"],$regs);
+			$type= $regs[1];
+			$name= $regs[2];
+			if ($type !== '' && isset($name) && $name !== '') {
+				$elem = $this->geFieldValue($name, $type);
 				$this->setElement("Description", $elem);
 			}
 		}
 
 		if (isset($foo["DefaultKeywords"]) && $foo["DefaultKeywords"]) {
-			list($f,$k) = explode("_", $foo["DefaultKeywords"]);
-			if ($f !== '' && $k !== '') {
-				$elem = $this->geFieldValue($k, $f);
+			preg_match('/(.+?)_(.*)/',$foo["DefaultKeywords"],$regs);
+			$type= $regs[1];
+			$name= $regs[2];
+			if ($type !== '' && isset($name) && $name !== '') {
+				$elem = $this->geFieldValue($name, $type);
 				$this->setElement("Keywords", $elem);
-			}	
+			}
 		}
 	}
 	
@@ -2028,27 +2034,36 @@ class we_objectFile extends we_document
 		$foo = getHash("SELECT DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3 FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		if(isset($foo["DefaultUrl"]) && $foo["DefaultUrl"]){		
 			if (isset($foo["DefaultUrlfield0"]) && $foo["DefaultUrlfield0"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield0"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield0 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield0"],$regs);
+				$type= $regs[1];
+				$name= $regs[2];
+				if ($type !== '' && isset($name) && $name !== '') {
+					$urlfield0 = $this->geFieldValue($name, $type);
 				}
 			}
 			if (isset($foo["DefaultUrlfield1"]) && $foo["DefaultUrlfield1"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield1"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield1 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield1"],$regs);
+				$type= $regs[1];
+				$name= $regs[2];
+				if ($type !== '' && isset($name) && $name !== '') {
+					$urlfield1 = $this->geFieldValue($name, $type);
 				}
+				
 			}
 			if (isset($foo["DefaultUrlfield2"]) && $foo["DefaultUrlfield2"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield2"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield2 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield2"],$regs);
+				$type= $regs[1];
+				$name= $regs[2];
+				if ($type !== '' && isset($name) && $name !== '') {
+					$urlfield2 = $this->geFieldValue($name, $type);
 				}
 			}
 			if (isset($foo["DefaultUrlfield3"]) && $foo["DefaultUrlfield3"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield3"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield3 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield3"],$regs);
+				$type= $regs[1];
+				$name= $regs[2];
+				if ($type !== '' && isset($name) && $name !== '') {
+					$urlfield3 = $this->geFieldValue($name, $type);
 				}
 			}
 			$text = $foo["DefaultUrl"];

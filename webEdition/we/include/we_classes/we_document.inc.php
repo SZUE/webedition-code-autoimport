@@ -1070,14 +1070,13 @@ class we_document extends we_root {
 				if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
 					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", false);
 				} else {
-					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
-				}
-				
+					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", false);
+				}		
 				
 				if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
 					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", false);
 				} else {
-					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
+					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", false);
 				}
 	
 
