@@ -73,7 +73,7 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
         print "<frame src='edit_shop_article_extend.php?typ=document' name='edbody' scrolling=auto>";
        }
       } ?>
-   <frame src="UntitledFrame-11"></frameset><noframes></noframes>
+   </frameset>
   <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
  </body>
 </html>
