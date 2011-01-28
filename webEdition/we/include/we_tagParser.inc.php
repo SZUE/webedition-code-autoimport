@@ -1008,10 +1008,10 @@ if(isset($weTagListviewCache)) {
 		}
 		if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
 			$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "true", false);
-		} else {p_r($attribs);
+		} else {
 			$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", false);
 		}
-		p_r('x'.$objectseourls.'y');
+		
 		$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
