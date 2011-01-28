@@ -414,7 +414,7 @@ class we_listview_object extends listviewBase {
 					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR. $this->DB_WE->Record['OF_Url'];
 					}				
-				} else {
+				} else {p_r('x'. defined('NAVIGATION_DIRECTORYINDEX_NAMES') .'y');
 					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->DB_WE->Record["we_WE_PATH"] = $this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					} else {
