@@ -2622,12 +2622,16 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 				$path= ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
 			} 			
-		}
+		}	
 		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $objectseourls){
 			$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", "Url", $DB_WE);
 		} else {$objecturl='';}
 		if ($objectseourls && $objecturl!=''){
-			return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+			if($hidedirindex && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
+				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+			} else {
+				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+			}
 		} else { 
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
 		}
