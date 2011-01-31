@@ -27,7 +27,7 @@
  */
 
 $l_object_url[""] = "----"; // TRANSLATE
-$l_object_url["%unique%"] = "Uniek";
+$l_object_url["%urlunique%"] = "Uniek";
 $l_object_url["%d%"] = "Dag";
 $l_object_url["%m%"] = "Maand (01-12)";
 $l_object_url["%n%"] = "Maand (1-12)";

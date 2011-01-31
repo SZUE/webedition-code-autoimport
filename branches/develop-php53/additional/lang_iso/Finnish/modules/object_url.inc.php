@@ -27,7 +27,7 @@
  */
 
 $l_object_url[""] = "----";
-$l_object_url["%unique%"] = "Uniikki";
+$l_object_url["%urlunique%"] = "Uniikki";
 $l_object_url["%d%"] = "Päivä";
 $l_object_url["%m%"] = "Kuukausi (01-12)";
 $l_object_url["%n%"] = "Kuukausi (1-12)";
