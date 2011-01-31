@@ -137,6 +137,7 @@ class we_objectFile extends we_document
 	}
 	function we_rewrite() {
 		$this->setLanguage();
+		$this->setUrl();
 		return we_document::we_rewrite();
 		
 	}
@@ -535,7 +536,7 @@ class we_objectFile extends we_document
 			$this->ParentID = $rootDirId;
 			$this->ParentPath = id_to_path($rootDirId, OBJECT_FILES_TABLE);
 		}
-
+		$this->setUrl();
 		$content =  '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$this->formInputField("","Text",$l_object["objectname"],30,388,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
