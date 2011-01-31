@@ -138,6 +138,9 @@ class we_objectFile extends we_document
 	function we_rewrite() {
 		$this->setLanguage();
 		$this->setUrl();
+		if(!$this->DB_WE->query("UPDATE ".$this->Table." SET Url='".$this->Url."' WHERE ID='".$this->ID."'")) return false; 
+		if(!$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Url='".$this->Url."' WHERE OF_ID='".$this->ID."'")) return false;
+		
 		return we_document::we_rewrite();
 		
 	}

@@ -48,8 +48,8 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 			if ($searchfor){
-				$searchfor = $path_parts['filename'].DIRECTORY_SEPARATOR.$searchfor;
-			} else $searchfor = $path_parts['filename'];
+				$searchfor = $path_parts['basename'].DIRECTORY_SEPARATOR.$searchfor;
+			} else $searchfor = $path_parts['basename'];
 			if(!$displayid && $hiddendirindex){
 				foreach($dirindexarray as $dirindex){
 					$display=$path_parts['dirname'].DIRECTORY_SEPARATOR.$dirindex;
@@ -57,7 +57,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 					if($displayidtest)$displayid = $displayidtest;
 				}
 			}		
-			if($displayid){		
+			if($displayid){
 				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchfor) . "' LIMIT 1", "ID", $db));
 				if ($objectid){
 					$notfound=false;
@@ -70,8 +70,8 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		}
 		if($notfound && $path_parts['dirname']=='/' && $hiddendirindex){
 			if ($searchfor){
-				$searchfor = $path_parts['filename'].DIRECTORY_SEPARATOR.$searchfor;
-			} else $searchfor = $path_parts['filename'];
+				$searchfor = $path_parts['basename'].DIRECTORY_SEPARATOR.$searchfor;
+			} else $searchfor = $path_parts['basename'];
 			
 			foreach($dirindexarray as $dirindex){
 				$display=$path_parts['dirname'].$dirindex;
@@ -86,7 +86,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		if(!$notfound){
 			$_REQUEST=array_merge($_REQUEST,$myRequest);
 			$_REQUEST['we_objectID']=$objectid;
-			unset($GLOBALS["WE_MAIN_DOC"]);
+			unset($GLOBALS["WE_MAIN_DOC"]);unset($GLOBALS["we_doc"]);
 			header("HTTP/1.0 200 OK", true,200);
 			header("Status: 200 OK", true,200);
 			include($_SERVER["DOCUMENT_ROOT"] . $display);
