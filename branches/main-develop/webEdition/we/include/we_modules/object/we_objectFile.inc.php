@@ -137,6 +137,7 @@ class we_objectFile extends we_document
 	}
 	function we_rewrite() {
 		$this->setLanguage();
+		$this->setUrl();
 		return we_document::we_rewrite();
 		
 	}
@@ -535,7 +536,7 @@ class we_objectFile extends we_document
 			$this->ParentID = $rootDirId;
 			$this->ParentPath = id_to_path($rootDirId, OBJECT_FILES_TABLE);
 		}
-
+		$this->setUrl();
 		$content =  '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$this->formInputField("","Text",$l_object["objectname"],30,388,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
@@ -564,6 +565,24 @@ class we_objectFile extends we_document
 						</td>
 					<td>&nbsp;
 						</td>
+				</tr>
+			</table></td>
+	</tr>
+	<tr>
+		<td>
+			'.getPixel(20,4).'</td>
+		<td>
+			'.getPixel(20,2).'</td>
+		<td>
+			'.getPixel(100,2).'</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="defaultfont">'.$l_object["seourl"].':</td>
+					<td class="defaultfont">&nbsp;</td>
+					<td class="defaultfont">&nbsp;'.$this->Url.'</td>
 				</tr>
 			</table></td>
 	</tr>
@@ -2053,15 +2072,40 @@ class we_objectFile extends we_document
 				}
 			}
 			$text = $foo["DefaultUrl"];
-			if(preg_match('/%unique([^%]*)%/',$text,$regs)){
+			if(preg_match('/%urlunique([^%]*)%/',$text,$regs)){
 				if(!$regs[1]){
 					$anz = 16;
 				}else{
 					$anz = abs($regs[1]);
 				}
 				$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
-				$text = preg_replace('/%unique[^%]*%/',$unique,$text);
+				$text = preg_replace('/%urlunique[^%]*%/',$unique,$text);
 			}
+			if(preg_match('/%urlfield1([^%]*)%/',$text,$regs)){
+				if(!$regs[1]){
+					$anz = 64;
+				}else{
+					$anz = abs($regs[1]);
+				}				
+				$text = preg_replace('/%urlfield1[^%]*%/',substr($urlfield1,0,$anz),$text);
+			}
+			if(preg_match('/%urlfield2([^%]*)%/',$text,$regs)){
+				if(!$regs[1]){
+					$anz = 64;
+				}else{
+					$anz = abs($regs[1]);
+				}				
+				$text = preg_replace('/%urlfield2[^%]*%/',substr($urlfield2,0,$anz),$text);
+			}
+			if(preg_match('/%urlfield3([^%]*)%/',$text,$regs)){
+				if(!$regs[1]){
+					$anz = 64;
+				}else{
+					$anz = abs($regs[1]);
+				}				
+				$text = preg_replace('/%urlfield3[^%]*%/',substr($urlfield3,0,$anz),$text);
+			}
+			
 			if(strpos($text,'%ID%')!==false){
 				$text = str_replace('%ID%',"".$this->ID,$text);
 			}
@@ -2083,16 +2127,18 @@ class we_objectFile extends we_document
 			if(strpos($text,'%FY%')!==false){$text = str_replace('%FY%',date("Y",$urlfield0),$text);}
 			if(strpos($text,'%Fn%')!==false){$text = str_replace('%Fn%',date("n",$urlfield0),$text);}
 			if(strpos($text,'%Fh%')!==false){$text = str_replace('%Fh%',date("h",$urlfield0),$text);}
-			if(strpos($text,'%urlfield1%')!==false){$text = str_replace('%urlfield1%',$urlfield1,$text);}
-			if(strpos($text,'%urlfield2%')!==false){$text = str_replace('%urlfield2%',$urlfield2,$text);}
-			if(strpos($text,'%urlfield3%')!==false){$text = str_replace('%urlfield3%',$urlfield3,$text);}
 			
 			if(strpos($text,'%DirSep%')!==false){$text = str_replace('%DirSep%','/',$text);}
-			
+			if(strpos($text,'%Parent%')!==false){
+				$fooo = getHash("SELECT Text FROM " .OBJECT_FILES_TABLE . " WHERE ID='".$this->ParentID."'",$this->DB_WE);
+				if(isset($fooo["Text"]) && $fooo["Text"]){
+					$text = str_replace('%Parent%',$fooo["Text"],$text);
+				}
+			}
 			$text=correctUml($text);
 			$text=str_replace(" ", "-", $text);
 			$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
-			$this->Url=$text; 
+			$this->Url=substr($text,0,256); 
 		}
 		
 		

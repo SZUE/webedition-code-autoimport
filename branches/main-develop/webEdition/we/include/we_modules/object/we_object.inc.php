@@ -153,9 +153,17 @@ class we_object extends we_document
 			for($i=0; $i <= $this->elements["DefaultanzahlUrl"]["dat"];$i++){
 				$was = "DefaultUrl_".$i;
 				if($this->elements[$was]["dat"]!=""){ //&& in_array($this->elements[$was]["dat"],$var_flip)
-				if(stristr($this->elements[$was]["dat"], 'unique')){
-					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(($this->elements["unique_".$i]["dat"]>0)?$this->elements["unique_".$i]["dat"]:"16")."%";
-					//echo $this->elements[$was]["dat"];
+				if(stristr($this->elements[$was]["dat"], 'urlunique')){
+					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(($this->elements["urlunique_".$i]["dat"]>0)?$this->elements["urlunique_".$i]["dat"]:"16")."%";
+				}
+				if(stristr($this->elements[$was]["dat"], 'urlfield1')){
+					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(($this->elements["urlfield1_".$i]["dat"]>0)?$this->elements["urlfield1_".$i]["dat"]:"64")."%";
+				}
+				if(stristr($this->elements[$was]["dat"], 'urlfield2')){
+					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(($this->elements["urlfield2_".$i]["dat"]>0)?$this->elements["urlfield2_".$i]["dat"]:"64")."%";
+				}
+				if(stristr($this->elements[$was]["dat"], 'urlfield3')){
+					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(($this->elements["urlfield3_".$i]["dat"]>0)?$this->elements["urlfield3_".$i]["dat"]:"64")."%";
 				}
 				$this->DefaultUrl .= $this->elements[$was]["dat"];
 				}
@@ -1849,11 +1857,19 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			for($i=0; $i <= $this->elements["DefaultanzahlUrl"]["dat"];$i++){
 				$was = "DefaultUrl_".$i;
 				if($this->elements[$was]["dat"]!=""){ //&& in_array($this->elements[$was]["dat"],$var_flip)
-				if(stristr($this->elements[$was]["dat"], 'unique')){
-					$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(( isset($this->elements["unique_".$i]["dat"]) && $this->elements["unique_".$i]["dat"]>0 )?$this->elements["unique_".$i]["dat"]:"16")."%";
-					//echo $this->elements[$was]["dat"];
-				}
-				$this->DefaultUrl .= $this->elements[$was]["dat"];
+					if(stristr($this->elements[$was]["dat"], 'urlunique')){
+						$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(( isset($this->elements["urlunique_".$i]["dat"]) && $this->elements["urlunique_".$i]["dat"]>0 )?$this->elements["urlunique_".$i]["dat"]:"16")."%";
+					}
+					if(stristr($this->elements[$was]["dat"], 'urlfield1')){
+						$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(( isset($this->elements["urlfield1_".$i]["dat"]) && $this->elements["urlfield1_".$i]["dat"]>0 )?$this->elements["urlfield1_".$i]["dat"]:"64")."%";
+					}
+					if(stristr($this->elements[$was]["dat"], 'urlfield2')){
+						$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(( isset($this->elements["urlfield2_".$i]["dat"]) && $this->elements["urlfield2_".$i]["dat"]>0 )?$this->elements["urlfield2_".$i]["dat"]:"64")."%";
+					}
+					if(stristr($this->elements[$was]["dat"], 'urlfield3')){
+						$this->elements[$was]["dat"] = "%".str_replace("%","",$this->elements[$was]["dat"]).(( isset($this->elements["urlfield3_".$i]["dat"]) && $this->elements["urlfield3_".$i]["dat"]>0 )?$this->elements["urlfield3_".$i]["dat"]:"64")."%";
+					}
+					$this->DefaultUrl .= $this->elements[$was]["dat"];
 				}
 			}
 
@@ -1867,19 +1883,45 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			if(preg_match('/^%([^%]+)%/', $all, $regs)){
 				$all = substr($all,strlen($regs[1])+2);
 				$key = $regs[1];
-				if(preg_match('/unique([^%]*)/', $key, $regs)){
+				if(preg_match('/urlunique([^%]*)/', $key, $regs)){
 					if(!$regs[1]){
 						$anz = 16;
 					}else{
 						$anz = abs($regs[1]);
 					}
 					$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
-					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
-					$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%unique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
-					$select2 .= $this->htmlTextInput("we_".$this->Name."_input[unique_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
+					$text = preg_replace('/%urlunique[^%]*%/', $unique, (isset($text) ? $text : ""));
+					$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlunique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+					$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlunique_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 				}else{
-				
-					$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+					if (preg_match('/urlfield1([^%]*)/', $key, $regs)){
+						if(!$regs[1]){
+							$anz = 64;
+						}else{
+							$anz = abs($regs[1]);
+						}
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlfield1%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+						$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlfield1_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
+					} elseif(preg_match('/urlfield2([^%]*)/', $key, $regs)){
+						if(!$regs[1]){
+							$anz = 64;
+						}else{
+							$anz = abs($regs[1]);
+						}
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlfield2%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+						$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlfield2_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);			
+					} elseif(preg_match('/urlfield3([^%]*)/', $key, $regs)){
+						if(!$regs[1]){
+							$anz = 64;
+						}else{
+							$anz = abs($regs[1]);
+						}
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlfield3%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+						$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlfield3_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);			
+
+					} else {
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+					}
 				}
 			}else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all,strlen($regs[1]));

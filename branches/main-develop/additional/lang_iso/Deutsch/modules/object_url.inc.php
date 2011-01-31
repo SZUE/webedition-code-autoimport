@@ -29,7 +29,7 @@
  */
 
 $l_object_url[""] = "----";
-$l_object_url["%unique%"] = "unique";
+$l_object_url["%urlunique%"] = "unique";
 $l_object_url["%d%"] = "Erstellungs-Tag";
 $l_object_url["%m%"] = "Erstellungs-Monat (01-12)";
 $l_object_url["%n%"] = "Erstellungs-Monat (1-12)";
