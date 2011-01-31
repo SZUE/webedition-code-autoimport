@@ -27,7 +27,7 @@
  */
 
 $l_object_url[""] = "----"; // TRANSLATE
-$l_object_url["%unique%"] = "unique";
+$l_object_url["%urlunique%"] = "unique";
 $l_object_url["%d%"] = "День";
 $l_object_url["%m%"] = "Месяц (01-12)";
 $l_object_url["%n%"] = "Месяц (1-12)";
