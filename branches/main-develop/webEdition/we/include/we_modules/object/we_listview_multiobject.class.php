@@ -441,7 +441,7 @@ class we_listview_multiobject extends listviewBase {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					}				
 				}
-				
+				$this->DB_WE->Record["we_WE_URL"] = isset($this->DB_WE->Record["OF_Url"]) ? $this->DB_WE->Record["OF_Url"] : '';
 				$this->DB_WE->Record["we_WE_TEXT"] = $this->DB_WE->Record["OF_Text"];
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->Record["OF_ID"];
 				$this->DB_WE->Record["we_wedoc_Category"] = $this->DB_WE->Record["OF_Category"];
