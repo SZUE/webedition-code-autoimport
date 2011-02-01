@@ -55,5 +55,16 @@ $l_object_url["%DirSep%"] = "Verzeichnisseparator";
 $l_object_url["%urlfield1%"] = "URL-Feld 1";
 $l_object_url["%urlfield2%"] = "URL-Feld 2";
 $l_object_url["%urlfield3%"] = "URL-Feld 3";
-
+$l_object_url["%locale%"] = "Locale";
+$l_object_url["%language%"] = "Sprache";
+$l_object_url["%country%"] = "Land";
+//$l_object_url["%firstcatN%"] = "Name erste Kat.";
+//$l_object_url["%firstcatT%"] = "Titel erste Kat.";
+//$l_object_url["%firstcatD%"] = "Beschr. erste Kat.";
+//$l_object_url["%secondcatN%"] = "Name zweite Kat.";
+//$l_object_url["%secondcatT%"] = "Titel zweite Kat.";
+//$l_object_url["%secondcatD%"] = "Beschr. zweite Kat.";
+//$l_object_url["%thirdcatN%"] = "Name dritte Kat.";
+//$l_object_url["%thirdcatT%"] = "Titel dritte Kat.";
+//$l_object_url["%thirdcatD%"] = "Beschr. dritte Kat.";
 ?>
