@@ -19,10 +19,10 @@
  */
 
 $we_EDITOR = true;
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/SEEM/"."we_SEEM.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/date.inc.php');
 
 protect();
 // prevent persmissions overriding
@@ -354,7 +354,7 @@ if((($_REQUEST["we_cmd"][0] != "save_document" && $_REQUEST["we_cmd"][0] != "pub
 		//
 	// --> Glossary Replacement
 	//
-	
+
 	if(defined("GLOSSARY_TABLE") && ((isset($GLOBALS["we_editmode"]) && !$GLOBALS["we_editmode"]) || !isset($GLOBALS["we_editmode"]))) {
 		if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
 			include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
@@ -443,11 +443,11 @@ else {
 						}
 						if($_REQUEST["we_cmd"][5]) { //Save in version
 							$_REQUEST["we_cmd"][5] = "";
-							$we_doc->we_publish();		
-									
+							$we_doc->we_publish();
+
 						}
-						
-						
+
+
 ####TEMPLATE_SAVE_CODE2_START###
 						$TEMPLATE_SAVE_CODE2 = true;
 						$arr = getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);
@@ -741,12 +741,12 @@ else {
     			    	//
 						// --> Start Glossary Replacement
 						//
-						
+
 						if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])  && !$GLOBALS["we_editmode"]) {
 							if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
 								include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
 								include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
-	
+
 								weGlossaryReplace::start();
 							}
 
