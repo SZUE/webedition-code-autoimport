@@ -63,4 +63,5 @@ $l_object_classfoldersearch["isnotsearchable"] = "not searchable";
 $l_object_classfoldersearch["ID"] = "ID";
 $l_object_classfoldersearch["language"] = "Language";
 $l_object_classfoldersearch["charset"] = "Charset";
+$l_object_classfoldersearch["url"] = "SEO-Object-Url";// TRANSLATE
 ?>

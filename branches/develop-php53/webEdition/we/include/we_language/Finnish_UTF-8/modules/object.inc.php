@@ -26,6 +26,7 @@ $l_object["attributes"] = "Ominaisuudet";
 $l_object["objectname"] = "Objektin nimi";
 $l_object["objectpath"] = "Objektin polku";
 $l_object["objectid"] = "Object ID";// TRANSLATE
+$l_object["objecturl"] = "Object URL";// TRANSLATE
 $l_object["class"] = "Luokka";
 $l_object["classname"] = "Luokan nimi";
 $l_object["class_id"] = "Luokan ID";

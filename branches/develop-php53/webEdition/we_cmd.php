@@ -332,7 +332,7 @@ if(!$INCLUDE){
         case 'customValidationService':
             $INCLUDE = 'we_templates/customizeValidation.inc.php';    //  edit parameters
             break;
-		
+
 
 		default:
 			// search tools for command
@@ -406,5 +406,3 @@ if($INCLUDE){
 
     exit;
 }
-
-?>

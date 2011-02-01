@@ -26,6 +26,7 @@ $l_object["attributes"] = "Attributes"; // TRANSLATE
 $l_object["objectname"] = "Имя объекта";
 $l_object["objectpath"] = "Путь объекта";
 $l_object["objectid"] = "Object ID";// TRANSLATE
+$l_object["objecturl"] = "Object URL";// TRANSLATE
 $l_object["class"] = "Класс";
 $l_object["classname"] = "Имя класса";
 $l_object["class_id"] = "ID of the class"; // TRANSLATE
