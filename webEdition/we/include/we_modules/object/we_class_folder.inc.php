@@ -321,7 +321,7 @@ class we_class_folder extends we_folder{
 
 		//$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_FILES_TABLE.'.ModDate'); +4076 orig
 		
-		$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].".OF_PATH LIKE '".$this->Path."/%' ".' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_IsSearchable, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Charset, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Language, '.OBJECT_FILES_TABLE.'.ModDate');
+		$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].".OF_PATH LIKE '".$this->Path."/%' ".' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_IsSearchable, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Charset, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Language, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Url, '.OBJECT_FILES_TABLE.'.ModDate');
 
 
 		$content=array();
@@ -357,13 +357,15 @@ class we_class_folder extends we_folder{
 					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" title="'.$GLOBALS['l_object_classfoldersearch']["isnotsearchable"].'" />';
 				}
 				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="middlefont" title="'.$this->searchclass->f("OF_Path").'">'.$this->searchclass->f("OF_ID").'</a>';
-				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="middlefont" title="'.$this->searchclass->f("OF_Path").'">'.shortenPath($this->searchclass->f("OF_Text"),$we_obectPathLength);
+				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="middlefont" title="'.$this->searchclass->f("OF_Path").'">'.shortenPath($this->searchclass->f("OF_Text"),$we_obectPathLength).'</a>';
 				$content[$f][5]["dat"] = $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")),$we_wsLength);
 				$content[$f][6]["dat"] = $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("OF_ExtraWorkspaces")),$we_extraWsLength,$classArray["ID"],$userWSArray);
 				$content[$f][7]["dat"] = '<nobr>'.($this->searchclass->f("OF_Published") ? date($GLOBALS['l_global']["date_format"],$this->searchclass->f("OF_Published")) : "-").'</nobr>';
 				$content[$f][8]["dat"] = '<nobr>'.($this->searchclass->f("ModDate") ? date($GLOBALS['l_global']["date_format"],$this->searchclass->f("ModDate")) : "-").'</nobr>';
-				$content[$f][9]["dat"] = $this->searchclass->f("OF_Charset");
-				$content[$f][10]["dat"] = $this->searchclass->f("OF_Language");
+				$content[$f][9]["dat"] = $this->searchclass->f("OF_Url");
+				$content[$f][10]["dat"] = $this->searchclass->f("OF_Charset");
+				$content[$f][11]["dat"] = $this->searchclass->f("OF_Language");
+				
 
 				$f++;
 			}
@@ -381,8 +383,10 @@ class we_class_folder extends we_folder{
 		$headline[6]["dat"] = $GLOBALS['l_object_classfoldersearch']["xtraArbeitsbereiche"];
 		$headline[7]["dat"] = '<a href="javascript:setOrder(\'OF_Published\');">'.$GLOBALS['l_object_classfoldersearch']["Veroeffentlicht"].'</a> ' . $this->getSortImage('OF_Published');
 		$headline[8]["dat"] = '<a href="javascript:setOrder(\'ModDate\');">'.$GLOBALS['l_object_classfoldersearch']["geaendert"].'</a> ' . $this->getSortImage('ModDate');
-		$headline[9]["dat"] = $GLOBALS['l_object_classfoldersearch']["charset"];
-		$headline[10]["dat"] = $GLOBALS['l_object_classfoldersearch']["language"];
+		$headline[9]["dat"] = '<a href="javascript:setOrder(\'OF_Url\');">'.$GLOBALS['l_object_classfoldersearch']["url"]. '</a> ' . $this->getSortImage('OF_Url');
+		$headline[10]["dat"] = $GLOBALS['l_object_classfoldersearch']["charset"];
+		$headline[11]["dat"] = $GLOBALS['l_object_classfoldersearch']["language"];
+		
 
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
 
@@ -555,7 +559,7 @@ class we_class_folder extends we_folder{
 				}
 				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="middlefont" title="'.$this->searchclass->f("OF_Path").'">'.$this->searchclass->f("OF_ID").'</a>';
 				
-				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\''.OBJECT_FILES_TABLE.'\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="'.$this->searchclass->f("OF_Path").'">'.shortenPath($this->searchclass->f("OF_Text"),$we_obectPathLength);
+				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\''.OBJECT_FILES_TABLE.'\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="'.$this->searchclass->f("OF_Path").'">'.shortenPath($this->searchclass->f("OF_Text"),$we_obectPathLength).'</a>';
 
 				for($i=0;$i<$count;$i++){
 					if($type[$i+5]=="date"){
@@ -576,7 +580,7 @@ class we_class_folder extends we_folder{
 							$class = $temp['class'];
 							$content[$f][$i+5]["dat"] = "";
 							foreach($objects as $idx => $id) {
-								$content[$f][$i+5]["dat"] .= '<a href="javascript:top.weEditorFrameController.openDocument(\''.OBJECT_FILES_TABLE.'\','.$id.',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="'.f("SELECT OF_Path FROM " . OBJECT_X_TABLE.$class." WHERE OF_ID='".$id."'","OF_Path",$DB_WE).'">'.shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE.$class." WHERE OF_ID='".$id."'","OF_Path",$DB_WE),$we_obectPathLength)."<br />";//
+								$content[$f][$i+5]["dat"] .= '<a href="javascript:top.weEditorFrameController.openDocument(\''.OBJECT_FILES_TABLE.'\','.$id.',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="'.f("SELECT OF_Path FROM " . OBJECT_X_TABLE.$class." WHERE OF_ID='".$id."'","OF_Path",$DB_WE).'">'.shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE.$class." WHERE OF_ID='".$id."'","OF_Path",$DB_WE),$we_obectPathLength).".</a><br />";//
 							}
 						} else {
 							$content[$f][$i+5]["dat"] = "-";
@@ -843,7 +847,7 @@ class we_class_folder extends we_folder{
 		</tr>
 		</table>';
 
-		$out .= htmlDialogBorder3(636,0, $content ,$headline);
+		$out .= htmlDialogBorder3(900,0, $content ,$headline);
 
 		$out .= '
 		<table border="0" cellpadding="0" cellspacing="0">
@@ -870,7 +874,7 @@ class we_class_folder extends we_folder{
 				</tr>
 				</table>
 			</td>
-		<tr>
+		</tr>
 		<tr>
 			<td>'.getPixel(175,12).'</td>
 			<td>'.getPixel(460,12).'</td>

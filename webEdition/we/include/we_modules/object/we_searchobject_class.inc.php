@@ -82,6 +82,10 @@ class objectsearch extends we_search {
 				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objectid"].'</option>'."\n";
 				$all .= $tableInfo[$i]["name"].",";
 			}
+			else if($tableInfo[$i]["name"] == "OF_Url") {
+				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objecturl"].'</option>'."\n";
+				$all .= $tableInfo[$i]["name"].",";
+			}
 		}
 		$all = ereg_replace('^(.*),$','\1',$all);
 		$opts = '<option value="'.$all.'">'.$l_object["allFields"].'</option>'."\n".$opts;
