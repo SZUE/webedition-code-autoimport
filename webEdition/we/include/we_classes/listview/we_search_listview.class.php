@@ -211,7 +211,7 @@ class we_search_listview extends listviewBase {
 
 		}
 
-		$q = "SELECT ID FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $weDocumentCustomerFilter_tail";
+		$q = "SELECT ID FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail";
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
 
