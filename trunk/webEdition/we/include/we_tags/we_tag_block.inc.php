@@ -208,10 +208,10 @@ function we_tag_block($attribs, $content){
 									5);
 						}
 					}
-					if (eregi('^< ?td', trim($foo)) || eregi('^< ?tr', trim($foo))) {
+					if (preg_match('/^< ?td/i', trim($foo)) || preg_match('/^< ?tr/i', trim($foo))) {
 						$foo = str_replace('=>', '#####PHPCALSSARROW####', $foo);
 						$foo = str_replace('?>', '#####PHPENDBRACKET####', $foo);
-						$foo = eregi_replace('(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)', '\1' . $buts . '\2\3', $foo);
+						$foo = preg_replace('|(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)|i', '$1' . $buts . '$2$3', $foo,1);
 						$foo = str_replace('#####PHPCALSSARROW####', '=>', $foo);
 						$foo = str_replace('#####PHPENDBRACKET####', '?>', $foo);
 					} else {
@@ -266,9 +266,9 @@ function we_tag_block($attribs, $content){
 						($show > 0 ? false : true));
 			}
 
-			if (eregi('^< ?td', $content) || eregi('^< ?tr', $content)) {
+			if (preg_match('/^< ?td/i', $content) || preg_match('/^< ?tr/i', $content)) {
 				$foo = makeEmptyTable(rmPhp($content));
-				$plusbut = eregi_replace('(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)', '\1\2' . $plusbut . '\3', $foo);
+				$plusbut = preg_replace('|(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)|i', '$1$2' . $plusbut . '$3', $foo,1);
 			} else {
 				$plusbut = "<p>" . $plusbut;
 			}
