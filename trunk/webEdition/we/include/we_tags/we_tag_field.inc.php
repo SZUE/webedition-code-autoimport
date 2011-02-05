@@ -247,13 +247,13 @@ function we_tag_field($attribs, $content){
 				break;
 			}
 		default :
-			if($name=='WE_PATH' && $triggerid && isset($GLOBALS["lv"]->ClassName) && ($GLOBALS["lv"]->ClassName == "we_search_listview" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_listview_multiobject"  ) ){
+			if($name=='WE_PATH' && $triggerid && isset($GLOBALS["lv"]->ClassName) && ($GLOBALS["lv"]->ClassName == "we_search_listview" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_listview_multiobject" || $GLOBALS["lv"]->ClassName == "we_objecttag"  ) ){
 				$triggerpath = id_to_path($triggerid); 
 				$triggerpath_parts = pathinfo($triggerpath); 
 				if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($triggerpath_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-					$normVal = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR. $GLOBALS["lv"]->f("WE_URL") . $tail;
+					$normVal = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR. $GLOBALS["lv"]->f("WE_URL");
 				} else {
-					$normVal = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR . $triggerpath_parts['filename'] . DIRECTORY_SEPARATOR . $GLOBALS["lv"]->f("WE_URL") . $tail;
+					$normVal = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR . $triggerpath_parts['filename'] . DIRECTORY_SEPARATOR . $GLOBALS["lv"]->f("WE_URL");
 				}
 				
 			} else {
@@ -267,6 +267,12 @@ function we_tag_field($attribs, $content){
 					$GLOBALS["DB_WE"],
 					$classid,
 					'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht inLV, #4648
+				if ($name=='WE_PATH'){	
+					$path_parts = pathinfo($normVal); 
+					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						$normVal = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+					} 
+				}	
 			}
 			// bugfix 7557
 			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
@@ -311,6 +317,14 @@ function we_tag_field($attribs, $content){
 							'$GLOBALS["lv"]->f');// war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					if ($altVal == "")
 						return "";
+					
+					if ($alt=='WE_PATH'){	
+						$path_parts = pathinfo($altVal); 
+						if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							$altVal = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+						} 
+					}	
+					
 					$out = cutText($altVal, $max);
 				} else {
 					$out = cutText($normVal, $max);
