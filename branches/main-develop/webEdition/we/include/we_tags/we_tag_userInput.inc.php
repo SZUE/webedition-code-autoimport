@@ -141,12 +141,12 @@ function we_tag_userInput($attribs, $content){
 						$attribs["id"] = $_SESSION[$_imgDataId]["id"];
 					}
 
-					if (isset($_SESSION[$_imgDataId]["serverPath"])) {
+					if (isset($_SESSION[$_imgDataId]["serverPath"]) && strpos($_SESSION[$_imgDataId]["serverPath"],TMP_DIR )===false ) {
 						$src = substr($_SESSION[$_imgDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
 						if (substr($src, 0, 1) !== "/") {
 							$src = "/" . $src;
 						}
-
+						
 						$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />';
 					} else {
 						unset($attribs["width"]);
