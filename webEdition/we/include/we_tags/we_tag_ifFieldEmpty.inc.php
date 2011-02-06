@@ -145,7 +145,6 @@ function we_isFieldNotEmpty($attribs){
 }
 
 function we_tag_ifFieldEmpty($attribs, $content){
-	global $we_editmode;
 	$foo = attributFehltError($attribs, 'match', 'ifFieldEmpty');
 	if ($foo) {
 		print($foo);

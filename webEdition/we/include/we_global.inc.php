@@ -2614,15 +2614,15 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 	if ($showLink) {
 
 		$path = getNextDynDoc($path, $pid, $foo["Workspaces"], $foo["ExtraWorkspacesSelected"], $DB_WE);
-		if (!$path) 
-			return "";		
-			
+		if (!$path)
+			return "";
+
 		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
 			$path_parts = pathinfo($path);
 			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 				$path= ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
-			} 			
-		}	
+			}
+		}
 		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $objectseourls){
 			$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", "Url", $DB_WE);
 		} else {$objecturl='';}
@@ -2632,7 +2632,7 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 			} else {
 				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
 			}
-		} else { 
+		} else {
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
 		}
 	} else {
@@ -2710,7 +2710,7 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 				$_path = $foo["Path"];
 				$path_parts = pathinfo($_path);
 				if(!($we_editmode || $WE_MAIN_EDITMODE) && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-					$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;			
+					$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
 				}
 				$text = str_replace(
 							$regs[$i][1] . '="document:' . $regs[$i][2] . $regs[$i][3],
@@ -3631,7 +3631,7 @@ function we_writeLanguageConfig($default, $available = array()) {
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-	
+
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/countries.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/languages.inc.php");
 
@@ -3801,5 +3801,83 @@ function CheckAndConvertISObackend($utf8data) {
 		return iconv("UTF-8", $GLOBALS["_language"]["charset"] . "//TRANSLIT", $utf8data);
 	} else {
 		return $utf8data;
+	}
+}
+
+
+function we_templateInit(){
+	if(!isset($GLOBALS["DB_WE"])){
+		$GLOBALS["DB_WE"] = new DB_WE;
+	}
+	if($GLOBALS["we_doc"]){
+		$GLOBALS["WE_DOC_ID"] = $GLOBALS["we_doc"]->ID;
+		if(!isset($GLOBALS["WE_MAIN_ID"])) $GLOBALS["WE_MAIN_ID"] = $GLOBALS["we_doc"]->ID;
+		if(!isset($GLOBALS["WE_MAIN_DOC"])) $GLOBALS["WE_MAIN_DOC"] = clone($GLOBALS["we_doc"]);
+		if(!isset($GLOBALS["WE_MAIN_DOC_REF"])) $GLOBALS["WE_MAIN_DOC_REF"] = &$GLOBALS["we_doc"];
+		if(!isset($GLOBALS["WE_MAIN_EDITMODE"])) $GLOBALS["WE_MAIN_EDITMODE"] = isset($GLOBALS["we_editmode"]) ? $GLOBALS["we_editmode"] : "";
+		$GLOBALS["WE_DOC_ParentID"] = $GLOBALS["we_doc"]->ParentID;
+		$GLOBALS["WE_DOC_Path"] = $GLOBALS["we_doc"]->Path;
+		$GLOBALS["WE_DOC_IsDynamic"] = $GLOBALS["we_doc"]->IsDynamic;
+		$GLOBALS["WE_DOC_FILENAME"] = $GLOBALS["we_doc"]->Filename;
+		$GLOBALS["WE_DOC_Category"] = isset($GLOBALS["we_doc"]->Category) ? $GLOBALS["we_doc"]->Category : "";
+		$GLOBALS["WE_DOC_EXTENSION"] = $GLOBALS["we_doc"]->Extension;
+		$GLOBALS["TITLE"] = $GLOBALS["we_doc"]->getElement("Title");
+		$GLOBALS["KEYWORDS"] = $GLOBALS["we_doc"]->getElement("Keywords");
+		$GLOBALS["DESCRIPTION"] = $GLOBALS["we_doc"]->getElement("Description");
+		$GLOBALS["CHARSET"] = $GLOBALS["we_doc"]->getElement("Charset");
+		$__tmp = explode("_",$GLOBALS["we_doc"]->Language);
+		$__lang = strtolower($__tmp[0]);
+		if ($__lang) {
+			$__parts = split("_", $GLOBALS["WE_LANGUAGE"]);
+			$__last = array_pop($__parts);
+			// Charset of page is not UTF-8 but languge files of page are UTF-8
+			// Then change language files to non UTF-8 pedant if available
+			if (count($__parts) && $__last === "UTF-8" && $GLOBALS["CHARSET"] !== "UTF-8") {
+				$__lang = $__parts[0];
+				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
+					$GLOBALS["WE_LANGUAGE"] = $__lang;
+					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
+				}
+
+				// Charset of page is  UTF-8 but languge files of page are not UTF-8
+			// Then change language files to UTF-8 pedant if available
+			} else if ($__last !== "UTF-8" && $GLOBALS["CHARSET"] === "UTF-8") {
+				$__lang = $GLOBALS["WE_LANGUAGE"] . "_UTF-8";
+				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
+					$GLOBALS["WE_LANGUAGE"] = $__lang;
+					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
+				}
+			}
+		}
+	}
+}
+
+function we_templateHead(){
+	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ){
+		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
+		print '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+	} else if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT  && WE_ECONDA_PATH !="" && !$GLOBALS["we_doc"]->InWebEdition) {
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weTracking/econda/weEcondaImplementHeader.inc.php");
+	}
+}
+
+function we_templatePreContent(){
+	if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) {
+		print '<form name="we_form" method="post" onsubmit="return false;">'.$GLOBALS["we_doc"]->pHiddenTrans();
+	}
+}
+
+function we_templatePostContent(){
+	if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) {
+		print '</form>';
+	} else if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT  && WE_ECONDA_PATH !="" && !$GLOBALS["we_doc"]->InWebEdition) {
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weTracking/econda/weEcondaImplement.inc.php");
+	}
+}
+
+function we_templatePost(){
+	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ){
+		print '<script language="JavaScript" type="text/javascript">setTimeout("doScrollTo();",100);</script>';
 	}
 }

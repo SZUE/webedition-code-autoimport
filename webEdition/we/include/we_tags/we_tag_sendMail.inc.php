@@ -19,8 +19,6 @@
  */
 
 function we_tag_sendMail($attribs, $content){
-	global $DB_WE;
-
 	$foo = attributFehltError($attribs, "recipient", "sendMail");
 	if ($foo)
 		return $foo;
@@ -30,7 +28,7 @@ function we_tag_sendMail($attribs, $content){
 
 	if (!$GLOBALS["we_doc"]->InWebEdition) {
 
-		$DB_WE = !isset($DB_WE) ? new DB_WE() : $DB_WE;
+		$GLOBALS['DB_WE'] = !isset($GLOBALS['DB_WE']) ? new DB_WE() : $GLOBALS['DB_WE'];
 		$id = we_getTagAttribute("id",$attribs, ( isset($_REQUEST["ID"])? $_REQUEST["ID"] : "" ) );
 		$from = we_getTagAttribute("from",$attribs);
 		$reply = we_getTagAttribute("reply",$attribs);

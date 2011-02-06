@@ -19,12 +19,11 @@
  */
 
 function we_tag_redirectObjectSeoUrls($attribs, $content){
-	global $we_editmode;
 
 	// check for id attribute
 	$myRequest=array();
 	if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']!=''){parse_str($_SERVER['REDIRECT_QUERY_STRING'],$myRequest);}
-	
+
 
 	// get attributes
 	$error404doc = we_getTagAttribute("error404doc", $attribs);
@@ -37,8 +36,8 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		}
 	}
 	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
-	
-	if(!$we_editmode){
+
+	if(!$GLOBALS['we_editmode']){
 		$db = new DB_WE();
 		$displayid=0;
 		$objectid=0;
@@ -56,7 +55,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 					$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 					if($displayidtest)$displayid = $displayidtest;
 				}
-			}		
+			}
 			if($displayid){
 				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchfor) . "' LIMIT 1", "ID", $db));
 				if ($objectid){
@@ -72,13 +71,13 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			if ($searchfor){
 				$searchfor = $path_parts['basename'].DIRECTORY_SEPARATOR.$searchfor;
 			} else $searchfor = $path_parts['basename'];
-			
+
 			foreach($dirindexarray as $dirindex){
 				$display=$path_parts['dirname'].$dirindex;
 				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 				if($displayidtest)$displayid = $displayidtest;
 			}
-			if($displayid){		
+			if($displayid){
 				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchfor) . "' LIMIT 1", "ID", $db));
 				if ($objectid){$notfound=false;}
 			}
@@ -98,5 +97,5 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			//we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
 			exit;
 		}
-	} 	
+	}
 }

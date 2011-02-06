@@ -20,7 +20,7 @@
 
 function we_tag_textarea($attribs, $content){
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-	global $we_editmode, $we_transaction;
+	global $we_transaction;
 	$foo = attributFehltError($attribs, "name", "textarea");
 	if ($foo)
 		return $foo;
@@ -41,7 +41,7 @@ function we_tag_textarea($attribs, $content){
 		$autobr = $autobrAttr ? "on" : "off";
 	}
 	$showAutobr = isset($attribs["autobr"]);
-	if (!$showAutobr && $we_editmode) {
+	if (!$showAutobr && $GLOBALS['we_editmode']) {
 		$autobr = "off";
 		$GLOBALS["we_doc"]->elements[$name]["autobr"] = "off";
 		$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$we_transaction]);
@@ -51,11 +51,11 @@ function we_tag_textarea($attribs, $content){
 	$fieldname = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
 	$value = $GLOBALS["we_doc"]->getElement($name) ? $GLOBALS["we_doc"]->getElement($name) : $content;
 
-	if ($we_editmode && (!$GLOBALS["we_doc"]->getElement($name)) && $value) { // when not inlineedit, we need to save the content in the object, if the field is empty
+	if ($GLOBALS['we_editmode'] && (!$GLOBALS["we_doc"]->getElement($name)) && $value) { // when not inlineedit, we need to save the content in the object, if the field is empty
 		$GLOBALS["we_doc"]->setElement($name, $value);
 		$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$we_transaction]);
 	}
-	if ($we_editmode) {
+	if ($GLOBALS['we_editmode']) {
 		return we_forms::weTextarea(
 				$fieldname,
 				$value,
