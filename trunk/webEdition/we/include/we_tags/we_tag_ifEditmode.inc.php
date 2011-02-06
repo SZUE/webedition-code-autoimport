@@ -19,12 +19,11 @@
  */
 
 function we_tag_ifEditmode($attribs, $content){
-	global $we_editmode, $WE_MAIN_EDITMODE, $we_doc, $WE_MAIN_DOC;
 	$doc = we_getTagAttribute('doc', $attribs);
 	switch ($doc) {
 		case 'self' :
-			return $WE_MAIN_DOC == $we_doc && $we_editmode;
+			return $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'] && $GLOBALS["we_editmode"];
 		default :
-			return $we_editmode || $WE_MAIN_EDITMODE/* || (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem')*/;
+			return $GLOBALS['we_editmode']|| $GLOBALS['WE_MAIN_EDITMODE']/* || (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem')*/;
 	}
 }

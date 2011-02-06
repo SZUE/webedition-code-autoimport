@@ -20,8 +20,6 @@
 
 function we_tag_shopVat($attribs,$content) {
 
-	global $we_editmode;
-
 	$name = WE_SHOP_VAT_FIELD_NAME;
 
 	require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
@@ -61,7 +59,7 @@ function we_tag_shopVat($attribs,$content) {
 		$val = htmlspecialchars(isset($GLOBALS["we_doc"]->elements[$name]["dat"]) ? $GLOBALS["we_doc"]->getElement($name) : $standardId);
 
 		// use a defined name for this...
-		if ($we_editmode) {
+		if ($GLOBALS['we_editmode']) {
 
 			switch ($type) {
 				default:

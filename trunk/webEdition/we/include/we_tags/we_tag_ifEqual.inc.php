@@ -20,7 +20,6 @@
 
 
 function we_tag_ifEqual($attribs, $content){
-	global $we_editmode;
 	$foo = attributFehltError($attribs, "name", "ifEqual");
 	if ($foo) {
 		print($foo);

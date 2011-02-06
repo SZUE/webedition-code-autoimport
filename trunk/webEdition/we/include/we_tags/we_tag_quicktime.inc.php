@@ -22,9 +22,6 @@ function we_tag_quicktime($attribs, $content){
 	// Include Quicktime class
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 
-	// Define globals
-	global $we_editmode;
-
 	$foo = attributFehltError($attribs, "name", "quicktime");
 	if ($foo)
 		return $foo;
@@ -43,13 +40,13 @@ function we_tag_quicktime($attribs, $content){
 		'showcontrol', 'showquicktime', 'startid', 'parentid'
 	));
 
-	if ($we_editmode && !$showquicktime) {
+	if ($GLOBALS['we_editmode'] && !$showquicktime) {
 		$out = '';
 	} else {
 		$out = $GLOBALS["we_doc"]->getField($attribs, "quicktime");
 	}
 
-	if ($showcontrol && $we_editmode) {
+	if ($showcontrol && $GLOBALS['we_editmode']) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$we_button = new we_button();
 		$quicktime_button = $we_button->create_button(
