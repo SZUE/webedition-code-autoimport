@@ -19,15 +19,13 @@
  */
 
 function we_tag_link($attribs, $content){
-	// Define globals
-	global $we_editmode, $l_global, $l_linklist_edit;
 
 	$name = we_getTagAttribute("name", $attribs);
 	$xml = getXmlAttributeValueAsBoolean(we_getTagAttribute("xml", $attribs, ""));
 	$text = we_getTagAttribute("text", $attribs, "");
 	$imageid = we_getTagAttribute("imageid", $attribs, 0);
 	$id = we_getTagAttribute("id", $attribs);
-	
+
 	// check if target document exists (Bug #7167)
 	if ($id != 0) {
 		$row = getHash("SELECT count(*) as tmp FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());
@@ -51,7 +49,7 @@ function we_tag_link($attribs, $content){
 	));
 
 	$link = $GLOBALS["we_doc"]->getElement($name) ? unserialize($GLOBALS["we_doc"]->getElement($name)) : array();
-	if (!$we_editmode) {
+	if (!$GLOBALS['we_editmode']) {
 		return $GLOBALS["we_doc"]->getField($attribs, "link");
 	} else {
 		if (is_array($link)) {

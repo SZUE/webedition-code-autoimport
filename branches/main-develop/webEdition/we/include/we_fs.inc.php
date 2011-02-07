@@ -34,7 +34,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 		$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
 		$filter = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";
 		$multiple = isset($_REQUEST["we_cmd"][9]) ? $_REQUEST["we_cmd"][9] : "";
-		
+
 		break;
 	case "openDocselector" :
 		$id = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
@@ -68,5 +68,3 @@ switch ($_REQUEST["we_cmd"][0]) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we_delSelect.php");
 		break;
 }
-
-?>	

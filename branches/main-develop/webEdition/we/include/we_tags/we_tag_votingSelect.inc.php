@@ -21,15 +21,15 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/voting/weVoting.php");
 
 function we_tag_votingSelect($attribs, $content){
- 	global $DB_WE,$we_editmode;
+ 	global $DB_WE;
 
- 	if($we_editmode && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
+ 	if($GLOBALS['we_editmode'] && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
 		$firstentry = we_getTagAttribute("firstentry",$attribs);
 		$submitonchange = we_getTagAttribute("submitonchange",$attribs,"",true);
 		$reload = we_getTagAttribute("reload", $attribs, "", true);
 		if($submitonchange) {$reload=true;}
 
-		$where = ' WHERE  IsFolder=0 ' . weVoting::getOwnersSql(); //nicht auf Active prüfen, sonst fliegen deaktivierte Votings aus den Dokumenten und man kann nicht einfach wieder aktivieren, bzw. man kann Ergebnisse anzeigen
+		$where = ' WHERE  IsFolder=0 ' . weVoting::getOwnersSql(); //nicht auf Active prï¿½fen, sonst fliegen deaktivierte Votings aus den Dokumenten und man kann nicht einfach wieder aktivieren, bzw. man kann Ergebnisse anzeigen
 
 		$select_name = $GLOBALS['_we_voting_namespace'];
 

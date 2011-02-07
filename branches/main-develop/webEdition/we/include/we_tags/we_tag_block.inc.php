@@ -25,49 +25,49 @@ function we_tag_block($attribs, $content){
 		$we_button = new we_button();
 	}
 
-	$foo = attributFehltError($attribs, "name", "block");
+	$foo = attributFehltError($attribs, 'name', 'block');
 	if ($foo)
 		return $foo;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_tagParser.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
 
-	$name = we_getTagAttribute("name", $attribs);
-	$showselect = we_getTagAttribute("showselect", $attribs, "", true, true);
+	$name = we_getTagAttribute('name', $attribs);
+	$showselect = we_getTagAttribute('showselect', $attribs, '', true, true);
 
-	$isInListview = isset($GLOBALS["lv"]);
+	$isInListview = isset($GLOBALS['lv']);
 
 	if ($isInListview) {
-		$list = $GLOBALS["lv"]->f($name);
-		$GLOBALS["lv"]->BlockInside = true;
+		$list = $GLOBALS['lv']->f($name);
+		$GLOBALS['lv']->BlockInside = true;
 	} else {
-		$list = $GLOBALS["we_doc"]->getElement($name);
+		$list = $GLOBALS['we_doc']->getElement($name);
 	}
 
 	// Bug Fix #1909 and #415
-	$start = we_getTagAttribute("start", $attribs);
-	$limit = we_getTagAttribute("limit", $attribs);
+	$start = we_getTagAttribute('start', $attribs);
+	$limit = we_getTagAttribute('limit', $attribs);
 	if (!$list && $start) {
 		$listarray = array();
 		if ($limit && $limit > 0 && $limit < $start) {
 			$start = $limit;
 		}
 		for ($i = 0; $i < $start; $i++) {
-			$listarray[$i] = "_" . ($i + 1);
+			$listarray[$i] = '_' . ($i + 1);
 		}
 		$list = serialize($listarray);
 	}
 	// Bug Fix #1909 and #415
 
 
-	$blkPreName = "blk_" . $name . "_";
+	$blkPreName = 'blk_' . $name . '_';
 
 	$content = str_replace('<we:ref', '<we_:_ref', $content);
 
 	$tp = new we_tagParser();
 	$tags = $tp->getAllTags($content);
 
-	$names = implode(",", $tp->getNames($tags));
+	$names = implode(',', $tp->getNames($tags));
 
-	if (strpos($content, "<we:object") === false && strpos($content, "<we:metadata") === false && strpos($content, "<we:listview") === false) { //	no we:object is used
+	if (strpos($content, '<we:object') === false && strpos($content, '<we:metadata') === false && strpos($content, '<we:listview') === false) { //	no we:object is used
 		//	parse name of we:field
 		$tp->parseTags($tags, $content, '<we_:_ref>', array());
 	} else { //	we:object is used
@@ -88,11 +88,11 @@ function we_tag_block($attribs, $content){
 					'we:ifNotObjectLanguage'
 				));
 	}
-	$out = "";
+	$out = '';
 
 	$tmpname = md5(uniqid(time()));
 
-	$noButCode = "";
+	$noButCode = '';
 	if ($list) {
 
 		$listarray = unserialize($list);
@@ -136,51 +136,29 @@ function we_tag_block($attribs, $content){
 					}
 					$selectb = '<select name="' . $tmpname . '_' . $i . '">';
 					for ($j = 0; $j < $show; $j++) {
-						$selectb .= "		<option value=\"" . ($j + 1) . "\">" . ($j + 1) . "</option>\n";
+						$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
 					}
-					$selectb .= "</select>";
+					$selectb .= '</select>';
 
-					$upbut = $we_button->create_button(
-							"image:btn_direction_up",
+					$upbut = $we_button->create_button('image:btn_direction_up',
 							"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','$name','$i')");
-					$upbutDis = $we_button->create_button("image:btn_direction_up", "", true, 21, 22, "", "", true);
-					$downbut = $we_button->create_button(
-							"image:btn_direction_down",
+					$upbutDis = $we_button->create_button('image:btn_direction_up', '', true, 21, 22, '', '', true);
+					$downbut = $we_button->create_button('image:btn_direction_down',
 							"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','$name','$i')");
-					$downbutDis = $we_button->create_button(
-							"image:btn_direction_down",
-							"",
-							true,
-							21,
-							22,
-							"",
-							"",
-							true);
+					$downbutDis = $we_button->create_button('image:btn_direction_down',
+							'',true,21,22,'','',true);
 					if ($showselect && $show > 0) {
-						$plusbut = $we_button->create_button(
-								"image:btn_add_listelement",
+						$plusbut = $we_button->create_button('image:btn_add_listelement',
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','$name','$i',document.we_form.elements['" . $tmpname . "_" . $i . "'].options[document.we_form.elements['" . $tmpname . "_" . $i . "'].selectedIndex].text)",
-								true,
-								100,
-								22,
-								"",
-								"",
-								($show > 0 ? false : true));
+								true,100,22,'','',($show > 0 ? false : true));
 					} else {
-						$plusbut = $we_button->create_button(
-								"image:btn_add_listelement",
+						$plusbut = $we_button->create_button('image:btn_add_listelement',
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','$name','$i',1)",
-								true,
-								100,
-								22,
-								"",
-								"",
-								($show > 0 ? false : true));
+								true,100,22,'','',($show > 0 ? false : true));
 					}
-					$trashbut = $we_button->create_button(
-							"image:btn_function_trash",
+					$trashbut = $we_button->create_button('image:btn_function_trash',
 							"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','$name','$i','$names',1)");
-					$buts = "";
+					$buts = '';
 
 					if (!$isInListview) {
 
@@ -208,10 +186,10 @@ function we_tag_block($attribs, $content){
 									5);
 						}
 					}
-					if (eregi('^< ?td', trim($foo)) || eregi('^< ?tr', trim($foo))) {
+					if (preg_match('/^< ?td/i', trim($foo)) || preg_match('/^< ?tr/i', trim($foo))) {
 						$foo = str_replace('=>', '#####PHPCALSSARROW####', $foo);
 						$foo = str_replace('?>', '#####PHPENDBRACKET####', $foo);
-						$foo = eregi_replace('(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)', '\1' . $buts . '\2\3', $foo);
+						$foo = preg_replace('|(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)|i', '$1' . $buts . '$2$3', $foo,1);
 						$foo = str_replace('#####PHPCALSSARROW####', '=>', $foo);
 						$foo = str_replace('#####PHPENDBRACKET####', '?>', $foo);
 					} else {
@@ -237,40 +215,28 @@ function we_tag_block($attribs, $content){
 		if ($show > 0) {
 			$selectb = '<select name="' . $tmpname . '_00">';
 			for ($j = 0; $j < $show; $j++) {
-				$selectb .= "		<option value=\"" . ($j + 1) . "\">" . ($j + 1) . "</option>\n";
+				$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
 			}
-			$selectb .= "</select>";
+			$selectb .= '</select>';
 
 			if ($showselect) {
-				$plusbut = $we_button->create_button(
-						"image:btn_add_listelement",
+				$plusbut = $we_button->create_button('image:btn_add_listelement',
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name',document.we_form.elements['" . $tmpname . "_00'].options[document.we_form.elements['" . $tmpname . "_00'].selectedIndex].text)",
-						true,
-						100,
-						22,
-						"",
-						"",
-						($show > 0 ? false : true));
+						true,100,22,'','',($show > 0 ? false : true));
 				$plusbut = $we_button->create_button_table(array(
 					$plusbut, $selectb
 				));
 			} else {
-				$plusbut = $we_button->create_button(
-						"image:btn_add_listelement",
+				$plusbut = $we_button->create_button('image:btn_add_listelement',
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name',1)",
-						true,
-						100,
-						22,
-						"",
-						"",
-						($show > 0 ? false : true));
+						true,100,22,'','',($show > 0 ? false : true));
 			}
 
-			if (eregi('^< ?td', $content) || eregi('^< ?tr', $content)) {
+			if (preg_match('/^< ?td/i', $content) || preg_match('/^< ?tr/i', $content)) {
 				$foo = makeEmptyTable(rmPhp($content));
-				$plusbut = eregi_replace('(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)', '\1\2' . $plusbut . '\3', $foo);
+				$plusbut = preg_replace('|(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)|i', '$1$2' . $plusbut . '$3', $foo,1);
 			} else {
-				$plusbut = "<p>" . $plusbut;
+				$plusbut = '<p>' . $plusbut;
 			}
 			$out .= (!$isInListview) ? ('<input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . ']" value="' . htmlentities(
 					$list) . '"><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . '#content]" value="' . htmlspecialchars(

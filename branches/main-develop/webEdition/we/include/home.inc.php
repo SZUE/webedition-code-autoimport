@@ -32,7 +32,7 @@ protect();
 htmlTop();
 print STYLESHEET;
 
-print 
+print
 		"
 <style type=\"text/css\">
 .rssDiv, .rssDiv *{
@@ -50,14 +50,14 @@ print
 </style>";
 
 if (we_hasPerm("CAN_SEE_QUICKSTART")) {
-	
+
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
 	$bResetProps = ($_REQUEST["we_cmd"][0] == "reset_home") ? true : false;
-	
+
 	if (!$bResetProps && $iLayoutCols) {
-		
+
 		$aDatTblPref = getPref("cockpit_dat"); // array as saved in the prefs
-		$aDat = (!empty($aDatTblPref)) ? unserialize($aDatTblPref) : $aCfgProps; // 
+		$aDat = (!empty($aDatTblPref)) ? unserialize($aDatTblPref) : $aCfgProps; //
 		$aTrf = array_pop($aDat);
 		if (sizeof($aDat) > $iLayoutCols) {
 			while (sizeof($aDat) > $iLayoutCols) {
@@ -69,18 +69,18 @@ if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 			setUserPref("cockpit_dat", serialize($aDat));
 		}
 		$iDatLen = sizeof($aDat);
-	
+
 	} else {
-		
+
 		$iLayoutCols = $iDefCols;
 		$_SESSION["prefs"]["cockpit_amount_columns"] = $iDefCols;
-		
+
 		setUserPref("cockpit_amount_columns", $iDefCols);
 		setUserPref("cockpit_dat", serialize($aCfgProps));
 		$aDat = $aCfgProps;
 		$aTrf = array_pop($aDat);
 		$iDatLen = sizeof($aDat);
-	
+
 	}
 
 	function in_array_recursive($value, $array)
@@ -94,7 +94,7 @@ if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 			}
 			if (in_array($value, $item))
 				return true;
-			else 
+			else
 				if (in_array_recursive($value, $item))
 					return true;
 		}
@@ -127,7 +127,7 @@ var oTblWidgets=null;
 	echo $jsPrefs;
 	?>
 
-function gel(id_){ 
+function gel(id_){
 	return document.getElementById ? document.getElementById(id_) : null;
 }
 
@@ -325,10 +325,10 @@ function saveSettings(){
 		// interne Meldung - debug
 		alert(sDg);
 	}
-	
+
 	fo=self.document.forms['we_form'];
 	fo.elements['we_cmd[1]'].value = serialize(aDat);
-	top.YAHOO.util.Connect.setForm(fo); 
+	top.YAHOO.util.Connect.setForm(fo);
 	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php
 	echo WEBEDITION_DIR;
 	?>we/include/we_widgets/cmd.inc.php', top.weDummy);
@@ -437,7 +437,7 @@ function setWidgetWidth(id,w){
 }
 
 function resizeWidget(id){
-	
+
 	var _type=gel(id+'_type').value;
 	var w=(resizeIdx('get',id)==0)?oCfg.general_['w_expand']:oCfg.general_['w_collapse'];
 	resizeIdx('swap',id);
@@ -445,27 +445,27 @@ function resizeWidget(id){
 	gel(id+'_lbl').innerHTML='';
 	setLabel(id);
 	updateJsStyleCls();
-	
+
 	initWidget(id); // resize widget, etc.
-	
+
 }
 
 function initWidget( _id ) {
-	
+
 	if (gel(_id+'_type').value == "sct") {
-		
+
 		var _width = "100%";
 		if ( resizeIdx('get', _id) == 1 ) {
 			_width = "48%";
 		}
-		
+
 		var _elem = gel(_id);
 		var _inlineDivs = _elem.getElementsByTagName('div');
-		
+
 		for (i=0;i<_inlineDivs.length;i++) {
 			if (_inlineDivs[i].className == "sct_row") {
 				_inlineDivs[i].style.width = _width;
-				
+
 			}
 		}
 	}
@@ -595,7 +595,7 @@ function createWidget(typ,row,col){
 	}
 	if(asoc.length && row){
 		domNode.insertBefore(divClone,gel(asoc[row-1]['id']));
-		
+
 	}else{ // add to empty col - before wildcard!!
 		var _td = gel("c_" + col);
 		_td.insertBefore(
@@ -649,7 +649,7 @@ function implode(arr,delimeter,enclosure){
 	for(var i=0;i<arr.length;i++){
 		if(i!=0){out+=delimeter;}
 		out+=enclosure+escape(arr[i])+enclosure;
-	}	
+	}
 	return out;
 }
 
@@ -675,11 +675,11 @@ function composeUri(args){
 		<?php if($GLOBALS['BROWSER']!='SAFARI'){
 		echo '
 			if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
-			
+
 				var clone=gel("rpcBusy").cloneNode(true);
 				var wpNode=gel(elementId+"_wrapper");
 				var ctNode=gel(elementId+"_content");
-		
+
 				ctNode.style.display="none";
 				wpNode.style.textAlign="center";
 				wpNode.style.verticalAlign="middle";
@@ -689,30 +689,30 @@ function composeUri(args){
 			}';
 		}?>
 	}
-	
-	
+
+
 	/**
 	 * hide the spinning wheel for a widget
 	 */
 	function hideLoadingSymbol( elementId ) {
 		var saf = <?php echo ($GLOBALS['BROWSER']=='SAFARI'?'true':'false');?>;
-		
+
 		if(!saf && gel('rpcBusyClone_' + elementId)){
 			var oWrapper=gel(elementId+'_wrapper');
 			oWrapper.style.textAlign='left';
 			oWrapper.style.verticalAlign='top';
 			gel('rpcBusyClone_' + elementId).parentNode.removeChild(gel('rpcBusyClone_' + elementId));
 		}
-		
+
 	}
 
 /** async REQUEST for preview **/
-	
+
 	function updateWidgetContent(widgetType, widgetId, contentData, titel) {
-		
+
 		var docIFrm,iFrmScr;
 		var oInline = gel(widgetId+'_inline'); // object-inline
-	
+
 		var saf = <?php echo ($GLOBALS['BROWSER']=='SAFARI'?'true':'false');?>;
 		if(!saf) {
 			oInline.style.display='block';
@@ -731,43 +731,43 @@ function composeUri(args){
 				return true;
 			}
 		}
-		
+
 		var oContent=gel(widgetId+'_content');
 		oContent.style.display='block';
 		hideLoadingSymbol(widgetId);
-		
+
 		eval(((widgetType=='pad')?'docIFrm.getElementById(widgetType)':'oInline')+ '.innerHTML=contentData;');
 		if(widgetType=='pad')iFrmScr.calendarSetup();
 		setLabel(widgetId,titel,'');
 		initWidget( widgetId );
-		
+
 	}
-	
+
 	/**
 	 * executes a real AJAX command, instead of using an iframe
 	 * the received ajax-response will use the function "updateWidgetContent" to replace the content of the widget
 	 * @param param_1 string: individual foreach widget
 	 * @param initCfg string: configuration (position, etc)
-	 * @param param_3 string: 
-	 * @param param_4 string: 
+	 * @param param_3 string:
+	 * @param param_4 string:
 	 * @param titel string: titel of the widget
 	 * @param widgetId string: id fo widget
-	 * 
+	 *
 	 */
 	function executeAjaxRequest( param_1, initCfg, param_3, param_4, titel, widgetId ) {
-		
+
 		// determine type of the widget
 		var widgetType = gel( widgetId + '_type').value;
-		
+
 		showLoadingSymbol( arguments[5] );
-		
+
 		var args = '';
 		for(var i = 0; i < arguments.length; i++) {
 			args += '&we_cmd['+i+']='+escape(arguments[i]);
 		}
-		
+
 		var _cmdName = null;
-		
+
 		switch ( widgetType ) {
 			case "rss":
 				_cmdName = "GetRss";
@@ -776,9 +776,9 @@ function composeUri(args){
 		top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php
 	print session_id();
 	?>' , ajaxCallback );
-		
+
 	}
-	
+
 		var ajaxCallback = {
 			success: function(o) {
 				if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
@@ -787,7 +787,7 @@ function composeUri(args){
 						eval( o.responseText );
 						if ( weResponse ) {
 							updateWidgetContent( weResponse.widgetType, weResponse.widgetId, weResponse.data, weResponse.titel );
-							
+
 						}
 					} catch (exc){
 						alert("Could not complete the ajax request");
@@ -796,22 +796,22 @@ function composeUri(args){
 			},
 			failure: function(o) {
 				alert("Could not complete the ajax request");
-				
+
 			}
 		}
-	
+
 	/**
 	 * Old ajax functions using an iframe
 	 */
 	function rpc(){
-		
+
 		if(!document.createElement){
 			return true;
 		}
 		var docIFrm;
 		var sType=gel(arguments[5]+'_type').value;
 		showLoadingSymbol( arguments[5] );
-		
+
 		// temporaryliy add a form submit the form and save all !!
 			// start bugfix #1145
 			var _tmpForm = document.createElement("form");
@@ -826,7 +826,7 @@ function composeUri(args){
 			for(var i=0;i<arguments.length;i++){
 				var _tmpField = document.createElement('input');
 				_tmpForm.appendChild(_tmpField);
-				
+
 				_tmpField.name = "we_cmd[" + i + "]";
 				_tmpField.value = unescape(arguments[i]);
 				_tmpField.style.display = "none";
@@ -834,23 +834,23 @@ function composeUri(args){
 			_tmpForm.submit();
 			// remove form after submitting everything
 			document.getElementsByTagName("body")[0].removeChild( document.getElementById("_tmpSubmitForm") );
-			
+
 			return false;
 			// end bugfix #1145
 	}
-	
-	
+
+
 	function rpcHandleResponse(sType,sObjId,oDoc,sCsvLabel){
-		
-	
+
+
 		var docIFrm,iFrmScr;
 		var oInline=gel(sObjId+'_inline');
-	
+
 		var saf = <?php echo ($GLOBALS['BROWSER']=='SAFARI'?'true':'false');?>;
 		if(!saf) {
 			oInline.style.display='block';
 		}
-		
+
 		if(sType=='rss'||sType=='pad'){
 			if(oInline.contentDocument){
 				docIFrm=oInline.contentDocument;
@@ -867,13 +867,13 @@ function composeUri(args){
 		}
 		var oContent=gel(sObjId+'_content');
 		oContent.style.display='block';
-		
+
 		hideLoadingSymbol(sObjId);
-		
+
 		eval(((sType=='rss'||sType=='pad')?'docIFrm.getElementById(sType)':'oInline')+ '.innerHTML=oDoc.innerHTML;');
 		if(sType=='pad')iFrmScr.calendarSetup();
 		setLabel(sObjId,sCsvLabel,'');
-		
+
 		initWidget( sObjId );
 	}
 
@@ -890,7 +890,7 @@ function closeAllModalWindows() {
 			_propsDlg[dialog].close();
 		}
 	} catch(e){
-		
+
 	}
 }
 
@@ -903,7 +903,7 @@ function closeAllModalWindows() {
 		$iCurrRssFeed++;
 	}
 	$_transact = md5(uniqid(rand()));
-	
+
 	echo "function newMessage(username){\n";
 	if (defined("WE_MESSAGING_MODULE_PATH")) {
 		echo "	new jsWindow('" . WE_MESSAGING_MODULE_PATH . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);\n";
@@ -923,9 +923,9 @@ function setTaskCount(num){
 	}
 }
 <?php
-	
+
 	if (in_array_recursive('usr', $aDat) && defined("USER_TABLE")) {
-		
+
 		?>
 
 function setUsersOnline(num){
@@ -950,7 +950,7 @@ function getUser(){
 		url += 'we_cmd['+i+']='+escape(arguments[i]);
 		if(i < (arguments.length - 1)) url += '&';
 	}
-	
+
 	new jsWindow(url,'browse_users',-1,-1,500,300,true,false,true);
 }
 
@@ -994,20 +994,20 @@ function getUser(){
 				}
 				include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
 				$$aProps[0] = $oWidget->create(
-						'm_' . $iCurrId, 
-						$aProps[0], 
-						$oTblCont, 
-						$aLang, 
-						$aProps[1], 
-						$aProps[2], 
-						$aProps[3], 
-						$iWidth, 
-						$aPrefs[$aProps[0]]["height"], 
+						'm_' . $iCurrId,
+						$aProps[0],
+						$oTblCont,
+						$aLang,
+						$aProps[1],
+						$aProps[2],
+						$aProps[3],
+						$iWidth,
+						$aPrefs[$aProps[0]]["height"],
 						$aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_htmlElement::htmlDiv(
 						array(
 							"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;"
-						), 
+						),
 						$$aProps[0]->getHtmlCode());
 				$s2 .= we_htmlElement::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
@@ -1026,47 +1026,47 @@ function getUser(){
 		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . "_collapse\">" . we_htmlElement::htmlDiv(
 				array(
 					"class" => "wildcard"
-				), 
+				),
 				"") . "</td>\n";
 		if ($iLayoutCols > $iCurrCol)
 			$s1 .= "<td>&nbsp;&nbsp;</td>\n";
 	}
-	
+
 	$oTblWidgets = new we_htmlTable(array(
 		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "height" => "98%"
 	), 1, 1);
 	$oTblWidgets->setCol(
-			0, 
-			0, 
+			0,
+			0,
 			array(
 				"valign" => "top", "width" => "100%", "align" => "left"
-			), 
+			),
 			we_htmlElement::htmlDiv(
 					array(
 						"id" => "modules"
-					), 
+					),
 					"<table id=\"le_tblWidgets\" cellspacing=\"0\" border=\"0\">\n<tr id=\"rowWidgets\">\n" . $s1 . "</tr>\n</table>"));
-	
+
 	// this is the clone widget
 	$oClone = $oWidget->create("clone", "_reCloneType_", null, array(
 		"", ""
 	), "white", 0, "", 100, 60);
-	
-	print 
+
+	print
 			we_htmlElement::htmlBody(
 					array(
-						
-							"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});", 
-							"marginwidth" => "10", 
-							"marginheight" => "10", 
-							"leftmargin" => "10", 
-							"topmargin" => "10", 
+
+							"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
+							"marginwidth" => "10",
+							"marginheight" => "10",
+							"leftmargin" => "10",
+							"topmargin" => "10",
 							"class" => "bgc_white"
-					), 
+					),
 					we_htmlElement::htmlForm(
 							array(
 								"name" => "we_form"
-							), 
+							),
 							we_htmlElement::htmlHidden(array(
 								"name" => "we_cmd[0]", "value" => "save"
 							)) . we_htmlElement::htmlHidden(array(
@@ -1076,14 +1076,14 @@ function getUser(){
 							))) . we_htmlElement::htmlDiv(
 							array(
 								"id" => "rpcBusy", "style" => "display:none;"
-							), 
+							),
 							we_htmlElement::htmlImg(
 									array(
-										
-											"src" => IMAGE_DIR . "pd/busy.gif", 
-											"width" => 32, 
-											"height" => 32, 
-											"border" => 0, 
+
+											"src" => IMAGE_DIR . "pd/busy.gif",
+											"width" => 32,
+											"height" => 32,
+											"border" => 0,
 											"style" => "margin-left:10px;"
 									))) . we_htmlElement::htmlDiv(array(
 						"id" => "widgets"
@@ -1091,23 +1091,23 @@ function getUser(){
 							"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_htmlElement::htmlDiv(
 							array(
 								"id" => "divClone", "style" => "position:relative;display:none;"
-							), 
+							),
 							$oClone->getHtmlCode()));
 
 } else { // no right to see cockpit!!!
-	
+
 
 	$we_button = new we_button();
-	
-	print 
+
+	print
 			we_htmlElement::jsElement(
 					'
-		
+
 		function isHot(){
 			return false;
 		}
 		function closeAllModalWindows(){}
-		
+
 		var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 		_EditorFrame.initEditorFrameData(
 		{
@@ -1119,8 +1119,8 @@ function getUser(){
 		}
 		);
 	');
-	
-	print 
+
+	print
 			we_htmlElement::cssElement(
 					'
 		html {
@@ -1133,7 +1133,7 @@ function getUser(){
 			padding: 0;
 			text-align: center;
 		}
-		
+
 		.errorMessage {
 			position: relative;
 			top: 250px;
@@ -1143,32 +1143,30 @@ function getUser(){
 			padding: auto;
 		}
 		');
-	
+
 	print "</head>";
-	print 
+	print
 			we_htmlElement::htmlBody(
 					array(
 						"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
-					), 
-					
+					),
+
 					we_htmlElement::htmlDiv(
 							array(
 								"class" => "defaultfont errorMessage", "style" => "width: 400px;"
-							), 
+							),
 							(we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? htmlAlertAttentionBox(
 									"<strong>" . $l_we_SEEM["question_change_startdocument"] . "</strong><br /><br />" . $we_button->create_button(
-											"preferences", 
-											"javascript:top.we_cmd('openPreferences');"), 
-									1, 
-									0, 
+											"preferences",
+											"javascript:top.we_cmd('openPreferences');"),
+									1,
+									0,
 									false) : htmlAlertAttentionBox(
-									"<strong>" . $l_we_SEEM["start_with_SEEM_no_startdocument"] . "</strong>", 
-									1, 
-									0, 
+									"<strong>" . $l_we_SEEM["start_with_SEEM_no_startdocument"] . "</strong>",
+									1,
+									0,
 									false))));
 }
 echo "
 <iframe id=\"RSIFrame\" name=\"RSIFrame\" style=\"border:0px;width:1px;height:1px; visibility:hidden\"></iframe>
 </html>\n";
-
-?>

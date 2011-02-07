@@ -36,5 +36,3 @@ switch ($_REQUEST["we_cmd"][0]) {
 		break;
 
 }
-
-?>

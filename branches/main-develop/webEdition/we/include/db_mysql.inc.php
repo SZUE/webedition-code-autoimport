@@ -91,22 +91,22 @@ class DB_Sql
 			$User = $this->User;
 		if ("" == $Password)
 			$Password = $this->Password;
-			
+
 		/* establish connection, select database */
 		if (0 == $this->Link_ID) {
-			
+
 			$this->Link_ID = mysql_pconnect($Host, $User, $Password);
 			if (!$this->Link_ID) {
 				$this->halt("pconnect($Host, $User, \$Password) failed.");
 				return 0;
 			}
-			
+
 			if (!@mysql_select_db($Database, $this->Link_ID)) {
 				$this->halt("cannot use database " . $this->Database);
 				return 0;
 			}
 		}
-		
+
 		return $this->Link_ID;
 	}
 
@@ -127,20 +127,20 @@ class DB_Sql
 		* like these: '$db = new DB_Sql_Subclass;'
 		*/
 		return 0;
-		
+
 		if (!$this->connect()) {
 			return 0; /* we already complained in connect() about that. */
 		}
 		;
-		
+
 		# New query, discard previous result.
 		if ($this->Query_ID) {
 			$this->free();
 		}
-		
+
 		if ($this->Debug)
 			printf("Debug: query = %s<br>\n", $Query_String);
-		
+
 		$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);
 		$this->Row = 0;
 		$this->Errno = mysql_errno();
@@ -148,7 +148,7 @@ class DB_Sql
 		if (!$this->Query_ID) {
 			$this->halt("Invalid SQL: " . $Query_String);
 		}
-		
+
 		# Will return nada if it fails. That's fine.
 		return $this->Query_ID;
 	}
@@ -156,17 +156,17 @@ class DB_Sql
 	/* public: walk result set */
 	function next_record($resultType = MYSQL_BOTH)
 	{
-		
+
 		if (!$this->Query_ID) {
 			$this->halt("next_record called with no query pending.");
 			return 0;
 		}
-		
+
 		$this->Record = @mysql_fetch_array($this->Query_ID, $resultType);
 		$this->Row += 1;
 		$this->Errno = mysql_errno();
 		$this->Error = mysql_error();
-		
+
 		$stat = is_array($this->Record);
 		if (!$stat && $this->Auto_Free) {
 			$this->free();
@@ -177,21 +177,21 @@ class DB_Sql
 	/* public: get result at positionset */
 	function record($pos = 0)
 	{
-		
+
 		if (!$this->Query_ID) {
 			$this->halt("record called with no query pending.");
 			return 0;
 		}
-		
+
 		if (!$this->seek($pos)) {
 			return 0;
 		}
-		
+
 		$this->Record = @mysql_fetch_array($this->Query_ID);
 		$this->Row += 1;
 		$this->Errno = mysql_errno();
 		$this->Error = mysql_error();
-		
+
 		$stat = is_array($this->Record);
 		if (!$stat && $this->Auto_Free) {
 			$this->free();
@@ -207,7 +207,7 @@ class DB_Sql
 			$this->Row = $pos;
 		else {
 			$this->halt("seek($pos) failed: result has " . $this->num_rows() . " rows");
-			
+
 			/* half assed attempt to save the day,
 			* but do not consider this documented or even
 			* desireable behaviour.
@@ -216,7 +216,7 @@ class DB_Sql
 			$this->Row = $this->num_rows();
 			return 0;
 		}
-		
+
 		return 1;
 	}
 
@@ -224,7 +224,7 @@ class DB_Sql
 	function lock($table, $mode = "write")
 	{
 		$this->connect();
-		
+
 		$query = "lock tables ";
 		if (is_array($table)) {
 			while (list($key, $value) = each($table)) {
@@ -249,7 +249,7 @@ class DB_Sql
 	function unlock()
 	{
 		$this->connect();
-		
+
 		$res = @mysql_query("unlock tables");
 		if (!$res) {
 			$this->halt("unlock() failed.");
@@ -299,13 +299,13 @@ class DB_Sql
 	function nextid($seq_name)
 	{
 		$this->connect();
-		
+
 		if ($this->lock($this->Seq_Table)) {
 			/* get sequence number (locked) and increment */
 			$q = sprintf("select nextid from %s where seq_name = '%s'", $this->Seq_Table, $seq_name);
 			$id = @mysql_query($q, $this->Link_ID);
 			$res = @mysql_fetch_array($id);
-			
+
 			/* No current value, make one */
 			if (!is_array($res)) {
 				$currentid = 0;
@@ -331,7 +331,7 @@ class DB_Sql
 		$count = 0;
 		$id = 0;
 		$res = array();
-		
+
 		/*
 		* Due to compatibility problems with Table we changed the behavior
 		* of metadata();
@@ -357,7 +357,7 @@ class DB_Sql
 		*   The last one is used, if you have a field name, but no index.
 		*   Test:  if (isset($result['meta']['myfield'])) { ...
 		*/
-		
+
 		// if no $table specified, assume that we are working with a query
 		// result
 		if ($table) {
@@ -370,9 +370,9 @@ class DB_Sql
 			if (!$id)
 				$this->halt("No query specified.");
 		}
-		
+
 		$count = @mysql_num_fields($id);
-		
+
 		// made this IF due to performance (one if is faster than $count if's)
 		if (!$full) {
 			for ($i = 0; $i < $count; $i++) {
@@ -384,7 +384,7 @@ class DB_Sql
 			}
 		} else { // full
 			$res["num_fields"] = $count;
-			
+
 			for ($i = 0; $i < $count; $i++) {
 				$res[$i]["table"] = mysql_field_table($id, $i);
 				$res[$i]["name"] = mysql_field_name($id, $i);
@@ -394,7 +394,7 @@ class DB_Sql
 				$res["meta"][$res[$i]["name"]] = $i;
 			}
 		}
-		
+
 		// free the result only if we were called on a table
 		if ($table)
 			@mysql_free_result($id);
@@ -408,9 +408,9 @@ class DB_Sql
 		$this->Errno = @mysql_errno($this->Link_ID);
 		if ($this->Halt_On_Error == "no")
 			return;
-		
+
 		$this->haltmsg($msg);
-		
+
 		if ($this->Halt_On_Error != "report")
 			die("Session halted.");
 	}
@@ -452,4 +452,3 @@ class DB_Sql
 	}
 
 }
-?>

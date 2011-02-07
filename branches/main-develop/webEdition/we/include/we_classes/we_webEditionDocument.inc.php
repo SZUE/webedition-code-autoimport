@@ -68,7 +68,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		if (defined("CUSTOMER_TABLE")) {
 			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
 		}
-		
+
 		$this->we_textContentDocument();
 		if(isset($_SESSION["prefs"]["DefaultTemplateID"])){
 			$this->TemplateID = $_SESSION["prefs"]["DefaultTemplateID"];
@@ -108,7 +108,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			case WE_EDITPAGE_INFO:
 				$GLOBALS["WE_MAIN_DOC"]->InWebEdition=true;//Bug 3417
 				return "we_templates/we_editor_info.inc.php";
-				
+
 			case WE_EDITPAGE_CONTENT:
 				$GLOBALS["we_editmode"] = true;
 				break;
@@ -833,7 +833,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			$fs=0;
 		}
 		return $fs;
-	
+
 	}
 
 	function i_getDocumentToSave() {
@@ -858,28 +858,26 @@ class we_webEditionDocument extends we_textContentDocument {
 			$serialized = serialize($data);
 			$base64Object = base64_encode($serialized);
 			$doc='<?php
+$GLOBALS[\'noSess\'] = true;
+$GLOBALS[\'WE_IS_DYN\'] = 1;
+$GLOBALS[\'we_transaction\'] = \'\';
+$GLOBALS[\'we_ContentType\'] = \'text/webedition\';
+$_REQUEST[\'we_cmd\'] = array();
 
-					$noSess = true;
-					$GLOBALS["WE_IS_DYN"] = 1;
-					$we_transaction = "";
-					$we_ContentType = "text/webedition";
-					$_REQUEST["we_cmd"] = array();
+if (isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
+	$_REQUEST[\'we_cmd\'][1] = $_REQUEST[\'pv_id\'];
+	$_REQUEST[\'we_cmd\'][4] = $_REQUEST[\'pv_tid\'];
+} else {
+	$_REQUEST[\'we_cmd\'][1] = ' . $this->ID . ';
+}
 
-					if (isset($_REQUEST["pv_id"]) && isset($_REQUEST["pv_tid"])) {
-						$_REQUEST["we_cmd"][1] = $_REQUEST["pv_id"];
-						$_REQUEST["we_cmd"][4] = $_REQUEST["pv_tid"];
-					} else {
-						$_REQUEST["we_cmd"][1] = ' . $this->ID . ';
-					}
+$FROM_WE_SHOW_DOC = true;
 
-					$FROM_WE_SHOW_DOC = true;
-
-					if (!isset($GLOBALS["WE_MAIN_DOC"]) && isset($_REQUEST["we_objectID"])) {
-						include($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_object_showDocument.inc.php");
-					} else {
-						include($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_showDocument.inc.php");
-					}
-				?>';
+if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
+	include($_SERVER[\'DOCUMENT_ROOT\'] . \'/webEdition/we/include/we_modules/object/we_object_showDocument.inc.php\');
+} else {
+	include($_SERVER[\'DOCUMENT_ROOT\'] . \'/webEdition/we/include/we_showDocument.inc.php\');
+}';
 		} else {
 			if (isset($GLOBALS["DocStream"]) && isset($GLOBALS["DocStream"][$this->ID])) {
 				$doc = $GLOBALS["DocStream"][$this->ID];

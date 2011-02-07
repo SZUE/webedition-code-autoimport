@@ -85,7 +85,6 @@ if (!_EditorFrame) {
 
 
 <?php if (isset($we_doc)) { ?>
-
 <?php
 
 if (isset($we_doc->ApplyWeDocumentCustomerFiltersToChilds) && $we_doc->ApplyWeDocumentCustomerFiltersToChilds) {
@@ -93,7 +92,6 @@ if (isset($we_doc->ApplyWeDocumentCustomerFiltersToChilds) && $we_doc->ApplyWeDo
 }
 
 ?>
-
 // check if parentId was changed
 var ajaxCallback = {
 	success: function(o) {
@@ -257,9 +255,9 @@ function doUnload(){
 function we_cmd(){
 	var args = "";
 	var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	
+
 	var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
-	
+
 	switch (arguments[0]){
 		case "edit_link":
 		case "edit_link_at_class":
@@ -373,9 +371,9 @@ function we_cmd(){
 			if(!confirm("<?php print $l_navigation['del_question']?>")) break;
 		default:
 			for(var i = 0; i < arguments.length; i++){
-				
+
 				args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-			
+
 			}
 			eval('parent.we_cmd('+args+')');
 	}

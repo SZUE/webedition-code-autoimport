@@ -19,7 +19,6 @@
  */
 
 function we_tag_listdir($attribs, $content){
-	global $we_editmode;
 
 	$dirID = we_getTagAttribute("id", $attribs, $GLOBALS["we_doc"]->ParentID);
 

@@ -64,7 +64,6 @@ print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("","100%",$parts,20,"",-1,"","",false);
 
 ?>
-
 </form>
 	</body>
 </html>

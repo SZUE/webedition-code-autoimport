@@ -18,8 +18,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-
-protect();
-
-phpinfo();
+function we_tag_ifNoJavaScript($attribs, $content){
+	$foo = attributFehltError($attribs, 'id', 'ifNoJavaScript');
+	if ($foo) {
+		print($foo);
+		return '';
+	}
+	$id = we_getTagAttribute('id', $attribs);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.abs($id), new DB_WE());
+	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
+	$attr = we_make_attribs($attribs, 'id');
+	return '<noscript><meta http-equiv="refresh" content="0;URL=' . $url . '"></noscript>';
+}

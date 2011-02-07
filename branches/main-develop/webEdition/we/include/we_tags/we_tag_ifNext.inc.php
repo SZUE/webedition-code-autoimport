@@ -18,8 +18,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-
-protect();
-
-phpinfo();
+function we_tag_ifNext($attribs, $content){
+	if (isset($GLOBALS['_we_voting_list']))
+		return $GLOBALS['_we_voting_list']->hasNextPage();
+	$useparent = we_getTagAttribute('useparent', $attribs, '', true);
+	return (isset($GLOBALS['lv'])) && $GLOBALS['lv']->hasNextPage($useparent);
+}

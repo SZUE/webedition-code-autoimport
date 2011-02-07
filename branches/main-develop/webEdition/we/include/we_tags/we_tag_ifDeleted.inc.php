@@ -18,8 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-
-protect();
-
-phpinfo();
+function we_tag_ifDeleted($attribs, $content){
+	$type = we_getTagAttribute('type', $attribs, 'document');
+	return isset($GLOBALS['we_' . $type . '_delete_ok']) && ($GLOBALS['we_' . $type . '_delete_ok'] == true);
+}

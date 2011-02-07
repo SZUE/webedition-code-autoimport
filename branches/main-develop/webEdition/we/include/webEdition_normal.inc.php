@@ -163,7 +163,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				top.setTreeWidth(420);
 				top.storeTreeWidth(420);
 			}
-			
+
 			var widthSidebar = top.getSidebarWidth();
 
 			widthBeforeDeleteModeSidebar = widthSidebar;
@@ -188,7 +188,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				top.setTreeWidth(500);
 				top.storeTreeWidth(500);
 			}
-			
+
 			var widthSidebar = top.getSidebarWidth();
 
 			widthBeforeDeleteModeSidebar = widthSidebar;
@@ -223,4 +223,3 @@ var widthBeforeDeleteModeSidebar = 0;
 </frameset>
 	<?php
 	}
-?>

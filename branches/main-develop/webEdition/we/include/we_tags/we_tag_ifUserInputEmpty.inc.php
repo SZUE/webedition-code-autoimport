@@ -18,8 +18,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+function we_isUserInputNotEmpty($attribs){
+	$formname = we_getTagAttribute('formname', $attribs, 'we_global_form');
+	$match = we_getTagAttribute('match', $attribs,'',false,false,true);
+	return (isset($_REQUEST['we_ui_' . $formname][$match]) && strlen($_REQUEST['we_ui_' . $formname][$match]));
+}
 
-protect();
-
-phpinfo();
+function we_tag_ifUserInputEmpty($attribs, $content){
+	$foo = attributFehltError($attribs, 'match', 'ifUserInputEmpty');
+	if ($foo) {
+		print($foo);
+		return '';
+	}
+	return !we_isUserInputNotEmpty($attribs);
+}

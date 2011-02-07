@@ -18,8 +18,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-
-protect();
-
-phpinfo();
+function we_tag_ifEditmode($attribs, $content){
+	$doc = we_getTagAttribute('doc', $attribs);
+	switch ($doc) {
+		case 'self' :
+			return $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'] && $GLOBALS["we_editmode"];
+		default :
+			return $GLOBALS['we_editmode']|| $GLOBALS['WE_MAIN_EDITMODE']/* || (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem')*/;
+	}
+}

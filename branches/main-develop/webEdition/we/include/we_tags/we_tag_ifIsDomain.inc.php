@@ -18,8 +18,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-
-protect();
-
-phpinfo();
+function we_tag_ifIsDomain($attribs, $content){
+	$foo = attributFehltError($attribs, 'domain', 'ifIsDomain');
+	if ($foo) {
+		print($foo);
+		return '';
+	}
+	$domain = we_getTagAttribute('domain', $attribs);
+	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || ($domain == $_SERVER['SERVER_NAME']);
+}

@@ -129,4 +129,3 @@ if (!date_default_timezone_set(@date_default_timezone_get())){
 define("DATETIME_INITIALIZED","1"); // to prevent additional initialization in we_defines und autoload, this allows later to make that an settings-item
 
 //define ("WE_SQL_DEBUG", 1);
-?>

@@ -308,8 +308,43 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$mailtextHTML);
 					}
 				}
-
+				$recipientCC = we_getTagAttribute("recipientCC",$attribs);
+				$recipientBCC = we_getTagAttribute("recipientBCC",$attribs);
+				$includeimages = we_getTagAttribute("includeimages",$attribs,false,true);
+				$useBaseHref = we_getTagAttribute("usebasehref",$attribs,true,true,true);
+				$toCC = explode(",",$recipientCC);
+				$we_recipientCC = array();
+				for ($l=0;$l < sizeof($toCC);$l++) {
+	
+					if (!eregi("@",$toCC[$l])) {
+						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && eregi("@",$_SESSION["webuser"][$toCC[$l]])) { //wenn man registrierten Usern was senden moechte
+							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
+						} else if(isset($_REQUEST[$toCC[$l]]) && eregi("@",$_REQUEST[$toCC[$l]])) {	//email to friend test
+							$we_recipientCC[] = $_REQUEST[$toCC[$l]];
+						}
+					} else {
+						$we_recipientCC[] = $toCC[$l];
+					}
+				}
+				$toBCC = explode(",",$recipientBCC);
+				$we_recipientBCC = array();
+				for ($l=0;$l < sizeof($toBCC);$l++) {
+	
+					if (!eregi("@",$toBCC[$l])) {
+						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && eregi("@",$_SESSION["webuser"][$toBCC[$l]])) { //wenn man registrierte Usern was senden moechte
+							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
+						} else if(isset($_REQUEST[$toBCC[$l]]) && eregi("@",$_REQUEST[$toBCC[$l]])) {	//email to friend test
+							$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
+						}
+					} else {
+						$we_recipientBCC[] = $toBCC[$l];
+					}
+				}
 				$phpmail = new we_util_Mailer($f["subscribe_mail"],$subject,$from,$from);
+				if(isset($includeimages)) {$phpmail->setIsEmbedImages($includeimages);}
+				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
+				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
+				
 				$phpmail->setBaseDir($basehref);
 				$phpmail->setCharSet($charset);
 
@@ -474,9 +509,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					$adminmailtextHTML = str_replace('###FIRSTNAME###',$f["subscribe_firstname"],$adminmailtextHTML);
 					$adminmailtextHTML = str_replace('###LASTNAME###',$f["subscribe_lastname"],$adminmailtextHTML);
 					$adminmailtextHTML = str_replace('###HTML###',$f["subscribe_html"],$adminmailtextHTML);
-
+					$includeimages = we_getTagAttribute("includeimages",$attribs,false,true);
 					$phpmail->addHTMLPart($adminmailtextHTML);
-
+					if(isset($includeimages)) {$phpmail->setIsEmbedImages($includeimages);}
 					$phpmail->buildMessage();
 					$phpmail->Send();
 					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_SUCCESS;
