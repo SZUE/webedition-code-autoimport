@@ -32,7 +32,7 @@ $perms=$_SESSION["perms"];
 
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_doc.inc.php");
+include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
 $_insertReloadFooter = "";

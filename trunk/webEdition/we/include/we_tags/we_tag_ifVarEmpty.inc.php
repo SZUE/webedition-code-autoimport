@@ -18,6 +18,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_ifVarSet.inc.php");
+
 function we_isVarNotEmpty($attribs){
 	$docAttr = we_getTagAttribute('doc', $attribs);
 	$type = we_getTagAttribute('type', $attribs);
