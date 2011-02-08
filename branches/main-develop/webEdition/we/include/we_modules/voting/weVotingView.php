@@ -30,7 +30,7 @@ class weVotingView {
 
 	var $db;
 	var $frameset;
-	
+
 	var $topFrame;
 	var $voting;
 	var $editorBodyFrame;
@@ -40,39 +40,39 @@ class weVotingView {
 	var $icon_pattern = "";
 	var $item_pattern = "";
 	var $group_pattern = "";
-	
+
 	function weVotingView($frameset="",$topframe="top.content") {
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->voting=new weVoting();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"'.IMAGE_DIR.'tree/icons/user.gif\" />&nbsp;';	
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"'.IMAGE_DIR.'tree/icons/folder.gif\" />&nbsp;';	
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"'.IMAGE_DIR.'tree/icons/user.gif\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"'.IMAGE_DIR.'tree/icons/folder.gif\" />&nbsp;';
 	}
-	
+
 	//----------- Utility functions ------------------
-	
+
 	function htmlHidden($name, $value = "") {
 		return we_htmlElement::htmlHidden(array("name"=>trim($name),"value"=>htmlspecialchars($value)));
-	}	
-	
-	
+	}
+
+
 	//-----------------Init -------------------------------
-	
+
 	function setFramesetName($frameset){
 		$this->frameset=$frameset;
 	}
-	
+
 	function setTopFrame($frame){
 		$this->topFrame=$frame;
 		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';		
-	}	
-	
-	//------------------------------------------------	
-	
-	
+		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
+	}
+
+	//------------------------------------------------
+
+
 	function getCommonHiddens($cmds=array()){
 		$out=$this->htmlHidden("cmd",(isset($cmds["cmd"]) ? $cmds["cmd"] : ""));
 		$out.=$this->htmlHidden("cmdid",(isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""));
@@ -82,10 +82,10 @@ class weVotingView {
 		$out.=$this->htmlHidden("IsFolder",(isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0'));
 		return $out;
 	}
-	
+
 	function getJSTop(){
 		global $l_voting;
-		
+
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
@@ -94,19 +94,19 @@ class weVotingView {
 				break;
 			}
 		}
-		
+
 		$js='
 			var get_focus = 1;
 			var activ_tab = 1;
 			var hot = 0;
 			var scrollToVal = 0;
-		
+
 			function setHot() {
 				hot = 1;
 			}
 			function usetHot() {
 				hot = 0;
-			} 
+			}
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -114,9 +114,9 @@ class weVotingView {
 					}
 				}
 			}
-			
+
 			parent.document.title = "'.$title.'";
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -133,7 +133,7 @@ class weVotingView {
 							eval(\'top.opener.top.we_cmd("exit_modules")\');
 						}
 				        break;
-							
+
 					case "vote":
 							'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
 							'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.tabnr.value = 3;
@@ -144,9 +144,9 @@ class weVotingView {
 							'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
 							'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.tabnr.value = 3;
 							'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
-							break;		
+							break;
 		            case "new_voting":
-		            case "new_voting_group":		
+		            case "new_voting_group":
 						if('.$this->topFrame.'.resize.right.editor.edbody.loaded) {
 							'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
 							'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmdid.value = arguments[1];
@@ -174,7 +174,7 @@ class weVotingView {
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.tabnr.value='.$this->topFrame.'.activ_tab;
 										'.$this->editorHeaderFrame.'.location="'.$this->frameset.'?home=1&pnt=edheader";
-										'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?home=1&pnt=edfooter";						
+										'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?home=1&pnt=edfooter";
 										'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
 									}
 								} else {
@@ -186,16 +186,16 @@ class weVotingView {
 
 					case "save_voting":
 						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
-						
-								
+
+
 								if ('.$this->topFrame.'.resize.right.editor.edbody.loaded) {
 
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.tabnr.value='.$this->topFrame.'.activ_tab;
-										'.(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"]) ? ($this->topFrame.'.resize.right.editor.edbody.document.we_form.owners_name.value='.$this->topFrame.'.resize.right.editor.edbody.owners_label.name;
+										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.owners_name.value='.$this->topFrame.'.resize.right.editor.edbody.owners_label.name;
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.owners_count.value='.$this->topFrame.'.resize.right.editor.edbody.owners_label.itemCount;
-										') : '').'
-										if('.$this->editorBodyForm.'.IsFolder.value!=1){										
+										'.'
+										if('.$this->editorBodyForm.'.IsFolder.value!=1){
 											'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.question_name.value='.$this->topFrame.'.resize.right.editor.edbody.question_edit.name;
 											'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.answers_name.value='.$this->topFrame.'.resize.right.editor.edbody.answers_edit.name;
 											'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.variant_count.value='.$this->topFrame.'.resize.right.editor.edbody.answers_edit.variantCount;
@@ -209,7 +209,7 @@ class weVotingView {
 								} else {
 									' . we_message_reporting::getShowMessageCall($l_voting['nothing_to_save'], WE_MESSAGE_ERROR) . '
 								}
-						
+
 						break;
 
 					case "edit_voting":
@@ -226,7 +226,7 @@ class weVotingView {
 					break;
 					case "home":
 						'.$this->editorBodyFrame.'.parent.location="'.$this->frameset.'?pnt=editor";
-					break;						
+					break;
 					default:
 						for (var i = 0; i < arguments.length; i++) {
 							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
@@ -235,10 +235,10 @@ class weVotingView {
 				}
 			}
 			';
-			
-			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js); 
+
+			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js);
 	}
-	
+
 	function getJSProperty(){
 		global $l_voting;
 		$out="";
@@ -254,19 +254,19 @@ class weVotingView {
 					}
 				}
 			}
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]) {
-					case "switchPage":					
+					case "switchPage":
 						document.we_form.cmd.value=arguments[0];
 						document.we_form.tabnr.value=arguments[1];
 						submitForm();
 					break;
 					case "openVotingDirselector":
 						url="/webEdition/we/include/we_modules/voting/we_votingDirSelectorFrameset.php?";
-						for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}		
+						for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 						new jsWindow(url,"we_votingSelector",-1,-1,600,350,true,true,true);
 					break;
 					case "browse_server":
@@ -295,13 +295,13 @@ class weVotingView {
 						document.we_form.question_name.value=question_edit.name;
 						document.we_form.answers_name.value=answers_edit.name;
 						document.we_form.variant_count.value=answers_edit.variantCount;
-						document.we_form.item_count.value=answers_edit.itemCount;		
+						document.we_form.item_count.value=answers_edit.itemCount;
 						document.we_form.cmd.value=arguments[0];
 						document.we_form.pnt.value=arguments[0];
 						new jsWindow("","export_csv",-1,-1,420,250,true,false,true);
 						submitForm("export_csv");
 						document.we_form.cmd.value=oldcmd;
-						document.we_form.pnt.value=oldpnt;		
+						document.we_form.pnt.value=oldpnt;
 					break;
 					case "exportGroup_csv":
 						oldcmd = document.we_form.cmd.value;
@@ -311,7 +311,7 @@ class weVotingView {
 						new jsWindow("","exportGroup_csv",-1,-1,420,250,true,false,true);
 						submitForm("exportGroup_csv");
 						document.we_form.cmd.value=oldcmd;
-						document.we_form.pnt.value=oldpnt;		
+						document.we_form.pnt.value=oldpnt;
 					break;
 
 					case "reset_ipdata":
@@ -328,12 +328,12 @@ class weVotingView {
 							url = "/webEdition/we/include/we_modules/voting/edit_voting_frameset.php?pnt="+arguments[0];
 							new jsWindow(url,arguments[0],-1,-1,420,230,true,false,true);
 						}
-					break;					
+					break;
 					case "show_log":
 						url = "/webEdition/we/include/we_modules/voting/edit_voting_frameset.php?pnt="+arguments[0];
 						new jsWindow(url,arguments[0],-1,-1,810,600,true,true,true);
-					break;					
-					break;					
+					break;
+					break;
 					default:
 						for (var i = 0; i < arguments.length; i++) {
 							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
@@ -341,12 +341,12 @@ class weVotingView {
 						eval("top.content.we_cmd("+args+")");
 				}
 			}
-			
+
 
 			'.$this->getJSSubmitFunction().'
-		
+
 		';
-		
+
 		$out.=we_htmlElement::jsElement($js);
 		return $out;
 	}
@@ -363,7 +363,7 @@ function getJSTreeHeader(){
 					}
 				}
 			}
-			
+
 			function we_cmd(){
 				var args = "";
 				var url = "'.$this->frameset.'?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -385,7 +385,7 @@ function getJSSubmitFunction($def_target="edbody",$def_method="post"){
 	return '
 			function submitForm() {
 				var f = self.document.we_form;
-				
+
 				if (arguments[0]) {
 					f.target = arguments[0];
 				} else {
@@ -444,7 +444,7 @@ function processCommands() {
 						$_REQUEST['pnt'] = 'edbody';
 						break;
 					}
-					
+
 					$this->voting = new weVoting($_REQUEST["cmdid"]);
 
 					if(!$this->voting->isAllowedForUser()) {
@@ -454,7 +454,7 @@ function processCommands() {
 						$this->voting = new weVoting();
 						$_REQUEST["home"] = true;
 						break;
-					}					
+					}
 					print we_htmlElement::jsElement('
 								'.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->voting->Text).'";
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
@@ -468,29 +468,29 @@ function processCommands() {
 						);
 						break;
 					}
-					
-					$js="";					
+
+					$js="";
 					if($this->voting->filenameNotValid($this->voting->Text)){
 						print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall($l_voting['wrongtext'], WE_MESSAGE_ERROR)
 						);
 						break;
 					}
-					
+
 					if(trim($this->voting->Text) == ''){
 						print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall($l_voting['name_empty'], WE_MESSAGE_ERROR)
 						);
 						break;
 					}
-					
+
 					if($this->voting->Active==1 && $this->voting->ActiveTime && $this->voting->Valid<time()) {
 						print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall($l_voting['not_active'], WE_MESSAGE_ERROR)
 						);
 						break;
 					}
-					
+
 					$oldpath = $this->voting->Path;
 					// set the path and check it
 					$this->voting->setPath();
@@ -506,11 +506,11 @@ function processCommands() {
 							we_message_reporting::getShowMessageCall($l_voting['path_nok'], WE_MESSAGE_ERROR)
 						);
 						break;
-					}					
-					
-									
+					}
+
+
 				    $error = false;
-				    
+
 				    $q_empty = true;
 				    $a_empty = true;
 				    if(!$this->voting->IsFolder && count($this->voting->QASet)!=0){
@@ -520,7 +520,7 @@ function processCommands() {
 				    			$q_empty = true;
 				    			break;
 				    		} else $q_empty = false;
-				    		
+
 				    		foreach ($set['answers'] as $ans){
 				    			$q = trim($ans);
 				    			if($q===''){
@@ -564,23 +564,23 @@ function processCommands() {
 						if($this->voting->ID) $newone=false;
 
 						$this->voting->save((isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']) ? true : false);
-						
+
 						if($this->voting->IsFolder && $oldpath!='' && $oldpath!='/' && $oldpath!=$this->voting->Path) {
 							$db_tmp = new DB_WE();
-							$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE \'' . mysql_real_escape_string($oldpath) . '%\' AND ID<>\''.abs($this->voting->ID).'\';'); 
+							$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE \'' . mysql_real_escape_string($oldpath) . '%\' AND ID<>\''.abs($this->voting->ID).'\';');
 							while($this->db->next_record()) {
 								$db_tmp->query('UPDATE ' . VOTING_TABLE . ' SET Path=\'' . $this->voting->evalPath($this->db->f("ID")) . '\' WHERE ID=\'' . $this->db->f("ID") . '\';');
 							}
-						}			
-						
-						
+						}
+
+
 						if ($newone) {
 							$js='
 								'.$this->topFrame.'.makeNewEntry(\''.$this->voting->Icon.'\',\''.$this->voting->ID.'\',\''.$this->voting->ParentID.'\',\''.$this->voting->Text.'\',0,\''.($this->voting->IsFolder ? 'folder' : 'item').'\',\''. VOTING_TABLE .'\',' . ($this->voting->isActive() ? 1 : 0) . ');
 							'. $this->topFrame.'.drawTree();';
-						} else {	
+						} else {
 							$js=''.$this->topFrame.'.updateEntry('.$this->voting->ID.',"'.$this->voting->Text.'","'.$this->voting->ParentID.'",' . ($this->voting->isActive() ? 1 : 0) . ');'."\n";
-						}						
+						}
 						print we_htmlElement::jsElement($js.'
 							'.$this->editorHeaderFrame.'.location.reload();
 							' . we_message_reporting::getShowMessageCall( ($this->voting->IsFolder==1 ? $l_voting["save_group_ok"] : $l_voting["save_ok"]), WE_MESSAGE_NOTICE ) . '
@@ -597,7 +597,7 @@ function processCommands() {
 					} else {
 						if ($this->voting->delete()) {
 							print we_htmlElement::jsElement('
-									'.$this->topFrame.'.deleteEntry('.$this->voting->ID.');	
+									'.$this->topFrame.'.deleteEntry('.$this->voting->ID.');
 									setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->voting->IsFolder==1 ? $l_voting['group_deleted'] : $l_voting['voting_deleted']), WE_MESSAGE_NOTICE) . '\',500);
 							');
 							$this->voting = new weVoting();
@@ -611,9 +611,9 @@ function processCommands() {
 					}
 				break;
 				case "switchPage":
-					
+
 				break;
-				case "export_csv":			
+				case "export_csv":
 					if ($_REQUEST["csv_dir"]=="/") {
 						$fname="/voting_" . $this->voting->ID . "_export_".time().".csv";
 					} else {
@@ -630,7 +630,7 @@ function processCommands() {
 							default: $lineend = "\r\n";
 						}
 					}
-					
+
 					$content = array();
 					if(isset($_REQUEST['question_name']) && isset($_REQUEST[$_REQUEST['question_name'].'_item0'])) $content[] = $enclose . addslashes($_REQUEST[$_REQUEST['question_name'].'_item0']) . $enclose . $delimiter;
 					if(isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
@@ -639,11 +639,11 @@ function processCommands() {
 						}
 					}
 					weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,implode($lineend,$content));
-					$_REQUEST["lnk"]=$fname;	
+					$_REQUEST["lnk"]=$fname;
 				break;
 				case "exportGroup_csv":
 					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
-			
+
 					if ($_REQUEST["csv_dir"]=="/") {
 						$fname="/votingGroup_" . $this->voting->ID . "_export_".time().".csv";
 					} else {
@@ -660,12 +660,12 @@ function processCommands() {
 							default: $lineend = "\r\n";
 						}
 					}
-					
+
 					$content = array();
 					$allData = $this->voting->loadDB();
 					if (!defined('DEFAULT_CHARSET')) {define ( 'DEFAULT_CHARSET' ,'UTF-8' );}
 					if (isset($_REQUEST['the_charset']) && $_REQUEST['the_charset'] !='') {$CSV_Charset = $_REQUEST['the_charset'];} else {$CSV_Charset = 'UTF-8';}
-					
+
 					$headline = '';
 					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-session']))  .$enclose . $delimiter;
 					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-id']))  .$enclose . $delimiter;
@@ -679,14 +679,14 @@ function processCommands() {
 					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['answerText']))  .$enclose . $delimiter;
 					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-successor']))  .$enclose . $delimiter;
 					$headline .= $enclose .  iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($l_voting['voting-additionalfields']))  .$enclose . $delimiter;
-					
+
 					$content[] = $headline;
-				
+
 					foreach ($allData as $key => $data) {
 						$myline = '';
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['votingsession'])) . $enclose . $delimiter;
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['voting'])) . $enclose . $delimiter;
-						
+
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim(date($l_we_editor_info["date_format"], $data['time']))) . $enclose . $delimiter;
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['ip'])) . $enclose . $delimiter;
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['agent'])) . $enclose . $delimiter;
@@ -712,7 +712,7 @@ function processCommands() {
 								default:
 									$mess = $l_voting['log_error'];
 							}
-						
+
 						}
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($mess)) . $enclose . $delimiter;
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['answer'])) . $enclose . $delimiter;
@@ -720,46 +720,46 @@ function processCommands() {
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['successor'])). $enclose . $delimiter;
 						$addDataString = "";
 						if ($data['additionalfields'] !=''){
-						
+
 							$addData = unserialize($data['additionalfields']);
-							
+
 							if (is_array($addData) && !empty($addData)){
 								foreach ($addData as $key => $values) {
 									$addDataString .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($values)) . $enclose . $delimiter;
 								}
-								
+
 							} else {
 								$addDataString .= $enclose . '-' . $enclose . $delimiter;
 							}
 						} else {$addDataString .= $enclose . '-' . $enclose . $delimiter;}
 						$myline .= $addDataString;
-						$content[] = $myline;	
+						$content[] = $myline;
 					}
-					
+
 					weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,implode($lineend,$content));
-					$_REQUEST["lnk"]=$fname;	
-				break;				
-				
+					$_REQUEST["lnk"]=$fname;
+				break;
+
 				default:
 			}
 		}
-		
+
 		$_SESSION["voting_session"]=serialize($this->voting);
 	}
-	
+
 
 	function processVariables() {
-		
+
 		if(isset($_SESSION["voting_session"])){
 
 			$this->voting=unserialize($_SESSION["voting_session"]);
 
 		}
-				
+
 		if (is_array($this->voting->persistent_slots)) {
 			foreach ($this->voting->persistent_slots as $key=>$val) {
-				$varname=$val;				
-				if (isset($_REQUEST[$varname])) { 
+				$varname=$val;
+				if (isset($_REQUEST[$varname])) {
 					eval('$this->voting->'.$val.'="'.addslashes($_REQUEST[$varname]).'";');
 				}
 			}
@@ -778,7 +778,7 @@ function processCommands() {
 					$set = array();
 					$set['question'] = addslashes($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0']);
 					$set['answers'] = array();
-					
+
 					$an = $_REQUEST['answers_name'] . '_variant' . $i . '_' . $_REQUEST['answers_name'] . '_item';
 					$anImage = $an.'ImageID';
 					$anMedia = $an.'MediaID';
@@ -786,45 +786,43 @@ function processCommands() {
 					$addset = array();
 					for($j=0;$j<$_REQUEST['item_count'];$j++){
 						if(isset($_REQUEST[$an.$j])) { $set['answers'][] = addslashes($_REQUEST[$an.$j]);}
-						if(isset($_REQUEST[$anImage.$j])) { 
+						if(isset($_REQUEST[$anImage.$j])) {
 							if($_REQUEST[$anImage.$j]!='Array') {
 								$addset['imageID'][] = addslashes($_REQUEST[$anImage.$j]);
 							} else {$addset['imageID'][]=0;}
 						}
-						if(isset($_REQUEST[$anMedia.$j])) { 
+						if(isset($_REQUEST[$anMedia.$j])) {
 							if($_REQUEST[$anMedia.$j]!='Array') {
 								$addset['mediaID'][] = addslashes($_REQUEST[$anMedia.$j]);
 							} else {$addset['mediaID'][]=0;}
 						}
-						if(isset($_REQUEST[$anSuccessor.$j])) { 
+						if(isset($_REQUEST[$anSuccessor.$j])) {
 							if($_REQUEST[$anSuccessor.$j]!='Array') {
 								$addset['successorID'][] = addslashes($_REQUEST[$anSuccessor.$j]);
 							} else {$addset['successorID'][]=0;}
 						}
-					} 
+					}
 					$qaset[] = $set;
 					$qaADDset[] = $addset;
 				}
-				
+
 			}
 		}
-		
+
 		$this->voting->QASet = $qaset;
 		$this->voting->QASetAdditions = $qaADDset;
-			
-		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
-			if(isset($_REQUEST['owners_name']) && isset($_REQUEST['owners_count'])){
-				$this->voting->Owners = array();
-				$an = $_REQUEST['owners_name'] . '_variant0_' . $_REQUEST['owners_name'] . '_item';
-				for($i=0;$i<$_REQUEST['owners_count'];$i++){
-					$up = str_replace(stripslashes($this->item_pattern),'',$_REQUEST[$an.$i]);
-					$up = str_replace(stripslashes($this->group_pattern),'',$up);
-					if(isset($_REQUEST[$an.$i])) $this->voting->Owners[] = path_to_id($up,USER_TABLE);
-				}
-				$this->voting->Owners = array_unique($this->voting->Owners);
+
+		if(isset($_REQUEST['owners_name']) && isset($_REQUEST['owners_count'])){
+			$this->voting->Owners = array();
+			$an = $_REQUEST['owners_name'] . '_variant0_' . $_REQUEST['owners_name'] . '_item';
+			for($i=0;$i<$_REQUEST['owners_count'];$i++){
+				$up = str_replace(stripslashes($this->item_pattern),'',$_REQUEST[$an.$i]);
+				$up = str_replace(stripslashes($this->group_pattern),'',$up);
+				if(isset($_REQUEST[$an.$i])) $this->voting->Owners[] = path_to_id($up,USER_TABLE);
 			}
+			$this->voting->Owners = array_unique($this->voting->Owners);
 		}
-		
+
 		$ipset = array();
 		if(isset($_REQUEST['iptable_name']) && isset($_REQUEST['iptable_count'])){
 			$in = $_REQUEST['iptable_name'] . '_variant0_' . $_REQUEST['iptable_name'] . '_item';
@@ -833,26 +831,26 @@ function processCommands() {
 			}
 			$this->voting->BlackList = $ipset;
 		}
-		
-	
+
+
 		if(isset($_REQUEST['PublishDate_day'])){
 			$this->voting->PublishDate = mktime($_REQUEST['PublishDate_hour'],$_REQUEST['PublishDate_minute'],0,$_REQUEST['PublishDate_month'],$_REQUEST['PublishDate_day'],$_REQUEST['PublishDate_year']);
 		}
-		
+
 		if(isset($_REQUEST['Valid_day'])){
 			$this->voting->Valid = mktime($_REQUEST['Valid_hour'],$_REQUEST['Valid_minute'],0,$_REQUEST['Valid_month'],$_REQUEST['Valid_day'],$_REQUEST['Valid_year']);
 		}
-		
+
 		if(isset($_REQUEST['scores_0']) && isset($_REQUEST['item_count']) && isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']){
 			$this->voting->Scores = array();
 			for($j=0;$j<$_REQUEST['item_count'];$j++){
 				if(isset($_REQUEST['scores_'.$j])) $this->voting->Scores[] = $_REQUEST['scores_'.$j];
 			}
-		}	
+		}
 
 	}
-	
-	
+
+
 	function new_array_splice(&$a,$start,$len=1){
 		$ks=array_keys($a);
 		$k=array_search($start,$ks);
@@ -860,8 +858,8 @@ function processCommands() {
 			$ks=array_splice($ks,$k,$len);
 			foreach($ks as $k) unset($a[$k]);
 		}
-	}	
-	
+	}
+
 
 }
 

@@ -2010,7 +2010,7 @@ function we_userCanEditModule($modName) {
 }
 
 function makeOwnersSql($useCreatorID = true) {
-	if (defined("BIG_USER_MODULE") && in_array("busers", $GLOBALS["_pro_modules"]) && (!$_SESSION["perms"]["ADMINISTRATOR"])) {
+	if (!$_SESSION["perms"]["ADMINISTRATOR"]) {
 		$aliases = array(
 				$_SESSION["user"]["ID"]
 		);
@@ -2051,8 +2051,6 @@ function we_getParentIDs($table, $id, &$ids, $db = "") {
 function we_getAliases($id, &$ids, $db = "") {
 	if (!$db)
 		$db = new DB_WE();
-	if (!defined("BIG_USER_MODULE") || !in_array("busers", $GLOBALS["_pro_modules"]))
-		return;
 	$db->query("
 		SELECT ID
 		FROM " . USER_TABLE . "
@@ -2540,16 +2538,16 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false) {
 	if ($_SESSION["perms"]["ADMINISTRATOR"])
 		return "";
 	$ws = "";
-	if (defined("BIG_USER_MODULE") && in_array("busers", $GLOBALS["_pro_modules"])) {
-		$foo = f(
-										"
-			SELECT workSpaceDef
-			FROM " . USER_TABLE . "
-			WHERE ID=" . abs($_SESSION["user"]["ID"]),
-										"workSpaceDef",
-										new DB_WE());
-		$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
-	}
+
+	$foo = f(
+									"
+		SELECT workSpaceDef
+		FROM " . USER_TABLE . "
+		WHERE ID=" . abs($_SESSION["user"]["ID"]),
+									"workSpaceDef",
+									new DB_WE());
+	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
+
 	if ($ws == "") {
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
 		if (sizeof($wsA))

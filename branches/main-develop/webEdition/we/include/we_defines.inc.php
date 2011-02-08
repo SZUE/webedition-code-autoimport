@@ -117,8 +117,6 @@ if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
 	$MNEMONIC_EDITPAGES['14'] = 'customer';
 }
 
-$GLOBALS['BIG_USER_MODULE'] = defined('BIG_USER_MODULE') ? BIG_USER_MODULE : '';
-
 // refresh pageExt array
 $PAGE_EXT = array(
 		'.html', '.php'

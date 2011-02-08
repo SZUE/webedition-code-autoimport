@@ -141,7 +141,7 @@ protect();
 	                		$i++;
 	                	}
                 	}
-                	
+
                		if (defined("NEWSLETTER_TABLE")) {
 	                	while (isset($_REQUEST[$_REQUEST['obj_name'].'_Workspace_'.NEWSLETTER_TABLE.'_'.$i]) && !empty($_REQUEST[$_REQUEST['obj_name'].'_Workspace_'.NEWSLETTER_TABLE.'_'.$i])) {
 					    	$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'].'_Workspace_'.NEWSLETTER_TABLE.'_'.$i],NEWSLETTER_TABLE,array("IsFolder"));
@@ -221,7 +221,7 @@ protect();
 	                }
 
 	    	        $foo = array();
-	    	        if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && $user_object->ID && in_array("busers",$GLOBALS["_pro_modules"])){
+	    	        if($user_object->ID){
 	                    $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($user_object->ID),$user_object->DB_WE);
 	                } else {
 	                    $foo["ParentID"]=0;
@@ -370,19 +370,11 @@ protect();
 
             case "check_user_display":
                 if($_REQUEST["uid"]){
-                    if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])){
-                        $foo=getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($_SESSION["user"]["ID"]),$DB_WE);
-                    } else {
-                        $foo["ParentID"]=0;
-                    }
+                    $foo=getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($_SESSION["user"]["ID"]),$DB_WE);
 
                     $mpid = $foo["ParentID"];
 
-                    if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])){
-                        $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($_REQUEST["uid"]),$DB_WE);
-                    } else {
-                        $foo["ParentID"]=0;
-                    }
+                    $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($_REQUEST["uid"]),$DB_WE);
 
                     $pid = $foo["ParentID"];
                     $search = true;
@@ -400,14 +392,10 @@ protect();
                         if($pid == 0){
                             $search = false;
                         }
-                        if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])){
-                            $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($pid),$DB_WE);
-                            if(empty($foo)) {
-                            	$foo["ParentID"] = 0;
-                            }
-                        } else {
-                            $foo["ParentID"] = 0;
-                        }
+												$foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($pid),$DB_WE);
+												if(empty($foo)) {
+													$foo["ParentID"] = 0;
+												}
                         $pid = $foo["ParentID"];
                         }
 

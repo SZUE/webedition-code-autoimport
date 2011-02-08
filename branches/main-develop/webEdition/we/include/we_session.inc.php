@@ -86,19 +86,14 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$get_wsn = 0;
 				$get_wsnl = 0;
 
-				$DB_WE->query(
-						(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array(
-								"busers",
-								$GLOBALS["_pro_modules"])) ? ("SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . abs($_SESSION["user"]["ID"]) . " OR Alias=" . abs($_SESSION["user"]["ID"])) : "SELECT workSpace FROM " . USER_TABLE . " WHERE ID=" . abs($_SESSION["user"]["ID"]));
+				$DB_WE->query("SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . abs($_SESSION["user"]["ID"]) . " OR Alias=" . abs($_SESSION["user"]["ID"]));
 				while ($DB_WE->next_record()) {
 					// get workspaces
 					$a = makeArrayFromCSV($DB_WE->f("workSpace"));
 					foreach ($a as $k => $v)
 						if (!in_array($v, $f))
 							array_push($f, $v);
-					if (isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array(
-							"busers",
-							$GLOBALS["_pro_modules"])) {
+{
 						$a = makeArrayFromCSV($DB_WE->f("workSpaceTmp"));
 						foreach ($a as $k => $v) {
 							if (!in_array($v, $t)) {
@@ -187,14 +182,10 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				}
 				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
-				if (isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array(
-						"busers",
-						$GLOBALS["_pro_modules"])) {
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $t);
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
-				}
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $t);
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
 
 				$_SESSION["prefs"] = getHash("SELECT * from " . PREFS_TABLE, $DB_WE);
 
@@ -221,14 +212,10 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
 				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
-				if (isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array(
-						"busers",
-						$GLOBALS["_pro_modules"])) {
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $t);
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
-					$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
-				}
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $t);
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
+				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
 
 				$_SESSION["prefs"] = getHash("SELECT * from " . PREFS_TABLE, $DB_WE);
 

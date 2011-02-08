@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -34,7 +34,7 @@ Zend_Loader::loadClass('we_util_Sys_Exception');
 
 /**
  * Class to check webEdition settings and installation properties
- * 
+ *
  * @category   we
  * @package    we_util
  * @subpackage we_util_Sys
@@ -42,7 +42,7 @@ Zend_Loader::loadClass('we_util_Sys_Exception');
  */
 class we_util_Sys_Webedition extends we_util_Sys
 {
-	
+
 	/**
 	 * tries to identify the version of the currently installed webEdition
 	 * @return version string without dots (i.e. "5501") or false, if the version could not be identified.
@@ -59,12 +59,12 @@ class we_util_Sys_Webedition extends we_util_Sys
 	            throw new we_util_sys_Exception('Could not identify webEdition version because we_version.inc.php '
 	                                                . 'is not available.');
 			}
-			
+
 			if(!defined("WE_VERSION")) return false;
 		}
 		return WE_VERSION;
 	}
-	
+
 	/**
 	 * compares specified webEdition version with the currently installed webEdition version
 	 * @param int $reference target version to be compared to current webEdition version
@@ -79,7 +79,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 		if($currentVersion === false || empty($version)) return false;
 		return parent::_versionCompare($version,$currentVersion,$operator);
 	}
-	
+
 	/**
 	 * checks if a requested module is installed and / or active
 	 * @param string module name
@@ -91,7 +91,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 	public static function module($property = "")
 	{
 		if(empty($property)) return -1;
-		
+
 		// all modules available for webEdition:
 		try {
 			include_once $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_available_modules.inc.php";
@@ -114,13 +114,13 @@ class we_util_Sys_Webedition extends we_util_Sys
 			throw new we_util_sys_Exception('could not read module information from we_active_integrated_modules.inc.php.');
 			return -1;
 		}
-		
+
 		if (in_array($property,$_we_active_integrated_modules)) {
 			return 1;
 		} else {
 			return 0;
 		}
-		
+
 		// modules previously available only with costs (always active):
 		// busers, customer, shop, object, messaging, workflow, newsletter
 		try {
@@ -132,12 +132,12 @@ class we_util_Sys_Webedition extends we_util_Sys
 			throw new we_util_sys_Exception('could not read module information from we_installed_modules.inc.php.');
 			return -1;
 		}
-		if (in_array($property,$_we_installed_modules) || in_array($module,$_pro_modules)) {
+		if (in_array($property,$_we_installed_modules)) {
 			return 1;
 		}
-		
+
 	}
-	
+
 	/**
 	 * builds a list of all installed modules (active and inactive) and returns it to the caller
 	 *
@@ -148,7 +148,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 		// not implemented yet
 		return array();
 	}
-	
+
 	/**
 	 * builds a list of all activated modules (including free and formerly non-free modules) and returns it to the caller
 	 *
@@ -159,7 +159,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 		// not implemented yet
 		return array();
 	}
-	
+
 	/**
 	 * builds a list of all available modules and returns it to the caller
 	 *
@@ -178,7 +178,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 		}
 		return $_we_available_modules;
 	}
-	
+
 	/**
 	 * checks if a requested tool is installed
 	 * this implementation is preliminary and WILL be changed once the we_tool-implementation is completed
@@ -198,7 +198,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 			return false;
 		}
 	}
-	
+
 	/**
 	 * get the version of the requested tool (if it is installed)
 	 * @param string tool name
@@ -209,7 +209,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 		// not imlpemented yet
 		return "1.0";
 	}
-	
+
 	/**
 	 * compares specified tool version with the currently installed version of this tool
 	 * @param string tool name
@@ -232,7 +232,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 			return parent::_versionCompare($reference,$version,$operator);
 		}
 	}
-	
+
 	public static function toolsInstalled()
 	{
 		// not implemented yet

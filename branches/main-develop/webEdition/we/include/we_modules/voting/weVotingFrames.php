@@ -66,7 +66,7 @@ class weVotingFrames extends weModuleFrames {
 			case "reset_logdata": print $this->getHTMLResetLogData();break;
 			case "show_log": if ($this->View->voting->LogDB) {print $this->getHTMLShowLogNew();} else { print $this->getHTMLShowLogOld();}break;
 			case "delete_log": print $this->getHTMLDeleteLog();break;
-			
+
 			default:
 				error_log(__FILE__ . " unknown reference: $what");
 		}
@@ -198,9 +198,9 @@ class weVotingFrames extends weModuleFrames {
 					we_htmlElement::jsElement("
 					function we_save() {
 						top.content.we_cmd('save_voting');
-						
+
 					}
-					") . 
+					") .
 					we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>"/webEdition/images/edit/editfooterback.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0"),
 							we_htmlElement::htmlForm(array(),$table1->getHtmlCode().$table2->getHtmlCode())
 					)
@@ -278,7 +278,7 @@ class weVotingFrames extends weModuleFrames {
 							$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
 							$variant_js .= '
 								answers_edit.setItem("'.$variant.'","'.$akey.'","' . $aval . '");
-								 
+
 								answers_edit.setItemImageID("'.$variant.'","'.$akey.'","' . $aval2 . '");
 								answers_edit.setItemMediaID("'.$variant.'","'.$akey.'","' . $aval3 . '");
 								answers_edit.setItemSuccessorID("'.$variant.'","'.$akey.'","' . $aval4 . '");
@@ -288,9 +288,9 @@ class weVotingFrames extends weModuleFrames {
 
 				}
 			}
-			
+
 			$variant_js .= '
-				
+
 				answers_edit.delRelatedItems=true;
 				question_edit.showVariant(0);
 				answers_edit.showVariant(0);
@@ -299,64 +299,64 @@ class weVotingFrames extends weModuleFrames {
 			';
 			if ($this->View->voting->AllowFreeText) {
 				$variant_js .= '
-				
+
 				answers_edit.SetMinCount(1);';
 			} else {
 				$variant_js .= '
-				
+
 				answers_edit.SetMinCount(2);';
 			}
 			if ($this->View->voting->AllowImages) {
 				$variant_js .= '
-				
+
 				answers_edit.showImages();';
 			} else {
 				$variant_js .= '
-				
+
 				answers_edit.hideImages();';
 			}
 			if ($this->View->voting->AllowMedia) {
 				$variant_js .= '
-				
+
 				answers_edit.showMedia();';
 			} else {
 				$variant_js .= '
-				
+
 				answers_edit.hideMedia();';
 			}
 			if ($this->View->voting->AllowSuccessors) {
 				$variant_js .= '
-				
+
 				answers_edit.showSuccessors();';
 			} else {
 				$variant_js .= '
-				
+
 				answers_edit.hideSuccessors();';
 			}
 
 		}
 
-		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
-			$variant_js .= '
-				owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",'.($this->_width_size-10).',false);
-				owners_label.addVariant();
-			';
-			if(is_array($this->View->voting->Owners)){
-				foreach ($this->View->voting->Owners as $owner) {
 
-					$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=\'' .$owner . '\';','IsFolder',$this->db);
+		$variant_js .= '
+			owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",'.($this->_width_size-10).',false);
+			owners_label.addVariant();
+		';
+		if(is_array($this->View->voting->Owners)){
+			foreach ($this->View->voting->Owners as $owner) {
 
-					$variant_js .= '
-						owners_label.addItem();
-						owners_label.setItem(0,(owners_label.itemCount-1),"'. ($foo ? $this->View->group_pattern : $this->View->item_pattern) . id_to_path($owner,USER_TABLE) . '");
-					';
+				$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=\'' .$owner . '\';','IsFolder',$this->db);
 
-				}
+				$variant_js .= '
+					owners_label.addItem();
+					owners_label.setItem(0,(owners_label.itemCount-1),"'. ($foo ? $this->View->group_pattern : $this->View->item_pattern) . id_to_path($owner,USER_TABLE) . '");
+				';
+
 			}
-			$variant_js .= '
-				owners_label.showVariant(0);
-			';
 		}
+		$variant_js .= '
+			owners_label.showVariant(0);
+		';
+
 
 		$variant_js .= '
 			iptable_label = new multi_edit("iptable",document.we_form,0,"' . $del_but . '",'.($this->_width_size-10).',false);
@@ -409,8 +409,6 @@ class weVotingFrames extends weModuleFrames {
 				'noline'=>1)
 		);
 
-		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
-
 			array_push($parts,array(
 					'headline'=>'',
 					'html'=> we_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', $l_voting['limit_access'],false,'defaultfont','top.content.setHot(); toggle(\'ownersTable\')'),
@@ -436,16 +434,9 @@ class weVotingFrames extends weModuleFrames {
 					'html'=>$table->getHtmlCode(),
 					'space'=>$this->_space_size)
 			);
-		} else {
-			array_push($parts,array(
-					'headline'=>'',
-					'html'=>'',
-					'space'=>$this->_space_size)
-			);
-		}
 
 		if($this->View->voting->IsFolder) {
-		
+
 			$table = new we_htmlTable(array('id'=>'LogGroupData','cellpadding' => 2,'cellspacing' => 2,"border"=>0),1,2);
 			$table->setColContent(0,0,getPixel(10,5));
 			$table->setColContent(0,1,
@@ -463,11 +454,11 @@ class weVotingFrames extends weModuleFrames {
 					'noline'=>1
 				)
 			);
-			
+
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/export.inc.php");
 
 			$ok = $we_button->create_button("export","javascript:we_cmd('exportGroup_csv')");
-	
+
 			$export_box=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),12,1);
 
 			$export_box->setCol(0,0,array(),getPixel(10,10));
@@ -478,7 +469,7 @@ class weVotingFrames extends weModuleFrames {
 			$lineend->addOption('windows', $l_export['windows']);
 			$lineend->addOption('unix', $l_export["unix"]);
 			$lineend->addOption('mac', $l_export["mac"]);
-			
+
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
 				$_charsetHandler = new charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
@@ -521,10 +512,10 @@ class weVotingFrames extends weModuleFrames {
 						$export_box->getHtmlCode(),
 				"space"=>$this->_space_size)
 			);
-		
-		
+
+
 			return $parts;
-			
+
 		}
 
 		$activeTime = new we_htmlSelect(array('name'=>'ActiveTime', 'class'=>'weSelect','size'=>'1','style'=>'width:200','onchange'=>'top.content.setHot(); if(this.value!=0) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
@@ -568,11 +559,11 @@ class weVotingFrames extends weModuleFrames {
 
 		$successor_box->setCol(0,0,array(),getPixel(10,10));
 		$successor_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'Successor','/','',''),$l_voting['voting-successor']));
-								
-						
+
+
   		if ($this->View->voting->AllowSuccessor) {$displaySuccessor = 'block';} else {$displaySuccessor = 'none';}
 
-			
+
 		array_push($parts,array(
 				'headline'=>$l_voting['headline_datatype'],
 				'html'=>
@@ -587,7 +578,7 @@ class weVotingFrames extends weModuleFrames {
 				'space'=>$this->_space_size
 				)
 		);
-		
+
 
 		$select = new we_htmlSelect(array('name'=>'selectVar','class'=>'weSelect','onchange'=>'top.content.setHot();question_edit.showVariant(this.value);answers_edit.showVariant(this.value);document.we_form.vernr.value=this.value;refreshTexts();','style'=>'width:'.($this->_width_size-64)));
 		foreach($this->View->voting->QASet as $variant=>$value){
@@ -801,14 +792,14 @@ class weVotingFrames extends weModuleFrames {
 		if (isset($this->View->voting->QASet[$version])){
 			foreach ($this->View->voting->QASet[$version]['answers'] as $key=>$value){
 				if(!isset($this->View->voting->Scores[$key])) $this->View->voting->Scores[$key] = 0;
-	
+
 				$percent = weVotingFrames::getPercent($total_score,$this->View->voting->Scores[$key],2);
-	
+
 				$pb=new we_progressBar($percent);
 				$pb->setName('item'.$key);
 				$pb->setStudWidth(10);
 				$pb->setStudLen(150);
-	
+
 				$table->addRow();
 				$table->setRow($key+1,array("id"=>"row_scores_$key"));
 				$table->setCol($i,0,array('style'=>'width: '.($this->_width_size-150).'px'),we_htmlElement::htmlSpan(array('id'=>'answers_score_' . $key),stripslashes($value)));
@@ -967,7 +958,7 @@ class weVotingFrames extends weModuleFrames {
 		$path = id_to_path($this->View->voting->ParentID,VOTING_TABLE);
 		$button = $we_button->create_button('select', "javascript:top.content.setHot(); we_cmd('openVotingDirselector',document.we_form.elements['ParentID'].value,'document.we_form.elements[\'ParentID\'].value','document.we_form.elements[\'ParentPath\'].value','')");
 		$width = "416";
-		
+
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType("folder");
@@ -980,7 +971,7 @@ class weVotingFrames extends weModuleFrames {
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setLabel($l_voting['group']);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -1369,7 +1360,7 @@ class weVotingFrames extends weModuleFrames {
 		$voting->load($this->View->voting->ID);
 		$log = array();
 		$log  = $voting->loadDB($voting->ID);
-		
+
 
 		$headline = array();
 
@@ -1440,7 +1431,7 @@ class weVotingFrames extends weModuleFrames {
 				}
 
 				$content[$ind][7]['dat'] = $mess ;
-				
+
 				$content[$ind][8]['dat'] = $data['answer'];
 				$content[$ind][9]['dat'] = $data['answertext'];
 				$content[$ind][10]['dat'] = $data['successor'];
@@ -1450,9 +1441,9 @@ class weVotingFrames extends weModuleFrames {
 					foreach ($addData as $key => $value) {
 						$addDataString .= $key .': '.$value.'<br />';
 					}
-				} 
+				}
 				$content[$ind][11]['dat'] = $addDataString;
-				
+
 				$ind++;
 			}
 
@@ -1506,7 +1497,7 @@ class weVotingFrames extends weModuleFrames {
 		return $this->getHTMLDocument($body);
 
 	}
-	
+
 	function getHTMLShowGroupLog(){
 		global $l_voting;
 
@@ -1522,7 +1513,7 @@ class weVotingFrames extends weModuleFrames {
 		$voting->load($this->View->voting->ID);
 		$log = array();
 		$log  = $voting->loadDB($voting->ID);
-		
+
 
 		$headline = array();
 
@@ -1587,10 +1578,10 @@ class weVotingFrames extends weModuleFrames {
 				}
 
 				$content[$ind][5]['dat'] = $mess ;
-				
+
 				$content[$ind][6]['dat'] = $data['answer'];
 				$content[$ind][7]['dat'] = $data['answertext'];
-				
+
 				$ind++;
 			}
 
@@ -1644,7 +1635,7 @@ class weVotingFrames extends weModuleFrames {
 		return $this->getHTMLDocument($body);
 
 	}
-	
+
 	function getHTMLDeleteGroupLog(){
 		global $l_voting;
 

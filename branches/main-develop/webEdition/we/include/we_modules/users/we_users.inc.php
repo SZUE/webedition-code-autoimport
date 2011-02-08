@@ -442,7 +442,7 @@ class we_user {
 		}
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
-		if($oldpath!="" && $oldpath!="/" && isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
+		if($oldpath!="" && $oldpath!="/") {
 			$this->DB_WE->query("SELECT ID,username FROM ".USER_TABLE." WHERE Path LIKE '".mysql_real_escape_string($oldpath)."%'");
 			while($this->DB_WE->next_record()) {
 				$db_tmp->query("UPDATE ".USER_TABLE." SET Path='".$this->getPath($this->DB_WE->f("ID"))."' WHERE ID='".$this->DB_WE->f("ID")."'");
@@ -541,16 +541,8 @@ function mapPermissions() {
 								if(is_array($permissions)) {
 									foreach($permissions as $pk=>$pv) {
 										if($v==$pk) {
-											if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])) {
-												$set=true;
-												$this->permissions_slots[$perm_group_name][$pk]=$pv;
-											}
-											else {
-												if($pk=="PUBLISH" || $pk=="ADMINISTRATOR") {
-													$set=true;
-													$this->permissions_slots[$perm_group_name][$pk]=$pv;
-												}
-											}
+											$set=true;
+											$this->permissions_slots[$perm_group_name][$pk]=$pv;
 										}
 									}
 								}
@@ -1147,25 +1139,6 @@ function mapPermissions() {
 
 			}
 		}
-		if($tab==0 && !(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"]))) {
-			if(isset($_POST[$this->Name.'_ADMIN']) && $_POST[$this->Name.'_ADMIN']){
-				$this->setPermission("ADMINISTRATOR",1);
-			}else{
-				$this->setPermission("ADMINISTRATOR",0);
-			}
-			if(isset($_POST[$this->Name.'_PUBLISH']) && $_POST[$this->Name.'_PUBLISH']){
-				$this->setPermission("PUBLISH",1);
-			}else{
-				$this->setPermission("PUBLISH",0);
-			}
-			$obj=$this->Name.'_workSpace';
-			if(isset($_POST[$obj])){
-				$this->workspaces[FILE_TABLE][0]=$_POST[$obj];
-			}else{
-				$this->workspaces[FILE_TABLE][0]=array();
-			}
-			return;
-		}
 		if($tab==1) {
 			foreach($this->permissions_slots as $pkey=>$pval) {
 				foreach($pval as $k=>$v) {
@@ -1367,17 +1340,8 @@ function mapPermissions() {
 			$id=abs($this->ParentID);
 			$path=mysql_real_escape_string($this->username);
 		}
-		if (isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
-			$foo=getHash("SELECT username,ParentID FROM ".USER_TABLE." WHERE ID='".$id."';",$db_tmp);
-			$path="/". (isset($foo["username"]) ? $foo["username"] : "") .$path;
-		} else {
-			if ($id) {
-				$foo=getHash("SELECT username FROM ".USER_TABLE." WHERE ID='".$id."';",$db_tmp);
-				return "/".(isset($foo["username"]) ? $foo["username"] : "");
-			} else {
-				return "/" . $this->username;
-			}
-		}
+		$foo=getHash("SELECT username,ParentID FROM ".USER_TABLE." WHERE ID='".$id."';",$db_tmp);
+		$path="/". (isset($foo["username"]) ? $foo["username"] : "") .$path;
 		$pid=isset($foo["ParentID"]) ? $foo["ParentID"] : "";
 		while($pid > 0) {
 				$db_tmp->query("SELECT username,ParentID FROM ".USER_TABLE." WHERE ID='$pid'");
@@ -1399,7 +1363,7 @@ function mapPermissions() {
 			}
 		}
 		$db_tmp=new DB_WE;
-		$this->DB_WE->query((isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) ? ("SELECT ParentID,ParentPerms,Permissions,Alias FROM ".USER_TABLE." WHERE ID=".abs($this->ID)." OR Alias=".abs($this->ID)) : ("SELECT Permissions FROM ".USER_TABLE." WHERE ID=".abs($this->ID)));
+		$this->DB_WE->query("SELECT ParentID,ParentPerms,Permissions,Alias FROM ".USER_TABLE." WHERE ID=".abs($this->ID)." OR Alias=".abs($this->ID));
 		$group_permissions=array();
 		while($this->DB_WE->next_record()) {
 			if($this->DB_WE->f("Alias")!=$this->ID) {
@@ -1500,14 +1464,6 @@ function mapPermissions() {
 
 	function formDefinition($tab,$perm_branch) {
 		$yuiSuggest =& weSuggest::getInstance();
-		if(!(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"]))) {
-			switch ($tab) {
-				case 3:
-					return $this->formPreferences($perm_branch);
-				default:
-					return $this->formSmallProperties();
-			}
-		}
 		switch ($tab) {
 			case 0:
 				$out  = $yuiSuggest->getYuiJsFiles();
@@ -3009,11 +2965,9 @@ function mapPermissions() {
 		} else {
 			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["data"], ($tab==0?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(0);"));
 
-			if (isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"]  && in_array("busers",$GLOBALS["_pro_modules"]) && $big) {
-				$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["permissions"], ($tab==1?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(1);"));
-				$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["workspace"], ($tab==2?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(2);"));
+			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["permissions"], ($tab==1?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(1);"));
+			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["workspace"], ($tab==2?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(2);"));
 
-			}
 			if($this->Type == 0) {
 				$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["preferences"], ($tab==3?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(3);"));
 			}
@@ -3073,14 +3027,6 @@ function mapPermissions() {
 		else {
 			$headline1=$GLOBALS["l_javaMenu"]["users"]["menu_user"].': ';
 		}
-		/*
-		if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"]  && in_array("busers",$GLOBALS["_pro_modules"]) && $big) {
-			$headline2=$this->Text;
-		}
-		else {
-			$headline2=$this->username;
-		}
-		*/
 		$headline2=empty($this->Path)?$this->getPath($this->ParentID):$this->Path;
 		$out .= '<div id="main" >' . getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$headline1).'&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$headline2).'</b></span></nobr></div>'.getPixel(100,3).$we_tabs->getHTML().'</div>';
 
@@ -3088,5 +3034,3 @@ function mapPermissions() {
 		return $out;
 	}
 }
-
-?>

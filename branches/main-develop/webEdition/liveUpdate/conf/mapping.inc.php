@@ -16,7 +16,7 @@
  * @category   webEdition
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */ 
+ */
 
 /*
  * map needed variables for the program here, for example map version number
@@ -37,7 +37,7 @@ $LU_Variables = array(
 	'clientPhpExtensions' => implode(',',get_loaded_extensions()),
 	'clientPcreVersion' => (defined("PCRE_VERSION")) ? PCRE_VERSION:'',
 	'clientMySQLVersion' => getMysqlVer(false),
-	'clientDBcharset' => (defined("DB_CHARSET") && DB_CHARSET != "") ? DB_CHARSET : '', 
+	'clientDBcharset' => (defined("DB_CHARSET") && DB_CHARSET != "") ? DB_CHARSET : '',
 	'clientDBcollation' => (defined("DB_COLLATION") && DB_COLLATION != "") ? DB_COLLATION : '',
 	'clientServerSoftware' => $_SERVER["SERVER_SOFTWARE"],
 	'clientUid' => (defined('UID') ? UID : false),
@@ -45,7 +45,7 @@ $LU_Variables = array(
 	'clientLng' => $GLOBALS['WE_LANGUAGE'],
 	'clientExtension' => '.php',
 	'clientDomain' => urlencode($_SERVER['SERVER_NAME']),
-	'clientInstalledModules' => array_merge($_we_installed_modules, $_pro_modules),
+	'clientInstalledModules' => array_merge($_we_installed_modules),
 	'clientInstalledLanguages' => liveUpdateFunctions::getInstalledLanguages(),
 	'clientInstalledAppMeta' => weToolLookup::getAllTools(true, false, true),
 	'clientInstalledAppTOC' => we_app_Common::readAppTOCasString(),

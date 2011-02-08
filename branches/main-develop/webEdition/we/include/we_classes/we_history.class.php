@@ -29,9 +29,6 @@ class we_history
 {
 
 	function userHasPerms($creatorid,$owners,$restricted){
-		if(!defined('BIG_USER_MODULE') || !in_array('busers',$GLOBALS['_pro_modules'])){
-			return true;
-		}
 		if($_SESSION['perms']['ADMINISTRATOR']){
 			return true;
 		}
@@ -55,13 +52,13 @@ class we_history
 		while($object->DB_WE->next_record()){
 			$_row = "DELETE FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".ID = '" . mysql_real_escape_string($object->DB_WE->f("ID")) . "';";
 			$_db->query($_row);
-		} 
+		}
 
 		$_query = 'INSERT INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,Act,UserName) VALUES("'.abs($object->ID).'","'.mysql_real_escape_string(str_replace(TBL_PREFIX,'',$object->Table)).'","'.mysql_real_escape_string($object->ContentType).'","'.mysql_real_escape_string($object->ModDate).'","save","'.mysql_real_escape_string($_username).'");';
 		$object->DB_WE->query($_query);
 
 	}
-	
+
 	/**
 	 * Deletes a model from navigation History
 	 *
@@ -69,18 +66,18 @@ class we_history
 	 * @param string $table
 	 */
 	function deleteFromHistory( $modelIds, $table ) {
-		
+
 		$_db = new DB_WE();
-		
+
 		$query = "
 			DELETE FROM " . HISTORY_TABLE . "
 			WHERE DID in (" . implode(", ", $modelIds) . ")
 			AND DocumentTable = \"" . substr($table, strlen(TBL_PREFIX)) . "\"
 		";
 		$_db->query( $query );
-		
+
 	}
 
-} 
-		
+}
+
 ?>

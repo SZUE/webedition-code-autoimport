@@ -225,8 +225,3 @@ $_we_available_modules["glossary"] = array(
 		"dependson" => "",
 		"childmodule" =>""
 );
-
-// as default installed pro-modules
-$we_pro_modules_available = array(
-	"busers"
-);

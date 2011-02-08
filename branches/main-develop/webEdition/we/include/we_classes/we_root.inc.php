@@ -423,7 +423,6 @@ class we_root extends we_class
 	function formCreatorOwners(){
 		global $l_we_class;
 		$width = 388;
-		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
 			include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 			$canChange = (!$this->ID) || isUserInUsers($_SESSION["user"]["ID"],$GLOBALS["we_doc"]->CreatorID);
 
@@ -439,9 +438,6 @@ class we_root extends we_class
 			}
 			$out .= '</table>
 ';
-		}else{
-			$out = $this->formCreator((($this->CreatorID==$_SESSION["user"]["ID"]) || $_SESSION["perms"]["ADMINISTRATOR"]),$width);
-		}
 
 		return $out;
 	}
@@ -479,8 +475,6 @@ class we_root extends we_class
 			the user is one of the restricted users
  	*/
 	function userHasPerms(){
-		if(!defined("BIG_USER_MODULE") || !in_array("busers",$GLOBALS["_pro_modules"]))
-			return true;
 		if($_SESSION["perms"]["ADMINISTRATOR"])
 			return true;
 		if(!$this->RestrictOwners)
@@ -491,13 +485,11 @@ class we_root extends we_class
 	}
 
 	function userIsCreator(){
-		if(!defined("BIG_USER_MODULE") || !in_array("busers",$GLOBALS["_pro_modules"])) return true;
 		if($_SESSION["perms"]["ADMINISTRATOR"]) return true;
 		return we_isOwner($this->CreatorID);
 	}
 
    function userCanSave(){
-		if(!defined("BIG_USER_MODULE") || !in_array("busers",$GLOBALS["_pro_modules"])) return true;
 		if($_SESSION["perms"]["ADMINISTRATOR"]) return true;
 		include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 		if(defined("OBJECT_TABLE") && ($this->Table == OBJECT_FILES_TABLE)){
@@ -688,7 +680,7 @@ class we_root extends we_class
 	}
 
 
-	function save($resave=0,$skipHook=0){	
+	function save($resave=0,$skipHook=0){
 		return $this->we_save($resave,$skipHook);
 	}
 
@@ -728,8 +720,8 @@ class we_root extends we_class
 		if($resave==0 && $this->ClassName!="we_class_folder"){
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
-		}	
-		
+		}
+
 		return $a;
 	}
 
@@ -827,7 +819,7 @@ class we_root extends we_class
 	}
 
 	function i_setElementsFromHTTP(){
-		
+
 		// do not set REQUEST VARS into the document
 		if (isset($_REQUEST['we_cmd'][0])) {
 			if(		($_REQUEST['we_cmd'][0] == "switch_edit_page" && isset($_REQUEST['we_cmd'][3]))
@@ -1009,7 +1001,7 @@ class we_root extends we_class
 		}
 		return false;
 	}
-	
+
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)) {
 			if(substr($this->Extension,0,1) == ".") {
@@ -1232,7 +1224,7 @@ class we_root extends we_class
 				$return = array();
 				while ($this->DB_WE->next_record()) {
 					array_push($return,$this->DB_WE->f('ParentID'));
-				}			
+				}
 				return $return;
 			} else {
 				$query = 'SELECT ParentID FROM '.NAVIGATION_TABLE.' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID="'.abs($this->ID).'";';
@@ -1240,13 +1232,13 @@ class we_root extends we_class
 				$return = array();
 				while ($this->DB_WE->next_record()) {
 					array_push($return,$this->DB_WE->f('ParentID'));
-				}			
+				}
 				return $return;
 			}
 		}
 		return array();
 	}
-	
+
 	function insertAtIndex(){
 
 	}
