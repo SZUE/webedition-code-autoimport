@@ -3829,7 +3829,6 @@ function g_l($name, $specific) {
 	if (!($tmp === false)) {
 		return $tmp;
 	}
-	echo 'try include';
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . "/$name.inc.php";
 	if (file_exists($file)) {
 		include($file);
