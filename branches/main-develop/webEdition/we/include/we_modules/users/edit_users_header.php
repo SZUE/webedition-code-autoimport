@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
@@ -34,9 +34,7 @@ htmlTop();
 
 print STYLESHEET;
 
-if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules/module_menu_busers.inc.php")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules/module_menu_busers.inc.php");
-}
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules/module_menu_busers.inc.php");
 
 $port = defined("HTTP_PORT") ? HTTP_PORT : "";
 $protocol=getServerProtocol();
@@ -45,10 +43,10 @@ $jmenu = new weJavaMenu($we_menu_users,SERVER_NAME,"top.opener.top.load",$protoc
 ?>
 	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
 	<script language="JavaScript" type="text/javascript">
-        function menuaction(cmd){                
-				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);                
+        function menuaction(cmd){
+				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
 	    }
-        
+
 	</script>
 	</head>
 	<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
@@ -64,6 +62,6 @@ $jmenu = new weJavaMenu($we_menu_users,SERVER_NAME,"top.opener.top.load",$protoc
 				?>
 				</td>
 			</tr>
-		</table>        
+		</table>
 	</body>
 </html>
