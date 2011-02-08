@@ -265,7 +265,7 @@ class we_wysiwyg{
 						return true;
 					}
 
-					var ua = navigator.userAgent.toLowerCase(); 
+					var ua = navigator.userAgent.toLowerCase();
 
 					isGecko     = (ua.indexOf(\'gecko\') != -1 && ua.indexOf(\'safari\') == -1);
 
@@ -880,7 +880,7 @@ class we_wysiwyg{
 					$this->elements,
 					new we_wysiwygToolbarSeparator($this)
 				);
-		if((isset($GLOBALS["IE55"]) && $GLOBALS["IE55"]) || (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"])){
+		if(($GLOBALS["$BROWSER"]=='IE') || (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"])){
 			array_push(
 					$this->elements,
 					new we_wysiwygToolbarButton(

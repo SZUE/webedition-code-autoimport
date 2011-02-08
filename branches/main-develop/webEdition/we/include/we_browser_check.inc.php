@@ -21,7 +21,7 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 function we_browser_check() {
-	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $NET6, $FF, $IE55, $MOZ13,$SAFARI_3;
+	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $FF, $SAFARI_3;
 	$SAFARI_WYSIWYG = false;
 
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
@@ -41,7 +41,6 @@ function we_browser_check() {
 			break;
 		case 'ie':
 			$BROWSER = "IE";
-			$IE55 =($_BROWSER->getBrowserVersion()>=5.5);
 			break;
 		case 'appleWebKit':
 		case 'safari':
@@ -61,30 +60,20 @@ function we_browser_check() {
 	}
 
 
-#### Erkennung fuer Mozilla >= 1.3
-
-
-	$MOZ13 = ($BROWSER == 'NN6' && $_BROWSER->getBrowserVersion()>=1.3);
-
 #### Erkennung fuer Netscape >= 6.0
-
-	//nobody is using netscape - this browser is really dead.
-	$NET6 = false;
 
 	$FF = ($_BROWSER->getBrowser()=='firefox'?abs($_BROWSER->getBrowserVersion()):'');
 }
 
 function checkSupportedBrowser() {
-	global $SYSTEM, $BROWSER, $IE55;
+	global $SYSTEM, $BROWSER;
 	we_browser_check();
 
 	switch ($SYSTEM) {
 		case 'WIN' :
 			switch ($BROWSER) {
 				case 'IE':
-					if ($IE55) {
-						return true;
-					}
+					return true;
 					break;
 
 				case 'OPERA':
@@ -115,9 +104,7 @@ function checkSupportedBrowser() {
 		case 'UNKNOWN':
 			switch ($BROWSER) {
 				case 'IE':
-					if ($IE55) {
-						return true;
-					}
+					return true;
 					break;
 
 				case 'OPERA':

@@ -107,15 +107,6 @@ define('FOLDER_ONLY', 1);
 
 define('WE_UB', 'SER_MODULE');
 
-$MNEMONIC_EDITPAGES = array(
-		'0' => 'properties', '1' => 'edit', '2' => 'information', '3' => 'preview', '8' => 'schedpro', '10' => 'validation', '17' => 'versions'
-);
-if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['11'] = 'variants';
-}
-if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['14'] = 'customer';
-}
 
 // refresh pageExt array
 $PAGE_EXT = array(

@@ -262,7 +262,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_thumbnails, $DB_WE, $BROWSER, $SYSTEM, $MOZ13, $NET6;
+	global $l_alert, $l_thumbnails, $DB_WE, $BROWSER, $SYSTEM;
 
 	$we_button = new we_button();
 
@@ -384,7 +384,7 @@ function build_dialog($selected_setting = "ui") {
 
 						self.location = url;
 					}
-					
+
 					function changeFormat() {
 						if(document.getElementById('Format').value == 'jpg' || document.getElementById('Format').value == 'none') {
 							document.getElementById('thumbnail_quality_text_cell').style.display='';
@@ -392,9 +392,9 @@ function build_dialog($selected_setting = "ui") {
 						} else {
 							document.getElementById('thumbnail_quality_text_cell').style.display='none';
 							document.getElementById('thumbnail_quality_value_cell').style.display='none';
-						}						
+						}
 					}
-					
+
 					function init() {
 						changeFormat();
 					}
