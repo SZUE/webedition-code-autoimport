@@ -609,7 +609,7 @@ class we_template extends we_document
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setTrashButton($trashButton);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -713,7 +713,7 @@ class we_template extends we_document
 		$masterTags = array();
 
 		preg_match_all("|(<we:master([^>+]*)>)([\\s\\S]*?)</we:master>|", $code, $regs, PREG_SET_ORDER);
-				
+
 
 		foreach ($regs as $reg) {
 			$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : "");
@@ -732,7 +732,7 @@ class we_template extends we_document
 
 
 		if ($this->MasterTemplateID != 0) {
-			
+
 			$_templates = array();
 			getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
 			if (in_array($this->ID, $_templates)) {
@@ -743,23 +743,23 @@ class we_template extends we_document
 				$templObj = new we_template();
 				$templObj->initByID($this->MasterTemplateID,TEMPLATES_TABLE);
 				$masterTemplateCode = $templObj->getTemplateCode(true);
-				
+
 				$contentTags = array();
 				preg_match_all("|<we:content ?([^>+]*)/?>|", $masterTemplateCode, $contentTags, PREG_SET_ORDER);
-	
+
 				foreach ($contentTags as $reg) {
 					$all = $reg[0];
 					$attribs = $this->_getAttribsArray($reg[1]);
 					$name = isset($attribs["name"]) ? $attribs["name"] : "";
 					if ($name) {
 						$we_masterTagCode = isset($masterTags[$name]["content"]) ? $masterTags[$name]["content"] : "";
-						
+
 						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
 					} else {
 						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
 					}
 				}
-	
+
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
 			}
 		}
@@ -792,7 +792,7 @@ class we_template extends we_document
 							$att["id"] = $templId;
 						}
 					}
-					
+
 					// if id attribute is set and greater 0
 					if (isset($att["id"]) && abs($att["id"]) > 0) {
 						$_templates = array();

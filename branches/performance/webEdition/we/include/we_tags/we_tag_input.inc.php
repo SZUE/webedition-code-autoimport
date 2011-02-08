@@ -19,9 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_input($attribs, $content) {
-	// Define globals
-	global $we_editmode, $l_global;
-
 	$foo = attributFehltError($attribs, 'name', 'input');
 	if ($foo)
 		return $foo;
@@ -43,7 +40,7 @@ function we_tag_input($attribs, $content) {
 	$val = htmlspecialchars(
 									isset($GLOBALS['we_doc']->elements[$name]['dat']) ? $GLOBALS['we_doc']->getElement($name) : $value);
 
-	if ($we_editmode) {
+	if ($GLOBALS['we_editmode']) {
 		//all edit-specific things
 		switch ($type) {
 			case 'date':

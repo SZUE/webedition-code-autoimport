@@ -74,7 +74,7 @@ class weVoting extends weModelBase{
 
 	var $FallbackIp=0;
 	var $UserAgent=0;
-	
+
 	var $FallbackUserID=0;
 	var $Log=0;
 	var $LogData=array();
@@ -117,7 +117,7 @@ class weVoting extends weModelBase{
 		if(empty($this->QASetAdditions)) {
 			$this->QASetAdditions = array(
 				0=>array("imageID"=>"","mediaID"=>"","successorID"=>"")
-				
+
 			);
 		}
 
@@ -144,7 +144,7 @@ class weVoting extends weModelBase{
 				if ($this->LogData=='a:0:{}') {
 					$this->LogDB = true;
 				} else {
-					$this->switchToLogDataDB();				
+					$this->switchToLogDataDB();
 				}
 			}
 		}
@@ -181,11 +181,11 @@ class weVoting extends weModelBase{
 
 		$_old_QASet = f("SELECT QASet FROM " . VOTING_TABLE . " WHERE Text='" . mysql_real_escape_string($this->Text) . "'","QASet",$GLOBALS["DB_WE"]);
 		$_new_QASet = $this->QASet;
-		
+
 		$this->QASet = serialize($this->QASet);
 		if($with_scores || $this->ID==0){
 			$this->Scores = serialize($this->Scores);
-		} elseif (isset($_REQUEST['updateScores']) && $_REQUEST['updateScores']){ 
+		} elseif (isset($_REQUEST['updateScores']) && $_REQUEST['updateScores']){
 			for ($_xcount=0; $_xcount<$_REQUEST['item_count'];$_xcount++){
 				if (isset($_REQUEST['scores_'.$_xcount])) {
 					$temp[$_xcount]=$_REQUEST['scores_'.$_xcount];
@@ -197,10 +197,10 @@ class weVoting extends weModelBase{
 			unset($this->Scores);
 		}
 
-		
+
 		$this->QASetAdditions = serialize($this->QASetAdditions);
 
-		
+
 		$logdata = $this->LogData;
 		unset($this->LogData);
 		$oldid = $this->ID;
@@ -374,8 +374,6 @@ class weVoting extends weModelBase{
 
 		if($this->RestrictOwners==0) return true;
 
-		if(!defined("BIG_USER_MODULE")) return true;
-
 		if(we_hasPerm('ADMINISTRATOR')) return true;
 
 		if(in_array($_SESSION['user']['ID'],$this->Owners)){
@@ -398,18 +396,16 @@ class weVoting extends weModelBase{
 
 	function getOwnersSql(){
 		$owners_sql = "";
-		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
-			if(!we_hasPerm('ADMINISTRATOR')){
-				$userids = array();
-				$userids[] = $_SESSION['user']['ID'];
-				we_readParents($_SESSION['user']['ID'],$userids,USER_TABLE,'IsFolder',1);
+		if(!we_hasPerm('ADMINISTRATOR')){
+			$userids = array();
+			$userids[] = $_SESSION['user']['ID'];
+			we_readParents($_SESSION['user']['ID'],$userids,USER_TABLE,'IsFolder',1);
 
-				$sqlarr = array();
-				foreach ($userids as $uid) {
-					$sqlarr[] = 'Owners LIKE ("%,' . $uid . ',%")';
-				}
-				$owners_sql = ' AND (RestrictOwners=0 OR (' .implode(' OR ',$sqlarr) . ')) ';
+			$sqlarr = array();
+			foreach ($userids as $uid) {
+				$sqlarr[] = 'Owners LIKE ("%,' . $uid . ',%")';
 			}
+			$owners_sql = ' AND (RestrictOwners=0 OR (' .implode(' OR ',$sqlarr) . ')) ';
 		}
 
 		return $owners_sql;
@@ -427,12 +423,12 @@ class weVoting extends weModelBase{
 			if ($this->AllowSuccessors) {
 				$mySuccessorID = stripslashes($this->QASetAdditions[$this->defVersion]['successorID'][$answer]);
 				if (is_numeric($mySuccessorID) && $mySuccessorID > 0 ) { $GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;}
-			}	
+			}
 		}
 		if ($this->AllowSuccessor) {
 			$mySuccessorID = $this->Successor;
 			if (is_numeric($mySuccessorID) && $mySuccessorID > 0 ) { $GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;}
-		} 
+		}
 		return VOTING_SUCCESS;
 	}
 	function vote($answers,$addfields=NULL){
@@ -461,7 +457,7 @@ class weVoting extends weModelBase{
 		foreach($answers as &$answer){
 			if (is_numeric($answer) && $answer < $countanswers) {
 				if($answer>-1 && $answer<count($this->Scores)){
-					$this->Scores[$answer]++;	
+					$this->Scores[$answer]++;
 				}
 			} else {
 				$answertext=$answer;
@@ -471,12 +467,12 @@ class weVoting extends weModelBase{
 			if ($this->AllowSuccessors) {
 				$mySuccessorID = stripslashes($this->QASetAdditions[$this->defVersion]['successorID'][$answer]);
 				if (is_numeric($mySuccessorID) && $mySuccessorID > 0 ) { $GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;}
-			}	
+			}
 		}
 		if ($this->AllowSuccessor) {
 			$mySuccessorID = $this->Successor;
 			if (is_numeric($mySuccessorID) && $mySuccessorID > 0 ) { $GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;}
-		} 
+		}
 		$answerID = makeCSVFromArray($answers);
 		$this->saveField('Scores',true);
 		if($this->RevoteTime!=0){
@@ -500,7 +496,7 @@ class weVoting extends weModelBase{
 		if ($mySuccessorID <= 0) {$mySuccessorID='';}
 		if (is_array($addfields) && !empty($addfields)) {$addfieldsdata= serialize($addfields);} else {$addfieldsdata='';}
 		if($this->Log) $this->logVoting($ret,$votingsession,$answerID,$answertext,$mySuccessorID,$addfieldsdata);
-		
+
 		return $ret;
 	}
 
@@ -535,9 +531,9 @@ class weVoting extends weModelBase{
 		} else {
 			if ($this->FallbackUserID) {
 				return $this->canVoteUserID();
-			} else return VOTING_SUCCESS;  
+			} else return VOTING_SUCCESS;
 		}
-		
+
 	}
 
 	function canVoteIP(){
@@ -579,8 +575,8 @@ class weVoting extends weModelBase{
 				return $this->canVoteUserID();
 			} else return VOTING_SUCCESS;
 		}
-		
-		
+
+
 	}
 	function canVoteUserID(){
 		if (defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"]) {
@@ -593,17 +589,17 @@ class weVoting extends weModelBase{
 		} else {
 			if($this->RevoteTime<0) $testtime = 0;
 			else $testtime = time() - $this->RevoteTime;
-			
+
 			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = '.$userid.' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . $testtime . ' ORDER BY time';
-			
+
 			$logEntries = $this->db->query($logQuery);
 			while ($this->db->next_record()){
 				return VOTING_ERROR_REVOTE;
 			}
 			return VOTING_SUCCESS;
 		}
- 		
-		
+
+
 
 	}
 	function isActive(){
@@ -652,13 +648,13 @@ class weVoting extends weModelBase{
 				'fallback' => $this->FallbackActive,
 				'status' => $status
 			);
-			$this->saveField('LogData',true);		
+			$this->saveField('LogData',true);
 		}
 	}
 
 	function deleteLogData(){
 		if ($this->IsFolder) {
-			$this->deleteGroupLogData();return true; 
+			$this->deleteGroupLogData();return true;
 		} else {
 			if($this->LogDB) {
 				$this->deleteLogDataDB();
@@ -674,7 +670,7 @@ class weVoting extends weModelBase{
 	}
 	function deleteGroupLogData(){
 		$querySammel = 'SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->Path."%'";
-		
+
 		$SammelEntries = $this->db->query($querySammel);
 		while ($this->db->next_record()){
 			$child=new weVoting($this->db->f("ID"));
@@ -683,32 +679,32 @@ class weVoting extends weModelBase{
 		}
  		return true;
 	}
-	
+
 	/* ================================= NEW FUNCTIONS FOR LOGGING TO VOTING_LOG_TABLE ================================= */
 	/**
 	 * @abstract new functions for logging votings to a separate database table
 	 * @internal new logging mode logs votings to a new table called "tblvotinglog" instead of saving them
 	 * 			to the field "LogData" as a serialized array. So $this->LogData contains an array if the new mode
-	 * 			is used (for newly created votings). For existing votings using the old logging style nothing has changed 
+	 * 			is used (for newly created votings). For existing votings using the old logging style nothing has changed
 	 * 			and the variable will still contain a string with the serialized logging data array from tblvoting.LogData
 	 * 			In the first case the variable $this->LogDB will be set to true, else it will stay false
 	 * @author Alexander Lindenstruth
 	 * @since 5.1.1.2 - 05.05.2008
 	 */
-	
+
 	/**
 	 * fetches all log entries for current voting from database
 	 * @author Alexander Lindenstruth
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function loadDB($id="0") {
-	
+
 		if ($this->IsFolder) {
 			$logQuery = 'SELECT A.*, B.* FROM `'.VOTING_TABLE.'` A, `'.VOTING_LOG_TABLE."` B WHERE A.Path LIKE '".$this->Path."%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time";
 		} else {
   			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $id . ' ORDER BY time';
 		}
-		
+
 		$logEntries = $this->db->query($logQuery);
 		$this->LogData= array();
 		while ($this->db->next_record()){
@@ -727,9 +723,9 @@ class weVoting extends weModelBase{
 	 		));
 		}
  		return $this->LogData;
- 		
+
 	}
-	
+
 	/**
 	 * writes a single entry to the voting log table VOTING_LOG_TABLE
 	 * @return boolean success or failure of this operation
@@ -749,7 +745,7 @@ class weVoting extends weModelBase{
 		} else {
 			$userid = 0;
 		}
-		$myquery = 'INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . 
+		$myquery = 'INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' .
 			'votingsession = \'' . $votingsession . '\', ' .
 			'voting = \'' . $this->ID . '\', ' .
 			'time = \'' . time() . '\', ' .
@@ -763,12 +759,12 @@ class weVoting extends weModelBase{
 			'successor = \'' . $successor . '\', ' .
 			'additionalfields = \'' . $additionalfields . '\', ' .
 			'status = \'' . $status . '\'';
-		
+
 		$this->db->query($myquery);
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * deletes all log entries for a given voting
 	 * @return boolean success or failure of this operation
@@ -779,7 +775,7 @@ class weVoting extends weModelBase{
 		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID);
 		return true;
 	}
-	
+
 	/**
 	 * switches from storing LogData in table VOTING_TABLE to table VOTING_LOG_TABLE
 	 * @return boolean success or failure of this operation
@@ -787,11 +783,11 @@ class weVoting extends weModelBase{
 	 * @since 6.1.0.2 - 019.09.2010
 	 */
 	function switchToLogDataDB() {
-	
+
 		$LogData = @unserialize($this->LogData);
 		if (is_array($LogData) && !empty($LogData) ){
 			foreach ($LogData as $ld){
-				$myquery = 'INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . 
+				$myquery = 'INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' .
 					'votingsession = \'\', ' .
 					'voting = \'' . $this->ID . '\', ' .
 					'time = \'' . $ld['time'] . '\', ' .
@@ -806,7 +802,7 @@ class weVoting extends weModelBase{
 					'additionalfields = \'\', ' .
 					'status = \'' . $ld['status'] . '\'';
 				$this->db->query($myquery);
-			
+
 			}
 			$this->LogData='';
 			$this->LogData = '';
@@ -814,8 +810,8 @@ class weVoting extends weModelBase{
 			$this->LogDB = true;
 			return true;
 		}
-	
-		
+
+
 	}
 
 }

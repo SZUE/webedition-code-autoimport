@@ -26,7 +26,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/RSS
 
 htmlTop();
 print STYLESHEET;
-print 
+print
 		'<style type="text/css">div#rss,div#rss *{color:black;font-size:' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';font-family:' . $l_css["font_family"] . ';}</style>';
 print '</head><body bgcolor="#F1F5FF">';
 
@@ -43,5 +43,3 @@ foreach ($rss->getItems() as $item) {
 $rss_out .= '</div>';
 print $rss_out;
 print '</body></html>';
-
-?>

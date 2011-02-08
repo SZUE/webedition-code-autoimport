@@ -33,7 +33,7 @@ class we_customertag{
 	var $ClassName = "we_customertag";
 	var $object = "";
 	var $avail = false;
-	var $hidedirindex=false
+	var $hidedirindex=false;
 
 	function we_customertag($id=0, $condition="",$hidedirindex=false){
 		$this->DB_WE = new DB_WE;

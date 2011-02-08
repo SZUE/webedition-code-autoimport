@@ -25,5 +25,3 @@ protect();
 
 $weFrame = new weSideBarFrames();
 $weFrame->getHTMLContent();
-
-?>

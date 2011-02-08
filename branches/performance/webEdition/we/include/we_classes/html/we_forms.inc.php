@@ -160,7 +160,7 @@ class we_forms {
 	*
 	*/
 	function weTextarea($name,$value,$attribs,$autobr,$autobrName,$showAutobr=true,$path="",$hidestylemenu=false,$forceinwebedition=false,$xml=false,$removeFirstParagraph=true,$charset="",$showSpell=true, $isFrontendEdit=false){
-		global $IE55,$MOZ13,$SAFARI_WYSIWYG,$BROWSER;
+		global $SAFARI_WYSIWYG;
 		if($charset == ""){
 			if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->getElement("Charset")){
 				$charset = $GLOBALS["we_doc"]->getElement("Charset");
@@ -171,7 +171,7 @@ class we_forms {
 		$dhtmledit = we_getTagAttribute("dhtmledit",$attribs,"",true); //4614
 		$wysiwyg = we_getTagAttribute("wysiwyg",$attribs,"",true);
 
-		$wysiwyg = ($dhtmledit || $wysiwyg) && ($IE55 || $MOZ13 || $BROWSER=="OPERA" || ($SAFARI_WYSIWYG && (defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
+		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['BROWSER']=="IE" || $GLOBALS['BROWSER'] == 'NN6' || $GLOBALS['BROWSER']=="OPERA" || ($SAFARI_WYSIWYG && (defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
 		$cols = we_getTagAttribute("cols",$attribs);
 		$rows = we_getTagAttribute("rows",$attribs);
 		$width = we_getTagAttribute("width",$attribs);

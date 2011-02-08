@@ -185,7 +185,7 @@ class weDialog{
 			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
 				<frame src="' . $_SERVER["PHP_SELF"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
 				<frame src="/webEdition/html/white.html" name="we_'.$this->ClassName.'_cmd_frame" scrolling="no" noresize="noresize">
-			<frame src="UntitledFrame-19"></frameset><noframes></noframes>';
+			</frameset>';
 	}
 
 	function getNextBut() {

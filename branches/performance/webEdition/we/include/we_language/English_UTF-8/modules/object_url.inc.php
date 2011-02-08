@@ -27,7 +27,7 @@
  */
 
 $l_object_url[""] = "----";
-$l_object_url["%unique%"] = "Unique";
+$l_object_url["%urlunique%"] = "Unique";
 $l_object_url["%d%"] = "Day";
 $l_object_url["%m%"] = "Month (01-12)";
 $l_object_url["%n%"] = "Month (1-12)";
@@ -41,4 +41,16 @@ $l_object_url["%DirSep%"] = "Directory separator";// TRANSLATE
 $l_object_url["%urlfield1%"] = "URL field 1";// TRANSLATE
 $l_object_url["%urlfield2%"] = "URL field 2";// TRANSLATE
 $l_object_url["%urlfield3%"] = "URL field 3";// TRANSLATE
+$l_object_url["%locale%"] = "Locale";// TRANSLATE
+$l_object_url["%language%"] = "Language";// TRANSLATE
+$l_object_url["%country%"] = "Country";// TRANSLATE
+//$l_object_url["%firstcatN%"] = "Name first cat.";// TRANSLATE
+//$l_object_url["%firstcatT%"] = "Title first cat.";// TRANSLATE
+//$l_object_url["%firstcatD%"] = "Desc. first Kat.";// TRANSLATE
+//$l_object_url["%secondcatN%"] = "Name second cat.";// TRANSLATE
+//$l_object_url["%secondcatT%"] = "Title second cat.";// TRANSLATE
+//$l_object_url["%secondcatD%"] = "Desc. second cat.";// TRANSLATE
+//$l_object_url["%thirdcatN%"] = "Name third cat.";// TRANSLATE
+//$l_object_url["%thirdcatT%"] = "Title third cat.";// TRANSLATE
+//$l_object_url["%thirdcatD%"] = "Desc. third cat.";// TRANSLATE
 

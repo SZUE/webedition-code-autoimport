@@ -72,7 +72,7 @@ $we_menu["1000000"]["enabled"] = "1";
 			if($nr == 197) break;
 		}
 
-		
+
 
 		// File > Image
 		$we_menu["1010200"]["text"] = $l_javaMenu["image"];
@@ -134,7 +134,7 @@ $we_menu["1000000"]["enabled"] = "1";
 			$we_menu["1010307"]["cmd"] = "new_text_xml";
             $we_menu["1010307"]["perm"] = "NEW_TEXT || ADMINISTRATOR";
 			$we_menu["1010307"]["enabled"] = "1";
-			
+
 			// File > New > Other > htaccess
 			$we_menu["1010308"]["text"] = $l_javaMenu["htaccess"];
 			$we_menu["1010308"]["parent"] = "1010300";
@@ -232,22 +232,22 @@ $we_menu["1000000"]["enabled"] = "1";
 	$we_menu["1050000"]["cmd"] = "close_all_documents";
     $we_menu["1050000"]["perm"] = "";
 	$we_menu["1050000"]["enabled"] = "1";
-	
+
 	// File > Close All But this
 	$we_menu["1050100"]["text"] = $l_javaMenu["close_all_but_active_document"];
 	$we_menu["1050100"]["parent"] = "1000000";
 	$we_menu["1050100"]["cmd"] = "close_all_but_active_document";
     $we_menu["1050100"]["perm"] = "";
 	$we_menu["1050100"]["enabled"] = "1";
-	
+
 	// File > Delete Active Document
 	$we_menu["1050200"]["text"] = $l_javaMenu["delete_active_document"];//$l_javaMenu["delete_single_document"];
 	$we_menu["1050200"]["parent"] = "1000000";
 	$we_menu["1050200"]["cmd"] = "delete_single_document_question";
     $we_menu["1050200"]["perm"] = "";
 	$we_menu["1050200"]["enabled"] = "1";
-	
-	
+
+
 	$we_menu["1060000"]["parent"] = "1000000"; // separator
 
 	// File > Save
@@ -377,7 +377,7 @@ $we_menu["1000000"]["enabled"] = "1";
 		$we_menu["1160200"]["cmd"] = "recover_backup";
 		$we_menu["1160200"]["perm"] = "IMPORT || ADMINISTRATOR";
 		$we_menu["1160200"]["enabled"] = "1";
-		
+
 		// File > Backup > view Log
 		$we_menu["1160300"]["text"] = $l_javaMenu["view_backuplog"] . "...";
 		$we_menu["1160300"]["parent"] = "1160000";
@@ -550,36 +550,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 	} else {
 		$userHasAllModules = false;
 	}
-	// usermanagement pro is the only promodule that is left
 
-	// Are there any promodules in version 5 or do we remove them, what happens with BV?
-	if(sizeof($_pro_modules) > 0){
-		foreach($we_pro_modules_available as $m){
-			if(in_array($m, $_pro_modules)){
-				$moduleList .= $m . "|" ;
-			}else{
-				$userHasAllModules = false;
-			}
-		}
-	}else{
-		$userHasAllModules = false;
-	}
-    /*
-	// No need for that any more
-	if ( defined('BIG_USER_MODULE') ) {
-
-		$m = $_we_available_modules['users'];
-
-		$we_menu["3010001"]["text"] = $m["text"] . "...";
-		$we_menu["3010001"]["parent"] = "3000000";
-		$we_menu["3010001"]["cmd"] = "edit_".$m["name"]."_ifthere";
-		$we_menu["3010001"]["perm"] = isset($m["perm"]) ? $m["perm"] : "";
-		$we_menu["3010001"]["enabled"] = "1";
-
-		$we_menu["3010002"]["parent"] = "3000000"; // separator
-
-	}
-	*/
 	foreach($_we_available_modules as $key=>$val) {
 		if($val["integrated"]) {
 			$moduleList .= $key . "|";
@@ -650,7 +621,7 @@ $we_menu["4000000"]["enabled"] = "1";
 		$we_menu["4010000"]["parent"] = "4000000"; // separator
 	}
 	*/
-	
+
 	// Extras > Inactive Extras
 /*
 	$_inactiveIntModules = weModuleInfo::getIntegratedModules(false);
@@ -663,7 +634,7 @@ $we_menu["4000000"]["enabled"] = "1";
 		$z = 100;
 
 		foreach ($_inactiveIntModules as $key => $modInfo) {
-			
+
 			$we_menu["4020$z"]["text"] = $modInfo["text"] . "...";
 			$we_menu["4020$z"]["parent"] = "4020000";
 			$we_menu["4020$z"]["cmd"] = "edit_".$modInfo["name"]."_ifthere";
@@ -700,7 +671,7 @@ $we_menu["4000000"]["enabled"] = "1";
 	$we_menu["4033300"]["parent"] = "4000000"; // separator
 
 	// Extras > Tools
-	
+
 	/*
 	include(weToolLookup::getLanguageInclude('weSearch'));
 	$we_menu["4045000"]["text"] = $l_weSearch["weSearch"] . "...";
@@ -709,11 +680,11 @@ $we_menu["4000000"]["enabled"] = "1";
 	$we_menu["4045000"]["perm"] = "";
 	$we_menu["4045000"]["enabled"] = "1";
 	*/
-	
+
 	// Extras > Tools > Custom tools
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 	$_tools = weToolLookup::getAllTools(true,false);
-	
+
 	foreach ($_tools as $_k=>$_tool) {
 		if($_tool['name']=='toolfactory') {
 			$we_menu["404" . sprintf("%04d", $_k)]["text"] = $_tool['text'] . "...";
@@ -730,8 +701,8 @@ $we_menu["4000000"]["enabled"] = "1";
 			$we_menu["405" . sprintf("%04d", $_k)]["enabled"] = "1";
 		}
 	}
-	
-	
+
+
 	$we_menu["4125000"]["parent"] = "4000000"; // separator
 
 	// Extras > Thumbnails
@@ -740,21 +711,21 @@ $we_menu["4000000"]["enabled"] = "1";
 	$we_menu["4130000"]["cmd"] = "editThumbs";
 	$we_menu["4130000"]["perm"] = "EDIT_THUMBS || ADMINISTRATOR";
 	$we_menu["4130000"]["enabled"] = "1";
-	
+
 	// Extras > Metadata fields
 	$we_menu["4140000"]["text"] = $l_javaMenu["metadata"] . "...";
 	$we_menu["4140000"]["parent"] = "4000000";
 	$we_menu["4140000"]["cmd"] = "editMetadataFields";
 	$we_menu["4140000"]["perm"] = "ADMINISTRATOR";
 	$we_menu["4140000"]["enabled"] = "1";
-	
+
 	// Extras > change password
 	$we_menu["4160000"]["text"] = $l_javaMenu["change_password"] . "...";
 	$we_menu["4160000"]["parent"] = "4000000";
 	$we_menu["4160000"]["cmd"] = "change_passwd";
     $we_menu["4160000"]["perm"] = "EDIT_PASSWD || ADMINISTRATOR";
 	$we_menu["4160000"]["enabled"] = "1";
-	
+
 if(we_hasPerm("ADMINISTRATOR")) {
 	// Extras > versioning
 	$we_menu["4161000"]["text"] = $l_javaMenu["versioning"] . "...";
@@ -762,7 +733,7 @@ if(we_hasPerm("ADMINISTRATOR")) {
 	$we_menu["4161000"]["cmd"] = "versions_wizard";
     $we_menu["4161000"]["perm"] = "ADMINISTRATOR";
 	$we_menu["4161000"]["enabled"] = "1";
-	
+
 	// Extras > versioning-log
 	$we_menu["4162000"]["text"] = $l_javaMenu["versioning_log"] . "...";
 	$we_menu["4162000"]["parent"] = "4000000";
@@ -776,7 +747,7 @@ if(we_hasPerm("ADMINISTRATOR")) {
 	$we_menu["4163000"]["parent"] = "4000000";
 	$we_menu["4163000"]["cmd"] = "setEconda";
 	$we_menu["4163000"]["enabled"] = "1";
-	
+
 
 	$we_menu["4170000"]["parent"] = "4000000"; // separator
 
@@ -855,7 +826,7 @@ $we_menu["5000000"]["enabled"] = "1";
 	//$we_menu["5010000"]["cmd"] = "help";
     //$we_menu["5010000"]["perm"] = "";
 	$we_menu["5010000"]["enabled"] = "1";
-	
+
 	$we_menu["5010001"]["text"] = $l_javaMenu["onlinehelp"] . "...";
 	$we_menu["5010001"]["parent"] = "5010000";
 	$we_menu["5010001"]["cmd"] = "help";
@@ -863,7 +834,7 @@ $we_menu["5000000"]["enabled"] = "1";
 	$we_menu["5010001"]["enabled"] = "1";
 
 	$we_menu["5010002"]["parent"] = "5010000"; // separator
-	
+
 	$we_menu["5010003"]["text"] = $l_javaMenu["onlinehelp_documentation"] . "...";
 	$we_menu["5010003"]["parent"] = "5010000";
 	$we_menu["5010003"]["cmd"] = "help_documentation";
@@ -893,9 +864,9 @@ $we_menu["5000000"]["enabled"] = "1";
 	//$we_menu["5010007"]["cmd"] = "help_demo";
     //$we_menu["5010007"]["perm"] = "";
 	//$we_menu["5010007"]["enabled"] = "1";
-	
+
 	$we_menu["5010008"]["parent"] = "5010000"; // separator
-	
+
 	$we_menu["5010009"]["text"] = $l_javaMenu["onlinehelp_changelog"] . "...";
 	$we_menu["5010009"]["parent"] = "5010000";
 	$we_menu["5010009"]["cmd"] = "help_changelog";
@@ -940,7 +911,7 @@ $we_menu["5000000"]["enabled"] = "1";
 		$we_menu["5070000"]["cmd"] = "upgrade";
 	    $we_menu["5070000"]["perm"] = "ADMINISTRATOR";
 		$we_menu["5070000"]["enabled"] = "1";
-	
+
 		$we_menu["5080000"]["parent"] = "5000000"; // separator
 	*/
 

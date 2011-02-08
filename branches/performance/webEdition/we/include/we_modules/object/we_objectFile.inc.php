@@ -73,8 +73,8 @@ class we_objectFile extends we_document{
 	var $IsTextContentDoc = true;
 
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
-	
-	
+
+
 	var $Url='';
 
 
@@ -123,8 +123,8 @@ class we_objectFile extends we_document{
 		$this->DefaultInit=false;
 
 		$this->i_objectFileInit(true);
-		
-		$this->Url = $Url; 
+
+		$this->Url = $Url;
 		$this->Workspaces = $Workspaces;
 		$this->ExtraWorkspaces = $ExtraWorkspaces;
 		$this->ExtraWorkspacesSelected = $ExtraWorkspacesSelected;
@@ -133,8 +133,12 @@ class we_objectFile extends we_document{
 	}
 	function we_rewrite() {
 		$this->setLanguage();
+		$this->setUrl();
+		if(!$this->DB_WE->query("UPDATE ".$this->Table." SET Url='".$this->Url."' WHERE ID='".$this->ID."'")) return false;
+		if(!$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Url='".$this->Url."' WHERE OF_ID='".$this->ID."'")) return false;
+
 		return we_document::we_rewrite();
-		
+
 	}
 
 	function formCopyDocument(){
@@ -151,7 +155,7 @@ class we_objectFile extends we_document{
 	function formLanguage() {
 
 		we_loadLanguageConfig();
-		
+
 		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
 		$inputName = "we_".$this->Name."_Language";
@@ -532,7 +536,7 @@ class we_objectFile extends we_document{
 			$this->ParentID = $rootDirId;
 			$this->ParentPath = id_to_path($rootDirId, OBJECT_FILES_TABLE);
 		}
-
+		$this->setUrl();
 		$content =  '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$this->formInputField('',"Text",$l_object["objectname"],30,388,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
@@ -561,6 +565,24 @@ class we_objectFile extends we_document{
 						</td>
 					<td>&nbsp;
 						</td>
+				</tr>
+			</table></td>
+	</tr>
+	<tr>
+		<td>
+			'.getPixel(20,4).'</td>
+		<td>
+			'.getPixel(20,2).'</td>
+		<td>
+			'.getPixel(100,2).'</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="defaultfont">'.$l_object["seourl"].':</td>
+					<td class="defaultfont">&nbsp;</td>
+					<td class="defaultfont">&nbsp;'.$this->Url.'</td>
 				</tr>
 			</table></td>
 	</tr>
@@ -643,7 +665,7 @@ class we_objectFile extends we_document{
 
 		$ctable = OBJECT_X_TABLE.$tableID;
 		$tableInfo = $db->metadata($ctable);
-		$tableInfo2 = array(); 
+		$tableInfo2 = array();
 		foreach($tableInfo as $i=>$arr){
 			if(	$arr["name"] != "input_" &&
 				$arr["name"] != "text_" &&
@@ -755,8 +777,8 @@ class we_objectFile extends we_document{
 				return $this->getElement($name);
 			break;
 		}
-		
-		
+
+
 		return $this->getElement($name);
 	}
 
@@ -830,7 +852,7 @@ class we_objectFile extends we_document{
 		$foo = getHash("SELECT Text,Path FROM " .OBJECT_TABLE . " WHERE ID=".abs($ObjectID),$db) ;
 		$name = isset($foo["Text"]) ? $foo["Text"] : '';
 		$classPath = isset($foo["Path"]) ? $foo["Path"] : '';
-		$pid = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db); 
+		$pid = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
 		$textname = 'we_'.$this->Name.'_txt[we_object_'.$ObjectID.'_path]';
 		$idname = 'we_'.$this->Name."_object[we_object_$ObjectID]";
 		$myid = $this->getElement("we_object_".$ObjectID);
@@ -998,7 +1020,7 @@ class we_objectFile extends we_document{
 
 					$reloadEntry = '';
 				}
-				$alerttext = $l_object["multiobject_recursion"];				
+				$alerttext = $l_object["multiobject_recursion"];
 				$selectObject = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) ."opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';;};".$reloadEntry."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
 				$upbut       = $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_object','".$GLOBALS['we_transaction']."','multiobject_".$name."','".($f)."')");
@@ -1284,7 +1306,7 @@ class we_objectFile extends we_document{
 			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
 			$countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
 			$countryselect=new we_htmlSelect(array("name"=>"we_".$this->Name."_language[$name]","size"=>"1","style"=>"{width:620;}","class"=>"wetextinput","onChange"=>"_EditorFrame.setEditorIsHot(true);" ));
-			
+
 			if(defined("WE_COUNTRIES_TOP")) {
 				$topCountries = explode(',',WE_COUNTRIES_TOP);
 			} else {
@@ -1308,7 +1330,7 @@ class we_objectFile extends we_document{
 			asort($topCountries,SORT_LOCALE_STRING );
 			asort($shownCountries,SORT_LOCALE_STRING );
 			setlocale(LC_ALL, $oldLocale);
-			
+
 			$content='';
 			if (!$this->DefArray["country_".$name]["required"]){
 				$countryselect->addOption('--','');
@@ -1320,8 +1342,8 @@ class we_objectFile extends we_document{
 			//$content.='<option value="-" disabled="disabled">----</option>'."\n";
 			foreach ($shownCountries as $countrykey => &$countryvalue){
 				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
-			}	
-			
+			}
+
 			$countryselect->selectOption($this->getElement($name));
 			$content = $countryselect->getHtmlCode();
 
@@ -1331,7 +1353,7 @@ class we_objectFile extends we_document{
 			}
 
 			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["country_".$name]["required"] ? "*" : '')."</span>" .  (isset($this->DefArray["country_".$name]['editdescription']) && $this->DefArray["country_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["country_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
-		} else {		
+		} else {
 			if ($this->getElement($name)!='--' || $this->getElement($name)!=''){
 				return '<div class="weObjectPreviewHeadline">'.$name. '</div><div class="defaultfont">'.CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name),'territory',$langcode) ).'</div>';
 			} else {
@@ -1351,7 +1373,7 @@ class we_objectFile extends we_document{
 			if (!$this->DefArray["language_".$name]["required"]){
 				$languageselect->addOption('--','');
 			}
-			
+
 			foreach($GLOBALS['l_languages'] as $languagekey => $languagevalue){
 				if(in_array($languagekey,$frontendL)){
 					$languageselect->addOption($languagekey,$languagevalue);
@@ -1467,7 +1489,7 @@ class we_objectFile extends we_document{
 			$this->setElement($name,0);
 		}
 		$img->initByID($id,FILE_TABLE,false);
-		
+
 		// handling thumbnails for this image
 		// identifying default thumbnail of class:
 		$defvals = $this->getDefaultValueArray();
@@ -1500,7 +1522,7 @@ class we_objectFile extends we_document{
 		if($editable){
 			$fname = 'we_'.$this->Name.'_img['.$name.']';
 			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
-			// show thumbnail of image if there exists one: 
+			// show thumbnail of image if there exists one:
 			if(!empty($thumbID)) {
 				$content .= '<img src="'.$_imgSrc.'" height="'.$_imgHeight.'" width="'.$_imgWight.'" />';
 			} else {
@@ -1997,68 +2019,94 @@ class we_objectFile extends we_document{
 		$foo = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 
 		if (isset($foo["DefaultTitle"]) && $foo["DefaultTitle"] && strpos($foo["DefaultTitle"], '_')) {
-			list($f,$t) = explode("_", $foo["DefaultTitle"]);
-			if ($f !== '' && isset($t) && $t !== '') {
-				$elem = $this->geFieldValue($t, $f);
+			preg_match('/(.+?)_(.*)/',$foo["DefaultTitle"],$regs);
+			if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
+				$elem = $this->geFieldValue($regs[2], $regs[1]);
 				$this->setElement("Title", $elem);
 			}
 		}
 
 		if (isset($foo["DefaultDesc"]) && $foo["DefaultDesc"]) {
-			list($f,$d) = explode("_", $foo["DefaultDesc"]);
-			if ($f !== '' && $d !== '') {
-				$elem = $this->geFieldValue($d, $f);
+			preg_match('/(.+?)_(.*)/',$foo["DefaultDesc"],$regs);
+			if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
+				$elem = $this->geFieldValue($regs[2], $regs[1]);
 				$this->setElement("Description", $elem);
 			}
 		}
 
 		if (isset($foo["DefaultKeywords"]) && $foo["DefaultKeywords"]) {
-			list($f,$k) = explode("_", $foo["DefaultKeywords"]);
-			if ($f !== '' && $k !== '') {
-				$elem = $this->geFieldValue($k, $f);
+			preg_match('/(.+?)_(.*)/',$foo["DefaultKeywords"],$regs);
+			if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
+				$elem = $this->geFieldValue($regs[2], $regs[1]);
 				$this->setElement("Keywords", $elem);
-			}	
+			}
 		}
 	}
-	
+
 	function setUrl(){
 
 		$foo = getHash("SELECT DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3 FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
-		if(isset($foo["DefaultUrl"]) && $foo["DefaultUrl"]){		
+		if(isset($foo["DefaultUrl"]) && $foo["DefaultUrl"]){
 			if (isset($foo["DefaultUrlfield0"]) && $foo["DefaultUrlfield0"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield0"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield0 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield0"],$regs);
+				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
+					$urlfield0 = $this->geFieldValue($regs[2], $regs[1]);
 				}
 			}
 			if (isset($foo["DefaultUrlfield1"]) && $foo["DefaultUrlfield1"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield1"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield1 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield1"],$regs);
+				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
+					$urlfield1 = $this->geFieldValue($regs[2], $regs[1]);
 				}
+
 			}
 			if (isset($foo["DefaultUrlfield2"]) && $foo["DefaultUrlfield2"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield2"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield2 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield2"],$regs);
+				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
+					$urlfield2 = $this->geFieldValue($regs[2], $regs[1]);
 				}
 			}
 			if (isset($foo["DefaultUrlfield3"]) && $foo["DefaultUrlfield3"]) {
-				list($f,$d) = explode("_", $foo["DefaultUrlfield3"]);
-				if ($f !== '' && $d !== '') {
-					$urlfield3 = $this->geFieldValue($d, $f);
+				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield3"],$regs);
+				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
+					$urlfield3 = $this->geFieldValue($regs[2], $regs[1]);
 				}
 			}
 			$text = $foo["DefaultUrl"];
-			if(preg_match('/%unique([^%]*)%/',$text,$regs)){
+			if(preg_match('/%urlunique([^%]*)%/',$text,$regs)){
 				if(!$regs[1]){
 					$anz = 16;
 				}else{
 					$anz = abs($regs[1]);
 				}
 				$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
-				$text = preg_replace('/%unique[^%]*%/',$unique,$text);
+				$text = preg_replace('/%urlunique[^%]*%/',$unique,$text);
 			}
+			if(preg_match('/%urlfield1([^%]*)%/',$text,$regs)){
+				if(!$regs[1]){
+					$anz = 64;
+				}else{
+					$anz = abs($regs[1]);
+				}
+				$text = preg_replace('/%urlfield1[^%]*%/',substr($urlfield1,0,$anz),$text);
+			}
+			if(preg_match('/%urlfield2([^%]*)%/',$text,$regs)){
+				if(!$regs[1]){
+					$anz = 64;
+				}else{
+					$anz = abs($regs[1]);
+				}
+				$text = preg_replace('/%urlfield2[^%]*%/',substr($urlfield2,0,$anz),$text);
+			}
+			if(preg_match('/%urlfield3([^%]*)%/',$text,$regs)){
+				if(!$regs[1]){
+					$anz = 64;
+				}else{
+					$anz = abs($regs[1]);
+				}
+				$text = preg_replace('/%urlfield3[^%]*%/',substr($urlfield3,0,$anz),$text);
+			}
+
 			if(strpos($text,'%ID%')!==false){
 				$text = str_replace('%ID%',"".$this->ID,$text);
 			}
@@ -2080,19 +2128,25 @@ class we_objectFile extends we_document{
 			if(strpos($text,'%FY%')!==false){$text = str_replace('%FY%',date("Y",$urlfield0),$text);}
 			if(strpos($text,'%Fn%')!==false){$text = str_replace('%Fn%',date("n",$urlfield0),$text);}
 			if(strpos($text,'%Fh%')!==false){$text = str_replace('%Fh%',date("h",$urlfield0),$text);}
-			if(strpos($text,'%urlfield1%')!==false){$text = str_replace('%urlfield1%',$urlfield1,$text);}
-			if(strpos($text,'%urlfield2%')!==false){$text = str_replace('%urlfield2%',$urlfield2,$text);}
-			if(strpos($text,'%urlfield3%')!==false){$text = str_replace('%urlfield3%',$urlfield3,$text);}
-			
+
 			if(strpos($text,'%DirSep%')!==false){$text = str_replace('%DirSep%','/',$text);}
-			
+			if(strpos($text,'%Parent%')!==false){
+				$fooo = getHash("SELECT Text FROM " .OBJECT_FILES_TABLE . " WHERE ID='".$this->ParentID."'",$this->DB_WE);
+				if(isset($fooo["Text"]) && $fooo["Text"]){
+					$text = str_replace('%Parent%',$fooo["Text"],$text);
+				}
+			}
+			if(strpos($text,'%locale%')!==false){$text = str_replace('%locale%',$this->Language,$text);}
+			if(strpos($text,'%language%')!==false){$text = str_replace('%language%',substr($this->Language,0,2),$text);}
+			if(strpos($text,'%country%')!==false){$text = str_replace('%country%',substr($this->Language,4,2),$text);}
+
 			$text=correctUml($text);
 			$text=str_replace(" ", "-", $text);
 			$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
-			$this->Url=$text; 
+			$this->Url=substr($text,0,256);
 		}
-		
-		
+
+
 	}
 
 
@@ -2227,7 +2281,7 @@ class we_objectFile extends we_document{
 	}
 
 	function we_save($resave=0,$skipHook=0){
-				
+
 		$foo = getHash("SELECT strOrder,DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
 
@@ -2259,9 +2313,9 @@ class we_objectFile extends we_document{
 		$this->ModDate = time();
 		$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		$this->wasUpdate=1;
-		
+
 		$this->setUrl();
-		
+
 		if($resave==0 && $this->ID) {
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
@@ -2271,16 +2325,16 @@ class we_objectFile extends we_document{
 			$this->resaveWeDocumentCustomerFilter();
 
 		}
-		
+
 		$a = $this->i_saveTmp();
-		
+
 		/* version */
 		if($this->ContentType=="objectFile") {
 			$version = new weVersions();
 			$version->save($this);
-			
+
 		}
-		
+
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));
@@ -2325,7 +2379,7 @@ class we_objectFile extends we_document{
 		switch($from){
 			case LOAD_SCHEDULE_DB:
 				$sessDat = unserialize(f("SELECT SerializedData FROM ".SCHEDULE_TABLE." WHERE DID=".$this->ID." AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
-	
+
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url");
@@ -2426,7 +2480,7 @@ class we_objectFile extends we_document{
 		if(!$this->DB_WE->query("UPDATE ".$this->Table." SET Published='0' WHERE ID='".$this->ID."'")) return false;
 		if(!$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Published=0 WHERE OF_ID='".$this->ID."'")) return false;
 		$this->Published=0;
-		
+
 		/* version */
 		if($this->ContentType=="objectFile") {
 			$version = new weVersions();
@@ -2437,7 +2491,7 @@ class we_objectFile extends we_document{
 			$hook = new weHook('unpublish', '', array($this));
 			$hook->executeHook();
 		}
-		
+
 		return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".$this->ID);
 	}
 
@@ -2448,12 +2502,12 @@ class we_objectFile extends we_document{
 		$this->DB_WE->query($q);
 		$foo = $this->DB_WE->getAll();
 		foreach ($foo as $testclass) {
-			if($this->isColExist(OBJECT_X_TABLE.$testclass['ID'],"object_".$this->TableID)){				
+			if($this->isColExist(OBJECT_X_TABLE.$testclass['ID'],"object_".$this->TableID)){
 				$q = "UPDATE " .OBJECT_X_TABLE.$testclass['ID']. " SET object_".$this->TableID."='0' WHERE object_".$this->TableID."= '".$this->ID."'";
 				$this->DB_WE->query($q);
-			}			
+			}
 		}
-		
+
 		return we_document::we_delete();
 	}
 
@@ -2703,7 +2757,7 @@ class we_objectFile extends we_document{
 			   global $DB_WE;
 			   $DB_WE->query("ALTER TABLE $tab ADD $col $typ".(($pos!='') ? " ".$pos : '').";");
 	}
-	
+
 	function getContentDataFromTemporaryDocs($ObjectID,$loadBinary=0){
 
 		$db = $this->DB_WE;
@@ -2711,9 +2765,9 @@ class we_objectFile extends we_document{
 		$query = "SELECT * FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='$ObjectID' AND Active=1 AND  DocTable='".OBJECT_FILES_TABLE."'";
 
 		$db->query($query);
-		
+
 		if($db->next_record()){
-			
+
 			if($db->f("DocumentObject")!='') {
 				$DocumentObject = unserialize($db->f("DocumentObject"));
 			}
@@ -2722,7 +2776,7 @@ class we_objectFile extends we_document{
 		if(isset($DocumentObject[0]["elements"]) && is_array($DocumentObject[0]["elements"])) {
 			$this->elements = $DocumentObject[0]["elements"];
 		}
-		
+
 	}
 
 	function i_saveContentDataInDB(){
@@ -2915,9 +2969,6 @@ class we_objectFile extends we_document{
 
 	function userCanSave(){
 
-		if(!defined("BIG_USER_MODULE") || !in_array("busers",$GLOBALS["_pro_modules"])){
-			return true;
-		}
 		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			return true;
 		}
@@ -2942,8 +2993,6 @@ class we_objectFile extends we_document{
 	 * @desc	checks if the user has the right to see an objectfile
  	 */
 	function userHasPerms(){
-		if(!defined("BIG_USER_MODULE") || !in_array("busers",$GLOBALS["_pro_modules"]))
-			return true;
 		if($_SESSION["perms"]["ADMINISTRATOR"])
 			return true;
 		if(!we_hasPerm("CAN_SEE_OBJECTFILES"))
@@ -3084,7 +3133,7 @@ class we_objectFile extends we_document{
 		);
 		$this->setElement($name, serialize($new));
 	}
-	
+
 	function checkAndCorrectParent(){
 		if (!isset($this->ParentID) || $this->ParentID==''){
 			$this->resetParentID();

@@ -25,14 +25,6 @@ String.prototype.trim2=function () {
    return this.replace(/^\s{2,}|\s{2,}$/g," ");
 }
 
-//Detect IE5.5+
-var weIE55=false;
-if (navigator.appVersion.indexOf("MSIE")!=-1){
-	var temp=navigator.appVersion.split("MSIE");
-	weIE55= parseFloat(temp[1]) < 6;
-}
-
-
 var we_styleSheets;
 var we_classNames;
 var we_styleString = "";
@@ -328,7 +320,7 @@ function weWysiwyg(fName,hiddenName,hiddenHTML,editHTML,fullScreenRef,className,
 	this.getParentElementFromRange = weWysiwyg_getParentElementFromRange;
 	this.decodeUmlautDomain = weWysiwyg_decodeUmlautDomain;
 	this.decodeDomainUmlautsOfUrl = weWysiwyg_decodeDomainUmlautsOfUrl;
-	
+
 	this.doStyle = weWysiwyg_doStyle;
 	this.doStyleIE = weWysiwyg_doStyleIE;
 	this.doStyleGecko = weWysiwyg_doStyleGecko;
@@ -400,16 +392,16 @@ function weWysiwyg_getParentElementFromRange(){
 		if (this.range) {
 			var frag = this.range.cloneContents();
 			var span = this.eDocument.createElement('SPAN');
-			
+
 			span.appendChild(frag);
-			
+
 			var firstChild = weGetFirstRealChildNode(span);
 			var lastChild = weGetLastRealChildNode(span);
-			
-			
-			
+
+
+
 			obj = this.range.commonAncestorContainer;
-			if (obj.nodeName == "#text") 
+			if (obj.nodeName == "#text")
 				obj = obj.parentNode;
 		}
 
@@ -631,9 +623,9 @@ function we_wysiwyg_finalize(){
 	if (isGecko||isOpera) {
 		try {
 			this.eDocument.designMode = "on";
-		} 
+		}
 		catch (e) {
-		
+
 		}
 	}
 	this.showBorders = false;
@@ -911,7 +903,7 @@ function weWysiwyg_showContextMenu(event){
 	we_GeneralContextMenu[0] = new we_ContextMenuItem(we_wysiwyg_lng["cut"], "cut");
 	we_GeneralContextMenu[1] = new we_ContextMenuItem(we_wysiwyg_lng["copy"], "copy");
 	we_GeneralContextMenu[2] = new we_ContextMenuItem(we_wysiwyg_lng["paste"], "paste");
-	
+
 	we_TableContextMenu[0] = new we_ContextMenuItem(we_wysiwyg_lng["edittable"]+"...", "edittable");
 	we_TableContextMenu[1] = new we_ContextMenuItem(we_wysiwyg_lng["editcell"]+"...", "editcell");
 	we_TableContextMenu[2] = new we_ContextMenuItem("", "");
@@ -1054,7 +1046,7 @@ function weWysiwyg_setButtonState(cmd){
 		try {
 			enabled = this.eDocument.queryCommandEnabled(cmd);
 		} catch (e) {}
-		
+
 		if(enabled){
 			this.buttons[cmd].enable();
 			var flag = false;
@@ -1453,7 +1445,7 @@ function weWysiwyg_encodeText(str) {
 
 function weWysiwyg_cleanCode(code){
 	code = this.removeHostname(code,false);
-	
+
 	code = code.replace(/<!--\[if !supportLists\]-->|<!--\[endif\]-->|<!--\[if !mso\]-->/gi,""); //Armin
 	code = code.replace(/<p> <table|<p><table/gi,"<table"); //Armin
 	code = code.replace(/<\/table> <\/p>|<\/table><\/p>/gi,"</table>"); //Armin
@@ -1484,8 +1476,8 @@ function weWysiwyg_cleanCode(code){
 	code = code.replace(/ ?BORDER-TOP: medium none;?/gi,"");
 	code = code.replace(/ ?BORDER-RIGHT: medium none;?/gi,"");
 	code = code.replace(/style=" +/gi,"style=\"");
-	
-	
+
+
 	if(this.removeFirstParagraph && code.substring(0,3).toUpperCase() == '<P>'){
 		code = code.substring(3,code.length);
 		code = weRemoveAlloneEndtags(code,"P")
@@ -1508,7 +1500,7 @@ function weWysiwyg_cleanCode(code){
 	code = code.replace(re,"$1$2");
 	var re = new RegExp("(<img src=\")/webEdition[^\"']*/([^\"']+)","gi");
 	code = code.replace(re,"$1$2");
-	
+
 	//Bug#3995
 	var LS = String.fromCharCode(8232);
 	var PS = String.fromCharCode(8233);
@@ -1525,7 +1517,7 @@ function weWysiwyg_cleanCode(code){
 	code = code.replace(/^<br>\r$/,"");
 	code = code.replace(/^<br>\r\n$/,"");
 	code = code.replace(/^<br>$/,"");
-	
+
 	return code;
 }
 
@@ -1540,7 +1532,7 @@ function weWysiwyg_decodeDomainUmlautsOfUrl(url) {
 		return found[1] + decodeURIComponent(found[2]) + found[3];
 	}
 	return url;
-	
+
 }
 
 
@@ -2598,17 +2590,17 @@ function weWysiwyg_execCommand(cmd){
 	switch(cmd){
 		case "lang":
 
-			
+
 			var dialog = new weWysiwygDialog(this.name, weWysiwygFolderPath + "langDialog.php");
-			
+
  			var langspan = this.getLangSpan();
 			if(langspan != null){
 				dialog.append("lang", null, langspan);
-			}			
+			}
 			dialog.open(430, 190);
 			return;
 		case "acronym":
-			
+
 			var dialog = new weWysiwygDialog(this.name, weWysiwygFolderPath + "acronymDialog.php");
 
 			var acronym = this.getNodeUnderInsertionPoint("ACRONYM",true,false);
@@ -2719,7 +2711,7 @@ function weWysiwyg_execCommand(cmd){
 
 			var screen_height = screen.availHeight - 70;
 			var screen_width = screen.availWidth-10;
-			
+
 			dialog.append("outsideWE", (this.outsideWE ? "1" : ""));
 			dialog.append("xml", (this.xml ? "1" : ""));
 			dialog.append("removeFirstParagraph", (this.removeFirstParagraph ? "1" : ""));
@@ -2792,7 +2784,7 @@ function weWysiwyg_execCommand(cmd){
 			this.removecaption();
 			break;
 		case "editcell":
-			
+
 
 			var cell = this.getNodeUnderInsertionPoint2("TD,TH",false,false);
 
@@ -2824,7 +2816,7 @@ function weWysiwyg_execCommand(cmd){
 			}
 			return;
 		case "edittable":
-			
+
 
 			var table = this.getNodeUnderInsertionPoint("TABLE",false,false);
 			if(table != null){
@@ -2840,14 +2832,14 @@ function weWysiwyg_execCommand(cmd){
 					dialog.append("cellSpacing", null, table);
 					dialog.append("bgColor", null, table);
 				}
-				
+
 				dialog.append("class", null, table);
 				dialog.append("width", null, table);
 				dialog.append("height", null, table);
 				dialog.append("align", null, table);
 				dialog.append("background", null, table);
 				dialog.append("summary", null, table);
-				
+
 				var rows = we_getNumTableRows(table);
 				var cols = we_getNumTableCols(table);
 				dialog.append("rows", rows);
@@ -2874,10 +2866,10 @@ function weWysiwyg_execCommand(cmd){
 			if (document.location.port) {
 				preurl += ":" + document.location.port;
 			}
-			
-			
+
+
 			var dialog = new weWysiwygDialog(this.name, weWysiwygFolderPath + "imageDialog.php");
-			
+
 			if(image != null){
 				if(we_hasAttribute(image,"src")){
 					var temp = "";
@@ -2886,7 +2878,7 @@ function weWysiwyg_execCommand(cmd){
 					}else{
 						temp = image.getAttribute("src");
 					}
-					
+
 					dialog.append("src", temp);
 				}
 
@@ -2907,7 +2899,7 @@ function weWysiwyg_execCommand(cmd){
 			dialog.append("outsideWE", (this.outsideWE ? "1" : ""));
 			dialog.append("cssClasses", this.cssClasses);
 			dialog.open(600,550);
-					
+
 			return;
 		case "createlink":
 			var image = this.getImage();
@@ -2936,9 +2928,9 @@ function weWysiwyg_execCommand(cmd){
 				link_href = link_href.replace(re,"");
 				re = new RegExp("we_cmd.php[^#\"']+","gi");
 				link_href = link_href.replace(re,"");
-				
+
 				link_href = this.decodeDomainUmlautsOfUrl(link_href);
-				
+
 				dialog.append("href", link_href);
 				dialog.append("target", null, link);
 				dialog.append("class", null, link);
@@ -2949,12 +2941,12 @@ function weWysiwyg_execCommand(cmd){
 				dialog.append("tabindex", null, link);
 				dialog.append("rel", null, link);
 				dialog.append("rev", null, link);
-				
+
 			}
-			
+
 			dialog.append("outsideWE", (this.outsideWE ? "1" : ""));
 			dialog.append("cssClasses", this.cssClasses);
-			
+
 			if(link != null || this.getSelectedText().length > 0 || image != null){
 				dialog.open(580, 500);
 			}else{
@@ -2967,19 +2959,19 @@ function weWysiwyg_execCommand(cmd){
 			var rule = this.getRule();
 			var tail = "";
 			if(rule != null){
-						
+
 				dialog.append("width", null, rule, true);
 				dialog.append("height", null, rule, true);
 				dialog.append("height", null, rule, true);
 				dialog.append("align", null, rule);
-				
+
 				var html = weGetOuterHTML(rule);
 				if (html.search(/noshade/i) > -1) {
 					dialog.append("noshade", 1);
 				}
 			}
 			dialog.open(320, 240);
-			
+
 			return;
 		case "insertspecialchar":
 			var dialog = new weWysiwygDialog(this.name, weWysiwygFolderPath + "specialCharDialog.php");
@@ -3031,7 +3023,7 @@ function weWysiwygDialog(editorName, action) {
 			val = val.replace(/([0-9]+)px/gi,"$1");
 			hidden.value = (val) ? val : "";
 		} else {
-		
+
 			if (value != null) {
 				hidden.value=value;
 			} else {
@@ -3039,15 +3031,15 @@ function weWysiwygDialog(editorName, action) {
 			}
 		}
 		this.form.appendChild(hidden);
-	
+
 	}
-		
+
 	this.append("editname", editorName);
-	
+
 
 	this.open = function(w,h) {
 		var ref = "win_" + new Date().getTime();
-		var win = new jsWindow("about:blank",ref,-1,-1,w,h,true,false,true,false);		
+		var win = new jsWindow("about:blank",ref,-1,-1,w,h,true,false,true,false);
 		this.form.target = ref;
 		this.form.submit();
 		document.body.removeChild(this.form);
@@ -3125,11 +3117,11 @@ function weWysiwygPopupMenu_enable(){
 		tds[0].style.backgroundImage="url(/webEdition/images/wysiwyg/menuback.gif)";
 		img[0].src = "/webEdition/images/wysiwyg/menudown.gif";
 
-		p.style.cursor = weIE55 ? "hand" : "pointer";
+		p.style.cursor =  "pointer";
 
 		if (!isGecko) {
 			inp.style.color="black";
-			inp.style.cursor = weIE55 ? "hand" : "pointer";
+			inp.style.cursor = "pointer";
 		}
 		this.disabled = false;
 	}

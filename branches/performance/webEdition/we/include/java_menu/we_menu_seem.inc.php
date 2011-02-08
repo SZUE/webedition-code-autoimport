@@ -144,7 +144,7 @@ $we_menu["1000000"]["enabled"] = "1";
 			$we_menu["1010307"]["cmd"] = "new_text_xml";
             $we_menu["1010307"]["perm"] = "NEW_TEXT || ADMINISTRATOR";
 			$we_menu["1010307"]["enabled"] = "1";
-			
+
 			// File > New > Other > htaccess
 			$we_menu["1010308"]["text"] = $l_javaMenu["htaccess"];
 			$we_menu["1010308"]["parent"] = "1010300";
@@ -274,7 +274,7 @@ $we_menu["1000000"]["enabled"] = "1";
 	$we_menu["1160100"]["cmd"] = "make_backup";
 	$we_menu["1160100"]["perm"] = "EXPORT || EXPORTNODOWNLOAD || ADMINISTRATOR";
 	$we_menu["1160100"]["enabled"] = "1";
-	
+
 			// File > Backup > view Log
 		$we_menu["1160300"]["text"] = $l_javaMenu["view_backuplog"] . "...";
 		$we_menu["1160300"]["parent"] = "1000000";
@@ -445,36 +445,16 @@ $we_menu["3000000"]["parent"] = "0000000";
 		$userHasAllModules = false;
 	}
 
-	// usermanagement pro is the only promodule that is left
+	$we_menu["3010001"]["parent"] = "3000000"; // separator
 
-	// Are there any promodules in version 5 or do we remove them, what happens with BV?
-	if(sizeof($_pro_modules) > 0){
-		foreach($we_pro_modules_available as $m){
-			if(in_array($m, $_pro_modules)){
-				$moduleList .= $m . "|" ;
-			}else{
-				$userHasAllModules = false;
-			}
-		}
-	}else{
-		$userHasAllModules = false;
-	}
+	$m = $_we_available_modules['users'];
 
-	if ( defined('BIG_USER_MODULE') ) {
+	$we_menu["3010002"]["text"] = $m["text"] . "...";
+	$we_menu["3010002"]["parent"] = "3000000";
+	$we_menu["3010002"]["cmd"] = "edit_".$m["name"]."_ifthere";
+	$we_menu["3010002"]["perm"] = isset($m["perm"]) ? $m["perm"] : "";
+	$we_menu["3010002"]["enabled"] = "1";
 
-		$we_menu["3010001"]["parent"] = "3000000"; // separator
-
-		$m = $_we_available_modules['users'];
-
-		$we_menu["3010002"]["text"] = $m["text"] . "...";
-		$we_menu["3010002"]["parent"] = "3000000";
-		$we_menu["3010002"]["cmd"] = "edit_".$m["name"]."_ifthere";
-		$we_menu["3010002"]["perm"] = isset($m["perm"]) ? $m["perm"] : "";
-		$we_menu["3010002"]["enabled"] = "1";
-
-
-
-	}
 	foreach($_we_available_modules as $key=>$val) {
 		if($val["integrated"]) {
 			$moduleList .= $key . "|";
@@ -578,7 +558,7 @@ $we_menu["4000000"]["enabled"] = "1";
 	$we_menu["4120000"]["cmd"] = "editCat";
 	$we_menu["4120000"]["perm"] = "EDIT_KATEGORIE || ADMINISTRATOR";
 	$we_menu["4120000"]["enabled"] = "1";
-	
+
 	$we_menu["4123000"]["parent"] = "4000000"; // separator
 
 	/*
@@ -598,14 +578,14 @@ $we_menu["4000000"]["enabled"] = "1";
 	$we_menu["4130000"]["cmd"] = "editThumbs";
 	$we_menu["4130000"]["perm"] = "EDIT_THUMBS || ADMINISTRATOR";
 	$we_menu["4130000"]["enabled"] = "1";
-	
+
 	// Extras > change password
 	$we_menu["4160000"]["text"] = $l_javaMenu["change_password"] . "...";
 	$we_menu["4160000"]["parent"] = "4000000";
 	$we_menu["4160000"]["cmd"] = "change_passwd";
     $we_menu["4160000"]["perm"] = "EDIT_PASSWD || ADMINISTRATOR";
 	$we_menu["4160000"]["enabled"] = "1";
-	
+
 if(we_hasPerm("ADMINISTRATOR")) {
 	// Extras > versioning
 	$we_menu["4161000"]["text"] = $l_javaMenu["versioning"] . "...";
@@ -613,7 +593,7 @@ if(we_hasPerm("ADMINISTRATOR")) {
 	$we_menu["4161000"]["cmd"] = "versions_wizard";
     $we_menu["4161000"]["perm"] = "ADMINISTRATOR";
 	$we_menu["4161000"]["enabled"] = "1";
-	
+
 	// Extras > versioning-log
 	$we_menu["4162000"]["text"] = $l_javaMenu["versioning_log"] . "...";
 	$we_menu["4162000"]["parent"] = "4000000";

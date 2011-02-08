@@ -25,18 +25,18 @@
  * Provides functions for creating webEdition buttons.
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$langDir = $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'];
-include_once($langDir.'/css/css.inc.php');
-include_once($langDir.'/buttons/global.inc.php');
-include_once($langDir.'/buttons/buttons.inc.php');
+if(!defined('WE_BUTTONS_LANGDIR')) define('WE_BUTTONS_LANGDIR',$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]);
+include_once(WE_BUTTONS_LANGDIR."/css/css.inc.php");
+include_once(WE_BUTTONS_LANGDIR."/buttons/global.inc.php");
+include_once(WE_BUTTONS_LANGDIR."/buttons/buttons.inc.php");
 
-if (is_dir($langDir.'/buttons/modules')) {
+if (is_dir(WE_BUTTONS_LANGDIR."/buttons/modules")) {
 
 	// Include language files of buttons used in modules
-	$d = dir($langDir.'/buttons/modules');
+	$d = dir(WE_BUTTONS_LANGDIR."/buttons/modules");
 	while (false !== ($entry = $d->read())) {
 		if ($entry[0] != '.' && substr($entry,(-1 * strlen('.php'))) == '.php') {
-			include_once($langDir.'/buttons/modules/'.$entry);
+			include_once(WE_BUTTONS_LANGDIR.'/buttons/modules/'.$entry);
 		}
 	}
 	$d->close();

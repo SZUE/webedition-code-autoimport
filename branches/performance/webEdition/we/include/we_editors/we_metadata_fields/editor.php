@@ -123,7 +123,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_metadata, $DB_WE, $BROWSER, $SYSTEM, $MOZ13, $NET6;
+	global $l_alert, $l_metadata, $DB_WE, $BROWSER, $SYSTEM;
 
 	$we_button = new we_button();
 

@@ -861,8 +861,8 @@ class we_backup {
 				$exist=true;
 		}
 		if($exist) {
-			$link = mysql_connect($this->backup_db->Host, $this->backup_db->User, $this->backup_db->Password);
-			mysql_select_db($this->backup_db->Database);
+			/*$link = mysql_connect($this->backup_db->Host, $this->backup_db->User, $this->backup_db->Password);
+			mysql_select_db($this->backup_db->Database);*/
 			$query = "SELECT * FROM ".BACKUP_TABLE." ORDER BY IsFolder DESC, Path ASC";
 			$result = mysql_unbuffered_query($query);
 			while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -895,7 +895,7 @@ class we_backup {
 				}
 			}
 			mysql_free_result($result);
-			mysql_close($link);
+			//mysql_close($link);
 		}
 		return true;
 	}

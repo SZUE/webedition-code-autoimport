@@ -49,11 +49,11 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 	var loaded=0;
 	var hot=0;
 	var hloaded=0;
-	
+
 	parent.document.title = "<?php print $title; ?>";
-	
+
 	<?php
-		if($_SESSION["user"]["ID"] && isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
+		if($_SESSION["user"]["ID"]) {
 			$DB_WE->query("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".$_SESSION["user"]["ID"]);
 			if($DB_WE->next_record())
 				print "var cgroup=".$DB_WE->f("ParentID").";\n";
@@ -322,14 +322,11 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 
 	function makeNewEntry(icon,id,pid,txt,offen,ct,tab,pub) {
 		if(table == tab) {
-			<?php if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])):?>
-				if(ct=="folder")
+				if(ct=="folder"){
 					menuDaten.addSort(new dirEntry(icon,id,pid,txt,offen,ct,tab));
-				else
+				}else{
 					menuDaten.addSort(new urlEntry(icon,id,pid,txt,ct,tab,pub));
-			<?php else:?>
-				menuDaten.addSort(new urlEntry(icon,id,0,txt,ct,tab,pub));
-			<?php endif?>
+				}
 			drawEintraege();
 		}
 	}
@@ -339,7 +336,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 		while (ai <= menuDaten.laenge) {
 			if ((menuDaten[ai].typ=='folder') || (menuDaten[ai].typ=='user'))
 				if (menuDaten[ai].name==id) {
-					menuDaten[ai].vorfahr=<?php if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])):?>pid<?php else:?>0<?php endif?>;
+					menuDaten[ai].vorfahr=pid;
 					menuDaten[ai].text=text;
 					menuDaten[ai].published=pub;
 				}
@@ -495,7 +492,6 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				}
 			}
 
-			if(isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
 				$entries=array();
 				if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSION["perms"]["SAVE_USER"] || $_SESSION["perms"]["SAVE_GROUP"] || $_SESSION["perms"]["DELETE_USER"] || $_SESSION["perms"]["DELETE_GROUP"] || $_SESSION["perms"]["ADMINISTRATOR"]) {
 					$foo=getHash("SELECT Path,ParentID FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'",$DB_WE);
@@ -520,14 +516,6 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 						}
 					}
 				}
-			}
-			else {
-				$DB_WE->query("SELECT * FROM ".USER_TABLE." ORDER BY username ASC");
-				while($DB_WE->next_record()) {
-					$p=unserialize($DB_WE->f("Permissions"));
-					print "  menuDaten.add(new urlEntry('user.gif','".$DB_WE->f("ID")."',0,'".$DB_WE->f("username")."','user','".USER_TABLE."','".$p["ADMINISTRATOR"]."'));\n";
-				}
-			}
 		?>
 	}
 

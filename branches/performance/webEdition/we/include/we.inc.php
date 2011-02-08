@@ -94,7 +94,7 @@ if (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == '
 
 if (defined('WE_WEBUSER_LANGUAGE')) {
 	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
-} else 
+} else
 	$sid = '';
 	//set new sessionID from dw-extension
 	if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId']!='' && isset($_REQUEST['cns']) && $_REQUEST['cns']=='dw')) {
@@ -136,7 +136,7 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>
 		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
 ');
-	
+
 	if (isset($_REQUEST['we_cmd'][0]) && (//	header when not in preview mode of documents
 $_REQUEST['we_cmd'][0] == 'edit_link' || $_REQUEST['we_cmd'][0] == 'edit_linklist' || $_REQUEST['we_cmd'][0] == 'show_newsletter' || $_REQUEST['we_cmd'][0] == 'save_document' || $_REQUEST['we_cmd'][0] == 'load_editor' || $_REQUEST['we_cmd'][0] == 'reload_editpage' && ($_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW || $_SESSION['EditPageNr'] == WE_EDITPAGE_CONTENT || $_SESSION['EditPageNr'] == WE_EDITPAGE_PROPERTIES) || $_REQUEST['we_cmd'][0] == 'switch_edit_page' && ($_REQUEST['we_cmd'][1] == WE_EDITPAGE_CONTENT || $_REQUEST['we_cmd'][1] == WE_EDITPAGE_PREVIEW || $_REQUEST['we_cmd'][1] == WE_EDITPAGE_PROPERTIES) || $_REQUEST['we_cmd'][0] == 'load_editor' && isset(
 			$_REQUEST['we_transaction']) && isset($_SESSION['we_data'][$_REQUEST['we_transaction']]) && $_SESSION['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE && $_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW) || isset(

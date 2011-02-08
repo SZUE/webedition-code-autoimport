@@ -36,6 +36,7 @@ $l_object["attributes"] = "Attribute";
 $l_object["objectname"] = "Objektname";
 $l_object["objectpath"] = "Objektpfad";
 $l_object["objectid"] = "Objekt-ID";
+$l_object["objecturl"] = "Objekt-URL";
 $l_object["class"] = "Klasse";
 $l_object["classname"] = "Klassenname";
 $l_object["class_id"] = "ID der Klasse";

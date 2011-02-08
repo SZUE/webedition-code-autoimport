@@ -18,9 +18,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_stripslashes(&$arr)
-{
+function we_stripslashes(&$arr) {
 	foreach ($arr as $n => $v) {
 		if (is_array($v)) {
 			we_stripslashes($arr[$n]);
@@ -65,7 +63,9 @@ define('WE_TREE_DEFAULT_WIDTH', 300);
 
 // Activate the webEdition error handler
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_error_handler.inc.php');
-if (!defined('WE_ERROR_HANDLER_SET')){ we_error_handler();}
+if (!defined('WE_ERROR_HANDLER_SET')) {
+	we_error_handler();
+}
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_version.php');
 
@@ -107,21 +107,10 @@ define('FOLDER_ONLY', 1);
 
 define('WE_UB', 'SER_MODULE');
 
-$MNEMONIC_EDITPAGES = array(
-	'0' => 'properties', '1' => 'edit', '2' => 'information', '3' => 'preview', '8' => 'schedpro', '10' => 'validation', '17' => 'versions'
-);
-if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['11'] = 'variants';
-}
-if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['14'] = 'customer';
-}
 
-$GLOBALS['BIG_USER_MODULE'] = defined('BIG_USER_MODULE') ? BIG_USER_MODULE : '';
-	
 // refresh pageExt array
 $PAGE_EXT = array(
-	'.html', '.php'
+		'.html', '.php'
 );
 
 define('SUB_DIR_NO', 0);
@@ -131,17 +120,17 @@ define('SUB_DIR_YEAR_MONTH_DAY', 3);
 
 // Initialize imageType array
 $IMAGE_TYPE = array(
-	'', 'image/gif', 'image/jpeg', 'image/png'
+		'', 'image/gif', 'image/jpeg', 'image/png'
 );
 
 // Refresh imageExt array
 $IMAGE_EXT = array(
-	'', '.gif', '.jpg', '.png'
+		'', '.gif', '.jpg', '.png'
 );
 
 // Initialize gdImageType arrays
 $GDIMAGE_TYPE = array(
-	'.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png'
+		'.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png'
 );
 
 define('IMAGE_CONTENT_TYPES', 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png');
@@ -198,8 +187,7 @@ define('ERROR_LOG_HOLDTIME', 30); // in days
 
 
 define(
-		'WE_WYSIWYG_COMMANDS',
-		'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
+				'WE_WYSIWYG_COMMANDS', 'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
 
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS
@@ -207,28 +195,21 @@ define(
 if (!isset($_SERVER['REQUEST_URI'])) {
 	if (isset($_SERVER['HTTP_REQUEST_URI'])) {
 		define('WE_SERVER_REQUEST_URI', $_SERVER['HTTP_REQUEST_URI']);
-	
 	} else {
-		
+
 		if (isset($_SERVER['SCRIPT_NAME'])) {
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-		
 		} else {
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['PHP_SELF'];
-		
 		}
-		
+
 		if (isset($_SERVER['QUERY_STRING'])) {
 			$_SERVER['HTTP_REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
-		
 		}
 		define('WE_SERVER_REQUEST_URI', $_SERVER['HTTP_REQUEST_URI']);
-	
 	}
-
 } else {
 	define('WE_SERVER_REQUEST_URI', $_SERVER['REQUEST_URI']);
-
 }
 
 define('WINDOW_SELECTOR_WIDTH', '900');
@@ -243,7 +224,6 @@ define('WINDOW_DELSELECTOR_WIDTH', '900');
 define('WINDOW_DELSELECTOR_HEIGHT', '600');
 
 $GLOBALS['WE_LANGS'] = array(
-	
 		'de' => 'Deutsch',
 		'en' => 'English',
 		'nl' => 'Dutch',
@@ -254,7 +234,6 @@ $GLOBALS['WE_LANGS'] = array(
 		'fr' => 'French'
 );
 $GLOBALS['WE_LANGS_COUNTRIES'] = array(
-	
 		'DE' => 'de',
 		'GB' => 'en',
 		'NL' => 'nl',
@@ -264,9 +243,9 @@ $GLOBALS['WE_LANGS_COUNTRIES'] = array(
 		'PL' => 'pl',
 		'FR' => 'fr'
 );
-if (!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if set somewhere else, i.e in autoload, this also allows later to make that an settings-item
-	if (!date_default_timezone_set(@date_default_timezone_get())){
+if (!defined('DATETIME_INITIALIZED')) {// to prevent additional initialization if set somewhere else, i.e in autoload, this also allows later to make that an settings-item
+	if (!date_default_timezone_set(@date_default_timezone_get())) {
 		date_default_timezone_set('Europe/Berlin');
 	}
-	define('DATETIME_INITIALIZED','1');
+	define('DATETIME_INITIALIZED', '1');
 }

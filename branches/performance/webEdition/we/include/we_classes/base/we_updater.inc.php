@@ -115,7 +115,6 @@
 	function fix_path(){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
 			$db->query("SELECT ID,username,ParentID FROM " . USER_TABLE);
 			while($db->next_record()){
 						set_time_limit(30);
@@ -132,17 +131,6 @@
 						}
 						$db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
 			}
-		}
-		else{
-			$db->query("SELECT ID,username FROM " . USER_TABLE);
-			while($db->next_record()){
-						set_time_limit(30);
-						$id = $db->f("ID");
-						$path = "/".$db->f("username");
-						$db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
-			}
-
-		}
 	}
 
 	function fix_icon(){
@@ -252,8 +240,8 @@
 		if($this->isColExist(USER_TABLE,"Second")) $this->changeColTyp(USER_TABLE,"Second","VARCHAR(255)");
 		if($this->isColExist(USER_TABLE,"username")) $this->changeColTyp(USER_TABLE,"username","VARCHAR(255) NOT NULL");
 		if($this->isColExist(USER_TABLE,"workSpace")) $this->changeColTyp(USER_TABLE,"workSpace","VARCHAR(255)");
-		
-		
+
+
 		$this->fix_path();
 		$this->fix_text();
 		$this->fix_icon_small();
@@ -282,7 +270,7 @@
 
 		if(!$this->isColExist(USER_TABLE,"LoginDenied")) $this->addCol(USER_TABLE,"LoginDenied","TINYINT(1) DEFAULT '0' NOT NULL");
 		if(!$this->isColExist(USER_TABLE,"UseSalt")) $this->addCol(USER_TABLE,"UseSalt","TINYINT(1) DEFAULT '0' NOT NULL");
-		
+
 		if($this->isColExist(USER_TABLE,"workSpace")){
 			$this->changeColTyp(USER_TABLE,"workSpace","VARCHAR(255)");
 			$DB_WE->query("UPDATE " . USER_TABLE . " SET workSpace='' WHERE workSpace='0';");
@@ -377,7 +365,7 @@
 			if($this->isColExist(SHOP_TABLE,"Price")) $this->changeColTyp(SHOP_TABLE,"Price","VARCHAR(20)");
 		}
 	}
-	
+
 	function updateObjectFilesX() {
 		global $DB_WE;
 		if(defined('OBJECT_X_TABLE')){

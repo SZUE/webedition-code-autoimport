@@ -18,9 +18,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function getHash($query, $DB_WE)
-{
+function getHash($query, $DB_WE) {
 	if (isset($GLOBALS['WE_GET_HASH_CACHE'][$query])) {
 		return $GLOBALS['WE_GET_HASH_CACHE'][$query];
 	} else {
@@ -37,14 +35,12 @@ function getHash($query, $DB_WE)
 	return $GLOBALS['WE_GET_HASH_CACHE'][$query];
 }
 
-function f($query, $field, $DB_WE)
-{
+function f($query, $field, $DB_WE) {
 	$h = getHash($query, $DB_WE);
 	return isset($h[$field]) ? $h[$field] : "";
 }
 
-function doUpdateQuery($DB_WE, $table, $hash, $where)
-{
+function doUpdateQuery($DB_WE, $table, $hash, $where) {
 	$tableInfo = $DB_WE->metadata($table);
 	$sql = "UPDATE $table SET ";
 	for ($i = 0; $i < sizeof($tableInfo); $i++) {
@@ -53,13 +49,11 @@ function doUpdateQuery($DB_WE, $table, $hash, $where)
 			$sql .= $fieldName . "='" . (isset($hash[$fieldName]) ? mysql_real_escape_string($hash[$fieldName]) : "") . "',";
 		}
 	}
-	$sql = rtrim($sql, ',').' '.$where;
+	$sql = rtrim($sql, ',') . ' ' . $where;
 	return $DB_WE->query($sql);
-
 }
 
-function doUpdateQuery2($DB_WE, $table, $hash, $where)
-{
+function doUpdateQuery2($DB_WE, $table, $hash, $where) {
 	$tableInfo = $DB_WE->metadata($table);
 	$sql = "UPDATE $table SET ";
 	for ($i = 0; $i < sizeof($tableInfo); $i++) {
@@ -68,15 +62,13 @@ function doUpdateQuery2($DB_WE, $table, $hash, $where)
 			$sql .= $fieldName . "='" . mysql_real_escape_string($hash[$fieldName]) . "',";
 		}
 	}
-	$sql = rtrim($sql, ',').' '.$where;
-	
-	return $DB_WE->query($sql);
+	$sql = rtrim($sql, ',') . ' ' . $where;
 
+	return $DB_WE->query($sql);
 }
 
-function doInsetQuery($DB_WE, $table, $hash)
-{
-	
+function doInsetQuery($DB_WE, $table, $hash) {
+
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
 	$values = "";
@@ -88,8 +80,6 @@ function doInsetQuery($DB_WE, $table, $hash)
 	$ti_s = implode(",", $fn);
 	$values = rtrim($values, ',');
 	$sql = "INSERT INTO $table ($ti_s) VALUES ($values)";
-	
+
 	return $DB_WE->query($sql);
 }
-
-?>

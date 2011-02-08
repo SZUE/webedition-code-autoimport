@@ -56,29 +56,29 @@ function toggleBusy(w) {
 }
 
 function doUnload(whichWindow) {
-	
+
 	// unlock all open documents
 	var _usedEditors = top.weEditorFrameController.getEditorsInUse();
-	
+
 	var docIds = "";
 	var docTables = "";
 
 	for (frameId in _usedEditors) {
-		
+
 		if (_usedEditors[frameId].EditorType != "cockpit") {
-		
+
 			docIds += _usedEditors[frameId].getEditorDocumentId() + ",";
 			docTables += _usedEditors[frameId].getEditorEditorTable() + ",";
 		}
 	}
-	
+
 	if (docIds) {
-		
+
 		top.we_cmd('unlock',docIds,'<?php print $_SESSION["user"]["ID"]; ?>',docTables);
-		
+
 		if(top.opener){
 			top.opener.focus();
-			
+
 		}
 	}
     //  close the SEEM-edit-include when exists
@@ -98,8 +98,8 @@ function doUnload(whichWindow) {
 
     }
 
-    //  only when no SEEM-edit-include window is closed 
-    
+    //  only when no SEEM-edit-include window is closed
+
     if(whichWindow !="include"){
         if(opener) {
             opener.location.replace('<?php
@@ -139,10 +139,10 @@ function pWebEdition_JSwe_cmds()
  * @return void
  * @desc the frameset for the SeeMode
  */
-function pWebEdition_Frameset(){	
+function pWebEdition_Frameset(){
 	if (isset($GLOBALS["SEEM_edit_include"]) && $GLOBALS["SEEM_edit_include"]) { // edit include file
 		$we_cmds = "we_cmd[0]=edit_document&";
-		
+
 		for ($i = 1; $i < sizeof($_REQUEST["we_cmd"]); $i++) {
 			$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST["we_cmd"][$i] . "&";
 		}
@@ -158,8 +158,8 @@ function pWebEdition_Frameset(){
 	<frame src="<?php	print HTML_DIR?>white.html" name="ad" scrolling="no" noresize>
 </frameset>
 			<?php
-	
-	} else 
+
+	} else
 		if ($_SESSION["we_mode"] == "seem") { //	normal SeeMode
 			?>
 <frameset rows="32,*,<?php
@@ -180,5 +180,3 @@ function pWebEdition_Frameset(){
 <?php
 		}
 }
-
-?>

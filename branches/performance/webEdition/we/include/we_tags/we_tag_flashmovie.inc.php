@@ -22,9 +22,6 @@ function we_tag_flashmovie($attribs, $content){
 	// Include Flash class
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 
-	// Define globals
-	global $we_editmode;
-
 	$foo = attributFehltError($attribs, "name", "flashmovie");
 	if ($foo)
 		return $foo;
@@ -42,13 +39,13 @@ function we_tag_flashmovie($attribs, $content){
 		'showcontrol', 'showflash'
 	));
 
-	if ($we_editmode && !$showflash) {
+	if ($GLOBALS['we_editmode'] && !$showflash) {
 		$out = '';
 	} else {
 		$out = $GLOBALS["we_doc"]->getField($attribs, "flashmovie");
 	}
 
-	if ($showcontrol && $we_editmode) {
+	if ($showcontrol && $GLOBALS['we_editmode']) {
 		// Include button class
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 

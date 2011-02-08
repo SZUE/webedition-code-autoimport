@@ -8,7 +8,3 @@
 	if (in_array("workflow",$_we_active_integrated_modules)) {$_we_installed_modules[] = "workflow";}
 	if (in_array("newsletter",$_we_active_integrated_modules)) {$_we_installed_modules[] = "newsletter";}
 
-	$_pro_modules = array();
-
-    $_pro_modules[] = "busers";
-?>

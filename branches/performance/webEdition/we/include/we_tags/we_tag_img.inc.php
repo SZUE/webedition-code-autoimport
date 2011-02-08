@@ -21,10 +21,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 
 function we_tag_img($attribs, $content){
-	// Define globals
-	global $we_editmode;
-
-	if ($we_editmode) {
+	if ($GLOBALS['we_editmode']) {
 		// Include we_button class
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/css/css.inc.php');
@@ -89,22 +86,22 @@ function we_tag_img($attribs, $content){
 		$titleattr == "" ? "" : $attribs['title'] = $titleattr;
 	}
 
-	if ($we_editmode && !$showimage) {
+	if ($GLOBALS['we_editmode'] && !$showimage) {
 		$out = '';
 	} elseif (!$id) {
-		if($we_editmode && $GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';} //no_image war noch in der Vorscha sichtbar
+		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';} //no_image war noch in der Vorscha sichtbar
 	} else {
 		$out = $GLOBALS["we_doc"]->getField($attribs, "img");
 	}
 
-	if (!$id && (!$we_editmode)) {
+	if (!$id && (!$GLOBALS['we_editmode'])) {
 		return "";
 	} else
 		if (!$id) {
 			$id = "";
 		}
 
-	if ($showcontrol && $we_editmode) {
+	if ($showcontrol && $GLOBALS['we_editmode']) {
 		// Create object of we_button class
 		$we_button = new we_button();
 

@@ -169,7 +169,7 @@ class we_listview_object extends listviewBase {
 						}
 						$ws_tail = " AND (".implode(" OR ", $cond).") ";
 					}
-					$q = "SELECT " . $_obxTable . ".ID as ID $calendar_select FROM ".$sqlParts["tables"]." WHERE ".($this->searchable ? " ". $_obxTable . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . $_obxTable.".OF_ID != 0 ".($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$ws_tail.$weDocumentCustomerFilter_tail.$webUserID_tail.$_idTail.$sqlParts['groupBy'];
+					$q = "SELECT " . $_obxTable . ".ID as ID $calendar_select FROM ".$sqlParts["tables"]." WHERE ".($this->searchable ? " ". $_obxTable . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . $_obxTable.".OF_ID != 0 ".$where_lang.($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$ws_tail.$weDocumentCustomerFilter_tail.$webUserID_tail.$_idTail.$sqlParts['groupBy'];
 					$this->DB_WE->query($q);
 					$this->anz_all = $this->DB_WE->num_rows();
 					if($calendar!=""){
@@ -421,7 +421,7 @@ class we_listview_object extends listviewBase {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];					
 					}
 				}
-				
+				$this->DB_WE->Record["we_WE_URL"] = isset($this->DB_WE->Record["OF_Url"]) ? $this->DB_WE->Record["OF_Url"] : '';
 				$this->DB_WE->Record["we_WE_TEXT"] = isset($this->DB_WE->Record["OF_Text"]) ? $this->DB_WE->Record["OF_Text"] : '';
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->Record["OF_ID"];
 				$this->DB_WE->Record["we_wedoc_Category"] = isset($this->DB_WE->Record["OF_Category"]) ? $this->DB_WE->Record["OF_Category"] : '';

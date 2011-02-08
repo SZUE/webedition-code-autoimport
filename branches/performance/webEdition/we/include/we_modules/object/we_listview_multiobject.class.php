@@ -179,7 +179,7 @@ class we_listview_multiobject extends listviewBase {
 		}
 
 		if($sqlParts["tables"]){
-			$q = "SELECT " . OBJECT_X_TABLE .  $this->classID . ".ID as ID $calendar_select FROM ".$sqlParts["tables"]." WHERE ". OBJECT_X_TABLE . $this->classID . ".OF_ID IN (".implode(",", $this->objects).") AND ".($this->searchable ? " ". OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . OBJECT_X_TABLE .  $this->classID.".OF_ID != 0 ".($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$weDocumentCustomerFilter_tail.$sqlParts['groupBy'];
+			$q = "SELECT " . OBJECT_X_TABLE .  $this->classID . ".ID as ID $calendar_select FROM ".$sqlParts["tables"]." WHERE ". OBJECT_X_TABLE . $this->classID . ".OF_ID IN (".implode(",", $this->objects).") AND ".($this->searchable ? " ". OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail.$where_lang." AND " . OBJECT_X_TABLE .  $this->classID.".OF_ID != 0 ".($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$weDocumentCustomerFilter_tail.$sqlParts['groupBy'];
 			$this->DB_WE->query($q);
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
@@ -441,7 +441,7 @@ class we_listview_multiobject extends listviewBase {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					}				
 				}
-				
+				$this->DB_WE->Record["we_WE_URL"] = isset($this->DB_WE->Record["OF_Url"]) ? $this->DB_WE->Record["OF_Url"] : '';
 				$this->DB_WE->Record["we_WE_TEXT"] = $this->DB_WE->Record["OF_Text"];
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->Record["OF_ID"];
 				$this->DB_WE->Record["we_wedoc_Category"] = $this->DB_WE->Record["OF_Category"];

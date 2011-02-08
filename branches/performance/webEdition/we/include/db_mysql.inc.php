@@ -18,129 +18,100 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class DB_Sql
-{
-
+class DB_Sql {
 	/* public: connection parameters */
-	var $Host = '';
 
 	var $Database = '';
 
-	var $User = '';
-
-	var $Password = '';
-
 	/* public: configuration parameters */
 	var $Auto_Free = 0; ## Set to 1 for automatic mysql_free_result()
-
 	var $Debug = 0; ## Set to 1 for debugging messages.
-
 	var $Halt_On_Error = "yes"; ## "yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)
-
 	var $Seq_Table = "db_sequence";
 
 	/* public: result array and current row number */
 	var $Record = array();
-
 	var $Row;
-
 	var $ResultAssoc = array();
 
 	/* public: current error number and error text */
 	var $Errno = 0;
-
 	var $Error = '';
 
 	/* public: this is an api revision, not a CVS revision. */
 	var $type = "mysql";
-
 	var $revision = "1.2";
 
 	/* private: link and query handles */
 	var $Link_ID = 0;
-
 	var $Query_ID = 0;
 
 	/* public: constructor */
-	function DB_Sql($query = '')
-	{
+	function DB_Sql($query = ''){
 		$this->query($query);
 	}
 
 	/* public: some trivial reporting */
-	function link_id()
-	{
+
+	function link_id() {
 		return $this->Link_ID;
 	}
 
-	function query_id()
-	{
+	function query_id() {
 		return $this->Query_ID;
 	}
 
 	/* public: connection management */
-	function connect($Database = '', $Host = '', $User = '', $Password = '')
-	{
-		/* Handle defaults */
-		if ('' == $Database)
-			$Database = $this->Database;
-		if ('' == $Host)
-			$Host = $this->Host;
-		if ('' == $User)
-			$User = $this->User;
-		if ('' == $Password)
-			$Password = $this->Password;
-			
+	function connect($Database = '', $Host = '', $User = '', $Password = ''){
 		/* establish connection, select database */
 		if (0 == $this->Link_ID) {
-			
+
 			$this->Link_ID = mysql_pconnect($Host, $User, $Password);
 			if (!$this->Link_ID) {
 				$this->halt("pconnect($Host, $User, \$Password) failed.");
 				return 0;
 			}
-			
+
 			if (!@mysql_select_db($Database, $this->Link_ID)) {
 				$this->halt("cannot use database " . $this->Database);
 				return 0;
 			}
 		}
-		
+
 		return $this->Link_ID;
 	}
 
 	/* public: discard the query result */
-	function free()
-	{
+
+	function free() {
 		@mysql_free_result($this->Query_ID);
 		$this->Query_ID = 0;
 	}
 
 	/* public: perform a query */
-	function query($Query_String)
-	{
+
+	function query($Query_String) {
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if ($Query_String == '')
 		/* The empty query string is passed on from the constructor,
-		* when calling the class without a query, e.g. in situations
-		* like these: '$db = new DB_Sql_Subclass;'
-		*/
-		return 0;
-		
+		 * when calling the class without a query, e.g. in situations
+		 * like these: '$db = new DB_Sql_Subclass;'
+		 */
+			return 0;
+
 		if (!$this->connect()) {
 			return 0; /* we already complained in connect() about that. */
 		}
 		;
-		
+
 		# New query, discard previous result.
 		if ($this->Query_ID) {
 			$this->free();
 		}
-		
+
 		if ($this->Debug)
 			printf("Debug: query = %s<br>\n", $Query_String);
-		
+
 		$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);
 		$this->Row = 0;
 		$this->Errno = mysql_errno();
@@ -148,25 +119,25 @@ class DB_Sql
 		if (!$this->Query_ID) {
 			$this->halt("Invalid SQL: " . $Query_String);
 		}
-		
+
 		# Will return nada if it fails. That's fine.
 		return $this->Query_ID;
 	}
 
 	/* public: walk result set */
-	function next_record($resultType = MYSQL_BOTH)
-	{
-		
+
+	function next_record($resultType = MYSQL_BOTH) {
+
 		if (!$this->Query_ID) {
 			$this->halt("next_record called with no query pending.");
 			return 0;
 		}
-		
+
 		$this->Record = @mysql_fetch_array($this->Query_ID, $resultType);
 		$this->Row += 1;
 		$this->Errno = mysql_errno();
 		$this->Error = mysql_error();
-		
+
 		$stat = is_array($this->Record);
 		if (!$stat && $this->Auto_Free) {
 			$this->free();
@@ -175,23 +146,23 @@ class DB_Sql
 	}
 
 	/* public: get result at positionset */
-	function record($pos = 0)
-	{
-		
+
+	function record($pos = 0) {
+
 		if (!$this->Query_ID) {
 			$this->halt("record called with no query pending.");
 			return 0;
 		}
-		
+
 		if (!$this->seek($pos)) {
 			return 0;
 		}
-		
+
 		$this->Record = @mysql_fetch_array($this->Query_ID);
 		$this->Row += 1;
 		$this->Errno = mysql_errno();
 		$this->Error = mysql_error();
-		
+
 		$stat = is_array($this->Record);
 		if (!$stat && $this->Auto_Free) {
 			$this->free();
@@ -200,31 +171,31 @@ class DB_Sql
 	}
 
 	/* public: position in result set */
-	function seek($pos = 0)
-	{
+
+	function seek($pos = 0) {
 		$status = @mysql_data_seek($this->Query_ID, $pos);
 		if ($status)
 			$this->Row = $pos;
 		else {
 			$this->halt("seek($pos) failed: result has " . $this->num_rows() . " rows");
-			
+
 			/* half assed attempt to save the day,
-			* but do not consider this documented or even
-			* desireable behaviour.
-			*/
+			 * but do not consider this documented or even
+			 * desireable behaviour.
+			 */
 			@mysql_data_seek($this->Query_ID, $this->num_rows());
 			$this->Row = $this->num_rows();
 			return 0;
 		}
-		
+
 		return 1;
 	}
 
 	/* public: table locking */
-	function lock($table, $mode = "write")
-	{
+
+	function lock($table, $mode = "write") {
 		$this->connect();
-		
+
 		$query = "lock tables ";
 		if (is_array($table)) {
 			while (list($key, $value) = each($table)) {
@@ -246,10 +217,9 @@ class DB_Sql
 		return $res;
 	}
 
-	function unlock()
-	{
+	function unlock() {
 		$this->connect();
-		
+
 		$res = @mysql_query("unlock tables");
 		if (!$res) {
 			$this->halt("unlock() failed.");
@@ -259,53 +229,48 @@ class DB_Sql
 	}
 
 	/* public: evaluate the result (size, width) */
-	function affected_rows()
-	{
+
+	function affected_rows() {
 		return @mysql_affected_rows($this->Link_ID);
 	}
 
-	function num_rows()
-	{
+	function num_rows() {
 		return @mysql_num_rows($this->Query_ID);
 	}
 
-	function num_fields()
-	{
+	function num_fields() {
 		return @mysql_num_fields($this->Query_ID);
 	}
 
 	/* public: shorthand notation */
-	function nf()
-	{
+
+	function nf() {
 		return $this->num_rows();
 	}
 
-	function np()
-	{
+	function np() {
 		print $this->num_rows();
 	}
 
-	function f($Name)
-	{
+	function f($Name) {
 		return isset($this->Record[$Name]) ? $this->Record[$Name] : '';
 	}
 
-	function p($Name)
-	{
+	function p($Name) {
 		print $this->Record[$Name];
 	}
 
 	/* public: sequence numbers */
-	function nextid($seq_name)
-	{
+
+	function nextid($seq_name) {
 		$this->connect();
-		
+
 		if ($this->lock($this->Seq_Table)) {
 			/* get sequence number (locked) and increment */
 			$q = sprintf("select nextid from %s where seq_name = '%s'", $this->Seq_Table, $seq_name);
 			$id = @mysql_query($q, $this->Link_ID);
 			$res = @mysql_fetch_array($id);
-			
+
 			/* No current value, make one */
 			if (!is_array($res)) {
 				$currentid = 0;
@@ -326,38 +291,38 @@ class DB_Sql
 	}
 
 	/* public: return table metadata */
-	function metadata($table = '', $full = false)
-	{
+
+	function metadata($table = '', $full = false) {
 		$count = 0;
 		$id = 0;
 		$res = array();
-		
+
 		/*
-		* Due to compatibility problems with Table we changed the behavior
-		* of metadata();
-		* depending on $full, metadata returns the following values:
-		*
-		* - full is false (default):
-		* $result[]:
-		*   [0]["table"]  table name
-		*   [0]["name"]   field name
-		*   [0]["type"]   field type
-		*   [0]["len"]    field length
-		*   [0]["flags"]  field flags
-		*
-		* - full is true
-		* $result[]:
-		*   ["num_fields"] number of metadata records
-		*   [0]["table"]  table name
-		*   [0]["name"]   field name
-		*   [0]["type"]   field type
-		*   [0]["len"]    field length
-		*   [0]["flags"]  field flags
-		*   ["meta"][field name]  index of field named "field name"
-		*   The last one is used, if you have a field name, but no index.
-		*   Test:  if (isset($result['meta']['myfield'])) { ...
-		*/
-		
+		 * Due to compatibility problems with Table we changed the behavior
+		 * of metadata();
+		 * depending on $full, metadata returns the following values:
+		 *
+		 * - full is false (default):
+		 * $result[]:
+		 *   [0]["table"]  table name
+		 *   [0]["name"]   field name
+		 *   [0]["type"]   field type
+		 *   [0]["len"]    field length
+		 *   [0]["flags"]  field flags
+		 *
+		 * - full is true
+		 * $result[]:
+		 *   ["num_fields"] number of metadata records
+		 *   [0]["table"]  table name
+		 *   [0]["name"]   field name
+		 *   [0]["type"]   field type
+		 *   [0]["len"]    field length
+		 *   [0]["flags"]  field flags
+		 *   ["meta"][field name]  index of field named "field name"
+		 *   The last one is used, if you have a field name, but no index.
+		 *   Test:  if (isset($result['meta']['myfield'])) { ...
+		 */
+
 		// if no $table specified, assume that we are working with a query
 		// result
 		if ($table) {
@@ -370,9 +335,9 @@ class DB_Sql
 			if (!$id)
 				$this->halt("No query specified.");
 		}
-		
+
 		$count = @mysql_num_fields($id);
-		
+
 		// made this IF due to performance (one if is faster than $count if's)
 		if (!$full) {
 			for ($i = 0; $i < $count; $i++) {
@@ -384,7 +349,7 @@ class DB_Sql
 			}
 		} else { // full
 			$res["num_fields"] = $count;
-			
+
 			for ($i = 0; $i < $count; $i++) {
 				$res[$i]["table"] = mysql_field_table($id, $i);
 				$res[$i]["name"] = mysql_field_name($id, $i);
@@ -394,7 +359,7 @@ class DB_Sql
 				$res["meta"][$res[$i]["name"]] = $i;
 			}
 		}
-		
+
 		// free the result only if we were called on a table
 		if ($table)
 			@mysql_free_result($id);
@@ -402,27 +367,25 @@ class DB_Sql
 	}
 
 	/* private: error handling */
-	function halt($msg)
-	{
+
+	function halt($msg) {
 		$this->Error = @mysql_error($this->Link_ID);
 		$this->Errno = @mysql_errno($this->Link_ID);
 		if ($this->Halt_On_Error == "no")
 			return;
-		
+
 		$this->haltmsg($msg);
-		
+
 		if ($this->Halt_On_Error != "report")
 			die("Session halted.");
 	}
 
-	function haltmsg($msg)
-	{
+	function haltmsg($msg) {
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
 
-	function table_names($like = '')
-	{
+	function table_names($like = ''){
 		$this->query("SHOW TABLES" . (($like != '') ? " LIKE '" . $like . "' " : ''));
 		$i = 0;
 		while ($info = mysql_fetch_row($this->Query_ID)) {
@@ -437,8 +400,7 @@ class DB_Sql
 	/**
 	 * Get complete result as array
 	 */
-	function getAll($resultType = MYSQL_ASSOC)
-	{
+	function getAll($resultType = MYSQL_ASSOC) {
 		$ret = array();
 		while ($this->next_record($resultType)) {
 			$ret[] = $this->Record;
@@ -446,8 +408,7 @@ class DB_Sql
 		return $ret;
 	}
 
-	function getInsertId()
-	{
+	function getInsertId() {
 		return mysql_insert_id($this->Link_ID);
 	}
 

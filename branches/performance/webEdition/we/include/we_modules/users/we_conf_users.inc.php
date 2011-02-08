@@ -29,5 +29,3 @@ define('PING_TOLERANZ','40'); // 40 sec - allows 1 Ping missing
 
 define('WE_USERS_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/users/');
 define('WE_USERS_MODULE_PATH','/webEdition/we/include/we_modules/users/');
-
-define('BIG_USER_MODULE','1');

@@ -134,6 +134,7 @@ class weNavigationItem
 				$__parts = explode("?", $this->href);
 			}
 			$__path = $__parts[0];
+			
 			$__id = path_to_id($__path, FILE_TABLE);
 			if ($__id) {
 				$_v = f(
@@ -142,6 +143,18 @@ class weNavigationItem
 						new DB_WE());
 				$this->visible = !empty($_v) ? 'true' : 'false';
 			}
+			if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
+				$mypath= id_to_path($this->docid, FILE_TABLE);
+				$mypath_parts = pathinfo($mypath);
+				if(in_array($mypath_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
+					$path_parts = pathinfo($__path);
+					$_v = f(
+						'SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($this->docid) . ' AND Published>0', 
+						'ID', 
+						new DB_WE());
+					$this->visible = !empty($_v) ? 'true' : 'false';
+				}
+			} 
 		}
 	}
 

@@ -46,14 +46,14 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	$_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))] = makeCSVFromArray($openDirs);
 } else {
 	$GLOBALS["OBJECT_FILES_TREE_COUNT"] = defined("OBJECT_FILES_TREE_COUNT") ? OBJECT_FILES_TREE_COUNT : 20;
-	
+
 	$counts = array();
 	$parents = array();
 	$childs = array();
 	$parentlist = "";
 	$childlist = "";
 	$wsQuery = "";
-	
+
 	$parentpaths = array();
 
 	function getQueryParents($path)
@@ -73,7 +73,7 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	function getItems($ParentID, $offset = 0, $segment = 0)
 	{
 		global $prefs, $table, $openFolders, $parentpaths, $wsQuery, $treeItems, $Tree;
-		
+
 		if ($table == TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES"))
 			return 0;
 		if ($table == FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))
@@ -82,48 +82,48 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
 		if ($offset && $segment) {
 			$treeItems[] = array(
-				
-					"icon" => "arrowup.gif", 
-					"id" => "prev_" . $ParentID, 
-					"parentid" => $ParentID, 
-					"text" => "display (" . $prevoffset . "-" . $offset . ")", 
-					"contenttype" => "arrowup", 
-					"isclassfolder" => 0, 
-					"isnoteditable" => 0, 
-					"table" => $table, 
-					"checked" => 0, 
-					"typ" => "threedots", 
-					"open" => 0, 
-					"published" => 0, 
-					"disabled" => 0, 
-					"tooltip" => "", 
+
+					"icon" => "arrowup.gif",
+					"id" => "prev_" . $ParentID,
+					"parentid" => $ParentID,
+					"text" => "display (" . $prevoffset . "-" . $offset . ")",
+					"contenttype" => "arrowup",
+					"isclassfolder" => 0,
+					"isnoteditable" => 0,
+					"table" => $table,
+					"checked" => 0,
+					"typ" => "threedots",
+					"open" => 0,
+					"published" => 0,
+					"disabled" => 0,
+					"tooltip" => "",
 					"offset" => $prevoffset
 			);
 		}
-		
+
 		$DB_WE = new DB_WE();
 		$where = " WHERE ";
-		
+
 		$where .= " ParentID=".abs($ParentID)." ";
 		$where .= makeOwnersSql();
 		$where .= $wsQuery;
-		
+
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" . (($table == FILE_TABLE || (defined(
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined(
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
-		
+
 		if ($table == FILE_TABLE || $table == TEMPLATES_TABLE) {
 			$elem .= ",Extension";
 		}
-		
+
 		$tree_count = 0;
 		if ($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) || (defined(
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 			$elem .= ",ContentType";
-		
+
 		$query = "SELECT $elem, LOWER(Text) AS lowtext, ABS(REPLACE(Text,'info','')) AS Nr, (Text REGEXP '^[0-9]') AS isNr FROM $table $where ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext" . ($segment != 0 ? " LIMIT $offset,$segment;" : ";");
 		$DB_WE->query($query);
-		
+
 		while ($DB_WE->next_record()) {
 			$tree_count++;
 			$ID = $DB_WE->f("ID");
@@ -133,70 +133,70 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 			$IsFolder = $DB_WE->f("IsFolder");
 			$ContentType = $DB_WE->f("ContentType");
 			$Icon = isset($GLOBALS["WE_CONTENT_TYPES"][$ContentType]) ? we_getIcon(
-					$ContentType, 
+					$ContentType,
 					$DB_WE->f("Extension")) : "link.gif";
 			$published = ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && ($table == OBJECT_FILES_TABLE))) ? ((($DB_WE->f(
 					"Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f(
 					"Published")) : 1;
 			$IsClassFolder = $DB_WE->f("IsClassFolder");
 			$IsNotEditable = $DB_WE->f("IsNotEditable");
-			
+
 			if (in_array($ID, $openFolders))
 				$OpenCloseStatus = 1;
 			else
 				$OpenCloseStatus = 0;
 			$disabled = in_array($Path, $parentpaths) ? 1 : 0;
-			
+
 			$typ = $IsFolder ? "group" : "item";
-			
+
 			$treeItems[] = array(
-				
-					"icon" => $Icon, 
-					"id" => "$ID", 
-					"parentid" => $ParentID, 
-					"text" => "$Text", 
-					"contenttype" => $ContentType, 
-					"isclassfolder" => $IsClassFolder, 
-					"isnoteditable" => $IsNotEditable, 
-					"table" => $table, 
-					"checked" => 0, 
-					"typ" => $typ, 
-					"open" => $OpenCloseStatus, 
-					"published" => $published, 
-					"disabled" => $disabled, 
-					"tooltip" => $ID, 
+
+					"icon" => $Icon,
+					"id" => "$ID",
+					"parentid" => $ParentID,
+					"text" => "$Text",
+					"contenttype" => $ContentType,
+					"isclassfolder" => $IsClassFolder,
+					"isnoteditable" => $IsNotEditable,
+					"table" => $table,
+					"checked" => 0,
+					"typ" => $typ,
+					"open" => $OpenCloseStatus,
+					"published" => $published,
+					"disabled" => $disabled,
+					"tooltip" => $ID,
 					"offset" => $offset
 			);
-			
+
 			if ($typ == "group" && $OpenCloseStatus == 1)
 				getItems($ID, 0, $segment);
-		
+
 		}
 		$total = f("SELECT COUNT(*) as total FROM $table $where;", "total", $DB_WE);
 		$nextoffset = $offset + $segment;
 		if ($segment && $total > $nextoffset) {
 			$treeItems[] = array(
-				
-					"icon" => "arrowdown.gif", 
-					"id" => "next_" . $ParentID, 
-					"parentid" => $ParentID, 
-					"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")", 
-					"contenttype" => "arrowdown", 
-					"isclassfolder" => 0, 
-					"isnoteditable" => 0, 
-					"table" => $table, 
-					"checked" => 0, 
-					"typ" => "threedots", 
-					"open" => 0, 
-					"published" => 0, 
-					"disabled" => 0, 
-					"tooltip" => "", 
+
+					"icon" => "arrowdown.gif",
+					"id" => "next_" . $ParentID,
+					"parentid" => $ParentID,
+					"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
+					"contenttype" => "arrowdown",
+					"isclassfolder" => 0,
+					"isnoteditable" => 0,
+					"table" => $table,
+					"checked" => 0,
+					"typ" => "threedots",
+					"open" => 0,
+					"published" => 0,
+					"disabled" => 0,
+					"tooltip" => "",
 					"offset" => $nextoffset
 			);
 		}
-	
+
 	}
-	
+
 	if ($ws = get_ws($table)) {
 		$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
 		foreach ($wsPathArray as $path) {
@@ -206,8 +206,8 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 				$path = dirname($path);
 			}
 		}
-	
-	} else 
+
+	} else
 		if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])) {
 			$ac = getAllowedClasses($DB_WE);
 			foreach ($ac as $cid) {
@@ -215,56 +215,56 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 				$wsQuery .= " Path like '".mysql_real_escape_string($path)."/%' OR Path='".mysql_real_escape_string($path)."' OR ";
 			}
 		}
-	
+
 	if ($wsQuery) {
 		$wsQuery = substr($wsQuery, 0, strlen($wsQuery) - 3);
 		$wsQuery = " AND ($wsQuery) ";
 	}
-	
+
 	if (isset($_REQUEST["we_cmd"][3])) {
 		$openFolders = explode(",", $_REQUEST["we_cmd"][3]);
 		$_SESSION["prefs"]["openFolders_" . substr($_REQUEST["we_cmd"][4], strlen(TBL_PREFIX))] = $_REQUEST["we_cmd"][3];
 	}
-	
+
 	if (isset($_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))])) {
 		$openFolders = explode(",", $_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))]);
 	} else {
 		$openFolders = array();
 	}
-	
+
 	if ($parentFolder) {
 		if (!in_array($parentFolder, $openFolders)) {
 			array_push($openFolders, $parentFolder);
 			$_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))] = implode(",", $openFolders);
 		}
 	}
-	
+
 	$js = "";
 	if ($_SESSION["we_mode"] != "seem") {
-		
+
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "weMainTree.inc.php");
-		
+
 		$Tree = new weMainTree("webEdition.php", "top", "top.resize.left.tree", "top.load");
-		
+
 		$treeItems = array();
-		
+
 		getItems($parentFolder, $offset, $Tree->default_segment);
-		
+
 		$js = '
 	if(!' . $Tree->topFrame . '.treeData) {
 		' . we_message_reporting::getShowMessageCall(
-				"A fatal error occured", 
+				"A fatal error occured",
 				WE_MESSAGE_ERROR) . '
 	}';
-		
+
 		if (!$parentFolder)
 			$js .= '
 		' . $Tree->topFrame . '.treeData.clear();
 		' . $Tree->topFrame . '.treeData.add(new ' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));
 ';
-		
+
 		$js .= $Tree->getJSLoadTree($treeItems);
-		
+
 		$js .= '
 		first=' . $Tree->topFrame . '.firstLoad;
 		if(top.firstLoad)
@@ -276,9 +276,8 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	$body = we_htmlElement::htmlBody(array(
 		"bgcolor" => "white"
 	));
-	
+
 	$head = WE_DEFAULT_HEAD . "\n" . we_htmlElement::jsElement($js);
-	
+
 	print we_htmlElement::htmlHtml(we_htmlElement::htmlHead($head) . $body);
 }
-?>

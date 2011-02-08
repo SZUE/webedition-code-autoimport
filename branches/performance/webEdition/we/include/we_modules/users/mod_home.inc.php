@@ -31,10 +31,8 @@ $we_button = new we_button();
 $createUser = $we_button->create_button("create_user", "javascript:top.opener.top.we_cmd('new_user');", true, -1, -1, "", "", !we_hasPerm("NEW_USER"));
 $createAlias = $createGroup = "";
 
-if (isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"]) {
-	$createGroup = $we_button->create_button("create_group", "javascript:top.opener.top.we_cmd('new_group');", true, -1, -1, "", "", !we_hasPerm("NEW_GROUP"));
-	$createAlias = $we_button->create_button("create_alias", "javascript:top.opener.top.we_cmd('new_alias');", true, -1, -1, "", "", !we_hasPerm("NEW_ALIAS"));
-}
+$createGroup = $we_button->create_button("create_group", "javascript:top.opener.top.we_cmd('new_group');", true, -1, -1, "", "", !we_hasPerm("NEW_GROUP"));
+$createAlias = $we_button->create_button("create_alias", "javascript:top.opener.top.we_cmd('new_alias');", true, -1, -1, "", "", !we_hasPerm("NEW_ALIAS"));
 
 $content = $createUser.getPixel(2,14).$createGroup.getPixel(2,14).$createAlias;
 
