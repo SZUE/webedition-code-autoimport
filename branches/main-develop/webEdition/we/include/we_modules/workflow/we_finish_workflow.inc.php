@@ -22,7 +22,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/workflow.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
@@ -58,11 +57,9 @@ if(weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]
 	}
 }
 else {
-	$we_responseText = $l_workflow[$we_doc->Table]["pass_workflow_notok"];
+	$we_responseText = g_l('modules_workflow','['.$we_doc->Table.'][pass_workflow_notok]');
 	$we_responseTextType = WE_MESSAGE_ERROR;
 	$we_responseText = '';
 }
 
 include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_save.inc.php");
-
-?>

@@ -31,7 +31,6 @@ define ('WE_WORKFLOW_STATE_INACTIVE', 0);
 define ('WE_WORKFLOW_STATE_ACTIVE', 1);
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/workflow.inc.php');
 include_once(WE_WORKFLOW_MODULE_DIR.'weWorkflowStep.php');
 include_once(WE_WORKFLOW_MODULE_DIR.'weWorkflowTask.php');
 
@@ -73,7 +72,6 @@ class weWorkflow extends weWorkflowBase{
 
 	function weWorkflow($workflowID = 0)
 	{
-	    global $l_workflow;
         parent::weWorkflowBase();
         $this->table=WORKFLOW_TABLE;
 
@@ -92,7 +90,7 @@ class weWorkflow extends weWorkflowBase{
 
 
 		$this->ID = 0;
-		$this->Text = $l_workflow['new_workflow'];
+		$this->Text = g_l('modules_workflow','[new_workflow]');
 		$this->Type = WE_WORKFLOW_FOLDER;
 		$this->Folders = ',0,';
 		$this->ObjectFileFolders = ',0,';
@@ -178,7 +176,7 @@ class weWorkflow extends weWorkflowBase{
 	*
 	*/
 	function getAllWorkflowsInfo($status=WE_WORKFLOW_STATE_ACTIVE,$type=WE_WORKFLOW_DOCTYPE_CATEGORY){
-		
+
 		$db=new DB_WE();
 
 		$db->query('SELECT ID,Text FROM ' . WORKFLOW_TABLE . ' WHERE Status IN ('.$status.') AND Type IN ('.$type.') ORDER BY Text');
@@ -219,7 +217,7 @@ class weWorkflow extends weWorkflowBase{
 			$deletequery = 'DELETE FROM '.WORKFLOW_STEP_TABLE.' WHERE workflowID=' . abs($this->ID) . ' AND ID NOT IN (' . join(',',$stepsList) . ')';
 			$afectedRows = $this->db->query($deletequery);
 		}
-		
+
 		//remove all documents from workflow
 		foreach($this->documents as $k=>$val){
 			$this->documentDef=new weWorkflowDocument($val['ID']);
@@ -260,7 +258,7 @@ class weWorkflow extends weWorkflowBase{
 		//$this->ID = -2; # status deleted
 	}
 
-	
+
 	function isDocInWorkflow($docID,$type){
 		$db = new DB_WE;
 		$db->query('SELECT ID FROM '.WORKFLOW_DOC_TABLE.' WHERE documentID=' . abs($docID) . ' AND Type IN(0,1) AND Status=0');
@@ -339,8 +337,8 @@ class weWorkflow extends weWorkflowBase{
 
 		return false;
 	}
-	
-	
+
+
 	function findWfIdForFolder($folderID){
 		$db = new DB_WE();
 		$wfID = f('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Folders LIKE \'%,'.abs($folderID).',%\' AND Type='.WE_WORKFLOW_FOLDER.' AND Status='.WE_WORKFLOW_STATE_ACTIVE,'ID',$db);
@@ -358,11 +356,11 @@ class weWorkflow extends weWorkflowBase{
 	function getObjectWorkflow($object,$categories='',$folderID=0){
 		$db = new DB_WE;
 		$workflowID = 0;
-		
+
 		$wfIDs = array();
 
 		$tail = '';
-		
+
 		if ($folderID != 0)
 		{
 			$tail = ' AND ObjectFileFolders LIKE \'%,'.abs($folderID).',%\'';
@@ -394,7 +392,7 @@ class weWorkflow extends weWorkflowBase{
 				}
 			}
 		}
-		
+
 		$max = 0;
 		foreach($wfIDs as $wfID=>$anz){
 			if($anz > $max){

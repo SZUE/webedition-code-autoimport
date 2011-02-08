@@ -389,7 +389,7 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 	if (defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 		if (weWorkflowUtility::inWorkflow($id, $table))
-			weWorkflowUtility::removeDocFromWorkflow($id, $table, $_SESSION["user"]["ID"], $l_workflow["doc_deleted"]);
+			weWorkflowUtility::removeDocFromWorkflow($id, $table, $_SESSION["user"]["ID"], g_l('modules_workflow','[doc_deleted]'));
 	}
 	if ($id) {
 		$row = getHash("SELECT Path,IsFolder,ContentType FROM ".mysql_real_escape_string($table)." WHERE ID=".abs($id)."", $DB_WE);

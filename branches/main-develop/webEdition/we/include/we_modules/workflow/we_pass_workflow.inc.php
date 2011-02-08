@@ -25,37 +25,37 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 protect();
 if($cmd == "ok"){
 	$wf_text = $_REQUEST["wf_text"];
-	$wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";	
-	
+	$wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";
+
 	$force = (!weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]));
-	
+
 	$ok = weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],$wf_text,$force);
-	
+
 	if($ok){
-		$msg = $l_workflow[$we_doc->Table]["pass_workflow_ok"];
+		$msg = g_l('modules_workflow','['.$we_doc->Table.'][pass_workflow_ok]');
 		$msgType = WE_MESSAGE_NOTICE;
-		
+
 		//	in SEEM-Mode back to Preview page
 		if($_SESSION["we_mode"] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION["we_mode"] == "normal"){
-			
+
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
-		
+
 		if(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)){
 			$script .= 'opener.top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef�gt
 		}
 	}else{
-		$msg = $l_workflow[$we_doc->Table]["pass_workflow_notok"];
+		$msg = g_l('modules_workflow','['.$we_doc->Table.'][pass_workflow_notok]');
 		$msgType = WE_MESSAGE_ERROR;
 				//	in SEEM-Mode back to Preview page
 		if($_SESSION["we_mode"] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION["we_mode"] == "normal"){
-			
+
 			$script = '';
 		}
 	}
@@ -86,7 +86,7 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">
 ';
 $wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
 $content .= '<tr>
-<td class="defaultfont">'.$l_workflow["message"].'</td>
+<td class="defaultfont">'.g_l('modules_workflow','[message]').'</td>
 </tr>
 <tr>
 <td>'.$wf_textarea.'</td>
@@ -97,7 +97,7 @@ $content .= '<tr>
 $_buttons = $we_button->position_yes_no_cancel(	$okbut,
 												"",
 												$cancelbut);
-$frame = htmlDialogLayout($content,$l_workflow["pass_workflow"], $_buttons);
+$frame = htmlDialogLayout($content,g_l('modules_workflow','[pass_workflow]'), $_buttons);
 
 print $frame;
 

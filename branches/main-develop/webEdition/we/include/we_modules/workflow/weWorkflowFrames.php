@@ -92,7 +92,7 @@ class weWorkflowFrames extends weModuleFrames{
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#FFFFFF" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
 		}
-		global $l_users,$l_workflow;
+		global $l_users;
 
 		if(isset($_GET["art"])){
 		    $mode = $_GET["art"];
@@ -103,7 +103,7 @@ class weWorkflowFrames extends weModuleFrames{
 		    $page = $_GET["page"];
 		}
 
-		$text = $l_workflow["new_workflow"];
+		$text = g_l('modules_workflow','[new_workflow]');
 		if(isset($_GET["txt"])){
 		    $text = $_GET["txt"];
 		}
@@ -123,7 +123,7 @@ class weWorkflowFrames extends weModuleFrames{
 		$tab_header = $we_tabs->getHeader('', 22);
 		$tab_body = $we_tabs->getJS();
 		if (empty($page)) $page=0;
-		 $textPre= ($mode==1 ? $l_workflow["document"] : $l_workflow["workflow"]);
+		 $textPre= ($mode==1 ? g_l('modules_workflow','[document]') : g_l('modules_workflow','[workflow]'));
 		 $textPost = "/".$text;
 
 		$out='
@@ -181,7 +181,7 @@ class weWorkflowFrames extends weModuleFrames{
 			}
 			function we_save() {
 				top.content.we_cmd('save_workflow');
-				
+
 			}
 	</script>
 	</head>

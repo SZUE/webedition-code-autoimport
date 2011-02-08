@@ -3820,21 +3820,37 @@ function getVarArray($arr, $string) {
 
 /**
  * getLanguage property
+ *  Note: underscores in name are used as directories - modules_workflow is searched in subdir modules
+ * usage example: echo g_l('modules_workflow','[test][new]');
+ *
  * @param $name name of the variable, without 'l_', this name is also used for inclusion
- * @param $specific
+ * @param $specific the array element to access
  */
 function g_l($name, $specific) {
-	//compatibility - try global scope
-	$tmp = getVarArray($GLOBALS["l_$name"], $specific);
+	//cache last accessed lang var
+	static $cache;
+	if(isset($cache["l_$name"])){
+		$tmp = getVarArray($cache["l_$name"], $specific);
+	}else{
+		if(isset($cache))unset($cache);
+		//compatibility - try global scope
+		$tmp = getVarArray($GLOBALS["l_$name"], $specific);
+	}
 	if (!($tmp === false)) {
 		return $tmp;
 	}
-	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . "/$name.inc.php";
+	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/'.str_replace('_','/',$name).'.inc.php';
 	if (file_exists($file)) {
 		include($file);
 		$tmp = getVarArray(${"l_$name"}, $specific);
 		//get local variable - otherwise try global again
-		return ($tmp !== false ? $tmp : getVarArray($GLOBALS["l_$name"], $specific));
+		if(!($tmp === false)){
+			$cache["l_$name"]=${"l_$name"};
+			return $tmp;
+		}else{
+			//try global again
+			return getVarArray($GLOBALS["l_$name"], $specific);
+		}
 	}
 	return '';
 }

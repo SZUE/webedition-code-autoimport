@@ -106,7 +106,6 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	*
 	*/
 	function start($desc=""){
-		global $l_workflow;
 		$this->startDate = time();
 
 
@@ -120,19 +119,19 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			$workflowTask = new weWorkflowTask($this->tasks[$i]->workflowTaskID);
 			if($workflowTask->userID){
 				//send todo to next user
-				$path = "<b>".$l_workflow[($workflowDoc->document->ContentType=='objectFile') ? OBJECT_FILES_TABLE : FILE_TABLE]["messagePath"].':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$workflowDoc->document->Table.'\',\''.$workflowDoc->document->ID.'\',\''.$workflowDoc->document->ContentType.'\');");" >'.$workflowDoc->document->Path.'</a>';
-				$mess="<p><b>".$l_workflow["todo_next"]."</b></p><p>".$desc."</p><p>".$path."</p>";
-				
-				$this->tasks[$i]->todoID=$this->sendTodo($workflowTask->userID,$l_workflow["todo_subject"],$mess."<p>".$path."</p>",$deadline);
-				if($workflowTask->Mail){					
+				$path = "<b>".g_l('modules_workflow','['.($workflowDoc->document->ContentType=='objectFile') ? OBJECT_FILES_TABLE : FILE_TABLE.'][messagePath]').':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$workflowDoc->document->Table.'\',\''.$workflowDoc->document->ID.'\',\''.$workflowDoc->document->ContentType.'\');");" >'.$workflowDoc->document->Path.'</a>';
+				$mess="<p><b>".g_l('modules_workflow','[todo_next]')."</b></p><p>".$desc."</p><p>".$path."</p>";
+
+				$this->tasks[$i]->todoID=$this->sendTodo($workflowTask->userID,g_l('modules_workflow','[todo_subject]'),$mess."<p>".$path."</p>",$deadline);
+				if($workflowTask->Mail){
 					$foo=f("SELECT Email FROM ".USER_TABLE." WHERE ID=".abs($workflowTask->userID),"Email",$this->db);
-					$this_user=getHash("SELECT First,Second,Email FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'",$this->db);					
-					//if($foo) we_mail($foo,correctUml($l_workflow["todo_next"]),$desc,(isset($this_user["Email"]) && $this_user["Email"]!="" ? "From: ".$this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">\n":"")."Content-Type: text/html; charset=iso-8859-1");
+					$this_user=getHash("SELECT First,Second,Email FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'",$this->db);
+					//if($foo) we_mail($foo,correctUml(g_l('modules_workflow','[todo_next]')),$desc,(isset($this_user["Email"]) && $this_user["Email"]!="" ? "From: ".$this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">\n":"")."Content-Type: text/html; charset=iso-8859-1");
 					if($foo) {
 						$desc = str_replace('<br />',"\n",$desc);
-						$mess = $l_workflow["todo_next"]." ID:".$workflowDoc->document->ID.", Pfad:".$workflowDoc->document->Path."\n\n".$desc;
-						
-						we_mail($foo,correctUml($l_workflow["todo_next"].($this->EmailPath ? ' '.$workflowDoc->document->Path :'')),$mess,(isset($this_user["Email"]) && $this_user["Email"]!="" ? $this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">":""));
+						$mess = g_l('modules_workflow','[todo_next]')." ID:".$workflowDoc->document->ID.", Pfad:".$workflowDoc->document->Path."\n\n".$desc;
+
+						we_mail($foo,correctUml(g_l('modules_workflow','[todo_next]').($this->EmailPath ? ' '.$workflowDoc->document->Path :'')),$mess,(isset($this_user["Email"]) && $this_user["Email"]!="" ? $this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">":""));
 						}
 				}
 
@@ -146,7 +145,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		$this->finishDate = time();
 		return true;
 	}
-	
+
 
 
 	/**
@@ -182,7 +181,6 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 
 
 	function approve($uID,$desc,$force=false){
-		global $l_workflow;
 		if($force){
 			foreach($this->tasks as $tk=>$tv){
 				$this->tasks[$tk]->approve();
@@ -228,7 +226,6 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	}
 
 	function autopublish($uID,$desc,$force=false){
-		global $l_workflow;
 		if($force){
 			foreach($this->tasks as $tk=>$tv){
 				$this->tasks[$tk]->approve();
@@ -272,9 +269,8 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		return false;
 
 	}
-	
+
 	function decline($uID,$desc,$force=false){
-		global $l_workflow;
 		if($force){
 			foreach($this->tasks as $tk=>$tv) $this->tasks[$tk]->decline();;
 			$this->Status=WORKFLOWDOC_STEP_STATUS_CANCELED;
@@ -319,7 +315,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	*
 	*/
 	function __getAllSteps($workflowDocumentID){
-		
+
 		$db = new DB_WE();
 
 		$db->query("SELECT ID FROM ".WORKFLOW_DOC_STEP_TABLE." WHERE workflowDocID=".abs($workflowDocumentID)." ORDER BY ID");

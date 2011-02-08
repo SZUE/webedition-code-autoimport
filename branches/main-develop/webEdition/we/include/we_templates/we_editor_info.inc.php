@@ -28,7 +28,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 
 if(defined("WORKFLOW_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/workflow.inc.php");
 }
 htmlTop();
 
@@ -165,7 +164,7 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 		}else{
 			$anzeige = weWorkflowUtility::getLogButton($GLOBALS["we_doc"]->ID,$GLOBALS["we_doc"]->Table);
 		}
-		array_push($parts,array(	"headline"=>$l_workflow["workflow"],
+		array_push($parts,array(	"headline"=>g_l('modules_workflow','[workflow]'),
 									"html"=>$anzeige,
 									"space"=>140,
 									"forceRightHeadline"=>1,

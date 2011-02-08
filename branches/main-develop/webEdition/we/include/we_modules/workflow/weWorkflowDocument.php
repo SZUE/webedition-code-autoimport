@@ -114,13 +114,12 @@ class weWorkflowDocument extends weWorkflowBase{
 		}
 		return $ret;
 	}
-	
+
 	function autopublish($uID,$desc,$force=false){
-		global $l_workflow;
 		$i=$this->findLastActiveStep();
 		if($i<0 && !$force){
 			return false;
-		} 
+		}
 		$ret=$this->steps[$i]->approve($uID,$desc,$force);
 		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_APPROVED){
 			$this->finishWorkflow(1,$uID);
@@ -130,33 +129,32 @@ class weWorkflowDocument extends weWorkflowBase{
 			} else {
 				$this->document->we_publish();
 			}
-			$path = "<b>".$l_workflow[($this->workflow->Type==2) ? OBJECT_FILES_TABLE : FILE_TABLE]["messagePath"].':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
-			$mess="<p><b>".$l_workflow["auto_published"]."</b></p><p>".$desc."</p><p>".$path."</p>";
+			$path = "<b>".g_l('modules_workflow','['.($this->workflow->Type==2) ? OBJECT_FILES_TABLE : FILE_TABLE.'][messagePath]').':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
+			$mess="<p><b>".g_l('modules_workflow','[auto_published]')."</b></p><p>".$desc."</p><p>".$path."</p>";
 			$deadline=time();
-			$this->sendTodo($this->userID,$l_workflow["auto_published"],$mess,$deadline,1);
+			$this->sendTodo($this->userID,g_l('modules_workflow','[auto_published]'),$mess,$deadline,1);
 			$desc = str_replace('<br />',"\n",$desc);
-			$mess = $l_workflow["auto_published"]."\n\n".$desc."\n\n".$this->document->Path;
-			$this->sendMail($this->userID,$l_workflow["auto_published"].($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
+			$mess = g_l('modules_workflow','[auto_published]')."\n\n".$desc."\n\n".$this->document->Path;
+			$this->sendMail($this->userID,g_l('modules_workflow','[auto_published]').($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
 
 		}
 		return $ret;
 	}
 
 	function decline($uID,$desc,$force=false){
-		global $l_workflow;
 		$i=$this->findLastActiveStep();
 		if($i<0 && !$force) return false;
 		$ret=$this->steps[$i]->decline($uID,$desc,$force);
 		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_CANCELED){
 			$this->finishWorkflow(1,$uID);
 
-			$path = "<b>".$l_workflow[($this->workflow->Type==2) ? OBJECT_FILES_TABLE : FILE_TABLE]["messagePath"].':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
-			$mess="<p><b>".$l_workflow["todo_returned"]."</b></p><p>".$desc."</p><p>".$path."</p>";
+			$path = "<b>".g_l('modules_workflow','['.($this->workflow->Type==2) ? OBJECT_FILES_TABLE : FILE_TABLE.'][messagePath]').':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
+			$mess="<p><b>".g_l('modules_workflow','[todo_returned]')."</b></p><p>".$desc."</p><p>".$path."</p>";
 			$deadline=time()+3600;
-			$this->sendTodo($this->userID,$l_workflow["todo_returned"],$mess,$deadline,1);
+			$this->sendTodo($this->userID,g_l('modules_workflow','[todo_returned]'),$mess,$deadline,1);
 			$desc = str_replace('<br />',"\n",$desc);
-			$mess = $l_workflow["todo_returned"]."\n\n".$desc."\n\n".$this->document->Path;
-			$this->sendMail($this->userID,$l_workflow["todo_returned"].($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
+			$mess = g_l('modules_workflow','[todo_returned]')."\n\n".$desc."\n\n".$this->document->Path;
+			$this->sendMail($this->userID,g_l('modules_workflow','[todo_returned]').($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
 		}
 		return $ret;
 	}
@@ -177,7 +175,6 @@ class weWorkflowDocument extends weWorkflowBase{
 	}
 
 	function finishWorkflow($force=0,$uID=0){
-		global $l_workflow;
 		if($force){
 			$this->Status = WORKFLOWDOC_STATUS_CANCELED;
 			foreach($this->steps as $sk=>$sv){
@@ -262,7 +259,7 @@ class weWorkflowDocument extends weWorkflowBase{
 
 	function find($documentID,$type="0,1",$status=WORKFLOWDOC_STATUS_UNKNOWN){
 
-		$db = new DB_WE();		
+		$db = new DB_WE();
 		$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".documentID=".abs($documentID)." AND ".WORKFLOW_DOC_TABLE.".Status IN (".mysql_real_escape_string($status).")".($type!="" ? " AND ".WORKFLOW_TABLE.".Type IN (".mysql_real_escape_string($type).")" : "")." ORDER BY ".WORKFLOW_DOC_TABLE.".ID DESC");
 		if ($db->next_record())
 		{
@@ -299,5 +296,3 @@ class weWorkflowDocument extends weWorkflowBase{
 	}
 
 }
-
-?>

@@ -18,160 +18,125 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: workflow.inc.php
  * Provides language strings.
  * Language: English
  */
+$l_modules_workflow = array(
+		'new_workflow' => "New workflow",
+		'workflow' => "Workflow",
+		'doc_in_wf_warning' => "The document is in workflow!",
+		'message' => "Message",
+		'in_workflow' => "Document in workflow",
+		'decline_workflow' => "Decline document",
+		'pass_workflow' => "Forward document",
+		'no_wf_defined' => "No workflow has been defined for this document!",
+		'document' => "Document",
+		'del_last_step' => "Cannot delete last serial step!",
+		'del_last_task' => "Cannot delete last parallel step!",
+		'save_ok' => "Workflow is saved.",
+		'delete_ok' => "Workflow is deleted.",
+		'delete_nok' => "Delete failed!",
+		'name' => "Name",
+		'type' => "Type",
+		'type_dir' => "Directory-based",
+		'type_doctype' => "Document type/Category-based",
+		'type_object' => "Object-based",
+		'dirs' => "Directories",
+		'doctype' => "Document type",
+		'categories' => "Categories",
+		'classes' => "Classes",
+		'active' => "Workflow is active.",
+		'step' => "Step",
+		'and_or' => "AND&nbsp;/&nbsp;OR",
+		'worktime' => "Worktime (H, 1min=0<b>.</b>016)", // TRANSLATE
+		'specials' => "Specials", // TRANSLATE
+		'EmailPath' => "Show the document path in the subject of notifications emails", // TRANSLATE
+		'LastStepAutoPublish' => "After the last step (next step clicked), publish the document instead of decline ist", // TRANSLATE
+		'user' => "User",
+		'edit' => "Edit",
+		'send_mail' => "Send mail",
+		'select_user' => "Select user",
+		'and' => " and ",
+		'or' => " or ",
+		'waiting_on_approval' => "Waiting for approval from %s.",
+		'status' => "Status",
+		'step_from' => "Step %s from %s",
+		'step_time' => "Step time",
+		'step_start' => "Step start date",
+		'step_plan' => "End date",
+		'step_worktime' => "Planed worktime",
+		'current_time' => "Current time",
+		'time_elapsed' => "Time elapsed",
+		'time_remained' => "Time remaining",
+		'todo_subject' => "Workflow task",
+		'todo_next' => "There is a document waiting for you in the workflow.",
+		'go_next' => "Next step",
+		'new_step' => "Create additional serial step.",
+		'new_task' => "Create additional parallel step.",
+		'delete_step' => "Delete serial step.",
+		'delete_task' => "Delete parallel step.",
+		'save_question' => "All documents that are in the workflow will be removed from it.\\nAre you sure that you want to do this?",
+		'nothing_to_save' => "Nothing to save!",
+		'save_changed_workflow' => "Workflow has been changed.\\nDo you want to save your changes?",
+		'delete_question' => "All workflow data will be deleated!\\nAre you sure that you want to do this?",
+		'nothing_to_delete' => "Nothing to delete!",
+		'user_empty' => "No defined users for step %s.",
+		'folders_empty' => "Folder is not defined for workflow!",
+		'objects_empty' => "Object is not defined for workflow!",
+		'doctype_empty' => "Document type or category are not defined for workflow",
+		'worktime_empty' => "Worktime is not defined for step %s!",
+		'name_empty' => "Name is not defined for workflow!",
+		'cannot_find_active_step' => "Cannot find active step!",
+		'no_perms' => "No permissions!",
+		'plan' => "(plan)",
+		'todo_returned' => "The document has been returned from the workflow.",
+		'description' => "Description",
+		'time' => "Time",
+		'log_approve_force' => "User has forcibly approved document.",
+		'log_approve' => "User has approved document.",
+		'log_decline_force' => "User has forcibly cancelled document workflow.",
+		'log_decline' => "User has cancelled document workflow.",
+		'log_doc_finished_force' => "Workflow has been forcibly finished.",
+		'log_doc_finished' => "Workflow is finished.",
+		'log_insert_doc' => "Document has been inserted into wokflow.",
+		'logbook' => "Logbook",
+		'empty_log' => "Empty logbook",
+		'emty_log_question' => "Do you really want to empty the logbook?",
+		'empty_log_ok' => "The logbook is now emtpy.",
+		'log_is_empty' => "The logbook is emtpy.",
+		'log_question_all' => "Clear all",
+		'log_question_time' => "Clear older than",
+		'log_question_text' => "Choose option:",
+		'log_remove_doc' => "Document is removed from workflow.",
+		'action' => "Action",
+		'auto_approved' => "Document has been automatically approved.",
+		'auto_declined' => "Document has been automatically declined.",
+		'auto_published' => "Document has been automatically published.", // TRANSLATE
 
-$l_workflow["new_workflow"] = "New workflow";
-$l_workflow["workflow"] = "Workflow";
-
-$l_workflow["doc_in_wf_warning"] = "The document is in workflow!";
-$l_workflow["message"] = "Message";
-$l_workflow["in_workflow"] = "Document in workflow";
-$l_workflow["decline_workflow"] = "Decline document";
-$l_workflow["pass_workflow"] = "Forward document";
-
-$l_workflow[FILE_TABLE]["in_workflow_ok"] = "The document was successfully placed in the workflow!";
-$l_workflow[FILE_TABLE]["in_workflow_notok"] = "The document cannot be placed in the workflow!";
-if(defined("OBJECT_FILES_TABLE")){
-	$l_workflow[OBJECT_FILES_TABLE]["in_workflow_ok"] = "The object was successfully placed in the workflow!";
-	$l_workflow[OBJECT_FILES_TABLE]["in_workflow_notok"] = "The object cannot be placed in the workflow!";
-	$l_workflow[OBJECT_FILES_TABLE]["pass_workflow_ok"] = "The object was successfully passed on!";
-	$l_workflow[OBJECT_FILES_TABLE]["pass_workflow_notok"] = "The object cannot be passed on!";
-	$l_workflow[OBJECT_FILES_TABLE]["decline_workflow_ok"] = "The object was returned to the author!";
-	$l_workflow[OBJECT_FILES_TABLE]["decline_workflow_notok"] = "The object cannot be returned to the author!";
+		'doc_deleted' => "Document has been deleted!",
+		'ask_before_recover' => "There are still documents/objects in the workflow process! Do you want to remove them from the workflow process?",
+		'double_name' => "Workflow name already exists!",
+		'more_information' => "More information",
+		'less_information' => "Less information",
+		'no_wf_defined_object' => "No workflow has been defined for this object!",
+		FILE_TABLE => array(
+				'messagePath' => "Document",
+				'in_workflow_ok' => "The document was successfully placed in the workflow!",
+				'in_workflow_notok' => "The document cannot be placed in the workflow!",
+				'pass_workflow_ok' => "The document was successfully passed on!",
+				'pass_workflow_notok' => "The document cannot be passed on!",
+				'decline_workflow_ok' => "The document was returned to the author!",
+				'decline_workflow_notok' => "The document cannot be returned to the author!",
+				));
+if (defined("OBJECT_FILES_TABLE")) {
+	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+			'in_workflow_ok' => "The object was successfully placed in the workflow!",
+			'in_workflow_notok' => "The object cannot be placed in the workflow!",
+			'pass_workflow_ok' => "The object was successfully passed on!",
+			'pass_workflow_notok' => "The object cannot be passed on!",
+			'decline_workflow_ok' => "The object was returned to the author!",
+			'decline_workflow_notok' => "The object cannot be returned to the author!",
+	);
 }
-$l_workflow[FILE_TABLE]["pass_workflow_ok"] = "The document was successfully passed on!";
-$l_workflow[FILE_TABLE]["pass_workflow_notok"] = "The document cannot be passed on!";
-
-$l_workflow[FILE_TABLE]["decline_workflow_ok"] = "The document was returned to the author!";
-$l_workflow[FILE_TABLE]["decline_workflow_notok"] = "The document cannot be returned to the author!";
-
-$l_workflow["no_wf_defined"] = "No workflow has been defined for this document!";
-
-$l_workflow["document"] = "Document";
-
-$l_workflow["del_last_step"] = "Cannot delete last serial step!";
-$l_workflow["del_last_task"] = "Cannot delete last parallel step!";
-$l_workflow["save_ok"] = "Workflow is saved.";
-$l_workflow["delete_ok"] = "Workflow is deleted.";
-$l_workflow["delete_nok"] = "Delete failed!";
-
-$l_workflow["name"] = "Name";
-$l_workflow["type"] = "Type";
-$l_workflow["type_dir"] = "Directory-based";
-$l_workflow["type_doctype"] = "Document type/Category-based";
-$l_workflow["type_object"] = "Object-based";
-
-$l_workflow["dirs"] = "Directories";
-$l_workflow["doctype"] = "Document type";
-$l_workflow["categories"] = "Categories";
-$l_workflow["classes"] = "Classes";
-
-$l_workflow["active"] = "Workflow is active.";
-
-$l_workflow["step"] = "Step";
-$l_workflow["and_or"] = "AND&nbsp;/&nbsp;OR";
-$l_workflow["worktime"] = "Worktime (H, 1min=0<b>.</b>016)"; // TRANSLATE
-$l_workflow["specials"] = "Specials";// TRANSLATE
-$l_workflow["EmailPath"] = "Show the document path in the subject of notifications emails";// TRANSLATE
-$l_workflow["LastStepAutoPublish"] = "After the last step (next step clicked), publish the document instead of decline ist";// TRANSLATE
-$l_workflow["user"] = "User";
-
-$l_workflow["edit"] = "Edit";
-$l_workflow["send_mail"] = "Send mail";
-$l_workflow["select_user"] = "Select user";
-
-$l_workflow["and"] = " and ";
-$l_workflow["or"] = " or ";
-
-$l_workflow["waiting_on_approval"] = "Waiting for approval from %s.";
-$l_workflow["status"] = "Status";
-$l_workflow["step_from"] = "Step %s from %s";
-
-$l_workflow["step_time"] = "Step time";
-$l_workflow["step_start"] = "Step start date";
-$l_workflow["step_plan"] = "End date";
-$l_workflow["step_worktime"] = "Planed worktime";
-
-$l_workflow["current_time"] = "Current time";
-$l_workflow["time_elapsed"] = "Time elapsed";
-$l_workflow["time_remained"] = "Time remaining";
-
-$l_workflow["todo_subject"] = "Workflow task";
-$l_workflow["todo_next"] = "There is a document waiting for you in the workflow.";
-
-$l_workflow["go_next"] = "Next step";
-
-$l_workflow["new_step"] = "Create additional serial step.";
-$l_workflow["new_task"] = "Create additional parallel step.";
-
-$l_workflow["delete_step"] = "Delete serial step.";
-$l_workflow["delete_task"] = "Delete parallel step.";
-
-$l_workflow["save_question"] = "All documents that are in the workflow will be removed from it.\\nAre you sure that you want to do this?";
-$l_workflow["nothing_to_save"] = "Nothing to save!";
-$l_workflow["save_changed_workflow"] = "Workflow has been changed.\\nDo you want to save your changes?";
-
-$l_workflow["delete_question"] = "All workflow data will be deleated!\\nAre you sure that you want to do this?";
-$l_workflow["nothing_to_delete"] = "Nothing to delete!";
-
-$l_workflow["user_empty"] = "No defined users for step %s.";
-$l_workflow["folders_empty"] = "Folder is not defined for workflow!";
-$l_workflow["objects_empty"] = "Object is not defined for workflow!";
-$l_workflow["doctype_empty"] = "Document type or category are not defined for workflow";
-$l_workflow["worktime_empty"] = "Worktime is not defined for step %s!";
-$l_workflow["name_empty"] = "Name is not defined for workflow!";
-$l_workflow["cannot_find_active_step"] = "Cannot find active step!";
-
-$l_workflow["no_perms"] = "No permissions!";
-$l_workflow["plan"] = "(plan)";
-
-$l_workflow["todo_returned"] = "The document has been returned from the workflow.";
-
-$l_workflow["description"] = "Description";
-$l_workflow["time"] = "Time";
-
-$l_workflow["log_approve_force"] = "User has forcibly approved document.";
-$l_workflow["log_approve"] = "User has approved document.";
-$l_workflow["log_decline_force"] = "User has forcibly cancelled document workflow.";
-$l_workflow["log_decline"] = "User has cancelled document workflow.";
-$l_workflow["log_doc_finished_force"] = "Workflow has been forcibly finished.";
-$l_workflow["log_doc_finished"] = "Workflow is finished.";
-$l_workflow["log_insert_doc"] = "Document has been inserted into wokflow.";
-
-$l_workflow["logbook"] = "Logbook";
-$l_workflow["empty_log"] = "Empty logbook";
-$l_workflow["emty_log_question"] = "Do you really want to empty the logbook?";
-$l_workflow["empty_log_ok"] = "The logbook is now emtpy.";
-$l_workflow["log_is_empty"] = "The logbook is emtpy.";
-
-$l_workflow["log_question_all"] = "Clear all";
-$l_workflow["log_question_time"] = "Clear older than";
-$l_workflow["log_question_text"] = "Choose option:";
-
-$l_workflow["log_remove_doc"] = "Document is removed from workflow.";
-$l_workflow["action"] = "Action";
-
-$l_workflow[FILE_TABLE]["messagePath"] = "Document";
-if(defined("OBJECT_FILES_TABLE")){
-	$l_workflow[OBJECT_FILES_TABLE]["messagePath"] = "Object";
-}
-$l_workflow["auto_approved"] = "Document has been automatically approved.";
-$l_workflow["auto_declined"] = "Document has been automatically declined.";
-$l_workflow["auto_published"] = "Document has been automatically published.";// TRANSLATE
-
-$l_workflow["doc_deleted"] = "Document has been deleted!";
-$l_workflow["ask_before_recover"] = "There are still documents/objects in the workflow process! Do you want to remove them from the workflow process?";
-
-$l_workflow["double_name"] = "Workflow name already exists!";
-
-$l_workflow["more_information"] = "More information";
-$l_workflow["less_information"] = "Less information";
-
-$l_workflow["no_wf_defined_object"] = "No workflow has been defined for this object!";
-?>
