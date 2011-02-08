@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_linklist.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tagParser.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/parser.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 /* a class for handling templates */
@@ -159,7 +158,7 @@ class we_template extends we_document
 			}
 		}
 		if($start != $end){
-			return parseError(sprintf($GLOBALS["l_parser"]["start_endtag_missing"],$tagname.((!$eq) ? "..." : "")));
+			return parseError(sprintf(g_l('parser','[start_endtag_missing]'),$tagname.((!$eq) ? "..." : "")));
 		}
 		return "";
 	}
@@ -218,8 +217,8 @@ class we_template extends we_document
 		for($i=0;$i<sizeof($tags);$i++){
 			if(ereg('<we:else',$tags[$i])){
 				$ifStart = $this->findIfStart($tags,$i);
-				if($ifStart == -1) return parseError($GLOBALS["l_parser"]["else_start"]);
-				if($this->findIfEnd($tags,$i) == -1 ) return parseError($GLOBALS["l_parser"]["else_end"]);
+				if($ifStart == -1) return parseError(g_l('parser','[else_start]'));
+				if($this->findIfEnd($tags,$i) == -1 ) return parseError(g_l('parser','[else_end]'));
 			}
 		}
 		return "";
@@ -377,7 +376,7 @@ class we_template extends we_document
 </body></html><?php $WE_HTML_HEAD_BODY = true; ?><?php endif ?>';
 
 		}else{
-			return parseError($GLOBALS["l_parser"]["html_tags"]);
+			return parseError(g_l('parser','[html_tags]'));
 		}
 		$code .= '<?php if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ): ?><script language="JavaScript" type="text/javascript">setTimeout("doScrollTo();",100);</script><?php endif ?>';
 
@@ -745,7 +744,7 @@ class we_template extends we_document
 			$_templates = array();
 			getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
 			if (in_array($this->ID, $_templates)) {
-				$code = $GLOBALS["l_parser"]["template_recursion_error"];
+				$code = g_l('parser','[template_recursion_error]');
 			} else {
 				// we have a master template. => surround current template with it
 				// first get template code
@@ -807,7 +806,7 @@ class we_template extends we_document
 						$_templates = array();
 						getUsedTemplatesOfTemplate($att["id"], $_templates);
 						if (in_array($this->ID, $_templates)) {
-							$code = str_replace($tag,$GLOBALS["l_parser"]["template_recursion_error"],$code);
+							$code = str_replace($tag,g_l('parser','[template_recursion_error]'),$code);
 						} else {
 							// get code of template
 							$templObj = new we_template();

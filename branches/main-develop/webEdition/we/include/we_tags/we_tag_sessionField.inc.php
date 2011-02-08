@@ -283,7 +283,7 @@ function we_tag_sessionField($attribs, $content) {
 			$inputstyle = we_getTagAttribute('inputstyle', $attribs);
 			$checkboxclass = we_getTagAttribute('checkboxclass', $attribs);
 			$inputclass = we_getTagAttribute('inputclass', $attribs);
-			$checkboxtext = we_getTagAttribute('checkboxtext', $attribs, $GLOBALS['l_parser']['delete']);
+			$checkboxtext = we_getTagAttribute('checkboxtext', $attribs, g_l('parser','[delete]'));
 
 			if ($_SESSION['webuser']['imgtmp'][$name]['id']) {
 				$attribs['id'] = $_SESSION['webuser']['imgtmp'][$name];
@@ -295,7 +295,6 @@ function we_tag_sessionField($attribs, $content) {
 			$showcontrol = we_getTagAttribute('showcontrol', $attribs, '', true, true);
 			if ($showcontrol) {
 				$we_button = new we_button();
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
 
 				$foo = attributFehltError($attribs, 'parentid', 'sessionField');
 				if ($foo)

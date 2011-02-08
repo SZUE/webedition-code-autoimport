@@ -26,7 +26,6 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
 
 // Tag and TagBlock Cache
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
@@ -112,10 +111,10 @@ function we_tag($name, $attribs=array(), $content = ''){
 						include_once ($toolinc);
 					} else {
 						if (strpos(trim($name), 'if') === 0) { // this ifTag does not exist
-							print parseError(sprintf($GLOBALS['l_parser']['tag_not_known'], trim($name)));
+							print parseError(sprintf(g_l('parser','[tag_not_known]'), trim($name)));
 							return false;
 						}
-						return parseError(sprintf($GLOBALS['l_parser']['tag_not_known'], trim($name)));
+						return parseError(sprintf(g_l('parser','[tag_not_known]'), trim($name)));
 					}
 
 				}

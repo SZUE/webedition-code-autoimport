@@ -109,8 +109,6 @@ function we_tag_userInput($attribs, $content){
 
 				if ($editable) {
 
-					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
-
 					$foo = attributFehltError($attribs, "parentid", "userInput");
 					if ($foo)
 						return $foo;
@@ -135,7 +133,7 @@ function we_tag_userInput($attribs, $content){
 					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
 					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
 					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_imgDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_imgDataId]["id"];
@@ -146,7 +144,7 @@ function we_tag_userInput($attribs, $content){
 						if (substr($src, 0, 1) !== "/") {
 							$src = "/" . $src;
 						}
-						
+
 						$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />';
 					} else {
 						unset($attribs["width"]);
@@ -220,8 +218,6 @@ function we_tag_userInput($attribs, $content){
 
 				if ($editable) {
 
-					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
-
 					$foo = attributFehltError($attribs, "parentid", "userInput");
 					if ($foo)
 						return $foo;
@@ -240,7 +236,7 @@ function we_tag_userInput($attribs, $content){
 					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
 					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
 					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_flashmovieDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_flashmovieDataId]["id"];
@@ -332,9 +328,6 @@ function we_tag_userInput($attribs, $content){
 				$we_button = new we_button();
 
 				if ($editable) {
-
-					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
-
 					$foo = attributFehltError($attribs, "parentid", "userInput");
 					if ($foo)
 						return $foo;
@@ -353,7 +346,7 @@ function we_tag_userInput($attribs, $content){
 					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
 					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
 					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_quicktimeDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_quicktimeDataId]["id"];
@@ -443,8 +436,6 @@ function we_tag_userInput($attribs, $content){
 
 				if ($editable) {
 
-					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
-
 					$foo = attributFehltError($attribs, "parentid", "userInput");
 					if ($foo)
 						return $foo;
@@ -462,7 +453,7 @@ function we_tag_userInput($attribs, $content){
 					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
 					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
 					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, $GLOBALS["l_parser"]["delete"]);
+					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_binaryDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
@@ -670,7 +661,7 @@ function we_tag_userInput($attribs, $content){
 			case "country":
 				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
 				$docAttr = we_getTagAttribute("doc", $attribs, "self");
-				
+
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 				$langcode= substr($lang,0,2);

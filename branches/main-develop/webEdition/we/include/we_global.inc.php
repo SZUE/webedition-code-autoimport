@@ -1629,20 +1629,20 @@ function getHTTP($server, $url, $port = "", $username = "", $password = "") {
 function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false) {
 	if ($canBeEmpty) {
 		if (!isset($attribs[$attr]))
-			return parseError(sprintf($GLOBALS["l_parser"]["attrib_missing2"], $attr, $tag));
+			return parseError(sprintf(g_l('parser','[attrib_missing2]'), $attr, $tag));
 	} else {
 		if (!isset($attribs[$attr]) || $attribs[$attr] == "")
-			return parseError(sprintf($GLOBALS["l_parser"]["attrib_missing"], $attr, $tag));
+			return parseError(sprintf(g_l('parser','[attrib_missing]'), $attr, $tag));
 	}
 	return "";
 }
 
 function modulFehltError($modul, $tag) {
-	return parseError(sprintf($GLOBALS["l_parser"]["module_missing"], $modul, $tag));
+	return parseError(sprintf(g_l('parser','[module_missing]'), $modul, $tag));
 }
 
 function parseError($text) {
-	return "<b>" . $GLOBALS["l_parser"]["error_in_template"] . ":</b> $text<br>\n";
+	return "<b>" . g_l('parser','[error_in_template]') . ":</b> $text<br>\n";
 }
 
 function std_numberformat($content) {
@@ -3802,6 +3802,43 @@ function CheckAndConvertISObackend($utf8data) {
 	}
 }
 
+function getVarArray($arr, $string) {
+	if (!isset($arr)) {
+		return false;
+	}
+	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
+	$return = $arr;
+	foreach ($arr_matches[1] as $dimension) {
+		if (isset($return[$dimension])) {
+			$return = $return[$dimension];
+		} else {
+			return false;
+		}
+	}
+	return $return;
+}
+
+/**
+ * getLanguage property
+ * @param $name name of the variable, without 'l_', this name is also used for inclusion
+ * @param $specific
+ */
+function g_l($name, $specific) {
+	//compatibility - try global scope
+	$tmp = getVarArray($GLOBALS["l_$name"], $specific);
+	if (!($tmp === false)) {
+		return $tmp;
+	}
+	echo 'try include';
+	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . "/$name.inc.php";
+	if (file_exists($file)) {
+		include($file);
+		$tmp = getVarArray(${"l_$name"}, $specific);
+		//get local variable - otherwise try global again
+		return ($tmp !== false ? $tmp : getVarArray($GLOBALS["l_$name"], $specific));
+	}
+	return '';
+}
 
 function we_templateInit(){
 	if(!isset($GLOBALS["DB_WE"])){

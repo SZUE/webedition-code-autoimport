@@ -25,5 +25,4 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
-?>
+include(dirname(__FILE__)."/enc_".basename(__FILE__));

@@ -119,7 +119,7 @@ function we_tag_setVar($attribs, $content){
 				break;
 			case "listview" :
 				if (!isset($GLOBALS["lv"])) {
-					return parseError($GLOBALS["l_parser"]["setVar_lv_not_in_lv"]);
+					return parseError(g_l('parser','[setVar_lv_not_in_lv]'));
 				}
 				$valueFrom = we_tag('field',array(
 					'name' => $nameFrom, 'type' => $typeFrom

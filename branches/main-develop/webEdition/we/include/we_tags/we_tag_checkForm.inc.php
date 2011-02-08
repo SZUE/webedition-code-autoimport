@@ -99,7 +99,7 @@ function we_tag_checkForm($attribs, $content){
 		$_pwFields = explode(',', $password);
 		if (sizeof($_pwFields) != 3) {
 			$jsPasword = '';
-			return parseError($GLOBALS["l_parser"]["checkForm_password"]);
+			return parseError(g_l('parser','[checkForm_password]'));
 		}
 		$jsPasword = '//  check passwords
         var password = new Array("' . implode('", "', $_pwFields) . '");
@@ -120,7 +120,7 @@ function we_tag_checkForm($attribs, $content){
 				$jsEventHandler = $jsTag;
 			} else {
 				$jsEventHandler = '';
-				return parseError($GLOBALS["l_parser"]["checkForm_jsIncludePath_not_found"]);
+				return parseError(g_l('parser','[checkForm_jsIncludePath_not_found]'));
 			}
 
 		} else {
