@@ -25,25 +25,16 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/db_mysql.inc.p
 
 class DB_WE extends DB_Sql {
 
-	var $Host = DB_HOST;
+	//var $Host = DB_HOST;
 	var $Database = DB_DATABASE;
-	var $User = DB_USER;
-	var $Password = DB_PASSWORD;
+	//var $User = DB_USER;
+	//var $Password = DB_PASSWORD;
 	var $Auto_Free = 0;
 	var $Halt_On_Error = 'no';
 
 	/* public: connection management */
 
-	function connect($Database = '', $Host = '', $User = '', $Password = '') {
-		/* Handle defaults */
-		if ('' == $Database)
-			$Database = $this->Database;
-		if ('' == $Host)
-			$Host = $this->Host;
-		if ('' == $User)
-			$User = $this->User;
-		if ('' == $Password)
-			$Password = $this->Password;
+	function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD) {
 
 		/* establish connection, select database */
 		if (0 == $this->Link_ID) {
@@ -146,7 +137,7 @@ class DB_WE extends DB_Sql {
 		if ($this->Query_ID)
 			$this->free();
 
-		if ($this->Debug){
+		if ($this->Debug) {
 			printf("Debug: query = %s<br>\n", $Query_String);
 		}
 		$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);

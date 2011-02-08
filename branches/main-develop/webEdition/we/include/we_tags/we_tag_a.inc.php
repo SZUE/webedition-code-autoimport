@@ -62,7 +62,7 @@ function we_tag_a($attribs, $content) {
 	$tp->parseTags($tags, $content);
 
 	if ((!$url) && ($GLOBALS["WE_MAIN_DOC"]->ClassName != "we_template")) {
-		return ($we_editmode ? parseError("in we:a attribute id not exists!") : '');
+		return ($we_editmode ? attributFehltError($attribs, 'id', 'we:a') : '');
 	}
 
 	switch ($edit) {
