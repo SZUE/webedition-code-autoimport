@@ -552,7 +552,7 @@ function we_tag_ifNotCaptcha($attribs, $content){
 }
 
 function we_tag_ifNotDeleted($attribs, $content){
-	return we_tag('ifDeleted',$attribs, $content);
+	return !we_tag('ifDeleted',$attribs, $content);
 }
 
 function we_tag_ifNotDoctype($attribs,$content){
