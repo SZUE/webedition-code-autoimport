@@ -22,7 +22,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/versions.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/contenttypes.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/version_wizard/versionFragment.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersions.class.inc.php');
@@ -246,12 +245,12 @@ class we_versions_wizard
 								"delete_versions",
 								($type == "delete_versions"),
 								"type",
-								$GLOBALS["l_versions"]["delete_versions"],
+								g_l('versions','[delete_versions]'),
 								true,
 								"defaultfont",
 								"",
 								false,
-								$GLOBALS["l_versions"]["txt_delete_versions"],
+								g_l('versions','[txt_delete_versions]'),
 								0,
 								495),
 						"space" => 0
@@ -266,12 +265,12 @@ class we_versions_wizard
 								"reset_versions",
 								($type == "reset_versions"),
 								"type",
-								$GLOBALS["l_versions"]["reset_versions"],
+								g_l('versions','[reset_versions]'),
 								true,
 								"defaultfont",
 								"",
 								false,
-								$GLOBALS["l_versions"]["txt_reset_versions"],
+								g_l('versions','[txt_reset_versions]'),
 								0,
 								495),
 						"space" => 0
@@ -312,7 +311,7 @@ class we_versions_wizard
 						"",
 						"",
 						false,
-						$GLOBALS["l_versions"]["versioning"]) .
+						g_l('versions','[versioning]')) .
 
 				$hiddenFields .
 
@@ -367,7 +366,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox($GLOBALS["l_versions"]['ct_delete_text'], 2, 520),
+						'html' => htmlAlertAttentionBox(g_l('versions','[ct_delete_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -384,7 +383,7 @@ class we_versions_wizard
 						$val,
 						$checked,
 						$name,
-						$GLOBALS["l_versions"]['versions_all'],
+						g_l('versions','[versions_all]'),
 						false,
 						"defaultfont",
 						$jvs) . "<br/>";
@@ -406,7 +405,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'headline' => $GLOBALS["l_versions"]['ContentType'],
+						'headline' => g_l('versions','[ContentType]'),
 						'space' => 170,
 						'html' => $content,
 						'noline' => 1
@@ -478,7 +477,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox($GLOBALS["l_versions"]['date_delete_text'], 2, 520),
+						'html' => htmlAlertAttentionBox(g_l('versions','[date_delete_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -498,8 +497,8 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'headline' => $GLOBALS["l_versions"]['time'],
-						'html' => "<div style='padding-bottom:3px;'>" . $GLOBALS["l_versions"]['day'] . ":</div><div style='float:left;'>" . $versions_delete_date . "</div><div style='float:left;margin: 0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>" . $GLOBALS["l_versions"]['clocktime'] . ":</div>" . $reset_hours->getHtmlCode() . " h : " . $reset_minutes->getHtmlCode() . " m: " . $reset_seconds->getHtmlCode() . " s",
+						'headline' => g_l('versions','[time]'),
+						'html' => "<div style='padding-bottom:3px;'>" . g_l('versions','[day]') . ":</div><div style='float:left;'>" . $versions_delete_date . "</div><div style='float:left;margin: 0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>" . g_l('versions','[clocktime]') . ":</div>" . $reset_hours->getHtmlCode() . " h : " . $reset_minutes->getHtmlCode() . " m: " . $reset_seconds->getHtmlCode() . " s",
 						'noline' => 1,
 						'space' => 170
 				));
@@ -549,7 +548,7 @@ class we_versions_wizard
 							var seconds = document.getElementById("delete_seconds").value;
 							if(' . $jsCheckboxCtIf . ') {
 								' . we_message_reporting::getShowMessageCall(
-				$GLOBALS['l_versions']['notCheckedContentType'],
+				g_l('versions','[notCheckedContentType]'),
 				WE_MESSAGE_NOTICE) . '
 							}
 							else {
@@ -639,7 +638,7 @@ class we_versions_wizard
 						"",
 						"",
 						false,
-						$GLOBALS["l_versions"]["delete_versions"] . " - " . $GLOBALS["l_versions"]["step"] . " 1 " . $GLOBALS["l_versions"]["of"] . " 2") .
+						g_l('versions','[delete_versions]') . " - " . g_l('versions','[step]') . " 1 " . g_l('versions','[of]') . " 2") .
 
 				we_htmlElement::htmlHidden(array(
 					"name" => "fr", "value" => "body"
@@ -676,7 +675,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox($GLOBALS["l_versions"]['ct_reset_text'], 2, 520),
+						'html' => htmlAlertAttentionBox(g_l('versions','[ct_reset_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -694,7 +693,7 @@ class we_versions_wizard
 						$val,
 						$checked,
 						$name,
-						$GLOBALS["l_versions"]['versions_all'],
+						g_l('versions','[versions_all]'),
 						false,
 						"defaultfont",
 						$jvs) . "<br/>";
@@ -715,7 +714,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'headline' => $GLOBALS["l_versions"]['ContentType'],
+						'headline' => g_l('versions','[ContentType]'),
 						'space' => 170,
 						'html' => $content,
 						'noline' => 1
@@ -727,7 +726,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox($GLOBALS["l_versions"]['doPublish_text'], 2, 520),
+						'html' => htmlAlertAttentionBox(g_l('versions','[doPublish_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -736,7 +735,7 @@ class we_versions_wizard
 				$version_reset_doPublish,
 				$version_reset_doPublish,
 				"reset_doPublish",
-				$GLOBALS['l_versions']['publishIfReset'],
+				g_l('versions','[publishIfReset]'),
 				false,
 				"defaultfont",
 				"");
@@ -809,7 +808,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox($GLOBALS["l_versions"]['date_reset_text'], 2, 520),
+						'html' => htmlAlertAttentionBox(g_l('versions','[date_reset_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -829,7 +828,7 @@ class we_versions_wizard
 				$parts,
 				array(
 
-						'headline' => $GLOBALS["l_versions"]['time'],
+						'headline' => g_l('versions','[time]'),
 						'html' => "<div style='padding-bottom:3px;'>Tag:</div><div style='float:left;'>" . $versions_reset_date . "</div><div style='float:left;margin:0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>Uhrzeit:</div>" . $reset_hours->getHtmlCode() . " h : " . $reset_minutes->getHtmlCode() . " m: " . $reset_seconds->getHtmlCode() . " s ",
 						'noline' => 1,
 						'space' => 170
@@ -880,12 +879,12 @@ class we_versions_wizard
 							var seconds = document.getElementById("reset_seconds").value;
 							if(' . $jsCheckboxCtIf . ') {
 								' . we_message_reporting::getShowMessageCall(
-				$GLOBALS['l_versions']['notCheckedContentType'],
+				g_l('versions','[notCheckedContentType]'),
 				WE_MESSAGE_NOTICE) . '
 							}
 							else if(date=="") {
 								' . we_message_reporting::getShowMessageCall(
-				$GLOBALS['l_versions']['notCheckedDate'],
+				g_l('versions','[notCheckedDate]'),
 				WE_MESSAGE_NOTICE) . '
 							}
 							else {
@@ -973,7 +972,7 @@ class we_versions_wizard
 						"",
 						"",
 						false,
-						$GLOBALS["l_versions"]["reset_versions"] . " - " . $GLOBALS["l_versions"]["step"] . " 1 " . $GLOBALS["l_versions"]["of"] . " 2") .
+						g_l('versions','[reset_versions]') . " - " . g_l('versions','[step]') . " 1 " . g_l('versions','[of]') . " 2") .
 
 				we_htmlElement::htmlHidden(array(
 					"name" => "fr", "value" => "body"
@@ -1063,7 +1062,7 @@ class we_versions_wizard
 				return array(
 
 						$js . we_message_reporting::getShowMessageCall(
-								$GLOBALS["l_versions"]["deleteNothingFound"],
+								g_l('versions','[deleteNothingFound]'),
 								1) . 'top.wizbusy.showPrevNextButton();',
 						""
 				);
@@ -1173,13 +1172,13 @@ class we_versions_wizard
 		}
 
 		$out = '<div style="width:520px;">';
-		$out .= $GLOBALS["l_versions"]['step2_txt1'];
+		$out .= g_l('versions','[step2_txt1]');
 
 		if ($timestamp != "") {
 			$date = date("d.m.y - H:i:s", $timestamp);
-			$out .= sprintf($GLOBALS["l_versions"]['step2_txt2_delete'], $date);
+			$out .= sprintf(g_l('versions','[step2_txt2_delete]'), $date);
 		}
-		$out .= $GLOBALS["l_versions"]['step2_txt3'];
+		$out .= g_l('versions','[step2_txt3]');
 		$out .= '</div>';
 
 		$out .= '<div style="background-color:#fff;width:520px;margin-top:20px;">';
@@ -1188,13 +1187,13 @@ class we_versions_wizard
 		$out .= '<tr class="defaultfont" style="height:30px;">';
 
 		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= $GLOBALS["l_versions"]["_id"];
+		$out .= g_l('versions','[_id]');
 		$out .= '</th>';
 		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= $GLOBALS["l_versions"]["path"];
+		$out .= g_l('versions','[path]');
 		$out .= '</th>';
 		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= $GLOBALS["l_versions"]["ContentType"];
+		$out .= g_l('versions','[ContentType]');
 		$out .= '</th>';
 
 		$out .= '</tr>';
@@ -1239,7 +1238,7 @@ class we_versions_wizard
 						"",
 						"",
 						false,
-						$GLOBALS["l_versions"]["delete_versions"] . " - " . $GLOBALS["l_versions"]["step"] . " 2 " . $GLOBALS["l_versions"]["of"] . " 2") .
+						g_l('versions','[delete_versions]') . " - " . g_l('versions','[step]') . " 2 " . g_l('versions','[of]') . " 2") .
 
 				$hiddenFields .
 
@@ -1350,7 +1349,7 @@ class we_versions_wizard
 
 		$date = date("d.m.y - H:i:s", $timestamp);
 		$out = '<div style="width:520px;">';
-		$out .= sprintf($GLOBALS["l_versions"]['step2_txt_reset'], $date);
+		$out .= sprintf(g_l('versions','[step2_txt_reset]'), $date);
 		$out .= '</div>';
 		$out .= '<div style="background-color:#fff;width:520px;margin-top:20px;">';
 		$out .= '<table border="0" cellpadding="2" cellspacing="0" width="100%">';
@@ -1358,13 +1357,13 @@ class we_versions_wizard
 		$out .= '<tr class="defaultfont" style="height:30px;">';
 
 		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= $GLOBALS["l_versions"]["_id"];
+		$out .= g_l('versions','[_id]');
 		$out .= '</th>';
 		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= $GLOBALS["l_versions"]["path"];
+		$out .= g_l('versions','[path]');
 		$out .= '</th>';
 		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= $GLOBALS["l_versions"]["ContentType"];
+		$out .= g_l('versions','[ContentType]');
 		$out .= '</th>';
 
 		$out .= '</tr>';
@@ -1409,7 +1408,7 @@ class we_versions_wizard
 						"",
 						"",
 						false,
-						$GLOBALS["l_versions"]["reset_versions"] . " - " . $GLOBALS["l_versions"]["step"] . " 2 " . $GLOBALS["l_versions"]["of"] . " 2") .
+						g_l('versions','[reset_versions]') . " - " . g_l('versions','[step]') . " 2 " . g_l('versions','[of]') . " 2") .
 
 				$hiddenFields .
 
@@ -1536,7 +1535,7 @@ class we_versions_wizard
 				we_htmlElement::htmlHead(
 						we_htmlElement::jsElement("", array(
 							"src" => JS_DIR . "we_showMessage.js"
-						)) . we_htmlElement::htmlTitle($GLOBALS["l_versions"]["versions_wizard"])) . $fst->getHtmlCode());
+						)) . we_htmlElement::htmlTitle(g_l('versions','[versions_wizard]'))) . $fst->getHtmlCode());
 
 	}
 
@@ -1606,7 +1605,7 @@ class we_versions_wizard
 						parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
 						' . we_message_reporting::getShowMessageCall(
 				addslashes(
-						$GLOBALS["l_versions"]["deleteDateVersionsOK"] ? $GLOBALS["l_versions"]["deleteDateVersionsOK"] : ""),
+						g_l('versions','[deleteDateVersionsOK]') ? g_l('versions','[deleteDateVersionsOK]') : ""),
 				WE_MESSAGE_NOTICE) . '
 						// reload current document => reload all open Editors on demand
 
@@ -1638,7 +1637,7 @@ class we_versions_wizard
 						parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
 						' . we_message_reporting::getShowMessageCall(
 				addslashes(
-						$GLOBALS["l_versions"]["resetAllVersionsOK"] ? $GLOBALS["l_versions"]["resetAllVersionsOK"] : ""),
+						g_l('versions','[resetAllVersionsOK]') ? g_l('versions','[resetAllVersionsOK]') : ""),
 				WE_MESSAGE_NOTICE) . '
 
 						top.close();

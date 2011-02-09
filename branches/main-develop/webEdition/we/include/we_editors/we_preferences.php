@@ -41,7 +41,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weS
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/alert.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/prefs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/languages.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/countries.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/contenttypes.inc.php");
 
 /*****************************************************************************
@@ -3939,7 +3938,7 @@ EOF;
 				$_languages->addOptions(sizeof($Languages), array_keys($Languages), array_values($Languages));
 
 				// Countries
-				$Countries = $GLOBALS['l_countries'];
+				$Countries = g_l('countries','');
 				$TopCountries = array();
 				$TopCountries['~DE'] = $Countries['DE'];
 				$TopCountries['~CH'] = $Countries['CH'];

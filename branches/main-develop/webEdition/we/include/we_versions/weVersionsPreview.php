@@ -20,7 +20,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersions.class.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/versions.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/customerFilter.inc.php');
 
@@ -55,17 +54,17 @@ if(! ($isObj OR $isTempl) ) {
 	if($binaryPathNew == "") {
 		$binaryPathNew = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($newDoc['version'])."' AND documentTable='".mysql_real_escape_string($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
 	}
-	
+
 	if(!empty($oldDoc)) {
 		$binaryPathOld = $oldDoc['binaryPath'];
 		if($binaryPathOld == "") {
 			$binaryPathOld = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($oldDoc['version'])."' AND documentTable='".mysql_real_escape_string($oldDoc['documentTable'])."' AND documentID='".abs($oldDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
 		}
 	}
-	
+
 	$prot = getServerProtocol();
 	$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://".$_SERVER["HTTP_HOST"] : "";
-	
+
 	$filePathNew = $_SERVER["DOCUMENT_ROOT"].$binaryPathNew;
 	if(!empty($oldDoc)) {
 		$filePathOld = $_SERVER["DOCUMENT_ROOT"].$binaryPathOld;
@@ -74,7 +73,7 @@ if(! ($isObj OR $isTempl) ) {
 	if(!empty($oldDoc)) {
 		$fileOld = $preurl.$binaryPathOld;
 	}
-	
+
 	if(!file_exists($filePathNew) && isset($fileOld)) {
 		$fileNew = $fileOld;
 	}
@@ -90,13 +89,13 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tab
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(new we_tab("#",$GLOBALS['l_versions']['versionDiffs'],'((activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('1');", array("id"=>"tab_1")));
+$we_tabs->addTab(new we_tab("#",g_l('versions','[versionDiffs]'),'((activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('1');", array("id"=>"tab_1")));
 
 if(!$isObj) {
-	$we_tabs->addTab(new we_tab("#",$GLOBALS['l_versions']['previewVersionNew'],'((activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('2');", array("id"=>"tab_2")));
+	$we_tabs->addTab(new we_tab("#",g_l('versions','[previewVersionNew]'),'((activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('2');", array("id"=>"tab_2")));
 }
 if(!empty($oldDoc) && !$isObj) {
-	$we_tabs->addTab(new we_tab("#",$GLOBALS['l_versions']['previewVersionOld'],'((activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('3');", array("id"=>"tab_3")));
+	$we_tabs->addTab(new we_tab("#",g_l('versions','[previewVersionOld]'),'((activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('3');", array("id"=>"tab_3")));
 }
 
 $js=$we_tabs->getHeader() . we_htmlElement::jsElement('
@@ -109,56 +108,56 @@ $js=$we_tabs->getHeader() . we_htmlElement::jsElement('
 ');
 
 function doNotShowFields($k) {
-	
+
 	$notshow = array(
-		"ID", 
-		"documentElements", 
-		"documentScheduler", 
-		"documentCustomFilter", 
-		"documentTable", 
+		"ID",
+		"documentElements",
+		"documentScheduler",
+		"documentCustomFilter",
+		"documentTable",
 		"binaryPath",
 		"ContentType",
 		"modifications",
-		"IP", 
-		"Browser", 
-		"Icon", 
-		"CreationDate", 
-		"Path", 
-		"ClassName", 
+		"IP",
+		"Browser",
+		"Icon",
+		"CreationDate",
+		"Path",
+		"ClassName",
 		"TableID",
 		"ObjectID",
 		"IsClassFolder",
 		"IsNotEditable",
 		"active"
 	);
-	
+
 	if (in_array($k, $notshow)) {
 		return false;
 	}
-	
+
 	return true;
-	
+
 }
 
 function doNotMarkFields($k) {
-	
+
 	$notmark = array(
-		"timestamp", 
+		"timestamp",
 		"version"
 	);
-	
+
 	if (in_array($k, $notmark)) {
 		return false;
 	}
-	
+
 	return true;
-	
+
 }
 
 $pathLength = 40;
 
 $tabsBody = $we_tabs->getHTML().we_htmlElement::jsElement('
-						if(!activ_tab) activ_tab = 1; 
+						if(!activ_tab) activ_tab = 1;
 						document.getElementById("tab_"+activ_tab).className="tabActive";
 					');
 
@@ -186,7 +185,7 @@ $_versions_time_days = new we_htmlSelect(array(
 	"class"=>"weSelect",
 	"onChange"=>'previewVersion('.$ID.', this.value);'
 	)
-);	
+);
 
 $versionOld = "";
 if(!empty($oldDoc)) {
@@ -200,46 +199,46 @@ while($_db->next_record()){
 	$versions[$_db->f("ID")]['timestamp'] = date("d.m.y - H:i:s",$_db->f("timestamp"));
 }
 
-$_versions_time_days->addOption("",$GLOBALS['l_versions']['pleaseChoose']);				
+$_versions_time_days->addOption("",g_l('versions','[pleaseChoose]'));
 foreach($versions as $k => $v) {
-	$txt = $GLOBALS['l_versions']['version']." ". $v['version']. " ".$GLOBALS['l_versions']['from'] ." ".$v['timestamp'];
+	$txt = g_l('versions','[version]')." ". $v['version']. " ".g_l('versions','[from]') ." ".$v['timestamp'];
 	$_versions_time_days->addOption($k,$txt);
 }
 
-$contentDiff = '<div style="margin-left:25px;" id="top">'.$GLOBALS['l_versions']['VersionChangeTxt'].'<br/><br/>'.
-			$GLOBALS['l_versions']['VersionNumber']." ".$_versions_time_days->getHtmlCode().'
-			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">'.$GLOBALS['l_versions']["printPage"].'</a></div>
+$contentDiff = '<div style="margin-left:25px;" id="top">'.g_l('versions','[VersionChangeTxt]').'<br/><br/>'.
+			g_l('versions','[VersionNumber]')." ".$_versions_time_days->getHtmlCode().'
+			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">'.g_l('versions','[printPage]').'</a></div>
 			</div>
 			<div style="margin:0px 0px 0px 25px;" id="topPrint">
-					<strong>'.$GLOBALS['l_versions']['versionDiffs'].':</strong><br/>
-					<br/><strong>'.$GLOBALS['l_versions']["Text"].':</strong> '.$newDoc["Text"].'
-					<br/><strong>'.$GLOBALS['l_versions']["documentID"].':</strong> '.$newDoc["documentID"].'
-					<br/><strong>'.$GLOBALS['l_versions']["path"].':</strong> '.$newDoc["Path"].'
+					<strong>'.g_l('versions','[versionDiffs]').':</strong><br/>
+					<br/><strong>'.g_l('versions','[Text]').':</strong> '.$newDoc["Text"].'
+					<br/><strong>'.g_l('versions','[documentID]').':</strong> '.$newDoc["documentID"].'
+					<br/><strong>'.g_l('versions','[path]').':</strong> '.$newDoc["Path"].'
 			</div>
 			<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 			<tr>
-			<td style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;">'.getPixel(30,15).'	
+			<td style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;">'.getPixel(30,15).'
 			</td>
-	  		<td class="defaultfont" align="left" style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;"><strong>'.$GLOBALS['l_versions']['VersionNew'].'</strong></td>';
+	  		<td class="defaultfont" align="left" style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;"><strong>'.g_l('versions','[VersionNew]').'</strong></td>';
 
 if(!empty($oldDoc)) {
-	 $contentDiff .= '<td class="defaultfont" align="left" style="border-left:1px solid #B8B8B7;background-color:#BCBBBB;border-bottom:1px solid #B8B8B7;"><strong>'.$GLOBALS['l_versions']['VersionOld'].'</strong></td>';
+	 $contentDiff .= '<td class="defaultfont" align="left" style="border-left:1px solid #B8B8B7;background-color:#BCBBBB;border-bottom:1px solid #B8B8B7;"><strong>'.g_l('versions','[VersionOld]').'</strong></td>';
 }
 $contentDiff .= '</tr>';
 
 foreach($newDoc as $k => $v) {
 	if(doNotShowFields($k)) {
-		$name = $GLOBALS['l_versions'][$k];
-		
+		$name = g_l('versions','['.$k.']');
+
 		$oldVersion = true;
 		if($k=="ParentID") {
 			$newVal = $newDoc['Path'];
 		}
 		else {
-			$newVal = weVersions::showValue($k, $newDoc[$k], $newDoc['documentTable']);	
+			$newVal = weVersions::showValue($k, $newDoc[$k], $newDoc['documentTable']);
 		}
 		if($k=="Owners" && $newDoc[$k]=="") {
-			$newVal = $GLOBALS['l_versions']['CreatorID'];
+			$newVal = g_l('versions','[CreatorID]');
 		}
 
 		$mark = "border-bottom:1px solid #B8B8B7; ";
@@ -251,7 +250,7 @@ foreach($newDoc as $k => $v) {
 				$oldVal = weVersions::showValue($k, $oldDoc[$k], $oldDoc['documentTable']);
 			}
 			if($k=="Owners" && $oldDoc[$k]=="") {
-				$oldVal = $GLOBALS['l_versions']['CreatorID'];
+				$oldVal = g_l('versions','[CreatorID]');
 			}
 			if(doNotMarkFields($k)) {
 				if($newVal!=$oldVal) {
@@ -271,20 +270,20 @@ foreach($newDoc as $k => $v) {
 		}
 		$contentDiff .= '</tr>';
 	}
-}	
-	
+}
+
 $contentDiff .= '</table>';
- 
+
 //elements
 
 $contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 		<tr>
-		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.$GLOBALS['l_versions']['contentElementsMod'].'</strong></td>';
+		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.g_l('versions','[contentElementsMod]').'</strong></td>';
 
 $contentDiff .= '</tr>';
-	$isTemplate=($newDoc['documentTable']==TEMPLATES_TABLE);	
+	$isTemplate=($newDoc['documentTable']==TEMPLATES_TABLE);
 	$newDocElements = unserialize(html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES));
-	
+
 	if(isset($oldDoc['documentElements'])) {
 		$oldDocElements = unserialize(html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES));
 	}
@@ -292,7 +291,7 @@ $contentDiff .= '</tr>';
 		foreach($newDocElements as $k => $v) {
 			$name = ($k!="") ? $k : getPixel(1,1);
 			$oldVersion = true;
-			
+
 			if($k=='weInternVariantElement') {
 				$newVal = weVersions::showValue($k, $newDocElements[$k]['dat']);
 			}
@@ -302,7 +301,7 @@ $contentDiff .= '</tr>';
 
 			$mark = "border-bottom:1px solid #B8B8B7; ";
 			if(!empty($oldDoc)) {
-				
+
 				if($k=='weInternVariantElement' && isset($oldDocElements[$k]['dat'])) {
 					$oldVal = weVersions::showValue($k, $oldDocElements[$k]['dat']);
 				}
@@ -316,7 +315,7 @@ $contentDiff .= '</tr>';
 				if($newVal!=$oldVal) {
 					$mark .= "background-color:#BFD5FF;";
 				}
-				
+
 			}
 			else {
 				$oldVersion = false;
@@ -358,17 +357,17 @@ $contentDiff .= '</tr>';
 				$contentDiff .= '<td width="33%" style="'.$mark.'border-left:1px solid #B8B8B7;">'.$div.$pre.$oldVal.($pre==''?'':'</pre>').($div==''?'':'</div>').'</td>';
 			}
 			$contentDiff .= '</tr>';
-			
-		}	
+
+		}
 	}
-		
+
 $contentDiff .= '</table>';
 
 	//scheduler
 	$contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 
 			<tr>
-			<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.$GLOBALS['l_versions']['schedulerMod'].'</strong></td>';
+			<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.g_l('versions','[schedulerMod]').'</strong></td>';
 
 	$contentDiff .= '</tr>';
 
@@ -378,7 +377,7 @@ $contentDiff .= '</table>';
 		}
 
 		$mark = "border-bottom:1px solid #B8B8B7; ";
-		
+
 		if(empty($newDocScheduler) && empty($oldDocScheduler)) {
 			$contentDiff .= '<tr>';
 			$contentDiff .= '<td style="border-bottom:1px solid #B8B8B7;">-</td>';
@@ -389,14 +388,14 @@ $contentDiff .= '</table>';
 			foreach($oldDocScheduler as $k => $v) {
 				$number = $k+1;
 				$contentDiff .= '<tr>';
-				$contentDiff .= '<td width="33%" style="background-color:#FFF; "><strong>'.$GLOBALS['l_versions']['scheduleTask'].' '.$number.'</strong></td>';
+				$contentDiff .= '<td width="33%" style="background-color:#FFF; "><strong>'.g_l('versions','[scheduleTask]').' '.$number.'</strong></td>';
 				$contentDiff .= '<td width="33%" style="background-color:#FFF;">'.getPixel(1,1).'</td>';
 				$contentDiff .= '<td width="33%" style="background-color:#FFF;">'.getPixel(1,1).'</td>';
 				$contentDiff .= '</tr>';
-			
+
 				foreach($v as $key => $val) {
-					
-					$name = $GLOBALS['l_versions'][$key];
+
+					$name = g_l('versions','['.$key.']');
 					$newVal = getPixel(1,1);
 					if(!is_array($val)) {
 						$oldVal = weVersions::showValue($key,$val,$oldDoc['documentTable']);
@@ -409,16 +408,16 @@ $contentDiff .= '</table>';
 								$oldVal = getPixel(1,1);
 							}
 					}
-					
-					
+
+
 					$contentDiff .= '<tr>';
 					$contentDiff .= '<td width="33%" style="'.$mark.'"><strong>'.$name.'</strong></td>';
 					$contentDiff .= '<td width="33%" style="'.$mark.'">'.$newVal.'</td>';
 					$contentDiff .= '<td width="33%" style="border-left:1px solid #B8B8B7;'.$mark.'">'.$oldVal.'</td>';
 					$contentDiff .= '</tr>';
-					
+
 				}
-				
+
 			}
 		}
 		else {
@@ -426,7 +425,7 @@ $contentDiff .= '</table>';
 				$number = $k+1;
 
 				$contentDiff .= '<tr>';
-				$contentDiff .= '<td width="33%" style="background-color:#FFF; "><strong>'.$GLOBALS['l_versions']['scheduleTask'].' '.$number.'</strong></td>';
+				$contentDiff .= '<td width="33%" style="background-color:#FFF; "><strong>'.g_l('versions','[scheduleTask]').' '.$number.'</strong></td>';
 				$contentDiff .= '<td width="33%" style="background-color:#FFF;">'.getPixel(1,1).'</td>';
 				if(!empty($oldDoc)) {
 					$contentDiff .= '<td width="33%" style="background-color:#FFF;">'.getPixel(1,1).'</td>';
@@ -436,11 +435,11 @@ $contentDiff .= '</table>';
 
 				foreach($v as $key => $val) {
 					$mark = "border-bottom:1px solid #B8B8B7; ";
-					$name = $GLOBALS['l_versions'][$key];
-					
+					$name = g_l('versions','['.$key.']');
+
 					if(!is_array($val)) {
 						$newVal = weVersions::showValue($key,$val,$newDoc['documentTable']);
-						
+
 						if(!empty($oldDocScheduler)) {
 							if(isset($oldDocScheduler[$k][$key]) && !is_array($oldDocScheduler[$k][$key])) {
 								$oldVal = weVersions::showValue($key,$oldDocScheduler[$k][$key],$oldDoc['documentTable']);
@@ -451,7 +450,7 @@ $contentDiff .= '</table>';
 							if($newVal!=$oldVal) {
 								$mark .= "background-color:#BFD5FF;";
 							}
-					
+
 						}
 						else {
 							$oldVal = getPixel(1,1);
@@ -469,14 +468,14 @@ $contentDiff .= '</table>';
 							if($newVal!=$oldVal) {
 								$mark .= "background-color:#BFD5FF;";
 							}
-					
+
 						}
 						else {
 							$oldVal = getPixel(1,1);
 						}
 					}
-					
-					
+
+
 					$contentDiff .= '<tr>';
 					$contentDiff .= '<td width="33%" style="'.$mark.'"><strong>'.$name.'</strong></td>';
 					$contentDiff .= '<td width="33%" style="'.$mark.'">'.$newVal.'</td>';
@@ -484,18 +483,18 @@ $contentDiff .= '</table>';
 						$contentDiff .= '<td width="33%" style="border-left:1px solid #B8B8B7;'.$mark.'">'.$oldVal.'</td>';
 					}
 					$contentDiff .= '</tr>';
-					
+
 				}
 			}
 		}
 
 	$contentDiff .= '</table>';
-	
-	
+
+
 	//customfilter
 	$contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 			<tr>
-			<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.$GLOBALS['l_versions']['customerMod'].'</strong></td>';
+			<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.g_l('versions','[customerMod]').'</strong></td>';
 
 	$contentDiff .= '</tr>';
 
@@ -514,8 +513,8 @@ $contentDiff .= '</table>';
 		elseif(empty($newCustomFilter) && !empty($oldCustomFilter)) {
 
 			foreach($oldCustomFilter as $key => $val) {
-				
-				$name = $GLOBALS['l_versions'][$key];
+
+				$name = g_l('versions','['.$key.']');
 				$newVal = getPixel(1,1);
 				if(!is_array($val)) {
 					$oldVal = weVersions::showValue($key,$val,$oldDoc['documentTable']);
@@ -528,7 +527,7 @@ $contentDiff .= '</table>';
 						$oldVal = getPixel(1,1);
 					}
 				}
-				
+
 				$contentDiff .= '<tr>';
 				$contentDiff .= '<td width="33%" style="'.$mark.'"><strong>'.$name.'</strong></td>';
 				$contentDiff .= '<td width="33%" style="'.$mark.'border-right:1px solid #000;">'.$newVal.'</td>';
@@ -536,14 +535,14 @@ $contentDiff .= '</table>';
 					$contentDiff .= '<td width="33%" style="'.$mark.'">'.$oldVal.'</td>';
 				}
 				$contentDiff .= '</tr>';
-				
+
 			}
 		}
 		else {
 			foreach($newCustomFilter as $key => $val) {
-				
-				$name = $GLOBALS['l_versions'][$key];
-				
+
+				$name = g_l('versions','['.$key.']');
+
 				$mark = "border-bottom:1px solid #B8B8B7; ";
 
 				if(!is_array($val)) {
@@ -575,14 +574,14 @@ $contentDiff .= '</table>';
 						if($newVal!=$oldVal) {
 							$mark .= "background-color:#BFD5FF;";
 						}
-				
+
 					}
 					else {
 						$oldVal = getPixel(1,1);
 					}
 				}
 
-				
+
 				$contentDiff .= '<tr>';
 				$contentDiff .= '<td width="33%" style="'.$mark.'"><strong>'.$name.'</strong></td>';
 				$contentDiff .= '<td width="33%" style="'.$mark.'">'.$newVal.'</td>';
@@ -590,11 +589,11 @@ $contentDiff .= '</table>';
 					$contentDiff .= '<td width="33%" style="'.$mark.'">'.$oldVal.'</td>';
 				}
 				$contentDiff .= '</tr>';
-				
+
 			}
-			
+
 		}
-			
+
 
 	$contentDiff .= '</table>';
 
@@ -610,13 +609,13 @@ $contentDiff .= '</table>';
 		$_tab_3 = "";
 		$activTab = 1;
 	}
-	
-	
 
-	htmlTop("webEdition - " .$GLOBALS['l_versions']['versioning']);
-	
+
+
+	htmlTop("webEdition - " .g_l('versions','[versioning]'));
+
 	print STYLESHEET;
-	
+
 
 
 ?>
@@ -637,20 +636,20 @@ function toggle(id){
 function previewVersion(ID, newID) {
 	top.opener.top.we_cmd("versions_preview", ID, newID);
 	//new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/we_versions/weVersionsPreview.php?ID="+ID+"&newCompareID="+newID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
-				
+
 }
 
 </script>
 <script src="<?php print JS_DIR; ?>windows.js" language="JavaScript" type="text/javascript"></script>
 <?php print $js;?>
-<style type="text/css" media="screen"> 
+<style type="text/css" media="screen">
 body {margin: 0;padding: 0;}
 td {font-size:11px;vertical-align:top;}
 #tab1 {position:absolute;overflow:auto; }
 #topPrint {display: none;}
 </style>
 
-<style type="text/css" media="print"> 
+<style type="text/css" media="print">
 body {margin: 0;padding: 0;}
 td {font-size:9px;vertical-align:top;}
 #tab1 {position:relative;overflow: visible;font-size:12px; }
@@ -671,27 +670,27 @@ td {font-size:9px;vertical-align:top;}
 
 				<?php print $_tab_1?>
 
-			
+
 		</div>
 		<div id="tab2" style="position:absolute;visibility:hidden;top:30px;left:-9999px;height:680px;overflow:auto;width: 980px;">
 
 				<?php print $_tab_2?>
-		
-		
+
+
 		</div>
 		<div id="tab3" style="position:absolute;visibility:hidden;top:30px;left:-9999px;height:680px;overflow:auto;width: 980px;">
 
 				<?php print $_tab_3?>
-			
-			
+
+
 		</div>
 	</div>
-	
+
 	<div style="left:0;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0;width:100%">
 		<div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
 	</div>
 
-	
+
 
 </body>
 

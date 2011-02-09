@@ -180,8 +180,5 @@ $GLOBALS['l_versions'] = array(
 	'objClassNotExists'				=> "Class no longer exists!",
 	'publishIfReset'				=> "Publish after reset",
 	'doPublish_text'				=> "Choose if the versions will be published after reset."
-	
+
 );
-
-
-?>

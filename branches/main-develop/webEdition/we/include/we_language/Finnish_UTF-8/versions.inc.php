@@ -180,8 +180,5 @@ $GLOBALS['l_versions'] = array(
 	'objClassNotExists'				=> "Luokkaa ei ole enää olemassa!",
 	'publishIfReset'				=> "Julkaise palautuksen jälkeen",
 	'doPublish_text'				=> "Valitse julkaistaanko versiot palautuksen jälkeen."
-	
+
 );
-
-
-?>

@@ -28,7 +28,7 @@ class versionFragment extends taskFragment
 	function versionFragment($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = "")
 	{
 		parent::taskFragment($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
-	
+
 	}
 
 	function doTask()
@@ -40,15 +40,15 @@ class versionFragment extends taskFragment
 	function updateProgressBar()
 	{
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		print 
+		print
 				'<script language="JavaScript" type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
 						shortenPath(
-								$this->data["path"] . " - " . $GLOBALS["l_versions"]['version'] . " " . $this->data["version"], 
+								$this->data["path"] . " - " . g_l('versions','[version]') . " " . $this->data["version"],
 								33)) . '" : "' . "test" . addslashes(
 						shortenPath(
-								$this->data["path"] . " - " . $GLOBALS["l_versions"]['version'] . " " . $this->data["version"], 
+								$this->data["path"] . " - " . g_l('versions','[version]') . " " . $this->data["version"],
 								60)) . '") );parent.wizbusy.setProgress(' . $percent . ');</script>';
-	
+
 	}
 
 	function finish()
@@ -61,19 +61,19 @@ class versionFragment extends taskFragment
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
 		htmlTop();
 		if ($_REQUEST['type'] == "delete_versions") {
-			$responseText = $GLOBALS["l_versions"]["deleteDateVersionsOK"];
+			$responseText = g_l('versions','[deleteDateVersionsOK]');
 		}
 		if ($_REQUEST['type'] == "reset_versions") {
-			$responseText = $GLOBALS["l_versions"]["resetAllVersionsOK"];
+			$responseText = g_l('versions','[resetAllVersionsOK]');
 		}
-		print 
+		print
 				'<script language="JavaScript" type="text/javascript">
 			' . we_message_reporting::getShowMessageCall(
-						addslashes($responseText ? $responseText : ""), 
+						addslashes($responseText ? $responseText : ""),
 						WE_MESSAGE_NOTICE) . '
-			
+
 			// reload current document => reload all open Editors on demand
-						
+
 			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 
@@ -89,7 +89,7 @@ class versionFragment extends taskFragment
 
 			//reload tree
 			top.opener.we_cmd("load", top.opener.treeData.table ,0);
-			
+
 			top.close();
 		</script>
 		</head>
@@ -104,7 +104,7 @@ class versionFragment extends taskFragment
 
 	function printBodyTag($attributes = "")
 	{
-	
+
 	}
 
 	function printFooter()

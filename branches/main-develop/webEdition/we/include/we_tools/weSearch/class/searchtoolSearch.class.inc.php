@@ -182,8 +182,8 @@ class searchtoolsearch extends we_search
 				'Published' => $GLOBALS['l_weSearch']['Published'],
 				'CreationDate' => $GLOBALS['l_weSearch']['CreationDate'],
 				'ModDate' => $GLOBALS['l_weSearch']['ModDate'],
-				'allModsIn' => $GLOBALS['l_versions']['allModsIn'],
-				'modifierID' => $GLOBALS['l_versions']['modUser']
+				'allModsIn' => g_l('versions','[allModsIn]'),
+				'modifierID' => g_l('versions','[modUser]')
 		);
 
 

@@ -3605,7 +3605,7 @@ function we_writeLanguageConfig($default, $available = array()) {
 		if (sizeof($temp) == 1) {
 			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] " . $temp[0] . ",\n";
 		} else {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . \$GLOBALS['l_countries']['" . $temp[1] . "'] . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
+			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
 		}
 	}
 
@@ -3630,7 +3630,6 @@ function we_writeLanguageConfig($default, $available = array()) {
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/countries.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/languages.inc.php");
 
 $GLOBALS["weFrontendLanguages"] = array(
@@ -3638,8 +3637,7 @@ $GLOBALS["weFrontendLanguages"] = array(
 );
 
 $GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";
-
-?>';
+';
 
 	$file = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_conf_language.inc.php";
 	$fh = fopen($file, "w+");
@@ -3834,7 +3832,7 @@ function g_l($name, $specific) {
 	}else{
 		if(isset($cache))unset($cache);
 		//compatibility - try global scope
-		$tmp = getVarArray($GLOBALS["l_$name"], $specific);
+		$tmp = (isset($GLOBALS["l_$name"])?getVarArray($GLOBALS["l_$name"], $specific):false);
 	}
 	if (!($tmp === false)) {
 		return $tmp;
@@ -3842,14 +3840,14 @@ function g_l($name, $specific) {
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/'.str_replace('_','/',$name).'.inc.php';
 	if (file_exists($file)) {
 		include($file);
-		$tmp = getVarArray(${"l_$name"}, $specific);
+		$tmp = (isset(${"l_$name"})?getVarArray(${"l_$name"}, $specific):false);
 		//get local variable - otherwise try global again
 		if(!($tmp === false)){
 			$cache["l_$name"]=${"l_$name"};
 			return $tmp;
 		}else{
 			//try global again
-			return getVarArray($GLOBALS["l_$name"], $specific);
+			return (isset($GLOBALS["l_$name"])?getVarArray($GLOBALS["l_$name"], $specific):false);
 		}
 	}
 	return '';

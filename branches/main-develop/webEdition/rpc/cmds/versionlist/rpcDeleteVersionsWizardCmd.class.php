@@ -21,21 +21,21 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLog.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/versions.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/we/include/we_global.inc.php");
 
 class rpcDeleteVersionsWizardCmd extends rpcCmd {
-	
+
 	function execute() {
-		
+
 		$resp = new rpcResponse();
-		
+
 		protect();
 
-		$db = new DB_WE();	
-		
+		$db = new DB_WE();
+
 		$query = "DELETE FROM `".VERSIONS_TABLE."` WHERE ".$_SESSION['versions']['deleteWizardWhere'];
 		$db->query($query);
-		
+
 		unset($_SESSION['versions']['deleteWizardWhere']);
 
 //		while($db->next_record()) {
@@ -48,34 +48,32 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd {
 			foreach($_SESSION['versions']['deleteWizardbinaryPath'] as $k=>$v) {
 				$binaryPath = $_SERVER["DOCUMENT_ROOT"].$v;
 				$binaryPathUsed = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath='".mysql_real_escape_string($v)."' LIMIT 1","binaryPath",$db);
-	
+
 				if(file_exists($binaryPath) && $binaryPathUsed=="") {
 					@unlink($binaryPath);
 				}
 			}
 			unset($_SESSION['versions']['deleteWizardbinaryPath']);
 		}
-		
+
 		if(!empty($_SESSION['versions']['logDeleteIds'])) {
 			$versionslog = new versionsLog();
 			$versionslog->saveVersionsLog($_SESSION['versions']['logDeleteIds'], WE_LOGGING_VERSIONS_DELETE);
 		}
 		unset($_SESSION['versions']['logDeleteIds']);
-		
-		
+
+
 		$WE_PB = new we_progressBar(100,0,true);
 		$WE_PB->setStudLen(200);
-		
-		$WE_PB->addText($GLOBALS['l_versions']['deleteDateVersionsOK'],0,"pb1");
+
+		$WE_PB->addText(g_l('versions','[deleteDateVersionsOK]'),0,"pb1");
 		$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
-		
-		
+
+
 		$resp->setData("data",$pb) ;
-	
+
 		return $resp;
-		
+
 	}
 }
-
-?>
