@@ -166,8 +166,6 @@ $GLOBALS["l_global"]["required_fields"] = "Required fields";
 $GLOBALS["l_global"]["no_file_uploaded"] = "<p class=\"defaultfont\">At the moment no document is uploaded.</p>";
 $GLOBALS["l_global"]["openCloseBox"] = "Open/Close";
 $GLOBALS["l_global"]["rebuild"] = "Rebuild";
-$GLOBALS["l_global"]["welcome_to_we"] = "Welcome to webEdition 4";
-$GLOBALS["l_global"]["tofit"] = "Welcome to webEdition 4";
 $GLOBALS["l_global"]["unlocking_document"] = "unlocking doocument";
 $GLOBALS["l_global"]["variant_field"] = "Variant field";
 $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following link, if you are not redirected within the next 30 seconds ";

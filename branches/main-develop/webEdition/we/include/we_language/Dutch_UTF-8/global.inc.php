@@ -166,8 +166,6 @@ $GLOBALS["l_global"]["required_fields"] = "Vereiste velden";
 $GLOBALS["l_global"]["no_file_uploaded"] = "<p class=\"defaultfont\">Op dit moment wordt er geen document ge-upload.</p>";
 $GLOBALS["l_global"]["openCloseBox"] = "Open/Sluit";
 $GLOBALS["l_global"]["rebuild"] = "Heropbouwen";
-$GLOBALS["l_global"]["welcome_to_we"] = "Welkom bij webEdition 4";
-$GLOBALS["l_global"]["tofit"] = "Welkom bij webEdition 4";
 $GLOBALS["l_global"]["unlocking_document"] = "Document ontgrendelen";
 $GLOBALS["l_global"]["variant_field"] = "Variant veld";
 $GLOBALS["l_global"]["redirect_to_login_failed"] = "Klik a.u.b. op de volgende koppeling, indien u niet doorgestuurd word binnen 30 seconden ";

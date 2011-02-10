@@ -25,10 +25,11 @@
  * Provides language strings.
  * Language: English
  */
-$l_importrtf["chose"] = "Choose file"; // TRANSLATE
-$l_importrtf["import_rtf"] = "Importar archivo RTF";
-$l_importrtf["use_fontname"] = "Aplicar nombres del tipo de letra RTF";
-$l_importrtf["use_fontsize"] = "Aplicar tamaño del tipo de letra RTF";
-$l_importrtf["use_fontcolor"] = "Aplicar el color del tipo de letra RTF";
-$l_importrtf["no_file"] = "El nombre del archivo está vacio";
-?>
+$l_importrtf=array(
+'chose' => "Choose file", // TRANSLATE
+'import_rtf' => "Importar archivo RTF",
+'use_fontname' => "Aplicar nombres del tipo de letra RTF",
+'use_fontsize' => "Aplicar tamaño del tipo de letra RTF",
+'use_fontcolor' => "Aplicar el color del tipo de letra RTF",
+'no_file' => "El nombre del archivo está vacio",
+);

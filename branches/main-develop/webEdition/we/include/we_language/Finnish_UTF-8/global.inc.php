@@ -166,8 +166,6 @@ $GLOBALS["l_global"]["required_fields"] = "Pakolliset kentät";
 $GLOBALS["l_global"]["no_file_uploaded"] = "<p class=\"defaultfont\">Tuo tiedosto.</p>";
 $GLOBALS["l_global"]["openCloseBox"] = "Avaa/Sulje";
 $GLOBALS["l_global"]["rebuild"] = "Rakenna uudelleen";
-$GLOBALS["l_global"]["welcome_to_we"] = "Tervetuloa webEdition 3 -järjestelmään";
-$GLOBALS["l_global"]["tofit"] = "Tervetuloa webEdition 3 -järjestelmään";
 $GLOBALS["l_global"]["unlocking_document"] = "poistaa lukinnan webEdition -dokumentista";
 $GLOBALS["l_global"]["variant_field"] = "Muunnelmakenttä";
 $GLOBALS["l_global"]["redirect_to_login_failed"] = "Klikkaa seuraavaa linkkiä jos selaintasi ei uudelleenohjata seuraanvan 30 sekunnin kuluessa ";

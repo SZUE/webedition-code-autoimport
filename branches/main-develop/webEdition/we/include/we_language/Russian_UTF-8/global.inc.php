@@ -168,8 +168,6 @@ $GLOBALS["l_global"]["required_fields"] = "Поля, обязательные к
 $GLOBALS["l_global"]["no_file_uploaded"] = "<p class=\"defaultfont\">На данный момент документ еще не загружен.</p>";
 $GLOBALS["l_global"]["openCloseBox"] = "Открыть/Закрыть";
 $GLOBALS["l_global"]["rebuild"] = "Перестроить";
-$GLOBALS["l_global"]["welcome_to_we"] = "Добро пожаловать в webEdition 3!";
-$GLOBALS["l_global"]["tofit"] = "Добро пожаловать в webEdition 3!";
 $GLOBALS["l_global"]["unlocking_document"] = "дать доступ к документу";
 $GLOBALS["l_global"]["variant_field"] = "Поле варианта";
 $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following link, if you are not redirected within the next 30 seconds "; // TRANSLATE

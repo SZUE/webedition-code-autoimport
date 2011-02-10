@@ -3847,9 +3847,16 @@ function g_l($name, $specific) {
 			return $tmp;
 		}else{
 			//try global again
-			return (isset($GLOBALS["l_$name"])?getVarArray($GLOBALS["l_$name"], $specific):false);
+			if(isset($GLOBALS["l_$name"])){
+				$tmp=getVarArray($GLOBALS["l_$name"], $specific);
+			}
+			if($tmp===false){
+				trigger_error('Requested lang entry '."l_$name$specific".' not found!',E_USER_WARNING);
+			}
+			return tmp;
 		}
 	}
+	trigger_error('Requested lang file '.$file.' not found!',E_USER_WARNING);
 	return '';
 }
 

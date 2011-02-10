@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,45 +18,39 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Language file: eplugin.inc.php
  * Provides language strings for editor plugin.
  * Language: English
  */
-$l_eplugin["lan_main_dialog_title"] = "Choose editor";
-$l_eplugin["lan_settings_dialog_title"] = "Settings";
-$l_eplugin["lan_alert_noeditor_title"] = "Error";
-$l_eplugin["lan_alert_noeditor_text"] = "The chosen editor can not be started!";
-$l_eplugin["lan_select_text"] = " Select a editor";
-$l_eplugin["lan_select_button"] = "Select...";
-
-$l_eplugin["lan_start_button"] = "Start";
-$l_eplugin["lan_close_button"] = "Close";
-$l_eplugin["lan_clear_button"] = "Clear list";
-$l_eplugin["lan_list_label"] = "Selected editors";
-$l_eplugin["lan_showall_label"] = "Show all editors";
-$l_eplugin["lan_edit_button"] = "Edit";
-$l_eplugin["lan_default_for"] = "Default for";
-
-$l_eplugin["lan_editor_name"] = "Editor name";
-$l_eplugin["lan_path"] = "Path";
-$l_eplugin["lan_args"] = "Arguments";
-$l_eplugin["lan_contenttypes"] = "Content Types";
-$l_eplugin["lan_defaultfor_label"] = "Default editor for";
-$l_eplugin["lan_del_button"] = "Delete";
-$l_eplugin["lan_save_button"] = "Save";
-$l_eplugin["lan_editor_prop"] = "Editor properties";
-$l_eplugin["lan_autostart_label"] = "use default editor only";
-$l_eplugin["lan_alert_nodefeditor_text"] = "There is no default editor for given content type.Please set a default editor for goven content type in the plugin settings.";
-$l_eplugin["initialisation"] = "webEdition Plugin initialisation...";
-
-$l_eplugin["lan_del_question"] = "Do you want to delete the selected item?";
-$l_eplugin["lan_clear_question"] = "Do you want to delete all items?";
-$l_eplugin["lan_encoding"] = "Encoding";
-
-$l_eplugin['no_java'] = 'It seems that the java plugin is not installed or activated. Minimal requirement for Editor-Plugin is Sun Java 1.4.2_05.';
-
-$l_eplugin['lan_add_button'] = 'Add';
-
-?>
+$l_eplugin = array(
+		'lan_main_dialog_title' => "Choose editor",
+		'lan_settings_dialog_title' => "Settings",
+		'lan_alert_noeditor_title' => "Error",
+		'lan_alert_noeditor_text' => "The chosen editor can not be started!",
+		'lan_select_text' => " Select a editor",
+		'lan_select_button' => "Select...",
+		'lan_start_button' => "Start",
+		'lan_close_button' => "Close",
+		'lan_clear_button' => "Clear list",
+		'lan_list_label' => "Selected editors",
+		'lan_showall_label' => "Show all editors",
+		'lan_edit_button' => "Edit",
+		'lan_default_for' => "Default for",
+		'lan_editor_name' => "Editor name",
+		'lan_path' => "Path",
+		'lan_args' => "Arguments",
+		'lan_contenttypes' => "Content Types",
+		'lan_defaultfor_label' => "Default editor for",
+		'lan_del_button' => "Delete",
+		'lan_save_button' => "Save",
+		'lan_editor_prop' => "Editor properties",
+		'lan_autostart_label' => "use default editor only",
+		'lan_alert_nodefeditor_text' => "There is no default editor for given content type.Please set a default editor for goven content type in the plugin settings.",
+		'initialisation' => "webEdition Plugin initialisation...",
+		'lan_del_question' => "Do you want to delete the selected item?",
+		'lan_clear_question' => "Do you want to delete all items?",
+		'lan_encoding' => "Encoding",
+		'no_java' => 'It seems that the java plugin is not installed or activated. Minimal requirement for Editor-Plugin is Sun Java 1.4.2_05.',
+		'lan_add_button' => 'Add',
+);

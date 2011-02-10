@@ -31,7 +31,6 @@ if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don'
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/users.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/we_tabs.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/prefs.inc.php');
 }
 
 
@@ -2320,9 +2319,9 @@ function mapPermissions() {
 		$dynamic_controls = new we_dynamicControls();
 
 		$groups = array(
-			'glossary'	=> $GLOBALS['l_prefs']['tab_glossary'],
-			'ui'		=> $GLOBALS['l_prefs']['tab_ui'],
-			'editor'	=> $GLOBALS['l_prefs']['tab_editor'],
+			'glossary'	=> g_l('prefs','[tab_glossary]'),
+			'ui'		=> g_l('prefs','[tab_ui]'),
+			'editor'	=> g_l('prefs','[tab_editor]'),
 		);
 
 		$titles = $groups;
@@ -2359,13 +2358,13 @@ function mapPermissions() {
 		// Create checkboxes
 		$_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
 
-		$_table->setCol(0, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name."_Preference_force_glossary_check", $GLOBALS['l_prefs']["force_glossary_check"], "false", "defaultfont", "top.content.setHot()" ));
+		$_table->setCol(0, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name."_Preference_force_glossary_check", g_l('prefs','[force_glossary_check]'), "false", "defaultfont", "top.content.setHot()" ));
 		$_table->setCol(1, 0, null, getPixel(1, 5));
-		$_table->setCol(2, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name."_Preference_force_glossary_action", $GLOBALS['l_prefs']["force_glossary_action"], "false", "defaultfont", "top.content.setHot()" ));
+		$_table->setCol(2, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name."_Preference_force_glossary_action", g_l('prefs','[force_glossary_action]'), "false", "defaultfont", "top.content.setHot()" ));
 
 		// Build dialog if user has permission
 		if (we_hasPerm("ADMINISTRATOR")) {
-			array_push($_settings, array("headline" => $GLOBALS['l_prefs']["glossary_publishing"], "html" => $_table->getHtmlCode(), "space" => 200, "noline" => 1));
+			array_push($_settings, array("headline" => g_l('prefs','[glossary_publishing]'), "html" => $_table->getHtmlCode(), "space" => 200, "noline" => 1));
 		}
 
 		return $_settings;
@@ -2420,13 +2419,13 @@ function mapPermissions() {
 			}
 
 			// Build dialog
-			array_push($_settings, array("headline" => $GLOBALS['l_prefs']["choose_language"], "html" => $_languages->getHtmlCode(), "space" => 200));
+			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages->getHtmlCode(), "space" => 200));
 		} else { // Just one Language Installed, no select box needed
 			foreach ($_language["translation"] as $key=>$value) {
 		    	$_languages = $value;
 		  	}
 			// Build dialog
-			array_push($_settings, array("headline" => $GLOBALS['l_prefs']["choose_language"], "html" => $_languages, "space" => 200));
+			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200));
 		}
 
 
@@ -2445,7 +2444,7 @@ function mapPermissions() {
 			}
 		}
 
-		array_push($_settings, array("headline" => $GLOBALS['l_prefs']["cockpit_amount_columns"], "html" => $_amount->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[cockpit_amount_columns]'), "html" => $_amount->getHtmlCode(), "space" => 200));
 
 
 
@@ -2550,10 +2549,10 @@ function mapPermissions() {
 
 		$_start_type = new we_htmlSelect(array("name" => "seem_start_type","class" => "weSelect", "id" => "seem_start_type", "onchange" => "show_seem_chooser(this.value); top.content.setHot();"));
 
-		$_start_type->addOption("cockpit", $GLOBALS['l_prefs']["seem_start_type_cockpit"]);
-		$_start_type->addOption("document", $GLOBALS['l_prefs']["seem_start_type_document"]);
+		$_start_type->addOption("cockpit", g_l('prefs','[seem_start_type_cockpit]'));
+		$_start_type->addOption("document", g_l('prefs','[seem_start_type_document]'));
 		if(defined("OBJECT_FILES_TABLE")) {
-			$_start_type->addOption("object", $GLOBALS['l_prefs']["seem_start_type_object"]);
+			$_start_type->addOption("object", g_l('prefs','[seem_start_type_object]'));
 
 		}
 		$_start_type->selectOption($_seem_start_type);
@@ -2602,7 +2601,7 @@ function mapPermissions() {
 		if (we_hasPerm("CHANGE_START_DOCUMENT")) {
 			array_push($_settings,
 					array(
-						"headline" => $GLOBALS['l_prefs']["seem_startdocument"],
+						"headline" => g_l('prefs','[seem_startdocument]'),
 						"html" => $js . $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>',
 						"space" => 200
 					)
@@ -2618,7 +2617,7 @@ function mapPermissions() {
 
 		$_file_tree_count = new we_htmlSelect(array("name" => $this->Name."_Preference_default_tree_count", "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 
-		$_file_tree_count->addOption(0, $GLOBALS['l_prefs']["all"]);
+		$_file_tree_count->addOption(0, g_l('prefs','[all]'));
 		if (0 == $_tree_count) {
 				$_file_tree_count->selectOption(0);
 				$_value_selected = true;
@@ -2650,7 +2649,7 @@ function mapPermissions() {
 			$_file_tree_count->selectOption($_tree_count);
 		}
 
-		array_push($_settings, array("headline" => $GLOBALS['l_prefs']["tree_title"], "html" => htmlAlertAttentionBox($GLOBALS['l_prefs']["tree_count_description"],2)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[tree_title]'), "html" => htmlAlertAttentionBox(g_l('prefs','[tree_count_description]'),2)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
 
 
 		/*****************************************************************
@@ -2669,10 +2668,10 @@ function mapPermissions() {
 		}
 
 		// Build maximize window
-		$_window_max_code = we_forms::radiobutton(0, $this->Preferences['sizeOpt'] == 0, $this->Name."_Preference_sizeOpt", $GLOBALS['l_prefs']["maximize"], true, "defaultfont", "document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = true;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = true;top.content.setHot();");
+		$_window_max_code = we_forms::radiobutton(0, $this->Preferences['sizeOpt'] == 0, $this->Name."_Preference_sizeOpt", g_l('prefs','[maximize]'), true, "defaultfont", "document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = true;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = true;top.content.setHot();");
 
 		// Build specify window dimension
-		$_window_specify_code = we_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name."_Preference_sizeOpt", $GLOBALS['l_prefs']["specify"], true, "defaultfont", "document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;top.content.setHot();");
+		$_window_specify_code = we_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name."_Preference_sizeOpt", g_l('prefs','[specify]'), true, "defaultfont", "document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;top.content.setHot();");
 
 		// Create specify window dimension input
 		$_window_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
@@ -2682,8 +2681,8 @@ function mapPermissions() {
 		$_window_specify_table->setCol(2, 0, null, getPixel(1, 5));
 		$_window_specify_table->setCol(3, 0, null, getPixel(40, 1));
 
-		$_window_specify_table->setCol(1, 1, array("class" => "defaultfont"), $GLOBALS['l_prefs']["width"] . ":");
-		$_window_specify_table->setCol(3, 1, array("class" => "defaultfont"), $GLOBALS['l_prefs']["height"] . ":");
+		$_window_specify_table->setCol(1, 1, array("class" => "defaultfont"), g_l('prefs','[width]') . ":");
+		$_window_specify_table->setCol(3, 1, array("class" => "defaultfont"), g_l('prefs','[height]') . ":");
 
 		$_window_specify_table->setCol(1, 2, null, getPixel(10, 1));
 		$_window_specify_table->setCol(3, 2, null, getPixel(10, 1));
@@ -2706,7 +2705,7 @@ function mapPermissions() {
 		$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtmlCode());
 
 		// Build dialog
-		array_push($_settings, array("headline" => $GLOBALS['l_prefs']["dimension"], "html" => $_window_html->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[dimension]'), "html" => $_window_html->getHtmlCode(), "space" => 200));
 
 		// Create predefined window dimension buttons
 		$_window_predefined_table = new we_htmlTable(array("border"=>"0", "align"=>"right", "cellpadding"=>"1", "cellspacing"=>"0"), 3, 1);
@@ -2717,7 +2716,7 @@ function mapPermissions() {
 		$_window_predefined_table->setCol(1, 0, null, getPixel(1, 10));
 
 		// Build dialog
-		array_push($_settings, array("headline" => $GLOBALS['l_prefs']["predefined"], "html" => $_window_predefined_table->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[predefined]'), "html" => $_window_predefined_table->getHtmlCode(), "space" => 200));
 
 		$_settings_cookie = weGetCookieVariable("but_settings_predefined");
 
@@ -2747,7 +2746,7 @@ function mapPermissions() {
 			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
 			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
 			$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
-			array_push($_settings, array("headline" => $GLOBALS['l_prefs']["editor_mode"], "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
+			array_push($_settings, array("headline" => g_l('prefs','[editor_mode]'), "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
 
 		$_template_fonts = array("Courier New", "Courier", "mono", "Verdana", "Arial", "Helvetica", "sans-serif", "none");
 		$_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
@@ -2764,7 +2763,7 @@ function mapPermissions() {
 		}
 
 		// Build specify font
-		$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, $this->Name."_Preference_editorFont", $GLOBALS['l_prefs']["specify"], true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('".$this->Name."_Preference_editorFont')[0].checked) { document.getElementsByName('".$this->Name."_Preference_editorFontname')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('".$this->Name."_Preference_editorFontname')[0].disabled = true;document.getElementsByName('".$this->Name."_Preference_editorFontsize')[0].disabled = true; }");
+		$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, $this->Name."_Preference_editorFont", g_l('prefs','[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('".$this->Name."_Preference_editorFont')[0].checked) { document.getElementsByName('".$this->Name."_Preference_editorFontname')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('".$this->Name."_Preference_editorFontname')[0].disabled = true;document.getElementsByName('".$this->Name."_Preference_editorFontsize')[0].disabled = true; }");
 
 		// Create specify window dimension input
 		$_template_editor_font_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
@@ -2774,8 +2773,8 @@ function mapPermissions() {
 		$_template_editor_font_specify_table->setCol(2, 0, null, getPixel(1, 5));
 		$_template_editor_font_specify_table->setCol(3, 0, null, getPixel(50, 1));
 
-		$_template_editor_font_specify_table->setCol(1, 1, array("class" => "defaultfont"), $GLOBALS['l_prefs']["editor_fontname"] . ":");
-		$_template_editor_font_specify_table->setCol(3, 1, array("class" => "defaultfont"), $GLOBALS['l_prefs']["editor_fontsize"] . ":");
+		$_template_editor_font_specify_table->setCol(1, 1, array("class" => "defaultfont"), g_l('prefs','[editor_fontname]') . ":");
+		$_template_editor_font_specify_table->setCol(3, 1, array("class" => "defaultfont"), g_l('prefs','[editor_fontsize]') . ":");
 
 		$_template_editor_font_specify_table->setCol(1, 2, null, getPixel(10, 1));
 		$_template_editor_font_specify_table->setCol(3, 2, null, getPixel(10, 1));
@@ -2816,7 +2815,7 @@ function mapPermissions() {
 		$_template_editor_font_specify_table->setCol(3, 3, null, $_template_editor_font_sizes_select_box->getHtmlCode());
 
 		// Build dialog
-		array_push($_settings, array("headline" => $GLOBALS['l_prefs']["editor_font"], "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[editor_font]'), "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtmlCode(), "space" => 200));
 
 		$_settings_cookie = weGetCookieVariable("but_settings_editor_predefined");
 

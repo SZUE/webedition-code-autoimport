@@ -18,69 +18,59 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: metadata.inc.php
  * Provides language strings.
  * Language: English
  */
-
-/*****************************************************************************
+/* * ***************************************************************************
  * DOCUMENT TAB
- *****************************************************************************/
+ * *************************************************************************** */
+$l_metadata = array(
+		'filesize' => "Bestandsgrootte",
+		'supported_types' => "Meta gegevens formaten",
+		'none' => "geen",
+		'filetype' => "Bestandstype",
+		/*		 * ***************************************************************************
+		 * METADATA FIELD MAPPING
+		 * *************************************************************************** */
 
-$l_metadata["filesize"] = "Bestandsgrootte";
-$l_metadata["supported_types"] = "Meta gegevens formaten";
-$l_metadata["none"] = "geen";
-$l_metadata["filetype"] = "Bestandstype";
+		'headline' => "Meta gegevens velden",
+		'tagname' => "Veld naam",
+		'type' => "Type", // TRANSLATE
+		'dummy' => "dummy", // TRANSLATE
 
-/*****************************************************************************
- * METADATA FIELD MAPPING
- *****************************************************************************/
+		'save' => "Bezig met bewaren van meta gegevens velden, een ogenblik geduld ...",
+		'save_wait' => "Instellingen bewaren",
+		'saved' => "De meta gegevens velden zijn succesvol bewaard.",
+		'saved_successfully' => "Meta gegevens velden bewaard",
+		'properties' => "Eigenschappen",
+		'fields_hint' => "Defineer extra velden voor meta gegevens. Toegevoegde gegevens(Exit, IPTC) aan het originele bestand, kunnen automatisch inbegrepen worden tijdens het importeren. Voeg één of meerdere velden toe die geïmporteerd moeten worden in het invoer veld &quot;importeer vanuit&quot; in het formaat &quot;[type]/[fieldname]&quot;. Bijvoorbeeld: &quot;exif/copyright,iptc/copyright&quot;. Er kunnen meerdere ingevoerd worden, gescheiden door een komma. Tijdens het importeren worden alle gespecificeerde velden doorzocht.",
+		'import_from' => "Importeer uit",
+		'fields' => "Velden",
+		'add' => "voeg toe",
+		/*		 * ***************************************************************************
+		 * UPLOAD
+		 * *************************************************************************** */
 
-$l_metadata["headline"] = "Meta gegevens velden";
-$l_metadata["tagname"] = "Veld naam";
-$l_metadata["type"] = "Type"; // TRANSLATE
-$l_metadata["dummy"] = "dummy"; // TRANSLATE
+		'import_metadata_at_upload' => "Importeer metagegevens uit bestand",
+		/*		 * ***************************************************************************
+		 * ERROR MESSAGES
+		 * *************************************************************************** */
 
-$l_metadata["save"] = "Bezig met bewaren van meta gegevens velden, een ogenblik geduld ...";
-$l_metadata["save_wait"] = "Instellingen bewaren";
+		'error_meta_field_empty_msg' => "De veldnaam op regel %s1 mag niet leeg zijn!",
+		'meta_field_wrong_chars_messsage' => "De veldnaam '%s1' is niet geldig! Geldige karakters zijn alfa-numeriek, hoofd- en kleine letters (a-z, A-Z, 0-9) en underscore.",
+		'meta_field_wrong_name_messsage' => "De veldnaam '%s1' is niet geldig! Deze naam wordt intern gebruikt in webEdition! De volgende namen zijn niet geldig en kunnen niet gebruikt worden: %s2",
+		'file_size_0' => 'The file size is 0 byte, please upload a document to the server before saving', // TRANSLATE
 
-$l_metadata["saved"] = "De meta gegevens velden zijn succesvol bewaard.";
-$l_metadata["saved_successfully"] = "Meta gegevens velden bewaard";
+		/*		 * ***************************************************************************
+		 * INFO TAB
+		 * *************************************************************************** */
 
-$l_metadata["properties"] = "Eigenschappen";
-
-$l_metadata["fields_hint"] = "Defineer extra velden voor meta gegevens. Toegevoegde gegevens(Exit, IPTC) aan het originele bestand, kunnen automatisch inbegrepen worden tijdens het importeren. Voeg één of meerdere velden toe die geïmporteerd moeten worden in het invoer veld &quot;importeer vanuit&quot; in het formaat &quot;[type]/[fieldname]&quot;. Bijvoorbeeld: &quot;exif/copyright,iptc/copyright&quot;. Er kunnen meerdere ingevoerd worden, gescheiden door een komma. Tijdens het importeren worden alle gespecificeerde velden doorzocht.";
-$l_metadata["import_from"] = "Importeer uit";
-$l_metadata["fields"] = "Velden";
-$l_metadata['add'] = "voeg toe";
-
-/*****************************************************************************
- * UPLOAD
- *****************************************************************************/
-
-$l_metadata["import_metadata_at_upload"] = "Importeer metagegevens uit bestand";
-
-/*****************************************************************************
- * ERROR MESSAGES
- *****************************************************************************/
-
-$l_metadata['error_meta_field_empty_msg'] = "De veldnaam op regel %s1 mag niet leeg zijn!";
-$l_metadata['meta_field_wrong_chars_messsage'] = "De veldnaam '%s1' is niet geldig! Geldige karakters zijn alfa-numeriek, hoofd- en kleine letters (a-z, A-Z, 0-9) en underscore.";
-$l_metadata['meta_field_wrong_name_messsage'] = "De veldnaam '%s1' is niet geldig! Deze naam wordt intern gebruikt in webEdition! De volgende namen zijn niet geldig en kunnen niet gebruikt worden: %s2";
-$l_metadata['file_size_0'] = 'The file size is 0 byte, please upload a document to the server before saving';// TRANSLATE
-
-/*****************************************************************************
- * INFO TAB
- *****************************************************************************/
-
-$l_metadata['info_exif_data'] = "Exif gegevens";
-$l_metadata['info_iptc_data'] = "IPTC gegevens";
-$l_metadata['no_exif_data'] = "Geen Exif gegevens beschikbaar";
-$l_metadata['no_iptc_data'] = "Geen IPTC gegevens available";
-$l_metadata['no_exif_installed'] = "De PHP Exif extensie is niet geïnstalleerd!";
-$l_metadata['no_metadata_supported'] = "webEdition ondersteunt geen metagegevens formaten voor dit type document.";
-
-?>
+		'info_exif_data' => "Exif gegevens",
+		'info_iptc_data' => "IPTC gegevens",
+		'no_exif_data' => "Geen Exif gegevens beschikbaar",
+		'no_iptc_data' => "Geen IPTC gegevens available",
+		'no_exif_installed' => "De PHP Exif extensie is niet geïnstalleerd!",
+		'no_metadata_supported' => "webEdition ondersteunt geen metagegevens formaten voor dit type document.",
+);

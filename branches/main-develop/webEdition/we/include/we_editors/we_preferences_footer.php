@@ -26,7 +26,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/prefs.inc.php");
 
 /*****************************************************************************
  * INITIALIZATION
@@ -46,7 +45,7 @@ $_javascript = <<< END_OF_SCRIPT
 <!--
 var countSaveTrys = 0;
 function we_save() {
-	/* 
+	/*
 	-- ERROR HANDLING IS RUNNING ON SERVER --
 	if(countSaveTrys>10) {
 		$acErrorMsg
@@ -136,5 +135,3 @@ $okbut = $we_button->create_button("save", "javascript:we_save();");
 $cancelbut = $we_button->create_button("cancel", "javascript:top.close()");
 
 print we_htmlElement::htmlBody(array("class" => "weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");
-
-?>

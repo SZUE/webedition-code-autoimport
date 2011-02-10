@@ -18,32 +18,31 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: copy_folder.inc.php
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_copyFolder"]["headline"] = "Copy directory";
-$GLOBALS["l_copyFolder"]["copyFile"] = "Copy file: %s";
-$GLOBALS["l_copyFolder"]["copyFolder"] = "Copy directory: %s";
-$GLOBALS["l_copyFolder"]["rewrite"] = "Rewrite: %s";
-$GLOBALS["l_copyFolder"]["copy_success"] = "Copying successfully finished!";
-$GLOBALS["l_copyFolder"]["create_new_templates"] = "Create new templates";
-$GLOBALS["l_copyFolder"]["create_new_masterTemplates"] = "Create new master templates";
-$GLOBALS["l_copyFolder"]["create_new_includedTemplates"] = "Create new included templates";
-$GLOBALS["l_copyFolder"]["destdir"] = "Generate new templates in";
-$GLOBALS["l_copyFolder"]["correctTemplate"] = "Correct template:  %s";
-$GLOBALS["l_copyFolder"]["create_new_doctypes"] = "Create new document types";
-$GLOBALS["l_copyFolder"]["prepareTemplates"] = "Preparing to  create new  templates";
-$GLOBALS["l_copyFolder"]["categories"] = "Categories";
-$GLOBALS["l_copyFolder"]["overwrite_categories"] = "Overwrite Categories";
-$GLOBALS["l_copyFolder"]["object_copy"] = "Copy objects and object folders";
-$GLOBALS["l_copyFolder"]["object_copy_no_folders"] = "do not copy sub-folders";//TRANSLATE
-$GLOBALS["l_copyFolder"]["sameName_expl"] = "Determine the behavior of webEdition, for the case that another object exisits with the same name and path.";
-$GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Overwrite the existing object";
-$GLOBALS["l_copyFolder"]["sameName_rename"] = "Rename the new object";
-$GLOBALS["l_copyFolder"]["sameName_nothing"] = "Do not copy the object";
-$GLOBALS["l_copyFolder"]["sameName_headline"] = "What to do for objects of the same name?";
-?>
+$GLOBALS["l_copyFolder"] = array(
+		'headline' => "Copy directory",
+		'copyFile' => "Copy file: %s",
+		'copyFolder' => "Copy directory: %s",
+		'rewrite' => "Rewrite: %s",
+		'copy_success' => "Copying successfully finished!",
+		'create_new_templates' => "Create new templates",
+		'create_new_masterTemplates' => "Create new master templates",
+		'create_new_includedTemplates' => "Create new included templates",
+		'destdir' => "Generate new templates in",
+		'correctTemplate' => "Correct template:  %s",
+		'create_new_doctypes' => "Create new document types",
+		'prepareTemplates' => "Preparing to  create new  templates",
+		'categories' => "Categories",
+		'overwrite_categories' => "Overwrite Categories",
+		'object_copy' => "Copy objects and object folders",
+		'object_copy_no_folders' => "do not copy sub-folders", //TRANSLATE
+		'sameName_expl' => "Determine the behavior of webEdition, for the case that another object exisits with the same name and path.",
+		'sameName_overwrite' => "Overwrite the existing object",
+		'sameName_rename' => "Rename the new object",
+		'sameName_nothing' => "Do not copy the object",
+		'sameName_headline' => "What to do for objects of the same name?",
+);

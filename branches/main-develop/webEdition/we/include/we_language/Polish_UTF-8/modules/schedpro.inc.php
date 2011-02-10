@@ -18,48 +18,40 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: schedpro.inc.php
  * Provides language strings.
  * Language: English
  */
-
-$GLOBALS["l_schedpro"] = array();
-$GLOBALS["l_schedpro"]["task"] = array();
-
-$GLOBALS["l_schedpro"]["task"]["headline"] = "Task";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_FROM] = "Publikuj";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_TO] = "Zaparkuj";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_DELETE] = "Kasuj";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_DOCTYPE] = "Zmień typ dokumentu";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_CATEGORY] = "Zmień kategorie";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_DIR] = "Zmień katalog";
-
-$GLOBALS["l_schedpro"]["type"] = array();
-
-$GLOBALS["l_schedpro"]["type"]["headline"] = "Frequency";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_ONCE] = "jednorazowo";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_HOUR] = "godzinna";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_DAY] = "dzienna";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_WEEK] = "tygodniowa";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_MONTH] = "miesięczna";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_YEAR] = "roczna";
-
-$GLOBALS["l_schedpro"]["time"] = "Godzina";
-$GLOBALS["l_schedpro"]["months"] = "Miesiące";
-$GLOBALS["l_schedpro"]["days"] = "Dni";
-$GLOBALS["l_schedpro"]["weekdays"] = "Dni tygdnia";
-$GLOBALS["l_schedpro"]["minutes"] = "Minuty";
-$GLOBALS["l_schedpro"]["datetime"] = "Data/godzina";
-
-$GLOBALS["l_schedpro"]["categories"] = "Kategoria";
-$GLOBALS["l_schedpro"]["doctype"] = "Typ dokumentu";
-$GLOBALS["l_schedpro"]["dirctory"] = "Katalog";
-
-$GLOBALS["l_schedpro"]["active"] = "aktywny";
-$GLOBALS["l_schedpro"]["doctypeAll"] = "Ustawić wartości standardowe";
-
-$GLOBALS["l_schedpro"]["descriptiontext"] = "Aby dodać nowe zaplanowane zadanie należy kliknąć na klawisz Plus";
-?>
+$GLOBALS["l_schedpro"] = array(
+		'task' => array(
+				'headline' => "Task",
+				SCHEDULE_FROM => "Publikuj",
+				SCHEDULE_TO => "Zaparkuj",
+				SCHEDULE_DELETE => "Kasuj",
+				SCHEDULE_DOCTYPE => "Zmień typ dokumentu",
+				SCHEDULE_CATEGORY => "Zmień kategorie",
+				SCHEDULE_DIR => "Zmień katalog",
+		),
+		'type' => array(
+				'headline' => "Frequency",
+				SCHEDULE_TYPE_ONCE => "jednorazowo",
+				SCHEDULE_TYPE_HOUR => "godzinna",
+				SCHEDULE_TYPE_DAY => "dzienna",
+				SCHEDULE_TYPE_WEEK => "tygodniowa",
+				SCHEDULE_TYPE_MONTH => "miesięczna",
+				SCHEDULE_TYPE_YEAR => "roczna",
+		),
+		'time' => "Godzina",
+		'months' => "Miesiące",
+		'days' => "Dni",
+		'weekdays' => "Dni tygdnia",
+		'minutes' => "Minuty",
+		'datetime' => "Data/godzina",
+		'categories' => "Kategoria",
+		'doctype' => "Typ dokumentu",
+		'dirctory' => "Katalog",
+		'active' => "aktywny",
+		'doctypeAll' => "Ustawić wartości standardowe",
+		'descriptiontext' => "Aby dodać nowe zaplanowane zadanie należy kliknąć na klawisz Plus",
+);

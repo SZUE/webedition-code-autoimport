@@ -18,33 +18,31 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: copy_folder.inc.php
  * Provides language strings.
  * Language: Deutsch
  */
-$GLOBALS["l_copyFolder"]["headline"] = "Verzeichnis kopieren";
-$GLOBALS["l_copyFolder"]["copyFile"] = "Kopiere Datei: %s";
-$GLOBALS["l_copyFolder"]["copyFolder"] = "Kopiere Verzeichnis: %s";
-$GLOBALS["l_copyFolder"]["rewrite"] = "Neu schreiben: %s";
-$GLOBALS["l_copyFolder"]["copy_success"] = "Der Kopiervorgang wurde erfolgreich abgeschlossen!";
-$GLOBALS["l_copyFolder"]["create_new_templates"] = "Erzeuge neue Vorlagen";
-$GLOBALS["l_copyFolder"]["create_new_masterTemplates"] = "Erzeuge neue Hauptvorlagen";
-$GLOBALS["l_copyFolder"]["create_new_includedTemplates"] = "Erzeuge neue inkludierte Vorlagen";
-$GLOBALS["l_copyFolder"]["destdir"] = "Neue Vorlagen erstellen in";
-$GLOBALS["l_copyFolder"]["correctTemplate"] = "Korrigiere Vorlage:  %s";
-$GLOBALS["l_copyFolder"]["create_new_doctypes"] = "Erzeuge neue Dokument-Typen";
-$GLOBALS["l_copyFolder"]["prepareTemplates"] = "Erzeugen neuer Vorlagen vorbereiten";
-$GLOBALS["l_copyFolder"]["categories"] = "Kategorien";
-$GLOBALS["l_copyFolder"]["overwrite_categories"] = "Überschreibe Kategorien";
-$GLOBALS["l_copyFolder"]["object_copy"] = "Kopiere Objekte und Objektordner";
-$GLOBALS["l_copyFolder"]["object_copy_no_folders"] = "kopiere keine Unterordner";
-$GLOBALS["l_copyFolder"]["sameName_expl"] = "Bestimmen Sie hier das Verhalten von webEdition, wenn ein Objekt mit gleichem Namen und Pfad existiert.";
-$GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Existierendes Objekt überschreiben";
-$GLOBALS["l_copyFolder"]["sameName_rename"] = "Neues Objekt umbenennen";
-$GLOBALS["l_copyFolder"]["sameName_nothing"] = "Objekt nicht kopieren";
-$GLOBALS["l_copyFolder"]["sameName_headline"] = "Was tun bei gleichem Namen?";
-
-?>
+$GLOBALS["l_copyFolder"] = array(
+		'headline' => "Verzeichnis kopieren",
+		'copyFile' => "Kopiere Datei: %s",
+		'copyFolder' => "Kopiere Verzeichnis: %s",
+		'rewrite' => "Neu schreiben: %s",
+		'copy_success' => "Der Kopiervorgang wurde erfolgreich abgeschlossen!",
+		'create_new_templates' => "Erzeuge neue Vorlagen",
+		'create_new_masterTemplates' => "Erzeuge neue Hauptvorlagen",
+		'create_new_includedTemplates' => "Erzeuge neue inkludierte Vorlagen",
+		'destdir' => "Neue Vorlagen erstellen in",
+		'correctTemplate' => "Korrigiere Vorlage:  %s",
+		'create_new_doctypes' => "Erzeuge neue Dokument-Typen",
+		'prepareTemplates' => "Erzeugen neuer Vorlagen vorbereiten",
+		'categories' => "Kategorien",
+		'overwrite_categories' => "Überschreibe Kategorien",
+		'object_copy' => "Kopiere Objekte und Objektordner",
+		'object_copy_no_folders' => "kopiere keine Unterordner",
+		'sameName_expl' => "Bestimmen Sie hier das Verhalten von webEdition, wenn ein Objekt mit gleichem Namen und Pfad existiert.",
+		'sameName_overwrite' => "Existierendes Objekt überschreiben",
+		'sameName_rename' => "Neues Objekt umbenennen",
+		'sameName_nothing' => "Objekt nicht kopieren",
+		'sameName_headline' => "Was tun bei gleichem Namen?",
+);

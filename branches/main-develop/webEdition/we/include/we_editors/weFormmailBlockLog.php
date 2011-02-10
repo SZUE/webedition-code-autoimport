@@ -22,7 +22,6 @@
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/prefs.inc.php");
 
 		protect();
 		if (we_hasPerm("administrator")) {
@@ -41,8 +40,8 @@
 
 			$headline = array();
 
-			$headline[0] = array('dat' => we_htmlElement::htmlB($l_prefs['ip_address']));
-			$headline[1] = array('dat' => we_htmlElement::htmlB($l_prefs['blocked_until']));
+			$headline[0] = array('dat' => we_htmlElement::htmlB(g_l('prefs','[ip_address]')));
+			$headline[1] = array('dat' => we_htmlElement::htmlB(g_l('prefs','[blocked_until]')));
 			$headline[2] = array('dat' => "");
 
 
@@ -65,11 +64,11 @@
 					$content[$ind] = array();
 					$content[$ind][0]['dat'] = $GLOBALS["DB_WE"]->f("ip");
 					if ($GLOBALS["DB_WE"]->f("blockedUntil") == -1) {
-						$content[$ind][1]['dat'] = htmlspecialchars($l_prefs["forever"]);
+						$content[$ind][1]['dat'] = htmlspecialchars(g_l('prefs','[forever]'));
 					} else {
 						$content[$ind][1]['dat'] = date($l_we_editor_info["date_format"],$GLOBALS["DB_WE"]->f("blockedUntil"));
 					}
-					$content[$ind][2]['dat'] = '<a href="javascript:clearEntry('.$GLOBALS["DB_WE"]->f("id").',\''.$GLOBALS["DB_WE"]->f("ip").'\')">' . $l_prefs['unblock']. '</a>';
+					$content[$ind][2]['dat'] = '<a href="javascript:clearEntry('.$GLOBALS["DB_WE"]->f("id").',\''.$GLOBALS["DB_WE"]->f("ip").'\')">' . g_l('prefs','[unblock]'). '</a>';
 
 					$ind++;
 				}
@@ -108,7 +107,7 @@
 			} else {
 				$parts[]=array(
 						'headline' => '',
-						'html' => 	we_htmlElement::htmlSpan(array('class'=>'middlefontgray'), $l_prefs['log_is_empty']) .
+						'html' => 	we_htmlElement::htmlSpan(array('class'=>'middlefontgray'), g_l('prefs','[log_is_empty]')) .
 									we_htmlElement::htmlBr() .
 									we_htmlElement::htmlBr() ,
 						'space' => 0,
@@ -119,7 +118,7 @@
 			}
 
 			$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
-					we_multiIconBox::getHTML("show_log_data","100%",$parts,30,$we_button->position_yes_no_cancel($refresh,$close,$deleteLogBut),-1,'','',false,$l_prefs["formmail_log"],"",558) .
+					we_multiIconBox::getHTML("show_log_data","100%",$parts,30,$we_button->position_yes_no_cancel($refresh,$close,$deleteLogBut),-1,'','',false,g_l('prefs','[formmail_log]'),"",558) .
 					we_htmlElement::jsElement("self.focus();")
 
 			);
@@ -128,12 +127,12 @@
 			$script = '<script type="text/javascript">
 
 function clearLog() {
-	if (confirm("'.addslashes($l_prefs['clear_log_question']).'")) {
+	if (confirm("'.addslashes(g_l('prefs','[clear_log_question]')).'")) {
 		document.location="'.$_SERVER['PHP_SELF'].'?clearlog=1";
 	}
 }
 function clearEntry(id,ip) {
-	var txt = "' . addslashes($l_prefs['clear_block_entry_question']) . '";
+	var txt = "' . addslashes(g_l('prefs','[clear_block_entry_question]')) . '";
 
 
 	if (confirm(txt.replace(/%s/,ip))) {
@@ -154,4 +153,3 @@ function clearEntry(id,ip) {
 					$body
 				);
 	}
-?>

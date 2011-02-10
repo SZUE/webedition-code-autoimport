@@ -18,48 +18,40 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: schedpro.inc.php
  * Provides language strings.
  * Language: English
  */
-
-$GLOBALS["l_schedpro"] = array();
-$GLOBALS["l_schedpro"]["task"] = array();
-
-$GLOBALS["l_schedpro"]["task"]["headline"] = "Task";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_FROM] = "Publiceer";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_TO] = "Depubliceer";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_DELETE] = "Verwijder";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_DOCTYPE] = "Wijzig document type";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_CATEGORY] = "Wijzig categorieën";
-$GLOBALS["l_schedpro"]["task"][SCHEDULE_DIR] = "Wijzig directory";
-
-$GLOBALS["l_schedpro"]["type"] = array();
-
-$GLOBALS["l_schedpro"]["type"]["headline"] = "Frequency";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_ONCE] = "Één keer";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_HOUR] = "Elk uur";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_DAY] = "Dagelijks";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_WEEK] = "Wekelijks";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_MONTH] = "Maandelijks";
-$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_YEAR] = "Jaarlijks";
-
-$GLOBALS["l_schedpro"]["time"] = "Tijd";
-$GLOBALS["l_schedpro"]["months"] = "Maanden";
-$GLOBALS["l_schedpro"]["days"] = "Dagen";
-$GLOBALS["l_schedpro"]["weekdays"] = "Weekdagen";
-$GLOBALS["l_schedpro"]["minutes"] = "Minuten";
-$GLOBALS["l_schedpro"]["datetime"] = "Datum/Tijd";
-
-$GLOBALS["l_schedpro"]["categories"] = "Categorieën";
-$GLOBALS["l_schedpro"]["doctype"] = "Document type"; // TRANSLATE
-$GLOBALS["l_schedpro"]["dirctory"] = "Directorie";
-
-$GLOBALS["l_schedpro"]["active"] = "Actief";
-$GLOBALS["l_schedpro"]["doctypeAll"] = "Gebruik standaard waardes";
-
-$GLOBALS["l_schedpro"]["descriptiontext"] = "Klik a.u.b. op deze button om een taak toe te voegen aan de Planner.";
-?>
+$GLOBALS["l_schedpro"] = array(
+		'task' => array(
+				'headline' => "Task",
+				SCHEDULE_FROM => "Publiceer",
+				SCHEDULE_TO => "Depubliceer",
+				SCHEDULE_DELETE => "Verwijder",
+				SCHEDULE_DOCTYPE => "Wijzig document type",
+				SCHEDULE_CATEGORY => "Wijzig categorieën",
+				SCHEDULE_DIR => "Wijzig directory",
+		),
+		'type' => array(
+				'headline' => "Frequency",
+				SCHEDULE_TYPE_ONCE => "Één keer",
+				SCHEDULE_TYPE_HOUR => "Elk uur",
+				SCHEDULE_TYPE_DAY => "Dagelijks",
+				SCHEDULE_TYPE_WEEK => "Wekelijks",
+				SCHEDULE_TYPE_MONTH => "Maandelijks",
+				SCHEDULE_TYPE_YEAR => "Jaarlijks",
+		),
+		'time' => "Tijd",
+		'months' => "Maanden",
+		'days' => "Dagen",
+		'weekdays' => "Weekdagen",
+		'minutes' => "Minuten",
+		'datetime' => "Datum/Tijd",
+		'categories' => "Categorieën",
+		'doctype' => "Document type", // TRANSLATE
+		'dirctory' => "Directorie",
+		'active' => "Actief",
+		'doctypeAll' => "Gebruik standaard waardes",
+		'descriptiontext' => "Klik a.u.b. op deze button om een taak toe te voegen aan de Planner.",
+);

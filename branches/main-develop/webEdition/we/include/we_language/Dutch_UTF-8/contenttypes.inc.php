@@ -18,28 +18,27 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: contenttypes.inc.php
  * Provides language strings.
  * Language: English
  */
-$GLOBALS['l_contentTypes']["all_Types"] = "All files"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/xml"] = "XML file"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/html"] = "HTML page"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/plain"] = "Text page"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess file";//TRANSLATE
-$GLOBALS['l_contentTypes']["text/webedition"] = "webEdition page"; // TRANSLATE
-$GLOBALS['l_contentTypes']["image/*"] = "Image"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/weTmpl"] = "webEdition template"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/css"] = "Style sheet"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/js"] = "JavaScript"; // TRANSLATE
-$GLOBALS['l_contentTypes']["application/x-shockwave-flash"] = "Flash movie"; // TRANSLATE
-$GLOBALS['l_contentTypes']["application/*"] = "Binary document"; // TRANSLATE
-$GLOBALS['l_contentTypes']["folder"] = "Directory"; // TRANSLATE
-$GLOBALS['l_contentTypes']["class_folder"] = "Directory"; // TRANSLATE
-$GLOBALS['l_contentTypes']["object"] = "Class"; // TRANSLATE
-$GLOBALS['l_contentTypes']["objectFile"] = "Object"; // TRANSLATE
-$GLOBALS['l_contentTypes']["video/quicktime"] = "Quicktime movie"; // TRANSLATE
-?>
+$GLOBALS['l_contentTypes'] = array(
+		'all_Types' => "All files", // TRANSLATE
+		'text/xml' => "XML file", // TRANSLATE
+		'text/html' => "HTML page", // TRANSLATE
+		'text/plain' => "Text page", // TRANSLATE
+		'text/htaccess' => ".htaccess file", //TRANSLATE
+		'text/webedition' => "webEdition page", // TRANSLATE
+		'image/*' => "Image", // TRANSLATE
+		'text/weTmpl' => "webEdition template", // TRANSLATE
+		'text/css' => "Style sheet", // TRANSLATE
+		'text/js' => "JavaScript", // TRANSLATE
+		'application/x-shockwave-flash' => "Flash movie", // TRANSLATE
+		'application/*' => "Binary document", // TRANSLATE
+		'folder' => "Directory", // TRANSLATE
+		'class_folder' => "Directory", // TRANSLATE
+		'object' => "Class", // TRANSLATE
+		'objectFile' => "Object", // TRANSLATE
+		'video/quicktime' => "Quicktime movie", // TRANSLATE
+);

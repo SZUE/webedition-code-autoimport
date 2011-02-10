@@ -168,8 +168,6 @@ $GLOBALS["l_global"]["required_fields"] = "Campos requeridos";
 $GLOBALS["l_global"]["no_file_uploaded"] = "<p class=\"defaultfont\">Por el momento, ningún documento fue cargado.</p>";
 $GLOBALS["l_global"]["openCloseBox"] = "Abrir/Cerrar";
 $GLOBALS["l_global"]["rebuild"] = "Reconstruir";
-$GLOBALS["l_global"]["welcome_to_we"] = "Bienvenido a webEdition 3";
-$GLOBALS["l_global"]["tofit"] = "Bienvenido a webEdition 3";
 $GLOBALS["l_global"]["unlocking_document"] = "Abriendo documento";
 $GLOBALS["l_global"]["variant_field"] = "Campo variante";
 $GLOBALS["l_global"]["redirect_to_login_failed"] = "Please press the following link, if you are not redirected within the next 30 seconds "; // TRANSLATE

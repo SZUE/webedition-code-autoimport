@@ -18,31 +18,30 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: linklist_edit.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_linklist_edit["objectFile"] = "Объект";
-$l_linklist_edit["edit_link"] = "Редактировать ссылку";
-$l_linklist_edit["link_attr"] = "Атрибут<br>ссылки";
-$l_linklist_edit["link_anchor"] = "Anchor"; // TRANSLATE
-$l_linklist_edit["link_params"] = "Параметры";
-$l_linklist_edit["link_target"] = "Цель ссылки";
-$l_linklist_edit["alt_text"] = "Альтернативный текст";
-$l_linklist_edit["title"] = "Заголовок";
-$l_linklist_edit["keyboard"] = "Клавиатура";
-$l_linklist_edit["accesskey"] = "Ключ доступа";
-$l_linklist_edit["tabindex"] = "Tabindex"; // TRANSLATE
-$l_linklist_edit['language'] = 'Язык';
-$l_linklist_edit['link_language'] = 'Ссылка';
-$l_linklist_edit['href_language'] = 'Документ, связанный ссылкой';
-$l_linklist_edit["internal_image"] = "Внутренняя графика";
-$l_linklist_edit["external_image"] = "Внешняя графика";
-$l_linklist_edit["internal_link"] = "Внутренняя ссылка";
-$l_linklist_edit["external_link"] = "Внешняя ссылка";
-$l_linklist_edit["text"] = "Текст";
-$l_linklist_edit["new_link"] = "Новая ссылка";
-?>
+$l_linklist_edit = array(
+		'objectFile' => "Объект",
+		'edit_link' => "Редактировать ссылку",
+		'link_attr' => "Атрибут<br>ссылки",
+		'link_anchor' => "Anchor", // TRANSLATE
+		'link_params' => "Параметры",
+		'link_target' => "Цель ссылки",
+		'alt_text' => "Альтернативный текст",
+		'title' => "Заголовок",
+		'keyboard' => "Клавиатура",
+		'accesskey' => "Ключ доступа",
+		'tabindex' => "Tabindex", // TRANSLATE
+		'language' => 'Язык',
+		'link_language' => 'Ссылка',
+		'href_language' => 'Документ, связанный ссылкой',
+		'internal_image' => "Внутренняя графика",
+		'external_image' => "Внешняя графика",
+		'internal_link' => "Внутренняя ссылка",
+		'external_link' => "Внешняя ссылка",
+		'text' => "Текст",
+		'new_link' => "Новая ссылка",
+);

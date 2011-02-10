@@ -18,609 +18,558 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Language file: prefs.inc.php
  * Provides language strings.
  * Language: English
  */
-
-/*****************************************************************************
+/* * ***************************************************************************
  * PRELOAD
- *****************************************************************************/
+ * *************************************************************************** */
+$l_prefs = array(
+		'preload' => "Cargando preferencias, un momento ...",
+		'preload_wait' => "Cargando preferencias",
+		/*		 * ***************************************************************************
+		 * SAVE
+		 * *************************************************************************** */
 
-$l_prefs["preload"] = "Cargando preferencias, un momento ...";
-$l_prefs["preload_wait"] = "Cargando preferencias";
+		'save' => "Salvando preferencias, un momento ...",
+		'save_wait' => "Salvando preferencias",
+		'saved' => "Las preferencias han sido salvadas exitosamente.",
+		'saved_successfully' => "Preferencias salvadas",
+		/*		 * ***************************************************************************
+		 * TABS
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * SAVE
- *****************************************************************************/
+		'tab_ui' => "Interfaz del usuario",
+		'tab_glossary' => "Glossary", // TRANSLATE
+		'tab_extensions' => "Extensiones de archivo",
+		'tab_editor' => 'Editor', // TRANSLATE
+		'tab_formmail' => 'Formas de correos',
+		'formmail_recipients' => 'Destinatarios de formas de correos',
+		'tab_proxy' => 'Servidor proxy',
+		'tab_advanced' => 'Advanzada',
+		'tab_system' => 'Sistema',
+		'tab_seolinks' => 'SEO links', // TRANSLATE
+		'tab_error_handling' => 'Manejo de error',
+		'tab_cockpit' => 'Cockpit', // TRANSLATE
+		'tab_cache' => 'Cache', // TRANSLATE
+		'tab_language' => 'Languages', // TRANSLATE
+		'tab_countries' => 'Countries', // TRANSLATE
+		'tab_modules' => 'Módulos',
+		'tab_versions' => 'Versioning', // TRANSLATE
 
-$l_prefs["save"] = "Salvando preferencias, un momento ...";
-$l_prefs["save_wait"] = "Salvando preferencias";
+		/*		 * ***************************************************************************
+		 * USER INTERFACE
+		 * *************************************************************************** */
+		/**
+		 * Countries
+		 */
+		'countries_information' => "Select the countries, which are available in the customer module, shop-module and so on.", // TRANSLATE
+		'countries_headline' => "Country selection", // TRANSLATE
+		'countries_country' => "Country", // TRANSLATE
+		'countries_top' => "top list", // TRANSLATE
+		'countries_show' => "display", // TRANSLATE
+		'countries_noshow' => "no display", // TRANSLATE
 
-$l_prefs["saved"] = "Las preferencias han sido salvadas exitosamente.";
-$l_prefs["saved_successfully"] = "Preferencias salvadas";
+		/**
+		 * LANGUAGE
+		 */
+		'choose_language' => "Idioma",
+		'language_notice' => "The language change will only take effect everywhere after restarting webEdition.", // TRANSLATE
 
-/*****************************************************************************
- * TABS
- *****************************************************************************/
-
-$l_prefs["tab_ui"] = "Interfaz del usuario";
-$l_prefs["tab_glossary"] = "Glossary"; // TRANSLATE
-$l_prefs["tab_extensions"] = "Extensiones de archivo";
-$l_prefs["tab_editor"] = 'Editor'; // TRANSLATE
-$l_prefs["tab_formmail"] = 'Formas de correos';
-$l_prefs["formmail_recipients"] = 'Destinatarios de formas de correos';
-$l_prefs["tab_proxy"] = 'Servidor proxy';
-$l_prefs["tab_advanced"] = 'Advanzada';
-$l_prefs["tab_system"] = 'Sistema';
-$l_prefs["tab_seolinks"] = 'SEO links';// TRANSLATE
-$l_prefs["tab_error_handling"] = 'Manejo de error';
-$l_prefs["tab_cockpit"] = 'Cockpit'; // TRANSLATE
-$l_prefs["tab_cache"] = 'Cache'; // TRANSLATE
-$l_prefs["tab_language"] = 'Languages'; // TRANSLATE
-$l_prefs["tab_countries"] = 'Countries';// TRANSLATE
-$l_prefs["tab_modules"] = 'Módulos';
-$l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
-
-/*****************************************************************************
- * USER INTERFACE
- *****************************************************************************/
-	/**
-	 * Countries
-	 */
-	$l_prefs["countries_information"]= "Select the countries, which are available in the customer module, shop-module and so on.";// TRANSLATE
-	$l_prefs["countries_headline"] = "Country selection";// TRANSLATE
-	$l_prefs["countries_country"] = "Country";// TRANSLATE
-    $l_prefs["countries_top"] = "top list";// TRANSLATE
-    $l_prefs["countries_show"] = "display";// TRANSLATE
-    $l_prefs["countries_noshow"] = "no display";// TRANSLATE
-
-	/**
-	 * LANGUAGE
-	 */
-
-	$l_prefs["choose_language"] = "Idioma";
-	$l_prefs["language_notice"] = "The language change will only take effect everywhere after restarting webEdition."; // TRANSLATE
-
-	/**
-	 * CHARSET
-	 */
-
-	$l_prefs["default_charset"] = "Standard charset"; // TRANSLATE
+		/**
+		 * CHARSET
+		 */
+		'default_charset' => "Standard charset", // TRANSLATE
 
 
-	/**
-	 * SEEM
-	 */
-	$l_prefs["seem"] = "seeMode"; // TRANSLATE
-	$l_prefs["seem_deactivate"] = "Desactivar seeMode";
-	$l_prefs["seem_startdocument"] = "Documento inicio de seeMode";
-	$l_prefs["seem_start_type_document"] = "Document"; // TRANSLATE
-	$l_prefs["seem_start_type_object"] = "Object"; // TRANSLATE
-	$l_prefs["seem_start_type_cockpit"] = "Cockpit"; // TRANSLATE
-	$l_prefs["question_change_to_seem_start"] = "Desea Ud cambiar el documento seleccionado?";
+		/**
+		 * SEEM
+		 */
+		'seem' => "seeMode", // TRANSLATE
+		'seem_deactivate' => "Desactivar seeMode",
+		'seem_startdocument' => "Documento inicio de seeMode",
+		'seem_start_type_document' => "Document", // TRANSLATE
+		'seem_start_type_object' => "Object", // TRANSLATE
+		'seem_start_type_cockpit' => "Cockpit", // TRANSLATE
+		'question_change_to_seem_start' => "Desea Ud cambiar el documento seleccionado?",
+		/**
+		 * Sidebar
+		 */
+		'sidebar' => "Sidebar", // TRANSLATE
+		'sidebar_deactivate' => "deactivate", // TRANSLATE
+		'sidebar_show_on_startup' => "show on startup", // TRANSLATE
+		'sidebar_width' => "Width in pixel", // TRANSLATE
+		'sidebar_document' => "Document", // TRANSLATE
 
 
-	/**
-	 * Sidebar
-	 */
-	$l_prefs["sidebar"] = "Sidebar"; // TRANSLATE
-	$l_prefs["sidebar_deactivate"] = "deactivate"; // TRANSLATE
-	$l_prefs["sidebar_show_on_startup"] = "show on startup"; // TRANSLATE
-	$l_prefs["sidebar_width"] = "Width in pixel"; // TRANSLATE
-	$l_prefs["sidebar_document"] = "Document"; // TRANSLATE
+		/**
+		 * WINDOW DIMENSION
+		 */
+		'dimension' => "Dimensiones de ventana",
+		'maximize' => "Máximizar",
+		'specify' => "Especificar",
+		'width' => "Ancho",
+		'height' => "Alto",
+		'predefined' => "Dimensiones predefinidas",
+		'show_predefined' => "Mostrar dimensiones predefinidas",
+		'hide_predefined' => "Ocultar dimensiones predefinidas",
+		/**
+		 * TREE
+		 */
+		'tree_title' => "Menú en árbol",
+		'all' => "Todos",
+		/*		 * ***************************************************************************
+		 * FILE EXTENSIONS
+		 * *************************************************************************** */
+
+		/**
+		 * FILE EXTENSIONS
+		 */
+		'extensions_information' => "Set the default file extensions for static and dynamic pages here.", // TRANSLATE
+
+		'we_extensions' => "Extensiones webEdition ",
+		'static' => "Páginas estáticas",
+		'dynamic' => "Páginas dinámicas",
+		'html_extensions' => "Extensiones HTML",
+		'html' => "Páginas HTML",
+		/*		 * ***************************************************************************
+		 * Glossary
+		 * *************************************************************************** */
+
+		'glossary_publishing' => "Check before publishing", // TRANSLATE
+		'force_glossary_check' => "Force glossary check", // TRANSLATE
+		'force_glossary_action' => "Force action", // TRANSLATE
+
+		/*		 * ***************************************************************************
+		 * COCKPIT
+		 * *************************************************************************** */
+
+		/**
+		 * Cockpit
+		 */
+		'cockpit_amount_columns' => "Columns in the cockpit ", // TRANSLATE
 
 
-	/**
-	 * WINDOW DIMENSION
-	 */
+		/*		 * ***************************************************************************
+		 * CACHING
+		 * *************************************************************************** */
 
-	$l_prefs["dimension"] = "Dimensiones de ventana";
-	$l_prefs["maximize"] = "Máximizar";
-	$l_prefs["specify"] = "Especificar";
-	$l_prefs["width"] = "Ancho";
-	$l_prefs["height"] = "Alto";
-	$l_prefs["predefined"] = "Dimensiones predefinidas";
-	$l_prefs["show_predefined"] = "Mostrar dimensiones predefinidas";
-	$l_prefs["hide_predefined"] = "Ocultar dimensiones predefinidas";
+		/**
+		 * Cache Type
+		 */
+		'cache_information' => "Set the preset values of the fields \"Caching Type\" and \"Cache lifetime in seconds\" for new templates here.<br /><br />Please note that these setting are only the presets of the fields.", // TRANSLATE
+		'cache_navigation_information' => "Enter the defaults for the &lt;we:navigation&gt; tag here. This value can be overwritten by the attribute \"cachelifetime\" of the &lt;we:navigation&gt; tag.", // TRANSLATE
 
-	/**
-	 * TREE
-	 */
+		'cache_presettings' => "Presetting", // TRANSLATE
+		'cache_type' => "Caching Type", // TRANSLATE
+		'cache_type_none' => "Caching deactivated", // TRANSLATE
+		'cache_type_full' => "Full cache", // TRANSLATE
+		'cache_type_document' => "Document cache", // TRANSLATE
+		'cache_type_wetag' => "we:Tag cache", // TRANSLATE
 
-	$l_prefs["tree_title"] = "Menú en árbol";
-	$l_prefs["all"] = "Todos";
-/*****************************************************************************
- * FILE EXTENSIONS
- *****************************************************************************/
+		/**
+		 * Cache Life Time
+		 */
+		'cache_lifetime' => "Cache lifetime in seconds", // TRANSLATE
 
-	/**
-	 * FILE EXTENSIONS
-	 */
-	$l_prefs["extensions_information"] = "Set the default file extensions for static and dynamic pages here."; // TRANSLATE
-	
-	$l_prefs["we_extensions"] = "Extensiones webEdition ";
-	$l_prefs["static"] = "Páginas estáticas";
-	$l_prefs["dynamic"] = "Páginas dinámicas";
-	$l_prefs["html_extensions"] = "Extensiones HTML";
-	$l_prefs["html"] = "Páginas HTML";
-	
-/*****************************************************************************
- * Glossary
- *****************************************************************************/
-
-	$l_prefs["glossary_publishing"] = "Check before publishing"; // TRANSLATE
-	$l_prefs["force_glossary_check"] = "Force glossary check"; // TRANSLATE
-	$l_prefs["force_glossary_action"] = "Force action"; // TRANSLATE
-
-/*****************************************************************************
- * COCKPIT
- *****************************************************************************/
-
-	/**
-	 * Cockpit
-	 */
-
-	$l_prefs["cockpit_amount_columns"] = "Columns in the cockpit "; // TRANSLATE
+		'cache_lifetimes' => array(
+				0 => "",
+				60 => "1 minute", // TRANSLATE
+				300 => "5 minutes", // TRANSLATE
+				600 => "10 minutes", // TRANSLATE
+				1800 => "30 minutes", // TRANSLATE
+				3600 => "1 hour", // TRANSLATE
+				21600 => "6 hours", // TRANSLATE
+				43200 => "12 hours", // TRANSLATE
+				86400 => "1 day", // TRANSLATE
+		),
+		'delete_cache_after' => 'Clear cache after', // TRANSLATE
+		'delete_cache_add' => 'adding a new entry', // TRANSLATE
+		'delete_cache_edit' => 'changing a entry', // TRANSLATE
+		'delete_cache_delete' => 'deleting a entry', // TRANSLATE
+		'cache_navigation' => 'Default setting', // TRANSLATE
+		'default_cache_lifetime' => 'Default cache lifetime', // TRANSLATE
 
 
-/*****************************************************************************
- * CACHING
- *****************************************************************************/
+		/*		 * ***************************************************************************
+		 * LOCALES // LANGUAGES
+		 * *************************************************************************** */
 
-	/**
-	 * Cache Type
-	 */
-	$l_prefs["cache_information"] = "Set the preset values of the fields \"Caching Type\" and \"Cache lifetime in seconds\" for new templates here.<br /><br />Please note that these setting are only the presets of the fields."; // TRANSLATE
-	$l_prefs["cache_navigation_information"] = "Enter the defaults for the &lt;we:navigation&gt; tag here. This value can be overwritten by the attribute \"cachelifetime\" of the &lt;we:navigation&gt; tag."; // TRANSLATE
-	
-	$l_prefs["cache_presettings"] = "Presetting"; // TRANSLATE
-	$l_prefs["cache_type"] = "Caching Type"; // TRANSLATE
-	$l_prefs["cache_type_none"] = "Caching deactivated"; // TRANSLATE
-	$l_prefs["cache_type_full"] = "Full cache"; // TRANSLATE
-	$l_prefs["cache_type_document"] = "Document cache"; // TRANSLATE
-	$l_prefs["cache_type_wetag"] = "we:Tag cache"; // TRANSLATE
+		/**
+		 * Languages
+		 */
+		'locale_information' => "Add all languages for which you would provide a web page.<br /><br />This preference will be used for the glossary check and the spellchecking.", // TRANSLATE
 
-	/**
-	 * Cache Life Time
-	 */
-	$l_prefs["cache_lifetime"] = "Cache lifetime in seconds"; // TRANSLATE
+		'locale_languages' => "Language", // TRANSLATE
+		'locale_countries' => "Country", // TRANSLATE
+		'locale_add' => "Add language", // TRANSLATE
+		'cannot_delete_default_language' => "The default language cannot be deleted.", // TRANSLATE
+		'language_already_exists' => "This language already exists", // TRANSLATE
+		'language_country_missing' => "Please select also a country", // TRANSLATE
+		'add_dictionary_question' => "Would you like to upload the dictionary for this language?", // TRANSLATE
 
-	$l_prefs['cache_lifetimes'] = array();
-	$l_prefs['cache_lifetimes'][0] = "";
-	$l_prefs['cache_lifetimes'][60] = "1 minute"; // TRANSLATE
-	$l_prefs['cache_lifetimes'][300] = "5 minutes"; // TRANSLATE
-	$l_prefs['cache_lifetimes'][600] = "10 minutes"; // TRANSLATE
-	$l_prefs['cache_lifetimes'][1800] = "30 minutes"; // TRANSLATE
-	$l_prefs['cache_lifetimes'][3600] = "1 hour"; // TRANSLATE
-	$l_prefs['cache_lifetimes'][21600] = "6 hours"; // TRANSLATE
-	$l_prefs['cache_lifetimes'][43200] = "12 hours"; // TRANSLATE
-	$l_prefs['cache_lifetimes'][86400] = "1 day"; // TRANSLATE
+		/*		 * ***************************************************************************
+		 * EDITOR
+		 * *************************************************************************** */
 
-	$l_prefs['delete_cache_after'] = 'Clear cache after'; // TRANSLATE
-	$l_prefs['delete_cache_add'] = 'adding a new entry'; // TRANSLATE
-	$l_prefs['delete_cache_edit'] = 'changing a entry'; // TRANSLATE
-	$l_prefs['delete_cache_delete'] = 'deleting a entry'; // TRANSLATE
-	$l_prefs['cache_navigation'] = 'Default setting'; // TRANSLATE
-	$l_prefs['default_cache_lifetime'] = 'Default cache lifetime'; // TRANSLATE
+		/**
+		 * EDITOR PLUGIN
+		 */
+		'editor_plugin' => 'PlugIn del Editor',
+		'use_it' => "Usarlo",
+		'start_automatic' => "Iniciar automáticamente",
+		'ask_at_start' => 'Preguntar al iniciar cuál<br>editor será usado',
+		'must_register' => 'Debe estar registrado',
+		'change_only_in_ie' => 'Estos ajustes no pueden ser cambiados. El PlugIn del Editor opera solamente con la versión Windows del Internet Explorer, Mozilla, Firebird, así como también Firefox.',
+		'install_plugin' => 'Para poder usar el PlugIn del Editor, el Mozilla ActiveX PlugIn debe de estar instalado.',
+		'confirm_install_plugin' => 'El Mozilla ActiveX PlugIn le permite correr los controles ActiveX en el navegador Mozilla . Después de la instalación, Ud debe reiniciar su navegador.\\n\\nNota: ActiveX puede ser un riesgo de seguridad!\\n\\nContinuar la instalación?',
+		'install_editor_plugin' => 'Para poder usar el Plugin del editor de webEdition, este debe estar instalado.',
+		'install_editor_plugin_text' => 'El Plugin del editor de webEdition será instalado...',
+		/**
+		 * TEMPLATE EDITOR
+		 */
+		'editor_information' => "Specify font and size which should be used for the editing of templates, CSS- and JavaScript files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types.", // TRANSLATE
 
+		'editor_mode' => 'Editor', // TRANSLATE
+		'editor_font' => 'Tipo de letra en el editor',
+		'editor_fontname' => 'Tipo de letra',
+		'editor_fontsize' => 'Tamaño de fuente',
+		'editor_dimension' => 'Dimensión del Editor',
+		'editor_dimension_normal' => 'Predeterminado',
+		/*		 * ***************************************************************************
+		 * FORMMAIL RECIPIENTS
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * LOCALES // LANGUAGES
- *****************************************************************************/
-
-	/**
-	 * Languages
-	 */
-	$l_prefs["locale_information"] = "Add all languages for which you would provide a web page.<br /><br />This preference will be used for the glossary check and the spellchecking."; // TRANSLATE
-
-	$l_prefs["locale_languages"] = "Language"; // TRANSLATE
-	$l_prefs["locale_countries"] = "Country"; // TRANSLATE
-	$l_prefs["locale_add"] = "Add language"; // TRANSLATE
-	$l_prefs['cannot_delete_default_language'] = "The default language cannot be deleted."; // TRANSLATE
-	$l_prefs["language_already_exists"] = "This language already exists"; // TRANSLATE
-	$l_prefs["language_country_missing"] = "Please select also a country"; // TRANSLATE
-	$l_prefs["add_dictionary_question"] = "Would you like to upload the dictionary for this language?"; // TRANSLATE
-
-/*****************************************************************************
- * EDITOR
- *****************************************************************************/
-
-	/**
-	 * EDITOR PLUGIN
-	 */
-
-	$l_prefs["editor_plugin"] = 'PlugIn del Editor';
-	$l_prefs["use_it"] = "Usarlo";
-	$l_prefs["start_automatic"] = "Iniciar automáticamente";
-	$l_prefs["ask_at_start"] = 'Preguntar al iniciar cuál<br>editor será usado';
-	$l_prefs["must_register"] = 'Debe estar registrado';
-	$l_prefs["change_only_in_ie"] = 'Estos ajustes no pueden ser cambiados. El PlugIn del Editor opera solamente con la versión Windows del Internet Explorer, Mozilla, Firebird, así como también Firefox.';
-	$l_prefs["install_plugin"] = 'Para poder usar el PlugIn del Editor, el Mozilla ActiveX PlugIn debe de estar instalado.';
-	$l_prefs["confirm_install_plugin"] = 'El Mozilla ActiveX PlugIn le permite correr los controles ActiveX en el navegador Mozilla . Después de la instalación, Ud debe reiniciar su navegador.\\n\\nNota: ActiveX puede ser un riesgo de seguridad!\\n\\nContinuar la instalación?';
-
-	$l_prefs["install_editor_plugin"] = 'Para poder usar el Plugin del editor de webEdition, este debe estar instalado.';
-	$l_prefs["install_editor_plugin_text"]= 'El Plugin del editor de webEdition será instalado...';
-
-	/**
-	 * TEMPLATE EDITOR
-	 */
-	
-	$l_prefs["editor_information"] = "Specify font and size which should be used for the editing of templates, CSS- and JavaScript files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types."; // TRANSLATE
-	
-	$l_prefs["editor_mode"] = 'Editor'; // TRANSLATE
-	$l_prefs["editor_font"] = 'Tipo de letra en el editor';
-	$l_prefs["editor_fontname"] = 'Tipo de letra';
-	$l_prefs["editor_fontsize"] = 'Tamaño de fuente';
-	$l_prefs["editor_dimension"] = 'Dimensión del Editor';
-	$l_prefs["editor_dimension_normal"] = 'Predeterminado';
-
-/*****************************************************************************
- * FORMMAIL RECIPIENTS
- *****************************************************************************/
-
-	/**
-	 * FORMMAIL RECIPIENTS
-	 */
-
-	$l_prefs["formmail_information"] = "Por favor, entre todas las direcciones de E-Mail que recibirán los formularios enviadas por la función formas de correos (&lt;we:form type=\"formmail\" ..&gt;).<br><br>Si UD no entra una dirección de E-Mail, no podrá mandar formas usando la función de formas de correos!"; // CHECK
+		/**
+		 * FORMMAIL RECIPIENTS
+		 */
+		'formmail_information' => "Por favor, entre todas las direcciones de E-Mail que recibirán los formularios enviadas por la función formas de correos (&lt;we:form type=\"formmail\" ..&gt;).<br><br>Si UD no entra una dirección de E-Mail, no podrá mandar formas usando la función de formas de correos!", // CHECK
 // changed from: "Please enter all E-Mail addresses, which should receive forms sent by the formmail function (&lt;we:form type=\"formmail\" ..&gt;).<br><br>If you do not enter an E-Mail address, you cannot send forms using the formmail function!"
 // changed to  : "Please enter all email addresses, which should receive forms sent by the formmail function (&lt;we:form type=\"formmail\" ..&gt;).<br><br>If you do not enter an email address, you cannot send forms using the formmail function!"
 
 
-	$l_prefs["formmail_log"] = "Formmail log"; // TRANSLATE
-	$l_prefs['log_is_empty'] = "The log is empty!"; // TRANSLATE
-	$l_prefs['ip_address'] = "IP address"; // TRANSLATE
-	$l_prefs['blocked_until'] = "Blocked until"; // TRANSLATE
-	$l_prefs['unblock'] = "Unblock"; // TRANSLATE
-	$l_prefs['clear_log_question'] = "Do you really want to clear the log?"; // TRANSLATE
-	$l_prefs['clear_block_entry_question'] = "Do you really want to unblock the IP %s ?"; // TRANSLATE
-	$l_prefs["forever"] = "Always"; // TRANSLATE
-	$l_prefs["yes"] = "yes"; // TRANSLATE
-	$l_prefs["no"] = "no"; // TRANSLATE
-	$l_prefs["on"] = "on"; // TRANSLATE
-	$l_prefs["off"] = "off"; // TRANSLATE
-	$l_prefs["formmailConfirm"] = "Formmail confirmation function"; // TRANSLATE
-	$l_prefs["logFormmailRequests"] = "Log formmail requests"; // TRANSLATE
-	$l_prefs["deleteEntriesOlder"] = "Delete entries older than"; // TRANSLATE
-	$l_prefs["blockFormmail"] = "Limit formmail requests"; // TRANSLATE
-	$l_prefs["formmailSpan"] = "Within the span of time"; // TRANSLATE
-	$l_prefs["formmailTrials"] = "Requests allowed"; // TRANSLATE
-	$l_prefs["blockFor"] = "Block for"; // TRANSLATE
-	$l_prefs["formmailViaWeDoc"] = "Call formmail via webEdition-Dokument."; // TRANSLATE
-	$l_prefs["never"] = "never"; // TRANSLATE
-	$l_prefs["1_day"] = "1 day"; // TRANSLATE
-	$l_prefs["more_days"] = "%s days"; // TRANSLATE
-	$l_prefs["1_week"] = "1 week"; // TRANSLATE
-	$l_prefs["more_weeks"] = "%s weeks"; // TRANSLATE
-	$l_prefs["1_year"] = "1 year"; // TRANSLATE
-	$l_prefs["more_years"] = "%s years"; // TRANSLATE
-	$l_prefs["1_minute"] = "1 minute"; // TRANSLATE
-	$l_prefs["more_minutes"] = "%s minutes"; // TRANSLATE
-	$l_prefs["1_hour"] = "1 hour"; // TRANSLATE
-	$l_prefs["more_hours"] = "%s hours"; // TRANSLATE
-	$l_prefs["ever"] = "always"; // TRANSLATE
+		'formmail_log' => "Formmail log", // TRANSLATE
+		'log_is_empty' => "The log is empty!", // TRANSLATE
+		'ip_address' => "IP address", // TRANSLATE
+		'blocked_until' => "Blocked until", // TRANSLATE
+		'unblock' => "Unblock", // TRANSLATE
+		'clear_log_question' => "Do you really want to clear the log?", // TRANSLATE
+		'clear_block_entry_question' => "Do you really want to unblock the IP %s ?", // TRANSLATE
+		'forever' => "Always", // TRANSLATE
+		'yes' => "yes", // TRANSLATE
+		'no' => "no", // TRANSLATE
+		'on' => "on", // TRANSLATE
+		'off' => "off", // TRANSLATE
+		'formmailConfirm' => "Formmail confirmation function", // TRANSLATE
+		'logFormmailRequests' => "Log formmail requests", // TRANSLATE
+		'deleteEntriesOlder' => "Delete entries older than", // TRANSLATE
+		'blockFormmail' => "Limit formmail requests", // TRANSLATE
+		'formmailSpan' => "Within the span of time", // TRANSLATE
+		'formmailTrials' => "Requests allowed", // TRANSLATE
+		'blockFor' => "Block for", // TRANSLATE
+		'formmailViaWeDoc' => "Call formmail via webEdition-Dokument.", // TRANSLATE
+		'never' => "never", // TRANSLATE
+		'1_day' => "1 day", // TRANSLATE
+		'more_days' => "%s days", // TRANSLATE
+		'1_week' => "1 week", // TRANSLATE
+		'more_weeks' => "%s weeks", // TRANSLATE
+		'1_year' => "1 year", // TRANSLATE
+		'more_years' => "%s years", // TRANSLATE
+		'1_minute' => "1 minute", // TRANSLATE
+		'more_minutes' => "%s minutes", // TRANSLATE
+		'1_hour' => "1 hour", // TRANSLATE
+		'more_hours' => "%s hours", // TRANSLATE
+		'ever' => "always", // TRANSLATE
 
 
 
 
 
-/*****************************************************************************
- * PROXY SERVER
- *****************************************************************************/
+		/*		 * ***************************************************************************
+		 * PROXY SERVER
+		 * *************************************************************************** */
 
-	/**
-	 * PROXY SERVER
-	 */
+		/**
+		 * PROXY SERVER
+		 */
+		'proxy_information' => "Specify your Proxy settings for your server here, if your server uses a proxy for the connection with the Internet.", // TRANSLATE
 
-	$l_prefs["proxy_information"] = "Specify your Proxy settings for your server here, if your server uses a proxy for the connection with the Internet."; // TRANSLATE
-	
-	$l_prefs["useproxy"] = "Usar servidor proxy para la<br>Actualización en vivo";
-	$l_prefs["proxyaddr"] = "Dirección";
-	$l_prefs["proxyport"] = "Puerto";
-	$l_prefs["proxyuser"] = "Nombre de usuario";
-	$l_prefs["proxypass"] = "Contraseña";
+		'useproxy' => "Usar servidor proxy para la<br>Actualización en vivo",
+		'proxyaddr' => "Dirección",
+		'proxyport' => "Puerto",
+		'proxyuser' => "Nombre de usuario",
+		'proxypass' => "Contraseña",
+		/*		 * ***************************************************************************
+		 * ADVANCED
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * ADVANCED
- *****************************************************************************/
-
-	/**
-	 * ATTRIBS
-	 */
-
-	$l_prefs["default_php_setting"] = "Ajustes predefinidos para<br><em>php</em>-el atributo en we:tags";
-
-	/**
-	 * INLINEEDIT
-	 */
-
-	 $l_prefs["inlineedit_default"] = "Valor por defecto para el atributo <br><em>inlineedit</em> en <br>&lt;we:textarea&gt;";
-
-	/**
-	 * SAFARI WYSIWYG
-	 */
-	 $l_prefs["safari_wysiwyg"] = "Use el Wysiwyg editor<br>de Safari (versión beta)";
-
-	/**
-	 * SHOWINPUTS
-	 */
-	 $l_prefs["showinputs_default"] = "Valor por defecto para el atributo<br><em>showinputs</em> en<br>&lt;we:img&gt;";
-
-	/**
-	 * NAVIGATION
-	 */
-	 $l_prefs["navigation_entries_from_document"] = "Create new navigation entries from the document as"; // TRANSLATE
-	 $l_prefs["navigation_entries_from_document_item"] = "item"; // TRANSLATE
-	 $l_prefs["navigation_entries_from_document_folder"] = "folder"; // TRANSLATE
-	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";// TRANSLATE
-	 $l_prefs["general_directoryindex_hide"] = "Hide DirectoryIndex- file names";// TRANSLATE
-	 $l_prefs["general_directoryindex_hide_description"] = "For the tags <we:link>, <we:linklist>, <we:listview> you can use the attribute 'hidedirindex'";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_hide"] = "in the navigation output";// TRANSLATE
- 	 $l_prefs["wysiwyglinks_directoryindex_hide"] = "in links from the WYSIWYG editor";// TRANSLATE
-	 $l_prefs["objectlinks_directoryindex_hide"] = "in links to objects";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_description"] = "After a change, a rebuild is required (i.e. navigation cache, objects ...)";// TRANSLATE
-	 $l_prefs["navigation_directoryindex_names"] = "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html'";// TRANSLATE
-	 $l_prefs["general_objectseourls"] = "Generate object SEO urls ";// TRANSLATE
-	 $l_prefs["navigation_objectseourls"] = "in the navigation output";// TRANSLATE
-	 $l_prefs["wysiwyglinks_objectseourls"] = "in links from the WYSIWYG editor";// TRANSLATE
-	 $l_prefs["general_objectseourls_description"] = "For the tags <we:link>, <we:linklist>, <we:listview>, <we:object> you can use the attribute 'objectseourls'";// TRANSLATE
-	 $l_prefs["taglinks_directoryindex_hide"] = "preset value for tags";// TRANSLATE
-	 $l_prefs["taglinks_objectseourls"] = "preset value for tags";// TRANSLATE
+		/**
+		 * ATTRIBS
+		 */
+		'default_php_setting' => "Ajustes predefinidos para<br><em>php</em>-el atributo en we:tags",
+		/**
+		 * INLINEEDIT
+		 */
+		'inlineedit_default' => "Valor por defecto para el atributo <br><em>inlineedit</em> en <br>&lt;we:textarea&gt;",
+		/**
+		 * SAFARI WYSIWYG
+		 */
+		'safari_wysiwyg' => "Use el Wysiwyg editor<br>de Safari (versión beta)",
+		/**
+		 * SHOWINPUTS
+		 */
+		'showinputs_default' => "Valor por defecto para el atributo<br><em>showinputs</em> en<br>&lt;we:img&gt;",
+		/**
+		 * NAVIGATION
+		 */
+		'navigation_entries_from_document' => "Create new navigation entries from the document as", // TRANSLATE
+		'navigation_entries_from_document_item' => "item", // TRANSLATE
+		'navigation_entries_from_document_folder' => "folder", // TRANSLATE
+		'navigation_rules_continue' => "Continue to evaluate navigation rules after a first match", // TRANSLATE
+		'general_directoryindex_hide' => "Hide DirectoryIndex- file names", // TRANSLATE
+		'general_directoryindex_hide_description' => "For the tags <we:link>, <we:linklist>, <we:listview> you can use the attribute 'hidedirindex'", // TRANSLATE
+		'navigation_directoryindex_hide' => "in the navigation output", // TRANSLATE
+		'wysiwyglinks_directoryindex_hide' => "in links from the WYSIWYG editor", // TRANSLATE
+		'objectlinks_directoryindex_hide' => "in links to objects", // TRANSLATE
+		'navigation_directoryindex_description' => "After a change, a rebuild is required (i.e. navigation cache, objects ...)", // TRANSLATE
+		'navigation_directoryindex_names' => "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html'", // TRANSLATE
+		'general_objectseourls' => "Generate object SEO urls ", // TRANSLATE
+		'navigation_objectseourls' => "in the navigation output", // TRANSLATE
+		'wysiwyglinks_objectseourls' => "in links from the WYSIWYG editor", // TRANSLATE
+		'general_objectseourls_description' => "For the tags <we:link>, <we:linklist>, <we:listview>, <we:object> you can use the attribute 'objectseourls'", // TRANSLATE
+		'taglinks_directoryindex_hide' => "preset value for tags", // TRANSLATE
+		'taglinks_objectseourls' => "preset value for tags", // TRANSLATE
 
 
-	/**
-	 * DATABASE
-	 */
-
-	$l_prefs["db_connect"] = "Tipo de conexiones de<br> base de datos";
-	$l_prefs["db_set_charset"] = "Connection charset"; // TRANSLATE
-	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems."; // TRANSLATE
-	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed."; // TRANSLATE
-
-	
-	/**
-	 * HTTP AUTHENTICATION
-	 */
-
-	$l_prefs["auth"] = "Autentificación HTTP";
-	$l_prefs["useauth"] = "El servidor usa autentificación<br>HTTP en el directorio<br>webEdition";
-	$l_prefs["authuser"] = "Nombre de usuario";
-	$l_prefs["authpass"] = "Contraseña";
-
-	/**
- 	* THUMBNAIL DIR
- 	*/
-	$l_prefs["thumbnail_dir"] = "Directorio de imágenes en miniatura";
-
-	$l_prefs["pagelogger_dir"] = "Directorio pageLogger";
-	
-	/**
-	 * HOOKS
-	 */
-	$l_prefs["hooks"] = "Hooks"; // TRANSLATE 
-	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
-	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; //TRANSLATE
-
-	/**
-	 * Backward compatibility
-	 */
-	$l_prefs["backwardcompatibility"] = "Backward compatibility";//TRANSLATE
-	$l_prefs["backwardcompatibility_tagloading"] = "Load all 'old' we_tag functions";//TRANSLATE
-	$l_prefs["backwardcompatibility_tagloading_message"] = "Only necessary if in custom_tags or in PHP code inside templates we_tags are called in the form we_tag_tagname().<br/> Recommended call: we_tag<br/>('tagname',&#36;attribs,&#36;content)";//TRANSLATE
-
-/*****************************************************************************
- * ERROR HANDLING
- *****************************************************************************/
+		/**
+		 * DATABASE
+		 */
+		'db_connect' => "Tipo de conexiones de<br> base de datos",
+		'db_set_charset' => "Connection charset", // TRANSLATE
+		'db_set_charset_information' => "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.", // TRANSLATE
+		'db_set_charset_warning' => "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed.", // TRANSLATE
 
 
-	$l_prefs['error_no_object_found'] = 'Errorpage for not existing objects'; // TRANSLATE
+		/**
+		 * HTTP AUTHENTICATION
+		 */
+		'auth' => "Autentificación HTTP",
+		'useauth' => "El servidor usa autentificación<br>HTTP en el directorio<br>webEdition",
+		'authuser' => "Nombre de usuario",
+		'authpass' => "Contraseña",
+		/**
+		 * THUMBNAIL DIR
+		 */
+		'thumbnail_dir' => "Directorio de imágenes en miniatura",
+		'pagelogger_dir' => "Directorio pageLogger",
+		/**
+		 * HOOKS
+		 */
+		'hooks' => "Hooks", // TRANSLATE
+		'hooks_information' => "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
+	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?", //TRANSLATE
 
-	/**
-	 * TEMPLATE TAG CHECK
-	 */
+		/**
+		 * Backward compatibility
+		 */
+		'backwardcompatibility' => "Backward compatibility", //TRANSLATE
+		'backwardcompatibility_tagloading' => "Load all 'old' we_tag functions", //TRANSLATE
+		'backwardcompatibility_tagloading_message' => "Only necessary if in custom_tags or in PHP code inside templates we_tags are called in the form we_tag_tagname().<br/> Recommended call: we_tag<br/>('tagname',&#36;attribs,&#36;content)", //TRANSLATE
 
-	$l_prefs["templates"] = "Templates"; // TRANSLATE
-	$l_prefs["disable_template_tag_check"] = "Deactivate check for missing,<br />closing we:tags"; // TRANSLATE
+		/*		 * ***************************************************************************
+		 * ERROR HANDLING
+		 * *************************************************************************** */
 
-	/**
-	 * ERROR HANDLER
-	 */
 
-	$l_prefs["error_use_handler"] = "Usar el proceso de tratamiento<br>de errores de webEdition";
+		'error_no_object_found' => 'Errorpage for not existing objects', // TRANSLATE
 
-	/**
-	 * ERROR TYPES
-	 */
+		/**
+		 * TEMPLATE TAG CHECK
+		 */
+		'templates' => "Templates", // TRANSLATE
+		'disable_template_tag_check' => "Deactivate check for missing,<br />closing we:tags", // TRANSLATE
 
-	$l_prefs["error_types"] = "Tratar estos errores";
-	$l_prefs["error_notices"] = "Avisos";
-	$l_prefs["error_deprecated"] = "deprecated Notices";//TRANSLATE
-	$l_prefs["error_warnings"] = "Advertencias";
-	$l_prefs["error_errors"] = "Errores";
+		/**
+		 * ERROR HANDLER
+		 */
+		'error_use_handler' => "Usar el proceso de tratamiento<br>de errores de webEdition",
+		/**
+		 * ERROR TYPES
+		 */
+		'error_types' => "Tratar estos errores",
+		'error_notices' => "Avisos",
+		'error_deprecated' => "deprecated Notices", //TRANSLATE
+		'error_warnings' => "Advertencias",
+		'error_errors' => "Errores",
+		'error_notices_warning' => 'Option for developers! Do not activate on live-systems.', // TRANSLATE
 
-	$l_prefs["error_notices_warning"] = 'Option for developers! Do not activate on live-systems.'; // TRANSLATE
+		/**
+		 * ERROR DISPLAY
+		 */
+		'error_displaying' => "Desplegando errores",
+		'error_display' => "Mostrar errores",
+		'error_log' => "Reportar errores",
+		'error_mail' => "Enviar un correos",
+		'error_mail_address' => "Direción",
+		'error_mail_not_saved' => 'Los errores no serán enviados a la dirección de E-mail dada porque la dirección no es correcta!\n\nLa preferencias restantes han sido salvadas exitosamente.',
+		/**
+		 * DEBUG FRAME
+		 */
+		'show_expert' => "Mostrar ajustes del experto",
+		'hide_expert' => "Ocultar ajustes del experto",
+		'show_debug_frame' => "Mostrar marco del depurador",
+		'debug_normal' => "En modo normal",
+		'debug_seem' => "En seeMode",
+		'debug_restart' => "Los cambios requieren de un reinicio",
+		/*		 * ***************************************************************************
+		 * MODULES
+		 * *************************************************************************** */
 
-	/**
-	 * ERROR DISPLAY
-	 */
+		/**
+		 * OBJECT MODULE
+		 */
+		'module_object' => "Módulo Base de datos/Objeto",
+		'tree_count' => "Número de objetos mostrados",
+		'tree_count_description' => "Este valor define el número máximo de objetos que son mostrados en la navegación a la izquierda.",
+		/*		 * ***************************************************************************
+		 * BACKUP
+		 * *************************************************************************** */
+		'backup' => "Reserva",
+		'backup_slow' => "Lento",
+		'backup_fast' => "Rápido",
+		'performance' => "Aqui Ud puede ajustar un nivel apropiado de ejecución. El nivel de ejecución debe ser adecuado al sistema de su servidor. Si su sistema tiene recursos limitados (memoria, pausas, etc) Ud debe escoger un nivel menor sino puede escoger un nivel mayor.",
+		'backup_auto' => "Auto", // TRANSLATE
 
-	$l_prefs["error_displaying"] = "Desplegando errores";
-	$l_prefs["error_display"] = "Mostrar errores";
-	$l_prefs["error_log"] = "Reportar errores";
-	$l_prefs["error_mail"] = "Enviar un correos";
-	$l_prefs["error_mail_address"] = "Direción";
-	$l_prefs["error_mail_not_saved"] = 'Los errores no serán enviados a la dirección de E-mail dada porque la dirección no es correcta!\n\nLa preferencias restantes han sido salvadas exitosamente.';
-
-	/**
-	 * DEBUG FRAME
-	 */
-
-	$l_prefs["show_expert"] = "Mostrar ajustes del experto";
-	$l_prefs["hide_expert"] = "Ocultar ajustes del experto";
-	$l_prefs["show_debug_frame"] = "Mostrar marco del depurador";
-	$l_prefs["debug_normal"] = "En modo normal";
-	$l_prefs["debug_seem"] = "En seeMode";
-	$l_prefs["debug_restart"] = "Los cambios requieren de un reinicio";
-
-/*****************************************************************************
- * MODULES
- *****************************************************************************/
-
-	/**
-	 * OBJECT MODULE
-	 */
-
-	$l_prefs["module_object"] = "Módulo Base de datos/Objeto";
-	$l_prefs["tree_count"] = "Número de objetos mostrados";
-	$l_prefs["tree_count_description"] = "Este valor define el número máximo de objetos que son mostrados en la navegación a la izquierda.";
-
-/*****************************************************************************
- * BACKUP
- *****************************************************************************/
-	$l_prefs["backup"] = "Reserva";
-	$l_prefs["backup_slow"] = "Lento";
-	$l_prefs["backup_fast"] = "Rápido";
-	$l_prefs["performance"] = "Aqui Ud puede ajustar un nivel apropiado de ejecución. El nivel de ejecución debe ser adecuado al sistema de su servidor. Si su sistema tiene recursos limitados (memoria, pausas, etc) Ud debe escoger un nivel menor sino puede escoger un nivel mayor.";
-	$l_prefs["backup_auto"]="Auto"; // TRANSLATE
-
-/*****************************************************************************
- * Validation
- *****************************************************************************/
-	$l_prefs['validation']='Validación';
-	$l_prefs['xhtml_default'] = 'Valor por defecto para el atributo <em>xml</em> en we:Tags';
-	$l_prefs['xhtml_debug_explanation'] = '´La depuración de XHTML soportará su desarrollo de un sitio web xhtml válido. La salida de cada we:Tag será chequeada para su validez y los atributos mal colocados pueden ser mostrados o removidos. Por favor notar: Esta acción puede tardar algún tiempo. En consecuencia usted debe activar la depuración xhtml solo durante el desarrollo de su sitio web.'; // CHECK
+		/*		 * ***************************************************************************
+		 * Validation
+		 * *************************************************************************** */
+		'validation' => 'Validación',
+		'xhtml_default' => 'Valor por defecto para el atributo <em>xml</em> en we:Tags',
+		'xhtml_debug_explanation' => '´La depuración de XHTML soportará su desarrollo de un sitio web xhtml válido. La salida de cada we:Tag será chequeada para su validez y los atributos mal colocados pueden ser mostrados o removidos. Por favor notar: Esta acción puede tardar algún tiempo. En consecuencia usted debe activar la depuración xhtml solo durante el desarrollo de su sitio web.', // CHECK
 // changed from: 'The XHTML debugging will support your development of a xhtml valid web-site. The output of every we:Tag will be checked for validity and misplaced attribs can be displayed or removed. Please note: This action can take some time. Therefore you should only activate xhtml debugging during the development of your web-site.'
 // changed to  : 'The XHTML debugging will support your development of a xhtml valid web-site. The output of every we:Tag will be checked for validity and misplaced attributes can be displayed or removed. Please note: This action can take some time. Therefore you should only activate xhtml debugging during the development of your web-site.'
 
-	$l_prefs['xhtml_debug_headline'] = 'Depuración XHTML';
-	$l_prefs['xhtml_debug_html'] = 'Activar depuración XHTML';
-	$l_prefs['xhtml_remove_wrong'] = 'Remover atributos no válidos';
-	$l_prefs['xhtml_show_wrong_headline'] = 'Notificación de atributos no válidos';
-	$l_prefs['xhtml_show_wrong_html'] = 'Activar';
-	$l_prefs['xhtml_show_wrong_text_html'] = 'Como texto';
-	$l_prefs['xhtml_show_wrong_js_html'] = 'Como Alerta-JavaScript';
-	$l_prefs['xhtml_show_wrong_error_log_html'] = 'En el log (PHP) de error';
+		'xhtml_debug_headline' => 'Depuración XHTML',
+		'xhtml_debug_html' => 'Activar depuración XHTML',
+		'xhtml_remove_wrong' => 'Remover atributos no válidos',
+		'xhtml_show_wrong_headline' => 'Notificación de atributos no válidos',
+		'xhtml_show_wrong_html' => 'Activar',
+		'xhtml_show_wrong_text_html' => 'Como texto',
+		'xhtml_show_wrong_js_html' => 'Como Alerta-JavaScript',
+		'xhtml_show_wrong_error_log_html' => 'En el log (PHP) de error',
+		/*		 * ***************************************************************************
+		 * max upload size
+		 * *************************************************************************** */
+		'we_max_upload_size' => "El tamaño máximo de subida<br>mostrándose en señales",
+		'we_max_upload_size_hint' => "(en MByte, 0=automatic)",
+		/*		 * ***************************************************************************
+		 * we_new_folder_mod
+		 * *************************************************************************** */
+		'we_new_folder_mod' => "Derechos de acceso<br>nuevos directorios",
+		'we_new_folder_mod_hint' => "(valor predeterminado es 755)",
+		/*		 * ***************************************************************************
+		 * we_doctype_workspace_behavior
+		 * *************************************************************************** */
+
+		'we_doctype_workspace_behavior_hint0' => "El directorio por defecto de un tipo de documento ha de estar localizado dentro del área de trabajo del usuario, de esta manera puede seleccionar el tipo de documento correspondiente.",
+		'we_doctype_workspace_behavior_hint1' => "El área de trabajo del usuario ha de estar localizada dentro del directorio por defecto definido en el tipo de documento por el usuario pudiendo de esta manera seleccionar el tipo de documento.",
+		'we_doctype_workspace_behavior_1' => "Inverso",
+		'we_doctype_workspace_behavior_0' => "Standard", // TRANSLATE
+		'we_doctype_workspace_behavior' => "Comportamiento de la selección del tipo de documento",
+		/*		 * ***************************************************************************
+		 * jupload
+		 * *************************************************************************** */
+
+		'use_jupload' => 'Use java upload', // TRANSLATE
+
+		/*		 * ***************************************************************************
+		 * message_reporting
+		 * *************************************************************************** */
+		'message_reporting' => array(
+				'information' => "You can decide on the respective check boxes whether you like to receive a notice for webEdition operations as for example saving, publishing or deleting.", // TRANSLATE
+
+				'headline' => "Notifications", // TRANSLATE
+				'show_notices' => "Show Notices", // TRANSLATE
+				'show_warnings' => "Show Warnings", // TRANSLATE
+				'show_errors' => "Show Errors", // TRANSLATE
+		),
+		/*		 * ***************************************************************************
+		 * Module Activation
+		 * *************************************************************************** */
+		'module_activation' => array(
+				'information' => "Here you can activate or deactivate your modules if you do not need them.<br />Deactivated modules improve the overall performance of webEdition.<br />For some modules, you have to restart webEdition to activate.<br />The Shop module requires the Customer module, the Workflow module requires the ToDo-Messaging module.", // TRANSLATE
+
+				'headline' => "Module activation", // TRANSLATE
+		),
+		/*		 * ***************************************************************************
+		 * Email settings
+		 * *************************************************************************** */
+
+		'mailer_information' => "Adjust whether webEditionin should dispatch emails via the integrated PHP function or a seperate SMTP server should be used.<br /><br />When using a SMTP mail server, the risk that messages are classified by the receiver as a \"Spam\" is lowered.", // TRANSLATE
+
+		'mailer_type' => "Mailer type", // TRANSLATE
+		'mailer_php' => "Use php mail() function", // TRANSLATE
+		'mailer_smtp' => "Use SMTP server", // TRANSLATE
+		'email' => "E-Mail", // TRANSLATE
+		'tab_email' => "E-Mail", // TRANSLATE
+		'smtp_auth' => "Authentication", // TRANSLATE
+		'smtp_server' => "SMTP server", // TRANSLATE
+		'smtp_port' => "SMTP port", // TRANSLATE
+		'smtp_username' => "User name", // TRANSLATE
+		'smtp_password' => "Password", // TRANSLATE
+		'smtp_halo' => "SMTP halo", // TRANSLATE
+		'smtp_timeout' => "SMTP timeout", // TRANSLATE
+		'smtp_encryption' => "encrypted transport", // TRANSLATE
+		'smtp_encryption_none' => "no", // TRANSLATE
+		'smtp_encryption_ssl' => "SSL", // TRANSLATE
+		'smtp_encryption_tls' => "TLS", // TRANSLATE
 
 
-/*****************************************************************************
- * max upload size
- *****************************************************************************/
-	$l_prefs["we_max_upload_size"]="El tamaño máximo de subida<br>mostrándose en señales";
-	$l_prefs["we_max_upload_size_hint"]="(en MByte, 0=automatic)";
+		/*		 * ***************************************************************************
+		 * Versions settings
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * we_new_folder_mod
- *****************************************************************************/
-	$l_prefs["we_new_folder_mod"]="Derechos de acceso<br>nuevos directorios";
-	$l_prefs["we_new_folder_mod_hint"]="(valor predeterminado es 755)";
-
-/*****************************************************************************
-* we_doctype_workspace_behavior
-*****************************************************************************/
-
-   $l_prefs["we_doctype_workspace_behavior_hint0"] = "El directorio por defecto de un tipo de documento ha de estar localizado dentro del área de trabajo del usuario, de esta manera puede seleccionar el tipo de documento correspondiente.";
-   $l_prefs["we_doctype_workspace_behavior_hint1"] = "El área de trabajo del usuario ha de estar localizada dentro del directorio por defecto definido en el tipo de documento por el usuario pudiendo de esta manera seleccionar el tipo de documento.";
-   $l_prefs["we_doctype_workspace_behavior_1"] = "Inverso";
-   $l_prefs["we_doctype_workspace_behavior_0"] = "Standard"; // TRANSLATE
-   $l_prefs["we_doctype_workspace_behavior"] = "Comportamiento de la selección del tipo de documento";
-
-
-/*****************************************************************************
- * jupload
- *****************************************************************************/
-
-	$l_prefs['use_jupload'] = 'Use java upload'; // TRANSLATE
-
-/*****************************************************************************
- * message_reporting
- *****************************************************************************/
-	$l_prefs["message_reporting"]["information"] = "You can decide on the respective check boxes whether you like to receive a notice for webEdition operations as for example saving, publishing or deleting."; // TRANSLATE
-	
-	$l_prefs["message_reporting"]["headline"] = "Notifications"; // TRANSLATE
-	$l_prefs["message_reporting"]["show_notices"] = "Show Notices"; // TRANSLATE
-	$l_prefs["message_reporting"]["show_warnings"] = "Show Warnings"; // TRANSLATE
-	$l_prefs["message_reporting"]["show_errors"] = "Show Errors"; // TRANSLATE
+		'versioning' => "Versioning", // TRANSLATE
+		'version_all' => "all", // TRANSLATE
+		'versioning_activate_text' => "Activate versioning for some or all content types.", // TRANSLATE
+		'versioning_time_text' => "If you specify a time period, only versions are saved which are created in this time until today. Older versions will be deleted.", // TRANSLATE
+		'versioning_time' => "Time period", // TRANSLATE
+		'versioning_anzahl_text' => "Number of versions which will be created for each document or object.", // TRANSLATE
+		'versioning_anzahl' => "Number", // TRANSLATE
+		'versioning_wizard_text' => "Open the Version-Wizard to delete or reset versions.", // TRANSLATE
+		'versioning_wizard' => "Open Versions-Wizard", // TRANSLATE
+		'ContentType' => "Content Type", // TRANSLATE
+		'versioning_create_text' => "Determine which actions provoke new versions. Either if you publish or if you save, unpublish, delete or import files, too.", // TRANSLATE
+		'versioning_create' => "Create Version", // TRANSLATE
+		'versions_create_publishing' => "only when publishing", // TRANSLATE
+		'versions_create_always' => "always", // TRANSLATE
+		'versioning_templates_text' => "Define special values for the <b>versioning of templates</b>", // TRANSLATE
+		'versions_create_tmpl_publishing' => "only using special button", // TRANSLATE
+		'versions_create_tmpl_always' => "always", // TRANSLATE
 
 
-/*****************************************************************************
- * Module Activation
- *****************************************************************************/
-	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br />Deactivated modules improve the overall performance of webEdition.<br />For some modules, you have to restart webEdition to activate.<br />The Shop module requires the Customer module, the Workflow module requires the ToDo-Messaging module."; // TRANSLATE
-	
-	$l_prefs["module_activation"]["headline"] = "Module activation"; // TRANSLATE
+		'use_jeditor' => "Use", // TRANSLATE
+		'editor_font_colors' => 'Specify font colors', // TRANSLATE
+		'editor_normal_font_color' => 'Default', // TRANSLATE
+		'editor_we_tag_font_color' => 'webEdition tags', // TRANSLATE
+		'editor_we_attribute_font_color' => 'webEdition attributes', // TRANSLATE
+		'editor_html_tag_font_color' => 'HTML tags', // TRANSLATE
+		'editor_html_attribute_font_color' => 'HTML attributes', // TRANSLATE
+		'editor_pi_tag_font_color' => 'PHP code', // TRANSLATE
+		'editor_comment_font_color' => 'Comments', // TRANSLATE
+		'editor_highlight_colors' => 'Highlighting colors', // TRANSLATE
+		'editor_linenumbers' => 'Line numbers', // TRANSLATE
+		'editor_completion' => 'Code Completion', // TRANSLATE
+		'editor_tooltips' => 'Tooltips on we:tags', // TRANSLATE
+		'editor_docuclick' => 'Docu integration', // TRANSLATE
+		'editor_enable' => 'Enable', // TRANSLATE
+		'editor_plaintext' => 'Plain textarea', // TRANSLATE
+		'editor_java' => 'Java editor', // TRANSLATE
+		'editor_javascript' => 'JavaScript editor (beta)', // TRANSLATE
+		'editor_javascript_information' => 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.', // TRANSLATE
 
-/*****************************************************************************
- * Email settings
- *****************************************************************************/
-	
-	$l_prefs["mailer_information"] = "Adjust whether webEditionin should dispatch emails via the integrated PHP function or a seperate SMTP server should be used.<br /><br />When using a SMTP mail server, the risk that messages are classified by the receiver as a \"Spam\" is lowered."; // TRANSLATE
-	
-	$l_prefs["mailer_type"] = "Mailer type"; // TRANSLATE
-	$l_prefs["mailer_php"] = "Use php mail() function"; // TRANSLATE
-	$l_prefs["mailer_smtp"] = "Use SMTP server"; // TRANSLATE
-	$l_prefs["email"] = "E-Mail"; // TRANSLATE
-	$l_prefs["tab_email"] = "E-Mail"; // TRANSLATE
-	$l_prefs["smtp_auth"] = "Authentication"; // TRANSLATE
-	$l_prefs["smtp_server"] = "SMTP server"; // TRANSLATE
-	$l_prefs["smtp_port"] = "SMTP port"; // TRANSLATE
-	$l_prefs["smtp_username"] = "User name"; // TRANSLATE
-	$l_prefs["smtp_password"] = "Password"; // TRANSLATE
-	$l_prefs["smtp_halo"] = "SMTP halo"; // TRANSLATE
-	$l_prefs["smtp_timeout"] = "SMTP timeout"; // TRANSLATE
-	$l_prefs["smtp_encryption"] = "encrypted transport";// TRANSLATE
-	$l_prefs["smtp_encryption_none"] = "no";// TRANSLATE
-	$l_prefs["smtp_encryption_ssl"] = "SSL";// TRANSLATE
-	$l_prefs["smtp_encryption_tls"] = "TLS";// TRANSLATE
 
-	
-/*****************************************************************************
- * Versions settings
- *****************************************************************************/
-
-	$l_prefs["versioning"] = "Versioning"; // TRANSLATE
-	$l_prefs["version_all"] = "all"; // TRANSLATE
-	$l_prefs["versioning_activate_text"] = "Activate versioning for some or all content types."; // TRANSLATE
-	$l_prefs["versioning_time_text"] = "If you specify a time period, only versions are saved which are created in this time until today. Older versions will be deleted."; // TRANSLATE
-	$l_prefs["versioning_time"] = "Time period"; // TRANSLATE
-	$l_prefs["versioning_anzahl_text"] = "Number of versions which will be created for each document or object."; // TRANSLATE
-	$l_prefs["versioning_anzahl"] = "Number"; // TRANSLATE
-	$l_prefs["versioning_wizard_text"] = "Open the Version-Wizard to delete or reset versions."; // TRANSLATE
-	$l_prefs["versioning_wizard"] = "Open Versions-Wizard"; // TRANSLATE
-	$l_prefs["ContentType"] = "Content Type"; // TRANSLATE
-	$l_prefs["versioning_create_text"] = "Determine which actions provoke new versions. Either if you publish or if you save, unpublish, delete or import files, too."; // TRANSLATE
-	$l_prefs["versioning_create"] = "Create Version"; // TRANSLATE
-	$l_prefs["versions_create_publishing"] = "only when publishing"; // TRANSLATE
-	$l_prefs["versions_create_always"] = "always"; // TRANSLATE
-	$l_prefs["versioning_templates_text"] = "Define special values for the <b>versioning of templates</b>";// TRANSLATE
-	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";// TRANSLATE
-	$l_prefs["versions_create_tmpl_always"] = "always";// TRANSLATE
-
-	
-	$l_prefs['use_jeditor'] = "Use"; // TRANSLATE
-	$l_prefs["editor_font_colors"] = 'Specify font colors'; // TRANSLATE
-	$l_prefs["editor_normal_font_color"] = 'Default'; // TRANSLATE
-	$l_prefs["editor_we_tag_font_color"] = 'webEdition tags'; // TRANSLATE
-	$l_prefs["editor_we_attribute_font_color"] = 'webEdition attributes'; // TRANSLATE
-	$l_prefs["editor_html_tag_font_color"] = 'HTML tags'; // TRANSLATE
-	$l_prefs["editor_html_attribute_font_color"] = 'HTML attributes'; // TRANSLATE
-	$l_prefs["editor_pi_tag_font_color"] = 'PHP code'; // TRANSLATE
-	$l_prefs["editor_comment_font_color"] = 'Comments'; // TRANSLATE
-	$l_prefs['editor_highlight_colors'] = 'Highlighting colors';// TRANSLATE
-	$l_prefs['editor_linenumbers'] = 'Line numbers';// TRANSLATE
-	$l_prefs['editor_completion'] = 'Code Completion';// TRANSLATE
-	$l_prefs['editor_tooltips'] = 'Tooltips on we:tags';// TRANSLATE
-	$l_prefs['editor_docuclick'] = 'Docu integration';// TRANSLATE
-	$l_prefs['editor_enable'] = 'Enable';// TRANSLATE
-	$l_prefs['editor_plaintext'] = 'Plain textarea';// TRANSLATE
-	$l_prefs['editor_java'] = 'Java editor';// TRANSLATE
-	$l_prefs['editor_javascript'] = 'JavaScript editor (beta)';// TRANSLATE
-	$l_prefs['editor_javascript_information'] = 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.';// TRANSLATE
-	
-	
-	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
-	
-
-?>
+		'juplod_not_installed' => 'JUpload is not installed!', // TRANSLATE
+);

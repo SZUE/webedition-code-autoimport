@@ -18,33 +18,31 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: copy_folder.inc.php
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_copyFolder"]["headline"] = "Kopioi hakemisto";
-$GLOBALS["l_copyFolder"]["copyFile"] = "Kopioi tiedosto: %s";
-$GLOBALS["l_copyFolder"]["copyFolder"] = "Kopioi hakemisto: %s";
-$GLOBALS["l_copyFolder"]["rewrite"] = "Uudelleenkirjoita tiedosto: %s";
-$GLOBALS["l_copyFolder"]["copy_success"] = "Kopiointi päättynyt!";
-$GLOBALS["l_copyFolder"]["create_new_templates"] = "Luo uusia sivupohjia";
-$GLOBALS["l_copyFolder"]["create_new_masterTemplates"] = "Luo uusia pääsivupohjia";
-$GLOBALS["l_copyFolder"]["create_new_includedTemplates"] = "Luo uusia include-sivupohjia";
-$GLOBALS["l_copyFolder"]["destdir"] = "Luo uusia sivupohjia kohteeseen";
-$GLOBALS["l_copyFolder"]["correctTemplate"] = "Oikea sivupohja:  %s";
-$GLOBALS["l_copyFolder"]["create_new_doctypes"] = "Luo dokumenttityyppi";
-$GLOBALS["l_copyFolder"]["prepareTemplates"] = "Luodaan uusia sivupohjia";
-$GLOBALS["l_copyFolder"]["categories"] = "Kategoriat";
-$GLOBALS["l_copyFolder"]["overwrite_categories"] = "Ylikirjoita kategoriat";
-$GLOBALS["l_copyFolder"]["object_copy"] = "Copy objects and object folders"; //TRANSLATE
-$GLOBALS["l_copyFolder"]["object_copy_no_folders"] = "do not copy sub-folders";//TRANSLATE
-$GLOBALS["l_copyFolder"]["sameName_expl"] = "Determine the behavior of webEdition, for the case that another object exisits with the same name and path."; //TRANSLATE
-$GLOBALS["l_copyFolder"]["sameName_overwrite"] = "Overwrite the existing object"; //TRANSLATE
-$GLOBALS["l_copyFolder"]["sameName_rename"] = "Rename the new object"; //TRANSLATE
-$GLOBALS["l_copyFolder"]["sameName_nothing"] = "Do not copy the object"; //TRANSLATE
-$GLOBALS["l_copyFolder"]["sameName_headline"] = "What to do for objects of the same name?"; //TRANSLATE
-
-?>
+$GLOBALS["l_copyFolder"] = array(
+		'headline' => "Kopioi hakemisto",
+		'copyFile' => "Kopioi tiedosto: %s",
+		'copyFolder' => "Kopioi hakemisto: %s",
+		'rewrite' => "Uudelleenkirjoita tiedosto: %s",
+		'copy_success' => "Kopiointi päättynyt!",
+		'create_new_templates' => "Luo uusia sivupohjia",
+		'create_new_masterTemplates' => "Luo uusia pääsivupohjia",
+		'create_new_includedTemplates' => "Luo uusia include-sivupohjia",
+		'destdir' => "Luo uusia sivupohjia kohteeseen",
+		'correctTemplate' => "Oikea sivupohja:  %s",
+		'create_new_doctypes' => "Luo dokumenttityyppi",
+		'prepareTemplates' => "Luodaan uusia sivupohjia",
+		'categories' => "Kategoriat",
+		'overwrite_categories' => "Ylikirjoita kategoriat",
+		'object_copy' => "Copy objects and object folders", //TRANSLATE
+		'object_copy_no_folders' => "do not copy sub-folders", //TRANSLATE
+		'sameName_expl' => "Determine the behavior of webEdition, for the case that another object exisits with the same name and path.", //TRANSLATE
+		'sameName_overwrite' => "Overwrite the existing object", //TRANSLATE
+		'sameName_rename' => "Rename the new object", //TRANSLATE
+		'sameName_nothing' => "Do not copy the object", //TRANSLATE
+		'sameName_headline' => "What to do for objects of the same name?", //TRANSLATE
+);
