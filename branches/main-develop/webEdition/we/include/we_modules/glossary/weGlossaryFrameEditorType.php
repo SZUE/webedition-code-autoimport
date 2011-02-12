@@ -360,13 +360,13 @@
 
 				}
 				$temp[] = array(
-					'dat' => $Search->getField('Published')>0?str_replace(" - ", "<br />", date($GLOBALS['l_global']["date_format"],$Search->getField('Published'))):"-",
+					'dat' => $Search->getField('Published')>0?str_replace(" - ", "<br />", date(g_l('date','[format][default]'),$Search->getField('Published'))):"-",
 					'height' => 25,
 					'align' => 'center',
 					'bgcolor' => '#ffffff',
 				);
 				$temp[] = array(
-					'dat' => $Search->getField('ModDate')>0?str_replace(" - ", "<br />", date($GLOBALS['l_global']["date_format"],$Search->getField('ModDate'))):"-",
+					'dat' => $Search->getField('ModDate')>0?str_replace(" - ", "<br />", date(g_l('date','[format][default]'),$Search->getField('ModDate'))):"-",
 					'height' => 25,
 					'align' => 'center',
 					'bgcolor' => '#ffffff',

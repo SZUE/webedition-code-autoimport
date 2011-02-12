@@ -911,7 +911,7 @@ class weCustomerFrames extends weModuleFrames {
 										we_htmlElement::jsElement("", array("src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js")) .
 										we_htmlElement::jsElement($this->View->getJSSearch()) .
 										we_htmlElement::jsElement("$this->jsOut_fieldTypesByName
-	var date_format_dateonly = '" . $GLOBALS["l_global"]["date_format_dateonly_mysql"] . "';
+	var date_format_dateonly = '" . g_l('date','[format][mysqlDate]') . "';
 	var fieldDate = new weDate(date_format_dateonly);
 
 	function showDatePickerIcon(fieldNr) {

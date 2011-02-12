@@ -29,7 +29,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop_month.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tabs.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 protect();
@@ -48,13 +47,13 @@ if (!isset($l_shop["lastNo"])){
 $bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
 
 $cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
-$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
+$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
 if ($DB_WE->next_record()) {
 	$headline = $l_shop["lastOrd"]." ".$l_shop["lastNo"]." ". $DB_WE->f("IntOrderID")."&nbsp;&raquo; ".$l_shop["bestellung"]." ".$DB_WE->f("orddate");
-	$textPost = sprintf($l_shop["orderNo"],$_REQUEST['bid'],$DB_WE->f("orddate")); 
+	$textPost = sprintf($l_shop["orderNo"],$_REQUEST['bid'],$DB_WE->f("orddate"));
 } else {
 	$headline = "";
-	$textPost = ""; 
+	$textPost = "";
 }
 
 
@@ -78,12 +77,12 @@ if (isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00'){
 
 $textPre = isset($_REQUEST['bid']) && $_REQUEST['bid'] > 0 ? $l_shop['orderList']['order'] : $l_shop["order_view"];
 $textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid'])>5 ? $l_shop_month[substr($_REQUEST['mid'],0,-5)] . " " . substr($_REQUEST['mid'],-5,4): substr($_REQUEST['mid'],1)) : $textPost;
-//$textPost = sprintf($l_shop["orderNo"],$_REQUEST['bid'],"post"); 
+//$textPost = sprintf($l_shop["orderNo"],$_REQUEST['bid'],"post");
 $we_tabs->onResize();
 $tab_head = $we_tabs->getHeader();
 
 $tab_body = '<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ","&nbsp;",$textPost) . '</b></span></nobr></div>' .getPixel(100,3) .
-			$we_tabs->getHTML() . 
+			$we_tabs->getHTML() .
 			'</div>';
 ?>
    <script language="JavaScript">
@@ -109,6 +108,6 @@ $tab_body = '<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;paddi
 		<?php
 		print $tab_body;
 		?>
-		
+
 	</body>
 </html>

@@ -444,7 +444,7 @@ class listviewBase{
 		}
 		return false;
 	}
-	
+
 	function tdEmpty(){
 		return ($this->count > $this->anz);
 	}
@@ -468,20 +468,20 @@ class listviewBase{
 			break;
 			case "dayname":
 			case "dayname_long":
-				$out='print $GLOBALS["l_dayLong"][date("w",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))];';
+				$out='print g_l("date","[day][long][".date("w",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))."]");';
 			break;
 			case "dayname_short":
-				$out='print $GLOBALS["l_dayShort"][date("w",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"])];';
+				$out='print g_l("date","[day][short][".date("w",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"])."]");';
 			break;
 			case "month":
 				$out='print date("m",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]));';
 			break;
 			case "monthname":
 			case "monthname_long":
-				$out='print $GLOBALS["l_monthLong"][(int)(date("n",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))-1)];';
+				$out='print g_l("date","[month][long][".(int)(date("n",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))-1)."]");';
 			break;
 			case "monthname_short":
-				$out='print $GLOBALS["l_monthShort"][(int)(date("n",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))-1)];';
+				$out='print g_l("date","[month][short][".(int)(date("n",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))-1)."]");';
 			break;
 			case "year":
 				$out='print date("Y",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]));';
@@ -517,17 +517,17 @@ class listviewBase{
 			break;
 			case "dayname":
 			case "dayname_long":
-				return $GLOBALS["l_dayLong"][date("w",$calendar["date"])];
+				return g_l('date','[day][long]['.date("w",$calendar["date"]).']');
 			break;
 			case "dayname_short":
-				return $GLOBALS["l_dayShort"][date("w",$calendar["date"])];
+				return g_l('date','[day][short]['.date("w",$calendar["date"]).']');
 			break;
 			case "monthname":
 			case "monthname_long":
-				return $GLOBALS["l_monthLong"][date("n",$calendar["date"])-1];
+				return g_l('date','[month][long]['.(date("n",$calendar["date"])-1).']');
 			break;
 			case "monthname_short":
-				return $GLOBALS["l_monthShort"][date("n",$calendar["date"])-1];
+				return g_l('date','[month][short]['.(date("n",$calendar["date"])-1).']');
 			break;
 			case "hour":
 				return date("H:i",$calendar["date"]);

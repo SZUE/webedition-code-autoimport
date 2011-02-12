@@ -37,7 +37,7 @@ include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_
 
 if(weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],"",true)) {
 	if($we_doc->i_publInScheduleTable()) {
-		$we_responseText = sprintf($l_we_editor[$we_doc->ContentType]["autoschedule"],date($l_global["date_format"],$we_doc->From));
+		$we_responseText = sprintf($l_we_editor[$we_doc->ContentType]["autoschedule"],date(g_l('date','[format][default]'),$we_doc->From));
 		$we_responseTextType = WE_MESSAGE_NOTICE;
 	}
 	else{

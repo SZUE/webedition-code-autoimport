@@ -3342,10 +3342,10 @@ function getHtmlTag($element, $attribs = array(), $content = "", $forceEndTag = 
 	$attribs = removeAttribs($attribs, array(
 							"xml", "xmltype"
 					));
-	if (defined("HIDENAMEATTRIBINWEIMG_DEFAULT") && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+	if ($element =='img' && defined("HIDENAMEATTRIBINWEIMG_DEFAULT") && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array("name"));
 	}
-	if (defined("HIDENAMEATTRIBINWEFORM_DEFAULT") && HIDENAMEATTRIBINWEFORM_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+	if ($element =='form' && defined("HIDENAMEATTRIBINWEFORM_DEFAULT") && HIDENAMEATTRIBINWEFORM_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array("name"));
 	}
 	if ($xhtml) { //	xhtml, check if and what we shall debug
@@ -3898,7 +3898,6 @@ function we_templateInit(){
 				$__lang = $__parts[0];
 				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
 					$GLOBALS["WE_LANGUAGE"] = $__lang;
-					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 				}
 
 				// Charset of page is  UTF-8 but languge files of page are not UTF-8
@@ -3907,7 +3906,6 @@ function we_templateInit(){
 				$__lang = $GLOBALS["WE_LANGUAGE"] . "_UTF-8";
 				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
 					$GLOBALS["WE_LANGUAGE"] = $__lang;
-					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 				}
 			}
 		}

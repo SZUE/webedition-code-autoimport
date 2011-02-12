@@ -25,7 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tabs.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
@@ -43,17 +42,17 @@ print we_htmlElement::jsElement('
 			}
 		}
 	}
-		
+
 	function we_cmd() {
-		
+
 		switch (arguments[0]) {
-		
+
 			case "openOrder":
 				if(top.content.shop_tree.window.doClick) {
 					top.content.shop_tree.window.doClick(arguments[1], arguments[2], arguments[3]);
 				}
 			break;
-			
+
 			default:
 				// not needed yet
 			break;
@@ -65,16 +64,16 @@ print we_htmlElement::jsElement('
 $bid = abs(isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0);
 
 $cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
-$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");         
+$DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
 
    if ($DB_WE->next_record()){
 	$headline ='<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $DB_WE->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf($l_shop["lastOrder"], $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")) . '</a>';
    }else{
-	$headline = "";	
+	$headline = "";
    }
-	
+
 	$we_button = new we_button();
-	
+
 	// grep the last element from the year-set, wich is the current year
 	$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM ".SHOP_TABLE . " ORDER BY DateOrd");
 	while ($DB_WE->next_record()) {
@@ -94,11 +93,11 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 	  if(empty($classid)){
 	  	$classid = $fe[0];
 	  }
-     
+
       //$resultO = count($fe);
       $resultO = array_shift ($fe);
-      
-  
+
+
      $dbTitlename="shoptitle";
    	// wether the resultset ist empty?
 	$DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='$dbTitlename'");
@@ -111,15 +110,15 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 	<table border="0" cellpadding="6" cellspacing="0" style="margin-left:8px">
 		<tr>
 			<?php
-			
-			
+
+
 			echo "<td>".$we_button->create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
-			
+
 			<td>
 				<?php echo $we_button->create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 			<?php
-				
-				
+
+
 				if ( ($resultD > 0) && (!empty($resultO)) ){  //docs and objects
 					echo "<td>".$we_button->create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true)."</td>";
 	               }elseif(($resultD < 1) && (!empty($resultO)) ){ // no docs but objects
@@ -128,13 +127,13 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 					echo "<td>".$we_button->create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true)."</td>";
 				  }else{
 					echo " ";
-				}	 
-	          
+				}
+
 	            ?>
 			<td>
 				<?php echo $we_button->create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 			<td>
-				<?php echo $we_button->create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>	
+				<?php echo $we_button->create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 	<?php
 	if ($headline) {
 		?>
@@ -144,6 +143,6 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 ?>
 			</tr>
 	</table>
-	
+
 
 </body></html>

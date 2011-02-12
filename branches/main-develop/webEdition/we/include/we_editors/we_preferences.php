@@ -5113,7 +5113,7 @@ else {
 					}
 				}
 
-				array_push($_settings, array("headline" => q_l('prefs','[removefirstparagraph_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs','[removefirstparagraph_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 
 
@@ -5159,7 +5159,7 @@ else {
 					}
 				}
 
-				array_push($_settings, array("headline" => q_l('prefs','[hidenameattribinweimg_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs','[hidenameattribinweimg_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_php_setting = new we_htmlSelect(array("name" => "hidenameattribinweform_default","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
@@ -5173,7 +5173,7 @@ else {
 					}
 				}
 
-				array_push($_settings, array("headline" => q_l('prefs','[hidenameattribinweform_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs','[hidenameattribinweform_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_we_doctype_workspace_behavior = abs(get_value("we_doctype_workspace_behavior"));
 				$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.
@@ -5342,12 +5342,12 @@ else {
 			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'we_tracker_dir\\'].value', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
 				$_inp = htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
                 $_we_tracker_dir = $we_button->create_button_table(array($_inp,$_but));
-			    array_push($_settings, array("headline" => q_l('prefs','[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200));
+			    array_push($_settings, array("headline" => g_l('prefs','[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200));
 
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "navigation_entries_from_document","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? q_l('prefs','[navigation_entries_from_document_folder]') : q_l('prefs','[navigation_entries_from_document_item]'));
+					$_php_setting->addOption($i, $i == 0 ? g_l('prefs','[navigation_entries_from_document_folder]') : g_l('prefs','[navigation_entries_from_document_item]'));
 
 					// Set selected setting
 					if ($i == 0 && !get_value("navigation_entries_from_document")) {
@@ -5357,7 +5357,7 @@ else {
 					}
 				}
 
-				array_push($_settings, array("headline" => q_l('prefs','[navigation_entries_from_document]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs','[navigation_entries_from_document]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_php_setting = new we_htmlSelect(array("name" => "navigation_rules_continue_after_first_match","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
@@ -5370,7 +5370,7 @@ else {
 						$_php_setting->selectOption($i);
 					}
 				}
-				array_push($_settings, array("headline" => q_l('prefs','[navigation_rules_continue]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs','[navigation_rules_continue]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 
 
@@ -5480,30 +5480,30 @@ else {
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("wysiwyglinks_objectseourls"));
 
-				array_push($_settings, array("headline" => q_l('prefs','[wysiwyglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
-				array_push($_settings, array("html" => htmlAlertAttentionBox(q_l('prefs','[general_objectseourls_description]'),2,480),"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[wysiwyglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("html" => htmlAlertAttentionBox(g_l('prefs','[general_objectseourls_description]'),2,480),"noline" => 1));
 
 				$_php_setting = new we_htmlSelect(array("name" => "taglinks_objectseourls","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("taglinks_objectseourls"));
 
-				array_push($_settings, array("headline" => q_l('prefs','[taglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs','[taglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
-				array_push($_settings, array("headline" => q_l('prefs','[general_seoinside]'), "noline" => 1));
-				array_push($_settings, array("html" => htmlAlertAttentionBox(q_l('prefs','[general_seoinside_description]'),2,480),"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[general_seoinside]'), "noline" => 1));
+				array_push($_settings, array("html" => htmlAlertAttentionBox(g_l('prefs','[general_seoinside_description]'),2,480),"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "seoinside__hideineditmode","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("seoinside__hideineditmode"));
-				array_push($_settings, array("headline" => q_l('prefs','[seoinside_hideineditmode]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideineditmode]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "seoinside_hideinwebedition","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
-				array_push($_settings, array("headline" => q_l('prefs','[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
-				$_dialog = create_dialog("", q_l('prefs','[tab_seolinks]'), $_settings, -1, "", "", null, $_needed_JavaScript);
+				$_dialog = create_dialog("", g_l('prefs','[tab_seolinks]'), $_settings, -1, "", "", null, $_needed_JavaScript);
 
 
 

@@ -366,7 +366,6 @@ function makeArrayFromAttribs($attr){
 }
 
 function correctDateFormat($format, $t = ''){
-	global $l_dayShort, $l_monthLong, $l_dayLong, $l_monthShort;
 	if (!$t)
 		$t = time();
 
@@ -396,16 +395,16 @@ function correctDateFormat($format, $t = ''){
 	$format = str_replace('l', '%%%2%%%', $format);
 	$format = str_replace('M', '%%%3%%%', $format);
 
-	$foo = $l_dayShort[date('w', $t)];
+	$foo = g_l('date','[day][short]['.date('w', $t).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%0%%%', $foo, $format);
-	$foo = $l_monthLong[date('n', $t) - 1];
+	$foo = g_l('date','[month][long]['.(date('n', $t) - 1).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%1%%%', $foo, $format);
-	$foo = $l_dayLong[date('w', $t)];
+	$foo = g_l('date','[day][long]['.date('w', $t).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%2%%%', $foo, $format);
-	$foo = $l_monthShort[date('n', $t) - 1];
+	$foo = g_l('date','[month][short]['.(date('n', $t) - 1).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%3%%%', $foo, $format);
 	return $format;

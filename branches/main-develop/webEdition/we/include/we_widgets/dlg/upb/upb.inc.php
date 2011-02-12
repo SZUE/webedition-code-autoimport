@@ -21,7 +21,6 @@
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/resave.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/notpublished.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/date.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 
 protect();
@@ -134,7 +133,7 @@ foreach ($tbls as $table) {
 			"dat" => $usern
 		));
 
-		$foo = $DB_WE->f("CreationDate") ? date($l_global["date_format"], $DB_WE->f("CreationDate")) : "-";
+		$foo = $DB_WE->f("CreationDate") ? date(g_l('date','[format][default]'), $DB_WE->f("CreationDate")) : "-";
 		array_push($row, array(
 			"dat" => $foo
 		));
@@ -147,11 +146,11 @@ foreach ($tbls as $table) {
 			"dat" => $usern
 		));
 
-		$foo = $DB_WE->f("ModDate") ? date($l_global["date_format"], $DB_WE->f("ModDate")) : "-";
+		$foo = $DB_WE->f("ModDate") ? date(g_l('date','[format][default]'), $DB_WE->f("ModDate")) : "-";
 		array_push($row, array(
 			"dat" => $foo
 		));
-		$foo = $DB_WE->f("Published") ? date($l_global["date_format"], $DB_WE->f("Published")) : "-";
+		$foo = $DB_WE->f("Published") ? date(g_l('date','[format][default]'), $DB_WE->f("Published")) : "-";
 		array_push($row, array(
 			"dat" => $foo
 		));

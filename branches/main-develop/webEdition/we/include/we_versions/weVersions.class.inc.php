@@ -2249,7 +2249,7 @@ class weVersions {
 			if(is_array($v) && !empty($v)) {
 				foreach($v as $k=>$v) {
 					if($v==1) {
-						$months[] = $GLOBALS["l_monthShort"][$k];
+						$months[] = g_l('date','[month][short]['.$k.']');
 					}
 				}
 			}
@@ -2278,7 +2278,7 @@ class weVersions {
 			if(is_array($v) && !empty($v)) {
 				foreach($v as $k=>$v) {
 					if($v==1) {
-						$weekdays[] = $GLOBALS["l_dayShort"][$k];
+						$weekdays[] = g_l('date','[day][short]['.$k.']');
 					}
 				}
 			}

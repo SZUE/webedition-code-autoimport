@@ -27,7 +27,6 @@ if(!isset($GLOBALS["WE_IS_DYN"])){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 }
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
@@ -1460,7 +1459,7 @@ class we_objectFile extends we_document
 			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["date_".$name]["required"] ? "*" : "")."</span>" . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : '<br />' ) .getPixel(2,2) . '<br />'.$content;
 		}else{
 			$d =abs($this->getElement($name));
-			$content = date($GLOBALS["l_global"]["date_format"],$d);
+			$content = date(g_l('date','[format][default]'),$d);
 			return $this->getPreviewView($name,$content);
 		}
 	}

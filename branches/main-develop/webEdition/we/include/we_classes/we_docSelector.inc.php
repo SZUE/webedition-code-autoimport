@@ -122,9 +122,9 @@ class we_docSelector extends we_dirSelector {
 				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".abs($this->dir));
 				while ($_db->next_record()) {
 					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
-				}		
+				}
 			}
-			
+
 		}
 	}
 
@@ -325,7 +325,7 @@ function writeBody(d){
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
 		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('<td class="selector"><?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
-		d.writeln('<td class="selector"><?php print date($GLOBALS["l_global"]["date_format"])?></td>');
+		d.writeln('<td class="selector"><?php print date(g_l(\'date\',\'[format][default]\'))?></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -415,7 +415,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				$title = strip_tags($title);
 				$title = $title == "&nbsp;" ? "-" : htmlspecialchars($title);
 				$published = ($this->table==FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table==OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
-				print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date($GLOBALS["l_global"]["date_format"],$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
+				print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date(g_l('date','[format][default]'),$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
 			}
 		}
 	}
@@ -433,7 +433,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 			$title = str_replace("\\", "\\\\", $title);
 			$title = str_replace("�", "&deg;", $title);
 			$title = strip_tags($title);
-			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date($GLOBALS["l_global"]["date_format"],$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
+			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date(g_l('date','[format][default]'),$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
 		}
 
 		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
@@ -778,7 +778,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 						$_selFields = substr($_selFields, 0, strlen($_selFields)-1);
 						$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . abs($result["ID"]), $this->db);
 					}
-					
+
 				} elseif ($result['ContentType'] == "folder") {
 					$this->db->query("SELECT ID, Text, IsFolder FROM " . mysql_real_escape_string($this->table) . " WHERE ParentID=".abs($this->id));
 					$folderFolders = array();
@@ -857,14 +857,14 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				if ($result['CreationDate']) {
 					$_previewFields["properies"]["data"][] = array(
 						"caption" => $GLOBALS['l_fileselector']["created"],
-						"content" => date($GLOBALS["l_global"]["date_format"],$result['CreationDate'])
+						"content" => date(g_l('date','[format][default]'),$result['CreationDate'])
 					);
 				}
 
 				if ($result['ModDate']) {
 					$_previewFields["properies"]["data"][] = array(
 						"caption" => $GLOBALS['l_fileselector']["modified"],
-						"content" => date($GLOBALS["l_global"]["date_format"],$result['ModDate'])
+						"content" => date(g_l('date','[format][default]'),$result['ModDate'])
 					);
 				}
 

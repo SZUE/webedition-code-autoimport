@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 
 /* message object class */
 class we_format extends we_class {
@@ -165,7 +164,7 @@ class we_format extends we_class {
 	    switch ($this->mode) {
 		case 'update':
 		case 'view':
-		    $ret = date($GLOBALS['l_global']['date_format'], isset($this->sel_msg['hdrs']['Date']) ? $this->sel_msg['hdrs']['Date'] : "");
+		    $ret = date(g_l('date','[format][default]'), isset($this->sel_msg['hdrs']['Date']) ? $this->sel_msg['hdrs']['Date'] : "");
 		    break;
 		default:
 		    break;
@@ -243,7 +242,7 @@ class we_format extends we_class {
 		    $ret = $this->sel_msg['hdrs']['Deadline'];
 		    break;
 		case 'view':
-		    $ret = date($GLOBALS['l_global']['date_format'], $this->sel_msg['hdrs']['Deadline']);
+		    $ret = date(g_l('date','[format][default]'), $this->sel_msg['hdrs']['Deadline']);
 		    break;
 		case 'new':
 		    $ret = time();
@@ -359,7 +358,7 @@ class we_format extends we_class {
 		    default:
 			break;
 		}
-		$ret .= '<span class="todo_hist_hdr">--- ' . $this->userid_to_username($c['from_userid']) . ' -- ' . date($GLOBALS['l_global']['date_format'], $c['date']) . ' -- ' . $hist_str . "</span><br>\n";
+		$ret .= '<span class="todo_hist_hdr">--- ' . $this->userid_to_username($c['from_userid']) . ' -- ' . date(g_l('date','[format][default]'), $c['date']) . ' -- ' . $hist_str . "</span><br>\n";
 		if (!empty($c['comment'])) {
 		    $ret .= nl2br(htmlspecialchars($c['comment'])) . "<br><br>\n";
 		}

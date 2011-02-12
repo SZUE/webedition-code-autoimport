@@ -19,10 +19,8 @@
  */
 
 function we_tag_date($attribs, $content){
-	global $l_dayShort, $l_monthLong, $l_dayLong, $l_monthShort;
-
 	$type = we_getTagAttribute("type", $attribs);
-	$format = we_getTagAttribute("format", $attribs, $GLOBALS["l_global"]["date_format"]);
+	$format = we_getTagAttribute("format", $attribs, g_l('date','[format][default]'));
 
 	$xml = we_getTagAttribute("xml", $attribs, "");
 
@@ -47,28 +45,28 @@ function we_tag_date($attribs, $content){
 
 		$js .= 'function getDateWord(f,dateObj){' . "\n";
 		$js .= '	var l_day_Short = new Array(';
-		foreach ($l_dayShort as $d) {
+		foreach (g_l('date','[day][short]') as $d) {
 			$js .= '"' . $d . '",';
 		}
 		$js = ereg_replace('^(.+),$', '\1', $js);
 		$js .= ');' . "\n";
 
 		$js .= '	var l_monthLong = new Array(';
-		foreach ($l_monthLong as $d) {
+		foreach (g_l('date','[month][long]') as $d) {
 			$js .= '"' . $d . '",';
 		}
 		$js = ereg_replace('^(.+),$', '\1', $js);
 		$js .= ');' . "\n";
 
 		$js .= '	var l_dayLong = new Array(';
-		foreach ($l_dayLong as $d) {
+		foreach (g_l('date','[day][long]') as $d) {
 			$js .= '"' . $d . '",';
 		}
 		$js = ereg_replace('^(.+),$', '\1', $js);
 		$js .= ');' . "\n";
 
 		$js .= '	var l_monthShort = new Array(';
-		foreach ($l_monthShort as $d) {
+		foreach (g_l('date','[month][short]') as $d) {
 			$js .= '"' . $d . '",';
 		}
 		$js = ereg_replace('^(.+),$', '\1', $js);
