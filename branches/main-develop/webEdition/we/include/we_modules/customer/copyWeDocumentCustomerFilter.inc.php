@@ -129,9 +129,9 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 	function finish(){
 
 		print we_htmlElement::jsElement("
-			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter',"apply_filter_done") . "');
+			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter',"[apply_filter_done]") . "');
 			parent.setProgress(100);
-			" . we_message_reporting::getShowMessageCall( g_l('modules_customerFilter',"apply_filter_done"), WE_MESSAGE_NOTICE) . "
+			" . we_message_reporting::getShowMessageCall( g_l('modules_customerFilter',"[apply_filter_done]"), WE_MESSAGE_NOTICE) . "
 			window.setTimeout('parent.top.close()', 2000);
 		");
 	}
@@ -228,7 +228,7 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 			$_js
 
 			if (_openChilds.length) {
-				if ( confirm(\"" . g_l('modules_customerFilter',"apply_filter_cofirm_close") . "\") ) {
+				if ( confirm(\"" . g_l('modules_customerFilter',"[apply_filter_cofirm_close]") . "\") ) {
 					// close all
 					for (i=0;i<_openChilds.length;i++) {
 						_usedEditors[_openChilds[i]].setEditorIsHot(false);
@@ -249,7 +249,7 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 	print "</head>
 <body class=\"weDialogBody\" onload=\"checkForOpenChilds()\">
 " . $js . "
-" . htmlDialogLayout($content, g_l('modules_customerFilter',"apply_filter"), $buttonBar) . "
+" . htmlDialogLayout($content, g_l('modules_customerFilter',"[apply_filter]"), $buttonBar) . "
 <div style=\"display: none;\"> <!-- hidden -->
 	<iframe style=\"position: absolute; top: 150; height: 1px; width: 1px;\" name=\"iframeCopyWeDocumentCustomerFilter\" id=\"iframeCopyWeDocumentCustomerFilter\" src=\"about:blank\"></iframe>
 </div>

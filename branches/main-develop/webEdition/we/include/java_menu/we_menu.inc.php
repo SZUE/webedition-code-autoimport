@@ -673,8 +673,7 @@ $we_menu["4000000"]["enabled"] = "1";
 	// Extras > Tools
 
 	/*
-	include(weToolLookup::getLanguageInclude('weSearch'));
-	$we_menu["4045000"]["text"] = $l_weSearch["weSearch"] . "...";
+	$we_menu["4045000"]["text"] = g_l('searchtool',"[weSearch]") . "...";
 	$we_menu["4045000"]["parent"] = "4000000";
 	$we_menu["4045000"]["cmd"] = "tool_weSearch_edit";
 	$we_menu["4045000"]["perm"] = "";

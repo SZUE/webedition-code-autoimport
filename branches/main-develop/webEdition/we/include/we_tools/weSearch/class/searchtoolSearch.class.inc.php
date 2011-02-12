@@ -23,7 +23,6 @@ define("SEARCH_TEMP_TABLE", md5(session_id()));
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "we_search.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_db_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/searchtool.inc.php');
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 class searchtoolsearch extends we_search
@@ -161,27 +160,27 @@ class searchtoolsearch extends we_search
 
 		$tableFields = array(
 
-				'ID' => $GLOBALS['l_weSearch']['ID'],
-				'Text' => $GLOBALS['l_weSearch']['Text'],
-				'Path' => $GLOBALS['l_weSearch']['Path'],
-				'ParentIDDoc' => $GLOBALS['l_weSearch']['ParentIDDoc'],
-				'ParentIDObj' => $GLOBALS['l_weSearch']['ParentIDObj'],
-				'ParentIDTmpl' => $GLOBALS['l_weSearch']['ParentIDTmpl'],
-				'temp_template_id' => $GLOBALS['l_weSearch']['temp_template_id'],
-				'MasterTemplateID' => $GLOBALS['l_weSearch']['MasterTemplateID'],
-				'ContentType' => $GLOBALS['l_weSearch']['ContentType'],
-				'temp_doc_type' => $GLOBALS['l_weSearch']['temp_doc_type'],
-				'temp_category' => $GLOBALS['l_weSearch']['temp_category'],
-				'CreatorID' => $GLOBALS['l_weSearch']['CreatorID'],
-				'CreatorName' => $GLOBALS['l_weSearch']['CreatorName'],
-				'WebUserID' => $GLOBALS['l_weSearch']['WebUserID'],
-				'WebUserName' => $GLOBALS['l_weSearch']['WebUserName'],
-				'Content' => $GLOBALS['l_weSearch']['Content'],
-				'Status' => $GLOBALS['l_weSearch']['Status'],
-				'Speicherart' => $GLOBALS['l_weSearch']['Speicherart'],
-				'Published' => $GLOBALS['l_weSearch']['Published'],
-				'CreationDate' => $GLOBALS['l_weSearch']['CreationDate'],
-				'ModDate' => $GLOBALS['l_weSearch']['ModDate'],
+				'ID' => g_l('searchtool','[ID]'),
+				'Text' => g_l('searchtool','[Text]'),
+				'Path' => g_l('searchtool','[Path]'),
+				'ParentIDDoc' => g_l('searchtool','[ParentIDDoc]'),
+				'ParentIDObj' => g_l('searchtool','[ParentIDObj]'),
+				'ParentIDTmpl' => g_l('searchtool','[ParentIDTmpl]'),
+				'temp_template_id' => g_l('searchtool','[temp_template_id]'),
+				'MasterTemplateID' => g_l('searchtool','[MasterTemplateID]'),
+				'ContentType' => g_l('searchtool','[ContentType]'),
+				'temp_doc_type' => g_l('searchtool','[temp_doc_type]'),
+				'temp_category' => g_l('searchtool','[temp_category]'),
+				'CreatorID' => g_l('searchtool','[CreatorID]'),
+				'CreatorName' => g_l('searchtool','[CreatorName]'),
+				'WebUserID' => g_l('searchtool','[WebUserID]'),
+				'WebUserName' => g_l('searchtool','[WebUserName]'),
+				'Content' => g_l('searchtool','[Content]'),
+				'Status' => g_l('searchtool','[Status]'),
+				'Speicherart' => g_l('searchtool','[Speicherart]'),
+				'Published' => g_l('searchtool','[Published]'),
+				'CreationDate' => g_l('searchtool','[CreationDate]'),
+				'ModDate' => g_l('searchtool','[ModDate]'),
 				'allModsIn' => g_l('versions','[allModsIn]'),
 				'modifierID' => g_l('versions','[modUser]')
 		);
@@ -225,13 +224,13 @@ class searchtoolsearch extends we_search
 
 		$fields = array(
 
-				'jeder' => $GLOBALS['l_weSearch']['jeder'],
-				'geparkt' => $GLOBALS['l_weSearch']['geparkt'],
-				'veroeffentlicht' => $GLOBALS['l_weSearch']['veroeffentlicht'],
-				'geaendert' => $GLOBALS['l_weSearch']['geaendert'],
-				'veroeff_geaendert' => $GLOBALS['l_weSearch']['veroeff_geaendert'],
-				'geparkt_geaendert' => $GLOBALS['l_weSearch']['geparkt_geaendert'],
-				'deleted' => $GLOBALS['l_weSearch']['deleted']
+				'jeder' => g_l('searchtool','[jeder]'),
+				'geparkt' => g_l('searchtool','[geparkt]'),
+				'veroeffentlicht' => g_l('searchtool','[veroeffentlicht]'),
+				'geaendert' => g_l('searchtool','[geaendert]'),
+				'veroeff_geaendert' => g_l('searchtool','[veroeff_geaendert]'),
+				'geparkt_geaendert' => g_l('searchtool','[geparkt_geaendert]'),
+				'deleted' => g_l('searchtool','[deleted]')
 		);
 
 		return $fields;
@@ -241,9 +240,9 @@ class searchtoolsearch extends we_search
 	{
 		$fields = array(
 
-				'jeder' => $GLOBALS['l_weSearch']['jeder'],
-				'dynamisch' => $GLOBALS['l_weSearch']['dynamisch'],
-				'statisch' => $GLOBALS['l_weSearch']['statisch']
+				'jeder' => g_l('searchtool','[jeder]'),
+				'dynamisch' => g_l('searchtool','[dynamisch]'),
+				'statisch' => g_l('searchtool','[statisch]')
 		);
 
 		return $fields;
@@ -253,14 +252,14 @@ class searchtoolsearch extends we_search
 	{
 		$locations = array(
 
-				'CONTAIN' => $GLOBALS['l_weSearch']['CONTAIN'],
-				'IS' => $GLOBALS['l_weSearch']['IS'],
-				'START' => $GLOBALS['l_weSearch']['START'],
-				'END' => $GLOBALS['l_weSearch']['END'],
-				'<' => $GLOBALS['l_weSearch']['<'],
-				'<=' => $GLOBALS['l_weSearch']['<='],
-				'>=' => $GLOBALS['l_weSearch']['>='],
-				'>' => $GLOBALS['l_weSearch']['>']
+				'CONTAIN' => g_l('searchtool','[CONTAIN]'),
+				'IS' => g_l('searchtool','[IS]'),
+				'START' => g_l('searchtool','[START]'),
+				'END' => g_l('searchtool','[END]'),
+				'<' => g_l('searchtool','[<]'),
+				'<=' => g_l('searchtool','[<=]'),
+				'>=' => g_l('searchtool','[>=]'),
+				'>' => g_l('searchtool','[>]')
 		);
 
 		if ($whichField == "date") {

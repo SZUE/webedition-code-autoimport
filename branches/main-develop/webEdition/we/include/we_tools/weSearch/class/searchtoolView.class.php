@@ -19,7 +19,6 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/searchtool.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtool.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolView.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolSearch.class.inc.php');
@@ -182,7 +181,7 @@ class searchtoolView extends weToolView
 						print
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-												$GLOBALS['l_weSearch']["nameTooLong"],
+												g_l('searchtool',"[nameTooLong]"),
 												WE_MESSAGE_ERROR));
 						break;
 					}
@@ -190,7 +189,7 @@ class searchtoolView extends weToolView
 						print
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-												$GLOBALS['l_weSearch']["no_hochkomma"],
+												g_l('searchtool',"[no_hochkomma]"),
 												WE_MESSAGE_ERROR));
 						break;
 					}
@@ -271,7 +270,7 @@ class searchtoolView extends weToolView
 								$js . '
        ' . $this->editorHeaderFrame . '.location.reload();
        ' . we_message_reporting::getShowMessageCall(
-										($this->Model->IsFolder == 1 ? $GLOBALS['l_weSearch']["save_group_ok"] : $GLOBALS['l_weSearch']["save_ok"]),
+										($this->Model->IsFolder == 1 ? g_l('searchtool',"[save_group_ok]") : g_l('searchtool',"[save_ok]")),
 										WE_MESSAGE_NOTICE) . '
        ' . $this->topFrame . '.hot=0;
       ');
@@ -291,7 +290,7 @@ class searchtoolView extends weToolView
 								$js . '
        ' . $this->editorHeaderFrame . '.location.reload();
        ' . we_message_reporting::getShowMessageCall(
-										($this->Model->IsFolder == 1 ? $GLOBALS['l_weSearch']["save_group_failed"] : $GLOBALS['l_weSearch']["save_failed"]),
+										($this->Model->IsFolder == 1 ? g_l('searchtool',"[save_group_failed]") : g_l('searchtool',"[save_failed]")),
 										WE_MESSAGE_ERROR) . '
        ' . $this->topFrame . '.hot=0;
       ');
@@ -352,13 +351,13 @@ class searchtoolView extends weToolView
    case "tool_weSearch_save":
     if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
      ' . we_message_reporting::getShowMessageCall(
-				$GLOBALS['l_weSearch']['predefinedSearchmodify'],
+				g_l('searchtool','[predefinedSearchmodify]'),
 				WE_MESSAGE_ERROR) . '
      break;
     }
     else if (' . $this->editorBodyFrame . '.loaded) {
      if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
-      var name = prompt("' . $GLOBALS['l_weSearch']['nameForSearch'] . '", "");
+      var name = prompt("' . g_l('searchtool','[nameForSearch]') . '", "");
       if (name == null) {
        break;
       } else {
@@ -381,7 +380,7 @@ class searchtoolView extends weToolView
    case "tool_weSearch_delete":
     if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
      ' . we_message_reporting::getShowMessageCall(
-				$GLOBALS['l_weSearch']['predefinedSearchdelete'],
+				g_l('searchtool','[predefinedSearchdelete]'),
 				WE_MESSAGE_ERROR) . '
      return;
     }
@@ -397,7 +396,7 @@ class searchtoolView extends weToolView
 				WE_MESSAGE_ERROR)) : ('
         if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
 
-         if (confirm("' . $GLOBALS['l_weSearch']['confirmDel'] . '")) {
+         if (confirm("' . g_l('searchtool','[confirmDel]') . '")) {
 
           ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
           ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
@@ -652,7 +651,7 @@ class searchtoolView extends weToolView
 
    		if(' . searchtoolsearch::checkRightTempTable() . ' && ' . searchtoolsearch::checkRightDropTable() . ') {
    			' . we_message_reporting::getShowMessageCall(
-						$GLOBALS["l_weSearch"]["noTempTableRightsSearch"],
+						g_l('searchtool',"[noTempTableRightsSearch]"),
 						WE_MESSAGE_NOTICE) . '
       	}
    		else {
@@ -671,7 +670,7 @@ class searchtoolView extends weToolView
 		      }
 		      if(Checks.length==0) {
 		     ' . we_message_reporting::getShowMessageCall(
-						$GLOBALS["l_weSearch"]["nothingCheckedAdv"],
+						g_l('searchtool',"[nothingCheckedAdv]"),
 						WE_MESSAGE_ERROR) . '
 		    }
 		     }
@@ -688,7 +687,7 @@ class searchtoolView extends weToolView
 		      }
 		       if(Checks.length==0) {
 		     ' . we_message_reporting::getShowMessageCall(
-						$GLOBALS["l_weSearch"]["nothingCheckedTmplDoc"],
+						g_l('searchtool',"[nothingCheckedTmplDoc]"),
 						WE_MESSAGE_ERROR) . '
 		    }
 		     }
@@ -705,7 +704,7 @@ class searchtoolView extends weToolView
 		      }
 		       if(Checks.length==0) {
 		     ' . we_message_reporting::getShowMessageCall(
-						$GLOBALS["l_weSearch"]["nothingCheckedTmplDoc"],
+						g_l('searchtool',"[nothingCheckedTmplDoc]"),
 						WE_MESSAGE_ERROR) . '
 		    }
 		     }
@@ -1541,12 +1540,12 @@ class searchtoolView extends weToolView
 
 		if(check==false) {
 			' . we_message_reporting::getShowMessageCall(
-						$GLOBALS['l_weSearch']['notChecked'],
+						g_l('searchtool','[notChecked]'),
 						WE_MESSAGE_NOTICE) . '
 		}
 		else {
 
-			Check = confirm("' . $GLOBALS['l_weSearch']['publish_docs'] . '");
+			Check = confirm("' . g_l('searchtool','[publish_docs]') . '");
 				if (Check == true) {
 					publishDocsAjax(whichSearch);
 				}
@@ -1578,7 +1577,7 @@ class searchtoolView extends weToolView
 			document.getElementById("resetBusyAdvSearch").innerHTML = "";
 	     	document.getElementById("resetBusyDocSearch").innerHTML = "";
 	     	' . we_message_reporting::getShowMessageCall(
-						$GLOBALS['l_weSearch']['publishOK'],
+						g_l('searchtool','[publishOK]'),
 						WE_MESSAGE_NOTICE) . '
 
 	    },
@@ -1745,7 +1744,7 @@ class searchtoolView extends weToolView
 						we_forms::checkboxWithHidden(
 								$this->Model->searchForTextDocSearch ? true : false,
 								"searchForTextDocSearch",
-								$GLOBALS['l_weSearch']['onlyFilename'],
+								g_l('searchtool','[onlyFilename]'),
 								false,
 								'defaultfont',
 								''));
@@ -1757,7 +1756,7 @@ class searchtoolView extends weToolView
 						we_forms::checkboxWithHidden(
 								$this->Model->searchForTitleDocSearch ? true : false,
 								"searchForTitleDocSearch",
-								$GLOBALS['l_weSearch']['onlyTitle'],
+								g_l('searchtool','[onlyTitle]'),
 								false,
 								'defaultfont',
 								''));
@@ -1769,7 +1768,7 @@ class searchtoolView extends weToolView
 						we_forms::checkboxWithHidden(
 								$this->Model->searchForContentDocSearch ? true : false,
 								"searchForContentDocSearch",
-								$GLOBALS['l_weSearch']['Content'],
+								g_l('searchtool','[Content]'),
 								false,
 								'defaultfont',
 								''));
@@ -1783,7 +1782,7 @@ class searchtoolView extends weToolView
 						we_forms::checkboxWithHidden(
 								$this->Model->searchForTextTmplSearch ? true : false,
 								"searchForTextTmplSearch",
-								$GLOBALS['l_weSearch']['onlyFilename'],
+								g_l('searchtool','[onlyFilename]'),
 								false,
 								'defaultfont',
 								''));
@@ -1795,7 +1794,7 @@ class searchtoolView extends weToolView
 						we_forms::checkboxWithHidden(
 								$this->Model->searchForContentTmplSearch ? true : false,
 								"searchForContentTmplSearch",
-								$GLOBALS['l_weSearch']['Content'],
+								g_l('searchtool','[Content]'),
 								false,
 								'defaultfont',
 								''));
@@ -1934,7 +1933,7 @@ class searchtoolView extends weToolView
 					we_forms::checkboxWithHidden(
 							$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false,
 							'search_tables_advSearch[' . FILE_TABLE . ']',
-							$GLOBALS['l_weSearch']['documents'],
+							g_l('searchtool','[documents]'),
 							false,
 							'defaultfont',
 							''));
@@ -1948,7 +1947,7 @@ class searchtoolView extends weToolView
 					we_forms::checkboxWithHidden(
 							$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false,
 							'search_tables_advSearch[' . TEMPLATES_TABLE . ']',
-							$GLOBALS['l_weSearch']['templates'],
+							g_l('searchtool','[templates]'),
 							false,
 							'defaultfont',
 							''));
@@ -1963,7 +1962,7 @@ class searchtoolView extends weToolView
 						we_forms::checkboxWithHidden(
 								$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false,
 								'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']',
-								$GLOBALS['l_weSearch']['objects'],
+								g_l('searchtool','[objects]'),
 								false,
 								'defaultfont',
 								''));
@@ -1976,7 +1975,7 @@ class searchtoolView extends weToolView
 						we_forms::checkboxWithHidden(
 								$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false,
 								'search_tables_advSearch[' . OBJECT_TABLE . ']',
-								$GLOBALS['l_weSearch']['classes'],
+								g_l('searchtool','[classes]'),
 								false,
 								'defaultfont',
 								''));
@@ -2347,7 +2346,7 @@ class searchtoolView extends weToolView
 				print
 						we_htmlElement::jsElement(
 								we_message_reporting::getShowMessageCall(
-										$GLOBALS["l_weSearch"]["noTempTableRightsSearch"],
+										g_l('searchtool',"[noTempTableRightsSearch]"),
 										WE_MESSAGE_NOTICE));
 			} else {
 				$thisObj->searchclass->createTempTable();
@@ -2669,16 +2668,16 @@ class searchtoolView extends weToolView
 
 	function makeHeadLines($whichSearch)
 	{
-		$headline[0]["dat"] = '<a href="javascript:setOrder(\'Text\',\'' . $whichSearch . '\');">' . $GLOBALS['l_weSearch']['dateiname'] . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage(
+		$headline[0]["dat"] = '<a href="javascript:setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool','[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage(
 				'Text',
 				$whichSearch) . '</span>';
-		$headline[1]["dat"] = '<a href="javascript:setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . $GLOBALS['l_weSearch']['seitentitel'] . '</a> <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage(
+		$headline[1]["dat"] = '<a href="javascript:setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . g_l('searchtool','[seitentitel]') . '</a> <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage(
 				'SiteTitle',
 				$whichSearch) . '</span>';
-		$headline[2]["dat"] = '<a href="javascript:setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . $GLOBALS['l_weSearch']['created'] . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage(
+		$headline[2]["dat"] = '<a href="javascript:setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool','[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage(
 				'CreationDate',
 				$whichSearch) . '</span>';
-		$headline[3]["dat"] = '<a href="javascript:setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . $GLOBALS['l_weSearch']['modified'] . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage(
+		$headline[3]["dat"] = '<a href="javascript:setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool','[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage(
 				'ModDate',
 				$whichSearch) . '</span>';
 
@@ -2823,10 +2822,10 @@ class searchtoolView extends weToolView
 						$_result[$f]["SiteTitle"],
 						$we_PathLength) . '</nobr>';
 				$content[$f][4]["dat"] = '<nobr>' . $checkTable = isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
-						$GLOBALS['l_weSearch']["date_format"],
+						g_l('searchtool',"[date_format]"),
 						$_result[$f]["CreationDate"]) : "-");
 				$content[$f][5]["dat"] = '<nobr>' . ($_result[$f]["ModDate"] ? date(
-						$GLOBALS['l_weSearch']["date_format"],
+						g_l('searchtool',"[date_format]"),
 						$_result[$f]["ModDate"]) : "-") . '</nobr>';
 			} else
 
@@ -2879,7 +2878,7 @@ class searchtoolView extends weToolView
 
 				$content[$f][0]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>';
 
-				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : $GLOBALS['l_weSearch']["nobody"];
+				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool',"[nobody]");
 
 				if ($_result[$f]["ContentType"] == "text/webedition" && $_result[$f]["Table"] != VERSIONS_TABLE) {
 					if ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] != 0) {
@@ -2887,7 +2886,7 @@ class searchtoolView extends weToolView
 					} else {
 						$templateID = $_result[$f]["temp_template_id"];
 					}
-					$templateText = $GLOBALS['l_weSearch']["no_template"];
+					$templateText = g_l('searchtool',"[no_template]");
 					if ($templateID != "") {
 						$sql = "SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = ".abs($templateID)."";
 						$DB_WE->query($sql);
@@ -2922,10 +2921,10 @@ class searchtoolView extends weToolView
 						$_result[$f]["Text"],
 						20) . '</u></a>';
 				$content[$f][3]["dat"] = '<nobr>' . ($_result[$f]["CreationDate"] ? date(
-						$GLOBALS['l_weSearch']["date_format"],
+						g_l('searchtool',"[date_format]"),
 						$_result[$f]["CreationDate"]) : "-") . '</nobr>';
 				$content[$f][4]["dat"] = '<nobr>' . ($_result[$f]["ModDate"] ? date(
-						$GLOBALS['l_weSearch']["date_format"],
+						g_l('searchtool',"[date_format]"),
 						$_result[$f]["ModDate"]) : "-") . '</nobr>';
 				$content[$f][5]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>';
 				$content[$f][6]["dat"] = $filesize;
@@ -3010,7 +3009,7 @@ class searchtoolView extends weToolView
    <table border="0" cellpadding="0" cellspacing="0">
    <tr>
    <td>' . getPixel(30, 12) . '</td>
-   <td style="font-size:12px;width:125px;">' . $GLOBALS['l_weSearch']["eintraege_pro_seite"] . ':</td>
+   <td style="font-size:12px;width:125px;">' . g_l('searchtool',"[eintraege_pro_seite]") . ':</td>
    <td class="defaultgray" style="width:60px;">
    ' . htmlSelect(
 				$anzahl,
@@ -3595,27 +3594,27 @@ class searchtoolView extends weToolView
 			$outDivs .= $content[$n][9]["dat"];
 			$outDivs .= '<br/><br/></td></tr>';
 			$outDivs .= '<tr><td valign="top">';
-			$outDivs .= $GLOBALS['l_weSearch']["idDiv"] . ': ';
+			$outDivs .= g_l('searchtool',"[idDiv]") . ': ';
 			$outDivs .= '</td>';
 			$outDivs .= '<td>';
 			$outDivs .= $content[$n][16]["dat"];
 			$outDivs .= '</td></tr>';
 			$outDivs .= '<tr><td valign="top">';
-			$outDivs .= $GLOBALS['l_weSearch']["dateityp"] . ': ';
+			$outDivs .= g_l('searchtool',"[dateityp]") . ': ';
 			$outDivs .= '</td>';
 			$outDivs .= '<td>';
 			$outDivs .= $content[$n][8]["dat"];
 			$outDivs .= '</td></tr>';
 			if ($content[$n][12]["dat"] == "image/*" || $content[$n][12]["dat"] == "application/*") {
 				$outDivs .= '<tr><td valign="top">';
-				$outDivs .= $GLOBALS['l_weSearch']["groesse"] . ': ';
+				$outDivs .= g_l('searchtool',"[groesse]") . ': ';
 				$outDivs .= '</td>';
 				$outDivs .= '<td>';
 				$outDivs .= $content[$n][6]["dat"];
 				$outDivs .= '</td></tr>';
 				if ($content[$n][12]["dat"] == "image/*") {
 					$outDivs .= '<tr><td valign="top">';
-					$outDivs .= $GLOBALS['l_weSearch']["aufloesung"] . ': ';
+					$outDivs .= g_l('searchtool',"[aufloesung]") . ': ';
 					$outDivs .= '</td>';
 					$outDivs .= '<td>';
 					$outDivs .= $content[$n][7]["dat"];
@@ -3624,7 +3623,7 @@ class searchtoolView extends weToolView
 			}
 			if ($content[$n][12]["dat"] == "text/webedition") {
 				$outDivs .= '<tr><td valign="top">';
-				$outDivs .= $GLOBALS['l_weSearch']["template"] . ': ';
+				$outDivs .= g_l('searchtool',"[template]") . ': ';
 				$outDivs .= '</td>';
 				$outDivs .= '<td>';
 				$outDivs .= $content[$n][14]["dat"];
@@ -3632,19 +3631,19 @@ class searchtoolView extends weToolView
 				$outDivs .= '<td></tr>';
 			}
 			$outDivs .= '<tr><td valign="top">';
-			$outDivs .= $GLOBALS['l_weSearch']["creator"] . ': ';
+			$outDivs .= g_l('searchtool',"[creator]") . ': ';
 			$outDivs .= '</td>';
 			$outDivs .= '<td>';
 			$outDivs .= $content[$n][13]["dat"];
 			$outDivs .= '</td></tr>';
 			$outDivs .= '<tr><td valign="top">';
-			$outDivs .= $GLOBALS['l_weSearch']["created"] . ': ';
+			$outDivs .= g_l('searchtool',"[created]") . ': ';
 			$outDivs .= '</td>';
 			$outDivs .= '<td>';
 			$outDivs .= $content[$n][3]["dat"];
 			$outDivs .= '</td></tr>';
 			$outDivs .= '<tr><td valign="top">';
-			$outDivs .= $GLOBALS['l_weSearch']["modified"] . ': ';
+			$outDivs .= g_l('searchtool',"[modified]") . ': ';
 			$outDivs .= '</td>';
 			$outDivs .= '<td>';
 			$outDivs .= $content[$n][4]["dat"];
@@ -3653,7 +3652,7 @@ class searchtoolView extends weToolView
 
 			$outDivs .= '<div style="padding:0px 0px 6px 15px;position:relative;top:0px;left:0px;width:360px;">';
 			if ($content[$n][11]["dat"] != "") {
-				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . $GLOBALS['l_weSearch']["beschreibung"] . ':</td><td>' . getPixel(
+				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool',"[beschreibung]") . ':</td><td>' . getPixel(
 						15,
 						5) . '</td><td>';
 				$outDivs .= shortenPath($content[$n][11]["dat"], 150);
@@ -3667,7 +3666,7 @@ class searchtoolView extends weToolView
 				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#FFF;">';
 				$outDivs .= '</div>';
 				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:20px;overflow:hidden;background-color:#DDDDDD;">';
-				$outDivs .= '<div style="margin:5px 0px 0px 15px">' . $GLOBALS['l_weSearch']["metafelder"] . ':</div>';
+				$outDivs .= '<div style="margin:5px 0px 0px 15px">' . g_l('searchtool',"[metafelder]") . ':</div>';
 				$outDivs .= '</div>';
 				$outDivs .= '<div style="width:100%;position:relative;top:0px;background-color:#FFF;">';
 				$outDivs .= '<div style="padding:10px 0px 10px 15px;">';

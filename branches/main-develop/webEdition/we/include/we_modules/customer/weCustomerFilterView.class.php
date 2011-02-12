@@ -319,21 +319,21 @@ EO_SCRIPT;
 		}
 
 		$_filter_op = array(
-			'0'=>g_l('modules_customerFilter','equal'),
-			'1'=>g_l('modules_customerFilter','not_equal'),
-			'2'=>g_l('modules_customerFilter','less'),
-			'3'=>g_l('modules_customerFilter','less_equal'),
-			'4'=>g_l('modules_customerFilter','greater'),
-			'5'=>g_l('modules_customerFilter','greater_equal'),
-			'6'=>g_l('modules_customerFilter','starts_with'),
-			'7'=>g_l('modules_customerFilter','ends_with'),
-			'8'=>g_l('modules_customerFilter','contains'),
-			'9'=>g_l('modules_customerFilter','in')
+			'0'=>g_l('modules_customerFilter','[equal]'),
+			'1'=>g_l('modules_customerFilter','[not_equal]'),
+			'2'=>g_l('modules_customerFilter','[less]'),
+			'3'=>g_l('modules_customerFilter','[less_equal]'),
+			'4'=>g_l('modules_customerFilter','[greater]'),
+			'5'=>g_l('modules_customerFilter','[greater_equal]'),
+			'6'=>g_l('modules_customerFilter','[starts_with]'),
+			'7'=>g_l('modules_customerFilter','[ends_with]'),
+			'8'=>g_l('modules_customerFilter','[contains]'),
+			'9'=>g_l('modules_customerFilter','[in]')
 
 		);
 
-		$_filter_logic = array('AND' => g_l('modules_customerFilter','AND')
-				, 'OR' => g_l('modules_customerFilter','OR'));
+		$_filter_logic = array('AND' => g_l('modules_customerFilter','[AND]')
+				, 'OR' => g_l('modules_customerFilter','[OR]'));
 
 		$_filter = $this->_filter->getFilter();
 

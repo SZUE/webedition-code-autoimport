@@ -2334,16 +2334,16 @@ class weVersions {
 
 		if($k=="_mode") {
 			if($v==0) {
-				$v = g_l('modules_customerFilter','mode_off');
+				$v = g_l('modules_customerFilter','[mode_off]');
 			}
 			if($v==1) {
-				$v = g_l('modules_customerFilter','mode_all');
+				$v = g_l('modules_customerFilter','[mode_all]');
 			}
 			if($v==2) {
-				$v = g_l('modules_customerFilter','mode_specific');
+				$v = g_l('modules_customerFilter','[mode_specific]');
 			}
 			if($v==3) {
-				$v = g_l('modules_customerFilter','mode_filter');
+				$v = g_l('modules_customerFilter','[mode_filter]');
 			}
 		}
 

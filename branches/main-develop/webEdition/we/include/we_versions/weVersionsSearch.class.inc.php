@@ -264,7 +264,15 @@ class weVersionsSearch {
 	*/
 	function getLocation($whichFilterCategory = "")	{
 
-		$locations = array('CONTAIN' => $GLOBALS['l_weSearch']['CONTAIN'], 'IS' => $GLOBALS['l_weSearch']['IS'], 'START' => $GLOBALS['l_weSearch']['START'], 'END' => $GLOBALS['l_weSearch']['END'], '<' => $GLOBALS['l_weSearch']['<'], '<=' => $GLOBALS['l_weSearch']['<='], '>=' => $GLOBALS['l_weSearch']['>='], '>' => $GLOBALS['l_weSearch']['>']);
+		$locations = array(
+				'CONTAIN' => g_l('searchtool','[CONTAIN]'),
+				'IS' => g_l('searchtool','[IS]'),
+				'START' => g_l('searchtool','[START]'),
+				'END' => g_l('searchtool','[END]'),
+				'<' => g_l('searchtool','[<]'),
+				'<=' => g_l('searchtool','[<=]'),
+				'>=' => g_l('searchtool','[>=]'),
+				'>' => g_l('searchtool','[>]'));
 
 		if ($whichFilterCategory == "date") {
 			unset($locations["CONTAIN"]);
@@ -334,5 +342,3 @@ class weVersionsSearch {
 	}
 
 }
-
-?>
