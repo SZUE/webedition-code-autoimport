@@ -67,4 +67,5 @@ $l_object_classfoldersearch["ID"] = "ID";
 $l_object_classfoldersearch["language"] = "Sprache";
 $l_object_classfoldersearch["charset"] = "Zeichensatz";
 $l_object_classfoldersearch["url"] = "SEO-Objekt-Url";
+$l_object_classfoldersearch["triggerid"] = "Darstellungsdokument";
 ?>
