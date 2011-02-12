@@ -186,4 +186,5 @@ $GLOBALS["l_global"]["beat"] ="Beta"; // TRANSLATE
 $GLOBALS["l_global"]["rc"] ="RC"; // TRANSLATE
 $GLOBALS["l_global"]["preview"] ="preview"; // TRANSLATE
 $GLOBALS["l_global"]["release"] ="official release"; // TRANSLATE
-?>
+$GLOBALS["l_global"]["categorys"] = "Categories"; // TRANSLATE
+$GLOBALS["l_global"]["navigation"] = "Navigation"; // TRANSLATE
