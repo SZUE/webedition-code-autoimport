@@ -688,9 +688,11 @@
 		if (isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) {
 			$myarray= $_SESSION['weBackupVars']['tablekeys'];
 			foreach($myarray as $k => $v){
-				foreach($v as $tabkey){
-					if(!weDBUtil::isKeyExist($k,$tabkey)) {
-						weDBUtil::addKey($k,$tabkey);
+				if (is_array($v)){
+					foreach($v as $tabkey){
+						if(!weDBUtil::isKeyExist($k,$tabkey)) {
+							weDBUtil::addKey($k,$tabkey);
+						}
 					}
 				}
 			}					
