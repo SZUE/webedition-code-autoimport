@@ -170,6 +170,12 @@ $l_we_class["grant_language"] = "Vaihda kieltä";
 $l_we_class["grant_language_expl"] = "Muuta kaikkien tämänhetkisen hakemiston alla olevien tiedostojen (ja hakemistojen) kieltä.";
 $l_we_class["grant_language_ok"] = "Kieli onnistuneesti muutettu!";
 $l_we_class["grant_language_notok"] = "Virhe kielenvaihdon yhteydessä!";
+
+$l_we_class["grant_tid"] = "Change display document"; // TRANSLATE
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";// TRANSLATE
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";// TRANSLATE
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";// TRANSLATE
+
 $l_we_class["notValidFolder"] = "Valittu hakemisto on virheellinen!";
 
 

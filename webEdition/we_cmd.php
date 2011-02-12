@@ -310,6 +310,9 @@ if(!$INCLUDE){
 		case "changeLanguageRecursive":
 			$INCLUDE = "changeLanguage_rec.inc.php";
 			break;
+		case "changeTriggerIDRecursive":
+			$INCLUDE = "changeTriggerID_rec.inc.php";
+			break;
 		case "add_thumbnail" :
 			$INCLUDE = "we_editors/add_thumbnail.inc.php";
 			break;

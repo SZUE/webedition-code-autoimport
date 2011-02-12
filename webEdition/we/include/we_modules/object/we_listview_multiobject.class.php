@@ -141,7 +141,7 @@ class we_listview_multiobject extends listviewBase {
 			$this->order .= " DESC";
 		}
 
-		if($this->triggerID){
+		if($this->triggerID && show_SeoLinks()){
 			$this->Path = id_to_path($this->triggerID,FILE_TABLE,$this->DB_WE);
 		}else{
 			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
@@ -343,7 +343,7 @@ class we_listview_multiobject extends listviewBase {
 		}
 
 
-		$f = OBJECT_X_TABLE . $classID . ".ID as ID," . OBJECT_X_TABLE . $classID . ".OF_Templates as OF_Templates," . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text,". OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language,";
+		$f = OBJECT_X_TABLE . $classID . ".ID as ID," . OBJECT_X_TABLE . $classID . ".OF_Templates as OF_Templates," . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text,". OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url,". OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language,";
 		$f.=$_selFields;
 		foreach($matrix as $n=>$p){
 			$n2 = $n;
@@ -428,19 +428,24 @@ class we_listview_multiobject extends listviewBase {
 				$this->DB_WE->record($this->Record[$this->count]);
 				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 				$path_parts = pathinfo($this->Path);
-				if ($this->objectseourls && $this->DB_WE->Record['OF_Url']!=''){
+				if ($this->objectseourls && $this->DB_WE->Record['OF_Url']!='' && show_SeoLinks()){
+					if ($this->DB_WE->Record['OF_TriggerID']!=0){
+						$path_parts = pathinfo(id_to_path($this->DB_WE->Record['OF_TriggerID']));
+					}
+				
 					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR. $this->DB_WE->Record['OF_Url'];
 					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR. $this->DB_WE->Record['OF_Url'];
 					}
 				} else {
-					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+					if (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					}				
 				}
+				$this->DB_WE->Record["we_WE_TRIGGERID"] = isset($this->DB_WE->Record["OF_TriggerID"]) ? $this->DB_WE->Record["OF_TriggerID"] : 0;
 				$this->DB_WE->Record["we_WE_URL"] = isset($this->DB_WE->Record["OF_Url"]) ? $this->DB_WE->Record["OF_Url"] : '';
 				$this->DB_WE->Record["we_WE_TEXT"] = $this->DB_WE->Record["OF_Text"];
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->Record["OF_ID"];

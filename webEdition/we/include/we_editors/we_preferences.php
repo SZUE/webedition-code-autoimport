@@ -92,6 +92,11 @@ $global_config[] = array('define("BACKUP_STEPS",', '// Number of entries per bat
 // inlineedit default value
 $global_config[] = array('define("INLINEEDIT_DEFAULT",', '// Default setting for inlineedit attribute' . "\n" . 'define("INLINEEDIT_DEFAULT", true);');
 $global_config[] = array('define("WE_PHP_DEFAULT",', '// Default setting for php attribute' . "\n" . 'define("WE_PHP_DEFAULT", false);');
+$global_config[] = array('define("REMOVEFIRSTPARAGRAPH_DEFAULT",', '// Default setting for removeparagraph attribute' . "\n" . 'define("REMOVEFIRSTPARAGRAPH_DEFAULT", false);');
+$global_config[] = array('define("HIDENAMEATTRIBINWEIMG_DEFAULT",', '// Default setting for hide name attribute in weimg output' . "\n" . 'define("HIDENAMEATTRIBINWEIMG_DEFAULT", false);');
+$global_config[] = array('define("HIDENAMEATTRIBINWEFORM_DEFAULT",', '// Default setting for hide name attribute in weform output' . "\n" . 'define("IHIDENAMEATTRIBINWEFORM_DEFAULT", false);');
+
+
 
 // hooks
 $global_config[] = array('define("EXECUTE_HOOKS",', '// Default setting for hook execution' . "\n" . 'define("EXECUTE_HOOKS", false);');
@@ -148,6 +153,9 @@ $global_config[] = array('define("TAGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if d
 $global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of navigation' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", "no");');
 $global_config[] = array('define("WYSIWYGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of wysiwyg editior' . "\n" . 'define("WYSIWYGLINKS_OBJECTSEOURLS", "no");');
 $global_config[] = array('define("TAGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("TAGLINKS_OBJECTSEOURLS", "no");');
+$global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if should be displayed in webEdition ' . "\n" . 'define("SEOINSIDE_HIDEINWEBEDITION", "no");');
+$global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", "no");');
+
 
 //default charset
 $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
@@ -524,6 +532,15 @@ function get_value($settingvalue) {
 		case "inlineedit_default":
 			return defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true;
 			break;
+		case "removefirstparagraph_default":
+			return defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? INLINEEDIT_DEFAULT : false;
+			break;
+		case "hidenameattribinweimg_default":
+			return defined("HIDENAMEATTRIBINWEIMG_DEFAULT") ? INLINEEDIT_DEFAULT : false;
+			break;
+		case "hidenameattribinweform_default":
+			return defined("HIDENAMEATTRIBINWEFORM_DEFAULT") ? INLINEEDIT_DEFAULT : false;
+			break;
 
 		/*********************************************************************
 		 * NAVIGATION
@@ -555,6 +572,12 @@ function get_value($settingvalue) {
 			break;
 		case "taglinks_objectseourls":
 			return defined("TAGLINKS_OBJECTSEOURLS") ? TAGLINKS_OBJECTSEOURLS : false;
+			break;
+		case "seoinside_hideinwebedition":
+			return defined("SEOINSIDE_HIDEINWEBEDITION") ? SEOINSIDE_HIDEINWEBEDITION : false;
+			break;
+		case "seoinside_hideineditmode":
+			return defined("SEOINSIDE_HIDEINEDITMODE") ? SEOINSIDE_HIDEINEDITMODE : false;
 			break;
 
 
@@ -1626,6 +1649,30 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+			
+			case '$_REQUEST["removefirstparagraph_default"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "REMOVEFIRSTPARAGRAPH_DEFAULT", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+			
+			case '$_REQUEST["hidenameattribinweimg_default"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "HIDENAMEATTRIBINWEIMG_DEFAULT", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+			
+			case '$_REQUEST["hidenameattribinweform_default"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "HIDENAMEATTRIBINWEFORM_DEFAULT", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 
 			/*****************************************************************
 			 * NAVIGATION
@@ -1698,6 +1745,22 @@ $_we_active_integrated_modules = array();
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, "TAGLINKS_OBJECTSEOURLS", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+			
+			case '$_REQUEST["seoinside_hideinwebedition"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "SEOINSIDE_HIDEINWEBEDITION", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+			
+			case '$_REQUEST["seoinside_hideineditmode"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "SEOINSIDE_HIDEINEDITMODE", $settingvalue);
 
 				$_update_prefs = false;
 				break;
@@ -2739,6 +2802,10 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, '$_REQUEST["execute_hooks"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["backwardcompatibility_tagloading"]) ? $_REQUEST["backwardcompatibility_tagloading"] : null, '$_REQUEST["backwardcompatibility_tagloading"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["removefirstparagraph_default"]) ? $_REQUEST["removefirstparagraph_default"] : null, '$_REQUEST["removefirstparagraph_default"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweimg_default"]) ? $_REQUEST["hidenameattribinweimg_default"] : null, '$_REQUEST["hidenameattribinweimg_default"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweform_default"]) ? $_REQUEST["hidenameattribinweform_default"] : null, '$_REQUEST["hidenameattribinweform_default"]') || $_update_prefs;
+		
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_entries_from_document"]) ? $_REQUEST["navigation_entries_from_document"] : null, '$_REQUEST["navigation_entries_from_document"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, '$_REQUEST["navigation_rules_continue_after_first_match"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_hide"]) ? $_REQUEST["navigation_directoryindex_hide"] : null, '$_REQUEST["navigation_directoryindex_hide"]') || $_update_prefs;
@@ -2748,7 +2815,9 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_objectseourls"]) ? $_REQUEST["navigation_objectseourls"] : null, '$_REQUEST["navigation_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_objectseourls"]) ? $_REQUEST["wysiwyglinks_objectseourls"] : null, '$_REQUEST["wysiwyglinks_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["taglinks_objectseourls"]) ? $_REQUEST["taglinks_objectseourls"] : null, '$_REQUEST["taglinks_objectseourls"]') || $_update_prefs;
-		
+		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
+
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
@@ -5034,10 +5103,23 @@ else {
 				}
 
 				array_push($_settings, array("headline" => $l_prefs["inlineedit_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
-			}
+				
+				$_php_setting = new we_htmlSelect(array("name" => "removefirstparagraph_default","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
-			// Build dialog if user has permission
-			if (we_hasPerm("ADMINISTRATOR")) {
+					// Set selected setting
+					if ($i == 0 && !get_value("removefirstparagraph_default_default")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("removefirstparagraph_default_default")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+
+				array_push($_settings, array("headline" => $l_prefs["removefirstparagraph_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+
+			
+			
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "safari_wysiwyg","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
@@ -5052,10 +5134,7 @@ else {
 				}
 
 				array_push($_settings, array("headline" => $l_prefs["safari_wysiwyg"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
-			}
-
-            // Build dialog if user has permission
-			if (we_hasPerm("ADMINISTRATOR")) {
+			
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "showinputs_default","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
@@ -5070,6 +5149,34 @@ else {
 				}
 
 				array_push($_settings, array("headline" => $l_prefs["showinputs_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "hidenameattribinweimg_default","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("hidenameattribinweimg_default")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("hidenameattribinweimg_default")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+
+				array_push($_settings, array("headline" => $l_prefs["hidenameattribinweimg_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "hidenameattribinweform_default","class"=>"weSelect"));
+				for ($i = 0; $i < 2; $i++) {
+					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+
+					// Set selected setting
+					if ($i == 0 && !get_value("hidenameattribinweform_default")) {
+						$_php_setting->selectOption($i);
+					} else if ($i == 1 && get_value("hidenameattribinweform_default")) {
+						$_php_setting->selectOption($i);
+					}
+				}
+
+				//array_push($_settings, array("headline" => $l_prefs["hidenameattribinweform_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_we_doctype_workspace_behavior = abs(get_value("we_doctype_workspace_behavior"));
 				$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.
@@ -5239,51 +5346,7 @@ else {
 				$_inp = htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
                 $_we_tracker_dir = $we_button->create_button_table(array($_inp,$_but));
 			    array_push($_settings, array("headline" => $l_prefs["pagelogger_dir"], "html" => $_we_tracker_dir, "space" => 200));
-			    
-			    
-			    //  select if hooks can be executed
-				$_php_setting = new we_htmlSelect(array("name" => "execute_hooks","class"=>"weSelect"));
-				$_php_setting->addOption(0,$l_prefs["no"]);
-				$_php_setting->addOption(1,$l_prefs["yes"]);
 
-				if(get_value("execute_hooks")){
-				    $_php_setting->selectOption(1);
-				} else {
-				    $_php_setting->selectOption(0);
-				}
-				
-				$hooksHtml = htmlAlertAttentionBox($l_prefs["hooks_information"], 2, 240, false)."<br/>";
-				
-				$hooksHtml .= $_php_setting->getHtmlCode();
-				
-				array_push($_settings, array("headline" => $l_prefs["hooks"], "html" => $hooksHtml, "space" => 200));
-				
-				$_backwardcompatibility_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
-
-				$_backwardcompatibility_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("backwardcompatibility_tagloading"), "backwardcompatibility_tagloading", $l_prefs["backwardcompatibility_tagloading"], false, "defaultfont"));
-				$_backwardcompatibility_table->setCol(1, 0, null, getPixel(1, 5));
-			
-				$_backwardcompatibility_table->setCol(2, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 0px;'), htmlAlertAttentionBox($l_prefs['backwardcompatibility_tagloading_message'],1,245,false));
-
-				
-				if (we_hasPerm("ADMINISTRATOR")) {
-					array_push($_settings, array("headline" => $l_prefs["backwardcompatibility"], "html" => $_backwardcompatibility_table->getHtmlCode(), "space" => 200));
-				}
-			    		    
-				// Build dialog element if user has permission
-				$_dialog = create_dialog("", $l_prefs["tab_system"], $_settings, -1, "", "", null, $_needed_JavaScript);
-			}
-
-			break;
-			
-		case "seolinks":
-			/*********************************************************************
-			 * ATTRIBS
-			 *********************************************************************/
-			$_settings = array();
-			$_needed_JavaScript="";
-						// Build dialog if user has permission
-			if (we_hasPerm("ADMINISTRATOR")) {
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "navigation_entries_from_document","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
@@ -5311,6 +5374,53 @@ else {
 					}
 				}
 				array_push($_settings, array("headline" => $l_prefs["navigation_rules_continue"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+
+			    
+			    
+			    //  select if hooks can be executed
+				$_php_setting = new we_htmlSelect(array("name" => "execute_hooks","class"=>"weSelect"));
+				$_php_setting->addOption(0,$l_prefs["no"]);
+				$_php_setting->addOption(1,$l_prefs["yes"]);
+
+				if(get_value("execute_hooks")){
+				    $_php_setting->selectOption(1);
+				} else {
+				    $_php_setting->selectOption(0);
+				}
+				
+				$hooksHtml = htmlAlertAttentionBox($l_prefs["hooks_information"], 2, 240, false)."<br/>";
+				
+				$hooksHtml .= $_php_setting->getHtmlCode();
+				
+				array_push($_settings, array("headline" => $l_prefs["hooks"], "html" => $hooksHtml, "space" => 200));
+				
+								
+				$_backwardcompatibility_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
+
+				$_backwardcompatibility_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("backwardcompatibility_tagloading"), "backwardcompatibility_tagloading", $l_prefs["backwardcompatibility_tagloading"], false, "defaultfont"));
+				$_backwardcompatibility_table->setCol(1, 0, null, getPixel(1, 5));
+			
+				$_backwardcompatibility_table->setCol(2, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 0px;'), htmlAlertAttentionBox($l_prefs['backwardcompatibility_tagloading_message'],1,245,false));
+
+				
+				if (we_hasPerm("ADMINISTRATOR")) {
+					array_push($_settings, array("headline" => $l_prefs["backwardcompatibility"], "html" => $_backwardcompatibility_table->getHtmlCode(), "space" => 200));
+				}
+			    		    
+				// Build dialog element if user has permission
+				$_dialog = create_dialog("", $l_prefs["tab_system"], $_settings, -1, "", "", null, $_needed_JavaScript);
+			}
+
+			break;
+			
+		case "seolinks":
+			/*********************************************************************
+			 * ATTRIBS
+			 *********************************************************************/
+			$_settings = array();
+			$_needed_JavaScript="";
+						// Build dialog if user has permission
+			if (we_hasPerm("ADMINISTRATOR")) {
 
 				array_push($_settings, array("headline" => $l_prefs["general_directoryindex_hide"], "html" => "", "space" => 480, "noline" => 1));
 				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["navigation_directoryindex_description"],2,480),  "noline" => 1));
@@ -5374,17 +5484,32 @@ else {
 				$_php_setting->selectOption(get_value("wysiwyglinks_objectseourls"));			
 
 				array_push($_settings, array("headline" => $l_prefs["wysiwyglinks_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
-				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["general_objectseourls_description"],2,480)));
+				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["general_objectseourls_description"],2,480),"noline" => 1));
 				
 				$_php_setting = new we_htmlSelect(array("name" => "taglinks_objectseourls","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("taglinks_objectseourls"));			
 
-				array_push($_settings, array("headline" => $l_prefs["taglinks_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => $l_prefs["taglinks_objectseourls"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
+				array_push($_settings, array("headline" => $l_prefs["general_seoinside"], "noline" => 1));
+				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["general_seoinside_description"],2,480),"noline" => 1));
+				$_php_setting = new we_htmlSelect(array("name" => "seoinside__hideineditmode","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("seoinside__hideineditmode"));
+				array_push($_settings, array("headline" => $l_prefs["seoinside_hideineditmode"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));	
+				$_php_setting = new we_htmlSelect(array("name" => "seoinside_hideinwebedition","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
+				array_push($_settings, array("headline" => $l_prefs["seoinside_hideinwebedition"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));	
 				
 				$_dialog = create_dialog("", $l_prefs["tab_seolinks"], $_settings, -1, "", "", null, $_needed_JavaScript);
+				
+				
+				
 			}
 
 			break;

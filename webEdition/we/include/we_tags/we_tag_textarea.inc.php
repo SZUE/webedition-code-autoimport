@@ -27,10 +27,8 @@ function we_tag_textarea($attribs, $content){
 
 	$name = we_getTagAttribute("name", $attribs);
 	$xml = we_getTagAttribute("xml", $attribs, "");
-	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, true);
-	$attribs = removeAttribs($attribs, array(
-		'removefirstparagraph'
-	));
+	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
+	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
 
 	$html = we_getTagAttribute("html", $attribs, "", true, true);
 	$autobrAttr = we_getTagAttribute("autobr", $attribs, "", true);

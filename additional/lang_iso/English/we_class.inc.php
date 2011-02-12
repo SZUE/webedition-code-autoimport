@@ -168,9 +168,14 @@ $l_we_class["no_documents"] = "No document based on this template";
 
 $l_we_class["grant_language"] = "Change language";
 $l_we_class["grant_language_expl"] = "Change the language of all files and directories which reside in the current directory to the setting above.";
-$l_we_class["grant_language_ok"] = "Language have been successfully changed!";
+$l_we_class["grant_language_ok"] = "Language has been successfully changed!";
 $l_we_class["grant_language_notok"] = "There was an error while changing the language!";
 $l_we_class["notValidFolder"] = "The directory chosen is invalid!";
+
+$l_we_class["grant_tid"] = "Change display document";
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";
 
 
 $l_we_class["saveFirstMessage"] = "You need to save your changes before executing this command.";

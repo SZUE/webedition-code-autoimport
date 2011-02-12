@@ -472,11 +472,13 @@
 			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrlfield1')) $this->addCol(OBJECT_TABLE,'DefaultUrlfield1',"varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield0 ');
 			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrlfield2')) $this->addCol(OBJECT_TABLE,'DefaultUrlfield2',"varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield1 ');
 			if(!$this->isColExist(OBJECT_TABLE,'DefaultUrlfield3')) $this->addCol(OBJECT_TABLE,'DefaultUrlfield3',"varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield2 ');
+			if(!$this->isColExist(OBJECT_TABLE,'DefaultTriggerID')) $this->addCol(OBJECT_TABLE,'DefaultTriggerID',"bigint(20) NOT NULL default 0", ' AFTER  DefaultUrlfield3 ');
 		}
 	}
 	function updateObjectFiles(){
 		if(defined("OBJECT_FILES_TABLE")){
 			if(!$this->isColExist(OBJECT_FILES_TABLE,'Url')) $this->addCol(OBJECT_FILES_TABLE,'Url',"varchar(255) NOT NULL default ''", ' AFTER Path ');
+			if(!$this->isColExist(OBJECT_FILES_TABLE,'TriggerID')) $this->addCol(OBJECT_FILES_TABLE,'TriggerID',"bigint NOT NULL default '0'", ' AFTER Url ');
 		}
 	}
 	
@@ -489,6 +491,11 @@
 				$this->changeColTyp($_table,'Url','VARCHAR(255) NOT NULL');
 			} else {
 				$this->addCol($_table,'Url','VARCHAR(255) NOT NULL',' AFTER Path ');
+			}
+			if($this->isColExist($_table,'TriggerID')){
+				$this->changeColTyp($_table,'TriggerID',"bigint NOT NULL default '0'");
+			} else {
+				$this->addCol($_table,'TriggerID',"bigint NOT NULL default '0'",' AFTER Url ');
 			}
 			if($this->isColExist($_table,'IsSearchable')){
 				$this->changeColTyp($_table,'IsSearchable','TINYINT(1) DEFAULT 1');
@@ -520,6 +527,11 @@
 						$this->changeColTyp($_table,'OF_Url','VARCHAR(255) NOT NULL');
 					} else {
 						$this->addCol($_table,'OF_Url','VARCHAR(255) NOT NULL',' AFTER OF_Path ');
+					}
+					if($this->isColExist($_table,'OF_TriggerID')){
+						$this->changeColTyp($_table,'OF_TriggerID','BIGINT(20) NOT NULL DEFAULT 0');
+					} else {
+						$this->addCol($_table,'OF_TriggerID','BIGINT(20) NOT NULL DEFAULT 0',' AFTER OF_Url ');
 					}
 					if($this->isColExist($_table,'OF_IsSearchable')){
 						$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');

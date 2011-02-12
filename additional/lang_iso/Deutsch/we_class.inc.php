@@ -174,6 +174,12 @@ $l_we_class["grant_language_notok"] = "Es gab einen Fehler beim Übertragen der S
 $l_we_class["notValidFolder"] = "Das angegebene Verzeichnis ist ungültig!";
 $l_we_class["saveFirstMessage"] = "Um diese Aktion auszuführen müssen Sie zuerst Ihre Änderungen speichern!";
 
+$l_we_class["grant_tid"] = "Dokument für die Darstellung übertragen";
+$l_we_class["grant_tid_expl"] = "Übertragen Sie das oben eingestellte okument für die Darstellung auf Objekte und Verzeichnisse, welche sich in diesem Verzeichnis befinden.";
+$l_we_class["grant_tid_ok"] = "Das Darstellungsdokument wurde wurden erfolgreich übertragen!";
+$l_we_class["grant_tid_notok"] = "Es gab einen Fehler beim Übertragen des Darstellungsdokumentes!";
+
+
 $l_we_class["image_edit_null_not_allowed"] = "Im Feld Breite und Höhe sind nur Zahlen größer als 0 erlaubt!";
 $l_we_class['doctype_changed_question'] = "Sollen die Standardeinstellungen des Dokument-Typs für das Dokument übernommen werden?";
 $l_we_class['availableAfterSave'] = "Die Funktion steht erst nach dem Speichern des Eintrags zur Verfügung.";

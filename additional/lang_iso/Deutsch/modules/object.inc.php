@@ -44,6 +44,7 @@ $l_object["default"] = "Voreinstellung";
 $l_object["checked"] = "ausgewählt";
 $l_object["name"] = "Automatischer Name";
 $l_object["seourl"] = "SEO-URL";
+$l_object["seourltrigger"] = "Voreinstellung Dokument für die Darstellung";
 $l_object["allFields"] = "allen Feldern";
 $l_object["search_term"] = "Suchbegriff";
 $l_object["search_field"] = "Suchfeld";

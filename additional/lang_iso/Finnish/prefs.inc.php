@@ -365,6 +365,12 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 $l_prefs["general_objectseourls_description"] = "For the tags <we:link>, <we:linklist>, <we:listview>, <we:object> you can use the attribute 'objectseourls'";// TRANSLATE
 	 $l_prefs["taglinks_directoryindex_hide"] = "preset value for tags";// TRANSLATE
 	 $l_prefs["taglinks_objectseourls"] = "preset value for tags";// TRANSLATE
+	 $l_prefs["general_seoinside"] = "Usage within webEdition ";// TRANSLATE
+	 $l_prefs["general_seoinside_description"] = "If DirectoryIndex- file names and object SEO urls are used within webEdition, webEdition can not identify internal links and clicks on these links do not open the editor. With the following options, you can decide if they are are used in editmode and in the preview.";// TRANSLATE
+	 $l_prefs["seoinside_hideinwebedition"] = "Hide in preview";// TRANSLATE
+	 $l_prefs["seoinside_hideineditmode"] = "Hide in editmode";// TRANSLATE
+
+	 $l_prefs["navigation"] ="Navigation";// TRANSLATE
 
 
 	/**
