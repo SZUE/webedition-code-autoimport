@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
 
@@ -84,7 +83,7 @@ print STYLESHEET;
 
 	function delete_messages() {
 		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-			c = confirm("<?php echo $l_messaging['q_rm_todos']?>");
+			c = confirm("<?php echo g_l('modules_messaging','[q_rm_todos]')?>");
 			if (c == false) {
 				return;
 			}

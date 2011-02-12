@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 protect();
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
@@ -37,7 +36,7 @@ if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
 ?>
 <html>
   <head>
-    <title><?php print $l_messaging['sel_rcpts']; ?></title>
+    <title><?php print g_l('modules_messaging','[sel_rcpts]'); ?></title>
   <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
   <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
   <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>we_showMessage.js"></script>
@@ -61,10 +60,10 @@ if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
 	    }
 
 	    if ( $messaging->save_addresses($addrbook) ) {
-	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( $l_messaging['addr_book_saved'], WE_MESSAGE_NOTICE) . "\n}\n";
+	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( g_l('modules_messaging','[addr_book_saved]'), WE_MESSAGE_NOTICE) . "\n}\n";
 
 	    } else {
-	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( $l_messaging['error_occured'], WE_MESSAGE_ERROR) . "\n}\n";
+	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( g_l('modules_messaging','[error_occured]'), WE_MESSAGE_ERROR) . "\n}\n";
 
 	    }
 	 } else {
@@ -273,7 +272,7 @@ if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
   <body class="weDialogBody" onload="doOnLoad()" onUnload="doUnload();">
     <form name="usel">
 <?php  $tbl = '  <table cellspacing="6">
-      <tr><td class="defaultfont">' . $l_messaging['addr_book'] . '</td><td></td><td class="defaultfont">' . $l_messaging['selected'] . '</td></tr>
+      <tr><td class="defaultfont">' . g_l('modules_messaging','[addr_book]') . '</td><td></td><td class="defaultfont">' . g_l('modules_messaging','[selected]') . '</td></tr>
       <tr>
         <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple>
             </select>
@@ -302,7 +301,7 @@ if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
 	<td colspan="2">' . $we_button->create_button("select_user", "javascript:browse_users_window();") . '<td>
       </tr>
     </table>';
-    echo htmlDialogLayout($tbl, $l_messaging['sel_rcpts'],$we_button->position_yes_no_cancel($we_button->create_button("ok", "javascript:ok()"),  "", $we_button->create_button("cancel", "javascript:window.close();")));
+    echo htmlDialogLayout($tbl, g_l('modules_messaging','[sel_rcpts]'),$we_button->position_yes_no_cancel($we_button->create_button("ok", "javascript:ok()"),  "", $we_button->create_button("cancel", "javascript:window.close();")));
 ?>
     </form>
     <form action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel.php" method="post" name="addrbook_data">

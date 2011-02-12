@@ -21,7 +21,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 
 protect();
 htmlTop();
@@ -56,7 +55,7 @@ $we_button = new we_button();
       <?php echo hidden('we_transaction', $_REQUEST['we_transaction']) ?>
       <table cellpadding="0" cellspacing="0" border="0">
 	<tr>
-	  <td class="defaultfont"><?php print $GLOBALS["l_messaging"]["search_todos"]; ?>:</td>
+	  <td class="defaultfont"><?php print g_l('modules_messaging',"[search_todos]"); ?>:</td>
 	<?php
 	    echo '<td class="defaultfont">' . getPixel(10, 1) . htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) . '</td>';
 	    echo '<td class="defaultfont">' . getPixel(10, 1) . '</td>';

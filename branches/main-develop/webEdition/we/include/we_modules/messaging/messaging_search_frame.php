@@ -20,7 +20,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 protect();
 htmlTop();
@@ -52,7 +51,7 @@ $we_button = new we_button();
 
       <table cellpadding="0" cellspacing="0" border="0">
 	<tr>
-	  <td class="defaultfont"><?php echo $l_messaging['search_messages']?>:</td>
+	  <td class="defaultfont"><?php echo g_l('modules_messaging','[search_messages]')?>:</td>
 	  <td width="10"></td>
 	<?php
 	    echo '<td class="defaultfont">' .

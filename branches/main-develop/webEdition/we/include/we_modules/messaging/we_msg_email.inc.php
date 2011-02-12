@@ -21,7 +21,6 @@
 
 include_once(WE_MESSAGING_MODULE_DIR . "we_msg_proto.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 
 /* messaging email send class */
 class we_msg_email extends we_msg_proto {
@@ -40,7 +39,7 @@ class we_msg_email extends we_msg_proto {
     /*****************************************************************/
     /* Class Methods *************************************************/
     /*****************************************************************/
-    
+
     /* Constructor */
     function we_msg_email() {
 	$this->Name = 'msg_email_' . md5(uniqid(rand()));
@@ -56,7 +55,7 @@ class we_msg_email extends we_msg_proto {
     }
 
     function rfc2047_encode($header) {
-	if (!ereg('[����]', $header)) 
+	if (!ereg('[����]', $header))
 	    return $header;
 
 	/* Quoted-Printable encoding (see RFC 2045) should be okay for iso-8859-1 */
@@ -85,9 +84,9 @@ class we_msg_email extends we_msg_proto {
 	    }
 
 	}
-	
+
 	$enc_header .= "?=";
-	
+
 	return $enc_header;
     }
 
@@ -102,7 +101,7 @@ class we_msg_email extends we_msg_proto {
 	//$cc = join(',', $rcpts);
 
 	if (we_mail($to, $data['subject'], $data['body'],$from)) {
-	    $results['err'] = $l_messaging['error_occured'] . ': ' . $l_messaging['mail_not_sent'];
+	    $results['err'] = g_l('modules_messaging','[error_occured]') . ': ' . g_l('modules_messaging','[mail_not_sent]');
 	    $results['failed'] = $rcpts;
 	} else {
 	    array_unshift($rcpts, $to);

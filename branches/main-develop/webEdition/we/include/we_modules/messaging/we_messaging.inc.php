@@ -22,7 +22,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 
 
 /* messaging object class */
@@ -128,37 +127,35 @@ class we_messaging extends we_class {
 
     /* Constructor */
     function we_messaging(&$transact) {
-	global $l_messaging;
-
 	$this->Name = 'messaging_' . md5(uniqid(rand()));
 	array_push($this->persistent_slots, 'Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'last_id', 'sortorder', 'last_sortfield', 'available_folders', 'ids_selected', 'search_folder_ids', 'search_fields', 'used_msgobjs_names', 'clipboard_action', 'clipboard', 'cached');
 	$this->we_transact = &$transact;
 	$this->DB = new DB_WE();
 
-	$this->sf_names['subject'] = $l_messaging['subject'];
-	$this->sf_names['sender'] = $l_messaging['sender'];
-	$this->sf_names['mtext'] = $l_messaging['content'];
+	$this->sf_names['subject'] = g_l('modules_messaging','[subject]');
+	$this->sf_names['sender'] = g_l('modules_messaging','[sender]');
+	$this->sf_names['mtext'] = g_l('modules_messaging','[content]');
     }
 
     function add_msgobj($objname, $recover = 0) {
-    	
+
 		$inc_files = array("we_message" => WE_MESSAGING_MODULE_DIR . "we_message.inc.php",
 		   "we_todo" => WE_MESSAGING_MODULE_DIR . "we_todo.inc.php",
 		   "we_msg_email" => WE_MESSAGING_MODULE_DIR . "we_msg_email.inc.php");
-    	
+
 		if (in_array($objname, array_keys($this->send_msgobjs))){
     	    return 0;
     	}
-    	
+
     	if (!isset($inc_files[$objname])){
 	        return -1;
 	    }
-	    
+
     	include_once($inc_files[$objname]);
         if (! @class_exists($objname)){
 	        return -2;
 	    }
-	    
+
 	    $c = new $objname;
 	    $c->set_login_data($this->userid, $this->username);
 
@@ -275,10 +272,8 @@ class we_messaging extends we_class {
     }
 
     function clipboard_paste(&$errs) {
-	    global $l_messaging;
-
 	    if ($this->Folder_ID == -1) {
-    	    $errs = $l_messaging['cant_paste'];
+    	    $errs = g_l('modules_messaging','[cant_paste]');
 	        return;
 	    }
 
@@ -304,68 +299,64 @@ class we_messaging extends we_class {
     }
 
     function &reject(&$data) {
-		global $l_messaging;
-	
 		$results = array();
 		$results['err'] = array();
 		$results['ok'] = array();
 		$results['failed'] = array();
 		$rcpt_elems = explode(',', urldecode($data['rcpts_string']));
-		
+
 		if (empty($this->selected_message)) {
-		    $results['err'][] = $l_messaging['no_selection'];
+		    $results['err'][] = g_l('modules_messaging','[no_selection]');
 		    $results['failed'] = $rcpt_elems;
 		    return $results;
 		}
-	
+
 		$ret = $this->used_msgobjs[$this->selected_message['hdrs']['ClassName']]->reject($this->selected_message, $data);
 		$results['err'] = $ret['err'];
 		$results['ok'] = $ret['ok'];
 		$results['failed'] = $ret['failed'];
-	
+
 		array_splice($this->selected_set, array_ksearch('ID', $this->selected_message['ID'], $this->selected_set), 1);
 		$this->selected_message = array();
-	
+
 		return $results;
     }
 
     function forward(&$data) {
-		global $l_messaging;
-	
 		$results = array();
 		$results['err'] = array();
 		$results['ok'] = array();
 		$results['failed'] = array();
 		$rcpt_elems = explode(',', urldecode($data['rcpts_string']));
 		$rcpts = array();
-	
+
 		if (empty($this->selected_message)) {
-		    $results['err'][] = $l_messaging['no_selection'];
+		    $results['err'][] = g_l('modules_messaging','[no_selection]');
 		    $results['failed'] = $rcpt_elems;
 		    return $results;
 		}
-	
+
 		foreach ($rcpt_elems as $elem) {
 		    $rcpt_info = array();
 		    $elem = urldecode($elem);
 		    if (!$this->get_recipient_info($elem, $rcpt_info, "")) {
-			    $results['err'][] = $l_messaging['rcpt_parse_error'];
+			    $results['err'][] = g_l('modules_messaging','[rcpt_parse_error]');
 			    $results['failed'][] = $elem;
 			    continue;
 		    }
-	
+
 		    $rcpts[$rcpt_info['msg_obj']][] = $rcpt_info['address'];
 		}
-	
+
 		unset($data['rcpts_string']);
-	
+
 		foreach ($rcpts as $vals) {
 		    $ret = $this->used_msgobjs[$this->selected_message['hdrs']['ClassName']]->forward($vals, $data, $this->selected_message);
 		    $results['err'] = array_merge($results['err'], $ret['err']);
 		    $results['ok'] = array_merge($results['ok'], $ret['ok']);
 		    $results['failed'] = array_merge($results['failed'], $ret['failed']);
 		}
-	
+
 		return $results;
     }
 
@@ -379,7 +370,7 @@ class we_messaging extends we_class {
 		        $s_hash[$cn] = array(array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']));
 		    }
 		}
-	
+
 		foreach ($s_hash as $cn => $val) {
 			$kvals = array_get_kvals('hdrs', $val);
 			$di = $this->used_msgobjs[$cn]->delete_items($kvals);
@@ -505,8 +496,6 @@ class we_messaging extends we_class {
     }
 
     function save_addresses(&$addressbook) {
-	global $l_messaging;
-
 	$this->DB->query('DELETE FROM '.MSG_ADDRBOOK_TABLE.' WHERE UserID=' . abs($this->userid));
 	foreach ($addressbook as $elem) {
 	    if (!empty($elem))
@@ -648,14 +637,12 @@ class we_messaging extends we_class {
 
     /* Methods dealing with USER_TABLE and other userstuff */
     function userid_to_username($id) {
-	global $l_messaging;
-
 	$db2 = new DB_WE();
 	$db2->query('SELECT username FROM '.USER_TABLE.' WHERE ID=' . addslashes($id));
 	if ($db2->next_record())
 	    return $db2->f('username');
 
-	return $l_messaging['userid_not_found'];
+	return g_l('modules_messaging','[userid_not_found]');
     }
 
     function get_header($id, $headername) {
@@ -692,8 +679,6 @@ class we_messaging extends we_class {
     }
 
     function send(&$data, $msgobj_name = '') {
-	global $l_messaging;
-
 	$results = array();
 	$results['err'] = array();
 	$results['ok'] = array();
@@ -705,7 +690,7 @@ class we_messaging extends we_class {
 	    $rcpt_info = array();
 	    $elem = urldecode($elem);
 	    if (!$this->get_recipient_info($elem, $rcpt_info, isset($msgobj_name) ? $msgobj_name : "")) {
-		$results['err'][] = $l_messaging['rcpt_parse_error'];
+		$results['err'][] = g_l('modules_messaging','[rcpt_parse_error]');
 		$results['failed'][] = $elem;
 		continue;
 	    }
@@ -781,9 +766,9 @@ class we_messaging extends we_class {
 						    $this->init_sortstuff($id, '');
 						else
 						    $this->save_sortstuff($id, array_key_by_val($sortfield, $this->sf2sh), $this->sortorder);*/
-				
+
 				//		$this->ids_selected = array();
-				
+
 				//		echo "ID=$id<br>\n";
 				if(array_ksearch('ID', $id, $this->available_folders) != "-1"){
 				    $o   = $this->used_msgobjs[$this->available_folders[array_ksearch('ID', $id, $this->available_folders)]['ClassName']];
@@ -793,7 +778,7 @@ class we_messaging extends we_class {
 				$arr = array('folder_id' => $id, 'last_id' => $this->last_id);
 				$this->selected_set = isset($o)? $o->get_msg_set($arr) : array();
 				$this->update_last_id();
-		
+
 				$this->last_sortfield = (isset($o) && isset($this->sf2sh[$o->get_sortfield()])) ? $this->sf2sh[$o->get_sortfield()] : "";
 				$this->sortfield = $this->last_sortfield;
 				$this->sortorder = isset($o) ? $o->get_sortorder() : "";
@@ -834,20 +819,18 @@ class we_messaging extends we_class {
     }
 
     function &create_folder($name, $parent_id, $type) {
-	global $l_messaging;
-
 	$ret = array();
 
 	/* Sanity Checks */
 	if (empty($type) || !isset($this->used_msgobjs[$type])) {
 	    $ret[] = -1;
-	    $ret[] = $l_messaging['msg_type_not_found'];
+	    $ret[] = g_l('modules_messaging','[msg_type_not_found]');
 	    return $ret;
 	}
 
 	if ((($ind = array_ksearch('Name', $name, $this->available_folders)) >= 0) && ($this->available_folders[$ind]['ParentID'] == $parent_id)) {
 	    $ret[] = -1;
-	    $ret[] = $l_messaging['children_same_name'];
+	    $ret[] = g_l('modules_messaging','[children_same_name]');
 	    return $ret;
 	}
 
@@ -856,7 +839,7 @@ class we_messaging extends we_class {
 	//XXX: Parent-check must be done by $type object;
 	if ($parent_id != 0 && !in_array($parent_id, array_get_kvals('ID', $this->available_folders))) {
 	    $ret[] = -1;
-	    $ret[] = $l_messaging['no_parent_folder'];
+	    $ret[] = g_l('modules_messaging','[no_parent_folder]');
 	    return $ret;
 	}
 
@@ -867,35 +850,33 @@ class we_messaging extends we_class {
 						'Name' => $name);
 
 	    $ret[] = $id;
-	    $ret[] = $l_messaging['folder_created'];
+	    $ret[] = g_l('modules_messaging','[folder_created]');
 	} else {
 	    $ret = -1;
-	    $ret[] = $l_messaging['folder_create_error'];
+	    $ret[] = g_l('modules_messaging','[folder_create_error]');
 	}
 
 	return $ret;
     }
 
     function modify_folder($fid, $folder_name, $parent_folder) {
-	global $l_messaging;
-
 	$ret = array();
 
 	if (!is_numeric($fid) || !is_numeric($parent_folder)) {
 	    $ret[] =  -1;
-	    $ret[] = $l_messaging['param_wrong_type'];
+	    $ret[] = g_l('modules_messaging','[param_wrong_type]');
 	    return $ret;
 	}
 
 	if ($parent_folder != -1 && ($fid == $parent_folder || !$this->valid_parent_folder($fid, $parent_folder))) {
 	    $ret[] =  -1;
-	    $ret[] = $l_messaging['parentfolder_invalid'];
+	    $ret[] = g_l('modules_messaging','[parentfolder_invalid]');
 	    return $ret;
 	}
 
 	if (($f = $this->get_folder($fid)) == NULL) {
 	    $ret[] =  -1;
-	    $ret[] = $l_messaging['folderid_invalid'];
+	    $ret[] = g_l('modules_messaging','[folderid_invalid]');
 	    return $ret;
 	}
 
@@ -904,10 +885,10 @@ class we_messaging extends we_class {
 	    $this->available_folders[$ind]['Name'] = $folder_name;
 	    $this->available_folders[$ind]['ParentID'] = $parent_folder;
 	    $ret[] = 1;
-	    $ret[] = $l_messaging['folder_modified'];
+	    $ret[] = g_l('modules_messaging','[folder_modified]');
 	} else {
 	    $ret[] =  -1;
-	    $ret[] = $l_messaging['folder_change_failed'];
+	    $ret[] = g_l('modules_messaging','[folder_change_failed]');
 	}
 
 	return $ret;
@@ -931,12 +912,12 @@ class we_messaging extends we_class {
 
     function &get_wesel_available_folders() {
     	$fooArray = array(
-    						"sent" => $GLOBALS["l_messaging"]["folder_sent"],
-    						"messages" => $GLOBALS["l_messaging"]["folder_messages"],
-    						"done" => $GLOBALS["l_messaging"]["folder_done"],
-    						"task" => $GLOBALS["l_messaging"]["folder_todo"],
-    						"rejected" => $GLOBALS["l_messaging"]["folder_rejected"],
-   							"todo" => $GLOBALS["l_messaging"]["folder_todo"]
+    						"sent" => g_l('modules_messaging',"[folder_sent]"),
+    						"messages" => g_l('modules_messaging',"[folder_messages]"),
+    						"done" => g_l('modules_messaging',"[folder_done]"),
+    						"task" => g_l('modules_messaging',"[folder_todo]"),
+    						"rejected" => g_l('modules_messaging',"[folder_rejected]"),
+   							"todo" => g_l('modules_messaging',"[folder_todo]")
     					);
 
     	$matchArray = array("Name" => $fooArray);
@@ -945,7 +926,7 @@ class we_messaging extends we_class {
     		array(
     			array(
     				'ID' => '0',
-    				'Name' => "-- ".$GLOBALS["l_messaging"]["nofolder"]." --"
+    				'Name' => "-- ".g_l('modules_messaging',"[nofolder]")." --"
     			)
     		),
 			array_hash_construct(
@@ -978,5 +959,3 @@ class we_messaging extends we_class {
 		return $out;
     }
 }
-
-?>

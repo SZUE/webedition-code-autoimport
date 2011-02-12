@@ -20,7 +20,6 @@
 
 
 if (defined("MESSAGING_SYSTEM")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 	include_once(WE_MESSAGING_MODULE_DIR."we_message.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
@@ -30,8 +29,8 @@ if (defined("MESSAGING_SYSTEM")){
 	$_we_messaging->add_msgobj('we_message');
 	$_we_messaging->saveInSession($_SESSION['we_data'][$_transact]);
 	$messaging_text = $l_javaMenu["module_information"]["messaging"]["text"].":";
-	$new_messages = $l_messaging["new_messages"];
-	$new_tasks = $l_messaging["new_tasks"];
+	$new_messages = g_l('modules_messaging',"[new_messages]");
+	$new_tasks = g_l('modules_messaging',"[new_tasks]");
 
 	$messaging = "";
 	$messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);

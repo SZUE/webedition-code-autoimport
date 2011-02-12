@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 
 /* message object class */
@@ -87,15 +86,13 @@ class we_format extends we_class {
 
 	/* Constructor */
 	function we_format($mode, $sel_msg = NULL) {
-		global $l_messaging;
-
 		$this->Name = 'messageformat_' . md5(uniqid(rand()));
 		array_push($this->persistent_slots, 'ClassName','Name','ID','Table', 'mode', 'userid', 'username');
 		$this->DB = new DB_WE();
 		$this->mode = $mode;
 		$this->sel_msg = $sel_msg;
 		$this->msg_obj = isset($sel_msg['hdrs']['ClassName']) ? $sel_msg['hdrs']['ClassName'] : "";
-		$this->attribution_line = $l_messaging['attrib_line'] . ':';
+		$this->attribution_line = g_l('modules_messaging','[attrib_line]') . ':';
 	}
 
 	/* Getters And Setters */
@@ -155,13 +152,12 @@ class we_format extends we_class {
 	}
 
 	function userid_to_username($id) {
-		global $l_messaging;
 		$db2 = new DB_WE();
 		$db2->query('SELECT username FROM '.USER_TABLE.' WHERE ID=' . abs($id));
 		if ($db2->next_record())
 			return $db2->f('username');
 
-		return $l_messaging['userid_not_found'];
+		return g_l('modules_messaging','[userid_not_found]');
 	}
 
 	function get_date() {
@@ -343,8 +339,6 @@ class we_format extends we_class {
 	}
 
 	function &get_todo_history() {
-	    global $l_messaging;
-
 	    if ($this->msg_obj != 'we_todo') {
 		return NULL;
 	    }
@@ -355,13 +349,13 @@ class we_format extends we_class {
 		$hist_str = '';
 		switch ($c['action']) {
 		    case 1:
-			$hist_str = $l_messaging['comment_created'];
+			$hist_str = g_l('modules_messaging','[comment_created]');
 			break;
 		    case 2:
-			$hist_str =  $l_messaging['forwarded_to'] . ' ' . $c['username'];
+			$hist_str =  g_l('modules_messaging','[forwarded_to]'). ' ' . $c['username'];
 			break;
 		    case 3:
-			$hist_str =  $l_messaging['rejected_to']. ' ' . $c['username'];
+			$hist_str =  g_l('modules_messaging','[rejected_to]'). ' ' . $c['username'];
 		    default:
 			break;
 		}
@@ -385,5 +379,3 @@ class we_format extends we_class {
 	}
 
 }
-
-?>

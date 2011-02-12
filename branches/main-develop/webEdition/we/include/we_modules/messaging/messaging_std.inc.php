@@ -152,6 +152,5 @@ function get_nameline($id, $addr = 'username') {
 		return $db2->f('Email') . ' (' . ((($db2->f('First') == '') && ($db2->f('Second') == '')) ? $db2->f('Username') : $db2->f('First') . ' ' . $db2->f('Second')) . ')';
 	}
 
-	return $l_messaging['userid_not_found'];
+	return g_l('modules_messaging','[userid_not_found]');
 }
-?>
