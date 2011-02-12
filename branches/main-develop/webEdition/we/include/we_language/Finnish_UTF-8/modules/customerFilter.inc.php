@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$GLOBALS['l_customerFilter'] = array(
+$l_modules_customerFilter = array(
 	'mode_off' 					=> 'Suodatin pois käytöstä (kaikilla vierailijoilla on pääsyoikeus)',
 	'mode_none' 				=> 'Only not logged in users have access',
 	'mode_all' 					=> 'Kaikilla sisäänkirjautuneilla asiakkailla on pääsyoikeus',
@@ -37,7 +37,7 @@ $GLOBALS['l_customerFilter'] = array(
 	'AND'						=> 'JA',
 	'OR'						=> 'TAI',
 	'black_list'				=> 'Mustalista (näillä asiakkailla ei ole koskaan pääsyoikeutta):',
-	'white_list'				=> 'Valkealista (näillä asiakkailla on aina pääsyoikeus):', 
+	'white_list'				=> 'Valkealista (näillä asiakkailla on aina pääsyoikeus):',
 	'documentNoLogin'			=> 'Virhesivu: asiakas ei ole kirjautunut sisään:',
 	'documentNoAccess'			=> 'Virhesivu: asiakkaalla ei ole vaadittavia oikeuksia:',
 	'accessControlOnErrorDoc' 	=> 'Käytä virhesivuja',
@@ -50,6 +50,3 @@ $GLOBALS['l_customerFilter'] = array(
 	'apply_filter_cofirm_close'	=> 'Useampia alikohteita on auki. Asiakassuodatinten käyttöönottamiseksi kaikki alikohteet on suljettava. Jos jatkat, kaikki alikohteet suljetaan automaattisesti ja tallentamattomat muutokset menetetään.',
 	'customerFilter'			=> 'Asiakassuodatin'
 );
-
-
-?>

@@ -556,6 +556,10 @@ class we_imageDocument extends we_binaryDocument {
 
 			$filter = array('filesize','type','id','showcontrol','thumbnail','href','longdescid','showimage', 'showinputs','listviewname','parentid','startid');   //  dont use these array-entries
 
+			if (defined(HIDENAMEATTRIBINWEIMG_DEFAULT) && HIDENAMEATTRIBINWEIMG_DEFAULT){
+				$filter[] = 'name';
+			}
+
             // check longdesc here - does file exist?
         	if($this->getElement('longdescid') && $this->getElement('longdescid') != '-1'){
         	    $longdesc = id_to_path($this->getElement('longdescid'));

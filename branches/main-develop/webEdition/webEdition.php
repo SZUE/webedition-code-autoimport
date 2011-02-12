@@ -652,6 +652,7 @@ function we_cmd() {
 			top.drawTree();
 			break;
         case "changeLanguageRecursive":
+		case "changeTriggerIDRecursive":
 			we_repl(self.load,url,arguments[0]);
 			break;
 		case "logout":

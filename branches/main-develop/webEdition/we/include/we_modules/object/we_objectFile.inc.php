@@ -80,6 +80,7 @@ class we_objectFile extends we_document
 
 
 	var $Url='';
+	var $TriggerID=0;
 
 
 	//######################################################################################################################################################
@@ -93,7 +94,7 @@ class we_objectFile extends we_document
 	function we_objectFile()
 	{
 		$this->we_document();
-		array_push($this->persistent_slots,"CSS","DefArray","Text","AllowedClasses","Templates","ExtraTemplates","Workspaces","ExtraWorkspaces","ExtraWorkspacesSelected","RootDirPath","rootDirID","TableID","ObjectID","Category","IsSearchable","Charset","Language","Url");
+		array_push($this->persistent_slots,"CSS","DefArray","Text","AllowedClasses","Templates","ExtraTemplates","Workspaces","ExtraWorkspaces","ExtraWorkspacesSelected","RootDirPath","rootDirID","TableID","ObjectID","Category","IsSearchable","Charset","Language","Url","TriggerID");
 		if(defined("SCHEDULE_TABLE")){
 			array_push($this->persistent_slots,"FromOk","ToOk","From","To");
 		}
@@ -119,6 +120,7 @@ class we_objectFile extends we_document
 		$IsSearchable = $this->IsSearchable;
 		$Charset = $this->Charset;
 		$Url =  $this->Url;
+		$TriggerID =  $this->TriggerID;
 		we_root::makeSameNew();
 		$this->Category = $Category;
 		$this->TableID = $TableID;
@@ -129,6 +131,7 @@ class we_objectFile extends we_document
 		$this->i_objectFileInit(true);
 
 		$this->Url = $Url;
+		$this->TriggerID = $TriggerID;
 		$this->Workspaces = $Workspaces;
 		$this->ExtraWorkspaces = $ExtraWorkspaces;
 		$this->ExtraWorkspacesSelected = $ExtraWorkspacesSelected;
@@ -304,7 +307,7 @@ class we_objectFile extends we_document
 		$this->Charset = '';
 		$this->restoreWorkspaces();
 		$this->elements = array();
-		$this->DB_WE->query("SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'");
+		$this->DB_WE->query("SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'");
 		if($this->DB_WE->next_record()){
 			// fix - the class access permissions should not be applied
 			/*if($this->DB_WE->f("Users")){
@@ -317,6 +320,9 @@ class we_objectFile extends we_document
 				$this->RestrictOwners = $this->DB_WE->f("RestrictUsers");
 			}*/
 
+			if($this->DB_WE->f("DefaultTriggerID")){
+				$this->TriggerID = $this->DB_WE->f("DefaultTriggerID");
+			}
 			if($this->DB_WE->f("DefaultCategory")){
 				$this->Category = $this->DB_WE->f("DefaultCategory");
 			}
@@ -589,10 +595,23 @@ class we_objectFile extends we_document
 				</tr>
 			</table></td>
 	</tr>
+	<tr>
+		<td>
+			'.getPixel(20,4).'</td>
+		<td>
+			'.getPixel(20,2).'</td>
+		<td>
+			'.getPixel(100,2).'</td>
+	</tr>
+	<tr>
+		<td colspan="3">'.$this->formTriggerDocument().'</td>
+	</tr>
 </table>
 ';
 		return $content;
 	}
+
+
 
 	function formIsSearchable(){
 		global $l_we_class;
@@ -1377,7 +1396,7 @@ class we_objectFile extends we_document
 				$languageselect->addOption('--','');
 			}
 
-			foreach($GLOBALS['l_languages'] as $languagekey => $languagevalue){
+			foreach(g_l('languages','') as $languagekey => $languagevalue){
 				if(in_array($languagekey,$frontendL)){
 					$languageselect->addOption($languagekey,$languagevalue);
 				}
@@ -2146,9 +2165,9 @@ class we_objectFile extends we_document
 			$text=str_replace(" ", "-", $text);
 			$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
 			$this->Url=substr($text,0,256);
+		} else {
+			$this->Url='';
 		}
-
-
 	}
 
 
@@ -2384,7 +2403,7 @@ class we_objectFile extends we_document
 
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
-					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url");
+					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID");
 					$this->i_getUniqueIDsAndFixNames();
 					break;
 				}else{
@@ -2397,7 +2416,7 @@ class we_objectFile extends we_document
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat,false);
-					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url");
+					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_MAID_DB);
@@ -2408,7 +2427,7 @@ class we_objectFile extends we_document
 				$sessDat = we_temporaryDocument::revert($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat,false);
-					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url");
+					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_TEMP_DB);
@@ -2798,6 +2817,7 @@ class we_objectFile extends we_document
 
 		// updater
 		if(!$this->isColExist($ctable,"OF_Url")) $this->addCol($ctable,"OF_Url","varchar(255) NOT NULL ", "OF_Path");
+		if(!$this->isColExist($ctable,"OF_TriggerID")) $this->addCol($ctable,"OF_TriggerID","BIGINT NOT NULL DEFAULT '0'", "OF_Url");
 		if(!$this->isColExist($ctable,"OF_IsSearchable")) $this->addCol($ctable,"OF_IsSearchable","tinyint(1) DEFAULT '1' ", "OF_Published");
 		if(!$this->isColExist($ctable,"OF_Charset")) $this->addCol($ctable,"OF_Charset","varchar(64) NOT NULL", "OF_IsSearchable");
 		if(!$this->isColExist($ctable,"OF_WebUserID")) $this->addCol($ctable,"OF_WebUserID","BIGINT DEFAULT '0' NOT NULL", "AFTER OF_Charset");
@@ -2876,7 +2896,7 @@ class we_objectFile extends we_document
 		$this->saveInSession($saveArr);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
 		if($this->ID) $this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_TEXT='".$this->Text."',OF_PATH='".$this->Path."' WHERE OF_ID=".$this->ID);
-		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url");
+		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url,TriggerID");
 	}
 
 	function i_getDocument($includepath="") {

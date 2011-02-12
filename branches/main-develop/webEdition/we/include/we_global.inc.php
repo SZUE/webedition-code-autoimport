@@ -2617,18 +2617,21 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 
 		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
 			$path_parts = pathinfo($path);
-			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-				$path= ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+			if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+				$path= ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 			}
 		}
-		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $objectseourls){
-			$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", "Url", $DB_WE);
+		if (show_SeoLinks() && $objectseourls){
+
+			$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", $DB_WE);
+			$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
+			if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 		} else {$objecturl='';}
 		if ($objectseourls && $objecturl!=''){
-			if($hidedirindex && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
-				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . "?pid=" . abs($pid);
 			} else {
-				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . "?pid=" . abs($pid);
 			}
 		} else {
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
@@ -2707,8 +2710,8 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 			if (isset($foo["Path"])) {
 				$_path = $foo["Path"];
 				$path_parts = pathinfo($_path);
-				if(!($we_editmode || $WE_MAIN_EDITMODE) && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-					$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+					$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 				}
 				$text = str_replace(
 							$regs[$i][1] . '="document:' . $regs[$i][2] . $regs[$i][3],
@@ -3339,7 +3342,12 @@ function getHtmlTag($element, $attribs = array(), $content = "", $forceEndTag = 
 	$attribs = removeAttribs($attribs, array(
 							"xml", "xmltype"
 					));
-
+	if (defined("HIDENAMEATTRIBINWEIMG_DEFAULT") && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+		$attribs = removeAttribs($attribs, array("name"));
+	}
+	if (defined("HIDENAMEATTRIBINWEFORM_DEFAULT") && HIDENAMEATTRIBINWEFORM_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+		$attribs = removeAttribs($attribs, array("name"));
+	}
 	if ($xhtml) { //	xhtml, check if and what we shall debug
 		$_xmlClose = true;
 
@@ -3603,9 +3611,9 @@ function we_writeLanguageConfig($default, $available = array()) {
 	foreach ($available as $Locale) {
 		$temp = explode("_", $Locale);
 		if (sizeof($temp) == 1) {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] " . $temp[0] . ",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]' " . $temp[0] . ",\n";
 		} else {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]' . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
 		}
 	}
 
@@ -3630,7 +3638,6 @@ function we_writeLanguageConfig($default, $available = array()) {
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/languages.inc.php");
 
 $GLOBALS["weFrontendLanguages"] = array(
 ' . $locales . '
@@ -3935,4 +3942,14 @@ function we_templatePost(){
 	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ){
 		print '<script language="JavaScript" type="text/javascript">setTimeout("doScrollTo();",100);</script>';
 	}
+}
+
+function show_SeoLinks(){
+	if (defined('SEOINSIDE_HIDEINWEBEDITION') && SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition){
+		return false;
+	} else if (defined('SEOINSIDE_HIDEINEDITMODE') && SEOINSIDE_HIDEINEDITMODE && ($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE'])){
+		return false;
+	}
+	return true;
+
 }

@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/customerFilter.inc.php');
 
 
 class weVersions {
@@ -2335,16 +2334,16 @@ class weVersions {
 
 		if($k=="_mode") {
 			if($v==0) {
-				$v = $GLOBALS["l_customerFilter"]['mode_off'];
+				$v = g_l('modules_customerFilter','mode_off');
 			}
 			if($v==1) {
-				$v = $GLOBALS["l_customerFilter"]['mode_all'];
+				$v = g_l('modules_customerFilter','mode_all');
 			}
 			if($v==2) {
-				$v = $GLOBALS["l_customerFilter"]['mode_specific'];
+				$v = g_l('modules_customerFilter','mode_specific');
 			}
 			if($v==3) {
-				$v = $GLOBALS["l_customerFilter"]['mode_filter'];
+				$v = g_l('modules_customerFilter','mode_filter');
 			}
 		}
 

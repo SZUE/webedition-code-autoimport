@@ -282,6 +282,9 @@ $l_prefs = array(
 		 * INLINEEDIT
 		 */
 		'inlineedit_default' => "Standard Einstellung für<br><em>inlineedit</em>-Attribut in<br>&lt;we:textarea&gt;",
+		'removefirstparagraph_default' => "Standard Einstellung für<br><em>removefirstparagraph</em>-Attribut in<br>&lt;we:textarea&gt;",
+		'hidenameattribinweimg_default' => "Keine Ausgabe von name=xyz in we:img (HTML 5)",
+		'hidenameattribinweform_default' => "Keine Ausgabe von name=xyz in we:form (XHTML strict)",
 		/**
 		 * SAFARI WYSIWYG
 		 */
@@ -310,6 +313,11 @@ $l_prefs = array(
 		'general_objectseourls_description' => "Für die Tags <we:link>, <we:linklist>, <we:listview>, <we:object> kann das Attribut 'objectseourls' verwendet, oder die folgende Voreinstallung vorgenommen werden:",
 		'taglinks_directoryindex_hide' => "Voreinstellung für Tags",
 		'taglinks_objectseourls' => "Voreinstellung für Tags",
+		'general_seoinside' => "Darstellung innerhalb von webEdition ",
+		'general_seoinside_description' => "Werden DirectoryIndex-Dateinamen und Objekt SEO-Urls innerhalb von webEdition dargestellt, so kann webEdition diese nicht mehr als interne Links erkennen und ein Klick auf den Link öffnet nicht mehr das Bearbeitungsfenster. Mit den folgenden Optionen können beide (bis auf die Navigation) im Editmode und der Vorschau daher unterdrückt werden.",
+		'seoinside_hideinwebedition' => "In der Vorschau verstecken",
+		'seoinside_hideineditmode' => "Im Editmode verstecken",
+		'navigation' => "Navigation",
 		/**
 		 * DATABASE
 		 */

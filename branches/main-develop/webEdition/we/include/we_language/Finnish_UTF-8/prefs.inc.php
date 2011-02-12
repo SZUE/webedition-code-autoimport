@@ -287,6 +287,10 @@ $l_prefs = array(
 		 * INLINEEDIT
 		 */
 		'inlineedit_default' => "Oletusarvo<br><em>inlineedit</em> määreelle<br>&lt;we:textarea&gt; -tagissa",
+		'removefirstparagraph_default' => "Default value for the<br><em>removefirstparagraph</em> attribute in<br>&lt;we:textarea&gt;", // TRANSLATE
+		'hidenameattribinweimg_default' => "No output of name=xyz in we:img (HTML 5)", // TRANSLATE
+		'hidenameattribinweform_default' => "No output of name=xyz in we:form (XHTML strict)", // TRANSLATE
+
 		/**
 		 * SAFARI WYSIWYG
 		 */
@@ -315,6 +319,13 @@ $l_prefs = array(
 		'general_objectseourls_description' => "For the tags <we:link>, <we:linklist>, <we:listview>, <we:object> you can use the attribute 'objectseourls'", // TRANSLATE
 		'taglinks_directoryindex_hide' => "preset value for tags", // TRANSLATE
 		'taglinks_objectseourls' => "preset value for tags", // TRANSLATE
+		'general_seoinside' => "Usage within webEdition ", // TRANSLATE
+		'general_seoinside_description' => "If DirectoryIndex- file names and object SEO urls are used within webEdition, webEdition can not identify internal links and clicks on these links do not open the editor. With the following options, you can decide if they are are used in editmode and in the preview.", // TRANSLATE
+		'seoinside_hideinwebedition' => "Hide in preview", // TRANSLATE
+		'seoinside_hideineditmode' => "Hide in editmode", // TRANSLATE
+
+		'navigation' => "Navigation", // TRANSLATE
+
 
 		/**
 		 * DATABASE
@@ -451,19 +462,19 @@ $l_prefs = array(
 		/*		 * ***************************************************************************
 		 * message_reporting
 		 * *************************************************************************** */
-		'message_reporting'=>array(
-		'information' => "Voit määrittää alla olevilla laatikoilla haluatko saada ilmoituksen webEditionin tapahtumista.",
-		'headline' => "Ilmoitukset",
-		'show_notices' => "Näytä huomautukset",
-		'show_warnings' => "Näytä varoitukset",
-		'show_errors' => "Näytä virheet",
+		'message_reporting' => array(
+				'information' => "Voit määrittää alla olevilla laatikoilla haluatko saada ilmoituksen webEditionin tapahtumista.",
+				'headline' => "Ilmoitukset",
+				'show_notices' => "Näytä huomautukset",
+				'show_warnings' => "Näytä varoitukset",
+				'show_errors' => "Näytä virheet",
 		),
 		/*		 * ***************************************************************************
 		 * Module Activation
 		 * *************************************************************************** */
-		'module_activation'=>array(
-		'information' => "Täällä voit aktivoida ja deaktivoida moduuleja tarpeesi mukaan.<br />Deaktivoidut moduulit voivat parantaa webEditionin yleistä suorituskykyä.",
-		'headline' => "Moduulien aktivointi",
+		'module_activation' => array(
+				'information' => "Täällä voit aktivoida ja deaktivoida moduuleja tarpeesi mukaan.<br />Deaktivoidut moduulit voivat parantaa webEditionin yleistä suorituskykyä.",
+				'headline' => "Moduulien aktivointi",
 		),
 		/*		 * ***************************************************************************
 		 * Email settings

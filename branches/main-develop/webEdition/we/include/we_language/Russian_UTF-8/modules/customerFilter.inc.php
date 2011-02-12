@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$GLOBALS['l_customerFilter'] = array(
+$l_modules_customerFilter = array(
 	'mode_off' 					=> 'Filter is off (all visitors have access)',
 	'mode_none' 				=> 'Only not logged in users have access',
 	'mode_all' 					=> 'All logged in customers have access',
@@ -50,6 +50,3 @@ $GLOBALS['l_customerFilter'] = array(
 	'apply_filter_cofirm_close'	=> 'Currently, several subitems of this folder are open. To apply the customerfilters all subitems must be closed. If you continue, all subitems are closed automatically, however unsaved changes are discarded.',
 	'customerFilter'			=> 'Customer filter'
 );
-
-
-?>

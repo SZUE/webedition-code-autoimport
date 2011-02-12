@@ -207,7 +207,7 @@ class weCustomerFrames extends weModuleFrames {
 					$lcvalue = $lccode[0];
 				}
 				$languageselect = new we_htmlSelect(array("name" => $field, "size" => "1", "style" => "{width:240;}", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
-				foreach ($GLOBALS['l_languages'] as $languagekey => $languagevalue) {
+				foreach (g_l('languages','') as $languagekey => $languagevalue) {
 					if (in_array($languagekey, $frontendL)) {
 						$languageselect->addOption($languagekey, $languagevalue);
 					}

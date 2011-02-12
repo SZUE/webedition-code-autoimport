@@ -37,7 +37,7 @@ htmlTop();
 	</head>
 	<body class="weEditorBody" onUnload="doUnload()">
 		<form name="we_form" method="post" onSubmit="return false;"><?php $we_doc->pHiddenTrans(); ?>
-			<table cellpadding="6" cellspacing="0" border="0">
+		<!-- <table cellpadding="6" cellspacing="0" border="0"><tr><td> -->	
 <?php
 	$implementYuiAC = false;
 	switch($we_doc->ContentType){
@@ -89,7 +89,7 @@ htmlTop();
 	}
 
 ?>
-			</table>
+		<!--</td></tr></table> -->
 		</form>
 <?php
 echo $yuiSuggest->getYuiCssFiles();

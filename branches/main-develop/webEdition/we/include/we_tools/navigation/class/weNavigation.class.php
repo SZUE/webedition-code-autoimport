@@ -846,14 +846,19 @@ class weNavigation extends weModelBase
 				if ($this->FolderSelection == 'objLink') {
 					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS ){
 						$_db = new DB_WE();
-						$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", "Url", $_db);
+						$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", $_db);
+						$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 						if($objecturl==''){
 							$_param = 'we_objectID='. $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 						}
 					} else {
 						$_param = 'we_objectID='. $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 					}
-					$_id = weDynList::getFirstDynDocument($this->FolderWsID);
+					if ($objecttriggerid){
+						$_id = $objecttriggerid;
+					} else {
+						$_id = weDynList::getFirstDynDocument($this->FolderWsID);
+					}
 				} else {
 					$_id = $this->LinkID;
 				}
@@ -861,9 +866,9 @@ class weNavigation extends weModelBase
 				if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && $objecturl!='' ){
 					$path_parts = pathinfo($_path);
 					if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-						$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;
+						$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl;
 					} else {
-						$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl;
+						$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl;
 					}
 				}
 
@@ -894,23 +899,28 @@ class weNavigation extends weModelBase
 						$objecturl='';
 						if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
-							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($_id) . "' LIMIT 1", "Url", $_db);
+							$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", $_db);
+							$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 							if($objecturl==''){
 								$_param = 'we_objectID='. $_id . (!empty($_param) ? '&' : '') . $_param;
 							}
 						} else {
 							$_param = 'we_objectID='. $_id . (!empty($_param) ? '&' : '') . $_param;
 						}
-						$_id = weDynList::getFirstDynDocument($this->WorkspaceID);
+						if ($objecttriggerid){
+							$_id = $objecttriggerid;
+						} else {
+							$_id = weDynList::getFirstDynDocument($this->WorkspaceID);
+						}
 					}
 
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
 					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl!='' ){
 						$path_parts = pathinfo($_path);
 						if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-							$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;
+							$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl;
 						} else {
-							$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl;
+							$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl;
 						}
 					}
 

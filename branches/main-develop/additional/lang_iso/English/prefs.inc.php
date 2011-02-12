@@ -335,6 +335,10 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 */
 
 	 $l_prefs["inlineedit_default"] = "Default value for the<br><em>inlineedit</em> attribute in<br>&lt;we:textarea&gt;";
+	 $l_prefs["removefirstparagraph_default"] = "Default value for the<br><em>removefirstparagraph</em> attribute in<br>&lt;we:textarea&gt;";// TRANSLATE
+	 $l_prefs["hidenameattribinweimg_default"] = "No output of name=xyz in we:img (HTML 5)";// TRANSLATE
+	 $l_prefs["hidenameattribinweform_default"] = "No output of name=xyz in we:form (XHTML strict)";// TRANSLATE
+
 
 	/**
 	 * SAFARI WYSIWYG
@@ -367,6 +371,12 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 $l_prefs["taglinks_directoryindex_hide"] = "preset value for tags";// TRANSLATE
 	 $l_prefs["taglinks_objectseourls"] = "preset value for tags";// TRANSLATE
 
+	 $l_prefs["general_seoinside"] = "Usage within webEdition ";// TRANSLATE
+	 $l_prefs["general_seoinside_description"] = "If DirectoryIndex- file names and object SEO urls are used within webEdition, webEdition can not identify internal links and clicks on these links do not open the editor. With the following options, you can decide if they are are used in editmode and in the preview.";// TRANSLATE
+	 $l_prefs["seoinside_hideinwebedition"] = "Hide in preview";// TRANSLATE
+	 $l_prefs["seoinside_hideineditmode"] = "Hide in editmode";// TRANSLATE
+
+	 $l_prefs["navigation"] ="Navigation";// TRANSLATE
 
 
 	/**

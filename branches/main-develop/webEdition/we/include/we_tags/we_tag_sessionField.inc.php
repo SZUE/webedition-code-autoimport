@@ -28,7 +28,7 @@ function we_tag_sessionField($attribs, $content) {
 
 	$name = we_getTagAttribute('name', $attribs);
 	$xml = we_getTagAttribute('xml', $attribs, '', true);
-	$removeFirstParagraph = we_getTagAttribute('removefirstparagraph', $attribs, 0, true, true);
+	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
 	$autobrAttr = we_getTagAttribute('autobr', $attribs, '', true);
 	$checked = we_getTagAttribute('checked', $attribs, '', true);
 	$values = we_getTagAttribute('values', $attribs);

@@ -27,7 +27,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/languages.inc.php');
 if(defined("SHOP_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 }
@@ -921,7 +920,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 							$lcvalue= $lccode[0];
 						}
 						$languageselect=new we_htmlSelect(array("name"=>"weCustomerOrder[$k]","size"=>"1","style"=>"{width:280;}","class"=>"wetextinput"));
-						foreach($GLOBALS['l_languages'] as $languagekey => $languagevalue){
+						foreach(g_l('languages','') as $languagekey => $languagevalue){
 							if(in_array($languagekey,$frontendL)){
 								$languageselect->addOption($languagekey,$languagevalue);
 							}

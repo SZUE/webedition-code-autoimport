@@ -19,10 +19,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/languages.inc.php");
 
 $GLOBALS["weFrontendLanguages"] = array(
-	'de_DE' => $GLOBALS['l_languages']['de'] . " (" . g_l('countries','[DE]') . ") de_DE",
+	'de_DE' => $g_l('languages','[de]') . " (" . g_l('countries','[DE]') . ") de_DE",
 
 );
 

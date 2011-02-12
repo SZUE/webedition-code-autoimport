@@ -39,7 +39,7 @@ if ($we_doc->ClassName != "we_imageDocument" && we_hasPerm("CAN_EDIT_CUSTOMERFIL
 	array_push(
 		$parts,
 		array(
-			'headline' => $GLOBALS['l_customerFilter']['customerFilter'],
+			'headline' => g_l('modules_customerFilter','[customerFilter]'),
 			'html' =>	$_view->getFilterHTML(),
 			'space' => $_space_size
 		)
@@ -141,9 +141,9 @@ function formWebuser($canChange,$width=388){
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setTrashButton($_trashBut);
 		$yuiSuggest->setTable(CUSTOMER_TABLE);
-		
+
 		$out = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode() . "\n";
-		
+
 	}else{
 		$out = $webuser;
 	}

@@ -50,6 +50,8 @@ $l_object_classfoldersearch["searchable"] = "Setze die gewählten Objekte auf du
 $l_object_classfoldersearch["wirklichsearchable"] = "Dies setzt die gewählten Objekt auf durchsuchbar! Sind Sie sicher?";
 $l_object_classfoldersearch["unsearchable"] = "Setze die gewählten Objekte auf nicht durchsuchbar";
 $l_object_classfoldersearch["wirklichunsearchable"] = "Dies setzt die gewählten Objekt auf nicht durchsuchbar! Sind Sie sicher?";
+$l_object_classfoldersearch["copytid"] = "Kopiere die in der Klasse definierte Voreinstellung für das Anzeige-Dokument in die ausgew&auml;hlten Objekte.";
+$l_object_classfoldersearch["wirklichcopytid"] = "Dies überschreibt den in den Objekten definierten Anzeige-Dokumente! Sind Sie sicher?";
 
 $l_object_classfoldersearch["zeige"] = "Zeige";
 $l_object_classfoldersearch["Objekt"] = "Objekt";
@@ -64,5 +66,7 @@ $l_object_classfoldersearch["ID"] = "ID";
 $l_object_classfoldersearch["language"] = "Sprache";
 $l_object_classfoldersearch["charset"] = "Zeichensatz";
 $l_object_classfoldersearch["url"] = "SEO-Objekt-Url";
+$l_object_classfoldersearch["triggerid"] = "Darstellungsdokument";
+
 
 ?>
