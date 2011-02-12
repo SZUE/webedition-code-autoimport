@@ -336,6 +336,9 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 
 	 $l_prefs["inlineedit_default"] = "Standardowe ustawienie dla<br>atrybutu <em>inlineedit</em> w<br>&lt;we:textarea&gt;";
+	 $l_prefs["removefirstparagraph_default"] = "Default value for the<br><em>removefirstparagraph</em> attribute in<br>&lt;we:textarea&gt;";// TRANSLATE
+	 $l_prefs["hidenameattribinweimg_default"] = "No output of name=xyz in we:img (HTML 5)";// TRANSLATE
+	 $l_prefs["hidenameattribinweform_default"] = "No output of name=xyz in we:form (XHTML strict)";// TRANSLATE
 
 	/**
 	 * SAFARI WYSIWYG
