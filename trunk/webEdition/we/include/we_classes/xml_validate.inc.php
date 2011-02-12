@@ -58,7 +58,7 @@ class XML_Validate extends XML_Parser {
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
 		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "Extension", "IsDynamic", "Published", "Category", "IsSearchable",
 		"schedArr", "DefArray", "AllowedClasses", "Templates", "ExtraTemplates", "Workspaces", "ExtraWorkspaces", "ExtraWorkspacesSelected",
-		"RootDirPath", "rootDirID", "TableID", "ObjectID", "Category", "FromOk", "ToOk", "From", "To", "WebUserID");
+		"RootDirPath", "rootDirID", "TableID", "ObjectID", "Category", "FromOk", "ToOk", "From", "To", "WebUserID","Url","TriggerID");
 
 	/**
 	 * This array contains all child elements of the "we:content" node with the parent node "we:object".
@@ -82,13 +82,13 @@ class XML_Validate extends XML_Parser {
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
 		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "Extension", "IsDynamic", "Published", "Category", "IsSearchable",
 		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "SerializedArray", "Templates", "Workspaces", "Users", "strOrder",
-		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords", "DefaultDesc");
+		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords", "DefaultDesc","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID");
 
 	/**
 	 * This array contains all child elements of the "we:category" node.
 	 * @var array
 	 */
-	var $catNode = array("ID", "Category", "Text", "Path", "ParentID", "IsFolder", "Icon");
+	var $catNode = array("ID", "Category", "Text", "Path", "ParentID", "IsFolder", "Icon","Catfields");
 
 
 	/**
