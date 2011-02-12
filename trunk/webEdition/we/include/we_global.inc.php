@@ -2620,7 +2620,7 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
 			$path_parts = pathinfo($path);
 			if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-				$path= ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+				$path= ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 			}
 		}
 		if (show_SeoLinks() && $objectseourls){
@@ -2631,9 +2631,9 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 		} else {$objecturl='';}
 		if ($objectseourls && $objecturl!=''){
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
-				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . "?pid=" . abs($pid);
 			} else {
-				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . "?pid=" . abs($pid);
 			}
 		} else {
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
@@ -2713,7 +2713,7 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 				$_path = $foo["Path"];
 				$path_parts = pathinfo($_path);
 				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-					$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+					$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 				}
 				$text = str_replace(
 							$regs[$i][1] . '="document:' . $regs[$i][2] . $regs[$i][3],
