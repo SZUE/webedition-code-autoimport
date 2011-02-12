@@ -334,6 +334,10 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	 */
 
 	 $l_prefs["inlineedit_default"] = "Standard Einstellung für<br><em>inlineedit</em>-Attribut in<br>&lt;we:textarea&gt;";
+	 $l_prefs["removefirstparagraph_default"] = "Standard Einstellung für<br><em>removefirstparagraph</em>-Attribut in<br>&lt;we:textarea&gt;";
+	 $l_prefs["hidenameattribinweimg_default"] = "Keine Ausgabe von name=xyz in we:img (HTML 5)";
+	 $l_prefs["hidenameattribinweform_default"] = "Keine Ausgabe von name=xyz in we:form (XHTML strict)";
+
 
 	/**
 	 * SAFARI WYSIWYG

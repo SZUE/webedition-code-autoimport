@@ -94,7 +94,7 @@ $global_config[] = array('define("INLINEEDIT_DEFAULT",', '// Default setting for
 $global_config[] = array('define("WE_PHP_DEFAULT",', '// Default setting for php attribute' . "\n" . 'define("WE_PHP_DEFAULT", false);');
 $global_config[] = array('define("REMOVEFIRSTPARAGRAPH_DEFAULT",', '// Default setting for removeparagraph attribute' . "\n" . 'define("REMOVEFIRSTPARAGRAPH_DEFAULT", false);');
 $global_config[] = array('define("HIDENAMEATTRIBINWEIMG_DEFAULT",', '// Default setting for hide name attribute in weimg output' . "\n" . 'define("HIDENAMEATTRIBINWEIMG_DEFAULT", false);');
-$global_config[] = array('define("HIDENAMEATTRIBINWEFORM_DEFAULT",', '// Default setting for hide name attribute in weform output' . "\n" . 'define("IHIDENAMEATTRIBINWEFORM_DEFAULT", false);');
+$global_config[] = array('define("HIDENAMEATTRIBINWEFORM_DEFAULT",', '// Default setting for hide name attribute in weform output' . "\n" . 'define("HIDENAMEATTRIBINWEFORM_DEFAULT", false);');
 
 
 
@@ -533,13 +533,13 @@ function get_value($settingvalue) {
 			return defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true;
 			break;
 		case "removefirstparagraph_default":
-			return defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? INLINEEDIT_DEFAULT : false;
+			return defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : false;
 			break;
 		case "hidenameattribinweimg_default":
-			return defined("HIDENAMEATTRIBINWEIMG_DEFAULT") ? INLINEEDIT_DEFAULT : false;
+			return defined("HIDENAMEATTRIBINWEIMG_DEFAULT") ? HIDENAMEATTRIBINWEIMG_DEFAULT : false;
 			break;
 		case "hidenameattribinweform_default":
-			return defined("HIDENAMEATTRIBINWEFORM_DEFAULT") ? INLINEEDIT_DEFAULT : false;
+			return defined("HIDENAMEATTRIBINWEFORM_DEFAULT") ? HIDENAMEATTRIBINWEFORM_DEFAULT : false;
 			break;
 
 		/*********************************************************************
@@ -5176,7 +5176,7 @@ else {
 					}
 				}
 
-				//array_push($_settings, array("headline" => $l_prefs["hidenameattribinweform_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => $l_prefs["hidenameattribinweform_default"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_we_doctype_workspace_behavior = abs(get_value("we_doctype_workspace_behavior"));
 				$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.
