@@ -20,6 +20,7 @@
  */
 // Database wrapper class of webEdition
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/db_mysql.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 ### Datenbankklasse ableiten
 
@@ -157,7 +158,7 @@ class DB_WE extends DB_Sql {
 		} else
 		if (preg_match('/insert |update /i', $Query_String)) {
 			// delete getHash DB Cache
-			$GLOBALS['WE_GET_HASH_CACHE'] = array();
+			getHash('');
 		}
 		$this->Row = 0;
 		$this->Errno = mysql_errno();
