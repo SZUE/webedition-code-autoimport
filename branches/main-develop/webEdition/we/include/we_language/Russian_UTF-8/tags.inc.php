@@ -21,9 +21,12 @@
 
 
 /**
- * Language file: tags.inc.php
+ * Language file: enc_tags.inc.php
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
+$GLOBALS["l_tags"]["int_href"] = "Внутренняя";
+$GLOBALS["l_tags"]["ext_href"] = "Внешняя";
+$GLOBALS["l_tags"]["include_file"] = "Select file for we:include"; // TRANSLATE
+$GLOBALS["l_tags"]["open_sidebar"] = "Open sidebar"; // TRANSLATE
 ?>

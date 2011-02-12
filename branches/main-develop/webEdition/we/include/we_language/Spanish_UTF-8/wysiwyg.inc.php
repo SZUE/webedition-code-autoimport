@@ -24,8 +24,7 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
-include_once(dirname(__FILE__)."/enc_wysiwyg_js.inc.php");
+include_once(dirname(__FILE__)."/wysiwyg_js.inc.php");
 
 $GLOBALS["l_wysiwyg"]["window_title"] = "Editar campo '%s'";
 

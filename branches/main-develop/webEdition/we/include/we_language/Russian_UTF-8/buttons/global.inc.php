@@ -26,7 +26,6 @@
  * Language: English
  */
 
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 /*****************************************************************************
  * LOGIN-SCREEN

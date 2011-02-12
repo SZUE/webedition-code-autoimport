@@ -25,8 +25,8 @@
  * Provides language strings.
  * Language: Deutsch
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
-
+$GLOBALS["l_global"]["categorys"] = "Kategorien";
+$GLOBALS["l_global"]["navigation"] = "Navigation";
 $GLOBALS["l_global"]["new_link"] = "Neuer Link"; // important to use for this the GLOBALS ARRAY (because in linklists the file is included in a function)!!!
 $GLOBALS["l_global"]["load_menu_info"] = "Lade Daten!<br>Dies kann bei vielen Menü-Einträgen etwas länger dauern ...";
 $GLOBALS["l_global"]["text"] = "Text";

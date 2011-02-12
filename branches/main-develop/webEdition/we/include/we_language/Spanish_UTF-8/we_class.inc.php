@@ -24,7 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 $l_we_class["ChangePark"] = "Ud solamente puede cambiar este atributo si el documento no es publicado!";
 $l_we_class["fieldusers"] = "Usuario";
@@ -77,7 +76,7 @@ $l_we_class["salign"] = "Alinear a escala";
 $l_we_class["play"] = "Ejecutar";
 $l_we_class["loop"] = "Ciclo";
 $l_we_class["scale"] = "Escala";
-$l_we_class["wmode"] = "Window mode"; // TRANSLATE 
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Color de fondo";
 $l_we_class["response_save_noperms_to_create_folders"] = "El documento no pudo ser salvado porque Ud no tiene los derechos necesarios para crear carpetas (%s)!";
 $l_we_class["file_on_liveserver"]="Archivo ya existe";

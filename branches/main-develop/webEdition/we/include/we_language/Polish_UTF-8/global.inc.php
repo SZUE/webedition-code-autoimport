@@ -25,7 +25,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 $GLOBALS["l_global"]["new_link"] = "New Link"; // TRANSLATE // It is important to use the GLOBALS ARRAY because in linklists, the file is included in a function.
 $GLOBALS["l_global"]["load_menu_info"] = "Załaduj dane!<br>Przy wielu wpisach w menu może to długo potrwać ...";
@@ -187,4 +186,6 @@ $GLOBALS["l_global"]["beat"] ="Beta"; // TRANSLATE
 $GLOBALS["l_global"]["rc"] ="RC"; // TRANSLATE
 $GLOBALS["l_global"]["preview"] ="preview"; // TRANSLATE
 $GLOBALS["l_global"]["release"] ="official release"; // TRANSLATE
-?>
+
+$GLOBALS["l_global"]["categorys"] = "Categories"; // TRANSLATE
+$GLOBALS["l_global"]["navigation"] = "Navigation"; // TRANSLATE

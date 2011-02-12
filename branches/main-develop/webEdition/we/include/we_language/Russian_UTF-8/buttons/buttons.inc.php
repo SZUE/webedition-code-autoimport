@@ -26,8 +26,6 @@
  * Language: English
  */
 
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
-
 $l_button["btn_messages_copy"]["alt"] = "Копировать сообщение";
 $l_button["btn_messages_create"]["alt"] = "Создать сообщение";
 $l_button["btn_messages_cut"]["alt"] = "Вырезать сообщение";
@@ -47,4 +45,3 @@ $l_button["btn_task_reject"]["alt"] = "Отклонить задачу";
 $l_button["btn_task_status"]["alt"] = "Обновить статус";
 $l_button["btn_task_trash"]["alt"] = "Удалить задачу";
 $l_button["btn_task_update"]["alt"] = "Новые задачи";
-?>
