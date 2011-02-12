@@ -26,7 +26,6 @@ include_once(WE_WORKFLOW_MODULE_DIR."weWorkflow.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocument.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 
 class weWorkflowView extends weWorkflowBase{
 
@@ -1293,7 +1292,7 @@ class weWorkflowView extends weWorkflowBase{
 		if($this->documentDef->document->CreatorID){
 			$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->CreatorID);
 			if($this->db->next_record())
-				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["created_by"],
+				array_push(	$_parts, array(	"headline" => g_l('modules_users',"[created_by]"),
 											"html"     => $this->db->f("First").' '.$this->db->f("Second").' ('.$this->db->f("username") . ')',
 											"space"    => $_space,
 											"noline"   => 1
@@ -1309,10 +1308,9 @@ class weWorkflowView extends weWorkflowBase{
 					);
 
 		if($this->documentDef->document->ModifierID){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 			$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->ModifierID);
 			if($this->db->next_record())
-				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["changed_by"],
+				array_push(	$_parts, array(	"headline" => g_l('modules_users',"[changed_by]"),
 											"html"     => $this->db->f("First").' '.$this->db->f("Second").' ('.$this->db->f("username").')',
 											"space"    => $_space,
 											"noline"   => 1
@@ -1375,7 +1373,6 @@ class weWorkflowView extends weWorkflowBase{
 	function getObjectInfo(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 
 
 		$_parts = array();
@@ -1404,7 +1401,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->CreatorID);
 			if($this->db->next_record())
-				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["created_by"],
+				array_push(	$_parts, array(	"headline" => g_l('modules_users',"[created_by]"),
 											"html"     => $this->db->f("First").' '.$this->db->f("Second").' ('.$this->db->f("username") . ')',
 											"space"    => $_space,
 											"noline"   => 1
@@ -1420,7 +1417,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->ModifierID);
 			if($this->db->next_record())
-				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["changed_by"],
+				array_push(	$_parts, array(	"headline" => g_l('modules_users',"[changed_by]"),
 											"html"     => $this->db->f("First").' '.$this->db->f("Second").' ('.$this->db->f("username").')',
 											"space"    => $_space,
 											"noline"   => 1

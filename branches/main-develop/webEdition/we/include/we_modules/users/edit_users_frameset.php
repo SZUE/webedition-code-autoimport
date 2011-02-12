@@ -23,7 +23,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_browser_check.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 
 protect();
@@ -86,7 +85,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 		}
 
 		if(hot == "1" && arguments[0] != "save_user") {
-			if(confirm("<?php print $l_users["save_changed_user"]?>")) {
+			if(confirm("<?php print g_l('modules_users',"[save_changed_user]")?>")) {
 				arguments[0] = "save_user";
 			} else {
 				top.content.usetHot();
@@ -101,7 +100,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 			case "new_user":
 				top.content.user_resize.user_right.user_editor.user_properties.focus();
 				if(hot==1 && top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd) {
-					if(confirm("<?php print $l_users["save_changed_user"]?>")) {
+					if(confirm("<?php print g_l('modules_users',"[save_changed_user]")?>")) {
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd.value="save_user";
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.sd.value=1;
 					} else {
@@ -125,7 +124,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 			case "display_user":
 				top.content.user_resize.user_right.user_editor.user_properties.focus();
 				if(hot==1 && top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd) {
-					if(confirm("<?php print $l_users["save_changed_user"]?>")) {
+					if(confirm("<?php print g_l('modules_users',"[save_changed_user]")?>")) {
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd.value="save_user";
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.sd.value=1;
 					}
@@ -149,7 +148,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				top.content.user_resize.user_right.user_editor.user_properties.focus();
 				top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd.value="display_user";
 				if(hot==1 && top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd) {
-					if(confirm("<?php print $l_users["save_changed_user"]?>")) {
+					if(confirm("<?php print g_l('modules_users',"[save_changed_user]")?>")) {
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd.value="save_user";
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.sd.value=1;
 					}
@@ -171,7 +170,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				break;
 			case "new_group":
 				if(hot==1 && top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd) {
-					if(confirm("<?php print $l_users["save_changed_user"]?>")) {
+					if(confirm("<?php print g_l('modules_users',"[save_changed_user]")?>")) {
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd.value="save_user";
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.sd.value=1;
 					} else {
@@ -191,7 +190,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				break;
 			case "new_alias":
 				if(hot==1 && top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd) {
-					if(confirm("<?php print $l_users["save_changed_user"]?>")) {
+					if(confirm("<?php print g_l('modules_users',"[save_changed_user]")?>")) {
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd.value="save_user";
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.sd.value=1;
 					} else {
@@ -223,7 +222,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				new jsWindow('<?php print WE_USERS_MODULE_PATH; ?>edit_users_sresults.php?kwd='+arguments[1],"customer_settings",-1,-1,580,400,true,false,true);
 				break;
 			case "new_organization":
-				var orgname = prompt("<?php print $l_users["give_org_name"]; ?>","");
+				var orgname = prompt("<?php print g_l('modules_users',"[give_org_name]"); ?>","");
 				if(orgname!= null) {
 					top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH ?>edit_users_cmd.php?ucmd=new_organization&orn='+orgname;
 				}

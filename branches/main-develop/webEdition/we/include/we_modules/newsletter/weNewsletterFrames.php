@@ -71,14 +71,14 @@ class weNewsletterFrames extends weModuleFrames {
 
 	/**
 	 * Modul Header
-	 * 
+	 *
 	 * @package weModules
 	 * @subpackage Newsletter
 	 * @param Integer $mode
 	 * @return String
 	 */
 	function getHTMLEditorHeader($mode = 0) {
-		global $l_users,$l_newsletter;
+		global $l_newsletter;
 
 		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
@@ -248,12 +248,12 @@ class weNewsletterFrames extends weModuleFrames {
 					setTimeout("populateGroups()",100);
 				}
 			}
-			
+
 			function we_save() {
 			    setTimeout(\'top.content.we_cmd("save_newsletter")\',100);
-				
+
 			}
-			
+
 		');
 
 		$select=new we_htmlSelect(array("name"=>"gview"));
@@ -890,7 +890,7 @@ class weNewsletterFrames extends weModuleFrames {
 			}
 			else {
 				$minutes[] = $i;
-			}		
+			}
 		}
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),1,7);
@@ -921,7 +921,7 @@ class weNewsletterFrames extends weModuleFrames {
 				}
 				else {
 					$table->setCol($c,2,array("colspan"=>$colspan,"id"=>"td_value_fields_".$group."_".$k.""),htmlTextInput("filter_fieldvalue_".$group."_".$k,16,isset($v["fieldvalue"]) ? $v["fieldvalue"] : "","",'onKeyUp="top.content.hot=1;"',"text","200"));
-				}				
+				}
 
 				$c++;
 			}
@@ -939,56 +939,56 @@ class weNewsletterFrames extends weModuleFrames {
 			$table->addRow();
 			$table->setCol($c,0,array("colspan"=>$colspan),$we_button->create_button_table(array($plus,$trash)));
 		}
-		
+
 		$js =we_htmlElement::jsElement("calendarSetup(".$group.",".$k.");");
 
 		return $this->View->htmlHidden("filter_".$group,count($this->View->newsletter->groups[$group]->aFilter)).
 					$table->getHtmlCode().$js;
 	}
-	
+
 function getDateSelector($_label, $_name, $_btn, $value)
 	{
 		$we_button = new we_button();
 		$btnDatePicker = $we_button->create_button(
-				"image:date_picker", 
-				"javascript:", 
-				null, 
-				null, 
-				null, 
-				null, 
-				null, 
-				null, 
-				false, 
+				"image:date_picker",
+				"javascript:",
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				false,
 				$_btn);
 		$oSelector = new we_htmlTable(
 				array(
 					"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"
-				), 
-				1, 
+				),
+				1,
 				5);
 		$oSelector->setCol(
-				0, 
-				2, 
-				null, 
+				0,
+				2,
+				null,
 				htmlTextInput(
-						$name = $_name, 
-						$size = 55, 
-						$value, 
-						$maxlength = 10, 
-						$attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', 
-						$type = "text", 
+						$name = $_name,
+						$size = 55,
+						$value,
+						$maxlength = 10,
+						$attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"',
+						$type = "text",
 						$width = 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");
 		$oSelector->setCol(0, 4, null, we_htmlElement::htmlA(array(
 			"href" => "#"
 		), $btnDatePicker));
-		
+
 		return $oSelector->getHTMLCode();
 	}
 
 	/**
 	 * Mailing list - block Emails
-	 * 
+	 *
 	 * @package weModules
 	 * @subpackage Newsletter
 	 *
@@ -1014,19 +1014,19 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		// Dialog table for the email block
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),6,3);
-		
+
 		// 1. ROW: select status
 		$selectStatus = we_htmlElement::htmlB($l_newsletter["status"])." ".htmlSelect("weEmailStatus",array($l_newsletter["statusAll"],$l_newsletter["statusInvalid"]),"",(isset($_REQUEST['weEmailStatus'])?$_REQUEST['weEmailStatus']:"0"),"","onchange='weShowMailsByStatus(this.value, $group);' id='weViewByStatus'","value","150");
-		$table->setCol(0,0,array("valign"=>"middle","colspan"=>"3","class"=>"defaultfont"),$selectStatus);		
+		$table->setCol(0,0,array("valign"=>"middle","colspan"=>"3","class"=>"defaultfont"),$selectStatus);
 		$table->setCol(1,0,array("colspan"=>"3"),getPixel(5,10));
-		
+
 		// 2. ROW: Mail list with handling buttons
 		$table->setCol(2,0,array("valign"=>"top"),$this->View->newsletter->htmlSelectEmailList("we_recipient".$group,$arr,10,"",false,'style="width:'.($this->def_width-110).'px; height:140px" id="we_recipient'.$group.'"',"value","600"));
 		$table->setCol(2,1,array("valign"=>"middle"),getPixel(10,12));
 		$table->setCol(2,2,array("valign"=>"top"),$buttons_table->getHtmlCode());
 		$table->setCol(3,0,array("colspan"=>"3"),getPixel(5,10));
 
-		// 3. ROW: Buttons for email import and export  
+		// 3. ROW: Buttons for email import and export
 		$importbut = $we_button->create_button("import","javascript:we_cmd('set_import',".$group.")");
 		$exportbut = $we_button->create_button("export", "javascript:we_cmd('set_export',".$group.")");
 
@@ -1331,7 +1331,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$table->setCol(6,0,array(),htmlFormElementTable(htmlTextInput("Test",37,$this->View->newsletter->Test,"","onKeyUp='top.content.hot=1;'"),$l_newsletter["test_email"]));
 
 			$table->setCol(7,0,array(),getPixel(10,10));
-			
+
 			if ($this->View->newsletter->isEmbedImages) {
 				$_embedImagesChk = we_htmlElement::htmlInput(array("type"=>"checkbox", "value"=>"1", "name"=>"isEmbedImagesChk" ,"onClick"=>$this->topFrame.".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}","checked"=>null),$l_newsletter["isEmbedImages"]);
 			} else {
@@ -1340,9 +1340,9 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$_embedImagesHid = we_htmlElement::htmlHidden(array("name"=>"isEmbedImages", "value"=>$this->View->newsletter->isEmbedImages));
 			//$_embedImagesChk = we_htmlElement::htmlInput(array("type"=>"checkbox", "value"=>"1", "name"=>"_isEmbedImages" ,"onClick"=>$this->topFrame.".hot=1;","checked"=>($this->View->newsletter->isEmbedImages?"true":"false")),$l_newsletter["isEmbedImages"]);
 			$_embedImagesLab = we_htmlElement::htmlLabel(array("class"=>"defaultfont","onClick"=>$this->topFrame.".hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}",'text',$this->def_width),$l_newsletter["isEmbedImages"]);
-			
+
 			$table->setCol(8,0,array(),htmlFormElementTable($_embedImagesHid.$_embedImagesChk."&nbsp;".$_embedImagesLab,""));
-			
+
 			array_push($parts,array("headline"=>$l_newsletter["newsletter"],"html"=>$table->getHtmlCode(),"space"=>140));
 
 			array_push($parts,array("headline"=>$l_newsletter["charset"],"html"=>$this->getHTMLCharsetTable(),"space"=>140));
@@ -1379,18 +1379,18 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		}
 
 		$js = $this->View->getJSProperty();
-		
+
 		$js .= we_htmlElement::jsElement("", array(
 			"src" => JS_DIR . "jscalendar/calendar.js"
 		)) . we_htmlElement::jsElement(
-				"", 
+				"",
 				array(
-					
+
 						"src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js"
 				)) . we_htmlElement::jsElement("", array(
 			"src" => JS_DIR . "jscalendar/calendar-setup.js"
 		));
-		
+
 		$js .=we_htmlElement::jsElement( '
 					if (top.content.get_focus) {
 						self.focus();
@@ -1402,17 +1402,17 @@ function getDateSelector($_label, $_name, $_btn, $value)
 					function setHeaderTitle() {
 						if(parent.edheader && parent.edheader.setTitlePath) {
 							if(preObj  = document.getElementById("yuiAcInputPathGroup")) {
-								parent.edheader.hasPathGroup = true; 
-								parent.edheader.setPathGroup(preObj.value); 
+								parent.edheader.hasPathGroup = true;
+								parent.edheader.setPathGroup(preObj.value);
 							} else {
-								parent.edheader.hasPathGroup = false; 
+								parent.edheader.hasPathGroup = false;
 							}
 
 							if(postObj = document.getElementById("yuiAcInputPathName")) {
-								parent.edheader.hasPathName = true; 
-								parent.edheader.setPathName(postObj.value); 
+								parent.edheader.hasPathName = true;
+								parent.edheader.setPathName(postObj.value);
 							} else {
-								parent.edheader.hasPathName = false; 
+								parent.edheader.hasPathName = false;
 							}
 							parent.edheader.setTitlePath();
 							countSetTitle = 0;
@@ -1445,7 +1445,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 							}
 						}
 					}
-					
+
 					function weShowMailsByStatus(status, group) {
 						var maillist = document.getElementById("we_recipient"+group).options;
 						switch(status) {
@@ -1473,41 +1473,41 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		     }
 		    }
 		   }
-		   
+
 		  function changeFieldValue(val,valueField) {
 
 
 		  	top.content.hot=1;
 			document.we_form.ncmd.value=arguments[0];
 			document.we_form.ngroup.value=arguments[1];
-			
+
 			if(val=="MemberSince" || val=="LastLogin" || val=="LastAccess") {
 				document.getElementById(valueField).value = "";
 			}
 			submitForm();
-		   
-		   	
+
+
 		   }
-				
+
 		');
-		
-		
-		
-		
+
+
+
+
 		$css = we_htmlElement::cssElement("
 	.markNotValid { background: #FFCCCC }
 	.markValid { background: #FFFFFF }
 ");
 		$css .= we_htmlElement::linkElement(
 				array(
-					
-						"rel" => "stylesheet", 
-						"type" => "text/css", 
-						"href" => JS_DIR . "jscalendar/skins/aqua/theme.css", 
+
+						"rel" => "stylesheet",
+						"type" => "text/css",
+						"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 						"title" => "Aqua"
 				));
-		
-		
+
+
 		$out=$this->View->getHiddens();
 		$out.=$this->View->newsletterHiddens();
 		$out.=$this->View->getHiddensProperty();
@@ -1516,7 +1516,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$out.=$this->weAutoColpleter->getYuiJsFiles();
 			$out.=$this->View->htmlHidden("home","0");
 			$out.=$this->View->htmlHidden("fromPage","0");
-			
+
 			if($this->View->newsletter->IsFolder==0){
 				$out.=$this->View->getHiddensMailingPage();
 				$out.=$this->View->getHiddensContentPage();
@@ -1845,7 +1845,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 							$_alldat = implode("",$dat);
 							if (str_replace(" ", "", $_alldat)=="") {
 								continue;
-							}							
+							}
 							$row[]=	$dat[$col];
 						}
 
@@ -2159,13 +2159,13 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		$headlines=array();
 		$content=array();
-		
+
 		$order = isset($_REQUEST["order"]) ? $_REQUEST["order"] : "";
 		for ($i = 0; $i <14; $i=$i+2){
 			if ($order == $i){ $sorter_code[$i] ="<br/>".we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i,"name"=>"order","checked"=>true,"onclick"=>"submitForm('edit_file')"))."&darr;";} else {$sorter_code[$i] ="<br/>".we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i,"name"=>"order","onclick"=>"submitForm('edit_file')"))."&darr;";}
 			if($order == $i+1) {$sorter_code[$i+1] =we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i+1,"name"=>"order","checked"=>true,"onclick"=>"submitForm('edit_file')"))."&uarr;";} else {$sorter_code[$i+1] =we_htmlElement::htmlInput(array("type"=>"radio","value"=>$i+1,"name"=>"order","onclick"=>"submitForm('edit_file')"))."&uarr;";}
 		}
-				
+
 		$headlines[0]["dat"]='ID'.$sorter_code[0].$sorter_code[1];
 		$headlines[0]["width"]="20";
 		$headlines[1]["dat"]=$l_newsletter["email"].$sorter_code[2].$sorter_code[3];
@@ -2194,7 +2194,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		$offset = isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0;
 		$art = isset($_REQUEST["art"]) ? $_REQUEST["art"] : "";
-		
+
 		$numRows = isset($_REQUEST["numRows"]) ? $_REQUEST["numRows"] : 15;
 
 		$anz = count($emails);
@@ -2203,21 +2203,21 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		if($offset<0) $offset=0;
 		$endRow=$offset+$numRows;
 		if($endRow>$anz) $endRow=$anz;
-		
+
 		function cmp0($a,$b) {return strnatcasecmp ( $a[0] , $b[0]);}
 		function cmp1($a,$b) {return strnatcasecmp ( $a[1] , $b[1]);}
 		function cmp2($a,$b) {return strnatcasecmp ( $a[2] , $b[2]);}
 		function cmp3($a,$b) {return strnatcasecmp ( $a[3] , $b[3]);}
 		function cmp4($a,$b) {return strnatcasecmp ( $a[4] , $b[4]);}
 		function cmp5($a,$b) {return strnatcasecmp ( $a[5] , $b[5]);}
-		
+
 		if ($order ==2 ||$order ==3 ){uasort($emails,"cmp0");}
 		if ($order ==4 ||$order ==5 ){uasort($emails,"cmp1");}
 		if ($order ==6 ||$order ==7 ){uasort($emails,"cmp2");}
 		if ($order ==8 ||$order ==9 ){uasort($emails,"cmp3");}
 		if ($order ==10 ||$order ==11 ){uasort($emails,"cmp4");}
 		if ($order ==12 ||$order ==13 ){uasort($emails,"cmp5");}
-		
+
 		if ($order ==0 || $order ==2 || $order ==4 || $order ==6 || $order ==8 || $order ==10 || $order ==12) {
 			$emails = array_reverse($emails, true);
 		}
@@ -2232,7 +2232,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 				$content[$counter][0]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),$k);
 				$content[$counter][0]["height"]="";
 				$content[$counter][0]["align"]="";
-				
+
 				$content[$counter][1]["dat"]=we_htmlElement::htmlDiv(array("class"=>"middlefont"),($cols[0]?$cols[0]:"&nbsp;"));
 				$content[$counter][1]["height"]="";
 				$content[$counter][1]["align"]="";
@@ -2316,7 +2316,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 					submitForm("edit_file");
 				}
 			}
-			
+
 			function postSelectorSelect(wePssCmd) {
 				switch(wePssCmd) {
 					case "selectFile":
@@ -2383,7 +2383,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		$nextprev->setCol(0,4,array(),
 					$colcontent
 		);
-		
+
 		if(count($emails)){
 			$add = $we_button->create_button("image:function_plus", "javascript:editEmailFile(".count($emails).",'','','','','','')");
 			$end=$nextprev->getHtmlCode();
@@ -2421,7 +2421,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 					$selectStatus2 ='';
 				}
 			}
-		    
+
 			$out=we_htmlElement::htmlDiv(array("class"=>"middlefontgray","align"=>"center"),"--&nbsp;".$_nlMessage."&nbsp;--".$selectStatus2);
 			$add = $we_button->create_button("image:function_plus", "javascript:editEmailFile(".count($emails).",'','','','','','')");
 			$out .= "<br/><br/>".$add;
@@ -2920,11 +2920,11 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$content_plain = str_replace('###EMAIL###',$email,$content_plain);
 			$content = str_replace('###EMAIL###',$email,$content);
 
-			// damd: Newsletter Platzhalter ersetzten 
+			// damd: Newsletter Platzhalter ersetzten
 			$this->replacePlaceholder($content, $content_plain, $emails[$j]);
-			
+
             $_clean = $this->View->getCleanMail($this->View->newsletter->Reply);
-            
+
             include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 			if($lastname && $firstname || $title && $lastname){
 				$emailName = '';
@@ -2941,7 +2941,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
             	$this->View->newsletter->isEmbedImages
             );
 			$phpmail->setCharSet($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]);
-			
+
 			if ($htmlmail) {
 				$phpmail->addHTMLPart($content);
 				$phpmail->addTextPart(trim($content_plain));
@@ -2951,7 +2951,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 			if(!$this->View->settings["use_base_href"]) {$phpmail->setIsUseBaseHref($this->View->settings["use_base_href"]);}
 
-			foreach($atts as $att){ 
+			foreach($atts as $att){
 				$phpmail->doaddAttachment($att);
 			}
 			if($this->View->settings["reject_malformed"])
@@ -2960,7 +2960,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$not_malformed=true;
 			$verified=true;
 			$domain="";
-		
+
 			if($this->View->settings["reject_malformed"]) $not_malformed=$this->View->newsletter->check_email($email);
 			if($this->View->settings["reject_not_verified"]) $verified=$this->View->newsletter->check_domain($email,$domain);
 			$not_black=!$this->View->isBlack($email);
@@ -3123,7 +3123,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	/**
 	 * returns	a select menu within a html table. to ATTENTION this function is also used in classes object and objectFile !!!!
 	 *			when $withHeadline is true, a table with headline is returned, default is false
-	 * 
+	 *
 	 * @package weModules
 	 * @subpackage Newsletter
 	 * @return	select menue to determine charset
@@ -3171,8 +3171,8 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$this->View->db->query("SELECT * FROM ".CUSTOMER_TABLE." WHERE ID=".abs($customerInfos[8]));
 			$this->View->db->next_record();
 		}
-		
-		foreach ($placeholderfields as $phf) {				
+
+		foreach ($placeholderfields as $phf) {
 			$placeholderReplaceValue = $fromCustomer ? $this->View->db->f($phf) : "";
 			$content = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$content);
 			$content_plain = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$this->View->db->f($phf),$content_plain);
@@ -3180,5 +3180,5 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	}
 
 }
-  
+
 ?>

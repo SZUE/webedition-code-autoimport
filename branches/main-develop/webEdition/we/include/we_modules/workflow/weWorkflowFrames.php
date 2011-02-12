@@ -92,7 +92,6 @@ class weWorkflowFrames extends weModuleFrames{
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#FFFFFF" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
 		}
-		global $l_users;
 
 		if(isset($_GET["art"])){
 		    $mode = $_GET["art"];

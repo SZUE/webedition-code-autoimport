@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 
 if(defined("WORKFLOW_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
@@ -60,7 +59,7 @@ $_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.$GLO
 if($GLOBALS["we_doc"]->CreatorID){
 	$GLOBALS["DB_WE"]->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=".$GLOBALS["we_doc"]->CreatorID);
 	if ($GLOBALS["DB_WE"]->next_record()) {
-		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.$GLOBALS["l_users"]["created_by"].'</div>' .
+		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('modules_users',"[created_by]").'</div>' .
 			'<div style="margin-bottom:10px;">' . $GLOBALS["DB_WE"]->f("First").' '.$GLOBALS["DB_WE"]->f("Second").' ('.$GLOBALS["DB_WE"]->f("username").')' .'</div>';
 	}
 }
@@ -72,7 +71,7 @@ $_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.$GL
 if($GLOBALS["we_doc"]->ModifierID){
 	$GLOBALS["DB_WE"]->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=".$GLOBALS["we_doc"]->ModifierID);
 	if ($GLOBALS["DB_WE"]->next_record()) {
-		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.$GLOBALS["l_users"]["changed_by"].'</div>' .
+		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('modules_users',"[changed_by]").'</div>' .
 			'<div style="margin-bottom:10px;">' . $GLOBALS["DB_WE"]->f("First").' '.$GLOBALS["DB_WE"]->f("Second").' ('.$GLOBALS["DB_WE"]->f("username").')' .'</div>';
 
 	}

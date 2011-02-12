@@ -28,7 +28,6 @@ if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don'
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/users.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/we_tabs.inc.php');
 }
@@ -1572,7 +1571,7 @@ function mapPermissions() {
 			//-->
 			</script>';
 
-		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',$GLOBALS['l_users']["username"]) : $this->getUserfield("username","username");
+		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',g_l('modules_users',"[username]")) : $this->getUserfield("username","username");
 		$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()" autocomplete="off"','password',240);
 
 
@@ -1584,16 +1583,16 @@ function mapPermissions() {
 		$_tableObj->setCol(0, 1, null, $this->getUserfield("Second","second_name"));
 		$_tableObj->setCol(1, 0, null, getPixel(280,20));
 		$_tableObj->setCol(1, 1, null, getPixel(280,5));
-		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name.'_LoginDenied', $GLOBALS["l_users"]["login_denied"], false, "defaultfont", "", ($_SESSION["user"]["ID"]==$this->ID || !we_hasPerm("ADMINISTRATOR")) ));
+		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name.'_LoginDenied', g_l('modules_users',"[login_denied]"), false, "defaultfont", "", ($_SESSION["user"]["ID"]==$this->ID || !we_hasPerm("ADMINISTRATOR")) ));
 		$_tableObj->setCol(3, 0, null, getPixel(280,20));
 		$_tableObj->setCol(3, 1, null, getPixel(280,5));
 		$_tableObj->setCol(4, 0, null, $_username);
-		$_tableObj->setCol(4, 1, null,htmlFormElementTable($_password,$GLOBALS['l_users']["password"]));
+		$_tableObj->setCol(4, 1, null,htmlFormElementTable($_password,g_l('modules_users',"[password]")));
 
 		$parts = array();
 		array_push($parts,
 						array(
-							"headline"=>$GLOBALS['l_users']["user_data"],
+							"headline"=>g_l('modules_users',"[user_data]"),
 							"html"=>$_tableObj->getHtmlCode(),
 							"space"=>120
 							)
@@ -1615,15 +1614,15 @@ function mapPermissions() {
 
 		$_tableObj = new we_htmlTable($_attr, 6, 3);
 
-		$_tableObj->setCol(0, 0, array("colspan"=>"3"), we_forms::radiobutton("1",$adminperm,$this->Name.'_ADMIN',$GLOBALS['l_users']["admin_permissions"],true,"defaultfont","top.content.setHot();doClick()"));
-		$_tableObj->setCol(1, 0, array("colspan"=>"3"), we_forms::radiobutton("0",!$adminperm,$this->Name.'_ADMIN',$GLOBALS['l_users']["user_permissions"],true,"defaultfont","top.content.setHot();doClick()"));
+		$_tableObj->setCol(0, 0, array("colspan"=>"3"), we_forms::radiobutton("1",$adminperm,$this->Name.'_ADMIN',g_l('modules_users',"[admin_permissions]"),true,"defaultfont","top.content.setHot();doClick()"));
+		$_tableObj->setCol(1, 0, array("colspan"=>"3"), we_forms::radiobutton("0",!$adminperm,$this->Name.'_ADMIN',g_l('modules_users',"[user_permissions]"),true,"defaultfont","top.content.setHot();doClick()"));
 		$_tableObj->setCol(2, 0, null);
-		$_tableObj->setCol(2, 1, array("colspan"=>"2"), we_forms::checkbox("1",($_ws!=0),"specify_check",$GLOBALS['l_users']["workspace_specify"],false,"defaultfont","top.content.setHot();specifyCheck()"));
+		$_tableObj->setCol(2, 1, array("colspan"=>"2"), we_forms::checkbox("1",($_ws!=0),"specify_check",g_l('modules_users',"[workspace_specify]"),false,"defaultfont","top.content.setHot();specifyCheck()"));
 		$_tableObj->setCol(3, 0, null);
 		$_tableObj->setCol(3, 1, null);
 		$_tableObj->setCol(3, 2, null, $_chooser);
 		$_tableObj->setCol(4, 0, null);
-		$_tableObj->setCol(4, 1, array("colspan"=>"2"), we_forms::checkbox("1",($adminperm=="0") && $publishperm==1,$this->Name.'_PUBLISH',$GLOBALS['l_users']["publish_specify"],false,"defaultfont","top.content.setHot()"));
+		$_tableObj->setCol(4, 1, array("colspan"=>"2"), we_forms::checkbox("1",($adminperm=="0") && $publishperm==1,$this->Name.'_PUBLISH',g_l('modules_users',"[publish_specify]"),false,"defaultfont","top.content.setHot()"));
 		$_tableObj->setCol(5, 0, null,getPixel(20,1));
 		$_tableObj->setCol(5, 1, null,getPixel(20,1));
 		$_tableObj->setCol(5, 2, null,getPixel(400,1));
@@ -1632,7 +1631,7 @@ function mapPermissions() {
 
 		array_push($parts,
 						array(
-							"headline"=>$GLOBALS['l_users']["permissions"],
+							"headline"=>g_l('modules_users',"[permissions]"),
 							"html"=>$_tableObj->getHtmlCode(),
 							"space"=>120
 							)
@@ -1713,7 +1712,7 @@ function mapPermissions() {
 
 		$_tableObj = new we_htmlTable($_attr, 5, 1);
 
-		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b><input type="hidden" id="yuiAcInputPathName" value="'.($this->username).'">',$GLOBALS['l_users']["group_name"]) : $this->getUserfield("username","group_name","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
+		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b><input type="hidden" id="yuiAcInputPathName" value="'.($this->username).'">',g_l('modules_users',"[group_name]")) : $this->getUserfield("username","group_name","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 		$_description = '<textarea name="'.$this->Name.'_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onChange="top.content.setHot();">'.$this->Description.'</textarea>';
 		$this->DB_WE->query("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($this->ParentID));
 
@@ -1739,15 +1738,15 @@ function mapPermissions() {
 
 		$_tableObj->setCol(0, 0, null, $_username);
 		$_tableObj->setCol(1, 0, null, getPixel(560,4));
-		$_tableObj->setCol(2, 0, null, htmlFormElementTable($_description,$GLOBALS['l_users']["description"]));
+		$_tableObj->setCol(2, 0, null, htmlFormElementTable($_description,g_l('modules_users',"[description]")));
 		$_tableObj->setCol(3, 0, null, getPixel(560,10));
-		$_tableObj->setCol(4, 0, null, htmlFormElementTable($weAcSelector,$GLOBALS['l_users']["group"]));
+		$_tableObj->setCol(4, 0, null, htmlFormElementTable($weAcSelector,g_l('modules_users',"[group]")));
 
 		$parts = array();
 
 		array_push($parts,
 						array(
-							"headline"=>$GLOBALS['l_users']["group_data"],
+							"headline"=>g_l('modules_users',"[group_data]"),
 							"html"=>$_tableObj->getHtmlCode(),
 							"space"=>120
 							)
@@ -1765,7 +1764,7 @@ function mapPermissions() {
 
 			array_push($parts,
 						array(
-							"headline"=>$GLOBALS['l_users']["user"],
+							"headline"=>g_l('modules_users',"[user]"),
 							"html"=>$content,
 							"space"=>120
 							)
@@ -1785,7 +1784,7 @@ function mapPermissions() {
 				$val = "";
 			}
 		}
-		return htmlFormElementTable(htmlTextInput($this->Name.'_'.$name,20,$val,$maxlen,'onchange="top.content.setHot()" '.(empty($attribs)?'':$attribs),$type,240),$GLOBALS["l_users"][$lngkey]);
+		return htmlFormElementTable(htmlTextInput($this->Name.'_'.$name,20,$val,$maxlen,'onchange="top.content.setHot()" '.(empty($attribs)?'':$attribs),$type,240),g_l('modules_users',"[$lngkey]"));
 	}
 
 	function formUserData() {
@@ -1819,7 +1818,7 @@ function mapPermissions() {
 		$parts = array();
 		array_push($parts,
 						array(
-							"headline"=>$GLOBALS['l_users']["general_data"],
+							"headline"=>g_l('modules_users',"[general_data]"),
 							"html"=>$_tableObj->getHtmlCode(),
 							"space"=>120
 							)
@@ -1830,7 +1829,7 @@ function mapPermissions() {
 
 		$_tableObj = new we_htmlTable($_attr, 8, 2);
 
-		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',$GLOBALS['l_users']["username"]) : $this->getUserfield("username","username","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
+		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',g_l('modules_users',"[username]")) : $this->getUserfield("username","username","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 
 		if(isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["ID"] && $_SESSION["user"]["ID"]==$this->ID && !we_hasPerm("EDIT_PASSWD"))
 			$_password="****************";
@@ -1860,14 +1859,14 @@ function mapPermissions() {
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_tableObj->setCol(0, 0, null, $_username);
-		$_tableObj->setCol(0, 1, null, htmlFormElementTable($_password, $GLOBALS['l_users']["password"]));
+		$_tableObj->setCol(0, 1, null, htmlFormElementTable($_password, g_l('modules_users',"[password]")));
 		$_tableObj->setCol(1, 0, null, getPixel(280,10));
 		$_tableObj->setCol(1, 1, null, getPixel(280,5));
-		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name.'_LoginDenied', $GLOBALS["l_users"]["login_denied"], false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"]==$this->ID || !we_hasPerm("ADMINISTRATOR")) ));
-		$_tableObj->setCol(2, 1, array("class"=>"defaultfont"), $GLOBALS['l_users']["lastPing"].' '.(($this->Ping) ? date('d.m.Y H:i:s',$this->Ping):'-'));
+		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name.'_LoginDenied', g_l('modules_users',"[login_denied]"), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"]==$this->ID || !we_hasPerm("ADMINISTRATOR")) ));
+		$_tableObj->setCol(2, 1, array("class"=>"defaultfont"), g_l('modules_users',"[lastPing]").' '.(($this->Ping) ? date('d.m.Y H:i:s',$this->Ping):'-'));
 		$_tableObj->setCol(3, 0, null, getPixel(280,10));
 		$_tableObj->setCol(3, 1, null, getPixel(280,5));
-		$_tableObj->setCol(4, 0, array("colspan"=>"2"), htmlFormElementTable($weAcSelector,$GLOBALS['l_users']["group"]));
+		$_tableObj->setCol(4, 0, array("colspan"=>"2"), htmlFormElementTable($weAcSelector,g_l('modules_users',"[group]")));
 		$_tableObj->setCol(5, 0, null, getPixel(280,10));
 		$_tableObj->setCol(5, 1, null, getPixel(280,5));
 		if($this->CreatorID){
@@ -1875,7 +1874,7 @@ function mapPermissions() {
 			if ($this->DB_WE->next_record()) {
 				$CreatorIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('first').' '.$this->DB_WE->f('second').')';
 			} else {
-				$CreatorIDtext=$GLOBALS['l_users']["lostID"].$this->CreatorID.$GLOBALS['l_users']["lostID2"];
+				$CreatorIDtext=g_l('modules_users',"[lostID]").$this->CreatorID.g_l('modules_users',"[lostID2]");
 			}
 
 		} else {$CreatorIDtext = '-'; }
@@ -1887,18 +1886,18 @@ function mapPermissions() {
 				if ($this->DB_WE->next_record()) {
 					$ModifierIDtext=$this->DB_WE->f("username").' ('.$this->DB_WE->f('First').' '.$this->DB_WE->f('Second').')';
 				} else {
-					$ModifierIDtext=$GLOBALS['l_users']["lostID"].$this->ModifierID.$GLOBALS['l_users']["lostID2"];
+					$ModifierIDtext=g_l('modules_users',"[lostID]").$this->ModifierID.g_l('modules_users',"[lostID2]");
 				}
 
 			}
 		} else {$ModifierIDtext = '-'; }
-		$_tableObj->setCol(6, 0, array("class"=>"defaultfont"), $GLOBALS['l_users']["CreatorID"].' '. $CreatorIDtext);
-		$_tableObj->setCol(6, 1, array("class"=>"defaultfont"), $GLOBALS['l_users']["CreateDate"].' '. (($this->CreateDate) ? date('d.m.Y H:i:s',$this->CreateDate):'-'));
-		$_tableObj->setCol(7, 0, array("class"=>"defaultfont"), $GLOBALS['l_users']["ModifierID"].' '. $ModifierIDtext);
-		$_tableObj->setCol(7, 1, array("class"=>"defaultfont"), $GLOBALS['l_users']["ModifyDate"].' '. (($this->ModifyDate) ? date('d.m.Y H:i:s',$this->ModifyDate):'-'));
+		$_tableObj->setCol(6, 0, array("class"=>"defaultfont"), g_l('modules_users',"[CreatorID]").' '. $CreatorIDtext);
+		$_tableObj->setCol(6, 1, array("class"=>"defaultfont"), g_l('modules_users',"[CreateDate]").' '. (($this->CreateDate) ? date('d.m.Y H:i:s',$this->CreateDate):'-'));
+		$_tableObj->setCol(7, 0, array("class"=>"defaultfont"), g_l('modules_users',"[ModifierID]").' '. $ModifierIDtext);
+		$_tableObj->setCol(7, 1, array("class"=>"defaultfont"), g_l('modules_users',"[ModifyDate]").' '. (($this->ModifyDate) ? date('d.m.Y H:i:s',$this->ModifyDate):'-'));
 		array_push($parts,
 							array(
-								"headline"=>$GLOBALS['l_users']["user_data"],
+								"headline"=>g_l('modules_users',"[user_data]"),
 								"html"=>$_tableObj->getHtmlCode(),
 								"space"=>120
 								)
@@ -2060,7 +2059,7 @@ function mapPermissions() {
 		array_push($parts,
 							array(
 								"headline"=>"",
-								"html"=>$this->formInherits("_ParentPerms",$this->ParentPerms,$GLOBALS['l_users']["inherit"]),
+								"html"=>$this->formInherits("_ParentPerms",$this->ParentPerms,g_l('modules_users',"[inherit]")),
 								"space"=>0
 								)
 		);
@@ -2163,26 +2162,26 @@ function mapPermissions() {
 				if(defined("WK")) {
 					break;
 				}
-				$title=$GLOBALS['l_users']["workspace_templates"];
+				$title=g_l('modules_users',"[workspace_templates]");
 			} else if($k==NAVIGATION_TABLE) {
 				if(defined("WK")) {
 					break;
 				}
-				$title=$GLOBALS['l_users']["workspace_navigations"];
+				$title=g_l('modules_users',"[workspace_navigations]");
 			} else if(defined("NEWSLETTER_TABLE") && $k==NEWSLETTER_TABLE) {
 				if(defined("WK")) {
 					break;
 				}
-				$title=$GLOBALS['l_users']["workspace_newsletter"];
+				$title=g_l('modules_users',"[workspace_newsletter]");
 			}
 			elseif(defined("OBJECT_TABLE") && $k==OBJECT_FILES_TABLE) {
 				if(defined("WK")) {
 					break;
 				}
-				$title=$GLOBALS['l_users']["workspace_objects"];
+				$title=g_l('modules_users',"[workspace_objects]");
 			}
 			else {
-				$title=$GLOBALS['l_users']["workspace_documents"];
+				$title=g_l('modules_users',"[workspace_documents]");
 			}
 			$obj_values=$this->Name.'_Workspace_'.$k.'_Values';
 			$obj_names=$this->Name.'_Workspace_'.$k;
@@ -2190,15 +2189,15 @@ function mapPermissions() {
 			$obj_def_names=$this->Name.'_defWorkspace_'.$k;
 
 			if($k == TEMPLATES_TABLE) {
-				$content1 .= $this->formInherits("_ParentWst",$this->ParentWst,$GLOBALS['l_users']["inherit_wst"]);
+				$content1 .= $this->formInherits("_ParentWst",$this->ParentWst,g_l('modules_users',"[inherit_wst]"));
 			} else if($k == NAVIGATION_TABLE) {
-				$content1 .= $this->formInherits("_ParentWsn",$this->ParentWsn,$GLOBALS['l_users']["inherit_wsn"]);
+				$content1 .= $this->formInherits("_ParentWsn",$this->ParentWsn,g_l('modules_users',"[inherit_wsn]"));
 			} elseif(defined("OBJECT_TABLE") && $k == OBJECT_FILES_TABLE) {
-				$content1 .= $this->formInherits("_ParentWso",$this->ParentWso,$GLOBALS['l_users']["inherit_wso"]);
+				$content1 .= $this->formInherits("_ParentWso",$this->ParentWso,g_l('modules_users',"[inherit_wso]"));
 			} elseif(defined('NEWSLETTER_TABLE') && $k == NEWSLETTER_TABLE) {
-				$content1 .= $this->formInherits("_ParentWsnl",$this->ParentWsnl,$GLOBALS['l_users']["inherit_wsnl"]);
+				$content1 .= $this->formInherits("_ParentWsnl",$this->ParentWsnl,g_l('modules_users',"[inherit_wsnl]"));
 			} else {
-				$content1 .= $this->formInherits("_ParentWs",$this->ParentWs,$GLOBALS['l_users']["inherit_ws"]);
+				$content1 .= $this->formInherits("_ParentWs",$this->ParentWs,g_l('modules_users',"[inherit_ws]"));
 			}
 			$content .= "<p>";
 
@@ -2276,7 +2275,7 @@ function mapPermissions() {
 
 				if($k == FILE_TABLE) {
 					$content1.='
-						<td class="defaultfont">'.we_forms::checkbox("1",$default,$obj_def_names."_$key",$GLOBALS['l_users']["make_def_ws"],true,"defaultfont",'top.content.setHot();fillDef(document.we_form.'.$obj_def_values.',document.we_form.'.$obj_values.',\''.$obj_def_names.'\',\''.$obj_names.'\');').'</td>';
+						<td class="defaultfont">'.we_forms::checkbox("1",$default,$obj_def_names."_$key",g_l('modules_users',"[make_def_ws]"),true,"defaultfont",'top.content.setHot();fillDef(document.we_form.'.$obj_def_values.',document.we_form.'.$obj_values.',\''.$obj_def_names.'\',\''.$obj_names.'\');').'</td>';
 				}
 				else {
 					$content1.='
@@ -2879,7 +2878,7 @@ function mapPermissions() {
 			<table cellpadding="0" cellspacing="0" border="0" width="530">
 				<tr>
 					<td class="defaultfont">
-						'.$GLOBALS['l_users']["user"].':</td>
+						'.g_l('modules_users',"[user]").':</td>
 					<td>
 						' . $weAcSelectorName . '
 					</td>
@@ -2892,7 +2891,7 @@ function mapPermissions() {
 				</tr>
 				<tr>
 					<td class="defaultfont">
-						'.$GLOBALS['l_users']["group_member"].':</td>
+						'.g_l('modules_users',"[group_member]").':</td>
 					<td>
 						' . $weAcSelectorGroup . '
 					</td>
@@ -2909,20 +2908,20 @@ function mapPermissions() {
 
 			array_push($parts,
 						array(
-							"headline"=>$GLOBALS['l_users']["alias_data"],
+							"headline"=>g_l('modules_users',"[alias_data]"),
 							"html"=>$content,
 							"space"=>120
 							)
 					);
 
-		$content = $this->formInherits("_ParentPerms",$this->ParentPerms,$GLOBALS['l_users']["inherit"]) . getPixel(5,5) .
-										$this->formInherits("_ParentWs",$this->ParentWs,$GLOBALS['l_users']["inherit_ws"]) . getPixel(5,5) .
-										$this->formInherits("_ParentWst",$this->ParentWst,$GLOBALS['l_users']["inherit_wst"]);
+		$content = $this->formInherits("_ParentPerms",$this->ParentPerms,g_l('modules_users',"[inherit]")) . getPixel(5,5) .
+										$this->formInherits("_ParentWs",$this->ParentWs,g_l('modules_users',"[inherit_ws]")) . getPixel(5,5) .
+										$this->formInherits("_ParentWst",$this->ParentWst,g_l('modules_users',"[inherit_wst]"));
 
 
 			array_push($parts,
 							array(
-								"headline"=>$GLOBALS['l_users']["rights_and_workspaces"],
+								"headline"=>g_l('modules_users',"[rights_and_workspaces]"),
 								"html"=>$content,
 								"space"=>120
 								)
@@ -3018,7 +3017,7 @@ function mapPermissions() {
 			$tab_header;
 
 		if($this->Type==1) {
-			$headline1=$GLOBALS['l_users']["group"].': ';
+			$headline1=g_l('modules_users',"[group]").': ';
 		}
 		else if($this->Type==2) {
 			$headline1=$GLOBALS["l_javaMenu"]["users"]["menu_alias"].': ';

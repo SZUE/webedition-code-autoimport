@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 htmlTop();
@@ -154,7 +153,7 @@ protect();
                		}
 
                 	if ($isAcError) {
-                   		print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_users["workspaceFieldError"], WE_MESSAGE_ERROR) . '</script>';
+                   		print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('modules_users',"[workspaceFieldError]"), WE_MESSAGE_ERROR) . '</script>';
                 		break;
                 	}
                     $user_object=new we_user();
@@ -192,7 +191,7 @@ protect();
 	                if($user_object->username=="" && $user_object->Type!=2){
 	                    print '
 	                        <script language="JavaScript" type="text/javascript">
-	                        	' . we_message_reporting::getShowMessageCall($l_users["username_empty"], WE_MESSAGE_ERROR) . '
+	                        	' . we_message_reporting::getShowMessageCall(g_l('modules_users',"[username_empty]"), WE_MESSAGE_ERROR) . '
 	                        </script>';
 	                    break;
 	                }
@@ -200,7 +199,7 @@ protect();
 	    	        if($user_object->Alias==0 && $user_object->Type==2){
 	                    print '
 	                        <script language="JavaScript" type="text/javascript">
-	                            ' . we_message_reporting::getShowMessageCall($l_users["username_empty"], WE_MESSAGE_ERROR) . '
+	                            ' . we_message_reporting::getShowMessageCall(g_l('modules_users',"[username_empty]"), WE_MESSAGE_ERROR) . '
 	                        </script>';
 	                    break;
 	                }
@@ -208,14 +207,14 @@ protect();
 	                if($DB_WE->next_record() && $user_object->Type!=2){
 	                    print '
 	                        <script language="JavaScript" type="text/javascript">
-	                        	' . we_message_reporting::getShowMessageCall(sprintf($l_users["username_exists"],$user_object->username), WE_MESSAGE_ERROR) . '
+	                        	' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users',"[username_exists]"),$user_object->username), WE_MESSAGE_ERROR) . '
 	                        </script>';
 	                    break;
 	                }
 	                if(($oldperm) && (!$user_object->checkPermission("ADMINISTRATOR")) && ($user_object->isLastAdmin())){
 	                    print '
 	                        <script language="JavaScript" type="text/javascript">
-	                        	' . we_message_reporting::getShowMessageCall($l_users["modify_last_admin"], WE_MESSAGE_ERROR) . '
+	                        	' . we_message_reporting::getShowMessageCall(g_l('modules_users',"[modify_last_admin]"), WE_MESSAGE_ERROR) . '
 	                        </script>';
 	                    break;
 	                }
@@ -254,7 +253,7 @@ protect();
 	                }
 
 	        	    if($ret == -5){
-	    	    	    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_users["user_path_nok"], WE_MESSAGE_ERROR) . '</script>';
+	    	    	    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('modules_users',"[user_path_nok]"), WE_MESSAGE_ERROR) . '</script>';
 	    	        } else {
 	                	if($id){
 	                	    $tree_code = 'top.content.updateEntry('.$user_object->ID.','.$user_object->ParentID.',"'.$user_object->Text.'",'.($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0).');';
@@ -263,11 +262,11 @@ protect();
 	                	}
 
 	    	    	    if($user_object->Type==2){
-	    	    	        $savemessage =  we_message_reporting::getShowMessageCall( sprintf($l_users["alias_saved_ok"],$user_object->Text), WE_MESSAGE_NOTICE);
+	    	    	        $savemessage =  we_message_reporting::getShowMessageCall( sprintf(g_l('modules_users',"[alias_saved_ok]"),$user_object->Text), WE_MESSAGE_NOTICE);
 	    	    	    } else if($user_object->Type==1){
-	    	    	    	$savemessage =  we_message_reporting::getShowMessageCall( sprintf($l_users["group_saved_ok"],$user_object->Text), WE_MESSAGE_NOTICE);
+	    	    	    	$savemessage =  we_message_reporting::getShowMessageCall( sprintf(g_l('modules_users',"[group_saved_ok]"),$user_object->Text), WE_MESSAGE_NOTICE);
 	    	    	    } else {
-	    	    	    	$savemessage =  we_message_reporting::getShowMessageCall( sprintf($l_users["user_saved_ok"],$user_object->Text), WE_MESSAGE_NOTICE);
+	    	    	    	$savemessage =  we_message_reporting::getShowMessageCall( sprintf(g_l('modules_users',"[user_saved_ok]"),$user_object->Text), WE_MESSAGE_NOTICE);
 	    	    	    }
 
 	                	if($user_object->Type == 0){
@@ -289,12 +288,12 @@ protect();
                     $user_object->setState($_SESSION["user_session_data"]);
 
                     if($user_object->ID == $_SESSION["user"]["ID"]){
-						print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_users["delete_user_same"], WE_MESSAGE_ERROR ) . '</script>';
+						print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('modules_users',"[delete_user_same]"), WE_MESSAGE_ERROR ) . '</script>';
 						break;
 					}
 
 					if(isUserInGroup($_SESSION["user"]["ID"],$user_object->ID)){
-						print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_users["delete_group_user_same"], WE_MESSAGE_ERROR ) . '</script>';
+						print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('modules_users',"[delete_group_user_same]"), WE_MESSAGE_ERROR ) . '</script>';
 						break;
 					}
 
@@ -321,7 +320,7 @@ protect();
                         if($user_object->isLastAdmin()){
                             print '
                                 <script language="JavaScript" type="text/javascript">
-                                	' . we_message_reporting::getShowMessageCall($l_users["modify_last_admin"], WE_MESSAGE_ERROR) . '
+                                	' . we_message_reporting::getShowMessageCall(g_l('modules_users',"[modify_last_admin]"), WE_MESSAGE_ERROR) . '
                                 </script>';
                                 exit();
                         }
@@ -329,11 +328,11 @@ protect();
                     $question="";
 
                     if($user_object->Type==1){
-                         $question = sprintf($l_users["delete_alert_group"],$user_object->Text);
+                         $question = sprintf(g_l('modules_users',"[delete_alert_group]"),$user_object->Text);
                     } else if($user_object->Type==2){
-                        $question = sprintf($l_users["delete_alert_alias"],$user_object->Text);
+                        $question = sprintf(g_l('modules_users',"[delete_alert_alias]"),$user_object->Text);
                     } else {
-                        $question = sprintf($l_users["delete_alert_user"],$user_object->Text);
+                        $question = sprintf(g_l('modules_users',"[delete_alert_user]"),$user_object->Text);
                     }
                     print '
                         <script language="JavaScript" type="text/javascript">

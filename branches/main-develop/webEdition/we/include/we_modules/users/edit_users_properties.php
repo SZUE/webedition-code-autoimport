@@ -21,7 +21,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
@@ -56,7 +55,7 @@ echo $yuiSuggest->getYuiJsFiles();
 		if (f.input_pass) {
 			if (f.oldtab.value == 0) {
 				if (f.input_pass.value.length < 4 && f.input_pass.value.length != 0) {
-					<?php print we_message_reporting::getShowMessageCall($l_users["password_alert"], WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[password_alert]"), WE_MESSAGE_ERROR); ?>
 					return false;
 				} else {
 					if (f.input_pass.value != "") {
@@ -90,7 +89,7 @@ echo $yuiSuggest->getYuiJsFiles();
 			}
 		}
 	}
-	
+
 	function we_cmd(){
 		var args = "";
 		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}

@@ -43,7 +43,7 @@ $znr = 4;
 if($we_doc->Table==FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Table==OBJECT_FILES_TABLE)){
 	array_push($parts,array("icon"=>"user.gif", "headline"=>$GLOBALS["l_we_class"]["owners"],"html"=>$GLOBALS['we_doc']->formCreatorOwners()."<br>","space"=>140, "noline"=>1));
 	if(isset($_SESSION["perms"]["ADMINISTRATOR"]) && $_SESSION["perms"]["ADMINISTRATOR"]){
-		array_push($parts,array("headline"=>$GLOBALS["l_users"]["grant_owners"],"html"=>$GLOBALS['we_doc']->formChangeOwners(),"space"=>140, "forceRightHeadline"=>1));
+		array_push($parts,array("headline"=>g_l('modules_users',"[grant_owners]"),"html"=>$GLOBALS['we_doc']->formChangeOwners(),"space"=>140, "forceRightHeadline"=>1));
 	}
 }
 
