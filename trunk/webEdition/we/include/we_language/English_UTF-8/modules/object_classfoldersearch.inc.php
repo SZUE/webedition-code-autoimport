@@ -66,4 +66,5 @@ $l_object_classfoldersearch["ID"] = "ID";
 $l_object_classfoldersearch["language"] = "Language";
 $l_object_classfoldersearch["charset"] = "Charset";
 $l_object_classfoldersearch["url"] = "SEO-Object-Url";// TRANSLATE
+$l_object_classfoldersearch["triggerid"] = "Display document";// TRANSLATE
 ?>
