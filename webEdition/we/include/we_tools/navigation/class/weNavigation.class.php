@@ -868,9 +868,9 @@ class weNavigation extends weModelBase
 				if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && $objecturl!='' ){
 					$path_parts = pathinfo($_path);
 					if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-						$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;
+						$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl;
 					} else {
-						$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl;
+						$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl;
 					}						
 				}
 				
@@ -920,9 +920,9 @@ class weNavigation extends weModelBase
 					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl!='' ){
 						$path_parts = pathinfo($_path);
 						if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-							$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl;
+							$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl;
 						} else {
-							$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl;
+							$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl;
 						}						
 					}
 				
