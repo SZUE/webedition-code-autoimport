@@ -54,10 +54,11 @@ class we_class_folder extends we_folder{
 	var $Search='';
 	var $SearchField='';
 	var $SearchStart = 0;
+	var $TriggerID = 0;
 	/* Constructor */
 	function we_class_folder(){
 		$this->we_folder();
-		array_push($this->persistent_slots,'searchclass','searchclass_class');
+		array_push($this->persistent_slots,'searchclass','searchclass_class','TriggerID');
 		$this->ContentType= 'folder';
 
 	}
@@ -321,7 +322,7 @@ class we_class_folder extends we_folder{
 
 		//$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_FILES_TABLE.'.ModDate'); +4076 orig
 		
-		$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].".OF_PATH LIKE '".$this->Path."/%' ".' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_IsSearchable, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Charset, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Language, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Url, '.OBJECT_FILES_TABLE.'.ModDate');
+		$this->searchclass->searchquery($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].".OF_PATH LIKE '".$this->Path."/%' ".' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID' , OBJECT_X_TABLE.$classArray["ID"].'.ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Text, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Path, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ParentID, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Workspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspaces, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ExtraWorkspacesSelected, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Published, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_IsSearchable, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Charset, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Language, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_Url, '.OBJECT_X_TABLE.$classArray["ID"].'.OF_TriggerID, '.OBJECT_FILES_TABLE.'.ModDate');
 
 
 		$content=array();
@@ -363,8 +364,9 @@ class we_class_folder extends we_folder{
 				$content[$f][7]["dat"] = '<nobr>'.($this->searchclass->f("OF_Published") ? date($GLOBALS['l_global']["date_format"],$this->searchclass->f("OF_Published")) : "-").'</nobr>';
 				$content[$f][8]["dat"] = '<nobr>'.($this->searchclass->f("ModDate") ? date($GLOBALS['l_global']["date_format"],$this->searchclass->f("ModDate")) : "-").'</nobr>';
 				$content[$f][9]["dat"] = $this->searchclass->f("OF_Url");
-				$content[$f][10]["dat"] = $this->searchclass->f("OF_Charset");
-				$content[$f][11]["dat"] = $this->searchclass->f("OF_Language");
+				$content[$f][10]["dat"] = $this->searchclass->f("OF_TriggerID") ? id_to_path($this->searchclass->f("OF_TriggerID")) :'';
+				$content[$f][11]["dat"] = $this->searchclass->f("OF_Charset");
+				$content[$f][12]["dat"] = $this->searchclass->f("OF_Language");
 				
 
 				$f++;
@@ -384,8 +386,9 @@ class we_class_folder extends we_folder{
 		$headline[7]["dat"] = '<a href="javascript:setOrder(\'OF_Published\');">'.$GLOBALS['l_object_classfoldersearch']["Veroeffentlicht"].'</a> ' . $this->getSortImage('OF_Published');
 		$headline[8]["dat"] = '<a href="javascript:setOrder(\'ModDate\');">'.$GLOBALS['l_object_classfoldersearch']["geaendert"].'</a> ' . $this->getSortImage('ModDate');
 		$headline[9]["dat"] = '<a href="javascript:setOrder(\'OF_Url\');">'.$GLOBALS['l_object_classfoldersearch']["url"]. '</a> ' . $this->getSortImage('OF_Url');
-		$headline[10]["dat"] = $GLOBALS['l_object_classfoldersearch']["charset"];
-		$headline[11]["dat"] = $GLOBALS['l_object_classfoldersearch']["language"];
+		$headline[10]["dat"] = '<a href="javascript:setOrder(\'OF_TriggerID\');">'.$GLOBALS['l_object_classfoldersearch']["triggerid"]. '</a> ' . $this->getSortImage('OF_TriggerID');
+		$headline[11]["dat"] = $GLOBALS['l_object_classfoldersearch']["charset"];
+		$headline[12]["dat"] = $GLOBALS['l_object_classfoldersearch']["language"];
 		
 
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
@@ -971,6 +974,22 @@ class we_class_folder extends we_folder{
 				</table>
 			</td>
 		</tr>
+		<tr>
+			<td>'.getPixel(175,12).'</td>
+			<td>'.getPixel(460,12).'</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichcopytid"]."'))document.we_form.elements['do'].value='copytid';we_cmd('reload_editpage');") .'</td>
+					<td>'.getPixel(5,1).'</td>
+					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["copytid"] : "").'</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
 		</table>
 		</form>
 		';
@@ -1234,6 +1253,38 @@ EOF;
                     $obj->initByID($ofid, OBJECT_FILES_TABLE);
                     $obj->getContentDataFromTemporaryDocs($ofid);
                     $obj->Charset = $Charset;
+                    $oldModDate =$obj->ModDate; 
+                    $obj->we_save(0,1);
+                    if ($obj->Published !=0 && $obj->Published == $oldModDate){
+                    	$obj->we_publish(0,1,1);
+                    }
+                }
+            
+            }
+        }
+        return $javascript;
+    
+    }
+    
+    function copyTIDfromClass () {
+    	$DB_WE = new DB_WE();
+		$this->setClassProp();
+		$foo = getHash("SELECT DefaultTriggerID FROM " .OBJECT_TABLE . " WHERE ID='".$this->ClassID."'",$DB_WE);
+        
+		$javascript = "";
+
+		// get Class
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$this->ClassPath."'",$DB_WE);
+		foreach(array_keys($_REQUEST) as $f){
+			if(substr($f,0,3)=="weg"){
+            	$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE.$classArray["ID"]." WHERE ID=".substr($f,3));
+				$DB_WE->next_record();
+				$ofid = $DB_WE->f("OF_ID");
+                if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
+                    $obj = new we_objectFile();
+                    $obj->initByID($ofid, OBJECT_FILES_TABLE);
+                    $obj->getContentDataFromTemporaryDocs($ofid);
+                    $obj->TriggerID = $foo["DefaultTriggerID"];
                     $oldModDate =$obj->ModDate; 
                     $obj->we_save(0,1);
                     if ($obj->Published !=0 && $obj->Published == $oldModDate){

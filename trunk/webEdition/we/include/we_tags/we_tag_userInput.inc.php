@@ -35,7 +35,7 @@ function we_tag_userInput($attribs, $content){
 	$size = we_getTagAttribute("size", $attribs);
 	$values = we_getTagAttribute("values", $attribs);
 	$xml = we_getTagAttribute("xml", $attribs, "");
-	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, true);
+	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
 
 	if ($hidden && ($type != "date")) {
 		$type = "hidden";

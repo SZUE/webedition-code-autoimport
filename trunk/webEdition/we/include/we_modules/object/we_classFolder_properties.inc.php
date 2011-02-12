@@ -55,6 +55,9 @@ if (isset($_REQUEST['do'])) {
 		case 'copyws':
 			$javascript .= $we_doc->copyWSfromClass();
 			break;
+		case 'copytid':
+			$javascript .= $we_doc->copyTIDfromClass();
+			break;
 	}
 }
 

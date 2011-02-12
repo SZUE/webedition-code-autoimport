@@ -77,7 +77,7 @@ class we_object extends we_document
 		$this->we_document();
         $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
         $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
-		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultDesc","CSS","CacheType","CacheLifeTime");
+		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID","DefaultDesc","CSS","CacheType","CacheLifeTime");
 		if(defined('DEFAULT_CHARSET')) {
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		}
@@ -179,6 +179,7 @@ class we_object extends we_document
 			$q .= " OF_Text VARCHAR(255) NOT NULL, ";
 			$q .= " OF_Path VARCHAR(255) NOT NULL, ";
 			$q .= " OF_Url VARCHAR(255) NOT NULL, ";
+			$q .= " OF_TriggerID  BIGINT NOT NULL  default '0', ";
 			$q .= " OF_Workspaces VARCHAR(255) NOT NULL, ";
 			$q .= " OF_ExtraWorkspaces VARCHAR(255) NOT NULL, ";
 			$q .= " OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL, ";
@@ -271,6 +272,7 @@ class we_object extends we_document
 			$this->DefaultUrlfield1 = isset($this->elements["urlfield1"]["dat"]) ? $this->getElement($this->elements["urlfield1"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield1"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield2 = isset($this->elements["urlfield2"]["dat"]) ? $this->getElement($this->elements["urlfield2"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield2"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield3 = isset($this->elements["urlfield3"]["dat"]) ? $this->getElement($this->elements["urlfield3"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "_";
+			$this->DefaultTriggerID = isset($this->elements["triggerid"]["dat"]) ? $this->getElement($this->elements["triggerid"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["triggerid"]["dat"],"dat") : "0";
 
 			$we_sort = $this->getElement("we_sort");
 
@@ -464,6 +466,7 @@ class we_object extends we_document
 			$this->DefaultUrlfield1 = isset($this->elements["urlfield1"]["dat"]) ? $this->getElement($this->elements["urlfield1"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield1"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield2 = isset($this->elements["urlfield2"]["dat"]) ? $this->getElement($this->elements["urlfield2"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield2"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield3 = isset($this->elements["urlfield3"]["dat"]) ? $this->getElement($this->elements["urlfield3"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "_";
+			//$this->DefaultTriggerID = isset($this->elements["triggerid"]["dat"]) ? $this->getElement($this->elements["triggerid"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "0";
 
 			$arrt["WE_CSS_FOR_CLASS"] = $this->CSS;
 
@@ -1513,7 +1516,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	function getWysiwygArea($name){
 
 		$attribs = array();
-		$attribs["removefirstparagraph"] = isset($this->elements[$name."removefirstparagraph"]["dat"]) ? $this->elements[$name."removefirstparagraph"]["dat"] : "";
+		$attribs["removefirstparagraph"] = isset($this->elements[$name."removefirstparagraph"]["dat"]) ? $this->elements[$name."removefirstparagraph"]["dat"] : defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true;
 		$attribs["xml"] = isset($this->elements[$name."xml"]["dat"]) ? $this->elements[$name."xml"]["dat"] : "";
 		$attribs["dhtmledit"] = isset($this->elements[$name."dhtmledit"]["dat"]) ? $this->elements[$name."dhtmledit"]["dat"] : "";
 		$attribs["wysiwyg"] = isset($this->elements[$name."dhtmledit"]["dat"]) ? $this->elements[$name."dhtmledit"]["dat"] : "";
@@ -1961,7 +1964,12 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	<tr>
 		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
 	</tr>
-
+	<tr>
+		<td colspan="3" >'.$this->formTriggerDocument(true).'</td>
+	</tr>
+	<tr>
+		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+	</tr>
 	<tr>
 		<td class="defaultfont" valign=top>'.$l_global["categorys"].'</td><td>'.getPixel(20,20).'</td><td>'.getPixel(100,2).'</td>
 	</tr>
@@ -2238,7 +2246,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$f=0;
 
 		if($this->ID){
-			$this->DB_WE->query("SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultKeywords,DefaultValues FROM " . OBJECT_TABLE . " WHERE ID = ".$this->ID);
+			$this->DB_WE->query("SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM " . OBJECT_TABLE . " WHERE ID = ".$this->ID);
 
 			$this->DB_WE->next_record();
 
@@ -2290,6 +2298,8 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$this->elements["urlfield1"]["dat"]=$this->DB_WE->f("DefaultUrlfield1");
 			$this->elements["urlfield2"]["dat"]=$this->DB_WE->f("DefaultUrlfield2");
 			$this->elements["urlfield3"]["dat"]=$this->DB_WE->f("DefaultUrlfield3");
+			$this->elements["triggerid"]["dat"]=$this->DB_WE->f("DefaultTriggerID");
+			$this->DefaultTriggerID=$this->DB_WE->f("DefaultTriggerID");
 
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);

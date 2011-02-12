@@ -1,4 +1,4 @@
-CREATE TABLE tblAnzeigePrefs (
+﻿CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -404,6 +404,7 @@ CREATE TABLE tblObject (
   DefaultUrlfield1 varchar(255) NOT NULL DEFAULT '_',
   DefaultUrlfield2 varchar(255) NOT NULL DEFAULT '_',
   DefaultUrlfield3 varchar(255) NOT NULL DEFAULT '_',
+  DefaultTriggerID bigint(20) NOT NULL default '0',
   ClassName varchar(64) NOT NULL default '',
   Workspaces varchar(255) NOT NULL default '',
   DefaultWorkspaces varchar(255) NOT NULL default '',
@@ -426,6 +427,7 @@ CREATE TABLE tblObjectFiles (
   ModDate int(11) NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
   Url varchar(255) NOT NULL default '',
+  TriggerID bigint(20) NOT NULL default '0',
   CreatorID bigint(20) NOT NULL default '0',
   ModifierID bigint(20) NOT NULL default '0',
   RestrictOwners tinyint(1) NOT NULL default '0',

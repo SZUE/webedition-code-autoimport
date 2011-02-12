@@ -79,7 +79,7 @@ class we_folder extends we_root
 	/* Constructor */
 	function we_folder(){
 		$this->we_root();
-		array_push($this->persistent_slots,"SearchStart","SearchField","Search","Order","GreenOnly","IsClassFolder","IsNotEditable","WorkspacePath","WorkspaceID","Language");
+		array_push($this->persistent_slots,"SearchStart","SearchField","Search","Order","GreenOnly","IsClassFolder","IsNotEditable","WorkspacePath","WorkspaceID","Language","TriggerID");
 		array_push($this->persistent_slots,"searchclassFolder","searchclassFolder_class");
 	}
 
@@ -317,7 +317,7 @@ class we_folder extends we_root
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND Active = 0";
+			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -332,7 +332,7 @@ class we_folder extends we_root
 	
 				}
 			}
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND Active = 1";
+			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 1";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -357,6 +357,77 @@ class we_folder extends we_root
 			$_obxTable = OBJECT_X_TABLE.$cid;
 			
 			$query = "UPDATE " . mysql_real_escape_string($_obxTable) . " SET OF_Language = '" . mysql_real_escape_string($this->Language) . "' WHERE OF_Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' ";
+			
+			if(!$DB_WE->query($query)) {
+				return false;
+			}
+			
+		}
+		
+		return true;
+
+	}
+	
+	function changeTriggerIDRecursive() {
+
+		$DB_WE = new DB_WE;
+		$DB_WE2 = new DB_WE;
+
+		$language = $this->TriggerID;
+
+		// Change TriggerID of published documents first
+		$query = "UPDATE " . mysql_real_escape_string($this->Table) . " SET TriggerID = '" . mysql_real_escape_string($this->TriggerID) . "' WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		
+		if(!$DB_WE->query($query)) {
+			return false;
+		}
+		// Change Language of unpublished documents
+		$query = "SELECT ID FROM " . mysql_real_escape_string($this->Table) . " WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
+
+		if(!$DB_WE->query($query)) {
+			return false;
+		}
+		while($DB_WE->next_record()) {
+			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
+			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
+			if ($DocumentObject!=''){
+				$DocumentObject = unserialize($DocumentObject);
+				
+				$DocumentObject[0]['TriggerID'] = $this->TriggerID;
+				$DocumentObject = serialize($DocumentObject);
+				$DocumentObject = str_replace("'", "\'", $DocumentObject);
+	
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
+				if(!$DB_WE2->query($query)) {
+					return false;
+	
+				}
+			}
+			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 1";
+			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
+			if ($DocumentObject!=''){
+				$DocumentObject = unserialize($DocumentObject);
+				$DocumentObject[0]['TriggerID'] = $this->TriggerID;
+				$DocumentObject = serialize($DocumentObject);
+				$DocumentObject = str_replace("'", "\'", $DocumentObject);
+	
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
+				if(!$DB_WE2->query($query)) {
+					return false;	
+				}
+			}
+		}
+		
+		// TriggerID auch bei den einzelnen Objekten aendern
+		if($this->Table == OBJECT_FILES_TABLE){
+			// Klasse feststellen
+			$ClassPathArray = explode('/',$this->Path);
+			$ClassPath = '/'.$ClassPathArray[1];
+			$q = "SELECT ID FROM ".OBJECT_TABLE." WHERE Path = '$ClassPath' ";
+			$cid = $pid = f($q, "ID",$DB_WE);
+			$_obxTable = OBJECT_X_TABLE.$cid;
+			
+			$query = "UPDATE " . mysql_real_escape_string($_obxTable) . " SET OF_TriggerID = '" . mysql_real_escape_string($this->TriggerID) . "' WHERE OF_Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' ";
 			
 			if(!$DB_WE->query($query)) {
 				return false;
@@ -419,16 +490,46 @@ class we_folder extends we_root
 		
 		$userCanChange = we_hasPerm("CHANGE_DOC_FOLDER_PATH") || ($this->CreatorID == $_SESSION["user"]["ID"]) || (!$this->ID);
 		if ($this->ID!=0 && $this->ParentID==0 && $this->ParentPath=='/' && defined('OBJECT_FILES_TABLE') && $this->Table== OBJECT_FILES_TABLE) {$userCanChange=false;}
-		$content = (!$userCanChange) ? ('<span class="defaultfont">'.$this->Path.'</span>') : '<table border="0" cellpadding="0" cellspacing="0">
+		$content = (!$userCanChange) ? ('<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">'.$this->Path.'</span></td></tr>') : '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont">'.$this->formInputField("",($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? "Filename" : "Text",$l_we_class["filename"],50,388,255,"onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();").'</td><td></td><td></td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,4).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.getPixel(20,10).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" class="defaultfont">'.$this->formDirChooser(388).'</td>
+	</tr>';
+	if ($this->Table== OBJECT_FILES_TABLE){
+		$content .='	<tr>
+		<td>'.getPixel(20,4).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		</tr>
+		<tr>
+		<td>'.getPixel(20,4).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
 	</tr>
+		<tr>
+			<td colspan="3" class="defaultfont">'.$this->formTriggerDocument().'</td>
+		</tr>';
+		
+		if ($this->ID) {
+			$_disabled = false;
+			$_disabledNote = "";
+		} else {
+			$_disabled = true;
+			$_disabledNote = " ".$GLOBALS["l_we_class"]["availableAfterSave"];
+		}
+		$we_button = new we_button();
+		$content .='<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. htmlAlertAttentionBox($GLOBALS["l_we_class"]["grant_tid_expl"].$_disabledNote,2,388,false) .'</td><td>'.
+						$we_button->create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall( $GLOBALS["l_we_class"]["saveFirstMessage"], WE_MESSAGE_ERROR ) ."; } else {;we_cmd('changeTriggerIDRecursive','".$GLOBALS["we_transaction"]."');}",true,100,22,"","",$_disabled) . '</td></tr>
+					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>
+		
+		';
+		
+		
+	
+	}
+	
+$content .='	
 </table>
 '; 
 		return $content;

@@ -250,7 +250,7 @@ function we_tag_field($attribs, $content){
 			if($name=='WE_PATH' && $triggerid && isset($GLOBALS["lv"]->ClassName) && ($GLOBALS["lv"]->ClassName == "we_search_listview" || $GLOBALS["lv"]->ClassName == "we_listview_object" || $GLOBALS["lv"]->ClassName == "we_listview_multiobject" || $GLOBALS["lv"]->ClassName == "we_objecttag"  ) ){
 				$triggerpath = id_to_path($triggerid); 
 				$triggerpath_parts = pathinfo($triggerpath); 
-				if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($triggerpath_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+				if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($triggerpath_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 					$normVal = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR. $GLOBALS["lv"]->f("WE_URL");
 				} else {
 					$normVal = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR . $triggerpath_parts['filename'] . DIRECTORY_SEPARATOR . $GLOBALS["lv"]->f("WE_URL");
@@ -269,7 +269,7 @@ function we_tag_field($attribs, $content){
 					'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht inLV, #4648
 				if ($name=='WE_PATH'){	
 					$path_parts = pathinfo($normVal); 
-					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+					if (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$normVal = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
 					} 
 				}	
@@ -320,7 +320,7 @@ function we_tag_field($attribs, $content){
 					
 					if ($alt=='WE_PATH'){	
 						$path_parts = pathinfo($altVal); 
-						if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							$altVal = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
 						} 
 					}	
@@ -482,12 +482,15 @@ function we_tag_field($attribs, $content){
 						} else {
 							$tail = "";
 						}
+						$path_parts = pathinfo($_SERVER["PHP_SELF"]);
 						if ($GLOBALS["lv"]->objectseourls){
 							$db = new DB_WE();
 							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($GLOBALS["lv"]->f("OID")) . "' LIMIT 1", "Url", $db);
-						} 
-						$path_parts = pathinfo($_SERVER["PHP_SELF"]);
-						if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($GLOBALS["lv"]->f("OID")) . "' LIMIT 1", $db);
+							$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
+							if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
+						}
+						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
 								$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
 							} else {
@@ -541,13 +544,13 @@ function we_tag_field($attribs, $content){
 									if ($triggerid) {
 										$triggerpath = id_to_path($triggerid); 
 										$triggerpath_parts = pathinfo($triggerpath); 
-										if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($triggerpath_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+										if (!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($triggerpath_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 											$_linkAttribs['href'] = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR. $GLOBALS["lv"]->f("WE_URL") . $tail;
 										} else {
 											$_linkAttribs['href'] = ($triggerpath_parts['dirname']!=DIRECTORY_SEPARATOR ? $triggerpath_parts['dirname']:'').DIRECTORY_SEPARATOR . $triggerpath_parts['filename'] . DIRECTORY_SEPARATOR . $GLOBALS["lv"]->f("WE_URL") . $tail;
 										}
 									} else {
-										if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+										if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 											$_linkAttribs['href'] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
 										} else {
 											$_linkAttribs['href'] = $GLOBALS["lv"]->f("WE_PATH") . $tail;

@@ -848,14 +848,19 @@ class weNavigation extends weModelBase
 				if ($this->FolderSelection == 'objLink') {
 					if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS ){
 						$_db = new DB_WE();
-						$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", "Url", $_db);
+						$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", $_db);
+						$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 						if($objecturl==''){
 							$_param = 'we_objectID='. $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 						}
 					} else {
 						$_param = 'we_objectID='. $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 					}
-					$_id = weDynList::getFirstDynDocument($this->FolderWsID);
+					if ($objecttriggerid){
+						$_id = $objecttriggerid;
+					} else {
+						$_id = weDynList::getFirstDynDocument($this->FolderWsID);
+					}
 				} else {
 					$_id = $this->LinkID;
 				}
@@ -896,14 +901,19 @@ class weNavigation extends weModelBase
 						$objecturl='';
 						if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
-							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($_id) . "' LIMIT 1", "Url", $_db);
+							$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", $_db);
+							$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 							if($objecturl==''){
 								$_param = 'we_objectID='. $_id . (!empty($_param) ? '&' : '') . $_param;
 							}
 						} else {
 							$_param = 'we_objectID='. $_id . (!empty($_param) ? '&' : '') . $_param;
 						}
-						$_id = weDynList::getFirstDynDocument($this->WorkspaceID);
+						if ($objecttriggerid){
+							$_id = $objecttriggerid;
+						} else {
+							$_id = weDynList::getFirstDynDocument($this->WorkspaceID);
+						}
 					}
 					
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);

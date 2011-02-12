@@ -48,6 +48,8 @@ $l_object_classfoldersearch["searchable"] = "Set the selected objects to searcha
 $l_object_classfoldersearch["wirklichsearchable"] = "This sets the selected objects to searchable! Are you sure?";// TRANSLATE
 $l_object_classfoldersearch["unsearchable"] = "Set the selected objects to unsearchable";// TRANSLATE
 $l_object_classfoldersearch["wirklichunsearchable"] = "This sets the selected objects to unsearchable! Are you sure?";// TRANSLATE
+$l_object_classfoldersearch["copytid"] = "Copy the display-document defined in the class to the selected objects.";// TRANSLATE
+$l_object_classfoldersearch["wirklichcopytid"] = "This overrides the defined display documents in the selected objects! Are you sure?";// TRANSLATE
 
 $l_object_classfoldersearch["zeige"] = "Показывать";
 $l_object_classfoldersearch["Objekt"] = "Объект";

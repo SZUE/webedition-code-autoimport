@@ -171,6 +171,12 @@ $l_we_class["grant_language"] = "Change language";
 $l_we_class["grant_language_expl"] = "Change the language of all files and directories which reside in the current directory to the setting above.";
 $l_we_class["grant_language_ok"] = "Language have been successfully changed!";
 $l_we_class["grant_language_notok"] = "There was an error while changing the language!";
+
+$l_we_class["grant_tid"] = "Change display document"; // TRANSLATE
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";// TRANSLATE
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";// TRANSLATE
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";// TRANSLATE
+
 $l_we_class["notValidFolder"] = "The directory chosen is invalid!";
 
 

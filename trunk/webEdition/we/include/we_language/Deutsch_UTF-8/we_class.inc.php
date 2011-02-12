@@ -171,6 +171,12 @@ $l_we_class["grant_language"] = "Sprache übertragen";
 $l_we_class["grant_language_expl"] = "Übertragen Sie die oben eingestellte Sprache auf alle Dateien und Verzeichnisse, welche sich in diesem Verzeichnis befinden.";
 $l_we_class["grant_language_ok"] = "Die Sprache wurden erfolgreich übertragen!";
 $l_we_class["grant_language_notok"] = "Es gab einen Fehler beim Übertragen der Sprache!";
+
+$l_we_class["grant_tid"] = "Dokument für die Darstellung übertragen";
+$l_we_class["grant_tid_expl"] = "Übertragen Sie das oben eingestellte okument für die Darstellung auf Objekte und Verzeichnisse, welche sich in diesem Verzeichnis befinden.";
+$l_we_class["grant_tid_ok"] = "Das Darstellungsdokument wurde wurden erfolgreich übertragen!";
+$l_we_class["grant_tid_notok"] = "Es gab einen Fehler beim Übertragen des Darstellungsdokumentes!";
+
 $l_we_class["notValidFolder"] = "Das angegebene Verzeichnis ist ungültig!";
 $l_we_class["saveFirstMessage"] = "Um diese Aktion auszuführen müssen Sie zuerst Ihre Änderungen speichern!";
 

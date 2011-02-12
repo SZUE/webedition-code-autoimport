@@ -34,6 +34,7 @@ $l_object["default"] = "Default Value";
 $l_object["checked"] = "aangevinkt";
 $l_object["name"] = "Automatische naam";
 $l_object["seourl"] = "SEO-URL";// TRANSLATE
+$l_object["seourltrigger"] = "Preset document for display ";// TRANSLATE
 $l_object["allFields"] = "Alle velden";
 $l_object["search_term"] = "Zoekterm";
 $l_object["search_field"] = "Zoekveld";
