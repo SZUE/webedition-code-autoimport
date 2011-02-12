@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/" . "weModuleFrames.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerView.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTree.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/date.inc.php");
 
 class weCustomerFrames extends weModuleFrames {
 

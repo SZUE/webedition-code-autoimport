@@ -309,7 +309,6 @@ class we_template extends we_document
 				$__lang = $__parts[0];
 				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
 					$GLOBALS["WE_LANGUAGE"] = $__lang;
-					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 				}
 
 
@@ -319,7 +318,6 @@ class we_template extends we_document
 				$__lang = $GLOBALS["WE_LANGUAGE"] . "_UTF-8";
 				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
 					$GLOBALS["WE_LANGUAGE"] = $__lang;
-					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 				}
 			}
 		}
