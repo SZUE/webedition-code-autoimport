@@ -18,7 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/alert.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
 
@@ -200,6 +199,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		deleteLocalFile($file);
 
 	}
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 	we_temporaryDocument::delete($id, $table, $DB_WE);
 
 	if ($table == FILE_TABLE) {
@@ -410,6 +410,7 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 			$hook->executeHook();
 		}
 
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
 		@set_time_limit(30);

@@ -3839,6 +3839,7 @@ function g_l($name, $specific) {
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 	}else{
+		//FIXME: decide if in we - then turn off, else turn on
 		//if(isset($cache))unset($cache);
 		//compatibility - try global scope
 		$tmp = (isset($GLOBALS["l_$name"])?getVarArray($GLOBALS["l_$name"], $specific):false);

@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/'.'we_classes/we_folder.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/we_objectFile.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once(WE_OBJECT_MODULE_DIR . 'we_searchobject_class.inc.php');
@@ -444,6 +443,7 @@ class we_class_folder extends we_folder{
 					$ofid = $DB_WE->f("OF_ID");
 
 					if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
+						include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 						$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . abs($classArray["ID"])." where ID=".abs(substr($f,3)));
 
 						$DB_WE->query("DELETE FROM " . INDEX_TABLE . " where OID=".abs($ofid));
@@ -1149,6 +1149,7 @@ EOF;
 				$DB_WE->next_record();
 				$ofid = $DB_WE->f("OF_ID");
 				if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
+					include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 
 					$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE.abs($classArray["ID"])." WHERE ID=".abs(substr($f,3)));
 					$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".abs($ofid));
