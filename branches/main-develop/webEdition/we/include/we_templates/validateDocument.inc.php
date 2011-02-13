@@ -24,8 +24,6 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validationService.class.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validation.class.php');
 
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/accessibility.inc.php');
-
 
     //  This page gives the possibility to check a document via a known web-Service
     //  supports w3c (xhtml) and css validation via fileupload.
@@ -80,7 +78,7 @@
                             $_lastCat = '1';
                         }
                         $_lastArt = $art;
-                        $_select .= "<optgroup class='lvl1' label='" . $l_validation['art_' . $art] . "'>\n";
+                        $_select .= "<optgroup class='lvl1' label='" . g_l('validation','[art_' . $art.']') . "'>\n";
                     }
                     if($_lastCat != $cat){
                         if($_lastCat != ''){
@@ -88,7 +86,7 @@
                         }
                         $_lastCat = $cat;
 
-                        $_select .= "<optgroup class='lvl2' label='-- " . $l_validation['category_' . $cat] . "'>\n";
+                        $_select .= "<optgroup class='lvl2' label='-- " . g_l('validation','[category_' . $cat.']') . "'>\n";
                     }
                     $_select .= "<option value='" . $service->getName() . "'>" . htmlentities($service->name) . "</option>\n";
                     $js .= '
@@ -113,7 +111,7 @@
                     hidden('varname', $selectedService->varname) .
                     hidden('additionalVars',$selectedService->additionalVars);
     } else {
-        $_select = $l_validation['no_services_available'];
+        $_select = g_l('validation','[no_services_available]');
     }
 
     //  css for webSite
@@ -202,8 +200,8 @@
     $button = new we_button();
     //  generate Body of page
     $parts = array();
-    array_push($parts,array('html'=>$l_validation['description'],'space'=>0));
-    array_push($parts,array('headline'=>$l_validation['service'],
+    array_push($parts,array('html'=>g_l('validation','[description]'),'space'=>0));
+    array_push($parts,array('headline'=>g_l('validation','[service]'),
                             'html'=>
                                 '<table border="0" cellpadding="0" cellspacing="0">
                                  <tr>
@@ -217,7 +215,7 @@
                                     . '</td></tr></table>'
                             ,'space'=>95));
 
-    array_push($parts,array('html'=>$l_validation['result'], 'noline'=>1,'space'=>0) );
+    array_push($parts,array('html'=>g_l('validation','[result]'), 'noline'=>1,'space'=>0) );
     array_push($parts,array('html'=>'<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space'=> 5) );
 
     $body = '
