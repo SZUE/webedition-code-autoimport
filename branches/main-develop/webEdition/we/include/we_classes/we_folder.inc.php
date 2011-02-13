@@ -19,8 +19,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_root.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_root.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 
 if (defined("CUSTOMER_FILTER_TABLE")) {
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
@@ -718,9 +718,6 @@ $content .='
 	 * @desc	the function modifies document EditPageNrs set
 	 */
 	function checkTabs(){
-
 	}
 
 }
-
-?>
