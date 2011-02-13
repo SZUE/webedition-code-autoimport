@@ -44,7 +44,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		$objectid=0;
 		$searchfor ='';
 		$notfound=true;
-		while($notfound && $path_parts['dirname']!='/'){
+		while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
 			$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 			if ($searchfor){
@@ -68,7 +68,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 				$path_parts = pathinfo($path_parts['dirname']);
 			}
 		}
-		if($notfound && $path_parts['dirname']=='/' && $hiddendirindex){
+		if($notfound && isset($path_parts['dirname']) && $path_parts['dirname']=='/' && $hiddendirindex){
 			if ($searchfor){
 				$searchfor = $path_parts['basename'].'/'.$searchfor;
 			} else $searchfor = $path_parts['basename'];
