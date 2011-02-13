@@ -58,9 +58,11 @@ $l_global = array(
 		'std_mailtext_delObj' => "Obiekt %s został usunięty!",
 		'std_subject_delDoc' => "Dokument usunięto",
 		'std_mailtext_delDoc' => "Dokument %s został usunięty!",
-		'text/html' => "Po zapisie nowej strony",
-		'text/webedition' => $GLOBALS["l_global"]["we_make_same"]["text/html"],
+				'we_make_same' => array(
+'text/html' => "Po zapisie nowej strony",
+		'text/webedition' => $l_global["we_make_same"]["text/html"],
 		'objectFile' => "New object after saving",
+						),
 		'no_entries' => "Brak wpisów!",
 		'save_temporaryTable' => "Zapisz ponownie tymczasowe dokumenty robocze",
 		'save_mainTable' => "Zapisz teraz główną tabelę bazy danych",

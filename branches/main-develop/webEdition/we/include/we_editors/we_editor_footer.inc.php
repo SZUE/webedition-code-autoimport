@@ -495,7 +495,7 @@ if(inWorkflow($we_doc)) {
 			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
 
 				$_normalTable->addCol(2);
-				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block') ) , we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", $GLOBALS['l_global']["we_make_same"][$we_doc->ContentType], false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ) ));
+				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block') ) , we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", g_l('global','[we_make_same]['.$we_doc->ContentType.']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ) ));
 				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
 			}
 		}
@@ -673,7 +673,7 @@ if(inWorkflow($we_doc)) {
 								}
 							//-->
 							</script>' .
-							we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", $GLOBALS['l_global']["we_make_same"][$we_doc->ContentType], false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ))
+							we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", g_l('global','[we_make_same]['.$we_doc->ContentType.']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ))
 							.
 						'<script language="JavaScript" type="text/javascript">
 								<!--
