@@ -39,7 +39,7 @@ print
 	background-color: transparent;
 	color: black;
 	font-size: " . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-	font-family: " . $l_css["font_family"] . " ! important;
+	font-family: " . g_l('css','[font_family]') . " ! important;
 }
 
 

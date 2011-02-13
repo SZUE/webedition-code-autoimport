@@ -1408,7 +1408,6 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][4]['dat'] = $data['agent'];
 				$content[$ind][5]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
 				$content[$ind][6]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
-				endif;
 
 				$mess = $l_voting['log_success'];
 				if($data['status']!=VOTING_SUCCESS){
@@ -1556,7 +1555,6 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][2]['dat'] = $data['agent'];
 				$content[$ind][3]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
 				$content[$ind][4]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
-				endif;
 
 				$mess = $l_voting['log_success'];
 				if($data['status']!=VOTING_SUCCESS){

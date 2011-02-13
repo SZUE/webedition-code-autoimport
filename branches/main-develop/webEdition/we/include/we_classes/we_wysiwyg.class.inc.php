@@ -21,7 +21,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php");
 //make sure we know which browser is used
 include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
 
@@ -212,7 +211,7 @@ class we_wysiwyg{
 						color: #000000;
 						cursor: default;
 						font-size: '.(($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")).';
-						font-family: '.$GLOBALS["l_css"]["font_family"].';
+						font-family: '.g_l('css','[font_family]').';
 						font-weight: normal;
 						margin: 0px;
 						padding:0px;

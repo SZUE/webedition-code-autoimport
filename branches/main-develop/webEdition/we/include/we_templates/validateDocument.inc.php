@@ -187,9 +187,9 @@
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,680);
-			var iframeWidth = w - 52;    
+			var iframeWidth = w - 52;
 			var validiframe = document.getElementById("validation");
-			validiframe.style.width=iframeWidth;    
+			validiframe.style.width=iframeWidth;
 			if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
 				validiframe.style.height=h - 185;
 			}
