@@ -2372,7 +2372,6 @@ function mapPermissions() {
 
 
 	function formPreferencesUI() {
-		global $BROWSER;
 		$we_button = new we_button();
 
 		$_settings = array();

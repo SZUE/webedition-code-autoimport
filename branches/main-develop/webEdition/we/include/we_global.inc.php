@@ -3611,9 +3611,9 @@ function we_writeLanguageConfig($default, $available = array()) {
 	foreach ($available as $Locale) {
 		$temp = explode("_", $Locale);
 		if (sizeof($temp) == 1) {
-			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]' " . $temp[0] . ",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "])' " . $temp[0] . ",\n";
 		} else {
-			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]' . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "])' . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
 		}
 	}
 

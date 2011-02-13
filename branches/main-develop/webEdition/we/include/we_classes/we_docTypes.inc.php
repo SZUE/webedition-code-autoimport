@@ -233,13 +233,13 @@ class we_docTypes extends we_class {
 	}
 
 	function formDocTypeDefaults() {
-		global $l_we_class,$BROWSER;
+		global $l_we_class;
 
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="3">
-						'.$this->formDirChooser($BROWSER=="IE"?403:409).'</td>
+						'.$this->formDirChooser($GLOBALS['BROWSER']=="IE"?403:409).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -322,7 +322,7 @@ class we_docTypes extends we_class {
 	}
 
 	function formDirChooser($width=100) {
-		global $l_we_class,$BROWSER;
+		global $l_we_class;
 
 		$yuiSuggest =& weSuggest::getInstance();
 
@@ -338,7 +338,7 @@ class we_docTypes extends we_class {
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname,$this->ParentID);
 		$yuiSuggest->setSelector("Dirselector");
-		$yuiSuggest->setWidth($width - ($BROWSER=="IE"? 0 : 10));
+		$yuiSuggest->setWidth($width - ($GLOBALS['BROWSER']=="IE"? 0 : 10));
 		$yuiSuggest->setSelectButton($button);
 
 		return $yuiSuggest->getHTML();

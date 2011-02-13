@@ -90,7 +90,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
  */
 
 function save_all_values() {
-	global $DB_WE, $BROWSER, $SYSTEM;
+	global $DB_WE, $SYSTEM;
 
 	/*************************************************************************
 	 * SAVE METADATA FIELDS TO DB
@@ -123,7 +123,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_metadata, $DB_WE, $BROWSER, $SYSTEM;
+	global $l_alert, $l_metadata, $DB_WE, $SYSTEM;
 
 	$we_button = new we_button();
 

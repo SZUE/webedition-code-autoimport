@@ -260,7 +260,6 @@ class weImageDialog extends weDialog{
 	}
 
 	function getDialogContentHTML(){
-		global $BROWSER;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 

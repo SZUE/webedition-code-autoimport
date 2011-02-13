@@ -21,7 +21,7 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 function we_browser_check() {
-	global $SAFARI_WYSIWYG, $BROWSER, $SYSTEM, $FF, $SAFARI_3;
+	global $SAFARI_WYSIWYG, $SYSTEM, $FF, $SAFARI_3;
 	$SAFARI_WYSIWYG = false;
 
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
@@ -37,14 +37,14 @@ function we_browser_check() {
 
 	switch($_BROWSER->getBrowser()){
 		case 'opera':
-			$BROWSER = 'OPERA';
+			$GLOBALS['BROWSER'] = 'OPERA';
 			break;
 		case 'ie':
-			$BROWSER = "IE";
+			$GLOBALS['BROWSER'] = "IE";
 			break;
 		case 'appleWebKit':
 		case 'safari':
-			$BROWSER = "SAFARI";
+			$GLOBALS['BROWSER'] = "SAFARI";
 			$wkV=$_BROWSER->getWebKitVersion();
 			$SAFARI_WYSIWYG = (($wkV > 311 && $wkV < 400) || ($wkV > 411));
       $SAFARI_3 = ($wkV > 522);
@@ -52,10 +52,10 @@ function we_browser_check() {
 		case 'mozilla':
 		case 'firefox':
 		case 'nn':
-			$BROWSER = ($_BROWSER->isGecko()?'NN6':'NN');
+			$GLOBALS['BROWSER'] = ($_BROWSER->isGecko()?'NN6':'NN');
 			break;
 		default:
-			$BROWSER = "UNKNOWN";
+			$GLOBALS['BROWSER'] = "UNKNOWN";
 
 	}
 
@@ -66,12 +66,12 @@ function we_browser_check() {
 }
 
 function checkSupportedBrowser() {
-	global $SYSTEM, $BROWSER;
+	global $SYSTEM;
 	we_browser_check();
 
 	switch ($SYSTEM) {
 		case 'WIN' :
-			switch ($BROWSER) {
+			switch ($GLOBALS['BROWSER']) {
 				case 'IE':
 					return true;
 					break;
@@ -84,7 +84,7 @@ function checkSupportedBrowser() {
 			break;
 
 		case 'MAC':
-			switch ($BROWSER) {
+			switch ($GLOBALS['BROWSER']) {
 				case 'OPERA':
 				case 'NN6':
 				case 'SAFARI':
@@ -93,7 +93,7 @@ function checkSupportedBrowser() {
 			break;
 
 		case 'X11':
-			switch ($BROWSER) {
+			switch ($GLOBALS['BROWSER']) {
 				case 'OPERA':
 				case 'NN6':
 					return true;
@@ -102,7 +102,7 @@ function checkSupportedBrowser() {
 			break;
 
 		case 'UNKNOWN':
-			switch ($BROWSER) {
+			switch ($GLOBALS['BROWSER']) {
 				case 'IE':
 					return true;
 					break;
@@ -120,6 +120,6 @@ function checkSupportedBrowser() {
 }
 
 
-if(!isset($BROWSER)||$BROWSER==''){
+if(!isset($GLOBALS['BROWSER'])||$GLOBALS['BROWSER']==''){
 	we_browser_check();
 }

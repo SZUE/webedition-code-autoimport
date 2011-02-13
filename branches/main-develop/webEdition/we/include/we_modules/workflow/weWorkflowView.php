@@ -338,8 +338,6 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getStepsHTML(){
-		global $BROWSER;
-
 		$we_button = new we_button();
 
 		$headline=array();
@@ -358,7 +356,7 @@ class weWorkflowView extends weWorkflowBase{
 		$yuiSuggest =& weSuggest::getInstance();
 
 		/***** BROWSER DEPENDENCIES *****/
-		switch ($BROWSER){
+		switch ($GLOBALS['BROWSER']){
 			case "IE" :
 				$_spacer_1_height = 13;
 				$_spacer_2_height = 5;

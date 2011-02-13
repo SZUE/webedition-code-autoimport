@@ -149,7 +149,7 @@ class DB_WE extends DB_Sql {
 		} else
 		if (preg_match('/insert |update /i', $Query_String)) {
 			// delete getHash DB Cache
-			getHash('');
+			getHash('',$this);
 		}
 		$this->Row = 0;
 		$this->Errno = mysql_errno();

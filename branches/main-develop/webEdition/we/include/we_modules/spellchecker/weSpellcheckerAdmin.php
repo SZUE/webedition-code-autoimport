@@ -53,7 +53,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 
 	// ----------------------
-	if($SYSTEM == 'MAC' && $BROWSER=='NN6') {
+	if($SYSTEM == 'MAC' && $GLOBALS['BROWSER']=='NN6') {
 		$l_param['scid'] = session_id();
 		$_tmp_dir = WE_SPELLCHECKER_MODULE_DIR . '/tmp';
 		if(!is_dir($_tmp_dir)) {

@@ -2340,7 +2340,7 @@ $_we_active_integrated_modules = array();
 			 *****************************************************************/
 /*
 			case '$_REQUEST["usePlugin"]':
-				if (($BROWSER == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
+				if (($GLOBALS['BROWSER'] == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
 					$_SESSION["prefs"]["usePlugin"] = 0;
 				}
 
@@ -2348,7 +2348,7 @@ $_we_active_integrated_modules = array();
 				break;
 
 			case '$_REQUEST["autostartPlugin"]':
-				if (($BROWSER == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
+				if (($GLOBALS['BROWSER'] == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
 					$_SESSION["prefs"]["autostartPlugin"] = 0;
 				}
 
@@ -2356,7 +2356,7 @@ $_we_active_integrated_modules = array();
 				break;
 
 			case '$_REQUEST["promptPlugin"]':
-				if (($BROWSER == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
+				if (($GLOBALS['BROWSER'] == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
 					$_SESSION["prefs"]["promptPlugin"] = 0;
 				}
 
@@ -2621,7 +2621,7 @@ $_we_active_integrated_modules = array();
  */
 
 function save_all_values() {
-	global $DB_WE, $BROWSER, $SYSTEM;
+	global $DB_WE, $SYSTEM;
 
 	// First, read all needed files
 	$GLOBALS['config_files'] = array();
@@ -3046,7 +3046,7 @@ function check_global_config($values) {
  */
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $DB_WE, $BROWSER, $SYSTEM;
+	global $l_alert, $DB_WE, $SYSTEM;
 	$yuiSuggest =& weSuggest::getInstance();
 
 	$we_button = new we_button();
@@ -3359,14 +3359,14 @@ function build_dialog($selected_setting = "ui") {
 				$showStartType = false;
 				$permitedStartTypes = array("");
 				$_start_type->addOption("", "-");
-				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:".($BROWSER=="IE"?"33px":"24px").";'>&nbsp;</div>";
+				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:".($GLOBALS['BROWSER']=="IE"?"33px":"24px").";'>&nbsp;</div>";
 				if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 					$_start_type->addOption("cockpit", g_l('prefs','[seem_start_type_cockpit]'));
 					$showStartType = true;
 					$permitedStartTypes[] = "cockpit";
 				}
 
-				$selectorSpace = $BROWSER == "IE" ? 8 : 160;
+				$selectorSpace = $GLOBALS['BROWSER'] == "IE" ? 8 : 160;
 
 				$_seem_document_chooser = "";
 				if (we_hasPerm("CAN_SEE_DOCUMENTS")) {
@@ -3597,7 +3597,7 @@ function build_dialog($selected_setting = "ui") {
 			$_window_current_dimension_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 2);
 
 			$_window_current_dimension_table->setCol(0, 0, null, getPixel(50, 1));
-			$_window_current_dimension_table->setCol(0, 1, null, $we_button->create_button("apply_current_dimension", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = " . ($BROWSER == "IE" ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('weHeight')[0].value = " . ($BROWSER == "IE" ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
+			$_window_current_dimension_table->setCol(0, 1, null, $we_button->create_button("apply_current_dimension", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('weHeight')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
 
 			// Build final HTML code
 			$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);

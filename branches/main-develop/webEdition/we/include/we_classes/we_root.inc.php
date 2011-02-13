@@ -260,7 +260,7 @@ class we_root extends we_class
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formDirChooser($width="",$rootDirID=0,$table="",$Pathname="ParentPath",$IDName="ParentID",$cmd="",$showTitle=true){
-		global $l_we_class, $BROWSER;
+		global $l_we_class;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 
@@ -552,7 +552,7 @@ class we_root extends we_class
 
 	}
 function formTriggerDocument($isclass=false){
-		global $l_we_class, $l_object,$BROWSER;
+		global $l_we_class, $l_object;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 		$table = FILE_TABLE;

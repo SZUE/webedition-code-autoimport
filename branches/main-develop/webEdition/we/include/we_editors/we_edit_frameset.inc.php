@@ -156,7 +156,7 @@ if(isset($_REQUEST["we_cmd"][0]) && isset($_REQUEST["we_cmd"][5]) && $_REQUEST["
 	if($we_doc->ContentType=="folder") {
 		$we_doc->setParentID($_REQUEST["we_cmd"][5]);
 	}
-	
+
 }
 
 
@@ -472,10 +472,10 @@ if(!isset($we_doc->elements['data']['dat'])){
 	</frameset>
 <?php
 	} else {
-		
+
 		$showContentEditor =  ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType,0,5) == "text/" &&  $we_doc->ContentType != "text/webedition");
 ?>
-	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="<?php if($BROWSER == "NN"){print "48";}else{print "39";} ?>,<?php print $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload();">
+	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="<?php if($GLOBALS['BROWSER'] == "NN"){print "48";}else{print "39";} ?>,<?php print $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload();">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no">
 		<?php if ($showContentEditor) { ?> 
 			<frame <?php print setOnload(); ?> src="about:blank" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>

@@ -1738,7 +1738,6 @@ class weBackupWizard{
 	function printWarnings(&$we_backup_obj) {
 		global $l_backup;
 		global $SYSTEM;
-		global $BROWSER;
 
 		$warnings = array();
 		$warnings = $we_backup_obj->getWarnings();

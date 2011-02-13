@@ -18,8 +18,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
@@ -414,7 +414,7 @@ function we_cmd() {
 
 	if (window.screen) {
 		h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
-		//h = screen.availHeight - <?php print ($BROWSER == "IE" && $SYSTEM == "WIN") ? 73 : (($BROWSER == "NN" && $SYSTEM == "WIN") ? 50: 40) ?>;
+		//h = screen.availHeight - <?php print ($GLOBALS['BROWSER'] == "IE" && $SYSTEM == "WIN") ? 73 : (($GLOBALS['BROWSER'] == "NN" && $SYSTEM == "WIN") ? 50: 40) ?>;
 		w = screen.availWidth; // - <?php print ($SYSTEM == "WIN") ? 10 : 20 ?>;
 	}
 

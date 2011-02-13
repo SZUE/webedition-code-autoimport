@@ -26,15 +26,15 @@
  * Language: English
  */
 
-$dir=dirname(__FILE__);
-include($dir."/global.inc.php");
-if (is_dir($dir."/modules")) {
+$dir=dirname(__FILE__).'/buttons/';
+include($dir."global.inc.php");
+if (is_dir($dir."modules")) {
 
 	// Include language files of buttons used in modules
-	$d = dir($dir."/modules");
+	$d = dir($dir."modules");
 	while (false !== ($entry = $d->read())) {
 		if ($entry[0] != "." && substr($entry,(-1 * strlen(".php"))) == ".php") {
-			include($dir."/modules/".$entry);
+			include($dir."modules/".$entry);
 		}
 	}
 	$d->close();

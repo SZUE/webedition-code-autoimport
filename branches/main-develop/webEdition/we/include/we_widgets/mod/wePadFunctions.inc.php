@@ -43,15 +43,15 @@ function getDateSelector($_label, $_name, $_btn)
 	global $l_cockpit;
 	$we_button = new we_button();
 	$btnDatePicker = $we_button->create_button(
-			"image:date_picker", 
-			"javascript:", 
-			null, 
-			null, 
-			null, 
-			null, 
-			null, 
-			null, 
-			false, 
+			"image:date_picker",
+			"javascript:",
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			false,
 			$_btn);
 	$oSelector = new we_htmlTable(array(
 		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"
@@ -61,17 +61,17 @@ function getDateSelector($_label, $_name, $_btn)
 	), $_label);
 	$oSelector->setCol(0, 1, null, getPixel(5, 1));
 	$oSelector->setCol(
-			0, 
-			2, 
-			null, 
+			0,
+			2,
+			null,
 			htmlTextInput(
-					$name = $_name, 
-					$size = 55, 
-					$value = "", 
-					$maxlength = 10, 
-					$attribs = 'id="' . $_name . '" readonly="1"', 
-					$type = "text", 
-					$width = 70, 
+					$name = $_name,
+					$size = 55,
+					$value = "",
+					$maxlength = 10,
+					$attribs = 'id="' . $_name . '" readonly="1"',
+					$type = "text",
+					$width = 70,
 					$height = 0));
 	$oSelector->setCol(0, 3, null, getPixel(5, 1));
 	$oSelector->setCol(0, 4, null, we_htmlElement::htmlA(array(
@@ -94,16 +94,16 @@ function getNoteList($_sql, $bDate, $bDisplay)
 	$_notes = '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
 	$_rcd = 0;
 	$_fields = array(
-		
-			'ID', 
-			'WidgetName', 
-			'UserID', 
-			'CreationDate', 
-			'Title', 
-			'Text', 
-			'Priority', 
-			'Valid', 
-			'ValidFrom', 
+
+			'ID',
+			'WidgetName',
+			'UserID',
+			'CreationDate',
+			'Title',
+			'Text',
+			'Priority',
+			'Valid',
+			'ValidFrom',
 			'ValidUntil'
 	);
 	while ($DB_WE->next_record()) {
@@ -124,7 +124,7 @@ function getNoteList($_sql, $bDate, $bDisplay)
 						'id' => $_rcd . '_' . $_fld, 'style' => 'display:none;', 'value' => ($_fldValue)
 					));
 		}
-		
+
 		$validity = $DB_WE->f("Valid");
 		switch ($bDate) {
 			case 1 :
@@ -144,7 +144,7 @@ function getNoteList($_sql, $bDate, $bDisplay)
 			default :
 				$showDate = convertDate($DB_WE->f("CreationDate"));
 		}
-		
+
 		$today = date("Ymd");
 		$vFrom = str_replace("-", "", $DB_WE->f("ValidFrom"));
 		$vTill = str_replace("-", "", $DB_WE->f("ValidUntil"));
@@ -168,9 +168,9 @@ function getNoteList($_sql, $bDate, $bDisplay)
 		$_notes .= '<td width="5">' . getPixel(5, 1) . '</td>';
 		$_notes .= '<td width="15" height="20" valign="middle" nowrap>' . we_htmlElement::htmlImg(
 				array(
-					
-						"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif", 
-						"width" => 13, 
+
+						"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
+						"width" => 13,
 						"height" => 14
 				)) . '</td>';
 		$_notes .= '<td width="5">' . getPixel(5, 1) . '</td>';
@@ -187,7 +187,7 @@ function getNoteList($_sql, $bDate, $bDisplay)
 
 function getCSS()
 {
-	global $BROWSER, $SYSTEM, $l_css;
+	global $SYSTEM, $l_css;
 	$_css = "
 	body{
 		background-color:transparent;
@@ -218,7 +218,7 @@ function getCSS()
 		border:#AAAAAA solid 1px;
 		height:18px;
 		vertical-align:middle;
-		" . (($BROWSER == "IE") ? "" : "line-height:normal;") . ";
+		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . $l_css["font_family"] . ";
 	}
@@ -227,7 +227,7 @@ function getCSS()
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
 		height:18px;
-		" . (($BROWSER == "IE") ? "" : "line-height:normal;") . ";
+		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . $l_css["font_family"] . ";
 	}
@@ -235,7 +235,7 @@ function getCSS()
 		color:black;
 		border:#AAAAAA solid 1px;
 		height:80px;
-		" . (($BROWSER == "IE") ? "" : "line-height:normal;") . ";
+		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . $l_css["font_family"] . ";
 	}
@@ -244,14 +244,13 @@ function getCSS()
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
 		height:80px;
-		" . (($BROWSER == "IE") ? "" : "line-height:normal;") . ";
+		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . $l_css["font_family"] . ";
 	}
 	select{
 		border:#AAAAAA solid 1px;
 	}";
-	
+
 	return $_css;
 }
-?>
