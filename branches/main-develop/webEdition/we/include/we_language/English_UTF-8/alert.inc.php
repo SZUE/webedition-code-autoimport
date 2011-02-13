@@ -24,10 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-if (!isset($l_backup)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-}
 
 $l_alert["notice"] = "Notice";
 $l_alert["warning"] = "Warning";
@@ -112,7 +108,7 @@ $l_alert["cat_changed"] = "The category is in use! Resave the documents which ar
 $l_alert["max_name_cat"] = "A category name may only be 32 characters long!";
 $l_alert["not_entered_cat"] = "No category name has been entered!";
 $l_alert["cat_new_name"] = "Enter the new name for the category!";
-$l_alert["we_backup_import_upload_err"] = "An error occured while uploading the backup file! The maximum file size for uploads is %s. If your backup file exceeds this limit, please upload it into the directory webEdition/we_Backup via FTP and choose '".$l_backup["import_from_server"]."'";
+$l_alert["we_backup_import_upload_err"] = "An error occured while uploading the backup file! The maximum file size for uploads is %s. If your backup file exceeds this limit, please upload it into the directory webEdition/we_Backup via FTP and choose '".g_l('backup',"[import_from_server]")."'";
 $l_alert["rebuild_nodocs"] = "No documents match the selected attributes.";
 $l_alert["we_name_not_allowed"] = "The terms 'we' and 'webEdition' are reserved words and may not be used!";
 $l_alert["we_filename_empty"] = "No name has been entered for this document or directory!";
@@ -183,6 +179,6 @@ $l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been mo
 
 $l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:";
 $l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s';
-$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; 
+$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.';
 $l_alert['discard_changed_data'] = 'There are unsaved changes that will be discarded. Are you sure?';
 ?>

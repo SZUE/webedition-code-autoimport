@@ -83,61 +83,60 @@
 
 
 		function getDescription($table,$prefix) {
-			global $l_backup;
 
 			if($table == CONTENT_TABLE) {
-				return $l_backup[$prefix . '_content'];
+				return g_l('backup',"[".$prefix . '_content]');
 			}
 
 			if($table == FILE_TABLE) {
-				return $l_backup[$prefix . '_files'];
+				return g_l('backup',"[".$prefix . '_files]');
 			}
 
 			if($table == LINK_TABLE) {
-				return $l_backup[$prefix . '_links'];
+				return g_l('backup',"[".$prefix . '_links]');
 			}
 
 			if($table == TEMPLATES_TABLE) {
-				return $l_backup[$prefix . '_templates'];
+				return g_l('backup',"[".$prefix . '_templates]');
 			}
 
 			if($table == TEMPORARY_DOC_TABLE) {
-				return $l_backup[$prefix . '_temporary_data'];
+				return g_l('backup',"[".$prefix . '_temporary_data]');
 			}
 
 			if($table == INDEX_TABLE) {
-				return $l_backup[$prefix . '_indexes'];
+				return g_l('backup',"[".$prefix . '_indexes]');
 			}
 
 			if($table == DOC_TYPES_TABLE) {
-					return $l_backup[$prefix . '_doctypes'];
+					return g_l('backup',"[".$prefix . '_doctypes]');
 			}
 
 			if(defined('USER_TABLE') && $table == USER_TABLE) {
-					return $l_backup[$prefix . '_user_data'];
+					return g_l('backup',"[".$prefix . '_user_data]');
 			}
 
 			if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE) {
-				return $l_backup[$prefix . '_customer_data'];
+				return g_l('backup',"[".$prefix . '_customer_data]');
 			}
 
 			if(defined('SHOP_TABLE') && $table == SHOP_TABLE) {
-				return $l_backup[$prefix . '_shop_data'];
+				return g_l('backup',"[".$prefix . '_shop_data]');
 			}
 
 			if(defined('PREFS_TABLE') && $table == PREFS_TABLE) {
-				return $l_backup[$prefix . '_prefs'];
+				return g_l('backup',"[".$prefix . '_prefs]');
 			}
 
 			if(defined('BACKUP_TABLE') && $table == BACKUP_TABLE) {
-				return $l_backup[$prefix . '_extern_data'];
+				return g_l('backup',"[".$prefix . '_extern_data]');
 			}
 
 			if(defined('BANNER_CLICKS_TABLE') && $table == BANNER_CLICKS_TABLE) {
-				return $l_backup[$prefix . '_banner_data'];
+				return g_l('backup',"[".$prefix . '_banner_data]');
 			}
 
-			return $l_backup['working'];
+			return g_l('backup','[working]');
 
 		}
 
@@ -205,7 +204,7 @@
 
 			return false;
 		}
-		
+
 		function canImportVersion($id,$path) {
 
 			if(!empty($id) && stristr($path, '/webEdition/we/version') && $_SESSION['weBackupVars']['handle_options']['versions_binarys']){

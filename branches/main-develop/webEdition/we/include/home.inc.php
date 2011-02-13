@@ -21,7 +21,6 @@
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_html_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/SEEM.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_widget.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/cfg.inc.php");
@@ -108,7 +107,7 @@ _EditorFrame.initEditorFrameData(
 	{
 		"EditorType":"cockpit",
 		"EditorDocumentText":"<?php
-	echo $l_cockpit['cockpit'];
+	echo g_l('cockpit','[cockpit]');
 	?>",
 		"EditorDocumentPath":"Cockpit",
 		"EditorContentType":"cockpit",
@@ -340,7 +339,7 @@ function resizeIdx(a,id){
 		case 'swap':
 			gel(id+'_res').value=(res==0)?1:0;
 			gel(id+'_icon_resize').title=(res==0)?'<?php
-	echo $l_cockpit["reduce_size"]?>' : '<?php echo $l_cockpit["increase_size"]; ?>';
+	echo g_l('cockpit',"[reduce_size]")?>' : '<?php echo g_l('cockpit',"[increase_size]"); ?>';
 		break;
 		case 'get':
 			return res;
@@ -631,9 +630,9 @@ function createWidget(typ,row,col){
 
 function removeWidget(wizId){
 	var remove=confirm('<?php
-	echo $l_cockpit["pre_remove"];
+	echo g_l('cockpit',"[pre_remove]");
 	?>"'+getLabel(wizId)+'"<?php
-	echo $l_cockpit["post_remove"];
+	echo g_l('cockpit',"[post_remove]");
 	?>');
 	if(remove==true){
 		gel(wizId).parentNode.removeChild(gel(wizId));

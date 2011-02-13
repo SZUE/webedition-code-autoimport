@@ -20,11 +20,10 @@
 
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/backup.inc.php');
 
 			protect();
 			@set_time_limit(360);
-			
+
 			if (isset($_REQUEST['cmd'])) {
 
 				if(($_REQUEST['cmd']=='export' || $_REQUEST['cmd']=='import') && isset($_SESSION['weBackupVars'])) {
@@ -57,7 +56,7 @@
 							if($_SESSION['weBackupVars']['retry']>10) {
 								$_SESSION['weBackupVars']['retry'] = 1;
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall($l_backup['error_timeout'], WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall(g_l('backup','[error_timeout]'), WE_MESSAGE_ERROR)
 								);
 								exit();
 							}
@@ -103,7 +102,7 @@
 								die('No write permissions!');
 							}
 
-							$description = $l_backup['working'];
+							$description = g_l('backup','[working]');
 
 						} else if(isset($_SESSION['weBackupVars']['extern_files']) && count($_SESSION['weBackupVars']['extern_files'])>0) {
 							$fh = fopen($_SESSION['weBackupVars']['backup_file'],'ab');
@@ -121,7 +120,7 @@
 								}
 								fclose($fh);
 							}
-							$description = $l_backup['external_backup'];
+							$description = g_l('backup','[external_backup]');
 						} else {
 							include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupExport.class.php');
 							if(weBackupExport::export(
@@ -221,10 +220,10 @@
 									weBackupUtil::addLog('Fatal error: compression failed!');
 									print '
 									<script language="JavaScript" type="text/javascript">
-										if(top.busy.setProgressText) top.busy.setProgressText("current_description","'.$l_backup["error"].'");
+										if(top.busy.setProgressText) top.busy.setProgressText("current_description","'.g_l('backup',"[error]").'");
 										if(top.busy.setProgress) top.busy.setProgress(100);
 										top.checker.location = "/webEdition/html/blank.html";
-										alert("' . $l_backup['error_compressing_backup'] . '");
+										alert("' . g_l('backup','[error_compressing_backup]') . '");
 									</script>
 									';
 									unset($_SESSION['weBackupVars']);
@@ -261,7 +260,7 @@
 							print '
 								<script language="JavaScript" type="text/javascript">
 
-								if(top.busy.setProgressText) top.busy.setProgressText("current_description","'.$l_backup["finished"].'");
+								if(top.busy.setProgressText) top.busy.setProgressText("current_description","'.g_l('backup',"[finished]").'");
 								if(top.busy.setProgress) top.busy.setProgress(100);
 								top.body.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&step=2";
 								top.checker.location = "/webEdition/html/blank.html";
@@ -316,7 +315,7 @@
 								exit();
 							}
 
-							$description = $l_backup['working'];
+							$description = g_l('backup','[working]');
 
 						} else if(isset($_SESSION['weBackupVars']['files_to_delete']) && count($_SESSION['weBackupVars']['files_to_delete'])>0) {
 							for($i=0;$i<$_SESSION['weBackupVars']['backup_steps'];$i++) {
@@ -327,7 +326,7 @@
 									@unlink($file_to_delete);
 								}
 							}
-							$description = $l_backup['delete_old_files'];
+							$description = g_l('backup','[delete_old_files]');
 
 						} else {
 							if($_SESSION['weBackupVars']['options']['format']=='xml') {
@@ -412,7 +411,7 @@
 									var op = top.opener.top.makeFoldersOpenString();
 									top.opener.top.we_cmd("load",top.opener.top.treeData.table);
 									top.opener.top.header.location.reload();
-									top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . $l_backup['finished'] . '&percent=100";
+									top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup','[finished]') . '&percent=100";
 								'.(( $_SESSION['weBackupVars']['options']['rebuild']) ? ('
 									top.cmd.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";
 								 ') : ('
@@ -421,7 +420,7 @@
 
 
 								if(top.busy.setProgressText){
-									top.busy.setProgressText("current_description","' . $l_backup['finished'] . '");
+									top.busy.setProgressText("current_description","' . g_l('backup','[finished]') . '");
 								}
 
 								if(top.busy.setProgress){
@@ -445,7 +444,7 @@
 
 					case 'rebuild':
 						print we_htmlElement::jsElement('
-							top.opener.top.openWindow("'.WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText='.$l_backup["finished_success"].'","rebuildwin",-1,-1,600,130,0,true);
+							top.opener.top.openWindow("'.WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText='.g_l('backup',"[finished_success]").'","rebuildwin",-1,-1,600,130,0,true);
 							setTimeout("top.close();",300);
 						');
 					break;

@@ -22,7 +22,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 protect();
 $parts = array();
@@ -36,7 +35,7 @@ function save(){
 	savePrefs();
 	previewPrefs();
 	" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['prefs_saved_successfully'], 
+		g_l('cockpit','[prefs_saved_successfully]'),
 		WE_MESSAGE_NOTICE) . "
 	self.close();
 }
@@ -61,29 +60,29 @@ $cancel_button = $we_button->create_button("close", "javascript:exit_close();");
 $buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getHTML(
-		"usrProps", 
-		"100%", 
-		$parts, 
-		30, 
-		$buttons, 
-		-1, 
-		"", 
-		"", 
-		"", 
-		$l_cockpit['users_online']);
+		"usrProps",
+		"100%",
+		$parts,
+		30,
+		$buttons,
+		-1,
+		"",
+		"",
+		"",
+		g_l('cockpit','[users_online]'));
 
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle($l_cockpit['users_online']) . STYLESHEET . we_htmlElement::jsElement(
-								"", 
+						we_htmlElement::htmlTitle(g_l('cockpit','[users_online]')) . STYLESHEET . we_htmlElement::jsElement(
+								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement(
 								$jsPrefs . $jsCode . $we_button->create_state_changer(false))) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
-						), 
+						),
 						we_htmlElement::htmlForm("", $sTblWidget)));
 
 ?>

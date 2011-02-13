@@ -367,7 +367,7 @@ top.close();
 
 		global $l_export;
 		$yuiSuggest =& weSuggest::getInstance();
-		
+
 		$_space = 10;
 
 		$js=we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
@@ -1065,8 +1065,6 @@ top.close();
 	}
 
 	function getHTMLFooter($step = 0) {
-		global $l_backup;
-
 		$this->getExportVars();
 		$we_button = new we_button();
 		$errortype = isset($_REQUEST["error"]) ? $_REQUEST["error"] : "no_error";
@@ -1146,7 +1144,7 @@ top.close();
 		if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "progress") {
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_progressBar.inc.php");
 
-			$text = $l_backup["working"];
+			$text = g_l('backup',"[working]");
 			$progress = 0;
 
 			if (isset($_REQUEST["current_description"]) && $_REQUEST["current_description"]) {
@@ -1791,7 +1789,7 @@ top.close();
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button,10);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 

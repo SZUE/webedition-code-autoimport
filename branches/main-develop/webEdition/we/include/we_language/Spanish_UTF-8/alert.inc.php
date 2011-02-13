@@ -24,10 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-if (!isset($l_backup)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-}
 
 $l_alert["notice"] = "Notice";
 $l_alert["warning"] = "Warning"; // TRANSLATE
@@ -118,7 +114,7 @@ $l_alert["cat_changed"] = "La categoría está en uso! Salve nuevamente los docu
 $l_alert["max_name_cat"] = "El nombre de la categoría debe tener solamente 32 carácteres!";
 $l_alert["not_entered_cat"] = "Ningún nombre de categoría ha sido entrado!";
 $l_alert["cat_new_name"] = "Entre el nuevo nombre para la categoría!";
-$l_alert["we_backup_import_upload_err"] = "Un error ocurrio mientras se cargaba el archivo de reserva! El tamaño maximo del archivo para cargar es %s. Si su archivo de reserva excede este limite, por favor, cargarlo en el directorio webEdition/we_Backup vía FTP y escoger '".$l_backup["import_from_server"]."'";
+$l_alert["we_backup_import_upload_err"] = "Un error ocurrio mientras se cargaba el archivo de reserva! El tamaño maximo del archivo para cargar es %s. Si su archivo de reserva excede este limite, por favor, cargarlo en el directorio webEdition/we_Backup vía FTP y escoger '".g_l('backup',"[import_from_server]")."'";
 $l_alert["rebuild_nodocs"] = "Ningún documento se iguala con los atributos seleccionados.";
 $l_alert["we_name_not_allowed"] = "Los terminos 'we' and 'webEdition' son palabras reservadas y no deben ser usadas!";
 $l_alert["we_filename_empty"] = "Ningún nombre ha sido entrado para este documento o directorio!";

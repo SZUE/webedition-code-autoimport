@@ -20,12 +20,9 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cockpit.inc.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/PEAR.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/Parser.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/RSS.php");
-
-$GLOBALS["l_cockpit"] = $l_cockpit;
 
 class rpcGetRssCmd extends rpcCmd {
 
@@ -72,17 +69,17 @@ class rpcGetRssCmd extends rpcCmd {
 				$sRssOut .= we_htmlElement::htmlBr().getPixel(1,5).(($bShowDesc || $bShowContEnc)? we_htmlElement::htmlBr() : "");
 			}
 			if ($bShowPubdate) {
-				$sRssOut .= $GLOBALS["l_cockpit"]["published"].": ".date(g_l('date','[format][default]'), strtotime($item['pubdate']));
+				$sRssOut .= g_l('cockpit',"[published]").": ".date(g_l('date','[format][default]'), strtotime($item['pubdate']));
 			}
 			if ($bShowCategory) {
 				$sRssOut .= ($bShowPubdate)? we_htmlElement::htmlBr().getPixel(1,2).we_htmlElement::htmlBr() : "";
-				$sRssOut .= $GLOBALS["l_cockpit"]["category"].": ".$item['category'];
+				$sRssOut .= g_l('cockpit',"[category]").": ".$item['category'];
 			}
 			if ($bShowPubdate || $bShowCategory) {
 				$sRssOut .= we_htmlElement::htmlBr().getPixel(1,5).we_htmlElement::htmlBr();
 			}
 			$sLink = (($bCfgLink && isset($item['link']))&&!$bShowTitle)? " &nbsp;".
-				we_htmlElement::htmlA(array("href"=>$item['link'],"target"=>"_blank","style"=>"text-decoration:underline;"),$GLOBALS["l_cockpit"]['more']) : "";
+				we_htmlElement::htmlA(array("href"=>$item['link'],"target"=>"_blank","style"=>"text-decoration:underline;"),g_l('cockpit','[more]')) : "";
 			$sRssOut .= ($bShowDesc)? $item['description'].$sLink.we_htmlElement::htmlBr() : "";
 			if ($bShowContEnc) {
 				$contEnc = new we_htmlTable(array("border"=>"0","cellpadding" =>"0","cellspacing"=>"0"),1,1);
@@ -101,7 +98,7 @@ class rpcGetRssCmd extends rpcCmd {
 		}
 
 		$aTb = array();
-		if ($bTbLabel) $aTb[] = $GLOBALS["l_cockpit"]['rss_feed'];
+		if ($bTbLabel) $aTb[] = g_l('cockpit','[rss_feed]');
 		if ($bTbTitel) $aTb[] = (isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4] != "")? $_REQUEST["we_cmd"][4] :
 			((isset($oRssParser->channel["title"]))? $oRssParser->channel["title"] : "");
 		if ($bTbDesc) $aTb[] = (isset($oRssParser->channel["description"]))? ereg_replace("(\r\n|\n|\r)","",$oRssParser->channel["description"]) : "";

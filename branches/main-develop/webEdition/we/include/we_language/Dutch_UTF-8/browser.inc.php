@@ -18,7 +18,7 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$GLOBALS["l_browser"] = array(
+$l_browser = array(
 		'save_link_as_IE' => 'Klik met de rechter muisknop op de volgende koppeling en kies "Bewaar bestand als..."',
 		'save_link_as_FF' => 'Klik met de rechter muisknop op de volgende koppeling en kies "Bewaar koppeling als..."',
 		'save_link_as_SM' => 'Klik met de rechter muisknop op de volgende koppeling en kies "Bewaar doel koppeling als..."',

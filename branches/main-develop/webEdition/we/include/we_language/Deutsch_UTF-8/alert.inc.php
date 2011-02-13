@@ -27,10 +27,6 @@
  */
 
 // Workarround for bug 1292
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-if (!isset($l_backup)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-}
 
 $l_alert["notice"] = "Hinweis";
 $l_alert["warning"] = "Warnung";
@@ -115,7 +111,7 @@ $l_alert['input_file_name'] = "Bitte geben Sie einen Dateinamen an.";
 $l_alert["max_name_recipient"] = "Die E-Mail-Adresse darf maximal 255 Zeichen lang sein!";
 $l_alert["not_entered_recipient"] = "Sie haben keine E-Mail-Adresse eingegeben!";
 $l_alert["recipient_new_name"] = "E-Mail-Adresse ändern!";
-$l_alert["we_backup_import_upload_err"] = "Es gab einen Fehler beim Hochladen der Backup-Datei! Die maximal erlaubte Dateigrösse für Uploads beträgt %s. Wenn Ihre Backup-Datei grösser ist, dann kopieren Sie diese per FTP in das Verzeichnis webEdition/we_backup und wählen '".$l_backup["import_from_server"]."'!";
+$l_alert["we_backup_import_upload_err"] = "Es gab einen Fehler beim Hochladen der Backup-Datei! Die maximal erlaubte Dateigrösse für Uploads beträgt %s. Wenn Ihre Backup-Datei grösser ist, dann kopieren Sie diese per FTP in das Verzeichnis webEdition/we_backup und wählen '".g_l('backup',"[import_from_server]")."'!";
 $l_alert["rebuild_nodocs"] = "Es gibt keine Dokumente, welche den ausgewählten Kriterien entsprechen!";
 $l_alert["we_name_not_allowed"] = "Die Namen 'we' und 'webEdition' werden von webEdition selbst benutzt und dürfen deshalb nicht verwendet werden!";
 $l_alert["we_filename_empty"] = "Sie haben noch keinen Dateinamen für dieses Dokument bzw. Verzeichnis eingegeben!";

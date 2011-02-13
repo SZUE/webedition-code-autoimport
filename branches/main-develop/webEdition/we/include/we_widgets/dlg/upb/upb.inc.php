@@ -21,13 +21,12 @@
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/resave.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/notpublished.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 
 protect();
 
 $bTypeDoc = (bool)$_REQUEST["we_cmd"][0]{0};
 $bTypeObj = (bool)$_REQUEST["we_cmd"][0]{1};
-$sTb = ($bTypeDoc && $bTypeObj) ? $l_cockpit["upb_docs_and_objs"] : (($bTypeDoc) ? $l_cockpit["upb_docs"] : (($bTypeObj) ? $l_cockpit["upb_objs"] : $l_cockpit["upb_docs_and_objs"]));
+$sTb = ($bTypeDoc && $bTypeObj) ? g_l('cockpit',"[upb_docs_and_objs]") : (($bTypeDoc) ? g_l('cockpit',"[upb_docs]") : (($bTypeObj) ? g_l('cockpit',"[upb_objs]") : g_l('cockpit',"[upb_docs_and_objs]")));
 
 $jsCode = "
 var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
@@ -186,7 +185,7 @@ $ct .= "</table>\n";
 print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle($l_cockpit['unpublished']) . STYLESHEET . we_htmlElement::jsElement(
+						we_htmlElement::htmlTitle(g_l('cockpit','[unpublished]')) . STYLESHEET . we_htmlElement::jsElement(
 								$jsCode)) . we_htmlElement::htmlBody(
 						array(
 
@@ -199,5 +198,3 @@ print
 						we_htmlElement::htmlDiv(array(
 							"id" => "upb"
 						), $ct)));
-
-?>

@@ -19,7 +19,6 @@
  */
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/PEAR.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/Parser.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/RSS.php");
@@ -36,7 +35,7 @@ $rss_out = '<div id="rss">';
 foreach ($rss->getItems() as $item) {
 	$rss_out .= "<b>" . $item['title'] . "</b><p>" . $item['description'] . " ";
 	if (isset($item['link']) && !empty($item['link']))
-		$rss_out .= "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . $l_cockpit['more'] . "</a>";
+		$rss_out .= "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . g_l('cockpit','[more]') . "</a>";
 	$rss_out .= "</p>\n";
 	$rss_out .= getPixel(1, 10) . "<br>";
 }

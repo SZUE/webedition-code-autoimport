@@ -184,11 +184,11 @@
 				$_SESSION['weBackupVars']['files_to_delete'] = weBackupPreparer::getFileLists();
 				$_SESSION['weBackupVars']['files_to_delete_count'] = count($_SESSION['weBackupVars']['files_to_delete']);
 			}
-			
-			if($_SESSION['weBackupVars']['handle_options']['versions'] 
-			|| $_SESSION['weBackupVars']['handle_options']['core'] 
-			|| $_SESSION['weBackupVars']['handle_options']['object'] 
-			|| $_SESSION['weBackupVars']['handle_options']['versions_binarys'] 
+
+			if($_SESSION['weBackupVars']['handle_options']['versions']
+			|| $_SESSION['weBackupVars']['handle_options']['core']
+			|| $_SESSION['weBackupVars']['handle_options']['object']
+			|| $_SESSION['weBackupVars']['handle_options']['versions_binarys']
 			) {
 				weBackupPreparer::clearVersionData();
 			}
@@ -196,7 +196,7 @@
 			if($_SESSION['weBackupVars']['handle_options']['object']) {
 				weBackupPreparer::clearTemporaryData('tblObjectFiles');
 			}
-			
+
 			return true;
 		}
 
@@ -235,7 +235,7 @@
 			$handle_options['spellchecker'] = (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0;
 			$handle_options['versions'] = (isset($_REQUEST['handle_versions']) && $_REQUEST['handle_versions']) ? 1 : 0;
 			$handle_options['versions_binarys'] = (isset($_REQUEST['handle_versions_binarys']) && $_REQUEST['handle_versions_binarys']) ? 1 : 0;
-			
+
 			$handle_options['tools'] = array();
 
 			foreach($_REQUEST as $_k=>$_val) {
@@ -248,7 +248,7 @@
 			}
 			$handle_options['spellchecker'] = (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0;
 
-			// exception for sql imports			
+			// exception for sql imports
 			$handle_options['glossary'] = (isset($_REQUEST['handle_glossary']) && $_REQUEST['handle_glossary']) ? 1 : 0;
 			// exception for sql imports
 			$handle_options['backup'] = $options['backup_extern'];
@@ -268,13 +268,13 @@
 					$tables = array_merge($tables,$tableMap[$group]);
 				}
 			}
-			
+
 			if(!empty($options['tools'])) {
 				foreach ($options['tools'] as $_tool) {
 					$tables = array_merge($tables,weToolLookup::getBackupTables($_tool));
 				}
 			}
-			
+
 			return $tables;
 
 		}
@@ -382,7 +382,7 @@
 			$DB_WE->query('TRUNCATE TABLE '.NAVIGATION_RULE_TABLE.';');
 			$DB_WE->query('TRUNCATE TABLE '.HISTORY_TABLE.';');
 		}
-		
+
 		function clearVersionData(){
 			global $DB_WE;
 			$DB_WE->query('TRUNCATE TABLE '.VERSIONS_TABLE.';');
@@ -456,7 +456,7 @@
 				if(we_hasPerm('WXML_IMPORT')) {
 					return '
 						<script language="JavaScript" type="text/javascript">
-							if(confirm("' . $GLOBALS['l_backup']['import_file_found'] . ' \n\n' . $GLOBALS['l_backup']['import_file_found_question'] . '")){
+							if(confirm("' . g_l('backup','[import_file_found]') . ' \n\n' . g_l('backup','[import_file_found_question]') . '")){
 								top.opener.top.we_cmd("import");
 								top.close();
 							} else {
@@ -468,7 +468,7 @@
 				} else {
 					return '
 						<script language="JavaScript" type="text/javascript">
-							' . we_message_reporting::getShowMessageCall($GLOBALS['l_backup']['import_file_found'], WE_MESSAGE_WARNING) . '
+							' . we_message_reporting::getShowMessageCall(g_l('backup','[import_file_found]'), WE_MESSAGE_WARNING) . '
 							top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 						</script>
 					';
@@ -479,7 +479,7 @@
 
 				return '
 					<script language="JavaScript" type="text/javascript">
-						' . we_message_reporting::getShowMessageCall($GLOBALS['l_backup']['customer_import_file_found'], WE_MESSAGE_WARNING) . '
+						' . we_message_reporting::getShowMessageCall(g_l('backup','[customer_import_file_found]'), WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 					</script>
 				';
@@ -488,7 +488,7 @@
 
 				return '
 					<script language="JavaScript" type="text/javascript">
-						' . we_message_reporting::getShowMessageCall($GLOBALS['l_backup']['format_unknown'], WE_MESSAGE_WARNING) . '
+						' . we_message_reporting::getShowMessageCall(g_l('backup','[format_unknown]'), WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 					</script>
 				';
@@ -511,21 +511,21 @@
 				if(isset($_SESSION['weBackupVars']['options']['upload'])) {
 
 					$maxsize = getUploadMaxFilesize();
-					$_mess = sprintf($GLOBALS['l_backup']['upload_failed'],round($maxsize / (1024*1024),3) . "MB");
+					$_mess = sprintf(g_l('backup','[upload_failed]'),round($maxsize / (1024*1024),3) . "MB");
 
 				} else {
 
-					$_mess = $GLOBALS['l_backup']['file_missing'];
+					$_mess = g_l('backup','[file_missing]');
 
 				}
 
 			} else if(!is_readable($_SESSION['weBackupVars']['backup_file'])) {
 
-					$_mess = $GLOBALS['l_backup']['file_not_readable'];
+					$_mess = g_l('backup','[file_not_readable]');
 
 			} else if($_SESSION['weBackupVars']['options']['format']!='xml' && $_SESSION['weBackupVars']['options']['format']!='sql') {
 
-				$_mess = $GLOBALS['l_backup']['format_unknown'];
+				$_mess = g_l('backup','[format_unknown]');
 
 			} else if($_SESSION['weBackupVars']['options']['xmltype']!='backup'){
 
@@ -533,11 +533,11 @@
 
 			} else if($_SESSION['weBackupVars']['options']['compress'] && !weFile::hasGzip()) {
 
-				$_mess = $GLOBALS['l_backup']['cannot_split_file_ziped'];
+				$_mess = g_l('backup','[cannot_split_file_ziped]');
 
 			} else {
 
-				$_mess = $GLOBALS['l_backup']['unspecified_error'];
+				$_mess = g_l('backup','[unspecified_error]');
 
 			}
 

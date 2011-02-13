@@ -19,7 +19,6 @@
  */
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_history.class.php");
 
 protect();
@@ -93,7 +92,7 @@ $aUsers = makeArrayFromCSV($_REQUEST["we_cmd"][4]);
 $sJsCode = "
 var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
 var _sType='mfd';
-var _sTb='" . $l_cockpit['last_modified'] . "';
+var _sTb='" . g_l('cockpit','[last_modified]') . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
@@ -195,7 +194,7 @@ $lastModified .= "</table>\n";
 print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle($l_cockpit['last_modified']) . STYLESHEET . we_htmlElement::jsElement(
+						we_htmlElement::htmlTitle(g_l('cockpit','[last_modified]')) . STYLESHEET . we_htmlElement::jsElement(
 								$sJsCode)) . we_htmlElement::htmlBody(
 						array(
 

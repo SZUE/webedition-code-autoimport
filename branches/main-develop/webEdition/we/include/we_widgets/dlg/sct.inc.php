@@ -20,7 +20,6 @@
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 protect();
 $_disableNew = true;
@@ -136,7 +135,7 @@ function deleteEntry(sValue){
 		if(oSctPool.options[i].value==sValue){
 			oSctPool.options[i]=null;
 			if(oSctPool.length==1){
-				oSctPool.options[0].text='" . $l_cockpit['all_selected'] . "';
+				oSctPool.options[0].text='" . g_l('cockpit','[all_selected]') . "';
 			}
 			oSctPool.selectedIndex=0;
 			break;
@@ -407,7 +406,7 @@ function save(){
 		opener.rpc(sCsv,'','','','',_sObjId,_sSctInc);
 	}
 	" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['prefs_saved_successfully'],
+		g_l('cockpit','[prefs_saved_successfully]'),
 		WE_MESSAGE_NOTICE) . "
 	self.close();
 }
@@ -476,7 +475,7 @@ $oBtnDelete = $we_button->create_button(
 		"",
 		false,
 		false);
-$oShortcutsRem = htmlAlertAttentionBox($l_cockpit['sct_rem'], 2, 420);
+$oShortcutsRem = htmlAlertAttentionBox(g_l('cockpit','[sct_rem]'), 2, 420);
 
 $oPool = new we_htmlTable(array(
 	"border" => "0", "width" => 420, "cellpadding" => "0", "cellspacing" => "0"
@@ -529,7 +528,7 @@ $oPool->setCol(2, 0, array(
 
 $content = $oShortcutsRem . getPixel(1, 5) . we_htmlElement::htmlBr() . htmlFormElementTable(
 		$oSctPool->getHTMLCode(),
-		$l_cockpit['select_buttons'],
+		g_l('cockpit','[select_buttons]'),
 		"left",
 		"defaultfont") . getPixel(1, 5) . we_htmlElement::htmlBr() . $oPool->getHTMLCode();
 
@@ -556,12 +555,12 @@ $sTblWidget = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
 		"",
 		"",
 		"",
-		$l_cockpit['shortcuts']);
+		g_l('cockpit','[shortcuts]'));
 
 print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle($l_cockpit['shortcuts']) . STYLESHEET . we_htmlElement::cssElement(
+						we_htmlElement::htmlTitle(g_l('cockpit','[shortcuts]')) . STYLESHEET . we_htmlElement::cssElement(
 								"select,textarea{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
 								"",
 								array(
