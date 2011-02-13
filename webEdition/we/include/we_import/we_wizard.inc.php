@@ -486,6 +486,7 @@ HTS;
 
 						$ref=false;
 						if($v["cid"]>=$v["numFiles"]-1){ // finish import
+							//$this->denyTMPaccess();
 							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weImportUpdater.class.php");
 							$xmlExIm=new weImportUpdater();
 							$xmlExIm->loadPerserves();
@@ -871,6 +872,15 @@ HTS;
 		else if (isset($_GET[$var])) $ret = $_GET[$var];
 		else $ret = $def;
 		return $ret;
+	}
+	
+	function denyTMPaccess(){
+		if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbase.txt')) {
+			$htaccessdata=file_get_contents($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbase.txt');
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess') ){
+					file_put_contents($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess',$htaccessdata);
+			}
+		}
 	}
 }
 
