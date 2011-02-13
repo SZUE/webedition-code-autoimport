@@ -79,12 +79,13 @@ class XML_Validate extends XML_Parser {
 	 * @var array
 	 */
 	//alle Felder
+	/*
 	var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
 		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "WebUserID", "Extension", "IsDynamic", "Published", "Category", "IsSearchable","InGlossar","Language",
 		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "Text","SerializedArray", "Templates", "Workspaces", "DefaultWorkspaces","Users", "strOrder",
 		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc","CSS","CacheType","CacheLifeTime");
-
+*/
 	//nur die vermeintlich gewünschten
 	var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
