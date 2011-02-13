@@ -622,6 +622,7 @@
 							if($marker_size){
 								if((substr($buff,(0-($marker_size+1)))==$marker."\n") || (substr($buff,(0-($marker_size+2)))==$marker."\r\n")) $write=true;
 								else  $write=false;
+								$write=true; //Bug 5041
 							}
 							else	$write=true;
 
