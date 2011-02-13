@@ -46,7 +46,6 @@ class weWorkflowLog{
 	}
 
 	function getLogForDocument($docID,$order="DESC",$wfType=0){
-		global $l_workflow;
 
 		$offset = isset($_REQUEST["offset"]) ? abs($_REQUEST["offset"]) : 0;
 
@@ -65,21 +64,21 @@ class weWorkflowLog{
 		while($db->next_record()) $hash[]=$db->Record;
 		foreach($hash as $k=>$v){
 			switch($hash[$k]["Type"]){
-				case LOG_TYPE_APPROVE: $hash[$k]["Type"]=$l_workflow["log_approve"];
+				case LOG_TYPE_APPROVE: $hash[$k]["Type"]=g_l('modules_workflow','[log_approve]');
 				break;
-				case LOG_TYPE_APPROVE_FORCE: $hash[$k]["Type"]=$l_workflow["log_approve_force"];
+				case LOG_TYPE_APPROVE_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_approve_force]');
 				break;
-				case LOG_TYPE_DECLINE: $hash[$k]["Type"]=$l_workflow["log_decline"];
+				case LOG_TYPE_DECLINE: $hash[$k]["Type"]=g_l('modules_workflow','[log_decline]');
 				break;
-				case LOG_TYPE_DECLINE_FORCE: $hash[$k]["Type"]=$l_workflow["log_decline_force"];
+				case LOG_TYPE_DECLINE_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_decline_force]');
 				break;
-				case LOG_TYPE_DOC_FINISHED: $hash[$k]["Type"]=$l_workflow["log_doc_finished"];
+				case LOG_TYPE_DOC_FINISHED: $hash[$k]["Type"]=g_l('modules_workflow','[log_doc_finished]');
 				break;
-				case LOG_TYPE_DOC_FINISHED_FORCE: $hash[$k]["Type"]=$l_workflow["log_doc_finished_force"];
+				case LOG_TYPE_DOC_FINISHED_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_doc_finished_force]');
 				break;
-				case LOG_TYPE_DOC_INSERTED: $hash[$k]["Type"]=$l_workflow["log_insert_doc"];
+				case LOG_TYPE_DOC_INSERTED: $hash[$k]["Type"]=g_l('modules_workflow','[log_insert_doc]');
 				break;
-				case LOG_TYPE_DOC_REMOVED: $hash[$k]["Type"]=$l_workflow["log_remove_doc"];
+				case LOG_TYPE_DOC_REMOVED: $hash[$k]["Type"]=g_l('modules_workflow','[log_remove_doc]');
 				break;
 			}
 		}

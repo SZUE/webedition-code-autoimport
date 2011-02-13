@@ -28,7 +28,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tabs.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
@@ -49,7 +48,7 @@ if (!isset($l_shop["lastNo"])){
 $yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
 $bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
 $cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
-  $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
+  $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
     if ($DB_WE->next_record()) {
 	  $headline =$l_shop["lastOrd"]." ".$l_shop["lastNo"]." ". $DB_WE->f("IntOrderID")."&nbsp;&raquo; ".$l_shop["bestellung"]." ".$DB_WE->f("orddate");
     } else {
@@ -113,7 +112,7 @@ $we_tabs = new we_tabs();
 $we_tabs->onResize();
 $tab_head = $we_tabs->getHeader();
 $tab_body = '<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB($headline).'</div>' . getPixel(100,3) .
-			$we_tabs->getHTML() . 
+			$we_tabs->getHTML() .
 			'</div>';
 ?>
    <script language="JavaScript">

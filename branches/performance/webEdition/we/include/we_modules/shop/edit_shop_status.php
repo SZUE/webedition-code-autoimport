@@ -54,7 +54,7 @@ $jsFunction = '
 			}
 		}
 	}
-			
+
 	function we_cmd(){
 
 		switch (arguments[0]) {
@@ -156,9 +156,9 @@ array_push($parts, array(
 			'space' => 110,
 			'noline' => 1
 		)
-	);	
+	);
 array_push($parts, array(
-			
+
 			'html' => htmlAlertAttentionBox($l_shop['statusmails']['hintEMailDaten'],2,650,false),
 			'space' => 0,
 			'noline' => 1
@@ -167,7 +167,7 @@ array_push($parts, array(
 array_push($parts, array(
 			'space' => 110,
 			'html' =>$tabEMail->getHtmlCode(),
-			
+
 		)
 	);
 
@@ -189,7 +189,7 @@ array_push($parts, array(
 		)
 	);
 array_push($parts, array(
-			
+
 			'space' => 110,
 			'html' =>$tabSprache->getHtmlCode(),
 			'noline' => 1
@@ -221,7 +221,7 @@ $frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
 foreach ($frontendL as $langkey){
 	$tabDokumente->addRow();
 	$i++;
-	$tabDokumente->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), $GLOBALS['l_languages'][$langkey].' ('.$langkey.')');
+	$tabDokumente->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('languages',"[$langkey]").' ('.$langkey.')');
 	foreach ($weShopStatusMails->StatusFields as $fieldkey => $fieldname){
 		$tabDokumente->setCol($i, $fieldkey+1, array("class"=>"defaultfont","nowrap"=>"nowrap"), we_class::htmlTextInput("FieldsDocuments[".$langkey."][".$fieldname."]",15,$weShopStatusMails->FieldsDocuments[$langkey][$fieldname]) );
 	}

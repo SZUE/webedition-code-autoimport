@@ -39,7 +39,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/w
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/start.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/alert.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
 
 $ignore_browser = isset($_REQUEST['ignore_browser']) &&  ($_REQUEST['ignore_browser'] === 'true');
 
@@ -127,14 +126,14 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbas
 	}
 	if (!file_exists($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'data/.htaccess') ){
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'data/.htaccess',$htaccessdata);
-	}	
+	}
 }
 
 if (!file_exists($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'.htaccess') ){
 	if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/we_exim/backup/we_backuphtaccess.txt')) {
 		$htaccessdata=file_get_contents($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/we_exim/backup/we_backuphtaccess.txt');
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'.htaccess',$htaccessdata);
-	} 
+	}
 }
 if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/')) {
 	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/');

@@ -24,7 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 $l_we_class["ChangePark"] = "Данный атрибут можно изменить только для неопубликованного документа!";
 $l_we_class["fieldusers"] = "Пользователи";
@@ -77,7 +76,7 @@ $l_we_class["salign"] = "Расположение Flash ролика";
 $l_we_class["play"] = "Воспроизведение (Play)";
 $l_we_class["loop"] = "Повтор (Loop)";
 $l_we_class["scale"] = "Масштаб";
-$l_we_class["wmode"] = "Window mode"; // TRANSLATE 
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Цвет заднего фона";
 $l_we_class["response_save_noperms_to_create_folders"] = "Документ не был сохранен, так как у Вас нет соответствующих полномочий для создания директорий (%s)!";
 $l_we_class["file_on_liveserver"]="Файл уже существует";
@@ -170,6 +169,12 @@ $l_we_class["grant_language"] = "Change language"; // TRANSLATE
 $l_we_class["grant_language_expl"] = "Change the language of all files and directories which reside in the current directory to the setting above."; // TRANSLATE
 $l_we_class["grant_language_ok"] = "Language have been successfully changed!"; // TRANSLATE
 $l_we_class["grant_language_notok"] = "There was an error while changing the language!"; // TRANSLATE
+
+$l_we_class["grant_tid"] = "Change display document"; // TRANSLATE
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";// TRANSLATE
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";// TRANSLATE
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";// TRANSLATE
+
 $l_we_class["notValidFolder"] = "The directory chosen is invalid!"; // TRANSLATE
 
 
@@ -179,4 +184,51 @@ $l_we_class["image_edit_null_not_allowed"] = "In the fields Width and Height onl
 
 $l_we_class['doctype_changed_question'] = "Should the default values for the document type be applied for this document?"; // TRANSLATE
 $l_we_class['availableAfterSave'] = "The feature is only available after saving the entry."; // TRANSLATE
-?>
+
+$l_we_class['properties'] = 'Свойства';
+$l_we_class['path'] = 'Путь';
+$l_we_class['adoptToAllInferiorDocuments'] = 'adopt for all inferior documents'; // TRANSLATE
+$l_we_class['filename'] = 'Имя файла';
+$l_we_class['extension'] = 'Расширение';
+$l_we_class['dir'] = 'Директория';
+$l_we_class['document'] = 'Документ';
+$l_we_class['upload_will_replace'] = 'При нажатии на кнопку «Загрузить» файл переписывается на новый. Для одновременной загрузки нескольких файлов нужно воспользоваться командой импорта или вернуться на текущую страницу с помощью команды меню «файл».';
+$l_we_class['upload_single_files'] = 'ВНИМАНИЕ: возможна загрузка одного файла. Для одновременной загрузки нескольких файлов нужно воспользоваться командой импорта.';
+$l_we_class['none'] = '--None--'; // TRANSLATE
+$l_we_class['nodoctype'] = '--none--'; // TRANSLATE
+$l_we_class['doctype'] = 'Document type'; // TRANSLATE
+$l_we_class['standard_workspace'] = 'Default Workspace'; // TRANSLATE
+$l_we_class['standard_template'] = 'Шаблон';
+$l_we_class['template'] = 'Шаблон';
+$l_we_class['no_template'] = 'Без шаблона';
+$l_we_class['IsDynamic'] = 'Создать динамическую страницу';
+$l_we_class['IsSearchable'] = 'Разрешить поиск?';
+$l_we_class['InGlossar'] = 'Not allowed for automatic glossary replacement'; // TRANSLATE //TRANSLATE
+$l_we_class['metainfo'] = 'Мета-теги';
+$l_we_class['Title'] = 'Название';
+$l_we_class['Keywords'] = 'Ключевые слова';
+$l_we_class['Description'] = 'Описание';
+$l_we_class['urlfield0'] = 'URL field';// TRANSLATE
+$l_we_class['urlfield1'] = 'URL field 1';// TRANSLATE
+$l_we_class['urlfield2'] = 'URL field 2';// TRANSLATE
+$l_we_class['urlfield3'] = 'URL field 3';// TRANSLATE
+$l_we_class['Charset'] = 'Кодировка символов';
+$l_we_class['moreProps'] = 'Больше свойств';
+$l_we_class['lessProps'] = 'Меньше свойств';
+$l_we_class['owners'] = 'Владельцы';
+$l_we_class['maincreator'] = 'Основной владелец';
+$l_we_class['otherowners'] = 'Доступ для следующих пользователей';
+$l_we_class['onlyOwner'] = 'Только основной владелец';
+$l_we_class['limitedAccess'] = 'Ограничить доступ';
+$l_we_class['nobody'] = 'Никто';
+$l_we_class['everybody'] = 'Все пользователи';
+$l_we_class['noWorkspaces'] = 'В данном классе не заданы рабочие пространства!';
+$l_we_class['readOnly'] = 'Только читать';
+$l_we_class['copyWeDoc'] = 'Копировать страницу webEdition';
+$l_we_class['showTagwizard'] = 'Показать Мастер тегов';
+$l_we_class['hideTagwizard'] = 'Спрятать Мастер тегов';
+$l_we_class['variant_fields'] = 'Поля';
+$l_we_class['variant_info'] = 'Следующие поля могут относиться к разным вариантам. Выберите поля с разными вариантами.';
+$l_we_class['webUser'] = 'Customer'; // TRANSLATE
+$l_we_class['docList'] = 'Content'; // TRANSLATE
+$l_we_class['version'] = 'Versions'; // TRANSLATE

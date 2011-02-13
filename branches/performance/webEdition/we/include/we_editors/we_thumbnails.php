@@ -238,7 +238,7 @@ function remember_value($settingvalue, $settingname) {
  */
 
 function save_all_values() {
-	global $DB_WE, $BROWSER, $SYSTEM;
+	global $DB_WE, $SYSTEM;
 
 	/*************************************************************************
 	 * THUMBNAILS
@@ -262,7 +262,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_thumbnails, $DB_WE, $BROWSER, $SYSTEM;
+	global $l_alert, $l_thumbnails, $DB_WE, $SYSTEM;
 
 	$we_button = new we_button();
 

@@ -20,7 +20,7 @@
 
 function we_tag_href($attribs, $content){
 	// Define globals
-	global $we_editmode, $l_global;
+	global $we_editmode;
 
 	if ($we_editmode) {
 		// Include files

@@ -189,6 +189,6 @@ $l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been mo
 
 $l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:"; // TRANSLATE
 $l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s'; // TRANSLATE
-$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; // TRANSLATE 
+$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; // TRANSLATE
 $l_alert['discard_changed_data'] = 'There are unsaved changes that will be discarded. Are you sure?'; // TRANSLATE
 ?>

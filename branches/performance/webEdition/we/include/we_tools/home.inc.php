@@ -21,18 +21,17 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 
 	if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"])){
 		htmlTop();
 	}
 	print STYLESHEET;
-	
-	
+
+
 	$we_head_insert = isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "";
 	$we_body_insert = isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : "";
-	
-	
+
+
 	$_row = 0;
 	$_starttable = new we_htmlTable(	array(	"border"      => "0",
 												"cellpadding" => "7",
@@ -72,7 +71,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 
 </head>
 
-<?php 
+<?php
 if($tool=='weSearch' || $tool=='navigation') {
 	 $tooldir = '/webEdition/we/include/we_tools/';
 }

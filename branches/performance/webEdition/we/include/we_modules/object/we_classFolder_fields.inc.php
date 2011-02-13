@@ -23,8 +23,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_t
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/global.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/object.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/object_classfoldersearch.inc.php');
 
@@ -55,6 +53,9 @@ if (isset($_REQUEST['do'])) {
 			break;
 		case 'copyws':
 			$javascript .= $we_doc->copyWSfromClass();
+			break;
+		case 'copytid':
+			$javascript .= $we_doc->copyTIDfromClass();
 			break;
 	}
 }

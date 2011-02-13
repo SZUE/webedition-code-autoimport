@@ -25,8 +25,53 @@
  * Provides language strings.
  * Language: Deutsch
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
-
+$l_we_class["properties"] = "Eigenschaften";
+$l_we_class["path"] = "Pfad";
+$l_we_class["adoptToAllInferiorDocuments"] = "für alle Dokumente übernehmen";
+$l_we_class["filename"] = "Dateiname";
+$l_we_class["extension"] = "Erweiterung";
+$l_we_class["dir"] = "Verzeichnis";
+$l_we_class["document"] = "Dokument";
+$l_we_class["upload_will_replace"] = "Über den Button \"Hochladen\" können Sie nun die aktuelle Datei ersetzen. Wenn Sie eine weitere, andere Datei oder mehrere Dateien hochladen möchten, so verwenden Sie hierzu bitte die Importfunktion oder rufen diese Seite erneut über das Datei-Menü auf.";
+$l_we_class["upload_single_files"] = "ACHTUNG: Bitte beachten Sie, dass über diese Funktion nur einzelne Dateien hochgeladen werden können. Für den Upload mehrerer Dateien verwenden Sie bitte die Importfunktion, welche Sie über das Datei-Menü erreichen.";
+$l_we_class["none"] = "--Keine--";
+$l_we_class["nodoctype"] = "--Ohne--";
+$l_we_class["doctype"] = "Dokument Typ";
+$l_we_class["standard_workspace"] = "Standardarbeitsbereich";
+$l_we_class["standard_template"] = "Vorlage";
+$l_we_class["template"] = "Vorlage";
+$l_we_class["no_template"] = "Ohne Vorlage";
+$l_we_class["IsDynamic"] = "Seite dynamisch generieren";
+$l_we_class["IsSearchable"] = "durchsuchbar";
+$l_we_class["InGlossar"] = "Von Glossarersetzung nicht berücksichtigen";
+$l_we_class["metainfo"] = "Meta-Infos";
+$l_we_class["Title"] = "Titel";
+$l_we_class["Keywords"] = "Schlüsselwörter";
+$l_we_class["Description"] = "Beschreibung";
+$l_we_class['urlfield0'] = 'URL-Feld';
+$l_we_class['urlfield1'] = 'URL-Feld 1';
+$l_we_class['urlfield2'] = 'URL-Feld 2';
+$l_we_class['urlfield3'] = 'URL-Feld 3';
+$l_we_class["Charset"] = "Zeichenkodierung";
+$l_we_class["moreProps"] = "Weitere Eigenschaften";
+$l_we_class["lessProps"] = "Eigenschaften ausblenden";
+$l_we_class["owners"] = "Besitzer";
+$l_we_class["maincreator"] = "Hauptbesitzer";
+$l_we_class["otherowners"] = "Zugriff für folgende Benutzer";
+$l_we_class["onlyOwner"] = "Nur Hauptbesitzer";
+$l_we_class["limitedAccess"] = "Zugriff einschränken";
+$l_we_class["nobody"] = "Niemand";
+$l_we_class["everybody"] = "Alle Benutzer";
+$l_we_class["noWorkspaces"] = "In der Klasse sind keine Arbeitsbereiche definiert!";
+$l_we_class["readOnly"] = "Nur lesen";
+$l_we_class["copyWeDoc"] = "webEdition-Seite kopieren";
+$l_we_class["showTagwizard"] = "Taghilfe anzeigen";
+$l_we_class["hideTagwizard"] = "Taghilfe ausblenden";
+$l_we_class["variant_fields"] = "Feldern";
+$l_we_class["variant_info"] = "Folgende Felder stehen in Dokumenten dieser Vorlage für Varianten zur Verfügung. Legen Sie hier fest, welche Felder dies sein sollen.";
+$l_we_class["webUser"] = "Kunden";
+$l_we_class["docList"] = "Inhalt";
+$l_we_class["version"] = "Versionen";
 $l_we_class["ChangePark"] = "Diese Eigenschaft darf nur verändert werden, wenn das Dokument geparkt ist!";
 $l_we_class["fieldusers"] = "Benutzer";
 $l_we_class["other"] = "Sonstige";
@@ -171,6 +216,12 @@ $l_we_class["grant_language"] = "Sprache übertragen";
 $l_we_class["grant_language_expl"] = "Übertragen Sie die oben eingestellte Sprache auf alle Dateien und Verzeichnisse, welche sich in diesem Verzeichnis befinden.";
 $l_we_class["grant_language_ok"] = "Die Sprache wurden erfolgreich übertragen!";
 $l_we_class["grant_language_notok"] = "Es gab einen Fehler beim Übertragen der Sprache!";
+
+$l_we_class["grant_tid"] = "Dokument für die Darstellung übertragen";
+$l_we_class["grant_tid_expl"] = "Übertragen Sie das oben eingestellte Dokument für die Darstellung auf Objekte und Verzeichnisse, welche sich in diesem Verzeichnis befinden.";
+$l_we_class["grant_tid_ok"] = "Das Darstellungsdokument wurde wurden erfolgreich übertragen!";
+$l_we_class["grant_tid_notok"] = "Es gab einen Fehler beim Übertragen des Darstellungsdokumentes!";
+
 $l_we_class["notValidFolder"] = "Das angegebene Verzeichnis ist ungültig!";
 $l_we_class["saveFirstMessage"] = "Um diese Aktion auszuführen müssen Sie zuerst Ihre Änderungen speichern!";
 

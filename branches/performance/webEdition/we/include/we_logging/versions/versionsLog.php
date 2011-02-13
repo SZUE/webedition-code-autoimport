@@ -20,7 +20,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/versions.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLogView.class.php");
 
@@ -30,7 +29,7 @@ $versionsLogView = new versionsLogView();
 $content = $versionsLogView->getContent();
 $out = $versionsLogView->printContent($content);
 
-htmlTop($GLOBALS["l_versions"]["versions_log"]);
+htmlTop(g_l('versions','[versions_log]'));
 
 print STYLESHEET;
 
@@ -81,16 +80,16 @@ $closeButton = $we_button->create_button("close", "javascript:window.close();");
 
 <div id="headlineDiv">
 	<div class="weDialogHeadline">
-		<?php print $GLOBALS["l_versions"]["versions_log"] ?>
+		<?php print g_l('versions','[versions_log]') ?>
 	</div>
 </div>
 <div id="versionsDiv">
-	<?php 
-	
+	<?php
+
 	print $out;
-	
+
 	?>
-	
+
 </div>
 <div class="dialogButtonDiv">
 	<div style="position:absolute;top:10px;right:20px;">

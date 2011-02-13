@@ -26,8 +26,6 @@
  * Language: English
  */
 
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
-
 /*****************************************************************************
  * LOGIN-SCREEN
  *****************************************************************************/
@@ -373,4 +371,152 @@ $l_button["revert_published"]["value"] = "Restore published version";
 $l_button["revert_published"]["alt"] = "Negeer wijzigingen en herstel gepubliceerde versie.";
 $l_button["revert_published"]["width"] = 220;
 
-?>
+$l_button["delete_all"]["value"] = "Verwijder alles";
+$l_button["delete_all"]["alt"]   = "Verwijder alles";
+$l_button["delete_all"]["width"] = 100;
+
+$l_button["add"]["value"] = "Add";
+$l_button["add"]["alt"] = "Voeg toe";
+$l_button["add"]["width"] = 100;
+
+$l_button["select"]["value"] = "Select";
+$l_button["select"]["alt"] = "Selecteer";
+$l_button["select"]["width"] = 100;
+
+$l_button["edit"]["value"] = "Edit";
+$l_button["edit"]["alt"] = "Wijzig";
+$l_button["edit"]["width"] = 100;
+
+$l_button["editor"]["value"] = "Start Editor";
+$l_button["editor"]["alt"] = "Start Editor";
+$l_button["editor"]["width"] = 100;
+
+$l_button["new_service"]["value"] = "New Service";
+$l_button["new_service"]["alt"] = "Nieuwe dienst";
+$l_button["new_service"]["width"] = 100;
+
+$l_button["new_entry"]["value"] = "New Entry";
+$l_button["new_entry"]["alt"] = "Nieuwe invoer";
+$l_button["new_entry"]["width"] = 100;
+
+$l_button["attributes"]["value"] = "Attributes...";
+$l_button["attributes"]["alt"] = "Attributen...";
+$l_button["attributes"]["width"] = 100;
+
+$l_button["selectAll"]["value"] = "Select all";
+$l_button["selectAll"]["alt"]   = "Selecteer komplete tekst";
+$l_button["selectAll"]["width"] = 110;
+
+$l_button["deselectAll"]["value"] = "Deselect all";
+$l_button["deselectAll"]["alt"]   = "Deselecteer komplete selectie";
+$l_button["deselectAll"]["width"] = 110;
+
+$l_button["prepend"]["value"] = "Prepend";
+$l_button["prepend"]["alt"]   = "Voeg geslecteerde tekst in voor de broncode";
+$l_button["prepend"]["width"] = 110;
+
+$l_button["append"]["value"] = "Append";
+$l_button["append"]["alt"]   = "Voeg geslecteerde tekst in achter de broncode";
+$l_button["append"]["width"] = 110;
+
+$l_button["addCursorPosition"]["value"] = "Insert at cursor position";
+$l_button["addCursorPosition"]["alt"]   = "Insert selected text at cursor position"; // TRANSLATE
+$l_button["addCursorPosition"]["width"] = 180;
+
+$l_button["startEditor"]["value"] = "Start editor";
+$l_button["startEditor"]["alt"]   = "Start editor met gebruik van de Editor-Plugin";
+$l_button["startEditor"]["width"] = 100;
+
+$l_button["refresh"]["value"] = "Refresh";
+$l_button["refresh"]["alt"]   = "Laad opnieuw";
+$l_button["refresh"]["width"] = 100;
+
+$l_button["ignore"]["value"] = "Ignore";
+$l_button["ignore"]["alt"]   = "Negeer";
+$l_button["ignore"]["width"] = 100;
+
+$l_button["change"]["value"] = "Change";
+$l_button["change"]["alt"]   = "Wijzig";
+$l_button["change"]["width"] = 100;
+
+$l_button["apply"]["value"] = "Apply";
+$l_button["apply"]["alt"]   = "Toekennen";
+$l_button["apply"]["width"] = 100;
+
+$l_button["check"]["value"] = "Check";
+$l_button["check"]["alt"]   = "Controleer";
+$l_button["check"]["width"] = 100;
+
+$l_button["iconview"]["value"] = "Iconview";
+$l_button["iconview"]["alt"]   = ""; // TRANSLATE
+$l_button["iconview"]["width"] = 100;
+
+$l_button["listview"]["value"] = "Listview";
+$l_button["listview"]["alt"]   = ""; // TRANSLATE
+$l_button["listview"]["width"] = 100;
+
+$l_button["reindent"]["value"] = "Reindent code";
+$l_button["reindent"]["alt"]   = "";
+$l_button["reindent"]["width"] = 100;
+
+$l_button["btn_messages_copy"]["alt"] = "Kopieer bericht(en)";
+$l_button["btn_messages_create"]["alt"] = "Maak bericht aan";
+$l_button["btn_messages_cut"]["alt"] = "Knip bericht(en)";
+$l_button["btn_messages_paste"]["alt"] = "Plak bericht(en)";
+$l_button["btn_messages_reply"]["alt"] = "Antwoord op bericht(en)";
+$l_button["btn_messages_tasks"]["alt"] = "Start Taak Systeem";
+$l_button["btn_messages_trash"]["alt"] = "verwijder bericht(en)";
+$l_button["btn_messages_update"]["alt"] = "Zoek naar nieuwe berichten";
+
+$l_button["btn_task_copy"]["alt"] = "Kopieer taak(en)";
+$l_button["btn_task_create"]["alt"] = "Maak taak(en) aan";
+$l_button["btn_task_cut"]["alt"] = "Knip taak(en)";
+$l_button["btn_task_forward"]["alt"] = "Stuur taak(en) door";
+$l_button["btn_task_messages"]["alt"] = "Start Berichten Systeem";
+$l_button["btn_task_paste"]["alt"] = "Plak taak(en)";
+$l_button["btn_task_reject"]["alt"] = "Negeer taak(en)";
+$l_button["btn_task_status"]["alt"] = "Werk status bij";
+$l_button["btn_task_trash"]["alt"] = "Verwijder taak(en)";
+$l_button["btn_task_update"]["alt"] = "Zoek naar nieuwe taken";
+
+$l_button["btn_add_field"]["alt"] = "Voeg veld toe";
+$l_button["btn_add_link"]["alt"] = "Voeg hyperlink toe";
+$l_button["btn_add_listelement"]["alt"] = "Voeg lijst element toe";
+$l_button["btn_add_schedule"]["alt"] = "Voeg geplande taak toe";
+$l_button["btn_add_template"]["alt"] = "Voeg sjabloon toe";
+$l_button["btn_add_image"]["alt"] = "Voeg afbeelding toe";
+$l_button["btn_add_thumbnail"]["alt"] = "Voeg Thumbnail toe";
+$l_button["btn_add_flash"]["alt"] = "Voeg Flash film toe";
+$l_button["btn_add_quicktime"]["alt"] = "Voeg Quicktime film toe";
+$l_button["btn_add_file"]["alt"] = "Voeg bestand toe";
+$l_button["btn_add_cat"]["alt"] = "Voeg categorie toe";
+$l_button["btn_fs_back"]["alt"] = "één niveau terug";
+$l_button["btn_new_dir"]["alt"] = "Voeg nieuwe directory toe";
+$l_button["btn_new_bannergroup"]["alt"] = "Voeg nieuwe banner groep toe";
+
+$l_button["btn_direction_down"]["alt"] = "Naar beneden";
+$l_button["btn_direction_left"]["alt"] = " Naar links";
+$l_button["btn_direction_right"]["alt"] = "Naar rechts";
+$l_button["btn_direction_up"]["alt"] = "Naar boven";
+
+$l_button["btn_edit_edit"]["alt"] = "Wijzig";
+$l_button["btn_edit_flash"]["alt"] = "Selecteer Flash bestand";
+$l_button["btn_edit_image"]["alt"] = "Wijzig afbeelding";
+$l_button["btn_edit_include"]["alt"] = "Wijzig bijgevoegd bestand";
+$l_button["btn_edit_link"]["alt"] = "Wijzig hyperlink";
+$l_button["btn_edit_list"]["alt"] = "Wijzig lijst";
+$l_button["btn_edit_object"]["alt"] = "Wijzig object";
+$l_button["btn_edit_pdf"]["alt"] = "Selecteer PDF bestand";
+$l_button["btn_edit_quicktime"]["alt"] = "Wijzig Quicktime bestand";
+$l_button["btn_edit_real"]["alt"] = "Selecteer Real Player bestand";
+$l_button["btn_edit_wmp"]["alt"] = "Selecteer Windows Media Player bestand";
+
+$l_button["btn_function_plus"]["alt"] = "Voeg toe";
+$l_button["btn_function_search"]["alt"] = "Zoek";
+$l_button["btn_function_trash"]["alt"] = "Verwijder";
+$l_button["btn_function_view"]["alt"] = "Toon";
+
+$l_button["btn_select_image"]["alt"] = "Selecteer afbeelding";
+$l_button["btn_help"]["alt"] = "Help"; // TRANSLATE
+
+$l_button["btn_open_sidebar"]["alt"] = "Open sidebar"; // TRANSLATE

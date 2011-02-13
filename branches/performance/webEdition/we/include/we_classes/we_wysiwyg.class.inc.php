@@ -880,7 +880,7 @@ class we_wysiwyg{
 					$this->elements,
 					new we_wysiwygToolbarSeparator($this)
 				);
-		if(($GLOBALS["$BROWSER"]=='IE') || (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"])){
+		if(($GLOBALS["BROWSER"]=='IE') || (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"])){
 			array_push(
 					$this->elements,
 					new we_wysiwygToolbarButton(

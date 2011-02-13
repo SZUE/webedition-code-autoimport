@@ -18,28 +18,27 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: contenttypes.inc.php
  * Provides language strings.
  * Language: English
  */
-$GLOBALS['l_contentTypes']["all_Types"] = "All files"; // TRANSLATE
-$GLOBALS['l_contentTypes']["text/xml"] = "Fichier-XML";
-$GLOBALS['l_contentTypes']["text/html"] = "Site-HTML";
-$GLOBALS['l_contentTypes']["text/plain"] = "Texte Clair";
-$GLOBALS['l_contentTypes']["text/htaccess"] = ".htaccess file";//TRANSLATE
-$GLOBALS['l_contentTypes']["text/webedition"] = "Site-webEdition";
-$GLOBALS['l_contentTypes']["image/*"] = "Graphique";
-$GLOBALS['l_contentTypes']["text/weTmpl"] = "Modèle-webEdition";
-$GLOBALS['l_contentTypes']["text/css"] = "Feuilles de style CSS";
-$GLOBALS['l_contentTypes']["text/js"] = "Javascript";
-$GLOBALS['l_contentTypes']["application/x-shockwave-flash"] = "Vidéo-Flash";
-$GLOBALS['l_contentTypes']["application/*"] = "Fichier divers";
-$GLOBALS['l_contentTypes']["folder"] = "Répertoire";
-$GLOBALS['l_contentTypes']["class_folder"] = "Répertoire";
-$GLOBALS['l_contentTypes']["object"] = "Classe";
-$GLOBALS['l_contentTypes']["objectFile"] = "Object"; // TRANSLATE
-$GLOBALS['l_contentTypes']["video/quicktime"] = "Film-Quicktime";
-?>
+$GLOBALS['l_contentTypes'] = array(
+		'all_Types' => "All files", // TRANSLATE
+		'text/xml' => "Fichier-XML",
+		'text/html' => "Site-HTML",
+		'text/plain' => "Texte Clair",
+		'text/htaccess' => ".htaccess file", //TRANSLATE
+		'text/webedition' => "Site-webEdition",
+		'image/*' => "Graphique",
+		'text/weTmpl' => "Modèle-webEdition",
+		'text/css' => "Feuilles de style CSS",
+		'text/js' => "Javascript",
+		'application/x-shockwave-flash' => "Vidéo-Flash",
+		'application/*' => "Fichier divers",
+		'folder' => "Répertoire",
+		'class_folder' => "Répertoire",
+		'object' => "Classe",
+		'objectFile' => "Object", // TRANSLATE
+		'video/quicktime' => "Film-Quicktime",
+);

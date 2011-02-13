@@ -254,7 +254,6 @@ $out .= '		self.close();
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
 		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
@@ -333,7 +332,7 @@ function writeBody(d){
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php echo ($BROWSER=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
+		var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"]=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editCatID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" width="25" align="center">');
@@ -502,7 +501,7 @@ top.selectFile(top.currentID);
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_fileselector"]["catname"].'</a></b></td>
-					<td width="65%" class="selector" style="padding-left:10px;"><b>'.$GLOBALS["l_button"]["properties"]["value"].'</b></td>
+					<td width="65%" class="selector" style="padding-left:10px;"><b>'.g_l('button','[properties][value]').'</b></td>
 				</tr>
 				<tr>
 					<td width="35%"></td>
@@ -1136,11 +1135,11 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			$table->setCol(2, 1, array("style" => "width:240px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), $dir_hidden . $dir_input);
 			$table->setCol(2, 2, array("style" => "width:110px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont", "align" => "right"), $dir_chooser);
 
-			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), "<b>".$GLOBALS["l_global"]["title"]."</b>");
+			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), "<b>".g_l('global',"[title]")."</b>");
 			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), htmlTextInput("catTitle",50,$title,"",'',"text",360));
 
 			$ta = htmlFormElementTable(we_forms::weTextarea("catDescription",$description,array("bgcolor"=>"white","inlineedit"=>"true","wysiwyg"=>"true","width"=>"450", "height"=>"130"), true, 'autobr',true,"",true,true,true,false,""),
-			"<b>".$GLOBALS["l_global"]["description"] ."</b>", "left", "defaultfont", "", "", "", "", "", 0);
+			"<b>".g_l('global',"[description]") ."</b>", "left", "defaultfont", "", "", "", "", "", 0);
 			$saveBut = $we_button->create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
 
 

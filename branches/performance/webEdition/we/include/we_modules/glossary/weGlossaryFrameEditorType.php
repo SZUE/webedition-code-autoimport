@@ -18,8 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
-
 
 	class weGlossaryFrameEditorType extends weGlossaryFrameEditor {
 
@@ -360,13 +358,13 @@
 
 				}
 				$temp[] = array(
-					'dat' => $Search->getField('Published')>0?str_replace(" - ", "<br />", date($GLOBALS['l_global']["date_format"],$Search->getField('Published'))):"-",
+					'dat' => $Search->getField('Published')>0?str_replace(" - ", "<br />", date(g_l('date','[format][default]'),$Search->getField('Published'))):"-",
 					'height' => 25,
 					'align' => 'center',
 					'bgcolor' => '#ffffff',
 				);
 				$temp[] = array(
-					'dat' => $Search->getField('ModDate')>0?str_replace(" - ", "<br />", date($GLOBALS['l_global']["date_format"],$Search->getField('ModDate'))):"-",
+					'dat' => $Search->getField('ModDate')>0?str_replace(" - ", "<br />", date(g_l('date','[format][default]'),$Search->getField('ModDate'))):"-",
 					'height' => 25,
 					'align' => 'center',
 					'bgcolor' => '#ffffff',
@@ -480,7 +478,7 @@
 					<td></td>
 					<td>' . $prev . '</td>
 					<td>' . getPixel(10,2) . '</td>
-					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . $GLOBALS["l_global"]["from"] . ' ' . $sum . '</b></td>
+					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global',"[from]") . ' ' . $sum . '</b></td>
 					<td>' . getPixel(10,2) . '</td>
 					<td>' . $next . '</td>
 					<td>' . getPixel(10,2) . '</td>

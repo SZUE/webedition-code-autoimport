@@ -66,7 +66,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 
 
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_global"]["categorys"],
+						"headline"=>g_l('global',"[categorys]"),
 						"html"=>$GLOBALS['we_doc']->formCategory(),
 						"space"=>140,
 						"icon"=>"cat.gif")
@@ -114,7 +114,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 				$we_button = new we_button();
 
 				$button = $we_button->create_button("ws_from_class","javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
-				
+
 				array_push($parts,array(
 						"headline"=>"",
 						"html"=>$button,

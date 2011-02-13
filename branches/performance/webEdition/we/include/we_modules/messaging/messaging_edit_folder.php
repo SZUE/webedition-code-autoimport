@@ -21,7 +21,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
@@ -32,7 +31,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 ?>
 <html>
   <head>
-    <title><?php echo $l_messaging['folder_settings']?></title>
+    <title><?php echo g_l('modules_messaging','[folder_settings]')?></title>
       <script language="JavaScript" type="text/javascript">
 
 <?php
@@ -90,12 +89,12 @@ $we_button = new we_button();
 <?php
     if ($_REQUEST["mode"] == 'new') {
 
-	$heading = $l_messaging['new_folder'];
+	$heading = g_l('modules_messaging','[new_folder]');
 	$acc_html = html_select('foldertypes', 1, $messaging->get_wesel_folder_types(),"","top.content.setHot();");
 
     } elseif ($_REQUEST["mode"] == 'edit') {
 
-	$heading = $l_messaging['change_folder_settings'];
+	$heading = g_l('modules_messaging','[change_folder_settings]');
 	$finf = $messaging->get_folder_info($_REQUEST['fid']);
 	$acc_html = html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'],"top.content.setHot();");
     }
@@ -103,12 +102,12 @@ $we_button = new we_button();
     $n = isset($finf) ? $finf['Name'] : '';
     $orgn = $n;
     $fooArray = array(
-    						"sent" => $GLOBALS["l_messaging"]["folder_sent"],
-    						"messages" => $GLOBALS["l_messaging"]["folder_messages"],
-    						"done" => $GLOBALS["l_messaging"]["folder_done"],
-    						"task" => $GLOBALS["l_messaging"]["folder_todo"],
-    						"rejected" => $GLOBALS["l_messaging"]["folder_rejected"],
-   							"todo" => $GLOBALS["l_messaging"]["folder_todo"]
+    						"sent" => g_l('modules_messaging',"[folder_sent]"),
+    						"messages" => g_l('modules_messaging',"[folder_messages]"),
+    						"done" => g_l('modules_messaging',"[folder_done]"),
+    						"task" => g_l('modules_messaging',"[folder_todo]"),
+    						"rejected" => g_l('modules_messaging',"[folder_rejected]"),
+   							"todo" => g_l('modules_messaging',"[folder_todo]")
     					);
     if(isset($fooArray[strtolower($n)])){
     	$n = $fooArray[strtolower($n)];
@@ -119,15 +118,15 @@ $we_button = new we_button();
 
     $input_tbl = '<table border="0" cellpadding="5" >
 	<tr>
-	  <td class="defaultfont">' . $l_messaging['folder_name'] . '</td>
+	  <td class="defaultfont">' . g_l('modules_messaging','[folder_name]') . '</td>
 	  <td class="defaultfont">' . ($specialfolder ? ($n.hidden("folder_name",$orgn))  : htmlTextInput('folder_name', 24, $n, 24, 'onchange="top.content.setHot();"')) . '</td>
 	</tr>
 	<tr>
-	  <td class="defaultfont">' . $l_messaging['parent_folder'] . '</td>
+	  <td class="defaultfont">' . g_l('modules_messaging','[parent_folder]') . '</td>
 	  <td>' . html_select('parent_folder', 1, $messaging->get_wesel_available_folders(), isset($finf) ? $finf['ParentID'] : '',"top.content.setHot();") . '</td>
 	</tr>
 	<tr>
-	  <td class="defaultfont">' . $l_messaging['type'] . '</td>
+	  <td class="defaultfont">' . g_l('modules_messaging','[type]') . '</td>
 	  <td>' . $acc_html  . '</td>
 	</tr>
       </table>';

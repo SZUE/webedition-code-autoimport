@@ -28,7 +28,6 @@
  * Language: Deutsch
  */
 
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 /*****************************************************************************
  * LOGIN-SCREEN
@@ -376,4 +375,155 @@ $l_button["revert_published"]["value"] = "Veröffentlichte Version wiederherstel
 $l_button["revert_published"]["alt"] = "Änderungen verwerfen und veröffentlichte Version wiederherstellen.";
 $l_button["revert_published"]["width"] = 220;
 
-?>
+$l_button["delete_all"]["value"] = "Alle löschen";
+$l_button["delete_all"]["alt"]   = "";
+$l_button["delete_all"]["width"] = 100;
+
+$l_button["add"]["value"] = "Hinzufügen";
+$l_button["add"]["alt"] = "";
+$l_button["add"]["width"] = 100;
+
+$l_button["select"]["value"] = "Auswählen";
+$l_button["select"]["alt"] = "";
+$l_button["select"]["width"] = 100;
+
+$l_button["edit"]["value"] = "Bearbeiten";
+$l_button["edit"]["alt"] = "";
+$l_button["edit"]["width"] = 100;
+
+$l_button["editor"]["value"] = "Editor starten";
+$l_button["editor"]["alt"] = "";
+$l_button["editor"]["width"] = 100;
+
+$l_button["attributes"]["value"] = "Attribute...";
+$l_button["attributes"]["alt"] = "";
+$l_button["attributes"]["width"] = 100;
+
+$l_button["new_service"]["value"] = "Neuer Dienst";
+$l_button["new_service"]["alt"] = "";
+$l_button["new_service"]["width"] = 100;
+
+$l_button["new_entry"]["value"] = "Neuer Eintrag";
+$l_button["new_entry"]["alt"] = "";
+$l_button["new_entry"]["width"] = 100;
+
+$l_button["selectAll"]["value"] = "Alles auswählen";
+$l_button["selectAll"]["alt"]   = "";
+$l_button["selectAll"]["width"] = 110;
+
+$l_button["deselectAll"]["value"] = "Alles abwählen";
+$l_button["deselectAll"]["alt"]   = "";
+$l_button["deselectAll"]["width"] = 110;
+
+$l_button["prepend"]["value"] = "Vorne einfügen";
+$l_button["prepend"]["alt"]   = "";
+$l_button["prepend"]["width"] = 110;
+
+$l_button["append"]["value"] = "Hinten einfügen";
+$l_button["append"]["alt"]   = "";
+$l_button["append"]["width"] = 110;
+
+$l_button["addCursorPosition"]["value"] = "An Cursorposition einfügen";
+$l_button["addCursorPosition"]["alt"]   = "";
+$l_button["addCursorPosition"]["width"] = 180;
+
+$l_button["startEditor"]["value"] = "Editor starten";
+$l_button["startEditor"]["alt"]   = "";
+$l_button["startEditor"]["width"] = 100;
+
+$l_button["refresh"]["value"] = "Aktualisieren";
+$l_button["refresh"]["alt"]   = "";
+$l_button["refresh"]["width"] = 100;
+
+$l_button["ignore"]["value"] = "Ignorieren";
+$l_button["ignore"]["alt"]   = "";
+$l_button["ignore"]["width"] = 100;
+
+$l_button["change"]["value"] = "Austauschen";
+$l_button["change"]["alt"]   = "";
+$l_button["change"]["width"] = 100;
+
+$l_button["apply"]["value"] = "Übernehmen";
+$l_button["apply"]["alt"]   = "";
+$l_button["apply"]["width"] = 100;
+
+$l_button["check"]["value"] = "Prüfen";
+$l_button["check"]["alt"]   = "";
+$l_button["check"]["width"] = 100;
+
+$l_button["iconview"]["value"] = "Miniaturansicht";
+$l_button["iconview"]["alt"]   = "";
+$l_button["iconview"]["width"] = 100;
+
+$l_button["listview"]["value"] = "Listenansicht";
+$l_button["listview"]["alt"]   = "";
+$l_button["listview"]["width"] = 100;
+
+$l_button["reindent"]["value"] = "Code neu einrücken";
+$l_button["reindent"]["alt"]   = "";
+$l_button["reindent"]["width"] = 130;
+
+$l_button["btn_messages_copy"]["alt"] = "Mitteilung(en) kopieren";
+$l_button["btn_messages_create"]["alt"] = "Mitteilung erstellen";
+$l_button["btn_messages_cut"]["alt"] = "Mitteilung(en) ausschneiden";
+$l_button["btn_messages_paste"]["alt"] = "Mitteilung(en) einfügen";
+$l_button["btn_messages_reply"]["alt"] = "Mitteilung(en) beantworten";
+$l_button["btn_messages_tasks"]["alt"] = "In das ToDo System wechseln";
+$l_button["btn_messages_trash"]["alt"] = "Mitteilung(en) löschen";
+$l_button["btn_messages_update"]["alt"] = "Nach neuen Mitteilungen schauen";
+
+$l_button["btn_task_copy"]["alt"] = "ToDo(s) kopieren";
+$l_button["btn_task_create"]["alt"] = "ToDo(s) erstellen";
+$l_button["btn_task_cut"]["alt"] = "ToDo(s) ausschneiden";
+$l_button["btn_task_forward"]["alt"] = "ToDo(s) weiterleiten";
+$l_button["btn_task_messages"]["alt"] = "In das Messaging System wechseln";
+$l_button["btn_task_paste"]["alt"] = "ToDo(s) einfügen";
+$l_button["btn_task_reject"]["alt"] = "ToDo(s) ablehnen";
+$l_button["btn_task_status"]["alt"] = "Status aktualisieren";
+$l_button["btn_task_trash"]["alt"] = "ToDo(s) löschen";
+$l_button["btn_task_update"]["alt"] = "Nach neuen ToDos schauen";
+
+$l_button["btn_mail_send"]["alt"] = "E-Mail versenden";
+$l_button["btn_mail_resend"]["alt"] = "E-Mail nochmals versenden";
+$l_button["btn_add_field"]["alt"] = "Feld hinzufügen";
+$l_button["btn_add_link"]["alt"] = "Hyperlink hinzufügen";
+$l_button["btn_add_listelement"]["alt"] = "Listenelement hinzufügen";
+$l_button["btn_add_schedule"]["alt"] = "Zeitgesteuerte Aufgabe hinzufügen";
+$l_button["btn_add_template"]["alt"] = "Vorlage hinzufügen";
+$l_button["btn_add_image"]["alt"] = "Grafik hinzufügen";
+$l_button["btn_add_thumbnail"]["alt"] = "Miniaturansicht hinzufügen";
+$l_button["btn_add_flash"]["alt"] = "Flash-Datei hinzufügen";
+$l_button["btn_add_quicktime"]["alt"] = "Quicktime-Datei hinzufügen";
+$l_button["btn_add_file"]["alt"] = "Datei hinzufügen";
+$l_button["btn_add_cat"]["alt"] = "Kategorie hinzufügen";
+$l_button["btn_fs_back"]["alt"] = "Eine Ebene zurück";
+$l_button["btn_new_dir"]["alt"] = "Neues Verzeichnis erstellen";
+$l_button["btn_new_bannergroup"]["alt"] = "Neue Bannergruppe erstellen";
+
+$l_button["btn_direction_down"]["alt"] = "Nach unten";
+$l_button["btn_direction_left"]["alt"] = "Nach links";
+$l_button["btn_direction_right"]["alt"] = "Nach rechts";
+$l_button["btn_direction_up"]["alt"] = "Nach oben";
+
+$l_button["btn_edit_edit"]["alt"] = "Bearbeiten";
+$l_button["btn_edit_flash"]["alt"] = "Flash-Datei auswählen";
+$l_button["btn_edit_image"]["alt"] = "Grafik bearbeiten";
+$l_button["btn_edit_include"]["alt"] = "Bearbeite Include Datei";
+$l_button["btn_edit_link"]["alt"] = "Bearbeite Hyperlink";
+$l_button["btn_edit_list"]["alt"] = "Bearbeite Liste";
+$l_button["btn_edit_object"]["alt"] = "Bearbeite Objekt";
+$l_button["btn_edit_pdf"]["alt"] = "PDF Datei auswählen ";
+$l_button["btn_edit_quicktime"]["alt"] = "Quicktime Datei auswählen";
+$l_button["btn_edit_real"]["alt"] = "Real Player Datei auswählen";
+$l_button["btn_edit_wmp"]["alt"] = "Windows Media Player Datei auswählen";
+
+$l_button["btn_function_plus"]["alt"] = "Hinzufügen";
+$l_button["btn_function_search"]["alt"] = "Suchen";
+$l_button["btn_function_trash"]["alt"] = "Löschen";
+$l_button["btn_function_view"]["alt"] = "Ansehen";
+
+$l_button["btn_select_image"]["alt"] = "Grafik auswählen";
+$l_button["btn_help"]["alt"] = "Hilfe";
+$l_button["btn_date_picker"]["alt"] = "Datum auswählen";
+
+$l_button["btn_open_sidebar"]["alt"] = "Sidebar öffnen";

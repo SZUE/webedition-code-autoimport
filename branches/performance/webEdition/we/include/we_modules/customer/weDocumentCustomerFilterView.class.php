@@ -69,7 +69,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder,text/webedition");
 		$yuiSuggest->setInput($selectorNoLoginText,$_path_selectorNoLoginId);
-		$yuiSuggest->setLabel($GLOBALS['l_customerFilter']['documentNoLogin']);
+		$yuiSuggest->setLabel(g_l('modules_customerFilter','[documentNoLogin]'));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($selectorNoLoginId,$_id_selectorNoLoginId);
@@ -94,7 +94,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder,text/webedition");
 		$yuiSuggest->setInput($selectorNoAccessText,$_path_selectorNoAccessId);
-		$yuiSuggest->setLabel($GLOBALS['l_customerFilter']['documentNoAccess']);
+		$yuiSuggest->setLabel(g_l('modules_customerFilter','[documentNoAccess]'));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($selectorNoAccessId,$_id_selectorNoAccessId);
@@ -105,12 +105,12 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		$weAcSelector2 = $yuiSuggest->getHTML();
 
 		$_accesControl = '<div class="weMultiIconBoxHeadline">' .
-			$GLOBALS['l_customerFilter']['accessControl'] . '</div>' .
+			g_l('modules_customerFilter','[accessControl]') . '</div>' .
 			we_forms::radiobutton(
 			"onTemplate",
 			$_filter->getAccessControlOnTemplate(),
 			"wecf_accessControlOnTemplate",
-			$GLOBALS['l_customerFilter']["accessControlOnTemplate"],
+			g_l('modules_customerFilter',"[accessControlOnTemplate]"),
 			true, "defaultfont", "updateView();" . $this->getHotScript()
 		) .
 
@@ -118,7 +118,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 			"errorDoc",
 			!$_filter->getAccessControlOnTemplate(),
 			"wecf_accessControlOnTemplate",
-			$GLOBALS['l_customerFilter']["accessControlOnErrorDoc"],
+			g_l('modules_customerFilter',"[accessControlOnErrorDoc]"),
 			true, "defaultfont", "updateView();" . $this->getHotScript()
 		) .
 
@@ -144,13 +144,13 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 	 */
 	function getFolderApplyHTML() {
 		$we_button = new we_button();
-		$_ok_button = $we_button->create_button("ok", "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall($GLOBALS['l_customerFilter']['apply_filter_isHot'], WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
+		$_ok_button = $we_button->create_button("ok", "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter','[apply_filter_isHot]'), WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
 
 		return "
-			<div class=\"weMultiIconBoxHeadline paddingVertical\">" . $GLOBALS['l_customerFilter']['apply_filter'] . "</div>
+			<div class=\"weMultiIconBoxHeadline paddingVertical\">" . g_l('modules_customerFilter','[apply_filter]') . "</div>
 			<table>
 			<tr>
-				<td>" . htmlAlertAttentionBox($GLOBALS['l_customerFilter']['apply_filter_info'],2,432,false) . "</td>
+				<td>" . htmlAlertAttentionBox(g_l('modules_customerFilter','[apply_filter_info]'),2,432,false) . "</td>
 				<td style=\"padding-left:17px;\">" . $_ok_button . "</td>
 			</tr>
 			</table>

@@ -20,8 +20,8 @@
 
 function we_tag_econda($attribs, $content){
 	// Define globals
-	global $we_editmode, $l_global;
-	
+	global $we_editmode;
+
 	$type = we_getTagAttribute("type",$attribs);
 	if ($type=="exclude" && !$GLOBALS["we_doc"]->InWebEdition) {
 			return "\n".'<script type="text/javascript">
@@ -62,8 +62,8 @@ function we_tag_econda($attribs, $content){
 			$pageName = we_getTagAttribute("pageName",$attribs);
 			return '<a name="emos_name" title="orderProcess" rel="'.$step.'_'.$pageName.'" rev=""></a>';
 		}
-		
+
 	} else {
-		
+
 	}
 }

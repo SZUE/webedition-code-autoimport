@@ -18,53 +18,49 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: siteimport.inc.php
  * Provides language strings.
  * Language: English
  */
-
-$GLOBALS["l_siteimport"]["siteimport"] = "Sivuston tuonti";
-$GLOBALS["l_siteimport"]["importFrom"] = "Lähdehakemisto";
-$GLOBALS["l_siteimport"]["importTo"] = "Kohdehakemisto";
-$GLOBALS["l_siteimport"]["import"] = "Tuo";
-$GLOBALS["l_siteimport"]["importImages"] = "Kuvia (.gif .jpg .png)";
-$GLOBALS["l_siteimport"]["importHtmlPages"] = "HTML -sivuja";
-$GLOBALS["l_siteimport"]["createWePages"] = "Luo webEdition -sivuja";
-$GLOBALS["l_siteimport"]["importFlashmovies"] = "Flash -tiedostoja";
-$GLOBALS["l_siteimport"]["importQuicktime"] = "Quicktime -tiedostoja";
-$GLOBALS["l_siteimport"]["importJS"] = "JavaScript -tiedostoja";
-$GLOBALS["l_siteimport"]["importCSS"] = "CSS -tiedostoja";
-$GLOBALS["l_siteimport"]["importText"] = "Tekstitiedostoja";
-$GLOBALS["l_siteimport"]["importHTACCESS"] = ".htaccess files"; //TRANSLATE
-$GLOBALS["l_siteimport"]["importOther"] = "Muita tiedostoja";
-$GLOBALS["l_siteimport"]["depth"] = "Hakemistosyvyys";
-$GLOBALS["l_siteimport"]["maxSize"] = "Tiedoston maksimikoko Mt";
-$GLOBALS["l_siteimport"]["nolimit"] = "Ei rajoitusta";
-$GLOBALS["l_siteimport"]["importingFile"] = "Tuodaan tiedostoa";
-$GLOBALS["l_siteimport"]["importFinished"] = "Web sivuston tuominen onnistui!";
-$GLOBALS["l_siteimport"]["dirs_headline"] = "Hakemistot";
-$GLOBALS["l_siteimport"]["limits"] = "Rajoitukset";
-
-$GLOBALS["l_siteimport"]["fieldName"] = "Kentän nimi";
-$GLOBALS["l_siteimport"]["startMark"] = "Aloitusmerkki";
-$GLOBALS["l_siteimport"]["endMark"] = "Lopetusmerkki";
-$GLOBALS["l_siteimport"]["newTemplate"] = "Uusi sivupohja";
-$GLOBALS["l_siteimport"]["dateFormatString"] = " d.m. Y ";
-$GLOBALS["l_siteimport"]["dateFormat"] = "Päivämäärän muotoilu";
-$GLOBALS["l_siteimport"]["useRegEx"] = "Käytä regular expressioneita";
-$GLOBALS["l_siteimport"]["cresteAutoTemplate"] = "Luo sivupohjat automaattisesti";
-$GLOBALS["l_siteimport"]["useSpecifiedTemplate"] =  "Käytä määriteltyä sivupohjaa";
-$GLOBALS["l_siteimport"]["importKind"] = "Tuonnin tyyppi";
-$GLOBALS["l_siteimport"]["autoExpl"] = "Tällä valinnalla luodaan automaattisesti sivupohjat tuotaville HTML-sivuille. Kentässä \" Sivupohjan nimi \" täytyy antaa nimi jolla sivupohja luodaan. Jos sivupohjia on useita käytetään laskuria.";
-$GLOBALS["l_siteimport"]["importSettingsWePages"] = "Tuo asetukset webEdition sivuille ";
-$GLOBALS["l_siteimport"]["pleaseSelectTemplateAlert"] = "Valitse sivupohja! ";
-$GLOBALS["l_siteimport"]["startEndMarkAlert"] = "Ainakin yksi aloitusmerkki ja sen mukainen lopetusmerkki on syötettävä! ";
-$GLOBALS["l_siteimport"]["nameOfTemplateAlert"] = "Kenttä 'Sivupohjan nimi' ei saa olla tyhjä!";
-$GLOBALS["l_siteimport"]["nameOfTemplate"] = "Sivupohjan nimi ";
-$GLOBALS["l_siteimport"]["template"] = "Sivupohja";
-$GLOBALS["l_siteimport"]["errorEmptyDateFormat"] = "Kenttä 'Päivämäärän muotoilu' ei saa olla tyhjä!";
-
-?>
+$GLOBALS["l_siteimport"] = array(
+		'siteimport' => "Sivuston tuonti",
+		'importFrom' => "Lähdehakemisto",
+		'importTo' => "Kohdehakemisto",
+		'import' => "Tuo",
+		'importImages' => "Kuvia (.gif .jpg .png)",
+		'importHtmlPages' => "HTML -sivuja",
+		'createWePages' => "Luo webEdition -sivuja",
+		'importFlashmovies' => "Flash -tiedostoja",
+		'importQuicktime' => "Quicktime -tiedostoja",
+		'importJS' => "JavaScript -tiedostoja",
+		'importCSS' => "CSS -tiedostoja",
+		'importText' => "Tekstitiedostoja",
+		'importHTACCESS' => ".htaccess files", //TRANSLATE
+		'importOther' => "Muita tiedostoja",
+		'depth' => "Hakemistosyvyys",
+		'maxSize' => "Tiedoston maksimikoko Mt",
+		'nolimit' => "Ei rajoitusta",
+		'importingFile' => "Tuodaan tiedostoa",
+		'importFinished' => "Web sivuston tuominen onnistui!",
+		'dirs_headline' => "Hakemistot",
+		'limits' => "Rajoitukset",
+		'fieldName' => "Kentän nimi",
+		'startMark' => "Aloitusmerkki",
+		'endMark' => "Lopetusmerkki",
+		'newTemplate' => "Uusi sivupohja",
+		'dateFormatString' => " d.m. Y ",
+		'dateFormat' => "Päivämäärän muotoilu",
+		'useRegEx' => "Käytä regular expressioneita",
+		'cresteAutoTemplate' => "Luo sivupohjat automaattisesti",
+		'useSpecifiedTemplate' => "Käytä määriteltyä sivupohjaa",
+		'importKind' => "Tuonnin tyyppi",
+		'autoExpl' => "Tällä valinnalla luodaan automaattisesti sivupohjat tuotaville HTML-sivuille. Kentässä \" Sivupohjan nimi \" täytyy antaa nimi jolla sivupohja luodaan. Jos sivupohjia on useita käytetään laskuria.",
+		'importSettingsWePages' => "Tuo asetukset webEdition sivuille ",
+		'pleaseSelectTemplateAlert' => "Valitse sivupohja! ",
+		'startEndMarkAlert' => "Ainakin yksi aloitusmerkki ja sen mukainen lopetusmerkki on syötettävä! ",
+		'nameOfTemplateAlert' => "Kenttä 'Sivupohjan nimi' ei saa olla tyhjä!",
+		'nameOfTemplate' => "Sivupohjan nimi ",
+		'template' => "Sivupohja",
+		'errorEmptyDateFormat' => "Kenttä 'Päivämäärän muotoilu' ei saa olla tyhjä!",
+);

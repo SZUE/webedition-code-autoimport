@@ -123,7 +123,6 @@ function we_makeTextFromPath(path){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
 		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 		$htmltop = str_replace('Script', "Scr' + 'ipt", $htmltop);
@@ -136,9 +135,9 @@ function writeBody(d){
 	d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
-	
+
 	<?php print $this->getJS_attachKeyListener(); ?>
-	
+
 	//from we_showMessage.js
 	d.writeln('var WE_MESSAGE_INFO = -1;');
 	d.writeln('var WE_MESSAGE_FRONTEND = -2;');
@@ -187,7 +186,7 @@ function writeBody(d){
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 	d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php echo ($BROWSER=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
+		var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"]=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr' + ((entries[i].ID == top.currentID)  ? ' style="background-color:#DFE9F5;cursor:pointer;-moz-user-select: none;"' : '') + ' id="line_'+entries[i].ID+'" style="cursor:pointer;-moz-user-select: none;"'+onclick+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" width="25" align="center">');

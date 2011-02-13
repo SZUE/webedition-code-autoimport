@@ -122,12 +122,12 @@ class we_fileselector{
 		}
 
 	}
-	
+
 	function setDefaultDirAndID($setLastDir){
-		
+
 		$this->dir = $setLastDir ? ( isset($_SESSION["we_fs_lastDir"][$this->table]) ? abs($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
 		$this->id = $this->dir;
-		
+
 		$this->path = "";
 
 		$this->values = array(
@@ -137,7 +137,7 @@ class we_fileselector{
 			"IsFolder"=>1
 		);
 	}
-	
+
 	function isIDInFolder($ID,$folderID,$db=""){
 		if($folderID==$ID) return true;
 		if(!$db) $db = new DB_WE();
@@ -214,34 +214,34 @@ class we_fileselector{
 	}
 ';
 	}
-	
+
 	function getJS_keyListenerFunctions() {
-		
+
 		return "
 		function applyOnEnter(evt) {
-			
+
 			_elemName = \"target\";
 			if ( typeof(evt[\"srcElement\"]) != \"undefined\" ) { // IE
 				_elemName = \"srcElement\";
 			}
-			
+
 			if (	!( evt[_elemName].tagName == \"SELECT\" ||
 					 ( evt[_elemName].tagName == \"INPUT\" && evt[_elemName].name != \"fname\" )
 				) ) {
 				top.fsfooter.press_ok_button();
 				return true;
 			}
-			
+
 		}
-		
+
 		function closeOnEscape() {
 			top.exit_close();
-			
+
 		}
 		";
-		
+
 	}
-	
+
 
 	function printFramesetHTML(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
@@ -353,9 +353,9 @@ function selectFile(id){
 	var currentPath="'.$this->path.'";
 	var currentText="'.$this->values["Text"].'";
 	var currentType="'.(isset($this->filter) ? $this->filter : "").'";
-	
+
 	var startPath="'.$startPath.'";
-	
+
 	var parentID="'.
 	($this->dir ?
 	    f("SELECT ParentID FROM $this->table WHERE ID='".$this->dir."'","ParentID",$this->db) :
@@ -399,18 +399,18 @@ function selectFile(id){
 							if(currentType!="")	{
 								switch(currentType){
 									case "noalias":
-										setTabsCurPath = "@"+currentText;									
+										setTabsCurPath = "@"+currentText;
 										break;
 									default:
-										setTabsCurPath = currentPath;								
+										setTabsCurPath = currentPath;
 								}
 								if(getEntry(currentID).isFolder) opener.parent.frames[0].setPathGroup(setTabsCurPath);
 								else opener.parent.frames[0].setPathName(setTabsCurPath);
 								opener.parent.frames[0].setTitlePath();
 							}
 					}
-					if(!!opener.'.$frameRef.'YAHOO && !!opener.'.$frameRef.'YAHOO.autocoml) {  opener.'.$frameRef.'YAHOO.autocoml.selectorSetValid(opener.'.str_replace('.value','.id',$this->JSTextName).'); } 
-					';			
+					if(!!opener.'.$frameRef.'YAHOO && !!opener.'.$frameRef.'YAHOO.autocoml) {  opener.'.$frameRef.'YAHOO.autocoml.selectorSetValid(opener.'.str_replace('.value','.id',$this->JSTextName).'); }
+					';
 		}
 		if($this->JSCommand){
 			$out .= '	'.str_replace('WE_PLUS','+',$this->JSCommand).';
@@ -478,7 +478,6 @@ function queryString(what,id,o){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
 		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
@@ -574,9 +573,9 @@ function clearEntries(){
 		print '<html><head></head>'."\n";
 		print '<body bgcolor="white" onLoad="top.writeBody(self.document);"></body></html>'."\n";
 	}
-	
+
 	function getJS_attachKeyListener() {
-		
+
 		// attach the keylistener
 		$_attachKeyListener = file($_SERVER['DOCUMENT_ROOT'] . "/webEdition/js/attachKeyListener.js");
 		$_addJs = "";
@@ -908,9 +907,9 @@ top.fsheader.selectIt();
 			</table>';
 	}
 	function setTableLayoutInfos() {
-		
+
 		$objectTable = defined("OBJECT_TABLE") ? OBJECT_TABLE : TEMPLATES_TABLE;
-		
+
 		switch ($this->table) {
 			case $objectTable:
 			case TEMPLATES_TABLE:
@@ -932,6 +931,6 @@ top.fsheader.selectIt();
 					<td class='selector'><b>".$GLOBALS['l_fileselector']['title']."</b></td>
 					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>".$GLOBALS['l_fileselector']['modified']."</a></b></td>
 				";
-		}	
+		}
 	}
 }

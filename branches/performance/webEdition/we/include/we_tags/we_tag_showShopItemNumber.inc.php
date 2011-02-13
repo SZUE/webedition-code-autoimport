@@ -27,7 +27,7 @@ function we_tag_showShopItemNumber($attribs,$content) {
 
 	$shopname = we_getTagAttribute("shopname",$attribs);
     if (!isset($GLOBALS[$shopname])||empty($GLOBALS[$shopname])) {
-    	return parseError(sprintf($GLOBALS["l_parser"]["missing_createShop"],'showShopItemNumber'));
+    	return parseError(sprintf(g_l('parser','[missing_createShop]'),'showShopItemNumber'));
     }
 	$option = we_getTagAttribute("option",$attribs,"",true);
 	$inputfield = we_getTagAttribute("inputfield",$attribs,"",true);
@@ -39,7 +39,7 @@ function we_tag_showShopItemNumber($attribs,$content) {
 	$floatquantities = empty($floatquantities) ? false : $floatquantities;
 	$nameTo = we_getTagAttribute("nameto", $attribs);
 	$to = we_getTagAttribute("to", $attribs,'screen');
-	
+
 	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname','nameto','to','floatquantities','$num_format'));
 
 	// $type of the field

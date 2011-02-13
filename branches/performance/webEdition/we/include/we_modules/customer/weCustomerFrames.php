@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/" . "weModuleFrames.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerView.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTree.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/date.inc.php");
 
 class weCustomerFrames extends weModuleFrames {
 
@@ -159,7 +158,6 @@ class weCustomerFrames extends weModuleFrames {
 
 				return we_htmlElement::htmlDiv(array('style'=>'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'),$out);//we_htmlElement::htmlB('not yet implemented');
 			case 'country':
-				//p_r($GLOBALS['l_countries']);
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
@@ -208,7 +206,7 @@ class weCustomerFrames extends weModuleFrames {
 					$lcvalue = $lccode[0];
 				}
 				$languageselect = new we_htmlSelect(array("name" => $field, "size" => "1", "style" => "{width:240;}", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
-				foreach ($GLOBALS['l_languages'] as $languagekey => $languagevalue) {
+				foreach (g_l('languages','') as $languagekey => $languagevalue) {
 					if (in_array($languagekey, $frontendL)) {
 						$languageselect->addOption($languagekey, $languagevalue);
 					}
@@ -912,7 +910,7 @@ class weCustomerFrames extends weModuleFrames {
 										we_htmlElement::jsElement("", array("src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js")) .
 										we_htmlElement::jsElement($this->View->getJSSearch()) .
 										we_htmlElement::jsElement("$this->jsOut_fieldTypesByName
-	var date_format_dateonly = '" . $GLOBALS["l_global"]["date_format_dateonly_mysql"] . "';
+	var date_format_dateonly = '" . g_l('date','[format][mysqlDate]') . "';
 	var fieldDate = new weDate(date_format_dateonly);
 
 	function showDatePickerIcon(fieldNr) {
@@ -1053,8 +1051,6 @@ class weCustomerFrames extends weModuleFrames {
 	}
 
 	function getDateInput2($name, $time="", $setHot=false, $format="", $onchange="", $class="defaultfont", $from_year=1970) {
-		global $l_global;
-
 		// removed attribute setHot
 
 		if (is_array($time)) {

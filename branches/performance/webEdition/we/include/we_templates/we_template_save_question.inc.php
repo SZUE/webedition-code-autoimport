@@ -21,15 +21,14 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 protect();
-htmlTop($l_global["question"]);
+htmlTop(g_l('global','[question]'));
 
 $_we_cmd6 = "";
 if (isset($_REQUEST["we_cmd"][6])) {
 	$_we_cmd6 = $_REQUEST["we_cmd"][6];
-	
+
 }
 
 if ($nrTemplatesUsedByThisTemplate) {
@@ -44,13 +43,13 @@ if ($nrTemplatesUsedByThisTemplate) {
 // functions for keyBoard Listener
 	function applyOnEnter() {
 		pressed_yes_button();
-	
+
 	}
-	
+
 	// functions for keyBoard Listener
 	function closeOnEscape() {
 		pressed_cancel_button();
-		
+
 	}
 
 function pressed_yes_button() {
@@ -64,13 +63,13 @@ function pressed_no_button() {
 	opener.top.we_cmd('save_document','<?php print $we_transaction; ?>',0,1,0,'<?php print str_replace("'","\\'",$_REQUEST["we_cmd"][5]) ?>',"<?php print $_we_cmd6; ?>");
 	opener.top.toggleBusy(1);
 	self.close();
-	
+
 }
 
 function pressed_cancel_button() {
 	self.close();
 	opener.top.toggleBusy(0);
-	
+
 }
 self.focus();
 

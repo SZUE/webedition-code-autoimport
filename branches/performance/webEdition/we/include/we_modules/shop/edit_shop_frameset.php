@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 if(defined("SHOP_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 }
@@ -73,7 +72,7 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
 	$title = '';
 	foreach($GLOBALS["_we_available_modules"] as $modData){
 		if($modData["name"] == $mod){
-			$title	= "webEdition " . $GLOBALS["l_global"]["modules"] . ' - ' .$modData["text"];
+			$title	= "webEdition " . g_l('global',"[modules]") . ' - ' .$modData["text"];
 			break;
 		}
 	}
@@ -397,7 +396,7 @@ fr.write("&nbsp;");
 
    // echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
 
-    $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$l_global["date_format_dateonly_mysql"]."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
+    $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
        while($DB_WE->next_record()){
          print "  menuDaten.add(new urlEntry('link.gif','".$DB_WE->f("IntOrderID")."',".$DB_WE->f("mdate").",'".$DB_WE->f("IntOrderID").". ".$l_shop["bestellung"]." ".$DB_WE->f("orddate")."','shop','".SHOP_TABLE."','".(($DB_WE->f("DateShipping")>0)?0:1)."'));\n";
        	 if($DB_WE->f("DateShipping")<=0){
@@ -416,7 +415,7 @@ fr.write("&nbsp;");
     	//eval('$r = $v'.$f.$year.";");
     	eval('$k = (isset($l' . $f . $year . ') ? $l' . $f . $year .' : ""); ');
     	//eval('$k = $l'.$f.$year.";");
-    	echo "menuDaten.add(new dirEntry('folder.gif',$f+''+$year,0, '".(($f<10)?"0".$f:$f).' '.$l_shop["sl"]." ".$GLOBALS["l_monthLong"][$f-1]. " (".(($k>0)?"<b>".$k."</b>":0)."/".(($r>0)?$r:0).")',0,'','',".(($k>0)?1:0)."));";
+    	echo "menuDaten.add(new dirEntry('folder.gif',$f+''+$year,0, '".(($f<10)?"0".$f:$f).' '.$l_shop["sl"]." ".g_l('date','[month][long]['.($f-1).']'). " (".(($k>0)?"<b>".$k."</b>":0)."/".(($r>0)?$r:0).")',0,'','',".(($k>0)?1:0)."));";
        } //'".$DB_WE->f("mdate")."'
        echo "top.yearshop = '$year';";
     ?>

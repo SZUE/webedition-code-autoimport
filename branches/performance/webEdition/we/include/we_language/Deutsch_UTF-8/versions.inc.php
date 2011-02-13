@@ -180,8 +180,5 @@ $GLOBALS['l_versions'] = array(
 	'objClassNotExists'				=> "Klasse existiert nicht mehr!",
 	'publishIfReset'				=> "Beim Zurücksetzen veröffentlichen",
 	'doPublish_text'				=> "Wählen Sie, ob die Versionen nach dem Zurücksetzen veröffentlicht werden sollen oder nicht."
-	
+
 );
-
-
-?>

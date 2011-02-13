@@ -24,7 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 $l_we_class["ChangePark"] = "Ud solamente puede cambiar este atributo si el documento no es publicado!";
 $l_we_class["fieldusers"] = "Usuario";
@@ -77,7 +76,7 @@ $l_we_class["salign"] = "Alinear a escala";
 $l_we_class["play"] = "Ejecutar";
 $l_we_class["loop"] = "Ciclo";
 $l_we_class["scale"] = "Escala";
-$l_we_class["wmode"] = "Window mode"; // TRANSLATE 
+$l_we_class["wmode"] = "Window mode"; // TRANSLATE
 $l_we_class["bgcolor"] = "Color de fondo";
 $l_we_class["response_save_noperms_to_create_folders"] = "El documento no pudo ser salvado porque Ud no tiene los derechos necesarios para crear carpetas (%s)!";
 $l_we_class["file_on_liveserver"]="Archivo ya existe";
@@ -170,6 +169,12 @@ $l_we_class["grant_language"] = "Change language"; // TRANSLATE
 $l_we_class["grant_language_expl"] = "Change the language of all files and directories which reside in the current directory to the setting above."; // TRANSLATE
 $l_we_class["grant_language_ok"] = "Language have been successfully changed!"; // TRANSLATE
 $l_we_class["grant_language_notok"] = "There was an error while changing the language!"; // TRANSLATE
+
+$l_we_class["grant_tid"] = "Change display document"; // TRANSLATE
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";// TRANSLATE
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";// TRANSLATE
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";// TRANSLATE
+
 $l_we_class["notValidFolder"] = "The directory chosen is invalid!"; // TRANSLATE
 
 
@@ -179,4 +184,51 @@ $l_we_class["image_edit_null_not_allowed"] = "In the fields Width and Height onl
 
 $l_we_class['doctype_changed_question'] = "Should the default values for the document type be applied for this document?"; // TRANSLATE
 $l_we_class['availableAfterSave'] = "The feature is only available after saving the entry."; // TRANSLATE
-?>
+
+$l_we_class['properties'] = 'Propiedades';
+$l_we_class['path'] = 'Ruta de acceso';
+$l_we_class['adoptToAllInferiorDocuments'] = 'adopt for all inferior documents'; // TRANSLATE
+$l_we_class['filename'] = 'Nombre de archivo';
+$l_we_class['extension'] = 'Extensión';
+$l_we_class['dir'] = 'Directorio';
+$l_we_class['document'] = 'Documento';
+$l_we_class['upload_will_replace'] = 'Ud puede ahora reemplazar el archivo actual usando el botón "cargar". Si Ud desea cargar otro archivo o múltiples archivos de una vez; por favor, use la función de importación o regrese a esta página usando el menú de archivo.';
+$l_we_class['upload_single_files'] = 'ATENCIÓN: Por favor, note que solamente puede cargar archivos únicos usando esta función. Para cargar múltiples archivos de una vez use la función de importación, a la cual puede acceder usando el menú de archivo.';
+$l_we_class['none'] = '--Ninguno--';
+$l_we_class['nodoctype'] = '--ninguno--';
+$l_we_class['doctype'] = 'Tipo de documento';
+$l_we_class['standard_workspace'] = 'Default Workspace'; // TRANSLATE
+$l_we_class['standard_template'] = 'Plantilla';
+$l_we_class['template'] = 'Plantilla';
+$l_we_class['no_template'] = 'Sin plantilla';
+$l_we_class['IsDynamic'] = 'Generar página dinámica';
+$l_we_class['IsSearchable'] = 'És buscable?';
+$l_we_class['InGlossar'] = 'Not allowed for automatic glossary replacement'; // TRANSLATE //TRANSLATE
+$l_we_class['metainfo'] = 'Meta rótulos';
+$l_we_class['Title'] = 'Titulo';
+$l_we_class['Keywords'] = 'Palabras claves';
+$l_we_class['Description'] = 'Descripción';
+$l_we_class['urlfield0'] = 'URL field';// TRANSLATE
+$l_we_class['urlfield1'] = 'URL field 1';// TRANSLATE
+$l_we_class['urlfield2'] = 'URL field 2';// TRANSLATE
+$l_we_class['urlfield3'] = 'URL field 3';// TRANSLATE
+$l_we_class['Charset'] = 'Codificación de carácter';
+$l_we_class['moreProps'] = 'Más propiedades';
+$l_we_class['lessProps'] = 'Menos propiedades';
+$l_we_class['owners'] = 'Dueños';
+$l_we_class['maincreator'] = 'Creador principal';
+$l_we_class['otherowners'] = 'Conceder acceso a los siguientes usuarios';
+$l_we_class['onlyOwner'] = 'Creador solamente';
+$l_we_class['limitedAccess'] = 'Restringir acceso';
+$l_we_class['nobody'] = 'Nadie';
+$l_we_class['everybody'] = 'Todos';
+$l_we_class['noWorkspaces'] = 'No hay área de trabajo definida en esta clase!';
+$l_we_class['readOnly'] = 'Solo lectura';
+$l_we_class['copyWeDoc'] = 'Copiar página webEdition';
+$l_we_class['showTagwizard'] = 'Mostrar Asistente de Rótulos';
+$l_we_class['hideTagwizard'] = 'Ocultar Asistente de Rótulos';
+$l_we_class['variant_fields'] = 'Campos';
+$l_we_class['variant_info'] = 'Los Siguientes campos pueden tener diferentes variantes. Por favor seleccione los campos que tienen diferentes variantes.';
+$l_we_class['webUser'] = 'Customer'; // TRANSLATE
+$l_we_class['docList'] = 'Content'; // TRANSLATE
+$l_we_class['version'] = 'Versions'; // TRANSLATE

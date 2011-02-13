@@ -34,6 +34,7 @@ $l_object["default"] = "Default Value";
 $l_object["checked"] = "checked";
 $l_object["name"] = "Automatic name";
 $l_object["seourl"] = "SEO-URL";// TRANSLATE
+$l_object["seourltrigger"] = "Preset document for display";// TRANSLATE
 $l_object["allFields"] = "All fields";
 $l_object["search_term"] = "Search term";
 $l_object["search_field"] = "Search field";

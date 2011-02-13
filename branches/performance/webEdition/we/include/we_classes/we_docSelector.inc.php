@@ -23,7 +23,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dir
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/enc_we_class.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
@@ -122,9 +122,9 @@ class we_docSelector extends we_dirSelector {
 				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".abs($this->dir));
 				while ($_db->next_record()) {
 					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
-				}		
+				}
 			}
-			
+
 		}
 	}
 
@@ -233,7 +233,6 @@ function reloadDir() {
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
 		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 
@@ -325,11 +324,11 @@ function writeBody(d){
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
 		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('<td class="selector"><?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
-		d.writeln('<td class="selector"><?php print date($GLOBALS["l_global"]["date_format"])?></td>');
+		d.writeln('<td class="selector"><?php print date(g_l(\'date\',\'[format][default]\'))?></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php echo ($BROWSER=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
+		var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"]=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr' + ((entries[i].ID == top.currentID)  ? ' style="background-color:#DFE9F5;cursor:pointer;-moz-user-select: none;"' : '') + ' id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" align="center">');
@@ -415,7 +414,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				$title = strip_tags($title);
 				$title = $title == "&nbsp;" ? "-" : htmlspecialchars($title);
 				$published = ($this->table==FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table==OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
-				print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date($GLOBALS["l_global"]["date_format"],$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
+				print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date(g_l('date','[format][default]'),$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
 			}
 		}
 	}
@@ -433,7 +432,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 			$title = str_replace("\\", "\\\\", $title);
 			$title = str_replace("�", "&deg;", $title);
 			$title = strip_tags($title);
-			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date($GLOBALS["l_global"]["date_format"],$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
+			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date(g_l('date','[format][default]'),$this->f("ModDate")).'","'.$this->f("ContentType").'","'.$published.'","'.$title.'");'."\n";
 		}
 
 		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
@@ -778,7 +777,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 						$_selFields = substr($_selFields, 0, strlen($_selFields)-1);
 						$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . abs($result["ID"]), $this->db);
 					}
-					
+
 				} elseif ($result['ContentType'] == "folder") {
 					$this->db->query("SELECT ID, Text, IsFolder FROM " . mysql_real_escape_string($this->table) . " WHERE ParentID=".abs($this->id));
 					$folderFolders = array();
@@ -857,14 +856,14 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				if ($result['CreationDate']) {
 					$_previewFields["properies"]["data"][] = array(
 						"caption" => $GLOBALS['l_fileselector']["created"],
-						"content" => date($GLOBALS["l_global"]["date_format"],$result['CreationDate'])
+						"content" => date(g_l('date','[format][default]'),$result['CreationDate'])
 					);
 				}
 
 				if ($result['ModDate']) {
 					$_previewFields["properies"]["data"][] = array(
 						"caption" => $GLOBALS['l_fileselector']["modified"],
-						"content" => date($GLOBALS["l_global"]["date_format"],$result['ModDate'])
+						"content" => date(g_l('date','[format][default]'),$result['ModDate'])
 					);
 				}
 

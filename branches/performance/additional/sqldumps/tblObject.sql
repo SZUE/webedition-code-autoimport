@@ -29,6 +29,7 @@ CREATE TABLE tblObject (
   DefaultUrlfield1 varchar(255) NOT NULL DEFAULT '_',
   DefaultUrlfield2 varchar(255) NOT NULL DEFAULT '_',
   DefaultUrlfield3 varchar(255) NOT NULL DEFAULT '_',
+  DefaultTriggerID bigint(20) NOT NULL default '0',
   ClassName varchar(64) NOT NULL default '',
   Workspaces varchar(255) NOT NULL default '',
   DefaultWorkspaces varchar(255) NOT NULL default '',

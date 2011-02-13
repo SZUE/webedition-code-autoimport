@@ -312,7 +312,7 @@ class weHyperlinkDialog extends weDialog{
 	##################################################################################################
 
 	function getDialogContentHTML() {
-		global $BROWSER,$l_we_class,$l_contentTypes,$l_linklist_edit;
+		global $l_we_class,$l_contentTypes,$l_linklist_edit;
 		// Initialize we_button class
 		$we_button = new we_button();
 
@@ -371,7 +371,7 @@ class weHyperlinkDialog extends weDialog{
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($_internal_select_button,10);
-		
+
 			$_internal_link = $yuiSuggest->getHTML();
 			// E-MAIL LINK
 
@@ -392,7 +392,7 @@ class weHyperlinkDialog extends weDialog{
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
 				$yuiSuggest->setSelectButton($_object_select_button,10);
-		
+
 				$_object_link = $yuiSuggest->getHTML();
 /*
 				$_object_link = htmlFormElementTable(htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, "0", "", !we_hasPerm("CAN_SEE_OBJECTFILES")) .

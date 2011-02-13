@@ -21,7 +21,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/workflow.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowLog.php");
 
@@ -39,7 +38,7 @@ class weWorkflowBase{
 	var $table="";
 
 	var $ClassName;
-	
+
 	var $Log;
 
 	function weWorkflowBase()
@@ -110,7 +109,6 @@ class weWorkflowBase{
 	}
 
 	function sendMail($userID,$subject,$description,$contecttype='text/plain'){
-		global $l_workflow;
 		$errs = array();
 		$foo=f("SELECT Email FROM ".USER_TABLE." WHERE ID=".abs($userID),"Email",$this->db);
 		if(!empty($foo) && we_check_email($foo)){
@@ -135,7 +133,7 @@ class weWorkflowBase{
 	function removeTodo($id){
 		return msg_rm_todo($id);
 	}
-	
+
 	function rejectTodo($id){
 		return msg_reject_todo($id);
 	}

@@ -24,7 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 $l_we_class["ChangePark"] = "U kunt dit attribuut alleen wijzigen als het document niet is gepubliceerd!";
 $l_we_class["fieldusers"] = "Gebruikers";
@@ -170,6 +169,12 @@ $l_we_class["grant_language"] = "Wijzig taal";
 $l_we_class["grant_language_expl"] = "Wijzig de taal van alle bestanden en directories die zich bevinden in de huidige directorie naar de bovenstaande instellingen.";
 $l_we_class["grant_language_ok"] = "Taal is succesvol gewijzigd!";
 $l_we_class["grant_language_notok"] = "Er is een fout opgetreden tijdens het wijzigen van de taal!";
+
+$l_we_class["grant_tid"] = "Change display document"; // TRANSLATE
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";// TRANSLATE
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";// TRANSLATE
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";// TRANSLATE
+
 $l_we_class["notValidFolder"] = "De gekozen directory is niet geldig!";
 
 
@@ -179,4 +184,51 @@ $l_we_class["image_edit_null_not_allowed"] = "In de velden Breedte en Hoogte zij
 
 $l_we_class['doctype_changed_question'] = "Should the default values for the document type be applied for this document?"; // TRANSLATE
 $l_we_class['availableAfterSave'] = "The feature is only available after saving the entry."; // TRANSLATE
-?>
+
+$l_we_class['properties'] = 'Eigenschappen';
+$l_we_class['path'] = 'Pad';
+$l_we_class['adoptToAllInferiorDocuments'] = 'adopteer voor alle inferieure documenten';
+$l_we_class['filename'] = 'Bestandsnaam';
+$l_we_class['extension'] = 'Extensie';
+$l_we_class['dir'] = 'Directorie';
+$l_we_class['document'] = 'Document'; // TRANSLATE
+$l_we_class['upload_will_replace'] = 'Door gebruik van de "upload" knop kunt u het bestaande bestand vervangen. Als u een ander bestand of meerdere bestand tegelijk wilt uploaden, gebruik dan de import functie of ga opnieuw naar deze pagina via het menu Bestand.';
+$l_we_class['upload_single_files'] = 'ATTENTIE: Let er op dat u met deze functie alleen losse bestanden kunt uploaden. Gebruik om meerdere bestanden tegelijk te uploaden de import functie, welke bereikbaar is via het menu Bestand.';
+$l_we_class['none'] = '--Geen--';
+$l_we_class['nodoctype'] = '--geen--';
+$l_we_class['doctype'] = 'Document type'; // TRANSLATE
+$l_we_class['standard_workspace'] = 'Standaard werkgebied';
+$l_we_class['standard_template'] = 'Sjabloon';
+$l_we_class['template'] = 'Sjabloon';
+$l_we_class['no_template'] = 'Geen sjabloon';
+$l_we_class['IsDynamic'] = 'Genereer dynamische pagina';
+$l_we_class['IsSearchable'] = 'kan doorzocht worden?';
+$l_we_class['InGlossar'] = 'Not allowed for automatic glossary replacement'; // TRANSLATE //TRANSLATE
+$l_we_class['metainfo'] = 'Meta tags'; // TRANSLATE
+$l_we_class['Title'] = 'Titel';
+$l_we_class['Keywords'] = 'Sleutelwoorden';
+$l_we_class['Description'] = 'Omschrijving';
+$l_we_class['urlfield0'] = 'URL field';// TRANSLATE
+$l_we_class['urlfield1'] = 'URL field 1';// TRANSLATE
+$l_we_class['urlfield2'] = 'URL field 2';// TRANSLATE
+$l_we_class['urlfield3'] = 'URL field 3';// TRANSLATE
+$l_we_class['Charset'] = 'Karakterset';
+$l_we_class['moreProps'] = 'Meer eigenschappen';
+$l_we_class['lessProps'] = 'Minder eigenschappen';
+$l_we_class['owners'] = 'Eigenaars';
+$l_we_class['maincreator'] = 'Hoofdmaker';
+$l_we_class['otherowners'] = 'Verleen toegang aan de volgende gebruikers';
+$l_we_class['onlyOwner'] = 'Alleen maker';
+$l_we_class['limitedAccess'] = 'Beperkte toegang';
+$l_we_class['nobody'] = 'Niemand';
+$l_we_class['everybody'] = 'Iedereen';
+$l_we_class['noWorkspaces'] = 'Er zijn geen werkgebieden gedefinieerd in deze class!';
+$l_we_class['readOnly'] = 'Alleen lezen';
+$l_we_class['copyWeDoc'] = 'Kopieer webEdition pagina';
+$l_we_class['showTagwizard'] = 'Toon Tag Hulp';
+$l_we_class['hideTagwizard'] = 'Verberg Tag Hulp';
+$l_we_class['variant_fields'] = 'Velden';
+$l_we_class['variant_info'] = 'De volgende velden kunnen verschillende varianten bevatten. Selecteer a.u.b de velden met verschillende varianten.';
+$l_we_class['webUser'] = 'Customer'; // TRANSLATE
+$l_we_class['docList'] = 'Content'; // TRANSLATE
+$l_we_class['version'] = 'Versions'; // TRANSLATE

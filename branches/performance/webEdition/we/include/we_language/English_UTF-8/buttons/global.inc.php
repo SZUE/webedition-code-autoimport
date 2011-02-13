@@ -26,7 +26,6 @@
  * Language: English
  */
 
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 /*****************************************************************************
  * LOGIN-SCREEN
@@ -374,4 +373,152 @@ $l_button["revert_published"]["value"] = "Restore published version";
 $l_button["revert_published"]["alt"] = "Discard changes and restore published version.";
 $l_button["revert_published"]["width"] = 220;
 
-?>
+$l_button["delete_all"]["value"] = "Delete all";
+$l_button["delete_all"]["alt"]   = "";
+$l_button["delete_all"]["width"] = 100;
+
+$l_button["add"]["value"] = "Add";
+$l_button["add"]["alt"] = "";
+$l_button["add"]["width"] = 100;
+
+$l_button["select"]["value"] = "Select";
+$l_button["select"]["alt"] = "";
+$l_button["select"]["width"] = 100;
+
+$l_button["edit"]["value"] = "Edit";
+$l_button["edit"]["alt"] = "";
+$l_button["edit"]["width"] = 100;
+
+$l_button["editor"]["value"] = "Start Editor";
+$l_button["editor"]["alt"] = "";
+$l_button["editor"]["width"] = 100;
+
+$l_button["new_service"]["value"] = "New Service";
+$l_button["new_service"]["alt"] = "";
+$l_button["new_service"]["width"] = 100;
+
+$l_button["new_entry"]["value"] = "New Entry";
+$l_button["new_entry"]["alt"] = "";
+$l_button["new_entry"]["width"] = 100;
+
+$l_button["attributes"]["value"] = "Attributes...";
+$l_button["attributes"]["alt"] = "";
+$l_button["attributes"]["width"] = 100;
+
+$l_button["selectAll"]["value"] = "Select all";
+$l_button["selectAll"]["alt"]   = "Select complete text";
+$l_button["selectAll"]["width"] = 110;
+
+$l_button["deselectAll"]["value"] = "Deselect all";
+$l_button["deselectAll"]["alt"]   = "Deselect complete selection";
+$l_button["deselectAll"]["width"] = 110;
+
+$l_button["prepend"]["value"] = "Prepend";
+$l_button["prepend"]["alt"]   = "Insert selected text before the source code";
+$l_button["prepend"]["width"] = 110;
+
+$l_button["append"]["value"] = "Append";
+$l_button["append"]["alt"]   = "Insert selected text after the source code";
+$l_button["append"]["width"] = 110;
+
+$l_button["addCursorPosition"]["value"] = "Insert at cursor position";
+$l_button["addCursorPosition"]["alt"]   = "Insert selected text at cursor position";
+$l_button["addCursorPosition"]["width"] = 180;
+
+$l_button["startEditor"]["value"] = "Start editor";
+$l_button["startEditor"]["alt"]   = "Start editor by using the Editor-Plugin";
+$l_button["startEditor"]["width"] = 100;
+
+$l_button["refresh"]["value"] = "Refresh";
+$l_button["refresh"]["alt"]   = "";
+$l_button["refresh"]["width"] = 100;
+
+$l_button["ignore"]["value"] = "Ignore";
+$l_button["ignore"]["alt"]   = "";
+$l_button["ignore"]["width"] = 100;
+
+$l_button["change"]["value"] = "Change";
+$l_button["change"]["alt"]   = "";
+$l_button["change"]["width"] = 100;
+
+$l_button["apply"]["value"] = "Apply";
+$l_button["apply"]["alt"]   = "";
+$l_button["apply"]["width"] = 100;
+
+$l_button["check"]["value"] = "Check";
+$l_button["check"]["alt"]   = "";
+$l_button["check"]["width"] = 100;
+
+$l_button["iconview"]["value"] = "Iconview";
+$l_button["iconview"]["alt"]   = "";
+$l_button["iconview"]["width"] = 100;
+
+$l_button["listview"]["value"] = "Listview";
+$l_button["listview"]["alt"]   = "";
+$l_button["listview"]["width"] = 100;
+
+$l_button["reindent"]["value"] = "Reindent code";
+$l_button["reindent"]["alt"]   = "";
+$l_button["reindent"]["width"] = 100;
+
+
+$l_button["btn_messages_copy"]["alt"] = "Copy message(s)";
+$l_button["btn_messages_create"]["alt"] = "Create message";
+$l_button["btn_messages_cut"]["alt"] = "Cut message(s)";
+$l_button["btn_messages_paste"]["alt"] = "Paste message(s)";
+$l_button["btn_messages_reply"]["alt"] = "Reply to message(s)";
+$l_button["btn_messages_tasks"]["alt"] = "Launch Task System";
+$l_button["btn_messages_trash"]["alt"] = "Delete message(s)";
+$l_button["btn_messages_update"]["alt"] = "Look for new messages";
+
+$l_button["btn_task_copy"]["alt"] = "Copy task(s)";
+$l_button["btn_task_create"]["alt"] = "Create task(s)";
+$l_button["btn_task_cut"]["alt"] = "Cut task(s)";
+$l_button["btn_task_forward"]["alt"] = "Forward task(s)";
+$l_button["btn_task_messages"]["alt"] = "Launch Messaging System";
+$l_button["btn_task_paste"]["alt"] = "Paste task(s)";
+$l_button["btn_task_reject"]["alt"] = "Reject task(s)";
+$l_button["btn_task_status"]["alt"] = "Update status";
+$l_button["btn_task_trash"]["alt"] = "Delete task(s)";
+$l_button["btn_task_update"]["alt"] = "Look for new tasks";
+$l_button["btn_add_field"]["alt"] = "Add field";
+$l_button["btn_add_link"]["alt"] = "Add hyperlink";
+$l_button["btn_add_listelement"]["alt"] = "Add list element";
+$l_button["btn_add_schedule"]["alt"] = "Add timed task";
+$l_button["btn_add_template"]["alt"] = "Add template";
+$l_button["btn_add_image"]["alt"] = "Add image";
+$l_button["btn_add_thumbnail"]["alt"] = "Add Thumbnail";
+$l_button["btn_add_flash"]["alt"] = "Add Flash movie";
+$l_button["btn_add_quicktime"]["alt"] = "Add Quicktime movie";
+$l_button["btn_add_file"]["alt"] = "Add file";
+$l_button["btn_add_cat"]["alt"] = "Add category";
+$l_button["btn_fs_back"]["alt"] = "One level back";
+$l_button["btn_new_dir"]["alt"] = "Add new directory";
+$l_button["btn_new_bannergroup"]["alt"] = "Add new banner group";
+
+$l_button["btn_direction_down"]["alt"] = "Down";
+$l_button["btn_direction_left"]["alt"] = "Left";
+$l_button["btn_direction_right"]["alt"] = "Right";
+$l_button["btn_direction_up"]["alt"] = "Up";
+
+$l_button["btn_edit_edit"]["alt"] = "Edit";
+$l_button["btn_edit_flash"]["alt"] = "Select Flash file";
+$l_button["btn_edit_image"]["alt"] = "Edit image";
+$l_button["btn_edit_include"]["alt"] = "Edit include file";
+$l_button["btn_edit_link"]["alt"] = "Edit hyperlink";
+$l_button["btn_edit_list"]["alt"] = "Edit list";
+$l_button["btn_edit_object"]["alt"] = "Edit object";
+$l_button["btn_edit_pdf"]["alt"] = "Select PDF file";
+$l_button["btn_edit_quicktime"]["alt"] = "Edit Quicktime file";
+$l_button["btn_edit_real"]["alt"] = "Select Real Player file";
+$l_button["btn_edit_wmp"]["alt"] = "Select Windows Media Player file";
+
+$l_button["btn_function_plus"]["alt"] = "Add";
+$l_button["btn_function_search"]["alt"] = "Search";
+$l_button["btn_function_trash"]["alt"] = "Delete";
+$l_button["btn_function_view"]["alt"] = "View";
+
+$l_button["btn_select_image"]["alt"] = "Select image";
+$l_button["btn_help"]["alt"] = "Help";
+
+$l_button["btn_open_sidebar"]["alt"] = "Open sidebar";

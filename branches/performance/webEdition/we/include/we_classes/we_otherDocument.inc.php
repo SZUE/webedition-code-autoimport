@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_binaryDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 
 /*  a class for handling flashDocuments. */
 class we_otherDocument extends we_binaryDocument
@@ -71,12 +70,12 @@ class we_otherDocument extends we_binaryDocument
 
 	/* gets the HTML for including in HTML-Docs */
 	function getHtml($dyn=false){
-		global $lngDir,$we_transaction,$l_global;
+		global $lngDir,$we_transaction;
 		$_data = $this->getElement("data");
 		if ($this->ID || ($_data && !is_dir($_data) && is_readable($_data))) {
 			$this->html = '<p class="defaultfont"><b>Datei</b>: '.$this->Text.'</p>';
 		}else{
-			$this->html = $GLOBALS["l_global"]["no_file_uploaded"];
+			$this->html = g_l('global',"[no_file_uploaded]");
 		}
 		return $this->html;
 	}

@@ -20,13 +20,10 @@
 
 if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/global.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/linklist_edit.inc.php');
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
 
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
@@ -78,10 +75,10 @@ function we_tag($name, $attribs=array(), $content = ''){
 						include_once ($toolinc);
 					} else {
 						if (strpos(trim($name), 'if') === 0) { // this ifTag does not exist
-							print parseError(sprintf($GLOBALS['l_parser']['tag_not_known'], trim($name)));
+							print parseError(sprintf(g_l('parser','[tag_not_known]'), trim($name)));
 							return false;
 						}
-						return parseError(sprintf($GLOBALS['l_parser']['tag_not_known'], trim($name)));
+						return parseError(sprintf(g_l('parser','[tag_not_known]'), trim($name)));
 					}
 
 				}
@@ -223,7 +220,6 @@ function makeArrayFromAttribs($attr){
 }
 
 function correctDateFormat($format, $t = ''){
-	global $l_dayShort, $l_monthLong, $l_dayLong, $l_monthShort;
 	if (!$t)
 		$t = time();
 
@@ -253,16 +249,16 @@ function correctDateFormat($format, $t = ''){
 	$format = str_replace('l', '%%%2%%%', $format);
 	$format = str_replace('M', '%%%3%%%', $format);
 
-	$foo = $l_dayShort[date('w', $t)];
+	$foo = g_l('date','[day][short]['.date('w', $t).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%0%%%', $foo, $format);
-	$foo = $l_monthLong[date('n', $t) - 1];
+	$foo = g_l('date','[month][long]['.(date('n', $t) - 1).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%1%%%', $foo, $format);
-	$foo = $l_dayLong[date('w', $t)];
+	$foo = g_l('date','[day][long]['.date('w', $t).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%2%%%', $foo, $format);
-	$foo = $l_monthShort[date('n', $t) - 1];
+	$foo = g_l('date','[month][short]['.(date('n', $t) - 1).']');
 	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
 	$format = str_replace('%%%3%%%', $foo, $format);
 	return $format;
@@ -408,7 +404,7 @@ function we_tag_ifNotCaptcha($attribs, $content){
 }
 
 function we_tag_ifNotDeleted($attribs, $content){
-	return we_tag('ifDeleted',$attribs, $content);
+	return !we_tag('ifDeleted',$attribs, $content);
 }
 
 function we_tag_ifNotDoctype($attribs,$content){

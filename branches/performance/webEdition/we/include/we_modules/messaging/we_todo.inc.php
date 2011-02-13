@@ -26,8 +26,6 @@ include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_defs.inc.php");
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
-
 /* todo object class */
 class we_todo extends we_msg_proto {
 
@@ -44,13 +42,13 @@ class we_todo extends we_msg_proto {
 
     /* ID from the database record */
     var $ID=0;
-    
+
     /* Database Object */
     var $DB_WE;
-    
+
     /* Flag which is set when the file is not new */
     var $wasUpdate=0;
-    
+
     var $InWebEdition = 0;
 
     var $selected_message = array();
@@ -92,10 +90,10 @@ class we_todo extends we_msg_proto {
     /*****************************************************************/
     /* Class Methods *************************************************/
     /*****************************************************************/
-    
+
     /* Constructor */
     function we_todo() {
-    	$this->Short_Description =   $GLOBALS["l_messaging"]["we_todo"];
+    	$this->Short_Description =   g_l('modules_messaging',"[we_todo]");
 		$this->Name = 'todo_' . md5(uniqid(rand()));
 		array_push($this->persistent_slots, 'ClassName','Name','ID', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids', 'search_fields', 'default_folders');
 		$this->DB = new DB_WE();
@@ -104,7 +102,7 @@ class we_todo extends we_msg_proto {
     function init($sessDat = '') {
 	    $init_folders = array();
 
-	    if($sessDat) 
+	    if($sessDat)
 		    $this->initSessionDat($sessDat);
 
 	    foreach ($this->default_folders as $id => $fid)
@@ -127,7 +125,7 @@ class we_todo extends we_msg_proto {
 				    eval('$this->' . $this->persistent_slots[$i] . '=$sessDat[0][$this->persistent_slots[$i]];');
 			    }
 		    }
-    
+
 		    if (isset($sessDat[1])) {
 			    $this->elements = $sessDat[1];
 		    }
@@ -146,14 +144,12 @@ class we_todo extends we_msg_proto {
 
     /* Methods dealing with USER_TABLE and other userstuff */
     function userid_to_username($id) {
-	global $l_messaging;
-
 	$db2 = new DB_WE();
 	$db2->query('SELECT username FROM '.USER_TABLE.' WHERE ID=' . abs($id));
 	if ($db2->next_record())
 	    return $db2->f('username');
 
-	return $l_messaging['userid_not_found'];
+	return g_l('modules_messaging','[userid_not_found]');
     }
 
     function username_to_userid($username) {
@@ -217,7 +213,7 @@ class we_todo extends we_msg_proto {
 
 	$this->DB->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE ParentID=' . abs($id) . ' AND UserID=' . $this->userid);
 	while ($this->DB->next_record())
-		$fids[] = $this->DB->f('ID');    
+		$fids[] = $this->DB->f('ID');
 
 	foreach ($fids as $fid)
 		$fids = array_merge($fids, $this->get_f_children($fid));
@@ -227,8 +223,8 @@ class we_todo extends we_msg_proto {
 
     function delete_items(&$i_headers) {
 	if (empty($i_headers))
-	    return -1; 
-	    
+	    return -1;
+
 	$cond = '';
 	foreach ($i_headers as $ih) {
 	    $cond .= 'ID=' . addslashes($ih['_ID']) . ' OR ';
@@ -256,8 +252,6 @@ class we_todo extends we_msg_proto {
     }
 
     function &update_status(&$data, &$msg, $userid = '') {
-	global $l_messaging;
-
 	$ret = array();
 	$ret['changed'] = 0;
 	$set_query = array();
@@ -267,12 +261,12 @@ class we_todo extends we_msg_proto {
 	}
 
 	if (empty($data)) {
-	    $ret['msg'] = $l_messaging['todo_no_changes'];
+	    $ret['msg'] = g_l('modules_messaging','[todo_no_changes]');
 	    return $ret;
 	}
 
 	if (empty($msg)) {
-	    $ret['msg'] = $l_messaging['todo_none_selected'];
+	    $ret['msg'] = g_l('modules_messaging','[todo_none_selected]');
 	    return $ret;
 	}
 
@@ -280,17 +274,17 @@ class we_todo extends we_msg_proto {
 	    /* XXX: use current assignee instead of userid */
 	    if ($this->history_update($msg['_ID'], $userid, $userid, $data['todo_comment'], MSG_ACTION_COMMENT)) {
 		/* XXX: ? */
-		$ret['msg'] = $l_messaging['update_successful'];
+		$ret['msg'] = g_l('modules_messaging','[update_successful]');
 		$ret['changed'] = 1;
 	    } else {
-		$ret['msg'] = $l_messaging['error_occured'];
+		$ret['msg'] = g_l('modules_messaging','[error_occured]');
 		$ret['err'] = 1;
 	    }
 	}
 
 	if (isset($data['todo_status'])) {
 	    if (!is_numeric($data['todo_status']) || ($data['todo_status'] < 0)) {
-		$ret['msg'] = $l_messaging['todo_status_inv_input'];
+		$ret['msg'] = g_l('modules_messaging','[todo_status_inv_input]');
 		$ret['err'] = 1;
 		return $ret;
 	    }
@@ -298,7 +292,7 @@ class we_todo extends we_msg_proto {
 	    $set_query[] = 'headerStatus=' . addslashes($data['todo_status']);
 	    if ($data['todo_status'] >= 100) {
 		if ($this->default_folders[MSG_FOLDER_DONE] < 0) {
-		    $ret['msg'] = $l_messaging['todo_move_error'] . ': ' . $l_messaging['no_done_folder'];
+		    $ret['msg'] = g_l('modules_messaging','[todo_move_error]'). ': ' . g_l('modules_messaging','[no_done_folder]');
 		    return $ret;
 		} else {
 		    $set_query[] = 'ParentID=' . $this->default_folders[MSG_FOLDER_DONE];
@@ -315,7 +309,7 @@ class we_todo extends we_msg_proto {
 	}
 
 	$this->DB->query('UPDATE ' . mysql_real_escape_string($this->table) . ' SET ' . join(', ', $set_query) . ' WHERE ID=' . abs($msg['_ID']));
-	$ret['msg'] = $l_messaging['update_successful'];
+	$ret['msg'] = g_l('modules_messaging','[update_successful]');
 	$ret['changed'] = 1;
 	$ret['err'] = 0;
 
@@ -324,8 +318,6 @@ class we_todo extends we_msg_proto {
 
     /* Forward is actually "reassign", so no copy is made */
     function forward(&$rcpts, &$data, &$msg) {
-	global $l_messaging;
-
 	$results = array();
 	$results['err'] = array();
 	$results['ok'] = array();
@@ -335,7 +327,7 @@ class we_todo extends we_msg_proto {
 	$rcpt = $rcpts[0];
 
 	if (($userid = $this->username_to_userid($rcpt)) == -1) {
-	    $results['err'][] = $l_messaging['username_not_found'];
+	    $results['err'][] = g_l('modules_messaging','[username_not_found]');
 	    $results['failed'][] = $rcpt;
 	    return $results;
 	}
@@ -343,7 +335,7 @@ class we_todo extends we_msg_proto {
 	$this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->table) . ' WHERE Properties=' . MSG_TODO_PROP_IMMOVABLE . ' AND ID=' . abs($msg['int_hdrs']['_ID']));
 	$this->DB->next_record();
 	if ($this->DB->f('ID') == $msg['int_hdrs']['_ID']) {
-	    $results['err'][] = $l_messaging['todo_no_forward'];
+	    $results['err'][] = g_l('modules_messaging','[todo_no_forward]');
 	    $results['failed'][] = $this->userid;
 	    return $results;
 	}
@@ -352,7 +344,7 @@ class we_todo extends we_msg_proto {
 	$this->DB->next_record();
 	$in_folder = $this->DB->f('ID');
 	if (!isset($in_folder) || $in_folder == '') {
-	    $results['err'][] = $l_messaging['no_inbox_folder'];
+	    $results['err'][] = g_l('modules_messaging','[no_inbox_folder]');
 	    $results['failed'][] = $rcpt;
 	    return $results;
 	}
@@ -361,7 +353,7 @@ class we_todo extends we_msg_proto {
 	    $this->DB->query('UPDATE ' . $this->table . " SET ParentID=$in_folder, UserID=" . abs($userid) . ', seenStatus=0, headerAssigner=' . abs($this->userid) . " WHERE ID=" . addslashes($msg['int_hdrs']['_ID']) . ' AND UserID=' . abs($this->userid));
 	    $results['ok'][] = $rcpt;
 	} else {
-	    $results['err'][] = $l_messaging['todo_err_history_update'];
+	    $results['err'][] = g_l('modules_messaging','[todo_err_history_update]');
 	    $results['failed'][] = $rcpt;
 	}
 
@@ -369,37 +361,35 @@ class we_todo extends we_msg_proto {
     }
 
     function reject(&$msg, &$data) {
-		global $l_messaging;
-	
 		$results = array();
 		$results['err'] = array();
 		$results['ok'] = array();
 		$results['failed'] = array();
-	
-	
+
+
 		$this->DB->query('SELECT ID FROM '.MSG_FOLDERS_TABLE.' WHERE obj_type=' . MSG_FOLDER_REJECT . ' AND UserID=' . abs($msg['int_hdrs']['_from_userid']));
 		$this->DB->next_record();
 		$rej_folder = $this->DB->f('ID');
 		if (empty($rej_folder)) {
-		    $results['err'][] = $l_messaging['no_reject_folder'];
+		    $results['err'][] = g_l('modules_messaging','[no_reject_folder]');
 		    $results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid']);
 		    return $results;
 		}
-		
+
 		$this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->table) . ' WHERE Properties=' . MSG_TODO_PROP_IMMOVABLE . ' AND ID=' . abs($msg['int_hdrs']['_ID']));
 		$this->DB->next_record();
 		if ($this->DB->f('ID') == $msg['int_hdrs']['_ID']) {
-		    $results['err'][] = $l_messaging['todo_no_reject'];
+		    $results['err'][] = g_l('modules_messaging','[todo_no_reject]');
 		    $results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid']);
 		    return $results;
 		}
-	
+
 		$this->DB->query('UPDATE ' . mysql_real_escape_string($this->table) . ' SET UserID=' . abs($msg['int_hdrs']['_from_userid']) . ', ParentID=' . abs($rej_folder) . ' WHERE ID=' . abs($msg['int_hdrs']['_ID']));
 		$this->history_update($msg['int_hdrs']['_ID'], $msg['int_hdrs']['_from_userid'], $this->userid, $data['body'], MSG_ACTION_REJECT);
-	
+
 		$results['err'][] = '';
 		$results['ok'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid']);
-	
+
 		return $results;
     }
 
@@ -465,8 +455,6 @@ class we_todo extends we_msg_proto {
     }
 
     function &send(&$rcpts, &$data) {
-	global $l_messaging;
-
 	$results = array();
 	$results['err'] = array();
 	$results['ok'] = array();
@@ -492,12 +480,12 @@ class we_todo extends we_msg_proto {
 		    $this->DB->next_record();
 		    $in_folder = $this->DB->f('ID');
 		    if (!isset($in_folder) || $in_folder == '') {
-			$results['err'][] = $l_messaging['no_inbox_folder'];
+			$results['err'][] = g_l('modules_messaging','[no_inbox_folder]');
 			$results['failed'][] = $rcpt;
 			continue;
 		    }
 		} else {
-		    $results['err'][] = $l_messaging['no_inbox_folder'];
+		    $results['err'][] = g_l('modules_messaging','[no_inbox_folder]');
 		    $results['failed'][] = $rcpt;
 		    continue;
 		}
@@ -522,8 +510,8 @@ class we_todo extends we_msg_proto {
 	    $sf_uoff = arr_offset_arraysearch($arr, $criteria['search_fields']);
 
 	    if ($sf_uoff > -1) {
-		$sfield_cond .= 'u.username LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR 
-				u.First LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR 
+		$sfield_cond .= 'u.username LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR
+				u.First LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR
 				u.Second LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR ';
 
 		array_splice($criteria['search_fields'], $sf_uoff, 1);
@@ -540,19 +528,19 @@ class we_todo extends we_msg_proto {
 	    $folders_cond = $criteria['folder_id'];
 
 	    if ($this->cached['sortfield'] != 1 || $this->cached['sortorder'] != 1) {
-		$this->init_sortstuff($criteria['folder_id']); 
+		$this->init_sortstuff($criteria['folder_id']);
 	    }
 
 	    $this->Folder_ID = $criteria['folder_id'];
 	}
 
 	if (isset($criteria['message_ids'])) {
-	    $message_ids_cond = join(' OR m.ID=', $criteria['message_ids']); 
+	    $message_ids_cond = join(' OR m.ID=', $criteria['message_ids']);
 	}
 
 	$this->selected_set = array();
-	$query = 'SELECT m.ID, m.ParentID, m.headerDeadline, m.headerSubject, m.headerCreator, m.Priority, m.seenStatus, m.headerStatus, u.username 
-		FROM ' . $this->table . ' as m, '.USER_TABLE.' as u 
+	$query = 'SELECT m.ID, m.ParentID, m.headerDeadline, m.headerSubject, m.headerCreator, m.Priority, m.seenStatus, m.headerStatus, u.username
+		FROM ' . $this->table . ' as m, '.USER_TABLE.' as u
 		WHERE ((m.msg_type=' . $this->sql_class_nr . ' AND m.obj_type=' . MSG_TODO_NR . ') ' . ($sfield_cond == '' ?  '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") .  ") AND m.UserID=" . $this->userid . " AND m.headerCreator=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder];
 	$this->DB->query($query);
@@ -564,8 +552,8 @@ class we_todo extends we_msg_proto {
 	while ($this->DB->next_record()) {
 	    if (!($this->DB->f('seenStatus') & MSG_STATUS_SEEN))
 		$seen_ids[] = $this->DB->f('ID');
-	
-	    $this->selected_set[] = 
+
+	    $this->selected_set[] =
 		array('ID' => $i++,
 		      'hdrs' => array('Deadline' => $this->DB->f('headerDeadline'),
 					'Subject' => $this->DB->f('headerSubject'),
@@ -652,5 +640,3 @@ class we_todo extends we_msg_proto {
 	return $ret;
     }
 }
-
-?>

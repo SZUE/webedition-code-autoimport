@@ -74,7 +74,7 @@ class we_schedpro{
 ';
 
 		for($i=1;$i<=12;$i++){
-			$months .= '<td>' . we_forms::checkbox("1", $this->months[$i-1], "check_we_schedule_month".$i."_".$this->nr, $GLOBALS["l_monthShort"][$i-1], false, "defaultfont", "this.form.elements['we_schedule_month".$i."_".$this->nr."'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+			$months .= '<td>' . we_forms::checkbox("1", $this->months[$i-1], "check_we_schedule_month".$i."_".$this->nr, g_l('date','[month][short]['.($i-1).']'), false, "defaultfont", "this.form.elements['we_schedule_month".$i."_".$this->nr."'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 			  '<input type="hidden" name="we_schedule_month'.$i.'_'.$this->nr.'" value="'.$this->months[$i-1].'" /></td>';
 		}
 
@@ -112,7 +112,7 @@ class we_schedpro{
 ';
 
 		for($i=1;$i<=7;$i++){
-			$wd .= '<td>' .	we_forms::checkbox("1", $this->weekdays[$i-1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", $GLOBALS["l_dayShort"][$i-1], false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)")
+			$wd .= '<td>' .	we_forms::checkbox("1", $this->weekdays[$i-1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date','[day][short]['.($i-1).']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)")
      			.  '<input type="hidden" name="we_schedule_wday'.$i.'_'.$this->nr.'" value="'.$this->weekdays[$i-1].'" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
@@ -204,7 +204,7 @@ class we_schedpro{
 			}
 
 			$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $_rootDirID . "')");
-			
+
 			$yuiSuggest =& weSuggest::getInstance();
 			$yuiSuggest->setAcId("WsDir");
 			$yuiSuggest->setContentType("folder");
@@ -216,8 +216,8 @@ class we_schedpro{
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setWidth(320);
 			$yuiSuggest->setSelectButton($button);
-			
-			
+
+
 			$extracont = $yuiSuggest->getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
 			$extraheadl = $GLOBALS["l_schedpro"]["dirctory"];
 		}
@@ -355,9 +355,9 @@ $this->getSpacerRowHTML().
 		$deleted = false;
 		$changeTmpDoc=false;
 		$_SESSION["Versions"]['fromScheduler'] = true;
-		
+
 		foreach($schedFile["value"] as $s){
-			
+
 			if($s["task"] == SCHEDULE_DELETE){
 				$GLOBALS["NOT_PROTECT"]=true;
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
@@ -418,7 +418,7 @@ $this->getSpacerRowHTML().
 					$DB_WE->query("UPDATE ".SCHEDULE_TABLE." SET Wann='".$nextWann."' WHERE DID='".abs($id)."' AND ClassName!='we_objectFile' AND Type='".$s["type"]."' AND Was='".$s["task"]."'");
 				}
 			}
-			
+
 		}
 
 		if($changeTmpDoc){
@@ -431,11 +431,11 @@ $this->getSpacerRowHTML().
 				$GLOBALS["we_doc"]->we_unpublish();
 			}
 		}
-				
+
 		$GLOBALS["we_doc"] = $doc_save;
-		
+
 		$_SESSION["Versions"]['fromScheduler'] = false;
-			
+
 		$DB_WE->query("UPDATE ".SCHEDULE_TABLE." SET Active=0 WHERE Wann<='".$now."' AND Schedpro != '' AND Active=1 AND TYPE='".SCHEDULE_TYPE_ONCE."'");
 	}
 
@@ -470,7 +470,7 @@ $this->getSpacerRowHTML().
 				}
 			}
 		}
-		
+
 		foreach($scheddyFile as $id=>$s){
 			we_schedpro::processSchedule($id,$s,$now,$DB_WE);
 		}

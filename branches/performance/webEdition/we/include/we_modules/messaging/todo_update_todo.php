@@ -25,12 +25,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_format.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop($l_messaging['wintitle'].' - Update Status');
+htmlTop(g_l('modules_messaging','[wintitle]').' - Update Status');
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
@@ -57,7 +56,7 @@ print STYLESHEET;
   </head>
   <body class="weDialogBody"  onUnload="doUnload();">
 <?php
-$heading = $l_messaging['todo_status_update'];
+$heading = g_l('modules_messaging','[todo_status_update]');
 $compose = new we_format('update', $messaging->selected_message);
 $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
@@ -69,31 +68,31 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 	echo hidden('mode', $_REQUEST['mode']);
 
     $parts = array();
-	array_push	($parts, array(	"headline" => $l_messaging['assigner'],
+	array_push	($parts, array(	"headline" => g_l('modules_messaging','[assigner]'),
 								"html"     => $compose->get_from(),
 								"space"    => 120,
 								"noline"   => 1
 								)
 				);
-	array_push	($parts, array(	"headline" => $l_messaging['subject'],
+	array_push	($parts, array(	"headline" => g_l('modules_messaging','[subject]'),
 								"html"     => $compose->get_subject(),
 								"space"    => 120,
 								"noline"   => 1
 								)
 				);
-	array_push	($parts, array(	"headline" => $l_messaging['deadline'],
+	array_push	($parts, array(	"headline" => g_l('modules_messaging','[deadline]'),
 								"html"     => getDateInput2('td_deadline%s', $compose->get_deadline()),
 								"space"    => 120,
 								"noline"   => 1
 								)
 				);
-	array_push	($parts, array(	"headline" => $l_messaging['status'],
+	array_push	($parts, array(	"headline" => g_l('modules_messaging','[status]'),
 								"html"     => htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
 								"space"    => 120,
 								"noline"   => 1
 								)
 				);
-	array_push	($parts, array(	"headline" => $l_messaging['priority'],
+	array_push	($parts, array(	"headline" => g_l('modules_messaging','[priority]'),
 								"html"     => html_select('todo_priority', 1, array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10), $compose->get_priority()),
 								"space"    => 120,
 								)
@@ -112,7 +111,7 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 								)
 				);
 
-	array_push	($parts, array(	"headline" => $l_messaging['comment'],
+	array_push	($parts, array(	"headline" => g_l('modules_messaging','[comment]'),
 								"html"     => '<textarea cols="40" rows="8" name="todo_comment"></textarea>',
 								"space"    => 120,
 								)

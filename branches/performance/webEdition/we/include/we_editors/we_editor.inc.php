@@ -21,8 +21,6 @@
 $we_EDITOR = true;
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/date.inc.php');
 
 protect();
 // prevent persmissions overriding
@@ -535,7 +533,7 @@ else {
 									if($we_doc->i_publInScheduleTable()) {
 											$foo = $we_doc->getNextPublishDate();
 										if($foo) {
-											$we_responseText .= "\\n".sprintf($l_we_editor[$we_doc->ContentType]["autoschedule"],date($l_global["date_format"],$foo));
+											$we_responseText .= "\\n".sprintf($l_we_editor[$we_doc->ContentType]["autoschedule"],date(g_l('date','[format][default]'),$foo));
 											$we_responseTextType = WE_MESSAGE_NOTICE;
 
 										}

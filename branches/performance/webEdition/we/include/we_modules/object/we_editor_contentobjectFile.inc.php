@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_browser_check.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tag.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/js_gui/weOrderContainer.class.php");
@@ -44,14 +43,14 @@ if (is_array($GLOBALS["we_doc"]->DefArray)){
 				array_push($parts,
 							array(
 								"headline"=>"",
-								"html"=>'*'.$GLOBALS["l_global"]["required_fields"],
+								"html"=>'*'.g_l('global',"[required_fields]"),
 								"space"=>0,
 								"name"=>uniqid(""),
 							)
 						);
 				break;
 			}
-	
+
 		}
 	}
 }

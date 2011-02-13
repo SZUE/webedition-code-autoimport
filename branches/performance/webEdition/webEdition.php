@@ -18,10 +18,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
@@ -157,7 +155,7 @@ var setPageNrCallback = {
 	success: function(o) {
 	},
 	failure: function(o) {
-		alert("<?php echo $GLOBALS["l_global"]["unable_to_call_setpagenr"];?>");
+		alert("<?php echo g_l('global',"[unable_to_call_setpagenr]");?>");
 	}
 }
 
@@ -351,9 +349,9 @@ function we_repl(target,url) {
 		try {
 			// use 2 loadframes to avoid missing cmds
 			if (target.name == "load" || target.name == "load2") {
-	
+
 				if (top.lastUsedLoadFrame == target.name) {
-	
+
 					if (target.name == "load") {
 						target = self.load2;
 					} else {
@@ -364,7 +362,7 @@ function we_repl(target,url) {
 			}
 		}
 		catch(e) {
-			// Nothing	
+			// Nothing
 		}
 		target.location.replace(url);
 	}
@@ -416,7 +414,7 @@ function we_cmd() {
 
 	if (window.screen) {
 		h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
-		//h = screen.availHeight - <?php print ($BROWSER == "IE" && $SYSTEM == "WIN") ? 73 : (($BROWSER == "NN" && $SYSTEM == "WIN") ? 50: 40) ?>;
+		//h = screen.availHeight - <?php print ($GLOBALS['BROWSER'] == "IE" && $SYSTEM == "WIN") ? 73 : (($GLOBALS['BROWSER'] == "NN" && $SYSTEM == "WIN") ? 50: 40) ?>;
 		w = screen.availWidth; // - <?php print ($SYSTEM == "WIN") ? 10 : 20 ?>;
 	}
 
@@ -500,14 +498,14 @@ function we_cmd() {
 		case "loadSidebarDocument":
 			top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location.href = url;
 			break;
-		
+
 		case "versions_preview":
 			new jsWindow(url,"version_preview",-1,-1,1000,750,true,false,true,false);
 			break;
 		case "versions_wizard":
 			new jsWindow(url,"versions_wizard",-1,-1,600,620,true,false,true);
 			break;
-		
+
 		case "versioning_log":
 			new jsWindow(url,"versioning_log",-1,-1,600,500,true,false,true);
 			break;
@@ -518,7 +516,7 @@ function we_cmd() {
 			var path     = top.weEditorFrameController.getActiveEditorFrame().getEditorDocumentPath();
 			var isFolder = cType == "folder" ? 1 : 0;
 			var hasPerm = 0;
-			
+
 			if(wePerms.ADMINISTRATOR) {
 				hasPerm = 1;
 			} else if(isFolder) {
@@ -554,16 +552,16 @@ function we_cmd() {
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
-				<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_global"]["no_document_opened"], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('global',"[no_document_opened]"), WE_MESSAGE_ERROR); ?>
 			}
 			break;
-			
+
 		case "delete_single_document":
 			var cType    = top.weEditorFrameController.getActiveEditorFrame().getEditorContentType();
 			var eTable   = top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable();
 			var isFolder = cType == "folder" ? 1 : 0;
 			var hasPerm = 0;
-			
+
 			if(wePerms.ADMINISTRATOR) {
 				hasPerm = 1;
 			} else if(isFolder) {
@@ -598,7 +596,7 @@ function we_cmd() {
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
-				<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_global"]["no_document_opened"], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('global',"[no_document_opened]"), WE_MESSAGE_ERROR); ?>
 			}
 			break;
 		case "do_delete":
@@ -653,6 +651,7 @@ function we_cmd() {
 			top.drawTree();
 			break;
         case "changeLanguageRecursive":
+		case "changeTriggerIDRecursive":
 			we_repl(self.load,url,arguments[0]);
 			break;
 		case "logout":
@@ -764,7 +763,7 @@ function we_cmd() {
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
 				echo 'new jsWindow("http://documentation.webedition.org/wiki/de/","help_documentation",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://documentation.webedition.org/wiki/en/","help_documentation",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://documentation.webedition.org/wiki/en/","help_documentation",-1,-1,960,700,true,true,true,true);';
 			}
 			?>
 			break;
@@ -779,7 +778,7 @@ function we_cmd() {
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
 				echo 'new jsWindow("http://tags.webedition.org/de/","help_tagreference",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://tags.webedition.org/en/","help_tagreference",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://tags.webedition.org/en/","help_tagreference",-1,-1,960,700,true,true,true,true);';
 			}
 			?>
 			break;
@@ -788,7 +787,7 @@ function we_cmd() {
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
 				echo 'new jsWindow("http://demo.webedition.org/de/","help_demo",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://demo.webedition.org/en/","help_demo",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://demo.webedition.org/en/","help_demo",-1,-1,960,700,true,true,true,true);';
 			}
 			?>
 			break;
@@ -797,7 +796,7 @@ function we_cmd() {
 			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
 				echo 'new jsWindow("http://documentation.webedition.org/de/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
 			}  else {
-				echo 'new jsWindow("http://documentation.webedition.org/en/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';			
+				echo 'new jsWindow("http://documentation.webedition.org/en/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
 			}
 			?>
 			break;
@@ -871,25 +870,25 @@ function we_cmd() {
 		case "doImage_convertJPEG":
 		case "doImage_crop":
 		case "revert_published":
-			
+
 			// get editor root frame of active tab
 			var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
 
 			// get visible frame for displaying editor page
 			var _visibleEditorFrame = top.weEditorFrameController.getVisibleEditorFrame();
-						
+
 			// if cmd equals "reload_editpage" and there are parameters, attach them to the url
 			if(arguments[0] == "reload_editpage" && _currentEditorRootFrame.parameters){
 				url += _currentEditorRootFrame.parameters;
 			}
-			
-			// attach necessary parameters if available 
+
+			// attach necessary parameters if available
 			if ( arguments[0] == "reload_editpage" && arguments[1]){
 				url += '#f'+arguments[1];
 			}else if (arguments[0] == "remove_image" && arguments[2]){
 				url += '#f'+arguments[2];
 			}
-			
+
 			// focus visible editor frame
         	if(_visibleEditorFrame){
                 _visibleEditorFrame.focus();
@@ -905,25 +904,25 @@ function we_cmd() {
 						url += "&we_transaction="+arguments[2];
 					}
 					we_repl(_visibleEditorFrame,url,arguments[0]);
-					
+
 				}
         	}
 
 			break;
 		case "switch_edit_page":
-			
+
 			// get editor root frame of active tab
 			var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
-			
+
 			// get visible frame for displaying editor page
 			var _visibleEditorFrame = top.weEditorFrameController.getVisibleEditorFrame();
-			
+
 			// frame where the form should be sent from
 			var _sendFromFrame = _visibleEditorFrame;
-			
+
 			// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
 			var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
-			
+
 			// if we switch from WE_EDITPAGE_CONTENT to another page
 			if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
 				// clean body to avoid flickering
@@ -932,10 +931,10 @@ function we_cmd() {
 				top.weEditorFrameController.switchToNonContentEditor();
 				// set var to new active editor frame
 				_visibleEditorFrame = _currentEditorRootFrame.frames[1];
-				
+
 				// set flag to false
 				_isEditpageContent = false;
-				
+
 			// if we switch to WE_EDITPAGE_CONTENT from another page
 			} else if (!_isEditpageContent && arguments[1] == <?php print WE_EDITPAGE_CONTENT; ?>) {
 				// switch to content editor frame
@@ -945,18 +944,18 @@ function we_cmd() {
 				// set flag to false
 				_isEditpageContent = true;
 			}
-			
+
 			// frame where the form should be sent to
 			var _sendToFrame = _visibleEditorFrame;
-			
-			// get active transaction		
+
+			// get active transaction
 			var _we_activeTransaction = top.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
 
 			// if there are parameters, attach them to the url
 			if(_currentEditorRootFrame.parameters){
 				url += _currentEditorRootFrame.parameters;
 			}
-			
+
 			// focus the frame
         	if(_visibleEditorFrame){
                 _visibleEditorFrame.focus();
@@ -971,7 +970,7 @@ function we_cmd() {
 
 
         	if (_currentEditorRootFrame) {
-  
+
   				if (!we_sbmtFrm(_sendToFrame,url,_sendFromFrame)) {
  					// add we_transaction, if not set
 					if (!arguments[2]) {
@@ -979,7 +978,7 @@ function we_cmd() {
 					}
 					url += "&we_transaction="+arguments[2];
 					we_repl(_sendToFrame,url,arguments[0]);
-					
+
 				}
         	}
 
@@ -1086,8 +1085,8 @@ function we_cmd() {
 			doPublish(url,arguments[1],arguments[0]);
 			break;
 		case "save_document":
-			
-		
+
+
 			var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
 			if( _EditorFrame && _EditorFrame.getEditorFrameWindow().frames && _EditorFrame.getEditorFrameWindow().frames["1"]) {
@@ -1126,7 +1125,7 @@ function we_cmd() {
 			break;
 		case "recover_backup":
 			if (we_demo){
-				<?php print we_message_reporting::getShowMessageCall($l_global["we_alert"], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('global',"[we_alert]"), WE_MESSAGE_ERROR); ?>
 			} else {
             	new jsWindow(url,"recover_backup",-1,-1,680,600,true,true,true);
             }
@@ -1169,7 +1168,7 @@ function we_cmd() {
 				wyh = Math.min(screen_height, wyh);
 			}
 			// set new width & height
-			
+
 			url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
 			url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]='+ (wyh-arguments[10]));
 
@@ -1185,7 +1184,7 @@ function we_cmd() {
 		case "customValidationService":
 			new jsWindow(url,"we_customizeValidation",-1,-1,700,700,true,false,true);
 			break;
-		
+
 		case "reset_home":
 
 			var _currEditor = top.weEditorFrameController.getActiveEditorFrame();

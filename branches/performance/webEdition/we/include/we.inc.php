@@ -147,7 +147,5 @@ $_REQUEST['we_cmd'][0] == 'edit_link' || $_REQUEST['we_cmd'][0] == 'edit_linklis
 	}
 }
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_message_reporting/we_message_reporting.class.php');
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/weModuleInfo.class.php');

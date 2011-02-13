@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 protect();
 htmlTop('Messaging System');
@@ -44,7 +43,7 @@ if (!$messaging->check_folders()) {
 	if (!msg_create_folders($_SESSION["user"]["ID"])) {
 ?>
 		<script language="JavaScript" type="text/javascript"><!--
-			<?php print we_message_reporting::getShowMessageCall($l_messaging['cant_create_folders'], WE_MESSAGE_ERROR); ?>
+			<?php print we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), WE_MESSAGE_ERROR); ?>
 		//-->
 		</script>
 <?php
@@ -65,7 +64,7 @@ $mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 $title = '';
 foreach($GLOBALS["_we_available_modules"] as $modData){
 	if($modData["name"] == $mod){
-		$title	= "webEdition " . $GLOBALS["l_global"]["modules"] . ' - ' .$modData["text"];
+		$title	= "webEdition " . g_l('global',"[modules]"). ' - ' .$modData["text"];
 		break;
 	}
 }
@@ -87,7 +86,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 	open_folder = -1;
 	viewclass ="message";
 	mode = "show_folder_content";
-	
+
 	parent.document.title = "<?php echo $title; ?>";
 
 	we_transaction = "<?php echo $we_transaction?>";
@@ -277,7 +276,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 			}
 		}
 	}
-			
+
 	function we_cmd() {
 		var args = "";
 		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_transaction=<?php echo $we_transaction?>&";
@@ -287,9 +286,9 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				url += "&";
 			}
 		}
-		
+
 		if(hot == "1" && arguments[0] != "messaging_start_view") {
-			if(confirm("<?php print $l_messaging["save_changed_folder"];?>")) {
+			if(confirm("<?php print g_l('modules_messaging',"[save_changed_folder]");?>")) {
 				top.content.messaging_main.messaging_right.msg_work.document.edit_folder.submit();
 			} else {
 				top.content.usetHot();
@@ -490,17 +489,17 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 
 	function translate(inp){
 		if(inp.substring(0,12).toLowerCase() == "messages - ("){
-			return "<?php print $GLOBALS["l_messaging"]["Mitteilungen"]; ?> - ("+inp.substring(12,inp.length);
+			return "<?php print g_l('modules_messaging',"[Mitteilungen]"); ?> - ("+inp.substring(12,inp.length);
 		}else if(inp.substring(0,8).toLowerCase() == "task - ("){
-			return "<?php print $GLOBALS["l_messaging"]["ToDo"]; ?> - ("+inp.substring(8,inp.length);
+			return "<?php print g_l('modules_messaging',"[ToDo]"); ?> - ("+inp.substring(8,inp.length);
 		}else if(inp.substring(0,8).toLowerCase() == "todo - ("){
-			return "<?php print $GLOBALS["l_messaging"]["ToDo"]; ?> - ("+inp.substring(8,inp.length);
+			return "<?php print g_l('modules_messaging',"[ToDo]"); ?> - ("+inp.substring(8,inp.length);
 		}else if(inp.substring(0,8).toLowerCase() == "done - ("){
-			return "<?php print $GLOBALS["l_messaging"]["Erledigt"]; ?> - ("+inp.substring(8,inp.length);
+			return "<?php print g_l('modules_messaging',"[Erledigt]"); ?> - ("+inp.substring(8,inp.length);
 		}else if(inp.substring(0,12).toLowerCase() == "rejected - ("){
-			return "<?php print $GLOBALS["l_messaging"]["Zurueckgewiesen"]; ?> - ("+inp.substring(12,inp.length);
+			return "<?php print g_l('modules_messaging',"[Zurueckgewiesen]"); ?> - ("+inp.substring(12,inp.length);
 		}else if(inp.substring(0,8).toLowerCase() == "sent - ("){
-			return "<?php print $GLOBALS["l_messaging"]["Gesendet"]; ?> - ("+inp.substring(8,inp.length);
+			return "<?php print g_l('modules_messaging',"[Gesendet]"); ?> - ("+inp.substring(8,inp.length);
 		}else{
 			return inp;
 		}
@@ -736,19 +735,19 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				switch ($folder['obj_type']) {
 					case MSG_FOLDER_INBOX:
 						$iconbasename = $folder['ClassName'] == 'we_todo' ? 'todo_in_folder' : 'msg_in_folder';
-						$folder['Name'] = $folder['ClassName'] == 'we_todo' ? $l_messaging['ToDo'] : $l_messaging['Mitteilungen'];
+						$folder['Name'] = $folder['ClassName'] == 'we_todo' ? g_l('modules_messaging','[ToDo]') : g_l('modules_messaging','[Mitteilungen]');
 						break;
 					case MSG_FOLDER_SENT:
 						$iconbasename = 'msg_sent_folder';
-						$folder['Name'] = $l_messaging['Gesendet'];
+						$folder['Name'] = g_l('modules_messaging','[Gesendet]');
 						break;
 					case MSG_FOLDER_DONE:
 						$iconbasename = 'todo_done_folder';
-						$folder['Name'] = $l_messaging['Erledigt'];
+						$folder['Name'] = g_l('modules_messaging','[Erledigt]');
 						break;
 					case MSG_FOLDER_REJECT:
 						$iconbasename = 'todo_reject_folder';
-						$folder['Name'] = $l_messaging['Zurueckgewiesen'];
+						$folder['Name'] = g_l('modules_messaging','[Zurueckgewiesen]');
 						break;
 					default:
 						$iconbasename = $folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder';

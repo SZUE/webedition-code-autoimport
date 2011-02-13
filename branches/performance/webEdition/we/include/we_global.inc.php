@@ -1627,20 +1627,20 @@ function getHTTP($server, $url, $port = "", $username = "", $password = "") {
 function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false) {
 	if ($canBeEmpty) {
 		if (!isset($attribs[$attr]))
-			return parseError(sprintf($GLOBALS["l_parser"]["attrib_missing2"], $attr, $tag));
+			return parseError(sprintf(g_l('parser','[attrib_missing2]'), $attr, $tag));
 	} else {
 		if (!isset($attribs[$attr]) || $attribs[$attr] == "")
-			return parseError(sprintf($GLOBALS["l_parser"]["attrib_missing"], $attr, $tag));
+			return parseError(sprintf(g_l('parser','[attrib_missing]'), $attr, $tag));
 	}
 	return "";
 }
 
 function modulFehltError($modul, $tag) {
-	return parseError(sprintf($GLOBALS["l_parser"]["module_missing"], $modul, $tag));
+	return parseError(sprintf(g_l('parser','[module_missing]'), $modul, $tag));
 }
 
 function parseError($text) {
-	return "<b>" . $GLOBALS["l_parser"]["error_in_template"] . ":</b> $text<br>\n";
+	return "<b>" . g_l('parser','[error_in_template]') . ":</b> $text<br>\n";
 }
 
 function std_numberformat($content) {
@@ -2615,18 +2615,21 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 
 		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
 			$path_parts = pathinfo($path);
-			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-				$path= ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+			if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+				$path= ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 			}
 		}
-		if (!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $objectseourls){
-			$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", "Url", $DB_WE);
+		if (show_SeoLinks() && $objectseourls){
+
+			$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", $DB_WE);
+			$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
+			if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 		} else {$objecturl='';}
 		if ($objectseourls && $objecturl!=''){
-			if($hidedirindex && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
-				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . "?pid=" . abs($pid);
 			} else {
-				return ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR.$path_parts['filename'].DIRECTORY_SEPARATOR.$objecturl . "?pid=" . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . "?pid=" . abs($pid);
 			}
 		} else {
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
@@ -2705,8 +2708,8 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 			if (isset($foo["Path"])) {
 				$_path = $foo["Path"];
 				$path_parts = pathinfo($_path);
-				if(!($we_editmode || $WE_MAIN_EDITMODE) && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-					$_path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+					$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 				}
 				$text = str_replace(
 							$regs[$i][1] . '="document:' . $regs[$i][2] . $regs[$i][3],
@@ -3337,7 +3340,12 @@ function getHtmlTag($element, $attribs = array(), $content = "", $forceEndTag = 
 	$attribs = removeAttribs($attribs, array(
 							"xml", "xmltype"
 					));
-
+	if ($element =='img' && defined("HIDENAMEATTRIBINWEIMG_DEFAULT") && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+		$attribs = removeAttribs($attribs, array("name"));
+	}
+	if ($element =='form' && defined("HIDENAMEATTRIBINWEFORM_DEFAULT") && HIDENAMEATTRIBINWEFORM_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+		$attribs = removeAttribs($attribs, array("name"));
+	}
 	if ($xhtml) { //	xhtml, check if and what we shall debug
 		$_xmlClose = true;
 
@@ -3600,9 +3608,9 @@ function we_writeLanguageConfig($default, $available = array()) {
 	foreach ($available as $Locale) {
 		$temp = explode("_", $Locale);
 		if (sizeof($temp) == 1) {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] " . $temp[0] . ",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "])' " . $temp[0] . ",\n";
 		} else {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . \$GLOBALS['l_countries']['" . $temp[1] . "'] . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "])' . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
 		}
 	}
 
@@ -3627,16 +3635,13 @@ function we_writeLanguageConfig($default, $available = array()) {
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/countries.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/languages.inc.php");
 
 $GLOBALS["weFrontendLanguages"] = array(
 ' . $locales . '
 );
 
 $GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";
-
-?>';
+';
 
 	$file = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_conf_language.inc.php";
 	$fh = fopen($file, "w+");
@@ -3799,6 +3804,65 @@ function CheckAndConvertISObackend($utf8data) {
 	}
 }
 
+function getVarArray($arr, $string) {
+	if (!isset($arr)) {
+		return false;
+	}
+	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
+	$return = $arr;
+	foreach ($arr_matches[1] as $dimension) {
+		if (isset($return[$dimension])) {
+			$return = $return[$dimension];
+		} else {
+			return false;
+		}
+	}
+	return $return;
+}
+
+/**
+ * getLanguage property
+ *  Note: underscores in name are used as directories - modules_workflow is searched in subdir modules
+ * usage example: echo g_l('modules_workflow','[test][new]');
+ *
+ * @param $name name of the variable, without 'l_', this name is also used for inclusion
+ * @param $specific the array element to access
+ */
+function g_l($name, $specific) {
+	//cache last accessed lang var
+	static $cache;
+	if(isset($cache["l_$name"])){
+		$tmp = getVarArray($cache["l_$name"], $specific);
+	}else{
+		if(isset($cache))unset($cache);
+		//compatibility - try global scope
+		$tmp = (isset($GLOBALS["l_$name"])?getVarArray($GLOBALS["l_$name"], $specific):false);
+	}
+	if (!($tmp === false)) {
+		return $tmp;
+	}
+	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/'.str_replace('_','/',$name).'.inc.php';
+	if (file_exists($file)) {
+		include($file);
+		$tmp = (isset(${"l_$name"})?getVarArray(${"l_$name"}, $specific):false);
+		//get local variable - otherwise try global again
+		if(!($tmp === false)){
+			$cache["l_$name"]=${"l_$name"};
+			return $tmp;
+		}else{
+			//try global again
+			if(isset($GLOBALS["l_$name"])){
+				$tmp=getVarArray($GLOBALS["l_$name"], $specific);
+			}
+			if($tmp===false){
+				trigger_error('Requested lang entry '."l_$name$specific".' not found!',E_USER_WARNING);
+			}
+			return false;
+		}
+	}
+	trigger_error('Requested lang file '.$file.' not found!',E_USER_WARNING);
+	return '';
+}
 
 function we_templateInit(){
 	if(!isset($GLOBALS["DB_WE"])){
@@ -3831,7 +3895,6 @@ function we_templateInit(){
 				$__lang = $__parts[0];
 				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
 					$GLOBALS["WE_LANGUAGE"] = $__lang;
-					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 				}
 
 				// Charset of page is  UTF-8 but languge files of page are not UTF-8
@@ -3840,7 +3903,6 @@ function we_templateInit(){
 				$__lang = $GLOBALS["WE_LANGUAGE"] . "_UTF-8";
 				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$__lang)) {
 					$GLOBALS["WE_LANGUAGE"] = $__lang;
-					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 				}
 			}
 		}
@@ -3875,4 +3937,14 @@ function we_templatePost(){
 	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ){
 		print '<script language="JavaScript" type="text/javascript">setTimeout("doScrollTo();",100);</script>';
 	}
+}
+
+function show_SeoLinks(){
+	if (defined('SEOINSIDE_HIDEINWEBEDITION') && SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition){
+		return false;
+	} else if (defined('SEOINSIDE_HIDEINEDITMODE') && SEOINSIDE_HIDEINEDITMODE && ($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE'])){
+		return false;
+	}
+	return true;
+
 }

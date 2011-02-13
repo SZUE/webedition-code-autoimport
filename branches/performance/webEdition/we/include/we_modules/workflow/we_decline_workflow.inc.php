@@ -29,7 +29,7 @@ if($cmd == "ok") {
 
 	if($ok) {
 
-		$msg = $l_workflow[$we_doc->Table]["decline_workflow_ok"];
+		$msg = g_l('modules_workflow','['.$we_doc->Table.'][decline_workflow_ok]');
 		$msgType = WE_MESSAGE_NOTICE;
 
 		//	in SEEM-Mode back to Preview page
@@ -37,7 +37,7 @@ if($cmd == "ok") {
 
 			$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION["we_mode"] == "normal"){
-			
+
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
 
@@ -46,14 +46,14 @@ if($cmd == "ok") {
 		}
 	}
 	else {
-		$msg = $l_workflow[$we_doc->Table]["decline_workflow_notok"];
+		$msg = g_l('modules_workflow','['.$we_doc->Table.'][decline_workflow_notok]');
 		$msgType = WE_MESSAGE_ERROR;
 		//	in SEEM-Mode back to Preview page
 		if($_SESSION["we_mode"] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION["we_mode"] == "normal"){
-			
+
 			$script = '';
 		}
 	}
@@ -82,18 +82,18 @@ if($cmd == "ok") {
 					$content .= '
 						<tr>
 							<td class="defaultfont">
-								'.$l_workflow["message"].'</td>
+								'.g_l('modules_workflow','[message]').'</td>
 						</tr>
 						<tr>
 							<td>
 								'.$wf_textarea.'</td>
 						</tr>
 					</table>';
-					
+
 					$_button = $we_button->position_yes_no_cancel(	$okbut,
 																	"",
 																	$cancelbut);
-					$frame = htmlDialogLayout($content,$l_workflow["decline_workflow"], $_button);
+					$frame = htmlDialogLayout($content,$g_l('modules_workflow','[decline_workflow]'), $_button);
 					print $frame;
 					print '
 						<input type="hidden" name="cmd" value="ok" />

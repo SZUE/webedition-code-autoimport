@@ -23,9 +23,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_mul
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/enc_we_class.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
@@ -191,7 +190,6 @@ function RenameFolder(id){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
 		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
@@ -282,11 +280,11 @@ function writeBody(d){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0" /></td>');
 		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
-		d.writeln('<td class="selector"><?php print date($GLOBALS["l_global"]["date_format"])?></td>');
+		d.writeln('<td class="selector"><?php print date(g_l(\'date\',\'[format][default]\'))?></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php echo ($BROWSER=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
+		var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"]=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" align="center">');
@@ -360,7 +358,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 
 	function printFramesetJSFunctionAddEntries(){
 		while($this->next_record()){
-			print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date($GLOBALS["l_global"]["date_format"],(is_numeric($this->f("ModDate"))  ? $this->f("ModDate") : 0)).'");'."\n";
+			print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date(g_l('date','[format][default]'),(is_numeric($this->f("ModDate"))  ? $this->f("ModDate") : 0)).'");'."\n";
 		}
 	}
 
@@ -368,7 +366,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	function printCmdAddEntriesHTML(){
 		$this->query();
 		while($this->next_record()){
-			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date($GLOBALS["l_global"]["date_format"],(is_numeric($this->f("ModDate"))  ? $this->f("ModDate") : 0)).'");'."\n";
+			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'","'.date(g_l('date','[format][default]'),(is_numeric($this->f("ModDate"))  ? $this->f("ModDate") : 0)).'");'."\n";
 		}
 		if($this->userCanMakeNewDir()){
 			print 'top.fsheader.enableNewFolderBut();'."\n";
@@ -428,7 +426,7 @@ function enableNewFolderBut(){
 		if(!userIsOwnerCreatorOfParentDir($this->dir,$this->table)){
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -1075,13 +1073,13 @@ top.selectFile(top.currentID);
 				$previewDefauts .= "<a href='javascript:openToEdit(\"".$this->table."\",\"".$this->id."\",\"".$result['ContentType']."\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='/webEdition/images/tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
 				$previewDefauts .= "<a href='javascript:openToEdit(\"".$this->table."\",\"".$this->id."\",\"".$result['ContentType']."\")' style='color:black'><div>".$this->id."</div></a></td></tr>";
 				if ($result['CreationDate']) {
-					$previewDefauts .= "<tr class='odd'><td class='odd'>".$GLOBALS['l_fileselector']["created"].": </td><td>".date($GLOBALS["l_global"]["date_format"],$result['CreationDate'])."</td></tr>";
+					$previewDefauts .= "<tr class='odd'><td class='odd'>".$GLOBALS['l_fileselector']["created"].": </td><td>".date(g_l('date','[format][default]'),$result['CreationDate'])."</td></tr>";
 					$nextrowclass = "even";
 				} else {
 					$nextrowclass = "odd";
 				}
 				if ($result['ModDate']) {
-					$previewDefauts .=  "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["modified"].": </td><td>".date($GLOBALS["l_global"]["date_format"],$result['ModDate'])."</td></tr>";
+					$previewDefauts .=  "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["modified"].": </td><td>".date(g_l('date','[format][default]'),$result['ModDate'])."</td></tr>";
 					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 				} else {
 					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";

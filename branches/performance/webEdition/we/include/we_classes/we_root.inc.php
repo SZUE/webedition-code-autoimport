@@ -22,7 +22,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/'.'we_class.inc.php');
 if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/'.'we_button.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
 }
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_ContentTypes.inc.php');
@@ -261,7 +260,7 @@ class we_root extends we_class
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formDirChooser($width="",$rootDirID=0,$table="",$Pathname="ParentPath",$IDName="ParentID",$cmd="",$showTitle=true){
-		global $l_we_class, $BROWSER;
+		global $l_we_class;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 
@@ -550,6 +549,40 @@ class we_root extends we_class
 			$we_button->create_button("select", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')")
 		);
 
+
+	}
+function formTriggerDocument($isclass=false){
+		global $l_we_class, $l_object;
+		$yuiSuggest =& weSuggest::getInstance();
+		$we_button = new we_button();
+		$table = FILE_TABLE;
+		if ($isclass){
+			$textname = 'we_'.$this->Name.'_TriggerName';
+			$idname = 'we_'.$this->Name.'_DefaultTriggerID';
+			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : "";
+
+		} else {
+			$textname = 'we_'.$this->Name.'_TriggerName';
+			$idname = 'we_'.$this->Name.'_TriggerID';
+			$myid = $this->TriggerID ? $this->TriggerID : "";
+		}
+		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)");
+		$yuiSuggest->setAcId("TriggerID");
+		$yuiSuggest->setContentType("folder,text/webedition");
+		$yuiSuggest->setInput($textname,$path);
+		$yuiSuggest->setLabel($l_object["seourltrigger"]);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(1);
+		$yuiSuggest->setResult($idname,$myid);
+		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setTable($table);
+		$yuiSuggest->setWidth(388);
+		$yuiSuggest->setSelectButton($button);
+		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
+		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
+
+		return $yuiSuggest->getHTML();
 
 	}
 

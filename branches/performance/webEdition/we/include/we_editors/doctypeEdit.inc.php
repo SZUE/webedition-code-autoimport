@@ -353,7 +353,7 @@ if($we_doc->ID){
 							)
 				);
 
-	array_push($parts, array(	"headline"=>$GLOBALS["l_global"]["templates"],
+	array_push($parts, array(	"headline"=>g_l('global',"[templates]"),
 								"html"=>$GLOBALS["we_doc"]->formDocTypeTemplates(),
 								"space"=>120
 							)

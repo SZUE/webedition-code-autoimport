@@ -27,7 +27,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permis
 if(defined("MESSAGING_SYSTEM") && (!isset($_REQUEST["SEEM_edit_include"]) || !$_REQUEST["SEEM_edit_include"] )) { ?>
     <html>
     <head>
-    <frameset cols="*,<?php if($BROWSER == "NN"){ print "60"; } else { print "50"; } ?>" framespacing="0" border="0" frameborder="NO">
+    <frameset cols="*,<?php if($GLOBALS['BROWSER'] == "NN"){ print "60"; } else { print "50"; } ?>" framespacing="0" border="0" frameborder="NO">
         <frame src="/webEdition/headermenu.php" name="header_menu" scrolling="no" noresize>
         <frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php" name="header_msg" scrolling="no" noresize>
     </frameset>

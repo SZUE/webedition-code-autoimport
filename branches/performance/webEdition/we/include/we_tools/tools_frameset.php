@@ -23,7 +23,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
 include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/tools.inc.php');
 include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/navigation.inc.php');
-include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/searchtool.inc.php');
 
 protect();
 
@@ -33,12 +32,12 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php')
 Zend_Loader::loadClass('we_core_Local');
 
 
-		
+
 $title = 'webEdition ';
 if(isset($_REQUEST['tool'])) {
 	$tool = $_REQUEST['tool'];
 	if($tool=='weSearch') {
-		$title .= $l_tools['tools']. ' - '.$GLOBALS['l_weSearch']['weSearch'];
+		$title .= $l_tools['tools']. ' - '.g_l('searchtool','[weSearch]');
 	}
 	elseif($tool=='navigation') {
 		$title .= $l_tools['tools']. ' - '.$GLOBALS['l_navigation']['navigation'];
@@ -48,7 +47,7 @@ if(isset($_REQUEST['tool'])) {
 		we_core_Local::addTranslation('default.xml', $tool);
 		$title .= $translate->_('Applications'). ' - '.$translate->_($tool);
 	}
-} 
+}
 
 htmlTop($title);
 
@@ -79,7 +78,7 @@ if($tool=="weSearch") {
 	}
 	//look which search is activ
 	if(isset($_REQUEST['we_cmd'][2])) {
-		
+
 		if(defined("OBJECT_FILES_TABLE")) {
 			$objectFilesTable = OBJECT_FILES_TABLE;
 		}
@@ -92,10 +91,10 @@ if($tool=="weSearch") {
 		else {
 			$objectTable = "";
 		}
-		
+
 		$table = $_REQUEST['we_cmd'][2];
 		switch ($table) {
-			
+
 			case FILE_TABLE:
 				$tab = 1;
 				$_SESSION["weSearch"]["checkWhich"] = 1;
@@ -112,12 +111,12 @@ if($tool=="weSearch") {
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 4;
 			break;
-		
-			default: 
+
+			default:
 				$tab = $_REQUEST['we_cmd'][2];
 		}
 	}
-	
+
 	if(isset($_REQUEST['we_cmd'][3])) {
 		$modelid = $_REQUEST['we_cmd'][3];
 	}

@@ -219,7 +219,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function formTemplateWindow() {
 
-		global $l_we_class, $BROWSER;
+		global $l_we_class;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 		$table = TEMPLATES_TABLE;

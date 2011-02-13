@@ -145,7 +145,7 @@ $jsFunction = '
 				}
 			}
 		}
-			
+
 		function we_cmd(){
 
             var args = "";
@@ -255,7 +255,7 @@ if (sizeof($allVats) > 0) {
 		<td>' . $_weShopVat->id . '</td>
 		<td>' . htmlspecialchars($_weShopVat->text) . '</td>
 		<td>' . $_weShopVat->vat . '%</td>
-		<td>' . ($_weShopVat->standard ? $GLOBALS["l_global"]["yes"] : $GLOBALS["l_global"]["no"]) . '</td>
+		<td>' . ($_weShopVat->standard ? g_l('global',"[yes]") : g_l('global',"[no]")) . '</td>
 		<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
 		<td>' . $we_button->create_button('image:btn_function_trash', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
 	</tr>';

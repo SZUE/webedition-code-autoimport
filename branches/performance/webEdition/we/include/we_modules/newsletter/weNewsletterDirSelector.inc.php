@@ -22,19 +22,19 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
 
 class weNewsletterDirSelector extends we_dirSelector{
-	
+
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
 	function weNewsletterDirSelector( $id, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $we_editDirID="", $FolderText="", $rootDirID=0, $multiple=0) {
 	    $table = NEWSLETTER_TABLE;
 	    $this->we_dirSelector( $id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple);
 	}
-	
+
 	function printCreateFolderHTML(){
-		htmlTop();		
+		htmlTop();
 		protect();
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
-		
+
 		print '<script>
 top.clearEntries();
 ';
@@ -78,26 +78,26 @@ top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 ';
 					}
 				}
-				
+
 			}
 		}
-		
-		
+
+
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
-		
+
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
 		print '</head><body></body></html>';
-	}	
-	
+	}
+
 	function printDoRenameFolderHTML(){
-		htmlTop();		
+		htmlTop();
 		protect();
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
-		
+
 		print '<script>
 top.clearEntries();
 ';
@@ -140,36 +140,36 @@ top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 						}
 					}
 				}
-				
+
 			}
 		}
-		
-		
+
+
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
-		
+
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
 		print '</head><body></body></html>';
-	}	
+	}
 
 
 	function query(){
 
 		$ws_query = getWsQueryForSelector(NEWSLETTER_TABLE);
-		
+
 		$_query = "	SELECT ".mysql_real_escape_string($this->fields)."
 					FROM ".mysql_real_escape_string($this->table)."
 					WHERE IsFolder=1 AND ParentID=".abs($this->dir).
 					$ws_query .
 					($this->order ? (' ORDER BY '.$this->order) : '');
-		
+
 		$this->db->query($_query);
-		
-	}	
-	
+
+	}
+
 	function printFramesetJSFunctionAddEntries(){
 		while($this->next_record()){
 			print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'");'."\n";
@@ -214,9 +214,8 @@ function addEntry(ID,icon,text,isFolder,path){
 ';
 
   	}
-	
+
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
 		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
@@ -228,9 +227,9 @@ function writeBody(d){
 	d.writeln('<?php print STYLESHEET_SCRIPT;?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
-	
+
 	<?php print $this->getJS_attachKeyListener(); ?>
-	
+
 	//from we_showMessage.js
 	d.writeln('var WE_MESSAGE_INFO = -1;');
 	d.writeln('var WE_MESSAGE_FRONTEND = -2;');
@@ -306,7 +305,7 @@ function writeBody(d){
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php echo ($BROWSER=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
+		var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"]=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" width="25" align="center">');
@@ -336,29 +335,29 @@ function writeBody(d){
 
 <?php
 
-	}	
+	}
 
 	function userCanSeeDir($showAll=false){
 		return true;
 	}
-	
+
 	function userCanRenameFolder(){
 		return we_hasPerm('EDIT_NEWSLETTER');
 	}
-	
+
 	function userCanMakeNewDir(){
 		return we_hasPerm('NEW_NEWSLETTER');
-	}	
+	}
 
 	function userHasRenameFolderPerms() {
 		return we_hasPerm('EDIT_NEWSLETTER');
 	}
-	
+
 	function userHasFolderPerms(){
 		return we_hasPerm('NEW_NEWSLETTER');
 	}
-		
-	
+
+
 
 }
 

@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_format.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
@@ -66,14 +65,14 @@ $parts = array();
 <?php
 if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo') {	//	TODO
 
-	array_push($parts,array(	"headline" => $l_messaging['subject'],
+	array_push($parts,array(	"headline" => g_l('modules_messaging','[subject]'),
 								"html"     => "<b>" . $format->get_subject() . "</b>",
 								"noline"   => 1,
 								"space"    => 140
 							)
 				);
 
-	array_push($parts,array(	"headline" => $l_messaging['deadline'],
+	array_push($parts,array(	"headline" => g_l('modules_messaging','[deadline]'),
 								"html"     => $format->get_deadline(),
 								"noline"   => 1,
 								"space"    => 140
@@ -88,28 +87,28 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 								"javascript:todo_markdone()").'</td>' : '') . '</tr></table>';
 
 
-	array_push($parts,array(	"headline" => $l_messaging['status'],
+	array_push($parts,array(	"headline" => g_l('modules_messaging','[status]'),
 								"html"     => $html,
 								"noline"   => 1,
 								"space"    => 140
 							)
 				);
 
-	array_push($parts,array(	"headline" => $l_messaging['created_by'],
+	array_push($parts,array(	"headline" => g_l('modules_messaging','[created_by]'),
 								"html"     => $format->get_from(),
 								"noline"   => 1,
 								"space"    => 140
 							)
 				);
 
-	array_push($parts,array(	"headline" => $l_messaging['assigned_by'],
+	array_push($parts,array(	"headline" => g_l('modules_messaging','[assigned_by]'),
 								"html"     => $format->get_assigner(),
 								"noline"   => 1,
 								"space"    => 140
 							)
 				);
 
-	array_push($parts,array(	"headline" => $l_messaging['creation_date'],
+	array_push($parts,array(	"headline" => g_l('modules_messaging','[creation_date]'),
 								"html"     => $format->get_date(),
 								"space"    => 140
 							)
@@ -133,27 +132,27 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 
 } else {	//	Message
 
-	array_push($parts,array(	"headline" => $l_messaging['subject'],
+	array_push($parts,array(	"headline" => g_l('modules_messaging','[subject]'),
 								"html"     => "<b>" . $format->get_subject() . "</b>",
 								"noline"   => 1,
 								"space"    => 80
 							)
 				);
 
-	array_push($parts,array("headline" => $l_messaging['from'],
+	array_push($parts,array("headline" => g_l('modules_messaging','[from]'),
 							"html"     => $format->get_from(),
 							"noline"   => 1,
 							"space"    => 80
 							)
 				);
-	array_push($parts,array("headline" => $l_messaging['date'],
+	array_push($parts,array("headline" => g_l('modules_messaging','[date]'),
 							"html"     => $format->get_date(),
 							"noline"   => (empty($messaging->selected_message['hdrs']['To']) ? null : 1),
 							"space"    => 80
 							)
 				);
 	if(!empty($messaging->selected_message['hdrs']['To'])){
-		array_push($parts,array("headline" => $l_messaging['recipients'],
+		array_push($parts,array("headline" => g_l('modules_messaging','[recipients]'),
 								"html"     => $messaging->selected_message['hdrs']['To'],
 								"space"    => 80
 								)
@@ -178,7 +177,7 @@ print we_multiIconBox::getHTML(	"weMessageView",
 							"",
 							"",
 							false,
-							(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? $l_messaging["type_todo"] : $l_messaging["type_message"]));
+							(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo' ? g_l('modules_messaging',"[type_todo]") : g_l('modules_messaging',"[type_message]")));
 
 ?>
   </body>

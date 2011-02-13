@@ -371,13 +371,6 @@
 		if(defined('OBJECT_X_TABLE')){
 			$_db = new DB_WE();
 
-			$_table = OBJECT_FILES_TABLE;
-			if($this->isColExist($_table,'OF_IsSearchable')){
-				$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
-			} else {
-				$this->addCol($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');
-			}
-
 			$_maxid = f('SELECT MAX(TableID) as MaxTID FROM ' . OBJECT_FILES_TABLE . ';','MaxTID',$_db);
 			$_maxid++;
 			for($i=1;$i<$_maxid;$i++) {
@@ -387,6 +380,11 @@
 						$this->changeColTyp($_table,'OF_Url','VARCHAR(255) NOT NULL');
 					} else {
 						$this->addCol($_table,'OF_Url','VARCHAR(255) NOT NULL',' AFTER OF_Path ');
+					}
+					if($this->isColExist($_table,'OF_TriggerID')){
+						$this->changeColTyp($_table,'OF_TriggerID','BIGINT(20) NOT NULL DEFAULT 0');
+					} else {
+						$this->addCol($_table,'OF_TriggerID','BIGINT(20) NOT NULL DEFAULT 0',' AFTER OF_Url ');
 					}
 					if($this->isColExist($_table,'OF_IsSearchable')){
 						$this->changeColTyp($_table,'OF_IsSearchable','TINYINT(1) DEFAULT 1');

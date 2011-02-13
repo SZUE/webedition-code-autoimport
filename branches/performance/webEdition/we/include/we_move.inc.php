@@ -249,13 +249,13 @@ function press_ok_move() {
 		}
 		<?php
 
-		$_type = $GLOBALS["l_global"]["documents"];
+		$_type = g_l('global',"[documents]");
 		if ($table == TEMPLATES_TABLE) {
-			$_type = $GLOBALS["l_global"]["templates"];
+			$_type = g_l('global',"[templates]");
 
 		} else
 			if (defined("OBJECT_TABLE") && $table == OBJECT_FILES_TABLE) {
-				$_type = $GLOBALS["l_global"]["objects"];
+				$_type = g_l('global',"[objects]");
 
 			}
 		?>

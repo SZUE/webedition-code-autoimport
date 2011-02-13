@@ -408,6 +408,7 @@
 			return $_inc;
 		}
 
+		//FIXME: remove this function!
 		function getLanguageInclude($name) {
 			if($name=='weSearch') {
 				$toolFolder = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/';

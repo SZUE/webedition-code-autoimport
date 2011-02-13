@@ -22,7 +22,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 protect();
 print STYLESHEET;
@@ -81,7 +80,7 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
 
 	if($condition!="") $condition=" WHERE ".$condition." ORDER BY Text";
 	$DB_WE->query("SELECT * FROM ".USER_TABLE.$condition);
-	
+
 	while($DB_WE->next_record()){
 		$_select.='<option value="'.$DB_WE->f("ID").'">'.$DB_WE->f("Text");
 	}
@@ -99,7 +98,7 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
 
  $_content = htmlFormElementTable(
  	htmlTextInput('kwd', 24, $_kwd,"","","text", 485),
- 	$l_users["search_for"],
+ 	g_l('modules_users',"[search_for]"),
  	"left",
  	"defaultfont",
  	getPixel(10,1),
@@ -108,7 +107,7 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
 
  htmlFormElementTable(
  	$_select,
- 	$l_users["search_result"]
+ 	g_l('modules_users',"[search_result]")
  )
 
  ;
@@ -117,6 +116,6 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
 </head>
 <body class="weEditorBody" style="margin:10px 20px;">
 <form name="we_form" method="post">
-	<?php print htmlDialogLayout($_content, $l_users["search"], $_buttons); ?>
+	<?php print htmlDialogLayout($_content, g_l('modules_users',"[search]"), $_buttons); ?>
 </form>
 </body>

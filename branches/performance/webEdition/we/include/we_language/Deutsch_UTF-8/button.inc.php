@@ -21,11 +21,23 @@
 
 
 /**
- * Language file: enc_global.inc.php
+ * Language file: buttons.inc.php
+ *
  * Provides language strings.
+ *
  * Language: Deutsch
  */
-$GLOBALS["l_global"]["categorys"] = "Kategorien";
-$GLOBALS["l_global"]["navigation"] = "Navigation";
 
-?>
+$dir=dirname(__FILE__).'/buttons/';
+include($dir."global.inc.php");
+if (is_dir($dir."modules")) {
+
+	// Include language files of buttons used in modules
+	$d = dir($dir."modules");
+	while (false !== ($entry = $d->read())) {
+		if ($entry[0] != "." && substr($entry,(-1 * strlen(".php"))) == ".php") {
+			include($dir."modules/".$entry);
+		}
+	}
+	$d->close();
+}

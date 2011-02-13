@@ -395,7 +395,7 @@
 					foreach($elements_ids as $ck){
 						if($object->ClassName=="weTable" || $object->ClassName=="weTableAdv"){
 							if($object->ClassName=="weTablea"){
-								$contentObj=new we_element(false,$object->elements[$ck]);p_r($contentObj);
+								$contentObj=new we_element(false,$object->elements[$ck]);
 							} else {
 								array_unshift($object->elements[$ck],' ');
 								$contentObj=new we_element(false,$object->elements[$ck]);

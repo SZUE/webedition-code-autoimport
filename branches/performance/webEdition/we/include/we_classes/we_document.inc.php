@@ -22,13 +22,11 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_root.inc.php');
 
 if(!isset($GLOBALS['WE_IS_DYN'])){
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 }
 if(!isset($GLOBALS['WE_IS_IMG'])){
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/charsetHandler.class.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/date.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/weModuleInfo.class.php');
 	if (defined('CUSTOMER_FILTER_TABLE')) {
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
@@ -65,7 +63,7 @@ class we_document extends we_root {
 	var $Category='';
 
 	var $IsSearchable = '';
-	
+
 	var $InGlossar = 0;
 
 	var $NavigationItems='';
@@ -234,11 +232,11 @@ class we_document extends we_root {
 		return $content;
 
 	}
-	
+
 	function formInGlossar($leftwidth=100){
 		global $l_we_class;
 		$n = 'we_'.$this->Name.'_InGlossar';
-		
+
 		$glossarActivated = we_getModuleNameByContentType('glossary');
 
 		if($glossarActivated=='glossary') {
@@ -246,7 +244,7 @@ class we_document extends we_root {
 			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class['InGlossar'],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 		}
 		else {
-			return''; 
+			return'';
 		}
 	}
 
@@ -351,7 +349,6 @@ class we_document extends we_root {
 	}
 
 	function formCategory() {
-		global $l_global;
 		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tools/MultiDirChooser.inc.php');
 
 		$we_button = new we_button();
@@ -366,7 +363,6 @@ class we_document extends we_root {
 	}
 
 	function formNavigation() {
-		global $l_global;
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/MultiFileChooser.inc.php');
 		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');
 
@@ -384,13 +380,13 @@ class we_document extends we_root {
 			$_id = path_to_id($_path,NAVIGATION_TABLE);
 			$_naviItem = new weNavigation($_id);
 			if (!$_naviItem->hasAnyChilds()){
-				
+
 				if(in_array($_path,$NoDelNavis)){
 					$pos = getArrayKey($_path,$NoDelNavis);
 					array_splice($NoDelNavis,$pos,1);
 				}
 			}
-			
+
 		}
 
 		$navis->diabledDelItems = makeCSVFromArray($NoDelNavis);
@@ -485,7 +481,7 @@ class we_document extends we_root {
 						}
 					}
 				}
- 
+
 			} else {
 				$_naviItem->Selection = 'static';
 				$_naviItem->SelectionType = 'docLink';
@@ -539,7 +535,7 @@ class we_document extends we_root {
 					array_splice($navis,$pos,1);
 				}
 			}
-			
+
 		}
 
 		$this->NavigationItems=makeCSVFromArray($navis,true);
@@ -565,7 +561,7 @@ class we_document extends we_root {
 		}
 		else {
 			$listarray = array();
-		} 
+		}
 		if(!is_array($listarray)){$listarray = array();} //bug #4079
 		for($f=0;$f<$number;$f++){
 			$content = $this->getElement($name,'content');
@@ -659,7 +655,7 @@ class we_document extends we_root {
 				unset($this->elements[$namesArray[$i].($isBlock ? ('blk_'.$name.'_') : '').$listarray[$nr]]);
 			}
 		} else {$listarray=array();}
-		
+
 		if (is_array($listarray)) {// Bug #4079
 			array_splice($listarray,$nr,1);
 		}
@@ -757,7 +753,7 @@ class we_document extends we_root {
 
 		/* version */
 		$version = new weVersions();
-		
+
 		$this->i_setText();
 
 		if(!we_root::we_save($resave))
@@ -769,15 +765,15 @@ class we_document extends we_root {
 			$this->resaveWeDocumentCustomerFilter();
 
 		}
-		
-		
+
+
 		if($this->ContentType=='application/x-shockwave-flash' || $this->ContentType=='image/*' || $this->ContentType=='text/weTmpl' //#4120 hinzugef�gt
 			|| $this->ContentType=='video/quicktime' || $this->ContentType=='text/js' || $this->ContentType=='text/css'
 			|| $this->ContentType=='text/plain' || $this->ContentType=='text/xml'  || $this->ContentType=='application/*') {
 
 				$version->save($this);
 		}
-		
+
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));
@@ -1066,13 +1062,13 @@ class we_document extends we_root {
 				$link = $val ? unserialize($val) : array();
 
 				$only = we_getTagAttribute('only',$attribs,'');
-				
+
 				if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
 					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true);
 				} else {
 					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
-				}		
-				
+				}
+
 				if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
 					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true);
 				} else {
@@ -1140,7 +1136,7 @@ class we_document extends we_root {
 				if($val == 0) {
 					$val = time();
 				}
-				$format = isset($attribs['format']) ? $attribs['format'] : $GLOBALS['l_global']['date_format'];
+				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date','[format][default]');
 				return date(correctDateFormat($format,$val),$val);
 			case 'select':
 				if(defined('OBJECT_TABLE')) {
@@ -1198,7 +1194,7 @@ class we_document extends we_root {
 					    else if($attribs['num_format']=='english') {
     						$retval =we_util::std_numberformat($retval);
 						    $retval=number_format($retval,$precision,'.','');
-					    } 
+					    }
 						else if($attribs['num_format']=='swiss'){
 							$retval =we_util::std_numberformat($retval);
 						    $retval=number_format($retval,$precision,'.', '\'');
@@ -1331,9 +1327,9 @@ class we_document extends we_root {
 
 					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Published',$db);
 					if ($published) {
-						if($hidedirindex && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
+						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
 							$path_parts = pathinfo($path);
-							$path = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+							$path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 						}
 						return $path;
 					} else {

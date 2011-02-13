@@ -24,7 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 $l_we_class["ChangePark"] = "You can only change this attribute if the document is not published!";
 $l_we_class["fieldusers"] = "Users";
@@ -78,7 +77,7 @@ $l_we_class["salign"] = "Scaled align";
 $l_we_class["play"] = "Play";
 $l_we_class["loop"] = "Loop";
 $l_we_class["scale"] = "Scale";
-$l_we_class["wmode"] = "Window mode"; 
+$l_we_class["wmode"] = "Window mode";
 $l_we_class["bgcolor"] = "Background color";
 $l_we_class["response_save_noperms_to_create_folders"] = "The document could not be saved because you do not have the neccessary rights to create folders (%s)!";
 $l_we_class["file_on_liveserver"]="File already exists";
@@ -171,6 +170,12 @@ $l_we_class["grant_language"] = "Change language";
 $l_we_class["grant_language_expl"] = "Change the language of all files and directories which reside in the current directory to the setting above.";
 $l_we_class["grant_language_ok"] = "Language have been successfully changed!";
 $l_we_class["grant_language_notok"] = "There was an error while changing the language!";
+
+$l_we_class["grant_tid"] = "Change display document"; // TRANSLATE
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";// TRANSLATE
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";// TRANSLATE
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";// TRANSLATE
+
 $l_we_class["notValidFolder"] = "The directory chosen is invalid!";
 
 
@@ -180,4 +185,51 @@ $l_we_class["image_edit_null_not_allowed"] = "In the fields Width and Height onl
 
 $l_we_class['doctype_changed_question'] = "Should the default values for the document type be applied for this document?";
 $l_we_class['availableAfterSave'] = "The feature is only available after saving the entry.";
-?>
+
+$l_we_class['properties'] = 'Properties';
+$l_we_class['path'] = 'Path';
+$l_we_class['adoptToAllInferiorDocuments'] = 'adopt for all inferior documents';
+$l_we_class['filename'] = 'Filename';
+$l_we_class['extension'] = 'Extension';
+$l_we_class['dir'] = 'Directory';
+$l_we_class['document'] = 'Document';
+$l_we_class['upload_will_replace'] = 'By using the "upload" button you can now replace the current file. If you want to upload another file or multiple files at once, please use the import function or return to this page using the file menu.';
+$l_we_class['upload_single_files'] = 'ATTENTION: Please note that you can upload only single files using this function. To upload multiple files at once please use the import function, which can be acessed using the file menu.';
+$l_we_class['none'] = '--None--';
+$l_we_class['nodoctype'] = '--none--';
+$l_we_class['doctype'] = 'Document type';
+$l_we_class['standard_workspace'] = 'Default Workspace';
+$l_we_class['standard_template'] = 'Template';
+$l_we_class['template'] = 'Template';
+$l_we_class['no_template'] = 'No template';
+$l_we_class['IsDynamic'] = 'Generate dynamic page';
+$l_we_class['IsSearchable'] = 'Is searchable?';
+$l_we_class['InGlossar'] = 'Not allowed for automatic glossary replacement'; //TRANSLATE
+$l_we_class['metainfo'] = 'Meta tags';
+$l_we_class['Title'] = 'Title';
+$l_we_class['Keywords'] = 'Keywords';
+$l_we_class['Description'] = 'Description';
+$l_we_class['urlfield0'] = 'URL field';// TRANSLATE
+$l_we_class['urlfield1'] = 'URL field 1';// TRANSLATE
+$l_we_class['urlfield2'] = 'URL field 2';// TRANSLATE
+$l_we_class['urlfield3'] = 'URL field 3';// TRANSLATE
+$l_we_class['Charset'] = 'Character coding';
+$l_we_class['moreProps'] = 'More properties';
+$l_we_class['lessProps'] = 'Less properties';
+$l_we_class['owners'] = 'Owners';
+$l_we_class['maincreator'] = 'Main creator';
+$l_we_class['otherowners'] = 'Grant access for following users';
+$l_we_class['onlyOwner'] = 'Creator only';
+$l_we_class['limitedAccess'] = 'Restrict access';
+$l_we_class['nobody'] = 'Nobody';
+$l_we_class['everybody'] = 'Everybody';
+$l_we_class['noWorkspaces'] = 'There are no workspaces defined in this class!';
+$l_we_class['readOnly'] = 'Read only';
+$l_we_class['copyWeDoc'] = 'Copy webEdition page';
+$l_we_class['showTagwizard'] = 'Show Tag help';
+$l_we_class['hideTagwizard'] = 'Hide Tag help';
+$l_we_class['variant_fields'] = 'Fields';
+$l_we_class['variant_info'] = 'Following fields can have the different variants. Please select the fields that have the different variants.';
+$l_we_class['webUser'] = 'Customer';
+$l_we_class['docList'] = 'Content';
+$l_we_class['version'] = 'Versions';

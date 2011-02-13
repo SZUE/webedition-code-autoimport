@@ -26,7 +26,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/linklist_edit.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 protect();
 $we_button = new we_button();
@@ -285,7 +284,7 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	} else {
 		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
 		if (!sizeof($ln)) {
-			$ln = array("ctype"=>"text","type"=>"int","href"=>"http://","text"=>$GLOBALS["l_global"]["new_link"]);
+			$ln = array("ctype"=>"text","type"=>"int","href"=>"http://","text"=>g_l('global',"[new_link]"));
 		}
 		$href = isset($ln["href"]) ? $ln["href"] : "";
 		if(strlen($href) >= 7 && substr($href,0,7) == "mailto:"){
@@ -351,29 +350,29 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 ?>
 <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script language="JavaScript" type="text/javascript">
-		
+
 		function closeOnEscape() {
 			return true;
-			
+
 		}
-		
+
 		function applyOnEnter(evt) {
-			
+
 			_elemName = "target";
 			if ( typeof(evt["srcElement"]) != "undefined" ) { // IE
 				_elemName = "srcElement";
 			}
-			
+
 			if ( !( evt[_elemName].tagName == "SELECT" ||
 					( evt[_elemName].tagName == "INPUT" && (evt[_elemName].name == "href_int" || evt[_elemName].name == "href_obj" || evt[_elemName].name == "src_int") )
 				) ) {
 				document.forms['we_form'].submit();
 				return true;
-				
+
 			}
 		}
-		
-		
+
+
 		function changeTypeSelect(s){
 			for(var i=0; i< s.options.length; i++){
 				var trObj = document.getElementById(s.options[i].value+"_tr");
@@ -520,7 +519,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 
 			$but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.we_form.href.value', '', document.we_form.href.value, '')") : "";
-			if ($BROWSER == "SAFARI") {
+			if ($GLOBALS['BROWSER'] == "SAFARI") {
 				$butspace = 8;
 			} else {
 				$butspace = 10;
@@ -538,7 +537,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($but,10);
-			
+
 			$intLink = $yuiSuggest->getHTML();
 			if(defined("OBJECT_TABLE")){
 				$but     = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','document.forms[\\'we_form\\'].elements[\\'obj_id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_obj\\'].value','','".session_id()."','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");");
@@ -553,7 +552,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
 				$yuiSuggest->setSelectButton($but, 10);
-				
+
 				$objLink = $yuiSuggest->getHTML();
 			}
 			$anchor = htmlTextInput("anchor",30,$anchor,"","","text",300);
@@ -571,16 +570,16 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 				<table cellspacing="0" cellpadding="0" border="0" width=100%>
 					<tr>
 						<td class="small">
-							'.$l_global["posx"].'</td>
+							'.g_l('global','[posx]').'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["posy"].'</td>
+							'.g_l('global',"[posy]").'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["width"].'</td>
+							'.g_l('global',"[width]").'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["height"].'</td>
+							'.g_l('global',"[height]").'</td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -608,22 +607,22 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 							'.getPixel(2,2).'</td>
 					</tr>
 					<tr>
-						<td>' . we_forms::checkbox("1", $jsstatus, "jsstatus", $l_global["status"], true, "small") . '</td>
+						<td>' . we_forms::checkbox("1", $jsstatus, "jsstatus", g_l('global',"[status]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jsscrollbars, "jsscrollbars", $l_global["scrollbars"], true, "small") . '</td>
+						<td>' . we_forms::checkbox("1", $jsscrollbars, "jsscrollbars", g_l('global',"[scrollbars]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jsmenubar, "jsmenubar", $l_global["menubar"], true, "small") . '</td>
+						<td>' . we_forms::checkbox("1", $jsmenubar, "jsmenubar", g_l('global',"[menubar]"), true, "small") . '</td>
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
 					<tr>
-						<td>' . we_forms::checkbox("1", $jsresizable, "jsresizable", $l_global["resizable"], true, "small") . '</td>
+						<td>' . we_forms::checkbox("1", $jsresizable, "jsresizable", g_l('global',"[resizable]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jslocation, "jslocation", $l_global["location"], true, "small") . '</td>
+						<td>' . we_forms::checkbox("1", $jslocation, "jslocation", g_l('global',"[location]"), true, "small") . '</td>
 						<td></td>
-						<td>' . we_forms::checkbox("1", $jstoolbar, "jstoolbar", $l_global["toolbar"], true, "small") . '</td>
+						<td>' . we_forms::checkbox("1", $jstoolbar, "jstoolbar", g_l('global',"[toolbar]"), true, "small") . '</td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -634,11 +633,11 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 				<table border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td>
-							' . we_forms::checkbox("1", $jswin, "jswin", $l_global["open"]) . '</td>
+							' . we_forms::checkbox("1", $jswin, "jswin", g_l('global',"[open]")) . '</td>
 						<td>
 							'.getPixel(10,2).'</td>
 						<td>
-							' . we_forms::checkbox("1", $jscenter, "jscenter", $l_global["center"], true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
+							' . we_forms::checkbox("1", $jscenter, "jscenter", g_l('global',"[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
 					</tr>
 				</table>';
 			$jswinonoff = htmlFormElementTable($jsWinProps,$foo,"left","defaultfont",getPixel(10,2),"","","","",0);
@@ -658,7 +657,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$extImg = htmlFormElementTable(htmlTextInput("img_src",30,$img_src,"","","text",300),"","left","defaultfont",getPixel(10,2),$but,"","","",0);
 
 			$but    = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'img_id\\'].value','document.forms[\\'we_form\\'].elements[\\'src_int\\'].value','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
-		
+
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
 			$yuiSuggest->setInput("src_int",$src_int);
@@ -668,28 +667,28 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($but,10);
-		
+
 			$intImg = $yuiSuggest->getHTML();
 			$imgProps = '
 				<table cellspacing="0" cellpadding="0" border="0" width=100%>
 					<tr>
 						<td class="small">
-							'.$l_global["width"].'</td>
+							'.g_l('global',"[width]").'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["height"].'</td>
+							'.g_l('global',"[height]").'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["border"].'</td>
+							'.g_l('global',"[border]").'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["hspace"].'</td>
+							'.g_l('global',"[hspace]").'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["vspace"].'</td>
+							'.g_l('global',"[vspace]").'</td>
 						<td></td>
 						<td class="small">
-							'.$l_global["align"].'</td>
+							'.g_l('global',"[align]").'</td>
 					</tr>
 					<tr>
 						<td>
@@ -805,7 +804,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 					</tr>
 				</table><div></div>';
 
-			$_parts[] = array(	'headline'=>$l_global["content"],
+			$_parts[] = array(	'headline'=>g_l('global',"[content]"),
 								'html'=>$_html,
 								'space'=>'150');
 
@@ -883,7 +882,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 
 			//   Pop-Up
-			$_parts[] = array(	'headline'=>$l_global["jswin"],
+			$_parts[] = array(	'headline'=>g_l('global',"[jswin]"),
 									'html'=>$jswinonoff,
 									'space'=>'150');
 

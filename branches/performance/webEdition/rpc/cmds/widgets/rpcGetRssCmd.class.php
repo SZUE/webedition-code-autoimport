@@ -21,7 +21,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cockpit.inc.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/PEAR.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/Parser.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/RSS.php");
@@ -29,9 +28,9 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/RSS.ph
 $GLOBALS["l_cockpit"] = $l_cockpit;
 
 class rpcGetRssCmd extends rpcCmd {
-	
+
 	function execute() {
-		
+
 		$sRssUri = $_REQUEST["we_cmd"][0];
 		$sCfgBinary = $_REQUEST["we_cmd"][1];
 		$bCfgTitle = (bool) $sCfgBinary{0};
@@ -54,11 +53,11 @@ class rpcGetRssCmd extends rpcCmd {
 		$bTbLink = (bool) $sTbBinary{3};
 		$bTbPubDate = (bool) $sTbBinary{4};
 		$bTbCopyright = (bool) $sTbBinary{5};
-		
+
 		$oRssParser = new XML_RSS($sRssUri,$GLOBALS["_language"]["charset"]);
 		$oRssParser->parse();
 		$sRssOut = "";
-		
+
 		$iCurrItem = 0;
 		foreach ($oRssParser->getItems() as $item) {
 			$bShowTitle = ($bCfgTitle && isset($item['title']))? true : false;
@@ -73,7 +72,7 @@ class rpcGetRssCmd extends rpcCmd {
 				$sRssOut .= we_htmlElement::htmlBr().getPixel(1,5).(($bShowDesc || $bShowContEnc)? we_htmlElement::htmlBr() : "");
 			}
 			if ($bShowPubdate) {
-				$sRssOut .= $GLOBALS["l_cockpit"]["published"].": ".date($GLOBALS["l_global"]["date_format"], strtotime($item['pubdate']));
+				$sRssOut .= $GLOBALS["l_cockpit"]["published"].": ".date(g_l('date','[format][default]'), strtotime($item['pubdate']));
 			}
 			if ($bShowCategory) {
 				$sRssOut .= ($bShowPubdate)? we_htmlElement::htmlBr().getPixel(1,2).we_htmlElement::htmlBr() : "";
@@ -100,19 +99,19 @@ class rpcGetRssCmd extends rpcCmd {
 				}
 			}
 		}
-		
+
 		$aTb = array();
 		if ($bTbLabel) $aTb[] = $GLOBALS["l_cockpit"]['rss_feed'];
 		if ($bTbTitel) $aTb[] = (isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4] != "")? $_REQUEST["we_cmd"][4] :
 			((isset($oRssParser->channel["title"]))? $oRssParser->channel["title"] : "");
 		if ($bTbDesc) $aTb[] = (isset($oRssParser->channel["description"]))? ereg_replace("(\r\n|\n|\r)","",$oRssParser->channel["description"]) : "";
 		if ($bTbLink) $aTb[] = (isset($oRssParser->channel["link"]))? $oRssParser->channel["link"] : "";
-		if ($bTbPubDate) $aTb[] = (isset($oRssParser->channel["pubdate"]))? (date($GLOBALS["l_global"]["date_format"], strtotime($oRssParser->channel["pubdate"]))) : "";
+		if ($bTbPubDate) $aTb[] = (isset($oRssParser->channel["pubdate"]))? (date(g_l('date','[format][default]'), strtotime($oRssParser->channel["pubdate"]))) : "";
 		if ($bTbCopyright) $aTb[] = (isset($oRssParser->channel["copyright"]))? $oRssParser->channel["copyright"] : "";
-		
+
 		$resp = new rpcResponse();
 		$resp->setData("data", $sRssOut);
-		
+
 		// title
 		$_title = implode(" - ", $aTb);
 		if (strlen($_title) > 50) {
@@ -121,7 +120,7 @@ class rpcGetRssCmd extends rpcCmd {
 		$resp->setData("titel", $_title);
 		$resp->setData("widgetType", "rss");
 		$resp->setData("widgetId", $_REQUEST["we_cmd"][5]);
-		
+
 		return $resp;
 	}
 }

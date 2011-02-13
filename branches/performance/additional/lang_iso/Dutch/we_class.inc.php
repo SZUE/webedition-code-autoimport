@@ -170,6 +170,13 @@ $l_we_class["grant_language"] = "Wijzig taal";
 $l_we_class["grant_language_expl"] = "Wijzig de taal van alle bestanden en directories die zich bevinden in de huidige directorie naar de bovenstaande instellingen.";
 $l_we_class["grant_language_ok"] = "Taal is succesvol gewijzigd!";
 $l_we_class["grant_language_notok"] = "Er is een fout opgetreden tijdens het wijzigen van de taal!";
+
+$l_we_class["grant_tid"] = "Change display document"; // TRANSLATE
+$l_we_class["grant_tid_expl"] = "Change the display document of all files and directories which reside in the current directory to the setting above.";// TRANSLATE
+$l_we_class["grant_tid_ok"] = "The display document has been successfully changed!";// TRANSLATE
+$l_we_class["grant_tid_notok"] = "There was an error while changing the display document";// TRANSLATE
+
+
 $l_we_class["notValidFolder"] = "De gekozen directory is niet geldig!";
 
 

@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$GLOBALS['l_customerFilter'] = array(
+$l_modules_customerFilter = array(
 	'mode_off' 					=> 'Kein Filter benutzen (alle Besucher haben Zugriff)',
 	'mode_none' 				=> 'Nur nicht angemeldete Nutzer haben Zugriff',
 	'mode_all' 					=> 'Alle angemeldeten Kunden haben Zugriff',
@@ -50,6 +50,3 @@ $GLOBALS['l_customerFilter'] = array(
 	'apply_filter_cofirm_close'	=> 'Momentan sind Unterelemente dieses Ordners geöffnet. Um die Kundenfilter zu übertragen müssen alle Unterelemente geschlossen werden. Wenn Sie fortfahren, werden diese automatisch geschlossen, ungespeicherte Änderungen werden dann allerdings ignoriert.',
 	'customerFilter'			=> 'Kundenfilter'
 );
-
-
-?>

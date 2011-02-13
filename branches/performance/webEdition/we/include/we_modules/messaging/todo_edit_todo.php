@@ -22,13 +22,12 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_format.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop($l_messaging['wintitle']);
+htmlTop(g_l('modules_messaging','[wintitle]'));
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
@@ -52,7 +51,7 @@ print STYLESHEET;
 	function selectRecipient() {
 
 	    var rs = escape(document.compose_form.mn_recipients.value);
-	    
+
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&maxsel=1&rs=" + rs,"messaging_usel",-1,-1,530,420,true,false,true,false);
 	}
 
@@ -79,15 +78,15 @@ print STYLESHEET;
 	<?php
 		if ($mode == 'forward') {
 			$compose = new we_format('forward', $messaging->selected_message);
-			$heading = $l_messaging['forward_todo'];
+			$heading = g_l('modules_messaging','[forward_todo]');
 		}
 		else if ($mode == 'reject') {
 			$compose = new we_format('reject', $messaging->selected_message);
-			$heading = $l_messaging['reject_todo'];
+			$heading = g_l('modules_messaging','[reject_todo]');
 		}
 		else {
 			$compose = new we_format('new');
-			$heading = $l_messaging['new_todo'];
+			$heading = g_l('modules_messaging','[new_todo]');
 		}
 		$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>
@@ -96,25 +95,25 @@ print STYLESHEET;
             echo hidden('we_transaction', $_REQUEST['we_transaction']);
 	        echo hidden('rcpts_string', '');
 	        echo hidden('mode', $mode);
-	        
+
 			if ($mode == 'reject') {
 				$tbl =  '
 					<table cellpadding="6">
 					    <tr>
 							<td class="defaultgray">
-								' . $l_messaging['from'] . ':</td>
+								' . g_l('modules_messaging','[from]') . ':</td>
 							<td class="defaultfont">
 								' . $compose->get_from() . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">
-								' . $l_messaging['reject_to'] . ':</a></td>
+								' . g_l('modules_messaging','[reject_to]') . ':</a></td>
 							<td class="defaultfont">
 								' . $compose->get_recipient_line() . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">
-								' . $l_messaging['subject'] . ':</td>
+								' . g_l('modules_messaging','[subject]') . ':</td>
 							<td class="defaultfont">
 								' . $compose->get_subject() . '</td>
 						</tr>
@@ -125,30 +124,30 @@ print STYLESHEET;
 					<table cellpadding="6">
 						<tr>
 							<td class="defaultgray">
-								' . $l_messaging['assigner'] . ':</td>
+								' . g_l('modules_messaging','[assigner]') . ':</td>
 							<td class="defaultfont">
 								' . $compose->get_from() . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">
-								<a href="javascript:selectRecipient()">' . $l_messaging['recipient'] . ':</a></td>
+								<a href="javascript:selectRecipient()">' . g_l('modules_messaging','[recipient]') . ':</a></td>
 							<td>
 								' . htmlTextInput('mn_recipients', 40, ($mode == 'forward' ? '' : $_SESSION["user"]["Username"])) . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">
-								' . $l_messaging['subject'] . ':</td>
+								' . g_l('modules_messaging','[subject]') . ':</td>
 							<td>
 								' . htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">
-								' . $l_messaging['deadline'] . ':</td>
+								' . g_l('modules_messaging','[deadline]') . ':</td>
 							<td>
 								' . getDateInput2('td_deadline%s', $compose->get_deadline()) . '</td>
 						</tr>
 						<tr>
-							<td class="defaultgray">' . $l_messaging['priority'] . ':</td>
+							<td class="defaultgray">' . g_l('modules_messaging','[priority]') . ':</td>
 							<td>' . html_select('mn_priority', 1, array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10)) . '</td>
 						</tr>
 					</table>

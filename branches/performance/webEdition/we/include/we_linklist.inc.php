@@ -245,7 +245,7 @@ class we_linklist
 		}
 		if (isset($row["Path"]) && $this->hidedirindex){
 			$path_parts = pathinfo($row["Path"]);
-			if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+			if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 				$row["Path"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
 			}
 
@@ -872,7 +872,7 @@ class we_linklist
 	{
 		$foo = array();
 		$foo["href"] = "http://";
-		$foo["text"] = $GLOBALS["l_global"]["new_link"];
+		$foo["text"] = g_l('global',"[new_link]");
 		$foo["target"] = "";
 		$foo["type"] = "ext";
 		$foo["ctype"] = "text";

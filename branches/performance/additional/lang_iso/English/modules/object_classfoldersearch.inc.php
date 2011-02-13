@@ -50,6 +50,10 @@ $l_object_classfoldersearch["searchable"] = "Set the selected objects to searcha
 $l_object_classfoldersearch["wirklichsearchable"] = "This sets the selected objects to searchable! Are you sure?";
 $l_object_classfoldersearch["unsearchable"] = "Set the selected objects to unsearchable";
 $l_object_classfoldersearch["wirklichunsearchable"] = "This sets the selected objects to unsearchable! Are you sure?";
+$l_object_classfoldersearch["copytid"] = "Copy the display-document defined in the class to the selected objects.";// TRANSLATE
+$l_object_classfoldersearch["wirklichcopytid"] = "This overrides the defined display documents in the selected objects! Are you sure?";// TRANSLATE
+$l_object_classfoldersearch["copytid"] = "Copy the display-document defined in the class to the selected objects.";// TRANSLATE
+$l_object_classfoldersearch["wirklichcopytid"] = "This overrides the defined display documents in the selected objects! Are you sure?";// TRANSLATE
 
 $l_object_classfoldersearch["zeige"] = "Show";
 $l_object_classfoldersearch["Objekt"] = "Object";
@@ -64,4 +68,5 @@ $l_object_classfoldersearch["ID"] = "ID";
 $l_object_classfoldersearch["language"] = "Language";
 $l_object_classfoldersearch["charset"] = "Charset";
 $l_object_classfoldersearch["url"] = "SEO-Object-Url";// TRANSLATE
+$l_object_classfoldersearch["triggerid"] = "Display document";// TRANSLATE
 ?>

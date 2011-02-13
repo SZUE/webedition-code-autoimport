@@ -21,12 +21,21 @@
 
 
 /**
- * Language file: enc_tags.inc.php
+ * Language file: buttons.inc.php
  * Provides language strings.
- * Language: Deutsch
+ * Language: English
  */
-$GLOBALS["l_tags"]["int_href"] = "Intern";
-$GLOBALS["l_tags"]["ext_href"] = "Extern";
-$GLOBALS["l_tags"]["include_file"] = "Datei für we:include auswählen";
-$GLOBALS["l_tags"]["open_sidebar"] = "Sidebar öffnen";
-?>
+
+$dir=dirname(__FILE__).'/buttons/';
+include($dir."global.inc.php");
+if (is_dir($dir."modules")) {
+
+	// Include language files of buttons used in modules
+	$d = dir($dir."modules");
+	while (false !== ($entry = $d->read())) {
+		if ($entry[0] != "." && substr($entry,(-1 * strlen(".php"))) == ".php") {
+			include($dir."modules/".$entry);
+		}
+	}
+	$d->close();
+}

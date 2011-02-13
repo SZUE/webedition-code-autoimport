@@ -18,17 +18,16 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: importrtf.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_importrtf["chose"] = "Kies bestand";
-$l_importrtf["import_rtf"] = "Importeer RTF bestand";
-$l_importrtf["use_fontname"] = "Ken RTF fontnamen toe";
-$l_importrtf["use_fontsize"] = "Ken RTF fontgrootte toe";
-$l_importrtf["use_fontcolor"] = "Ken RTF fontkleur toe";
-$l_importrtf["no_file"] = "Bestandsnaam is leeg";
-?>
+$l_importrtf = array(
+		'chose' => "Kies bestand",
+		'import_rtf' => "Importeer RTF bestand",
+		'use_fontname' => "Ken RTF fontnamen toe",
+		'use_fontsize' => "Ken RTF fontgrootte toe",
+		'use_fontcolor' => "Ken RTF fontkleur toe",
+		'no_file' => "Bestandsnaam is leeg",
+);

@@ -25,24 +25,8 @@
  * Provides functions for creating webEdition buttons.
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-if(!defined('WE_BUTTONS_LANGDIR')) define('WE_BUTTONS_LANGDIR',$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]);
-include_once(WE_BUTTONS_LANGDIR."/css/css.inc.php");
-include_once(WE_BUTTONS_LANGDIR."/buttons/global.inc.php");
-include_once(WE_BUTTONS_LANGDIR."/buttons/buttons.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css/css.inc.php");
 
-if (is_dir(WE_BUTTONS_LANGDIR."/buttons/modules")) {
-
-	// Include language files of buttons used in modules
-	$d = dir(WE_BUTTONS_LANGDIR."/buttons/modules");
-	while (false !== ($entry = $d->read())) {
-		if ($entry[0] != '.' && substr($entry,(-1 * strlen('.php'))) == '.php') {
-			include_once(WE_BUTTONS_LANGDIR.'/buttons/modules/'.$entry);
-		}
-	}
-	$d->close();
-
-
-}
 
 define('WE_BUTTON_LEFT_WIDTH',5);
 define('WE_BUTTON_RIGHT_WIDTH',7);
@@ -237,8 +221,9 @@ class we_button {
 
 		// Check if the button will a text button or a image button
 		if (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) { // Button will NOT be an image
-			if (($GLOBALS['l_button'][$name]['width'] != '') && ($width == 100)) {
-				$width = $GLOBALS['l_button'][$name]['width'];
+			$tmp=g_l('button','['.$name.'][width]');
+			if (($tmp != "") && ($width == 100)) {
+				$width = $tmp;
 			}
 		} else {
 			//quickfix for image button width;
@@ -300,18 +285,20 @@ class we_button {
 			}
 		}
 
-		$value = (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) ? $GLOBALS["l_button"][$name]["value"].($opensDialog ? "..." : "") :
+		$value = (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) ? g_l('button','['.$name.'][value]').($opensDialog ? "..." : "") :
 						'<img src="/webEdition/images/button/icons/'.str_replace("btn_","",$_button_pure_name).'.gif" class="weBtnImage" />';
 
 		$title = "";
 		// Check if the button will a text button or an image button
 		if (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) { // Button will NOT be an image
-			if (isset($GLOBALS["l_button"][$name]["alt"]) && ($GLOBALS["l_button"][$name]["alt"] != "") && $alt) {
-				$title = $GLOBALS["l_button"][$name]["alt"];
+			$tmp=g_l('button','['.$name.'][alt]');
+			if (($tmp != "") && $alt) {
+				$title = $tmp;
 			}
 		} else {
-			if (isset($GLOBALS["l_button"][$_button_pure_name]["alt"]) && ($GLOBALS["l_button"][$_button_pure_name]["alt"] != "") && $alt) {
-				$title = $GLOBALS["l_button"][$_button_pure_name]["alt"];
+			$tmp=g_l('button','['.$_button_pure_name.'][alt]');
+			if (($tmp != "") && $alt) {
+				$title = $tmp;
 			}
 		}
 		return we_button::getButton($value, $_button_name, $cmd, $width, $title, $disabled,'','','','','',true,(strpos($href, WE_FORM_BUTTON_IDENTIFY) !== false));

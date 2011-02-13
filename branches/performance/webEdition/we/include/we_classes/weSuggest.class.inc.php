@@ -102,7 +102,7 @@ class weSuggest {
 	function weSuggest() {
 
 	}
-	
+
 	function &getInstance() {
 		if (! isset($GLOBALS['__weSuggest__'])) {
 			$GLOBALS['__weSuggest__'] = new weSuggest();
@@ -111,9 +111,8 @@ class weSuggest {
 	}
 
 	function getErrorMarkPlaceHolder($id="errormark",$space=3,$w=4,$h=20){
-		global $BROWSER;
 		$s = $w+$space;
-		if ($BROWSER == "IE") {
+		if ($GLOBALS['BROWSER'] == "IE") {
 			$out = "<img id=\"$id\" src=\"".IMAGE_DIR."icons/errormark.gif\" width=\"$w\" height=\"$h\" border=\"0\" style=\"position:relative; left:-".$s."px; top:4px; visibility: hidden; z-index:1000000\" />";
 		} else {
 			$out = "<img id=\"$id\" src=\"".IMAGE_DIR."icons/errormark.gif\" width=\"$w\" height=\"$h\" border=\"0\" style=\"position:absolute; left:-$s; visibility:hidden;\" />";
@@ -161,7 +160,6 @@ class weSuggest {
 	 * @return String
 	 */
 	function getYuiJs() {
-		global $BROWSER;
 		/**
 		 * @todo 	1. value
 		 * 			2. table
@@ -259,7 +257,7 @@ HTS;
 			$oACDSInit     .= ($i>0?", ":"").'oACDS_'.$i;
 			$oAutoCompInit .= ($i>0?", ":"").'oAutoComp_'.$i;
 			$oAutoCompRes  .= "	var oAutoCompRes_$i = new Array();\n";
-			
+
 			if (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])) {
 				$initVars .= "	var selInputVal_".$i.";\n";
 				$onSelectInit = "";
@@ -305,7 +303,7 @@ HTS;
 			resultID = yuiAcFields.set_$i.fields_id[0];
 			{$this->_doOnItemSelect[$i]}
 		},
-		
+
 
 		doOnDataRequestEvent_$i: function() {
 			yuiAcFields.set_$i.found = 0;
@@ -313,7 +311,7 @@ HTS;
 			yuiAcFields.set_$i.changed = true;
 		},
 
-		
+
 		doOnDataReturnEvent_$i: function(param1,param2) {
 			param=param2.toString();
 			params=param.split(',');
@@ -338,22 +336,22 @@ HTS;
 			yuiAcFields.set_$i.run = false;
 		},
 
-		
+
 		doOnDataErrorEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 			yuiAcFields.set_$i.valid = false;
 		},
-		
-		
+
+
 		doOnDataReturnEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 		},
-		
-		
+
+
 		doOnUnmatchedItemSelectEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 		},
-		
+
 
 HTS;
 
@@ -372,8 +370,8 @@ HTS;
 		doSafariOnTextfieldBlur_$i: function(e) {
 			YAHOO.autocoml.doOnTextfieldBlur_$i();
 		},
-		
-		
+
+
 		doOnTextfieldBlur_$i: function() {
 			//document.getElementById(yuiAcFields.set_$i.id).blur();
 			wsValid_$i = true;
@@ -442,7 +440,7 @@ HTS;
 			{$this->_doOnTextfieldBlur[$i]}
 			yuiAcFields.set_$i.changed=false;
 		},
-		
+
 
 		doOnContainerCollapse_$i: function(){
 			//setTimeout('YAHOO.autocoml.doOnTextfieldBlur_$i()',100);
@@ -459,7 +457,7 @@ HTS;
 						$onFocus .= "			old_".$this->setOnSelectFields[$i][$j]." = document.getElementById('".$this->setOnSelectFields[$i][$j]."').value;\n";
 					}
 				}
-				
+
 				//$onFocus .= "			YAHOO.autocoml.unmarkNotValid($i);";
 				$onFocus .= "			if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[yuiAcFields.set_{$i}.id] = false;\n";
 				$onFocus .= "			yuiAcFields.set_$i.set = '';\n";
@@ -470,13 +468,13 @@ HTS;
 		doAjax: function(callback, postdata) {
 			var request = YAHOO.util.Connect.asyncRequest('POST', ajaxURL, callback, postdata);
 		},
-		
-		
+
+
 HTS;
 
 				$initVars .= <<<HTS
 
-				
+
 	var ajaxCallback_$i = {
 		success: function(o) {
 			if(o.responseText != undefined && o.responseText != ''){
@@ -514,8 +512,8 @@ HTS;
 			yuiAcFields.set_$i.newval = '';
 		}
 	};
-	
-	
+
+
 HTS;
 
 			}
@@ -688,8 +686,8 @@ $doAjax
 				return false;
 			}
 		},
-		counter: 0,		
-				
+		counter: 0,
+
 		isValid: function(){
 			var isValid = true;
 			for(fId in yuiAcFieldsById){
@@ -732,7 +730,7 @@ $doAjax
 
 YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 {$this->preCheck}
-" . ($BROWSER=="SAFARI"?$safariEventListener:"")."
+" . ($GLOBALS['BROWSER']=="SAFARI"?$safariEventListener:"")."
 
 function weInputAppendClass(inp, cls) {
 	if (inp.className) {
@@ -831,7 +829,6 @@ function doDebugResizeH(){
 	 * @return unknown
 	 */
 	function getYuiCss() {
-		global $BROWSER;
 		$inputfields = "";
 		$containerfields = "";
 		$yuiAcContent = "";
@@ -845,7 +842,7 @@ function doDebugResizeH(){
 		for ($i=0; $i<count($this->inputfields);$i++) {
 			$inputfields     .= ($i>0?", ":"") . "#" . $this->inputfields[$i];
 			$containerfields .= ($i>0?", ":"") . "#" . $this->containerfields[$i];
-			$yuiAcContent    .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:".($BROWSER=="IE" ? $this->containerwidth[$i] : ($this->containerwidth[$i]+4))."px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}\n";
+			$yuiAcContent    .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:".($GLOBALS['BROWSER']=="IE" ? $this->containerwidth[$i] : ($this->containerwidth[$i]+4))."px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}\n";
 			$ysearchquery    .= ($i>0?", ":"") . "#" . $this->containerfields[$i] . " .ysearchquery";
 			$yuiAcShadow     .= ($i>0?", ":"") . "#" . $this->containerfields[$i] . " .yui-ac-shadow";
 			$ul              .= ($i>0?", ":"") . "#" . $this->containerfields[$i] . " ul";
@@ -858,7 +855,7 @@ function doDebugResizeH(){
 		}
 		$out = "
 <style type=\"text/css\">\n";
-		if($BROWSER=="IE") {
+		if($GLOBALS['BROWSER']=="IE") {
 			if(!empty($layer)) {
 				$out .= "	$layerZ";
 			}
@@ -905,7 +902,6 @@ function doDebugResizeH(){
 			$resultId="", $label="", $table, $contentType="", $selector="",
 			$maxResults=10, $queryDelay=0, $checkFieldsValue=true, $width="100%",$inputMayBeEmpty='true', $inputButtonSpace=20,$buttonButtonSpace=10
 		){
-		global $BROWSER;
 
 		$this->setInputId($inputId);
 		$elog= '';
@@ -930,11 +926,11 @@ function doDebugResizeH(){
 		if (!$this->containerWidthForAll) {
 			$this->containerWidth = "";
 		}
-		$this->setAutocompleteField($inputId, $containerId, $table, $contentType, $selector, $maxResults, $queryDelay, $layerId, array($resultId), $checkFieldsValue, ($BROWSER=="IE"?$containerWidth:($containerWidth-8)), $inputMayBeEmpty);
+		$this->setAutocompleteField($inputId, $containerId, $table, $contentType, $selector, $maxResults, $queryDelay, $layerId, array($resultId), $checkFieldsValue, ($GLOBALS['BROWSER']=="IE"?$containerWidth:($containerWidth-8)), $inputMayBeEmpty);
 
 		$_button1 = "";
 		if (is_array($button)) {
-			if ($BROWSER=="IE") {
+			if ($GLOBALS['BROWSER']=="IE") {
 				$_button = array("text" => "<div>".$button[0]."</div>", "valign" => "top");
 				$_button1 = array("text" => "<div>".$button[1]."</div>", "valign" => "top");
 				$_space = $width+$inputButtonSpace-1;
@@ -947,7 +943,7 @@ function doDebugResizeH(){
 			}
 
 		} else {
-			if ($BROWSER=="IE") {
+			if ($GLOBALS['BROWSER']=="IE") {
 				$_button = array("text" => "<div>".$button."</div>", "valign" => "top");
 				$_space = $width+$inputButtonSpace-1;
 				$_space2 = "";
@@ -993,13 +989,12 @@ function doDebugResizeH(){
 		$we_button = new we_button($href);
 	}
 	function getHTML() {
-		global $BROWSER;
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;
 		$inputId = empty($this->inputId) ? "yuiAcInput".$this->acId : $this->inputId;
 		$resultId = empty($this->resultId) ? "yuiAcResult".$this->acId : $this->resultId;
 		$containerWidth = (empty($this->containerWidth)?$this->width:$this->containerWidth);
-		
-		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, ($BROWSER=="IE"?$containerWidth:($containerWidth-8)), $this->mayBeEmpty);
+
+		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, ($GLOBALS['BROWSER']=="IE"?$containerWidth:($containerWidth-8)), $this->mayBeEmpty);
 		$inputField  = $this->_htmlTextInput($this->inputName,30,$this->inputValue,"", 'id="'.$inputId.'" '.$this->inputAttribs,"text", $this->width, 0,"", $this->inputDisabled);
 		$resultField = hidden($this->resultName,$this->resultValue,array('id' => $resultId));
 		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">".$inputField."<div id=\"yuiAcContainer{$this->acId}\"></div></div>".getPixel(1,1);
@@ -1035,16 +1030,16 @@ function doDebugResizeH(){
 		$this->doOnTextfieldBlur    = "";
 		return $html;
 	}
-	
+
 	function getInputId(){
-		return $this->inputId;	
+		return $this->inputId;
 	}
-	
+
 	function _htmlTextInput($name,$size=20,$value="",$maxlength="",$attribs="",$type="text",$width="0",$height="0",$markHot="",$disabled=false){
 		$style = ($width || $height) ? (' style="'.($width ? ('width: '.$width.((strpos($width,"px") || strpos($width,"%")) ? "" : "px").';') : '').($height ? ('height: '.$height.((strpos($height,"px") || strpos($height,"%")) ? "" : "px").';') : '').'"') : '';
 		return '<input type="'.trim($type).'" name="'.trim($name).'" size="'.abs($size).'" value="'.htmlspecialchars($value).'" '.($maxlength ? (' maxlength="'.abs($maxlength).'"') : '').$attribs.$style.' />';
 	}
-	
+
 	/****************************************************************/
 	/*                             setter                           */
 	/****************************************************************/
@@ -1089,8 +1084,8 @@ function doDebugResizeH(){
 	 *
 	 * @param String $name
 	 * @param String $value
-	 * @param Array $attribs 
-	 * @param Boolean $disabled 
+	 * @param Array $attribs
+	 * @param Boolean $disabled
 	 */
 	function setInput($name, $value="", $attribs="", $disabled=false, $markHot="") {
 		$this->inputId='';
@@ -1120,7 +1115,7 @@ function doDebugResizeH(){
 						$_class = 1;
 					default:
 						$this->inputAttribs .= $key.'="'.$val.'" ';
-					}				
+					}
 			}
 			if (!isset($_class)) {
 				$this->inputAttribs  .= 'class="wetextinput" ';
@@ -1142,7 +1137,7 @@ function doDebugResizeH(){
 		}
 		$this->inputDisabled  = $disabled;
 	}
-	
+
 	function setInputId($val='') {
 		if ($val=='') {
 			$this->inputId = "yuiAcInput" . $this->acId;
@@ -1156,8 +1151,8 @@ function doDebugResizeH(){
 	function setInputValue($val) {
 		$this->inputValue = $val;
 	}
-	
-	
+
+
 	function setMaxResults($val) {
 		$this->maxResults = $val;
 	}
@@ -1173,7 +1168,7 @@ function doDebugResizeH(){
 		$this->mayBeEmpty = $val;
 	}
 	function setLabel($val){
-		$this->label = $val;	
+		$this->label = $val;
 	}
 	/**
 	 * Set name, value and id for the result field
@@ -1195,7 +1190,7 @@ function doDebugResizeH(){
 	function setResultValue($val) {
 		$this->resultValue = $val;
 	}
-	
+
 	function setSelectButton($val, $space=20) {
 		$this->selectButton = $val;
 		$this->selectButtonSpace = $space;

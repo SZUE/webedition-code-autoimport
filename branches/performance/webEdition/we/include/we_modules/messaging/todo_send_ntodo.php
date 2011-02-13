@@ -37,23 +37,23 @@ if(isset($_REQUEST['td_deadline_hour'])){
 if ($_REQUEST["mode"] == 'forward') {
     $arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'deadline' => $deadline, 'body' => $_REQUEST['mn_body']);
     $res = $messaging->forward($arr);
-    $heading = $l_messaging['forwarding_todo'];
-    $action = $l_messaging['forwarded_to'];
-    $s_action = $l_messaging['todo_s_forwarded'];
-    $n_action = $l_messaging['todo_n_forwarded'];
+    $heading = g_l('modules_messaging','[forwarding_todo]');
+    $action = g_l('modules_messaging','[forwarded_to]');
+    $s_action = g_l('modules_messaging','[todo_s_forwarded]');
+    $n_action = g_l('modules_messaging','[todo_n_forwarded]');
 } elseif ($_REQUEST["mode"] == 'reject') {
     $arr = array('body' => $_REQUEST['mn_body']);
     $res = $messaging->reject($arr);
-    $heading = $l_messaging['rejecting_todo'];
-    $action = $l_messaging['rejected_to'];
-    $s_action = $l_messaging['todo_s_rejected'];
-    $n_action = $l_messaging['todo_n_rejected'];
+    $heading = g_l('modules_messaging','[rejecting_todo]');
+    $action = g_l('modules_messaging','[rejected_to]');
+    $s_action = g_l('modules_messaging','[todo_s_rejected]');
+    $n_action = g_l('modules_messaging','[todo_n_rejected]');
 } else {
     $arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body'], 'deadline' => $deadline, 'status' => 0, 'priority' => $_REQUEST['mn_priority']);
     $res = $messaging->send($arr, "we_todo");
-    $heading = $l_messaging['creating_todo'];
-    $s_action = $l_messaging['todo_s_created'];
-    $n_action = $l_messaging['todo_n_created'];
+    $heading = g_l('modules_messaging','[creating_todo]');
+    $s_action = g_l('modules_messaging','[todo_s_created]');
+    $n_action = g_l('modules_messaging','[todo_n_created]');
 
 
 }
@@ -86,14 +86,14 @@ if ($_REQUEST["mode"] == 'forward') {
     $tbl = '<table align="center" cellpadding="7" cellspacing="3">
 		    <tr>
 		      <td class="defaultfont" valign="top">' . $s_action . ':</td>
-		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? $l_messaging['nobody'] : join("</li>\n<li>", $res['ok'])) . '</li></ul></td>
+		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging','[nobody]'): join("</li>\n<li>", $res['ok'])) . '</li></ul></td>
 		    </tr>
 		    ' . (empty($res['failed']) ? '' : '<tr>
 		        <td class="defaultfont" valign="top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . join("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
 		    (empty($res['err']) ? '' : '<tr>
-		        <td class="defaultfont" valign="top">' . $l_messaging['occured_errs'] . ':</td>
+		        <td class="defaultfont" valign="top">' . g_l('modules_messaging','[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . join("</li>\n<li>", $res['err']) . '</li></ul></td>
 		    </tr>') . '
 	    </table>

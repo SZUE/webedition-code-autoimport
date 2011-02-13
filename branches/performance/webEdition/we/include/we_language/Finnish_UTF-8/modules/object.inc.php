@@ -34,6 +34,7 @@ $l_object["default"] = "Default Value";
 $l_object["checked"] = "rastitettu";
 $l_object["name"] = "Automaattinen nimi";
 $l_object["seourl"] = "SEO-URL";// TRANSLATE
+$l_object["seourltrigger"] = "Preset document for display";// TRANSLATE
 $l_object["allFields"] = "Kaikki kentät";
 $l_object["search_term"] = "Hakuehto";
 $l_object["search_field"] = "Hakukenttä";

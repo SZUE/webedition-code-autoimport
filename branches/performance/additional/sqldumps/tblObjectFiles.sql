@@ -9,6 +9,7 @@ CREATE TABLE tblObjectFiles (
   ModDate int(11) NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
   Url varchar(255) NOT NULL default '',
+  TriggerID bigint(20) NOT NULL default '0',
   CreatorID bigint(20) NOT NULL default '0',
   ModifierID bigint(20) NOT NULL default '0',
   RestrictOwners tinyint(1) NOT NULL default '0',

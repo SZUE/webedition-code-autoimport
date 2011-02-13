@@ -22,8 +22,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_document.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/enc_we_class.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_value.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_url.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
@@ -77,7 +76,7 @@ class we_object extends we_document
 		$this->we_document();
         $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
         $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
-		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultDesc","CSS","CacheType","CacheLifeTime");
+		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID","DefaultDesc","CSS","CacheType","CacheLifeTime");
 		if(defined('DEFAULT_CHARSET')) {
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		}
@@ -179,6 +178,7 @@ class we_object extends we_document
 			$q .= " OF_Text VARCHAR(255) NOT NULL, ";
 			$q .= " OF_Path VARCHAR(255) NOT NULL, ";
 			$q .= " OF_Url VARCHAR(255) NOT NULL, ";
+			$q .= " OF_TriggerID  BIGINT NOT NULL  default '0', ";
 			$q .= " OF_Workspaces VARCHAR(255) NOT NULL, ";
 			$q .= " OF_ExtraWorkspaces VARCHAR(255) NOT NULL, ";
 			$q .= " OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL, ";
@@ -271,6 +271,7 @@ class we_object extends we_document
 			$this->DefaultUrlfield1 = isset($this->elements["urlfield1"]["dat"]) ? $this->getElement($this->elements["urlfield1"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield1"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield2 = isset($this->elements["urlfield2"]["dat"]) ? $this->getElement($this->elements["urlfield2"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield2"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield3 = isset($this->elements["urlfield3"]["dat"]) ? $this->getElement($this->elements["urlfield3"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "_";
+			$this->DefaultTriggerID = isset($this->elements["triggerid"]["dat"]) ? $this->getElement($this->elements["triggerid"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["triggerid"]["dat"],"dat") : "0";
 
 			$we_sort = $this->getElement("we_sort");
 
@@ -464,6 +465,7 @@ class we_object extends we_document
 			$this->DefaultUrlfield1 = isset($this->elements["urlfield1"]["dat"]) ? $this->getElement($this->elements["urlfield1"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield1"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield2 = isset($this->elements["urlfield2"]["dat"]) ? $this->getElement($this->elements["urlfield2"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield2"]["dat"],"dat") : "_";
 			$this->DefaultUrlfield3 = isset($this->elements["urlfield3"]["dat"]) ? $this->getElement($this->elements["urlfield3"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "_";
+			//$this->DefaultTriggerID = isset($this->elements["triggerid"]["dat"]) ? $this->getElement($this->elements["triggerid"]["dat"]."dtype","dat")."_".$this->getElement($this->elements["urlfield3"]["dat"],"dat") : "0";
 
 			$arrt["WE_CSS_FOR_CLASS"] = $this->CSS;
 
@@ -912,8 +914,8 @@ class we_object extends we_document
 
 		$content .= '</td></tr>';
 
-//		$content .= '<tr><td class="defaultfont">' . $GLOBALS["l_global"]["description"] . '</td><td>' . $this->htmlTextInput("we_".$this->Name."_input[".$name."editdescription]", 40, $this->getElement($name."editdescription"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388) . '</td></tr>';
-		$content .= '<tr><td class="weMultiIconBoxHeadlineThin" valign="top">' . $GLOBALS["l_global"]["description"] . '</td><td>' . $this->htmlTextArea("we_".$this->Name."_input[".$name."editdescription]", 3, 40, $this->getElement($name."editdescription"), 'onChange="_EditorFrame.setEditorIsHot(true)"; style="width: 388px;"') . '</td></tr>';
+//		$content .= '<tr><td class="defaultfont">' . g_l('global',"[description]") . '</td><td>' . $this->htmlTextInput("we_".$this->Name."_input[".$name."editdescription]", 40, $this->getElement($name."editdescription"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388) . '</td></tr>';
+		$content .= '<tr><td class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('global',"[description]") . '</td><td>' . $this->htmlTextArea("we_".$this->Name."_input[".$name."editdescription]", 3, 40, $this->getElement($name."editdescription"), 'onChange="_EditorFrame.setEditorIsHot(true)"; style="width: 388px;"') . '</td></tr>';
 
 		//type
 		$content .= '<tr>';
@@ -1225,10 +1227,10 @@ class we_object extends we_document
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>';
 			$content .= '<td width="170" class="defaultfont">';
 			// TITEL
-			$content .=  we_forms::radiobutton($name, (($this->getElement("title","dat")==$name)?1:0), "we_".$this->Name."_input[title]", $GLOBALS["l_global"]["title"], true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+			$content .=  we_forms::radiobutton($name, (($this->getElement("title","dat")==$name)?1:0), "we_".$this->Name."_input[title]", g_l('global',"[title]"), true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
 
 			// Beschreibung
-			$content .= we_forms::radiobutton($name, (($this->getElement("desc","dat")==$name)?1:0), "we_".$this->Name."_input[desc]", $GLOBALS["l_global"]["description"], true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+			$content .= we_forms::radiobutton($name, (($this->getElement("desc","dat")==$name)?1:0), "we_".$this->Name."_input[desc]", g_l('global',"[description]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
 
 			// Keywords
 			$content .= we_forms::radiobutton($name, (($this->getElement("keywords","dat")==$name)?1:0), "we_".$this->Name."_input[keywords]", $GLOBALS["l_we_class"]["Keywords"], true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
@@ -1255,11 +1257,11 @@ class we_object extends we_document
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td>';
 			$content .= '<td width="170" class="defaultfont">';
-			$content .= we_forms::checkbox("1", $this->getElement($name."required","dat"), "we_".$this->Name."_input[".$name."required1]", $GLOBALS["l_global"]["required_field"], true, "defaultfont", "if(this.checked){document.we_form.elements['"."we_".$this->Name."_input[".$name."required]"."'].value=1;}else{ document.we_form.elements['"."we_".$this->Name."_input[".$name."required]"."'].value=0;}");
+			$content .= we_forms::checkbox("1", $this->getElement($name."required","dat"), "we_".$this->Name."_input[".$name."required1]", g_l('global',"[required_field]"), true, "defaultfont", "if(this.checked){document.we_form.elements['"."we_".$this->Name."_input[".$name."required]"."'].value=1;}else{ document.we_form.elements['"."we_".$this->Name."_input[".$name."required]"."'].value=0;}");
 			if(defined('SHOP_TABLE')){
 				if($this->canHaveVariants() && $this->isVariantField($name)){
 					$variant = $this->getElement($name."variant","dat");
-					$content .= we_forms::checkboxWithHidden(($variant ==1 ? true : false), "we_".$this->Name."_variant[".$name."variant]", $GLOBALS["l_global"]["variant_field"],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
+					$content .= we_forms::checkboxWithHidden(($variant ==1 ? true : false), "we_".$this->Name."_variant[".$name."variant]", g_l('global',"[variant_field]"),false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 				}
 			}
 			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="'.$this->getElement($name."required","dat").'" />';
@@ -1271,7 +1273,7 @@ class we_object extends we_document
 			$content .= '<td width="170" class="defaultfont">';
 			if($this->canHaveVariants() && $this->isVariantField($name)){
 				$variant = $this->getElement($name."variant","dat");
-				$content .= we_forms::checkboxWithHidden(($variant ==1 ? true : false), "we_".$this->Name."_variant[".$name."variant]", $GLOBALS["l_global"]["variant_field"],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
+				$content .= we_forms::checkboxWithHidden(($variant ==1 ? true : false), "we_".$this->Name."_variant[".$name."variant]", g_l('global',"[variant_field]"),false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 			}
 			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."required]".'" value="0" />';
 			$content .= '</td></tr>';
@@ -1291,8 +1293,6 @@ class we_object extends we_document
 	}
 
 	function htmlHref($n){
-		global $l_global;
-
 		$type = isset($this->elements[$n."hreftype"]["dat"]) ?
 		$this->elements[$n."hreftype"]["dat"] :
 		"";
@@ -1361,7 +1361,6 @@ class we_object extends we_document
 	}
 
 	function htmlLinkInput($n, $i){
-		global $l_global;
 		$we_button = new we_button();
 
 		$attribs = array();
@@ -1371,7 +1370,7 @@ class we_object extends we_document
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(!is_array($link)) $link= array();
 		if(!sizeof($link)){
-			$link = array("ctype"=>"text","type"=>"ext","href"=>"#","text"=>$GLOBALS["l_global"]["new_link"]);
+			$link = array("ctype"=>"text","type"=>"ext","href"=>"#","text"=>g_l('global',"[new_link]"));
 		}
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
 		$img = new we_imageDocument();
@@ -1380,7 +1379,7 @@ class we_object extends we_document
 		$startTag = $this->getLinkStartTag($link,$attribs,$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
 		$editbut = $we_button->create_button("edit", "javascript:we_cmd('edit_link_at_class','".$n."','','".$i."');");
 		$delbut = $we_button->create_button("image:btn_function_trash", "javascript:setScrollTo();we_cmd('delete_link_at_class','".$GLOBALS['we_transaction']."','".$i."','".$n."')");
-		if(!$content) $content = $GLOBALS["l_global"]["new_link"];
+		if(!$content) $content = g_l('global',"[new_link]");
 		if($startTag){
 			$out = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
 					<tr>
@@ -1513,7 +1512,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	function getWysiwygArea($name){
 
 		$attribs = array();
-		$attribs["removefirstparagraph"] = isset($this->elements[$name."removefirstparagraph"]["dat"]) ? $this->elements[$name."removefirstparagraph"]["dat"] : "";
+		$attribs["removefirstparagraph"] = isset($this->elements[$name."removefirstparagraph"]["dat"]) ? $this->elements[$name."removefirstparagraph"]["dat"] : defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true;
 		$attribs["xml"] = isset($this->elements[$name."xml"]["dat"]) ? $this->elements[$name."xml"]["dat"] : "";
 		$attribs["dhtmledit"] = isset($this->elements[$name."dhtmledit"]["dat"]) ? $this->elements[$name."dhtmledit"]["dat"] : "";
 		$attribs["wysiwyg"] = isset($this->elements[$name."dhtmledit"]["dat"]) ? $this->elements[$name."dhtmledit"]["dat"] : "";
@@ -1792,8 +1791,8 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formDefault(){
-		global $l_object, $l_global,$l_object_value,$l_object_url;
-		//$l_global["categorys"]formCategory()
+		global $l_object, $l_object_value,$l_object_url;
+		//g_l('global',"[categorys]")formCategory()
 
 		$var_flip = array_flip($l_object_value);
 		$select = "";
@@ -1961,9 +1960,14 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	<tr>
 		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
 	</tr>
-
 	<tr>
-		<td class="defaultfont" valign=top>'.$l_global["categorys"].'</td><td>'.getPixel(20,20).'</td><td>'.getPixel(100,2).'</td>
+		<td colspan="3" >'.$this->formTriggerDocument(true).'</td>
+	</tr>
+	<tr>
+		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+	</tr>
+	<tr>
+		<td class="defaultfont" valign=top>'.g_l('global',"[categorys]").'</td><td>'.getPixel(20,20).'</td><td>'.getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$this->formCategory().'</td>
@@ -2237,7 +2241,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$f=0;
 
 		if($this->ID){
-			$this->DB_WE->query("SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultKeywords,DefaultValues FROM " . OBJECT_TABLE . " WHERE ID = ".$this->ID);
+			$this->DB_WE->query("SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM " . OBJECT_TABLE . " WHERE ID = ".$this->ID);
 
 			$this->DB_WE->next_record();
 
@@ -2289,6 +2293,8 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$this->elements["urlfield1"]["dat"]=$this->DB_WE->f("DefaultUrlfield1");
 			$this->elements["urlfield2"]["dat"]=$this->DB_WE->f("DefaultUrlfield2");
 			$this->elements["urlfield3"]["dat"]=$this->DB_WE->f("DefaultUrlfield3");
+			$this->elements["triggerid"]["dat"]=$this->DB_WE->f("DefaultTriggerID");
+			$this->DefaultTriggerID=$this->DB_WE->f("DefaultTriggerID");
 
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);

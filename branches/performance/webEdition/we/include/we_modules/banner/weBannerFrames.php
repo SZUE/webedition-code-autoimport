@@ -101,7 +101,7 @@ class weBannerFrames extends weModuleFrames{
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#F0EFF0" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
 		}
-		global $l_users,$l_banner;
+		global $l_banner;
 		$isFolder=0;
 		if(isset($_GET["isFolder"])) $isFolder=$_GET["isFolder"];
 
@@ -211,12 +211,12 @@ $we_tabs->getHTML() .
 						} else {
 							<?php echo we_message_reporting::getShowMessageCall($GLOBALS['l_alert']['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR); ?>
 						}
-					}				
+					}
 				} else {
 					_we_save();
 				}
 			}
-			
+
 			function _we_save() {
 				top.content.we_cmd('save_banner');
 			}

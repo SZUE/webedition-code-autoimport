@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
@@ -22,8 +22,7 @@
 
   include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
   include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-  include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
-  
+
   htmlTop();
 ?>
 	</head>

@@ -26,7 +26,6 @@
  * Language: English
  */
 
-include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
 /*****************************************************************************
  * LOGIN-SCREEN
@@ -373,4 +372,153 @@ $l_button["revert_published"]["value"] = "Palauta julkaistu versio";
 $l_button["revert_published"]["alt"] = "Hylkää muutokset ja palauta julkaistu versio.";
 $l_button["revert_published"]["width"] = 240;
 
-?>
+$l_button["delete_all"]["value"] = "Poista kaikki";
+$l_button["delete_all"]["alt"]   = "Poista kaikki";
+$l_button["delete_all"]["width"] = 100;
+
+$l_button["add"]["value"] = "Lisää";
+$l_button["add"]["alt"] = "Lisää";
+$l_button["add"]["width"] = 100;
+
+$l_button["select"]["value"] = "Valitse";
+$l_button["select"]["alt"] = "Valitse";
+$l_button["select"]["width"] = 100;
+
+$l_button["edit"]["value"] = "Muokkaa";
+$l_button["edit"]["alt"] = "Muokkaa";
+$l_button["edit"]["width"] = 100;
+
+$l_button["editor"]["value"] = "Käynnistä editori";
+$l_button["editor"]["alt"] = "Käynnistä editori";
+$l_button["editor"]["width"] = 120;
+
+$l_button["new_service"]["value"] = "Uusi palvelu";
+$l_button["new_service"]["alt"] = "Uusi palvelu";
+$l_button["new_service"]["width"] = 100;
+
+$l_button["new_entry"]["value"] = "Uusi linkki";
+$l_button["new_entry"]["alt"] = "Uusi linkki";
+$l_button["new_entry"]["width"] = 100;
+
+$l_button["attributes"]["value"] = "Attribuutit...";
+$l_button["attributes"]["alt"] = "Ominaisuudet...";
+$l_button["attributes"]["width"] = 100;
+
+$l_button["selectAll"]["value"] = "Valitse kaikki";
+$l_button["selectAll"]["alt"]   = "Valitse kaikki";
+$l_button["selectAll"]["width"] = 140;
+
+$l_button["deselectAll"]["value"] = "Kumoa valinta";
+$l_button["deselectAll"]["alt"]   = "Kumoa valinta";
+$l_button["deselectAll"]["width"] = 120;
+
+$l_button["prepend"]["value"] = "Liitä eteen";
+$l_button["prepend"]["alt"]   = "Liitä valittu teksti ennen lähdekoodia";
+$l_button["prepend"]["width"] = 140;
+
+$l_button["append"]["value"] = "Liitä jälkeen";
+$l_button["append"]["alt"]   = "Liitä valittu teksti lähdekoodin jälkeen";
+$l_button["append"]["width"] = 140;
+
+$l_button["addCursorPosition"]["value"] = "Insert at cursor position";
+$l_button["addCursorPosition"]["alt"]   = "Insert selected text at cursor position";
+$l_button["addCursorPosition"]["width"] = 180;
+
+$l_button["startEditor"]["value"] = "Käynnistä editori";
+$l_button["startEditor"]["alt"]   = "Käynnistä editori käyttämällä Editor-Plugin";
+$l_button["startEditor"]["width"] = 120;
+
+$l_button["refresh"]["value"] = "Päivitä";
+$l_button["refresh"]["alt"]   = "Päivitä";
+$l_button["refresh"]["width"] = 100;
+
+$l_button["ignore"]["value"] = "Hylkää";
+$l_button["ignore"]["alt"]   = "Hylkää";
+$l_button["ignore"]["width"] = 100;
+
+$l_button["change"]["value"] = "Muuta";
+$l_button["change"]["alt"]   = "Muuta";
+$l_button["change"]["width"] = 100;
+
+$l_button["apply"]["value"] = "Käytä";
+$l_button["apply"]["alt"]   = "Käytä";
+$l_button["apply"]["width"] = 100;
+
+$l_button["check"]["value"] = "Tarkista";
+$l_button["check"]["alt"]   = "Tarkista";
+$l_button["check"]["width"] = 100;
+
+$l_button["iconview"]["value"] = "Iconview";
+$l_button["iconview"]["alt"]   = "Iconview";
+$l_button["iconview"]["width"] = 100;
+
+$l_button["listview"]["value"] = "Listview";
+$l_button["listview"]["alt"]   = "Listview";
+$l_button["listview"]["width"] = 100;
+
+$l_button["reindent"]["value"] = "Reindent code";
+$l_button["reindent"]["alt"]   = "";
+$l_button["reindent"]["width"] = 100;
+
+
+$l_button["btn_messages_copy"]["alt"] = "Kopioi viesti(t)";
+$l_button["btn_messages_create"]["alt"] = "Luo viesti";
+$l_button["btn_messages_cut"]["alt"] = "Leikkaa viesti(t)";
+$l_button["btn_messages_paste"]["alt"] = "Liitä viesti(t)";
+$l_button["btn_messages_reply"]["alt"] = "Vastaa viesti(in)";
+$l_button["btn_messages_tasks"]["alt"] = "Suorita Tehtävänhallinta";
+$l_button["btn_messages_trash"]["alt"] = "Poista viesti(t)";
+$l_button["btn_messages_update"]["alt"] = "Etsi uudet viestit";
+
+$l_button["btn_task_copy"]["alt"] = "Kopioi tehtävä(t)";
+$l_button["btn_task_create"]["alt"] = "Luo tehtävä(t)";
+$l_button["btn_task_cut"]["alt"] = "Leikkaa tehtävä(t)";
+$l_button["btn_task_forward"]["alt"] = "Edelleenlähetä tehtävä(t)";
+$l_button["btn_task_messages"]["alt"] = "Suorita viestijärjestelmä";
+$l_button["btn_task_paste"]["alt"] = "Liitä tehtävä(t)";
+$l_button["btn_task_reject"]["alt"] = "Estä tehtävä(t)";
+$l_button["btn_task_status"]["alt"] = "Päivitä tila";
+$l_button["btn_task_trash"]["alt"] = "Poista tehtävä(t)";
+$l_button["btn_task_update"]["alt"] = "Etsi uusia tehtävät";
+
+$l_button["btn_add_field"]["alt"] = "Lisää kenttä";
+$l_button["btn_add_link"]["alt"] = "Lisää hyperlinkki";
+$l_button["btn_add_listelement"]["alt"] = "Lisää lista elementti";
+$l_button["btn_add_schedule"]["alt"] = "Lisää ajastettu tehtävä";
+$l_button["btn_add_template"]["alt"] = "Lisää sivupohja";
+$l_button["btn_add_image"]["alt"] = "Lisää kuva";
+$l_button["btn_add_thumbnail"]["alt"] = "Lisää esikatselukuva";
+$l_button["btn_add_flash"]["alt"] = "Lisää flash tiedosto";
+$l_button["btn_add_quicktime"]["alt"] = "Lisää Quicktime tiedosto";
+$l_button["btn_add_file"]["alt"] = "Lisää tiedosto";
+$l_button["btn_add_cat"]["alt"] = "Lisää kategoria";
+$l_button["btn_fs_back"]["alt"] = "Taaksepäin";
+$l_button["btn_new_dir"]["alt"] = "Uusi hakemisto";
+$l_button["btn_new_bannergroup"]["alt"] = "Luo uusi banneriryhmä";
+
+$l_button["btn_direction_down"]["alt"] = "Alas";
+$l_button["btn_direction_left"]["alt"] = "Vasemalle";
+$l_button["btn_direction_right"]["alt"] = "Oikealle";
+$l_button["btn_direction_up"]["alt"] = "Ylös";
+
+$l_button["btn_edit_edit"]["alt"] = "Muokkaa";
+$l_button["btn_edit_flash"]["alt"] = "Valitse Flash -tiedosto";
+$l_button["btn_edit_image"]["alt"] = "Muokkaa kuvaa";
+$l_button["btn_edit_include"]["alt"] = "Muokkaa include-tiedostoa";
+$l_button["btn_edit_link"]["alt"] = "Muokkaa hyperlinkkiä";
+$l_button["btn_edit_list"]["alt"] = "Muokkaa listaa";
+$l_button["btn_edit_object"]["alt"] = "Muokkaa objektia";
+$l_button["btn_edit_pdf"]["alt"] = "Valitse PDF -tiedosto";
+$l_button["btn_edit_quicktime"]["alt"] = "Muokkaa Quicktime -tiedostoa";
+$l_button["btn_edit_real"]["alt"] = "Valitse Real Player -tiedosto";
+$l_button["btn_edit_wmp"]["alt"] = "Valitse Windows Media Player -tiedosto";
+
+$l_button["btn_function_plus"]["alt"] = "Lisää";
+$l_button["btn_function_search"]["alt"] = "Etsi";
+$l_button["btn_function_trash"]["alt"] = "Poista";
+$l_button["btn_function_view"]["alt"] = "Katso";
+
+$l_button["btn_select_image"]["alt"] = "Valitse kuva";
+$l_button["btn_help"]["alt"] = "Ohje";
+
+$l_button["btn_open_sidebar"]["alt"] = "Avaa sivupalkki";

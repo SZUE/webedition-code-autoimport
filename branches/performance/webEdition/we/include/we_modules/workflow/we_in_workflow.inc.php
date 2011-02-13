@@ -31,16 +31,16 @@ if($cmd == "ok"){
 	$wf_text = $_REQUEST["wf_text"];
 	$wf_select = $_REQUEST["wf_select"];
 	if(weWorkflowUtility::insertDocInWorkflow($we_doc->ID,$we_doc->Table,$wf_select,$_SESSION["user"]["ID"],$wf_text)){
-		$msg = $l_workflow[$we_doc->Table]["in_workflow_ok"];
+		$msg = g_l('modules_workflow','['.$we_doc->Table.'][in_workflow_ok]');
 		$msgType = WE_MESSAGE_NOTICE;
 		if($_SESSION["we_mode"] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION["we_mode"] == "normal"){
-			
+
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
-		
+
 		if($_REQUEST["we_cmd"][2]){ // make same new
 			$we_doc->makeSameNew();
 			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
@@ -53,13 +53,13 @@ if($cmd == "ok"){
 			}
 		}
 		else {
-			$msg = $l_workflow[$we_doc->Table]["in_workflow_notok"];
+			$msg = g_l('modules_workflow','['.$we_doc->Table.'][in_workflow_notok]');
 			$msgType = WE_MESSAGE_ERROR;
 			if($_SESSION["we_mode"] == "seem"){
 
 				$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 			} else if($_SESSION["we_mode"] == "normal"){
-			
+
 			$script = '';
 		}
 		}
@@ -107,7 +107,7 @@ if($cmd == "ok"){
 							$content .= '
 								<tr>
 									<td class="defaultfont">
-										'.$l_workflow["workflow"].'</td>
+										'.g_l('modules_workflow','[workflow]').'</td>
 								</tr>
 								<tr>
 									<td>
@@ -125,21 +125,21 @@ if($cmd == "ok"){
 						$content .= '
 								<tr>
 									<td class="defaultfont">
-										'.$l_workflow["message"].'</td>
+										'.g_l('modules_workflow','[message]').'</td>
 								</tr>
 								<tr>
 									<td>
 										'.$wf_textarea.'</td>
 								</tr>
 							</table>';
-						
+
 						$_buttons = $we_button->position_yes_no_cancel(	$okbut,
 																		"",
 																		$cancelbut);
-						
-																		
-						$frame = htmlDialogLayout($content,$l_workflow["in_workflow"], $_buttons);
-						
+
+
+						$frame = htmlDialogLayout($content,g_l('modules_workflow','[in_workflow]'), $_buttons);
+
 						print $frame;
 						print '
 							<input type="hidden" name="cmd" value="ok" />
@@ -150,7 +150,7 @@ if($cmd == "ok"){
 				</form>
 			<?php else: ?>
 				<script language="JavaScript" type="text/javascript"><!--
-					<?php print we_message_reporting::getShowMessageCall( (($we_doc->Table==FILE_TABLE) ? $l_workflow['no_wf_defined'] : $l_workflow['no_wf_defined_object'] ), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall( (($we_doc->Table==FILE_TABLE) ? g_l('modules_workflow','[no_wf_defined]') : g_l('modules_workflow','[no_wf_defined_object]') ), WE_MESSAGE_ERROR); ?>
 					top.close();
 				//-->
 				</script>

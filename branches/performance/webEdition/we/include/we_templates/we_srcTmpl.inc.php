@@ -21,7 +21,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php'
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/global.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 
@@ -346,7 +345,7 @@ if ($we_editmode) {
 	            	</applet>
 	            	';
 	} else {
-		$maineditor .= '<textarea id="editarea" style="width: ' . (($_SESSION["prefs"]["editorWidth"] != 0) ? $_SESSION["prefs"]["editorWidth"] : "700") . 'px; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($BROWSER == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
+		$maineditor .= '<textarea id="editarea" style="width: ' . (($_SESSION["prefs"]["editorWidth"] != 0) ? $_SESSION["prefs"]["editorWidth"] : "700") . 'px; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
 						. htmlspecialchars($code) . '</textarea>';
 		if ($_SESSION['prefs']['editorMode'] == 'codemirror') { //Syntax-Highlighting
 			$parser_js = array();
@@ -658,7 +657,7 @@ if ($we_editmode) {
 
 	$maineditor .= '<td align="right" class="defaultfont">' .
 					($_SESSION['prefs']['editorMode'] == 'codemirror' ? '<div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . $we_button->create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
-					($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", $l_global["wrapcheck"], false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
+					($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", g_l('global','[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
         </table></td></tr></table>
 ';
 	$znr = -1;
@@ -679,7 +678,7 @@ if ($we_editmode) {
 		// NEW TAGWIZARD
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/we_tag_groups.inc.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/enc_we_tag_wizard.inc.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/we_tag_wizard.inc.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/javaMenu/module_information.inc.php');
 
 		$allWeTags = weTagWizard::getExistingWeTags();

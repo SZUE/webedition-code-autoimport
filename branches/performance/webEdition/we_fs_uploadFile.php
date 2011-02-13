@@ -194,7 +194,7 @@ if($we_ContentType == "image/*"){
 
 	array_push($parts,array("headline"=>"","html"=>we_forms::checkbox("1", true, "import_metadata", $l_metadata["import_metadata_at_upload"]),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_thumbnails"]["create_thumbnails"]."<br>".$_thumbnails->getHtmlCode(),"space"=>0));
-	array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_global"]["title"]."<br>".htmlTextInput("img_title",24,"","","","text",330),"space"=>0));
+	array_push($parts,array("headline"=>"","html"=>g_l('global',"[title]")."<br>".htmlTextInput("img_title",24,"","","","text",330),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_we_class"]["alt"]."<br>".htmlTextInput("img_alt",24,"","","","text",330),"space"=>0));
 }
 

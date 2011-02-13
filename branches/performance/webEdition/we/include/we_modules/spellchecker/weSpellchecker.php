@@ -126,9 +126,9 @@ print STYLESHEET;
 	left:0px;
 	top:0px;
 	background: white;
-	<?php if($BROWSER=='IE') {?>
+	<?php if($GLOBALS['BROWSER']=='IE') {?>
 	filter: alpha(opacity=80);
-	<?php }else if($BROWSER=='SAFARI') {?>
+	<?php }else if($GLOBALS['BROWSER']=='SAFARI') {?>
 	KhtmlOpacity: .8;
 	<?php } else {?>
 	opacity: .8;

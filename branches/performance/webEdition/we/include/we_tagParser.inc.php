@@ -18,9 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/parser.inc.php');
-
-
 class we_tagParser{
 
 	var $DB_WE;
@@ -227,12 +224,12 @@ class we_tagParser{
 		$isError = false;
 		foreach ($Counter as $_tag => $_counter) {
 			if ($_counter < 0) {
-				$ErrorMsg .= parseError(sprintf($GLOBALS['l_parser']['missing_open_tag'], 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser','[missing_open_tag]'), 'we:' . $_tag));
 				$isError = true;
 
 			} else
 				if ($_counter > 0) {
-					$ErrorMsg .= parseError(sprintf($GLOBALS['l_parser']['missing_close_tag'], 'we:' . $_tag));
+					$ErrorMsg .= parseError(sprintf(g_l('parser','[missing_close_tag]'), 'we:' . $_tag));
 					$isError = true;
 
 				}
@@ -321,10 +318,10 @@ class we_tagParser{
 
 		if (eregi('name="([^"]*)"', $attr, $regs)) {
 			if (!$regs[1]) {
-				print parseError(sprintf($GLOBALS['l_parser']['name_empty'], $tagname));
+				print parseError(sprintf(g_l('parser','[name_empty]'), $tagname));
 			} else
 				if (strlen($regs[1]) > 255) {
-					print parseError(sprintf($GLOBALS['l_parser']['name_to_long'], $tagname));
+					print parseError(sprintf(g_l('parser','[name_to_long]'), $tagname));
 				}
 		}
 
@@ -868,7 +865,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 		} else {
 			$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", false);
 		}
-		
+
 		$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1046,7 +1043,7 @@ $GLOBALS["lv"] = new we_catListview("' . $name . '", $we_rows, $we_offset, $we_l
 				break;
 			default:
 
-				return $this->replaceTag($tag, $code, parseError(sprintf($GLOBALS["l_parser"]["wrong_type"], "listview")));
+				return $this->replaceTag($tag, $code, parseError(sprintf(g_l('parser','[wrong_type]'), "listview")));
 
 		}
 		$php .= '$lv = clone($GLOBALS["lv"]); // for backwards compatibility
@@ -1112,7 +1109,7 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 			}
 			if ($name) {
 				if (strpos($name, " ") !== false) {
-					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+					return parseError(sprintf(g_l('parser','[name_with_space]'), "object"));
 				}
 
 				$php .= '
@@ -1233,7 +1230,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 
 			if ($name) {
 				if (strpos($name, " ") !== false) {
-					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+					return parseError(sprintf(g_l('parser','[name_with_space]'), "object"));
 				}
 
 				$php .= '
@@ -1371,7 +1368,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 
 			if ($name) {
 				if (strpos($name, " ") !== false) {
-					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+					return parseError(sprintf(g_l('parser','[name_with_space]'), "object"));
 				}
 
 				$php .= '
@@ -1463,7 +1460,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 
 			if ($name) {
 				if (strpos($name, " ") !== false) {
-					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
+					return parseError(sprintf(g_l('parser','[name_with_space]'), "object"));
 				}
 
 				$php .= '
@@ -1531,7 +1528,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 		$_SESSION["we_shopname"]="' . $shopname . '";
 
 		if (!isset($GLOBALS["' . $shopname . '"])||empty($GLOBALS["' . $shopname . '"])) {
-			echo parseError(sprintf($GLOBALS["l_parser"]["missing_createShop"],\'repeatShopItem\'));
+			echo parseError(sprintf(g_l(\'l_parser\',\'[missing_createShop]\',\'repeatShopItem\'));
 			return;
 		}
 
@@ -2308,10 +2305,10 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 			if ($foo)
 				return str_replace($tag, $foo, $code);
 
-			
+
 
 			$php = '<?php
-						
+
 						include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
 						$version = "' . $version . '";
 						$version = ($version > 0) ? ($version - 1) : 0;

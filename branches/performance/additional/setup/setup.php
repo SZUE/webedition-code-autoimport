@@ -14,7 +14,7 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * webEdition configuration script
- * 
+ *
  * optional URL parameters:
  * - debug		turn on debug messages
  * - debugoff	turn off debug messages
@@ -39,9 +39,9 @@ if(version_compare(PHP_VERSION,"5.2.4","<")) {
 
 // first some includes:
 if(
-	!is_readable('./webEdition/we/include/we_version.php') || 
-	!is_readable('./webEdition/we/include/conf/we_conf.inc.php') || 
-	!is_dir('./webEdition') || 
+	!is_readable('./webEdition/we/include/we_version.php') ||
+	!is_readable('./webEdition/we/include/conf/we_conf.inc.php') ||
+	!is_dir('./webEdition') ||
 	!is_dir('./webEdition/lib/we')) {
 	die("No webEdition installation found. This script has to be placed in your DOCUMENT_ROOT besides your webEdition folder!");
 }
@@ -58,7 +58,7 @@ if(get_magic_quotes_gpc()) {
 	}
 }
 
-// html code for additional html header tags: 
+// html code for additional html header tags:
 $header = "";
 // boolean for error state (for disabling the next button if any errors occured)
 $errors = false;
@@ -123,7 +123,7 @@ if(isset($_REQUEST["step"]) && !empty($_REQUEST["step"]) && intval($_REQUEST) >=
 	$currentStep = $steps[0];
 }
 
-//functions for checking system 
+//functions for checking system
 function ini_get_bool($val) {
 	$bool = ini_get($val);
 	if($val == "1") {
@@ -162,7 +162,7 @@ This webEdition setup script will guide you through the initial configuration st
 	';
 	// session and cookie test:
 	$sessionid = session_id();
-	if(!$sessionid) { 
+	if(!$sessionid) {
 		$_SESSION["we_test"] = @session_id();
 		$_COOKIE["we_test"] = @session_id();
 	} else {
@@ -174,31 +174,31 @@ This webEdition setup script will guide you through the initial configuration st
 
 function step_requirements() {
 	global $errors;
-	
+
 	$sdkDbOK = true;
 	$phpExtensionsDetectable = true;
-	
+
 	$phpextensions = get_loaded_extensions();
 	foreach ($phpextensions as &$extens){
 		$extens= strtolower($extens);
 	}
 	$phpextensionsMissing = array();
 	$phpextensionsMin = array('ctype','date','dom','filter','iconv','libxml','mysql','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
-	
+
 	if (count($phpextensions)> 3) {
 		foreach ($phpextensionsMin as $exten){
 			if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 		}
 		if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
-			$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
-		} else { 
-			$phpextensionsSDK_DB= '';	
+			$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
+		} else {
+			$phpextensionsSDK_DB= '';
 			$sdkDbOK = false;
 		}
 	} else {
 		$phpExtensionsDetectable = false;
-	} 
-	
+	}
+
 	$output = "Checking if all system requirements are met. Some additional tests are performed as they are needed for webEdition to be fully functional but are not essential to run webEdition.<br /><br /><b>Basic Requirements:</b><ul style=\"list-style-position:outside;\">";
 	$errors = false;
 	if(version_compare(PHP_VERSION,"5.2.4","<")) {
@@ -221,7 +221,7 @@ function step_requirements() {
 			$errors = true;
 		} else {
 			$output.=tpl_ok("PHP MySQL support available (Client API Version ".$mysqlVersion." found)");
-		}		
+		}
 	}
 
 	$output .= "</ul><b>Additional requirements:</b><ul style=\"list-style-position:outside;\">";
@@ -234,8 +234,8 @@ function step_requirements() {
 	if(in_array('suhosin',get_loaded_extensions()) ) {
 		$output.=tpl_warning("Suhosin is active! The application <b>might</b> work with activated <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>, but yet we do not recommend it, since Suhosin can lead to problems due it's many configuration options.");
 	}
-	
-	
+
+
 	if(!is_callable("curl_getinfo")) {
 		$output.=tpl_warning("curl support is not available.<br />You need at least curl or allow_url_fopen activated for using webEdition liveUpdate, the First Steps Wizard or the application installer.");
 	} else {
@@ -247,7 +247,7 @@ function step_requirements() {
 	} else {
 		$output.=tpl_ok("allow_url_fopen activated.");
 	}
-	
+
 	if(!is_callable("mb_convert_encoding")) {
 		$output.=tpl_warning("PHP multibyte functions not available");
 	} else {
@@ -267,16 +267,16 @@ function step_requirements() {
 	if(!$phpExtensionsDetectable) {
 		$output.=tpl_warning("Not all requirements could be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start");
 	}
-	
+
 	if(defined("PCRE_VERSION") && substr(PCRE_VERSION,0,1)<7){
 		$output.=tpl_warning("Your PCRE extension is outdated: ".PCRE_VERSION." detected. This can lead to problems, particularly in future webEdition versions.");
 	}
 	if(!defined("PCRE_VERSION") ){
 		$output.=tpl_warning("Your PCRE extension version can not be determined. Versions before 7.0 can lead to problems, particularly in future webEdition versions.");
 	}
-	
-	
-	
+
+
+
 	$output .= "</ul>";
 	if($errors === true) {
 		$output .= tpl_errorbox("Some of the essential system requirements are not met. Please check the informations given above and update yor system!<br /><a href=\"?phpinfo\" target=\"_blank\">Click here</a> to check your system's PHP configuration.");
@@ -312,20 +312,29 @@ function step_filesystem() {
 	} else {
 		$output .= tpl_ok("./webEdition");
 	}
-	
+
+        // check if directory exists
+        if (!is_dir('./webEdition/site')) {
+            mkdir('./webEdition/site');
+        }
 	if(!is_writable('./webEdition/site')) {
 		$output .= tpl_error("The directory webEdition/site is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("webEdition/site");
 	}
+
+        // check if directory exists
+        if (!is_dir('./webEdition/we/templates')) {
+            mkdir('./webEdition/we/templates');
+        }
 	if(!is_writable('./webEdition/we/templates')) {
 		$output .= tpl_error("The directory webEdition/we/templates is not writable!");
 		$errors = true;
 	} else {
 		$output .= tpl_ok("webEdition/we/templates");
 	}
-	
+
 	if(!is_writable('./webEdition/we/include/conf')) {
 		$output .= tpl_error("The webEdition configuration directory webEdition/we/include/conf is not writable!");
 		$errors = true;
@@ -338,8 +347,11 @@ function step_filesystem() {
 	} else {
 		$output .= tpl_ok("webEdition/we/include/conf/we_conf.inc.php");
 	}
-	
-	
+
+	// check if directory exists
+        if (!is_dir('./webEdition/we/tmp')) {
+            mkdir('./webEdition/we/tmp');
+        }
 	if(!is_writable('./webEdition/we/tmp')) {
 		$output .= tpl_error("The webEdition temporary directory webEdition/we/tmp is not writable!");
 		$errors = true;
@@ -351,7 +363,7 @@ function step_filesystem() {
 	} else {
 		$output .= tpl_ok("webEdition/liveUpdate/tmp");
 	}
-	
+
 	$output .= "</ul>";
 	if($errors === true) {
 		$output .= tpl_errorbox("There were some errors regarding file access privileges. Please fix these issues (i.e. via ftp) and try again.");
@@ -375,7 +387,7 @@ function step_database() {
 	}
 	$input_host->setWidth(200);
 	$input_host->setHeight(26);
-	
+
 	// database name:
 	$input_database = new we_ui_controls_TextField();
 	$input_database->setName('db_database');
@@ -386,7 +398,7 @@ function step_database() {
 	}
 	$input_database->setWidth(200);
 	$input_database->setHeight(26);
-	
+
 	// table prefix:
 	$input_tableprefix = new we_ui_controls_TextField();
 	$input_tableprefix->setName('db_tableprefix');
@@ -397,7 +409,7 @@ function step_database() {
 	}
 	$input_tableprefix->setWidth(200);
 	$input_tableprefix->setHeight(26);
-	
+
 	// database username:
 	$input_username = new we_ui_controls_TextField();
 	$input_username->setName('db_username');
@@ -408,7 +420,7 @@ function step_database() {
 	}
 	$input_username->setWidth(200);
 	$input_username->setHeight(26);
-	
+
 	// database user password:
 	$input_password = new we_ui_controls_TextField();
 	$input_password->setName('db_password');
@@ -421,7 +433,7 @@ function step_database() {
 	$input_password->setClass("small");
 	$input_password->setType("password");
 	$input_password->setHeight(26);;
-	
+
 	foreach($input_host->getJSFiles() as $jsFile) {
 		$header .= '<script src="'.$jsFile.'" language="JavaScript" type="text/javascript"></script>';
 	}
@@ -467,7 +479,7 @@ function step_databasecheck() {
  	} else if(!isset($_SESSION["db_tableprefix"])) {
  		$_SESSION["db_tableprefix"] = '';
  	}
-	
+
 	if((!isset($_SESSION["db_username"]) || empty($_SESSION["db_username"])) && (!isset($_REQUEST["db_username"]) || empty($_REQUEST["db_username"]))) {
 		$output .= tpl_error("Please enter the username for accessing your MySQL database server.");
 		$errors = true;
@@ -489,7 +501,7 @@ function step_databasecheck() {
 		$output .= tpl_errorbox("Please enter the missing informations.");
 		return $output.'</ul>';
 	}
-	
+
 	// check connection to db server using the entered data
 	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
 	if(!$conn) {
@@ -499,7 +511,7 @@ function step_databasecheck() {
 	} else {
 		$output .= tpl_ok("Connection test succeeded");
 	}
-	
+
 	// check if selected database already exists:
 	$op_createdb = false;
 	//$result = @mysql_list_dbs($conn);
@@ -514,7 +526,7 @@ function step_databasecheck() {
 		$output .= tpl_ok("The database \"".$_SESSION["db_database"]."\" exists already");
 		$op_createdb = false;
 	}
-	
+
 	// try to create db:
 	if($op_createdb === true) {
 		if(!@mysql_query(sprintf('use `%s`', $_SESSION['db_database']), $conn)) {
@@ -524,9 +536,9 @@ function step_databasecheck() {
 		}
 	}
 	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn);
-	
+
 	// check if there is already a webEdition installation present:
-	
+
 	$result = @mysql_query("select ID from ".$_SESSION["db_tableprefix"]."tblUser",$conn);
 	if(!$result) {
 		$output .= tpl_ok("The selected database obviously does not conain any previous webEdition installations using this table prefix");
@@ -541,7 +553,7 @@ function step_databasecheck() {
 	if ( (float) mysql_get_server_info($conn) < 5.0) {
 		$output .= 	tpl_warning(sprintf("The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><span style=\"color:red;font-weight:bold\">In addition: In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!</span><br/<br/>",mysql_get_server_info($conn)));
 	}
-		
+
 	// check for required database access permissions (select, insert, alter, update, drop)
 	$output .= "</ul>Performing some permission tests for important database operations:<ul>";
 	if(!@mysql_query("CREATE TABLE  `we_installer_test` (`id` VARCHAR( 100 ) NOT NULL) ENGINE = MyISAM;",$conn)) {
@@ -568,8 +580,8 @@ function step_databasecheck() {
 	} else {
 		$output .= tpl_ok("DROP TABLE succeeded");
 	}
-	
-	
+
+
 
 	$output .= "</ul>";
 	if($errors === false) {
@@ -577,7 +589,7 @@ function step_databasecheck() {
 	} else {
 		$output .= tpl_errorbox("There were some problems with the MySQL database server, please check the informations given above and fix these issues to continue the webEdition installation.");
 	}
-	
+
 	//$output .= "<br /><br /><br /><br /><br /><br />";
 	return $output;
 }
@@ -631,7 +643,7 @@ function step_language() {
 		$output .= "<b>Important:</b> We strongly recommend using UTF-8 for new projects. webEdition still contains a couple of ISO-8859-1 (ISO Latin-1) encoded translations for backwards compatibility, but all new translations are and will be UTF-8 encoded. In addition, for the upcoming Version 7, we do do not guarantee full support for ISO languages, so you might need to convert your site to UTF-8. <br /><br />";
 	}
 	$output .= "If your language is missing in this list, feel free to contribute a new translation to the webEdition community. You can find more informations about contributing code and translations on the <a href=\"http://www.webedition.org\" target=\"_blank\">webEdition website</a>.";
-	
+
 	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
 	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn);
 	$result = @mysql_query("SHOW COLLATION WHERE Compiled = 'Yes' ",$conn);
@@ -640,11 +652,11 @@ function step_language() {
 	} else {
 		$currentcharset = $_SESSION["we_db_collation"];
 	}
-	
+
 	$output .= "<br/>&nbsp;<br/>Please select the default encoding and the corresponding database collation (defining the standard sorting within database calls). We recommend utf8_general_ci";
 	$output .= '<input type="hidden" name="we_db_collation" value="'.$currentcharset.'" />';
 	$output .= '<div style="display:block; margin:10px; text-align:center;">';
-	
+
 	$output .= '<select name="we_db_char" onchange="document.getElementsByName(\'we_db_collation\')[0].value = this[this.selectedIndex].text;">';
 	$cset ='';
 	while ($row = mysql_fetch_assoc($result)) {
@@ -659,7 +671,7 @@ function step_language() {
 	}
 				//sort($charsets);
 	$output .= '</select></div>';
-	
+
 	return $output;
 }
 
@@ -687,15 +699,15 @@ function step_summary() {
 	} else {
 		$_SESSION["we_charset"] = "ISO-8859-1";
 	}
-	
+
 	// webEdition settings:
 	$output .= '<fieldset><legend>webEdition:</legend><table class="small" style="width:100%; table-layout:fixed;">';
 	$output .= '<tr><td style="width:160px;">Language*:</td><td>'.(isset($_SESSION["we_language_translation"]) ? htmlentities($_SESSION["we_language_translation"]) : ' - ').'</td></tr>';
 	$output .= '<tr><td>webEdition Code*:</td><td>'.(isset($_SESSION["we_language"]) ? htmlentities($_SESSION["we_language"]) : ' - ').'</td></tr>';
 	$output .= '<tr><td>Default Charset*:</td><td>'.(isset($_SESSION["we_charset"]) ? htmlentities($_SESSION["we_charset"]) : ' - ').'</td></tr>';
-	
+
 	$output .= '</table></fieldset><br />';
-	
+
 	// database settings:
 	$output .= '<fieldset><legend>Database server:</legend><table class="small" style="width:100%; table-layout:fixed;">';
 	$output .= '<tr><td style="width:160px;">Server name:</td><td>'.(isset($_SESSION["db_host"]) ? htmlentities($_SESSION["db_host"]) : ' - ').'</td></tr>';
@@ -708,18 +720,18 @@ function step_summary() {
 	$output .= '<tr><td>DB connection charset*:</td><td>'.(isset($_SESSION["we_db_charset"]) ? htmlentities($_SESSION["we_db_charset"]) : ' - ').'</td></tr>';
 	$output .= '</table></fieldset>';
 	if(
-		!isset($_SESSION["db_host"]) || 
-		empty($_SESSION["db_host"]) || 
-		!isset($_SESSION["db_database"]) || 
-		empty($_SESSION["db_database"]) || 
-		!isset($_SESSION["db_tableprefix"]) || 
-		!isset($_SESSION["db_username"]) || 
-		empty($_SESSION["db_username"]) || 
-		!isset($_SESSION["db_password"]) || 
-		!isset($_SESSION["we_language_translation"]) || 
-		empty($_SESSION["we_language_translation"]) || 
-		!isset($_SESSION["we_language"]) ||  
-		empty($_SESSION["we_language"]) 
+		!isset($_SESSION["db_host"]) ||
+		empty($_SESSION["db_host"]) ||
+		!isset($_SESSION["db_database"]) ||
+		empty($_SESSION["db_database"]) ||
+		!isset($_SESSION["db_tableprefix"]) ||
+		!isset($_SESSION["db_username"]) ||
+		empty($_SESSION["db_username"]) ||
+		!isset($_SESSION["db_password"]) ||
+		!isset($_SESSION["we_language_translation"]) ||
+		empty($_SESSION["we_language_translation"]) ||
+		!isset($_SESSION["we_language"]) ||
+		empty($_SESSION["we_language"])
 		) {
 		$errors = true;
 	}
@@ -741,7 +753,7 @@ function step_installation() {
 	} else {
 		$dbdata = file_get_contents("./additional/sqldumps/dump/complete.sql");
 	}
-	$dbdata = str_replace("`","",$dbdata);
+	// $dbdata = str_replace("`","",$dbdata);
 	$dbqueries = explode("/* query separator */",$dbdata);
 	echo sizeof($dbqueries).' queries found.';
 	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
@@ -786,7 +798,7 @@ function step_installation() {
 				$dbquery = str_replace($queryType." tbl",$queryType." ".$_SESSION["db_tableprefix"]."tbl",$dbquery);
 			}
 		}
-		
+
 		$dbquery = str_replace("ENGINE=MyISAM",$charset_collation,$dbquery);
 
 		if(!empty($dbquery)) {
@@ -801,16 +813,18 @@ function step_installation() {
 				//print("<pre>".mysql_info($conn)."</pre><hr />");
 			}
 		}
-	} if($queryErrors === true) {
-		$output .= tpl_ok("There were some errors while executing the database queries.");
+	}
+        if ($queryErrors === true) {
+		$output .= tpl_error("There were some errors while executing the database queries.");
+                $errors = true;
 	} else {
 		$output .= tpl_ok("Executed all queries successfully to the selected database.");
 	}
 	//print("<pre>".$dbdata."</pre>");
 	$output .= "<br /><b>Writing webEdition configuration:</b><br /><br />";
-	
+
 	//$output .= "<li><i>under construction ...</i></li>";
-	// set the language of the default user 
+	// set the language of the default user
 	if(!@mysql_query('UPDATE '.$_SESSION["db_tableprefix"].'tblPrefs set Language = "'.mysql_real_escape_string($_SESSION["we_language"]).'" where userID="1"',$conn)) {
 		$output .= tpl_warning("Could not change the default user's language settings. Message from server: ".mysql_error());
 		print("<pre>".$dbquery."</pre><hr />");
@@ -830,7 +844,7 @@ function step_installation() {
 		//$we_config = str_replace('define("WE_LANGUAGE","English_UTF-8");','define("WE_LANGUAGE","'.$_SESSION["we_language"].'");',$we_config);
 		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\s*)+("\);)/i','$1'.$_SESSION["we_language"].'$3',$we_config);
 		//str_replace('define("TBL_PREFIX","");','define("TBL_PREFIX","'.$_SESSION["db_tableprefix"].'"',$we_config);
-			
+
 		//$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','$1'.$_SESSION["db_host"].'$3',$we_config);
 		//$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','$1'.$_SESSION["db_database"].'$3',$we_config);
 		//$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','$1'.$_SESSION["db_username"].'$3',$we_config);
@@ -842,10 +856,10 @@ function step_installation() {
 		$we_config = preg_replace('/(define\("DB_COLLATION",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_collation"]).'${3}',$we_config);
 
 		$we_config_global = preg_replace('/(define\("DB_SET_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config_global);
-		 
+
 		//$we_config_global = preg_replace('/(define\("DEFAULT_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_charset"]).'${3}',$we_config_global); Das klappt irgendwie nicht, ersatz:
 		$we_config_global = str_replace('define("DEFAULT_CHARSET","UTF-8")','define("DEFAULT_CHARSET","'.str_replace('"', '\\"', $_SESSION["we_charset"]).'")',$we_config_global);
-		
+
 		$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_host"]).'${3}',$we_config);
 		$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_database"]).'${3}',$we_config);
 		$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_username"]).'${3}',$we_config);
@@ -869,13 +883,13 @@ function step_installation() {
 		define("TBL_PREFIX","");
 		define("DB_CHARSET","");
 		define("WE_LANGUAGE","English_UTF-8");
-		*/ 
+		*/
 	}
-	return $output;	
+	return $output;
 }
 
 function step_finish() {
-	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\" target=\"_blank\">clicking here</a>. 
+	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\" target=\"_blank\">clicking here</a>.
 	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
 	";
 	$output .= "<b>Important:</b><br /><br />";
@@ -907,13 +921,13 @@ function step_cleanup() {
 		}
 	}
 	//if(is_readable("./setup.php")) $error = true;
-	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\">clicking here</a>. 
+	$output = "The webEdition installation is now finished. It is located in the subdirectory \"/webEdition/\", you can enter webEdition by <a href=\"/webEdition/\">clicking here</a>.
 	If you want more informations about how to use webEdition, visit our website or join the webEdition community.<br /><br />
 	";
 	if($error === true) {
 		$output .= tpl_errorbox("At least one of the setup files could not be deleted (maybe insufficient access permissions?), please do that manually!");
 	} else {
-		$output .= tpl_infobox("All setup files have been deleted successfully to avoid system damage by misuse.");	
+		$output .= tpl_infobox("All setup files have been deleted successfully to avoid system damage by misuse.");
 	}
 	$output .= "<br /><b>Important:</b><br /><br />";
 	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
@@ -921,7 +935,7 @@ function step_cleanup() {
 	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
 	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
 	return $output;
-	
+
 }
 
 // html template functions:
@@ -986,7 +1000,7 @@ function tpl_navigation($step = "1") {
 		} else {
 			$buttonNext->setText('next');
 		}
-		
+
 		$buttonNext->setTarget('_self');
 		$buttonNext->setType('submit');
 		if($step >= sizeof($steps) || $errors === true) {
@@ -1008,14 +1022,14 @@ function tpl_navigation($step = "1") {
 	}
 	$buttonPrev->setWidth(120);
 	$buttonPrev->setTextPosition('left');
-	
+
 	foreach($buttonNext->getJSFiles() as $jsFile) {
 		$header .= '<script src="'.$jsFile.'" language="JavaScript" type="text/javascript"></script>';
 	}
 	foreach($buttonNext->getCSSFiles() as $cssFile) {
 		$header .= '<link href="'.$cssFile["path"].'" media = "'.$cssFile["media"].'" rel="styleSheet" type="text/css" />';
 	}
-	
+
 	$output = '<div style="display:block; margin:10px 0px 10px 0px;"><div style="float:left;">'.$buttonPrev->getHTML().'</div>';
 	$output .= '<div style="float:right;">'.$buttonNext->getHTML().'</div></div>';
 	return $output;
@@ -1033,7 +1047,7 @@ $bufferedOutput = ob_get_contents();
 ob_end_clean();
 ?>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
@@ -1100,9 +1114,9 @@ ob_end_clean();
 							<tr>
 								<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
 								<td width="402">
-								<?php 
+								<?php
 								echo $stepTitle;
-								echo $output; 
+								echo $output;
 								echo $navigation;
 								?>
 								</td>

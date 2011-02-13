@@ -81,7 +81,7 @@ if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC){
 if ($_blocked) {
 	print_error('Email dispatch blocked / Email Versand blockiert!');
 }
-	
+
 
 
 function is_valid_email($email) {
@@ -137,7 +137,7 @@ function contains_newlines($str_to_test) {
 function print_error($errortext){
 
 	$headline = 'Fehler / Error';
-	$content =		$GLOBALS['l_global']['formmailerror'].getHtmlTag('br')
+	$content =		g_l('global','[formmailerror]').getHtmlTag('br')
 				.	'&#8226; '.$errortext;
 
 	$css = array(
@@ -176,7 +176,7 @@ function error_page(){
 		$errorpage = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['error_page']) : $_REQUEST['error_page'];
 		redirect($errorpage);
 	}else{
-		print_error($GLOBALS['l_global']['email_notallfields']);
+		print_error(g_l('global','[email_notallfields]'));
 	}
 }
 
@@ -187,7 +187,7 @@ function ok_page($_subject=''){
 			redirect($ok_page, $_subject);
 		} else {
 			redirect($ok_page);
-		}		
+		}
 	}else{
 		print 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
 		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT) {
@@ -226,7 +226,7 @@ function check_captcha(){
 		return Captcha::check($_REQUEST[$name]);
 	} else {
 		return false;
-	}	
+	}
 }
 
 $_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
@@ -241,7 +241,7 @@ if(isset($_REQUEST['email']) && $_REQUEST['email']){
 			$foo = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['mail_error_page']) : $_REQUEST['mail_error_page'];
 			redirect($foo);
 		}else{
-			print_error($GLOBALS['l_global']['email_invalid']);
+			print_error(g_l('global','[email_invalid]'));
 		}
 	}
 }
@@ -350,7 +350,7 @@ $subject = (isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
 			$_REQUEST['subject'] :
 			WE_DEFAULT_SUBJECT;
 
-$subject = strip_tags($subject);			
+$subject = strip_tags($subject);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
 			ereg_replace("[\r\n]",'',$_REQUEST['charset']) :
@@ -377,7 +377,7 @@ if($recipient){
 	$fromMail = preg_replace("/(\\n+|\\r+)/","",$fromMail);
 	$email = preg_replace("/(\\n+|\\r+)/","",$email);
 	$from = preg_replace("/(\\n+|\\r+)/","",$from);
-	
+
 	contains_bad_str($email);
 	contains_bad_str($from);
 	contains_bad_str($fromMail);
@@ -385,7 +385,7 @@ if($recipient){
 	contains_bad_str($charset);
 
 	if (!is_valid_email($fromMail)) {
-		print_error($GLOBALS['l_global']['email_invalid']);
+		print_error(g_l('global','[email_invalid]'));
 	}
 
 	$recipients = makeArrayFromCSV($recipient);
@@ -396,14 +396,14 @@ if($recipient){
 	} else{
 		$sender = $fromMail;
 	}
-	
+
 	$phpmail = new we_util_Mailer('',$subject,$sender);
 	$phpmail->setCharSet($charset);
 
 	$recipientsList = array();
-	
+
 	foreach($recipients as $recipientID){
-		
+
 		if (is_numeric($recipientID)) {
 			$recipient = f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . abs($recipientID), 'Email', $GLOBALS['DB_WE']);
 		} else {
@@ -411,10 +411,10 @@ if($recipient){
 			$recipient = $recipientID;
 		}
 		if (!$recipient) {
-			print_error($GLOBALS['l_global']['email_no_recipient']);
+			print_error(g_l('global','[email_no_recipient]'));
 		}
 		if (!is_valid_email($recipient)) {
-			print_error($GLOBALS['l_global']['email_invalid']);
+			print_error(g_l('global','[email_invalid]'));
 		}
 
   		$recipient = preg_replace("/(\\n+|\\r+)/","",$recipient);
@@ -422,10 +422,10 @@ if($recipient){
 		if(we_check_email($recipient) && check_recipient($recipient)){
 			$recipientsList[] = $recipient;
 		}else{
-			print_error($GLOBALS['l_global']['email_recipient_invalid']);
+			print_error(g_l('global','[email_recipient_invalid]'));
 		}
 	}
-	
+
 	if (count($recipientsList)>0) {
 		if(sizeof($_FILES)){
 			foreach($_FILES as $name => $file){
@@ -435,7 +435,7 @@ if($recipient){
 					$phpmail->doaddAttachment($tempName);
 				}
 			}
-		} 	
+		}
 		$phpmail->addAddressList($recipientsList);
 		if($mimetype == 'text/html'){
 			$phpmail->addHTMLPart($we_html);
@@ -445,17 +445,17 @@ if($recipient){
 		$phpmail->buildMessage();
 		if ($phpmail->Send()) {
 			$wasSent = true;
-		}	
-		
+		}
+
 	}
-	
-	
-	
+
+
+
 	if ((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && (!defined('FORMMAIL_CONFIRM') || FORMMAIL_CONFIRM)) {
 		if($wasSent){
 			// validation
 			if (!is_valid_email($email)) {
-				print_error($GLOBALS['l_global']['email_invalid']);
+				print_error(g_l('global','[email_invalid]'));
 			}
 			$phpmail = new we_util_Mailer($email,$subject,$from);
 			$phpmail->setCharSet($charset);
@@ -470,7 +470,7 @@ if($recipient){
 	}
 
 }else{
-	print_error($GLOBALS['l_global']['email_no_recipient']);
+	print_error(g_l('global','[email_no_recipient]'));
 }
 
 ok_page($subject);

@@ -19,11 +19,8 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/versions.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_ContentTypes.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/weFile.class.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/customerFilter.inc.php');
 
 
 class weVersions {
@@ -2030,7 +2027,7 @@ class weVersions {
 			$v = date("d.m.y - H:i:s", $v);
 		}
 		if($k=="status") {
-			$v = $GLOBALS['l_versions'][$v];
+			$v = g_l('versions','['.$v.']');
 		}
 		if($k=="modifierID") {
 			$v = id_to_path($v, USER_TABLE);
@@ -2045,20 +2042,20 @@ class weVersions {
 			$v = id_to_path($v, TEMPLATES_TABLE);
 		}
 		if($k=="IsSearchable") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+			$v = ($v==1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
 		}
 		if($k=="InGlossar") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+			$v = ($v==1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
 		}
 		if($k=="IsDynamic") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+			$v = ($v==1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
 		}
 		if($k=="DocType") {
 			$docType = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '".$v."'","DocType",$db);
 			$v = $docType;
 		}
 		if($k=="RestrictOwners") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+			$v = ($v==1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
 		}
 		if($k=="Language") {
 			$v = isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
@@ -2142,10 +2139,10 @@ class weVersions {
 			$v = $fieldValueText;
 		}
 		if($k=="fromScheduler") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			$v = ($v==1) ? g_l('versions','[yes]') : g_l('versions','[no]');
 		}
 		if($k=="fromImport") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			$v = ($v==1) ? g_l('versions','[yes]') : g_l('versions','[no]');
 		}
 		if($k=="resetFromVersion") {
 			$v = ($v==0) ? "-" : $v;
@@ -2188,7 +2185,7 @@ class weVersions {
 					if($fieldValueText!="") {
 						$fieldValueText .= "<br/>";
 					}
-					$stat = ($val==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+					$stat = ($val==1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
 					$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength).": ".$stat;
 
 				}
@@ -2235,15 +2232,15 @@ class weVersions {
 		//Scheduler
 		if($k=="task") {
 			if($v!=""){
-				$v = $GLOBALS['l_versions'][$k."_".$v];
+				$v = g_l('versions','['.$k.'_'.$v.']');
 			}
 		}
 		if($k=="type") {
-			$v = $GLOBALS['l_versions']["type_".$v];
+			$v = g_l('versions','[type_'.$v.']');
 		}
 
 		if($k=="active") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			$v = ($v==1) ? g_l('versions','[yes]') : g_l('versions','[no]');
 		}
 
 		if($k=="months") {
@@ -2251,7 +2248,7 @@ class weVersions {
 			if(is_array($v) && !empty($v)) {
 				foreach($v as $k=>$v) {
 					if($v==1) {
-						$months[] = $GLOBALS["l_monthShort"][$k];
+						$months[] = g_l('date','[month][short]['.$k.']');
 					}
 				}
 			}
@@ -2280,7 +2277,7 @@ class weVersions {
 			if(is_array($v) && !empty($v)) {
 				foreach($v as $k=>$v) {
 					if($v==1) {
-						$weekdays[] = $GLOBALS["l_dayShort"][$k];
+						$weekdays[] = g_l('date','[day][short]['.$k.']');
 					}
 				}
 			}
@@ -2293,7 +2290,7 @@ class weVersions {
 		}
 
 		if($k=="doctypeAll") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : '';
+			$v = ($v==1) ? g_l('versions','[yes]') : '';
 		}
 
 		if($k=="DoctypeID") {
@@ -2323,7 +2320,7 @@ class weVersions {
 		}
 
 		if($k=="_accessControlOnTemplate") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			$v = ($v==1) ? g_l('versions','[yes]') : g_l('versions','[no]');
 		}
 
 		if($k=="_errorDocNoLogin") {
@@ -2336,16 +2333,16 @@ class weVersions {
 
 		if($k=="_mode") {
 			if($v==0) {
-				$v = $GLOBALS["l_customerFilter"]['mode_off'];
+				$v = g_l('modules_customerFilter','[mode_off]');
 			}
 			if($v==1) {
-				$v = $GLOBALS["l_customerFilter"]['mode_all'];
+				$v = g_l('modules_customerFilter','[mode_all]');
 			}
 			if($v==2) {
-				$v = $GLOBALS["l_customerFilter"]['mode_specific'];
+				$v = g_l('modules_customerFilter','[mode_specific]');
 			}
 			if($v==3) {
-				$v = $GLOBALS["l_customerFilter"]['mode_filter'];
+				$v = g_l('modules_customerFilter','[mode_filter]');
 			}
 		}
 

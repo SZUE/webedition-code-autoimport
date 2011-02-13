@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
@@ -89,7 +88,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
     		    <?php
 		        exit;
 		    } else {
-    		    echo we_message_reporting::getShowMessageCall( $l_messaging['err_delete_folders'], WE_MESSAGE_ERROR );
+    		    echo we_message_reporting::getShowMessageCall( g_l('modules_messaging','[err_delete_folders]'), WE_MESSAGE_ERROR );
 		    }
 		}
     }
@@ -99,7 +98,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 </script>
 
 <?php
-$content = "<span class=\"defaultfont\">" . $l_messaging['deltext'] . "</span>";
+$content = "<span class=\"defaultfont\">" . g_l('modules_messaging','[deltext]') . "</span>";
 
 $form = '<form name="we_form" method="post">' .
     hidden('we_transaction', $_REQUEST['we_transaction']) .
@@ -116,7 +115,7 @@ $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("ok", 
 </head>
 
 <body bgcolor="white" marginwidth="10" marginheight="10" leftmargin="10" topmargin="10" background="/webEdition/images/msg_white_bg.gif">
-<?php echo htmlMessageBox(400,120,$content,$l_messaging['rm_folders'], $_buttons)?>
+<?php echo htmlMessageBox(400,120,$content,g_l('modules_messaging','[rm_folders]'), $_buttons)?>
 <?php echo $form ?>
 </body>
 

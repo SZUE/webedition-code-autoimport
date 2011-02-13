@@ -28,6 +28,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 	// get attributes
 	$error404doc = we_getTagAttribute("error404doc", $attribs);
 	$hiddendirindex = we_getTagAttribute("hiddendirindex", $attribs,"false",true);
+	$suppresserrorcode = we_getTagAttribute("suppresserrorcode", $attribs,"false",true);
 	if($hiddendirindex){
 		if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
 			$dirindexarray = explode(',',NAVIGATION_DIRECTORYINDEX_NAMES);
@@ -47,11 +48,11 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 			if ($searchfor){
-				$searchfor = $path_parts['basename'].DIRECTORY_SEPARATOR.$searchfor;
+				$searchfor = $path_parts['basename'].'/'.$searchfor;
 			} else $searchfor = $path_parts['basename'];
 			if(!$displayid && $hiddendirindex){
 				foreach($dirindexarray as $dirindex){
-					$display=$path_parts['dirname'].DIRECTORY_SEPARATOR.$dirindex;
+					$display=$path_parts['dirname'].'/'.$dirindex;
 					$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 					if($displayidtest)$displayid = $displayidtest;
 				}
@@ -69,7 +70,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		}
 		if($notfound && $path_parts['dirname']=='/' && $hiddendirindex){
 			if ($searchfor){
-				$searchfor = $path_parts['basename'].DIRECTORY_SEPARATOR.$searchfor;
+				$searchfor = $path_parts['basename'].'/'.$searchfor;
 			} else $searchfor = $path_parts['basename'];
 
 			foreach($dirindexarray as $dirindex){
@@ -92,8 +93,13 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			//we_tag('include', array('type'=>'document', 'id'=>$displayid,'gethttp'=>'0'));
 			exit;
 		} elseif($error404doc) {
-			header("HTTP/1.0 404 Not Found", true,404);
-			header("Status: 404 Not Found", true,404);
+			if(suppresserrorcode){
+				header("HTTP/1.0 200 OK", true,200);
+				header("Status: 200 OK", true,200);
+			} else {
+				header("HTTP/1.0 404 Not Found", true,404);
+				header("Status: 404 Not Found", true,404);
+			}
 			//we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
 			exit;
 		}

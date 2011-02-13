@@ -18,8 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customerFilter.inc.php");
-
 /**
  * Basic view class for customer filters
  *
@@ -46,14 +44,14 @@ class weCustomerFilterView {
 	 * @var integer
 	 */
 	var $_width = 0;
-	
+
 	/**
 	 * show Mode_none
 	 *
 	 * @var integer
 	 */
 	var $_ShowModeNone = 0;
-	
+
 
 	/*################### CONSTRUCTOR ####################*/
 
@@ -176,15 +174,15 @@ function addToMultiEdit(_multEdit, paths){
 EO_SCRIPT;
 
 		/* ################# Radio buttons ###############*/
-		$_modeRadioOff = we_forms::radiobutton(WECF_OFF, $this->_filter->getMode()===WECF_OFF, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_off'],true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioOff = we_forms::radiobutton(WECF_OFF, $this->_filter->getMode()===WECF_OFF, 'wecf_mode', g_l('modules_customerFilter','[mode_off]'),true, "defaultfont", "wecf_hot();updateView();");
 		if ($this->_ShowModeNone) {
-			$_modeRadioNone = we_forms::radiobutton(WECF_NONE, $this->_filter->getMode()===WECF_NONE, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_none'],true, "defaultfont", "wecf_hot();updateView();");
+			$_modeRadioNone = we_forms::radiobutton(WECF_NONE, $this->_filter->getMode()===WECF_NONE, 'wecf_mode', g_l('modules_customerFilter','[mode_none]'),true, "defaultfont", "wecf_hot();updateView();");
        } else {
        	$_modeRadioNone = '';
        }
-        $_modeRadioAll = we_forms::radiobutton(WECF_ALL, $this->_filter->getMode()===WECF_ALL, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_all'],true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioSpecific = we_forms::radiobutton(WECF_SPECIFIC, $this->_filter->getMode()===WECF_SPECIFIC, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_specific'],true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioFilter = we_forms::radiobutton(WECF_FILTER, $this->_filter->getMode()===WECF_FILTER, 'wecf_mode', $GLOBALS['l_customerFilter']['mode_filter'],true, "defaultfont", "wecf_hot();updateView();");
+        $_modeRadioAll = we_forms::radiobutton(WECF_ALL, $this->_filter->getMode()===WECF_ALL, 'wecf_mode', g_l('modules_customerFilter','[mode_all]'),true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioSpecific = we_forms::radiobutton(WECF_SPECIFIC, $this->_filter->getMode()===WECF_SPECIFIC, 'wecf_mode', g_l('modules_customerFilter','[mode_specific]'),true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioFilter = we_forms::radiobutton(WECF_FILTER, $this->_filter->getMode()===WECF_FILTER, 'wecf_mode', g_l('modules_customerFilter','[mode_filter]'),true, "defaultfont", "wecf_hot();updateView();");
 
 
 		/* ################# Selector for specific customers ###############*/
@@ -195,12 +193,12 @@ EO_SCRIPT;
 		/* ################# Selector blacklist ###############*/
 
 		$_blackList = id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE,"",false,true);
-		$_blackListSelect = $this->getMultiEdit('blackListEdit', $_blackList, $GLOBALS['l_customerFilter']['black_list'], $this->_filter->getMode()===WECF_FILTER);
+		$_blackListSelect = $this->getMultiEdit('blackListEdit', $_blackList, g_l('modules_customerFilter','[black_list]'), $this->_filter->getMode()===WECF_FILTER);
 
 		/* ################# Selector for whitelist ###############*/
 
 		$_whiteList = id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE,"",false,true);
-		$_whiteListSelect = $this->getMultiEdit('whiteListEdit', $_whiteList, $GLOBALS['l_customerFilter']['white_list'], $this->_filter->getMode()===WECF_FILTER);
+		$_whiteListSelect = $this->getMultiEdit('whiteListEdit', $_whiteList, g_l('modules_customerFilter','[white_list]'), $this->_filter->getMode()===WECF_FILTER);
 
 		/* ################# customer filter ###############*/
 
@@ -321,20 +319,21 @@ EO_SCRIPT;
 		}
 
 		$_filter_op = array(
-			'0'=>$GLOBALS['l_customerFilter']['equal'],
-			'1'=>$GLOBALS['l_customerFilter']['not_equal'],
-			'2'=>$GLOBALS['l_customerFilter']['less'],
-			'3'=>$GLOBALS['l_customerFilter']['less_equal'],
-			'4'=>$GLOBALS['l_customerFilter']['greater'],
-			'5'=>$GLOBALS['l_customerFilter']['greater_equal'],
-			'6'=>$GLOBALS['l_customerFilter']['starts_with'],
-			'7'=>$GLOBALS['l_customerFilter']['ends_with'],
-			'8'=>$GLOBALS['l_customerFilter']['contains'],
-			'9'=>$GLOBALS['l_customerFilter']['in']
+			'0'=>g_l('modules_customerFilter','[equal]'),
+			'1'=>g_l('modules_customerFilter','[not_equal]'),
+			'2'=>g_l('modules_customerFilter','[less]'),
+			'3'=>g_l('modules_customerFilter','[less_equal]'),
+			'4'=>g_l('modules_customerFilter','[greater]'),
+			'5'=>g_l('modules_customerFilter','[greater_equal]'),
+			'6'=>g_l('modules_customerFilter','[starts_with]'),
+			'7'=>g_l('modules_customerFilter','[ends_with]'),
+			'8'=>g_l('modules_customerFilter','[contains]'),
+			'9'=>g_l('modules_customerFilter','[in]')
 
 		);
 
-		$_filter_logic = array('AND' => $GLOBALS['l_customerFilter']['AND'], 'OR' => $GLOBALS['l_customerFilter']['OR']);
+		$_filter_logic = array('AND' => g_l('modules_customerFilter','[AND]')
+				, 'OR' => g_l('modules_customerFilter','[OR]'));
 
 		$_filter = $this->_filter->getFilter();
 

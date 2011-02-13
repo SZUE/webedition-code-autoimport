@@ -1268,7 +1268,7 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][1]['dat'] = $data['ip'];
 				$content[$ind][2]['dat'] = $data['agent'];
 				$content[$ind][3]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
-				$content[$ind][4]['dat'] = $data['fallback'] ? $GLOBALS['l_global']['yes'] : $GLOBALS['l_global']['no'];
+				$content[$ind][4]['dat'] = $data['fallback'] ? g_l('global','[yes]'): g_l('global','[no]');
 
 				$mess = $l_voting['log_success'];
 				if($data['status']!=VOTING_SUCCESS){
@@ -1306,7 +1306,7 @@ class weVotingFrames extends weModuleFrames {
 
 			$nextprev .= ($size - $next);
 
-			$nextprev .= "&nbsp;".$GLOBALS["l_global"]["from"]." ".($size+1)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".getPixel(23,1);
 
 			if($next > 0){
 				$nextprev .= $we_button->create_button("next", $this->frameset . "?pnt=show_log&start=".$next); //bt_next
@@ -1407,7 +1407,8 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][3]['dat'] = $data['ip'];
 				$content[$ind][4]['dat'] = $data['agent'];
 				$content[$ind][5]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
-				$content[$ind][6]['dat'] = $data['fallback'] ? $GLOBALS['l_global']['yes'] : $GLOBALS['l_global']['no'];
+				$content[$ind][6]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
+				endif;
 
 				$mess = $l_voting['log_success'];
 				if($data['status']!=VOTING_SUCCESS){
@@ -1458,7 +1459,7 @@ class weVotingFrames extends weModuleFrames {
 
 			$nextprev .= ($size - $next);
 
-			$nextprev .= "&nbsp;".$GLOBALS["l_global"]["from"]." ".($size+1)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".getPixel(23,1);
 
 			if($next > 0){
 				$nextprev .= $we_button->create_button("next", $this->frameset . "?pnt=show_log&start=".$next); //bt_next
@@ -1554,7 +1555,8 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][1]['dat'] = $data['ip'];
 				$content[$ind][2]['dat'] = $data['agent'];
 				$content[$ind][3]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
-				$content[$ind][4]['dat'] = $data['fallback'] ? $GLOBALS['l_global']['yes'] : $GLOBALS['l_global']['no'];
+				$content[$ind][4]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
+				endif;
 
 				$mess = $l_voting['log_success'];
 				if($data['status']!=VOTING_SUCCESS){
@@ -1596,7 +1598,7 @@ class weVotingFrames extends weModuleFrames {
 
 			$nextprev .= ($size - $next);
 
-			$nextprev .= "&nbsp;".$GLOBALS["l_global"]["from"]." ".($size+1)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".getPixel(23,1);
 
 			if($next > 0){
 				$nextprev .= $we_button->create_button("next", $this->frameset . "?pnt=show_log&start=".$next); //bt_next

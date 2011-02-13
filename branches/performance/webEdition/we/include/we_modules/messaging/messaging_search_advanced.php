@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
@@ -34,7 +33,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 <html>
 <head>
-    <title><?php echo $l_messaging['search_advanced']?></title>
+    <title><?php echo g_l('modules_messaging','[search_advanced]')?></title>
 <?php
 
 print STYLESHEET;
@@ -73,13 +72,13 @@ $we_button = new we_button();
 <?php
 	$table =  '<table cellpadding="10" cellspacing="0" border="0">
 <tr>
-    <td valign="top" class="defaultgray">' . $l_messaging['to_search_fields'] . '</td>
+    <td valign="top" class="defaultgray">' . g_l('modules_messaging','[to_search_fields]') . '</td>
     <td><select name="search_fields[]" size="3" multiple>
     ' .$messaging->print_select_search_fields() . '
         </select></td>
 </tr>
 <tr>
-    <td valign="top" class="defaultgray">' .$l_messaging['to_search_folders'] . '</td>
+    <td valign="top" class="defaultgray">' .g_l('modules_messaging','[to_search_folders]') . '</td>
     <td><select name="search_folders[]" size="5" multiple>
     ' .$messaging->print_select_search_folders() . '
         </select>

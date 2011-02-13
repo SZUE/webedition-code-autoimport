@@ -68,7 +68,7 @@ function we_tag_link($attribs, $content){
 						'img_id' => ((isset($imageid) && $imageid != 0) ? $imageid : ""),
 						'type' => (isset($id) ? "int" : "ext"),
 						'href' => (isset($id) ? "" : "http://"),
-						'text' => ((isset($imageid) && $imageid != 0 ? "" : (isset($text) && $text != "" ? $text : $GLOBALS["l_global"]["new_link"])))
+						'text' => ((isset($imageid) && $imageid != 0 ? "" : (isset($text) && $text != "" ? $text : g_l('global',"[new_link]"))))
 				);
 
 				// Link should only displayed if it's a preset link

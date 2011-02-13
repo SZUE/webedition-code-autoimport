@@ -61,7 +61,7 @@ class searchtool extends weToolModel
 
 	/**
 	 * for each search there are seperate variables
-	 * 
+	 *
 	 * @var integer: position to start the search
 	 */
 	var $searchstartDocSearch = 0;
@@ -158,32 +158,32 @@ class searchtool extends weToolModel
 	 * Default Constructor
 	 * Can load or create new searchtool object depends of parameter
 	 */
-	
+
 	function searchtool($weSearchID = 0)
 	{
-		
+
 		parent::weToolModel(SUCHE_TABLE);
 
 		if ($weSearchID) {
 			$this->ID = $weSearchID;
 			$this->load($weSearchID);
 		}
-	
+
 	}
 
 	function setIsFolder($value)
 	{
-		
+
 		$this->IsFolder = $value;
-		
+
 		if ($value) {
 			$this->Icon = 'folder.gif';
 		} else {
 			$this->Icon = 'Suche.gif';
 		}
-	
+
 	}
-	
+
 	function filenameNotValid($text) {
 		return eregi('[^a-z0-9._-]', $text);
 	}
@@ -195,43 +195,43 @@ class searchtool extends weToolModel
 		if($_text!='') {
 			switch ($path) {
 				case '/Vordefinierte Suchanfragen' :
-					$_text = $GLOBALS['l_weSearch']['vordefinierteSuchanfragen'];
+					$_text = g_l('searchtool','[vordefinierteSuchanfragen]');
 					break;
 				case '/Vordefinierte Suchanfragen/Dokumente' :
-					$_text = $GLOBALS['l_weSearch']['dokumente'];
+					$_text = g_l('searchtool','[dokumente]');
 					break;
 				case '/Vordefinierte Suchanfragen/Objekte' :
-					$_text = $GLOBALS['l_weSearch']['objekte'];
+					$_text = g_l('searchtool','[objekte]');
 					break;
 				case substr($path, 0, 43)=='/Vordefinierte Suchanfragen/Dokumente/Unver' :
-					$_text = $GLOBALS['l_weSearch']['unveroeffentlicheDokumente'];
+					$_text = g_l('searchtool','[unveroeffentlicheDokumente]');
 					break;
 				case '/Vordefinierte Suchanfragen/Dokumente/Statische Dokumente' :
-					$_text = $GLOBALS['l_weSearch']['statischeDokumente'];
+					$_text = g_l('searchtool','[statischeDokumente]');
 					break;
 				case '/Vordefinierte Suchanfragen/Dokumente/Dynamische Dokumente' :
-					$_text = $GLOBALS['l_weSearch']['dynamischeDokumente'];
+					$_text = g_l('searchtool','[dynamischeDokumente]');
 					break;
 				case substr($path, 0, 41)=='/Vordefinierte Suchanfragen/Objekte/Unver' :
-					$_text = $GLOBALS['l_weSearch']['unveroeffentlicheObjekte'];
+					$_text = g_l('searchtool','[unveroeffentlicheObjekte]');
 					break;
 				case '/Eigene Suchanfragen' :
-					$_text = $GLOBALS['l_weSearch']['eigeneSuchanfragen'];
+					$_text = g_l('searchtool','[eigeneSuchanfragen]');
 					break;
 				case '/Versionen' :
-					$_text = $GLOBALS['l_weSearch']['versionen'];
+					$_text = g_l('searchtool','[versionen]');
 					break;
 				case '/Versionen/Dokumente' :
-					$_text = $GLOBALS['l_weSearch']['dokumente'];
+					$_text = g_l('searchtool','[dokumente]');
 					break;
 				case '/Versionen/Objekte' :
-					$_text = $GLOBALS['l_weSearch']['objekte'];
+					$_text = g_l('searchtool','[objekte]');
 					break;
 				case substr($path, 0, 24)=='/Versionen/Dokumente/gel' :
-					$_text = $GLOBALS['l_weSearch']['geloeschteDokumente'];
+					$_text = g_l('searchtool','[geloeschteDokumente]');
 					break;
 				case substr($path, 0, 22)=='/Versionen/Objekte/gel' :
-					$_text = $GLOBALS['l_weSearch']['geloeschteObjekte'];
+					$_text = g_l('searchtool','[geloeschteObjekte]');
 					break;
 				default:
 					$_text = $text;
@@ -239,7 +239,7 @@ class searchtool extends weToolModel
 		}
 
 		return $_text;
-	
+
 	}
 
 }

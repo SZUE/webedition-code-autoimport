@@ -53,7 +53,7 @@ class weJavaMenu {
 	function printMenu() {
 		print $this->getCode();
 	}
-	
+
 	function getCode() {
 		$ffJavaMenu = false;
 		if (preg_match('@gecko/([^ ]+)@i',$_SERVER["HTTP_USER_AGENT"],$regs)) {
@@ -71,7 +71,7 @@ class weJavaMenu {
 
 	function getJS() {
 		$portVar = (
-			($this->port==80 && $this->protocol=="http") || 
+			($this->port==80 && $this->protocol=="http") ||
 			($this->port==443 && $this->protocol=="https") ||
 			(!$this->port)
 		) ? "" : ":".$this->port;
@@ -128,7 +128,7 @@ class weJavaMenu {
 ';
   		return $out;
 	}
-	
+
 	function getHTML() {
 		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
@@ -138,8 +138,7 @@ class weJavaMenu {
 		if(!$showAltMenu) {
 			$out .= '
 				<div id="divForSelectMenu"></div>
-				<applet name="weJavaMenuApplet" code="menuapplet"  archive="menuapplet.zip"  codebase="'.$this->protocol.'://'.$this->SERVER_NAME.($this->port ? (":".$this->port) : "").'/webEdition/menuapplet" align="baseline" width="'.$this->width.'" height="'.$this->height.'" mayscript scriptable>
-					<param name="cabbase" value="menuapplet.cab"/>
+				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri('/webEdition/lib/we/ui/controls') . '" align="baseline" width="' . $this->width . '" height="' . $this->height . '" mayscript scriptable>
 					<param name="phpext" value=".php"/>';
 			$i=0;
 			foreach ($this->entries as $id=>$m) {
@@ -220,11 +219,11 @@ class weJavaMenu {
 			' . ($GLOBALS["BROWSER"] == "NN6"
 					? '
 			<script type="text/javascript">
-			
+
 			// BUGFIX #1831,
 			// Alternate txt does not work in firefox. Therefore, the select-menu is copied to another visible div ONLY in firefox
 			// Only script elements work: look at https://bugzilla.mozilla.org/show_bug.cgi?id=60724 for details
-			
+
 			if ( !navigator.javaEnabled() ) {
 				//document.getElementById("divForSelectMenu").innerHTML = document.getElementById("divWithSelectMenu").innerHTML;
 			}
@@ -249,7 +248,6 @@ class weJavaMenu {
 	}
 
 	function h_pOption($men,&$opt,$p,$zweig) {
-		global $BROWSER;
 		$nf = $this->h_search($men,$p);
 		if(sizeof($nf)) {
 			foreach($nf as $id=>$e) {
@@ -287,7 +285,7 @@ class weJavaMenu {
 					$this->h_pOption($men,$opt,$id,$newAst);
 				}
 				else if($mtext) {
-					$opt .=  '<option'.(($e["enabled"]==0) ? (' value="" style="{color:\'gray\'}" disabled') : (' value="'.$e["cmd"].'"')).'>&nbsp;&nbsp;'.$newAst.(($BROWSER=="NN" && $e["enabled"]==0) ? "(" : "").$mtext.(($BROWSER=="NN" && $e["enabled"]==0) ? ")" : "")."\n";
+					$opt .=  '<option'.(($e["enabled"]==0) ? (' value="" style="{color:\'gray\'}" disabled') : (' value="'.$e["cmd"].'"')).'>&nbsp;&nbsp;'.$newAst.(($GLOBALS['BROWSER']=="NN" && $e["enabled"]==0) ? "(" : "").$mtext.(($GLOBALS['BROWSER']=="NN" && $e["enabled"]==0) ? ")" : "")."\n";
 				}
 				else {
 					$opt .=  '<option value="" disabled>&nbsp;&nbsp;'.$newAst."--------\n";
@@ -296,7 +294,6 @@ class weJavaMenu {
 		}
 	}
 	function h_pXUL($men,&$opt,$p,$zweig) {
-		global $BROWSER;
 		$nf = $this->h_search($men,$p);
 		if(sizeof($nf)) {
 			foreach($nf as $id=>$e) {

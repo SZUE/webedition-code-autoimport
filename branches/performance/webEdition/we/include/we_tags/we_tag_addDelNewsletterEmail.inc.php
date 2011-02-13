@@ -341,11 +341,14 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					}
 				}
 				$phpmail = new we_util_Mailer($f["subscribe_mail"],$subject,$from,$from);
-				if(isset($includeimages)) {$phpmail->setIsEmbedImages($includeimages);}
+				if(isset($includeimages)) {
+					$phpmail->setIsEmbedImages($includeimages);
+				} else {
+					$phpmail->setBaseDir($basehref);
+				}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
 				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
 				
-				$phpmail->setBaseDir($basehref);
 				$phpmail->setCharSet($charset);
 
 

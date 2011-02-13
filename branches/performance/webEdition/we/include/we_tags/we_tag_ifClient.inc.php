@@ -28,7 +28,7 @@ function we_tag_ifClient($attribs, $content){
 
 	if ($version) {
 		if (!(ereg('up[0-9\.]+', $version) || ereg('down[0-9\.]+', $version) || ereg('eq[0-9\.]+', $version))) {
-			exit(parseError($GLOBALS['l_parser']['client_version']));
+			exit(parseError(g_l('parser','[client_version]')));
 		}
 	}
 

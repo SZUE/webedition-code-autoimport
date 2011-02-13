@@ -69,17 +69,17 @@ class we_search extends DB_WE{
 
 			if(!empty($searchname[$i])){ $regs = explode('_',$searchfield[$i],2); //bug #3694
 				if((count($regs)==2) && $regs[0] == "date") { //bug #3694
-						
+
 					$year   = ($searchname[$i]['year']&&$searchname[$i]['year']!=""?$searchname[$i]['year']:date("Y"));
 					$month  = ($searchname[$i]['month']&&$searchname[$i]['month']!=""?$searchname[$i]['month']:"");
 					$day    = ($searchname[$i]['day']&&$searchname[$i]['day']!=""?$searchname[$i]['day']:"");
 					$hour   = ($searchname[$i]['hour']&&$searchname[$i]['hour']!=""?$searchname[$i]['hour']:"");
 					$minute = ($searchname[$i]['minute']&&$searchname[$i]['minute']!=""?$searchname[$i]['minute']:"");
-					
+
 					$from = mktime(($hour!=""?$hour:0), ($minute!=""?$minute:0), 0, ($month!=""?$month:1), ($day!=""?$day:1), $year);
 					$till = mktime(($hour!=""?$hour:23), ($minute!=""?$minute:59), 59, ($month!=""?$month:12), ($day!=""?$day:date("t", mktime(0, 0, 0, ($month!=""?$month:12), 1, $year))), $year);
-					
-					switch ($searchlocation[$i]){	
+
+					switch ($searchlocation[$i]){
 						case "<":
 						case "<=":
 						case ">":
@@ -91,11 +91,11 @@ class we_search extends DB_WE{
 							$searching = " BETWEEN $from AND $till ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							break;
-	
+
 					}
-					
+
 				} else {
-				
+
 					switch ($searchlocation[$i]){
 						case "END":
 							$searching = " LIKE '%".mysql_real_escape_string($searchname[$i])."' ";
@@ -106,7 +106,7 @@ class we_search extends DB_WE{
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							//$sql .= " �".$val["field"]."� LIKE �".$val["search"]."%� ";
 							break;
-	
+
 						case "IS":
 							$searching = " = '".mysql_real_escape_string($searchname[$i])."' ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
@@ -122,7 +122,7 @@ class we_search extends DB_WE{
 							$searching = " LIKE '%".mysql_real_escape_string($searchname[$i])."%' ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							break;
-	
+
 					}
 				}
 			}
@@ -351,7 +351,7 @@ class we_search extends DB_WE{
 			$out .= $this->searchstart+$this->anzahl;
 		}
 
-		$out .= 	' '.$GLOBALS["l_global"]["from"].' '.$we_search_anzahl.'</b></td>'
+		$out .= 	' '.g_l('global',"[from]").' '.$we_search_anzahl.'</b></td>'
 				.	'<td>'.getPixel(10,2).'</td>'
 				.	'<td>';
 
@@ -363,22 +363,22 @@ class we_search extends DB_WE{
 		$out .= 	'</td>'
 				.	'<td>'.getPixel(10,2).'</td>'
 				.	'<td>';
-				
+
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $this->anzahl); $i++) {
 			$pages[($i*$this->anzahl)] = ($i+1);
 		}
-		
+
 		$page = ceil($this->searchstart / $this->anzahl) * $this->anzahl;
-		
+
 		$select = htmlSelect("page", $pages, 1, $page, false, "onChange=\"this.form.elements['SearchStart'].value = this.value;we_cmd('reload_editpage');\"");
 		if(!defined("SearchStart")) {
 			define("SearchStart", true);
 			$out .= hidden("SearchStart", $this->searchstart);
 		}
-		
+
 		$out .= $select;
-		
+
 		$out .= 	'</td>'
 				. 	'</tr>'
 				.	'</table>';

@@ -18,164 +18,147 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: messaging.inc.php
  * Provides language strings.
  * Language: English
  */
+$l_modules_messaging = array(
+		'done' => "Done", // TRANSLATE
+		'new_messages' => "Nouveaux Messages",
+		'new_tasks' => "Nouveaux Tâchesw",
+		'wintitle' => "System Messagerie - Tâche",
+		'updatestatus' => "État Mise à Jour",
+		'search_todos' => "Fouiller les Tâches",
+		'Mitteilungen' => "Messages", // TRANSLATE
+		'Gesendet' => "Envoyé",
+		'ToDo' => "Tâche",
+		'Erledigt' => "Accompli",
+		'Zurueckgewiesen' => "Rejeté",
+		'type_todo' => "Task", // TRANSLATE
+		'type_message' => "Message", // TRANSLATE
 
-$l_messaging['done'] = "Done"; // TRANSLATE
-$l_messaging['new_messages'] = "Nouveaux Messages";
-$l_messaging['new_tasks'] = "Nouveaux Tâchesw";
+		'userid_not_found' => "ID-Utilisateur non existant",
+		'username_not_found' => "Nom Utilisateur n'existe pas",
+		'save_changed_folder' => "Folder has been changed.\\nDo you want to save your changes?", // TRANSLATE
 
-$l_messaging['wintitle'] = "System Messagerie - Tâche";
-$l_messaging['updatestatus'] = "État Mise à Jour";
-$l_messaging["search_todos"] = "Fouiller les Tâches";
-$l_messaging['Mitteilungen'] = "Messages"; // TRANSLATE
-$l_messaging['Gesendet'] = "Envoyé";
-$l_messaging['ToDo'] = "Tâche";
-$l_messaging['Erledigt'] = "Accompli";
-$l_messaging['Zurueckgewiesen'] = "Rejeté";
-
-$l_messaging['type_todo'] = "Task"; // TRANSLATE
-$l_messaging['type_message'] = "Message"; // TRANSLATE
-
-$l_messaging['userid_not_found'] = "ID-Utilisateur non existant";
-$l_messaging['username_not_found'] = "Nom Utilisateur n'existe pas";
-
-$l_messaging["save_changed_folder"] = "Folder has been changed.\\nDo you want to save your changes?"; // TRANSLATE
-
-$l_messaging['no_inbox_folder'] = "Manque d'un Reçue-Répertoire pour le destinataire";
-$l_messaging['no_done_folder'] = "&quot;Non accompli&quot; Répertoire pour cet utilisateur n'est pas défini";
-$l_messaging['no_reject_folder'] = "Manque d'un Repoussé-Répertoire pour le destinaire";
-$l_messaging['folder_settings'] = "Préférences de Répertoire";
-$l_messaging['new_folder'] = 'Nouveaux Repertoire';
-$l_messaging['change_folder_settings'] = 'Changer les Préférences de Répertoire';
-$l_messaging['folder_name'] = 'Nom de Répertoire';
-$l_messaging['parent_folder'] = "Répertoire précédent";
-
-$l_messaging['update_successful'] = 'Mis a jour effectué';
-$l_messaging['error_occured'] = 'Erreur ';
-$l_messaging['type'] = 'Type'; // TRANSLATE
-$l_messaging['cant_paste'] = "Il n'est pas possible de coller dans ce répertoire";
-$l_messaging['src_class_ne_trgt_class'] = "Classe orginal est differnt de la classe destinataire";
-$l_messaging['no_selection'] = 'Aucun message sélectionné';
-$l_messaging['rcpt_parse_error'] = "L'adresse destinataire est inconnu";
-$l_messaging['addr_book_saved'] = "Carnet d'adresses enregistré";
-$l_messaging['msg_type_not_found'] = "Type de message n'existe pas";
-$l_messaging['children_same_name'] = 'Nom de répertoire existe déjà.';
-$l_messaging['no_parent_folder'] = "Répertoire précedent n'existe pas";
-$l_messaging['folder_created'] = "Répertoire créé";
-$l_messaging['folder_create_error'] = "Erreur en créant le Répertoire";
-$l_messaging['param_error'] = 'Erreur de paramètre';
-$l_messaging['param_wrong_type'] = "Le type de donné du paramètre est invalide";
-$l_messaging['parentfolder_invalid'] = "Le répertoire precendent est invalide";
-$l_messaging['folderid_invalid'] = 'ID-Répertoire invalide';
-$l_messaging['folder_modified'] = 'Répertoire changé';
-$l_messaging['folder_change_failed'] = 'Changement de Répertoire échoué';
-$l_messaging['mail_not_sent'] = "Mail n'a pas été envoyé";
-
-$l_messaging['from'] = 'De';
-$l_messaging['to'] = 'To'; // TRANSLATE
-$l_messaging['reject_to'] = 'Repoussé à';
-$l_messaging['recipient'] = 'Destinataire';
-$l_messaging['recipients'] = 'Destinataires';
-$l_messaging['assigner'] = 'Assignaire';
-$l_messaging['current_assignee'] = 'Assigné à';
-$l_messaging['subject'] = 'Sujet';
-$l_messaging['sender'] = 'Expéditeur';
-$l_messaging['content'] = 'Contenu';
-$l_messaging['deadline'] = 'Date limite';
-$l_messaging['status'] = 'État';
-$l_messaging['priority'] = 'Priorité';
-$l_messaging['comment'] = 'Commentaire';
-$l_messaging['message'] = 'Messages';
-$l_messaging['forwarding_todo'] = 'Transmettre la Tâche ...';
-$l_messaging['rejecting_todo'] = 'Repousser la Tâche...';
-$l_messaging['creating_todo'] = 'Créer une Tâche...';
-$l_messaging['todo_s_created'] = 'Tâche créée avec succès';
-$l_messaging['todo_s_forwarded'] = "Tâche transmit avec succès a";
-$l_messaging['todo_s_rejected'] = "Tâche rejetée avec succès a";
-$l_messaging['todo_n_created'] = "Tâche n'a pas été créé pour";
-$l_messaging['todo_n_forwarded'] = "Tâche n'a pas été transmit à";
-$l_messaging['todo_n_rejected'] = "Tâche n'a pas été rejetée à";
-$l_messaging['occured_errs'] = 'Erreurs apparues';
-$l_messaging['nobody'] = 'Personne';
-
-$l_messaging['new_todo'] = 'Créer une Tâche';
-$l_messaging['forward_todo'] = 'Transmettre la Tâche';
-$l_messaging['reject_todo'] = 'Rejeter la Tâche';
-$l_messaging['update_todo'] = "Mis a jour de l'etat de Tâche";
-$l_messaging['multi_sel_on'] = 'Choix multiple activé';
-$l_messaging['multi_sel_off'] = 'Choix multiple désactivé';
-$l_messaging['copy_todos'] = 'Copier des Tâches';
-$l_messaging['cut_todos'] = 'Couper des Tâches';
-$l_messaging['paste_todos'] = 'Coller des Tâches';
-$l_messaging['rm_todos'] = 'Supprimer les Tâches';
-$l_messaging['poll_msg'] = 'Recherche de nouveaux Messages/Tâches';
-$l_messaging['addr_book'] = 'Adresses';
-$l_messaging['selected'] = 'Sélectioné';
-$l_messaging['settings'] = 'Préférences';
-$l_messaging['saved'] = 'Enregistré';
-$l_messaging['check_step'] = 'Intervalle de Contrôle';
-$l_messaging['minutes'] = 'Minute(s)'; // TRANSLATE
-$l_messaging['message_send'] = 'Envoyer des Messages';
-$l_messaging['s_sent_to'] = 'Envoyé avec succès à';
-$l_messaging['n_sent_to'] = 'nicht versandt an';
-
-$l_messaging['q_rm_todos'] = 'Supprimer les Tâches?';
-$l_messaging['search_messages'] = 'Fouiller les Messages';
-$l_messaging['new_message'] = 'New message';
-$l_messaging['reply_message'] = 'Répondre à des Messages';
-$l_messaging['new_message'] = 'Créer des Messages';
-$l_messaging['created_by'] = 'Créé par';
-$l_messaging['assigned_by'] = 'Assigné par';
-$l_messaging['creation_date'] = 'Date de fabrication';
-$l_messaging['date'] = 'Date'; // TRANSLATE
-$l_messaging['q_rm_messages'] = 'Supprimer les Messages?';
-$l_messaging['copy_messages'] = 'Copier des Messages';
-$l_messaging['cut_messages'] = 'Couper ';
-$l_messaging['paste_messages'] = 'Coller des Messages';
-$l_messaging['rm_messages'] = 'Supprimer des Messages';
-$l_messaging['is_read'] = 'Lu';
-$l_messaging['attrib_line'] = 'Vous écrivez';
-$l_messaging['comment_created'] = 'Commentaire créé';
-$l_messaging['forwarded_to'] = 'transmit à';
-$l_messaging['rejected_to'] = 'rejeté à';
-
-$l_messaging['todo_no_changes'] = 'Aucun Changement indiqué';
-$l_messaging['todo_none_selected'] = 'Aucune Tâche sélectionée';
-$l_messaging['todo_move_error'] = 'Erreur en déplacant';
-$l_messaging['todo_no_forward'] = 'Cette Tâche ne peut pas être transmise';
-$l_messaging['todo_creator_is_assignee'] = 'Créateur et Assignaire sont identiques';
-$l_messaging['todo_no_reject'] = 'Cette Tâche ne peut pas être rejetée';
-$l_messaging['rm_folders'] = "Supprimer le répertoire";
-$l_messaging['cant_create_folders'] = "Erreur: Il n'était pas possible de créer un répertoire pour cet utiltisateur";
-$l_messaging['folders_created'] = 'Répertoire créé';
-$l_messaging['deltext'] = "Marquer les répertoires que vous voulez supprimer dans le Menue-Explorer, et appuyez ensuite sur le &quot;d'accord&quot;-Bouton";
-
-$l_messaging['sel_rcpts'] = 'Choisir le Destinataire';
-$l_messaging['err_delete_folders'] = 'Erreur en supprimant';
-
-$l_messaging['launch_todo'] = 'Passer au System de Tâche';
-$l_messaging['launch_msg'] = 'Passer au System de Messagerie';
-
-$l_messaging['folder_sent'] = 'Envoyé';
-$l_messaging['folder_messages'] = 'Messages'; // TRANSLATE
-$l_messaging['folder_done'] = 'Accompli';
-$l_messaging['folder_rejected'] = 'Rejeté';
-$l_messaging['folder_todo'] = 'Tâche';
-
-$l_messaging['search_advanced'] = 'Préferences de recherche supplementaire';
-$l_messaging['to_search_fields'] = 'Chercher dans les Champs';
-$l_messaging['to_search_folders'] = 'Chercher dans les Répertoires';
-
-$l_messaging['todo_status_inv_input'] = 'Entrée invalide (État-Tâche)';
-
-$l_messaging['todo_status_update'] = "Actualisation de l'état de Tâche";
-
-$l_messaging["we_todo"] = "webEdition Tâche";
-$l_messaging["nofolder"] = "aucun";
-?>
+		'no_inbox_folder' => "Manque d'un Reçue-Répertoire pour le destinataire",
+		'no_done_folder' => "&quot;Non accompli&quot; Répertoire pour cet utilisateur n'est pas défini",
+		'no_reject_folder' => "Manque d'un Repoussé-Répertoire pour le destinaire",
+		'folder_settings' => "Préférences de Répertoire",
+		'new_folder' => 'Nouveaux Repertoire',
+		'change_folder_settings' => 'Changer les Préférences de Répertoire',
+		'folder_name' => 'Nom de Répertoire',
+		'parent_folder' => "Répertoire précédent",
+		'update_successful' => 'Mis a jour effectué',
+		'error_occured' => 'Erreur ',
+		'type' => 'Type', // TRANSLATE
+		'cant_paste' => "Il n'est pas possible de coller dans ce répertoire",
+		'src_class_ne_trgt_class' => "Classe orginal est differnt de la classe destinataire",
+		'no_selection' => 'Aucun message sélectionné',
+		'rcpt_parse_error' => "L'adresse destinataire est inconnu",
+		'addr_book_saved' => "Carnet d'adresses enregistré",
+		'msg_type_not_found' => "Type de message n'existe pas",
+		'children_same_name' => 'Nom de répertoire existe déjà.',
+		'no_parent_folder' => "Répertoire précedent n'existe pas",
+		'folder_created' => "Répertoire créé",
+		'folder_create_error' => "Erreur en créant le Répertoire",
+		'param_error' => 'Erreur de paramètre',
+		'param_wrong_type' => "Le type de donné du paramètre est invalide",
+		'parentfolder_invalid' => "Le répertoire precendent est invalide",
+		'folderid_invalid' => 'ID-Répertoire invalide',
+		'folder_modified' => 'Répertoire changé',
+		'folder_change_failed' => 'Changement de Répertoire échoué',
+		'mail_not_sent' => "Mail n'a pas été envoyé",
+		'from' => 'De',
+		'to' => 'To', // TRANSLATE
+		'reject_to' => 'Repoussé à',
+		'recipient' => 'Destinataire',
+		'recipients' => 'Destinataires',
+		'assigner' => 'Assignaire',
+		'current_assignee' => 'Assigné à',
+		'subject' => 'Sujet',
+		'sender' => 'Expéditeur',
+		'content' => 'Contenu',
+		'deadline' => 'Date limite',
+		'status' => 'État',
+		'priority' => 'Priorité',
+		'comment' => 'Commentaire',
+		'message' => 'Messages',
+		'forwarding_todo' => 'Transmettre la Tâche ...',
+		'rejecting_todo' => 'Repousser la Tâche...',
+		'creating_todo' => 'Créer une Tâche...',
+		'todo_s_created' => 'Tâche créée avec succès',
+		'todo_s_forwarded' => "Tâche transmit avec succès a",
+		'todo_s_rejected' => "Tâche rejetée avec succès a",
+		'todo_n_created' => "Tâche n'a pas été créé pour",
+		'todo_n_forwarded' => "Tâche n'a pas été transmit à",
+		'todo_n_rejected' => "Tâche n'a pas été rejetée à",
+		'occured_errs' => 'Erreurs apparues',
+		'nobody' => 'Personne',
+		'new_todo' => 'Créer une Tâche',
+		'forward_todo' => 'Transmettre la Tâche',
+		'reject_todo' => 'Rejeter la Tâche',
+		'update_todo' => "Mis a jour de l'etat de Tâche",
+		'multi_sel_on' => 'Choix multiple activé',
+		'multi_sel_off' => 'Choix multiple désactivé',
+		'copy_todos' => 'Copier des Tâches',
+		'cut_todos' => 'Couper des Tâches',
+		'paste_todos' => 'Coller des Tâches',
+		'rm_todos' => 'Supprimer les Tâches',
+		'poll_msg' => 'Recherche de nouveaux Messages/Tâches',
+		'addr_book' => 'Adresses',
+		'selected' => 'Sélectioné',
+		'settings' => 'Préférences',
+		'saved' => 'Enregistré',
+		'check_step' => 'Intervalle de Contrôle',
+		'minutes' => 'Minute(s)', // TRANSLATE
+		'message_send' => 'Envoyer des Messages',
+		's_sent_to' => 'Envoyé avec succès à',
+		'n_sent_to' => 'nicht versandt an',
+		'q_rm_todos' => 'Supprimer les Tâches?',
+		'search_messages' => 'Fouiller les Messages',
+		'new_message' => 'New message',
+		'reply_message' => 'Répondre à des Messages',
+		'new_message' => 'Créer des Messages',
+		'created_by' => 'Créé par',
+		'assigned_by' => 'Assigné par',
+		'creation_date' => 'Date de fabrication',
+		'date' => 'Date', // TRANSLATE
+		'q_rm_messages' => 'Supprimer les Messages?',
+		'copy_messages' => 'Copier des Messages',
+		'cut_messages' => 'Couper ',
+		'paste_messages' => 'Coller des Messages',
+		'rm_messages' => 'Supprimer des Messages',
+		'is_read' => 'Lu',
+		'attrib_line' => 'Vous écrivez',
+		'comment_created' => 'Commentaire créé',
+		'forwarded_to' => 'transmit à',
+		'rejected_to' => 'rejeté à',
+		'todo_no_changes' => 'Aucun Changement indiqué',
+		'todo_none_selected' => 'Aucune Tâche sélectionée',
+		'todo_move_error' => 'Erreur en déplacant',
+		'todo_no_forward' => 'Cette Tâche ne peut pas être transmise',
+		'todo_creator_is_assignee' => 'Créateur et Assignaire sont identiques',
+		'todo_no_reject' => 'Cette Tâche ne peut pas être rejetée',
+		'rm_folders' => "Supprimer le répertoire",
+		'cant_create_folders' => "Erreur: Il n'était pas possible de créer un répertoire pour cet utiltisateur",
+		'folders_created' => 'Répertoire créé',
+		'deltext' => "Marquer les répertoires que vous voulez supprimer dans le Menue-Explorer, et appuyez ensuite sur le &quot;d'accord&quot;-Bouton",
+		'sel_rcpts' => 'Choisir le Destinataire',
+		'err_delete_folders' => 'Erreur en supprimant',
+		'launch_todo' => 'Passer au System de Tâche',
+		'launch_msg' => 'Passer au System de Messagerie',
+		'folder_sent' => 'Envoyé',
+		'folder_messages' => 'Messages', // TRANSLATE
+		'folder_done' => 'Accompli',
+		'folder_rejected' => 'Rejeté',
+		'folder_todo' => 'Tâche',
+		'search_advanced' => 'Préferences de recherche supplementaire',
+		'to_search_fields' => 'Chercher dans les Champs',
+		'to_search_folders' => 'Chercher dans les Répertoires',
+		'todo_status_inv_input' => 'Entrée invalide (État-Tâche)',
+		'todo_status_update' => "Actualisation de l'état de Tâche",
+		'we_todo' => "webEdition Tâche",
+		'nofolder' => "aucun",
+);

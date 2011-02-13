@@ -147,7 +147,7 @@
 				treeData[eintragsIndex].open=openstatus;
 
 				if(openstatus && treeData[eintragsIndex].loaded!=1){
-				
+
 					id = escape(id);
 					sort = escape(sort);
 					id = id.replace(/\+/g,"%2B");
@@ -216,9 +216,6 @@
 		}
 
 		function getJSLoadTree($treeItems){
-
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/date.inc.php");
-
 			$days = array(
 				"Sunday"=>0,
 				"Monday"=>1,
@@ -250,8 +247,8 @@
 			foreach($treeItems as $item){
 				$js.="		if(".$this->topFrame.".indexOfEntry('".$item["id"]."')<0){ \n";
 				foreach($item as $k=>$v){
-					if($k=="text") if(in_array($v,array_keys($days))) $v=$GLOBALS['l_dayLong'][$days[$v]];
-					if($k=="text") if(in_array($v,array_keys($months))) $v=$GLOBALS['l_monthLong'][$months[$v]];
+					if($k=="text") if(in_array($v,array_keys($days))) $v=g_l('date','[day][long]['.$days[$v].']');
+					if($k=="text") if(in_array($v,array_keys($months))) $v=g_l('date','[month][long]['.$months[$v].']');
 					$js.='
 							attribs["'.strtolower($k).'"]=\''.addslashes(stripslashes($v)).'\';
 					';

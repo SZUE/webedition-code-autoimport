@@ -22,7 +22,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 
 protect();
 $ok = false;
@@ -50,9 +49,9 @@ htmlTop();
 ?>
 <script language="JavaScript" type="text/javascript"><!--
 	<?php if($ok): ?>
-		<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_users"]["grant_owners_ok"], WE_MESSAGE_NOTICE); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[grant_owners_ok]"), WE_MESSAGE_NOTICE); ?>
 	<?php else: ?>
-		<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_users"]["grant_owners_notok"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[grant_owners_notok]"), WE_MESSAGE_ERROR); ?>
 	<?php endif ?>
 //-->
 </script>

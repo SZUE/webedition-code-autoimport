@@ -251,7 +251,6 @@ class we_import_files
 
 	function getStep1()
 	{
-		global $BROWSER;
 		$yuiSuggest = & weSuggest::getInstance();
 		$this->loadPropsFromSession();
 		unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
@@ -266,7 +265,7 @@ class we_import_files
 		$we_button = new we_button();
 
 		$parts = array();
-		$selectorSpace = $BROWSER == "IE" ? 16 : 280;
+		$selectorSpace = $GLOBALS['BROWSER'] == "IE" ? 16 : 280;
 		$wsA = makeArrayFromCSV(get_def_ws());
 		$ws = sizeof($wsA) ? $wsA[0] : 0;
 		$store_id = $this->importToID ? $this->importToID : $ws;
@@ -339,7 +338,7 @@ class we_import_files
 					$parts,
 					array(
 
-							'headline' => $GLOBALS["l_global"]["categorys"] . '',
+							'headline' => g_l('global',"[categorys]") . '',
 							'html' => $this->getHTMLCategory(),
 							'space' => 150
 					));

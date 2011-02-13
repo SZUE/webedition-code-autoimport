@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_binaryDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 
@@ -86,7 +85,7 @@ class we_flashDocument extends we_binaryDocument
 			}
 			unset($attribs['sizingstyle']);
 		} else {$sizingstyle = false;}
-			
+
 		if ($sizingstyle){
 			$style_width = round($attribs["width"]/$sizingbase,6);
 			$style_height = round($attribs["height"]/$sizingbase,6);
@@ -94,7 +93,7 @@ class we_flashDocument extends we_binaryDocument
 				$newstyle = $attribs["style"];
 			} else {$newstyle="";}
 
-			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";"; 
+			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
 			$attribs["style"]= $newstyle;
 			unset($attribs['width']);
 			unset($attribs['height']);
@@ -217,8 +216,8 @@ class we_flashDocument extends we_binaryDocument
 			} else if (isset($attribs['pathonly']) && $attribs['pathonly']) {
 				$this->html = $src;
 			}
-		}else{ 
-			if($GLOBALS['we_doc']->InWebEdition == 1) { 
+		}else{
+			if($GLOBALS['we_doc']->InWebEdition == 1) {
 				/* Anzeige des No_Falsh-Bildes in der Vorschau
 				$imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
 				$imgAtts["width"]  = 64;
@@ -239,14 +238,14 @@ class we_flashDocument extends we_binaryDocument
 	}
 
 	function formProperties(){
-		global $l_we_class,$l_global;
+		global $l_we_class;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>'.$this->formInputInfo2(155,"width",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"","origwidth").'</td>
 		<td>'.getPixel(18,2).'</td>
 		<td>'.$this->formInputInfo2(155,"height",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"","origheight").'</td>
 		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formSelectElement2(155,"scale",array(""=>"","showall"=>$l_global["showall"],"noborder"=>$l_global["noborder"],"exactfit"=>$l_global["exactfit"]),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>'.$this->formSelectElement2(155,"scale",array(""=>"","showall"=>g_l('global','[showall]'),"noborder"=>g_l('global','[noborder]'),"exactfit"=>g_l('global','[exactfit]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">'.getPixel(2,5).'</td>
@@ -262,7 +261,7 @@ class we_flashDocument extends we_binaryDocument
 		<td colspan="5">'.getPixel(2,5).'</td>
 	</tr>
 	<tr valign="top">
-		<td>'.$this->formSelectElement2(155,"play",array(""=>$l_global["true"],"false"=>$l_global["false"]),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>'.$this->formSelectElement2(155,"play",array(""=>g_l('global','[true]'),"false"=>g_l('global','[false]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 		<td>'.getPixel(18,2).'</td>
 		<td>'.$this->formSelectElement2(155,"quality",array(""=>"","low"=>"low","high"=>"high","autohigh"=>"autohigh","autolow"=>"autolow","best"=>"best"),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 		<td>'.getPixel(18,2).'</td>
@@ -272,11 +271,11 @@ class we_flashDocument extends we_binaryDocument
 		<td colspan="5">'.getPixel(2,5).'</td>
 	</tr>
 	<tr valign="top">
-		<td>'.$this->formSelectElement2(155,"align",array(""=>"","left"=>$l_global["left"],"right"=>$l_global["right"],"top"=>$l_global["top"],"bottom"=>$l_global["bottom"]),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>'.$this->formSelectElement2(155,"align",array(""=>"","left"=>g_l('global','[left]'),"right"=>g_l('global','[right]'),"top"=>g_l('global','[top]'),"bottom"=>g_l('global','[bottom]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formSelectElement2(155,"salign",array(""=>"","l"=>$l_global["left"],"r"=>$l_global["right"],"t"=>$l_global["top"],"b"=>$l_global["bottom"],"tl"=>$l_global["topleft"],"tr"=>$l_global["topright"],"bl"=>$l_global["bottomleft"],"br"=>$l_global["bottomright"]),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>'.$this->formSelectElement2(155,"salign",array(""=>"","l"=>g_l('global','[left]'),"r"=>g_l('global','[right]'),"t"=>g_l('global','[top]'),"b"=>g_l('global','[bottom]'),"tl"=>g_l('global','[topleft]'),"tr"=>g_l('global','[topright]'),"bl"=>g_l('global','[bottomleft]'),"br"=>g_l('global','[bottomright]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formSelectElement2(155,"loop",array(""=>$l_global["true"],"false"=>$l_global["false"]),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"") .'</td>
+		<td>'.$this->formSelectElement2(155,"loop",array(""=>g_l('global','[true]'),"false"=>g_l('global','[false]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"") .'</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">'.getPixel(2,5).'</td>
@@ -343,7 +342,7 @@ class we_flashDocument extends we_binaryDocument
 		$this->setElement("wmode", "window", "attrib");
 		$this->setElement("origwidth", "", "attrib");
 		$this->setElement("origheight", "", "attrib");
-	
+
 		$html = $this->getHtml(true);
 		$this->setElement("width", $_width, "attrib");
 		$this->setElement("height", $_height, "attrib");
