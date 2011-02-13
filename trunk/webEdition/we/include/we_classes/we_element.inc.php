@@ -72,7 +72,7 @@
 		
 		function fetchOptions($options=array()){
 			foreach($options as $k=>$v){
-				if($k!=0){eval('$this->'.$k.'=$options["'.$k.'"];');}
+				eval('$this->'.$k.'=$options["'.$k.'"];');
 			}
 		}		
 		
