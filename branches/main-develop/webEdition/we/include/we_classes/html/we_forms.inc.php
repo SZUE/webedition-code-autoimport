@@ -27,10 +27,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
 
-if (isset($GLOBALS["WE_LANGUAGE"]) && $GLOBALS["WE_LANGUAGE"]) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/html_forms.inc.php");
-}
-
 class we_forms {
 
 	/**
@@ -47,9 +43,6 @@ class we_forms {
 	 */
 
 	function checkbox($value,$checked,$name,$text,$uniqid=false,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$html="") {
-		// Get global variables
-		global $l_html_forms;
-
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid?uniqid($name . "_"):$name);
 
@@ -108,9 +101,6 @@ class we_forms {
 	 */
 
 	function radiobutton($value,$checked,$name,$text,$uniqid=true,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$onMouseUp="",$extra_content="") {
-		// Get global variables
-		global $l_html_forms;
-
 		// Check if we have to create a uniqe id
 		if ($uniqid) {
 			$_id = $name . "_" . uniqid(rand());

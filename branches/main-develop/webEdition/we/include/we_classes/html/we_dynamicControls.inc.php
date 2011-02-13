@@ -25,8 +25,7 @@
  * Provides functions for creating layers that can hide and unhide.
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/dynamic_controls.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 class we_dynamicControls {
 
@@ -51,16 +50,13 @@ class we_dynamicControls {
 	 */
 
 	function we_dynamicControls() {
-		// Get global variables
-		global $l_dynamic_controls;
-
 		// Set path to images for the groups arrows
 		$this->_arrow_image_closed = IMAGE_DIR . "modules/users/arrow_open.gif";
 		$this->_arrow_image_opened = IMAGE_DIR . "modules/users/arrow_close.gif";
 
 		// Set hint text for the groups arrows
-		$this->_arrow_hint_closed = $l_dynamic_controls["expand_group"];
-		$this->_arrow_hint_opened = $l_dynamic_controls["fold_group"];
+		$this->_arrow_hint_closed = g_l('dynamicControls','[expand_group]');
+		$this->_arrow_hint_opened = g_l('dynamicControls','[fold_group]');
 	}
 
 	/*************************************************************************
@@ -283,9 +279,6 @@ class we_dynamicControls {
 	 */
 
 	function fold_checkbox_groups($groups, $main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE") {
-		// Get global variables
-		global $l_dynamic_controls;
-
 		// Include the needed JavaScript
 		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
@@ -378,27 +371,27 @@ class we_dynamicControls {
 
 				// Now fill the group with content
 				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
-				
+
 				// first of all order all the entries
 				$_groups = array();
 				foreach ( $groups[$_groups_key] as $_group_item_key=>$_group_item_value ) {
-					
+
 					$_groups[$_groups_key][$titles[$_groups_key][$_group_item_key]] = array(
 						'perm' => $_group_item_key,
 						'value' => $_group_item_value
 					);
-					
+
 				}
-				
+
 				foreach ( $_groups as $_groups_key => $_group_item ) {
-					
+
 					ksort($_group_item);
-					
+
 					foreach ( $_group_item as $_group_item_text => $_group_item_values ) {
-						
+
 						$_group_item_key = $_group_item_values['perm'];
 						$_group_item_value = $_group_item_values['value'];
-						
+
 						if (($check_permissions && we_hasPerm($_group_item_key)) || !$check_permissions) {
 							// Display the items of the group
 							$_contentTable[$main_titles[$_groups_key]] .= '
@@ -412,9 +405,9 @@ class we_dynamicControls {
 								</tr>';
 						}
 					}
-					
+
 				}
-				
+
 				// Finish output of table
 				$_contentTable[$main_titles[$_groups_key]] .= '</table>';
 			}
@@ -451,10 +444,6 @@ class we_dynamicControls {
 	 */
 
 	function fold_multibox_groups($groups, $main_titles, $multiboxes, $open_group = "", $filter = "", $use_form = false, $form_name = "", $form_group_name = "", $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE") {
-
-		// Get global variables
-		global $l_dynamic_controls;
-
 		// Include the needed JavaScript
 		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 

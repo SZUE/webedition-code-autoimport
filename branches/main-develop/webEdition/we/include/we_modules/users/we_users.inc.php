@@ -28,7 +28,6 @@ if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don'
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/we_tabs.inc.php');
 }
 
@@ -2949,6 +2948,7 @@ function mapPermissions() {
 	function formHeader($tab = 0) {
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
 
 		$big=false;
 		if(file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")) {

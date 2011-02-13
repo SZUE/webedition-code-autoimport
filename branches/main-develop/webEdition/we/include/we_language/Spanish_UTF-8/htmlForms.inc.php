@@ -18,12 +18,11 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: html_forms.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_html_forms["click_here"] = 'Нажмите здесь, чтобы выбрать опцию &raquo;%s&laquo; или отменить свой выбор ... ';
-?>
+$l_htmlForms = array(
+		'click_here' => 'Click here to check or to uncheck the option &raquo;%s&laquo; ...', // TRANSLATE
+);
