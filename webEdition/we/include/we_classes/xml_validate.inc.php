@@ -78,11 +78,19 @@ class XML_Validate extends XML_Parser {
 	 * This array contains all child elements of the "we:class" node.
 	 * @var array
 	 */
+	//alle Felder
 	var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
-		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "Extension", "IsDynamic", "Published", "Category", "IsSearchable",
-		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "SerializedArray", "Templates", "Workspaces", "Users", "strOrder",
-		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords", "DefaultDesc","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID");
+		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "WebUserID", "Extension", "IsDynamic", "Published", "Category", "IsSearchable","InGlossar","Language",
+		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "Text","SerializedArray", "Templates", "Workspaces", "DefaultWorkspaces","Users", "strOrder",
+		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc","CSS","CacheType","CacheLifeTime");
+
+	//nur die vermeintlich gewünschten
+	var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
+		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
+		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners",         "Extension", "IsDynamic", "Published", "Category", "IsSearchable",  
+		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly",       "SerializedArray", "Templates", "Workspaces",         "Users", "strOrder",
+		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc"           );
 
 	/**
 	 * This array contains all child elements of the "we:category" node.
