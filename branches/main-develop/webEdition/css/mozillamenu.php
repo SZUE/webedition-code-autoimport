@@ -32,7 +32,7 @@ if (isset($_SESSION["prefs"]["Language"]) && $_SESSION["prefs"]["Language"] != "
 } else {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css/css.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
 ?>
 window,

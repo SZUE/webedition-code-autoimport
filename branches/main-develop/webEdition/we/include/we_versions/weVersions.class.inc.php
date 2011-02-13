@@ -19,7 +19,6 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 
@@ -792,6 +791,7 @@ class weVersions {
 
 		$contentTypes = array();
 		$contentTypes[] = 'all';
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		foreach($GLOBALS["WE_CONTENT_TYPES"] as $k => $v) {
 			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
 			if($k != "object"  && $k != "folder" && $k != "class_folder") {

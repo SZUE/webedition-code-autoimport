@@ -36,7 +36,7 @@ if (isset($_REQUEST["WE_LANGUAGE"]) && $_REQUEST["WE_LANGUAGE"] != "") {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
 
-if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css/css.inc.php")) {
+if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php")) {
 	exit("Could not include language file!");
 }
 

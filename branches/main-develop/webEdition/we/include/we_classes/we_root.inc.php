@@ -24,7 +24,6 @@ if(!isset($GLOBALS["WE_IS_DYN"])){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 /* the parent class for tree-objects */
 class we_root extends we_class
 {
@@ -724,6 +723,7 @@ function formTriggerDocument($isclass=false){
 
 	function we_new(){
 		we_class::we_new();
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		$this->CreatorID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		if(isset($this->ContentType) && $this->ContentType){
 			$this->Icon = $GLOBALS["WE_CONTENT_TYPES"][$this->ContentType]["Icon"];

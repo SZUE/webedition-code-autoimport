@@ -3736,6 +3736,7 @@ function we_getIcon($contentType, $extension) {
 		}
 		return "prog.gif";
 	} else {
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		return $GLOBALS["WE_CONTENT_TYPES"][$contentType]['Icon'];
 	}
 }
@@ -3834,6 +3835,7 @@ function getVarArray($arr, $string) {
 function g_l($name, $specific) {
 	//cache last accessed lang var
 	static $cache;
+	//echo $name.$specific;
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 	}else{

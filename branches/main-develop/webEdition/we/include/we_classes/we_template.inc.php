@@ -826,6 +826,7 @@ class we_template extends we_document
 	}
 
 	function we_save($resave=0){
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		$this->Extension = $GLOBALS["WE_CONTENT_TYPES"]["text/weTmpl"]["Extension"];
 		$this->_updateCompleteCode();
 		if(defined('SHOP_TABLE')) {

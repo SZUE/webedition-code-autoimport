@@ -19,8 +19,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_binaryDocument.inc.php");
-
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 
 
@@ -395,7 +394,7 @@ class we_flashDocument extends we_binaryDocument
 	* @param boolean $resave
 	*/
 	function we_save($resave = 0) {
-
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$origw = $this->getElement("origwidth");

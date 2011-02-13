@@ -75,7 +75,7 @@ class weTree{
 		$this->setTreeIconDir(ICON_DIR);
 		if($frameset!="" && $topFrame!=""  && $treeFrame!=""  && $cmdFrame!="") $this->init($frameset,$topFrame,$treeFrame,$cmdFrame);
 
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css/css.inc.php");
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php");
 
 		$styles=array();
 		$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].';}';
@@ -121,7 +121,7 @@ class weTree{
 	function setTreeImageDir($dir){
 		$this->tree_image_dir=$dir;
 	}
-	
+
 	function setTreeIconDir($dir){
 		$this->tree_icon_dir=$dir;
 	}
