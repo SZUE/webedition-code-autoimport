@@ -25,7 +25,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' .
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/glossary.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
@@ -174,18 +173,18 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 ?>
 	<script type="text/javascript" src="<?php print JS_DIR . "keyListener.js"; ?>"></script>
 	<script type="text/javascript">
-	
+
 	function applyOnEnter() {
 		top.frames.glossarycheck.checkForm();
 		return true;
-		
+
 	}
-	
+
 	function closeOnEscape() {
 		return true;
-		
+
 	}
-	
+
 	var orginal;
   	var retryjava = 0;
   	var retry = 0;
@@ -447,7 +446,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 
 	function getTextColumn(text, colspan) {
-		text = text+''; 
+		text = text+'';
 		var td = document.createElement('td');
 		td.setAttribute('style', 'overflow: hidden;');
 		td.setAttribute('title', text);
@@ -464,7 +463,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 		td.appendChild(document.createTextNode(text));
 		return td
 	}
-	
+
 	function shortenWord(text, chars) {
 		var newText = "";
 		var textlength = text.length;
@@ -487,7 +486,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 		else {
 			newText = text;
 		}
-		
+
 		return newText;
 	}
 
@@ -834,12 +833,12 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "checkOnly") {
 		$CancelButton = $we_button->create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
 		$PublishButton = "";
-		
+
 	// glossary check and publishing
 	} else {
 		$CancelButton = $we_button->create_button("cancel", "javascript:top.close();", true, 120, 22, "", "", false, false);
 		$PublishButton = $we_button->create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
-		
+
 	}
 	$ExecuteButton = $we_button->create_button("execute", "javascript:checkForm();", true, 120, 22, "", "", true, false);
 
@@ -847,7 +846,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	$Buttons = $we_button->position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
 	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly") {
 		$Buttons .= we_htmlElement::jsElement("weButton.hide('publish');");
-		
+
 	}
 
 	$Parts = array();
@@ -973,16 +972,16 @@ top.add();
 	// Only glossary check
 	if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "checkOnly") {
 		$Message = $GLOBALS['l_glossary']['check_successful'];
-		
+
 	// glossary check with publishing
 	} else {
 		$Message = $GLOBALS['l_glossary']['check_successful_and_publish'];
-		
+
 	}
-	
+
 	$Js .= we_message_reporting::getShowMessageCall($Message, WE_MESSAGE_NOTICE, false, true);
 	$Js .= "top.close();";
-	
+
 	$Js = we_htmlElement::jsElement($Js);
 	print $Js;
 ?>

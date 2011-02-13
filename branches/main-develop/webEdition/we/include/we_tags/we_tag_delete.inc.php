@@ -93,11 +93,11 @@ function we_tag_delete($attribs, $content){
 				$mailfrom = "dontReply@" . $GLOBALS["SERVER_NAME"];
 			}
 			if ($type == "object") {
-				$mailtext = sprintf($GLOBALS["l_global"]["std_mailtext_delObj"], $doc->Path) . "\n";
-				$subject = $GLOBALS["l_global"]["std_subject_delObj"];
+				$mailtext = sprintf(g_l('global',"[std_mailtext_delObj]"), $doc->Path) . "\n";
+				$subject = g_l('global',"[std_subject_delObj]");
 			} else {
-				$mailtext = sprintf($GLOBALS["l_global"]["std_mailtext_delDoc"], $doc->Path) . "\n";
-				$subject = $GLOBALS["l_global"]["std_subject_delDoc"];
+				$mailtext = sprintf(g_l('global',"[std_mailtext_delDoc]"), $doc->Path) . "\n";
+				$subject = g_l('global',"[std_subject_delDoc]");
 			}
 			$phpmail = new we_util_Mailer($mail, $subject, $mailfrom);
 			$phpmail->setCharSet($charset);

@@ -90,7 +90,7 @@ protect();
 
             	 // bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
 				if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !eregi("^[A-Za-z0-9._-]+$", $_REQUEST[$_REQUEST['obj_name'] . '_username'])) {
-            		print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($GLOBALS["l_global"]["username_wrong_chars"], WE_MESSAGE_ERROR) . '</script>';
+            		print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('global',"[username_wrong_chars]"), WE_MESSAGE_ERROR) . '</script>';
                     break;
             	} else if(!isset($_SESSION["user_session_data"])){
                     print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["no_perms"], WE_MESSAGE_ERROR) . '</script>';

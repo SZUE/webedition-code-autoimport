@@ -21,10 +21,9 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 
 
-		
+
 htmlTop();
 if($_SESSION["user"]["ID"]){
 	$DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
@@ -63,18 +62,18 @@ var ajaxCallback = {
 				if (top.header.header_msg.update) {
 					var newmsg_count = result.DataArray.newmsg_count;
 					var newtodo_count = result.DataArray.newtodo_count;
-				
+
 					top.header.header_msg.update(newmsg_count, newtodo_count);
 				}
-				
+
 			<?php } ?>
 				setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
-			
+
 			}
 		}
 	},
 	failure: function(o) {
-		alert("<?php echo $GLOBALS["l_global"]["unable_to_call_ping"];?>");
+		alert("<?php echo g_l('global',"[unable_to_call_ping]");?>");
 		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
 	}
 }

@@ -22,11 +22,10 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 
 protect();
-htmlTop($l_global["select_color"]);
+htmlTop(g_l('global','[select_color]'));
 
 print STYLESHEET;
 
@@ -41,18 +40,18 @@ function selectColor(c){
 function setColor(){
 <?php if($_REQUEST["we_cmd"][0]): ?>
 	opener.document.we_form.elements["<?php print $_REQUEST["we_cmd"][1]; ?>"].value = document.we_form.colorvalue.value;
-	
+
 	<?php if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) { ?>
-	
+
 		<?php print $_REQUEST["we_cmd"][3]; ?>
-		
+
 	<?php } else { ?>
-	
+
 		opener._EditorFrame.setEditorIsHot(true);
 		opener.we_cmd("reload_editpage");
-		
+
 	<?php } ?>
-	
+
 <?php else: ?>
 	window.returnValue = document.we_form.colorvalue.value;
 <?php endif ?>
@@ -129,7 +128,7 @@ if($_REQUEST["we_cmd"][0]){
 </table>
 ';
 
-	print htmlDialogLayout($table,$l_global["select_color"], $buttons);
+	print htmlDialogLayout($table,g_l('global','[select_color]'), $buttons);
 	?>
 		</form>
 	</body>

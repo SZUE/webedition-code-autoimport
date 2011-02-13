@@ -309,10 +309,10 @@ class weImageDialog extends weDialog{
 												(isset($this->args["type"]) && $this->args["type"]=="int"),
 												"we_dialog_args[type]",
 												$GLOBALS["l_wysiwyg"]["internal_image"],true,"defaultfont","imageChanged();");
-		
+
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
-			//Bug #3556, orig, imageChanged wird aufgerufen sobald man mit der Maus klickt, und bevor das input feld gefüllt ist
+			//Bug #3556, orig, imageChanged wird aufgerufen sobald man mit der Maus klickt, und bevor das input feld gefï¿½llt ist
 			//$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"imageChanged()"));
 			$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"document.we_form.elements['we_dialog_args[type]'][1].checked=true;"));
 			//Bug #3556 imageChanged wird aufgerufen wenn das input feld verlassen wird, nicht ideal, macht es aber nutzbar
@@ -324,8 +324,8 @@ class weImageDialog extends weDialog{
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($but);
-			
-			
+
+
 			$intSrc = $yuiSuggest->getHTML();
 
 			$thumbdata = (isset($this->args["thumbnail"]) ? $this->args["thumbnail"] : "");
@@ -362,7 +362,7 @@ class weImageDialog extends weDialog{
 			$yuiSuggest->setWidth(363);
 			$yuiSuggest->setSelectButton($but);
 			$yuiSuggest->setTrashButton($but2);
-			
+
 			$_longdesc   =  $yuiSuggest->getHTML();
 		}
 
@@ -386,7 +386,7 @@ class weImageDialog extends weDialog{
 		$alt = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["altText"]);
 
 		$foo = htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] :""), "", "", "text" , 200 );
-		$title = htmlFormElementTable($foo,$GLOBALS["l_global"]["title"]);
+		$title = htmlFormElementTable($foo,g_l('global',"[title]"));
 
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">

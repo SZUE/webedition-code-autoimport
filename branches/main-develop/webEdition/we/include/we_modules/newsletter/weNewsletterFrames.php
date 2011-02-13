@@ -2356,13 +2356,13 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		if( ($anz-$offset) < $numRows){
 			$colcontent=( $anz ? $offset+1 : 0 )."-".$anz.
 								getPixel(5,1).
-								$GLOBALS["l_global"]["from"].
+								g_l('global',"[from]").
 								getPixel(5,1).
 								$anz;
 		}else{
 			$colcontent=( $anz ? $offset+1 : 0 )."-".$offset+$numRows.
 								getPixel(5,1).
-								$GLOBALS["l_global"]["from"].
+								g_l('global',"[from]").
 								getPixel(5,1).
 								$anz;
 		}

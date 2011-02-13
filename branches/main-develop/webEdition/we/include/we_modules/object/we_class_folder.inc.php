@@ -590,7 +590,7 @@ class we_class_folder extends we_folder{
 						}
 					}else if($type[$i+5]=="checkbox"){
 						$text = $this->searchclass->f($type[$i+5]."_".$head[$i+5]["dat"]);
-						$content[$f][$i+5]["dat"] = ($text == "1" ? $GLOBALS["l_global"]["yes"]  : $GLOBALS["l_global"]["no"] );
+						$content[$f][$i+5]["dat"] = ($text == "1" ? g_l('global',"[yes]"): g_l('global',"[no]") );
 					}else if($type[$i+5]=="meta"){
 						if(		$this->searchclass->f($type[$i+5]."_".$head[$i+5]["dat"]) != ""
 							&& 	isset($DefaultValues[$type[$i+5]."_".$head[$i+5]["dat"]]["meta"][$this->searchclass->f($type[$i+5]."_".$head[$i+5]["dat"])])) {
@@ -670,14 +670,14 @@ class we_class_folder extends we_folder{
 					$values = $DefaultValues[$this->searchclass->objsearchField[$i]]["meta"];
 				} else {
 					$values = array(
-						0 => $GLOBALS['l_global']['no'],
-						1 => $GLOBALS['l_global']['yes'],
+						0 => g_l('global','[no]'),
+						1 => g_l('global','[yes]'),
 					);
 				}
 
 				$out .= '
 				<tr>
-					<td class="defaultfont">'.$GLOBALS['l_global']["search"].'</td>
+					<td class="defaultfont">'.g_l('global',"[search]").'</td>
 					<td width="50">'.getPixel(5,2).'</td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->ClassPath).'</td>
@@ -737,7 +737,7 @@ class we_class_folder extends we_folder{
 
 				$out .= '
 				<tr>
-					<td class="defaultfont">'.$GLOBALS['l_global']["search"].'</td>
+					<td class="defaultfont">'.g_l('global',"[search]").'</td>
 					<td>'.getPixel(5,2).'</td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->ClassPath).'</td>
@@ -758,7 +758,7 @@ class we_class_folder extends we_folder{
 			} else {
 				$out .= '
 				<tr>
-					<td class="defaultfont">'.$GLOBALS['l_global']["search"].'</td>
+					<td class="defaultfont">'.g_l('global',"[search]").'</td>
 					<td>'.getPixel(1,2).'</td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->Path).'</td> #4076 orig
 					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->ClassPath).'</td>

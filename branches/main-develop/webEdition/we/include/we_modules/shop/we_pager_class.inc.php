@@ -76,13 +76,13 @@ class blaettern {
 
 
 
-	/** Erstellt einen normalen webEdition pager für den Shop
+	/** Erstellt einen normalen webEdition pager fï¿½r den Shop
 	*
 	*	@access public
 	*	@param string $url URL der Seite
 	*	@param int $actPage Aktuelle Seitenzahl (0 = erste Seite)
-	*	@param int $nrOfPage Anzahl Einträge pro Seite
-	*	@param int $anz Anzahl Einträge gesamt
+	*	@param int $nrOfPage Anzahl Eintrï¿½ge pro Seite
+	*	@param int $anz Anzahl Eintrï¿½ge gesamt
 	*/
 	function getStandardPagerHTML($url,$actPage,$nrOfPage,$anz ) {
 		$we_button = new we_button();
@@ -101,7 +101,7 @@ class blaettern {
 		} else {
 			$nextprev .= $offset+$nrOfPage;
 		}
-		$nextprev .= "&nbsp;&nbsp;".$GLOBALS["l_global"]["from"]."&nbsp;&nbsp;".$anz."</b></td><td>".getPixel(23,1).'</td><td>';
+		$nextprev .= "&nbsp;&nbsp;".g_l('global',"[from]")."&nbsp;&nbsp;".$anz."</b></td><td>".getPixel(23,1).'</td><td>';
 		if (($offset+$nrOfPage) < $anz) {
 			$nextprev .= $we_button->create_button("next", $url . '&actPage=' . ($actPage + 1));
 		} else {
@@ -1182,14 +1182,14 @@ class blaettern {
 	*	@access private
 	*	@var (string)
 	*/
-	var $link_next_text				= 'Vorwärts';
+	var $link_next_text				= 'Vorwï¿½rts';
 
 	/** Text fuer 'Zurueck' (vorherige Seite), siehe 'Variablen fuer Links'
 	*
 	*	@access private
 	*	@var (string)
 	*/
-	var $link_prev_text				= 'Zurück';
+	var $link_prev_text				= 'Zurï¿½ck';
 
 	/** Zusaetzliche Angaben zu Links 'Weiter' und 'Zurueck', siehe 'Variablen fuer Links'
 	*

@@ -22,7 +22,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_root.inc.php');
 
 if(!isset($GLOBALS['WE_IS_DYN'])){
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/global.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 }
 if(!isset($GLOBALS['WE_IS_IMG'])){
@@ -351,7 +350,6 @@ class we_document extends we_root {
 	}
 
 	function formCategory() {
-		global $l_global;
 		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tools/MultiDirChooser.inc.php');
 
 		$we_button = new we_button();
@@ -366,7 +364,6 @@ class we_document extends we_root {
 	}
 
 	function formNavigation() {
-		global $l_global;
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/MultiFileChooser.inc.php');
 		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');
 

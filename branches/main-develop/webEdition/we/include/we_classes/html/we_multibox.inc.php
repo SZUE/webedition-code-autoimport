@@ -55,7 +55,7 @@ class we_multiIconBox{
 		foreach($content as $i => $c){
 
 			if($i==$foldAtNr && $foldAtNr < sizeof($content)){ // only if the folded items contain stuff.
-				$but = we_multiIconBox::_getButton($uniqname,($delegate ? $delegate : "" ). ";weToggleBox('$uniqname','".addslashes($foldDown)."','".addslashes($foldRight)."')",($displayAtStartup ? "down" : "right"),$GLOBALS["l_global"]["openCloseBox"]);
+				$but = we_multiIconBox::_getButton($uniqname,($delegate ? $delegate : "" ). ";weToggleBox('$uniqname','".addslashes($foldDown)."','".addslashes($foldRight)."')",($displayAtStartup ? "down" : "right"),g_l('global',"[openCloseBox]"));
 				$out .= $we_button->create_button_table(
 												array(
 													$but,

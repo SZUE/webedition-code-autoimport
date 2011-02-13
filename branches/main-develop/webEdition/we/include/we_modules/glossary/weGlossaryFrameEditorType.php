@@ -478,7 +478,7 @@
 					<td></td>
 					<td>' . $prev . '</td>
 					<td>' . getPixel(10,2) . '</td>
-					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . $GLOBALS["l_global"]["from"] . ' ' . $sum . '</b></td>
+					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global',"[from]") . ' ' . $sum . '</b></td>
 					<td>' . getPixel(10,2) . '</td>
 					<td>' . $next . '</td>
 					<td>' . getPixel(10,2) . '</td>

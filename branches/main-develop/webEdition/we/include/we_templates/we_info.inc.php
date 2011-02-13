@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 
 
@@ -36,13 +35,13 @@ $_logoPart = 140;
 $_leftPart = $_middlePart - $_logoPart;
 
 $_credits = '<br /><span style="line-height:160%">'
-			.$l_global["developed_further_by"].': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>'
-			.$l_global["with"].' <b><a href="http://credits.webedition.org/?version='.str_replace(".","",WE_VERSION).'&language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.$l_global["credits_team"].'</a></b></span><br/>';
+			.g_l('global','[developed_further_by]').': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>'
+			.g_l('global','[with]').' <b><a href="http://credits.webedition.org/?version='.str_replace(".","",WE_VERSION).'&language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.g_l('global','[credits_team]').'</a></b></span><br/>';
 
 
 $we_version = preg_replace('/\.0$/','', WE_VERSION);
 if(defined("WE_SVNREV") && WE_SVNREV!='0000' && !isset($GLOBALS["loginpage"])) $we_version .= " (SVN-Revision: ".WE_SVNREV.")";
-if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='' && !isset($GLOBALS["loginpage"]) ) $we_version .= ' '.$l_global[WE_VERSION_SUPP];
+if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='' && !isset($GLOBALS["loginpage"]) ) $we_version .= ' '.g_l('global','['.WE_VERSION_SUPP.']');
 if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' && !isset($GLOBALS["loginpage"]) ) $we_version .= WE_VERSION_SUPP_VERSION;
 
 $_logo = "info.jpg";
@@ -124,7 +123,7 @@ if (is_readable($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'agency.php') ){
 	$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,5));
 	$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
 							"class" => "defaultfont small"), $_agency);
-	$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));							
+	$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
 }
 
 //	8th row
@@ -144,8 +143,8 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		7,
 		2
 	);
-	
-	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label",true,array("for"=>"username"),$l_global["username"])));
+
+	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label",true,array("for"=>"username"),g_l('global','[username]'))));
 
 	$_loginTable->setCol($loginRow++, 1, array('width'=> $_logoPart, 'rowspan' => '5', 'valign' => 'bottom'), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
 
@@ -153,7 +152,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), getPixel(5,5));
 
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label",true,array("for"=>"password"),$l_global["password"])));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label",true,array("for"=>"password"),g_l('global','[password]'))));
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), htmlTextInput("password", 25, "", 100, "id=\"password\" style=\"width: 250px;\" ", "password", 0, 0));
 
@@ -224,10 +223,10 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$_content = "";
 	if($_SESSION["user"]["Username"] && $_POST["password"] && $_POST["username"]){
-		$_content = $l_global["loginok"];
+		$_content = g_l('global','[loginok]');
 	}
 
-	$_content = $l_global["loginok"];
+	$_content = g_l('global','[loginok]');
 
 
 	$_loginTable = new we_htmlTable(

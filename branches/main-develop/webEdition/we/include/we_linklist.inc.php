@@ -873,7 +873,7 @@ class we_linklist
 	{
 		$foo = array();
 		$foo["href"] = "http://";
-		$foo["text"] = $GLOBALS["l_global"]["new_link"];
+		$foo["text"] = g_l('global',"[new_link]");
 		$foo["target"] = "";
 		$foo["type"] = "ext";
 		$foo["ctype"] = "text";

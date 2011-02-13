@@ -90,7 +90,7 @@ function save(){
 	_oCsv_.value=cs();
 	savePrefs();
 	" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['prefs_saved_successfully'], 
+		$l_cockpit['prefs_saved_successfully'],
 		WE_MESSAGE_NOTICE) . "
 	self.close();
 }
@@ -126,116 +126,116 @@ $_dns = explode("\n", $websites);
 
 
 $sctDns = htmlFormElementTable(
-		htmlSelect("sct_dns", $_dns, 1, 0, false, 'onChange="" style="width:300px;"', 'value'), 
+		htmlSelect("sct_dns", $_dns, 1, 0, false, 'onChange="" style="width:300px;"', 'value'),
 		$l_cockpit["domain"]);
 
 $chbxChart[0] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['visitors_data_today'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['visitors_data_today'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[1] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['visitors_data_yesterday'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['visitors_data_yesterday'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[2] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['visitors_data_this_month'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['visitors_data_this_month'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[3] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['visitors_behaviour_today'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['visitors_behaviour_today'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[4] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['Snapshot'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['Snapshot'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[5] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['top_visiting_periods'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['top_visiting_periods'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[6] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['visitors_forecast'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['visitors_forecast'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[7] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['avg_amount_visitors'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['avg_amount_visitors'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $chbxChart[8] = we_forms::checkbox(
-		$value = 0, 
-		$checked = 0, 
-		$name = "chbx_chart", 
-		$text = $l_cockpit['promo_value_tai'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "chbx_chart",
+		$text = $l_cockpit['promo_value_tai'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 
 $chart = new we_htmlTable(array(
@@ -269,15 +269,15 @@ $preview_button = $we_button->create_button("preview", "javascript:preview();", 
 $cancel_button = $we_button->create_button("close", "javascript:exit_close();");
 $buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 $sMultibox = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
-		"plgProps", 
-		"100%", 
-		$parts, 
-		30, 
-		$buttons, 
-		-1, 
-		"", 
-		"", 
-		"", 
+		"plgProps",
+		"100%",
+		$parts,
+		30,
+		$buttons,
+		-1,
+		"",
+		"",
+		"",
 		$l_cockpit['pagelogger']);
 
 $_pLogProps = new we_htmlTable(array(
@@ -286,18 +286,18 @@ $_pLogProps = new we_htmlTable(array(
 $_pLogProps->setCol(0, 0, null, $sMultibox);
 $_pLogProps->setCol(1, 0, null, getPixel(1, 10));
 
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
 						we_htmlElement::htmlTitle($l_cockpit['pagelogger']) . STYLESHEET . we_htmlElement::cssElement(
 								"select{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
-								"", 
+								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement($jsPrefs . $jsCode)) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
-						), 
+						),
 						we_htmlElement::htmlForm("", $_pLogProps->getHTMLCode())));
 
 ?>

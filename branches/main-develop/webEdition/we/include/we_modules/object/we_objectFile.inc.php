@@ -24,7 +24,6 @@ if(!isset($GLOBALS["WE_IS_DYN"])){
 	include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_temporaryDocument.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
@@ -897,7 +896,7 @@ class we_objectFile extends we_document
 			$inputWidth = 443;
 
 			$uniq = uniqid("");
-			$openCloseButton = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','','')","down",$GLOBALS["l_global"]["openCloseBox"]);
+			$openCloseButton = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','','')","down",g_l('global',"[openCloseBox]"));
 			$openCloseButtonDis = getPixel(21, 1);
 
 			$objectpreview = "<div id=\"text_".$uniq."\"></div><div id=\"table_".$uniq."\" style=\"display:block; padding: 10px 0px 20px 30px;\">";
@@ -952,7 +951,7 @@ class we_objectFile extends we_document
 			$content = 	'';
 			$uniq = uniqid("");
 			$txt = $ob->Text ? $ob->Text : $name;
-			$but = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','".$txt."','".$txt."')","down",$GLOBALS["l_global"]["openCloseBox"]);
+			$but = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','".$txt."','".$txt."')","down",g_l('global',"[openCloseBox]"));
 			$content .= $we_button->create_button_table(
 										array(
 											$but,
@@ -1026,7 +1025,7 @@ class we_objectFile extends we_document
 
 					$uniq = uniqid("");
 
-					$openCloseButton = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','','')","right",$GLOBALS["l_global"]["openCloseBox"]);
+					$openCloseButton = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','','')","right",g_l('global',"[openCloseBox]"));
 					$openCloseButtonDis = getPixel(21, 1);
 
 					$reloadEntry = "opener.top.we_cmd(\'change_objectlink\',\'".$GLOBALS['we_transaction']."\',\'multiobject_".$name."\');";
@@ -1115,7 +1114,7 @@ class we_objectFile extends we_document
 						$ob->DefArray = $ob->getDefaultValueArray();
 						$txt = $ob->Text;
 
-						$but = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','".$txt."','".$txt."')","right",$GLOBALS["l_global"]["openCloseBox"]);
+						$but = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','".$txt."','".$txt."')","right",g_l('global',"[openCloseBox]"));
 						$content .= $we_button->create_button_table(
 													array(
 														$but,
@@ -1195,7 +1194,7 @@ class we_objectFile extends we_document
 	}
 
 	function getHrefFieldHTML($n,$attribs,$we_editmode=true){
-		global $l_global,$we_doc;
+		global $we_doc;
 		$type = isset($attribs["hreftype"]) ?
 		$attribs["hreftype"] :
 		"";
@@ -1265,14 +1264,13 @@ class we_objectFile extends we_document
 	}
 
 	function htmlLinkInput($n,$attribs,$we_editmode=true,$headline=true){
-		global $l_global;
 		$attribs["name"]=$n;
 		$we_button = new we_button();
 		$out = "";
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(is_array($link)){
 			if(!sizeof($link)){
-				$link = array("ctype"=>"text","type"=>"ext","href"=>"#","text"=>$GLOBALS["l_global"]["new_link"]);
+				$link = array("ctype"=>"text","type"=>"ext","href"=>"#","text"=>g_l('global',"[new_link]"));
 			}
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
 			$img = new we_imageDocument();
@@ -1284,7 +1282,7 @@ class we_objectFile extends we_document
 			$delbut  = $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('delete_link_at_object','".$GLOBALS['we_transaction']."', 'link_".$n."')");
 			$buttons = $we_button->create_button_table(array(	$editbut,
 																$delbut));
-			if(!$content) $content = $GLOBALS["l_global"]["new_link"];
+			if(!$content) $content = g_l('global',"[new_link]");
 			if($startTag){
 				$out = $startTag.$content.'</a>'.($we_editmode ? ($buttons) : "");
 			}else{
@@ -1422,7 +1420,8 @@ class we_objectFile extends we_document
 			$content = we_forms::checkboxWithHidden(($this->getElement($name)?true:false), "we_".$this->Name."_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 			return '<span class="weObjectPreviewHeadline"><b>'.$name.($this->DefArray["checkbox_".$name]["required"] ? "*" : "")."</b></span>" . ( isset($this->DefArray["checkbox_".$name]['editdescription']) && $this->DefArray["checkbox_".$name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_".$name]['editdescription'] . '</div>' : '<br />' ) .$content;
 		}else{
-			$content = ($this->getElement($name) ?  $GLOBALS["l_global"]["yes"] : $GLOBALS["l_global"]["no"]);
+			$content = ($this->getElement($name) ?  g_l('global',"[yes]") : g_l('global',"[no]"));
+		endif;
 			return $this->getPreviewView($name,$content);
 		}
 	}
@@ -1785,7 +1784,7 @@ class we_objectFile extends we_document
 		}else{
 			$textname = md5(uniqid(rand(),1));
 			$idname = md5(uniqid(rand(),1));
-			$foo = array(""=>$GLOBALS["l_global"]["add_workspace"]);
+			$foo = array(""=>g_l('global',"[add_workspace]"));
 			foreach($values as $key=>$val){
 				$foo[$key]=$val;
 			}
@@ -1897,7 +1896,7 @@ class we_objectFile extends we_document
 		}else{
 			$textname = md5(uniqid(rand(),1));
 			$idname = md5(uniqid(rand(),1));
-			$foo = array(""=>$GLOBALS["l_global"]["add_workspace"]);
+			$foo = array(""=>g_l('global',"[add_workspace]"));
 			foreach($values as $key=>$val){
 				$foo[$key]=$val;
 			}

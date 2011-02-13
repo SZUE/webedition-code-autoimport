@@ -1670,7 +1670,7 @@ class searchtoolView extends weToolView
 			$out .= $searchstart + $anzahl;
 		}
 
-		$out .= ' ' . $GLOBALS["l_global"]["from"] . ' ' . $we_search_anzahl . '</b></td>' . '<td>' . getPixel(10, 2) . '</td>' . '<td>';
+		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td>' . '<td>' . getPixel(10, 2) . '</td>' . '<td>';
 
 		if (($searchstart + $anzahl) < $we_search_anzahl) {
 			//bt_back

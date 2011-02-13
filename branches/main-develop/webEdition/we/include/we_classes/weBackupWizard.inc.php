@@ -1381,7 +1381,7 @@ class weBackupWizard{
  	}
 
  	function  getHTMLCmd(){
-			global $l_backup, $l_global, $l_alert;
+			global $l_backup,  $l_alert;
 			if (isset($_REQUEST["operation_mode"])) {
 				switch ($_REQUEST["operation_mode"]) {
 					case "backup":

@@ -21,18 +21,13 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop($l_global["changePass"]);
+htmlTop(g_l('global','[changePass]'));
 
-?>
-<?php
 if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
-?>
-<?php
 	print STYLESHEET;
 
 	$we_button = new we_button();
@@ -62,7 +57,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 						<table border="0" cellpadding="0" cellspacing="0">
 							<tr>
 								<td class="defaultfont">
-									' . $l_global["oldPass"] . '</td>
+									' . g_l('global','[oldPass]') . '</td>
 							</tr>
 							<tr>
 								<td>
@@ -74,7 +69,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 							</tr>
 							<tr>
 								<td class="defaultfont">
-									' . $l_global["newPass"] . '</td>
+									' . g_l('global','[newPass]') . '</td>
 							</tr>
 							<tr>
 								<td>
@@ -86,7 +81,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 							</tr>
 							<tr>
 								<td class="defaultfont">
-									' . $l_global["newPass2"] . '</td>
+									' . g_l('global','[newPass2]') . '</td>
 							</tr>
 							<tr>
 								<td>
@@ -99,7 +94,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 																	null,
 																	$cancelbut);
 
-					$frame = htmlDialogLayout($content, $l_global["changePass"], $_buttons);
+					$frame = htmlDialogLayout($content, g_l('global','[changePass]'), $_buttons);
 					print $frame;
 					print '	<input type="hidden" name="cmd" value="ok" />
 							<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST["we_cmd"][0] . '" />
@@ -120,24 +115,24 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 
 			if (md5($oldpasswd.md5($_SESSION["user"]["Username"])) != $passwd) {
 				print
-					we_message_reporting::getShowMessageCall($l_global["pass_not_match"], WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_not_match]'), WE_MESSAGE_ERROR) . '
 					top.passwdcontent.document.forms[0].elements["oldpasswd"].focus();
 					top.passwdcontent.document.forms[0].elements["oldpasswd"].select();';
 			} else if (strlen($newpasswd) < 4) {
 				print
-					we_message_reporting::getShowMessageCall($l_global["pass_to_short"], WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_to_short]'), WE_MESSAGE_ERROR) . '
 					top.passwdcontent.document.forms[0].elements["newpasswd"].focus();
 					top.passwdcontent.document.forms[0].elements["newpasswd"].select();';
 			} else if ($newpasswd != $newpasswd2) {
 				print
-					we_message_reporting::getShowMessageCall($l_global["pass_not_confirmed"], WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_not_confirmed]'), WE_MESSAGE_ERROR) . '
 					top.passwdcontent.document.forms[0].elements["newpasswd2"].focus();
 					top.passwdcontent.document.forms[0].elements["newpasswd2"].select();';
 			} else {
-				
+
 		 		$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='" . md5($newpasswd . md5($_SESSION["user"]["Username"])) . "', UseSalt=1 WHERE username='" . mysql_real_escape_string($_SESSION["user"]["Username"]) . "'");
 				print
-					we_message_reporting::getShowMessageCall($l_global["pass_changed"], WE_MESSAGE_NOTICE) .
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_changed]'), WE_MESSAGE_NOTICE) .
 					'top.close();';
 			}
 		}
@@ -159,10 +154,10 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 					}
 					function closeOnEscape() {
 						return true;
-					
+
 					}
 				  ");
-			
+
 		?>
 	</head>
 

@@ -339,7 +339,7 @@ class we_import_files
 					$parts,
 					array(
 
-							'headline' => $GLOBALS["l_global"]["categorys"] . '',
+							'headline' => g_l('global',"[categorys]") . '',
 							'html' => $this->getHTMLCategory(),
 							'space' => 150
 					));

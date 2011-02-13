@@ -27,10 +27,10 @@ class weExportView {
 
 	var $db;
 	var $frameset;
-	
+
 	var $topFrame;
 	var $export;
-	
+
 	var $editorBodyFrame;
 	var $editorBodyDoc;
 	var $editorBodyForm;
@@ -41,30 +41,30 @@ class weExportView {
 		$this->setTopFrame($topframe);
 		$this->export=new weExport();
 	}
-	
+
 	//----------- Utility functions ------------------
-	
+
 	function htmlHidden($name, $value = "") {
 		return we_htmlElement::htmlHidden(array("name"=>trim($name),"value"=>htmlspecialchars($value)));
-	}	
-	
-	
+	}
+
+
 	//-----------------Init -------------------------------
-	
+
 	function setFramesetName($frameset){
 		$this->frameset=$frameset;
 	}
-	
+
 	function setTopFrame($frame){
 		$this->topFrame=$frame;
 		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
 		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
-	}	
-	
-	//------------------------------------------------	
-	
-	
+	}
+
+	//------------------------------------------------
+
+
 	function getCommonHiddens($cmds=array()){
 		$out=$this->htmlHidden("cmd",(isset($cmds["cmd"]) ? $cmds["cmd"] : ""));
 		$out.=$this->htmlHidden("cmdid",(isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""));
@@ -77,42 +77,42 @@ class weExportView {
 		$out.=$this->htmlHidden("selTempl",(isset($this->export->selTempl) ? $this->export->selTempl : ''));
 		$out.=$this->htmlHidden("selObjs",(isset($this->export->selObjs) ? $this->export->selObjs : ''));
 		$out.=$this->htmlHidden("selClasses",(isset($this->export->selClasses) ? $this->export->selClasses : ''));
-		
+
 		$out.=$this->htmlHidden("selDocs_open",(isset($_REQUEST["selDocs_open"]) ? $_REQUEST["selDocs_open"] : ''));
 		$out.=$this->htmlHidden("selTempl_open",(isset($_REQUEST["selTempl_open"]) ? $_REQUEST["selTempl_open"] : ''));
 		$out.=$this->htmlHidden("selObjs_open",(isset($_REQUEST["selObjs_open"]) ? $_REQUEST["selObjs_open"] : ''));
 		$out.=$this->htmlHidden("selClasses_open",(isset($_REQUEST["selClasses_open"]) ? $_REQUEST["selClasses_open"] : ''));
-		
+
 		return $out;
 	}
-	
+
 	function getJSTop(){
 		global $l_export;
-		
+
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
 			if($modData["name"] == $mod){
-				$title	= "webEdition " . $GLOBALS["l_global"]["modules"] . ' - ' .$modData["text"];
+				$title	= "webEdition " . g_l('global',"[modules]") . ' - ' .$modData["text"];
 				break;
 			}
 		}
-		
+
 		$js='
 			var get_focus = 1;
 			var activ_tab = 1;
 			var hot= 0;
 			var scrollToVal=0;
 			var table = "'.FILE_TABLE.'";
-			
+
 			function setHot() {
 				hot = "1";
 			}
-			
+
 			function usetHot() {
 				hot = "0";
 			}
-			
+
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -120,9 +120,9 @@ class weExportView {
 					}
 				}
 			}
-			
+
 			parent.document.title = "'.$title.'";
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -204,7 +204,7 @@ class weExportView {
 							: ''
 						).'
 						if('.$this->editorBodyForm.'.cmd.value=="home") return;
-						
+
 						if ('.$this->editorBodyFrame.'.loaded) {
 										if('.$this->editorBodyForm.'.Text.value==""){
 											' . we_message_reporting::getShowMessageCall( $l_export['name_empty'], WE_MESSAGE_ERROR) . '
@@ -218,13 +218,13 @@ class weExportView {
 											'.$this->editorBodyForm.'.selTempl.value='.$this->editorBodyFrame.'.SelectedItems["'.TEMPLATES_TABLE.'"].join(",");
 											'.(defined("OBJECT_FILES_TABLE") ? $this->editorBodyForm.'.selObjs.value='.$this->editorBodyFrame.'.SelectedItems["'.OBJECT_FILES_TABLE.'"].join(",");' : '').'
 											'.(defined("OBJECT_TABLE") ? $this->editorBodyForm.'.selClasses.value='.$this->editorBodyFrame.'.SelectedItems["'.OBJECT_TABLE.'"].join(",");' : '') . '
-						
+
 											'.$this->editorBodyForm.'.selDocs_open.value='.$this->editorBodyFrame.'.openFolders["'.FILE_TABLE.'"];
 											'.$this->editorBodyForm.'.selTempl_open.value='.$this->editorBodyFrame.'.openFolders["'.TEMPLATES_TABLE.'"];
 											'.(defined("OBJECT_FILES_TABLE") ? $this->editorBodyForm.'.selObjs_open.value='.$this->editorBodyFrame.'.openFolders["'.OBJECT_FILES_TABLE.'"];' : '').'
 											'.(defined("OBJECT_TABLE") ? $this->editorBodyForm.'.selClasses_open.value='.$this->editorBodyFrame.'.openFolders["'.OBJECT_TABLE.'"];' : '') . '
 										}
-										
+
 										'.$this->editorBodyFrame.'.submitForm(arguments[0]=="start_export" ? "cmd" : "edbody");
 						} else {
 							' . we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["nothing_to_save"], WE_MESSAGE_ERROR) . '
@@ -250,7 +250,7 @@ class weExportView {
 					break;
 					case "home":
 						'.$this->editorBodyFrame.'.parent.location="'.$this->frameset.'?pnt=editor";
-					break;						
+					break;
 					default:
 						for (var i = 0; i < arguments.length; i++) {
 							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
@@ -259,19 +259,19 @@ class weExportView {
 				}
 			}
 			';
-			
-			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js); 
+
+			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js);
 	}
-	
+
 	function getJSProperty(){
-		
+
 		$table = isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE;
-		
+
 		$out="";
 		$out.=we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-		
+
 		$js = '';
-		
+
 		$js='
 			var loaded=0;
 			var table = "'.$table.'";
@@ -283,13 +283,13 @@ class weExportView {
 					}
 				}
 			}
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 				switch (arguments[0]) {
-					case "switchPage":					
+					case "switchPage":
 						document.we_form.cmd.value=arguments[0];
 						document.we_form.tabnr.value=arguments[1];
 						submitForm();
@@ -323,7 +323,7 @@ class weExportView {
 			}
 
 			'.$this->getJSSubmitFunction().'
-		
+
 		';
 		$selected = '';
 		$opened = '';
@@ -338,13 +338,13 @@ class weExportView {
 			foreach($items as $item){
 				$selected .= 'SelectedItems["'.$table.'"].push("'.$item.'");'."\n";
 			}
-			
+
 			if(isset($_REQUEST[$elem . '_open']) && !empty($_REQUEST[$elem . '_open'])) {
-					$opened .= 'openFolders["'.$table.'"]="'.$_REQUEST[$elem . '_open'].'";'."\n"; 
-			}		
-			
-		}		
-		
+					$opened .= 'openFolders["'.$table.'"]="'.$_REQUEST[$elem . '_open'].'";'."\n";
+			}
+
+		}
+
 		$js .= '
 			function start() {
 				' . $selected . $opened . ( $this->export->IsFolder==0 ? '
@@ -367,7 +367,7 @@ function getJSTreeHeader(){
 					}
 				}
 			}
-			
+
 			function we_cmd(){
 				var args = "";
 				var url = "'.$this->frameset.'?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -389,7 +389,7 @@ function getJSSubmitFunction($def_target="edbody",$def_method="post"){
 	return '
 			function submitForm() {
 				var f = self.document.we_form;
-				
+
 				if (arguments[0]) {
 					f.target = arguments[0];
 				} else {
@@ -432,7 +432,7 @@ function processCommands() {
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 						');
 					}
-						
+
 				break;
 				case "new_export_group":
 					if(!we_hasPerm("NEW_EXPORT")) {
@@ -440,7 +440,7 @@ function processCommands() {
 							we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR)
 						);
 						break;
-					}else{					
+					}else{
 						$this->export = new weExport();
 						$this->export->Text = $l_export['newFolder'];
 						$this->export->IsFolder = 1;
@@ -486,7 +486,7 @@ function processCommands() {
 							);
 							break;
 						}
-						
+
 						if(trim($this->export->Text) == ''){
 							print we_htmlElement::jsElement(
 								we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["name_empty"], WE_MESSAGE_ERROR)
@@ -507,7 +507,7 @@ function processCommands() {
 								we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["path_nok"], WE_MESSAGE_ERROR)
 							);
 							break;
-						}						
+						}
 
 					    if($this->export->ParentID>0) {
 					    	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
@@ -531,7 +531,7 @@ function processCommands() {
 								break;
 					    	}
 					    }
-						
+
 						$newone=true;
 						if($this->export->ID) $newone=false;
 
@@ -539,19 +539,19 @@ function processCommands() {
 
 						if($this->export->IsFolder && $oldpath!='' && $oldpath!='/' && $oldpath!=$this->export->Path) {
 							$db_tmp = new DB_WE();
-							$this->db->query('SELECT ID FROM ' . EXPORT_TABLE . ' WHERE Path LIKE \'' . mysql_real_escape_string($oldpath) . '%\' AND ID<>'.abs($this->export->ID).';'); 
+							$this->db->query('SELECT ID FROM ' . EXPORT_TABLE . ' WHERE Path LIKE \'' . mysql_real_escape_string($oldpath) . '%\' AND ID<>'.abs($this->export->ID).';');
 							while($this->db->next_record()) {
 								$db_tmp->query('UPDATE ' . EXPORT_TABLE . ' SET Path=\'' . $this->export->evalPath($this->db->f("ID")) . '\' WHERE ID=' . $this->db->f("ID") . ';');
 							}
-						}			
+						}
 
 						if ($newone) {
 							$js='
 									'.$this->topFrame.'.makeNewEntry(\''.$this->export->Icon.'\',\''.$this->export->ID.'\',\''.$this->export->ParentID.'\',\''.$this->export->Text.'\',0,\''.($this->export->IsFolder ? 'folder' : 'item').'\',\''. EXPORT_TABLE .'\');
 							'. $this->topFrame.'.drawTree();';
-						} else {	
+						} else {
 							$js=''.$this->topFrame.'.updateEntry('.$this->export->ID.',"'.$this->export->Text.'","'.$this->export->ParentID.'");'."\n";
-						}						
+						}
 						print we_htmlElement::jsElement($js.'
 							'.$this->editorHeaderFrame.'.location.reload();
 							' . we_message_reporting::getShowMessageCall(  ($this->export->IsFolder==1 ? $l_export["save_group_ok"] : $l_export["save_ok"]), WE_MESSAGE_NOTICE )
@@ -583,7 +583,7 @@ function processCommands() {
 
 				break;
 				case "start_export":
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");					
+					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 					weXMLExIm::unsetPerserves();
 					$_REQUEST["cmd"] = "do_export";
 					$this->export->ExportFilename=($this->export->ExportTo == 'local' ? TMP_DIR . "/" . $this->export->Filename : $_SERVER["DOCUMENT_ROOT"] . $this->export->ServerPath . "/" . $this->export->Filename);
@@ -591,36 +591,36 @@ function processCommands() {
 				default:
 			}
 		}
-		
+
 		$_SESSION["ExportSession"]=serialize($this->export);
 	}
-	
+
 
 	function processVariables() {
-		
+
 		if(isset($_SESSION["ExportSession"])){
 			$this->export=unserialize($_SESSION["ExportSession"]);
 		}
-		
-		if(isset($_SESSION["exportVars"])) unset($_SESSION["exportVars"]);		
-				
+
+		if(isset($_SESSION["exportVars"])) unset($_SESSION["exportVars"]);
+
 		if (is_array($this->export->persistent_slots)) {
 			foreach ($this->export->persistent_slots as $key=>$val) {
-				$varname=$val;				
+				$varname=$val;
 				if (isset($_REQUEST[$varname])) {
 					eval('$this->export->'.$val.'="'.addslashes($_REQUEST[$varname]).'";');
 				}
 			}
 		}
-				
+
 		if(isset($_REQUEST["page"]))
 		if (isset($_REQUEST["page"])) {
 			$this->page=$_REQUEST["page"];
 		}
-		
+
 	}
-	
-	
+
+
 	function new_array_splice(&$a,$start,$len=1){
 		$ks=array_keys($a);
 		$k=array_search($start,$ks);
@@ -628,8 +628,8 @@ function processCommands() {
 			$ks=array_splice($ks,$k,$len);
 			foreach($ks as $k) unset($a[$k]);
 		}
-	}	
-	
+	}
+
 
 }
 

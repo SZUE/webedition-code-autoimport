@@ -19,7 +19,6 @@
  */
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/inlcude/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/inlcude/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/global.inc.php");
 
 ?>
 
@@ -34,7 +33,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/inlcude/we_language/" 
 <body>
 <span class="defaultfont">
 			<?php
-			print $l_global["load_menu_info"];
+			print g_l('global','[load_menu_info]');
 			?>
 		</span>
 </body>

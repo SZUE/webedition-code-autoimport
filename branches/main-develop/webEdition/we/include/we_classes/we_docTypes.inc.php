@@ -19,10 +19,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 
@@ -88,11 +87,11 @@ class we_docTypes extends we_class {
 
 		return we_class::we_save($resave);
 	}
-	
+
 	function we_save_exim() {
 		return we_class::we_save(0);
 	}
-	
+
 
 	function saveInSession(&$save) {
 		$save = array();
@@ -167,7 +166,6 @@ class we_docTypes extends we_class {
 
 	function formCategory() {
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		global $l_global;
 
 		$we_button = new we_button();
 		$addbut = $we_button->create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
@@ -226,7 +224,6 @@ class we_docTypes extends we_class {
 
 	function formDocTypeTemplates() {
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		global $l_global;
 
 		$we_button = new we_button();
 		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)");
@@ -236,7 +233,7 @@ class we_docTypes extends we_class {
 	}
 
 	function formDocTypeDefaults() {
-		global $l_we_class,$l_global,$BROWSER;
+		global $l_we_class,$BROWSER;
 
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
@@ -326,9 +323,9 @@ class we_docTypes extends we_class {
 
 	function formDirChooser($width=100) {
 		global $l_we_class,$BROWSER;
-		
+
 		$yuiSuggest =& weSuggest::getInstance();
-		
+
 		$textname = 'we_'.$this->Name.'_ParentPath';
 		$idname = 'we_'.$this->Name.'_ParentID';
 
@@ -343,9 +340,9 @@ class we_docTypes extends we_class {
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setWidth($width - ($BROWSER=="IE"? 0 : 10));
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
-		
+
 	}
 
 	function formExtension($width=100) {

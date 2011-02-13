@@ -90,7 +90,7 @@ class weVotingView {
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
 			if($modData["name"] == $mod){
-				$title	= "webEdition " . $GLOBALS["l_global"]["modules"] . ' - ' .$modData["text"];
+				$title	= "webEdition " . g_l('global',"[modules]") . ' - ' .$modData["text"];
 				break;
 			}
 		}
@@ -692,7 +692,7 @@ function processCommands() {
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['agent'])) . $enclose . $delimiter;
 						$cookie =  $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($cookie)) . $enclose . $delimiter;
-						$fallback = $data['fallback'] ? $GLOBALS['l_global']['yes'] : $GLOBALS['l_global']['no'];
+						$fallback = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($fallback)) . $enclose . $delimiter;
 						$mess = $l_voting['log_success'];
 						if($data['status']!=VOTING_SUCCESS){

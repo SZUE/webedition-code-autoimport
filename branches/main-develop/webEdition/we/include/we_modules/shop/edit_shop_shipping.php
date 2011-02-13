@@ -113,7 +113,7 @@ $jsFunction = '
 				}
 			}
 		}
-			
+
 		function we_cmd(){
 
             var args = "";
@@ -264,7 +264,7 @@ $parts = array();
 	array_push($parts, array(
 		'headline' => $l_shop['shipping']['prices_are_net'],
 		'space' => 200,
-		'html' => we_class::htmlSelect('isNet', array(1=>$GLOBALS["l_global"]["true"], 0=>$GLOBALS["l_global"]["false"]), 1, $weShippingControl->isNet, false, '', 'value', 200)
+		'html' => we_class::htmlSelect('isNet', array(1=>g_l('global',"[true]"), 0=>g_l('global',"[false]")), 1, $weShippingControl->isNet, false, '', 'value', 200)
 		)
 	);
 // selectBox with all existing shippings
@@ -364,7 +364,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 		array(
 			'headline' => 'Standard',
 			'space' => 150,
-			'html' => we_class::htmlSelect('weShipping_default', array(1 => $GLOBALS["l_global"]["true"], 0 => $GLOBALS["l_global"]["false"]), 1, $weShipping->default),
+			'html' => we_class::htmlSelect('weShipping_default', array(1 => g_l('global',"[true]"), 0 => g_l('global',"[false]")), 1, $weShipping->default),
 			'noline' => 1
 
 		)

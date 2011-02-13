@@ -21,7 +21,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php'
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/global.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 
@@ -658,7 +657,7 @@ if ($we_editmode) {
 
 	$maineditor .= '<td align="right" class="defaultfont">' .
 					($_SESSION['prefs']['editorMode'] == 'codemirror' ? '<div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . $we_button->create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
-					($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", $l_global["wrapcheck"], false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
+					($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", g_l('global','[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
         </table></td></tr></table>
 ';
 	$znr = -1;

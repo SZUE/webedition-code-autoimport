@@ -1051,8 +1051,6 @@ class weCustomerFrames extends weModuleFrames {
 	}
 
 	function getDateInput2($name, $time="", $setHot=false, $format="", $onchange="", $class="defaultfont", $from_year=1970) {
-		global $l_global;
-
 		// removed attribute setHot
 
 		if (is_array($time)) {

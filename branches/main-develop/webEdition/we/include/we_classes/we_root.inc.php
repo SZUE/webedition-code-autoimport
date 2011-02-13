@@ -22,8 +22,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
 if(!isset($GLOBALS["WE_IS_DYN"])){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-}
+	
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 /* the parent class for tree-objects */
@@ -560,12 +559,12 @@ function formTriggerDocument($isclass=false){
 		if ($isclass){
 			$textname = 'we_'.$this->Name.'_TriggerName';
 			$idname = 'we_'.$this->Name.'_DefaultTriggerID';
-			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : "";		
-	
+			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : "";
+
 		} else {
 			$textname = 'we_'.$this->Name.'_TriggerName';
 			$idname = 'we_'.$this->Name.'_TriggerID';
-			$myid = $this->TriggerID ? $this->TriggerID : "";		
+			$myid = $this->TriggerID ? $this->TriggerID : "";
 		}
 		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)");

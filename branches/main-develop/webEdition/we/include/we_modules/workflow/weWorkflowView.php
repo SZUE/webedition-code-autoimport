@@ -556,7 +556,7 @@ class weWorkflowView extends weWorkflowBase{
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
 			if($modData["name"] == $mod){
-				$title	= "webEdition " . $GLOBALS["l_global"]["modules"] . ' - ' .$modData["text"];
+				$title	= "webEdition " . g_l('global',"[modules]") . ' - ' .$modData["text"];
 				break;
 			}
 		}
@@ -1667,7 +1667,7 @@ class weWorkflowView extends weWorkflowBase{
 			$nextprev .= $offset+$numRows;
 		}
 
-		$nextprev .= getPixel(5,1)." ".$GLOBALS["l_global"]["from"]." ".getPixel(5,1).$anz."</b></td><td>".getPixel(23,1);
+		$nextprev .= getPixel(5,1)." ".g_l('global',"[from]")." ".getPixel(5,1).$anz."</b></td><td>".getPixel(23,1);
 
 		if(($offset+$numRows) < $anz){
 			$nextprev .= $we_button->create_button("next", WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=".($offset+$numRows)."&order=$order"); //bt_back

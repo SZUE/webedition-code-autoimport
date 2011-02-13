@@ -151,7 +151,7 @@ function getTmplTableRow($type,$name,$isField=false){
 						<we:repeat>'.getTemplTag($type,$name).'</we:repeat>
 					</we:listview>
 					<we:else>
-						'.$GLOBALS["l_global"]["no_entries"].'
+						'.g_l('global',"[no_entries]").'
 					'.$close.'
 				</td>
 			</tr>
@@ -242,7 +242,7 @@ $content .= '		</table></p>
 					</tr>
 				</table></p>
 			<we:else/>
-				'.$GLOBALS["l_global"]["no_entries"].'
+				'.g_l('global',"[no_entries]").'
 			</we:ifFound>
 		</we:listview>
 ';

@@ -21,12 +21,11 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 protect();
 function showWorkflowFooterForNormalMode(){
 
-	global $we_doc, $showPubl, $l_global;
+	global $we_doc, $showPubl;
 
 	$_gap = 16;
 	$_col = 0;
@@ -85,7 +84,7 @@ function showWorkflowFooterForNormalMode(){
 
 function showWorkflowFooterForSEEMMode(){
 
-	global $we_doc, $showPubl, $l_global;
+	global $we_doc, $showPubl;
 
 	$we_button = new we_button();
 

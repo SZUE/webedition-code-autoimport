@@ -24,7 +24,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $
 
 
 class weImportRtfDialog extends weDialog{
-	
+
 ##################################################################################################
 
 	var $ClassName = "weImportRtfDialog";
@@ -38,7 +38,7 @@ class weImportRtfDialog extends weDialog{
 									"applyFontSize",
 									"applyFontColor"
 									);
-	
+
 ##################################################################################################
 
 	function weImportRtfDialog(){
@@ -98,18 +98,18 @@ function importFile(){
 ##################################################################################################
 
 	function getDialogContentHTML(){
-	
+
 		switch($this->pageNr){
-########################################################################	
+########################################################################
 			case 1:
-########################################################################	
-				$content='<table border="0" cellpadding="0" cellspacing="0" width="550">			
+########################################################################
+				$content='<table border="0" cellpadding="0" cellspacing="0" width="550">
 	<tr>
 		<td>'.getPixel(550,5).'</td>
 	</tr>
 	<tr>
 		<td class="defaultfont"><b>'.$GLOBALS["l_importrtf"]["chose"].'</b></td>
-	</tr>            
+	</tr>
 	<tr>
 		<td><input type="file" name="fileName" size="50" onKeyDown="return false" /></td>
 	</tr>
@@ -117,13 +117,13 @@ function importFile(){
 		<td>'.getPixel(5,10).'</td>
 	</tr>
 	<tr>
-		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontName"]) && $this->args["applyFontName"] == 1),"we_dialog_args[applyFontName]",$GLOBALS["l_importrtf"]["use_fontname"]).'</td>                
+		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontName"]) && $this->args["applyFontName"] == 1),"we_dialog_args[applyFontName]",$GLOBALS["l_importrtf"]["use_fontname"]).'</td>
 	</tr>
 	<tr>
-		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontSize"]) && $this->args["applyFontSize"] == 1),"we_dialog_args[applyFontSize]",$GLOBALS["l_importrtf"]["use_fontsize"]).'</td>                
+		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontSize"]) && $this->args["applyFontSize"] == 1),"we_dialog_args[applyFontSize]",$GLOBALS["l_importrtf"]["use_fontsize"]).'</td>
 	</tr>
 	<tr>
-		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontColor"]) && $this->args["applyFontColor"] == 1),"we_dialog_args[applyFontColor]",$GLOBALS["l_importrtf"]["use_fontcolor"]).'</td>                
+		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontColor"]) && $this->args["applyFontColor"] == 1),"we_dialog_args[applyFontColor]",$GLOBALS["l_importrtf"]["use_fontcolor"]).'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(5,22).'</td>
@@ -131,45 +131,45 @@ function importFile(){
 </table><input type="hidden" name="we_pageNr" value="2" />
 ';
 				break;
-########################################################################	
+########################################################################
 			case 2:
-########################################################################	
+########################################################################
 				if(isset($_FILES["fileName"]) && is_array($_FILES["fileName"])){
-		
+
 					$filename = isset($_FILES["fileName"]["tmp_name"]) ? $_FILES["fileName"]["tmp_name"] : "";
 					if($filename && $filename!="none"){
-						
+
 						$this->args["applyFontName"]=isset($this->args["applyFontName"]) ? $this->args["applyFontName"] : false;
 						$this->args["applyFontSize"]=isset($this->args["applyFontSize"]) ? $this->args["applyFontSize"] : false;
 						$this->args["applyFontColor"]=isset($this->args["applyFontColor"]) ? $this->args["applyFontColor"] : false;
-						
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_rtf2html.inc.php"); 
+
+						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_rtf2html.inc.php");
 						$rtf2html=new we_rtf2html($filename,$this->args["applyFontName"],$this->args["applyFontSize"],$this->args["applyFontColor"]);
 					}
 				}
 				$content='<table border="0" cellpadding="0" cellspacing="0" width="550">
 	<tr>
-		<td colspan="2" class="defaultfont"><b>'.$GLOBALS["l_global"]["preview"].'</b></td>
+		<td colspan="2" class="defaultfont"><b>'.g_l('global',"[preview]").'</b></td>
 	</tr>
 
 	<tr>
 		<td colspan="2"><textarea id="we_dialog_args[htmltxt]" name="we_dialog_args[htmltxt]" cols="59" rows="15" style="width:550px">'.
 					(isset($rtf2html) ? htmlspecialchars($rtf2html->htmlOut) : "").'</textarea>
 		</td>
-	</tr>            
+	</tr>
 	<tr>
 		<td colspan="2">'.getPixel(5,22).'</td>
 	</tr>
 </table>
 ';
 				break;
-########################################################################	
+########################################################################
 		}
-		return $content;                       
+		return $content;
 
 	}
-	
-	
+
+
 ##################################################################################################
 
 }

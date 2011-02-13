@@ -63,7 +63,7 @@ class we_rebuild_wizard{
 	function getBusy(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
-		
+
 		$WE_PB = new we_progressBar(0,0,true);
 		$WE_PB->setStudLen($dc ? 490 : 200);
 		$WE_PB->addText("",0,"pb1");
@@ -94,7 +94,7 @@ class we_rebuild_wizard{
 		$refreshButton = $WE_BTN->create_button("refresh","javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
 
 		$nextbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm("REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm("REBUILD_META"));
-		
+
 		if($dc){
 			$buttons = $WE_BTN->create_button_table(array($refreshButton, $cancelButton), 10);
 			$pb = htmlDialogLayout($pb,$GLOBALS["l_rebuild"]["rebuild"],$buttons);
@@ -434,8 +434,6 @@ class we_rebuild_wizard{
 	* @param boolean $catAnd if the categories should be connected with AND
 	*/
 	function formCategory($categories,$catAnd){
-		global $l_global;
-
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
@@ -447,7 +445,7 @@ class we_rebuild_wizard{
 		$upperTable = '<table border="0" cellpadding="0" cellspacing="0" width="495"><tr><td align="left">'.$catAndCheck.'</td><td align="right">'.$butTable.'</td></tr></table>';
 
 		$cats = new MultiDirChooser(495,$categories,"del_cat",$upperTable,"","Icon,Path", CATEGORY_TABLE);
-		return $GLOBALS["l_global"]["categorys"]."<br>".getPixel(1,3)."<br>".$cats->get();
+		return g_l('global',"[categorys]")."<br>".getPixel(1,3)."<br>".$cats->get();
 	}
 
 	/**
@@ -459,7 +457,7 @@ class we_rebuild_wizard{
 	function formDoctypes($doctypes){
 
 		$GLOBALS["DB_WE"]->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
-		$DTselect = $GLOBALS["l_global"]["doctypes"]."<br>".getPixel(1,3)."<br>".'<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">'."\n";
+		$DTselect = g_l('global',"[doctypes]")."<br>".getPixel(1,3)."<br>".'<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">'."\n";
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		while($GLOBALS["DB_WE"]->next_record()){

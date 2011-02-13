@@ -441,7 +441,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			if ($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])) {
 				array_push($parts, array(
-				    'headline' => $GLOBALS['l_global']['search'],
+				    'headline' => g_l('global','[search]'),
 				    'space' => 100,
 					'html' => '<table border="0" cellpadding="0" cellspacing="0">
 					<tr><td>' . we_class::htmlTextInput('searchArticle', 24, ( isset($_REQUEST['searchArticle']) ? $_REQUEST['searchArticle'] : '' ), '', 'id="searchArticle"', 'text', 380  ) . '</td>
@@ -764,7 +764,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			array_push($parts, array(
 			    'headline' => $l_shop['edit_shipping_cost']['isNet'],
 			    'space' => 150,
-				'html' => we_class::htmlSelect("weShipping_isNet", array('1'=>$GLOBALS['l_global']['yes'], '0'=>$GLOBALS['l_global']['no']), 1, $shippingIsNet),
+				'html' => we_class::htmlSelect("weShipping_isNet", array('1'=>g_l('global','[yes]'), '0'=>g_l('global','[no]')), 1, $shippingIsNet),
 				'noline' => 1
 				)
 			);

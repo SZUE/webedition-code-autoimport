@@ -19,10 +19,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 protect();
@@ -85,7 +84,7 @@ self.focus();
 <body class="weDialogBody" onResize="setSize()" style="width:100%; height:100%"><center>
 <form method="post">
    <input type="hidden" name="cmd" value="save" />
-   <?php print htmlDialogLayout($content,$l_global["edit_file"].": <span class=\"weMultiIconBoxHeadline\">".ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons)."</span>"; ?>
+   <?php print htmlDialogLayout($content,g_l('global','[edit_file]').": <span class=\"weMultiIconBoxHeadline\">".ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons)."</span>"; ?>
 </form></center>
 </body>
 </html>

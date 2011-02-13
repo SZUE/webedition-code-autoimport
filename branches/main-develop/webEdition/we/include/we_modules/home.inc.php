@@ -22,7 +22,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 protect();
 if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"])){
 	htmlTop();
@@ -66,9 +65,9 @@ $title = "";
 											"colspan" => 3), "");
 
 
-	
+
 	include(WE_MODULE_DIR . $mod ."/mod_home.inc.php");  // $content should be defined in mod_home.inc.php
-	
+
 	$_starttable->setCol($_row++, 0, array("align"=>"center"), $content);
 ?>
 	<style media="screen" type="text/css">

@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 if(defined("WORKFLOW_TABLE")) {
@@ -131,13 +130,13 @@ $_js_we_save_document = "
 			var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
 			if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
 				return;
-	
+
 			}
 		}
 		catch(e) {
 			// Nothing
 		}
-		
+
 		if (  _EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
 			we_cmd('check_glossary', '', '".$we_transaction."');
 
@@ -176,13 +175,13 @@ if($we_doc->userCanSave()){
 	$_js_we_save_document .= "
 			var addCmd = arguments[0] ? arguments[0] : '';
 		";
-	
+
 	// publish for templates to save in version
 	$pass_publish = $showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
 	if ( $we_doc->ContentType == "text/weTmpl" && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
 	}
-	
+
 	$_js_we_save_document .= "
 		we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);
 	" . ($reloadPage ? "self.location='" . $we_doc->url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';" : "");
@@ -360,7 +359,7 @@ if(inWorkflow($we_doc)) {
  	*/
 	function showEditFooterForNormalMode() {
 
-		global $we_doc, $we_transaction, $l_global, $haspermNew, $showPubl, $we_button;
+		global $we_doc, $we_transaction,  $haspermNew, $showPubl, $we_button;
 
 		$_normalTable = new we_htmlTable(	array(	"cellpadding" => 0,
 													"cellspacing" => 0,
@@ -469,13 +468,13 @@ if(inWorkflow($we_doc)) {
 			if (defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, $we_button->create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));			
+				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
 			}
-			
+
 			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", $l_global["we_rebuild_at_save"], false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
+			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global','[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
 			$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
-			
+
 
 		} else if($showPubl) {
 
@@ -496,7 +495,7 @@ if(inWorkflow($we_doc)) {
 			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
 
 				$_normalTable->addCol(2);
-				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block') ) , we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", $l_global["we_make_same"][$we_doc->ContentType], false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ) ));
+				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block') ) , we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", $GLOBAL['l_global']["we_make_same"][$we_doc->ContentType], false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ) ));
 				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
 			}
 		}
@@ -504,7 +503,7 @@ if(inWorkflow($we_doc)) {
 		if($we_doc->ContentType == "text/weTmpl") {
             if(we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR")) {
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", $GLOBALS["l_global"]["we_new_doc_after_save"], false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global',"[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
             }
 		} else if($we_doc->ContentType == "object") {
@@ -523,7 +522,7 @@ if(inWorkflow($we_doc)) {
 	* @desc prints the footer for the See-Mode
  	*/
 	function showEditFooterForSEEMMode() {
-		global $we_doc, $we_transaction, $l_global, $haspermNew, $showPubl, $we_button, $l_alert, $_we_active_modules;
+		global $we_doc, $we_transaction,  $haspermNew, $showPubl, $we_button, $l_alert, $_we_active_modules;
 
 		$_seeModeTable = new we_htmlTable(	array(	"cellpadding" => 0,
 													"cellspacing" => 0,
@@ -674,7 +673,7 @@ if(inWorkflow($we_doc)) {
 								}
 							//-->
 							</script>' .
-							we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", $l_global["we_make_same"][$we_doc->ContentType], false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ))
+							we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", $GLOBALS['l_global']["we_make_same"][$we_doc->ContentType], false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ))
 							.
 						'<script language="JavaScript" type="text/javascript">
 								<!--
@@ -719,7 +718,7 @@ if(inWorkflow($we_doc)) {
 		<?php
 		$_SESSION['seemForOpenDelSelector']['ID'] = $we_doc->ID;
 		$_SESSION['seemForOpenDelSelector']['Table'] = $we_doc->Table;
-		
+
 				if($we_doc->userCanSave()){
 
 					if($_SESSION["we_mode"] == "normal"){		// open footer for NormalMode

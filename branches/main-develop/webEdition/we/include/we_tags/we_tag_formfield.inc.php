@@ -95,18 +95,18 @@ function we_tag_formfield($attribs, $content){
 		$tmp_select .= '</select>';
 		$tbl = '<table width="223" border="0" cellspacing="0" cellpadding="4" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">
 	<tr>
-		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["name"] . ':&nbsp;</nobr></td>
+		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[name]") . ':&nbsp;</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffname]' . '" value="' . $ffname . '" size="24" /></td>
 	</tr>
 	<tr>
-		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["type"] . ':&nbsp;</nobr></td>
+		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[type]") . ':&nbsp;</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161">' . $tmp_select . '</td>
 	</tr>
 ';
 
 		if (sizeof($ff)) {
 			$tbl .= '	<tr>
-		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["attributes"] . ':&nbsp;</nobr></td>
+		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[attributes]") . ':&nbsp;</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161">
 			<table border="0" cellspacing="0">
 				<tr>
@@ -159,13 +159,13 @@ function we_tag_formfield($attribs, $content){
 		}
 		if ($type_sel == "select") {
 			$tbl .= '	<tr>
-		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["values"] . ':</nobr></td>
+		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[values]") . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><textarea name="' . $nameprefix . 'ffvalues]" cols="30" rows="5">' . $GLOBALS["we_doc"]->getElement(
 					$name,
 					'ffvalues') . '</textarea></td>
 	</tr>
 	<tr>
-		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["default"] . ':</nobr></td>
+		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[default]") . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffdefault]" size="24" value="' . $GLOBALS["we_doc"]->getElement(
 					$name,
 					'ffdefault') . '" /></td>
@@ -175,7 +175,7 @@ function we_tag_formfield($attribs, $content){
 		} else
 			if ($type_sel == 'file') {
 				$tbl .= '	<tr>
-		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["max_file_size"] . ':</nobr></td>
+		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[max_file_size]") . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffmaxfilesize]" size="24" value="' . $GLOBALS["we_doc"]->getElement(
 						$name,
 						'ffmaxfilesize') . '" /></td>
@@ -184,12 +184,12 @@ function we_tag_formfield($attribs, $content){
 			} else
 				if ($type_sel == 'radio' || $type_sel == 'checkbox') {
 					$tbl .= '	<tr>
-		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . $GLOBALS["l_global"]["checked"] . ':</nobr></td>
+		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[checked]") . ':</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161"><select name="' . $nameprefix . 'ffchecked]" size="1"><option value="0"' . ($GLOBALS["we_doc"]->getElement(
 							$name,
-							'ffchecked') ? "" : " selected") . '>' . $GLOBALS["l_global"]["no"] . '</option><option value="1"' . ($GLOBALS["we_doc"]->getElement(
+							'ffchecked') ? "" : " selected") . '>' . g_l('global',"[no]"). '</option><option value="1"' . ($GLOBALS["we_doc"]->getElement(
 							$name,
-							'ffchecked') ? " selected" : "") . '>' . $GLOBALS["l_global"]["yes"] . '</option></select></td>
+							'ffchecked') ? " selected" : "") . '>' . g_l('global',"[yes]") . '</option></select></td>
 	</tr>
 ';
 				}

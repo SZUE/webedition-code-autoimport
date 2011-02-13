@@ -84,7 +84,7 @@
 
 				$nextprev .= min($num_all, $start+$count);
 
-				$nextprev .= "&nbsp;".$GLOBALS["l_global"]["from"]." ".($num_all)."</b></td><td>".getPixel(23,1);
+				$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($num_all)."</b></td><td>".getPixel(23,1);
 
 				$next = $start + $count;
 

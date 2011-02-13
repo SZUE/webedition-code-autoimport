@@ -19,7 +19,6 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModuleInfo.class.php");
 
 $we_menu = array();
@@ -311,7 +310,7 @@ $we_menu["1000000"]["enabled"] = "1";
 
 
 // Cockpit
-$we_menu["2000000"]["text"] = $l_global["cockpit"];
+$we_menu["2000000"]["text"] = g_l('global','[cockpit]');
 $we_menu["2000000"]["parent"] = "0000000";
 $we_menu["2000000"]["enabled"] = we_hasPerm("CAN_SEE_QUICKSTART");
 

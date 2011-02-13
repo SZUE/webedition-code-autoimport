@@ -86,7 +86,7 @@ class weCustomerView {
 		$title = '';
 		foreach($GLOBALS['_we_available_modules'] as $modData){
 			if($modData['name'] == $mod){
-				$title	= 'webEdition ' . $GLOBALS['l_global']['modules'] . ' - ' .$modData['text'];
+				$title	= 'webEdition ' . g_l('global','[modules]') . ' - ' .$modData['text'];
 				break;
 			}
 		}
