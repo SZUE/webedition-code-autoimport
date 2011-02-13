@@ -22,7 +22,6 @@
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 //include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/navigation.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/copy_folder.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 class weNavigationView {
@@ -90,7 +89,7 @@ class weNavigationView {
 	}
 
 	function getJSTop(){
-		
+
 		global $l_navigation;
 		$js='
 			var activ_tab = "1";
@@ -233,7 +232,7 @@ class weNavigationView {
 						url = "'.$this->frameset.'?pnt=exit_doc_question&delayCmd="+'.$this->editorBodyFrame.'.document.we_form.delayCmd.value+"&delayParam="+'.$this->editorBodyFrame.'.document.we_form.delayParam.value;
 						new jsWindow(url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
 					break;
-					
+
 					case "tool_navigation_reset_customer_filter":
 						if(confirm("'.$GLOBALS["l_navigation"]["reset_customerfilter_question"].'")) {
 							we_cmd("tool_navigation_do_reset_customer_filter");
@@ -270,7 +269,7 @@ class weNavigationView {
 				$_class = new we_object();
 				$_class->initByID($this->Model->ClassID,OBJECT_TABLE);
 				$_fields = $_class->getAllVariantFields();
-				
+
 				foreach ($_fields as $_key=>$val){
 					$_objFields .= "\t\t\t".'weNavTitleField["' . substr($_key,strpos($_key,"_")+1).'"] = "' . $_key . '";'."\n";
 				}
@@ -336,7 +335,7 @@ class weNavigationView {
 			var copyNaviFolderAjaxCallback = {
 				success: function(o) {
 					if(o.responseText != "") {
-						' . we_message_reporting::getShowMessageCall($GLOBALS["l_copyFolder"]["copy_success"], WE_MESSAGE_NOTICE) . '
+						' . we_message_reporting::getShowMessageCall(g_l('copyFolder',"[copy_success]"), WE_MESSAGE_NOTICE) . '
 						top.content.cmd.location.reload();
 					} else {
 						' . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . '
@@ -522,9 +521,9 @@ $js .= '
 				} else {
 					weInputAppendClass(fieldFrom, "weMarkInputError");
 				}
-				
+
 			}
-			
+
 			function putTitleField(field){
 				'.$this->topFrame.'.mark();
 				document.we_form.TitleField.value=field;
@@ -799,7 +798,7 @@ function processCommands() {
 						);
 						break;
 					}
-					
+
 					$oldpath = $this->Model->Path;
 					// set the path and check it
 					$this->Model->setPath();
@@ -809,7 +808,7 @@ function processCommands() {
 						);
 						break;
 					}
-					
+
 					if($this->Model->isSelf()){
 						print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall($GLOBALS["l_navigation"]["path_nok"], WE_MESSAGE_ERROR)
@@ -886,7 +885,7 @@ function processCommands() {
 							foreach ($_old_items as $_id) {
 								$js .= $this->topFrame.'.deleteEntry('.$_id['id'].');';
 							}
-						}						
+						}
 					}
 
 
@@ -1060,7 +1059,7 @@ function processCommands() {
 
 					$_objFields = "\n";
 					if ($this->Model->SelectionType == 'classname') {
-						$__fields = array();			
+						$__fields = array();
 						if(defined('OBJECT_TABLE')) {
 
 							include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
@@ -1073,13 +1072,13 @@ function processCommands() {
 							}
 						}
 					}
-					
-					
-					
+
+
+
 					require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 					$_prefix = '';
-					
-					if($this->Model->Selection=='dynamic'){ 
+
+					if($this->Model->Selection=='dynamic'){
 						$_values = weDynList::getWorkspacesForClass($this->Model->ClassID);
 						$_prefix = 'Class';
 					} else {

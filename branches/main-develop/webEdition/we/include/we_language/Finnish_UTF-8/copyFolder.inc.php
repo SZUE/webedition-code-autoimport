@@ -23,21 +23,21 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_copyFolder"] = array(
-		'headline' => "Copy directory", // TRANSLATE
-		'copyFile' => "Copier le fichier: %s",
-		'copyFolder' => "Copier le répertoire: %s",
-		'rewrite' => "Écrire de nouveau: %s",
-		'copy_success' => "Der Kopiervorgang wurde erfolgreich abgeschlossen!",
-		'create_new_templates' => "Créer des modèle",
-		'create_new_masterTemplates' => "Create new master templates", // TRANSLATE
-		'create_new_includedTemplates' => "Create new included templates", // TRANSLATE
-		'destdir' => "Generate new templates in", // TRANSLATE
-		'correctTemplate' => "Corriger le modèle:  %s",
-		'create_new_doctypes' => "Créer des nouveaux types de document",
-		'prepareTemplates' => "Péparation de la création des nouveaux modèle",
-		'categories' => "Categories", // TRANSLATE
-		'overwrite_categories' => "Overwrite Categories", // TRANSLATE
+$l_copyFolder = array(
+		'headline' => "Kopioi hakemisto",
+		'copyFile' => "Kopioi tiedosto: %s",
+		'copyFolder' => "Kopioi hakemisto: %s",
+		'rewrite' => "Uudelleenkirjoita tiedosto: %s",
+		'copy_success' => "Kopiointi päättynyt!",
+		'create_new_templates' => "Luo uusia sivupohjia",
+		'create_new_masterTemplates' => "Luo uusia pääsivupohjia",
+		'create_new_includedTemplates' => "Luo uusia include-sivupohjia",
+		'destdir' => "Luo uusia sivupohjia kohteeseen",
+		'correctTemplate' => "Oikea sivupohja:  %s",
+		'create_new_doctypes' => "Luo dokumenttityyppi",
+		'prepareTemplates' => "Luodaan uusia sivupohjia",
+		'categories' => "Kategoriat",
+		'overwrite_categories' => "Ylikirjoita kategoriat",
 		'object_copy' => "Copy objects and object folders", //TRANSLATE
 		'object_copy_no_folders' => "do not copy sub-folders", //TRANSLATE
 		'sameName_expl' => "Determine the behavior of webEdition, for the case that another object exisits with the same name and path.", //TRANSLATE

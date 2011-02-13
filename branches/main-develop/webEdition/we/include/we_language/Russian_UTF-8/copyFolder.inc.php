@@ -23,21 +23,21 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_copyFolder"] = array(
-		'headline' => "Kopiëer directory",
-		'copyFile' => "Kopiëer bestand: %s",
-		'copyFolder' => "Kopiëer directory: %s",
-		'rewrite' => "Herschrijf: %s",
-		'copy_success' => "Het kopiëren is voltooid!",
-		'create_new_templates' => "Maak nieuwe sjablonen aan",
-		'create_new_masterTemplates' => "Maak nieuwe hoofdsjablonen aan",
-		'create_new_includedTemplates' => "Maak nieuwe ingevoegde sjablonen aan",
-		'destdir' => "Maak nieuwe sjablonen aan in",
-		'correctTemplate' => "Corrigeer sjabloon:  %s",
-		'create_new_doctypes' => "Maak nieuwe document-types aan",
-		'prepareTemplates' => "Bezig met voorbereiden van aanmaken nieuwe sjablonen",
-		'categories' => "Categorieën",
-		'overwrite_categories' => "Overschrijf Categorieën",
+$l_copyFolder = array(
+		'headline' => "Копировать директорию",
+		'copyFile' => "Копировать файл: %s",
+		'copyFolder' => "Копировать директорию: %s",
+		'rewrite' => "Переписать: %s",
+		'copy_success' => "Копирование успешно завершено!",
+		'create_new_templates' => "Создать шаблоны",
+		'create_new_masterTemplates' => "Create new master templates", // TRANSLATE
+		'create_new_includedTemplates' => "Create new included templates", // TRANSLATE
+		'destdir' => "Generate new templates in", // TRANSLATE
+		'correctTemplate' => "Исправить шаблон:  %s",
+		'create_new_doctypes' => "Создать типы документов",
+		'prepareTemplates' => "Подготовить создание новых шаблонов",
+		'categories' => "Categories", // TRANSLATE
+		'overwrite_categories' => "Overwrite Categories", // TRANSLATE
 		'object_copy' => "Copy objects and object folders", //TRANSLATE
 		'object_copy_no_folders' => "do not copy sub-folders", //TRANSLATE
 		'sameName_expl' => "Determine the behavior of webEdition, for the case that another object exisits with the same name and path.", //TRANSLATE

@@ -23,19 +23,19 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_copyFolder"] = array(
-		'headline' => "Копировать директорию",
-		'copyFile' => "Копировать файл: %s",
-		'copyFolder' => "Копировать директорию: %s",
-		'rewrite' => "Переписать: %s",
-		'copy_success' => "Копирование успешно завершено!",
-		'create_new_templates' => "Создать шаблоны",
+$l_copyFolder = array(
+		'headline' => "Copy directory", // TRANSLATE
+		'copyFile' => "Copiar archivo: %s",
+		'copyFolder' => "Copiar directorio: %s",
+		'rewrite' => "Rescribir: %s",
+		'copy_success' => "Copia exitosamente finalizada!",
+		'create_new_templates' => "Crear nuevas plantillas",
 		'create_new_masterTemplates' => "Create new master templates", // TRANSLATE
 		'create_new_includedTemplates' => "Create new included templates", // TRANSLATE
 		'destdir' => "Generate new templates in", // TRANSLATE
-		'correctTemplate' => "Исправить шаблон:  %s",
-		'create_new_doctypes' => "Создать типы документов",
-		'prepareTemplates' => "Подготовить создание новых шаблонов",
+		'correctTemplate' => "Corregir plantilla:  %s",
+		'create_new_doctypes' => "Crear nuevos tipos de documentos",
+		'prepareTemplates' => "Preparando para crear nuevas plantillas",
 		'categories' => "Categories", // TRANSLATE
 		'overwrite_categories' => "Overwrite Categories", // TRANSLATE
 		'object_copy' => "Copy objects and object folders", //TRANSLATE

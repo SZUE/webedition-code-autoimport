@@ -23,7 +23,7 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$GLOBALS["l_copyFolder"] = array(
+$l_copyFolder = array(
 		'headline' => "Verzeichnis kopieren",
 		'copyFile' => "Kopiere Datei: %s",
 		'copyFolder' => "Kopiere Verzeichnis: %s",
