@@ -502,7 +502,7 @@ top.selectFile(top.currentID);
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_fileselector"]["catname"].'</a></b></td>
-					<td width="65%" class="selector" style="padding-left:10px;"><b>'.$GLOBALS["l_button"]["properties"]["value"].'</b></td>
+					<td width="65%" class="selector" style="padding-left:10px;"><b>'.g_l('button','[properties][value]').'</b></td>
 				</tr>
 				<tr>
 					<td width="35%"></td>

@@ -26,22 +26,16 @@
  * Language: English
  */
 
-$l_button["btn_messages_copy"]["alt"] = "Копировать сообщение";
-$l_button["btn_messages_create"]["alt"] = "Создать сообщение";
-$l_button["btn_messages_cut"]["alt"] = "Вырезать сообщение";
-$l_button["btn_messages_paste"]["alt"] = "Вставить сообщение";
-$l_button["btn_messages_reply"]["alt"] = "Ответить на сообщение";
-$l_button["btn_messages_tasks"]["alt"] = "Запустить систему задач";
-$l_button["btn_messages_trash"]["alt"] = "Удалить сообщение";
-$l_button["btn_messages_update"]["alt"] = "Новые сообщения";
+$dir=dirname(__FILE__);
+include($dir."/global.inc.php");
+if (is_dir($dir."/modules")) {
 
-$l_button["btn_task_copy"]["alt"] = "Копировать задачу";
-$l_button["btn_task_create"]["alt"] = "Создать задачу";
-$l_button["btn_task_cut"]["alt"] = "Вырезать задачу";
-$l_button["btn_task_forward"]["alt"] = "Перенаправить задачу";
-$l_button["btn_task_messages"]["alt"] = "Запустить систему сообщений";
-$l_button["btn_task_paste"]["alt"] = "Вставить задачу";
-$l_button["btn_task_reject"]["alt"] = "Отклонить задачу";
-$l_button["btn_task_status"]["alt"] = "Обновить статус";
-$l_button["btn_task_trash"]["alt"] = "Удалить задачу";
-$l_button["btn_task_update"]["alt"] = "Новые задачи";
+	// Include language files of buttons used in modules
+	$d = dir($dir."/modules");
+	while (false !== ($entry = $d->read())) {
+		if ($entry[0] != "." && substr($entry,(-1 * strlen(".php"))) == ".php") {
+			include($dir."/modules/".$entry);
+		}
+	}
+	$d->close();
+}
