@@ -18,13 +18,12 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: dynamic_controls.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_dynamic_controls["expand_group"] = 'Klik hier om de groep uit te klappen ...';
-$l_dynamic_controls["fold_group"] = 'Klik hier om deze groep in te klappen ...';
-?>
+$l_dynamicControls = array(
+		"expand_group" => 'Klik hier om de groep uit te klappen ...',
+		"fold_group" => 'Klik hier om deze groep in te klappen ...',
+);

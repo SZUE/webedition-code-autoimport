@@ -20,7 +20,6 @@
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_ContentTypes.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_import/importFunctions.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/import_files.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_class.inc.php');
@@ -895,6 +894,7 @@ class we_import_files
 
 	function importFile()
 	{
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		if (isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])) {
 			$ct = getContentTypeFromFile($_FILES['we_File']["name"]);
 			if (!we_hasPerm($GLOBALS["WE_CONTENT_TYPES"][$ct]["Permission"])) {

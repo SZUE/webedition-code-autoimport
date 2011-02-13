@@ -19,7 +19,6 @@
  */
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_ContentTypes.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/" . "we_htmlElement.inc.php");
 
@@ -73,7 +72,8 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	function getItems($ParentID, $offset = 0, $segment = 0)
 	{
 		global $prefs, $table, $openFolders, $parentpaths, $wsQuery, $treeItems, $Tree;
-
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+		
 		if ($table == TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES"))
 			return 0;
 		if ($table == FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))

@@ -71,15 +71,12 @@ class we_htmlElement {
 	* @return		string
 	*/
 	function htmlRadioCheckbox($attribs=array()){
-			// Get global variables
-			global $l_html_forms;
-
 			$attribs['type']='checkbox';
 
 			$table=new we_htmlTable(array('cellpadding'=>'0','cellspacing'=>'0','border'=>'0'),1,3);
 			$table->setColContent(0,0,we_htmlElement::htmlInput($attribs));
 			$table->setColContent(0,1,getPixel(4,2));
-			$table->setColContent(0,2,we_htmlElement::htmlLabel(array('for'=>'$name','title'=>sprintf($l_html_forms['click_here'], $attribs['title']),$attribs['title'])));
+			$table->setColContent(0,2,we_htmlElement::htmlLabel(array('for'=>'$name','title'=>sprintf(g_l('htmlForms','[click_here]'), $attribs['title']),$attribs['title'])));
 
 			return $table->getHtmlCode();
 	}

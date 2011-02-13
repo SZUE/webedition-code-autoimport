@@ -28,5 +28,3 @@ $we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][1]]);
 header("Content-Type: ".$we_doc->getElement("type"));
 $dataPath = $we_doc->getElement("data");
 readfile($dataPath);
-
-?>

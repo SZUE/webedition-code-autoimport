@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 
 define("WE_FORM_PARENT_FOLDER",3);
@@ -347,6 +346,7 @@ class we_docTypes extends we_class {
 
 	function formExtension($width=100) {
 		global $l_we_class;
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		$exts = $GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"];
 		return $this->htmlFormElementTable(getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),$width),$l_we_class["extension"]);
 	}

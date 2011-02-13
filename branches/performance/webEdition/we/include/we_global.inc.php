@@ -764,7 +764,7 @@ function checkAndPrepareImage($formname, $key = "we_document") {
 
 		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_imageDocument.inc.php");
+		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
 			foreach ($_FILES["we_ui_$formname"]["name"] as $imgName => $filename) {
 
@@ -1066,7 +1066,7 @@ function checkAndPrepareQuicktime($formname, $key = "we_document") {
 
 function checkAndCreateImage($formname, $type = "we_document") {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_imageDocument.inc.php");
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 	foreach ($_REQUEST as $key => $_imgDataId) {
 		if (preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)) {
@@ -3733,6 +3733,7 @@ function we_getIcon($contentType, $extension) {
 		}
 		return "prog.gif";
 	} else {
+		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		return $GLOBALS["WE_CONTENT_TYPES"][$contentType]['Icon'];
 	}
 }
@@ -3831,6 +3832,7 @@ function getVarArray($arr, $string) {
 function g_l($name, $specific) {
 	//cache last accessed lang var
 	static $cache;
+	//echo $name.$specific;
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 	}else{

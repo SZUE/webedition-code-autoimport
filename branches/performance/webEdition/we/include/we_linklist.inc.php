@@ -896,6 +896,7 @@ class we_linklist
 
 	function makeImgTag($nr, $attribs = ""){
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 		$id = $this->getImageID($nr);
 		if (!$attribs)
 			$attribs = $this->getImageAttribs($nr);

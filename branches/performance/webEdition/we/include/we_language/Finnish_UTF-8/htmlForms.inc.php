@@ -18,19 +18,11 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
- * Language file: css.inc.php
+ * Language file: html_forms.inc.php
  * Provides language strings.
  * Language: English
  */
-
-/*	To complete the localisation kit, it is necceessary to have the possibility
- *	to change the stylesheet itself
- *	In this file all these language specific characteristica can be set.
- */
-
-$l_css["font_family"] = "Verdana Cyr, Arial Cyr, Helvetica Cyr, Liberation Sans Cyr, Verdana, Arial, Helvetica, Liberation Sans, sans-serif";
-
-?>
+$l_htmlForms = array(
+		'click_here' => 'Klikkaa tästä valitaksesi / poistaaksesi valinnan &raquo;%s&laquo; ...',
+);

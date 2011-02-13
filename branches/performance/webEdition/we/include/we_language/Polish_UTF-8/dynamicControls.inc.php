@@ -18,19 +18,12 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
- * Language file: css.inc.php
+ * Language file: dynamic_controls.inc.php
  * Provides language strings.
  * Language: English
  */
-
-/*	To complete the localisation kit, it is necceessary to have the possibility
- *	to change the stylesheet itself
- *	In this file all these language specific characteristica can be set.
- */
-
-$l_css["font_family"] = "Verdana, Arial, Helvetica, Liberation Sans, sans-serif"; // TRANSLATE
-
-?>
+$l_dynamicControls = array(
+		"expand_group" => 'Click here to expand this group ...', // TRANSLATE
+		"fold_group" => 'Tu kliknij aby zamknąć tą grupę ...',
+);

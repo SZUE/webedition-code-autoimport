@@ -21,10 +21,16 @@
 
 
 /**
- * Language file: dynamic_controls.inc.php
+ * Language file: css.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_dynamic_controls["expand_group"] = 'Click here to expand this group ...'; // TRANSLATE
-$l_dynamic_controls["fold_group"] = 'Cliquez ici, pour fermer ce groupe ...';
-?>
+
+/*	To complete the localisation kit, it is necceessary to have the possibility
+ *	to change the stylesheet itself
+ *	In this file all these language specific characteristica can be set.
+ */
+
+$l_css = array(
+		"font_family" => "Verdana, Arial, Helvetica, Liberation Sans, sans-serif",
+);
