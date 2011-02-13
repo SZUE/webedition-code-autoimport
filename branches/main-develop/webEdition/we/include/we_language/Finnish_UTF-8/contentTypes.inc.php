@@ -23,22 +23,24 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS['l_contentTypes'] = array(
-		'all_Types' => "All files", // TRANSLATE
-		'text/xml' => "Archivo XML",
-		'text/html' => "Página HTML",
-		'text/plain' => "Página de texto",
+$l_contentTypes = array(
+		'all_Types' => "Kaikki kentät",
+		'text/xml' => "XML -tiedosto",
+		'text/html' => "HTML -sivu",
+		'text/plain' => "Tekstisivu",
 		'text/htaccess' => ".htaccess file", //TRANSLATE
-		'text/webedition' => "Página webEdition",
-		'image/*' => "Imagen",
-		'text/weTmpl' => "Plantilla webEdition",
-		'text/css' => "Hoja de estilo",
-		'text/js' => "JavaScript", // TRANSLATE
-		'application/x-shockwave-flash' => "Película Flash",
-		'application/*' => "Documento binario",
-		'folder' => "Directorio",
-		'class_folder' => "Directorio",
-		'object' => "Clase",
-		'objectFile' => "Objeto",
-		'video/quicktime' => "Película Quicktime",
+		'text/webedition' => "webEdition -sivu",
+		'image/*' => "Kuva",
+		'text/weTmpl' => "webEdition -sivupohja",
+		'text/css' => "Tyylitiedosto",
+		'text/js' => "Javascript -tiedosto",
+		'application/x-shockwave-flash' => "Flash -tiedosto",
+		'application/*' => "Binäärinen dokumentti",
+		'folder' => "Hakemisto",
+		'class_folder' => "Hakemisto",
+		'object' => "Luokka",
+		'objectFile' => "Objekti",
+		'video/quicktime' => "Quicktime -tiedosto",
+		'objectFile' => "Objekti",
+		'object' => "Luokka",
 );

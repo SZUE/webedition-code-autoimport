@@ -23,7 +23,6 @@ if(!$_SESSION["user"]["Username"])
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 
 protect();
 htmltop();
@@ -59,7 +58,7 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
      var currentID="<?php print $currentID; ?>";
      var currentDir="<?php print str_replace($rootDir, "", $currentDir); ?>";
      var currentName="<?php print $currentName; ?>";
-     var currentFilter="<?php print str_replace(' ','%20',isset($l_contentTypes[$filter]) ? $l_contentTypes[$filter] : ""); ?>";
+     var currentFilter="<?php print str_replace(' ','%20',g_l('contentTypes','['.$filter.']')!==false ? g_l('contentTypes','['.$filter.']') : ""); ?>";
      var filter = '<?php print $filter; ?>';
      var browseServer = <?php print isset($_REQUEST["we_cmd"][1]) ? "false" : "true"; ?>
 
@@ -83,7 +82,7 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
       if(!!opener.postSelectorSelect) {
       	opener.postSelectorSelect('selectFile');
       }
-      
+
 <?php endif?>
 <?php if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") :?>
 	<?php print $_REQUEST["we_cmd"][4].";\n"; ?>
@@ -92,12 +91,12 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
      }
 
      self.focus();
-     
+
      function closeOnEscape() {
      	return true;
-     	
+
      }
-     
+
 </script>
 <script type="text/javascript" src="<?php print JS_DIR . "keyListener.js"; ?>"></script>
 </head>

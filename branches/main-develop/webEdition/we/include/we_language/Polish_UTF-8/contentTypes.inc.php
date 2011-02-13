@@ -23,22 +23,24 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS['l_contentTypes'] = array(
+$l_contentTypes = array(
 		'all_Types' => "All files", // TRANSLATE
-		'text/xml' => "XML file", // TRANSLATE
-		'text/html' => "HTML page", // TRANSLATE
-		'text/plain' => "Text page", // TRANSLATE
+		'text/xml' => "Plik XML",
+		'text/html' => "Strona HTML",
+		'text/plain' => "Strona text",
 		'text/htaccess' => ".htaccess file", //TRANSLATE
-		'text/webedition' => "webEdition page", // TRANSLATE
-		'image/*' => "Image", // TRANSLATE
-		'text/weTmpl' => "webEdition template", // TRANSLATE
-		'text/css' => "Style sheet", // TRANSLATE
-		'text/js' => "JavaScript", // TRANSLATE
-		'application/x-shockwave-flash' => "Flash movie", // TRANSLATE
-		'application/*' => "Binary document", // TRANSLATE
-		'folder' => "Directory", // TRANSLATE
-		'class_folder' => "Directory", // TRANSLATE
-		'object' => "Class", // TRANSLATE
-		'objectFile' => "Object", // TRANSLATE
-		'video/quicktime' => "Quicktime movie", // TRANSLATE
+		'text/webedition' => "Strona webEdition",
+		'image/*' => "Grafika",
+		'text/weTmpl' => " Szablon webEdition",
+		'text/css' => "CSS Stylesheet",
+		'text/js' => "Javascript",
+		'application/x-shockwave-flash' => "Animacja Flash",
+		'application/*' => "Pozostałe pliki",
+		'folder' => "Katalog",
+		'class_folder' => "Katalog",
+		'object' => "Klasa",
+		'objectFile' => "Obiekt",
+		'video/quicktime' => "Film Quicktime",
+		'objectFile' => "Obiekt",
+		'object' => "Klasa",
 );

@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
@@ -202,8 +201,8 @@ var contentTypes = new Array();
 <?php
 
 foreach($GLOBALS["WE_CONTENT_TYPES"] as $ct=>$foo ){
-	if(isset($GLOBALS["l_contentTypes"][$ct])){
-		print  'contentTypes["'.$ct.'"]  = "'.$GLOBALS["l_contentTypes"][$ct].'";'."\n";
+	if(g_l('contentTypes','['.$ct.']')!==false){
+		print  'contentTypes["'.$ct.'"]  = "'.g_l('contentTypes','['.$ct.']').'";'."\n";
 	}
 }
 
@@ -323,7 +322,7 @@ function writeBody(d){
 		d.writeln('<tr>');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
 		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
-		d.writeln('<td class="selector"><?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
+		d.writeln('<td class="selector"><?php print g_l('contentTypes',"[folder]"); ?></td>');
 		d.writeln('<td class="selector"><?php print date(g_l(\'date\',\'[format][default]\'))?></td>');
 		d.writeln('</tr>');
 	}
@@ -606,7 +605,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 							<option value="">'.$GLOBALS["l_fileselector"]["all_Types"].'</option>';
 			foreach($GLOBALS["WE_CONTENT_TYPES"] as $ct => $val){
 				if (isset($val["IsWebEditionFile"]) && $val["IsWebEditionFile"]) {
-					print '<option value="'.htmlspecialchars($ct).'">'.$GLOBALS["l_contentTypes"][$ct].'</option>'."\n";
+					print '<option value="'.htmlspecialchars($ct).'">'.g_l('contentTypes','['.$ct.']').'</option>'."\n";
 				}
 			}
 			print '
@@ -869,7 +868,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				$_previewFields["properies"]["data"][] = array(
 					"caption" => $GLOBALS['l_fileselector']["type"],
-					"content" => (isset($GLOBALS['l_contentTypes'][$result['ContentType']])?$GLOBALS['l_contentTypes'][$result['ContentType']]:$result['ContentType'])
+					"content" => ((g_l('contentTypes','['.$result['ContentType'].']')!==false)?g_l('contentTypes','['.$result['ContentType'].']'):$result['ContentType'])
 				);
 
 

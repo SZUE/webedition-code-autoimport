@@ -61,15 +61,15 @@ class we_wizard {
 			"			self.frames['wizbody'].document.forms['we_form'].elements['v[import_type]'][0].checked=true;\n":"";
 		$weSessionId = session_id();
 
-		
+
 		$ajaxJS = <<<HTS
-		
+
 var ajaxUrl = "/webEdition/rpc/rpc.php";
 
 var weGetCategoriesHandleSuccess = function(o){
 	if(o.responseText !== undefined){
 		var json = eval('('+o.responseText+')');
-	
+
 		for(var elemNr in json.elemsById){
 			for(var propNr in json.elemsById[elemNr].props){
 				var propval = json.elemsById[elemNr].props[propNr].val;
@@ -109,10 +109,10 @@ HTS;
 				we_htmlElement::htmlTitle($l_import["title"]) .
 				we_htmlElement::jsElement("", array("src" => WEBEDITION_DIR."js/windows.js")).
 				we_htmlElement::jsElement("",array("src"=>JS_DIR."we_showMessage.js")) .
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")). 
+				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")).
 				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js")).
 				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js")).
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")). 
+				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")).
 				we_htmlElement::jsElement("<!--\n".
 					"function wiz_next(frm, url) {\n".
 					"	eval('window.'+frm+'.location.href=\"'+url+'\"');\n".
@@ -200,7 +200,7 @@ HTS;
 					"			}\n" .
 					"			eval('top.opener.top.we_cmd('+args+')');\n" .
 					"	}\n" .
-					"}\n" . $ajaxJS . 
+					"}\n" . $ajaxJS .
 					"//-->")).
 				$fst->getHtmlCode()
 		);
@@ -211,7 +211,7 @@ HTS;
 		$a = array();
 		$a["name"] = "we_form";
 		if ($type=="GXMLImport" && $step==1) {
-			$a["onSubmit"] = "return false;"; 
+			$a["onSubmit"] = "return false;";
 		}
 		if ($step==1) $a["enctype"] = "multipart/form-data";
 		eval('list($js, $content)=$this->get'.$type.'Step'.$step.'();');
@@ -621,7 +621,6 @@ HTS;
 								$xmlExIm->savePerserves();
 								if($imported){
 									$ref = $xmlExIm->RefTable->getLast();
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 
 									$_status = $l_import['import'];
 
@@ -638,8 +637,8 @@ HTS;
 									}
 
 									$_progress_text = we_htmlElement::htmlB(
-															isset($l_contentTypes[$ref->ContentType]) ?
-															$l_contentTypes[$ref->ContentType] :
+															g_l('contentTypes','['.$ref->ContentType.']')!==false ?
+															g_l('contentTypes','['.$ref->ContentType.']') :
 															(isset($l_import[$ref->ContentType]) ?
 																$l_import[$ref->ContentType] : ''
 															)

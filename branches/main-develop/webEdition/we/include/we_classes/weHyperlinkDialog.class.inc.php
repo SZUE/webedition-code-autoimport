@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/linklist_edit.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
 class weHyperlinkDialog extends weDialog{
@@ -312,7 +311,7 @@ class weHyperlinkDialog extends weDialog{
 	##################################################################################################
 
 	function getDialogContentHTML() {
-		global $l_we_class,$l_contentTypes,$l_linklist_edit;
+		global $l_we_class,$l_linklist_edit;
 		// Initialize we_button class
 		$we_button = new we_button();
 
@@ -472,7 +471,7 @@ class weHyperlinkDialog extends weDialog{
 		if (defined("OBJECT_TABLE") && isset($_object_link)) {
 			$table .= '
 				<tr id="obj_tr" style="display:'.(($this->args["type"]=="obj") ? "" : "none").';">
-					<td class="defaultgray" valign="top" width="100" height="0">'.$l_contentTypes["objectFile"].'</td>
+					<td class="defaultgray" valign="top" width="100" height="0">'.g_l('contentTypes','[objectFile]').'</td>
 					<td valign="top">
 						' . $_object_link . '</td>
 				</tr>';

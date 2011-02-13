@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModuleInfo.class.php");
 
@@ -133,11 +132,11 @@ if ($_SESSION["we_mode"] != "seem"){	//	No tabs in Super-Easy-Edit_mode
 			$we_tabs->addTab(new we_tab("#", $l_we_class["webUser"],(($we_doc->EditPageNr == WE_EDITPAGE_WEBUSER) ? "TAB_ACTIVE" : "TAB_NORMAL"),"we_cmd('switch_edit_page'," . WE_EDITPAGE_WEBUSER . ",'" . $we_transaction . "');",array("id"=>"tab_".WE_EDITPAGE_WEBUSER)));
 
 		}
-		
+
 		if(we_hasPerm("ADMINISTRATOR") || we_hasPerm("SEE_VERSIONS")) {
 			if (in_array(WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)) {
 				$we_tabs->addTab(new we_tab("#", $l_we_class["version"],(($we_doc->EditPageNr == WE_EDITPAGE_VERSIONS) ? "TAB_ACTIVE" : "TAB_NORMAL"),"we_cmd('switch_edit_page'," . WE_EDITPAGE_VERSIONS . ",'" . $we_transaction . "');",array("id"=>"tab_".WE_EDITPAGE_VERSIONS)));
-	
+
 			}
 		}
 
@@ -240,7 +239,7 @@ print STYLESHEET;
 </head>
 <body id='eHeaderBody' bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
 <div id="main" ><?php
-print getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",$l_contentTypes[$we_doc->ContentType])).': <span id="h_path"></span></div>'.getPixel(100,3);
+print getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",g_l('contentTypes','['.$we_doc->ContentType.']'))).': <span id="h_path"></span></div>'.getPixel(100,3);
 
 if ($_SESSION["we_mode"] != "seem") {
 	print $we_tabs->getHTML();

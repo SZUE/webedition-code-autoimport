@@ -39,7 +39,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModu
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/alert.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/contenttypes.inc.php");
 
 /*****************************************************************************
  * INITIALIZATION
@@ -6101,7 +6100,7 @@ $_needed_JavaScript .= "
 						}
 						else {
 							$jvs = "checkAllRevert(this);";
-							$checkboxes .= we_forms::checkbox($val, $checked, $name, $GLOBALS["l_contentTypes"][$txt], false, "defaultfont", $jvs)."<br/>";
+							$checkboxes .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes','['.$txt.']'), false, "defaultfont", $jvs)."<br/>";
 						}
 
 					}

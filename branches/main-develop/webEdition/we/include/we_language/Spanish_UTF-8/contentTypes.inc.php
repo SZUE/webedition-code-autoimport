@@ -23,22 +23,24 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS['l_contentTypes'] = array(
-		'all_Types' => "Все файлы",
-		'text/xml' => "Файлы XML",
-		'text/html' => "Страница HTML ",
-		'text/plain' => "Текстовая страница",
+$l_contentTypes = array(
+		'all_Types' => "All files", // TRANSLATE
+		'text/xml' => "Archivo XML",
+		'text/html' => "Página HTML",
+		'text/plain' => "Página de texto",
 		'text/htaccess' => ".htaccess file", //TRANSLATE
-		'text/webedition' => "Страница webEdition",
-		'image/*' => "Графика",
-		'text/weTmpl' => "Шаблон webEdition",
-		'text/css' => "Таблица стилей CSS",
-		'text/js' => "Javascript",
-		'application/x-shockwave-flash' => "Flash Movie",
-		'application/*' => "Прочие данные",
-		'folder' => "Директория",
-		'class_folder' => "Директория",
-		'object' => "Класс",
-		'objectFile' => "Объект",
-		'video/quicktime' => "Quicktime Movie",
+		'text/webedition' => "Página webEdition",
+		'image/*' => "Imagen",
+		'text/weTmpl' => "Plantilla webEdition",
+		'text/css' => "Hoja de estilo",
+		'text/js' => "JavaScript", // TRANSLATE
+		'application/x-shockwave-flash' => "Película Flash",
+		'application/*' => "Documento binario",
+		'folder' => "Directorio",
+		'class_folder' => "Directorio",
+		'object' => "Clase",
+		'objectFile' => "Objeto",
+		'video/quicktime' => "Película Quicktime",
+		'objectFile' => "Object", // TRANSLATE
+		'object' => "Clase",
 );

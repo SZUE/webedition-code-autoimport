@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
@@ -1084,7 +1083,7 @@ top.selectFile(top.currentID);
 				} else {
 					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 				}
-				$previewDefauts .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["type"].": </td><td>".(isset($GLOBALS['l_contentTypes'][$result['ContentType']])?$GLOBALS['l_contentTypes'][$result['ContentType']]:$result['ContentType'])."</td></tr>";
+				$previewDefauts .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["type"].": </td><td>".(g_l('contentTypes','['.$result['ContentType'].']')!==false?g_l('contentTypes','['.$result['ContentType'].']'):$result['ContentType'])."</td></tr>";
 
 				$out .= "\t<table cellpadding='0' cellspacing='0' height='100%' width='100%'>\n";
 				switch ($result['ContentType']) {

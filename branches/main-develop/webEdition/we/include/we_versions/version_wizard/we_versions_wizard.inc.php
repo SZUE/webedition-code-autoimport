@@ -22,7 +22,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/contenttypes.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/version_wizard/versionFragment.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersions.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersionsSearch.class.inc.php');
@@ -393,7 +392,7 @@ class we_versions_wizard
 						$val,
 						$checked,
 						$name,
-						$GLOBALS["l_contentTypes"][$txt],
+						g_l('contentTypes','['.$txt.']'),
 						false,
 						"defaultfont",
 						$jvs) . "<br/>";
@@ -703,7 +702,7 @@ class we_versions_wizard
 						$val,
 						$checked,
 						$name,
-						$GLOBALS["l_contentTypes"][$txt],
+						g_l('contentTypes','['.$txt.']'),
 						false,
 						"defaultfont",
 						$jvs) . "<br/>";

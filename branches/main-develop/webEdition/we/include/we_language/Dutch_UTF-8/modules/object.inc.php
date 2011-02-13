@@ -19,8 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$l_contentTypes["objectFile"] = "Object"; // TRANSLATE
-$l_contentTypes["object"] = "Class"; // TRANSLATE
 
 $l_object["attributes"] = "Attributen";
 $l_object["objectname"] = "Object naam";

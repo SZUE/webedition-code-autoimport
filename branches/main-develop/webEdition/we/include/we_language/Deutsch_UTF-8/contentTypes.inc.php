@@ -21,24 +21,26 @@
 /**
  * Language file: contenttypes.inc.php
  * Provides language strings.
- * Language: English
+ * Language: Deutsch
  */
-$GLOBALS['l_contentTypes'] = array(
-		'all_Types' => "Kaikki kentät",
-		'text/xml' => "XML -tiedosto",
-		'text/html' => "HTML -sivu",
-		'text/plain' => "Tekstisivu",
-		'text/htaccess' => ".htaccess file", //TRANSLATE
-		'text/webedition' => "webEdition -sivu",
-		'image/*' => "Kuva",
-		'text/weTmpl' => "webEdition -sivupohja",
-		'text/css' => "Tyylitiedosto",
-		'text/js' => "Javascript -tiedosto",
-		'application/x-shockwave-flash' => "Flash -tiedosto",
-		'application/*' => "Binäärinen dokumentti",
-		'folder' => "Hakemisto",
-		'class_folder' => "Hakemisto",
-		'object' => "Luokka",
-		'objectFile' => "Objekti",
-		'video/quicktime' => "Quicktime -tiedosto",
+$l_contentTypes = array(
+		'all_Types' => "Alle Dateien",
+		'text/xml' => "XML-Datei",
+		'text/html' => "HTML-Datei",
+		'text/plain' => "Text-Datei",
+		'text/htaccess' => ".htaccess-Datei",
+		'text/webedition' => "webEdition-Seite",
+		'image/*' => "Grafik",
+		'text/weTmpl' => "webEdition-Vorlage",
+		'text/css' => "CSS-Datei",
+		'text/js' => "Javascript-Datei",
+		'application/x-shockwave-flash' => "Flash-Datei",
+		'application/*' => "Sonstige Datei",
+		'folder' => "Verzeichnis",
+		'class_folder' => "Verzeichnis",
+		'object' => "Klasse",
+		'objectFile' => "Objekt",
+		'video/quicktime' => "Quicktime-Datei",
+		'objectFile' => "Objekt",
+		'object' => "Klasse",
 );

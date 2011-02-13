@@ -955,7 +955,7 @@ class we_object extends we_document
 
 		if ($type == 'multiobject') {
 			$content .= '<tr>';
-			$content .= '<td  width="100" class="weMultiIconBoxHeadlineThin" valign="top" >'.$GLOBALS['l_contentTypes']['object'].'</td>';
+			$content .= '<td  width="100" class="weMultiIconBoxHeadlineThin" valign="top" >'.g_l('contentTypes','[object]').'</td>';
 			$content .= '<td  width="170" class="defaultfont"  valign="top">';
 			$vals = array();
 			$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");

@@ -23,22 +23,24 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS['l_contentTypes'] = array(
-		'all_Types' => "All files", // TRANSLATE
-		'text/xml' => "Plik XML",
-		'text/html' => "Strona HTML",
-		'text/plain' => "Strona text",
+$l_contentTypes = array(
+		'all_Types' => "All files",
+		'text/xml' => "XML file",
+		'text/html' => "HTML page",
+		'text/plain' => "Text page",
 		'text/htaccess' => ".htaccess file", //TRANSLATE
-		'text/webedition' => "Strona webEdition",
-		'image/*' => "Grafika",
-		'text/weTmpl' => " Szablon webEdition",
-		'text/css' => "CSS Stylesheet",
-		'text/js' => "Javascript",
-		'application/x-shockwave-flash' => "Animacja Flash",
-		'application/*' => "Pozostałe pliki",
-		'folder' => "Katalog",
-		'class_folder' => "Katalog",
-		'object' => "Klasa",
-		'objectFile' => "Obiekt",
-		'video/quicktime' => "Film Quicktime",
+		'text/webedition' => "webEdition page",
+		'image/*' => "Image",
+		'text/weTmpl' => "webEdition template",
+		'text/css' => "Style sheet",
+		'text/js' => "JavaScript",
+		'application/x-shockwave-flash' => "Flash movie",
+		'application/*' => "Binary document",
+		'folder' => "Directory",
+		'class_folder' => "Directory", // TRANSLATE
+		'object' => "Class",
+		'objectFile' => "Object",
+		'video/quicktime' => "Quicktime movie",
+		'objectFile' => "Object",
+		'object' => "Class",
 );

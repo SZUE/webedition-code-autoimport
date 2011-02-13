@@ -22,7 +22,6 @@
  * @abstract class making the view for the document list
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/contenttypes.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
@@ -1209,7 +1208,7 @@ class doclistView {
 				$content [$f] [0] ["dat"] = $publishCheckbox;
 				$content [$f] [1] ["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
 				$content [$f] [2] ["dat"] = '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result [$f] ["Text"] . '"><u>' . shortenPath ( $_result [$f] ["Text"], $we_PathLength );
-				//$content[$f][2]["dat"] = '<nobr>'. $GLOBALS['l_contentTypes'][$_result[$f]['ContentType']] .'</nobr>';
+				//$content[$f][2]["dat"] = '<nobr>'. g_l('contentTypes','['.$_result[$f]['ContentType'].']') .'</nobr>';
 				$content [$f] [3] ["dat"] = '<nobr>' . shortenPath ( $_result [$f] ["SiteTitle"], $we_PathLength ) . '</nobr>';
 				$content [$f] [4] ["dat"] = '<nobr>' . ($_result [$f] ["CreationDate"] ? date ( g_l('searchtool',"[date_format]"), $_result [$f] ["CreationDate"] ) : "-") . '</nobr>';
 				$content [$f] [5] ["dat"] = '<nobr>' . ($_result [$f] ["ModDate"] ? date ( g_l('searchtool',"[date_format]"),
@@ -1298,7 +1297,7 @@ class doclistView {
 				$content [$f] [5] ["dat"] = '<a href="javascript:openToEdit(\'' . $_result [$f] ["docTable"] . '\',\'' . $_result [$f] ["docID"] . '\',\'' . $_result [$f] ["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result [$f] ["Text"] . '">' . $imageViewPopup . '</a>';
 				$content [$f] [6] ["dat"] = $filesize;
 				$content [$f] [7] ["dat"] = $imagesize [0] . " x " . $imagesize [1];
-				$content [$f] [8] ["dat"] = shortenPath ( $GLOBALS ['l_contentTypes'] [$_result [$f] ['ContentType']], 22 );
+				$content [$f] [8] ["dat"] = shortenPath ( g_l('contentTypes','['.($_result [$f] ['ContentType']).']'), 22 );
 				$content [$f] [9] ["dat"] = '<span style="color:' . $fontColor . ';">' . shortenPath ( $_result [$f] ["Text"], 30 ) . '</span>';
 				$content [$f] [10] ["dat"] = shortenPath ( $_result [$f] ["SiteTitle"], 45 );
 				$content [$f] [11] ["dat"] = shortenPath ( $_result [$f] ["Description"], 100 );

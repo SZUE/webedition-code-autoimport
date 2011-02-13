@@ -29,8 +29,6 @@
  */
 
 
-$l_contentTypes["objectFile"] = "Objekt";
-$l_contentTypes["object"] = "Klasse";
 
 $l_object["attributes"] = "Attribute";
 $l_object["objectname"] = "Objektname";
@@ -43,7 +41,7 @@ $l_object["class_id"] = "ID der Klasse";
 $l_object["default"] = "Voreinstellung";
 $l_object["checked"] = "ausgewählt";
 $l_object["name"] = "Automatischer Name";
-$l_object["seourl"] = "SEO-URL";// 
+$l_object["seourl"] = "SEO-URL";//
 $l_object["seourltrigger"] = "Voreinstellung Dokument für die Darstellung";
 $l_object["allFields"] = "allen Feldern";
 $l_object["search_term"] = "Suchbegriff";

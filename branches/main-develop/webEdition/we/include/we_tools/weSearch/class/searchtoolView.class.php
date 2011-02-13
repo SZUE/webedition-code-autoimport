@@ -23,7 +23,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSea
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolView.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolSearch.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolExp.class.inc.php');
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/contenttypes.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "weSuggest.class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
@@ -2817,7 +2816,7 @@ class searchtoolView extends weToolView
 				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . shortenPath(
 						$_result[$f]["Text"],
 						17);
-				//$content[$f][2]["dat"] = '<nobr>'. $GLOBALS['l_contentTypes'][$_result[$f]['ContentType']] .'</nobr>';
+				//$content[$f][2]["dat"] = '<nobr>'. g_l('contentTypes','['.$_result[$f]['ContentType'].']') .'</nobr>';
 				$content[$f][3]["dat"] = '<nobr>' . shortenPath(
 						$_result[$f]["SiteTitle"],
 						$we_PathLength) . '</nobr>';
@@ -2929,7 +2928,7 @@ class searchtoolView extends weToolView
 				$content[$f][5]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>';
 				$content[$f][6]["dat"] = $filesize;
 				$content[$f][7]["dat"] = $imagesize[0] . " x " . $imagesize[1];
-				$content[$f][8]["dat"] = shortenPath($GLOBALS['l_contentTypes'][$_result[$f]['ContentType']], 22);
+				$content[$f][8]["dat"] = shortenPath(g_l('contentTypes','['.$_result[$f]['ContentType'].']'), 22);
 				$content[$f][9]["dat"] = '<span style="color:' . $fontColor . ';">' . shortenPath(
 						$_result[$f]["Text"],
 						30) . '</span>';

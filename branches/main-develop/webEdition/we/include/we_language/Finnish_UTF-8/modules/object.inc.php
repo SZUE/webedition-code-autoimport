@@ -19,8 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$l_contentTypes["objectFile"] = "Objekti";
-$l_contentTypes["object"] = "Luokka";
 
 $l_object["attributes"] = "Ominaisuudet";
 $l_object["objectname"] = "Objektin nimi";

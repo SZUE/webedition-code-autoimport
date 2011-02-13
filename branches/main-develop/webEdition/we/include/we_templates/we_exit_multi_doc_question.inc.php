@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 protect();
 htmlTop(g_l('global','[question]'));
 
@@ -40,7 +39,7 @@ if (!in_array($nextCmd,$allowedCmds)) {
 $ctLngs = '
 var ctLngs = new Object();';
 
-foreach ($l_contentTypes as $key => $lng) {
+foreach (g_l('contentTypes','') as $key => $lng) {
 	$ctLngs .= "
 	ctLngs[\"$key\"] = \"$lng\";";
 }

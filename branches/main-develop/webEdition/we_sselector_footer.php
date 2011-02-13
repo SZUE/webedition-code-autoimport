@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 
 protect();
@@ -99,11 +98,11 @@ if($_REQUEST["ret"]==1){
 					<td></td>
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.forms['we_form'].elements['filter'].options[document.forms['we_form'].elements['filter'].selectedIndex].value)" style="width:100%">
-                      <option value="<?php print str_replace(' ','%20',$l_contentTypes["all_Types"]); ?>"><?php print $l_contentTypes["all_Types"]; ?></option>
+                      <option value="<?php print str_replace(' ','%20',g_l('contentTypes','[all_Types]')); ?>"><?php print g_l('contentTypes','[all_Types]'); ?></option>
                       <?php
                         foreach($GLOBALS["WE_CONTENT_TYPES"] as $key=>$value){
                         	if($value["IsRealFile"]){
-								print '<option value="'.rawurlencode($l_contentTypes[$key]).'">'.$l_contentTypes[$key].'</option>'."\n";
+								print '<option value="'.rawurlencode(g_l('contentTypes','['.$key.']')).'">'.g_l('contentTypes','['.$key.']').'</option>'."\n";
                         	}
                         }
              ?>
