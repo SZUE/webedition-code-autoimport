@@ -138,8 +138,7 @@ class weJavaMenu {
 		if(!$showAltMenu) {
 			$out .= '
 				<div id="divForSelectMenu"></div>
-				<applet name="weJavaMenuApplet" code="menuapplet"  archive="menuapplet.zip"  codebase="'.$this->protocol.'://'.$this->SERVER_NAME.($this->port ? (":".$this->port) : "").'/webEdition/menuapplet" align="baseline" width="'.$this->width.'" height="'.$this->height.'" mayscript scriptable>
-					<param name="cabbase" value="menuapplet.cab"/>
+				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri('/webEdition/lib/we/ui/controls') . '" align="baseline" width="' . $this->_width . '" height="' . $this->_height . '" mayscript scriptable>
 					<param name="phpext" value=".php"/>';
 			$i=0;
 			foreach ($this->entries as $id=>$m) {
