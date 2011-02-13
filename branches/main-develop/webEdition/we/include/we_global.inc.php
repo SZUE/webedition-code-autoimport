@@ -3860,7 +3860,7 @@ function g_l($name, $specific) {
 			if($tmp===false){
 				trigger_error('Requested lang entry '."l_$name$specific".' not found!',E_USER_WARNING);
 			}
-			return tmp;
+			return false;
 		}
 	}
 	trigger_error('Requested lang file '.$file.' not found!',E_USER_WARNING);

@@ -60,7 +60,7 @@ $l_global = array(
 		'std_mailtext_delDoc' => "El documento %s ha sido borrado!",
 		'we_make_same' => array(
 				'text/html' => "Nueva página después de salvar",
-				'text/webedition' => $l_global["we_make_same"]["text/html"],
+				'text/webedition' => "Nueva página después de salvar",
 				'objectFile' => "New object after saving",
 		),
 		'no_entries' => "Ninguna entrada encontrada!",

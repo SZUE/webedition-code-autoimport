@@ -62,7 +62,7 @@ $l_global = array(
 		'std_mailtext_delDoc' => "Het document %s is verwijderd!",
 		'we_make_same' => array(
 				'text/html' => "Nieuwe pagina na bewaren",
-				'text/webedition' => $l_global["we_make_same"]["text/html"],
+				'text/webedition' => "Nieuwe pagina na bewaren",
 				'objectFile' => "New object after saving",
 		),
 		'no_entries' => "Geen invoeren gevonden!",

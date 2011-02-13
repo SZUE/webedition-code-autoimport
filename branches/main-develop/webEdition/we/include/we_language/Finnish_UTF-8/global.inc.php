@@ -60,7 +60,7 @@ $l_global = array(
 		'std_mailtext_delDoc' => "Dokumentti %s on poistettu!",
 		'we_make_same' => array(
 				'text/html' => "Uusi sivu tallentamisen jälkeen",
-				'text/webedition' => $l_global['we_make_same']['text/html'],
+				'text/webedition' => "Uusi sivu tallentamisen jälkeen",
 				'objectFile' => "Uusi objekti tallennuksen jälkeen",
 		),
 		'no_entries' => "Tuloksia ei löytynyt!",

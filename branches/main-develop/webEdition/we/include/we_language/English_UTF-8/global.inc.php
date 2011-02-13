@@ -60,7 +60,7 @@ $l_global = array(
 		'std_mailtext_delDoc' => "The document %s has been deleted!",
 		'we_make_same' => array(
 				'text/html' => "New page after saving",
-				'text/webedition' => $l_global["we_make_same"]["text/html"],
+				'text/webedition' => "New page after saving",
 				'objectFile' => "New object after saving",
 		),
 		'no_entries' => "No entries found!",

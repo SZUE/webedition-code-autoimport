@@ -62,7 +62,7 @@ $l_global = array(
 		'std_mailtext_delDoc' => "Das Dokument %s wurde gelöscht!",
 		'we_make_same' => array(
 				'text/html' => "Nach Speichern neue Seite",
-				'text/webedition' => $l_global['we_make_same']['text/html'],
+				'text/webedition' => "Nach Speichern neue Seite",
 				'objectFile' => "Nach Speichern neues Objekt",
 		),
 		'no_entries' => "Keine Einträge vorhanden!",

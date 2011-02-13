@@ -1421,7 +1421,6 @@ class we_objectFile extends we_document
 			return '<span class="weObjectPreviewHeadline"><b>'.$name.($this->DefArray["checkbox_".$name]["required"] ? "*" : "")."</b></span>" . ( isset($this->DefArray["checkbox_".$name]['editdescription']) && $this->DefArray["checkbox_".$name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_".$name]['editdescription'] . '</div>' : '<br />' ) .$content;
 		}else{
 			$content = ($this->getElement($name) ?  g_l('global',"[yes]") : g_l('global',"[no]"));
-		endif;
 			return $this->getPreviewView($name,$content);
 		}
 	}

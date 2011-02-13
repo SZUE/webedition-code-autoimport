@@ -62,7 +62,7 @@ $l_global = array(
 		'std_mailtext_delDoc' => "Документ %s удален!",
 		'we_make_same' => array(
 				'text/html' => "После сохранения новая страница",
-				'text/webedition' => $l_global["we_make_same"]["text/html"],
+				'text/webedition' => "После сохранения новая страница",
 				'objectFile' => "New object after saving",
 		),
 		'no_entries' => "Данные не найдены!",
