@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDial
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/linklist_edit.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
 class weHyperlinkDialog extends weDialog{
@@ -311,7 +310,7 @@ class weHyperlinkDialog extends weDialog{
 	##################################################################################################
 
 	function getDialogContentHTML() {
-		global $l_we_class,$l_linklist_edit;
+		global $l_we_class;
 		// Initialize we_button class
 		$we_button = new we_button();
 
@@ -323,7 +322,7 @@ class weHyperlinkDialog extends weDialog{
 
 
 			$_select_type = '<select name="we_dialog_args[type]" size="1" style="margin-bottom:5px;" onchange="changeTypeSelect(this);">
-<option value="ext"'.(($this->args["type"]=="ext") ? ' selected="selected"' : '').'>'.$GLOBALS["l_linklist_edit"]["external_link"].'</option>
+<option value="ext"'.(($this->args["type"]=="ext") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[external_link]").'</option>
 <option value="mail"'.(($this->args["type"]=="mail") ? ' selected="selected"' : '').'>'.$GLOBALS["l_wysiwyg"]["emaillink"].'</option>
 </select>';
 
@@ -343,11 +342,11 @@ class weHyperlinkDialog extends weDialog{
 
 		} else {
 			$_select_type = '<select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">
-<option value="ext"'.(($this->args["type"]=="ext") ? ' selected="selected"' : '').'>'.$GLOBALS["l_linklist_edit"]["external_link"].'</option>
-<option value="int"'.(($this->args["type"]=="int") ? ' selected="selected"' : '').'>'.$GLOBALS["l_linklist_edit"]["internal_link"].'</option>
+<option value="ext"'.(($this->args["type"]=="ext") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[external_link]").'</option>
+<option value="int"'.(($this->args["type"]=="int") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[internal_link]").'</option>
 <option value="mail"'.(($this->args["type"]=="mail") ? ' selected="selected"' : '').'>'.$GLOBALS["l_wysiwyg"]["emaillink"].'</option>
 ' . ((defined("OBJECT_TABLE") && ($_SESSION["we_mode"] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ? '
-<option value="obj"'.(($this->args["type"]=="obj") ? ' selected="selected"' : '').'>'.$GLOBALS["l_linklist_edit"]["objectFile"].'</option>' : '') . '
+<option value="obj"'.(($this->args["type"]=="obj") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[objectFile]").'</option>' : '') . '
 </select>';
 
 			// EXTERNAL LINK
@@ -441,7 +440,7 @@ class weHyperlinkDialog extends weDialog{
 						' . $_select_type . '</td>
 				</tr>
 				<tr id="ext_tr" style="display:'.(($this->args["type"]=="ext") ? "" : "none").';">
-					<td class="defaultgray" valign="top" width="100">'.$l_linklist_edit["external_link"].'</td><td valign="top" >
+					<td class="defaultgray" valign="top" width="100">'.g_l('linklist_edit',"[external_link]").'</td><td valign="top" >
 						' . $_external_link . '</td>
 				</tr>
 				';
@@ -499,7 +498,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr>
 					<td class="defaultgray" valign="top">
-						' . $GLOBALS["l_linklist_edit"]["link_params"] . '</td>
+						' . g_l('linklist_edit',"[link_params]") . '</td>
 					<td>
 						' . $_param . '</td>
 				</tr>
@@ -519,7 +518,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr>
 					<td class="defaultgray" valign="top">
-						' . $GLOBALS["l_linklist_edit"]["link_target"] . '</td>
+						' . g_l('linklist_edit',"[link_target]") . '</td>
 					<td>
 						' . targetBox("we_dialog_args[target]", 29, 300, "we_dialog_args[target]", $this->args["target"], "", 10, 100) . '</td>
 				</tr>

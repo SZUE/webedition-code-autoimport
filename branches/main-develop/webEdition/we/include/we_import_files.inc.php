@@ -1163,7 +1163,6 @@ class we_import_files
 
 	function getHTMLCategory()
 	{
-		global $l_navigation;
 
 		$we_button = new we_button();
 

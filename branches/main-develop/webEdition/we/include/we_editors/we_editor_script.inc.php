@@ -366,9 +366,8 @@ function we_cmd(){
 <?php } ?>
 		// it must be the last command
 		case "delete_navi":
-			<?php include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');?>
 			for(var i = 0; i < arguments.length; i++){arguments[i]=encodeURIComponent(arguments[i]);}
-			if(!confirm("<?php print $l_navigation['del_question']?>")) break;
+			if(!confirm("<?php print g_l('navigation','[del_question]')?>")) break;
 		default:
 			for(var i = 0; i < arguments.length; i++){
 

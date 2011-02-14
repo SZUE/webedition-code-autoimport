@@ -23,7 +23,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_t
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_live_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_move_fn.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/newfile.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
@@ -358,7 +357,7 @@ $yuiSuggest->setSelectButton(
 
 $weAcSelector = $yuiSuggest->getHTML();
 
-$content = '<span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . $l_newFile["move_text"] . '</span>
+$content = '<span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile',"[move_text]") . '</span>
 			<p style="margin:0 0 10px 0;padding:0;">' . $weAcSelector . '</p>';
 
 $_buttons = $we_button->position_yes_no_cancel(
@@ -381,7 +380,7 @@ print
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
 <h1 class="big" style="padding:0;margin:0;">' . htmlspecialchars(
-				$l_newFile["title_move"]) . '</h1>
+				g_l('newFile',"[title_move]")) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '
 ' . $yuiSuggest->getYuiCss() . '

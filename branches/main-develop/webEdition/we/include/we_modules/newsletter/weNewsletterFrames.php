@@ -2018,7 +2018,6 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	function getHTMLUploadCsv($js = "javascript:we_cmd('do_upload_csv');") {
 		global $l_newsletter;
 
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/newfile.inc.php");
 
 		$we_button = new we_button();
 		$cancel = $we_button->create_button("cancel","javascript:self.close();");
@@ -2035,7 +2034,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),4,1);
 		if($maxsize){
-			$table->setCol(0,0,array("style"=>"padding-right:30px"),htmlAlertAttentionBox(sprintf($l_newFile["max_possible_size"],round($maxsize / (1024*1024),3)."MB"),1));
+			$table->setCol(0,0,array("style"=>"padding-right:30px"),htmlAlertAttentionBox(sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB"),1));
 			$table->setCol(1,0,array(),getPixel(2,10));
 		}else{
 			$table->setCol(0,0,array(),getPixel(2,10));

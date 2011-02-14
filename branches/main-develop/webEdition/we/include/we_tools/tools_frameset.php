@@ -22,7 +22,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
 include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/tools.inc.php');
-include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/navigation.inc.php');
 
 protect();
 
@@ -40,7 +39,7 @@ if(isset($_REQUEST['tool'])) {
 		$title .= $l_tools['tools']. ' - '.g_l('searchtool','[weSearch]');
 	}
 	elseif($tool=='navigation') {
-		$title .= $l_tools['tools']. ' - '.$GLOBALS['l_navigation']['navigation'];
+		$title .= $l_tools['tools']. ' - '.g_l('navigation','[navigation]');
 	}
 	else {
 		$translate = we_core_Local::addTranslation('apps.xml');

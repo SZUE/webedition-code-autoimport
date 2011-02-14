@@ -25,7 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_linklist.inc.p
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/linklist_edit.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 protect();
 $we_button = new we_button();
@@ -342,7 +341,7 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	}
 }
 
-htmlTop($l_linklist_edit["edit_link"]);
+htmlTop(g_l('linklist_edit',"[edit_link]"));
 $yuiSuggest =& weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
@@ -508,11 +507,11 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 		if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 
 			$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
-<option value="ext"'.(($type=="ext") ? ' selected="selected"' : '').'>'.$GLOBALS["l_linklist_edit"]["external_link"].'</option>
-<option value="int"'.(($type=="int") ? ' selected="selected"' : '').'>'.$GLOBALS["l_linklist_edit"]["internal_link"].'</option>
+<option value="ext"'.(($type=="ext") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[external_link]").'</option>
+<option value="int"'.(($type=="int") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[internal_link]").'</option>
 <option value="mail"'.(($type=="mail") ? ' selected="selected"' : '').'>'.$GLOBALS["l_wysiwyg"]["emaillink"].'</option>
 ' . (defined("OBJECT_TABLE")  ? '
-<option value="obj"'.(($type=="obj") ? ' selected="selected"' : '').'>'.$GLOBALS["l_linklist_edit"]["objectFile"].'</option>' : '') . '
+<option value="obj"'.(($type=="obj") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[objectFile]").'</option>' : '') . '
 </select>';
 
 
@@ -558,10 +557,10 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$anchor = htmlTextInput("anchor",30,$anchor,"","","text",300);
 			$accesskey = htmlTextInput("accesskey",30,$accesskey,"","","text",140);
 			$tabindex = htmlTextInput("tabindex",30,$tabindex,"","","text",140);
-			$lang = getLangField('lang',$lang,$l_linklist_edit['link_language'],140);
+			$lang = getLangField('lang',$lang,g_l('linklist_edit','[link_language]'),140);
 			$relfield = getRevRelSelect("rel",$rel);
 			$revfield = getRevRelSelect("rev",$rev);
-			$hreflang = getLangField('hreflang',$hreflang,$l_linklist_edit['href_language'],140);
+			$hreflang = getLangField('hreflang',$hreflang,g_l('linklist_edit','[href_language]'),140);
 			$params = htmlTextInput("params",30,$params,"","","text",300);
 			$title = htmlTextInput("title",30,$title,"","","text",300);
 			$ctarget = targetBox("target",30,300,"",$target);
@@ -644,9 +643,9 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 
 			$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
-<option value="text"'.(($ctype=="text") ? ' selected="selected"' : '').'>'.htmlspecialchars($l_linklist_edit["text"]).'</option>
-<option value="ext"'.(($ctype=="ext") ? ' selected="selected"' : '').'>'.htmlspecialchars($l_linklist_edit["external_image"]).'</option>
-<option value="int"'.(($ctype=="int") ? ' selected="selected"' : '').'>'.htmlspecialchars($l_linklist_edit["internal_image"]).'</option>
+<option value="text"'.(($ctype=="text") ? ' selected="selected"' : '').'>'.htmlspecialchars(g_l('linklist_edit',"[text]")).'</option>
+<option value="ext"'.(($ctype=="ext") ? ' selected="selected"' : '').'>'.htmlspecialchars(g_l('linklist_edit',"[external_image]")).'</option>
+<option value="int"'.(($ctype=="int") ? ' selected="selected"' : '').'>'.htmlspecialchars(g_l('linklist_edit',"[internal_image]")).'</option>
 </select>';
 
 
@@ -731,7 +730,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 					</tr>
 					<tr>
 						<td colspan="12" class="small">
-							'.$l_linklist_edit["alt_text"] .'</td>
+							'.g_l('linklist_edit',"[alt_text]") .'</td>
 					</tr>
 					<tr>
 						<td colspan="12">
@@ -739,7 +738,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 					</tr>
                     <tr>
 						<td colspan="12" class="small">
-							'.$l_linklist_edit["title"] .'</td>
+							'.g_l('linklist_edit',"[title]") .'</td>
 					</tr>
 					<tr>
 						<td colspan="12">
@@ -809,17 +808,17 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 								'space'=>'150');
 
 
-			$_parts[] = array(	'headline'=>$l_linklist_edit["link_anchor"],
+			$_parts[] = array(	'headline'=>g_l('linklist_edit',"[link_anchor]"),
 								'html'=>$anchor,
 								'space'=>'150',
 								'noline'=>1);
 
-			$_parts[] = array(	'headline'=>$l_linklist_edit["link_params"],
+			$_parts[] = array(	'headline'=>g_l('linklist_edit',"[link_params]"),
 								'html'=>$params,
 								'space'=>'150',
 								'noline'=>1);
 
-			$_parts[] = array(	'headline'=>$l_linklist_edit["link_target"],
+			$_parts[] = array(	'headline'=>g_l('linklist_edit',"[link_target]"),
 								'html'=>$ctarget,
 								'space'=>'150');
 
@@ -834,21 +833,21 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
                             </tr>
 			                 </table>';
 
-				$_parts[] = array(	'headline'=>$l_linklist_edit['language'],
+				$_parts[] = array(	'headline'=>g_l('linklist_edit','[language]'),
 									'html'=>$_html,
 									'space'=>'150',
 									'noline'=>1);
 
-				$_parts[] = array(	'headline'=>$l_linklist_edit['title'],
+				$_parts[] = array(	'headline'=>g_l('linklist_edit','[title]'),
 									'html'=>$title,
 									'space'=>'150',
 									'noline'=>1);
 
 				$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td class="small">' . $l_linklist_edit['accesskey'] . '</td>
+                                <td class="small">' . g_l('linklist_edit','[accesskey]') . '</td>
 			                    <td>' . getPixel(20,5) . '</td>
-			                    <td class="small">' . $l_linklist_edit['tabindex'] . '</td>
+			                    <td class="small">' . g_l('linklist_edit','[tabindex]') . '</td>
                             </tr>
                             <tr>
                                 <td>' . $accesskey . '</td>
@@ -857,7 +856,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
                             </tr>
 			                 </table>';
 
-				$_parts[] = array(	'headline'=>$l_linklist_edit['keyboard'],
+				$_parts[] = array(	'headline'=>g_l('linklist_edit','[keyboard]'),
 									'html'=>$_html,
 									'space'=>'150',
 									'noline'=>1);
@@ -875,7 +874,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 									'space'=>'150',
 									'noline'=>1);
 
-				$_parts[] = array(	'headline'=>$l_linklist_edit["link_attr"],
+				$_parts[] = array(	'headline'=>g_l('linklist_edit',"[link_attr]"),
 									'html'=>$cattribs,
 									'space'=>'150');
 			}
@@ -903,7 +902,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction; ?>" />
 			<input type="hidden" name="we_field" value="<?php print isset($_REQUEST['we_cmd'][3])?$_REQUEST['we_cmd'][3]:""; ?>" />
 			<?php
-				print we_multiIconBox::getHTML("","100%",$_parts,30,$buttons,-1,"","",false,$l_linklist_edit["edit_link"],"",671);
+				print we_multiIconBox::getHTML("","100%",$_parts,30,$buttons,-1,"","",false,g_l('linklist_edit',"[edit_link]"),"",671);
 				print $yuiSuggest->getYuiCss();
 				print $yuiSuggest->getYuiJs();
 			?>

@@ -411,12 +411,8 @@
 		//FIXME: remove this function!
 		function getLanguageInclude($name) {
 			if($name=='weSearch') {
-				$toolFolder = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/';
-				return $toolFolder . $GLOBALS['WE_LANGUAGE'] . '/searchtool.inc.php';
 			}
 			elseif($name=='navigation') {
-				$toolFolder = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/';
-				return $toolFolder . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php';
 			}
 			else {
 				if(!defined('WE_TOOLS_DIR')) {

@@ -21,9 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_document.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
-if (!isset($GLOBALS["WE_IS_DYN"])) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/metadata.inc.php");
-}
 
 /*  a class for handling binary-documents like images. */
 class we_binaryDocument extends we_document
@@ -109,10 +106,9 @@ class we_binaryDocument extends we_document
 
 
 	function we_save($resave=0){
-	global $l_metadata;
 		if ($this->getFilesize() ==0){
 			print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall($l_metadata['file_size_0'], WE_MESSAGE_ERROR)
+					we_message_reporting::getShowMessageCall(g_l('metadata','[file_size_0]'), WE_MESSAGE_ERROR)
 			);
 			return false;
 		} else {
@@ -255,7 +251,7 @@ class we_binaryDocument extends we_document
 		$we_button = new we_button();
 		$uploadButton = $we_button->create_button("upload", "javascript:we_cmd('editor_uploadFile')", true,150,22,"","",false,true,"",true);
 		$fs = $GLOBALS["we_doc"]->getFilesize();
-		$fs = $GLOBALS["l_metadata"]["filesize"].": ".round(($fs / 1024),2)."&nbsp;KB";
+		$fs = g_l('metadata',"[filesize]").": ".round(($fs / 1024),2)."&nbsp;KB";
 		$_metaData = $this->getMetaData();
 		$_mdtypes = array();
 
@@ -269,7 +265,7 @@ class we_binaryDocument extends we_document
 
 		}
 
-		$filetype = $GLOBALS["l_metadata"]["filetype"].": ";
+		$filetype = g_l('metadata',"[filetype]").": ";
 		if(!empty($this->Extension)) {
 			$filetype .= substr($this->Extension,1);
 		}
@@ -277,19 +273,19 @@ class we_binaryDocument extends we_document
 		if ($_SESSION["we_mode"] == "seem") {
 			$md = "";
 		} else {
-			$md = $GLOBALS["l_metadata"]["supported_types"].": ";
-	
+			$md = g_l('metadata',"[supported_types]").": ";
+
 			if(count($_mdtypes) > 0) {
 				$_mdTypesTxt = implode(", ", $_mdtypes);
 			} else {
-				$_mdTypesTxt = $GLOBALS["l_metadata"]["none"];
+				$_mdTypesTxt = g_l('metadata',"[none]");
 			}
-	
+
 			$md .= '<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\''.$GLOBALS['we_transaction'].'\');">';
 			$md.= $_mdTypesTxt;
 			$md .= '</a>';
 		}
-		
+
 		$foo = '<table cellpadding="0" cellspacing="0" border="0" width="500">
 		';
 			$foo .= '<tr style="vertical-align:top;">

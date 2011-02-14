@@ -40,5 +40,3 @@ if(is_readable(LIVEUPDATE_DIR . 'updateClient/liveUpdateResponseServer.class.php
 if(is_readable(LIVEUPDATE_DIR . 'updateClient/liveUpdateServer.class.php')) {
 	require_once(LIVEUPDATE_DIR . 'updateClient/liveUpdateServer.class.php');
 }
-
-?>

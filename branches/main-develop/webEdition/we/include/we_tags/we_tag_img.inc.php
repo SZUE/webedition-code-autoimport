@@ -17,6 +17,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+
 
 function we_tag_img($attribs, $content){
 	if ($GLOBALS['we_editmode']) {

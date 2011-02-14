@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,12 +18,13 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+$l_messageConsole = array(
+		'iconBar' => array(
 // message bar next to java menu
-$GLOBALS["l_messageConsole"]["iconBar"]["notice"] = "Neuer Hinweis";
-$GLOBALS["l_messageConsole"]["iconBar"]["warning"] = "Neue Warnung";
-$GLOBALS["l_messageConsole"]["iconBar"]["error"] = "Neuer Fehler";
-
+				'notice' => "Neuer Hinweis",
+				'warning' => "Neue Warnung",
+				'error' => "Neuer Fehler",
+		),
 // message window !
-$l_messageConsole["headline"] = "Nachrichten Fenster";
-?>
+		'headline' => "Nachrichten Fenster",
+);

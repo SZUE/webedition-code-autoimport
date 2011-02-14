@@ -26,7 +26,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/metadata.inc.php");
 
 /*****************************************************************************
  * INITIALIZATION
@@ -42,9 +41,9 @@ htmlTop();
 
 // Define needed JS
 
-$_meta_field_empty_messsage = addslashes($GLOBALS['l_metadata']['error_meta_field_empty_msg']);
-$_meta_field_wrong_chars_messsage = addslashes($GLOBALS['l_metadata']['meta_field_wrong_chars_messsage']);
-$_meta_field_wrong_name_messsage = addslashes($GLOBALS['l_metadata']['meta_field_wrong_name_messsage']);
+$_meta_field_empty_messsage = addslashes(g_l('metadata','[error_meta_field_empty_msg]'));
+$_meta_field_wrong_chars_messsage = addslashes(g_l('metadata','[meta_field_wrong_chars_messsage]'));
+$_meta_field_wrong_name_messsage = addslashes(g_l('metadata','[meta_field_wrong_name_messsage]'));
 
 $_javascript = <<< END_OF_SCRIPT
 <!--

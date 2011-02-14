@@ -365,11 +365,10 @@ class we_document extends we_root {
 
 	function formNavigation() {
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/MultiFileChooser.inc.php');
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');
 
 		$we_button = new we_button();
 
-		$delallbut = $we_button->create_button('delete_all',"javascript:if(confirm('".$l_navigation['dellall_question']."')) we_cmd('delete_all_navi')",true,-1,-1,"","",(we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
+		$delallbut = $we_button->create_button('delete_all',"javascript:if(confirm('".g_l('navigation','[dellall_question]')."')) we_cmd('delete_all_navi')",true,-1,-1,"","",(we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
 
 		$addbut    = $we_button->create_button('add', "javascript:we_cmd('tool_navigation_edit_navi',0)",true,100,22,'','',(we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true,false);
 
@@ -391,7 +390,7 @@ class we_document extends we_root {
 		}
 
 		$navis->diabledDelItems = makeCSVFromArray($NoDelNavis);
-		$navis->diabledDelReason = $l_navigation['NoDeleteFromDocument'];
+		$navis->diabledDelReason = g_l('navigation','[NoDeleteFromDocument]');
 
 		if(!we_hasPerm('EDIT_NAVIGATION')) {
 			$navis->isEditable=false;

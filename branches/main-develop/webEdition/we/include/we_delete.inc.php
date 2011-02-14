@@ -23,7 +23,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/alert.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/newfile.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_history.class.php');
@@ -625,11 +624,11 @@ if ($_REQUEST["we_cmd"][0] == "do_delete") {
 
 $we_button = new we_button();
 if ((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") || (defined("FILE_TABLE") && $table == FILE_TABLE . "_cache")) {
-	$delete_text = $l_newFile["delete_text_cache"];
+	$delete_text = g_l('newFile',"[delete_text_cache]");
 	$delete_confirm = $l_alert["delete_cache"];
 
 } else {
-	$delete_text = $l_newFile["delete_text"];
+	$delete_text = g_l('newFile',"[delete_text]");
 	$delete_confirm = $l_alert["delete"];
 
 }
@@ -653,7 +652,7 @@ print
 		'</head><body class="weTreeHeader">
 <div style="width:380px;">
 <h1 class="big" style="padding:0;margin:0;">' . htmlspecialchars(
-				$l_newFile["title_delete"]) . '</h1>
+				g_l('newFile',"[title_delete]")) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '
 </body>

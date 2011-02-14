@@ -174,14 +174,13 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 
 	if ($GLOBALS['we_doc']->ContentType == "image/*") {
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/metadata.inc.php");
 
 		$_metaData = $GLOBALS['we_doc']->getMetaData();
 
 		$_metaDataTable = '<table border="0" cellpadding="0" cellspacing="0">
 ';
 
-		$_metaDataTable .= '<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . $l_metadata['info_exif_data'] . '</td></tr>
+		$_metaDataTable .= '<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata','[info_exif_data]') . '</td></tr>
 ';
 		if (isset($_metaData["exif"])) {
 			foreach ($_metaData["exif"] as $_key => $_val) {
@@ -190,11 +189,11 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 			}
 		}
 		if (!isset($_metaData["exif"]) || count($_metaData["exif"]) == 0) {
-				$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . (is_callable("exif_read_data") ? $l_metadata['no_exif_data'] : $l_metadata['no_exif_installed']) . '</td></tr>
+				$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . (is_callable("exif_read_data") ? g_l('metadata','[no_exif_data]'): g_l('metadata','[no_exif_installed]')) . '</td></tr>
 ';
 		}
 
-		$_metaDataTable .= '<tr><td style="padding:10px 0 5px 0;" class="weMultiIconBoxHeadline" colspan="2">' . $l_metadata['info_iptc_data'] . '</td></tr>
+		$_metaDataTable .= '<tr><td style="padding:10px 0 5px 0;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata','[info_iptc_data]') . '</td></tr>
 ';
 		if (isset($_metaData["iptc"])) {
 			foreach ($_metaData["iptc"] as $_key => $_val) {
@@ -203,7 +202,7 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 			}
 		}
 		if (!isset($_metaData["iptc"]) || count($_metaData["iptc"]) == 0) {
-				$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . $l_metadata['no_iptc_data'] . '</td></tr>
+				$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . g_l('metadata','[no_iptc_data]') . '</td></tr>
 ';
 		}
 		$_metaDataTable .= '</table>';
@@ -216,7 +215,7 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 				);
 	} else if ($GLOBALS['we_doc']->IsBinary) {
 		array_push($parts,array(	"headline"=>"Metadaten",
-									"html"=>$l_metadata['no_metadata_supported'],
+									"html"=>g_l('metadata','[no_metadata_supported]'),
 									"space"=>140,
 									"forceRightHeadline"=>1,
 									"icon"=>"meta.gif"

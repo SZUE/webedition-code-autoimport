@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,12 +18,13 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+$l_messageConsole = array(
+		'iconBar' => array(
 // for bar in menu!
-$GLOBALS["l_messageConsole"]["iconBar"]["notice"]  = "Nieuw bericht";
-$GLOBALS["l_messageConsole"]["iconBar"]["warning"] = "Nieuwe waarschuwing";
-$GLOBALS["l_messageConsole"]["iconBar"]["error"]   = "Nieuwe fout";
-
+				'notice' => "Nieuw bericht",
+				'warning' => "Nieuwe waarschuwing",
+				'error' => "Nieuwe fout",
+		),
 // message window
-$l_messageConsole["headline"] = "Berichten venster";
-?>
+		'headline' => "Berichten venster",
+);

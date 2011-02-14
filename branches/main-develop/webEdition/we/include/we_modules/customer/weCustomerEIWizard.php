@@ -652,10 +652,9 @@ class weCustomerEIWizard{
 		);
 
 		//upload table
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/newfile.inc.php");
 		$maxsize = getUploadMaxFilesize(true);
 		if($maxsize){
-			$tmptable->setCol(0,0,array(),htmlAlertAttentionBox(sprintf($l_newFile["max_possible_size"],round($maxsize / (1024*1024),3)."MB"),1,"430"));
+			$tmptable->setCol(0,0,array(),htmlAlertAttentionBox(sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB"),1,"430"));
 			$tmptable->setCol(1,0,array(),getPixel(2,5));
 		}else{
 			$tmptable->setCol(0,0,array(),getPixel(2,5));

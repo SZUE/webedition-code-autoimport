@@ -22,8 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/newfile.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/metadata.inc.php");
 
 protect();
 
@@ -34,10 +32,10 @@ $allowedContentTypes = "";
 $error = false;
 
 $maxsize = getUploadMaxFilesize(false);
-$we_maxfilesize_text = sprintf($GLOBALS["l_newFile"]["max_possible_size"],round($maxsize / (1024*1024),3)."MB");
+$we_maxfilesize_text = sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB");
 
 
-htmlTop($l_newFile["import_File_from_hd_title"]);
+htmlTop(g_l('newFile',"[import_File_from_hd_title]"));
 
 print STYLESHEET;
 
@@ -110,7 +108,7 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">'.
 				<tr><td>'.getPixel(2,10).'</td></tr>
 ';
 								if 	($we_doc->ContentType=="image/*") {
-									$content .= '<tr><td>'.we_forms::checkbox("1", true, "import_metadata", $l_metadata["import_metadata_at_upload"]).'</td></tr>
+									$content .= '<tr><td>'.we_forms::checkbox("1", true, "import_metadata", g_l('metadata',"[import_metadata_at_upload]")).'</td></tr>
 ';
 								}
 								$content .= '</table>';
@@ -146,7 +144,7 @@ $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("uploa
 	<center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
-			<?php print htmlDialogLayout($content,$l_newFile["import_File_from_hd_title"], $_buttons); ?>
+			<?php print htmlDialogLayout($content,g_l('newFile',"[import_File_from_hd_title]"), $_buttons); ?>
 		</form>
 	</center>
 </body>

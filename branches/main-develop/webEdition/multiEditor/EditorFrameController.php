@@ -19,7 +19,6 @@
  */
 
 include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/' . $GLOBALS["WE_LANGUAGE"] .  '/multiEditor.inc.php');
 
 protect();
 ?><html>
@@ -251,7 +250,7 @@ function EditorFrameController() {
 
 				} else {
 					<?php
-						print we_message_reporting::getShowMessageCall( $l_multiEditor["no_editor_left"], WE_MESSAGE_ERROR );
+						print we_message_reporting::getShowMessageCall( g_l('multiEditor',"[no_editor_left]"), WE_MESSAGE_ERROR );
 					?>
 				}
 			}
@@ -385,7 +384,7 @@ function EditorFrameController() {
 	 */
 	this.closeAllDocuments = function() {
 
-		if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print $GLOBALS["l_multiEditor"]["eplugin_exit_doc"]; ?>") ) {
+		if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print g_l('multiEditor',"[eplugin_exit_doc]"); ?>") ) {
 
 			// close all none Hot Editors
 			if ( this.FreeEditorFrames.length != this.EditorWindowsAmount ) {
@@ -421,7 +420,7 @@ function EditorFrameController() {
 
 	this.closeAllButActiveDocument = function(activeId) {
 
-		if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print $GLOBALS["l_multiEditor"]["eplugin_exit_doc"]; ?>") ) {
+		if ( top.we_cmd("editor_plugin_doc_count") == 0 || confirm("<?php print g_l('multiEditor',"[eplugin_exit_doc]"); ?>") ) {
 
 			// only do something, if more than one editor is open
 			if ( (this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1  ) {

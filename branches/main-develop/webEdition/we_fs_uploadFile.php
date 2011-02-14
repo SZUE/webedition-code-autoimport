@@ -24,16 +24,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/newfile.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/metadata.inc.php");
 
 protect();
 
-htmlTop($l_newFile["import_File_from_hd_title"]);
+htmlTop(g_l('newFile',"[import_File_from_hd_title]"));
 $parts = array();
 
 print STYLESHEET;
@@ -166,14 +164,14 @@ $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 if($maxsize){
 	array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(
-				sprintf($GLOBALS["l_newFile"]["max_possible_size"],round($maxsize / (1024*1024),3)."MB"),
+				sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB"),
 				1,390),"space"=>0,"noline"=>1));
 
 }
 
 array_push($parts,array("headline"=>"","html"=>'<input name="we_uploadedFile" TYPE="file"'.($allowedContentTypes ? ' ACCEPT="'.$allowedContentTypes.'"' : '').' size="35" />',"space"=>0));
-array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_newFile"]["caseFileExists"].'<br>'.we_forms::radiobutton("yes", true, "overwrite", $GLOBALS["l_newFile"]["overwriteFile"]).
-we_forms::radiobutton("no", false, "overwrite", $GLOBALS["l_newFile"]["renameFile"]),"space"=>0));
+array_push($parts,array("headline"=>"","html"=>g_l('newFile',"[caseFileExists]").'<br>'.we_forms::radiobutton("yes", true, "overwrite", g_l('newFile',"[overwriteFile]")).
+we_forms::radiobutton("no", false, "overwrite", g_l('newFile',"[renameFile]")),"space"=>0));
 
 if($we_ContentType == "image/*"){
 	$_thumbnails = new we_htmlSelect(array("multiple" => "multiple", "name" => "Thumbnails[]", "id" => "Thumbnails", "class" => "defaultfont", "size" => "6", "style" => "width: 330px;"));
@@ -191,7 +189,7 @@ if($we_ContentType == "image/*"){
 
 	}
 
-	array_push($parts,array("headline"=>"","html"=>we_forms::checkbox("1", true, "import_metadata", $l_metadata["import_metadata_at_upload"]),"space"=>0));
+	array_push($parts,array("headline"=>"","html"=>we_forms::checkbox("1", true, "import_metadata", g_l('metadata',"[import_metadata_at_upload]")),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_thumbnails"]["create_thumbnails"]."<br>".$_thumbnails->getHtmlCode(),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>g_l('global',"[title]")."<br>".htmlTextInput("img_title",24,"","","","text",330),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_we_class"]["alt"]."<br>".htmlTextInput("img_alt",24,"","","","text",330),"space"=>0));
@@ -233,7 +231,7 @@ endif ?>
    <input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
    <input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
    <input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
-	<?php print we_multiIconBox::getHTML("","100%",$parts,30,$buttons,-1,"","",false,$l_newFile["import_File_from_hd_title"], "", 560); ?>
+	<?php print we_multiIconBox::getHTML("","100%",$parts,30,$buttons,-1,"","",false,g_l('newFile',"[import_File_from_hd_title]"), "", 560); ?>
 </form></center>
 </body>
 </html>

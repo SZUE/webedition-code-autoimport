@@ -21,12 +21,11 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/messageConsole.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop($l_messageConsole["headline"]);
+htmlTop(g_l('messageConsole',"[headline]"));
 print STYLESHEET;
 
 $we_button = new we_button();
@@ -46,7 +45,7 @@ $_buttons = $we_button->position_yes_no_cancel(	$deleteAllButton,
 	list-style-type		: none;
 	margin				: 0;
 	padding				: 0;
-	
+
 }
 
 #jsMessageUl li {
@@ -103,7 +102,7 @@ li.msgError {
 
 <div id="headlineDiv">
 	<div class="weDialogHeadline">
-		<?php print $l_messageConsole["headline"] ?>
+		<?php print g_l('messageConsole',"[headline]") ?>
 	</div>
 </div>
 <div id="messageDiv">

@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/' . $GLOBALS["WE_LANGUAGE"] .  '/multiEditor.inc.php');
 //make sure we know which browser is used
 include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
 
@@ -1027,7 +1026,7 @@ function we_cmd() {
 				}
 
 			} else {
-				alert("<?php print $l_multiEditor["no_editor_left"]; ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
 
 			}
 			break;
@@ -1050,7 +1049,7 @@ function we_cmd() {
 				we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 
 			} else {
-				alert("<?php print $l_multiEditor["no_editor_left"]; ?>");
+				alert("<?php print $g_l('multiEditor',"[no_editor_left]"); ?>");
 
 			}
 			break;
@@ -1320,7 +1319,7 @@ function we_cmd() {
 				top.weEditorFrameController.toggleFrames();
 
 			} else {
-				<?php we_message_reporting::getShowMessageCall($l_multiEditor["no_editor_left"], WE_MESSAGE_INFO); ?>
+				<?php we_message_reporting::getShowMessageCall(g_l('multiEditor',"[no_editor_left]"), WE_MESSAGE_INFO); ?>
 			}
 	}
 

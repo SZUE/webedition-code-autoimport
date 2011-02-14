@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,34 +18,30 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-$GLOBALS['l_logging'] = array(
-	'date' 						=> 'Päiväys',
-	'user' 						=> 'Käyttäjä',
-	'logEntry' 					=> 'Logimerkintä',
-	'activated' 				=> 'aktivoitu',
-	'deactivated' 				=> 'pois päältä',
-	'zeitraum' 					=> 'aika',
-	'days' 						=> 'Päiviä',
-	'weeks' 					=> 'Viikkoja',
-	'years' 					=> 'Vuosia',
-	'anzahlVersions' 			=> 'Versiomäärä',
-	'version' 					=> 'Versio',
-	'ID' 						=> 'ID',
-	'name' 						=> 'Nimi',
-	'path' 						=> 'Polku',
-	'versions' 					=> 'Versiot',
-	'contenttype' 				=> 'Sisältötyyppi',
-	'details' 					=> 'Yksityiskohdat',
-	'deleted' 					=> 'poistettu',
-	'reset' 					=> 'nollaa',
-	'of' 						=> '',
-	'all' 						=> 'näytä kaikki',
-	'defaultView' 				=> 'Oletusnäkymä',
-	'back' 						=> 'takaisin',
-	'next' 						=> 'seuraava',
-	'prefsVersionChanged' 		=> 'Version asetukset tallennettu'
-)
-	
-	
-?>
+$l_logging = array(
+		'date' => 'Päiväys',
+		'user' => 'Käyttäjä',
+		'logEntry' => 'Logimerkintä',
+		'activated' => 'aktivoitu',
+		'deactivated' => 'pois päältä',
+		'zeitraum' => 'aika',
+		'days' => 'Päiviä',
+		'weeks' => 'Viikkoja',
+		'years' => 'Vuosia',
+		'anzahlVersions' => 'Versiomäärä',
+		'version' => 'Versio',
+		'ID' => 'ID',
+		'name' => 'Nimi',
+		'path' => 'Polku',
+		'versions' => 'Versiot',
+		'contenttype' => 'Sisältötyyppi',
+		'details' => 'Yksityiskohdat',
+		'deleted' => 'poistettu',
+		'reset' => 'nollaa',
+		'of' => '',
+		'all' => 'näytä kaikki',
+		'defaultView' => 'Oletusnäkymä',
+		'back' => 'takaisin',
+		'next' => 'seuraava',
+		'prefsVersionChanged' => 'Version asetukset tallennettu'
+);
