@@ -23,7 +23,7 @@
  * };
  *
  * Tag description and attributes are taken right from the tag descriptor files.
- * 
+ *
  * 2 examples of array elements:
  *
  *   top.we_tags["we:tag"] = {
@@ -37,7 +37,7 @@
  *         "anotherAttribute": 2 // 2 indicates, this attribute has no default options
  *      }
  *   };
- * 
+ *
  *   top.we_tags["we:anotherTag"] = {
  *      "desc": "This is the tags description",
  *      "attributes": 1 // 1 indicates this tag has no default attributes
@@ -50,7 +50,6 @@
  */
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
 	protect();
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/taged.inc.php");
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_tag.inc.php');
 	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
 	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');

@@ -18,22 +18,21 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: taged.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_taged["description"] = "Description";
-$l_taged['tagreference_linktext'] = "to the tag reference";
-$l_taged["required"] = "All fields which are marked with * have to be filled!";
-$l_taged['fill_required_fields'] = "The following required fields need to be filled.";
-$l_taged['type_attribute'] = "Type - Attribute";
-$l_taged['select_type'] = "-- Select type--";
-$l_taged['attributes'] = "Attributes";
-$l_taged['no_type_selected'] = "Please select a type first.";
-$l_taged['no_attributes_for_type'] = "There are no attributes for this type of value.";
-$l_taged['defaultvalue'] = "Default value";
-$l_taged['tag_not_found'] = "The required file for the tag-wizard was not found. If you use a custom we:tag, make sure to save the relating tag-wizard file in the correct folder (/webEdition/we/include/we_tags/custom_tags/).";
-?>
+$l_taged = array(
+		'description' => "Description",
+		'tagreference_linktext' => "to the tag reference",
+		'required' => "All fields which are marked with * have to be filled!",
+		'fill_required_fields' => "The following required fields need to be filled.",
+		'type_attribute' => "Type - Attribute",
+		'select_type' => "-- Select type--",
+		'attributes' => "Attributes",
+		'no_type_selected' => "Please select a type first.",
+		'no_attributes_for_type' => "There are no attributes for this type of value.",
+		'defaultvalue' => "Default value",
+		'tag_not_found' => "The required file for the tag-wizard was not found. If you use a custom we:tag, make sure to save the relating tag-wizard file in the correct folder (/webEdition/we/include/we_tags/custom_tags/).",
+);

@@ -20,7 +20,6 @@
  */
 if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_class.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/tags.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 }
@@ -119,7 +118,7 @@ class we_class {
 		if ($showRadio) {
 			$checked = ($intID_elem_Name && $int) || ((!$intID_elem_Name) && (!$int));
 
-			$out = "<td>" . we_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, ((!$intID_elem_Name) ? $GLOBALS["l_tags"]["ext_href"] : $GLOBALS["l_tags"]["int_href"]) . ":&nbsp;", true, "defaultfont", "")
+			$out = "<td>" . we_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, ((!$intID_elem_Name) ? g_l('tags',"[ext_href]"): g_l('tags',"[int_href]")) . ":&nbsp;", true, "defaultfont", "")
 							. "</td>";
 		} else {
 			$out .= '<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />';

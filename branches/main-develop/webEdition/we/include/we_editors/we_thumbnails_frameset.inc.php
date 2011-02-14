@@ -81,7 +81,6 @@ if( we_image_edit::gd_version() > 0 ){
 } else {    //  gd_lib is not installed - show error
 
     include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-    include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/import_files.inc.php");
     include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 
     print STYLESHEET . '</head><body class="weDialogBody">';

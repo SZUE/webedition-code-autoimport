@@ -29,7 +29,7 @@ class weTagData_linkAttribute extends weTagDataAttribute
 	 */
 	function weTagData_linkAttribute($id, $name, $required = false, $module = '', $value='')
 	{
-		
+
 		parent::weTagDataAttribute($id, $name, $required, $module);
 		$this->Value = $value;
 	}
@@ -37,25 +37,25 @@ class weTagData_linkAttribute extends weTagDataAttribute
 	/**
 	 * @return string
 	 */
-	
+
 	function getCodeForTagWizard()
-	{	
+	{
 		return '
 					<table class="attribute">
 					<tr>
 						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' . we_htmlElement::htmlSpan(
 				array(
-					
-						'name' => $this->Name, 
-						'id' => $this->getIdName(), 
-						'value' => '', 
+
+						'name' => $this->Name,
+						'id' => $this->getIdName(),
+						'value' => '',
 						'class' => 'defaultfont'
-				),'<a href="http://' . $this->Value . '" target="TagRef">'.$GLOBALS['l_taged']['tagreference_linktext'].'</a>') . '</td>
+				),'<a href="http://' . $this->Value . '" target="TagRef">'.g_l('taged','[tagreference_linktext]').'</a>') . '</td>
 					</tr>
 					</table>';
 	}
-	
-	
+
+
 }
 
 ?>

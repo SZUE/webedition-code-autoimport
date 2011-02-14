@@ -23,7 +23,7 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_siteimport"] = array(
+$l_siteimport = array(
 		'siteimport' => "Импортировать данные сайта",
 		'importFrom' => "Исходная директория",
 		'importTo' => "Директория назначения",

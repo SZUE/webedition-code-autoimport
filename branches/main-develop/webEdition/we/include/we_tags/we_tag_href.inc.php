@@ -26,7 +26,6 @@ function we_tag_href($attribs, $content){
 		// Include files
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/tags.inc.php");
 	}
 
 	$foo = attributFehltError($attribs, "name", "href");
@@ -147,7 +146,7 @@ function we_tag_href($attribs, $content){
 					1,
 					$int,
 					$int_elem_Name,
-					$span . $GLOBALS["l_tags"]["int_href"] . ":</span>") . '</td>
+					$span . g_l('tags',"[int_href]") . ":</span>") . '</td>
 						<td class="weEditmodeStyle">
 							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
 							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>
@@ -164,7 +163,7 @@ function we_tag_href($attribs, $content){
 					0,
 					!$int,
 					$int_elem_Name,
-					$span . $GLOBALS["l_tags"]["ext_href"] . ":</span>") . '</td>
+					$span . g_l('tags',"[ext_href]") . ":</span>") . '</td>
 						<td class="weEditmodeStyle">
 							<input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
@@ -212,7 +211,7 @@ function we_tag_href($attribs, $content){
 					<tr>
 						<td class="weEditmodeStyle defaultfont" nowrap="nowrap">
 							<input type="hidden" name="' . $int_elem_Name . '" value="1" />
-							' . $span . $GLOBALS["l_tags"]["int_href"] . ':</span></td>
+							' . $span . g_l('tags',"[int_href]") . ':</span></td>
 						<td class="weEditmodeStyle">
 							<input type="hidden" name="' . $ext_elem_Name . '" />
 							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
@@ -268,7 +267,7 @@ function we_tag_href($attribs, $content){
 					<tr>
 						<td class="weEditmodeStyle defaultfont" nowrap="nowrap">
 							<input type="hidden" name="' . $int_elem_Name . '" value="0" />
-							' . $span . $GLOBALS["l_tags"]["ext_href"] . ':</span></td>
+							' . $span . g_l('tags',"[ext_href]") . ':</span></td>
 						<td class="weEditmodeStyle">
 							<input type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
