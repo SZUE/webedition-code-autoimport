@@ -21,9 +21,6 @@
 // Workarround for bug 1292
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
-if (!isset($l_alert)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-}
 
 protect();
 // Dreamweaver RPC Command ShowPreparedPreview
@@ -403,14 +400,14 @@ function fields_are_valid() {
 						if ( !theVal.match(/^-{0,1}\d+$/) ) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_contains_incorrect_chars'], "' + theType + '");
+							$_msg = sprintf(g_l('alert','[field_contains_incorrect_chars]'), "' + theType + '");
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
 						} else if(theVal>2147483647) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_int_value_to_height']);
+							$_msg = sprintf(g_l('alert','[field_int_value_to_height]'));
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
@@ -420,7 +417,7 @@ function fields_are_valid() {
 						if ( isNaN(theVal) ) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_contains_incorrect_chars'], "' + theType + '");
+							$_msg = sprintf(g_l('alert','[field_contains_incorrect_chars]'), "' + theType + '");
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
@@ -430,7 +427,7 @@ function fields_are_valid() {
 						if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>255) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_input_contains_incorrect_length']);
+							$_msg = sprintf(g_l('alert','[field_input_contains_incorrect_length]'));
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
@@ -440,7 +437,7 @@ function fields_are_valid() {
 						if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>10) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_int_contains_incorrect_length']);
+							$_msg = sprintf(g_l('alert','[field_int_contains_incorrect_length]'));
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;

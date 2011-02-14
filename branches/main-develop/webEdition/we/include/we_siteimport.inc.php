@@ -21,7 +21,6 @@
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/thumbnails.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
@@ -506,7 +505,6 @@ class weSiteImport
 	 */
 	function _getCreateWePageSettingsHTML()
 	{
-		global $l_alert;
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		$we_button = new we_button();
 
@@ -682,7 +680,7 @@ class weSiteImport
 			var reg = /[^a-z0-9\._\-]/gi;
 			if (reg.test(f.templateName.value)) {
 				' . we_message_reporting::getShowMessageCall(
-				$l_alert["we_filename_notValid"],
+				g_l('alert',"[we_filename_notValid]"),
 				WE_MESSAGE_ERROR) . '
 				f.templateName.focus();
 				f.templateName.select();

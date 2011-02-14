@@ -1358,7 +1358,6 @@ class weBackupWizard{
  	}
 
  	function  getHTMLCmd(){
-			global $l_alert;
 			if (isset($_REQUEST["operation_mode"])) {
 				switch ($_REQUEST["operation_mode"]) {
 					case "backup":
@@ -1519,7 +1518,7 @@ class weBackupWizard{
 								insertIntoCleanUp($we_backup_obj->filename, time());
 								$ok = true;
 							} else {
-								$we_alerttext = sprintf($l_alert["we_backup_import_upload_err"], ini_get("upload_max_filesize"));
+								$we_alerttext = sprintf(g_l('alert',"[we_backup_import_upload_err]"), ini_get("upload_max_filesize"));
 								print "\n".
 									we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR)

@@ -325,7 +325,7 @@ class weNavigationView {
 					cnfUrl = copyNaviFolderUrl+"?protocol=text&cmd=CopyNavigationFolder&cns=tools/navigation&we_cmd[0]="+selfNaviPath+"&we_cmd[1]="+selfNaviId+"&we_cmd[2]="+folderPath+"&we_cmd[3]="+folderID;
 					top.YAHOO.util.Connect.asyncRequest("GET", cnfUrl, copyNaviFolderAjaxCallback);
 				} else {
-					' . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . '
+					' . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folder_not_valid]"), WE_MESSAGE_ERROR) . '
 				}
 			}
 
@@ -335,11 +335,11 @@ class weNavigationView {
 						' . we_message_reporting::getShowMessageCall(g_l('copyFolder',"[copy_success]"), WE_MESSAGE_NOTICE) . '
 						top.content.cmd.location.reload();
 					} else {
-						' . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . '
+						' . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folder_not_valid]"), WE_MESSAGE_ERROR) . '
 					}
 				},
 				failure: function(o) {
-					' . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . '
+					' . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folder_not_valid]"), WE_MESSAGE_ERROR) . '
 				}
 			}
 

@@ -20,7 +20,6 @@
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 
 protect();
 
@@ -28,7 +27,7 @@ htmlTop();
 
 print STYLESHEET;
 
-$content = "<p class=\"defaultfont\">" . $l_alert["no_perms_action"] . "</p>";
+$content = "<p class=\"defaultfont\">" . g_l('alert',"[no_perms_action]") . "</p>";
 
 ?>
 <script language="JavaScript" type="text/javascript">
@@ -40,7 +39,7 @@ _EditorFrame.setEditorIsLoading(false);
 
 <body class="weDialogBody">
 <?php
-print htmlDialogLayout($content, $l_alert["no_perms_title"]);
+print htmlDialogLayout($content, g_l('alert',"[no_perms_title]"));
 ?>
     </body>
 </html>

@@ -37,7 +37,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMeta
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/Exif.class.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/IPTC.class.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
 /*****************************************************************************
@@ -122,7 +121,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $DB_WE, $SYSTEM;
+	global $DB_WE, $SYSTEM;
 
 	$we_button = new we_button();
 
@@ -378,7 +377,7 @@ $save_javascript ="";
 if (isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] == "true") {
 
 	if (isset($_REQUEST["metadatafields_name"]) && (strpos($_REQUEST["metadatafields_name"],"'") !== false || strpos($_REQUEST["metadatafields_name"],",") !== false)) {
-		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall($l_alert["metadatafields_hochkomma"], WE_MESSAGE_ERROR).
+		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[metadatafields_hochkomma]"), WE_MESSAGE_ERROR).
 							'history.back()');
 	} else {
 		save_all_values();

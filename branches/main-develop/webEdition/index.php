@@ -37,7 +37,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/alert.inc.php');
 
 $ignore_browser = isset($_REQUEST['ignore_browser']) &&  ($_REQUEST['ignore_browser'] === 'true');
 
@@ -158,7 +157,7 @@ $DB_WE->next_record();
 if ($DB_WE->f('count') >= LOGIN_FAILED_NR) {
 	htmlTop('webEdition ' . WE_VERSION);
 	print we_htmlElement::jsElement(
-		we_message_reporting::getShowMessageCall( sprintf($l_alert['3timesLoginError'], LOGIN_FAILED_NR,LOGIN_FAILED_TIME), WE_MESSAGE_ERROR )
+		we_message_reporting::getShowMessageCall( sprintf(g_l('alert','[3timesLoginError]'), LOGIN_FAILED_NR,LOGIN_FAILED_TIME), WE_MESSAGE_ERROR )
 	);
 	print '</html>';
 	exit();
@@ -204,7 +203,7 @@ $_head_javascript = "
 	document.cookie = cookieBackup;
 
 	if (!cookieOk) {
-		" . we_message_reporting::getShowMessageCall( $l_alert["no_cookies"], WE_MESSAGE_ERROR ) . "
+		" . we_message_reporting::getShowMessageCall( g_l('alert',"[no_cookies]"), WE_MESSAGE_ERROR ) . "
 	}
 
 ";
@@ -291,7 +290,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), $l_alert['phpError'])));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert','[phpError]'))));
 
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
@@ -321,7 +320,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), $l_alert['phpError'])));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert','[phpError]'))));
 
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
@@ -352,7 +351,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), $l_alert['phpError'])));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert','[phpError]'))));
 
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
@@ -533,7 +532,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 				$_body_javascript .= "var ah=6000;\n";
 			}
 
-			$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . $l_alert["popupLoginError"] . "', '/webEdition/index.php'); }";
+			$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert',"[popupLoginError]") . "', '/webEdition/index.php'); }";
 			break;
 		case 1:
 			$DB_WE->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET Username="' . $_POST['username'] . '", IP="' . $_SERVER['REMOTE_ADDR'] . '"');
@@ -547,16 +546,16 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 			$DB_WE->next_record();
 
 			if ($DB_WE->f('count') >= LOGIN_FAILED_NR) {
-				$_body_javascript = we_message_reporting::getShowMessageCall(sprintf($l_alert["3timesLoginError"], LOGIN_FAILED_NR, LOGIN_FAILED_TIME), WE_MESSAGE_ERROR);
+				$_body_javascript = we_message_reporting::getShowMessageCall(sprintf(g_l('alert',"[3timesLoginError]"), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), WE_MESSAGE_ERROR);
 			} else {
-				$_body_javascript = we_message_reporting::getShowMessageCall($l_alert["login_failed"], WE_MESSAGE_ERROR);
+				$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_failed]"), WE_MESSAGE_ERROR);
 			}
 			break;
 		case 3:
-			$_body_javascript = we_message_reporting::getShowMessageCall($l_alert["login_failed_security"], WE_MESSAGE_ERROR) . "document.location = '/webEdition/index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? "true" : "false")) : "") . "';";
+			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_failed_security]"), WE_MESSAGE_ERROR) . "document.location = '/webEdition/index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? "true" : "false")) : "") . "';";
 			break;
 		case 4:
-			$_body_javascript = we_message_reporting::getShowMessageCall($l_alert["login_denied_for_user"], WE_MESSAGE_ERROR);
+			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_denied_for_user]"), WE_MESSAGE_ERROR);
 			break;
 	}
 

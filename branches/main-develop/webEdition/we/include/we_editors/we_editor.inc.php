@@ -507,13 +507,13 @@ else {
 							$wasNew = (abs($we_doc->ID) == 0) ? true : false;
 							$wasPubl = (isset($we_doc->Published) && $we_doc->Published) ? true : false;
 							if (!$_SESSION["perms"]["ADMINISTRATOR"] && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile"  && !in_workspace($we_doc->ParentID,get_ws($we_doc->Table),$we_doc->Table)) {
-								$we_responseText = $l_alert[FILE_TABLE]["not_im_ws"];
+								$we_responseText = g_l('alert','['.FILE_TABLE.'][not_im_ws]');
 								$we_responseTextType = WE_MESSAGE_ERROR;
 								include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_save.inc.php");
 								exit();
 							}
 							if(!$we_doc->userCanSave()) {
-								$we_responseText = $l_alert["access_denied"];
+								$we_responseText = g_l('alert',"[access_denied]");
 								$we_responseTextType = WE_MESSAGE_ERROR;
 								include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_save.inc.php");
 								exit();

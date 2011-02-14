@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 protect();
 
@@ -50,7 +49,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save"){
 		while(!feof($fh)) $we_fileData .= fread($fh,10000);
 		fclose($fh);
 	}else{
-		$we_alerttext=sprintf($l_alert["can_not_open_file"],ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]));
+		$we_alerttext=sprintf(g_l('alert',"[can_not_open_file]"),ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]));
 	}
 
 }

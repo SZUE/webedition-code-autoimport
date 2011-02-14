@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 protect();
 htmlTop(g_l('global','[question]'));
 
@@ -29,7 +28,7 @@ $yesCmd = "url = '" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&step=2&btyp
 $noCmd = "self.close();opener.top.toggleBusy(0);";
 $cancelCmd = "self.close();opener.top.toggleBusy(0);";
 
-$alerttext = $l_alert["document_move_warning"];
+$alerttext = g_l('alert',"[document_move_warning]");
 
 ?>
 <script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR; ?>windows.js"></script>

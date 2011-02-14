@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 protect();
 htmlTop(g_l('global','[question]'));
 
@@ -132,7 +131,7 @@ EOFEOF;
 
 $content = '
 <div>
-	' . $l_alert["exit_multi_doc_question"] . '
+	' . g_l('alert',"[exit_multi_doc_question]") . '
 	<br />
 	<br />
 	<div style="width: 350px; height: 150px; background: white; overflow: auto;">

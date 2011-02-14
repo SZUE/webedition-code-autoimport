@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 protect();
 
@@ -186,7 +185,7 @@ function getDataType($dat){
 		$dir_obj->close();
  }
  else{
-	print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.$l_alert["access_denied"].' --</div>';
+	print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"),WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.g_l('alert',"[access_denied]").' --</div>';
  }
 
  switch($_REQUEST["ord"]){

@@ -93,9 +93,9 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 		}
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 	} else if(isset($_FILES['we_File']['name']) && !empty($_FILES['we_File']['name'])) {
-		$we_alerttext=$l_alert["wrong_file"][$we_doc->ContentType];
+		$we_alerttext=g_l('alert',"[wrong_file][".$we_doc->ContentType.']');
 	} else if(isset($_FILES['we_File']['name']) && empty($_FILES['we_File']['name'])) {
-		$we_alerttext=$l_alert["no_file_selected"];
+		$we_alerttext=g_l('alert',"[no_file_selected]");
 	}
 
 }

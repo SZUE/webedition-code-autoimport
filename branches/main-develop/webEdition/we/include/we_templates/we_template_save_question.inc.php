@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 protect();
 htmlTop(g_l('global','[question]'));
 
@@ -32,9 +31,9 @@ if (isset($_REQUEST["we_cmd"][6])) {
 }
 
 if ($nrTemplatesUsedByThisTemplate) {
-	$alerttext = $l_alert["template_save_warning2"];
+	$alerttext = g_l('alert',"[template_save_warning2]");
 } else {
-	$alerttext = sprintf((($nrDocsUsedByThisTemplate==1) ? $l_alert["template_save_warning1"] : $l_alert["template_save_warning"]),$nrDocsUsedByThisTemplate);
+	$alerttext = sprintf((($nrDocsUsedByThisTemplate==1) ? g_l('alert',"[template_save_warning1]") : g_l('alert',"[template_save_warning]")),$nrDocsUsedByThisTemplate);
 }
 ?>
 <script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>

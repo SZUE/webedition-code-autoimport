@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 htmlTop();
 protect();
@@ -36,7 +35,7 @@ protect();
         switch($_REQUEST["ucmd"]){
             case "new_user":
                 if(!we_hasPerm("NEW_USER")){
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR) . '</script>';
                         break;
                 }
                 $user_object=new we_user();
@@ -63,7 +62,7 @@ protect();
                     $user_object->initFromDB($_REQUEST["uid"]);
 
         		    if(!we_hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR) . '</script>';
         			    $user_object=new we_user();
                         break;
                     }
@@ -93,13 +92,13 @@ protect();
             		print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('global',"[username_wrong_chars]"), WE_MESSAGE_ERROR) . '</script>';
                     break;
             	} else if(!isset($_SESSION["user_session_data"])){
-                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["no_perms"], WE_MESSAGE_ERROR) . '</script>';
+                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR) . '</script>';
                     break;
                 } else {
 					if(isset($_REQUEST[$_REQUEST['obj_name'] . '_ParentID']) && !empty($_REQUEST[$_REQUEST['obj_name'] . '_ParentID']) && $_REQUEST[$_REQUEST['obj_name'] . '_ParentID']>0) {
 				    	$weAcResult = $weAcQuery->getItemById($_REQUEST[$_REQUEST['obj_name'] . '_ParentID'],USER_TABLE,array("IsFolder"),false);
 				    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {
-		                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["no_perms"], WE_MESSAGE_ERROR) . '</script>';
+		                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR) . '</script>';
 		                    break;
 				    	}
 					}
@@ -160,7 +159,7 @@ protect();
                     $user_object->setState($_SESSION["user_session_data"]);
                 }
                 if(!we_hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
-                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script>';
+                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR) . '</script>';
         		    $user_object = new we_user();
                     break;
                 }
@@ -169,19 +168,19 @@ protect();
                 if($user_object){
 
                     if(!we_hasPerm("SAVE_USER") && ($user_object->Type==0 || $user_object->Type==2) && $user_object->ID!=0){
-                   		print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script>';
+                   		print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR) . '</script>';
                     	break;
 	                }
 	        	    if(!we_hasPerm("NEW_USER") && ($user_object->Type==0 || $user_object->Type==2) && $user_object->ID==0){
-	                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script>';
+	                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR) . '</script>';
 	                    break;
 	                }
 	                if(!we_hasPerm("SAVE_GROUP") && $user_object->Type==1 && $user_object->ID!=0){
-	                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script>';
+	                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR) . '</script>';
 	                    break;
 	                }
 	        	    if(!we_hasPerm("NEW_GROUP") && $user_object->Type==1  && $user_object->ID==0){
-	                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script>';
+	                    print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR) . '</script>';
 	                    break;
 	                }
 	                if(isset($_REQUEST["oldtab"]))
@@ -298,21 +297,21 @@ protect();
 					}
 
                     if(!we_hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_alert["access_denied"], WE_MESSAGE_ERROR ) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR ) . '</script>';
         		        $user_object = new we_user();
                         break;
            	        }
         	        if(!we_hasPerm("DELETE_USER") && $user_object->Type==0){
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_alert["access_denied"], WE_MESSAGE_ERROR ) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR ) . '</script>';
                         break;
                     }
                     if(!we_hasPerm("DELETE_GROUP") && $user_object->Type==1){
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_alert["access_denied"], WE_MESSAGE_ERROR ) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR ) . '</script>';
                         break;
                     }
 
 					if(isset($GLOBALS["user"]) && $user_object->Text == $GLOBALS["user"]["Username"]){
-						print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_alert["user_same"], WE_MESSAGE_ERROR ) . '</script>';
+						print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('alert',"[user_same]"), WE_MESSAGE_ERROR ) . '</script>';
 						break;
 					}
 
@@ -347,11 +346,11 @@ protect();
         	        $user_object = new we_user();
         		    $user_object->setState($_SESSION["user_session_data"]);
                     if(!we_hasPerm("DELETE_USER") && $user_object->Type==0){
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_alert["access_denied"], WE_MESSAGE_ERROR ) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR ) . '</script>';
                         break;
                     }
                     if(!we_hasPerm("DELETE_GROUP") && $user_object->Type==1){
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_alert["access_denied"], WE_MESSAGE_ERROR ) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR ) . '</script>';
                         break;
                     }
                     if($user_object->deleteMe()){
@@ -404,7 +403,7 @@ protect();
                                 top.content.we_cmd(\'display_user\','.$_REQUEST["uid"].')
                             </script>';
                     } else {
-                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $l_alert["access_denied"], WE_MESSAGE_ERROR ) . '</script>';
+                        print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR ) . '</script>';
                     }
                 }
                 break;

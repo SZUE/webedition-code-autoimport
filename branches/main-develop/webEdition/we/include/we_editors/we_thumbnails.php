@@ -36,7 +36,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/w
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/alert.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/thumbnails.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_class.inc.php');
 
@@ -262,7 +261,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_thumbnails, $DB_WE, $SYSTEM;
+	global $l_thumbnails, $DB_WE, $SYSTEM;
 
 	$we_button = new we_button();
 
@@ -351,16 +350,16 @@ function build_dialog($selected_setting = "ui") {
 
 						if (name != null) {
 							if((name.indexOf('<') != -1) || (name.indexOf('>') != -1)) {
-								" . we_message_reporting::getShowMessageCall($l_alert["name_nok"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR) . "
 								return;
 							}
 
 							if (name.indexOf(\"'\") != -1 || name.indexOf(\",\") != -1) {
-								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_hochkomma"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_hochkomma]"), WE_MESSAGE_ERROR) . "
 							} else if (name == '') {
-								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_empty"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_empty]"), WE_MESSAGE_ERROR) . "
 							} else if (in_array(thumbnail_names, name)) {
-								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_exists"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_exists]"), WE_MESSAGE_ERROR) . "
 							} else {
 								self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?newthumbnail=' + escape(name);
 							}
@@ -575,7 +574,7 @@ htmlTop();
 if (isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true") {
 
 	if (isset($_REQUEST["thumbnail_name"]) && (strpos($_REQUEST["thumbnail_name"],"'") !== false || strpos($_REQUEST["thumbnail_name"],",") !== false)) {
-		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall($l_alert["thumbnail_hochkomma"], WE_MESSAGE_ERROR).
+		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_hochkomma]"), WE_MESSAGE_ERROR).
 							'history.back()');
 	} else {
 		save_all_values();
@@ -601,5 +600,3 @@ if (isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true
 
 	print we_htmlElement::htmlBody(array("class" => "weDialogBody", "onload"=>"init()"), $_form) . "</html>";
 }
-
-?>

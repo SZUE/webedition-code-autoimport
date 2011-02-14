@@ -22,7 +22,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.ph
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_live_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_move_fn.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
@@ -66,15 +65,15 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 				case 1 :
 					break;
 				case -1 :
-					$message = $l_alert["move_nofolder"];
+					$message = g_l('alert',"[move_nofolder]");
 					$retVal = 0;
 					break;
 				case -2 :
-					$message = $l_alert["move_duplicate"];
+					$message = g_l('alert',"[move_duplicate]");
 					$retVal = 0;
 					break;
 				case -3 :
-					$message = $l_alert["move_onlysametype"];
+					$message = g_l('alert',"[move_onlysametype]");
 					$retVal = 0;
 					break;
 				default :
@@ -90,7 +89,7 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 
 			$script .= "top.toggleBusy(0);\n";
 			$script .= we_message_reporting::getShowMessageCall(
-					sprintf($l_alert["noRightsToMove"], id_to_path($selectedItems[$i], $table)),
+					sprintf(g_l('alert',"[noRightsToMove]"), id_to_path($selectedItems[$i], $table)),
 					WE_MESSAGE_ERROR);
 
 		} else
@@ -113,7 +112,7 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 						$_SESSION["move_files_info"] = str_replace(
 								"\\n",
 								"",
-								sprintf($l_alert["move_of_files_failed"], ""));
+								sprintf(g_l('alert',"[move_of_files_failed]"), ""));
 						foreach ($notMovedItems as $item) {
 							$_SESSION["move_files_nok"][] = array(
 								"icon" => $item['Icon'], "path" => $item['Path']
@@ -121,7 +120,7 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 						}
 						$script .= 'new jsWindow("' . WEBEDITION_DIR . 'moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
 					} else {
-						$script .= we_message_reporting::getShowMessageCall($l_alert["move_ok"], WE_MESSAGE_NOTICE);
+						$script .= we_message_reporting::getShowMessageCall(g_l('alert',"[move_ok]"), WE_MESSAGE_NOTICE);
 
 					}
 				}
@@ -133,10 +132,10 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 
 	} elseif (!isset($_REQUEST["we_target"]) || !$_REQUEST["we_target"]) {
 		$script .= "top.toggleBusy(0);\n";
-		$script .= we_message_reporting::getShowMessageCall($l_alert["move_no_dir"], WE_MESSAGE_ERROR);
+		$script .= we_message_reporting::getShowMessageCall(g_l('alert',"[move_no_dir]"), WE_MESSAGE_ERROR);
 	} else {
 		$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(
-				$l_alert["nothing_to_move"],
+				g_l('alert',"[nothing_to_move]"),
 				WE_MESSAGE_ERROR) . "\n";
 	}
 	print '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
@@ -155,10 +154,10 @@ if ($_SESSION["we_mode"] == "seem") {
 
 	if ($retVal) { //	document moved -> go to seeMode startPage
 		$_js = we_message_reporting::getShowMessageCall(
-				$l_alert['move_single']['return_to_start'],
+				g_l('alert','[move_single][return_to_start]'),
 				WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');";
 	} else {
-		$_js = we_message_reporting::getShowMessageCall($l_alert['move_single']['no_delete'], WE_MESSAGE_ERROR);
+		$_js = we_message_reporting::getShowMessageCall(g_l('alert','[move_single][no_delete]'), WE_MESSAGE_ERROR);
 	}
 	print
 			we_htmlElement::htmlHtml(we_htmlElement::htmlHead(we_htmlElement::jsElement($_js)));
@@ -198,7 +197,7 @@ function press_ok_move() {
 	if(!sel){
 		top.toggleBusy(0);
 		<?php
-		print we_message_reporting::getShowMessageCall($l_alert['nothing_to_move'], WE_MESSAGE_ERROR)?>
+		print we_message_reporting::getShowMessageCall(g_l('alert','[nothing_to_move]'), WE_MESSAGE_ERROR)?>
 		return;
 	}
 
@@ -260,9 +259,9 @@ function press_ok_move() {
 		?>
 
 		if ( confirm("<?php
-		printf($l_alert["move_exit_open_docs_question"], $_type, $_type);
+		printf(g_l('alert',"[move_exit_open_docs_question]"), $_type, $_type);
 		?>" + _openDocs_Str + "\n<?php
-		print $l_alert["move_exit_open_docs_continue"];
+		print g_l('alert',"[move_exit_open_docs_continue]");
 		?>") ) {
 
 			for ( i=0; i<_open_move_editors.length;i++ ) {
@@ -278,7 +277,7 @@ function press_ok_move() {
 	} else {
 
 		if(confirm('<?php
-		print $l_alert["move"];
+		print g_l('alert',"[move]");
 		?>')) {
 			we_cmd('do_move','','<?php
 			print $table;
@@ -296,7 +295,7 @@ function we_submitForm(target,url){
 	if(!sel){
 		top.toggleBusy(0);
 		<?php
-		print we_message_reporting::getShowMessageCall($l_alert['nothing_to_move'], WE_MESSAGE_ERROR)?>
+		print we_message_reporting::getShowMessageCall(g_l('alert','[nothing_to_move]'), WE_MESSAGE_ERROR)?>
 		return;
 	}
 

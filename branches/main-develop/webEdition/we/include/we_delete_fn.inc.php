@@ -18,7 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/alert.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
@@ -114,12 +113,11 @@ function checkDeleteFile($id, $table, $path = "")
 
 function makeAlertDelFolderNotEmpty($folders)
 {
-	global $l_alert;
 	$txt = "";
 	for ($i = 0; $i < sizeof($folders); $i++) {
 		$txt .= $folders[$i] . "\\n";
 	}
-	return sprintf($l_alert["folder_not_empty"], $txt);
+	return sprintf(g_l('alert',"[folder_not_empty]"), $txt);
 }
 
 function deleteFolder($id, $table, $path = "", $delR = true)

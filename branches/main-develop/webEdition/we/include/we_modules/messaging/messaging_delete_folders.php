@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
@@ -50,7 +49,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 		}
 		if(!sel) {
 			top.toggleBusy(0);
-			<?php print we_message_reporting::getShowMessageCall( $l_alert["nothing_to_delete"], WE_MESSAGE_ERROR ); ?>
+			<?php print we_message_reporting::getShowMessageCall( g_l('alert',"[nothing_to_delete]"), WE_MESSAGE_ERROR ); ?>
 			return;
 		}
 		sel = sel.substring(0,sel.length-1);

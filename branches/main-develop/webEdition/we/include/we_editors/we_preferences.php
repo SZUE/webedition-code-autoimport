@@ -38,7 +38,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModuleInfo.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/alert.inc.php");
 
 /*****************************************************************************
  * INITIALIZATION
@@ -3045,7 +3044,7 @@ function check_global_config($values) {
  */
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $DB_WE, $SYSTEM;
+	global $DB_WE, $SYSTEM;
 	$yuiSuggest =& weSuggest::getInstance();
 
 	$we_button = new we_button();
@@ -4574,13 +4573,13 @@ else {
 							}
 
 							function add_recipient() {
-								var newRecipient = prompt(\"" . $l_alert["input_name"] . "\", \"\");
+								var newRecipient = prompt(\"" . g_l('alert',"[input_name]") . "\", \"\");
 								var p = document.forms[0].elements[\"we_recipient\"];
 
 								if (newRecipient != null) {
 									if (newRecipient.length > 0) {
 										if (newRecipient.length > 255 ) {
-											" . we_message_reporting::getShowMessageCall($l_alert["max_name_recipient"], WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert',"[max_name_recipient]"), WE_MESSAGE_ERROR) . "
 											return;
 										}
 
@@ -4590,10 +4589,10 @@ else {
 
 											set_state_edit_delete_recipient();
 										} else {
-											" . we_message_reporting::getShowMessageCall($l_alert["recipient_exists"], WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert',"[recipient_exists]"), WE_MESSAGE_ERROR) . "
 										}
 									} else {
-										" . we_message_reporting::getShowMessageCall($l_alert["not_entered_recipient"], WE_MESSAGE_ERROR) . "
+										" . we_message_reporting::getShowMessageCall(g_l('alert',"[not_entered_recipient]"), WE_MESSAGE_ERROR) . "
 									}
 								}
 							}
@@ -4602,7 +4601,7 @@ else {
 								var p = document.forms[0].elements[\"we_recipient\"];
 
 								if (p.selectedIndex >= 0) {
-									if (confirm(\"" . $l_alert["delete_recipient"] . "\")) {
+									if (confirm(\"" . g_l('alert',"[delete_recipient]") . "\")) {
 										hot = true;
 
 										var d = document.forms[0].elements[\"formmail_deleted\"];
@@ -4621,7 +4620,7 @@ else {
 								if (p.selectedIndex >= 0) {
 									var editRecipient = p.options[p.selectedIndex].text;
 
-									editRecipient = prompt(\"" . $l_alert["recipient_new_name"] . "\", editRecipient);
+									editRecipient = prompt(\"" . g_l('alert',"[recipient_new_name]") . "\", editRecipient);
 								}
 
 								if (p.selectedIndex >= 0 && editRecipient != null) {
@@ -4631,7 +4630,7 @@ else {
 										}
 
 										if (editRecipient.length > 255 ) {
-											" . we_message_reporting::getShowMessageCall($l_alert["max_name_recipient"], WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert',"[max_name_recipient]"), WE_MESSAGE_ERROR) . "
 											return;
 										}
 
@@ -4639,10 +4638,10 @@ else {
 											p.options[p.selectedIndex].text = editRecipient;
 											hot = true;
 										} else {
-											" . we_message_reporting::getShowMessageCall($l_alert["recipient_exists"], WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert',"[recipient_exists]"), WE_MESSAGE_ERROR) . "
 										}
 									} else {
-										" . we_message_reporting::getShowMessageCall($l_alert["not_entered_recipient"], WE_MESSAGE_ERROR) . "
+										" . we_message_reporting::getShowMessageCall(g_l('alert',"[not_entered_recipient]"), WE_MESSAGE_ERROR) . "
 									}
 								}
 							}
@@ -6421,23 +6420,23 @@ if (isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true") {
 	if ($_REQUEST['seem_start_type']=="document") {
 		if (empty($_REQUEST['seem_start_document'])) {
 			$acError = true;
-			$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'],g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
+			$acErrorMsg = sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
 		} else {
 			$acResponse = $acQuery->getItemById($_REQUEST['seem_start_document'],FILE_TABLE,array("IsFolder"));
 			if (!$acResponse || $acResponse[0]['IsFolder']==1) {
 				$acError = true;
-				$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'],g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
+				$acErrorMsg = sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
 			}
 		}
 	} elseif ($_REQUEST['seem_start_type']=="object") {
 		if (empty($_REQUEST['seem_start_object'])) {
 			$acError = true;
-			$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'],g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
+			$acErrorMsg = sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
 		} else {
 			$acResponse = $acQuery->getItemById($_REQUEST['seem_start_object'],OBJECT_FILES_TABLE,array("IsFolder"));
 			if (!$acResponse || $acResponse[0]['IsFolder']==1) {
 				$acError = true;
-				$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'],g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
+				$acErrorMsg = sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs','[seem_startdocument]'),g_l('prefs','[tab_ui]'))."\\n";
 			}
 		}
 	}
@@ -6446,7 +6445,7 @@ if (isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true") {
 		$acResponse = $acQuery->getItemById($_REQUEST['ui_sidebar_file'],FILE_TABLE,array("IsFolder"));
 		if (!$acResponse || $acResponse[0]['IsFolder']==1) {
 			$acError = true;
-			$acErrorMsg .= sprintf($l_alert['field_in_tab_notvalid'],g_l('prefs','[sidebar]')." / ".g_l('prefs','[sidebar_document]'),g_l('prefs','[tab_ui]'))."\\n";
+			$acErrorMsg .= sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs','[sidebar]')." / ".g_l('prefs','[sidebar_document]'),g_l('prefs','[tab_ui]'))."\\n";
 		}
 	}
 	// check doc for error on none existing objects
@@ -6454,14 +6453,14 @@ if (isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true") {
 		$acResponse = $acQuery->getItemById($_REQUEST['error_document_no_objectfile'],FILE_TABLE,array("IsFolder"));
 		if (!$acResponse || $acResponse[0]['IsFolder']==1) {
 			$acError = true;
-			$acErrorMsg .= sprintf($l_alert['field_in_tab_notvalid'],g_l('prefs','[error_no_object_found]'),g_l('prefs','[tab_error_handling]'))."\\n";
+			$acErrorMsg .= sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs','[error_no_object_found]'),g_l('prefs','[tab_error_handling]'))."\\n";
 		}
 	}
 	// check if versioning number is correct
 	if (isset($_REQUEST['versions_anzahl']) && $_REQUEST['versions_anzahl']!="") {
 		if (!pos_number($_REQUEST['versions_anzahl'])) {
 			$acError = true;
-			$acErrorMsg .= sprintf($l_alert['field_in_tab_notvalid'],g_l('prefs','[versioning_anzahl]'),g_l('prefs','[tab_versions]'))."\\n";
+			$acErrorMsg .= sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs','[versioning_anzahl]'),g_l('prefs','[tab_versions]'))."\\n";
 		}
 	}
 	$doSave=true;
@@ -6530,7 +6529,7 @@ function setColorField(name) {
 	document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
 }
 
-' . ($acError ? we_message_reporting::getShowMessageCall($l_alert['field_in_tab_notvalid_pre']."\\n\\n".$acErrorMsg."\\n".$l_alert['field_in_tab_notvalid_post'], WE_MESSAGE_ERROR) : ""));
+' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert','[field_in_tab_notvalid_pre]')."\\n\\n".$acErrorMsg."\\n".g_l('alert','[field_in_tab_notvalid_post]'), WE_MESSAGE_ERROR) : ""));
 
 	$_we_win_js = '<script src="'.JS_DIR.'windows.js" language="JavaScript" type="text/javascript"></script>';
 

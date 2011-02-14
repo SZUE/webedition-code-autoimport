@@ -24,8 +24,7 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 }
 if (defined('WE_TAG_GLOBALS') && !we_isLocalRequest()) {
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/alert.inc.php');
-	exit($l_alert['we_localhost_invalid_request']);
+	exit(g_l('alert','[we_localhost_invalid_request]'));
 }
 
 /* the parent class of storagable webEdition classes */

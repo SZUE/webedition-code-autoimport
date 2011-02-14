@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
@@ -56,7 +55,7 @@ $we_button = new we_button();
 if (isset($_FILES['we_uploadedFile'])){
 	$ct = getContentTypeFromFile($_FILES['we_uploadedFile']["name"]);
 	if(!we_hasPerm($GLOBALS["WE_CONTENT_TYPES"][$ct]["Permission"])){
-		$we_alerttext=$l_alert["upload_notallowed"];
+		$we_alerttext=g_l('alert',"[upload_notallowed]");
 	}
 }
 
@@ -147,9 +146,9 @@ if ((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploade
 
 } else if(isset($_FILES['we_uploadedFile'])){
 	if (we_filenameNotValid($_FILES['we_uploadedFile']['name'])) {
-		$we_alerttext=$l_alert["we_filename_notValid"];
+		$we_alerttext=g_l('alert',"[we_filename_notValid]");
 	} else {
-		$we_alerttext=$l_alert["wrong_file"][$we_ContentType];
+		$we_alerttext=g_l('alert',"[wrong_file][".$we_ContentType.']');
 	}
 }
 

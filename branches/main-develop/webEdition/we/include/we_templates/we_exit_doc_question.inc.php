@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 protect();
 
@@ -146,7 +145,7 @@ print STYLESHEET;
 </head>
 
 <body onUnload="window_closed();" class="weEditorBody" onLoad="self.focus();" onBlur="self.focus();">
-	<?php print htmlYesNoCancelDialog($l_alert["exit_doc_question_$_documentTable"],IMAGE_DIR."alert.gif",true,true,true,$yesCmd,$noCmd,$cancelCmd); ?>
+	<?php print htmlYesNoCancelDialog(g_l('alert',"[exit_doc_question_$_documentTable]"),IMAGE_DIR."alert.gif",true,true,true,$yesCmd,$noCmd,$cancelCmd); ?>
 </body>
 
 </html>

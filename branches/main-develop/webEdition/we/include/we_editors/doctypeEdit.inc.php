@@ -22,10 +22,9 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_docTypes.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_docTypes.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 protect();
 $parts = array();
@@ -44,12 +43,12 @@ switch ($_REQUEST["we_cmd"][0]) {
 		}
 		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
 		if (ereg("'",$we_doc->DocType) || ereg(",",$we_doc->DocType) || ereg("\"",$we_doc->DocType)) {
-			$we_responseText = $l_alert["doctype_hochkomma"];
+			$we_responseText = g_l('alert',"[doctype_hochkomma]");
 			$we_response_type = WE_MESSAGE_ERROR;
 			$we_JavaScript = "";
 			$we_show_response = 1;
 		} else if (strlen($we_doc->DocType)==0) {
-			$we_responseText = $l_alert["doctype_empty"];
+			$we_responseText = g_l('alert',"[doctype_empty]");
 			$we_response_type = WE_MESSAGE_ERROR;
 			$we_JavaScript = "";
 			$we_show_response = 1;
@@ -81,7 +80,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 		break;
 	case "deleteDocTypeok":
 		if (!we_hasPerm("EDIT_DOCTYPE")) {
-			$we_responseText = $l_alert["no_perms"];
+			$we_responseText = g_l('alert',"[no_perms]");
 			$we_response_type = WE_MESSAGE_ERROR;
 			break;
 		}
@@ -183,7 +182,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 	<?php endif ?>
 	<?php if($_REQUEST["we_cmd"][0] == "deleteDocType"): ?>
 		<?php if(!we_hasPerm("EDIT_DOCTYPE")):?>
-			<?php print we_message_reporting::getShowMessageCall($l_alert["no_perms"], WE_MESSAGE_ERROR); ?>
+			<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR); ?>
 		<?php else:?>
 			if(confirm("<?php printf($l_we_class["doctype_delete_prompt"],$we_doc->DocType); ?>")) {
 				we_cmd("deleteDocTypeok","<?php print $_REQUEST["we_cmd"][1]; ?>");
@@ -209,21 +208,21 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 		}
 		acStatusType = typeof acStatus;
 		if (countSaveLoop > 10) {
-			<?php print we_message_reporting::getShowMessageCall($l_alert['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR) ?>;
+			<?php print we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) ?>;
 			countSaveLoop = 0;
 		} else if(acStatusType.toLowerCase() == 'object') {
 			if(acStatus.running) {
 				countSaveLoop++;
 				setTimeout('we_save_docType(doc,url)',100);
 			} else if(!acStatus.valid) {
-				<?php print we_message_reporting::getShowMessageCall($l_alert['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR) ?>;
+				<?php print we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) ?>;
 				countSaveLoop=0;
 			} else {
 				countSaveLoop=0;
 				we_submitForm(doc,url);
 			}
 		} else {
-			<?php print we_message_reporting::getShowMessageCall($l_alert['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR) ?>;
+			<?php print we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) ?>;
 		}
 	}
 
@@ -258,17 +257,17 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 				var name = prompt("<?php print $l_we_class["newDocTypeName"]; ?>","");
 				if(name != null) {
 					if((name.indexOf("<") != -1) || (name.indexOf(">") != -1)) {
-						<?php print we_message_reporting::getShowMessageCall($l_alert["name_nok"], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR); ?>
 						return;
 					}
 					if(name.indexOf("'") != -1 || name.indexOf('"') != -1 || name.indexOf(',') != -1) {
-						<?php print we_message_reporting::getShowMessageCall($l_alert["doctype_hochkomma"], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[doctype_hochkomma]"), WE_MESSAGE_ERROR); ?>
 					}
 					else if(name=="") {
-						<?php print we_message_reporting::getShowMessageCall($l_alert["doctype_empty"], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[doctype_empty]"), WE_MESSAGE_ERROR); ?>
 					}
 					else if(in_array(docTypeNames,name)) {
-						<?php print we_message_reporting::getShowMessageCall($l_alert["doctype_exists"], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[doctype_exists]"), WE_MESSAGE_ERROR); ?>
 					}
 					else {
 						if (top.opener.top.header) {
@@ -398,4 +397,3 @@ print $yuiSuggest->getYuiJs();
 
 <?php
 $we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-?>

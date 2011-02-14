@@ -80,7 +80,7 @@ print $tab_header;
 var current = "<?php echo $_REQUEST["tool"];?>";
 function openTool(tool) {
 	if(top.content.hot =="1") {
-		if(confirm("<?php print $l_alert['discard_changed_data']?>")) {
+		if(confirm("<?php print g_l('alert','[discard_changed_data]')?>")) {
 			top.content.hot = "0";
 			current = tool;
 			top.content.location.replace('tools_content.php?tool=' + tool);

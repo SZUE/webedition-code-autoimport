@@ -20,7 +20,6 @@
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 
 protect();
 
@@ -28,7 +27,7 @@ htmlTop();
 
 print STYLESHEET;
 
-$content = "<p class=\"defaultfont\">" . $l_alert["noResource"] . "</p>";
+$content = "<p class=\"defaultfont\">" . g_l('alert',"[noResource]") . "</p>";
 
 ?>
 <script language="JavaScript" type="text/javascript">
@@ -40,7 +39,7 @@ _EditorFrame.setEditorIsLoading(false);
 
 <body class="weDialogBody">
 <?php
-print htmlDialogLayout($content, $l_alert["noResourceTitle"]);
+print htmlDialogLayout($content, g_l('alert',"[noResourceTitle]"));
 ?>
     </body>
 </html>

@@ -66,7 +66,7 @@ top.close();
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 ?>
@@ -108,9 +108,9 @@ top.close();
 					if(YAHOO.autocoml.isValid()) {
 						document.we_form.submit();;
 					} else {
-						<?php echo we_message_reporting::getShowMessageCall($GLOBALS['l_alert']['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR); ?>
+						<?php echo we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR); ?>
 					}
-				}				
+				}
 			}
 
 			self.focus();

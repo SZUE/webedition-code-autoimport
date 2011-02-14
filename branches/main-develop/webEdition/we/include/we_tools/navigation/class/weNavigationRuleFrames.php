@@ -23,7 +23,6 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/htm
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 
 class weNavigationRuleFrames
 {
@@ -70,7 +69,6 @@ class weNavigationRuleFrames
 
 	function getHTMLContent()
 	{
-		global $l_alert;
 		// content contains textarea with all so far existing rules
 		$yuiSuggest = & weSuggest::getInstance();
 		$we_button = new we_button();
@@ -276,7 +274,7 @@ class weNavigationRuleFrames
 		$saveButton = $we_button->create_button('save', 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = $we_button->create_button('close', 'javascript:top.window.close();');
 		$acErrorMsg = we_message_reporting::getShowMessageCall(
-				$l_alert['save_error_fields_value_not_valid'],
+				g_l('alert','[save_error_fields_value_not_valid]'),
 				WE_MESSAGE_ERROR);
 		return htmlTop() . STYLESHEET . '
 
@@ -522,4 +520,3 @@ function we_cmd(){
 					');
 	}
 }
-?>
