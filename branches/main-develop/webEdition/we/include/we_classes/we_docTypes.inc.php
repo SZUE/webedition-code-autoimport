@@ -200,7 +200,6 @@ class we_docTypes extends we_class {
 	*/
 
 	function formDocTypeHeader() {
-		global $l_we_class;
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr valign="top">
@@ -232,8 +231,6 @@ class we_docTypes extends we_class {
 	}
 
 	function formDocTypeDefaults() {
-		global $l_we_class;
-
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -304,7 +301,6 @@ class we_docTypes extends we_class {
 	* @return string
 	*/
 	function formDocTypes2($arrHide=array()) {
-		global $l_we_class;
 		$vals = array();
 		$q=getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
@@ -321,8 +317,6 @@ class we_docTypes extends we_class {
 	}
 
 	function formDirChooser($width=100) {
-		global $l_we_class;
-
 		$yuiSuggest =& weSuggest::getInstance();
 
 		$textname = 'we_'.$this->Name.'_ParentPath';
@@ -333,7 +327,7 @@ class we_docTypes extends we_class {
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname,$this->ParentPath);
-		$yuiSuggest->setLabel($l_we_class["dir"]);
+		$yuiSuggest->setLabel(g_l('weClass',"[dir]"));
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname,$this->ParentID);
 		$yuiSuggest->setSelector("Dirselector");
@@ -345,16 +339,13 @@ class we_docTypes extends we_class {
 	}
 
 	function formExtension($width=100) {
-		global $l_we_class;
 		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 		$exts = $GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"];
-		return $this->htmlFormElementTable(getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),$width),$l_we_class["extension"]);
+		return $this->htmlFormElementTable(getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),$width),g_l('weClass',"[extension]"));
 	}
 
 	/* creates the Template PopupMenue */
 	function formTemplatePopup($width=100) {
-		global $l_we_class;
-
 		$tlist="";
 		if($this->TemplateID!="")
 			$tlist=$this->TemplateID;
@@ -366,12 +357,11 @@ class we_docTypes extends we_class {
 			$sqlTeil="WHERE IsFolder=0 AND ID IN($tlist)";
 		else
 			$sqlTeil="WHERE IsFolder=0";
-		return $this->formSelect2("",$width,"TemplateID", TEMPLATES_TABLE,"ID","Path",$l_we_class["standard_template"],$sqlTeil,1,$this->TemplateID,false,"","","left","defaultfont","","",array(0,$l_we_class["none"]));
+		return $this->formSelect2("",$width,"TemplateID", TEMPLATES_TABLE,"ID","Path",g_l('weClass',"[standard_template]"),$sqlTeil,1,$this->TemplateID,false,"","","left","defaultfont","","",array(0,g_l('weClass',"[none]")));
 	}
 
 	// return DocumentType HTML
 	function formDocTypeDropDown($selected=-1, $width=200, $onChange="") {
-		global $l_we_class;
 		$this->DocType = $selected;
 		return  $this->formSelect2(
 			"",								// element type
@@ -380,7 +370,7 @@ class we_docTypes extends we_class {
 			DOC_TYPES_TABLE,				// table
 			"ID",							// value in DB
 			"DocType",						// txt in DB
-			$l_we_class["doctype"],			// text
+			g_l('weClass',"[doctype]"),			// text
 			"ORDER BY DocType",				// sql Part
 			1,								// size
 			$selected,						// selectedIndex
@@ -391,12 +381,11 @@ class we_docTypes extends we_class {
 			"defaultfont",					// textclass
 			"",								// pre code
 			"",								// postcode
-		array(-1,$l_we_class["nodoctype"])	// first element
+		array(-1,g_l('weClass',"[nodoctype]"))	// first element
 		);
 	}
 
 	function formIsDynamic() {
-		global $l_we_class;
 		$isDyn = $this->IsDynamic ? 1 : 0;
 		$n = "we_".$this->Name."_IsDynamic";
 		$v = $this->IsDynamic;
@@ -404,7 +393,7 @@ class we_docTypes extends we_class {
 		$out="\nfunction switchExt(){\n";
 		$out.='var a=document.we_form.elements;'."\n";
 		if ($this->ID) {
-			$out.='if(confirm("'.$l_we_class["confirm_ext_change"].'")){'."\n";
+			$out.='if(confirm("'.g_l('weClass',"[confirm_ext_change]").'")){'."\n";
 		}
 		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
 		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
@@ -416,25 +405,23 @@ class we_docTypes extends we_class {
 		$out.="}\n";
 		$out="\n".'<script language="JavaScript" type="text/javascript">'.$out.'</script>'."\n";
 
-		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, $l_we_class["IsDynamic"], true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
+		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass',"[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
 	}
 
 	function formIsSearchable() {
-		global $l_we_class;
 		$isSearchable = $this->IsSearchable ? 1 : 0;
 		$n = "we_".$this->Name."_IsSearchable";
 		$v = $isSearchable ;
 
-		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, $l_we_class["IsSearchable"], false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
+		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass',"[IsSearchable]"), false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
 	}
 
 	function formSubDir($width=100) {
-		global $l_we_class;
 		$vals = array();
-		for($i=0;$i<sizeof($l_we_class["subdir"]);$i++) {
-			$vals[(string)$i] = $l_we_class["subdir"][$i];
+		for($i=0;$i<sizeof(g_l('weClass',"[subdir]"));$i++) {
+			$vals[(string)$i] = g_l('weClass',"[subdir][".$i.']');
 		}
-		return $this->htmlFormElementTable($this->htmlSelect('we_'.$this->Name.'_SubDir',$vals,$size=1,$this->SubDir,false,"","value",$width),$l_we_class["subdirectory"]);
+		return $this->htmlFormElementTable($this->htmlSelect('we_'.$this->Name.'_SubDir',$vals,$size=1,$this->SubDir,false,"","value",$width),g_l('weClass',"[subdirectory]"));
 	}
 
 	function formNewDocType() {

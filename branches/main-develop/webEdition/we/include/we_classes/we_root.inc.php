@@ -253,13 +253,11 @@ class we_root extends we_class
 
 	/* creates the filename input-field */
 	function formFilename($text=""){
-		global $l_we_class;
-		return $this->formTextInput("","Filename",$text ? $text : $l_we_class["filename"],24,255);
+		return $this->formTextInput("","Filename",$text ? $text : g_l('weClass',"[filename]"),24,255);
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formDirChooser($width="",$rootDirID=0,$table="",$Pathname="ParentPath",$IDName="ParentID",$cmd="",$showTitle=true){
-		global $l_we_class;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 
@@ -287,7 +285,7 @@ class we_root extends we_class
 		$yuiSuggest->setAcId("Path",id_to_path(array($rootDirID),$table));
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname,$path,array("onBlur"=>$_parentPathChangedBlur));
-		$yuiSuggest->setLabel($l_we_class["dir"]);
+		$yuiSuggest->setLabel(g_l('weClass',"[dir]"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname,$myid);
@@ -328,13 +326,11 @@ class we_root extends we_class
 	}
 
 	function formCreator($canChange,$width=388){
-		global $l_we_class;
-
 		$we_button = new we_button();
 
 		if(!$this->CreatorID) $this->CreatorID = 0;
 
-		$creator = $this->CreatorID ? id_to_path($this->CreatorID,USER_TABLE,$this->DB_WE) : $l_we_class["nobody"];
+		$creator = $this->CreatorID ? id_to_path($this->CreatorID,USER_TABLE,$this->DB_WE) : g_l('weClass',"[nobody]");
 
 
 		if($canChange){
@@ -350,7 +346,7 @@ class we_root extends we_class
 			$button = $we_button->create_button("edit", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);')");
 
 			$out = $this->htmlFormElementTable($inputFeld,
-			$l_we_class["maincreator"],
+			g_l('weClass',"[maincreator]"),
 			"left",
 			"defaultfont",
 			$idfield,
@@ -364,20 +360,16 @@ class we_root extends we_class
 	}
 
 	function formRestrictOwners($canChange){
-		global $l_we_class;
 		if($canChange){
 			$n = 'we_'.$this->Name.'_RestrictOwners';
 			$v = $this->RestrictOwners ? true : false;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class["limitedAccess"],false,"defaultfont","setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass',"[limitedAccess]"),false,"defaultfont","setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		}else{
-			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif').'" /></td><td class="defaultfont">&nbsp;'.$l_we_class["limitedAccess"].'</td></tr></table>';
+			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif').'" /></td><td class="defaultfont">&nbsp;'.g_l('weClass',"[limitedAccess]").'</td></tr></table>';
 		}
 	}
 
 	function formOwners($canChange=true){
-
-		global $l_we_class;
-
 		$we_button = new we_button();
 
 		$owners = makeArrayFromCSV($this->Owners);
@@ -392,12 +384,12 @@ class we_root extends we_class
 				$_path = isset($foo["Path"]) ? $foo["Path"] : "";
 				$content .= '<tr><td><img src="'.$icon.'" width="16" height="18" /></td><td class="defaultfont">'.$_path.'</td><td>'.
 
-				we_forms::checkboxWithHidden(isset($ownersReadOnly[$owners[$i]]) ? $ownersReadOnly[$owners[$i]] : "", 'we_owners_read_only['.$owners[$i].']', $l_we_class["readOnly"],false,"defaultfont","_EditorFrame.setEditorIsHot(true);",!$canChange).
+				we_forms::checkboxWithHidden(isset($ownersReadOnly[$owners[$i]]) ? $ownersReadOnly[$owners[$i]] : "", 'we_owners_read_only['.$owners[$i].']', g_l('weClass',"[readOnly]"),false,"defaultfont","_EditorFrame.setEditorIsHot(true);",!$canChange).
 
 				'</td><td>'.($canChange ? $we_button->create_button("image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','".$owners[$i]."');") : "").'</td></tr>'."\n";
 			}
 		}else{
-			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.$l_we_class["onlyOwner"].'</td><td></td><td></td></tr>'."\n";
+			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.g_l('weClass',"[onlyOwner]").'</td><td></td><td></td></tr>'."\n";
 		}
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(351,2).'</td><td>'.getPixel(100,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
 
@@ -413,13 +405,12 @@ class we_root extends we_class
 '.($canChange ? '<tr><td align="right">'.getPixel(2,8).'<br>'.$we_button->create_button_table(array($delallbut, $addbut)).'</td></tr>' : "").'</table'."\n";
 
 		return $this->htmlFormElementTable($content,
-			$l_we_class["otherowners"],
+			g_l('weClass',"[otherowners]"),
 			"left",
 			"defaultfont");
 	}
 
 	function formCreatorOwners(){
-		global $l_we_class;
 		$width = 388;
 			include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 			$canChange = (!$this->ID) || isUserInUsers($_SESSION["user"]["ID"],$GLOBALS["we_doc"]->CreatorID);
@@ -521,8 +512,6 @@ class we_root extends we_class
 	#
 	function formUserChooser($old_userID=-1,$width="",$in_textname="",$in_idname="")
 	{
-		global $l_we_class;
-
 		$we_button = new we_button();
 
 		$textname = $in_textname=="" ?  'we_'.$this->Name.'_UserName' : $in_textname;
@@ -551,7 +540,7 @@ class we_root extends we_class
 
 	}
 function formTriggerDocument($isclass=false){
-		global $l_we_class, $l_object;
+		global $l_object;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 		$table = FILE_TABLE;

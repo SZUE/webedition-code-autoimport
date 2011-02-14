@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 protect();
 htmlTop('Messaging System');
 ?>
@@ -430,15 +429,15 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 					if(nf[ai].name != -1) {
 						trg = "javascript:top.content.check('img_" + nf[ai].name + "');"
 						if(nf[ai].checked) {
-							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check1.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print $l_tree["select_statustext"]; ?>\" name=\"img_"+nf[ai].name+"\"></a>");
+							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check1.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree',"[select_statustext]"); ?>\" name=\"img_"+nf[ai].name+"\"></a>");
 						}
 						else {
-							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check0.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print $l_tree["select_statustext"]; ?>\" name=\"img_"+nf[ai].name+"\"></a>");
+							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check0.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree',"[select_statustext]"); ?>\" name=\"img_"+nf[ai].name+"\"></a>");
 						}
 					}
 				} else {
 					fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+");return true;\" BORDER=0>");
-					fr.write("<IMG SRC=<?php print ICON_DIR; ?>"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print $l_tree['edit_statustext']; ?>\">");
+					fr.write("<IMG SRC=<?php print ICON_DIR; ?>"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree','[edit_statustext]'); ?>\">");
 					fr.write("</a>");
 					trg = "doClick("+nf[ai].name+");return true;"
 				}
@@ -447,19 +446,19 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				var newAst = zweigEintrag;
 				var zusatz = (ai == nf.laenge) ? "end" : "";
 				if (nf[ai].offen == 0) {
-					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print $l_tree['open_statustext'] ?>\"></A>");
+					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree','[open_statustext]') ?>\"></A>");
 					var zusatz2 = '';
 				} else {
-					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print $l_tree['close_statustext'] ?>\"></A>");
+					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree','[close_statustext]') ?>\"></A>");
 					var zusatz2 = "open";
 				}
 				if(deleteMode) {
 					if(nf[ai].name != -1) {
 						trg = "javascript:top.content.check('img_" + nf[ai].name + "');";
 						if(nf[ai].checked) {
-							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check1.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print $l_tree["select_statustext"]; ?>\" name=\"img_"+nf[ai].name+"\"></a>");
+							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check1.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree',"[select_statustext]"); ?>\" name=\"img_"+nf[ai].name+"\"></a>");
 						} else {
-							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check0.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print $l_tree["select_statustext"]; ?>\" name=\"img_"+nf[ai].name+"\"></a>");
+							fr.write("<a href=\"" + trg + "\"><img src=\"<?php print TREE_IMAGE_DIR; ?>check0.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree',"[select_statustext]"); ?>\" name=\"img_"+nf[ai].name+"\"></a>");
 						}
 					}
 				} else {
@@ -467,7 +466,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 				}
 
 				fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"" + trg + "\" BORDER=0>");
-				fr.write("<IMG SRC=<?php print ICON_DIR;?>" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print $l_tree["edit_statustext"]; ?>\">");
+				fr.write("<IMG SRC=<?php print ICON_DIR;?>" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree',"[edit_statustext]"); ?>\">");
 				fr.write("</a>");
 
 				fr.write("<A name='_"+nf[ai].name+"' HREF=\"javascript://\" onClick=\"" + trg + "\">");

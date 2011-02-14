@@ -31,9 +31,6 @@ class we_makenewtemplate extends we_template
 {
 
 	function formDirChooser($width="",$rootDirID=0,$table=TEMPLATES_TABLE,$Pathname="ParentPath",$IDName="ParentID",$cmd=""){
-
-		global $l_we_class;
-
 		$we_button = new we_button();
 		if(!$table) $table = $this->Table;
 		$textname = 'we_'.$this->Name.'_'.$Pathname;
@@ -42,7 +39,7 @@ class we_makenewtemplate extends we_template
 		eval('$myid = $this->'.$IDName.';');
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','".session_id()."')");
 		return $this->htmlFormElementTable($this->htmlTextInput($textname,30,$path,"",' readonly',"text",$width,0),
-			$l_we_class["dir"],
+			g_l('weClass',"[dir]"),
 			"left",
 			"defaultfont",
 			$this->htmlHidden($idname,0),//$myid

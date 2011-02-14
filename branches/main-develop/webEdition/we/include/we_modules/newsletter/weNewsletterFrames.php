@@ -1296,7 +1296,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	}
 
 	function getHTMLNewsletterHeader() {
-		global $l_we_class,$l_newsletter;
+		global $l_newsletter;
 		$parts=array();
 
 		array_push($parts,array("headline"=>"","html"=>"","space"=>140,"noline"=>1));

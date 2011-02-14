@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$GLOBALS['l_versions'] = array(
+$l_versions = array(
 	'version' 						=> 'Version',
 	'versions' 						=> 'Versions',
 	'versions_log' 					=> 'Versions-Log',

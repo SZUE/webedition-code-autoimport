@@ -21,7 +21,6 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_import/importFunctions.class.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_image_edit.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');

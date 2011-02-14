@@ -453,7 +453,6 @@ class weExportFrames extends weModuleFrames {
 	}
 
 	function getHTMLDirChooser(){
-		global $l_we_class;
 
 		$we_button = new we_button();
 		$path = id_to_path($this->View->export->ParentID,EXPORT_TABLE);

@@ -92,7 +92,7 @@ class weModuleFrames{
 			if(nf[ai].name != -1){
 				fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
 			}
-			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR;?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print $GLOBALS["l_tree"]["edit_statustext"]; ?>\">");
+			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR;?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]"); ?>\">");
 			fr.write("</a>");
 			fr.write("&nbsp;<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">"+(parseInt(nf[ai].published) ? "" : "")+ nf[ai].text +(parseInt(nf[ai].published) ? "" : "")+ "</A>&nbsp;&nbsp;<BR>\n");
 		}else{
@@ -101,14 +101,14 @@ class weModuleFrames{
 			var zusatz = (ai == nf.laenge) ? "end" : "";
 
 			if (nf[ai].offen == 0){
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print $l_tree["open_statustext"] ?>\"></A>");
+				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]") ?>\"></A>");
 				var zusatz2 = "";
 			}else{
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print $l_tree["close_statustext"] ?>\"></A>");
+				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]") ?>\"></A>");
 	        	var zusatz2 = "open";
 	        }
 			fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
-			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR;?>icons/"+nf[ai].icon.replace(/\.gif/,"")+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print $l_tree["edit_statustext"]; ?>\">");
+			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR;?>icons/"+nf[ai].icon.replace(/\.gif/,"")+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]"); ?>\">");
 			fr.write("</a>");
 			fr.write("<A name='_"+nf[ai].name+"' HREF=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 			fr.write("&nbsp;<b>" + nf[ai].text + "</b>");

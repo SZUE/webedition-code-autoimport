@@ -18,9 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-// Workarround for bug 1292
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-
 
 protect();
 // Dreamweaver RPC Command ShowPreparedPreview
@@ -318,7 +315,7 @@ function we_cmd(){
 <?php if($we_doc->gd_support()): ?>
 			new jsWindow(url,"we_image_resize",-1,-1,260,<?php print ($we_doc->getGDType()=="jpg") ? 250 : 190; ?>,true,false,true);
 <?php else:
-	print we_message_reporting::getShowMessageCall( sprintf($l_we_class["type_not_supported_hint"],$l_we_class["convert_".$we_doc->getGDType()]), WE_MESSAGE_ERROR );
+	print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
 
 	endif ?>
 
@@ -334,12 +331,12 @@ function we_cmd(){
 	<?php if($we_doc->gd_support()): ?>
 			new jsWindow(url,"we_rotate",-1,-1,300,<?php print ($we_doc->getGDType()=="jpg") ? 230 : 170; ?>,true,false,true);
 	<?php else:
-		print we_message_reporting::getShowMessageCall( sprintf($l_we_class["type_not_supported_hint"],$l_we_class["convert_".$we_doc->getGDType()]), WE_MESSAGE_ERROR );
+		print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
 	endif ?>
 
 <?php else:
 
-	print we_message_reporting::getShowMessageCall($l_we_class["rotate_hint"], WE_MESSAGE_ERROR);
+	print we_message_reporting::getShowMessageCall(g_l('weClass',"[rotate_hint]"), WE_MESSAGE_ERROR);
 
 	endif ?>
 			break;
@@ -350,7 +347,7 @@ function we_cmd(){
 			CropTool.crop();
 <?php } else if(defined("WE_EDIT_IMAGE")) {
 
-			print we_message_reporting::getShowMessageCall(sprintf($l_we_class["type_not_supported_hint"],$l_we_class["convert_".$we_doc->getGDType()]), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR);
 	  } ?>
 		break;
 		case "crop_cancel":

@@ -91,18 +91,18 @@ print "</body>";
 print "</html>";
 
 function formWebuser($canChange,$width=388){
-	global $l_we_class, $l_customer;
+	global $l_customer;
 
 	$we_button = new we_button();
 
 	if(!$GLOBALS['we_doc']->WebUserID) $GLOBALS['we_doc']->WebUserID = 0;
 
-	$webuser = "";//$l_we_class["nobody"];
+	$webuser = "";//g_l('weClass',"[nobody]");
 
 	if ($GLOBALS['we_doc']->WebUserID != 0) {
 		$webuser = id_to_path($GLOBALS['we_doc']->WebUserID,CUSTOMER_TABLE,$GLOBALS['we_doc']->DB_WE);
 		if(!$webuser) {
-			$webuser = "";//$l_we_class["nobody"];
+			$webuser = "";//g_l('weClass',"[nobody]");
 		}
 	}
 

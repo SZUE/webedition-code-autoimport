@@ -235,14 +235,13 @@ class we_document extends we_root {
 	}
 
 	function formInGlossar($leftwidth=100){
-		global $l_we_class;
 		$n = 'we_'.$this->Name.'_InGlossar';
 
 		$glossarActivated = we_getModuleNameByContentType('glossary');
 
 		if($glossarActivated=='glossary') {
 			$v = $this->InGlossar;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class['InGlossar'],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass','[InGlossar]'),false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 		}
 		else {
 			return'';
@@ -250,14 +249,12 @@ class we_document extends we_root {
 	}
 
 	function formIsSearchable($leftwidth=100){
-		global $l_we_class;
 		$n = 'we_'.$this->Name.'_IsSearchable';
 		$v = $this->IsSearchable;
- 		return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class['IsSearchable'],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
+ 		return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass','[IsSearchable]'),false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
  	}
 
  	function formExtension2() {
-		global $l_we_class;
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
 		if($this->ID==0 && $_REQUEST['we_cmd'][0] == 'load_editor' && $doctype == ''){	//	Neues Dokument oder Dokument ohne DocType
@@ -276,12 +273,10 @@ class we_document extends we_root {
 		} else {	//	bestehendes Dokument oder Dokument mit DocType
             $selected=$this->Extension;
 		}
-		return $this->htmlFormElementTable(getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')),$l_we_class["extension"]);
+		return $this->htmlFormElementTable(getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')),g_l('weClass',"[extension]"));
 	}
 
 	function formPath() {
-		global $l_we_class;
-
 		$disable = ( ($this->ContentType == 'text/html' || $this->ContentType == 'text/webedition') && $this->Published);
 		if ($this->ContentType == 'text/htaccess'){
 			$this->Filename='.htaccess';
@@ -293,7 +288,7 @@ class we_document extends we_root {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.$this->formInputField('','Filename',$l_we_class['filename'],30,388,255,$filenameinput.'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"').'</td>
+						'.$this->formInputField('','Filename',g_l('weClass','[filename]'),30,388,255,$filenameinput.'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"').'</td>
 					<td></td>
 					<td>
 						'.$this->formExtension2().'</td>
@@ -315,13 +310,11 @@ class we_document extends we_root {
 	}
 
 	function formMetaInfos() {
-		global $l_we_class;
-
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Title",$l_we_class["Title"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>
 				<tr>
 					<td>
@@ -329,7 +322,7 @@ class we_document extends we_root {
 				</tr>
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Description",$l_we_class["Description"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>
 				<tr>
 					<td>
@@ -337,7 +330,7 @@ class we_document extends we_root {
 				</tr>
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Keywords",$l_we_class["Keywords"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>';
 
 			$content .= '</table>';
@@ -1719,9 +1712,6 @@ class we_document extends we_root {
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-
-		global $l_we_class;
-
 		$value = (isset($this->elements['Charset']['dat']) ? $this->elements['Charset']['dat'] : '');
 
 		$_charsetHandler = new charsetHandler();

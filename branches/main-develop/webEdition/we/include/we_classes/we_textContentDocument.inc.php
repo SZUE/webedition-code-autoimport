@@ -219,22 +219,19 @@ class we_textContentDocument extends we_textDocument{
 
 
 	function formDocType2($width = 300) {
-		global $l_we_class;
-
 		$q = getDoctypeQuery($this->DB_WE);
 
 		$we_button = new we_button();
 
-		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", $l_we_class["doctype"], $q, 1, $this->DocType, false,
+		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", g_l('weClass',"[doctype]"), $q, 1, $this->DocType, false,
 								  (($this->DocType !== "") ?
 								  	"if(confirm('".$GLOBALS['l_we_class']['doctype_changed_question']."')){we_cmd('doctype_changed');};" :
 								  	"we_cmd('doctype_changed');") .
 								  	"_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", $we_button->create_button("edit", "javascript:top.we_cmd('doctypes')", false, -1, -1, "", "", (!we_hasPerm("EDIT_DOCTYPE"))),
-		 						  ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", $l_we_class["nodoctype"])  : "");
+		 						  ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", g_l('weClass',"[nodoctype]"))  : "");
 	}
 
 	function formDocTypeTempl(){
-		global $l_we_class;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$this->formDocType2(388).'</td>

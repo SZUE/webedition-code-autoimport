@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_document.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_value.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_url.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
@@ -87,7 +86,7 @@ class we_object extends we_document
 	//##################################################################### SAVE FUNCTIONS ######################################################################
 	/* saves the document */
 	function save(){
-		global $l_we_class,$we_JavaScript,$we_responseText, $we_responseTextType;
+		global $we_JavaScript,$we_responseText, $we_responseTextType;
 
 		if(!$this->checkIfPathOk()){
 			return false;
@@ -98,7 +97,7 @@ class we_object extends we_document
 
 		$this->saveToDB();
 
-		$we_responseText = $l_we_class["response_save_ok"];
+		$we_responseText = g_l('weClass',"[response_save_ok]");
 		$we_responseTextType = WE_MESSAGE_NOTICE;
 
 		$db = new DB_WE();
@@ -607,7 +606,7 @@ class we_object extends we_document
 	function editor()	{
 		global $we_responseText,$we_JavaScript, $we_responseTextType;
 		if($_REQUEST["we_cmd"][0] == "save_document"){
-			$we_responseText = $l_we_class["response_save_ok"];
+			$we_responseText = g_l('weClass',"[response_save_ok]");
 			$we_JavaScript = "";
 			$this->save();
 			$we_responseText = sprintf($we_responseText,$this->Path);
@@ -1556,8 +1555,6 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formUsers1($name,$nr=0){
-		global $l_we_class;
-
 		$we_button = new we_button();
 		$users = $this->getElement($name."users","dat") ? explode(",",$this->getElement($name."users","dat")) : array();
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">';
@@ -1582,8 +1579,6 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formUsers($canChange=true){
-		global $l_we_class;
-
 		$we_button = new we_button();
 
 		$users = makeArrayFromCSV($this->Users);
@@ -1597,10 +1592,10 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				$content .= '<tr><td><img src="'.ICON_DIR.$foo["Icon"].'" width="16" height="18" /></td><td class="defaultfont">'.$foo["Path"].'</td><td>'.
 				($canChange ?
 				$this->htmlHidden('we_users_read_only['.$users[$i].']',(isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]]) ? $usersReadOnly[$users[$i]] : "" ).'<input type="checkbox" value="1" name="wetmp_users_read_only['.$users[$i].']"'.( (isset($usersReadOnly[$users[$i]]) && $usersReadOnly[$users[$i]] ) ? ' checked' : '').' OnClick="this.form.elements[\'we_users_read_only['.$users[$i].']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
-				'<img src="'.TREE_IMAGE_DIR.($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif').'" />').'</td><td class="defaultfont">'.$l_we_class["readOnly"].'</td><td>'.($canChange ? $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_user','".$users[$i]."');_EditorFrame.setEditorIsHot(true);") : "").'</td></tr>'."\n";
+				'<img src="'.TREE_IMAGE_DIR.($usersReadOnly[$users[$i]] ? 'check1_disabled.gif' : 'check0_disabled.gif').'" />').'</td><td class="defaultfont">'.g_l('weClass',"[readOnly]").'</td><td>'.($canChange ? $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_user','".$users[$i]."');_EditorFrame.setEditorIsHot(true);") : "").'</td></tr>'."\n";
 			}
 		}else{
-			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.$l_we_class["onlyOwner"].'</td><td></td></tr>'."\n";
+			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.g_l('weClass',"[onlyOwner]").'</td><td></td></tr>'."\n";
 		}
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(333,2).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(80,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
 
@@ -1617,7 +1612,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 '.($canChange ? '<tr><td align="right">'.getPixel(2,6).'<br>'.$we_button->create_button_table(array($delallbut, $addbut)).'</td></tr>' : "").'</table'."\n";
 
 		return $this->htmlFormElementTable($content,
-		$l_we_class["otherowners"],
+		g_l('weClass',"[otherowners]"),
 		"left",
 		"defaultfont");
 	}
@@ -1999,21 +1994,19 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formRestrictUsers($canChange=true){
-		global $l_we_class;
-
 		if($canChange){
 			$hiddenname = 'we_'.$this->Name.'_RestrictUsers';
 			$tmpname = 'tmpwe_'.$this->Name.'_RestrictUsers';
 			$hidden=$this->htmlHidden($hiddenname,abs($this->RestrictUsers));
-			$check = we_forms::checkbox("1", $this->RestrictUsers ? true : false, $tmpname, $l_we_class["limitedAccess"], true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['".$hiddenname."'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
+			$check = we_forms::checkbox("1", $this->RestrictUsers ? true : false, $tmpname, g_l('weClass',"[limitedAccess]"),true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['".$hiddenname."'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
 			return $hidden.$check;
 		}else{
-			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictUsers ? 'check1_disabled.gif' : 'check0_disabled.gif').'" /></td><td class="defaultfont">&nbsp;'.$l_we_class["limitedAccess"].'</td></tr></table>';
+			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="'.TREE_IMAGE_DIR.($this->RestrictUsers ? 'check1_disabled.gif' : 'check0_disabled.gif').'" /></td><td class="defaultfont">&nbsp;'.g_l('weClass',"[limitedAccess]").'</td></tr></table>';
 		}
 	}
 
 	function formPath(){
-		global $l_object,$l_we_class;
+		global $l_object,;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$this->formInputField("","Text",$l_object["classname"],30,508,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
@@ -2024,7 +2017,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formWorkspaces(){
-		global $l_we_class,$l_object;
+		global $l_object;
 
 		$we_button = new we_button();
 
@@ -2069,7 +2062,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		if (isset($GLOBALS['WE_DEL_WORKSPACE_ERROR']) && $GLOBALS['WE_DEL_WORKSPACE_ERROR']) {
 			unset($GLOBALS['WE_DEL_WORKSPACE_ERROR']);
-			$content .= '<script type="text/javascript">' . we_message_reporting::getShowMessageCall( addslashes($l_we_class['we_del_workspace_error']), WE_MESSAGE_ERROR ) . '</script>';
+			$content .= '<script type="text/javascript">' . we_message_reporting::getShowMessageCall( addslashes(g_l('weClass','[we_del_workspace_error]')), WE_MESSAGE_ERROR ) . '</script>';
 		}
 		return $content;
 	}
@@ -2595,8 +2588,6 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formDirChooser($width="" ,$rootDirID=0, $table="", $Pathname="ParentPath", $IDName="ParentID", $cmd="", $pathID=0, $identifier=""){
-		global $l_we_class;
-
 		$we_button = new we_button();
 
 		$path = id_to_path($pathID);

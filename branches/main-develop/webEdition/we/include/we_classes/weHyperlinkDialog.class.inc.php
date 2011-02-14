@@ -23,7 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDial
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
 class weHyperlinkDialog extends weDialog{
 
@@ -310,7 +309,6 @@ class weHyperlinkDialog extends weDialog{
 	##################################################################################################
 
 	function getDialogContentHTML() {
-		global $l_we_class;
 		// Initialize we_button class
 		$we_button = new we_button();
 
@@ -435,7 +433,7 @@ class weHyperlinkDialog extends weDialog{
 			<div style="position:relative; top:15px"><table cellpadding="0" cellspacing="0" border="0" height="65">
 				<tr>
 					<td class="defaultgray" valign="top" width="100" height="20">
-						'  . $l_we_class["linkType"] . '</td>
+						'  . g_l('weClass',"[linkType]") . '</td>
 					<td valign="top">
 						' . $_select_type . '</td>
 				</tr>
@@ -455,7 +453,7 @@ class weHyperlinkDialog extends weDialog{
 			$autoSuggest .= "</script>\n";
 			$table .= '
 				<tr id="int_tr" style="display:'.(($this->args["type"]=="int") ? "" : "none").';">
-					<td class="defaultgray" valign="top" width="100"> ' . $l_we_class["document"] . '</td>
+					<td class="defaultgray" valign="top" width="100"> ' . g_l('weClass',"[document]") . '</td>
 					<td valign="top"> ' . $autoSuggest . '</td>
 				</tr>';
 		}

@@ -24,5 +24,3 @@ $l_perm["versions"]["perm_group_title"] = "Versionierung";
 
 $l_perm["versions"]["SEE_VERSIONS"] = "Der Benutzer darf Versionen sehen";
 $l_perm["versions"]["RESET_VERSIONS"] = "Der Benutzer darf Versionen wiederherstellen";
-
-?>

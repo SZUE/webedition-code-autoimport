@@ -536,7 +536,7 @@ class we_objectFile extends we_document
 	}
 
 	function formPath(){
-		global $l_object,$l_we_class;
+		global $l_object;
 		$rootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
 		if($this->ParentID=="") {
 			$this->ParentID = $rootDirId;
@@ -611,11 +611,10 @@ class we_objectFile extends we_document
 
 
 	function formIsSearchable(){
-		global $l_we_class;
 		$n = "we_".$this->Name."_IsSearchable";
 
 		$v = $this->IsSearchable;
- 		return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class["IsSearchable"],false,"defaultfont","_EditorFrame.setEditorIsHot(true);");
+ 		return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass',"[IsSearchable]"),false,"defaultfont","_EditorFrame.setEditorIsHot(true);");
  	}
 
  	/**
@@ -625,9 +624,6 @@ class we_objectFile extends we_document
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-
-		global $l_we_class;
-
 		$_charsetHandler = new charsetHandler();
 
 		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
@@ -1739,7 +1735,6 @@ class we_objectFile extends we_document
 	}
 
 	function formWorkspaces(){
-		global $l_we_class;
 		$foo = getHash("SELECT Workspaces,Templates FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$ws = $foo["Workspaces"];
 		$ts = $foo["Templates"];
@@ -1871,7 +1866,6 @@ class we_objectFile extends we_document
 	}
 
 	function formExtraWorkspaces(){
-		global $l_we_class;
 		$foo = getHash("SELECT Workspaces,Templates FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$ws = $foo["Workspaces"];
 		$ts = $foo["Templates"];

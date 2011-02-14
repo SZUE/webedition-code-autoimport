@@ -37,7 +37,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMeta
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/Exif.class.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/IPTC.class.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
 /*****************************************************************************
  * INITIALIZATION

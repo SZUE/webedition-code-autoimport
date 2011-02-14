@@ -43,7 +43,7 @@ htmlTop();
 	$headline = array();
 
 	$headline[0] = array(
-		'dat'=>$l_we_class["variant_fields"]
+		'dat'=>g_l('weClass',"[variant_fields]")
 	);
 
 
@@ -58,7 +58,7 @@ htmlTop();
 
 	$parts[]=array(
 			'headline' => '',
-			'html' => htmlAlertAttentionBox($l_we_class['variant_info'],2,620, false),
+			'html' => htmlAlertAttentionBox(g_l('weClass','[variant_info]'),2,620, false),
 			'space' => 0,
 			'noline'=>1
 	);

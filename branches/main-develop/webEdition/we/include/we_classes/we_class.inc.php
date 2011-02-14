@@ -19,7 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 if (!isset($GLOBALS['WE_IS_DYN'])) {
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_class.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 }
@@ -161,27 +160,24 @@ class we_class {
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
 
 	function formInput($name, $size=25, $type="txt") {
-		global $l_we_class;
-		return $this->formTextInput($type, $name, ($l_we_class[$name] ? $l_we_class[$name] : $name), $size);
+		return $this->formTextInput($type, $name, (g_l('weClass','['.$name.']') ? g_l('weClass','['.$name.']') : $name), $size);
 	}
 
 	/* creates a color field. when user clicks, a colorchooser opens. Data that will be stored at the $elements Array */
 
 	function formColor($width=100, $name, $size=25, $type="txt", $height=18, $isTag=false) {
-		global $l_we_class;
 		$value = $this->getElement($name);
 		if (!$isTag) {
 			$width -= 4;
 		}
 		$formname = "we_" . $this->Name . "_" . $type . "[$name]";
 		$out = $this->htmlHidden($formname, $this->getElement($name)) . '<table cellpadding="0" cellspacing="0" border="1"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . getPixel($width, $height) . '</a></td></tr></table>';
-		return isset($l_we_class[$name]) ? $this->htmlFormElementTable($out, $l_we_class[$name]) : $out;
+		return g_l('weClass','['.$name.']')!==false ? $this->htmlFormElementTable($out, g_l('weClass','['.$name.']')) : $out;
 	}
 
 	/* creates a select field for entering Data that will be stored at the $elements Array */
 
 	function formSelectElement($name, $values, $type="txt", $size=1) {
-		global $l_we_class;
 		$out = '<select class="defaultfont" name="we_' . $this->Name . "_" . $type . "[$name]" . '" size="' . $size . '">' . "\n";
 		$value = $this->getElement($name);
 		reset($values);
@@ -189,30 +185,26 @@ class we_class {
 			$out .= '<option value="' . $val . '"' . (($val == $value) ? " selected" : "") . '>' . $txt . "</option>\n";
 		}
 		$out .= "</select>\n";
-		return $this->htmlFormElementTable($out, $l_we_class[$name]);
+		return $this->htmlFormElementTable($out, g_l('weClass','['.$name.']'));
 	}
 
 	function formTextInput($elementtype, $name, $text, $size=24, $maxlength="", $attribs="", $textalign="left", $textclass="defaultfont") {
-		global $l_we_class;
 		if (!$elementtype)
 			eval('$ps=$this->' . $name . ";");
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
 	function formInputField($elementtype, $name, $text, $size=24, $width, $maxlength="", $attribs="", $textalign="left", $textclass="defaultfont") {
-		global $l_we_class;
 		if (!$elementtype)
 			eval('$ps=$this->' . $name . ";");
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $size, ($elementtype && $this->getElement($name) != "" ? $this->getElement($name) : (isset($GLOBALS["meta"][$name]) ? $GLOBALS["meta"][$name]["default"] : (isset($ps) ? $ps : "") )), $maxlength, $attribs, "text", $width), $text, $textalign, $textclass);
 	}
 
 	function formPasswordInput($elementtype, $name, $text, $size=24, $maxlength="", $attribs="", $textalign="left", $textclass="defaultfont") {
-		global $l_we_class;
 		return $this->htmlFormElementTable($this->htmlPasswordInput(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $size, "", $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
 	function formTextArea($elementtype, $name, $text, $rows=10, $cols=30, $attribs="", $textalign="left", $textclass="defaultfont") {
-		global $l_we_class;
 		if (!$elementtype)
 			eval('$ps=$this->' . $name . ";");
 		return $this->htmlFormElementTable($this->htmlTextArea(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $rows, $cols, ($elementtype ? $this->getElement($name) : $ps), $attribs), $text, $textalign, $textclass);
@@ -332,7 +324,6 @@ class we_class {
 	/* creates a select field for entering Data that will be stored at the $elements Array */
 
 	function formSelectElement2($width="", $name, $values, $type="txt", $size=1, $attribs="") {
-		global $l_we_class;
 		$out = '<select class="defaultfont" name="we_' . $this->Name . "_" . $type . "[$name]" . '" size="' . $size . '"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ($attribs ? " $attribs" : '') . '>' . "\n";
 		$value = $this->getElement($name);
 		reset($values);
@@ -340,23 +331,21 @@ class we_class {
 			$out .= '<option value="' . $val . '"' . (($val == $value) ? " selected" : "") . '>' . $txt . "</option>\n";
 		}
 		$out .= "</select>\n";
-		return $this->htmlFormElementTable($out, $l_we_class[$name]);
+		return $this->htmlFormElementTable($out, g_l('weClass','['.$name.']'));
 	}
 
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
 
 	function formInput2($width="", $name, $size=25, $type="txt", $attribs="") {
-		global $l_we_class;
-		return $this->formInputField($type, $name, (isset($l_we_class[$name]) ? $l_we_class[$name] : $name), $size, $width, "", $attribs);
+		return $this->formInputField($type, $name, (g_l('weClass','['.$name.']')!=false ? g_l('weClass','['.$name.']') : $name), $size, $width, "", $attribs);
 	}
 
 	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element */
 
 	function formInputInfo2($width="", $name, $size=25, $type="txt", $attribs="", $infoname) {
-		global $l_we_class;
 		$info = $this->getElement($infoname);
-		$infotext = " (" . (isset($l_we_class[$infoname]) ? $l_we_class[$infoname] : $infoname) . ": " . $info . ")";
-		return $this->formInputField($type, $name, (isset($l_we_class[$name]) ? $l_we_class[$name] : $name) . $infotext, $size, $width, "", $attribs);
+		$infotext = " (" . (g_l('weClass','['.$infoname.']')!=false ? g_l('weClass','['.$infoname.']') : $infoname) . ": " . $info . ")";
+		return $this->formInputField($type, $name, (g_l('weClass','['.$name.']')!==false ? g_l('weClass','['.$name.']') : $name) . $infotext, $size, $width, "", $attribs);
 	}
 
 	function formSelect2($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail="", $size=1, $selectedIndex="", $multiple=false, $onChange="", $attribs="", $textalign="left", $textclass="defaultfont", $precode="", $postcode="", $firstEntry="", $gap=20) {

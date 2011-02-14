@@ -21,7 +21,6 @@
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/taskFragment.class.php");
@@ -1360,8 +1359,6 @@ class weSiteImport
 	 */
 	function _formPathHTML($templateName = "neueVorlage", $myid = 0)
 	{
-		global $l_we_class;
-
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 		$path = id_to_path($myid, TEMPLATES_TABLE);
@@ -1379,7 +1376,7 @@ class weSiteImport
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $path);
 		$yuiSuggest->setResult($idname, 0);
-		$yuiSuggest->setLabel($l_we_class["dir"]);
+		$yuiSuggest->setLabel(g_l('weClass',"[dir]"));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setWidth(320);
@@ -1391,7 +1388,7 @@ class weSiteImport
 		/*
 
 		$dirChooser = htmlFormElementTable(htmlTextInput($textname,30,$path,"",' readonly',"text",320,0),
-			$l_we_class["dir"],
+			g_l('weClass',"[dir]"),
 			"left",
 			"defaultfont",
 			hidden($idname,0),
@@ -1410,7 +1407,7 @@ class weSiteImport
 					<td>
 						' . htmlFormElementTable(
 				'<span class="defaultfont"><b>.tmpl</b></span>',
-				$l_we_class["extension"]) . '</td>
+				g_l('weClass',"[extension]")) . '</td>
 				</tr>
 				<tr>
 					<td>

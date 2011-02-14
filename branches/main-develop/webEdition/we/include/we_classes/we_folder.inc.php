@@ -478,7 +478,6 @@ class we_folder extends we_root
 
 
 	function formPath(){
-		global $l_we_class;
 		$ws = get_ws($this->Table);
 		if(abs($this->ParentID)==0 && $ws){
 			$wsa = makeArrayFromCSV($ws);
@@ -491,7 +490,7 @@ class we_folder extends we_root
 		if ($this->ID!=0 && $this->ParentID==0 && $this->ParentPath=='/' && defined('OBJECT_FILES_TABLE') && $this->Table== OBJECT_FILES_TABLE) {$userCanChange=false;}
 		$content = (!$userCanChange) ? ('<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">'.$this->Path.'</span></td></tr>') : '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont">'.$this->formInputField("",($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? "Filename" : "Text",$l_we_class["filename"],50,388,255,"onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();").'</td><td></td><td></td>
+		<td class="defaultfont">'.$this->formInputField("",($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? "Filename" : "Text",g_l('weClass',"[filename]"),50,388,255,"onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();").'</td><td></td><td></td>
 	</tr>
 	<tr>
 		<td>'.getPixel(20,10).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>

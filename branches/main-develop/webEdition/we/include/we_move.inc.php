@@ -22,7 +22,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.ph
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_live_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_move_fn.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
@@ -212,7 +211,7 @@ function press_ok_move() {
 			return;
 		} else if(!acStatus.valid) {
 			<?php
-			print we_message_reporting::getShowMessageCall($l_we_class["notValidFolder"], WE_MESSAGE_ERROR)?>
+			print we_message_reporting::getShowMessageCall(g_l('weClass',"[notValidFolder]"), WE_MESSAGE_ERROR)?>
 			return;
 		}
 	}

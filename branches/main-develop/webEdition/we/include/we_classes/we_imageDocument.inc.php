@@ -656,8 +656,6 @@ class we_imageDocument extends we_binaryDocument {
 	* @return string
 	*/
 	function formProperties() {
-		global $l_we_class;
-
 		// Create table
 		$_content = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 5);
 
@@ -699,7 +697,7 @@ class we_imageDocument extends we_binaryDocument {
 			$_metaTitleField = "we_".$this->Name."_txt[Title]";
 			$useMetaTitle = "we_".$this->Name."_txt[useMetaTitle]";
 		//	disable field 'title' when checked or not.
-		$_content->setCol(6, 4, array("valign" => "bottom"), we_forms::checkboxWithHidden($this->getElement("useMetaTitle"), $useMetaTitle, $l_we_class["use_meta_title"], false, "defaultfont", "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = ''; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false');}_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol(6, 4, array("valign" => "bottom"), we_forms::checkboxWithHidden($this->getElement("useMetaTitle"), $useMetaTitle, g_l('weClass',"[use_meta_title]"),false, "defaultfont", "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = ''; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false');}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
@@ -718,7 +716,7 @@ class we_imageDocument extends we_binaryDocument {
 		$yuiSuggest->setAcId("LonDesc");
 		$yuiSuggest->setContentType("folder,text/webEdition,text/html");
 		$yuiSuggest->setInput($longdesc_text_name,$longdescPath);
-		$yuiSuggest->setLabel($l_we_class["longdesc_text"]);
+		$yuiSuggest->setLabel(g_l('weClass',"[longdesc_text]"));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
@@ -891,8 +889,6 @@ class we_imageDocument extends we_binaryDocument {
 	* @return string
 	*/
 	function formLink() {
-		global $l_we_class;
-
 		$we_button = new we_button();
 
 		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
@@ -928,7 +924,7 @@ class we_imageDocument extends we_binaryDocument {
 		$_content = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), (defined("OBJECT_TABLE") ? 11 : 9), 2);
 
 		// No link
-		$_content->setCol(0, 0, array("valign" => "top"), we_forms::radiobutton("no", ($linkType == "no"), "we_" . $this->Name . "_txt[LinkType]", $l_we_class["nolink"], true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol(0, 0, array("valign" => "top"), we_forms::radiobutton("no", ($linkType == "no"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass',"[nolink]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
 		$_content->setCol(0, 1, null, "");
 
 		// Space
@@ -944,7 +940,7 @@ class we_imageDocument extends we_binaryDocument {
 
 		$_ext_link = "href" . we_htmlElement::htmlBr() . $_ext_link_table->getHtmlCode();
 
-		$_content->setCol(2, 0, array("valign" => "top"), we_forms::radiobutton("ext", ($linkType == "ext"), "we_" . $this->Name . "_txt[LinkType]", $l_we_class["extern"], true, "defaultfont", "_EditorFrame.setEditorIsHot(true)"));
+		$_content->setCol(2, 0, array("valign" => "top"), we_forms::radiobutton("ext", ($linkType == "ext"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass',"[extern]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true)"));
 		$_content->setCol(2, 1, array("class" => "defaultfont", "valign" => "top"), $_ext_link);
 
 		// Space
@@ -960,7 +956,7 @@ class we_imageDocument extends we_binaryDocument {
 
 		$_int_link = "href" . we_htmlElement::htmlBr() . $_int_link_table->getHtmlCode();
 
-		$_content->setCol(4, 0, array("valign" => "top"), we_forms::radiobutton("int", ($linkType == "int"), "we_" . $this->Name . "_txt[LinkType]", $l_we_class["intern"], true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol(4, 0, array("valign" => "top"), we_forms::radiobutton("int", ($linkType == "int"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass',"[intern]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
 		$_content->setCol(4, 1, array("class" => "defaultfont", "valign" => "top"), $_int_link);
 
 		// Object link
@@ -985,7 +981,7 @@ class we_imageDocument extends we_binaryDocument {
 		$_content->setCol((defined("OBJECT_TABLE") ? 7 : 5), 1, null, getPixel(400, 20));
 
 		// Target
-		$_content->setCol((defined("OBJECT_TABLE") ? 8 : 6), 0, array("colspan" => 2, "class" => "defaultfont", "valign" => "top"), $l_we_class["target"] . we_htmlElement::htmlBr() . targetBox("we_" . $this->Name . "_txt[LinkTarget]", 33, 380, "", $this->getElement("LinkTarget"), "_EditorFrame.setEditorIsHot(true);", 20, 97));
+		$_content->setCol((defined("OBJECT_TABLE") ? 8 : 6), 0, array("colspan" => 2, "class" => "defaultfont", "valign" => "top"), g_l('weClass',"[target]") . we_htmlElement::htmlBr() . targetBox("we_" . $this->Name . "_txt[LinkTarget]", 33, 380, "", $this->getElement("LinkTarget"), "_EditorFrame.setEditorIsHot(true);", 20, 97));
 
 		// Space
 		$_content->setCol((defined("OBJECT_TABLE") ? 9 : 7), 0, null, getPixel(100, 20));
@@ -1019,22 +1015,21 @@ class we_imageDocument extends we_binaryDocument {
 
 
 	function formMetaInfos() {
-		global $l_we_class;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td colspan="2">'.$this->formInputField("txt","Title",$l_we_class["Title"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td colspan="2">'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(2,4).'</td>
 	</tr>
 	<tr>
-		<td colspan="2">'.$this->formInputField("txt","Description",$l_we_class["Description"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td colspan="2">'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(2,4).'</td>
 	</tr>
 	<tr>
-		<td colspan="2">'.$this->formInputField("txt","Keywords",$l_we_class["Keywords"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td colspan="2">'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(2,4).'</td>
