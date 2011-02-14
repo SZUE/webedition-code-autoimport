@@ -23,14 +23,14 @@
 
 
 	class weExportTreeMain extends weTree{
-		
-		
-		function weExportTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
-				
-				weTree::weTree($frameset,$topFrame,$treeFrame,$cmdFrame);
-				
 
-				
+
+		function weExportTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
+
+				weTree::weTree($frameset,$topFrame,$treeFrame,$cmdFrame);
+
+
+
 		}
 
 		function getJSOpenClose(){
@@ -40,11 +40,11 @@
 				if(id=="") return;
 				var eintragsIndex = indexOfEntry(id);
 				var openstatus;
-	
-						
+
+
 				if(treeData[eintragsIndex].open==0) openstatus=1;
 				else openstatus=0;
-				
+
 				treeData[eintragsIndex].open=openstatus;
 
 				if(openstatus && treeData[eintragsIndex].loaded!=1){
@@ -58,7 +58,7 @@
 				if(openstatus==1) treeData[eintragsIndex].loaded=1;
  			}
  			';
- 		
+
 		}
 
  		function getJSUpdateItem(){
@@ -66,26 +66,25 @@
  				function updateEntry(id,text,pid){
         			var ai = 1;
         			while (ai <= treeData.len) {
-            			if (treeData[ai].id==id) {                 			
-                 			treeData[ai].text=text;                	 		
+            			if (treeData[ai].id==id) {
+                 			treeData[ai].text=text;
                  			treeData[ai].parentid=pid;
              			}
             	 		ai++;
         			}
 					drawTree();
- 				}	
+ 				}
 			';
  		}
 
 		function getJSTreeFunctions(){
-			global $l_export;
 			$out=weTree::getJSTreeFunctions();
-	
+
 			$out.='
 				function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
-						if(confirm("'.$l_export["save_changed_export"].'")) {
+						if(confirm("'.g_l('export',"[save_changed_export]").'")) {
 							cmd = "save_export";
 							top.content.we_cmd("save_export");
 						} else {
@@ -100,28 +99,28 @@
 						'.$this->topFrame.'.resize.right.editor.edbody.location="'.$this->frameset.'?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+'.$this->topFrame.'.activ_tab;
 					}
 				}
-				'.$this->topFrame.'.loaded=1;			
+				'.$this->topFrame.'.loaded=1;
 			';
 			return $out;
-		}  	
-		
+		}
+
 		function getJSStartTree(){
-			
+
 			return 'function startTree(){
 				'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&cmd=mainload&pid=0";
 				drawTree();
 			}';
-			
+
 		}
-		
+
 		function getJSIncludeFunctions(){
 
-			$out=weTree::getJSIncludeFunctions();			
+			$out=weTree::getJSIncludeFunctions();
 			$out.="\n".$this->getJSStartTree()."\n";
-		
-			return $out;   
+
+			return $out;
 		}
-		
+
 		function getJSMakeNewEntry(){
 	 		return '
 			function makeNewEntry(icon,id,pid,txt,open,ct,tab){
@@ -132,32 +131,32 @@
 	 						else ct="item";
 
 							var attribs=new Array();
-	
+
 							attribs["id"]=id;
 							attribs["icon"]=icon;
 							attribs["text"]=txt;
 							attribs["parentid"]=pid;
 							attribs["open"]=open;
-							
+
 	 						attribs["tooltip"]=id;
 	 						attribs["typ"]=ct;
-	 		
-	
+
+
 							attribs["disabled"]=0;
 							if(attribs["typ"]=="item") attribs["published"]=0;
-	
+
 							attribs["selected"]=0;
-	 		
+
 							treeData.addSort(new node(attribs));
-	
+
 							drawTree();
 						}
 					}
 			}
 			';
-		}		
-	 		
- 		
+		}
+
+
 	}
 
 ?>

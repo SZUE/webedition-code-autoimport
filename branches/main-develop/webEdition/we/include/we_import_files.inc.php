@@ -156,7 +156,7 @@ class we_import_files
 									imgs[i].style.display="";
 							}
 						}
-						//weAppendMultiboxRow(we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr()),\'' . $GLOBALS["l_import_files"]["file"] . '\' + \' \' + (parseInt(weGetMultiboxLength())),80,1);
+						//weAppendMultiboxRow(we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr()),\'' . g_l('importFiles',"[file]") . '\' + \' \' + (parseInt(weGetMultiboxLength())),80,1);
 						var fi = we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr());
 						fi = fi.replace(/WE_FORM_NUM/g,(document.forms.length));
 						weAppendMultiboxRow(fi,"",0,1);
@@ -221,7 +221,7 @@ class we_import_files
 				function uploadFinished() {
 					refreshTree();
 					' . we_message_reporting::getShowMessageCall(
-				$GLOBALS["l_import_files"]["finished"],
+				g_l('importFiles',"[finished]"),
 				WE_MESSAGE_NOTICE) . '
 				}
 
@@ -296,34 +296,34 @@ class we_import_files
 				$parts,
 				array(
 
-						"headline" => $GLOBALS["l_import_files"]["destination_dir"],
+						"headline" => g_l('importFiles',"[destination_dir]"),
 						"html" => $content,
 						"space" => 150
 				));
 
-		$content = htmlAlertAttentionBox($GLOBALS["l_import_files"]["sameName_expl"], 2, 380);
+		$content = htmlAlertAttentionBox(g_l('importFiles',"[sameName_expl]"), 2, 380);
 		$content .= getPixel(200, 10);
 		$content .= we_forms::radiobutton(
 				"overwrite",
 				($this->sameName == "overwrite"),
 				"sameName",
-				$GLOBALS["l_import_files"]["sameName_overwrite"]);
+				g_l('importFiles',"[sameName_overwrite]"));
 		$content .= we_forms::radiobutton(
 				"rename",
 				($this->sameName == "rename"),
 				"sameName",
-				$GLOBALS["l_import_files"]["sameName_rename"]);
+				g_l('importFiles',"[sameName_rename]"));
 		$content .= we_forms::radiobutton(
 				"nothing",
 				($this->sameName == "nothing"),
 				"sameName",
-				$GLOBALS["l_import_files"]["sameName_nothing"]);
+				g_l('importFiles',"[sameName_nothing]"));
 
 		array_push(
 				$parts,
 				array(
 
-						"headline" => $GLOBALS["l_import_files"]["sameName_headline"],
+						"headline" => g_l('importFiles',"[sameName_headline]"),
 						"html" => $content,
 						"space" => 150
 				));
@@ -350,17 +350,17 @@ class we_import_files
 					$parts,
 					array(
 
-							'headline' => $GLOBALS["l_import_files"]["metadata"] . '',
+							'headline' => g_l('importFiles',"[metadata]") . '',
 							'html' => we_forms::checkboxWithHidden(
 									$this->importMetadata == true,
 									'importMetadata',
-									$GLOBALS["l_import_files"]["import_metadata"]),
+									g_l('importFiles',"[import_metadata]")),
 							'space' => 150
 					));
 
 			if (we_image_edit::gd_version() > 0) {
 				$GLOBALS["DB_WE"]->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
-				$Thselect = $GLOBALS["l_import_files"]["thumbnails"] . "<br>" . getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
+				$Thselect = g_l('importFiles',"[thumbnails]") . "<br>" . getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
 				while ($GLOBALS["DB_WE"]->next_record()) {
@@ -374,7 +374,7 @@ class we_import_files
 						$parts,
 						array(
 
-								"headline" => $GLOBALS["l_import_files"]["make_thumbs"],
+								"headline" => g_l('importFiles',"[make_thumbs]"),
 								"html" => $Thselect,
 								"space" => 150
 						));
@@ -459,7 +459,7 @@ class we_import_files
 
 								"headline" => "",
 								"html" => htmlAlertAttentionBox(
-										$GLOBALS["l_import_files"]["add_description_nogdlib"],
+										g_l('importFiles',"[add_description_nogdlib]"),
 										2,
 										""),
 								"space" => 0
@@ -478,10 +478,10 @@ class we_import_files
 				30,
 				"",
 				$foldAt,
-				$GLOBALS["l_import_files"]["image_options_open"],
-				$GLOBALS["l_import_files"]["image_options_close"],
+				g_l('importFiles',"[image_options_open]"),
+				g_l('importFiles',"[image_options_close]"),
 				($wepos == "down"),
-				$GLOBALS["l_import_files"]["step1"]);
+				g_l('importFiles',"[step1]"));
 		$startsrceen = we_htmlElement::htmlDiv(
 				array(
 					"id" => "start"
@@ -549,12 +549,12 @@ class we_import_files
 				array(
 					'id' => 'desc'
 				),
-				htmlAlertAttentionBox(sprintf($GLOBALS["l_import_files"]["import_expl"], $maxsize), 2, "520", false)) . we_htmlElement::htmlDiv(
+				htmlAlertAttentionBox(sprintf(g_l('importFiles',"[import_expl]"), $maxsize), 2, "520", false)) . we_htmlElement::htmlDiv(
 				array(
 					'id' => 'descJupload', 'style' => 'display:none;'
 				),
 				htmlAlertAttentionBox(
-						sprintf($GLOBALS["l_import_files"]["import_expl_jupload"], $maxsize),
+						sprintf(g_l('importFiles',"[import_expl_jupload]"), $maxsize),
 						2,
 						"520",
 						false));
@@ -575,7 +575,7 @@ class we_import_files
 						"onchange" => "checkFileinput();"
 				)) . $but;
 
-		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . $GLOBALS["l_import_files"]["file"] . '&nbsp;<span id="uploadFiles_headline_WEFORMNUM">WE_FORM_NUM</span></td><td>' . getPixel(
+		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles',"[file]") . '&nbsp;<span id="uploadFiles_headline_WEFORMNUM">WE_FORM_NUM</span></td><td>' . getPixel(
 				35,
 				5) . '</td><td>' . $fileinput . '</td></tr></table>';
 
@@ -665,7 +665,7 @@ class we_import_files
 						"",
 						"",
 						"",
-						$GLOBALS["l_import_files"]["step2"]));
+						g_l('importFiles',"[step2]")));
 
 		$body = we_htmlElement::htmlBody(
 				array(
@@ -696,14 +696,14 @@ class we_import_files
 
 			$filelist = "";
 			foreach ($_SESSION["WE_IMPORT_FILES_ERRORs"] as $err) {
-				$filelist .= "- " . $err["filename"] . " => " . $GLOBALS["l_import_files"][$err["error"]] . '<br>';
+				$filelist .= "- " . $err["filename"] . " => " . g_l('importFiles','['.$err["error"].']') . '<br>';
 			}
 			unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
 
 			$parts[] = array(
 
 					'html' => htmlAlertAttentionBox(
-							sprintf(str_replace('\n', '<br>', $GLOBALS["l_import_files"]["error"]), $filelist),
+							sprintf(str_replace('\n', '<br>', g_l('importFiles',"[error]")), $filelist),
 							1,
 							"520",
 							false)
@@ -712,7 +712,7 @@ class we_import_files
 		} else {
 
 			$parts[] = array(
-				'html' => htmlAlertAttentionBox($GLOBALS["l_import_files"]["finished"], 2, "520", false)
+				'html' => htmlAlertAttentionBox(g_l('importFiles',"[finished]"), 2, "520", false)
 			);
 
 		}
@@ -733,7 +733,7 @@ class we_import_files
 						"",
 						"",
 						"",
-						$GLOBALS["l_import_files"]["step3"]))// bugfix 1001
+						g_l('importFiles',"[step3]")))// bugfix 1001
 ;
 
 		$body = we_htmlElement::htmlBody(array(
@@ -816,15 +816,15 @@ class we_import_files
 
 			$filelist = "";
 			foreach ($_SESSION["WE_IMPORT_FILES_ERRORs"] as $err) {
-				$filelist .= "- " . $err["filename"] . " => " . $GLOBALS["l_import_files"][$err["error"]] . "\\n";
+				$filelist .= "- " . $err["filename"] . " => " . g_l('importFiles','['.$err["error"].']') . "\\n";
 			}
 			unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
 			$js .= "			" . we_message_reporting::getShowMessageCall(
-					sprintf($GLOBALS["l_import_files"]["error"], $filelist),
+					sprintf(g_l('importFiles',"[error]"), $filelist),
 					WE_MESSAGE_ERROR) . "\n";
 		} else {
 			$js .= "			" . we_message_reporting::getShowMessageCall(
-					$GLOBALS["l_import_files"]["finished"],
+					g_l('importFiles',"[finished]"),
 					WE_MESSAGE_NOTICE) . "\n";
 		}
 
@@ -848,7 +848,7 @@ class we_import_files
 		$prog = ($formcount == 0) ? 0 : (($this->step == 0) ? 0 : ((int)((100 / $formcount) * ($formnum + 1))));
 		$pb = new we_progressBar($prog);
 		$pb->setStudLen(200);
-		$pb->addText(sprintf($GLOBALS["l_import_files"]["import_file"], $formnum + 1), 0, "title");
+		$pb->addText(sprintf(g_l('importFiles',"[import_file]"), $formnum + 1), 0, "title");
 		$progressbar = '<span id="progressbar"' . (($this->step == 0) ? 'style="display:none' : '') . '">' . $pb->getHTML() . '</span>';
 		$js .= $pb->getJSCode();
 

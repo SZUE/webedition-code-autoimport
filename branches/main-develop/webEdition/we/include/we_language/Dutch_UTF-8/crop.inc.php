@@ -18,21 +18,17 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: crop.inc.php
  * Provides language strings.
  * Language: English
  */
-
-$l_crop["value_minor_zero"] = "Waardes kleiner dan 0 zijn niet geldig.\\nLaatste geldige waarde hersteld.";
-$l_crop["zero_to_width"] = "Alleen hele nummers tussen 0 en de breedte van de afbeelding zijn geldig.\\nLaatste geldige waarde hersteld.";
-$l_crop["invalid_value_width"] = "Waardes groter dan de breedte van de afbeelding zijn niet geldig.\\nLaatste geldige waarde hersteld.";
-$l_crop["zero_to_height"] = "Alleen hele nummers tussen 0 en de hoogte van de afbeelding zijn geldig.\\nLaatste geldige waarde hersteld.";
-$l_crop["invalid_value_height"] = "Waardes groter dan de hoogte van de afbeelding zijn niet geldig.\\nLaatste geldige waarde hersteld.";
-
-$l_crop["enlarge_crop_area"] = "Vergroot het uitsnij gebied";
-$l_crop["reduce_crop_area"] = "Verklein het uitsnij gebied";
-
-?>
+$l_crop = array(
+		'value_minor_zero' => "Waardes kleiner dan 0 zijn niet geldig.\\nLaatste geldige waarde hersteld.",
+		'zero_to_width' => "Alleen hele nummers tussen 0 en de breedte van de afbeelding zijn geldig.\\nLaatste geldige waarde hersteld.",
+		'invalid_value_width' => "Waardes groter dan de breedte van de afbeelding zijn niet geldig.\\nLaatste geldige waarde hersteld.",
+		'zero_to_height' => "Alleen hele nummers tussen 0 en de hoogte van de afbeelding zijn geldig.\\nLaatste geldige waarde hersteld.",
+		'invalid_value_height' => "Waardes groter dan de hoogte van de afbeelding zijn niet geldig.\\nLaatste geldige waarde hersteld.",
+		'enlarge_crop_area' => "Vergroot het uitsnij gebied",
+		'reduce_crop_area' => "Verklein het uitsnij gebied",
+);

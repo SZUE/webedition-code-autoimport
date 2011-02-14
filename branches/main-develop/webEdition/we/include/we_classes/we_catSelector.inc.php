@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
@@ -130,7 +129,7 @@ class we_catSelector extends we_multiSelector{
 		$this->printHeaderTableSpaceRow();
 		print '				<tr valign="middle">
 					<td width="10">'.getPixel(10,29).'</td>
-					<td width="70" class="defaultfont"><b>'.$GLOBALS["l_fileselector"]["lookin"].'</b></td>
+					<td width="70" class="defaultfont"><b>'.g_l('fileselector',"[lookin]").'</b></td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td>
 					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
@@ -323,12 +322,12 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0" /></td>');
-		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector',"[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector',"[new_folder_name]")?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}else if(makeNewCat){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>cat.gif" width="16" height="18" border="0" /></td>');
-		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print $GLOBALS["l_fileselector"]["new_cat_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_cat_name"]?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector',"[new_cat_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector',"[new_cat_name]")?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -393,7 +392,7 @@ function drawNewCat(){
 	top.makeNewCat=false;
 }
 function deleteEntry(){
-	if(confirm('<?php print $GLOBALS["l_fileselector"]["deleteQuestion"]?>')){
+	if(confirm('<?php print g_l('fileselector',"[deleteQuestion]")?>')){
 		var todel = "";
 		for	(var i=0;i < entries.length; i++){
 			if(isFileSelected(entries[i].ID)){
@@ -500,7 +499,7 @@ top.selectFile(top.currentID);
   	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_fileselector"]["catname"].'</a></b></td>
+					<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('fileselector',"[catname]").'</a></b></td>
 					<td width="65%" class="selector" style="padding-left:10px;"><b>'.g_l('button','[properties][value]').'</b></td>
 				</tr>
 				<tr>
@@ -856,7 +855,7 @@ function setDir(id){
 			if($catlistNotDeleted){
 
 				print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall($GLOBALS["l_fileselector"]["cat_in_use"] . '\n\n' . $catlistNotDeleted, WE_MESSAGE_ERROR)
+					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, WE_MESSAGE_ERROR)
 				);
 			}
 			if($changeToParent){
@@ -896,7 +895,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		if($this->CatInUse($this->id,$IsDir)){
 
 			print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall($GLOBALS["l_fileselector"]["cat_in_use"] . '\n\n' . $catlistNotDeleted, WE_MESSAGE_ERROR)
+					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, WE_MESSAGE_ERROR)
 				);
 		}else{
 			print '<script>
@@ -984,7 +983,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b>'.$GLOBALS["l_fileselector"]["catname"].'</b>
+						<b>'.g_l('fileselector',"[catname]").'</b>
 					</td>
 					<td></td>
 					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'

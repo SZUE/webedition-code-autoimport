@@ -21,7 +21,7 @@
 
 
 /**
- * Language file: export.inc.php
+ * Language file:
  *
  * Provides language strings.
  *

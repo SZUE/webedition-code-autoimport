@@ -28,8 +28,6 @@ class we_image_crop
 {
 
 	function getJS(){
-		global $l_crop;
-
 		if (!isset($GLOBALS["we_doc"]->elements["origwidth"])) {
 			$GLOBALS["we_doc"]->setElement("origwidth", $GLOBALS["we_doc"]->getElement("width"));
 		}
@@ -537,7 +535,7 @@ var CropTool = {
 		var h = this.sel.getHeight();
 		var cov = document.getElementById(this.coverID);
 
-	
+
 		if((w - w != 0) || (w < 1) || (w > this.imgW)){
 			if(typeof this.sel.getWidth() != "number") document.forms["we_form"].CropWidth.value = "";
 			else document.forms["we_form"].CropWidth.value = this.sel.getWidth();
@@ -931,7 +929,6 @@ if(!Function.prototype.apply){
 	}
 
 	function getCrop($attribs){
-		global $l_crop;
 		$we_button = new we_button();
 		$cancelbut = $we_button->create_button("cancel", "javascript:we_cmd('crop_cancel')");
 		$okbut = $we_button->create_button("save", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('doImage_crop',document.forms['we_form'].cropCoordX.value,document.forms['we_form'].cropCoordY.value,document.forms['we_form'].CropWidth.value,document.forms['we_form'].CropHeight.value);", true, -1, -1, "", "", true, false);
@@ -956,8 +953,8 @@ if(!Function.prototype.apply){
          	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="CropTool.setCropWidth(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
                 <input type="text" name="CropHeight" id="CropHeight" value="0" onchange="CropTool.setCropHeight(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
               </div>
-              <a id="cropButtonZoomIn" title="'.$l_crop["enlarge_crop_area"].'" onmousedown="CropTool.zoom(1);">&nbsp;</a>
-              <a id="cropButtonZoomOut" title="'.$l_crop["reduce_crop_area"].'" onmousedown="CropTool.zoom(-1);">&nbsp;</a>
+              <a id="cropButtonZoomIn" title="'.g_l('crop','[enlarge_crop_area]').'" onmousedown="CropTool.zoom(1);">&nbsp;</a>
+              <a id="cropButtonZoomOut" title="'.g_l('crop'),'[reduce_crop_area]').'" onmousedown="CropTool.zoom(-1);">&nbsp;</a>
               </div>
             </td>
             <td>'.$we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2).'</td>

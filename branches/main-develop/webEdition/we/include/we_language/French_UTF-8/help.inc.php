@@ -18,14 +18,13 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: help.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_help["help_not_available_title"] = "Help is not available"; // TRANSLATE
-$l_help["help_not_available_text"] = "L'aide-Online ne pas accessible en ce moment!";
-$l_help["help_not_available_again"] = "S'il vous plaît essayer le de nouveau postérieurement.";
-?>
+$l_help = array(
+		'help_not_available_title' => "Help is not available", // TRANSLATE
+		'help_not_available_text' => "L'aide-Online ne pas accessible en ce moment!",
+		'help_not_available_again' => "S'il vous plaît essayer le de nouveau postérieurement.",
+);

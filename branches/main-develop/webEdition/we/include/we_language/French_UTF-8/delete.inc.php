@@ -18,13 +18,12 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: delete.inc.php
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_delete"]["delete"] = "Delete"; // TRANSLATE
-$GLOBALS["l_delete"]["delete_entry"] = "Supprimer %s";
-?>
+$l_delete = array(
+		'delete' => "Delete", // TRANSLATE
+		'delete_entry' => "Supprimer %s",
+);

@@ -54,7 +54,6 @@ class delFragment extends taskFragment{
 
 	function doTask(){
 		$p = addslashes(shortenPath(id_to_path($this->data,$this->table,$this->db),70));
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/delete.inc.php");
 		$GLOBALS["we_folder_not_del"] = array();
 		$currentID = (isset($_REQUEST["currentID"]) && $_REQUEST["currentID"]) ? $_REQUEST["currentID"] : 0;
 		$currentParents = array();
@@ -68,7 +67,7 @@ class delFragment extends taskFragment{
 			$_SESSION["we_go_seem_start"] = true;
 		}
 		$percent = round((100/count($this->alldata))*(1+$this->currentTask));
-		print '<script language="JavaScript" type="text/javascript">parent.delmain.setProgressText("pb1","'.sprintf($GLOBALS["l_delete"]["delete_entry"],$p).'");parent.delmain.setProgress('.$percent.');</script>';
+		print '<script language="JavaScript" type="text/javascript">parent.delmain.setProgressText("pb1","'.sprintf(g_l('delete',"[delete_entry]"),$p).'");parent.delmain.setProgress('.$percent.');</script>';
 
 	}
 

@@ -18,61 +18,60 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: fileselector.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_fileselector["username"] = "Имя пользователя";
-$l_fileselector["catname"] = "Категория";
-$l_fileselector["cat_in_use"] = "Следующие категории обрабатываются и поэтому не могут быть удалены:";
-$l_fileselector["cat_in_use_rename"] = "Данная категория - действующая и поэтому не может быть изменена!";
-$l_fileselector["deleteQuestion"] = "Удалить выбранные данные! Вы уверены?";
-$l_fileselector["overwriteImg"] = "Overwrite existing image";
-$l_fileselector["renameImg"] = "Rename new image if it exists";
-$l_fileselector["open"] = "Открыть";
-$l_fileselector["close"] = "Закрыть";
-$l_fileselector["lookin"] = "Искать в";
-$l_fileselector["type"] = "Тип файла";
-$l_fileselector["title"] = "Title"; // TRANSLATE
-$l_fileselector["filename"] = "Имя файла";
-$l_fileselector["groupname"] = "Имя группы";
-$l_fileselector["folders"] = "Verzeichnisse";
-$l_fileselector["files"] = "Dateien";
-$l_fileselector["name"] = "Имя";
-$l_fileselector["foldername"] = "Директория";
-$l_fileselector["folders"] = "Directories"; // TRANSLATE
-$l_fileselector["files"] = "Files"; // TRANSLATE
-$l_fileselector["up_folder"] = "Вышестоящая директория";
-$l_fileselector["delete_entry"] = "Удалить введенные данные";
-$l_fileselector["new_cat"] = "Создать новую категорию";
-$l_fileselector["new_folder"] = "Создать новую директорию";
-$l_fileselector["new_folder_name"] = "Новая директория";
-$l_fileselector["new_cat_name"] = "Новая категория";
-$l_fileselector["created"] = "Date of creation"; // TRANSLATE
-$l_fileselector["modified"] = "Дата последнего изменения";
-$l_fileselector["root_folder"] = "Корневой каталог";
-$l_fileselector["ok"] = "Ok"; // TRANSLATE
-$l_fileselector["cancel"] = "Отменить";
-$l_fileselector["all_Types"] = "Все типы";
-$l_fileselector["new_image"] = "Создать графику";
-$l_fileselector["new_file"] = "Создать файл";
-$l_fileselector["folder"] = "Директория";
-$l_fileselector["text/xml"] = "Файлы XML";
-$l_fileselector["edit_file"] = "Редактировать выделенные файлы";
-$l_fileselector["data"] = "Файл";
-$l_fileselector["create_folder_nok"] = "Директория не может быть создана!";
-$l_fileselector["rename_folder_nok"] = "Директория не может быть переименована!";
-$l_fileselector["rename_file_nok"] = "Файл не может быть переименован!";
-$l_fileselector["edit_file_nok"] = "Имя файла не заполнено!";
-$l_fileselector["edit_file_is_folder"] = "Вы не выделили директорию для дальнейшей обработки!";
-$l_fileselector["already_root"] = "Принадлежит корневому каталогу";
-$l_fileselector["delete"] = "Удалить файл";
-$l_fileselector["overwriteImg"] = "Переписать";
-$l_fileselector["renameImg"] = "Переименовать";
-$l_fileselector["can_not_overwrite_we_file"] = "Файл системы webEdition не может быть переписан!";
-$l_fileselector["filesize"] = "Размер файла";
-$l_fileselector["image_not_uploaded"] = "No image has been uploaded."; // TRANSLATE
-?>
+$l_fileselector = array(
+		'username' => "Имя пользователя",
+		'catname' => "Категория",
+		'cat_in_use' => "Следующие категории обрабатываются и поэтому не могут быть удалены:",
+		'cat_in_use_rename' => "Данная категория - действующая и поэтому не может быть изменена!",
+		'deleteQuestion' => "Удалить выбранные данные! Вы уверены?",
+		'overwriteImg' => "Overwrite existing image",
+		'renameImg' => "Rename new image if it exists",
+		'open' => "Открыть",
+		'close' => "Закрыть",
+		'lookin' => "Искать в",
+		'type' => "Тип файла",
+		'title' => "Title", // TRANSLATE
+		'filename' => "Имя файла",
+		'groupname' => "Имя группы",
+		'folders' => "Verzeichnisse",
+		'files' => "Dateien",
+		'name' => "Имя",
+		'foldername' => "Директория",
+		'folders' => "Directories", // TRANSLATE
+		'files' => "Files", // TRANSLATE
+		'up_folder' => "Вышестоящая директория",
+		'delete_entry' => "Удалить введенные данные",
+		'new_cat' => "Создать новую категорию",
+		'new_folder' => "Создать новую директорию",
+		'new_folder_name' => "Новая директория",
+		'new_cat_name' => "Новая категория",
+		'created' => "Date of creation", // TRANSLATE
+		'modified' => "Дата последнего изменения",
+		'root_folder' => "Корневой каталог",
+		'ok' => "Ok", // TRANSLATE
+		'cancel' => "Отменить",
+		'all_Types' => "Все типы",
+		'new_image' => "Создать графику",
+		'new_file' => "Создать файл",
+		'folder' => "Директория",
+		'text/xml' => "Файлы XML",
+		'edit_file' => "Редактировать выделенные файлы",
+		'data' => "Файл",
+		'create_folder_nok' => "Директория не может быть создана!",
+		'rename_folder_nok' => "Директория не может быть переименована!",
+		'rename_file_nok' => "Файл не может быть переименован!",
+		'edit_file_nok' => "Имя файла не заполнено!",
+		'edit_file_is_folder' => "Вы не выделили директорию для дальнейшей обработки!",
+		'already_root' => "Принадлежит корневому каталогу",
+		'delete' => "Удалить файл",
+		'overwriteImg' => "Переписать",
+		'renameImg' => "Переименовать",
+		'can_not_overwrite_we_file' => "Файл системы webEdition не может быть переписан!",
+		'filesize' => "Размер файла",
+		'image_not_uploaded' => "No image has been uploaded.", // TRANSLATE
+);

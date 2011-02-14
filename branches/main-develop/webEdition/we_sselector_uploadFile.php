@@ -23,7 +23,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/newfile.inc.php");
 
 protect();
@@ -52,7 +51,7 @@ if (isset($_FILES['we_uploadFile'])) {
 	if(file_exists($cpat."/".$_FILES['we_uploadFile']["name"])){
 		if($overwrite=="yes"){
 			if(weFile($_REQUEST["pat"]."/".$_FILES['we_uploadFile']["name"])){
-				$we_alerttext = $GLOBALS["l_fileselector"]["can_not_overwrite_we_file"];
+				$we_alerttext = g_l('fileselector',"[can_not_overwrite_we_file]");
 			}
 		}else{
 			$z=0;
@@ -81,7 +80,7 @@ if (isset($_FILES['we_uploadFile'])) {
 $maxsize = getUploadMaxFilesize(false);
 
 
-$yes_button = $we_button->create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall($l_fileselector["edit_file_nok"], WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
+$yes_button = $we_button->create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector',"[edit_file_nok]"),WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
 $cancel_button = $we_button->create_button("cancel", "javascript:self.close();");
 $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 

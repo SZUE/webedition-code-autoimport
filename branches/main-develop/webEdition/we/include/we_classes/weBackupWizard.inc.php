@@ -817,8 +817,6 @@ class weBackupWizard{
 
 
  	function  getHTMLBackupStep1(){
- 		global $l_export;
-
  		if(isset($_SESSION['weBackupVars'])) {
 			// workaround for php bug #18071
 			// bug: session has been restarted

@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 protect();
@@ -224,8 +223,8 @@ $set_rename=false;
 if( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"){ ?>
    <tr style="background-color:#DFE9F5;">
    <td align="center" width="25"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>
-   <td class="selector" width="200"><?php print htmlTextInput("txt",20,$l_fileselector["new_folder_name"],"",'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"',"text","100%"); ?></td>
-   <td class="selector" width="150"><?php print $l_fileselector["folder"]?></td>
+   <td class="selector" width="200"><?php print htmlTextInput("txt",20,g_l('fileselector',"[new_folder_name]"),"",'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"',"text","100%"); ?></td>
+   <td class="selector" width="150"><?php print g_l('fileselector',"[folder]")?></td>
    <td class="selector"><?php print date("d-m-Y H:i:s")?></td>
    <td class="selector"></td>
    </tr>

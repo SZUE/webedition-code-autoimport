@@ -23,7 +23,7 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$GLOBALS["l_import_files"] = array(
+$l_importFiles  = array(
 		'destination_dir' => "Zielverzeichnis",
 		'file' => "Datei",
 		'sameName_expl' => "Bestimmen Sie hier das Verhalten von webEdition, wenn eine Datei mit gleichem Namen existiert.",

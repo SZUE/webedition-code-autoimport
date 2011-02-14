@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
@@ -278,7 +277,7 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0" /></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('fileselector',"[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('fileselector',"[new_folder_name]"); ?>" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('<td class="selector"><?php print date(g_l(\'date\',\'[format][default]\'))?></td>');
 		d.writeln('</tr>');
 	}
@@ -378,8 +377,8 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td>'.getPixel(25,14).'</td>
-					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_fileselector"]["filename"].'</a></b></td>
-					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, ModDate\');">'.$GLOBALS["l_fileselector"]["modified"].'</a></b></td>
+					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('fileselector',"[filename]").'</a></b></td>
+					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, ModDate\');">'.g_l('fileselector',"[modified]").'</a></b></td>
 				</tr>
 				<tr>
 					<td width="25">'.getPixel(25,1).'</td>
@@ -537,7 +536,7 @@ function enableNewFolderBut(){
 		$this->printHeaderTableSpaceRow();
 		print '				<tr valign="middle">
 					<td width="10">'.getPixel(10,29).'</td>
-					<td width="70" class="defaultfont"><b>'.$GLOBALS["l_fileselector"]["lookin"].'</b></td>
+					<td width="70" class="defaultfont"><b>'.g_l('fileselector',"[lookin]").'</b></td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td>
 					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
@@ -1064,7 +1063,7 @@ top.selectFile(top.currentID);
 				$previewDefauts .= "<div style='overflow:auto; height:100%' id='info'><table cellpadding='0' cellspacing='0' width='100%'>";
 
 				$previewDefauts .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["tab_properties"]."</td></tr>";
-				$previewDefauts .= "<tr class='odd'><td title=\"".$result['Path']."\" width='10'>".$GLOBALS['l_fileselector']["name"].": </td><td>";
+				$previewDefauts .= "<tr class='odd'><td title=\"".$result['Path']."\" width='10'>".g_l('fileselector',"[name]").": </td><td>";
 				//$previewDefauts .= "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'><img src='/webEdition/images/tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>";
 				//$previewDefauts .= "<div style='margin-right:14px'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'>".$result['Text']."</a></div></td></tr>";
 				$previewDefauts .= "<div style='margin-right:14px'>".$result['Text']."</div></td></tr>";
@@ -1072,18 +1071,18 @@ top.selectFile(top.currentID);
 				$previewDefauts .= "<a href='javascript:openToEdit(\"".$this->table."\",\"".$this->id."\",\"".$result['ContentType']."\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='/webEdition/images/tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
 				$previewDefauts .= "<a href='javascript:openToEdit(\"".$this->table."\",\"".$this->id."\",\"".$result['ContentType']."\")' style='color:black'><div>".$this->id."</div></a></td></tr>";
 				if ($result['CreationDate']) {
-					$previewDefauts .= "<tr class='odd'><td class='odd'>".$GLOBALS['l_fileselector']["created"].": </td><td>".date(g_l('date','[format][default]'),$result['CreationDate'])."</td></tr>";
+					$previewDefauts .= "<tr class='odd'><td class='odd'>".g_l('fileselector',"[created]").": </td><td>".date(g_l('date','[format][default]'),$result['CreationDate'])."</td></tr>";
 					$nextrowclass = "even";
 				} else {
 					$nextrowclass = "odd";
 				}
 				if ($result['ModDate']) {
-					$previewDefauts .=  "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["modified"].": </td><td>".date(g_l('date','[format][default]'),$result['ModDate'])."</td></tr>";
+					$previewDefauts .=  "<tr class='$nextrowclass'><td>".g_l('fileselector',"[modified]").": </td><td>".date(g_l('date','[format][default]'),$result['ModDate'])."</td></tr>";
 					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 				} else {
 					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 				}
-				$previewDefauts .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["type"].": </td><td>".(g_l('contentTypes','['.$result['ContentType'].']')!==false?g_l('contentTypes','['.$result['ContentType'].']'):$result['ContentType'])."</td></tr>";
+				$previewDefauts .= "<tr class='$nextrowclass'><td>".g_l('fileselector',"[type]").": </td><td>".(g_l('contentTypes','['.$result['ContentType'].']')!==false?g_l('contentTypes','['.$result['ContentType'].']'):$result['ContentType'])."</td></tr>";
 
 				$out .= "\t<table cellpadding='0' cellspacing='0' height='100%' width='100%'>\n";
 				switch ($result['ContentType']) {
@@ -1109,7 +1108,7 @@ top.selectFile(top.currentID);
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["width"]." x ".$GLOBALS['l_we_class']["height"].": </td><td>".$imagesize[0]." x ".$imagesize[1]." px </td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["filesize"].": </td><td>".$filesize."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('fileselector',"[filesize]").": </td><td>".$filesize."</td></tr>";
 
 							$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["metainfo"]."</td></tr>";
 							$nextrowclass = "odd";
@@ -1133,7 +1132,7 @@ top.selectFile(top.currentID);
 					case "folder":
 						$out .= $previewDefauts;
 						if (isset($folderFolders) && is_array($folderFolders) && count($folderFolders)) {
-							$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_fileselector']["folders"]."</td></tr>";
+							$out .= "<tr><td colspan='2' class='headline'>".g_l('fileselector',"[folders]")."</td></tr>";
 							$nextrowclass = "odd";
 							foreach ($folderFolders as $fId => $fxVal) {
 								$out .= "<tr class='$nextrowclass'><td>".$fId.": </td><td>".$fxVal."</td></tr>";
@@ -1141,7 +1140,7 @@ top.selectFile(top.currentID);
 							}
 						}
 						if (isset($folderFiles) && is_array($folderFiles) && count($folderFiles)) {
-							$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_fileselector']["files"]."</td></tr>";
+							$out .= "<tr><td colspan='2' class='headline'>".g_l('fileselector',"[files]")."</td></tr>";
 							$nextrowclass = "odd";
 							foreach ($folderFiles as $fId => $fxVal) {
 								$out .= "<tr class='$nextrowclass'><td>".$fId.": </td><td>".$fxVal."</td></tr>";
@@ -1175,22 +1174,22 @@ top.selectFile(top.currentID);
 					case "text/html":
 						$out .= $previewDefauts;
 						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["filesize"].":</td><td>".$filesize."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('fileselector',"[filesize]").":</td><td>".$filesize."</td></tr>";
 						break;
 					case "text/css":
 						$out .= $previewDefauts;
 						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["filesize"].":</td><td>".$filesize."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('fileselector',"[filesize]").":</td><td>".$filesize."</td></tr>";
 						break;
 					case "text/js":
 						$out .= $previewDefauts;
 						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["filesize"].":</td><td>".$filesize."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('fileselector',"[filesize]").":</td><td>".$filesize."</td></tr>";
 						break;
 					case "application/*":
 						$out .= $previewDefauts;
 						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_fileselector']["filesize"].":</td><td>".$filesize."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('fileselector',"[filesize]").":</td><td>".$filesize."</td></tr>";
 						break;
 					case "object":
 						$out .= $previewDefauts;

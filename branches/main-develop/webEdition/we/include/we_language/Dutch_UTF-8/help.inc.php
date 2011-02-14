@@ -18,14 +18,13 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: help.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_help["help_not_available_title"] = "Help is niet beschikbaar";
-$l_help["help_not_available_text"] = "Online hulp is momenteel niet beschikbaar";
-$l_help["help_not_available_again"] = "Probeer het later nog eens.";
-?>
+$l_help = array(
+		'help_not_available_title' => "Help is niet beschikbaar",
+		'help_not_available_text' => "Online hulp is momenteel niet beschikbaar",
+		'help_not_available_again' => "Probeer het later nog eens.",
+);

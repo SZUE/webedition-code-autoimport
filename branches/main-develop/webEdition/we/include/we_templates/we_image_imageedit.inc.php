@@ -77,7 +77,6 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 							';
 				}
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/crop.inc.php");
 			$_html .= '
                         <tr>
 							<td>' . $we_doc->getHtml(true) .  '</td>
@@ -88,4 +87,3 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 			$_html .= '</table>';
 
 			print $_html;
-?>

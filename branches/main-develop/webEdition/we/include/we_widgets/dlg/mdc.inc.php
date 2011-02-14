@@ -22,7 +22,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/export.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/dlg/tree.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "weSuggest.class.inc.php");
@@ -450,10 +449,10 @@ $divStatic = we_htmlElement::htmlDiv(
 
 $captions = array();
 if (we_hasPerm("CAN_SEE_DOCUMENTS")) {
-	$captions[FILE_TABLE] = $l_export["documents"];
+	$captions[FILE_TABLE] = g_l('export',"[documents]");
 }
 if (defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")) {
-	$captions[OBJECT_FILES_TABLE] = $l_export["objects"];
+	$captions[OBJECT_FILES_TABLE] = g_l('export',"[objects]");
 }
 
 $divDynamic = we_htmlElement::htmlDiv(

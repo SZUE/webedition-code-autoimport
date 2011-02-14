@@ -18,15 +18,13 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: help.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_help["help_not_available_title"] = "Ohje ei ole saatavilla";
-$l_help["help_not_available_text"] = "Online ohjetta ei ole saatavilla";
-$l_help["help_not_available_again"] = "Yritä myöhemmin uudelleen.";
-
-?>
+$l_help = array(
+		'help_not_available_title' => "Ohje ei ole saatavilla",
+		'help_not_available_text' => "Online ohjetta ei ole saatavilla",
+		'help_not_available_again' => "Yritä myöhemmin uudelleen.",
+);

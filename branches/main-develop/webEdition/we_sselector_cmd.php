@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
 
@@ -67,7 +66,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 			selectDir();
 		}
 		else {
-			<?php print we_message_reporting::getShowMessageCall($l_fileselector["already_root"], WE_MESSAGE_ERROR); ?>
+			<?php print we_message_reporting::getShowMessageCall(g_l('fileselector',"[already_root]"), WE_MESSAGE_ERROR); ?>
 		}
 	}
 
@@ -76,7 +75,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 		if(a.length-2>-1)
 			setDir(a[a.length-2].value);
 		else
-			<?php print we_message_reporting::getShowMessageCall($l_fileselector["already_root"], WE_MESSAGE_ERROR); ?>
+			<?php print we_message_reporting::getShowMessageCall(g_l('fileselector',"[already_root]"), WE_MESSAGE_ERROR); ?>
 	}
 
 	function selectFile(fid) {
@@ -158,7 +157,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 		if((top.currentID!="")&&(top.fsfooter.document.forms["we_form"].elements["fname"].value!=""))
 			top.fscmd.location="we_sselector_cmd.php?cmd=delete_file&fid="+top.currentID+"&ask="+arguments[0];
 		else
-			<?php print we_message_reporting::getShowMessageCall($l_fileselector["edit_file_nok"], WE_MESSAGE_ERROR); ?>
+			<?php print we_message_reporting::getShowMessageCall(g_l('fileselector',"[edit_file_nok]"), WE_MESSAGE_ERROR); ?>
 	}
 
 	<?php

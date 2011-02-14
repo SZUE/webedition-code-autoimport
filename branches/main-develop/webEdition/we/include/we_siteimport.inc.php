@@ -23,7 +23,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/htm
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/siteimport.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/import.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/import_files.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/thumbnails.inc.php");
@@ -509,7 +508,7 @@ class weSiteImport
 	 */
 	function _getCreateWePageSettingsHTML()
 	{
-		global $l_import, $l_alert;
+		global $l_alert;
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		$we_button = new we_button();
 
@@ -538,7 +537,7 @@ class weSiteImport
 		}
 		$date_help_button = $we_button->create_button("image:btn_help", "javascript:showDateHelp();", true . -1, 22);
 		$dateformatvals = array(
-			"unix" => $l_import['uts'], "gmt" => $l_import['gts'], "own" => $l_import['fts']
+			"unix" => g_l('import','[uts]'), "gmt" => g_l('import','[gts]'), "own" => g_l('import','[fts]')
 		);
 		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
 				$GLOBALS["l_siteimport"]["dateFormat"],
@@ -710,7 +709,7 @@ class weSiteImport
 	function showDateHelp() {
 		// this is a real alert, dont use showMessage yet
 		' . we_message_reporting::getShowMessageCall(
-				$l_import['format_timestamp'],
+				g_l('import','[format_timestamp]'),
 				WE_MESSAGE_INFO) . '
 	}
 
@@ -972,7 +971,7 @@ class weSiteImport
 			$thumbsarray[$GLOBALS["DB_WE"]->f("ID")] = $GLOBALS["DB_WE"]->f("Name");
 		}
 		$_select = htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, "", "value", 150);
-		$_thumbs = htmlFormElementTable($_select, $GLOBALS["l_import_files"]["thumbnails"]);
+		$_thumbs = htmlFormElementTable($_select, g_l('importFiles',"[thumbnails]"));
 
 		$parts = array();
 
@@ -1038,29 +1037,29 @@ class weSiteImport
 						"space" => 120
 				));
 
-		$content = htmlAlertAttentionBox($GLOBALS["l_import_files"]["sameName_expl"], 2, "410");
+		$content = htmlAlertAttentionBox(g_l('importFiles',"[sameName_expl]"), 2, "410");
 		$content .= getPixel(200, 10);
 		$content .= we_forms::radiobutton(
 				"overwrite",
 				($this->sameName == "overwrite"),
 				"sameName",
-				$GLOBALS["l_import_files"]["sameName_overwrite"]);
+				g_l('importFiles',"[sameName_overwrite]"));
 		$content .= we_forms::radiobutton(
 				"rename",
 				($this->sameName == "rename"),
 				"sameName",
-				$GLOBALS["l_import_files"]["sameName_rename"]);
+				g_l('importFiles',"[sameName_rename]"));
 		$content .= we_forms::radiobutton(
 				"nothing",
 				($this->sameName == "nothing"),
 				"sameName",
-				$GLOBALS["l_import_files"]["sameName_nothing"]);
+				g_l('importFiles',"[sameName_nothing]"));
 
 		array_push(
 				$parts,
 				array(
 
-						"headline" => $GLOBALS["l_import_files"]["sameName_headline"],
+						"headline" => g_l('importFiles',"[sameName_headline]"),
 						"html" => $content,
 						"space" => 120
 				));
@@ -1070,11 +1069,11 @@ class weSiteImport
 					$parts,
 					array(
 
-							'headline' => $GLOBALS["l_import_files"]["metadata"] . '',
+							'headline' => g_l('importFiles',"[metadata]") . '',
 							'html' => we_forms::checkboxWithHidden(
 									$this->importMetadata == true,
 									'importMetadata',
-									$GLOBALS["l_import_files"]["import_metadata"]),
+									g_l('importFiles',"[import_metadata]")),
 							'space' => 120
 					));
 
@@ -1084,7 +1083,7 @@ class weSiteImport
 						$parts,
 						array(
 
-								"headline" => $GLOBALS["l_import_files"]["make_thumbs"],
+								"headline" => g_l('importFiles',"[make_thumbs]"),
 								"html" => $_thumbs,
 								"space" => 120
 						));
@@ -1168,7 +1167,7 @@ class weSiteImport
 
 								"headline" => "",
 								"html" => htmlAlertAttentionBox(
-										$GLOBALS["l_import_files"]["add_description_nogdlib"],
+										g_l('importFiles',"[add_description_nogdlib]"),
 										2,
 										""),
 								"space" => 0
@@ -1188,8 +1187,8 @@ class weSiteImport
 				30,
 				"",
 				$foldAT,
-				$GLOBALS["l_import_files"]["image_options_open"],
-				$GLOBALS["l_import_files"]["image_options_close"],
+				g_l('importFiles',"[image_options_open]"),
+				g_l('importFiles',"[image_options_close]"),
 				($wepos == "down"),
 				$GLOBALS["l_siteimport"]["siteimport"]) . $this->_getHiddensHTML();
 
@@ -1229,10 +1228,10 @@ class weSiteImport
 						ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"]) . $this->from);
 				if (count(scandir($importDirectory)) <= 2) {
 					return '<script type="text/javascript>alert(\'' . addslashes(
-							$GLOBALS["l_import_files"]["emptyDir"]) . '\');top.close()</script>';
+							g_l('importFiles',"[emptyDir]")) . '\');top.close()</script>';
 				} else {
 					return '<script type="text/javascript>alert(\'' . addslashes(
-							$GLOBALS["l_import_files"]["noFiles"]) . '\');top.close()</script>';
+							g_l('importFiles',"[noFiles]")) . '\');top.close()</script>';
 				}
 			}
 			$fr = new siteimportFrag($this);
@@ -1257,7 +1256,7 @@ class weSiteImport
 
 		$js = "function back() {\n" . "	top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=siteImport';\n" . "}\n\n" .
 
-		"function next() {\n" . "	var testvalue = 0;;\n" . "	if(!top.siteimportcontent.document.we_form.from.value  || top.siteimportcontent.document.we_form.from.value=='/'){\n" . "		testvalue += 1;\n" . "	}\n" . "	if(top.siteimportcontent.document.we_form.to.value == 0 || top.siteimportcontent.document.we_form.to.value == ''){\n" . "		testvalue += 2;\n" . "	}\n" . "	switch(testvalue){\n" . "		case 0:\n" . "			top.siteimportcontent.document.we_form.submit()\n" . "			break;\n" . "		case 1:\n" . "			if(confirm('" . $GLOBALS["l_import_files"]["root_dir_1"] . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		case 2:\n" . "			if(confirm('" . $GLOBALS["l_import_files"]["root_dir_2"] . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		case 3:\n" . "			if(confirm('" . $GLOBALS["l_import_files"]["root_dir_3"] . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		default:\n" . "	}\n" . "}\n\n";
+		"function next() {\n" . "	var testvalue = 0;;\n" . "	if(!top.siteimportcontent.document.we_form.from.value  || top.siteimportcontent.document.we_form.from.value=='/'){\n" . "		testvalue += 1;\n" . "	}\n" . "	if(top.siteimportcontent.document.we_form.to.value == 0 || top.siteimportcontent.document.we_form.to.value == ''){\n" . "		testvalue += 2;\n" . "	}\n" . "	switch(testvalue){\n" . "		case 0:\n" . "			top.siteimportcontent.document.we_form.submit()\n" . "			break;\n" . "		case 1:\n" . "			if(confirm('" . g_l('importFiles',"[root_dir_1]") . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		case 2:\n" . "			if(confirm('" . g_l('importFiles',"[root_dir_2]"). "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		case 3:\n" . "			if(confirm('" . g_l('importFiles',"[root_dir_3]") . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		default:\n" . "	}\n" . "}\n\n";
 
 		$js = we_htmlElement::jsElement($js);
 

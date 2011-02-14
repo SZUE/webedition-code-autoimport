@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
 
 protect();
@@ -678,7 +677,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 		$this->printHeaderTableSpaceRow();
 		print '				<tr valign="middle">
 					<td width="10">'.getPixel(10,29).'</td>
-					<td width="70" class="defaultfont"><b>'.$GLOBALS["l_fileselector"]["lookin"].'</b></td>
+					<td width="70" class="defaultfont"><b>'.g_l('fileselector',"[lookin]").'</b></td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td>
 					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
@@ -711,7 +710,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td>'.getPixel(25,14).'</td>
-					<td class="selector"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_fileselector"]["filename"].'</a></b></td>
+					<td class="selector"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('fileselector',"[filename]").'</a></b></td>
 				</tr>
 				<tr>
 					<td width="25">'.getPixel(25,1).'</td>
@@ -885,7 +884,7 @@ top.fsheader.selectIt();
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b>'.$GLOBALS["l_fileselector"]["name"].'</b>
+						<b>'.g_l('fileselector',"[name]").'</b>
 					</td>
 					<td></td>
 					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
@@ -917,9 +916,9 @@ top.fsheader.selectIt();
 				$this->tableSizer = "<td>".getPixel( 25,1)."</td><td>".getPixel(350,1)."</td><td>".getPixel(70,1)."</td><td>".getPixel(150,1)."</td>";
 				$this->tableHeadlines  = "
 					<td></td>
-					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>".$GLOBALS['l_fileselector']['filename']."</a></b></td>
+					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>".g_l('fileselector','[filename]')."</a></b></td>
 					<td class='selector'>&nbsp;<b>ID</b></td>
-					<td class='selector'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>".$GLOBALS['l_fileselector']['modified']."</a></b></td>
+					<td class='selector'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>".g_l('fileselector','[modified]')."</a></b></td>
 				";
 				break;
 			default:
@@ -927,9 +926,9 @@ top.fsheader.selectIt();
 				$this->tableSizer = "<td>".getPixel( 25,1)."</td><td>".getPixel(200,1)."</td><td>".getPixel(220,1)."</td><td>".getPixel(150,1)."</td>";
 				$this->tableHeadlines  = "
 					<td></td>
-					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>".$GLOBALS['l_fileselector']['filename']."</a></b></td>
-					<td class='selector'><b>".$GLOBALS['l_fileselector']['title']."</b></td>
-					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>".$GLOBALS['l_fileselector']['modified']."</a></b></td>
+					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>".g_l('fileselector','[filename]')."</a></b></td>
+					<td class='selector'><b>".g_l('fileselector','[title]')."</b></td>
+					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>".g_l('fileselector','[modified]')."</a></b></td>
 				";
 		}
 	}

@@ -55,19 +55,19 @@ $_javascript = "
 if( we_image_edit::gd_version() > 0 ){
 
     print
-    	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) . 
-    	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) . 
+    	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
+    	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
     	we_htmlElement::jsElement(
     		"
     			function closeOnEscape() {
 					return true;
-					
+
 				}
-				
+
 				function saveOnKeyBoard() {
 					window.frames[1].we_save();
 					return true;
-					
+
 				}"
     	) .
     "</head>";
@@ -89,7 +89,7 @@ if( we_image_edit::gd_version() > 0 ){
 
     $parts = array();
     array_push($parts, array(	"headline"=>"",
-								"html"=>htmlAlertAttentionBox($GLOBALS["l_import_files"]["add_description_nogdlib"],2,440),
+								"html"=>htmlAlertAttentionBox(g_l('importFiles',"[add_description_nogdlib]"),2,440),
 								"space"=>0
 						)
 				);
