@@ -419,7 +419,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 			<?php
 				if( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ){
 
-					print we_message_reporting::getShowMessageCall($l_we_SEEM["alert"]["close_include"], WE_MESSAGE_ERROR)
+					print we_message_reporting::getShowMessageCall(g_l('SEEM',"[alert][close_include]"), WE_MESSAGE_ERROR)
 					?>
 			top.close();
 					<?php
@@ -477,7 +477,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 ?>
 	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="<?php if($GLOBALS['BROWSER'] == "NN"){print "48";}else{print "39";} ?>,<?php print $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload();">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no">
-		<?php if ($showContentEditor) { ?> 
+		<?php if ($showContentEditor) { ?>
 			<frame <?php print setOnload(); ?> src="about:blank" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 			<frame  src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); ?><?php isset($parastr) ? print "&" . $parastr : print ""; ?>" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 		<?php } else { ?>

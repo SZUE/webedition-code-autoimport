@@ -19,11 +19,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/perms/SEEM.inc.php");
 
 $perm_group_name = "seem";
 $perm_group_title[$perm_group_name] = $l_perm["seem"]["perm_group_title"];
- 
+
 $perm_values[$perm_group_name]=array(
 	"CAN_SEE_MENUE",
 	"CAN_WORK_NORMAL_MODE",

@@ -18,15 +18,19 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
- * Language file: register.inc.php
+ * Language file: notpublished.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_register["regtext"] = 'Register your own full version of webEdition here or test out webEdition\'s functionality with the demo version.  The registration can also take place at a later date, through the Help menu and the "Registration" button.'; // TRANSLATE
-$l_register["register"] = 'Rejestracja';
-$l_register["to_demo"] = 'Wersja demo:';
-$l_register["regist"] = 'Rejestracja pełnej wersji webEdition:';
-?>
+$l_notPublished = array(
+		'path' => "Polku",
+		'creator' => "Luonut",
+		'created' => "Luotu",
+		'changedBy' => "Muuttanut",
+		'published' => "Julkaistu viimeksi",
+		'changed' => "Muutettu",
+		'inWorkflow' => "Työnkulun vaihe",
+		'title_pages' => "Julkaisemattomat sivut",
+		'title_objects' => "Julkaisemattomat objektit",
+);

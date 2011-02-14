@@ -18,20 +18,19 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: notpublished.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_notPublished["path"] = "Path"; // TRANSLATE
-$l_notPublished["creator"] = "Autor";
-$l_notPublished["created"] = "Utworzono";
-$l_notPublished["changedBy"] = "Wprowadzono zmiany przez";
-$l_notPublished["published"] = "Ostatnio opublikowano";
-$l_notPublished["changed"] = "Zmieniono";
-$l_notPublished["inWorkflow"] = "Krok Workflow";
-$l_notPublished["title_pages"] = "Nieopublikowane strony";
-$l_notPublished["title_objects"] = "Nieopublikowane obiekty";
-?>
+$l_notPublished = array(
+		'path' => "Path", // TRANSLATE
+		'creator' => "Autor",
+		'created' => "Utworzono",
+		'changedBy' => "Wprowadzono zmiany przez",
+		'published' => "Ostatnio opublikowano",
+		'changed' => "Zmieniono",
+		'inWorkflow' => "Krok Workflow",
+		'title_pages' => "Nieopublikowane strony",
+		'title_objects' => "Nieopublikowane obiekty",
+);

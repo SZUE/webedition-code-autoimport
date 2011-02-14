@@ -1672,9 +1672,8 @@ function mapPermissions() {
 			}
 
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 
-			$title = $l_we_SEEM["workspace_seem_startdocument"];
+			$title = g_l('SEEM',"[workspace_seem_startdocument]");
 
 			$docPath = "none";
 

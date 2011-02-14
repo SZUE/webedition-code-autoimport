@@ -1687,7 +1687,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 		$_SESSION["we_shopname"]="' . $shopname . '";
 
 		if (!isset($GLOBALS["' . $shopname . '"])||empty($GLOBALS["' . $shopname . '"])) {
-			echo parseError(sprintf(g_l(\'l_parser\',\'[missing_createShop]\',\'repeatShopItem\'));
+			echo parseError(sprintf(g_l(\'parser\',\'[missing_createShop]\',\'repeatShopItem\'));
 			return;
 		}
 

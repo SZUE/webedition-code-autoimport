@@ -18,15 +18,14 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: resave.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_resave["saving_doc"] = "Saving document"; // TRANSLATE
-$l_resave["saving_template"] = "Enregistre Modèle";
-$l_resave["saving_obj"] = "Enregistre Object";
-$l_resave["of"] = "de";
-?>
+$l_resave = array(
+		'saving_doc' => "Saving document", // TRANSLATE
+		'saving_template' => "Enregistre Modèle",
+		'saving_obj' => "Enregistre Object",
+		'of' => "de",
+);

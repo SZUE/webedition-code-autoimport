@@ -1,4 +1,4 @@
-<?php                                                                             
+<?php
 
 /**
  * webEdition CMS
@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".  $GLOBALS["WE_LANGUAGE"] . "/SEEM.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".  $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 
 protect();
@@ -50,7 +49,7 @@ top.toggleBusy(0);
 
 	//	For SEEM-Mode
 	if($_SESSION["we_mode"] == "seem"){
-		?><a href="javascript://" style="text-decoration:none" onClick="top.weNavigationHistory.navigateReload()" ><?php print $GLOBALS["l_we_SEEM"]["try_doc_again"] ?></a>
+		?><a href="javascript://" style="text-decoration:none" onClick="top.weNavigationHistory.navigateReload()" ><?php print g_l('SEEM',"[try_doc_again]") ?></a>
 		<?php
 	}
 ?>

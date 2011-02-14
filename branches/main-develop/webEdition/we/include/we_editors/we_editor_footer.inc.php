@@ -742,7 +742,7 @@ if(inWorkflow($we_doc)) {
 						$_noPermTable->setColContent( 0, 0, getPixel(20,2));
 						$_noPermTable->setColContent( 0, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 						$_noPermTable->setColContent( 0, 2, getPixel(10,2));
-						$_noPermTable->setColContent( 0, 3, $GLOBALS["l_we_SEEM"]["no_permission_to_edit_document"]);
+						$_noPermTable->setColContent( 0, 3, g_l('SEEM',"[no_permission_to_edit_document]"));
 
 
 						print $_noPermTable->getHtmlCode();

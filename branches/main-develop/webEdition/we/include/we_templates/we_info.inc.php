@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 
 
 //	build table for login screen.
@@ -185,16 +184,16 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		//	15th Mode
 		$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,5));
 		$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
-									"class" => "small"), ((defined("WE_SEEM") && !WE_SEEM) ? "" : $GLOBALS["l_we_SEEM"]["start_mode"]));
+									"class" => "small"), ((defined("WE_SEEM") && !WE_SEEM) ? "" : g_l('SEEM',"[start_mode]")));
 		$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
 
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0,0, array(), '<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td>' . we_forms::radiobutton("normal", getValueLoginMode("normal"), "mode", $GLOBALS["l_we_SEEM"]["start_mode_normal"], true, "small") . '</td>
+			<td>' . we_forms::radiobutton("normal", getValueLoginMode("normal"), "mode", g_l('SEEM',"[start_mode_normal]"), true, "small") . '</td>
 		</tr>
 		<tr>
-			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", $GLOBALS["l_we_SEEM"]["start_mode_seem"], true, "small") . '</td>
+			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", g_l('SEEM',"[start_mode_seem]"), true, "small") . '</td>
 		</tr>
 		</table>');
 		$_modetable->setCol(0,1, array(	"align"   => "right",

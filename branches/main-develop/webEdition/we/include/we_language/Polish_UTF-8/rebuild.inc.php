@@ -23,7 +23,7 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_rebuild"] = array(
+$l_rebuild = array(
 		'rebuild_documents' => "Rebuild - documents", // TRANSLATE
 		'rebuild_maintable' => "Zapisz tabelę główną",
 		'rebuild_tmptable' => "Tymczasową tabelę zapisać na nowo",

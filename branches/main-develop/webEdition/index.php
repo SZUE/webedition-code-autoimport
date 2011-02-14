@@ -513,7 +513,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 				if (permissionhandler::isUserAllowedForAction('work_mode', 'normal')) {
 					$_SESSION['we_mode'] = $_REQUEST['mode'];
 				} else {
-					$_body_javascript .= we_message_reporting::getShowMessageCall($GLOBALS['l_we_SEEM']['only_seem_mode_allowed'], WE_MESSAGE_ERROR);
+					$_body_javascript .= we_message_reporting::getShowMessageCall(g_l('SEEM','[only_seem_mode_allowed]'), WE_MESSAGE_ERROR);
 					$_SESSION['we_mode'] = 'seem';
 				}
 			} else {

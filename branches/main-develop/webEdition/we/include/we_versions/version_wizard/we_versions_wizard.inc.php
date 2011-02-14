@@ -95,7 +95,7 @@ class we_versions_wizard
 			$buttons = $WE_BTN->create_button_table(array(
 				$refreshButton, $cancelButton
 			), 10);
-			$pb = htmlDialogLayout($pb, $GLOBALS["l_rebuild"]["rebuild"], $buttons);
+			$pb = htmlDialogLayout($pb, g_l('rebuild',"[rebuild]"), $buttons);
 		} else {
 			$prevButton = $WE_BTN->create_button(
 					"back",

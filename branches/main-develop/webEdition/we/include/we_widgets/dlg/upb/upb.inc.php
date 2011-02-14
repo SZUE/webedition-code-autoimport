@@ -19,7 +19,6 @@
  */
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/resave.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/notpublished.inc.php");
 
 protect();
@@ -157,7 +156,7 @@ foreach ($tbls as $table) {
 			if ($DB_WE->f("wforder")) {
 				$step = weWorkflowUtility::findLastActiveStep($DB_WE->f("ID"), $table) + 1;
 				$steps = count(weWorkflowUtility::getNumberOfSteps($DB_WE->f("ID"), $table));
-				$text = "$step&nbsp;" . $l_resave["of"] . "&nbsp;$steps";
+				$text = "$step&nbsp;" . $g_l('resave','[of]') . "&nbsp;$steps";
 				if ($DB_WE->f("mywforder"))
 					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle" />';
 				else

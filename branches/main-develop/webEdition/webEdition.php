@@ -20,7 +20,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 //make sure we know which browser is used
@@ -225,7 +224,7 @@ function doClickDirect(id,ct,table,fenster){
 
 	} else {
 		//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
-		<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_we_SEEM"]["open_link_in_SEEM_edit_include"], WE_MESSAGE_WARNING); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('SEEM',"[open_link_in_SEEM_edit_include]"), WE_MESSAGE_WARNING); ?>
 		top.opener.top.doClickDirect(id,ct,table,top.opener);
 		// clean session
 		// get the EditorFrame - this is important due to edit_include_mode!!!!
@@ -1402,19 +1401,6 @@ function openBrowser(url) {
 	}
 }
 <?php
-if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
-	?>
-function register() {
-
-	if(we_demo) {
-		new jsWindow("<?php print WEBEDITION_DIR; ?>registerScreen.php","register",-1,-1, 530,260,true,false,true);
-	}
-}
-
-register();
-	<?php
-}
-
 	pWebEdition_JSFunctions();
 ?>
 var cockpitFrame;
