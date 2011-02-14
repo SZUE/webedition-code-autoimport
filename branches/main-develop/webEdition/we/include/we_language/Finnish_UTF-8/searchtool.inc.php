@@ -145,9 +145,9 @@ $l_searchtool = array(
 		'publishOK' => 'Dokumentit on julkaistu.',
 );
 
-$l_weSearch = array_merge($l_weSearch, array(
-		'perm_group_title' => $l_weSearch['weSearch'],
-		'perm_group_title' => $l_weSearch['weSearch'],
-		'import_tool_weSearch_data' => "Palauta " . $l_weSearch['weSearch'] . " tieto",
-		'export_tool_weSearch_data' => "Tallenna " . $l_weSearch['weSearch'] . " tieto",
+$l_searchtool = array_merge($l_searchtool, array(
+		'perm_group_title' => $l_searchtool['weSearch'],
+		'perm_group_title' => $l_searchtool['weSearch'],
+		'import_tool_weSearch_data' => "Palauta " . $l_searchtool['weSearch'] . " tieto",
+		'export_tool_weSearch_data' => "Tallenna " . $l_searchtool['weSearch'] . " tieto",
 				));

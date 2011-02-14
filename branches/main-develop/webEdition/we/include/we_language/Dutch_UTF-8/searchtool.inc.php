@@ -150,9 +150,9 @@ $l_searchtool = array(
 		'publishOK' => 'Documents were published.', // TRANSLATE
 );
 
-$l_weSearch = array_merge($l_weSearch, array(
-		'perm_group_title' => $l_weSearch['weSearch'],
-		'perm_group_title' => $l_weSearch['weSearch'],
-		'import_tool_weSearch_data' => "Herstel " . $l_weSearch['weSearch'] . " gegevens",
-		'export_tool_weSearch_data' => "Bewaar " . $l_weSearch['weSearch'] . " gegevens",
+$l_searchtool = array_merge($l_searchtool, array(
+		'perm_group_title' => $l_searchtool['weSearch'],
+		'perm_group_title' => $l_searchtool['weSearch'],
+		'import_tool_weSearch_data' => "Herstel " . $l_searchtool['weSearch'] . " gegevens",
+		'export_tool_weSearch_data' => "Bewaar " . $l_searchtool['weSearch'] . " gegevens",
 				));

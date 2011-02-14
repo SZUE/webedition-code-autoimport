@@ -145,9 +145,9 @@ $l_searchtool = array(
 		'publishOK' => 'Documents were published.',
 );
 
-$l_weSearch = array_merge($l_weSearch, array(
-		'perm_group_title' => $l_weSearch['weSearch'],
-		'perm_group_title' => $l_weSearch['weSearch'],
-		'import_tool_weSearch_data' => "Restore " . $l_weSearch['weSearch'] . " data",
-		'export_tool_weSearch_data' => "Save " . $l_weSearch['weSearch'] . " data",
+$l_searchtool = array_merge($l_searchtool, array(
+		'perm_group_title' => $l_searchtool['weSearch'],
+		'perm_group_title' => $l_searchtool['weSearch'],
+		'import_tool_weSearch_data' => "Restore " . $l_searchtool['weSearch'] . " data",
+		'export_tool_weSearch_data' => "Save " . $l_searchtool['weSearch'] . " data",
 				));
