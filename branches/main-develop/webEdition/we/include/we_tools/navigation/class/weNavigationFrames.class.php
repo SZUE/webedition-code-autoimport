@@ -22,7 +22,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolFrames.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/charset/charset.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationView.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationTree.class.php');
 
@@ -2125,7 +2124,7 @@ function onFolderSelectionChangeJS(elem) {
 	{
 
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/charsetHandler.class.php');
-		$value = ((isset($this->Model->Charset) && $this->Model->Charset) ? $this->Model->Charset : $GLOBALS["_language"]["charset"]);
+		$value = ((isset($this->Model->Charset) && $this->Model->Charset) ? $this->Model->Charset : g_l('charset',"[charset]"));
 
 		$charsetHandler = new charsetHandler();
 

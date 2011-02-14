@@ -63,7 +63,7 @@ class weBackup extends we_backup{
 		global $_language;
 		$this->nl="\n";
 
-		$this->header="<?xml version=\"1.0\" encoding=\"".$_language["charset"]."\" standalone=\"yes\"?>".$this->nl.
+		$this->header="<?xml version=\"1.0\" encoding=\"".g_l('charset','[charset]')."\" standalone=\"yes\"?>".$this->nl.
 					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">".$this->nl;
 		$this->footer=$this->nl."</webEdition>";
 

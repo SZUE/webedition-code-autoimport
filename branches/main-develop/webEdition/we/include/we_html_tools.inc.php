@@ -24,8 +24,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/htm
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/charset/charset.inc.php');
-
 /**
  * This function creates a table.
  *
@@ -811,7 +809,7 @@ function getHtmlTop($title = "webEdition", $charset = "", $useMessageBox = true)
 			array(
 
 					"http-equiv" => "content-type",
-					"content" => "text/html; charset=" . ($charset ? $charset : $GLOBALS["_language"]["charset"])
+					"content" => "text/html; charset=" . ($charset ? $charset : g_l('charset',"[charset]"))
 			));
 	$_meta_imagetoolbar_type = we_htmlElement::htmlMeta(array(
 		"http-equiv" => "imagetoolbar", "content" => "no"

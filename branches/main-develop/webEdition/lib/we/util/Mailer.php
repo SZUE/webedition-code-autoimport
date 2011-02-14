@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -23,7 +23,7 @@ include_once $GLOBALS['__WE_LIB_PATH__'] . '/Zend/Mail.php';
 
 /**
  * PHP email transport class
- * 
+ *
  */
 class we_util_Mailer extends Zend_Mail
 {
@@ -35,7 +35,7 @@ class we_util_Mailer extends Zend_Mail
 	 * @var String
 	 */
 	protected $ContentType = 'text/html';
-	
+
 	/**
 	 * Flag for embed images
 	 *
@@ -109,23 +109,23 @@ class we_util_Mailer extends Zend_Mail
 	 * @param Bool $isEmbedImages
 	 */
 	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0)
-	{ 
-		if (isset($GLOBALS["_language"]["charset"])){
-			$this->setCharSet($GLOBALS["_language"]["charset"]);
+	{
+		if (g_l('charset',"[charset]")!==false){
+			$this->setCharSet(g_l('charset',"[charset]"));
 		} else {
 			setCharSet('UTF-8');
 		}
 		if (defined("WE_MAILER")) {
 			switch (WE_MAILER) {
 				case 'smtp' :
-					
+
 					if (defined('SMTP_SERVER')) {
 						$smtp_config = array();
 						if (defined('SMTP_PORT')) {
 							$smtp_config['port'] = SMTP_PORT;
 						}
 						if (defined('SMTP_AUTH') && SMTP_AUTH) {
-							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterstützte Version - Zend kann auch plain und crammd5
+							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterstï¿½tzte Version - Zend kann auch plain und crammd5
 							if (defined('SMTP_USERNAME')) {
 								$smtp_config['username'] = SMTP_USERNAME;
 							}
@@ -133,27 +133,27 @@ class we_util_Mailer extends Zend_Mail
 								$smtp_config['password'] = SMTP_PASSWORD;
 							}
 						}
-						if (defined('SMTP_TIMEOUT') && SMTP_TIMEOUT != '') {//sitzt wohl auf 5 Minuten fest, keine Möglichkeit gefunden das zu ändern, aber auch nicht lange gesucht
+						if (defined('SMTP_TIMEOUT') && SMTP_TIMEOUT != '') {//sitzt wohl auf 5 Minuten fest, keine Mï¿½glichkeit gefunden das zu ï¿½ndern, aber auch nicht lange gesucht
 						}
-						if (defined('SMTP_HALO')) {//keine Möglichkeit gefunden das zu ändern, aber auch nicht lange gesucht, scheint den Host zu übergeben
+						if (defined('SMTP_HALO')) {//keine Mï¿½glichkeit gefunden das zu ï¿½ndern, aber auch nicht lange gesucht, scheint den Host zu ï¿½bergeben
 						}
 						if (defined('SMTP_ENCRYPTION')){
 							if ((SMTP_ENCRYPTION !=0 ) || SMTP_ENCRYPTION !=''){
 								$smtp_config['ssl'] = SMTP_ENCRYPTION;
-							}						
+							}
 						}
-						$tr = new Zend_Mail_Transport_Smtp(SMTP_SERVER, $smtp_config); 
-						$this->setDefaultTransport($tr);					
+						$tr = new Zend_Mail_Transport_Smtp(SMTP_SERVER, $smtp_config);
+						$this->setDefaultTransport($tr);
 					}
 					break;
 				default :
-					
+
 					break;
 			}
 			;
 		}
-		
-		
+
+
 		if (is_array($to) && count($to) > 0) {
 			foreach ($to as $_to) {
 				$_to = $this->parseEmailUser($_to);
@@ -163,7 +163,7 @@ class we_util_Mailer extends Zend_Mail
 			$_to = $this->parseEmailUser($to);
 			$this->addTo($_to['email'], $_to['name']);
 		}
-		
+
 		if (is_array($reply) && count($reply) > 0) {
 			foreach ($reply as $_reply) {
 				$_reply = $this->parseEmailUser($_reply);
@@ -173,7 +173,7 @@ class we_util_Mailer extends Zend_Mail
 			$_reply = $this->parseEmailUser($reply);
 			$this->setReplyTo($_reply['email'], $_reply['name']);
 		}
-		
+
 		if ($sender !=''){
 			$_sender = $this->parseEmailUser($sender);
 			$this->setFrom($_sender['email'],$_sender['name']);
@@ -191,7 +191,7 @@ class we_util_Mailer extends Zend_Mail
 		} else if ($toCC != "") {
 			$_toCC = $this->parseEmailUser($toCC);
 			$this->addCc($_toCC['email'], $_toCC['name']);
-		}	
+		}
 	}
 	public function setBCC($toBCC){
 		if (is_array($toBCC) && count($toBCC) > 0) {
@@ -202,7 +202,7 @@ class we_util_Mailer extends Zend_Mail
 		} else if ($toBCC != "") {
 			$_toBCC = $this->parseEmailUser($toBCC);
 			$this->addBcc($_toBCC['email'], $_toBCC['name']);
-		}	
+		}
 	}
 	public function parseEmailUser($user)
 	{
@@ -215,7 +215,7 @@ class we_util_Mailer extends Zend_Mail
 		}
 		return array("email" => trim($email), "name" => trim($name));
 	}
-	
+
 	public function formatEMail($email,$name)
 	{
 		return $this->_formatAddress($email, $name);
@@ -247,7 +247,7 @@ class we_util_Mailer extends Zend_Mail
 		if ($this->Body !='') {
 			if ($this->isEmbedImages) {
 				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
-				$images[2] = array_unique ($images[2]); //entfernt doppelte Bildereinfügungen #3725
+				$images[2] = array_unique ($images[2]); //entfernt doppelte Bildereinfï¿½gungen #3725
 				foreach ($images[2] as $i => $url) {
 					// only images that from the own server will be embeded
 					if (preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['HTTP_HOST'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)) {
@@ -258,11 +258,11 @@ class we_util_Mailer extends Zend_Mail
 						if ($pos = stripos($directory, $_SERVER['HTTP_HOST'])) {
 							$directory = substr($directory, (strlen($_SERVER['HTTP_HOST']) + $pos), strlen($directory));
 						}
-						
-						
+
+
 						$fileParts = pathinfo($filename);
 						$ext = $fileParts['extension'];
-						
+
 						if ($this->basedir == "") {
 							$this->basedir = $_SERVER['DOCUMENT_ROOT'];
 						}
@@ -275,43 +275,43 @@ class we_util_Mailer extends Zend_Mail
 						if (in_array($ext, $this->embedImages)) {
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//','/',$attachmentpath);
-							
+
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
-										
+
 							$this->Body = preg_replace("/" . $images[1][$i] . "=\"" . preg_quote($url, '/') . "\"/Ui", $images[1][$i] . "=\"" . $cid . "\"", $this->Body);
-							
+
 						}
 					}
 				}
 			}
-	
+
 			$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'],"/"),"",$_SERVER['SERVER_PROTOCOL']));
-	
+
 			if($this->isUseBaseHref) {//Bug #3735
-				if ($this->ContentType == 'text/html' && !strpos($this->Body,"<base")) { 
+				if ($this->ContentType == 'text/html' && !strpos($this->Body,"<base")) {
 					$this->Body = str_replace("</head>","<base href='".($protocol==""?"":$protocol."://").$_SERVER['HTTP_HOST']."' />\n</head>",$this->Body);
 				}
 			}
-		
-			if ($this->AltBody == "") { // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter häufig der Fall
+
+			if ($this->AltBody == "") { // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter hï¿½ufig der Fall
 			//	$this->parseHtml2TextPart($this->Body);
 			}
 		}
 		/**
-	   * Problem ist mit Zend Mail eine E-Mail Nachricht hinzubekommen, die den Regeln entspricht 
+	   * Problem ist mit Zend Mail eine E-Mail Nachricht hinzubekommen, die den Regeln entspricht
 	   * Erledigt: Reine Textnachricht (text/plain)
 	   * Erledigt: Reine HTML-Nachricht (text/html)
 	   * Erledigt: Text und HTML ohne Inline-Bilder (multipart/alternative)
 	   * Erledigt: Reine HTML-Nachricht mit Inline-Bildern (multipart/related), jedoch ohne Text-Part
 	   * Problem: HTML mit Inline-Bildern und Textpart, also multipart/mixed, darin multipart/alternative mit a) text/plain und b) multipart/related mit darin b1) text/html und b2) image/*
-	   * Für das notwendige Konstruct siehe http://www.phpeveryday.com/articles/PHP-Email-Using-Embedded-Images-in-HTML-Email-P113.html
+	   * Fï¿½r das notwendige Konstruct siehe http://www.phpeveryday.com/articles/PHP-Email-Using-Embedded-Images-in-HTML-Email-P113.html
 	   * Das was Zend Mail da produziert entspricht nicht ganz diesen Vorgaben, scheint aber zu funktionieren
 	   */
-		if ($this->Body != '') { // es gibt einen HTML-Part			
-			if (!empty($this->inlineAtt)){ // es gibt Inline-Bilder 
-				$this->setType(Zend_Mime::MULTIPART_RELATED);  // dann brauchen wir diesen Typ 				
+		if ($this->Body != '') { // es gibt einen HTML-Part
+			if (!empty($this->inlineAtt)){ // es gibt Inline-Bilder
+				$this->setType(Zend_Mime::MULTIPART_RELATED);  // dann brauchen wir diesen Typ
 				foreach ($this->inlineAtt as $at) {
-					$this->addAttachment($at);					
+					$this->addAttachment($at);
 				}
 			}
 			$this->setBodyHtml(trim($this->Body));
@@ -324,19 +324,19 @@ class we_util_Mailer extends Zend_Mail
 		}
 
 		$this->messageBuilt = true;
-		
+
 	}
 
 	public function parseHtml2TextPart($html)
 	{
 		$lineBreacks = array("\n" => "", "\r" => "", "</h1>" => "</h1>\n\n", "</h2>" => "</h2>\n\n", "</h3>" => "</h3>\n\n", "</h4>" => "</h4>\n\n", "</h5>" => "</h5>\n\n", "</h6>" => "</h6>\n\n", "</p>" => "</p>\n\n", "</div>" => "</div>\n", "</li>" => "</li>\n","&lt;" => "<","&gt;" => ">");
-		
+
 		$textpart = strtr($html, $lineBreacks);
 		$textpart = preg_replace('/<br[^>]*>/s', "\n", $textpart);
 		$textpart = preg_replace('/<(ul|ol)[^>]*>/s', "\n\n", $textpart);
 		$this->AltBody =trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', $textpart)));
 	}
-	
+
 	public function doaddAttachmentInline($attachmentpath)
 	{
 		if($attachmentpath!=''){
@@ -349,18 +349,18 @@ class we_util_Mailer extends Zend_Mail
 			$at->id=md5($filename);
 			$at->filename=$filename;
 			$fileParts = pathinfo($filename);
-			$ext = $fileParts['extension'];		
+			$ext = $fileParts['extension'];
 			$at->type = $this->get_mime_type($ext,$filename);
 			$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'],"/"),"",$_SERVER['SERVER_PROTOCOL']));
 			$loc = $protocol."://".$_SERVER['HTTP_HOST'].$rep;
 			$at->location = $loc;
 			$this->inlineAtt[] = $at;
-			return 	$at->id;				
-		
+			return 	$at->id;
+
 		}
-	
+
 	}
-	
+
 	/**
    * Extends Zend Mail addAttachment to be compatible with phpMailer
    * @access public
@@ -379,11 +379,11 @@ class we_util_Mailer extends Zend_Mail
 			$fileParts = pathinfo($filename);
 			$ext = $fileParts['extension'];
 			$at->type = $this->get_mime_type($ext,$filename);
-			
-			$this->addAttachment($at);				
-		
+
+			$this->addAttachment($at);
+
 		}
-	
+
 	}
 
 
@@ -394,7 +394,7 @@ class we_util_Mailer extends Zend_Mail
    * @return mime type of ext
    * Replacement for mime_content_type (deprecated in PHP 5.3, and not available on some older systems
    * Replacement for  finfo_file, available only for >= PHP 5.3
-   * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
+   * Da Zend Mail keinen name="yxz" ï¿½bergibt, kann man den hier einfach anhï¿½ngen
    */
   public function get_mime_type($ext = '',$name='') {
     $mimetypes = array(
@@ -492,7 +492,7 @@ class we_util_Mailer extends Zend_Mail
 	/********************************************
 	 *                  SETTER                  *
 	 ********************************************/
-	
+
 	/**
 	 * Setter for more class vars at once
 	 * The array keys represents the names of the class vars
@@ -579,7 +579,7 @@ class we_util_Mailer extends Zend_Mail
 /**
 	public function setBodyHtml
 	Quelle: http://www.zfsnippets.com/snippets/view/id/64/zendmail-inline-picture-attachments
-	Ersatz / Erweiterung mit interessantem Ansatz für inline Bilder, funktioniert mit webEdition exterenen Bildern aus fremden Domains (sonst entfernt eine textarea den URL-Teil)
+	Ersatz / Erweiterung mit interessantem Ansatz fï¿½r inline Bilder, funktioniert mit webEdition exterenen Bildern aus fremden Domains (sonst entfernt eine textarea den URL-Teil)
 */
 
 	public function setBodyHtml2($html, $charset = null, $encoding = Zend_Mime::ENCODING_QUOTEDPRINTABLE, $preload_images = true)

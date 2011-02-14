@@ -354,7 +354,7 @@ $subject = strip_tags($subject);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
 			ereg_replace("[\r\n]",'',$_REQUEST['charset']) :
-			$GLOBALS['_language']['charset'];
+			g_l('charset','[charset]');
 $recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
 			$_REQUEST['recipient'] :
 			'';

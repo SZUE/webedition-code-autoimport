@@ -22,10 +22,10 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/xml
 
 /**
  * Code Snipptes are used in templates inside webEdition
- * 
+ *
  * @see Parser.php
  * @see dtd:http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd
- * 
+ *
  */
 class weCodeWizardSnippet
 {
@@ -64,7 +64,7 @@ class weCodeWizardSnippet
 	 */
 	function __construct()
 	{
-	
+
 	}
 
 	/**
@@ -84,80 +84,79 @@ class weCodeWizardSnippet
 	 */
 	function initByXmlFile($file)
 	{
-		
+
 		$Snippet = new weCodeWizardSnippet();
 		$Parser = new XML_Parser($file);
-		
+
 		// set the title
 		if ($Parser->execMethod_count("/topic[1]", "title") > 0) {
 			$Snippet->Name = $Parser->getData("/topic[1]/title[1]");
 			if (isset($GLOBALS['we_doc']->elements["Charset"]['dat']) && $GLOBALS['we_doc']->elements["Charset"]['dat'] != "UTF-8") {
 				$Snippet->Name = $Snippet->Name;
-			
+
 			}
-		
+
 		}
-		
+
 		// set the short description
 		if ($Parser->execMethod_count("/topic[1]", "shortdesc") > 0) {
 			$Snippet->Description = $Parser->getData("/topic[1]/shortdesc[1]");
 			if (isset($GLOBALS['we_doc']->elements["Charset"]['dat']) && $GLOBALS['we_doc']->elements["Charset"]['dat'] != "UTF-8") {
 				$Snippet->Description = $Snippet->Description;
-			
+
 			}
-		
+
 		}
-		
+
 		// set the author
 		if ($Parser->execMethod_count("/topic[1]/prolog[1]", "author") > 0) {
 			$Snippet->Author = $Parser->getData("/topic[1]/prolog[1]/author[1]");
 			if (isset($GLOBALS['we_doc']->elements["Charset"]['dat']) && $GLOBALS['we_doc']->elements["Charset"]['dat'] != "UTF-8") {
 				$Snippet->Author = $Snippet->Author;
-			
+
 			}
-		
+
 		}
-		
+
 		// set the code
 		if ($Parser->execMethod_count("/topic[1]/body[1]/p[1]", "codeblock") > 0) {
 			$Snippet->Code = $Parser->getData("/topic[1]/body[1]/p[1]/codeblock[1]");
 			if (isset($GLOBALS['we_doc']->elements["Charset"]['dat']) && $GLOBALS['we_doc']->elements["Charset"]['dat'] != "UTF-8") {
 				$Snippet->Code = $Snippet->Code;
-			
+
 			}
-		
+
 		}
-		
+
 		return $Snippet;
-	
+
 	}
 
 	function changeCharset($string, $charset = "")
 	{
-		
+
 		if ($charset == "") {
 			$charset = $GLOBALS['we_doc']->getElement('Charset');
 			if ($charset == "") {
-				include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/charset/charset.inc.php");
-				$charset = $_language["charset"];
-			
+				$charset = g_l('charset',"[charset]");
+
 			}
 		}
-		
+
 		if ($charset != "UTF-8" && $charset != "") {
-			
+
 			if (function_exists("iconv")) {
 				$string = iconv("UTF-8", $charset, $string);
-			
+
 			} elseif ($charset == "ISO-8859-1") {
 				$string = utf8_decode($string);
-			
+
 			}
-		
+
 		}
-		
+
 		return $string;
-	
+
 	}
 
 	/**
@@ -168,7 +167,7 @@ class weCodeWizardSnippet
 	function getName($charset = "")
 	{
 		return weCodeWizardSnippet::changeCharset($this->Name, $charset);
-	
+
 	}
 
 	/**
@@ -179,7 +178,7 @@ class weCodeWizardSnippet
 	function getDescription($charset = "")
 	{
 		return weCodeWizardSnippet::changeCharset($this->Description, $charset);
-	
+
 	}
 
 	/**
@@ -190,7 +189,7 @@ class weCodeWizardSnippet
 	function getAuthor($charset = "")
 	{
 		return weCodeWizardSnippet::changeCharset($this->Author, $charset);
-	
+
 	}
 
 	/**
@@ -201,18 +200,18 @@ class weCodeWizardSnippet
 	function getCode($charset = "")
 	{
 		return weCodeWizardSnippet::changeCharset($this->Code, $charset);
-	
+
 	}
 
 }
 
 /**
  * Code Sample
- * 
+ *
  * $Snippet = weCodeWizardSnippet::initByXmlFile('Contact.xml');
- * 
+ *
  * echo $Snippet->getName();
- * 
+ *
  */
 
 ?>

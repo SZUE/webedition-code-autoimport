@@ -25,7 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
 protect();
@@ -189,7 +188,7 @@ if($we_ContentType == "image/*"){
 	}
 
 	array_push($parts,array("headline"=>"","html"=>we_forms::checkbox("1", true, "import_metadata", g_l('metadata',"[import_metadata_at_upload]")),"space"=>0));
-	array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_thumbnails"]["create_thumbnails"]."<br>".$_thumbnails->getHtmlCode(),"space"=>0));
+	array_push($parts,array("headline"=>"","html"=>g_l('thumbnails',"[create_thumbnails]")."<br>".$_thumbnails->getHtmlCode(),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>g_l('global',"[title]")."<br>".htmlTextInput("img_title",24,"","","","text",330),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>$GLOBALS["l_we_class"]["alt"]."<br>".htmlTextInput("img_alt",24,"","","","text",330),"space"=>0));
 }

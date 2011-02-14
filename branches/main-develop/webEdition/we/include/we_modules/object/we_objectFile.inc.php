@@ -24,7 +24,6 @@ if(!isset($GLOBALS["WE_IS_DYN"])){
 	include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_temporaryDocument.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
@@ -1468,7 +1467,7 @@ class we_objectFile extends we_document
 			if ( isset($this->Charset) ) {	//	send charset which might be determined in template
 				$charset = $this->Charset;
 			} else {
-				$charset = $GLOBALS["_language"]["charset"];
+				$charset = g_l('charset',"[charset]");
 			}
 
 			$value = $this->getElement($name);

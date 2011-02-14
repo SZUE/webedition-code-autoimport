@@ -276,7 +276,7 @@ if ($we_editmode) {
 		}
 
 		function getCharset(){
-			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS["_language"]["charset"]; ?>";
+			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : g_l('charset',"[charset]"); ?>";
 		}
 
 		// ############ CodeMirror Functions ################

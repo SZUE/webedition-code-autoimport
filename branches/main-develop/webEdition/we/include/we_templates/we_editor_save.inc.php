@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-@header("Content-Type: text/html; charset=" . $GLOBALS["_language"]["charset"]);
+@header("Content-Type: text/html; charset=" . g_l('charset',"[charset]"));
 htmlTop();
 
 ?>

@@ -28,7 +28,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_message_reporting/we_message_reporting.class.php");
 
 protect();
@@ -149,7 +148,7 @@ function we_switchPixelPercent(inp,sel){
 
 function we_keep_ratio(inp,sel){
 	var _newVal;
-	
+
 	if(inp.value){
 		if(sel.options[sel.selectedIndex].value == "pixel"){
 			_newVal = Math.round(inp.value);
@@ -160,7 +159,7 @@ function we_keep_ratio(inp,sel){
 			inp.value = _newVal;
 		}
 	}
-	
+
 	if(inp.form.ratio.checked){
 		var inp_change = null;
 		var sel_change = null;
@@ -277,7 +276,7 @@ function we_getImageResizeDialog(){
 	$widthSelect = '<select class="weSelect" size="1" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">'.$GLOBALS["l_we_class"]["pixel"].'</option><option value="percent">'.$GLOBALS["l_we_class"]["percent"].'</option></select>';
 	$heightSelect = '<select class="weSelect" size="1" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">'.$GLOBALS["l_we_class"]["pixel"].'</option><option value="percent">'.$GLOBALS["l_we_class"]["percent"].'</option></select>';
 
-	$ratio_checkbox = we_forms::checkbox("1",true,"ratio",$GLOBALS["l_thumbnails"]["ratio"],false,"defaultfont","if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
+	$ratio_checkbox = we_forms::checkbox("1",true,"ratio",g_l('thumbnails',"[ratio]"),false,"defaultfont","if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
 
 	$_table = '<table border="0" cellpadding="2" cellspacing="0">
 	<tr>

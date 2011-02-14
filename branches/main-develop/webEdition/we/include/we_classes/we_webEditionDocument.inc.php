@@ -470,8 +470,8 @@ class we_webEditionDocument extends we_textContentDocument {
 		 			<tr>
 		 				<td colspan="2" class="defaultfont">' . $GLOBALS["l_we_class"]["Charset"] . '</td>
 		 			<tr>
-		 				<td>' . $this->htmlTextInput("dummi", 40, $GLOBALS["_charset"]["error"]["no_charset_tag"], "", " readonly disabled", "text", 254) . '</td>
-		 				<td>' . $this->htmlSelect("dummi2", array($GLOBALS["_charset"]["error"]["no_charset_available"]), 1, $GLOBALS["_language"]["charset"], false, "disabled ", "value", "254") . '</td>
+		 				<td>' . $this->htmlTextInput("dummi", 40, g_l('charset',"[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td>
+		 				<td>' . $this->htmlSelect("dummi2", array(g_l('charset',"[error][no_charset_available]")), 1, g_l('charset',"[charset]"), false, "disabled ", "value", "254") . '</td>
 		 			</tr>
 		 			</table>';
 		}

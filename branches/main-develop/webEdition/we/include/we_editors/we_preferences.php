@@ -5326,10 +5326,9 @@ else {
 
 			    } else {                                 //  gd lib ist nicht installiert
 
-			        include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/thumbnails.inc.php");
 			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "#", true, 100, 22,'','', true) : "";
 				    $_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125,'0','',true);
-                    $_thumbnail_dir = $we_button->create_button_table(array($_inp,$_but)) . '<br/>' . $l_thumbnails["add_description_nogdlib"];
+                    $_thumbnail_dir = $we_button->create_button_table(array($_inp,$_but)) . '<br/>' . g_l('thumbnails',"[add_description_nogdlib]");
 			    }
 
 			    array_push($_settings, array("headline" => g_l('prefs','[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200));

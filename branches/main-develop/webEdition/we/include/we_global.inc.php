@@ -2835,7 +2835,7 @@ function we_mail($recipient, $subject, $txt, $from = "") {
 	}
 
 	$phpmail = new we_util_Mailer($recipient, $subject, $from);
-	$phpmail->setCharSet($GLOBALS["_language"]["charset"]);
+	$phpmail->setCharSet(g_l('charset',"[charset]"));
 	$phpmail->addTextPart(trim($txt));
 	$phpmail->buildMessage();
 	$phpmail->Send();
@@ -3801,8 +3801,8 @@ function CheckAndConvertISOfrontend($utf8data) {
 
 function CheckAndConvertISObackend($utf8data) {
 
-	if ($GLOBALS["_language"]["charset"] != 'UTF-8') {
-		return iconv("UTF-8", $GLOBALS["_language"]["charset"] . "//TRANSLIT", $utf8data);
+	if (g_l('charset',"[charset]") != 'UTF-8') {
+		return iconv("UTF-8", g_l('charset',"[charset]") . "//TRANSLIT", $utf8data);
 	} else {
 		return $utf8data;
 	}

@@ -1694,7 +1694,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		header("Pragma: no-cache;");
 		header("Cache-Control: post-check=0, post-check=0, false");
-		header("Content-Type: text/html; charset= " . ($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]) . ";");
+		header("Content-Type: text/html; charset= " . ($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : g_l('charset',"[charset]")) . ";");
 
 
 		if (!$hm) {
@@ -2939,7 +2939,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
             	$this->View->newsletter->Reply,
             	$this->View->newsletter->isEmbedImages
             );
-			$phpmail->setCharSet($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]);
+			$phpmail->setCharSet($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : g_l('charset',"[charset]"));
 
 			if ($htmlmail) {
 				$phpmail->addHTMLPart($content);

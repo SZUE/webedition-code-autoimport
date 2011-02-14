@@ -280,7 +280,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				}
 
 
-				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"]!="" ? $mywedoc->elements["Charset"]["dat"] : $GLOBALS["_language"]["charset"];
+				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"]!="" ? $mywedoc->elements["Charset"]["dat"] : g_l('charset',"[charset]");
 				$mailtext = we_getDocumentByID($mailid,"","",$charset);
 
 				if($f["subscribe_title"]){
@@ -315,7 +315,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toCC = explode(",",$recipientCC);
 				$we_recipientCC = array();
 				for ($l=0;$l < sizeof($toCC);$l++) {
-	
+
 					if (!eregi("@",$toCC[$l])) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && eregi("@",$_SESSION["webuser"][$toCC[$l]])) { //wenn man registrierten Usern was senden moechte
 							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
@@ -329,7 +329,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toBCC = explode(",",$recipientBCC);
 				$we_recipientBCC = array();
 				for ($l=0;$l < sizeof($toBCC);$l++) {
-	
+
 					if (!eregi("@",$toBCC[$l])) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && eregi("@",$_SESSION["webuser"][$toBCC[$l]])) { //wenn man registrierte Usern was senden moechte
 							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
@@ -348,7 +348,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
 				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
-				
+
 				$phpmail->setCharSet($charset);
 
 
@@ -368,7 +368,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				return;
 			}
 
-		} else { //confirmID wurde übermittelt, eine Bestätigung liegt also vor
+		} else { //confirmID wurde ï¿½bermittelt, eine Bestï¿½tigung liegt also vor
 			$emailwritten = 0;
 			if($customer) {
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php");

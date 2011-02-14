@@ -201,7 +201,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.
 
 	print we_htmlElement::htmlHtml(
 		we_htmlElement::htmlHead(
-		$_meta_content_type = we_htmlElement::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . ($charset ? $charset : $GLOBALS["_language"]["charset"]))).
+		$_meta_content_type = we_htmlElement::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . ($charset ? $charset : g_l('charset',"[charset]")))).
 		$js
 		).
 		we_htmlElement::htmlBody(array("bgcolor"=>"white","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0","onload"=>"to=window.setTimeout('pingPlugin()',5000);"),
