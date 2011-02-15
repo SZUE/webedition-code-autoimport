@@ -132,8 +132,6 @@ class weCustomerTreeLoader{
 	}
 
 	function getSortFromDB($pid,$sort,$offset=0,$segment=500){
-		global $l_customer;
-
 		$db=new DB_WE();
 
 		include_once(WE_CUSTOMER_MODULE_DIR."weCustomerSettings.php");
@@ -153,7 +151,7 @@ class weCustomerTreeLoader{
 		$pid=str_replace("{","",$pid);
 		$pid=str_replace("}","",$pid);
 		$pid=str_replace("*****quot*****","\\\\\'",$pid);
-		
+
 		if($pid || $notroot){
 			$pidarr=explode("-|-",$pid);
 			$tmp="";
@@ -183,7 +181,7 @@ class weCustomerTreeLoader{
 				$orderarr[]=$sortdef["field"]."_".$sortdef["function"]." ".$sortdef["order"];
 				$orderarr[]=$sortdef["field"]." ".$sortdef["order"];
 				if(isset($pidarr[$c]))
-					if($pidarr[$c]==$l_customer["no_value"])
+					if($pidarr[$c]==g_l('modules_customer','[no_value]'))
 						$havingarr[]="(".$sortdef["field"]."_".$sortdef["function"]."='' OR ".$sortdef["field"]."_".$sortdef["function"]." IS NULL)";
 					else
 						$havingarr[]=$sortdef["field"]."_".$sortdef["function"]."='".$pidarr[$c]."'";
@@ -193,7 +191,7 @@ class weCustomerTreeLoader{
 				$grouparr[]=$sortdef["field"];
 				$orderarr[]=$sortdef["field"]." ".$sortdef["order"];
 				if(isset($pidarr[$c]) && $pidarr[$c])
-					if($pidarr[$c]==$l_customer["no_value"])
+					if($pidarr[$c]==g_l('modules_customer','[no_value]'))
 						$havingarr[]="(".$sortdef["field"]."='' OR ".$sortdef["field"]." IS NULL)";
 					else
 						$havingarr[]=$sortdef["field"]."='".$pidarr[$c]."'";
@@ -241,7 +239,7 @@ class weCustomerTreeLoader{
 			$old=0;
 
 			if($level==0){
-					$gname=$db->f($grouparr[0])!="" ? $db->f($grouparr[0]) : $l_customer["no_value"];
+					$gname=$db->f($grouparr[0])!="" ? $db->f($grouparr[0]) : g_l('modules_customer','[no_value]');
 					$gid="{".$gname."}";
 
 					$items[]=array(
@@ -260,15 +258,15 @@ class weCustomerTreeLoader{
 			else{
 				$foo=array();
 				for($i=0;$i<$levelcount;$i++){
-					if($i==0) $foo[]="{".($db->f($grouparr[$i])!="" ? $db->f($grouparr[$i]) : $l_customer["no_value"])."}";
-					else $foo[]=$db->f($grouparr[$i])!="" ? $db->f($grouparr[$i]) : $l_customer["no_value"];
+					if($i==0) $foo[]="{".($db->f($grouparr[$i])!="" ? $db->f($grouparr[$i]) : g_l('modules_customer','[no_value]'))."}";
+					else $foo[]=$db->f($grouparr[$i])!="" ? $db->f($grouparr[$i]) : g_l('modules_customer','[no_value]');
 					$gname=implode("-|-",$foo);
 					if($i>=$level){
 						if(!isset($check[$gname])){
 							$items[]=array(
 														"id"=>$gname,
 														"parentid"=>$old,
-														"path"=>"","text"=>($db->f($grouparr[$i])!="" ? $db->f($grouparr[$i]) : $l_customer["no_value"]),
+														"path"=>"","text"=>($db->f($grouparr[$i])!="" ? $db->f($grouparr[$i]) : g_l('modules_customer','[no_value]')),
 														"icon"=>"folder.gif",
 														"isfolder"=>1,
 														"typ"=>"group",
@@ -345,7 +343,7 @@ class weCustomerTreeLoader{
 				);
 			}
 		}
-		
+
 		return $items;
 
 	}

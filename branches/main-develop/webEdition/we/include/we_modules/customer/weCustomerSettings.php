@@ -114,24 +114,22 @@ class weCustomerSettings {
 	public $formatFields = array();
 
 	function weCustomerSettings() {
-		global $l_customer;
-
 		$this->db = new DB_WE();
 		//$this->table = CUSTOMER_ADMIN_TABLE;
 		$this->customer = new weCustomer();
 		$this->properties = array();
 
 		$this->PropertyTitle = array(
-				'Username' => $l_customer['Username'],
-				'Password' => $l_customer['Password'],
-				'Forename' => $l_customer['Forname'],
-				'Surname' => $l_customer['Surname'],
-				'LoginDenied' => $l_customer['login'],
-				'AutoLoginDenied' => $l_customer['autologin'],
-				'AutoLogin' => $l_customer['autologin'],
-				'MemberSince' => $l_customer['MemeberSince'],
-				'LastLogin' => $l_customer['LastLogin'],
-				'LastAccess' => $l_customer['LastAccess'],
+				'Username' => g_l('modules_customer','[Username]'),
+				'Password' => g_l('modules_customer','[Password]'),
+				'Forename' => g_l('modules_customer','[Forname]'),
+				'Surname' => g_l('modules_customer','[Surname]'),
+				'LoginDenied' => g_l('modules_customer','[login]'),
+				'AutoLoginDenied' => g_l('modules_customer','[autologin]'),
+				'AutoLogin' => g_l('modules_customer','[autologin]'),
+				'MemberSince' => g_l('modules_customer','[MemeberSince]'),
+				'LastLogin' => g_l('modules_customer','[LastLogin]'),
+				'LastAccess' => g_l('modules_customer','[LastAccess]'),
 				'ID' => 'ID',
 		);
 		// additional date function
@@ -253,10 +251,8 @@ class weCustomerSettings {
 	}
 
 	function isFunctionForField($function, $field) {
-		global $l_customer;
-
-		if (ereg($l_customer['other'], $field)) {
-			$field = str_replace($l_customer['other'] . '_', '', $field);
+		if (ereg(g_l('modules_customer','[other]'), $field)) {
+			$field = str_replace(g_l('modules_customer','[other]') . '_', '', $field);
 		}
 		$fieldprops = $this->customer->getFieldDbProperties($field);
 

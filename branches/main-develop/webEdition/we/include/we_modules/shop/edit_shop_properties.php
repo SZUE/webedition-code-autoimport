@@ -25,7 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browserDetect.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
 if(defined("SHOP_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 }
@@ -841,7 +840,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 
 			array_push($parts,array(
-					'headline' => $l_customer['Forname'].": ",
+					'headline' => g_l('modules_customer','[Forname]').": ",
 					'space' => 150,
 					'html' => we_class::htmlTextInput("weCustomerOrder[Forename]", 44, $_customer['Forename']),
 					'noline' => 1
@@ -850,7 +849,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			$editFields[] = 'Forename';
 
 			array_push($parts,array(
-					'headline' => $l_customer['Surname'].": ",
+					'headline' => g_l('modules_customer','[Surname]').": ",
 					'space' => 150,
 					'html' => we_class::htmlTextInput("weCustomerOrder[Surname]", 44, $_customer['Surname']),
 					'noline' => 1
@@ -1362,7 +1361,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
     if(isset($_customer['Forename'])) {
     	$customerFieldTable .=
     		'	<tr height="25">
-											<td class="defaultfont" width="86" valign="top" height="25">' . $l_customer['Forname'] . ':</td>
+											<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer','[Forname]') . ':</td>
 											<td class="defaultfont" valign="top" width="40" height="25"></td>
 											<td width="20" height="25"></td>
 											<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Forename'] . '</td>
@@ -1371,7 +1370,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
     if(isset($_customer['Surname'])) {
 		$customerFieldTable .=
     		'	<tr height="25">
-											<td class="defaultfont" width="86" valign="top" height="25">' . $l_customer['Surname'] . ':</td>
+											<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer','[Surname]') . ':</td>
 											<td class="defaultfont" valign="top" width="40" height="25"></td>
 											<td width="20" height="25"></td>
 											<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Surname'] . '</td>

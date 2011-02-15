@@ -50,7 +50,7 @@ if ($we_doc->ClassName != "we_imageDocument" && we_hasPerm("CAN_EDIT_CUSTOMERFIL
 
 $_docWebUserHTML = formWebuser(we_hasPerm("CAN_CHANGE_DOCS_CUSTOMER"),434);
 $_docWebUser = array(
-	'headline' => $l_customer["one_customer"],
+	'headline' => g_l('modules_customer','[one_customer]'),
 	'html' =>	$_docWebUserHTML,
 	'space' => $_space_size
 );
@@ -91,8 +91,6 @@ print "</body>";
 print "</html>";
 
 function formWebuser($canChange,$width=388){
-	global $l_customer;
-
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$we_button = new we_button();
 
@@ -122,7 +120,7 @@ function formWebuser($canChange,$width=388){
 		$_trashBut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
 /*
 		$out = $GLOBALS['we_doc']->htmlFormElementTable($inputFeld,
-		$l_customer["connected_with_customer"],
+		g_l('modules_customer','[connected_with_customer]'),
 		"left",
 		"defaultfont",
 		$idfield,
@@ -133,7 +131,7 @@ function formWebuser($canChange,$width=388){
 		$yuiSuggest->setAcId("Customer");
 		$yuiSuggest->setContentType("");
 		$yuiSuggest->setInput($textname,$webuser,'','',1);
-		$yuiSuggest->setLabel($l_customer["connected_with_customer"]);
+		$yuiSuggest->setLabel(g_l('modules_customer','[connected_with_customer]'));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname,$GLOBALS['we_doc']->WebUserID);

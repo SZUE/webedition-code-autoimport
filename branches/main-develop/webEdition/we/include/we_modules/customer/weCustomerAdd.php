@@ -28,15 +28,12 @@ class weCustomerAdd{
 	var $db;
 
 	function weCustomerAdd(){
-		global $l_customer;
 	}
 
 	function getHTMLSortEditor(&$pob){
-		global $l_customer;
-
 		$we_button=new we_button();
 		$branch=$pob->getHTMLBranchSelect();
-		$branch->setOptionVT(1,$l_customer['other'],$l_customer['other']);
+		$branch->setOptionVT(1,g_l('modules_customer','[other]'),g_l('modules_customer','[other]'));
 
 
 		$order=new we_htmlSelect(array('name'=>'order','style'=>'width:90'));
@@ -55,10 +52,10 @@ class weCustomerAdd{
 			$sort_field_code='';
 
 			$sort_table=new we_htmlTable(array('border'=>'0','cellpadding'=>'2','cellspacing'=>'1','width'=>'400','height'=>'50'),1,5);
-			$sort_table->setCol(0,0,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_branch']));
-			$sort_table->setCol(0,1,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_field']));
-			$sort_table->setCol(0,2,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_function']));
-			$sort_table->setCol(0,3,array('class'=>'defaultfont'),we_htmlElement::htmlB($l_customer['sort_order']));
+			$sort_table->setCol(0,0,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_branch]')));
+			$sort_table->setCol(0,1,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_field]')));
+			$sort_table->setCol(0,2,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_function]')));
+			$sort_table->setCol(0,3,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_order]')));
 
 
 			foreach($sorts as $sort){
@@ -66,7 +63,7 @@ class weCustomerAdd{
 				if(!$sort["branch"]){
 					$branches_names=$pob->View->customer->getBranchesNames();
 					if(isset($branches_names[0])) $sort["branch"]=$branches_names[0];
-					else $sort["branch"]=$l_customer["common"];
+					else $sort["branch"]=g_l('modules_customer','[common]');
 				}
 
 				$branch->setAttributes(array("name"=>"branch_".$counter."_".$fcounter,"class"=>"weSelect","onChange"=>"we_cmd('selectBranch')","style"=>"width:180"));
@@ -77,7 +74,7 @@ class weCustomerAdd{
 
 				$fields_names=array();
 				$fields_names=array_keys($this->View->customer->getFieldsNames($sort["branch"]));
-				if($sort["branch"]==$l_customer["common"] ||  $sort["branch"]==$l_customer["other"]){
+				if($sort["branch"]==g_l('modules_customer','[common]') ||  $sort["branch"]==g_l('modules_customer','[other]')){
 					foreach($fields_names as $fnk=>$fnv) $fields_names[$fnk]=str_replace($sort["branch"]."_","",$fields_names[$fnk]);
 				}
 
@@ -86,8 +83,8 @@ class weCustomerAdd{
 				if(is_array($fields_names))
 					if(!in_array($sort["field"],$fields_names)) $sort["field"]=array_shift($fields_names);
 
-				if($sort["branch"]==$l_customer["common"] && isset($sort["field"]))
-					$field->selectOption($l_customer["common"]."_".$sort["field"]);
+				if($sort["branch"]==g_l('modules_customer','[common]') && isset($sort["field"]))
+					$field->selectOption(g_l('modules_customer','[common]')."_".$sort["field"]);
 				else if(isset($sort["field"]))
 					$field->selectOption($sort["field"]);
 
@@ -130,7 +127,7 @@ class weCustomerAdd{
 
 			$fhidden.=we_htmlElement::htmlHidden(array("name"=>"fcounter_".$counter,"value"=>"$fcounter"));
 
-			$_htmlCode = 	$pob->getHTMLBox(we_htmlElement::htmlInput(array("name"=>"sort_".$counter,"value"=>$k,"size"=>"40")),$l_customer["name"],100,50,25,0,0,50).
+			$_htmlCode = 	$pob->getHTMLBox(we_htmlElement::htmlInput(array("name"=>"sort_".$counter,"value"=>$k,"size"=>"40")),g_l('modules_customer','[name]'),100,50,25,0,0,50).
 							$sort_table->getHtmlCode() .
 							$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','$k')");
 
@@ -144,7 +141,7 @@ class weCustomerAdd{
 
 		$_buttons = $we_button->position_yes_no_cancel($save,null,$cancel);
 
-		$add_button= $we_button->create_button_table(array($we_button->create_button("image:btn_function_plus", "javascript:we_cmd('add_sort')"),we_htmlElement::htmlDiv(array("class"=>"defaultgray"),$l_customer["add_sort_group"])));
+		$add_button= $we_button->create_button_table(array($we_button->create_button("image:btn_function_plus", "javascript:we_cmd('add_sort')"),we_htmlElement::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[add_sort_group]'))));
 		$_parts[] = array('html'=>$add_button);
 
 		$sort_code = we_multiIconBox::getHTML("","100%",$_parts,30,$_buttons,-1,"","",false,"","",459);
@@ -173,7 +170,6 @@ class weCustomerAdd{
 	}
 
 	function getJSSortAdmin(&$pob){
-			global $l_customer;
 			return
 			'
 
@@ -193,7 +189,7 @@ class weCustomerAdd{
 
 					case "add_sort_field":
 						if(arguments[1]==""){
-							' . we_message_reporting::getShowMessageCall($l_customer["sortname_empty"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[sortname_empty]'), WE_MESSAGE_ERROR) . '
 							break;
 						}
 						document.we_form.sortindex.value=arguments[1];
@@ -205,7 +201,7 @@ class weCustomerAdd{
 						document.we_form.fieldindex.value=arguments[2];
 					case "del_sort":
 						if(arguments[1]=="'.$pob->settings->Prefs["default_sort_view"].'"){
-							' . we_message_reporting::getShowMessageCall($l_customer["default_soting_no_del"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[default_soting_no_del]'), WE_MESSAGE_ERROR) . '
 						}
 						else{
 							document.we_form.cmd.value=arguments[0];
@@ -297,8 +293,6 @@ class weCustomerAdd{
 
 
 	function getHTMLSearch(&$pob,&$search,&$select){
-			global $l_customer;
-
 			$count=$_REQUEST['count'];
 
 			$operators=array('=','<>','<','<=','>','>=','LIKE');
@@ -321,9 +315,9 @@ class weCustomerAdd{
 
 			$advsearch=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"3"),1,4);
 			$branch=$pob->getHTMLBranchSelect();
-			$branch->setOptionVT(1,$l_customer["other"],$l_customer["other"]);
+			$branch->setOptionVT(1,g_l('modules_customer','[other]'),g_l('modules_customer','[other]'));
 
-			$field=$pob->getHTMLFieldsSelect($l_customer["common"]);
+			$field=$pob->getHTMLFieldsSelect(g_l('modules_customer','[common]'));
 
 			$c=0;
 
@@ -332,7 +326,7 @@ class weCustomerAdd{
 					if(isset($search_arr["branch_".$i])){
 						$branch->selectOption($search_arr["branch_".$i]);
 						if($search_arr["branch_".$i]=="")
-							$field=$pob->getHTMLFieldsSelect($l_customer["common"]);
+							$field=$pob->getHTMLFieldsSelect(g_l('modules_customer','[common]'));
 						else
 							$field=$pob->getHTMLFieldsSelect($search_arr["branch_".$i]);
 					}
@@ -382,7 +376,7 @@ class weCustomerAdd{
 			$search->setCol(3,0,array("align"=>"right","colspan"=>$colspan),
 									"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".$we_button->create_button_table(
 										array(
-											we_htmlElement::htmlDiv(array("class"=>"defaultgray"),$l_customer["simple_search"]),
+											we_htmlElement::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[simple_search]')),
 											$we_button->create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
 											$search_but
 										)
@@ -396,8 +390,6 @@ class weCustomerAdd{
 	}
 
 	function getAdvSearchResults($keywords,$count,$res_num){
-		global $l_customer;
-
 		$operators=array("0"=>"=",
 									"1"=>"<>",
 									"2"=>"<",
@@ -413,7 +405,7 @@ class weCustomerAdd{
 
 		for($i=0;$i<$count;$i++){
 				if(isset($keywords["field_".$i])){
-					$keywords["field_".$i]=str_replace($l_customer["common"]."_","",$keywords["field_".$i]);
+					$keywords["field_".$i]=str_replace(g_l('modules_customer','[common]')."_","",$keywords["field_".$i]);
 					$select.=",".$keywords["field_".$i];
 				}
 				if(isset($keywords["field_".$i]) && isset($keywords["operator_".$i]) && isset($keywords["value_".$i])) $where.=(isset($keywords["logic_".$i]) ? " ".$keywords["logic_".$i]." " : "").$keywords["field_".$i]." ".$operators[$keywords["operator_".$i]]." '".(is_numeric($keywords["value_".$i])?$keywords["value_".$i]:mysql_real_escape_string($keywords["value_".$i]))."'";
@@ -433,8 +425,6 @@ class weCustomerAdd{
 	}
 
 	function getHTMLTreeHeader(&$pob){
-		global $l_customer;
-
 		$we_button=new we_button();
 
 		$select=$pob->getHTMLSortSelect();

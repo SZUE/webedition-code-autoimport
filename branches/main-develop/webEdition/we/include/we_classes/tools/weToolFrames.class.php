@@ -182,8 +182,6 @@ class weToolFrames extends weModuleFrames {
 	 * @return string
 	 */
 	function getHTMLHeader(){
-		global $l_customer;
-
 		//	Include the menu.
 		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/java_menu/weJavaMenu.inc.php');
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');

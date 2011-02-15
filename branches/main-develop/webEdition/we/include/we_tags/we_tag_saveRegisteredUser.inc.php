@@ -32,23 +32,22 @@ function we_tag_saveRegisteredUser($attribs,$content){
 	$protected = makeArrayFromCSV(we_getTagAttribute("protected",$attribs));
 
 	if(defined("CUSTOMER_TABLE") && isset ($_REQUEST["s"])){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/weCustomer.php");
 
 		if(isset($_REQUEST["s"]["Password2"])) {
 			unset($_REQUEST["s"]["Password2"]);
 		}
-		
-		$dates = array();//type date 
+
+		$dates = array();//type date
 		foreach ($_REQUEST["s"] as $n => $v) {
 			if (preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)) {
 				$dates[$regs[1]][$regs[2]] = $v;
 				unset($_REQUEST["s"][$n]);
-			} 
+			}
 		}
 		foreach ($dates as $k => $vv) {
 			$_REQUEST["s"][$k] = mktime($vv['hour'],$vv['minute'],0,$vv['month'],$vv['day'],$vv['year']);
-		}	
+		}
 
                                            // new user ...                    || existing user
 		if(isset($_REQUEST["s"]["ID"]) && (!isset($_SESSION["webuser"]["ID"]) || $_REQUEST["s"]["ID"] == $_SESSION["webuser"]["ID"])){
@@ -108,7 +107,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 								$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE ID='".abs($uID)."'",$GLOBALS["DB_WE"]);
 								$_SESSION["webuser"]=$u;
 								$_SESSION["webuser"]["registered"] = true;
-								
+
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastAccess='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastLogin='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
@@ -123,7 +122,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					} elseif($_REQUEST["s"]["ID"] == $_SESSION["webuser"]["ID"]) { // Username existiert schon!
 
 						if(!$userexists){
-							$userexists = $l_customer["username_exists"];
+							$userexists = g_l('modules_customer','[username_exists]');
 						}
 
 						// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
@@ -147,14 +146,14 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 
 						if(!$userempty){
-							$userempty = $l_customer["username_empty"];
+							$userempty = g_l('modules_customer','[username_empty]');
 						}
                         print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($userempty, WE_MESSAGE_FRONTEND));
 
 					}else if(strlen($_REQUEST["s"]["Password"]) == 0){
 
 						if(!$passempty){
-							$passempty = $l_customer["password_empty"];
+							$passempty = g_l('modules_customer','[password_empty]');
 						}
 						if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 							echo '<a name="emos_name" title="register" rel="noUser" rev="1" ></a>';
@@ -202,7 +201,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							}
 
 						}
-						if(isset($_REQUEST["s"]["Password"]) && $_REQUEST["s"]["Password"] != $_SESSION["webuser"]["Password"]){//bei Passwordänderungen müssen die Autologins des Users gelöscht werden
+						if(isset($_REQUEST["s"]["Password"]) && $_REQUEST["s"]["Password"] != $_SESSION["webuser"]["Password"]){//bei Passwordï¿½nderungen mï¿½ssen die Autologins des Users gelï¿½scht werden
 							$GLOBALS["DB_WE"]->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE UserID='".abs($_REQUEST["s"]["ID"])."'");
 						}
 						if(sizeof($set_a)){
@@ -213,7 +212,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					}else{
 
 						if(!$userexists){
-							$userexists = $l_customer["username_exists"];
+							$userexists = g_l('modules_customer','[username_exists]');
 						}
 
 						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST["s"]["Username"]), WE_MESSAGE_FRONTEND) );

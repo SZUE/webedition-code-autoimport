@@ -146,7 +146,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 				$nodeName = $xp->nodeName($node);
 				$nodeattribs=array();
 				if ($xp->hasAttributes($node)) {
-					$attrs = $attrs + array("@n:"=>$l_customer["none"]);
+					$attrs = $attrs + array("@n:"=>g_l('modules_customer','[none]'));
 					$attributes = $xp->getAttributes($node);
 					foreach ($attributes as $name=>$value) {
 						$nodeattribs[$name] = $value;
@@ -158,8 +158,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 		}
 
 		function exportCSV($options=array()){
-			global $l_customer;
-
 			if(isset($options["customers"]) && is_array($options["customers"])){
 				$customer_csv=array();
 				$customer=new weCustomer();
@@ -191,11 +189,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 				$delimiter=$enclose.($options["csv_delimiter"]=="\\t" ? "\t" : trim($options["csv_delimiter"])).$enclose;
 
 				if($options["csv_fieldnames"]){
-					$csv_out.=$enclose.implode($delimiter,$field_names).$enclose.($lineend==$l_customer["unix"] ? "\n" : ($lineend==$l_customer["mac"] ? "\r" : "\r\n"));
+					$csv_out.=$enclose.implode($delimiter,$field_names).$enclose.($lineend==g_l('modules_customer','[unix]') ? "\n" : ($lineend==g_l('modules_customer','[mac]') ? "\r" : "\r\n"));
 				}
 
 				foreach($customer_csv as $ck=>$cv){
-						$csv_out.=$enclose.implode($delimiter,$cv).$enclose.($lineend==$l_customer["unix"] ? "\n" : ($lineend==$l_customer["mac"] ? "\r" : "\r\n"));
+						$csv_out.=$enclose.implode($delimiter,$cv).$enclose.($lineend==g_l('modules_customer','[unix]') ? "\n" : ($lineend==g_l('modules_customer','[mac]') ? "\r" : "\r\n"));
 				}
 
 				return $csv_out;
@@ -213,11 +211,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 				$delimiter=$enclose.($options["csv_delimiter"]=="\\t" ? "\t" : trim($options["csv_delimiter"])).$enclose;
 
 				if($options["csv_fieldnames"]){
-					$csv_out.=$enclose.implode($delimiter,$field_names).$enclose.($lineend==$l_customer["unix"] ? "\n" : ($lineend==$l_customer["mac"] ? "\r" : "\r\n"));
+					$csv_out.=$enclose.implode($delimiter,$field_names).$enclose.($lineend==g_l('modules_customer','[unix]') ? "\n" : ($lineend==g_l('modules_customer','[mac]') ? "\r" : "\r\n"));
 				}
 
 				foreach($customer_csv as $ck=>$cv){
-						$csv_out.=$enclose.implode($delimiter,$cv).$enclose.($lineend==$l_customer["unix"] ? "\n" : ($lineend==$l_customer["mac"] ? "\r" : "\r\n"));
+						$csv_out.=$enclose.implode($delimiter,$cv).$enclose.($lineend==g_l('modules_customer','[unix]') ? "\n" : ($lineend==g_l('modules_customer','[mac]') ? "\r" : "\r\n"));
 				}
 
 				return $csv_out;
@@ -225,7 +223,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 
 
 		function getCSVDataset($filename,$delimiter,$enclose,$lineend,$fieldnames,$charset){
-			global $l_customer;
 			if ($charset == ''){
 				if (defined('DEFAULT_CHARSET')) {$charset = DEFAULT_CHARSET;} else {$charset = "UTF-8";}
 			}
@@ -254,7 +251,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 				}
 				for ($i=0; $i < count($recs); $i++) {
 						if ($fieldnames) $nodes[$recs[$i]] = array();
-						else $nodes[$l_customer["record_field"]." ".($i+1)] = array();
+						else $nodes[g_l('modules_customer','[record_field]')." ".($i+1)] = array();
 				}
 			}
 
@@ -278,7 +275,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 		}
 
 		function prepareImport($options) {
-				global $l_customer,$_language;
+				global $_language;
 
 				$ret=array();
 				$ret["tmp_dir"]="";
@@ -346,7 +343,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 									$value=array();
 									foreach($data as $kdat=>$vdat){
 											$value[]=array(
-												"name"=>($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(" ","",$l_customer["record_field"]).($kdat+1))),
+												"name"=>($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(" ","",g_l('modules_customer','[record_field]')).($kdat+1))),
 												"attributes"=>null,
 												"content"=>'<![CDATA[' . $vdat . ']]>'
 											);
@@ -369,8 +366,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 			}
 
 			function importCustomers($options=array()){
-					global $l_customer;
-
 					$ret=false;
 					$xmlfile=isset($options["xmlfile"]) ? $options["xmlfile"] : "";
 					$field_mappings=isset($options["field_mappings"]) ? $options["field_mappings"] : array();
@@ -408,18 +403,18 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 							}
 							$customer->Username=$new_name;
 							$customer->save();
-							weCustomerEI::save2File($logfile,sprintf($l_customer["rename_customer"],$oldname,$customer->Username)."\n");
+							weCustomerEI::save2File($logfile,sprintf(g_l('modules_customer','[rename_customer]'),$oldname,$customer->Username)."\n");
 							$ret=true;
 						}
 						else if($same=="overwrite"){
 							$oldcustomer=new weCustomer($existid);
 							$oldcustomer->delete();
 							$customer->save();
-							weCustomerEI::save2File($logfile,sprintf($l_customer["overwrite_customer"],$customer->Username)."\n");
+							weCustomerEI::save2File($logfile,sprintf(g_l('modules_customer','[overwrite_customer]'),$customer->Username)."\n");
 							$ret=true;
 						}
 						else if($same=="skip"){
-							weCustomerEI::save2File($logfile,sprintf($l_customer["skip_customer"],$customer->Username)."\n");
+							weCustomerEI::save2File($logfile,sprintf(g_l('modules_customer','[skip_customer]'),$customer->Username)."\n");
 						}
 					}
 					else{
