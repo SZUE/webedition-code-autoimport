@@ -27,6 +27,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_pro
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 if (defined("OBJECT_FILES_TABLE") ) {
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 

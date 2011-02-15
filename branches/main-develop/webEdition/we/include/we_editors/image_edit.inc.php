@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
@@ -259,6 +258,7 @@ function we_getImageRotateDialogJS(){
 }
 
 function we_getImageResizeDialog(){
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	list($width,$height) = $GLOBALS["we_doc"]->getOrigSize();
 
 	$_content = array();
@@ -300,6 +300,7 @@ function we_getImageResizeDialog(){
 }
 
 function we_getImageConvertDialog(){
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$_content = array();
 	$we_button = new we_button();
 
@@ -315,6 +316,7 @@ function we_getImageConvertDialog(){
 }
 
 function we_getImageRotateDialog(){
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 	$_content = array();
 	$we_button = new we_button();
@@ -340,6 +342,3 @@ function we_getImageRotateDialog(){
 	return we_multiIconBox::getHTML("", "100%", $_content,30,$buttons,-1,"","",false,g_l('weClass',"[rotate]"));
 
 }
-
-
-?>

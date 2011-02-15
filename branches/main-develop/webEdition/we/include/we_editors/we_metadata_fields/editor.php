@@ -27,7 +27,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
@@ -122,6 +121,7 @@ function save_all_values() {
 function build_dialog($selected_setting = "ui") {
 	global $DB_WE, $SYSTEM;
 
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$we_button = new we_button();
 
 	switch ($selected_setting) {
@@ -144,6 +144,7 @@ function build_dialog($selected_setting = "ui") {
 		case "dialog":
 			global $DB_WE;
 			$_headline = we_htmlElement::htmlDiv(array("class" => "weDialogHeadline", "style" => "padding:10 25 5 25;"),g_l('metadata',"[headline]"));
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 			$we_button = new we_button();
 
 			// read already defined metadata fields from db:

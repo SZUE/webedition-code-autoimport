@@ -275,6 +275,7 @@ class weCustomerFrames extends weModuleFrames {
 
 				$imgId = abs($value);
 
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 				$we_button = new we_button();
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_document.inc.php');
 				$out = we_document::getFieldByVal($imgId, 'img');

@@ -23,6 +23,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_browser_check.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class copyFolderFrag extends taskFragment
 {
@@ -825,7 +826,6 @@ class copyFolderFrag extends taskFragment
 
 	function finish()
 	{
-
 		$we_button = new we_button();
 		$cancelButton = $we_button->create_button("cancel", "javascript:top.close()");
 
@@ -918,7 +918,6 @@ HTS;
 
 	function formCreateCategoryChooser()
 	{
-
 		$we_button = new we_button();
 
 		$addbut = $we_button->create_button(
