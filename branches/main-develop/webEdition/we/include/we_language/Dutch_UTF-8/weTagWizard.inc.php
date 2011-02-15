@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,10 +18,9 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-$GLOBALS['l_we_tag_groups']['input_tags'] = 'Input we:tags';
-$GLOBALS['l_we_tag_groups']['if_tags'] = 'If we:tags';
-$GLOBALS['l_we_tag_groups']['navigation_tags'] = 'Navigation';
-$GLOBALS['l_we_tag_groups']['apptags'] = 'Applications we:tags';
-
-?>
+$l_weTagWizard = array(
+		'alltags' => 'Alle we:tags',
+		'custom' => 'Aangepaste we:tags',
+		'insert_tagname' => "Enter name of we:tags: ", // TRANSLATE
+		'insert_tagname_not_exist' => "The tag %s does not exists", // TRANSLATE
+);

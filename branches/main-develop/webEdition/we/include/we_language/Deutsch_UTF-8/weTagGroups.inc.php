@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,10 +18,9 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-$GLOBALS['l_we_tag_wizard']['alltags'] = 'Kaikki we:tagit';
-$GLOBALS['l_we_tag_wizard']['custom'] = 'kustomoidut we:tagit';
-$GLOBALS['l_we_tag_wizard']['insert_tagname'] = "Anna we:tagin nimi: ";
-$GLOBALS['l_we_tag_wizard']['insert_tagname_not_exist'] = "Tagi %s puuttuu";
-
-?>
+$l_weTagGroups = array(
+		'input_tags' => 'Eingabe we:tags',
+		'if_tags' => 'If we:tags',
+		'navigation_tags' => 'Navigation',
+		'apptags' => 'Applikationen we:tags',
+);

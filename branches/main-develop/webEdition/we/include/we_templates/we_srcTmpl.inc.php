@@ -677,8 +677,6 @@ if ($we_editmode) {
 
 		// NEW TAGWIZARD
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/we_tag_groups.inc.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/we_tag_wizard.inc.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/javaMenu/module_information.inc.php');
 
 		$allWeTags = weTagWizard::getExistingWeTags();
@@ -700,7 +698,7 @@ if ($we_editmode) {
 			if ($tagGroupName == 'custom') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
-			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_modules']) ? $l_javaMenu["module_information"][$tagGroupName]["text"] : (isset($GLOBALS['l_we_tag_groups'][$tagGroupName]) ? $GLOBALS['l_we_tag_groups'][$tagGroupName] : $GLOBALS['l_we_tag_wizard'][$tagGroupName] )) . '</option>';
+			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_modules']) ? $l_javaMenu["module_information"][$tagGroupName]["text"] : (g_l('weTagGroups','['.$tagGroupName.']')!==false ? g_l('weTagGroups','['.$tagGroupName.']') : g_l('weTagWizard','['.$tagGroupName.']') )) . '</option>';
 			if ($tagGroupName == 'alltags') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
@@ -748,9 +746,9 @@ if ($we_editmode) {
 		 	function openTagWizardPrompt( _wrongTag ) {
 
 
-		 		var _prompttext = "' . $GLOBALS['l_we_tag_wizard']['insert_tagname'] . '";
+		 		var _prompttext = "' . g_l('weTagWizard','[insert_tagname]') . '";
 		 		if ( _wrongTag ) {
-		 			_prompttext = "' . sprintf($GLOBALS['l_we_tag_wizard']['insert_tagname_not_exist'], '\"" + _wrongTag + "\"') . '\n\n" + _prompttext;
+		 			_prompttext = "' . sprintf(g_l('weTagWizard','[insert_tagname_not_exist]'), '\"" + _wrongTag + "\"') . '\n\n" + _prompttext;
 		 		}
 
 		 		var _tagName = prompt(_prompttext);

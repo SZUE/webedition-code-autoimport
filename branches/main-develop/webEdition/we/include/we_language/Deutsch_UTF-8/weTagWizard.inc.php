@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,10 +18,9 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-$GLOBALS['l_we_tag_wizard']['alltags'] = 'All we:tags';
-$GLOBALS['l_we_tag_wizard']['custom'] = 'custom we:tags';
-$GLOBALS['l_we_tag_wizard']['insert_tagname'] = "Enter name of we:tags: ";
-$GLOBALS['l_we_tag_wizard']['insert_tagname_not_exist'] = "The tag %s does not exists";
-
-?>
+$l_weTagWizard = array(
+		'alltags' => 'Alle we:tags',
+		'custom' => 'Eigene we:tags',
+		'insert_tagname' => "Name des we:tags eingeben: ",
+		'insert_tagname_not_exist' => "Den Tag %s gibt es nicht",
+);
