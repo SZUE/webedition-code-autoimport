@@ -440,7 +440,7 @@ class we_webEditionDocument extends we_textContentDocument {
 					<tr>
 						<td><table border="0" cellpadding="0" cellspacing="0">
 		 			<tr>
-		 				<td colspan="2" class="defaultfont">' . $GLOBALS["l_we_class"]["Charset"] . '</td>
+		 				<td colspan="2" class="defaultfont">' . g_l('weClass',"[Charset]") . '</td>
 		 			<tr>
 		 				<td>' . $retInput . '</td>
 		 				<td>' . $retSelect . '</td>
@@ -457,7 +457,7 @@ class we_webEditionDocument extends we_textContentDocument {
 					<tr>
 						<td><table border="0" cellpadding="0" cellspacing="0">
 		 			<tr>
-		 				<td colspan="2" class="defaultfont">' . $GLOBALS["l_we_class"]["Charset"] . '</td>
+		 				<td colspan="2" class="defaultfont">' . g_l('weClass',"[Charset]") . '</td>
 		 			<tr>
 		 				<td>' . $this->htmlTextInput("dummi", 40, g_l('charset',"[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td>
 		 				<td>' . $this->htmlSelect("dummi2", array(g_l('charset',"[error][no_charset_available]")), 1, g_l('charset',"[charset]"), false, "disabled ", "value", "254") . '</td>

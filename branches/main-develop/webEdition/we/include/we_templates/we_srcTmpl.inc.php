@@ -914,7 +914,7 @@ if ($we_editmode) {
 		$znr = 1;
 	}
 	print we_multiIconBox::getJS();
-	print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, $GLOBALS["l_we_class"]["showTagwizard"], $GLOBALS["l_we_class"]["hideTagwizard"], ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+	print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass',"[showTagwizard]"), g_l('weClass',"[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 	?></body>
 
 	<?php

@@ -640,7 +640,7 @@ class we_objectFile extends we_document
 		if($withHeadline){
 			$_headline = '
 			<tr>
-				<td class="defaultfont">' . $GLOBALS["l_we_class"]["Charset"] . '</td>
+				<td class="defaultfont">' . g_l('weClass',"[Charset]") . '</td>
 			</tr>
 			';
 		}

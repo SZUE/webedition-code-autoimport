@@ -647,7 +647,7 @@ class weNavigationFrames extends weToolFrames
 		//$cmd = 'opener.'.$this->topFrame.'.mark()';
 		if ($this->Model->isnew) {
 			$_disabled = true;
-			$_disabledNote = " " . $GLOBALS["l_we_class"]["availableAfterSave"];
+			$_disabledNote = " " . g_l('weClass',"[availableAfterSave]");
 			$_padding = "15";
 		} else {
 			$_disabled = false;
@@ -662,10 +662,10 @@ class weNavigationFrames extends weToolFrames
 				$parts,
 				array(
 
-						'headline' => $GLOBALS["l_we_class"]["copyFolder"],
+						'headline' => g_l('weClass',"[copyFolder]"),
 						'html' => "<script type='text/javascript'>\nvar selfNaviPath ='" . addslashes(
 								$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';\n</script>\n" . "<div style='float:left; margin-right:20px'>" . htmlAlertAttentionBox(
-								$GLOBALS["l_we_class"]["copy_owners_expl"] . $_disabledNote,
+								g_l('weClass',"[copy_owners_expl]") . $_disabledNote,
 								2,
 								($this->_width_size - 120),
 								true,

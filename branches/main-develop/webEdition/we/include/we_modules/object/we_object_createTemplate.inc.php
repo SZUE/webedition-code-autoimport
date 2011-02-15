@@ -48,7 +48,7 @@ class we_makenewtemplate extends we_template
 	}
 
 	function formExtension2(){
-		return $this->htmlFormElementTable("<b class='defaultfont'>".$this->Extension."</b>",$GLOBALS["l_we_class"]["extension"]);
+		return $this->htmlFormElementTable("<b class='defaultfont'>".$this->Extension."</b>",g_l('weClass',"[extension]"));
 	}
 }
 
@@ -162,7 +162,7 @@ function getTmplTableRow($type,$name,$isField=false){
 	}
 }
 
-htmlTop($GLOBALS['l_we_class']['generateTemplate']);
+htmlTop(g_l('weClass','[generateTemplate]'));
 echo "<script language='JavaScript' type='text/javascript' src='".WEBEDITION_DIR."js/windows.js'></script>";
 
 print STYLESHEET;
@@ -263,11 +263,9 @@ $buttons = $we_button->position_yes_no_cancel(
 											);
 
 
-echo htmlDialogLayout($tmpl->formPath(),$GLOBALS['l_we_class']['generateTemplate'],$buttons);
+echo htmlDialogLayout($tmpl->formPath(),g_l('weClass','[generateTemplate]'),$buttons);
 echo '<input type="hidden" name="SID" value="'.$tmpl->Name.'" />';
 echo '<input type="hidden" name="we_cmd[3]" value="'.$_REQUEST["we_cmd"][3].'" />';
 echo '<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';
 echo "</form>";
 echo "</body></html>";
-
-?>

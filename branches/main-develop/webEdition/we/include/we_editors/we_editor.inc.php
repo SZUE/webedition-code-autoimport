@@ -383,7 +383,7 @@ else {
 			if($we_doc->ContentType) {
 				$saveTemplate = true;
 				if (strpos($we_doc->ParentPath,"..")!==false || $we_doc->ParentPath{0} != "/") {
-					$we_responseText = sprintf($GLOBALS["l_we_class"]["notValidFolder"],$we_doc->Path);
+					$we_responseText = sprintf(g_l('weClass',"[notValidFolder]"),$we_doc->Path);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if($we_doc->i_filenameEmpty()) {
 					$we_responseText = g_l('we_editor','['.$we_doc->ContentType.'][filename_empty]');
@@ -414,7 +414,7 @@ else {
 					$we_responseText =  sprintf(g_l('we_editor','['.$we_doc->ContentType.'][we_objecturl_exists]'),$we_doc->Url);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if(!$we_doc->i_checkPathDiffAndCreate()) {
-					$we_responseText = sprintf($GLOBALS["l_we_class"]["notValidFolder"],$we_doc->Url);
+					$we_responseText = sprintf(g_l('weClass',"[notValidFolder]"),$we_doc->Url);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if($n = $we_doc->i_check_requiredFields()) {
 					$we_responseText = sprintf(g_l('we_editor',"[required_field_alert]"),$n);

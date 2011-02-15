@@ -27,7 +27,7 @@ $parts = array();
 
 if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["path"],
+						"headline"=>g_l('weClass',"[path]"),
 						"html"=>$GLOBALS['we_doc']->formPath(),
 						"space"=>140,
 						"icon"=>"path.gif")
@@ -45,13 +45,13 @@ if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 						"icon"=>"cache.gif")
 				);
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["Charset"],
+						"headline"=>g_l('weClass',"[Charset]"),
 						"html"=>$GLOBALS['we_doc']->formCharset(),
 						"space"=>140,
 						"icon"=>"charset.gif")
 				);
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["CSS"],
+						"headline"=>g_l('weClass',"[CSS]"),
 						"html"=>$GLOBALS['we_doc']->formCSS(),
 						"space"=>140,
 						"icon"=>"css.gif")
@@ -66,7 +66,7 @@ if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 } else {
 
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["workspaces"],
+						"headline"=>g_l('weClass',"[workspaces]"),
 						"html"=>$GLOBALS['we_doc']->formWorkspaces(),
 						"space"=>140,
 						"icon"=>"workspace.gif")

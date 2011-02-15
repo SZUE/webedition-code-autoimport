@@ -304,9 +304,9 @@ class we_binaryDocument extends we_document
 					</tr>
 					<tr>';
 			if($GLOBALS["we_doc"]->getFilesize() != 0){
-					$foo .= '<td colspan="2" class="defaultfont">' . htmlAlertAttentionBox($GLOBALS['l_we_class']["upload_will_replace"],1,508) . '</td>';
+					$foo .= '<td colspan="2" class="defaultfont">' . htmlAlertAttentionBox(g_l('weClass',"[upload_will_replace]"),1,508) . '</td>';
 			} else {
-					$foo .= '<td colspan="2" class="defaultfont">' . htmlAlertAttentionBox($GLOBALS['l_we_class']["upload_single_files"],1,508) . '</td>';
+					$foo .= '<td colspan="2" class="defaultfont">' . htmlAlertAttentionBox(g_l('weClass',"[upload_single_files]"),1,508) . '</td>';
 			}
 			$foo .= '</tr>';
 

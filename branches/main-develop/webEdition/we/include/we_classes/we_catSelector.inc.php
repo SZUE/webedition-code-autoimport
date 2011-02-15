@@ -1122,13 +1122,13 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 			$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"),4, 3);
 
-			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), '<b>'.$GLOBALS["l_we_class"]["category"].'</b>');
+			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), '<b>'.g_l('weClass',"[category]").'</b>');
 			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), htmlTextInput("Category",50,$category,"",' id="category"',"text",360));
 
 			$table->setCol(1, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), "<b>ID</b>");
 			$table->setCol(1, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), $catID);
 
-			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), '<b>'.$GLOBALS["l_we_class"]["dir"].'</b>');
+			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), '<b>'.g_l('weClass',"[dir]").'</b>');
 			$table->setCol(2, 1, array("style" => "width:240px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), $dir_hidden . $dir_input);
 			$table->setCol(2, 2, array("style" => "width:110px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont", "align" => "right"), $dir_chooser);
 

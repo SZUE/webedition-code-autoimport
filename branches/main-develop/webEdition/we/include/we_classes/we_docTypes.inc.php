@@ -157,7 +157,7 @@ class we_docTypes extends we_class {
 		$_languages = $GLOBALS['weFrontendLanguages'];
 
 		return $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521),
-			$GLOBALS['l_we_class']['language'],
+			g_l('weClass','[language]'),
 			"left",
 			"defaultfont");
 
@@ -170,7 +170,7 @@ class we_docTypes extends we_class {
 		$addbut = $we_button->create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(521,$this->Category,"dt_delete_cat",$addbut,"","Icon,Path", CATEGORY_TABLE);
-		return $this->htmlFormElementTable($cats->get(),$GLOBALS["l_we_class"]["category"]);
+		return $this->htmlFormElementTable($cats->get(),g_l('weClass',"[category]"));
 	}
 
 	function addCat($id) {

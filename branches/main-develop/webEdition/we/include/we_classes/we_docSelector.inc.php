@@ -813,12 +813,12 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				}
 
 				$_previewFields = array(
-					"properies"  => array("headline"=>$GLOBALS['l_we_class']["tab_properties"], "data"=>array()),
-					"metainfos"  => array("headline"=>$GLOBALS['l_we_class']["metainfo"], "data"=>array()),
-					"attributes" => array("headline"=>$GLOBALS['l_we_class']["attribs"], "data"=>array()),
+					"properies"  => array("headline"=>g_l('weClass',"[tab_properties]"), "data"=>array()),
+					"metainfos"  => array("headline"=>g_l('weClass',"[metainfo]"), "data"=>array()),
+					"attributes" => array("headline"=>g_l('weClass',"[attribs]"), "data"=>array()),
 					"folders" 	 => array("headline"=>g_l('fileselector',"[folders]"), "data"=>array()),
 					"files" 	 => array("headline"=>g_l('fileselector',"[files]"), "data"=>array()),
-					"masterTemplate" 	 => array("headline"=>$GLOBALS['l_we_class']["master_template"], "data"=>array())
+					"masterTemplate" 	 => array("headline"=>g_l('weClass',"[master_template]"), "data"=>array())
 				);
 
 
@@ -870,7 +870,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				if (isset($_imagesize)) {
 					$_previewFields["properies"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["width"]." x ".$GLOBALS['l_we_class']["height"],
+						"caption" => g_l('weClass',"[width]")." x ".g_l('weClass',"[height]"),
 						"content" => $_imagesize[0]." x ".$_imagesize[1]." px "
 					);
 				}
@@ -885,21 +885,21 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				if (isset($metainfos['Title'])) {
 					$_previewFields["metainfos"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["Title"],
+						"caption" => g_l('weClass',"[Title]"),
 						"content" => $metainfos['Title']
 					);
 				}
 
 				if (isset($metainfos['Description'])) {
 					$_previewFields["metainfos"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["Description"],
+						"caption" => g_l('weClass',"[Description]"),
 						"content" => $metainfos['Description']
 					);
 				}
 
 				if (isset($metainfos['Keywords'])) {
 					$_previewFields["metainfos"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["Keywords"],
+						"caption" => g_l('weClass',"[Keywords]"),
 						"content" => $metainfos['Keywords']
 					);
 				}
@@ -924,21 +924,21 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					$_content = (isset($metainfos['title']) ? $metainfos['title'] : ((isset($metainfos['Title']) && isset($metainfos['useMetaTitle']) && $metainfos['useMetaTitle']) ? $metainfos['Title'] : ''));
 					if ($_content !== "") {
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["Title"],
+							"caption" => g_l('weClass',"[Title]"),
 							"content" => htmlspecialchars($_content)
 						);
 					}
 					$_content = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					if ($_content !== "") {
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["name"],
+							"caption" => g_l('weClass',"[name]"),
 							"content" => $_content
 						);
 					}
 					$_content = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
 					if ($_content !== "") {
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["alt"],
+							"caption" => g_l('weClass',"[alt]"),
 							"content" => htmlspecialchars($_content)
 						);
 					}
@@ -972,7 +972,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 							"content" => $result['MasterTemplateID']
 						);
 						$_previewFields["masterTemplate"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["path"],
+							"caption" => g_l('weClass',"[path]"),
 							"content" => $mastertemppath
 						);
 					}

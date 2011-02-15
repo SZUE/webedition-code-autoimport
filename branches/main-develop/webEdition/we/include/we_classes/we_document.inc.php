@@ -214,7 +214,7 @@ class we_document extends we_root {
 		if($withHeadline){
 			$_headline = '
 				<tr>
-					<td class="defaultfont">' . $GLOBALS['l_we_class']['language'] . '</td>
+					<td class="defaultfont">' . g_l('weClass','[language]') . '</td>
 				</tr>
 			';
 		}
@@ -1730,7 +1730,7 @@ class we_document extends we_root {
 		if($withHeadline){
 			$_headline = '
 			<tr>
-				<td class="defaultfont">' . $GLOBALS['l_we_class']['Charset'] . '</td>
+				<td class="defaultfont">' . g_l('weClass','[Charset]') . '</td>
 			</tr>
 			';
 		}

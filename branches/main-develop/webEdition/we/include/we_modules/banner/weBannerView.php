@@ -139,8 +139,8 @@ class weBannerView extends weBannerBase{
 					}
 					$headline = g_l('tabs',"[module][properties]");
 					$itsname = "weBannerProp";
-					$openText=$GLOBALS["l_we_class"]["moreProps"];
-					$closeText=$GLOBALS["l_we_class"]["lessProps"];
+					$openText=g_l('weClass',"[moreProps]");
+					$closeText=g_l('weClass',"[lessProps]");
 					$wepos = weGetCookieVariable("but_weBannerProp");
 					break;
 				case BANNER_PAGE_PLACEMENT:
@@ -179,8 +179,8 @@ class weBannerView extends weBannerBase{
 					$headline = g_l('tabs',"[module][placement]");
 					$znr = 3;
 					$itsname = "weBannerPlace";
-					$openText=$GLOBALS["l_we_class"]["moreProps"];
-					$closeText=$GLOBALS["l_we_class"]["lessProps"];
+					$openText=g_l('weClass',"[moreProps]");
+					$closeText=g_l('weClass',"[lessProps]");
 					$wepos = weGetCookieVariable("but_$itsname");
 					break;
 				case BANNER_PAGE_STATISTICS:

@@ -340,13 +340,13 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 if($we_doc->ID){
 
-	array_push($parts, array(	"headline"=>$GLOBALS["l_we_class"]["doctypes"],
+	array_push($parts, array(	"headline"=>g_l('weClass',"[doctypes]"),
 								"html"=>$GLOBALS["we_doc"]->formDocTypeHeader(),
 								"space"=>120
 							)
 				);
 
-	array_push($parts, array(	"headline"=>$GLOBALS["l_we_class"]["name"],
+	array_push($parts, array(	"headline"=>g_l('weClass',"[name]"),
 								"html"=>$GLOBALS["we_doc"]->formName(),
 								"space"=>120
 							)
@@ -358,7 +358,7 @@ if($we_doc->ID){
 							)
 				);
 
-	array_push($parts, array(	"headline"=>$GLOBALS["l_we_class"]["defaults"],
+	array_push($parts, array(	"headline"=>g_l('weClass',"[defaults]"),
 								"html"=>$GLOBALS["we_doc"]->formDocTypeDefaults(),
 								"space"=>120
 							)

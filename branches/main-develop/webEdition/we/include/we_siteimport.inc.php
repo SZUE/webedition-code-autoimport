@@ -1085,8 +1085,8 @@ class weSiteImport
 				$widthInput = htmlTextInput("width", "10", $this->width, "", '', "text", 60);
 				$heightInput = htmlTextInput("height", "10", $this->height, "", '', "text", 60);
 
-				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . $GLOBALS["l_we_class"]["pixel"] . '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . $GLOBALS["l_we_class"]["percent"] . '</option></select>';
-				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . $GLOBALS["l_we_class"]["pixel"] . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . $GLOBALS["l_we_class"]["percent"] . '</option></select>';
+				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[pixel]"). '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[percent]") . '</option></select>';
+				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[pixel]") . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[percent]") . '</option></select>';
 
 				$ratio_checkbox = we_forms::checkbox(
 						"1",
@@ -1096,12 +1096,12 @@ class weSiteImport
 
 				$_resize = '<table border="0" cellpadding="2" cellspacing="0">
 				<tr>
-					<td class="defaultfont">' . $GLOBALS["l_we_class"]["width"] . ':</td>
+					<td class="defaultfont">' . g_l('weClass',"[width]") . ':</td>
 					<td>' . $widthInput . '</td>
 					<td>' . $widthSelect . '</td>
 				</tr>
 				<tr>
-					<td class="defaultfont">' . $GLOBALS["l_we_class"]["height"] . ':</td>
+					<td class="defaultfont">' . g_l('weClass',"[height]") . ':</td>
 					<td>' . $heightInput . '</td>
 					<td>' . $heightSelect . '</td>
 				</tr>
@@ -1113,35 +1113,35 @@ class weSiteImport
 				array_push(
 						$parts,
 						array(
-							"headline" => $GLOBALS["l_we_class"]["resize"], "html" => $_resize, "space" => 120
+							"headline" => g_l('weClass',"[resize]"), "html" => $_resize, "space" => 120
 						));
 
 				$_radio0 = we_forms::radiobutton(
 						"0",
 						$this->degrees == 0,
 						"degrees",
-						$GLOBALS["l_we_class"]["rotate0"]);
+						g_l('weClass',"[rotate0]"));
 				$_radio180 = we_forms::radiobutton(
 						"180",
 						$this->degrees == 180,
 						"degrees",
-						$GLOBALS["l_we_class"]["rotate180"]);
+						g_l('weClass',"[rotate180]"));
 				$_radio90l = we_forms::radiobutton(
 						"90",
 						$this->degrees == 90,
 						"degrees",
-						$GLOBALS["l_we_class"]["rotate90l"]);
+						g_l('weClass',"[rotate90l]"));
 				$_radio90r = we_forms::radiobutton(
 						"270",
 						$this->degrees == 270,
 						"degrees",
-						$GLOBALS["l_we_class"]["rotate90r"]);
+						g_l('weClass',"[rotate90r]"));
 
 				array_push(
 						$parts,
 						array(
 
-								"headline" => $GLOBALS["l_we_class"]["rotate"],
+								"headline" => g_l('weClass',"[rotate]"),
 								"html" => $_radio0 . $_radio180 . $_radio90l . $_radio90r,
 								"space" => 120
 						));
@@ -1150,7 +1150,7 @@ class weSiteImport
 						$parts,
 						array(
 
-								"headline" => $GLOBALS["l_we_class"]["quality"],
+								"headline" => g_l('weClass',"[quality]"),
 								"html" => we_qualitySelect("quality", $this->quality),
 								"space" => 120
 						));

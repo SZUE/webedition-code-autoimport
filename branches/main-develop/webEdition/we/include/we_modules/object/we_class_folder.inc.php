@@ -232,13 +232,13 @@ class we_class_folder extends we_folder{
 			$_disabledNote = '';
 		} else {
 			$_disabled = true;
-			$_disabledNote = ' '.$GLOBALS['l_we_class']['availableAfterSave'];
+			$_disabledNote = ' '.g_l('weClass','[availableAfterSave]');
 		}
 
 		$we_button = new we_button();
 		$but = $we_button->create_button('select', $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folder_not_valid]"), WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->RootfolderID.");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folders_no_id]"), WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox($GLOBALS["l_we_class"]["copy_owners_expl"].$_disabledNote,2,388,false).'</td><td>'.
+		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox(g_l('weClass',"[copy_owners_expl]").$_disabledNote,2,388,false).'</td><td>'.
 						$this->htmlHidden($idname,$this->CopyID).$but . '</td></tr>
 					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>';
 

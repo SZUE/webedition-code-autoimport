@@ -96,7 +96,7 @@ function toggleObject(id) {
 <?php
 if($_editMode){
 
-	echo we_multiIconBox::_getBoxStart("100%", $GLOBALS["l_we_class"]["edit"], uniqid(""),30);
+	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass',"[edit]"), uniqid(""),30);
 
 	echo $jsGUI->getContainer();
 

@@ -172,7 +172,7 @@ class we_root extends we_class
 
 			### check if Path exists in db
 			if(f("SELECT Path FROM ".mysql_real_escape_string($this->Table)." WHERE Path='".mysql_real_escape_string($Path)."'","Path",$this->DB_WE)){
-				$GLOBALS["we_responseText"] = sprintf($GLOBALS["l_we_class"]["response_path_exists"],$Path);
+				$GLOBALS["we_responseText"] = sprintf(g_l('weClass',"[response_path_exists]"),$Path);
 				return false;
 			}
 			$this->Path = $Path;

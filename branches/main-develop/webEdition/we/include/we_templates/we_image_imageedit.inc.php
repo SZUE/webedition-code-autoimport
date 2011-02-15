@@ -47,7 +47,7 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 	<form name="we_form" method="post" onsubmit="return false;">
 		<?php $we_doc->pHiddenTrans(); ?>
 		<?php
-				$_headline = $GLOBALS["l_we_class"]["image"];
+				$_headline = g_l('weClass',"[image]");
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 
 				$_gdtype = $we_doc->getGDType();

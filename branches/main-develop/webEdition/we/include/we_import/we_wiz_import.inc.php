@@ -437,7 +437,7 @@ class we_wizard_import extends we_wizard {
 
 		$wepos = weGetCookieVariable("but_wxml");
 		$znr = -1;
-		$content = $hdns . we_multiIconBox::getHTML("wxml", "100%", $parts, 30,"", $znr, $GLOBALS["l_we_class"]["moreProps"], $GLOBALS["l_we_class"]["lessProps"], ($wepos=="down"), g_l('import',"[wxml_import]"));
+		$content = $hdns . we_multiIconBox::getHTML("wxml", "100%", $parts, 30,"", $znr, g_l('weClass',"[moreProps]"), g_l('weClass',"[lessProps]"), ($wepos=="down"), g_l('import',"[wxml_import]"));
 		return array($functions, $content);
 	}
 
@@ -837,7 +837,7 @@ class we_wizard_import extends we_wizard {
 		}
 		$wepos = weGetCookieVariable("but_wxml");
 		$znr = -1;
-		$content = $hdns . we_multiIconBox::getHTML("wxml","100%",$parts,30,"",$znr,$GLOBALS["l_we_class"]["moreProps"],$GLOBALS["l_we_class"]["lessProps"],($wepos=="down"),($we_valid)? g_l('import','[import_options]'):g_l('import','[wxml_import]'));
+		$content = $hdns . we_multiIconBox::getHTML("wxml","100%",$parts,30,"",$znr,g_l('weClass',"[moreProps]"),g_l('weClass',"[lessProps]"),($wepos=="down"),($we_valid)? g_l('import','[import_options]'):g_l('import','[wxml_import]'));
 		return array($functions, $content);
 	}
 
@@ -1273,7 +1273,7 @@ HTS;
 		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js"));
 		$content.= $hdns;
 		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("xml", "100%", $parts, 30,"", $znr, $GLOBALS["l_we_class"]["moreProps"], $GLOBALS["l_we_class"]["lessProps"], ($wepos=="down"), g_l('import',"[gxml_import]"));
+		$content.= we_multiIconBox::getHTML("xml", "100%", $parts, 30,"", $znr, g_l('weClass',"[moreProps]"), g_l('weClass',"[lessProps]"), ($wepos=="down"), g_l('import',"[gxml_import]"));
 
 		return array($functions, $content);
 	}
@@ -1402,7 +1402,7 @@ HTS;
 
 		$content = $hdns;
 		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("xml","100%",$parts,30,"",$znr,$GLOBALS["l_we_class"]["moreProps"],$GLOBALS["l_we_class"]["lessProps"],($wepos=="down"),g_l('import',"[select_data_set]"));
+		$content.= we_multiIconBox::getHTML("xml","100%",$parts,30,"",$znr,g_l('weClass',"[moreProps]"),g_l('weClass',"[lessProps]"),($wepos=="down"),g_l('import',"[select_data_set]"));
 
 		return array($functions, $content);
 	}
@@ -1644,7 +1644,7 @@ HTS;
 
 		$content = $hdns;
 		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("xml","100%",$parts,30,"",$znr,$GLOBALS["l_we_class"]["moreProps"],$GLOBALS["l_we_class"]["lessProps"],($wepos=="down"),g_l('import',"[asgn_rcd_flds]"));
+		$content.= we_multiIconBox::getHTML("xml","100%",$parts,30,"",$znr,g_l('weClass',"[moreProps]"), g_l('weClass',"[lessProps]"),($wepos=="down"),g_l('import',"[asgn_rcd_flds]"));
 
 		return array($functions, $content);
 	}
@@ -2448,7 +2448,7 @@ HTS;
 
 		$content = $hdns;
 		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("csv","100%",$parts,30,"",$znr,$GLOBALS["l_we_class"]["moreProps"],$GLOBALS["l_we_class"]["lessProps"],($wepos=="down"),g_l('import',"[asgn_rcd_flds]"));
+		$content.= we_multiIconBox::getHTML("csv","100%",$parts,30,"",$znr,g_l('weClass',"[moreProps]"),g_l('weClass',"[lessProps]"),($wepos=="down"),g_l('import',"[asgn_rcd_flds]"));
 
 		return array($functions, $content);
 	}

@@ -25,7 +25,7 @@ $parts = array();
 
 if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["path"],
+						"headline"=>g_l('weClass',"[path]"),
 						"html"=>$GLOBALS['we_doc']->formPath(),
 						"space"=>140,
 						"icon"=>"path.gif")
@@ -58,7 +58,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 	}
 
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["language"],
+						"headline"=>g_l('weClass',"[language]"),
 						"html"=>$GLOBALS['we_doc']->formLanguage(),
 						"space"=>140,
 						"icon"=>"lang.gif")
@@ -82,7 +82,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 
 
 	array_push($parts,array(
-							"headline"=>$GLOBALS["l_we_class"]["owners"],
+							"headline"=>g_l('weClass',"[owners]"),
 							"html"=>$GLOBALS['we_doc']->formCreatorOwners(),
 							"space"=>140,
 							"icon"=>"user.gif")
@@ -90,7 +90,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 
 
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["Charset"],
+						"headline"=>g_l('weClass',"[Charset]"),
 						"html"=>$GLOBALS['we_doc']->formCharset(),
 						"space"=>140,
 						"icon"=>"charset.gif")
@@ -99,14 +99,14 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 
 	if($GLOBALS['we_doc']->hasWorkspaces()){	//	Show workspaces
 		array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["workspaces"],
+						"headline"=>g_l('weClass',"[workspaces]"),
 						"html"=>$GLOBALS['we_doc']->formWorkspaces(),
 						"space"=>140,
 						"noline"=>1,
 						"icon"=>"workspace.gif")
 				);
 		array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_class"]["extraWorkspaces"],
+						"headline"=>g_l('weClass',"[extraWorkspaces]"),
 						"html"=>$GLOBALS['we_doc']->formExtraWorkspaces(),
 						"space"=>140,
 						"forceRightHeadline"=>1)

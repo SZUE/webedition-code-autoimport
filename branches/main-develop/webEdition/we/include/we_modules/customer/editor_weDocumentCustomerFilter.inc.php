@@ -85,7 +85,7 @@ if ($we_doc->ClassName != "we_imageDocument") {
 	print hidden("we_edit_weDocumentCustomerFilter", 1);
 	print hidden("weDocumentCustomerFilter_id", $_filter->getId());
 }
-print we_multiIconBox::getHTML("weDocProp","100%",$parts,20,"",-1,$GLOBALS["l_we_class"]["moreProps"],$GLOBALS["l_we_class"]["lessProps"]);
+print we_multiIconBox::getHTML("weDocProp","100%",$parts,20,"",-1,g_l('weClass',"[moreProps]"),g_l('weClass',"[lessProps]"));
 print "</form>\n";
 print "</body>";
 print "</html>";

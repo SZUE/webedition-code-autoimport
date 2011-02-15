@@ -868,7 +868,7 @@ class we_object extends we_document
 
 		$type = ( $this->getElement($name."dtype","dat") !="" ) ? $this->getElement($name."dtype","dat") : "input";
 		$content = '<tr>';
-		$content .= '<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . $GLOBALS["l_we_class"]["name"].'</td>';
+		$content .= '<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . g_l('weClass',"[name]").'</td>';
 		$content .= '<td  width="170" class="defaultfont" valign="top">';
 
 		if ($type == 'object') {
@@ -1232,7 +1232,7 @@ class we_object extends we_document
 			$content .= we_forms::radiobutton($name, (($this->getElement("desc","dat")==$name)?1:0), "we_".$this->Name."_input[desc]", g_l('global',"[description]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
 
 			// Keywords
-			$content .= we_forms::radiobutton($name, (($this->getElement("keywords","dat")==$name)?1:0), "we_".$this->Name."_input[keywords]", $GLOBALS["l_we_class"]["Keywords"], true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+			$content .= we_forms::radiobutton($name, (($this->getElement("keywords","dat")==$name)?1:0), "we_".$this->Name."_input[keywords]", g_l('weClass',"[Keywords]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
 
 			$content .= '</td></tr>';
 		}
@@ -1241,11 +1241,11 @@ class we_object extends we_document
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>';
 			$content .= '<td width="170" class="defaultfont">';
 			if ($type=="date") {
-				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield0","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield0]", $GLOBALS["l_we_class"]["urlfield0"], true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield0","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield0]", g_l('weClass',"[urlfield0]"), true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
 			} else {
-				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield1","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield1]", $GLOBALS["l_we_class"]["urlfield1"], true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
-				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield2","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield2]", $GLOBALS["l_we_class"]["urlfield2"], true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
-				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield3","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield3]", $GLOBALS["l_we_class"]["urlfield3"], true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield1","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield1]", g_l('weClass',"[urlfield1]"), true, "defaultfont","if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield2","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield2]", g_l('weClass',"[urlfield2]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
+				$content .= we_forms::radiobutton($name, (($this->getElement("urlfield3","dat")==$name)?1:0), "we_".$this->Name."_input[urlfield3]", g_l('weClass',"[urlfield3]"), true, "defaultfont", "if(this.waschecked){this.checked=false;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);",false,"",0,0,"if(this.checked){this.waschecked=true}");
 			}
 			$content .= '</td></tr>';
 		}
@@ -1282,7 +1282,7 @@ class we_object extends we_document
 		}
 
 
-		$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_we_class"]["fieldusers"].'</td>';
+		$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('weClass',"[fieldusers]").'</td>';
 		$content .= '<td width="170" class="defaultfont" >';
 		$content .= $this->formUsers1($name,$identifier);
 		$content .= '</td></tr>';
@@ -1565,7 +1565,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				$content .= '<tr><td><img src="'.ICON_DIR.$foo["Icon"].'" width="16" height="18" /></td><td class="defaultfont">'.$foo["Path"].'</td><td>' . $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','".$GLOBALS['we_transaction']."','".$nr."',".$users[$i].",'".$name."');").'</td></tr>'."\n";
 			}
 		}else{
-			$content .= '<tr><td><img src="'.ICON_DIR.'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">'.$GLOBALS["l_we_class"]["everybody"].'</td><td>'.getPixel(26,18).'</td></tr>'."\n";
+			$content .= '<tr><td><img src="'.ICON_DIR.'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">'.g_l('weClass',"[everybody]").'</td><td>'.getPixel(26,18).'</td></tr>'."\n";
 		}
 		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(324,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
 
@@ -2006,7 +2006,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formPath(){
-		global $l_object,;
+		global $l_object;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$this->formInputField("","Text",$l_object["classname"],30,508,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>

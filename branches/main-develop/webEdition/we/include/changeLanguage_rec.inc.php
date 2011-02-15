@@ -41,9 +41,9 @@ htmlTop();
 	<?php
 
 	if ($ok) {
-		print we_message_reporting::getShowMessageCall($GLOBALS["l_we_class"]["grant_language_ok"], WE_MESSAGE_NOTICE);
+		print we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_ok]"), WE_MESSAGE_NOTICE);
 	} else {
-		print we_message_reporting::getShowMessageCall($GLOBALS["l_we_class"]["grant_language_notok"], WE_MESSAGE_ERROR);
+		print we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_notok]"), WE_MESSAGE_ERROR);
 	}
 	?>
 //-->

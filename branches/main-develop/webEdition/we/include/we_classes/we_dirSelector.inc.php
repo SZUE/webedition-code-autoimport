@@ -1056,7 +1056,7 @@ top.selectFile(top.currentID);
 				$previewDefauts  = "<tr><td class='info' width='100%'>";
 				$previewDefauts .= "<div style='overflow:auto; height:100%' id='info'><table cellpadding='0' cellspacing='0' width='100%'>";
 
-				$previewDefauts .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["tab_properties"]."</td></tr>";
+				$previewDefauts .= "<tr><td colspan='2' class='headline'>".g_l('weClass',"[tab_properties]")."</td></tr>";
 				$previewDefauts .= "<tr class='odd'><td title=\"".$result['Path']."\" width='10'>".g_l('fileselector',"[name]").": </td><td>";
 				//$previewDefauts .= "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'><img src='/webEdition/images/tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>";
 				//$previewDefauts .= "<div style='margin-right:14px'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'>".$result['Text']."</a></div></td></tr>";
@@ -1100,27 +1100,27 @@ top.selectFile(top.currentID);
 							$out .= $previewDefauts;
 
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["width"]." x ".$GLOBALS['l_we_class']["height"].": </td><td>".$imagesize[0]." x ".$imagesize[1]." px </td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[width]")." x ".g_l('weClass',"[height]").": </td><td>".$imagesize[0]." x ".$imagesize[1]." px </td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 							$out .= "<tr class='$nextrowclass'><td>".g_l('fileselector',"[filesize]").": </td><td>".$filesize."</td></tr>";
 
-							$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["metainfo"]."</td></tr>";
+							$out .= "<tr><td colspan='2' class='headline'>".g_l('weClass',"[metainfo]")."</td></tr>";
 							$nextrowclass = "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Title"].": </td><td>".(isset($metainfos['Title']) ? $metainfos['Title'] : '')."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Title]").": </td><td>".(isset($metainfos['Title']) ? $metainfos['Title'] : '')."</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Description"].": </td><td>".(isset($metainfos['Description']) ? $metainfos['Description'] : '')."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Description]").": </td><td>".(isset($metainfos['Description']) ? $metainfos['Description'] : '')."</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Keywords"].": </td><td>".(isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '')."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Keywords]").": </td><td>".(isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '')."</td></tr>";
 
-							$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["attribs"]."</td></tr>";
+							$out .= "<tr><td colspan='2' class='headline'>".g_l('weClass',"[attribs]")."</td></tr>";
 							$nextrowclass = "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Title"].": </td><td>".(isset($metainfos['Title']) ? $metainfos['Title'] : '')."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Title]").": </td><td>".(isset($metainfos['Title']) ? $metainfos['Title'] : '')."</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["name"].": </td><td>".(isset($metainfos['name']) ? $metainfos['name'] : '')."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[name]").": </td><td>".(isset($metainfos['name']) ? $metainfos['name'] : '')."</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["alt"].": </td><td>".(isset($metainfos['alt']) ? $metainfos['alt'] : '')."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[alt]").": </td><td>".(isset($metainfos['alt']) ? $metainfos['alt'] : '')."</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["width"]." x ".$GLOBALS['l_we_class']["height"].": </td><td>".(isset($metainfos['width']) ? $metainfos['width'] : '')." x ".(isset($metainfos['height']) ? $metainfos['height'] : '')." px </td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[width]")." x ".g_l('weClass',"[height]").": </td><td>".(isset($metainfos['width']) ? $metainfos['width'] : '')." x ".(isset($metainfos['height']) ? $metainfos['height'] : '')." px </td></tr>";
 						}
 						break;
 					case "folder":
@@ -1146,24 +1146,24 @@ top.selectFile(top.currentID);
 						$out .= $previewDefauts;
 						if (isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])) {
 							$mastertemppath = f("SELECT Text, Path FROM " . mysql_real_escape_string($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
-							$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["master_template"]."</td></tr>";
+							$out .= "<tr><td colspan='2' class='headline'>".g_l('weClass',"[master_template]")."</td></tr>";
 							$nextrowclass = "odd";
 							$out .= "<tr class='$nextrowclass'><td>ID:</td><td>".$result['MasterTemplateID']."</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["path"].":</td><td>".$mastertemppath."</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[path]").":</td><td>".$mastertemppath."</td></tr>";
 						}
 						break;
 					case "text/webedition":
 						$out .= $previewDefauts;
-						$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["metainfo"]."</td></tr>";
+						$out .= "<tr><td colspan='2' class='headline'>".g_l('weClass',"[metainfo]")."</td></tr>";
 						$nextrowclass = "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Title"].":</td><td>".(isset($metainfos['Title']) ? $metainfos['Title'] : '')."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Title]").":</td><td>".(isset($metainfos['Title']) ? $metainfos['Title'] : '')."</td></tr>";
 						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Charset"].":</td><td>".(isset($metainfos['Charset']) ? $metainfos['Charset'] : '')."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Charset]").":</td><td>".(isset($metainfos['Charset']) ? $metainfos['Charset'] : '')."</td></tr>";
 						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Keywords"].":</td><td>".(isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '')."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Keywords]").":</td><td>".(isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '')."</td></tr>";
 						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>".$GLOBALS['l_we_class']["Description"].":</td><td>".(isset($metainfos['Description']) ? $metainfos['Description'] : '')."</td></tr>";
+						$out .= "<tr class='$nextrowclass'><td>".g_l('weClass',"[Description]").":</td><td>".(isset($metainfos['Description']) ? $metainfos['Description'] : '')."</td></tr>";
 						break;
 					case "text/html":
 						$out .= $previewDefauts;
