@@ -1047,7 +1047,7 @@ function we_cmd() {
 				we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 
 			} else {
-				alert("<?php print $g_l('multiEditor',"[no_editor_left]"); ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
 
 			}
 			break;
