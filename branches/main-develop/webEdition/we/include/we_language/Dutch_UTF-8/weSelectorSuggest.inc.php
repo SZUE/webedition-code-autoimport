@@ -18,19 +18,17 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: weSelectorSuggest.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_weSelectorSuggest["no_template"] = "Het aangegeven sjabloon bestaat niet.";
-$l_weSelectorSuggest["no_document"] = "Het aangegeven document bestaat niet.";
-$l_weSelectorSuggest["no_folder"]   = "De aangegeven directorie bestaat niet.";
-$l_weSelectorSuggest["no_class"]    = "De aangegeven class bestaat niet.";
-$l_weSelectorSuggest["no_object"]   = "Het aangegeven object bestaat niet.";
-$l_weSelectorSuggest["no_image"]    = "De aangegeven afbeelding bestaat niet.";
-$l_weSelectorSuggest["no_result"]   = "Uw aanvraag heeft geen resultaat opgeleverd Your request did not render a result.";
-
-?>
+$l_weSelectorSuggest = array(
+		'no_template' => "Het aangegeven sjabloon bestaat niet.",
+		'no_document' => "Het aangegeven document bestaat niet.",
+		'no_folder' => "De aangegeven directorie bestaat niet.",
+		'no_class' => "De aangegeven class bestaat niet.",
+		'no_object' => "Het aangegeven object bestaat niet.",
+		'no_image' => "De aangegeven afbeelding bestaat niet.",
+		'no_result' => "Uw aanvraag heeft geen resultaat opgeleverd Your request did not render a result.",
+);

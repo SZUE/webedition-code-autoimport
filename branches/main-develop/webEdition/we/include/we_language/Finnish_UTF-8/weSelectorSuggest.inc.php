@@ -18,19 +18,17 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: weSelectorSuggest.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_weSelectorSuggest["no_template"] = "Valittua sivupohjaa ei ole olemassa.";
-$l_weSelectorSuggest["no_document"] = "Valittua tiedostoa ei ole olemassa.";
-$l_weSelectorSuggest["no_folder"]   = "Valittua hakemistoa ei ole olemassa.";
-$l_weSelectorSuggest["no_class"]    = "Valittua luokkaa ei ole olemassa.";
-$l_weSelectorSuggest["no_object"]   = "Valittua objektia ei ole olemassa.";
-$l_weSelectorSuggest["no_image"]    = "Valittua kuvaa ei ole olemassa.";
-$l_weSelectorSuggest["no_result"]   = "Pyyntösi ei tuottanut tuloksia.";
-
-?>
+$l_weSelectorSuggest = array(
+		'no_template' => "Valittua sivupohjaa ei ole olemassa.",
+		'no_document' => "Valittua tiedostoa ei ole olemassa.",
+		'no_folder' => "Valittua hakemistoa ei ole olemassa.",
+		'no_class' => "Valittua luokkaa ei ole olemassa.",
+		'no_object' => "Valittua objektia ei ole olemassa.",
+		'no_image' => "Valittua kuvaa ei ole olemassa.",
+		'no_result' => "Pyyntösi ei tuottanut tuloksia.",
+);
