@@ -2946,7 +2946,6 @@ function mapPermissions() {
 	function formHeader($tab = 0) {
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
 
 		$big=false;
 		if(file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")) {
@@ -3017,10 +3016,10 @@ function mapPermissions() {
 			$headline1=g_l('modules_users',"[group]").': ';
 		}
 		else if($this->Type==2) {
-			$headline1=$GLOBALS["l_javaMenu"]["users"]["menu_alias"].': ';
+			$headline1=g_l('javaMenu_users','[menu_alias]').': ';
 		}
 		else {
-			$headline1=$GLOBALS["l_javaMenu"]["users"]["menu_user"].': ';
+			$headline1=g_l('javaMenu_users','[menu_user]').': ';
 		}
 		$headline2=empty($this->Path)?$this->getPath($this->ParentID):$this->Path;
 		$out .= '<div id="main" >' . getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$headline1).'&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$headline2).'</b></span></nobr></div>'.getPixel(100,3).$we_tabs->getHTML().'</div>';

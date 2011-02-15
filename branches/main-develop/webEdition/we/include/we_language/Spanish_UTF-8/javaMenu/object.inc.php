@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -14,14 +15,21 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_javamenu
+ * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-// File > Glossary Check
-$we_menu["1099000"]["text"] = g_l('javaMenu_glossary','[glossary_check]');
-$we_menu["1099000"]["parent"] = "1000000";
-$we_menu["1099000"]["cmd"] = "check_glossary";
-$we_menu["1099000"]["perm"] = "";
-$we_menu["1099000"]["enabled"] = "1";
+/**
+ * Language file: javaMenu_object.inc.php
+ * Provides language strings.
+ * Language: English
+ */
+$l_javaMenu_object = array(
+		'open_object' => "Object", // TRANSLATE
+		'open_class' => "Clase",
+		'object' => "Objeto",
+		'object_directory' => "Directorio de objetos ",
+		'class' => "Clase",
+		'objects' => "Objetos",
+		'classes' => "Clases",
+		'unpublished_objects' => "Objetos inéditos",
+);

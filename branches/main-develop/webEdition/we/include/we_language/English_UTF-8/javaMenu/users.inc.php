@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -14,14 +15,25 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_javamenu
+ * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-// File > Glossary Check
-$we_menu["1099000"]["text"] = g_l('javaMenu_glossary','[glossary_check]');
-$we_menu["1099000"]["parent"] = "1000000";
-$we_menu["1099000"]["cmd"] = "check_glossary";
-$we_menu["1099000"]["perm"] = "";
-$we_menu["1099000"]["enabled"] = "1";
+/**
+ * Language file: javaMenu_users.inc.php
+ * Provides language strings.
+ * Language: English
+ */
+$l_javaMenu_users = array(
+//	This entry is for the java-menu of webEdition
+		'user_management' => "User Management",
+//	These entries are for the java-menu of the modules
+		'menu_user' => "User",
+		'menu_alias' => "Alias",
+		'menu_new' => "New",
+		'menu_save' => "Save",
+		'menu_delete' => "Delete",
+		'menu_exit' => "Close",
+		'menu_info' => "Info",
+		'menu_help' => "Help",
+		'group' => "Group",
+);

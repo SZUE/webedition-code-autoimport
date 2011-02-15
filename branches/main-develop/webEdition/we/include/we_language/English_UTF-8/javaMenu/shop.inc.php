@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -14,14 +15,22 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_javamenu
+ * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-// File > Glossary Check
-$we_menu["1099000"]["text"] = g_l('javaMenu_glossary','[glossary_check]');
-$we_menu["1099000"]["parent"] = "1000000";
-$we_menu["1099000"]["cmd"] = "check_glossary";
-$we_menu["1099000"]["perm"] = "";
-$we_menu["1099000"]["enabled"] = "1";
+$l_javaMenu_shop = array(
+//	These entries are used for the java-menu of the module
+		'menu_user' => "Shop",
+		'year' => "Business year",
+		'menu_exit' => "Close",
+		'shop_edit' => "Edit",
+		'shop_pref' => "Preferences",
+		'shop_status' => "Status mails", //TRANSLATE
+		'country_vat' => "Countries",
+		'edit_vats' => "VAT rates",
+		'order' => "Order",
+		'add_article_to_order' => "Add Article",
+		'delete_order' => "Delete order",
+		'menu_help' => "Help",
+		'menu_info' => "Info",
+);
