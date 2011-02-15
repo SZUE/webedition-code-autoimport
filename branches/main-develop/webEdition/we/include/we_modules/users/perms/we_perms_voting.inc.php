@@ -21,7 +21,7 @@
 
 
 $perm_group_name="voting";
-$perm_group_title[$perm_group_name]=g_l('perm_voting',"[perm_group_title]");
+$perm_group_title[$perm_group_name]=g_l('perms_voting',"[perm_group_title]");
 
 $perm_values[$perm_group_name]=array(
 	"NEW_VOTING",

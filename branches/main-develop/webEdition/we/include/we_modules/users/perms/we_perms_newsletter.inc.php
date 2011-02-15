@@ -21,7 +21,7 @@
 
 
 $perm_group_name="newsletter";
-$perm_group_title[$perm_group_name]=g_l('perm_newsletter',"[perm_group_title]");
+$perm_group_title[$perm_group_name]=g_l('perms_newsletter',"[perm_group_title]");
 
 $perm_values[$perm_group_name]=array("NEW_NEWSLETTER",
 	"DELETE_NEWSLETTER",

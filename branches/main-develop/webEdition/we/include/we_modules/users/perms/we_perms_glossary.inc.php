@@ -21,7 +21,7 @@
 
 
 $perm_group_name="glossary";
-$perm_group_title[$perm_group_name]=g_l('perm_glossary',"[perm_group_title]");
+$perm_group_title[$perm_group_name]=g_l('perms_glossary',"[perm_group_title]");
 
 $perm_values[$perm_group_name]=array(
 	"NEW_GLOSSARY",

@@ -22,7 +22,7 @@
 
 $perm_group_name="controlpermissions";
 
-$perm_group_title[$perm_group_name] = g_l('perm_controlpermissions',"[perm_group_title]");
+$perm_group_title[$perm_group_name] = g_l('perms_controlpermissions',"[perm_group_title]");
 
 
 $perm_values[$perm_group_name] = array(

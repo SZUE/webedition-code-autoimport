@@ -21,7 +21,7 @@
 
 
 $perm_group_name="banner";
-$perm_group_title[$perm_group_name] = g_l('perm_banner',"[perm_group_title]");
+$perm_group_title[$perm_group_name] = g_l('perms_banner',"[perm_group_title]");
 
 
  $perm_values[$perm_group_name]=array(

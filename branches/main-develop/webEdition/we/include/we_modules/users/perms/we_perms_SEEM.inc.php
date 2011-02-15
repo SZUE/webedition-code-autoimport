@@ -20,8 +20,8 @@
  */
 
 
-$perm_group_name = "seem";
-$perm_group_title[$perm_group_name] = g_l('perm_SEEM',"[perm_group_title]");
+$perm_group_name = "SEEM";
+$perm_group_title[$perm_group_name] = g_l('perms_SEEM',"[perm_group_title]");
 
 $perm_values[$perm_group_name]=array(
 	"CAN_SEE_MENUE",

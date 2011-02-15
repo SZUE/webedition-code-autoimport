@@ -21,7 +21,7 @@
 
 
 $perm_group_name="scheduler";
-$perm_group_title[$perm_group_name] = g_l('perm_scheduler',"[perm_group_title]");
+$perm_group_title[$perm_group_name] = g_l('perms_scheduler',"[perm_group_title]");
 
 
 $perm_values[$perm_group_name] = array(

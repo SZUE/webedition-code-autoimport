@@ -23,7 +23,7 @@
 
 $perm_group_name="customer";
 
-$perm_group_title[$perm_group_name] = g_l('perm_customer',"[perm_group_title]");
+$perm_group_title[$perm_group_name] = g_l('perms_customer',"[perm_group_title]");
 
 $perm_values[$perm_group_name] = array(
 	'NEW_CUSTOMER',

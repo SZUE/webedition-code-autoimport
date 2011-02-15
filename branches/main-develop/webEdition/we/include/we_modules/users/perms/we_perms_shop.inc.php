@@ -21,7 +21,7 @@
 
 
 $perm_group_name="shop";
-$perm_group_title[$perm_group_name] = g_l('perm_shop',"[perm_group_title]");
+$perm_group_title[$perm_group_name] = g_l('perms_shop',"[perm_group_title]");
 
 
 $perm_values[$perm_group_name] = array(
