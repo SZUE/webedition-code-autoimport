@@ -27,11 +27,11 @@
 
 			$we_tabs = new we_tabs();
 
-			$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['exception'],'TAB_ACTIVE',"setTab('1');"));
+			$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[exception]'),'TAB_ACTIVE',"setTab('1');"));
 
-			$title = $GLOBALS['l_glossary']['exception'] . ":&nbsp;".(isset($GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)])?$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]:"-");
+			$title = g_l('modules_glossary','[exception]') . ":&nbsp;".(isset($GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)])?$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]:"-");
 
-			return weGlossaryFrameEditorException::buildHeader($weGlossaryFrames, $we_tabs, $GLOBALS['l_glossary']['exception'],(isset($GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)])?$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]:"-"));
+			return weGlossaryFrameEditorException::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[exception]'),(isset($GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)])?$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]:"-"));
 
 		}
 
@@ -103,7 +103,7 @@
 			$content = '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							' . htmlAlertAttentionBox($GLOBALS['l_glossary']['hint_exception'], 2, 520, true, 0) . '</td>
+							' . htmlAlertAttentionBox(g_l('modules_glossary','[hint_exception]'), 2, 520, true, 0) . '</td>
 					</tr>
 					<tr>
 						<td>
@@ -116,7 +116,7 @@
 				</table>';
 
 			$item = array(
-				"headline" => $GLOBALS['l_glossary']['exception'],
+				"headline" => g_l('modules_glossary','[exception]'),
 				"html" => $content,
 				"space" => 120
 			);

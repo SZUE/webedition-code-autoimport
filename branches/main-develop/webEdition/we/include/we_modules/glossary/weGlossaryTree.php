@@ -38,7 +38,7 @@ class weGlossaryTree extends weMainTree{
 			$this->setStyles($styles);
 
 	}
-	
+
 
 	function getJSOpenClose() {
 
@@ -90,14 +90,13 @@ class weGlossaryTree extends weMainTree{
 
 
 	function getJSTreeFunctions() {
-		global $l_glossary;
 		$out = weTree::getJSTreeFunctions();
 
 		$out.='
 			function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
-						if(confirm("'.$l_glossary["save_changed_glossary"].'")) {
+						if(confirm("'.g_l('modules_glossary',"[save_changed_glossary]").'")) {
 							cmd = "save_export";
 							top.content.we_cmd("save_glossary");
 						} else {

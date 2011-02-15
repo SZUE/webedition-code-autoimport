@@ -18,7 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/glossary.inc.php");
 
 ?>
 
@@ -39,7 +38,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 				new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
 
 			} else {
-				<?php print we_message_reporting::getShowMessageCall($l_glossary["glossary_check_not_avalaible"], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary',"[glossary_check_not_avalaible]"), WE_MESSAGE_ERROR); ?>
 
 			}
 			break;

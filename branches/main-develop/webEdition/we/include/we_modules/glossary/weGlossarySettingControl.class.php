@@ -19,29 +19,29 @@
  */
 
 class weGlossarySettingControl {
-	
+
 	function weGlossarySettingControl() {
-		
+
 	}
-	
+
 	function processCommands() {
-		
+
 		$js = '';
 		$html = '';
-		
+
 		if (isset($_REQUEST['cmd'])) {
-			
+
 			switch ($_REQUEST['cmd']) {
-				
+
 				case "save_glossary_setting":
 					if($this->saveSettings()) {
-						$html .= "<script type=\"text/javascript\">top.close();" . we_message_reporting::getShowMessageCall($GLOBALS['l_glossary']['preferences_saved'], WE_MESSAGE_NOTICE) . "</script>";
+						$html .= "<script type=\"text/javascript\">top.close();" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_saved]'), WE_MESSAGE_NOTICE) . "</script>";
 					} else {
-						$html .= "<script type=\"text/javascript\">" . we_message_reporting::getShowMessageCall($GLOBALS['l_glossary']['preferences_not_saved'], WE_MESSAGE_ERROR) . "</script>";
+						$html .= "<script type=\"text/javascript\">" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_not_saved]'), WE_MESSAGE_ERROR) . "</script>";
 					}
 				break;
 			}
-			
+
 			print htmlTop();
 			print we_htmlElement::jsElement($js);
 			print "</head>
@@ -52,25 +52,25 @@ class weGlossarySettingControl {
 			exit;
 		}
 	}
-	
+
 	function processVariables() {
-		
+
 	}
-	
+
 	function saveSettings($default = false) {
-		
+
 		if($default) {
 			$GlossaryAutomaticReplacement = 'false';
-			
+
 		} else {
-			
+
 			$GlossaryAutomaticReplacement = 'false';
 			if(isset($_REQUEST['GlossaryAutomaticReplacement']) && $_REQUEST['GlossaryAutomaticReplacement'] == 1) {
 				$GlossaryAutomaticReplacement = 'true';
 			}
-			
+
 		}
-		
+
 		$code = <<<EOF
 <?php
 
@@ -86,9 +86,7 @@ EOF;
 		}
 		fputs($fh, $code);
 		return fclose($fh);
-	
-	}
-	
-}
 
-?>
+	}
+
+}

@@ -28,13 +28,13 @@
 
 			$we_tabs = new we_tabs();
 
-			$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['overview'],'TAB_ACTIVE',"setTab('1');"));
+			$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[overview]'),'TAB_ACTIVE',"setTab('1');"));
 
-			$title = $GLOBALS['l_glossary']['folder'] . ":&nbsp;";
+			$title = g_l('modules_glossary','[folder]') . ":&nbsp;";
 
 			$title .= $GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)];
 
-			return weGlossaryFrameEditorFolder::buildHeader($weGlossaryFrames, $we_tabs, $GLOBALS['l_glossary']['folder'], $GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]);
+			return weGlossaryFrameEditorFolder::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[folder]'), $GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]);
 
 		}
 
@@ -68,10 +68,10 @@
 		function getHTMLOverview(&$weGlossaryFrames) {
 
 			$_list = array(
-				'abbreviation' => $GLOBALS['l_glossary']['abbreviation'],
-				'acronym' => $GLOBALS['l_glossary']['acronym'],
-				'foreignword' => $GLOBALS['l_glossary']['foreignword'],
-				'link' => $GLOBALS['l_glossary']['link'],
+				'abbreviation' => g_l('modules_glossary','[abbreviation]'),
+				'acronym' => g_l('modules_glossary','[acronym]'),
+				'foreignword' => g_l('modules_glossary','[foreignword]'),
+				'link' => g_l('modules_glossary','[link]'),
 			);
 
 			$language = substr($_REQUEST['cmdid'], 0, 5);
@@ -90,14 +90,14 @@
 				$content = '<table width="550" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
 						<tr>
 							<td>
-								' . $GLOBALS['l_glossary'][$key . '_description'] . '</td>
+								' . g_l('modules_glossary','['.$key . '_description]') . '</td>
 						</tr>
 						<tr>
 							<td>
 								'.getPixel(2,4).'</td>
 						<tr>
 							<td>
-								' . $GLOBALS['l_glossary']['number_of_entries'] . ': ' . $items . '</td>
+								' . g_l('modules_glossary','[number_of_entries]') . ': ' . $items . '</td>
 						</tr>
 						<tr>
 							<td>
@@ -109,7 +109,7 @@
 						</tr>
 						</table>';
 
-				$headline = '<a href="javascript://" onclick="'.$this->topFrame.'.resize.right.editor.edbody.location=\''.$weGlossaryFrames->frameset.'?pnt=edbody&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+'.$weGlossaryFrames->topFrame.'.activ_tab;">' . $GLOBALS['l_glossary'][$key] . '</a>';
+				$headline = '<a href="javascript://" onclick="'.$this->topFrame.'.resize.right.editor.edbody.location=\''.$weGlossaryFrames->frameset.'?pnt=edbody&cmd=view_type&cmdid=' . $_REQUEST['cmdid'] . '_' . $key . '&tabnr=\'+'.$weGlossaryFrames->topFrame.'.activ_tab;">' . g_l('modules_glossary','['.$key.']') . '</a>';
 
 				array_push($parts,array("headline"=>$headline,"html"=>$content,"space"=>120));
 

@@ -26,7 +26,6 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossary.php");
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossaryCache.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/glossary.inc.php");
 	protect();
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
@@ -38,14 +37,14 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	$Glossary->setPath();
 
 	if($Glossary->Title=="") {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['title_empty'], WE_MESSAGE_ERROR) . ';var elem = document.forms[0].elements["we_dialog_args[title]"];elem.focus();elem.select();</script>';
+		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[title_empty]'),WE_MESSAGE_ERROR) . ';var elem = document.forms[0].elements["we_dialog_args[title]"];elem.focus();elem.select();</script>';
 	} else if($Glossary->getAttribute('lang')=="") {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['lang_empty'], WE_MESSAGE_ERROR) . 'var elem = document.forms[0].elements["we_dialog_args[lang]"];elem.focus();elem.select();</script>';
+		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[lang_empty]'), WE_MESSAGE_ERROR) . 'var elem = document.forms[0].elements["we_dialog_args[lang]"];elem.focus();elem.select();</script>';
 	} else if($Glossary->Text=="") {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['name_empty'], WE_MESSAGE_ERROR) . '</script>';
+		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[name_empty]'), WE_MESSAGE_ERROR) . '</script>';
 
 	} else if($Glossary->pathExists($Glossary->Path)) {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['name_exists'], WE_MESSAGE_ERROR) . '</script>';
+		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[name_exists]'), WE_MESSAGE_ERROR) . '</script>';
 
 	} else {
 		$Glossary->save();
@@ -54,7 +53,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 		$Cache->write();
 		unset($Cache);
 
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['entry_saved'], WE_MESSAGE_NOTICE) . 'top.close();</script>';
+		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[entry_saved]'), WE_MESSAGE_NOTICE) . 'top.close();</script>';
 
 	}
 

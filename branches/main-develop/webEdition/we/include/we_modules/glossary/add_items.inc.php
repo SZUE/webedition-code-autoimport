@@ -21,11 +21,9 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/spellchecker.inc.php');
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/glossary.inc.php');
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/glossary.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
@@ -34,7 +32,7 @@ require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossaryCache.php');
 
 protect();
 
-htmlTop($GLOBALS['l_glossary']['glossary_check']);
+htmlTop(g_l('modules_glossary','[glossary_check]'));
 
 $we_button = new we_button();
 
@@ -232,7 +230,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	function spellcheck() {
 		retry = 0;
 		if(document.spellchecker.isReady()) {
-			top.frames.glossarycheck.document.getElementById("statusText").innerHTML = "<?php print $GLOBALS['l_glossary']['checking'];?>...";
+			top.frames.glossarycheck.document.getElementById("statusText").innerHTML = "<?php print g_l('modules_glossary','[checking]');?>...";
 			var text = getTextOnly(orginal);
 			document.spellchecker.check(text);
 			window.setTimeout("findNext()",2000);
@@ -388,20 +386,20 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 			||	$_REQUEST['we_cmd'][3] != "checkOnly"
 		)
 		) {
-		$Modes[''] = $GLOBALS['l_glossary']['please_choose'];
+		$Modes[''] = g_l('modules_glossary','[please_choose]');
 
 	}
-	$Modes['ignore'] = $GLOBALS['l_glossary']['ignore'];
+	$Modes['ignore'] = g_l('modules_glossary','[ignore]');
 	if(we_hasPerm("NEW_GLOSSARY")) {
-		$Modes['abbreviation'] = $GLOBALS['l_glossary']['abbreviation'];
-		$Modes['acronym'] = $GLOBALS['l_glossary']['acronym'];
-		$Modes['foreignword'] = $GLOBALS['l_glossary']['foreignword'];
+		$Modes['abbreviation'] = g_l('modules_glossary','[abbreviation]');
+		$Modes['acronym'] = g_l('modules_glossary','[acronym]');
+		$Modes['foreignword'] = g_l('modules_glossary','[foreignword]');
 	}
 	if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")) {
-		$Modes['exception'] = $GLOBALS['l_glossary']['to_exceptionlist'];
+		$Modes['exception'] = g_l('modules_glossary','[to_exceptionlist]');
 	}
-	$Modes['correct'] = $GLOBALS['l_glossary']['correct_word'];
-	$Modes['dictionary'] = $GLOBALS['l_glossary']['to_dictionary'];
+	$Modes['correct'] = g_l('modules_glossary','[correct_word]');
+	$Modes['dictionary'] = g_l('modules_glossary','[to_dictionary]');
 
 ?>
 	<style type="text/css">
@@ -456,7 +454,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 			td.setAttribute("valign", "middle");
 			td.setAttribute("height", "220");
 		}
-		if(text!="<?php echo $GLOBALS['l_glossary']['all_words_identified']; ?>" && text!="<?php echo $GLOBALS['l_glossary']['no_java']; ?>") {
+		if(text!="<?php echo g_l('modules_glossary','[all_words_identified]');?>" && text!="<?php echo g_l('modules_glossary','[no_java]'); ?>") {
 			text = shortenWord(text,20);
 		}
 
@@ -525,11 +523,11 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 		html	=	'<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" onblur="this.className=\'wetextinput\';" disabled=\"disabled\" onfocus="this.className=\'wetextinputselected\'" />'
 				+	'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">'
 				+	'<option value="' + word + '">' + word + '</option>'
-				+	'<optgroup label="<?php echo $GLOBALS['l_glossary']['change_to']; ?>">'
-				+	'<option value="">-- <?php echo $GLOBALS['l_glossary']['input']; ?> --</option>'
+				+	'<optgroup label="<?php echo g_l('modules_glossary','[change_to]'); ?>">'
+				+	'<option value="">-- <?php echo g_l('modules_glossary','[input]'); ?> --</option>'
 				+	'</optgroup>';
 		if(suggestions.length > 1) {
-			html +=		'<optgroup label="<?php echo $GLOBALS['l_glossary']['suggestions']; ?>">';
+			html +=		'<optgroup label="<?php echo g_l('modules_glossary','[suggestions]'); ?>">';
 			for(i = 0; i < suggestions.length; i++) {
 				if(suggestions[i] != '') {
 					html +=	'<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';
@@ -551,10 +549,10 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 		html	=	'<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">'
 				+	'<option value="' + lang + '">' + lang + '</option>'
-				+	'<optgroup label="<?php echo $GLOBALS['l_glossary']['change_to']; ?>">'
-				+	'<option value="">-- <?php echo $GLOBALS['l_glossary']['input']; ?> --</option>'
+				+	'<optgroup label="<?php echo g_l('modules_glossary','[change_to]'); ?>">'
+				+	'<option value="">-- <?php echo g_l('modules_glossary','[input]'); ?> --</option>'
 				+	'</optgroup>'
-				+	'<optgroup label="<?php echo $GLOBALS['l_glossary']['languages']; ?>">'
+				+	'<optgroup label="<?php echo g_l('modules_glossary','[languages]'); ?>">'
 
 <?php
 	foreach ($Languages as $Key => $Value) {
@@ -641,7 +639,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 		if(counter == 0) {
 			var tr = document.createElement('tr');
 
-			tr.appendChild(getTextColumn('<?php echo $GLOBALS['l_glossary']['all_words_identified']; ?>', 7));
+			tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary','[all_words_identified]'); ?>', 7));
 			table.appendChild(tr);
 			weButton.hide('execute');
 <?php
@@ -663,7 +661,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	function noJava() {
 		var tr = document.createElement('tr');
 
-		tr.appendChild(getTextColumn('<?php echo $GLOBALS['l_glossary']['no_java']; ?>', 7));
+		tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary','[no_java]'); ?>', 7));
 		table.appendChild(tr);
 		weButton.hide('execute');
 <?php
@@ -720,19 +718,19 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 				case 'acronym':
 					if(title == '') {
 						document.getElementById('title_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall($GLOBALS['l_glossary']['please_insert_title'], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_title]'), WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					if(lang == '') {
 						document.getElementById('lang_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall($GLOBALS['l_glossary']['please_insert_language'], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_language]'), WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					break;
 				case 'foreignword':
 					if(lang == '') {
 						document.getElementById('lang_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall($GLOBALS['l_glossary']['please_insert_language'], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_language]'), WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					break;
@@ -745,13 +743,13 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 					title = document.getElementById('title_' +  i).value;
 					if(title == '') {
 						document.getElementById('title_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall($GLOBALS['l_glossary']['please_insert_correct_word'], WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_correct_word]'), WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					break;
 				default:
 					document.getElementById('type_' +  i).focus();
-					<?php print we_message_reporting::getShowMessageCall($GLOBALS['l_glossary']['please_choose_action'], WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_choose_action]'), WE_MESSAGE_ERROR); ?>
 					return false;
 					break;
 			}
@@ -767,7 +765,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 	<div id="spinner">
 		<div id="statusImage"><img src="<?php echo IMAGE_DIR; ?>/spinner.gif"/></div>
-		<div id="statusText" class="small" style="color: black;"><?php echo $GLOBALS['l_glossary']['download']; ?></div>
+		<div id="statusText" class="small" style="color: black;"><?php echo g_l('modules_glossary','[download]'); ?></div>
 	</div>
 
 
@@ -794,19 +792,19 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 		<td>'.getPixel(100,1).'</td>
 	</tr>
 	<tr>
-		<td colspan="7">' . $GLOBALS['l_glossary']['not_identified_words'] . '</td>
+		<td colspan="7">' . g_l('modules_glossary','[not_identified_words]') . '</td>
 	</tr>
 	<tr>
 		<td colspan="7">'.getPixel(2,5).'</td>
 	</tr>
 	<tr>
-		<td><b>' . $GLOBALS['l_glossary']['not_known_word'] . '</b></td>
+		<td><b>' . g_l('modules_glossary','[not_known_word]') . '</b></td>
 		<td>'.getPixel(20,1).'</td>
-		<td><b>' . $GLOBALS['l_glossary']['action'] . '</b></td>
+		<td><b>' . g_l('modules_glossary','[action]') . '</b></td>
 		<td>'.getPixel(20,1).'</td>
-		<td><b>' . $GLOBALS['l_glossary']['announced_word'] . ' / ' . $GLOBALS['l_glossary']['suggestion'] . '</b></td>
+		<td><b>' . g_l('modules_glossary','[announced_word]') . ' / ' . g_l('modules_glossary','[suggestion]') . '</b></td>
 		<td>'.getPixel(20,1).'</td>
-		<td><b>' . $GLOBALS['l_glossary']['language'] . '</b></td>
+		<td><b>' . g_l('modules_glossary','[language]') . '</b></td>
 		<td>'.getPixel(20,1).'</td>
 	</tr>
 	<tr>
@@ -857,7 +855,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	);
 	array_push($Parts, $Part);
 
-	echo we_multiIconBox::getHTML('weMultibox',"100%",$Parts,30,$Buttons,-1,'','',false,$GLOBALS['l_glossary']['glossary_check']);
+	echo we_multiIconBox::getHTML('weMultibox',"100%",$Parts,30,$Buttons,-1,'','',false,g_l('modules_glossary','[glossary_check]'));
 
 //
 // --> Finish Step
@@ -971,11 +969,11 @@ top.add();
 
 	// Only glossary check
 	if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "checkOnly") {
-		$Message = $GLOBALS['l_glossary']['check_successful'];
+		$Message = g_l('modules_glossary','[check_successful]');
 
 	// glossary check with publishing
 	} else {
-		$Message = $GLOBALS['l_glossary']['check_successful_and_publish'];
+		$Message = g_l('modules_glossary','[check_successful_and_publish]');
 
 	}
 

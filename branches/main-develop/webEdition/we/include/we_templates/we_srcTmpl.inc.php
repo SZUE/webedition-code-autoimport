@@ -677,7 +677,6 @@ if ($we_editmode) {
 
 		// NEW TAGWIZARD
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/javaMenu/module_information.inc.php');
 
 		$allWeTags = weTagWizard::getExistingWeTags();
 
@@ -698,7 +697,7 @@ if ($we_editmode) {
 			if ($tagGroupName == 'custom') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
-			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_modules']) ? $l_javaMenu["module_information"][$tagGroupName]["text"] : (g_l('weTagGroups','['.$tagGroupName.']')!==false ? g_l('weTagGroups','['.$tagGroupName.']') : g_l('weTagWizard','['.$tagGroupName.']') )) . '</option>';
+			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_modules']) ? g_l('javaMenu_moduleInformation','['.$tagGroupName.'][text]') : (g_l('weTagGroups','['.$tagGroupName.']')!==false ? g_l('weTagGroups','['.$tagGroupName.']') : g_l('weTagWizard','['.$tagGroupName.']') )) . '</option>';
 			if ($tagGroupName == 'alltags') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}

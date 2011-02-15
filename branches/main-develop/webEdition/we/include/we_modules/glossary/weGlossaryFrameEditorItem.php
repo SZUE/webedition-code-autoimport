@@ -32,33 +32,33 @@
 
 			switch($weGlossaryFrames->View->Glossary->Type) {
 				case 'abbreviation':
-					$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['property'],'TAB_ACTIVE',"setTab('1');"));
+					$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[property]'),'TAB_ACTIVE',"setTab('1');"));
 
-					$title .= $GLOBALS['l_glossary']['abbreviation'];
+					$title .= g_l('modules_glossary','[abbreviation]');
 					break;
 
 				case 'acronym':
-					$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['property'],'TAB_ACTIVE',"setTab('1');"));
+					$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[property]'),'TAB_ACTIVE',"setTab('1');"));
 
-					$title .= $GLOBALS['l_glossary']['acronym'];
+					$title .= g_l('modules_glossary','[acronym]');
 					break;
 
 				case 'foreignword':
-					$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['property'],'TAB_ACTIVE',"setTab('1');"));
+					$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[property]'),'TAB_ACTIVE',"setTab('1');"));
 
-					$title .= $GLOBALS['l_glossary']['foreignword'];
+					$title .= g_l('modules_glossary','[foreignword]');
 					break;
 
 				case 'link':
-					$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['property'],'TAB_ACTIVE',"setTab('1');"));
+					$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[property]'),'TAB_ACTIVE',"setTab('1');"));
 
-					$title .= $GLOBALS['l_glossary']['link'];
+					$title .= g_l('modules_glossary','[link]');
 					break;
 			}
 
-			//$title .= ":&nbsp;" . ($weGlossaryFrames->View->Glossary->ID != 0 ? $weGlossaryFrames->View->Glossary->Text : $GLOBALS['l_glossary']['menu_new']).'<div id="mark" style="display: none;">*</div>';
+			//$title .= ":&nbsp;" . ($weGlossaryFrames->View->Glossary->ID != 0 ? $weGlossaryFrames->View->Glossary->Text : g_l('modules_glossary','[menu_new]')).'<div id="mark" style="display: none;">*</div>';
 
-			return weGlossaryFrameEditorItem::buildHeader($weGlossaryFrames, $we_tabs, $title,($weGlossaryFrames->View->Glossary->ID != 0 ? htmlspecialchars($weGlossaryFrames->View->Glossary->Text) : $GLOBALS['l_glossary']['menu_new']).'<div id="mark" style="display: none;">*</div>');
+			return weGlossaryFrameEditorItem::buildHeader($weGlossaryFrames, $we_tabs, $title,($weGlossaryFrames->View->Glossary->ID != 0 ? htmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary','[menu_new]')).'<div id="mark" style="display: none;">*</div>');
 
 		}
 
@@ -147,7 +147,7 @@
 						}
 					}
 				}
-				
+
 				function we_cmd() {
 					var args = "";
 					var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -208,7 +208,7 @@
 				  . we_multiIconBox::getJs();
 
 
-			$out .= we_htmlElement::htmlDiv(array('id' => 'tab1','style'=>($tabNr==1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox',"100%",weGlossaryFrameEditorItem::getHTMLTabProperties($weGlossaryFrames),30,'',2,$GLOBALS['l_glossary']['show_extended_linkoptions'],$GLOBALS['l_glossary']['hide_extended_linkoptions'],false));
+			$out .= we_htmlElement::htmlDiv(array('id' => 'tab1','style'=>($tabNr==1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox',"100%",weGlossaryFrameEditorItem::getHTMLTabProperties($weGlossaryFrames),30,'',2,g_l('modules_glossary','[show_extended_linkoptions]'),g_l('modules_glossary','[hide_extended_linkoptions]'),false));
 
 			$js = '
 				showType("'. $weGlossaryFrames->View->Glossary->Type .'");
@@ -255,8 +255,8 @@
 			$SaveButton = $we_button->create_button("save", "javascript:if(top.publishWhenSave==1){" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=1;};we_save();",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
 			$UnpublishButton = $we_button->create_button("deactivate", "javascript:" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
 
-			$NewEntry = we_forms::checkbox("1", false, "makeNewEntry", $GLOBALS['l_glossary']['new_item_after_saving'], false, "defaultfont", "top.makeNewEntry = (this.checked) ? 1 : 0", false);
-			$PublishWhenSaved = we_forms::checkbox("1", false, "publishWhenSave", $GLOBALS['l_glossary']['publish_when_saved'], false, "defaultfont", "top.publishWhenSave = (this.checked) ? 1 : 0", false);
+			$NewEntry = we_forms::checkbox("1", false, "makeNewEntry", g_l('modules_glossary','[new_item_after_saving]'), false, "defaultfont", "top.makeNewEntry = (this.checked) ? 1 : 0", false);
+			$PublishWhenSaved = we_forms::checkbox("1", false, "publishWhenSave", g_l('modules_glossary','[publish_when_saved]'), false, "defaultfont", "top.publishWhenSave = (this.checked) ? 1 : 0", false);
 
 			$ShowUnpublish = $weGlossaryFrames->View->Glossary->ID==0?true:($weGlossaryFrames->View->Glossary->Published>0 ? true : false);
 
@@ -283,10 +283,10 @@
 					.	"	document.getElementById('publishWhenSave').checked = true;\n"
 					.	"}";
 			$js = we_htmlElement::jsElement(
-				$js . 
+				$js .
 				"function we_save() {
 					top.content.we_cmd('save_glossary');
-					
+
 				}
 				");
 
@@ -303,10 +303,10 @@
 			$parts = array();
 
 			$_types = array(
-				'acronym' => $GLOBALS['l_glossary']['acronym'],
-				'abbreviation' => $GLOBALS['l_glossary']['abbreviation'],
-				'foreignword' => $GLOBALS['l_glossary']['foreignword'],
-				'link' => $GLOBALS['l_glossary']['link'],
+				'acronym' => g_l('modules_glossary','[acronym]'),
+				'abbreviation' => g_l('modules_glossary','[abbreviation]'),
+				'foreignword' => g_l('modules_glossary','[foreignword]'),
+				'link' => g_l('modules_glossary','[link]'),
 			);
 
 			$hidden =	 	we_htmlElement::htmlHidden(array('name'=>'newone','value'=>($weGlossaryFrames->View->Glossary->ID==0 ? 1 : 0)))
@@ -318,7 +318,7 @@
 
 			$content = $hidden . '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
-						<td class="defaultfont">' . $GLOBALS['l_glossary']['folder'] . '</td>
+						<td class="defaultfont">' . g_l('modules_glossary','[folder]') . '</td>
 					</tr>
 					<tr>
 						<td>
@@ -329,7 +329,7 @@
 							'.getPixel(2,4).'</td>
 					</tr>
 					<tr>
-						<td class="defaultfont">' . $GLOBALS['l_glossary']['type'] . '</td>
+						<td class="defaultfont">' . g_l('modules_glossary','[type]') . '</td>
 					</tr>
 					<tr>
 						<td>
@@ -338,7 +338,7 @@
 				</table>';
 
 			$item = array(
-				"headline" => $GLOBALS['l_glossary']['path'],
+				"headline" => g_l('modules_glossary','[path]'),
 				"html" => $content,
 				"space" => 120
 			);
@@ -351,7 +351,7 @@
 					weGlossaryFrameEditorItem::getHTMLLink($weGlossaryFrames);
 
 			$item = array(
-				"headline" => $GLOBALS['l_glossary']['selection'],
+				"headline" => g_l('modules_glossary','[selection]'),
 				"html" => $html,
 				"space" => 120,
 				'noline' => 1,
@@ -368,9 +368,9 @@
 
 		function getHTMLAbbreviation(&$weGlossaryFrames) {
 
-			$text = $GLOBALS['l_glossary']['abbreviation'];
-			$title = $GLOBALS['l_glossary']['announced_word'];
-			$language = $GLOBALS['l_glossary']['language'];
+			$text = g_l('modules_glossary','[abbreviation]');
+			$title = g_l('modules_glossary','[announced_word]');
+			$language = g_l('modules_glossary','[language]');
 
 			$_text = "";
 			$_title = "";
@@ -423,9 +423,9 @@
 
 		function getHTMLAcronym(&$weGlossaryFrames) {
 
-			$text = $GLOBALS['l_glossary']['acronym'];
-			$title = $GLOBALS['l_glossary']['announced_word'];
-			$language = $GLOBALS['l_glossary']['language'];
+			$text = g_l('modules_glossary','[acronym]');
+			$title = g_l('modules_glossary','[announced_word]');
+			$language = g_l('modules_glossary','[language]');
 
 			$_text = "";
 			$_title = "";
@@ -477,8 +477,8 @@
 
 		function getHTMLForeignWord(&$weGlossaryFrames) {
 
-			$text = $GLOBALS['l_glossary']['foreignword'];
-			$language = $GLOBALS['l_glossary']['language'];
+			$text = g_l('modules_glossary','[foreignword]');
+			$language = g_l('modules_glossary','[language]');
 
 			$_text = "";
 			$_language = "";
@@ -517,7 +517,7 @@
 
 		function getHTMLLink(&$weGlossaryFrames) {
 
-			$text = $GLOBALS['l_glossary']['link'];
+			$text = g_l('modules_glossary','[link]');
 
 			$_text = "";
 			$_mode = "";
@@ -529,10 +529,10 @@
 			}
 
 			$_modes = array(
-				'intern' => $GLOBALS['l_glossary']['link_intern'],
-				'extern' => $GLOBALS['l_glossary']['link_extern'],
-				'object' => $GLOBALS['l_glossary']['link_object'],
-				'category' => $GLOBALS['l_glossary']['link_category'],
+				'intern' => g_l('modules_glossary','[link_intern]'),
+				'extern' => g_l('modules_glossary','[link_extern]'),
+				'object' => g_l('modules_glossary','[link_object]'),
+				'category' => g_l('modules_glossary','[link_category]'),
 			);
 
 			$pre = '<div id="type_link" style="display: none;">';
@@ -572,7 +572,7 @@
 
 		function getHTMLIntern(&$weGlossaryFrames) {
 
-			$parameter = $GLOBALS['l_glossary']['parameter'];
+			$parameter = g_l('modules_glossary','[parameter]');
 
 			$we_button = new we_button();
 
@@ -632,7 +632,7 @@
 
 		function getHTMLExtern(&$weGlossaryFrames) {
 
-			$parameter = $GLOBALS['l_glossary']['parameter'];
+			$parameter = g_l('modules_glossary','[parameter]');
 
 			$_url = "http://";
 			$_parameter = "";
@@ -676,8 +676,8 @@
 
 			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 
-			$workspace = $GLOBALS['l_glossary']['workspace'];
-			$parameter = $GLOBALS['l_glossary']['parameter'];
+			$workspace = g_l('modules_glossary','[workspace]');
+			$parameter = g_l('modules_glossary','[parameter]');
 
 			$_linkPath = "";
 			$_linkID = "";
@@ -762,13 +762,13 @@
 
 		function getHTMLCategory(&$weGlossaryFrames) {
 
-			$mode = $GLOBALS['l_glossary']['link_selection'];
-			$catParameter = $GLOBALS['l_glossary']['parameter_name'];
-			$parameter = $GLOBALS['l_glossary']['parameter'];
+			$mode = g_l('modules_glossary','[link_selection]');
+			$catParameter = g_l('modules_glossary','[parameter_name]');
+			$parameter = g_l('modules_glossary','[parameter]');
 
 			$_modes = array(
-				'intern' => $GLOBALS['l_glossary']['link_intern'],
-				'extern' => $GLOBALS['l_glossary']['link_extern'],
+				'intern' => g_l('modules_glossary','[link_intern]'),
+				'extern' => g_l('modules_glossary','[link_extern]'),
 			);
 
 			$_linkPath = "/";
@@ -969,43 +969,43 @@
 
 			$_parts[] = array(
 				'headline'=> '',
-				'html' =>htmlAlertAttentionBox($GLOBALS['l_glossary']['linkprops_desc'],2,520),
+				'html' =>htmlAlertAttentionBox(g_l('modules_glossary','[linkprops_desc]'),2,520),
 				'space' => 120,
 				'noline' => 1
 			);
 
 			$_title =  htmlFormElementTable(
 				htmlTextInput('link[Title]',30,$weGlossaryFrames->View->Glossary->Title,'','onchange="setHot();"','text',520),
-				$GLOBALS['l_glossary']['title']
+				g_l('modules_glossary','[title]')
 			);
 
 			$_anchor = htmlFormElementTable(
 				htmlTextInput('link[Attributes][anchor]',30,$weGlossaryFrames->View->Glossary->getAttribute('anchor'),'','onchange="setHot();"','text',520),
-				$GLOBALS['l_glossary']['anchor']
+				g_l('modules_glossary','[anchor]')
 			);
 
 			$_target = htmlFormElementTable(
 				targetBox('link[Attributes][target]',30,(520-100),'',$weGlossaryFrames->View->Glossary->getAttribute('target'),'"setHot();"','text',100),
-				$GLOBALS['l_glossary']['target']
+				g_l('modules_glossary','[target]')
 			);
 
 			$_link = htmlFormElementTable(
 				htmlTextInput('link[Attributes][attribute]',30,$weGlossaryFrames->View->Glossary->getAttribute('attribute'),'','onchange="setHot();"','text',520),
-				$GLOBALS['l_glossary']['link_attribute']
+				g_l('modules_glossary','[link_attribute]')
 			);
 
 			$_parts[] = array(
-				'headline'=>$GLOBALS['l_glossary']['attributes'],
+				'headline'=>g_l('modules_glossary','[attributes]'),
 				'html'=>$_title . $_anchor . $_link . $_target,
 				'space' => 120,
 				'noline' => 1
 			);
 
-			$_lang = weGlossaryFrameEditorItem::getLangField('link[Attributes][lang]',$weGlossaryFrames->View->Glossary->getAttribute('lang'),$GLOBALS['l_glossary']['link_language'],520);
-			$_hreflang = weGlossaryFrameEditorItem::getLangField('link[Attributes][hreflang]',$weGlossaryFrames->View->Glossary->getAttribute('hreflang'),$GLOBALS['l_glossary']['href_language'],520);
+			$_lang = weGlossaryFrameEditorItem::getLangField('link[Attributes][lang]',$weGlossaryFrames->View->Glossary->getAttribute('lang'),g_l('modules_glossary','[link_language]'),520);
+			$_hreflang = weGlossaryFrameEditorItem::getLangField('link[Attributes][hreflang]',$weGlossaryFrames->View->Glossary->getAttribute('hreflang'),g_l('modules_glossary','[href_language]'),520);
 
 			$_parts[] = array(
-				'headline'=>$GLOBALS['l_glossary']['language'],
+				'headline'=>g_l('modules_glossary','[language]'),
 				'html'=>	$_lang .
 							$_hreflang,
 				'space' => 120,
@@ -1014,16 +1014,16 @@
 
 			$_accesskey = 	htmlFormElementTable(
 								htmlTextInput('link[Attributes][accesskey]',30,$weGlossaryFrames->View->Glossary->getAttribute('accesskey'),'','onchange="setHot();"','text',520),
-								$GLOBALS['l_glossary']['accesskey']
+								g_l('modules_glossary','[accesskey]')
 							);
 
 			$_tabindex = 	htmlFormElementTable(
 								htmlTextInput('link[Attributes][tabindex]',30,$weGlossaryFrames->View->Glossary->getAttribute('tabindex'),'','onchange="setHot();"','text',520),
-								$GLOBALS['l_glossary']['tabindex']
+								g_l('modules_glossary','[tabindex]')
 							);
 
 			$_parts[] = array(
-				'headline'=> $GLOBALS['l_glossary']['keyboard'],
+				'headline'=> g_l('modules_glossary','[keyboard]'),
 				'html'=>	$_accesskey . $_tabindex,
 				'space' => 120,
 				'noline' => 1
@@ -1033,7 +1033,7 @@
 			$_revfield = weGlossaryFrameEditorItem::getRevRel('link[Attributes][rev]',$weGlossaryFrames->View->Glossary->getAttribute('rev'),'rev',520);
 
 			$_parts[] = array(
-				'headline'=> $GLOBALS['l_glossary']['relation'],
+				'headline'=> g_l('modules_glossary','[relation]'),
 				'html'=>	$_relfield . $_revfield,
 				'space' => 120,
 				'noline' => 1
@@ -1044,62 +1044,62 @@
 			$_popup = new we_htmlTable(array('cellpadding'=>'5','cellspacing'=>'0'),4,4);
 
 			$_popup->setCol(0,0,array('colspan'=>'2'),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', $GLOBALS['l_glossary']['popup_open'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary','[popup_open]'))
 			);
 			$_popup->setCol(0,2,array('colspan'=>'2'),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', $GLOBALS['l_glossary']['popup_center'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary','[popup_center]'))
 			);
 
 			$_popup->setCol(1,0,array(),
 				htmlFormElementTable(
 					htmlTextInput('link[Attributes][popup_xposition]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_xposition'),'','onchange="setHot();"','text',$_input_width),
-					$GLOBALS['l_glossary']['popup_x']
+					g_l('modules_glossary','[popup_x]')
 				)
 			);
 			$_popup->setCol(1,1,array(),
 				htmlFormElementTable(
 					htmlTextInput('link[Attributes][popup_yposition]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_yposition'),'','onchange="setHot();"','text',$_input_width),
-					$GLOBALS['l_glossary']['popup_y']
+					g_l('modules_glossary','[popup_y]')
 				)
 			);
 			$_popup->setCol(1,2,array(),
 				htmlFormElementTable(
 					htmlTextInput('link[Attributes][popup_width]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_width'),'','onchange="setHot();"','text',$_input_width),
-					$GLOBALS['l_glossary']['popup_width']
+					g_l('modules_glossary','[popup_width]')
 				)
 			);
 
 			$_popup->setCol(1,3,array(),
 				htmlFormElementTable(
 					htmlTextInput('link[Attributes][popup_height]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_height'),'','onchange="setHot();"','text',$_input_width),
-					$GLOBALS['l_glossary']['popup_height']
+					g_l('modules_glossary','[popup_height]')
 				)
 			);
 
 
 			$_popup->setCol(2,0,array(),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', $GLOBALS['l_glossary']['popup_status'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary','[popup_status]'))
 			);
 			$_popup->setCol(2,1,array(),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', $GLOBALS['l_glossary']['popup_scrollbars'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary','[popup_scrollbars]'))
 			);
 			$_popup->setCol(2,2,array(),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', $GLOBALS['l_glossary']['popup_menubar'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary','[popup_menubar]'))
 			);
 
 			$_popup->setCol(3,0,array(),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', $GLOBALS['l_glossary']['popup_resizable'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary','[popup_resizable]'))
 			);
 			$_popup->setCol(3,1,array(),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', $GLOBALS['l_glossary']['popup_location'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary','[popup_location]'))
 			);
 			$_popup->setCol(3,2,array(),
-				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', $GLOBALS['l_glossary']['popup_toolbar'])
+				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary','[popup_toolbar]'))
 			);
 
 
 			$_parts[] = array(
-				'headline'=> $GLOBALS['l_glossary']['popup'],
+				'headline'=> g_l('modules_glossary','[popup]'),
 				'html'=>	$_popup->getHTMLCode(),
 				'space' => 120,
 				'noline' => 1
@@ -1112,4 +1112,3 @@
 
 	}
 
-?>
