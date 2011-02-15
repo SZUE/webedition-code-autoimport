@@ -20,13 +20,11 @@
  */
 
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/perms/controlpermissions.inc.php");
-
 $perm_group_name="controlpermissions";
 
-$perm_group_title[$perm_group_name] = $l_perm["controlpermissions"]["perm_group_title"];  
- 
- 
+$perm_group_title[$perm_group_name] = g_l('perm_controlpermissions',"[perm_group_title]");
+
+
 $perm_values[$perm_group_name] = array(
 	"NEW_GROUP",
 	"NEW_USER",
@@ -38,14 +36,13 @@ $perm_values[$perm_group_name] = array(
 	"EDIT_SETTINGS_DEF_EXT",
 	"EDIT_SETTINGS",
 	"EDIT_PASSWD");
- 
+
 //	Here the array of the permission-titles is set.
-//	$perm_titles[$perm_group_name]["NAME OF PERMISSION"] = $l_perm[$perm_group_name]["NAME OF PERMISSION"]
 $perm_titles[$perm_group_name] = array();
 
 for($i = 0; $i < sizeof($perm_values[$perm_group_name]); $i++){
 
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = $l_perm[$perm_group_name][$perm_values[$perm_group_name][$i]];
+	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
 }
 
 $perm_defaults[$perm_group_name] = array(
@@ -59,6 +56,5 @@ $perm_defaults[$perm_group_name] = array(
 	"EDIT_SETTINGS_DEF_EXT"=>0,
 	"EDIT_SETTINGS"=>1,
 	"EDIT_PASSWD"=>1
-	);     
- 
-?>
+	);
+
