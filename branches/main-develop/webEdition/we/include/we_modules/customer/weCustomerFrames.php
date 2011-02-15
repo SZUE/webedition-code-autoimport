@@ -400,8 +400,6 @@ class weCustomerFrames extends weModuleFrames {
 	}
 
 	function getHTMLEditorFooter() {
-		global $l_newsletter;
-
 		if (isset($_REQUEST['home'])) {
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}

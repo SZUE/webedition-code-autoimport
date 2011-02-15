@@ -134,8 +134,6 @@ class weNewsletter extends weNewsletterBase{
 	 * @return int
 	 */
 	function save(&$message,$check=true){
-		global $l_newsletter;
-
 		//check addesses
 		if($check){
 			$ret=$this->checkEmails($message);
@@ -143,7 +141,7 @@ class weNewsletter extends weNewsletterBase{
 		}
 
 		if(!$this->checkParents($this->ParentID)){
-			$message=$l_newsletter["path_nok"];
+			$message=g_l('modules_newsletter','[path_nok]');
 			return -10;
 		}
 

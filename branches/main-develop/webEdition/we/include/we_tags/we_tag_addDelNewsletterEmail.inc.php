@@ -48,7 +48,6 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			$_customerFieldPrefs[$db->f('pref_name')] = $db->f('pref_value');
 		}
 	} else {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/newsletter.inc.php");
 		$_domainName = str_replace("www.","",SERVER_NAME);
 		$_customerFieldPrefs = array(
 			'black_list' => '',
@@ -62,10 +61,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			'isEmbedImages' => '0',
 			'default_reply' => 'reply@'.$_domainName,
 			'default_sender' => 'mailer@'.$_domainName,
-			'female_salutation' => $l_newsletter["default"]["female"],
+			'female_salutation' => g_l('modules_newsletter','[default][female]'),
 			'global_mailing_list' => '',
 			'log_sending' => '1',
-			'male_salutation' => $l_newsletter["default"]["male"],
+			'male_salutation' => g_l('modules_newsletter','[default][male]'),
 			'reject_malformed' => '1',
 			'reject_not_verified' => '1',
 			'send_step' => '20',
