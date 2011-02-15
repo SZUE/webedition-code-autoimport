@@ -790,7 +790,7 @@ top.clearEntries();
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 				$folder= new we_class_folder();
 			} else {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
 				$folder= new we_folder();
 			}
 
@@ -900,7 +900,7 @@ top.clearEntries();
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 				$folder= new we_class_folder();
 			} else {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
 				$folder= new we_folder();
 			}
 

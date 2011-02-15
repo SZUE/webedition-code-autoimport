@@ -763,7 +763,7 @@ class weCustomerEIWizard{
 
 			}else{
 
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/xml_parser.inc.php");
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
 
 				//invoke parser
 				$xp = new XML_Parser($filesource);

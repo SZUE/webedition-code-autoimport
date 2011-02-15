@@ -20,8 +20,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
 
 define("SHOP_TABLE", TBL_PREFIX . "tblOrders");
 define("ANZEIGE_PREFS_TABLE", TBL_PREFIX . "tblAnzeigePrefs");
@@ -127,7 +127,7 @@ class Basket {
 	 *	'id'       => integer
 	 *	'type'     => w | o
 	 *	'variant'  => string
-	 *	'quantity' => integer //früher - jetzt umstellung auf float, feature #4875
+	 *	'quantity' => integer //frï¿½her - jetzt umstellung auf float, feature #4875
 	 *	'serial'   => string
 	 *  'customFields' => array
 	 *

@@ -23,4 +23,6 @@ $l_weTagGroups = array(
 		'if_tags' => 'If we:tags',
 		'navigation_tags' => 'Navigation',
 		'apptags' => 'Applikationen we:tags',
+		'alltags' => 'Alle we:tags',
+		'custom' => 'Eigene we:tags',
 );

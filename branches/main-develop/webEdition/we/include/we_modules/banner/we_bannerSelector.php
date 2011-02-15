@@ -20,20 +20,19 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
 
 define("FS_SETDIR",5);
 
 class we_bannerSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
-	
+
 	function we_bannerSelector($id,
 								$JSIDName="",
 								$JSTextName="",
 								$JSCommand="",
 								$order=""){
-		
+
 		$this->we_multiSelector($id,
 								BANNER_TABLE,
 								$JSIDName,
@@ -68,16 +67,16 @@ function doClick(id,ct){
 
 
   	function printHeaderHeadlines(){
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">         
+		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>             
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_banner"]["name"].'</a></b></td> 
+					<td>'.getPixel(25,14).'</td>
+					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('modules_banner','[name]').'</a></b></td>
 				</tr>
-				<tr>  
-					<td width="25">'.getPixel(25,1).'</td>								
-					<td width="200">'.getPixel(200,1).'</td>								
+				<tr>
+					<td width="25">'.getPixel(25,1).'</td>
+					<td width="200">'.getPixel(200,1).'</td>
 					<td width="300">'.getPixel(300,1).'</td>
-				</tr>  
+				</tr>
 			</table>
 ';
 
@@ -85,7 +84,7 @@ function doClick(id,ct){
 
 
 
-	
+
 	function printFramesetJSsetDir(){
 ?>
 function setDir(id){

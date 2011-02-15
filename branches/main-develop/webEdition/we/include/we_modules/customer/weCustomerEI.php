@@ -21,7 +21,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once(WE_CUSTOMER_MODULE_DIR."weCustomer.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 
 
 	class weCustomerEI{
@@ -136,7 +136,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 
 
 		function getXMLDataset($filename,$dataset){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/xml_parser.inc.php");
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
 			$xp = new XML_Parser($_SERVER["DOCUMENT_ROOT"].$filename);
 			$nodeSet = $xp->evaluate($xp->root.'/'.$dataset.'[1]/child::*');
 			$nodes = array();
@@ -293,8 +293,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 						$xml_to=$options["xml_to"];
 
 
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/xml_parser.inc.php");
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/xml_splitFile.inc.php");
+						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
+						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_splitFile.inc.php");
 
 						$parse = new XML_SplitFile($_SERVER["DOCUMENT_ROOT"].$filename);
 						$parse->splitFile("*/".$dataset, $xml_from, $xml_to);
@@ -380,7 +380,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 					$logfile=isset($options["logfile"]) ? $options["logfile"] : "";
 
 
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/xml_parser.inc.php");
+					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
 
 					$db=new DB_WE();
 
@@ -434,7 +434,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/csv.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/csv.inc.php");
 
 class weCustomerCSVImport extends CSVImport{
 

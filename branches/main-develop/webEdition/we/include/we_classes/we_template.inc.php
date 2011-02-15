@@ -19,10 +19,10 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_document.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_linklist.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tagParser.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_document.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_linklist.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tagParser.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
@@ -238,11 +238,11 @@ class we_template extends we_document
 		$foo = $this->checkElsetags($tags);if($foo) return $foo;
 		$foo = $this->checkEndtags("if",0,$tags);if($foo) return $foo;
 
-		$d = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tags");
+		$d = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tags");
 		$needEndtags=array();
 		while (false !== ($entry=$d->read())) {
 			if(substr($entry,0,7) == "we_tag_" && substr($entry,0,9) != "we_tag_if"){
-				$foo = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tags/".$entry;
+				$foo = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tags/".$entry;
 
 				$file = file($foo);
 				foreach($file as $foo){

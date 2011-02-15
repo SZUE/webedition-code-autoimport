@@ -21,6 +21,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/" . "weModuleFrames.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerView.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTree.php");
 
@@ -275,7 +276,6 @@ class weCustomerFrames extends weModuleFrames {
 
 				$imgId = abs($value);
 
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 				$we_button = new we_button();
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_document.inc.php');
 				$out = we_document::getFieldByVal($imgId, 'img');

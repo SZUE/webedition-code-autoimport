@@ -100,7 +100,6 @@ class weBannerFrames extends weModuleFrames{
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#F0EFF0" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
 		}
-		global $l_banner;
 		$isFolder=0;
 		if(isset($_GET["isFolder"])) $isFolder=$_GET["isFolder"];
 
@@ -108,8 +107,8 @@ class weBannerFrames extends weModuleFrames{
 		if(isset($_GET["page"])) $page=$_GET["page"];
 
 
-		$headline1 = ($isFolder==1) ? $l_banner["group"] : $l_banner["banner"];
-		$text="".($isFolder==1) ? $l_banner["newbannergroup"] : $l_banner["newbanner"];
+		$headline1 = ($isFolder==1) ? g_l('modules_banner','[group]') : g_l('modules_banner','[banner]');
+		$text="".($isFolder==1) ? g_l('modules_banner','[newbannergroup]') : g_l('modules_banner','[newbanner]');
 		if(isset($_GET["txt"])) $text=$_GET["txt"];
 
 

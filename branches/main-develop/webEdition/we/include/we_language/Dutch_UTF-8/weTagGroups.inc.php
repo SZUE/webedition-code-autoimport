@@ -23,4 +23,6 @@ $l_weTagGroups = array(
 		'if_tags' => 'If we:tags', // TRANSLATE
 		'navigation_tags' => 'Navigatie',
 		'apptags' => 'Applications we:tags', // TRANSLATE
+		'alltags' => 'Alle we:tags',
+		'custom' => 'Aangepaste we:tags',
 );

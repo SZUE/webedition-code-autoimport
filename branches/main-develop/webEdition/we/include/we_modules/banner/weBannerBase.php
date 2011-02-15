@@ -19,7 +19,6 @@
  */
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
 
 /**
 * Document Definition base class
@@ -35,7 +34,7 @@ class weBannerBase{
 	var $table="";
 
 	var $ClassName;
-	
+
 
 	function weBannerBase(){
 		$this->uid = "ba_".md5(uniqid(rand()));

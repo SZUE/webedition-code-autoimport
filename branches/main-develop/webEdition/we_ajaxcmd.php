@@ -24,7 +24,7 @@ if(!isset($_REQUEST["we_cmd"])){
 
 $include = "";
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 protect();
 

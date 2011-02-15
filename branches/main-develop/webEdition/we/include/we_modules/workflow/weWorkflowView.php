@@ -1368,7 +1368,7 @@ class weWorkflowView extends weWorkflowBase{
 
 
 	function getObjectInfo(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 
 
 		$_parts = array();
@@ -1439,7 +1439,7 @@ class weWorkflowView extends weWorkflowBase{
 					);
 
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 		$out  = '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
 		<script language="JavaScript" type="text/javascript">function openToEdit(tab,id,contentType){

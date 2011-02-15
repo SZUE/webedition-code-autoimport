@@ -19,8 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $l_weTagWizard = array(
-		'alltags' => 'Kaikki we:tagit',
-		'custom' => 'kustomoidut we:tagit',
 		'insert_tagname' => "Anna we:tagin nimi: ",
 		'insert_tagname_not_exist' => "Tagi %s puuttuu",
 );

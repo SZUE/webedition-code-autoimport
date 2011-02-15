@@ -1730,7 +1730,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$shopname = we_getTagAttributeTagParser("shopname", $arr);
 
 			$php = '<?php
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 
 				$deleteshop_now = "' . $deleteshop . '";

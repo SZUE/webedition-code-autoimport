@@ -6,7 +6,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/spellchecker.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']. '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 

@@ -20,8 +20,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 if(defined("SHOP_TABLE")){
@@ -100,13 +100,9 @@ $stat = $l_shop["umsatzgesamt"].": <b>".numfom(($bezahlt+$unbezahlt)*$mwst)." $w
 ?>
     <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
     <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-
-
 	</head>
 
-<body class="weEditorBody" onUnload="doUnload()">
-
-<?php
+<body class="weEditorBody" onUnload="doUnload()"><?php
 
 $parts = array();
 
@@ -129,8 +125,4 @@ array_push($parts,
 
 print we_multiIconBox::getHTML("","100%",$parts,30,"",-1,"","",false,g_l('tabs',"[module][overview]"));
 
-?>
-
-
-
- </body></html>
+?></body></html>

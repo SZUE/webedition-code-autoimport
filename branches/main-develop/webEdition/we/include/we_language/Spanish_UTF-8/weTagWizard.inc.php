@@ -19,8 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $l_weTagWizard = array(
-		'alltags' => 'All we:tags', // TRANSLATE
-		'custom' => 'custom we:tags', // TRANSLATE
 		'insert_tagname' => "Enter name of we:tags: ", // TRANSLATE
 		'insert_tagname_not_exist' => "The tag %s does not exists", // TRANSLATE
 );

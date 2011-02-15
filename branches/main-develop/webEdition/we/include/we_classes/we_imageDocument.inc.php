@@ -120,7 +120,7 @@ class we_imageDocument extends we_binaryDocument {
 		if (parent::we_save($resave)) {
 			if($docChanged){
 				$thumbs = $this->getThumbs();
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_delete_fn.inc.php");
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
 				deleteThumbsByImageID($this->ID);
 				if(count($thumbs)){
 					foreach($thumbs as $thumbID) {

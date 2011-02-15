@@ -1371,7 +1371,7 @@ class we_object extends we_document
 		if(!sizeof($link)){
 			$link = array("ctype"=>"text","type"=>"ext","href"=>"#","text"=>g_l('global',"[new_link]"));
 		}
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$img = new we_imageDocument();
 		$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
 
@@ -1672,7 +1672,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function getImageHTML($name,$defaultname,$i=0){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 		$we_button = new we_button();
 		$content = "";
@@ -1715,7 +1715,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function getFlashmovieHTML($name,$defaultname,$i=0){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 
 		$we_button = new we_button();
 		$content = "";
@@ -1740,7 +1740,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function getQuicktimeHTML($name,$defaultname,$i=0){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_quicktimeDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 
 		$we_button = new we_button();
 		$content = "";
@@ -1766,7 +1766,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 
 	function getBinaryHTML($name,$defaultname,$i=0){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_otherDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 
 		$we_button = new we_button();
 

@@ -34,7 +34,7 @@ $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : $we_t
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_doc.inc.php");
+include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 function getControlElement($type, $name){
 

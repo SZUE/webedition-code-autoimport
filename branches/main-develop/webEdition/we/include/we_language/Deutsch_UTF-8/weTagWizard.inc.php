@@ -19,8 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $l_weTagWizard = array(
-		'alltags' => 'Alle we:tags',
-		'custom' => 'Eigene we:tags',
 		'insert_tagname' => "Name des we:tags eingeben: ",
 		'insert_tagname_not_exist' => "Den Tag %s gibt es nicht",
 );

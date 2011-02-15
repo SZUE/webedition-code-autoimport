@@ -19,8 +19,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_browser_check.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
 
 if(($SYSTEM == "MAC" && $GLOBALS['BROWSER'] == "IE") || $GLOBALS['BROWSER']="NN"){
 	$mheight = "marginheight=4 topMargin=4";
