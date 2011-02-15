@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_BANNER_MODULE_DIR."weModuleFrames.php");
 include_once(WE_BANNER_MODULE_DIR."weBannerView.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/we_tabs.inc.php");
 
 class weBannerFrames extends weModuleFrames{
 
@@ -118,12 +117,12 @@ class weBannerFrames extends weModuleFrames{
 
 		if($isFolder==0){
 
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["properties"],($page==0?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(0);"));
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["placement"],($page==1?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(1);"));
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["statistics"],($page==2?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(2);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][properties]"),($page==0?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][placement]"),($page==1?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(1);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][statistics]"),($page==2?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(2);"));
 		} else {
 
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["properties"],"TAB_ACTIVE","setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][properties]"),"TAB_ACTIVE","setTab(0);"));
 		}
 
 		$we_tabs->onResize('header');

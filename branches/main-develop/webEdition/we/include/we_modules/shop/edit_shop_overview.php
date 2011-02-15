@@ -23,7 +23,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 
 if(defined("SHOP_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
@@ -128,7 +127,7 @@ array_push($parts,
 				)
 		);
 
-print we_multiIconBox::getHTML("","100%",$parts,30,"",-1,"","",false,$GLOBALS["l_tabs"]["module"]["overview"]);
+print we_multiIconBox::getHTML("","100%",$parts,30,"",-1,"","",false,g_l('tabs',"[module][overview]"));
 
 ?>
 

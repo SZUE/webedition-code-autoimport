@@ -25,14 +25,14 @@
  * Provides language strings.
  * Language: English
  */
-$l_tabs["editor"]["properties"] = "Properties";
-$l_tabs["editor"]["edit"] = "Edit";
-$l_tabs["editor"]["information"] = "Information";
-$l_tabs["editor"]["preview"] = "Preview";
-$l_tabs["editor"]["scheduler"] = "Scheduler";
-$l_tabs["editor"]["scheduler_pro"] = "Scheduler PRO";
-$l_tabs["editor"]["workspace"] = "Workspace";
-$l_tabs["editor"]["meta"] = "Meta-Information";
-$l_tabs["editor"]["fields"] = "Fields";
-$l_tabs["editor"]["search"] = "Search";
-?>
+$l_tabs["editor"]["properties"] = "Properties"; // TRANSLATE
+$l_tabs["editor"]["edit"] = "Edycja";
+$l_tabs["editor"]["information"] = "Informacje";
+$l_tabs["editor"]["preview"] = "Podgląd";
+$l_tabs["editor"]["scheduler"] = "Harmonogram";
+$l_tabs["editor"]["scheduler_pro"] = "Harmonogram PRO";
+$l_tabs["editor"]["workspace"] = "Obszar pracy";
+$l_tabs["editor"]["meta"] = "Meta-informacje";
+$l_tabs["editor"]["fields"] = "Pola";
+$l_tabs["editor"]["search"] = "Szukaj";
+include(dirname(__FILE__).'modules/we_tabs.inc.php');

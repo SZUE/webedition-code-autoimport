@@ -25,9 +25,7 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
@@ -94,19 +92,19 @@ $cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid
 	//print $entries;
 $we_tabs = new we_tabs();
    if (isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
-		$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["overview"], "TAB_ACTIVE","//"));
+		$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][overview]"), "TAB_ACTIVE","//"));
 
    } else {
 		if (($resultD > 0) && (!empty($resultO))){ //docs and objects
-		  $we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["admin_1"], "TAB_ACTIVE","setTab(0);"));
-	      $we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["admin_2"], "TAB_NORMAL","setTab(1);"));
+		  $we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][admin_1]"), "TAB_ACTIVE","setTab(0);"));
+	      $we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][admin_2]"), "TAB_NORMAL","setTab(1);"));
 	 	 }elseif (($resultD > 0) && (empty($resultO)) ){ // docs but no objects
-	      $we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["admin_1"], "TAB_NORMAL","setTab(0);"));
+	      $we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][admin_1]"), "TAB_NORMAL","setTab(0);"));
 		 }elseif (($resultD < 1) && (!empty($resultO))){  // no docs but objects
-	      $we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["admin_2"], "TAB_NORMAL","setTab(1);"));
+	      $we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][admin_2]"), "TAB_NORMAL","setTab(1);"));
 	     }
 	     if(isset($yearTrans) && $yearTrans !=0){
-          $we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["admin_3"], "TAB_NORMAL","setTab(2);"));
+          $we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][admin_3]"), "TAB_NORMAL","setTab(2);"));
 	     }
    }
 $we_tabs->onResize();

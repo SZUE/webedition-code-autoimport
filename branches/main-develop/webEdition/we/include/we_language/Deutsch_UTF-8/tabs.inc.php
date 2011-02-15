@@ -23,16 +23,17 @@
 /**
  * Language file: we_tabs.inc.php
  * Provides language strings.
- * Language: English
+ * Language: Deutsch
  */
-$l_tabs["editor"]["properties"] = "Свойства";
-$l_tabs["editor"]["edit"] = "Редактировать";
-$l_tabs["editor"]["information"] = "Справка";
-$l_tabs["editor"]["preview"] = "Предварительный просмотр";
-$l_tabs["editor"]["scheduler"] = "Планировщик";
-$l_tabs["editor"]["scheduler_pro"] = "Планировщик ПРО";
-$l_tabs["editor"]["workspace"] = "Рабочее пространство";
-$l_tabs["editor"]["meta"] = "Мета-информация";
-$l_tabs["editor"]["fields"] = "Поля";
-$l_tabs["editor"]["search"] = "Поиск";
-?>
+$l_tabs["editor"]["properties"] = "Eigenschaften";
+$l_tabs["editor"]["edit"] = "Bearbeiten";
+$l_tabs["editor"]["information"] = "Information";
+$l_tabs["editor"]["preview"] = "Vorschau";
+$l_tabs["editor"]["scheduler"] = "Scheduler";
+$l_tabs["editor"]["scheduler_pro"] = "Scheduler PRO";
+$l_tabs["editor"]["workspace"] = "Arbeitsbereich";
+$l_tabs["editor"]["meta"] = "Meta-Informationen";
+$l_tabs["editor"]["fields"] = "Felder";
+$l_tabs["editor"]["search"] = "Suche";
+
+include(dirname(__FILE__).'modules/we_tabs.inc.php');

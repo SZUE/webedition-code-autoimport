@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
 
 if(defined("SHOP_TABLE")){
@@ -496,7 +495,7 @@ $vatTable .= '
 
 	}
 
-	print we_multiIconBox::getHTML("revenues", "100%", $parts, 30,"", -1,"","",false, sprintf($GLOBALS['l_tabs']['module']['revenueTotal'], $selectedYear));
+	print we_multiIconBox::getHTML("revenues", "100%", $parts, 30,"", -1,"","",false, sprintf(g_l('tabs','[module][revenueTotal]'), $selectedYear));
 ?>
 </form>
 </body>

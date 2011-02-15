@@ -25,7 +25,6 @@ include_once(WE_BANNER_MODULE_DIR."weBanner.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weBannerView extends weBannerBase{
@@ -138,7 +137,7 @@ class weBannerView extends weBannerBase{
 									"space"=>120)
 								);
 					}
-					$headline = $GLOBALS["l_tabs"]["module"]["properties"];
+					$headline = g_l('tabs',"[module][properties]");
 					$itsname = "weBannerProp";
 					$openText=$GLOBALS["l_we_class"]["moreProps"];
 					$closeText=$GLOBALS["l_we_class"]["lessProps"];
@@ -177,7 +176,7 @@ class weBannerView extends weBannerBase{
 								"html"=>$this->formDoctypes(),
 								"space"=>120)
 							);
-					$headline = $GLOBALS["l_tabs"]["module"]["placement"];
+					$headline = g_l('tabs',"[module][placement]");
 					$znr = 3;
 					$itsname = "weBannerPlace";
 					$openText=$GLOBALS["l_we_class"]["moreProps"];
@@ -185,7 +184,7 @@ class weBannerView extends weBannerBase{
 					$wepos = weGetCookieVariable("but_$itsname");
 					break;
 				case BANNER_PAGE_STATISTICS:
-					$headline = $GLOBALS["l_tabs"]["module"]["statistics"];
+					$headline = g_l('tabs',"[module][statistics]");
 					array_push($parts,array(
 								"headline"=>"",
 								"html"=>$this->formStat(),

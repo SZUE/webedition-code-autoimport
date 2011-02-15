@@ -25,10 +25,8 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop_month.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 protect();
@@ -61,17 +59,17 @@ $we_tabs = new we_tabs();
 
 if (isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00'){
 
-	$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["overview"], "TAB_ACTIVE","0"));
+	$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][overview]"), "TAB_ACTIVE","0"));
 
 } else {
 
-	$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["orderdata"], "TAB_ACTIVE","setTab(0);"));
-	$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["orderlist"], "TAB_NORMAL","setTab(1);"));
+	$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][orderdata]"), "TAB_ACTIVE","setTab(0);"));
+	$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][orderlist]"), "TAB_NORMAL","setTab(1);"));
 	/*
-	$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["addtab1"], "TAB_NORMAL","setTab(2);"));
-	$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["addtab2"], "TAB_NORMAL","setTab(3);"));
-	$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["addtab3"], "TAB_NORMAL","setTab(4);"));
-	$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["addtab4"], "TAB_NORMAL","setTab(5);"));
+	$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][addtab1]"), "TAB_NORMAL","setTab(2);"));
+	$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][addtab2]"), "TAB_NORMAL","setTab(3);"));
+	$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][addtab3]"), "TAB_NORMAL","setTab(4);"));
+	$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][addtab4]"), "TAB_NORMAL","setTab(5);"));
 	*/
 }
 

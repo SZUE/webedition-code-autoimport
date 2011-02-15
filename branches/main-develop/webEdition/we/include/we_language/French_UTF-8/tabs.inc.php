@@ -23,16 +23,16 @@
 /**
  * Language file: we_tabs.inc.php
  * Provides language strings.
- * Language: Deutsch
+ * Language: English
  */
-$l_tabs["editor"]["properties"] = "Eigenschaften";
-$l_tabs["editor"]["edit"] = "Bearbeiten";
-$l_tabs["editor"]["information"] = "Information";
-$l_tabs["editor"]["preview"] = "Vorschau";
-$l_tabs["editor"]["scheduler"] = "Scheduler";
-$l_tabs["editor"]["scheduler_pro"] = "Scheduler PRO";
-$l_tabs["editor"]["workspace"] = "Arbeitsbereich";
-$l_tabs["editor"]["meta"] = "Meta-Informationen";
-$l_tabs["editor"]["fields"] = "Felder";
-$l_tabs["editor"]["search"] = "Suche";
-?>
+$l_tabs["editor"]["properties"] = "Properties"; // TRANSLATE
+$l_tabs["editor"]["edit"] = "Édition";
+$l_tabs["editor"]["information"] = "Information"; // TRANSLATE
+$l_tabs["editor"]["preview"] = "Aperç";
+$l_tabs["editor"]["scheduler"] = "Gestion de Flux";
+$l_tabs["editor"]["scheduler_pro"] = "Gestion de Flux PRO";
+$l_tabs["editor"]["workspace"] = "Éspace de travail";
+$l_tabs["editor"]["meta"] = "Informations-Meta";
+$l_tabs["editor"]["fields"] = "Champs";
+$l_tabs["editor"]["search"] = "Recherche";
+include(dirname(__FILE__).'modules/we_tabs.inc.php');

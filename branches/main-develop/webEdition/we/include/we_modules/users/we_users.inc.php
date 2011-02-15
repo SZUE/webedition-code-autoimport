@@ -28,7 +28,6 @@ if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don'
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/we_tabs.inc.php');
 }
 
 
@@ -2957,15 +2956,15 @@ function mapPermissions() {
 		$we_tabs = new we_tabs();
 
 		if ($this->Type == 2) {
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["data"], "TAB_ACTIVE", "setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][data]"), "TAB_ACTIVE", "setTab(0);"));
 		} else {
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["data"], ($tab==0?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][data]"), ($tab==0?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(0);"));
 
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["permissions"], ($tab==1?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(1);"));
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["workspace"], ($tab==2?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(2);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][permissions]"), ($tab==1?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(1);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][workspace]"), ($tab==2?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(2);"));
 
 			if($this->Type == 0) {
-				$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["preferences"], ($tab==3?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(3);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][preferences]"), ($tab==3?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(3);"));
 			}
 		}
 
