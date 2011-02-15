@@ -185,7 +185,7 @@ $l_weEditor["video/quicktime"]["response_save_noperms_to_create_folders"] = $l_w
  * UNLESS YOU KNOW EXACTLY WHAT YOU ARE DOING!
  *****************************************************************************/
 
-$_language_directory = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules";
+$_language_directory = dirname(__FILE__)."/modules";
 $_directory = dir($_language_directory);
 
 while (false !== ($entry = $_directory->read())) {

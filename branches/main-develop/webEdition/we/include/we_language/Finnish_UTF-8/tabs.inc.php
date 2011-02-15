@@ -35,4 +35,4 @@ $l_tabs["editor"]["workspace"] = "Työtila";
 $l_tabs["editor"]["meta"] = "Meta-tiedot";
 $l_tabs["editor"]["fields"] = "Kentät";
 $l_tabs["editor"]["search"] = "Etsi";
-include(dirname(__FILE__).'modules/we_tabs.inc.php');
+include(dirname(__FILE__).'/modules/we_tabs.inc.php');

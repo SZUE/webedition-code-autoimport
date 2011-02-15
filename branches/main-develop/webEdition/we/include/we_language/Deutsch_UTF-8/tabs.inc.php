@@ -36,4 +36,4 @@ $l_tabs["editor"]["meta"] = "Meta-Informationen";
 $l_tabs["editor"]["fields"] = "Felder";
 $l_tabs["editor"]["search"] = "Suche";
 
-include(dirname(__FILE__).'modules/we_tabs.inc.php');
+include(dirname(__FILE__).'/modules/we_tabs.inc.php');

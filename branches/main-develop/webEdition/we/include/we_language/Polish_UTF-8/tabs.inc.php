@@ -35,4 +35,4 @@ $l_tabs["editor"]["workspace"] = "Obszar pracy";
 $l_tabs["editor"]["meta"] = "Meta-informacje";
 $l_tabs["editor"]["fields"] = "Pola";
 $l_tabs["editor"]["search"] = "Szukaj";
-include(dirname(__FILE__).'modules/we_tabs.inc.php');
+include(dirname(__FILE__).'/modules/we_tabs.inc.php');

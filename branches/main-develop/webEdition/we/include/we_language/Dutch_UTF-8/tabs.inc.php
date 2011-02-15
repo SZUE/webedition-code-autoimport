@@ -35,4 +35,4 @@ $l_tabs["editor"]["workspace"] = "Werkgebied";
 $l_tabs["editor"]["meta"] = "Meta-Informatie";
 $l_tabs["editor"]["fields"] = "Velden";
 $l_tabs["editor"]["search"] = "Zoek";
-include(dirname(__FILE__).'modules/we_tabs.inc.php');
+include(dirname(__FILE__).'/modules/we_tabs.inc.php');
