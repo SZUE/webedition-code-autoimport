@@ -248,8 +248,7 @@ function we_tag_votingField($attribs, $content) {
 			break;
 			case 'date':
 				$format = we_getTagAttributeTagParser("format",$attribs,"");
-				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/we_editor_info.inc.php");
-				$returnvalue =  date(($format!="" ? $format : $l_we_editor_info["date_format"]), $GLOBALS['_we_voting']->PublishDate);
+				$returnvalue =  date(($format!="" ? $format : g_l('weEditorInfo',"[date_format]")), $GLOBALS['_we_voting']->PublishDate);
 			break;
 		}
 

@@ -33,7 +33,6 @@ class weNewsletterDirSelector extends we_dirSelector{
 	function printCreateFolderHTML(){
 		htmlTop();
 		protect();
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
 
 		print '<script>
 top.clearEntries();
@@ -41,7 +40,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["filename_empty"], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('we_editor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
 		}else{
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
 			$folder= new we_folder();
@@ -58,11 +57,11 @@ top.clearEntries();
 			$folder->ModifierID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
 			$this->db->query("SELECT ID FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."'");
 			if($this->db->next_record()){
-				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
+				$we_responseText = sprintf(g_l('we_editor',"[folder][response_path_exists]"),$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
-					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
+					$we_responseText = sprintf(g_l('we_editor',"[folder][we_filename_notValid]"),$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
 					$folder->we_save();
@@ -96,7 +95,6 @@ top.selectFile(top.currentID);
 	function printDoRenameFolderHTML(){
 		htmlTop();
 		protect();
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
 
 		print '<script>
 top.clearEntries();
@@ -104,7 +102,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall($GLOBALS["l_we_editor"]["folder"]["filename_empty"], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('we_editor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
 		}else{
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
 			$folder= new we_folder();
@@ -117,11 +115,11 @@ top.clearEntries();
 			$folder->ModifierID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
 			$this->db->query("SELECT ID,Text FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."' AND ID != ".abs($this->we_editDirID));
 			if($this->db->next_record()){
-				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
+				$we_responseText = sprintf(g_l('we_editor',"[folder][response_path_exists]"),$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
-					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
+					$we_responseText = sprintf(g_l('we_editor',"[folder][we_filename_notValid]"),$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
 					if(f("SELECT Text FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){

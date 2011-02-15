@@ -1211,7 +1211,6 @@ class weVotingFrames extends weModuleFrames {
 		global $l_voting;
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		$we_button = new we_button();
 
@@ -1262,7 +1261,7 @@ class weVotingFrames extends weModuleFrames {
 				if($i<0) break;
 				$data = $log[$i];
 				$content[$ind] = array();
-				$content[$ind][0]['dat'] = date($l_we_editor_info["date_format"], $data['time']);
+				$content[$ind][0]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$data['time']);
 				$content[$ind][1]['dat'] = $data['ip'];
 				$content[$ind][2]['dat'] = $data['agent'];
 				$content[$ind][3]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
@@ -1347,7 +1346,6 @@ class weVotingFrames extends weModuleFrames {
 		global $l_voting;
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		$we_button = new we_button();
 
@@ -1401,7 +1399,7 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind] = array();
 				$content[$ind][0]['dat'] = $data['votingsession'];
 				$content[$ind][1]['dat'] = $data['voting'];
-				$content[$ind][2]['dat'] = date($l_we_editor_info["date_format"], $data['time']);
+				$content[$ind][2]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$data['time']);
 				$content[$ind][3]['dat'] = $data['ip'];
 				$content[$ind][4]['dat'] = $data['agent'];
 				$content[$ind][5]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
@@ -1500,7 +1498,6 @@ class weVotingFrames extends weModuleFrames {
 		global $l_voting;
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		$we_button = new we_button();
 
@@ -1548,7 +1545,7 @@ class weVotingFrames extends weModuleFrames {
 				if($i<0) break;
 				$data = $log[$i];
 				$content[$ind] = array();
-				$content[$ind][0]['dat'] = date($l_we_editor_info["date_format"], $data['time']);
+				$content[$ind][0]['dat'] = date(g_l('weEditorInfo',"[date_format]"), $data['time']);
 				$content[$ind][1]['dat'] = $data['ip'];
 				$content[$ind][2]['dat'] = $data['agent'];
 				$content[$ind][3]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];

@@ -233,7 +233,6 @@ class weCustomerFrames extends weModuleFrames {
 				break;
 			case 'dateTime':
 			case 'date':
-				include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_editor_info.inc.php');
 				$out = we_htmlElement::htmlHidden(array('name' => $field, 'value' => $value));
 
 				if (empty($value)) {
@@ -241,7 +240,7 @@ class weCustomerFrames extends weModuleFrames {
 				}
 				$date_format = ($props['type'] == 'dateTime' ? DATE_FORMAT : DATE_ONLY_FORMAT);
 				$value = $this->View->settings->getDate($value, $date_format);
-				$format = ($props['type'] == 'dateTime' ? $l_we_editor_info['date_format'] : $l_we_editor_info['date_only_format']);
+				$format = ($props['type'] == 'dateTime' ? g_l('weEditorInfo','[date_format]') : g_l('weEditorInfo','[date_only_format]'));
 				$out.=we_htmlElement::jsElement('
 					function populateDate_' . $field . '(){
 						var year=document.we_form.' . $field . '_select_year.options[document.we_form.' . $field . '_select_year.selectedIndex].text;
@@ -456,7 +455,6 @@ class weCustomerFrames extends weModuleFrames {
 		$common['ID'] = $this->View->customer->ID;
 		$this->View->customer->getBranches($branches, $common, $other, $this->View->settings->getEditSort());
 
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_editor_info.inc.php');
 
 
 		if ($preselect == $l_customer["common"] || $preselect == $l_customer["all"]) {
@@ -469,7 +467,7 @@ class weCustomerFrames extends weModuleFrames {
 
 				if ($this->View->customer->isInfoDate($pk)) {
 					$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-					$table->setCol($r, $c, array("class" => "defaultfont"), htmlFormElementTable(($pv != "0" ? we_htmlElement::htmlDiv(array("class" => "defaultgray"), date($l_we_editor_info["date_format"], $pv)) : "-" . getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
+					$table->setCol($r, $c, array("class" => "defaultfont"), htmlFormElementTable(($pv != "0" ? we_htmlElement::htmlDiv(array("class" => "defaultgray"), date(g_l('weEditorInfo',"[date_format]"), $pv)) : "-" . getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
 				} else {
 					switch ($pk) {
 						case 'ID':

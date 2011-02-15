@@ -25,7 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_cla
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
 
@@ -247,7 +246,7 @@ if (isset($daten)){
         $menu .="<select name=\"".$select_name."\" onChange=\"document.location.href='".$_SERVER['PHP_SELF']."?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
 
         foreach($fe as $key => $val) {
-			if ($val!="") {			
+			if ($val!="") {
 	            $menu .= "  <option value=\"". $val."\"";
 	            $menu .= (isset($_REQUEST[$select_name])  && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "";
 	            $sql_merge = "SELECT ".OBJECT_TABLE.".Text as ClassIDName, ".OBJECT_TABLE.".ID as SerID FROM ".OBJECT_TABLE." WHERE ".OBJECT_TABLE.".ID = ".abs($val);

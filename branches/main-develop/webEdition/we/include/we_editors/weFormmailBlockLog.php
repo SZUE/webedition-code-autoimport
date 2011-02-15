@@ -21,7 +21,6 @@
 		include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		protect();
 		if (we_hasPerm("administrator")) {
@@ -66,7 +65,7 @@
 					if ($GLOBALS["DB_WE"]->f("blockedUntil") == -1) {
 						$content[$ind][1]['dat'] = htmlspecialchars(g_l('prefs','[forever]'));
 					} else {
-						$content[$ind][1]['dat'] = date($l_we_editor_info["date_format"],$GLOBALS["DB_WE"]->f("blockedUntil"));
+						$content[$ind][1]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$GLOBALS["DB_WE"]->f("blockedUntil"));
 					}
 					$content[$ind][2]['dat'] = '<a href="javascript:clearEntry('.$GLOBALS["DB_WE"]->f("id").',\''.$GLOBALS["DB_WE"]->f("ip").'\')">' . g_l('prefs','[unblock]'). '</a>';
 

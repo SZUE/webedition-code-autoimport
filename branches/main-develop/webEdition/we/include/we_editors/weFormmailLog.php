@@ -21,7 +21,6 @@
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
 		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-		include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_editor_info.inc.php');
 
 		protect();
 		if (we_hasPerm('administrator')) {
@@ -60,7 +59,7 @@
 
 					$content[$ind] = array();
 					$content[$ind][0]['dat'] = $GLOBALS["DB_WE"]->f("ip");
-					$content[$ind][1]['dat'] = date($l_we_editor_info["date_format"],$GLOBALS["DB_WE"]->f("unixTime"));
+					$content[$ind][1]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$GLOBALS["DB_WE"]->f("unixTime"));
 
 					$ind++;
 				}

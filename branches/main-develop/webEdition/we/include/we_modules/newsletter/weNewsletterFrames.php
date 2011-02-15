@@ -340,7 +340,6 @@ class weNewsletterFrames extends weModuleFrames {
 	}
 
 	function getHTMLLog() {
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		global $l_newsletter;
 
@@ -350,7 +349,7 @@ class weNewsletterFrames extends weModuleFrames {
 		while ($this->View->db->next_record()) {
 			$log=$l_newsletter[$this->View->db->f("Log")];
 			$param=$this->View->db->f("Param");
-			$content.=we_htmlElement::htmlDiv(array("class"=>"defaultfont"),date($l_we_editor_info["date_format_sec"],$this->View->db->f("LogTime")).'&nbsp;'.($param ? sprintf($log,$param) : $log));
+			$content.=we_htmlElement::htmlDiv(array("class"=>"defaultfont"),date(g_l('weEditorInfo',"[date_format_sec]"),$this->View->db->f("LogTime")).'&nbsp;'.($param ? sprintf($log,$param) : $log));
 		}
 
 		$js=we_htmlElement::jsElement("self.focus();");
@@ -2460,7 +2459,6 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		protect();
 
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		if(isset($_REQUEST["ncmd"])){
 			if($_REQUEST["ncmd"]=="do_clear_log"){
@@ -2486,7 +2484,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		$csv="";
 		$this->View->db->query("SELECT ".NEWSLETTER_TABLE.".Text as NewsletterName, ".NEWSLETTER_LOG_TABLE.".* FROM ".NEWSLETTER_TABLE.",".NEWSLETTER_LOG_TABLE." WHERE ".NEWSLETTER_TABLE.".ID=".NEWSLETTER_LOG_TABLE.".NewsletterID;");
 		while($this->View->db->next_record()){
-			$csv.=$this->View->db->f("NewsletterName").",".date($l_we_editor_info["date_format"],$this->View->db->f("LogTime")).",".(isset($l_newsletter[$this->View->db->f("Log")]) ? (sprintf($l_newsletter[$this->View->db->f("Log")],$this->View->db->f("Param"))) : $this->View->db->f("Log"))."\n";
+			$csv.=$this->View->db->f("NewsletterName").",".date(g_l('weEditorInfo',"[date_format]"),$this->View->db->f("LogTime")).",".(isset($l_newsletter[$this->View->db->f("Log")]) ? (sprintf($l_newsletter[$this->View->db->f("Log")],$this->View->db->f("Param"))) : $this->View->db->f("Log"))."\n";
 		}
 
 		$link="/webEdition/we_backup/download/log_".time().".csv";

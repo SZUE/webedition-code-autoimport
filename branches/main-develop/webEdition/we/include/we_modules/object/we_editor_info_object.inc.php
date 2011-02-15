@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 protect();
 
@@ -31,8 +30,8 @@ $parts = array();
 $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
 	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ?  $GLOBALS['we_doc']->ID : "-") . '</div>';
 
-$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.$GLOBALS["l_we_editor_info"]["content_type"].'</div>' .
-	'<div style="margin-bottom:10px;">' . $GLOBALS["l_we_editor_info"][$GLOBALS["we_doc"]->ContentType] .'</div>';
+$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[content_type]").'</div>' .
+	'<div style="margin-bottom:10px;">' . g_l('weEditorInfo','['.$GLOBALS["we_doc"]->ContentType.']') .'</div>';
 
 
 array_push($parts, array(	"headline"=>"",
@@ -44,8 +43,8 @@ array_push($parts, array(	"headline"=>"",
 
 
 
-$_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.$GLOBALS["l_we_editor_info"]["creation_date"].'</div>' .
-	'<div style="margin-bottom:10px;">' . date($GLOBALS["l_we_editor_info"]["date_format"], $GLOBALS["we_doc"]->CreationDate) .'</div>';
+$_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[creation_date]").'</div>' .
+	'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo',"[date_format]"),$GLOBALS["we_doc"]->CreationDate) .'</div>';
 
 
 
@@ -58,8 +57,8 @@ if($GLOBALS["we_doc"]->CreatorID){
 	}
 }
 
-$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.$GLOBALS["l_we_editor_info"]["changed_date"].'</div>' .
-	'<div style="margin-bottom:10px;">' . date($GLOBALS["l_we_editor_info"]["date_format"], $GLOBALS["we_doc"]->ModDate) .'</div>';
+$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[changed_date]").'</div>' .
+	'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo',"[date_format]"), $GLOBALS["we_doc"]->ModDate) .'</div>';
 
 
 if($GLOBALS["we_doc"]->ModifierID){

@@ -689,9 +689,9 @@ if ($we_editmode) {
 		$groupJs = "tagGroups = new Array();\n";
 
 		$selectedGroup = isset($we_doc->TagWizardSelection) && !empty($we_doc->TagWizardSelection) ? $we_doc->TagWizardSelection : "alltags";
-		$groupselect .= '<optgroup label="' . $GLOBALS['l_weCodeWizard']['snippets'] . '">';
-		$groupselect .= '<option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . $GLOBALS['l_weCodeWizard']['standard_snippets'] . '</option>';
-		$groupselect .= '<option value="snippet_custom" ' . ($selectedGroup == "snippet_custom" ? "selected" : "") . '>' . $GLOBALS['l_weCodeWizard']['custom_snippets'] . '</option>';
+		$groupselect .= '<optgroup label="' . g_l('weCodeWizard','[snippets]') . '">';
+		$groupselect .= '<option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . g_l('weCodeWizard','[standard_snippets]') . '</option>';
+		$groupselect .= '<option value="snippet_custom" ' . ($selectedGroup == "snippet_custom" ? "selected" : "") . '>' . g_l('weCodeWizard','[custom_snippets]') . '</option>';
 		$groupselect .= '</optgroup>';
 		$groupselect .= '<optgroup label="we:tags">';
 

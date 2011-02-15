@@ -28,6 +28,3 @@
 		        	$INCLUDE = "we_editors/we_editor.inc.php";
 		        	break;
                 }
-
-
-?>

@@ -135,10 +135,9 @@ class weCustomerSettings {
 				'ID' => 'ID',
 		);
 		// additional date function
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_editor_info.inc.php');
-		$this->FunctionTable['FORMAT_DATETIME'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', $l_we_editor_info['mysql_date_format']) . '\')';
-		$this->FunctionTable['FORMAT_DATE'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', $l_we_editor_info['mysql_date_only_format']) . '\')';
-		$this->FunctionTable['FORMAT_TIME'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', $l_we_editor_info['mysql_time_only_format']) . '\')';
+		$this->FunctionTable['FORMAT_DATETIME'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', g_l('weEditorInfo','[mysql_date_format]')) . '\')';
+		$this->FunctionTable['FORMAT_DATE'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', g_l('weEditorInfo','[mysql_date_only_format]')) . '\')';
+		$this->FunctionTable['FORMAT_TIME'] = 'DATE_FORMAT(%s,\'' . str_replace('%', '%%', g_l('weEditorInfo','[mysql_time_only_format]')) . '\')';
 		$this->FunctionTable['HOUR'] = 'DATE_FORMAT(%s,\'%%H\')';
 
 		$this->TypeFunction['FORMAT_DATETIME'] = 'date';
