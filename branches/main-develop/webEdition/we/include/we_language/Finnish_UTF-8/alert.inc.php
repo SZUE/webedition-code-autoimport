@@ -177,8 +177,8 @@ $l_alert['discard_changed_data'] = 'Tallentamattomat muutokset menetetään, hal
 $l_alert["login_denied_for_user"] = "Kirjautuminen epäonnistui. Käyttäjäkirjautuminen ei ole käytössä";
 $l_alert["no_perm_to_delete_single_document"] = "Sinulla ei ole tarvittavia oikeuksia dokumentin poistoon.";
 
-$l_confim["applyWeDocumentCustomerFiltersDocument"] = "Tiedosto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä dokumentissa?";
-$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "Hakemisto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä hakemistossa ja kaikissa sen alihakemistoissa? ";
+$l_alert['confim']["applyWeDocumentCustomerFiltersDocument"] = "Tiedosto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä dokumentissa?";
+$l_alert['confim']["applyWeDocumentCustomerFiltersFolder"]   = "Hakemisto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä hakemistossa ja kaikissa sen alihakemistoissa? ";
 
 $l_alert['field_in_tab_notvalid_pre'] = "Asetuksia ei voitu tallentaa, koska seuraavat kentät sisältävät virheellisiä arvoja:";
 $l_alert['field_in_tab_notvalid'] = ' - kenttä %s välilehdellä %s';

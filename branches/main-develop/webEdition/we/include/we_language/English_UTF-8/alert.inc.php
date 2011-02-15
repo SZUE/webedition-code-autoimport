@@ -174,8 +174,8 @@ $l_alert["we_filename_notValid"] = "Invalid file name\\nValid characters are alp
 $l_alert["login_denied_for_user"] = "The user cannot login. The user access is disabled.";
 $l_alert["no_perm_to_delete_single_document"] = "You have not the needed permissions to delete the active document.";
 
-$l_confim["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?";
-$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ";
+$l_alert['confim']["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?";
+$l_alert['confim']["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ";
 
 $l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:";
 $l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s';
