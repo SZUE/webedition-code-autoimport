@@ -33,7 +33,7 @@ class charsetHandler{
 		//	First ISO-8859-charsets
 		$_charsets["west_european"]["national"] = "West Europe";				//	Here is the name of the country in mother language
 		$_charsets["west_european"]["charset"] = "ISO-8859-1";
-		$_charsets["west_european"]["international"] = $GLOBALS["_charset"]["titles][west_european"];	//	Name in selected language
+		$_charsets["west_european"]["international"] = g_l('charset',"[titles][west_european]");	//	Name in selected language
 
 		$_charsets["central_european"]["national"] = "Central Europe";
 		$_charsets["central_european"]["charset"] = "ISO-8859-2";

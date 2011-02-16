@@ -3,7 +3,7 @@ CREATE TABLE tblIndex (
   `Text` text NOT NULL,
   ID bigint(20) NOT NULL default '0',
   OID bigint(20) NOT NULL default '0',
-  BText longblob NOT NULL,
+  BText longtext NOT NULL,
   Workspace varchar(255) NOT NULL default '',
   WorkspaceID bigint(20) NOT NULL default '0',
   Category varchar(255) NOT NULL default '',

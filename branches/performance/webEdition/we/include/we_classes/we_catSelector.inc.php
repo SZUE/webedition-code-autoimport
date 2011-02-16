@@ -437,12 +437,12 @@ top.clearEntries();
 		$txt = $this->EntryText;
 		if($txt==""){
 			if($what==1){
-				print we_message_reporting::getShowMessageCall(g_l('we_editor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
 			}else{
-				print we_message_reporting::getShowMessageCall(g_l('we_editor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
 			}
 		}else if(ereg(",",$txt)){
-			print we_message_reporting::getShowMessageCall(g_l('we_editor',"[category][name_komma]"), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), WE_MESSAGE_ERROR);
 		}else{
 			$txt = trim($txt);
 			$parentPath = (!abs($this->dir)) ? "" : f("SELECT Path FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($this->dir),"Path",$this->db);
@@ -451,15 +451,15 @@ top.clearEntries();
 			$this->db->query("SELECT ID FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($Path)."'");
 			if($this->db->next_record()){
 				if($what==1){
-					$we_responseText = sprintf(g_l('we_editor',"[folder][response_path_exists]"),$Path);
+					$we_responseText = sprintf(g_l('weEditor',"[folder][response_path_exists]"),$Path);
 				}else{
-					$we_responseText = sprintf(g_l('we_editor',"[category][response_path_exists]"),$Path);
+					$we_responseText = sprintf(g_l('weEditor',"[category][response_path_exists]"),$Path);
 				}
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
 				if(eregi('[\\\'"<>/]',$txt)){
 
-					$we_responseText = sprintf(g_l('we_editor',"[category][we_filename_notValid]"),$Path);
+					$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"),$Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 		         }else{
 					$this->db->query("INSERT INTO ".mysql_real_escape_string($this->table)."
@@ -523,26 +523,26 @@ top.clearEntries();
 		$txt = $this->EntryText;
 		if($txt==""){
 			if($what==1){
-				print we_message_reporting::getShowMessageCall(g_l('we_editor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
 			}else{
-				print we_message_reporting::getShowMessageCall(g_l('we_editor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
 			}
 		}else if(ereg(",",$txt)){
-			print we_message_reporting::getShowMessageCall(g_l('we_editor',"[category][name_komma]"), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), WE_MESSAGE_ERROR);
 		}else{
 			$parentPath = (!abs($this->dir)) ? "" : f("SELECT Path FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($this->dir),"Path",$this->db);
 			$Path = $parentPath."/".$txt;
 			$this->db->query("SELECT ID,Text FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($Path)."' AND ID != '".abs($this->we_editCatID)."'");
 			if($this->db->next_record()){
 				if($what==1){
-					$we_responseText = sprintf(g_l('we_editor',"[folder][response_path_exists]"),$Path);
+					$we_responseText = sprintf(g_l('weEditor',"[folder][response_path_exists]"),$Path);
 				}else{
-					$we_responseText = sprintf(g_l('we_editor',"[category][response_path_exists]"),$Path);
+					$we_responseText = sprintf(g_l('weEditor',"[category][response_path_exists]"),$Path);
 				}
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
 				if(eregi('[\'"<>/]',$txt)){
-					$we_responseText = sprintf(g_l('we_editor',"[category][we_filename_notValid]"),$Path);
+					$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"),$Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 		         }else{
 		         	if(f("SELECT Text FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($this->we_editCatID)."'","Text",$this->db) != $txt){
@@ -1074,8 +1074,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			protect();
 			print '<script>'.$js.'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
 				($updateok
-					? we_message_reporting::getShowMessageCall( sprintf(g_l('we_editor',"[category][response_save_ok]"),$category), WE_MESSAGE_NOTICE)
-					: we_message_reporting::getShowMessageCall( sprintf(g_l('we_editor',"[category][response_save_notok]"),$category), WE_MESSAGE_ERROR ) )
+					? we_message_reporting::getShowMessageCall( sprintf(g_l('weEditor',"[category][response_save_ok]"),$category), WE_MESSAGE_NOTICE)
+					: we_message_reporting::getShowMessageCall( sprintf(g_l('weEditor',"[category][response_save_notok]"),$category), WE_MESSAGE_ERROR ) )
 				. '</script>';
 
 			print '</head><body></body></html>';
@@ -1169,7 +1169,7 @@ function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {
 ';
-	$we_responseText = sprintf(g_l('we_editor',"[category][we_filename_notValid]"), $path);
+	$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"), $path);
 	print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();

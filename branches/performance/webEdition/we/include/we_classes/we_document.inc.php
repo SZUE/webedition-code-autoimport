@@ -76,7 +76,7 @@ class we_document extends we_root {
 	function we_document() {
 		//FIXME: remove in next Versions
 		if(defined('INCLUDE_ALL_WE_TAGS')){
-		 include_all_we_tags();
+			if(function_exists('include_all_we_tags')) {include_all_we_tags();}
 		}
 		$this->we_root();
 		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
