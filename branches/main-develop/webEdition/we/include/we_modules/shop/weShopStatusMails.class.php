@@ -1,6 +1,5 @@
 <?php
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_global.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 class weShopStatusMails {
@@ -46,7 +45,6 @@ class weShopStatusMails {
 
 	function getShopStatusMails() {
 		global $DB_WE;
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
 		$docarray = array(
 						'DateOrder' => '',
 						'DateConfirmation' => '',
@@ -114,22 +112,22 @@ class weShopStatusMails {
 
 				),
 				array( //FieldsTexts
-					'DateOrder' => $l_shop['bestelldatum'],
-					'DateConfirmation' => $l_shop['bestaetigt'],
-					'DateCustomA' => $l_shop['customA'],
-					'DateCustomB' => $l_shop['customB'],
-					'DateCustomC' => $l_shop['customC'],
-					'DateShipping' => $l_shop['bearbeitet'],
-					'DateCustomD' => $l_shop['customD'],
-					'DateCustomE' => $l_shop['customE'],
-					'DatePayment' => $l_shop['bezahlt'],
-					'DateCustomF' => $l_shop['customF'],
-					'DateCustomG' => $l_shop['customG'],
-					'DateCancellation' => $l_shop['storniert'],
-					'DateCustomH' => $l_shop['customH'],
-					'DateCustomI' => $l_shop['customI'],
-					'DateCustomJ' => $l_shop['customJ'],
-					'DateFinished' => $l_shop['beendet']
+					'DateOrder' => g_l('modules_shop','[bestelldatum]'),
+					'DateConfirmation' => g_l('modules_shop','[bestaetigt]'),
+					'DateCustomA' => g_l('modules_shop','[customA]'),
+					'DateCustomB' => g_l('modules_shop','[customB]'),
+					'DateCustomC' => g_l('modules_shop','[customC]'),
+					'DateShipping' => g_l('modules_shop','[bearbeitet]'),
+					'DateCustomD' => g_l('modules_shop','[customD]'),
+					'DateCustomE' => g_l('modules_shop','[customE]'),
+					'DatePayment' => g_l('modules_shop','[bezahlt]'),
+					'DateCustomF' => g_l('modules_shop','[customF]'),
+					'DateCustomG' => g_l('modules_shop','[customG]'),
+					'DateCancellation' => g_l('modules_shop','[storniert]'),
+					'DateCustomH' => g_l('modules_shop','[customH]'),
+					'DateCustomI' => g_l('modules_shop','[customI]'),
+					'DateCustomJ' => g_l('modules_shop','[customJ]'),
+					'DateFinished' => g_l('modules_shop','[beendet]')
 				),
 				array( //FieldsMails
 					'DateOrder' => 1,
@@ -286,10 +284,10 @@ class weShopStatusMails {
 		$dateform = "00.00.0000";
 		$we_button = new we_button();
 		if ($this->FieldsMails['Date'.$was]){
-			$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">'.$l_shop['statusmails']['EMail'].': </td>';
+			$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">'.g_l('modules_shop','[statusmails][EMail]').': </td>';
 			if ($_REQUEST["Mail".$was] != $datetimeform && $_REQUEST["Mail".$was]!='') {
 				$EMailhandler .= '<td class="defaultfont" width="150">'.$_REQUEST["Mail".$was].'</td>';
-				$but =  $we_button->create_button("image:/mail_resend","javascript:check=confirm('".$l_shop['statusmails']['resent']."'); if (check){SendMail('".$was."');}");
+				$but =  $we_button->create_button("image:/mail_resend","javascript:check=confirm('".g_l('modules_shop','[statusmails][resent]')."'); if (check){SendMail('".$was."');}");
 			} else {
 				$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
 				$but =  $we_button->create_button("image:/mail_send","javascript:SendMail('".$was."')");

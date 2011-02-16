@@ -30,18 +30,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_class.inc.php');
 
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
-
 function prepareFieldname($str){
-	
+
 	if(strpos($str, '_')){
 		return substr_replace($str, "/", strpos($str, '_'),1);
 	} else {
 		return $str;
 	}
-	
+
 }
 
 protect();
@@ -52,19 +48,19 @@ print STYLESHEET;
 
 $we_button = new we_button();
 
-if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays .. 
+if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays ..
 
 	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="payment_details"';
-	
+
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
 		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["fieldForname"]). "|" . mysql_real_escape_string($_REQUEST["fieldSurname"]). "|" . mysql_real_escape_string($_REQUEST["fieldStreet"]). "|" . mysql_real_escape_string($_REQUEST["fieldZip"]) . "|" . mysql_real_escape_string($_REQUEST["fieldCity"]) . "|". mysql_real_escape_string($_REQUEST["lc"]) . "|" . mysql_real_escape_string($_REQUEST["ppB"]) . "|" . mysql_real_escape_string($_REQUEST["psb"]) . "|" . mysql_real_escape_string($_REQUEST["lcS"]) . "|" . mysql_real_escape_string($_REQUEST["spAID"]). "|" . mysql_real_escape_string($_REQUEST["spB"]). "|" . mysql_real_escape_string($_REQUEST["spC"]). "|" . mysql_real_escape_string($_REQUEST["spD"]) . "|" . mysql_real_escape_string($_REQUEST["spCo"]) . "|" . mysql_real_escape_string($_REQUEST["spPS"]) . "|" . mysql_real_escape_string($_REQUEST["spcmdP"]) . "|" . mysql_real_escape_string($_REQUEST["spconfP"]) . "|" . mysql_real_escape_string($_REQUEST["spdesc"]) .  "|" . mysql_real_escape_string($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
 	} else {
-		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (ID,strDateiname,strFelder) VALUES('','payment_details','strFelder')");	
+		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (ID,strDateiname,strFelder) VALUES('','payment_details','strFelder')");
 	}
-	
+
 	$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["fieldForname"]) . "|" . mysql_real_escape_string($_REQUEST["fieldSurname"]) . "|" . mysql_real_escape_string($_REQUEST["fieldStreet"]) . "|" . mysql_real_escape_string($_REQUEST["fieldZip"]). "|" . mysql_real_escape_string($_REQUEST["fieldCity"]) . "|". mysql_real_escape_string($_REQUEST["lc"]) . "|" . mysql_real_escape_string($_REQUEST["ppB"]) . "|" . mysql_real_escape_string($_REQUEST["psb"]) . "|" . mysql_real_escape_string($_REQUEST["lcS"]) . "|" . mysql_real_escape_string($_REQUEST["spAID"]) . "|" . mysql_real_escape_string($_REQUEST["spB"]) . "|" . mysql_real_escape_string($_REQUEST["spC"]) . "|" . mysql_real_escape_string($_REQUEST["spD"]) . "|" . mysql_real_escape_string($_REQUEST["spCo"]) . "|" . mysql_real_escape_string($_REQUEST["spPS"]) . "|" . mysql_real_escape_string($_REQUEST["spcmdP"]) . "|" . mysql_real_escape_string($_REQUEST["spconfP"]) . "|" . mysql_real_escape_string($_REQUEST["spdesc"]) .  "|" . mysql_real_escape_string($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
-	                                                                                                                                                                                                                                                                                                                                                                                                                                           
+
 	//	Close window when finished
 	echo '<script type="text/javascript">self.close();</script>';
 	exit;
@@ -91,9 +87,9 @@ if (defined("CUSTOMER_TABLE")) {
 	'width' => "100%"),
 	14,
 	3);
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4, 'class'=>'defaultfont'),$l_shop["FormFieldsTxt"]);
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4, 'class'=>'defaultfont'),g_l('modules_shop','[FormFieldsTxt]'));
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
-	
+
 	$custfields=array();
 
 
@@ -101,38 +97,38 @@ if (defined("CUSTOMER_TABLE")) {
 	while ($DB_WE->next_record()) {
 		$custfields[$DB_WE->f("Field")]=$DB_WE->f("Field");
 	}
-	
-	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldForname"]);
+
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[fieldForname]'));
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldForname',$custfields, 1, $feldnamen[0]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
-	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldSurname"]);
+
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[fieldSurname]'));
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldSurname',$custfields, 1, $feldnamen[1]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
-	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldStreet"]);
+
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[fieldStreet]'));
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldStreet',$custfields, 1, $feldnamen[2]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
-	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldZip"]);
+
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[fieldZip]'));
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldZip',$custfields, 1, $feldnamen[3]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
-	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldCity"]);
+
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[fieldCity]'));
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldCity',$custfields, 1, $feldnamen[4]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
-	
-	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldEmail"]);
+
+
+	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[fieldEmail]'));
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldEmail', array_merge(array(""), $custfields), 1, $feldnamen[18]) );
 
-	array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode())); 
+	array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode()));
 
 }
 
@@ -144,7 +140,7 @@ $_htmlTable = new we_htmlTable(	array(	'border'      => 0,
 	20,
 	3);
 
-$_htmlTable->setCol($_row++, 0, array('class'=>'weDialogHeadline', 'colspan' => 4), $l_shop["paypal"]);
+$_htmlTable->setCol($_row++, 0, array('class'=>'weDialogHeadline', 'colspan' => 4), g_l('modules_shop','[paypal]'));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,8));
 
 $list1 = array("AI" => "Anguilla","AR" => "Argentina","AU" => "Australia", "AT"=>"Austria","BE" => "Belgium","BR" => "Brazil","CA" => "Canada", "CL"=>"Chile", "CN" => "China","CR" => "Costa Rica","CY" => "Cyprus", "CZ"=>"Czech Republic","DK" => "Denmark","DO" => "Dominican Rep.","EC" => "Equador", "EE"=>"Estonia", "FI"=>"Finland","FR" => "France", "DE"=>"Deutschland", "GR"=>"Greece", "HK"=>"Hong Kong");
@@ -152,22 +148,22 @@ $list2= array("HU" => "Hungary","IS" => "Iceland","IN" => "India", "IE"=>"Irelan
 $list3= array("NL" => "Netherlands", "NZ"=>"New Zealand", "NO"=>"Norway","PL" => "Poland", "PT"=>"Portugal", "SG"=>"Singapore", "SK"=>"Slovakia","ZA" => "South Afrika","KR" => "South Korea","ES" => "Spain", "SE"=>"Sweden","CH" => "Switzerland","TW" => "Taiwan","TH" => "Thailand","TR" => "Turkey","GB" => "United Kingdom","United States" => "US","Uruguay" => "UY","Venezuela" => "VE");
 $list = array_merge($list1,$list2,$list3);
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["lc"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[lc]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlSelect('lc', $list, 1, $feldnamen[5]). '<span class="small">&nbsp'. $l_shop["paypalLcTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlSelect('lc', $list, 1, $feldnamen[5]). '<span class="small">&nbsp'. g_l('modules_shop','[paypalLcTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["paypalbusiness"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[paypalbusiness]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlTextInput("ppB",30,$feldnamen[6],"","","text",128). '<span class="small">&nbsp'. $l_shop["paypalbTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlTextInput("ppB",30,$feldnamen[6],"","","text",128). '<span class="small">&nbsp'. g_l('modules_shop','[paypalbTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
 $paypalPV = array("default" => "PayPal-Shop","test" => "Sandbox (Test) ");
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["paypalSB"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[paypalSB]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlSelect('psb', $paypalPV, 1, $feldnamen[7]). '<span class="small">&nbsp'. $l_shop["paypalSBTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlSelect('psb', $paypalPV, 1, $feldnamen[7]). '<span class="small">&nbsp'. g_l('modules_shop','[paypalSBTxt]').' </span>' );
 
-array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode())); 
+array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode()));
 
 // saferpay
 $_htmlTable = new we_htmlTable(	array(	'border'      => 0,
@@ -177,78 +173,78 @@ $_htmlTable = new we_htmlTable(	array(	'border'      => 0,
 	43,
 	3);
 
-$_htmlTable->setCol($_row++, 0, array('class'=>'weDialogHeadline', 'colspan' => 4), $l_shop["saferpay"]);
+$_htmlTable->setCol($_row++, 0, array('class'=>'weDialogHeadline', 'colspan' => 4), g_l('modules_shop','[saferpay]'));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,8));
 
 $saferPayLang = array("en" => "english","de" => "deutsch","fr" => "francais","it" => "italiano");
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayTermLang"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayTermLang]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlSelect('lcS',$saferPayLang, 1, $feldnamen[8]). '<span class="small">&nbsp'. $l_shop["saferpayLcTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlSelect('lcS',$saferPayLang, 1, $feldnamen[8]). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayLcTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayID"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayID]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlTextInput("spAID",30,$feldnamen[9],"","","text",128). '<span class="small">&nbsp'. $l_shop["saferpayIDTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlTextInput("spAID",30,$feldnamen[9],"","","text",128). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayIDTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpaybusiness"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpaybusiness]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlTextInput("spB",30,$feldnamen[10],"","","text",128). '<span class="small">&nbsp'. $l_shop["saferpaybTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlTextInput("spB",30,$feldnamen[10],"","","text",128). '<span class="small">&nbsp'. g_l('modules_shop','[saferpaybTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$saferPayCollect = array("no" => $l_shop["saferpayNo"],"yes" => $l_shop["saferpayYes"]);
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayAllowCollect"]);
+$saferPayCollect = array("no" => g_l('modules_shop','[saferpayNo]'),"yes" => g_l('modules_shop','[saferpayYes]'));
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayAllowCollect]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlSelect('spC',$saferPayCollect, 1, $feldnamen[11]). '<span class="small">&nbsp'. $l_shop["saferpayAllowCollectTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlSelect('spC',$saferPayCollect, 1, $feldnamen[11]). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayAllowCollectTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$saferPayDelivery = array("no" => $l_shop["saferpayNo"],"yes" => $l_shop["saferpayYes"]);
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayDelivery"]);
+$saferPayDelivery = array("no" => g_l('modules_shop','[saferpayNo]'),"yes" => g_l('modules_shop','[saferpayYes]'));
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayDelivery]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlSelect('spD',$saferPayDelivery, 1, $feldnamen[12]). '<span class="small">&nbsp'. $l_shop["saferpayDeliveryTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlSelect('spD',$saferPayDelivery, 1, $feldnamen[12]). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayDeliveryTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$saferPayConfirm = array("no" => $l_shop["saferpayNo"],"yes" => $l_shop["saferpayYes"]);
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayUnotify"]);
+$saferPayConfirm = array("no" => g_l('modules_shop','[saferpayNo]'),"yes" => g_l('modules_shop','[saferpayYes]'));
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayUnotify]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlSelect('spCo',$saferPayConfirm, 1, $feldnamen[13]). '<span class="small">&nbsp'. $l_shop["saferpayUnotifyTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlSelect('spCo',$saferPayConfirm, 1, $feldnamen[13]). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayUnotifyTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayProviderset"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayProviderset]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlTextInput("spPS",30,$feldnamen[14],"","","text",128). '<span class="small">&nbsp'. $l_shop["saferpayProvidersetTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlTextInput("spPS",30,$feldnamen[14],"","","text",128). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayProvidersetTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayCMDPath"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayCMDPath]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlTextInput("spcmdP",30,$feldnamen[15],"","","text",128). '<span class="small">&nbsp'. $l_shop["saferpayCMDPathTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlTextInput("spcmdP",30,$feldnamen[15],"","","text",128). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayCMDPathTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpayconfPath"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpayconfPath]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, htmlTextInput("spconfP",30,$feldnamen[16],"","","text",128). '<span class="small">&nbsp'. $l_shop["saferpayconfPathTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, htmlTextInput("spconfP",30,$feldnamen[16],"","","text",128). '<span class="small">&nbsp'. g_l('modules_shop','[saferpayconfPathTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
-$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["saferpaydesc"]);
+$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[saferpaydesc]'));
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-$_htmlTable->setColContent($_row++, 2, we_class::htmlTextArea("spdesc",2,30,$feldnamen[17]). '<span class="small">&nbsp'. $l_shop["saferpaydescTxt"].' </span>' );
+$_htmlTable->setColContent($_row++, 2, we_class::htmlTextArea("spdesc",2,30,$feldnamen[17]). '<span class="small">&nbsp'. g_l('modules_shop','[saferpaydescTxt]').' </span>' );
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
 
-array_push($Parts, array("html" => $_htmlTable->getHtmlCode())); 
+array_push($Parts, array("html" => $_htmlTable->getHtmlCode()));
 
 $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:document.we_form.submit();"),
 "",
 $we_button->create_button("cancel", "javascript:self.close();")
 );
 
-$frame = we_multiIconBox::getHTML('','100%',$Parts,'30',$_buttons,-1,'','',false, $l_shop["paymentP"],'','','hidden');
+$frame = we_multiIconBox::getHTML('','100%',$Parts,'30',$_buttons,-1,'','',false, g_l('modules_shop','[paymentP]'),'','','hidden');
 
 
 echo '<script type="text/javascript">self.focus();</script>
 </head>
-<body class="weDialogBody"> 
+<body class="weDialogBody">
 
 
 <form name="we_form" method="post" style="margin-top:16px;">

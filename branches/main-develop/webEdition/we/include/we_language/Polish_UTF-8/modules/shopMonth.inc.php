@@ -22,23 +22,19 @@
 
 /**
  * Language file: shop_month.inc.php
- *
  * Provides language strings.
- *
- * Language: Deutsch
+ * Language: English
  */
 
-$l_shop_month[1] = "Januar";
-$l_shop_month[2] = "Februar";
-$l_shop_month[3] = "M&auml;rz";
-$l_shop_month[4] = "April";
-$l_shop_month[5] = "Mai";
-$l_shop_month[6] = "Juni";
-$l_shop_month[7] = "Juli";
-$l_shop_month[8] = "August";
-$l_shop_month[9] = "September";
-$l_shop_month[10] = "Oktober";
-$l_shop_month[11] = "November";
-$l_shop_month[12] = "Dezember";
-
-?>
+$l_modules_shopMonth[1] = "January"; // TRANSLATE
+$l_modules_shopMonth[2] = "Luty";
+$l_modules_shopMonth[3] = "Marzec";
+$l_modules_shopMonth[4] = "Kwiecień";
+$l_modules_shopMonth[5] = "Maj";
+$l_modules_shopMonth[6] = "Czerwiec";
+$l_modules_shopMonth[7] = "Lipiec";
+$l_modules_shopMonth[8] = "Sierpień";
+$l_modules_shopMonth[9] = "Wrzesień";
+$l_modules_shopMonth[10] = "Październik";
+$l_modules_shopMonth[11] = "Listopad";
+$l_modules_shopMonth[12] = "Grudzień";

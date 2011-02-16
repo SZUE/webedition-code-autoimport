@@ -25,8 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_class.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
-
 require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
@@ -241,7 +239,7 @@ $parts = array();
 	}
 
 	array_push($parts, array(
-		'headline' => $l_shop['vat_country']['stateField'],
+		'headline' => g_l('modules_shop','[vat_country][stateField]'),
 		'space' => 200,
 		'html' => we_class::htmlSelect('stateField', $selectFields, 1, $weShippingControl->stateField, false, '', 'value', 200),
 		'noline' => 1
@@ -255,14 +253,14 @@ $parts = array();
 		$selectFields[$id] = $shopVat->text . ' (' . $shopVat->vat . '%)';
 	}
 	array_push($parts, array(
-		'headline' => $l_shop['mwst'],
+		'headline' => g_l('modules_shop','[mwst]'),
 		'space' => 200,
 		'html' => we_class::htmlSelect('vatId', $selectFields, 1, $weShippingControl->vatId, false, '', 'value', 200),
 		'noline' => 1
 		)
 	);
 	array_push($parts, array(
-		'headline' => $l_shop['shipping']['prices_are_net'],
+		'headline' => g_l('modules_shop','[shipping][prices_are_net]'),
 		'space' => 200,
 		'html' => we_class::htmlSelect('isNet', array(1=>g_l('global',"[true]"), 0=>g_l('global',"[false]")), 1, $weShippingControl->isNet, false, '', 'value', 200)
 		)
@@ -276,7 +274,7 @@ $parts = array();
 	}
 
 	array_push($parts, array(
-		'headline' => $l_shop['shipping']['insert_packaging'],
+		'headline' => g_l('modules_shop','[shipping][insert_packaging]'),
 		'space' => 200,
 		'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
 	<tr>
@@ -300,7 +298,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 	array_push(
 		$parts,
 		array(
-			'headline' => $l_shop['shipping']['name'],
+			'headline' => g_l('modules_shop','[shipping][name]'),
 			'space' => 150,
 			'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . hidden('weShippingId', $weShipping->id),
 			'noline' => 1
@@ -310,7 +308,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 	array_push(
 		$parts,
 		array(
-			'headline' => $l_shop['shipping']['countries'],
+			'headline' => g_l('modules_shop','[shipping][countries]'),
 			'space' => 150,
 			'html' => we_class::htmlTextArea('weShipping_countries', 4, 20, implode("\n", $weShipping->countries)),
 			'noline' => 1
@@ -340,14 +338,14 @@ if (isset($weShipping)) { // show the shipping which must be edited
 	array_push(
 		$parts,
 		array(
-			'headline' => $l_shop['shipping']['costs'],
+			'headline' => g_l('modules_shop','[shipping][costs]'),
 			'space' => 150,
 			'html' =>
 	'<table border="0" cellpadding="0" cellspacing="0" width="100%" class="defaultfont" id="shippingCostTable">
 		<tr>
-			<td><b>'.$l_shop['shipping']['order_value'].'</b></td>
+			<td><b>'.g_l('modules_shop','[shipping][order_value]').'</b></td>
 			<td width="10"></td>
-			<td><b>'.$l_shop['shipping']['shipping_costs'].'</b></td>
+			<td><b>'.g_l('modules_shop','[shipping][shipping_costs]').'</b></td>
 			<td width="10"></td>
 		</tr>
 		<tbody id="shippingCostTableEntries">
@@ -385,10 +383,9 @@ print we_multiIconBox::getHTML(
 	'',
 	'',
 	false,
-	$l_shop['shipping']['shipping_package']
+	g_l('modules_shop','[shipping][shipping_package]')
 );
 
 print '
 </form>
 </body></html>';
-?>

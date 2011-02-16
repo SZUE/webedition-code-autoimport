@@ -5,7 +5,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/spellchecker.inc.php');
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 if(empty($_SESSION["user"]["Username"])) {
@@ -149,7 +148,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			weFile::save(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php',$_content);
 
 			print we_htmlElement::jsElement(
-				we_message_reporting::getShowMessageCall( $l_spellchecker['save_settings'], WE_MESSAGE_NOTICE)
+				we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[save_settings]'), WE_MESSAGE_NOTICE)
 			);
 
 		break;
@@ -157,7 +156,7 @@ if(isset($_REQUEST['cmd'][0])) {
 		case  'deleteDict':
 			if(strpos($_REQUEST['cmd'][1],"..")===false) {
 				unlink(WE_SPELLCHECKER_MODULE_DIR.'dict/'.$_REQUEST['cmd'][1].'.zip');
-				$_mess = $l_spellchecker['dict_removed'];
+				$_mess = g_l('modules_spellchecker','[dict_removed]');
 				$_messType = WE_MESSAGE_NOTICE;
 
 				if($GLOBALS['spellcheckerConf']['default'] == $_REQUEST['cmd'][1]) { // if the default dict has been deleted
@@ -175,7 +174,7 @@ if(isset($_REQUEST['cmd'][0])) {
 				}
 
 			} else {
-				$_mess = $l_spellchecker['name_invalid'];
+				$_mess = g_l('modules_spellchecker','[name_invalid]');
 				$_messType = WE_MESSAGE_ERROR;
 			}
 
@@ -195,12 +194,12 @@ if(isset($_REQUEST['cmd'][0])) {
 			$table=new we_htmlTable(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),1,6);
 
 			$table->setRow(0,array('style'=>'background-color: silver;font-weight: bold;'),6);
-			$table->setCol(0,0,array('valign'=>'top','class'=>'small','style'=>'color: white;'), $l_spellchecker['default']);
-			$table->setCol(0,1,array('valign'=>'top','class'=>'small','style'=>'color: white;'), $l_spellchecker['dictionary']);
-			$table->setCol(0,2,array('valign'=>'top','class'=>'small','style'=>'color: white;'), $l_spellchecker['language']);
-			$table->setCol(0,3,array('valign'=>'top','class'=>'small','style'=>'color: white;'), $l_spellchecker['active']);
-			$table->setCol(0,4,array('valign'=>'top','class'=>'small','style'=>'color: white;'), $l_spellchecker['refresh']);
-			$table->setCol(0,5,array('valign'=>'top','class'=>'small','style'=>'color: white;'), $l_spellchecker['delete']);
+			$table->setCol(0,0,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[default]'));
+			$table->setCol(0,1,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[dictionary]'));
+			$table->setCol(0,2,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[language]'));
+			$table->setCol(0,3,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[active]'));
+			$table->setCol(0,4,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[refresh]'));
+			$table->setCol(0,5,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[delete]'));
 
 			$_lanSelect = new we_htmlSelect(array('size'=>1,'style'=>'width: 100px;','class'=>'weSelect'));
 			foreach($GLOBALS['weFrontendLanguages'] as $klan=>$vlan) {

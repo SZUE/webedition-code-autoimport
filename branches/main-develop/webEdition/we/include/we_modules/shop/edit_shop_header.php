@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
@@ -23,9 +23,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/java_menu/weJavaMenu.inc.php");
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
 include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 
 protect();
@@ -46,7 +43,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules
 
 	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
 	<script language="JavaScript" type="text/javascript">
-        function menuaction(cmd){                
+        function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
 	    }
 	</script>
@@ -66,6 +63,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules
 				?>
 				</td>
 			</tr>
-		</table> 
+		</table>
 	</body>
 </html>

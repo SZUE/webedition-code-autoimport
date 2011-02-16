@@ -27,11 +27,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop_month.inc.php");
-}
-
 $selectedYear = isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date("Y");
 $selectedMonth = isset($_REQUEST['ViewMonth']) ? $_REQUEST['ViewMonth'] : '0';
 $orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'IntOrderID';
@@ -119,11 +114,8 @@ function yearSelect($select_name) {
 }
 
 function monthSelect($select_name) {
-
-	global $l_shop_month;
-
 	$opts[0] = '-';
-	$opts = array_merge($opts, $l_shop_month);
+	$opts = array_merge($opts, g_l('modules_shopMonth',''));
 
 	return we_class::htmlSelect($select_name, $opts, 1, (isset($_REQUEST[$select_name]) ? $_REQUEST[$select_name] : '' ), false, 'id="' . $select_name . '"'  );
 }
@@ -146,7 +138,7 @@ print '
 	var countSetTitle = 0;
 	function setHeaderTitle() {
 		pre = "";
-		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? $l_shop_month[$_REQUEST['ViewMonth']] . " ": "") . $_REQUEST['ViewYear'] . '";
+		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? g_l('modules_shopMonth','['.$_REQUEST['ViewMonth'].']') . " ": "") . $_REQUEST['ViewYear'] . '";
 		if(parent.edheader && parent.edheader.setTitlePath) {
 			parent.edheader.hasPathGroup = true;
 			parent.edheader.setPathGroup(pre);
@@ -200,14 +192,14 @@ $feldnamen = explode("|",$DB_WE->f("strFelder"));
 	// get header of total revenue of a year
 
 	array_push($parts, array(
-		'headline' => '<label for="ViewYear">' . $l_shop["selectYear"] . '</label>',
+		'headline' => '<label for="ViewYear">' . g_l('modules_shop','[selectYear]') . '</label>',
 		'html' => yearSelect("ViewYear"),
 		'space' => 150,
 		'noline' => 1
 		)
 	);
 	array_push($parts, array(
-		'headline' => '<label for="ViewMonth">' . $l_shop["selectMonth"] . '</label>',
+		'headline' => '<label for="ViewMonth">' . g_l('modules_shop','[selectMonth]') . '</label>',
 		'html' => monthSelect("ViewMonth"),
 		'space' => 150,
 		'noline' => 1
@@ -384,7 +376,7 @@ $vatTable .= '
 <tr>
 	<td>' . getPixel(1,10) . '</td>
 <tr>
-	<td colspan="6" class="shopContentfontR">' . $l_shop["includedVat"] . ':</td>
+	<td colspan="6" class="shopContentfontR">' . g_l('modules_shop','[includedVat]') . ':</td>
 </tr>
 ';
 			foreach ($articleVatArray as $_vat => $_amount) {
@@ -403,13 +395,13 @@ $vatTable .= '
 			'html' => '
 <table class="defaultfont" width="680" cellpadding="2">
 <tr>
-	<th>' . $l_shop["anual"] . '</th>
-	<th>' . ($selectedMonth ? $l_shop["monat"] : '' ) . '</th>
-	<th>' . $l_shop["anzahl"] . '</th>
-	<th>' . $l_shop["unbearb"] . '</th>
-	<th>' . $l_shop["schonbezahlt"] . '</th>
-	<th>' . $l_shop["unbezahlt"] . '</th>
-	<th>' . $l_shop["umsatzgesamt"] . '</th>
+	<th>' . g_l('modules_shop','[anual]') . '</th>
+	<th>' . ($selectedMonth ? g_l('modules_shop','[monat]') : '' ) . '</th>
+	<th>' . g_l('modules_shop','[anzahl]') . '</th>
+	<th>' . g_l('modules_shop','[unbearb]') . '</th>
+	<th>' . g_l('modules_shop','[schonbezahlt]') . '</th>
+	<th>' . g_l('modules_shop','[unbezahlt]') . '</th>
+	<th>' . g_l('modules_shop','[umsatzgesamt]') . '</th>
 </tr>
 <tr class="shopContentfont">
 	<td>' . $selectedYear . '</td>
@@ -426,12 +418,12 @@ $vatTable .= '
 			)
 		);
 
-		$headline[0]["dat"] = getTitleLink($l_shop["bestellung"], 'IntOrderID');
-		$headline[1]["dat"] = getTitleLink($l_shop["artName"], 'shoptitle');
-		$headline[2]["dat"] = getTitleLink($l_shop["artPrice"], 'Price');
-		$headline[3]["dat"] = getTitleLink($l_shop["artOrdD"], 'DateOrder');
-		$headline[4]["dat"] = getTitleLink($l_shop["artID"], 'IntArticleID');
-		$headline[5]["dat"] = getTitleLink($l_shop["artPay"], 'DatePayment');
+		$headline[0]["dat"] = getTitleLink(g_l('modules_shop','[bestellung]'), 'IntOrderID');
+		$headline[1]["dat"] = getTitleLink(g_l('modules_shop','[artName]'), 'shoptitle');
+		$headline[2]["dat"] = getTitleLink(g_l('modules_shop','[artPrice]'), 'Price');
+		$headline[3]["dat"] = getTitleLink(g_l('modules_shop','[artOrdD]'), 'DateOrder');
+		$headline[4]["dat"] = getTitleLink(g_l('modules_shop','[artID]'), 'IntArticleID');
+		$headline[5]["dat"] = getTitleLink(g_l('modules_shop','[artPay]'), 'DatePayment');
 
 		// we need functionalitty to order these
 
@@ -446,7 +438,7 @@ $vatTable .= '
 
 			$variantStr = '';
 			if ( isset($articleData['WE_VARIANT']) && $articleData['WE_VARIANT'] ) {
-				$variantStr = '<br />' . $l_shop["variant"] . ': ' . $articleData['WE_VARIANT'];
+				$variantStr = '<br />' . g_l('modules_shop','[variant]') . ': ' . $articleData['WE_VARIANT'];
 			}
 
 			$customFields = '';
@@ -464,7 +456,7 @@ $vatTable .= '
 			$content[$nr][2]['dat'] = numfom($orderRows[$i]['Price']) . $waehr;
 			$content[$nr][3]['dat'] = $orderRows[$i]['formatDateOrder'];
 			$content[$nr][4]['dat'] = $orderRows[$i]['IntArticleID'];
-			$content[$nr][5]['dat'] = ($orderRows[$i]['DatePayment'] != 0 ? $orderRows[$i]['formatDatePayment'] : '<span class="npshopContentfontR">' . $l_shop['artNPay'] . '</span>');
+			$content[$nr][5]['dat'] = ($orderRows[$i]['DatePayment'] != 0 ? $orderRows[$i]['formatDatePayment'] : '<span class="npshopContentfontR">' . g_l('modules_shop','[artNPay]') . '</span>');
 
 		}
 
@@ -488,7 +480,7 @@ $vatTable .= '
 
 	} else {
 		array_push($parts, array(
-			'html' => $l_shop["NoRevenue"],
+			'html' => g_l('modules_shop','[NoRevenue]'),
 			'space'=> 0
 			)
 		);

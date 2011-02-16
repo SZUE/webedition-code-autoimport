@@ -26,16 +26,15 @@
  * Language: English
  */
 
-$l_shop_month[1] = "Январь";
-$l_shop_month[2] = "Февраль";
-$l_shop_month[3] = "Март";
-$l_shop_month[4] = "Апрель";
-$l_shop_month[5] = "Май";
-$l_shop_month[6] = "Июнь";
-$l_shop_month[7] = "Июль";
-$l_shop_month[8] = "Август";
-$l_shop_month[9] = "Сентябрь";
-$l_shop_month[10] = "Октябрь";
-$l_shop_month[11] = "Ноябрь";
-$l_shop_month[12] = "Декабрь";
-?>
+$l_modules_shopMonth[1] = "Januari";
+$l_modules_shopMonth[2] = "Februari";
+$l_modules_shopMonth[3] = "Maart";
+$l_modules_shopMonth[4] = "April"; // TRANSLATE
+$l_modules_shopMonth[5] = "Mei";
+$l_modules_shopMonth[6] = "Juni";
+$l_modules_shopMonth[7] = "Juli";
+$l_modules_shopMonth[8] = "Augustus";
+$l_modules_shopMonth[9] = "September"; // TRANSLATE
+$l_modules_shopMonth[10] = "Oktober";
+$l_modules_shopMonth[11] = "November"; // TRANSLATE
+$l_modules_shopMonth[12] = "December"; // TRANSLATE

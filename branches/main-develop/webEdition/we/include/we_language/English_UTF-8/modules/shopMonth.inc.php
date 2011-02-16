@@ -26,16 +26,15 @@
  * Language: English
  */
 
-$l_shop_month[1] = "January";
-$l_shop_month[2] = "February";
-$l_shop_month[3] = "March";
-$l_shop_month[4] = "April";
-$l_shop_month[5] = "May";
-$l_shop_month[6] = "June";
-$l_shop_month[7] = "July";
-$l_shop_month[8] = "August";
-$l_shop_month[9] = "September";
-$l_shop_month[10] = "October";
-$l_shop_month[11] = "November";
-$l_shop_month[12] = "December";
-?>
+$l_modules_shopMonth[1] = "January";
+$l_modules_shopMonth[2] = "February";
+$l_modules_shopMonth[3] = "March";
+$l_modules_shopMonth[4] = "April";
+$l_modules_shopMonth[5] = "May";
+$l_modules_shopMonth[6] = "June";
+$l_modules_shopMonth[7] = "July";
+$l_modules_shopMonth[8] = "August";
+$l_modules_shopMonth[9] = "September";
+$l_modules_shopMonth[10] = "October";
+$l_modules_shopMonth[11] = "November";
+$l_modules_shopMonth[12] = "December";

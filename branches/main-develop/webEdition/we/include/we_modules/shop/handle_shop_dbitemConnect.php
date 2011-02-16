@@ -23,11 +23,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop_month.inc.php");
-}
-
 protect();
 
 // grep the last element from the year-set, wich is the current year
@@ -51,11 +46,11 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 	  if(empty($classid)){
 	  	$classid = $fe[0];
 	  }
-     
+
       //$resultO = count($fe);
       $resultO = array_shift ($fe);
-      
-  
+
+
      $dbTitlename="shoptitle";
    	// wether the resultset ist empty?
 	$DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='$dbTitlename'");

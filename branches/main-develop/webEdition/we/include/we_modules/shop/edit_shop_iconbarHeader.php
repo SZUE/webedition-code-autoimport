@@ -22,7 +22,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
@@ -65,7 +64,7 @@ $cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid
 $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
 
    if ($DB_WE->next_record()){
-	$headline ='<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $DB_WE->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf($l_shop["lastOrder"], $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")) . '</a>';
+	$headline ='<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $DB_WE->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop','[lastOrder]'), $DB_WE->f("IntOrderID"), $DB_WE->f("orddate")) . '</a>';
    }else{
 	$headline = "";
    }

@@ -21,9 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
 
 protect();
 
@@ -107,11 +104,11 @@ function doUnload() {
 		case "delete_shop":
 
 			if ( top.content && top.content.shop_properties.edbody.hot && top.content.shop_properties.edbody.hot == 1 ) {
-				if(confirm('<?php echo $l_shop["del_shop"]; ?>')){
+				if(confirm('<?php echo g_l('modules_shop','[del_shop]'); ?>')){
 					top.content.shop_properties.edbody.deleteorder();
 				}
 			} else {
-				<?php print we_message_reporting::getShowMessageCall( $l_shop["nothing_to_delete"], WE_MESSAGE_NOTICE); ?>
+				<?php print we_message_reporting::getShowMessageCall( g_l('modules_shop','[nothing_to_delete]'), WE_MESSAGE_NOTICE); ?>
 			}
 
 		break;
@@ -119,7 +116,7 @@ function doUnload() {
 			if ( top.content && top.content.shop_properties.edbody.hot && top.content.shop_properties.edbody.hot == 1 ) {
 				top.content.shop_properties.edbody.neuerartikel();
 			} else {
-				<?php print we_message_reporting::getShowMessageCall($l_shop["no_order_there"], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('modules_shop','[no_order_there]'), WE_MESSAGE_ERROR); ?>
 			}
 		break;
 
@@ -208,7 +205,7 @@ function doUnload() {
     fr.write("</HEAD>\n");
     fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=5 topmargin=0 marginheight=0 marginwidth=5>\n");
     fr.write("<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td class=\"tree\">\n<NOBR>\n");
-    fr.write("<tr><td class=\"tree\">\n<NOBR>\n<a href=javascript:// onClick=\"doYearClick("+ top.yearshop +");return true;\" title=\"Ums�tze des Gesch�ftsjahres\" ><?php print $l_shop["treeYear"];?>: <strong>" + top.yearshop + " </strong></a> <br/>\n");
+    fr.write("<tr><td class=\"tree\">\n<NOBR>\n<a href=javascript:// onClick=\"doYearClick("+ top.yearshop +");return true;\" title=\"Ums�tze des Gesch�ftsjahres\" ><?php print g_l('modules_shop','[treeYear]');?>: <strong>" + top.yearshop + " </strong></a> <br/>\n");
 
     zeichne("0","");
     fr.write("</NOBR>\n</td></tr></table>\n");
@@ -397,7 +394,7 @@ fr.write("&nbsp;");
 
     $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
        while($DB_WE->next_record()){
-         print "  menuDaten.add(new urlEntry('link.gif','".$DB_WE->f("IntOrderID")."',".$DB_WE->f("mdate").",'".$DB_WE->f("IntOrderID").". ".$l_shop["bestellung"]." ".$DB_WE->f("orddate")."','shop','".SHOP_TABLE."','".(($DB_WE->f("DateShipping")>0)?0:1)."'));\n";
+         print "  menuDaten.add(new urlEntry('link.gif','".$DB_WE->f("IntOrderID")."',".$DB_WE->f("mdate").",'".$DB_WE->f("IntOrderID").". ".g_l('modules_shop','[bestellung]')." ".$DB_WE->f("orddate")."','shop','".SHOP_TABLE."','".(($DB_WE->f("DateShipping")>0)?0:1)."'));\n";
        	 if($DB_WE->f("DateShipping")<=0){
        	    eval('if(isset($l' . $DB_WE->f("mdate") . ')) {$l'. $DB_WE->f("mdate") .'++;} else { $l'. $DB_WE->f("mdate") .' = 1;}');
        	 	//eval('$l'.$DB_WE->f("mdate")."++;");
@@ -414,7 +411,7 @@ fr.write("&nbsp;");
     	//eval('$r = $v'.$f.$year.";");
     	eval('$k = (isset($l' . $f . $year . ') ? $l' . $f . $year .' : ""); ');
     	//eval('$k = $l'.$f.$year.";");
-    	echo "menuDaten.add(new dirEntry('folder.gif',$f+''+$year,0, '".(($f<10)?"0".$f:$f).' '.$l_shop["sl"]." ".g_l('date','[month][long]['.($f-1).']'). " (".(($k>0)?"<b>".$k."</b>":0)."/".(($r>0)?$r:0).")',0,'','',".(($k>0)?1:0)."));";
+    	echo "menuDaten.add(new dirEntry('folder.gif',$f+''+$year,0, '".(($f<10)?"0".$f:$f).' '.g_l('modules_shop','[sl]')." ".g_l('date','[month][long]['.($f-1).']'). " (".(($k>0)?"<b>".$k."</b>":0)."/".(($r>0)?$r:0).")',0,'','',".(($k>0)?1:0)."));";
        } //'".$DB_WE->f("mdate")."'
        echo "top.yearshop = '$year';";
     ?>

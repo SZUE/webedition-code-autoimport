@@ -23,10 +23,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once(WE_SHOP_MODULE_DIR . 'shopFunctions.inc.php');
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
-
 protect();
 
 htmlTop();
@@ -35,7 +31,7 @@ print STYLESHEET;
 
 $da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" )?"%d.%m.%y":"%m/%d/%y";
 if(isset($_REQUEST["cid"]) ){
-	
+
 	$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID='" . abs($_REQUEST["cid"]) . "'",$DB_WE);
 	if (is_array($foo)){
 		$Kundenname = $foo["Forename"]." ".$foo["Surname"];
@@ -45,5 +41,5 @@ if(isset($_REQUEST["cid"]) ){
 ?>
 </head>
 <body class="weEditorBody" onUnload="doUnload()">
-<?php print  htmlDialogLayout($orderList,$l_shop["order_liste"]."&nbsp;".$Kundenname);?>   
+<?php print  htmlDialogLayout($orderList,g_l('modules_shop','[order_liste]')."&nbsp;".$Kundenname);?>
 </body></html>

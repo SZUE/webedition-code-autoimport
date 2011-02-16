@@ -22,10 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
-
 protect();
 
 htmlTop();
@@ -40,8 +36,8 @@ $Kundenname = $foo["Forename"]." ".$foo["Surname"];
 //$DB_WE->query("SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ".SHOP_TABLE." WHERE IntCustomerID=$cid GROUP BY IntOrderID ORDER BY IntOrderID");
 
 $Bestelldaten = '<table border="0" cellpadding="2" cellspacing="6" width="300">
-				<tr><td class="defaultfont" colspan="2"><b>'.$l_shop["bestellung"].'</b></td>
-				<td class="defaultfont"><b>'.$l_shop["datum"].'</b></td>
+				<tr><td class="defaultfont" colspan="2"><b>'.g_l('modules_shop','[bestellung]').'</b></td>
+				<td class="defaultfont"><b>'.g_l('modules_shop','[datum]').'</b></td>
 				</tr>
 				<tr><td colspan=3></tr>';
 
@@ -49,20 +45,20 @@ $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') 
 while($DB_WE->next_record()){
 //echo "<br>".$DB_WE->f("Price");
  $Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_PATH . "edit_shop_properties.php?bid=".$DB_WE->f("IntOrderID")."' class=\"defaultfont\"><b>".$DB_WE->f("IntOrderID").".</b></a></td>";
- 
- 
- $Bestelldaten .= "<td class='defaultgray'>".$l_shop["bestellungvom"]."</td>";
+
+
+ $Bestelldaten .= "<td class='defaultgray'>".g_l('modules_shop','[bestellungvom]')."</td>";
  $Bestelldaten .= "<td class='defaultfont'><a href='" . WE_SHOP_MODULE_PATH . "edit_shop_editorFrameset.php?bid=".$DB_WE->f("IntOrderID")."' class=\"defaultfont\" target=\"shop_properties\"><b>".$DB_WE->f("orddate")."</b></a></td></tr>";
-       	 
+
 }
 $Bestelldaten .= "</table>";
 }else{
 
-$Bestelldaten = $l_shop["keinedaten"];
+$Bestelldaten = g_l('modules_shop','[keinedaten]');
 
 }
 ?>
 </head>
 <body class="weEditorBody" onUnload="doUnload()">
-<?php print  htmlDialogLayout($Bestelldaten,$l_shop["order_liste"]."&nbsp;".$Kundenname);?>   
+<?php print  htmlDialogLayout($Bestelldaten,g_l('modules_shop','[order_liste]')."&nbsp;".$Kundenname);?>
 </body></html>

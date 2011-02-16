@@ -21,8 +21,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_util.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/shop.inc.php');
-
 
 
 /**
@@ -289,7 +287,7 @@ function we_tag_saferpay($attribs,$content) {
 $command = $execPath."saferpay -payinit -p $confPath $strAttributes";
 
  if (!$execPath || !$confPath ){
- 	 print $GLOBALS["l_shop"]["saferpayError"];
+ 	 print g_l('modules_shop','[saferpayError]');
  	 print $strAttributes;
      exit;
  }else{

@@ -25,8 +25,6 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop_month.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 protect();
@@ -35,20 +33,13 @@ htmlTop();
 
 print STYLESHEET;
 
-if (!isset($l_shop["lastOrd"])){
-	$l_shop["lastOrd"] = "";
-}
-if (!isset($l_shop["lastNo"])){
-	$l_shop["lastNo"] = "";
-}
-
 $bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
 
 $cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
 $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
 if ($DB_WE->next_record()) {
-	$headline = $l_shop["lastOrd"]." ".$l_shop["lastNo"]." ". $DB_WE->f("IntOrderID")."&nbsp;&raquo; ".$l_shop["bestellung"]." ".$DB_WE->f("orddate");
-	$textPost = sprintf($l_shop["orderNo"],$_REQUEST['bid'],$DB_WE->f("orddate"));
+	$headline = g_l('modules_shop','[lastOrd]')." ".g_l('modules_shop','[lastNo]')." ".$DB_WE->f("IntOrderID")."&nbsp;&raquo; ".g_l('modules_shop','[bestellung]')." ".$DB_WE->f("orddate");
+	$textPost = sprintf(g_l('modules_shop','[orderNo]'),$_REQUEST['bid'],$DB_WE->f("orddate"));
 } else {
 	$headline = "";
 	$textPost = "";
@@ -73,9 +64,9 @@ if (isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00'){
 	*/
 }
 
-$textPre = isset($_REQUEST['bid']) && $_REQUEST['bid'] > 0 ? $l_shop['orderList']['order'] : $l_shop["order_view"];
-$textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid'])>5 ? $l_shop_month[substr($_REQUEST['mid'],0,-5)] . " " . substr($_REQUEST['mid'],-5,4): substr($_REQUEST['mid'],1)) : $textPost;
-//$textPost = sprintf($l_shop["orderNo"],$_REQUEST['bid'],"post");
+$textPre = isset($_REQUEST['bid']) && $_REQUEST['bid'] > 0 ? g_l('modules_shop','[orderList][order]') : g_l('modules_shop','[order_view]');
+$textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid'])>5 ? g_l('modules_shopMonth','['.substr($_REQUEST['mid'],0,-5).']') . " " . substr($_REQUEST['mid'],-5,4): substr($_REQUEST['mid'],1)) : $textPost;
+//$textPost = sprintf(g_l('modules_shop','[orderNo]'),$_REQUEST['bid'],"post");
 $we_tabs->onResize();
 $tab_head = $we_tabs->getHeader();
 
