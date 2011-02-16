@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 
 protect();
 htmlTop(g_l('global','[select_color]'));
@@ -100,7 +99,7 @@ if(z != 0){
 	';
 
 	$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
-	$color = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["color"]);
+	$color = htmlFormElementTable($foo,g_l('wysiwyg',"[color]"));
 
 if($_REQUEST["we_cmd"][0]){
 	$buttons =

@@ -26,22 +26,22 @@
  */
 include_once(dirname(__FILE__)."/wysiwyg_js.inc.php");
 
-$GLOBALS["l_wysiwyg"]["window_title"] = "Edytuj pole '%s'";
+$l_wysiwyg["window_title"] = "Edytuj pole '%s'";
 
-$GLOBALS["l_wysiwyg"]["format"] = "Styl";
-$GLOBALS["l_wysiwyg"]["fontsize"] = "Wilekość czcionki";
-$GLOBALS["l_wysiwyg"]["fontname"] = "Nazwa czcionki";
-$GLOBALS["l_wysiwyg"]["css_style"] = "Styl CSS";
+$l_wysiwyg["format"] = "Styl";
+$l_wysiwyg["fontsize"] = "Wilekość czcionki";
+$l_wysiwyg["fontname"] = "Nazwa czcionki";
+$l_wysiwyg["css_style"] = "Styl CSS";
 
-$GLOBALS["l_wysiwyg"]["normal"] = "Normal"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["h1"] = "Nagłówek 1";
-$GLOBALS["l_wysiwyg"]["h2"] = "Nagłówek 2";
-$GLOBALS["l_wysiwyg"]["h3"] = "Nagłówek 3";
-$GLOBALS["l_wysiwyg"]["h4"] = "Nagłówek 4";
-$GLOBALS["l_wysiwyg"]["h5"] = "Nagłówek 5";
-$GLOBALS["l_wysiwyg"]["h6"] = "Nagłówek 6";
-$GLOBALS["l_wysiwyg"]["pre"] = "Sformatowano";
-$GLOBALS["l_wysiwyg"]["address"] = "Adres";
+$l_wysiwyg["normal"] = "Normal"; // TRANSLATE
+$l_wysiwyg["h1"] = "Nagłówek 1";
+$l_wysiwyg["h2"] = "Nagłówek 2";
+$l_wysiwyg["h3"] = "Nagłówek 3";
+$l_wysiwyg["h4"] = "Nagłówek 4";
+$l_wysiwyg["h5"] = "Nagłówek 5";
+$l_wysiwyg["h6"] = "Nagłówek 6";
+$l_wysiwyg["pre"] = "Sformatowano";
+$l_wysiwyg["address"] = "Adres";
 
 $GLOBALS['l_wysiwyg']['spellcheck'] = 'Spellchecking'; // TRANSLATE
 
@@ -51,128 +51,128 @@ $GLOBALS['l_wysiwyg']['spellcheck'] = 'Spellchecking'; // TRANSLATE
  *****************************************************************************/
 
 // REMEMBER: context menus cannot display any umlauts!
-$GLOBALS["l_wysiwyg"]["cut"] = "Cut"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["copy"] = "Kopiuj";
-$GLOBALS["l_wysiwyg"]["paste"] = "Wklej";
-$GLOBALS["l_wysiwyg"]["insert_row"] = "Wstaw wiersz";
-$GLOBALS["l_wysiwyg"]["delete_rows"] = "Kasuj wiersze";
-$GLOBALS["l_wysiwyg"]["insert_colmn"] = "Wstaw kolumnę";
-$GLOBALS["l_wysiwyg"]["delete_colmns"] = "Kasuj kolumny";
-$GLOBALS["l_wysiwyg"]["insert_cell"] = "Wstaw komórkę";
-$GLOBALS["l_wysiwyg"]["delete_cells"] = "Kasuj komórki";
-$GLOBALS["l_wysiwyg"]["merge_cells"] = "Scal komórki";
-$GLOBALS["l_wysiwyg"]["split_cell"] = "Podziel komórki";
+$l_wysiwyg["cut"] = "Cut"; // TRANSLATE
+$l_wysiwyg["copy"] = "Kopiuj";
+$l_wysiwyg["paste"] = "Wklej";
+$l_wysiwyg["insert_row"] = "Wstaw wiersz";
+$l_wysiwyg["delete_rows"] = "Kasuj wiersze";
+$l_wysiwyg["insert_colmn"] = "Wstaw kolumnę";
+$l_wysiwyg["delete_colmns"] = "Kasuj kolumny";
+$l_wysiwyg["insert_cell"] = "Wstaw komórkę";
+$l_wysiwyg["delete_cells"] = "Kasuj komórki";
+$l_wysiwyg["merge_cells"] = "Scal komórki";
+$l_wysiwyg["split_cell"] = "Podziel komórki";
 
 /*****************************************************************************
  * ALT-TEXTS FOR BUTTONS
  *****************************************************************************/
 
-$GLOBALS["l_wysiwyg"]["subscript"] = "Index dolny";
-$GLOBALS["l_wysiwyg"]["superscript"] = "Index górny";
-$GLOBALS["l_wysiwyg"]["justify_full"] = "Wyjustuj";
-$GLOBALS["l_wysiwyg"]["strikethrought"] = "Przekreślenie";
-$GLOBALS["l_wysiwyg"]["removeformat"] = "Kasuj formatowanie";
-$GLOBALS["l_wysiwyg"]["removetags"] = "Remove tags, styles and comments"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["editcell"] = "Edytuj komórkę tabeli";
-$GLOBALS["l_wysiwyg"]["edittable"] = "Edytuj tabelę";
-$GLOBALS["l_wysiwyg"]["insert_row2"] = "Wstaw wiersz";
-$GLOBALS["l_wysiwyg"]["delete_rows2"] = "Kasuj wiersze";
-$GLOBALS["l_wysiwyg"]["insert_colmn2"] = "Wstaw kolumnę";
-$GLOBALS["l_wysiwyg"]["delete_colmns2"] = "Kasuj kolumny";
-$GLOBALS["l_wysiwyg"]["insert_cell2"] = "Wstaw komórkę";
-$GLOBALS["l_wysiwyg"]["delete_cells2"] = "Kasuj komórki";
-$GLOBALS["l_wysiwyg"]["merge_cells2"] = "Scal komórki";
-$GLOBALS["l_wysiwyg"]["split_cell2"] = "Podziel komórki";
-$GLOBALS["l_wysiwyg"]["insert_edit_table"] = "Tabela wklej/edytuj";
-$GLOBALS["l_wysiwyg"]["insert_edit_image"] = "Grafika wklej/edytuj";
-$GLOBALS["l_wysiwyg"]["edit_style_class"] = "Edytuj klasę (Style)";
-$GLOBALS["l_wysiwyg"]["insert_br"] = "Wstaw przełamanie linii (SHIFT + RETURN)";
-$GLOBALS["l_wysiwyg"]["insert_p"] = "Wstaw paragraf";
-$GLOBALS["l_wysiwyg"]["edit_sourcecode"] = "Edytuj kod źródłowy";
-$GLOBALS["l_wysiwyg"]["show_details"] = "Pokaż szczegóły";
-$GLOBALS["l_wysiwyg"]["rtf_import"] = "Importuj RTF";
-$GLOBALS["l_wysiwyg"]["unlink"] = "Usuń Hyperlink";
-$GLOBALS["l_wysiwyg"]["hyperlink"] = "Hyperlink wklej/edytuj";
-$GLOBALS["l_wysiwyg"]["back_color"] = "Kolor tła";
-$GLOBALS["l_wysiwyg"]["fore_color"] = "Kolor panelu";
-$GLOBALS["l_wysiwyg"]["outdent"] = "Usuń wcięcie";
-$GLOBALS["l_wysiwyg"]["indent"] = "Wcięcie";
-$GLOBALS["l_wysiwyg"]["unordered_list"] = "Nieuporządkowana lista";
-$GLOBALS["l_wysiwyg"]["ordered_list"] = "Uporządkowana lista";
-$GLOBALS["l_wysiwyg"]["justify_right"] = "Wyrównaj do prawej";
-$GLOBALS["l_wysiwyg"]["justify_center"] = "Centruj";
-$GLOBALS["l_wysiwyg"]["justify_left"] = "Wyrównaj do lewej";
-$GLOBALS["l_wysiwyg"]["underline"] = "Podkreślenie";
-$GLOBALS["l_wysiwyg"]["italic"] = "Kursywa";
-$GLOBALS["l_wysiwyg"]["bold"] = "Wytłuść";
-$GLOBALS["l_wysiwyg"]["fullscreen"] = "Otwórz edytor w trybie Fullscreen";
-$GLOBALS["l_wysiwyg"]["edit_source"] = "Edytuj kod źródłowy";
-$GLOBALS["l_wysiwyg"]["fullscreen_editor"] = "Fullscreen edytor";
-$GLOBALS["l_wysiwyg"]["table_props"] = "Edytuj tabelę";
-$GLOBALS["l_wysiwyg"]["insert_table"] = "Wstaw tabelę";
-$GLOBALS["l_wysiwyg"]["edit_stylesheet"] = "Edytuj klasy Stylesheet";
+$l_wysiwyg["subscript"] = "Index dolny";
+$l_wysiwyg["superscript"] = "Index górny";
+$l_wysiwyg["justify_full"] = "Wyjustuj";
+$l_wysiwyg["strikethrought"] = "Przekreślenie";
+$l_wysiwyg["removeformat"] = "Kasuj formatowanie";
+$l_wysiwyg["removetags"] = "Remove tags, styles and comments"; // TRANSLATE
+$l_wysiwyg["editcell"] = "Edytuj komórkę tabeli";
+$l_wysiwyg["edittable"] = "Edytuj tabelę";
+$l_wysiwyg["insert_row2"] = "Wstaw wiersz";
+$l_wysiwyg["delete_rows2"] = "Kasuj wiersze";
+$l_wysiwyg["insert_colmn2"] = "Wstaw kolumnę";
+$l_wysiwyg["delete_colmns2"] = "Kasuj kolumny";
+$l_wysiwyg["insert_cell2"] = "Wstaw komórkę";
+$l_wysiwyg["delete_cells2"] = "Kasuj komórki";
+$l_wysiwyg["merge_cells2"] = "Scal komórki";
+$l_wysiwyg["split_cell2"] = "Podziel komórki";
+$l_wysiwyg["insert_edit_table"] = "Tabela wklej/edytuj";
+$l_wysiwyg["insert_edit_image"] = "Grafika wklej/edytuj";
+$l_wysiwyg["edit_style_class"] = "Edytuj klasę (Style)";
+$l_wysiwyg["insert_br"] = "Wstaw przełamanie linii (SHIFT + RETURN)";
+$l_wysiwyg["insert_p"] = "Wstaw paragraf";
+$l_wysiwyg["edit_sourcecode"] = "Edytuj kod źródłowy";
+$l_wysiwyg["show_details"] = "Pokaż szczegóły";
+$l_wysiwyg["rtf_import"] = "Importuj RTF";
+$l_wysiwyg["unlink"] = "Usuń Hyperlink";
+$l_wysiwyg["hyperlink"] = "Hyperlink wklej/edytuj";
+$l_wysiwyg["back_color"] = "Kolor tła";
+$l_wysiwyg["fore_color"] = "Kolor panelu";
+$l_wysiwyg["outdent"] = "Usuń wcięcie";
+$l_wysiwyg["indent"] = "Wcięcie";
+$l_wysiwyg["unordered_list"] = "Nieuporządkowana lista";
+$l_wysiwyg["ordered_list"] = "Uporządkowana lista";
+$l_wysiwyg["justify_right"] = "Wyrównaj do prawej";
+$l_wysiwyg["justify_center"] = "Centruj";
+$l_wysiwyg["justify_left"] = "Wyrównaj do lewej";
+$l_wysiwyg["underline"] = "Podkreślenie";
+$l_wysiwyg["italic"] = "Kursywa";
+$l_wysiwyg["bold"] = "Wytłuść";
+$l_wysiwyg["fullscreen"] = "Otwórz edytor w trybie Fullscreen";
+$l_wysiwyg["edit_source"] = "Edytuj kod źródłowy";
+$l_wysiwyg["fullscreen_editor"] = "Fullscreen edytor";
+$l_wysiwyg["table_props"] = "Edytuj tabelę";
+$l_wysiwyg["insert_table"] = "Wstaw tabelę";
+$l_wysiwyg["edit_stylesheet"] = "Edytuj klasy Stylesheet";
 
 /*****************************************************************************
  * THE REST
  *****************************************************************************/
 
-$GLOBALS["l_wysiwyg"]["url"] = "URL"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["image_url"] = "Obrazek URL";
-$GLOBALS["l_wysiwyg"]["width"] = "Szerokość";
-$GLOBALS["l_wysiwyg"]["height"] = "Wysokość";
-$GLOBALS["l_wysiwyg"]["hspace"] = "Odstęp poziomy";
-$GLOBALS["l_wysiwyg"]["vspace"] = "Odstęp pionowy";
-$GLOBALS["l_wysiwyg"]["border"] = "Krawędź";
-$GLOBALS["l_wysiwyg"]["altText"] = "Tekst alternatywny";
-$GLOBALS["l_wysiwyg"]["alignment"] = "Wyrównanie";
+$l_wysiwyg["url"] = "URL"; // TRANSLATE
+$l_wysiwyg["image_url"] = "Obrazek URL";
+$l_wysiwyg["width"] = "Szerokość";
+$l_wysiwyg["height"] = "Wysokość";
+$l_wysiwyg["hspace"] = "Odstęp poziomy";
+$l_wysiwyg["vspace"] = "Odstęp pionowy";
+$l_wysiwyg["border"] = "Krawędź";
+$l_wysiwyg["altText"] = "Tekst alternatywny";
+$l_wysiwyg["alignment"] = "Wyrównanie";
 
-$GLOBALS["l_wysiwyg"]["external_image"] = "webEdition-zew. grafika";
-$GLOBALS["l_wysiwyg"]["internal_image"] = "webEdition-wew. grafika";
+$l_wysiwyg["external_image"] = "webEdition-zew. grafika";
+$l_wysiwyg["internal_image"] = "webEdition-wew. grafika";
 
-$GLOBALS["l_wysiwyg"]["bgcolor"] = "Kolor tła";
-$GLOBALS["l_wysiwyg"]["cellspacing"] = "Odległość komórek";
-$GLOBALS["l_wysiwyg"]["cellpadding"] = "Margines w komórkach tabeli";
-$GLOBALS["l_wysiwyg"]["rows"] = "Wiersze";
-$GLOBALS["l_wysiwyg"]["cols"] = "Kolumny";
-$GLOBALS["l_wysiwyg"]["edit_table"] = "Edytuj tabelę";
-$GLOBALS["l_wysiwyg"]["colspan"] = "Rozpiętość";
-$GLOBALS["l_wysiwyg"]["halignment"] = "Wyrównanie horyz."; // has to be short !!
-$GLOBALS["l_wysiwyg"]["valignment"] = "Wyrównanie wert.";  // has to be short !!
-$GLOBALS["l_wysiwyg"]["color"] = "Color";
-$GLOBALS["l_wysiwyg"]["choosecolor"] = "Wybierz kolor";
-$GLOBALS["l_wysiwyg"]["parent_class"] = "Klasa bazowa";
-$GLOBALS["l_wysiwyg"]["region_class"] = "Klasa potomna";
-$GLOBALS["l_wysiwyg"]["edit_classname"] = "Edytuj klasę Stylesheet";
-$GLOBALS["l_wysiwyg"]["emaillink"] = "E-mail";
-$GLOBALS["l_wysiwyg"]["clean_word"] = "Czyść kod MS Word";
-$GLOBALS["l_wysiwyg"]["addcaption"] = "Dodaj podpis";
-$GLOBALS["l_wysiwyg"]["removecaption"] = "Usuń podpis";
-$GLOBALS["l_wysiwyg"]["anchor"] = "Odnośnik";
+$l_wysiwyg["bgcolor"] = "Kolor tła";
+$l_wysiwyg["cellspacing"] = "Odległość komórek";
+$l_wysiwyg["cellpadding"] = "Margines w komórkach tabeli";
+$l_wysiwyg["rows"] = "Wiersze";
+$l_wysiwyg["cols"] = "Kolumny";
+$l_wysiwyg["edit_table"] = "Edytuj tabelę";
+$l_wysiwyg["colspan"] = "Rozpiętość";
+$l_wysiwyg["halignment"] = "Wyrównanie horyz."; // has to be short !!
+$l_wysiwyg["valignment"] = "Wyrównanie wert.";  // has to be short !!
+$l_wysiwyg["color"] = "Color";
+$l_wysiwyg["choosecolor"] = "Wybierz kolor";
+$l_wysiwyg["parent_class"] = "Klasa bazowa";
+$l_wysiwyg["region_class"] = "Klasa potomna";
+$l_wysiwyg["edit_classname"] = "Edytuj klasę Stylesheet";
+$l_wysiwyg["emaillink"] = "E-mail";
+$l_wysiwyg["clean_word"] = "Czyść kod MS Word";
+$l_wysiwyg["addcaption"] = "Dodaj podpis";
+$l_wysiwyg["removecaption"] = "Usuń podpis";
+$l_wysiwyg["anchor"] = "Odnośnik";
 
-$GLOBALS["l_wysiwyg"]["edit_hr"] = "Pozioma linia";
-$GLOBALS["l_wysiwyg"]["color"] = "Kolor";
-$GLOBALS["l_wysiwyg"]["noshade"] = "Bez cieniowania";
-$GLOBALS["l_wysiwyg"]["strikethrough"] = "Przekreśl";
+$l_wysiwyg["edit_hr"] = "Pozioma linia";
+$l_wysiwyg["color"] = "Kolor";
+$l_wysiwyg["noshade"] = "Bez cieniowania";
+$l_wysiwyg["strikethrough"] = "Przekreśl";
 
-$GLOBALS["l_wysiwyg"]["nothumb"] = "Brak miniatury";
-$GLOBALS["l_wysiwyg"]["thumbnail"] = "Widok miniatury";
+$l_wysiwyg["nothumb"] = "Brak miniatury";
+$l_wysiwyg["thumbnail"] = "Widok miniatury";
 
-$GLOBALS["l_wysiwyg"]["acronym"] = "Skrót";
-$GLOBALS["l_wysiwyg"]["acronym_title"] = "Edytuj skrót";
-$GLOBALS["l_wysiwyg"]["abbr"] = "Abbreviation"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["abbr_title"] = "Edit Abbreviation"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["title"] = "Tytuł";
-$GLOBALS["l_wysiwyg"]["language"] = "Język";
-$GLOBALS["l_wysiwyg"]["language_title"] = "Edytuj język";
-$GLOBALS["l_wysiwyg"]["link_lang"] = "Link"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["href_lang"] = "Zlinkowane strony";
-$GLOBALS["l_wysiwyg"]["paragraph"] = "Paragraf";
+$l_wysiwyg["acronym"] = "Skrót";
+$l_wysiwyg["acronym_title"] = "Edytuj skrót";
+$l_wysiwyg["abbr"] = "Abbreviation"; // TRANSLATE
+$l_wysiwyg["abbr_title"] = "Edit Abbreviation"; // TRANSLATE
+$l_wysiwyg["title"] = "Tytuł";
+$l_wysiwyg["language"] = "Język";
+$l_wysiwyg["language_title"] = "Edytuj język";
+$l_wysiwyg["link_lang"] = "Link"; // TRANSLATE
+$l_wysiwyg["href_lang"] = "Zlinkowane strony";
+$l_wysiwyg["paragraph"] = "Paragraf";
 
-$GLOBALS["l_wysiwyg"]["summary"] = "Zestawienie";
-$GLOBALS["l_wysiwyg"]["isheader"] = "Jest podpis";
+$l_wysiwyg["summary"] = "Zestawienie";
+$l_wysiwyg["isheader"] = "Jest podpis";
 
-$GLOBALS["l_wysiwyg"]["keyboard"] = "Klawiatura";
+$l_wysiwyg["keyboard"] = "Klawiatura";
 
-$GLOBALS["l_wysiwyg"]["relation"] = "Powiązania";
+$l_wysiwyg["relation"] = "Powiązania";
 
-$GLOBALS["l_wysiwyg"]["fontsize"] = "Font size"; // TRANSLATE
+$l_wysiwyg["fontsize"] = "Font size"; // TRANSLATE

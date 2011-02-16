@@ -39,7 +39,7 @@ $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoTblJS");
 
 if(!$_REQUEST["we_dialog_args"]["edit"]){
-	$dialog->dialogTitle = $GLOBALS["l_wysiwyg"]["insert_table"];
+	$dialog->dialogTitle = g_l('wysiwyg',"[insert_table]");
 }
 print $dialog->getHTML();
 

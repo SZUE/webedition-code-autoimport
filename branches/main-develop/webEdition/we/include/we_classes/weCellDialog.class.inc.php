@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 
 
@@ -48,7 +47,7 @@ class weCellDialog extends weDialog{
 
 	function weCellDialog(){
 		$this->weDialog();
-		$this->dialogTitle = $GLOBALS["l_wysiwyg"]["edit_cell"];
+		$this->dialogTitle = g_l('wysiwyg',"[edit_cell]");
 		$this->defaultInit();
 	}
 
@@ -74,17 +73,17 @@ class weCellDialog extends weDialog{
 	function getDialogContentHTML(){
 
 		$foo = $this->formColor(10,"we_dialog_args[bgcolor]",(isset($this->args["bgcolor"]) ? $this->args["bgcolor"] : ""),50);
-		$bgcolor = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["bgcolor"]);
+		$bgcolor = htmlFormElementTable($foo,g_l('wysiwyg',"[bgcolor]"));
 
 		$foo = htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
-		$width = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["width"]);
+		$width = htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
 
 		$foo = htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
-		$height = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["height"]);
+		$height = htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
 
 		$foo = htmlTextInput("we_dialog_args[colspan]", 5, (isset($this->args["colspan"]) ? $this->args["colspan"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
 
-		$colspan = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["colspan"]);
+		$colspan = htmlFormElementTable($foo,g_l('wysiwyg',"[colspan]"));
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">
 							<option value="">Default</option>
@@ -92,7 +91,7 @@ class weCellDialog extends weDialog{
 							<option value="center"'.((isset($this->args["align"]) && $this->args["align"] == "center") ? "selected" : "").'>Center</option>
 							<option value="right"'.((isset($this->args["align"]) && $this->args["align"] == "right") ? "selected" : "").'>Right</option>
 						</select>';
-		$align = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["halignment"]);
+		$align = htmlFormElementTable($foo,g_l('wysiwyg',"[halignment]"));
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[valign]" size="1">
 							<option value="">Default</option>
@@ -100,12 +99,12 @@ class weCellDialog extends weDialog{
 							<option value="middle"'.((isset($this->args["valign"]) && $this->args["valign"] == "middle") ? "selected" : "").'>Middle</option>
 							<option value="bottom"'.((isset($this->args["valign"]) && $this->args["valign"] == "bottom") ? "selected" : "").'>Bottom</option>
 						</select>';
-		$valign = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["valignment"]);
+		$valign = htmlFormElementTable($foo,g_l('wysiwyg',"[valignment]"));
 
 		$foo = '<script language="JavaScript" type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "").'","");</script>';
-		$classSelect = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["css_style"]);
+		$classSelect = htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
 
-		$_isheader = we_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", $GLOBALS["l_wysiwyg"]["isheader"]);
+		$_isheader = we_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", g_l('wysiwyg',"[isheader]"));
 
 		$foo = htmlTextInput("we_dialog_args[id]", 5, (isset($this->args["id"]) ? $this->args["id"] :""), "", '', "text" , 50 );
 		$_id = htmlFormElementTable($foo,"id");
@@ -154,7 +153,7 @@ class weCellDialog extends weDialog{
 			}
 				$js .= '
 	document.writeln(\'<select class="defaultfont"  name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\' style="width:380px">\');
-	document.writeln(\'<option value="">'.$GLOBALS["l_wysiwyg"]["none"].'\');
+	document.writeln(\'<option value="">'.g_l('wysiwyg',"[none]").'\');
 	for(var i=0;i<classNames.length;i++){
 		var foo = classNames[i].substring(0,1) == "." ?
 							classNames[i].substring(1,classNames[i].length) :

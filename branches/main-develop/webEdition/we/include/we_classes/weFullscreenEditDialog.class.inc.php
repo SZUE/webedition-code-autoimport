@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
 
 
@@ -36,7 +35,7 @@ class weFullscreenEditDialog extends weDialog{
 
 	function weFullscreenEditDialog(){
 		$this->weDialog();
-		$this->dialogTitle = $GLOBALS["l_wysiwyg"]["fullscreen_editor"];
+		$this->dialogTitle = g_l('wysiwyg',"[fullscreen_editor]");
 		$this->args["src"] = "";
 	}
 

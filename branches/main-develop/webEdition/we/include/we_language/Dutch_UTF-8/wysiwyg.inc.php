@@ -26,22 +26,22 @@
  */
 include_once(dirname(__FILE__)."/wysiwyg_js.inc.php");
 
-$GLOBALS["l_wysiwyg"]["window_title"] = "Wijzig veld '%s'";
+$l_wysiwyg["window_title"] = "Wijzig veld '%s'";
 
-$GLOBALS["l_wysiwyg"]["format"] = "Opmaak";
-$GLOBALS["l_wysiwyg"]["fontsize"] = "Font grootte";
-$GLOBALS["l_wysiwyg"]["fontname"] = "Font naam";
-$GLOBALS["l_wysiwyg"]["css_style"] = "CSS stijl";
+$l_wysiwyg["format"] = "Opmaak";
+$l_wysiwyg["fontsize"] = "Font grootte";
+$l_wysiwyg["fontname"] = "Font naam";
+$l_wysiwyg["css_style"] = "CSS stijl";
 
-$GLOBALS["l_wysiwyg"]["normal"] = "Normaal";
-$GLOBALS["l_wysiwyg"]["h1"] = "Kop 1";
-$GLOBALS["l_wysiwyg"]["h2"] = "Kop 2";
-$GLOBALS["l_wysiwyg"]["h3"] = "Kop 3";
-$GLOBALS["l_wysiwyg"]["h4"] = "Kop 4";
-$GLOBALS["l_wysiwyg"]["h5"] = "Kop 5";
-$GLOBALS["l_wysiwyg"]["h6"] = "Kop 6";
-$GLOBALS["l_wysiwyg"]["pre"] = "Opgemaakt";
-$GLOBALS["l_wysiwyg"]["address"] = "Adresseer";
+$l_wysiwyg["normal"] = "Normaal";
+$l_wysiwyg["h1"] = "Kop 1";
+$l_wysiwyg["h2"] = "Kop 2";
+$l_wysiwyg["h3"] = "Kop 3";
+$l_wysiwyg["h4"] = "Kop 4";
+$l_wysiwyg["h5"] = "Kop 5";
+$l_wysiwyg["h6"] = "Kop 6";
+$l_wysiwyg["pre"] = "Opgemaakt";
+$l_wysiwyg["address"] = "Adresseer";
 
 $GLOBALS['l_wysiwyg']['spellcheck'] = 'Spellingscontrole';
 /*****************************************************************************
@@ -49,128 +49,128 @@ $GLOBALS['l_wysiwyg']['spellcheck'] = 'Spellingscontrole';
  *****************************************************************************/
 
 // REMEMBER: context menus cannot display any umlauts!
-$GLOBALS["l_wysiwyg"]["cut"] = "Knip";
-$GLOBALS["l_wysiwyg"]["copy"] = "Kopieer";
-$GLOBALS["l_wysiwyg"]["paste"] = "Plak";
-$GLOBALS["l_wysiwyg"]["insert_row"] = "Voeg rij in";
-$GLOBALS["l_wysiwyg"]["delete_rows"] = "Verwijder rij";
-$GLOBALS["l_wysiwyg"]["insert_colmn"] = "Voeg kolom in";
-$GLOBALS["l_wysiwyg"]["delete_colmns"] = "Verwijder kolommen";
-$GLOBALS["l_wysiwyg"]["insert_cell"] = "Voeg cel in";
-$GLOBALS["l_wysiwyg"]["delete_cells"] = "Verwijder cellen";
-$GLOBALS["l_wysiwyg"]["merge_cells"] = "Verenig cellen";
-$GLOBALS["l_wysiwyg"]["split_cell"] = "Splits cellen";
+$l_wysiwyg["cut"] = "Knip";
+$l_wysiwyg["copy"] = "Kopieer";
+$l_wysiwyg["paste"] = "Plak";
+$l_wysiwyg["insert_row"] = "Voeg rij in";
+$l_wysiwyg["delete_rows"] = "Verwijder rij";
+$l_wysiwyg["insert_colmn"] = "Voeg kolom in";
+$l_wysiwyg["delete_colmns"] = "Verwijder kolommen";
+$l_wysiwyg["insert_cell"] = "Voeg cel in";
+$l_wysiwyg["delete_cells"] = "Verwijder cellen";
+$l_wysiwyg["merge_cells"] = "Verenig cellen";
+$l_wysiwyg["split_cell"] = "Splits cellen";
 
 /*****************************************************************************
  * ALT-TEXTS FOR BUTTONS
  *****************************************************************************/
 
-$GLOBALS["l_wysiwyg"]["subscript"] = "Subschrift";
-$GLOBALS["l_wysiwyg"]["superscript"] = "Superschrift";
-$GLOBALS["l_wysiwyg"]["justify_full"] = "Sta alles toe";
-$GLOBALS["l_wysiwyg"]["strikethrought"] = "Doorhalen";
-$GLOBALS["l_wysiwyg"]["removeformat"] = "Verwijder opmaak";
-$GLOBALS["l_wysiwyg"]["removetags"] = "Remove tags, styles and comments"; //TRANSLATE
-$GLOBALS["l_wysiwyg"]["editcell"] = "Wijzig tabelcel";
-$GLOBALS["l_wysiwyg"]["edittable"] = "Wijzig tabel";
-$GLOBALS["l_wysiwyg"]["insert_row2"] = "Voeg rijen toe";
-$GLOBALS["l_wysiwyg"]["delete_rows2"] = "Verwijder rijen";
-$GLOBALS["l_wysiwyg"]["insert_colmn2"] = "Voeg kolom toe";
-$GLOBALS["l_wysiwyg"]["delete_colmns2"] = "Verwijder kolommen";
-$GLOBALS["l_wysiwyg"]["insert_cell2"] = "Voeg cel toe";
-$GLOBALS["l_wysiwyg"]["delete_cells2"] = "Verwijder cellen";
-$GLOBALS["l_wysiwyg"]["merge_cells2"] = "Verenig cellen";
-$GLOBALS["l_wysiwyg"]["split_cell2"] = "Splits cellen";
-$GLOBALS["l_wysiwyg"]["insert_edit_table"] = "Voeg toe/wijzig tabel";
-$GLOBALS["l_wysiwyg"]["insert_edit_image"] = "Voeg toe/wijzig afbeelding";
-$GLOBALS["l_wysiwyg"]["edit_style_class"] = "Wijzig class (stijl)";
-$GLOBALS["l_wysiwyg"]["insert_br"] = "Voeg witregel toe (SHIFT + RETURN)";
-$GLOBALS["l_wysiwyg"]["insert_p"] = "Voeg paragraaf toe";
-$GLOBALS["l_wysiwyg"]["edit_sourcecode"] = "Wijzig code";
-$GLOBALS["l_wysiwyg"]["show_details"] = "Toon details";
-$GLOBALS["l_wysiwyg"]["rtf_import"] = "Importeer RTF";
-$GLOBALS["l_wysiwyg"]["unlink"] = "Verwijder hyperlink";
-$GLOBALS["l_wysiwyg"]["hyperlink"] = "Voeg toe/wijzig hyperlink";
-$GLOBALS["l_wysiwyg"]["back_color"] = "Achtergrondkleur";
-$GLOBALS["l_wysiwyg"]["fore_color"] = "Voorgrondkleur";
-$GLOBALS["l_wysiwyg"]["outdent"] = "Spring in";
-$GLOBALS["l_wysiwyg"]["indent"] = "Spring uit";
-$GLOBALS["l_wysiwyg"]["unordered_list"] = "Ongeordende lijst";
-$GLOBALS["l_wysiwyg"]["ordered_list"] = "Geordende lijst";
-$GLOBALS["l_wysiwyg"]["justify_right"] = "Lijn rechts uit";
-$GLOBALS["l_wysiwyg"]["justify_center"] = "Centreer";
-$GLOBALS["l_wysiwyg"]["justify_left"] = "Lijn links uit";
-$GLOBALS["l_wysiwyg"]["underline"] = "Onderstreep";
-$GLOBALS["l_wysiwyg"]["italic"] = "Cursief";
-$GLOBALS["l_wysiwyg"]["bold"] = "Vet";
-$GLOBALS["l_wysiwyg"]["fullscreen"] = "Open editor in volledig scherm";
-$GLOBALS["l_wysiwyg"]["edit_source"] = "Wijzig broncode";
-$GLOBALS["l_wysiwyg"]["fullscreen_editor"] = "Volledige scherm editor";
-$GLOBALS["l_wysiwyg"]["table_props"] = "Tabel eigenschappen";
-$GLOBALS["l_wysiwyg"]["insert_table"] = "Voeg tabel toe";
-$GLOBALS["l_wysiwyg"]["edit_stylesheet"] = "Wijzig stylesheet";
+$l_wysiwyg["subscript"] = "Subschrift";
+$l_wysiwyg["superscript"] = "Superschrift";
+$l_wysiwyg["justify_full"] = "Sta alles toe";
+$l_wysiwyg["strikethrought"] = "Doorhalen";
+$l_wysiwyg["removeformat"] = "Verwijder opmaak";
+$l_wysiwyg["removetags"] = "Remove tags, styles and comments"; //TRANSLATE
+$l_wysiwyg["editcell"] = "Wijzig tabelcel";
+$l_wysiwyg["edittable"] = "Wijzig tabel";
+$l_wysiwyg["insert_row2"] = "Voeg rijen toe";
+$l_wysiwyg["delete_rows2"] = "Verwijder rijen";
+$l_wysiwyg["insert_colmn2"] = "Voeg kolom toe";
+$l_wysiwyg["delete_colmns2"] = "Verwijder kolommen";
+$l_wysiwyg["insert_cell2"] = "Voeg cel toe";
+$l_wysiwyg["delete_cells2"] = "Verwijder cellen";
+$l_wysiwyg["merge_cells2"] = "Verenig cellen";
+$l_wysiwyg["split_cell2"] = "Splits cellen";
+$l_wysiwyg["insert_edit_table"] = "Voeg toe/wijzig tabel";
+$l_wysiwyg["insert_edit_image"] = "Voeg toe/wijzig afbeelding";
+$l_wysiwyg["edit_style_class"] = "Wijzig class (stijl)";
+$l_wysiwyg["insert_br"] = "Voeg witregel toe (SHIFT + RETURN)";
+$l_wysiwyg["insert_p"] = "Voeg paragraaf toe";
+$l_wysiwyg["edit_sourcecode"] = "Wijzig code";
+$l_wysiwyg["show_details"] = "Toon details";
+$l_wysiwyg["rtf_import"] = "Importeer RTF";
+$l_wysiwyg["unlink"] = "Verwijder hyperlink";
+$l_wysiwyg["hyperlink"] = "Voeg toe/wijzig hyperlink";
+$l_wysiwyg["back_color"] = "Achtergrondkleur";
+$l_wysiwyg["fore_color"] = "Voorgrondkleur";
+$l_wysiwyg["outdent"] = "Spring in";
+$l_wysiwyg["indent"] = "Spring uit";
+$l_wysiwyg["unordered_list"] = "Ongeordende lijst";
+$l_wysiwyg["ordered_list"] = "Geordende lijst";
+$l_wysiwyg["justify_right"] = "Lijn rechts uit";
+$l_wysiwyg["justify_center"] = "Centreer";
+$l_wysiwyg["justify_left"] = "Lijn links uit";
+$l_wysiwyg["underline"] = "Onderstreep";
+$l_wysiwyg["italic"] = "Cursief";
+$l_wysiwyg["bold"] = "Vet";
+$l_wysiwyg["fullscreen"] = "Open editor in volledig scherm";
+$l_wysiwyg["edit_source"] = "Wijzig broncode";
+$l_wysiwyg["fullscreen_editor"] = "Volledige scherm editor";
+$l_wysiwyg["table_props"] = "Tabel eigenschappen";
+$l_wysiwyg["insert_table"] = "Voeg tabel toe";
+$l_wysiwyg["edit_stylesheet"] = "Wijzig stylesheet";
 
 /*****************************************************************************
  * THE REST
  *****************************************************************************/
 
-$GLOBALS["l_wysiwyg"]["url"] = "URL"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["image_url"] = "Afbeeldings URL";
-$GLOBALS["l_wysiwyg"]["width"] = "Breedte";
-$GLOBALS["l_wysiwyg"]["height"] = "Hoogte";
-$GLOBALS["l_wysiwyg"]["hspace"] = "Horizontale ruimte";
-$GLOBALS["l_wysiwyg"]["vspace"] = "Verticale ruimte";
-$GLOBALS["l_wysiwyg"]["border"] = "Rand";
-$GLOBALS["l_wysiwyg"]["altText"] = "Alternatieve tekst";
-$GLOBALS["l_wysiwyg"]["alignment"] = "Uitlijning";
+$l_wysiwyg["url"] = "URL"; // TRANSLATE
+$l_wysiwyg["image_url"] = "Afbeeldings URL";
+$l_wysiwyg["width"] = "Breedte";
+$l_wysiwyg["height"] = "Hoogte";
+$l_wysiwyg["hspace"] = "Horizontale ruimte";
+$l_wysiwyg["vspace"] = "Verticale ruimte";
+$l_wysiwyg["border"] = "Rand";
+$l_wysiwyg["altText"] = "Alternatieve tekst";
+$l_wysiwyg["alignment"] = "Uitlijning";
 
-$GLOBALS["l_wysiwyg"]["external_image"] = "webEdition externe afbeelding";
-$GLOBALS["l_wysiwyg"]["internal_image"] = "webEdition interne afbeelding";
+$l_wysiwyg["external_image"] = "webEdition externe afbeelding";
+$l_wysiwyg["internal_image"] = "webEdition interne afbeelding";
 
-$GLOBALS["l_wysiwyg"]["bgcolor"] = "Achtergrondkleur";
-$GLOBALS["l_wysiwyg"]["cellspacing"] = "Cel spacing";
-$GLOBALS["l_wysiwyg"]["cellpadding"] = "Cel padding";
-$GLOBALS["l_wysiwyg"]["rows"] = "Rijen";
-$GLOBALS["l_wysiwyg"]["cols"] = "Kolommen";
-$GLOBALS["l_wysiwyg"]["edit_table"] = "Wijzig tabel";
-$GLOBALS["l_wysiwyg"]["colspan"] = "Colspan"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["halignment"] = "Horiz. uitlijnen"; // has to be short !!
-$GLOBALS["l_wysiwyg"]["valignment"] = "Vert. uitlijnen";  // has to be short !!
-$GLOBALS["l_wysiwyg"]["color"] = "Color";
-$GLOBALS["l_wysiwyg"]["choosecolor"] = "Kies kleur";
-$GLOBALS["l_wysiwyg"]["parent_class"] = "Hoofdgebied";
-$GLOBALS["l_wysiwyg"]["region_class"] = "Alleen selectie";
-$GLOBALS["l_wysiwyg"]["edit_classname"] = "Wijzig stylesheet class naam";
-$GLOBALS["l_wysiwyg"]["emaillink"] = "E-Mail"; // TRANSLATE
-$GLOBALS["l_wysiwyg"]["clean_word"] = "Leeg MS Word code";
-$GLOBALS["l_wysiwyg"]["addcaption"] = "Voeg onderschrift toe";
-$GLOBALS["l_wysiwyg"]["removecaption"] = "Verwijder onderschrift";
-$GLOBALS["l_wysiwyg"]["anchor"] = "Anker";
+$l_wysiwyg["bgcolor"] = "Achtergrondkleur";
+$l_wysiwyg["cellspacing"] = "Cel spacing";
+$l_wysiwyg["cellpadding"] = "Cel padding";
+$l_wysiwyg["rows"] = "Rijen";
+$l_wysiwyg["cols"] = "Kolommen";
+$l_wysiwyg["edit_table"] = "Wijzig tabel";
+$l_wysiwyg["colspan"] = "Colspan"; // TRANSLATE
+$l_wysiwyg["halignment"] = "Horiz. uitlijnen"; // has to be short !!
+$l_wysiwyg["valignment"] = "Vert. uitlijnen";  // has to be short !!
+$l_wysiwyg["color"] = "Color";
+$l_wysiwyg["choosecolor"] = "Kies kleur";
+$l_wysiwyg["parent_class"] = "Hoofdgebied";
+$l_wysiwyg["region_class"] = "Alleen selectie";
+$l_wysiwyg["edit_classname"] = "Wijzig stylesheet class naam";
+$l_wysiwyg["emaillink"] = "E-Mail"; // TRANSLATE
+$l_wysiwyg["clean_word"] = "Leeg MS Word code";
+$l_wysiwyg["addcaption"] = "Voeg onderschrift toe";
+$l_wysiwyg["removecaption"] = "Verwijder onderschrift";
+$l_wysiwyg["anchor"] = "Anker";
 
-$GLOBALS["l_wysiwyg"]["edit_hr"] = "Horizontale lijn";
-$GLOBALS["l_wysiwyg"]["color"] = "kleur";
-$GLOBALS["l_wysiwyg"]["noshade"] = "Geen schaduw";
-$GLOBALS["l_wysiwyg"]["strikethrough"] = "Haal door";
+$l_wysiwyg["edit_hr"] = "Horizontale lijn";
+$l_wysiwyg["color"] = "kleur";
+$l_wysiwyg["noshade"] = "Geen schaduw";
+$l_wysiwyg["strikethrough"] = "Haal door";
 
-$GLOBALS["l_wysiwyg"]["nothumb"] = "geen thumbnail";
-$GLOBALS["l_wysiwyg"]["thumbnail"] = "Thumbnail"; // TRANSLATE
+$l_wysiwyg["nothumb"] = "geen thumbnail";
+$l_wysiwyg["thumbnail"] = "Thumbnail"; // TRANSLATE
 
-$GLOBALS["l_wysiwyg"]["acronym"] = "Acroniem";
-$GLOBALS["l_wysiwyg"]["acronym_title"] = "Wijzig Acroniem";
-$GLOBALS["l_wysiwyg"]["abbr"] = "Afkorting";
-$GLOBALS["l_wysiwyg"]["abbr_title"] = "Wijzig afkorting";
-$GLOBALS["l_wysiwyg"]["title"] = "Titel";
-$GLOBALS["l_wysiwyg"]["language"] = "Taal";
-$GLOBALS["l_wysiwyg"]["language_title"] = "Wijzig Taal";
-$GLOBALS["l_wysiwyg"]["link_lang"] = "Koppeling";
-$GLOBALS["l_wysiwyg"]["href_lang"] = "Gekoppelde pagina";
-$GLOBALS["l_wysiwyg"]["paragraph"] = "Paragraaf";
+$l_wysiwyg["acronym"] = "Acroniem";
+$l_wysiwyg["acronym_title"] = "Wijzig Acroniem";
+$l_wysiwyg["abbr"] = "Afkorting";
+$l_wysiwyg["abbr_title"] = "Wijzig afkorting";
+$l_wysiwyg["title"] = "Titel";
+$l_wysiwyg["language"] = "Taal";
+$l_wysiwyg["language_title"] = "Wijzig Taal";
+$l_wysiwyg["link_lang"] = "Koppeling";
+$l_wysiwyg["href_lang"] = "Gekoppelde pagina";
+$l_wysiwyg["paragraph"] = "Paragraaf";
 
-$GLOBALS["l_wysiwyg"]["summary"] = "Opsomming";
-$GLOBALS["l_wysiwyg"]["isheader"] = "Is Koptekst";
+$l_wysiwyg["summary"] = "Opsomming";
+$l_wysiwyg["isheader"] = "Is Koptekst";
 
-$GLOBALS["l_wysiwyg"]["keyboard"] = "Toetsenbord";
+$l_wysiwyg["keyboard"] = "Toetsenbord";
 
-$GLOBALS["l_wysiwyg"]["relation"] = "Relatie";
+$l_wysiwyg["relation"] = "Relatie";
 
-$GLOBALS["l_wysiwyg"]["fontsize"] = "Font grootte";
+$l_wysiwyg["fontsize"] = "Font grootte";

@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 
 class weImageDialog extends weDialog{
@@ -56,7 +55,7 @@ class weImageDialog extends weDialog{
 
 	function weImageDialog(){
 		$this->weDialog();
-		$this->dialogTitle = $GLOBALS["l_wysiwyg"]["edit_image"];
+		$this->dialogTitle = g_l('wysiwyg',"[edit_image]");
 	}
 
 ##################################################################################################
@@ -286,7 +285,7 @@ class weImageDialog extends weDialog{
 			$radioBut = we_forms::radiobutton(	"ext",
 												(isset($this->args["type"]) && $this->args["type"] =="ext"),
 												"we_dialog_args[type]",
-												$GLOBALS["l_wysiwyg"]["external_image"],true,"defaultfont","imageChanged();"
+												g_l('wysiwyg',"[external_image]"),true,"defaultfont","imageChanged();"
 											  );
 
 			$extSrc = htmlFormElementTable(htmlTextInput("we_dialog_args[extSrc]",30,(isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""),"",' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onChange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"',"text",300),
@@ -305,7 +304,7 @@ class weImageDialog extends weDialog{
 			$radioBut = we_forms::radiobutton(	"int",
 												(isset($this->args["type"]) && $this->args["type"]=="int"),
 												"we_dialog_args[type]",
-												$GLOBALS["l_wysiwyg"]["internal_image"],true,"defaultfont","imageChanged();");
+												g_l('wysiwyg',"[internal_image]"),true,"defaultfont","imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
@@ -334,14 +333,14 @@ class weImageDialog extends weDialog{
 			if(we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset($GLOBALS['GDIMAGE_TYPE'][strtolower($extension)]) ? $GLOBALS['GDIMAGE_TYPE'][strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"]=="int")){
 
 				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">'."\n";
-				$thumbnails .= '<option value="0"'.(($thumbdata==0) ? (' selected="selected"') : "").'>'.$GLOBALS["l_wysiwyg"]["nothumb"].'</option>'."\n";
+				$thumbnails .= '<option value="0"'.(($thumbdata==0) ? (' selected="selected"') : "").'>'.g_l('wysiwyg',"[nothumb]").'</option>'."\n";
 				$this->db->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 				while($this->db->next_record()){
 					$thumbnails .= '<option value="'.$this->db->f("ID").'"'.(($thumbdata==$this->db->f("ID")) ? (' selected="selected"') : "").'>'.$this->db->f("Name").'</option>'."\n";
 				}
 				$thumbnails .= '</select>';
 
-				$thumbnails = htmlFormElementTable($thumbnails,$GLOBALS["l_wysiwyg"]["thumbnail"]);
+				$thumbnails = htmlFormElementTable($thumbnails,g_l('wysiwyg',"[thumbnail]"));
 			}else{
 				$thumbnails = "";
 			}
@@ -365,22 +364,22 @@ class weImageDialog extends weDialog{
 
 		$foo = htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text" , 50 );
 
-		$width = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["width"]);
+		$width = htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
 
 		$foo = htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text" , 50 );
-		$height = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["height"]);
+		$height = htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
 
 		$foo = htmlTextInput("we_dialog_args[hspace]", 5, (isset($this->args["hspace"]) ? $this->args["hspace"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
-		$hspace = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["hspace"]);
+		$hspace = htmlFormElementTable($foo,g_l('wysiwyg',"[hspace]"));
 
 		$foo = htmlTextInput("we_dialog_args[vspace]", 5, (isset($this->args["vspace"]) ? $this->args["vspace"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
-		$vspace = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["vspace"]);
+		$vspace = htmlFormElementTable($foo,g_l('wysiwyg',"[vspace]"));
 
 		$foo = htmlTextInput("we_dialog_args[border]", 5, (isset($this->args["border"]) ? $this->args["border"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
-		$border = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["border"]);
+		$border = htmlFormElementTable($foo,g_l('wysiwyg',"[border]"));
 
 		$foo = htmlTextInput("we_dialog_args[alt]", 5, (isset($this->args["alt"]) ? $this->args["alt"] :""), "", "", "text" , 200 );
-		$alt = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["altText"]);
+		$alt = htmlFormElementTable($foo,g_l('wysiwyg',"[altText]"));
 
 		$foo = htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] :""), "", "", "text" , 200 );
 		$title = htmlFormElementTable($foo,g_l('global',"[title]"));
@@ -398,14 +397,14 @@ class weImageDialog extends weDialog{
 							<option value="baseline"'.(($this->args["align"] == "baseline") ? "selected" : "").'>Baseline</option>
 							<option value="absbottom"'.(($this->args["align"] == "absbottom") ? "selected" : "").'>Abs Bottom</option>
 						</select>';
-		$align = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["alignment"]);
+		$align = htmlFormElementTable($foo,g_l('wysiwyg',"[alignment]"));
 
 		$foo = htmlTextInput("we_dialog_args[name]", 30, (isset($this->args["name"]) ? $this->args["name"] :""), "", '', "text" , 200 );
 		$name = htmlFormElementTable($foo,"Name");
 
 		$srctable = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr>
-		<td class="defaultgray" valign="top">'.$GLOBALS["l_wysiwyg"]["image_url"].'</td><td>'.$extSrc.'</td>
+		<td class="defaultgray" valign="top">'.g_l('wysiwyg',"[image_url]").'</td><td>'.$extSrc.'</td>
 	</tr>
 ';
 		if($intSrc){
@@ -433,7 +432,7 @@ class weImageDialog extends weDialog{
 ';
 
 	$foo = '<script language="JavaScript" type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "") .'","");</script>';
-	$classSelect = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["css_style"]);
+	$classSelect = htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
 
 	$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
 
@@ -529,7 +528,7 @@ function checkWidthHeight(field){
 			}
 				$js .= '
 					document.writeln(\'<select class="defaul	qqtfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
-					document.writeln(\'<option value="">'.$GLOBALS["l_wysiwyg"]["none"].'\');
+					document.writeln(\'<option value="">'.g_l('wysiwyg',"[none]").'\');
 
 					for (var i = 0; i < classNames.length; i++) {
 						var foo = classNames[i].substring(0,1) == "." ?

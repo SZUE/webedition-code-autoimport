@@ -122,8 +122,6 @@ class searchtoolView extends weToolView
 
 	function processCommands()
 	{
-		global $l_tools;
-
 		if (isset($_REQUEST["cmd"])) {
 			switch ($_REQUEST['cmd']) {
 				case 'tool_weSearch_new' :
@@ -152,7 +150,7 @@ class searchtoolView extends weToolView
 						print
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-												$GLOBALS["l_tools"]["no_perms"],
+												g_l('tools','[no_perms]'),
 												WE_MESSAGE_ERROR));
 						$this->Model = new searchtool();
 						$_REQUEST['home'] = true;
@@ -197,7 +195,7 @@ class searchtoolView extends weToolView
 						print
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-												$GLOBALS["l_tools"]["wrongtext"],
+												g_l('tools','[wrongtext]'),
 												WE_MESSAGE_ERROR));
 						break;
 					}
@@ -208,7 +206,7 @@ class searchtoolView extends weToolView
 						print
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-												$GLOBALS["l_tools"]["name_empty"],
+												g_l('tools','[name_empty]'),
 												WE_MESSAGE_ERROR));
 						break;
 					}
@@ -219,7 +217,7 @@ class searchtoolView extends weToolView
 						print
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-												$GLOBALS["l_tools"]["name_exists"],
+												g_l('tools','[name_exists]'),
 												WE_MESSAGE_ERROR));
 						break;
 					}
@@ -227,7 +225,7 @@ class searchtoolView extends weToolView
 						print
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-												$GLOBALS["l_tools"]["path_nok"],
+												g_l('tools','[path_nok]'),
 												WE_MESSAGE_ERROR));
 						break;
 					}
@@ -323,7 +321,7 @@ class searchtoolView extends weToolView
 										'
         ' . $this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
         setTimeout(\'' . we_message_reporting::getShowMessageCall(
-												($this->Model->IsFolder == 1 ? $l_tools['group_deleted'] : $l_tools['item_deleted']),
+												($this->Model->IsFolder == 1 ? g_l('tools','[group_deleted]') : g_l('tools','[item_deleted]')),
 												WE_MESSAGE_NOTICE) . '\',500);
 
       ');
@@ -370,7 +368,7 @@ class searchtoolView extends weToolView
     }
     else {
      ' . we_message_reporting::getShowMessageCall(
-				$GLOBALS["l_tools"]["nothing_to_save"],
+				g_l('tools','[nothing_to_save]'),
 				WE_MESSAGE_ERROR) . '
     }
 
@@ -385,13 +383,13 @@ class searchtoolView extends weToolView
     }
     if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
      ' . we_message_reporting::getShowMessageCall(
-				$GLOBALS["l_tools"]["nothing_to_delete"],
+				g_l('tools','[nothing_to_delete]'),
 				WE_MESSAGE_ERROR) . '
      return;
     }
     ' . (!we_hasPerm(
 				"DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
-				$GLOBALS["l_tools"]["no_perms"],
+				g_l('tools','[no_perms]'),
 				WE_MESSAGE_ERROR)) : ('
         if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
 
@@ -407,7 +405,7 @@ class searchtoolView extends weToolView
 
         } else {
          ' . we_message_reporting::getShowMessageCall(
-				$GLOBALS["l_tools"]["nothing_to_delete"],
+				g_l('tools','[nothing_to_delete]'),
 				WE_MESSAGE_ERROR) . '
         }
 

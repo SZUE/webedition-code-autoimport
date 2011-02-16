@@ -133,26 +133,26 @@ class weToolView {
 							'.$this->editorBodyFrame.'.document.we_form.pnt.value="edbody";
 							'.$this->editorBodyFrame.'.submitForm();
 						} else {
-							' . we_message_reporting::getShowMessageCall($GLOBALS["l_tools"]["nothing_to_save"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_save]'), WE_MESSAGE_ERROR) . '
 						}
 						break;
 					case "tool_' . $this->toolName . '_delete":
 						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value=="home"){
-							' . we_message_reporting::getShowMessageCall($GLOBALS["l_tools"]["nothing_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_selected]'), WE_MESSAGE_ERROR) . '
 							return;
 						}
 						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone.value==1){
-							' . we_message_reporting::getShowMessageCall($GLOBALS["l_tools"]["nothing_to_delete"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_delete]'), WE_MESSAGE_ERROR) . '
 							return;
 						}
 						'.(!we_hasPerm("DELETE_" . strtoupper($this->toolName)) ?
 						(
-							we_message_reporting::getShowMessageCall($GLOBALS["l_tools"]["no_perms"], WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('tools','[no_perms]'), WE_MESSAGE_ERROR)
 						)
 						:
 						('
 								if ('.$this->topFrame.'.resize.right.editor.edbody.loaded) {
-									if (confirm("'.$GLOBALS['l_tools']["delete_alert"].'")) {
+									if (confirm("'.g_l('tools','[delete_alert]').'")) {
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.tabnr.value='.$this->topFrame.'.activ_tab;
 										'.$this->editorHeaderFrame.'.location="'.$this->frameset.'?home=1&pnt=edheader";
@@ -160,7 +160,7 @@ class weToolView {
 										'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
 									}
 								} else {
-									' . we_message_reporting::getShowMessageCall($GLOBALS["l_tools"]["nothing_to_delete"], WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_delete]'), WE_MESSAGE_ERROR) . '
 								}
 
 						')).'

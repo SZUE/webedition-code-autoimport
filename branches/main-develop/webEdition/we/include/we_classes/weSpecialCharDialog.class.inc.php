@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 
 class weSpecialCharDialog extends weDialog{
 
@@ -37,7 +36,7 @@ class weSpecialCharDialog extends weDialog{
 
 	function weSpecialCharDialog(){
 		$this->weDialog();
-		$this->dialogTitle = $GLOBALS["l_wysiwyg"]["insertspecialchar"];
+		$this->dialogTitle = g_l('wysiwyg',"[insertspecialchar]");
 		$this->defaultInit();
 	}
 
