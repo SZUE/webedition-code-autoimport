@@ -21,8 +21,6 @@
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_html_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/SEEM.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_widget.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/cfg.inc.php");
 //make sure we know which browser is used
@@ -39,7 +37,7 @@ print
 	background-color: transparent;
 	color: black;
 	font-size: " . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-	font-family: " . $l_css["font_family"] . " ! important;
+	font-family: " . g_l('css','[font_family]') . " ! important;
 }
 
 
@@ -108,7 +106,7 @@ _EditorFrame.initEditorFrameData(
 	{
 		"EditorType":"cockpit",
 		"EditorDocumentText":"<?php
-	echo $l_cockpit['cockpit'];
+	echo g_l('cockpit','[cockpit]');
 	?>",
 		"EditorDocumentPath":"Cockpit",
 		"EditorContentType":"cockpit",
@@ -340,7 +338,7 @@ function resizeIdx(a,id){
 		case 'swap':
 			gel(id+'_res').value=(res==0)?1:0;
 			gel(id+'_icon_resize').title=(res==0)?'<?php
-	echo $l_cockpit["reduce_size"]?>' : '<?php echo $l_cockpit["increase_size"]; ?>';
+	echo g_l('cockpit',"[reduce_size]")?>' : '<?php echo g_l('cockpit',"[increase_size]"); ?>';
 		break;
 		case 'get':
 			return res;
@@ -631,9 +629,9 @@ function createWidget(typ,row,col){
 
 function removeWidget(wizId){
 	var remove=confirm('<?php
-	echo $l_cockpit["pre_remove"];
+	echo g_l('cockpit',"[pre_remove]");
 	?>"'+getLabel(wizId)+'"<?php
-	echo $l_cockpit["post_remove"];
+	echo g_l('cockpit',"[post_remove]");
 	?>');
 	if(remove==true){
 		gel(wizId).parentNode.removeChild(gel(wizId));
@@ -1096,6 +1094,7 @@ function getUser(){
 
 } else { // no right to see cockpit!!!
 
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 	$we_button = new we_button();
 
@@ -1156,13 +1155,13 @@ function getUser(){
 								"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 							),
 							(we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? htmlAlertAttentionBox(
-									"<strong>" . $l_we_SEEM["question_change_startdocument"] . "</strong><br /><br />" . $we_button->create_button(
+									"<strong>" . g_l('SEEM',"[question_change_startdocument]") . "</strong><br /><br />" . $we_button->create_button(
 											"preferences",
 											"javascript:top.we_cmd('openPreferences');"),
 									1,
 									0,
 									false) : htmlAlertAttentionBox(
-									"<strong>" . $l_we_SEEM["start_with_SEEM_no_startdocument"] . "</strong>",
+									"<strong>" . g_l('SEEM',"[start_with_SEEM_no_startdocument]") . "</strong>",
 									1,
 									0,
 									false))));

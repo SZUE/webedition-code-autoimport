@@ -233,11 +233,11 @@ class we_template extends we_document
 		$foo = $this->checkElsetags($tags);if($foo) return $foo;
 		$foo = $this->checkEndtags("if",0,$tags);if($foo) return $foo;
 
-		$d = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tags");
+		$d = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tags");
 		$needEndtags=array();
 		while (false !== ($entry=$d->read())) {
 			if(substr($entry,0,7) == "we_tag_" && substr($entry,0,9) != "we_tag_if"){
-				$foo = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tags/".$entry;
+				$foo = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tags/".$entry;
 
 				$file = file($foo);
 				foreach($file as $foo){
@@ -591,7 +591,7 @@ class we_template extends we_document
 		$idname = 'we_'.$this->Name.'_MasterTemplateID';
 		$myid = $this->MasterTemplateID ? $this->MasterTemplateID : '';
 		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
-		$alerttext=str_replace("'","\\\\\\'",$GLOBALS["l_we_class"]["same_master_template"]);
+		$alerttext=str_replace("'","\\\\\\'",g_l('weClass',"[same_master_template]"));
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) . "opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';}','".session_id()."','','text/weTmpl',1)");
 		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
@@ -628,7 +628,7 @@ class we_template extends we_document
 
 	function formTemplateDocuments() {
 		if($this->ID == 0) {
-			return $GLOBALS["l_we_class"]["no_documents"];
+			return g_l('weClass',"[no_documents]");
 		}
 		$we_button = new we_button();
 		$textname = 'TemplateDocuments';
@@ -637,7 +637,7 @@ class we_template extends we_document
 
 
 		if(sizeof($path) == 0) {
-			return $GLOBALS["l_we_class"]["no_documents"];
+			return g_l('weClass',"[no_documents]");
 		}
 
 		$button = $we_button->create_button("open", "javascript:top.weEditorFrameController.openDocument('".FILE_TABLE."', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");

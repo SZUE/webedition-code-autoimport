@@ -56,7 +56,7 @@ class we_textContentDocument extends we_textDocument{
 			array_push($this->persistent_slots,"FromOk","ToOk","From","To");
 		}
 		array_push($this->EditPageNrs,WE_EDITPAGE_SCHEDULER);
-		
+
 	}
 
 	function editor($baseHref=true){
@@ -215,22 +215,19 @@ class we_textContentDocument extends we_textDocument{
 
 
 	function formDocType2($width = 300) {
-		global $l_we_class;
-
 		$q = getDoctypeQuery($this->DB_WE);
 
 		$we_button = new we_button();
 
-		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", $l_we_class["doctype"], $q, 1, $this->DocType, false,
+		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", g_l('weClass',"[doctype]"), $q, 1, $this->DocType, false,
 								  (($this->DocType !== "") ?
-								  	"if(confirm('".$GLOBALS['l_we_class']['doctype_changed_question']."')){we_cmd('doctype_changed');};" :
+								  	"if(confirm('".g_l('weClass','[doctype_changed_question]')."')){we_cmd('doctype_changed');};" :
 								  	"we_cmd('doctype_changed');") .
 								  	"_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", $we_button->create_button("edit", "javascript:top.we_cmd('doctypes')", false, -1, -1, "", "", (!we_hasPerm("EDIT_DOCTYPE"))),
-		 						  ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", $l_we_class["nodoctype"])  : "");
+		 						  ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", g_l('weClass',"[nodoctype]"))  : "");
 	}
 
 	function formDocTypeTempl(){
-		global $l_we_class;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$this->formDocType2(388).'</td>
@@ -340,17 +337,17 @@ class we_textContentDocument extends we_textDocument{
 		// allways store in temp-table
 		$ret = $this->i_saveTmp(!$resave);
 		$this->OldPath = $this->Path;
-		
+
 		if($this->ContentType=="text/webedition" || $this->ContentType=="text/html") {
 			$version->save($this);
 		}
-		
+
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));
 			$hook->executeHook();
 		}
-		
+
 		return $ret;
 	}
 
@@ -405,7 +402,7 @@ class we_textContentDocument extends we_textDocument{
 		$this->Published=0;
 
 		$this->rewriteNavigation();
-		
+
 		/* version */
 		if($this->ContentType=="text/webedition" || $this->ContentType=="text/html") {
 			$version = new weVersions();
@@ -421,7 +418,7 @@ class we_textContentDocument extends we_textDocument{
 		if($this->DB_WE->next_record()) {
 			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($this->ID));
 		}
-		
+
 
 		return true;
 	}
@@ -461,7 +458,7 @@ class we_textContentDocument extends we_textDocument{
 	function i_saveTmp($write=true){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
-		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;	
+		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
 		if(!$this->i_savePersistentSlotsToDB("Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,temp_doc_type,WebUserID")) return false;
 		if($write){
 			return $this->i_writeDocument();

@@ -22,11 +22,8 @@
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_BANNER_MODULE_DIR."weBanner.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weBannerView extends weBannerBase{
@@ -114,19 +111,19 @@ class weBannerView extends weBannerBase{
 					$out .= $this->htmlHidden("FilterDate",$this->FilterDate);
 					$out .= $this->htmlHidden("FilterDateEnd",$this->FilterDateEnd);
 					array_push($parts,array(
-								"headline"=>$GLOBALS["l_banner"]["path"],
+								"headline"=>g_l('modules_banner','[path]'),
 								"html"=>$this->formPath(),
 								"space"=>120)
 							);
 					$znr = -1;
 					if(!$this->banner->IsFolder){
 						array_push($parts,array(
-									"headline"=>$GLOBALS["l_banner"]["banner"],
+									"headline"=>g_l('modules_banner','[banner]'),
 									"html"=>$this->formBanner(),
 									"space"=>120)
 								);
 						array_push($parts,array(
-									"headline"=>$GLOBALS["l_banner"]["period"],
+									"headline"=>g_l('modules_banner','[period]'),
 									"html"=>$this->formPeriod(),
 									"space"=>120)
 								);
@@ -134,15 +131,15 @@ class weBannerView extends weBannerBase{
 					}
 					if(defined("CUSTOMER_TABLE")){
 						array_push($parts,array(
-									"headline"=>$GLOBALS["l_banner"]["customers"],
+									"headline"=>g_l('modules_banner','[customers]'),
 									"html"=>$this->formCustomer(),
 									"space"=>120)
 								);
 					}
-					$headline = $GLOBALS["l_tabs"]["module"]["properties"];
+					$headline = g_l('tabs',"[module][properties]");
 					$itsname = "weBannerProp";
-					$openText=$GLOBALS["l_we_class"]["moreProps"];
-					$closeText=$GLOBALS["l_we_class"]["lessProps"];
+					$openText=g_l('weClass',"[moreProps]");
+					$closeText=g_l('weClass',"[lessProps]");
 					$wepos = weGetCookieVariable("but_weBannerProp");
 					break;
 				case BANNER_PAGE_PLACEMENT:
@@ -150,43 +147,43 @@ class weBannerView extends weBannerBase{
 					$out .= $this->htmlHidden("FilterDate",$this->FilterDate);
 					$out .= $this->htmlHidden("FilterDateEnd",$this->FilterDateEnd);
 					array_push($parts,array(
-								"headline"=>$GLOBALS["l_banner"]["tagname"],
+								"headline"=>g_l('modules_banner','[tagname]'),
 								"html"=>$this->formTagName(),
 								"space"=>120)
 							);
 
 					array_push($parts,array(
-								"headline"=>$GLOBALS["l_banner"]["pages"],
+								"headline"=>g_l('modules_banner','[pages]'),
 								"html"=>$this->formFiles(),
 								"space"=>120)
 							);
 
 					array_push($parts,array(
-								"headline"=>$GLOBALS["l_banner"]["dirs"],
+								"headline"=>g_l('modules_banner','[dirs]'),
 								"html"=>$this->formFolders(),
 								"space"=>120)
 							);
 
 					array_push($parts,array(
-								"headline"=>$GLOBALS["l_banner"]["categories"],
+								"headline"=>g_l('modules_banner','[categories]'),
 								"html"=>$this->formCategories(),
 								"space"=>120)
 							);
 
 					array_push($parts,array(
-								"headline"=>$GLOBALS["l_banner"]["doctypes"],
+								"headline"=>g_l('modules_banner','[doctypes]'),
 								"html"=>$this->formDoctypes(),
 								"space"=>120)
 							);
-					$headline = $GLOBALS["l_tabs"]["module"]["placement"];
+					$headline = g_l('tabs',"[module][placement]");
 					$znr = 3;
 					$itsname = "weBannerPlace";
-					$openText=$GLOBALS["l_we_class"]["moreProps"];
-					$closeText=$GLOBALS["l_we_class"]["lessProps"];
+					$openText=g_l('weClass',"[moreProps]");
+					$closeText=g_l('weClass',"[lessProps]");
 					$wepos = weGetCookieVariable("but_$itsname");
 					break;
 				case BANNER_PAGE_STATISTICS:
-					$headline = $GLOBALS["l_tabs"]["module"]["statistics"];
+					$headline = g_l('tabs',"[module][statistics]");
 					array_push($parts,array(
 								"headline"=>"",
 								"html"=>$this->formStat(),
@@ -208,7 +205,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function previewBanner(){
-		global $l_banner;
 		$content = "";
 		$ID = $this->banner->bannerID;
 		if($ID){
@@ -229,7 +225,6 @@ class weBannerView extends weBannerBase{
 
 
 	function getJSTopCode(){
-		global $l_banner;
 ?>
 	<script language="JavaScript">
 
@@ -268,7 +263,7 @@ class weBannerView extends weBannerBase{
 				var args = "";
 				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				if(hot == "1" && arguments[0] != "save_banner") {
-					if(confirm("<?php print $l_banner["save_changed_banner"]?>")) {
+					if(confirm("<?php print g_l('modules_banner','[save_changed_banner]')?>")) {
 						arguments[0] = "save_banner";
 					} else {
 						top.content.usetHot();
@@ -296,13 +291,13 @@ class weBannerView extends weBannerBase{
 					break;
 					case "delete_banner":
 						<?php if(!we_hasPerm("DELETE_BANNER")):
-							print we_message_reporting::getShowMessageCall($l_banner["no_perms"], WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
 						else: ?>
 						if(top.content.resize.right.editor.edbody.loaded && top.content.resize.right.editor.edbody.we_is_home==undefined){
-							if(!confirm("<?php print $l_banner["delete_question"]?>")) return;
+							if(!confirm("<?php print g_l('modules_banner','[delete_question]')?>")) return;
 						}
 						else {
-							<?php print we_message_reporting::getShowMessageCall($l_banner["nothing_to_delete"], WE_MESSAGE_WARNING); ?>
+							<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[nothing_to_delete]'), WE_MESSAGE_WARNING); ?>
 							return;
 						}
 						top.content.resize.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
@@ -316,7 +311,7 @@ class weBannerView extends weBannerBase{
 								return;
 							}
 						}else{
-							<?php print we_message_reporting::getShowMessageCall($l_banner["nothing_to_save"], WE_MESSAGE_WARNING); ?>
+							<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[nothing_to_save]'), WE_MESSAGE_WARNING); ?>
 							return;
 						}
 
@@ -342,7 +337,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function getJSFooterCode(){
-	global $l_banner;
 	?>
 	<script language="JavaScript">
 
@@ -385,7 +379,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function getJSProperty(){
-		global $l_banner;
 	?>
 		<script language="JavaScript" src="<?php print JS_DIR; ?>windows.js"></script>
 		<script language="JavaScript">
@@ -440,7 +433,7 @@ class weBannerView extends weBannerBase{
 						submitForm();
 						break;
 					case "delete_stat":
-						if(confirm("<?php print $l_banner["deleteStatConfirm"]; ?>")){
+						if(confirm("<?php print g_l('modules_banner','[deleteStatConfirm]'); ?>")){
 							document.we_form.ncmd.value=arguments[0];
 							submitForm();
 						}
@@ -475,7 +468,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function processCommands(){
-		global $l_banner;
 		if(isset($_REQUEST["ncmd"]))
 		switch($_REQUEST["ncmd"]){
 			case "delete_stat":
@@ -646,38 +638,38 @@ class weBannerView extends weBannerBase{
 					$acQuery = new  weSelectorQuery();
 					if(!we_hasPerm("EDIT_BANNER") && !we_hasPerm("NEW_BANNER")){
 						print '<script language="JavaScript">';
-						print we_message_reporting::getShowMessageCall($l_banner["no_perms"], WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($newone && !we_hasPerm("NEW_BANNER")){
 						print '<script language="JavaScript">';
-						print we_message_reporting::getShowMessageCall($l_banner["no_perms"], WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($this->banner->Text==""){
 						print '<script language="JavaScript">';
-						print we_message_reporting::getShowMessageCall($l_banner["no_text"], WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_text]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif(ereg('[%/\\\"\']',$this->banner->Text)){
 						print '<script language="JavaScript">';
-						print we_message_reporting::getShowMessageCall($l_banner["wrongtext"], WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[wrongtext]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif(!$this->banner->bannerID && !$this->banner->IsFolder){
 						print '<script language="JavaScript">';
-						print we_message_reporting::getShowMessageCall($l_banner["no_bannerid"], WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_bannerid]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($this->banner->ID && ($this->banner->ID == $this->banner->ParentID)){
 						print '<script language="JavaScript">';
-						print we_message_reporting::getShowMessageCall($l_banner["no_group_in_group"], WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_group_in_group]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($double){
 						if($double){
 							print '<script language="JavaScript">';
-							print we_message_reporting::getShowMessageCall($l_banner["double_name"], WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[double_name]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
 						}
@@ -687,7 +679,7 @@ class weBannerView extends weBannerBase{
 						$acResult = $acQuery->getItemById($this->banner->ParentID, BANNER_TABLE, "IsFolder");
 						if(!$acResult || (isset($acResult[0]['IsFolder']) && $acResult[0]['IsFolder']==0)) {
 							print '<script language="JavaScript">';
-							print we_message_reporting::getShowMessageCall($l_banner["error_ac_field"], WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_ac_field]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
 						}
@@ -696,7 +688,7 @@ class weBannerView extends weBannerBase{
 						$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, array("IsFolder"));
 						if(!$acResult || $acResult[0]['IsFolder']==1) {
 							print '<script language="JavaScript">';
-							print we_message_reporting::getShowMessageCall($l_banner["error_ac_field"], WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_ac_field]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
 						}
@@ -705,7 +697,7 @@ class weBannerView extends weBannerBase{
 						$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, array("ContentType"));
 						if(!$acResult || $acResult[0]['ContentType']!='image/*') {
 							print '<script language="JavaScript">';
-							print we_message_reporting::getShowMessageCall($l_banner["error_ac_field"], WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_ac_field]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
 						}
@@ -719,7 +711,7 @@ class weBannerView extends weBannerBase{
 						if($newone) print 'top.content.makeNewEntry("'.$this->banner->Icon.'",'.$this->banner->ID.','.$this->banner->ParentID.',"'.$this->banner->Text.'",true,"'.($this->banner->IsFolder ? 'folder' : 'file').'","weBanner",1);';
 						else print 'top.content.updateEntry('.$this->banner->ID.','.$this->banner->ParentID.',"'.$this->banner->Text.'",1);';
 						print $childs;
-						print we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? $l_banner["save_group_ok"] : $l_banner["save_ok"]), WE_MESSAGE_NOTICE );
+						print we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? g_l('modules_banner','[save_group_ok]') : g_l('modules_banner','[save_ok]')), WE_MESSAGE_NOTICE );
 						print '</script>';
 
 				}
@@ -728,7 +720,7 @@ class weBannerView extends weBannerBase{
 				if(isset($_REQUEST["bid"])){
 					if(!we_hasPerm("DELETE_BANNER")){
 						print '<script language="JavaScript">';
-						print we_message_reporting::getShowMessageCall($l_banner["no_perms"], WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}
@@ -739,12 +731,12 @@ class weBannerView extends weBannerBase{
 							$this->banner = new weBanner(0,$this->banner->IsFolder);
 							print '<script language="JavaScript">
 							top.content.deleteEntry('.$_REQUEST["bid"].',"'.($this->banner->IsFolder ? 'folder' : 'file').'");
-							' . we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? $l_banner["delete_group_ok"] : $l_banner["delete_ok"]), WE_MESSAGE_NOTICE ) . '
+							' . we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? g_l('modules_banner','[delete_group_ok]') : g_l('modules_banner','[delete_ok]')), WE_MESSAGE_NOTICE ) . '
 							top.content.we_cmd("new_banner");
 							</script>';
 						}else{
 							print '<script language="JavaScript">
-							' . we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? $l_banner["delete_group_nok"] : $l_banner["delete_nok"]), WE_MESSAGE_ERROR ) . '
+							' . we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? g_l('modules_banner','[delete_group_nok]'): g_l('modules_banner','[delete_nok]')), WE_MESSAGE_ERROR ) . '
 							</script>';
 						}
 					}
@@ -847,7 +839,6 @@ class weBannerView extends weBannerBase{
 	############### form functions #################
 
 	function formTagName(){
-		global $l_banner;
 
 		$tagnames = array();
 		$query = "SELECT ".CONTENT_TABLE.".Dat AS templateCode, ".LINK_TABLE.".DID AS DID FROM ".CONTENT_TABLE.",".LINK_TABLE." WHERE ".LINK_TABLE.".DocumentTable='".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."' AND ".LINK_TABLE.".CID=".CONTENT_TABLE.".ID AND ".CONTENT_TABLE.".Dat like '%<we:banner %'  ";
@@ -881,7 +872,6 @@ class weBannerView extends weBannerBase{
 
 	function formFiles(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		global $l_banner;
 		$we_button = new we_button();
 
 		$delallbut = $we_button->create_button("delete_all","javascript:top.content.setHot(); we_cmd('del_all_files')");
@@ -895,7 +885,6 @@ class weBannerView extends weBannerBase{
 
 	function formFolders(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		global $l_banner;
 
 		$we_button = new we_button();
 
@@ -910,7 +899,6 @@ class weBannerView extends weBannerBase{
 
 	function formCategories(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		global $l_banner;
 
 		$we_button = new we_button();
 
@@ -923,7 +911,6 @@ class weBannerView extends weBannerBase{
 
 	}
 	function formDoctypes(){
-		global $l_banner;
 
 		$dt = '<select name="DoctypeIDs[]" size="10" multiple="multiple" style="width:495" onchange="top.content.setHot();">
 ';
@@ -943,7 +930,7 @@ class weBannerView extends weBannerBase{
 
 	function formStat($class="middlefont"){
 
-		$datefilterCheck = we_forms::checkboxWithHidden($this->UseFilter, "UseFilter", $GLOBALS["l_banner"]["datefilter"],false,"defaultfont","top.content.setHot(); we_cmd('switchPage','".$this->page."')");
+		$datefilterCheck = we_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner','[datefilter]'),false,"defaultfont","top.content.setHot(); we_cmd('switchPage','".$this->page."')");
 		$datefilter = getDateInput2("dateFilter%s",($this->FilterDate == -1 ? time() : $this->FilterDate),false,"dmy","top.content.setHot(); we_cmd('switchPage','".$this->page."');",$class);
 		$datefilter2 = getDateInput2("dateFilter2%s",($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd),false,"dmy","top.content.setHot(); we_cmd('switchPage','".$this->page."');",$class);
 
@@ -968,10 +955,10 @@ class weBannerView extends weBannerBase{
 ';
 
 		$GLOBALS["lv"] = new we_listview_banner("0",99999999,$this->Order,$this->banner->ID,$this->UseFilter,$this->FilterDate,$this->FilterDateEnd+86399);
-		$pathlink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'path\'){this.document.we_form.elements[\'order\'].value=\'path desc\';}else{this.document.we_form.elements[\'order\'].value=\'path\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.$GLOBALS["l_banner"]["page"].'</a>';
-		$viewslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'views desc\'){this.document.we_form.elements[\'order\'].value=\'views\';}else{this.document.we_form.elements[\'order\'].value=\'views desc\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.$GLOBALS["l_banner"]["views"].'</a>';
-		$clickslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'clicks desc\'){this.document.we_form.elements[\'order\'].value=\'clicks\';}else{this.document.we_form.elements[\'order\'].value=\'clicks desc\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.$GLOBALS["l_banner"]["clicks"].'</a>';
-		$ratelink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'rate desc\'){this.document.we_form.elements[\'order\'].value=\'rate\';}else{this.document.we_form.elements[\'order\'].value=\'rate desc\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.$GLOBALS["l_banner"]["rate"].'</a>';
+		$pathlink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'path\'){this.document.we_form.elements[\'order\'].value=\'path desc\';}else{this.document.we_form.elements[\'order\'].value=\'path\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.g_l('modules_banner','[page]').'</a>';
+		$viewslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'views desc\'){this.document.we_form.elements[\'order\'].value=\'views\';}else{this.document.we_form.elements[\'order\'].value=\'views desc\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.g_l('modules_banner','[views]').'</a>';
+		$clickslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'clicks desc\'){this.document.we_form.elements[\'order\'].value=\'clicks\';}else{this.document.we_form.elements[\'order\'].value=\'clicks desc\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.g_l('modules_banner','[clicks]').'</a>';
+		$ratelink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements[\'order\'].value==\'rate desc\'){this.document.we_form.elements[\'order\'].value=\'rate\';}else{this.document.we_form.elements[\'order\'].value=\'rate desc\';}we_cmd(\'switchPage\',\''.$this->page.'\');">'.g_l('modules_banner','[rate]').'</a>';
 		$headline = array(
 							array("dat"=>$pathlink),
 							array("dat"=>$viewslink),
@@ -980,7 +967,7 @@ class weBannerView extends weBannerBase{
 						);
 		$rows = array(
 							array(
-								array("dat"=>$GLOBALS["l_banner"]["all"]),
+								array("dat"=>g_l('modules_banner','[all]')),
 								array("dat"=>$GLOBALS["lv"]->getAllviews()),
 								array("dat"=>$GLOBALS["lv"]->getAllclicks()),
 								array("dat"=>$GLOBALS["lv"]->getAllrate()."%","align"=>"right")
@@ -998,10 +985,9 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formBanner($leftsize=120){
-		global $l_banner;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.$this->formBannerChooser(388,$this->uid."_bannerID",$this->banner->bannerID,$l_banner["imagepath"],"opener.we_cmd(\\'switchPage\\',\\'".$this->page."\\')").'</td>
+		<td>'.$this->formBannerChooser(388,$this->uid."_bannerID",$this->banner->bannerID,g_l('modules_banner','[imagepath]'),"opener.we_cmd(\\'switchPage\\',\\'".$this->page."\\')").'</td>
 	</tr>
 ';
 		if($this->banner->bannerID){
@@ -1031,14 +1017,13 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formPeriod(){
-		global $l_banner;
 
 		$now = time();
 		$from = $this->banner->StartOk ? $this->banner->StartDate : $now;
 		$to = $this->banner->EndOk ? $this->banner->EndDate : $now + 3600;
 
-		$checkStart = we_forms::checkboxWithHidden($this->banner->StartOk, $this->uid.'_StartOk', $l_banner["from"],false,"defaultfont","top.content.setHot();");
-		$checkEnd = we_forms::checkboxWithHidden($this->banner->EndOk, $this->uid.'_EndOk', $l_banner["to"],false,"defaultfont","top.content.setHot();");
+		$checkStart = we_forms::checkboxWithHidden($this->banner->StartOk, $this->uid.'_StartOk', g_l('modules_banner','[from]'),false,"defaultfont","top.content.setHot();");
+		$checkEnd = we_forms::checkboxWithHidden($this->banner->EndOk, $this->uid.'_EndOk', g_l('modules_banner','[to]'),false,"defaultfont","top.content.setHot();");
 
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
@@ -1067,7 +1052,6 @@ class weBannerView extends weBannerBase{
 
    function formCustomer(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		global $l_banner;
 		$we_button = new we_button();
 		$delallbut = $we_button->create_button("delete_all","javascript:top.content.setHot();we_cmd('del_all_customers')");
 		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openSelector','','".CUSTOMER_TABLE."','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
@@ -1076,16 +1060,15 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formPath($leftsize=120){
-		global $l_banner;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.htmlFormElementTable(htmlTextInput($this->uid."_Text",37,$this->banner->Text,"",'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'),$l_banner["name"]).'</td>
+		<td>'.htmlFormElementTable(htmlTextInput($this->uid."_Text",37,$this->banner->Text,"",'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'),g_l('modules_banner','[name]')).'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(20,10).'</td>
 	</tr>
 	<tr>
-		<td>'.$this->formDirChooser(388,BANNER_TABLE,$this->banner->ParentID,$this->uid."_ParentID",$l_banner["group"],"","PathGroup").'</td>
+		<td>'.$this->formDirChooser(388,BANNER_TABLE,$this->banner->ParentID,$this->uid."_ParentID",g_l('modules_banner','[group]'),"","PathGroup").'</td>
 	</tr>
 </table>
 ';
@@ -1150,22 +1133,20 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formBannerNumbers(){
-		global $l_banner;
 		$cn = md5(uniqid(rand()));
-		$activeCheckbox = we_forms::checkboxWithHidden($this->banner->IsActive, $this->uid.'_IsActive', $l_banner["active"],false,"defaultfont","top.content.setHot();");
+		$activeCheckbox = we_forms::checkboxWithHidden($this->banner->IsActive, $this->uid.'_IsActive', g_l('modules_banner','[active]'),false,"defaultfont","top.content.setHot();");
 		$maxShow = htmlFormElementTable(htmlTextInput($this->uid."_maxShow",10,$this->banner->maxShow,"","onchange=\"top.content.setHot();\"","text","100",0),
-			$l_banner["max_show"],
+			g_l('modules_banner','[max_show]'),
 			"left",
 			"defaultfont");
 		$maxClicks = htmlFormElementTable(htmlTextInput($this->uid."_maxClicks",10,$this->banner->maxClicks,"","onchange=\"top.content.setHot();\"","text","100",0),
-			$l_banner["max_clicks"],
+			g_l('modules_banner','[max_clicks]'),
 			"left",
 			"defaultfont");
-		$weight = htmlFormElementTable(htmlSelect(	$this->uid."_weight",
-													array("8"=>"1 (".$l_banner["infrequent"].")", "7"=>"2", "6"=>"3", "5"=>"4", "4"=>"5 (".$l_banner["normal"].")", "3"=>"6", "2"=>"7", "1"=>"8", "0"=>"9 (".$l_banner["frequent"].")") ,
+		$weight = htmlFormElementTable(htmlSelect(	$this->uid."_weight",array("8"=>"1 (".g_l('modules_banner','[infrequent]').")", "7"=>"2", "6"=>"3", "5"=>"4", "4"=>"5 (".g_l('modules_banner','[normal]').")", "3"=>"6", "2"=>"7", "1"=>"8", "0"=>"9 (".g_l('modules_banner','[frequent]').")") ,
 													1,
 													$this->banner->weight) ,
-			$l_banner["weight"],
+			g_l('modules_banner','[weight]'),
 			"left",
 			"defaultfont");
 
@@ -1196,8 +1177,8 @@ class weBannerView extends weBannerBase{
 		$onkeydown2 = "self.document.we_form.elements['".$this->uid."_IntHref'][1].checked=true; document.getElementById('".$this->uid."_bannerUrl"."').value='';";
 		$width = 388;
 
-		$title1 = $GLOBALS["l_banner"]["ext_url"];
-		$title2 = $GLOBALS["l_banner"]["int_url"];
+		$title1 = g_l('modules_banner','[ext_url]');
+		$title2 = g_l('modules_banner','[int_url]');
 
 		$title1 = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>

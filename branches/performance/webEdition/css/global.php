@@ -25,6 +25,7 @@ $show_stylesheet = true;
 // Activate the webEdition error handler
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
 if (!defined("WE_ERROR_HANDLER_SET")){ we_error_handler();}
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
@@ -36,9 +37,9 @@ if (isset($_REQUEST["WE_LANGUAGE"]) && $_REQUEST["WE_LANGUAGE"] != "") {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
 
-if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php")) {
+/*if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php")) {
 	exit("Could not include language file!");
-}
+}*/
 
 ?>
 
@@ -46,7 +47,7 @@ if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/
 	border: #AAAAAA solid 1px;
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .wetextinput {
@@ -55,7 +56,7 @@ if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/
 	height: 20px;
 	<?php print ($GLOBALS['BROWSER'] == "IE") ? "" : "line-height: 18px;"; ?>
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .wetextinput[disabled] {
@@ -71,7 +72,7 @@ if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/
 	height: 20px;
 	<?php print ($GLOBALS['BROWSER'] == "IE") ? "" : "line-height: 18px;"; ?>
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 
@@ -81,7 +82,7 @@ if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/
 	height: 80px;
 	<?php print ($GLOBALS['BROWSER'] == "IE") ? "" : "line-height: 18px;"; ?>
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .wetextareaselected {
@@ -91,7 +92,7 @@ if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/
 	height: 80px;
 	<?php print ($GLOBALS['BROWSER'] == "IE") ? "" : "line-height: 18px;"; ?>
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .multichooser {
@@ -107,7 +108,7 @@ body {
 .defaultfont {
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .defaultfont a {
@@ -129,7 +130,7 @@ body {
 .npdefaultfont {
 	color: red;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .npdefaultfont a {
@@ -148,25 +149,25 @@ body {
 	vertical-align: top;
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:center;
 }
 .shopContentfontSmall {
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "9px" : (($SYSTEM == "X11") ? "11px" : "10px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:center;
 }
 .shopContentfontAlert {
 	color: #800000;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:left;
 }
 .shopContentfontGreySmall {
 	color: #666666;
 	font-size: <?php print ($SYSTEM == "MAC") ? "9px" : (($SYSTEM == "X11") ? "11px" : "10px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:left;
 
 }
@@ -174,13 +175,13 @@ body {
 	vertical-align: top;
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:right;
 }
 .shopContentfontGR {
 	color: #666666;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:right;
 }
 .npshopContentfontR {
@@ -189,7 +190,7 @@ body {
 .npshopContentfont {
 	color: red;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:center;
 }
 .npshopContentfont a {
@@ -206,14 +207,14 @@ body {
 .pshopContentfontR {
 	color: green;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:right;
 
 }
 .pshopContentfont {
 	color: green;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	text-align:center;
 
 }
@@ -234,7 +235,7 @@ body {
 .pdefaultfont {
 	color: green;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 
 }
 
@@ -261,7 +262,7 @@ body {
 .middlefont {
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 
 }
 
@@ -282,7 +283,7 @@ body {
 .middlefontgray {
 	color: #666666;
 	font-size: <?php print ($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 
 }
 
@@ -303,7 +304,7 @@ body {
 .middlefontred {
 	color: red;
 	font-size: <?php print ($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .middlefontred a {
@@ -323,7 +324,7 @@ body {
 .defaultgray {
 	color: #666666;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .defaultgray a {
@@ -343,20 +344,20 @@ body {
 .small {
 	color: black;
 	font-size: <?php print ($GLOBALS['BROWSER'] == "NN" && ($SYSTEM == "WIN") ? "9px" : (($SYSTEM == "X11") ? "11px" : "9px")); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .header_small {
 	color: #006699;
 	font-size: <?php print ($GLOBALS['BROWSER'] == "NN" && ($SYSTEM == "WIN") ? "11px" : (($SYSTEM == "X11") ? "10px" : "10px")); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 
 .header_shop {
 	color: #006699;
 	font-size: <?php print ($GLOBALS['BROWSER'] == "NN" && ($SYSTEM == "WIN") ? "11px" : (($SYSTEM == "X11") ? "11px" : "11px")); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	background-image: url(/webEdition/we/include/we_modules/shop/images/shopInfast.gif);
       background-position: bottom left;
       background-repeat: no-repeat;
@@ -365,7 +366,7 @@ body {
 .shop_th {
 	color: #000000;
 	font-size: <?php print ($GLOBALS['BROWSER'] == "NN" && ($SYSTEM == "WIN") ? "12px" : (($SYSTEM == "X11") ? "12px" : "12px")); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	padding-bottom:5px;
 	font-weight:bold;
 }
@@ -373,7 +374,7 @@ body {
 .shop_fontView {
 	color: #666666;
 	font-size: <?php print ($GLOBALS['BROWSER'] == "NN" && ($SYSTEM == "WIN") ? "12px" : (($SYSTEM == "X11") ? "12px" : "12px")); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 
@@ -382,7 +383,7 @@ body {
 	color: black;
 	text-align: left;
 	font-size: <?php print ($GLOBALS['BROWSER'] == "NN" && ($SYSTEM == "WIN") ? "14px" : (($SYSTEM == "X11") ? "15px" : "13px")); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 
 }
 
@@ -392,7 +393,7 @@ body {
 	color: black;
 	font-weight: bold;
 	font-size: 20px;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 
@@ -400,7 +401,7 @@ body {
 .tree {
 	color: black;
 	font-size: <?php print ($GLOBALS['BROWSER'] == "NN" && ($SYSTEM == "WIN") ? "10px" : (($SYSTEM == "X11") ? "11px" : "9px")); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .tree a {
@@ -412,7 +413,7 @@ body {
 .selector {
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .selector a {
@@ -425,7 +426,7 @@ body {
 	color: #ffffff;
 	font-weight: bold;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .tableHeader a {
@@ -452,7 +453,7 @@ body {
 .defaultfontred {
 	color: #6CBFF9;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
 .blockWrapper {
@@ -470,7 +471,7 @@ body {
 	color: #000000;
 	cursor: default;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	font-weight: normal;
 	margin: 0px;
 	padding:0px;
@@ -514,7 +515,7 @@ optgroup.lvl2{
 .weDialogHeadline {
 	color: #000000;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	font-weight: bold;
 }
 
@@ -522,14 +523,14 @@ optgroup.lvl2{
 .weMultiIconBoxHeadline {
 	color: #6078A2;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	font-weight: bold;
 }
 
 .weMultiIconBoxHeadlineThin {
 	color: #6078A2;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	font-weight: normal;
 }
 
@@ -576,7 +577,7 @@ optgroup.lvl2{
 .weObjectPreviewHeadline {
 	color: #6078A2;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	font-weight: bold;
 	margin-bottom:3px;
 }
@@ -590,13 +591,13 @@ optgroup.lvl2{
 .weDocListSearchHeadline {
 	color: #6078A2;
 	font-size: <?php print ($SYSTEM == "MAC") ? "13px" : (($SYSTEM == "X11") ? "15px" : "14px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	font-weight: bold;
 	margin-top:6px;
 }
 .weDocListSearchHeadlineDivs {
 	color: #6078A2;
 	font-size: <?php print ($SYSTEM == "MAC") ? "13px" : (($SYSTEM == "X11") ? "15px" : "14px"); ?>;
-	font-family: <?php print $l_css["font_family"]; ?>;
+	font-family: <?php print g_l('css','[font_family]'); ?>;
 	font-weight: bold;
 }

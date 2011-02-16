@@ -276,7 +276,7 @@ if ($we_editmode) {
 		}
 
 		function getCharset(){
-			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS["_language"]["charset"]; ?>";
+			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : g_l('charset',"[charset]"); ?>";
 		}
 
 		// ############ CodeMirror Functions ################
@@ -677,9 +677,6 @@ if ($we_editmode) {
 
 		// NEW TAGWIZARD
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/we_tag_groups.inc.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/we_tag_wizard.inc.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/javaMenu/module_information.inc.php');
 
 		$allWeTags = weTagWizard::getExistingWeTags();
 
@@ -689,9 +686,9 @@ if ($we_editmode) {
 		$groupJs = "tagGroups = new Array();\n";
 
 		$selectedGroup = isset($we_doc->TagWizardSelection) && !empty($we_doc->TagWizardSelection) ? $we_doc->TagWizardSelection : "alltags";
-		$groupselect .= '<optgroup label="' . $GLOBALS['l_weCodeWizard']['snippets'] . '">';
-		$groupselect .= '<option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . $GLOBALS['l_weCodeWizard']['standard_snippets'] . '</option>';
-		$groupselect .= '<option value="snippet_custom" ' . ($selectedGroup == "snippet_custom" ? "selected" : "") . '>' . $GLOBALS['l_weCodeWizard']['custom_snippets'] . '</option>';
+		$groupselect .= '<optgroup label="' . g_l('weCodeWizard','[snippets]') . '">';
+		$groupselect .= '<option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . g_l('weCodeWizard','[standard_snippets]') . '</option>';
+		$groupselect .= '<option value="snippet_custom" ' . ($selectedGroup == "snippet_custom" ? "selected" : "") . '>' . g_l('weCodeWizard','[custom_snippets]') . '</option>';
 		$groupselect .= '</optgroup>';
 		$groupselect .= '<optgroup label="we:tags">';
 
@@ -700,7 +697,7 @@ if ($we_editmode) {
 			if ($tagGroupName == 'custom') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
-			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_modules']) ? $l_javaMenu["module_information"][$tagGroupName]["text"] : (isset($GLOBALS['l_we_tag_groups'][$tagGroupName]) ? $GLOBALS['l_we_tag_groups'][$tagGroupName] : $GLOBALS['l_we_tag_wizard'][$tagGroupName] )) . '</option>';
+			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_modules']) ? g_l('javaMenu_moduleInformation','['.$tagGroupName.'][text]') : g_l('weTagGroups','['.$tagGroupName.']')) . '</option>';
 			if ($tagGroupName == 'alltags') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
@@ -748,9 +745,9 @@ if ($we_editmode) {
 		 	function openTagWizardPrompt( _wrongTag ) {
 
 
-		 		var _prompttext = "' . $GLOBALS['l_we_tag_wizard']['insert_tagname'] . '";
+		 		var _prompttext = "' . g_l('weTagWizard','[insert_tagname]') . '";
 		 		if ( _wrongTag ) {
-		 			_prompttext = "' . sprintf($GLOBALS['l_we_tag_wizard']['insert_tagname_not_exist'], '\"" + _wrongTag + "\"') . '\n\n" + _prompttext;
+		 			_prompttext = "' . sprintf(g_l('weTagWizard','[insert_tagname_not_exist]'), '\"" + _wrongTag + "\"') . '\n\n" + _prompttext;
 		 		}
 
 		 		var _tagName = prompt(_prompttext);
@@ -916,7 +913,7 @@ if ($we_editmode) {
 		$znr = 1;
 	}
 	print we_multiIconBox::getJS();
-	print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, $GLOBALS["l_we_class"]["showTagwizard"], $GLOBALS["l_we_class"]["hideTagwizard"], ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+	print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass',"[showTagwizard]"), g_l('weClass',"[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 	?></body>
 
 	<?php

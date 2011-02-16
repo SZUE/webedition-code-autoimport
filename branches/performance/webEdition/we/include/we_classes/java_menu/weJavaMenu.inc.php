@@ -66,7 +66,7 @@ class weJavaMenu {
 	}
 
 	function getMozillaMenuHTML(){
-		return '<iframe src="'.WEBEDITION_DIR.'mozillamenu.php?wecharset='.rawurlencode($GLOBALS["_language"]["charset"]).($this->prename != "" ? "&pre=".$this->prename : "").'" frameborder="0" style="position:absolute;left:0px;top:5px; width:' . $this->width . '"px"></iframe>';
+		return '<iframe src="'.WEBEDITION_DIR.'mozillamenu.php?wecharset='.rawurlencode(g_l('charset',"[charset]")).($this->prename != "" ? "&pre=".$this->prename : "").'" frameborder="0" style="position:absolute;left:0px;top:5px; width:' . $this->width . '"px"></iframe>';
 	}
 
 	function getJS() {

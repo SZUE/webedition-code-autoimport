@@ -213,7 +213,7 @@ class we_document extends we_root {
 		if($withHeadline){
 			$_headline = '
 				<tr>
-					<td class="defaultfont">' . $GLOBALS['l_we_class']['language'] . '</td>
+					<td class="defaultfont">' . g_l('weClass','[language]') . '</td>
 				</tr>
 			';
 		}
@@ -234,14 +234,13 @@ class we_document extends we_root {
 	}
 
 	function formInGlossar($leftwidth=100){
-		global $l_we_class;
 		$n = 'we_'.$this->Name.'_InGlossar';
 
 		$glossarActivated = we_getModuleNameByContentType('glossary');
 
 		if($glossarActivated=='glossary') {
 			$v = $this->InGlossar;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class['InGlossar'],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass','[InGlossar]'),false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 		}
 		else {
 			return'';
@@ -249,14 +248,12 @@ class we_document extends we_root {
 	}
 
 	function formIsSearchable($leftwidth=100){
-		global $l_we_class;
 		$n = 'we_'.$this->Name.'_IsSearchable';
 		$v = $this->IsSearchable;
- 		return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class['IsSearchable'],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
+ 		return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass','[IsSearchable]'),false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
  	}
 
  	function formExtension2() {
-		global $l_we_class;
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
 		if($this->ID==0 && $_REQUEST['we_cmd'][0] == 'load_editor' && $doctype == ''){	//	Neues Dokument oder Dokument ohne DocType
@@ -275,12 +272,10 @@ class we_document extends we_root {
 		} else {	//	bestehendes Dokument oder Dokument mit DocType
             $selected=$this->Extension;
 		}
-		return $this->htmlFormElementTable(getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')),$l_we_class["extension"]);
+		return $this->htmlFormElementTable(getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')),g_l('weClass',"[extension]"));
 	}
 
 	function formPath() {
-		global $l_we_class;
-
 		$disable = ( ($this->ContentType == 'text/html' || $this->ContentType == 'text/webedition') && $this->Published);
 		if ($this->ContentType == 'text/htaccess'){
 			$this->Filename='.htaccess';
@@ -292,7 +287,7 @@ class we_document extends we_root {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.$this->formInputField('','Filename',$l_we_class['filename'],30,388,255,$filenameinput.'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"').'</td>
+						'.$this->formInputField('','Filename',g_l('weClass','[filename]'),30,388,255,$filenameinput.'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"').'</td>
 					<td></td>
 					<td>
 						'.$this->formExtension2().'</td>
@@ -314,13 +309,11 @@ class we_document extends we_root {
 	}
 
 	function formMetaInfos() {
-		global $l_we_class;
-
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Title",$l_we_class["Title"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>
 				<tr>
 					<td>
@@ -328,7 +321,7 @@ class we_document extends we_root {
 				</tr>
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Description",$l_we_class["Description"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>
 				<tr>
 					<td>
@@ -336,7 +329,7 @@ class we_document extends we_root {
 				</tr>
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Keywords",$l_we_class["Keywords"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>';
 
 			$content .= '</table>';
@@ -364,11 +357,10 @@ class we_document extends we_root {
 
 	function formNavigation() {
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/MultiFileChooser.inc.php');
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');
 
 		$we_button = new we_button();
 
-		$delallbut = $we_button->create_button('delete_all',"javascript:if(confirm('".$l_navigation['dellall_question']."')) we_cmd('delete_all_navi')",true,-1,-1,"","",(we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
+		$delallbut = $we_button->create_button('delete_all',"javascript:if(confirm('".g_l('navigation','[dellall_question]')."')) we_cmd('delete_all_navi')",true,-1,-1,"","",(we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
 
 		$addbut    = $we_button->create_button('add', "javascript:we_cmd('tool_navigation_edit_navi',0)",true,100,22,'','',(we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true,false);
 
@@ -390,7 +382,7 @@ class we_document extends we_root {
 		}
 
 		$navis->diabledDelItems = makeCSVFromArray($NoDelNavis);
-		$navis->diabledDelReason = $l_navigation['NoDeleteFromDocument'];
+		$navis->diabledDelReason = g_l('navigation','[NoDeleteFromDocument]');
 
 		if(!we_hasPerm('EDIT_NAVIGATION')) {
 			$navis->isEditable=false;
@@ -1720,9 +1712,6 @@ class we_document extends we_root {
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-
-		global $l_we_class;
-
 		$value = (isset($this->elements['Charset']['dat']) ? $this->elements['Charset']['dat'] : '');
 
 		$_charsetHandler = new charsetHandler();
@@ -1741,7 +1730,7 @@ class we_document extends we_root {
 		if($withHeadline){
 			$_headline = '
 			<tr>
-				<td class="defaultfont">' . $GLOBALS['l_we_class']['Charset'] . '</td>
+				<td class="defaultfont">' . g_l('weClass','[Charset]') . '</td>
 			</tr>
 			';
 		}

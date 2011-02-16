@@ -17,15 +17,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 function we_tag_img($attribs, $content){
 	if ($GLOBALS['we_editmode']) {
 		// Include we_button class
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/css.inc.php');
-		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/we_class.inc.php');
 	}
 
 	$foo = attributFehltError($attribs, "name", "img");
@@ -117,14 +114,14 @@ function we_tag_img($attribs, $content){
 		            <td class=\"weEditmodeStyle\" align=\"center\" style=\"width: 180px;\">
 		            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
                     <tr>
-                        <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . $l_css["font_family"] . ";\">" . $l_we_class["alt_kurz"] . ":&nbsp;</td>
+                        <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css','[font_family]') . ";\">" . g_l('weClass',"[alt_kurz]") . ":&nbsp;</td>
                         <td class=\"weEditmodeStyle\">" . htmlTextInput($altname, 16, $alt,'','onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
                     </tr>
 					<tr>
 						<td class=\"weEditmodeStyle\"></td>
 					</tr>
 				    <tr>
-		                <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . $l_css["font_family"] . ";\">" . $l_we_class["title"] . ":&nbsp;</td>
+		                <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css','[font_family]') . ";\">" . g_l('weClass',"[title]") . ":&nbsp;</td>
 		                <td class=\"weEditmodeStyle\">" . htmlTextInput($titlename, 16, $title,'','onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
                     </tr>
 		            </table>

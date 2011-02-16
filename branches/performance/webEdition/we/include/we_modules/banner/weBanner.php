@@ -19,7 +19,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_BANNER_MODULE_DIR."weBannerBase.php");
 
 define("BANNER_PAGE_PROPERTY",0);
@@ -132,11 +132,11 @@ class weBanner extends weBannerBase{
 
 		if($this->IsFolder){
 			$this->Icon="banner_folder.gif";
-			$this->Text = $GLOBALS["l_banner"]["newbannergroup"];
-			$this->Path = "/".$GLOBALS["l_banner"]["newbannergroup"];
+			$this->Text = g_l('modules_banner','[newbannergroup]');
+			$this->Path = "/".g_l('modules_banner','[newbannergroup]');
 		}else{
-			$this->Text = $GLOBALS["l_banner"]["newbanner"];
-			$this->Path = "/".$GLOBALS["l_banner"]["newbanner"];
+			$this->Text = g_l('modules_banner','[newbanner]');
+			$this->Path = "/".g_l('modules_banner','[newbanner]');
 		}
 
 		if ($bannerID){
@@ -295,7 +295,7 @@ class weBanner extends weBannerBase{
 
 		return array("ID"=>0,"bannerID"=>0);
 	}
-	
+
 	function getImageInfos($fileID){
 		$imgAttr = array();
 		$db = new DB_WE();
@@ -317,13 +317,13 @@ class weBanner extends weBannerBase{
 		$prot = getServerProtocol();
 		$attsImage['border'] = 0;
 		$attsImage['alt'] = '';
-		
+
 		if($bannerData["ID"]){
 			$id = $bannerData["ID"];
 			if($bannerData["bannerID"]){
 				$bannersrc = $prot."://".SERVER_NAME.(defined("HTTP_PORT") ? (":".HTTP_PORT) : "").id_to_path($bannerData["bannerID"]);
 				$attsImage = array_merge($attsImage,weBanner::getImageInfos($bannerData["bannerID"]));
-				if (isset($attsImage['longdescid'])) unset($attsImage['longdescid']);				
+				if (isset($attsImage['longdescid'])) unset($attsImage['longdescid']);
 			}else{
 				$bannersrc = $getbanner."?".($nocount ? 'nocount='.$nocount.'&amp;' : '')."u=$uniq&amp;bannername=".rawurlencode($bannername)."&amp;id=".$bannerData["ID"]."&amp;bid=".$bannerData["bannerID"]."&amp;did=".$did."&amp;page=".rawurlencode($page);
 			}
@@ -335,7 +335,7 @@ class weBanner extends weBannerBase{
 			if($bannerID){
 				$bannersrc = $prot."://".SERVER_NAME.(defined("HTTP_PORT") ? (":".HTTP_PORT) : "").id_to_path($bannerID);
 				$attsImage = array_merge($attsImage,weBanner::getImageInfos($bannerID));
-				if (isset($attsImage['longdescid'])) unset($attsImage['longdescid']);				
+				if (isset($attsImage['longdescid'])) unset($attsImage['longdescid']);
 			}else{
 				$bannersrc = $getbanner."?".($nocount ? 'nocount='.$nocount.'&amp;' : '')."u=$uniq&amp;bannername=".rawurlencode($bannername)."&amp;id=".$id."&amp;bid=".$bannerID."&amp;did=".$did;
 				$showlink = false;

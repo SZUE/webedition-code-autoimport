@@ -29,19 +29,19 @@ class weGlossaryTree extends weMainTree{
 			weMainTree::weMainTree($frameset,$topFrame,$treeFrame,$cmdFrame);
 
 			$styles=array();
-			$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].';}';
+			$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').';}';
 			$styles[]='.item a { text-decoration:none;}';
 
-			$styles[]='.group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].';}';
+			$styles[]='.group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').';}';
 			$styles[]='.group a { text-decoration:none;}';
 
 			$this->setStyles($styles);
 
 	}
-	
-	
+
+
 	function getJSOpenClose() {
-		
+
 		return '
 			function openClose(id){
 			var sort="";
@@ -66,12 +66,12 @@ class weGlossaryTree extends weMainTree{
 			if(openstatus==1) treeData[eintragsIndex].loaded=1;
 			}
 			';
-			
+
 	}
-	
-	
+
+
 	function getJSUpdateItem() {
-		
+
 		return '
 				function updateEntry(id,text,pid,pub){
     			var ai = 1;
@@ -87,17 +87,16 @@ class weGlossaryTree extends weMainTree{
 				}
 		';
 	}
-	
-	
+
+
 	function getJSTreeFunctions() {
-		global $l_glossary;
 		$out = weTree::getJSTreeFunctions();
 
 		$out.='
 			function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
-						if(confirm("'.$l_glossary["save_changed_glossary"].'")) {
+						if(confirm("'.g_l('modules_glossary',"[save_changed_glossary]").'")) {
 							cmd = "save_export";
 							top.content.we_cmd("save_glossary");
 						} else {
@@ -115,8 +114,8 @@ class weGlossaryTree extends weMainTree{
 		return $out;
 
 	}
-	
-	
+
+
 	function getJSStartTree() {
 
 		return 'function startTree(){
@@ -125,20 +124,20 @@ class weGlossaryTree extends weMainTree{
 		}';
 
 	}
-	
-	
+
+
 	function getJSIncludeFunctions() {
 
 		$out=weTree::getJSIncludeFunctions();
 		$out.="\n".$this->getJSStartTree()."\n";
 
 		return $out;
-		
+
 	}
-	
-	
+
+
 	function getJSMakeNewEntry() {
-		
+
  		return '
 		function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 				if(treeData[indexOfEntry(pid)]){
@@ -172,22 +171,22 @@ class weGlossaryTree extends weMainTree{
 				}
 		}
 		';
- 		
+
 	}
-	
-	
+
+
 	function getJSInfo() {
-		
+
 		return '
 			function info(text) {
 			}
 		';
-		
+
 	}
-	
-	
+
+
 	function getJSShowSegment() {
-		
+
 		return '
 				function showSegment(){
 				parentnode='.$this->topFrame.'.get(this.parentid);
@@ -196,10 +195,10 @@ class weGlossaryTree extends weMainTree{
 				drawTree();
 			}
 		';
-		
+
 	}
-	
-	
+
+
 }
 
 ?>

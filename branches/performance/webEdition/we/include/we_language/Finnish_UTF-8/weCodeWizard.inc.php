@@ -18,14 +18,11 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$l_weCodeWizard["snippets"] = "Snipetit";
-$l_weCodeWizard["standard_snippets"] = "Vakio";
-$l_weCodeWizard["custom_snippets"] = "Customi";
-
+$l_weCodeWizard = array(
+		'snippets' => "Snipetit",
+		'standard_snippets' => "Vakio",
+		'custom_snippets' => "Customi",
 // Names of the Folders
-$l_weCodeWizard['information']['forms']['foldername'] = "Formit";
-$l_weCodeWizard['information']['overviews']['foldername'] = "Yleisnäkymät";
-
-?>
+		'foldername' => "Formit",
+		'foldername' => "Yleisnäkymät",
+);

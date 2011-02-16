@@ -22,9 +22,8 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
 protect();
-htmlTop($GLOBALS["l_banner"]["bannercode"]);
+htmlTop(g_l('modules_banner','[bannercode]'));
 print STYLESHEET;
 
 $code = '';
@@ -78,37 +77,37 @@ document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" s
 
 function checkForm(f){
 	if(f.tagname.value==""){
-		<?php print we_message_reporting::getShowMessageCall($l_banner["error_tagname_empty"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_tagname_empty]'), WE_MESSAGE_ERROR); ?>
 		f.tagname.focus();
 		f.tagname.select();
 		return false;
 	}
 	if(f.page.value==""){
-		<?php print we_message_reporting::getShowMessageCall($l_banner["error_page_empty"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_page_empty]'), WE_MESSAGE_ERROR); ?>
 		f.page.focus();
 		f.page.select();
 		return false;
 	}
 	if(f.width.value==""){
-		<?php print we_message_reporting::getShowMessageCall($l_banner["error_width_empty"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_width_empty]'), WE_MESSAGE_ERROR); ?>
 		f.width.focus();
 		f.width.select();
 		return false;
 	}
 	if(f.height.value==""){
-		<?php print we_message_reporting::getShowMessageCall($l_banner["error_height_empty"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_height_empty]'), WE_MESSAGE_ERROR); ?>
 		f.height.focus();
 		f.height.select();
 		return false;
 	}
 	if(f.getscript.value==""){
-		<?php print we_message_reporting::getShowMessageCall($l_banner["error_getscript_empty"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_getscript_empty]'), WE_MESSAGE_ERROR); ?>
 		f.getscript.focus();
 		f.getscript.select();
 		return false;
 	}
 	if(f.clickscript.value==""){
-		<?php print we_message_reporting::getShowMessageCall($l_banner["error_clickscript_empty"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_clickscript_empty]'), WE_MESSAGE_ERROR); ?>
 		f.clickscript.focus();
 		f.clickscript.select();
 		return false;
@@ -133,55 +132,55 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">
 ';
 if(!$ok){
 	$content.= '	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["type"].'</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.$typeselect.'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[type]').'</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.$typeselect.'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["tagname"].'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("tagname",40,$tagname,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[tagname]').'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("tagname",40,$tagname,"","","text",300).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["pageurl"].'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("page",40,$page,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[pageurl]').'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("page",40,$page,"","","text",300).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["target"].'</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("target",40,$target,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[target]').'</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("target",40,$target,"","","text",300).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["width"].'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("width",40,$width,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[width]').'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("width",40,$width,"","","text",300).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["height"].'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("height",40,$height,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[height]').'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("height",40,$height,"","","text",300).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["paths"].'</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("paths",40,$paths,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[paths]').'</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("paths",40,$paths,"","","text",300).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["getscript"].'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("getscript",40,$getscript,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[getscript]').'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("getscript",40,$getscript,"","","text",300).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.getPixel(10,10).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont">'.$GLOBALS["l_banner"]["clickscript"].'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("clickscript",40,$clickscript,"","","text",300).'</td>
+		<td class="defaultfont">'.g_l('modules_banner','[clickscript]').'*</td><td>'.getPixel(10,2).'</td><td class="defaultfont">'.htmlTextInput("clickscript",40,$clickscript,"","","text",300).'</td>
 	</tr>
 ';
 }
@@ -195,7 +194,7 @@ if($ok){
 ';
 }
 $we_button = new we_button();
-$content .= '</table>'.(($ok) ? "" : '<p class="defaultfont">*'.$l_banner["required"]).'</p>';
+$content .= '</table>'.(($ok) ? "" : '<p class="defaultfont">*'.g_l('modules_banner','[required]')).'</p>';
 $cancel_button = $we_button->create_button("cancel", "javascript:top.close();");
 $ok_button = $we_button->create_button("ok", "form:submit:we_form");
 $back_button = $we_button->create_button("back", "javascript:history.back();");
@@ -203,7 +202,7 @@ $close_button = $we_button->create_button("close", "javascript:top.close();");
 
 $buttons = $ok ? $we_button->position_yes_no_cancel($close_button,null,$back_button) : $we_button->position_yes_no_cancel($ok_button,null,$cancel_button);
 
-print  htmlDialogLayout($content,$ok ? $GLOBALS["l_banner"]["bannercode_copy"] : $GLOBALS["l_banner"]["bannercode_ext"],$buttons);
+print  htmlDialogLayout($content,$ok ? g_l('modules_banner','[bannercode_copy]') : g_l('modules_banner','[bannercode_ext]'),$buttons);
 ?>
 	</form>
 	</body>

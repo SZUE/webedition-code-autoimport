@@ -27,7 +27,6 @@ if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don'
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/we_tabs.inc.php');
 }
 
 
@@ -1671,9 +1670,8 @@ function mapPermissions() {
 			}
 
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
 
-			$title = $l_we_SEEM["workspace_seem_startdocument"];
+			$title = g_l('SEEM',"[workspace_seem_startdocument]");
 
 			$docPath = "none";
 
@@ -2949,7 +2947,6 @@ function mapPermissions() {
 	function formHeader($tab = 0) {
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/javaMenu/javaMenu_users.inc.php');
 
 		$big=false;
 		if(file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")) {
@@ -2959,15 +2956,15 @@ function mapPermissions() {
 		$we_tabs = new we_tabs();
 
 		if ($this->Type == 2) {
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["data"], "TAB_ACTIVE", "setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][data]"), "TAB_ACTIVE", "setTab(0);"));
 		} else {
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["data"], ($tab==0?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][data]"), ($tab==0?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(0);"));
 
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["permissions"], ($tab==1?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(1);"));
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["workspace"], ($tab==2?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(2);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][permissions]"), ($tab==1?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(1);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][workspace]"), ($tab==2?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(2);"));
 
 			if($this->Type == 0) {
-				$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["preferences"], ($tab==3?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(3);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][preferences]"), ($tab==3?"TAB_ACTIVE":"TAB_NORMAL"), "self.setTab(3);"));
 			}
 		}
 
@@ -3020,10 +3017,10 @@ function mapPermissions() {
 			$headline1=g_l('modules_users',"[group]").': ';
 		}
 		else if($this->Type==2) {
-			$headline1=$GLOBALS["l_javaMenu"]["users"]["menu_alias"].': ';
+			$headline1=g_l('javaMenu_users','[menu_alias]').': ';
 		}
 		else {
-			$headline1=$GLOBALS["l_javaMenu"]["users"]["menu_user"].': ';
+			$headline1=g_l('javaMenu_users','[menu_user]').': ';
 		}
 		$headline2=empty($this->Path)?$this->getPath($this->ParentID):$this->Path;
 		$out .= '<div id="main" >' . getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$headline1).'&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$headline2).'</b></span></nobr></div>'.getPixel(100,3).$we_tabs->getHTML().'</div>';

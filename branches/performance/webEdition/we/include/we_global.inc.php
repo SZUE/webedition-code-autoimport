@@ -2833,7 +2833,7 @@ function we_mail($recipient, $subject, $txt, $from = "") {
 	}
 
 	$phpmail = new we_util_Mailer($recipient, $subject, $from);
-	$phpmail->setCharSet($GLOBALS["_language"]["charset"]);
+	$phpmail->setCharSet(g_l('charset',"[charset]"));
 	$phpmail->addTextPart(trim($txt));
 	$phpmail->buildMessage();
 	$phpmail->Send();
@@ -3199,17 +3199,17 @@ function number2System($value, $chars = array(), $str = "") {
  */
 function we_qualitySelect($name = "quality", $sel = 8) {
 	return '<select name="' . $name . '" class="weSelect" size="1">
-<option value="0"' . (($sel == 0) ? ' selected' : '') . '>0 - ' . $GLOBALS["l_we_class"]["quality_low"] . '</option>
+<option value="0"' . (($sel == 0) ? ' selected' : '') . '>0 - ' . g_l('weClass',"[quality_low]") . '</option>
 <option value="1"' . (($sel == 1) ? ' selected' : '') . '>1</option>
 <option value="2"' . (($sel == 2) ? ' selected' : '') . '>2</option>
 <option value="3"' . (($sel == 3) ? ' selected' : '') . '>3</option>
-<option value="4"' . (($sel == 4) ? ' selected' : '') . '>4 - ' . $GLOBALS["l_we_class"]["quality_medium"] . '</option>
+<option value="4"' . (($sel == 4) ? ' selected' : '') . '>4 - ' . g_l('weClass',"[quality_medium]") . '</option>
 <option value="5"' . (($sel == 5) ? ' selected' : '') . '>5</option>
 <option value="6"' . (($sel == 6) ? ' selected' : '') . '>6</option>
 <option value="7"' . (($sel == 7) ? ' selected' : '') . '>7</option>
-<option value="8"' . (($sel == 8) ? ' selected' : '') . '>8 - ' . $GLOBALS["l_we_class"]["quality_high"] . '</option>
+<option value="8"' . (($sel == 8) ? ' selected' : '') . '>8 - ' . g_l('weClass',"[quality_high]") . '</option>
 <option value="9"' . (($sel == 9) ? ' selected' : '') . '>9</option>
-<option value="10"' . (($sel == 10) ? ' selected' : '') . '>10 - ' . $GLOBALS["l_we_class"]["quality_maximum"] . '</option>
+<option value="10"' . (($sel == 10) ? ' selected' : '') . '>10 - ' . g_l('weClass',"[quality_maximum]") . '</option>
 </select>
 ';
 }
@@ -3608,9 +3608,9 @@ function we_writeLanguageConfig($default, $available = array()) {
 	foreach ($available as $Locale) {
 		$temp = explode("_", $Locale);
 		if (sizeof($temp) == 1) {
-			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "])' " . $temp[0] . ",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]') " . $temp[0] . ",\n";
 		} else {
-			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "])' . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
+			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]') . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
 		}
 	}
 
@@ -3798,8 +3798,8 @@ function CheckAndConvertISOfrontend($utf8data) {
 
 function CheckAndConvertISObackend($utf8data) {
 
-	if ($GLOBALS["_language"]["charset"] != 'UTF-8') {
-		return iconv("UTF-8", $GLOBALS["_language"]["charset"] . "//TRANSLIT", $utf8data);
+	if (g_l('charset',"[charset]") != 'UTF-8') {
+		return iconv("UTF-8", g_l('charset',"[charset]") . "//TRANSLIT", $utf8data);
 	} else {
 		return $utf8data;
 	}
@@ -3836,7 +3836,8 @@ function g_l($name, $specific) {
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 	}else{
-		if(isset($cache))unset($cache);
+		//FIXME: decide if in we - then turn off, else turn on
+		//if(isset($cache))unset($cache);
 		//compatibility - try global scope
 		$tmp = (isset($GLOBALS["l_$name"])?getVarArray($GLOBALS["l_$name"], $specific):false);
 	}

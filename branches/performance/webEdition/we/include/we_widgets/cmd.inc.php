@@ -27,9 +27,8 @@ switch ($_REQUEST["we_cmd"][0]) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_html_tools.inc.php");
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/cfg.inc.php");
-		
+
 		$aProps = array();
 		$aProps[0] = $_REQUEST["we_cmd"][1];
 		$aProps[1] = $aPrefs[$aProps[0]]["cls"];
@@ -51,7 +50,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.inc.php');
 		}
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
-		
+
 		$js = "
 function gel(id_){
 	return document.getElementById?document.getElementById(id_):null;
@@ -62,14 +61,14 @@ function transmit(){
 	}
 }
 ";
-		print 
+		print
 				we_htmlElement::htmlHtml(
 						we_htmlElement::htmlHead(
 								we_htmlElement::cssElement("div,span{display:none;}") . we_htmlElement::jsElement(
 										$js)) . we_htmlElement::htmlBody(
 								array(
 									"onload" => "transmit();"
-								), 
+								),
 								we_htmlElement::htmlDiv(array(
 									"id" => "content"
 								), $oTblCont->getHtmlCode()) . we_htmlElement::htmlSpan(array(

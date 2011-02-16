@@ -21,14 +21,15 @@
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
- * 
+ *
  */
 
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 $we_button = new we_button();
 $searchButton = $we_button->create_button('search', $_SERVER['PHP_SELF'] . '?section=update&update_cmd=update&detail=lookForUpdate');
 if (isset($GLOBALS['LU_Variables']['clientSubVersion']) &&  $GLOBALS['LU_Variables']['clientSubVersion'] !='0000'){
 	$clientSubVersion = ' (SVN-Revision: '.$GLOBALS['LU_Variables']['clientSubVersion'].')';
-} else { 
+} else {
 	$clientSubVersion = '';
 }
 
@@ -56,5 +57,3 @@ $content = '
 ';
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['update']['headline'], $content);
-
-?>

@@ -21,7 +21,6 @@
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/moduleActivation.inc.php");
 
 htmlTop();
 print STYLESHEET;
@@ -30,7 +29,7 @@ $content = '
 <table border="0" cellpadding="7" width="100%" class="defaultfont">
 <tr>
 	<td colspan="2"><strong>' . sprintf(
-		$l_moduleActivation["headline"], 
+		g_l('moduleActivation','[headline]'),
 		$_moduleName) . '</strong></td>
 </tr>
 <tr>
@@ -38,7 +37,7 @@ $content = '
 		<img src="' . IMAGE_DIR . "alert.gif" . '" />
 	</td>
 	<td class="defaultfont">
-		' . $l_moduleActivation["content"] . '
+		' . $g_l('moduleActivation','[content]') . '
 	</td>
 </tr>
 </table>';

@@ -18,9 +18,7 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$l_moduleActivation["headline"] = "Extra '%s' ei ole aktivoitu";
-$l_moduleActivation["content"] = "Voit valita käytettävät extrat aktivoimalla ne <a href=\"javascript:top.opener.top.we_cmd('openPreferences', 'setting_active_integrated_modules');\">valinnat</a> alta";
-
-?>
+$l_moduleActivation = array(
+		'headline' => "Extra '%s' ei ole aktivoitu",
+		'content' => "Voit valita käytettävät extrat aktivoimalla ne <a href=\"javascript:top.opener.top.we_cmd('openPreferences', 'setting_active_integrated_modules');\">valinnat</a> alta",
+);

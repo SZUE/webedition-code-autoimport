@@ -49,7 +49,7 @@ class weNewsletter extends weNewsletterBase{
 	var $log=array();
 	var $blocks=array();
 	var $groups=array();
-	
+
 	var $isEmbedImages;
 	/**
 	 * Default Constructor
@@ -80,7 +80,7 @@ class weNewsletter extends weNewsletterBase{
 		$this->persistents[]="IsFolder";
 		$this->persistents[]="Charset";
 		$this->persistents[]="isEmbedImages";
-		
+
 		$this->ID = 0;
 		$this->ParentID = 0;
 		$this->IsFolder = 0;
@@ -97,7 +97,7 @@ class weNewsletter extends weNewsletterBase{
 		$this->isEmbedImages="";
 		$this->Step=0;
 		$this->Offset=0;
-		$this->Charset=$GLOBALS["_language"]["charset"];
+		$this->Charset=g_l('charset',"[charset]");
 		$this->log=array();
 		$this->blocks=array();
 		$this->groups=array();
@@ -117,13 +117,13 @@ class weNewsletter extends weNewsletterBase{
 	 * @param int $newsletterID
 	 */
 	function load($newsletterID){
-		parent::load($newsletterID);		
+		parent::load($newsletterID);
 		$this->Text=stripslashes($this->Text);
-		if($this->Path=="") $this->Path="/";		
-		$this->Subject=stripslashes($this->Subject);				  
+		if($this->Path=="") $this->Path="/";
+		$this->Subject=stripslashes($this->Subject);
 		$this->groups=weNewsletterGroup::__getAllGroups($newsletterID);
 		$this->blocks=weNewsletterBlock::__getAllBlocks($newsletterID);
-		if($this->Charset == "") $this->Charset=$GLOBALS["_language"]["charset"];
+		if($this->Charset == "") $this->Charset=g_l('charset',"[charset]");
 	}
 
 	/**
@@ -134,8 +134,6 @@ class weNewsletter extends weNewsletterBase{
 	 * @return int
 	 */
 	function save(&$message,$check=true){
-		global $l_newsletter;
-		
 		//check addesses
 		if($check){
 			$ret=$this->checkEmails($message);
@@ -143,10 +141,10 @@ class weNewsletter extends weNewsletterBase{
 		}
 
 		if(!$this->checkParents($this->ParentID)){
-			$message=$l_newsletter["path_nok"];
+			$message=g_l('modules_newsletter','[path_nok]');
 			return -10;
 		}
-		
+
 		if($this->IsFolder){
 			$this->Icon="folder.gif";
 			$this->fixChildsPaths();
@@ -155,10 +153,10 @@ class weNewsletter extends weNewsletterBase{
 		if($this->Step!=0 || $this->Offset!=0) $this->addLog("log_campagne_reset");
 		$this->Step=0;
 		$this->Offset=0;
-		
+
 		parent::save();
 
-						
+
 		$this->db->query("DELETE FROM ".NEWSLETTER_GROUP_TABLE." WHERE NewsletterID=".abs($this->ID));
 		$this->db->query("DELETE FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".abs($this->ID));
 
@@ -190,7 +188,7 @@ class weNewsletter extends weNewsletterBase{
 	 * @return bool
 	 */
 	function delete(){
-			
+
 		if($this->IsFolder) $this->deleteChilds();
 		foreach($this->blocks as $block){
 			$block->delete();
@@ -204,12 +202,12 @@ class weNewsletter extends weNewsletterBase{
 		parent::delete();
 		return true;
 	}
-	
+
 	/**
 	 * delete childs from database
 	 *
 	 */
-	function deleteChilds(){		
+	function deleteChilds(){
 		$this->db->query("SELECT ID FROM ".NEWSLETTER_TABLE . " WHERE ParentID='".abs($this->ID)."'");
 		while($this->db->next_record()){
 			$child=new weNewsletter($this->db->f("ID"));
@@ -217,11 +215,11 @@ class weNewsletter extends weNewsletterBase{
 			$child=new weNewsletter();
 		}
 	}
-	
+
 
 	/**
 	 * gets all newsletter names from database
-	 * 
+	 *
 	 * gets all newsletter names from databes and returns them as an associated array with id as key and name as value
 	 *
 	 * @return array
@@ -335,7 +333,7 @@ class weNewsletter extends weNewsletterBase{
 	 * @param string $log
 	 * @param string $param
 	 */
-	function addLog($log,$param=""){ 
+	function addLog($log,$param=""){
 		$this->db->query("INSERT INTO ".NEWSLETTER_LOG_TABLE."(NewsletterID,LogTime,Log,Param) VALUES('".abs($this->ID)."','".time()."','".mysql_real_escape_string($log)."','".mysql_real_escape_string($param)."');");
 	}
 
@@ -346,7 +344,7 @@ class weNewsletter extends weNewsletterBase{
 	function clearLog(){
 		$this->db->query("DELETE FROM ".NEWSLETTER_LOG_TABLE." WHERE NewsletterID='".abs($this->ID)."';");
 	}
-	
+
 	/**
 	 * checks recursive the parents to detect if path is ok or not
 	 *
@@ -355,7 +353,7 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function checkParents($id){
 		$count=0;
-		while($id>0){			
+		while($id>0){
 			if($count>1000) break;
 			if($id==$this->ID) return false;
 			$h=getHash("SELECT IsFolder,ParentID FROM ".NEWSLETTER_TABLE." WHERE ID=".$id,$this->db);
@@ -365,24 +363,24 @@ class weNewsletter extends weNewsletterBase{
 		}
 		return true;
 	}
-	
+
 	/**
 	 * fix childs path if parets changes
 	 *
 	 */
 	function fixChildsPaths(){
-		
+
 		$dbtmp=new DB_WE;
 		$oldpath=f("SELECT Path FROM ".NEWSLETTER_TABLE." WHERE ID=".abs($this->ID),"Path",$this->db);
-		
-		if(trim($oldpath)!="" && trim($oldpath)!="/"){		
-			$this->db->query("SELECT ID,Path FROM ".NEWSLETTER_TABLE." WHERE Path LIKE '".$oldpath."%'");		
+
+		if(trim($oldpath)!="" && trim($oldpath)!="/"){
+			$this->db->query("SELECT ID,Path FROM ".NEWSLETTER_TABLE." WHERE Path LIKE '".$oldpath."%'");
 			while($this->db->next_record()){
-				$dbtmp->query("UPDATE ".NEWSLETTER_TABLE." SET Path='".str_replace($oldpath,$this->Path,$this->db->f("Path"))."' WHERE ID=".$this->db->f("ID"));			
+				$dbtmp->query("UPDATE ".NEWSLETTER_TABLE." SET Path='".str_replace($oldpath,$this->Path,$this->db->f("Path"))."' WHERE ID=".$this->db->f("ID"));
 			}
 		}
 	}
-	
+
 	/**
 	 * checks if filename is well formated
 	 *
@@ -390,7 +388,7 @@ class weNewsletter extends weNewsletterBase{
 	 */
 	function filenameNotValid(){
 			return eregi('[^a-z0-9\ \._\-]',$this->Text);
-	}	
+	}
 
 }
 

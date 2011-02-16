@@ -32,7 +32,7 @@ if(defined("SCHEDULE_TABLE")){
 
 htmlTop();
 ?>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php"); ?>
+<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 <?php print STYLESHEET; ?>
 <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	</head>

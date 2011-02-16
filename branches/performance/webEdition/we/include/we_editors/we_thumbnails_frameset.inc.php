@@ -55,19 +55,19 @@ $_javascript = "
 if( we_image_edit::gd_version() > 0 ){
 
     print
-    	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) . 
-    	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) . 
+    	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
+    	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
     	we_htmlElement::jsElement(
     		"
     			function closeOnEscape() {
 					return true;
-					
+
 				}
-				
+
 				function saveOnKeyBoard() {
 					window.frames[1].we_save();
 					return true;
-					
+
 				}"
     	) .
     "</head>";
@@ -81,21 +81,18 @@ if( we_image_edit::gd_version() > 0 ){
 } else {    //  gd_lib is not installed - show error
 
     include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-    include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/import_files.inc.php");
-    include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 
     print STYLESHEET . '</head><body class="weDialogBody">';
 
 
     $parts = array();
     array_push($parts, array(	"headline"=>"",
-								"html"=>htmlAlertAttentionBox($GLOBALS["l_import_files"]["add_description_nogdlib"],2,440),
+								"html"=>htmlAlertAttentionBox(g_l('importFiles',"[add_description_nogdlib]"),2,440),
 								"space"=>0
 						)
 				);
-	$content = we_multiIconBox::getHTML("weimportfiles","100%",$parts,30,"",-1,'','',false,$GLOBALS['l_thumbnails']['thumbnails']);
+	$content = we_multiIconBox::getHTML("weimportfiles","100%",$parts,30,"",-1,'','',false,g_l('thumbnails','[thumbnails]'));
 
     print $content;
 }
 
-?>

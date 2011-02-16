@@ -18,7 +18,7 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$GLOBALS["l_browser"] = array(
+$l_browser = array(
 		'save_link_as_IE' => 'Klikkaa hiiren oikealla painikkeella seuraavaa linkkiä ja valitse "Save Target As..."',
 		'save_link_as_FF' => 'Klikkaa hiiren oikealla painikkeella seuraavaa linkkiä ja valitse "Save Link As..."',
 		'save_link_as_SM' => 'Klikkaa hiiren oikealla painikkeella seuraavaa linkkiä ja valitse "Save Link Target As..."',

@@ -33,8 +33,7 @@ function we_tag_sidebar($attribs, $content){
 		));
 
 		if (trim($content) == "") {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/tags.inc.php");
-			$content = $GLOBALS["l_tags"]["open_sidebar"];
+			$content = g_l('tags',"[open_sidebar]");
 
 		}
 

@@ -25,7 +25,6 @@ if(empty($_SESSION["user"]["Username"]) && isset($_REQUEST['csid'])) {
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_global.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_import_files.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/import_files.inc.php");
 
 protect();
 
@@ -39,9 +38,9 @@ $_counter = 0;
 foreach($_FILES as $_index=>$_file) {
 	if(ereg('uploadedFiles'.$_counter,$_index)) {
 		$_FILES['we_File'] = $_file;
-		
+
 		$error = $import_files->importFile();
-			
+
 		if(sizeof($error)){
 			if(!isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
 				$_SESSION["WE_IMPORT_FILES_ERRORs"] = array();
@@ -53,7 +52,7 @@ foreach($_FILES as $_index=>$_file) {
 		unset($_FILES['we_File']);
 		$_counter++;
 	} else {
-		break;		
+		break;
 	}
 }
 

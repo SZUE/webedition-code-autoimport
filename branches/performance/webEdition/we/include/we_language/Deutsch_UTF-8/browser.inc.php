@@ -18,7 +18,7 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$GLOBALS["l_browser"] = array(
+$l_browser = array(
 		'save_link_as_IE' => 'Schließen Sie dieses Fenster erst, nachdem der Download erfolgreich beendet ist!<br/><br/>Klicken Sie mit der rechten Maustaste auf den Link und wählen Sie "Ziel speichern unter..."',
 		'save_link_as_FF' => 'Schließen Sie dieses Fenster erst, nachdem der Download erfolgreich beendet ist!<br/><br/>Klicken Sie mit der rechten Maustaste auf den Link und wählen Sie "Ziel speichern unter..."',
 		'save_link_as_SM' => 'Schließen Sie dieses Fenster erst, nachdem der Download erfolgreich beendet ist!<br/><br/>Klicken Sie mit der rechten Maustaste auf den Link und wählen Sie "Link-Ziel speichern unter..."',

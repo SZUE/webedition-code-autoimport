@@ -18,278 +18,242 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Language file: newsletter.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_newsletter["save_changed_newsletter"] = "Newsletter has been changed.\\nDo you want to save your changes?"; // TRANSLATE
-$l_newsletter["Enter_Path"] = "Введите путь, который начинается с DOCUMENT_ROOT!";
-$l_newsletter["title_or_salutation"] = "Английский титул/степень (не обращение)";
-$l_newsletter["global_mailing_list"] = "Список адресов рассылки по умолчанию (файл CSV)";
-$l_newsletter["new_newsletter"] = "Новый лист рассылки";
-$l_newsletter["newsletter"] = "Лист рассылки";
-$l_newsletter["new"] = "Новый";
-$l_newsletter["save"] = "Сохранить";
-$l_newsletter["delete"] = "Удалить";
-$l_newsletter["quit"] = "Выйти";
-$l_newsletter["help"] = "Помощь";
-$l_newsletter["info"] = "Справка";
-$l_newsletter["options"] = "Опции";
-$l_newsletter["send_test"] = "Отправить пробное письмо"; 
-
-$l_newsletter["domain_check"] = "Проверить домен";
-$l_newsletter["send"] = "Отправить";
-$l_newsletter["preview"] = "Предварительный просмотр";
-$l_newsletter["settings"] = "Настройки";
-$l_newsletter["show_log"] = "Показать книгу записей";
-$l_newsletter["mailing_list"] = "Список для рассылки %s";
-$l_newsletter["customers"] = "Клиенты";
-$l_newsletter["emails"] = "Emails";
-
-$l_newsletter["newsletter_content"] = "Содержание листа рассылки";
-$l_newsletter["type_doc"] = "Документы";
-$l_newsletter["type_object"] = "Объекты";
-$l_newsletter["type_file"] = "Файл";
-$l_newsletter["type_text"] = "Текст";
-$l_newsletter["attchments"] = "Приложения";
-$l_newsletter["name"] = "Имя";
-$l_newsletter["no_perms"] = "Нет полномочий";
-$l_newsletter["nothing_to_delete"] = "Отсутствует предмет удаления";
-$l_newsletter["documents"] = "Документы";
-$l_newsletter["save_ok"] = "Лист рассылки сохранен";
-$l_newsletter["message_description"] = "Задать содержимое листу рассылки";
-$l_newsletter["sender"] = "Отправитель";
-$l_newsletter["reply"] = "Ответить (кому)";
-$l_newsletter["reply_same"] = "как адрес отправителя";
-$l_newsletter["block_type"] = "Тип блока";
-$l_newsletter["block_document"] = "Документ";
-$l_newsletter["block_document_field"] = "Поле документа";
-$l_newsletter["block_object"] = "Объект";
-$l_newsletter["block_object_field"] = "Поле объекта";
-$l_newsletter["block_file"] = "Файл";
-$l_newsletter["block_html"] = "HTML"; // TRANSLATE
-$l_newsletter["block_plain"] = "Только текст";
-$l_newsletter["block_newsletter"] = "Лист рассылки";
-$l_newsletter["block_attachment"] = "Приложение";
-$l_newsletter["block_lists"] = "Списки адресов рассылки";
-$l_newsletter["block_all"] = "----   Все   ----";
-$l_newsletter["block_template"] = "Шаблон";
-$l_newsletter["block_url"] = "URL"; // TRANSLATE
-$l_newsletter["use_default"] = "Использовать шаблон по умолчанию";
-$l_newsletter["subject"] = "Тема";
-$l_newsletter["delete_question"] = "Удалить текущий лист рассылки?";
-$l_newsletter["delete_group_question"] = "Do you want to delete the current group?"; // TRANSLATE
-$l_newsletter["delete_ok"] = "Лист рассылки удален";
-$l_newsletter["delete_nok"] = "ОШИБКА: лист рассылки не был удален!";
-$l_newsletter["test_email"] = "Пробное письмо";
-
-$l_newsletter["test_email_question"] = "Пробное письмо будет отправлено на тестовый электронный адрес %s!\\n Продолжить?";
-
-$l_newsletter["test_mail_sent"] = "Пробное письмо отправлено на тестовый электронный адрес %s";
-
-$l_newsletter["malformed_mail_group"] = "Список адресов рассылки %s содержит недействительный адрес '%s'!\\nЛист рассылки не сохранен!";
-
-$l_newsletter["malformed_mail_sender"] = "Адрес отправителя '%s' недействительный!\\nЛист рассылки не сохранен!";
-
-$l_newsletter["malformed_mail_reply"] = "Обратный адрес '%s' недействительный!\\nЛист рассылки не сохранен!";
-
-$l_newsletter["malformed_mail_test"] = "Тестовый адрес '%s' недействительный!\\nЛист рассылки не сохранен!";
-
-$l_newsletter["send_question"] = "Отправить лист рассылки по адресам рассылок?";
-$l_newsletter["send_test_question"] = "Это тест (без отправки листа рассылки)\\nПодтвердите для того, чтобы продолжить";
-$l_newsletter["domain_ok"] = "Домен %s проверен";
-$l_newsletter["domain_nok"] = "Домен %s невозможно проверить";
-$l_newsletter["email_malformed"] = "Адрес %s недействителен";
-
-$l_newsletter["domain_check_list"] = "Проверка доменов по списку адресов рассылки %s";
-$l_newsletter["domain_check_begins"] = "Проверка доменов началась";
-$l_newsletter["domain_check_ends"] = "Проверка доменов завершена";
-$l_newsletter["newsletter_type_0"] = "Документ";
-$l_newsletter["newsletter_type_1"] = "Поле документа";
-$l_newsletter["newsletter_type_2"] = "Объект";
-$l_newsletter["newsletter_type_3"] = "Поле объекта";
-$l_newsletter["newsletter_type_4"] = "Файл";
-$l_newsletter["newsletter_type_5"] = "Текст";
-$l_newsletter["newsletter_type_6"] = "Приложение";
-$l_newsletter["newsletter_type_7"] = "URL"; // TRANSLATE
-$l_newsletter["all_list"] = "-- Все списки рассылок --";
-$l_newsletter["newsletter_test"] = "Тест";
-$l_newsletter["send_to_list"] = "Отправить по адресам рассылки списка %s.";
-$l_newsletter["campaign_starts"] = "Кампания по рассылке началась...";
-$l_newsletter["campaign_ends"] = "Кампания по рассылке завершена";
-$l_newsletter["test_no_mail"] = "Тестирование - без рассылки писем...";
-
-$l_newsletter["sending"] = "Разослать...";
-$l_newsletter["mail_not_sent"] = "Письмо '%s' не может быть отправлено.";
-
-$l_newsletter["filter"] = "Фильтр";
-$l_newsletter["send_all"] = "Отправить всем";
-$l_newsletter["lists_overview_menu"] = "Обзор списков рассылки";
-$l_newsletter["lists_overview"] = "Обзор списков рассылки";
-$l_newsletter["copy"] = "Копировать";
-$l_newsletter["copy_newsletter"] = "Копировать лист рассылки";
-$l_newsletter["continue_camp"] = "Предыдущая кампания по рассылке листа рассылки не завершена!<br>Есть возможность продолжить предыдущую кампанию.<br>Продолжить предыдущую кампанию по рассылке?";
-$l_newsletter["reject_malformed"] = "Письмо не отправлять в случае, если адрес недействителен";
-
-$l_newsletter["reject_not_verified"] = "Письмо не отправлять в случае, если невозможно проверить адрес";
-
-$l_newsletter["send_step"] = "Количество писем в одной рассылке";
-
-$l_newsletter["test_account"] = "Тестовый адрес";
-$l_newsletter["log_sending"] = "Вносить запись в журнал при отправке письма";
-
-$l_newsletter["default_sender"] = "Отправитель по умолчанию";
-$l_newsletter["default_reply"] = "Обратный адрес по умолчанию";
-$l_newsletter["default_htmlmail"] = "Формат письма HTML по умолчанию";
-
-$l_newsletter["isEmbedImages"] = "Embed images"; // TRANSLATE
-$l_newsletter["ask_to_preserve"] = "Предыдущая кампания по рассылке листа рассылки окончательно не завершена!<br>В случае, если Вы сейчас сохраните данный лист рассылки, Вы не сможете завершить предыдущую кампанию по рассылке!<br>Продолжить?";
-$l_newsletter["log_save_newsletter"] = "Лист рассылки сохранен";
-$l_newsletter["log_start_send"] = "Начать кампанию по рассылке";
-$l_newsletter["log_end_send"] = "Кампания по рассылке успешно завершена";
-$l_newsletter["log_continue_send"] = "Кампания по рассылке в действии...";
-$l_newsletter["log_campaign_reset"] = "Параметры кампании по рассылке были изменены";
-$l_newsletter["mail_sent"] = "Лист рассылки отправлен по адресу %s.";
-$l_newsletter["must_save"] = "Лист рассылки изменен.\\nПеред отправкой Вы должны сохранить изменения!";
-$l_newsletter["email_exists"] = "Такой адрес уже существует!";
-
-$l_newsletter["email_max_len"] = "Адрес email не должен превышать 255 символов!";
-
-$l_newsletter["no_email"] = "Адрес email не выбран!";
-
-$l_newsletter["email_new"] = "Введите, пожалуйста, email адрес!";
-
-$l_newsletter["email_delete"] = "Удалить выделенные email адреса?";
-
-$l_newsletter["email_delete_all"] = "Удалить все email адреса?";
-
-$l_newsletter["email_edit"] = "Адрес email изменен!";
-
-$l_newsletter["nothing_to_save"] = "Нет предмета сохранения!";
-$l_newsletter["csv_delimiter"] = "Разделительный знак";
-$l_newsletter["csv_col"] = "Колонка email";
-
-$l_newsletter["csv_hmcol"] = "Колонка HTML";
-$l_newsletter["csv_salutationcol"] = "Колонка обращения";
-$l_newsletter["csv_titlecol"] = "Колонка титула, звания";
-$l_newsletter["csv_firstnamecol"] = "Колонка имени";
-$l_newsletter["csv_lastnamecol"] = "Колонка фамилии";
-$l_newsletter["csv_export"] = "Файл '%s' сохранен";
-$l_newsletter["customer_email_field"] = "Поле еmail клиента";
-
-$l_newsletter["customer_html_field"] = "Поле HTML клиента";
-$l_newsletter["customer_salutation_field"] = "Поле обращения к клиенту";
-$l_newsletter["customer_title_field"] = "Поле титула/степени клиента";
-$l_newsletter["customer_firstname_field"] = "Поле имени клиента";
-$l_newsletter["customer_lastname_field"] = "Поле фамилии клиента";
-$l_newsletter["csv_html_explain"] = "(0 - без колонки HTML)";
-$l_newsletter["csv_salutation_explain"] = "(0 - без колонки обращения)";
-$l_newsletter["csv_title_explain"] = "(0 - без колонки титула/степени)";
-$l_newsletter["csv_firstname_explain"] = "(0 - без колонки имени)";
-$l_newsletter["csv_lastname_explain"] = "(0 - без колонки фамилии)";
-$l_newsletter["email"] = "Email";
-
-$l_newsletter["lastname"] = "Фамилия";
-$l_newsletter["firstname"] = "Имя";
-$l_newsletter["salutation"] = "Обращение";
-$l_newsletter["title"] = "Титул";
-$l_newsletter["female_salutation"] = "Обращение к женщине";
-$l_newsletter["male_salutation"] = "Обращение к мужчине";
-$l_newsletter["edit_htmlmail"] = "HTML email";
-
-$l_newsletter["htmlmail_check"] = "HTML"; // TRANSLATE
-$l_newsletter["double_name"] = "Название листа рассылки уже существует.";
-$l_newsletter["cannot_preview"] = "Предварительный просмотр листа рассылки невозможен";
-$l_newsletter["empty_name"] = "Не заполнено имя!";
-$l_newsletter["edit_email"] = "Редактировать адреса email";
-
-$l_newsletter["add_email"] = "Добавить адрес email";
-
-$l_newsletter["none"] = "-- Отсутствуют --";
-$l_newsletter["must_save_preview"] = "Лист рассылки изменен.\\nПеред его предварительным просмотром нужно сохранить изменения!";
-$l_newsletter["black_list"] = "Черный список";
-$l_newsletter["email_is_black"] = "Адрес еmail в черном списке!";
-
-$l_newsletter["upload_nok"] = "Невозможно загрузить файл.";
-$l_newsletter["csv_download"] = "Загрузить csv файл";
-$l_newsletter["csv_upload"] = "Загрузить csv";
-$l_newsletter["finished"] = "Завершено";
-$l_newsletter["cannot_open"] = "Невозможно раскрыть файл!";
-$l_newsletter["search_email"] = "Поиск адреса еmail...";
-
-$l_newsletter["search_text"] = "Введите, пожалуйста, адрес email";
-
-$l_newsletter["search_finished"] = "Поиск завершен\\nНайдено: %s";
-$l_newsletter["email_double"] = "Адрес email %s уже существует!";
-
-$l_newsletter["error"] = "ОШИБКА";
-$l_newsletter["warning"] = "ВНИМАНИЕ";
-$l_newsletter["file_email"] = "CSV files"; // TRANSLATE
-$l_newsletter["edit_file"] = "Edit CSV file"; // TRANSLATE
-$l_newsletter["show"] = "Show"; // TRANSLATE
-$l_newsletter["no_file_selected"] = "No file selected!"; // TRANSLATE
-$l_newsletter["file_is_empty"] = "The CSV file is empty"; // TRANSLATE
-$l_newsletter["file_all_ok"] = "The CSV file has no invalid entries";// TRANSLATE
-$l_newsletter["del_email_file"] = "Delete E-mail '%s'?";
-
-$l_newsletter["email_missing"] = "Missing E-mail address";
-
-$l_newsletter["yes"] = "Yes"; // TRANSLATE
-$l_newsletter["no"] = "No"; // TRANSLATE
-$l_newsletter["select_file"] = "Select file"; // TRANSLATE
-$l_newsletter["clear_log"] = "Clear logbook"; // TRANSLATE
-$l_newsletter["clearlog_note"] = "Do you really want to clear all entries from the logbook?"; // TRANSLATE
-$l_newsletter["log_is_clear"] = "Logbook is cleared."; // TRANSLATE
-$l_newsletter["property"] = "Properties"; // TRANSLATE
-$l_newsletter["edit"] = "Edit"; // TRANSLATE
-$l_newsletter["details"] = "Details"; // TRANSLATE
-$l_newsletter["path"] = "Path"; // TRANSLATE
-$l_newsletter["dir"] = "Directory"; // TRANSLATE
-$l_newsletter["block"] = "Block %s"; // TRANSLATE
-$l_newsletter["new_newsletter_group"] = "New group"; // TRANSLATE
-$l_newsletter["group"] = "Group"; // TRANSLATE
-$l_newsletter["path_nok"] = "Путь неверный!";
-$l_newsletter["save_group_ok"] = "Группа листов рассылки сохранена";
-$l_newsletter["delete_group_ok"] = "Группа листов рассылки удалена";
-$l_newsletter["delete_group_nok"] = "ОШИБКА: Группа листов рассылки не удалена!";
-$l_newsletter["path_not_valid"] = "The path is not valid"; // TRANSLATE
-$l_newsletter["no_subject"] = "The subject field is empty. Do you really want to send the newsletter?"; // TRANSLATE
-$l_newsletter["mail_failed"] = " E-mail '%s' cannot be sent. A possible cause is an incorrect server configuration.";
-
-$l_newsletter["reject_save_malformed"] = "Do not save newsletter if address is malformed."; // TRANSLATE;
-$l_newsletter["rfc_email_check"] = "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server."; // TRANSLATE
-$l_newsletter["use_https_refer"] = "Use HTTPS for reference"; // TRANSLATE
-$l_newsletter["use_base_href"] = "Use &lt;base href=... in head"; // TRANSLATE 
-$l_newsletter["we_filename_notValid"] = "Введенное имя недействительно!\\nДопустимыми символами являются буквы от a до z (большие и малые), числа, нижняя черта (_), тире (-), точка (.) и пробел ( ).";
-$l_newsletter["send_wait"] = "Wait period to next load (ms)"; // TRANSLATE
-$l_newsletter["send_images"] = "Send images"; // TRANSLATE
-$l_newsletter["prepare_newsletter"] = "Preparation..."; // TRANSLATE
-$l_newsletter["use_port_check"] = "Использовать порт для перенаправления";
-$l_newsletter["use_port"] = "порт";
-$l_newsletter["sum_group"] = "адрес(а) E-Mail в списке %s";
-
-$l_newsletter["sum_all"] = "адреса E-Mail всех списков";
-
-$l_newsletter["retry"] = "повторить";
-
-$l_newsletter["charset"]= "Кодировка символов";
-$l_newsletter["additional_clp"] = "Additional reply address (option -f)"; // TRANSLATE
-$l_newsletter["html_preview"]= "show HTML preview"; // TRANSLATE
-$l_newsletter["status"]= "Status"; // TRANSLATE
-$l_newsletter["statusAll"]= "all entries"; // TRANSLATE
-$l_newsletter["statusInvalid"]= "invalid entries"; // TRANSLATE
-$l_newsletter["invalid_email"]= "The email is not valid."; // TRANSLATE
-$l_newsletter["blockFieldError"]= "Invalid value in Block %s, Field %s!";
-
-$l_newsletter["operator"]['startWith']= "starts with"; // TRANSLATE
-$l_newsletter["operator"]['endsWith']= "ends with"; // TRANSLATE
-$l_newsletter["operator"]['contains']= "contains"; // TRANSLATE
-$l_newsletter["logic"]['and']= "and"; // TRANSLATE
-$l_newsletter["logic"]['or']= "or"; // TRANSLATE
-$l_newsletter["no_newsletter_selected"]= "No newsletter selected. Please open the newsletter first."; // TRANSLATE
-
-$l_newsletter["default"]["female"] = "Mrs."; // TRANSLATE
-$l_newsletter["default"]["male"] = "Mr."; // TRANSLATE
-?>
+$l_modules_newsletter = array(
+		'save_changed_newsletter' => "Newsletter has been changed.\\nDo you want to save your changes?", // TRANSLATE
+		'Enter_Path' => "Введите путь, который начинается с DOCUMENT_ROOT!",
+		'title_or_salutation' => "Английский титул/степень (не обращение)",
+		'global_mailing_list' => "Список адресов рассылки по умолчанию (файл CSV)",
+		'new_newsletter' => "Новый лист рассылки",
+		'newsletter' => "Лист рассылки",
+		'new' => "Новый",
+		'save' => "Сохранить",
+		'delete' => "Удалить",
+		'quit' => "Выйти",
+		'help' => "Помощь",
+		'info' => "Справка",
+		'options' => "Опции",
+		'send_test' => "Отправить пробное письмо",
+		'domain_check' => "Проверить домен",
+		'send' => "Отправить",
+		'preview' => "Предварительный просмотр",
+		'settings' => "Настройки",
+		'show_log' => "Показать книгу записей",
+		'mailing_list' => "Список для рассылки %s",
+		'customers' => "Клиенты",
+		'emails' => "Emails",
+		'newsletter_content' => "Содержание листа рассылки",
+		'type_doc' => "Документы",
+		'type_object' => "Объекты",
+		'type_file' => "Файл",
+		'type_text' => "Текст",
+		'attchments' => "Приложения",
+		'name' => "Имя",
+		'no_perms' => "Нет полномочий",
+		'nothing_to_delete' => "Отсутствует предмет удаления",
+		'documents' => "Документы",
+		'save_ok' => "Лист рассылки сохранен",
+		'message_description' => "Задать содержимое листу рассылки",
+		'sender' => "Отправитель",
+		'reply' => "Ответить (кому)",
+		'reply_same' => "как адрес отправителя",
+		'block_type' => "Тип блока",
+		'block_document' => "Документ",
+		'block_document_field' => "Поле документа",
+		'block_object' => "Объект",
+		'block_object_field' => "Поле объекта",
+		'block_file' => "Файл",
+		'block_html' => "HTML", // TRANSLATE
+		'block_plain' => "Только текст",
+		'block_newsletter' => "Лист рассылки",
+		'block_attachment' => "Приложение",
+		'block_lists' => "Списки адресов рассылки",
+		'block_all' => "----   Все   ----",
+		'block_template' => "Шаблон",
+		'block_url' => "URL", // TRANSLATE
+		'use_default' => "Использовать шаблон по умолчанию",
+		'subject' => "Тема",
+		'delete_question' => "Удалить текущий лист рассылки?",
+		'delete_group_question' => "Do you want to delete the current group?", // TRANSLATE
+		'delete_ok' => "Лист рассылки удален",
+		'delete_nok' => "ОШИБКА: лист рассылки не был удален!",
+		'test_email' => "Пробное письмо",
+		'test_email_question' => "Пробное письмо будет отправлено на тестовый электронный адрес %s!\\n Продолжить?",
+		'test_mail_sent' => "Пробное письмо отправлено на тестовый электронный адрес %s",
+		'malformed_mail_group' => "Список адресов рассылки %s содержит недействительный адрес '%s'!\\nЛист рассылки не сохранен!",
+		'malformed_mail_sender' => "Адрес отправителя '%s' недействительный!\\nЛист рассылки не сохранен!",
+		'malformed_mail_reply' => "Обратный адрес '%s' недействительный!\\nЛист рассылки не сохранен!",
+		'malformed_mail_test' => "Тестовый адрес '%s' недействительный!\\nЛист рассылки не сохранен!",
+		'send_question' => "Отправить лист рассылки по адресам рассылок?",
+		'send_test_question' => "Это тест (без отправки листа рассылки)\\nПодтвердите для того, чтобы продолжить",
+		'domain_ok' => "Домен %s проверен",
+		'domain_nok' => "Домен %s невозможно проверить",
+		'email_malformed' => "Адрес %s недействителен",
+		'domain_check_list' => "Проверка доменов по списку адресов рассылки %s",
+		'domain_check_begins' => "Проверка доменов началась",
+		'domain_check_ends' => "Проверка доменов завершена",
+		'newsletter_type_0' => "Документ",
+		'newsletter_type_1' => "Поле документа",
+		'newsletter_type_2' => "Объект",
+		'newsletter_type_3' => "Поле объекта",
+		'newsletter_type_4' => "Файл",
+		'newsletter_type_5' => "Текст",
+		'newsletter_type_6' => "Приложение",
+		'newsletter_type_7' => "URL", // TRANSLATE
+		'all_list' => "-- Все списки рассылок --",
+		'newsletter_test' => "Тест",
+		'send_to_list' => "Отправить по адресам рассылки списка %s.",
+		'campaign_starts' => "Кампания по рассылке началась...",
+		'campaign_ends' => "Кампания по рассылке завершена",
+		'test_no_mail' => "Тестирование - без рассылки писем...",
+		'sending' => "Разослать...",
+		'mail_not_sent' => "Письмо '%s' не может быть отправлено.",
+		'filter' => "Фильтр",
+		'send_all' => "Отправить всем",
+		'lists_overview_menu' => "Обзор списков рассылки",
+		'lists_overview' => "Обзор списков рассылки",
+		'copy' => "Копировать",
+		'copy_newsletter' => "Копировать лист рассылки",
+		'continue_camp' => "Предыдущая кампания по рассылке листа рассылки не завершена!<br>Есть возможность продолжить предыдущую кампанию.<br>Продолжить предыдущую кампанию по рассылке?",
+		'reject_malformed' => "Письмо не отправлять в случае, если адрес недействителен",
+		'reject_not_verified' => "Письмо не отправлять в случае, если невозможно проверить адрес",
+		'send_step' => "Количество писем в одной рассылке",
+		'test_account' => "Тестовый адрес",
+		'log_sending' => "Вносить запись в журнал при отправке письма",
+		'default_sender' => "Отправитель по умолчанию",
+		'default_reply' => "Обратный адрес по умолчанию",
+		'default_htmlmail' => "Формат письма HTML по умолчанию",
+		'isEmbedImages' => "Embed images", // TRANSLATE
+		'ask_to_preserve' => "Предыдущая кампания по рассылке листа рассылки окончательно не завершена!<br>В случае, если Вы сейчас сохраните данный лист рассылки, Вы не сможете завершить предыдущую кампанию по рассылке!<br>Продолжить?",
+		'log_save_newsletter' => "Лист рассылки сохранен",
+		'log_start_send' => "Начать кампанию по рассылке",
+		'log_end_send' => "Кампания по рассылке успешно завершена",
+		'log_continue_send' => "Кампания по рассылке в действии...",
+		'log_campaign_reset' => "Параметры кампании по рассылке были изменены",
+		'mail_sent' => "Лист рассылки отправлен по адресу %s.",
+		'must_save' => "Лист рассылки изменен.\\nПеред отправкой Вы должны сохранить изменения!",
+		'email_exists' => "Такой адрес уже существует!",
+		'email_max_len' => "Адрес email не должен превышать 255 символов!",
+		'no_email' => "Адрес email не выбран!",
+		'email_new' => "Введите, пожалуйста, email адрес!",
+		'email_delete' => "Удалить выделенные email адреса?",
+		'email_delete_all' => "Удалить все email адреса?",
+		'email_edit' => "Адрес email изменен!",
+		'nothing_to_save' => "Нет предмета сохранения!",
+		'csv_delimiter' => "Разделительный знак",
+		'csv_col' => "Колонка email",
+		'csv_hmcol' => "Колонка HTML",
+		'csv_salutationcol' => "Колонка обращения",
+		'csv_titlecol' => "Колонка титула, звания",
+		'csv_firstnamecol' => "Колонка имени",
+		'csv_lastnamecol' => "Колонка фамилии",
+		'csv_export' => "Файл '%s' сохранен",
+		'customer_email_field' => "Поле еmail клиента",
+		'customer_html_field' => "Поле HTML клиента",
+		'customer_salutation_field' => "Поле обращения к клиенту",
+		'customer_title_field' => "Поле титула/степени клиента",
+		'customer_firstname_field' => "Поле имени клиента",
+		'customer_lastname_field' => "Поле фамилии клиента",
+		'csv_html_explain' => "(0 - без колонки HTML)",
+		'csv_salutation_explain' => "(0 - без колонки обращения)",
+		'csv_title_explain' => "(0 - без колонки титула/степени)",
+		'csv_firstname_explain' => "(0 - без колонки имени)",
+		'csv_lastname_explain' => "(0 - без колонки фамилии)",
+		'email' => "Email",
+		'lastname' => "Фамилия",
+		'firstname' => "Имя",
+		'salutation' => "Обращение",
+		'title' => "Титул",
+		'female_salutation' => "Обращение к женщине",
+		'male_salutation' => "Обращение к мужчине",
+		'edit_htmlmail' => "HTML email",
+		'htmlmail_check' => "HTML", // TRANSLATE
+		'double_name' => "Название листа рассылки уже существует.",
+		'cannot_preview' => "Предварительный просмотр листа рассылки невозможен",
+		'empty_name' => "Не заполнено имя!",
+		'edit_email' => "Редактировать адреса email",
+		'add_email' => "Добавить адрес email",
+		'none' => "-- Отсутствуют --",
+		'must_save_preview' => "Лист рассылки изменен.\\nПеред его предварительным просмотром нужно сохранить изменения!",
+		'black_list' => "Черный список",
+		'email_is_black' => "Адрес еmail в черном списке!",
+		'upload_nok' => "Невозможно загрузить файл.",
+		'csv_download' => "Загрузить csv файл",
+		'csv_upload' => "Загрузить csv",
+		'finished' => "Завершено",
+		'cannot_open' => "Невозможно раскрыть файл!",
+		'search_email' => "Поиск адреса еmail...",
+		'search_text' => "Введите, пожалуйста, адрес email",
+		'search_finished' => "Поиск завершен\\nНайдено: %s",
+		'email_double' => "Адрес email %s уже существует!",
+		'error' => "ОШИБКА",
+		'warning' => "ВНИМАНИЕ",
+		'file_email' => "CSV files", // TRANSLATE
+		'edit_file' => "Edit CSV file", // TRANSLATE
+		'show' => "Show", // TRANSLATE
+		'no_file_selected' => "No file selected!", // TRANSLATE
+		'file_is_empty' => "The CSV file is empty", // TRANSLATE
+		'file_all_ok' => "The CSV file has no invalid entries", // TRANSLATE
+		'del_email_file' => "Delete E-mail '%s'?",
+		'email_missing' => "Missing E-mail address",
+		'yes' => "Yes", // TRANSLATE
+		'no' => "No", // TRANSLATE
+		'select_file' => "Select file", // TRANSLATE
+		'clear_log' => "Clear logbook", // TRANSLATE
+		'clearlog_note' => "Do you really want to clear all entries from the logbook?", // TRANSLATE
+		'log_is_clear' => "Logbook is cleared.", // TRANSLATE
+		'property' => "Properties", // TRANSLATE
+		'edit' => "Edit", // TRANSLATE
+		'details' => "Details", // TRANSLATE
+		'path' => "Path", // TRANSLATE
+		'dir' => "Directory", // TRANSLATE
+		'block' => "Block %s", // TRANSLATE
+		'new_newsletter_group' => "New group", // TRANSLATE
+		'group' => "Group", // TRANSLATE
+		'path_nok' => "Путь неверный!",
+		'save_group_ok' => "Группа листов рассылки сохранена",
+		'delete_group_ok' => "Группа листов рассылки удалена",
+		'delete_group_nok' => "ОШИБКА: Группа листов рассылки не удалена!",
+		'path_not_valid' => "The path is not valid", // TRANSLATE
+		'no_subject' => "The subject field is empty. Do you really want to send the newsletter?", // TRANSLATE
+		'mail_failed' => " E-mail '%s' cannot be sent. A possible cause is an incorrect server configuration.",
+		'reject_save_malformed' => "Do not save newsletter if address is malformed.", // TRANSLATE
+		'rfc_email_check' => "Validate conform to rfc 3696.<br>WARNIGN: This validation can take heavy influence on the speed of your server.", // TRANSLATE
+		'use_https_refer' => "Use HTTPS for reference", // TRANSLATE
+		'use_base_href' => "Use &lt;base href=... in head", // TRANSLATE
+		'we_filename_notValid' => "Введенное имя недействительно!\\nДопустимыми символами являются буквы от a до z (большие и малые), числа, нижняя черта (_), тире (-), точка (.) и пробел ( ).",
+		'send_wait' => "Wait period to next load (ms)", // TRANSLATE
+		'send_images' => "Send images", // TRANSLATE
+		'prepare_newsletter' => "Preparation...", // TRANSLATE
+		'use_port_check' => "Использовать порт для перенаправления",
+		'use_port' => "порт",
+		'sum_group' => "адрес(а) E-Mail в списке %s",
+		'sum_all' => "адреса E-Mail всех списков",
+		'retry' => "повторить",
+		'charset' => "Кодировка символов",
+		'additional_clp' => "Additional reply address (option -f)", // TRANSLATE
+		'html_preview' => "show HTML preview", // TRANSLATE
+		'status' => "Status", // TRANSLATE
+		'statusAll' => "all entries", // TRANSLATE
+		'statusInvalid' => "invalid entries", // TRANSLATE
+		'invalid_email' => "The email is not valid.", // TRANSLATE
+		'blockFieldError' => "Invalid value in Block %s, Field %s!",
+		'operator' => array(
+				'startWith' => "starts with", // TRANSLATE
+				'endsWith' => "ends with", // TRANSLATE
+				'contains' => "contains", // TRANSLATE
+		),
+		'logic' => array(
+				'and' => "and", // TRANSLATE
+				'or' => "or", // TRANSLATE
+		),
+		'default' => array(
+				'female' => "Mrs.", // TRANSLATE
+				'male' => "Mr.", // TRANSLATE
+		),
+		'no_newsletter_selected' => "No newsletter selected. Please open the newsletter first.", // TRANSLATE
+);

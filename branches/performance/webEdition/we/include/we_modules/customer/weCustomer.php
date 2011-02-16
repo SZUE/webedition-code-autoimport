@@ -113,8 +113,7 @@ class weCustomer extends weModelBase {
 	}
 
 	function transFieldName($real_name, &$banche) {
-		global $l_customer;
-		if (ereg($l_customer["other"], $real_name)) {
+		if (ereg(g_l('modules_customer','[other]'), $real_name)) {
 			return $real_name;
 		}
 		$pre = explode("_", $real_name);
@@ -177,8 +176,6 @@ class weCustomer extends weModelBase {
 	}
 
 	function getFieldsNames($branch, $mysort='') {
-		global $l_customer;
-
 		$branches = array();
 		$common = array();
 		$other = array();
@@ -188,13 +185,13 @@ class weCustomer extends weModelBase {
 		$arr = array();
 
 		if ($branch == '')
-			$branch = $l_customer["other"];
+			$branch = g_l('modules_customer','[other]');
 
-		if ($branch == $l_customer["common"]) {
+		if ($branch == g_l('modules_customer','[common]')) {
 			if (is_array($common)) {
 				$arr = $common;
 			}
-		} else if ($branch == $l_customer["other"]) {
+		} else if ($branch == g_l('modules_customer','[other]')) {
 			if (is_array($common)) {
 				$arr = $other;
 			}
@@ -205,7 +202,7 @@ class weCustomer extends weModelBase {
 
 		$ret = array();
 		foreach (array_keys($arr) as $b) {
-			if ($branch == $l_customer["other"])
+			if ($branch == g_l('modules_customer','[other]'))
 				$ret[$b] = $b;
 			else
 				$ret[$branch . "_" . $b] = $b;

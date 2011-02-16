@@ -134,11 +134,6 @@ class we_webEditionDocument extends we_textContentDocument {
 	*/
 
 	function formIsDynamic($leftwidth=100,$disabled=false) {
-		global $l_we_class;
-		if( (defined('ISP_VERSION') && ISP_VERSION) && ISP_TYPE == 'small' ){
-		    return '<input type="hidden" name="we_' . $this->Name . '_IsDynamic" value="0" />';
-		}
-
 		$n = '';
 		$out = '';
 		if (!$disabled) {
@@ -149,7 +144,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			if(!$this->Published) {
 				$out.='var a=document.we_form.elements;'."\n";
 				if($this->ID)
-					$out.='if(confirm("'.$l_we_class["confirm_ext_change"].'")){'."\n";
+					$out.='if(confirm("'.g_l('weClass',"[confirm_ext_change]").'")){'."\n";
 				$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
 				$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 				$out.='if(a["we_'.$this->Name.'_IsDynamic"].value==1) var changeto="'.$DefaultDynamicExt.'"; else var changeto="'.$DefaultStaticExt.'";'."\n";
@@ -159,16 +154,14 @@ class we_webEditionDocument extends we_textContentDocument {
 			}
 			$out.="}\n";
 			$out="\n".'<script language="JavaScript" type="text/javascript">'.$out.'</script>'."\n";
-			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class["IsDynamic"],false,"defaultfont","_EditorFrame.setEditorIsHot(true);switchExt();").$out;
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass',"[IsDynamic]"),false,"defaultfont","_EditorFrame.setEditorIsHot(true);switchExt();").$out;
 		} else {
 			$v = $this->IsDynamic;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class["IsDynamic"],false,"defaultfont","",true).$out;
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass',"[IsDynamic]"),false,"defaultfont","",true).$out;
 		}
 	}
 
 	function formDocTypeTempl() {
-		global $l_we_class;
-
 		$disable = (($this->ContentType == 'text/html' || $this->ContentType == 'text/webedition') && $this->Published);
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
@@ -218,16 +211,14 @@ class we_webEditionDocument extends we_textContentDocument {
 	}
 
 	function formTemplateWindow() {
-
-		global $l_we_class;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 		$table = TEMPLATES_TABLE;
 		$textname = 'we_'.$this->Name.'_TemplateName';
 		$idname = 'we_'.$this->Name.'_TemplateID';
-		$ueberschrift=$l_we_class['template'];
+		$ueberschrift=g_l('weClass',"[template]");
 		if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['we_mode'] != 'seem') {
-			$ueberschriftLink='<a href="javascript:goTemplate(document.we_form.elements[\''.$idname.'\'].value)">'.$l_we_class["template"].'</a>';
+			$ueberschriftLink='<a href="javascript:goTemplate(document.we_form.elements[\''.$idname.'\'].value)">'.g_l('weClass',"[template]").'</a>';
 		} else {
 			$ueberschriftLink = $ueberschrift;
 		}
@@ -261,8 +252,6 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	// creates the Template PopupMenue
 	function formTemplatePopup($leftsize=120) {
-		global $l_we_class;
-
 		if($this->DocType) {
 			$sql = 'SELECT Templates FROM '.DOC_TYPES_TABLE.' WHERE ID = '.abs($this->DocType);
 			$this->DB_WE->query($sql);
@@ -284,7 +273,6 @@ class we_webEditionDocument extends we_textContentDocument {
 
 
 	function xformTemplatePopup($width=50) {
-		global $l_we_class;
 		$ws = get_ws(TEMPLATES_TABLE);
 
 		$fieldname = 'we_'.$this->Name.'_TemplateID';
@@ -318,10 +306,10 @@ class we_webEditionDocument extends we_textContentDocument {
 				$TID=$this->TemplateID;
 		}
 		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION ["we_mode"] == "normal") {
-			$ueberschrift='<a href="javascript:goTemplate(document.we_form.elements[\''.$fieldname.'\'].options[document.we_form.elements[\''.$fieldname.'\'].selectedIndex].value)">'.$l_we_class["template"].'</a>';
+			$ueberschrift='<a href="javascript:goTemplate(document.we_form.elements[\''.$fieldname.'\'].options[document.we_form.elements[\''.$fieldname.'\'].selectedIndex].value)">'.g_l('weClass',"[template]").'</a>';
 		}
 		else {
-			$ueberschrift=$l_we_class["template"];
+			$ueberschrift=g_l('weClass',"[template]");
 		}
 		if($tlist!='') {
 			$foo = array();
@@ -345,8 +333,6 @@ class we_webEditionDocument extends we_textContentDocument {
 	* @desc Returns the metainfos for the selected file.
  	*/
 	function formMetaInfos() {
-		global $l_we_class;
-
 		//	Collect data from meta-tags
 		//debug2($this);
 		$_tp = new we_tagParser();
@@ -367,7 +353,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Title",$l_we_class["Title"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>
 				<tr>
 					<td>
@@ -375,7 +361,7 @@ class we_webEditionDocument extends we_textContentDocument {
 				</tr>
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Description",$l_we_class["Description"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>
 				<tr>
 					<td>
@@ -383,7 +369,7 @@ class we_webEditionDocument extends we_textContentDocument {
 				</tr>
 				<tr>
 					<td colspan="2">
-						'.$this->formInputField("txt","Keywords",$l_we_class["Keywords"],40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+						'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 				</tr>';
 
 				$content .= $this->getCharsetSelect();
@@ -453,7 +439,7 @@ class we_webEditionDocument extends we_textContentDocument {
 					<tr>
 						<td><table border="0" cellpadding="0" cellspacing="0">
 		 			<tr>
-		 				<td colspan="2" class="defaultfont">' . $GLOBALS["l_we_class"]["Charset"] . '</td>
+		 				<td colspan="2" class="defaultfont">' . g_l('weClass',"[Charset]") . '</td>
 		 			<tr>
 		 				<td>' . $retInput . '</td>
 		 				<td>' . $retSelect . '</td>
@@ -470,10 +456,10 @@ class we_webEditionDocument extends we_textContentDocument {
 					<tr>
 						<td><table border="0" cellpadding="0" cellspacing="0">
 		 			<tr>
-		 				<td colspan="2" class="defaultfont">' . $GLOBALS["l_we_class"]["Charset"] . '</td>
+		 				<td colspan="2" class="defaultfont">' . g_l('weClass',"[Charset]") . '</td>
 		 			<tr>
-		 				<td>' . $this->htmlTextInput("dummi", 40, $GLOBALS["_charset"]["error"]["no_charset_tag"], "", " readonly disabled", "text", 254) . '</td>
-		 				<td>' . $this->htmlSelect("dummi2", array($GLOBALS["_charset"]["error"]["no_charset_available"]), 1, $GLOBALS["_language"]["charset"], false, "disabled ", "value", "254") . '</td>
+		 				<td>' . $this->htmlTextInput("dummi", 40, g_l('charset',"[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td>
+		 				<td>' . $this->htmlSelect("dummi2", array(g_l('charset',"[error][no_charset_available]")), 1, g_l('charset',"[charset]"), false, "disabled ", "value", "254") . '</td>
 		 			</tr>
 		 			</table>';
 		}

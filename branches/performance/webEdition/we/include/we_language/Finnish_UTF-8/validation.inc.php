@@ -18,20 +18,53 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$l_xhtml_debug['wrong_attribute']['text']      = 'Määrettä "%s" ei löydy elementistä "&lt;%s&gt;".';
-$l_xhtml_debug['wrong_attribute']['js']        = 'Määrettä \"%s\" ei löydy elementistä \"<%s>\".';
-$l_xhtml_debug['wrong_attribute']['error_log'] = 'Määrettä "%s" ei löydy elementistä "<%s>".';
-
-$l_xhtml_debug['missing_attribute']['text']      = 'Vaadittu määre "%s" puuttuu elementistä "&lt;%s&gt;".';
-$l_xhtml_debug['missing_attribute']['js']        = 'Vaadittu määre \"%s\" puuttuu elementistä \"<%s>\".';
-$l_xhtml_debug['missing_attribute']['error_log'] = 'Vaadittu määre "%s" puuttuu elementistä "<%s>".';
-
-$l_xhtml_debug['wrong_element']['text']      = 'Elementtiä "&lt;%s&gt;" ei löydy.';
-$l_xhtml_debug['wrong_element']['js']        = 'Elementtiä \"<%s>\" ei löydy.';
-$l_xhtml_debug['wrong_element']['error_log'] = 'Elementtiä "<%s>" ei löydy.';
-
-$l_xhtml_debug['removed_element']['text'] = 'Poistettu.';
-
-?>
+$l_validation = array(
+		'headline' => 'Dokumentin validointi internetin välityksellä',
+//  variables for checking html files.
+		'description' => 'Voit valita palvelun verkosta tarkistaaksesi dokumentin validiteetin/käytettävyyden.',
+		'available_services' => 'Olemassaolevat palvelut',
+		'category' => 'Kategoria',
+		'service_name' => 'Palvelun nimi',
+		'service' => 'Palvelu',
+		'host' => 'Palvelin',
+		'path' => 'Polku',
+		'ctype' => 'Sisällön tyyppi',
+		'ctype' => 'Lähetettävän tiedoston tyypin tarkistuksen toiminto kohdepalvelimelle (text/html oder text/css)',
+		'fileEndings' => 'Tiedoston päätteet',
+		'fileEndings' => 'Syötä kaikki päätteet jotka on käytettävissä tälle palvelulle. (.html,.css)',
+		'method' => 'Siirtotapa',
+		'checkvia' => 'Lähetä käyttäen',
+		'checkvia_upload' => 'Tiedoston latausta',
+		'checkvia_url' => 'URL -siirtoa',
+		'varname' => 'Muuttujan nimi',
+		'varname' => 'Syötä tiedoston/url -kentän nimi',
+		'additionalVars' => 'Lisäparametrit',
+		'additionalVars' => 'valinneinen: var1=wert1&var2=wert2&...',
+		'result' => 'Tulos',
+		'active' => 'Aktiivinen',
+		'active' => 'Piilota palvelu väliaikaisesti.',
+		'no_services_available' => 'Ei palveluita käytettävissä tälle tiedostotyypille.',
+//  the different predefined services
+		'adjust_service' => 'Muuta validointipalvelua',
+		'art_custom' => 'Räätälöidyt palvelut',
+		'art_default' => 'Esimääritetyt palvelut',
+		'category_xhtml' => '(X)HTML',
+		'category_links' => 'Linkit',
+		'category_css' => 'CSS -tyylitiedostot',
+		'category_accessibility' => 'Käytettävyys',
+		'edit_service' => array(
+				'new' => 'Uusi palvelu',
+				'saved_success' => 'Palvelu on tallennettu.',
+				'saved_failure' => 'Palvelua ei voitu tallentaa.',
+				'delete_success' => 'Palvelu on poistettu.',
+				'delete_failure' => 'Palvelua ei voitu poistaa.',
+				'servicename_already_exists' => 'Tämän niminen palvelu on jo olemassa.',
+		),
+//  services for html
+		'service_xhtml_upload' => '(X)HTML W3C -validointi tiedostolatauksen kautta',
+		'service_xhtml_url' => '(X)HTML W3C -validointi URL -siirron kautta',
+//  services for css
+		'service_css_upload' => 'CSS -validointi tiedostolatauksen kautta',
+		'service_css_url' => 'CSS -validointi URL -siirron kautta',
+		'connection_problems' => '<strong>Virhe yhteydenmuodostuksessa palveluun<(/trong><br /><br /><br />Huomioi: valinta "url siirto" on käytettävissä vain, jos webEdition järjestelmän pääsy on sallittu internetiin.Siirto ei ole mahdollinen paikallisasennuksessa.<br /><br />Ongelmia voi myös esiintyä käytettäessä palomuureja tai proxy-palvelimia. Tarkista asetukset tässä tapauksessa.<br /><br />HTTP-Response: %s',
+);

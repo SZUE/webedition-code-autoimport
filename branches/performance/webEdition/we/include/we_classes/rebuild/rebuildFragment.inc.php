@@ -36,16 +36,15 @@ class rebuildFragment extends taskFragment{
 
 	function updateProgressBar() {
 		$percent = round((100/count($this->alldata))*(1+$this->currentTask));
-		print '<script language="JavaScript" type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "'.addslashes(shortenPath($this->data["path"],33)).'" : "'.$GLOBALS["l_rebuild"]["savingDocument"].addslashes(shortenPath($this->data["path"],60)).'") );parent.wizbusy.setProgress('.$percent.');</script>';
+		print '<script language="JavaScript" type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "'.addslashes(shortenPath($this->data["path"],33)).'" : "'.g_l('rebuild',"[savingDocument]").addslashes(shortenPath($this->data["path"],60)).'") );parent.wizbusy.setProgress('.$percent.');</script>';
 
 	}
 
 	function finish(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/rebuild.inc.php");
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
 		htmlTop();
 		print '<script language="JavaScript" type="text/javascript">
-			' . we_message_reporting::getShowMessageCall( addslashes($responseText ? $responseText : $GLOBALS["l_rebuild"]["finished"]), WE_MESSAGE_NOTICE ) . '
+			' . we_message_reporting::getShowMessageCall( addslashes($responseText ? $responseText : g_l('rebuild',"[finished]")), WE_MESSAGE_NOTICE ) . '
 			top.close();
 		</script>
 		</head>

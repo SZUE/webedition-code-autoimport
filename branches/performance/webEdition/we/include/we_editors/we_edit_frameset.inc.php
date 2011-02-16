@@ -19,9 +19,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/"."permissionhandler.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 protect();
 
@@ -92,7 +91,7 @@ if(isset($_SESSION["we_data"][$we_transaction])){
     $we_dt = $_SESSION["we_data"][$we_transaction];
 }
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_doc.inc.php");
+include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 if (!$we_doc->fileExists){
 	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weInfoPages/weNoResource.inc.php");
 	exit();
@@ -176,7 +175,7 @@ if($we_doc->ID){
 	if($ws = get_ws($we_Table)) {
 		if(!(in_workspace($we_doc->ID,$ws,$we_Table,$DB_WE))) {
 			if($we_Table == TEMPLATES_TABLE) {	//	different workspace. for template
-				$we_message = $l_alert[($we_ContentType == "folder") ? "folder" :$we_Table]["not_im_ws"];
+				$we_message = g_l('alert','['.($we_ContentType == "folder") ? "folder" :$we_Table.'][not_im_ws]');
 				include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
 				exit();
 			} else if($we_Table == FILE_TABLE){	//	only preview mode allowed for docs
@@ -229,7 +228,7 @@ if($we_doc->EditPageNr === -1 ){	//	there is no view available for this document
 					STYLESHEET
 				) .
 				we_htmlElement::htmlBody(array( 'class'=>'weDialogBody'),
-					htmlDialogLayout(htmlAlertAttentionBox($l_alert['no_views']['description'], 1, 500, true), $l_alert['no_views']['headline'])
+					htmlDialogLayout(htmlAlertAttentionBox(g_l('alert','[no_views][description]'),1, 500, true), g_l('alert','[no_views][headline]'))
 				)
 			);
 	exit;
@@ -257,7 +256,7 @@ if(!isset($we_doc->IsClassFolder)) {
 	}
 
 	if($we_doc->ContentType=="objectFile" && (!$we_doc->canMakeNew())) { // at this time only in objectFiles
-		$we_message = $l_alert["no_new"]["objectFile"];
+		$we_message = g_l('alert',"[no_new][objectFile]");
 		include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
 		exit;
 	}
@@ -419,7 +418,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 			<?php
 				if( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ){
 
-					print we_message_reporting::getShowMessageCall($l_we_SEEM["alert"]["close_include"], WE_MESSAGE_ERROR)
+					print we_message_reporting::getShowMessageCall(g_l('SEEM',"[alert][close_include]"), WE_MESSAGE_ERROR)
 					?>
 			top.close();
 					<?php
@@ -477,7 +476,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 ?>
 	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="<?php if($GLOBALS['BROWSER'] == "NN"){print "48";}else{print "39";} ?>,<?php print $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload();">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no">
-		<?php if ($showContentEditor) { ?> 
+		<?php if ($showContentEditor) { ?>
 			<frame <?php print setOnload(); ?> src="about:blank" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 			<frame  src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); ?><?php isset($parastr) ? print "&" . $parastr : print ""; ?>" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 		<?php } else { ?>
@@ -494,4 +493,3 @@ if(!isset($we_doc->elements['data']['dat'])){
 </html><?php
 
 	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-?>

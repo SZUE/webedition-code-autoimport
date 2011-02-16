@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
@@ -28,7 +27,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/w
 
 htmlTop();
 ?>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php"); ?>
+<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 <?php print STYLESHEET; ?>
 <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	</head>
@@ -49,7 +48,7 @@ if(we_image_edit::gd_version() > 0){
 
 	if(!$we_doc->getDocument()){
 		array_push($parts, array(		"headline"=>"",
-										"html"=>htmlAlertAttentionBox($GLOBALS["l_thumbnails"]["no_image_uploaded"],2,"700"),
+										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[no_image_uploaded]"),2,"700"),
 										"space"=>0
 								)
 						);
@@ -108,20 +107,20 @@ if(we_image_edit::gd_version() > 0){
 
 		}
 		array_push($parts, array(		"headline"=>"",
-										"html"=>htmlAlertAttentionBox($GLOBALS["l_thumbnails"]["add_descriptiontext"],2,"700").'<br><br>'. $we_button->create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','".$we_transaction."');"),
+										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[add_descriptiontext]"),2,"700").'<br><br>'. $we_button->create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','".$we_transaction."');"),
 										"space"=>0
 								)
 						);
 	}else{
 		array_push($parts, array(		"headline"=>"",
-										"html"=>htmlAlertAttentionBox($GLOBALS["l_thumbnails"]["format_not_supported"],2,"700"),
+										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[format_not_supported]"),2,"700"),
 										"space"=>0
 								)
 						);
 	}
 }else{
 	array_push($parts, array(		"headline"=>"",
-									"html"=>htmlAlertAttentionBox($GLOBALS["l_thumbnails"]["add_description_nogdlib"],2,"700"),
+									"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[add_description_nogdlib]"),2,"700"),
 									"space"=>0
 							)
 					);

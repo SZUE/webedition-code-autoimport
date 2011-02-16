@@ -28,7 +28,7 @@ if (defined("MESSAGING_SYSTEM")){
 	$_we_messaging = new we_messaging($_SESSION['we_data'][$_transact]);
 	$_we_messaging->add_msgobj('we_message');
 	$_we_messaging->saveInSession($_SESSION['we_data'][$_transact]);
-	$messaging_text = $l_javaMenu["module_information"]["messaging"]["text"].":";
+	$messaging_text = g_l('javaMenu_moduleInformation','[messaging][text]').":";
 	$new_messages = g_l('modules_messaging',"[new_messages]");
 	$new_tasks = g_l('modules_messaging',"[new_tasks]");
 

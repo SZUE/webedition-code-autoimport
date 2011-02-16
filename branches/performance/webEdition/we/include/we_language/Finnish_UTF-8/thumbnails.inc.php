@@ -18,84 +18,68 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: thumbnails.inc.php
  * Provides language strings.
  * Language: English
  */
+$l_thumbnails = array(
+		/*		 * ***************************************************************************
+		 * PRELOAD
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * PRELOAD
- *****************************************************************************/
+		'preload' => "Ladataan asetuksia, hetkinen ...",
+		'preload_wait' => "Ladataan asetuksia",
+		/*		 * ***************************************************************************
+		 * SAVE
+		 * *************************************************************************** */
 
-$l_thumbnails["preload"] = "Ladataan asetuksia, hetkinen ...";
-$l_thumbnails["preload_wait"] = "Ladataan asetuksia";
+		'save' => "Tallennetaan asetuksia, hetkinen ...",
+		'save_wait' => "Tallennetaan asetuksia",
+		'saved' => "Asetukset on tallennettu.",
+		'saved_successfully' => "Asetukset tallennettu",
+		/*		 * ***************************************************************************
+		 * THUMBNAILS
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * SAVE
- *****************************************************************************/
+		/**
+		 * JAVASCRIPT
+		 */
+		'new' => "Kirjoita esikatselukuvan nimi!",
+		'delete_prompt' => "Poista esikatselukuva \'%s\'! Oletko varma?",
+		/**
+		 * CAPTION
+		 */
+		'thumbnails' => "Esikatselukuvat",
+		/**
+		 * NAME
+		 */
+		'name' => "Nimi",
+		/**
+		 * PROPERTIES
+		 */
+		'properties' => "Ominaisuudet",
+		'width' => "Leveys",
+		'height' => "Korkeus",
+		'ratio' => "Säilytä kuvasuhde",
+		'maximize' => "Maksimoi koko jos tarvetta",
+		'interlace' => "Limitys (interlace)",
+		'quality' => "Laatu",
+		/**
+		 * FORMAT
+		 */
+		'format' => "Tallennustyyppi",
+		'format_original' => "Alkuperäinen tyyppi",
+		'format_gif' => "GIF -tiedosto",
+		'format_jpg' => "JPEG -tiedosto",
+		'format_png' => "PNG -tiedosto",
+		/*		 * ***************************************************************************
+		 * THUMBNAILS View
+		 * *************************************************************************** */
 
-$l_thumbnails["save"] = "Tallennetaan asetuksia, hetkinen ...";
-$l_thumbnails["save_wait"] = "Tallennetaan asetuksia";
-
-$l_thumbnails["saved"] = "Asetukset on tallennettu.";
-$l_thumbnails["saved_successfully"] = "Asetukset tallennettu";
-
-/*****************************************************************************
- * THUMBNAILS
- *****************************************************************************/
-
-	/**
-	 * JAVASCRIPT
-	 */
-
-	$l_thumbnails["new"] = "Kirjoita esikatselukuvan nimi!";
-	$l_thumbnails["delete_prompt"] = "Poista esikatselukuva \'%s\'! Oletko varma?";
-
-	/**
-	 * CAPTION
-	 */
-
-	$l_thumbnails["thumbnails"] = "Esikatselukuvat";
-
-	/**
-	 * NAME
-	 */
-
-	$l_thumbnails["name"] = "Nimi";
-
-	/**
-	 * PROPERTIES
-	 */
-
-	$l_thumbnails["properties"] = "Ominaisuudet";
-	$l_thumbnails["width"] = "Leveys";
-	$l_thumbnails["height"] = "Korkeus";
-	$l_thumbnails["ratio"] = "Säilytä kuvasuhde";
-	$l_thumbnails["maximize"] = "Maksimoi koko jos tarvetta";
-	$l_thumbnails["interlace"] = "Limitys (interlace)";
-	$l_thumbnails["quality"] = "Laatu";
-
-	/**
-	 * FORMAT
-	 */
-
-	$l_thumbnails["format"] = "Tallennustyyppi";
-	$l_thumbnails["format_original"] = "Alkuperäinen tyyppi";
-	$l_thumbnails["format_gif"] = "GIF -tiedosto";
-	$l_thumbnails["format_jpg"] = "JPEG -tiedosto";
-	$l_thumbnails["format_png"] = "PNG -tiedosto";
-
-/*****************************************************************************
- * THUMBNAILS View
- *****************************************************************************/
-
-	$l_thumbnails["add_descriptiontext"] = "Paina plus -painiketta lisätäksesi uusia esikatselukuvia.";
-	$l_thumbnails["add_description_nogdlib"] = "Käyttääksesi esikatselukuva toimintoja gd -kirjasto on asennettava palvelimella. Ota yhteyttä järjestelmän ylläpitäjään asenuspyyntöä varten.";
-	$l_thumbnails["format_not_supported"] = "Asennettu gd- kirjasto ei tue kuvatyypiä. Ota yhteyttä järjestelmän ylläpitäjään korjataksesi ongelmatilanteen.";
-	$l_thumbnails["no_image_uploaded"] = "Kuva on ladattava palvelimelle käyttääksesi esikatselukuva toimintoa.";
-
-	$l_thumbnails["create_thumbnails"] = "Luo esikatselukuvia";
-?>
+		'add_descriptiontext' => "Paina plus -painiketta lisätäksesi uusia esikatselukuvia.",
+		'add_description_nogdlib' => "Käyttääksesi esikatselukuva toimintoja gd -kirjasto on asennettava palvelimella. Ota yhteyttä järjestelmän ylläpitäjään asenuspyyntöä varten.",
+		'format_not_supported' => "Asennettu gd- kirjasto ei tue kuvatyypiä. Ota yhteyttä järjestelmän ylläpitäjään korjataksesi ongelmatilanteen.",
+		'no_image_uploaded' => "Kuva on ladattava palvelimelle käyttääksesi esikatselukuva toimintoa.",
+		'create_thumbnails' => "Luo esikatselukuvia",
+);

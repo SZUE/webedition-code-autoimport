@@ -18,91 +18,93 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-$l_liveUpdate['tabs']['register'] = 'Rekisteröinti';
-$l_liveUpdate['tabs']['update'] = 'Päivitä';
-$l_liveUpdate['tabs']['upgrade'] = 'Päivitä webEdition 5';
-$l_liveUpdate['tabs']['modules'] = 'Moduulit';
-$l_liveUpdate['tabs']['updatelog'] = 'Loki';
-$l_liveUpdate['tabs']['languages'] = 'Kielet';
-$l_liveUpdate['tabs']['connect'] = 'Testaa yhteyttä';
-$l_liveUpdate['tabs']['nextVersion'] = 'Seuraava versio';
-
-
-$l_liveUpdate['register']['headline'] = 'rekisteröi webEdition';
-$l_liveUpdate['register']['description'] = 'rekisteröi webEdition ja löydä sen täysi toiminnallisuus.';
-
-
-$l_liveUpdate['update']['headline'] = 'Etsi uutta versiota';
-$l_liveUpdate['update']['actualVersion'] = 'Nykyinen versio';
-$l_liveUpdate['update']['lastUpdate'] = 'Edellinen asennus';
-$l_liveUpdate['update']['neverUpdated'] = '-';
-$l_liveUpdate['update']['lookForUpdate'] = 'Etsi päivitystä';
-
-
-$l_liveUpdate['upgrade']['headline'] = 'Päivitä versioon webEdition 5';
-$l_liveUpdate['upgrade']['actualVersion'] = 'Nykyinen versio';
-$l_liveUpdate['upgrade']['lookForUpdate'] = 'Asenna webEdition 5';
-
-
-$l_liveUpdate['modules']['headline'] = 'Moduulien asennus';
-$l_liveUpdate['modules']['installedModules'] = 'Asennetut moduulit';
-$l_liveUpdate['modules']['noModulesInstalled'] = 'Moduuleja ei ole vielä asennettu';
-$l_liveUpdate['modules']['showModules'] = 'Valitse moduulit';
-
-
-$l_liveUpdate['languages']['headline'] = 'Kielien asennus';
-$l_liveUpdate['languages']['installedLngs'] = 'Seuraavat kielet on asennettu';
-$l_liveUpdate['languages']['showLanguages'] = 'Asenna lisää kieliä';
-$l_liveUpdate['languages']['deleteSelectedLanguages'] = 'Poista valitut kielet';
-$l_liveUpdate['languages']['systemLanguage'] = 'järkestelmän kieli';
-$l_liveUpdate['languages']['usedLanguage'] = 'käytössä oleva kieli';
-$l_liveUpdate['languages']['languagesDeleted'] = 'Seuraavat kielet poistettiin';
-$l_liveUpdate['languages']['languagesNotDeleted'] = 'Seuraavia kieliä ei voitu poistaa';
-
-
-$l_liveUpdate['connect']['headline'] = 'Tarkista yhteys päivityspalvelimeen';
-$l_liveUpdate['connect']['description'] = 'Jos päivityksessä on ongelmia, voit täällä testata onko yhteyden luonti päivityspalvelimeen mahdollista.';
-$l_liveUpdate['connect']['connectionSuccess'] = 'Yhteys päivityspalvelimeen saatiin muodostettua.';
-$l_liveUpdate['connect']['connectionSuccessError'] = 'Yhteys päivityspalvelimeen saatiin luotua mutta päivityspalvelimella tapahtui virhe.<br />';
-$l_liveUpdate['connect']['connectionError'] = 'Tällä hetkellä yhteyttä päivityspalvelimeen ei saada muodostettua';
-$l_liveUpdate['connect']['connectionErrorJs'] = 'Yhteyden muodostaminen päivityspalvelimeen ei ole mahdollista';
-$l_liveUpdate['connect']["connectionInfo"] = "Yhteystiedot";
-$l_liveUpdate['connect']["availableConnectionTypes"] = "Saatavilla olevat yhteystyypit";
-$l_liveUpdate['connect']["connectionType"] = "Käytetty yhteystyyppi";
-$l_liveUpdate['connect']["proxyHost"] = "Proxy isäntä";
-$l_liveUpdate['connect']["proxyPort"] = "Proxy portti";
-$l_liveUpdate['connect']["hostName"] = "Isäntänimi";
-$l_liveUpdate['connect']["addressResolution"] = "Osoitteen selvitys";
-$l_liveUpdate['connect']["updateServer"] = "Päivitä palvelin";
-$l_liveUpdate['connect']["ipResolutionTest"] = "IP-osoitteen selvitystesti";
-$l_liveUpdate['connect']["dnsResolutionTest"] = "DNS selvitystesti";
-$l_liveUpdate['connect']["succeeded"] = "Onnistui";
-$l_liveUpdate['connect']["failed"] = "Epäonnistui";
-$l_liveUpdate['connect']["ipAddresses"] = "IP osoite(es)";
-
-
-$l_liveUpdate['state']['headline'] = 'Viesti päivityspalvelimelta';
-$l_liveUpdate['state']['descriptionTrue'] = 'Päivityspalvelin on suorittanut tämän pyynnön.';
-$l_liveUpdate['state']['descriptionError'] = 'Päivityspalvelin ei voinut suorittaa tätä pyyntöä. Seuraava ongelma ilmeni.';
-
-
-$l_liveUpdate['updatelog']['headline'] = 'Päivitysloki';
-$l_liveUpdate['updatelog']['logIsEmpty'] = 'Päivitysloki on tyhjä';
-$l_liveUpdate['updatelog']['date'] = 'Pvm / aika';
-$l_liveUpdate['updatelog']['action'] = 'Toiminto';
-$l_liveUpdate['updatelog']['version'] = 'Versio';
-$l_liveUpdate['updatelog']['entriesTotal'] = 'Merkintöjä yhteensä';
-$l_liveUpdate['updatelog']['page'] = 'sivu';
-$l_liveUpdate['updatelog']['noEntriesMatchFilter'] = 'Suodatuksen ehtoihin sopivia merkintöjä ei ole.';
-$l_liveUpdate['updatelog']['legendMessages'] = 'Viesti';
-$l_liveUpdate['updatelog']['legendNotices'] = 'Huomautukset';
-$l_liveUpdate['updatelog']['legendErrors'] = 'Virheet';
-$l_liveUpdate['updatelog']['confirmDelete'] = 'Haluatko varmasti poistaa valitut kohteet?';
-
-$l_liveUpdate['tabs']['beta'] = 'Pre-Release Versions';// TRANSLATE
-$l_liveUpdate['beta']['headline'] = 'Shall Pre-Release Versions be included in the search?';// TRANSLATE
-$l_liveUpdate['beta']['lookForUpdate'] = 'search for Pre-Release Versions';// TRANSLATE
-$l_liveUpdate['beta']['warning'] = '<b>Pre-Release versions,<br/> such as <u>nightly Builds, Alpha-, Beta- und RC-Versions</u>,<br/> should never be used in produktion sites!</b><br/><br/>They are provided for testing purposes only and aim at easing <br/>the search for severe erros before an official version is published.';// TRANSLATE
-
-?>
+$l_liveUpdate = array(
+		'tabs' => array(
+				'beta' => 'Pre-Release Versions', // TRANSLATE
+				'register' => 'Rekisteröinti',
+				'update' => 'Päivitä',
+				'upgrade' => 'Päivitä webEdition 5',
+				'modules' => 'Moduulit',
+				'updatelog' => 'Loki',
+				'languages' => 'Kielet',
+				'connect' => 'Testaa yhteyttä',
+				'nextVersion' => 'Seuraava versio',
+		),
+		'register' => array(
+				'headline' => 'rekisteröi webEdition',
+				'description' => 'rekisteröi webEdition ja löydä sen täysi toiminnallisuus.',
+		),
+		'update' => array(
+				'headline' => 'Etsi uutta versiota',
+				'actualVersion' => 'Nykyinen versio',
+				'lastUpdate' => 'Edellinen asennus',
+				'neverUpdated' => '-',
+				'lookForUpdate' => 'Etsi päivitystä',
+		),
+		'upgrade' => array(
+				'headline' => 'Päivitä versioon webEdition 5',
+				'actualVersion' => 'Nykyinen versio',
+				'lookForUpdate' => 'Asenna webEdition 5',
+		),
+		'modules' => array(
+				'headline' => 'Moduulien asennus',
+				'installedModules' => 'Asennetut moduulit',
+				'noModulesInstalled' => 'Moduuleja ei ole vielä asennettu',
+				'showModules' => 'Valitse moduulit',
+		),
+		'languages' => array(
+				'headline' => 'Kielien asennus',
+				'installedLngs' => 'Seuraavat kielet on asennettu',
+				'showLanguages' => 'Asenna lisää kieliä',
+				'deleteSelectedLanguages' => 'Poista valitut kielet',
+				'systemLanguage' => 'järkestelmän kieli',
+				'usedLanguage' => 'käytössä oleva kieli',
+				'languagesDeleted' => 'Seuraavat kielet poistettiin',
+				'languagesNotDeleted' => 'Seuraavia kieliä ei voitu poistaa',
+		),
+		'connect' => array(
+				'headline' => 'Tarkista yhteys päivityspalvelimeen',
+				'description' => 'Jos päivityksessä on ongelmia, voit täällä testata onko yhteyden luonti päivityspalvelimeen mahdollista.',
+				'connectionSuccess' => 'Yhteys päivityspalvelimeen saatiin muodostettua.',
+				'connectionSuccessError' => 'Yhteys päivityspalvelimeen saatiin luotua mutta päivityspalvelimella tapahtui virhe.<br />',
+				'connectionError' => 'Tällä hetkellä yhteyttä päivityspalvelimeen ei saada muodostettua',
+				'connectionErrorJs' => 'Yhteyden muodostaminen päivityspalvelimeen ei ole mahdollista',
+				'connectionInfo' => "Yhteystiedot",
+				'availableConnectionTypes' => "Saatavilla olevat yhteystyypit",
+				'connectionType' => "Käytetty yhteystyyppi",
+				'proxyHost' => "Proxy isäntä",
+				'proxyPort' => "Proxy portti",
+				'hostName' => "Isäntänimi",
+				'addressResolution' => "Osoitteen selvitys",
+				'updateServer' => "Päivitä palvelin",
+				'ipResolutionTest' => "IP-osoitteen selvitystesti",
+				'dnsResolutionTest' => "DNS selvitystesti",
+				'succeeded' => "Onnistui",
+				'failed' => "Epäonnistui",
+				'ipAddresses' => "IP osoite(es)",
+		),
+		'state' => array(
+				'headline' => 'Viesti päivityspalvelimelta',
+				'descriptionTrue' => 'Päivityspalvelin on suorittanut tämän pyynnön.',
+				'descriptionError' => 'Päivityspalvelin ei voinut suorittaa tätä pyyntöä. Seuraava ongelma ilmeni.',
+		),
+		'updatelog' => array(
+				'headline' => 'Päivitysloki',
+				'logIsEmpty' => 'Päivitysloki on tyhjä',
+				'date' => 'Pvm / aika',
+				'action' => 'Toiminto',
+				'version' => 'Versio',
+				'entriesTotal' => 'Merkintöjä yhteensä',
+				'page' => 'sivu',
+				'noEntriesMatchFilter' => 'Suodatuksen ehtoihin sopivia merkintöjä ei ole.',
+				'legendMessages' => 'Viesti',
+				'legendNotices' => 'Huomautukset',
+				'legendErrors' => 'Virheet',
+				'confirmDelete' => 'Haluatko varmasti poistaa valitut kohteet?',
+		),
+		'beta' => array(
+				'headline' => 'Shall Pre-Release Versions be included in the search?', // TRANSLATE
+				'lookForUpdate' => 'search for Pre-Release Versions', // TRANSLATE
+				'warning' => '<b>Pre-Release versions,<br/> such as <u>nightly Builds, Alpha-, Beta- und RC-Versions</u>,<br/> should never be used in produktion sites!</b><br/><br/>They are provided for testing purposes only and aim at easing <br/>the search for severe erros before an official version is published.', // TRANSLATE
+		),
+);

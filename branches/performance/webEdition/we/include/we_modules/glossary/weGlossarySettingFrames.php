@@ -22,7 +22,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/glossary.inc.php');
 
 class weGlossarySettingFrames {
 
@@ -70,7 +69,7 @@ class weGlossarySettingFrames {
 		$parts = array();
 
 		// Automatic Replacement
-		$content = 		we_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', $GLOBALS['l_glossary']['enable_replacement']);
+		$content = 		we_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', g_l('modules_glossary','[enable_replacement]'));
 
 		array_push($parts, array(
 							'headline' => "",
@@ -91,11 +90,10 @@ class weGlossarySettingFrames {
 <body class="weDialogBody">
 	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . hidden('cmd', 'save_glossary_setting') . '
-	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, $we_button->position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, $GLOBALS['l_glossary']['menu_settings'] ) . '
+	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, $we_button->position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('modules_glossary','[menu_settings]') ) . '
 	</form>
 </body>
 </html>';
 	}
 
 }
-?>

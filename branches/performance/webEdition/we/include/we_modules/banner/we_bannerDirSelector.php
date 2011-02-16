@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
 
 class we_bannerDirSelector extends we_dirSelector{
@@ -53,7 +52,7 @@ class we_bannerDirSelector extends we_dirSelector{
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
 					<td>'.getPixel(25,14).'</td>
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_banner"]["name"].'</a></b></td>
+					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('modules_banner','[name]').'</a></b></td>
 				</tr>
 				<tr>
 					<td width="25">'.getPixel(25,1).'</td>
@@ -85,7 +84,7 @@ class we_bannerDirSelector extends we_dirSelector{
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b>'.$GLOBALS["l_banner"]["name"].'</b>
+						<b>'.g_l('modules_banner','[name]').'</b>
 					</td>
 					<td></td>
 					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
@@ -204,7 +203,7 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0" /></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_banner"]["newbannergroup"]?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_banner"]["newbannergroup"]?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('modules_banner','[newbannergroup]')?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('modules_banner','[newbannergroup]')?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -302,9 +301,9 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall($GLOBALS["l_banner"]["group_empty"], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), WE_MESSAGE_ERROR);
 		}else{
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder= new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -314,11 +313,11 @@ top.clearEntries();
 			$folder->Path=$folder->getPath();
 			$this->db->query("SELECT ID FROM ".$this->table." WHERE Path='".mysql_real_escape_string($folder->Path)."'");
 			if($this->db->next_record()){
-				$we_responseText = sprintf($GLOBALS["l_banner"]["group_path_exists"],$folder->Path);
+				$we_responseText = sprintf(g_l('modules_banner','[group_path_exists]'),$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[%/\\"\']/',$folder->Text)){
-					$we_responseText = $GLOBALS["l_banner"]["wrongtext"];
+					$we_responseText = g_l('modules_banner','[wrongtext]');
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 		         }else{
 					$folder->we_save();
@@ -366,9 +365,9 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall($GLOBALS["l_banner"]["group_empty"], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), WE_MESSAGE_ERROR);
 		}else{
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder= new we_folder();
 			$folder->initByID($this->we_editDirID,$this->table);
 			$folder->Text=$txt;
@@ -376,11 +375,11 @@ top.clearEntries();
 			$folder->Path=$folder->getPath();
 			$this->db->query("SELECT ID,Text FROM ".$this->table." WHERE Path='".mysql_real_escape_string($folder->Path)."' AND ID != ".abs($this->we_editDirID));
 			if($this->db->next_record()){
-				$we_responseText = sprintf($GLOBALS["l_banner"]["group_path_exists"],$folder->Path);
+				$we_responseText = sprintf(g_l('modules_banner','[group_path_exists]'),$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[%/\\"\']/',$folder->Text)){
-					$we_responseText = $GLOBALS["l_banner"]["wrongtext"];
+					$we_responseText = g_l('modules_banner','[wrongtext]');
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
 					if(f("SELECT Text FROM ".$this->table." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){

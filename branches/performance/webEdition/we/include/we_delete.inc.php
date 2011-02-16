@@ -22,8 +22,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/alert.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/newfile.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_history.class.php');
 
@@ -59,7 +57,7 @@ if (!$wfchk) {
 		$wfchk_html .= '<script language="JavaScript" type="text/javascript">
                      function confirmDel(){' . "\n";
 		if ($found)
-			$wfchk_html .= 'if(confirm("' . $l_alert["found_in_workflow"] . '"))' . "\n";
+			$wfchk_html .= 'if(confirm("' . g_l('alert',"[found_in_workflow]") . '"))' . "\n";
 		$wfchk_html .= 'we_cmd("' . $_REQUEST["we_cmd"][0] . '","","' . $table . '",1);' . "\n";
 		if ($found)
 			$wfchk_html .= 'else top.toggleBusy(0)';
@@ -67,7 +65,7 @@ if (!$wfchk) {
 
 	} else {
 		$script = "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(
-				$l_alert["nothing_to_delete"],
+				g_l('alert',"[nothing_to_delete]"),
 				WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' . "\n";
@@ -243,7 +241,7 @@ if (!$wfchk) {
 			if ($retVal == -6) {
 
 				$script .= "top.toggleBusy(0);\n";
-				$script .= we_message_reporting::getShowMessageCall($l_alert['no_perms_action'], WE_MESSAGE_ERROR);
+				$script .= we_message_reporting::getShowMessageCall(g_l('alert','[no_perms_action]'), WE_MESSAGE_ERROR);
 
 			} else
 				if ($retVal == -5) { //	not allowed to delete workspace
@@ -256,7 +254,7 @@ if (!$wfchk) {
 					}
 					$script .= we_message_reporting::getShowMessageCall(
 							sprintf(
-									$l_alert['delete_workspace_object_r'],
+									g_l('alert','[delete_workspace_object_r]'),
 									id_to_path($selectedItems[$i], $table),
 									$objList),
 							WE_MESSAGE_ERROR);
@@ -270,7 +268,7 @@ if (!$wfchk) {
 						}
 						$script .= we_message_reporting::getShowMessageCall(
 								sprintf(
-										$l_alert['delete_workspace_user_r'],
+										g_l('alert','[delete_workspace_user_r]'),
 										id_to_path($selectedItems[$i], $table),
 										$usrList),
 								WE_MESSAGE_ERROR);
@@ -284,7 +282,7 @@ if (!$wfchk) {
 							}
 							$script .= we_message_reporting::getShowMessageCall(
 									sprintf(
-											$l_alert['delete_workspace_object'],
+											g_l('alert','[delete_workspace_object]'),
 											id_to_path($selectedItems[$i], $table),
 											$objList),
 									WE_MESSAGE_ERROR);
@@ -298,7 +296,7 @@ if (!$wfchk) {
 								}
 								$script .= we_message_reporting::getShowMessageCall(
 										sprintf(
-												$l_alert['delete_workspace_user'],
+												g_l('alert','[delete_workspace_user]'),
 												id_to_path($selectedItems[$i], $table),
 												$usrList),
 										WE_MESSAGE_ERROR);
@@ -310,7 +308,7 @@ if (!$wfchk) {
 									$script .= "top.toggleBusy(0);\n";
 									$script .= we_message_reporting::getShowMessageCall(
 											sprintf(
-													$l_alert["noRightsToDelete"],
+													g_l('alert',"[noRightsToDelete]"),
 													id_to_path($selectedItems[$i], $table)),
 											WE_MESSAGE_ERROR);
 
@@ -418,7 +416,7 @@ if (!$wfchk) {
 														"\\n",
 														"",
 														sprintf(
-																$GLOBALS["l_alert"]["folder_not_empty"],
+																g_l('alert',"[folder_not_empty]"),
 																""));
 												foreach ($GLOBALS["we_folder_not_del"] as $datafile) {
 													$_SESSION["delete_files_nok"][] = array(
@@ -430,10 +428,10 @@ if (!$wfchk) {
 
 												if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache" || defined(
 														"FILE_TABLE") && $table == FILE_TABLE . "_cache") {
-													$delete_ok = $l_alert["delete_cache_ok"];
+													$delete_ok = g_l('alert',"[delete_cache_ok]");
 
 												} else {
-													$delete_ok = $l_alert["delete_ok"];
+													$delete_ok = g_l('alert',"[delete_ok]");
 
 												}
 
@@ -447,23 +445,23 @@ if (!$wfchk) {
 										$script .= "top.toggleBusy(0);\n";
 										if ($table == TEMPLATES_TABLE) {
 											$script .= we_message_reporting::getShowMessageCall(
-													$l_alert["deleteTempl_notok_used"],
+													g_l('alert',"[deleteTempl_notok_used]"),
 													WE_MESSAGE_ERROR);
 										} else
 											if ($table == OBJECT_TABLE) {
 												$script .= we_message_reporting::getShowMessageCall(
-														$l_alert["deleteClass_notok_used"],
+														g_l('alert',"[deleteClass_notok_used]"),
 														WE_MESSAGE_ERROR);
 											} else {
 												$script .= we_message_reporting::getShowMessageCall(
-														$l_alert["delete_notok"],
+														g_l('alert',"[delete_notok]"),
 														WE_MESSAGE_ERROR);
 											}
 									}
 
 		} else {
 			$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(
-					$l_alert["nothing_to_delete"],
+					g_l('alert',"[nothing_to_delete]"),
 					WE_MESSAGE_WARNING) . "\n";
 		}
 		print '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
@@ -482,10 +480,10 @@ if ($_SESSION["we_mode"] == "seem") {
 
 	if ($retVal) { //	document deleted -> go to seeMode startPage
 		$_js = we_message_reporting::getShowMessageCall(
-				$l_alert['delete_single']['return_to_start'],
+				g_l('alert','[delete_single][return_to_start]'),
 				WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');";
 	} else {
-		$_js = we_message_reporting::getShowMessageCall($l_alert['delete_single']['no_delete'], WE_MESSAGE_ERROR);
+		$_js = we_message_reporting::getShowMessageCall(g_l('alert','[delete_single][no_delete]'), WE_MESSAGE_ERROR);
 	}
 	print
 			we_htmlElement::htmlHtml(we_htmlElement::htmlHead(we_htmlElement::jsElement($_js)));
@@ -563,7 +561,7 @@ function we_submitForm(target,url){
 	if(!sel){
 		top.toggleBusy(0);
 		<?php
-		print we_message_reporting::getShowMessageCall($l_alert["nothing_to_delete"], WE_MESSAGE_ERROR);
+		print we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_delete]"), WE_MESSAGE_ERROR);
 		?>
 		return;
 	}
@@ -599,12 +597,12 @@ if ($_REQUEST["we_cmd"][0] == "do_delete") {
 
 $we_button = new we_button();
 if ((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") || (defined("FILE_TABLE") && $table == FILE_TABLE . "_cache")) {
-	$delete_text = $l_newFile["delete_text_cache"];
-	$delete_confirm = $l_alert["delete_cache"];
+	$delete_text = g_l('newFile',"[delete_text_cache]");
+	$delete_confirm = g_l('alert',"[delete_cache]");
 
 } else {
-	$delete_text = $l_newFile["delete_text"];
-	$delete_confirm = $l_alert["delete"];
+	$delete_text = g_l('newFile',"[delete_text]");
+	$delete_confirm = g_l('alert',"[delete]");
 
 }
 $content = '<span class="middlefont">' . $delete_text . '</span>';
@@ -627,7 +625,7 @@ print
 		'</head><body class="weTreeHeader">
 <div style="width:380px;">
 <h1 class="big" style="padding:0;margin:0;">' . htmlspecialchars(
-				$l_newFile["title_delete"]) . '</h1>
+				g_l('newFile',"[title_delete]")) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '
 </body>

@@ -75,120 +75,120 @@ if (we_hasPerm('EDIT_SETTINGS')) {
 }
 
 $aPrefs['sct'] = array(
-	
-		'width' => $small, 
-		'height' => 210, 
-		'res' => 0, 
-		'cls' => 'red', 
-		'csv' => implode(',', $sc1) . ';' . implode(',', $sc2), 
-		'dlgHeight' => 435, 
+
+		'width' => $small,
+		'height' => 210,
+		'res' => 0,
+		'cls' => 'red',
+		'csv' => implode(',', $sc1) . ';' . implode(',', $sc2),
+		'dlgHeight' => 435,
 		'isResizable' => 1
 );
 $aPrefs['rss'] = array(
-	
-		'width' => $small, 
-		'height' => 307, 
-		'res' => 0, 
-		'cls' => 'yellow', 
-		'csv' => base64_encode('http://www.webedition.org/de/feeds/aktuelles.xml') . ',111000,0,110000,1', 
-		'dlgHeight' => 480, 
+
+		'width' => $small,
+		'height' => 307,
+		'res' => 0,
+		'cls' => 'yellow',
+		'csv' => base64_encode('http://www.webedition.org/de/feeds/aktuelles.xml') . ',111000,0,110000,1',
+		'dlgHeight' => 480,
 		'isResizable' => 1
 );
 $aPrefs['mfd'] = array(
-	
-		'width' => $small, 
-		'height' => 210, 
-		'res' => 0, 
-		'cls' => 'lightCyan', 
-		'csv' => $shortCutsDocs . $shortCutsTemplates . $shortCutsObjects . $shortCutsClasses . ';0;5;00;', 
-		'dlgHeight' => 435, 
+
+		'width' => $small,
+		'height' => 210,
+		'res' => 0,
+		'cls' => 'lightCyan',
+		'csv' => $shortCutsDocs . $shortCutsTemplates . $shortCutsObjects . $shortCutsClasses . ';0;5;00;',
+		'dlgHeight' => 435,
 		'isResizable' => 1
 );
 $aPrefs['msg'] = array(
-	
-		'width' => $small, 
-		'height' => 100, 
-		'res' => 0, 
-		'cls' => 'lightCyan', 
-		'csv' => '', 
-		'dlgHeight' => 140, 
+
+		'width' => $small,
+		'height' => 100,
+		'res' => 0,
+		'cls' => 'lightCyan',
+		'csv' => '',
+		'dlgHeight' => 140,
 		'isResizable' => 1
 );
 $aPrefs['usr'] = array(
-	
-		'width' => $small, 
-		'height' => 210, 
-		'res' => 0, 
-		'cls' => 'lightCyan', 
-		'csv' => '', 
-		'dlgHeight' => 140, 
+
+		'width' => $small,
+		'height' => 210,
+		'res' => 0,
+		'cls' => 'lightCyan',
+		'csv' => '',
+		'dlgHeight' => 140,
 		'isResizable' => 1
 );
 $aPrefs['upb'] = array(
-	
-		'width' => $small, 
-		'height' => 210, 
-		'res' => 0, 
-		'cls' => 'lightCyan', 
-		'csv' => $shortCutsDocs . $shortCutsObjects, 
-		'dlgHeight' => 190, 
+
+		'width' => $small,
+		'height' => 210,
+		'res' => 0,
+		'cls' => 'lightCyan',
+		'csv' => $shortCutsDocs . $shortCutsObjects,
+		'dlgHeight' => 190,
 		'isResizable' => 1
 );
 $aPrefs['mdc'] = array(
-	
-		'width' => $small, 
-		'height' => 307, 
-		'res' => 0, 
-		'cls' => 'white', 
-		'csv' => ';10;', 
-		'dlgHeight' => 450, 
+
+		'width' => $small,
+		'height' => 307,
+		'res' => 0,
+		'cls' => 'white',
+		'csv' => ';10;',
+		'dlgHeight' => 450,
 		'isResizable' => 1
 );
 $aPrefs['pad'] = array(
-	
-		'width' => $large, 
-		'height' => 307, 
-		'res' => 1, 
-		'cls' => 'blue', 
-		'csv' => base64_encode($l_cockpit['notepad_defaultTitle_DO_NOT_TOUCH']) . ',30020', 
-		'dlgHeight' => 560, 
+
+		'width' => $large,
+		'height' => 307,
+		'res' => 1,
+		'cls' => 'blue',
+		'csv' => base64_encode(g_l('cockpit','[notepad_defaultTitle_DO_NOT_TOUCH]')) . ',30020',
+		'dlgHeight' => 560,
 		'isResizable' => 0
 );
 $aPrefs['plg'] = array(
-	
-		'width' => $large, 
-		'height' => 210, 
-		'res' => 1, 
-		'cls' => 'white', 
-		'csv' => '00000000000;', 
-		'dlgHeight' => 435, 
+
+		'width' => $large,
+		'height' => 210,
+		'res' => 1,
+		'cls' => 'white',
+		'csv' => '00000000000;',
+		'dlgHeight' => 435,
 		'isResizable' => 1
 );
 
 $aCfgProps = array(
-	
+
 		array(
-			
+
 				array(
-					"pad", "blue", 1, base64_encode($l_cockpit['notepad_defaultTitle_DO_NOT_TOUCH']) . ',30020'
+					"pad", "blue", 1, base64_encode(g_l('cockpit','[notepad_defaultTitle_DO_NOT_TOUCH]')) . ',30020'
 				), 
 				array(
-					
-						"mfd", 
-						"green", 
-						1, 
+
+						"mfd",
+						"green",
+						1,
 						$shortCutsDocs . $shortCutsTemplates . $shortCutsObjects . $shortCutsClasses . ';0;5;00;'
 				)
-		), 
+		),
 		array(
-			
+
 				array(
-					
-						"rss", 
-						"yellow", 
-						1, 
+
+						"rss",
+						"yellow",
+						1,
 						base64_encode('http://www.webedition.org/de/feeds/aktuelles.xml') . ',111000,0,110000,1'
-				), 
+				),
 				array(
 					"sct", "red", 1, implode(',', $shortCuts_left) . ';' . implode(',', $shortCuts_right)
 				)

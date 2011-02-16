@@ -18,9 +18,7 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$l_moduleActivation["headline"] = "The Extra '%s' ist currently not activated"; // TRANSLATE
-$l_moduleActivation["content"] = "You can select which Extra to use, by activating them in the <a href=\"javascript:top.opener.top.we_cmd('openPreferences', 'setting_active_integrated_modules');\">preferences</a>"; // TRANSLATE
-
-?>
+$l_moduleActivation = array(
+		'headline' => "The Extra '%s' ist currently not activated", // TRANSLATE
+		'content' => "You can select which Extra to use, by activating them in the <a href=\"javascript:top.opener.top.we_cmd('openPreferences', 'setting_active_integrated_modules');\">preferences</a>", // TRANSLATE
+);

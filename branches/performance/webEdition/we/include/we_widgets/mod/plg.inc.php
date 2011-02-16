@@ -20,7 +20,6 @@
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/inc/plg/chart.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/includes/showme.inc.php");
 
 protect();
@@ -32,49 +31,49 @@ $_isPrev = !isset($aProps);
 list($_pLogCsv, $_pLogUrl64) = explode(";", (($_isPrev) ? $_REQUEST["we_cmd"][0] : $aProps[3]));
 $_pLogUrl = base64_decode($_pLogUrl64);
 $_pLog_[] = array(
-	
-		'visitors_data_today', 
-		'visitors_today_total', 
-		'visitors_today_unique', 
-		'lateral_entry_today', 
-		'pages_today', 
+
+		'visitors_data_today',
+		'visitors_today_total',
+		'visitors_today_unique',
+		'lateral_entry_today',
+		'pages_today',
 		'transfer_today'
 );
 $_pLog_[] = array(
-	
-		'visitors_data_yesterday', 
-		'visitors_yesterday_total', 
-		'visitors_yesterday_unique', 
-		'lateral_entry_yesterday', 
-		'pages_yesterday', 
+
+		'visitors_data_yesterday',
+		'visitors_yesterday_total',
+		'visitors_yesterday_unique',
+		'lateral_entry_yesterday',
+		'pages_yesterday',
 		'transfer_yesterday'
 );
 $_pLog_[] = array(
-	
-		'visitors_data_this_month', 
-		'visitors_this_month_total', 
-		'visitors_this_month_unique', 
-		'lateral_entry_this_month', 
-		'pages_this_month', 
+
+		'visitors_data_this_month',
+		'visitors_this_month_total',
+		'visitors_this_month_unique',
+		'lateral_entry_this_month',
+		'pages_this_month',
 		'transfer_this_month'
 );
 $_pLog_[] = array(
-	
-		'visitors_behaviour_today', 
-		'visitors_avg_hour_today', 
-		'retention_avg_visitor_today', 
-		'showtime_avg_page_today', 
+
+		'visitors_behaviour_today',
+		'visitors_avg_hour_today',
+		'retention_avg_visitor_today',
+		'showtime_avg_page_today',
 		'impressions_per_visitor_today'
 );
 $_pLog_[] = array(
 	'Snapshot', 'usercount', 'bot_visits', 'downloads', 'visitor_per_hour'
 );
 $_pLog_[] = array(
-	
-		'top_visiting_periods', 
-		'strongest_visitor_hour', 
-		'lowest_visitor_hour', 
-		'strongest_visitor_day', 
+
+		'top_visiting_periods',
+		'strongest_visitor_hour',
+		'lowest_visitor_hour',
+		'strongest_visitor_day',
 		'lowest_visitor_day'
 );
 $_pLog_[] = array(
@@ -114,26 +113,26 @@ if ($_isPrev) {
 	$sJsCode = "
 	var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
 	var _sType='plg';
-	var _sTb='" . $l_cockpit['pagelogger'] . ($_pLogUrl != '' ? ' - ' . $_pLogUrl : $_pLogUrl) . "';
+	var _sTb='" . g_l('cockpit','[pagelogger]') . ($_pLogUrl != '' ? ' - ' . $_pLogUrl : $_pLogUrl) . "';
 
 	function init(){
 		parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 	}
 	";
-	
-	print 
+
+	print
 			we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead(
-							we_htmlElement::htmlTitle($l_cockpit['pagelogger']) . STYLESHEET . we_htmlElement::jsElement(
+							we_htmlElement::htmlTitle(g_l('cockpit','[pagelogger]')) . STYLESHEET . we_htmlElement::jsElement(
 									$sJsCode)) . we_htmlElement::htmlBody(
 							array(
-								
-									"marginwidth" => "15", 
-									"marginheight" => "10", 
-									"leftmargin" => "15", 
-									"topmargin" => "10", 
+
+									"marginwidth" => "15",
+									"marginheight" => "10",
+									"leftmargin" => "15",
+									"topmargin" => "10",
 									"onload" => "if(parent!=self)init();"
-							), 
+							),
 							we_htmlElement::htmlDiv(array(
 								"id" => "plg"
 							), $_pLogOut)));

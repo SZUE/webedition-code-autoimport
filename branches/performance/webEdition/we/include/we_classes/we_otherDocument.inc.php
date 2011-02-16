@@ -81,7 +81,7 @@ class we_otherDocument extends we_binaryDocument
 	}
 
 	function formExtension2(){
-		return $this->htmlFormElementTable($this->htmlTextInput("we_".$this->Name."_Extension",5,$this->Extension,"",'onChange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'),$GLOBALS["l_we_class"]["extension"]);
+		return $this->htmlFormElementTable($this->htmlTextInput("we_".$this->Name."_Extension",5,$this->Extension,"",'onChange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'),g_l('weClass',"[extension]"));
 	}
 
 	function we_save($resave=0){

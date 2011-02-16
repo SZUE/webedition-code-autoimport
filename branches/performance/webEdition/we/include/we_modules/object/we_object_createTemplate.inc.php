@@ -19,21 +19,18 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 include_once(WE_OBJECT_MODULE_DIR."we_object.inc.php");
 include_once(WE_OBJECT_MODULE_DIR."we_objectFile.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_webEditionDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_template.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_template.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class we_makenewtemplate extends we_template
 {
 
 	function formDirChooser($width="",$rootDirID=0,$table=TEMPLATES_TABLE,$Pathname="ParentPath",$IDName="ParentID",$cmd=""){
-
-		global $l_we_class;
-
 		$we_button = new we_button();
 		if(!$table) $table = $this->Table;
 		$textname = 'we_'.$this->Name.'_'.$Pathname;
@@ -42,7 +39,7 @@ class we_makenewtemplate extends we_template
 		eval('$myid = $this->'.$IDName.';');
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','".session_id()."')");
 		return $this->htmlFormElementTable($this->htmlTextInput($textname,30,$path,"",' readonly',"text",$width,0),
-			$l_we_class["dir"],
+			g_l('weClass',"[dir]"),
 			"left",
 			"defaultfont",
 			$this->htmlHidden($idname,0),//$myid
@@ -51,7 +48,7 @@ class we_makenewtemplate extends we_template
 	}
 
 	function formExtension2(){
-		return $this->htmlFormElementTable("<b class='defaultfont'>".$this->Extension."</b>",$GLOBALS["l_we_class"]["extension"]);
+		return $this->htmlFormElementTable("<b class='defaultfont'>".$this->Extension."</b>",g_l('weClass',"[extension]"));
 	}
 }
 
@@ -165,12 +162,12 @@ function getTmplTableRow($type,$name,$isField=false){
 	}
 }
 
-htmlTop($GLOBALS['l_we_class']['generateTemplate']);
+htmlTop(g_l('weClass','[generateTemplate]'));
 echo "<script language='JavaScript' type='text/javascript' src='".WEBEDITION_DIR."js/windows.js'></script>";
 
 print STYLESHEET;
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 echo "</head><body class='weDialogBody'><form name='we_form'>";
 $tmpl = new we_makenewtemplate();
@@ -260,17 +257,15 @@ $_SESSION["content"] = $content;
 $we_button = new we_button();
 
 $buttons = $we_button->position_yes_no_cancel(
-		$we_button->create_button("save", "javascript:if(document.forms['we_form'].we_".$tmpl->Name."_Filename.value != ''){ document.forms['we_form'].action='".WE_OBJECT_MODULE_PATH."we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall($l_alert['input_file_name'], WE_MESSAGE_ERROR) . " }"),
+		$we_button->create_button("save", "javascript:if(document.forms['we_form'].we_".$tmpl->Name."_Filename.value != ''){ document.forms['we_form'].action='".WE_OBJECT_MODULE_PATH."we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert','[input_file_name]'), WE_MESSAGE_ERROR) . " }"),
 		null,
 		$we_button->create_button("cancel", "javascript:self.close();")
 											);
 
 
-echo htmlDialogLayout($tmpl->formPath(),$GLOBALS['l_we_class']['generateTemplate'],$buttons);
+echo htmlDialogLayout($tmpl->formPath(),g_l('weClass','[generateTemplate]'),$buttons);
 echo '<input type="hidden" name="SID" value="'.$tmpl->Name.'" />';
 echo '<input type="hidden" name="we_cmd[3]" value="'.$_REQUEST["we_cmd"][3].'" />';
 echo '<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';
 echo "</form>";
 echo "</body></html>";
-
-?>

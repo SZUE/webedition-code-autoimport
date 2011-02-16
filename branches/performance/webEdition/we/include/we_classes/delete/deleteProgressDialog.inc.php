@@ -20,9 +20,7 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/delete.inc.php");
 
 class deleteProgressDialog{
 
@@ -36,9 +34,10 @@ class deleteProgressDialog{
 		$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$WE_BTN = new we_button();
 		$cancelButton = $WE_BTN->create_button("cancel","javascript:top.close();");
-		$pb = htmlDialogLayout($pb,$GLOBALS["l_delete"]["delete"],$cancelButton);
+		$pb = htmlDialogLayout($pb,g_l('delete',"[delete]"),$cancelButton);
 
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
@@ -68,8 +67,8 @@ class deleteProgressDialog{
 		$fst->setFrameAttributes(1, array("scrolling" => "no"));
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
-				we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) . 
-				we_htmlElement::htmlTitle($GLOBALS["l_delete"]["delete"])).$fst->getHtmlCode());
+				we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
+				we_htmlElement::htmlTitle(g_l('delete',"[delete]"))).$fst->getHtmlCode());
 	}
 
 	function cmd(){

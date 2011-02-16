@@ -42,9 +42,9 @@ function we_tag_include($attribs, $content) {
 			$type = we_getTagAttribute('kind', $attribs);
 			$_tmpspan = '<span style="color: white;font-size:' .
 							(($GLOBALS['SYSTEM'] == 'MAC') ? '11px' : (($GLOBALS['SYSTEM'] == 'X11') ? '13px' : '12px')) . ';font-family:' .
-							$GLOBALS['l_css']['font_family'] . ';">';
+							g_l('css','[font_family]') . ';">';
 
-			$ret = '?><table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . $GLOBALS['l_tags']['include_file'] . '</span></td></tr><tr><td>';
+			$ret = '?><table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . g_l('tags','[include_file]') . '</span></td></tr><tr><td>';
 			$ret.= we_tag('href', array('name' => $name, 'rootdir' => $rootdir, 'type' => $type));
 			$ret.='</td></tr></table>';
 			return $ret;

@@ -22,6 +22,7 @@
  * This is the template for tab languages. It contains the information screen
  * before deleting or installing languages
  */
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 $we_button = new we_button();
 $nextButton = $we_button->create_button('next', $_SERVER['PHP_SELF'] . '?section=languages&update_cmd=languages&detail=selectLanguages');
@@ -31,7 +32,7 @@ $languages = liveUpdateFunctions::getInstalledLanguages();
 
 $languagesStr = '';
 foreach ($languages as $lng) {
-	
+
 	if (WE_LANGUAGE == $lng) {
 		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . $GLOBALS['l_liveUpdate']['languages']['systemLanguage'] . ")</i>", false, 'defaultfont', '', true);
 	} else if ($GLOBALS['WE_LANGUAGE'] == $lng) {
@@ -41,7 +42,7 @@ foreach ($languages as $lng) {
 	}
 		$languagesStr .= "
 	$lngBox";
-		
+
 }
 
 $deletedLngs = $this->getData('deletedLngs');

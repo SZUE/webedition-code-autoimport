@@ -39,7 +39,5 @@ $oTblCont = new we_htmlTable(array(
 ), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmPad);
 $aLang = array(
-	$l_cockpit['notes'] . " - " . base64_decode($pad_header_enc), ""
+	g_l('cockpit','[notes]') . " - " . base64_decode($pad_header_enc), ""
 );
-
-?>

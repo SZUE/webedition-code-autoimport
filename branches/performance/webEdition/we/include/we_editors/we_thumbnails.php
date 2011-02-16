@@ -36,9 +36,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/w
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/alert.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/thumbnails.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_class.inc.php');
 
 /*****************************************************************************
  * INITIALIZATION
@@ -262,7 +259,7 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $l_alert, $l_thumbnails, $DB_WE, $SYSTEM;
+	global $DB_WE, $SYSTEM;
 
 	$we_button = new we_button();
 
@@ -279,14 +276,14 @@ function build_dialog($selected_setting = "ui") {
 			 */
 
 			// Build dialog
-			array_push($_settings, array("headline" => "", "html" => $l_thumbnails["save"], "space" => 0));
+			array_push($_settings, array("headline" => "", "html" => g_l('thumbnails',"[save]"), "space" => 0));
 
 			/**
 			 * BUILD FINAL DIALOG
 			 */
 
 			// Build dialog element if user has permission
-			$_dialog = create_dialog("", $l_thumbnails["save_wait"], $_settings);
+			$_dialog = create_dialog("", g_l('thumbnails',"[save_wait]"), $_settings);
 
 			break;
 
@@ -302,14 +299,14 @@ function build_dialog($selected_setting = "ui") {
 			 */
 
 			// Build dialog
-			array_push($_thumbs, array("headline" => "", "html" => $l_thumbnails["saved"], "space" => 0));
+			array_push($_thumbs, array("headline" => "", "html" => g_l('thumbnails',"[saved]"), "space" => 0));
 
 			/**
 			 * BUILD FINAL DIALOG
 			 */
 
 			// Build dialog element if user has permission
-			$_dialog = create_dialog("", $l_thumbnails["saved_successfully"], $_thumbs);
+			$_dialog = create_dialog("", g_l('thumbnails',"[saved_successfully]"), $_thumbs);
 
 			break;
 
@@ -347,20 +344,20 @@ function build_dialog($selected_setting = "ui") {
 
 			$_needed_JavaScript_Source .= "
 						var thumbnail_names = new Array(" . $_thumbnail_names . ");
-						var name = prompt('" . $l_thumbnails["new"] . "', '');
+						var name = prompt('" . g_l('thumbnails',"[new]") . "', '');
 
 						if (name != null) {
 							if((name.indexOf('<') != -1) || (name.indexOf('>') != -1)) {
-								" . we_message_reporting::getShowMessageCall($l_alert["name_nok"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR) . "
 								return;
 							}
 
 							if (name.indexOf(\"'\") != -1 || name.indexOf(\",\") != -1) {
-								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_hochkomma"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_hochkomma]"), WE_MESSAGE_ERROR) . "
 							} else if (name == '') {
-								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_empty"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_empty]"), WE_MESSAGE_ERROR) . "
 							} else if (in_array(thumbnail_names, name)) {
-								" . we_message_reporting::getShowMessageCall($l_alert["thumbnail_exists"], WE_MESSAGE_ERROR) . "
+								" . we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_exists]"), WE_MESSAGE_ERROR) . "
 							} else {
 								self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?newthumbnail=' + escape(name);
 							}
@@ -370,7 +367,7 @@ function build_dialog($selected_setting = "ui") {
 					function delete_thumbnail() {" .
 						((we_hasPerm("ADMINISTRATOR")) ?
 						"
-							var deletion = confirm('" . sprintf($l_thumbnails["delete_prompt"], f("SELECT Name FROM " . THUMBNAILS_TABLE . " WHERE ID='" . $_GET["id"] . "'", "Name", $DB_WE)) . "');
+							var deletion = confirm('" . sprintf(g_l('thumbnails',"[delete_prompt]"), f("SELECT Name FROM " . THUMBNAILS_TABLE . " WHERE ID='" . $_GET["id"] . "'", "Name", $DB_WE)) . "');
 
 							if (deletion == true) {
 								self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?deletethumbnail=" . $_GET["id"] . "';
@@ -452,7 +449,7 @@ function build_dialog($selected_setting = "ui") {
 			$_thumbnail_name_input = htmlTextInput("thumbnail_name", 22, ($_thumbnail_name != -1 ? $_thumbnail_name : ""), 255, ($_thumbnail_name == -1 ? "disabled=\"true\"" : ""), "text", 225);
 
 			// Build dialog
-			array_push($_thumbs, array("headline" => $l_thumbnails["name"], "html" => $_thumbnail_name_input, "space" => 200));
+			array_push($_thumbs, array("headline" => g_l('thumbnails',"[name]"), "html" => $_thumbnail_name_input, "space" => 200));
 
 			/*****************************************************************
 			 * PROPERTIES
@@ -468,9 +465,9 @@ function build_dialog($selected_setting = "ui") {
 			$_thumbnail_specify_table->setCol(1, 0, array("width" => "60"), getPixel(1, 5));
 			$_thumbnail_specify_table->setCol(3, 0, array("colspan" => "3"), getPixel(1, 5));
 
-			$_thumbnail_specify_table->setCol(0, 0, array("class" => "defaultfont"), $l_thumbnails["width"] . ":");
-			$_thumbnail_specify_table->setCol(2, 0, array("class" => "defaultfont"), $l_thumbnails["height"] . ":");
-			$_thumbnail_specify_table->setCol(4, 0, array("class" => "defaultfont", "id" => "thumbnail_quality_text_cell"), $l_thumbnails["quality"] . ":");
+			$_thumbnail_specify_table->setCol(0, 0, array("class" => "defaultfont"), g_l('thumbnails',"[width]") . ":");
+			$_thumbnail_specify_table->setCol(2, 0, array("class" => "defaultfont"), g_l('thumbnails',"[height]") . ":");
+			$_thumbnail_specify_table->setCol(4, 0, array("class" => "defaultfont", "id" => "thumbnail_quality_text_cell"), g_l('thumbnails',"[quality]") . ":");
 
 			$_thumbnail_specify_table->setCol(0, 1, null, getPixel(10, 1));
 			$_thumbnail_specify_table->setCol(2, 1, null, getPixel(10, 1));
@@ -487,11 +484,11 @@ function build_dialog($selected_setting = "ui") {
 
 			$_thumbnail_option_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
 
-			$_thumbnail_option_table->setCol(0, 0, null, we_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), "Ratio", $l_thumbnails["ratio"], false, "defaultfont", "", ($_thumbnail_ratio == -1)));
+			$_thumbnail_option_table->setCol(0, 0, null, we_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), "Ratio", g_l('thumbnails',"[ratio]"), false, "defaultfont", "", ($_thumbnail_ratio == -1)));
 			$_thumbnail_option_table->setCol(1, 0, null, getPixel(1, 5));
-			$_thumbnail_option_table->setCol(2, 0, null, we_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), "Maxsize", $l_thumbnails["maximize"], false, "defaultfont", "", ($_thumbnail_maximize == -1)));
+			$_thumbnail_option_table->setCol(2, 0, null, we_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), "Maxsize", g_l('thumbnails',"[maximize]"), false, "defaultfont", "", ($_thumbnail_maximize == -1)));
 			$_thumbnail_option_table->setCol(3, 0, null, getPixel(1, 5));
-			$_thumbnail_option_table->setCol(4, 0, null, we_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), "Interlace", $l_thumbnails["interlace"], false, "defaultfont", "", ($_thumbnail_interlace == -1)));
+			$_thumbnail_option_table->setCol(4, 0, null, we_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), "Interlace", g_l('thumbnails',"[interlace]"), false, "defaultfont", "", ($_thumbnail_interlace == -1)));
 
 			// Build final HTML code
 			$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
@@ -500,7 +497,7 @@ function build_dialog($selected_setting = "ui") {
 			$_window_html->setCol(2, 0, null, $_thumbnail_option_table->getHtmlCode());
 
 			// Build dialog
-			array_push($_thumbs, array("headline" => $l_thumbnails["properties"], "html" => $_window_html->getHtmlCode(), "space" => 200));
+			array_push($_thumbs, array("headline" => g_l('thumbnails',"[properties]"), "html" => $_window_html->getHtmlCode(), "space" => 200));
 
 			/*****************************************************************
 			 * OUTPUT FORMAT
@@ -509,7 +506,7 @@ function build_dialog($selected_setting = "ui") {
 			$_thumbnail_format = ($_GET["id"] != -1) ? f("SELECT Format FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Format", $DB_WE) : -1;
 
 			// Define available formats
-			$_thumbnails_formats = array("none" => $l_thumbnails["format_original"], "gif" => $l_thumbnails["format_gif"], "jpg" => $l_thumbnails["format_jpg"], "png" => $l_thumbnails["format_png"]);
+			$_thumbnails_formats = array("none" => g_l('thumbnails',"[format_original]"),"gif" => g_l('thumbnails',"[format_gif]"), "jpg" => g_l('thumbnails',"[format_jpg]"), "png" => g_l('thumbnails',"[format_png]"));
 
 			$_thumbnail_format_select_attribs = array("name" => "Format", "id" => "Format", "class" => "weSelect", "style" => "width: 225px;", "onchange"=>"changeFormat()");
 
@@ -531,13 +528,13 @@ function build_dialog($selected_setting = "ui") {
 			}
 
 			// Build dialog
-			array_push($_thumbs, array("headline" => $l_thumbnails["format"], "html" => $_thumbnail_format_select->getHtmlCode(), "space" => 200));
+			array_push($_thumbs, array("headline" => g_l('thumbnails',"[format]"), "html" => $_thumbnail_format_select->getHtmlCode(), "space" => 200));
 
 			/**
 			 * BUILD FINAL DIALOG
 			 */
 
-			$_dialog = create_dialog("settings_predefined", $l_thumbnails["thumbnails"], $_thumbs, -1, "", "", false, $_needed_JavaScript);
+			$_dialog = create_dialog("settings_predefined", g_l('thumbnails',"[thumbnails]"), $_thumbs, -1, "", "", false, $_needed_JavaScript);
 
 			break;
 	}
@@ -575,7 +572,7 @@ htmlTop();
 if (isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true") {
 
 	if (isset($_REQUEST["thumbnail_name"]) && (strpos($_REQUEST["thumbnail_name"],"'") !== false || strpos($_REQUEST["thumbnail_name"],",") !== false)) {
-		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall($l_alert["thumbnail_hochkomma"], WE_MESSAGE_ERROR).
+		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[thumbnail_hochkomma]"), WE_MESSAGE_ERROR).
 							'history.back()');
 	} else {
 		save_all_values();
@@ -584,7 +581,7 @@ if (isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true
 		$save_javascript = we_htmlElement::jsElement("
 
 							   " . $save_javascript . "
-								" . we_message_reporting::getShowMessageCall($l_thumbnails["saved"], WE_MESSAGE_NOTICE) . "
+								" . we_message_reporting::getShowMessageCall(g_l('thumbnails',"[saved]"), WE_MESSAGE_NOTICE) . "
 
 							   self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?id=" . $_REQUEST["edited_id"] . "';
 
@@ -601,5 +598,3 @@ if (isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true
 
 	print we_htmlElement::htmlBody(array("class" => "weDialogBody", "onload"=>"init()"), $_form) . "</html>";
 }
-
-?>

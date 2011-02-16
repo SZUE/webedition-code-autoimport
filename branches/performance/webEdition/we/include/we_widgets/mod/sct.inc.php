@@ -20,7 +20,6 @@
  */
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 protect();
 $aCols = explode(";", isset($aProps) ? $aProps[3] : $_REQUEST["we_cmd"][0]);
 $_disableNew = true;
@@ -150,7 +149,7 @@ if (!isset($aProps)) {
 	$sJsCode = "
 	var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
 	var _sType='sct';
-	var _sTb='" . $l_cockpit['shortcuts'] . "';
+	var _sTb='" . g_l('cockpit','[shortcuts]') . "';
 	function init(){
 		parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 	}
@@ -159,7 +158,7 @@ if (!isset($aProps)) {
 	print
 			we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead(
-							we_htmlElement::htmlTitle($l_cockpit['shortcuts']) . STYLESHEET . we_htmlElement::jsElement(
+							we_htmlElement::htmlTitle(g_l('cockpit','[shortcuts]')) . STYLESHEET . we_htmlElement::jsElement(
 									$sJsCode)) . we_htmlElement::htmlBody(
 							array(
 
@@ -173,5 +172,3 @@ if (!isset($aProps)) {
 								"id" => "sct"
 							), $sc->getHtmlCode())));
 }
-
-?>

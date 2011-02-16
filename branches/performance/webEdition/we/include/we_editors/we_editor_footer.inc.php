@@ -24,7 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
 
 if(defined("WORKFLOW_TABLE")) {
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
@@ -35,7 +34,7 @@ $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : $we_t
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_doc.inc.php");
+include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 function getControlElement($type, $name){
 
@@ -159,14 +158,14 @@ $_js_we_save_document = "
 				}
 			}
 			if (countSaveLoop > 10) {
-				" . we_message_reporting::getShowMessageCall($l_alert['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR) . ";
+				" . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) . ";
 				countSaveLoop = 0;
 			}
 			else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
 				countSaveLoop++;
 				setTimeout('we_save_document()',100);
 			} else if(invalidAcFields) {
-				" . we_message_reporting::getShowMessageCall($l_alert['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR) . ";
+				" . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) . ";
 				countSaveLoop=0;
 			} else {
 				countSaveLoop=0;
@@ -202,7 +201,7 @@ if(defined("WORKFLOW_TABLE")){
 	function put_in_workflow() {
 
 		if( _EditorFrame.getEditorIsHot() ) {
-			if(confirm('" . $l_alert[$we_doc->Table]["in_wf_warning"] . "')) {
+			if(confirm('" . g_l('alert','['.$we_doc->Table.'][in_wf_warning]') . "')) {
 				we_cmd('save_document','','','','',0,0,1);
 			}
 		}
@@ -522,7 +521,7 @@ if(inWorkflow($we_doc)) {
 	* @desc prints the footer for the See-Mode
  	*/
 	function showEditFooterForSEEMMode() {
-		global $we_doc, $we_transaction,  $haspermNew, $showPubl, $we_button, $l_alert, $_we_active_modules;
+		global $we_doc, $we_transaction,  $haspermNew, $showPubl, $we_button, $_we_active_modules;
 
 		$_seeModeTable = new we_htmlTable(	array(	"cellpadding" => 0,
 													"cellspacing" => 0,
@@ -704,7 +703,7 @@ if(inWorkflow($we_doc)) {
 				$_seeModeTable->addCol(2);
 
 				$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
-				$_seeModeTable->setCol(0, $_pos++, array('valign' => 'top'), $we_button->create_button("image:btn_function_trash", "javascript:if(confirm('" . $l_alert['delete_single']['confirm_delete'] . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+				$_seeModeTable->setCol(0, $_pos++, array('valign' => 'top'), $we_button->create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert','[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 			}
 		}
 		print $_seeModeTable->getHtmlCode();
@@ -742,7 +741,7 @@ if(inWorkflow($we_doc)) {
 						$_noPermTable->setColContent( 0, 0, getPixel(20,2));
 						$_noPermTable->setColContent( 0, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 						$_noPermTable->setColContent( 0, 2, getPixel(10,2));
-						$_noPermTable->setColContent( 0, 3, $GLOBALS["l_we_SEEM"]["no_permission_to_edit_document"]);
+						$_noPermTable->setColContent( 0, 3, g_l('SEEM',"[no_permission_to_edit_document]"));
 
 
 						print $_noPermTable->getHtmlCode();

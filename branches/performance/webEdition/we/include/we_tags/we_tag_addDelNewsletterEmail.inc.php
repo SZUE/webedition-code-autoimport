@@ -48,7 +48,6 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			$_customerFieldPrefs[$db->f('pref_name')] = $db->f('pref_value');
 		}
 	} else {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/newsletter.inc.php");
 		$_domainName = str_replace("www.","",SERVER_NAME);
 		$_customerFieldPrefs = array(
 			'black_list' => '',
@@ -62,10 +61,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			'isEmbedImages' => '0',
 			'default_reply' => 'reply@'.$_domainName,
 			'default_sender' => 'mailer@'.$_domainName,
-			'female_salutation' => $l_newsletter["default"]["female"],
+			'female_salutation' => g_l('modules_newsletter','[default][female]'),
 			'global_mailing_list' => '',
 			'log_sending' => '1',
-			'male_salutation' => $l_newsletter["default"]["male"],
+			'male_salutation' => g_l('modules_newsletter','[default][male]'),
 			'reject_malformed' => '1',
 			'reject_not_verified' => '1',
 			'send_step' => '20',
@@ -280,7 +279,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				}
 
 
-				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"]!="" ? $mywedoc->elements["Charset"]["dat"] : $GLOBALS["_language"]["charset"];
+				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"]!="" ? $mywedoc->elements["Charset"]["dat"] : g_l('charset',"[charset]");
 				$mailtext = we_getDocumentByID($mailid,"","",$charset);
 
 				if($f["subscribe_title"]){
@@ -315,7 +314,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toCC = explode(",",$recipientCC);
 				$we_recipientCC = array();
 				for ($l=0;$l < sizeof($toCC);$l++) {
-	
+
 					if (!eregi("@",$toCC[$l])) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && eregi("@",$_SESSION["webuser"][$toCC[$l]])) { //wenn man registrierten Usern was senden moechte
 							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
@@ -329,7 +328,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toBCC = explode(",",$recipientBCC);
 				$we_recipientBCC = array();
 				for ($l=0;$l < sizeof($toBCC);$l++) {
-	
+
 					if (!eregi("@",$toBCC[$l])) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && eregi("@",$_SESSION["webuser"][$toBCC[$l]])) { //wenn man registrierte Usern was senden moechte
 							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
@@ -348,7 +347,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
 				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
-				
+
 				$phpmail->setCharSet($charset);
 
 
@@ -368,7 +367,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				return;
 			}
 
-		} else { //confirmID wurde übermittelt, eine Bestätigung liegt also vor
+		} else { //confirmID wurde ï¿½bermittelt, eine Bestï¿½tigung liegt also vor
 			$emailwritten = 0;
 			if($customer) {
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php");

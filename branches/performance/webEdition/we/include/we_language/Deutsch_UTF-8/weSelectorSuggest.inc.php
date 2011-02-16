@@ -18,19 +18,17 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: weSelectorSuggest.inc.php
  * Provides language strings.
  * Language: Deutsch
  */
-$l_weSelectorSuggest["no_template"] = "Das angegebene Template wurde nicht gefunden.";
-$l_weSelectorSuggest["no_document"] = "Das angegebene Dokument wurde nicht gefunden.";
-$l_weSelectorSuggest["no_folder"]   = "Das angegebene Verzeichnis wurde nicht gefunden.";
-$l_weSelectorSuggest["no_class"]    = "Die angegebene Klasse wurde nicht gefunden.";
-$l_weSelectorSuggest["no_object"]   = "Das angegebene Objekt wurde nicht gefunden.";
-$l_weSelectorSuggest["no_image"]    = "Das angegebene Bild wurde nicht gefunden.";
-$l_weSelectorSuggest["no_result"]   = "Zu Ihrer Anfrage konnte kein Ergebnis gefunden werden.";
-
-?>
+$l_weSelectorSuggest = array(
+		'no_template' => "Das angegebene Template wurde nicht gefunden.",
+		'no_document' => "Das angegebene Dokument wurde nicht gefunden.",
+		'no_folder' => "Das angegebene Verzeichnis wurde nicht gefunden.",
+		'no_class' => "Die angegebene Klasse wurde nicht gefunden.",
+		'no_object' => "Das angegebene Objekt wurde nicht gefunden.",
+		'no_image' => "Das angegebene Bild wurde nicht gefunden.",
+		'no_result' => "Zu Ihrer Anfrage konnte kein Ergebnis gefunden werden.",
+);

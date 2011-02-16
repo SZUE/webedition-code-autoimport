@@ -20,7 +20,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/importrtf.inc.php");
 
 
 class weImportRtfDialog extends weDialog{
@@ -43,7 +42,7 @@ class weImportRtfDialog extends weDialog{
 
 	function weImportRtfDialog(){
 		$this->weDialog();
-		$this->dialogTitle = $GLOBALS["l_importrtf"]["import_rtf"];
+		$this->dialogTitle = g_l('importrtf',"[import_rtf]");
 		$this->args["htmltxt"] = "";
 		$this->args["applyFontName"]=false;
 		$this->args["applyFontSize"]=false;
@@ -108,7 +107,7 @@ function importFile(){
 		<td>'.getPixel(550,5).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont"><b>'.$GLOBALS["l_importrtf"]["chose"].'</b></td>
+		<td class="defaultfont"><b>'.g_l('importrtf',"[chose]").'</b></td>
 	</tr>
 	<tr>
 		<td><input type="file" name="fileName" size="50" onKeyDown="return false" /></td>
@@ -117,13 +116,13 @@ function importFile(){
 		<td>'.getPixel(5,10).'</td>
 	</tr>
 	<tr>
-		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontName"]) && $this->args["applyFontName"] == 1),"we_dialog_args[applyFontName]",$GLOBALS["l_importrtf"]["use_fontname"]).'</td>
+		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontName"]) && $this->args["applyFontName"] == 1),"we_dialog_args[applyFontName]",g_l('importrtf',"[use_fontname]")).'</td>
 	</tr>
 	<tr>
-		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontSize"]) && $this->args["applyFontSize"] == 1),"we_dialog_args[applyFontSize]",$GLOBALS["l_importrtf"]["use_fontsize"]).'</td>
+		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontSize"]) && $this->args["applyFontSize"] == 1),"we_dialog_args[applyFontSize]",g_l('importrtf',"[use_fontsize]")).'</td>
 	</tr>
 	<tr>
-		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontColor"]) && $this->args["applyFontColor"] == 1),"we_dialog_args[applyFontColor]",$GLOBALS["l_importrtf"]["use_fontcolor"]).'</td>
+		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontColor"]) && $this->args["applyFontColor"] == 1),"we_dialog_args[applyFontColor]",g_l('importrtf',"[use_fontcolor]")).'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(5,22).'</td>
@@ -143,7 +142,7 @@ function importFile(){
 						$this->args["applyFontSize"]=isset($this->args["applyFontSize"]) ? $this->args["applyFontSize"] : false;
 						$this->args["applyFontColor"]=isset($this->args["applyFontColor"]) ? $this->args["applyFontColor"] : false;
 
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_rtf2html.inc.php");
+						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_rtf2html.inc.php");
 						$rtf2html=new we_rtf2html($filename,$this->args["applyFontName"],$this->args["applyFontSize"],$this->args["applyFontColor"]);
 					}
 				}

@@ -338,5 +338,3 @@ class we_forms {
 		return $text;
 	}
 }
-
-?>

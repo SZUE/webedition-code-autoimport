@@ -29,28 +29,28 @@
 				weMainTree::weMainTree($frameset,$topFrame,$treeFrame,$cmdFrame);
 
 				$styles=array();
-				$styles[]='.item {color: black; font-size: '.($GLOBALS['BROWSER'] == 'NN' && ($GLOBALS['SYSTEM'] == 'WIN') ? '10px' : (($GLOBALS['SYSTEM'] == 'X11') ? '11px' : '9px')).'; font-family: '.$GLOBALS['l_css']['font_family'].';}';
+				$styles[]='.item {color: black; font-size: '.($GLOBALS['BROWSER'] == 'NN' && ($GLOBALS['SYSTEM'] == 'WIN') ? '10px' : (($GLOBALS['SYSTEM'] == 'X11') ? '11px' : '9px')).'; font-family: '.g_l('css','[font_family]').';}';
 				$styles[]='.item a { text-decoration:none;}';
 
-				$styles[]='.group {color: black; font-weight: bold; font-size: '.($GLOBALS['BROWSER'] == 'NN' && ($GLOBALS['SYSTEM'] == 'WIN') ? '10px' : (($GLOBALS['SYSTEM'] == 'X11') ? '11px' : '9px')).'; font-family: '.$GLOBALS['l_css']['font_family'].';}';
+				$styles[]='.group {color: black; font-weight: bold; font-size: '.($GLOBALS['BROWSER'] == 'NN' && ($GLOBALS['SYSTEM'] == 'WIN') ? '10px' : (($GLOBALS['SYSTEM'] == 'X11') ? '11px' : '9px')).'; font-family: '.g_l('css','[font_family]').';}';
 				$styles[]='.group a { text-decoration:none;}';
 
-				$styles[]='.notpublished {color: #3366CC; font-size: '.($GLOBALS["BROWSER"]== "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; cursor: pointer;}';
+				$styles[]='.notpublished {color: #3366CC; font-size: '.($GLOBALS["BROWSER"]== "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; cursor: pointer;}';
 				$styles[]='.notpublished a { text-decoration:none;}';
 
-				$styles[]='.selected_item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; background-color: #D4DBFA; cursor: pointer;}';
+				$styles[]='.selected_item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; background-color: #D4DBFA; cursor: pointer;}';
 				$styles[]='.selected_item a { text-decoration:none;}';
 
-				$styles[]='.selected_notpublished_item {color: #3366CC; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; background-color: #D4DBFA; cursor: pointer;}';
+				$styles[]='.selected_notpublished_item {color: #3366CC; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; background-color: #D4DBFA; cursor: pointer;}';
 				$styles[]='.selected_notpublished_item a { text-decoration:none;}';
 
-				$styles[]='.selected_changed_item {color: #3366CC; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; background-color: #D4DBFA; cursor: pointer;}';
+				$styles[]='.selected_changed_item {color: #3366CC; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; background-color: #D4DBFA; cursor: pointer;}';
 				$styles[]='.selected_changed_item a { text-decoration:none;}';
 
-				$styles[]='.selected_group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; background-color: #D4DBFA; cursor: pointer;}';
+				$styles[]='.selected_group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; background-color: #D4DBFA; cursor: pointer;}';
 				$styles[]='.selected_group a { text-decoration:none;}';
 
-				$styles[]='.selected_open_group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; background-color: #D4DBFA; cursor: pointer;}';
+				$styles[]='.selected_open_group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; background-color: #D4DBFA; cursor: pointer;}';
 				$styles[]='.selected_open_group a { text-decoration:none;}';
 
 				$this->setStyles($styles);
@@ -299,14 +299,14 @@
 		return $out;
 
 	}
-	
+
 	function getJSTreeCode($withTag=true){
 		// must override
  		return parent::getJSTreeCode($withTag) . "\n" .
- 				
+
  			($withTag ? we_htmlElement::jsElement('drawTree.selection_table="";') : 'drawTree.selection_table="";');
  	}
- 	
+
 }
 
 ?>

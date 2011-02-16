@@ -22,9 +22,8 @@
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletter.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/newsletter.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 
 
 class weNewsletterView {
@@ -54,8 +53,6 @@ class weNewsletterView {
 
 
 	function weNewsletterView() {
-		global $l_newsletter;
-
 		$this->db = new DB_WE();
 		$this->newsletter = new weNewsletter();
 
@@ -77,7 +74,7 @@ class weNewsletterView {
 				$this->customers_fields[] = $this->db->f("Field");
 			}
 		}
-		$this->newsletter->Text = $l_newsletter["new_newsletter"];
+		$this->newsletter->Text = g_l('modules_newsletter','[new_newsletter]');
 		$this->newsletter->Sender = $this->settings["default_sender"];
 		$this->newsletter->Reply = $this->settings["default_reply"];
 		$this->newsletter->Test = $this->settings["test_account"];
@@ -373,8 +370,6 @@ class weNewsletterView {
 	}
 
 	function getJSTopCode() {
-		global $l_newsletter;
-
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
@@ -414,7 +409,7 @@ class weNewsletterView {
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 				if(hot == "1" && arguments[0] != "save_newsletter") {
-					if(confirm("'.$l_newsletter["save_changed_newsletter"].'")) {
+					if(confirm("'.g_l('modules_newsletter','[save_changed_newsletter]').'")) {
 						arguments[0] = "save_newsletter";
 					} else {
 						top.content.usetHot();
@@ -447,18 +442,18 @@ class weNewsletterView {
 
 					case "delete_newsletter":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							'.((!we_hasPerm("DELETE_NEWSLETTER")) ? (
-								we_message_reporting::getShowMessageCall($l_newsletter["no_perms"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), WE_MESSAGE_ERROR)
 							) : ('
 									if (top.content.resize.right.editor.edbody.loaded) {
-										var delQuestion = top.content.resize.right.editor.edbody.document.we_form.IsFolder.value == 1 ? "'.$l_newsletter["delete_group_question"].'" : "'.$l_newsletter["delete_question"].'";
+										var delQuestion = top.content.resize.right.editor.edbody.document.we_form.IsFolder.value == 1 ? "'.g_l('modules_newsletter','[delete_group_question]').'" : "'.g_l('modules_newsletter','[delete_question]').'";
 										if (!confirm(delQuestion)) {
 											return;
 										}
 									} else {
-										' . we_message_reporting::getShowMessageCall($l_newsletter["nothing_to_delete"], WE_MESSAGE_ERROR) . '
+										' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[nothing_to_delete]'), WE_MESSAGE_ERROR) . '
 									}
 									'.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?home=1&pnt=edheader";
 									'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?home=1&pnt=edfooter";
@@ -470,10 +465,10 @@ class weNewsletterView {
 
 					case "save_newsletter":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							'.((!we_hasPerm("EDIT_NEWSLETTER") && !we_hasPerm("NEW_NEWSLETTER")) ? (
-								we_message_reporting::getShowMessageCall($l_newsletter["no_perms"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), WE_MESSAGE_ERROR)
 							) : ('
 									if (top.content.resize.right.editor.edbody.loaded) {
 										if (!top.content.resize.right.editor.edbody.checkData()) {
@@ -483,7 +478,7 @@ class weNewsletterView {
 										top.content.resize.right.editor.edbody.submitForm();
 
 									} else {
-										' . we_message_reporting::getShowMessageCall($l_newsletter["nothing_to_save"], WE_MESSAGE_ERROR) . '
+										' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[nothing_to_save]'), WE_MESSAGE_ERROR) . '
 									}
 							')).'
 							top.content.usetHot();
@@ -499,9 +494,9 @@ class weNewsletterView {
 
 					case "send_test":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if(top.content.resize.right.editor.edbody.document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							top.content.resize.right.editor.edbody.we_cmd("send_test");
 						}
@@ -509,9 +504,9 @@ class weNewsletterView {
 
 					case "empty_log":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if(top.content.resize.right.editor.edbody.document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							new jsWindow("'.$this->frameset.'?pnt=qlog","log_question",-1,-1,330,230,true,false,true);
 						}
@@ -519,9 +514,9 @@ class weNewsletterView {
 
 					case "preview_newsletter":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if(top.content.resize.right.editor.edbody.document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							top.content.resize.right.editor.edbody.we_cmd("popPreview");
 						}
@@ -529,9 +524,9 @@ class weNewsletterView {
 
 					case "send_newsletter":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if(top.content.resize.right.editor.edbody.document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							top.content.resize.right.editor.edbody.we_cmd("popSend");
 						}
@@ -539,9 +534,9 @@ class weNewsletterView {
 
 					case "test_newsletter":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if(top.content.resize.right.editor.edbody.document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							top.content.resize.right.editor.edbody.we_cmd("popSend","1");
 						}
@@ -553,9 +548,9 @@ class weNewsletterView {
 					case "search_email":
 					case "clear_log":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if(top.content.resize.right.editor.edbody.document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 							top.content.resize.right.editor.edbody.we_cmd(arguments[0]);
 						}
@@ -584,8 +579,6 @@ class weNewsletterView {
 	}
 
 	function getJSFooterCode() {
-		global $l_newsletter;
-
 		$js='
 
 			function doUnload() {
@@ -631,7 +624,6 @@ class weNewsletterView {
 	}
 
 	function getJSProperty() {
-		global $l_newsletter;
 		if (isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed']) {
 			$_mailCheck = "we.validate.email(email);";
 		} else {
@@ -749,7 +741,7 @@ class weNewsletterView {
 					case "popPreview":
 						if(document.we_form.ncmd.value=="home") return;
 						if (top.content.hot!=0) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["must_save_preview"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[must_save_preview]'), WE_MESSAGE_ERROR) . '
 						} else {
 							document.we_form.elements["we_cmd[0]"].value="preview_newsletter";
 							document.we_form.gview.value=parent.edfooter.document.we_form.gview.value;
@@ -760,17 +752,17 @@ class weNewsletterView {
 
 					case "popSend":
 						if(document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if (top.content.hot!=0) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["must_save"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[must_save]'), WE_MESSAGE_ERROR) . '
 						} else if(document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
 
 							if (arguments[1]) {
-								message_text="'.$l_newsletter["send_test_question"].'";
+								message_text="'.g_l('modules_newsletter','[send_test_question]').'";
 							} else {
-								message_text="'.$l_newsletter["send_question"].'";
+								message_text="'.g_l('modules_newsletter','[send_question]').'";
 							}
 
 							if (confirm(message_text)) {
@@ -783,13 +775,13 @@ class weNewsletterView {
 
 					case "send_test":
 						if(document.we_form.ncmd.value=="home") {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else if (top.content.hot!=0) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["must_save"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[must_save]'), WE_MESSAGE_ERROR) . '
 						} else if(document.we_form.IsFolder.value==1) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_newsletter_selected]'), WE_MESSAGE_ERROR) . '
 						} else {
-							if (confirm("'.sprintf($l_newsletter["test_email_question"],$this->newsletter->Test).'")) {
+							if (confirm("'.sprintf(g_l('modules_newsletter','[test_email_question]'),$this->newsletter->Test).'")) {
 								document.we_form.ncmd.value=arguments[0];
 								document.we_form.gview.value=parent.edfooter.document.we_form.gview.value;
 								document.we_form.hm.value=parent.edfooter.document.we_form.hm.value;
@@ -877,7 +869,7 @@ class weNewsletterView {
 						eval("var p=document.we_form.we_recipient"+arguments[1]+";");
 
 						if (p.selectedIndex < 0) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["no_email"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_email]'), WE_MESSAGE_ERROR) . '
 							return;
 						}
 
@@ -914,7 +906,7 @@ class weNewsletterView {
 						break;
 					case "search_email":
 						if(document.we_form.ncmd.value=="home") return;
-						var searchname=prompt("'.$l_newsletter["search_text"].'","");
+						var searchname=prompt("'.g_l('modules_newsletter','[search_text]').'","");
 
 						if (searchname != null) {
 							searchEmail(searchname);
@@ -1055,7 +1047,7 @@ class weNewsletterView {
 
 			function checkData() {
 				if (document.we_form.Text.value == "") {
-					' . we_message_reporting::getShowMessageCall($l_newsletter["empty_name"], WE_MESSAGE_ERROR) . '
+					' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[empty_name]'), WE_MESSAGE_ERROR) . '
 					return false;
 				}
 
@@ -1073,7 +1065,7 @@ class weNewsletterView {
 					if (newRecipient.length > 0) {
 
 						if (newRecipient.length > 255 ) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["email_max_len"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[email_max_len]'), WE_MESSAGE_ERROR) . '
 							return;
 						}
 
@@ -1083,10 +1075,10 @@ class weNewsletterView {
 							addElement(document.forms[0].elements["we_recipient"+group],"#",newRecipient,true,optionClassName);
 							addEmail(group,newRecipient,htmlmail,salutation,title,firstname,lastname);
 						} else {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["email_exists"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[email_exists]'), WE_MESSAGE_ERROR) . '
 						}
 					} else {
-						' . we_message_reporting::getShowMessageCall($l_newsletter["no_email"], WE_MESSAGE_ERROR) . '
+						' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_email]'), WE_MESSAGE_ERROR) . '
 					}
 					//set_state_edit_delete_recipient("we_recipient"+group);
 				}
@@ -1102,12 +1094,12 @@ class weNewsletterView {
 				var p=document.forms[0].elements["we_recipient"+group];
 
 				if (p.selectedIndex >= 0) {
-					if (confirm("'.$l_newsletter["email_delete"].'")) {
+					if (confirm("'.g_l('modules_newsletter','[email_delete]').'")) {
 						delEmail(group,p.selectedIndex);
 						p.options[p.selectedIndex] = null;
 					}
 				} else {
-					' . we_message_reporting::getShowMessageCall($l_newsletter["no_email"], WE_MESSAGE_ERROR) . '
+					' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_email]'), WE_MESSAGE_ERROR) . '
 				}
 				//set_state_edit_delete_recipient("we_recipient"+group);
 			}
@@ -1115,7 +1107,7 @@ class weNewsletterView {
 			function deleteall(group) {
 				var p = document.forms[0].elements["we_recipient"+group];
 
-				if (confirm("'.$l_newsletter["email_delete_all"].'")) {
+				if (confirm("'.g_l('modules_newsletter','[email_delete_all]').'")) {
 					delallEmails(group);
 					we_cmd("switchPage",1);
 				}
@@ -1141,7 +1133,7 @@ class weNewsletterView {
 					if (editRecipient != "") {
 
 						if (editRecipient.length > 255 ) {
-							' . we_message_reporting::getShowMessageCall($l_newsletter["email_max_len"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[email_max_len]'), WE_MESSAGE_ERROR) . '
 							return;
 						}
 						if(isValidEmail(editRecipient)) optionClassName = "markValid";
@@ -1150,7 +1142,7 @@ class weNewsletterView {
 						p.options[index].className = optionClassName;
 						editEmail(group,index,editRecipient,htmlmail,salutation,title,firstname,lastname);
 					} else {
-						' . we_message_reporting::getShowMessageCall($l_newsletter["no_email"], WE_MESSAGE_ERROR) . '
+						' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_email]'), WE_MESSAGE_ERROR) . '
 					}
 				}
 			}
@@ -1288,7 +1280,7 @@ class weNewsletterView {
 							}
 						}
 					}
-					msg = sprintf("'.$l_newsletter["search_finished"].'",hit);
+					msg = sprintf("'.g_l('modules_newsletter','[search_finished]').'",hit);
 					' . we_message_reporting::getShowMessageCall("msg", WE_MESSAGE_NOTICE, true) . '
 				}
 
@@ -1324,13 +1316,11 @@ class weNewsletterView {
 	}
 
 	function processCommands() {
-		global $l_newsletter;
-
 		if (isset($_REQUEST["ncmd"])) {
 			switch ($_REQUEST["ncmd"]) {
 				case "new_newsletter":
 					$this->newsletter = new weNewsletter();
-					$this->newsletter->Text = $l_newsletter["new_newsletter"];
+					$this->newsletter->Text = g_l('modules_newsletter','[new_newsletter]');
 					$this->newsletter->Sender = $this->settings["default_sender"];
 					$this->newsletter->Reply = $this->settings["default_reply"];
 					$this->newsletter->Test = $this->settings["test_account"];
@@ -1345,7 +1335,7 @@ class weNewsletterView {
 					$this->page=0;
 					$this->newsletter = new weNewsletter();
 					$this->newsletter->IsFolder = "1";
-					$this->newsletter->Text = $l_newsletter["new_newsletter_group"];
+					$this->newsletter->Text = g_l('modules_newsletter','[new_newsletter_group]');
 					print we_htmlElement::jsElement('
 							top.content.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&group=1";
 							top.content.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter&group=1";
@@ -1459,7 +1449,7 @@ class weNewsletterView {
 
 						if($this->newsletter->filenameNotValid()){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($l_newsletter["we_filename_notValid"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[we_filename_notValid]'), WE_MESSAGE_ERROR)
 							);
 							return;
 						}
@@ -1468,7 +1458,7 @@ class weNewsletterView {
 					    	$weAcResult = $weAcQuery->getItemById($this->newsletter->ParentID,NEWSLETTER_TABLE,array("IsFolder"), false);
 					    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall($l_newsletter['path_nok'], WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[path_nok]'), WE_MESSAGE_ERROR)
 								);
 								return;
 					    	}
@@ -1481,12 +1471,12 @@ class weNewsletterView {
 									case 0:
 									case 1:
 										$acTable = FILE_TABLE;
-										$acErrorField = $l_newsletter["block_document"];
+										$acErrorField = g_l('modules_newsletter','[block_document]');
 										break;
 									case 2:
 									case 3:
 										$acTable = OBJECT_FILES_TABLE;
-										$acErrorField = $l_newsletter["block_object"];
+										$acErrorField = g_l('modules_newsletter','[block_object]');
 										break;
 									default:
 										$acTable = "";
@@ -1497,7 +1487,7 @@ class weNewsletterView {
 
 							    	if (!is_array($weAcResult) || count($weAcResult)<1 || $weAcResult[0]['IsFolder']==1) {
 										print we_htmlElement::jsElement(
-											we_message_reporting::getShowMessageCall(sprintf($l_newsletter["blockFieldError"],($i+1),$acErrorField), WE_MESSAGE_ERROR)
+											we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter','[blockFieldError]'),($i+1),$acErrorField), WE_MESSAGE_ERROR)
 										);
 										return;
 							    	}
@@ -1505,7 +1495,7 @@ class weNewsletterView {
 								    	$weAcResult = $weAcQuery->getItemById($_REQUEST['block'.$i."_Field"],TEMPLATES_TABLE,array("IsFolder"));
 								    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==1) {
 											print we_htmlElement::jsElement(
-												we_message_reporting::getShowMessageCall(sprintf($l_newsletter["blockFieldError"],$i,$l_newsletter["block_template"]), WE_MESSAGE_ERROR)
+												we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter','[blockFieldError]'),$i,g_l('modules_newsletter','[block_template]')), WE_MESSAGE_ERROR)
 											);
 											return;
 								    	}
@@ -1562,24 +1552,24 @@ class weNewsletterView {
 
 						if (!we_hasPerm("EDIT_NEWSLETTER") && !we_hasPerm("NEW_NEWSLETTER")) {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($l_newsletter["no_perms"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), WE_MESSAGE_ERROR)
 							);
 							return;
 						} else if ($newone && !we_hasPerm("NEW_NEWSLETTER")) {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($l_newsletter["no_perms"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), WE_MESSAGE_ERROR)
 							);
 							return;
 						} else if (!$newone && !we_hasPerm("EDIT_NEWSLETTER")) {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($l_newsletter["no_perms"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), WE_MESSAGE_ERROR)
 							);
 							return;
 						} else {
 
 							if ($double) {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($l_newsletter["double_name"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[double_name]'), WE_MESSAGE_ERROR)
 							);
 							return;
 							}
@@ -1592,13 +1582,13 @@ class weNewsletterView {
 							if ($ret != 0) {
 								$jsmess="";
 								if ($ret>0) {
-									$jsmess .= we_message_reporting::getShowMessageCall( sprintf($l_newsletter["malformed_mail_group"],$ret,$message), WE_MESSAGE_ERROR );
+									$jsmess .= we_message_reporting::getShowMessageCall( sprintf(g_l('modules_newsletter','[malformed_mail_group]'),$ret,$message), WE_MESSAGE_ERROR );
 								} else if ($ret==-1) {
-									$jsmess .= we_message_reporting::getShowMessageCall( sprintf($l_newsletter["malformed_mail_sender"],$message), WE_MESSAGE_ERROR );
+									$jsmess .= we_message_reporting::getShowMessageCall( sprintf(g_l('modules_newsletter','[malformed_mail_sender]'),$message), WE_MESSAGE_ERROR );
 								} else if ($ret==-2) {
-									$jsmess .= we_message_reporting::getShowMessageCall( sprintf($l_newsletter["malformed_mail_reply"],$message), WE_MESSAGE_ERROR );
+									$jsmess .= we_message_reporting::getShowMessageCall( sprintf(g_l('modules_newsletter','[malformed_mail_reply]'),$message), WE_MESSAGE_ERROR );
 								} else if ($ret==-3) {
-									$jsmess .= we_message_reporting::getShowMessageCall( sprintf($l_newsletter["malformed_mail_test"],$message), WE_MESSAGE_ERROR );
+									$jsmess .= we_message_reporting::getShowMessageCall( sprintf(g_l('modules_newsletter','[malformed_mail_test]'),$message), WE_MESSAGE_ERROR );
 								}else if ($ret==-10) {
 									$jsmess .= we_message_reporting::getShowMessageCall( $message, WE_MESSAGE_ERROR );
 								}
@@ -1617,7 +1607,7 @@ class weNewsletterView {
 
 								$jsmess.='
 										'.$this->topFrame.'.drawTree();
-										' . we_message_reporting::getShowMessageCall( ($this->newsletter->IsFolder==1 ? $l_newsletter["save_group_ok"] : $l_newsletter["save_ok"]), WE_MESSAGE_NOTICE ) . '
+										' . we_message_reporting::getShowMessageCall( ($this->newsletter->IsFolder==1 ? g_l('modules_newsletter','[save_group_ok]'): g_l('modules_newsletter','[save_ok]')), WE_MESSAGE_NOTICE ) . '
 										top.content.hot=0;
 								';
 							}
@@ -1630,13 +1620,13 @@ class weNewsletterView {
 					if (isset($_REQUEST["nid"])){
 						if (!$_REQUEST["nid"]){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($l_newsletter["delete_nok"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[delete_nok]'), WE_MESSAGE_ERROR)
 							);
 							return;
 						}
 						if (!we_hasPerm("DELETE_NEWSLETTER")) {
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall($l_newsletter["no_perms"], WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), WE_MESSAGE_ERROR)
 								);
 							return;
 						} else {
@@ -1646,20 +1636,20 @@ class weNewsletterView {
 								$this->newsletter = new weNewsletter();
 								print we_htmlElement::jsElement('
 										top.content.deleteEntry('.$_REQUEST["nid"].',"file");
-										setTimeout(\'' . we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? $l_newsletter["delete_group_ok"] : $l_newsletter["delete_ok"]), WE_MESSAGE_NOTICE ) . '\',500);
+										setTimeout(\'' . we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? g_l('modules_newsletter','[delete_group_ok]') : g_l('modules_newsletter','[delete_ok]')), WE_MESSAGE_NOTICE ) . '\',500);
 								');
 								$_REQUEST['home'] = '1';
 								$_REQUEST['pnt'] = 'edbody';
 							} else {
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? $l_newsletter["delete_group_nok"] : $l_newsletter["delete_nok"]), WE_MESSAGE_ERROR )
+									we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? g_l('modules_newsletter','[delete_group_nok]') : g_l('modules_newsletter','[delete_nok]')), WE_MESSAGE_ERROR )
 								);
 							}
 						}
 					}
  					else {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? $l_newsletter["delete_group_nok"] : $l_newsletter["delete_nok"]), WE_MESSAGE_ERROR )
+								we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? g_l('modules_newsletter','[delete_group_nok]') : g_l('modules_newsletter','[delete_nok]')), WE_MESSAGE_ERROR )
 							);
 					}
 					break;
@@ -1720,13 +1710,13 @@ class weNewsletterView {
 				case "send_test":
 					if (!we_hasPerm("SEND_TEST_EMAIL")) {
 						print we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall($l_newsletter["no_perms"], WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), WE_MESSAGE_ERROR)
 						);
 						return;
 					}
 					$this->sendTestMail($_REQUEST["gview"],$_REQUEST["hm"]);
 					print we_htmlElement::jsElement(
-						we_message_reporting::getShowMessageCall(sprintf($l_newsletter["test_mail_sent"],$this->newsletter->Test), WE_MESSAGE_NOTICE)
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter','[test_mail_sent]'),$this->newsletter->Test), WE_MESSAGE_NOTICE)
 					);
 					break;
 
@@ -1748,7 +1738,7 @@ class weNewsletterView {
 						$id = $this->newsletter->ID;
 						$this->newsletter = new weNewsletter($_REQUEST["copyid"]);
 						$this->newsletter->ID=$id;
-						$this->newsletter->Text.="_".$l_newsletter["copy"];
+						$this->newsletter->Text.="_".g_l('modules_newsletter','[copy]');
 					}
 					break;
 
@@ -1837,7 +1827,7 @@ class weNewsletterView {
 
 						if(ereg("\.\.",$filepath)){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall( $l_newsletter["path_not_valid"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[path_not_valid]'), WE_MESSAGE_ERROR)
 							);
 						}
 						else{
@@ -1858,7 +1848,7 @@ class weNewsletterView {
 										if (str_replace(" ", "", $_alldat)=="") {
 											continue;
 										}
-									    $mailrecip = (str_replace(" ", "", $dat[$col])=="")? "--- ".$l_newsletter["email_missing"]." ---" : $dat[$col];
+									    $mailrecip = (str_replace(" ", "", $dat[$col])=="")? "--- ".g_l('modules_newsletter','[email_missing]')." ---" : $dat[$col];
 									    if(!empty($mailrecip) && !in_array($mailrecip,$mailListArray)) {
 											$row[]=		$mailrecip.",".
 												( ($importHTML  && isset($dat[$hmcol])) ? $dat[$hmcol] : $hmcol=$this->settings["default_htmlmail"]).",".
@@ -1881,7 +1871,7 @@ class weNewsletterView {
 							}
 							else {
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall( $l_newsletter["path_not_valid"], WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[path_not_valid]'), WE_MESSAGE_ERROR)
 								);
 							}
 						}
@@ -1932,7 +1922,7 @@ class weNewsletterView {
 							');
 						} else {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall( $l_newsletter["upload_nok"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[upload_nok]'), WE_MESSAGE_ERROR)
 							);
 						}
 					}
@@ -1954,7 +1944,7 @@ class weNewsletterView {
 							');
 						} else {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall( $l_newsletter["upload_nok"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[upload_nok]'), WE_MESSAGE_ERROR)
 							);
 						}
 					}
@@ -2009,7 +1999,7 @@ class weNewsletterView {
 
 						print we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
 						print we_htmlElement::jsElement(
-							((trim($this->newsletter->Subject)=="") ? 'if(confirm("'.$l_newsletter["no_subject"].'")){' : '').'
+							((trim($this->newsletter->Subject)=="") ? 'if(confirm("'.g_l('modules_newsletter','[no_subject]').'")){' : '').'
 							'.$url.'
 							new jsWindow(url,"newsletter_send",-1,-1,600,400,true,true,true,false);
 						'.((trim($this->newsletter->Subject)=="") ? '}' : '')
@@ -2176,8 +2166,6 @@ class weNewsletterView {
 	}
 
 	function we_includeEntity(&$we_doc, $tmpid) {
-		global $l_newsletter;
-
 		if ($tmpid != "" && $tmpid != 0) {
 			$path = id_to_path($tmpid,TEMPLATES_TABLE);
 		}
@@ -2192,7 +2180,7 @@ class weNewsletterView {
 			include($path);
 		} else {
 			print STYLESHEET;
-			print '<div class="defaultgray"><center>'.$l_newsletter["cannot_preview"].'</center></div>';
+			print '<div class="defaultgray"><center>'.g_l('modules_newsletter','[cannot_preview]').'</center></div>';
 		}
 	}
 
@@ -2281,7 +2269,7 @@ class weNewsletterView {
 						case WENBLOCK_FILE:
 							$content = weFile::load($_SERVER["DOCUMENT_ROOT"].$block->Field);
 							if(!$content)
-								print $l_newsletter["cannot_open"].": ".$_SERVER["DOCUMENT_ROOT"].$block->Field;
+								print g_l('modules_newsletter','[cannot_open]').": ".$_SERVER["DOCUMENT_ROOT"].$block->Field;
 							break;
 						case WENBLOCK_URL:
 							if($block->Field){
@@ -2483,7 +2471,7 @@ class weNewsletterView {
 		$_clean = $this->getCleanMail($this->newsletter->Reply);
 		$phpmail = new we_util_Mailer($this->newsletter->Test,$this->newsletter->Subject,$this->newsletter->Sender,$this->newsletter->Reply,$this->newsletter->isEmbedImages);
 		if(!$this->settings["use_base_href"]) {$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);}
-		$phpmail->setCharSet($this->newsletter->Charset!="" ? $this->newsletter->Charset : $GLOBALS["_language"]["charset"]);
+		$phpmail->setCharSet($this->newsletter->Charset!="" ? $this->newsletter->Charset : g_l('charset',"[charset]"));
 		if ($hm) {$phpmail->addHTMLPart($content);}
 		$phpmail->addTextPart(trim($plain));
 		foreach ($atts as $att) {
@@ -2665,7 +2653,6 @@ class weNewsletterView {
 
 	function getSettings() {
 		$db=new DB_WE();
-		global $l_newsletter;
 		$ret=array();
 		$_domainName = str_replace("www.","",SERVER_NAME);
 		$ret = array(
@@ -2680,10 +2667,10 @@ class weNewsletterView {
 			'isEmbedImages' => '0',
 			'default_reply' => 'replay@'.$_domainName,
 			'default_sender' => 'mailer@'.$_domainName,
-			'female_salutation' => $l_newsletter["default"]["female"],
+			'female_salutation' => g_l('modules_newsletter','[default][female]'),
 			'global_mailing_list' => '',
 			'log_sending' => '1',
-			'male_salutation' => $l_newsletter["default"]["male"],
+			'male_salutation' => g_l('modules_newsletter','[default][male]'),
 			'reject_malformed' => '1',
 			'reject_not_verified' => '1',
 			'send_step' => '20',

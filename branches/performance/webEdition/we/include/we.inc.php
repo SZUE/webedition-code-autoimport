@@ -124,7 +124,6 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_perms.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_available_modules.inc.php');
 	//	At last we set the charset, as determined from the choosen language
-	include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/charset/charset.inc.php');
 	define('WE_DEFAULT_TITLE', 'webEdition::');
 	define(
 			'WE_DEFAULT_HEAD',
@@ -132,7 +131,7 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 		<title>' . WE_DEFAULT_TITLE . '</title>
 		<meta http-equiv="expires" content="0">
 		<meta http-equiv="pragma" content="no-cache">
-		<meta http-equiv="content-type" content="text/html; charset=' . $_language["charset"] . '">
+		<meta http-equiv="content-type" content="text/html; charset=' . g_l('charset',"[charset]") . '">
 		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>
 		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
 ');
@@ -143,7 +142,7 @@ $_REQUEST['we_cmd'][0] == 'edit_link' || $_REQUEST['we_cmd'][0] == 'edit_linklis
 			$show_stylesheet) && $show_stylesheet) {
 		//	dont send charset, it is determined from document itself
 	} else {
-		header('Content-Type: text/html; charset=' . $_language['charset']);
+		header('Content-Type: text/html; charset=' . g_l('charset',"[charset]"));
 	}
 }
 

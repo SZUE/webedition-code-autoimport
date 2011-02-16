@@ -44,10 +44,10 @@ class delBackup extends taskFragment{
 			while($this->db->next_record()){
 				$this->alldata[]=TEMPLATE_DIR . "/".preg_replace('/\.tmpl$/i','.php',$this->db->f("Path")).",".$this->db->f("Icon");
 			}
-		
+
 			if(!count($this->alldata)){
 				print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall($GLOBALS["l_backup"]["nothing_to_delete"], WE_MESSAGE_WARNING)
+					we_message_reporting::getShowMessageCall(g_l('backup',"[nothing_to_delete]"), WE_MESSAGE_WARNING)
 				);
 				$this->finish();
 			}
@@ -56,7 +56,6 @@ class delBackup extends taskFragment{
 	}
 
 	function doTask(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
 		$item=makeArrayFromCSV($this->data);
 		if(!weFile::delete($item[0])){
 				if(file_exists($item[0])) array_push($_SESSION["delete_files_nok"],array("icon"=>(isset($item[1]) ? $item[1] : ""),"path"=>$item[0]));
@@ -67,7 +66,7 @@ class delBackup extends taskFragment{
 			$text = addslashes(substr($text,0,65) . '...' . substr($text,-10));
 		}
 		print we_htmlElement::jsElement('
-			parent.delmain.setProgressText("pb1","'.sprintf($GLOBALS["l_backup"]["delete_entry"],$text).'");
+			parent.delmain.setProgressText("pb1","'.sprintf(g_l('backup',"[delete_entry]"),$text).'");
 			parent.delmain.setProgress('.$percent.');
 		');
 

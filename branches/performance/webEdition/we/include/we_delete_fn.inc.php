@@ -18,8 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/alert.inc.php');
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersions.class.inc.php');
@@ -114,12 +112,11 @@ function checkDeleteFile($id, $table, $path = "")
 
 function makeAlertDelFolderNotEmpty($folders)
 {
-	global $l_alert;
 	$txt = "";
 	for ($i = 0; $i < sizeof($folders); $i++) {
 		$txt .= $folders[$i] . "\\n";
 	}
-	return sprintf($l_alert["folder_not_empty"], $txt);
+	return sprintf(g_l('alert',"[folder_not_empty]"), $txt);
 }
 
 function deleteFolder($id, $table, $path = "", $delR = true)
@@ -199,6 +196,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		deleteLocalFile($file);
 
 	}
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 	we_temporaryDocument::delete($id, $table, $DB_WE);
 
 	if ($table == FILE_TABLE) {
@@ -403,6 +401,7 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 			$hook->executeHook();
 		}
 
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
 		@set_time_limit(30);

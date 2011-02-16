@@ -22,8 +22,8 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tas
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/copy_folder.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_browser_check.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class copyFolderFrag extends taskFragment
 {
@@ -154,10 +154,10 @@ class copyFolderFrag extends taskFragment
 			if (!isset($this->data["TheTable"])){
 				if ($this->copyFile()) {
 					if ($this->data["IsWeFile"] && $this->data["num"]) {
-						$pbText = (sprintf($GLOBALS["l_copyFolder"]["rewrite"], basename($this->data["Path"])));
+						$pbText = (sprintf(g_l('copyFolder',"[rewrite]"), basename($this->data["Path"])));
 					} else {
 						$pbText = (sprintf(
-								$this->data["IsFolder"] ? $GLOBALS["l_copyFolder"]["copyFolder"] : $GLOBALS["l_copyFolder"]["copyFile"],
+								$this->data["IsFolder"] ? g_l('copyFolder',"[copyFolder]"): g_l('copyFolder',"[copyFile]"),
 								basename($this->data["Path"])));
 					}
 					print
@@ -172,7 +172,7 @@ class copyFolderFrag extends taskFragment
 			} else {
 				if ($this->copyObjects()){
 					$pbText = (sprintf(
-								$this->data["IsFolder"] ? $GLOBALS["l_copyFolder"]["copyObjectFolder"] : $GLOBALS["l_copyFolder"]["copyObjectFile"],
+								$this->data["IsFolder"] ? g_l('copyFolder',"[copyObjectFolder]") : g_l('copyFolder',"[copyObjectFile]"),
 								basename($this->data["Path"])));
 					print
 							'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int)((100 / count(
@@ -826,7 +826,6 @@ class copyFolderFrag extends taskFragment
 
 	function finish()
 	{
-
 		$we_button = new we_button();
 		$cancelButton = $we_button->create_button("cancel", "javascript:top.close()");
 
@@ -836,7 +835,7 @@ class copyFolderFrag extends taskFragment
 
 		if (isset($_SESSION["WE_CREATE_TEMPLATE"])) {
 
-			$pbText = $GLOBALS["l_copyFolder"]["prepareTemplates"];
+			$pbText = g_l('copyFolder',"[prepareTemplates]");
 
 			print
 					'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes(
@@ -850,13 +849,13 @@ class copyFolderFrag extends taskFragment
 				if (!isset($_SESSION["WE_COPY_OBJECTS"])) {
 					print
 					'<script language="JavaScript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-							$GLOBALS["l_copyFolder"]["copy_success"],
+							g_l('copyFolder',"[copy_success]"),
 							WE_MESSAGE_NOTICE) . 'top.close();</script>';
 				} else {
 					unset($_SESSION["WE_COPY_OBJECTS"]);
 					print
 					'<script language="JavaScript">top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
-							$GLOBALS["l_copyFolder"]["copy_success"],
+							g_l('copyFolder',"[copy_success]"),
 							WE_MESSAGE_NOTICE) . 'top.close();</script>';
 
 				}
@@ -894,7 +893,7 @@ HTS;
 		$yuiSuggest->setAcId("Template");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $path, "", 1);
-		$yuiSuggest->setLabel($GLOBALS["l_copyFolder"]["destdir"]);
+		$yuiSuggest->setLabel(g_l('copyFolder',"[destdir]"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
@@ -919,7 +918,6 @@ HTS;
 
 	function formCreateCategoryChooser()
 	{
-
 		$we_button = new we_button();
 
 		$addbut = $we_button->create_button(
@@ -966,7 +964,7 @@ HTS;
 		), getPixel(5, 5));
 		$table->setCol(1, 0, array(
 			'class' => 'defaultfont', 'width' => 100
-		), $GLOBALS["l_copyFolder"]['categories']);
+		), g_l('copyFolder','[categories]'));
 		$table->setCol(
 				1,
 				1,
@@ -977,7 +975,7 @@ HTS;
 						"1",
 						0,
 						'OverwriteCategories',
-						$GLOBALS["l_copyFolder"]["overwrite_categories"],
+						g_l('copyFolder',"[overwrite_categories]"),
 						false,
 						"defaultfont",
 						"toggleButton();"));
@@ -1034,7 +1032,7 @@ class copyFolderFinishFrag extends copyFolderFrag
 		if ($this->correctTemplate()) {
 
 			$pbText = sprintf(
-					$GLOBALS["l_copyFolder"]["correctTemplate"],
+					g_l('copyFolder',"[correctTemplate]"),
 					basename(id_to_path($this->data, TEMPLATES_TABLE)));
 
 			print
@@ -1079,7 +1077,7 @@ class copyFolderFinishFrag extends copyFolderFrag
 		}
 		print
 				'<script language="JavaScript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-						$GLOBALS["l_copyFolder"]["copy_success"],
+						g_l('copyFolder',"[copy_success]"),
 						WE_MESSAGE_NOTICE) . 'top.close();</script>';
 
 	}
@@ -1200,27 +1198,27 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 			null,
 			$cancel_button) . '</td></tr></table>';
 	if (isset($_REQUEST['we_cmd'][4]) && defined('OBJECT_FILES_TABLE') && $_REQUEST['we_cmd'][4]==OBJECT_FILES_TABLE){
-		$content = $GLOBALS["l_copyFolder"]["object_copy"] .'<br/>';
-		$content .= we_forms::checkbox("1",0,"DoNotCopyFolders",$GLOBALS["l_copyFolder"]["object_copy_no_folders"]);
-		$content .= '&nbsp;<br/>'.$GLOBALS["l_copyFolder"]["sameName_headline"].'<br/>';
+		$content = g_l('copyFolder',"[object_copy]") .'<br/>';
+		$content .= we_forms::checkbox("1",0,"DoNotCopyFolders",g_l('copyFolder',"[object_copy_no_folders]"));
+		$content .= '&nbsp;<br/>'.g_l('copyFolder',"[sameName_headline]").'<br/>';
 
-		$content .= htmlAlertAttentionBox($GLOBALS["l_copyFolder"]["sameName_expl"], 2, 380);
+		$content .= htmlAlertAttentionBox(g_l('copyFolder',"[sameName_expl]"), 2, 380);
 		$content .= getPixel(200, 10);
 		$content .= we_forms::radiobutton(
 				"overwrite",
 				0,
 				"OverwriteObjects",
-				$GLOBALS["l_copyFolder"]["sameName_overwrite"]);
+				g_l('copyFolder',"[sameName_overwrite]"));
 		$content .= we_forms::radiobutton(
 				"rename",
 				0,
 				"OverwriteObjects",
-				$GLOBALS["l_copyFolder"]["sameName_rename"]);
+				g_l('copyFolder',"[sameName_rename]"));
 		$content .= we_forms::radiobutton(
 				"nothing",
 				1,
 				"OverwriteObjects",
-				$GLOBALS["l_copyFolder"]["sameName_nothing"]);
+				g_l('copyFolder',"[sameName_nothing]"));
 
 		$content .= we_htmlElement::htmlHidden(
 			array(
@@ -1238,7 +1236,7 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 			"1",
 			0,
 			'CreateTemplate',
-			$GLOBALS["l_copyFolder"]["create_new_templates"],
+			g_l('copyFolder',"[create_new_templates]"),
 			false,
 			"defaultfont",
 			"toggleButton(); incTemp(this.checked)") . '
@@ -1246,7 +1244,7 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 			"1",
 			0,
 			'CreateMasterTemplate',
-			$GLOBALS["l_copyFolder"]["create_new_masterTemplates"],
+			g_l('copyFolder',"[create_new_masterTemplates]"),
 			false,
 			"defaultfont",
 			"",
@@ -1254,7 +1252,7 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 			"1",
 			0,
 			'CreateIncludedTemplate',
-			$GLOBALS["l_copyFolder"]["create_new_includedTemplates"],
+			g_l('copyFolder',"[create_new_includedTemplates]"),
 			false,
 			"defaultfont",
 			"",
@@ -1263,7 +1261,7 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 			"1",
 			0,
 			'CreateDoctypes',
-			$GLOBALS["l_copyFolder"]["create_new_doctypes"]) . '
+			g_l('copyFolder',"[create_new_doctypes]")) . '
 					</td></tr>
 					<tr><td colspan="2">' . getPixel(2, 5) . '</td></tr>
 					<tr><td colspan="2">' . copyFolderFrag::formCreateTemplateDirChooser() . '</td></tr>
@@ -1285,7 +1283,7 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 	print
 			htmlDialogLayout(
 					$content,
-					$GLOBALS["l_copyFolder"]["headline"] . ": " . shortenPath(
+					g_l('copyFolder',"[headline]") . ": " . shortenPath(
 							id_to_path($_REQUEST["we_cmd"][1]),
 							46),
 					$buttons);

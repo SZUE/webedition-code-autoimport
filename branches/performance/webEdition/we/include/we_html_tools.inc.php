@@ -19,13 +19,10 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/charset/charset.inc.php');
 
 /**
  * This function creates a table.
@@ -812,7 +809,7 @@ function getHtmlTop($title = "webEdition", $charset = "", $useMessageBox = true)
 			array(
 
 					"http-equiv" => "content-type",
-					"content" => "text/html; charset=" . ($charset ? $charset : $GLOBALS["_language"]["charset"])
+					"content" => "text/html; charset=" . ($charset ? $charset : g_l('charset',"[charset]"))
 			));
 	$_meta_imagetoolbar_type = we_htmlElement::htmlMeta(array(
 		"http-equiv" => "imagetoolbar", "content" => "no"
@@ -856,6 +853,7 @@ function getHtmlTop($title = "webEdition", $charset = "", $useMessageBox = true)
  */
 function htmlYesNoCancelDialog($text = "", $img = "", $yes = "", $no = "", $cancel = "", $yesHandler = "", $noHandler = "", $cancelHandler = "", $script = "")
 {
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 	$we_button = new we_button();
 
 	$cancelButton = ($cancel != "" ? $we_button->create_button("cancel", "javascript:$cancelHandler") : "");

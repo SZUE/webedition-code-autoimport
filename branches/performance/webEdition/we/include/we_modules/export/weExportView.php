@@ -20,7 +20,6 @@
 
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/export.inc.php");
 include_once(WE_EXPORT_MODULE_DIR."weExport.php");
 
 class weExportView {
@@ -87,8 +86,6 @@ class weExportView {
 	}
 
 	function getJSTop(){
-		global $l_export;
-
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
@@ -127,7 +124,7 @@ class weExportView {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				if(hot == "1" && arguments[0] != "save_export") {
-					if(confirm("'.$l_export["save_changed_export"].'")) {
+					if(confirm("'.g_l('export',"[save_changed_export]").'")) {
 						arguments[0] = "save_export";
 					} else {
 						top.content.usetHot();
@@ -141,14 +138,14 @@ class weExportView {
 				        break;
 					case "new_export_group":
 						'.(!we_hasPerm("NEW_EXPORT")
-							? we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR) . 'return;'
+							? we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR) . 'return;'
 							: '').'
 						if('.$this->editorBodyFrame.'.loaded) {
 							'.$this->editorBodyForm.'.IsFolder.value = 1;
 						}
 					case "new_export":
 						'.(!we_hasPerm("NEW_EXPORT")
-							? we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR) . 'return;'
+							? we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR) . 'return;'
 							: '').'
 						if('.$this->editorBodyFrame.'.loaded) {
 							'.$this->editorBodyForm.'.cmd.value = arguments[0];
@@ -164,13 +161,13 @@ class weExportView {
 						if('.$this->editorBodyForm.'.cmd.value=="home") return;
 						'.(!we_hasPerm("DELETE_EXPORT") ?
 						(
-								print we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR)
+								print we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR)
 						)
 						:
 						('
 								if ('.$this->editorBodyFrame.'.loaded) {
-									var message="'.$l_export['delete_question'].'";
-									if('.$this->editorBodyForm.'.IsFolder.value=="1") message = "'.$l_export['delete_group_question'].'";
+									var message="'.g_l('export','[delete_question]').'";
+									if('.$this->editorBodyForm.'.IsFolder.value=="1") message = "'.g_l('export','[delete_group_question]').'";
 
 									if (confirm(message)) {
 										'.$this->editorBodyForm.'.cmd.value=arguments[0];
@@ -179,18 +176,18 @@ class weExportView {
 										'.$this->editorBodyFrame.'.submitForm("cmd");
 									}
 								} else {
-									' . we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["nothing_to_delete"], WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall(g_l('export',"[nothing_to_delete]"), WE_MESSAGE_ERROR) . '
 								}
 
 						')).'
 					break;
 					case "start_export":
 								if('.$this->topFrame.'.hot!=0){
-									' . we_message_reporting::getShowMessageCall( $l_export["must_save"], WE_MESSAGE_ERROR ) . '
+									' . we_message_reporting::getShowMessageCall( g_l('export',"[must_save]"), WE_MESSAGE_ERROR ) . '
 									break;
 								}
 								'.(!we_hasPerm("NEW_EXPORT")
-									? we_message_reporting::getShowMessageCall( $GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR) . 'return;'
+									? we_message_reporting::getShowMessageCall( g_l('export',"[no_perms]"), WE_MESSAGE_ERROR) . 'return;'
 									: ''
 								).'
 								if ('.$this->topFrame.'.resize.right.editor.edheader.setTab) '.$this->topFrame.'.resize.right.editor.edheader.setActiveTab("tab_3");
@@ -200,14 +197,14 @@ class weExportView {
 								if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(getPixel(10,10)) . '<br>");
 					case "save_export":
 						'.(!we_hasPerm("NEW_EXPORT")
-							? we_message_reporting::getShowMessageCall( $GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR) . 'return;'
+							? we_message_reporting::getShowMessageCall( g_l('export',"[no_perms]"), WE_MESSAGE_ERROR) . 'return;'
 							: ''
 						).'
 						if('.$this->editorBodyForm.'.cmd.value=="home") return;
 
 						if ('.$this->editorBodyFrame.'.loaded) {
 										if('.$this->editorBodyForm.'.Text.value==""){
-											' . we_message_reporting::getShowMessageCall( $l_export['name_empty'], WE_MESSAGE_ERROR) . '
+											' . we_message_reporting::getShowMessageCall( g_l('export','[name_empty]'), WE_MESSAGE_ERROR) . '
 											return;
 										}
 										'.$this->editorBodyForm.'.cmd.value=arguments[0];
@@ -227,14 +224,14 @@ class weExportView {
 
 										'.$this->editorBodyFrame.'.submitForm(arguments[0]=="start_export" ? "cmd" : "edbody");
 						} else {
-							' . we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["nothing_to_save"], WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('export',"[nothing_to_save]"), WE_MESSAGE_ERROR) . '
 						}
 						top.content.usetHot();
 					break;
 
 					case "edit_export":
 						'.(!we_hasPerm("EDIT_EXPORT")
-							? we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR) . 'return;'
+							? we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR) . 'return;'
 							: ''
 						).'
 						'.$this->topFrame.'.hot=0;
@@ -416,13 +413,12 @@ function getJSSubmitFunction($def_target="edbody",$def_method="post"){
 }
 
 function processCommands() {
-		global $l_export;
 		if (isset($_REQUEST["cmd"])) {
 			switch ($_REQUEST["cmd"]) {
 				case "new_export":
 					if(!we_hasPerm("NEW_EXPORT")) {
 						print we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR)
 						);
 						break;
 					}else{
@@ -437,12 +433,12 @@ function processCommands() {
 				case "new_export_group":
 					if(!we_hasPerm("NEW_EXPORT")) {
 						print we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR)
 						);
 						break;
 					}else{
 						$this->export = new weExport();
-						$this->export->Text = $l_export['newFolder'];
+						$this->export->Text = g_l('export','[newFolder]');
 						$this->export->IsFolder = 1;
 						print we_htmlElement::jsElement('
 								'.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->export->Text).'";
@@ -453,7 +449,7 @@ function processCommands() {
 				case "edit_export":
 					if(!we_hasPerm("EDIT_EXPORT")) {
 						print we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR)
 						);
 						break;
 					}else{
@@ -468,28 +464,28 @@ function processCommands() {
 				case "save_export":
 					if(!we_hasPerm("NEW_EXPORT")) {
 						print we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["no_perms"], WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR)
 						);
 						break;
 					}else{
 						$js="";
 						if($this->export->filenameNotValid($this->export->Text)){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["wrongtext"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export',"[wrongtext]"), WE_MESSAGE_ERROR)
 							);
 							break;
 						}
 						// check if filename is valid.
 						if( $this->export->exportToFilenameValid($this->export->Filename) ){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["wrongfilename"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export',"[wrongfilename]"), WE_MESSAGE_ERROR)
 							);
 							break;
 						}
 
 						if(trim($this->export->Text) == ''){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["name_empty"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export',"[name_empty]"), WE_MESSAGE_ERROR)
 							);
 							break;
 						}
@@ -498,13 +494,13 @@ function processCommands() {
 						$this->export->setPath();
 						if($this->export->pathExists($this->export->Path)){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["name_exists"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export',"[name_exists]"), WE_MESSAGE_ERROR)
 							);
 							break;
 						}
 						if($this->export->isSelf()){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($GLOBALS["l_export"]["path_nok"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export',"[path_nok]"), WE_MESSAGE_ERROR)
 							);
 							break;
 						}
@@ -515,7 +511,7 @@ function processCommands() {
 					    	$weAcResult = $weAcQuery->getItemById($this->export->ParentID,EXPORT_TABLE,array("IsFolder"));
 					    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall($l_export['path_nok'], WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall(g_l('export','[path_nok]'), WE_MESSAGE_ERROR)
 								);
 								break;
 					    	}
@@ -526,7 +522,7 @@ function processCommands() {
 					    	$weAcResult = $weAcQuery->getItemById($this->export->Folder,FILE_TABLE,array("IsFolder"));
 					    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall($l_export['path_nok'], WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall(g_l('export','[path_nok]'), WE_MESSAGE_ERROR)
 								);
 								break;
 					    	}
@@ -554,7 +550,7 @@ function processCommands() {
 						}
 						print we_htmlElement::jsElement($js.'
 							'.$this->editorHeaderFrame.'.location.reload();
-							' . we_message_reporting::getShowMessageCall(  ($this->export->IsFolder==1 ? $l_export["save_group_ok"] : $l_export["save_ok"]), WE_MESSAGE_NOTICE )
+							' . we_message_reporting::getShowMessageCall(  ($this->export->IsFolder==1 ? g_l('export',"[save_group_ok]") : g_l('export',"[save_ok]")), WE_MESSAGE_NOTICE )
 							.$this->topFrame.'.hot=0;
 						');
 					}
@@ -562,7 +558,7 @@ function processCommands() {
 				case "delete_export":
 					if (!we_hasPerm("DELETE_EXPORT")) {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall($l_export["no_perms"], WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export',"[no_perms]"), WE_MESSAGE_ERROR)
 						);
 						return;
 					} else {
@@ -570,13 +566,13 @@ function processCommands() {
 						if ($this->export->delete()) {
 							print we_htmlElement::jsElement('
 									'.$this->topFrame.'.deleteEntry('.$this->export->ID.');
-									' . we_message_reporting::getShowMessageCall( ($this->export->IsFolder==1 ? $l_export["delete_group_ok"] : $l_export["delete_ok"]), WE_MESSAGE_NOTICE ) . '
+									' . we_message_reporting::getShowMessageCall( ($this->export->IsFolder==1 ? g_l('export',"[delete_group_ok]") : g_l('export',"[delete_ok]")), WE_MESSAGE_NOTICE ) . '
 									'.$this->topFrame.'.we_cmd("home");
 							');
 							$this->export = new weExport();
 						} else {
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall( ($this->export->IsFolder==1 ? $l_export["delete_group_nok"] : $l_export["delete_nok"]), WE_MESSAGE_ERROR )
+								we_message_reporting::getShowMessageCall( ($this->export->IsFolder==1 ? g_l('export',"[delete_group_nok]") : g_l('export',"[delete_nok]")), WE_MESSAGE_ERROR )
 							);
 						}
 					}

@@ -20,13 +20,12 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 if(defined("SHOP_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
@@ -143,16 +142,16 @@ print '
 		elem = document.forms[0];
 		elem.submit();
 	}
-	
+
 	var countSetTitle = 0;
 	function setHeaderTitle() {
 		pre = "";
 		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? $l_shop_month[$_REQUEST['ViewMonth']] . " ": "") . $_REQUEST['ViewYear'] . '";
 		if(parent.edheader && parent.edheader.setTitlePath) {
-			parent.edheader.hasPathGroup = true; 
-			parent.edheader.setPathGroup(pre); 
-			parent.edheader.hasPathName = true; 
-			parent.edheader.setPathName(post); 
+			parent.edheader.hasPathGroup = true;
+			parent.edheader.setPathGroup(pre);
+			parent.edheader.hasPathName = true;
+			parent.edheader.setPathName(post);
 			parent.edheader.setTitlePath();
 			countSetTitle = 0;
 		} else {
@@ -497,7 +496,7 @@ $vatTable .= '
 
 	}
 
-	print we_multiIconBox::getHTML("revenues", "100%", $parts, 30,"", -1,"","",false, sprintf($GLOBALS['l_tabs']['module']['revenueTotal'], $selectedYear));
+	print we_multiIconBox::getHTML("revenues", "100%", $parts, 30,"", -1,"","",false, sprintf(g_l('tabs','[module][revenueTotal]'), $selectedYear));
 ?>
 </form>
 </body>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,12 +18,13 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+$l_messageConsole = array(
+		'iconBar' => array(
 // for bar in menu!
-$GLOBALS["l_messageConsole"]["iconBar"]["notice"]  = "New notice"; // TRANSLATE
-$GLOBALS["l_messageConsole"]["iconBar"]["warning"] = "New warning"; // TRANSLATE
-$GLOBALS["l_messageConsole"]["iconBar"]["error"]   = "New error"; // TRANSLATE
-
+				'notice' => "New notice", // TRANSLATE
+				'warning' => "New warning", // TRANSLATE
+				'error' => "New error", // TRANSLATE
+		),
 // message window
-$l_messageConsole["headline"] = "Message window"; // TRANSLATE
-?>
+		'headline' => "Message window", // TRANSLATE
+);

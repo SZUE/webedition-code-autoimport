@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,7 +18,7 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-$l_multiEditor["no_editor_left"] = "Vapaat editori-ikkunat ovat lopussa. Sulje jokin avoimista editoreista.";
-$l_multiEditor["eplugin_exit_doc"] = "Jos jatkat, kaikki tiedostot poistetaan Editori-lisäosasta.\\nwebEditionissa ei huomioida enää ulkoisia muokkauksia";
-?>
+$l_multiEditor = array(
+		'no_editor_left' => "Vapaat editori-ikkunat ovat lopussa. Sulje jokin avoimista editoreista.",
+		'eplugin_exit_doc' => "Jos jatkat, kaikki tiedostot poistetaan Editori-lisäosasta.\\nwebEditionissa ei huomioida enää ulkoisia muokkauksia",
+);

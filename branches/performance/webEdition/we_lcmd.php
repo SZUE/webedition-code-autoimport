@@ -19,8 +19,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 ?>
 <script language="JavaScript" type="text/javascript">
@@ -40,7 +39,7 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
-	' . we_message_reporting::getShowMessageCall($l_alert["nothing_to_save"], WE_MESSAGE_ERROR) . '
+	' . we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_save]"), WE_MESSAGE_ERROR) . '
 }
 ';
 			break;
@@ -50,7 +49,7 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
-	' . we_message_reporting::getShowMessageCall($l_alert["nothing_to_publish"], WE_MESSAGE_ERROR) . '
+	' . we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_publish]"), WE_MESSAGE_ERROR) . '
 }
 ';
 			break;
@@ -135,7 +134,7 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 
 
 		default:
-			
+
 			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST["we_cmd"][0],$regs)){
 				$dt = $regs[1];
 				print 'top.we_cmd("new","'.FILE_TABLE.'","","text/webedition","'.$dt.'");'."\n";
@@ -147,10 +146,10 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 			}
 			$str = "setTimeout(\"top.we_cmd(";
 			for($i=0;$i<sizeof($_REQUEST["we_cmd"]);$i++){
-			
+
 				$val = str_replace("'","\\'", $_REQUEST["we_cmd"][$i]);
 				$val = str_replace("\"","\\\"", $val);
-				
+
 				$str .= "'".$val."'".(($i<(sizeof($_REQUEST["we_cmd"])-1)) ? "," : "");
 			}
 			$str .= ")\",50);\n";

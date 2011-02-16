@@ -19,7 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 
@@ -31,7 +31,7 @@ protect();
 htmlTop();
 ?>
 <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php"); ?>
+<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 <?php print STYLESHEET; ?>
 	</head>
 	<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onUnload="doUnload()">
@@ -43,7 +43,7 @@ htmlTop();
 	$headline = array();
 
 	$headline[0] = array(
-		'dat'=>$l_we_class["variant_fields"]
+		'dat'=>g_l('weClass',"[variant_fields]")
 	);
 
 
@@ -58,7 +58,7 @@ htmlTop();
 
 	$parts[]=array(
 			'headline' => '',
-			'html' => htmlAlertAttentionBox($l_we_class['variant_info'],2,620, false),
+			'html' => htmlAlertAttentionBox(g_l('weClass','[variant_info]'),2,620, false),
 			'space' => 0,
 			'noline'=>1
 	);

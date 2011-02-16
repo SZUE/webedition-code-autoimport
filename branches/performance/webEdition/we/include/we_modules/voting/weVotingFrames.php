@@ -22,7 +22,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/"."weModuleFrames.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/voting.inc.php");
 include_once(WE_VOTING_MODULE_DIR."weVotingView.php");
@@ -455,20 +455,19 @@ class weVotingFrames extends weModuleFrames {
 				)
 			);
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/export.inc.php");
 
 			$ok = $we_button->create_button("export","javascript:we_cmd('exportGroup_csv')");
 
 			$export_box=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),12,1);
 
 			$export_box->setCol(0,0,array(),getPixel(10,10));
-			$export_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),$l_export['dir']));
+			$export_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),g_l('export','[dir]')));
 			$export_box->setCol(2,0,array(),getPixel(5,5));
 
 			$lineend = new we_htmlSelect(array('name'=>'csv_lineend','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
-			$lineend->addOption('windows', $l_export['windows']);
-			$lineend->addOption('unix', $l_export["unix"]);
-			$lineend->addOption('mac', $l_export["mac"]);
+			$lineend->addOption('windows', g_l('export','[windows]'));
+			$lineend->addOption('unix', g_l('export',"[unix]"));
+			$lineend->addOption('mac', g_l('export',"[mac]"));
 
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
 				$_charsetHandler = new charsetHandler();
@@ -482,23 +481,23 @@ class weVotingFrames extends weModuleFrames {
 
 
 			$delimiter = new we_htmlSelect(array('name'=>'csv_delimiter','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
-			$delimiter->addOption(';',$l_export['semicolon']);
-			$delimiter->addOption(',',$l_export['comma']);
-			$delimiter->addOption(':',$l_export['colon']);
-			$delimiter->addOption('\t',$l_export['tab']);
-			$delimiter->addOption(' ',$l_export['space']);
+			$delimiter->addOption(';',g_l('export','[semicolon]'));
+			$delimiter->addOption(',',g_l('export','[comma]'));
+			$delimiter->addOption(':',g_l('export','[colon]'));
+			$delimiter->addOption('\t',g_l('export','[tab]'));
+			$delimiter->addOption(' ',g_l('export','[space]'));
 
 			$enclose = new we_htmlSelect(array('name'=>'csv_enclose','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
-			$enclose->addOption(0,$l_export['double_quote']);
-			$enclose->addOption(1,$l_export['single_quote']);
+			$enclose->addOption(0,g_l('export','[double_quote]'));
+			$enclose->addOption(1,g_l('export','[single_quote]'));
 
-			$export_box->setCol(3, 0, array("class" => "defaultfont"), htmlFormElementTable($lineend->getHtmlCode(),$l_export['csv_lineend']));
+			$export_box->setCol(3, 0, array("class" => "defaultfont"), htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
 			$export_box->setColContent(4,0,getPixel(5,5));
 			$export_box->setCol(5, 0, array("class" => "defaultfont"), htmlFormElementTable($import_Charset,$l_voting['csv_charset']));
 			$export_box->setColContent(6,0,getPixel(5,5));
-			$export_box->setColContent(7,0, htmlFormElementTable($delimiter->getHtmlCode(),$l_export['csv_delimiter']));
+			$export_box->setColContent(7,0, htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
 			$export_box->setColContent(8,0,getPixel(5,5));
-			$export_box->setColContent(9,0, htmlFormElementTable($enclose->getHtmlCode(),$l_export['csv_enclose']));
+			$export_box->setColContent(9,0, htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
 			$export_box->setColContent(10,0,getPixel(5,15));
 			$export_box->setCol(11,0,array("nowrap"=>null),
 			$we_button->create_button_table(array($ok))
@@ -865,37 +864,36 @@ class weVotingFrames extends weModuleFrames {
 				"space"=>$this->_space_size)
 		);
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/export.inc.php");
 
 		$ok = $we_button->create_button("export","javascript:we_cmd('export_csv')");
 
 		$export_box=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),10,1);
 
 		$export_box->setCol(0,0,array(),getPixel(10,10));
-		$export_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),$l_export['dir']));
+		$export_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),g_l('export','[dir]')));
 		$export_box->setCol(2,0,array(),getPixel(5,5));
 
 		$lineend = new we_htmlSelect(array('name'=>'csv_lineend','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
-		$lineend->addOption('windows', $l_export['windows']);
-		$lineend->addOption('unix', $l_export["unix"]);
-		$lineend->addOption('mac', $l_export["mac"]);
+		$lineend->addOption('windows', g_l('export','[windows]'));
+		$lineend->addOption('unix', g_l('export',"[unix]"));
+		$lineend->addOption('mac', g_l('export',"[mac]"));
 
 		$delimiter = new we_htmlSelect(array('name'=>'csv_delimiter','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
-		$delimiter->addOption(';',$l_export['semicolon']);
-		$delimiter->addOption(',',$l_export['comma']);
-		$delimiter->addOption(':',$l_export['colon']);
-		$delimiter->addOption('\t',$l_export['tab']);
-		$delimiter->addOption(' ',$l_export['space']);
+		$delimiter->addOption(';',g_l('export','[semicolon]'));
+		$delimiter->addOption(',',g_l('export','[comma]'));
+		$delimiter->addOption(':',g_l('export','[colon]'));
+		$delimiter->addOption('\t',g_l('export','[tab]'));
+		$delimiter->addOption(' ',g_l('export','[space]'));
 
 		$enclose = new we_htmlSelect(array('name'=>'csv_enclose','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
-		$enclose->addOption(0,$l_export['double_quote']);
-		$enclose->addOption(1,$l_export['single_quote']);
+		$enclose->addOption(0,g_l('export','[double_quote]'));
+		$enclose->addOption(1,g_l('export','[single_quote]'));
 
-		$export_box->setCol(3, 0, array("class" => "defaultfont"), htmlFormElementTable($lineend->getHtmlCode(),$l_export['csv_lineend']));
+		$export_box->setCol(3, 0, array("class" => "defaultfont"), htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
 		$export_box->setColContent(4,0,getPixel(5,5));
-		$export_box->setColContent(5,0, htmlFormElementTable($delimiter->getHtmlCode(),$l_export['csv_delimiter']));
+		$export_box->setColContent(5,0, htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
 		$export_box->setColContent(6,0,getPixel(5,5));
-		$export_box->setColContent(7,0, htmlFormElementTable($enclose->getHtmlCode(),$l_export['csv_enclose']));
+		$export_box->setColContent(7,0, htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
 		$export_box->setColContent(8,0,getPixel(5,15));
 		$export_box->setCol(9,0,array("nowrap"=>null),
 						$we_button->create_button_table(array($ok))
@@ -1213,7 +1211,6 @@ class weVotingFrames extends weModuleFrames {
 		global $l_voting;
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		$we_button = new we_button();
 
@@ -1264,7 +1261,7 @@ class weVotingFrames extends weModuleFrames {
 				if($i<0) break;
 				$data = $log[$i];
 				$content[$ind] = array();
-				$content[$ind][0]['dat'] = date($l_we_editor_info["date_format"], $data['time']);
+				$content[$ind][0]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$data['time']);
 				$content[$ind][1]['dat'] = $data['ip'];
 				$content[$ind][2]['dat'] = $data['agent'];
 				$content[$ind][3]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
@@ -1349,7 +1346,6 @@ class weVotingFrames extends weModuleFrames {
 		global $l_voting;
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		$we_button = new we_button();
 
@@ -1403,12 +1399,11 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind] = array();
 				$content[$ind][0]['dat'] = $data['votingsession'];
 				$content[$ind][1]['dat'] = $data['voting'];
-				$content[$ind][2]['dat'] = date($l_we_editor_info["date_format"], $data['time']);
+				$content[$ind][2]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$data['time']);
 				$content[$ind][3]['dat'] = $data['ip'];
 				$content[$ind][4]['dat'] = $data['agent'];
 				$content[$ind][5]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
 				$content[$ind][6]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
-				endif;
 
 				$mess = $l_voting['log_success'];
 				if($data['status']!=VOTING_SUCCESS){
@@ -1503,7 +1498,6 @@ class weVotingFrames extends weModuleFrames {
 		global $l_voting;
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		$we_button = new we_button();
 
@@ -1551,12 +1545,11 @@ class weVotingFrames extends weModuleFrames {
 				if($i<0) break;
 				$data = $log[$i];
 				$content[$ind] = array();
-				$content[$ind][0]['dat'] = date($l_we_editor_info["date_format"], $data['time']);
+				$content[$ind][0]['dat'] = date(g_l('weEditorInfo',"[date_format]"), $data['time']);
 				$content[$ind][1]['dat'] = $data['ip'];
 				$content[$ind][2]['dat'] = $data['agent'];
 				$content[$ind][3]['dat'] = $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];
 				$content[$ind][4]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
-				endif;
 
 				$mess = $l_voting['log_success'];
 				if($data['status']!=VOTING_SUCCESS){

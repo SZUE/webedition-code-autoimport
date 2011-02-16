@@ -20,13 +20,8 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 
 
 class we_docSelector extends we_dirSelector {
@@ -202,8 +197,8 @@ var contentTypes = new Array();
 <?php
 
 foreach($GLOBALS["WE_CONTENT_TYPES"] as $ct=>$foo ){
-	if(isset($GLOBALS["l_contentTypes"][$ct])){
-		print  'contentTypes["'.$ct.'"]  = "'.$GLOBALS["l_contentTypes"][$ct].'";'."\n";
+	if(g_l('contentTypes','['.$ct.']')!==false){
+		print  'contentTypes["'.$ct.'"]  = "'.g_l('contentTypes','['.$ct.']').'";'."\n";
 	}
 }
 
@@ -322,8 +317,8 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr>');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]; ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_fileselector"]["new_folder_name"]?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
-		d.writeln('<td class="selector"><?php print $GLOBALS["l_contentTypes"]["folder"]; ?></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('fileselector',"[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('fileselector',"[new_folder_name]")?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td class="selector"><?php print g_l('contentTypes',"[folder]"); ?></td>');
 		d.writeln('<td class="selector"><?php print date(g_l(\'date\',\'[format][default]\'))?></td>');
 		d.writeln('</tr>');
 	}
@@ -599,14 +594,14 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b>'.$GLOBALS["l_fileselector"]["type"].'</b></td>
+						<b>'.g_l('fileselector',"[type]").'</b></td>
 					<td></td>
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
-							<option value="">'.$GLOBALS["l_fileselector"]["all_Types"].'</option>';
+							<option value="">'.g_l('fileselector',"[all_Types]").'</option>';
 			foreach($GLOBALS["WE_CONTENT_TYPES"] as $ct => $val){
 				if (isset($val["IsWebEditionFile"]) && $val["IsWebEditionFile"]) {
-					print '<option value="'.htmlspecialchars($ct).'">'.$GLOBALS["l_contentTypes"][$ct].'</option>'."\n";
+					print '<option value="'.htmlspecialchars($ct).'">'.g_l('contentTypes','['.$ct.']').'</option>'."\n";
 				}
 			}
 			print '
@@ -627,7 +622,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b>'.$GLOBALS["l_fileselector"]["name"].'</b>
+						<b>'.g_l('fileselector',"[name]").'</b>
 					</td>
 					<td></td>
 					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$seval,"","style=\"width:100%\" readonly=\"readonly\"").'
@@ -808,7 +803,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					if($fs===0) {
 						$_imagesize = array(0,0);
 						$_thumbpath = '/webEdition/images/icons/no_image.gif';
-						$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" .$GLOBALS['l_fileselector']["image_not_uploaded"] . "</p>";
+						$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" .g_l('fileselector',"[image_not_uploaded]") . "</p>";
 					} else {
 						$_imagesize = getimagesize($_SERVER["DOCUMENT_ROOT"].$result['Path']);
 						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
@@ -818,18 +813,18 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				}
 
 				$_previewFields = array(
-					"properies"  => array("headline"=>$GLOBALS['l_we_class']["tab_properties"], "data"=>array()),
-					"metainfos"  => array("headline"=>$GLOBALS['l_we_class']["metainfo"], "data"=>array()),
-					"attributes" => array("headline"=>$GLOBALS['l_we_class']["attribs"], "data"=>array()),
-					"folders" 	 => array("headline"=>$GLOBALS['l_fileselector']["folders"], "data"=>array()),
-					"files" 	 => array("headline"=>$GLOBALS['l_fileselector']["files"], "data"=>array()),
-					"masterTemplate" 	 => array("headline"=>$GLOBALS['l_we_class']["master_template"], "data"=>array())
+					"properies"  => array("headline"=>g_l('weClass',"[tab_properties]"), "data"=>array()),
+					"metainfos"  => array("headline"=>g_l('weClass',"[metainfo]"), "data"=>array()),
+					"attributes" => array("headline"=>g_l('weClass',"[attribs]"), "data"=>array()),
+					"folders" 	 => array("headline"=>g_l('fileselector',"[folders]"), "data"=>array()),
+					"files" 	 => array("headline"=>g_l('fileselector',"[files]"), "data"=>array()),
+					"masterTemplate" 	 => array("headline"=>g_l('weClass',"[master_template]"), "data"=>array())
 				);
 
 
 
 				$_previewFields["properies"]["data"][] = array(
-					"caption" => $GLOBALS['l_fileselector']["name"],
+					"caption" => g_l('fileselector',"[name]"),
 					"content" => (
 						$showPriview 	? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://".
 													$_SERVER['HTTP_HOST'].$result['Path'].
@@ -855,34 +850,34 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				if ($result['CreationDate']) {
 					$_previewFields["properies"]["data"][] = array(
-						"caption" => $GLOBALS['l_fileselector']["created"],
+						"caption" => g_l('fileselector',"[created]"),
 						"content" => date(g_l('date','[format][default]'),$result['CreationDate'])
 					);
 				}
 
 				if ($result['ModDate']) {
 					$_previewFields["properies"]["data"][] = array(
-						"caption" => $GLOBALS['l_fileselector']["modified"],
+						"caption" => g_l('fileselector',"[modified]"),
 						"content" => date(g_l('date','[format][default]'),$result['ModDate'])
 					);
 				}
 
 				$_previewFields["properies"]["data"][] = array(
-					"caption" => $GLOBALS['l_fileselector']["type"],
-					"content" => (isset($GLOBALS['l_contentTypes'][$result['ContentType']])?$GLOBALS['l_contentTypes'][$result['ContentType']]:$result['ContentType'])
+					"caption" => g_l('fileselector',"[type]"),
+					"content" => ((g_l('contentTypes','['.$result['ContentType'].']')!==false)?g_l('contentTypes','['.$result['ContentType'].']'):$result['ContentType'])
 				);
 
 
 				if (isset($_imagesize)) {
 					$_previewFields["properies"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["width"]." x ".$GLOBALS['l_we_class']["height"],
+						"caption" => g_l('weClass',"[width]")." x ".g_l('weClass',"[height]"),
 						"content" => $_imagesize[0]." x ".$_imagesize[1]." px "
 					);
 				}
 
 				if ($result['ContentType'] != "folder" && $result['ContentType'] != "text/weTmpl" && $result['ContentType'] != "object" && $result['ContentType'] != "objectFile") {
 					$_previewFields["properies"]["data"][] = array(
-						"caption" => $GLOBALS['l_fileselector']["filesize"],
+						"caption" => g_l('fileselector',"[filesize]"),
 						"content" => $_filesize
 					);
 				}
@@ -890,21 +885,21 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				if (isset($metainfos['Title'])) {
 					$_previewFields["metainfos"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["Title"],
+						"caption" => g_l('weClass',"[Title]"),
 						"content" => $metainfos['Title']
 					);
 				}
 
 				if (isset($metainfos['Description'])) {
 					$_previewFields["metainfos"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["Description"],
+						"caption" => g_l('weClass',"[Description]"),
 						"content" => $metainfos['Description']
 					);
 				}
 
 				if (isset($metainfos['Keywords'])) {
 					$_previewFields["metainfos"]["data"][] = array(
-						"caption" => $GLOBALS['l_we_class']["Keywords"],
+						"caption" => g_l('weClass',"[Keywords]"),
 						"content" => $metainfos['Keywords']
 					);
 				}
@@ -929,21 +924,21 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					$_content = (isset($metainfos['title']) ? $metainfos['title'] : ((isset($metainfos['Title']) && isset($metainfos['useMetaTitle']) && $metainfos['useMetaTitle']) ? $metainfos['Title'] : ''));
 					if ($_content !== "") {
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["Title"],
+							"caption" => g_l('weClass',"[Title]"),
 							"content" => htmlspecialchars($_content)
 						);
 					}
 					$_content = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					if ($_content !== "") {
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["name"],
+							"caption" => g_l('weClass',"[name]"),
 							"content" => $_content
 						);
 					}
 					$_content = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
 					if ($_content !== "") {
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["alt"],
+							"caption" => g_l('weClass',"[alt]"),
 							"content" => htmlspecialchars($_content)
 						);
 					}
@@ -977,7 +972,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 							"content" => $result['MasterTemplateID']
 						);
 						$_previewFields["masterTemplate"]["data"][] = array(
-							"caption" => $GLOBALS['l_we_class']["path"],
+							"caption" => g_l('weClass',"[path]"),
 							"content" => $mastertemppath
 						);
 					}

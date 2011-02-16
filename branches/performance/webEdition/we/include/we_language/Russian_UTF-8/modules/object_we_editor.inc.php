@@ -18,36 +18,33 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: object_we_editor.inc.php
  * Provides language strings.
  * Language: English
  */
-
-$l_we_editor["object"]["response_save_ok"] = "Класс '%s' успешно сохранен!";
-$l_we_editor["object"]["response_publish_ok"] = "Класс '%s' успешно опубликован!";
-$l_we_editor["object"]["response_unpublish_ok"] = "Класс '%s' успешно снят с публикации!";
-$l_we_editor["object"]["response_save_notok"] = "Ошибка при сохранении класса '%s'!";
-$l_we_editor["object"]["response_path_exists"] = "Класс '%s' не сохранен по указанному пути, так как это местоположение занято другим документом или директорией!";
-$l_we_editor["object"]["filename_empty"] = "Не введено имя для данного класса!";
-$l_we_editor["object"]["we_filename_notValid"] = "Invalid class name or automatic name\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)"; // TRANSLATE
-$l_we_editor["object"]["we_filename_notAllowed"] = "Введенное имя класса недопустимо!";
-$l_we_editor["object"]["response_save_noperms_to_create_folders"] = "Класс не сохранен, так как у Вас нет соответствующих полномочий на создание новых директорий (%s)!";
-
-$l_we_editor["objectFile"]["response_save_ok"] = "Объект '%s' успешно сохранен!";
-$l_we_editor["objectFile"]["response_publish_ok"] = "Объект '%s' успешно опубликован!";
-$l_we_editor["objectFile"]["response_publish_notok"] = "Ошибка при публикации объекта '%s'!";
-$l_we_editor["objectFile"]["response_unpublish_ok"] = "Объект '%s' успешно снят с публикации!";
-$l_we_editor["objectFile"]["response_unpublish_notok"] = "Ошибка при снятии с публикации объекта '%s'!";
-$l_we_editor["objectFile"]["response_not_published"] = "Объект '%s' не опубликован!";
-$l_we_editor["objectFile"]["response_save_notok"] = "Ошибка при сохранении объекта '%s'!";
-$l_we_editor["objectFile"]["response_path_exists"] = "Объект '%s' не сохранен по указанному пути, так как это местоположение занято другим документом или директорией!";
-$l_we_editor["objectFile"]["we_objecturl_exists"] = "The object '%s' could not be saved, because another object with the same URL already exists";//TRANSLATE
-$l_we_editor["objectFile"]["filename_empty"] = "Не введено имя для данного объекта!";
-$l_we_editor["objectFile"]["we_filename_notValid"] = "Недействительное имя объекта\\nДопустимыми являются большие и малые буквы латинского алфавита, цифры, тире, нижняя черта и точка (a-z, A-Z, 0-9, _, -, .)";
-$l_we_editor["objectFile"]["we_filename_notAllowed"] = "Введенное имя объекта недопустимо!";
-$l_we_editor["objectFile"]["response_save_noperms_to_create_folders"] = "Объект не сохранен, так как у Вас нет соответствующих полномочий на создание новых директорий (%s)!";
-$l_we_editor["objectFile"]["autoschedule"] = "Дата автоматической публикации объекта %s";
-?>
+$l_weEditor['object'] = array(
+		'response_save_ok' => "Класс '%s' успешно сохранен!",
+		'response_publish_ok' => "Класс '%s' успешно опубликован!",
+		'response_unpublish_ok' => "Класс '%s' успешно снят с публикации!",
+		'response_save_notok' => "Ошибка при сохранении класса '%s'!",
+		'response_path_exists' => "Класс '%s' не сохранен по указанному пути, так как это местоположение занято другим документом или директорией!",
+		'filename_empty' => "Не введено имя для данного класса!",
+		'we_filename_notValid' => "Invalid class name or automatic name\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)", // TRANSLATE
+		'we_filename_notAllowed' => "Введенное имя класса недопустимо!",
+		'response_save_noperms_to_create_folders' => "Класс не сохранен, так как у Вас нет соответствующих полномочий на создание новых директорий (%s)!",
+		'response_save_ok' => "Объект '%s' успешно сохранен!",
+		'response_publish_ok' => "Объект '%s' успешно опубликован!",
+		'response_publish_notok' => "Ошибка при публикации объекта '%s'!",
+		'response_unpublish_ok' => "Объект '%s' успешно снят с публикации!",
+		'response_unpublish_notok' => "Ошибка при снятии с публикации объекта '%s'!",
+		'response_not_published' => "Объект '%s' не опубликован!",
+		'response_save_notok' => "Ошибка при сохранении объекта '%s'!",
+		'response_path_exists' => "Объект '%s' не сохранен по указанному пути, так как это местоположение занято другим документом или директорией!",
+		'we_objecturl_exists' => "The object '%s' could not be saved, because another object with the same URL already exists", //TRANSLATE
+		'filename_empty' => "Не введено имя для данного объекта!",
+		'we_filename_notValid' => "Недействительное имя объекта\\nДопустимыми являются большие и малые буквы латинского алфавита, цифры, тире, нижняя черта и точка (a-z, A-Z, 0-9, _, -, .)",
+		'we_filename_notAllowed' => "Введенное имя объекта недопустимо!",
+		'response_save_noperms_to_create_folders' => "Объект не сохранен, так как у Вас нет соответствующих полномочий на создание новых директорий (%s)!",
+		'autoschedule' => "Дата автоматической публикации объекта %s",
+);

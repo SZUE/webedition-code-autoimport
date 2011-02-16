@@ -20,8 +20,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg_js.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/charset/charset.inc.php");
-header("Content-Type: text/html; charset=" . $_language["charset"]);
+header("Content-Type: text/html; charset=" . g_l('charset',"[charset]"));
 
 ?>
 
@@ -29,7 +28,7 @@ header("Content-Type: text/html; charset=" . $_language["charset"]);
 
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=<?php echo $_language["charset"]; ?>">
+<meta http-equiv="content-type" content="text/html; charset=<?php echo g_l('charset',"[charset]"); ?>">
 
 <?php
 

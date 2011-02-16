@@ -22,8 +22,6 @@
 
 include_once(WE_WORKFLOW_MODULE_DIR."weModuleFrames.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowView.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tabs.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class weWorkflowFrames extends weModuleFrames{
@@ -111,11 +109,11 @@ class weWorkflowFrames extends weModuleFrames{
 
 		if($mode==0){
 
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["properties"], "TAB_NORMAL", "setTab(0);", array("id"=>"tab_0")));
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["overview"], "TAB_NORMAL", "setTab(1);", array("id"=>"tab_1")));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][properties]"), "TAB_NORMAL", "setTab(0);", array("id"=>"tab_0")));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][overview]"), "TAB_NORMAL", "setTab(1);", array("id"=>"tab_1")));
 
 		} else {
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["editor"]["information"], "TAB_ACTIVE", "//", array("id"=>"tab_0")));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[editor][information]"), "TAB_ACTIVE", "//", array("id"=>"tab_0")));
 		}
 
 		$we_tabs->onResize();

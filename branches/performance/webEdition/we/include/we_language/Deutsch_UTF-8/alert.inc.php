@@ -27,10 +27,6 @@
  */
 
 // Workarround for bug 1292
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-if (!isset($l_backup)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-}
 
 $l_alert["notice"] = "Hinweis";
 $l_alert["warning"] = "Warnung";
@@ -115,7 +111,7 @@ $l_alert['input_file_name'] = "Bitte geben Sie einen Dateinamen an.";
 $l_alert["max_name_recipient"] = "Die E-Mail-Adresse darf maximal 255 Zeichen lang sein!";
 $l_alert["not_entered_recipient"] = "Sie haben keine E-Mail-Adresse eingegeben!";
 $l_alert["recipient_new_name"] = "E-Mail-Adresse ändern!";
-$l_alert["we_backup_import_upload_err"] = "Es gab einen Fehler beim Hochladen der Backup-Datei! Die maximal erlaubte Dateigrösse für Uploads beträgt %s. Wenn Ihre Backup-Datei grösser ist, dann kopieren Sie diese per FTP in das Verzeichnis webEdition/we_backup und wählen '".$l_backup["import_from_server"]."'!";
+$l_alert["we_backup_import_upload_err"] = "Es gab einen Fehler beim Hochladen der Backup-Datei! Die maximal erlaubte Dateigrösse für Uploads beträgt %s. Wenn Ihre Backup-Datei grösser ist, dann kopieren Sie diese per FTP in das Verzeichnis webEdition/we_backup und wählen '".g_l('backup',"[import_from_server]")."'!";
 $l_alert["rebuild_nodocs"] = "Es gibt keine Dokumente, welche den ausgewählten Kriterien entsprechen!";
 $l_alert["we_name_not_allowed"] = "Die Namen 'we' und 'webEdition' werden von webEdition selbst benutzt und dürfen deshalb nicht verwendet werden!";
 $l_alert["we_filename_empty"] = "Sie haben noch keinen Dateinamen für dieses Dokument bzw. Verzeichnis eingegeben!";
@@ -179,8 +175,8 @@ $l_alert["login_denied_for_user"] = "Der Benutzer kann sich nicht anmelden. Sein
 
 $l_alert["no_perm_to_delete_single_document"] = "Sie verfügen nicht über die benötigten Rechte, um das aktive Dokument zu löschen";
 
-$l_confim["applyWeDocumentCustomerFiltersDocument"] = "Das Dokument wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen des Ordners auf dieses Dokument übertragen werden?";
-$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "Das Verzeichnis wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen für dieses Verzeichnis und alle Unterelemente übertragen werden? ";
+$l_alert['confim']["applyWeDocumentCustomerFiltersDocument"] = "Das Dokument wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen des Ordners auf dieses Dokument übertragen werden?";
+$l_alert['confim']["applyWeDocumentCustomerFiltersFolder"]   = "Das Verzeichnis wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen für dieses Verzeichnis und alle Unterelemente übertragen werden? ";
 
 $l_alert['error_fields_value_not_valid'] = 'Eingabe-Felder enthalten ungültige Werte!';
 $l_alert['field_in_tab_notvalid_pre'] = "Die Einstellungen konnten nicht gespeichert werden, da folgende Felder ungültige Werte enthalten:";

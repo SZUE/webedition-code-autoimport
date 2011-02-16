@@ -21,29 +21,28 @@
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
- * 
+ *
  */
 
 $we_button = new we_button();
 $nextButton = $we_button->create_button('next', $_SERVER['PHP_SELF'] . '?section=modules&update_cmd=modules&detail=selectModules');
 
-require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . LIVEUPDATE_LANGUAGE . '/javaMenu/module_information.inc.php');
 
 if (sizeof($GLOBALS['LU_Variables']['clientInstalledModules'])) {
-	
+
 	$moduleString = "<ul>";
 	foreach ($GLOBALS['LU_Variables']['clientInstalledModules'] as $moduleKey) {
-		
-		if ( isset($l_javaMenu["module_information"][$moduleKey]["text"]) ) {
-			
+
+		if ( g_l('javaMenu_moduleInformation','['.$moduleKey.'][text]')!==false ) {
+
 			$moduleString .= "
-			<li>" . $l_javaMenu["module_information"][$moduleKey]["text"] . "</li>";
+			<li>" . g_l('javaMenu_moduleInformation','['.$moduleKey.'][text]') . "</li>";
 		}
 	}
 	$moduleKey .= '</ul>';
-	
+
 } else {
-	
+
 	$moduleString = $GLOBALS['l_liveUpdate']['modules']['noModulesInstalled'];
 }
 

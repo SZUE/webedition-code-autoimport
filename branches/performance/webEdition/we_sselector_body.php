@@ -19,11 +19,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
@@ -112,7 +109,7 @@ function setScrollTo(){
 
 function keypressed(e) {
 	if (e.keyCode == 13) { // RETURN KEY => valid for all Browsers
-		setTimeout('document.we_form.txt.blur()',30);  
+		setTimeout('document.we_form.txt.blur()',30);
 		//document.we_form
 	}
 }
@@ -128,10 +125,9 @@ function keypressed(e) {
 <?php
 
 function getDataType($dat){
-	global $l_contentTypes;
 	$ct = getContentTypeFromFile($dat);
-	if (isset($l_contentTypes[$ct])) {
-		return $l_contentTypes[$ct];
+	if (g_l('contentTypes','['.$ct.']')!==false) {
+		return g_l('contentTypes','['.$ct.']');
 	}
 	return "";
 }
@@ -189,7 +185,7 @@ function getDataType($dat){
 		$dir_obj->close();
  }
  else{
-	print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($l_alert["access_denied"], WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.$l_alert["access_denied"].' --</div>';
+	print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"),WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.g_l('alert',"[access_denied]").' --</div>';
  }
 
  switch($_REQUEST["ord"]){
@@ -226,8 +222,8 @@ $set_rename=false;
 if( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"){ ?>
    <tr style="background-color:#DFE9F5;">
    <td align="center" width="25"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>
-   <td class="selector" width="200"><?php print htmlTextInput("txt",20,$l_fileselector["new_folder_name"],"",'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"',"text","100%"); ?></td>
-   <td class="selector" width="150"><?php print $l_fileselector["folder"]?></td>
+   <td class="selector" width="200"><?php print htmlTextInput("txt",20,g_l('fileselector',"[new_folder_name]"),"",'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"',"text","100%"); ?></td>
+   <td class="selector" width="150"><?php print g_l('fileselector',"[folder]")?></td>
    <td class="selector"><?php print date("d-m-Y H:i:s")?></td>
    <td class="selector"></td>
    </tr>
@@ -239,13 +235,13 @@ foreach ($final as $key => $entry) {
 
 	$isfolder = is_dir($dir."/".$entry) ? true : false;
 
-	$type = $isfolder ? $l_contentTypes["folder"] : getDataType($dir."/".$entry);
+	$type = $isfolder ? g_l('contentTypes','[folder]') : getDataType($dir."/".$entry);
 
 	$indb = $DB_WE->next_record() ? true : false;
 	if($entry=="webEdition") $indb = true;
 	if((ereg('^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/',$dir) || ereg('^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition$',$dir)) && (!ereg('^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/we_backup',$dir) || $entry=="download" || $entry=="tmp")) $indb = true;
 	if($supportDebugging) $indb = false;
-	$show = ($entry!=".") && ($entry!="..") && (($_REQUEST["fil"]==$l_contentTypes["all_Types"])||($type==$l_contentTypes["folder"])||($type==$_REQUEST["fil"] || $_REQUEST["fil"]==""));
+	$show = ($entry!=".") && ($entry!="..") && (($_REQUEST["fil"]==g_l('contentTypes','[all_Types]'))||($type==g_l('contentTypes','[folder]'))||($type==$_REQUEST["fil"] || $_REQUEST["fil"]==""));
 	$bgcol = ($_REQUEST["curID"] == ($dir."/".$entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"))) ? "#DFE9F5" : "white";
 	$onclick = "";
 	$ondblclick = "";
@@ -282,7 +278,7 @@ foreach ($final as $key => $entry) {
 	if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="rename_folder")&&($entry==$_REQUEST["sid"])&&($isfolder)&&(!$indb)){
 		$_text_to_show = htmlTextInput("txt",20,$entry,"",'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"',"text","100%");
 		$set_rename=true;
-		$_type = $l_contentTypes["folder"];
+		$_type = g_l('contentTypes','[folder]');
 		$_date = date("d-m-Y H:i:s");
 	}else if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="rename_file")&&($entry==$_REQUEST["sid"])&&(!$indb)){
 		$_text_to_show = htmlTextInput("txt",20,$entry,"",'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"',"text","100%");

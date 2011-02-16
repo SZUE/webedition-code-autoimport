@@ -18,20 +18,53 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$l_xhtml_debug['wrong_attribute']['text']      = 'Das Attribut "%s" existiert nicht im Element "&lt;%s&gt;".';
-$l_xhtml_debug['wrong_attribute']['js']        = 'Das Attribut \"%s\" existiert nicht im Element \"<%s>\".';
-$l_xhtml_debug['wrong_attribute']['error_log'] = 'Das Attribut "%s" existiert nicht im Element "<%s>".';
-
-$l_xhtml_debug['missing_attribute']['text']      = 'Das Pflicht-Attribut "%s" fehlt im Element "&lt;%s&gt;".';
-$l_xhtml_debug['missing_attribute']['js']        = 'Das Pflicht-Attribut \"%s\" fehlt im Element \"<%s>\".';
-$l_xhtml_debug['missing_attribute']['error_log'] = 'Das Pflicht-Attribut "%s" fehlt im Element "<%s>".';
-
-$l_xhtml_debug['wrong_element']['text']      = 'Das Element "&lt;%s&gt;" existiert nicht.';
-$l_xhtml_debug['wrong_element']['js']        = 'Das Element \"<%s>\" existiert nicht.';
-$l_xhtml_debug['wrong_element']['error_log'] = 'Das Element "<%s>" existiert nicht.';
-
-$l_xhtml_debug['removed_element']['text'] = 'Es wurde entfernt.';
-
-?>
+$l_validation = array(
+		'headline' => 'Online-Validierung dieses Dokuments.',
+//  variables for checking html files.
+		'description' => 'Sie können hier einige Dienste des Webs nutzen, um Ihre Seiten nach Validität, bzw. Zugänglichkeit zu testen.',
+		'available_services' => 'Eingetragene Dienste',
+		'category' => 'Kategorie',
+		'service_name' => 'Name des Diensts',
+		'service' => 'Dienst',
+		'host' => 'Host',
+		'path' => 'Pfad',
+		'ctype' => 'Datei-Typ',
+		'ctype' => 'Erkennungsmerkmal für den Zielserver, um was für eine Datei es sich handelt. (text/html oder text/css)',
+		'fileEndings' => 'Datei-Endungen',
+		'fileEndings' => 'Dateiendungen für den dieser Service benutzt werden soll, können hier eingetragen werden. (.html,.css)',
+		'method' => 'Methode',
+		'checkvia' => 'Verschicken per',
+		'checkvia_upload' => 'Datei-Upload',
+		'checkvia_url' => 'URL-Übergabe',
+		'varname' => 'Variablenname',
+		'varname' => '(Name des HTML-Eingabefelds der Datei/ URL eintragen)',
+		'additionalVars' => 'Zusatz-Parameter',
+		'additionalVars' => 'optional: var1=wert1&var2=wert2&...',
+		'active' => 'Aktiv',
+		'active' => 'Sie können Dienste zeitweise ausblenden.',
+		'result' => 'Ergebnis',
+		'no_services_available' => 'Für diesen Dateityp sind noch keine Dienste eingetragen.',
+//  the different predefined services
+		'adjust_service' => 'Validierungsdienste bearbeiten',
+		'art_custom' => 'Benutzerdefinierte Dienste',
+		'art_default' => 'Voreingestellte Dienste',
+		'category_xhtml' => '(X)HTML',
+		'category_links' => 'Links',
+		'category_css' => 'Cascading Style Sheets',
+		'category_accessibility' => 'Zugänglichkeit',
+		'edit_service' => array(
+				'new' => 'Neuer Dienst',
+				'saved_success' => 'Der Dienst wurde gespeichert.',
+				'saved_failure' => 'Der Dienst konnte nicht gespeichert werden.',
+				'servicename_already_exists' => 'Ein Dienst mit diesem Namen existiert bereits.',
+				'delete_success' => 'Der Dienst wurde erfolgreich gelöscht.',
+				'delete_failure' => 'Der Dienst konnte nicht gelöscht werden.',
+		),
+//  services for html
+		'service_xhtml_upload' => '(X)HTML Validierung des W3C per Datei-Upload',
+		'service_xhtml_url' => '(X)HTML Validierung des W3C per URL-Übergabe',
+//  services for css
+		'service_css_upload' => 'CSS Validierung per Datei-Upload',
+		'service_css_url' => 'CSS Validierung per URL-Übergabe',
+		'connection_problems' => '<strong>Bei der Verbindung zu dem gewählten Dienst ist ein Fehler aufgetreten.</strong><br /><br />Bitte beachten Sie: Die Option "URL-Übergabe" kann nur verwendet werden, wenn Ihre webEdition-Installation vom Internet (also auch ausserhalb ihres lokalen Netzwerks) aus zu erreichen ist. Dies ist nicht der Fall bei einer lokalen Installation (Localhost).<br /><br />Ebenso können Probleme mit Firewalls und Proxy-Servern auftreten. Überprüfen Sie in diesen Fällen bitte Ihre Konfiguration.<br /><br />HTTP-Antwort: %s',
+);

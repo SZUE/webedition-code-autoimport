@@ -20,10 +20,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
 
 protect();
 
@@ -105,7 +104,7 @@ $we_button = new we_button();
  		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr valign="middle">
 				<td width="10"><?php print getPixel(10,49); ?></td>
-				<td width="70" class="defaultfont"><b><?php print $l_fileselector["lookin"]?></b></td>
+				<td width="70" class="defaultfont"><b><?php print g_l('fileselector',"[lookin]")?></b></td>
 				<td width="10"><?php print getPixel(10,29); ?></td>
 				<td><select name="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
 						<option value="/">/</option>
@@ -143,10 +142,10 @@ $we_button = new we_button();
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
          <tr>
             <td><?php print getPixel(25,20)?></td>
-            <td class="selector"><b><a href="#" onclick="reorder('name');"><?php print $l_fileselector["filename"]?></a></b></td>
-            <td class="selector"><b><a href="#" onclick="reorder('type');"><?php print $l_fileselector["type"]?></b></a></td>
-            <td class="selector"><b><a href="#" onclick="reorder('date');"><?php print $l_fileselector["modified"]?></b></a></td>
-            <td class="selector"><b><a href="#" onclick="reorder('size');"><?php print $l_fileselector["filesize"]?></b></a></td>
+            <td class="selector"><b><a href="#" onclick="reorder('name');"><?php print g_l('fileselector',"[filename]")?></a></b></td>
+            <td class="selector"><b><a href="#" onclick="reorder('type');"><?php print g_l('fileselector',"[type]")?></b></a></td>
+            <td class="selector"><b><a href="#" onclick="reorder('date');"><?php print g_l('fileselector',"[modified]")?></b></a></td>
+            <td class="selector"><b><a href="#" onclick="reorder('size');"><?php print g_l('fileselector',"[filesize]")?></b></a></td>
          </tr>
          <tr>
             <td width="25"><?php print getPixel(25,1)?></td>

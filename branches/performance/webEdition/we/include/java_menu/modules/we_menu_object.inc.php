@@ -20,10 +20,9 @@
 
    if(defined("OBJECT_TABLE")){
 
-   	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/javaMenu/javaMenu_object.inc.php");
 
 	// File > unpublished objects
-	$we_menu["1115000"]["text"] = $l_we_javaMenu["object"]["unpublished_objects"] . "...";
+	$we_menu["1115000"]["text"] = g_l('javaMenu_object','[unpublished_objects]') . "...";
 	$we_menu["1115000"]["parent"] = "1000000";
 	$we_menu["1115000"]["cmd"] = "openUnpublishedObjects";
 	$we_menu["1115000"]["perm"] = "CAN_SEE_OBJECTFILES || ADMINISTRATOR";
@@ -32,7 +31,7 @@
 //  File > open
 
 	// File > open > Object
-	$we_menu["1030300"]["text"] = $l_we_javaMenu["object"]["open_object"] . "...";
+	$we_menu["1030300"]["text"] = g_l('javaMenu_object','[open_object]') . "...";
 	$we_menu["1030300"]["parent"] = "1030000";
 	$we_menu["1030300"]["cmd"] = "open_objectFile";
 	$we_menu["1030300"]["perm"] = "CAN_SEE_OBJECTFILES || ADMINISTRATOR";
@@ -41,7 +40,7 @@
 	if ($_SESSION["we_mode"] == "normal") {
 
 		// File > Open > Class
-		$we_menu["1030400"]["text"] = $l_we_javaMenu["object"]["open_class"] . "...";
+		$we_menu["1030400"]["text"] = g_l('javaMenu_object','[open_class]') . "...";
 		$we_menu["1030400"]["parent"] = "1030000";
 		$we_menu["1030400"]["cmd"] = "open_object";
 		$we_menu["1030400"]["perm"] = "CAN_SEE_OBJECTS || ADMINISTRATOR";
@@ -54,14 +53,14 @@
 	if ($_SESSION["we_mode"] == "normal") {
 
 		// File > new > Class
-		$we_menu["1010700"]["text"] = $l_we_javaMenu["object"]["class"];
+		$we_menu["1010700"]["text"] = g_l('javaMenu_object','[class]');
 		$we_menu["1010700"]["parent"] = "1010000";
 		$we_menu["1010700"]["cmd"] = "new_object";
 		$we_menu["1010700"]["perm"] = "NEW_OBJECT || ADMINISTRATOR";
 		$we_menu["1010700"]["enabled"] = "1";
 
 		// File > new > directory > objectfolder
-		$we_menu["1011003"]["text"] = $l_we_javaMenu["object"]["object_directory"];
+		$we_menu["1011003"]["text"] = g_l('javaMenu_object','[object_directory]');
 		$we_menu["1011003"]["parent"] = "1011000";
 		$we_menu["1011003"]["cmd"] = "new_objectfile_folder";
 		$we_menu["1011003"]["perm"] = "NEW_OBJECTFILE_FOLDER || ADMINISTRATOR";
@@ -69,7 +68,7 @@
 	}
 
 	// File > new > Object
-	$we_menu["1010800"]["text"] = $l_we_javaMenu["object"]["object"];
+	$we_menu["1010800"]["text"] = g_l('javaMenu_object','[object]');
     $we_menu["1010800"]["parent"] = "1010000";
     $we_menu["1010800"]["perm"] = "NEW_OBJECTFILE || ADMINISTRATOR";
     $we_menu["1010800"]["enabled"] = "0";
@@ -112,14 +111,14 @@
 	if ($_SESSION["we_mode"] == "normal") {
 
 		// File > Delete > Objects
-		$we_menu["1080300"]["text"] = $l_we_javaMenu["object"]["objects"];
+		$we_menu["1080300"]["text"] = g_l('javaMenu_object','[objects]');
 		$we_menu["1080300"]["parent"] = "1080000";
 		$we_menu["1080300"]["cmd"] = "delete_objectfile";
 		$we_menu["1080300"]["perm"] = "DELETE_OBJECTFILE || ADMINISTRATOR";
 		$we_menu["1080300"]["enabled"] = "1";
 
 		// File > Delete > Classes
-		$we_menu["1080400"]["text"] = $l_we_javaMenu["object"]["classes"];
+		$we_menu["1080400"]["text"] = g_l('javaMenu_object','[classes]');
 		$we_menu["1080400"]["parent"] = "1080000";
 		$we_menu["1080400"]["cmd"] = "delete_object";
 		$we_menu["1080400"]["perm"] = "DELETE_OBJECT || ADMINISTRATOR";
@@ -127,7 +126,7 @@
 
 		// File > Delete > Objectscache
 		if(we_hasPerm("ADMINISTRATOR")){
-			$we_menu["1080600"]["text"] = $l_javaMenu["cache"] . " (".$l_we_javaMenu["object"]["objects"] . ")";
+			$we_menu["1080600"]["text"] = g_l('javaMenu_global','[cache]') . " (".g_l('javaMenu_object','[objects]') . ")";
 			$we_menu["1080600"]["parent"] = "1080000";
 			$we_menu["1080600"]["cmd"] = "delete_objectfile_cache";
 	        $we_menu["1080600"]["perm"] = "ADMINISTRATOR";
@@ -135,7 +134,7 @@
 		}
 		// File > move
 		if ($_SESSION["we_mode"] == "normal") {
-			$we_menu["1090300"]["text"] = $l_we_javaMenu["object"]["objects"];
+			$we_menu["1090300"]["text"] = g_l('javaMenu_object','[objects]');
 			$we_menu["1090300"]["parent"] = "1090000";
 			$we_menu["1090300"]["cmd"] = "move_objectfile";
 			$we_menu["1090300"]["perm"] = "MOVE_OBJECTFILE || ADMINISTRATOR";

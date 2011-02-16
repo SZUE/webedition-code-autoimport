@@ -23,7 +23,6 @@ $tagName = $_REQUEST['we_cmd'][1];
 $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
 $GLOBALS['TagRefURLName'] = strtolower($tagName);
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/taged.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tag.inc.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 
@@ -37,7 +36,7 @@ if (function_exists('protect')) {
 $weTag = weTagData::getTagData($tagName);
 
 if ( !$weTag ) {
-	print sprintf($l_taged['tag_not_found'], $tagName);
+	print sprintf(g_l('taged','[tag_not_found]'), $tagName);
 	exit;
 }
 
@@ -47,69 +46,69 @@ $we_button = new we_button();
 	// #1 - all attributes of this we:tag (ids of attributes)
 	$_attributes = $weTag->getAllAttributes(true);
 	if (sizeof($_attributes)) {
-		
+
 		$jsAllAttributes = 'var allAttributes = new Array("';
 		$jsAllAttributes .= implode('", "', $_attributes);
 		$jsAllAttributes .= '");';
-		
+
 	} else {
 		$jsAllAttributes = 'var allAttributes = new Array();';
 	}
-	
+
 	// #2 all required attributes
 	$_reqAttributes = $weTag->getRequiredAttributes();
 	$jsReqAttributes = "var reqAttributes = new Object();";
 	foreach ($_reqAttributes as $_attribName) {
 		$jsReqAttributes .= "\n\treqAttributes[\"$_attribName\"] = 1;";
 	}
-	
+
 	// #3 all neccessary stuff for typeAttribute
 	if ($typeAttribute = $weTag->getTypeAttribute()) {
-		
+
 		// name of the attribute
 		$typeAttributeJs = "var typeAttributeId = \"" . $typeAttribute->getIdName() . "\";\n";
-		
+
 		// allowed attributes
 		$_typeOptions = $weTag->getTypeAttributeOptions();
-		
+
 		if ($_typeOptions) {
-			
+
 			$typeAttributeJs .= "var typeAttributeAllows = new Object();\n";
-			
+
 			foreach ($_typeOptions as $option) {
-				
+
 				$_allowedAttribs = $option->getAllowedAttributes($_attributes);
-				
+
 				if (sizeof($_allowedAttribs)) {
-					
+
 					$typeAttributeJs .= "\ttypeAttributeAllows[\"" . $option->getName() . "\"] = new Array(\"";
-					
+
 					$typeAttributeJs .= implode('","', $_allowedAttribs );
 					$typeAttributeJs .= "\");\n";
-					
+
 				} else {
 					$typeAttributeJs .= "\ttypeAttributeAllows[\"" . $option->getName() . "\"] = new Array();\n";
 				}
 			}
-			
+
 			reset($_typeOptions);
 			$typeAttributeJs .= "var typeAttributeRequires = new Object();\n";
-			
+
 			foreach ($_typeOptions as $option) {
-				
+
 				$_reqAttribs = $option->getRequiredAttributes($_attributes);
 				if (sizeof($_reqAttribs)) {
 					$typeAttributeJs .= "\ttypeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
-					
+
 					$typeAttributeJs .= implode('","', $_reqAttribs );
 					$typeAttributeJs .= "\");\n";
-					
+
 				} else {
 					$typeAttributeJs .= "\ttypeAttributeRequires[\"" . $option->getName() . "\"] = new Array();\n";
 				}
-				
+
 			}
-			
+
 			$typeAttributeJs .= "weTagWizard.typeAttributeAllows = typeAttributeAllows;\nweTagWizard.typeAttributeRequires = typeAttributeRequires;\n";
 		}
 		$typeAttributeJs .= "weTagWizard.typeAttributeId = typeAttributeId;\n";
@@ -136,19 +135,19 @@ function closeOnEscape() {
 }
 
 function applyOnEnter(evt) {
-	
+
 	_elemName = "target";
 	if ( typeof(evt["srcElement"]) != "undefined" ) { // IE
 		_elemName = "srcElement";
 	}
-	
+
 	if (	!( evt[_elemName].tagName == "SELECT")
 		) {
 		we_cmd("saveTag");
 		return true;
 	}
 
-	
+
 }
 
 </script>
@@ -166,20 +165,20 @@ weTagWizard.reqAttributes = reqAttributes;
 // information about the type-attribute
 ' . $typeAttributeJs . '
 function we_cmd(){
-    
+
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
-		
+
 		case "switch_type":
 			weTagWizard.changeType(arguments[1]);
 		break;
-		
+
 		case "saveTag":
-		
+
 			if (strWeTag = weTagWizard.getWeTag()) {
-				
-				' . 
+
+				' .
 					( $openAtCursor
 						? '
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
@@ -193,25 +192,25 @@ function we_cmd(){
     			self.close();'
 
 					) . '
-			
-				
-				
+
+
+
 			} else {
-				
+
 				if (weTagWizard.missingFields.length) {
-					
+
 					req = "";
 					for (i=0;i<weTagWizard.missingFields.length;i++) {
 						req += "- " + weTagWizard.missingFields[i] + "\n";
 					}
-					req = "' . $l_taged['fill_required_fields'] . '\n" + req;
+					req = "' . g_l('taged','[fill_required_fields]') . '\n" + req;
 					' . we_message_reporting::getShowMessageCall("req", WE_MESSAGE_WARNING, true) . '
 				} else {
-					' . we_message_reporting::getShowMessageCall($l_taged['no_type_selected'], WE_MESSAGE_WARNING) . '
+					' . we_message_reporting::getShowMessageCall(g_l('taged','[no_type_selected]'), WE_MESSAGE_WARNING) . '
 				}
 			}
 		break;
-		
+
 		case "openDirselector":
 			new jsWindow(url,"we_fileselector",-1,-1,'.WINDOW_DIRSELECTOR_WIDTH.','.WINDOW_DIRSELECTOR_HEIGHT.',true,true,true,true);
 			break;
@@ -250,38 +249,38 @@ $attributesCode = $weTag->getAttributesCodeForTagWizard();
 $defaultValueCode = ($weTag->needsEndTag() ? $weTag->getDefaultValueCodeForTagWizard() : '');
 
 if ($typeAttribCode) {
-	
+
 	$typeAttribCode = "
 	<hr />
 	<fieldset>
-		<div class='legend'><strong>" . $GLOBALS['l_taged']['type_attribute'] . "</strong></div>
+		<div class='legend'><strong>" . g_l('taged','[type_attribute]') . "</strong></div>
 		$typeAttribCode
 	</fieldset>";
 }
 if ($attributesCode) {
-	
+
 	$attributesCode = "
 	<hr />
 	<fieldset>
-		<div class='legend'><strong>" . $GLOBALS['l_taged']['attributes'] . "</strong></div>
-		" . ($typeAttribCode ? '<ul id="no_type_selected_attributes"><li>' . $GLOBALS['l_taged']['no_type_selected'] . '</li></ul>' : '' ) . "
-		" . ($typeAttribCode ? '<ul id="no_attributes_for_type" style="display: none;"><li>' . $GLOBALS['l_taged']['no_attributes_for_type'] . '</li></ul>' : '' ) . "
+		<div class='legend'><strong>" . g_l('taged','[attributes]') . "</strong></div>
+		" . ($typeAttribCode ? '<ul id="no_type_selected_attributes"><li>' . g_l('taged','[no_type_selected]') . '</li></ul>' : '' ) . "
+		" . ($typeAttribCode ? '<ul id="no_attributes_for_type" style="display: none;"><li>' . g_l('taged','[no_attributes_for_type]') . '</li></ul>' : '' ) . "
 		$attributesCode
 	</fieldset>";
 }
 if ($defaultValueCode) {
-	
+
 	$defaultValueCode = "
 	<hr />
 	<fieldset>
-		<div class='legend'><strong>" . we_htmlElement::htmlLabel(array('id'=>'label_weTagData_defaultValue', 'for' => 'weTagData_defaultValue'), $GLOBALS['l_taged']['defaultvalue'] . ':<br />') . "</strong></div>
+		<div class='legend'><strong>" . we_htmlElement::htmlLabel(array('id'=>'label_weTagData_defaultValue', 'for' => 'weTagData_defaultValue'), g_l('taged','[defaultvalue]') . ':<br />') . "</strong></div>
 		$defaultValueCode
 	</fieldset>";
 }
 
 $code = "
 	<fieldset>
-		<div class='legend'><strong>" . $GLOBALS['l_taged']['description'] . "</strong></div>
+		<div class='legend'><strong>" . g_l('taged','[description]') . "</strong></div>
 		" . (isset($l_we_tag[$weTag->getName()]) ? $l_we_tag[$weTag->getName()]['description'] :$weTag->getDescription() )."
 	</fieldset>
 	$typeAttribCode

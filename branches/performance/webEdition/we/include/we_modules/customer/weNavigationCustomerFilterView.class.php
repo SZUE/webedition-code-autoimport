@@ -38,7 +38,7 @@ class weNavigationCustomerFilterView extends weCustomerFilterView {
 		return we_forms::checkboxWithHidden(
 			$_filter->getUseDocumentFilter(),
 			'wecf_useDocumentFilter',
-			$GLOBALS['l_navigation']['useDocumentFilter'],
+			g_l('navigation','[useDocumentFilter]'),
 			false,
 			'defaultfont',
 			'updateView();',

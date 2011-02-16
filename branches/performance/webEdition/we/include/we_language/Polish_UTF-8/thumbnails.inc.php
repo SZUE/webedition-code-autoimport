@@ -18,84 +18,69 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: thumbnails.inc.php
  * Provides language strings.
  * Language: English
  */
+$l_thumbnails = array(
+		/*		 * ***************************************************************************
+		 * PRELOAD
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * PRELOAD
- *****************************************************************************/
+		'preload' => "Loading preferences, one moment ...", // TRANSLATE
+		'preload_wait' => "Ładuj ustawienia",
+		/*		 * ***************************************************************************
+		 * SAVE
+		 * *************************************************************************** */
 
-$l_thumbnails["preload"] = "Loading preferences, one moment ..."; // TRANSLATE
-$l_thumbnails["preload_wait"] = "Ładuj ustawienia";
+		'save' => "Ustawienia są zapisywane, proszę czekać ...",
+		'save_wait' => "Zapisz ustawienia",
+		'saved' => "Zapisano ustawienia.",
+		'saved_successfully' => "Zapisano ustawienia",
+		/*		 * ***************************************************************************
+		 * THUMBNAILS
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * SAVE
- *****************************************************************************/
+		/**
+		 * JAVASCRIPT
+		 */
+		'new' => "Proszę nadać nazwę nowej miniaturze podglądu!",
+		'delete_prompt' => "Usuń podgląd miniatury \'%s\'! Jesteś pewien?",
+		/**
+		 * CAPTION
+		 */
+		'thumbnails' => "Podgląd miniatury",
+		/**
+		 * NAME
+		 */
+		'name' => "Nazwa",
+		/**
+		 * PROPERTIES
+		 */
+		'properties' => "Właściwości",
+		'width' => "Szerokość",
+		'height' => "Wysokość",
+		'ratio' => "Zachowaj proporcje",
+		'maximize' => "Maksymalizuj w razie potrzeby",
+		'interlace' => "Interlace", // TRANSLATE
+		'quality' => "Quality", // TRANSLATE
 
-$l_thumbnails["save"] = "Ustawienia są zapisywane, proszę czekać ...";
-$l_thumbnails["save_wait"] = "Zapisz ustawienia";
+		/**
+		 * FORMAT
+		 */
+		'format' => "Format zadania",
+		'format_original' => "Oryginalny format",
+		'format_gif' => "Plik GIF",
+		'format_jpg' => "Plik JPEG",
+		'format_png' => "Plik PNG",
+		/*		 * ***************************************************************************
+		 * THUMBNAILS View
+		 * *************************************************************************** */
 
-$l_thumbnails["saved"] = "Zapisano ustawienia.";
-$l_thumbnails["saved_successfully"] = "Zapisano ustawienia";
-
-/*****************************************************************************
- * THUMBNAILS
- *****************************************************************************/
-
-	/**
-	 * JAVASCRIPT
-	 */
-
-	$l_thumbnails["new"] = "Proszę nadać nazwę nowej miniaturze podglądu!";
-	$l_thumbnails["delete_prompt"] = "Usuń podgląd miniatury \'%s\'! Jesteś pewien?";
-
-	/**
-	 * CAPTION
-	 */
-
-	$l_thumbnails["thumbnails"] = "Podgląd miniatury";
-
-	/**
-	 * NAME
-	 */
-
-	$l_thumbnails["name"] = "Nazwa";
-
-	/**
-	 * PROPERTIES
-	 */
-
-	$l_thumbnails["properties"] = "Właściwości";
-	$l_thumbnails["width"] = "Szerokość";
-	$l_thumbnails["height"] = "Wysokość";
-	$l_thumbnails["ratio"] = "Zachowaj proporcje";
-	$l_thumbnails["maximize"] = "Maksymalizuj w razie potrzeby";
-	$l_thumbnails["interlace"] = "Interlace"; // TRANSLATE
-	$l_thumbnails["quality"] = "Quality"; // TRANSLATE
-
-	/**
-	 * FORMAT
-	 */
-
-	$l_thumbnails["format"] = "Format zadania";
-	$l_thumbnails["format_original"] = "Oryginalny format";
-	$l_thumbnails["format_gif"] = "Plik GIF";
-	$l_thumbnails["format_jpg"] = "Plik JPEG";
-	$l_thumbnails["format_png"] = "Plik PNG";
-
-/*****************************************************************************
- * THUMBNAILS View
- *****************************************************************************/
-
-	$l_thumbnails["add_descriptiontext"] = "Aby dodać nową mianiaturę kliknij w klawisz Plus";
-	$l_thumbnails["add_description_nogdlib"] = "Aby funkcja podglądu miniatur była dostępna wymagana jest na serwerze instalacja GD Library!";
-	$l_thumbnails["format_not_supported"] = "Format grafiki nie jest obsługiwany przez zainstalowaną GD Library!";
-	$l_thumbnails["no_image_uploaded"] = "Najpierw załaduj plik graficzny!";
-
-	$l_thumbnails["create_thumbnails"] = "Utwórz podgląd miniatury";
-?>
+		'add_descriptiontext' => "Aby dodać nową mianiaturę kliknij w klawisz Plus",
+		'add_description_nogdlib' => "Aby funkcja podglądu miniatur była dostępna wymagana jest na serwerze instalacja GD Library!",
+		'format_not_supported' => "Format grafiki nie jest obsługiwany przez zainstalowaną GD Library!",
+		'no_image_uploaded' => "Najpierw załaduj plik graficzny!",
+		'create_thumbnails' => "Utwórz podgląd miniatury",
+);

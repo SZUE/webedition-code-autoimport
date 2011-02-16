@@ -1245,7 +1245,6 @@ class weWorkflowView extends weWorkflowBase{
 
 	function getDocumentInfo(){
 		if($this->documentDef->workflow->Type==WE_WORKFLOW_OBJECT)return $this->getObjectInfo();
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 		$_space = 100;
 		$_parts = array();
@@ -1262,8 +1261,8 @@ class weWorkflowView extends weWorkflowBase{
 	} </script>';
 
 		//	Part - file-information
-		array_push(	$_parts, array(	"headline" => $l_we_editor_info["content_type"],
-									"html"     => $l_we_editor_info[$this->documentDef->document->ContentType],
+		array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[content_type]"),
+									"html"     => g_l('weEditorInfo','['.$this->documentDef->document->ContentType.']'),
 									"space"    => $_space,
 									"noline"   => (($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type!=WE_WORKFLOW_OBJECT) ? 1 : 0)
 								)
@@ -1271,7 +1270,7 @@ class weWorkflowView extends weWorkflowBase{
 		if($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type!=WE_WORKFLOW_OBJECT){
 			$GLOBALS["we_doc"]=$this->documentDef->document;
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
-			array_push(	$_parts, array(	"headline" => $l_we_editor_info["file_size"],
+			array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[file_size]"),
 										"html"     => round(($fs / 1024),2)."&nbsp;KB&nbsp;(".number_format ($fs,0,",",".")."&nbsp;Byte)",
 										"space"    => $_space
 									)
@@ -1280,8 +1279,8 @@ class weWorkflowView extends weWorkflowBase{
 
 		//	Part - publish-information
 
-		array_push(	$_parts, array(	"headline" => $l_we_editor_info["creation_date"],
-									"html"     => date($l_we_editor_info["date_format"], $this->documentDef->document->CreationDate),
+		array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[creation_date]"),
+									"html"     => date(g_l('weEditorInfo',"[date_format]"), $this->documentDef->document->CreationDate),
 									"space"    => $_space,
 									"noline"   => 1
 								)
@@ -1298,8 +1297,8 @@ class weWorkflowView extends weWorkflowBase{
 						);
 		}
 
-			array_push(	$_parts, array(	"headline" => $l_we_editor_info["changed_date"],
-										"html"     => date($l_we_editor_info["date_format"], $this->documentDef->document->ModDate),
+			array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[changed_date]"),
+										"html"     => date(g_l('weEditorInfo',"[date_format]"), $this->documentDef->document->ModDate),
 										"space"    => $_space,
 										"noline"   => 1
 									)
@@ -1317,8 +1316,8 @@ class weWorkflowView extends weWorkflowBase{
 		}
 
 		if($this->documentDef->document->ContentType == "text/html" || $this->documentDef->document->ContentType == "text/webedition"){
-			array_push(	$_parts, array(	"headline" => $l_we_editor_info["lastLive"],
-										"html"     => ($this->documentDef->document->Published ? date($l_we_editor_info["date_format"],$this->documentDef->document->Published) : "-"),
+			array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[lastLive]"),
+										"html"     => ($this->documentDef->document->Published ? date(g_l('weEditorInfo',"[date_format]"),$this->documentDef->document->Published) : "-"),
 										"space"    => $_space
 									)
 						);
@@ -1335,20 +1334,20 @@ class weWorkflowView extends weWorkflowBase{
 					$this->documentDef->document->ContentType=="image/*"  ||
 					$this->documentDef->document->ContentType=="application/x-shockwave-flash");
 
-			array_push(	$_parts, array(	"headline" => $l_we_editor_info["local_path"],
+			array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[local_path]"),
 										"html"     => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onMouseOver="showtip(this,event,\''.$rp.'\')" onMouseOut="hidetip()"  onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.shortenPath($rp,74).'</a>',
 										"space"    => $_space,
 										"noline"   => 1
 									)
 						);
 
-			array_push(	$_parts, array(	"headline" => $l_we_editor_info["http_path"],
+			array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[http_path]"),
 										"html"     => ($showlink ? '<a href="'.$http.'" target="_blank" onMouseOver="showtip(this,event,\''.$http.'\')" onMouseOut="hidetip()">' : '').shortenPath($http,74).($showlink ? '</a>' : ''),
 										"space"    => $_space
 									)
 						);
 			array_push(	$_parts, array(	"headline" => '',
-										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.$l_we_editor_info["openDocument"].'</a>',
+										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.g_l('weEditorInfo',"[openDocument]").'</a>',
 										"space"    => $_space
 									)
 						);
@@ -1369,8 +1368,7 @@ class weWorkflowView extends weWorkflowBase{
 
 
 	function getObjectInfo(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 
 
 		$_parts = array();
@@ -1383,15 +1381,15 @@ class weWorkflowView extends weWorkflowBase{
 									"noline"   => 1
 									)
 					);
-		array_push($_parts, array(	"headline" => $l_we_editor_info["content_type"],
-									"html"     => $l_we_editor_info[$this->documentDef->document->ContentType],
+		array_push($_parts, array(	"headline" => g_l('weEditorInfo',"[content_type]"),
+									"html"     => g_l('weEditorInfo','['.$this->documentDef->document->ContentType.']'),
 									"space"    => $_space,
 									)
 					);
 
 		// publish information
-		array_push($_parts, array(	"headline" => $l_we_editor_info["creation_date"],
-									"html"     => date($l_we_editor_info["date_format"], $this->documentDef->document->CreationDate),
+		array_push($_parts, array(	"headline" => g_l('weEditorInfo',"[creation_date]"),
+									"html"     => date(g_l('weEditorInfo',"[date_format]"), $this->documentDef->document->CreationDate),
 									"space"    => $_space,
 									"noline"   => 1
 									)
@@ -1406,8 +1404,8 @@ class weWorkflowView extends weWorkflowBase{
 										)
 						);
 
-		array_push($_parts, array(	"headline" => $l_we_editor_info["changed_date"],
-									"html"     => date($l_we_editor_info["date_format"], $this->documentDef->document->ModDate),
+		array_push($_parts, array(	"headline" => g_l('weEditorInfo',"[changed_date]"),
+									"html"     => date(g_l('weEditorInfo',"[date_format]"), $this->documentDef->document->ModDate),
 									"space"    => $_space,
 									"noline"   => 1
 									)
@@ -1422,14 +1420,14 @@ class weWorkflowView extends weWorkflowBase{
 										)
 						);
 
-		array_push($_parts, array(	"headline" => $l_we_editor_info["lastLive"],
-									"html"     => ($this->documentDef->document->Published ? date($l_we_editor_info["date_format"],$this->documentDef->document->Published) : "-"),
+		array_push($_parts, array(	"headline" => g_l('weEditorInfo',"[lastLive]"),
+									"html"     => ($this->documentDef->document->Published ? date(g_l('weEditorInfo',"[date_format]"),$this->documentDef->document->Published) : "-"),
 									"space"    => $_space,
 									)
 					);
 
 		array_push(	$_parts, array(	"headline" => '',
-										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.$l_we_editor_info["openDocument"].'</a>',
+										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.g_l('weEditorInfo',"[openDocument]").'</a>',
 										"space"    => $_space
 									)
 					);
@@ -1441,7 +1439,7 @@ class weWorkflowView extends weWorkflowBase{
 					);
 
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 		$out  = '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
 		<script language="JavaScript" type="text/javascript">function openToEdit(tab,id,contentType){
@@ -1481,8 +1479,6 @@ class weWorkflowView extends weWorkflowBase{
 
 
 	function getDocumentStatus($workflowDocID){
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
-
 		$we_button = new we_button();
 
 		$db=new DB_WE;
@@ -1498,8 +1494,8 @@ class weWorkflowView extends weWorkflowBase{
 
 			$workflowStep=new weWorkflowStep($sv->workflowStepID);
 
-			$now=date($l_we_editor_info["date_format"],time());
-			$start=date($l_we_editor_info["date_format"],$sv->startDate);
+			$now=date(g_l('weEditorInfo',"[date_format]"),time());
+			$start=date(g_l('weEditorInfo',"[date_format]"),$sv->startDate);
 
 			$secs=time()-$sv->startDate;
 			$elapsed=weWorkflowView::getTime($secs);
@@ -1522,7 +1518,7 @@ class weWorkflowView extends weWorkflowBase{
 				$notfinished_font="middlefontgray";
 			}
 
-			$end=date($l_we_editor_info["date_format"],$sv->startDate+ round($workflowStep->Worktime*3600));
+			$end=date(g_l('weEditorInfo',"[date_format]"),$sv->startDate+ round($workflowStep->Worktime*3600));
 
 			$content[$counter][0]["dat"]=($sv->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').($counter+1)."</div>";
 			$content[$counter][0]["height"]="";
@@ -1605,7 +1601,6 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getLogForDocument($docID,$type=0){
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 		$db=new DB_WE;
 
 		$we_button = new we_button();
@@ -1638,7 +1633,7 @@ class weWorkflowView extends weWorkflowBase{
 				$content[$counter][1]["height"]="";
 				$content[$counter][1]["align"]="";
 
-				$content[$counter][2]["dat"]='<div class="middlefont"><nobr>'.date($l_we_editor_info["date_format"],$v["logDate"])."</nobr></div>";
+				$content[$counter][2]["dat"]='<div class="middlefont"><nobr>'.date(g_l('weEditorInfo',"[date_format]"),$v["logDate"])."</nobr></div>";
 				$content[$counter][2]["height"]="";
 				$content[$counter][2]["align"]="right";
 

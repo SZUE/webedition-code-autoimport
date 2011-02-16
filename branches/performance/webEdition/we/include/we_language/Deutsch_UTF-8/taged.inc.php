@@ -18,23 +18,21 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: taged.inc.php
  * Provides language strings.
  * Language: Deutsch
  */
-$l_taged['description'] = "Beschreibung";
-$l_taged['tagreference_linktext'] = "zur Tagreferenz";
-$l_taged['required'] = "Alle Felder, welche mit * markiert sind, müssen ausgefüllt sein!";
-$l_taged['fill_required_fields'] = "Die folgenden Pflichtfelder müssen ausgefüllt werden";
-$l_taged['type_attribute'] = "Typ - Attribut";
-$l_taged['select_type'] = "-- Typ auswählen --";
-$l_taged['attributes'] = "Attribute";
-$l_taged['defaultvalue'] = "Standardwert";
-$l_taged['no_type_selected'] = "Bitte wählen Sie zunächst ein Typ-Attribut aus.";
-$l_taged['no_attributes_for_type'] = "Für diesen Typ gibt es keine Attribute.";
-$l_taged['tag_not_found'] = "Die für den Tag-Wizard benötigte Datei mit Informationen über we:%s konnte nicht gefunden werden. Wenn Sie einen eigenen we:tag angelegt haben, kontrollieren Sie bitte, ob die Datei im richtigen Verzeichnis (/webEdition/we/include/we_tags/custom_tags/) abgespeichert wurde.";
-
-?>
+$l_taged = array(
+		'description' => "Beschreibung",
+		'tagreference_linktext' => "zur Tagreferenz",
+		'required' => "Alle Felder, welche mit * markiert sind, müssen ausgefüllt sein!",
+		'fill_required_fields' => "Die folgenden Pflichtfelder müssen ausgefüllt werden",
+		'type_attribute' => "Typ - Attribut",
+		'select_type' => "-- Typ auswählen --",
+		'attributes' => "Attribute",
+		'defaultvalue' => "Standardwert",
+		'no_type_selected' => "Bitte wählen Sie zunächst ein Typ-Attribut aus.",
+		'no_attributes_for_type' => "Für diesen Typ gibt es keine Attribute.",
+		'tag_not_found' => "Die für den Tag-Wizard benötigte Datei mit Informationen über we:%s konnte nicht gefunden werden. Wenn Sie einen eigenen we:tag angelegt haben, kontrollieren Sie bitte, ob die Datei im richtigen Verzeichnis (/webEdition/we/include/we_tags/custom_tags/) abgespeichert wurde.",
+);

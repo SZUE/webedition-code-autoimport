@@ -18,15 +18,14 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: enc_tags.inc.php
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_tags"]["int_href"] = "Internal";
-$GLOBALS["l_tags"]["ext_href"] = "External";
-$GLOBALS["l_tags"]["include_file"] = "Select file for we:include";
-$GLOBALS["l_tags"]["open_sidebar"] = "Open sidebar";
-?>
+$l_tags = array(
+		'int_href' => "Internal",
+		'ext_href' => "External",
+		'include_file' => "Select file for we:include",
+		'open_sidebar' => "Open sidebar",
+);

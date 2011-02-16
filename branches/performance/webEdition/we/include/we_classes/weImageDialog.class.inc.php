@@ -24,8 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/thumbnails.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
 
 class weImageDialog extends weDialog{
 
@@ -276,7 +274,7 @@ class weImageDialog extends weDialog{
 			$thumbnails="";
 
 			$_longdesc   = htmlFormElementTable(htmlTextInput("we_dialog_args[longdesc]",30,str_replace('"','&quot;',(isset($this->args["longdesc"]) ? $this->args["longdesc"] : "") ),"",'',"text",520),
-												$GLOBALS["l_we_class"]["longdesc_text"]);
+												g_l('weClass',"[longdesc_text]"));
 
 		}else{
 			$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
@@ -353,7 +351,7 @@ class weImageDialog extends weDialog{
 			$yuiSuggest->setAcId("Longdesc");
 			$yuiSuggest->setContentType("folder,text/webedition,text/html");
 			$yuiSuggest->setInput("we_dialog_args[longdescsrc]",str_replace('"','&quot;',(isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "") ));
-			$yuiSuggest->setLabel($GLOBALS["l_we_class"]["longdesc_text"]);
+			$yuiSuggest->setLabel(g_l('weClass',"[longdesc_text]"));
 			$yuiSuggest->setMaxResults(7);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult("we_dialog_args[longdescid]",(isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
@@ -439,7 +437,7 @@ class weImageDialog extends weDialog{
 
 	$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
 
-	$ratio = we_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false),"we_dialog_args[ratio]",$GLOBALS["l_thumbnails"]["ratio"],false,"defaultfont",$onclick);
+	$ratio = we_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false),"we_dialog_args[ratio]",g_l('thumbnails',"[ratio]"),false,"defaultfont",$onclick);
 
 	$parts = array();
 

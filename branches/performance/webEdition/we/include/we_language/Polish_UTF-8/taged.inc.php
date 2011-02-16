@@ -18,22 +18,21 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: taged.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_taged["description"] = "Description"; // TRANSLATE
-$l_taged['tagreference_linktext'] = "to the tag reference"; // TRANSLATE
-$l_taged["required"] = "Wszystkie pola oznaczone * muszą zostać wypełnione!";
-$l_taged['fill_required_fields'] = "The following required fields need to be filled."; // TRANSLATE
-$l_taged['type_attribute'] = "Type - Attribute"; // TRANSLATE
-$l_taged['select_type'] = "-- Select type--"; // TRANSLATE
-$l_taged['attributes'] = "Attributes"; // TRANSLATE
-$l_taged['no_type_selected'] = "Please select a type first."; // TRANSLATE
-$l_taged['no_attributes_for_type'] = "There are no attributes for this type of value."; // TRANSLATE
-$l_taged['defaultvalue'] = "Defaultvalue";
-$l_taged['tag_not_found'] = "The required file for the tag-wizard was not found. If you use a custom we:tag, make sure to save the relating tag-wizard file in the correct folder (/webEdition/we/include/we_tags/custom_tags/)."; // TRANSLATE
-?>
+$l_taged = array(
+		'description' => "Description", // TRANSLATE
+		'tagreference_linktext' => "to the tag reference", // TRANSLATE
+		'required' => "Wszystkie pola oznaczone * muszą zostać wypełnione!",
+		'fill_required_fields' => "The following required fields need to be filled.", // TRANSLATE
+		'type_attribute' => "Type - Attribute", // TRANSLATE
+		'select_type' => "-- Select type--", // TRANSLATE
+		'attributes' => "Attributes", // TRANSLATE
+		'no_type_selected' => "Please select a type first.", // TRANSLATE
+		'no_attributes_for_type' => "There are no attributes for this type of value.", // TRANSLATE
+		'defaultvalue' => "Defaultvalue",
+		'tag_not_found' => "The required file for the tag-wizard was not found. If you use a custom we:tag, make sure to save the relating tag-wizard file in the correct folder (/webEdition/we/include/we_tags/custom_tags/).", // TRANSLATE
+);

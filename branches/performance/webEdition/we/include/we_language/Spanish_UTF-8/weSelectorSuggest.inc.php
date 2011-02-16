@@ -18,19 +18,17 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: weSelectorSuggest.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_weSelectorSuggest["no_template"] = "The indicated template does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_document"] = "The indicated document does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_folder"]   = "The indicated directory does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_class"]    = "The indicated class does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_object"]   = "The indicated object does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_image"]    = "The indicated image does not exist."; // TRANSLATE
-$l_weSelectorSuggest["no_result"]   = "Your request did not render a result."; // TRANSLATE
-
-?>
+$l_weSelectorSuggest = array(
+		'no_template' => "The indicated template does not exist.", // TRANSLATE
+		'no_document' => "The indicated document does not exist.", // TRANSLATE
+		'no_folder' => "The indicated directory does not exist.", // TRANSLATE
+		'no_class' => "The indicated class does not exist.", // TRANSLATE
+		'no_object' => "The indicated object does not exist.", // TRANSLATE
+		'no_image' => "The indicated image does not exist.", // TRANSLATE
+		'no_result' => "Your request did not render a result.", // TRANSLATE
+);

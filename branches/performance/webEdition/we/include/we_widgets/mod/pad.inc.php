@@ -27,10 +27,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
  */
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 /**
- * The language file for the cockpit
- */
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
-/**
  * The notepad widtget functions
  */
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/mod/wePadFunctions.inc.php");
@@ -81,7 +77,7 @@ switch ($_REQUEST["we_cmd"][2]) {
 		if ($q_Valid == "always") {
 			$q_ValidUntil = "3000-01-01";
 			$q_ValidFrom = date("Y-m-d");
-		} else 
+		} else
 			if ($q_Valid == "date") {
 				$q_ValidUntil = "3000-01-01";
 			}
@@ -157,14 +153,14 @@ if (!$bDisplay) {
 }
 // validity settings
 $sctValid = htmlSelect("sct_valid", array(
-	$l_cockpit['always'], $l_cockpit['from_date'], $l_cockpit['period']
-), 1, $l_cockpit['always'], false, 'style="width:100px;" onChange="toggleTblValidity()"', 'value', 100, 'middlefont');
+		g_l('cockpit','[always]'), g_l('cockpit','[from_date]'), g_l('cockpit','[period]')
+), 1, g_l('cockpit','[always]'), false, 'style="width:100px;" onChange="toggleTblValidity()"', 'value', 100, 'middlefont');
 $oTblValidity = new we_htmlTable(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => "oTblValidity"
 ), 1, 3);
-$oTblValidity->setCol(0, 0, null, getDateSelector($l_cockpit['from'], "f_ValidFrom", "_from"));
+$oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit','[from]'), "f_ValidFrom", "_from"));
 $oTblValidity->setCol(0, 1, null, getPixel(10, 1));
-$oTblValidity->setCol(0, 2, null, getDateSelector($l_cockpit['until'], "f_ValidUntil", "_until"));
+$oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit','[until]'), "f_ValidUntil", "_until"));
 $oTblPeriod = new we_htmlTable(array(
 	"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 2);
@@ -177,83 +173,83 @@ $oTblPeriod->setCol(0, 1, array(
 
 // Edit note prio settings
 $rdoPrio[0] = we_forms::radiobutton(
-		$value = 0, 
-		$checked = 0, 
-		$name = "rdo_prio", 
-		$text = $l_cockpit['high'], 
-		$uniqid = true, 
-		$class = "middlefont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "rdo_prio",
+		$text = g_l('cockpit','[high]'),
+		$uniqid = true,
+		$class = "middlefont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $rdoPrio[1] = we_forms::radiobutton(
-		$value = 1, 
-		$checked = 0, 
-		$name = "rdo_prio", 
-		$text = $l_cockpit['medium'], 
-		$uniqid = true, 
-		$class = "middlefont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 1,
+		$checked = 0,
+		$name = "rdo_prio",
+		$text = g_l('cockpit','[medium]'),
+		$uniqid = true,
+		$class = "middlefont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $rdoPrio[2] = we_forms::radiobutton(
-		$value = 2, 
-		$checked = 1, 
-		$name = "rdo_prio", 
-		$text = $l_cockpit['low'], 
-		$uniqid = true, 
-		$class = "middlefont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 2,
+		$checked = 1,
+		$name = "rdo_prio",
+		$text = g_l('cockpit','[low]'),
+		$uniqid = true,
+		$class = "middlefont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oTblPrio = new we_htmlTable(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(
-		0, 
-		1, 
-		null, 
+		0,
+		1,
+		null,
 		we_htmlElement::htmlImg(
 				array(
-					
-						"src" => IMAGE_DIR . "pd/prio_high.gif", 
-						"width" => 13, 
-						"height" => 14, 
+
+						"src" => IMAGE_DIR . "pd/prio_high.gif",
+						"width" => 13,
+						"height" => 14,
 						"style" => "margin-left:5px"
 				)));
 $oTblPrio->setCol(0, 2, null, getPixel(15, 1));
 $oTblPrio->setCol(0, 3, null, $rdoPrio[1]);
 $oTblPrio->setCol(
-		0, 
-		4, 
-		null, 
+		0,
+		4,
+		null,
 		we_htmlElement::htmlImg(
 				array(
-					
-						"src" => IMAGE_DIR . "pd/prio_medium.gif", 
-						"width" => 13, 
-						"height" => 14, 
+
+						"src" => IMAGE_DIR . "pd/prio_medium.gif",
+						"width" => 13,
+						"height" => 14,
 						"style" => "margin-left:5px"
 				)));
 $oTblPrio->setCol(0, 5, null, getPixel(15, 1));
 $oTblPrio->setCol(0, 6, null, $rdoPrio[2]);
 $oTblPrio->setCol(
-		0, 
-		7, 
-		null, 
+		0,
+		7,
+		null,
 		we_htmlElement::htmlImg(
 				array(
-					
-						"src" => IMAGE_DIR . "pd/prio_low.gif", 
-						"width" => 13, 
-						"height" => 14, 
+
+						"src" => IMAGE_DIR . "pd/prio_low.gif",
+						"width" => 13,
+						"height" => 14,
 						"style" => "margin-left:5px"
 				)));
 
@@ -270,50 +266,50 @@ $oTblProps = new we_htmlTable(array(
 ), 9, 2);
 $oTblProps->setCol(0, 0, array(
 	"class" => "middlefont"
-), $l_cockpit['valid'] . '&nbsp;');
+), g_l('cockpit','[valid]') . '&nbsp;');
 $oTblProps->setCol(0, 1, array(
 	"colspan" => 2, "align" => "right"
 ), $oTblPeriod->getHTMLCode());
 $oTblProps->setCol(1, 0, null, getPixel(1, 8));
 $oTblProps->setCol(2, 0, array(
 	"class" => "middlefont"
-), $l_cockpit['prio']);
+), g_l('cockpit','[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTMLCode());
 $oTblProps->setCol(3, 0, null, getPixel(1, 8));
 $oTblProps->setCol(4, 0, array(
 	"class" => "middlefont"
-), $l_cockpit['title']);
+), g_l('cockpit','[title]'));
 $oTblProps->setCol(
-		4, 
-		1, 
-		null, 
+		4,
+		1,
+		null,
 		htmlTextInput(
-				$name = "props_title", 
-				$size = 255, 
-				$value = "", 
-				$maxlength = 255, 
-				$attribs = "", 
-				$type = "text", 
-				$width = "100%", 
+				$name = "props_title",
+				$size = 255,
+				$value = "",
+				$maxlength = 255,
+				$attribs = "",
+				$type = "text",
+				$width = "100%",
 				$height = 0));
 $oTblProps->setCol(5, 0, null, getPixel(1, 8));
 $oTblProps->setCol(6, 0, array(
 	"class" => "middlefont", "valign" => "top"
-), $l_cockpit['note']);
+), g_l('cockpit','[note]'));
 $oTblProps->setCol(
-		6, 
-		1, 
-		null, 
+		6,
+		1,
+		null,
 		we_htmlElement::htmlTextArea(
 				array(
-					
-						'name' => 'props_text', 
-						'id' => 'previewCode', 
-						'style' => 'width:100%;height:60px;', 
-						'class' => 'wetextinput', 
-						'onblur' => 'this.className=\'wetextinput\';', 
+
+						'name' => 'props_text',
+						'id' => 'previewCode',
+						'style' => 'width:100%;height:60px;',
+						'class' => 'wetextinput',
+						'onblur' => 'this.className=\'wetextinput\';',
 						'onfocus' => 'this.className=\'wetextinputselected\''
-				), 
+				),
 				""));
 $oTblProps->setCol(7, 0, null, getPixel(1, 8));
 $oTblProps->setCol(8, 0, array(
@@ -331,14 +327,14 @@ $oTblBtnProps->setCol(0, 0, array(
 // Table with the note list
 $oPad = new we_htmlTable(
 		array(
-			
-				"width" => "100%", 
-				"cellpadding" => "0", 
-				"cellspacing" => "0", 
-				"border" => "0", 
+
+				"width" => "100%",
+				"cellpadding" => "0",
+				"cellspacing" => "0",
+				"border" => "0",
 				"style" => "table-layout:fixed;"
-		), 
-		3, 
+		),
+		3,
 		3);
 $oPad->setCol(0, 0, array(
 	"width" => "6"
@@ -395,26 +391,26 @@ function toggleTblValidity(){
 toggleTblValidity();
 </script>';
 
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle($l_cockpit['notepad']) . STYLESHEET . we_htmlElement::cssElement(
+						we_htmlElement::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . we_htmlElement::cssElement(
 								getCSS()) . we_htmlElement::linkElement(
 								array(
-									
-										"rel" => "stylesheet", 
-										"type" => "text/css", 
-										"href" => JS_DIR . "jscalendar/skins/aqua/theme.css", 
+
+										"rel" => "stylesheet",
+										"type" => "text/css",
+										"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 										"title" => "Aqua"
 								)) . we_htmlElement::jsElement("", array(
 							"src" => JS_DIR . "jscalendar/calendar.js"
 						)) . we_htmlElement::jsElement(
-								"", 
+								"",
 								array(
-									
+
 										"src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js"
 								)) . we_htmlElement::jsElement(
-								"", 
+								"",
 								array(
 									"src" => JS_DIR . "jscalendar/calendar-setup.js"
 								)) . we_htmlElement::jsElement($we_button->create_state_changer(false)) . we_htmlElement::jsElement(
@@ -422,7 +418,7 @@ print
 			var _sObjId='" . $_sObjId . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;
 			var _sType='pad';
-			var _sTb='" . $l_cockpit['notes'] . " - " . $_title . "';
+			var _sTb='" . g_l('cockpit','[notes]') . " - " . $_title . "';
 			function init(){
 				parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 			}
@@ -436,7 +432,7 @@ print
 			function gel(id_){
 				return document.getElementById?document.getElementById(id_):null;
 			}
-			
+
 			function weEntity2char(weString){
 				weString = weString.replace('&lt;','<');
 				weString = weString.replace('&gt;','>');
@@ -550,14 +546,14 @@ print
 							weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
 							if(weValidFrom>weValidUntil) {
 								" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['until_befor_from'], 
+										g_l('cockpit','[until_befor_from]'),
 										WE_MESSAGE_NOTICE) . "
 								return false;
 							}
 						}
 						if(q_curr['Title']=='') {
 							" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['title_empty'], 
+										g_l('cockpit','[title_empty]'),
 										WE_MESSAGE_NOTICE) . "
 							return false;
 						}
@@ -565,7 +561,7 @@ print
 						parent.rpc(_ttlB64Esc.concat(','+_sInitProps),(q_ID+';'+escape(csv)),'update','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
 					}else{
 						" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['note_not_modified'], 
+										g_l('cockpit','[note_not_modified]'),
 										WE_MESSAGE_NOTICE) . "
 					}
 				}else{
@@ -576,31 +572,31 @@ print
 							weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
 							if(weValidFrom>weValidUntil) {
 								" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['until_befor_from'], 
+										g_l('cockpit','[until_befor_from]'),
 										WE_MESSAGE_NOTICE) . "
 								return false;
 							} else if(!weValidFrom || !weValidUntil) {
 								" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['date_empty'], 
+										g_l('cockpit','[date_empty]'),
 										WE_MESSAGE_NOTICE) . "
 								return false;
 							}
 						} else if(q_curr['Validity'] == 'date' && !q_curr['ValidFrom']){
 								" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['date_empty'], 
+										g_l('cockpit','[date_empty]'),
 										WE_MESSAGE_NOTICE) . "
 								return false;
 						}
 						if(q_curr['Title']=='') {
 							" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['title_empty'], 
+										g_l('cockpit','[title_empty]'),
 										WE_MESSAGE_NOTICE) . "
 							return false;
 						}
 						parent.rpc(_ttlB64Esc.concat(','+_sInitProps),escape(csv),'insert','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
 					}else{
 						" . we_message_reporting::getShowMessageCall(
-										$l_cockpit['title_empty'], 
+										g_l('cockpit','[title_empty]'),
 										WE_MESSAGE_NOTICE) . "
 					}
 				}
@@ -714,21 +710,21 @@ print
 			}
 		")) . we_htmlElement::htmlBody(
 						array(
-							
-								"marginwidth" => "0", 
-								"marginheight" => "0", 
-								"leftmargin" => "0", 
-								"topmargin" => "0", 
+
+								"marginwidth" => "0",
+								"marginheight" => "0",
+								"leftmargin" => "0",
+								"topmargin" => "0",
 								"onload" => (($_REQUEST["we_cmd"][6] == "pad/pad") ? "if(parent!=self)init();" : "")
-						), 
+						),
 						we_htmlElement::htmlForm(
 								array(
 									"style" => "display:inline;"
-								), 
+								),
 								we_htmlElement::htmlDiv(
 										array(
 											"id" => "pad"
-										), 
+										),
 										$_notepad . we_htmlElement::htmlHidden(
 												array(
 													"name" => "mark", "value" => ""

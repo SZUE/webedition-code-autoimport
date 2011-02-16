@@ -24,7 +24,6 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/object.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/thumbnails.inc.php');
 }
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/date.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_versions/weVersions.class.inc.php');
@@ -534,7 +533,7 @@ class we_objectFile extends we_document{
 	}
 
 	function formPath(){
-		global $l_object,$l_we_class;
+		global $l_object;
 		$rootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
 		if($this->ParentID=='') {
 			$this->ParentID = $rootDirId;
@@ -609,11 +608,10 @@ class we_objectFile extends we_document{
 
 
 	function formIsSearchable(){
-		global $l_we_class;
 		$n = "we_".$this->Name."_IsSearchable";
 
 		$v = $this->IsSearchable;
- 		return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class["IsSearchable"],false,"defaultfont","_EditorFrame.setEditorIsHot(true);");
+ 		return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass',"[IsSearchable]"),false,"defaultfont","_EditorFrame.setEditorIsHot(true);");
  	}
 
  	/**
@@ -623,9 +621,6 @@ class we_objectFile extends we_document{
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-
-		global $l_we_class;
-
 		$_charsetHandler = new charsetHandler();
 
 		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
@@ -642,7 +637,7 @@ class we_objectFile extends we_document{
 		if($withHeadline){
 			$_headline = '
 			<tr>
-				<td class="defaultfont">' . $GLOBALS["l_we_class"]["Charset"] . '</td>
+				<td class="defaultfont">' . g_l('weClass',"[Charset]") . '</td>
 			</tr>
 			';
 		}
@@ -1269,7 +1264,7 @@ class we_objectFile extends we_document{
 			if(!sizeof($link)){
 				$link = array("ctype"=>"text","type"=>"ext","href"=>"#","text"=>g_l('global',"[new_link]"));
 			}
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
+			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 			$img = new we_imageDocument();
 			$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
 
@@ -1465,7 +1460,7 @@ class we_objectFile extends we_document{
 			if ( isset($this->Charset) ) {	//	send charset which might be determined in template
 				$charset = $this->Charset;
 			} else {
-				$charset = $GLOBALS["_language"]["charset"];
+				$charset = g_l('charset',"[charset]");
 			}
 
 			$value = $this->getElement($name);
@@ -1496,7 +1491,7 @@ class we_objectFile extends we_document{
 		}
 	}
 	function getImageHTML($name,$attribs,$editable=true, $variant=false){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_imageDocument();
 		$id = $this->getElement($name);
@@ -1558,7 +1553,7 @@ class we_objectFile extends we_document{
 	}
 
 	function getBinaryHTML($name,$attribs,$editable=true){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_otherDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_otherDocument();
 		$id = $this->getElement($name);
@@ -1580,7 +1575,7 @@ class we_objectFile extends we_document{
 		}
 	}
 	function getFlashmovieHTML($name,$attribs,$editable=true){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_flashDocument();
 		$id = $this->getElement($name);
@@ -1602,7 +1597,7 @@ class we_objectFile extends we_document{
 		}
 	}
 	function getQuicktimeHTML($name,$attribs,$editable=true){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_quicktimeDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_quicktimeDocument();
 		$id = $this->getElement($name);
@@ -1738,7 +1733,6 @@ class we_objectFile extends we_document{
 	}
 
 	function formWorkspaces(){
-		global $l_we_class;
 		$foo = getHash("SELECT Workspaces,Templates FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$ws = $foo["Workspaces"];
 		$ts = $foo["Templates"];
@@ -1870,7 +1864,6 @@ class we_objectFile extends we_document{
 	}
 
 	function formExtraWorkspaces(){
-		global $l_we_class;
 		$foo = getHash("SELECT Workspaces,Templates FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$ws = $foo["Workspaces"];
 		$ts = $foo["Templates"];
@@ -1893,11 +1886,7 @@ class we_objectFile extends we_document{
 		}else{
 			$textname = md5(uniqid(rand(),1));
 			$idname = md5(uniqid(rand(),1));
-<<<<<<< .working
-			$foo = array(''=>$GLOBALS["l_global"]["add_workspace"]);
-=======
 			$foo = array(""=>g_l('global',"[add_workspace]"));
->>>>>>> .merge-rechts.r2498
 			foreach($values as $key=>$val){
 				$foo[$key]=$val;
 			}
@@ -2017,7 +2006,7 @@ class we_objectFile extends we_document{
 			case "link":
 				$link = $elem ? unserialize($elem) : array();
 				if(is_array($link)){
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
+					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 					$img = new we_imageDocument();
 					$elem = we_document::getLinkContent($link,0,'',$this->DB_WE,$img);
 				}else{

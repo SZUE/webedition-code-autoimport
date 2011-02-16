@@ -223,7 +223,6 @@ class we_quicktimeDocument extends we_binaryDocument {
 	}
 
 	function formProperties(){
-		global $l_we_class;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>'.$this->formInput2(155,"width",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
@@ -278,7 +277,6 @@ class we_quicktimeDocument extends we_binaryDocument {
  	}
 
  	function formOther(){
-		global $l_we_class;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>'.$this->formInputField("txt","Pluginspage","Pluginspage",24,388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>

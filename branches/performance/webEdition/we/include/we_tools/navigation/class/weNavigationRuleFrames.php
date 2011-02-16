@@ -22,9 +22,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
 
 class weNavigationRuleFrames
 {
@@ -71,7 +69,6 @@ class weNavigationRuleFrames
 
 	function getHTMLContent()
 	{
-		global $l_alert;
 		// content contains textarea with all so far existing rules
 		$yuiSuggest = & weSuggest::getInstance();
 		$we_button = new we_button();
@@ -92,7 +89,7 @@ class weNavigationRuleFrames
 				$parts,
 				array(
 
-						'headline' => $GLOBALS['l_navigation']['rules']['available_rules'],
+						'headline' => g_l('navigation','[rules][available_rules]'),
 						'space' => 200,
 						'html' => $yuiSuggest->getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
 										<tr><td>' . htmlSelect(
@@ -122,7 +119,7 @@ class weNavigationRuleFrames
 				$parts,
 				array(
 
-						'headline' => $GLOBALS['l_navigation']['rules']['rule_name'],
+						'headline' => g_l('navigation','[rules][rule_name]'),
 						'space' => 200,
 						'html' => htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
 						'noline' => 1
@@ -149,7 +146,7 @@ class weNavigationRuleFrames
 				$parts,
 				array(
 
-						'headline' => $GLOBALS['l_navigation']['rules']['rule_navigation_link'],
+						'headline' => g_l('navigation','[rules][rule_navigation_link]'),
 						'space' => 200,
 						'html' => $weAcSelector,
 						'noline' => 1
@@ -165,7 +162,7 @@ class weNavigationRuleFrames
 				$parts,
 				array(
 
-						'headline' => $GLOBALS['l_navigation']['rules']['rule_applies_for'],
+						'headline' => g_l('navigation','[rules][rule_applies_for]'),
 						'space' => 200,
 						'html' => htmlSelect(
 								'SelectionType',
@@ -178,7 +175,7 @@ class weNavigationRuleFrames
 
 		// getDoctypes
 		$docTypes = array(
-			0 => $GLOBALS['l_navigation']['no_entry']
+			0 => g_l('navigation','[no_entry]')
 		);
 		$q = getDoctypeQuery($this->db);
 		$this->db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
@@ -201,7 +198,7 @@ class weNavigationRuleFrames
 				10);
 		$yuiSuggest->setTrashButton(
 				$we_button->create_button(
-						"image:function_trash",
+						"image:btn_function_trash",
 						"javascript:document.we_form.elements['FolderID'].value = '';document.we_form.elements['FolderIDPath'].value = '';"),
 				10);
 
@@ -212,11 +209,11 @@ class weNavigationRuleFrames
 	<td width="200">' . getPixel(200, 1) . '</td>
 </tr>
 <tr id="trFolderID">
-	<td class="weMultiIconBoxHeadline" valign="top">' . $GLOBALS['l_navigation']['rules']['rule_folder'] . '</td>
+	<td class="weMultiIconBoxHeadline" valign="top">' . g_l('navigation','[rules][rule_folder]') . '</td>
 	<td colspan="5">' . $weAcSelector . '</td>
 </tr>
 <tr id="trDoctypeID">
-	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . $GLOBALS['l_navigation']['rules']['rule_doctype'] . '</td>
+	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation','[rules][rule_doctype]') . '</td>
 	<td>' . htmlSelect(
 				'DoctypeID',
 				$docTypes,
@@ -247,11 +244,11 @@ class weNavigationRuleFrames
 
 			$formTable .= '
 <tr id="trClassID">
-	<td class="weMultiIconBoxHeadline">' . $GLOBALS['l_navigation']['rules']['rule_class'] . '</td>
+	<td class="weMultiIconBoxHeadline">' . g_l('navigation','[rules][rule_class]') . '</td>
 	<td colspan="3">' . $weAcSelector . '</td>
 </tr>
 <tr id="trWorkspaceID">
-	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . $GLOBALS['l_navigation']['rules']['rule_workspace'] . '</td>
+	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation','[rules][rule_workspace]') . '</td>
 	<td>' . htmlSelect(
 					'WorkspaceID',
 					array(),
@@ -263,7 +260,7 @@ class weNavigationRuleFrames
 		}
 		$formTable .= '
 <tr id="trCategories">
-	<td style="width: 200px;" valign="top" class="weMultiIconBoxHeadline">' . $GLOBALS['l_navigation']['rules']['rule_categories'] . '</td>
+	<td style="width: 200px;" valign="top" class="weMultiIconBoxHeadline">' . g_l('navigation','[rules][rule_categories]') . '</td>
 	<td colspan="4">
 		' . $this->getHTMLCategory() . '
 	</td>
@@ -277,7 +274,7 @@ class weNavigationRuleFrames
 		$saveButton = $we_button->create_button('save', 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = $we_button->create_button('close', 'javascript:top.window.close();');
 		$acErrorMsg = we_message_reporting::getShowMessageCall(
-				$l_alert['save_error_fields_value_not_valid'],
+				g_l('alert','[save_error_fields_value_not_valid]'),
 				WE_MESSAGE_ERROR);
 		return htmlTop() . STYLESHEET . '
 
@@ -417,7 +414,7 @@ function we_cmd(){
 				'',
 				'',
 				false,
-				$GLOBALS['l_navigation']['rules']['navigation_rules']) . '
+				g_l('navigation','[rules][navigation_rules]')) . '
 	</form>
 	' . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . '
 </body>
@@ -426,7 +423,6 @@ function we_cmd(){
 
 	function getHTMLCategory()
 	{
-		global $l_navigation;
 
 		$we_button = new we_button();
 
@@ -524,4 +520,3 @@ function we_cmd(){
 					');
 	}
 }
-?>

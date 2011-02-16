@@ -19,8 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$l_contentTypes["objectFile"] = "Object";
-$l_contentTypes["object"] = "Class";
 
 $l_object["attributes"] = "Attributes";
 $l_object["objectname"] = "Object name";
@@ -96,5 +94,5 @@ $l_object["use_thumbnail_preview"] = "Thumbnail preview in objects";
 $l_object["not_published"] = "The object is not published";
 $l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
 $l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
- 
+
 ?>

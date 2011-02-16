@@ -642,7 +642,6 @@ function processCommands() {
 					$_REQUEST["lnk"]=$fname;
 				break;
 				case "exportGroup_csv":
-					include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor_info.inc.php");
 
 					if ($_REQUEST["csv_dir"]=="/") {
 						$fname="/votingGroup_" . $this->voting->ID . "_export_".time().".csv";
@@ -687,7 +686,7 @@ function processCommands() {
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['votingsession'])) . $enclose . $delimiter;
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['voting'])) . $enclose . $delimiter;
 
-						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim(date($l_we_editor_info["date_format"], $data['time']))) . $enclose . $delimiter;
+						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim(date(g_l('weEditorInfo',"[date_format]"),$data['time']))) . $enclose . $delimiter;
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['ip'])) . $enclose . $delimiter;
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($data['agent'])) . $enclose . $delimiter;
 						$cookie =  $data['cookie'] ? $l_voting['enabled'] : $l_voting['disabled'];

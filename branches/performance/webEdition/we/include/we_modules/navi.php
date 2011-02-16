@@ -20,10 +20,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/"."navi_language.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/we_tabs.inc.php");
 protect();
 htmltop();
 
@@ -65,7 +64,7 @@ print $tab_header;
 var current = "<?php echo $_REQUEST["mod"];?>";
 function openModule(module) {
 	if(top.content.hot =="1") {
-		if(confirm("<?php print $l_alert['discard_changed_data']?>")) {
+		if(confirm("<?php print g_l('alert','[discard_changed_data]')?>")) {
 			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 			current = module;
 			top.content.location.replace('show.php?mod=' + module);
@@ -76,9 +75,9 @@ function openModule(module) {
 		if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 		current = module;
 		top.content.location.replace('show.php?mod=' + module);
-		
+
 	}
-	
+
 }
 </script>
 <body bgcolor="white" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">

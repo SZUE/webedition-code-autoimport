@@ -20,13 +20,13 @@
  */
 
 switch ($_REQUEST["we_cmd"][0]) {
-	
+
 	case "edit_shop_ifthere":
 	case "edit_shop":
 		$mod="shop";
 		$INCLUDE = "we_modules/show_frameset.php";
 	break;
-	
+
 	case 'shop_insert_variant':
 	case 'shop_move_variant_up':
 	case 'shop_move_variant_down':
@@ -35,5 +35,3 @@ switch ($_REQUEST["we_cmd"][0]) {
 		$INCLUDE = 'we_editors/we_editor.inc.php';
 	break;
 }
-
-?>

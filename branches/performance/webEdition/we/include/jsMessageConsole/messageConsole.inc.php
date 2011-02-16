@@ -18,7 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/messageConsole.inc.php");
 
 /**
  * creates a new messageConsole
@@ -33,9 +32,9 @@ function createMessageConsole($consoleName="NoName") {
 <script type=\"text/javascript\" src=\"" . JS_DIR . "messageConsoleView.js\"></script>
 <script type=\"text/javascript\">
 
-var _msgNotice  = \"" . $GLOBALS["l_messageConsole"]["iconBar"]["notice"] . "\";
-var _msgWarning = \"" . $GLOBALS["l_messageConsole"]["iconBar"]["warning"] . "\";
-var _msgError   = \"" . $GLOBALS["l_messageConsole"]["iconBar"]["error"] . "\";
+var _msgNotice  = \"" . g_l('messageConsole',"[iconBar][notice]") . "\";
+var _msgWarning = \"" . g_l('messageConsole',"[iconBar][warning]") . "\";
+var _msgError   = \"" . g_l('messageConsole',"[iconBar][error]") . "\";
 
 
 var _console_$consoleName = new messageConsoleView( '$consoleName', window );

@@ -32,19 +32,18 @@ if (isset($_SESSION["prefs"]["Language"]) && $_SESSION["prefs"]["Language"] != "
 } else {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
 ?>
 window,
 hbox {
-  font-family: <?php print $l_css["font_family"]; ?>;
+  font-family: <?php print g_l('css','[font_family]'); ?>;
   font-size: 12px;
   border:0px;
 }
 
 menupopup {
   background-image: url(/webEdition/images/backgrounds/aquaBackground.gif);
-  font-family: <?php print $l_css["font_family"]; ?>;
+  font-family: <?php print g_l('css','[font_family]'); ?>;
   font-size: 12px;
 
 }
@@ -65,7 +64,7 @@ menupopup {
 menu,menuitem {
    font-weight: normal;
   color: black;
-  font-family: <?php print $l_css["font_family"]; ?>;
+  font-family: <?php print g_l('css','[font_family]'); ?>;
   font-size: 12px;
 }
 
@@ -80,7 +79,7 @@ menuitem[_moz-menuactive="true"][disabled="true"] {
 menu[_moz-menuactive="true"],menuitem[_moz-menuactive="true"] {
   background: #3063B0;
   color: white;
-  font-family: <?php print $l_css["font_family"]; ?>;
+  font-family: <?php print g_l('css','[font_family]'); ?>;
   font-size: 12px;
 }
 
@@ -97,7 +96,7 @@ toolbarbutton {
   font-weight: bold ! important;
   color: black ! important;
   border: solid 1px transparent ! important;
-  font-family: <?php print $l_css["font_family"]; ?>  ! important;
+  font-family: <?php print g_l('css','[font_family]'); ?>  ! important;
   font-size: 12px ! important;
 }
 

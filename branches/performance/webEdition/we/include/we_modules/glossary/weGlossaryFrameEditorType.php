@@ -28,13 +28,14 @@
 
 			$we_tabs = new we_tabs();
 
-			$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['overview'],'TAB_ACTIVE',"setTab('1');"));
+			$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[overview]'),'TAB_ACTIVE',"setTab('1');"));
 
-			$title = $GLOBALS['l_glossary']['type'] . ":&nbsp;";
+			$title = g_l('modules_glossary','[type]') . ":&nbsp;";
 
-			$title .= $GLOBALS['l_glossary'][array_pop(explode("_", $_REQUEST['cmdid']))];
+			$title .= g_l('modules_glossary','['.array_pop(explode("_", $_REQUEST['cmdid'])).']');
 
-			return weGlossaryFrameEditorType::buildHeader($weGlossaryFrames, $we_tabs, $GLOBALS['l_glossary']['type'],$GLOBALS['l_glossary'][array_pop(explode("_", $_REQUEST['cmdid']))]);
+			return weGlossaryFrameEditorType::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[type]'),
+							g_l('modules_glossary','['.array_pop(explode("_", $_REQUEST['cmdid'])).']'));
 
 		}
 
@@ -188,7 +189,7 @@
 		</tr>
 		<tr>
 			<td>' . getPixel(5,1) . '</td>
-			<td class="defaultfont">' . $GLOBALS['l_glossary']['no_entries_found'] . '</td>
+			<td class="defaultfont">' . g_l('modules_glossary','[no_entries_found]') . '</td>
 		</tr>
 		<tr>
 			<td>' . getPixel(5,1) . '</td>
@@ -235,10 +236,10 @@
 				'dat' => '',
 			);
 			$headline[1] = array(
-				'dat' => $GLOBALS['l_glossary']['show'],
+				'dat' => g_l('modules_glossary','[show]'),
 			);
 			$headline[2] = array(
-				'dat' => $GLOBALS['l_glossary'][$Type],
+				'dat' => g_l('modules_glossary','['.$Type.']'),
 			);
 
 			switch($Type) {
@@ -246,7 +247,7 @@
 				case 'abbreviation':
 				case 'acronym':
 					$headline[3] = array(
-						'dat' => $GLOBALS['l_glossary']['announced_word'],
+						'dat' => g_l('modules_glossary','[announced_word]'),
 					);
 					break;
 
@@ -255,19 +256,19 @@
 
 				case 'link':
 					$headline[3] = array(
-						'dat' => $GLOBALS['l_glossary']['link_mode'],
+						'dat' => g_l('modules_glossary','[link_mode]'),
 					);
 					$headline[4] = array(
-						'dat' => $GLOBALS['l_glossary']['link_url'],
+						'dat' => g_l('modules_glossary','[link_url]'),
 					);
 					break;
 
 			}
 			$headline[] = array(
-				'dat' => $GLOBALS['l_glossary']['date_published'],
+				'dat' => g_l('modules_glossary','[date_published]'),
 			);
 			$headline[] = array(
-				'dat' => $GLOBALS['l_glossary']['date_modified'],
+				'dat' => g_l('modules_glossary','[date_modified]'),
 			);
 
 			$content = array();
@@ -322,15 +323,15 @@
 						switch($values['mode']) {
 							case 'intern':
 								$url = $values['InternLinkPath'];
-								$mode = $GLOBALS['l_glossary']['link_intern'];
+								$mode = g_l('modules_glossary','[link_intern]');
 								break;
 							case 'extern':
 								$url = $values['ExternUrl'];
-								$mode = $GLOBALS['l_glossary']['link_extern'];
+								$mode = g_l('modules_glossary','[link_extern]');
 								break;
 							case 'object':
 								$url = $values['ObjectLinkPath'];
-								$mode = $GLOBALS['l_glossary']['link_object'];
+								$mode = g_l('modules_glossary','[link_object]');
 								break;
 							case 'category':
 								if($values['modeCategory'] == "extern") {
@@ -338,7 +339,7 @@
 								} else {
 									$url = $values['CategoryInternLinkPath'];
 								}
-								$mode = $GLOBALS['l_glossary']['link_category'];
+								$mode = g_l('modules_glossary','[link_category]');
 								break;
 
 						}
@@ -408,7 +409,7 @@
 			<td width="100"></td>
 		</tr>
 		<tr>
-			<td class="defaultgray">' . $GLOBALS['l_glossary']['search'] . '</td>
+			<td class="defaultgray">' . g_l('modules_glossary','[search]') . '</td>
 			<td colspan="2">'.htmlTextInput('Keyword', 24, isset($_REQUEST['Keyword'])?$_REQUEST['Keyword']:'', "", "style=\"width: 430px\"").'</td>
 			<td>'.getPixel(18,2).'</td>
 			<td>' . $button . '</td>
@@ -417,9 +418,9 @@
 			<td colspan="5">'.getPixel(18,12).'</td>
 		</tr>
 		<tr>
-			<td class="defaultgray">' . $GLOBALS['l_glossary']['view'] . '</td>
+			<td class="defaultgray">' . g_l('modules_glossary','[view]') . '</td>
 			<td>'.htmlSelect("Rows",$_rows,1,$Search->Rows,"",'onchange="SubmitForm();"').'</td>
-			<td>'.we_forms::checkboxWithHidden(isset($_REQUEST['GreenOnly'])&&$_REQUEST['GreenOnly']==1?true:false, "GreenOnly", $GLOBALS['l_glossary']['show_only_visible_items'],false,"defaultfont","jump(0);").'</td>
+			<td>'.we_forms::checkboxWithHidden(isset($_REQUEST['GreenOnly'])&&$_REQUEST['GreenOnly']==1?true:false, "GreenOnly", g_l('modules_glossary','[show_only_visible_items]'),false,"defaultfont","jump(0);").'</td>
 			<td>'.getPixel(18,2).'</td>
 			<td>' . $newButton . '</td>
 		</tr>
@@ -499,9 +500,9 @@
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("DELETE_GLOSSARY") ? $we_button->create_button("image:btn_function_trash", "javascript: if(confirm('".$GLOBALS['l_glossary']["confirm_delete"]."')) { document.we_form.elements['do'].value='delete'; SubmitForm(); }") .'</td>
+					<td class="small">'.(we_hasPerm("DELETE_GLOSSARY") ? $we_button->create_button("image:btn_function_trash", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_delete]")."')) { document.we_form.elements['do'].value='delete'; SubmitForm(); }") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_glossary']['delete_selected_items'] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_glossary','[delete_selected_items]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -516,9 +517,9 @@
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? $we_button->create_button("image:btn_function_publish", "javascript: if(confirm('".$GLOBALS['l_glossary']["confirm_publish"]."')) { document.we_form.elements['do'].value='publish'; SubmitForm(); }") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? $we_button->create_button("image:btn_function_publish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_publish]")."')) { document.we_form.elements['do'].value='publish'; SubmitForm(); }") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_glossary']['publish_selected_items'] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_glossary','[publish_selected_items]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -533,9 +534,9 @@
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? $we_button->create_button("image:btn_function_unpublish", "javascript: if(confirm('".$GLOBALS['l_glossary']["confirm_unpublish"]."')) { document.we_form.elements['do'].value='unpublish'; SubmitForm(); }") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? $we_button->create_button("image:btn_function_unpublish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_unpublish]")."')) { document.we_form.elements['do'].value='unpublish'; SubmitForm(); }") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_glossary']['unpublish_selected_items'] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_glossary','[unpublish_selected_items]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -552,5 +553,3 @@
 
 
 	}
-
-?>

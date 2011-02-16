@@ -102,7 +102,7 @@
 
 				if(($we_ContentType=="object" && !defined("OBJECT_TABLE")) || ($we_ContentType=="objectFile" && !defined("OBJECT_FILES_TABLE"))) return $we_doc;
 				
-				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_doc.inc.php");
+				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 			}
 

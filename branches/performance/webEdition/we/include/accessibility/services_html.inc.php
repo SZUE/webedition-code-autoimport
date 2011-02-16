@@ -19,13 +19,13 @@
  */
 
     $i = 0;
-    
+
     //  first xhtml from W3C
     $validationService[] = new validationService(
                             $i++,
                             'default',
                             'xhtml',
-                            $l_validation['service_xhtml_upload'],
+                            g_l('validation','[service_xhtml_upload]'),
                             'validator.w3.org',
                             '/check',
                             'post',
@@ -35,12 +35,12 @@
                             '',
                             '.html,.htm,.php',
                             1);
-    
+
     $validationService[] = new validationService(
                             $i++,
                             'default',
                             'xhtml',
-                            $l_validation['service_xhtml_url'],
+                            g_l('validation','[service_xhtml_url]'),
                             'validator.w3.org',
                             '/check',
                             'get',
@@ -54,7 +54,7 @@
 
 /*
 $service['bobby'] = array(
-                        'name'     => $l_validation['service_bobby'],
+                        'name'     => g_l('validation','[service_bobby]'),
                         'host'     => 'bobby.watchfire.com',
                         'path'     => '/bobby/bobbyServlet',
                         'method'   => 'get',

@@ -22,7 +22,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/cockpit.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 protect();
 $jsCode = "
@@ -90,7 +89,7 @@ function save(){
 	opener.saveSettings();
 	savePrefs();
 	" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['prefs_saved_successfully'], 
+		g_l('cockpit','[prefs_saved_successfully]'),
 		WE_MESSAGE_NOTICE) . "
 	opener.top.weNavigationHistory.navigateReload();
 	self.close();
@@ -118,64 +117,64 @@ $we_button = new we_button();
 $parts = array();
 
 $oRdoSort[0] = we_forms::radiobutton(
-		$value = 0, 
-		$checked = 0, 
-		$name = "rdo_sort", 
-		$text = $l_cockpit['by_pubdate'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "rdo_sort",
+		$text = g_l('cockpit','[by_pubdate]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoSort[1] = we_forms::radiobutton(
-		$value = 1, 
-		$checked = 0, 
-		$name = "rdo_sort", 
-		$text = $l_cockpit['by_valid_from'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 1,
+		$checked = 0,
+		$name = "rdo_sort",
+		$text = g_l('cockpit','[by_valid_from]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoSort[2] = we_forms::radiobutton(
-		$value = 2, 
-		$checked = 0, 
-		$name = "rdo_sort", 
-		$text = $l_cockpit['by_valid_until'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 2,
+		$checked = 0,
+		$name = "rdo_sort",
+		$text = g_l('cockpit','[by_valid_until]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoSort[3] = we_forms::radiobutton(
-		$value = 3, 
-		$checked = 0, 
-		$name = "rdo_sort", 
-		$text = $l_cockpit['by_priority'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 3,
+		$checked = 0,
+		$name = "rdo_sort",
+		$text = g_l('cockpit','[by_priority]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoSort[4] = we_forms::radiobutton(
-		$value = 4, 
-		$checked = 1, 
-		$name = "rdo_sort", 
-		$text = $l_cockpit['alphabetic'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 4,
+		$checked = 1,
+		$name = "rdo_sort",
+		$text = g_l('cockpit','[alphabetic]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 
 $sort = new we_htmlTable(array(
@@ -193,32 +192,32 @@ $sort->setCol(1, 2, null, $oRdoSort[4]);
 $sort->setCol(2, 0, null, $oRdoSort[2]);
 
 array_push($parts, array(
-	"headline" => $l_cockpit['sorting'], "html" => $sort->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[sorting]'), "html" => $sort->getHTMLCode(), "space" => 100
 ));
 
 $oRdoDisplay[0] = we_forms::radiobutton(
-		$value = 0, 
-		$checked = 1, 
-		$name = "rdo_display", 
-		$text = $l_cockpit['all_notes'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 1,
+		$name = "rdo_display",
+		$text = g_l('cockpit','[all_notes]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoDisplay[1] = we_forms::radiobutton(
-		$value = 1, 
-		$checked = 0, 
-		$name = "rdo_display", 
-		$text = $l_cockpit['only_valid'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 1,
+		$checked = 0,
+		$name = "rdo_display",
+		$text = g_l('cockpit','[only_valid]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 
 $display = new we_htmlTable(array(
@@ -233,44 +232,44 @@ $display->setCol(0, 2, array(
 ), $oRdoDisplay[1]);
 
 array_push($parts, array(
-	"headline" => $l_cockpit['display'], "html" => $display->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[display]'), "html" => $display->getHTMLCode(), "space" => 100
 ));
 
 $oRdoDate[0] = we_forms::radiobutton(
-		$value = 0, 
-		$checked = 1, 
-		$name = "rdo_date", 
-		$text = $l_cockpit['by_pubdate'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 1,
+		$name = "rdo_date",
+		$text = g_l('cockpit','[by_pubdate]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoDate[1] = we_forms::radiobutton(
-		$value = 1, 
-		$checked = 0, 
-		$name = "rdo_date", 
-		$text = $l_cockpit['by_valid_from'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 1,
+		$checked = 0,
+		$name = "rdo_date",
+		$text = g_l('cockpit','[by_valid_from]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoDate[2] = we_forms::radiobutton(
-		$value = 2, 
-		$checked = 0, 
-		$name = "rdo_date", 
-		$text = $l_cockpit['by_valid_until'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 2,
+		$checked = 0,
+		$name = "rdo_date",
+		$text = g_l('cockpit','[by_valid_until]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 
 $date = new we_htmlTable(array(
@@ -283,44 +282,44 @@ $date->setCol(1, 0, null, $oRdoDate[1]);
 $date->setCol(2, 0, null, $oRdoDate[2]);
 
 array_push($parts, array(
-	"headline" => $l_cockpit['display_date'], "html" => $date->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[display_date]'), "html" => $date->getHTMLCode(), "space" => 100
 ));
 
 $oRdoPrio[0] = we_forms::radiobutton(
-		$value = 0, 
-		$checked = 0, 
-		$name = "rdo_prio", 
-		$text = $l_cockpit['high'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = 0,
+		$name = "rdo_prio",
+		$text = g_l('cockpit','[high]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoPrio[1] = we_forms::radiobutton(
-		$value = 1, 
-		$checked = 0, 
-		$name = "rdo_prio", 
-		$text = $l_cockpit['medium'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 1,
+		$checked = 0,
+		$name = "rdo_prio",
+		$text = g_l('cockpit','[medium]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 $oRdoPrio[2] = we_forms::radiobutton(
-		$value = 2, 
-		$checked = 1, 
-		$name = "rdo_prio", 
-		$text = $l_cockpit['low'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 2,
+		$checked = 1,
+		$name = "rdo_prio",
+		$text = g_l('cockpit','[low]'),
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$onMouseUp = "");
 
 $prio = new we_htmlTable(array(
@@ -346,15 +345,15 @@ $prio->setCol(2, 2, null, we_htmlElement::htmlImg(array(
 )));
 
 array_push($parts, array(
-	"headline" => $l_cockpit['default_priority'], "html" => $prio->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[default_priority]'), "html" => $prio->getHTMLCode(), "space" => 100
 ));
 
 $oSctValid = htmlSelect("sct_valid", array(
-	$l_cockpit['always'], $l_cockpit['from_date'], $l_cockpit['period']
-), 1, $l_cockpit['always'], false, 'style="width:120px;" onChange=""', 'value', 120);
+	g_l('cockpit','[always]'),g_l('cockpit','[from_date]'), g_l('cockpit','[period]')
+), 1, g_l('cockpit','[always]'), false, 'style="width:120px;" onChange=""', 'value', 120);
 
 array_push($parts, array(
-	"headline" => $l_cockpit['default_validity'], "html" => $oSctValid, "space" => 100
+	"headline" => g_l('cockpit','[default_validity]'), "html" => $oSctValid, "space" => 100
 ));
 
 list($pad_header_enc, ) = explode(',', $_REQUEST["we_cmd"][1]);
@@ -363,17 +362,17 @@ $_sql = "SELECT	distinct(WidgetName) FROM " . NOTEPAD_TABLE . " WHERE UserID = "
 $DB_WE = new DB_WE();
 $DB_WE->query($_sql);
 $_options = array(
-	$pad_header => $pad_header, $l_cockpit['change'] => $l_cockpit['change']
+	$pad_header => $pad_header, g_l('cockpit','[change]') => g_l('cockpit','[change]')
 );
 while ($DB_WE->next_record()) {
 	$_options[$DB_WE->f('WidgetName')] = $DB_WE->f('WidgetName');
 }
 $oSctTitle = htmlSelect("sct_title", array_unique($_options), 1, "", false, 'id="title" onChange=""', 'value');
 array_push($parts, array(
-	"headline" => $l_cockpit['title'], "html" => $oSctTitle, "space" => 100
+	"headline" => g_l('cockpit','[title]'), "html" => $oSctTitle, "space" => 100
 ));
 array_push($parts, array(
-	"headline" => $l_cockpit['bg_color'], "html" => $oSctCls->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[bg_color]'), "html" => $oSctCls->getHTMLCode(), "space" => 100
 ));
 
 $save_button = $we_button->create_button("save", "javascript:save();", false, -1, -1);
@@ -381,12 +380,12 @@ $preview_button = $we_button->create_button("preview", "javascript:preview();", 
 $cancel_button = $we_button->create_button("close", "javascript:exit_close();");
 $buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle($l_cockpit['notepad']) . STYLESHEET . we_htmlElement::cssElement(
+						we_htmlElement::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . we_htmlElement::cssElement(
 								"select{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
-								"", 
+								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement("", array(
@@ -394,22 +393,20 @@ print
 						)) . we_htmlElement::jsElement($jsPrefs . $jsCode)) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
-						), 
+						),
 						we_htmlElement::htmlForm(
 								array(
 									"onsubmit" => "return false;"
-								), 
+								),
 								we_multiIconBox::getHTML(
-										"padProps", 
-										"100%", 
-										$parts, 
-										30, 
-										$buttons, 
-										-1, 
-										"", 
-										"", 
-										"", 
-										$l_cockpit['notepad']))) . we_htmlElement::jsElement(
+										"padProps",
+										"100%",
+										$parts,
+										30,
+										$buttons,
+										-1,
+										"",
+										"",
+										"",
+										g_l('cockpit','[notepad]')))) . we_htmlElement::jsElement(
 						"ComboBox=new weCombobox();ComboBox.init('title');"));
-
-?>

@@ -25,11 +25,10 @@
  * Provides functions for exporting and importing backups.
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_updater.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 
 define("BACKUP_TABLE",TBL_PREFIX . "tblbackup");
 
@@ -130,8 +129,6 @@ class we_backup {
 
 	//function we_backup($handle_users=false,$handle_customers=false,$handle_shop=false,$handle_workflow=false,$handle_todo=false,$handle_newsletter=false) {
 	function we_backup($handle_options=array()){
-		global $l_backup;
-
 		$this->backup_db = new DB_WE();
 		$this->backup_steps=$this->default_backup_steps;
 		$this->partial=false;
@@ -250,31 +247,31 @@ class we_backup {
 				"tblvoting"
 		);
 
-		$this->description["import"][strtolower(CONTENT_TABLE)]=$l_backup["import_content"];
-		$this->description["import"][strtolower(FILE_TABLE)]=$l_backup["import_files"];
-		$this->description["import"][strtolower(DOC_TYPES_TABLE)]=$l_backup["import_doctypes"];
-		if(isset($this->handle_options["users"]) && $this->handle_options["users"]) $this->description["import"][strtolower(USER_TABLE)]=$l_backup["import_user_data"];
-		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"]) $this->description["import"][strtolower(CUSTOMER_TABLE)]=$l_backup["import_customers_data"];
-		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["import"][strtolower(SHOP_TABLE)]=$l_backup["import_shop_data"];
-		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["import"][strtolower(ANZEIGE_PREFS_TABLE)]=$l_backup["import_prefs"];
-		$this->description["import"][strtolower(TEMPLATES_TABLE)]=$l_backup["import_templates"];
-		$this->description["import"][strtolower(TEMPORARY_DOC_TABLE)]=$l_backup["import_temporary_data"];
-		$this->description["import"][strtolower(BACKUP_TABLE)]=$l_backup["external_backup"];
-		$this->description["import"][strtolower(LINK_TABLE)]=$l_backup["import_links"];
-		$this->description["import"][strtolower(INDEX_TABLE)]=$l_backup["import_indexes"];
+		$this->description["import"][strtolower(CONTENT_TABLE)]=g_l('backup',"[import_content]");
+		$this->description["import"][strtolower(FILE_TABLE)]=g_l('backup',"[import_files]");
+		$this->description["import"][strtolower(DOC_TYPES_TABLE)]=g_l('backup',"[import_doctypes]");
+		if(isset($this->handle_options["users"]) && $this->handle_options["users"]) $this->description["import"][strtolower(USER_TABLE)]=g_l('backup',"[import_user_data]");
+		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"]) $this->description["import"][strtolower(CUSTOMER_TABLE)]=g_l('backup',"[import_customers_data]");
+		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["import"][strtolower(SHOP_TABLE)]=g_l('backup',"[import_shop_data]");
+		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["import"][strtolower(ANZEIGE_PREFS_TABLE)]=g_l('backup',"[import_prefs]");
+		$this->description["import"][strtolower(TEMPLATES_TABLE)]=g_l('backup',"[import_templates]");
+		$this->description["import"][strtolower(TEMPORARY_DOC_TABLE)]=g_l('backup',"[import_temporary_data]");
+		$this->description["import"][strtolower(BACKUP_TABLE)]=g_l('backup',"[external_backup]");
+		$this->description["import"][strtolower(LINK_TABLE)]=g_l('backup',"[import_links]");
+		$this->description["import"][strtolower(INDEX_TABLE)]=g_l('backup',"[import_indexes]");
 
-		$this->description["export"][strtolower(CONTENT_TABLE)]=$l_backup["export_content"];
-		$this->description["export"][strtolower(FILE_TABLE)]=$l_backup["export_files"];
-		$this->description["export"][strtolower(DOC_TYPES_TABLE)]=$l_backup["export_doctypes"];
-		if(isset($this->handle_options["users"]) && $this->handle_options["users"]) $this->description["export"][strtolower(USER_TABLE)]=$l_backup["export_user_data"];
-		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"]) $this->description["export"][strtolower(CUSTOMER_TABLE)]=$l_backup["export_customers_data"];
-		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["export"][strtolower(SHOP_TABLE)]=$l_backup["export_shop_data"];
-		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["export"][strtolower(ANZEIGE_PREFS_TABLE)]=$l_backup["export_prefs"];
-		$this->description["export"][strtolower(TEMPLATES_TABLE)]=$l_backup["export_templates"];
-		$this->description["export"][strtolower(TEMPORARY_DOC_TABLE)]=$l_backup["export_temporary_data"];
-		$this->description["export"][strtolower(BACKUP_TABLE)]=$l_backup["external_backup"];
-		$this->description["export"][strtolower(LINK_TABLE)]=$l_backup["export_links"];
-		$this->description["export"][strtolower(INDEX_TABLE)]=$l_backup["export_indexes"];
+		$this->description["export"][strtolower(CONTENT_TABLE)]=g_l('backup',"[export_content]");
+		$this->description["export"][strtolower(FILE_TABLE)]=g_l('backup',"[export_files]");
+		$this->description["export"][strtolower(DOC_TYPES_TABLE)]=g_l('backup',"[export_doctypes]");
+		if(isset($this->handle_options["users"]) && $this->handle_options["users"]) $this->description["export"][strtolower(USER_TABLE)]=g_l('backup',"[export_user_data]");
+		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"]) $this->description["export"][strtolower(CUSTOMER_TABLE)]=g_l('backup',"[export_customers_data]");
+		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["export"][strtolower(SHOP_TABLE)]=g_l('backup',"[export_shop_data]");
+		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"]) $this->description["export"][strtolower(ANZEIGE_PREFS_TABLE)]=g_l('backup',"[export_prefs]");
+		$this->description["export"][strtolower(TEMPLATES_TABLE)]=g_l('backup',"[export_templates]");
+		$this->description["export"][strtolower(TEMPORARY_DOC_TABLE)]=g_l('backup',"[export_temporary_data]");
+		$this->description["export"][strtolower(BACKUP_TABLE)]=g_l('backup',"[external_backup]");
+		$this->description["export"][strtolower(LINK_TABLE)]=g_l('backup',"[export_links]");
+		$this->description["export"][strtolower(INDEX_TABLE)]=g_l('backup',"[export_indexes]");
 
 		$this->clearOldTmp();
 	}
@@ -328,13 +325,13 @@ class we_backup {
 			if($fd)
 				if(@filesize($file)>$this->mysql_max_packet) {
 					$ok=false;
-					$this->setWarning(sprintf($GLOBALS["l_backup"]["too_big_file"],$file));
+					$this->setWarning(sprintf(g_l('backup',"[too_big_file]"),$file));
 				}
 				else {
 					$contents = @fread ($fd, filesize ($file));
 				}
 			else {
-				$this->setError(sprintf($GLOBALS["l_backup"]["can_not_open_file"],$file));
+				$this->setError(sprintf(g_l('backup',"[can_not_open_file]"),$file));
 				$ok=false;
 				return false;
 			}
@@ -487,7 +484,7 @@ class we_backup {
 				@fclose($fh);
 			}
 			else {
-				$this->setError(sprintf($GLOBALS["l_backup"]["can_not_open_file"],$this->dumpfilename));
+				$this->setError(sprintf(g_l('backup',"[can_not_open_file]"),$this->dumpfilename));
 				return -1;
 			}
 		}
@@ -534,8 +531,7 @@ class we_backup {
 	 */
 
 	function buildBackupTable() {
-		global $l_backup;
-		$this->current_description=$l_backup["external_backup"];
+		$this->current_description=g_l('backup',"[external_backup]");
 		$rootdir = $_SERVER["DOCUMENT_ROOT"];
 		$rootdir = str_replace("\\","/",$rootdir);
 		if(substr($rootdir,-1) != "/")
@@ -579,7 +575,6 @@ class we_backup {
 	 */
 
 	function exportTables() {
-		global $l_backup;
 		$nl = "\n";
 		$len=0;
 		$tab=array();
@@ -631,7 +626,7 @@ class we_backup {
 							if (isset($this->description["export"][strtolower($noprefix)])) {
 									$this->current_description = $this->description["export"][strtolower($noprefix)];
 							} else {
-									$this->current_description = $l_backup["working"];
+									$this->current_description = g_l('backup',"[working]");
 							}
 						}
 						$this->partial=false;
@@ -714,7 +709,7 @@ class we_backup {
 			else {
 				$this->backup_db->query("DROP TABLE IF EXISTS ".BACKUP_TABLE);
 				$this->backup_db->query("DROP TABLE IF EXISTS ".BACKUP_TABLE);
-				$this->setError(sprintf($GLOBALS["l_backup"]["can_not_open_file"],$this->dumpfilename));
+				$this->setError(sprintf(g_l('backup',"[can_not_open_file]"),$this->dumpfilename));
 				return -1;
 			}
 		}
@@ -748,7 +743,7 @@ class we_backup {
 			@fclose($fh);
 		}
 		else {
-			$this->setError(sprintf($GLOBALS["l_backup"]["can_not_open_file"],$this->dumpfilename));
+			$this->setError(sprintf(g_l('backup',"[can_not_open_file]"),$this->dumpfilename));
 			return false;
 		}
 		return true;
@@ -853,7 +848,6 @@ class we_backup {
 	 */
 
 	function restoreFiles() {
-		global $l_backup;
 		$exist=false;
 		$tab=@mysql_list_tables($this->backup_db->Database);
 		while (list($tname)=@mysql_fetch_array($tab)) {
@@ -889,7 +883,7 @@ class we_backup {
 						@fclose($fh);
 					}
 					else {
-						$this->setError($l_backup["can_not_open_file"],$line["Path"]);
+						$this->setError(g_l('backup',"[can_not_open_file]"),$line["Path"]);
 						return false;
 					}
 				}
@@ -909,11 +903,9 @@ class we_backup {
 	 */
 
 	function splitFile($backup_select) {
-		global $l_backup;
-
 		$buff = "";
 
-		$this->current_description=$l_backup["preparing_file"];
+		$this->current_description=g_l('backup',"[preparing_file]");
 
 		$filename=$backup_select;
 		$backup_select=uniqid(rand());
@@ -960,13 +952,13 @@ class we_backup {
 					}
 				}
 				else {
-					$this->setError($l_backup["can_not_open_file"],basename($filename)."_".$num);
+					$this->setError(g_l('backup',"[can_not_open_file]"),basename($filename)."_".$num);
 					return -1;
 				}
 			}
 		}
 		else {
-			$this->setError($l_backup["can_not_open_file"],basename($filename)."_".$num);
+			$this->setError(g_l('backup',"[can_not_open_file]"),basename($filename)."_".$num);
 			return -1;
 		}
 		if($fh_temp) @fclose ($fh_temp);
@@ -990,8 +982,6 @@ class we_backup {
 	 */
 
 	function restoreFromBackup($filename,$restore_extra=0) {
-		global $l_backup;
-
 		$buff="";
 		$fh = fopen ("$filename", "rb");
 
@@ -1049,7 +1039,7 @@ class we_backup {
 								}
 							}
 							else {
-								$this->setWarning($l_backup["query_is_too_big"],$this->mysql_max_packet);
+								$this->setWarning(g_l('backup',"[query_is_too_big]"),$this->mysql_max_packet);
 							}
 						}
 
@@ -1060,7 +1050,7 @@ class we_backup {
 
 		}
 		else {
-			$this->setError(sprintf($l_backup["can_not_open_file"],$filename));
+			$this->setError(sprintf(g_l('backup',"[can_not_open_file]"),$filename));
 			return false;
 		}
 		@fclose ($fh);
@@ -1070,7 +1060,7 @@ class we_backup {
 		if (isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"]) {
 				$this->current_description = $this->description["import"]["$tn"];
 		} else {
-				$this->current_description = $l_backup["working"];
+				$this->current_description = g_l('backup',"[working]");
 		}
 
 		if($restore_extra)
@@ -1500,7 +1490,7 @@ class we_backup {
 		global $DB_WE;
 
 		if(!is_writable($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp")){
-			$this->setError(sprintf($GLOBALS["l_backup"]["cannot_save_tmpfile"],BACKUP_DIR));
+			$this->setError(sprintf(g_l('backup',"[cannot_save_tmpfile]"),BACKUP_DIR));
 			return -1;
 		}
 

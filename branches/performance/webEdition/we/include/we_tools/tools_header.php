@@ -52,7 +52,7 @@ foreach ($_menuItems as $_menuItem) {
 		$text = g_l('searchtool',"[weSearch]");
 	}
 	else if ($_menuItem["name"]=="navigation") {
-		$text = $l_navigation["navigation"];
+		$text = g_l('navigation',"[navigation]");
 	}
 	if($_REQUEST["tool"]=="weSearch") {
 		$we_tabs->heightPlus=-30;
@@ -61,7 +61,7 @@ foreach ($_menuItems as $_menuItem) {
 		$we_tabs->heightPlus=-30;
 	}
 	else  {
-		if($text != g_l('searchtool',"[weSearch]") && $text != $l_navigation["navigation"] && $_menuItem["name"] != 'toolfactory') {
+		if($text != g_l('searchtool',"[weSearch]") && $text != g_l('navigation',"[navigation]") && $_menuItem["name"] != 'toolfactory') {
 			if(we_hasPerm($_menuItem['startpermission'])) {
 				$we_tabs->addTab(new we_tab("#", $text, ( isset($_REQUEST['tool']) && $_REQUEST['tool'] == $_menuItem["name"] ? "TAB_ACTIVE" : "TAB_NORMAL" ) ,"openTool('" . $_menuItem["name"] . "');",array("id" => $_menuItem["name"])));
 			}
@@ -80,7 +80,7 @@ print $tab_header;
 var current = "<?php echo $_REQUEST["tool"];?>";
 function openTool(tool) {
 	if(top.content.hot =="1") {
-		if(confirm("<?php print $l_alert['discard_changed_data']?>")) {
+		if(confirm("<?php print g_l('alert','[discard_changed_data]')?>")) {
 			top.content.hot = "0";
 			current = tool;
 			top.content.location.replace('tools_content.php?tool=' + tool);

@@ -25,11 +25,11 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 class weToolView {
 
 	var $Model;
-	
+
 	var $toolName;
-	var $toolDir; 
-	var $toolUrl; 
-	
+	var $toolDir;
+	var $toolUrl;
+
 	var $db;
 	var $frameset;
 
@@ -46,7 +46,7 @@ class weToolView {
 
 	function weToolView($frameset='',$topframe='top') {
 
-		
+
 	}
 
 	//----------- Utility functions ------------------
@@ -86,7 +86,6 @@ class weToolView {
 	}
 
 	function getJSTop(){
-		global $l_navigation;
 		$js='
 			var activ_tab = "1";
 			var hot = 0;
@@ -192,17 +191,16 @@ class weToolView {
 			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js);
 	}
 
-	
+
 	function getTopJSAdditional() {
 		return '';
 	}
-	
+
 	function getPropertyJSAdditional() {
 		return '';
 	}
-	
+
 	function getJSProperty(){
-		global $l_navigation;
 		$out="";
 		$out.=we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
 
@@ -250,10 +248,10 @@ class weToolView {
 	}
 
 
-	
+
 	function getJSTreeHeader(){
 		return '
-	
+
 				function we_cmd(){
 					var args = "";
 					var url = "'.$this->frameset.'?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -265,7 +263,7 @@ class weToolView {
 							eval(\''.$this->topFrame.'.we_cmd(\'+args+\')\');
 					}
 				}
-	
+
 		'.$this->getJSSubmitFunction('cmd');
 	}
 
@@ -273,38 +271,38 @@ class weToolView {
 
 	function getJSSubmitFunction($def_target="edbody",$def_method="post"){
 		return '
-	
+
 				function submitForm() {
-	
+
 					var f = self.document.we_form;
-	
+
 					if (arguments[0]) {
 						f.target = arguments[0];
 					} else {
 						f.target = "'.$def_target.'";
 					}
-	
+
 					if (arguments[1]) {
 						f.action = arguments[1];
 					} else {
 						f.action = "'.$this->frameset.'";
 					}
-	
+
 					if (arguments[2]) {
 						f.method = arguments[2];
 					} else {
 						f.method = "'.$def_method.'";
 					}
-	
+
 					f.submit();
 				}
-	
+
 		';
 
 	}
 
 	function processCommands() {
-		
+
 	}
 
 
@@ -320,7 +318,7 @@ class weToolView {
 				}
 			}
 		}
-		
+
 	}
 
 

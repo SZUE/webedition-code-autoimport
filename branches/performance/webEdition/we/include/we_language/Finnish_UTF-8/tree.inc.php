@@ -18,15 +18,14 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: tree.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_tree["edit_statustext"] = "Muokkaa";
-$l_tree["select_statustext"] = "Valitse";
-$l_tree["open_statustext"] = "Avaa";
-$l_tree["close_statustext"] = "Sulje";
-?>
+$l_tree = array(
+		'edit_statustext' => "Muokkaa",
+		'select_statustext' => "Valitse",
+		'open_statustext' => "Avaa",
+		'close_statustext' => "Sulje",
+);

@@ -18,61 +18,58 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: sidebar.inc.php
  * Provides language strings for the sidebar.
  * Language: English
  */
-
-$l_sidebar["headline"] = "Zijbalk";
-$l_sidebar["confirm_to_close_sidebar"] = "Wilt u de zijbalk echt sluiten?";
-
+$l_sidebar = array(
+		'headline' => "Zijbalk",
+		'confirm_to_close_sidebar' => "Wilt u de zijbalk echt sluiten?",
 // shown on the default sidebar page
-$l_sidebar["default"] = array();
+		'default' => array(
+				array(
+						'headline' => 'Welcome!',
+						'text' => 'webEdition is succesvol geï¿½nstalleerd, maar bevat nog geen content.',
+				),
+				array(
+						'headline' => 'Manuals',
+						'text' => 'Hier vind u algemene informatie over de werking en structuur van webEdition',
+						'link' => 'http://documentation.webedition.org/wiki/en/start', // CHECK
 
-$l_sidebar["default"][0] = array();
-$l_sidebar["default"][0]["headline"] = 'Welcome!';
-$l_sidebar["default"][0]["text"] = 'webEdition is succesvol geïnstalleerd, maar bevat nog geen content.';
-
-$l_sidebar["default"][1] = array();
-$l_sidebar["default"][1]["headline"] = 'Manuals';
-$l_sidebar["default"][1]["text"] = 'Hier vind u algemene informatie over de werking en structuur van webEdition';
-$l_sidebar["default"][1]["link"] = 'http://documentation.webedition.org/wiki/en/start'; // CHECK
-
-$l_sidebar["default"][1]["icon"] = 'documentation.gif'; // TRANSLATE
-
-$l_sidebar["default"][2] = array();
-$l_sidebar["default"][2]["headline"] = 'Other help resources';
-$l_sidebar["default"][2]["text"] = 'Overzicht van verdere instructies en referenties';
-$l_sidebar["default"][2]["link"] = 'javascript:top.we_cmd(\'help\');'; // TRANSLATE
-$l_sidebar["default"][2]["icon"] = 'help.gif'; // TRANSLATE
-
-$l_sidebar["default"][3] = array();
-$l_sidebar["default"][3]["headline"] = 'Tag reference';
-$l_sidebar["default"][3]["text"] = 'Here you will find a list of all webEdition we:Tags with attributes and examples. ';
-$l_sidebar["default"][3]["link"] = 'http://tags.webedition.org/wiki/en/';
-$l_sidebar["default"][3]["icon"] = 'firststepswizard.gif';
-
-$l_sidebar["default"][4] = array();
-$l_sidebar["default"][4]["headline"] = 'Forum';
-$l_sidebar["default"][4]["text"] = 'Official webEdition support forum with many Q&A concerning all kind of webEdition problems ';
-$l_sidebar["default"][4]["link"] = 'http://forum.webedition.org/viewforum.php?f=36';
-$l_sidebar["default"][4]["icon"] = 'tutorial.gif';
-
-$l_sidebar["default"][5] = array();
-$l_sidebar["default"][5]["headline"] = 'Version history';
-$l_sidebar["default"][5]["text"] = 'A complete changelog of all webEdition bugfixes and improvements';
-$l_sidebar["default"][5]["link"] = 'http://documentation.webedition.org/wiki/en/webedition/change-log/start';
-$l_sidebar["default"][5]["icon"] = 'demopages.gif';
-
+						'icon' => 'documentation.gif', // TRANSLATE
+				),
+				array(
+						'headline' => 'Other help resources',
+						'text' => 'Overzicht van verdere instructies en referenties',
+						'link' => 'javascript:top.we_cmd(\'help\');', // TRANSLATE
+						'icon' => 'help.gif', // TRANSLATE
+				),
+				array(
+						'headline' => 'Tag reference',
+						'text' => 'Here you will find a list of all webEdition we:Tags with attributes and examples. ',
+						'link' => 'http://tags.webedition.org/wiki/en/',
+						'icon' => 'firststepswizard.gif',
+				),
+				array(
+						'headline' => 'Forum',
+						'text' => 'Official webEdition support forum with many Q&A concerning all kind of webEdition problems ',
+						'link' => 'http://forum.webedition.org/viewforum.php?f=36',
+						'icon' => 'tutorial.gif',
+				),
+				array(
+						'headline' => 'Version history',
+						'text' => 'A complete changelog of all webEdition bugfixes and improvements',
+						'link' => 'http://documentation.webedition.org/wiki/en/webedition/change-log/start',
+						'icon' => 'demopages.gif',
+				),
+		),
 // Only shown on the default sidebar page if user has administrator perms
-$l_sidebar["admin"] = array();
-
-$l_sidebar["admin"][0] = array();
-$l_sidebar["admin"][0]["headline"] = 'Preferences Sidebar';
-$l_sidebar["admin"][0]["text"] = 'U vind de instellingen voor de zijbalk, zoals individuele start documenten, breedte of deactivatie van de zijbalk onder extras> voorkeuren > algemeen ... onder de "Gebruikers interface" tab';
-$l_sidebar["admin"][0]["link"] = 'javascript:top.we_cmd(\'openPreferences\');'; // TRANSLATE
-
-?>
+		'admin' => array(
+				array(
+						'headline' => 'Preferences Sidebar',
+						'text' => 'U vind de instellingen voor de zijbalk, zoals individuele start documenten, breedte of deactivatie van de zijbalk onder extras> voorkeuren > algemeen ... onder de "Gebruikers interface" tab',
+						'link' => 'javascript:top.we_cmd(\'openPreferences\');', // TRANSLATE
+				),
+		),
+);

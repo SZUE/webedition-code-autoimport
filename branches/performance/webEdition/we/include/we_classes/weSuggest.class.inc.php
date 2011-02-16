@@ -1265,4 +1265,3 @@ function doDebugResizeH(){
 		$this->doOnTextfieldBlur="";
 	}
 }
-?>

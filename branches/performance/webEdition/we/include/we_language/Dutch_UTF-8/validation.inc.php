@@ -18,20 +18,53 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$l_xhtml_debug['wrong_attribute']['text']      = 'Het attribuut "%s" komt niet voor in het element "&lt;%s&gt;".';
-$l_xhtml_debug['wrong_attribute']['js']        = 'Het attribuut \"%s\" komt niet voor in het element \"<%s>\".';
-$l_xhtml_debug['wrong_attribute']['error_log'] = 'Het attribuut "%s" komt niet voor in het element "<%s>".';
-
-$l_xhtml_debug['missing_attribute']['text']      = 'Het vereiste attribuut "%s" ontbreekt in het element "&lt;%s&gt;".';
-$l_xhtml_debug['missing_attribute']['js']        = 'Het vereiste attribuut \"%s\" ontbreekt in het element \"<%s>\".';
-$l_xhtml_debug['missing_attribute']['error_log'] = 'Het vereiste attribuut "%s" ontbreekt in het element "<%s>".';
-
-$l_xhtml_debug['wrong_element']['text']      = 'Het element "&lt;%s&gt;" bestaat niet.';
-$l_xhtml_debug['wrong_element']['js']        = 'Het element \"<%s>\" bestaat niet.';
-$l_xhtml_debug['wrong_element']['error_log'] = 'Het element "<%s>" bestaat niet.';
-
-$l_xhtml_debug['removed_element']['text'] = 'Is verwijderd.';
-
-?>
+$l_validation = array(
+		'headline' => 'Online valideren van dit document',
+//  variables for checking html files.
+		'description' => 'U kunt een internet-dienst kiezen om dit document te testen op geldigheid/toegankelijkheid.',
+		'available_services' => 'Bestaande diensten',
+		'category' => 'Categorie',
+		'service_name' => 'Naam van de dienst',
+		'service' => 'Dienst',
+		'host' => 'Host', // TRANSLATE
+		'path' => 'Pad',
+		'ctype' => 'Soort inhoud',
+		'ctype' => 'Kenmerk voor de doel server bij het bepalen van het soort aangeboden bestand (tekst/html of tekst/css)',
+		'fileEndings' => 'Extensies',
+		'fileEndings' => 'Voeg alle extensies toe die beschikbaar zijn voor deze dienst. (.html,.css)',
+		'method' => 'Methode',
+		'checkvia' => 'Aanbieden via',
+		'checkvia_upload' => 'Bestandsupload',
+		'checkvia_url' => 'URL overdracht',
+		'varname' => 'Variable naam',
+		'varname' => 'Voer de veldnaam in van het bestand/url',
+		'additionalVars' => 'Bijkomende Parameters',
+		'additionalVars' => 'optioneel: var1=wert1&var2=wert2&...',
+		'result' => 'Resultaat',
+		'active' => 'Actief',
+		'active' => 'Hier kunt u een dienst tijdelijk verbergen.',
+		'no_services_available' => 'Er zijn nog geen diensten beschikbaar voor dit bestandstype.',
+//  the different predefined services
+		'adjust_service' => 'Stel validatie dienst in',
+		'art_custom' => 'Vrije diensten',
+		'art_default' => 'Vooraf gedefinieerde diensten',
+		'category_xhtml' => '(X)HTML', // TRANSLATE
+		'category_links' => 'Koppelingen',
+		'category_css' => 'Cascading Style Sheets', // TRANSLATE
+		'category_accessibility' => 'Toegankelijkheid',
+		'edit_service' => array(
+				'new' => 'Nieuwe dienst',
+				'saved_success' => 'De dienst is bewaard.',
+				'saved_failure' => 'De dienst kon niet bewaard worden.',
+				'delete_success' => 'De dienst is verwijderd.',
+				'delete_failure' => 'De dienst kon niet verwijderd worden.',
+				'servicename_already_exists' => 'Er bestaat al een dienst met deze naam.',
+		),
+//  services for html
+		'service_xhtml_upload' => '(X)HTML W3C valideren via bestandsupload',
+		'service_xhtml_url' => '(X)HTML W3C valideren via url overdracht',
+//  services for css
+		'service_css_upload' => 'CSS valideren via bestandsupload',
+		'service_css_url' => 'CSS valideren via url overdracht',
+		'connection_problems' => '<strong>Er is een fout opgetreden tijdens het verbinden met deze dienst</strong><br /><br />Let op: De optie "url overdracht" is alleen beschikbaar als uw webEdition installatie ook bereikbaar is via het internet (buiten uw lokale netwerk). Dit is niet mogelijk wanneer webEdition lokaal is geïnstalleerd (localhost).<br /><br />Ook kunnen er problemen optreden wanneer u Firewalls en proxy-servers gebruikt. Controleer uw configuratie als dit het geval is.<br /><br />HTTP-Reactie: %s',
+);

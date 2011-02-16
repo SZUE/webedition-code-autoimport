@@ -22,12 +22,9 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 
 $parts = array();
 
-array_push($parts,array("icon"=>"path.gif", "headline"=>$GLOBALS["l_we_class"]["path"],"html"=>$GLOBALS['we_doc']->formPath(),"space"=>140));
-array_push($parts,array("icon"=>"default.gif", "headline"=>$GLOBALS["l_we_class"]["other"],"html"=>$GLOBALS['we_doc']->formOther(),"space"=>140));
+array_push($parts,array("icon"=>"path.gif", "headline"=>g_l('weClass',"[path]"),"html"=>$GLOBALS['we_doc']->formPath(),"space"=>140));
+array_push($parts,array("icon"=>"default.gif", "headline"=>g_l('weClass',"[other]"),"html"=>$GLOBALS['we_doc']->formOther(),"space"=>140));
 $wepos = weGetCookieVariable("but_weFlashProp");
 
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("weFlashProp","100%",$parts,20);
-
-
-?>

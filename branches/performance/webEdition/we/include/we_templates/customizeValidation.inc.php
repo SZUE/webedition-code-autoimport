@@ -21,10 +21,9 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/accessibility.inc.php');
-
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validationService.class.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validation.class.php');
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
     protect();
     htmlTop();
@@ -95,12 +94,12 @@
                 $_service = new validationService($_REQUEST['id'],'custom',$_REQUEST['category'],$_REQUEST['name'],$_REQUEST['host'],$_REQUEST['path'],$_REQUEST['s_method'],$_REQUEST['varname'],$_REQUEST['checkvia'], $_REQUEST['ctype'],$_REQUEST['additionalVars'],$_REQUEST['fileEndings'],$_REQUEST['active']);
                 if($selectedService = validation::saveService($_service)){
                     print we_htmlElement::jsElement(
-                    	we_message_reporting::getShowMessageCall($l_validation['edit_service']['saved_success'], WE_MESSAGE_NOTICE)
+                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][saved_success]'), WE_MESSAGE_NOTICE)
                     );
                 } else {
                 	$selectedService = $_service;
                     print we_htmlElement::jsElement(
-                    	we_message_reporting::getShowMessageCall($l_validation['edit_service']['saved_failure'] . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), WE_MESSAGE_ERROR)
+                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), WE_MESSAGE_ERROR)
                     );
                 }
                 break;
@@ -108,11 +107,11 @@
                 $_service = new validationService($_REQUEST['id'],'custom',$_REQUEST['category'],$_REQUEST['name'],$_REQUEST['host'],$_REQUEST['path'],$_REQUEST['s_method'],$_REQUEST['varname'],$_REQUEST['checkvia'], $_REQUEST['ctype'],$_REQUEST['additionalVars'],$_REQUEST['fileEndings'],$_REQUEST['active']);
                 if(validation::deleteService($_service)){
                     print we_htmlElement::jsElement(
-                    	we_message_reporting::getShowMessageCall($l_validation['edit_service']['delete_success'], WE_MESSAGE_NOTICE)
+                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][delete_success]'), WE_MESSAGE_NOTICE)
                     );
                 } else {
                     print we_htmlElement::jsElement(
-                    	we_message_reporting::getShowMessageCall($l_validation['edit_service']['delete_failure'], WE_MESSAGE_ERR
+                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][delete_failure]'), WE_MESSAGE_ERR
                     	)
                     );
                 }
@@ -121,7 +120,7 @@
                 $selectedName = $_REQUEST['validationService'];
                 break;
             case 'newService':
-                $selectedService = new validationService(0,'custom','accessible',$l_validation['edit_service']['new'],'example.com','/path', 'get', 'varname','url','text/html','','.html',1);
+                $selectedService = new validationService(0,'custom','accessible',g_l('validation','[edit_service][new]'),'example.com','/path', 'get', 'varname','url','text/html','','.html',1);
                 break;
         }
     }
@@ -172,26 +171,24 @@
 
     $_table .=  $hiddenFields;
 
-    array_push($parts,array('headline'=>$l_validation['available_services'], 'html'=>$_table, 'space'=> 150) );
+    array_push($parts,array('headline'=>g_l('validation','[available_services]'), 'html'=>$_table, 'space'=> 150) );
 
     if(sizeof($services) > 0){
-        array_push($parts,array('headline'=>$l_validation['category'],'html'=>htmlSelect('category', validation::getAllCategories(),1,$selectedService->category), 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['service_name'],'html'=>htmlTextInput('name',50,$selectedService->name), 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['host'],'html'=>htmlTextInput('host',50,$selectedService->host), 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['path'],'html'=>htmlTextInput('path',50,$selectedService->path), 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['ctype'],'html'=>htmlTextInput('ctype',50,$selectedService->ctype) . '<br /><span class="small">' . $l_validation['desc']['ctype'] . '</span>', 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['fileEndings'],'html'=>htmlTextInput('fileEndings',50,$selectedService->fileEndings) . '<br /><span class="small">' . $l_validation['desc']['fileEndings'] . '</span>', 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['method'],'html'=>htmlSelect('s_method', array('post'=>'post','get'=>'get'),1,$selectedService->method,false), 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['checkvia'],'html'=>htmlSelect('checkvia',array('url'=>$l_validation['checkvia_url'],'fileupload'=>$l_validation['checkvia_upload']),1,$selectedService->checkvia,false), 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['varname'],'html'=>htmlTextInput('varname',50,$selectedService->varname) . '<br /><span class="small">' . $l_validation['desc']['varname'] . '</span>', 'space'=> 150,'noline'=>1) );
-        array_push($parts,array('headline'=>$l_validation['additionalVars'],'html'=>htmlTextInput('additionalVars',50,$selectedService->additionalVars) . '<br /><span class="small">' . $l_validation['desc']['additionalVars'] . '</span>', 'space'=> 150) );
-        array_push($parts,array('headline'=>$l_validation['active'],'html'=>htmlSelect('active',array(0=>'false',1=>'true'), 1,$selectedService->active) . '<br /><span class="small">' . $l_validation['desc']['active'] . '</span>', 'space'=> 150) );
+        array_push($parts,array('headline'=>g_l('validation','[category]'),'html'=>htmlSelect('category', validation::getAllCategories(),1,$selectedService->category), 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[service_name]'),'html'=>htmlTextInput('name',50,$selectedService->name), 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[host]'),'html'=>htmlTextInput('host',50,$selectedService->host), 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[path]'),'html'=>htmlTextInput('path',50,$selectedService->path), 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[ctype]'),'html'=>htmlTextInput('ctype',50,$selectedService->ctype) . '<br /><span class="small">' . g_l('validation','[desc][ctype]') . '</span>', 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[fileEndings]'),'html'=>htmlTextInput('fileEndings',50,$selectedService->fileEndings) . '<br /><span class="small">' . g_l('validation','[desc][fileEndings]') . '</span>', 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[method]'),'html'=>htmlSelect('s_method', array('post'=>'post','get'=>'get'),1,$selectedService->method,false), 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[checkvia]'),'html'=>htmlSelect('checkvia',array('url'=>g_l('validation','[checkvia_url]'),'fileupload'=>g_l('validation','[checkvia_upload]')),1,$selectedService->checkvia,false), 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[varname]'),'html'=>htmlTextInput('varname',50,$selectedService->varname) . '<br /><span class="small">' . g_l('validation','[desc][varname]') . '</span>', 'space'=> 150,'noline'=>1) );
+        array_push($parts,array('headline'=>g_l('validation','[additionalVars]'),'html'=>htmlTextInput('additionalVars',50,$selectedService->additionalVars) . '<br /><span class="small">' . g_l('validation','[desc][additionalVars]') . '</span>', 'space'=> 150) );
+        array_push($parts,array('headline'=>g_l('validation','[active]'),'html'=>htmlSelect('active',array(0=>'false',1=>'true'), 1,$selectedService->active) . '<br /><span class="small">' . g_l('validation','[desc][active]') . '</span>', 'space'=> 150) );
     }
 
-    $body = '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation','100%',$parts, 30, $button->position_yes_no_cancel($button->create_button('save','javascript:we_cmd(\'customValidationService\',\'saveService\');',true,100,22,'','',!(sizeof($services) > 0)),$button->create_button('cancel','javascript:we_cmd(\'close\');')),-1,'','',false, $l_validation['adjust_service'], "", 660)
+    $body = '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation','100%',$parts, 30, $button->position_yes_no_cancel($button->create_button('save','javascript:we_cmd(\'customValidationService\',\'saveService\');',true,100,22,'','',!(sizeof($services) > 0)),$button->create_button('cancel','javascript:we_cmd(\'close\');')),-1,'','',false, g_l('validation','[adjust_service]'), "", 660)
             . '</form>';
 
     print $body;
     print '</body></html>';
-
-?>

@@ -19,11 +19,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/fileselector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 
 protect();
@@ -50,11 +48,11 @@ $we_button = new we_button();
        new jsWindow(url,"we_fseditFile",-1,-1,600,500,true,false,true,true);
       }
       else {
-      	<?php print we_message_reporting::getShowMessageCall( $l_fileselector["edit_file_nok"], WE_MESSAGE_ERROR); ?>
+      	<?php print we_message_reporting::getShowMessageCall( g_l('fileselector',"[edit_file_nok]"), WE_MESSAGE_ERROR); ?>
      	}
      }
      else{
-     	<?php print we_message_reporting::getShowMessageCall( $l_fileselector["edit_file_is_folder"], WE_MESSAGE_ERROR ); ?>
+     	<?php print we_message_reporting::getShowMessageCall( g_l('fileselector',"[edit_file_is_folder]"), WE_MESSAGE_ERROR ); ?>
      }
   }
 
@@ -95,15 +93,15 @@ if($_REQUEST["ret"]==1){
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b><?php print $GLOBALS["l_fileselector"]["type"]; ?></b></td>
+						<b><?php print g_l('fileselector',"[type]"); ?></b></td>
 					<td></td>
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.forms['we_form'].elements['filter'].options[document.forms['we_form'].elements['filter'].selectedIndex].value)" style="width:100%">
-                      <option value="<?php print str_replace(' ','%20',$l_contentTypes["all_Types"]); ?>"><?php print $l_contentTypes["all_Types"]; ?></option>
+                      <option value="<?php print str_replace(' ','%20',g_l('contentTypes','[all_Types]')); ?>"><?php print g_l('contentTypes','[all_Types]'); ?></option>
                       <?php
                         foreach($GLOBALS["WE_CONTENT_TYPES"] as $key=>$value){
                         	if($value["IsRealFile"]){
-								print '<option value="'.rawurlencode($l_contentTypes[$key]).'">'.$l_contentTypes[$key].'</option>'."\n";
+								print '<option value="'.rawurlencode(g_l('contentTypes','['.$key.']')).'">'.g_l('contentTypes','['.$key.']').'</option>'."\n";
                         	}
                         }
              ?>
@@ -117,7 +115,7 @@ if($_REQUEST["ret"]==1){
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b><?php if($_REQUEST["filter"] == "folder"){print $l_fileselector["name"];}else{print $l_fileselector["name"];} ?></b>
+						<b><?php if($_REQUEST["filter"] == "folder"){print g_l('fileselector',"[name]");}else{print g_l('fileselector',"[name]");} ?></b>
 					</td>
 					<td></td>
 					<td class="defaultfont" align="left"><?php print htmlTextInput("fname",24,$_REQUEST["currentName"],"","style=\"width:100%\" readonly=\"readonly\""); ?>

@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_BANNER_MODULE_DIR."weModuleFrames.php");
 include_once(WE_BANNER_MODULE_DIR."weBannerView.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/we_tabs.inc.php");
 
 class weBannerFrames extends weModuleFrames{
 
@@ -101,7 +100,6 @@ class weBannerFrames extends weModuleFrames{
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#F0EFF0" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
 		}
-		global $l_banner;
 		$isFolder=0;
 		if(isset($_GET["isFolder"])) $isFolder=$_GET["isFolder"];
 
@@ -109,8 +107,8 @@ class weBannerFrames extends weModuleFrames{
 		if(isset($_GET["page"])) $page=$_GET["page"];
 
 
-		$headline1 = ($isFolder==1) ? $l_banner["group"] : $l_banner["banner"];
-		$text="".($isFolder==1) ? $l_banner["newbannergroup"] : $l_banner["newbanner"];
+		$headline1 = ($isFolder==1) ? g_l('modules_banner','[group]') : g_l('modules_banner','[banner]');
+		$text="".($isFolder==1) ? g_l('modules_banner','[newbannergroup]') : g_l('modules_banner','[newbanner]');
 		if(isset($_GET["txt"])) $text=$_GET["txt"];
 
 
@@ -118,12 +116,12 @@ class weBannerFrames extends weModuleFrames{
 
 		if($isFolder==0){
 
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["properties"],($page==0?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(0);"));
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["placement"],($page==1?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(1);"));
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["statistics"],($page==2?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(2);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][properties]"),($page==0?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][placement]"),($page==1?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(1);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][statistics]"),($page==2?"TAB_ACTIVE":"TAB_NORMAL"),"setTab(2);"));
 		} else {
 
-			$we_tabs->addTab(new we_tab("#", $GLOBALS["l_tabs"]["module"]["properties"],"TAB_ACTIVE","setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs',"[module][properties]"),"TAB_ACTIVE","setTab(0);"));
 		}
 
 		$we_tabs->onResize('header');
@@ -209,7 +207,7 @@ $we_tabs->getHTML() .
 						if(top.content.resize.right.editor.edbody.YAHOO.autocoml.isValid()) {
 							_we_save();
 						} else {
-							<?php echo we_message_reporting::getShowMessageCall($GLOBALS['l_alert']['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR); ?>
+							<?php echo we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR); ?>
 						}
 					}
 				} else {

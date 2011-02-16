@@ -22,11 +22,10 @@
 
 		protect();
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sysinfo.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/we/core/autoload.php");
 
 
@@ -174,51 +173,51 @@
 
 			if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//sp�ter ODER mysqli
 				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
-			} else { $phpextensionsSDK_DB= getWarning($_sysinfo["sdk_db warning"],'-');	}
+			} else { $phpextensionsSDK_DB= getWarning(g_l('sysinfo',"[sdk_db warning]"),'-');	}
 		} else {
 			$phpExtensionsDetectable = false;
 			$phpextensionsSDK_DB = 'unkown';
 		}
 		$_info = array(
 			'webEdition' => array (
-				$_sysinfo['we_version'] => $weVersion,
-				$_sysinfo['server_name'] => SERVER_NAME,
-				$_sysinfo['port'] => defined("HTTP_PORT") ? HTTP_PORT : 80,
-				$_sysinfo['protocol'] => getServerProtocol(),
-				$_sysinfo['installation_folder'] => $_install_dir,
-				$_sysinfo['we_max_upload_size'] => getUploadMaxFilesize()
+				g_l('sysinfo','[we_version]') => $weVersion,
+				g_l('sysinfo','[server_name]') => SERVER_NAME,
+				g_l('sysinfo','[port]') => defined("HTTP_PORT") ? HTTP_PORT : 80,
+				g_l('sysinfo','[protocol]') => getServerProtocol(),
+				g_l('sysinfo','[installation_folder]') => $_install_dir,
+				g_l('sysinfo','[we_max_upload_size]') => getUploadMaxFilesize()
 			),
 
 			'<a href="javascript:showPhpInfo();">PHP</a>' => array(
-				$_sysinfo['php_version'] => phpversion(),
-				$_sysinfo['zendframework_version'] => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning($_sysinfo["zend_framework warning"],Zend_Version::VERSION) : Zend_Version::VERSION,
-				'register_globals' => (ini_get_bool('register_globals')) ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : ini_get('register_globals'),
+				g_l('sysinfo','[php_version]') => phpversion(),
+				g_l('sysinfo','[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ?getWarning(g_l('sysinfo',"[zend_framework warning]"),Zend_Version::VERSION) : Zend_Version::VERSION,
+				'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo',"[register_globals warning]"),ini_get('register_globals')) : ini_get('register_globals'),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),
-				'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning($_sysinfo["short_open_tag warning"],ini_get('short_open_tag')) : ini_get('short_open_tag'),
+				'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning(g_l('sysinfo',"[short_open_tag warning]"),ini_get('short_open_tag')) : ini_get('short_open_tag'),
 				'allow_url_fopen' => ini_get('allow_url_fopen'),
 				'open_basedir' => ini_get('open_basedir'),
-				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo($_sysinfo["safe_mode warning"],ini_get('safe_mode')) : ini_get('safe_mode'),
+				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo(g_l('sysinfo',"[safe_mode warning]"),ini_get('safe_mode')) : ini_get('safe_mode'),
 				'safe_mode_exec_dir' => ini_get('safe_mode_exec_dir'),
 				'safe_mode_gid' => ini_get('safe_mode_gid'),
 				'safe_mode_include_dir' => ini_get('safe_mode_include_dir'),
 				'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
-				'Suhosin' => (in_array('suhosin',get_loaded_extensions()) ) ? getWarning($_sysinfo["suhosin warning"],in_array('suhosin',get_loaded_extensions())) : ''
+				'Suhosin' => (in_array('suhosin',get_loaded_extensions()) ) ? getWarning(g_l('sysinfo',"[suhosin warning]"),in_array('suhosin',get_loaded_extensions())) : ''
 			),
 
 			'MySql' => array (
-				$_sysinfo['mysql_version'] => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf($_sysinfo["dbversion warning"],getMysqlVer(false)),getMysqlVer(false) ) :  getMysqlVer(false),
+				g_l('sysinfo','[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf(g_l('sysinfo',"[dbversion warning]"),getMysqlVer(false)),getMysqlVer(false) ) :  getMysqlVer(false),
 				'max_allowed_packet' => getMaxAllowedPacket()
 			),
 
 			'System' => array (
-				$_sysinfo['connection_types'] => implode(", ", getConnectionTypes()),
-				$_sysinfo['mbstring'] => (is_callable("mb_get_info") ? $_sysinfo['available'] : "-"),
-				$_sysinfo['gdlib'] => (!empty($gdVersion) ? $_sysinfo['version']." ".$gdVersion : "-"),
-				$_sysinfo['exif'] => (is_callable("exif_imagetype") ? $_sysinfo['available'] : getWarning($_sysinfo["exif warning"],'-')),
-				$_sysinfo['pcre'] => ((defined("PCRE_VERSION")) ? ( (substr(PCRE_VERSION,0,1)<7)? getWarning($_sysinfo["pcre warning"],$_sysinfo['version'].' '.PCRE_VERSION):$_sysinfo['version'].' '.PCRE_VERSION  ) : getWarning($_sysinfo['available'],$_sysinfo["pcre_unkown"])) ,
-				$_sysinfo['sdk_db'] => $phpextensionsSDK_DB,
-				$_sysinfo['phpext'] => (!empty($phpextensionsMissing) ? getWarning($_sysinfo["phpext warning2"],$_sysinfo["phpext warning"]. implode(', ', $phpextensionsMissing))  : ($phpExtensionsDetectable ? $_sysinfo['available'] : $_sysinfo['detectable warning']) ),
+				g_l('sysinfo','[connection_types]') => implode(", ", getConnectionTypes()),
+				g_l('sysinfo','[mbstring]') => (is_callable("mb_get_info") ? g_l('sysinfo','[available]') : "-"),
+				g_l('sysinfo','[gdlib]') => (!empty($gdVersion) ? g_l('sysinfo','[version]')." ".$gdVersion : "-"),
+				g_l('sysinfo','[exif]') => (is_callable("exif_imagetype") ? g_l('sysinfo','[available]') : getWarning(g_l('sysinfo',"[exif warning]"),'-')),
+				g_l('sysinfo','[pcre]') => ((defined("PCRE_VERSION")) ? ( (substr(PCRE_VERSION,0,1)<7)? getWarning(g_l('sysinfo',"[pcre warning]"),g_l('sysinfo','[version]').' '.PCRE_VERSION):g_l('sysinfo','[version]').' '.PCRE_VERSION  ) : getWarning(g_l('sysinfo','[available]'),g_l('sysinfo',"[pcre_unkown]"))) ,
+				g_l('sysinfo','[sdk_db]') => $phpextensionsSDK_DB,
+				g_l('sysinfo','[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo',"[phpext warning2]"),g_l('sysinfo',"[phpext warning]"). implode(', ', $phpextensionsMissing))  : ($phpExtensionsDetectable ? g_l('sysinfo','[available]') : g_l('sysinfo','[detectable warning]')) ),
 			),
 
 		);
@@ -228,7 +227,7 @@
 			'upload_max_filesize'=>'bytes',
 			'memory_limit'=>'bytes',
 			'max_allowed_packet'=>'bytes',
-			$_sysinfo['we_max_upload_size']=>'bytes'
+			g_l('sysinfo','[we_max_upload_size]')=>'bytes'
 		);
 
 		$we_button = new we_button();
@@ -252,7 +251,7 @@
 
 		$_parts[] = array(
 					'headline'=> '',
-					'html'=> '<a href="javascript:showPhpInfo();">'.$_sysinfo['more_info'].'...</a>',
+					'html'=> '<a href="javascript:showPhpInfo();">'.g_l('sysinfo','[more_info]').'...</a>',
 					'space'=>10
 		);
 
@@ -261,7 +260,7 @@
 <html>
 <head>
 
-<title><?php print $_sysinfo['sysinfo']?></title>
+<title><?php print g_l('sysinfo','[sysinfo]')?></title>
 <script type="text/javascript" src="<?php print JS_DIR; ?>attachKeyListener.js"></script>
 <script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>
 <script type="text/javascript">
@@ -303,13 +302,13 @@
 
 		$_parts[] = array(
 					'headline'=> '',
-					'html'=> '<iframe id="phpinfo" style="width:660px;height:530px;">'.$_sysinfo['more_info'].'...</iframe>',
+					'html'=> '<iframe id="phpinfo" style="width:660px;height:530px;">'.g_l('sysinfo','[more_info]').'...</iframe>',
 					'space'=>$_space_size
 		);
 
 		$_parts[] = array(
 					'headline'=> '',
-					'html'=> '<a href="javascript:showInfoTable();">'.$_sysinfo['back'].'</a>',
+					'html'=> '<a href="javascript:showInfoTable();">'.g_l('sysinfo','[back]').'</a>',
 					'space'=>10
 		);
 

@@ -18,12 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-// Workarround for bug 1292
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_class.inc.php");
-
-if (!isset($l_alert)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-}
 
 protect();
 // Dreamweaver RPC Command ShowPreparedPreview
@@ -101,7 +95,7 @@ var ajaxCallback = {
 				eval( o.responseText );
 				if ( weResponse ) {
 					if (weResponse["data"] == "true") {
-						_question = "<?php print ($we_doc->IsFolder ? $l_confim["applyWeDocumentCustomerFiltersFolder"] : $l_confim["applyWeDocumentCustomerFiltersDocument"] ) ?>";
+						_question = "<?php print ($we_doc->IsFolder ? g_l('alert','[confim][applyWeDocumentCustomerFiltersFolder]') : g_l('alert','[confim][applyWeDocumentCustomerFiltersDocument]')) ?>";
 						if ( confirm(_question) ) {
 							top.we_cmd("applyWeDocumentCustomerFilterFromFolder");
 
@@ -321,7 +315,7 @@ function we_cmd(){
 <?php if($we_doc->gd_support()): ?>
 			new jsWindow(url,"we_image_resize",-1,-1,260,<?php print ($we_doc->getGDType()=="jpg") ? 250 : 190; ?>,true,false,true);
 <?php else:
-	print we_message_reporting::getShowMessageCall( sprintf($l_we_class["type_not_supported_hint"],$l_we_class["convert_".$we_doc->getGDType()]), WE_MESSAGE_ERROR );
+	print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
 
 	endif ?>
 
@@ -337,12 +331,12 @@ function we_cmd(){
 	<?php if($we_doc->gd_support()): ?>
 			new jsWindow(url,"we_rotate",-1,-1,300,<?php print ($we_doc->getGDType()=="jpg") ? 230 : 170; ?>,true,false,true);
 	<?php else:
-		print we_message_reporting::getShowMessageCall( sprintf($l_we_class["type_not_supported_hint"],$l_we_class["convert_".$we_doc->getGDType()]), WE_MESSAGE_ERROR );
+		print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
 	endif ?>
 
 <?php else:
 
-	print we_message_reporting::getShowMessageCall($l_we_class["rotate_hint"], WE_MESSAGE_ERROR);
+	print we_message_reporting::getShowMessageCall(g_l('weClass',"[rotate_hint]"), WE_MESSAGE_ERROR);
 
 	endif ?>
 			break;
@@ -353,7 +347,7 @@ function we_cmd(){
 			CropTool.crop();
 <?php } else if(defined("WE_EDIT_IMAGE")) {
 
-			print we_message_reporting::getShowMessageCall(sprintf($l_we_class["type_not_supported_hint"],$l_we_class["convert_".$we_doc->getGDType()]), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR);
 	  } ?>
 		break;
 		case "crop_cancel":
@@ -366,9 +360,8 @@ function we_cmd(){
 <?php } ?>
 		// it must be the last command
 		case "delete_navi":
-			<?php include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');?>
 			for(var i = 0; i < arguments.length; i++){arguments[i]=encodeURIComponent(arguments[i]);}
-			if(!confirm("<?php print $l_navigation['del_question']?>")) break;
+			if(!confirm("<?php print g_l('navigation','[del_question]')?>")) break;
 		default:
 			for(var i = 0; i < arguments.length; i++){
 
@@ -404,14 +397,14 @@ function fields_are_valid() {
 						if ( !theVal.match(/^-{0,1}\d+$/) ) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_contains_incorrect_chars'], "' + theType + '");
+							$_msg = sprintf(g_l('alert','[field_contains_incorrect_chars]'), "' + theType + '");
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
 						} else if(theVal>2147483647) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_int_value_to_height']);
+							$_msg = sprintf(g_l('alert','[field_int_value_to_height]'));
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
@@ -421,7 +414,7 @@ function fields_are_valid() {
 						if ( isNaN(theVal) ) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_contains_incorrect_chars'], "' + theType + '");
+							$_msg = sprintf(g_l('alert','[field_contains_incorrect_chars]'), "' + theType + '");
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
@@ -431,7 +424,7 @@ function fields_are_valid() {
 						if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>255) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_input_contains_incorrect_length']);
+							$_msg = sprintf(g_l('alert','[field_input_contains_incorrect_length]'));
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
@@ -441,7 +434,7 @@ function fields_are_valid() {
 						if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>10) {
 							<?php
 							//  don't change the formatting of the fields here
-							$_msg = sprintf($l_alert['field_int_contains_incorrect_length']);
+							$_msg = sprintf(g_l('alert','[field_int_contains_incorrect_length]'));
 							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;

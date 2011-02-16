@@ -19,9 +19,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 if(defined("SHOP_TABLE")){
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 }
@@ -234,7 +233,7 @@ function doUnload() {
 
 <?php endif ?>
 
-			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print $l_tree["edit_statustext"]; ?>\">");
+			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree',"[edit_statustext]"); ?>\">");
 
 <?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
 			fr.write("</a>");
@@ -261,10 +260,10 @@ fr.write("&nbsp;");
 			var zusatz = (ai == nf.laenge) ? "end" : "";
 
 			if (nf[ai].offen == 0){
-				fr.write("&nbsp;&nbsp;<A HREF=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print $l_tree["open_statustext"] ?>\"></A>");
+				fr.write("&nbsp;&nbsp;<A HREF=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree',"[open_statustext]") ?>\"></A>");
 				var zusatz2 = "";
 			}else{
-				fr.write("&nbsp;&nbsp;<A HREF=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print $l_tree["close_statustext"] ?>\"></A>");
+				fr.write("&nbsp;&nbsp;<A HREF=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree',"[close_statustext]") ?>\"></A>");
 	        	var zusatz2 = "open";
 	        }
 <?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
@@ -272,7 +271,7 @@ fr.write("&nbsp;");
 
 <?php endif ?>
 
-			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/folder"+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print $l_tree["edit_statustext"]; ?>\">");
+			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/folder"+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree',"[edit_statustext]"); ?>\">");
 
 <?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
 			fr.write("</a>");

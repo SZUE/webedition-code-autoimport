@@ -20,10 +20,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/SEEM.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tree.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/' . $GLOBALS["WE_LANGUAGE"] .  '/multiEditor.inc.php');
 //make sure we know which browser is used
 include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
 
@@ -226,7 +223,7 @@ function doClickDirect(id,ct,table,fenster){
 
 	} else {
 		//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
-		<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_we_SEEM"]["open_link_in_SEEM_edit_include"], WE_MESSAGE_WARNING); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('SEEM',"[open_link_in_SEEM_edit_include]"), WE_MESSAGE_WARNING); ?>
 		top.opener.top.doClickDirect(id,ct,table,top.opener);
 		// clean session
 		// get the EditorFrame - this is important due to edit_include_mode!!!!
@@ -546,8 +543,8 @@ function we_cmd() {
 			toggleBusy(1);
 			if (weEditorFrameController.getActiveDocumentReference()) {
 				if(!hasPerm) {
-					<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["no_perms_action"], WE_MESSAGE_ERROR); ?>
-				} else if (window.confirm("<?php print $l_alert['delete_single']['confirm_delete'];?>\n"+path)) {
+					<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms_action]"), WE_MESSAGE_ERROR); ?>
+				} else if (window.confirm("<?php print g_l('alert','[delete_single][confirm_delete]');?>\n"+path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
@@ -591,7 +588,7 @@ function we_cmd() {
 			toggleBusy(1);
 			if (weEditorFrameController.getActiveDocumentReference()) {
 				if(!hasPerm) {
-					<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["no_perms_action"], WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms_action]"), WE_MESSAGE_ERROR); ?>
 				} else {
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
@@ -1027,7 +1024,7 @@ function we_cmd() {
 				}
 
 			} else {
-				alert("<?php print $l_multiEditor["no_editor_left"]; ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
 
 			}
 			break;
@@ -1050,7 +1047,7 @@ function we_cmd() {
 				we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 
 			} else {
-				alert("<?php print $l_multiEditor["no_editor_left"]; ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
 
 			}
 			break;
@@ -1190,14 +1187,14 @@ function we_cmd() {
 			var _currEditor = top.weEditorFrameController.getActiveEditorFrame();
 
 			if ( _currEditor && _currEditor.getEditorType() == "cockpit" ) {
-				if( confirm('<?php print $l_alert['cockpit_reset_settings']; ?>') ){
+				if( confirm('<?php print g_l('alert','[cockpit_reset_settings]'); ?>') ){
 					top.weEditorFrameController.getActiveDocumentReference().location='<?php print WEBEDITION_DIR; ?>we/include/home.inc.php?we_cmd[0]='+arguments[0];
 					if(treeData){
 						treeData.unselectnode();
 					}
 				}
 			} else {
-				<?php print we_message_reporting::getShowMessageCall( $l_alert['cockpit_not_activated'], WE_MESSAGE_NOTICE); ?>
+				<?php print we_message_reporting::getShowMessageCall( g_l('alert','[cockpit_not_activated]'), WE_MESSAGE_NOTICE); ?>
 			}
 
 			break;
@@ -1222,7 +1219,7 @@ function we_cmd() {
 				top.weEditorFrameController.getActiveDocumentReference().createWidget(arguments[0].substr(arguments[0].length-3),1,1);
 			}
 			else {
-				<?php print we_message_reporting::getShowMessageCall($l_alert['cockpit_not_activated'], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('alert','[cockpit_not_activated]'), WE_MESSAGE_ERROR); ?>
 			}
 			break;
  		case "initPlugin":
@@ -1285,7 +1282,7 @@ function we_cmd() {
 		case "eplugin_exit_doc" :
 			if(typeof(top.plugin.document.WePlugin)!="undefined") {
 				if(top.plugin.isInEditor(arguments[1])) {
-					return confirm("<?php echo $GLOBALS['l_alert']['eplugin_exit_doc']; ?>");
+					return confirm("<?php echo g_l('alert','[eplugin_exit_doc]'); ?>");
 				}
 			}
 			return true;
@@ -1320,7 +1317,7 @@ function we_cmd() {
 				top.weEditorFrameController.toggleFrames();
 
 			} else {
-				<?php we_message_reporting::getShowMessageCall($l_multiEditor["no_editor_left"], WE_MESSAGE_INFO); ?>
+				<?php we_message_reporting::getShowMessageCall(g_l('multiEditor',"[no_editor_left]"), WE_MESSAGE_INFO); ?>
 			}
 	}
 
@@ -1399,23 +1396,10 @@ function openBrowser(url) {
 	try{
 		browserwind = window.open("/webEdition/openBrowser.php?url="+escape(url),"browser","menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 	}catch(e) {
-		<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["browser_crashed"], WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[browser_crashed]"), WE_MESSAGE_ERROR); ?>
 	}
 }
 <?php
-if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
-	?>
-function register() {
-
-	if(we_demo) {
-		new jsWindow("<?php print WEBEDITION_DIR; ?>registerScreen.php","register",-1,-1, 530,260,true,false,true);
-	}
-}
-
-register();
-	<?php
-}
-
 	pWebEdition_JSFunctions();
 ?>
 var cockpitFrame;

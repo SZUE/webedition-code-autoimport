@@ -18,47 +18,45 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Language file: sysinfo.inc.php
  * Provides language strings for system info.
  * Language: Deutsch
  */
+$l_sysinfo = array(
+		'we_version' => 'webEdition versio',
+		'server_name' => 'Server name',
+		'port' => 'Portti',
+		'protocol' => 'Protokolla',
+		'installation_folder' => 'Asennushakemisto',
+		'we_max_upload_size' => 'Maksimi lähetettävän tiedoston koko',
+		'php_version' => 'PHP versio',
+		'mysql_version' => 'MySql versio',
+		'more_info' => 'lisätietoja',
+		'back' => 'paluu',
+		'sysinfo' => 'Järjestelmätiedot',
+		'zendframework_version' => 'Zend Framework versio',
+		'register_globals warning' => 'WARNING: register_globals can be a serious security risk for your system so we strongly recommend to turn off this feature!',
+		'short_open_tag warning' => 'WARNUNG: short_open_tag can lead to severe problems with the processing of xml-files, i.e. for backup files. We strongly recommend to turn off this feature!!',
+		'safe_mode warning' => 'Please deactivate the PHP Safe Mode if you experience problems during installation or update procedures.',
+		'zend_framework warning' => 'You are currently using a different version of the Zend Framework than the recommended version ' . WE_ZFVERSION . '.',
+		'suhosin warning' => 'Due to the many configuration options of this PHP extension, we cannot guarenty the full functionality of webEdition.',
+		'dbversion warning' => 'The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required. In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!',
+		'pcre warning' => 'Versions before 7.0 can lead to severe problems', // TRANSLATE
+		'pcre_unkown' => 'Not detectable', // TRANSLATE
+		'exif warning' => 'EXIF-Metadata for images are not available', // TRANSLATE
+		'sdk_db warning' => 'SDK Operations and WE-APPS with database access are not available', // TRANSLATE
+		'phpext warning' => 'not available: ', // TRANSLATE
+		'phpext warning2' => 'Most likely, webEdition will not work properly!', // TRANSLATE
+		'detectable warning' => 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start ', // TRANSLATE
 
-$_sysinfo['we_version'] = 'webEdition versio';
-$_sysinfo['server_name'] = 'Server name';
-$_sysinfo['port'] ='Portti' ;
-$_sysinfo['protocol'] = 'Protokolla';
-$_sysinfo['installation_folder'] = 'Asennushakemisto';
-$_sysinfo['we_max_upload_size'] = 'Maksimi lähetettävän tiedoston koko';
-$_sysinfo['php_version'] = 'PHP versio';
-$_sysinfo['mysql_version'] = 'MySql versio';
-$_sysinfo['more_info'] = 'lisätietoja';
-$_sysinfo['back'] = 'paluu';
-$_sysinfo['sysinfo'] = 'Järjestelmätiedot';
-$_sysinfo['zendframework_version'] = 'Zend Framework versio';
-$_sysinfo["register_globals warning"] = 'WARNING: register_globals can be a serious security risk for your system so we strongly recommend to turn off this feature!';
-$_sysinfo["short_open_tag warning"] = 'WARNUNG: short_open_tag can lead to severe problems with the processing of xml-files, i.e. for backup files. We strongly recommend to turn off this feature!!';
-
-$_sysinfo["safe_mode warning"] = 'Please deactivate the PHP Safe Mode if you experience problems during installation or update procedures.';
-$_sysinfo["zend_framework warning"] = 'You are currently using a different version of the Zend Framework than the recommended version '.WE_ZFVERSION.'.';
-$_sysinfo["suhosin warning"] = 'Due to the many configuration options of this PHP extension, we cannot guarenty the full functionality of webEdition.';
-$_sysinfo["dbversion warning"] = 'The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required. In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!';
-$_sysinfo["pcre warning"] = 'Versions before 7.0 can lead to severe problems';// TRANSLATE
-$_sysinfo["pcre_unkown"] = 'Not detectable';// TRANSLATE
-$_sysinfo["exif warning"] = 'EXIF-Metadata for images are not available';// TRANSLATE
-$_sysinfo['sdk_db warning'] = 'SDK Operations and WE-APPS with database access are not available';// TRANSLATE
-$_sysinfo['phpext warning'] = 'not available: ';// TRANSLATE
-$_sysinfo['phpext warning2'] = 'Most likely, webEdition will not work properly!';// TRANSLATE
-$_sysinfo['detectable warning'] = 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start ';// TRANSLATE
-
-$_sysinfo['connection_types'] = 'Päivitä yhteystyypit';
-$_sysinfo['gdlib'] = 'GDlib tuki';
-$_sysinfo['mbstring'] = 'Multibyte String funktiot';
-$_sysinfo['version'] = 'Versio';
-$_sysinfo['available'] = 'saatavilla';
-$_sysinfo['exif'] = 'EXIF Support'; // TRANSLATE
-$_sysinfo['pcre'] = 'PCRE-Extension'; // TRANSLATE
-$_sysinfo['sdk_db'] = 'SDK/Apps DB support'; // TRANSLATE
-$_sysinfo['phpext'] = 'Required PHP extensions'; // TRANSLATE
-?>
+		'connection_types' => 'Päivitä yhteystyypit',
+		'gdlib' => 'GDlib tuki',
+		'mbstring' => 'Multibyte String funktiot',
+		'version' => 'Versio',
+		'available' => 'saatavilla',
+		'exif' => 'EXIF Support', // TRANSLATE
+		'pcre' => 'PCRE-Extension', // TRANSLATE
+		'sdk_db' => 'SDK/Apps DB support', // TRANSLATE
+		'phpext' => 'Required PHP extensions', // TRANSLATE
+);

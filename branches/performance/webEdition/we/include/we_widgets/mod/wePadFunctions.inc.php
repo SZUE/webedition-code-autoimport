@@ -25,6 +25,8 @@
  * @param unknown_type $date
  * @return unknown
  */
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+
 function convertDate($date)
 {
 	return implode('.', array_reverse(explode('-', $date)));
@@ -40,7 +42,6 @@ function convertDate($date)
  */
 function getDateSelector($_label, $_name, $_btn)
 {
-	global $l_cockpit;
 	$we_button = new we_button();
 	$btnDatePicker = $we_button->create_button(
 			"image:date_picker",
@@ -185,9 +186,8 @@ function getNoteList($_sql, $bDate, $bDisplay)
 	return $_notes;
 }
 
-function getCSS()
-{
-	global $SYSTEM, $l_css;
+function getCSS(){
+	global $SYSTEM;
 	$_css = "
 	body{
 		background-color:transparent;
@@ -220,7 +220,7 @@ function getCSS()
 		vertical-align:middle;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . $l_css["font_family"] . ";
+		font-family:" . g_l('css','[font_family]') . ";
 	}
 	.wetextinputselected{
 		color:black;
@@ -229,7 +229,7 @@ function getCSS()
 		height:18px;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . $l_css["font_family"] . ";
+		font-family:" . g_l('css','[font_family]') . ";
 	}
 	.wetextarea{
 		color:black;
@@ -237,7 +237,7 @@ function getCSS()
 		height:80px;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . $l_css["font_family"] . ";
+		font-family:" . g_l('css','[font_family]') . ";
 	}
 	.wetextareaselected{
 		color:black;
@@ -246,7 +246,7 @@ function getCSS()
 		height:80px;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . $l_css["font_family"] . ";
+		font-family:" . g_l('css','[font_family]') . ";
 	}
 	select{
 		border:#AAAAAA solid 1px;
