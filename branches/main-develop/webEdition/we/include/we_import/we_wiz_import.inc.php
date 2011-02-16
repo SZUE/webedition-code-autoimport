@@ -842,6 +842,7 @@ class we_wizard_import extends we_wizard {
 	}
 
 	function getWXMLImportStep3(){
+		$this->getTMPaccess();
 		$we_button = new we_button();
 
 		$functions = $we_button->create_state_changer(false) . '
@@ -876,6 +877,7 @@ class we_wizard_import extends we_wizard {
 				"space"=>0)
 		);
 		$content = $hdns . we_multiIconBox::getHTML("wxml","100%",$parts,30,"",-1,'','',false,g_l('import','[log]'));
+		
 		return array($functions, $content);
 	}
 
@@ -1408,6 +1410,7 @@ HTS;
 	}
 
 	function getGXMLImportStep3() {
+		$this->getTMPaccess();
 		$v = $_REQUEST["v"]; if (isset($v["att_pfx"])) $v["att_pfx"] = base64_encode($v["att_pfx"]);
 		$records = (isset($_REQUEST["records"]))? $_REQUEST["records"] : array();
 		$we_flds = (isset($_REQUEST["we_flds"]))? $_REQUEST["we_flds"] : array();
@@ -2183,6 +2186,9 @@ HTS;
 	}
 
 	function getCSVImportStep3() {
+		
+		$this->getTMPaccess();
+		
 		if (isset($_REQUEST["v"]['we_TemplateName']) && ($_REQUEST["v"]['we_TemplateID']==0 || $_REQUEST["v"]['we_TemplateID']=="")) {
 			$_REQUEST["v"]['we_TemplateID'] = path_to_id($_REQUEST["v"]['we_TemplateName'],TEMPLATES_TABLE);
 		}
@@ -2468,6 +2474,20 @@ HTS;
 			we_htmlElement::htmlHidden(array("name"=>$IDName,"value"=>$IDValue)),
 			getPixel(20,4),
 			$button);
+	}
+	
+	function getTMPaccess(){
+		if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess') ){
+			unlink($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess');
+		}
+	}
+	function denyTMPaccess(){
+		if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbase.txt')) {
+			$htaccessdata=file_get_contents($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbase.txt');
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess') ){
+					file_put_contents($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess',$htaccessdata);
+			}
+		}
 	}
 
 }
