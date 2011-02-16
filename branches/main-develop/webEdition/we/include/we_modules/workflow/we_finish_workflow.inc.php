@@ -35,13 +35,13 @@ include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc
 
 if(weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],"",true)) {
 	if($we_doc->i_publInScheduleTable()) {
-		$we_responseText = sprintf(g_l('we_editor','['.$we_doc->ContentType.'][autoschedule]'),date(g_l('date','[format][default]'),$we_doc->From));
+		$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][autoschedule]'),date(g_l('date','[format][default]'),$we_doc->From));
 		$we_responseTextType = WE_MESSAGE_NOTICE;
 	}
 	else{
 		if($we_doc->we_publish()) {
 			$we_JavaScript = "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n".$we_doc->getUpdateTreeScript()."\n";
-			$we_responseText = sprintf(g_l('we_editor','['.$we_doc->ContentType.'][response_publish_ok]'),$we_doc->Path);
+			$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_publish_ok]'),$we_doc->Path);
 			$we_responseTextType = WE_MESSAGE_NOTICE;
 			if(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)) {
 				$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef�gt
@@ -49,7 +49,7 @@ if(weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]
 			$we_JavaScript .= "top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n".$we_doc->getUpdateTreeScript()."\n";
 		}
 		else {
-			$we_responseText = sprintf(g_l('we_editor','['.$we_doc->ContentType.'][response_publish_notok]'),$we_doc->Path);
+			$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_publish_notok]'),$we_doc->Path);
 			$we_responseTextType = WE_MESSAGE_ERROR;
 		}
 	}
