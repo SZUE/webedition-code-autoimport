@@ -18,16 +18,14 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: schedule.inc.php
  * Provides language strings.
  * Language: English
  */
-
-$l_schedule["headline"] = "Automaattinen<br>julkaisu";
-$l_schedule["from"] = "Mistä";
-$l_schedule["to"] = "Minne";
-$l_schedule["toBeforeNow"] = "Syötetty 'Minne' päivämäärä on vanhempi kuin nykyhetki!\\Dokukenttia ei tallennettu!\\Deaktivoi 'Mistä' -kenttä tai muuta 'Minne' -päivämäärää!";
-?>
+$l_modules_schedule = array(
+		'headline' => "Automaattinen<br>julkaisu",
+		'from' => "Mistä",
+		'to' => "Minne",
+		'toBeforeNow' => "Syötetty 'Minne' päivämäärä on vanhempi kuin nykyhetki!\\Dokukenttia ei tallennettu!\\Deaktivoi 'Mistä' -kenttä tai muuta 'Minne' -päivämäärää!",
+);

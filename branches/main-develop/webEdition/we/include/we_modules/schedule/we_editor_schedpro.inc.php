@@ -21,7 +21,6 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/schedpro.inc.php");
 include_once(WE_SCHEDULE_MODULE_DIR."we_schedpro.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
@@ -56,7 +55,7 @@ foreach($we_doc->schedArr as $i=>$sched){
 
 }
 array_push($parts, array(		"headline"=>"",
-								"html"=>htmlAlertAttentionBox($GLOBALS["l_schedpro"]["descriptiontext"],2,"700").'<br><br>'. $we_button->create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
+								"html"=>htmlAlertAttentionBox(g_l('modules_schedpro',"[descriptiontext]"),2,"700").'<br><br>'. $we_button->create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
 								"space"=>0
 						)
 				);

@@ -18,7 +18,7 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$GLOBALS["l_schedpro"] = array(
+$l_modules_schedpro = array(
 		'task' => array(
 				'headline' => "Aufgabe",
 				SCHEDULE_FROM => "Veröffentlichen",
