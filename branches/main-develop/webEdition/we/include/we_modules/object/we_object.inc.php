@@ -22,9 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_document.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_value.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object_url.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
@@ -905,7 +902,7 @@ class we_object extends we_document
 				$content .= hidden("we_".$this->Name."_input[$name]", $foo);
 				$content .= $this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME,40,$foo,52,' readonly="readonly" disabled="disabled"',"text",388);
 			} else {
-				$foo = $foo ? $foo : $GLOBALS["l_object"]["new_field"];
+				$foo = $foo ? $foo : g_l('modules_object','[new_field]');
 				$content .= $this->htmlTextInput("we_".$this->Name."_input[$name]",40,$foo,52,' oldValue="' . $foo . '" onBlur="we_checkObjFieldname(this);" onChange="_EditorFrame.setEditorIsHot(true);"',"text",388);
 			}
 		}
@@ -918,27 +915,27 @@ class we_object extends we_document
 
 		//type
 		$content .= '<tr>';
-		$content .= '<td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["type"].'</td>';
+		$content .= '<td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[type]').'</td>';
 		$content .= '<td width="170" class="defaultfont"  valign="top">';
-		$val["input"] = $GLOBALS["l_object"]["input_field"];
-		$val["text"] = $GLOBALS["l_object"]["textarea_field"];
-		$val["date"] = $GLOBALS["l_object"]["date_field"];
-		$val["img"] = $GLOBALS["l_object"]["img_field"];
-		$val["checkbox"] = $GLOBALS["l_object"]["checkbox_field"];
-		$val["int"] = $GLOBALS["l_object"]["int_field"];
-		$val["float"] = $GLOBALS["l_object"]["float_field"];
-		$val["meta"] = $GLOBALS["l_object"]["meta_field"];
-		$val["link"] = $GLOBALS["l_object"]["link_field"];
-		$val["href"] = $GLOBALS["l_object"]["href_field"];
-		$val["binary"] = $GLOBALS["l_object"]["binary_field"];
-		$val["flashmovie"] = $GLOBALS["l_object"]["flashmovie_field"];
-		$val["quicktime"] = $GLOBALS["l_object"]["quicktime_field"];
-		$val["country"] = $GLOBALS["l_object"]["country_field"];
-		$val["language"] = $GLOBALS["l_object"]["language_field"];
-		$val["object"] = $GLOBALS["l_object"]["objectFile_field"];
-		$val["multiobject"] = $GLOBALS["l_object"]["multiObjectFile_field"];
+		$val["input"] = g_l('modules_object','[input_field]');
+		$val["text"] = g_l('modules_object','[textarea_field]');
+		$val["date"] = g_l('modules_object','[date_field]');
+		$val["img"] = g_l('modules_object','[img_field]');
+		$val["checkbox"] = g_l('modules_object','[checkbox_field]');
+		$val["int"] = g_l('modules_object','[int_field]');
+		$val["float"] = g_l('modules_object','[float_field]');
+		$val["meta"] = g_l('modules_object','[meta_field]');
+		$val["link"] = g_l('modules_object','[link_field]');
+		$val["href"] = g_l('modules_object','[href_field]');
+		$val["binary"] = g_l('modules_object','[binary_field]');
+		$val["flashmovie"] = g_l('modules_object','[flashmovie_field]');
+		$val["quicktime"] = g_l('modules_object','[quicktime_field]');
+		$val["country"] = g_l('modules_object','[country_field]');
+		$val["language"] = g_l('modules_object','[language_field]');
+		$val["object"] = g_l('modules_object','[objectFile_field]');
+		$val["multiobject"] = g_l('modules_object','[multiObjectFile_field]');
 		if (defined('SHOP_TABLE')) {
-			$val["shopVat"] = $GLOBALS["l_object"]["shopVat_field"];
+			$val["shopVat"] = g_l('modules_object','[shopVat_field]');
 		}
 		$content .= $this->htmlSelect("we_".$this->Name."_input[".$name."dtype]",$val,1,$type,"",'onChange="if(this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\']){this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.$identifier.'\'); "',"value",388);
 		$content .= '</td></tr>';
@@ -946,7 +943,7 @@ class we_object extends we_document
 		if($type != 'shopVat' && $type!="float" && $type!="text" && $type!="country" && $type!="language" && $type!="img" && $type!="binary"  && $type!="flashmovie" && $type!="quicktime" && $type!="date" && $type!="meta" && $type!="object" && $type!="link" && $type!="href" && $type!="checkbox" && $type!="multiobject"){
 			// Length
 			$maxLengthVal = $type == 'int' ? 10 : 255;
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["length"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[length]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlTextInput("we_".$this->Name."_input[".$name."length]",10,($this->getElement($name."length","dat")>0  && ($this->getElement($name."length","dat") < ($maxLengthVal+1))?$this->getElement($name."length","dat"):$maxLengthVal),($type == 'int' ? 2 : 3),'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_'.$type.'_length"',"text",388);
 			$content .= '</td></tr>';
@@ -1017,75 +1014,75 @@ class we_object extends we_document
 		}
 		*/
 		if($type == 'checkbox') {
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
-			$content .= we_forms::checkbox("1", $this->getElement($name."default","dat"), "we_".$this->Name."_input[".$name."default1]", $GLOBALS["l_object"]["checked"], true, "defaultfont", "if(this.checked){document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=1;}else{ document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=0;}");
+			$content .= we_forms::checkbox("1", $this->getElement($name."default","dat"), "we_".$this->Name."_input[".$name."default1]", g_l('modules_object','[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=1;}else{ document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=0;}");
 			$content .= '<input type=hidden name="'."we_".$this->Name."_input[".$name."default]".'" value="'.$this->getElement($name."default","dat").'" />';
 			$content .= '</td></tr>';
 
 		}else if($type=="img"){
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["rootdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
 			$content .= '</td></tr>';
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["defaultdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[defaultdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[".$name."defaultdir]", "", $this->getElement($name."defaultdir","dat"),$identifier);
 			$content .= '</td></tr>';
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->getImageHTML($name."default",$this->getElement($name."default","dat"),$identifier);
 			$content .= '</td></tr>';
 
 		}else if($type=="flashmovie"){
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["rootdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
 			$content .= '</td></tr>';
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["defaultdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[defaultdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[".$name."defaultdir]", "", $this->getElement($name."defaultdir","dat"),$identifier);
 			$content .= '</td></tr>';
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->getFlashmovieHTML($name."default",$this->getElement($name."default","dat"),$identifier);
 			$content .= '</td></tr>';
 
 		}else if($type=="quicktime"){
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["rootdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
 			$content .= '</td></tr>';
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["defaultdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[defaultdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[".$name."defaultdir]", "", $this->getElement($name."defaultdir","dat"),$identifier);
 			$content .= '</td></tr>';
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" valign="top">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->getQuicktimeHTML($name."default",$this->getElement($name."default","dat"),$identifier);
 			$content .= '</td></tr>';
 
 		}else if($type=="binary"){
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["rootdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
 			$content .= '</td></tr>';
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["defaultdir"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[defaultdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[".$name."defaultdir]", "", $this->getElement($name."defaultdir","dat"),$identifier);
 			$content .= '</td></tr>';
-			$content .= '<tr><td  width="100" valign="top" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr><td  width="100" valign="top" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class= "defaultfont"  valign="top">';
 			$content .= $this->getBinaryHTML($name."default",$this->getElement($name."default","dat"),$identifier);
 			$content .= '</td></tr>';
@@ -1101,7 +1098,7 @@ class we_object extends we_document
 		}else if($type=="text"){
 
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 
 			$content .= $this->dhtmledit($name,$identifier);
@@ -1109,7 +1106,7 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 		}else if($type=="object"){
 
-			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 
 			$content .= $this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "");
@@ -1118,7 +1115,7 @@ class we_object extends we_document
 
 		}else if($type=="meta"){
 
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"><table border="0"><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
 			if(!isset($this->elements[$name."count"]["dat"])){
 			    $this->elements[$name."count"]["dat"] = 0;
@@ -1158,11 +1155,11 @@ class we_object extends we_document
 		}else if($type=="multiobject"){
 
 			$content .= 	'<tr valign="top">'
-						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["max_objects"].'</td>'
-						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.$GLOBALS["l_object"]["no_maximum"].')</nobr></td>'
+						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[max_objects]').'</td>'
+						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.g_l('modules_object','[no_maximum]').')</nobr></td>'
 						. 	'</tr>';
 
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"><table border="0">';
 			if(!isset($this->elements[$name."count"]["dat"])){
 			    $this->elements[$name."count"]["dat"] = 0;
@@ -1174,22 +1171,22 @@ class we_object extends we_document
 			$content .=	'</tr></table></td></tr>';
 
 		}else if($type=="country"){
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlTextInput("we_".$this->Name."_country[".$name."default]",40,$this->getElement($name."default","dat"),10,'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"',"text",388);
 			$content .= '</td></tr>';
 		}else if($type=="language"){
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlTextInput("we_".$this->Name."_language[".$name."default]",40,$this->getElement($name."default","dat"),15,'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"',"text",388);
 			$content .= '</td></tr>';
 		}else if($type=="link"){
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlLinkInput($name, $identifier);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
 			$content .= '</td></tr>';
 		}else if($type=="href"){
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlHref($name);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
 			$content .= '</td></tr>';
@@ -1209,13 +1206,13 @@ class we_object extends we_document
 					}
 				}
 			}
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= we_class::htmlSelect("we_".$this->Name."_shopVat[".$name."default]", $values, 1, $this->getElement($name."default","dat")); //$this->htmlTextInput("we_".$this->Name."_shopVat[".$name."default]",40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388);
 			$content .= '</td></tr>';
 		} else{ // default for input, int and float
 
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlTextInput("we_".$this->Name."_input[".$name."default]",40,$this->getElement($name."default","dat"),($type=='int'?10:($type=='float'?19:255)),'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"',"text",388);
 			$content .= '</td></tr>';
@@ -1405,7 +1402,6 @@ class we_object extends we_document
 	}
 
 	function getObjectFieldHTML($ObjectID,$attribs,$editable=true){
-		global $l_object;
 		$pid = $this->getElement($ObjectID,"dat");
 		$we_button = new we_button();
 		if($editable){
@@ -1448,7 +1444,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			"defaultfont",
 			$this->htmlHidden($idname,$myid),
 			getPixel(10,4),
-			$button,getPixel(5,4),$delbutton) . ($DoubleNames ? '<span style="color:red" >' .$l_object["incObject_sameFieldname_start"] . implode(', ',$DoubleNames). $l_object["incObject_sameFieldname_end"] .'</span>':'');
+			$button,getPixel(5,4),$delbutton) . ($DoubleNames ? '<span style="color:red" >' .g_l('modules_object','[incObject_sameFieldname_start]') . implode(', ',$DoubleNames). g_l('modules_object','[incObject_sameFieldname_end]') .'</span>':'');
 		}
 	}
 
@@ -1698,7 +1694,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$thumbdb->query("SELECT Name FROM ".THUMBNAILS_TABLE);
 		$thumbs = $thumbdb->getAll();
 		if(count($thumbs)) {
-			$content .= "<br />".$GLOBALS["l_object"]["use_thumbnail_preview"].":<br />";
+			$content .= "<br />".g_l('modules_object','[use_thumbnail_preview]').":<br />";
 			$thumbList = array("-");
 			foreach($thumbs as $id=>$thumb) {
 				$thumbList[] = $thumb["Name"];
@@ -1786,10 +1782,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formDefault(){
-		global $l_object, $l_object_value,$l_object_url;
 		//g_l('global',"[categorys]")formCategory()
 
-		$var_flip = array_flip($l_object_value);
+		$var_flip = array_flip(g_l('modules_object','[value]'));
 		$select = "";
 		if(isset($this->elements["Defaultanzahl"]["dat"])){
 			$this->DefaultText="";
@@ -1823,15 +1818,15 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 					}
 					$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
-					$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$l_object_value,1,"%unique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+					$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",g_l('modules_object','[value]'),1,"%unique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 					$select .= $this->htmlTextInput("we_".$this->Name."_input[unique_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 				}else{
-					$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$l_object_value,1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+					$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$g_l('modules_object','[value]'),1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 				}
 			}else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all,strlen($regs[1]));
 				$key = $regs[1];
-				$select .= $this->htmlSelect("textwert_".$zahl,$l_object_value,1,"Text","",'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_'.$this->Name.'_input[DefaultText_'.$zahl.']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+				$select .= $this->htmlSelect("textwert_".$zahl,$g_l('modules_object','[value]'),1,"Text","",'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_'.$this->Name.'_input[DefaultText_'.$zahl.']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 				$select .= $this->htmlTextInput("we_".$this->Name."_input[DefaultText_".$zahl."]",40,$key,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 			}
 
@@ -1839,11 +1834,11 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$zahl ++;
 		}
 
-		$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$l_object_value,1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+		$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$g_l('modules_object','[value]'),1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 		$select .= '<input type = "hidden" name="we_'.$this->Name.'_input[Defaultanzahl]" value="'.$zahl.'" />';
 
 
-		$var_flip = array_flip($l_object_url);
+		$var_flip = array_flip(g_l('modules_object','[url]'));
 		$select2 = "";
 		if(isset($this->elements["DefaultanzahlUrl"]["dat"])){
 			$this->DefaultUrl="";
@@ -1885,7 +1880,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 					}
 					$unique = substr(md5(uniqid(rand(),1)),0,min($anz,32));
 					$text = preg_replace('/%urlunique[^%]*%/', $unique, (isset($text) ? $text : ""));
-					$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlunique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+					$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",g_l('modules_object','[url]'),1,"%urlunique%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 					$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlunique_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 				}else{
 					if (preg_match('/urlfield1([^%]*)/', $key, $regs)){
@@ -1894,7 +1889,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 						}else{
 							$anz = abs($regs[1]);
 						}
-						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlfield1%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",g_l('modules_object','[url]'),1,"%urlfield1%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 						$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlfield1_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 					} elseif(preg_match('/urlfield2([^%]*)/', $key, $regs)){
 						if(!$regs[1]){
@@ -1902,7 +1897,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 						}else{
 							$anz = abs($regs[1]);
 						}
-						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlfield2%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",g_l('modules_object','[url]'),1,"%urlfield2%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 						$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlfield2_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 					} elseif(preg_match('/urlfield3([^%]*)/', $key, $regs)){
 						if(!$regs[1]){
@@ -1910,17 +1905,17 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 						}else{
 							$anz = abs($regs[1]);
 						}
-						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%urlfield3%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",g_l('modules_object','[url]'),1,"%urlfield3%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 						$select2 .= $this->htmlTextInput("we_".$this->Name."_input[urlfield3_".$zahl."]",40,$anz,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 
 					} else {
-						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+						$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",g_l('modules_object','[url]'),1,"%".$key."%","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 					}
 				}
 			}else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all,strlen($regs[1]));
 				$key = $regs[1];
-				$select2 .= $this->htmlSelect("textwert_".$zahl,$l_object_url,1,"Text","",'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_'.$this->Name.'_input[DefaultUrl_'.$zahl.']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+				$select2 .= $this->htmlSelect("textwert_".$zahl,g_l('modules_object','[url]'),1,"Text","",'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_'.$this->Name.'_input[DefaultUrl_'.$zahl.']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 				$select2 .= $this->htmlTextInput("we_".$this->Name."_input[DefaultUrl_".$zahl."]",40,$key,255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",140);
 			}
 
@@ -1928,7 +1923,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$zahl ++;
 		}
 
-		$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",$l_object_url,1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+		$select2 .= $this->htmlSelect("we_".$this->Name."_input[DefaultUrl_".$zahl."]",g_l('modules_object','[url]'),1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 		$select2 .= '<input type = "hidden" name="we_'.$this->Name.'_input[DefaultanzahlUrl]" value="'.$zahl.'" />';
 
 
@@ -1936,7 +1931,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 
 	<tr>
-		<td colspan="2" class="defaultfont" valign=top>'.$l_object["name"].'</td><td>'.getPixel(20,20).'</td>
+		<td colspan="2" class="defaultfont" valign=top>'.g_l('modules_object','[name]').'</td><td>'.getPixel(20,20).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$select.'</td>
@@ -1947,7 +1942,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	</tr>
 
 	<tr>
-		<td colspan="2" class="defaultfont" valign=top>'.$l_object["seourl"].'</td><td>'.getPixel(20,20).'</td>
+		<td colspan="2" class="defaultfont" valign=top>'.g_l('modules_object','[seourl]').'</td><td>'.getPixel(20,20).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$select2.'</td>
@@ -2006,10 +2001,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formPath(){
-		global $l_object;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.$this->formInputField("","Text",$l_object["classname"],30,508,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
+		<td>'.$this->formInputField("","Text",g_l('modules_object','[classname]'),30,508,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
 	</tr>
 </table>
 ';
@@ -2017,8 +2011,6 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formWorkspaces(){
-		global $l_object;
-
 		$we_button = new we_button();
 
 		//remove not existing workspaces - deal with templates as well
@@ -2068,12 +2060,10 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function formWorkspacesFlag(){
-		global $l_object;
-
 		$content =
 
-			'<div style="margin-bottom:8px;">'.we_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_".$this->Name."_WorkspaceFlag",$l_object["behaviour_all"]).'</div><div>' .
-			we_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_".$this->Name."_WorkspaceFlag",$l_object["behaviour_no"]).'</div>';
+			'<div style="margin-bottom:8px;">'.we_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_".$this->Name."_WorkspaceFlag",g_l('modules_object','[behaviour_all]')).'</div><div>' .
+			we_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_".$this->Name."_WorkspaceFlag",g_l('modules_object','[behaviour_no]')).'</div>';
 
 		return $content;
 	}
@@ -2651,5 +2641,3 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
    }
 
 }
-
-?>

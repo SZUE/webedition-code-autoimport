@@ -33,7 +33,7 @@ if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 						"icon"=>"path.gif")
 				);
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_object"]["default"],
+						"headline"=>g_l('modules_object','[default]'),
 						"html"=>$GLOBALS['we_doc']->formDefault(),
 						"space"=>140,
 						"icon"=>"default.gif")
@@ -57,7 +57,7 @@ if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 						"icon"=>"css.gif")
 				);
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_object"]["copyClass"],
+						"headline"=>g_l('modules_object','[copyClass]'),
 						"html"=>$GLOBALS['we_doc']->formCopyDocument(),
 						"space"=>140,
 						"icon"=>"copy.gif")
@@ -72,7 +72,7 @@ if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 						"icon"=>"workspace.gif")
 				);
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_object"]["behaviour"],
+						"headline"=>g_l('modules_object','[behaviour]'),
 						"html"=>$GLOBALS['we_doc']->formWorkspacesFlag(),
 						"space"=>140,
 						"icon"=>"display.gif")
@@ -80,5 +80,3 @@ if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 }
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("","100%",$parts,30,"",-1,"","",false);
-
-?>

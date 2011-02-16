@@ -18,81 +18,112 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$l_modules_object = array(
+		'attributes' => "Ominaisuudet",
+		'objectname' => "Objektin nimi",
+		'objectpath' => "Objektin polku",
+		'objectid' => "Object ID", // TRANSLATE
+		'objecturl' => "Object URL", // TRANSLATE
+		'class' => "Luokka",
+		'classname' => "Luokan nimi",
+		'class_id' => "Luokan ID",
+		'default' => "Default Value",
+		'checked' => "rastitettu",
+		'name' => "Automaattinen nimi",
+		'seourl' => "SEO-URL", // TRANSLATE
+		'seourltrigger' => "Preset document for display", // TRANSLATE
+		'allFields' => "Kaikki kentät",
+		'search_term' => "Hakuehto",
+		'search_field' => "Hakukenttä",
+		'defaultdir' => "Oletushakemisto",
+		'rootdir' => "Työtila",
+		'no_root_ws_select' => "Juurihakemistoa ei voida valita!",
+		'objectFile_field' => "Objekti",
+		'multiObjectFile_field' => "Useita objekteja",
+		'checkbox_field' => "Ruutu",
+		'meta_field' => "Valinta",
+		'input_field' => "Tekstikenttä",
+		'country_field' => "Country", // TRANSLATE
+		'language_field' => "Language", // TRANSLATE
+		'locale_field' => "Locale", // TRANSLATE
+		'int_field' => "Kokonaisluku",
+		'float_field' => "Liukuluku",
+		'date_field' => "Päivämäärä",
+		'textarea_field' => "Iso tekstikenttä",
+		'img_field' => "Kuva",
+		'binary_field' => "Binääridokumentti",
+		'flashmovie_field' => "Flashmovie", // TRANSLATE
+		'quicktime_field' => "Quicktime", // TRANSLATE
+		'link_field' => "Linkki",
+		'href_field' => "Href",
+		'shopVat_field' => "ALV kenttä",
+		'multiobject_recursion' => "In a Multiobject, an object can not be included in itself", // TRANSLATE
 
+		'we_new_doc_after_save' => "Uusi objekti tallentamisen jälkeen",
+		'objectFile_response_save_ok' => "Objekti '%s' on tallennettu!",
+		'objectFile_response_publish_ok' => "Objekti '%s' on julkaistu!",
+		'objectFile_response_unpublish_ok' => "Objekti '%s' on poistettu julkaisusta!",
+		'fieldNameNotValid' => "Tiedoston nimi ei ole kelvollinen\\nKelvollisia ovat numerot sekä pienet ja isot kirjaimet (a-z, A-Z, 0-9) ja alaviiva.",
+		'fieldNameNotTitleDesc' => "Kenttien nimenä ei voida käyttää: Title ja Description!",
+		'fieldNameEmpty' => "Kentän nimi on tyhjä!",
+		'length' => "Pituus",
+		'type' => "Tyyppi",
+		'default' => "Oletus",
+		'max_objects' => "max. Objekteja",
+		'no_maximum' => "jätä tyhjäksi jos ei rajoitusta",
+		'DefaultOwners' => "Normaalikäyttäjä",
+		'copyObject' => "Kopioi objekti",
+		'copyClass' => "Kopioi luokka",
+		'new_field' => "Uusi kenttä",
+		'behaviour' => "Näytä",
+		'behaviour_all' => "Jos et valitse työtilaa, kaikki tämän luokan objektit ovat näkyviä!",
+		'behaviour_no' => " Jos et valitse työtilaa, kaikki tämän luokan objektit eivät ole näkyviä!",
+		'generated_template_for_objectFile' => "Vastaavaa sivupohjaa ei löytynyt.",
+		'no_workspace_defined' => "Objektille ei ole määritetty työtilaa. Voit määrittää erityistyötilan tämän luokan objekteille.",
+		'use_thumbnail_preview' => "Esikatselukuvat objekteissa",
+		'not_published' => "The object is not published", // TRANSLATE
+		'incObject_sameFieldname_start' => "The included object has identical field names: ", // TRANSLATE
+		'incObject_sameFieldname_end' => ". These are not displayed in listviews or in we:object.", // TRANSLATE
 
-$l_object["attributes"] = "Ominaisuudet";
-$l_object["objectname"] = "Objektin nimi";
-$l_object["objectpath"] = "Objektin polku";
-$l_object["objectid"] = "Object ID";// TRANSLATE
-$l_object["objecturl"] = "Object URL";// TRANSLATE
-$l_object["class"] = "Luokka";
-$l_object["classname"] = "Luokan nimi";
-$l_object["class_id"] = "Luokan ID";
-$l_object["default"] = "Default Value";
-$l_object["checked"] = "rastitettu";
-$l_object["name"] = "Automaattinen nimi";
-$l_object["seourl"] = "SEO-URL";// TRANSLATE
-$l_object["seourltrigger"] = "Preset document for display";// TRANSLATE
-$l_object["allFields"] = "Kaikki kentät";
-$l_object["search_term"] = "Hakuehto";
-$l_object["search_field"] = "Hakukenttä";
-$l_object["defaultdir"] = "Oletushakemisto";
-$l_object["rootdir"] = "Työtila";
-
-$l_object["no_root_ws_select"] = "Juurihakemistoa ei voida valita!";
-
-$l_object["objectFile_field"] = "Objekti";
-$l_object["multiObjectFile_field"] = "Useita objekteja";
-$l_object["checkbox_field"] = "Ruutu";
-$l_object["meta_field"] = "Valinta";
-$l_object["input_field"] = "Tekstikenttä";
-$l_object["country_field"] = "Country";// TRANSLATE
-$l_object["language_field"] = "Language";// TRANSLATE
-$l_object["locale_field"] = "Locale";// TRANSLATE
-$l_object["int_field"] = "Kokonaisluku";
-$l_object["float_field"] = "Liukuluku";
-$l_object["date_field"] = "Päivämäärä";
-$l_object["textarea_field"] = "Iso tekstikenttä";
-$l_object["img_field"] = "Kuva";
-$l_object["binary_field"] = "Binääridokumentti";
-$l_object["flashmovie_field"] = "Flashmovie";// TRANSLATE
-$l_object["quicktime_field"] = "Quicktime";// TRANSLATE
-$l_object["link_field"] = "Linkki";
-$l_object["href_field"] = "Href";
-$l_object["shopVat_field"] = "ALV kenttä";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself";// TRANSLATE
-
-$l_object["we_new_doc_after_save"] = "Uusi objekti tallentamisen jälkeen";
-$l_object["objectFile_response_save_ok"] = "Objekti '%s' on tallennettu!";
-$l_object["objectFile_response_publish_ok"] = "Objekti '%s' on julkaistu!";
-$l_object["objectFile_response_unpublish_ok"] = "Objekti '%s' on poistettu julkaisusta!";
-$l_object["fieldNameNotValid"] = "Tiedoston nimi ei ole kelvollinen\\nKelvollisia ovat numerot sekä pienet ja isot kirjaimet (a-z, A-Z, 0-9) ja alaviiva.";
-$l_object["fieldNameNotTitleDesc"] = "Kenttien nimenä ei voida käyttää: Title ja Description!";
-$l_object["fieldNameEmpty"] = "Kentän nimi on tyhjä!";
-$l_object["length"] = "Pituus";
-$l_object["type"] = "Tyyppi";
-$l_object["default"] = "Oletus";
-$l_object["max_objects"] = "max. Objekteja";
-$l_object["no_maximum"] = "jätä tyhjäksi jos ei rajoitusta";
-
-$l_object["DefaultOwners"] = "Normaalikäyttäjä";
-
-$l_object["copyObject"] = "Kopioi objekti";
-$l_object["copyClass"] = "Kopioi luokka";
-
-$l_object["new_field"] = "Uusi kenttä";
-
-$l_object["behaviour"] = "Näytä";
-$l_object["behaviour_all"] = "Jos et valitse työtilaa, kaikki tämän luokan objektit ovat näkyviä!";
-$l_object["behaviour_no"] = " Jos et valitse työtilaa, kaikki tämän luokan objektit eivät ole näkyviä!";
-
-$l_object["generated_template_for_objectFile"] = "Vastaavaa sivupohjaa ei löytynyt.";
-
-$l_object["no_workspace_defined"] = "Objektille ei ole määritetty työtilaa. Voit määrittää erityistyötilan tämän luokan objekteille.";
-
-$l_object["use_thumbnail_preview"] = "Esikatselukuvat objekteissa";
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
-?>
+		'value' => array(
+				'' => "----",
+				'%unique%' => "Uniikki",
+				'%d%' => "Päivä",
+				'%m%' => "Kuukausi (01-12)",
+				'%n%' => "Kuukausi (1-12)",
+				'%y%' => "Vuosi (11)",
+				'%Y%' => "Vuosi (2011)",
+				'%h%' => "Tunnit",
+				'%ID%' => "ID",
+				'Text' => "Teksti",
+		),
+		'url' => array(
+				'' => "----",
+				'%urlunique%' => "Uniikki",
+				'%d%' => "Päivä",
+				'%m%' => "Kuukausi (01-12)",
+				'%n%' => "Kuukausi (1-12)",
+				'%y%' => "Vuosi (11)",
+				'%Y%' => "Vuosi (2011)",
+				'%h%' => "Tunnit",
+				'%ID%' => "ID",
+				'Text' => "Teksti",
+				'%Parent%' => "Parent folder", // TRANSLATE
+				'%DirSep%' => "Directory separator", // TRANSLATE
+				'%urlfield1%' => "URL field 1", // TRANSLATE
+				'%urlfield2%' => "URL field 2", // TRANSLATE
+				'%urlfield3%' => "URL field 3", // TRANSLATE
+				'%locale%' => "Locale", // TRANSLATE
+				'%language%' => "Language", // TRANSLATE
+				'%country%' => "Country", // TRANSLATE
+//'%firstcatN%' => "Name first cat.",// TRANSLATE
+//'%firstcatT%' => "Title first cat.",// TRANSLATE
+//'%firstcatD%' => "Desc. first Kat.",// TRANSLATE
+//'%secondcatN%' => "Name second cat.",// TRANSLATE
+//'%secondcatT%' => "Title second cat.",// TRANSLATE
+//'%secondcatD%' => "Desc. second cat.",// TRANSLATE
+//'%thirdcatN%' => "Name third cat.",// TRANSLATE
+//'%thirdcatT%' => "Title third cat.",// TRANSLATE
+//'%thirdcatD%' => "Desc. third cat.",// TRANSLATE
+		),
+);

@@ -18,81 +18,115 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$l_modules_object = array(
+		'attributes' => "Atrybut",
+		'objectname' => "Nazwa obiektu",
+		'objectpath' => "ďż˝cieďż˝ka obiektu",
+		'objectid' => "Object ID", // TRANSLATE
+		'objecturl' => "Object URL", // TRANSLATE
+		'class' => "Klasa",
+		'classname' => "Nazwa klasy",
+		'class_id' => "ID of the class", // TRANSLATE
+		'default' => "Default Value",
+		'checked' => "checked", // TRANSLATE
+		'name' => "Automatyczna nazwa",
+		'seourl' => "SEO-URL", // TRANSLATE
+		'seourltrigger' => "Preset document for the display of the object", // TRANSLATE
+		'allFields' => "wszystkie pola",
+		'search_term' => "Wyszukiwane pojďż˝cie",
+		'search_field' => "Wyszukiwane pole",
+		'defaultdir' => "Default Directory", // TRANSLATE
+		'rootdir' => "Workspace", // TRANSLATE
 
+		'no_root_ws_select' => "Nie moďż˝na wybraďż˝ katalogu Root jako obszaru roboczego!",
+		'objectFile_field' => "Obiekt",
+		'multiObjectFile_field' => "Multi object", // TRANSLATE
+		'checkbox_field' => "Checkbox", // TRANSLATE
+		'meta_field' => "Pole wyboru",
+		'input_field' => "Pole wpisu tekstu",
+		'country_field' => "Country", // TRANSLATE
+		'language_field' => "Language", // TRANSLATE
+		'locale_field' => "Locale", // TRANSLATE
+		'int_field' => "Caďż˝kowita",
+		'float_field' => "Zmiennoprzecinkowa",
+		'date_field' => "Data",
+		'textarea_field' => "Pole tekstowe",
+		'img_field' => "Grafika",
+		'binary_field' => "Dokument binarny",
+		'flashmovie_field' => "Flashmovie", // TRANSLATE
+		'quicktime_field' => "Quicktime", // TRANSLATE
+		'link_field' => "Link", // TRANSLATE
+		'href_field' => "Href", // TRANSLATE
+		'shopVat_field' => "Pole VAT",
+		'multiobject_recursion' => "In a Multiobject, an object can not be included in itself", // TRANSLATE
 
-$l_object["attributes"] = "Atrybut";
-$l_object["objectname"] = "Nazwa obiektu";
-$l_object["objectpath"] = "ďż˝cieďż˝ka obiektu";
-$l_object["objectid"] = "Object ID";// TRANSLATE
-$l_object["objecturl"] = "Object URL";// TRANSLATE
-$l_object["class"] = "Klasa";
-$l_object["classname"] = "Nazwa klasy";
-$l_object["class_id"] = "ID of the class"; // TRANSLATE
-$l_object["default"] = "Default Value";
-$l_object["checked"] = "checked"; // TRANSLATE
-$l_object["name"] = "Automatyczna nazwa";
-$l_object["seourl"] = "SEO-URL";// TRANSLATE
-$l_object["seourltrigger"] = "Preset document for the display of the object";// TRANSLATE
-$l_object["allFields"] = "wszystkie pola";
-$l_object["search_term"] = "Wyszukiwane pojďż˝cie";
-$l_object["search_field"] = "Wyszukiwane pole";
-$l_object["defaultdir"] = "Default Directory"; // TRANSLATE
-$l_object["rootdir"] = "Workspace"; // TRANSLATE
+		'we_new_doc_after_save' => "New Object after saving", // TRANSLATE
+		'objectFile_response_save_ok' => "Zapamiďż˝tano obiekt '%s' !",
+		'objectFile_response_publish_ok' => "Opublikowano obiekt '%s' !",
+		'objectFile_response_unpublish_ok' => "Wycofano obiekt '%s' !",
+		'fieldNameNotValid' => "Invalid field name\\nValid characters are alpha-numeric, capital and small (a-z, A-Z, 0-9) and underscore.", // TRANSLATE
+		'fieldNameNotTitleDesc' => "Nazwy pďż˝l Title oraz Description sďż˝ niedozwolone!",
+		'fieldNameEmpty' => "Nazwa pola nie moďż˝e byďż˝ pusta!",
+		'length' => "Dďż˝ugoďż˝ďż˝",
+		'type' => "Typ",
+		'default' => "Ustawienie domyďż˝lne",
+		'max_objects' => "max. Objects", // TRANSLATE
+		'no_maximum' => "leave empty for no limit", // TRANSLATE
 
-$l_object["no_root_ws_select"] = "Nie moďż˝na wybraďż˝ katalogu Root jako obszaru roboczego!";
+		'DefaultOwners' => "Uďż˝ytkownik standardowy",
+		'copyObject' => "Kopiuj obiekt",
+		'copyClass' => "Copy class", // TRANSLATE
 
-$l_object["objectFile_field"] = "Obiekt";
-$l_object["multiObjectFile_field"] = "Multi object"; // TRANSLATE
-$l_object["checkbox_field"] = "Checkbox"; // TRANSLATE
-$l_object["meta_field"] = "Pole wyboru";
-$l_object["input_field"] = "Pole wpisu tekstu";
-$l_object["country_field"] = "Country";// TRANSLATE
-$l_object["language_field"] = "Language";// TRANSLATE
-$l_object["locale_field"] = "Locale";// TRANSLATE
-$l_object["int_field"] = "Caďż˝kowita";
-$l_object["float_field"] = "Zmiennoprzecinkowa";
-$l_object["date_field"] = "Data";
-$l_object["textarea_field"] = "Pole tekstowe";
-$l_object["img_field"] = "Grafika";
-$l_object["binary_field"] = "Dokument binarny";
-$l_object["flashmovie_field"] = "Flashmovie";// TRANSLATE
-$l_object["quicktime_field"] = "Quicktime";// TRANSLATE
-$l_object["link_field"] = "Link"; // TRANSLATE
-$l_object["href_field"] = "Href"; // TRANSLATE
-$l_object["shopVat_field"] = "Pole VAT";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
+		'new_field' => "Nowe pole",
+		'behaviour' => "Wyďż˝wietl",
+		'behaviour_all' => "Obiekt jest wyďż˝wietlany, gdy nie wybrano obszarďż˝w roboczych!",
+		'behaviour_no' => "Nie wyďż˝wietla siďż˝ obiektu, jeďż˝eli nie wybrano obszarďż˝w roboczych!",
+		'generated_template_for_objectFile' => "Nie znaleziono pasujďż˝cego szablonu.",
+		'no_workspace_defined' => "Temu obiektowi nie przyporzďż˝dkowano jeszcze obszaru roboczego. Jeďż˝eli chcesz przyporzďż˝dkowaďż˝ obiektowi specjalne obszary robocze, musisz wybraďż˝ je w klasie obiektu.",
+		'use_thumbnail_preview' => "Thumbnail preview in objects", // TRANSLATE
+		'not_published' => "The object is not published", // TRANSLATE
+		'incObject_sameFieldname_start' => "The included object has identical field names: ", // TRANSLATE
+		'incObject_sameFieldname_end' => ". These are not displayed in listviews or in we:object.", // TRANSLATE
 
-$l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
-$l_object["objectFile_response_save_ok"] = "Zapamiďż˝tano obiekt '%s' !";
-$l_object["objectFile_response_publish_ok"] = "Opublikowano obiekt '%s' !";
-$l_object["objectFile_response_unpublish_ok"] = "Wycofano obiekt '%s' !";
-$l_object["fieldNameNotValid"] = "Invalid field name\\nValid characters are alpha-numeric, capital and small (a-z, A-Z, 0-9) and underscore."; // TRANSLATE
-$l_object["fieldNameNotTitleDesc"] = "Nazwy pďż˝l Title oraz Description sďż˝ niedozwolone!";
-$l_object["fieldNameEmpty"] = "Nazwa pola nie moďż˝e byďż˝ pusta!";
-$l_object["length"] = "Dďż˝ugoďż˝ďż˝";
-$l_object["type"] = "Typ";
-$l_object["default"] = "Ustawienie domyďż˝lne";
-$l_object["max_objects"] = "max. Objects"; // TRANSLATE
-$l_object["no_maximum"] = "leave empty for no limit"; // TRANSLATE
-
-$l_object["DefaultOwners"] = "Uďż˝ytkownik standardowy";
-
-$l_object["copyObject"] = "Kopiuj obiekt";
-$l_object["copyClass"] = "Copy class"; // TRANSLATE
-
-$l_object["new_field"] = "Nowe pole";
-
-$l_object["behaviour"] = "Wyďż˝wietl";
-$l_object["behaviour_all"] = "Obiekt jest wyďż˝wietlany, gdy nie wybrano obszarďż˝w roboczych!";
-$l_object["behaviour_no"] = "Nie wyďż˝wietla siďż˝ obiektu, jeďż˝eli nie wybrano obszarďż˝w roboczych!";
-
-$l_object["generated_template_for_objectFile"] = "Nie znaleziono pasujďż˝cego szablonu.";
-
-$l_object["no_workspace_defined"] = "Temu obiektowi nie przyporzďż˝dkowano jeszcze obszaru roboczego. Jeďż˝eli chcesz przyporzďż˝dkowaďż˝ obiektowi specjalne obszary robocze, musisz wybraďż˝ je w klasie obiektu.";
-
-$l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
-?>
+		'value' => array(
+				'' => "----", // TRANSLATE
+				'%unique%' => "unique",
+				'%d%' => "Dzień",
+				'%m%' => "Miesiąc (01-12)",
+				'%n%' => "Miesiąc (1-12)",
+				'%y%' => "Rok (11)",
+				'%Y%' => "Rok (2011)",
+				'%h%' => "Godziny",
+				'%ID%' => "ID", // TRANSLATE
+				'Text' => "Tekst",
+		),
+		'url' => array(
+				'' => "----", // TRANSLATE
+				'%urlunique%' => "unique",
+				'%d%' => "Dzień",
+				'%m%' => "Miesiąc (01-12)",
+				'%n%' => "Miesiąc (1-12)",
+				'%y%' => "Rok (11)",
+				'%Y%' => "Rok (2011)",
+				'%h%' => "Godziny",
+				'%ID%' => "ID", // TRANSLATE
+				'Text' => "Tekst",
+				'%Parent%' => "Parent folder", // TRANSLATE
+				'%DirSep%' => "Directory separator", // TRANSLATE
+				'%urlfield1%' => "URL field 1", // TRANSLATE
+				'%urlfield2%' => "URL field 2", // TRANSLATE
+				'%urlfield3%' => "URL field 3", // TRANSLATE
+				'%locale%' => "Locale", // TRANSLATE
+				'%language%' => "Language", // TRANSLATE
+				'%country%' => "Country", // TRANSLATE
+//'%firstcatN%' => "Name first cat.",// TRANSLATE
+//'%firstcatT%' => "Title first cat.",// TRANSLATE
+//'%firstcatD%' => "Desc. first Kat.",// TRANSLATE
+//'%secondcatN%' => "Name second cat.",// TRANSLATE
+//'%secondcatT%' => "Title second cat.",// TRANSLATE
+//'%secondcatD%' => "Desc. second cat.",// TRANSLATE
+//'%thirdcatN%' => "Name third cat.",// TRANSLATE
+//'%thirdcatT%' => "Title third cat.",// TRANSLATE
+//'%thirdcatD%' => "Desc. third cat.",// TRANSLATE
+		),
+);

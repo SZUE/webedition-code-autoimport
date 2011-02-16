@@ -508,7 +508,7 @@ if(inWorkflow($we_doc)) {
 		} else if($we_doc->ContentType == "object") {
             if(we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR")) {
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", $GLOBALS["l_object"]["we_new_doc_after_save"], false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object','[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
             }
 		}

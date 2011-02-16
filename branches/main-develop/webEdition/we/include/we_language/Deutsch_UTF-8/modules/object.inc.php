@@ -18,8 +18,6 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: object.inc.php
  *
@@ -27,79 +25,121 @@
  *
  * Language: Deutsch
  */
-
-
-
-$l_object["attributes"] = "Attribute";
-$l_object["objectname"] = "Objektname";
-$l_object["objectpath"] = "Objektpfad";
-$l_object["objectid"] = "Objekt-ID";
-$l_object["objecturl"] = "Objekt-URL";
-$l_object["class"] = "Klasse";
-$l_object["classname"] = "Klassenname";
-$l_object["class_id"] = "ID der Klasse";
-$l_object["default"] = "Voreinstellung";
-$l_object["checked"] = "ausgewählt";
-$l_object["name"] = "Automatischer Name";
-$l_object["seourl"] = "SEO-URL";//
-$l_object["seourltrigger"] = "Voreinstellung Dokument für die Darstellung";
-$l_object["allFields"] = "allen Feldern";
-$l_object["search_term"] = "Suchbegriff";
-$l_object["search_field"] = "Suchfeld";
-$l_object["defaultdir"] = "Standardverzeichnis";
-$l_object["rootdir"] = "Arbeitsbereich";
-
-$l_object["no_root_ws_select"] = "Das Root Verzeichnis kann nicht als Arbeitbereich ausgew&auml;hlt werden!";
-
-$l_object["objectFile_field"] = "Objekt";
-$l_object["multiObjectFile_field"] = "Multi Objekt";
-$l_object["checkbox_field"] = "Checkbox";
-$l_object["meta_field"] = "Select";
-$l_object["input_field"] = "Textinput";
-$l_object["country_field"] = "Land";
-$l_object["language_field"] = "Sprache";
-$l_object["locale_field"] = "Locale";
-$l_object["int_field"] = "Integer";
-$l_object["float_field"] = "Float";
-$l_object["date_field"] = "Datum";
-$l_object["textarea_field"] = "Textarea";
-$l_object["img_field"] = "Grafik";
-$l_object["binary_field"] = "Binary Dokument";
-$l_object["flashmovie_field"] = "Flashmovie";
-$l_object["quicktime_field"] = "Quicktime";
-$l_object["link_field"] = "Link";
-$l_object["href_field"] = "Href";
-$l_object["shopVat_field"] = "Mehrwertsteuer Feld";
-$l_object["multiobject_recursion"] = "In einem Multiobjekt kann ein Objekt nicht in sich selbst eingebunden werden!";
-$l_object["we_new_doc_after_save"] = "Nach Speichern neues Objekt";
-$l_object["objectFile_response_save_ok"] = "Das Objekt '%s' wurde erfolgreich gespeichert!";
-$l_object["objectFile_response_publish_ok"] = "Das Objekt '%s' wurde erfolgreich veröffentlicht!";
-$l_object["objectFile_response_unpublish_ok"] = "Das Objekt '%s' wurde erfolgreich geparkt!";
-$l_object["fieldNameNotValid"] = "Der Feldname darf nur aus Buchstaben (groß oder klein, aber ohne Umlaute und Sonderzeichen), Zahlen (a-z, A-Z, 0-9) und Unterstrichen bestehen!";
-$l_object["fieldNameNotTitleDesc"] = "Die Feldnamen Title und Description sind nicht zulässig!";
-$l_object["fieldNameEmpty"] = "Der Feldname darf nicht leer sein!";
-$l_object["length"] = "Länge";
-$l_object["type"] = "Typ";
-$l_object["max_objects"] = "max. Objekte";
-$l_object["no_maximum"] = "leer für keine Beschränkung";
-
-$l_object["DefaultOwners"] = "Standard User";
-
-$l_object["copyObject"] = "Objekt kopieren";
-$l_object["copyClass"] = "Klasse kopieren";
-
-$l_object["new_field"] = "NeuesFeld";
-
-$l_object["behaviour"] = "Anzeige";
-$l_object["behaviour_all"] = "Ein Objekt wird immer angezeigt, wenn keine Arbeitsbereiche ausgewählt wurden!";
-$l_object["behaviour_no"] = "Ein Objekt wird nicht angezeigt, wenn keine Arbeitsbereiche ausgewählt wurden!";
-
-$l_object["generated_template_for_objectFile"] = "Kein passendes Template gefunden.";
-
-$l_object["no_workspace_defined"] = "Diesem Objekt wurden noch keine Arbeitsbereiche zugewiesen. Wollen Sie einem Objekt spezielle Arbeitsbereiche zuordnen, müssen Sie diese in der Klasse des Objekts auswählen.";
-
-$l_object["use_thumbnail_preview"] = "Vorschau in Objekten als Miniaturansicht";
-$l_object["not_published"] = "das Objekt ist geparkt";
-$l_object["incObject_sameFieldname_start"] = "Die inkludierte Klasse hat identischen Feldnamen: ";
-$l_object["incObject_sameFieldname_end"] = ". Diese werden in Listviews und we:object nicht angezeigt.";
-?>
+$l_modules_object = array(
+		'attributes' => "Attribute",
+		'objectname' => "Objektname",
+		'objectpath' => "Objektpfad",
+		'objectid' => "Objekt-ID",
+		'objecturl' => "Objekt-URL",
+		'class' => "Klasse",
+		'classname' => "Klassenname",
+		'class_id' => "ID der Klasse",
+		'default' => "Voreinstellung",
+		'checked' => "ausgewählt",
+		'name' => "Automatischer Name",
+		'seourl' => "SEO-URL", //
+		'seourltrigger' => "Voreinstellung Dokument für die Darstellung",
+		'allFields' => "allen Feldern",
+		'search_term' => "Suchbegriff",
+		'search_field' => "Suchfeld",
+		'defaultdir' => "Standardverzeichnis",
+		'rootdir' => "Arbeitsbereich",
+		'no_root_ws_select' => "Das Root Verzeichnis kann nicht als Arbeitbereich ausgew&auml;hlt werden!",
+		'objectFile_field' => "Objekt",
+		'multiObjectFile_field' => "Multi Objekt",
+		'checkbox_field' => "Checkbox",
+		'meta_field' => "Select",
+		'input_field' => "Textinput",
+		'country_field' => "Land",
+		'language_field' => "Sprache",
+		'locale_field' => "Locale",
+		'int_field' => "Integer",
+		'float_field' => "Float",
+		'date_field' => "Datum",
+		'textarea_field' => "Textarea",
+		'img_field' => "Grafik",
+		'binary_field' => "Binary Dokument",
+		'flashmovie_field' => "Flashmovie",
+		'quicktime_field' => "Quicktime",
+		'link_field' => "Link",
+		'href_field' => "Href",
+		'shopVat_field' => "Mehrwertsteuer Feld",
+		'multiobject_recursion' => "In einem Multiobjekt kann ein Objekt nicht in sich selbst eingebunden werden!",
+		'we_new_doc_after_save' => "Nach Speichern neues Objekt",
+		'objectFile_response_save_ok' => "Das Objekt '%s' wurde erfolgreich gespeichert!",
+		'objectFile_response_publish_ok' => "Das Objekt '%s' wurde erfolgreich veröffentlicht!",
+		'objectFile_response_unpublish_ok' => "Das Objekt '%s' wurde erfolgreich geparkt!",
+		'fieldNameNotValid' => "Der Feldname darf nur aus Buchstaben (groß oder klein, aber ohne Umlaute und Sonderzeichen), Zahlen (a-z, A-Z, 0-9) und Unterstrichen bestehen!",
+		'fieldNameNotTitleDesc' => "Die Feldnamen Title und Description sind nicht zulässig!",
+		'fieldNameEmpty' => "Der Feldname darf nicht leer sein!",
+		'length' => "Länge",
+		'type' => "Typ",
+		'max_objects' => "max. Objekte",
+		'no_maximum' => "leer für keine Beschränkung",
+		'DefaultOwners' => "Standard User",
+		'copyObject' => "Objekt kopieren",
+		'copyClass' => "Klasse kopieren",
+		'new_field' => "NeuesFeld",
+		'behaviour' => "Anzeige",
+		'behaviour_all' => "Ein Objekt wird immer angezeigt, wenn keine Arbeitsbereiche ausgewählt wurden!",
+		'behaviour_no' => "Ein Objekt wird nicht angezeigt, wenn keine Arbeitsbereiche ausgewählt wurden!",
+		'generated_template_for_objectFile' => "Kein passendes Template gefunden.",
+		'no_workspace_defined' => "Diesem Objekt wurden noch keine Arbeitsbereiche zugewiesen. Wollen Sie einem Objekt spezielle Arbeitsbereiche zuordnen, müssen Sie diese in der Klasse des Objekts auswählen.",
+		'use_thumbnail_preview' => "Vorschau in Objekten als Miniaturansicht",
+		'not_published' => "das Objekt ist geparkt",
+		'incObject_sameFieldname_start' => "Die inkludierte Klasse hat identischen Feldnamen: ",
+		'incObject_sameFieldname_end' => ". Diese werden in Listviews und we:object nicht angezeigt.",
+		'value' => array(
+				'' => "----",
+				'%unique%' => "unique",
+				'%d%' => "Tag",
+				'%m%' => "Monat (01-12)",
+				'%n%' => "Monat (1-12)",
+				'%y%' => "Jahr (11)",
+				'%Y%' => "Jahr (2011)",
+				'%h%' => "Stunden",
+				'%ID%' => "ID",
+				'Text' => "Text",
+		),
+		'url' => array(
+				'' => "----",
+				'%urlunique%' => "unique",
+				'%d%' => "Erstellungs-Tag",
+				'%m%' => "Erstellungs-Monat (01-12)",
+				'%n%' => "Erstellungs-Monat (1-12)",
+				'%y%' => "Erstellungs-Jahr (11)",
+				'%Y%' => "Erstellungs-Jahr (2011)",
+				'%h%' => "Erstellungs-Stunden",
+				'%Md%' => "Modifikations-Tag",
+				'%Mm%' => "Modifikations-Monat (01-12)",
+				'%Mn%' => "Modifikations-Monat (1-12)",
+				'%My%' => "Modifikations-Jahr (11)",
+				'%MY%' => "Modifikations-Jahr (2011)",
+				'%Mh%' => "Modifikations-Stunden",
+				'%Fd%' => "Datumsfeld-Tag",
+				'%Fm%' => "Datumsfeld-Monat (01-12)",
+				'%Fn%' => "Datumsfeld-Monat (1-12)",
+				'%Fy%' => "Datumsfeld-Jahr (11)",
+				'%FY%' => "Datumsfeld-Jahr (2011)",
+				'%Fh%' => "Datumsfeld-Stunden",
+				'%ID%' => "ID",
+				'Text' => "Text",
+				'%Parent%' => "ElternOrdner",
+				'%DirSep%' => "Verzeichnisseparator",
+				'%urlfield1%' => "URL-Feld 1",
+				'%urlfield2%' => "URL-Feld 2",
+				'%urlfield3%' => "URL-Feld 3",
+				'%locale%' => "Locale",
+				'%language%' => "Sprache",
+				'%country%' => "Land",
+//'%firstcatN%' => "Name erste Kat.",
+//'%firstcatT%' => "Titel erste Kat.",
+//'%firstcatD%' => "Beschr. erste Kat.",
+//'%secondcatN%' => "Name zweite Kat.",
+//'%secondcatT%' => "Titel zweite Kat.",
+//'%secondcatD%' => "Beschr. zweite Kat.",
+//'%thirdcatN%' => "Name dritte Kat.",
+//'%thirdcatT%' => "Titel dritte Kat.",
+//'%thirdcatD%' => "Beschr. dritte Kat.",
+		),
+);
