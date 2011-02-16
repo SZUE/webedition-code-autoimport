@@ -18,147 +18,128 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$l_modules_voting = array(
+		'no_perms' => 'You do not have permission to use this option.',
+		'delete_alert' => 'Удалить текущее голосование/группу.\\n Вы уверены?',
+		'result_delete_alert' => 'Delete the current voting results.\\nAre you sure?', // TRANSLATE
+		'nothing_to_delete' => 'Нет предмета удаления!',
+		'nothing_to_save' => 'Нет предмета сохранения',
+		'we_filename_notValid' => 'Недействительное имя пользователя!\\nДействительными символами являются большие и малые буквы латинского алфавита, цифры, нижняя черта, тире, точка и пробел (a-z, A-Z, 0-9, _, -, ., )',
+		'menu_new' => 'Новое',
+		'menu_save' => 'Сохранить',
+		'menu_delete' => 'Удалить',
+		'menu_exit' => 'Закрыть',
+		'menu_info' => 'Справка',
+		'menu_help' => 'Помощь',
+		'headline' => 'Имя и фамилия',
+		'headline_name' => 'Имя',
+		'headline_publish_date' => 'Создать дату',
+		'headline_data' => 'Данные вопросника',
+		'publish_date' => 'Дата',
+		'publish_format' => 'Формат',
+		'published_on' => 'Дата опубликования',
+		'total_voting' => 'Общее голосование',
+		'reset_scores' => 'Сброс голосов',
+		'inquiry_question' => 'Вопрос',
+		'inquiry_answers' => 'Ответы',
+		'question_empty' => 'Поле для вопроса не заполнено, введите пожалуйста вопрос!',
+		'answer_empty' => 'Не заполнено одно или несколько полей для ответов, введите пожалуйста ответ!',
+		'invalid_score' => 'Результат голосования должен иметь численное значение, попробуйте еще раз!',
+		'headline_revote' => 'Повторное голосование',
+		'headline_help' => 'Помощь',
+		'inquiry' => 'Вопросник',
+		'browser_vote' => 'Данный браузер может снова голосовать не ранее, чем через',
+		'one_hour' => 'час',
+		'feethteen_minutes' => '15 мин.',
+		'thirthty_minutes' => '30 мин.',
+		'one_day' => 'день',
+		'never' => '--никогда--',
+		'always' => '--всегда--',
+		'cookie_method' => 'Методом маркёров',
+		'ip_method' => 'Методом IP',
+		'time_after_voting_again' => 'Время до следующего голосования',
+		'cookie_method_help' => 'В случае, если Вы не можете воспользоваться методом IP, выберите данный метод. Примите во внимание то, что некоторые пользователи могли заблокировать маркёры (cookies) в браузерах.',
+		'ip_method_help' => 'В случае, если Ваш веб-сайт работает в сети Intranet и пользователи не могут соединиться с помощью прокси сервера, следует выбрать данный метод. При этом нужно принять во внимание, что некоторые серверы распределяют динамические адреса IP.',
+		'time_after_voting_again_help' => 'Во избежание многократного голосования одним браузером/IP за короткие промежутки времени, следует установить нужный промежуток времени, по прошествии которого такой браузер сможет повторно принимать участие в голосовании. Для однократного голосования браузера следует выбрать --никогда--.',
+		'property' => 'Свойства',
+		'variant' => 'Версия',
+		'voting' => 'Голосование',
+		'result' => 'Результат',
+		'group' => 'Группа',
+		'name' => 'Имя',
+		'newFolder' => 'Новая группа',
+		'save_group_ok' => 'Группа сохранена',
+		'save_ok' => 'Голосование сохранено',
+		'path_nok' => 'Путь неверен!',
+		'name_empty' => 'Поле имени не должно быть пустым!',
+		'name_exists' => 'Имя уже существует!',
+		'wrongtext' => ' Имя недействительно!',
+		'voting_deleted' => 'Голосование успешно удалено',
+		'group_deleted' => 'Группа успешно удалена',
+		'access' => 'Доступ',
+		'limit_access' => 'Ограниченный доступ',
+		'limit_access_text' => 'Разрешить доступ следующим пользователям',
+		'variant_limit' => 'В вопроснике должна быть указана по меньшей мере одна версия!',
+		'answer_limit' => 'Вопросник должен содержать по крайней мере два ответа!',
+		'valid_txt' => 'Для  сохранения результатов голосования на Вашей странице, а также для «парковки», по истечении срока действия голосования, должно быть активировано окошко «действует». С помощью выпадающего меню определяется срок (дата и время), до которого проводится голосование. По истечении выбранной Вами даты участие в данном голосовании не засчитывается.',
+		'active_till' => 'Действует до',
+		'valid' => 'Действие',
+		'export' => 'Экспорт',
+		'export_txt' => 'Экспортировать данные голосования как файл CSV (comma separated values).',
+		'csv_download' => "Загрузить файл CSV",
+		'csv_export' => "Файл '%s' сохранён",
+		'fallback' => 'Метод Fallback IP',
+		'save_user_agent' => 'Сохранить/сравнить данные пользователя-агента',
+		'save_changed_voting' => "Voting has been changed.\\nDo you want to save your changes?", // TRANSLATE
+		'voting_log' => 'Вести протокол голосования',
+		'forbid_ip' => 'Заблокировать следующие адреса IP',
+		'until' => 'до',
+		'options' => 'опции',
+		'control' => 'контроль',
+		'data_deleted_info' => 'Данные удалены!',
+		'time' => 'Время',
+		'ip' => 'IP', // TRANSLATE
+		'user_agent' => 'Пользователь-агент',
+		'cookie' => 'Cookie', // TRANSLATE
+		'delete_ipdata_question' => 'Вы собираетесь удалить все сохраненные данные IP. Вы уверены?',
+		'delete_log_question' => 'Вы собираетесь удалить все сохраненные лог-записи голосования.  Вы уверены?',
+		'delete_ipdata_text' => 'Сохраненные данные IP занимают %s байтов памяти. Вы можете их удалить с помощью кнопки \Удалить\'. Примите во внимание, что удаление сохраненных данных IP может вызвать неточность результатов голосования, так как в этом случае возможно многократное участие в голосовании.',
+		'status' => 'Состояние',
+		'log_success' => 'Успех',
+		'log_error' => 'Ошибка',
+		'log_error_active' => 'Ошибка: не активен',
+		'log_error_revote' => 'Ошибка: новое голосование',
+		'log_error_blackip' => 'Ошибка: IP заблокирован',
+		'log_is_empty' => 'Книга лог-записей не заполнена!',
+		'enabled' => 'Активировано',
+		'disabled' => 'Не активировано',
+		'log_fallback' => 'Fallback', // TRANSLATE
 
-$l_voting = array();
-$l_voting['no_perms'] = 'You do not have permission to use this option.';
-$l_voting['delete_alert'] = 'Удалить текущее голосование/группу.\\n Вы уверены?';
-$l_voting['result_delete_alert'] = 'Delete the current voting results.\\nAre you sure?'; // TRANSLATE
-$l_voting['nothing_to_delete'] = 'Нет предмета удаления!';
-$l_voting['nothing_to_save'] = 'Нет предмета сохранения';
-$l_voting['we_filename_notValid'] = 'Недействительное имя пользователя!\\nДействительными символами являются большие и малые буквы латинского алфавита, цифры, нижняя черта, тире, точка и пробел (a-z, A-Z, 0-9, _, -, ., )';
+		'new_ip_add' => 'Введите, пожалуйста, новый адрес IP!',
+		'not_valid_ip' => 'Адрес IP недействителен!',
+		'not_active' => 'The entered date is in the past!', // TRANSLATE
 
-$l_voting['menu_new'] = 'Новое';
-$l_voting['menu_save'] = 'Сохранить';
-$l_voting['menu_delete'] = 'Удалить';
-$l_voting['menu_exit'] = 'Закрыть';
-$l_voting['menu_info'] = 'Справка';
-$l_voting['menu_help'] = 'Помощь';
-$l_voting['headline'] = 'Имя и фамилия';
+		'headline_datatype' => 'Type of Inquiry', // TRANSLATE
+		'AllowFreeText' => 'Allow free text', // TRANSLATE
+		'AllowImages' => 'Allow images', // TRANSLATE
+		'AllowSuccessor' => 'redirect to:', // TRANSLATE
+		'AllowSuccessors' => 'allow individual redirects', // TRANSLATE
+		'csv_charset' => "Export charset", // TRANSLATE
+		'imageID_text' => "Image ID", // TRANSLATE
+		'successorID_text' => "Successor ID", // TRANSLATE
+		'mediaID_text' => "Media-ID", // TRANSLATE
+		'AllowMedia' => 'Allow Media such as Audio or video files', // TRANSLATE
 
+		'voting-id' => 'Voting ID', // TRANSLATE
+		'voting-session' => 'Voting Session', // TRANSLATE
+		'voting-successor' => 'successor', // TRANSLATE
+		'voting-additionalfields' => 'add. data', // TRANSLATE
+		'answerID' => 'answer ID', // TRANSLATE
+		'answerText' => 'answer text', // TRANSLATE
 
-$l_voting['headline_name'] = 'Имя';
-$l_voting['headline_publish_date'] = 'Создать дату';
-$l_voting['headline_data'] = 'Данные вопросника';
+		'userid_method' => 'For logged in Users (customer management), compare to saved customer ID (the log has to be active)', // TRANSLATE
+		'IsRequired' => 'This is a required field', // TRANSLATE
 
-$l_voting['publish_date'] = 'Дата';
-$l_voting['publish_format'] = 'Формат';
-
-$l_voting['published_on'] = 'Дата опубликования';
-$l_voting['total_voting'] = 'Общее голосование';
-$l_voting['reset_scores'] = 'Сброс голосов';
-
-$l_voting['inquiry_question'] = 'Вопрос';
-$l_voting['inquiry_answers'] = 'Ответы';
-
-$l_voting['question_empty'] = 'Поле для вопроса не заполнено, введите пожалуйста вопрос!';
-$l_voting['answer_empty'] = 'Не заполнено одно или несколько полей для ответов, введите пожалуйста ответ!';
-
-$l_voting['invalid_score'] = 'Результат голосования должен иметь численное значение, попробуйте еще раз!';
-
-$l_voting['headline_revote'] = 'Повторное голосование';
-$l_voting['headline_help'] = 'Помощь';
-
-$l_voting['inquiry'] = 'Вопросник';
-
-$l_voting['browser_vote'] = 'Данный браузер может снова голосовать не ранее, чем через';
-$l_voting['one_hour'] = 'час';
-$l_voting['feethteen_minutes'] = '15 мин.';
-$l_voting['thirthty_minutes'] = '30 мин.';
-$l_voting['one_day'] = 'день';
-$l_voting['never'] = '--никогда--';
-$l_voting['always'] = '--всегда--';
-$l_voting['cookie_method'] = 'Методом маркёров';
-$l_voting['ip_method'] = 'Методом IP';
-$l_voting['time_after_voting_again'] = 'Время до следующего голосования';
-$l_voting['cookie_method_help'] = 'В случае, если Вы не можете воспользоваться методом IP, выберите данный метод. Примите во внимание то, что некоторые пользователи могли заблокировать маркёры (cookies) в браузерах.';
-$l_voting['ip_method_help'] = 'В случае, если Ваш веб-сайт работает в сети Intranet и пользователи не могут соединиться с помощью прокси сервера, следует выбрать данный метод. При этом нужно принять во внимание, что некоторые серверы распределяют динамические адреса IP.';
-$l_voting['time_after_voting_again_help'] = 'Во избежание многократного голосования одним браузером/IP за короткие промежутки времени, следует установить нужный промежуток времени, по прошествии которого такой браузер сможет повторно принимать участие в голосовании. Для однократного голосования браузера следует выбрать --никогда--.';
-
-$l_voting['property'] = 'Свойства';
-$l_voting['variant'] = 'Версия';
-$l_voting['voting'] = 'Голосование';
-$l_voting['result'] = 'Результат';
-$l_voting['group'] = 'Группа';
-$l_voting['name'] = 'Имя';
-$l_voting['newFolder'] = 'Новая группа';
-$l_voting['save_group_ok'] = 'Группа сохранена';
-$l_voting['save_ok'] = 'Голосование сохранено';
-
-$l_voting['path_nok'] = 'Путь неверен!';
-$l_voting['name_empty'] = 'Поле имени не должно быть пустым!';
-$l_voting['name_exists'] = 'Имя уже существует!';
-$l_voting['wrongtext'] = ' Имя недействительно!';
-$l_voting['voting_deleted'] = 'Голосование успешно удалено';
-$l_voting['group_deleted'] = 'Группа успешно удалена';
-
-$l_voting['access'] = 'Доступ';
-$l_voting['limit_access'] = 'Ограниченный доступ';
-$l_voting['limit_access_text'] = 'Разрешить доступ следующим пользователям';
-
-$l_voting['variant_limit'] = 'В вопроснике должна быть указана по меньшей мере одна версия!';
-$l_voting['answer_limit'] = 'Вопросник должен содержать по крайней мере два ответа!';
-
-$l_voting['valid_txt'] = 'Для  сохранения результатов голосования на Вашей странице, а также для «парковки», по истечении срока действия голосования, должно быть активировано окошко «действует». С помощью выпадающего меню определяется срок (дата и время), до которого проводится голосование. По истечении выбранной Вами даты участие в данном голосовании не засчитывается.';
-$l_voting['active_till'] = 'Действует до';
-$l_voting['valid'] = 'Действие';
-
-$l_voting['export'] = 'Экспорт';
-$l_voting['export_txt'] = 'Экспортировать данные голосования как файл CSV (comma separated values).';
-$l_voting["csv_download"] = "Загрузить файл CSV";
-$l_voting["csv_export"] = "Файл '%s' сохранён";
-
-$l_voting['fallback'] = 'Метод Fallback IP';
-$l_voting['save_user_agent'] = 'Сохранить/сравнить данные пользователя-агента';
-$l_voting["save_changed_voting"] = "Voting has been changed.\\nDo you want to save your changes?"; // TRANSLATE
-$l_voting['voting_log'] = 'Вести протокол голосования';
-$l_voting['forbid_ip'] = 'Заблокировать следующие адреса IP';
-$l_voting['until'] = 'до';
-$l_voting['options'] = 'опции';
-$l_voting['control'] = 'контроль';
-$l_voting['data_deleted_info'] = 'Данные удалены!';
-$l_voting['time'] = 'Время';
-$l_voting['ip'] = 'IP'; // TRANSLATE
-$l_voting['user_agent'] = 'Пользователь-агент';
-$l_voting['cookie'] = 'Cookie'; // TRANSLATE
-$l_voting['delete_ipdata_question'] = 'Вы собираетесь удалить все сохраненные данные IP. Вы уверены?';
-$l_voting['delete_log_question'] = 'Вы собираетесь удалить все сохраненные лог-записи голосования.  Вы уверены?';
-$l_voting['delete_ipdata_text'] = 'Сохраненные данные IP занимают %s байтов памяти. Вы можете их удалить с помощью кнопки \Удалить\'. Примите во внимание, что удаление сохраненных данных IP может вызвать неточность результатов голосования, так как в этом случае возможно многократное участие в голосовании.';
-$l_voting['status'] = 'Состояние';
-$l_voting['log_success'] = 'Успех';
-$l_voting['log_error'] = 'Ошибка';
-$l_voting['log_error_active'] = 'Ошибка: не активен';
-$l_voting['log_error_revote'] = 'Ошибка: новое голосование';
-$l_voting['log_error_blackip'] = 'Ошибка: IP заблокирован';
-$l_voting['log_is_empty'] = 'Книга лог-записей не заполнена!';
-$l_voting['enabled'] = 'Активировано';
-$l_voting['disabled'] = 'Не активировано';
-$l_voting['log_fallback'] = 'Fallback'; // TRANSLATE
-
-$l_voting['new_ip_add'] = 'Введите, пожалуйста, новый адрес IP!';
-$l_voting['not_valid_ip'] = 'Адрес IP недействителен!';
-$l_voting['not_active'] = 'The entered date is in the past!'; // TRANSLATE
-
-$l_voting['headline_datatype'] = 'Type of Inquiry';// TRANSLATE
-$l_voting['AllowFreeText'] = 'Allow free text';// TRANSLATE
-$l_voting['AllowImages'] = 'Allow images';// TRANSLATE
-$l_voting['AllowSuccessor'] = 'redirect to:';// TRANSLATE
-$l_voting['AllowSuccessors'] = 'allow individual redirects';// TRANSLATE
-$l_voting["csv_charset"] = "Export charset";// TRANSLATE
-$l_voting["imageID_text"] = "Image ID";// TRANSLATE
-$l_voting["successorID_text"] = "Successor ID";// TRANSLATE
-$l_voting["mediaID_text"] = "Media-ID";// TRANSLATE
-$l_voting['AllowMedia'] = 'Allow Media such as Audio or video files';// TRANSLATE
-
-$l_voting['voting-id'] = 'Voting ID';// TRANSLATE
-$l_voting['voting-session'] = 'Voting Session';// TRANSLATE
-$l_voting['voting-successor'] = 'successor';// TRANSLATE
-$l_voting['voting-additionalfields'] = 'add. data';// TRANSLATE
-$l_voting['answerID'] = 'answer ID';// TRANSLATE
-$l_voting['answerText'] = 'answer text';// TRANSLATE
-
-$l_voting['userid_method'] = 'For logged in Users (customer management), compare to saved customer ID (the log has to be active)';// TRANSLATE
-$l_voting['IsRequired'] = 'This is a required field';// TRANSLATE
-
-$l_voting['answer_limit'] = 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!';// TRANSLATE
-$l_voting['folder_path_exists'] = "Folder already exists!";// TRANSLATE
-?>
+		'answer_limit' => 'The inquiry must consist of at least two - in case free text answers are allowd one - answers!', // TRANSLATE
+		'folder_path_exists' => "Folder already exists!", // TRANSLATE
+);

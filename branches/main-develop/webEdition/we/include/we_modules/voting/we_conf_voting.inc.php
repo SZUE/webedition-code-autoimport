@@ -27,6 +27,3 @@ define("VOTING_LOG_TABLE",TBL_PREFIX . "tblvotinglog");
 
 define("WE_VOTING_MODULE_PATH","/webEdition/we/include/we_modules/voting/");
 define("WE_VOTING_MODULE_DIR",$_SERVER["DOCUMENT_ROOT"].WE_VOTING_MODULE_PATH);
-
-
-?>
