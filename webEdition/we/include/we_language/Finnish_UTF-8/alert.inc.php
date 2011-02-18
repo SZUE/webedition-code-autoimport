@@ -24,10 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-if (!isset($l_backup)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-}
 
 $l_alert["notice"] = "Huomautus";
 $l_alert["warning"] = "Varoitus";
@@ -112,7 +108,7 @@ $l_alert["cat_changed"] = "Kategoria on käytössä! Tallenna uudelleen dokument
 $l_alert["max_name_cat"] = "Kategorian nimi voi olla maksimissaan 32 merkkiä pitkä!";
 $l_alert["not_entered_cat"] = "Kategorian nimeä ei annettu!";
 $l_alert["cat_new_name"] = "Anna uusi nimi kategorialle!";
-$l_alert["we_backup_import_upload_err"] = "Varmuuskopiotiedostoa ladattaessa tapahtui virha! Ladattavien tiedostojen maksimikoko on %s. Jos varmuuskopiotiedoston koko ylittää rajan, lataa tiedosto hakemistoon webEdition/we_backup käyttäen FTP -tiedostonsiirtoa ja valitse '".$l_backup["import_from_server"]."'";
+$l_alert["we_backup_import_upload_err"] = "Varmuuskopiotiedostoa ladattaessa tapahtui virha! Ladattavien tiedostojen maksimikoko on %s. Jos varmuuskopiotiedoston koko ylittää rajan, lataa tiedosto hakemistoon webEdition/we_backup käyttäen FTP -tiedostonsiirtoa ja valitse '".g_l('backup',"[import_from_server]")."'";
 $l_alert["rebuild_nodocs"] = "Ei dokumentteja jotka vastaisivat valittuja määreitä.";
 $l_alert["we_name_not_allowed"] = "Termit 'we' and 'webEdition' ovat varattuja sanoja joten niitä ei voida käyttää!";
 $l_alert["we_filename_empty"] = "Hakemistolle tai tiedostolle ei ole annettu nimeä!";
@@ -181,8 +177,8 @@ $l_alert['discard_changed_data'] = 'Tallentamattomat muutokset menetetään, hal
 $l_alert["login_denied_for_user"] = "Kirjautuminen epäonnistui. Käyttäjäkirjautuminen ei ole käytössä";
 $l_alert["no_perm_to_delete_single_document"] = "Sinulla ei ole tarvittavia oikeuksia dokumentin poistoon.";
 
-$l_confim["applyWeDocumentCustomerFiltersDocument"] = "Tiedosto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä dokumentissa?";
-$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "Hakemisto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä hakemistossa ja kaikissa sen alihakemistoissa? ";
+$l_alert['confim']["applyWeDocumentCustomerFiltersDocument"] = "Tiedosto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä dokumentissa?";
+$l_alert['confim']["applyWeDocumentCustomerFiltersFolder"]   = "Hakemisto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä hakemistossa ja kaikissa sen alihakemistoissa? ";
 
 $l_alert['field_in_tab_notvalid_pre'] = "Asetuksia ei voitu tallentaa, koska seuraavat kentät sisältävät virheellisiä arvoja:";
 $l_alert['field_in_tab_notvalid'] = ' - kenttä %s välilehdellä %s';

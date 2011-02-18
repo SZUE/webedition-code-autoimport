@@ -24,10 +24,6 @@
  * Provides language strings.
  * Language: English
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-if (!isset($l_backup)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
-}
 
 $l_alert["notice"] = "Notice";
 $l_alert["warning"] = "Warning";
@@ -112,7 +108,7 @@ $l_alert["cat_changed"] = "The category is in use! Resave the documents which ar
 $l_alert["max_name_cat"] = "A category name may only be 32 characters long!";
 $l_alert["not_entered_cat"] = "No category name has been entered!";
 $l_alert["cat_new_name"] = "Enter the new name for the category!";
-$l_alert["we_backup_import_upload_err"] = "An error occured while uploading the backup file! The maximum file size for uploads is %s. If your backup file exceeds this limit, please upload it into the directory webEdition/we_Backup via FTP and choose '".$l_backup["import_from_server"]."'";
+$l_alert["we_backup_import_upload_err"] = "An error occured while uploading the backup file! The maximum file size for uploads is %s. If your backup file exceeds this limit, please upload it into the directory webEdition/we_Backup via FTP and choose '".g_l('backup',"[import_from_server]")."'";
 $l_alert["rebuild_nodocs"] = "No documents match the selected attributes.";
 $l_alert["we_name_not_allowed"] = "The terms 'we' and 'webEdition' are reserved words and may not be used!";
 $l_alert["we_filename_empty"] = "No name has been entered for this document or directory!";
@@ -178,11 +174,11 @@ $l_alert["we_filename_notValid"] = "Invalid file name\\nValid characters are alp
 $l_alert["login_denied_for_user"] = "The user cannot login. The user access is disabled.";
 $l_alert["no_perm_to_delete_single_document"] = "You have not the needed permissions to delete the active document.";
 
-$l_confim["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?";
-$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ";
+$l_alert['confim']["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?";
+$l_alert['confim']["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ";
 
 $l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:";
 $l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s';
-$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; 
+$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.';
 $l_alert['discard_changed_data'] = 'There are unsaved changes that will be discarded. Are you sure?';
 ?>
