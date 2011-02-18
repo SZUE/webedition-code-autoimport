@@ -383,8 +383,8 @@
 		if(defined('OBJECT_X_TABLE')){
 			$_db = new DB_WE();
 
-			$_maxid = f('SELECT MAX(TableID) as MaxTID FROM ' . OBJECT_FILES_TABLE . ';','MaxTID',$_db);
-			$_maxid++;
+			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE . ';','MaxTID',$_db);
+			$_maxid++;p_r($_maxid);
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
 				if ($this->isTabExist($_table)) {
@@ -420,7 +420,6 @@
 					}
 				}
 			}
-
 		}
 	}
 
