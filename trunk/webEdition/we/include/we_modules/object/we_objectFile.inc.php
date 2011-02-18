@@ -2161,9 +2161,14 @@ class we_objectFile extends we_document
 			if(strpos($text,'%language%')!==false){$text = str_replace('%language%',substr($this->Language,0,2),$text);}
 			if(strpos($text,'%country%')!==false){$text = str_replace('%country%',substr($this->Language,4,2),$text);}
 			
-			$text=correctUml($text);
+			
 			$text=str_replace(" ", "-", $text);
-			$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
+			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
+				$text= urlencode ($text);
+			} else {
+				$text=correctUml($text);
+				$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
+			}
 			$this->Url=substr($text,0,256); 
 		} else {
 			$this->Url='';

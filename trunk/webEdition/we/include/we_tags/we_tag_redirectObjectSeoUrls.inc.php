@@ -36,6 +36,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			$hiddendirindex = false;
 		}
 	}
+	
 	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
 
 	if(!$GLOBALS['we_editmode']){
@@ -45,6 +46,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		$searchfor ='';
 		$notfound=true;
 		while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
+		//while($notfound  && $path_parts['dirname']!='/'){
 			$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 			if ($searchfor){
@@ -58,7 +60,13 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 				}
 			}
 			if($displayid){
-				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchfor) . "' LIMIT 1", "ID", $db));
+				if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
+					$searchforInternal=urlencode ($searchfor);
+				} else {
+					$searchforInternal=$searchfor;
+				}
+		
+				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchforInternal) . "' LIMIT 1", "ID", $db));
 				if ($objectid){
 					$notfound=false;
 				} else {
@@ -69,6 +77,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			}
 		}
 		if($notfound && isset($path_parts['dirname']) && $path_parts['dirname']=='/' && $hiddendirindex){
+		//if($notfound  && $path_parts['dirname']=='/' && $hiddendirindex){
 			if ($searchfor){
 				$searchfor = $path_parts['basename'].'/'.$searchfor;
 			} else $searchfor = $path_parts['basename'];
@@ -86,7 +95,8 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		if(!$notfound){
 			$_REQUEST=array_merge($_REQUEST,$myRequest);
 			$_REQUEST['we_objectID']=$objectid;
-			unset($GLOBALS["WE_MAIN_DOC"]);unset($GLOBALS["we_doc"]);
+			unset($GLOBALS["WE_MAIN_DOC"]);
+			unset($GLOBALS["we_doc"]);
 			header("HTTP/1.0 200 OK", true,200);
 			header("Status: 200 OK", true,200);
 			include($_SERVER["DOCUMENT_ROOT"] . $display);
