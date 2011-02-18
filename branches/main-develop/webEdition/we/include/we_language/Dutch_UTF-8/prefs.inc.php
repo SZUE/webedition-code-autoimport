@@ -311,6 +311,7 @@ $l_prefs = array(
 		'navigation_rules_continue' => "Continue to evaluate navigation rules after a first match", // TRANSLATE
 		'general_directoryindex_hide' => "Hide DirectoryIndex- file names", // TRANSLATE
 		'general_directoryindex_hide_description' => "For the tags <we:link>, <we:linklist>, <we:listview> you can use the attribute 'hidedirindex'", // TRANSLATE
+		'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
 		'navigation_directoryindex_hide' => "in the navigation output", // TRANSLATE
 		'wysiwyglinks_directoryindex_hide' => "in links from the WYSIWYG editor", // TRANSLATE
 		'objectlinks_directoryindex_hide' => "in links to objects", // TRANSLATE

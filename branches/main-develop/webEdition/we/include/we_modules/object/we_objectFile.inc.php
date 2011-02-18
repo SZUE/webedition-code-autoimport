@@ -2061,20 +2061,20 @@ class we_objectFile extends we_document
 			if (isset($foo["DefaultUrlfield1"]) && $foo["DefaultUrlfield1"]) {
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield1"],$regs);
 				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
-					$urlfield1 = $this->geFieldValue($regs[2], $regs[1]);
+					$urlfield1 = str_replace("/", "-",$this->geFieldValue($regs[2], $regs[1]));
 				}
 
 			}
 			if (isset($foo["DefaultUrlfield2"]) && $foo["DefaultUrlfield2"]) {
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield2"],$regs);
 				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
-					$urlfield2 = $this->geFieldValue($regs[2], $regs[1]);
+					$urlfield2 = str_replace("/", "-",$this->geFieldValue($regs[2], $regs[1]));
 				}
 			}
 			if (isset($foo["DefaultUrlfield3"]) && $foo["DefaultUrlfield3"]) {
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield3"],$regs);
 				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
-					$urlfield3 = $this->geFieldValue($regs[2], $regs[1]);
+					$urlfield3 = str_replace("/", "-",$this->geFieldValue($regs[2], $regs[1]));
 				}
 			}
 			$text = $foo["DefaultUrl"];
@@ -2145,9 +2145,14 @@ class we_objectFile extends we_document
 			if(strpos($text,'%language%')!==false){$text = str_replace('%language%',substr($this->Language,0,2),$text);}
 			if(strpos($text,'%country%')!==false){$text = str_replace('%country%',substr($this->Language,4,2),$text);}
 
-			$text=correctUml($text);
+			
 			$text=str_replace(" ", "-", $text);
-			$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
+			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
+				$text= urlencode ($text);
+			} else {
+				$text=correctUml($text);
+				$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
+			}
 			$this->Url=substr($text,0,256);
 		} else {
 			$this->Url='';

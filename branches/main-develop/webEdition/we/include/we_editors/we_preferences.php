@@ -145,11 +145,12 @@ $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_HIDE",', '// Flag if
 $global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_NAMES",', '// Comma seperated list such as index.php,index.html' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_NAMES", "");');
 $global_config[] = array('define("WYSIWYGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in Wysiwyg-editor output' . "\n" . 'define("WYSIWYGLINKS_DIRECTORYINDEX_HIDE", false);');
 $global_config[] = array('define("TAGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in tag output' . "\n" . 'define("TAGLINKS_DIRECTORYINDEX_HIDE", false);');
-$global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of navigation' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", "no");');
-$global_config[] = array('define("WYSIWYGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of wysiwyg editior' . "\n" . 'define("WYSIWYGLINKS_OBJECTSEOURLS", "no");');
-$global_config[] = array('define("TAGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("TAGLINKS_OBJECTSEOURLS", "no");');
-$global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if should be displayed in webEdition ' . "\n" . 'define("SEOINSIDE_HIDEINWEBEDITION", "no");');
-$global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", "no");');
+$global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of navigation' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", false);');
+$global_config[] = array('define("WYSIWYGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of wysiwyg editior' . "\n" . 'define("WYSIWYGLINKS_OBJECTSEOURLS", false);');
+$global_config[] = array('define("TAGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("TAGLINKS_OBJECTSEOURLS", false);');
+$global_config[] = array('define("URLENCODE_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("URLENCODE_OBJECTSEOURLS", false);');
+$global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if should be displayed in webEdition ' . "\n" . 'define("SEOINSIDE_HIDEINWEBEDITION", false);');
+$global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", false);');
 
 
 //default charset
@@ -567,6 +568,9 @@ function get_value($settingvalue) {
 			break;
 		case "taglinks_objectseourls":
 			return defined("TAGLINKS_OBJECTSEOURLS") ? TAGLINKS_OBJECTSEOURLS : false;
+			break;
+		case "urlencode_objectseourls":
+			return defined("URLENCODE_OBJECTSEOURLS") ? URLENCODE_OBJECTSEOURLS : false;
 			break;
 		case "seoinside_hideinwebedition":
 			return defined("SEOINSIDE_HIDEINWEBEDITION") ? SEOINSIDE_HIDEINWEBEDITION : false;
@@ -1743,7 +1747,19 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+<<<<<<< .working
 
+=======
+
+			case '$_REQUEST["urlencode_objectseourls"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "URLENCODE_OBJECTSEOURLS", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+
+>>>>>>> .merge-rechts.r2553
 			case '$_REQUEST["seoinside_hideinwebedition"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -2810,6 +2826,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["navigation_objectseourls"]) ? $_REQUEST["navigation_objectseourls"] : null, '$_REQUEST["navigation_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_objectseourls"]) ? $_REQUEST["wysiwyglinks_objectseourls"] : null, '$_REQUEST["wysiwyglinks_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["taglinks_objectseourls"]) ? $_REQUEST["taglinks_objectseourls"] : null, '$_REQUEST["taglinks_objectseourls"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["urlencode_objectseourls"]) ? $_REQUEST["urlencode_objectseourls"] : null, '$_REQUEST["urlencode_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
 
@@ -5485,8 +5502,14 @@ else {
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("taglinks_objectseourls"));
 
-				array_push($_settings, array("headline" => g_l('prefs','[taglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs','[taglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "urlencode_objectseourls","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("urlencode_objectseourls"));			
 
+				array_push($_settings, array("headline" => g_l('prefs','[urlencode_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 				array_push($_settings, array("headline" => g_l('prefs','[general_seoinside]'), "noline" => 1));
 				array_push($_settings, array("html" => htmlAlertAttentionBox(g_l('prefs','[general_seoinside_description]'),2,480),"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "seoinside__hideineditmode","class"=>"weSelect"));
