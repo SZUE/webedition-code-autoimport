@@ -3838,14 +3838,14 @@ function g_l($name, $specific) {
 	//echo $name.$specific;
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
+		if (!($tmp === false)) {
+			return $tmp;
+		}
 	}else{
 		//FIXME: decide if in we - then turn off, else turn on
-		//if(isset($cache))unset($cache);
-		//compatibility - try global scope
-		$tmp = (isset($GLOBALS["l_$name"])?getVarArray($GLOBALS["l_$name"], $specific):false);
-	}
-	if (!($tmp === false)) {
-		return $tmp;
+		if((!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
+			unset($cache);
+		}
 	}
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/'.str_replace('_','/',$name).'.inc.php';
 	if (file_exists($file)) {
@@ -3856,13 +3856,7 @@ function g_l($name, $specific) {
 			$cache["l_$name"]=${"l_$name"};
 			return $tmp;
 		}else{
-			//try global again
-			if(isset($GLOBALS["l_$name"])){
-				$tmp=getVarArray($GLOBALS["l_$name"], $specific);
-			}
-			if($tmp===false){
 				trigger_error('Requested lang entry '."l_$name$specific".' not found!',E_USER_WARNING);
-			}
 			return false;
 		}
 	}
