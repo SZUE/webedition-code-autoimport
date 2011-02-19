@@ -2624,7 +2624,7 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 			}
 		}
 		if (show_SeoLinks() && $objectseourls){
-			
+
 			$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", $DB_WE);
 			$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 			if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
@@ -3812,6 +3812,45 @@ function CheckAndConvertISObackend($utf8data) {
 	}
 }
 
+/**
+ * getLanguage property
+ *  Note: underscores in name are used as directories - modules_workflow is searched in subdir modules
+ * usage example: echo g_l('modules_workflow','[test][new]');
+ *
+ * @param $name name of the variable, without 'l_', this name is also used for inclusion
+ * @param $specific the array element to access
+ */
+function g_l($name, $specific) {
+	//cache last accessed lang var
+	static $cache;
+	//echo $name.$specific;
+	if(isset($cache["l_$name"])){
+		$tmp = getVarArray($cache["l_$name"], $specific);
+		if (!($tmp === false)) {
+			return $tmp;
+		}
+	}else{
+		//FIXME: decide if in we - then turn off, else turn on
+		if((!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
+			unset($cache);
+		}
+	}
+	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/'.str_replace('_','/',$name).'.inc.php';
+	if (file_exists($file)) {
+		include($file);
+		$tmp = (isset(${"l_$name"})?getVarArray(${"l_$name"}, $specific):false);
+		//get local variable - otherwise try global again
+		if(!($tmp === false)){
+			$cache["l_$name"]=${"l_$name"};
+			return $tmp;
+		}else{
+				trigger_error('Requested lang entry '."l_$name$specific".' not found!',E_USER_WARNING);
+			return false;
+		}
+	}
+	trigger_error('Requested lang file '.$file.' not found!',E_USER_WARNING);
+	return '';
+}
 
 function we_templateInit(){
 	if(!isset($GLOBALS["DB_WE"])){
