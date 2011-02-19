@@ -3812,6 +3812,22 @@ function CheckAndConvertISObackend($utf8data) {
 	}
 }
 
+function getVarArray($arr, $string) {
+	if (!isset($arr)) {
+		return false;
+	}
+	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
+	$return = $arr;
+	foreach ($arr_matches[1] as $dimension) {
+		if (isset($return[$dimension])) {
+			$return = $return[$dimension];
+		} else {
+			return false;
+		}
+	}
+	return $return;
+}
+
 /**
  * getLanguage property
  *  Note: underscores in name are used as directories - modules_workflow is searched in subdir modules
