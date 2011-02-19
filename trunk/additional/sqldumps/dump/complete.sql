@@ -1101,7 +1101,7 @@ CREATE TABLE tblnavigationrules (
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
 /* query separator */
-CREATE TABLE IF NOT EXISTS _delKeys(
+CREATE TEMPORARY TABLE IF NOT EXISTS _delKeys(
   ID bigint
 )ENGINE = MEMORY;
 /* query separator */
@@ -1112,7 +1112,7 @@ INSERT INTO _delKeys SELECT s.ID FROM tblsearchtool s, tblsearchtool t WHERE s.P
 DELETE FROM tblsearchtool WHERE ID IN (SELECT ID FROM _delKeys);
 /* query separator */
 
-DROP TABLE _delKeys;
+DROP TEMPORARY TABLE IF EXISTS _delKeys;
 
 /* query separator */
 CREATE TABLE tblsearchtool (
@@ -1147,7 +1147,7 @@ CREATE TABLE tblsearchtool (
   `search_tables_advSearch` varchar(255) NOT NULL,
   `activTab` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`ID`),
-  UNIQUE KEY Path (Path),
+  UNIQUE KEY Path (Path)
 ) ENGINE=MyISAM ;
 /* query separator */
 INSERT INTO tblsearchtool (`ParentID`, `IsFolder`, `Icon`, `Path`, `Text`, `predefined`, `folderIDDoc`, `folderIDTmpl`, `searchDocSearch`, `searchTmplSearch`, `searchForTextDocSearch`, `searchForTitleDocSearch`, `searchForContentDocSearch`, `searchForTextTmplSearch`, `searchForContentTmplSearch`, `anzahlDocSearch`, `anzahlTmplSearch`, `anzahlAdvSearch`, `setViewDocSearch`, `setViewTmplSearch`, `setViewAdvSearch`, `OrderDocSearch`, `OrderTmplSearch`, `OrderAdvSearch`, `searchAdvSearch`, `locationAdvSearch`, `searchFieldsAdvSearch`, `search_tables_advSearch`, `activTab`) VALUES

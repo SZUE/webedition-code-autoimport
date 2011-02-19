@@ -9,7 +9,7 @@ INSERT INTO _delKeys SELECT s.ID FROM tblsearchtool s, tblsearchtool t WHERE s.P
 DELETE FROM tblsearchtool WHERE ID IN (SELECT ID FROM _delKeys);
 /* query separator */
 
-DROP TABLE _delKeys;
+DROP TEMPORARY TABLE IF EXISTS _delKeys;
 
 /* query separator */
 CREATE TABLE tblsearchtool (
