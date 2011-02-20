@@ -24,6 +24,10 @@
  * Provides language strings.
  * Language: English
  */
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
+if (!isset($l_backup)) {
+	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
+}
 
 $l_alert["notice"] = "Notice";
 $l_alert["warning"] = "Warning"; // TRANSLATE
@@ -114,7 +118,7 @@ $l_alert["cat_changed"] = "Категория в действии! Пересо�
 $l_alert["max_name_cat"] = "Имя категории должно содержать не более 32 символов!";
 $l_alert["not_entered_cat"] = "Не введено имя категории!";
 $l_alert["cat_new_name"] = "Введите новое имя категории!";
-$l_alert["we_backup_import_upload_err"] = "Ошибка при загрузке резервного файла! Максимально допустимый размер файла для загрузки составляет %s. Если размер Вашего резервного файла превышает этот предел, загрузите его в директорию webEdition/we_Backup при помощи FTP и выберите '".g_l('backup',"[import_from_server]")."'";
+$l_alert["we_backup_import_upload_err"] = "Ошибка при загрузке резервного файла! Максимально допустимый размер файла для загрузки составляет %s. Если размер Вашего резервного файла превышает этот предел, загрузите его в директорию webEdition/we_Backup при помощи FTP и выберите '".$l_backup["import_from_server"]."'";
 $l_alert["rebuild_nodocs"] = "Не существует документов, соответствующих выбранным критериям.";
 $l_alert["we_name_not_allowed"] = "Имена 'we' и 'webEdition' зарезервированы для использования самой системой и не могут употребляться для других целей!";
 $l_alert["we_filename_empty"] = "Не введено имя для этого документа или директории!";
@@ -180,11 +184,11 @@ $l_alert["we_filename_notValid"] = "Недопустимое имя файла\\
 $l_alert["login_denied_for_user"] = "The user cannot login. The user access is disabled."; // TRANSLATE
 $l_alert["no_perm_to_delete_single_document"] = "You have not the needed permissions to delete the active document."; // TRANSLATE
 
-$l_alert['confim']["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?"; // TRANSLATE
-$l_alert['confim']["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? "; // TRANSLATE
+$l_confim["applyWeDocumentCustomerFiltersDocument"] = "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?"; // TRANSLATE
+$l_confim["applyWeDocumentCustomerFiltersFolder"]   = "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? "; // TRANSLATE
 
 $l_alert['field_in_tab_notvalid_pre'] = "The settings could not be saved, because the following fields contain invalid values:"; // TRANSLATE
 $l_alert['field_in_tab_notvalid'] = ' - field %s on tab %s'; // TRANSLATE
-$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; // TRANSLATE
+$l_alert['field_in_tab_notvalid_post'] = 'Correct the fields before saving the settings.'; // TRANSLATE 
 $l_alert['discard_changed_data'] = 'There are unsaved changes that will be discarded. Are you sure?'; // TRANSLATE
 ?>
