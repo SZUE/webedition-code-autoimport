@@ -311,6 +311,7 @@ $l_prefs = array(
 		'navigation_directoryindex_description' => "After a change, a rebuild is required (i.e. navigation cache, objects ...)", // TRANSLATE
 		'navigation_directoryindex_names' => "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html'", // TRANSLATE
 		'general_objectseourls' => "Generate object SEO urls ", // TRANSLATE
+		'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
 		'navigation_objectseourls' => "in the navigation output", // TRANSLATE
 		'wysiwyglinks_objectseourls' => "in links from the WYSIWYG editor", // TRANSLATE
 		'general_objectseourls_description' => "For the tags <we:link>, <we:linklist>, <we:listview>, <we:object> you can use the attribute 'objectseourls'", // TRANSLATE

@@ -18,8 +18,6 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: schedule.inc.php
  *
@@ -27,10 +25,9 @@
  *
  * Language: Deutsch
  */
-
-$l_schedule["headline"] = "Automatisch<br>Ver&ouml;ffentlichen";
-$l_schedule["from"] = "Von";
-$l_schedule["to"] = "Bis";
-$l_schedule["toBeforeNow"] = "Das eingetragene Bis-Datum liegt in der Vergangenheit!\\nDas Dokument wurde NICHT gespeichert!\\nBitte deaktivieren Sie die Bis-Funktion oder ändern Sie das Bis-Datum!";
-
-?>
+$l_modules_schedule = array(
+		'headline' => "Automatisch<br>Ver&ouml;ffentlichen",
+		'from' => "Von",
+		'to' => "Bis",
+		'toBeforeNow' => "Das eingetragene Bis-Datum liegt in der Vergangenheit!\\nDas Dokument wurde NICHT gespeichert!\\nBitte deaktivieren Sie die Bis-Funktion oder ändern Sie das Bis-Datum!",
+);

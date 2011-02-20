@@ -49,12 +49,12 @@ class weShippingControl {
 		$DB_WE->query($query);
 
 		if ($DB_WE->next_record()) {
-			
+
 			$shippingControl = unserialize($DB_WE->f('strFelder'));
 			$shippingControl->vatRate = weShopVats::getVatRateForSite($shippingControl->vatId);
-			
+
 			return $shippingControl;
-			
+
 		} else {
 			return new weShippingControl(
 				'',
@@ -99,7 +99,7 @@ class weShippingControl {
 	function getNewEmptyShipping() {
 		return new weShipping(
 			uniqid('weShipping_'),
-			$GLOBALS['l_shop']['new_entry'],
+			g_l('modules_shop','[new_entry]'),
 			array('Deutschland'),
 			array('10','20','100'),
 			array('15','5','0'),

@@ -420,8 +420,7 @@ else {
 					$we_responseText = sprintf(g_l('weEditor',"[required_field_alert]"),$n);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if($we_doc->i_scheduleToBeforeNow()) {
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/schedule.inc.php");
-					$we_responseText = $l_schedule["toBeforeNow"];
+					$we_responseText = g_l('modules_schedule','[toBeforeNow]');
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if($n = $we_doc->i_hasDoubbleFieldNames()) {
 					$we_responseText = sprintf(g_l('weEditor',"[doubble_field_alert]"),$n);

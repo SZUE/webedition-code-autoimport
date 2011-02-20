@@ -1,7 +1,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_dirSelector.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$GLOBALS["WE_LANGUAGE"].'/tools.inc.php');
 include_once('conf/define.conf.php');
 
 class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
@@ -38,7 +37,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
 					<td>'.getPixel(25,14).'</td>
-					<td class="selector"colspan="2"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS['l_tools']['name'].'</a></b></td>
+					<td class="selector"colspan="2"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('tools','[name]').'</a></b></td>
 				</tr>
 				<tr>
 					<td width="25">'.getPixel(25,1).'</td>
@@ -138,7 +137,7 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print '<?php print WE_TOOLS_PATH;?>' . $TOOLNAME;?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print '<?php print g_l('tools','[newFolder"]?>';?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print '<?php print g_l('tools','[newFolder]');?>';?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -246,7 +245,7 @@ top.clearEntries();
 			$txt = rawurldecode($_REQUEST['we_FolderText_tmp']);
 		}
 		if($txt==''){
-			print we_message_reporting::getShowMessageCall($GLOBALS['l_tools']['wrongtext'], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('tools','[wrongtext]'), WE_MESSAGE_ERROR);
 		}else{
 			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/'.'we_classes/we_folder.inc.php');
 			//include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/apps/<?php print $TOOLNAME; ?>/class/<?php print $CLASSNAME; ?>.class.php');
@@ -259,10 +258,10 @@ top.clearEntries();
 			$folder->Path=$folder->getPath();
 			$this->db->query("SELECT ID FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."'");
 			if($this->db->next_record()){
-				print we_message_reporting::getShowMessageCall($GLOBALS['l_tools']['folder_path_exists'], WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('tools','[folder_path_exists]'), WE_MESSAGE_ERROR);
 			}else{
 				if(<?php print $CLASSNAME; ?>::textNotValid($folder->Text)){
-					print we_message_reporting::getShowMessageCall($GLOBALS['l_tools']['wrongtext'], WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall(g_l('tools','[wrongtext]'), WE_MESSAGE_ERROR);
 		         }else{
 					$folder->we_save();
 		         	print 'var ref = top.opener.top.content;

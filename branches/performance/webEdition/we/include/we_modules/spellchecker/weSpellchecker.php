@@ -3,7 +3,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/spellchecker.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']. '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
@@ -246,7 +245,7 @@ print STYLESHEET;
 	function spellcheck() {
 		retry = 0;
 		if(document.spellchecker.isReady()) {
-			document.getElementById("statusText").innerHTML = "<?php print $l_spellchecker['checking'];?>";
+			document.getElementById("statusText").innerHTML = "<?php print g_l('modules_spellchecker','[checking]');?>";
 			var text = getTextOnly(orginal);
 			document.spellchecker.check(text);
 			setTimeout("findNext()",2000);
@@ -255,7 +254,7 @@ print STYLESHEET;
 				setTimeout("spellcheck()",1000);
 				retryjava++;
 			} else {
-				<?php print we_message_reporting::getShowMessageCall( $l_spellchecker['no_java'], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[no_java]'), WE_MESSAGE_ERROR); ?>
 				self.close();
 			}
 		}
@@ -301,7 +300,7 @@ print STYLESHEET;
 									fadeout("spinner",80,10,10);
 								}
 								weButton.enable("check");
-								<?php print we_message_reporting::getShowMessageCall( $l_spellchecker['finished'], WE_MESSAGE_NOTICE); ?>
+								<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[finished]'), WE_MESSAGE_NOTICE); ?>
 							}
 					}
 			} else {
@@ -454,7 +453,7 @@ print STYLESHEET;
 	<div id="searchPanel">
 		<input class="wetextinput" name="search" id="search" />
 		<br />
-		<label for="suggestion" class="defaultfont">'.$l_spellchecker['suggestion'].'</label>
+		<label for="suggestion" class="defaultfont">'.g_l('modules_spellchecker','[suggestion]').'</label>
 		<select name="suggestion" id="suggestion" size="5" class="wetextinput" onchange="document.we_form.search.value=this.value;">
 		</select>
 
@@ -520,7 +519,7 @@ print STYLESHEET;
 	';
 
 	$_parts[] =  array(
-		'headline' => $l_spellchecker['dictionary'],
+		'headline' => g_l('modules_spellchecker','[dictionary]'),
 		'html' => $_selectCode,
 		'space' => 100
 
@@ -532,7 +531,7 @@ print STYLESHEET;
 		<center>
 			<div style="padding-top: 30%;">
 				<img src="'.IMAGE_DIR.'spinner.gif"/><br />
-				<div id="statusText" class="small" style="color: black;">'.$l_spellchecker['download'].'</div>
+				<div id="statusText" class="small" style="color: black;">'.g_l('modules_spellchecker','[download]').'</div>
 			</div>
 		</center>
 	</div>
@@ -543,7 +542,7 @@ print STYLESHEET;
 	<div id="mainPanel">
 	'.
 
-	we_multiIconBox::getHTML('',"100%",$_parts,30,$_buttons_bottom,-1,'','',false, $l_spellchecker['spellchecker'])
+	we_multiIconBox::getHTML('',"100%",$_parts,30,$_buttons_bottom,-1,'','',false, g_l('modules_spellchecker','[spellchecker]'))
 	.
 	'
 	</div>

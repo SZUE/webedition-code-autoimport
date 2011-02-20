@@ -25,9 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browserDetect.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
 
 	protect();
 
@@ -322,7 +319,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			$DB_WE->query($query);
 
 			while ($DB_WE->next_record()) {
-				$shopArticles[$DB_WE->f('documentId') . '_d'] = $DB_WE->f("shopTitle").' ['.$DB_WE->f("documentId").']'.$l_shop["isDoc"];
+				$shopArticles[$DB_WE->f('documentId') . '_d'] = $DB_WE->f("shopTitle").' ['.$DB_WE->f("documentId").']'.g_l('modules_shop','[isDoc]');
 			}
 
 			if (defined('OBJECT_TABLE')) {
@@ -343,7 +340,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 					$DB_WE->query($query);
 					while ($DB_WE->next_record()) {
-						$shopArticles[$DB_WE->f('objectId') . '_o'] = $DB_WE->f('shopTitle') . ' [' . $DB_WE->f('objectId') . ']' . $l_shop['isObj'];
+						$shopArticles[$DB_WE->f('objectId') . '_o'] = $DB_WE->f('shopTitle') . ' [' . $DB_WE->f('objectId') . ']' . g_l('modules_shop','[isObj]');
 					}
 				}
 				unset($_classId);
@@ -412,7 +409,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			if ( $AMOUNT_ARTICLES > 0) {
 
 				array_push($parts, array(
-				    'headline' => $l_shop["Artikel"],
+				    'headline' => g_l('modules_shop','[Artikel]'),
 				    'space' => 100,
 					'html' => '<form name="we_intern_form">' . hidden('bid', $_REQUEST['bid']) . hidden("we_cmd[]", 'add_new_article') . '
 					<table border="0" cellpadding="0" cellspacing="0">
@@ -421,7 +418,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 					<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 					</tr>
 					<tr>
-						<td class="small">' . sprintf($l_shop['add_article']['entry_x_to_y_from_z'], $start_entry, $end_entry, $AMOUNT_ARTICLES) . '</td>
+						<td class="small">' . sprintf(g_l('modules_shop','[add_article][entry_x_to_y_from_z]'), $start_entry, $end_entry, $AMOUNT_ARTICLES) . '</td>
 					</tr>
 					</table>',
 					'noline' => 1
@@ -430,9 +427,9 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			} else {
 				array_push($parts, array(
-			    	'headline' => $l_shop["Artikel"],
+			    	'headline' => g_l('modules_shop','[Artikel]'),
 				    'space' => 100,
-					'html' => $l_shop['add_article']['empty_articles']
+					'html' => g_l('modules_shop','[add_article][empty_articles]')
 					)
 				);
 			}
@@ -500,7 +497,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				}
 
 				array_push($parts, array(
-				    'headline' => $l_shop["Artikel"],
+				    'headline' => g_l('modules_shop','[Artikel]'),
 				    'space' => 100,
 					'html' => '
 					<form name="we_form" target="edbody">
@@ -516,7 +513,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				unset($model);
 
 				array_push($parts, array(
-				    'headline' => $l_shop["Anzahl"],
+				    'headline' => g_l('modules_shop','[Anzahl]'),
 				    'space' => 100,
 					'html' => we_class::htmlTextInput('anzahl', 24, '', '', '', 'text', 380),
 					'noline' => 1
@@ -524,7 +521,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				);
 
 				array_push($parts, array(
-				    'headline' => $l_shop["variant"],
+				    'headline' => g_l('modules_shop','[variant]'),
 				    'space' => 100,
 					'html' => we_class::htmlSelect('we_variant', $variantOptions, 1, '', false, '', 'value', 380),
 					'noline' => 1
@@ -532,7 +529,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				);
 
 				array_push($parts, array(
-				    'headline' => $l_shop["customField"],
+				    'headline' => g_l('modules_shop','[customField]'),
 				    'space' => 100,
 					'html' =>	we_class::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
 								'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
@@ -548,7 +545,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 	}
 
 
-	print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,$l_shop['add_article']['title']);
+	print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,g_l('modules_shop','[add_article][title]'));
 	print '
 </form>
 </body>
@@ -570,10 +567,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			// update all orders with this orderId
 			if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
-				$alertMessage = $l_shop['edit_order']['js_saved_calculateVat_success'];
+				$alertMessage = g_l('modules_shop','[edit_order][js_saved_calculateVat_success]');
 				$alertType = WE_MESSAGE_NOTICE;
 			} else {
-				$alertMessage = $l_shop['edit_order']['js_saved_calculateVat_error'];
+				$alertMessage = g_l('modules_shop','[edit_order][js_saved_calculateVat_error]');
 				$alertType = WE_MESSAGE_ERROR;
 			}
 			unset($serialOrder);
@@ -591,10 +588,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
-					$alertMessage = sprintf($l_shop['edit_order']['js_delete_cart_field_success'], $_REQUEST['cartfieldname']);
+					$alertMessage = sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']);
 					$alertType = WE_MESSAGE_NOTICE;
 				} else {
-					$alertMessage = sprintf($l_shop['edit_order']['js_delete_cart_field_error'], $_REQUEST['cartfieldname']);
+					$alertMessage = sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']);
 					$alertType = WE_MESSAGE_ERROR;
 				}
 			}
@@ -612,7 +609,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 		if (elem && elem.value) {
 			document.we_form.submit();
 		} else {
-			' . we_message_reporting::getShowMessageCall( $l_shop['field_empty_js_alert'], WE_MESSAGE_ERROR) . '
+			' . we_message_reporting::getShowMessageCall( g_l('modules_shop','[field_empty_js_alert]'), WE_MESSAGE_ERROR) . '
 		}
 
 	}
@@ -644,20 +641,20 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			// make input field, for name or textfield
 			array_push($parts, array(
-				'headline' => $l_shop['field_name'],
+				'headline' => g_l('modules_shop','[field_name]'),
 				'html' => $fieldHtml,
 				'space' => 120,
 				'noline' => 1
 				)
 			);
 			array_push($parts, array(
-				'headline' => $l_shop['field_value'],
+				'headline' => g_l('modules_shop','[field_value]'),
 				'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
 				'space' => 120
 				)
 			);
 
-			print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,$l_shop['add_shop_field']);
+			print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,g_l('modules_shop','[add_shop_field]'));
 			unset($saveBut);
 			unset($canelBut);
 			unset($parts);
@@ -683,18 +680,18 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
 					$jsCmd = '
 					top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");
-					' . we_message_reporting::getShowMessageCall( sprintf($l_shop['edit_order']['js_saved_cart_field_success'], $_REQUEST['cartfieldname']), WE_MESSAGE_NOTICE) . '
+					' . we_message_reporting::getShowMessageCall( sprintf(g_l('modules_shop','[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), WE_MESSAGE_NOTICE) . '
 					window.close();
 					';
 				} else {
-					$jsCmd = we_message_reporting::getShowMessageCall( sprintf($l_shop['edit_order']['js_saved_cart_field_error'], $_REQUEST['cartfieldname']), WE_MESSAGE_ERROR) . '
+					$jsCmd = we_message_reporting::getShowMessageCall( sprintf(g_l('modules_shop','[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), WE_MESSAGE_ERROR) . '
 					window.close();
 					';
 				}
 
 			} else {
 
-				$jsCmd = we_message_reporting::getShowMessageCall( $l_shop['field_empty_js_alert'], WE_MESSAGE_ERROR) . '
+				$jsCmd = we_message_reporting::getShowMessageCall( g_l('modules_shop','[field_empty_js_alert]'), WE_MESSAGE_ERROR) . '
 					window.close();
 					';
 			}
@@ -752,7 +749,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			$parts = array();
 			array_push($parts, array(
-			    'headline' => $l_shop['edit_order']['shipping_costs'],
+			    'headline' => g_l('modules_shop','[edit_order][shipping_costs]'),
 			    'space' => 150,
 				'html' => we_class::htmlTextInput("weShipping_costs", 24, $shippingCost),
 				'noline' => 1
@@ -760,7 +757,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			);
 
 			array_push($parts, array(
-			    'headline' => $l_shop['edit_shipping_cost']['isNet'],
+			    'headline' => g_l('modules_shop','[edit_shipping_cost][isNet]'),
 			    'space' => 150,
 				'html' => we_class::htmlSelect("weShipping_isNet", array('1'=>g_l('global','[yes]'), '0'=>g_l('global','[no]')), 1, $shippingIsNet),
 				'noline' => 1
@@ -768,7 +765,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			);
 
 			array_push($parts, array(
-			    'headline' => $l_shop['edit_shipping_cost']['vatRate'],
+			    'headline' => g_l('modules_shop','[edit_shipping_cost][vatRate]'),
 			    'space' => 150,
 				'html' => we_getInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
 				'noline' => 1
@@ -782,7 +779,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				<form name="we_form" target="edbody">
 				' . hidden('bid', $_REQUEST['bid']) .
 				hidden("we_cmd[]", 'save_shipping_cost');
-				print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,$l_shop['edit_shipping_cost']['title']);
+				print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,g_l('modules_shop','[edit_shipping_cost][title]'));
 				print '
 				</form>
 				</body>
@@ -804,10 +801,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
-					$alertMessage = $l_shop['edit_order']['js_saved_shipping_success'];
+					$alertMessage = g_l('modules_shop','[edit_order][js_saved_shipping_success]');
 					$alertType = WE_MESSAGE_NOTICE;
 				} else {
-					$alertMessage = $l_shop['edit_order']['js_saved_shipping_error'];
+					$alertMessage = g_l('modules_shop','[edit_order][js_saved_shipping_error]');
 					$alertType = WE_MESSAGE_ERROR;
 				}
 			}
@@ -832,7 +829,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			$parts = array();
 			array_push($parts,array(
-					'html' => htmlAlertAttentionBox($l_shop['preferences']['explanation_customer_odercustomer'], 2,470),
+					'html' => htmlAlertAttentionBox(g_l('modules_shop','[preferences][explanation_customer_odercustomer]'), 2,470),
 					'space' => 0
 				)
 			);
@@ -952,7 +949,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				<form name="we_form" target="edbody">
 				' . hidden('bid', $_REQUEST['bid']) .
 				hidden("we_cmd[]", 'save_order_customer');
-				print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,$l_shop['preferences']['customerdata'],"",560);
+				print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,g_l('modules_shop','[preferences][customerdata]'),"",560);
 				print '
 				</form>
 				</body>
@@ -973,10 +970,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 
 			if (updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($_orderData))) {
-				$alertMessage = $l_shop['edit_order']['js_saved_customer_success'];
+				$alertMessage = g_l('modules_shop','[edit_order][js_saved_customer_success]');
 				$alertType = WE_MESSAGE_NOTICE;
 			} else {
-				$alertMessage = $l_shop['edit_order']['js_saved_customer_error'];
+				$alertMessage = g_l('modules_shop','[edit_order][js_saved_customer_error]');
 				$alertType = WE_MESSAGE_ERROR;
 			}
 
@@ -1004,7 +1001,7 @@ if(isset($_REQUEST["deletethisorder"])){
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
-        <td colspan="2" class="defaultfont">'.htmlDialogLayout("<span class='defaultfont'>".$l_shop["geloscht"]."</span>",$l_shop["loscht"]).'</td>
+        <td colspan="2" class="defaultfont">'.htmlDialogLayout("<span class='defaultfont'>".g_l('modules_shop','[geloscht]')."</span>",g_l('modules_shop','[loscht]')).'</td>
       </tr>
       </table></html>';
       exit;
@@ -1303,7 +1300,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
-        <td colspan="2" class="defaultfont">'.htmlDialogLayout("<span class='defaultfont'>" . $l_shop["orderDoesNotExist"] . "</span>",$l_shop["loscht"]).'</td>
+        <td colspan="2" class="defaultfont">'.htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop','[orderDoesNotExist]'). "</span>",g_l('modules_shop','[loscht]')).'</td>
       </tr>
       </table></html>';
       exit;
@@ -1407,7 +1404,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		$orderDataTable .= '
 											<tr height="25">
 
-												<td class="defaultfont" width="86" valign="top" height="25">'.$l_shop["bestellnr"].'</td>
+												<td class="defaultfont" width="86" valign="top" height="25">'.g_l('modules_shop','[bestellnr]').'</td>
 												<td class="defaultfont" valign="top" width="40" height="25"><b>'.$_REQUEST["bid"].'</b></td>
 												<td width="20" height="25">'.getPixel(34,15).'</td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateOrder'].'</td>
@@ -1766,10 +1763,10 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 											</tr>
 ' . $customerFieldTable . '
                                             <tr>
-                                            	<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . $l_shop['order']['edit_order_customer'] . '</a></td>
+                                            	<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop','[order][edit_order_customer]') . '</a></td>
                                             </tr>
                                             <tr>
-                                            	<td colspan="9">'.(we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . $l_shop['order']['open_customer'] . '</a>':'').' </td>
+                                            	<td colspan="9">'.(we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop','[order][open_customer]') . '</a>':'').' </td>
                                             </tr>
 										</table>';
 	//
@@ -1788,17 +1785,17 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	$orderTable = '
 	<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
 	<tr>
-		<th class="defaultgray" height="25">' . $l_shop['Anzahl'] . '</th>
+		<th class="defaultgray" height="25">' . g_l('modules_shop','[Anzahl]') . '</th>
 		<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . $l_shop['Titel'] . '</th>
+		<th class="defaultgray" height="25">' . g_l('modules_shop','[Titel]') . '</th>
 		<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . $l_shop['Beschreibung'] . '</th>
+		<th class="defaultgray" height="25">' . g_l('modules_shop','[Beschreibung]') . '</th>
 		<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . $l_shop['Preis'] . '</th>
+		<th class="defaultgray" height="25">' . g_l('modules_shop','[Preis]') . '</th>
 		<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . $l_shop['Gesamt'] . '</th>
+		<th class="defaultgray" height="25">' . g_l('modules_shop','[Gesamt]') . '</th>
 		' . ($calcVat ? '<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . $l_shop['MwSt'] . '</th>' : '' ) . '
+		<th class="defaultgray" height="25">' . g_l('modules_shop','[MwSt]') . '</th>' : '' ) . '
 	</tr>';
 
 
@@ -1852,21 +1849,21 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".$l_shop["jsanz"]."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".g_l('modules_shop','[jsanz]')."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]'). "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shopdescription', 45) . '</td>
 		<td></td>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".$l_shop["jsbetrag"]."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".g_l('modules_shop','[jsbetrag]')."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" .g_l('modules_shop','[keinezahl]') ."'", WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
 		<td></td>
 		<td class="shopContentfontR">' . numfom($articlePrice) . $waehr . '</td>
 		' . ($calcVat ? '
 			<td></td>
-			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".$l_shop["jsbetrag"]."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
+			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[jsbetrag]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" .g_l('modules_shop','[keinezahl]'). "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
 			: '') . '
 		<td>' . $pixelImg . '</td>
-		<td>' . $we_button->create_button("image:btn_function_trash", "javascript:check=confirm('".$l_shop["jsloeschen"]."'); if (check){document.location.href='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+		<td>' . $we_button->create_button("image:btn_function_trash", "javascript:check=confirm('".g_l('modules_shop','[jsloeschen]')."'); if (check){document.location.href='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 	</tr>
 		';
 		// if this article has custom fields or is a variant - we show them in a extra rows
@@ -1876,7 +1873,8 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 			$orderTable .='
 	<tr>
 		<td colspan="4"></td>
-		<td class="small" colspan="6">' . $l_shop["variant"] . ': ' . $shopArticleObject['WE_VARIANT'] . '</td>
+		<td class="small" colspan="6">' . g_l('modules_shop','[variant]')
+			. ': ' . $shopArticleObject['WE_VARIANT'] . '</td>
 	</tr>
 			';
 		}
@@ -1931,7 +1929,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td colspan="5" class="shopContentfontR">' . $l_shop["Preis"] . ':</td>
+		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop','[Preis]') . ':</td>
 		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPrice) . $waehr . '</strong></td>
 	</tr>
 	';
@@ -1952,7 +1950,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 				$totalPriceAndVat += $shippingCostsNet;
 				$orderTable .= '
 					<tr>
-						<td colspan="5" class="shopContentfontR">' . $l_shop['shipping']['shipping_package'] . ':</td>
+						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop','[shipping][shipping_package]') . ':</td>
 						<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . numfom($shippingCostsNet) . $waehr . '</a></strong></td>
 					</tr>
 					<tr>
@@ -1961,7 +1959,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 			}
 			$orderTable .='
 	<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . $l_shop["plusVat"] . '</label>:</td>
+		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[plusVat]') . '</label>:</td>
 		<td colspan="7"></td>
 		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 	</tr>
@@ -1984,7 +1982,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td colspan="5" class="shopContentfontR">' . $l_shop["gesamtpreis"] . ':</td>
+		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop','[gesamtpreis]') . ':</td>
 		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPriceAndVat) . $waehr . '</strong></td>
 	</tr>
 			';
@@ -2001,14 +1999,14 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 				$totalPrice += $shippingCostsGros;
 				$orderTable .= '
 					<tr>
-						<td colspan="5" class="shopContentfontR">' . $l_shop['shipping']['shipping_package'] . ':</td>
+						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop','[shipping][shipping_package]') . ':</td>
 						<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . numfom($shippingCostsGros) . $waehr . '</a></td>
 					</tr>
 					<tr>
 						<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 					</tr>
 					<tr>
-						<td colspan="5" class="shopContentfontR">' . $l_shop["gesamtpreis"] . ':</td>
+						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop','[gesamtpreis]') . ':</td>
 						<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPrice) . $waehr . '</strong></td>
 					</tr>
 					<tr>
@@ -2019,7 +2017,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 			$orderTable .= '
 
 	<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . $l_shop["includedVat"] . '</label>:</td>
+		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[includedVat]') . '</label>:</td>
 		<td colspan="7"></td>
 		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 	</tr>
@@ -2047,14 +2045,14 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td colspan="5" class="shopContentfontR">' . $l_shop['shipping']['shipping_package'] . ':</td>
+		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop','[shipping][shipping_package]') . ':</td>
 		<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . numfom($shippingCostsNet) . $waehr . '</a></td>
 	</tr>
 	<tr>
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . $l_shop['edit_order']['calculate_vat'] . '</label></td>
+		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[edit_order][calculate_vat]') . '</label></td>
 		<td colspan="7"></td>
 		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 	</tr>
@@ -2062,7 +2060,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td colspan="5" class="shopContentfontR">' . $l_shop["gesamtpreis"] . ':</td>
+		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop','[gesamtpreis]') . ':</td>
 		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPrice) . $waehr . '</strong></td>
 	</tr>
 	<tr>
@@ -2073,7 +2071,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 
 			$orderTable .= '
 	<tr>
-		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . $l_shop['edit_order']['calculate_vat'] . '</label></td>
+		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[edit_order][calculate_vat]') . '</label></td>
 		<td colspan="7"></td>
 		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 	</tr>';
@@ -2095,7 +2093,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 
 	$customCartFieldsTable = '<table cellpadding="0" cellspacing="0" border="0" width="99%">
 			<tr>
-				<th colspan="3" class="defaultgray" height="30">' . $l_shop["order_comments"] . '</th>
+				<th colspan="3" class="defaultgray" height="30">' . g_l('modules_shop','[order_comments]') . '</th>
 			</tr>
 			<tr>
 				<td height="10"></td>
@@ -2112,7 +2110,8 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 				<td>' . $pixelImg . '</td>
 				<td valign="top">' . $we_button->create_button('image:btn_edit_edit', "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 				<td>' . $pixelImg . '</td>
-				<td valign="top">' . $we_button->create_button('image:btn_function_trash', "javascript:check=confirm('".sprintf($l_shop['edit_order']['js_delete_cart_field'], $key)."'); if (check) { document.location.href='".$_SERVER["PHP_SELF"]."?we_cmd[0]=delete_shop_cart_custom_field&bid=".$_REQUEST["bid"]."&cartfieldname=" . $key . "'; }") . '</td>
+				<td valign="top">' . $we_button->create_button('image:btn_function_trash', "javascript:check=confirm('".sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field]')
+								, $key)."'); if (check) { document.location.href='".$_SERVER["PHP_SELF"]."?we_cmd[0]=delete_shop_cart_custom_field&bid=".$_REQUEST["bid"]."&cartfieldname=" . $key . "'; }") . '</td>
 			</tr>
 			<tr>
 				<td height="10"></td>

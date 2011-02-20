@@ -20,10 +20,9 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 
 class weAbbrDialog extends weDialog{
-	
+
 ##################################################################################################
 
 	var $dialogWidth = 370;
@@ -34,15 +33,15 @@ class weAbbrDialog extends weDialog{
 									"class",
 									"style"
 								);
-	
+
 ##################################################################################################
 
 	function weAbbrDialog(){
 		$this->weDialog();
-		$this->dialogTitle = $GLOBALS["l_wysiwyg"]["abbr_title"];
+		$this->dialogTitle = g_l('wysiwyg',"[abbr_title]");
 		$this->defaultInit();
 	}
-	
+
 ##################################################################################################
 
 	function defaultInit(){
@@ -53,11 +52,11 @@ class weAbbrDialog extends weDialog{
 	}
 
 ##################################################################################################
-	
+
 	function getJs() {
-		
+
 		$js = weDialog::getJs();
-		
+
 		if(defined("GLOSSARY_TABLE")) {
 			$js .= '
 			<script language="JavaScript" type="text/javascript">
@@ -75,21 +74,21 @@ class weAbbrDialog extends weDialog{
 			-->
 			</script>';
 		}
-		
+
 		return $js;
-		
+
 	}
-	
+
 
 ##################################################################################################
 
 	function getDialogContentHTML(){
-	
-		$foo = htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] :""), "", '', "text" , 350 );
-		$title = htmlFormElementTable($foo,$GLOBALS["l_wysiwyg"]["title"]);
 
-		$lang = $this->getLangField("lang",$GLOBALS["l_wysiwyg"]["language"],350);
-		
+		$foo = htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] :""), "", '', "text" , 350 );
+		$title = htmlFormElementTable($foo,g_l('wysiwyg',"[title]"));
+
+		$lang = $this->getLangField("lang",g_l('wysiwyg',"[language]"),350);
+
 	$table = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>'.$title.'</td></tr>
 <tr><td>'.getPixel(225,10).'</td></tr>
@@ -105,25 +104,25 @@ class weAbbrDialog extends weDialog{
 		return $table;
 
 	}
-	
+
 	function getDialogButtons(){
 		$we_button = new we_button();
 		$trashbut =  $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
-		
+
 		$buttons = array();
 		array_push($buttons, $trashbut);
-		
+
 		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")) {
 			$glossarybut =  $we_button->create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 			array_push($buttons, $glossarybut);
 		}
-		
+
 		array_push($buttons, parent::getDialogButtons());
-		
+
 		return $we_button->create_button_table($buttons);
-		
+
 	}
-	
+
 ##################################################################################################
 
 }

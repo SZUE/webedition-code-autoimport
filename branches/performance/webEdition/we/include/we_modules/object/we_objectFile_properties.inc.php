@@ -33,7 +33,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 
 	if($_SESSION["we_mode"] == "seem" || !we_hasPerm('CAN_SEE_OBJECTS')){	// No link to class in normal mode
 		array_push($parts,array(
-						"headline"=>$GLOBALS["l_object"]["class"],
+						"headline"=>g_l('modules_object','[class]'),
 						"html"=>$GLOBALS['we_doc']->formClass(),
 						"space"=>140,
 						'noline' => true,
@@ -41,9 +41,9 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 				);
 
 	} else if($_SESSION["we_mode"] == "normal"){	//	Link to class in normal mode
-		$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">'.'<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\','.$GLOBALS['we_doc']->TableID.',\'object\');">' . $GLOBALS["l_object"]["class"].'</a>'.'</div>' .
+		$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">'.'<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\','.$GLOBALS['we_doc']->TableID.',\'object\');">' . g_l('modules_object','[class]').'</a>'.'</div>' .
 		'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClass() . '</div>';
-		$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">'.$GLOBALS['l_object']['class_id'].'</div>' .
+		$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">'.g_l('modules_object','[class_id]').'</div>' .
 		'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClassId() . '</div>';
 
 
@@ -74,7 +74,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 
 
 	array_push($parts,array(
-						"headline"=>$GLOBALS["l_object"]["copyObject"],
+						"headline"=>g_l('modules_object','[copyObject]'),
 						"html"=>$GLOBALS['we_doc']->formCopyDocument(),
 						"space"=>140,
 						"icon"=>"copy.gif")
@@ -124,7 +124,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 
 		array_push($parts,array(
 						"headline"=> "",
-						"html"    => $GLOBALS['l_object']["no_workspace_defined"],
+						"html"    => g_l('modules_object','[no_workspace_defined]'),
 						"space"   => 0)
 				);
 	}
@@ -132,6 +132,3 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 }
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("weOjFileProp","100%",$parts,30);
-
-
-?>

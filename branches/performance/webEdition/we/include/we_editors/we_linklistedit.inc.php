@@ -25,7 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_linklist.inc.p
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 protect();
 $we_button = new we_button();
 
@@ -509,7 +508,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
 <option value="ext"'.(($type=="ext") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[external_link]").'</option>
 <option value="int"'.(($type=="int") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[internal_link]").'</option>
-<option value="mail"'.(($type=="mail") ? ' selected="selected"' : '').'>'.$GLOBALS["l_wysiwyg"]["emaillink"].'</option>
+<option value="mail"'.(($type=="mail") ? ' selected="selected"' : '').'>'.g_l('wysiwyg',"[emaillink]").'</option>
 ' . (defined("OBJECT_TABLE")  ? '
 <option value="obj"'.(($type=="obj") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[objectFile]").'</option>' : '') . '
 </select>';
@@ -869,7 +868,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
                             </tr>
 			                 </table>';
 
-				$_parts[] = array(	'headline'=>$GLOBALS["l_wysiwyg"]["relation"],
+				$_parts[] = array(	'headline'=>g_l('wysiwyg',"[relation]"),
 									'html'=>$_html,
 									'space'=>'150',
 									'noline'=>1);

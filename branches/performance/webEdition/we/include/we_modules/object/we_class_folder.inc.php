@@ -352,9 +352,9 @@ class we_class_folder extends we_folder{
 					$content[$f][1]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" />';
 				}
 				if($this->searchclass->f("OF_IsSearchable") ){
-					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18" title="'.$GLOBALS['l_object_classfoldersearch']["issearchable"].'" />';
+					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18" title="'.g_l('modules_objectClassfoldersearch','[issearchable]').'" />';
 				} else {
-					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" title="'.$GLOBALS['l_object_classfoldersearch']["isnotsearchable"].'" />';
+					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" title="'.g_l('modules_objectClassfoldersearch','[isnotsearchable]').'" />';
 				}
 				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="middlefont" title="'.$this->searchclass->f("OF_Path").'">'.$this->searchclass->f("OF_ID").'</a>';
 				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="middlefont" title="'.$this->searchclass->f("OF_Path").'">'.shortenPath($this->searchclass->f("OF_Text"),$we_obectPathLength).'</a>';
@@ -376,18 +376,18 @@ class we_class_folder extends we_folder{
 		}
 
 		$headline[0]["dat"] = "";
-		$headline[1]["dat"] = $GLOBALS['l_object_classfoldersearch']["zeige"];
+		$headline[1]["dat"] = g_l('modules_objectClassfoldersearch','[zeige]');
 		$headline[2]["dat"] = "";
-		$headline[3]["dat"] = '<a href="javascript:setOrder(\'OF_ID\');">'.$GLOBALS['l_object_classfoldersearch']["ID"]. '</a> ' . $this->getSortImage('OF_ID');
-		$headline[4]["dat"] = '<a href="javascript:setOrder(\'OF_Path\');">'.$GLOBALS['l_object_classfoldersearch']["Objekt"] . '</a> ' . $this->getSortImage('OF_Path');
-		$headline[5]["dat"] = $GLOBALS['l_object_classfoldersearch']["Arbeitsbereiche"];
-		$headline[6]["dat"] = $GLOBALS['l_object_classfoldersearch']["xtraArbeitsbereiche"];
-		$headline[7]["dat"] = '<a href="javascript:setOrder(\'OF_Published\');">'.$GLOBALS['l_object_classfoldersearch']["Veroeffentlicht"].'</a> ' . $this->getSortImage('OF_Published');
-		$headline[8]["dat"] = '<a href="javascript:setOrder(\'ModDate\');">'.$GLOBALS['l_object_classfoldersearch']["geaendert"].'</a> ' . $this->getSortImage('ModDate');
-		$headline[9]["dat"] = '<a href="javascript:setOrder(\'OF_Url\');">'.$GLOBALS['l_object_classfoldersearch']["url"]. '</a> ' . $this->getSortImage('OF_Url');
-		$headline[10]["dat"] = '<a href="javascript:setOrder(\'OF_TriggerID\');">'.$GLOBALS['l_object_classfoldersearch']["triggerid"]. '</a> ' . $this->getSortImage('OF_TriggerID');
-		$headline[11]["dat"] = $GLOBALS['l_object_classfoldersearch']["charset"];
-		$headline[12]["dat"] = $GLOBALS['l_object_classfoldersearch']["language"];
+		$headline[3]["dat"] = '<a href="javascript:setOrder(\'OF_ID\');">'.g_l('modules_objectClassfoldersearch','[ID]'). '</a> ' . $this->getSortImage('OF_ID');
+		$headline[4]["dat"] = '<a href="javascript:setOrder(\'OF_Path\');">'.g_l('modules_objectClassfoldersearch','[Objekt]') . '</a> ' . $this->getSortImage('OF_Path');
+		$headline[5]["dat"] = g_l('modules_objectClassfoldersearch','[Arbeitsbereiche]');
+		$headline[6]["dat"] = g_l('modules_objectClassfoldersearch','[xtraArbeitsbereiche]');
+		$headline[7]["dat"] = '<a href="javascript:setOrder(\'OF_Published\');">'.g_l('modules_objectClassfoldersearch','[Veroeffentlicht]').'</a> ' . $this->getSortImage('OF_Published');
+		$headline[8]["dat"] = '<a href="javascript:setOrder(\'ModDate\');">'.g_l('modules_objectClassfoldersearch','[geaendert]').'</a> ' . $this->getSortImage('ModDate');
+		$headline[9]["dat"] = '<a href="javascript:setOrder(\'OF_Url\');">'.g_l('modules_objectClassfoldersearch','[url]'). '</a> ' . $this->getSortImage('OF_Url');
+		$headline[10]["dat"] = '<a href="javascript:setOrder(\'OF_TriggerID\');">'.g_l('modules_objectClassfoldersearch','[triggerid]'). '</a> ' . $this->getSortImage('OF_TriggerID');
+		$headline[11]["dat"] = g_l('modules_objectClassfoldersearch','[charset]');
+		$headline[12]["dat"] = g_l('modules_objectClassfoldersearch','[language]');
 
 
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
@@ -556,9 +556,9 @@ class we_class_folder extends we_folder{
 					$content[$f][1]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" />';
 				}
 				if($this->searchclass->f("OF_IsSearchable") ){
-					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18" title="'.$GLOBALS['l_object_classfoldersearch']["issearchable"].'" />';
+					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_blau.gif" width="16" height="18" title="'.g_l('modules_objectClassfoldersearch','[issearchable]').'" />';
 				} else {
-					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" title="'.$GLOBALS['l_object_classfoldersearch']["isnotsearchable"].'" />';
+					$content[$f][2]["dat"] = '<img src="'.IMAGE_DIR.'we_boebbel_grau.gif" width="16" height="18" title="'.g_l('modules_objectClassfoldersearch','[isnotsearchable]').'" />';
 				}
 				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\','.$this->searchclass->f("OF_ID").',\'objectFile\');" style="text-decoration:none" class="middlefont" title="'.$this->searchclass->f("OF_Path").'">'.$this->searchclass->f("OF_ID").'</a>';
 
@@ -624,10 +624,10 @@ class we_class_folder extends we_folder{
 			//$out .= "Leider nichts gefunden!";
 		}
 		$headline[0]["dat"] = "";
-		$headline[1]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . $GLOBALS['l_object_classfoldersearch']["zeige"] . '</td><td></td></tr></table>';
+		$headline[1]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch','[zeige]') . '</td><td></td></tr></table>';
 		$headline[2]["dat"] = '';
-		$headline[3]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . $GLOBALS['l_object_classfoldersearch']["ID"] . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>';
-		$headline[4]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . $GLOBALS['l_object_classfoldersearch']["Objekt"] . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>';
+		$headline[3]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch','[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>';
+		$headline[4]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch','[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>';
 
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
 
@@ -807,14 +807,14 @@ class we_class_folder extends we_folder{
 		'.$this->hiddenTrans().'
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td class="defaultgray">'.$GLOBALS['l_object_classfoldersearch']["Verzeichnis"].'</td>
+			<td class="defaultgray">'.g_l('modules_objectClassfoldersearch','[Verzeichnis]').'</td>
 			<td colspan="3">'.$this->formDirChooser(388,0,FILE_TABLE,"WorkspacePath","WorkspaceID","opener.we_cmd(\\'reload_editpage\\');",false).'</td>
 		</tr>
 		<tr>
 			<td colspan="4">'.getPixel(18,12).'</td>
 		</tr>
 		<tr>
-			<td class="defaultgray">'.$GLOBALS['l_object_classfoldersearch']["Ansicht"].'</td>
+			<td class="defaultgray">'.g_l('modules_objectClassfoldersearch','[Ansicht]').'</td>
 			<td>'.htmlSelect("Anzahl",$values,1,$this->searchclass->anzahl,"",'onChange=\'this.form.elements["SearchStart"].value=0;we_cmd("reload_editpage");\'');
 
 		$out .= hidden("Order",$this->searchclass->Order);
@@ -822,7 +822,7 @@ class we_class_folder extends we_folder{
 
 		$out .=  '</td>
 			<td>&nbsp;</td>
-			<td>'.we_forms::checkboxWithHidden($this->GreenOnly==1 ? true : false, "we_".$this->Name."_GreenOnly", $GLOBALS['l_object_classfoldersearch']["sicht"],false,"defaultfont","toggleShowVisible(document.getElementById('_we_".$this->Name."_GreenOnly'));").'</td>
+			<td>'.we_forms::checkboxWithHidden($this->GreenOnly==1 ? true : false, "we_".$this->Name."_GreenOnly", g_l('modules_objectClassfoldersearch','[sicht]'),false,"defaultfont","toggleShowVisible(document.getElementById('_we_".$this->Name."_GreenOnly'));").'</td>
 		</tr>';
 
 		$out .= '
@@ -838,7 +838,7 @@ class we_class_folder extends we_folder{
 			<td class="defaultgray">';
 
 		if(isset($this->searchclass->searchname)){
-			$out .= $GLOBALS['l_object_classfoldersearch']["teilsuche"];
+			$out .= g_l('modules_objectClassfoldersearch','[teilsuche]');
 		}
 
 		$out .= '</td>
@@ -871,9 +871,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("DELETE_OBJECTFILE") ? $we_button->create_button("image:btn_function_trash", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichloeschen"]."'))document.we_form.elements['do'].value='delete';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("DELETE_OBJECTFILE") ? $we_button->create_button("image:btn_function_trash", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichloeschen]')."'))document.we_form.elements['do'].value='delete';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["loesch"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[loesch]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -887,9 +887,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_publish", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichveroeffentlichen"]."'))document.we_form.elements['do'].value='publish';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_publish", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichveroeffentlichen]')."'))document.we_form.elements['do'].value='publish';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["veroeffentlichen"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[veroeffentlichen]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -903,9 +903,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_unpublish", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichparken"]."'))document.we_form.elements['do'].value='unpublish';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_unpublish", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichparken]')."'))document.we_form.elements['do'].value='unpublish';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["parken"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[parken]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -919,9 +919,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_searchable", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichsearchable"]."'))document.we_form.elements['do'].value='searchable';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_searchable", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichsearchable]')."'))document.we_form.elements['do'].value='searchable';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["searchable"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[searchable]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -935,9 +935,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_unsearchable", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichunsearchable"]."'))document.we_form.elements['do'].value='unsearchable';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_unsearchable", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichunsearchable]')."'))document.we_form.elements['do'].value='unsearchable';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["unsearchable"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[unsearchable]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -951,9 +951,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichcopychar"]."'))document.we_form.elements['do'].value='copychar';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichcopychar]')."'))document.we_form.elements['do'].value='copychar';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["copychar"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[copychar]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -967,9 +967,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichcopyws"]."'))document.we_form.elements['do'].value='copyws';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichcopyws]')."'))document.we_form.elements['do'].value='copyws';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["copyws"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[copyws]') : "").'</td>
 				</tr>
 				</table>
 			</td>
@@ -983,9 +983,9 @@ class we_class_folder extends we_folder{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".$GLOBALS['l_object_classfoldersearch']["wirklichcopytid"]."'))document.we_form.elements['do'].value='copytid';we_cmd('reload_editpage');") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? $we_button->create_button("image:btn_function_copy", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichcopytid]')."'))document.we_form.elements['do'].value='copytid';we_cmd('reload_editpage');") .'</td>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">&nbsp;'.$GLOBALS['l_object_classfoldersearch']["copytid"] : "").'</td>
+					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[copytid]') : "").'</td>
 				</tr>
 				</table>
 			</td>

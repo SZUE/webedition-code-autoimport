@@ -18,81 +18,115 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$l_modules_object = array(
+		'attributes' => "Attributes", // TRANSLATE
+		'objectname' => "Имя объекта",
+		'objectpath' => "Путь объекта",
+		'objectid' => "Object ID", // TRANSLATE
+		'objecturl' => "Object URL", // TRANSLATE
+		'class' => "Класс",
+		'classname' => "Имя класса",
+		'class_id' => "ID of the class", // TRANSLATE
+		'default' => "Default Value",
+		'checked' => "checked", // TRANSLATE
+		'name' => "Автоматическое имя",
+		'seourl' => "SEO-URL", // TRANSLATE
+		'seourltrigger' => "Preset document for display", // TRANSLATE
+		'allFields' => "Все поля",
+		'search_term' => "Искать термин",
+		'search_field' => "Поле поиска",
+		'defaultdir' => "Default Directory", // TRANSLATE
+		'rootdir' => "Workspace", // TRANSLATE
 
+		'no_root_ws_select' => "Корневой каталог невозможно выбрать!",
+		'objectFile_field' => "Объект",
+		'multiObjectFile_field' => "Multi object", // TRANSLATE
+		'checkbox_field' => "Checkbox", // TRANSLATE
+		'meta_field' => "Выбрать",
+		'input_field' => "Ввод текста",
+		'country_field' => "Country", // TRANSLATE
+		'language_field' => "Language", // TRANSLATE
+		'locale_field' => "Locale", // TRANSLATE
+		'int_field' => "Integer", // TRANSLATE
+		'float_field' => "Float", // TRANSLATE
+		'date_field' => "Дата",
+		'textarea_field' => "Область для текста",
+		'img_field' => "Графика",
+		'binary_field' => "Бинарный документ",
+		'flashmovie_field' => "Flashmovie", // TRANSLATE
+		'quicktime_field' => "Quicktime", // TRANSLATE
+		'link_field' => "Ссылка",
+		'href_field' => "Гиперссылка",
+		'shopVat_field' => "Поле НДС",
+		'multiobject_recursion' => "In a Multiobject, an object can not be included in itself", // TRANSLATE
 
-$l_object["attributes"] = "Attributes"; // TRANSLATE
-$l_object["objectname"] = "Имя объекта";
-$l_object["objectpath"] = "Путь объекта";
-$l_object["objectid"] = "Object ID";// TRANSLATE
-$l_object["objecturl"] = "Object URL";// TRANSLATE
-$l_object["class"] = "Класс";
-$l_object["classname"] = "Имя класса";
-$l_object["class_id"] = "ID of the class"; // TRANSLATE
-$l_object["default"] = "Default Value";
-$l_object["checked"] = "checked"; // TRANSLATE
-$l_object["name"] = "Автоматическое имя";
-$l_object["seourl"] = "SEO-URL";// TRANSLATE
-$l_object["seourltrigger"] = "Preset document for display";// TRANSLATE
-$l_object["allFields"] = "Все поля";
-$l_object["search_term"] = "Искать термин";
-$l_object["search_field"] = "Поле поиска";
-$l_object["defaultdir"] = "Default Directory"; // TRANSLATE
-$l_object["rootdir"] = "Workspace"; // TRANSLATE
+		'we_new_doc_after_save' => "New Object after saving", // TRANSLATE
+		'objectFile_response_save_ok' => "Объект '%s' успешно сохранен!",
+		'objectFile_response_publish_ok' => "Объект '%s' успешно опубликован!",
+		'objectFile_response_unpublish_ok' => "Объект '%s' успешно снят с публикации!",
+		'fieldNameNotValid' => "Недействительное имя поля\\nДопустимыми являются большие и малые буквы латинского алфавита и цифры (a-z, A-Z, 0-9)",
+		'fieldNameNotTitleDesc' => "Заголовок неприемлем в качестве имени поля!",
+		'fieldNameEmpty' => "Имя поля обязательно к заполнению!",
+		'length' => "Длина",
+		'type' => "Тип",
+		'default' => "По умолчанию",
+		'max_objects' => "max. Objects", // TRANSLATE
+		'no_maximum' => "leave empty for no limit", // TRANSLATE
 
-$l_object["no_root_ws_select"] = "Корневой каталог невозможно выбрать!";
+		'DefaultOwners' => "Пользователь по умолчанию",
+		'copyObject' => "Копировать объект",
+		'copyClass' => "Copy class", // TRANSLATE
 
-$l_object["objectFile_field"] = "Объект";
-$l_object["multiObjectFile_field"] = "Multi object"; // TRANSLATE
-$l_object["checkbox_field"] = "Checkbox"; // TRANSLATE
-$l_object["meta_field"] = "Выбрать";
-$l_object["input_field"] = "Ввод текста";
-$l_object["country_field"] = "Country";// TRANSLATE
-$l_object["language_field"] = "Language";// TRANSLATE
-$l_object["locale_field"] = "Locale";// TRANSLATE
-$l_object["int_field"] = "Integer"; // TRANSLATE
-$l_object["float_field"] = "Float"; // TRANSLATE
-$l_object["date_field"] = "Дата";
-$l_object["textarea_field"] = "Область для текста";
-$l_object["img_field"] = "Графика";
-$l_object["binary_field"] = "Бинарный документ";
-$l_object["flashmovie_field"] = "Flashmovie";// TRANSLATE
-$l_object["quicktime_field"] = "Quicktime";// TRANSLATE
-$l_object["link_field"] = "Ссылка";
-$l_object["href_field"] = "Гиперссылка";
-$l_object["shopVat_field"] = "Поле НДС";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
+		'new_field' => "Новое поле",
+		'behaviour' => "Вывод на экран",
+		'behaviour_all' => "Если не выбрано ни одного рабочего пространства, на экран выводятся все объекты данного класса!",
+		'behaviour_no' => "Если не выбрано ни одного рабочего пространства, на экран не выводится ни одного объекта данного класса!",
+		'generated_template_for_objectFile' => "Не найдено подходящих шаблонов",
+		'no_workspace_defined' => "Для данного объекта не заданы рабочие пространства. Можно выбрать специальные рабочие пространства для объекта в его классе.",
+		'use_thumbnail_preview' => "Thumbnail preview in objects", // TRANSLATE
+		'not_published' => "The object is not published", // TRANSLATE
+		'incObject_sameFieldname_start' => "The included object has identical field names: ", // TRANSLATE
+		'incObject_sameFieldname_end' => ". These are not displayed in listviews or in we:object.", // TRANSLATE
 
-$l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
-$l_object["objectFile_response_save_ok"] = "Объект '%s' успешно сохранен!";
-$l_object["objectFile_response_publish_ok"] = "Объект '%s' успешно опубликован!";
-$l_object["objectFile_response_unpublish_ok"] = "Объект '%s' успешно снят с публикации!";
-$l_object["fieldNameNotValid"] = "Недействительное имя поля\\nДопустимыми являются большие и малые буквы латинского алфавита и цифры (a-z, A-Z, 0-9)";
-$l_object["fieldNameNotTitleDesc"] = "Заголовок неприемлем в качестве имени поля!";
-$l_object["fieldNameEmpty"] = "Имя поля обязательно к заполнению!";
-$l_object["length"] = "Длина";
-$l_object["type"] = "Тип";
-$l_object["default"] = "По умолчанию";
-$l_object["max_objects"] = "max. Objects"; // TRANSLATE
-$l_object["no_maximum"] = "leave empty for no limit"; // TRANSLATE
-
-$l_object["DefaultOwners"] = "Пользователь по умолчанию";
-
-$l_object["copyObject"] = "Копировать объект";
-$l_object["copyClass"] = "Copy class"; // TRANSLATE
-
-$l_object["new_field"] = "Новое поле";
-
-$l_object["behaviour"] = "Вывод на экран";
-$l_object["behaviour_all"] = "Если не выбрано ни одного рабочего пространства, на экран выводятся все объекты данного класса!";
-$l_object["behaviour_no"] = "Если не выбрано ни одного рабочего пространства, на экран не выводится ни одного объекта данного класса!";
-
-$l_object["generated_template_for_objectFile"] = "Не найдено подходящих шаблонов";
-
-$l_object["no_workspace_defined"] = "Для данного объекта не заданы рабочие пространства. Можно выбрать специальные рабочие пространства для объекта в его классе.";
-
-$l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
-?>
+		'value' => array(
+				'' => "----", // TRANSLATE
+				'%unique%' => "unique",
+				'%d%' => "День",
+				'%m%' => "Месяц (01-12)",
+				'%n%' => "Месяц (1-12)",
+				'%y%' => "Год (11)",
+				'%Y%' => "Год (2011)",
+				'%h%' => "Часы",
+				'%ID%' => "ID", // TRANSLATE
+				'Text' => "Текст",
+		),
+		'url' => array(
+				'' => "----", // TRANSLATE
+				'%urlunique%' => "unique",
+				'%d%' => "День",
+				'%m%' => "Месяц (01-12)",
+				'%n%' => "Месяц (1-12)",
+				'%y%' => "Год (11)",
+				'%Y%' => "Год (2011)",
+				'%h%' => "Часы",
+				'%ID%' => "ID", // TRANSLATE
+				'Text' => "Текст",
+				'%Parent%' => "Parent folder", // TRANSLATE
+				'%DirSep%' => "Directory separator", // TRANSLATE
+				'%urlfield1%' => "URL field 1", // TRANSLATE
+				'%urlfield2%' => "URL field 2", // TRANSLATE
+				'%urlfield3%' => "URL field 3", // TRANSLATE
+				'%locale%' => "Locale", // TRANSLATE
+				'%language%' => "Language", // TRANSLATE
+				'%country%' => "Country", // TRANSLATE
+//'%firstcatN%' => "Name first cat.",// TRANSLATE
+//'%firstcatT%' => "Title first cat.",// TRANSLATE
+//'%firstcatD%' => "Desc. first Kat.",// TRANSLATE
+//'%secondcatN%' => "Name second cat.",// TRANSLATE
+//'%secondcatT%' => "Title second cat.",// TRANSLATE
+//'%secondcatD%' => "Desc. second cat.",// TRANSLATE
+//'%thirdcatN%' => "Name third cat.",// TRANSLATE
+//'%thirdcatT%' => "Title third cat.",// TRANSLATE
+//'%thirdcatD%' => "Desc. third cat.",// TRANSLATE
+		),
+);

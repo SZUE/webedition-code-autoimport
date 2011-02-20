@@ -21,7 +21,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']. '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 require_once($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-require_once($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
 
 $variantFields = $we_doc->getVariantFields();
 

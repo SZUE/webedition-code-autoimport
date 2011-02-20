@@ -25,7 +25,6 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
@@ -35,20 +34,12 @@ htmlTop();
 
 print STYLESHEET;
 
-if (!isset($l_shop["lastOrd"])){
-	$l_shop["lastOrd"] = "";
-}
-if (!isset($l_shop["lastNo"])){
-	$l_shop["lastNo"] = "";
-}
-
-
 $yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
 $bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
 $cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
   $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
     if ($DB_WE->next_record()) {
-	  $headline =$l_shop["lastOrd"]." ".$l_shop["lastNo"]." ". $DB_WE->f("IntOrderID")."&nbsp;&raquo; ".$l_shop["bestellung"]." ".$DB_WE->f("orddate");
+	  $headline =g_l('modules_shop','[lastOrd]')." ".g_l('modules_shop','[lastNo]')." ". $DB_WE->f("IntOrderID")."&nbsp;&raquo; ".g_l('modules_shop','[bestellung]')." ".$DB_WE->f("orddate");
     } else {
 	  $headline = "";
     }

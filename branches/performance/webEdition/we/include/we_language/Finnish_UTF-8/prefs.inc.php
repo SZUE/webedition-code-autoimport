@@ -311,6 +311,7 @@ $l_prefs = array(
 		'navigation_directoryindex_hide' => "in the navigation output", // TRANSLATE
 		'wysiwyglinks_directoryindex_hide' => "in links from the WYSIWYG editor", // TRANSLATE
 		'objectlinks_directoryindex_hide' => "in links to objects", // TRANSLATE
+		'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
 		'navigation_directoryindex_description' => "After a change, a rebuild is required (i.e. navigation cache, objects ...)", // TRANSLATE
 		'navigation_directoryindex_names' => "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html'", // TRANSLATE
 		'general_objectseourls' => "Generate object SEO urls ", // TRANSLATE

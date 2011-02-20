@@ -21,7 +21,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_search.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
 
 class objectsearch extends we_search {
 	var $height;
@@ -54,7 +53,6 @@ class objectsearch extends we_search {
 	}
 
 	function getFields($name="obj_searchField",$size=1,$select="",$Path,$multi="") {
-		global $l_object;
 
 		$objID = f("SELECT ID FROM ".OBJECT_TABLE." WHERE Path='".mysql_real_escape_string($Path)."'","ID",$GLOBALS["DB_WE"]);
 		$opts = '';
@@ -62,7 +60,7 @@ class objectsearch extends we_search {
 		$all = "";
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && !eregi("^multiobject", $tableInfo[$i]["name"]) && !eregi("^object", $tableInfo[$i]["name"])) {
-				$regs=explode('_',$tableInfo[$i]["name"],2); 
+				$regs=explode('_',$tableInfo[$i]["name"],2);
 				if(count($regs)==2) {//if(ereg('^(.*)_(.*)$',$tableInfo[$i]["name"],$regs)) {
 					$opts .= '<option value="'.$tableInfo[$i]["name"].'" '
 					      .(($select==$tableInfo[$i]["name"])?"selected":"").'>'
@@ -71,24 +69,24 @@ class objectsearch extends we_search {
 				$all .= $tableInfo[$i]["name"].",";
 			}
 			else if($tableInfo[$i]["name"] == "OF_Text") {
-				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objectname"].'</option>'."\n";
+				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.g_l('modules_object','[objectname]').'</option>'."\n";
 				$all .= $tableInfo[$i]["name"].",";
 			}
 			else if($tableInfo[$i]["name"] == "OF_Path") {
-				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objectpath"].'</option>'."\n";
+				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.g_l('modules_object','[objectpath]').'</option>'."\n";
 				$all .= $tableInfo[$i]["name"].",";
 			}
 			else if($tableInfo[$i]["name"] == "OF_ID") {
-				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objectid"].'</option>'."\n";
+				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.g_l('modules_object','[objectid]').'</option>'."\n";
 				$all .= $tableInfo[$i]["name"].",";
 			}
 			else if($tableInfo[$i]["name"] == "OF_Url") {
-				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.$l_object["objecturl"].'</option>'."\n";
+				$opts .= '<option value="'.$tableInfo[$i]["name"].'" '.(($select==$tableInfo[$i]["name"])?"selected":"").'>'.g_l('modules_object','[objecturl]').'</option>'."\n";
 				$all .= $tableInfo[$i]["name"].",";
 			}
 		}
 		$all = ereg_replace('^(.*),$','\1',$all);
-		$opts = '<option value="'.$all.'">'.$l_object["allFields"].'</option>'."\n".$opts;
+		$opts = '<option value="'.$all.'">'.g_l('modules_object','[allFields]').'</option>'."\n".$opts;
 		$onchange = (substr($select,0,4)!="meta"&&substr($select,0,4)!="date"&&substr($select,0,8)!="checkbox"?'onChange="changeit(this.value);"':'onChange="changeitanyway(this.value);"');
 		return '<select name="'.$name.'" class="weSelect" size="'.$size.'" '.$multi.' '.$onchange.'>'.$opts.'</select>';
 	}
@@ -187,10 +185,10 @@ class objectsearch extends we_search {
 		}
 		return $out;
 	}
-	
-	
+
+
 	function removeFilter($position) {
-		
+
 		foreach ($this->objsearch as $idx => $value) {
 			if($idx == $position) {
 				unset($this->objsearch[$position]);
@@ -202,7 +200,7 @@ class objectsearch extends we_search {
 				unset($this->objsearch[$idx]);
 			}
 		}
-		
+
 		foreach ($this->objsearchField as $idx => $value) {
 			if($idx == $position) {
 				unset($this->objsearchField[$position]);
@@ -214,7 +212,7 @@ class objectsearch extends we_search {
 				unset($this->objsearchField[$idx]);
 			}
 		}
-		
+
 		foreach ($this->objlocation as $idx => $value) {
 			if($idx == $position) {
 				unset($this->objlocation[$position]);
@@ -226,9 +224,8 @@ class objectsearch extends we_search {
 				unset($this->objlocation[$idx]);
 			}
 		}
-		
+
 		$this->height--;
 	}
 }
 
-?>

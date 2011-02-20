@@ -39,7 +39,7 @@
 
 				$styles[]='.notpublished {color: green; font-size: '.($GLOBALS["BROWSER"]== "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; cursor: pointer;}';
 				$styles[]='.notpublished a { text-decoration:none;}';
-				
+
 				$this->setStyles($styles);
 
 
@@ -91,14 +91,13 @@
  		}
 
 		function getJSTreeFunctions(){
-			global $l_voting;
 			$out=weTree::getJSTreeFunctions();
 
 			$out.='
 				function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
-						if(confirm("'.$l_voting["save_changed_voting"].'")) {
+						if(confirm("'.g_l('modules_voting','[save_changed_voting]').'")) {
 							cmd = "save_voting";
 							top.content.we_cmd("save_voting");
 						} else {

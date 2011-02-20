@@ -3,7 +3,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/spellchecker.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']. '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
@@ -27,26 +26,26 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	$_width = 600;
 	$space = 5;
 
-	$l_param['l_dictAdmin'] = $l_spellchecker['dictAdmin'];
-	$l_param['l_userDictAdmin'] = $l_spellchecker['userDictAdmin'];
-	$l_param['l_select'] = $l_spellchecker['select'];
-	$l_param['l_select_words'] = $l_spellchecker['select_words'];
-	$l_param['l_select_phonetic'] = $l_spellchecker['select_phonetic'];
-	$l_param['l_build'] = $l_spellchecker['build'];
-	$l_param['l_close'] = $l_spellchecker['close'];
-	$l_param['l_encoding'] = $l_spellchecker['encoding'];
-	$l_param['l_dictname'] = $l_spellchecker['dictname'];
-	$l_param['l_enc_warning'] = $l_spellchecker['enc_warning'];
-	$l_param['l_filename_nok'] = $l_spellchecker['filename_nok'];
-	$l_param['l_filename_warning'] = $l_spellchecker['filename_warning'];
-	$l_param['l_phonetic_nok'] = $l_spellchecker['phonetic_nok'];
-	$l_param['l_phonetic_warning'] = $l_spellchecker['phonetic_warning'];
-	$l_param['l_enc_warning'] = $l_spellchecker['enc_warning'];
-	$l_param['l_name_warning'] = $l_spellchecker['name_warning'];
-	$l_param['l_building'] = $l_spellchecker['building'];
-	$l_param['l_packing'] = $l_spellchecker['packing'];
-	$l_param['l_uploading'] = $l_spellchecker['uploading'];
-	$l_param['l_finished'] = $l_spellchecker['end'];
+	$l_param['l_dictAdmin'] = g_l('modules_spellchecker','[dictAdmin]');
+	$l_param['l_userDictAdmin'] = g_l('modules_spellchecker','[userDictAdmin]');
+	$l_param['l_select'] = g_l('modules_spellchecker','[select]');
+	$l_param['l_select_words'] = g_l('modules_spellchecker','[select_words]');
+	$l_param['l_select_phonetic'] = g_l('modules_spellchecker','[select_phonetic]');
+	$l_param['l_build'] = g_l('modules_spellchecker','[build]');
+	$l_param['l_close'] = g_l('modules_spellchecker','[close]');
+	$l_param['l_encoding'] = g_l('modules_spellchecker','[encoding]');
+	$l_param['l_dictname'] = g_l('modules_spellchecker','[dictname]');
+	$l_param['l_enc_warning'] = g_l('modules_spellchecker','[enc_warning]');
+	$l_param['l_filename_nok'] = g_l('modules_spellchecker','[filename_nok]');
+	$l_param['l_filename_warning'] = g_l('modules_spellchecker','[filename_warning]');
+	$l_param['l_phonetic_nok'] = g_l('modules_spellchecker','[phonetic_nok]');
+	$l_param['l_phonetic_warning'] = g_l('modules_spellchecker','[phonetic_warning]');
+	$l_param['l_enc_warning'] = g_l('modules_spellchecker','[enc_warning]');
+	$l_param['l_name_warning'] = g_l('modules_spellchecker','[name_warning]');
+	$l_param['l_building'] = g_l('modules_spellchecker','[building]');
+	$l_param['l_packing'] = g_l('modules_spellchecker','[packing]');
+	$l_param['l_uploading'] = g_l('modules_spellchecker','[uploading]');
+	$l_param['l_finished'] = g_l('modules_spellchecker','[end]');
 
 	$l_param['upload_size'] = getUploadMaxFilesize();
 	$l_param['upload_url'] = getServerProtocol(true) . ((defined('HTTP_USERNAME') && defined('HTTP_PASSWORD')) ? HTTP_USERNAME . ':' . HTTP_PASSWORD . '@' : '') . SERVER_NAME . (defined('HTTP_PORT') ? ':' . HTTP_PORT : '' ) . WE_SPELLCHECKER_MODULE_PATH . 'weSpellcheckerCmd.php';
@@ -84,8 +83,8 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 	$we_tabs = new we_tabs();
 
-	$we_tabs->addTab(new we_tab("#",$l_spellchecker['dictAdmin'],'((activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('1');", array("id"=>"tab_1")));
-	$we_tabs->addTab(new we_tab("#",$l_spellchecker['userDictAdmin'],'((activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('2');", array("id"=>"tab_2")));
+	$we_tabs->addTab(new we_tab("#",g_l('modules_spellchecker','[dictAdmin]'),'((activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('1');", array("id"=>"tab_1")));
+	$we_tabs->addTab(new we_tab("#",g_l('modules_spellchecker','[userDictAdmin]'),'((activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('2');", array("id"=>"tab_2")));
 
 
 	$js=$we_tabs->getHeader() . we_htmlElement::jsElement('
@@ -100,11 +99,11 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	$table=new we_htmlTable(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),3,5);
 
 	$table->setRow(0,array('style'=>'background-color: silver;font-weight: bold;'),5);
-	$table->setCol(0,0,array('valign'=>'top','class'=>'small','style'=>'color: white;'), $l_spellchecker['default']);
-	$table->setCol(0,1,array('valign'=>'top','class'=>'small'), $l_spellchecker['dictionary']);
-	$table->setCol(0,2,array('valign'=>'top','class'=>'small'), $l_spellchecker['active']);
-	$table->setCol(0,3,array('valign'=>'top','class'=>'small'), $l_spellchecker['refresh']);
-	$table->setCol(0,4,array('valign'=>'top','class'=>'small'), $l_spellchecker['delete']);
+	$table->setCol(0,0,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[default]'));
+	$table->setCol(0,1,array('valign'=>'top','class'=>'small'), g_l('modules_spellchecker','[dictionary]'));
+	$table->setCol(0,2,array('valign'=>'top','class'=>'small'), g_l('modules_spellchecker','[active]'));
+	$table->setCol(0,3,array('valign'=>'top','class'=>'small'), g_l('modules_spellchecker','[refresh]'));
+	$table->setCol(0,4,array('valign'=>'top','class'=>'small'), g_l('modules_spellchecker','[delete]'));
 
 	$_dir = dir(WE_SPELLCHECKER_MODULE_DIR . 'dict');
 
@@ -287,7 +286,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 			if(document.spellchecker.uploadFinished) {
 				if(document.spellchecker.uploadFinished()) {
 					if(document.spellchecker.packingFinished()) {
-						<?php print we_message_reporting::getShowMessageCall( $l_spellchecker['dict_saved'], WE_MESSAGE_NOTICE); ?>
+						<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[dict_saved]'), WE_MESSAGE_NOTICE); ?>
 					}
 					hideDictSelector();
 					appletActiv=false;
@@ -302,7 +301,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	}
 
 	function deleteDict(name) {
-		if(confirm(sprintf("<?php print $l_spellchecker['ask_dict_del']; ?>",name))){
+		if(confirm(sprintf("<?php print g_l('modules_spellchecker','[ask_dict_del]'); ?>",name))){
 			hiddenCmd.dispatch("deleteDict",name);
 		}
 	}

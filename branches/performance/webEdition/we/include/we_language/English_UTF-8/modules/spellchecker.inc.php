@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,52 +18,45 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$l_spellchecker = array();
-
-$l_spellchecker['spellchecker'] = 'Spellchecker';
-$l_spellchecker['dictionaries'] = 'Dictionaries';
-$l_spellchecker['suggestion'] = 'Suggestion';
-$l_spellchecker['installed_dicts'] = 'installed dictionaries';
-$l_spellchecker['not_installed_dicts'] = 'not installed dictionaries';
-$l_spellchecker['finished'] = 'The spellchecking is finished.';
-$l_spellchecker['download'] = 'Download...';
-$l_spellchecker['checking'] = 'Check the spelling...';
-$l_spellchecker['dictionary'] = 'Dictionary';
-
-$l_spellchecker['dictAdmin'] = 'Dictionaries';
-$l_spellchecker['userDictAdmin'] = 'User dictionary';
-$l_spellchecker['select'] = 'select';
-$l_spellchecker['select_words'] = 'Select the word list file.';
-$l_spellchecker['select_phonetic'] = 'Select the phonetic file.';
-$l_spellchecker['build'] = 'build';
-$l_spellchecker['close'] = 'close';
-$l_spellchecker['encoding'] = 'Encoding';
-$l_spellchecker['dictname'] = 'Name';
-$l_spellchecker['enc_warning'] = 'Name';
-$l_spellchecker['filename_nok'] = 'The word list file cannot be found!';
-$l_spellchecker['filename_warning'] = 'The word list file is empty!';
-$l_spellchecker['phonetic_nok'] = 'The phonetic file cannot be found!';
-$l_spellchecker['phonetic_warning'] = 'The phonetic file is empty!';
-$l_spellchecker['enc_warning'] = 'Encoding is empty!';
-$l_spellchecker['name_warning'] = 'The Name is empty!';	
-$l_spellchecker['building'] = 'Building...';
-$l_spellchecker['packing'] = 'Packing...';
-$l_spellchecker['uploading'] = 'Uploading...';
-$l_spellchecker['end'] = 'Finished';
-
-$l_spellchecker['default'] = 'Default';
-$l_spellchecker['language'] = 'Language';
-$l_spellchecker['active'] = 'Active';
-$l_spellchecker['refresh'] = 'refresh';
-$l_spellchecker['delete'] = 'delete';
-
-$l_spellchecker['save_settings'] = 'Settings have been saved.';
-$l_spellchecker['ask_dict_del'] = 'Do you want to delete the selected dictionary?';
-$l_spellchecker['dict_removed'] = 'Dictionary has been deleted.';
-$l_spellchecker['name_invalid'] = 'The filename is invalid.';
-$l_spellchecker['dict_saved'] = 'The dictonary has been saved.';
-
-$l_spellchecker['no_java'] = 'It seems that the java plugin is not installed or activated. The spelling cannot be checked!';
-?>
+$l_modules_spellchecker = array(
+		'spellchecker' => 'Spellchecker',
+		'dictionaries' => 'Dictionaries',
+		'suggestion' => 'Suggestion',
+		'installed_dicts' => 'installed dictionaries',
+		'not_installed_dicts' => 'not installed dictionaries',
+		'finished' => 'The spellchecking is finished.',
+		'download' => 'Download...',
+		'checking' => 'Check the spelling...',
+		'dictionary' => 'Dictionary',
+		'dictAdmin' => 'Dictionaries',
+		'userDictAdmin' => 'User dictionary',
+		'select' => 'select',
+		'select_words' => 'Select the word list file.',
+		'select_phonetic' => 'Select the phonetic file.',
+		'build' => 'build',
+		'close' => 'close',
+		'encoding' => 'Encoding',
+		'dictname' => 'Name',
+		'enc_warning' => 'Name',
+		'filename_nok' => 'The word list file cannot be found!',
+		'filename_warning' => 'The word list file is empty!',
+		'phonetic_nok' => 'The phonetic file cannot be found!',
+		'phonetic_warning' => 'The phonetic file is empty!',
+		'enc_warning' => 'Encoding is empty!',
+		'name_warning' => 'The Name is empty!',
+		'building' => 'Building...',
+		'packing' => 'Packing...',
+		'uploading' => 'Uploading...',
+		'end' => 'Finished',
+		'default' => 'Default',
+		'language' => 'Language',
+		'active' => 'Active',
+		'refresh' => 'refresh',
+		'delete' => 'delete',
+		'save_settings' => 'Settings have been saved.',
+		'ask_dict_del' => 'Do you want to delete the selected dictionary?',
+		'dict_removed' => 'Dictionary has been deleted.',
+		'name_invalid' => 'The filename is invalid.',
+		'dict_saved' => 'The dictonary has been saved.',
+		'no_java' => 'It seems that the java plugin is not installed or activated. The spelling cannot be checked!',
+);

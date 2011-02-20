@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
@@ -28,9 +28,7 @@
 			        break;
 				case "openVotingDirselector":
 					//$INCLUDE = "we_modules/voting/we_votingDirSelectorFrameset.php";
-					break;		
-	        	break;                                                                                
+					break;
+	        	break;
                 }
         
- 
-?>

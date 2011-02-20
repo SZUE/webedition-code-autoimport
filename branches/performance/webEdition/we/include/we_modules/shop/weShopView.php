@@ -22,7 +22,6 @@
 
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
 include_once(WE_SHOP_MODULE_DIR."weShop.php");
 
 class weShopView {
@@ -85,7 +84,7 @@ class weShopView {
 					}
 				}
 			}
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -173,7 +172,7 @@ class weShopView {
 					}
 				}
 			}
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -212,7 +211,7 @@ function getJSTreeHeader(){
 					}
 				}
 			}
-			
+
 			function we_cmd(){
 				var args = "";
 				var url = "'.$this->frameset.'?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}

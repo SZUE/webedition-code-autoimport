@@ -22,7 +22,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModuleFrames.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"]. "/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tools.inc.php");
 
 class weToolFrames extends weModuleFrames {
 
@@ -215,8 +214,6 @@ class weToolFrames extends weModuleFrames {
 	 * @return string
 	 */
 	function getHTMLEditorHeader() {
-		global $l_tools;
-
 		require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_tabs.class.inc.php');
 		if(isset($_REQUEST['home'])){
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array('bgcolor'=>'#F0EFF0','background'=>'/webEdition/images/backgrounds/bgGrayLineTop.gif'),''));
@@ -226,7 +223,7 @@ class weToolFrames extends weModuleFrames {
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab('#',$l_tools['properties'],'(('.$this->topFrame.'.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('1');",array("id"=>"tab_1")));
+		$we_tabs->addTab(new we_tab('#',g_l('tools','[properties]'),'(('.$this->topFrame.'.activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('1');",array("id"=>"tab_1")));
 
 		$we_tabs->onResize();
 		$tabsHead = $we_tabs->getHeader();
@@ -275,14 +272,14 @@ class weToolFrames extends weModuleFrames {
 		$table->setCol(1,0,array("valign"=>"top","class"=>"small"),
 							getPixel(15,2).
 							we_htmlElement::htmlB(
-								($this->Model->IsFolder ? $l_tools['group'] : $l_tools['entry']) . ':&nbsp;'. str_replace('&amp;','&',$this->Model->Text) . '<div id="mark" style="display: none;">*</div>' .
+								($this->Model->IsFolder ? g_l('tools','[group]') : g_l('tools','[entry]')) . ':&nbsp;'. str_replace('&amp;','&',$this->Model->Text) . '<div id="mark" style="display: none;">*</div>' .
 								we_htmlElement::htmlImg(array("align"=>"absmiddle","height"=>"19","width"=>"1600","src"=>IMAGE_DIR."pixel.gif"))
 							)
 		);
 
 		$extraJS = 'document.getElementById("tab_"+'.$this->topFrame.'.activ_tab).className="tabActive";';
 		$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"),
-			'<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(($this->Model->IsFolder ? $l_tools['group'] : $l_tools['entry']) . ':&nbsp;'. str_replace('&amp;','&',$this->Model->Text) . '<div id="mark" style="display: none;">*</div>').'</div>' . getPixel(100,3) .
+			'<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(($this->Model->IsFolder ? g_l('tools','[group]') : g_l('tools','[entry]')) . ':&nbsp;'. str_replace('&amp;','&',$this->Model->Text) . '<div id="mark" style="display: none;">*</div>').'</div>' . getPixel(100,3) .
 			$we_tabs->getHTML() .
 			'</div>' . we_htmlElement::jsElement($extraJS)
 		);
@@ -399,16 +396,14 @@ class weToolFrames extends weModuleFrames {
 
 
 	function getHTMLGeneral(){
-		global $l_tools;
-
 		$we_button = new we_button();
 		$parts = array();
 
 		array_push($parts,array(
-				'headline'=> $l_tools['general'],
+				'headline'=> g_l('tools','[general]'),
 				'html'=>	we_htmlElement::htmlHidden(array('name'=>'newone','value'=>($this->Model->ID==0 ? 1 : 0))) .
-							htmlFormElementTable(htmlTextInput('Text','',$this->Model->Text,'','style="width: '.$this->_width_size.'" onChange="'.$this->topFrame.'.mark();"'), $l_tools['name']) .
-							$this->getHTMLChooser($l_tools['group'],$this->Table,0,'ParentID',$this->Model->ParentID,'ParentPath','opener.'.$this->topFrame.'.mark()',''),
+							htmlFormElementTable(htmlTextInput('Text','',$this->Model->Text,'','style="width: '.$this->_width_size.'" onChange="'.$this->topFrame.'.mark();"'), g_l('tools','[name]')) .
+							$this->getHTMLChooser(g_l('tools','[group]'),$this->Table,0,'ParentID',$this->Model->ParentID,'ParentPath','opener.'.$this->topFrame.'.mark()',''),
 				'space'=>$this->_space_size,
 				'noline'=>1
 				)
@@ -526,8 +521,6 @@ class weToolFrames extends weModuleFrames {
 	}
 
 	function getHTMLExitQuestion() {
-		global $l_tools;
-
 		if(isset($_REQUEST['delayCmd']) && isset($_REQUEST['delayParam'])) {
 
 			$_frame = 'opener.' . $this->topFrame;
@@ -545,7 +538,7 @@ class weToolFrames extends weModuleFrames {
 			</head>
 
 			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">
-					' . htmlYesNoCancelDialog($l_tools['exit_doc_question'],IMAGE_DIR."alert.gif","ja","nein","abbrechen",$_yes,$_no,$_cancel) . '
+					' . htmlYesNoCancelDialog(g_l('tools','[exit_doc_question]'),IMAGE_DIR."alert.gif","ja","nein","abbrechen",$_yes,$_no,$_cancel) . '
 			</body>
 
 			</html>
@@ -574,8 +567,6 @@ class weToolFrames extends weModuleFrames {
 
 
 	function getHTMLChooser($title,$table=FILE_TABLE,$rootDirID=0,$IDName='ID',$IDValue='0',$PathName='Path',$cmd='',$filter='text/webedition',$disabled=false,$showtrash=false){
-		global $l_tools;
-
 		$we_button = new we_button();
 		$_path = id_to_path($this->Model->$IDName,$table);
 

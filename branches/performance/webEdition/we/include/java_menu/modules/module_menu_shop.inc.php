@@ -87,13 +87,13 @@ $we_menu_shop["250000"]["cmd"] = "edit_shop_vats";
 $we_menu_shop["250000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
 $we_menu_shop["250000"]["enabled"] = "1";
 
-$we_menu_shop["260000"]["text"] = $l_shop['shipping']['shipping_package'] . '...';
+$we_menu_shop["260000"]["text"] = g_l('modules_shop','[shipping][shipping_package]') . '...';
 $we_menu_shop["260000"]["parent"] = "200000";
 $we_menu_shop["260000"]["cmd"] = "edit_shop_shipping";
 $we_menu_shop["260000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
 $we_menu_shop["260000"]["enabled"] = "1";
 
-$we_menu_shop["261000"]["text"] = $l_shop['shipping']['payment_provider'] . '...';
+$we_menu_shop["261000"]["text"] = g_l('modules_shop','[shipping][payment_provider]') . '...';
 $we_menu_shop["261000"]["parent"] = "200000";
 $we_menu_shop["261000"]["cmd"] = "payment_val";
 $we_menu_shop["261000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";
@@ -101,7 +101,7 @@ $we_menu_shop["261000"]["enabled"] = "1";
 
 $we_menu_shop["261001"]["parent"] = "200000"; // separator
 
-$we_menu_shop["262000"]["text"] = $l_shop['shipping']['revenue_view'];
+$we_menu_shop["262000"]["text"] = g_l('modules_shop','[shipping][revenue_view]');
 $we_menu_shop["262000"]["parent"] = "200000";
 $we_menu_shop["262000"]["cmd"] = "revenue_view";
 $we_menu_shop["262000"]["perm"] = "EDIT_SHOP_PREFS || ADMINISTRATOR";

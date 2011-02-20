@@ -18,16 +18,14 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: schedule.inc.php
  * Provides language strings.
  * Language: English
  */
-
-$l_schedule["headline"] = "Automatic<br>publishing"; // TRANSLATE
-$l_schedule["from"] = "De";
-$l_schedule["to"] = "À";
-$l_schedule["toBeforeNow"] = "Le Date-De indiqué est situé dans le passé!\\nLe document n'a pas été enregistré!\\nS'il vous plaît désactiver la function-De ou changer la Date-De!";
-?>
+$l_modules_schedule = array(
+		'headline' => "Automatic<br>publishing", // TRANSLATE
+		'from' => "De",
+		'to' => "À",
+		'toBeforeNow' => "Le Date-De indiqué est situé dans le passé!\\nLe document n'a pas été enregistré!\\nS'il vous plaît désactiver la function-De ou changer la Date-De!",
+);

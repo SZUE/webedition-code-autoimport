@@ -18,9 +18,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/wysiwyg.inc.php");
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_html_tools.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
@@ -64,19 +63,19 @@ include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_editors/we_
 
 if (eregi('^.+_te?xt\[.+\]$', $_REQUEST["we_cmd"][1])) {
 	$fieldName = ereg_replace('^.+_te?xt\[(.+)\]$', '\1', $_REQUEST["we_cmd"][1]);
-} else 
+} else
 	if (eregi('^.+_input\[.+\]$', $_REQUEST["we_cmd"][1])) {
 		$fieldName = ereg_replace('^.+_input\[(.+)\]$', '\1', $_REQUEST["we_cmd"][1]);
 	}
 
 htmlTop(
-		sprintf($GLOBALS["l_wysiwyg"]["window_title"], $fieldName), 
+		sprintf(g_l('wysiwyg',"[window_title]"), $fieldName),
 		($_REQUEST["we_cmd"][15] ? $_REQUEST["we_cmd"][15] : "ISO-8859-1"));
 
 if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]) {
 	if (eregi('^(.+_te?xt)\[.+\]$', $_REQUEST["we_cmd"][1])) {
 		$reqName = ereg_replace('^(.+_te?xt)\[.+\]$', '\1', $_REQUEST["we_cmd"][1]);
-	} else 
+	} else
 		if (eregi('^(.+_input)\[.+\]$', $_REQUEST["we_cmd"][1])) {
 			$reqName = ereg_replace('^(.+_input)\[.+\]$', '\1', $_REQUEST["we_cmd"][1]);
 		}
@@ -85,7 +84,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	$newHTML = $we_doc->getField(array(
 		"name" => $fieldName
 	));
-	
+
 	?>
 <script language="JavaScript" type="text/javascript">
 	if(top.opener && top.opener.top.weEditorFrameController.getVisibleEditorFrame()){
@@ -95,10 +94,10 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 			top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_<?php
 	print $_REQUEST["we_cmd"][1];
 	?>").innerHTML = "<?php
-	print 
+	print
 			preg_replace(
-					'|script|i', 
-					'scr"+"ipt', 
+					'|script|i',
+					'scr"+"ipt',
 					str_replace("\"", "\\\"", str_replace("\r", "\\r", str_replace("\n", "\\n", $newHTML))));
 	?>";
 		}
@@ -115,7 +114,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 } else {
 	$cancelBut = $we_button->create_button("cancel", "javascript:top.close()");
 	$okBut = $we_button->create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
-	
+
 	print STYLESHEET;
 	?>
 <script src="<?php
@@ -133,11 +132,11 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	?>" name="we_form"
 	method="post"><input type="hidden" name="we_okpressed" value="1" />
 <?php
-	
+
 	foreach ($_REQUEST["we_cmd"] as $i => $v) {
 		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST["we_cmd"][$i] . '" />' . "\n";
 	}
-	
+
 	/*
 1 = name
 2 = width
@@ -158,29 +157,29 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 17 = Language
 
 */
-	
+
 	$e = new we_wysiwyg(
-			$_REQUEST["we_cmd"][1], 
-			$_REQUEST["we_cmd"][2], 
-			$_REQUEST["we_cmd"][3], 
-			$we_doc->getElement($fieldName), 
-			$_REQUEST["we_cmd"][5], 
-			$_REQUEST["we_cmd"][13], 
-			"", 
-			$_REQUEST["we_cmd"][6], 
-			$_REQUEST["we_cmd"][7], 
-			$_REQUEST["we_cmd"][8], 
-			$_REQUEST["we_cmd"][11], 
-			$_REQUEST["we_cmd"][12], 
-			true, 
-			$_REQUEST["we_cmd"][14], 
-			$_REQUEST["we_cmd"][15], 
-			$_REQUEST["we_cmd"][16], 
+			$_REQUEST["we_cmd"][1],
+			$_REQUEST["we_cmd"][2],
+			$_REQUEST["we_cmd"][3],
+			$we_doc->getElement($fieldName),
+			$_REQUEST["we_cmd"][5],
+			$_REQUEST["we_cmd"][13],
+			"",
+			$_REQUEST["we_cmd"][6],
+			$_REQUEST["we_cmd"][7],
+			$_REQUEST["we_cmd"][8],
+			$_REQUEST["we_cmd"][11],
+			$_REQUEST["we_cmd"][12],
+			true,
+			$_REQUEST["we_cmd"][14],
+			$_REQUEST["we_cmd"][15],
+			$_REQUEST["we_cmd"][16],
 			$_REQUEST["we_cmd"][17]);
-	
+
 	print we_wysiwyg::getHeaderHTML() . $e->getHTML();
 	print '<div style="height:8px"></div>' . $we_button->position_yes_no_cancel($okBut, $cancelBut);
-	
+
 	?>
 </form>
 <?php

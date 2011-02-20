@@ -21,19 +21,20 @@
 
 
 /**
- * Language file: object_value.inc.php
+ * Language file: shop_month.inc.php
  * Provides language strings.
  * Language: English
  */
 
-$l_object_value[""] = "----"; // TRANSLATE
-$l_object_value["%unique%"] = "Único";
-$l_object_value["%d%"] = "Rótulo";
-$l_object_value["%m%"] = "Mes (01-12)";
-$l_object_value["%n%"] = "Mes (1-12)";
-$l_object_value["%y%"] = "Año (11)";
-$l_object_value["%Y%"] = "Año (2011)";
-$l_object_value["%h%"] = "Hora";
-$l_object_value["%ID%"] = "ID"; // TRANSLATE
-$l_object_value["Text"] = "Texto";
-?>
+$l_modules_shopMonth[1] = "January";
+$l_modules_shopMonth[2] = "February";
+$l_modules_shopMonth[3] = "March";
+$l_modules_shopMonth[4] = "April";
+$l_modules_shopMonth[5] = "May";
+$l_modules_shopMonth[6] = "June";
+$l_modules_shopMonth[7] = "July";
+$l_modules_shopMonth[8] = "August";
+$l_modules_shopMonth[9] = "September";
+$l_modules_shopMonth[10] = "October";
+$l_modules_shopMonth[11] = "November";
+$l_modules_shopMonth[12] = "December";

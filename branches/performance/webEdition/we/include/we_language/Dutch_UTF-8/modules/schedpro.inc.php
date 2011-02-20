@@ -23,7 +23,7 @@
  * Provides language strings.
  * Language: English
  */
-$GLOBALS["l_schedpro"] = array(
+$l_modules_schedpro = array(
 		'task' => array(
 				'headline' => "Task",
 				SCHEDULE_FROM => "Publiceer",

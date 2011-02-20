@@ -18,81 +18,115 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$l_modules_object = array(
+		'attributes' => "Attributs",
+		'objectname' => "Nom de l'Object",
+		'objectpath' => "Chemin de l'Object",
+		'objectid' => "Object ID", // TRANSLATE
+		'objecturl' => "Object URL", // TRANSLATE
+		'class' => "Classe",
+		'classname' => "Nom de la Classe",
+		'class_id' => "ID of the class", // TRANSLATE
+		'default' => "Default Value",
+		'checked' => "checked", // TRANSLATE
+		'name' => "Nom automatique",
+		'seourl' => "SEO-URL", // TRANSLATE
+		'seourltrigger' => "Preset document for display", // TRANSLATE
+		'allFields' => "tous les champs",
+		'search_term' => "Mot de Recherchee",
+		'search_field' => "Champ de Recherche",
+		'defaultdir' => "Default Directory", // TRANSLATE
+		'rootdir' => "Workspace", // TRANSLATE
 
+		'no_root_ws_select' => "Le rï¿½pertoire source ne peut pas ï¿½tre choisi comm ï¿½space de travail!",
+		'objectFile_field' => "Object", // TRANSLATE
+		'multiObjectFile_field' => "Multi object", // TRANSLATE
+		'checkbox_field' => "Checkbox", // TRANSLATE
+		'meta_field' => "Select", // TRANSLATE
+		'input_field' => "Champs de saisie",
+		'country_field' => "Country", // TRANSLATE
+		'language_field' => "Language", // TRANSLATE
+		'locale_field' => "Locale", // TRANSLATE
+		'int_field' => "Integer", // TRANSLATE
+		'float_field' => "Float", // TRANSLATE
+		'date_field' => "Date", // TRANSLATE
+		'textarea_field' => "Passage de texte",
+		'img_field' => "Grafphique",
+		'binary_field' => "Document binaire",
+		'flashmovie_field' => "Flashmovie", // TRANSLATE
+		'quicktime_field' => "Quicktime", // TRANSLATE
+		'link_field' => "Lien",
+		'href_field' => "Href", // TRANSLATE
+		'shopVat_field' => "Champ de TVA",
+		'multiobject_recursion' => "In a Multiobject, an object can not be included in itself", // TRANSLATE
 
-$l_object["attributes"] = "Attributs";
-$l_object["objectname"] = "Nom de l'Object";
-$l_object["objectpath"] = "Chemin de l'Object";
-$l_object["objectid"] = "Object ID";// TRANSLATE
-$l_object["objecturl"] = "Object URL";// TRANSLATE
-$l_object["class"] = "Classe";
-$l_object["classname"] = "Nom de la Classe";
-$l_object["class_id"] = "ID of the class"; // TRANSLATE
-$l_object["default"] = "Default Value";
-$l_object["checked"] = "checked"; // TRANSLATE
-$l_object["name"] = "Nom automatique";
-$l_object["seourl"] = "SEO-URL";// TRANSLATE
-$l_object["seourltrigger"] = "Preset document for display";// TRANSLATE
-$l_object["allFields"] = "tous les champs";
-$l_object["search_term"] = "Mot de Recherchee";
-$l_object["search_field"] = "Champ de Recherche";
-$l_object["defaultdir"] = "Default Directory"; // TRANSLATE
-$l_object["rootdir"] = "Workspace"; // TRANSLATE
+		'we_new_doc_after_save' => "New Object after saving", // TRANSLATE
+		'objectFile_response_save_ok' => "L'object '%s' a ï¿½tï¿½ enregistrï¿½ avec succï¿½s!",
+		'objectFile_response_publish_ok' => "L'object '%s' a ï¿½tï¿½ publiï¿½ avec succï¿½s!",
+		'objectFile_response_unpublish_ok' => "L'object '%s' a ï¿½tï¿½ depubliï¿½ avec succï¿½s!",
+		'fieldNameNotValid' => "Invalid field name\\nValid characters are alpha-numeric, capital and small (a-z, A-Z, 0-9) and underscore.", // TRANSLATE
+		'fieldNameNotTitleDesc' => "Les nom de champs \"Titre\" et \"Dï¿½scpription ne sont pas licites\"!",
+		'fieldNameEmpty' => "Le nom de champs ne doit pas ï¿½tre vide!",
+		'length' => "Longeur",
+		'type' => "Type", // TRANSLATE
+		'default' => "Prï¿½reglage",
+		'max_objects' => "max. Objects", // TRANSLATE
+		'no_maximum' => "leave empty for no limit", // TRANSLATE
 
-$l_object["no_root_ws_select"] = "Le rï¿½pertoire source ne peut pas ï¿½tre choisi comm ï¿½space de travail!";
+		'DefaultOwners' => "Utilisateur standard",
+		'copyObject' => "Copier l'object",
+		'copyClass' => "Copy class", // TRANSLATE
 
-$l_object["objectFile_field"] = "Object"; // TRANSLATE
-$l_object["multiObjectFile_field"] = "Multi object"; // TRANSLATE
-$l_object["checkbox_field"] = "Checkbox"; // TRANSLATE
-$l_object["meta_field"] = "Select"; // TRANSLATE
-$l_object["input_field"] = "Champs de saisie";
-$l_object["country_field"] = "Country";// TRANSLATE
-$l_object["language_field"] = "Language";// TRANSLATE
-$l_object["locale_field"] = "Locale";// TRANSLATE
-$l_object["int_field"] = "Integer"; // TRANSLATE
-$l_object["float_field"] = "Float"; // TRANSLATE
-$l_object["date_field"] = "Date"; // TRANSLATE
-$l_object["textarea_field"] = "Passage de texte";
-$l_object["img_field"] = "Grafphique";
-$l_object["binary_field"] = "Document binaire";
-$l_object["flashmovie_field"] = "Flashmovie";// TRANSLATE
-$l_object["quicktime_field"] = "Quicktime";// TRANSLATE
-$l_object["link_field"] = "Lien";
-$l_object["href_field"] = "Href"; // TRANSLATE
-$l_object["shopVat_field"] = "Champ de TVA";
-$l_object["multiobject_recursion"] = "In a Multiobject, an object can not be included in itself"; // TRANSLATE
+		'new_field' => "Nouveau Champ",
+		'behaviour' => "Montrer",
+		'behaviour_all' => "Un object est tousjours visible, si aucun ï¿½space de travail n'a ï¿½tï¿½ choisi!",
+		'behaviour_no' => "Un object n'est pas visible, si aucun ï¿½space de travail n'a ï¿½tï¿½ choisi!",
+		'generated_template_for_objectFile' => "Aucun modï¿½le correspondant.",
+		'no_workspace_defined' => "Aucun ï¿½space de travail n'a ï¿½tï¿½ encore assignï¿½ ï¿½ cet object. Si vous voulez assigner ï¿½ un object des ï¿½paces de travail specieaux, vous devez les choisir dans la classe de l'object.",
+		'use_thumbnail_preview' => "Thumbnail preview in objects", // TRANSLATE
+		'not_published' => "The object is not published", // TRANSLATE
+		'incObject_sameFieldname_start' => "The included object has identical field names: ", // TRANSLATE
+		'incObject_sameFieldname_end' => ". These are not displayed in listviews or in we:object.", // TRANSLATE
 
-$l_object["we_new_doc_after_save"] = "New Object after saving"; // TRANSLATE
-$l_object["objectFile_response_save_ok"] = "L'object '%s' a ï¿½tï¿½ enregistrï¿½ avec succï¿½s!";
-$l_object["objectFile_response_publish_ok"] = "L'object '%s' a ï¿½tï¿½ publiï¿½ avec succï¿½s!";
-$l_object["objectFile_response_unpublish_ok"] = "L'object '%s' a ï¿½tï¿½ depubliï¿½ avec succï¿½s!";
-$l_object["fieldNameNotValid"] = "Invalid field name\\nValid characters are alpha-numeric, capital and small (a-z, A-Z, 0-9) and underscore."; // TRANSLATE
-$l_object["fieldNameNotTitleDesc"] = "Les nom de champs \"Titre\" et \"Dï¿½scpription ne sont pas licites\"!";
-$l_object["fieldNameEmpty"] = "Le nom de champs ne doit pas ï¿½tre vide!";
-$l_object["length"] = "Longeur";
-$l_object["type"] = "Type"; // TRANSLATE
-$l_object["default"] = "Prï¿½reglage";
-$l_object["max_objects"] = "max. Objects"; // TRANSLATE
-$l_object["no_maximum"] = "leave empty for no limit"; // TRANSLATE
-
-$l_object["DefaultOwners"] = "Utilisateur standard";
-
-$l_object["copyObject"] = "Copier l'object";
-$l_object["copyClass"] = "Copy class"; // TRANSLATE
-
-$l_object["new_field"] = "Nouveau Champ";
-
-$l_object["behaviour"] = "Montrer";
-$l_object["behaviour_all"] = "Un object est tousjours visible, si aucun ï¿½space de travail n'a ï¿½tï¿½ choisi!";
-$l_object["behaviour_no"] = "Un object n'est pas visible, si aucun ï¿½space de travail n'a ï¿½tï¿½ choisi!";
-
-$l_object["generated_template_for_objectFile"] = "Aucun modï¿½le correspondant.";
-
-$l_object["no_workspace_defined"] = "Aucun ï¿½space de travail n'a ï¿½tï¿½ encore assignï¿½ ï¿½ cet object. Si vous voulez assigner ï¿½ un object des ï¿½paces de travail specieaux, vous devez les choisir dans la classe de l'object.";
-
-$l_object["use_thumbnail_preview"] = "Thumbnail preview in objects"; // TRANSLATE
-$l_object["not_published"] = "The object is not published"; // TRANSLATE
-$l_object["incObject_sameFieldname_start"] = "The included object has identical field names: ";// TRANSLATE
-$l_object["incObject_sameFieldname_end"] = ". These are not displayed in listviews or in we:object.";// TRANSLATE
-
-?>
+		'value' => array(
+				'' => "----", // TRANSLATE
+				'%unique%' => "unique",
+				'%d%' => "jour",
+				'%m%' => "mois (01-12)",
+				'%n%' => "mois (1-12)",
+				'%y%' => "année (11)",
+				'%Y%' => "année (2011)",
+				'%h%' => "heures",
+				'%ID%' => "ID", // TRANSLATE
+				'Text' => "Texte",
+		),
+		'url' => array(
+				'' => "----", // TRANSLATE
+				'%unique%' => "unique",
+				'%d%' => "jour",
+				'%m%' => "mois (01-12)",
+				'%n%' => "mois (1-12)",
+				'%y%' => "année (11)",
+				'%Y%' => "année (2011)",
+				'%h%' => "heures",
+				'%ID%' => "ID", // TRANSLATE
+				'Text' => "Texte",
+				'%Parent%' => "Parent folder", // TRANSLATE
+				'%DirSep%' => "Directory separator", // TRANSLATE
+				'%urlfield1%' => "URL field 1", // TRANSLATE
+				'%urlfield2%' => "URL field 2", // TRANSLATE
+				'%urlfield3%' => "URL field 3", // TRANSLATE
+				'%locale%' => "Locale", // TRANSLATE
+				'%language%' => "Language", // TRANSLATE
+				'%country%' => "Country", // TRANSLATE
+//'%firstcatN%' => "Name first cat.",// TRANSLATE
+//'%firstcatT%' => "Title first cat.",// TRANSLATE
+//'%firstcatD%' => "Desc. first Kat.",// TRANSLATE
+//'%secondcatN%' => "Name second cat.",// TRANSLATE
+//'%secondcatT%' => "Title second cat.",// TRANSLATE
+//'%secondcatD%' => "Desc. second cat.",// TRANSLATE
+//'%thirdcatN%' => "Name third cat.",// TRANSLATE
+//'%thirdcatT%' => "Title third cat.",// TRANSLATE
+//'%thirdcatD%' => "Desc. third cat.",// TRANSLATE
+		),
+);

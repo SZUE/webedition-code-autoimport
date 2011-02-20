@@ -75,9 +75,9 @@ function we_error_handler($in_webEdition = true) {
 		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', '/webEdition/we/we_classes/base/we_error_handler.inc.php', 69);
 		exit();
 	}
-	
+
 	if (defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)) {
-		$_error_level = 0 + 
+		$_error_level = 0 +
 			($_error_deprecated && defined('E_DEPRECATED') ? E_DEPRECATED|E_USER_DEPRECATED : 0) +
 			($_error_notice ? E_NOTICE|E_USER_NOTICE : 0) +
 			($_error_warning ? E_WARNING|E_CORE_WARNING|E_COMPILE_WARNING|E_USER_WARNING : 0) +
@@ -242,8 +242,9 @@ function log_error_message($type, $message, $file, $_line) {
 			or die('Cannot log error! Could not connect: ' . mysql_error());
 
 		mysql_select_db(DB_DATABASE) or die('Cannot log error! Could not select database.');
-
-		$_query = 'INSERT INTO ' . ERROR_LOG_TABLE . ' SET Type=\''.mysql_real_escape_string($_type).'\',
+		//make sure we have a table name!
+		$tbl=defined(ERROR_LOG_TABLE)?ERROR_LOG_TABLE:TBL_PREFIX . 'tblErrorLog';
+		$_query = 'INSERT INTO ' . $tbl . ' SET Type=\''.mysql_real_escape_string($_type).'\',
 			`Function`=\''.mysql_real_escape_string($_caller).'\',
 			File=\'' . mysql_real_escape_string($_file) . '\',
 			Line=\'' . abs($_line) . '\',
@@ -403,7 +404,7 @@ function error_handler($type, $message, $file, $line, $context) {
 					}
 				}
 				break;
-		default:		
+		default:
 	}
 	//Error handled
 	return true;

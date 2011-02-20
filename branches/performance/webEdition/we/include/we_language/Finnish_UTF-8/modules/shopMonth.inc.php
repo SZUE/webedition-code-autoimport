@@ -21,19 +21,20 @@
 
 
 /**
- * Language file: object_value.inc.php
+ * Language file: shop_month.inc.php
  * Provides language strings.
  * Language: English
  */
 
-$l_object_value[""] = "----"; // TRANSLATE
-$l_object_value["%unique%"] = "unique";
-$l_object_value["%d%"] = "Dzień";
-$l_object_value["%m%"] = "Miesiąc (01-12)";
-$l_object_value["%n%"] = "Miesiąc (1-12)";
-$l_object_value["%y%"] = "Rok (11)";
-$l_object_value["%Y%"] = "Rok (2011)";
-$l_object_value["%h%"] = "Godziny";
-$l_object_value["%ID%"] = "ID"; // TRANSLATE
-$l_object_value["Text"] = "Tekst";
-?>
+$l_modules_shopMonth[1] = "Tammikuu";
+$l_modules_shopMonth[2] = "Helmikuu";
+$l_modules_shopMonth[3] = "Maaliskuu";
+$l_modules_shopMonth[4] = "Huhtikuu";
+$l_modules_shopMonth[5] = "Toukokuu";
+$l_modules_shopMonth[6] = "Kesäkuu";
+$l_modules_shopMonth[7] = "Heinäkuu";
+$l_modules_shopMonth[8] = "Elokuu";
+$l_modules_shopMonth[9] = "Syyskuu";
+$l_modules_shopMonth[10] = "Lokakuu";
+$l_modules_shopMonth[11] = "Marraskuu";
+$l_modules_shopMonth[12] = "Joulukuu";

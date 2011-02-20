@@ -22,7 +22,6 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 
 class weHyperlinkDialog extends weDialog{
 
@@ -54,7 +53,7 @@ class weHyperlinkDialog extends weDialog{
 
 	function weHyperlinkDialog($href="",$target="",$fileID=0,$objID=0){
 		$this->weDialog();
-		$this->dialogTitle = $GLOBALS["l_wysiwyg"]["edit_hyperlink"];
+		$this->dialogTitle = g_l('wysiwyg',"[edit_hyperlink]");
 	}
 
 	##################################################################################################
@@ -321,7 +320,7 @@ class weHyperlinkDialog extends weDialog{
 
 			$_select_type = '<select name="we_dialog_args[type]" size="1" style="margin-bottom:5px;" onchange="changeTypeSelect(this);">
 <option value="ext"'.(($this->args["type"]=="ext") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[external_link]").'</option>
-<option value="mail"'.(($this->args["type"]=="mail") ? ' selected="selected"' : '').'>'.$GLOBALS["l_wysiwyg"]["emaillink"].'</option>
+<option value="mail"'.(($this->args["type"]=="mail") ? ' selected="selected"' : '').'>'.g_l('wysiwyg',"[emaillink]").'</option>
 </select>';
 
 
@@ -342,7 +341,7 @@ class weHyperlinkDialog extends weDialog{
 			$_select_type = '<select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">
 <option value="ext"'.(($this->args["type"]=="ext") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[external_link]").'</option>
 <option value="int"'.(($this->args["type"]=="int") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[internal_link]").'</option>
-<option value="mail"'.(($this->args["type"]=="mail") ? ' selected="selected"' : '').'>'.$GLOBALS["l_wysiwyg"]["emaillink"].'</option>
+<option value="mail"'.(($this->args["type"]=="mail") ? ' selected="selected"' : '').'>'.g_l('wysiwyg',"[emaillink]").'</option>
 ' . ((defined("OBJECT_TABLE") && ($_SESSION["we_mode"] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ? '
 <option value="obj"'.(($this->args["type"]=="obj") ? ' selected="selected"' : '').'>'.g_l('linklist_edit',"[objectFile]").'</option>' : '') . '
 </select>';
@@ -413,8 +412,8 @@ class weHyperlinkDialog extends weDialog{
 
 
 		// lang
-		$_lang = $this->getLangField("lang",$GLOBALS["l_wysiwyg"]["link_lang"],145);
-		$_hreflang = $this->getLangField("hreflang",$GLOBALS["l_wysiwyg"]["href_lang"],145);
+		$_lang = $this->getLangField("lang",g_l('wysiwyg',"[link_lang]"),145);
+		$_hreflang = $this->getLangField("hreflang",g_l('wysiwyg',"[href_lang]"),145);
 
 		$_title = htmlTextInput("we_dialog_args[title]",30,$this->args["title"],"","","text",300);
 
@@ -460,7 +459,7 @@ class weHyperlinkDialog extends weDialog{
 
 		$table .= '
 				<tr id="mail_tr" style="display:'.(($this->args["type"]=="mail") ? "" : "none").';">
-					<td class="defaultgray" valign="top" width="100">'.$GLOBALS["l_wysiwyg"]["emaillink"].'</td>
+					<td class="defaultgray" valign="top" width="100">'.g_l('wysiwyg',"[emaillink]").'</td>
 					<td valign="top">
 						' . $_email_link . '</td>
 				</tr>';
@@ -486,7 +485,7 @@ class weHyperlinkDialog extends weDialog{
 		$table = '<table cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td class="defaultgray" valign="top" width="100">
-						' . $GLOBALS["l_wysiwyg"]["anchor"] . '</td>
+						' . g_l('wysiwyg',"[anchor]") . '</td>
 					<td>
 						' . $_anchor . '</td>
 				</tr>
@@ -506,7 +505,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr>
 					<td class="defaultgray" valign="top">
-						' . $GLOBALS["l_wysiwyg"]["css_style"] . '</td>
+						' . g_l('wysiwyg',"[css_style]") . '</td>
 					<td>
 						' . $classSelect . '</td>
 				</tr>
@@ -527,7 +526,7 @@ class weHyperlinkDialog extends weDialog{
 			$table = '<table cellpadding="0" cellspacing="0" border="0">
 				<tr'.$show_accessible_class.'>
 					<td class="defaultgray" valign="top" width="100">
-						' . $GLOBALS["l_wysiwyg"]["language"] . '</td>
+						' . g_l('wysiwyg',"[language]") . '</td>
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lang . '</td><td>'.getPixel(10,2).'</td><td>'.$_hreflang.'</td></tr></table></td>
 				</tr>
@@ -537,7 +536,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td class="defaultgray" valign="top">
-						' . $GLOBALS["l_wysiwyg"]["title"] . '</td>
+						' . g_l('wysiwyg',"[title]") . '</td>
 					<td>
 						' . $_title . '</td>
 				</tr>
@@ -547,7 +546,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td class="defaultgray" valign="top">
-						' . $GLOBALS["l_wysiwyg"]["keyboard"] . '</td>
+						' . g_l('wysiwyg',"[keyboard]") . '</td>
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_accesskey . '</td><td>'.getPixel(10,2).'</td><td>'.$_tabindex.'</td></tr></table></td>
 				</tr>
@@ -557,7 +556,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td class="defaultgray" valign="top">
-						'.$GLOBALS["l_wysiwyg"]["relation"].'</td>
+						'.g_l('wysiwyg',"[relation]").'</td>
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_rel . '</td><td>'.getPixel(10,2).'</td><td>'.$_rev.'</td></tr></table></td>
 				</tr>
@@ -673,7 +672,7 @@ class weHyperlinkDialog extends weDialog{
 			}
 				$js .= '
 					document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
-					document.writeln(\'<option value="">'.$GLOBALS["l_wysiwyg"]["none"].'\');
+					document.writeln(\'<option value="">'.g_l('wysiwyg',"[none]").'\');
 
 					for (var i = 0; i < classNames.length; i++) {
 						var foo = classNames[i].substring(0,1) == "." ?

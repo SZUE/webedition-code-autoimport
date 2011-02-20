@@ -22,20 +22,22 @@
 
 /**
  * Language file: shop_month.inc.php
+ *
  * Provides language strings.
- * Language: English
+ *
+ * Language: Deutsch
  */
 
-$l_shop_month[1] = "Tammikuu";
-$l_shop_month[2] = "Helmikuu";
-$l_shop_month[3] = "Maaliskuu";
-$l_shop_month[4] = "Huhtikuu";
-$l_shop_month[5] = "Toukokuu";
-$l_shop_month[6] = "Kesäkuu";
-$l_shop_month[7] = "Heinäkuu";
-$l_shop_month[8] = "Elokuu";
-$l_shop_month[9] = "Syyskuu";
-$l_shop_month[10] = "Lokakuu";
-$l_shop_month[11] = "Marraskuu";
-$l_shop_month[12] = "Joulukuu";
-?>
+$l_modules_shopMonth[1] = "Januar";
+$l_modules_shopMonth[2] = "Februar";
+$l_modules_shopMonth[3] = "M&auml;rz";
+$l_modules_shopMonth[4] = "April";
+$l_modules_shopMonth[5] = "Mai";
+$l_modules_shopMonth[6] = "Juni";
+$l_modules_shopMonth[7] = "Juli";
+$l_modules_shopMonth[8] = "August";
+$l_modules_shopMonth[9] = "September";
+$l_modules_shopMonth[10] = "Oktober";
+$l_modules_shopMonth[11] = "November";
+$l_modules_shopMonth[12] = "Dezember";
+

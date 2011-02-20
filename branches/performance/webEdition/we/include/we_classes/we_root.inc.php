@@ -540,7 +540,6 @@ class we_root extends we_class
 
 	}
 function formTriggerDocument($isclass=false){
-		global $l_object;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 		$table = FILE_TABLE;
@@ -559,7 +558,7 @@ function formTriggerDocument($isclass=false){
 		$yuiSuggest->setAcId("TriggerID");
 		$yuiSuggest->setContentType("folder,text/webedition");
 		$yuiSuggest->setInput($textname,$path);
-		$yuiSuggest->setLabel($l_object["seourltrigger"]);
+		$yuiSuggest->setLabel(g_l('modules_object','[seourltrigger]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname,$myid);

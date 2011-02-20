@@ -20,7 +20,6 @@
 
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/wysiwyg.inc.php");
 //make sure we know which browser is used
 include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
 
@@ -381,41 +380,41 @@ class we_wysiwyg{
 						new we_wysiwygToolbarSelect(
 														$this,
 														"formatblock",
-														$GLOBALS["l_wysiwyg"]["format"],
+														g_l('wysiwyg',"[format]"),
 														($GLOBALS["BROWSER"] == "IE") ? array(
-															"normal"=>$GLOBALS["l_wysiwyg"]["normal"],
-															"p"=>$GLOBALS["l_wysiwyg"]["paragraph"],
-															"h1"=>$GLOBALS["l_wysiwyg"]["h1"],
-															"h2"=>$GLOBALS["l_wysiwyg"]["h2"],
-															"h3"=>$GLOBALS["l_wysiwyg"]["h3"],
-															"h4"=>$GLOBALS["l_wysiwyg"]["h4"],
-															"h5"=>$GLOBALS["l_wysiwyg"]["h5"],
-															"h6"=>$GLOBALS["l_wysiwyg"]["h6"],
-															"pre"=>$GLOBALS["l_wysiwyg"]["pre"],
-															"address"=>$GLOBALS["l_wysiwyg"]["address"]
+															"normal"=>g_l('wysiwyg',"[normal]"),
+															"p"=>g_l('wysiwyg',"[paragraph]"),
+															"h1"=>g_l('wysiwyg',"[h1]"),
+															"h2"=>g_l('wysiwyg',"[h2]"),
+															"h3"=>g_l('wysiwyg',"[h3]"),
+															"h4"=>g_l('wysiwyg',"[h4]"),
+															"h5"=>g_l('wysiwyg',"[h5]"),
+															"h6"=>g_l('wysiwyg',"[h6]"),
+															"pre"=>g_l('wysiwyg',"[pre]"),
+															"address"=>g_l('wysiwyg',"[address]")
 														) : ($SAFARI_WYSIWYG ? array(
-															"div"=>$GLOBALS["l_wysiwyg"]["normal"],
-															"p"=>$GLOBALS["l_wysiwyg"]["paragraph"],
-															"h1"=>$GLOBALS["l_wysiwyg"]["h1"],
-															"h2"=>$GLOBALS["l_wysiwyg"]["h2"],
-															"h3"=>$GLOBALS["l_wysiwyg"]["h3"],
-															"h4"=>$GLOBALS["l_wysiwyg"]["h4"],
-															"h5"=>$GLOBALS["l_wysiwyg"]["h5"],
-															"h6"=>$GLOBALS["l_wysiwyg"]["h6"],
-															"pre"=>$GLOBALS["l_wysiwyg"]["pre"],
-															"address"=>$GLOBALS["l_wysiwyg"]["address"],
+															"div"=>g_l('wysiwyg',"[normal]"),
+															"p"=>g_l('wysiwyg',"[paragraph]"),
+															"h1"=>g_l('wysiwyg',"[h1]"),
+															"h2"=>g_l('wysiwyg',"[h2]"),
+															"h3"=>g_l('wysiwyg',"[h3]"),
+															"h4"=>g_l('wysiwyg',"[h4]"),
+															"h5"=>g_l('wysiwyg',"[h5]"),
+															"h6"=>g_l('wysiwyg',"[h6]"),
+															"pre"=>g_l('wysiwyg',"[pre]"),
+															"address"=>g_l('wysiwyg',"[address]"),
 															"blockquote"=>"blockquote"
 														) : array(
-															"normal"=>$GLOBALS["l_wysiwyg"]["normal"],
-															"p"=>$GLOBALS["l_wysiwyg"]["paragraph"],
-															"h1"=>$GLOBALS["l_wysiwyg"]["h1"],
-															"h2"=>$GLOBALS["l_wysiwyg"]["h2"],
-															"h3"=>$GLOBALS["l_wysiwyg"]["h3"],
-															"h4"=>$GLOBALS["l_wysiwyg"]["h4"],
-															"h5"=>$GLOBALS["l_wysiwyg"]["h5"],
-															"h6"=>$GLOBALS["l_wysiwyg"]["h6"],
-															"pre"=>$GLOBALS["l_wysiwyg"]["pre"],
-															"address"=>$GLOBALS["l_wysiwyg"]["address"],
+															"normal"=>g_l('wysiwyg',"[normal]"),
+															"p"=>g_l('wysiwyg',"[paragraph]"),
+															"h1"=>g_l('wysiwyg',"[h1]"),
+															"h2"=>g_l('wysiwyg',"[h2]"),
+															"h3"=>g_l('wysiwyg',"[h3]"),
+															"h4"=>g_l('wysiwyg',"[h4]"),
+															"h5"=>g_l('wysiwyg',"[h5]"),
+															"h6"=>g_l('wysiwyg',"[h6]"),
+															"pre"=>g_l('wysiwyg',"[pre]"),
+															"address"=>g_l('wysiwyg',"[address]"),
 															"code"=>"Code",
 															"cite"=>"Cite",
 															"q"=>"q",
@@ -429,7 +428,7 @@ class we_wysiwyg{
 						new we_wysiwygToolbarSelect(
 														$this,
 														"fontname",
-														$GLOBALS["l_wysiwyg"]["fontname"],
+														g_l('wysiwyg',"[fontname]"),
 														$this->fontnames,
 														120
 													)
@@ -439,7 +438,7 @@ class we_wysiwyg{
 						new we_wysiwygToolbarSelect(
 														$this,
 														"fontsize",
-														$GLOBALS["l_wysiwyg"]["fontsize"],
+														g_l('wysiwyg',"[fontsize]"),
 														$SAFARI_WYSIWYG ? array(
 															"8px"=>"8px",
 															"9px"=>"9px",
@@ -478,7 +477,7 @@ class we_wysiwyg{
 						new we_wysiwygToolbarSelect(
 														$this,
 														"applystyle",
-														$GLOBALS["l_wysiwyg"]["css_style"],
+														g_l('wysiwyg',"[css_style]"),
 														array(),
 														120
 													)
@@ -496,7 +495,7 @@ class we_wysiwyg{
 													$this,
 													"bold",
 													$this->_image_languagePath."bold.gif",
-													$GLOBALS["l_wysiwyg"]["bold"]
+													g_l('wysiwyg',"[bold]")
 												)
 				);
 		array_push(
@@ -505,7 +504,7 @@ class we_wysiwyg{
 													$this,
 													"italic",
 													$this->_image_languagePath."italic.gif",
-													$GLOBALS["l_wysiwyg"]["italic"]
+													g_l('wysiwyg',"[italic]")
 												)
 				);
 		array_push(
@@ -514,7 +513,7 @@ class we_wysiwyg{
 													$this,
 													"underline",
 													$this->_image_languagePath."underline.gif",
-													$GLOBALS["l_wysiwyg"]["underline"]
+													g_l('wysiwyg',"[underline]")
 												)
 				);
 		array_push(
@@ -523,7 +522,7 @@ class we_wysiwyg{
 													$this,
 													"subscript",
 													$this->_imagePath."subscript.gif",
-													$GLOBALS["l_wysiwyg"]["subscript"]
+													g_l('wysiwyg',"[subscript]")
 												)
 				);
 		array_push(
@@ -532,7 +531,7 @@ class we_wysiwyg{
 													$this,
 													"superscript",
 													$this->_imagePath."superscript.gif",
-													$GLOBALS["l_wysiwyg"]["superscript"]
+													g_l('wysiwyg',"[superscript]")
 												)
 				);
 		array_push(
@@ -541,7 +540,7 @@ class we_wysiwyg{
 													$this,
 													"strikethrough",
 													$this->_imagePath."strikethrough.gif",
-													$GLOBALS["l_wysiwyg"]["strikethrough"]
+													g_l('wysiwyg',"[strikethrough]")
 												)
 				);
 		array_push(
@@ -550,7 +549,7 @@ class we_wysiwyg{
 													$this,
 													"removeformat",
 													$this->_imagePath."removeformat.gif",
-													$GLOBALS["l_wysiwyg"]["removeformat"]
+													g_l('wysiwyg',"[removeformat]")
 												)
 				);
 		array_push(
@@ -559,7 +558,7 @@ class we_wysiwyg{
 													$this,
 													"removetags",
 													$this->_imagePath."removetags.gif",
-													$GLOBALS["l_wysiwyg"]["removetags"]
+													g_l('wysiwyg',"[removetags]")
 												)
 				);
 
@@ -573,7 +572,7 @@ class we_wysiwyg{
 													$this,
 													"acronym",
 													$this->_image_languagePath."acronym.gif",
-													$GLOBALS["l_wysiwyg"]["acronym"]
+													g_l('wysiwyg',"[acronym]")
 												)
 				);
 		array_push(
@@ -582,7 +581,7 @@ class we_wysiwyg{
 													$this,
 													"abbr",
 													$this->_image_languagePath."abbr.gif",
-													$GLOBALS["l_wysiwyg"]["abbr"]
+													g_l('wysiwyg',"[abbr]")
 												)
 				);
 		array_push(
@@ -591,7 +590,7 @@ class we_wysiwyg{
 													$this,
 													"lang",
 													$this->_imagePath."lang.gif",
-													$GLOBALS["l_wysiwyg"]["language"]
+													g_l('wysiwyg',"[language]")
 												)
 				);
 		array_push(
@@ -604,7 +603,7 @@ class we_wysiwyg{
 													$this,
 													"forecolor",
 													$this->_imagePath."setforecolor.gif",
-													$GLOBALS["l_wysiwyg"]["fore_color"]
+													g_l('wysiwyg',"[fore_color]")
 												)
 				);
 		array_push(
@@ -613,7 +612,7 @@ class we_wysiwyg{
 													$this,
 													"backcolor",
 													$this->_imagePath."setbackcolor.gif",
-													$GLOBALS["l_wysiwyg"]["back_color"]
+													g_l('wysiwyg',"[back_color]")
 												)
 				);
 		array_push(
@@ -626,7 +625,7 @@ class we_wysiwyg{
 													$this,
 													"justifyleft",
 													$this->_imagePath."justifyleft.gif",
-													$GLOBALS["l_wysiwyg"]["justify_left"]
+													g_l('wysiwyg',"[justify_left]")
 												)
 				);
 		array_push(
@@ -635,7 +634,7 @@ class we_wysiwyg{
 													$this,
 													"justifycenter",
 													$this->_imagePath."justifycenter.gif",
-													$GLOBALS["l_wysiwyg"]["justify_center"]
+													g_l('wysiwyg',"[justify_center]")
 												)
 				);
 		array_push(
@@ -644,7 +643,7 @@ class we_wysiwyg{
 													$this,
 													"justifyright",
 													$this->_imagePath."justifyright.gif",
-													$GLOBALS["l_wysiwyg"]["justify_right"]
+													g_l('wysiwyg',"[justify_right]")
 												)
 				);
 		array_push(
@@ -653,7 +652,7 @@ class we_wysiwyg{
 													$this,
 													"justifyfull",
 													$this->_imagePath."justifyfull.gif",
-													$GLOBALS["l_wysiwyg"]["justify_full"]
+													g_l('wysiwyg',"[justify_full]")
 												)
 				);
 		array_push(
@@ -666,7 +665,7 @@ class we_wysiwyg{
 													$this,
 													"insertunorderedlist",
 													$this->_imagePath."unorderlist.gif",
-													$GLOBALS["l_wysiwyg"]["unordered_list"]
+													g_l('wysiwyg',"[unordered_list]")
 												)
 				);
 		array_push(
@@ -675,7 +674,7 @@ class we_wysiwyg{
 													$this,
 													"insertorderedlist",
 													$this->_imagePath."orderlist.gif",
-													$GLOBALS["l_wysiwyg"]["ordered_list"]
+													g_l('wysiwyg',"[ordered_list]")
 												)
 				);
 		array_push(
@@ -684,7 +683,7 @@ class we_wysiwyg{
 													$this,
 													"indent",
 													$this->_imagePath."indent.gif",
-													$GLOBALS["l_wysiwyg"]["indent"]
+													g_l('wysiwyg',"[indent]")
 												)
 				);
 		array_push(
@@ -693,7 +692,7 @@ class we_wysiwyg{
 													$this,
 													"outdent",
 													$this->_imagePath."outdent.gif",
-													$GLOBALS["l_wysiwyg"]["outdent"]
+													g_l('wysiwyg',"[outdent]")
 												)
 				);
 		array_push(
@@ -706,7 +705,7 @@ class we_wysiwyg{
 													$this,
 													"createlink",
 													$this->_imagePath."hyperlink.gif",
-													$GLOBALS["l_wysiwyg"]["hyperlink"]
+													g_l('wysiwyg',"[hyperlink]")
 												)
 				);
 		array_push(
@@ -715,7 +714,7 @@ class we_wysiwyg{
 													$this,
 													"unlink",
 													$this->_imagePath."unlink.gif",
-													$GLOBALS["l_wysiwyg"]["unlink"]
+													g_l('wysiwyg',"[unlink]")
 												)
 				);
 		array_push(
@@ -724,7 +723,7 @@ class we_wysiwyg{
 													$this,
 													"anchor",
 													$this->_imagePath."anchor.gif",
-													$GLOBALS["l_wysiwyg"]["insert_edit_anchor"]
+													g_l('wysiwyg',"[insert_edit_anchor]")
 												)
 				);
 		array_push(
@@ -733,7 +732,7 @@ class we_wysiwyg{
 													$this,
 													"insertimage",
 													$this->_imagePath."image.gif",
-													$GLOBALS["l_wysiwyg"]["insert_edit_image"]
+													g_l('wysiwyg',"[insert_edit_image]")
 												)
 				);
 		array_push(
@@ -742,7 +741,7 @@ class we_wysiwyg{
 													$this,
 													"inserthorizontalrule",
 													$this->_imagePath."rule.gif",
-													$GLOBALS["l_wysiwyg"]["inserthorizontalrule"]
+													g_l('wysiwyg',"[inserthorizontalrule]")
 												)
 				);
 		array_push(
@@ -751,7 +750,7 @@ class we_wysiwyg{
 													$this,
 													"insertspecialchar",
 													$this->_imagePath."specialchar.gif",
-													$GLOBALS["l_wysiwyg"]["insertspecialchar"]
+													g_l('wysiwyg',"[insertspecialchar]")
 												)
 				);
 			array_push(
@@ -764,7 +763,7 @@ class we_wysiwyg{
 													$this,
 													"inserttable",
 													$this->_imagePath."inserttable.gif",
-													$GLOBALS["l_wysiwyg"]["inserttable"]
+													g_l('wysiwyg',"[inserttable]")
 												)
 				);
 		array_push(
@@ -773,7 +772,7 @@ class we_wysiwyg{
 													$this,
 													"edittable",
 													$this->_imagePath."edittable.gif",
-													$GLOBALS["l_wysiwyg"]["edittable"]
+													g_l('wysiwyg',"[edittable]")
 												)
 				);
 		array_push(
@@ -782,7 +781,7 @@ class we_wysiwyg{
 													$this,
 													"editcell",
 													$this->_imagePath."editcell.gif",
-													$GLOBALS["l_wysiwyg"]["editcell"]
+													g_l('wysiwyg',"[editcell]")
 												)
 				);
 		array_push(
@@ -791,7 +790,7 @@ class we_wysiwyg{
 													$this,
 													"insertcolumnleft",
 													$this->_imagePath."insertcol_left.gif",
-													$GLOBALS["l_wysiwyg"]["insertcolumnleft"]
+													g_l('wysiwyg',"[insertcolumnleft]")
 												)
 				);
 		array_push(
@@ -800,7 +799,7 @@ class we_wysiwyg{
 													$this,
 													"insertcolumnright",
 													$this->_imagePath."insertcol_right.gif",
-													$GLOBALS["l_wysiwyg"]["insertcolumnright"]
+													g_l('wysiwyg',"[insertcolumnright]")
 												)
 				);
 		array_push(
@@ -809,7 +808,7 @@ class we_wysiwyg{
 													$this,
 													"insertrowabove",
 													$this->_imagePath."insertrow_above.gif",
-													$GLOBALS["l_wysiwyg"]["insertrowabove"]
+													g_l('wysiwyg',"[insertrowabove]")
 												)
 				);
 		array_push(
@@ -818,7 +817,7 @@ class we_wysiwyg{
 													$this,
 													"insertrowbelow",
 													$this->_imagePath."insertrow_below.gif",
-													$GLOBALS["l_wysiwyg"]["insertrowbelow"]
+													g_l('wysiwyg',"[insertrowbelow]")
 												)
 				);
 		array_push(
@@ -827,7 +826,7 @@ class we_wysiwyg{
 													$this,
 													"deletecol",
 													$this->_imagePath."deletecols.gif",
-													$GLOBALS["l_wysiwyg"]["deletecol"]
+													g_l('wysiwyg',"[deletecol]")
 												)
 				);
 		array_push(
@@ -836,7 +835,7 @@ class we_wysiwyg{
 													$this,
 													"deleterow",
 													$this->_imagePath."deleterows.gif",
-													$GLOBALS["l_wysiwyg"]["deleterow"]
+													g_l('wysiwyg',"[deleterow]")
 												)
 				);
 		array_push(
@@ -845,7 +844,7 @@ class we_wysiwyg{
 													$this,
 													"increasecolspan",
 													$this->_imagePath."inc_col.gif",
-													$GLOBALS["l_wysiwyg"]["increasecolspan"]
+													g_l('wysiwyg',"[increasecolspan]")
 												)
 				);
 		array_push(
@@ -854,7 +853,7 @@ class we_wysiwyg{
 													$this,
 													"decreasecolspan",
 													$this->_imagePath."dec_col.gif",
-													$GLOBALS["l_wysiwyg"]["decreasecolspan"]
+													g_l('wysiwyg',"[decreasecolspan]")
 												)
 				);
 		array_push(
@@ -863,7 +862,7 @@ class we_wysiwyg{
 													$this,
 													"caption",
 													$this->_imagePath."caption.gif",
-													$GLOBALS["l_wysiwyg"]["addcaption"]
+													g_l('wysiwyg',"[addcaption]")
 												)
 				);
 		array_push(
@@ -872,7 +871,7 @@ class we_wysiwyg{
 													$this,
 													"removecaption",
 													$this->_imagePath."removecaption.gif",
-													$GLOBALS["l_wysiwyg"]["removecaption"]
+													g_l('wysiwyg',"[removecaption]")
 												)
 				);
 		array_push(
@@ -886,7 +885,7 @@ class we_wysiwyg{
 													$this,
 													"insertbreak",
 													$this->_imagePath."br.gif",
-													$GLOBALS["l_wysiwyg"]["insert_br"]
+													g_l('wysiwyg',"[insert_br]")
 												)
 				);
 		}
@@ -902,7 +901,7 @@ class we_wysiwyg{
 													$this,
 													"importrtf",
 													$this->_imagePath."rtf.gif",
-													$GLOBALS["l_wysiwyg"]["rtf_import"]
+													g_l('wysiwyg',"[rtf_import]")
 												)
 				);
 		if(!$this->fullscreen){
@@ -912,7 +911,7 @@ class we_wysiwyg{
 													$this,
 													"fullscreen",
 													$this->_imagePath."fullscreen.gif",
-													$GLOBALS["l_wysiwyg"]["fullscreen"]
+													g_l('wysiwyg',"[fullscreen]")
 												)
 				);
 		}
@@ -927,7 +926,7 @@ class we_wysiwyg{
 													$this,
 													"cut",
 													$this->_imagePath."cut.gif",
-													$GLOBALS["l_wysiwyg"]["cut"]
+													g_l('wysiwyg',"[cut]")
 												)
 				);
 		array_push(
@@ -936,7 +935,7 @@ class we_wysiwyg{
 													$this,
 													"copy",
 													$this->_imagePath."copy.gif",
-													$GLOBALS["l_wysiwyg"]["copy"]
+													g_l('wysiwyg',"[copy]")
 												)
 				);
 		array_push(
@@ -945,7 +944,7 @@ class we_wysiwyg{
 													$this,
 													"paste",
 													$this->_imagePath."paste.gif",
-													$GLOBALS["l_wysiwyg"]["paste"]
+													g_l('wysiwyg',"[paste]")
 												)
 				);
 		array_push(
@@ -958,7 +957,7 @@ class we_wysiwyg{
 													$this,
 													"undo",
 													$this->_imagePath."undo.gif",
-													$GLOBALS["l_wysiwyg"]["undo"]
+													g_l('wysiwyg',"[undo]")
 												)
 				);
 		array_push(
@@ -967,7 +966,7 @@ class we_wysiwyg{
 													$this,
 													"redo",
 													$this->_imagePath."redo.gif",
-													$GLOBALS["l_wysiwyg"]["redo"]
+													g_l('wysiwyg',"[redo]")
 												)
 				);
 
@@ -981,7 +980,7 @@ class we_wysiwyg{
 													$this,
 													"visibleborders",
 													$this->_imagePath."visibleborders.gif",
-													$GLOBALS["l_wysiwyg"]["visible_borders"]
+													g_l('wysiwyg',"[visible_borders]")
 												)
 				);
 		array_push(
@@ -990,7 +989,7 @@ class we_wysiwyg{
 													$this,
 													"editsource",
 													$this->_imagePath."editsourcecode.gif",
-													$GLOBALS["l_wysiwyg"]["edit_sourcecode"]
+													g_l('wysiwyg',"[edit_sourcecode]")
 												)
 				);
 		if(defined('SPELLCHECKER') && $this->showSpell) {
@@ -1000,7 +999,7 @@ class we_wysiwyg{
 														$this,
 														'spellcheck',
 														$this->_imagePath . 'spellcheck.gif',
-														$GLOBALS['l_wysiwyg']['spellcheck']
+														g_l('wysiwyg','[spellcheck]')
 													)
 					);
 		}

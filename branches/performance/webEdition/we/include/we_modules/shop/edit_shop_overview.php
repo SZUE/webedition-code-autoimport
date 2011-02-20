@@ -24,11 +24,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop_month.inc.php");
-}
-
 protect();
 
 htmlTop();
@@ -95,8 +90,8 @@ global $numberformat;
 }
 
 $mwst = (!empty($mwst))?$mwst:1;
-$info = $l_shop["anzahl"].": <b>".($f+$r)."</b><br>".$l_shop["unbearb"].": ".(($f)?$f:"0");
-$stat = $l_shop["umsatzgesamt"].": <b>".numfom(($bezahlt+$unbezahlt)*$mwst)." $waehr </b><br><br>".$l_shop["schonbezahlt"].": ".numfom($bezahlt*$mwst)." $waehr <br>".$l_shop["unbezahlt"].": ".numfom($unbezahlt*$mwst)." $waehr";
+$info = g_l('modules_shop','[anzahl]').": <b>".($f+$r)."</b><br>".g_l('modules_shop','[unbearb]').": ".(($f)?$f:"0");
+$stat = g_l('modules_shop','[umsatzgesamt]').": <b>".numfom(($bezahlt+$unbezahlt)*$mwst)." $waehr </b><br><br>".g_l('modules_shop','[schonbezahlt]').": ".numfom($bezahlt*$mwst)." $waehr <br>".g_l('modules_shop','[unbezahlt]').": ".numfom($unbezahlt*$mwst)." $waehr";
 ?>
     <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
     <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
@@ -108,7 +103,7 @@ $parts = array();
 
 array_push($parts,
 			array(
-				"headline"=>$l_shop_month[$month]." ".$year,
+				"headline"=>g_l('modules_shopMonth','['.$month.']')." ".$year,
 				"html"=>$info,
 				"space"=>170
 				)
@@ -117,7 +112,7 @@ array_push($parts,
 
 array_push($parts,
 			array(
-				"headline"=>$l_shop["stat"],
+				"headline"=>g_l('modules_shop','[stat]'),
 				"html"=>$stat,
 				"space"=>170
 				)

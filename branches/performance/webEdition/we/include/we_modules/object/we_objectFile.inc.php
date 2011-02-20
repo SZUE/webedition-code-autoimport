@@ -23,7 +23,6 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_doc
 if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/object.inc.php');
 }
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/date.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_versions/weVersions.class.inc.php');
@@ -482,7 +481,7 @@ class we_objectFile extends we_document{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor()
 	{
-		global $l_object,$we_responseText,$we_JavaScript;
+		global $we_responseText,$we_JavaScript;
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
 			case WE_EDITPAGE_WORKSPACE:
@@ -533,7 +532,6 @@ class we_objectFile extends we_document{
 	}
 
 	function formPath(){
-		global $l_object;
 		$rootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
 		if($this->ParentID=='') {
 			$this->ParentID = $rootDirId;
@@ -542,7 +540,7 @@ class we_objectFile extends we_document{
 		$this->setUrl();
 		$content =  '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.$this->formInputField('',"Text",$l_object["objectname"],30,388,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
+		<td>'.$this->formInputField('','Text',g_l('modules_object','[objectname]'),30,388,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
 	</tr>
 	<tr>
 		<td>'.getPixel(20,4).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
@@ -583,7 +581,7 @@ class we_objectFile extends we_document{
 		<td colspan="3">
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="defaultfont">'.$l_object["seourl"].':</td>
+					<td class="defaultfont">'.g_l('modules_object','[seourl]').':</td>
 					<td class="defaultfont">&nbsp;</td>
 					<td class="defaultfont">&nbsp;'.$this->Url.'</td>
 				</tr>
@@ -656,8 +654,6 @@ class we_objectFile extends we_document{
 	}
 
 	function formClass(){
-		global $l_object;
-
 		if($this->ID){
 			$content = '<span class="defaultfont">'.f("SELECT Text FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'","Text",$this->DB_WE)."</span>";
 		}else{
@@ -667,7 +663,6 @@ class we_objectFile extends we_document{
 	}
 
 	function formClassId(){
-		global $l_object;
 		return '<span class="defaultfont">' . $this->TableID . "</span>";
 	}
 
@@ -929,7 +924,7 @@ class we_objectFile extends we_document{
 
 			return $this->htmlFormElementTable(
 				$this->htmlTextInput($textname,30,$path,'',' readonly',"text",$inputWidth,0),
-				'<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["object_".$ObjectID]["required"] ? "*" : '') .'</span>'.($npubl ? '':' <span style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>') . ( isset($this->DefArray["object_$ObjectID"]['editdescription']) && $this->DefArray["object_$ObjectID"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["object_$ObjectID"]['editdescription'] . '</div>' : '<br />' ),
+				'<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["object_".$ObjectID]["required"] ? "*" : "") .'</span>'.($npubl ? '':' <span style="color:red">' . g_l('modules_object','[not_published]') .'</span>') . ( isset($this->DefArray["object_$ObjectID"]['editdescription']) && $this->DefArray["object_$ObjectID"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["object_$ObjectID"]['editdescription'] . '</div>' : '<br />' ),
 				"left",
 				"defaultfont",
 				$this->htmlHidden($idname,$myid),
@@ -947,7 +942,7 @@ class we_objectFile extends we_document{
 			$content .= $we_button->create_button_table(
 										array(
 											$but,
-												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . $GLOBALS["l_object"]["not_published"] .'</span>')
+												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object','[not_published]') .'</span>')
 											)
 										);
 
@@ -963,7 +958,6 @@ class we_objectFile extends we_document{
 	}
 
 	function getMultiObjectFieldHTML($name,$attribs,$editable=true){
-	global $l_object;
 		$db = new DB_WE();
 		$we_button = new we_button();
 
@@ -1032,7 +1026,7 @@ class we_objectFile extends we_document{
 
 					$reloadEntry = '';
 				}
-				$alerttext = $l_object["multiobject_recursion"];
+				$alerttext = g_l('modules_object','[multiobject_recursion]');
 				$selectObject = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) ."opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';;};".$reloadEntry."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
 				$upbut       = $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_object','".$GLOBALS['we_transaction']."','multiobject_".$name."','".($f)."')");
@@ -2065,20 +2059,20 @@ class we_objectFile extends we_document{
 			if (isset($foo["DefaultUrlfield1"]) && $foo["DefaultUrlfield1"]) {
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield1"],$regs);
 				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
-					$urlfield1 = $this->geFieldValue($regs[2], $regs[1]);
+					$urlfield1 = str_replace("/", "-",$this->geFieldValue($regs[2], $regs[1]));
 				}
 
 			}
 			if (isset($foo["DefaultUrlfield2"]) && $foo["DefaultUrlfield2"]) {
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield2"],$regs);
 				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
-					$urlfield2 = $this->geFieldValue($regs[2], $regs[1]);
+					$urlfield2 = str_replace("/", "-",$this->geFieldValue($regs[2], $regs[1]));
 				}
 			}
 			if (isset($foo["DefaultUrlfield3"]) && $foo["DefaultUrlfield3"]) {
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield3"],$regs);
 				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
-					$urlfield3 = $this->geFieldValue($regs[2], $regs[1]);
+					$urlfield3 = str_replace("/", "-",$this->geFieldValue($regs[2], $regs[1]));
 				}
 			}
 			$text = $foo["DefaultUrl"];
@@ -2149,9 +2143,14 @@ class we_objectFile extends we_document{
 			if(strpos($text,'%language%')!==false){$text = str_replace('%language%',substr($this->Language,0,2),$text);}
 			if(strpos($text,'%country%')!==false){$text = str_replace('%country%',substr($this->Language,4,2),$text);}
 
-			$text=correctUml($text);
+			
 			$text=str_replace(" ", "-", $text);
-			$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
+			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
+				$text= urlencode ($text);
+			} else {
+				$text=correctUml($text);
+				$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
+			}
 			$this->Url=substr($text,0,256);
 		} else {
 			$this->Url='';

@@ -286,7 +286,6 @@ class we_search extends DB_WE{
 
 	function getLocation($name="locationField",$select="",$size=1,$sprach=array()){
 	// get Class
-	global $l_object;
 			$opts = "";
 			$loc = array("CONTAIN","IS","START","END","<","<=",">=",">");
 			for($i=0;$i<sizeof($loc);$i++){
@@ -300,7 +299,6 @@ class we_search extends DB_WE{
 
 	function getLocationDate($name="locationField",$select="",$size=1,$sprach=array()){
 	// get Class
-	global $l_object;
 			$opts = "";
 			$loc = array("IS","<","<=",">=",">");
 			for($i=0;$i<sizeof($loc);$i++){
@@ -314,7 +312,6 @@ class we_search extends DB_WE{
 
 	function getLocationMeta($name="locationField",$select="",$size=1,$sprach=array()){
 	// get Class
-	global $l_object;
 			$opts = "";
 			$loc = array("IS");
 			for($i=0;$i<sizeof($loc);$i++){
@@ -388,4 +385,3 @@ class we_search extends DB_WE{
 
 
 }
-?>

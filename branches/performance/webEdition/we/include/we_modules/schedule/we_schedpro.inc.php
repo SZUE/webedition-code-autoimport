@@ -135,22 +135,22 @@ class we_schedpro{
 		$we_button = new we_button();
 
 		$taskpopup = '<select class="weSelect" name="we_schedule_task_'.$this->nr.'" size="1" onchange="_EditorFrame.setEditorIsHot(true);if(self.we_hasExtraRow_'.$this->nr.' || this.options[this.selectedIndex].value=='.SCHEDULE_DOCTYPE.' || this.options[this.selectedIndex].value=='.SCHEDULE_CATEGORY.' || this.options[this.selectedIndex].value=='.SCHEDULE_DIR.'){ setScrollTo();we_cmd(\'reload_editpage\');}">
-<option value="'.SCHEDULE_FROM.'"'.(($this->task == SCHEDULE_FROM) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["task"][SCHEDULE_FROM].'</option>
-<option value="'.SCHEDULE_TO.'"'.(($this->task == SCHEDULE_TO) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["task"][SCHEDULE_TO].'</option>
+<option value="'.SCHEDULE_FROM.'"'.(($this->task == SCHEDULE_FROM) ? ' selected' : '').'>'.g_l('modules_schedpro',"[task][".SCHEDULE_FROM.']').'</option>
+<option value="'.SCHEDULE_TO.'"'.(($this->task == SCHEDULE_TO) ? ' selected' : '').'>'.g_l('modules_schedpro',"[task][".SCHEDULE_TO.']').'</option>
 ';
 		if((we_hasPerm("DELETE_DOCUMENT") && (!$isobj)) || (we_hasPerm("DELETE_OBJECTFILE") && $isobj)){
-			$taskpopup .= '<option value="'.SCHEDULE_DELETE.'"'.(($this->task == SCHEDULE_DELETE) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["task"][SCHEDULE_DELETE].'</option>
+			$taskpopup .= '<option value="'.SCHEDULE_DELETE.'"'.(($this->task == SCHEDULE_DELETE) ? ' selected' : '').'>'.g_l('modules_schedpro',"[task][".SCHEDULE_DELETE.']').'</option>
 ';
 		}
 		if(!$isobj){
-			$taskpopup .= '<option value="'.SCHEDULE_DOCTYPE.'"'.(($this->task == SCHEDULE_DOCTYPE) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["task"][SCHEDULE_DOCTYPE].'</option>
+			$taskpopup .= '<option value="'.SCHEDULE_DOCTYPE.'"'.(($this->task == SCHEDULE_DOCTYPE) ? ' selected' : '').'>'.g_l('modules_schedpro',"[task][".SCHEDULE_DOCTYPE.']').'</option>
 ';
 		}
-			$taskpopup .= '<option value="'.SCHEDULE_CATEGORY.'"'.(($this->task == SCHEDULE_CATEGORY) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["task"][SCHEDULE_CATEGORY].'</option>
+			$taskpopup .= '<option value="'.SCHEDULE_CATEGORY.'"'.(($this->task == SCHEDULE_CATEGORY) ? ' selected' : '').'>'.g_l('modules_schedpro',"[task][".SCHEDULE_CATEGORY.']').'</option>
 ';
 		if((we_hasPerm("MOVE_DOCUMENT") && (!$isobj)) || (we_hasPerm("MOVE_OBJECTFILE") && $isobj)){
 			$taskpopup .= '
-<option value="'.SCHEDULE_DIR.'"'.(($this->task == SCHEDULE_DIR) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["task"][SCHEDULE_DIR].'</option>
+<option value="'.SCHEDULE_DIR.'"'.(($this->task == SCHEDULE_DIR) ? ' selected' : '').'>'.g_l('modules_schedpro',"[task][".SCHEDULE_DIR.']').'</option>
 ';
 		}
 		$taskpopup .= '</select>
@@ -171,9 +171,10 @@ class we_schedpro{
 			}
 			$doctypepop .= '</select>';
 			$checknname = md5(uniqid(rand(),1));
-			$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.$doctypepop.'</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->doctypeAll, $checknname, $GLOBALS["l_schedpro"]["doctypeAll"], false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_".$this->nr."'].value=this.checked?1:0;")
+			$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.$doctypepop.'</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->doctypeAll, $checknname, g_l('modules_schedpro',"[doctypeAll]")
+							, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_".$this->nr."'].value=this.checked?1:0;")
 																																						 .  '<input type="hidden" name="we_schedule_doctypeAll_'.$this->nr.'" value="'.$this->doctypeAll.'" /></td></tr></table>';
-			$extraheadl = $GLOBALS["l_schedpro"]["doctype"];
+			$extraheadl = g_l('modules_schedpro',"[doctype]");
 
 		}else if($this->task==SCHEDULE_CATEGORY){
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
@@ -185,7 +186,7 @@ class we_schedpro{
 				$cats->isEditable=false;
 			}
 			$extracont = $cats->get();
-			$extraheadl = $GLOBALS["l_schedpro"]["categories"];
+			$extraheadl = g_l('modules_schedpro',"[categories]");
 		}else if($this->task==SCHEDULE_DIR){
 
 			$textname = 'path_we_schedule_parentid_'.$this->nr;
@@ -219,16 +220,16 @@ class we_schedpro{
 
 
 			$extracont = $yuiSuggest->getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
-			$extraheadl = $GLOBALS["l_schedpro"]["dirctory"];
+			$extraheadl = g_l('modules_schedpro',"[dirctory]");
 		}
 
 		$typepopup = '<select class="weSelect" name="we_schedule_type_'.$this->nr.'" size="1" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">
-<option value="'.SCHEDULE_TYPE_ONCE.'"'.(($this->type == SCHEDULE_TYPE_ONCE) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_ONCE].'</option>
-<option value="'.SCHEDULE_TYPE_HOUR.'"'.(($this->type == SCHEDULE_TYPE_HOUR) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_HOUR].'</option>
-<option value="'.SCHEDULE_TYPE_DAY.'"'.(($this->type == SCHEDULE_TYPE_DAY) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_DAY].'</option>
-<option value="'.SCHEDULE_TYPE_WEEK.'"'.(($this->type == SCHEDULE_TYPE_WEEK) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_WEEK].'</option>
-<option value="'.SCHEDULE_TYPE_MONTH.'"'.(($this->type == SCHEDULE_TYPE_MONTH) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_MONTH].'</option>
-<option value="'.SCHEDULE_TYPE_YEAR.'"'.(($this->type == SCHEDULE_TYPE_YEAR) ? ' selected' : '').'>'.$GLOBALS["l_schedpro"]["type"][SCHEDULE_TYPE_YEAR].'</option>
+<option value="'.SCHEDULE_TYPE_ONCE.'"'.(($this->type == SCHEDULE_TYPE_ONCE) ? ' selected' : '').'>'.g_l('modules_schedpro',"[type][".SCHEDULE_TYPE_ONCE.']').'</option>
+<option value="'.SCHEDULE_TYPE_HOUR.'"'.(($this->type == SCHEDULE_TYPE_HOUR) ? ' selected' : '').'>'.g_l('modules_schedpro',"[type][".SCHEDULE_TYPE_HOUR.']').'</option>
+<option value="'.SCHEDULE_TYPE_DAY.'"'.(($this->type == SCHEDULE_TYPE_DAY) ? ' selected' : '').'>'.g_l('modules_schedpro',"[type][".SCHEDULE_TYPE_DAY.']').'</option>
+<option value="'.SCHEDULE_TYPE_WEEK.'"'.(($this->type == SCHEDULE_TYPE_WEEK) ? ' selected' : '').'>'.g_l('modules_schedpro',"[type][".SCHEDULE_TYPE_WEEK.']').'</option>
+<option value="'.SCHEDULE_TYPE_MONTH.'"'.(($this->type == SCHEDULE_TYPE_MONTH) ? ' selected' : '').'>'.g_l('modules_schedpro',"[type][".SCHEDULE_TYPE_MONTH.']').'</option>
+<option value="'.SCHEDULE_TYPE_YEAR.'"'.(($this->type == SCHEDULE_TYPE_YEAR) ? ' selected' : '').'>'.g_l('modules_schedpro',"[type][".SCHEDULE_TYPE_YEAR.']').'</option>
 </select>
 ';
 
@@ -236,8 +237,9 @@ class we_schedpro{
 		$checknname = md5(uniqid(rand(),1));
 		$table = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["task"]["headline"].':</td>
-		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>'.$taskpopup.'</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->active, $checknname, $GLOBALS["l_schedpro"]["active"], false, "defaultfont", "this.form.elements['we_schedule_active_".$this->nr."'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);")
+		<td class="defaultgray">'.g_l('modules_schedpro',"[task][headline]").':</td>
+		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>'.$taskpopup.'</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->active, $checknname, g_l('modules_schedpro',"[active]")
+						, false, "defaultfont", "this.form.elements['we_schedule_active_".$this->nr."'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);")
 																																							. '<input type="hidden" name="we_schedule_active_'.$this->nr.'" value="'.$this->active.'" /></td></tr></table></td>
 		<td>' . $we_button->create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','".$this->nr."')") . '</td>
 	</tr>
@@ -252,7 +254,7 @@ class we_schedpro{
 		}
 
 		$table .= '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["type"]["headline"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[type][headline]").':</td>
 		<td class="defaultfont">'.$typepopup.'</td>
 		<td></td>
 	</tr>
@@ -263,7 +265,7 @@ $this->getSpacerRowHTML();
 		switch($this->type){
 			case SCHEDULE_TYPE_ONCE:
 				$table .= '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["datetime"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[datetime]").':</td>
 		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true).'</td>
 		<td></td>
 	</tr>
@@ -271,7 +273,7 @@ $this->getSpacerRowHTML();
 				break;
 			case SCHEDULE_TYPE_HOUR:
 				$table .= '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["minutes"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[minutes]").':</td>
 		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"i").'</td>
 		<td></td>
 	</tr>
@@ -279,7 +281,7 @@ $this->getSpacerRowHTML();
 				break;
 			case SCHEDULE_TYPE_DAY:
 				$table .= '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["time"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[time]").':</td>
 		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
@@ -287,14 +289,14 @@ $this->getSpacerRowHTML();
 				break;
 			case SCHEDULE_TYPE_WEEK:
 				$table .= '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["time"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[time]").':</td>
 		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
 '.
 $this->getSpacerRowHTML().
 '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["weekdays"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[weekdays]").':</td>
 		<td class="defaultfont">'.$this->getWeekdaysHTML().'</td>
 		<td></td>
 	</tr>
@@ -302,14 +304,14 @@ $this->getSpacerRowHTML().
 				break;
 			case SCHEDULE_TYPE_MONTH:
 				$table .= '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["time"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[time]").':</td>
 		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
 '.
 $this->getSpacerRowHTML().
 '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["days"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[days]").':</td>
 		<td class="defaultfont">'.$this->getDaysHTML().'</td>
 		<td></td>
 	</tr>
@@ -317,21 +319,21 @@ $this->getSpacerRowHTML().
 				break;
 			case SCHEDULE_TYPE_YEAR:
 				$table .= '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["time"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[time]").':</td>
 		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
 '.
 $this->getSpacerRowHTML().
 '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["months"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[months]").':</td>
 		<td class="defaultfont">'.$this->getMonthsHTML().'</td>
 		<td></td>
 	</tr>
 '.
 $this->getSpacerRowHTML().
 '	<tr valign="top">
-		<td class="defaultgray">'.$GLOBALS["l_schedpro"]["days"].':</td>
+		<td class="defaultgray">'.g_l('modules_schedpro',"[days]").':</td>
 		<td class="defaultfont">'.$this->getDaysHTML().'</td>
 		<td></td>
 	</tr>

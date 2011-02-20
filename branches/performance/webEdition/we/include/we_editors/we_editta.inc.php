@@ -27,8 +27,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 
 protect();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/object.inc.php");
-
 
 $nr = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
 $name = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
@@ -251,9 +249,8 @@ $we_button = new we_button();
 $cancel_button = $we_button->create_button("cancel","javascript:top.close()");
 $okbut = $we_button->create_button("ok","javascript:okFn();");
 $buttons = $we_button->position_yes_no_cancel($okbut,null,$cancel_button);
-$out .= we_multiIconBox::getHTML("","100%",$parts,30,$buttons,-1,"","","",$l_object["textarea_field"] . ' "' . $we_doc->elements[$name]['dat'] . '" - ' . $l_object["attributes"]);
+$out .= we_multiIconBox::getHTML("","100%",$parts,30,$buttons,-1,"","","",g_l('modules_object','[textarea_field]'). ' "' . $we_doc->elements[$name]['dat'] . '" - ' . g_l('modules_object','[attributes]'));
 $out .= '</form></body></html>';
 
 print $out;
 
-?>

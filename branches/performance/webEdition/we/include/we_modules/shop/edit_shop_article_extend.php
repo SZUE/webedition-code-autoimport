@@ -29,11 +29,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
-
-
 /* ************* fuction for orders  ************** */
 $typeObj = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'object';
 $typeDoc = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'document';
@@ -261,7 +256,7 @@ if (isset($daten)){
     }
     /* ************* selectbox function ************** */
 
-    $selClass = array_select("$val", "ViewClass", $l_shop["classSel"]);  // displays a selectbox for the purpose of selecting a class..
+    $selClass = array_select("$val", "ViewClass", g_l('modules_shop','[classSel]'));  // displays a selectbox for the purpose of selecting a class..
 
 
 
@@ -304,7 +299,7 @@ if (isset($daten)){
         	$classSelectTable = "";
         }
         if($entries !=0) {   // Pager: Number of records not empty?
-            $topInfo = ($entries>0) ? $entries : $l_shop["noRecord"];
+            $topInfo = ($entries>0) ? $entries : g_l('modules_shop','[noRecord]');
 
             $classid = abs($_REQUEST["ViewClass"]); // gets the value from the selectbox;
 
@@ -356,12 +351,12 @@ if (isset($daten)){
             }
 
             // build the headline
-            $headline[0]["dat"] = getTitleLinkObj($l_shop["ArtName"], 'obTitle');
-            $headline[1]["dat"] = getTitleLinkObj($l_shop["ArtID"], 'obID');
-            //$headline[2]["dat"] = getTitleLinkObj($l_shop["docType"], $typeAlias);
-            $headline[2]["dat"] = getTitleLinkObj($l_shop["artCreate"], 'cDate');
-            $headline[3]["dat"] = getTitleLinkObj($l_shop["artPub"], 'cPub');
-            $headline[4]["dat"] = getTitleLinkObj($l_shop["artMod"], 'cMob');
+            $headline[0]["dat"] = getTitleLinkObj(g_l('modules_shop','[ArtName]'), 'obTitle');
+            $headline[1]["dat"] = getTitleLinkObj(g_l('modules_shop','[ArtID]'), 'obID');
+            //$headline[2]["dat"] = getTitleLinkObj(g_l('modules_shop','[docType]'), $typeAlias);
+            $headline[2]["dat"] = getTitleLinkObj(g_l('modules_shop','[artCreate]'), 'cDate');
+            $headline[3]["dat"] = getTitleLinkObj(g_l('modules_shop','[artPub]'), 'cPub');
+            $headline[4]["dat"] = getTitleLinkObj(g_l('modules_shop','[artMod]'), 'cMob');
 
             // we need functionalitty to order these
 
@@ -414,7 +409,7 @@ if (isset($daten)){
             $parts = array();
 
             $out = 		'<table cellpadding="2" cellspacing="0" width="100%" border="0">'
-                .	'<tr><td class="defaultfont">'.$l_shop["noRecordAlert"].'</td></tr>'
+                .	'<tr><td class="defaultfont">'.g_l('modules_shop','[noRecordAlert]').'</td></tr>'
                 .	'<tr><td class="defaultfont">'.$we_button->create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")).'</td></tr>'
                 .	'</table>';
 
@@ -425,7 +420,7 @@ if (isset($daten)){
             );
 
 
-            print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1,"","",false, sprintf(g_l('tabs','[module][artList]'),$l_shop["noRecord"]));
+            print we_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1,"","",false, sprintf(g_l('tabs','[module][artList]'),g_l('modules_shop','[noRecord]')));
 
         }
 
@@ -445,7 +440,7 @@ if (isset($daten)){
         $typeAlias = isset($typeAlias) ? $typeAlias = "document" : $typeAlias = "document"; // Pager: determine the current page
 
         if($entries !=0){  // Pager: Number of records not empty?
-            $topInfo = ($entries>0) ? $entries : $l_shop["noRecord"];
+            $topInfo = ($entries>0) ? $entries : g_l('modules_shop','[noRecord]');
             // :: then do the query for documents
             $queryCondition = FILE_TABLE.".ID = ".LINK_TABLE.".DID AND ".LINK_TABLE.".CID = ".CONTENT_TABLE.".ID AND ".LINK_TABLE.".Name = \"".$dbTitlename."\" ";
             $queryFrom = CONTENT_TABLE.", ".LINK_TABLE.",".FILE_TABLE." ";
@@ -484,12 +479,12 @@ if (isset($daten)){
             }
             $typeAlias = "document";
             // build the headline
-            $headline[0]["dat"] = getTitleLinkDoc($l_shop["ArtName"], 'sql');
-            $headline[1]["dat"] = getTitleLinkDoc($l_shop["ArtID"], 'dd');
-            //$headline[2]["dat"] = getTitleLinkDoc($l_shop["docType"], $typeAlias);
-            $headline[2]["dat"] = getTitleLinkDoc($l_shop["artCreate"], 'dDate');
-            $headline[3]["dat"] = getTitleLinkDoc($l_shop["artPub"], 'dPub');
-            $headline[4]["dat"] = getTitleLinkDoc($l_shop["artMod"], 'dMod');
+            $headline[0]["dat"] = getTitleLinkDoc(g_l('modules_shop','[ArtName]'), 'sql');
+            $headline[1]["dat"] = getTitleLinkDoc(g_l('modules_shop','[ArtID]'), 'dd');
+            //$headline[2]["dat"] = getTitleLinkDoc(g_l('modules_shop','[docType]'), $typeAlias);
+            $headline[2]["dat"] = getTitleLinkDoc(g_l('modules_shop','[artCreate]'), 'dDate');
+            $headline[3]["dat"] = getTitleLinkDoc(g_l('modules_shop','[artPub]'), 'dPub');
+            $headline[4]["dat"] = getTitleLinkDoc(g_l('modules_shop','[artMod]'), 'dMod');
 
             // we need functionalitty to order these
 
