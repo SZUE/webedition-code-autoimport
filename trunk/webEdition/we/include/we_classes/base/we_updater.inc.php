@@ -293,7 +293,7 @@
 		}
 		$this->fix_icon();
 
-
+		return true;
 	}
 
 	function updateCustomers(){
@@ -353,6 +353,7 @@
 			else $this->changeColTyp(CUSTOMER_TABLE,"LastAccess","VARCHAR(24) DEFAULT '' NOT NULL");
 
 		}
+		return true;
 	}
 
 	function updateScheduler(){
@@ -361,6 +362,7 @@
 			if(!$this->isColExist(SCHEDULE_TABLE,"Type")) $this->addCol(SCHEDULE_TABLE,"Type","TINYINT(3) DEFAULT '0' NOT NULL");
 			if(!$this->isColExist(SCHEDULE_TABLE,"Active")) $this->addCol(SCHEDULE_TABLE,"Active","TINYINT(1) DEFAULT '1'");
 		}
+		return true;
 	}
 
 	function updateNewsletter(){
@@ -370,12 +372,14 @@
 		if(defined("NEWSLETTER_BLOCK_TABLE")){
 				if(!$this->isColExist(NEWSLETTER_BLOCK_TABLE,"Pack")) $this->addCol(NEWSLETTER_BLOCK_TABLE,"Pack","TINYINT(1) DEFAULT '0'");
 		}
+		return true;
 	}
 
 	function updateShop(){
 		if(defined("SHOP_TABLE")){
 			if($this->isColExist(SHOP_TABLE,"Price")) $this->changeColTyp(SHOP_TABLE,"Price","VARCHAR(20)");
 		}
+		return true;
 	}
 	
 	function updateObjectFilesX() {
@@ -384,7 +388,7 @@
 			$_db = new DB_WE();
 
 			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE . ';','MaxTID',$_db);
-			$_maxid++;p_r($_maxid);
+			$_maxid++;
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
 				if ($this->isTabExist($_table)) {
@@ -421,6 +425,7 @@
 				}
 			}
 		}
+		return true;
 	}
 
 	function doUpdate(){
