@@ -127,14 +127,14 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbas
 	}
 	if (!file_exists($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'data/.htaccess') ){
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'data/.htaccess',$htaccessdata);
-	}	
+	}
 }
 
 if (!file_exists($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'.htaccess') ){
 	if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/we_exim/backup/we_backuphtaccess.txt')) {
 		$htaccessdata=file_get_contents($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/we_exim/backup/we_backuphtaccess.txt');
 		file_put_contents($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'.htaccess',$htaccessdata);
-	} 
+	}
 }
 if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/')) {
 	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/');
@@ -154,7 +154,7 @@ $DB_WE->query('DELETE FROM '.ERROR_LOG_TABLE.' WHERE `Date` < DATE_SUB(NOW(), IN
 
 $DB_WE->query('DELETE FROM '.FAILED_LOGINS_TABLE.' WHERE LoginDate < DATE_SUB(NOW(), INTERVAL '.LOGIN_FAILED_HOLDTIME.' DAY)');
 
-$DB_WE->query('SELECT COUNT(ID) AS count FROM '.FAILED_LOGINS_TABLE.' WHERE IP="'.addslashes($_SERVER['REMOTE_ADDR']).'" AND LoginDate > DATE_SUB(NOW(). INTERVAL '.abs(LOGIN_FAILED_TIME).' HOUR)');
+$DB_WE->query('SELECT COUNT(ID) AS count FROM '.FAILED_LOGINS_TABLE.' WHERE IP="'.addslashes($_SERVER['REMOTE_ADDR']).'" AND LoginDate > DATE_SUB(NOW(), INTERVAL '.abs(LOGIN_FAILED_TIME).' HOUR)');
 $DB_WE->next_record();
 
 if ($DB_WE->f('count') >= LOGIN_FAILED_NR) {
