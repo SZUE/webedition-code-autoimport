@@ -51,7 +51,7 @@ class weNewsletterView {
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
-	
+
 
 	function weNewsletterView() {
 		global $l_newsletter;
@@ -236,7 +236,7 @@ class weNewsletterView {
 		if ($Pathvalue == "") {
 			$Pathvalue = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID=" . abs($IDValue), "Path", $this->db);
 		}
-		
+
 		$we_button = new we_button();
 		$button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','','$open_doc')");
 		if(is_object($acObject)){
@@ -252,7 +252,7 @@ class weNewsletterView {
 			$yuiSuggest->setTable($table);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
-			return $yuiSuggest->getHTML();		
+			return $yuiSuggest->getHTML();
 		} else {
 			return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly',"text",$width,0),
 				"",
@@ -270,7 +270,7 @@ class weNewsletterView {
 	  $we_button = new we_button();
 	  $button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
 		if(is_object($acObject)){
-		
+
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId($IDName);
 			$yuiSuggest->setContentType("folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime");
@@ -282,7 +282,7 @@ class weNewsletterView {
 			$yuiSuggest->setTable($table);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
-			return $yuiSuggest->getHTML();		
+			return $yuiSuggest->getHTML();
 		} else {
 			return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly',"text",$width,0),
 			"",
@@ -314,10 +314,10 @@ class weNewsletterView {
 			$yuiSuggest->setTable(NEWSLETTER_TABLE);
 			$yuiSuggest->setWidth($width);
 			$yuiSuggest->setSelectButton($button);
-			
+
 			return $yuiSuggest->getHTML();
 		} else {
-	
+
 			return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly id="yuiAcInputPathGroup"',"text",$width,0),
 				"",
 				"left",
@@ -403,9 +403,9 @@ class weNewsletterView {
 					}
 				}
 			}
-			
+
 			parent.document.title = "'.$title.'";
-			
+
 			/**
 			  * Menu command controler
 			  */
@@ -426,7 +426,7 @@ class weNewsletterView {
 							eval(\'top.opener.top.we_cmd("exit_modules")\');
 						}
 						break;
-						
+
 					case "new_newsletter":
 						if(top.content.resize.right.editor.edbody.loaded) {
 							top.content.resize.right.editor.edbody.document.we_form.ncmd.value = arguments[0];
@@ -435,7 +435,7 @@ class weNewsletterView {
 							setTimeout("we_cmd(\"new_newsletter\");", 10);
 						}
 						break;
-						
+
 					case "new_newsletter_group":
 						if(top.content.resize.right.editor.edbody.loaded) {
 							top.content.resize.right.editor.edbody.document.we_form.ncmd.value = arguments[0];
@@ -444,7 +444,7 @@ class weNewsletterView {
 							setTimeout("we_cmd(\"new_newsletter_group\");", 10);
 						}
 						break;
-						
+
 					case "delete_newsletter":
 						if(top.content.resize.right.editor.edbody.document.we_form.ncmd.value=="home") {
 							' . we_message_reporting::getShowMessageCall($l_newsletter["no_newsletter_selected"], WE_MESSAGE_ERROR) . '
@@ -481,7 +481,7 @@ class weNewsletterView {
 										}
 										top.content.resize.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
 										top.content.resize.right.editor.edbody.submitForm();
-	
+
 									} else {
 										' . we_message_reporting::getShowMessageCall($l_newsletter["nothing_to_save"], WE_MESSAGE_ERROR) . '
 									}
@@ -489,7 +489,7 @@ class weNewsletterView {
 							top.content.usetHot();
 						}
 						break;
-						
+
 					case "edit_newsletter":
 						top.content.hot=0;
 						top.content.resize.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
@@ -560,7 +560,7 @@ class weNewsletterView {
 							top.content.resize.right.editor.edbody.we_cmd(arguments[0]);
 						}
 						break;
-						
+
 					case "newsletter_settings":
 					case "black_list":
 					case "edit_file":
@@ -578,8 +578,8 @@ class weNewsletterView {
 						eval("top.opener.top.we_cmd(" + args + ")");
 				}
 			}
-			
-			
+
+
 		');
 	}
 
@@ -595,7 +595,7 @@ class weNewsletterView {
 					}
 				}
 			}
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -640,7 +640,7 @@ class weNewsletterView {
 		$we_button = new we_button();
 		$js =we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
 		$js.=we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/we/weValidate.js"));
-	
+
 		$js.=we_htmlElement::jsElement('
 
 			function doUnload() {
@@ -650,7 +650,7 @@ class weNewsletterView {
 					}
 				}
 			}
-			
+
 			/**
 			  * Newsletter command controler
 			  */
@@ -679,7 +679,7 @@ class weNewsletterView {
 					case "openSelector":
 						new jsWindow(url,"we_selector",-1,-1,'.WINDOW_SELECTOR_WIDTH.','.WINDOW_SELECTOR_HEIGHT.',true,true,true,true);
 						break;
-						
+
 					case "openNewsletterDirselector":
 						url = "'.WEBEDITION_DIR.'we/include/we_modules/newsletter/we_dirfs.php?";
 						for(var i = 0; i < arguments.length; i++){
@@ -687,7 +687,7 @@ class weNewsletterView {
 						}
 						new jsWindow(url,"we_newsletter_dirselector",-1,-1,600,400,true,true,true);
 						break;
-						
+
 					case "add_customer":
 						document.we_form.ngroup.value=arguments[2];
 
@@ -1063,7 +1063,7 @@ class weNewsletterView {
 			}
 
 			function markEMails() {
-			
+
 			}
 			function add(group, newRecipient, htmlmail, salutation, title, firstname, lastname) {
 				var p = document.forms[0].elements["we_recipient"+group];
@@ -1261,7 +1261,7 @@ class weNewsletterView {
 
 				p.options[i] =  new Option(text,value);
 				p.options[i].className = optionClassName;
-				
+
 				if (sel) {
 					p.selectedIndex = i;
 				}
@@ -1315,7 +1315,7 @@ class weNewsletterView {
 						//delete_all_enabled = switch_button_state("delete_all", "delete_all_enabled", "enabled");
 					}
 			}
-	
+
 
 		');
 		//$js.=we_htmlElement::jsElement($we_button->create_state_changer(false));
@@ -1454,8 +1454,8 @@ class weNewsletterView {
 				    	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 				    	$weAcQuery = new weSelectorQuery();
 						$newone = false;
-						
-						
+
+
 
 						if($this->newsletter->filenameNotValid()){
 							print we_htmlElement::jsElement(
@@ -1473,9 +1473,9 @@ class weNewsletterView {
 								return;
 					    	}
 					    }
-						
+
 					    if (isset($_REQUEST['blocks'])) {
-					    	
+
 						    for ($i=0;$i<$_REQUEST['blocks'];$i++) {
 								switch ($_REQUEST['block'.$i."_Type"]) {
 									case 0:
@@ -1494,7 +1494,7 @@ class weNewsletterView {
 								}
 								if (!empty($acTable)) {
 							    	$weAcResult = $weAcQuery->getItemById($_REQUEST['block'.$i."_LinkID"],$acTable,array("IsFolder"));
-									
+
 							    	if (!is_array($weAcResult) || count($weAcResult)<1 || $weAcResult[0]['IsFolder']==1) {
 										print we_htmlElement::jsElement(
 											we_message_reporting::getShowMessageCall(sprintf($l_newsletter["blockFieldError"],($i+1),$acErrorField), WE_MESSAGE_ERROR)
@@ -1546,7 +1546,7 @@ class weNewsletterView {
 						if ($this->newsletter->isEmbedImages=="") {
 							$this->newsletter->isEmbedImages=$this->settings["isEmbedImages"];
 						}
-						
+
 						$exist=false;
 						$double = 0;
 
@@ -1588,7 +1588,7 @@ class weNewsletterView {
 							$message="";
 
 							$ret=$this->newsletter->save($message,(isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
-							
+
 							if ($ret != 0) {
 								$jsmess="";
 								if ($ret>0) {
@@ -1852,7 +1852,7 @@ class weNewsletterView {
 								}
 								unset($_mailListArray);
 								while ($dat=fgetcsv($fh,1000,$delimiter)) {
-									
+
 									if (!isset($control[$dat[$col]])) {
 										$_alldat = implode("",$dat);
 										if (str_replace(" ", "", $_alldat)=="") {
@@ -2195,7 +2195,7 @@ class weNewsletterView {
 			print '<div class="defaultgray"><center>'.$l_newsletter["cannot_preview"].'</center></div>';
 		}
 	}
-	
+
 	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = "", $title = "", $firstname = "", $lastname = "") {
 
 		$content = "";
@@ -2332,8 +2332,8 @@ class weNewsletterView {
 				$port = ":".$this->settings["use_port"];
 			} else {
 				//if ($_SERVER['SERVER_PORT'] != 80) { $port = ":".$_SERVER['SERVER_PORT'];} //Dieses Verhalten führt zu Bug #3894
-				// else {$port = "";} 
-				$port = ""; 
+				// else {$port = "";}
+				$port = "";
 			}
 			if(isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"]) $protocol="https://";
 			else $protocol="http://";
@@ -2452,7 +2452,7 @@ class weNewsletterView {
 
 	function sendTestMail($group, $hm) {
 		include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
-	
+
 		$plain="";
 		$content="";
 		$inlines=array();
@@ -2491,7 +2491,7 @@ class weNewsletterView {
 		}
 		$phpmail->buildMessage();
 		$phpmail->Send();
-		
+
 		$cc=0;
 		while(true){
 			if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_p_".$cc)) weFile::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_p_".$cc);
@@ -2524,11 +2524,11 @@ class weNewsletterView {
 				$month = $date[1];
 				$year = $date[2];
 				$hour = $filter['hours'];
-				$minute = $filter['minutes']; 
+				$minute = $filter['minutes'];
 				$filter['fieldvalue'] = mktime($hour, $minute, 0, $month, $day, $year);
-			} 
+			}
 		}
-		
+
 		switch ($filter["operator"]) {
 			case 0:
 				$filterSQL .= " = '".$filter["fieldvalue"]."'";
@@ -2571,10 +2571,10 @@ class weNewsletterView {
 	}
 
 	function getEmails($group, $select = 0, $emails_only = 0) {
-		
+
 		@set_time_limit(0);
 		@ini_set("memory_limit", "128M");
-		
+
 		$list = array();
 
 		if ($select==0 || $select==3) {
@@ -2699,6 +2699,15 @@ class weNewsletterView {
 		while ($db->next_record()) {
 			$ret[$db->f("pref_name")]=$db->f("pref_value");
 		}
+		//make sure blacklist is correct
+		$tmp=explode(',',$ret['black_list']);
+		if(isarray($tmp)){
+			foreach($tmp as &$t){
+				$t=trim($t);
+			}
+		}
+		$ret['black_list']=implode(',',$tmp);
+
 		return $ret;
 	}
 
@@ -2731,7 +2740,7 @@ class weNewsletterView {
 		$db->query("UPDATE ".NEWSLETTER_PREFS_TABLE." SET pref_value='$value' WHERE pref_name='$name';");
 		if(!$db->affected_rows()){
 			$db->query("INSERT INTO ".NEWSLETTER_PREFS_TABLE." SET pref_name='$name', pref_value='$value';");
-		}		
+		}
 	}
 
 	function getBlackList() {
