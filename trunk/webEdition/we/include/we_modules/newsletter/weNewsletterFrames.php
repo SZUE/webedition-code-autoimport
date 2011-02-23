@@ -2771,7 +2771,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		$end=count($emails);
 
 		for($j=$start;$j<$end;$j++){
-			$email=$emails[$j][0];
+			$email=trim($emails[$j][0]);
 
 			$user_groups=explode(",",$emails[$j][6]);
 			$user_blocks=$emails[$j][7];
