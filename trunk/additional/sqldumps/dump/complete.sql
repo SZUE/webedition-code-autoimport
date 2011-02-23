@@ -1,4 +1,4 @@
-﻿CREATE TABLE tblAnzeigePrefs (
+CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE tblDocTypes (
 /* query separator */
 CREATE TABLE tblErrorLog (
   ID int(11) NOT NULL auto_increment,
-  `Type` enum('Error','Warning','Parse error','Notice','Core error','Core warning','Compile error','Compile warning','User error','User warning','User notice','Deprecated notice','User deprecated notice','unknown Error') NOT NULL,
+  `Type` enum('Error','Warning','Parse error','Notice','Core error','Core warning','Compile error','Compile warning','User error','User warning','User notice','Deprecated notice','User deprecated notice','Strict Error','unknown Error') NOT NULL,
   `Function` varchar(255) NOT NULL default '',
   `File` varchar(255) NOT NULL default '',
   `Line` int(11) NOT NULL,
