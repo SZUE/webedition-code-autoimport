@@ -37,6 +37,7 @@ class we_browserDetectTest extends PHPUnit_Framework_TestCase {
 			array('str' => 'Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.2.11) Gecko/20101012 Firefox/3.6.11', 'name' => 'firefox', 'version' => '3.6', 'os' => 'win', 'supported'=>true),
 			array('str' => 'Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10.5; en-US; rv:1.9.0.3) Gecko/2008092414 Firefox/3.0.3', 'name' => 'firefox', 'version' => '3.0', 'os' => 'mac', 'supported'=>true),
 			array('str' => 'Mozilla/5.0 (X11; U; Darwin Power Macintosh; en-US; rv:1.8.0.12) Gecko/20070803 Firefox/1.5.0.12 Fink Community Edition', 'name' => 'firefox', 'version' => '1.5', 'os' => 'mac', 'supported'=>true),
+			array('str' => 'Mozilla/4.0 (Linux 2.6.33.7-desktop-2mnb) Java/1.6.0_22', 'name' => 'java', 'version' => '1.6.0_22', 'os' => 'unknown', 'supported'=>false),
 	);
 	/**
 	 * @var    we_browserDetect
