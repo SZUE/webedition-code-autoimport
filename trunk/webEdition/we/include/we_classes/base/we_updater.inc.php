@@ -217,23 +217,23 @@
 
 	function addCol($tab,$col,$typ,$pos=""){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD $col $typ".(($pos!="") ? " ".$pos : "").";");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
 	}
 
 	function changeColTyp($tab,$col,$newtyp){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE mysql_real_escape_string($tab) CHANGE $col $col $newtyp;");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
 	}
 
 	function getColTyp($tab,$col){
 			   global $DB_WE;
-			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '$col';");
+			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".$col."';");
 			   if($DB_WE->next_record()) return $DB_WE->f("Type"); else return "";
 	}
 
 	function delCol($tab,$col){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE mysql_real_escape_string($tab) DROP $col;");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP ".$col.";");
 	}
 
 	function updateUsers(){
