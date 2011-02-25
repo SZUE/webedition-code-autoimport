@@ -2701,7 +2701,7 @@ class weNewsletterView {
 		}
 		//make sure blacklist is correct
 		$tmp=explode(',',$ret['black_list']);
-		if(isarray($tmp)){
+		if(is_array($tmp)){
 			foreach($tmp as &$t){
 				$t=trim($t);
 			}
