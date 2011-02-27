@@ -150,7 +150,7 @@ class weCustomerFrames extends weModuleFrames {
 				$cnt=count($defs);
 				$i=0;
 				foreach ($defs as $def){
-					$attribs=array('type'=>'checkbox','name'=>$field.'_multi_'.($i++),'value'=>$def, 'onchange'=>'setMultiSelectData(\''.$field.'\','.$cnt.');');
+					$attribs=array('type'=>'checkbox','name'=>$field.'_multi_'.($i++),'value'=>$def, ($GLOBALS['BROWSER']=='IE'?'onclick':'onchange')=>'setMultiSelectData(\''.$field.'\','.$cnt.');');
 					if(in_array($def,$values)){
 						$attribs['checked']='checked';
 					}
