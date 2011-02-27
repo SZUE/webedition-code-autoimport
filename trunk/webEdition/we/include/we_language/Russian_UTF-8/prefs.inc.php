@@ -530,7 +530,7 @@ $l_prefs = array(
 		'smtp_encryption_ssl' => "SSL", // TRANSLATE
 		'smtp_encryption_tls' => "TLS", // TRANSLATE
 
-	 $l_prefs["urlencode_objectseourls"] = "URLencode the SEO-urls";// TRANSLATE
+	 'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
 
 		/*		 * ***************************************************************************
 		 * Versions settings
