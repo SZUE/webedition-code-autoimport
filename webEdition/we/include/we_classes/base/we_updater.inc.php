@@ -194,6 +194,21 @@
 			if($DB_WE->next_record()) return true; else return false;
 	}
 
+	function updateUnindexedCols($tab,$col){
+			global $DB_WE;
+			$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
+			$query=array();
+			while($DB_WE->next_record()) {
+				if($DB_WE->f('Key')==''){
+					$query[]='ADD INDEX ('.$DB_WE->f('Field').')';
+				}
+			}
+			if(count($query)>0){
+				$tmp='ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query);
+				echo $tmp;
+			}
+	}
+
 	function isTabExist($tab){
 			global $DB_WE;
 			$DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
@@ -252,8 +267,8 @@
 		if($this->isColExist(USER_TABLE,"Second")) $this->changeColTyp(USER_TABLE,"Second","VARCHAR(255)");
 		if($this->isColExist(USER_TABLE,"username")) $this->changeColTyp(USER_TABLE,"username","VARCHAR(255) NOT NULL");
 		if($this->isColExist(USER_TABLE,"workSpace")) $this->changeColTyp(USER_TABLE,"workSpace","VARCHAR(255)");
-		
-		
+
+
 		$this->fix_path();
 		$this->fix_text();
 		$this->fix_icon_small();
@@ -282,7 +297,7 @@
 
 		if(!$this->isColExist(USER_TABLE,"LoginDenied")) $this->addCol(USER_TABLE,"LoginDenied","TINYINT(1) DEFAULT '0' NOT NULL");
 		if(!$this->isColExist(USER_TABLE,"UseSalt")) $this->addCol(USER_TABLE,"UseSalt","TINYINT(1) DEFAULT '0' NOT NULL");
-		
+
 		if($this->isColExist(USER_TABLE,"workSpace")){
 			$this->changeColTyp(USER_TABLE,"workSpace","VARCHAR(255)");
 			$DB_WE->query("UPDATE " . USER_TABLE . " SET workSpace='' WHERE workSpace='0';");
@@ -381,7 +396,7 @@
 		}
 		return true;
 	}
-	
+
 	function updateObjectFilesX() {
 		global $DB_WE;
 		if(defined('OBJECT_X_TABLE')){
@@ -422,6 +437,8 @@
 					} else {
 						$this->addCol($_table,'OF_Language','VARCHAR(5) DEFAULT NULL',' AFTER OF_WebUserID ');
 					}
+					//add indices to all objects
+					$this->updateUnindexedCols($_table,'object_%');
 				}
 			}
 		}
@@ -438,4 +455,3 @@
 	}
 
 }
-?>
