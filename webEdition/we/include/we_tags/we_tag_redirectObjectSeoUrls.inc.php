@@ -104,11 +104,10 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		if(!$notfound){
 			$_REQUEST=array_merge($_REQUEST,$myRequest);
 			$_REQUEST['we_objectID']=$objectid;
+			$_REQUEST['we_oid']=$objectid;
 			unset($GLOBALS["WE_MAIN_DOC"]);
 			unset($GLOBALS["we_doc"]);
 			$saveLang= $GLOBALS['WE_LANGUAGE'];
-			unset($GLOBALS);
-			$GLOBALS['WE_LANGUAGE']=$saveLang;
 			header("HTTP/1.0 200 OK", true,200);
 			header("Status: 200 OK", true,200);
 			include($_SERVER["DOCUMENT_ROOT"] . $display);
@@ -122,7 +121,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 				header("HTTP/1.0 404 Not Found", true,404);
 				header("Status: 404 Not Found", true,404);
 			}
-			//we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
+			we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
 			exit;
 		}
 	}

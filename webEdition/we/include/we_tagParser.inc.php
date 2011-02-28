@@ -1242,7 +1242,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 if (!isset($GLOBALS["we_lv_array"])) {
 	$GLOBALS["we_lv_array"] = array();
 }
-
+$we__oid=$GLOBALS["'. $we__oid .'"];
 include_once(WE_OBJECT_MODULE_DIR . "we_objecttag.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 ';
@@ -1261,7 +1261,7 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 
 				$php .= '
 		$we_doc = $GLOBALS["we_doc"];
-		$we_oid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_oid . ';
+		$we_oid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset(' . $we_oid. ') ? '. $we_oid.' : $we__oid;
 		$path = f("SELECT Path FROM ".OBJECT_FILES_TABLE." WHERE ID=\'$we_oid\'","Path",$GLOBALS["DB_WE"]);
 		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
 		$idname = \'we_\'.$we_doc->Name.\'_txt[' . $name . ']\';
