@@ -153,7 +153,7 @@ CREATE TABLE tblIndex (
   Description text NOT NULL,
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
-  PRIMARY KEY (`DID`,`OID`),
+  PRIMARY KEY (`DID`,`OID`,WorkspaceID),
   KEY `OID` (`OID`)
 ) ENGINE=MyISAM;
 /* query separator */
