@@ -193,7 +193,7 @@ class we_object extends we_document
 			$q .= " OF_Language VARCHAR(5) default 'NULL',";
 			// Letzter Eintrag darf nicht mit einem Leerzeichen enden, letztes Zeichen mu? ein , sein!!!
 
-			$indexe = ', KEY OF_WebUserID (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY `OF_IsSearchable` (`OF_IsSearchable`)';
+			$indexe = ', KEY (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY (`OF_IsSearchable`)';
 
 			if(isset($this->elements["neuefelder"]["dat"])){
 
@@ -253,7 +253,7 @@ class we_object extends we_document
 						$q .= ",";
 						//add index for complex queries
 						if($this->getElement($neu[$i]."dtype","dat")=='object'){
-							$indexe .= ', KEY '.$name.' ('.$name.')';
+							$indexe .= ', KEY ('.$name.')';
 						}
 					}
 				}
@@ -323,6 +323,12 @@ class we_object extends we_document
 							$nam = $this->getElement($tableInfo[$i]["name"]."dtype","dat")."_".$this->getElement($tableInfo[$i]["name"],"dat");
 							$q .= " CHANGE ".$tableInfo[$i]["name"]." ". $nam. " ";
 							$q .= $this->switchtypes($tableInfo[$i]["name"]);
+							//change from object is indexed to unindexed
+							if((strpos($tableInfo[$i]["name"],'object_')===0) && (strpos($nam, 'object_')!==0) && (strpos($tableInfo[$i]["flags"],'multiple_key')!==false)){
+								$q.=', DROP KEY '.$tableInfo[$i]["name"].' ';
+							}else if ((strpos($tableInfo[$i]["name"],'object_')!==0) && (strpos($nam, 'object_')===0) && (strpos($tableInfo[$i]["flags"],'multiple_key')===false)){
+								$q.=', ADD INDEX ('.$tableInfo[$i]["name"].') ';
+							}
 							$arrt[$nam]["default"] = $this->elements[$tableInfo[$i]["name"]."default"]["dat"];
 							$arrt[$nam]["defaultThumb"] = $this->elements[$tableInfo[$i]["name"]."defaultThumb"]["dat"];
 							$arrt[$nam]["autobr"] = $this->elements[$tableInfo[$i]["name"]."autobr"]["dat"];
@@ -1427,7 +1433,7 @@ class we_object extends we_document
 			$myid = $this->getElement($ObjectID."default","dat");
  			$DoubleNames = $this->includedObjectHasDoubbleFieldNames($pid);
 			$path = $this->getElement("we_object_".$pid."_path");
-			$path = $path ? $path : f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid","Path",$db);
+			$path = $path ? $path : ($myid?f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid","Path",$db):'');
 			$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
 			$table = OBJECT_FILES_TABLE;
 
