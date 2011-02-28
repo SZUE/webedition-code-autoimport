@@ -615,6 +615,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 	if (isset($_REQUEST["we_returnpage"])) {
 		$GLOBALS["we_object"][$formname]->setElement("we_returnpage", $_REQUEST["we_returnpage"]);
 	}
+	
 	if (isset($_REQUEST["we_ui_$formname"]) && is_array($_REQUEST["we_ui_$formname"])) {
 		$dates = array();
 
@@ -648,6 +649,13 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 		}
 		$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 		$GLOBALS["we_object"][$formname]->Category = $cats;
+	}
+	if (isset($_REQUEST["we_ui_$formname"."_Category"])){
+		if(is_array($_REQUEST["we_ui_$formname"."_Category"])) {
+			$_REQUEST["we_ui_$formname"."_Category"] = makeCSVFromArray($_REQUEST["we_ui_$formname"."_Category"],true);
+		} else {
+			$_REQUEST["we_ui_$formname"."_Category"] = makeCSVFromArray(makeArrayFromCSV($_REQUEST["we_ui_$formname"."_Category"]), true);
+		}
 	}
 	foreach ($GLOBALS["we_object"][$formname]->persistent_slots as $slotname) {
 		if ($slotname != "categories" && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])) {
@@ -742,6 +750,13 @@ function initDocument($formname = "we_global_form", $tid = "", $doctype = "", $c
 		}
 		$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 		$GLOBALS["we_document"][$formname]->Category = $cats;
+	}
+	if (isset($_REQUEST["we_ui_$formname"."_Category"])){
+		if(is_array($_REQUEST["we_ui_$formname"."_Category"])) {
+			$_REQUEST["we_ui_$formname"."_Category"] = makeCSVFromArray($_REQUEST["we_ui_$formname"."_Category"],true);
+		} else {
+			$_REQUEST["we_ui_$formname"."_Category"] = makeCSVFromArray(makeArrayFromCSV($_REQUEST["we_ui_$formname"."_Category"]), true);
+		}
 	}
 	foreach ($GLOBALS["we_document"][$formname]->persistent_slots as $slotname) {
 		if ($slotname != "categories" && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])) {

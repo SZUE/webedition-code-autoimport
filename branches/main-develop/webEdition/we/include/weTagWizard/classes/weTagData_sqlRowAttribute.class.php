@@ -18,6 +18,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataOption.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
@@ -50,25 +52,27 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute
 	 */
 	function weTagData_sqlRowAttribute($id, $name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '')
 	{
-		
+
 		global $DB_WE;
-		
+		if(!isset($DB_WE)){
+			$DB_WE=new DB_WE();
+		}
 		$this->Table = $table;
 		$this->ValueName = $valueName;
 		$this->TextName = $textName ? $textName : $valueName;
-		
+
 		$options = array();
-		
+
 		// get options from choosen table
 		$items = array();
-		
+
 		$DB_WE->query(
 				"SELECT " . mysql_real_escape_string($this->ValueName) . "," . mysql_real_escape_string($this->TextName) . "
 			 FROM " . mysql_real_escape_string($this->Table) . "
 			 " . ($order ? "ORDER BY $order" : ''));
-		
+
 		while ($DB_WE->next_record()) {
-			
+
 			$options[] = new weTagDataOption($DB_WE->f($this->TextName), $DB_WE->f($this->ValueName));
 		}
 		parent::weTagData_selectAttribute($id, $name, $options, $required, $module);

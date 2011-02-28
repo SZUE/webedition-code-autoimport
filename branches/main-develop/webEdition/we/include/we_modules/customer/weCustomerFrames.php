@@ -129,7 +129,7 @@ class weCustomerFrames extends weModuleFrames {
 
 	function getHTMLFieldControl($field, $value=null) {
 		$props = $this->View->getFieldProperties($field);
-		if ($props['type'] != 'select' && !$this->View->customer->ID && $value == null) {
+		if ($props['type'] != 'select' && $props['type'] != 'multiselect' && !$this->View->customer->ID && $value == null) {
 			$value = $props['default'];
 		}
 		switch ($props['type']) {
@@ -144,7 +144,7 @@ class weCustomerFrames extends weModuleFrames {
 				$cnt=count($defs);
 				$i=0;
 				foreach ($defs as $def){
-					$attribs=array('type'=>'checkbox','name'=>$field.'_multi_'.($i++),'value'=>$def, 'onchange'=>'setMultiSelectData(\''.$field.'\','.$cnt.');');
+					$attribs=array('type'=>'checkbox','name'=>$field.'_multi_'.($i++),'value'=>$def, ($GLOBALS['BROWSER']=='IE'?'onclick':'onchange')=>'setMultiSelectData(\''.$field.'\','.$cnt.');');
 					if(in_array($def,$values)){
 						$attribs['checked']='checked';
 					}

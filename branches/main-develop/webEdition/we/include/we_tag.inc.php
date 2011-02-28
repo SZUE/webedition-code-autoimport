@@ -559,7 +559,7 @@ function we_tag_ifNotEditmode($attribs, $content) {
 }
 
 function we_tag_ifNotEmpty($attribs, $content){
-	return !we_tag('ifEmpty',$attribs);
+	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])||!we_tag('ifEmpty',$attribs);
 }
 
 function we_tag_ifNotEqual($attribs, $content){

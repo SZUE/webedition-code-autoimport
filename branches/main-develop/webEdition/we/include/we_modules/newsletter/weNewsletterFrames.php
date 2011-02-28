@@ -2713,7 +2713,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		$end=count($emails);
 
 		for($j=$start;$j<$end;$j++){
-			$email=$emails[$j][0];
+			$email=trim($emails[$j][0]);
 
 			$user_groups=explode(",",$emails[$j][6]);
 			$user_blocks=$emails[$j][7];
@@ -2882,7 +2882,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
             	$this->View->newsletter->Reply,
             	$this->View->newsletter->isEmbedImages
             );
-			$phpmail->setCharSet($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : g_l('charset',"[charset]"));
+			$phpmail->setCharSet($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]);
 
 			if ($htmlmail) {
 				$phpmail->addHTMLPart($content);
@@ -2896,18 +2896,14 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			foreach($atts as $att){
 				$phpmail->doaddAttachment($att);
 			}
-			if($this->View->settings["reject_malformed"])
-			$phpmail->buildMessage();
 
-			$not_malformed=true;
-			$verified=true;
 			$domain="";
-
-			if($this->View->settings["reject_malformed"]) $not_malformed=$this->View->newsletter->check_email($email);
-			if($this->View->settings["reject_not_verified"]) $verified=$this->View->newsletter->check_domain($email,$domain);
+			$not_malformed=($this->View->settings["reject_malformed"])?$this->View->newsletter->check_email($email):true;
+			$verified=($this->View->settings["reject_not_verified"])?$this->View->newsletter->check_domain($email,$domain):true;
 			$not_black=!$this->View->isBlack($email);
             if($verified && $not_malformed && $not_black){
 							if(!$test){
+								$phpmail->buildMessage();
                         		if($phpmail->Send()){
                         			if($this->View->settings["log_sending"]) $this->View->newsletter->addLog("mail_sent",$email);
 								}
@@ -3120,5 +3116,3 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	}
 
 }
-
-?>

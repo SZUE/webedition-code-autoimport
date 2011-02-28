@@ -37,7 +37,11 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		}
 	}
 	
-	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
+	if (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL']!=''){
+		$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
+	} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']!=''){
+		$path_parts = pathinfo($_SERVER['REDIRECT_URL']);
+	}
 
 	if(!$GLOBALS['we_editmode']){
 		$db = new DB_WE();

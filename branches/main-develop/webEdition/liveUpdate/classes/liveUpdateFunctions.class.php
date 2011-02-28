@@ -385,7 +385,10 @@ class liveUpdateFunctions {
 		if (file_exists($path)) {
 
 			$code = $this->getFileContent($path);
+			/** läuft nicht durch
 			$patchSuccess = eval('?>' . escapeshellcmd($code));
+			*/
+			$patchSuccess = eval('?>' .$code);
 			if ($patchSuccess === false) {
 				return false;
 			} else {

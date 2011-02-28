@@ -78,7 +78,7 @@ function we_error_handler($in_webEdition = true) {
 
 	if (defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)) {
 		$_error_level = 0 +
-			($_error_deprecated && defined('E_DEPRECATED') ? E_DEPRECATED|E_USER_DEPRECATED : 0) +
+			($_error_deprecated && defined('E_DEPRECATED') ? E_DEPRECATED|E_USER_DEPRECATED|E_STRICT : 0) +
 			($_error_notice ? E_NOTICE|E_USER_NOTICE : 0) +
 			($_error_warning ? E_WARNING|E_CORE_WARNING|E_COMPILE_WARNING|E_USER_WARNING : 0) +
 			($_error_error ? E_ERROR|E_PARSE|E_CORE_ERROR|E_COMPILE_ERROR|E_USER_ERROR|E_RECOVERABLE_ERROR : 0);
@@ -86,10 +86,11 @@ function we_error_handler($in_webEdition = true) {
 		ini_set('display_errors', $_display_error);
 		set_error_handler('error_handler',$_error_level);
 	} else {
+		//disable strict & deprecated errors
 		if (version_compare(PHP_VERSION, '5.3.0') >= 0){
 			$cur_error = error_reporting();
-			if (($cur_error & E_DEPRECATED ) == E_DEPRECATED ) {
-				$new_error = $cur_error ^ E_DEPRECATED;
+			if (($cur_error & (E_DEPRECATED|E_STRICT) ) > 0 ) {
+				$new_error = $cur_error & ~(E_DEPRECATED|E_STRICT);
 				$old_error = error_reporting($new_error);
 			}
 		}
@@ -99,6 +100,10 @@ function we_error_handler($in_webEdition = true) {
 //Note: Errors can only have ONE type - in case of changed typenames, rename DB's enum
 function translate_error_type($type) {
 	global $_error_notice, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	if (!defined('E_STRICT')) {
+		define('E_STRICT', 2048);
+	}
+
 	if (!defined('E_DEPRECATED')) {
 		define('E_DEPRECATED', 8192);
 	}
@@ -143,6 +148,9 @@ function translate_error_type($type) {
 
 		case E_DEPRECATED:
 			return 'Deprecated notice';
+
+		case E_STRICT:
+			return 'Strict Error';
 
 		case E_USER_DEPRECATED:
 			return 'User deprecated notice';
