@@ -36,8 +36,7 @@ class usersOnline
 		$_color = array('red','blue','green','orange');
 		$_i = $_k = 0;
 
-		$_query = 'SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE FROM_UNIXTIME(Ping-'.(PING_TIME + PING_TOLERANZ).')>UNIX_TIMESTAMP(NOW()) ORDER BY Ping DESC';
-		$DB_WE->query($_query);
+		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping > UNIX_TIMESTAMP(DATE_SUB( NOW(), INTERVAL '.(PING_TIME + PING_TOLERANZ).' second ) ) ORDER BY Ping DESC');
 
 		while($DB_WE->next_record()){
 			$this->num_uo++;
@@ -74,4 +73,3 @@ class usersOnline
 		return $this->users;
 	}
 }
-?>
