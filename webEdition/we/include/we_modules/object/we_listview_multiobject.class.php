@@ -41,10 +41,10 @@ class we_listview_multiobject extends listviewBase {
 	var $searchable = true;
 	var $Record = array();
 	var $customerFilterType = 'off';
-	var $languages = ""; //string of Languages, separated by ,
+	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
-	
+
 	/**
 	 * we_listview_multiobject()
 	 * @desc    constructor of class
@@ -107,13 +107,12 @@ class we_listview_multiobject extends listviewBase {
 
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
-		$this->languages = $languages;
-		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 		$this->objectseourls=$objectseourls;
 		$this->hidedirindex=$hidedirindex;
 
 		$_obxTable = OBJECT_X_TABLE.$this->classID;
-		
+
 		if ($this->languages !=''){
 			$where_lang = ' AND (';
 			$langArray = makeArrayFromCSV($this->languages);
@@ -126,14 +125,13 @@ class we_listview_multiobject extends listviewBase {
 		} else {
 			$where_lang = '';
 		}
-		
+
 		$this->seeMode   = $seeMode;	//	edit objects in seeMode
 		$this->searchable = $searchable;
 		$this->docID = $docID; //Bug #3720
 		$this->Record    = array();
 
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 
 
 
@@ -210,8 +208,8 @@ class we_listview_multiobject extends listviewBase {
 			}
 
 			$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE  ". OBJECT_X_TABLE . $this->classID . ".OF_ID IN (".implode(",", $this->objects).") AND ".($this->searchable ? " ". OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail.$where_lang." AND " . OBJECT_X_TABLE . $this->classID.".OF_ID != 0 ".($join ? " AND ($join) " : "").$cat_tail.$weDocumentCustomerFilter_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$sqlParts['groupBy'].$sqlParts["order"].(($rows > 0 && $this->order != "") ? (" limit ".$this->start.",".$this->rows) : "");
-			
-			
+
+
 			$this->DB_WE->query($q);
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
@@ -432,7 +430,7 @@ class we_listview_multiobject extends listviewBase {
 					if ($this->DB_WE->Record['OF_TriggerID']!=0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->Record['OF_TriggerID']));
 					}
-				
+
 					if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'. $this->DB_WE->Record['OF_Url'];
 					} else {
@@ -443,7 +441,7 @@ class we_listview_multiobject extends listviewBase {
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
-					}				
+					}
 				}
 				$this->DB_WE->Record["we_WE_TRIGGERID"] = isset($this->DB_WE->Record["OF_TriggerID"]) ? $this->DB_WE->Record["OF_TriggerID"] : 0;
 				$this->DB_WE->Record["we_WE_URL"] = isset($this->DB_WE->Record["OF_Url"]) ? $this->DB_WE->Record["OF_Url"] : '';
@@ -482,5 +480,3 @@ class we_listview_multiobject extends listviewBase {
 
 
 }
-
-?>
