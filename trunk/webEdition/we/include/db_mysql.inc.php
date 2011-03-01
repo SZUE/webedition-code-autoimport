@@ -34,7 +34,7 @@ class DB_Sql
 	/* public: configuration parameters */
 	var $Auto_Free = 0; ## Set to 1 for automatic mysql_free_result()
 
-	var $Debug = 0; ## Set to 1 for debugging messages.
+	static $Debug = 0; ## Set to 1 for debugging messages.
 
 	var $Halt_On_Error = "yes"; ## "yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)
 
@@ -138,7 +138,7 @@ class DB_Sql
 			$this->free();
 		}
 
-		if ($this->Debug)
+		if (self::$Debug)
 			printf("Debug: query = %s<br>\n", $Query_String);
 
 		$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);
