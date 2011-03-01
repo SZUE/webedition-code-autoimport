@@ -43,6 +43,10 @@ $_log_error = false;
 $_send_error = false;
 $_send_address = '';
 
+if (!defined('E_SQL')) {
+	define('E_SQL', -1);
+}
+
 /*************************************************************************
  * FUNCTIONS
  *************************************************************************/
@@ -155,9 +159,31 @@ function translate_error_type($type) {
 		case E_USER_DEPRECATED:
 			return 'User deprecated notice';
 
+		case E_SQL:
+			return 'SQL Error';
+
 		default:
 			return 'unknown Error';
 	}
+}
+
+function getBacktrace($skip=0){
+	++$skip;//don't count ourself
+	$_detailedError=$_caller='';
+
+	$_backtrace=debug_backtrace();
+
+	foreach($_backtrace AS $no=>$arr){
+		if($no<$skip){
+			continue;
+		}else if($no==$skip){ //this is the caller
+			$_caller=$arr['function'];
+			$_file=(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'');
+			$_line=(isset($arr['line'])?$arr['line']:'');
+		}
+		$_detailedError .='#'.($no-$skip).' '.$arr['function'].' called at ['.(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'').':'.(isset($arr['line'])?$arr['line']:'')."]\n";
+	}
+	return array($_detailedError,$_caller,$_file,$_line);
 }
 
 /**
@@ -170,6 +196,11 @@ function translate_error_type($type) {
 
 function display_error_message($type, $message, $file, $line) {
 	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	if(strpos($message,'MYSQL-ERROR')===0){
+		$type=E_SQL;
+	}
+
+	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:2));
 
 	// Build the error table
 	$_detailedError  = '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>';
@@ -205,10 +236,9 @@ function display_error_message($type, $message, $file, $line) {
 	$_detailedError .= '	<tr valign="top">';
 	$_detailedError .= '		<td nowrap="nowrap" style="border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>';
 	$_detailedError .= '		<td ><font face="Verdana, Arial, Helvetica, sans-serif" size="2">';
-	$_backtrace=debug_backtrace();
-	foreach($_backtrace AS $no=>$arr){
-		$_detailedError .="#$no ".$arr['function'].' called at ['.(isset($arr['file'])?$arr['file']:'').':'.(isset($arr['line'])?$arr['line']:'').']<br/>';
-	}
+
+	$detailedError=preg_replace("|[\r\n]|",'',nl2br($detailedError));
+	$_detailedError .= $detailedError;
 	$_detailedError .= ' 	</font></td>';
 	$_detailedError .= '	</tr>';
 
@@ -222,6 +252,11 @@ function display_error_message($type, $message, $file, $line) {
 function log_error_message($type, $message, $file, $_line) {
 	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 
+	if(strpos($message,'MYSQL-ERROR')===0){
+		$type=E_SQL;
+	}
+	list($_detailedError,$_caller,$file,$_line)=getBacktrace(($type==E_SQL?3:2));
+
 	// Error type
 	$_type=translate_error_type($type);
 
@@ -231,18 +266,7 @@ function log_error_message($type, $message, $file, $_line) {
 	// Script name
 	$_file = str_replace($_SERVER['DOCUMENT_ROOT'], '', $file);
 
-	$_caller = '';
 
-	$_detailedError ='';
-	$_backtrace=debug_backtrace();
-	foreach($_backtrace AS $no=>$arr){
-		if($no<2){//first 2 are error-handler-functions
-			continue;
-		}else if($no==2){
-			$_caller=$arr['function'];
-		}
-		$_detailedError .='#'.($no-2).' '.$arr['function'].' called at ['.(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'').':'.(isset($arr['line'])?$arr['line']:'')."]\n";
-	}
 
 	// Log the error
 	if (defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')) {
@@ -270,6 +294,10 @@ function log_error_message($type, $message, $file, $_line) {
 
 function mail_error_message($type, $message, $file, $line) {
 	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
+	if(strpos($message,'MYSQL-ERROR')===0){
+		$type=E_SQL;
+	}
+	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:2));
 
 	// Build the error table
 	$_detailedError  = "An error occurred while executing a script in webEdition.\n\n\n";
@@ -289,13 +317,11 @@ function mail_error_message($type, $message, $file, $line) {
 	$_detailedError .= 'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $file) . ",\n";
 
 	// Line
-	$_detailedError .= 'Line number: ' . $line;
+	$_detailedError .= 'Line number: ' . $line. ",\n";
 
-	$_detailedError .=' Backtrace: ';
-	$_backtrace=debug_backtrace();
-	foreach($_backtrace AS $no=>$arr){
-		$_detailedError .="#$no ".$arr['function'].' called at ['.(isset($arr['file'])?$arr['file']:'').':'.(isset($arr['line'])?$arr['line']:'')."]\n";
-	}
+
+	$_detailedError .=' Caller: '.$_caller. ",\n";
+ 	$_detailedError .=' Backtrace: '.$detailedError;
 
 	// Log the error
 	if (defined('WE_ERROR_MAIL_ADDRESS')) {
