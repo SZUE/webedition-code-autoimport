@@ -195,8 +195,8 @@
 	}
 
 	function hasIndex($tab,$index){
-		$GLOBAL['DB_WE']->query('SHOW INDEX FROM '.mysql_real_escape_string($tab).' WHERE Key_name = "'.$index.'"');
-		return $GLOBAL['DB_WE']->next_record();
+		$GLOBALS['DB_WE']->query('SHOW INDEX FROM '.mysql_real_escape_string($tab).' WHERE Key_name = "'.$index.'"');
+		return $GLOBALS['DB_WE']->next_record();
 	}
 
 	function updateUnindexedCols($tab,$col){
@@ -241,7 +241,7 @@
 	}
 
 	function addIndex($tab,$name,$def){
-		$GLOBAL['DB_WE']->query('ALTER TABLE '.mysql_real_escape_string($tab).' ADD INDEX '.$name.' ('.$def.')');
+		$GLOBALS['DB_WE']->query('ALTER TABLE '.mysql_real_escape_string($tab).' ADD INDEX '.$name.' ('.$def.')');
 	}
 
 	function changeColTyp($tab,$col,$newtyp){
