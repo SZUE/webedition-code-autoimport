@@ -209,8 +209,7 @@
 				}
 			}
 			if(count($query)>0){
-				$tmp='ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query);
-				echo $tmp;
+				$DB_WE->query('ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query));
 			}
 	}
 
