@@ -1011,7 +1011,7 @@ if(isset($weTagListviewCache)) {
 		} else {
 			$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", false);
 		}
-		
+
 		$php = '<?php
 
 if (!isset($GLOBALS["we_lv_array"])) {
@@ -1127,7 +1127,7 @@ $GLOBALS["lv"] = new we_listview_orderitem("' . $name . '", $we_rows, $we_offset
 					if ($foo) return str_replace($tag, $foo, $code);
 					$php .= '
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php");
-$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . ',$we_lv_languages",'.$hidedirindex.','.$objectseourls.');
+$GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, "' . $cfilter . '", "' . $docid . '",$we_lv_languages,'.$hidedirindex.','.$objectseourls.');
 ';
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="multiobject"'), $code); }
 				break;
@@ -2470,10 +2470,10 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 			if ($foo)
 				return str_replace($tag, $foo, $code);
 
-			
+
 
 			$php = '<?php
-						
+
 						include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
 						$version = "' . $version . '";
 						$version = ($version > 0) ? ($version - 1) : 0;
