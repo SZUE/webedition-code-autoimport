@@ -1291,11 +1291,11 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 </table><?php endif ?><?php
 ';
 			} else {
-				if ($we_oid!=0){//Bug 4848
-					$php .='if(isset('. $we_oid .')){ $we_oid = ' . $we_oid . ';} else { if (isset($GLOBALS["' . $we__oid .'"]) ) { $we_oid = $GLOBALS["' . $we__oid .'"];} else {$we_oid=0; } }';
-				} else {
+				if (strpos($we_oid,'$')===false ){//Bug 4848
 					$php .='$we_oid=' . $we_oid . '	;
 					';
+				} else {
+					$php.='$we_oid =  isset('.$we_oid.') ? "'.$we_oid.'" : $GLOBALS["'.str_replace('$','', $we_oid). '"];';
 				}
 
 				$php .='
