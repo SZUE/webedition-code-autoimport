@@ -112,11 +112,13 @@ class we_listview_multiobject extends listviewBase {
 				array_push($objects, $val);
 			}
 		}
-
+		if (empty($objects)){
+			return;
+		}
 		$this->DB_WE2    = new DB_WE();
 		$this->classID   = $data['class'];
 		$this->objects   = $objects;
-
+		
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
 		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
