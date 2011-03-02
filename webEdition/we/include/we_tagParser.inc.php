@@ -1220,7 +1220,6 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$classid = we_getTagAttributeTagParser("classid", $arr);
 			$we_oid = we_getTagAttributeTagParser("id", $arr, 0);
-			$we__oid = str_replace('$','',$we_oid);//Bug 4848
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1262,7 +1261,7 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 				$php .= '
 		$we_doc = $GLOBALS["we_doc"];
 		';
-				if (strpos($we_oid,'$')===false ){
+				if (strpos($we_oid,'$')===false ){//Bug 4848
 					$php.='$we_oid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_oid . ';';
 				} else {
 					$php.='$we_oid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset('.$we_oid.') ? "'.$we_oid.'" : $GLOBALS["'.str_replace('$','', $we_oid). '"];';
@@ -1368,7 +1367,6 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_cid = we_getTagAttributeTagParser("id", $arr, 0);
-			$we__cid = str_replace('$','',$we_cid);//Bug 4848
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			$_showName = we_getTagAttributeTagParser("name", $arr);
 			$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1394,7 +1392,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 
 				$php .= '
 		$we_doc = $GLOBALS["we_doc"];
-		$we_cid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_cid . ';
+		';
+				if (strpos($we_cid,'$')===false ){//Bug 4848
+					$php.='$we_cid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_cid . ';';
+				} else {
+					$php.='$we_cid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset('.$we_cid.') ? "'.$we_cid.'" : $GLOBALS["'.str_replace('$','', $we_cid). '"];';
+				}
+			$php .='
+		
 		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
 		$path = f("SELECT Path FROM ".CUSTOMER_TABLE." WHERE ID=".abs($we_cid),"Path",$GLOBALS["DB_WE"]);
 		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
@@ -1418,12 +1423,13 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 </table><?php endif ?><?php
 ';
 			} else {
-			if ($we_cid!=0){//Bug 4848
-				$php .='if(isset('. $we_cid .')){$we_cid=' . $we_cid . ';} else { if (isset($GLOBALS["' . $we__cid .'"]) ) { $we_cid = $GLOBALS["' . $we__cid .'"];} else {$we_cid=0; } }';
-			} else {
-				$php .='$we_cid=' . $we_cid . '	;
-				';
-			}
+				if (strpos($we_cid,'$')===false ){//Bug 4848
+					$php .='$we_cid=' . $we_cid . '	;
+					';
+				} else {
+					$php.='$we_cid =  isset('.$we_cid.') ? "'.$we_cid.'" : $GLOBALS["'.str_replace('$','', $we_cid). '"];';
+				}
+			
 
 $php .='$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
 ';
@@ -1455,7 +1461,6 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_omid = we_getTagAttributeTagParser("id", $arr, 0);
-			$we__omid = str_replace('$','',$we_omid);//Bug 4848
 
 			$php = '<?php
 
@@ -1468,11 +1473,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 ';
 
 
-			if ($we_omid!=0){//Bug 4848
-				$php .='if(isset('. $we_omid .')){$we_omid=' . $we_omid . ';} else { if (isset($GLOBALS["' . $we__omid .'"]) ) { $we_omid = $GLOBALS["' . $we__omid .'"];} else {$we_omid=0; } }';
+			if (strpos($we_omid,'$')===false ){//Bug 4848
+					$php .='$we_omid=' . $we_oid . '	;
+					';
 			} else {
-				$php .='$we_omid=' . $we_omid . '	;
-				';
+					$php.='$we_oimd =  isset('.$we_omid.') ? "'.$we_omid.'" : $GLOBALS["'.str_replace('$','', $we_omid). '"];';
 			}
 
 $php .='$we_omid = $we_omid ? $we_omid : (isset($_REQUEST["we_omid"]) ? $_REQUEST["we_omid"] : 0);
@@ -1509,7 +1514,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_orderid = we_getTagAttributeTagParser("id", $arr, 0);
-			$we__orderid = str_replace('$','',$we_orderid);//Bug 4848
+			
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1536,7 +1541,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 
 				$php .= '
 		$we_doc = $GLOBALS["we_doc"];
-		$we_orderid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderid . ';
+		';
+				if (strpos($we_orderid,'$')===false ){//Bug 4848
+					$php.='$we_orderid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderid . ';';
+				} else {
+					$php.='$we_orderid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset('.$we_orderid.') ? "'.$we_orderid.'" : $GLOBALS["'.str_replace('$','', $we_orderid). '"];';
+				}
+				$php .= '
+		
 		$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
 		$path = "/".$we_orderid;
 		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
@@ -1560,13 +1572,12 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 </table><?php endif ?><?php
 ';
 			} else {
-				if ($we_orderid!=0){//Bug 4848
-					$php .='if(isset('. $we_orderid .')){ $we_orderid = ' . $we_orderid . ';} else { if (isset($GLOBALS["' . $we__orderid .'"]) ) { $we_oid = $GLOBALS["' . $we__orderid .'"];} else {$we_orderid=0; } }';
-				} else {
+				if (strpos($we_orderid,'$')===false ){//Bug 4848
 					$php .='$we_orderid=' . $we_orderid . '	;
 					';
+				} else {
+					$php.='$we_orderid =  isset('.$we_orderid.') ? "'.$we_orderid.'" : $GLOBALS["'.str_replace('$','', $we_orderid). '"];';
 				}
-
 				$php .= '$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
 ';
 			}
@@ -1596,10 +1607,9 @@ function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
 			$we_button = new we_button();
 
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
-			$we_orderitemid = we_getTagAttributeTagParser("id", $arr, 0);
-			$we__orderitemid = str_replace('$','',orderitemid);//Bug 4848
+			$we_orderitemid = we_getTagAttributeTagParser("id", $arr, 0);			
 			$we_orderid = we_getTagAttributeTagParser("orderid", $arr, 0);
-			$we__orderid = str_replace('$','',$we_orderid);//Bug 4848
+			
 			//$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1630,7 +1640,13 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 
 				$php .= '
 		$we_doc = $GLOBALS["we_doc"];
-		$we_orderitemid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderitemid . ';
+		';
+				if (strpos($we_orderitemid,'$')===false ){//Bug 4848
+					$php.='$we_orderitemid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_orderitemid . ';';
+				} else {
+					$php.='$we_orderitemid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset('.$we_orderitemid.') ? "'.$we_orderitemid.'" : $GLOBALS["'.str_replace('$','', $we_orderitemid). '"];';
+				}
+				$php .= '
 		$we_ordeitemrid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
 		$path = "/".$we_orderitemid;
 		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
@@ -1654,11 +1670,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 </table><?php endif ?><?php
 ';
 			} else {
-				if ($we_orderitemid!=0){//Bug 4848
-					$php .='if(isset('. $we_orderitemid .')){ $we_orderitemid = ' . $we_orderitemid . ';} else { if (isset($GLOBALS["' . $we__orderitemid .'"]) ) { $we_oid = $GLOBALS["' . $we__orderitemid .'"];} else {$we_orderitemid=0; } }';
-				} else {
-					$php .='$we_orderitemid=' . $we_orderitemid . ';
+				if (strpos($we_orderitemid,'$')===false ){//Bug 4848
+					$php .='$we_orderitemid=' . $we_orderitemid . '	;
 					';
+				} else {
+					$php.='$we_orderitemid =  isset('.$we_orderitemid.') ? "'.$we_orderitemid.'" : $GLOBALS["'.str_replace('$','', $we_orderitemid). '"];';
 				}
 				$php .= '
 $we_orderitemid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
