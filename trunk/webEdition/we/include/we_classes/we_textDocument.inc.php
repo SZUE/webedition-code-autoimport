@@ -122,4 +122,3 @@ class we_textDocument extends we_document
 	}
 
 }
-?>

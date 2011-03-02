@@ -279,8 +279,8 @@ class we_template extends we_document
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
 	we_error_handler(false);
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_global.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tag.inc.php");
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tag.inc.php");
 	$GLOBALS["DB_WE"] = new DB_WE;
 	';
 	$pre_code .= 'if($GLOBALS["we_doc"]){
@@ -332,12 +332,12 @@ class we_template extends we_document
 		}
 
 
-		$head = '
-<?php if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ){ ?>
-<?php print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY; ?>
+		$head = '<?php
+if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ){
+print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY; ?>
 <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
-<?php } else if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT  && WE_ECONDA_PATH !="" && !$GLOBALS["we_doc"]->InWebEdition) { 
+<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+} else if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT  && WE_ECONDA_PATH !="" && !$GLOBALS["we_doc"]->InWebEdition) {
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weTracking/econda/weEcondaImplementHeader.inc.php");
 } ?>';
 
@@ -347,7 +347,7 @@ class we_template extends we_document
 
 		$postContent = '<?php if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) { ?>
 </form>
-<?php } else if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT  && WE_ECONDA_PATH !="" && !$GLOBALS["we_doc"]->InWebEdition) { 
+<?php } else if(defined("WE_ECONDA_STAT") && defined("WE_ECONDA_PATH") && WE_ECONDA_STAT  && WE_ECONDA_PATH !="" && !$GLOBALS["we_doc"]->InWebEdition) {
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weTracking/econda/weEcondaImplement.inc.php");
 } ?>';
 
@@ -370,8 +370,7 @@ class we_template extends we_document
 			$code = eregi_replace("(</body>)","$postContent\\1",$code);
 
 		}else if(!$this->hasStartAndEndTag("html",$code) && !$this->hasStartAndEndTag("head",$code) && !$this->hasStartAndEndTag("body",$code)){
-			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])): ?><?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]): ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php endif ?>
-'.$head.'</head>
+			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])): ?><?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]): ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php endif ?>'.$head.'</head>
 <body <?php if(isset($we_editmode) && $we_editmode) print " onUnload=\"doUnload()\""; ?>>
 '.$preContent.'<?php endif ?>'.$code.'<?php if((!isset($WE_HTML_HEAD_BODY) || !$WE_HTML_HEAD_BODY ) && (isset($we_editmode) && $we_editmode)): ?>'.$postContent.'
 </body></html><?php $WE_HTML_HEAD_BODY = true; ?><?php endif ?>';
@@ -618,7 +617,7 @@ class we_template extends we_document
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setTrashButton($trashButton);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -722,7 +721,7 @@ class we_template extends we_document
 		$masterTags = array();
 
 		preg_match_all("|(<we:master([^>+]*)>)([\\s\\S]*?)</we:master>|", $code, $regs, PREG_SET_ORDER);
-				
+
 
 		foreach ($regs as $reg) {
 			$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : "");
@@ -741,7 +740,7 @@ class we_template extends we_document
 
 
 		if ($this->MasterTemplateID != 0) {
-			
+
 			$_templates = array();
 			getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
 			if (in_array($this->ID, $_templates)) {
@@ -752,23 +751,23 @@ class we_template extends we_document
 				$templObj = new we_template();
 				$templObj->initByID($this->MasterTemplateID,TEMPLATES_TABLE);
 				$masterTemplateCode = $templObj->getTemplateCode(true);
-				
+
 				$contentTags = array();
 				preg_match_all("|<we:content ?([^>+]*)/?>|", $masterTemplateCode, $contentTags, PREG_SET_ORDER);
-	
+
 				foreach ($contentTags as $reg) {
 					$all = $reg[0];
 					$attribs = $this->_getAttribsArray($reg[1]);
 					$name = isset($attribs["name"]) ? $attribs["name"] : "";
 					if ($name) {
 						$we_masterTagCode = isset($masterTags[$name]["content"]) ? $masterTags[$name]["content"] : "";
-						
+
 						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
 					} else {
 						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
 					}
 				}
-	
+
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
 			}
 		}
@@ -801,7 +800,7 @@ class we_template extends we_document
 							$att["id"] = $templId;
 						}
 					}
-					
+
 					// if id attribute is set and greater 0
 					if (isset($att["id"]) && abs($att["id"]) > 0) {
 						$_templates = array();
@@ -891,5 +890,3 @@ class we_template extends we_document
 	}
 
 }
-
-?>

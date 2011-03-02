@@ -11,4 +11,3 @@
 	$_pro_modules = array();
 
     $_pro_modules[] = "busers";
-?>

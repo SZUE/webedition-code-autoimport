@@ -21,7 +21,7 @@
 
 /**
 * Util Functions
-* 
+*
 * all functions in this class are static! Please use it in static form:
 *    we_util::function_name();
 *
@@ -29,22 +29,22 @@
 * @static
 */
 class we_util{
-	
+
 	/**
 	* Default constructor. WARNING !!! (not usefull).
 	*
 	* All functions in this class is static, and there is no logic to create instance of this class
 	*/
 	function we_global(){
-		die("Please don't create instance of class we_global"); 
+		die("Please don't create instance of class we_global");
 	}
-	
+
 	/**
 	* Searches a string for matches to the regular expressions given in pattern
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param array pattern Array of patterns
 	* @param string string
 	*/
@@ -52,7 +52,7 @@ class we_util{
 		foreach($pattern as $reg){
 			if(eregi($reg,$string)){
 				return true;
-			}	
+			}
 		}
 		return false;
 	}
@@ -60,10 +60,10 @@ class we_util{
 	/**
 	* Formates a number with a country specific format into computer readable format.
 	* Returns the formated number.
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param mixed number
 	*/
 	function std_numberformat($number){
@@ -89,10 +89,10 @@ class we_util{
 	/**
 	* Converts all windows and mac newlines from string to unix newlines
 	* Returns the converted String.
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param mixed number
 	*/
 	function cleanNewLine($string){
@@ -106,10 +106,10 @@ class we_util{
 	/**
 	* Removes from string all newlines and converts all <br> to newlines
 	* Returns the converted String.
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param mixed number
 	*/
 	function br2nl($string){

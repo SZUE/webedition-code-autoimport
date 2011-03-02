@@ -2677,5 +2677,3 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
    }
 
 }
-
-?>

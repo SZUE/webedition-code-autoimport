@@ -65,5 +65,3 @@ class we_message_reporting {
 		}
 	}
 }
-
-?>

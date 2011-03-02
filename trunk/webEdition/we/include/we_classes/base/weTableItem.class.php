@@ -65,7 +65,7 @@
 			$len=strlen(TBL_PREFIX);
 			if(substr($tabname,0,$len)==TBL_PREFIX) return strtolower(substr_replace($tabname,"",0,$len));
 		}
-		
+
         function save($force_new=false){
             // create table if doesn't exists;
             /*if(!weDBUtil::isTabExist($this->table)){
@@ -91,24 +91,24 @@
 			}
 			return false;
 		}
-		
+
 		function doConvertCharset($was){ //dies konvertiert die Daten, die binary im backup waren
 			$tables = array();
 			$tables[CONTENT_TABLE] = array('Dat');
-			
+
 			if(defined("OBJECT_TABLE")) {
 				$tables[OBJECT_FILES_TABLE] = array('Category');
-				
+
 			}
 			if(defined("SHOP_TABLE")) {
 				$tables[ANZEIGE_PREFS_TABLE] = array('strDateiname','strFelder');
 				$tables[SHOP_TABLE] = array('strSerial','strSerialOrder');
 			}
 			if (array_key_exists($this->table , $tables)){
-				if ( in_array($was,$tables[$this->table]) ) {return true;}			
-			} 
+				if ( in_array($was,$tables[$this->table]) ) {return true;}
+			}
 			return false;
-		
+
 		}
 		function doCorrectExactCharsetString($was){
 			$tables = array();
@@ -125,13 +125,13 @@
 			if(defined("NEWSLETTER_TABLE")) {
 				$tables[NEWSLETTER_TABLE] = array('Charset');
 			}
-			
-			
+
+
 			if (array_key_exists($table, $tables)){
-				if ( in_array($was,$tables[$table]) ) {return true;}			
-			} 
+				if ( in_array($was,$tables[$table]) ) {return true;}
+			}
 			return false;
-		
+
 		}
 		function doCorrectSerializedLenghtValues($was){
 			$tables = array();
@@ -149,61 +149,61 @@
 			if(defined("VOTING_TABLE")) {
 				$tables[VOTING_TABLE] = array('QASet','QASetAdditions','Scores','LogData');
 			}
-			
-			
+
+
 			if (array_key_exists($table , $tables)){
-				if ( in_array($was,$tables[$table]) ) {return true;}			
-			} 
-			return false;		
+				if ( in_array($was,$tables[$table]) ) {return true;}
+			}
+			return false;
 		}
 		function doPrepareCorrectSerializedLenghtValues($was){
 			$tables = array();
 			$tables[CATEGORY_TABLE] = array('Catfields');
 			$table = $this->table;
 			if (array_key_exists($table , $tables)){
-				if ( in_array($was,$tables[$table]) ) {return true;}			
-			} 
-			return false;	
+				if ( in_array($was,$tables[$table]) ) {return true;}
+			}
+			return false;
 		}
 		function doCorrectSerializedExactCharsetString($was){
 			$tables = array();
 			if(defined("OBJECT_TABLE")) {
 				$tables[OBJECT_TABLE] = array('DefaultValues');
-				
+
 			}
-			
+
 			if (array_key_exists($this->table , $tables)){
-				if ( in_array($was,$tables[$this->table]) ) {return true;}			
-			} 
+				if ( in_array($was,$tables[$this->table]) ) {return true;}
+			}
 			return false;
-		
+
 		}
 
 		function convertCharsetEncoding($fromC,$toC){
 			foreach($this as $key => &$val){
 				if ($this->doConvertCharset($key)){
-					$mydata = $val; 
+					$mydata = $val;
 					if(isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
 						$mydataUS = unserialize($mydata);
 						if (is_array($mydataUS)){
 							foreach ($mydataUS as &$ad){
 								if (is_array($ad)){
 									foreach ($ad as &$add){
-									
+
 										if (is_array($add)){
 											foreach ($add as &$addd){
 												$addd = convertCharsetEncoding($fromC,$toC,$addd);
 												$addd = convertExactCharsetString($fromC,$toC,$addd);
-												$addd = convertCharsetString($fromC,$toC,$addd);										
+												$addd = convertCharsetString($fromC,$toC,$addd);
 											}
 										} else {
-									
+
 											$add = convertCharsetEncoding($fromC,$toC,$add);
 											$add = convertExactCharsetString($fromC,$toC,$add);
 											$add = convertCharsetString($fromC,$toC,$add);
 										}
-									}							
-								} else {							
+									}
+								} else {
 									$ad = convertCharsetEncoding($fromC,$toC,$ad);
 									$ad = convertExactCharsetString($fromC,$toC,$ad);
 									$ad = convertCharsetString($fromC,$toC,$ad);
@@ -226,8 +226,8 @@
 					}
 					$val =  correctSerDataISOtoUTF($val);
 				}
-				
-				if ($this->doCorrectSerializedExactCharsetString($key))	{ 
+
+				if ($this->doCorrectSerializedExactCharsetString($key))	{
 					$mydata = $val;
 					$mydataUS = @unserialize($mydata);
 					if (is_array($mydataUS)){
@@ -238,9 +238,7 @@
 						}
 					}
 					$val = @serialize($mydataUS);
-				}				
-			}		
-		}				
+				}
+			}
+		}
 	}
-	
-?>

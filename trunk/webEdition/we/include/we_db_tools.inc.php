@@ -95,5 +95,3 @@ function doInsetQuery($DB_WE, $table, $hash)
 
 	return $DB_WE->query($sql);
 }
-
-?>
