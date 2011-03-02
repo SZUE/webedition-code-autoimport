@@ -33,7 +33,7 @@ class weModuleInfo {
 		foreach ($_we_available_modules as $key => $modInfo) {
 				$retArr[$key] = $modInfo;
 		}
-		
+
 		return $retArr;
 	}
 
@@ -53,7 +53,7 @@ class weModuleInfo {
 				$retArr[$key] = $modInfo;
 			}
 		}
-		
+
 		return $retArr;
 	}
 
@@ -128,4 +128,3 @@ class weModuleInfo {
 		return in_array($modul,$_we_active_integrated_modules);
 	}
 }
-?>

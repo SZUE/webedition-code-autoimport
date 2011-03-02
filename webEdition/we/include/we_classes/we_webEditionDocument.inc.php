@@ -68,7 +68,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		if (defined("CUSTOMER_TABLE")) {
 			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
 		}
-		
+
 		$this->we_textContentDocument();
 		if(isset($_SESSION["prefs"]["DefaultTemplateID"])){
 			$this->TemplateID = $_SESSION["prefs"]["DefaultTemplateID"];
@@ -108,7 +108,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			case WE_EDITPAGE_INFO:
 				$GLOBALS["WE_MAIN_DOC"]->InWebEdition=true;//Bug 3417
 				return "we_templates/we_editor_info.inc.php";
-				
+
 			case WE_EDITPAGE_CONTENT:
 				$GLOBALS["we_editmode"] = true;
 				break;
@@ -833,7 +833,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			$fs=0;
 		}
 		return $fs;
-	
+
 	}
 
 	function i_getDocumentToSave() {
@@ -1225,4 +1225,3 @@ class we_webEditionDocument extends we_textContentDocument {
 
 }
 
-?>

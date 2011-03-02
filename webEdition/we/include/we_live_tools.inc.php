@@ -37,42 +37,42 @@ function saveFile($file_name, $sourceCode = "")
 
 function createLocalFolder($RootDir, $path = "")
 {
-	
+
 	$completeDirPath = $RootDir . $path;
-	
+
 	return createLocalFolderByPath($completeDirPath);
 }
 
 function createLocalFolderByPath($completeDirPath)
 {
-	
+
 	$returnValue = true;
-	
+
 	if (checkAndMakeFolder($completeDirPath))
 		return $returnValue;
-	
+
 	$cf = array(
 		$completeDirPath
 	);
-	
+
 	$parent = dirname($completeDirPath);
 	$parent = str_replace("\\", "/", $parent);
-	
+
 	while (!checkAndMakeFolder($parent)) {
 		array_push($cf, $parent);
 		$parent = dirname($parent);
 		$parent = str_replace("\\", "/", $parent);
 	}
-	
+
 	for ($i = (sizeof($cf) - 1); $i >= 0; $i--) {
 		$oldumask = @umask(0000);
-		
+
 		if (defined("WE_NEW_FOLDER_MOD")) {
 			eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) . ';');
 		} else {
 			$mod = 0755;
 		}
-		
+
 		if (!@mkdir($cf[$i], $mod)) {
 			insertIntoErrorLog(
 					"Could not create local Folder at we_live_tools.inc.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
@@ -80,7 +80,7 @@ function createLocalFolderByPath($completeDirPath)
 		}
 		@umask($oldumask);
 	}
-	
+
 	return $returnValue;
 }
 
@@ -103,22 +103,22 @@ function checkAndMakeFolder($path)
 	$path2 = ereg_replace('^(.*)/$', '\1', $path);
 	if (strtolower($docroot) == strtolower($path2))
 		return true;
-		
+
 	/* if instead of the directory a file exists, we delete the file and create the directory */
 	if (file_exists($path) && (!is_dir($path))) {
 		if (!deleteLocalFile($path)) {
 			insertIntoErrorLog("Could not delete File '" . $path . "'");
 		}
 	}
-	
+
 	$oldumask = @umask(0000);
-	
+
 	if (defined("WE_NEW_FOLDER_MOD")) {
 		eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) . ';');
 	} else {
 		$mod = 0755;
 	}
-	
+
 	if (!@mkdir($path, $mod,true)) {
 		@umask($oldumask);
 		insertIntoErrorLog("Could not create local Folder at we_live_tools.inc.php/checkAndMakeFolder(): '" . $path . "'");
@@ -138,8 +138,8 @@ function getContentDirectFromDB($id, $name, $db = "")
 {
 	$db = $db ? $db : new DB_WE();
 	return f(
-			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=".abs($id)." AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($name)."'", 
-			"Dat", 
+			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=".abs($id)." AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($name)."'",
+			"Dat",
 			$db);
 }
 
@@ -169,5 +169,3 @@ function deleteLocalFolder($filename, $delAll = 0)
 	}
 	return @rmdir($filename);
 }
-
-?>
