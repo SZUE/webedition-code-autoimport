@@ -71,21 +71,33 @@ class we_listview_multiobject extends listviewBase {
 	function we_listview_multiobject($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off',$docID=0,$languages='',$hidedirindex=false,$objectseourls=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
+		
+		$data=0;
 		if(isset($GLOBALS['we_lv_array']) && sizeof($GLOBALS['we_lv_array']) > 1) {
 			$parent_lv = $GLOBALS['we_lv_array'][(sizeof($GLOBALS['we_lv_array'])-1)];
-			$data = unserialize($parent_lv->DB_WE->Record['we_'.$name]);
+			if (isset($parent_lv->DB_WE->Record['we_'.$name]) && $parent_lv->DB_WE->Record['we_'.$name]){
+				$data = unserialize($parent_lv->DB_WE->Record['we_'.$name]);
+			} 
 		} elseif(isset($GLOBALS["lv"])) {
 			if(isset($GLOBALS["lv"]->object)) {
-				$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_'.$name]);
+				if (isset($GLOBALS['lv']->object->DB_WE->Record['we_'.$name]) && $GLOBALS['lv']->object->DB_WE->Record['we_'.$name] ){
+					$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_'.$name]);
+				} 
 			} else {
 				if ($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart') {
-					$data = unserialize($GLOBALS['lv']->Record[$name]);
+					if (isset($GLOBALS['lv']->Record[$name]) && $GLOBALS['lv']->Record[$name]){
+						$data = unserialize($GLOBALS['lv']->Record[$name]);
+					}
 				} else {
-					$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_'.$name]);
+					if (isset($GLOBALS['lv']->DB_WE->Record['we_'.$name]) && $GLOBALS['lv']->DB_WE->Record['we_'.$name]){
+						$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_'.$name]);
+					}
 				}
 			}
 		} else {
-			$data = unserialize($GLOBALS['we_doc']->getElement($name));
+			if ( $GLOBALS['we_doc']->getElement($name)){
+				$data = unserialize($GLOBALS['we_doc']->getElement($name));
+			}
 		}
 
 		if (!$data) {
