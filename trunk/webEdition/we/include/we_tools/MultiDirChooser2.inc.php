@@ -101,12 +101,12 @@ class MultiDirChooser2 extends MultiDirChooser{
 		}
 		return $out;
 	}
-	
+
 	function getTableRows(){
 		$out = '	<tr><td width="20">'.getPixel(20,2).'</td><td>'.getPixel(50,2).'</td><td width="26">'.getPixel(26,2).'</td></tr>';
 		$this->nr=0;
 		$idArr = makeArrayFromCSV($this->ids);
-		
+
 		if(sizeof($idArr)){
 			foreach($idArr as $id){
 				$this->db->query("SELECT ID,".$this->fields." FROM ".mysql_real_escape_string($this->table)." WHERE ID ='".abs($id)."'");
@@ -125,13 +125,13 @@ class MultiDirChooser2 extends MultiDirChooser{
 		$out .= '	<tr><td width="20">'.getPixel(20,sizeof($idArr) ? 2 : 12).'</td><td>'.getPixel(50,2).'</td><td width="26">'.getPixel(26,2).'</td></tr>';
 		return $out;
 	}
-	
+
 	function get(){
-		
+
 		$out = '<table border="0" cellpadding="0" height="18" cellspacing="0" width="'.abs($this->width-10).'" id="'.$this->rowPrefix.'CatTable">
 ';
 		$out .= $this->getTableRows();
-		
+
 		$out .= '</table>
 ';
 
@@ -142,7 +142,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 
 
 
-	}	
+	}
 	function setRowPrefix($val) {
 		$this->rowPrefix = $val;
 		return true;
@@ -154,4 +154,3 @@ class MultiDirChooser2 extends MultiDirChooser{
 
 
 }
-?>

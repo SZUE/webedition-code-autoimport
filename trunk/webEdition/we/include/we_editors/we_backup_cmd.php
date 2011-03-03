@@ -24,7 +24,7 @@
 
 			protect();
 			@set_time_limit(360);
-			
+
 			if (isset($_REQUEST['cmd'])) {
 
 				if(($_REQUEST['cmd']=='export' || $_REQUEST['cmd']=='import') && isset($_SESSION['weBackupVars'])) {
@@ -454,6 +454,3 @@
 
 				}
 			}
-
-
-?>

@@ -19,15 +19,15 @@
  */
 
 	class weJUpload {
-		
+
 		var $Params = array();
-		
+
 		var $Buttons = array();
-		
+
 		function weJUpload($params,$language=''){
-			
+
 			$this->Params = $params;
-			
+
 			if(!empty($language)) {
 				switch ($language) {
 					case 'Deutsch':
@@ -64,17 +64,17 @@
 					break;
 				}
 			}
-			
+
 		}
-		
+
 		function addParam($name,$value){
-			$this->Params[$name] = $value;			
+			$this->Params[$name] = $value;
 		}
-		
+
 		function getAppletTag($content='',$w=300,$h=300) {
-			
+
 			$_params = '';
-			
+
 			foreach ($this->Params as $name=>$value) {
 				$_params .= '<param name="'.$name.'" value="'.$value.'">
 				';
@@ -84,24 +84,24 @@
 			<applet	name="JUpload" code="JUpload/startup.class" archive="/webEdition/jupload/jupload.jar" width="'.$w.'" height="'.$h.'" mayscript scriptable>
 				'.$_params.'
 				'.$content.'
-			</applet>  
+			</applet>
 			';
 
 		}
-		
+
 		function getJS(){
-			
+
 			return '';
-			
+
 		}
-		
+
 		function getButtons($buttons,$order='h',$space=5){
-						
+
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 			$we_button = new we_button();
-						
+
 			$_buttons = array();
-			
+
 			foreach ($buttons as $button) {
 				switch ($button) {
 					case 'add':
@@ -115,15 +115,12 @@
 					break;
 				}
 			}
-			
+
 			if($order=='h'){
 				return $we_button->create_button_table($_buttons,$space);
-			} else {				
+			} else {
 				return '<div style="margin-bottom: '.$space.'px;">' . implode('</div><div style="margin-bottom: '.$space.'px;">',$_buttons) . '</div>';
 			}
 		}
-		
+
 	}
-
-
-?>

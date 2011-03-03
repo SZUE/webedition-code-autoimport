@@ -36,10 +36,10 @@ class weTagData_typeAttribute extends weTagDataAttribute
 	 */
 	function weTagData_typeAttribute($id, $name, $options = array(), $required = true, $module = '')
 	{
-		
+
 		parent::weTagDataAttribute($id, $name, $required, $module);
 		$this->Options = $this->getUseOptions($options);
-		
+
 		// overwrite value if needed
 		if ($this->Value === false) {
 			$this->Value = '-';
@@ -51,36 +51,36 @@ class weTagData_typeAttribute extends weTagDataAttribute
 	 */
 	function getCodeForTagWizard()
 	{
-		
+
 		$keys = array();
 		$values = array();
-		
+
 		$keys[] = '';
 		$values[] = $GLOBALS['l_taged']['select_type'];
-		
+
 		foreach ($this->Options as $option) {
-			
+
 			$keys[] = $option->Value;
-			
+
 			if ($option->getName() == '-') {
 				$values[] = '';
 			} else {
 				$values[] = $option->getName();
 			}
 		}
-		
+
 		$js = "we_cmd('switch_type', this.value);";
-		
+
 		$select = new we_htmlSelect(
 				array(
-					
-						'name' => $this->Name, 
-						'id' => $this->getIdName(), 
-						'onchange' => $js, 
+
+						'name' => $this->Name,
+						'id' => $this->getIdName(),
+						'onchange' => $js,
 						'class' => 'defaultfont selectinput'
 				));
 		$select->addOptions(sizeof($values), $keys, $values);
-		
+
 		return '
 					<table class="attribute">
 					<tr>
@@ -99,4 +99,3 @@ class weTagData_typeAttribute extends weTagDataAttribute
 	}
 }
 
-?>

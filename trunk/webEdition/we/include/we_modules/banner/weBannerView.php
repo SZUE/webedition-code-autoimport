@@ -234,7 +234,7 @@ class weBannerView extends weBannerBase{
 	<script language="JavaScript">
 
 			var hot = 0;
-			
+
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -242,7 +242,7 @@ class weBannerView extends weBannerBase{
 					}
 				}
 			}
-			<?php 
+			<?php
 
 			$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 			$title = '';
@@ -253,17 +253,17 @@ class weBannerView extends weBannerBase{
 				}
 			}
 			?>
-			
+
 			parent.document.title = "webEdition <?php print $GLOBALS["l_global"]["modules"] . ' - ' .$title; ?>";
-			
+
 			function setHot() {
 				hot = "1";
 			}
-			
+
 			function usetHot() {
 				hot = "0";
 			}
-			
+
 			function we_cmd(){
 				var args = "";
 				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -682,7 +682,7 @@ class weBannerView extends weBannerBase{
 							return;
 						}
 					}
-					
+
 					if($this->banner->ParentID>0){
 						$acResult = $acQuery->getItemById($this->banner->ParentID, BANNER_TABLE, "IsFolder");
 						if(!$acResult || (isset($acResult[0]['IsFolder']) && $acResult[0]['IsFolder']==0)) {
@@ -690,7 +690,7 @@ class weBannerView extends weBannerBase{
 							print we_message_reporting::getShowMessageCall($l_banner["error_ac_field"], WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
-						}						
+						}
 					}
 					if($this->banner->IntHref){
 						$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, array("IsFolder"));
@@ -710,8 +710,8 @@ class weBannerView extends weBannerBase{
 							return;
 						}
 					}
-					
-												
+
+
 					$childs="";
 					$message="";
 					$this->banner->save($message);
@@ -864,7 +864,7 @@ class weBannerView extends weBannerBase{
 
 		}
 		sort($tagnames);
-		
+
 		$code = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">'.
 		htmlTextInput($this->uid."_TagName",50,$this->banner->TagName,"",'style="width:250px" onchange="top.content.setHot();"').
 		'</td>
@@ -1124,7 +1124,7 @@ class weBannerView extends weBannerBase{
 		$yuiSuggest->setSelector("Docselector");
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -1145,7 +1145,7 @@ class weBannerView extends weBannerBase{
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -1191,11 +1191,11 @@ class weBannerView extends weBannerBase{
 		$Pathname = md5(uniqid(rand()));
 
 		$cmd = "opener.document.we_form.elements[\\'".$this->uid."_IntHref\\'][1].checked=true";
-		
+
 		$onkeydown = "self.document.we_form.elements['".$this->uid."_IntHref'][0].checked=true; YAHOO.autocoml.setValidById('yuiAcInputInternalURL'); document.getElementById('yuiAcInputInternalURL').value=''; document.getElementById('yuiAcResultInternalURL').value=''";
 		$onkeydown2 = "self.document.we_form.elements['".$this->uid."_IntHref'][1].checked=true; document.getElementById('".$this->uid."_bannerUrl"."').value='';";
 		$width = 388;
-		
+
 		$title1 = $GLOBALS["l_banner"]["ext_url"];
 		$title2 = $GLOBALS["l_banner"]["int_url"];
 
@@ -1226,7 +1226,7 @@ class weBannerView extends weBannerBase{
 		$yuiSuggest->setSelector("Docselector");
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return htmlFormElementTable(htmlTextInput($this->uid."_bannerUrl",30,$this->banner->bannerUrl,"",'id="'.$this->uid.'_bannerUrl" onkeydown="'.$onkeydown.'"',"text",$width,0),
 			$title1,
 			"left",
@@ -1234,6 +1234,4 @@ class weBannerView extends weBannerBase{
 	}
 
 }
-
-?>
 

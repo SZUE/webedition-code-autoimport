@@ -154,4 +154,3 @@ function get_nameline($id, $addr = 'username') {
 
 	return $l_messaging['userid_not_found'];
 }
-?>

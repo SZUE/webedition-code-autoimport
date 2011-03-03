@@ -154,4 +154,3 @@ function clearEntry(id,ip) {
 					$body
 				);
 	}
-?>

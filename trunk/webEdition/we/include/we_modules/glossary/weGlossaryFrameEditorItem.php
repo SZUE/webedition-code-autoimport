@@ -147,7 +147,7 @@
 						}
 					}
 				}
-				
+
 				function we_cmd() {
 					var args = "";
 					var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -283,10 +283,10 @@
 					.	"	document.getElementById('publishWhenSave').checked = true;\n"
 					.	"}";
 			$js = we_htmlElement::jsElement(
-				$js . 
+				$js .
 				"function we_save() {
 					top.content.we_cmd('save_glossary');
-					
+
 				}
 				");
 
@@ -1111,5 +1111,3 @@
 
 
 	}
-
-?>

@@ -27,7 +27,7 @@ $tag_languages = array(
 );
 
 #=========================================================
-#         tag elements                                   
+#         tag elements
 #=========================================================
 
 
@@ -71,12 +71,12 @@ $tag_elements[36]["name"] = "we:url";
 $tag_elements[37]["name"] = "we:var";
 
 #=========================================================
-#         tag category                                   
+#         tag category
 #=========================================================
 
 
 #=========================================================
-#         tag attributes                                  
+#         tag attributes
 #=========================================================
 $tag_attributes[0]["name"] = "name";
 $tag_attributes[1]["name"] = "dhtmledit";
@@ -128,7 +128,7 @@ $tag_attributes[46]["name"] = "values";
 $tag_attributes[47]["name"] = "mimetype";
 
 #=========================================================
-#         tag elements attributes                        
+#         tag elements attributes
 #=========================================================
 
 
@@ -172,7 +172,7 @@ $tag_elements[36]["attributes"] = "9";
 $tag_elements[37]["attributes"] = "3 0";
 
 #=========================================================
-#         tag elements required attributes                
+#         tag elements required attributes
 #=========================================================
 $tag_elements[0]["required"] = "9";
 $tag_elements[1]["required"] = "";
@@ -214,7 +214,7 @@ $tag_elements[36]["required"] = "9";
 $tag_elements[37]["required"] = "0";
 
 #=========================================================
-#         tag elements description - Deutsch          
+#         tag elements description - Deutsch
 #=========================================================
 
 
@@ -258,7 +258,7 @@ $tag_elements[36]["description"]["Deutsch"] = 'Das we:url Tag erzeugt eine webEd
 $tag_elements[37]["description"]["Deutsch"] = 'Das we:var Tag zeigt den Inhalt einer globalen Php-Variablen bzw. den Inhalt eines Dokumentfeldes, mit dem unten eingegebenen Namen an.';
 
 #=========================================================
-#         tag elements description - English          
+#         tag elements description - English
 #=========================================================
 $tag_elements[0]["description"]["English"] = "";
 $tag_elements[1]["description"]["English"] = "";
@@ -300,14 +300,14 @@ $tag_elements[36]["description"]["English"] = "";
 $tag_elements[37]["description"]["English"] = "";
 
 #=========================================================
-#         tag attributes alias                            
+#         tag attributes alias
 #=========================================================
 $tag_alias[4][4] = "Standardwert";
 $tag_alias[23][4] = "Standardwert";
 $tag_alias[35][4] = "Standardwert";
 
 #=========================================================
-#         tag predefined                          
+#         tag predefined
 #=========================================================
 $tag_predefined[3][3] = "js,php";
 $tag_predefined[6][3] = "text,date,img";
@@ -324,9 +324,7 @@ $tag_predefined[34][35] = "on,off";
 $tag_predefined[37][3] = "global,document";
 
 #=========================================================
-#         tags which needs close tag                          
+#         tags which needs close tag
 #=========================================================
 $need_close = "0 1 4 8 10 11 12 13 14 15 16 17 18 19 23 25 26 27 28 29 30 31 35";
 /*$need_close="13 16 17 18 19 20";*/
-
-?>

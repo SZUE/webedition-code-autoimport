@@ -265,7 +265,7 @@ class we_wysiwyg{
 						return true;
 					}
 
-					var ua = navigator.userAgent.toLowerCase(); 
+					var ua = navigator.userAgent.toLowerCase();
 
 					isGecko     = (ua.indexOf(\'gecko\') != -1 && ua.indexOf(\'safari\') == -1);
 
@@ -1387,5 +1387,3 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		return $out;
 	}
 }
-
-?>

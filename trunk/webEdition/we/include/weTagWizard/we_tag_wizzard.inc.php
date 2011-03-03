@@ -47,69 +47,69 @@ $we_button = new we_button();
 	// #1 - all attributes of this we:tag (ids of attributes)
 	$_attributes = $weTag->getAllAttributes(true);
 	if (sizeof($_attributes)) {
-		
+
 		$jsAllAttributes = 'var allAttributes = new Array("';
 		$jsAllAttributes .= implode('", "', $_attributes);
 		$jsAllAttributes .= '");';
-		
+
 	} else {
 		$jsAllAttributes = 'var allAttributes = new Array();';
 	}
-	
+
 	// #2 all required attributes
 	$_reqAttributes = $weTag->getRequiredAttributes();
 	$jsReqAttributes = "var reqAttributes = new Object();";
 	foreach ($_reqAttributes as $_attribName) {
 		$jsReqAttributes .= "\n\treqAttributes[\"$_attribName\"] = 1;";
 	}
-	
+
 	// #3 all neccessary stuff for typeAttribute
 	if ($typeAttribute = $weTag->getTypeAttribute()) {
-		
+
 		// name of the attribute
 		$typeAttributeJs = "var typeAttributeId = \"" . $typeAttribute->getIdName() . "\";\n";
-		
+
 		// allowed attributes
 		$_typeOptions = $weTag->getTypeAttributeOptions();
-		
+
 		if ($_typeOptions) {
-			
+
 			$typeAttributeJs .= "var typeAttributeAllows = new Object();\n";
-			
+
 			foreach ($_typeOptions as $option) {
-				
+
 				$_allowedAttribs = $option->getAllowedAttributes($_attributes);
-				
+
 				if (sizeof($_allowedAttribs)) {
-					
+
 					$typeAttributeJs .= "\ttypeAttributeAllows[\"" . $option->getName() . "\"] = new Array(\"";
-					
+
 					$typeAttributeJs .= implode('","', $_allowedAttribs );
 					$typeAttributeJs .= "\");\n";
-					
+
 				} else {
 					$typeAttributeJs .= "\ttypeAttributeAllows[\"" . $option->getName() . "\"] = new Array();\n";
 				}
 			}
-			
+
 			reset($_typeOptions);
 			$typeAttributeJs .= "var typeAttributeRequires = new Object();\n";
-			
+
 			foreach ($_typeOptions as $option) {
-				
+
 				$_reqAttribs = $option->getRequiredAttributes($_attributes);
 				if (sizeof($_reqAttribs)) {
 					$typeAttributeJs .= "\ttypeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
-					
+
 					$typeAttributeJs .= implode('","', $_reqAttribs );
 					$typeAttributeJs .= "\");\n";
-					
+
 				} else {
 					$typeAttributeJs .= "\ttypeAttributeRequires[\"" . $option->getName() . "\"] = new Array();\n";
 				}
-				
+
 			}
-			
+
 			$typeAttributeJs .= "weTagWizard.typeAttributeAllows = typeAttributeAllows;\nweTagWizard.typeAttributeRequires = typeAttributeRequires;\n";
 		}
 		$typeAttributeJs .= "weTagWizard.typeAttributeId = typeAttributeId;\n";
@@ -136,19 +136,19 @@ function closeOnEscape() {
 }
 
 function applyOnEnter(evt) {
-	
+
 	_elemName = "target";
 	if ( typeof(evt["srcElement"]) != "undefined" ) { // IE
 		_elemName = "srcElement";
 	}
-	
+
 	if (	!( evt[_elemName].tagName == "SELECT")
 		) {
 		we_cmd("saveTag");
 		return true;
 	}
 
-	
+
 }
 
 </script>
@@ -166,20 +166,20 @@ weTagWizard.reqAttributes = reqAttributes;
 // information about the type-attribute
 ' . $typeAttributeJs . '
 function we_cmd(){
-    
+
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
-		
+
 		case "switch_type":
 			weTagWizard.changeType(arguments[1]);
 		break;
-		
+
 		case "saveTag":
-		
+
 			if (strWeTag = weTagWizard.getWeTag()) {
-				
-				' . 
+
+				' .
 					( $openAtCursor
 						? '
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
@@ -193,13 +193,13 @@ function we_cmd(){
     			self.close();'
 
 					) . '
-			
-				
-				
+
+
+
 			} else {
-				
+
 				if (weTagWizard.missingFields.length) {
-					
+
 					req = "";
 					for (i=0;i<weTagWizard.missingFields.length;i++) {
 						req += "- " + weTagWizard.missingFields[i] + "\n";
@@ -211,7 +211,7 @@ function we_cmd(){
 				}
 			}
 		break;
-		
+
 		case "openDirselector":
 			new jsWindow(url,"we_fileselector",-1,-1,'.WINDOW_DIRSELECTOR_WIDTH.','.WINDOW_DIRSELECTOR_HEIGHT.',true,true,true,true);
 			break;
@@ -250,7 +250,7 @@ $attributesCode = $weTag->getAttributesCodeForTagWizard();
 $defaultValueCode = ($weTag->needsEndTag() ? $weTag->getDefaultValueCodeForTagWizard() : '');
 
 if ($typeAttribCode) {
-	
+
 	$typeAttribCode = "
 	<hr />
 	<fieldset>
@@ -259,7 +259,7 @@ if ($typeAttribCode) {
 	</fieldset>";
 }
 if ($attributesCode) {
-	
+
 	$attributesCode = "
 	<hr />
 	<fieldset>
@@ -270,7 +270,7 @@ if ($attributesCode) {
 	</fieldset>";
 }
 if ($defaultValueCode) {
-	
+
 	$defaultValueCode = "
 	<hr />
 	<fieldset>
@@ -318,4 +318,3 @@ print '
 </form>
 </body>
 </html>';
-?>

@@ -24,15 +24,15 @@ if(defined("WORKFLOW_TABLE")) {
 }
 
 class rpcPublishDocsCmd extends rpcCmd {
-	
+
 	function execute() {
-						
+
 		$db = new DB_WE();
-		
+
 		protect();
-			
+
 		$docs = array();
-		
+
 		$arr = $_REQUEST['we_cmd'];
 		if(!empty($arr)) {
 			$allDocs = explode(",", $arr[0]);
@@ -66,4 +66,3 @@ class rpcPublishDocsCmd extends rpcCmd {
 	}
 }
 
-?>

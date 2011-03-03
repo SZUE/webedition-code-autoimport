@@ -160,4 +160,3 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
-?>

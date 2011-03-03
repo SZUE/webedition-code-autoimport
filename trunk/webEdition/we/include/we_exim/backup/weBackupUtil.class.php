@@ -205,7 +205,7 @@
 
 			return false;
 		}
-		
+
 		function canImportVersion($id,$path) {
 
 			if(!empty($id) && stristr($path, '/webEdition/we/version') && $_SESSION['weBackupVars']['handle_options']['versions_binarys']){
@@ -438,6 +438,3 @@
 
 
 	}
-
-
-?>

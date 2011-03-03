@@ -38,20 +38,20 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 	 */
 	function weTagData_sqlColAttribute($id, $name, $table, $required = false, $filter = array(), $module = '')
 	{
-		
+
 		$this->Table = $table;
-		
+
 		global $DB_WE;
-		
+
 		$options = array();
-		
+
 		// get options from choosen table
 		$items = array();
 		$tableInfo = $DB_WE->metadata($this->Table);
 		sort($tableInfo); // #3490
-		
+
 		for ($i = 0; $i < sizeof($tableInfo); $i++) {
-			
+
 			if (!in_array($tableInfo[$i]['name'], $filter)) {
 				$options[] = new weTagDataOption($tableInfo[$i]['name']);
 			}
@@ -59,4 +59,3 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 		parent::weTagData_selectAttribute($id, $name, $options, $required, $module);
 	}
 }
-?>

@@ -512,7 +512,7 @@ class we_imageDocument extends we_binaryDocument {
 				$this->setElement("height", round($this->elements["height"]["dat"]*$this->elements['sizingrel']['dat']), "attrib");
 				unset($this->elements['sizingrel']);
 			}
-			
+
 			if (isset($this->elements['sizingbase']) && $this->elements['sizingbase']['dat']!= 16 ){
 				$sizingbase = $this->elements['sizingbase']['dat'];
 			} else {
@@ -528,7 +528,7 @@ class we_imageDocument extends we_binaryDocument {
 				}
 				unset($this->elements['sizingstyle']);
 			} else {$sizingstyle = false;}
-			
+
 			if ($sizingstyle){
 				$style_width = round($this->elements["width"]["dat"]/$sizingbase,6);
 				$style_height = round($this->elements["height"]["dat"]/$sizingbase,6);
@@ -536,16 +536,16 @@ class we_imageDocument extends we_binaryDocument {
 					$newstyle = $this->elements["style"]["dat"];
 				} else {$newstyle="";}
 
-				$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";"; 
+				$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
 				$this->setElement("style", $newstyle, "attrib");
 				unset($this->elements['width']);
 				unset($this->elements['height']);
 			}
 
-			
+
 			$this->resetElements();
-			
-			
+
+
 
 
 			/********************************************************/
@@ -593,7 +593,7 @@ class we_imageDocument extends we_binaryDocument {
 				$this->html = $attribs['src'];
 				return $this->html;
 			}
-			
+
 			if((isset($href) && $href) && (isset($inc_href) && $inc_href)){  //  use link with rollover
 
 			    $_aAtts['href'] = $href;
@@ -1047,10 +1047,8 @@ class we_imageDocument extends we_binaryDocument {
 
 				$content .= $this->formLanguage(true);
 			}
-		
+
 		return $content;
 
 	}
 }
-
-?>

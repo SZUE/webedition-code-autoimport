@@ -63,4 +63,3 @@ class rebuildFragment extends taskFragment{
 		$this->printJSReload();
 	}
 }
-?>

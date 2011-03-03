@@ -77,10 +77,10 @@ class we_listview_onlinemonitor extends listviewBase {
 			$this->order .= " DESC";
 		}
 
- 		if ($this->order != '') { 
-			$orderstring = " ORDER BY ".$this->order." "; 
-		} else { 
-			$orderstring = ''; 
+ 		if ($this->order != '') {
+			$orderstring = " ORDER BY ".$this->order." ";
+		} else {
+			$orderstring = '';
 		}
 		$laStr='';
 		$llStr='';
@@ -91,10 +91,10 @@ class we_listview_onlinemonitor extends listviewBase {
 			$laStr= "LastAccess > DATE_SUB(NOW(), INTERVAL ".$this->lastaccesslimit." SECOND) ";
 		}
 		if ($this->lastloginlimit!=''){$this->condition= ($this->condition!='' ? $this->condition." AND ":'').$llStr;}
-		
+
 		if ($this->lastaccesslimit!=''){$this->condition= ($this->condition!='' ? $this->condition." AND ":'').$laStr;}
 		$where = $this->condition ? (' WHERE ' . $this->condition) : '';
-		
+
 
 		$q = 'SELECT * FROM ' . CUSTOMER_SESSION_TABLE . $where;
 		$this->DB_WE->query($q);
@@ -104,7 +104,7 @@ class we_listview_onlinemonitor extends listviewBase {
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
-		
+
 		$this->adjustRows();
 	}
 
@@ -136,6 +136,3 @@ class we_listview_onlinemonitor extends listviewBase {
 	}
 
 }
-
-
-?>

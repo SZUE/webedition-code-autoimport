@@ -193,5 +193,3 @@
 
     print $body;
     print '</body></html>';
-
-?>

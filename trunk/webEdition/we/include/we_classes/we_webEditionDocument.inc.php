@@ -1224,4 +1224,3 @@ class we_webEditionDocument extends we_textContentDocument {
 	*/
 
 }
-

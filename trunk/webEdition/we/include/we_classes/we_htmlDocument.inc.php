@@ -78,16 +78,14 @@ class we_htmlDocument extends we_textContentDocument{
 		}
 		return false;
 	}
-	
+
 	function getDocumentCode(){
-		
+
 		$code = $this->getElement("data");
-		
+
 		if( isset($this->elements["Charset"]["dat"]) && $this->elements["Charset"]["dat"] ){
 			$code = preg_replace( "'<meta http-equiv=\"Content-Type\" content=\".*>'i", '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->elements["Charset"]["dat"] . '">', $code );
 		}
 		return $code;
 	}
 }
-
-?>

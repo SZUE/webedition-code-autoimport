@@ -30,9 +30,9 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weBack
 
 	if(isset($_REQUEST["pnt"])) $what=$_REQUEST["pnt"];
 	else $what="frameset";
-		
+
 	if(isset($_REQUEST["step"])) $step=$_REQUEST["step"];
-	else $step=1;	
+	else $step=1;
 
 	$weBackupWizard=new weBackupWizard("/webEdition/we/include/we_editors/we_make_backup.php",BACKUP_MODE);
 
@@ -47,4 +47,3 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weBack
 			error_log(__FILE__ . " unknown reference: $what");
 	}
 
-?>

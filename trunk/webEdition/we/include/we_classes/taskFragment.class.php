@@ -29,7 +29,7 @@ define("FRAGMENT_LOCATION",$_SERVER["DOCUMENT_ROOT"]."/webEdition/fragments/");
 * longer than the timeout of some servers
 */
 class  taskFragment{
-	
+
 	/**
 	 * Number of all tasks.
 	 * @var        int
@@ -56,20 +56,20 @@ class  taskFragment{
 	 */
 	var $data = null;
 	/**
-	 * Name for the whole fragment action. 
+	 * Name for the whole fragment action.
 	 * This variable is used for a reference, so it must be unique
 	 * @var        string
 	 */
 	var $name;
 	/**
-	 * Pause for each task in ms. 
+	 * Pause for each task in ms.
 	 * @var        int
 	 */
 	var $pause;
-		
+
 	var $initdata = null;
 	/**
-	 * init Data. 
+	 * init Data.
 	 * @var        array
 	 */
 
@@ -95,7 +95,7 @@ class  taskFragment{
 			$fp = fopen($filename,"rb");
 			$ser = fread($fp,filesize($filename));
 			if (!$ser) {
-				exit ("Could not read: ".$filename);	
+				exit ("Could not read: ".$filename);
 			}
 			fclose($fp);
 			$this->alldata = unserialize($ser);
@@ -105,7 +105,7 @@ class  taskFragment{
 			$ser = serialize($this->alldata);
 			$fp = fopen($filename,"wb");
 			if (!fwrite($fp,$ser)) {
-				exit("Could not write: ".$filename);	
+				exit("Could not write: ".$filename);
 			}
 			fclose($fp);
 		}
@@ -125,7 +125,7 @@ class  taskFragment{
 		}
 		$this->printFooter();
 	}
-	
+
 	/**
 	 * Prints the body tag.
 	 *
@@ -144,14 +144,14 @@ class  taskFragment{
 			if (is_array($v)) {
 				foreach($v as $k => $av){
 					if(get_magic_quotes_gpc() == 1){
-						$av = stripslashes($av);	
+						$av = stripslashes($av);
 					}
 					$tail .= "&".rawurlencode($i)."[".rawurlencode($k)."]=".rawurlencode($av);
 				}
 			} else {
 				if ($i != "fr_".rawurlencode($this->name)."_ct") {
 					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);	
+						$v = stripslashes($v);
 					}
 					$tail .= "&".rawurlencode($i)."=".rawurlencode($v);
 				}
@@ -161,29 +161,29 @@ class  taskFragment{
 			if (is_array($v)) {
 				foreach($v as $k => $av){
 					if(get_magic_quotes_gpc() == 1){
-						$av = stripslashes($av);	
+						$av = stripslashes($av);
 					}
 					$tail .= "&".$i."[".rawurlencode($k)."]=".rawurlencode($av);
 				}
 			} else {
 				if ($i != "fr_".rawurlencode($this->name)."_ct") {
 					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);	
+						$v = stripslashes($v);
 					}
 					$tail .= "&".rawurlencode($i)."=".rawurlencode($v);
 				}
 			}
 		}
-		
+
 		$onload = "document.location='".$_SERVER["PHP_SELF"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
-		
+
 		if ($this->pause) {
 			$onload = "setTimeout('".addslashes($onload)."',".$this->pause.");";
 		}
 		print "<body".
 			$attr.
-			(($nextTask <= $this->numberOfTasks) ? 
-				(' onload="'.$onload.'"') : 
+			(($nextTask <= $this->numberOfTasks) ?
+				(' onload="'.$onload.'"') :
 				"").
 			">";
 	}
@@ -199,14 +199,14 @@ class  taskFragment{
 			if (is_array($v)) {
 				foreach($v as $k => $av){
 					if(get_magic_quotes_gpc() == 1){
-						$av = stripslashes($av);	
+						$av = stripslashes($av);
 					}
 					$tail .= "&".rawurlencode($i)."[".rawurlencode($k)."]=".rawurlencode($av);
 				}
 			} else {
 				if ($i != "fr_".rawurlencode($this->name)."_ct") {
 					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);	
+						$v = stripslashes($v);
 					}
 					$tail .= "&".rawurlencode($i)."=".rawurlencode($v);
 				}
@@ -216,22 +216,22 @@ class  taskFragment{
 			if (is_array($v)) {
 				foreach($v as $k => $av){
 					if(get_magic_quotes_gpc() == 1){
-						$av = stripslashes($av);	
+						$av = stripslashes($av);
 					}
 					$tail .= "&".$i."[".rawurlencode($k)."]=".rawurlencode($av);
 				}
 			} else {
 				if ($i != "fr_".rawurlencode($this->name)."_ct") {
 					if(get_magic_quotes_gpc() == 1){
-						$v = stripslashes($v);	
+						$v = stripslashes($v);
 					}
 					$tail .= "&".rawurlencode($i)."=".rawurlencode($v);
 				}
 			}
 		}
-		
+
 		$onload = "document.location='".$_SERVER["PHP_SELF"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
-		
+
 		if ($this->pause) {
 			$onload = "setTimeout('".addslashes($onload)."',".$this->pause.");";
 		}
@@ -246,9 +246,9 @@ class  taskFragment{
 	function printFooter(){
 		print "</body>\n</html>\n";
 	}
-	
+
 	// overwrite the following functions
-	
+
 	/**
 	 * Prints the header.
 	 * This Function should be overwritten
@@ -264,19 +264,19 @@ class  taskFragment{
 	function init(){
 		$this->alldata = $this->initdata;
 	}
-	
+
 	/**
 	 * Overwrite this function to do the work for each task.
 	 *
 	 */
 	function doTask(){}
-	
+
 	/**
 	 * Overwrite this function to do the work when everything is finished.
 	 *
 	 */
 	function finish(){}
-	
+
 }
 
 /*
@@ -285,7 +285,7 @@ class  taskFragment{
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/taskFragment.class.php");
 
 class myFrag extends taskFragment{
-	
+
 	function init(){
 		$this->alldata = array(
 							array("color"=>"red","size"=>30),
@@ -294,19 +294,19 @@ class myFrag extends taskFragment{
 							array("color"=>"yellow","size"=>50)
 							);
 	}
-	
+
 	function doTask(){
 		$id = $this->data;
 		print "Color:".$this->data["color"]."<br>";
 		print "Size:".$this->data["size"]."<br><br>";
 	}
-	
+
 	function finish(){
-		print "FINISHED!";	
+		print "FINISHED!";
 	}
-	
+
 	function printHeader(){
-		print "<html><head><title>myFragment</title></head>";	
+		print "<html><head><title>myFragment</title></head>";
 	}
 }
 
@@ -315,4 +315,3 @@ $fr = new myFrag("holeg",1,800,array("bgcolor"=>"silver"));
 
 */
 
-?>

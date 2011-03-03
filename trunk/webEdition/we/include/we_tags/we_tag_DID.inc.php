@@ -14,4 +14,4 @@ function we_tag_DID($attribs, $content){
 		default :
 			return $GLOBALS["we_doc"]->ID;
 	}
-}?>
+}

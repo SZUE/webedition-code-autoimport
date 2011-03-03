@@ -40,7 +40,7 @@ class we_msg_email extends we_msg_proto {
     /*****************************************************************/
     /* Class Methods *************************************************/
     /*****************************************************************/
-    
+
     /* Constructor */
     function we_msg_email() {
 	$this->Name = 'msg_email_' . md5(uniqid(rand()));
@@ -56,7 +56,7 @@ class we_msg_email extends we_msg_proto {
     }
 
     function rfc2047_encode($header) {
-	if (!ereg('[����]', $header)) 
+	if (!ereg('[����]', $header))
 	    return $header;
 
 	/* Quoted-Printable encoding (see RFC 2045) should be okay for iso-8859-1 */
@@ -85,9 +85,9 @@ class we_msg_email extends we_msg_proto {
 	    }
 
 	}
-	
+
 	$enc_header .= "?=";
-	
+
 	return $enc_header;
     }
 
@@ -113,4 +113,3 @@ class we_msg_email extends we_msg_proto {
     }
 }
 
-?>

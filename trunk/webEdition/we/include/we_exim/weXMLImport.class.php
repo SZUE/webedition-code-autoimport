@@ -42,9 +42,9 @@
 
 			$data = weFile::load($chunk_file);
 			$this->xmlBrowser = new weXMLParser();
-//			$this->xmlBrowser->parse($data,$_SESSION['weXMLimportCharset']); Original , änderung für Zeichensatz Wandlung
+//			$this->xmlBrowser->parse($data,$_SESSION['weXMLimportCharset']); Original , ï¿½nderung fï¿½r Zeichensatz Wandlung
 			$this->xmlBrowser->parse($data,$this->options['xml_encoding']);
-			unset($data); 
+			unset($data);
 			$this->xmlBrowser->normalize();
 
 			if($this->xmlBrowser->getChildren(0,$node_set)){
@@ -190,14 +190,14 @@
 								$owner = ($this->options['owners_overwrite'] &&  $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
 								$object->ParentID=makePath(dirname($object->Path),$object->Table,$pathids,$owner);
 								if(isset($object->ParentPath)) $object->ParentPath=id_to_path($object->ParentID,$object->Table);
-								
+
 								// insert new created folders in ref table
 								foreach($pathids as $pid){
 
 									$h=getHash("SELECT ParentID,Path FROM ".mysql_real_escape_string($object->Table)." WHERE ID='".abs($pid)."';",new DB_WE());
 									if(!$this->RefTable->exists(array("ID"=>$pid,"ContentType"=>"folder"))){
 										$this->RefTable->add2(
-											array_merge(array(	
+											array_merge(array(
 															"ID"=>$pid,
 															"ParentID"=>$h["ParentID"],
 															"Path"=>$h["Path"],
@@ -350,7 +350,7 @@
 			$object = '';
 			$node_props = array();
 
-			
+
 
 			if($this->xmlBrowser->getChildren($node_id,$node_props)) {
 
@@ -358,7 +358,7 @@
 						$this->xmlBrowser->seek($node);
 						$nodname=$this->xmlBrowser->getNodeName();
 						$noddata=$this->xmlBrowser->getNodeData();
-						
+
 						if($nodname=="we:info"){
 							$this->importNodeSet($node);
 						}
@@ -403,7 +403,7 @@
 									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/we_thumbnail.class.php");
 									$object=new $noddata();
 								}
-								else if($noddata=="we_class_folder"){ //Bug 3857 sonderbehandlung hinzugefügt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
+								else if($noddata=="we_class_folder"){ //Bug 3857 sonderbehandlung hinzugefï¿½gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
 								}
 								else{
 									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$noddata.".inc.php");
@@ -412,7 +412,7 @@
 							}
 							$node_data[$nodname]=$noddata;
 						}
-						
+
 				}
 			}
 
@@ -434,7 +434,7 @@
 					if(!weContentProvider::noEncodingChange($object->ClassName,$k, $this->nodehierarchy, $object->Name)) {
 						$v= $this->changeEncoding($v);
 					}
-					
+
 					if($v!=$object->$k) $object->$k= $v;
 				}
 			}
@@ -452,7 +452,7 @@
 
 					if ($value==$this->options['xml_encoding']) {
 						return $this->options['target_encoding'];
-					} else { 
+					} else {
 						if ($this->isSerialized($value)) {
 							$usv= unserialize($value);
 							if(is_array($usv)) {
@@ -462,7 +462,7 @@
 									} else {
 										$av = utf8_decode($av);
 									}
-								}	   
+								}
 							   $sv= serialize($usv);
 							   return $sv;
 							} else {
@@ -484,7 +484,7 @@
 				return $value;
 			}
 		}
-		
+
 		function refreshOwners(&$object){
 			if(isset($object->CreatorID) && ($this->options['handle_owners'] || $this->options['owners_overwrite'])){
 				$userid=$object->CreatorID;
@@ -670,8 +670,3 @@
 		}
 
 	}
-
-
-
-
-?>

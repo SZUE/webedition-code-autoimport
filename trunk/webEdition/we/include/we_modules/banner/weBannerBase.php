@@ -35,7 +35,7 @@ class weBannerBase{
 	var $table="";
 
 	var $ClassName;
-	
+
 
 	function weBannerBase(){
 		$this->uid = "ba_".md5(uniqid(rand()));
@@ -94,5 +94,3 @@ class weBannerBase{
 	}
 
 }
-
-?>

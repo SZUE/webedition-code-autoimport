@@ -82,4 +82,3 @@ $foo .= '		&lt;title&gt;'.$we_doc->getElement("Title").'&lt;/title&gt;
 	</body>
 <?php endif ?>
 </html>
-

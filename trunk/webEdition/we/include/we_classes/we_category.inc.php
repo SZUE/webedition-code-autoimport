@@ -29,26 +29,24 @@
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."modules/weModelBase.php");
 
 	class we_category extends weModelBase{
-		
+
 		var $ClassName="we_category";
 		var $ContentType="category";
-		
-		function we_category(){			
-			weModelBase::weModelBase(CATEGORY_TABLE);		
+
+		function we_category(){
+			weModelBase::weModelBase(CATEGORY_TABLE);
 		}
-		
+
 		function we_save(){
 			if(isset($this->Catfields) && is_array($this->Catfields)){
 				$this->Catfields = serialize($this->Catfields);
 			}
-			
-			weModelBase::save();
-			
-		}
-		
-		
-		
-	} 
-		
 
-?>
+			weModelBase::save();
+
+		}
+
+
+
+	}
+	

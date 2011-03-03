@@ -43,24 +43,24 @@ if (($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) || ($table == FI
 $yuiSuggest = & weSuggest::getInstance();
 
 if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_single_document") {
-	
+
 	if (isset($_REQUEST["sel"]) && $_REQUEST["sel"] && isset($_REQUEST["we_target"])) {
-		
+
 		$targetDirectroy = $_REQUEST["we_target"];
 		// list of all item names which should be moved
 		$items2move = array();
-		
+
 		// list of the selected items
 		$selectedItems = explode(",", $_REQUEST["sel"]);
 		$retVal = 1;
 		for ($i = 0; $i < sizeof($selectedItems); $i++) {
-			
+
 			// check if user is allowed to move this item
 			if (!checkIfRestrictUserIsAllowed($selectedItems[$i], $table)) {
 				$retVal = -1;
 				break;
 			}
-			
+
 			// check if item could be moved to the target directory
 			$check = checkMoveItem($targetDirectroy, $selectedItems[$i], $table, $items2move);
 			switch ($check) {
@@ -85,35 +85,35 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 				break;
 			}
 		}
-		
+
 		if ($retVal == -1) { //	not allowed to move document
-			
+
 
 			$script .= "top.toggleBusy(0);\n";
 			$script .= we_message_reporting::getShowMessageCall(
-					sprintf($l_alert["noRightsToMove"], id_to_path($selectedItems[$i], $table)), 
+					sprintf($l_alert["noRightsToMove"], id_to_path($selectedItems[$i], $table)),
 					WE_MESSAGE_ERROR);
-		
-		} else 
+
+		} else
 			if ($retVal) { //	move files !
-				
+
 
 				$notMovedItems = array();
 				for ($i = 0; $i < sizeof($selectedItems); $i++) {
 					moveItem($targetDirectroy, $selectedItems[$i], $table, $notMovedItems);
 				}
-				
+
 				if ($_SESSION["we_mode"] == "normal") { //	only update tree when in normal mode
 					$script .= moveTreeEntries($table == OBJECT_FILES_TABLE);
 				}
-				
+
 				$script .= "\ntop.toggleBusy(0);\n";
 				if ($_SESSION["we_mode"] == "normal") { //	different messages in normal or seeMode
 					if (sizeof($notMovedItems)) {
 						$_SESSION["move_files_nok"] = array();
 						$_SESSION["move_files_info"] = str_replace(
-								"\\n", 
-								"", 
+								"\\n",
+								"",
 								sprintf($l_alert["move_of_files_failed"], ""));
 						foreach ($notMovedItems as $item) {
 							$_SESSION["move_files_nok"][] = array(
@@ -123,21 +123,21 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 						$script .= 'new jsWindow("' . WEBEDITION_DIR . 'moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
 					} else {
 						$script .= we_message_reporting::getShowMessageCall($l_alert["move_ok"], WE_MESSAGE_NOTICE);
-					
+
 					}
 				}
-			
+
 			} else {
 				$script .= "top.toggleBusy(0);\n";
 				$script .= we_message_reporting::getShowMessageCall($message, WE_MESSAGE_ERROR);
 			}
-	
+
 	} elseif (!isset($_REQUEST["we_target"]) || !$_REQUEST["we_target"]) {
 		$script .= "top.toggleBusy(0);\n";
 		$script .= we_message_reporting::getShowMessageCall($l_alert["move_no_dir"], WE_MESSAGE_ERROR);
 	} else {
 		$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(
-				$l_alert["nothing_to_move"], 
+				$l_alert["nothing_to_move"],
 				WE_MESSAGE_ERROR) . "\n";
 	}
 	print '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
@@ -153,15 +153,15 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 
 
 if ($_SESSION["we_mode"] == "seem") {
-	
+
 	if ($retVal) { //	document moved -> go to seeMode startPage
 		$_js = we_message_reporting::getShowMessageCall(
-				$l_alert['move_single']['return_to_start'], 
+				$l_alert['move_single']['return_to_start'],
 				WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');";
 	} else {
 		$_js = we_message_reporting::getShowMessageCall($l_alert['move_single']['no_delete'], WE_MESSAGE_ERROR);
 	}
-	print 
+	print
 			we_htmlElement::htmlHtml(we_htmlElement::htmlHead(we_htmlElement::jsElement($_js)));
 	exit();
 }
@@ -248,15 +248,15 @@ function press_ok_move() {
 
 		}
 		<?php
-		
+
 		$_type = $GLOBALS["l_global"]["documents"];
 		if ($table == TEMPLATES_TABLE) {
 			$_type = $GLOBALS["l_global"]["templates"];
-		
-		} else 
+
+		} else
 			if (defined("OBJECT_TABLE") && $table == OBJECT_FILES_TABLE) {
 				$_type = $GLOBALS["l_global"]["objects"];
-			
+
 			}
 		?>
 
@@ -352,8 +352,8 @@ $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);
 $yuiSuggest->setSelectButton(
 		$we_button->create_button(
-				"select", 
-				"javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','top.rframe.bframe.treeheader.document.we_form.elements." . $idname . ".value','top.rframe.bframe.treeheader.document.we_form.elements." . $textname . ".value','','" . session_id() . "',0)"), 
+				"select",
+				"javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','top.rframe.bframe.treeheader.document.we_form.elements." . $idname . ".value','top.rframe.bframe.treeheader.document.we_form.elements." . $textname . ".value','','" . session_id() . "',0)"),
 		10);
 
 $weAcSelector = $yuiSuggest->getHTML();
@@ -362,10 +362,10 @@ $content = '<span class="middlefont" style="padding-right:5px;padding-bottom:10p
 			<p style="margin:0 0 10px 0;padding:0;">' . $weAcSelector . '</p>';
 
 $_buttons = $we_button->position_yes_no_cancel(
-		$we_button->create_button("ok", "javascript:press_ok_move();"), 
-		"", 
-		$we_button->create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"), 
-		10, 
+		$we_button->create_button("ok", "javascript:press_ok_move();"),
+		"",
+		$we_button->create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"),
+		10,
 		"left");
 
 $form = '
@@ -376,7 +376,7 @@ $form = '
 ?>
 
 <?php
-print 
+print
 		'</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
@@ -389,4 +389,3 @@ print
 </body>
 </html>
 ';
-?>

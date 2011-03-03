@@ -563,7 +563,7 @@ class Image_Transform_Driver_GD extends Image_Transform
             $new_img = @ImageCreateTrueColor($width, $height);
         }
         if (!$new_img) {
-        	
+
         	$width = intval($width) > 0 ? $width : 1;
         	$height = intval($height) > 0 ? $height : 1;
             $new_img = ImageCreate($width, $height);
@@ -578,4 +578,3 @@ class Image_Transform_Driver_GD extends Image_Transform
     }
 }
 
-?>

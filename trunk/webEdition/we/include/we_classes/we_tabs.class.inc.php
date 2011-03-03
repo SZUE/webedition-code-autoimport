@@ -158,7 +158,7 @@ function allowed_change_edit_page() {
 		var contentEditor = top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController ? top.opener.top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.opener && top.opener.top.weEditorFrameController ? top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.weEditorFrameController.getVisibleEditorFrame();
 		if ( contentEditor && contentEditor.fields_are_valid ) {
 			return contentEditor.fields_are_valid();
-		
+
 		}
 	}
 	catch(e) {
@@ -181,11 +181,11 @@ function setPathName(pathName) {
 	if(hasPathName) titlePathName = pathName;
 }
 
-function setPathGroup(pathGroup) {	
+function setPathGroup(pathGroup) {
 	if(hasPathGroup) titlePathGroup = pathGroup;
 }
 
-var __weEditorFrameController = (top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) ? top.opener.top.opener.top.weEditorFrameController : (top.opener && top.opener.top.weEditorFrameController) ? top.opener.top.weEditorFrameController : top.weEditorFrameController; 
+var __weEditorFrameController = (top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) ? top.opener.top.opener.top.weEditorFrameController : (top.opener && top.opener.top.weEditorFrameController) ? top.opener.top.weEditorFrameController : top.weEditorFrameController;
 
 if (__weEditorFrameController.getVisibleEditorFrame() || (parent.frames && parent.frames[1])) {
 	setTimeout("getPathInfos()",250);
@@ -196,11 +196,11 @@ var loop = 0;
 function getPathInfos(){
 	try	{
 		var contentEditor = __weEditorFrameController.getVisibleEditorFrame();
-		
+
 		if (contentEditor == null && parent.frames) {
 			contentEditor = parent.frames[1];
 		}
-	
+
 		if(contentEditor.loaded) {
 			if(pathNameElem = contentEditor.document.getElementById('yuiAcInputPathName')) {
 				hasPathName   = true;
@@ -280,4 +280,3 @@ HTS;
 	}
 
 }
-?>

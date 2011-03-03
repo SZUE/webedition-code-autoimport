@@ -46,7 +46,7 @@ $_javascript = <<< END_OF_SCRIPT
 <!--
 var countSaveTrys = 0;
 function we_save() {
-	/* 
+	/*
 	-- ERROR HANDLING IS RUNNING ON SERVER --
 	if(countSaveTrys>10) {
 		$acErrorMsg
@@ -137,4 +137,3 @@ $cancelbut = $we_button->create_button("cancel", "javascript:top.close()");
 
 print we_htmlElement::htmlBody(array("class" => "weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");
 
-?>

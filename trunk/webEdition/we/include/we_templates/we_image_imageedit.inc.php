@@ -88,4 +88,3 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 			$_html .= '</table>';
 
 			print $_html;
-?>

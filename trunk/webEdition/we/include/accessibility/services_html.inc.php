@@ -19,7 +19,7 @@
  */
 
     $i = 0;
-    
+
     //  first xhtml from W3C
     $validationService[] = new validationService(
                             $i++,
@@ -35,7 +35,7 @@
                             '',
                             '.html,.htm,.php',
                             1);
-    
+
     $validationService[] = new validationService(
                             $i++,
                             'default',
@@ -65,4 +65,3 @@ $service['bobby'] = array(
                     );
 */
 
-?>

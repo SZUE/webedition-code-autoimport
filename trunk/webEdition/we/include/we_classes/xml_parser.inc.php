@@ -151,7 +151,7 @@ class XML_Parser {
 		if (preg_match("/^(((f|ht){1}tp:\/\/)".
 			"[-a-zA-Z0-9@:%_\+.~#?&\/\/=]+)/i", $file)) {
 			// Read the content of the url.
-			$data = @implode('', @file($file));			
+			$data = @implode('', @file($file));
 			if (empty($data)) {
 				//$this->addWarning(ERROR_FILE_EMPTY, __LINE__, $this->fileName);
 				return FALSE;
@@ -174,10 +174,10 @@ class XML_Parser {
 		}
 
 		if(empty($force_encoding)) {
-			
-			$head = substr($data,0,250); 
+
+			$head = substr($data,0,250);
 			$encoding = $this->getEncoding('',$head);
-			
+
 		} else {
 
 			$encoding = $force_encoding;
@@ -716,7 +716,7 @@ class XML_Parser {
 				$xPath = $this->replaceEntities($xPath);
 			} else {
 				$xPath = rhtmlentities($xPath);
-				
+
 			}
 
 			// Split the XPath at every slash.
@@ -936,7 +936,7 @@ class XML_Parser {
 				$axis['axis']      = 'parent';
 				$axis['node-test'] = '*';
 			}
-			else if (ereg("^[a-zA-Z0-9\_-]+$", $step)) { 
+			else if (ereg("^[a-zA-Z0-9\_-]+$", $step)) {
 				// Select the child axis and the child.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = $step;
@@ -1134,7 +1134,7 @@ class XML_Parser {
 			'+', '-', '*', ' div ', ' mod ');
 		$operator = '';
 		$position = 0;
-		
+
 		// Run through all operators.
 		foreach ($operators as $expression) {
 			// Check if a position was already found.
@@ -2027,7 +2027,7 @@ class XML_Parser {
 	 *
 	 * The XPath function 'position' returns the position in the node list of
 	 * the node that is currently beeing processed.
-	 * 
+	 *
 	 *
 	 * @param      string $node
 	 * @param      string $args
@@ -2620,7 +2620,7 @@ class XML_Parser {
 		// exit the script
 		exit;
 	}
-	
+
 	/**
 	 * The method gets defined encoding from file or from data
 	 *
@@ -2628,7 +2628,7 @@ class XML_Parser {
 	 * @param      string $data
 	 * @return     string
 	 * @see        parseXML()
-	 */	
+	 */
 	function getEncoding($file='',$data=''){
 
 			if(!empty($file)) {
@@ -2649,10 +2649,8 @@ class XML_Parser {
 					$encoding = 'UTF-8';
 				}
 			}
-			
+
 			return $encoding;
 	}
 
 }
-
-?>

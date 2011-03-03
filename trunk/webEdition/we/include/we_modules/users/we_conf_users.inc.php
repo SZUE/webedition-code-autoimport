@@ -31,5 +31,3 @@ define("WE_USERS_MODULE_DIR", $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/
 define("WE_USERS_MODULE_PATH","/webEdition/we/include/we_modules/users/");
 
 @include(WE_USERS_MODULE_DIR."we_conf_userpro.inc.php");
-
-?>

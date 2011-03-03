@@ -63,7 +63,7 @@ class we_rebuild_wizard{
 	function getBusy(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
-		
+
 		$WE_PB = new we_progressBar(0,0,true);
 		$WE_PB->setStudLen($dc ? 490 : 200);
 		$WE_PB->addText("",0,"pb1");
@@ -94,7 +94,7 @@ class we_rebuild_wizard{
 		$refreshButton = $WE_BTN->create_button("refresh","javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
 
 		$nextbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm("REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm("REBUILD_META"));
-		
+
 		if($dc){
 			$buttons = $WE_BTN->create_button_table(array($refreshButton, $cancelButton), 10);
 			$pb = htmlDialogLayout($pb,$GLOBALS["l_rebuild"]["rebuild"],$buttons);
@@ -1064,4 +1064,3 @@ class we_rebuild_wizard{
 	}
 }
 
-?>

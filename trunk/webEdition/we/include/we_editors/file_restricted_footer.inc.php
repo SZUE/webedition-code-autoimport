@@ -41,4 +41,3 @@
 
 
 	print we_htmlElement::htmlHtml($_head . "\n" . $_body);
-?>

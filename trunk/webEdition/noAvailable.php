@@ -41,4 +41,3 @@ $content='<table cellpadding="0" cellspacing="0" border="0">
  <?php print htmlDialogLayout($content,$l_help["help_not_available_title"],$we_button->create_button("close", "javascript:self.close();")); ?>
 </body>
 </html>
-

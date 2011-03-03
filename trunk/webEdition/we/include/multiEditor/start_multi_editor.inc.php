@@ -55,7 +55,7 @@ function checkIfValidStartdocument( $id , $type = "document"){
 
 
 function _buildJsCommand($cmdArray = array( "", "", "cockpit", "open_cockpit","","","","","" ) ) {
-	return 'if(top && top.weEditorFrameController) top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");';	
+	return 'if(top && top.weEditorFrameController) top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");';
 }
 
 $jsCommand = _buildJsCommand();
@@ -122,13 +122,12 @@ if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we
 if ($_SESSION["prefs"]["seem_start_type"] !== "") {
 	print we_htmlElement::jsElement(
 		$jsCommand
-		
+
 	);
 } else {
 	print we_htmlElement::jsElement(
 		"top.weEditorFrameController.toggleFrames();"
-		
+
 	);
 }
 
-?>

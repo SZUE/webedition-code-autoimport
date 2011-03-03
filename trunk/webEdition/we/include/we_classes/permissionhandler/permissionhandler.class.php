@@ -44,7 +44,7 @@
          * @return  array               of the needed Permissions
          */
         function getPermissionsForAction($requestedAction, $parameter){
-        	
+
         	/*
 		        Here is the Array, which gives the connection between the action the user wants to make
 		        and the needed permissions.
@@ -53,15 +53,15 @@
 		        - the last is an array of strings containing all permissions, the user must have
 		          each entry of the array reflects a condition, when one condition matches - the action is allowed.
 		        - Several AND conditions in one conditionstring are seperated with ","
-		
+
 		          here are two example usages:
-		
+
 		          $knownActions["switch_edit_page"]["WE_EDITPAGE_PROPERTIES"] = array("CAN_SEE_PROPERTIES");
 		          action: switch editPage to property-page - needed right is "CAN_SEE_PROPERTIES"
-		          
+
 		          $knownActions["another_action"]["another_para"] = array("Right1","Right2,Right3");
 		          action: another_action with another_para - needed right can be: Right1 OR Right2 AND Right3
-		          
+
 		    */
 		    $knownActions = array();
 		    //	The first entries are no we_cmd[0], but sometimes needed.
@@ -71,13 +71,13 @@
 		    $knownActions["switch_edit_page"][2] = array("CAN_SEE_INFO");
 		    $knownActions["switch_edit_page"]["WE_EDITPAGE_VALIDATION"] = array("CAN_SEE_VALIDATION");
 		    $knownActions["switch_edit_page"][10] = array("CAN_SEE_VALIDATION");
-		    
+
 		    //	Is user allowed to work in normal mode or only in SEEM
 		    $knownActions["work_mode"]["normal"] = array("CAN_WORK_NORMAL_MODE");
 		    $knownActions["header"]["with_java"] = array("CAN_SEE_MENUE");
-        	
-		    
-		    
+
+
+
             if(isset($knownActions[$requestedAction][$parameter])){
                 return $knownActions[$requestedAction][$parameter];
             } else {
@@ -103,7 +103,7 @@
 
             //  An array is returned, check the rights.
             if(is_array($neededPerm)){
-				
+
                 while(list($key, $val) = each($neededPerm)){
 
                     $allowed = true;
@@ -129,4 +129,3 @@
             return false;
         }
     }
-?>

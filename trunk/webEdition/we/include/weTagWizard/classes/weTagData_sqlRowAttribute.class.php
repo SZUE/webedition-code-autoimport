@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,26 +18,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataOption.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
 
-class weTagData_sqlRowAttribute extends weTagData_selectAttribute
-{
+class weTagData_sqlRowAttribute extends weTagData_selectAttribute {
 
 	/**
 	 * @var string
 	 */
 	var $Table;
-
 	/**
 	 * @var string
 	 */
 	var $ValueName;
-
 	/**
 	 * @var string
 	 */
@@ -50,12 +47,11 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute
 	 * @param string $textName
 	 * @param string $order
 	 */
-	function weTagData_sqlRowAttribute($id, $name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '')
-	{
+	function weTagData_sqlRowAttribute($id, $name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '') {
 
 		global $DB_WE;
-		if(!isset($DB_WE)){
-			$DB_WE=new DB_WE();
+		if (!isset($DB_WE)) {
+			$DB_WE = new DB_WE();
 		}
 		$this->Table = $table;
 		$this->ValueName = $valueName;
@@ -67,7 +63,7 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute
 		$items = array();
 
 		$DB_WE->query(
-				"SELECT " . mysql_real_escape_string($this->ValueName) . "," . mysql_real_escape_string($this->TextName) . "
+						"SELECT " . mysql_real_escape_string($this->ValueName) . "," . mysql_real_escape_string($this->TextName) . "
 			 FROM " . mysql_real_escape_string($this->Table) . "
 			 " . ($order ? "ORDER BY $order" : ''));
 
@@ -77,5 +73,5 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute
 		}
 		parent::weTagData_selectAttribute($id, $name, $options, $required, $module);
 	}
+
 }
-?>

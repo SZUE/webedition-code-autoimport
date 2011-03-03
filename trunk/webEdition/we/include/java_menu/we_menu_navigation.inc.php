@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,12 +18,10 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');
 
 
-$we_menu_navigation['000100']['text'] =$GLOBALS['l_navigation']['navigation'];
+$we_menu_navigation['000100']['text'] = $GLOBALS['l_navigation']['navigation'];
 $we_menu_navigation['000100']['parent'] = '000000';
 $we_menu_navigation['000100']['perm'] = '';
 $we_menu_navigation['000100']['enabled'] = '1';
@@ -64,22 +63,22 @@ $we_menu_navigation['001000']['cmd'] = 'exit_navigation';
 $we_menu_navigation['001000']['perm'] = '';
 $we_menu_navigation['001000']['enabled'] = '1';
 /*
-$we_menu_navigation['001500']['text'] = $GLOBALS['l_navigation']['menu_options'];
-$we_menu_navigation['001500']['parent'] = '000000';
-$we_menu_navigation['001500']['perm'] = '';
-$we_menu_navigation['001500']['enabled'] = '1';
+  $we_menu_navigation['001500']['text'] = $GLOBALS['l_navigation']['menu_options'];
+  $we_menu_navigation['001500']['parent'] = '000000';
+  $we_menu_navigation['001500']['perm'] = '';
+  $we_menu_navigation['001500']['enabled'] = '1';
 
-$we_menu_navigation['001600']['text'] = $GLOBALS['l_navigation']['menu_generate'].'...';
-$we_menu_navigation['001600']['parent'] = '001500';
-$we_menu_navigation['001600']['cmd'] = 'generate_navigation';
-$we_menu_navigation['001600']['perm'] = '';
-$we_menu_navigation['001600']['enabled'] = '1';
+  $we_menu_navigation['001600']['text'] = $GLOBALS['l_navigation']['menu_generate'].'...';
+  $we_menu_navigation['001600']['parent'] = '001500';
+  $we_menu_navigation['001600']['cmd'] = 'generate_navigation';
+  $we_menu_navigation['001600']['perm'] = '';
+  $we_menu_navigation['001600']['enabled'] = '1';
 
-$we_menu_navigation['001700']['text'] = $GLOBALS['l_navigation']['menu_settings'];
-$we_menu_navigation['001700']['parent'] = '001500';
-$we_menu_navigation['001700']['cmd'] = 'settings_navigation';
-$we_menu_navigation['001700']['perm'] = '';
-$we_menu_navigation['001700']['enabled'] = '1';*/
+  $we_menu_navigation['001700']['text'] = $GLOBALS['l_navigation']['menu_settings'];
+  $we_menu_navigation['001700']['parent'] = '001500';
+  $we_menu_navigation['001700']['cmd'] = 'settings_navigation';
+  $we_menu_navigation['001700']['perm'] = '';
+  $we_menu_navigation['001700']['enabled'] = '1'; */
 
 $we_menu_navigation['002000']['text'] = $GLOBALS['l_navigation']['menu_options'];
 $we_menu_navigation['002000']['parent'] = '000000';
@@ -97,16 +96,15 @@ $we_menu_navigation['003000']['parent'] = '000000';
 $we_menu_navigation['003000']['perm'] = '';
 $we_menu_navigation['003000']['enabled'] = '1';
 
-$we_menu_navigation['003100']['text'] = $GLOBALS['l_navigation']['menu_help'].'...';
+$we_menu_navigation['003100']['text'] = $GLOBALS['l_navigation']['menu_help'] . '...';
 $we_menu_navigation['003100']['parent'] = '003000';
 $we_menu_navigation['003100']['cmd'] = 'help_navigation';
 $we_menu_navigation['003100']['perm'] = '';
 $we_menu_navigation['003100']['enabled'] = '1';
 
-$we_menu_navigation['003200']['text'] = $GLOBALS['l_navigation']['menu_info'].'...';
+$we_menu_navigation['003200']['text'] = $GLOBALS['l_navigation']['menu_info'] . '...';
 $we_menu_navigation['003200']['parent'] = '003000';
 $we_menu_navigation['003200']['cmd'] = 'info';
 $we_menu_navigation['003200']['perm'] = '';
 $we_menu_navigation['003200']['enabled'] = '1';
 
-?>

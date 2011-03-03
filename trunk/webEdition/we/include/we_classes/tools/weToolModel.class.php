@@ -21,35 +21,35 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModelBase.php');
 
 class weToolModel extends weModelBase {
-	
+
 	var $ID=0;
 	var $Text;
 	var $ParentID=0;
 	var $Path;
 	var $Icon;
 	var $IsFolder;
-	
+
 	var $ModelClassName = 'weToolModel';
 	var $toolName = '';
-	
+
 	var $requiredFields = array();
-	
+
 	function weToolModel($table){
 
 		weModelBase::weModelBase($table);
-		
+
 	}
-	
+
 	function saveInSession() {
 		$_SESSION[$this->toolName . '_session'] = serialize($this);
 	}
-	
+
 	function clearSessionVars(){
 		if(!empty($this->toolName) && isset($_SESSION[$this->toolName . '_session'])){
 				unset($_SESSION[$this->toolName . '_session']);
 			}
 	}
-	
+
 	function filenameNotValid() {
 		return false;
 	}
@@ -57,7 +57,7 @@ class weToolModel extends weModelBase {
 	function isRequiredField($fieldname) {
 		return in_array($fieldname,$this->requiredFields);
 	}
-	
+
 	function hasRequiredFields(&$failed) {
 		foreach ($this->requiredFields as $_req) {
 			if(empty($this->$_req)) {
@@ -66,17 +66,17 @@ class weToolModel extends weModelBase {
 		}
 		return empty($failed);
 	}
-	
+
 	function setPath(){
 		$ppath = f('SELECT Path FROM ' . mysql_real_escape_string($this->table) . ' WHERE ID=' . abs($this->ParentID) . ';','Path',$this->db);
 		$this->Path=$ppath."/".$this->Text;
 	}
-	
+
 	function pathExists($path){
 		$this->db->query('SELECT * FROM '.mysql_real_escape_string($this->table).' WHERE Path = \''.mysql_real_escape_string($path).'\' AND ID <> \''.abs($this->ID).'\';');
 		if($this->db->next_record()) return true;
 		else return false;
-	}	
+	}
 
 	function isSelf(){
 		if($this->ID) {
@@ -140,7 +140,7 @@ class weToolModel extends weModelBase {
 			$this->Icon = 'link.gif';
 		}
 	}
-	
+
 	function deleteChilds(){
 		$this->db->query('SELECT ID FROM '. mysql_real_escape_string($this->table) . ' WHERE ParentID="'.abs($this->ID).'"');
 		while($this->db->next_record()){
@@ -148,17 +148,16 @@ class weToolModel extends weModelBase {
 			$child->delete();
 		}
 	}
-	
+
 	function delete() {
 
 		if (!$this->ID) return false;
-		
+
 		if($this->IsFolder) $this->deleteChilds();
-		
+
 		parent::delete();
-		
+
 		return true;
 	}
 
 }
-?>

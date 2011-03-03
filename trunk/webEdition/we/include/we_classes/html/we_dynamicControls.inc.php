@@ -378,27 +378,27 @@ class we_dynamicControls {
 
 				// Now fill the group with content
 				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
-				
+
 				// first of all order all the entries
 				$_groups = array();
 				foreach ( $groups[$_groups_key] as $_group_item_key=>$_group_item_value ) {
-					
+
 					$_groups[$_groups_key][$titles[$_groups_key][$_group_item_key]] = array(
 						'perm' => $_group_item_key,
 						'value' => $_group_item_value
 					);
-					
+
 				}
-				
+
 				foreach ( $_groups as $_groups_key => $_group_item ) {
-					
+
 					ksort($_group_item);
-					
+
 					foreach ( $_group_item as $_group_item_text => $_group_item_values ) {
-						
+
 						$_group_item_key = $_group_item_values['perm'];
 						$_group_item_value = $_group_item_values['value'];
-						
+
 						if (($check_permissions && we_hasPerm($_group_item_key)) || !$check_permissions) {
 							// Display the items of the group
 							$_contentTable[$main_titles[$_groups_key]] .= '
@@ -412,9 +412,9 @@ class we_dynamicControls {
 								</tr>';
 						}
 					}
-					
+
 				}
-				
+
 				// Finish output of table
 				$_contentTable[$main_titles[$_groups_key]] .= '</table>';
 			}
@@ -584,5 +584,3 @@ class we_dynamicControls {
 	}
 
 }
-
-?>

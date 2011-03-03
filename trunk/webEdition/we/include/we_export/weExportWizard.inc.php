@@ -367,7 +367,7 @@ top.close();
 
 		global $l_export;
 		$yuiSuggest =& weSuggest::getInstance();
-		
+
 		$_space = 10;
 
 		$js=we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
@@ -1791,7 +1791,7 @@ top.close();
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button,10);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -1816,5 +1816,3 @@ top.close();
  	}
 
 }
-
-?>

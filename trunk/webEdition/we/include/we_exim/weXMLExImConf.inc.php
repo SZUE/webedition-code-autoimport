@@ -24,10 +24,7 @@
 
 		$GLOBALS['weXmlExImHeader'] = '<?xml version="1.0" encoding="'.$_language['charset'].'" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
 					 '<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
-					 
+
 		$GLOBALS['weXmlExImFooter'] = '</webEdition>';
-		
+
 		$GLOBALS['weXmlExImProtectCode'] = '<?php exit();?>';
-
-
-?>

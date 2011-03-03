@@ -102,7 +102,7 @@ class weSuggest {
 	function weSuggest() {
 
 	}
-	
+
 	function &getInstance() {
 		if (! isset($GLOBALS['__weSuggest__'])) {
 			$GLOBALS['__weSuggest__'] = new weSuggest();
@@ -259,7 +259,7 @@ HTS;
 			$oACDSInit     .= ($i>0?", ":"").'oACDS_'.$i;
 			$oAutoCompInit .= ($i>0?", ":"").'oAutoComp_'.$i;
 			$oAutoCompRes  .= "	var oAutoCompRes_$i = new Array();\n";
-			
+
 			if (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])) {
 				$initVars .= "	var selInputVal_".$i.";\n";
 				$onSelectInit = "";
@@ -305,7 +305,7 @@ HTS;
 			resultID = yuiAcFields.set_$i.fields_id[0];
 			{$this->_doOnItemSelect[$i]}
 		},
-		
+
 
 		doOnDataRequestEvent_$i: function() {
 			yuiAcFields.set_$i.found = 0;
@@ -313,7 +313,7 @@ HTS;
 			yuiAcFields.set_$i.changed = true;
 		},
 
-		
+
 		doOnDataReturnEvent_$i: function(param1,param2) {
 			param=param2.toString();
 			params=param.split(',');
@@ -338,22 +338,22 @@ HTS;
 			yuiAcFields.set_$i.run = false;
 		},
 
-		
+
 		doOnDataErrorEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 			yuiAcFields.set_$i.valid = false;
 		},
-		
-		
+
+
 		doOnDataReturnEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 		},
-		
-		
+
+
 		doOnUnmatchedItemSelectEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 		},
-		
+
 
 HTS;
 
@@ -372,8 +372,8 @@ HTS;
 		doSafariOnTextfieldBlur_$i: function(e) {
 			YAHOO.autocoml.doOnTextfieldBlur_$i();
 		},
-		
-		
+
+
 		doOnTextfieldBlur_$i: function() {
 			//document.getElementById(yuiAcFields.set_$i.id).blur();
 			wsValid_$i = true;
@@ -442,7 +442,7 @@ HTS;
 			{$this->_doOnTextfieldBlur[$i]}
 			yuiAcFields.set_$i.changed=false;
 		},
-		
+
 
 		doOnContainerCollapse_$i: function(){
 			//setTimeout('YAHOO.autocoml.doOnTextfieldBlur_$i()',100);
@@ -459,7 +459,7 @@ HTS;
 						$onFocus .= "			old_".$this->setOnSelectFields[$i][$j]." = document.getElementById('".$this->setOnSelectFields[$i][$j]."').value;\n";
 					}
 				}
-				
+
 				//$onFocus .= "			YAHOO.autocoml.unmarkNotValid($i);";
 				$onFocus .= "			if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[yuiAcFields.set_{$i}.id] = false;\n";
 				$onFocus .= "			yuiAcFields.set_$i.set = '';\n";
@@ -470,13 +470,13 @@ HTS;
 		doAjax: function(callback, postdata) {
 			var request = YAHOO.util.Connect.asyncRequest('POST', ajaxURL, callback, postdata);
 		},
-		
-		
+
+
 HTS;
 
 				$initVars .= <<<HTS
 
-				
+
 	var ajaxCallback_$i = {
 		success: function(o) {
 			if(o.responseText != undefined && o.responseText != ''){
@@ -514,8 +514,8 @@ HTS;
 			yuiAcFields.set_$i.newval = '';
 		}
 	};
-	
-	
+
+
 HTS;
 
 			}
@@ -688,8 +688,8 @@ $doAjax
 				return false;
 			}
 		},
-		counter: 0,		
-				
+		counter: 0,
+
 		isValid: function(){
 			var isValid = true;
 			for(fId in yuiAcFieldsById){
@@ -998,7 +998,7 @@ function doDebugResizeH(){
 		$inputId = empty($this->inputId) ? "yuiAcInput".$this->acId : $this->inputId;
 		$resultId = empty($this->resultId) ? "yuiAcResult".$this->acId : $this->resultId;
 		$containerWidth = (empty($this->containerWidth)?$this->width:$this->containerWidth);
-		
+
 		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, ($BROWSER=="IE"?$containerWidth:($containerWidth-8)), $this->mayBeEmpty);
 		$inputField  = $this->_htmlTextInput($this->inputName,30,$this->inputValue,"", 'id="'.$inputId.'" '.$this->inputAttribs,"text", $this->width, 0,"", $this->inputDisabled);
 		$resultField = hidden($this->resultName,$this->resultValue,array('id' => $resultId));
@@ -1035,16 +1035,16 @@ function doDebugResizeH(){
 		$this->doOnTextfieldBlur    = "";
 		return $html;
 	}
-	
+
 	function getInputId(){
-		return $this->inputId;	
+		return $this->inputId;
 	}
-	
+
 	function _htmlTextInput($name,$size=20,$value="",$maxlength="",$attribs="",$type="text",$width="0",$height="0",$markHot="",$disabled=false){
 		$style = ($width || $height) ? (' style="'.($width ? ('width: '.$width.((strpos($width,"px") || strpos($width,"%")) ? "" : "px").';') : '').($height ? ('height: '.$height.((strpos($height,"px") || strpos($height,"%")) ? "" : "px").';') : '').'"') : '';
 		return '<input type="'.trim($type).'" name="'.trim($name).'" size="'.abs($size).'" value="'.htmlspecialchars($value).'" '.($maxlength ? (' maxlength="'.abs($maxlength).'"') : '').$attribs.$style.' />';
 	}
-	
+
 	/****************************************************************/
 	/*                             setter                           */
 	/****************************************************************/
@@ -1089,8 +1089,8 @@ function doDebugResizeH(){
 	 *
 	 * @param String $name
 	 * @param String $value
-	 * @param Array $attribs 
-	 * @param Boolean $disabled 
+	 * @param Array $attribs
+	 * @param Boolean $disabled
 	 */
 	function setInput($name, $value="", $attribs="", $disabled=false, $markHot="") {
 		$this->inputId='';
@@ -1120,7 +1120,7 @@ function doDebugResizeH(){
 						$_class = 1;
 					default:
 						$this->inputAttribs .= $key.'="'.$val.'" ';
-					}				
+					}
 			}
 			if (!isset($_class)) {
 				$this->inputAttribs  .= 'class="wetextinput" ';
@@ -1142,7 +1142,7 @@ function doDebugResizeH(){
 		}
 		$this->inputDisabled  = $disabled;
 	}
-	
+
 	function setInputId($val='') {
 		if ($val=='') {
 			$this->inputId = "yuiAcInput" . $this->acId;
@@ -1156,8 +1156,8 @@ function doDebugResizeH(){
 	function setInputValue($val) {
 		$this->inputValue = $val;
 	}
-	
-	
+
+
 	function setMaxResults($val) {
 		$this->maxResults = $val;
 	}
@@ -1173,7 +1173,7 @@ function doDebugResizeH(){
 		$this->mayBeEmpty = $val;
 	}
 	function setLabel($val){
-		$this->label = $val;	
+		$this->label = $val;
 	}
 	/**
 	 * Set name, value and id for the result field
@@ -1195,7 +1195,7 @@ function doDebugResizeH(){
 	function setResultValue($val) {
 		$this->resultValue = $val;
 	}
-	
+
 	function setSelectButton($val, $space=20) {
 		$this->selectButton = $val;
 		$this->selectButtonSpace = $space;
@@ -1270,4 +1270,3 @@ function doDebugResizeH(){
 		$this->doOnTextfieldBlur="";
 	}
 }
-?>

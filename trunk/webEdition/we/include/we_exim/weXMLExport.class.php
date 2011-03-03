@@ -43,7 +43,7 @@
 			if(isset($doc->ContentType) && (ereg("^image/",$doc->ContentType) || ereg("^application/",$doc->ContentType) || ereg("^video/",$doc->ContentType))) {
 				$doc->setElement("data",weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 			}
-			
+
 			$fh=fopen($fname,"ab");
 			if(!$fh){
 			    return -1;
@@ -325,7 +325,3 @@
 
 
 	}
-
-
-
-?>

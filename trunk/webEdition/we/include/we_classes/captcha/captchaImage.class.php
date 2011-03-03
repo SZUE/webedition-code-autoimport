@@ -19,80 +19,80 @@
  */
 
 class CaptchaImage {
-	
+
 	/**
 	 * @var integer
 	 * @desc Length of the text
 	 */
 	var $textlength = 0;
-	
+
 	/**
 	 * @var integer
 	 * @desc Width of the image
 	 */
 	var $width = 0;
-	
+
 	/**
 	 * @var integer
 	 * @desc Height of the image
 	 */
 	var $height = 0;
-	
+
 	/**
 	 * @var string
 	 * @desc Backgroundcolor of the image
 	 */
 	var $background = 0;
-	
+
 	/**
 	 * @var array
 	 * @desc all informations about the used font
 	 */
 	var $font = array();
-	
+
 	/**
 	 * @var string
 	 * @desc path where font is located
 	 */
 	var $fontpath = "";
-	
+
 	/**
 	 * @var array
 	 * @desc range of the angle
 	 */
 	var $angle = array();
-	
+
 	/**
 	 * @var string
 	 * @desc vertical align of the code
 	 */
 	var $valign = "";
-	
+
 	/**
 	 * @var string
 	 * @desc align of the code
 	 */
 	var $align = "";
-	
+
 	/**
 	 * @var array
 	 * @desc strikeout
 	 */
 	var $style = array();
-	
+
 	/**
 	 * @var array
 	 * @desc ranges of the charactersubset
 	 */
 	var $charactersubset = array();
-	
+
 	/**
 	 * @var boolean
 	 * @desc transparent
 	 */
 	var $transparent = false;
-	
-	
+
+
 	/**
 	 * PHP4 Constuctor
 	 *
@@ -104,8 +104,8 @@ class CaptchaImage {
 	function CaptchaImage($width, $height, $textlength = 6) {
 		$this->__construct($width, $height, $textlength);
 	} /* end: CaptchaImage */
-	
-	
+
+
 	/**
 	 * PHP5 Constructor
 	 *
@@ -115,10 +115,10 @@ class CaptchaImage {
 	 * @return void
 	 */
 	function __construct($width, $height, $textlength = 5) {
-		
+
 		$this->width = $width;
 		$this->height = $height;
-		
+
 		if($textlength < 3) {
 			$this->textlength = 3;
 		//} else if($textlength > 20) {
@@ -126,25 +126,25 @@ class CaptchaImage {
 		} else {
 			$this->textlength = $textlength;
 		}
-		
+
 		// init the font
 		$this->setFont();
-		
+
 		// init the character subset
 		$this->setCharacterSubset();
-		
+
 		// no signs to skip
 		$this->skip = array();
-		
+
 		// init the anglerange
 		$this->setAngleRange();
-		
+
 		// init the vertical align
 		$this->setVerticalAlign();
-		
+
 		// init the align
 		$this->setAlign();
-		
+
 		// init the vertical align
 		$this->style = array(
 			'strikeout' => false,
@@ -155,12 +155,12 @@ class CaptchaImage {
 			'color' => false,
 			'number' => false,
 		);
-		
+
 		// init the anglerange
 		$this->setBackground();
 	} /* end: __construct */
-	
-	
+
+
 	/**
 	 * Destructor
 	 * @return void
@@ -169,8 +169,8 @@ class CaptchaImage {
 		$this->width = 0;
 		$this->height = 0;
 	} /* end: __desctruct */
-	
-	
+
+
 	/**
 	 * Set the font family and size
 	 *
@@ -180,9 +180,9 @@ class CaptchaImage {
 	 * @return void
 	 */
 	function setFont($family = "Times", $size = "15,20", $color = "#000000") {
-		
+
 		$this->font = array();
-		
+
 		// set the font families
 		$families = explode(",", $family);
 		$this->font['family'] = array();
@@ -193,7 +193,7 @@ class CaptchaImage {
 		} else {
 			$this->font['family'][] = $family;
 		}
-		
+
 		// set the font size
 		$sizes = explode(",", $size);
 		$this->font['size'] = array();
@@ -209,7 +209,7 @@ class CaptchaImage {
 			$this->font['size']['min'] = $size;
 			$this->font['size']['max'] = $size;
 		}
-		
+
 		// set the font colors
 		$colors = explode(",", $color);
 		$this->font['color'] = array();
@@ -221,8 +221,8 @@ class CaptchaImage {
 			$this->font['color'][] = $this->_hex2rgb($color);
 		}
 	} /* setFont */
-	
-	
+
+
 	/**
 	 * Set the path where the fonts are located
 	 *
@@ -232,8 +232,8 @@ class CaptchaImage {
 	function setFontPath($path) {
 		$this->fontpath = $path;
 	} /* setFontPath */
-	
-	
+
+
 	/**
 	 * Set the font family and size
 	 *
@@ -269,7 +269,7 @@ class CaptchaImage {
 				} else {
 					$this->charactersubset = array(array(48,57),array(65,90),array(97,122));
 				}
-				break;				
+				break;
 		}
 		$skips = explode(",", $skip);
 		$this->skip = array();
@@ -279,8 +279,8 @@ class CaptchaImage {
 			}
 		}
 	} /* end: setCharacterSubset */
-	
-	
+
+
 	/**
 	 * Set the range of the angles
 	 *
@@ -298,8 +298,8 @@ class CaptchaImage {
 			$this->angle['right'] = $angle;
 		}
 	} /* setAngleRange */
-	
-	
+
+
 	/**
 	 * Set the styles
 	 *
@@ -358,8 +358,8 @@ class CaptchaImage {
 			}
 		}
 	} /* setStyle */
-	
-	
+
+
 	/**
 	 * Set the vertical position
 	 *
@@ -383,8 +383,8 @@ class CaptchaImage {
 				break;
 		}
 	} /* setVerticalAlign */
-	
-	
+
+
 	/**
 	 * Set the position
 	 *
@@ -408,8 +408,8 @@ class CaptchaImage {
 				break;
 		}
 	} /* setAlign */
-	
-	
+
+
 	/**
 	 * Set the background color
 	 *
@@ -420,8 +420,8 @@ class CaptchaImage {
 		$this->background = $this->_hex2rgb($background);
 		$this->transparent = $transparent;
 	} /* setBackground */
-	
-	
+
+
 	/**
 	 * Converts a Hex-code to rgb values
 	 *
@@ -444,26 +444,26 @@ class CaptchaImage {
 		}
 		return $rgb;
 	} /* end: _hex2rgb */
-	
-	
+
+
 	/**
 	 * Displayes the captcha image
 	 *
 	 * @return void
 	 */
 	function get(&$code) {
-		
+
 		$image = imagecreate($this->width, $this->height);
-		
+
 		$bgcolor = imagecolorallocate($image, $this->background[0], $this->background[1], $this->background[2]);
 		if($this->transparent) {
 			imagecolortransparent($image, $bgcolor);
 		}
-		
+
 		if($this->style['fullcircle'] || $this->style['fullrectangle'] || $this->style['outlinecircle'] || $this->style['outlinerectangle']) {
-			
+
 			$counter = rand($this->style['number']['min'], $this->style['number']['max']);
-			
+
 			$random = array();
 			if($this->style['outlinecircle']) {
 				array_push($random, 'outlinecircle');
@@ -477,18 +477,18 @@ class CaptchaImage {
 			if($this->style['fullrectangle']) {
 				array_push($random, 'fullrectangle');
 			}
-			
+
 			for($i = 0; $i < $counter; $i++) {
-				
+
 				$do = $random[rand(0, sizeof($random)-1)];
-				
+
 				if($do == 'fullcircle') {
 					$cx = rand(0, $this->width);
 					$cy = rand(0, $this->height);
 					$w = rand(0, $this->width/2);
 					$h = rand(0, $this->height/2);
 					$color = $this->style['color'][rand(0, sizeof($this->style['color'])-1)];
-					
+
 					imagefilledarc(
 						$image,
 						$cx,
@@ -506,7 +506,7 @@ class CaptchaImage {
 					$x2 = rand(0, $this->width/2);
 					$y2 = rand(0, $this->height/2);
 					$color = $this->style['color'][rand(0, sizeof($this->style['color'])-1)];
-					
+
 					imagefilledrectangle(
 						$image,
 						$x1,
@@ -515,14 +515,14 @@ class CaptchaImage {
 						$y2,
 						imagecolorallocate($image, $color[0], $color[1], $color[1])
 					);
-					
+
 				} elseif($do == 'outlinecircle') {
 					$cx = rand(0, $this->width);
 					$cy = rand(0, $this->height);
 					$w = rand(0, $this->width/2);
 					$h = rand(0, $this->height/2);
 					$color = $this->style['color'][rand(0, sizeof($this->style['color'])-1)];
-					
+
 					imagearc(
 						$image,
 						$cx,
@@ -539,7 +539,7 @@ class CaptchaImage {
 					$x2 = rand(0, $this->width/2);
 					$y2 = rand(0, $this->height/2);
 					$color = $this->style['color'][rand(0, sizeof($this->style['color'])-1)];
-					
+
 					imagerectangle(
 						$image,
 						$x1,
@@ -548,20 +548,20 @@ class CaptchaImage {
 						$y2,
 						imagecolorallocate($image, $color[0], $color[1], $color[1])
 					);
-					
+
 				}
 			}
 		}
-		
+
 		$code = "";
 		$xpos = 0;
-		
+
 		$signs = array();
-		
+
 		$sumwidth = 0;
-		
+
 		for($counter = 0; $counter < $this->textlength; $counter++) {
-			
+
 			// Sign
 			$j = 0;
 			$idx1 = rand(0, sizeof($this->charactersubset)-1);
@@ -574,42 +574,42 @@ class CaptchaImage {
 				}
 			}
 			$sign = chr($sign);
-			
+
 			// Size
 			$size = rand($this->font['size']['min'], $this->font['size']['max']);
-			
+
 			// Color
 			$color = $this->font['color'][rand(0, sizeof($this->font['color'])-1)];
-			
+
 			// Family
 			$family = $this->font['family'][rand(0, sizeof($this->font['family'])-1)];
-			
+
 			$isWindows = (stristr(php_uname(), 'wind') == true) ? true : false;
-			
+
 			if(isset($this->fontpath) && $this->fontpath !='' && file_exists($_SERVER['DOCUMENT_ROOT'] . $this->fontpath.$family.".ttf")) {
 				$family = $_SERVER['DOCUMENT_ROOT'] . $this->fontpath.$family.".ttf";
 				$use_fontfile = true;
-				
+
 				// Angle
 				$angle = rand($this->angle['left'], $this->angle['right']);
-			
+
 				// Coordinates
 				$coords = imagettfbbox($size, $angle, $family, $sign);
 		 		$width = abs( ( (-1) * abs(min($coords[0],$coords[6])) ) + ( abs(max($coords[2],$coords[4])) ) );
 		 		$height = abs( ( (-1) * abs(min($coords[1],$coords[7])) ) + ( abs(max($coords[3],$coords[5])) ) );
- 			
+
 			} else if(isset($this->fontpath) && $this->fontpath !='' && file_exists($this->fontpath.$family.".ttf")) {
 				$family = $this->fontpath.$family.".ttf";
 				$use_fontfile = true;
-				
+
 				// Angle
 				$angle = rand($this->angle['left'], $this->angle['right']);
-			
+
 				// Coordinates
 				$coords = imagettfbbox($size, $angle, $family, $sign);
 		 		$width = abs( ( (-1) * abs(min($coords[0],$coords[6])) ) + ( abs(max($coords[2],$coords[4])) ) );
 		 		$height = abs( ( (-1) * abs(min($coords[1],$coords[7])) ) + ( abs(max($coords[3],$coords[5])) ) );
- 			
+
 			} else if($isWindows) {
 				$use_fontfile = true;
 				if(isset($_ENV['windir'])) {
@@ -646,30 +646,30 @@ class CaptchaImage {
 					$family = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/fonts/DejaVuSans.ttf";
 				}
 				$use_fontfile = true;
-				
+
 				// Angle
 				$angle = rand($this->angle['left'], $this->angle['right']);
-			
+
 				// Coordinates
 				$coords = imagettfbbox($size, $angle, $family, $sign);
 		 		$width = abs( ( (-1) * abs(min($coords[0],$coords[6])) ) + ( abs(max($coords[2],$coords[4])) ) );
 		 		$height = abs( ( (-1) * abs(min($coords[1],$coords[7])) ) + ( abs(max($coords[3],$coords[5])) ) );
- 			
+
 			} else {
 				$family = 5;
 				$use_fontfile = false;
-				
+
 				// Angle
 				$angle = 0;
 				$width = (int) imagefontwidth($family) * strlen($sign);
 				$height = (int) imagefontheight($family);
-				
+
 			}
-			
-			
+
+
  			// Abstand X-Position
 			if(($xpos + $width) <= $this->width) {
-				
+
 
 				if($use_fontfile) {
 					$family = file_exists($family) ? $family : $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/fonts/DejaVuSans.ttf";
@@ -685,7 +685,7 @@ class CaptchaImage {
 						$min = $height+5;
 						$ypos = rand($min, $max);
 					}
-					
+
 					$tmp_sign = array(
 						'size'		=> $size,
 						'angle'		=> $angle,
@@ -695,9 +695,9 @@ class CaptchaImage {
 						'family'	=> $family,
 						'sign'		=> $sign,
 					);
-					
+
 				} else {
-					
+
 					// Y-Position
 					if($this->valign == 'top') {
 						$ypos = 0;
@@ -710,7 +710,7 @@ class CaptchaImage {
 						$min = 0;
 						$ypos = rand($min, $max);
 					}
-					
+
 					$tmp_sign = array(
 						'xpos'		=> $xpos,
 						'ypos'		=> $ypos,
@@ -719,29 +719,29 @@ class CaptchaImage {
 						'sign'		=> $sign,
 					);
 				}
-				
+
 				array_push($signs, $tmp_sign);
-				
+
 				$space = rand(round($this->font['size']['min']/2), round($this->font['size']['max']/2));
-			
-				
+
+
 				// X-Position
 				$xpos += round($space);
 				$xpos += $width;
-				
+
 				$code .= $sign;
-			
+
 				$sumwidth += round($space) + $width;
-				
+
 			}
-			
+
 		}
-		
+
 		if($this->align == 'random') {
 			$temp = array('left', 'right', 'center');
 			$this->align = $temp[rand(0, 2)];
 		}
-		
+
 		// align
 		if($use_fontfile) {
 			if($this->align == 'left') {
@@ -760,11 +760,11 @@ class CaptchaImage {
 				$xoffset = ($this->width/2) - ($sumwidth/2) + 3;
 			}
 		}
-		
+
 		foreach($signs as $sign) {
-			
+
 			if($use_fontfile) {
-					
+
 				imagettftext(
 					$image,							// Imageressource
 					$sign['size'],					// Fontsize
@@ -775,9 +775,9 @@ class CaptchaImage {
 					$sign['family'], 				// Font Family (File)
 					$sign['sign']					// Text
 				);
-					
+
 			} else {
-				
+
 				imagestring(
 					$image,
 					$sign['family'],
@@ -786,24 +786,24 @@ class CaptchaImage {
 					$sign['sign'],
 					$sign['color']
 				);
-				
+
 			}
-			
+
 		}
-		
+
 		if($this->style['strikeout']) {
-			
+
 			// Y-Position
 			$max = ($this->height/2)+10;
 			$min = ($this->height/2)-10;
 			$y1 = $y2 = rand($min, $max);
-			
+
 			// X-Position
 			$x1 = 0;
 			$x2 = $this->width;
-			
+
 			$color = $this->font['color'][rand(0, sizeof($this->font['color'])-1)];
-			
+
 			imageline(
 				$image,
 				$x1,
@@ -812,14 +812,11 @@ class CaptchaImage {
 				$y2,
 				imagecolorallocate($image, $color[0], $color[1], $color[2])
 			);
-			
+
 		}
-		
+
 		return $image;
-    	
+
 	} /* end: get */
-	
+
 } /* end: Class */
-
-
-?>

@@ -135,7 +135,7 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 
 
 		default:
-			
+
 			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST["we_cmd"][0],$regs)){
 				$dt = $regs[1];
 				print 'top.we_cmd("new","'.FILE_TABLE.'","","text/webedition","'.$dt.'");'."\n";
@@ -147,10 +147,10 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 			}
 			$str = "setTimeout(\"top.we_cmd(";
 			for($i=0;$i<sizeof($_REQUEST["we_cmd"]);$i++){
-			
+
 				$val = str_replace("'","\\'", $_REQUEST["we_cmd"][$i]);
 				$val = str_replace("\"","\\\"", $val);
-				
+
 				$str .= "'".$val."'".(($i<(sizeof($_REQUEST["we_cmd"])-1)) ? "," : "");
 			}
 			$str .= ")\",50);\n";

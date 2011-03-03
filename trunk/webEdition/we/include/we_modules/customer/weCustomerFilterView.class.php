@@ -46,14 +46,14 @@ class weCustomerFilterView {
 	 * @var integer
 	 */
 	var $_width = 0;
-	
+
 	/**
 	 * show Mode_none
 	 *
 	 * @var integer
 	 */
 	var $_ShowModeNone = 0;
-	
+
 
 	/*################### CONSTRUCTOR ####################*/
 
@@ -629,7 +629,3 @@ EO_SCRIPT;
 
 
 }
-
-
-
-?>

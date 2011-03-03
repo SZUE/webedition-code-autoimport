@@ -301,7 +301,7 @@ class we_image_edit {
 
 		$_outsize["width"] = 0;
 		$_outsize["height"] = 0;
-		
+
 		// If width has been specified set it and compute new height based on source area aspect ratio
 		if ($newwidth) {
 			$_outsize["width"] = $newwidth;
@@ -475,7 +475,7 @@ class we_image_edit {
 						imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done
 					}
 				} else {
-				
+
 					// preserve transparency of png and gif images:
 					if($output_format == "gif") {
 						$colorTransparent = imagecolortransparent($_gdimg);
@@ -486,17 +486,17 @@ class we_image_edit {
 					} else if($output_format == "png") {
 						imagealphablending($_output_gdimg, false);
 						$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
-						$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127); 
+						$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
 						imagefill($_output_gdimg, 0, 0, $transparent);
 						imagesavealpha($_output_gdimg, true);
 					} else {
-						
+
 					}
 				}
 				// Resize image
 				//if($_outsize["width"] == "1")
 				$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize["width"], $_outsize["height"], $_width, $_height);
-				
+
 				 // PHP 4.4.1 GDLIB-Bug/Safemode - Workarround
 				if ($output_filename != "" && file_exists($output_filename)) {
 					touch($output_filename);
@@ -627,4 +627,3 @@ class we_image_edit {
 
 }
 
-?>

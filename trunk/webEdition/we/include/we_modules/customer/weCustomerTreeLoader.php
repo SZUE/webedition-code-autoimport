@@ -153,7 +153,7 @@ class weCustomerTreeLoader{
 		$pid=str_replace("{","",$pid);
 		$pid=str_replace("}","",$pid);
 		$pid=str_replace("*****quot*****","\\\\\'",$pid);
-		
+
 		if($pid || $notroot){
 			$pidarr=explode("-|-",$pid);
 			$tmp="";
@@ -345,12 +345,9 @@ class weCustomerTreeLoader{
 				);
 			}
 		}
-		
+
 		return $items;
 
 	}
 
 }
-
-
-?>

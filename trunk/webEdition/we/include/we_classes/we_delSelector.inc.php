@@ -28,15 +28,15 @@ if(!defined("FS_DEL")) define("FS_DEL",11);
 class we_delSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
-	
+
 
 	function we_delSelector($id,
 								$table=FILE_TABLE){
-		
+
 		$this->we_multiSelector($id,
 								$table);
 
-								
+
 	}
 
 	function printHTML($what=FS_FRAMESET){
@@ -66,7 +66,7 @@ class we_delSelector extends we_multiSelector{
 	function printFooterJS(){
 		$we_button = new we_button();
 		print '
-		
+
 ' . $we_button->create_state_changer(false) . '
 function disableDelBut(){
 	delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
@@ -103,7 +103,7 @@ function deleteEntry(){
 		if (todel) {
 			todel = "," + todel;
 		}
-		
+
 		top.fscmd.location.replace(top.queryString(<?php print FS_DEL; ?>,top.currentID)+"&todel="+escape(todel));
 		top.fsfooter.disableDelBut();
 
@@ -112,8 +112,8 @@ function deleteEntry(){
 			top.opener.top.we_cmd('close_all_documents');
 			top.opener.top.we_cmd('start_multi_editor');
 		}
-		
-		
+
+
 	}
 
 }
@@ -141,7 +141,7 @@ function doClick(id,ct){
 			var oldid = currentID;
 			var currendPos = getPositionByID(id);
 			var firstSelected = getFirstSelected();
-			
+
 			if(currendPos > firstSelected){
 				selectFilesFrom(firstSelected,currendPos);
 			}else if(currendPos < firstSelected){
@@ -150,7 +150,7 @@ function doClick(id,ct){
 				selectFile(id);
 			}
 			currentID = oldid;
-			
+
 		}else if(!fsbody.ctrlpressed){
 			selectFile(id);
 		}else{
@@ -160,7 +160,7 @@ function doClick(id,ct){
 				selectFile(id);
 			}
 		}
-	
+
 	}
 	if(fsbody.ctrlpressed){
 		fsbody.ctrlpressed = 0;
@@ -197,18 +197,18 @@ top.parentID = "'.$this->values["ParentID"].'";
 	}
 
 	function printFramesetSelectFileHTML(){
-?>	
+?>
 
 
 function selectFile(id){
 	if(id){
 		e = getEntry(id);
-		
+
 		if( top.fsfooter.document.we_form.fname.value != e.text &&
-			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 && 
+			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
 			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
 			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-		
+
 			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
 																(top.fsfooter.document.we_form.fname.value + "," + e.text) :
 																e.text;
@@ -230,7 +230,7 @@ function selectFile(id){
 	}
 
 	function printFramesetUnselectAllFilesHTML(){
-?>	
+?>
 
 function unselectAllFiles(){
 	for	(var i=0;i < entries.length; i++){
@@ -241,7 +241,7 @@ function unselectAllFiles(){
 }
 
 <?php
-	
+
 	}
 	function printFramesetJSsetDir(){
 ?>
@@ -259,7 +259,7 @@ function setDir(id){
 
 <?php
 	}
-	
+
 	function renameChildrenPath($id){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
@@ -272,15 +272,15 @@ function setDir(id){
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	function printDoDelEntryHTML(){
-		htmlTop();		
+		htmlTop();
 		protect();
-		
-		
-		
+
+
+
 		if (isset($_REQUEST["todel"])) {
 			$_SESSION["todel"] = $_REQUEST["todel"];
 			print '<script src="'.JS_DIR.'windows.js" language="JavaScript" type="text/javascript"></script>
@@ -288,16 +288,16 @@ function setDir(id){
 	top.opener.top.we_cmd("del_frag", "' . $_REQUEST["todel"] . '");
 	top.close();
 </script>';
-		}	
+		}
 		print '</head><body></body></html>';
-		
+
 	}
-	
+
 	function printFooterTable() {
 		$we_button = new we_button();
 		if($this->values["Text"] == "/" ) $this->values["Text"]="";
 		$okBut = $we_button->create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true,100,22,"","",true,false);
-		
+
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
@@ -341,18 +341,17 @@ function setDir(id){
 			</table>';
 	}
 
-	
+
 	function query(){
-		
+
 		$wsQuery = getWsQueryForSelector($this->table, false);
-		
+
 		$_query = "	SELECT ".$this->fields."
 					FROM ".mysql_real_escape_string($this->table)."
 					WHERE ParentID='".abs($this->dir)."'".makeOwnersSql().
 					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
-		
+
 		$this->db->query($_query);
 
 	}
 }
-?>

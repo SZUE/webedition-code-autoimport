@@ -299,14 +299,13 @@
 		return $out;
 
 	}
-	
+
 	function getJSTreeCode($withTag=true){
 		// must override
  		return parent::getJSTreeCode($withTag) . "\n" .
- 				
+
  			($withTag ? we_htmlElement::jsElement('drawTree.selection_table="";') : 'drawTree.selection_table="";');
  	}
- 	
+
 }
 
-?>

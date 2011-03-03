@@ -351,29 +351,29 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 ?>
 <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script language="JavaScript" type="text/javascript">
-		
+
 		function closeOnEscape() {
 			return true;
-			
+
 		}
-		
+
 		function applyOnEnter(evt) {
-			
+
 			_elemName = "target";
 			if ( typeof(evt["srcElement"]) != "undefined" ) { // IE
 				_elemName = "srcElement";
 			}
-			
+
 			if ( !( evt[_elemName].tagName == "SELECT" ||
 					( evt[_elemName].tagName == "INPUT" && (evt[_elemName].name == "href_int" || evt[_elemName].name == "href_obj" || evt[_elemName].name == "src_int") )
 				) ) {
 				document.forms['we_form'].submit();
 				return true;
-				
+
 			}
 		}
-		
-		
+
+
 		function changeTypeSelect(s){
 			for(var i=0; i< s.options.length; i++){
 				var trObj = document.getElementById(s.options[i].value+"_tr");
@@ -538,7 +538,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($but,10);
-			
+
 			$intLink = $yuiSuggest->getHTML();
 			if(defined("OBJECT_TABLE")){
 				$but     = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','document.forms[\\'we_form\\'].elements[\\'obj_id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_obj\\'].value','','".session_id()."','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");");
@@ -553,7 +553,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
 				$yuiSuggest->setSelectButton($but, 10);
-				
+
 				$objLink = $yuiSuggest->getHTML();
 			}
 			$anchor = htmlTextInput("anchor",30,$anchor,"","","text",300);
@@ -658,7 +658,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$extImg = htmlFormElementTable(htmlTextInput("img_src",30,$img_src,"","","text",300),"","left","defaultfont",getPixel(10,2),$but,"","","",0);
 
 			$but    = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'img_id\\'].value','document.forms[\\'we_form\\'].elements[\\'src_int\\'].value','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
-		
+
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
 			$yuiSuggest->setInput("src_int",$src_int);
@@ -668,7 +668,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$yuiSuggest->setSelector("Docselector");
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($but,10);
-		
+
 			$intImg = $yuiSuggest->getHTML();
 			$imgProps = '
 				<table cellspacing="0" cellpadding="0" border="0" width=100%>
@@ -920,4 +920,3 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 	if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 	}
-?>

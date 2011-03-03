@@ -22,7 +22,7 @@
 /**
 * include connection with webEdition
 */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 
 
@@ -30,7 +30,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 * name of table in database where will be stored all temporary documents
 *
 *  sturcture of the table :
-* 
+*
 * CREATE TABLE TEMPRARY_DOC_TABLE (
 *   ID bigint(20) NOT NULL auto_increment,
 *   DocumentID bigint(20) NOT NULL default '0',
@@ -47,7 +47,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 
 /**
 * Temporary document
-* 
+*
 * all functions on this class is static, and please use it in static form :
 *    we_temporaryDocument::function_name();
 *
@@ -66,16 +66,16 @@ class we_temporaryDocument
 	*/
 	function we_temporaryDocument()
 	{
-		die("Please don't create instance of class we_temporaryDocument"); 
+		die("Please don't create instance of class we_temporaryDocument");
 	}
 
 
 	/**
 	* Save document in temporary table
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param int documentID ID for document which will be stored in database
 	* @param object mixed document object
 	*/
@@ -108,10 +108,10 @@ class we_temporaryDocument
 
 	/**
 	* Load document from temporary table
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param int documentID Document ID
 	* @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	*/
@@ -122,7 +122,7 @@ class we_temporaryDocument
 	    }
 
 		$db = $db ? $db : new DB_WE();
-				
+
 		$db->query("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND Active=1 AND  DocTable='".mysql_real_escape_string($table)."'");
 
 		if ($db->next_record())
@@ -131,14 +131,14 @@ class we_temporaryDocument
 		}
 		return false;
 	}
-	
+
 
 	/**
 	* Delete document from temporary table
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param int documentID Document ID
 	*/
 	function delete($documentID, $table="", $db="")
@@ -150,13 +150,13 @@ class we_temporaryDocument
 		$db = $db ? $db : new DB_WE();
 		return $db->query("DELETE FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND  DocTable='".mysql_real_escape_string($table)."'");
 	}
-	
+
 	/**
 	* Revert document from temporary table
-	*   
+	*
 	* @static
 	* @access public
-	* 
+	*
 	* @param int documentID Document ID
 	*/
 	function revert($documentID, $table="", $db="")
@@ -166,7 +166,7 @@ class we_temporaryDocument
 	    }
 
 		$db = $db ? $db : new DB_WE();
-				
+
 		$db->query("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND  DocTable='".mysql_real_escape_string($table)."' AND Active=0");
 
 		if ($db->next_record())
@@ -178,7 +178,7 @@ class we_temporaryDocument
 		}
 		return false;
 	}
-	
+
 	function isInTempDB($id, $table="", $db=""){
 	    if ($table == "") {
 	        $table = FILE_TABLE;
@@ -192,9 +192,5 @@ class we_temporaryDocument
 			return 0;
 		}
 	}
-	
+
 }
-
-
-
-?>

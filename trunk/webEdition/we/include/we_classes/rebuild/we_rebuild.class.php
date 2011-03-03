@@ -425,7 +425,7 @@ class we_rebuild {
 		$updater->updateObjectFilesX();
 		$data = array();
 		if(we_hasPerm("REBUILD_OBJECTS")){
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID"); 			
+			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
 			while($GLOBALS["DB_WE"]->next_record()){
 				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
 										"type"=>"object",
@@ -577,4 +577,3 @@ class we_rebuild {
 
 }
 
-?>

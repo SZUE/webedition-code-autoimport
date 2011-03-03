@@ -121,7 +121,7 @@ class weTree{
 	function setTreeImageDir($dir){
 		$this->tree_image_dir=$dir;
 	}
-	
+
 	function setTreeIconDir($dir){
 		$this->tree_icon_dir=$dir;
 	}
@@ -902,5 +902,3 @@ class weTree{
 	}
 
 }
-
-?>

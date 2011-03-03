@@ -147,7 +147,7 @@
 				treeData[eintragsIndex].open=openstatus;
 
 				if(openstatus && treeData[eintragsIndex].loaded!=1){
-				
+
 					id = escape(id);
 					sort = escape(sort);
 					id = id.replace(/\+/g,"%2B");
@@ -279,5 +279,3 @@
  		}
 
 	}
-
-?>

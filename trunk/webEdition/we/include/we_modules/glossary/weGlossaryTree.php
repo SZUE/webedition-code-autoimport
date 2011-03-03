@@ -38,10 +38,10 @@ class weGlossaryTree extends weMainTree{
 			$this->setStyles($styles);
 
 	}
-	
-	
+
+
 	function getJSOpenClose() {
-		
+
 		return '
 			function openClose(id){
 			var sort="";
@@ -66,12 +66,12 @@ class weGlossaryTree extends weMainTree{
 			if(openstatus==1) treeData[eintragsIndex].loaded=1;
 			}
 			';
-			
+
 	}
-	
-	
+
+
 	function getJSUpdateItem() {
-		
+
 		return '
 				function updateEntry(id,text,pid,pub){
     			var ai = 1;
@@ -87,8 +87,8 @@ class weGlossaryTree extends weMainTree{
 				}
 		';
 	}
-	
-	
+
+
 	function getJSTreeFunctions() {
 		global $l_glossary;
 		$out = weTree::getJSTreeFunctions();
@@ -115,8 +115,8 @@ class weGlossaryTree extends weMainTree{
 		return $out;
 
 	}
-	
-	
+
+
 	function getJSStartTree() {
 
 		return 'function startTree(){
@@ -125,20 +125,20 @@ class weGlossaryTree extends weMainTree{
 		}';
 
 	}
-	
-	
+
+
 	function getJSIncludeFunctions() {
 
 		$out=weTree::getJSIncludeFunctions();
 		$out.="\n".$this->getJSStartTree()."\n";
 
 		return $out;
-		
+
 	}
-	
-	
+
+
 	function getJSMakeNewEntry() {
-		
+
  		return '
 		function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 				if(treeData[indexOfEntry(pid)]){
@@ -172,22 +172,22 @@ class weGlossaryTree extends weMainTree{
 				}
 		}
 		';
- 		
+
 	}
-	
-	
+
+
 	function getJSInfo() {
-		
+
 		return '
 			function info(text) {
 			}
 		';
-		
+
 	}
-	
-	
+
+
 	function getJSShowSegment() {
-		
+
 		return '
 				function showSegment(){
 				parentnode='.$this->topFrame.'.get(this.parentid);
@@ -196,10 +196,8 @@ class weGlossaryTree extends weMainTree{
 				drawTree();
 			}
 		';
-		
-	}
-	
-	
-}
 
-?>
+	}
+
+
+}

@@ -85,18 +85,18 @@ class XML_SplitFile extends XML_Parser {
 		// Check if a XML file was loaded, either by the constructor or by the
 		// getFile method.
 		if (!$this->parserHasContent()) return FALSE;
-		
+
 		// Save the path consisting of the temporary directory and a unique id.
 		$this->path = (defined("TMP_DIR"))? TMP_DIR : $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp";
 		$this->path .= "/".$this->getUniqueId();
-		
+
 		// Make the current directory.
 		createLocalFolder($this->path);
-		
+
 		// Node-set with paths of the descendant nodes.
 		$nodeSet = $this->evaluate($absoluteXPath);
 		$desc = 0;
-		
+
 		// Run through the descendant nodes.
 		foreach ($nodeSet as $node) {
 			// Split the XML data at each node that has children.
@@ -107,7 +107,7 @@ class XML_SplitFile extends XML_Parser {
 					// Add the XML declaration.
 					$xml .= "<?xml version=\"1.0\" " . ($this->mainXmlEncoding ? "encoding=\"" . $this->mainXmlEncoding . "\"" : "sandalone=\"yes\"") . "?>\n";
 					// Add the XML data containing all nodes till to the given depth.
-					$xml .= $this->exportAsXML($node, $dpth);				
+					$xml .= $this->exportAsXML($node, $dpth);
 					// Write the XML data to a file.
 					$this->exportToFile($xml);
 				}
@@ -128,21 +128,21 @@ class XML_SplitFile extends XML_Parser {
 		// Calculate the indentation.
 		$indent = "";
 		for($i=0; $i < (($lvl-1)*$this->indent); $i++) $indent .= " ";
-		
+
 		// Add the start tag of the new root element.
 		$root = $this->nodes[$node];
 		$xml .= $indent."<".$root["name"].$this->getAttributeString($root).">\n";
-		
+
 		// Run through the child nodes.
 		foreach ($this->nodes[$node]["children"] as $tagname => $id) {
-			
+
 			// Run through all siblings with the same name.
 			for ($sibl = 1; $sibl <= $id; $sibl++) {
-				
+
 				// Leave out the child nodes which will be processed in the
 				// next call of this method.
 				$absoluteXPath = $node."/".$tagname."[".$sibl."]";
-				
+
 				$sibling = $this->nodes[$absoluteXPath];
 				if (!$this->hasChildNodes($absoluteXPath)) {
 
@@ -158,7 +158,7 @@ class XML_SplitFile extends XML_Parser {
 						$hasSection = $this->hasCdataSection($absoluteXPath);
 						$text = stripslashes($sibling["data"]);
 						$xml .= (!$hasSection)? $this->replaceEntities($text) : "<![CDATA[".$text."]]>";
-						
+
 						// Add the end tag of the element.
 						if ($hasText) $xml .= "</".$tagname.">\n";
 					}
@@ -174,7 +174,7 @@ class XML_SplitFile extends XML_Parser {
 		}
 		// Add the end tag of the new root element.
 		$xml .= $indent."</".$root["name"].">";
-		
+
 		return $xml;
 	}
 
@@ -190,24 +190,24 @@ class XML_SplitFile extends XML_Parser {
 	function exportToFile($data) {
 		// The current file.
 		$file = "temp_".$this->fileId.".xml";
-		
+
 		// Open the file.
 		$hFile = fopen($this->path."/".$file, "wb");
-		
+
 		// Check if the file was opened correctly.
 		if (!$hFile) return FALSE;
 		else {
 			// Acquire an exclusive lock.
 			flock($hFile, LOCK_EX);
-			
+
 			// Write the xml data to the file.
 			if (!fwrite($hFile, $data)) return FALSE;
-			
+
 			// Flush the output to the file.
 			fflush($hFile);
 			// Release the lock.
 			flock($hFile, LOCK_UN);
-			
+
 			// Close the file.
 			if (!fclose($hFile)) return FALSE;
 		}
@@ -247,7 +247,7 @@ class XML_SplitFile extends XML_Parser {
 	}
 
 	/**
-	 * Replaces the XML entities for not beeing recognized as markup. 
+	 * Replaces the XML entities for not beeing recognized as markup.
 	 *
 	 * @param      string $text
 	 * @return     string
@@ -260,5 +260,3 @@ class XML_SplitFile extends XML_Parser {
 	}
 
 }
-
-?>

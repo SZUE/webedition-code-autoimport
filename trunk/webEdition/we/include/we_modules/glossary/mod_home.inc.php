@@ -38,5 +38,3 @@ $content	=		$createAbbreviation
 				.	$createLink;
 
 $modimage = "glossary.gif";
-
-?>

@@ -124,7 +124,7 @@ if (is_readable($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'agency.php') ){
 	$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,5));
 	$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
 							"class" => "defaultfont small"), $_agency);
-	$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));							
+	$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
 }
 
 //	8th row
@@ -144,7 +144,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		7,
 		2
 	);
-	
+
 	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label",true,array("for"=>"username"),$l_global["username"])));
 
 	$_loginTable->setCol($loginRow++, 1, array('width'=> $_logoPart, 'rowspan' => '5', 'valign' => 'bottom'), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
@@ -275,4 +275,3 @@ if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "info"){
 } else {
 	$_loginTable = $_table->getHtmlCode() . '<input type="image" width="1" height="1" src="/webEdition/images/pixel.gif"/>';
 }
-?>

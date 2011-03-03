@@ -19,9 +19,7 @@
  */
 
 class rpcSelectorGetFilesOfDirView extends rpcJsonView {
-	
-	
-	
-}
 
-?>
+
+
+}

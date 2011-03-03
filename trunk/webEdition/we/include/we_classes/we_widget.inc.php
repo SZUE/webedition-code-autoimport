@@ -117,5 +117,3 @@ class we_widget {
 	}
 
 }
-
-?>

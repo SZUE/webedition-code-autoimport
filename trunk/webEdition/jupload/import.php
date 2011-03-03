@@ -39,9 +39,9 @@ $_counter = 0;
 foreach($_FILES as $_index=>$_file) {
 	if(ereg('uploadedFiles'.$_counter,$_index)) {
 		$_FILES['we_File'] = $_file;
-		
+
 		$error = $import_files->importFile();
-			
+
 		if(sizeof($error)){
 			if(!isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
 				$_SESSION["WE_IMPORT_FILES_ERRORs"] = array();
@@ -53,8 +53,6 @@ foreach($_FILES as $_index=>$_file) {
 		unset($_FILES['we_File']);
 		$_counter++;
 	} else {
-		break;		
+		break;
 	}
 }
-
-?>

@@ -255,5 +255,3 @@ $out .= we_multiIconBox::getHTML("","100%",$parts,30,$buttons,-1,"","","",$l_obj
 $out .= '</form></body></html>';
 
 print $out;
-
-?>

@@ -24,27 +24,27 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/contenttypes.inc.php');
 
 class versionsLogView {
-	
+
 	public $db;
 	public $actionView;
 	public $versionPerPage = 10;
-	
-	
+
+
 	function __construct() {
-		
+
 		$this->db = new DB_WE ( );
 		$this->Model = new versionsLog();
 
 	}
-	
+
 	function getJS() {
-				
+
 		$js = we_htmlElement::jsElement('
-		
+
 			var ajaxURL = "/webEdition/rpc/rpc.php";
-			
+
 			var currentId = 0;
-			
+
 			var ajaxCallbackDetails = {
 				success: function(o) {
 				if(typeof(o.responseText) != "undefined" && o.responseText != "") {
@@ -54,44 +54,44 @@ class versionsLogView {
 				failure: function(o) {
 				}
 			}
-			
+
 			function openDetails(id) {
 				currentId = id;
 				var dataContent = document.getElementById("dataContent_"+id+"");
-				dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";  
+				dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
 				var otherdataContents = document.getElementsByName("dataContent");
 				for(var i=0;i<otherdataContents.length;i++) {
 					if(otherdataContents[i].id != "dataContent_"+id+""){
 						otherdataContents[i].innerHTML = "";
 					}
 				}
-				
-				
+
+
 				YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDetails, "protocol=json&cns=logging/versions&cmd=GetLogVersionDetails&id="+id+"");
-				
+
 			}
-			
+
 			function showAll(id) {
 				var Elements = document.getElementsByName(id+"_list");
 				for(var i=0;i<Elements.length;i++) {
 					Elements[i].style.display = "";
 				}
-				
+
 				var newstartNumber = 1;
 				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
 				var newshowNumber = Elements.length;
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-				
+
 				document.getElementById("showAll_"+id).innerHTML = "'.$GLOBALS['l_logging']['defaultView'].'";
 				document.getElementById("showAll_"+id).onclick = function(){
 					showDefault(id);
 				};
 				document.getElementById("back_"+id).style.display = "none";
 				document.getElementById("next_"+id).style.display = "none";
-			
+
 			}
-			
+
 			function showDefault(id) {
 				var Elements = document.getElementsByName(id+"_list");
 				for(var i=0;i<Elements.length;i++) {
@@ -100,27 +100,27 @@ class versionsLogView {
 					}
 					else {
 						Elements[i].style.display = "";
-					}				
+					}
 				}
-				
+
 				var newstartNumber = 1;
 				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
 				var newshowNumber = '.$this->versionPerPage.';
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-				
+
 				document.getElementById("back_"+id).style.display = "none";
 				document.getElementById("next_"+id).style.display = "inline";
-				
+
 				document.getElementById("showAll_"+id).innerHTML = "'.$GLOBALS['l_logging']['all'].'";
 				document.getElementById("showAll_"+id).onclick = function(){
 					showAll(id);
 				};
-				
+
 				document.getElementsByName("start_"+id)[0].value = 0;
 
 			}
-			
+
 			function next(id) {
 				var start = document.getElementsByName("start_"+id)[0].value;
 				var newStart = parseInt(start) + '.$this->versionPerPage.';
@@ -133,9 +133,9 @@ class versionsLogView {
 					else {
 						Elements[i].style.display = "none";
 					}
-					
+
 				}
-				
+
 				if(newStart>(Elements.length-'.$this->versionPerPage.')) {
 					document.getElementById("next_"+id).style.display = "none";
 				}
@@ -143,22 +143,22 @@ class versionsLogView {
 					document.getElementById("next_"+id).style.display = "inline";
 				}
 				document.getElementById("back_"+id).style.display = "inline";
-				
+
 				var newstartNumber = newStart+1;
 				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
-				
+
 				var newshowNumber = Elements.length;
 				if(Elements.length>(newStart+'.$this->versionPerPage.')) {
 					newshowNumber = (newStart+'.$this->versionPerPage.');
 				}
-				
+
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-				
+
 				document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
-				
-				
+
+
 			}
-			
+
 			function back(id) {
 				var start = document.getElementsByName("start_"+id)[0].value;
 				var newStart = parseInt(start) - '.$this->versionPerPage.';
@@ -171,10 +171,10 @@ class versionsLogView {
 					else {
 						Elements[i].style.display = "none";
 					}
-					
+
 				}
-				
-				
+
+
 				if(newStart==0) {
 					document.getElementById("back_"+id).style.display = "none";
 				}
@@ -182,34 +182,34 @@ class versionsLogView {
 					document.getElementById("back_"+id).style.display = "inline";
 				}
 				document.getElementById("next_"+id).style.display = "inline";
-				
+
 				var newstartNumber = newStart+1;
 				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
-				
-				
+
+
 				newshowNumber = (newstartNumber+'.$this->versionPerPage.');
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-				
+
 				document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
-				
+
 			}
-		
-		
+
+
 		');
-		
+
 		return $js;
-		
+
 	}
-	
+
 	function getContent() {
-		
+
 		$content = $this->Model->load();
-		
+
 		return $content;
 	}
-	
+
 	function printContent($content) {
-		
+
 		$out = "";
 
 		$out .= '<div align="center" width="100%"><table border="0" width="100%" cellpadding="0" cellspacing="0" class="middlefont">';
@@ -267,65 +267,65 @@ class versionsLogView {
 			$out .= '</div>';
 			$out .= '</td>';
 			$out .= '</tr>';
-			
+
 		}
-		
+
 		$out .= '</table></div>';
-		
-		
+
+
 		return $out;
-		
+
 	}
-	
+
 	function showLog($action,$logID) {
-		
+
 
 		$out = "";
-		
+
 		switch($action) {
-			
+
 			case WE_LOGGING_VERSIONS_DELETE:
-				
+
 				$title = $GLOBALS['l_logging']['versions']." ".$GLOBALS['l_logging']['deleted'];
-				
+
 			break;
-			
+
 			case WE_LOGGING_VERSIONS_RESET:
-				
+
 				$title = $GLOBALS['l_logging']['versions']." ".$GLOBALS['l_logging']['reset'];
-				
+
 			break;
-			
+
 			case WE_LOGGING_VERSIONS_PREFS:
-				
+
 				$title = $GLOBALS['l_logging']['prefsVersionChanged'];
-				
+
 			break;
-			
+
 		}
-		
-		$out .= $title.".";		
-				
+
+		$out .= $title.".";
+
 		return $out;
-		
+
 	}
-	
+
 	function handleData($logId, $start, $anzahl) {
-		
+
 		$db = new DB_WE();
-				
+
 		$db->query("SELECT data,action FROM `".VERSIONS_TABLE_LOG."` WHERE ID='".abs($logId)."'");
 		while($db->next_record()){
 			$data = $db->f("data");
 			$action = $db->f("action");
 		}
-		
+
 		$data = unserialize($data);
-		
+
 		$out = "";
 
 		if($action==WE_LOGGING_VERSIONS_DELETE || $action==WE_LOGGING_VERSIONS_RESET) {
-								
+
 			$out .= '<table cellpadding="3" cellspacing="0" border="0" style="width:100%;border:1px solid #BBBAB9;" class="middlefont">';
 			$out .= '<thead>';
 			$out .= '<tr style="background-color:#dddddd;font-weight:bold;">';
@@ -349,10 +349,10 @@ class versionsLogView {
 			$out .= '</td>';
 			$out .= '</tr>';
 			$out .= '</thead>';
-			
+
 			$anzGesamt = count($data);
 
-			$orderedArray = array();		
+			$orderedArray = array();
 			foreach($data as $k=>$v) {
 				$orderedArray[] = $v;
 			}
@@ -360,7 +360,7 @@ class versionsLogView {
 			$showNumber = 0;
 			//for($i=$start;$i<$anzahl;$i++) {
 			foreach($orderedArray as $k=>$v) {
-	
+
 				$display = "none";
 				$m = $k+1;
 				$name = $logId.'_list';
@@ -399,18 +399,18 @@ class versionsLogView {
 			$out .= hidden("start_".$logId ,$start);
 			$out .= '</td>';
 			$out .= '</tr>';
-				
+
 			$out .= '</table>';
-			
+
 		}
 		elseif($action==WE_LOGGING_VERSIONS_PREFS) {
-			
+
 			$secondsDay = 86400;
-			$secondsWeek = 604800;	
+			$secondsWeek = 604800;
 			$secondsYear = 31449600;
 
 			foreach($data as $k=>$v) {
-				
+
 				switch($k) {
 					case "version_image/*":
 						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
@@ -483,23 +483,22 @@ class versionsLogView {
 				}
 				$out .= "<br/>";
 			}
-			
-			
-			$out .= "<br/>";	
 
-			
+
+			$out .= "<br/>";
+
+
 		}
-				
+
 		return $out;
-		
+
 	}
-	
+
 	function __destruct() {
-		
+
 
 	}
 
-	
+
 }
 	
-?>

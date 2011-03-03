@@ -398,4 +398,3 @@ print $yuiSuggest->getYuiJs();
 
 <?php
 $we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-?>

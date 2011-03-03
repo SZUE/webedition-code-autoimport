@@ -38,23 +38,23 @@ htmlTop();
  */
 
 function startNormalMode() {
-	
+
 	$_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : WE_TREE_DEFAULT_WIDTH;
 
 	// Get the width of the sidebar
 	$_sidebarwidth = 0;
 	if(defined("SIDEBAR_DISABLED") && SIDEBAR_DISABLED == 1) {
 		$_sidebarwidth = 0;
-		
+
 	} else if(!defined("SIDEBAR_SHOW_ON_STARTUP") || SIDEBAR_SHOW_ON_STARTUP == 1) {
 		if(defined("SIDEBAR_DEFAULT_WIDTH")) {
 			$_sidebarwidth = SIDEBAR_DEFAULT_WIDTH;
-			
+
 		} else {
 			$_sidebarwidth = 300;
-			
+
 		}
-		
+
 	}
 
 	//FIXME: do we really want to load sidebar-frame - even if it is deactivated?
@@ -172,7 +172,6 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 	startNormalMode();
 }
 ?>
-
 <noframes>
 		<body>
 		</body>

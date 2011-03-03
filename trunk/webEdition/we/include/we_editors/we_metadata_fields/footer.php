@@ -113,5 +113,3 @@ $okbut = $we_button->create_button("ok", "javascript:we_save();");
 $cancelbut = $we_button->create_button("cancel", "javascript:".((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ?  ($_REQUEST["closecmd"].";") : "")."top.close()");
 
 print we_htmlElement::htmlBody(array("class"=>"weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "",0) . "</html>");
-
-?>

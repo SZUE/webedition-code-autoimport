@@ -31,12 +31,12 @@ function protect()
 {
 	global $l_alert;
 	if ($_SESSION["user"]["Username"] == "") {
-		
+
 		print htmlTop();
-		print 
+		print
 				we_htmlElement::jsElement(
 						we_message_reporting::getShowMessageCall(
-								$l_alert["perms_no_permissions"], 
+								$l_alert["perms_no_permissions"],
 								WE_MESSAGE_ERROR) . "top.close();");
 		print "</body></html>";
 		exit();
@@ -52,15 +52,13 @@ function login()
 {
 	global $l_alert;
 	if ($_SESSION["user"]["Username"] == "") {
-		
+
 		print htmlTop();
-		print 
+		print
 				we_htmlElement::jsElement(
 						we_message_reporting::getShowMessageCall($l_alert["login_failed"], WE_MESSAGE_ERROR) . "history.back();");
 		print "</body></html>";
 		exit();
-	
+
 	}
 }
-
-?>

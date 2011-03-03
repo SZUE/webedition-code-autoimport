@@ -106,4 +106,3 @@ class weMetaData_Exif extends weMetaData {
 	}
 
 }
-?>

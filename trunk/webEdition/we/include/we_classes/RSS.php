@@ -74,7 +74,7 @@ class XML_RSS extends XML_Parser
      * @var array
      */
     var $textinput = array();
-    
+
     /**
      * @var array
      */
@@ -128,8 +128,8 @@ class XML_RSS extends XML_Parser
                             'DC:RELATION', 'DC:COVERAGE', 'DC:RIGHTS',
                             'BLOGCHANNEL:BLOGROLL', 'BLOGCHANNEL:MYSUBSCRIPTIONS',
                             'BLOGCHANNEL:MYSUBSCRIPTIONS', 'BLOGCHANNEL:CHANGES',
-                            'CC:LICENSE', 'CONTENT:ENCODED', 
-                            'SY:UPDATEPERIOD', 'SY:UPDATEFREQUENCY', 'SY:UPDATEBASE', 
+                            'CC:LICENSE', 'CONTENT:ENCODED',
+                            'SY:UPDATEPERIOD', 'SY:UPDATEFREQUENCY', 'SY:UPDATEBASE',
                             );
 
     // }}}
@@ -276,7 +276,7 @@ class XML_RSS extends XML_Parser
                 $this->_add($tagName, strtolower($this->activeTag),
                             $cdata);
             }
-            
+
         }
     }
 
@@ -403,4 +403,3 @@ class XML_RSS extends XML_Parser
     // }}}
 
 }
-?>

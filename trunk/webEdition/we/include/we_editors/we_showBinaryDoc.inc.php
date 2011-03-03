@@ -90,5 +90,3 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){ // create thumbnail
 
 readfile($dataPath);
 exit();
-
-?>
