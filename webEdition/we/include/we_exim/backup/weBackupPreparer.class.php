@@ -184,11 +184,11 @@
 				$_SESSION['weBackupVars']['files_to_delete'] = weBackupPreparer::getFileLists();
 				$_SESSION['weBackupVars']['files_to_delete_count'] = count($_SESSION['weBackupVars']['files_to_delete']);
 			}
-			
-			if($_SESSION['weBackupVars']['handle_options']['versions'] 
-			|| $_SESSION['weBackupVars']['handle_options']['core'] 
-			|| $_SESSION['weBackupVars']['handle_options']['object'] 
-			|| $_SESSION['weBackupVars']['handle_options']['versions_binarys'] 
+
+			if($_SESSION['weBackupVars']['handle_options']['versions']
+			|| $_SESSION['weBackupVars']['handle_options']['core']
+			|| $_SESSION['weBackupVars']['handle_options']['object']
+			|| $_SESSION['weBackupVars']['handle_options']['versions_binarys']
 			) {
 				weBackupPreparer::clearVersionData();
 			}
@@ -196,7 +196,7 @@
 			if($_SESSION['weBackupVars']['handle_options']['object']) {
 				weBackupPreparer::clearTemporaryData('tblObjectFiles');
 			}
-			
+
 			return true;
 		}
 
@@ -235,7 +235,7 @@
 			$handle_options['spellchecker'] = (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0;
 			$handle_options['versions'] = (isset($_REQUEST['handle_versions']) && $_REQUEST['handle_versions']) ? 1 : 0;
 			$handle_options['versions_binarys'] = (isset($_REQUEST['handle_versions_binarys']) && $_REQUEST['handle_versions_binarys']) ? 1 : 0;
-			
+
 			$handle_options['tools'] = array();
 
 			foreach($_REQUEST as $_k=>$_val) {
@@ -248,7 +248,7 @@
 			}
 			$handle_options['spellchecker'] = (isset($_REQUEST['handle_spellchecker']) && $_REQUEST['handle_spellchecker']) ? 1 : 0;
 
-			// exception for sql imports			
+			// exception for sql imports
 			$handle_options['glossary'] = (isset($_REQUEST['handle_glossary']) && $_REQUEST['handle_glossary']) ? 1 : 0;
 			// exception for sql imports
 			$handle_options['backup'] = $options['backup_extern'];
@@ -268,13 +268,13 @@
 					$tables = array_merge($tables,$tableMap[$group]);
 				}
 			}
-			
+
 			if(!empty($options['tools'])) {
 				foreach ($options['tools'] as $_tool) {
 					$tables = array_merge($tables,weToolLookup::getBackupTables($_tool));
 				}
 			}
-			
+
 			return $tables;
 
 		}
@@ -382,7 +382,7 @@
 			$DB_WE->query('TRUNCATE TABLE '.NAVIGATION_RULE_TABLE.';');
 			$DB_WE->query('TRUNCATE TABLE '.HISTORY_TABLE.';');
 		}
-		
+
 		function clearVersionData(){
 			global $DB_WE;
 			$DB_WE->query('TRUNCATE TABLE '.VERSIONS_TABLE.';');
@@ -588,5 +588,3 @@
 
 
 	}
-
-?>

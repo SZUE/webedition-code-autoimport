@@ -24,4 +24,3 @@ header("Content-Type: application/vnd.mozilla.xul+xml");
 $port = defined("HTTP_PORT") ? HTTP_PORT : "";
 $jmenu = new weJavaMenu("",SERVER_NAME,"top.load","http",$port,500,30,(isset($_REQUEST['pre'])?$_REQUEST['pre']:""));
 print $jmenu->getXUL($_language["charset"]);
-?>

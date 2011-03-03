@@ -24,19 +24,19 @@ $GLOBALS["WE_CONTENT_TYPES"] = array();
 
 
 $GLOBALS["WE_CONTENT_TYPES"]["image/*"] = array(
-	
-		"Extension" => ".gif,.jpg,.jpeg,.png", 
-		"Permission" => 'NEW_GRAFIK', 
-		"DefaultCode" => "", 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => ".gif,.jpg,.jpeg,.png",
+		"Permission" => 'NEW_GRAFIK',
+		"DefaultCode" => "",
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "image.gif"
 );
 
 $GLOBALS["WE_CONTENT_TYPES"]["text/html"] = array(
-	
-		"Extension" => ".html,.htm,.shtm,.shtml,.stm,.php,.jsp,.asp,.pl,.cgi,.xml,.xsl", 
-		"Permission" => 'NEW_HTML', 
+
+		"Extension" => ".html,.htm,.shtm,.shtml,.stm,.php,.jsp,.asp,.pl,.cgi,.xml,.xsl",
+		"Permission" => 'NEW_HTML',
 		"DefaultCode" => '<html>
         <head>
                 <title></title>
@@ -45,25 +45,25 @@ $GLOBALS["WE_CONTENT_TYPES"]["text/html"] = array(
         </head>
         <body>
         </body>
-</html>', 
-		"IsWebEditionFile" => "1", 
-		"IsRealFile" => "1", 
+</html>',
+		"IsWebEditionFile" => "1",
+		"IsRealFile" => "1",
 		"Icon" => "html.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["text/webedition"] = array(
-	
-		"Extension" => ".html,.htm,.shtm,.shtml,.stm,.php,.jsp,.asp,.pl,.cgi,.xml", 
-		"Permission" => 'NEW_WEBEDITIONSITE', 
-		"DefaultCode" => '', 
-		"IsWebEditionFile" => "1", 
-		"IsRealFile" => "0", 
+
+		"Extension" => ".html,.htm,.shtm,.shtml,.stm,.php,.jsp,.asp,.pl,.cgi,.xml",
+		"Permission" => 'NEW_WEBEDITIONSITE',
+		"DefaultCode" => '',
+		"IsWebEditionFile" => "1",
+		"IsRealFile" => "0",
 		"Icon" => "we_dokument.gif"
 );
 
 $GLOBALS["WE_CONTENT_TYPES"]["text/weTmpl"] = array(
-	
-		"Extension" => ".tmpl", 
-		"Permission" => 'NEW_TEMPLATE', 
+
+		"Extension" => ".tmpl",
+		"Permission" => 'NEW_TEMPLATE',
 		"DefaultCode" => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -95,119 +95,118 @@ $GLOBALS["WE_CONTENT_TYPES"]["text/weTmpl"] = array(
     </tr>
   </table>
 </body>
-</html>', 
-		"IsRealFile" => "0", 
+</html>',
+		"IsRealFile" => "0",
 		"Icon" => "we_template.gif"
 );
 
 $GLOBALS["WE_CONTENT_TYPES"]["text/js"] = array(
-	
-		"Extension" => ".js", 
-		"Permission" => 'NEW_JS', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => ".js",
+		"Permission" => 'NEW_JS',
+		"DefaultCode" => '',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "javascript.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["text/css"] = array(
-	
-		"Extension" => ".css", 
-		"Permission" => 'NEW_CSS', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => ".css",
+		"Permission" => 'NEW_CSS',
+		"DefaultCode" => '',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "css.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["text/htaccess"] = array(
-	
-		"Extension" => "", 
-		"Permission" => 'NEW_HTACCESS', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => "",
+		"Permission" => 'NEW_HTACCESS',
+		"DefaultCode" => '',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "htaccess.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["text/plain"] = array(
-	
-		"Extension" => ".txt", 
-		"Permission" => 'NEW_TEXT', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => ".txt",
+		"Permission" => 'NEW_TEXT',
+		"DefaultCode" => '',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "link.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["folder"] = array(
-	
-		"Extension" => "", 
-		"Permission" => '', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "0", 
-		"IsWebEditionFile" => "0", 
+
+		"Extension" => "",
+		"Permission" => '',
+		"DefaultCode" => '',
+		"IsRealFile" => "0",
+		"IsWebEditionFile" => "0",
 		"Icon" => "folder.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["class_folder"] = array(
-	
-		"Extension" => "", 
-		"Permission" => '', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "0", 
-		"IsWebEditionFile" => "0", 
+
+		"Extension" => "",
+		"Permission" => '',
+		"DefaultCode" => '',
+		"IsRealFile" => "0",
+		"IsWebEditionFile" => "0",
 		"Icon" => "class_folder.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["application/x-shockwave-flash"] = array(
-	
-		"Extension" => ".swf", 
-		"Permission" => 'NEW_FLASH', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => ".swf",
+		"Permission" => 'NEW_FLASH',
+		"DefaultCode" => '',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "flashmovie.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["video/quicktime"] = array(
-	
-		"Extension" => ".mov,.moov,.qt", 
-		"Permission" => 'NEW_QUICKTIME', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => ".mov,.moov,.qt",
+		"Permission" => 'NEW_QUICKTIME',
+		"DefaultCode" => '',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "quicktime.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["application/*"] = array(
-	
-		"Extension" => ".doc,.xls,.ppt,.zip,.sit,.bin,.hqx,.exe", 
-		"Permission" => 'NEW_SONSTIGE', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+
+		"Extension" => ".doc,.xls,.ppt,.zip,.sit,.bin,.hqx,.exe",
+		"Permission" => 'NEW_SONSTIGE',
+		"DefaultCode" => '',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "link.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["text/xml"] = array(
-	
-		"Extension" => ".xml", 
-		"Permission" => 'NEW_TEXT', 
+
+		"Extension" => ".xml",
+		"Permission" => 'NEW_TEXT',
 		"DefaultCode" => '<?xml version="1.0" encoding="'. (isset(
-				$GLOBALS["_language"]["charset"]) ? $GLOBALS["_language"]["charset"] : "UTF-8") .'" ?>', 
-		"IsRealFile" => "1", 
-		"IsWebEditionFile" => "1", 
+				$GLOBALS["_language"]["charset"]) ? $GLOBALS["_language"]["charset"] : "UTF-8") .'" ?>',
+		"IsRealFile" => "1",
+		"IsWebEditionFile" => "1",
 		"Icon" => "link.gif"
 );
 
 $GLOBALS["WE_CONTENT_TYPES"]["object"] = array(
-	
-		"Extension" => "", 
-		"Permission" => '', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "0", 
-		"IsWebEditionFile" => "0", 
+
+		"Extension" => "",
+		"Permission" => '',
+		"DefaultCode" => '',
+		"IsRealFile" => "0",
+		"IsWebEditionFile" => "0",
 		"Icon" => "object.gif"
 );
 $GLOBALS["WE_CONTENT_TYPES"]["objectFile"] = array(
-	
-		"Extension" => "", 
-		"Permission" => '', 
-		"DefaultCode" => '', 
-		"IsRealFile" => "0", 
-		"IsWebEditionFile" => "0", 
+
+		"Extension" => "",
+		"Permission" => '',
+		"DefaultCode" => '',
+		"IsRealFile" => "0",
+		"IsWebEditionFile" => "0",
 		"Icon" => "objectFile.gif"
 );
-?>

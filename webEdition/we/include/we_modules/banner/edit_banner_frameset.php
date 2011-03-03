@@ -34,7 +34,7 @@
 
 	if(isset($_REQUEST["art"])) $mode=$_REQUEST["art"];
 	else $mode=0;
-		
+
 
 	switch($what){
 		case "frameset": print $bannerFrame->getHTMLFrameset();break;
@@ -49,5 +49,3 @@
 		case "cmd": print $bannerFrame->getHTMLCmd();break;
       default:
 	}
-
-?>

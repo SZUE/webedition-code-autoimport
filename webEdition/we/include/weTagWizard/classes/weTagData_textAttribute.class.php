@@ -29,7 +29,7 @@ class weTagData_textAttribute extends weTagDataAttribute
 	 */
 	function weTagData_textAttribute($id, $name, $required = false, $module = '')
 	{
-		
+
 		parent::weTagDataAttribute($id, $name, $required, $module);
 	}
 
@@ -38,17 +38,17 @@ class weTagData_textAttribute extends weTagDataAttribute
 	 */
 	function getCodeForTagWizard()
 	{
-		
+
 		return '
 					<table class="attribute">
 					<tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
 						<td class="attributeField">' . we_htmlElement::htmlInput(
 				array(
-					
-						'name' => $this->Name, 
-						'id' => $this->getIdName(), 
-						'value' => $this->Value, 
+
+						'name' => $this->Name,
+						'id' => $this->getIdName(),
+						'value' => $this->Value,
 						'class' => 'wetextinput'
 				)) . '</td>
 					</tr>
@@ -56,4 +56,3 @@ class weTagData_textAttribute extends weTagDataAttribute
 	}
 }
 
-?>

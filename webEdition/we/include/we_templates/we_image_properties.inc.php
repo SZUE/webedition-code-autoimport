@@ -32,5 +32,3 @@ array_push($parts,array("icon"=>"hyperlink.gif", "headline"=>$GLOBALS["l_we_clas
 
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("weImgProp","100%",$parts,20);
-
-?>

@@ -373,12 +373,12 @@
 					foreach($item as $k=>$v)
 					$buff.='
 								attribs["'.strtolower($k).'"]=\''.addslashes($v).'\';';
-	
+
 					$js.=$buff.'
 						'.$this->topFrame.'.treeData.add(new '.$this->topFrame.'.node(attribs));
 					}
 					';
-	
+
 				}
 			}
 			$js.=$nextCode;
@@ -391,4 +391,3 @@
 
 
 }
-?>

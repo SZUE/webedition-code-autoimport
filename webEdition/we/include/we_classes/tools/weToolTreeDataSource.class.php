@@ -25,18 +25,18 @@ class weToolTreeDataSource {
 
 	var $SourceType;
 	var $SourceName;
-	
+
 	function weToolTreeDataSource($ds) {
-		
+
 		$_dsd = explode(':',$ds);
 		if(isset($_dsd[0]) && isset($_dsd[1])) {
 			$this->SourceType = $_dsd[0];
 			$this->SourceName = $_dsd[1];
 		}
-		
-		
+
+
 	}
-	
+
 	function getItems($pid,$offset=0,$segment=500,$sort=''){
 		switch ($this->SourceType) {
 			case 'table' :
@@ -49,7 +49,7 @@ class weToolTreeDataSource {
 
 	}
 
-	
+
 	function getQueryParents($path){
 		$out = "";
 		while($path != "/" && $path != "\\" && $path){
@@ -61,15 +61,15 @@ class weToolTreeDataSource {
 		}else{
 			return "";
 		}
-	}	
+	}
 
 	function getItemsFromDB($ParentID=0,$offset=0,$segment=500,$elem='ID,ParentID,Path,Text,Icon,IsFolder',$addWhere='',$addOrderBy=''){
-		
+
 		$db=new DB_WE();
 		$table=$this->SourceName;
-		
+
 		$items=array();
-		
+
 		$wsQuery = '';
 		$_aWsQuery=array();
 		$parentpaths = array();
@@ -85,10 +85,10 @@ class weToolTreeDataSource {
 			}
 			$wsQuery = !empty($_aWsQuery) ? '(' .implode(' OR ',$_aWsQuery) . ') AND ' : '';
 		}
-				
+
 		$prevoffset=$offset-$segment;
 		$prevoffset=($prevoffset<0) ? 0 : $prevoffset;
-		if($offset && $segment){	
+		if($offset && $segment){
 				$items[]=array(
 										'icon'=>'arrowup.gif',
 										'id'=>'prev_'.$ParentID,
@@ -102,14 +102,14 @@ class weToolTreeDataSource {
 										'disabled'=> 0,
 										'tooltip'=>'',
 										'offset'=>$prevoffset
-				);	
-		}		
-		
-		$where=" WHERE $wsQuery ParentID=".abs($ParentID)." ".$addWhere;		
-	
+				);
+		}
+
+		$where=" WHERE $wsQuery ParentID=".abs($ParentID)." ".$addWhere;
+
 		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".mysql_real_escape_string($table)." $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT ".abs($offset).",".abs($segment).";" : ";" ));
 		$now = time();
-		
+
 		while($db->next_record()){
 
 			if($db->f('IsFolder')==1) $typ=array('typ'=>'group');
@@ -123,17 +123,17 @@ class weToolTreeDataSource {
 			$typ['order']=$db->f('Ordn');
 			$typ['published']= 1;
 			$typ['disabled']=0;
-			
+
 			$fileds=array();
- 
+
  			foreach($db->Record as $k=>$v){
  				if(!is_numeric($k)) $fileds[strtolower($k)]=$v;
  			}
- 
- 			$items[]=array_merge($fileds,$typ);			
+
+ 			$items[]=array_merge($fileds,$typ);
 
 		}
-		
+
 		$total=f("SELECT COUNT(*) as total FROM ".mysql_real_escape_string($table)." $where;",'total',$db);
 		$nextoffset=$offset+$segment;
 		if($segment && ($total>$nextoffset)){
@@ -149,21 +149,21 @@ class weToolTreeDataSource {
 									'disabled'=>0,
 									'tooltip'=>'',
 									'offset'=>$nextoffset
-			);		
-		}		
-		
-		
+			);
+		}
+
+
 		return $items;
 
 	}
-	
+
 	function getItemsFromFile($ParentID=0,$offset=0,$segment=500,$elem='ID,ParentID,Path,Text,Icon,IsFolder',$addWhere='',$addOrderBy=''){
-		
+
 		$file=$this->SourceName;
-		
+
 		$items=array();
-		
-			
+
+
 		$items[]=array(
 										'icon' => 'link.gif',
 										'id'=>1,
@@ -176,18 +176,18 @@ class weToolTreeDataSource {
 										'published'=>1,
 										'disabled'=> 0,
 										'tooltip'=>''
-				);	
-		
-		
-		
+				);
+
+
+
 		return $items;
 
 	}
-	
+
 	function getCustomItems($ParentID=0,$offset=0,$segment=500,$elem='ID,ParentID,Path,Text,Icon,IsFolder',$addWhere='',$addOrderBy=''){
-			
+
 		$items=array();
-		
+
 		$items[]=array(
 										'icon' => 'folder.gif',
 										'id'=>1,
@@ -200,8 +200,8 @@ class weToolTreeDataSource {
 										'published'=>1,
 										'disabled'=> 0,
 										'tooltip'=>''
-		);	
-		
+		);
+
 		$items[]=array(
 										'icon' => 'link.gif',
 										'id'=>2,
@@ -214,13 +214,12 @@ class weToolTreeDataSource {
 										'published'=>1,
 										'disabled'=> 0,
 										'tooltip'=>''
-		);	
-		
-		
+		);
+
+
 		return $items;
 
 	}
-	
+
 }
 
-?>

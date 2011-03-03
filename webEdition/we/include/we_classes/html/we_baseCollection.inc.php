@@ -44,20 +44,20 @@ class we_baseCollection extends we_baseElement{
 	* @param		$childs_num								int					(optional)
 	*
 	* @return		we_baseCollection
-	*/	
+	*/
 	function we_baseCollection($tagname="",$need_end_tag=true,$attribs=array(),$childs_num=0){
 		$this->we_baseElement($tagname,$need_end_tag,$attribs);
-		
-		for($i=0;$i<$childs_num;$i++) $this->addChild(new we_baseElement()); 		
+
+		for($i=0;$i<$childs_num;$i++) $this->addChild(new we_baseElement());
 	}
-		
+
 	/**
 	* Function adds new element to the collection
 	*
 	* @param		$child									we_baseElement
 	*
 	* @return		void
-	*/	
+	*/
 	function addChild($child){
 		$this->childs[]=$child;
 	}
@@ -69,10 +69,10 @@ class we_baseCollection extends we_baseElement{
 	* @param		$childid									int
 	*
 	* @return		void
-	*/	
+	*/
 	function delChild($childid){
 		array_splice($this->childs,$childid,1);
-	}	
+	}
 
 	/**
 	* Function sets child wit specified childid with given child object
@@ -81,7 +81,7 @@ class we_baseCollection extends we_baseElement{
 	* @param		$child										we_baseElement
 	*
 	* @return		void
-	*/		
+	*/
 	function setChild($childId,$child){
 		$this->childs[$childId]=$child;
 	}
@@ -93,12 +93,12 @@ class we_baseCollection extends we_baseElement{
 	*
 	* @return		we_baseElement
 	*/
-	function &getChild($childId){			
-		return $this->childs[$childId]; 
-	}				
-		
+	function &getChild($childId){
+		return $this->childs[$childId];
+	}
+
 	/**
-	* Function generate collection HTML code 
+	* Function generate collection HTML code
 	*
 	* @param		$object										we_baseElement
 	*
@@ -106,15 +106,13 @@ class we_baseCollection extends we_baseElement{
 	*/
 	function getHtmlCode($object){
 		$childs_content="";
-		foreach($object->childs as $kc=>$vc){						
+		foreach($object->childs as $kc=>$vc){
 			$childs_content.=$object->childs[$kc]->getHtmlCode($object->childs[$kc]);
 		}
 		$object->setContent($childs_content);
 		return we_baseElement::getHtmlCode($object);
 	}
-	
-	
-	
-}
 
-?>
+
+
+}

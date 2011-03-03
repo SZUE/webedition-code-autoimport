@@ -20,12 +20,12 @@
 
 
 class rpcSelectorGetSelectedIdView extends rpcView {
-	
-	
+
+
 	function getResponse($response) {
 
 		header('Content-type: text/plain');
-		$suggests = $response->getData("data");		
+		$suggests = $response->getData("data");
 		$html = "";
 		if (is_array($suggests) && isset($suggests[0]['ID'])) {
 			$status = "response";
@@ -47,7 +47,7 @@ class rpcSelectorGetSelectedIdView extends rpcView {
 						break;
 					case OBJECT_FILES_TABLE:
 						$msg = $l_weSelectorSuggest["no_class"];
-						break;				
+						break;
 					default:
 						$msg = $l_weSelectorSuggest["no_result"];
 						break;
@@ -57,14 +57,10 @@ class rpcSelectorGetSelectedIdView extends rpcView {
 			}
 			$html .= '"msg":"'.$msg.'","nr":"'.$_REQUEST["we_cmd"][2].'"';
 		}
-		return 
+		return
 			'var weResponse = {
 			"type": "' . $status . '",
 			"data": {' . $html . ' }
 		};';
 	}
 }
-
-
-
-?>

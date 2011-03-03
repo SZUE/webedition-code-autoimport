@@ -19,29 +19,26 @@
  */
 
 
-		
+
 	/**
-	 * if hook execution is enabled this function will be executed 
+	 * if hook execution is enabled this function will be executed
 	 * when publishing a document, template, object or class
 	 * The array $param has all information about the respective document.
 	 *
 	 * IMPORTANT!
 	 * Copy this file to the custom_hooks folder when doing any changes
 	 * Files in the sample_hooks folder are not update-safe and will be overwritten by the next webEdition update
-	 * 
+	 *
 	 * @param array $param
-	 */	
+	 */
 	function weCustomHook_publish($param) {
-		
+
 		/**
 		 * e.g.:
-		 * 
+		 *
 		 * ob_start("error_log");
 		 * print_r($param);
 		 * ob_end_clean();
 		 */
 
 	}
-
-
-?>

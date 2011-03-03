@@ -928,4 +928,4 @@ if ($we_editmode) {
 	}
 	?>
 	</html>
-<?php } ?>
+<?php } 

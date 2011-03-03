@@ -19,7 +19,7 @@
  */
 
 class rpcChangeDocTypeCmd extends rpcCmd {
-	
+
 	function execute() {
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/import.inc.php");
 		$resp = new rpcResponse();
@@ -27,10 +27,10 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 		//$categories = "";
 		if (isset($_REQUEST['docType'])) {
 			if ($_REQUEST['docType'] >= 0) {
-				$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID='".abs($_REQUEST['docType'])."'",$GLOBALS["DB_WE"]);	
-				
+				$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID='".abs($_REQUEST['docType'])."'",$GLOBALS["DB_WE"]);
+
 				$ids_arr = makeArrayFromCSV($values["Templates"]);
-				
+
 				$paths_arr = id_to_path($values["Templates"],TEMPLATES_TABLE,"",false,true);
 				$TPLselect = new we_htmlSelect(array(
 					"name"		=> "docTypeTemplateId",
@@ -74,13 +74,13 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 							"self.document.forms['we_form'].elements['chbxIsDynamic']"       => array("checked"=>$values["IsDynamic"]|0),
 							"self.document.forms['we_form'].elements['v[docCategories]']"    => array("value"=>$values["Category"]|""),
 							"self.document.forms['we_form'].elements['noDocTypeTemplateId']" => array("value"=>0),
-							"document.getElementById('docTypeLayer')"                        => array("innerHTML"=>addslashes($templateElement), "style.display"=>$_docTypeLayerDisplay), 
+							"document.getElementById('docTypeLayer')"                        => array("innerHTML"=>addslashes($templateElement), "style.display"=>$_docTypeLayerDisplay),
 							"document.getElementById('noDocTypeLayer')"                      => array("style.display"=>$_noDocTypeLayerDisplay),
 							"document.getElementById('docCatTable')"                         => array("innerHTML"=>addslashes($categories)
 						)
 					)
 				);
-		
+
 			} else {
 				$resp->setData("elements",
 						array(
@@ -93,24 +93,23 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 							"self.document.forms['we_form'].elements['chbxIsDynamic']"       => array("checked"=>0),
 							"self.document.forms['we_form'].elements['v[docCategories]']"    => array("value"=>""),
 							"self.document.forms['we_form'].elements['noDocTypeTemplateId']" => array("value"=>0),
-							"document.getElementById('docTypeLayer')"                        => array("innerHTML"=>"", "style.display"=>"none"), 
+							"document.getElementById('docTypeLayer')"                        => array("innerHTML"=>"", "style.display"=>"none"),
 							"document.getElementById('noDocTypeLayer')"                      => array("style.display"=>"block"),
 							"document.getElementById('docCatTable')"                         => array("innerHTML"=>$categories
 						)
 					)
 				);
-						
+
 			}
 		}
 		return $resp;
 	}
-	
+
 	function getCategories($obj, $categories, $catField="") {
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser2.inc.php");
 		$cats = new MultiDirChooser2(410,$categories,"delete_".$obj."Cat","","","Icon,Path",CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);
 		return $cats->getTableRows();
-	}	
+	}
 }
-?>

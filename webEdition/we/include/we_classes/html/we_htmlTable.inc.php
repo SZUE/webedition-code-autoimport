@@ -32,7 +32,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"
 
 class we_htmlTable extends we_baseCollection {
 
-	
+
 	/**
 	 * Constructor of class we_htmlTable
 	 *
@@ -66,11 +66,11 @@ class we_htmlTable extends we_baseCollection {
 				if(is_array($this->childs[0]->childs)){
 					$cols_num=count($this->childs[0]->childs);
 				}
-			}		
+			}
 		}
 		for ($i = 0; $i < $rows_num; $i++) {
 			$this->childs[] = new we_baseCollection("tr");
-			for($j=0;$j<$cols_num;$j++) $this->childs[count($this->childs)-1]->childs[]=new we_baseElement("td"); 
+			for($j=0;$j<$cols_num;$j++) $this->childs[count($this->childs)-1]->childs[]=new we_baseElement("td");
 		}
 	}
 
@@ -91,7 +91,7 @@ class we_htmlTable extends we_baseCollection {
 			}
 		}
 	}
-	
+
 	/**
 	 * This functions sets the current row being edited
 	 *
@@ -143,7 +143,7 @@ class we_htmlTable extends we_baseCollection {
 	 * @return     void
 	 */
 
-	function setRowAttributes($rowid, $attribs = array()) {		
+	function setRowAttributes($rowid, $attribs = array()) {
 		$row=& $this->getChild($rowid);
 		$row->setAttributes($attribs);
 	}
@@ -178,7 +178,7 @@ class we_htmlTable extends we_baseCollection {
 		$row=& $this->getChild($rowid);
 		$col=& $row->getChild($colid);
 		$col->setContent($content);
-	}	
+	}
 
 	/**
 	* Returns the rendered HTML code
@@ -186,10 +186,10 @@ class we_htmlTable extends we_baseCollection {
 	* @return     string
 	*/
 	function getHtmlCode() {
-		
+
 		$copy=$this->copy();
 	 	$rows_num=count($copy->childs);
-		 
+
 		for($i=0;$i<$rows_num;$i++){
 			$row=& $copy->getChild($i);
 			$cols_num=count($row->childs);
@@ -210,10 +210,8 @@ class we_htmlTable extends we_baseCollection {
 				}
 			}
 		}
-		
+
 		return we_baseCollection::getHtmlCode($copy);
-	}	
+	}
 
 }
-
-?>

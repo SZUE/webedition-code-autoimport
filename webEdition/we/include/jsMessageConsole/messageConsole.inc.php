@@ -62,5 +62,3 @@ onunload=function() {
 </div>
 ";
 }
-
-?>

@@ -64,7 +64,7 @@ class we_class
 	var $IsTextContentDoc = false;
 
 	var $LoadBinaryContent = false;
-	
+
 	var $fileExists = 1;
 
 	######################################################################################################################################################
@@ -292,7 +292,7 @@ class we_class
 		if (is_array($values)) {
 			reset($values);
 		} else {
-			$values = array();	
+			$values = array();
 		}
 		$ret = '<select id="'.trim($name).'" class="weSelect defaultfont" name="'.trim($name).'" size="'.abs($size).'"'.($multiple ? " multiple" : "").($attribs ? " $attribs" : "").($width ? ' style="width: '.$width.'px"' : '').'>'."\n";
 		$selIndex = split(",",$selectedIndex);
@@ -301,9 +301,9 @@ class we_class
 		}
 		$ret .= "</select>";
 		return $ret;
-		
+
 	}
-	
+
 	// this function doesn't split selectedIndex
 	function htmlSelect2($name,$values,$size=1,$selectedIndex="",$multiple=false,$attribs="",$compare="value",$width=""){
 		reset($values);
@@ -315,7 +315,7 @@ class we_class
 		return $ret;
 	}
 
-	
+
 	function htmlFormElementTable($element,$text,$textalign="left",$textclass="defaultfont",$col2="",$col3="",$col4="",$col5="",$col6=""){
 		return htmlFormElementTable($element,$text,$textalign,$textclass,$col2,$col3,$col4,$col5,$col6);
 	}
@@ -497,7 +497,7 @@ class we_class
 				}
 			}
 		} else {
-			$this->fileExists = 0;			
+			$this->fileExists = 0;
 		}
 	}
 
@@ -592,8 +592,3 @@ class we_class
 	}
 
 }
-
-
-
-
-?>

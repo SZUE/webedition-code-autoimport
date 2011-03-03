@@ -72,7 +72,7 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move)
 	if (sizeof($row) == 0 || $row["IsFolder"]) {
 		return -1;
 	}
-	
+
 	$text = $row["Text"];
 	$temp = explode("/", $row["Path"]);
 	if (sizeof($temp) < 2) {
@@ -80,17 +80,17 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move)
 	} else {
 		$rootdir = "/" . $temp[1];
 	}
-	
+
 	// add the item to the item names which could be moved
 	array_push($items2move, $text);
-	
+
 	$DB_WE->query("SELECT Text,Path FROM " . mysql_real_escape_string($table) . " WHERE ParentID=" . abs($targetDirectoryID));
 	while ($DB_WE->next_record()) {
 		// check if there is a item with the same name in the target directory
 		if (in_array($DB_WE->f('Text'), $items2move)) {
 			return -2;
 		}
-		
+
 		if (defined("OBJECT_TABLE") && $table == OBJECT_FILES_TABLE) {
 			// check if class directory is the same
 			if (substr($DB_WE->f('Path'), 0, strlen($rootdir)+1) != $rootdir."/") {
@@ -103,15 +103,15 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move)
 
 function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 {
-	
+
 	$DB_WE = new DB_WE();
-	
+
 	if (!$id) {
 		return false;
 	}
-	
+
 	$table = addslashes($table);
-	
+
 	// get information about the target directory
 	if (defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !$targetDirectoryID) {
 		return false;
@@ -126,9 +126,9 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		$newPath = "";
 		$parentID = 0;
 	}
-	
+
 	@set_time_limit(30);
-	
+
 	// move Templates
 	if ($table == TEMPLATES_TABLE) {
 		/*
@@ -179,12 +179,12 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		$_template->ParentID = $targetDirectoryID;
 		if (!$_template->save()) {
 			array_push(
-					$notMovedItems, 
+					$notMovedItems,
 					array(
-						
-							'ID' => $_template->ID, 
-							'Text' => $_template->Text, 
-							'Path' => $_template->Path, 
+
+							'ID' => $_template->ID,
+							'Text' => $_template->Text,
+							'Path' => $_template->Path,
 							'Icon' => $_template->Icon
 					));
 			return false;
@@ -192,10 +192,10 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		return true;
 		// move documents
 	} elseif ($table == FILE_TABLE) {
-		
+
 		// get information about the document which has to be moved
 		$row = getHash(
-				"SELECT Text,Path,Published,IsFolder,Icon,ContentType FROM " . mysql_real_escape_string($table) . " WHERE ID=" . abs($id), 
+				"SELECT Text,Path,Published,IsFolder,Icon,ContentType FROM " . mysql_real_escape_string($table) . " WHERE ID=" . abs($id),
 				$DB_WE);
 		$fileName = $row['Text'];
 		$oldPath = $row['Path'];
@@ -209,14 +209,14 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 			array_push($notMovedItems, $item);
 			return false;
 		}
-		
+
 		// move document file
 		if (!file_exists($_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 		if (!copy(
-				$_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath, 
+				$_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath,
 				$_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $newPath . "/" . $fileName)) {
 			array_push($notMovedItems, $item);
 			return false;
@@ -225,7 +225,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 			array_push($notMovedItems, $item);
 			return false;
 		}
-		
+
 		// move published document file
 		if ($isPublished) {
 			if (!file_exists($_SERVER["DOCUMENT_ROOT"] . $oldPath)) {
@@ -241,7 +241,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 				return false;
 			}
 		}
-		
+
 		$version = new weVersions();
 		if (in_array($row['ContentType'], $version->contentTypes)) {
 			$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
@@ -260,22 +260,22 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 				$object->ParentID = $tempNewParentID;
 			}
 			$version->saveVersion($object);
-		
+
 		}
-		
+
 		// update table
 		$q = "UPDATE " . mysql_real_escape_string($table) . " SET ParentID=" . abs($parentID) . ", Path='" . mysql_real_escape_string($newPath) . "/" . mysql_real_escape_string($fileName) . "' WHERE ID=" . abs(
 				$id);
 		$DB_WE->query($q);
-		
+
 		return true;
-		
+
 	// move Objects
 	} elseif (defined("OBJECT_TABLE") && $table == OBJECT_FILES_TABLE) {
-		
+
 		// get information about the object which has to be moved
 		$row = getHash(
-				"SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM " . mysql_real_escape_string($table) . " WHERE ID=" . abs($id), 
+				"SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM " . mysql_real_escape_string($table) . " WHERE ID=" . abs($id),
 				$DB_WE);
 		$tableID = $row['TableID'];
 		$oldPath = $row['Path'];
@@ -289,7 +289,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 			array_push($notMovedItems, $item);
 			return false;
 		}
-		
+
 		$version = new weVersions();
 		if (in_array($row['ContentType'], $version->contentTypes)) {
 			$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
@@ -308,9 +308,9 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 				$object->ParentID = $tempNewParentID;
 			}
 			$version->saveVersion($object);
-		
+
 		}
-		
+
 		// update table
 		$q = "UPDATE " . mysql_real_escape_string($table) . " SET ParentID=" . abs($parentID) . ", Path='" . mysql_real_escape_string($newPath) . "/" . mysql_real_escape_string($fileName) . "' WHERE ID=" . abs(
 				$id);
@@ -318,32 +318,32 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		$q = "UPDATE " . OBJECT_X_TABLE . $tableID . " SET OF_ParentID=" . abs($parentID) . ", OF_Path='" . mysql_real_escape_string($newPath) . "/" . mysql_real_escape_string($fileName) . "' WHERE OF_ID=" . abs(
 				$id);
 		$DB_WE->query($q);
-		
+
 		return true;
-	
+
 	}
-	
+
 	return false;
 
 }
 
 function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 {
-	
+
 	$DB_WE = new DB_WE();
 	$row = getHash("SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ".mysql_real_escape_string($table)." WHERE ID=".abs($id)."", $DB_WE);
-	
+
 	if (($_SESSION["user"]["ID"] == $row["CreatorID"]) || $_SESSION["perms"]["ADMINISTRATOR"]) { //	Owner or admin
 		return true;
 	}
-	
+
 	if ($row["RestrictOwners"]) { //	check which user - group has permission
-		
+
 
 		$userArray = makeArrayFromCSV($row["Owners"]);
-		
+
 		$_allowedGroup = false;
-		
+
 		//	check if usergroup is allowed
 		foreach ($_SESSION['user']['groups'] as $nr => $_userGroup) {
 			if (in_array($_userGroup, $userArray)) {
@@ -352,19 +352,19 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 			}
 		}
 		if (!in_array($_SESSION["user"]["ID"], $userArray) && !$_allowedGroup) { //	user is no allowed user.
-			
+
 
 			return false;
 		}
-		
+
 		//	user belongs to owners of document, check if he has only read access !!!
-		
+
 
 		if ($row["OwnersReadOnly"]) {
-			
+
 			$arr = unserialize($row["OwnersReadOnly"]);
 			if (is_array($arr)) {
-				
+
 				if (isset($arr[$_SESSION["user"]["ID"]]) && $arr[$_SESSION["user"]["ID"]]) { //	if user is readonly user -> no delete
 					return false;
 				} else { //	user NOT readonly and in restricted -> delete allowed
@@ -387,5 +387,3 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 	}
 	return true;
 }
-
-?>

@@ -83,7 +83,7 @@ class we_quicktimeDocument extends we_binaryDocument {
 			}
 			unset($attribs['sizingstyle']);
 		} else {$sizingstyle = false;}
-			
+
 		if ($sizingstyle){
 			$style_width = round($attribs["width"]/$sizingbase,6);
 			$style_height = round($attribs["height"]/$sizingbase,6);
@@ -91,7 +91,7 @@ class we_quicktimeDocument extends we_binaryDocument {
 				$newstyle = $attribs["style"];
 			} else {$newstyle="";}
 
-			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";"; 
+			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
 			$attribs["style"]= $newstyle;
 			unset($attribs['width']);
 			unset($attribs['height']);
@@ -211,7 +211,7 @@ class we_quicktimeDocument extends we_binaryDocument {
 				$_imgAtts["style"] = "margin:8px 18px;";
 				$_imgAttr['alt'] = "";
 				$_imgAttr['xml'] = $this->getElement("xml");
-	
+
 				if(isset($this->name)){
 					$_imgAttr['name'] = $this->name;
 				}
@@ -338,5 +338,3 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 
 }
-
-?>

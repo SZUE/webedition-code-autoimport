@@ -748,14 +748,14 @@ class weCustomerEIWizard{
 				$_importCharsetChooser = htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false,"onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",160,"defaultfont",false);
 				$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
-				
+
 
 
 				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), getPixel(10,10));
 				$fileformattable->setCol(1, 0, array("class" => "defaultfont"), $l_customer["csv_lineend"] . we_htmlElement::htmlBr() . $_file_encoding->getHtmlCode());
 				$fileformattable->setCol(2, 0, array("class" => "defaultfont"), $l_customer["import_charset"] . we_htmlElement::htmlBr() . $import_Charset);
 				//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
-				
+
 				$fileformattable->setColContent(3,0,$this->getHTMLChooser("csv_delimiter",$csv_delimiter,array(";"=>$l_customer["semicolon"],","=>$l_customer["comma"],":"=>$l_customer["colon"],"\\t"=>$l_customer["tab"]," "=>$l_customer["space"]),$l_customer["csv_delimiter"]));
 				$fileformattable->setColContent(4,0,$this->getHTMLChooser("csv_enclose",$csv_enclose,array("\""=>$l_customer["double_quote"],"'"=>$l_customer["single_quote"]),$l_customer["csv_enclose"]));
 
@@ -1955,5 +1955,3 @@ class weCustomerEIWizard{
 	}
 
 }
-
-?>

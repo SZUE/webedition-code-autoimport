@@ -19,21 +19,21 @@
  */
 
 class rpcGetCategoryCmd extends rpcCmd {
-	
+
 	function execute() {
 		$resp = new rpcResponse();
 		$_error = array();
 		// check for necessory params
 		if(!isset($_REQUEST['obj']) || $_REQUEST['obj']=="") {
 			$_error[] = "Missing field obj";
-		} 
+		}
 		if(!isset($_REQUEST['cats']) || $_REQUEST['cats']=="") {
 			$_error[] = "Missing field cats";
-		} 
+		}
 		if(isset($_REQUEST['part']) && $_REQUEST['part']=="table" && (!isset($_REQUEST['target']) || $_REQUEST['target']=="")) {
 			$_error[] = "Missing target for table";
-		} 
-		
+		}
+
 		if (count($_error) > 0) {
 			$resp->setData("error",$_error);
 		} else {
@@ -45,7 +45,7 @@ class rpcGetCategoryCmd extends rpcCmd {
 			$resp->setData("elementsById",
 				array($target => array("innerHTML" => addslashes($categories)))
 			);
-			
+
 		}
 		return $resp;
 	}
@@ -58,4 +58,3 @@ class rpcGetCategoryCmd extends rpcCmd {
 		return $cats->getTableRows();
 	}
 }
-?>

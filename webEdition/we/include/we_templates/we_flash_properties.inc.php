@@ -28,6 +28,3 @@ $wepos = weGetCookieVariable("but_weFlashProp");
 
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("weFlashProp","100%",$parts,20);
-
-
-?>

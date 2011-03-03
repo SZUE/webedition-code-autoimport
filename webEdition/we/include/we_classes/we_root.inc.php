@@ -568,12 +568,12 @@ function formTriggerDocument($isclass=false){
 		if ($isclass){
 			$textname = 'we_'.$this->Name.'_TriggerName';
 			$idname = 'we_'.$this->Name.'_DefaultTriggerID';
-			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : "";		
-	
+			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : "";
+
 		} else {
 			$textname = 'we_'.$this->Name.'_TriggerName';
 			$idname = 'we_'.$this->Name.'_TriggerID';
-			$myid = $this->TriggerID ? $this->TriggerID : "";		
+			$myid = $this->TriggerID ? $this->TriggerID : "";
 		}
 		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)");
@@ -722,7 +722,7 @@ function formTriggerDocument($isclass=false){
 	}
 
 
-	function save($resave=0,$skipHook=0){	
+	function save($resave=0,$skipHook=0){
 		return $this->we_save($resave,$skipHook);
 	}
 
@@ -762,8 +762,8 @@ function formTriggerDocument($isclass=false){
 		if($resave==0 && $this->ClassName!="we_class_folder"){
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
-		}	
-		
+		}
+
 		return $a;
 	}
 
@@ -861,7 +861,7 @@ function formTriggerDocument($isclass=false){
 	}
 
 	function i_setElementsFromHTTP(){
-		
+
 		// do not set REQUEST VARS into the document
 		if (isset($_REQUEST['we_cmd'][0])) {
 			if(		($_REQUEST['we_cmd'][0] == "switch_edit_page" && isset($_REQUEST['we_cmd'][3]))
@@ -1043,7 +1043,7 @@ function formTriggerDocument($isclass=false){
 		}
 		return false;
 	}
-	
+
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)) {
 			if(substr($this->Extension,0,1) == ".") {
@@ -1266,7 +1266,7 @@ function formTriggerDocument($isclass=false){
 				$return = array();
 				while ($this->DB_WE->next_record()) {
 					array_push($return,$this->DB_WE->f('ParentID'));
-				}			
+				}
 				return $return;
 			} else {
 				$query = 'SELECT ParentID FROM '.NAVIGATION_TABLE.' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID="'.abs($this->ID).'";';
@@ -1274,13 +1274,13 @@ function formTriggerDocument($isclass=false){
 				$return = array();
 				while ($this->DB_WE->next_record()) {
 					array_push($return,$this->DB_WE->f('ParentID'));
-				}			
+				}
 				return $return;
 			}
 		}
 		return array();
 	}
-	
+
 	function insertAtIndex(){
 
 	}
@@ -1309,7 +1309,3 @@ function formTriggerDocument($isclass=false){
 
 	}
 }
-
-
-
-?>

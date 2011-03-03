@@ -134,7 +134,7 @@ class XML_Export {
 			$out[0] .= sprintf($content_format, $DB_WE->f("Name"), $DB_WE->f("Type"), $DB_WE->f("DocumentTable"));
 			$db_tmp->query("SELECT * FROM ".CONTENT_TABLE." WHERE ID=".abs($DB_WE->f("CID")).";");
 
-			while ($db_tmp->next_record()) {		
+			while ($db_tmp->next_record()) {
 				foreach ($metadata as $field) {
 					if ($field["name"] == "Dat") {
 						$dat = $db_tmp->f($field["name"]);
@@ -296,7 +296,7 @@ class XML_Export {
 		$xml_out = '<?xml version="1.0" standalone="yes" ?>';
 		$xml_out.= $dtd."\n".$root."\n";
 
-		// add document and template nodes 
+		// add document and template nodes
 		$arr = $this->export_nodes($documents);
 		$xml_out.= $arr[0];
 
@@ -320,5 +320,3 @@ class XML_Export {
 	}
 
 }
-
-?>

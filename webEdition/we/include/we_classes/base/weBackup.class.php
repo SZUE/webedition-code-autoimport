@@ -62,7 +62,7 @@ class weBackup extends we_backup{
 	function weBackup($handle_options=array()){
 		global $_language;
 		$this->nl="\n";
-	
+
 		$this->header="<?xml version=\"1.0\" encoding=\"".$_language["charset"]."\" standalone=\"yes\"?>".$this->nl.
 					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">".$this->nl;
 		$this->footer=$this->nl."</webEdition>";
@@ -875,4 +875,3 @@ class weBackup extends we_backup{
 
 
 }
-?>

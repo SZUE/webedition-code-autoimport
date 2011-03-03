@@ -20,7 +20,7 @@
 
 class we_tab {
 	var $tab;
-	
+
 	function we_tab($href='#', $text, $status='TAB_NORMAL', $jscmd='', $attribs=array()) {
 		$class = $status == 'TAB_ACTIVE' ? "tabActive":"tabNormal";
 		$att = "";
@@ -53,12 +53,11 @@ class we_tab {
 					$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				}
 		}
-		
+
 	}
-	
+
 	function getHTML() {
 		return $this->tab;
 	}
-	
+
 }
-?>

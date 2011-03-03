@@ -122,9 +122,9 @@ class we_docSelector extends we_dirSelector {
 				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".abs($this->dir));
 				while ($_db->next_record()) {
 					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
-				}		
+				}
 			}
-			
+
 		}
 	}
 
@@ -778,7 +778,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 						$_selFields = substr($_selFields, 0, strlen($_selFields)-1);
 						$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . abs($result["ID"]), $this->db);
 					}
-					
+
 				} elseif ($result['ContentType'] == "folder") {
 					$this->db->query("SELECT ID, Text, IsFolder FROM " . mysql_real_escape_string($this->table) . " WHERE ParentID=".abs($this->id));
 					$folderFolders = array();
@@ -1129,4 +1129,3 @@ function previewFolder(id) {
 
 }
 
-?>

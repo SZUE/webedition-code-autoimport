@@ -22,4 +22,3 @@
 
     include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/" . "webEdition.php");
 
-?>

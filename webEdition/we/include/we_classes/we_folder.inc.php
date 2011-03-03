@@ -19,8 +19,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_root.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_root.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
 
 if (defined("CUSTOMER_FILTER_TABLE")) {
@@ -241,7 +241,7 @@ class we_folder extends we_root
 				  $this->IsClassFolder=0;
 				}
 			}
-			
+
 			if($this->ParentID !=0){
 				$this->DB_WE->query("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE IsNotEditable=1");
 				while($this->DB_WE->next_record()){
@@ -250,7 +250,7 @@ class we_folder extends we_root
 					}
 				}
 			}
-			
+
 		}
 		return true;
 	}
@@ -306,7 +306,7 @@ class we_folder extends we_root
 
 		// Change language of published documents first
 		$query = "UPDATE " . mysql_real_escape_string($this->Table) . " SET Language = '" . mysql_real_escape_string($this->Language) . "' WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
-		
+
 		if(!$DB_WE->query($query)) {
 			return false;
 		}
@@ -321,15 +321,15 @@ class we_folder extends we_root
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
-				
+
 				$DocumentObject[0]['Language'] = $this->Language;
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
-	
+
 				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
 				if(!$DB_WE2->query($query)) {
 					return false;
-	
+
 				}
 			}
 			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 1";
@@ -339,14 +339,14 @@ class we_folder extends we_root
 				$DocumentObject[0]['Language'] = $this->Language;
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
-	
+
 				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
 				if(!$DB_WE2->query($query)) {
-					return false;	
+					return false;
 				}
 			}
 		}
-		
+
 		// Sprache auch bei den einzelnen Objekten aendern
 		if($this->Table == OBJECT_FILES_TABLE){
 			// Klasse feststellen
@@ -355,19 +355,19 @@ class we_folder extends we_root
 			$q = "SELECT ID FROM ".OBJECT_TABLE." WHERE Path = '$ClassPath' ";
 			$cid = $pid = f($q, "ID",$DB_WE);
 			$_obxTable = OBJECT_X_TABLE.$cid;
-			
+
 			$query = "UPDATE " . mysql_real_escape_string($_obxTable) . " SET OF_Language = '" . mysql_real_escape_string($this->Language) . "' WHERE OF_Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' ";
-			
+
 			if(!$DB_WE->query($query)) {
 				return false;
 			}
-			
+
 		}
-		
+
 		return true;
 
 	}
-	
+
 	function changeTriggerIDRecursive() {
 
 		$DB_WE = new DB_WE;
@@ -377,7 +377,7 @@ class we_folder extends we_root
 
 		// Change TriggerID of published documents first
 		$query = "UPDATE " . mysql_real_escape_string($this->Table) . " SET TriggerID = '" . mysql_real_escape_string($this->TriggerID) . "' WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
-		
+
 		if(!$DB_WE->query($query)) {
 			return false;
 		}
@@ -392,15 +392,15 @@ class we_folder extends we_root
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
-				
+
 				$DocumentObject[0]['TriggerID'] = $this->TriggerID;
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
-	
+
 				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
 				if(!$DB_WE2->query($query)) {
 					return false;
-	
+
 				}
 			}
 			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 1";
@@ -410,14 +410,14 @@ class we_folder extends we_root
 				$DocumentObject[0]['TriggerID'] = $this->TriggerID;
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
-	
+
 				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
 				if(!$DB_WE2->query($query)) {
-					return false;	
+					return false;
 				}
 			}
 		}
-		
+
 		// TriggerID auch bei den einzelnen Objekten aendern
 		if($this->Table == OBJECT_FILES_TABLE){
 			// Klasse feststellen
@@ -426,15 +426,15 @@ class we_folder extends we_root
 			$q = "SELECT ID FROM ".OBJECT_TABLE." WHERE Path = '$ClassPath' ";
 			$cid = $pid = f($q, "ID",$DB_WE);
 			$_obxTable = OBJECT_X_TABLE.$cid;
-			
+
 			$query = "UPDATE " . mysql_real_escape_string($_obxTable) . " SET OF_TriggerID = '" . mysql_real_escape_string($this->TriggerID) . "' WHERE OF_Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' ";
-			
+
 			if(!$DB_WE->query($query)) {
 				return false;
 			}
-			
+
 		}
-		
+
 		return true;
 
 	}
@@ -487,7 +487,7 @@ class we_folder extends we_root
 			$this->ParentPath = id_to_path($this->ParentID,$this->Table,$this->DB_WE);
 
 		}
-		
+
 		$userCanChange = we_hasPerm("CHANGE_DOC_FOLDER_PATH") || ($this->CreatorID == $_SESSION["user"]["ID"]) || (!$this->ID);
 		if ($this->ID!=0 && $this->ParentID==0 && $this->ParentPath=='/' && defined('OBJECT_FILES_TABLE') && $this->Table== OBJECT_FILES_TABLE) {$userCanChange=false;}
 		$content = (!$userCanChange) ? ('<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">'.$this->Path.'</span></td></tr>') : '<table border="0" cellpadding="0" cellspacing="0">
@@ -510,7 +510,7 @@ class we_folder extends we_root
 		<tr>
 			<td colspan="3" class="defaultfont">'.$this->formTriggerDocument().'</td>
 		</tr>';
-		
+
 		if ($this->ID) {
 			$_disabled = false;
 			$_disabledNote = "";
@@ -522,16 +522,16 @@ class we_folder extends we_root
 		$content .='<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. htmlAlertAttentionBox($GLOBALS["l_we_class"]["grant_tid_expl"].$_disabledNote,2,388,false) .'</td><td>'.
 						$we_button->create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall( $GLOBALS["l_we_class"]["saveFirstMessage"], WE_MESSAGE_ERROR ) ."; } else {;we_cmd('changeTriggerIDRecursive','".$GLOBALS["we_transaction"]."');}",true,100,22,"","",$_disabled) . '</td></tr>
 					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>
-		
+
 		';
-		
-		
-	
+
+
+
 	}
-	
-$content .='	
+
+$content .='
 </table>
-'; 
+';
 		return $content;
 	}
 
@@ -702,14 +702,14 @@ $content .='
 	}
 
 	/**
-	 * Beseitigt #Bug 3705: sorgt dafür, das auch leere Dokumentenordner bei einem REbuild angelegt werden
+	 * Beseitigt #Bug 3705: sorgt dafï¿½r, das auch leere Dokumentenordner bei einem REbuild angelegt werden
 	 */
 	function we_rewrite(){
 		if(parent::we_rewrite()){
 			if($this->Table == FILE_TABLE){
 				$this->we_save(1);
 			} else {return true;}
-		
+
 		} else {
 			return false;
 		};
@@ -723,5 +723,3 @@ $content .='
 	}
 
 }
-
-?>

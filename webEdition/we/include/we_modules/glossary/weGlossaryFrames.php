@@ -43,232 +43,232 @@ class weGlossaryFrames extends weModuleFrames {
 	var $_text_size = 75;
 	var $_width_size = 535;
 
-	
+
 	function weGlossaryFrames() {
-		
+
 		$this->weModuleFrames(WE_GLOSSARY_MODULE_PATH."edit_glossary_frameset.php");
-		
+
 		$this->Tree = new weGlossaryTree();
 		$this->View = new weGlossaryView(WE_GLOSSARY_MODULE_PATH."edit_glossary_frameset.php","top.content");
-		
+
 		$this->setupTree(GLOSSARY_TABLE,"top.content","top.content.resize.left.tree","top.content.cmd");
-		
+
 		$this->module="glossary";
-		
+
 	}
 
-	
+
 	function getHTML($what) {
 
 		switch($what){
-			
+
 			case "frameset":
 				print $this->getHTMLFrameset();
 				break;
-				
+
 			case "header":
 				print $this->getHTMLHeader();
 				break;
-				
+
 			case "resize":
 				print $this->getHTMLResize();
 				break;
-				
+
 			case "left":
 				print $this->getHTMLLeft();
 				break;
-				
+
 			case "right":
 				print $this->getHTMLRight();
 				break;
-				
+
 			case "editor":
 				print $this->getHTMLEditor();
 				break;
-				
+
 			case "edheader":
 				print $this->getHTMLEditorHeader();
 				break;
-				
+
 			case "edbody":
 				print $this->getHTMLEditorBody();
 				break;
-				
+
 			case "edfooter":
 				print $this->getHTMLEditorFooter();
 				break;
-				
+
 			case "cmd":
 				print $this->getHTMLCmd();
 				break;
-				
+
 			case "treeheader":
 				print $this->getHTMLTreeHeader();
 				break;
-				
+
 			case "treefooter":
 				print $this->getHTMLTreeFooter();
 				break;
-				
+
 			default:
 				error_log(__FILE__ . " unknown reference: $what");
 		}
 	}
 
-	
+
 	function getHTMLFrameset() {
-		
+
 		return weModuleFrames::getHTMLFrameset();
-		
+
 	}
-	
-	
+
+
 	function getJSCmdCode() {
-		
+
 		return $this->View->getJSTop() . we_htmlElement::jsElement($this->Tree->getJSMakeNewEntry());
-		
+
 	}
-	
-	
+
+
 	function getHTMLEditorHeader() {
-		
+
 		if(isset($_REQUEST['home']) && $_REQUEST["home"]) {
 			return weGlossaryFrameEditorHome::Header($this);
-			
+
 		}
-		
+
 		if(isset($_REQUEST['cmd'])) {
 			switch($_REQUEST['cmd']) {
-				
+
 				// Folder View
 				case 'view_folder':
 					return weGlossaryFrameEditorFolder::Header($this);
 					break;
-				
+
 				// Type View
 				case 'view_type':
 					return weGlossaryFrameEditorType::Header($this);
 					break;
-				
+
 				// Exception View
 				case 'view_exception':
 				case 'save_exception':
 					return weGlossaryFrameEditorException::Header($this);
 					break;
-				
+
 				// Item View
 				default:
 					return weGlossaryFrameEditorItem::Header($this);
 					break;
-					
+
 			}
-			
+
 			if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
-				
+
 			}
-			
+
 		} else {
 			return weGlossaryFrameEditorItem::Header($this);
-			
+
 		}
-		
+
 	}
-		
-	
-	
+
+
+
 	function getHTMLEditorBody() {
-		
+
 		if(isset($_REQUEST['home']) && $_REQUEST["home"]) {
 			return weGlossaryFrameEditorHome::Body($this);
-			
+
 		}
-		
+
 		if(isset($_REQUEST['cmd'])) {
 			switch($_REQUEST['cmd']) {
-				
+
 				// Folder View
 				case 'view_folder':
 					return weGlossaryFrameEditorFolder::Body($this);
 					break;
-				
+
 				// Type View
 				case 'view_type':
 					return weGlossaryFrameEditorType::Body($this);
 					break;
-				
+
 				// Exception View
 				case 'view_exception':
 				case 'save_exception':
 					return weGlossaryFrameEditorException::Body($this);
 					break;
-				
+
 				// Item View
 				default:
 					return weGlossaryFrameEditorItem::Body($this);
 					break;
-					
+
 			}
-			
+
 			if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
-				
+
 			}
-			
+
 		} else {
 			return weGlossaryFrameEditorItem::Body($this);
-			
+
 		}
 
 	}
-	
-	
+
+
 	function getHTMLEditorFooter() {
 
 		if(isset($_REQUEST["home"])){
 			return weGlossaryFrameEditorHome::Footer($this);
-			
+
 		}
-		
+
 		if(isset($_REQUEST['cmd'])) {
 			switch($_REQUEST['cmd']) {
-				
+
 				// Folder View
 				case 'view_folder':
 					return weGlossaryFrameEditorFolder::Footer($this);
 					break;
-				
+
 				// Type View
 				case 'view_type':
 					return weGlossaryFrameEditorType::Footer($this);
 					break;
-				
+
 				// Exception View
 				case 'view_exception':
 				case 'save_exception':
 					return weGlossaryFrameEditorException::Footer($this);
 					break;
-				
+
 				// Item View
 				default:
 					return weGlossaryFrameEditorItem::Footer($this);
 					break;
-					
+
 			}
-			
+
 			if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
-				
+
 			}
-			
+
 		} else {
 			return weGlossaryFrameEditorItem::Footer($this);
-			
+
 		}
 
 	}
-	
-	
+
+
 	function getHTMLLeft(){
 
 		$frameset=new we_htmlFrameset(array("framespacing"=>"0","border"=>"0","frameborder"=>"no"));
@@ -290,8 +290,8 @@ class weGlossaryFrames extends weModuleFrames {
 	function getHTMLTreeHeader(){
 		return "";
 	}
-	
-	
+
+
 	function getHTMLTreeFooter(){
 
 		$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>"/webEdition/images/edit/editfooterback.gif","marginwidth"=>"5","marginheight"=>"0","leftmargin"=>"5","topmargin"=>"0"),
@@ -300,8 +300,8 @@ class weGlossaryFrames extends weModuleFrames {
 
 		return $this->getHTMLDocument($body);
 	}
-	
-	
+
+
 	function getHTMLCmd(){
 		$out="";
 
@@ -335,10 +335,8 @@ class weGlossaryFrames extends weModuleFrames {
 		);
 
 		return $this->getHTMLDocument($out);
-		
+
 	}
-	
+
 
 }
-
-?>

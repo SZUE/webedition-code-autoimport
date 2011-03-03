@@ -29,4 +29,3 @@ header("Content-Type: ".$we_doc->getElement("type"));
 $dataPath = $we_doc->getElement("data");
 readfile($dataPath);
 
-?>

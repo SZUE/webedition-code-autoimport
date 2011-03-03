@@ -1519,4 +1519,3 @@ class we_backup {
 	}
 
 }
-?>

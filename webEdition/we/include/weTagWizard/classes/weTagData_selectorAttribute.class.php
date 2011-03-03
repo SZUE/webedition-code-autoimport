@@ -41,10 +41,10 @@ class weTagData_selectorAttribute extends weTagDataAttribute
 	 */
 	function weTagData_selectorAttribute($id, $name, $table, $selectable, $required = false, $module = '')
 	{
-		
+
 		$this->Table = $table;
 		$this->Selectable = $selectable;
-		
+
 		parent::weTagDataAttribute($id, $name, $required, $module);
 	}
 
@@ -53,36 +53,36 @@ class weTagData_selectorAttribute extends weTagDataAttribute
 	 */
 	function getCodeForTagWizard()
 	{
-		
+
 		global $we_button;
-		
+
 		$weCmd = 'openDocselector';
-		
+
 		if ($this->Selectable == 'folder') {
 			$weCmd = 'openDirselector';
 		}
-		
+
 		if ($this->Table == CATEGORY_TABLE) {
 			$weCmd = 'openCatselector';
 			$this->Selectable = '';
 		}
-		
+
 		if ($this->Table == NAVIGATION_TABLE) {
 			$weCmd = 'openSelector';
 		}
-		
+
 		$input = we_htmlElement::htmlInput(
 				array(
-					
-						'name' => $this->Name, 
-						'value' => $this->Value, 
-						'id' => $this->getIdName(), 
+
+						'name' => $this->Name,
+						'value' => $this->Value,
+						'id' => $this->getIdName(),
 						'class' => 'wetextinput'
 				));
 		$button = $we_button->create_button(
-				"select", 
+				"select",
 				"javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "', 'document.getElementById(\\'" . $this->getIdName() . "\\').value', '', '', '" . session_id() . "', '', '" . $this->Selectable . "')");
-		
+
 		return '
 					<table class="attribute">
 					<tr>
@@ -94,4 +94,3 @@ class weTagData_selectorAttribute extends weTagDataAttribute
 	}
 }
 
-?>

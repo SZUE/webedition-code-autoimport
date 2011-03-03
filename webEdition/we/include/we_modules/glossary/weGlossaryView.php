@@ -220,7 +220,7 @@ class weGlossaryView {
 
 	function getJSTop() {
 		global $l_glossary;
-		
+
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
@@ -234,7 +234,7 @@ class weGlossaryView {
 			var activ_tab = 1;
 			var hot = 0;
 			var scrollToVal = 0;
-			
+
 			function setHot() {
 				hot = "1";
 			}
@@ -250,13 +250,13 @@ class weGlossaryView {
 					}
 				}
 			}
-			
+
 			parent.document.title = "'.$title.'";
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				
+
 				if(hot == "1" && arguments[0] != "save_glossary") {
 					if(confirm("'.$l_glossary["save_changed_glossary"].'")) {
 						arguments[0] = "save_glossary";
@@ -398,7 +398,7 @@ class weGlossaryView {
 					}
 				}
 			}
-			
+
 			function we_cmd() {
 				var args = "";
 				var url = "'.WEBEDITION_DIR.'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -437,7 +437,7 @@ class weGlossaryView {
 					}
 				}
 			}
-			
+
 			function we_cmd(){
 				var args = "";
 				var url = "'.$this->FrameSet.'?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -581,11 +581,11 @@ class weGlossaryView {
 					$language = substr($_REQUEST['cmdid'], 0, 5);
 
 					weGlossary::editException($language, $_REQUEST['Exception']);
-					
+
 					print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall($GLOBALS["l_glossary"]["save_ok"], WE_MESSAGE_NOTICE)
 						);
-					
+
 					break;
 
 				case "save_glossary":
@@ -594,7 +594,7 @@ class weGlossaryView {
 
 						weGlossary::editException($language, $_REQUEST['Exception']);
 						break;
-					}					
+					}
 					$this->Glossary->Text = $_REQUEST[$_REQUEST['Type']]['Text'];
 					if($this->Glossary->Type != "foreignword") {
 						$this->Glossary->Title = $_REQUEST[$_REQUEST['Type']]['Title'];
@@ -621,7 +621,7 @@ class weGlossaryView {
 						);
 						break;
 					}
-					
+
 					if($this->Glossary->checkFieldText($this->Glossary->Title)){
 						print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall($GLOBALS["l_glossary"]["title_notValid"], WE_MESSAGE_ERROR)
@@ -647,50 +647,50 @@ class weGlossaryView {
 						);
 						break;
 					}
-					
-					
+
+
 					if($this->Glossary->ID != 0) {
 						$StateBefore = f("SELECT Published FROM " . GLOSSARY_TABLE . " WHERE ID = " . abs($this->Glossary->ID), "Published", new DB_WE());
-						
+
 					} else {
 						$StateBefore = 0;
-						
+
 					}
-					
-					
+
+
 					$isNew = $this->Glossary->ID==0;
-								
+
 	                if($this->Glossary->save()) {
-	                	
+
 	                	$this->Glossary->Text = htmlentities($this->Glossary->Text,ENT_QUOTES);
 						$this->Glossary->Title = htmlentities($this->Glossary->Title,ENT_QUOTES);
-					
+
 						if($isNew) {
 							$js = $this->TopFrame . '.makeNewEntry(\''.$this->Glossary->Icon.'\',\''.$this->Glossary->ID.'\',\''.$this->Glossary->Language.'_'.$this->Glossary->Type.'\',\''.$this->Glossary->Text.'\',0,\''.($this->Glossary->IsFolder ? 'folder' : 'item').'\',\''. GLOSSARY_TABLE .'\',' . ($this->Glossary->Published>0?1:0) . ');
 								'. $this->TopFrame.'.drawTree();';
 						} else {
 							$js = $this->TopFrame.'.updateEntry('.$this->Glossary->ID.',"'.$this->Glossary->Text.'","'.$this->Glossary->Language.'_'.$this->Glossary->Type.'",' . ($this->Glossary->Published>0?1:0) . ');'."\n";
 						}
-						
+
 						$this->Glossary->Text = html_entity_decode($this->Glossary->Text,ENT_QUOTES);
 						$this->Glossary->Title = html_entity_decode($this->Glossary->Title,ENT_QUOTES);
-						
+
 						$message = "";
 						// Replacment of item is activated
 						if($StateBefore == 0 && $_REQUEST['Published']=="1") {
 							$message .= sprintf($GLOBALS['l_glossary']["replace_activated"], $this->Glossary->Text);
 							$message .= "\\n";
-						
+
 						// Replacement of item is deactivated
 						} else if($StateBefore > 0 && $_REQUEST['Published']=="0") {
 							$message .= sprintf($GLOBALS['l_glossary']["replace_deactivated"], $this->Glossary->Text);
 							$message .= "\\n";
-							
+
 						}
 						$message .= sprintf($GLOBALS['l_glossary']["item_saved"], $this->Glossary->Text);
 
 						print we_htmlElement::jsElement(
-							$js . 
+							$js .
 							we_message_reporting::getShowMessageCall($message, WE_MESSAGE_NOTICE) . '
 							if(top.makeNewEntry==1) {
 								'.$this->TopFrame . '.we_cmd("new_glossary_' . $this->Glossary->Type . '", "' . $this->Glossary->Language . '");
@@ -803,5 +803,3 @@ class weGlossaryView {
 
 
 }
-
-?>

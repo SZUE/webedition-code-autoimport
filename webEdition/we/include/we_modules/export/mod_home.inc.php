@@ -31,4 +31,3 @@ $content = 	$we_button->create_button("new_export", "javascript:top.opener.top.w
 			$we_button->create_button("new_export_group", "javascript:top.opener.top.we_cmd('new_export_group');", true, -1, -1, "", "", !we_hasPerm("NEW_EXPORT")) . getPixel(2,14);
 
 $modimage = "export.gif";
-?>

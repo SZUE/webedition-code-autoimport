@@ -82,7 +82,7 @@
 			"handle_navigation"=>0,
 			"navigation_path"=>0,
 			"handle_thumbnails"=>0,
-			
+
 			"change_encoding"=>0,
 			"xml_encoding"=>'',
 			"target_encoding"=>'',
@@ -151,7 +151,7 @@
 				case "weNavigation": return NAVIGATION_TABLE;
 				case "weNavigationRule": return NAVIGATION_RULE_TABLE;
 				case "weThumbnail": return THUMBNAILS_TABLE;
-				case "folder": 
+				case "folder":
 					if(!empty($table)) {
 						return $table;
 					}
@@ -373,9 +373,9 @@
 		}
 
 		function isBinary() {
-			
+
 		}
-		
+
 
 		function saveObject(&$object){
 			if(is_object($object)){
@@ -383,29 +383,27 @@
 				if(in_array("savebinarydata",get_class_methods(get_class($object)))) {
 					$object->savebinarydata();
 				}
-				 
+
 				if($object->ClassName=='we_docTypes') {
-					$object->we_save_exim();					
+					$object->we_save_exim();
 				} else {
 					$GLOBALS["we_doc"]=$object;
 					if(in_array("we_save",get_class_methods(get_class($object)))){
 						$object->we_save();
 					}
-					
+
 					if(in_array("we_publish",get_class_methods(get_class($object)))){
 						$object->we_publish();
 					}
-					
+
 					if(in_array("savebinarydata",get_class_methods(get_class($object)))) {
 						$object->setElement("data", "");
 					}
-				 
-					
-					
+
+
+
 				}
 			}
 		}
 
 	}
-
-?>

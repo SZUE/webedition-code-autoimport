@@ -3088,5 +3088,3 @@ function mapPermissions() {
 		return $out;
 	}
 }
-
-?>

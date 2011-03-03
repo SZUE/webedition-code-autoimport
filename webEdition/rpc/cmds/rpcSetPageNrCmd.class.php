@@ -30,7 +30,5 @@ class rpcSetPageNrCmd  extends rpcCmd {
 		$resp = new rpcResponse();
     	return $resp;
 	}
-	
-}
 
-?>
+}

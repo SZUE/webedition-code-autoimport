@@ -31,11 +31,11 @@
 
 class we_xhtmlConverter {
 
-	
+
 	function we_xhtmlConverter(){
-		exit( "Do not call this function directly! This is a static class!!!" );	
+		exit( "Do not call this function directly! This is a static class!!!" );
 	}
-	
+
 	/**
 	 * @return string
 	 * @param string $code
@@ -43,11 +43,11 @@ class we_xhtmlConverter {
 	 * @desc parse and convert HTML source to html4 or xhtml
 	*/
 	function correct_HTML_source($code,$xml=false) {
-		
+
 		// convert <?tags to  be sure that the following regex will work correct
 		$code = str_replace("/<?","WE##[?",$code);
 		$code = str_replace("/?>","WE##?]",$code);
-		
+
 		// find the tags and process them
 		$code = preg_replace ("/<([^> ]+)([^>]*)>/e","we_xhtmlConverter::_corrTag('\\1','\\2',$xml)", $code);
 
@@ -55,21 +55,21 @@ class we_xhtmlConverter {
 		$code = we_xhtmlConverter::_correctListTags($code,"ul");
 		// correct wrong <ol> Tags
 		$code = we_xhtmlConverter::_correctListTags($code,"ol");
-		
+
 		// convert back
 		$code = str_replace("WE##[?","/<?",$code);
 		$code = str_replace("WE##?]","/?>",$code);
-		
-		
+
+
 		return $code;
-		
+
 	}
-	
-	
+
+
 	function _correctListTags($code,$name="ul"){
 		while(eregi("</li>[ \n\r\t]*<$name",$code,$regs)){
 			$repl = $regs[0];
-			
+
 			$pos = strpos($code,$repl);
 			// suche ul endtag
 			$posULStartTag = strpos($code,"<$name",$pos+1);
@@ -87,8 +87,8 @@ class we_xhtmlConverter {
 				$endtagcount --;
 			}
 			$code = ($pos ? substr($code,0,$pos) : "") . substr($code,$pos+5,($posULEndTag - $pos)) . "</li>" . ((strlen($code)-($posULEndTag+5)) ? substr($code,$posULEndTag+5,strlen($code)-($posULEndTag+5)) : "");
-			
-			
+
+
 		}
 		return $code;
 	}
@@ -104,7 +104,7 @@ class we_xhtmlConverter {
 		// only if attribs exists
 		if(strlen($attr)){
 			$attr = stripslashes(trim($attr));
-			
+
 			//remove existing slash at the end
 			$l =  strlen($attr);
 			if($attr[$l-1] == "/"){
@@ -114,7 +114,7 @@ class we_xhtmlConverter {
 					$attr = trim(substr($attr,0,$l-2));
 				}
 			}
-			// correct attribs in the form of attrib='attrib'			
+			// correct attribs in the form of attrib='attrib'
 			$attr = preg_replace("/([^> ]+)='([^']+)'/e", "we_xhtmlConverter::_corrAttr('\\1','\\2')", $attr);
 			// replace "=" within attribs to  be sure that the following regex will work correct
 			while(eregi(" ?= ?\"[^\"]*=[^\"]*\"",$attr)){
@@ -128,13 +128,13 @@ class we_xhtmlConverter {
 		}
 		//correct tagname to lowercase
 		$tagname = trim(strtolower($tagname));
-		
+
 		if($tagname == "img"){
 			if(!ereg('alt="',$attr)){
-				$attr .= ' alt=""';	
+				$attr .= ' alt=""';
 			}
 		}
-		
+
 		// detect if a slash should be added
 		$slash = "";
 		if($xml){
@@ -147,13 +147,13 @@ class we_xhtmlConverter {
 				case "hr":
 					$slash = " /";
 					break;
-					
+
 			}
 		}
 		// return the tag
 		return '<' . $tagname . $attr . $slash . '>';
 	}
-	
+
 	/**
 	 * @return string
 	 * @param string $key
@@ -164,7 +164,5 @@ class we_xhtmlConverter {
 		// correct an attrib
 		return  strtolower($key) . "=" . '"' . str_replace("\"","&quot;",$val) . '"';
 	}
-	
-}
 
-?>
+}

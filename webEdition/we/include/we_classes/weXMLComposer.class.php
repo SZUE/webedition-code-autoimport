@@ -23,18 +23,18 @@
 
 
 	class weXMLComposer{
-		
-		function we_xmlElement($name,$content="",$attributes=null){																											 
+
+		function we_xmlElement($name,$content="",$attributes=null){
 			$element=new we_baseElement($name,true,(isset($attributes) && is_array($attributes) ? $attributes : null),$content);
 			return $element->getHtmlCode($element);
 
 		}
-		
-		
-		/* Function creates new xml element. 
-		* 
+
+
+		/* Function creates new xml element.
+		*
 		* element - [name] - element name
-		*				 [attributes] - atributes array in form arry["attribute_name"]=attribute_value 
+		*				 [attributes] - atributes array in form arry["attribute_name"]=attribute_value
 		*				 [content] - if array childs otherwise some content
 		*
 		*/
@@ -42,7 +42,7 @@
 							$out="";
 							$content="";
 							foreach($elements as $element){
-								if(is_array($element["content"])){									
+								if(is_array($element["content"])){
 									$content=weXMLComposer::buildXMLElements($element["content"]);
 								}
 								else $content=$element["content"];
@@ -50,27 +50,25 @@
 								$out.=$element->getHtmlCode($element);
 							}
 							return $out;
-		}		
-		
+		}
+
 		function buildAttributesFromArray($attribs) {
-			
+
 			if(!is_array($attribs)){
 				return '';
 			}
 			$out = '';
-			foreach($attribs as $k=>$v){ 
+			foreach($attribs as $k=>$v){
 				if($v==null && $v!=""){
-					$out.=' '.$k; 
+					$out.=' '.$k;
 				} else {
 					$out.=' '.$k.'="'.$v.'"';
 				}
 			}
-			
-			return $out;
-			
-		}
-		
-	
-	}
 
-?>
+			return $out;
+
+		}
+
+
+	}

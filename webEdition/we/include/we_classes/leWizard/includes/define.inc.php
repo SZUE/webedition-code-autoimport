@@ -29,5 +29,3 @@ define("LE_WIZARDSTEP_FATAL_ERROR", 3);
 
 // repeat step - download files
 define("LE_WIZARDSTEP_ITERATE", 4);
-
-?>

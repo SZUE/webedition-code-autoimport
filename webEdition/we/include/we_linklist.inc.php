@@ -41,9 +41,9 @@ class we_linklist
 	var $rollAttribs = array();
 
 	var $cache = array();
-	
+
 	var $hidedirindex=false;
-	
+
 	var $objectseourls=false;
 
 	function we_linklist($sString,$hidedirindex=false,$objectseourls=false)
@@ -74,18 +74,18 @@ class we_linklist
 		$link = "";
 		if ($this->getType($nr) == "int") {
 			$link = $this->getUrl($nr);
-		} else 
+		} else
 			if ($this->getType($nr) == "ext") {
 				$link = $this->getHref($nr);
-			} else 
+			} else
 				if ($this->getType($nr) == "mail") {
 					$link = $this->getHref($nr);
-				} else 
+				} else
 					if ($this->getType($nr) == "obj") {
 						$link = getHrefForObject(
-								$this->getObjID($nr), 
-								$GLOBALS["WE_MAIN_DOC"]->ParentID, 
-								$GLOBALS["WE_MAIN_DOC"]->Path, 
+								$this->getObjID($nr),
+								$GLOBALS["WE_MAIN_DOC"]->ParentID,
+								$GLOBALS["WE_MAIN_DOC"]->Path,
 								$this->db,
 								$this->hidedirindex,
 								$this->objectseourls);
@@ -134,12 +134,12 @@ class we_linklist
 		$text = $this->getText($nr);  // #3636
 		$jswinAttribs = $this->getJsWinAttribs($nr);
 		$js = "var we_winOpts = '';";
-		
+
 		$hidedirindex = $this->getHidedirindex($nr);
 		$objectseourls = $this->getObjectseourls($nr);
-		
+
 		$lattribs = makeArrayFromAttribs($attribs);
-		
+
 		$lattribs['target'] = $target;
 		$lattribs['title'] = $title;
 		$lattribs['accesskey'] = $accesskey;
@@ -147,26 +147,26 @@ class we_linklist
 		$lattribs['lang'] = $lang;
 		$lattribs['hreflang'] = $hreflang;
 		$lattribs['rel'] = $rel;
-		$lattribs['rev'] = $rev;		
+		$lattribs['rev'] = $rev;
 		$lattribs = removeEmptyAttribs($lattribs, array());
-		
+
 		$rollOverAttribsArr = $this->rollAttribs;
-		
+
 		if (is_array($tagAttr)) {
 			foreach ($tagAttr as $n => $v) {
 				$lattribs[$n] = $v;
 			}
 		}
-		
+
 		// overwrite rolloverattribs
 		foreach ($rollOverAttribsArr as $n => $v) {
 			$lattribs[$n] = $v;
 		}
-		
+
 		if (isset($jswinAttribs) && is_array($jswinAttribs) && isset($jswinAttribs["jswin"])) { //popUp
 			if ($jswinAttribs["jscenter"] && $jswinAttribs["jswidth"] && $jswinAttribs["jsheight"]) {
 				$js .= 'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
-			} else 
+			} else
 				if ($jswinAttribs["jsposx"] != "" || $jswinAttribs["jsposy"] != "") {
 					if ($jswinAttribs["jsposx"] != "") {
 						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';';
@@ -212,11 +212,11 @@ class we_linklist
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=no\';';
 			}
 			$foo = $js . "var we_win = window.open('','" . "we_ll_" . $nr . "',we_winOpts);";
-			
+
 			$lattribs = removeAttribs($lattribs, array(
 				'name', 'target', 'href', 'onClick', 'onclick'
 			));
-			
+
 			$lattribs['target'] = 'we_ll_' . $nr;
 			$lattribs['onclick'] = $foo;
 		} else { //  no popUp
@@ -225,11 +225,11 @@ class we_linklist
 			));
 		}
 		$lattribs['href'] = $link . str_replace('&', '&amp;', $params . $anchor);
-		
+
 		if (isset($lattribs['only'])) {
 			return $lattribs[$lattribs['only']];
 		}
-		
+
 		return $this->rollScript . getHtmlTag('a', $lattribs, '', false, true);
 	}
 
@@ -249,11 +249,11 @@ class we_linklist
 			if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 				$row["Path"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
 			}
-		
+
 		}
-		
+
 		return (isset($row["Path"]) ? $row["Path"] : '') . ($params ? ("?" . $params) : "");
-	
+
 	}
 
 	function getImageID($nr)
@@ -327,12 +327,12 @@ class we_linklist
 	{
 		return (isset($this->listArray[$nr]["hreflang"]) ? $this->listArray[$nr]["hreflang"] : "");
 	}
-	
+
 	function getHidedirindex($nr)
 	{
 		return (isset($this->listArray[$nr]["hidedirindex"]) ? $this->listArray[$nr]["hidedirindex"] : "");
 	}
-	
+
 	function getObjectseourls($nr)
 	{
 		return (isset($this->listArray[$nr]["objectseourls"]) ? $this->listArray[$nr]["objectseourls"] : "");
@@ -525,26 +525,26 @@ class we_linklist
 			if ((!($starttagpos === false)) && ($starttagpos < $endtagpos)) {
 				$ipos = $starttagpos;
 				$starttag++;
-			} else 
+			} else
 				if (!($endtagpos === false)) {
 					$starttag--;
 					$ipos = $endtagpos;
-				} else 
+				} else
 					if (!($starttagpos === false)) {
 						$ipos = $starttagpos;
 					}
 		}
 		$end = $endtagpos ? $endtagpos + 15 : strlen($content);
-		
+
 		$search = substr($content, $start, $end - $start);
-		
+
 		$repl = str_replace("we_:_linklist", "we__:__linklist", $search);
 		$repl = str_replace("<we_:_", "<we_#:#_", $repl);
 		$repl = str_replace("</we_:_", "</we_#:#_", $repl);
 		$repl = str_replace("we__:__linklist", "we:linklist", $repl);
-		
+
 		return str_replace($search, $repl, $content);
-	
+
 	}
 
 	function getHTML($editmode, $attribs, $content, $docName)
@@ -555,12 +555,12 @@ class we_linklist
 			$limit = $attribs['limit'];
 		}
 		$out = "";
-		
+
 		if (!isset($GLOBALS["WE_IS_DYN"])) {
 			$we_button = new we_button();
 		}
 		$tp = new we_tagParser();
-		
+
 		if (!(strpos($content, '<we:') === false)) {
 			$content = str_replace("<we:target", "<we_:_target", $content);
 			$content = str_replace("<we:field", "<we_:_field", $content);
@@ -573,21 +573,21 @@ class we_linklist
 			$content = str_replace("</we:ifNotSelf", "</we_:_ifNotSelf", $content);
 			$content = str_replace("</we:prelink", "</we_:_prelink", $content);
 			$content = str_replace("</we:postlink", "</we_:_postlink", $content);
-		
+
 		}
-		
+
 		$ipos = strpos($content, '<we_:_linklist');
 		while (!($ipos === false)) {
 			$content = $this->correctContent($content);
 			$ipos = strpos($content, '<we_:_linklist');
 		}
-		
+
 		$tags = $tp->getAllTags($content);
 		$names = implode(",", $tp->getNames($tags));
 		$tp->parseTags($tags, $content, '<we_:_linklistRef>', array(
 			'we:ifVar'
 		));
-		
+
 		if (!$editmode) {
 			$show = $this->listArray;
 			if ($limit > 0 && $this->listArray > $limit) {
@@ -601,67 +601,67 @@ class we_linklist
 			if (!$editmode && $j > $show) {
 				break;
 			}
-			
+
 			if (abs($i) || $i == "0") {
 				$foo = $content;
-				
+
 				$link = $this->getLink($i);
 				$linkcontent = $this->getLinkContent($i);
 				if ($linkcontent) {
-					
+
 					$buts = "";
-					
+
 					if ($editmode) {
 						// Create button object
 						$we_button = new we_button();
-						
+
 						// Create buttons
 						$disabled = false;
 						if ($limit > 0 && $this->length() >= $limit) {
 							$disabled = true;
 						}
 						$plusbut = $we_button->create_button(
-								"image:btn_add_link", 
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $attribs["name"] . "','" . $i . "')", 
-								true, 
-								100, 
-								22, 
-								"", 
-								"", 
+								"image:btn_add_link",
+								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $attribs["name"] . "','" . $i . "')",
+								true,
+								100,
+								22,
+								"",
+								"",
 								$disabled);
 						$upbut = $we_button->create_button(
-								"image:btn_direction_up", 
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $attribs["name"] . "','" . $i . "')", 
-								true, 
-								-1, 
-								-1, 
-								"", 
-								"", 
+								"image:btn_direction_up",
+								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $attribs["name"] . "','" . $i . "')",
+								true,
+								-1,
+								-1,
+								"",
+								"",
 								!($i > 0));
 						$downbut = $we_button->create_button(
-								"image:btn_direction_down", 
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $attribs["name"] . "','" . $i . "')", 
-								true, 
-								-1, 
-								-1, 
-								"", 
-								"", 
+								"image:btn_direction_down",
+								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $attribs["name"] . "','" . $i . "')",
+								true,
+								-1,
+								-1,
+								"",
+								"",
 								!($i < (sizeof($this->listArray) - 1)));
 						$editbut = $we_button->create_button(
-								"image:btn_edit_link", 
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $attribs["name"] . "','" . $i . "')", 
+								"image:btn_edit_link",
+								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $attribs["name"] . "','" . $i . "')",
 								true);
 						$trashbut = $we_button->create_button(
-								"image:btn_function_trash", 
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $attribs["name"] . "','" . $i . "','" . $names . "')", 
+								"image:btn_function_trash",
+								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $attribs["name"] . "','" . $i . "','" . $names . "')",
 								true);
 						$buts = $we_button->create_button_table(
 								array(
 									$plusbut, $upbut, $downbut, $editbut, $trashbut
-								), 
+								),
 								5);
 					}
-					
+
 					if ($i == (sizeof($this->listArray) - 1)) {
 						$foo = eregi_replace('<we_:_postlink>.*</we_:_postlink>', '', $foo);
 					} else {
@@ -674,33 +674,33 @@ class we_linklist
 						$foo = str_replace('<we_:_prelink>', '', $foo);
 						$foo = str_replace('</we_:_prelink>', '', $foo);
 					}
-					
+
 					//	handle we:ifPosition - if available
 					if (strpos($foo, 'position') || strpos($foo, 'ifPosition') || strpos(
-							$foo, 
+							$foo,
 							'ifNotPosition')) {
 						$foo = '<?php $GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\'] = array(\'size\'=> ' . sizeof(
 								$this->listArray) . ',\'position\'=>' . ($i + 1) . '); ?>' . $foo . '<?php unset($GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\']); ?>';
 					}
 					//	handle we:ifPosition - if available
-					
+
 
 					$lnr = $this->listArray[$i]["nr"];
-					
+
 					$foo = eregi_replace('<we_:_target */? *>', $this->getTarget($i), $foo);
 					$foo = eregi_replace('<we_:_field */? *>', $linkcontent, $foo);
 					$foo = eregi_replace('<we_:_path */? *>', $link . $this->getParams($i), $foo);
 					$foo = str_replace(
-							'<we_:_ifSelf>', 
-							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink($i) . '"): ?>', 
+							'<we_:_ifSelf>',
+							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink($i) . '"): ?>',
 							$foo);
 					$foo = str_replace('</we_:_ifSelf>', '<?php endif ?>', $foo);
 					$foo = str_replace(
-							'<we_:_ifNotSelf>', 
-							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink($i) . '"): ?>', 
+							'<we_:_ifNotSelf>',
+							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink($i) . '"): ?>',
 							$foo);
 					$foo = str_replace('</we_:_ifNotSelf>', '<?php endif ?>', $foo);
-					
+
 					if (!isset($this->listArray[$i]["nr"])) {
 						$nr = $i;
 						$this->listArray[$i]["nr"] = $nr;
@@ -708,16 +708,16 @@ class we_linklist
 						$nr = $this->listArray[$i]["nr"];
 					}
 					$foo = str_replace('<we_:_linklistRef>', $linklistRef . $nr, $foo);
-					
+
 					if (preg_match_all('/<we_:_link([^>\/]*)\/?>/', $foo, $regs, PREG_SET_ORDER)) {
-						
+
 						foreach ($regs as $reg) {
-							
+
 							$attrArr = makeArrayFromAttribs(trim($reg[1]));
-							
+
 							$xml = getXmlAttributeValueAsBoolean(we_getTagAttribute("xml", $attrArr));
 							$_content = $linkcontent;
-							
+
 							if (isset($attrArr['only'])) {
 								$foo = str_replace($reg[0], $this->getLinktag($i, $link, $attrArr) . $buts, $foo);
 							} else {
@@ -737,7 +737,7 @@ class we_linklist
 			$this->rollAttribs = array();
 		}
 		if ($editmode) {
-			
+
 			if (isset($GLOBALS["we_list_inserted"]) && isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $attribs["name"])) {
 				$out .= '<script language="JavaScript" type="text/javascript">we_cmd(\'edit_linklist\',\'' . $attribs["name"] . '\',\'' . ((isset(
 						$GLOBALS["we_list_insertedNr"]) && ($GLOBALS["we_list_insertedNr"] != "")) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');</script>';
@@ -752,22 +752,22 @@ class we_linklist
 			$clearContent = eregi_replace('^[^<]*(<we_:_link ?/?>)[^<]*$', '\1', $clearContent);
 			if ($limit == 0 || ($limit != 0 && $this->length() < $limit)) {
 				$plusbut = "<br>" . $we_button->create_button(
-						"image:btn_add_link", 
-						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $attribs["name"] . "')", 
-						true, 
-						100, 
-						22, 
-						"", 
-						"", 
+						"image:btn_add_link",
+						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $attribs["name"] . "')",
+						true,
+						100,
+						22,
+						"",
+						"",
 						$disabled);
 				$out .= '<input type="hidden" name="we_' . $docName . '_linklist[' . $attribs["name"] . ']" value="' . htmlspecialchars(
 						$this->getString()) . '" />' . eregi_replace(
-						'(.*)<we_:_link[^>/]*/?>(.*)', 
-						'\1' . $plusbut . '\2' . "\n", 
+						'(.*)<we_:_link[^>/]*/?>(.*)',
+						'\1' . $plusbut . '\2' . "\n",
 						$clearContent);
 			}
 		}
-		
+
 		$out = str_replace("<we_#:#_", "<we:", $out);
 		$out = str_replace("</we_#:#_", "</we:", $out);
 		return $out;
@@ -885,10 +885,10 @@ class we_linklist
 	{
 		if ($this->getCType($nr) == "int") {
 			return $this->makeImgTag($nr);
-		} else 
+		} else
 			if ($this->getCType($nr) == "ext") {
 				return $this->makeImgTagFromSrc($this->getImageSrc($nr), $this->getImageAttribs($nr));
-			} else 
+			} else
 				if ($this->getCType($nr) == "text") {
 					return $this->getText($nr);
 				}
@@ -907,13 +907,13 @@ class we_linklist
 		$img->elements['name']['dat'] = $this->name . "_img" . $nr;
 		$this->rollScript = $img->getRollOverScript();
 		$this->rollAttribs = $img->getRollOverAttribsArr();
-		
+
 		return $img->getHtml(false, false);
 	}
 
 	function makeImgTagFromSrc($src, $attribs)
 	{
-		
+
 		$attribs = removeEmptyAttribs($attribs, array(
 			'alt'
 		));
@@ -927,5 +927,3 @@ class we_linklist
 	}
 
 }
-
-?>

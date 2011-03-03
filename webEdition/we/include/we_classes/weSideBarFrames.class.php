@@ -22,42 +22,42 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/SEEM/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sidebar.inc.php");
 
 class weSideBarFrames {
-	
+
 	var $_frameset = "";
-	
+
 	function weSideBar() {
-		
+
 		$_frameset = WEBEDITION_DIR . "we/includes/sidebar.php";
-		
+
 	}
-	
+
 
 	function getHTML($what){
-		
+
 		switch($what) {
-				
+
 			case 'header':
 				print $this->getHTMLHeader();
 				break;
-				
+
 			case 'content':
 				print $this->getHTMLContent();
 				break;
-				
+
 			case 'footer':
 				print $this->getHTMLFooter();
 				break;
-			
+
 			case 'frameset':
 			default:
 				print $this->getHTMLFrameset();
 				break;
-				
+
 		}
-		
+
 	}
-	
-	
+
+
 	function getHTMLFrameset() {
 ?>
 </head>
@@ -67,7 +67,7 @@ class weSideBarFrames {
 	<frame src="<?php print $this->_frameset; ?>?pnt=content" name="weSidebarContent" scrolling="auto" noresize>
 	<frame src="<?php print $this->_frameset; ?>?pnt=footer" name="weSidebarFooter" scrolling="no" noresize>
 </frameset>
-		
+
 <body bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
 </body>
 
@@ -75,7 +75,7 @@ class weSideBarFrames {
 		<?php
 	}
 
-	
+
 	function getHTMLHeader(){
 ?>
 <style type="text/css">
@@ -118,7 +118,7 @@ body {
 <?php
 	}
 
-	
+
 	function getHTMLFooter(){
 ?>
 </head>
@@ -129,9 +129,9 @@ body {
 <?php
 	}
 
-	
+
 	function getHTMLContent() {
-		
+
 		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
 		define("WE_SIDEBAR", true);
 
@@ -139,41 +139,37 @@ body {
 			//not implemented
 			//header("Location: " . $file);
 			exit();
-			
+
 		}
-		
+
 		if(!eregi("^/", $file)) {
 			$file = id_to_path($file, FILE_TABLE);
-			
+
 		}
-		
+
 		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)) {
 			if(defined("SIDEBAR_DEFAULT_DOCUMENT")) {
 				$file = id_to_path(SIDEBAR_DEFAULT_DOCUMENT, FILE_TABLE);
 			}
 			if($file == "" || eregi("/$", $file) || $file == "default") {
 				$file = WEBEDITION_DIR . "sidebar/default.php";
-				
+
 			}
-			
+
 		}
-		
+
 		ob_start();
 		include($_SERVER['DOCUMENT_ROOT'] . $file);
-		
+
 		$SrcCode = ob_get_contents();
 		ob_end_clean();
-		
+
         $SrcCode = we_SEEM::parseDocument($SrcCode);
 		echo $SrcCode;
-		
+
 		exit();
-		
+
 	}
-	
-	
+
+
 }
-
-
-
-?>

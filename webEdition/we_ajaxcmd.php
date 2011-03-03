@@ -36,4 +36,3 @@ switch($_REQUEST["we_cmd"][0]){
 if ($include) {
 	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/".$include);
 }
-?>

@@ -385,5 +385,3 @@ class we_format extends we_class {
 	}
 
 }
-
-?>

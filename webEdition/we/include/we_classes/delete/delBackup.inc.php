@@ -44,7 +44,7 @@ class delBackup extends taskFragment{
 			while($this->db->next_record()){
 				$this->alldata[]=TEMPLATE_DIR . "/".preg_replace('/\.tmpl$/i','.php',$this->db->f("Path")).",".$this->db->f("Icon");
 			}
-		
+
 			if(!count($this->alldata)){
 				print we_htmlElement::jsElement(
 					we_message_reporting::getShowMessageCall($GLOBALS["l_backup"]["nothing_to_delete"], WE_MESSAGE_WARNING)
@@ -90,6 +90,3 @@ class delBackup extends taskFragment{
 		print "<html><head><title></title></head>";
 	}
 }
-
-
-?>

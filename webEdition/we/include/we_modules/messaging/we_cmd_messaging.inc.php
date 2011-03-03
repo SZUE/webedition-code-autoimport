@@ -25,4 +25,3 @@
 			$INCLUDE = 'we_modules/show_frameset.php';
 			break;
 	}
-?>

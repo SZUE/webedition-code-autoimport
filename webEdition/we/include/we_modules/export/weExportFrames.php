@@ -198,7 +198,7 @@ class weExportFrames extends weModuleFrames {
 		$js = we_htmlElement::jsElement('
 				function we_save() {
 					top.content.we_cmd("save_export");
-					
+
 				}
 				function doProgress(progress) {
 					var elem = document.getElementById("progress");
@@ -305,7 +305,7 @@ class weExportFrames extends weModuleFrames {
 		$table->setColContent(0,0,htmlSelect('ExportTo',array('local'=>$l_export['export_to_local'],"server"=>$l_export["export_to_server"]),1,$this->View->export->ExportTo,false,'onChange="toggle(\'save_to\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
 		$table->setColContent(1,0,getPixel(10,10));
 		$table->setCol(2,0,array("id"=>"save_to","style"=>($this->View->export->ExportTo=='server' ? 'display: ""' : 'display: none')),htmlFormElementTable($this->formFileChooser(($this->_width_size - 120),"ServerPath",$this->View->export->ServerPath,"","folder"),$l_export["save_to"]));
-		
+
 
 		array_push($parts,array(
 					"headline" => "",
@@ -467,7 +467,7 @@ class weExportFrames extends weModuleFrames {
 		$we_button = new we_button();
 		$path = id_to_path($this->View->export->ParentID,EXPORT_TABLE);
 		$button = $we_button->create_button('select', "javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'document.we_form.elements[\'ParentID\'].value','document.we_form.elements[\'ParentPath\'].value','top.hot=1;')");
-		
+
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType("folder");
@@ -480,7 +480,7 @@ class weExportFrames extends weModuleFrames {
 		$yuiSuggest->setTable(EXPORT_TABLE);
 		$yuiSuggest->setWidth($this->_width_size - 120);
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -876,7 +876,7 @@ class weExportFrames extends weModuleFrames {
 
 		$we_button = new we_button();
 	  	$button =  $we_button->create_button("select","javascript:top.content.setHot();formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);");
-		
+
 		return $js.htmlFormElementTable(htmlTextInput($IDName,42,$IDValue,"",' readonly onChange="'.$this->topFrame.'.hot=1;"',"text",$width,0),
 			"",
 			"left",
@@ -890,7 +890,7 @@ class weExportFrames extends weModuleFrames {
 		if ($Pathvalue == "") {
 			$Pathvalue = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID=" . abs($IDValue).";", "Path", $this->db);
 		}
-		
+
 		$we_button = new we_button();
 		$button =  $we_button->create_button("select","javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");
 		$yuiSuggest =& weSuggest::getInstance();
@@ -904,7 +904,7 @@ class weExportFrames extends weModuleFrames {
 		$yuiSuggest->setTable(FILE_TABLE);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 
@@ -961,4 +961,3 @@ class weExportFrames extends weModuleFrames {
 		return $hiddens.htmlFormElementTable($cats->get(),$l_export["categories"], "left", "defaultfont");
 	}
 }
-?>

@@ -71,5 +71,3 @@
 		default:
 			error_log(__FILE__ . " unknown reference: $what");
 	}
-
-?>

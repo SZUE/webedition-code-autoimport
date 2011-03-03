@@ -23,17 +23,17 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 
 class importFunctions{
-	
-	
+
+
 	/**
 	* @return importFunctions
 	* @desc Don't call this function directly. This is a static class!
 	*/
 	function importFunctions(){
-		print "Don't call this function directly. This is a static class!";	
+		print "Don't call this function directly. This is a static class!";
 	}
-	
-	
+
+
 	/**
 	* @return boolean
 	* @param integer $parentID
@@ -56,7 +56,7 @@ class importFunctions{
 		$GLOBALS["we_doc"] = new we_webEditionDocument();
 
 		$GLOBALS["we_doc"]->we_new();
-	
+
 		$GLOBALS["we_doc"]->Extension = $extension;
 		if($filename){
 			$filename = importFunctions::correctFilename($filename);
@@ -76,9 +76,9 @@ class importFunctions{
 					$footext = $GLOBALS["we_doc"]->Filename."_".$z.$GLOBALS["we_doc"]->Extension;
 				}
 				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Filename."_".$z;
-			
+
 				$GLOBALS["we_doc"]->Text = $footext;
-				$GLOBALS["we_doc"]->Path=$GLOBALS["we_doc"]->getParentPath().(($GLOBALS["we_doc"]->getParentPath() != "/") ? "/" : "").$GLOBALS["we_doc"]->Text;		        
+				$GLOBALS["we_doc"]->Path=$GLOBALS["we_doc"]->getParentPath().(($GLOBALS["we_doc"]->getParentPath() != "/") ? "/" : "").$GLOBALS["we_doc"]->Text;
 			} else if($conflict == 'replace') {
 				$GLOBALS['we_doc']->initById($file_id);
 			}
@@ -88,29 +88,29 @@ class importFunctions{
 		}
 
 		$GLOBALS["we_doc"]->DocType = $doctypeID;
-		$GLOBALS["we_doc"]->setTemplateID($templateID);		
+		$GLOBALS["we_doc"]->setTemplateID($templateID);
 		$GLOBALS["we_doc"]->Category = $categories;
-				
+
 		$GLOBALS["we_doc"]->ContentType = "text/webedition";
-		
+
 		$GLOBALS["we_doc"]->IsDynamic = $isDynamic;
 		$GLOBALS["we_doc"]->IsSearchable = $IsSearchable;
 		foreach($fields as $fieldName => $fieldValue){
 			$GLOBALS["we_doc"]->setElement($fieldName,$fieldValue);
 		}
-		
+
 		// SAVE DOCUMENT
 		if(!$GLOBALS["we_doc"]->we_save()){
-			return false;	
+			return false;
 		}
 		// PUBLISH OR EXIT
 		if ($publish) {
 			return $GLOBALS["we_doc"]->we_publish();
 		} else {
-			return true;	
+			return true;
 		}
 	}
-	
+
 	/**
 	* @return boolean
 	* @param integer $classID
@@ -121,9 +121,9 @@ class importFunctions{
 	* @desc imports an object into webEdition
 	*/
 	function importObject($classID, $fields, $categories="", $filename="", $publish=true, $conflict='rename'){
-			
+
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
-		
+
 		// INIT OBJECT
 		$object = new we_objectFile();
 		$object->we_new();
@@ -134,12 +134,12 @@ class importFunctions{
 		if($categories){
 			$object->Category = $categories;
 		}
-		
+
 		// IF WE HAVE TO GIVE THE OBJECT A NAME
 		if($filename || $filename == 0){
 			$name_exists = false;
 			$filename = importFunctions::correctFilename($filename);
-			$object->Text = $filename;	
+			$object->Text = $filename;
 		    $object->Path=$object->getParentPath().(($object->getParentPath() != "/") ? "/" : "").$object->Text;
 		    // IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
 		    if($file_id = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($object->Path)."'","ID",$GLOBALS["DB_WE"])){
@@ -154,30 +154,30 @@ class importFunctions{
 						$footext = $object->Text."_".$z;
 					}
 					$object->Text = $footext;
-					$object->Path=$object->getParentPath().(($object->getParentPath() != "/") ? "/" : "").$object->Text;					
+					$object->Path=$object->getParentPath().(($object->getParentPath() != "/") ? "/" : "").$object->Text;
 		    	} else {
 		    		return true;
 		    	}
-		    	
+
 			}
 		}
-		
+
 		// FILL FIELDS OF OBJECT
 		foreach($fields as $fieldName => $fieldValue){
 			$object->setElement($fieldName,$fieldValue);
 		}
 		// SAVE OBJECT
 		if(!$object->we_save()){
-				return false;	
+				return false;
 		}
 		// PUBLISH OR EXIT
 		if ($publish) {
 			return $object->we_publish();
 		} else {
-			return true;	
+			return true;
 		}
 	}
-	
+
 	/**
 	* @return string
 	* @param string $filename
@@ -194,12 +194,12 @@ class importFunctions{
 		$filename = str_replace("�","ss",$filename);
 		$filename = eregi_replace('[^a-z0-9\._\-]','',$filename);
 		if(strlen($filename) > 100){
-			$filename  = substr($filename,0,100);	
+			$filename  = substr($filename,0,100);
 		}
 		return strlen($filename) ? $filename : "newfile";
 	}
-	
-	
+
+
 	/**
 	* @return int
 	* @param string $datestring
@@ -210,21 +210,21 @@ class importFunctions{
 		if(!$format){
 			return strtotime($datestring);
 		}
-		
+
 		$replaceorder=array();
-		
+
 		$formatchars = array("Y","y","m","n","d","j","H","G","i","s");
-		
+
 		$eregchars = "";
-		
+
 		foreach($formatchars as $char){
 			$eregchars .= $char;
 		}
-		
+
 		foreach($formatchars as $char){
 			$format = str_replace("\\".$char,"###we###".ord($char)."###we###",$format);
 		}
-			
+
 		if(preg_match_all("/[$eregchars]/",$format,$matches,PREG_SET_ORDER)){
 			foreach($matches as $match){
 				if(is_array($match) && isset($match[0])){
@@ -232,13 +232,13 @@ class importFunctions{
 				}
 			}
 		}
-		
+
 		$eregformat = ereg_replace("([$eregchars])","([0-9]+)",str_replace("/","\\/",preg_quote($format)));
-		
+
 		foreach($formatchars as $char){
 			$eregformat = str_replace("###we###".ord($char)."###we###","\\".$char,$eregformat);
 		}
-			
+
 		$outarray = array(
 							"hour" => 1,
 							"minute" => 0,
@@ -249,7 +249,7 @@ class importFunctions{
 						);
 
 		if(preg_match_all("/".$eregformat."/",$datestring,$matches,PREG_SET_ORDER)){
-		
+
 			if(isset($matches[0]) && is_array($matches[0])){
 				for($i=1;$i<sizeof($matches[0]);$i++){
 					if(isset($replaceorder[$i-1])){
@@ -280,7 +280,7 @@ class importFunctions{
 					}
 				}
 			}
-						
+
 			return mktime(
 								$outarray["hour"],
 								$outarray["minute"],
@@ -289,12 +289,9 @@ class importFunctions{
 								$outarray["day"],
 								$outarray["year"]
 									);
-		
+
 		}
 		return 0;
-	
+
 	}
 }
-
-
-?>

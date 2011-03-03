@@ -175,5 +175,3 @@ class we_otherDocument extends we_binaryDocument
 		return $out;
 	}
 }
-
-?>

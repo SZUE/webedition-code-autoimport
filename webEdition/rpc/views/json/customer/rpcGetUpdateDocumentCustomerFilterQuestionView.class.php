@@ -21,5 +21,3 @@
 class rpcGetUpdateDocumentCustomerFilterQuestionView extends rpcJsonView {
 
 }
-
-?>

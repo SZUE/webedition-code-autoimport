@@ -21,5 +21,3 @@
 
 
 define("BIG_USER_MODULE","1");
-
-?>

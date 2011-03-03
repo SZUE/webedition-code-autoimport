@@ -36,5 +36,3 @@ $wepos = weGetCookieVariable("but_weHtmlDocProp");
 
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("weHtmlDocProp","100%",$parts,20);
-
-?>

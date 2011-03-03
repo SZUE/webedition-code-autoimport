@@ -26,4 +26,3 @@ $_REQUEST["we_cmd"][4] = 0;
 $_REQUEST["we_cmd"][5] = 1;
 $FROM_WE_SHOW_DOC = true;
 include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_showDocument.inc.php");
-?>

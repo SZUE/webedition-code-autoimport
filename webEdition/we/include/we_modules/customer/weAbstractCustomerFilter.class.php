@@ -463,6 +463,3 @@ class weAbstractCustomerFilter {
 
 
 }
-
-
-?>

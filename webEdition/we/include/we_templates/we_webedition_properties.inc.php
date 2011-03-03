@@ -40,5 +40,3 @@ $znr = 5;
 
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("weDocProp","100%",$parts,20,"",-1,$GLOBALS["l_we_class"]["moreProps"],$GLOBALS["l_we_class"]["lessProps"],($wepos=="down"));
-
-?>

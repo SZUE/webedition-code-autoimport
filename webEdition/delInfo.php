@@ -76,4 +76,3 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 			)
 	);
 
-?>

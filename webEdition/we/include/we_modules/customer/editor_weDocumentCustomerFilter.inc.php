@@ -141,14 +141,12 @@ function formWebuser($canChange,$width=388){
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setTrashButton($_trashBut);
 		$yuiSuggest->setTable(CUSTOMER_TABLE);
-		
+
 		$out = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode() . "\n";
-		
+
 	}else{
 		$out = $webuser;
 	}
 	return $out;
 
 }
-
-?>

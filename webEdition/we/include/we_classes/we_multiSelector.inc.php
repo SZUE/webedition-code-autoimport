@@ -136,9 +136,9 @@ function writeBody(d){
 	d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
-	
+
 	<?php print $this->getJS_attachKeyListener(); ?>
-	
+
 	//from we_showMessage.js
 	d.writeln('var WE_MESSAGE_INFO = -1;');
 	d.writeln('var WE_MESSAGE_FRONTEND = -2;');
@@ -396,5 +396,3 @@ function selectFile(id){
 	}
 
 }
-
-?>

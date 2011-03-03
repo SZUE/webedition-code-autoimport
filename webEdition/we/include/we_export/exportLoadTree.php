@@ -30,12 +30,12 @@ if(isset($_REQUEST["we_cmd"][5])){
 if(isset($_REQUEST["we_cmd"][4])){
 	$topFrame=$_REQUEST["we_cmd"][4];
 }
-else $topFrame = "top"; 
+else $topFrame = "top";
 
 $table = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
 
 if($table==FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS")){
-	if(we_hasPerm("CAN_SEE_TEMPLATES")) $table=TEMPLATES_TABLE;	
+	if(we_hasPerm("CAN_SEE_TEMPLATES")) $table=TEMPLATES_TABLE;
 	else if(defined('OBJECT_FILES_TABLE') && we_hasPerm("CAN_SEE_OBJECTFILES")) $table=OBJECT_FILES_TABLE;
 	else if(defined('OBJECT_TABLE') && we_hasPerm("CAN_SEE_OBJECTS")) $table=OBJECT_TABLE;
 }
@@ -107,7 +107,7 @@ function getItems($ParentID) {
 	if($table==FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))
 	return 0;
 	if($table==TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES"))
-	return 0;	
+	return 0;
 	if(defined('OBJECT_FILES_TABLE') && $table==OBJECT_FILES_TABLE && !we_hasPerm("CAN_SEE_OBJECTFILES"))
 	return 0;
 	if(defined('OBJECT_TABLE') && $table==OBJECT_TABLE && !we_hasPerm("CAN_SEE_OBJECTS"))
@@ -210,5 +210,3 @@ print we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead($head).
 			$body
 );
-
-?>

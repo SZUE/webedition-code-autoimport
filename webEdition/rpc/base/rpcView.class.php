@@ -20,19 +20,18 @@
 
 /**
  * Base class for views.
- * 
+ *
  */
 
 class rpcView {
 
 	var $CmdShell;
-	
+
 	function getResponse($response){
-		
+
 	}
-	
+
 	function setCmdShell($cmdshell) {
 		$this->CmdShell = $cmdshell;
 	}
 }
-?>

@@ -36,14 +36,14 @@ class weEmos{
 	 * @var String
 	 */
 	private $emosHTMLFooter;
-	
+
 	function __construct(){
-		
+
 		$this->emosJsFooter = isset($GLOBALS["weEconda"]) && isset($GLOBALS["weEconda"]["JS"]) ? $GLOBALS["weEconda"]["JS"] : "";
 		$this->emosHTMLFooter = isset($GLOBALS["weEconda"]) && isset($GLOBALS["weEconda"]["HTML"]) ? $GLOBALS["weEconda"]["HTML"] : "";
 /*
 		if (isset($GLOBALS["we_doc"]) && isset($GLOBALS["we_doc"]["Language"])) {
-			$this->emosHTMLFooter .= '<a name="emos_name" title="langid" rel="'.substr($GLOBALS["we_doc"]["Language"],0,2).'" rev=""></a>'."\n";	
+			$this->emosHTMLFooter .= '<a name="emos_name" title="langid" rel="'.substr($GLOBALS["we_doc"]["Language"],0,2).'" rev=""></a>'."\n";
 		}
 */
 		if (isset($_REQUEST['emosScontact']) && $_REQUEST['emosScontact'] != "") {
@@ -60,7 +60,7 @@ class weEmos{
 				case 'navigation':
 					if(isset($GLOBALS["we_doc"]->NavigationItems) && $GLOBALS["we_doc"]->NavigationItems != "") {
 						$navItems = explode(",",$GLOBALS["we_doc"]->NavigationItems);
-						$contentLabel = $navItems[1]; 
+						$contentLabel = $navItems[1];
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($contentLabel,1).'" rev=""></a>';
 					} else {
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
@@ -68,7 +68,7 @@ class weEmos{
 					break;
 				case 'category':
 					if(isset($GLOBALS["we_doc"]->Category) && $GLOBALS["we_doc"]->Category != "") {
-						$catIds = explode(",",$GLOBALS["we_doc"]->Category); 
+						$catIds = explode(",",$GLOBALS["we_doc"]->Category);
 						$contentLabel = f("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . abs($catIds[1]), "Path", $GLOBALS["DB_WE"]);
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($contentLabel,1).'" rev=""></a>';
 					} else {
@@ -87,7 +87,7 @@ class weEmos{
 			$this->emosHTMLFooter .= "\n";
 		}
 	}
-	
+
 	/**
 	 * Article content page
 	 *
@@ -106,10 +106,10 @@ emosECPageArray['var1']		= '" . rawurlencode(isset($GLOBALS["we_".$type]->Varian
 emosECPageArray['var2']		= 'NULL';
 emosECPageArray['var3']		= 'NULL';
 ";
-		
+
 		//$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="Katalog/" rev=""';
 	}
-	
+
 	/**
 	 * Add/remove article to/from shopping basket
 	 *
@@ -123,9 +123,9 @@ emosECPageArray['var3']		= 'NULL';
 		} else {
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 			$article = new we_objectFile();
-			$article->initByID($_REQUEST["shop_artikelid"], OBJECT_FILES_TABLE);			
-		}		
-		
+			$article->initByID($_REQUEST["shop_artikelid"], OBJECT_FILES_TABLE);
+		}
+
 		if (isset($_REQUEST['we_variant']) && count($article->elements['weInternVariantElement']['dat'])>0) {
 			$weInternVariantElements = unserialize($article->elements['weInternVariantElement']['dat']);
 			$weVariants = array();
@@ -138,7 +138,7 @@ emosECPageArray['var3']		= 'NULL';
 			$emosName  = $article->elements["shoptitle"]["dat"];
 			$emosPreis = $article->elements["price"]["dat"];
 		}
-		
+
 		if ($_REQUEST['shop_anzahl']>0){
 			$emosEvent  = "c_add";
 			$emosAnzahl = $_REQUEST['shop_anzahl'];
@@ -146,12 +146,12 @@ emosECPageArray['var3']		= 'NULL';
 			$emosEvent  =  "c_rmv";
 			$emosAnzahl = $_REQUEST['shop_anzahl']*(-1);
 		}
-		
+
 		if ($complete) {
 			$emosEvent  =  "c_rmv";
 			$emosAnzahl = "0";
 		}
-		
+
 		$this->emosJsFooter .= "
 if(typeof emosECPageArray == 'undefined') var emosECPageArray = new Array();
 emosECPageArray['event'] 	= '" . $emosEvent . "';
@@ -163,9 +163,9 @@ emosECPageArray['anzahl']	= '" . $emosAnzahl . "';
 emosECPageArray['var1']		= '" . rawurlencode(isset($GLOBALS["we_".$type]->Variant) ? $GLOBALS["we_".$type]->Variant : "NULL") . "';
 emosECPageArray['var2']		= 'NULL';
 emosECPageArray['var3']		= 'NULL';
-";		
+";
 	}
-	
+
 	/**
 	 * User registration
 	 *
@@ -179,7 +179,7 @@ emosECPageArray['var3']		= 'NULL';
 		}
 		$this->emosHTMLFooter .= "<a name='emos_name' title='register' rel='$userID' rev='$eventNr' ></a>\n";
 	}
-	
+
 	/**
 	 * User Login
 	 *
@@ -193,12 +193,12 @@ emosECPageArray['var3']		= 'NULL';
 		}
 		$this->emosHTMLFooter .= "<a name='emos_name' title='login' rel='$userID' rev='$eventNr' ></a>\n";
 	}
-	
+
 	function emosShopingBasket(){
 		$this->emosJsFooter .= $_GLOBALS['weEconda']['emosBasket'];
 	}
-	
-	
+
+
 	/**
 	 * Returns the emos HTML code
 	 *
@@ -207,16 +207,15 @@ emosECPageArray['var3']		= 'NULL';
 	function getEmosHTMLFooter(){
 		return $this->emosHTMLFooter;
 	}
-	
+
 	/**
 	 * Returns the emos JS code
 	 *
 	 * @return String
 	 */
 	function getEmosJsFooter(){
-		return $this->emosJsFooter;	
+		return $this->emosJsFooter;
 	}
 }
 
 
-?>

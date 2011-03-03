@@ -149,7 +149,7 @@ function we_switchPixelPercent(inp,sel){
 
 function we_keep_ratio(inp,sel){
 	var _newVal;
-	
+
 	if(inp.value){
 		if(sel.options[sel.selectedIndex].value == "pixel"){
 			_newVal = Math.round(inp.value);
@@ -160,7 +160,7 @@ function we_keep_ratio(inp,sel){
 			inp.value = _newVal;
 		}
 	}
-	
+
 	if(inp.form.ratio.checked){
 		var inp_change = null;
 		var sel_change = null;
@@ -344,4 +344,3 @@ function we_getImageRotateDialog(){
 }
 
 
-?>

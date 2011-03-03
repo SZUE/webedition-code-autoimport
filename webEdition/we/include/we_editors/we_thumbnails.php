@@ -384,7 +384,7 @@ function build_dialog($selected_setting = "ui") {
 
 						self.location = url;
 					}
-					
+
 					function changeFormat() {
 						if(document.getElementById('Format').value == 'jpg' || document.getElementById('Format').value == 'none') {
 							document.getElementById('thumbnail_quality_text_cell').style.display='';
@@ -392,9 +392,9 @@ function build_dialog($selected_setting = "ui") {
 						} else {
 							document.getElementById('thumbnail_quality_text_cell').style.display='none';
 							document.getElementById('thumbnail_quality_value_cell').style.display='none';
-						}						
+						}
 					}
-					
+
 					function init() {
 						changeFormat();
 					}
@@ -602,4 +602,3 @@ if (isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true
 	print we_htmlElement::htmlBody(array("class" => "weDialogBody", "onload"=>"init()"), $_form) . "</html>";
 }
 
-?>

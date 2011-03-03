@@ -24,37 +24,37 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 class weGlossaryTreeLoader{
 
 	function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = "") {
-		
+
 		$Types = array(
 			'abbreviation',
 			'acronym',
 			'foreignword',
 			'link',
 		);
-		
+
 		$Temp = explode("_", $ParentId);
 
 		if(in_array($Temp[(sizeof($Temp)-1)], $Types)) {
 			$Type = array_pop($Temp);
 			$Language = implode("_", $Temp);
 			return weGlossaryTreeLoader::getItemsFromDB($Language, $Type, $Offset, $Segment);
-			
+
 		} else if(in_array($ParentId, array_keys($GLOBALS['weFrontendLanguages']))) {
 			return weGlossaryTreeLoader::getTypes($ParentId);
-			
+
 		} else {
 			return weGlossaryTreeLoader::getLanguages();
 		}
-		
+
 	}
 
 
 	function getLanguages() {
-		
+
 		$Items = array();
-		
+
 		foreach($GLOBALS['weFrontendLanguages'] as $Key => $Val) {
-			
+
 			$Item = array(
 				'id'		=> $Key,
 				'parentid'	=> 0,
@@ -67,29 +67,29 @@ class weGlossaryTreeLoader{
 				'published'	=> 1,
 				'cmd'		=> "view_folder",
 			);
-			
+
 			array_push($Items, $Item);
-			
+
 		}
-		
+
 		return $Items;
 
 	}
 
 
 	function getTypes($Language) {
-		
+
 		$Items = array();
-				
+
 		$Types = array(
 			'abbreviation'	=> $GLOBALS['l_glossary']['abbreviation'],
 			'acronym'		=> $GLOBALS['l_glossary']['acronym'],
 			'foreignword'	=> $GLOBALS['l_glossary']['foreignword'],
 			'link'			=> $GLOBALS['l_glossary']['link'],
 		);
-			
+
 		foreach($Types as $Key => $Val) {
-			
+
 			$Item = array(
 				'id'		=> $Language . "_" . $Key,
 				'parentid'	=> $Language,
@@ -102,11 +102,11 @@ class weGlossaryTreeLoader{
 				'published'	=> 1,
 				'cmd'		=> 'view_type',
 			);
-			
+
 			array_push($Items, $Item);
-			
+
 		}
-			
+
 		if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")) {
 			$Item = array(
 				'id'		=> $Language . "_exception",
@@ -121,29 +121,29 @@ class weGlossaryTreeLoader{
 				'cmd'		=> 'view_exception',
 				'Icon'		=> 'prog.gif'
 			);
-		 
+
 		 	array_push($Items, $Item);
-		 	
+
 		}
-		
+
 		return $Items;
 
 	}
 
-	
+
 	function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500) {
-		
+
 		$Db = new DB_WE();
 		$Table = GLOSSARY_TABLE;
-		
+
 		$Items = array();
-		
-		$Where = " WHERE Language = '".mysql_real_escape_string($Language)."' AND Type = '".mysql_real_escape_string($Type)."'";	
-				
+
+		$Where = " WHERE Language = '".mysql_real_escape_string($Language)."' AND Type = '".mysql_real_escape_string($Type)."'";
+
 		$PrevOffset = $Offset-$Segment;
 		$PrevOffset = ($PrevOffset<0) ? 0 : $PrevOffset;
-		
-		if($Offset && $Segment){	
+
+		if($Offset && $Segment){
 			$Item = array(
 				"id"			=> "prev_" . $Language . "_" . $Type,
 				"parentid"		=> $Language . "_" . $Type,
@@ -158,9 +158,9 @@ class weGlossaryTreeLoader{
 				"offset"		=> $PrevOffset,
 			);
 		 	array_push($Items, $Item);
-		 	
+
 		}
-		
+
 		$Query = 	"SELECT "
 				.	"ID, "
 				.	"Type, "
@@ -178,7 +178,7 @@ class weGlossaryTreeLoader{
 				.	"Nr, "
 				.	"Text "
 				.	($Segment ?  "LIMIT ".abs($Offset).",".abs($Segment) : "");
-				
+
 		$Db->query($Query);
 		while($Db->next_record()){
 
@@ -196,7 +196,7 @@ class weGlossaryTreeLoader{
 			);
 
 			switch($Type) {
-						
+
 				case 'abbreviation':
 					$Item['cmd'] = "edit_glossary_abbreviation";
 					break;
@@ -210,7 +210,7 @@ class weGlossaryTreeLoader{
 					$Item['cmd'] = "edit_glossary_link";
 					break;
 			}
-				
+
  			foreach($Db->Record as $Key => $Val) {
  				if(!is_numeric($Key)) {
  					if(strtolower($Key)=="text") {
@@ -220,14 +220,14 @@ class weGlossaryTreeLoader{
  						$Item[strtolower($Key)] = $Val;
  					}
  				}
- 				
+
  			}
-		 
+
 		 	array_push($Items, $Item);
 		}
 
 		$Total = f("SELECT COUNT(*) as total FROM ".mysql_real_escape_string($Table)." $Where","total",$Db);
-		
+
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){
 			$Item = array(
@@ -243,16 +243,14 @@ class weGlossaryTreeLoader{
 				"tooltip"		=> "",
 				"offset"		=> $NextOffset,
 			);
-		 
+
 		 	array_push($Items, $Item);
-		 	
+
 		}
-		
+
 		return $Items;
 
 	}
 
 
 }
-
-?>

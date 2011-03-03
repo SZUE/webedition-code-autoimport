@@ -86,7 +86,7 @@ class we_flashDocument extends we_binaryDocument
 			}
 			unset($attribs['sizingstyle']);
 		} else {$sizingstyle = false;}
-			
+
 		if ($sizingstyle){
 			$style_width = round($attribs["width"]/$sizingbase,6);
 			$style_height = round($attribs["height"]/$sizingbase,6);
@@ -94,7 +94,7 @@ class we_flashDocument extends we_binaryDocument
 				$newstyle = $attribs["style"];
 			} else {$newstyle="";}
 
-			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";"; 
+			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
 			$attribs["style"]= $newstyle;
 			unset($attribs['width']);
 			unset($attribs['height']);
@@ -217,8 +217,8 @@ class we_flashDocument extends we_binaryDocument
 			} else if (isset($attribs['pathonly']) && $attribs['pathonly']) {
 				$this->html = $src;
 			}
-		}else{ 
-			if($GLOBALS['we_doc']->InWebEdition == 1) { 
+		}else{
+			if($GLOBALS['we_doc']->InWebEdition == 1) {
 				/* Anzeige des No_Falsh-Bildes in der Vorschau
 				$imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
 				$imgAtts["width"]  = 64;
@@ -343,7 +343,7 @@ class we_flashDocument extends we_binaryDocument
 		$this->setElement("wmode", "window", "attrib");
 		$this->setElement("origwidth", "", "attrib");
 		$this->setElement("origheight", "", "attrib");
-	
+
 		$html = $this->getHtml(true);
 		$this->setElement("width", $_width, "attrib");
 		$this->setElement("height", $_height, "attrib");
@@ -453,5 +453,3 @@ class we_flashDocument extends we_binaryDocument
 
 
 }
-
-?>

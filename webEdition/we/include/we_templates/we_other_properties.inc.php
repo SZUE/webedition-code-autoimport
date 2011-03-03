@@ -33,5 +33,3 @@ array_push($parts,array("icon"=>"user.gif", "headline"=>$GLOBALS["l_we_class"]["
 print we_multiIconBox::getJS();
 
 print we_multiIconBox::getHTML("weOtherDocProp","100%",$parts,20);
-
-?>

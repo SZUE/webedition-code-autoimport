@@ -642,7 +642,7 @@ class we_wizard_import extends we_wizard {
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setWidth(280);
 			$yuiSuggest->setSelectButton($btnDocDir,10);
-			
+
 
 			$docPath = $yuiSuggest->getYuiFiles().$yuiSuggest->getHTML();
 
@@ -760,19 +760,19 @@ class we_wizard_import extends we_wizard {
 
 			$xml_encoding = XML_Parser::getEncoding($_import_file);
 			if(defined ('DEFAULT_CHARSET') && DEFAULT_CHARSET!='' && (DEFAULT_CHARSET=='ISO-8859-1' || DEFAULT_CHARSET=='UTF-8' ) && ($xml_encoding=='ISO-8859-1' || $xml_encoding=='UTF-8' ) ) {
-			
+
 				array_push($parts, array(
 					'headline' => $l_import['encoding_headline'],
 					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', $l_import['encoding_change'].$l_import['encoding_XML'].$xml_encoding.$l_import['encoding_to'].(defined ('DEFAULT_CHARSET')? DEFAULT_CHARSET :'-'  ). $l_import['encoding_default']).'<input type="hidden" name="v[import_XMLencoding]" value="'.$xml_encoding.'" /><input type="hidden" name="v[import_TARGETencoding]" value="'.DEFAULT_CHARSET.'" />',
 				'space' => 120)
 			);
-			
+
 			} else {
 				array_push($parts, array(
 					'headline' => $l_import['encoding_headline'],
 					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', $l_import['encoding_noway'],false,"defaultfont",'',true),
 					'space' => 120)
-				);			
+				);
 			}
 
 
@@ -884,7 +884,7 @@ class we_wizard_import extends we_wizard {
 				"space"=>0)
 		);
 		$content = $hdns . we_multiIconBox::getHTML("wxml","100%",$parts,30,"",-1,'','',false,$l_import['log']);
-		
+
 		return array($functions, $content);
 	}
 
@@ -919,7 +919,7 @@ class we_wizard_import extends we_wizard {
 			we_htmlElement::htmlHidden(array("name" => "v[we_TemplateID]", "value" => 0))."\n".
 			//we_htmlElement::htmlHidden(array("name" => "v[we_TemplateName]", "value" => "/"))."\n".
 			we_htmlElement::htmlHidden(array("name" => "v[is_dynamic]", "value" => (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0)))."\n";
-			
+
 		if (!defined("OBJECT_TABLE")) $hdns .= we_htmlElement::htmlHidden(array("name" => "v[import_type]", "value" => "documents"))."\n";
 
 		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
@@ -986,12 +986,12 @@ class we_wizard_import extends we_wizard {
 		$functions .= (defined("OBJECT_TABLE"))?
 			"			if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
 			"			if(f.elements['v[we_TemplateID]'].value!=0) {\n";
-			
-		$functions .= 				
+
+		$functions .=
 			"				f.step.value = 2;\n" .
 			"				we_submit_form(f, 'wizbody', '".$this->path."');\n" .
 			"			} else {\n";
-			
+
 		$functions .= (defined("OBJECT_TABLE"))?
 			"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall($l_import["select_docType"], WE_MESSAGE_ERROR) . "\n" :
 			"				" . we_message_reporting::getShowMessageCall($l_import["select_docType"], WE_MESSAGE_ERROR) . "\n";
@@ -1021,7 +1021,7 @@ var ajaxUrl = "/webEdition/rpc/rpc.php";
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
 		var json = eval('('+o.responseText+')');
-	
+
 		for(var elemNr in json.elems){
 			for(var propNr in json.elems[elemNr].props){
 				var propval = json.elems[elemNr].props[propNr].val;
@@ -1033,7 +1033,7 @@ var handleSuccess = function(o){
 				}
 			}
 		}
-		
+
 		switchExt();
 	}
 }
@@ -1078,7 +1078,7 @@ HTS;
 
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLServer);
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
-		
+
 		$importLocs->setCol($_tblRow++, 0, array(), getPixel(1,4));
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLLocal);
 		$maxsize = getUploadMaxFilesize(false);
@@ -1137,7 +1137,7 @@ HTS;
 			$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID ='".abs($v["docType"])."'", $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo["Templates"]);
 			$paths_arr = id_to_path($foo["Templates"],TEMPLATES_TABLE,"",false,true);
-	
+
 			$optid = 0;
 			while (list(, $templateID) = each($ids_arr)) {
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
@@ -1153,7 +1153,7 @@ HTS;
 			$l_import['template'],
 			"left",
 			"defaultfont")."</div>";
-			
+
 		$yuiSuggest->setAcId("TmplPath");
 		$yuiSuggest->setContentType("folder,text/weTmpl");
 		$yuiSuggest->setInput("v[we_TemplateName]", (isset($v["we_TemplateName"])? $v["we_TemplateName"] : ""),array("onFocus"=>"self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;"));
@@ -1165,7 +1165,7 @@ HTS;
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($button,10);
 		$yuiSuggest->setLabel($l_import["template"]);
-		
+
 		$templateElement .= "<div id='noDocTypeLayer' style='$displayNoDocType'>".$yuiSuggest->getHTML()."</div>";
 
 
@@ -1191,9 +1191,9 @@ HTS;
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($storeToButton,10);
 		$yuiSuggest->setLabel($l_import["import_dir"]);
-		
+
 		$storeTo = $yuiSuggest->getHTML();
-		
+
 		$radioDocs = we_forms::radiobutton("documents", ($v["import_type"] == "documents"), "v[import_type]", $l_import["documents"]);
 		$radioObjs = we_forms::radiobutton("objects", ($v["import_type"] == "objects"), "v[import_type]", $l_import["objects"], true, "defaultfont", "self.document.forms['we_form'].elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[store_to_path]'].id); if(!!self.document.forms['we_form'].elements['v[we_TemplateName]']) { self.document.forms['we_form'].elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.forms['we_form'].elements['v[we_TemplateName]'].id); }", (defined("OBJECT_TABLE")? false : true));
 
@@ -1277,9 +1277,9 @@ HTS;
 		$wepos = weGetCookieVariable("but_xml");
 		$znr = -1;
 
-		$content = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")); 
-		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js")); 
-		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")); 
+		$content = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js"));
+		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js"));
+		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js"));
 		$content.= $hdns;
 		$content.= we_multiIconBox::getJS();
 		$content.= we_multiIconBox::getHTML("xml", "100%", $parts, 30,"", $znr, $GLOBALS["l_we_class"]["moreProps"], $GLOBALS["l_we_class"]["lessProps"], ($wepos=="down"), $l_import["gxml_import"]);
@@ -1289,7 +1289,7 @@ HTS;
 
 	/**
 	 * Generic XML Import Step 2
-	 * 
+	 *
 	 */
 	function getGXMLImportStep2() {
 		global $l_import;
@@ -1419,7 +1419,7 @@ HTS;
 
 	function getGXMLImportStep3() {
 		global $l_import;
-		
+
 		$this->getTMPaccess();
 
 		$v = $_REQUEST["v"]; if (isset($v["att_pfx"])) $v["att_pfx"] = base64_encode($v["att_pfx"]);
@@ -1929,7 +1929,7 @@ HTS;
 			"			break;\n" .
 			"	}\n" .
 			"}\n";
-			
+
 		$weSessionId = session_id();
 		$functions .= <<<HTS
 
@@ -2080,9 +2080,9 @@ HTS;
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($button,10);
 		$yuiSuggest->setLabel($l_import["template"]);
-		
+
 		$templateElement .= "<div id='noDocTypeLayer' style='$displayNoDocType'>".$yuiSuggest->getHTML()."</div>";
-		
+
 //		$input = htmlTextInput("v[store_to_path]", 30, (isset($v["store_to_path"]) ? $v["store_to_path"] : "/"), "", "", "text", 300, 0, "", false);
 //		$storeTo = htmlFormElementTable($input, $l_import["import_dir"], "left", "defaultfont", getPixel(10, 1), $storeToButton, "", "", "", 0);
 
@@ -2096,7 +2096,7 @@ HTS;
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($storeToButton,10);
 		$yuiSuggest->setLabel($l_import["import_dir"]);
-		
+
 		$storeTo = $yuiSuggest->getHTML();
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
@@ -2187,9 +2187,9 @@ HTS;
 		}
 
 
-		$content = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")); 
-		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js")); 
-		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")); 
+		$content = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js"));
+		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js"));
+		$content.= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js"));
 		$content.= $hdns;
 		$content.= we_multiIconBox::getHTML("csv", "100%", $parts, 30, "", -1, "", "", false, $l_import["csv_import"]);
 
@@ -2198,15 +2198,15 @@ HTS;
 
 	function getCSVImportStep3() {
 		global $l_import;
-		
+
 		$this->getTMPaccess();
-		
+
 		if (isset($_REQUEST["v"]['we_TemplateName']) && ($_REQUEST["v"]['we_TemplateID']==0 || $_REQUEST["v"]['we_TemplateID']=="")) {
 			$_REQUEST["v"]['we_TemplateID'] = path_to_id($_REQUEST["v"]['we_TemplateName'],TEMPLATES_TABLE);
 		}
-		
+
 		$v = $_REQUEST["v"];
-		
+
 		$records = (isset($_REQUEST["records"]))? $_REQUEST["records"] : array();
 		$we_flds = (isset($_REQUEST["we_flds"]))? $_REQUEST["we_flds"] : array();
 		$attrs = (isset($_REQUEST["attrs"]))? $_REQUEST["attrs"] : array();
@@ -2487,7 +2487,7 @@ HTS;
 			getPixel(20,4),
 			$button);
 	}
-	
+
 	function getTMPaccess(){
 		if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess') ){
 			unlink($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess');
@@ -2503,5 +2503,3 @@ HTS;
 	}
 
 }
-
-?>

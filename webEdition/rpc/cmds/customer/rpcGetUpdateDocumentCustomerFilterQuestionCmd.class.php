@@ -71,5 +71,3 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd {
 		}
 	}
 }
-
-?>

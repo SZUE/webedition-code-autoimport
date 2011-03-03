@@ -20,5 +20,3 @@
 
 
 define("CUSTOMERPRO","1");
-
-?>

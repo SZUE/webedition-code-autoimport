@@ -144,7 +144,7 @@ function msg_create_folders($userid) {
     	if (isset($default_folders[$db->f('msg_type')][$db->f('obj_type')])) {
     	    if ($db->f('obj_type') == 3)
     		$pfolders[$db->f('msg_type')] = $db->f('ID');
-    
+
     	    unset($default_folders[$db->f('msg_type')][$db->f('obj_type')]);
     	}
     }
@@ -159,7 +159,7 @@ function msg_create_folders($userid) {
     	    $pf_id = $db->f('pf_id');
     	    unset($farr['3']);
     	}
-    
+
     	foreach ($farr as $df => $fname) {
     	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . abs($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
     	}
@@ -178,18 +178,15 @@ function msg_reject_todo($id) {
     $m = new we_todo();
 
     $db = new DB_WE();
-    
+
     $userid = f('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . abs($id),'UserID',$db);
-    
+
     $m->set_login_data($userid, isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
     $m->init();
 
     $msg = array('int_hdrs'=> array('_ID' => $id,'_from_userid'=>$userid));
     $data = array('body'=>'');
-    
+
     $m->reject($msg,$data);
 
 }
-
-
-?>

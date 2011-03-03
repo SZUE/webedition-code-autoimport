@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * webEdition CMS
  *
@@ -26,9 +26,8 @@
 			        break;
 				case "openExportDirselector":
 					$INCLUDE = "we_modules/export/we_exportDirSelectorFrameset.php";
-					break;		
-	        	break;                                                                                
+					break;
+	        	break;
                 }
-        
- 
-?>
+
+

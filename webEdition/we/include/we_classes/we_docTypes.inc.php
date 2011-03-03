@@ -88,11 +88,11 @@ class we_docTypes extends we_class {
 
 		return we_class::we_save($resave);
 	}
-	
+
 	function we_save_exim() {
 		return we_class::we_save(0);
 	}
-	
+
 
 	function saveInSession(&$save) {
 		$save = array();
@@ -326,9 +326,9 @@ class we_docTypes extends we_class {
 
 	function formDirChooser($width=100) {
 		global $l_we_class,$BROWSER;
-		
+
 		$yuiSuggest =& weSuggest::getInstance();
-		
+
 		$textname = 'we_'.$this->Name.'_ParentPath';
 		$idname = 'we_'.$this->Name.'_ParentID';
 
@@ -343,9 +343,9 @@ class we_docTypes extends we_class {
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setWidth($width - ($BROWSER=="IE"? 0 : 10));
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
-		
+
 	}
 
 	function formExtension($width=100) {
@@ -452,4 +452,3 @@ class we_docTypes extends we_class {
 
 }
 
-?>

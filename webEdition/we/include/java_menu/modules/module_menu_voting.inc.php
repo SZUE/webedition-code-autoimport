@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,13 +18,11 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 if (defined("VOTING_TABLE")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/voting.inc.php");
+	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/voting.inc.php");
 }
 
-$we_menu_voting["000100"]["text"] =$GLOBALS["l_voting"]["voting"];
+$we_menu_voting["000100"]["text"] = $GLOBALS["l_voting"]["voting"];
 $we_menu_voting["000100"]["parent"] = "000000";
 $we_menu_voting["000100"]["perm"] = "";
 $we_menu_voting["000100"]["enabled"] = "1";
@@ -70,16 +69,17 @@ $we_menu_voting["001100"]["parent"] = "000000";
 $we_menu_voting["001100"]["perm"] = "";
 $we_menu_voting["001100"]["enabled"] = "1";
 
-$we_menu_voting["001200"]["text"] = $GLOBALS["l_voting"]["menu_help"]."...";;
+$we_menu_voting["001200"]["text"] = $GLOBALS["l_voting"]["menu_help"] . "...";
+;
 $we_menu_voting["001200"]["parent"] = "001100";
 $we_menu_voting["001200"]["cmd"] = "help_modules";
 $we_menu_voting["001200"]["perm"] = "";
 $we_menu_voting["001200"]["enabled"] = "1";
 
-$we_menu_voting["001300"]["text"] = $GLOBALS["l_voting"]["menu_info"]."...";;
+$we_menu_voting["001300"]["text"] = $GLOBALS["l_voting"]["menu_info"] . "...";
+;
 $we_menu_voting["001300"]["parent"] = "001100";
 $we_menu_voting["001300"]["cmd"] = "info_modules";
 $we_menu_voting["001300"]["perm"] = "";
 $we_menu_voting["001300"]["enabled"] = "1";
 
-?>

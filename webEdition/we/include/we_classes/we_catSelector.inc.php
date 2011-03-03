@@ -1191,5 +1191,3 @@ function we_checkName() {
 
 
 }
-
-?>

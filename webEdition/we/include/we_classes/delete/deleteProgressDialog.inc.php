@@ -68,7 +68,7 @@ class deleteProgressDialog{
 		$fst->setFrameAttributes(1, array("scrolling" => "no"));
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
-				we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) . 
+				we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
 				we_htmlElement::htmlTitle($GLOBALS["l_delete"]["delete"])).$fst->getHtmlCode());
 	}
 
@@ -87,5 +87,3 @@ class deleteProgressDialog{
 	}
 
 }
-
-?>

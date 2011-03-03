@@ -141,24 +141,24 @@ class we_messaging extends we_class {
     }
 
     function add_msgobj($objname, $recover = 0) {
-    	
+
 		$inc_files = array("we_message" => WE_MESSAGING_MODULE_DIR . "we_message.inc.php",
 		   "we_todo" => WE_MESSAGING_MODULE_DIR . "we_todo.inc.php",
 		   "we_msg_email" => WE_MESSAGING_MODULE_DIR . "we_msg_email.inc.php");
-    	
+
 		if (in_array($objname, array_keys($this->send_msgobjs))){
     	    return 0;
     	}
-    	
+
     	if (!isset($inc_files[$objname])){
 	        return -1;
 	    }
-	    
+
     	include_once($inc_files[$objname]);
         if (! @class_exists($objname)){
 	        return -2;
 	    }
-	    
+
 	    $c = new $objname;
 	    $c->set_login_data($this->userid, $this->username);
 
@@ -305,46 +305,46 @@ class we_messaging extends we_class {
 
     function &reject(&$data) {
 		global $l_messaging;
-	
+
 		$results = array();
 		$results['err'] = array();
 		$results['ok'] = array();
 		$results['failed'] = array();
 		$rcpt_elems = explode(',', urldecode($data['rcpts_string']));
-		
+
 		if (empty($this->selected_message)) {
 		    $results['err'][] = $l_messaging['no_selection'];
 		    $results['failed'] = $rcpt_elems;
 		    return $results;
 		}
-	
+
 		$ret = $this->used_msgobjs[$this->selected_message['hdrs']['ClassName']]->reject($this->selected_message, $data);
 		$results['err'] = $ret['err'];
 		$results['ok'] = $ret['ok'];
 		$results['failed'] = $ret['failed'];
-	
+
 		array_splice($this->selected_set, array_ksearch('ID', $this->selected_message['ID'], $this->selected_set), 1);
 		$this->selected_message = array();
-	
+
 		return $results;
     }
 
     function forward(&$data) {
 		global $l_messaging;
-	
+
 		$results = array();
 		$results['err'] = array();
 		$results['ok'] = array();
 		$results['failed'] = array();
 		$rcpt_elems = explode(',', urldecode($data['rcpts_string']));
 		$rcpts = array();
-	
+
 		if (empty($this->selected_message)) {
 		    $results['err'][] = $l_messaging['no_selection'];
 		    $results['failed'] = $rcpt_elems;
 		    return $results;
 		}
-	
+
 		foreach ($rcpt_elems as $elem) {
 		    $rcpt_info = array();
 		    $elem = urldecode($elem);
@@ -353,19 +353,19 @@ class we_messaging extends we_class {
 			    $results['failed'][] = $elem;
 			    continue;
 		    }
-	
+
 		    $rcpts[$rcpt_info['msg_obj']][] = $rcpt_info['address'];
 		}
-	
+
 		unset($data['rcpts_string']);
-	
+
 		foreach ($rcpts as $vals) {
 		    $ret = $this->used_msgobjs[$this->selected_message['hdrs']['ClassName']]->forward($vals, $data, $this->selected_message);
 		    $results['err'] = array_merge($results['err'], $ret['err']);
 		    $results['ok'] = array_merge($results['ok'], $ret['ok']);
 		    $results['failed'] = array_merge($results['failed'], $ret['failed']);
 		}
-	
+
 		return $results;
     }
 
@@ -379,7 +379,7 @@ class we_messaging extends we_class {
 		        $s_hash[$cn] = array(array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']));
 		    }
 		}
-	
+
 		foreach ($s_hash as $cn => $val) {
 			$kvals = array_get_kvals('hdrs', $val);
 			$di = $this->used_msgobjs[$cn]->delete_items($kvals);
@@ -781,9 +781,9 @@ class we_messaging extends we_class {
 						    $this->init_sortstuff($id, '');
 						else
 						    $this->save_sortstuff($id, array_key_by_val($sortfield, $this->sf2sh), $this->sortorder);*/
-				
+
 				//		$this->ids_selected = array();
-				
+
 				//		echo "ID=$id<br>\n";
 				if(array_ksearch('ID', $id, $this->available_folders) != "-1"){
 				    $o   = $this->used_msgobjs[$this->available_folders[array_ksearch('ID', $id, $this->available_folders)]['ClassName']];
@@ -793,7 +793,7 @@ class we_messaging extends we_class {
 				$arr = array('folder_id' => $id, 'last_id' => $this->last_id);
 				$this->selected_set = isset($o)? $o->get_msg_set($arr) : array();
 				$this->update_last_id();
-		
+
 				$this->last_sortfield = (isset($o) && isset($this->sf2sh[$o->get_sortfield()])) ? $this->sf2sh[$o->get_sortfield()] : "";
 				$this->sortfield = $this->last_sortfield;
 				$this->sortorder = isset($o) ? $o->get_sortorder() : "";
@@ -979,4 +979,3 @@ class we_messaging extends we_class {
     }
 }
 
-?>

@@ -53,5 +53,3 @@ if(sizeof($parts) == 1){
 
 print we_multiIconBox::getJS();
 print we_multiIconBox::getHTML("weDirProp","100%",$parts,20);
-
-?>

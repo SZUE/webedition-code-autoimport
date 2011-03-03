@@ -25,13 +25,13 @@
 
 	require('rpcRoot.inc.php');
 	require('base/rpcCmdShell.class.php');
-	
+
 	protect();
-	
+
 	if (!isset($_REQUEST['cmd'])) {
-		
+
 		switch ($_REQUEST["protocol"]) {
-			
+
 			case "json":
 				$resp = new rpcResponse();
 				$resp->setStatus(false);
@@ -51,20 +51,20 @@
 			default:
 				die('The Request is not well formed!');
 			break;
-				
+
 		}
 	}
-	
+
 	$_shell = new rpcCmdShell($_REQUEST,$_REQUEST["protocol"]);
 
 	if($_shell->getStatus()==RPC_STATUS_OK) {
 		$_shell->executeCommand();
 		print $_shell->getResponse();
-		
+
 	} else { // there was an error in initializing the command
-		
+
 		switch ($_REQUEST["protocol"]) {
-			
+
 			case "json":
 				$resp = new rpcResponse();
 				$resp->setStatus(false);
@@ -72,7 +72,7 @@
 				$errorView = new rpcJsonView();
 				die ( $errorView->getResponse($resp) );
 				exit;
-				
+
 			break;
 			case "text":
 				$resp = new rpcResponse();
@@ -87,9 +87,7 @@
 			break;
 		}
 	}
-	
-	unset($_shell);
-	
-	//include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/rpc/navi.php');
 
-?>
+	unset($_shell);
+
+	//include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/rpc/navi.php');

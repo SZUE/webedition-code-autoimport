@@ -26,4 +26,3 @@ protect();
 		$JSCommand = $_REQUEST["we_cmd"][4];
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_bannerSelect.php");
-?>
