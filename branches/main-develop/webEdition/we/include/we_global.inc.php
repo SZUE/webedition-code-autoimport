@@ -615,7 +615,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 	if (isset($_REQUEST["we_returnpage"])) {
 		$GLOBALS["we_object"][$formname]->setElement("we_returnpage", $_REQUEST["we_returnpage"]);
 	}
-	
+
 	if (isset($_REQUEST["we_ui_$formname"]) && is_array($_REQUEST["we_ui_$formname"])) {
 		$dates = array();
 
@@ -3858,7 +3858,7 @@ function g_l($name, $specific) {
 		}
 	}else{
 		//FIXME: decide if in we - then turn off, else turn on
-		if((!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
+		if(isset($GLOBALS['WE_MAIN_DOC'])&&(!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
 			unset($cache);
 		}
 	}
