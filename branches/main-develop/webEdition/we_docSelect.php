@@ -39,4 +39,3 @@ $fs = new we_docSelector(isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
 
-?>

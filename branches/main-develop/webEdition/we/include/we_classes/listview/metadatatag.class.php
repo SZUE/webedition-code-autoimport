@@ -34,7 +34,7 @@ class metadatatag{
 
 	function metadatatag($name){
 		$this->DB_WE = new DB_WE;
-		
+
 		if($name){
 			$unique = md5(uniqid(rand()));
 			if (!isset($GLOBALS["lv"])) {
@@ -59,7 +59,7 @@ class metadatatag{
 				if($this->object->next_record()){
 					$this->avail = true;
 				}
-				
+
 			}
 		}
  	}
@@ -73,5 +73,3 @@ class metadatatag{
 	}
 
 }
-
-?>

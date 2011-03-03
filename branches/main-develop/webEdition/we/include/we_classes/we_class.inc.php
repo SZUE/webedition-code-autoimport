@@ -583,4 +583,4 @@ class we_class {
 		return false;
 	}
 
-}
+	}

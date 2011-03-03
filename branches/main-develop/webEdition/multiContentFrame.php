@@ -94,8 +94,4 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
 </frameset>
 <?php } ?>
-
-
-
-
 </html>

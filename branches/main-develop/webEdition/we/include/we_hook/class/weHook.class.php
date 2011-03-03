@@ -24,36 +24,36 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/
  * class to handle hooks in webEdition and in applications
  */
 class weHook{
-	
+
 	protected $_action;
-	
+
 	protected $_appName;
-	
+
 	protected $_param;
-	
-		
+
+
 	function __construct($action, $appName='', $param=array()) {
-		
+
 		$this->_action = $action;
 		$this->_appName = $appName;
 		$this->_param = $param;
 
 	}
-	
-	
+
+
 	function executeHook() {
-		
+
 		if(!defined('EXECUTE_HOOKS')) {
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf_global.inc.php");
 		}
 
 		if(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS) {
-		
+
 			$hookFile = '';
 			$action = $this->_action;
 			$param = $this->_param;
 			$appName = $this->_appName;
-			
+
 			if($action!='' && is_array($param)) {
 
 				if($appName!='') {
@@ -62,12 +62,12 @@ class weHook{
 				else {
 					$functionName = 'weCustomHook_'.$action;
 				}
-				
+
 				$hookFile = $this->getHookFile($action, $appName);
 
 				if ($hookFile!='') {
 					include_once($hookFile);
-					
+
 					if(function_exists($functionName)) {
 						eval($functionName.'($param);');
 					}
@@ -75,17 +75,17 @@ class weHook{
 			}
 		}
 	}
-	
+
 	/**
 	 * get custom hook file
-	 * 
-	 * @param string $action 
-	 * @param string $appName 
-	 * 
+	 *
+	 * @param string $action
+	 * @param string $appName
+	 *
 	 * return string
 	 */
 	function getHookFile($action, $appName) {
-		
+
 		$hookFile = '';
 
 		if($appName!='') {
@@ -109,17 +109,15 @@ class weHook{
 				}
 	  		}
 		}
-		
+
 		return $hookFile;
 	}
-	
-	
+
+
 	function __destruct() {
-		
+
 		unset($this);
-		
+
 	}
 
 }
-
-?>

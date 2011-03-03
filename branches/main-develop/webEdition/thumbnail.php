@@ -59,4 +59,3 @@ header("Content-type: image/" . $imageExt . "");
 
 readfile($_SERVER["DOCUMENT_ROOT"] . $thumbpath);
 
-?>

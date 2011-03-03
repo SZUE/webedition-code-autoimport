@@ -138,7 +138,7 @@ class DB_WE extends DB_Sql {
 		if ($this->Query_ID)
 			$this->free();
 
-		if ($this->Debug) {
+		if (self::$Debug){
 			printf("Debug: query = %s<br>\n", $Query_String);
 		}
 		$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);

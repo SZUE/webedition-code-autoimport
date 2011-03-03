@@ -26,34 +26,32 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/loggin
 
 
 class versionsLog extends logging{
-	
-	
+
+
 	public $action;
 	public $data;
-	
-	
+
+
 	function __construct() {
-		
+
 		$this->table = VERSIONS_TABLE_LOG;
 		parent::__construct();
-		
+
 	}
-	
+
 	function saveVersionsLog($logArray, $action=""){
-		
+
 		$this->action = $action;
 		$this->data = serialize($logArray);
-		
+
 		$this->saveLog();
 
 	}
-	
-	function __destruct() {
-		
-		parent::__destruct();
-		
-	}
-	
-}
 
-?>
+	function __destruct() {
+
+		parent::__destruct();
+
+	}
+
+}

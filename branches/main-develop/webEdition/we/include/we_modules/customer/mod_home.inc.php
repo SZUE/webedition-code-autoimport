@@ -33,5 +33,3 @@ $createCustomer = $we_button->create_button("new_customer", "javascript:top.open
 $content = $createCustomer;
 
 $modimage = "customer.gif";
-
-?>

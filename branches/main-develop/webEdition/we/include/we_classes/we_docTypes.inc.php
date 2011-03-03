@@ -436,4 +436,3 @@ class we_docTypes extends we_class {
 
 }
 
-?>

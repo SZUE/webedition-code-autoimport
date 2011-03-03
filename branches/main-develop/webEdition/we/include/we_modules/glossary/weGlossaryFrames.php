@@ -337,7 +337,4 @@ class weGlossaryFrames extends weModuleFrames {
 
 	}
 
-
 }
-
-?>

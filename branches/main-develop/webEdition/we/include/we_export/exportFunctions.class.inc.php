@@ -75,7 +75,7 @@ class exportFunctions {
 					} else {
 						$_text  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 					}
-					
+
 					$_text .= "<webEdition>\n";
 
 					$_file_handler = fopen($_file_name, "wb");
@@ -874,5 +874,3 @@ class exportFunctions {
 		return $_export_success;
 	}
 }
-
-?>

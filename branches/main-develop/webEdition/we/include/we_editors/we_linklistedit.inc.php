@@ -917,4 +917,3 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 	if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 	}
-?>

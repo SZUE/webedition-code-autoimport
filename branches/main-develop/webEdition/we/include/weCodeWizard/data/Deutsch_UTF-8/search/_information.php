@@ -18,9 +18,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $information = array(
-	'foldername' => 'Suche',
+		'foldername' => 'Suche',
 );
 
-?>

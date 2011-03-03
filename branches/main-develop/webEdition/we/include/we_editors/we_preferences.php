@@ -5143,6 +5143,7 @@ else {
 
 				array_push($_settings, array("headline" => g_l('prefs','[safari_wysiwyg]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
+
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "showinputs_default","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {

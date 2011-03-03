@@ -137,7 +137,7 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print '<?php print WE_TOOLS_PATH;?>' . $TOOLNAME;?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print '<?php print g_l('tools','[newFolder"]?>';?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print '<?php print g_l('tools','[newFolder]');?>';?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('tools','[newFolder]');?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('tools','[newFolder]');?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){

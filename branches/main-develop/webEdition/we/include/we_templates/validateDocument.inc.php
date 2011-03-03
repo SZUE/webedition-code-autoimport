@@ -228,5 +228,3 @@
     print we_htmlElement::htmlBody(array('class'=>'weEditorBody', 'onload'=>'setIFrameSize()', 'onresize'=>'setIFrameSize()'),
                     $body);
     print '</html>';
-
-?>

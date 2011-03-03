@@ -458,7 +458,6 @@ if (!$wfchk) {
 
 												} else {
 													$delete_ok = g_l('alert',"[delete_ok]");
-
 												}
 
 												$script .= we_message_reporting::getShowMessageCall(

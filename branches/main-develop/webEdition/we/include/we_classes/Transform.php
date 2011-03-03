@@ -1111,4 +1111,3 @@ class Image_Transform
     }
 }
 
-?>

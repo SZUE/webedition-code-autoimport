@@ -101,8 +101,9 @@
             if($http_response->getHttp_answer('code') == 200){
                 //  change base href -> css of included page is loaded correctly
                 print str_replace('<head>', '<head><base href="http://' . $host . '" />',$http_response->http_body);
-
             } else {    //  no correct answer
+                include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE']  . '/accessibility.inc.php');
+
                 htmlTop();
                 print STYLESHEET;
                 print '</head>
@@ -117,4 +118,3 @@
     } else {
         print ' ... ';
     }
-?>

@@ -1160,7 +1160,6 @@ class we_import_files
 
 	function getHTMLCategory()
 	{
-
 		$we_button = new we_button();
 
 		$_width_size = 300;

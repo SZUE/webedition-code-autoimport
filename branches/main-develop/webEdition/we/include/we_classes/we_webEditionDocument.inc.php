@@ -1219,5 +1219,3 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	*/
 
 }
-
-?>

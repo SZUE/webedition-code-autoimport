@@ -414,5 +414,3 @@ top.selectFile(top.currentID);
 	}
 
 }
-
-?>

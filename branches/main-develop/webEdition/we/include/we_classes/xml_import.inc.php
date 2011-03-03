@@ -22,14 +22,14 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 class XML_Import extends XML_Parser {
-	
+
 	var $current_table = "";
 	var $attribs = array();
 
 	var $element_id = 0;
 	var $content_id = 0;
 	var $db;
-	
+
 	var $store_docs = 0;
 	var $store_templ = 0;
 
@@ -51,7 +51,7 @@ class XML_Import extends XML_Parser {
 		$this->updateIDs();
 	}
 
-	function setImportDirs($doc_id = 0,$temp_id = 0) {		
+	function setImportDirs($doc_id = 0,$temp_id = 0) {
 		$this->store_docs = $doc_id;
 		$this->store_templ = $temp_id;
 	}
@@ -109,7 +109,7 @@ class XML_Import extends XML_Parser {
 
 		$this->db->query($insert);
 		if ($this->current_table == FILE_TABLE || $this->current_table == TEMPLATES_TABLE  || $this->current_table == CONTENT_TABLE)
-			$retID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->current_table,"LastID",$this->db);		
+			$retID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->current_table,"LastID",$this->db);
 
 		$this->idTable[$this->current_table][(isset($oldid))?$oldid:0] = $retID;
 		$this->attribs = array();
@@ -202,7 +202,7 @@ class XML_Import extends XML_Parser {
 				if ($ids!="") $this->db->query("UPDATE $key SET ParentID=".abs($store)." WHERE ID IN($ids);");
 
 				if ($key==FILE_TABLE || $key == TEMPLATES_TABLE) {
-					foreach($val as $k=>$v) {								
+					foreach($val as $k=>$v) {
 						if ($key == TEMPLATES_TABLE) {
 							$this->db->query("SELECT ID FROM ".FILE_TABLE." WHERE TemplateID=".abs($k));
 							while($this->db->next_record()) {
@@ -222,5 +222,3 @@ class XML_Import extends XML_Parser {
 	}
 
 }
-
-?>

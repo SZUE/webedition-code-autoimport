@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,18 +18,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
 
-class weTagData_linkAttribute extends weTagDataAttribute
-{
+class weTagData_linkAttribute extends weTagDataAttribute {
 
 	/**
 	 * @param string $name
 	 * @param boolean $required
 	 */
-	function weTagData_linkAttribute($id, $name, $required = false, $module = '', $value='')
-	{
+	function weTagData_linkAttribute($id, $name, $required = false, $module = '', $value='') {
 
 		parent::weTagDataAttribute($id, $name, $required, $module);
 		$this->Value = $value;
@@ -37,9 +35,7 @@ class weTagData_linkAttribute extends weTagDataAttribute
 	/**
 	 * @return string
 	 */
-
-	function getCodeForTagWizard()
-	{
+	function getCodeForTagWizard() {
 		return '
 					<table class="attribute">
 					<tr>
@@ -54,8 +50,4 @@ class weTagData_linkAttribute extends weTagDataAttribute
 					</tr>
 					</table>';
 	}
-
-
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,11 +18,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 
-class weCodeWizard
-{
+class weCodeWizard {
 
 	/**
 	 * Directory where the snippets are located
@@ -29,15 +28,13 @@ class weCodeWizard
 	 * @var string
 	 */
 	var $SnippetPath = "";
-
 	var $SnippetLanguage = "";
 
 	/**
 	 * PHP 5 constructor
 	 *
 	 */
-	function __construct()
-	{
+	function __construct() {
 		$this->SnippetPath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/weCodeWizard/data/";
 
 		// identify language for code snippets. currently there are only german and english translations so
@@ -52,7 +49,6 @@ class weCodeWizard
 		if (!is_dir($this->SnippetPath . $this->SnippetLanguage)) {
 			$this->SnippetLanguage = "English_UTF-8";
 		}
-
 	}
 
 	/**
@@ -60,10 +56,8 @@ class weCodeWizard
 	 *
 	 * @return weCodeWizard
 	 */
-	function weCodeWizard()
-	{
+	function weCodeWizard() {
 		$this->__construct();
-
 	}
 
 	/**
@@ -71,8 +65,9 @@ class weCodeWizard
 	 *
 	 * @return array
 	 */
-	function _getCustomSnippets()
-	{
+
+	function _getCustomSnippets() {
+
 
 		$SnippetDir = $this->SnippetPath . "custom";
 		if (!is_dir($SnippetDir)) {
@@ -90,19 +85,15 @@ class weCodeWizard
 	 *
 	 * @return array
 	 */
-	function _getStandardSnippets()
-	{
+	function _getStandardSnippets() {
 
 		$SnippetDir = $this->SnippetPath . $this->SnippetLanguage;
 
 		if (!is_dir($SnippetDir)) {
 			return array();
-
 		} else {
 			return $this->_getSnippetsByDir($this->SnippetLanguage);
-
 		}
-
 	}
 
 	/**
@@ -110,8 +101,7 @@ class weCodeWizard
 	 *
 	 * @return array
 	 */
-	function _getSnippetsByDir($SnippetDir, $Depth = 0)
-	{
+	function _getSnippetsByDir($SnippetDir, $Depth = 0) {
 
 		$Snippets = array();
 
@@ -122,56 +112,47 @@ class weCodeWizard
 			// ignore files . and ..
 			if ($_entry == "." || $_entry == "..") {
 				// ignore these
-
-
-			// get the snippets by file if extension is xml
+				// get the snippets by file if extension is xml
 			} else
-				if (!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && eregi(".xml$", $_entry)) {
-					// get the snippet
-					$_snippet = weCodeWizardSnippet::initByXmlFile(
-							$this->SnippetPath . $SnippetDir . "/" . $_entry);
-					$_item = array(
-
-							'type' => 'option',
-							'name' => $_snippet->getName(),
-							'value' => $SnippetDir . "/" . $_entry
-					);
-					$Snippets[] = $_item;
+			if (!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && eregi(".xml$", $_entry)) {
+				// get the snippet
+				$_snippet = weCodeWizardSnippet::initByXmlFile(
+												$this->SnippetPath . $SnippetDir . "/" . $_entry);
+				$_item = array(
+						'type' => 'option',
+						'name' => $_snippet->getName(),
+						'value' => $SnippetDir . "/" . $_entry
+				);
+				$Snippets[] = $_item;
 
 				// enter subdirectory only if depth is smaller than 2
-				} else
-					if (is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && $Depth < 2) {
+			} else
+			if (is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && $Depth < 2) {
 
-						$information = array();
-						$_infoFile = $this->SnippetPath . $SnippetDir . "/" . $_entry . "/" . "_information.php";
-						if (file_exists($_infoFile) && is_file($_infoFile)) {
-							include ($_infoFile);
+				$information = array();
+				$_infoFile = $this->SnippetPath . $SnippetDir . "/" . $_entry . "/" . "_information.php";
+				if (file_exists($_infoFile) && is_file($_infoFile)) {
+					include ($_infoFile);
+				}
 
-						}
+				$_foldername = $_entry;
+				if (isset($information['foldername'])) {
+					$_foldername = $information['foldername'];
+				}
 
-						$_foldername = $_entry;
-						if (isset($information['foldername'])) {
-							$_foldername = $information['foldername'];
-
-						}
-
-						$_folder = array(
-
-								'type' => 'optgroup',
-								'name' => $_foldername,
-								'value' => $this->_getSnippetsByDir($SnippetDir . "/" . $_entry, $Depth)
-						);
-						$Snippets[] = $_folder;
-
-					}
-
+				$_folder = array(
+						'type' => 'optgroup',
+						'name' => $_foldername,
+						'value' => $this->_getSnippetsByDir($SnippetDir . "/" . $_entry, $Depth)
+				);
+				$Snippets[] = $_folder;
+			}
 		}
 		$_dir->close();
 
 		$Depth--;
 
 		return $Snippets;
-
 	}
 
 	/**
@@ -180,8 +161,7 @@ class weCodeWizard
 	 * @param string $type
 	 * @return string
 	 */
-	function getSelect($type = 'standard')
-	{
+	function getSelect($type = 'standard') {
 
 		$_options = array();
 
@@ -193,7 +173,6 @@ class weCodeWizard
 			default :
 				$_options = $this->_getStandardSnippets();
 				break;
-
 		}
 
 		$_select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"weButton.enable('btn_direction_right_applyCode')\">\n";
@@ -205,22 +184,17 @@ class weCodeWizard
 
 					if ($optgroupoption['type'] == 'option') {
 						$_select .= "<option value=\"" . $optgroupoption['value'] . "\">" . $optgroupoption['name'] . "</option>\n";
-
 					}
-
 				}
 				$_select .= "</optgroup>\n";
-
 			} else
-				if ($option['type'] == 'option') {
-					$_select .= "<option value=\"" . $option['value'] . "\">" . $option['name'] . "</option>\n";
-				}
-
+			if ($option['type'] == 'option') {
+				$_select .= "<option value=\"" . $option['value'] . "\">" . $option['name'] . "</option>\n";
+			}
 		}
 		$_select .= "</select>\n";
 
 		return $_select;
-
 	}
 
 	/**
@@ -228,8 +202,7 @@ class weCodeWizard
 	 *
 	 * @return string
 	 */
-	function getJavascript()
-	{
+	function getJavascript() {
 
 		$Js = <<<JS
 <script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
@@ -258,7 +231,6 @@ function YUIdoAjax(value) {
 JS;
 
 		return $Js;
-
 	}
 
 }
@@ -271,5 +243,3 @@ JS;
  * echo $CodeWizard->buildDialog();
  *
  */
-
-?>

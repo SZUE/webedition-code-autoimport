@@ -335,5 +335,3 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 
 }
-
-?>

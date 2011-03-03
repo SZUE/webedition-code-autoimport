@@ -449,5 +449,3 @@ class we_flashDocument extends we_binaryDocument
 
 
 }
-
-?>

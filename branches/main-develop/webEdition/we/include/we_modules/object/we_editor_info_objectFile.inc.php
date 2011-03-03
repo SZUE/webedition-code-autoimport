@@ -94,7 +94,7 @@ if(defined("WORKFLOW_TABLE")){
 	}else{
 		$anzeige = weWorkflowUtility::getLogButton($GLOBALS["we_doc"]->ID,$GLOBALS["we_doc"]->Table);
 	}
-	array_push($parts,array(	"headline"=>g_l('modules_workflow','[workflow]')',
+	array_push($parts,array(	"headline"=>g_l('modules_workflow','[workflow]'),
 								"html"=>$anzeige,
 								"space"=>140,
 								"forceRightHeadline"=>1,

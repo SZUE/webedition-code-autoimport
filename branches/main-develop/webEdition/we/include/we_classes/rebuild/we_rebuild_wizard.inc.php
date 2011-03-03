@@ -1061,4 +1061,3 @@ class we_rebuild_wizard{
 	}
 }
 
-?>

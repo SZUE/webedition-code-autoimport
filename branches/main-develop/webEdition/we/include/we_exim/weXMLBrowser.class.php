@@ -190,8 +190,4 @@ class weXMLBrowser extends XML_Parser{
 	}
 
 
-
 }
-
-
-?>

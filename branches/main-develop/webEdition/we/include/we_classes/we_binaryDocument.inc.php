@@ -329,4 +329,3 @@ class we_binaryDocument extends we_document
 	}
 }
 
-?>

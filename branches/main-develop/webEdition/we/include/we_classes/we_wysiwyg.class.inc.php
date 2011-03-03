@@ -1385,5 +1385,3 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		return $out;
 	}
 }
-
-?>

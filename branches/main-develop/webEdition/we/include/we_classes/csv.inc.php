@@ -179,12 +179,12 @@ class CSVImport extends CSV {
 	var $Enclosure;
 	var $FromCharset;
 	var $ToCharset;
-	
+
 	function CSVImport() {
 		parent::CSV();
 		$this->FieldDelim = ";";
 		if (defined('DEFAULT_CHARSET')) {$this->FromCharset = DEFAULT_CHARSET;$this->ToCharset = DEFAULT_CHARSET;} else {$this->FromCharset = "UTF-8";$this->ToCharset = "UTF-8";}
-		
+
 	}
 
 	function setDelim($delimiter) {
@@ -265,7 +265,7 @@ class CSVImport extends CSV {
 				if ($akt_char == "\\") $akt_char = "";
 				$akt_field_value .= $akt_char;
 
-				if ($head_complete) { 
+				if ($head_complete) {
 					$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
 				}
 				else {
@@ -278,7 +278,7 @@ class CSVImport extends CSV {
 			}
 
 			$this->fetchCursor = 0;
-	
+
 		}
 		else {
 			$this->CSVError[] = "CSV data empty.";
@@ -293,7 +293,7 @@ class CSVImport extends CSV {
 			$fieldnames = ($csv_fieldnames)? 0 : 1;
 			$num_rows = $this->CSVNumRows();
 			$num_fields = $this->CSVNumFields();
-						
+
 			createLocalFolder($path);
 
 			for ($i = 0; $i < $num_rows + $fieldnames; $i++) {
@@ -383,4 +383,3 @@ class CSVFixImport extends CSV {
 	}
 }
 
-?>

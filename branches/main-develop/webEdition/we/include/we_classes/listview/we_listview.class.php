@@ -85,16 +85,16 @@ class we_listview extends listviewBase {
 		$this->defaultCondition=$condition;
 		$this->condition = $condition;
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-		
+
 		$cond_where = ""; // #3763
 		if($this->condition!=""){
-			$condition_sql=$this->makeConditionSql($this->condition);		
+			$condition_sql=$this->makeConditionSql($this->condition);
 			if(!empty($condition_sql)) $cond_where .= " AND (".$condition_sql.")";
 		}
-		
+
 		$this->languages = $languages;
 		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
-		
+
 		if ($this->languages !=''){
 			$where_lang = ' AND (';
 			$langArray = makeArrayFromCSV($this->languages);
@@ -108,14 +108,14 @@ class we_listview extends listviewBase {
 			$where_lang = '';
 		}
 
-		if(stripos($this->order," desc") !== false){//was #3849		
+		if(stripos($this->order," desc") !== false){//was #3849
 			$this->order = str_ireplace(" desc","",$this->order);
 			$this->desc = true;
 		}
 
         $this->numorder = $numorder;
 		$this->hidedirindex=$hidedirindex;
-		$this->order = trim($this->order);    	
+		$this->order = trim($this->order);
 
 		if(	$this->order == "we_id" ||  $this->order == "we_creationdate" || $this->order == "we_filename" || $this->order == "we_moddate" || $this->order == "we_published"){
 
@@ -175,7 +175,7 @@ class we_listview extends listviewBase {
 
 			$sql_tail .= " AND (" . $_wsql. ") ";
 		}
-		
+
 		$sql_tail .= $this->getIdQuery(FILE_TABLE . ".ID");
 
 		if($this->search){
@@ -270,11 +270,11 @@ class we_listview extends listviewBase {
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
-		
+
 		if ($this->customers === "*") {
 			$_idListArray = array();
 		}
-		
+
 		while($this->DB_WE->next_record()){
 			array_push($this->IDs,$this->DB_WE->f("ID"));
 			if($calendar!=""){
@@ -350,7 +350,7 @@ class we_listview extends listviewBase {
 					$ShopVariants = @unserialize ($this->Record["weInternVariantElement"]);
 					if(is_array($ShopVariants) && count($ShopVariants)>0){
 						$this->Record["WE_SHOPVARIANTS"]= count($ShopVariants);
-					}				
+					}
 				}
 
 				$this->Record["WE_PATH"] = $this->Record["wedoc_Path"];
@@ -449,5 +449,3 @@ class we_listview extends listviewBase {
 
 
 }
-
-?>

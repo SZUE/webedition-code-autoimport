@@ -26,7 +26,7 @@ protect();
 
 if(isset($_REQUEST["pnt"])){
 	$what = $_REQUEST["pnt"];
-} else {	
+} else {
 	$what = "frameset";
 }
 
@@ -37,16 +37,16 @@ else $step=0;
 
 
 switch ($what) {
-	
+
 	case "frameset" :
 		print $frames->getHTMLFrameset();
 		break;
-		
-	case "header" : 
+
+	case "header" :
 		print $frames->getHTMLHeader($step);
 		break;
-			
-	case "body" : 
+
+	case "body" :
 		print $frames->getHTMLStep($step);
 		break;
 
@@ -57,10 +57,8 @@ switch ($what) {
 	case "load" :
 		print $frames->getHTMLCmd();
 		break;
-		
+
 	default :
 		die("Unknown command: " . $what . "\n");
 		break;
 }
-
-?>

@@ -178,4 +178,3 @@ class charsetHandler{
 		return $retArr;
 	}
 }
-?>

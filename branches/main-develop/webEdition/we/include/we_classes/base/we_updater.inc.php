@@ -182,6 +182,25 @@
 			if($DB_WE->next_record()) return true; else return false;
 	}
 
+	function hasIndex($tab,$index){
+		$GLOBALS['DB_WE']->query('SHOW INDEX FROM '.mysql_real_escape_string($tab).' WHERE Key_name = "'.$index.'"');
+		return $GLOBALS['DB_WE']->next_record();
+	}
+
+	function updateUnindexedCols($tab,$col){
+			global $DB_WE;
+			$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
+			$query=array();
+			while($DB_WE->next_record()) {
+				if($DB_WE->f('Key')==''){
+					$query[]='ADD INDEX ('.$DB_WE->f('Field').')';
+				}
+			}
+			if(count($query)>0){
+				$DB_WE->query('ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query));
+			}
+	}
+
 	function isTabExist($tab){
 			global $DB_WE;
 			$DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
@@ -206,6 +225,10 @@
 	function addCol($tab,$col,$typ,$pos=""){
 			   global $DB_WE;
 			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
+	}
+
+	function addIndex($tab,$name,$def){
+		$GLOBALS['DB_WE']->query('ALTER TABLE '.mysql_real_escape_string($tab).' ADD INDEX '.$name.' ('.$def.')');
 	}
 
 	function changeColTyp($tab,$col,$newtyp){
@@ -410,6 +433,18 @@
 					} else {
 						$this->addCol($_table,'OF_Language','VARCHAR(5) DEFAULT NULL',' AFTER OF_WebUserID ');
 					}
+					//add indices to all objects
+					$this->updateUnindexedCols($_table,'object_%');
+
+					if(!$this->hasIndex($_table, 'OF_WebUserID')){
+						$this->addIndex($_table,'OF_WebUserID','OF_WebUserID');
+					}
+					if(!$this->hasIndex($_table, 'published')){
+						$this->addIndex($_table,'published','OF_ID,OF_Published,OF_IsSearchable');
+					}
+					if(!$this->hasIndex($_table, 'OF_IsSearchable')){
+						$this->addIndex($_table,'OF_IsSearchable','OF_IsSearchable');
+					}
 				}
 			}
 		}
@@ -426,4 +461,3 @@
 	}
 
 }
-?>

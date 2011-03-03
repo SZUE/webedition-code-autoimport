@@ -39,4 +39,3 @@ if(defined("MESSAGING_SYSTEM") && (!isset($_REQUEST["SEEM_edit_include"]) || !$_
 } else {
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/headermenu.php");
 }
-?>

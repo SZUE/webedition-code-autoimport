@@ -420,6 +420,3 @@ class we_message extends we_msg_proto {
 	return $ret;
     }
 }
-
-
-?>

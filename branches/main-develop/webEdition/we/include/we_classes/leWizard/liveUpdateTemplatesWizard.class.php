@@ -88,6 +88,3 @@ class liveUpdateTemplatesWizarad extends liveUpdateTemplates {
 </html>';
 	}
 }
-
-
-?>

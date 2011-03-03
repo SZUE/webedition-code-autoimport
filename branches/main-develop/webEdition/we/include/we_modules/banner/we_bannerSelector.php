@@ -140,5 +140,3 @@ top.parentID = "'.$this->values["ParentID"].'";
 		}
 	}
 }
-
-?>

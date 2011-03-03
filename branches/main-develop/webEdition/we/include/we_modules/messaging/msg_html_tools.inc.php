@@ -39,5 +39,3 @@ function sort_arrow($name, $href) {
 		return '<input type="image" src="' . $_image_path . '" border="0" alt="" />';
 	}
 }
-
-?>

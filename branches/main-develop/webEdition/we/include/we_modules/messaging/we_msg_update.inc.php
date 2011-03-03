@@ -37,10 +37,10 @@ class we_msg_update extends we_class {
 
 	/* ID from the database record */
 	var $ID=0;
-	
+
 	/* Flag which is set when the file is not new */
 	var $wasUpdate=0;
-	
+
 	var $userid = -1;
 
 	var $username = '';
@@ -48,7 +48,7 @@ class we_msg_update extends we_class {
 	/*****************************************************************/
 	/* Class Methods *************************************************/
 	/*****************************************************************/
-	
+
 	/* Constructor */
 	function we_clipboard() {
 		$this->Name = 'msg_clipboard_' . md5(uniqid(rand()));
@@ -57,4 +57,3 @@ class we_msg_update extends we_class {
 
 }
 	
-?>

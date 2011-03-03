@@ -1187,5 +1187,3 @@ function we_checkName() {
 
 
 }
-
-?>

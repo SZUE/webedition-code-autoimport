@@ -19,17 +19,17 @@
  */
 
 class rpcCopyNavigationFolderCmd extends rpcCmd {
-	
+
 	function execute() {
 		$resp = new rpcResponse();
-		if(		isset($_REQUEST['we_cmd'][0]) && !empty($_REQUEST['we_cmd'][0]) && 
-				isset($_REQUEST['we_cmd'][1]) && !empty($_REQUEST['we_cmd'][1]) && 
+		if(		isset($_REQUEST['we_cmd'][0]) && !empty($_REQUEST['we_cmd'][0]) &&
+				isset($_REQUEST['we_cmd'][1]) && !empty($_REQUEST['we_cmd'][1]) &&
 				isset($_REQUEST['we_cmd'][2]) && !empty($_REQUEST['we_cmd'][2]) &&
 				isset($_REQUEST['we_cmd'][3]) && !empty($_REQUEST['we_cmd'][3]) &&
 				(strpos($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0]) ===false || strpos($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0]) > 0)
 		){
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
-			
+
 			$db = new DB_WE();
 			$query = "SELECT * FROM " . NAVIGATION_TABLE . " WHERE Path LIKE '".mysql_real_escape_string($_REQUEST['we_cmd'][2])."/%' ORDER BY Path";
 			$db->query($query);
@@ -47,7 +47,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd {
 							break;
 						case "Path" :
 							$path = str_replace($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0],$val);
-							$querySet .= ", '".mysql_real_escape_string($path)."'"; 
+							$querySet .= ", '".mysql_real_escape_string($path)."'";
 							break;
 						case "ParentID" :
 							$querySet .= ", '".abs($mapedId[$val])."'";
@@ -73,7 +73,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd {
 					}
 					$query .= $querySet;
 				}
-				$lastInserted = $row['IsFolder'];		
+				$lastInserted = $row['IsFolder'];
 			}
 			if (!$lastInserted) {
 				$query = "INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query;
@@ -88,8 +88,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd {
 		} else {
 			$resp->setData("folders","") ;
 		}
-		
+
 		return $resp;
 	}
 }
-?>

@@ -55,5 +55,3 @@ foreach($_FILES as $_index=>$_file) {
 		break;
 	}
 }
-
-?>

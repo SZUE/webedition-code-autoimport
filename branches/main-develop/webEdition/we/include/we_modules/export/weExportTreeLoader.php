@@ -35,12 +35,12 @@ class weExportTreeLoader{
 	function getItemsFromDB($ParentID=0,$offset=0,$segment=500,$elem="ID,ParentID,Path,Text,Icon,IsFolder",$addWhere="",$addOrderBy=""){
 		$db=new DB_WE();
 		$table=EXPORT_TABLE;
-		
+
 		$items=array();
-		
+
 		$prevoffset=$offset-$segment;
 		$prevoffset=($prevoffset<0) ? 0 : $prevoffset;
-		if($offset && $segment){	
+		if($offset && $segment){
 				$items[]=array(
 										"icon"=>"arrowup.gif",
 										"id"=>"prev_".$ParentID,
@@ -54,16 +54,16 @@ class weExportTreeLoader{
 										"disabled"=>0,
 										"tooltip"=>"",
 										"offset"=>$prevoffset
-				);	
-		}		
-		
+				);
+		}
 
 
-		
+
+
 		$where=" WHERE ParentID=".abs($ParentID)." ".$addWhere;
 
 		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT $offset,$segment;" : ";" ));
-		
+
 		while($db->next_record()){
 
 			if($db->f("IsFolder")==1) $typ=array("typ"=>"group");
@@ -73,7 +73,7 @@ class weExportTreeLoader{
 			$typ["disabled"]=0;
 			$typ["tooltip"]=$db->f("ID");
 			$typ["offset"]=$offset;
-			
+
 			$tt="";
 			//$ttrow=getHash("SELECT * FROM ".RAW_TABLE." WHERE ID='".$db->f("ID")."';",new DB_WE());
 			$ttrow=$db->Record;
@@ -85,9 +85,9 @@ class weExportTreeLoader{
 
 			$fileds["text"] = trim($tt)!="" ? $tt : $db->f("Text");
 			$items[]=array_merge($fileds,$typ);
-			
+
 		}
-		
+
 		$total=f("SELECT COUNT(*) as total FROM $table $where;","total",$db);
 		$nextoffset=$offset+$segment;
 		if($segment && ($total>$nextoffset)){
@@ -103,15 +103,12 @@ class weExportTreeLoader{
 									"disabled"=>0,
 									"tooltip"=>"",
 									"offset"=>$nextoffset
-			);		
-		}		
-		
+			);
+		}
+
 		return $items;
 
 	}
 
 
 }
-
-
-?>

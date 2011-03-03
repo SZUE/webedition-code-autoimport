@@ -23,8 +23,9 @@
  * Provides language strings.
  * Language: English
  */
-'perm_group_title' => "Baner/Statystyki modułu",
- 'NEW_BANNER' => "Użytkownik może tworzyć baner i grupę banerów",
- 'DELETE_BANNER' => "Użytkownik może usuwać baner i grupę banerów",
- 'EDIT_BANNER' => "Użytkownik może edytować baner i grupę banerów",
+$l_perms_banner = array(
+		'perm_group_title' => "Baner/Statystyki modułu",
+		'NEW_BANNER' => "Użytkownik może tworzyć baner i grupę banerów",
+		'DELETE_BANNER' => "Użytkownik może usuwać baner i grupę banerów",
+		'EDIT_BANNER' => "Użytkownik może edytować baner i grupę banerów",
 );

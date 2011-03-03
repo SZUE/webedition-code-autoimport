@@ -25,7 +25,7 @@ class DB_Sql {
 
 	/* public: configuration parameters */
 	var $Auto_Free = 0; ## Set to 1 for automatic mysql_free_result()
-	var $Debug = 0; ## Set to 1 for debugging messages.
+	static $Debug = 0; ## Set to 1 for debugging messages.
 	var $Halt_On_Error = "yes"; ## "yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)
 	var $Seq_Table = "db_sequence";
 
@@ -97,10 +97,10 @@ class DB_Sql {
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if ($Query_String == "")
 		/* The empty query string is passed on from the constructor,
-		 * when calling the class without a query, e.g. in situations
-		 * like these: '$db = new DB_Sql_Subclass;'
-		 */
-			return 0;
+		* when calling the class without a query, e.g. in situations
+		* like these: '$db = new DB_Sql_Subclass;'
+		*/
+		return 0;
 
 		if (!$this->connect()) {
 			return 0; /* we already complained in connect() about that. */
@@ -112,7 +112,7 @@ class DB_Sql {
 			$this->free();
 		}
 
-		if ($this->Debug)
+		if (self::$Debug)
 			printf("Debug: query = %s<br>\n", $Query_String);
 
 		$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);
@@ -301,30 +301,30 @@ class DB_Sql {
 		$res = array();
 
 		/*
-		 * Due to compatibility problems with Table we changed the behavior
-		 * of metadata();
-		 * depending on $full, metadata returns the following values:
-		 *
-		 * - full is false (default):
-		 * $result[]:
-		 *   [0]["table"]  table name
-		 *   [0]["name"]   field name
-		 *   [0]["type"]   field type
-		 *   [0]["len"]    field length
-		 *   [0]["flags"]  field flags
-		 *
-		 * - full is true
-		 * $result[]:
-		 *   ["num_fields"] number of metadata records
-		 *   [0]["table"]  table name
-		 *   [0]["name"]   field name
-		 *   [0]["type"]   field type
-		 *   [0]["len"]    field length
-		 *   [0]["flags"]  field flags
-		 *   ["meta"][field name]  index of field named "field name"
-		 *   The last one is used, if you have a field name, but no index.
-		 *   Test:  if (isset($result['meta']['myfield'])) { ...
-		 */
+		* Due to compatibility problems with Table we changed the behavior
+		* of metadata();
+		* depending on $full, metadata returns the following values:
+		*
+		* - full is false (default):
+		* $result[]:
+		*   [0]["table"]  table name
+		*   [0]["name"]   field name
+		*   [0]["type"]   field type
+		*   [0]["len"]    field length
+		*   [0]["flags"]  field flags
+		*
+		* - full is true
+		* $result[]:
+		*   ["num_fields"] number of metadata records
+		*   [0]["table"]  table name
+		*   [0]["name"]   field name
+		*   [0]["type"]   field type
+		*   [0]["len"]    field length
+		*   [0]["flags"]  field flags
+		*   ["meta"][field name]  index of field named "field name"
+		*   The last one is used, if you have a field name, but no index.
+		*   Test:  if (isset($result['meta']['myfield'])) { ...
+		*/
 
 		// if no $table specified, assume that we are working with a query
 		// result
@@ -342,7 +342,6 @@ class DB_Sql {
 		$count = @mysql_num_fields($id);
 
 		// made this IF due to performance (one if is faster than $count if's)
-		if (!$full) {
 			for ($i = 0; $i < $count; $i++) {
 				$res[$i]["table"] = mysql_field_table($id, $i);
 				$res[$i]["name"] = mysql_field_name($id, $i);
@@ -350,15 +349,9 @@ class DB_Sql {
 				$res[$i]["len"] = mysql_field_len($id, $i);
 				$res[$i]["flags"] = mysql_field_flags($id, $i);
 			}
-		} else { // full
+		if ($full) {
 			$res["num_fields"] = $count;
-
 			for ($i = 0; $i < $count; $i++) {
-				$res[$i]["table"] = mysql_field_table($id, $i);
-				$res[$i]["name"] = mysql_field_name($id, $i);
-				$res[$i]["type"] = mysql_field_type($id, $i);
-				$res[$i]["len"] = mysql_field_len($id, $i);
-				$res[$i]["flags"] = mysql_field_flags($id, $i);
 				$res["meta"][$res[$i]["name"]] = $i;
 			}
 		}

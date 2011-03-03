@@ -349,6 +349,3 @@ class weCustomerTreeLoader{
 	}
 
 }
-
-
-?>

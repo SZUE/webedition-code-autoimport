@@ -55,10 +55,10 @@
 			if($log){
 				weBackupUtil::addLog('Parsing data');
 			}
-			
+
 			$parser = new weXMLParser();
 			//if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){ vor 4092
-			if (defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!=''){// Fix für 4092, in Verbindung mit alter Version für bug 3412 löst das beide Situationen
+			if (defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!=''){// Fix fï¿½r 4092, in Verbindung mit alter Version fï¿½r bug 3412 lï¿½st das beide Situationen
 				$parser->parse($data,DEFAULT_CHARSET);
 			} else {
 				$parser->parse($data);
@@ -118,8 +118,8 @@
 							if(weContentProvider::needCoding($classname,$name)){
 								$object->$name = weContentProvider::decode($parser->getNodeData());
 							} else {
-								$object->$name = $parser->getNodeData();//original mit Bug #3412 aber diese Version löst 4092
-								// ehemaliger Fix Bug #3412, nicht mehr notwendig dank fix oben für 4092
+								$object->$name = $parser->getNodeData();//original mit Bug #3412 aber diese Version lï¿½st 4092
+								// ehemaliger Fix Bug #3412, nicht mehr notwendig dank fix oben fï¿½r 4092
 								/*
 								if($charset=="UTF-8"){
 									$object->$name = utf8_encode($parser->getNodeData());
@@ -133,7 +133,7 @@
 							}
 
 						}
-						
+
 						//correct table name in tblversions
 						if(isset($object->table) && $object->table=="tblversions") {
 							if(isset($object->documentTable)) {
@@ -174,7 +174,7 @@
 					}
 					if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
 							if (method_exists($object,'convertCharsetEncoding')) 	$object->convertCharsetEncoding($_SESSION['weBackupVars']['encoding'],DEFAULT_CHARSET);
-					}				
+					}
 					if(isset($object->Path) && $object->Path == '/webEdition/we/include/conf/we_conf_global.inc.php'){
 						weBackupImport::handlePrefs($object);
 					} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path,'/webEdition/we/include/we_modules/spellchecker/')===0) && !$_SESSION['weBackupVars']['handle_options']['spellchecker']){
@@ -193,8 +193,8 @@
 					$parser->gotoMark('first');
 
 				}
-				
-				
+
+
 
 				if(isset($object)){
 					unset($object);
@@ -219,7 +219,7 @@
 						return true;
 					}
 				break;
-				
+
 				case 'we:tableadv':
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTable.class.php');
 					$table = weBackupUtil::getRealTableName($attribs['name']);
@@ -248,7 +248,7 @@
 					$classname = 'weBinary';
 					return true;
 				break;
-				
+
 				case 'we:version':
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weVersion.class.php');
 					$object = new weVersion();
@@ -284,8 +284,3 @@
 
 
 }
-
-
-
-
-?>

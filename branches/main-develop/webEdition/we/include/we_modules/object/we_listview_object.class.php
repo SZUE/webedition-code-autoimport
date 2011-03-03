@@ -54,7 +54,7 @@ class we_listview_object extends listviewBase {
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
 		$this->languages = $languages;
-		
+
 		$this->seeMode   = $seeMode;	//	edit objects in seeMode
 		$this->searchable = $searchable;
 		$this->docID = $docID;
@@ -67,7 +67,7 @@ class we_listview_object extends listviewBase {
 		$this->hidedirindex=$hidedirindex;
 
 		$_obxTable = OBJECT_X_TABLE.$this->classID;
-		
+
 		if ($this->languages !=''){
 			$where_lang = ' AND (';
 			$langArray = makeArrayFromCSV($this->languages);
@@ -147,19 +147,19 @@ class we_listview_object extends listviewBase {
 		}
 
 		if($sqlParts["tables"] || $we_predefinedSQL!=""){
-			
+
 				if($we_predefinedSQL!="") {
 					$q = $we_predefinedSQL;
 					$this->DB_WE->query($q);
 					$this->anz_all = $this->DB_WE->num_rows();
 					$q = $we_predefinedSQL.(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
-					
+
 				}
 				else {
 					$_idTail = $this->getIdQuery($_obxTable . ".OF_ID");
-					
+
 					$ws_tail = "";
-					
+
 					if($this->workspaceID != ""){
 						$workspaces = makeArrayFromCSV($this->workspaceID);
 						$cond = array();
@@ -184,7 +184,7 @@ class we_listview_object extends listviewBase {
 				}
 				$this->DB_WE->query($q);
 				$this->anz = $this->DB_WE->num_rows();
-	
+
 				if ($this->customers === "*") {
 					$_idListArray = array();
 					while($this->DB_WE->next_record()) {
@@ -202,11 +202,11 @@ class we_listview_object extends listviewBase {
 						}
 					}
 					unset($_idListArray);
-	
+
 					$this->DB_WE->seek(0);
-	
+
 				}
-			
+
 
 		}else{
 			$this->anz_all = 0;
@@ -244,7 +244,7 @@ class we_listview_object extends listviewBase {
 						$foo = $this->fillMatrix($matrix,$name,$db);
 						$joinWhere .= " ".OBJECT_X_TABLE.$classID.".object_".$name."=". OBJECT_X_TABLE.$name.".OF_ID AND ".($foo ? "$foo AND " : "");
 					}
-				}else{ 
+				}else{
 					if( !isset($matrix[$name])) {
 						$matrix[$name]["type"] = $type;
 						$matrix[$name]["table"] = $table;
@@ -272,7 +272,7 @@ class we_listview_object extends listviewBase {
 	}
 
 	function makeSQLParts($matrix,$classID,$order,$cond){
-		
+
 		$out = array();
 		$from = array();
 		$orderArr = array();
@@ -365,13 +365,13 @@ class we_listview_object extends listviewBase {
 		}
 		$out["order"] = $order;
 		$out["tables"] = makeCSVFromArray($tb);
-		
+
 		if (count($tb) > 1) {
 			$out["groupBy"] = " GROUP BY " . OBJECT_X_TABLE . $classID . ".ID ";
 		} else {
 			$out["groupBy"] = "";
 		}
-		
+
 		$out["publ_cond"] = "";
 		foreach($tb as $t){
 			$out["publ_cond"] .= " ( $t.OF_Published > 0 OR $t.OF_ID = 0) AND ";
@@ -411,17 +411,17 @@ class we_listview_object extends listviewBase {
 				if ($this->objectseourls && $this->DB_WE->Record['OF_Url']!='' && show_SeoLinks() ){
 					if ($this->DB_WE->Record['OF_TriggerID']!=0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->Record['OF_TriggerID']));
-					}		
+					}
 					if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'. $this->DB_WE->Record['OF_Url'];
 					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'. $this->DB_WE->Record['OF_Url'];
-					}				
+					}
 				} else {
 					if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->DB_WE->Record["we_WE_PATH"] = $this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					} else {
-						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];					
+						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					}
 				}
 				$this->DB_WE->Record["we_WE_TRIGGERID"] = isset($this->DB_WE->Record["OF_TriggerID"]) ? $this->DB_WE->Record["OF_TriggerID"] : 0;
@@ -434,7 +434,7 @@ class we_listview_object extends listviewBase {
 					$ShopVariants = @unserialize ($this->DB_WE->Record["we_weInternVariantElement"]);
 					if(is_array($ShopVariants) && count($ShopVariants)>0){
 						$this->DB_WE->Record["we_WE_SHOPVARIANTS"]= count($ShopVariants);
-					}				
+					}
 				}
 				// for seeMode #5317
 				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?$paramName=".$this->DB_WE->Record["OF_ID"];
@@ -468,5 +468,3 @@ class we_listview_object extends listviewBase {
 
 
 }
-
-?>

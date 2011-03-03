@@ -32,7 +32,7 @@ class treePopup{
 	var $Options = "";
 	var $onChange = "";
 	var $width = "";
-	
+
 	function treePopup($size,$multiple,$name,$table,$showEntries = false,$onChange=""){
 		$this->size=$size;
 		$this->multiple=$multiple;
@@ -73,7 +73,7 @@ class treePopup{
 		for($i=0;$i<$nbsp;$i++){$spaces .= "&nbsp;";}
 		$nf = $this->search($startEntry,$filter);
 		if(sizeof($nf)){
-	
+
 			$flag=false;
 			for($ai = 0; $ai < sizeof($nf); $ai++){
 				$newAst = $zweigEintrag;
@@ -97,5 +97,3 @@ class treePopup{
 		}
 	}
 }
-
-?>

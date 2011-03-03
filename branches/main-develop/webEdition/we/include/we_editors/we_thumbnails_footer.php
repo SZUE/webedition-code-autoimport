@@ -69,4 +69,3 @@ $cancelbut = $we_button->create_button("close", "javascript:".((isset($_REQUEST[
 
 print we_htmlElement::htmlBody(array("class"=>"weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "",0) . "</html>");
 
-?>

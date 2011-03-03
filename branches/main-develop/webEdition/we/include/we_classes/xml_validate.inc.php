@@ -86,10 +86,10 @@ class XML_Validate extends XML_Parser {
 		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly", "Text","SerializedArray", "Templates", "Workspaces", "DefaultWorkspaces","Users", "strOrder",
 		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc","CSS","CacheType","CacheLifeTime");
 */
-	//nur die vermeintlich gewünschten
+	//nur die vermeintlich gewï¿½nschten
 	var $clsNode = array("ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition", "OwnersReadOnly", "ParentID", "ParentPath", "Text",
 		"Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "EditPageNr", "CopyID", "Owners",
-		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners",         "Extension", "IsDynamic", "Published", "Category", "IsSearchable",  
+		"CreatorID", "ModifierID", "DefaultInit", "RestrictOwners",         "Extension", "IsDynamic", "Published", "Category", "IsSearchable",
 		"schedArr", "WorkspaceFlag", "RestrictUsers", "UsersReadOnly",       "SerializedArray", "Templates", "Workspaces",         "Users", "strOrder",
 		"Category", "DefaultCategory", "DefaultText", "DefaultValues", "DefaultTitle", "DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID", "DefaultDesc"           );
 
@@ -241,5 +241,3 @@ class XML_Validate extends XML_Parser {
 	}
 
 }
-
-?>

@@ -1927,5 +1927,3 @@ class weCustomerEIWizard{
 	}
 
 }
-
-?>

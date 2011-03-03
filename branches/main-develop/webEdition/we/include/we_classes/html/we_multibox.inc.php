@@ -348,5 +348,3 @@ function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $ov
 
 
 }
-
-?>

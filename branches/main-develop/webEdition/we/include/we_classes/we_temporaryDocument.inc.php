@@ -194,7 +194,3 @@ class we_temporaryDocument
 	}
 
 }
-
-
-
-?>

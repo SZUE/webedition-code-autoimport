@@ -258,6 +258,3 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 ";
 
 }
-
-
-?>

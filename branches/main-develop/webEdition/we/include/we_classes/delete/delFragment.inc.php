@@ -90,6 +90,3 @@ class delFragment extends taskFragment{
 		print "<html><head><title></title></head>";
 	}
 }
-
-
-?>

@@ -273,4 +273,3 @@ if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "info"){
 } else {
 	$_loginTable = $_table->getHtmlCode() . '<input type="image" width="1" height="1" src="/webEdition/images/pixel.gif"/>';
 }
-?>

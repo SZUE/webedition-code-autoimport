@@ -218,5 +218,3 @@ class liveUpdateHttp {
 		return $html;
 	}
 }
-
-?>

@@ -46,4 +46,3 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weBack
 			error_log(__FILE__ . " unknown reference: $what");
 	}
 
-?>

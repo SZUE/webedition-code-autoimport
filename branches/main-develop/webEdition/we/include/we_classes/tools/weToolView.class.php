@@ -334,4 +334,3 @@ class weToolView {
 
 }
 
-?>

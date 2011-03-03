@@ -19,24 +19,24 @@
  */
 
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExIm.class.php');
-	
+
 	class weImportUpdater extends weXMLExIm {
-		
+
 		var $RefTable;
-		
+
 		var $UpdateItemsCount = 1;
-		
+
 		var $Patterns;
-		
+
 		var $debug = false;
-		
+
 		function weImportUpdater() {
-			$this->RefTable = new RefTable();		
+			$this->RefTable = new RefTable();
 		}
-		
-		
+
+
 		function updateObject(&$object){
-			
+
 			if($this->debug) {
 				debug("Updating object\n");
 				debug("Id:" . $object->ID . "\n");
@@ -45,7 +45,7 @@
 			}
 
 			$this->Patterns = new weSearchPatterns();
-			
+
 			if(isset($object->MasterTemplateID) && $object->MasterTemplateID){
 				$ref=$this->RefTable->getRef(
 					array(
@@ -61,9 +61,9 @@
 
 			if(isset($object->ClassName) && $object->ClassName=="we_template"){
 				$this->updateTemplate($object);
-								
+
 			}
-			
+
 			if($this->debug) {
 				debug("Updating TemplateID property\n");
 			}
@@ -91,7 +91,7 @@
 				}
 
 			}
-			
+
 			if($this->debug) {
 				debug("Updating DocType property\n");
 			}
@@ -105,7 +105,7 @@
 				if($ref) $object->DocType=$ref->ID;
 				else $object->DocType=0;
 			}
-			
+
 			if($this->debug) {
 				debug("Updating Category property\n");
 			}
@@ -128,42 +128,42 @@
 				}
 
 			}
-			
+
 			// update class for embedded object
 			if(isset($object->ClassName) && ($object->ClassName=="we_object") && ereg("object_([0-9])+",implode(',',array_keys($object->SerializedArray)))) {
 				$this->updateObjectModuleData($object);
 			}
-						
+
 			//update binary elements
 			if(isset($object->elements)){
 				$this->updateElements($object);
 			}
-			
+
 			if(isset($object->ContentType) && ($object->ContentType == 'weNavigation' || $object->ContentType == 'weNavigationRule')) {
 				$this->updateNavigation($object);
 			}
-			
+
 			if($object->ClassName=="we_docTypes"){
 				$this->updateDocType($object);
 			}
-			
+
 			if($this->debug) {
 				debug("Saving object...\n");
 			}
-			
+
 			weXMLExIm::saveObject($object);
-			
+
 			if($this->debug) {
 				debug("Object saved\n");
 			}
 
 		}
 
-		
+
 		function updateElements(&$object) {
-			
+
 			if(isset($object->elements)){
-				
+
 				if($this->debug) {
 					debug("Updating elements\n");
 				}
@@ -174,12 +174,12 @@
 					$new_defs = array();
 					$del_defs = array();
 				}
-				
+
 				foreach($object->elements as $k=>$element) {
 					if($this->debug) {
 						debug("Updating object element " . $k . " \n");
 					}
-					
+
 					if(ereg('intID',$k) || ereg('LinkID',$k) || ereg('RollOverID',$k)){
 							if(isset($object->elements[$k]['dat'])){
 								$ref=$this->RefTable->getRef(
@@ -214,7 +214,7 @@
 					}
 
 					if(isset($object->ClassName) && ($object->ClassName=="we_objectFile")) {
-						
+
 						if(ereg("we_object_([0-9])+_path",$k,$regs)){
 							$ref=$this->RefTable->getRef(
 									array(
@@ -254,7 +254,7 @@
 								}
 							}
 						}
-						
+
 						if($object->elements[$k]['type']=='img' || $object->elements[$k]['type']=='binary') {
 							$objref=$this->RefTable->getRef(
 									array(
@@ -262,14 +262,14 @@
 										'Table'=>FILE_TABLE
 									)
 							);
-							
+
 							if($objref){
 								$object->elements[$k]['dat']=$objref->ID;
 							}
 						}
-						
-						
-						
+
+
+
 					}
 
 					if(isset($object->ClassName) && ($object->ClassName=="we_object") && ereg("object_([0-9])+([a-zA-Z]*[0-9]*)",$k,$regs)) {
@@ -288,7 +288,7 @@
 					}
 
 				}
-				
+
 				// update object for embedded object
 				if(isset($new_elements) && count($new_elements)){
 					foreach ($del_elements as $delid) unset($object->elements[$delid]);
@@ -307,10 +307,10 @@
 							$source = $object->getElement("data");
 							$this->updateSource($this->Patterns->ext_patterns,$source,"Path");
 							$object->setElement("data",$source);
-	
-					}	
+
+					}
 				}
-								
+
 				// update elements serialized data
 				if(isset($object->IsBinary) && $object->IsBinary!=1) {
 					if($this->debug) {
@@ -333,25 +333,25 @@
 									$object->elements[$ek]["dat"] = $source;
 								}
 							}
-	
+
 						}
-	
+
 					}
 				}
 			}
 		}
 
-		
+
 		function updateTemplate(&$object) {
-			
+
 			if(isset($object->ClassName) && $object->ClassName=="we_template"){
-				
+
 				if($this->debug) {
 						debug("Updating template source...\n");
 				}
-				
+
 				$source=$object->getElement("data");
-								
+
 				$this->updateSource($this->Patterns->doc_patterns["id"],$source,'ID');
 				$this->updateSource($this->Patterns->doc_patterns["path"],$source,'Path');
 				if(defined('OBJECT_TABLE')) {
@@ -359,25 +359,25 @@
 					$this->updateSource($this->Patterns->doc_patterns["path"],$source,'Path',OBJECT_FILES_TABLE);
 					$this->updateSource($this->Patterns->class_patterns,$source,'ID',OBJECT_TABLE);
 				}
-				
+
 				$this->updateSource($this->Patterns->navigation_patterns,$source,'ID',NAVIGATION_TABLE);
-				
+
 				$match = array();
-				
+
 				$this->updateSource($this->Patterns->tmpl_patterns,$source,'ID',TEMPLATES_TABLE);
-				
+
 				// must be at the end
 				$this->updateSource($this->Patterns->special_patterns,$source,'ID',FILE_TABLE);
-								
+
 				$object->setElement("data",$source);
-								
+
 			}
-			
+
 		}
-		
-		
+
+
 		function updateObjectModuleData(&$object) {
-			
+
 			if(isset($object->ClassName) && ($object->ClassName=="we_object") && ereg("object_([0-9])+",implode(',',array_keys($object->SerializedArray)))) {
 				if($this->debug) {
 						debug("Updating object module data...\n");
@@ -406,10 +406,10 @@
 			}
 
 		}
-		
-		
+
+
 		function updateDocType(&$object) {
-			
+
 			if($object->ClassName=="we_docTypes"){
 				if($this->debug) {
 						debug("Updating doctype object...\n");
@@ -424,9 +424,9 @@
 						$object->ParentPath = '/';
 					}
 				}
-				
+
 				if(isset($object->Templates) && strlen($object->Templates)>0) {
-					
+
 					$_tids = makeArrayFromCSV($object->Templates);
 					$_new_tids = array();
 					foreach ($_tids as $_tid) {
@@ -438,14 +438,14 @@
 						);
 						if($_ref) {
 							$_new_tids[] = $_ref->ID;
-						} 
+						}
 					}
-					$object->Templates = makeCSVFromArray($_new_tids);	
+					$object->Templates = makeCSVFromArray($_new_tids);
 				}
 			}
-			
+
 		}
-		
+
 		function updateNavigation(&$object) {
 			if(isset($object->ContentType) && $object->ContentType == 'weNavigation') {
 				if($this->debug) {
@@ -455,10 +455,10 @@
 					$this->updateField($object,'LinkID',FILE_TABLE);
 				}
 				if(isset($object->Selection) && $object->Selection=='dynamic') {
-					
+
 					switch ($object->SelectionType) {
-					
-						case 'doctype':											
+
+						case 'doctype':
 							$this->updateField($object,'DocTypeID',DOC_TYPES_TABLE);
 							$this->updateField($object,'FolderID',FILE_TABLE);
 						break;
@@ -470,45 +470,45 @@
 								$this->updateField($object,'WorkspaceID',OBJECT_FILES_TABLE);
 							}
 						break;
-						
+
 						case 'category':
 							$this->updateField($object,'FolderID',CATEGORY_TABLE);
 							if($object->LinkSelection == 'intern') {
 								$this->updateField($object,'UrlID',FILE_TABLE);
 							}
 						break;
-						
+
 					}
-												
-				} 
-				
+
+				}
+
 				if(isset($object->Selection) && $object->Selection=='static'){
 
-					
-					
+
+
 					switch ($object->SelectionType) {
 
 						case 'docLink' :
-							$this->updateField($object,'LinkID',FILE_TABLE);							
-						break;					
+							$this->updateField($object,'LinkID',FILE_TABLE);
+						break;
 						case 'objLink' :
-							$this->updateField($object,'LinkID',OBJECT_FILES_TABLE);							
-						break;						
+							$this->updateField($object,'LinkID',OBJECT_FILES_TABLE);
+						break;
 						case 'catLink' :
 							$this->updateField($object,'LinkID',CATEGORY_TABLE);
 							if($object->LinkSelection == 'intern') {
 								$this->updateField($object,'UrlID',FILE_TABLE);
-							}							
-						break;					
+							}
+						break;
 					}
 				}
 			}
-			
+
 			if(isset($object->ContentType) && $object->ContentType == 'weNavigationRule') {
-				
+
 				$this->updateField($object,'NavigationID',NAVIGATION_TABLE);
 				$this->updateField($object,'DoctypeID',DOC_TYPES_TABLE);
-				
+
 				if($object->SelectionType=='classname') {
 					if(defined('OBJECT_TABLE')) {
 						$this->updateField($object,'FolderID',OBJECT_FILES_TABLE);
@@ -516,18 +516,18 @@
 				} else {
 					$this->updateField($object,'FolderID',FILE_TABLE);
 				}
-				
+
 				if(defined('OBJECT_TABLE')) {
 					$this->updateField($object,'ClassID',OBJECT_TABLE);
 					$this->updateField($object,'WorkspaceID',OBJECT_FILES_TABLE);
 				}
 			}
-			
+
 			if(isset($object->ContentType) && ($object->ContentType == 'weNavigation' || $object->ContentType == 'weNavigationRule')) {
 				if(isset($object->Categories) && is_array($object->Categories)) {
 					$_cats = $object->Categories;
 				} else if(isset($object->Categories)){
-					$_cats = makeArrayFromCSV($object->Categories);				
+					$_cats = makeArrayFromCSV($object->Categories);
 				} else {
 					$_cats = array();
 				}
@@ -547,8 +547,8 @@
 				}
 			}
 		}
-		
-		
+
+
 		function updateField(&$object,$field,$table) {
 
 			$_ref=$this->RefTable->getRef(
@@ -560,11 +560,11 @@
 
 			if($_ref) {
 					$object->$field = $_ref->ID;
-			}			
-			
+			}
+
 		}
-		
-		
+
+
 		function updateArray(&$array) {
 			foreach ($array as $key=>$value) {
 				// the condition is passed for key=0 ??!!??
@@ -594,7 +594,7 @@
 								foreach ($_item2 as $_k3=>$_item3){
 									if(in_array('bdid',array_keys($_item3))){
 										if(!empty($source[$_k1][$_k2][$_k3]['bdid'])){
-											
+
 											$ref=$this->RefTable->getRef(
 												array(
 													'OldID'=>$source[$_k1][$_k2][$_k3]['bdid'],
@@ -611,7 +611,7 @@
 						}
 					}
 				}
-				
+
 			} else {
 				$match = array();
 				foreach($patterns as $pattern){
@@ -625,20 +625,20 @@
 													$match[1][$k].$_new_id.$match[3][$k],
 													$source
 									);
-								} else {				
+								} else {
 									$ref=$this->RefTable->getRef(
 										array(
 											"Old".$field=>$include,
 											"Table"=>$table
 										)
 									);
-									if($ref && isset($match[3][$k])){									
+									if($ref && isset($match[3][$k])){
 										$source=str_replace(
 														$match[1][$k].$match[2][$k].$match[3][$k],
 														$match[1][$k].$ref->$field.$match[3][$k],
 														$source
 										);
-												
+
 									}
 								}
 							}
@@ -648,8 +648,5 @@
 			}
 
 		}
-		
+
 	}
-
-
-?>

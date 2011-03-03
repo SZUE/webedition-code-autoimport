@@ -44,4 +44,3 @@ define('MSG_ACTION_DONE', 4);
 /* ToDO properties */
 define('MSG_TODO_PROP_NONE', 0);
 define('MSG_TODO_PROP_IMMOVABLE', 1);
-?>

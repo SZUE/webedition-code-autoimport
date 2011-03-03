@@ -311,8 +311,7 @@ class we_template extends we_document
 			$code = eregi_replace("(</body>)","$postContent\\1",$code);
 
 		}else if(!$this->hasStartAndEndTag("html",$code) && !$this->hasStartAndEndTag("head",$code) && !$this->hasStartAndEndTag("body",$code)){
-			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])): ?><?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]): ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php endif ?>
-'.$head.'</head>
+			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])): ?><?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]): ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php endif ?>'.$head.'</head>
 <body <?php if(isset($we_editmode) && $we_editmode) print " onUnload=\"doUnload()\""; ?>>
 '.$preContent.'<?php endif ?>'.$code.'<?php if((!isset($WE_HTML_HEAD_BODY) || !$WE_HTML_HEAD_BODY ) && (isset($we_editmode) && $we_editmode)): ?>'.$postContent.'
 </body></html><?php $WE_HTML_HEAD_BODY = true; ?><?php endif ?>';

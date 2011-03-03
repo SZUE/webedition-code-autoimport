@@ -112,4 +112,3 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 		return $cats->getTableRows();
 	}
 }
-?>

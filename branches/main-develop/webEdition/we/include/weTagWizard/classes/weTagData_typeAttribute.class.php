@@ -54,7 +54,7 @@ class weTagData_typeAttribute extends weTagDataAttribute
 
 		$keys = array();
 		$values = array();
-		
+
 		$keys[] = '';
 		$values[] = g_l('taged','[select_type]');
 
@@ -99,4 +99,3 @@ class weTagData_typeAttribute extends weTagDataAttribute
 	}
 }
 
-?>

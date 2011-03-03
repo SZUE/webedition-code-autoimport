@@ -62,4 +62,3 @@ class MultiDirTemplateAndDefaultChooser extends MultiDirAndTemplateChooser{
 
 
 }
-?>

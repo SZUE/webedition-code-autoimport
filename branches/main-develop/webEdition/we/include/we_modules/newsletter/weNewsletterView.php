@@ -52,8 +52,6 @@ class weNewsletterView {
 	var $cmdFrame;
 
 	function weNewsletterView() {
-
-	function weNewsletterView() {
 		$this->db = new DB_WE();
 		$this->newsletter = new weNewsletter();
 
@@ -2914,5 +2912,3 @@ class weNewsletterView {
 
 
 }
-
-?>

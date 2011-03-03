@@ -20,22 +20,22 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_codeConvertor.inc.php");
-	
+
 define("EOF",-999999);
 
-class we_rtf2html{        
+class we_rtf2html{
     var $current=-1;
     var $fileContent="";
     var $htmlOut="";
     var $stack=array();
     var $align=array();
-    
+
     var $skip=false;
 
     var $group=0;
     var $skip_group=0;
     var $first_control=0;
-    
+
     var $dflFont=true;
     var $dflSize=true;
     var $dflColor=true;
@@ -56,10 +56,10 @@ class we_rtf2html{
     var $applySize=true;
     var $applyColor=true;
     var $bulletPara=false;
-    
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------        
-    
+
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
+
     function we_rtf2html($fileName,$applyFontNames=true,$applyFontSize=true,$applyFontColor=true){
 	  $tempName = TMP_DIR."/".md5(uniqid(rand(),1));
 	  move_uploaded_file($fileName,$tempName);
@@ -68,13 +68,13 @@ class we_rtf2html{
       $this->applyNames=$applyFontNames;
       $this->applySize=$applyFontSize;
       $this->applyColor=$applyFontColor;
-                 
+
       $fp=fopen($fileName,"rb");
       if ($fp) {
         $this->fileContent = @fread ($fp, @filesize ($fileName));
       }
       fclose($fp);
-      
+
       $this->initControlTable();
       $this->colectInfo();
 
@@ -87,22 +87,22 @@ class we_rtf2html{
 		   $this->htmlOut = eregi_replace('<\?[^>]+>','',$this->fileContent);
       }
 
-    }    
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+    }
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
 	function correctLists(){
 		$this->htmlOut = eregi_replace("</li><br>(\r?\n)<li>",'</li>\1<li>',$this->htmlOut);
 		$this->htmlOut = eregi_replace("<br>(\r?\n)<li>",'<ul>\1<li>',$this->htmlOut);
 		$this->htmlOut = str_replace('</li><br>','</li></ul>',$this->htmlOut);
 	}
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
-    function initControlTable(){      
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
+    function initControlTable(){
      $this->rtf_cons[0]=array("b",          "property",    "<b>","</b>");
      $this->rtf_cons[1]=array("ul",          "property",    "<u>","</u>");
-     $this->rtf_cons[2]=array("i",          "property",    "<i>","</i>");          
+     $this->rtf_cons[2]=array("i",          "property",    "<i>","</i>");
      $this->rtf_cons[3]=array("fs",        "property",     "<font style=\"{font-size=%spt}\">","</font>");
-     $this->rtf_cons[4]=array("tab",       "property",     "	","");                         
+     $this->rtf_cons[4]=array("tab",       "property",     "	","");
      $this->rtf_cons[6]=array("cols",       "property",    "","");
      $this->rtf_cons[7]=array("sbknone",    "property",    "","");
      $this->rtf_cons[8]=array("sbkcol",     "property",    "","");
@@ -171,8 +171,8 @@ class we_rtf2html{
      $this->rtf_cons[81]=array("title",     "jump",    "","");
      $this->rtf_cons[82]=array("txe",       "jump",    "","");
      $this->rtf_cons[83]=array("xe",        "jump",    "","");
-     $this->rtf_cons[84]=array("{",         "spec_char",    '{'); 
-     $this->rtf_cons[85]=array("}",         "spec_char",    '}'); 
+     $this->rtf_cons[84]=array("{",         "spec_char",    '{');
+     $this->rtf_cons[85]=array("}",         "spec_char",    '}');
      $this->rtf_cons[86]=array("\\",        "spec_char",    '\\');
      $this->rtf_cons[87]=array("f",         "property",    "<font face=\"%s\">","</font>");
      $this->rtf_cons[88]=array("pntext",    "property",    "<li>","</li>");
@@ -193,46 +193,46 @@ class we_rtf2html{
      $this->rtf_cons[105]=array("\r",       "spec_char",    "<br>\n","");
      $this->rtf_cons[106]=array("\n",       "spec_char",    "<br>\n","");
 	 $this->rtf_cons[107]=array("panose",   "special",    "","");
-    }    
-#-------------------------------------------------------------------------------------------    
+    }
 #-------------------------------------------------------------------------------------------
-	function colectInfo(){ 
-     
+#-------------------------------------------------------------------------------------------
+	function colectInfo(){
+
 		$ch="";
 		$infocon="";
 		$kind=0; //1-font table; 2-color table;
 		$fonttbl="";
 		$colortbl="";
-     
-		$tableproc=false; 
+
+		$tableproc=false;
 		$g=1;
-     
+
 		$font_fin=false;
 		$color_fin=false;
-     
-     
-		$ch=$this->getNextCh();   
+
+
+		$ch=$this->getNextCh();
 		while($ch!=EOF){
 			switch ($ch){
 				case '{':
 					if(substr($infocon,0,7)=="fonttbl"){ $kind=1; $g=1; $tableproc=true;$infocon="";}
-					if(substr($infocon,0,8)=="colortbl"){ $kind=2; $g=1; $tableproc=true;$infocon="";} 
-					if($tableproc) $g++; 
+					if(substr($infocon,0,8)=="colortbl"){ $kind=2; $g=1; $tableproc=true;$infocon="";}
+					if($tableproc) $g++;
 				break;
-				case '}':               
-					if($tableproc) {                 
-						$g--; 
+				case '}':
+					if($tableproc) {
+						$g--;
 						if($g==0){
-							$g=1;                  
+							$g=1;
 							$tableproc=false;
 							if($kind==1) {$fonttbl=$infocon;$kind=0;$infocon="";$font_fin=true;}
-							if($kind==2) {$colortbl=$infocon;$kind=0;$infocon="";$color_fin=true;}                  
-						} 
-					}  
+							if($kind==2) {$colortbl=$infocon;$kind=0;$infocon="";$color_fin=true;}
+						}
+					}
 				break;
 				case '\\':
 					if(substr($infocon,0,7)=="fonttbl"){ $kind=1; $g=1; $tableproc=true;$infocon="";}
-					if(substr($infocon,0,8)=="colortbl"){ $kind=2; $g=1; $tableproc=true;$infocon="";}               
+					if(substr($infocon,0,8)=="colortbl"){ $kind=2; $g=1; $tableproc=true;$infocon="";}
 					if(substr($infocon,0,7)=="ansicpg"){ $this->codepage=substr($infocon,7);$infocon="";}
 					if($infocon=="mac"){ $this->standard=$infocon;$infocon="";}
 					if($kind==0) $infocon=""; else if($g<3) $infocon.="\\"; else $infocon.=" ";
@@ -240,32 +240,32 @@ class we_rtf2html{
 				case "\r":
 				case "\n":
 				break;
-				default:          
+				default:
 					if($g<3) $infocon.=$ch;
 				break;
-			} 
-			$ch=$this->getNextCh();  
-			if($font_fin && $color_fin) break;			
+			}
+			$ch=$this->getNextCh();
+			if($font_fin && $color_fin) break;
 		}
 		$this->parseFontTable($fonttbl);
 		$this->parseColorTable($colortbl);
    }
-   
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
    function hexColor($red,$green,$blue){
      $hex="0123456789abcdef";
-     $h1=substr($hex,floor($red/16),1);     
-     $h2=substr($hex,$red%16,1);     
-     $h3=substr($hex,floor($green/16),1);    
+     $h1=substr($hex,floor($red/16),1);
+     $h2=substr($hex,$red%16,1);
+     $h3=substr($hex,floor($green/16),1);
      $h4=substr($hex,$green%16,1);
      $h5=substr($hex,floor($blue/16),1);
-     $h6=substr($hex,$blue%16,1);    
+     $h6=substr($hex,$blue%16,1);
      return "#".$h1.$h2.$h3.$h4.$h5.$h6;
    }
-    
+
 #-------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
 
   function parseFontTable($fonttbl){
 
@@ -275,12 +275,12 @@ class we_rtf2html{
 
     $a=explode(";",$fonttbl);
     foreach($a as $k=>$v){
-      $b=explode(" ",$v);       
+      $b=explode(" ",$v);
 		$name="";
       $m=array();
-		if(preg_match("/f([0-9]+)/",$b[0],$m)){        			
+		if(preg_match("/f([0-9]+)/",$b[0],$m)){
 			$ident=$m[1];
-		}		
+		}
 		if($k==0) $this->dflFontIndex=$ident;
       for($i=1;$i<count($b);$i++) $name.=$b[$i]." ";
       $name=trim($name);
@@ -289,112 +289,112 @@ class we_rtf2html{
     }
   }
 
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
 
-  function parseColorTable($colortbl){	
+  function parseColorTable($colortbl){
     $a=array();
     $b=array();
 	 array_push($this->colorTable,$this->hexColor(0,0,0));
     $a=explode(";",$colortbl);
-    foreach($a as $k=>$v){       		
+    foreach($a as $k=>$v){
 		if($v!=""){
 			$m=array();
-			if(preg_match("/red([0-9]+)/",$v,$m)) $red=$m[1];		
+			if(preg_match("/red([0-9]+)/",$v,$m)) $red=$m[1];
 			$m=array();
-			if(preg_match("/green([0-9]+)/",$v,$m)) $green=$m[1];	
+			if(preg_match("/green([0-9]+)/",$v,$m)) $green=$m[1];
 			$m=array();
-			if(preg_match("/blue([0-9]+)/",$v,$m)) $blue=$m[1];		
+			if(preg_match("/blue([0-9]+)/",$v,$m)) $blue=$m[1];
 			array_push($this->colorTable,$this->hexColor($red,$green,$blue));
 		}
 	 }
- } 
- 
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+ }
+
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function parseRtf()
   {
 
     $ch="";
     $cNibble = 2;
     $b = 0;
-        
-    $ch=$this->getNextCh();   
+
+    $ch=$this->getNextCh();
     while($ch!=EOF)
-     {        
+     {
         switch ($ch)
             {
-            case '{': 
+            case '{':
 					$this->pushGroup();
             break;
-            case '}': 
+            case '}':
 					$this->popGroup();
             break;
-            case '\\': 
-					if(($this->skip_group>$this->group)||($this->skip_group==0)) $this->parseControl();                    
+            case '\\':
+					if(($this->skip_group>$this->group)||($this->skip_group==0)) $this->parseControl();
             break;
             case "\r":
             case "\n":
             break;
             default:
-					if(($this->skip_group>$this->group)||($this->skip_group==0)) $this->pasteChars($ch);              
+					if(($this->skip_group>$this->group)||($this->skip_group==0)) $this->pasteChars($ch);
             break;
-        } 
-		$ch=$this->getNextCh();  
-     }    
-     
+        }
+		$ch=$this->getNextCh();
+     }
+
      if ($this->group < 0)return false;
-     
+
      return true;
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function pushGroup(){
 
     if($this->first_control==0) $this->first_control=1;
     $this->group++;
-    
+
 	 $this->stack[$this->group]=array();
     $this->prevFont[$this->group]=array();
-    $this->prevSize[$this->group]=array();            
-    $this->prevColor[$this->group]=array();            
+    $this->prevSize[$this->group]=array();
+    $this->prevColor[$this->group]=array();
 
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------      
-  function popGroup(){        
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
+  function popGroup(){
     while(count($this->stack[$this->group])!=0){
      $key=$this->popStack();
      if($key==-1) break;
-     if($this->rtf_cons[$key][3]!="") $this->pasteChars($this->rtf_cons[$key][3]);          
+     if($this->rtf_cons[$key][3]!="") $this->pasteChars($this->rtf_cons[$key][3]);
      if($key==87) $this->prevFont[$this->group]["index"]=$this->dflFontIndex;
-     if($key==3) $this->prevSize[$this->group]["index"]=0;          
-     if($key==94) $this->prevColor[$this->group]["index"]=0;          
-    }   
+     if($key==3) $this->prevSize[$this->group]["index"]=0;
+     if($key==94) $this->prevColor[$this->group]["index"]=0;
+    }
     if($this->group==$this->skip_group) $this->skip_group=0;
     $this->group--;
 
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function getCurrentCh(){
   	if(isset($this->fileContent[$this->current]))
     	return $this->fileContent[$this->current];
     else
     	return null;
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------      
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function getPrevCh(){
     if($this->current>0){
-     $this->current--;     
+     $this->current--;
      return $this->getCurrentCh();
     }
 
     else{return false;}
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------      
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function getNextCh(){
     if($this->current<strlen($this->fileContent))
     {
@@ -406,8 +406,8 @@ class we_rtf2html{
     }
 
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function parseControl(){
     $ch="";
     $neg = false;
@@ -416,7 +416,7 @@ class we_rtf2html{
     $para="";
 
     $ch=$this->getNextCh();
-    
+
     if($ch == "\r" || $ch == "\n"){
     	return $this->analyzeControl($ch,$para);
     }
@@ -461,27 +461,27 @@ class we_rtf2html{
     if ($sfch && $ch == ' '){
 		 $ch=$this->getPrevCh();
 	 }
-	 
-	 if (substr($control,0,1)=="'"){				 
+
+	 if (substr($control,0,1)=="'"){
 		 $para=substr($control,1).$para;
 		 $control="'";
 	 }
-    
+
 	 return $this->analyzeControl($control,$para);
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function isletter($ch){
    if((ord($ch)>96)&&(ord($ch)<123)) return true;
    else return false;
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function isnumber($ch){
    if((ord($ch)>47)&&(ord($ch)<58)) return true;
    else return false;
   }
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
   function analyzeControl($control,$para=""){
 
@@ -508,37 +508,37 @@ class we_rtf2html{
 
     $this->first_control++;
     if($this->first_control>1) $this->first_control=0;
-    
+
     return true;
 
-     
+
   }
-  
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
  function propParse($key,$para="") {
-      
+
 	   if(($key==19)||($key==20)||($key==21)){
-       array_push($this->align,$key);      
+       array_push($this->align,$key);
       }
-      
+
       if($key==95){
       	$pp=array_pop($this->align);
        if($pp) $this->pasteChars($this->rtf_cons[$pp][3]);
-               		
+
        $ret=$this->popStack(0); while ($ret>-1){ $this->pasteChars($this->rtf_cons[$ret][3]);$ret=$this->popStack(0);}
 		 $ret=$this->popStack(1); while ($ret>-1){ $this->pasteChars($this->rtf_cons[$ret][3]);$ret=$this->popStack(1);}
-		 $ret=$this->popStack(2); while ($ret>-1){ $this->pasteChars($this->rtf_cons[$ret][3]);$ret=$this->popStack(2);}		 
+		 $ret=$this->popStack(2); while ($ret>-1){ $this->pasteChars($this->rtf_cons[$ret][3]);$ret=$this->popStack(2);}
       }
-      
-      if($key==42 && $this->bulletPara){                    
-       $this->pasteChars($this->rtf_cons[88][3]);        
+
+      if($key==42 && $this->bulletPara){
+       $this->pasteChars($this->rtf_cons[88][3]);
        $this->bulletPara=false;
       }
 
-      
+
       switch ($key){
-                  
+
       case 87:
          if($this->applyNames){
 
@@ -547,15 +547,15 @@ class we_rtf2html{
 				 $this->putOnStack($key);$this->dflFont=false;
 			 }
           else {
-             $this->pasteChars(sprintf($this->rtf_cons[$key][2],$this->fontTable[$para]));                
-             $this->putOnStack($key); 
-             $this->prevFont[$this->group]["index"]=$para;             
+             $this->pasteChars(sprintf($this->rtf_cons[$key][2],$this->fontTable[$para]));
+             $this->putOnStack($key);
+             $this->prevFont[$this->group]["index"]=$para;
           }
-         }             
+         }
       break;
-      case 94:          
+      case 94:
             if($this->applyColor){
-             if($this->dflColor){ 
+             if($this->dflColor){
                      $this->pasteChars(sprintf($this->rtf_cons[$key][2],$this->colorTable[$para]));
                      $this->putOnStack($key);
                      $this->dflColor=false;
@@ -563,81 +563,81 @@ class we_rtf2html{
              }
              else {
                $this->pasteChars(sprintf($this->rtf_cons[$key][2],$this->colorTable[$para]));
-               $this->putOnStack($key); 
-               $this->prevColor[$this->group]["index"]=$para;                           
+               $this->putOnStack($key);
+               $this->prevColor[$this->group]["index"]=$para;
              }
           }
-          
 
-          
-      break;  
+
+
+      break;
       case 4:
-         $this->pasteChars($this->rtf_cons[$key][2]);                        
+         $this->pasteChars($this->rtf_cons[$key][2]);
       break;
       case 88:
          $this->pasteChars($this->rtf_cons[$key][2]);
          $this->bulletPara=true;
          $this->skip_group=$this->group;
-      break;        
+      break;
       case 91:
           if($this->htmlOut!="") $this->pasteChars($this->rtf_cons[$key][2]);
-      break;     
+      break;
       case 42:
       case 89:
           $this->pasteChars($this->rtf_cons[$key][2]);
-      break;  
-      case 3:         
+      break;
+      case 3:
          if($this->applySize){
-                if($this->dflSize){ 
+                if($this->dflSize){
                         $this->pasteChars(sprintf($this->rtf_cons[$key][2],$para/2));
                         $this->putOnStack($key);
                         $this->dflSize=false;
-                        $this->prevSize[$this->group]["index"]=$para;                           
+                        $this->prevSize[$this->group]["index"]=$para;
                 }
-                else if($para<$this->prevSize[$this->group]["index"]) {                                    
-                  $this->pasteChars($this->rtf_cons[$key][3]);                              
-                  
+                else if($para<$this->prevSize[$this->group]["index"]) {
+                  $this->pasteChars($this->rtf_cons[$key][3]);
+
                   $this->popStack($key);
-                  $this->prevSize[$this->group]["index"]=$para;   
-                  
+                  $this->prevSize[$this->group]["index"]=$para;
+
                 }
                 else {
-                  $this->pasteChars(sprintf($this->rtf_cons[$key][2],$para/2));                                                                           
+                  $this->pasteChars(sprintf($this->rtf_cons[$key][2],$para/2));
                   $this->putOnStack($key);
                   $this->prevSize[$this->group]["index"]=$para;
                 }
-          }                                                
-      break;           
+          }
+      break;
          default:
             if($para=="0"){
-             if($this->rtf_cons[$key][3]!="") {     
-              $this->pasteChars($this->rtf_cons[$key][3]);        
+             if($this->rtf_cons[$key][3]!="") {
+              $this->pasteChars($this->rtf_cons[$key][3]);
               $this->popStack($key);
-              
+
              }
-            }  
-            else{               
+            }
+            else{
              if($this->rtf_cons[$key][2]!=""){
-              $this->pasteChars($this->rtf_cons[$key][2]);                         
+              $this->pasteChars($this->rtf_cons[$key][2]);
               $this->putOnStack($key);
              }
-              
+
             }
-         break;        
+         break;
       }
 
  }
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
   function specialParse($key,$para) {
-	
-	$go=true;    
+
+	$go=true;
 	switch($key){
 		case 98: if($para=="4") $this->pasteChars("�"); # AE
 				 $go=false;
 		break;
-		case 99: if($para=="6") $this->pasteChars("�"); 
-				 if($para=="c") $this->pasteChars("�"); 
+		case 99: if($para=="6") $this->pasteChars("�");
+				 if($para=="c") $this->pasteChars("�");
 				 if($para=="f") $this->pasteChars("�"); # OE and UE
 				 $go=false;
       break;
@@ -650,66 +650,63 @@ class we_rtf2html{
 		case 104:
 				$this->pasteChars("&#".$para);
 				$go=false;
-		break;	 
+		break;
 		case 50:
-			if($this->codepage=="1251" || $this->codepage=="1252" || $this->codepage=="10000" ){				
-				$this->pasteChars("&#x".we_codeConvertor::toUnicode($this->codepage,strtoupper($para)).";");				
-			} 
+			if($this->codepage=="1251" || $this->codepage=="1252" || $this->codepage=="10000" ){
+				$this->pasteChars("&#x".we_codeConvertor::toUnicode($this->codepage,strtoupper($para)).";");
+			}
 			else{
 				if($this->standard=="mac")
 					$this->pasteChars("&#x".we_codeConvertor::toUnicode("10000",strtoupper($para)).";");
 				else
 					$this->pasteChars("&#x".we_codeConvertor::toUnicode("1252",strtoupper($para)).";");
 			}
-			$go=false;			
+			$go=false;
 		break;
-   } 
-    
-   if($go)
-    if((($this->skip_group>$this->group)||($this->skip_group==0))&&($this->first_control==1)) {   
-        $this->skip_group=$this->group;        
    }
-        
-                        
-  }
- 
 
-   
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------     
-  function pasteChars($chars) {	 
+   if($go)
+    if((($this->skip_group>$this->group)||($this->skip_group==0))&&($this->first_control==1)) {
+        $this->skip_group=$this->group;
+   }
+
+
+  }
+
+
+
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
+  function pasteChars($chars) {
     $this->htmlOut.=$chars;
   }
 
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
   function putOnStack($key){
-   $this->stack[$this->group][count($this->stack[$this->group])]=$key;	  
+   $this->stack[$this->group][count($this->stack[$this->group])]=$key;
   }
-#-------------------------------------------------------------------------------------------    
-#-------------------------------------------------------------------------------------------      
+#-------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
  function popStack($key=-1){
   $ret=-1;
   if(is_array($this->stack[$this->group])){
-   if($key==-1){       
-       $ret=array_pop($this->stack[$this->group]);  
-       return $ret;     
+   if($key==-1){
+       $ret=array_pop($this->stack[$this->group]);
+       return $ret;
     }
-   else{      
+   else{
       $count=count($this->stack[$this->group])-1;
-      for($i=$count;$i>-1;$i--){   
-       if(($key!=-1)&&($this->stack[$this->group][$i]==$key)){                     
+      for($i=$count;$i>-1;$i--){
+       if(($key!=-1)&&($this->stack[$this->group][$i]==$key)){
         $ret=$this->stack[$this->group][$i];
-        array_splice($this->stack[$this->group],$i,1);                    
+        array_splice($this->stack[$this->group],$i,1);
         return $ret;
-       }                 
-      }   
+       }
+      }
    }
-  }   
+  }
   return $ret;
  }
-    
+
 }
-
-
-?>

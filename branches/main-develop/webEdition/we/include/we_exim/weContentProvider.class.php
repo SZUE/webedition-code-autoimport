@@ -101,7 +101,7 @@
 				else $we_Table=FILE_TABLE;
 
 				if(($we_ContentType=="object" && !defined("OBJECT_TABLE")) || ($we_ContentType=="objectFile" && !defined("OBJECT_FILES_TABLE"))) return $we_doc;
-				
+
 				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 			}
@@ -142,7 +142,7 @@
 		}
 
 		function needCoding($classname,$prop){
-			if($prop=="schedArr") return true;			
+			if($prop=="schedArr") return true;
 			$encoded=array(
 				"we_element"=>array("Dat","dat"),
 				"weTableItem"=>array("Dat","strFelder","strSerial","DocumentObject","QASet","QASetAdditions","Catfields","RevoteUserAgent","agent","LogData","strSerialOrder"),
@@ -161,7 +161,7 @@
 
 		}
 		function noEncodingChange($classname,$prop,$wedocClass,$objectname){
-		    
+
 			$nocoding=array(
 				"we_object"=>array("DefaultText","DefaultValues","SerializedArray"),
 				"weBinary"=>array("Data")
@@ -174,16 +174,16 @@
 				"we_flashDocument",
 				"we_quicktimeDocument",
 				"we_otherDocument"
-				
+
 			);
 			if(isset($nocoding[$classname])) {
 				return in_array($prop,$nocoding[$classname]);
-			} else { 
+			} else {
 				if( in_array($wedocClass[0],$nocodingDocClasses) && $objectname=="data") {
 					if(isset($nocoding2[$classname])) {
 						return in_array($prop,$nocoding2[$classname]);
 					} return false;
-				} else 
+				} else
 				return false;
 			}
 		}
@@ -195,20 +195,20 @@
 				"weTableItem"=>array("Text","BText","answertext"),
 				"we_category"=>array("Catfields")
 			);
-		
+
 			if($classname=="weTableItem") return true;
 			if(isset($encoded[$classname]))
 				return in_array($prop,$encoded[$classname]);
 			else
 				return false;
 		}
-		
+
 
 		function needSerialize(&$object,$classname,$prop){
 			if($prop=="schedArr") return true;
 			$serialize=array(
 				"we_object"=>array("SerializedArray"),
-				"we_objectFile"=>array("DefArray","schedArr")				
+				"we_objectFile"=>array("DefArray","schedArr")
 			);
 
 			if($prop == 'Dat' && $classname == 'we_element' && defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $object->Name == WE_SHOP_VARIANTS_ELEMENT_NAME) {
@@ -221,7 +221,7 @@
 				return false;
 			}
 		}
-		
+
 		function isExportable(&$object,$prop){
 
 			if(isset($object->Pseudo)) $classname=$object->Pseudo;
@@ -249,10 +249,10 @@
 							$content=weContentProvider::encode($content);
 						}
 						else if(weContentProvider::needCdata($object->ClassName,$v))  $content=weContentProvider::getCDATA($content);
-						$attribs .= weXMLComposer::we_xmlElement($v,$content);		
+						$attribs .= weXMLComposer::we_xmlElement($v,$content);
 					}
 				}
-				
+
 				if(isset($object->Data)) {
 					$offset=0;
 					$rsize=1048576;
@@ -273,15 +273,15 @@
 							fwrite($file,"</we:binary>");
 							fwrite($file,'<!-- webackup -->'."\n");
 						}
-						// if offset g.t. filesize then exit 
+						// if offset g.t. filesize then exit
 						/*if(filesize($path)<$offset){
 							$data = null;
 						}*/
-					} while ($data);					
+					} while ($data);
 				}
 		}
-		
-		
+
+
 		function version2file(&$object,&$file,$isWe=true){
 				$attribs = '';
 				foreach($object->persistent_slots as $k=>$v){
@@ -291,19 +291,19 @@
 							$content=weContentProvider::encode($content);
 						}
 						else if(weContentProvider::needCdata($object->ClassName,$v))  $content=weContentProvider::getCDATA($content);
-						$attribs .= weXMLComposer::we_xmlElement($v,$content);		
+						$attribs .= weXMLComposer::we_xmlElement($v,$content);
 					}
 				}
-				
+
 				if(isset($object->Data)) {
 					$offset=0;
 					$rsize=1048576;
 					do {
-						
+
 						$path = $_SERVER["DOCUMENT_ROOT"].$object->Path;
 						if($object->Path=="") break;
 						$data = weFile::loadPart($path,$offset,$rsize);
-						
+
 						if(!empty($data)) {
 							fwrite($file,"<we:version>");
 							fwrite($file,$attribs);
@@ -314,28 +314,28 @@
 							fwrite($file,"</we:version>");
 							fwrite($file,'<!-- webackup -->'."\n");
 						}
-						// if offset g.t. filesize then exit 
+						// if offset g.t. filesize then exit
 						/*if(filesize($path)<$offset){
 							$data = null;
 						}*/
-					} while ($data);					
+					} while ($data);
 				}
 		}
 
 
 
 		function object2xml(&$object,&$file,$attribs=array()){
-				
+
 				if(isset($object->Pseudo)) $classname=$object->Pseudo;
 				else $classname=$object->ClassName;
-				
+
 				if($classname=="we_category" || $classname=="weNavigation" || $classname=="weNavigationRule" || $classname=="we_thumbnail") $object->persistent_slots = array_merge(array("ClassName"),$object->persistent_slots);
 
 				//write tag name
-				fwrite($file,'<'.weContentProvider::getTagName($object));				
+				fwrite($file,'<'.weContentProvider::getTagName($object));
 				if(!empty($attribs)){
 					fwrite($file, weXMLComposer::buildAttributesFromArray($attribs));
-				}				
+				}
 				fwrite($file,'>');
 
 				// fix for classes; insert missing field length into default values ---
@@ -344,7 +344,7 @@
 					$ctable = OBJECT_X_TABLE . $object->ID;
 					$tableInfo = $db->metadata($ctable);
 					$defvalues = unserialize($object->DefaultValues);
-					$size = count($tableInfo);					
+					$size = count($tableInfo);
 					for ($i=0;$i<$size;$i++){
 						$fieldname = $tableInfo[$i]['name'];
 						if(isset($defvalues[$fieldname])){
@@ -353,7 +353,7 @@
 					}
 					$object->DefaultValues = serialize($defvalues);
 				}
-				// fix ends -----------------------------------------------------------				
+				// fix ends -----------------------------------------------------------
 
 				if($classname=='we_webEditionDocument') {
 					$object->TemplatePath = clearPath('/' . str_replace($_SERVER['DOCUMENT_ROOT'],'',$object->TemplatePath));
@@ -363,22 +363,22 @@
 					$object->Table = strtolower(str_replace(TBL_PREFIX,'',$object->Table));
 				}
 
-				
+
 				foreach($object->persistent_slots as $k=>$v){
 					if($v!="elements"){
 						$content="";
 						if(isset($object->$v)) $content=$object->$v;
-						
+
 						if(weContentProvider::needSerialize($object,$classname,$v)){
 							$content=serialize($content);
 						}
-						
+
 
 						if(weContentProvider::needCoding($classname,$v)) {
 							if(!is_array($content)){
 								$content=weContentProvider::encode($content);
 							}
-							
+
 						}
 						else if(weContentProvider::needCdata($classname,$v))  $content=weContentProvider::getCDATA($content);
 
@@ -401,7 +401,7 @@
 								$contentObj=new we_element(false,$object->elements[$ck]);
 								foreach($object->elements[$ck] as $okey => $ov) {$contentObj->$okey=trim($ov);};
 							}
-							
+
 						}
 						else{
 							$options=array(
@@ -418,7 +418,7 @@
 						}
 
 						weContentProvider::object2xml($contentObj,$file);
-						
+
 					}
 					unset($elements_ids);
 					unset($contentObj);
@@ -435,10 +435,10 @@
 
 			$bin=weContentProvider::getInstance('weBinary',0);
 			$bin->Path = $file;
-			
+
 			weContentProvider::binary2file($bin,$fh,false);
-			
-		
+
+
 		}
 
 		function xml2object(&$object){
@@ -485,5 +485,3 @@
 
 
 	}
-
-?>

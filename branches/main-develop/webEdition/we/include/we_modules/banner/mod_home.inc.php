@@ -34,5 +34,3 @@ $createGroup = $we_button->create_button("new_bannergroup", "javascript:top.open
 $content = $createBanner.getPixel(2,14).$createGroup;
 
 $modimage = "banner.gif";
-
-?>

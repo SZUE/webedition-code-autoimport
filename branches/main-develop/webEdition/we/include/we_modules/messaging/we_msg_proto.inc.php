@@ -39,13 +39,13 @@ class we_msg_proto extends we_class {
 
     /* ID from the database record */
     var $ID=0;
-    
+
     /* Database Object */
     var $DB_WE;
-    
+
     /* Flag which is set when the file is not new */
     var $wasUpdate = 0;
-    
+
     var $InWebEdition = 0;
 
     var $Folder_ID = -1;
@@ -93,7 +93,7 @@ class we_msg_proto extends we_class {
     /*****************************************************************/
     /* Class Methods *************************************************/
     /*****************************************************************/
-    
+
     /* Constructor */
     function we_msg_proto() {
 	$this->Name = 'msg_proto_' . md5(uniqid(rand()));
@@ -141,7 +141,7 @@ class we_msg_proto extends we_class {
 		if ($this->cached['sortorder'] != 1) {
 		    $this->init_sortstuff($this->Folder_ID);
 		}
-	
+
 		return $this->sortorder;
 	    }
 
@@ -171,37 +171,37 @@ class we_msg_proto extends we_class {
 	$this->search_fields = array();
 	$this->search_folder_ids = array();
 
-	if (isset($search_fields)) 
+	if (isset($search_fields))
 		foreach ($search_fields as $elem) {
-		    if (!empty($this->si2sf[$elem])) 
+		    if (!empty($this->si2sf[$elem]))
 			$this->search_fields[] = $this->si2sf[$elem];
 		}
 
-	if (isset($search_folder_ids)) 
+	if (isset($search_folder_ids))
 	    foreach ($search_folder_ids as $elem) {
-		if (in_array($elem, $this->array_get_kvals('ID', $this->available_folders))) 
+		if (in_array($elem, $this->array_get_kvals('ID', $this->available_folders)))
 		    $this->search_folder_ids[] = $elem;
 		}
     }
 
     /* Intialize the class. If $sessDat (array) is set, the class will be initialized from this array */
     function init($sessDat){
-	if($sessDat) 
+	if($sessDat)
 	    $this->initSessionDat($sessDat);
 
 /*	if (empty($this->available_folders))
 	    $this->get_available_folders();*/
     }
 
-    function initSessionDat($sessDat){ 
+    function initSessionDat($sessDat){
 	if ($sessDat) {
 	    for ($i = 0; $i < sizeof($this->persistent_slots); $i++) {
 		if (isset($sessDat[0][$this->persistent_slots[$i]])) {
 		    eval('$this->' . $this->persistent_slots[$i] . '=$sessDat[0][$this->persistent_slots[$i]];');
 		}
 	    }
-    
-	    if (isset($sessDat[1])) 
+
+	    if (isset($sessDat[1]))
 		$this->elements = $sessDat[1];
 	}
     }
@@ -239,7 +239,7 @@ class we_msg_proto extends we_class {
 		$this->DB->query('INSERT INTO ' . mysql_real_escape_string($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . abs($parent) . ', ' . abs($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . MSG_FOLDER_NR . ', "' . mysql_real_escape_string($name) . '")');
 		$this->DB->query('SELECT LAST_INSERT_ID() as l');
 		$this->DB->next_record();
-	
+
 		return $this->DB->f('l');
     }
 
@@ -247,7 +247,7 @@ class we_msg_proto extends we_class {
 		if (!is_numeric($fid) || !is_numeric($parent_folder)) {
 		    return -1;
 		}
-	
+
 		$query = 'UPDATE ' . mysql_real_escape_string($this->folder_tbl) . ' SET Name="' . mysql_real_escape_string($folder_name) . '", ParentID=' . abs($parent_folder) . ' WHERE ID=' . abs($fid) . ' AND UserID=' . abs($this->userid);
 		$this->DB->query($query);
 		return 1;
@@ -259,7 +259,7 @@ class we_msg_proto extends we_class {
 
 	$this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE ParentID=' . addslashes($id) . ' AND UserID=' . abs($this->userid));
 	while ($this->DB->next_record())
-	    $fids[] = $this->DB->f('ID');    
+	    $fids[] = $this->DB->f('ID');
 
 	foreach ($fids as $fid)
 	    $fids = array_merge($fids, $this->get_f_children($fid));
@@ -272,12 +272,12 @@ class we_msg_proto extends we_class {
     $ret = array();
     $ret["res"] = 0;
     $ret["ids"] = array();
-        
+
 	if (empty($f_arr)){
 	    return $ret;
-	    
+
 	}
-	    
+
 	$rm_folders = array();
 	$rm_fids = $f_arr;
 	$norm_folderds = array();
@@ -301,17 +301,17 @@ class we_msg_proto extends we_class {
 		$rm_folders[] = $this->DB->f('ID');
 	    }
 	}
-    
+
 	if (empty($rm_folders)) {
 	    return $ret;
 	} else {
 	    $query = 'DELETE FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE (ID=' . join(' OR ID=', $rm_folders) . ') AND UserID=' . abs($this->userid);
 	    $this->DB->query($query);
 	}
-    
+
     $ret["res"] = 1;
     $ret["ids"] = $rm_folders;
-    
+
 	return $ret;
     }
 
@@ -348,29 +348,28 @@ class we_msg_proto extends we_class {
 	    $sortorder = 'desc';
 	else
 	    $sortorder = 'asc';
-		    
+
 	$this->DB->query('UPDATE ' . mysql_real_escape_string($this->folder_tbl) . ' SET sortItem="' . mysql_real_escape_string($sortfield) . '", sortOrder="' . mysql_real_escape_string($sortorder) . '" WHERE ID=' . abs($id) . ' AND UserID=' . abs($this->userid));
     }
 
     function init_sortstuff($id) {
 		$this->DB->query('SELECT sortItem, sortOrder FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE ID=' . abs($id) . ' AND UserID=' . abs($this->userid));
 		$this->DB->next_record();
-	
+
 		if (($this->DB->f('sortItem'))) {
 		    $this->sortfield = $this->DB->f('sortItem');
 		}
-	
+
 		if (($this->DB->f('sortOrder'))) {
 		    if ($this->DB->f('sortOrder') == 'asc')
 			$this->sortorder = 'desc';
 		    else if ($this->DB->f('sortOrder') == 'desc')
 			$this->sortorder = 'asc';
 		}
-	
+
 		$this->cached[] = 'sortfield';
 		$this->cached[] = 'sortorder';
 	//	$this->got_sortstuff_from_db = 1;
     }
 }
     
-?>

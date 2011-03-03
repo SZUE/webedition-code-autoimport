@@ -19,8 +19,8 @@
  */
 
 class CaptchaMemory {
-	
-	
+
+
 	/**
 	 * Save the Captcha Code to the Memory
 	 *
@@ -31,7 +31,7 @@ class CaptchaMemory {
 	function save($captcha, $file) {
 		$items = array();
 		$items = CaptchaMemory::readData($file);
-		
+
 		// delete old items
 		if(sizeof($items) > 0) {
 			foreach($items as $code => $item) {
@@ -42,16 +42,16 @@ class CaptchaMemory {
 				}
 			}
 		}
-		
+
 		$items[$captcha] = array(
 			'time'	=> time()+30*60,
 			'ip'	=> $_SERVER['REMOTE_ADDR'],
 			'agent'	=> $_SERVER['HTTP_USER_AGENT'],
 		);
-		CaptchaMemory::writeData($file, $items);			
+		CaptchaMemory::writeData($file, $items);
 	} /* end: save */
-	
-	
+
+
 	/**
 	 * checks if the Captcha Code is a valid Code
 	 *
@@ -60,22 +60,22 @@ class CaptchaMemory {
 	 * @return boolean
 	 */
 	function isValid($captcha, $file) {
-		
+
 		$returnValue = false;
-		
+
 		$items = array();
 		$items = CaptchaMemory::readData($file);
-		
+
 		// check if code is valid
 		if(		isset($items[$captcha])
-			&&	is_array($items[$captcha]) 
+			&&	is_array($items[$captcha])
 			&&	time() < $items[$captcha]['time']
 			&&	$_SERVER['REMOTE_ADDR'] == $items[$captcha]['ip']
 			&&	$_SERVER['HTTP_USER_AGENT'] == $items[$captcha]['agent']) {
 			unset($items[$captcha]);
 			$returnValue = true;
 		}
-		
+
 		// delete old items
 		if(sizeof($items) > 0) {
 			foreach($items as $code => $item) {
@@ -86,13 +86,13 @@ class CaptchaMemory {
 				}
 			}
 		}
-		
+
 		CaptchaMemory::writeData($file, $items);
-		
+
         return $returnValue;
 	} /* end: isValid */
-	
-	
+
+
 	/**
 	 * read the data file
 	 *
@@ -108,8 +108,8 @@ class CaptchaMemory {
 		}
 		return array();
 	} /* end: readData */
-	
-	
+
+
 	/**
 	 * write the data file
 	 *
@@ -128,7 +128,5 @@ class CaptchaMemory {
 	    	fclose($fh);
 		}
 	} /* end: writeData */
-	
-} /* end: Class */
 
-?>
+} /* end: Class */

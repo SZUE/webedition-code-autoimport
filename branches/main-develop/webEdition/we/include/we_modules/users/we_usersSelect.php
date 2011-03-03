@@ -38,5 +38,3 @@ $fs = new we_usersSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUES
 							isset($multiple) ? $multiple : (isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : "" ));
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
-
-?>

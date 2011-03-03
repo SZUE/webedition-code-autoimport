@@ -145,7 +145,7 @@ class weConfParser {
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-		
+
 
 /**
  * Configuration file for webEdition
@@ -209,4 +209,3 @@ if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_error_
 	}
 }
 
-?>

@@ -39,7 +39,7 @@ class we_search_listview extends listviewBase {
 	var $languages = ""; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
-	
+
 	/**
 	 * we_search_listview()
 	 * @desc    constructor of class
@@ -63,7 +63,7 @@ class we_search_listview extends listviewBase {
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 		$this->customerFilterType = $customerFilterType;
-		
+
 		$this->languages = $languages;
 		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 		if ($this->languages !=''){
@@ -223,7 +223,7 @@ class we_search_listview extends listviewBase {
 
 		}
 		$this->DB_WE->query($q);
-		$this->anz = $this->DB_WE->num_rows();		
+		$this->anz = $this->DB_WE->num_rows();
 		$this->adjustRows();
 
 	}
@@ -254,5 +254,3 @@ class we_search_listview extends listviewBase {
 	}
 
 }
-
-?>

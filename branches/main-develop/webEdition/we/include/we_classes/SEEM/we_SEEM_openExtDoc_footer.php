@@ -69,4 +69,3 @@
 										$_body);
 
 	print we_htmlElement::htmlHtml("\n" . $_head . "\n" . $_body );
-?>

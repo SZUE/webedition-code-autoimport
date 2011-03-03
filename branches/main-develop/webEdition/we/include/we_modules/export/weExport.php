@@ -35,22 +35,22 @@ class weExport extends weModelBase{
 	var $Icon;
 	var $IsFolder;
 	var $Path;
-	
+
 	var $ExportTo; // local | server
 	var $ServerPath;
-	var $Filename; 
+	var $Filename;
 	var $Selection = 'auto'; // auto | manual
 	var $SelectionType = 'doctype'; // doctype | classname
 	var $DocType;
 	var $Folder;
 	var $ClassName;
 	var $Categorys;
-	
+
 	var $selDocs;
 	var $selTempl;
 	var $selObjs;
 	var $selClasses;
-	
+
 	var $HandleDefTemplates;
 	var $HandleDocIncludes;
 	var $HandleObjIncludes;
@@ -62,31 +62,31 @@ class weExport extends weModelBase{
 	var $HandleOwners;
 	var $HandleNavigation;
 	var $HandleThumbnails;
-	
+
 	var $ExportDepth;
 	var $Log = array();
-			
+
 	var $ExportFilename;
-	
+
 	var $protected=array("ID","ParentID","Icon","IsFolder","Path","Text");
-	
-		
+
+
 	/**
 	* Default Constructor
 	* Can load or create new Newsletter depends of parameter
 	*/
 
 	function weExport($exportID = 0){
-		
+
 		$this->table=EXPORT_TABLE;
-		
+
 		weModelBase::weModelBase(EXPORT_TABLE);
 		$this->setDefaults();
 		if ($exportID){
 			$this->ID=$exportID;
 			$this->load($exportID);
 		}
-		// clear expiered stuff		
+		// clear expiered stuff
 		$this->selDocs = $this->clearExpiered($this->selDocs,FILE_TABLE);
 		$this->selTempl = $this->clearExpiered($this->selTempl,TEMPLATES_TABLE);
 		if(defined('OBJECT_TABLE')){
@@ -95,9 +95,9 @@ class weExport extends weModelBase{
 		} else {
 			$this->selObjs = '';
 			$this->selClasses = '';
-		}		
+		}
 	}
-	
+
 	function clearExpiered($ids,$table,$idfield='ID'){
 		$idsarr = makeArrayFromCSV($ids);
 		$new = array();
@@ -106,18 +106,18 @@ class weExport extends weModelBase{
 		}
 		return makeCSVFromArray($new);
 	}
-	
+
 	function save($force_new=false){
 		$this->Icon = ($this->IsFolder==1 ? 'folder.gif' : 'link.gif');
 		$sets=array();
-		$wheres=array();		
+		$wheres=array();
 		foreach($this->persistent_slots as $key=>$val){
 			//if(!in_array($val,$this->keys))
 			eval('if(isset($this->'.$val.')) $sets[]="'.$val.'=\'".mysql_real_escape_string($this->'.$val.')."\'";');
 		}
 		$where=$this->getKeyWhere();
 		$set=implode(",",$sets);
-		
+
 		$this->table = mysql_real_escape_string($this->table);
 	  if (!$this->ID || $force_new){
 
@@ -146,34 +146,34 @@ class weExport extends weModelBase{
 			parent::delete();
 			return true;
 	}
-	
+
 	/*********************************
 	* delete childs from database
 	*
-	**********************************/	
-	function deleteChilds(){		
+	**********************************/
+	function deleteChilds(){
 		$this->db->query("SELECT ID FROM ".EXPORT_TABLE . " WHERE ParentID='".$this->ID."'");
 		while($this->db->next_record()){
 			$child=new weExport($this->db->f("ID"));
 			$child->delete();
 		}
-	}	
-	
+	}
+
 	function clearSessionVars(){
 			if(isset($_SESSION["export_session"])) unset($_SESSION["export_session"]);
 			if(isset($_SESSION["ExportSession"])) unset($_SESSION["ExportSession"]);
 			if(isset($_SESSION["exportVars"])) unset($_SESSION["exportVars"]);
 	}
-	
+
 	function filenameNotValid($text){
 			return eregi('[^a-z0-9���\._\@\ \-]',$text);
 	}
-	
+
 	function exportToFilenameValid($filename) {
-		
+
 		return (eregi("p?html?", $filename) || eregi("inc", $filename) || eregi("php3?", $filename));
 	}
-	
+
 	function setDefaults() {
 		$this->ParentID = 0;
 		$this->Text = "weExport_".time();
@@ -194,23 +194,23 @@ class weExport extends weModelBase{
 		$this->HandleOwners=0;
 		$this->HandleNavigation=0;
 	}
-	
+
 	function setPath(){
 		$ppath = f('SELECT Path FROM ' . EXPORT_TABLE . ' WHERE ID=' . $this->ParentID . ';','Path',$this->db);
 		$this->Path=$ppath."/".$this->Text;
 	}
-	
+
 	function pathExists($path){
 		$this->db->query('SELECT * FROM '.$this->table.' WHERE Path = \''.$path.'\' AND ID <> \''.$this->ID.'\';');
 		if($this->db->next_record()) return true;
 		else return false;
 	}
-	
-	function isSelf(){		
+
+	function isSelf(){
 		if(ereg('/'.$this->Text.'/',clearPath(dirname($this->Path) . '/'))) return true;
 		else return false;
 	}
-	
+
 	function evalPath($id=0) {
 		$db_tmp=new DB_WE();
 		$path = "";
@@ -231,10 +231,8 @@ class weExport extends weModelBase{
 				}
 		}
 		return $path;
-	}	
-	
+	}
+
 
 }
 
-
-?>

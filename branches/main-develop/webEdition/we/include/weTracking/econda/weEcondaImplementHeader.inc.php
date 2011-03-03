@@ -24,4 +24,3 @@ if(!isset($GLOBALS["weEconda"])&&!isset($GLOBALS["weEconda"]["HTML"])){
 if(!isset($GLOBALS["weEconda"])&&!isset($GLOBALS["weEconda"]["JS"])){
 	$GLOBALS["weEconda"]["JS"] = "";
 }
-?>

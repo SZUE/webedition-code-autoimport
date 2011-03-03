@@ -61,4 +61,3 @@ $imageTypeMap = array(
 	"wbmp", // IMAGETYPE_WBMP
 	"xbm", // IMAGETYPE_XBM
 );
-?>
