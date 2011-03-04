@@ -241,7 +241,7 @@ if(!isset($we_doc->IsClassFolder)) {
 
 	//update already offline users
 	$DB_WE2 = new DB_WE;
-	$DB_WE2->query('UPDATE '.USER_TABLE.' SET Ping=0 WHERE Ping+'.(PING_TIME+PING_TOLERANZ).'<UNIX_TIMESTAMP(NOW())');
+	$DB_WE2->query('UPDATE '.USER_TABLE.' SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-'.(PING_TIME+PING_TOLERANZ).')');
 
 	$_filelocked = ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]);
 

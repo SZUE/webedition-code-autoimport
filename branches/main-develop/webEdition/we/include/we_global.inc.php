@@ -2670,7 +2670,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = "") {
 	if (f("
 		SELECT IsDynamic
 		FROM " . FILE_TABLE . "
-		WHERE Path=" . mysql_real_escape_string($path) . "'", "IsDynamic", $DB_WE)) {
+		WHERE Path='" . mysql_real_escape_string($path) . "'", "IsDynamic", $DB_WE)) {
 		return $path;
 	}
 	$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
