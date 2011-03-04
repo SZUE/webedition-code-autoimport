@@ -1170,7 +1170,7 @@ $objectId = $GLOBALS["lv"]->DB_WE->f("OF_ID");
 }
 }
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_listview_shopVariants.class.php");
-$GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $defaultname . '", $docId, $objectId, $we_offset);
+$GLOBALS["lv"] = new we_listview_shopVariants("' . $name . '", $we_rows, "' . $defaultname . '", $docId, $objectId, $we_offset,'.$hidedirindex.','.$objectseourls.');
 ';
 				} else { return str_replace($tag, modulFehltError('Shop','listview type="shopVariant"'), $code); }
 				break;
