@@ -329,7 +329,7 @@ class DB_Sql
 		$count=$this->num_fields();
 		$res=array();
 		for ($i = 0; $i < $count; $i++) {
-			$res[$i]["name"] = mysql_field_name($id, $i);
+			$res[$i] = mysql_field_name($id, $i);
 		}
 		return $res;
 	}
