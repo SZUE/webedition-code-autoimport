@@ -40,8 +40,9 @@ class we_listview_shopVariants extends listviewBase {
 	var $Model = null;
 	var $IsObjectFile = false;
 	var $hidedirindex = false;
-
-	function we_listview_shopVariants($name="0", $rows, $defaultname='default', $documentid='', $objectid='', $offset=0,$hidedirindex=false) {
+	var $objectseourls = false;
+	
+	function we_listview_shopVariants($name="0", $rows, $defaultname='default', $documentid='', $objectid='', $offset=0,$hidedirindex=false,$objectseourls=false,$triggerID="") {
 
 		listviewBase::listviewBase($name, $rows, $offset);
 		
@@ -100,6 +101,8 @@ class we_listview_shopVariants extends listviewBase {
 		$this->anz_all = sizeof($this->VariantData['Record']);
 		$this->anz = min($this->rows,$this->anz_all) ;
 		$this->hidedirindex=$hidedirindex;
+		$this->objectseourls=$objectseourls;
+		$this->triggerID = $triggerID;
 	}
 	
 	
@@ -143,10 +146,41 @@ class we_listview_shopVariants extends listviewBase {
 			}
 
 			$ret['WE_ID'] = $this->Id;
+			
 			if ($this->IsObjectFile) { // objectFile
-				$ret['WE_PATH'] = $GLOBALS['we_doc']->Path."?we_objectID=".$this->Id . ($varUrl ? "&amp;$varUrl" : '');
+				$path_parts = pathinfo($GLOBALS['we_doc']->Path);
+				if ($this->objectseourls && show_SeoLinks() ){
+					$Url = f("SELECT Url from ".OBJECT_FILES_TABLE." WHERE ID=".$this->Id,'Url',$this->DB_WE);
+					if ($Url!=''){
+					
+						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							$ret['WE_PATH'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'. $Url. ($varUrl ? "?$varUrl" : '');
+						} else {
+							$ret['WE_PATH'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'. $Url. ($varUrl ? "?$varUrl" : '');
+						}
+					
+					} else {
+						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							$ret['WE_PATH'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?we_objectID=".$this->Id . ($varUrl ? "&amp;$varUrl" : '');
+						} else {
+							$ret['WE_PATH'] = $GLOBALS['we_doc']->Path."?we_objectID=".$this->Id . ($varUrl ? "&amp;$varUrl" : '');
+						}
+					}
+				} else {
+					if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						$ret['WE_PATH'] = $GLOBALS['we_doc']->Path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.($varUrl ? "?$varUrl" : '');
+					} else {
+						$ret['WE_PATH'] = $GLOBALS['we_doc']->Path."?we_objectID=".$this->Id . ($varUrl ? "&amp;$varUrl" : '');
+					}
+					
+				}
 			} else { // webEdition Document
-				$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? "?$varUrl" : '');
+				$path_parts = pathinfo($this->Model->Path);
+				if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+					$ret['WE_PATH'] = $this->Model->Path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.($varUrl ? "?$varUrl" : '');
+				} else {
+					$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? "?$varUrl" : '');
+				}
 			}
 
 			$this->Record = $ret;
