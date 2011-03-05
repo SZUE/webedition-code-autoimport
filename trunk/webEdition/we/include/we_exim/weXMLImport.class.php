@@ -607,7 +607,7 @@
 
 					if($open_new && !empty($line) && trim($line)!="</webEdition>") {
 						$num++;
-						$filename_tmp=sprintf($path.$pattern,$num);
+						$filename_tmp=sprintf($path.$pattern,$num);p_r($filename_tmp);
 						$fh_temp=fopen($filename_tmp,"wb");
 						fwrite($fh_temp,$header);
 						if($num==0) $header="";
@@ -622,7 +622,7 @@
 							if($marker_size){
 								if((substr($buff,(0-($marker_size+1)))==$marker."\n") || (substr($buff,(0-($marker_size+2)))==$marker."\r\n")) $write=true;
 								else  $write=false;
-								$write=true; //Bug 5041
+								//$write=true; //Bug 5041
 							}
 							else	$write=true;
 
