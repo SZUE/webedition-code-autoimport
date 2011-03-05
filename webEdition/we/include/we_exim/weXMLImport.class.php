@@ -607,7 +607,7 @@
 
 					if($open_new && !empty($line) && trim($line)!="</webEdition>") {
 						$num++;
-						$filename_tmp=sprintf($path.$pattern,$num);p_r($filename_tmp);
+						$filename_tmp=sprintf($path.$pattern,$num);
 						$fh_temp=fopen($filename_tmp,"wb");
 						fwrite($fh_temp,$header);
 						if($num==0) $header="";
