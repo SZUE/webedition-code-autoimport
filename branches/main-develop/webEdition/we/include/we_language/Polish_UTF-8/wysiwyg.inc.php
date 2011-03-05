@@ -18,161 +18,148 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Language file: wysiwyg.inc.php
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/wysiwyg_js.inc.php");
+include_once(dirname(__FILE__) . "/wysiwyg_js.inc.php");
 
-$l_wysiwyg["window_title"] = "Edytuj pole '%s'";
-
-$l_wysiwyg["format"] = "Styl";
-$l_wysiwyg["fontsize"] = "Wilekość czcionki";
-$l_wysiwyg["fontname"] = "Nazwa czcionki";
-$l_wysiwyg["css_style"] = "Styl CSS";
-
-$l_wysiwyg["normal"] = "Normal"; // TRANSLATE
-$l_wysiwyg["h1"] = "Nagłówek 1";
-$l_wysiwyg["h2"] = "Nagłówek 2";
-$l_wysiwyg["h3"] = "Nagłówek 3";
-$l_wysiwyg["h4"] = "Nagłówek 4";
-$l_wysiwyg["h5"] = "Nagłówek 5";
-$l_wysiwyg["h6"] = "Nagłówek 6";
-$l_wysiwyg["pre"] = "Sformatowano";
-$l_wysiwyg["address"] = "Adres";
-
-$GLOBALS['l_wysiwyg']['spellcheck'] = 'Spellchecking'; // TRANSLATE
+$l_wysiwyg = array_merge($l_wysiwyg, array(
+		'window_title' => "Edytuj pole '%s'",
+		'format' => "Styl",
+		'fontsize' => "Wilekość czcionki",
+		'fontname' => "Nazwa czcionki",
+		'css_style' => "Styl CSS",
+		'normal' => "Normal", // TRANSLATE
+		'h1' => "Nagłówek 1",
+		'h2' => "Nagłówek 2",
+		'h3' => "Nagłówek 3",
+		'h4' => "Nagłówek 4",
+		'h5' => "Nagłówek 5",
+		'h6' => "Nagłówek 6",
+		'pre' => "Sformatowano",
+		'address' => "Adres",
+		'spellcheck' => 'Spellchecking', // TRANSLATE
 
 
-/*****************************************************************************
- * CONTEXT MENUS
- *****************************************************************************/
+		/*		 * ***************************************************************************
+		 * CONTEXT MENUS
+		 * *************************************************************************** */
 
 // REMEMBER: context menus cannot display any umlauts!
-$l_wysiwyg["cut"] = "Cut"; // TRANSLATE
-$l_wysiwyg["copy"] = "Kopiuj";
-$l_wysiwyg["paste"] = "Wklej";
-$l_wysiwyg["insert_row"] = "Wstaw wiersz";
-$l_wysiwyg["delete_rows"] = "Kasuj wiersze";
-$l_wysiwyg["insert_colmn"] = "Wstaw kolumnę";
-$l_wysiwyg["delete_colmns"] = "Kasuj kolumny";
-$l_wysiwyg["insert_cell"] = "Wstaw komórkę";
-$l_wysiwyg["delete_cells"] = "Kasuj komórki";
-$l_wysiwyg["merge_cells"] = "Scal komórki";
-$l_wysiwyg["split_cell"] = "Podziel komórki";
+		'cut' => "Cut", // TRANSLATE
+		'copy' => "Kopiuj",
+		'paste' => "Wklej",
+		'insert_row' => "Wstaw wiersz",
+		'delete_rows' => "Kasuj wiersze",
+		'insert_colmn' => "Wstaw kolumnę",
+		'delete_colmns' => "Kasuj kolumny",
+		'insert_cell' => "Wstaw komórkę",
+		'delete_cells' => "Kasuj komórki",
+		'merge_cells' => "Scal komórki",
+		'split_cell' => "Podziel komórki",
+		/*		 * ***************************************************************************
+		 * ALT-TEXTS FOR BUTTONS
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * ALT-TEXTS FOR BUTTONS
- *****************************************************************************/
+		'subscript' => "Index dolny",
+		'superscript' => "Index górny",
+		'justify_full' => "Wyjustuj",
+		'strikethrought' => "Przekreślenie",
+		'removeformat' => "Kasuj formatowanie",
+		'removetags' => "Remove tags, styles and comments", // TRANSLATE
+		'editcell' => "Edytuj komórkę tabeli",
+		'edittable' => "Edytuj tabelę",
+		'insert_row2' => "Wstaw wiersz",
+		'delete_rows2' => "Kasuj wiersze",
+		'insert_colmn2' => "Wstaw kolumnę",
+		'delete_colmns2' => "Kasuj kolumny",
+		'insert_cell2' => "Wstaw komórkę",
+		'delete_cells2' => "Kasuj komórki",
+		'merge_cells2' => "Scal komórki",
+		'split_cell2' => "Podziel komórki",
+		'insert_edit_table' => "Tabela wklej/edytuj",
+		'insert_edit_image' => "Grafika wklej/edytuj",
+		'edit_style_class' => "Edytuj klasę (Style)",
+		'insert_br' => "Wstaw przełamanie linii (SHIFT + RETURN)",
+		'insert_p' => "Wstaw paragraf",
+		'edit_sourcecode' => "Edytuj kod źródłowy",
+		'show_details' => "Pokaż szczegóły",
+		'rtf_import' => "Importuj RTF",
+		'unlink' => "Usuń Hyperlink",
+		'hyperlink' => "Hyperlink wklej/edytuj",
+		'back_color' => "Kolor tła",
+		'fore_color' => "Kolor panelu",
+		'outdent' => "Usuń wcięcie",
+		'indent' => "Wcięcie",
+		'unordered_list' => "Nieuporządkowana lista",
+		'ordered_list' => "Uporządkowana lista",
+		'justify_right' => "Wyrównaj do prawej",
+		'justify_center' => "Centruj",
+		'justify_left' => "Wyrównaj do lewej",
+		'underline' => "Podkreślenie",
+		'italic' => "Kursywa",
+		'bold' => "Wytłuść",
+		'fullscreen' => "Otwórz edytor w trybie Fullscreen",
+		'edit_source' => "Edytuj kod źródłowy",
+		'fullscreen_editor' => "Fullscreen edytor",
+		'table_props' => "Edytuj tabelę",
+		'insert_table' => "Wstaw tabelę",
+		'edit_stylesheet' => "Edytuj klasy Stylesheet",
+		/*		 * ***************************************************************************
+		 * THE REST
+		 * *************************************************************************** */
 
-$l_wysiwyg["subscript"] = "Index dolny";
-$l_wysiwyg["superscript"] = "Index górny";
-$l_wysiwyg["justify_full"] = "Wyjustuj";
-$l_wysiwyg["strikethrought"] = "Przekreślenie";
-$l_wysiwyg["removeformat"] = "Kasuj formatowanie";
-$l_wysiwyg["removetags"] = "Remove tags, styles and comments"; // TRANSLATE
-$l_wysiwyg["editcell"] = "Edytuj komórkę tabeli";
-$l_wysiwyg["edittable"] = "Edytuj tabelę";
-$l_wysiwyg["insert_row2"] = "Wstaw wiersz";
-$l_wysiwyg["delete_rows2"] = "Kasuj wiersze";
-$l_wysiwyg["insert_colmn2"] = "Wstaw kolumnę";
-$l_wysiwyg["delete_colmns2"] = "Kasuj kolumny";
-$l_wysiwyg["insert_cell2"] = "Wstaw komórkę";
-$l_wysiwyg["delete_cells2"] = "Kasuj komórki";
-$l_wysiwyg["merge_cells2"] = "Scal komórki";
-$l_wysiwyg["split_cell2"] = "Podziel komórki";
-$l_wysiwyg["insert_edit_table"] = "Tabela wklej/edytuj";
-$l_wysiwyg["insert_edit_image"] = "Grafika wklej/edytuj";
-$l_wysiwyg["edit_style_class"] = "Edytuj klasę (Style)";
-$l_wysiwyg["insert_br"] = "Wstaw przełamanie linii (SHIFT + RETURN)";
-$l_wysiwyg["insert_p"] = "Wstaw paragraf";
-$l_wysiwyg["edit_sourcecode"] = "Edytuj kod źródłowy";
-$l_wysiwyg["show_details"] = "Pokaż szczegóły";
-$l_wysiwyg["rtf_import"] = "Importuj RTF";
-$l_wysiwyg["unlink"] = "Usuń Hyperlink";
-$l_wysiwyg["hyperlink"] = "Hyperlink wklej/edytuj";
-$l_wysiwyg["back_color"] = "Kolor tła";
-$l_wysiwyg["fore_color"] = "Kolor panelu";
-$l_wysiwyg["outdent"] = "Usuń wcięcie";
-$l_wysiwyg["indent"] = "Wcięcie";
-$l_wysiwyg["unordered_list"] = "Nieuporządkowana lista";
-$l_wysiwyg["ordered_list"] = "Uporządkowana lista";
-$l_wysiwyg["justify_right"] = "Wyrównaj do prawej";
-$l_wysiwyg["justify_center"] = "Centruj";
-$l_wysiwyg["justify_left"] = "Wyrównaj do lewej";
-$l_wysiwyg["underline"] = "Podkreślenie";
-$l_wysiwyg["italic"] = "Kursywa";
-$l_wysiwyg["bold"] = "Wytłuść";
-$l_wysiwyg["fullscreen"] = "Otwórz edytor w trybie Fullscreen";
-$l_wysiwyg["edit_source"] = "Edytuj kod źródłowy";
-$l_wysiwyg["fullscreen_editor"] = "Fullscreen edytor";
-$l_wysiwyg["table_props"] = "Edytuj tabelę";
-$l_wysiwyg["insert_table"] = "Wstaw tabelę";
-$l_wysiwyg["edit_stylesheet"] = "Edytuj klasy Stylesheet";
-
-/*****************************************************************************
- * THE REST
- *****************************************************************************/
-
-$l_wysiwyg["url"] = "URL"; // TRANSLATE
-$l_wysiwyg["image_url"] = "Obrazek URL";
-$l_wysiwyg["width"] = "Szerokość";
-$l_wysiwyg["height"] = "Wysokość";
-$l_wysiwyg["hspace"] = "Odstęp poziomy";
-$l_wysiwyg["vspace"] = "Odstęp pionowy";
-$l_wysiwyg["border"] = "Krawędź";
-$l_wysiwyg["altText"] = "Tekst alternatywny";
-$l_wysiwyg["alignment"] = "Wyrównanie";
-
-$l_wysiwyg["external_image"] = "webEdition-zew. grafika";
-$l_wysiwyg["internal_image"] = "webEdition-wew. grafika";
-
-$l_wysiwyg["bgcolor"] = "Kolor tła";
-$l_wysiwyg["cellspacing"] = "Odległość komórek";
-$l_wysiwyg["cellpadding"] = "Margines w komórkach tabeli";
-$l_wysiwyg["rows"] = "Wiersze";
-$l_wysiwyg["cols"] = "Kolumny";
-$l_wysiwyg["edit_table"] = "Edytuj tabelę";
-$l_wysiwyg["colspan"] = "Rozpiętość";
-$l_wysiwyg["halignment"] = "Wyrównanie horyz."; // has to be short !!
-$l_wysiwyg["valignment"] = "Wyrównanie wert.";  // has to be short !!
-$l_wysiwyg["color"] = "Color";
-$l_wysiwyg["choosecolor"] = "Wybierz kolor";
-$l_wysiwyg["parent_class"] = "Klasa bazowa";
-$l_wysiwyg["region_class"] = "Klasa potomna";
-$l_wysiwyg["edit_classname"] = "Edytuj klasę Stylesheet";
-$l_wysiwyg["emaillink"] = "E-mail";
-$l_wysiwyg["clean_word"] = "Czyść kod MS Word";
-$l_wysiwyg["addcaption"] = "Dodaj podpis";
-$l_wysiwyg["removecaption"] = "Usuń podpis";
-$l_wysiwyg["anchor"] = "Odnośnik";
-
-$l_wysiwyg["edit_hr"] = "Pozioma linia";
-$l_wysiwyg["color"] = "Kolor";
-$l_wysiwyg["noshade"] = "Bez cieniowania";
-$l_wysiwyg["strikethrough"] = "Przekreśl";
-
-$l_wysiwyg["nothumb"] = "Brak miniatury";
-$l_wysiwyg["thumbnail"] = "Widok miniatury";
-
-$l_wysiwyg["acronym"] = "Skrót";
-$l_wysiwyg["acronym_title"] = "Edytuj skrót";
-$l_wysiwyg["abbr"] = "Abbreviation"; // TRANSLATE
-$l_wysiwyg["abbr_title"] = "Edit Abbreviation"; // TRANSLATE
-$l_wysiwyg["title"] = "Tytuł";
-$l_wysiwyg["language"] = "Język";
-$l_wysiwyg["language_title"] = "Edytuj język";
-$l_wysiwyg["link_lang"] = "Link"; // TRANSLATE
-$l_wysiwyg["href_lang"] = "Zlinkowane strony";
-$l_wysiwyg["paragraph"] = "Paragraf";
-
-$l_wysiwyg["summary"] = "Zestawienie";
-$l_wysiwyg["isheader"] = "Jest podpis";
-
-$l_wysiwyg["keyboard"] = "Klawiatura";
-
-$l_wysiwyg["relation"] = "Powiązania";
-
-$l_wysiwyg["fontsize"] = "Font size"; // TRANSLATE
+		'url' => "URL", // TRANSLATE
+		'image_url' => "Obrazek URL",
+		'width' => "Szerokość",
+		'height' => "Wysokość",
+		'hspace' => "Odstęp poziomy",
+		'vspace' => "Odstęp pionowy",
+		'border' => "Krawędź",
+		'altText' => "Tekst alternatywny",
+		'alignment' => "Wyrównanie",
+		'external_image' => "webEdition-zew. grafika",
+		'internal_image' => "webEdition-wew. grafika",
+		'bgcolor' => "Kolor tła",
+		'cellspacing' => "Odległość komórek",
+		'cellpadding' => "Margines w komórkach tabeli",
+		'rows' => "Wiersze",
+		'cols' => "Kolumny",
+		'edit_table' => "Edytuj tabelę",
+		'colspan' => "Rozpiętość",
+		'halignment' => "Wyrównanie horyz.", // has to be short !!
+		'valignment' => "Wyrównanie wert.", // has to be short !!
+		'color' => "Color",
+		'choosecolor' => "Wybierz kolor",
+		'parent_class' => "Klasa bazowa",
+		'region_class' => "Klasa potomna",
+		'edit_classname' => "Edytuj klasę Stylesheet",
+		'emaillink' => "E-mail",
+		'clean_word' => "Czyść kod MS Word",
+		'addcaption' => "Dodaj podpis",
+		'removecaption' => "Usuń podpis",
+		'anchor' => "Odnośnik",
+		'edit_hr' => "Pozioma linia",
+		'color' => "Kolor",
+		'noshade' => "Bez cieniowania",
+		'strikethrough' => "Przekreśl",
+		'nothumb' => "Brak miniatury",
+		'thumbnail' => "Widok miniatury",
+		'acronym' => "Skrót",
+		'acronym_title' => "Edytuj skrót",
+		'abbr' => "Abbreviation", // TRANSLATE
+		'abbr_title' => "Edit Abbreviation", // TRANSLATE
+		'title' => "Tytuł",
+		'language' => "Język",
+		'language_title' => "Edytuj język",
+		'link_lang' => "Link", // TRANSLATE
+		'href_lang' => "Zlinkowane strony",
+		'paragraph' => "Paragraf",
+		'summary' => "Zestawienie",
+		'isheader' => "Jest podpis",
+		'keyboard' => "Klawiatura",
+		'relation' => "Powiązania",
+		'fontsize' => "Font size", // TRANSLATE
+				));

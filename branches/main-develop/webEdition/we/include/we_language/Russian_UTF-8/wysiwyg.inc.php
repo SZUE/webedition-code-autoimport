@@ -18,160 +18,147 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Language file: wysiwyg.inc.php
  * Provides language strings.
  * Language: English
  */
-include_once(dirname(__FILE__)."/wysiwyg_js.inc.php");
+include_once(dirname(__FILE__) . "/wysiwyg_js.inc.php");
 
-$l_wysiwyg["window_title"] = "Редактировать поле %s'";
+$l_wysiwyg = array_merge($l_wysiwyg, array(
+		'window_title' => "Редактировать поле %s'",
+		'format' => "Формат",
+		'fontsize' => "Размер шрифта",
+		'fontname' => "Название шрифта",
+		'css_style' => "Стиль CSS",
+		'normal' => "Обычный",
+		'h1' => "1 Заголовок",
+		'h2' => "2 Заголовок",
+		'h3' => "3 Заголовок",
+		'h4' => "4 Заголовок",
+		'h5' => "5 Заголовок",
+		'h6' => "6 Заголовок",
+		'pre' => "Отформатированный",
+		'address' => "Адрес",
+		'spellcheck' => 'Spellchecking', // TRANSLATE
 
-$l_wysiwyg["format"] = "Формат";
-$l_wysiwyg["fontsize"] = "Размер шрифта";
-$l_wysiwyg["fontname"] = "Название шрифта";
-$l_wysiwyg["css_style"] = "Стиль CSS";
-
-$l_wysiwyg["normal"] = "Обычный";
-$l_wysiwyg["h1"] = "1 Заголовок";
-$l_wysiwyg["h2"] = "2 Заголовок";
-$l_wysiwyg["h3"] = "3 Заголовок";
-$l_wysiwyg["h4"] = "4 Заголовок";
-$l_wysiwyg["h5"] = "5 Заголовок";
-$l_wysiwyg["h6"] = "6 Заголовок";
-$l_wysiwyg["pre"] = "Отформатированный";
-$l_wysiwyg["address"] = "Адрес";
-
-$GLOBALS['l_wysiwyg']['spellcheck'] = 'Spellchecking'; // TRANSLATE
-
-/*****************************************************************************
- * CONTEXT MENUS
- *****************************************************************************/
+		/*		 * ***************************************************************************
+		 * CONTEXT MENUS
+		 * *************************************************************************** */
 
 // REMEMBER: context menus cannot display any umlauts!
-$l_wysiwyg["cut"] = "Вырезать";
-$l_wysiwyg["copy"] = "Копировать";
-$l_wysiwyg["paste"] = "Вставить";
-$l_wysiwyg["insert_row"] = "Вставить строку";
-$l_wysiwyg["delete_rows"] = "Удалить строки";
-$l_wysiwyg["insert_colmn"] = "Вставить столбец";
-$l_wysiwyg["delete_colmns"] = "Удалить столбцы";
-$l_wysiwyg["insert_cell"] = "Вставить ячейку";
-$l_wysiwyg["delete_cells"] = "Удалить ячейки";
-$l_wysiwyg["merge_cells"] = "Слить ячейки";
-$l_wysiwyg["split_cell"] = "Разделить ячейки";
+		'cut' => "Вырезать",
+		'copy' => "Копировать",
+		'paste' => "Вставить",
+		'insert_row' => "Вставить строку",
+		'delete_rows' => "Удалить строки",
+		'insert_colmn' => "Вставить столбец",
+		'delete_colmns' => "Удалить столбцы",
+		'insert_cell' => "Вставить ячейку",
+		'delete_cells' => "Удалить ячейки",
+		'merge_cells' => "Слить ячейки",
+		'split_cell' => "Разделить ячейки",
+		/*		 * ***************************************************************************
+		 * ALT-TEXTS FOR BUTTONS
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * ALT-TEXTS FOR BUTTONS
- *****************************************************************************/
+		'subscript' => "Нижний индекс",
+		'superscript' => "Верхний индекс",
+		'justify_full' => "Центровка текста вширь",
+		'strikethrought' => "Перечеркнутый",
+		'removeformat' => "Удалить форматирование",
+		'removetags' => "Remove tags, styles and comments", // TRANSLATE
+		'editcell' => "Редактировать ячейку таблицы",
+		'edittable' => "Редактировать таблицу",
+		'insert_row2' => "Вставить строки",
+		'delete_rows2' => "Удалить строки",
+		'insert_colmn2' => "Вставить столбец",
+		'delete_colmns2' => "Удалить столбцы",
+		'insert_cell2' => "Вставить ячейку",
+		'delete_cells2' => "Удалить ячейку",
+		'merge_cells2' => "Слить ячейки",
+		'split_cell2' => "Разделить ячейку",
+		'insert_edit_table' => "Вставить/редактировать таблицу",
+		'insert_edit_image' => "Вставить/редактировать графику",
+		'edit_style_class' => "Редактировать класс (стиль)",
+		'insert_br' => "Вставить разрыв строки (SHIFT + RETURN)",
+		'insert_p' => "Вставить абзац",
+		'edit_sourcecode' => "Редактировать код",
+		'show_details' => "Показать детали",
+		'rtf_import' => "Импортировать RTF",
+		'unlink' => "Удалить гиперссылку",
+		'hyperlink' => "Вставить/редактировать гиперссылку",
+		'back_color' => "Цвет заднего плана",
+		'fore_color' => "Цвет переднего плана",
+		'outdent' => "Втяжка",
+		'indent' => "Отступ",
+		'unordered_list' => "Ненумерованный список",
+		'ordered_list' => "Нумерованный список",
+		'justify_right' => "Выровнять вправо",
+		'justify_center' => "Центрировать",
+		'justify_left' => "Выровнять влево",
+		'underline' => "Подчеркнуть",
+		'italic' => "Курсив",
+		'bold' => "Жирный шрифт",
+		'fullscreen' => "Открыть редактор в режиме крупного экрана",
+		'edit_source' => "Редактировать код",
+		'fullscreen_editor' => "Редактор крупного экрана",
+		'table_props' => "Свойства таблицы",
+		'insert_table' => "Вставить таблицу",
+		'edit_stylesheet' => "Редактировать таблицу стилей",
+		/*		 * ***************************************************************************
+		 * THE REST
+		 * *************************************************************************** */
 
-$l_wysiwyg["subscript"] = "Нижний индекс";
-$l_wysiwyg["superscript"] = "Верхний индекс";
-$l_wysiwyg["justify_full"] = "Центровка текста вширь";
-$l_wysiwyg["strikethrought"] = "Перечеркнутый";
-$l_wysiwyg["removeformat"] = "Удалить форматирование";
-$l_wysiwyg["removetags"] = "Remove tags, styles and comments"; // TRANSLATE
-$l_wysiwyg["editcell"] = "Редактировать ячейку таблицы";
-$l_wysiwyg["edittable"] = "Редактировать таблицу";
-$l_wysiwyg["insert_row2"] = "Вставить строки";
-$l_wysiwyg["delete_rows2"] = "Удалить строки";
-$l_wysiwyg["insert_colmn2"] = "Вставить столбец";
-$l_wysiwyg["delete_colmns2"] = "Удалить столбцы";
-$l_wysiwyg["insert_cell2"] = "Вставить ячейку";
-$l_wysiwyg["delete_cells2"] = "Удалить ячейку";
-$l_wysiwyg["merge_cells2"] = "Слить ячейки";
-$l_wysiwyg["split_cell2"] = "Разделить ячейку";
-$l_wysiwyg["insert_edit_table"] = "Вставить/редактировать таблицу";
-$l_wysiwyg["insert_edit_image"] = "Вставить/редактировать графику";
-$l_wysiwyg["edit_style_class"] = "Редактировать класс (стиль)";
-$l_wysiwyg["insert_br"] = "Вставить разрыв строки (SHIFT + RETURN)";
-$l_wysiwyg["insert_p"] = "Вставить абзац";
-$l_wysiwyg["edit_sourcecode"] = "Редактировать код";
-$l_wysiwyg["show_details"] = "Показать детали";
-$l_wysiwyg["rtf_import"] = "Импортировать RTF";
-$l_wysiwyg["unlink"] = "Удалить гиперссылку";
-$l_wysiwyg["hyperlink"] = "Вставить/редактировать гиперссылку";
-$l_wysiwyg["back_color"] = "Цвет заднего плана";
-$l_wysiwyg["fore_color"] = "Цвет переднего плана";
-$l_wysiwyg["outdent"] = "Втяжка";
-$l_wysiwyg["indent"] = "Отступ";
-$l_wysiwyg["unordered_list"] = "Ненумерованный список";
-$l_wysiwyg["ordered_list"] = "Нумерованный список";
-$l_wysiwyg["justify_right"] = "Выровнять вправо";
-$l_wysiwyg["justify_center"] = "Центрировать";
-$l_wysiwyg["justify_left"] = "Выровнять влево";
-$l_wysiwyg["underline"] = "Подчеркнуть";
-$l_wysiwyg["italic"] = "Курсив";
-$l_wysiwyg["bold"] = "Жирный шрифт";
-$l_wysiwyg["fullscreen"] = "Открыть редактор в режиме крупного экрана";
-$l_wysiwyg["edit_source"] = "Редактировать код";
-$l_wysiwyg["fullscreen_editor"] = "Редактор крупного экрана";
-$l_wysiwyg["table_props"] = "Свойства таблицы";
-$l_wysiwyg["insert_table"] = "Вставить таблицу";
-$l_wysiwyg["edit_stylesheet"] = "Редактировать таблицу стилей";
-
-/*****************************************************************************
- * THE REST
- *****************************************************************************/
-
-$l_wysiwyg["url"] = "URL"; // TRANSLATE
-$l_wysiwyg["image_url"] = "URL графики";
-$l_wysiwyg["width"] = "Ширина";
-$l_wysiwyg["height"] = "Высота";
-$l_wysiwyg["hspace"] = "Расстояние по горизонтали";
-$l_wysiwyg["vspace"] = "Расстояние по вертикали";
-$l_wysiwyg["border"] = "Границы";
-$l_wysiwyg["altText"] = "Альтернативный текст";
-$l_wysiwyg["alignment"] = "Центровка";
-
-$l_wysiwyg["external_image"] = "графика извне";
-$l_wysiwyg["internal_image"] = "графика внутри webEdition";
-
-$l_wysiwyg["bgcolor"] = "Цвет фона";
-$l_wysiwyg["cellspacing"] = "Расстояние от ячеек";
-$l_wysiwyg["cellpadding"] = "Внутреннее расстояние";
-$l_wysiwyg["rows"] = "Ряды";
-$l_wysiwyg["cols"] = "Столбцы";
-$l_wysiwyg["edit_table"] = "Редактировать таблицу";
-$l_wysiwyg["colspan"] = "Colspan"; // TRANSLATE
-$l_wysiwyg["halignment"] = "Гориз.выравнивание"; // has to be short !!
-$l_wysiwyg["valignment"] = "Верт.выравнивание";  // has to be short !!
-$l_wysiwyg["color"] = "Color";
-$l_wysiwyg["choosecolor"] = "Выбрать цвет";
-$l_wysiwyg["parent_class"] = "Исходная область";
-$l_wysiwyg["region_class"] = "Только выбор";
-$l_wysiwyg["edit_classname"] = "Редактировать имя класса таблицы стилей";
-$l_wysiwyg["emaillink"] = "E-Mail"; // TRANSLATE
-$l_wysiwyg["clean_word"] = "Очистить код MS Word";
-$l_wysiwyg["addcaption"] = "Добавить надпись";
-$l_wysiwyg["removecaption"] = "Удалить надпись";
-$l_wysiwyg["anchor"] = "Якорь";
-
-$l_wysiwyg["edit_hr"] = "Горизонтальная линия";
-$l_wysiwyg["color"] = "Цвет";
-$l_wysiwyg["noshade"] = "Без затенения";
-$l_wysiwyg["strikethrough"] = "Перечеркнуть";
-
-$l_wysiwyg["nothumb"] = "Без иконок";
-$l_wysiwyg["thumbnail"] = "Иконки";
-
-$l_wysiwyg["acronym"] = "Акроним";
-$l_wysiwyg["acronym_title"] = "Редактировать акроним";
-$l_wysiwyg["abbr"] = "Abbreviation"; // TRANSLATE
-$l_wysiwyg["abbr_title"] = "Edit Abbreviation"; // TRANSLATE
-$l_wysiwyg["title"] = "Заголовок";
-$l_wysiwyg["language"] = "Язык";
-$l_wysiwyg["language_title"] = "Редактировать язык";
-$l_wysiwyg["link_lang"] = "Ссылка";
-$l_wysiwyg["href_lang"] = "Ссылка указывает на страницу";
-$l_wysiwyg["paragraph"] = "Знак абзаца";
-
-$l_wysiwyg["summary"] = "Аннотация";
-$l_wysiwyg["isheader"] = "Является заголовком";
-
-$l_wysiwyg["keyboard"] = "Клавиатура";
-
-$l_wysiwyg["relation"] = "Отношение";
-
-$l_wysiwyg["fontsize"] = "Font size"; // TRANSLATE
+		'url' => "URL", // TRANSLATE
+		'image_url' => "URL графики",
+		'width' => "Ширина",
+		'height' => "Высота",
+		'hspace' => "Расстояние по горизонтали",
+		'vspace' => "Расстояние по вертикали",
+		'border' => "Границы",
+		'altText' => "Альтернативный текст",
+		'alignment' => "Центровка",
+		'external_image' => "графика извне",
+		'internal_image' => "графика внутри webEdition",
+		'bgcolor' => "Цвет фона",
+		'cellspacing' => "Расстояние от ячеек",
+		'cellpadding' => "Внутреннее расстояние",
+		'rows' => "Ряды",
+		'cols' => "Столбцы",
+		'edit_table' => "Редактировать таблицу",
+		'colspan' => "Colspan", // TRANSLATE
+		'halignment' => "Гориз.выравнивание", // has to be short !!
+		'valignment' => "Верт.выравнивание", // has to be short !!
+		'color' => "Color",
+		'choosecolor' => "Выбрать цвет",
+		'parent_class' => "Исходная область",
+		'region_class' => "Только выбор",
+		'edit_classname' => "Редактировать имя класса таблицы стилей",
+		'emaillink' => "E-Mail", // TRANSLATE
+		'clean_word' => "Очистить код MS Word",
+		'addcaption' => "Добавить надпись",
+		'removecaption' => "Удалить надпись",
+		'anchor' => "Якорь",
+		'edit_hr' => "Горизонтальная линия",
+		'color' => "Цвет",
+		'noshade' => "Без затенения",
+		'strikethrough' => "Перечеркнуть",
+		'nothumb' => "Без иконок",
+		'thumbnail' => "Иконки",
+		'acronym' => "Акроним",
+		'acronym_title' => "Редактировать акроним",
+		'abbr' => "Abbreviation", // TRANSLATE
+		'abbr_title' => "Edit Abbreviation", // TRANSLATE
+		'title' => "Заголовок",
+		'language' => "Язык",
+		'language_title' => "Редактировать язык",
+		'link_lang' => "Ссылка",
+		'href_lang' => "Ссылка указывает на страницу",
+		'paragraph' => "Знак абзаца",
+		'summary' => "Аннотация",
+		'isheader' => "Является заголовком",
+		'keyboard' => "Клавиатура",
+		'relation' => "Отношение",
+		'fontsize' => "Font size", // TRANSLATE
+				));

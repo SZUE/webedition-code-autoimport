@@ -18,21 +18,22 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: we_tabs.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_tabs["editor"]["properties"] = "Properties"; // TRANSLATE
-$l_tabs["editor"]["edit"] = "Editar";
-$l_tabs["editor"]["information"] = "Información";
-$l_tabs["editor"]["preview"] = "Vista previa";
-$l_tabs["editor"]["scheduler"] = "Planificador";
-$l_tabs["editor"]["scheduler_pro"] = "Planificador PRO";
-$l_tabs["editor"]["workspace"] = "Área de trabajo";
-$l_tabs["editor"]["meta"] = "Meta-Información";
-$l_tabs["editor"]["fields"] = "Campos";
-$l_tabs["editor"]["search"] = "Búsqueda";
-include(dirname(__FILE__).'/modules/we_tabs.inc.php');
+$l_tabs = array(
+		'editor' => array(
+				'properties' => "Properties", // TRANSLATE
+				'edit' => "Editar",
+				'information' => "Información",
+				'preview' => "Vista previa",
+				'scheduler' => "Planificador",
+				'scheduler_pro' => "Planificador PRO",
+				'workspace' => "Área de trabajo",
+				'meta' => "Meta-Información",
+				'fields' => "Campos",
+				'search' => "Búsqueda",
+				));
+include(dirname(__FILE__) . '/modules/we_tabs.inc.php');

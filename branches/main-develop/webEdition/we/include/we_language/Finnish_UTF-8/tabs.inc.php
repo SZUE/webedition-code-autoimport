@@ -18,21 +18,22 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: we_tabs.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_tabs["editor"]["properties"] = "Ominaisuudet";
-$l_tabs["editor"]["edit"] = "Muokkaa";
-$l_tabs["editor"]["information"] = "Tietoja";
-$l_tabs["editor"]["preview"] = "Esikatselu";
-$l_tabs["editor"]["scheduler"] = "Ajastin";
-$l_tabs["editor"]["scheduler_pro"] = "Ajastin PRO";
-$l_tabs["editor"]["workspace"] = "Työtila";
-$l_tabs["editor"]["meta"] = "Meta-tiedot";
-$l_tabs["editor"]["fields"] = "Kentät";
-$l_tabs["editor"]["search"] = "Etsi";
-include(dirname(__FILE__).'/modules/we_tabs.inc.php');
+$l_tabs = array(
+		'editor' => array(
+				'properties' => "Ominaisuudet",
+				'edit' => "Muokkaa",
+				'information' => "Tietoja",
+				'preview' => "Esikatselu",
+				'scheduler' => "Ajastin",
+				'scheduler_pro' => "Ajastin PRO",
+				'workspace' => "Työtila",
+				'meta' => "Meta-tiedot",
+				'fields' => "Kentät",
+				'search' => "Etsi",
+				));
+include(dirname(__FILE__) . '/modules/we_tabs.inc.php');
