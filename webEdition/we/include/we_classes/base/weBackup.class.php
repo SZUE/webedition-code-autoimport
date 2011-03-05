@@ -157,7 +157,7 @@ class weBackup extends we_backup{
 					$open_new=false;
 				}
 
-				if($fh_temp) {
+				if($fh_temp) {p_r($line);
 					if((substr($line,0,2) != "<?") && (substr($line,0,11) != "<webEdition") && (substr($line,0,12) != "</webEdition")){
 
 						$buff.=$line;

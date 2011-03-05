@@ -1155,12 +1155,11 @@ $GLOBALS["lv"] = new we_listview_banner("' . $name . '", $we_rows, "' . $order .
 				if (defined("SHOP_TABLE")) {
 					$defaultname = we_getTagAttributeTagParser("defaultname", $arr, '');
 					$docId = we_getTagAttributeTagParser("documentid", $arr, '');
-					$objId = we_getTagAttributeTagParser("objectid", $arr, '');
+					$objectId = we_getTagAttributeTagParser("objectid", $arr, '');
 					if (strpos($docId,'$')===false ){$php.='$docId="'.$docId.'";';} else {$php.='$docId = isset('.$docId.') ? "'.$docId.'" : $GLOBALS["'.str_replace('$','', $docId). '"];'; }
 					if (strpos($objectId,'$')===false ){$php.='$objectId="'.$objectId.'";';} else {$php.='$objectId = isset('.$objectId.') ? "'.$objectId.'" : $GLOBALS["'.str_replace('$','', $objectId). '"];'; }
 					$php .= '
-//$docId = "' . $docId . '";
-//$objectId = "' . $objId . '";
+
 if($objectId ==""){
 if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_objecttag"){
 $objectId = $GLOBALS["lv"]->object->DB_WE->f("OF_ID");
