@@ -78,7 +78,7 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 
 		if ($navItem->limitaccess == 0) {
 			$this->setMode(WECF_OFF);
-		} else { 
+		} else {
 			if ($navItem->limitaccess == 2) {
 				$this->setMode(WECF_NONE);
 			} else {
@@ -87,14 +87,14 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 					$_custFilter = $navItem->customers['filter'];
 					$this->updateCustomerFilter($_custFilter);
 					$this->setFilter($_custFilter);
-	
+
 					if (isset($navItem->customers['blacklist']) && is_array($navItem->customers['blacklist']) && count($navItem->customers['blacklist'])) {
 						$this->setBlackList($navItem->customers['blacklist']);
 					}
 					if (isset($navItem->customers['whitelist']) && is_array($navItem->customers['whitelist']) && count($navItem->customers['whitelist'])) {
 						$this->setWhiteList($navItem->customers['whitelist']);
 					}
-	
+
 				} else if (isset($navItem->customers['id']) && is_array($navItem->customers['id']) && count($navItem->customers['id'])) {
 					$this->setMode(WECF_SPECIFIC);
 					$this->setSpecificCustomers($navItem->customers['id']);
@@ -202,7 +202,7 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 				$_applyFilter = 0;
 				$_allCustomers = 1;
 			break;
-			
+
 			case WECF_NONE:
 				$_limitAccess = 2;
 				$_applyFilter = 0;
@@ -233,5 +233,3 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 
 
 }
-
-?>

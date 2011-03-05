@@ -30,4 +30,3 @@ array_push($parts,array("icon"=>"user.gif", "headline"=>g_l('weClass',"[owners]"
 array_push($parts,array("icon"=>"copy.gif", "headline"=>g_l('weClass',"[copy".$GLOBALS['we_doc']->ContentType.']'),"html"=>$GLOBALS['we_doc']->formCopyDocument(),"space"=>120));
 
 print we_multiIconBox::getHTML("","100%",$parts,30);
-?>

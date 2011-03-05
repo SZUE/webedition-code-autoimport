@@ -65,4 +65,3 @@ echo '
 </form>
 </body>
 </html>';
-?>

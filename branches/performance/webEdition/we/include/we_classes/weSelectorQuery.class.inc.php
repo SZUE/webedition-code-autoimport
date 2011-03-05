@@ -22,7 +22,7 @@
  * @name we_selectorQuery
  */
 class weSelectorQuery {
-	
+
 	/*************************************************************************
 	 * VARIABLES
 	 *************************************************************************/
@@ -30,36 +30,36 @@ class weSelectorQuery {
 	var $result = array();
 	var $fields;
 	var $condition = array();
-	
+
 	/*************************************************************************
 	 * CONSTRUCTOR
 	 *************************************************************************/
 
 	/**
 	 * Constructor of class
-	 * 
+	 *
 	 * @return weSelectorQuery
 	 */
 	function weSelectorQuery() {
 		$this->db = new DB_WE();
-		$this->fields = array('ID', 'Path');		
+		$this->fields = array('ID', 'Path');
 	}
-	
-	
+
+
 	/*************************************************************************
 	 * FUNCTIONS
 	 *************************************************************************/
-	
+
 	/**
 	 * query
 	 * Die Funktion 'query' f�hrt die Abfrage f�r den �bergebenen Selektor-Typ durch.
 	 * Mit dem Parameter 'limit' kann man die Anzahl der Suchergebnisse begrenzen.
-	 * 
+	 *
 	 * @param search
 	 * @param table
 	 * @param types
 	 * @param limit
-	 * 
+	 *
 	 * @return void
 	 */
 	function queryTable($search, $table, $types=null, $limit=null) {
@@ -77,15 +77,15 @@ class weSelectorQuery {
 				$typeField = "ContentType";
 		}
 
-		$userExtraSQL = $this->getUserExtraQuery($table);	
+		$userExtraSQL = $this->getUserExtraQuery($table);
 		$where = "WHERE Path = '".mysql_real_escape_string($search)."'";
 		$isFolder = 1;
 		$addCT = 0;
 
 		if (isset($types) && is_array($types)) {
 			for ($i=0; $i<count($types); $i++) {
-				if ($types[$i]!="") {	
-					$types[$i] = str_replace(" ","",$types[$i]);										
+				if ($types[$i]!="") {
+					$types[$i] = str_replace(" ","",$types[$i]);
 					if ($types[$i]=="folder") {
 						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i<1 ? " AND (" : " OR ") . "IsFolder=1";
 					} elseif(isset($typeField) && $typeField != "") {
@@ -115,17 +115,17 @@ class weSelectorQuery {
 		$query = "SELECT $fields FROM ".mysql_real_escape_string($table)." $where $order" . ($limit ? " LIMIT $limit" : "");
 		$this->db->query($query);
 	}
-	
+
 	/**
 	 * search
 	 * Die Funktion 'search' f�hrt die Suche nach den Anfangszeichen f�r den �bergebenen Selektor-Typ durch.
 	 * Mit dem Parameter 'limit' kann man die Anzahl der Suchergebnisse begrenzen.
-	 * 
+	 *
 	 * @param search
 	 * @param table
 	 * @param types
 	 * @param limit
-	 * 
+	 *
 	 * @return void
 	 */
 	function search($search, $table, $types=null, $limit=null, $rootDir="") {
@@ -143,16 +143,16 @@ class weSelectorQuery {
 				$typeField = "ContentType";
 		}
 
-		$userExtraSQL = $this->getUserExtraQuery($table);	
+		$userExtraSQL = $this->getUserExtraQuery($table);
 		$where = "WHERE Path REGEXP '^".preg_quote(preg_quote($search))."[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '".mysql_real_escape_string($rootDir)."' OR Path LIKE '".mysql_real_escape_string($rootDir)."%')" : "") ;
 		$isFolder = 1;
 		$addCT = 0;
-		
+
 		if (isset($types) && is_array($types)) {
 			$types = array_unique($types);
 			for ($i=0; $i<count($types); $i++) {
-				if ($types[$i]!="") {		
-					$types[$i] = str_replace(" ","",$types[$i]);								
+				if ($types[$i]!="") {
+					$types[$i] = str_replace(" ","",$types[$i]);
 					if ($types[$i]=="folder") {
 						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i<1 ? " AND (" : " OR ") . "IsFolder=1";
 					} elseif(isset($typeField) && $typeField != "") {
@@ -182,8 +182,8 @@ class weSelectorQuery {
 		$query = "SELECT $fields FROM ".mysql_real_escape_string($table)." $where $order" . ($limit ? " LIMIT $limit" : "");
 		$this->db->query($query);
 	}
-	
-	
+
+
 	/**
 	 * Returns all entries of a folder, depending on the contenttype.
 	 *
@@ -193,40 +193,40 @@ class weSelectorQuery {
 	 * @param integer $limit
 	 */
 	function queryFolderContents($id, $table, $types=null, $limit=null) {
-		$userExtraSQL = $this->getUserExtraQuery($table);	
+		$userExtraSQL = $this->getUserExtraQuery($table);
 		if (is_array($types) &&  $table != CATEGORY_TABLE) {
 			$this->addQueryField('ContentType');
 		}
-		
+
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");
-		
+
 		// deal with contenttypes
 		$ctntQuery = " OR ( 0 ";
 		if ($table == CATEGORY_TABLE) {
 			$ctntQuery .= " OR 1 ";
 		}
 		if ($types) {
-			
+
 			for ($i=0; $i<sizeof($types); $i++) {
 				$ctntQuery .= " OR ContentType = \"" . $types[$i] . "\"";
 			}
 		}
 		$ctntQuery .= " ) ";
-		
+
 		$query = "
 			SELECT " . implode(", ", $this->fields) . "
 			FROM ".mysql_real_escape_string($table)."
-			WHERE 
+			WHERE
 				ParentID = ".abs($id)."
-				AND ( IsFolder = 1 
+				AND ( IsFolder = 1
 					  $ctntQuery ) " .
 			(empty($userExtraSQL) ? "" : " " . $userExtraSQL) . "
 			ORDER BY IsFolder DESC, Path
 		";
 		$this->db->query($query);
 	}
-	
+
 	/**
 	 * returns single item by id
 	 *
@@ -244,9 +244,9 @@ class weSelectorQuery {
 		}
 		$userExtraSQL = "";
 		if($table!=BANNER_TABLE) {
-			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : "";	
+			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : "";
 		}
-		
+
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");
 		if (is_array($fields)) {
@@ -257,13 +257,13 @@ class weSelectorQuery {
 		$query = "
 			SELECT " . implode(", ", $this->fields) . "
 			FROM ".mysql_real_escape_string($table)."
-			WHERE 
+			WHERE
 				ID = ".abs($id)."
 				" .	(empty($userExtraSQL) ? "" : " " . $userExtraSQL);
 		$this->db->query($query);
 		return $this->getResult();
 	}
-	
+
 	/**
 	 * returns single item by id
 	 *
@@ -271,8 +271,8 @@ class weSelectorQuery {
 	 * @param string $table
 	 */
 	function getItemByPath($path, $table, $fields="") {
-		$userExtraSQL = $this->getUserExtraQuery($table);	
-		
+		$userExtraSQL = $this->getUserExtraQuery($table);
+
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");
 		if (is_array($fields)) {
@@ -283,13 +283,13 @@ class weSelectorQuery {
 		$query = "
 			SELECT " . implode(", ", $this->fields) . "
 			FROM ".mysql_real_escape_string($table)."
-			WHERE 
+			WHERE
 				Path = '".mysql_real_escape_string($path)."'
 				" .	(empty($userExtraSQL) ? "" : " " . $userExtraSQL);
 		$this->db->query($query);
 		return $this->getResult();
 	}
-	
+
 	/**
 	 * getResult
 	 * Liefert das komplette Erg�bnis der Abfrage als Hash mit den Feldnamen als Spalten.
@@ -306,29 +306,29 @@ class weSelectorQuery {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * addQueryField
 	 * F�gt den �bergebenen String zur Liste der gesuchten Felder hinzu.
-	 * @param field 
+	 * @param field
 	 * @return void
 	 */
 	function addQueryField($field) {
-		array_push($this->fields, $field); 
+		array_push($this->fields, $field);
 	}
-	
+
 	/**
 	 * delQueryField
 	 * Entfernt den �bergebenen String von der Liste der gesuchten Felder.
-	 * @param field 
+	 * @param field
 	 * @return void
 	 */
 	function delQueryField($field) {
 		foreach ($this->fields as $key=>$val) {
-			if ($val==$field) unset($this->fields[$key]);	
+			if ($val==$field) unset($this->fields[$key]);
 		}
 	}
-		
+
 	/**
 	 * addCondition
 	 * F�gt die �bergeben Abfragebedingung hinzu.
@@ -341,9 +341,9 @@ class weSelectorQuery {
 			$this->condition[$arrayIndex]['conditionOperator'] = $condition[1];
 			$this->condition[$arrayIndex]['field'] = $condition[2];
 			$this->condition[$arrayIndex]['value'] = $condition[3];
-		} 
+		}
 	}
-	
+
 	/**
 	 * getUserExtraQuery
 	 * Erzeugt ein Bedingungen zur Filterung der Arbeitsbereiche
@@ -351,11 +351,11 @@ class weSelectorQuery {
 	 * @return string
 	 */
 	function getUserExtraQuery($table, $useCreatorID=true){
-		$userExtraSQL = makeOwnersSql(false) . " ";	 
-		 
+		$userExtraSQL = makeOwnersSql(false) . " ";
+
 		if(get_ws($table)) {
 			$userExtraSQL .= getWsQueryForSelector($table);
-			
+
 		}else if( defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
@@ -372,5 +372,3 @@ class weSelectorQuery {
 		return $userExtraSQL;
 	}
 }
-
-?>

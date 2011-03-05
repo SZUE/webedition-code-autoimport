@@ -37,7 +37,11 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		}
 	}
 	
-	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
+	if (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL']!=''){
+		$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
+	} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']!=''){
+		$path_parts = pathinfo($_SERVER['REDIRECT_URL']);
+	}
 
 	if(!$GLOBALS['we_editmode']){
 		$db = new DB_WE();
@@ -46,7 +50,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		$searchfor ='';
 		$notfound=true;
 		while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
-		//while($notfound  && $path_parts['dirname']!='/'){
+		
 			$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 			if ($searchfor){
@@ -77,7 +81,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			}
 		}
 		if($notfound && isset($path_parts['dirname']) && $path_parts['dirname']=='/' && $hiddendirindex){
-		//if($notfound  && $path_parts['dirname']=='/' && $hiddendirindex){
+		
 			if ($searchfor){
 				$searchfor = $path_parts['basename'].'/'.$searchfor;
 			} else $searchfor = $path_parts['basename'];
@@ -88,15 +92,22 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 				if($displayidtest)$displayid = $displayidtest;
 			}
 			if($displayid){
-				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchfor) . "' LIMIT 1", "ID", $db));
+				if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
+					$searchforInternal=urlencode ($searchfor);
+				} else {
+					$searchforInternal=$searchfor;
+				}
+				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchforInternal) . "' LIMIT 1", "ID", $db));
 				if ($objectid){$notfound=false;}
 			}
 		}
 		if(!$notfound){
 			$_REQUEST=array_merge($_REQUEST,$myRequest);
 			$_REQUEST['we_objectID']=$objectid;
+			$_REQUEST['we_oid']=$objectid;
 			unset($GLOBALS["WE_MAIN_DOC"]);
 			unset($GLOBALS["we_doc"]);
+			$saveLang= $GLOBALS['WE_LANGUAGE'];
 			header("HTTP/1.0 200 OK", true,200);
 			header("Status: 200 OK", true,200);
 			include($_SERVER["DOCUMENT_ROOT"] . $display);
@@ -110,7 +121,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 				header("HTTP/1.0 404 Not Found", true,404);
 				header("Status: 404 Not Found", true,404);
 			}
-			//we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
+			we_tag('include', array('type'=>'document', 'id'=>$error404doc,'gethttp'=>'0'));
 			exit;
 		}
 	}

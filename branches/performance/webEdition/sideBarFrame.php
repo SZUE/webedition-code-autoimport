@@ -29,5 +29,3 @@ $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 
 $weFrame = new weSideBarFrames();
 $weFrame->getHTML($what);
-
-?>

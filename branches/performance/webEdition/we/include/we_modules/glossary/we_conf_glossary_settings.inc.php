@@ -21,5 +21,3 @@
 $GLOBALS['weGlossaryCheckBeforePublishing'] = true;
 $GLOBALS['weGlossaryAutomaticReplacement'] = true;
 $GLOBALS['weGlossaryForceAction'] = false;
-
-?>

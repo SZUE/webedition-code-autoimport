@@ -31,4 +31,3 @@ $fs = new we_delSelector(
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
 
-?>

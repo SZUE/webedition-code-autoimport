@@ -232,7 +232,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @return string
 	 */
 	function getConditionForListviewQuery( &$listview ) {
-		
+
 		if ( $listview->customerFilterType === 'off' || $listview->customerFilterType === 'false') {
 			return '';
 		}
@@ -241,7 +241,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
 		$_restrictedFilesForCustomer = weDocumentCustomerFilter::_getFilesWithRestrictionsOfCustomer($listview);
-		
+
 		if ($listview->ClassName == "we_search_listview") { // search
 
 			// build query from restricted files, regard search and normal listview
@@ -490,13 +490,13 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$_cid = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 		$_filesWithRestrictionsForCustomer = array();
 		$_defaultQuery = !weDocumentCustomerFilter::customerIsLogedIn() ? "(mode=" . WECF_ALL . ") OR " : "";
-		
+
 		$_blacklistQuery = " (mode=".WECF_FILTER." AND blackList LIKE '%,$_cid,%') ";
 		$_whiteLlistQuery = " (mode=".WECF_FILTER." AND whiteList NOT LIKE '%,$_cid,%') ";
 		$_specificCustomersQuery = " (mode=" . WECF_SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
 
 		$_accessControlOnTemplateQuery = ( ($listview->customerFilterType != 'all' && $listview->customerFilterType != 'true') ? ' AND (accessControlOnTemplate = 0) '  :  '' );
-		
+
 		// detect all files/objects with restrictions
 		if ($listview->ClassName == "we_search_listview") {
 			$_queryForIds = "
@@ -589,7 +589,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 		}
 		if ( $modelHash["id"] == $this->getModelId() && $modelHash["contentType"] == $this->getModelType() ) { // model is correct
-			
+
 			if ( !$_fromListviewCheck && $this->getAccessControlOnTemplate() && !$_fromIfRegisteredUser ) {
 				// access control is on template (for we:ifregisteredUser)
 				return WECF_CONTROLONTEMPLATE;

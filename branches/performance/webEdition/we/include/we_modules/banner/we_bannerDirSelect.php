@@ -32,4 +32,4 @@ $fs = new we_bannerDirSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_RE
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
 
-?>
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);

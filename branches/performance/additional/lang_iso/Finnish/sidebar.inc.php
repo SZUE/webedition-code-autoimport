@@ -44,7 +44,7 @@ $l_sidebar["default"][1]["icon"] = 'documentation.gif';
 
 $l_sidebar["default"][2] = array();
 $l_sidebar["default"][2]["headline"] = 'Muita tiedonl?eit?
-$l_sidebar["default"][2]["text"] = 'Katsaus muista tiedonl?eist?
+$l_sidebar["default"][2]["text"] = 'Katsaus muista tiedonl?eist?';
 $l_sidebar["default"][2]["link"] = 'javascript:top.we_cmd(\'help\');';
 $l_sidebar["default"][2]["icon"] = 'help.gif';
 

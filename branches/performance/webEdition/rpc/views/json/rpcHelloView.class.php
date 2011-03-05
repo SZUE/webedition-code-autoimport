@@ -19,15 +19,14 @@
  */
 
 class rpcHelloView extends rpcView {
-	
-	
+
+
 	function getResponse($response) {
-		
+
 		$html = '
-			Hallo World!	
+			Hallo World!
 		';
-		
+
 		return $html;
 	}
 }
-?>

@@ -38,6 +38,3 @@ if($DB_WE->next_record()){
 	}
 }
 header("Location: ".$preurl.WEBEDITION_DIR."notPublished.php");
-
-
-?>

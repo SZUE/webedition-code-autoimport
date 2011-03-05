@@ -36,7 +36,7 @@ class weTagData_selectAttribute extends weTagDataAttribute
 	 */
 	function weTagData_selectAttribute($id, $name, $options = array(), $required = false, $module = '')
 	{
-		
+
 		$this->weTagDataAttribute($id, $name, $required, $module);
 		$this->Options = $this->getUseOptions($options);
 	}
@@ -46,29 +46,29 @@ class weTagData_selectAttribute extends weTagDataAttribute
 	 */
 	function getCodeForTagWizard()
 	{
-		
+
 		$keys = array();
 		$values = array();
-		
+
 		if (!$this->Required) {
 			$keys[] = '';
 			$values[] = '';
 		}
-		
+
 		foreach ($this->Options as $option) {
-			
+
 			$keys[] = $option->Value;
 			$values[] = $option->getName();
 		}
-		
+
 		$select = new we_htmlSelect(
 				array(
 					'name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'
 				));
 		$select->addOptions(sizeof($values), $keys, $values);
-		
+
 		$select->selectOption($this->Value);
-		
+
 		return '
 					<table class="attribute">
 					<tr>
@@ -79,4 +79,3 @@ class weTagData_selectAttribute extends weTagDataAttribute
 	}
 }
 
-?>

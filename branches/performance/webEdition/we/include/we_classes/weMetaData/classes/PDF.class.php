@@ -48,4 +48,3 @@ class weMetaData_PDF extends weMetaData {
 	}
 
 }
-?>

@@ -31,5 +31,3 @@ $fs = new we_bannerSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUE
 							isset($order) ? $order : (isset($_REQUEST["order"]) ? $_REQUEST["order"] : ''));
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
-
-?>

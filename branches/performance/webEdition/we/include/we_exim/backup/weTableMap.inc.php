@@ -35,7 +35,7 @@
 			'tblmetadata'			=>	METADATA_TABLE
 
 	);
-	
+
 	$tableMap['versions']=array(
 			'tblversions'		=>	VERSIONS_TABLE,
 			'tblversionslog'	=>	VERSIONS_TABLE_LOG
@@ -158,7 +158,3 @@
 
 
 	$tableMap['configuration']=array();
-
-
-
-?>

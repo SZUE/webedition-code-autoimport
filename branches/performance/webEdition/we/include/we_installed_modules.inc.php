@@ -7,4 +7,3 @@
 	if (in_array("messaging",$_we_active_integrated_modules)) {$_we_installed_modules[] = "messaging";}
 	if (in_array("workflow",$_we_active_integrated_modules)) {$_we_installed_modules[] = "workflow";}
 	if (in_array("newsletter",$_we_active_integrated_modules)) {$_we_installed_modules[] = "newsletter";}
-

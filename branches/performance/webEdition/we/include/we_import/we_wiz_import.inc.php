@@ -877,7 +877,7 @@ class we_wizard_import extends we_wizard {
 				"space"=>0)
 		);
 		$content = $hdns . we_multiIconBox::getHTML("wxml","100%",$parts,30,"",-1,'','',false,g_l('import','[log]'));
-		
+
 		return array($functions, $content);
 	}
 
@@ -2186,9 +2186,9 @@ HTS;
 	}
 
 	function getCSVImportStep3() {
-		
+
 		$this->getTMPaccess();
-		
+
 		if (isset($_REQUEST["v"]['we_TemplateName']) && ($_REQUEST["v"]['we_TemplateID']==0 || $_REQUEST["v"]['we_TemplateID']=="")) {
 			$_REQUEST["v"]['we_TemplateID'] = path_to_id($_REQUEST["v"]['we_TemplateName'],TEMPLATES_TABLE);
 		}
@@ -2475,7 +2475,7 @@ HTS;
 			getPixel(20,4),
 			$button);
 	}
-	
+
 	function getTMPaccess(){
 		if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess') ){
 			unlink($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/tmp/.htaccess');
@@ -2491,5 +2491,3 @@ HTS;
 	}
 
 }
-
-?>

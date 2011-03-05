@@ -954,7 +954,7 @@ if(!Function.prototype.apply){
                 <input type="text" name="CropHeight" id="CropHeight" value="0" onchange="CropTool.setCropHeight(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
               </div>
               <a id="cropButtonZoomIn" title="'.g_l('crop','[enlarge_crop_area]').'" onmousedown="CropTool.zoom(1);">&nbsp;</a>
-              <a id="cropButtonZoomOut" title="'.g_l('crop'),'[reduce_crop_area]').'" onmousedown="CropTool.zoom(-1);">&nbsp;</a>
+              <a id="cropButtonZoomOut" title="'.g_l('crop','[reduce_crop_area]').'" onmousedown="CropTool.zoom(-1);">&nbsp;</a>
               </div>
             </td>
             <td>'.$we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2).'</td>

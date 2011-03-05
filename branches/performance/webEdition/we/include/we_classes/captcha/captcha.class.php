@@ -83,6 +83,3 @@ class Captcha {
 	} /* end: check */
 
 } /* end: Class */
-
-
-?>

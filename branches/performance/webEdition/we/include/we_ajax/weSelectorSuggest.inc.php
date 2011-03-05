@@ -40,4 +40,3 @@ if (is_array($suggests)) {
 	}
 }
 echo $return;
-?>

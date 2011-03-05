@@ -19,7 +19,5 @@
  */
 
 class rpcPreparePreviewView extends rpcJsonView {
-	
-}
 
-?>
+}

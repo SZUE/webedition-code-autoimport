@@ -197,8 +197,4 @@ class weGlossaryTree extends weMainTree{
 		';
 
 	}
-
-
 }
-
-?>

@@ -1,5 +1,6 @@
 <?php
 
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
 
@@ -26,6 +27,7 @@ $xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 $xml .= "<tags>\n";
 $allWeTags = weTagWizard::getExistingWeTags();
 foreach($allWeTags as $tag){
+	$GLOBALS['TagRefURLName'] = strtolower($tag);
 	$tagData = weTagData::getTagData($tag);
 	$xml .= "\t". '<tag needsEndtag="'.($tagData->needsEndTag()? "true" : "false").'" name="' . $tagData->getName() . '" />'."\n";
 }

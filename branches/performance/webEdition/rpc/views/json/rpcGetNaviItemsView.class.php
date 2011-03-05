@@ -19,7 +19,6 @@
  */
 
 class rpcGetNaviItemsView extends rpcJsonView {
-		
-	
+
+
 }
-?>

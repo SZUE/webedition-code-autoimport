@@ -47,7 +47,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			$this->attribute_slots["name"]=weTable::rmTablePrefix($table);
 
 			$update_table=true;
-			
+
 			if(defined("OBJECT_X_TABLE") && !$force_columns){
 				 if(strtolower(substr($table,0,10))==strtolower(substr(OBJECT_X_TABLE, strlen(TBL_PREFIX)))) $update_table=false;
 			}
@@ -74,7 +74,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 					);
 				}
 			}
-		
+
 			$this->fetchNewColumns();
 		}
 
@@ -88,11 +88,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			$keys=array();
 
 			foreach($this->elements as $element){
-				
+
 					$_defalut_for_type = eregi('int',$element["Type"]) ||  eregi('double',$element["Type"]) || eregi('float',$element["Type"]) ? 0 : "''";
-					
+
 					$_default_value = ("DEFAULT " .((isset($element["Default"]) && $element["Default"]!="")  ? ("'".$element["Default"]."'") : ((isset($element["Null"]) && $element["Null"]=="YES") ? "NULL" : $_defalut_for_type)));
-				
+
 					$cols[$element["Field"]]= $element["Type"]." ".((isset($element["Null"]) && $element["Null"]=="YES") ? "NULL " : "NOT NULL ").((isset($element["Extra"]) && strtolower($element["Extra"])!="auto_increment") ? $_default_value  : "")." ".((isset($element["Extra"])) ? $element["Extra"] : '');
 
 					if(isset($element["Key"]) && $element["Key"]){
@@ -103,12 +103,12 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			}
 
 			if(!empty($cols)) {
-				
+
 				 return weDBUtil::addTable($this->table,$cols,$keys);
-				
-				
+
+
 			}
-			
+
 			return false;
 
 		}
@@ -118,7 +118,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			if(substr($tabname,0,$len)==TBL_PREFIX) return strtolower(substr_replace($tabname,"",0,$len));
 
 		}
-		
+
 		// add new fields to the table before import
 		function fetchNewColumns() {
 			// fix for bannerclicks table - primary key has been added
@@ -147,20 +147,20 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 					);
 				}
 			}
-			
+
 		}
-		
+
 
 	}
-	
+
 	class weTableAdv extends weTable
 	{
 		var $ClassName="weTableAdv";
-		
+
 		function weTableAdv($table,$force_columns=false){
 			parent::weTable($table,$force_columns);
 		}
-		
+
 		function getColumns(){
 			if(weDBUtil::isTabExist($this->table)){
 				$metadata=$this->db->query("SHOW CREATE TABLE $this->table;");
@@ -174,14 +174,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			}
 			$this->fetchNewColumns();
 		}
-		
+
 		function save(){
-			global $DB_WE;	
+			global $DB_WE;
 			if( !(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) ){
 				$_SESSION['weBackupVars']['tablekeys']=array();
 			}
 			$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
-			weDBUtil::delTable($this->table);	
+			weDBUtil::delTable($this->table);
 			$myarray=$this->elements['create'];
 			array_shift($myarray);//get rid of 'create'
 			array_shift($myarray);//get rid of old create Statement'
@@ -194,21 +194,20 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 				$Collation = DB_COLLATION;
 				$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
 			}
-			
+
 			array_pop($myarray);//get rid of old Engine statement
 			$myarray[] =' ) '. $charset_collation .' ENGINE=MyISAM;';
-			
+
 			$query = implode(" ",$myarray);
 			if ($DB_WE->query($query)) {
-				return true;		
+				return true;
 			} else {
 				p_r($query);
 				sleep(10);
 				return false;
-			
+
 			}
 		}
-		
+
 	}
 
-?>

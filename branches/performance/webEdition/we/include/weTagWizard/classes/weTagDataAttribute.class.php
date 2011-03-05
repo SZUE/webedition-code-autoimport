@@ -1,5 +1,7 @@
 <?php
 
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/taged.inc.php');
+
 /**
  * webEdition CMS
  *
@@ -18,30 +20,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class weTagDataAttribute
-{
+class weTagDataAttribute {
 
 	/**
 	 * @var string
 	 */
 	var $Id;
-
 	/**
 	 * @var string
 	 */
 	var $Name;
-
 	/**
 	 * @var boolean
 	 */
 	var $Required;
-
 	/**
 	 * @var string
 	 */
 	var $Module;
-
 	/**
 	 * @var string
 	 */
@@ -52,9 +48,8 @@ class weTagDataAttribute
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function weTagDataAttribute($id, $name, $required, $module = '')
-	{
-		
+	function weTagDataAttribute($id, $name, $required, $module = '') {
+
 		$this->Id = $id;
 		$this->Name = $name;
 		$this->Required = $required;
@@ -66,40 +61,34 @@ class weTagDataAttribute
 	/**
 	 * @return string
 	 */
-	function getLabelCodeForTagWizard()
-	{
-		
+	function getLabelCodeForTagWizard() {
+
 		return we_htmlElement::htmlLabel(
-				array(
-					
-						'id' => 'label_' . $this->getIdName(), 
-						'class' => 'defaultfont', 
-						'for' => $this->getIdName()
-				), 
-				$this->Name . ($this->Required ? '*' : ''));
+						array(
+				'id' => 'label_' . $this->getIdName(),
+				'class' => 'defaultfont',
+				'for' => $this->getIdName()
+						), $this->Name . ($this->Required ? '*' : ''));
 	}
 
 	/**
 	 * @return string
 	 */
-	function getName()
-	{
+	function getName() {
 		return $this->Name;
 	}
 
 	/**
 	 * @return string
 	 */
-	function getIdName()
-	{
+	function getIdName() {
 		return 'id' . $this->Id . '_' . $this->Name;
 	}
 
 	/**
 	 * @return boolean
 	 */
-	function IsRequired()
-	{
+	function IsRequired() {
 		return $this->Required;
 	}
 
@@ -107,8 +96,7 @@ class weTagDataAttribute
 	 * checks if this attribute should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function useAttribute()
-	{
+	function useAttribute() {
 		if ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules'])) {
 			return true;
 		}
@@ -119,9 +107,8 @@ class weTagDataAttribute
 	 * checks if this option should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function getUseOptions($options)
-	{
-		
+	function getUseOptions($options) {
+
 		$useOptions = array();
 		foreach ($options as $option) {
 			if ($option->useOption()) {
@@ -130,5 +117,5 @@ class weTagDataAttribute
 		}
 		return $useOptions;
 	}
+
 }
-?>

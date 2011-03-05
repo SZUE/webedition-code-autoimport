@@ -74,6 +74,5 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd {
 		$resp->setData("data",$pb) ;
 
 		return $resp;
-
 	}
 }

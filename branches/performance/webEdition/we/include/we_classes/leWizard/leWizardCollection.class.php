@@ -154,7 +154,7 @@ class leWizardCollection {
 	}
 
 	function getFirstStepUrl() {
-		
+
 		$debug = "";
 		if(isset($_REQUEST['debug'])) {
 			$debug = "&debug=1";
@@ -311,6 +311,3 @@ class leWizardCollection {
 
 
 }
-
-
-?>

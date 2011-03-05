@@ -266,5 +266,3 @@ $we_tabs->getHTML() .
 
 
 }
-
-?>

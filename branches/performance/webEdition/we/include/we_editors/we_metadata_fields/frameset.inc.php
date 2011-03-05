@@ -51,19 +51,19 @@ $_javascript = "
  *****************************************************************************/
 
 print
-	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) . 
-	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) . 
+	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
+	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
 	we_htmlElement::jsElement(
 		"
 			function closeOnEscape() {
 				return true;
-				
+
 			}
-			
+
 			function saveOnKeyBoard() {
 				window.frames[1].we_save();
 				return true;
-				
+
 			}"
 	) .
 "</head>";
@@ -73,4 +73,3 @@ $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_me
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/footer.php?closecmd=".(isset($_REQUEST["we_cmd"][1]) ? rawurlencode($_REQUEST["we_cmd"][1]) : ""), "name" => "we_metadatafields_footer", "scrolling" => "no", "noresize" => "noresize"));
 
 print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
-?>

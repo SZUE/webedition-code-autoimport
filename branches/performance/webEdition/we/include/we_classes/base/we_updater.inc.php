@@ -182,6 +182,25 @@
 			if($DB_WE->next_record()) return true; else return false;
 	}
 
+	function hasIndex($tab,$index){
+		$GLOBALS['DB_WE']->query('SHOW INDEX FROM '.mysql_real_escape_string($tab).' WHERE Key_name = "'.$index.'"');
+		return $GLOBALS['DB_WE']->next_record();
+	}
+
+	function updateUnindexedCols($tab,$col){
+			global $DB_WE;
+			$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
+			$query=array();
+			while($DB_WE->next_record()) {
+				if($DB_WE->f('Key')==''){
+					$query[]='ADD INDEX ('.$DB_WE->f('Field').')';
+				}
+			}
+			if(count($query)>0){
+				$DB_WE->query('ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query));
+			}
+	}
+
 	function isTabExist($tab){
 			global $DB_WE;
 			$DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
@@ -205,23 +224,27 @@
 
 	function addCol($tab,$col,$typ,$pos=""){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD $col $typ".(($pos!="") ? " ".$pos : "").";");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
+	}
+
+	function addIndex($tab,$name,$def){
+		$GLOBALS['DB_WE']->query('ALTER TABLE '.mysql_real_escape_string($tab).' ADD INDEX '.$name.' ('.$def.')');
 	}
 
 	function changeColTyp($tab,$col,$newtyp){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE mysql_real_escape_string($tab) CHANGE $col $col $newtyp;");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
 	}
 
 	function getColTyp($tab,$col){
 			   global $DB_WE;
-			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '$col';");
+			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".$col."';");
 			   if($DB_WE->next_record()) return $DB_WE->f("Type"); else return "";
 	}
 
 	function delCol($tab,$col){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE mysql_real_escape_string($tab) DROP $col;");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP ".$col.";");
 	}
 
 	function updateUsers(){
@@ -281,7 +304,7 @@
 		}
 		$this->fix_icon();
 
-
+		return true;
 	}
 
 	function updateCustomers(){
@@ -341,6 +364,7 @@
 			else $this->changeColTyp(CUSTOMER_TABLE,"LastAccess","VARCHAR(24) DEFAULT '' NOT NULL");
 
 		}
+		return true;
 	}
 
 	function updateScheduler(){
@@ -349,6 +373,7 @@
 			if(!$this->isColExist(SCHEDULE_TABLE,"Type")) $this->addCol(SCHEDULE_TABLE,"Type","TINYINT(3) DEFAULT '0' NOT NULL");
 			if(!$this->isColExist(SCHEDULE_TABLE,"Active")) $this->addCol(SCHEDULE_TABLE,"Active","TINYINT(1) DEFAULT '1'");
 		}
+		return true;
 	}
 
 	function updateNewsletter(){
@@ -358,12 +383,14 @@
 		if(defined("NEWSLETTER_BLOCK_TABLE")){
 				if(!$this->isColExist(NEWSLETTER_BLOCK_TABLE,"Pack")) $this->addCol(NEWSLETTER_BLOCK_TABLE,"Pack","TINYINT(1) DEFAULT '0'");
 		}
+		return true;
 	}
 
 	function updateShop(){
 		if(defined("SHOP_TABLE")){
 			if($this->isColExist(SHOP_TABLE,"Price")) $this->changeColTyp(SHOP_TABLE,"Price","VARCHAR(20)");
 		}
+		return true;
 	}
 
 	function updateObjectFilesX() {
@@ -372,7 +399,7 @@
 			$_db = new DB_WE();
 
 			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE . ';','MaxTID',$_db);
-			$_maxid++;p_r($_maxid);
+			$_maxid++;
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
 				if ($this->isTabExist($_table)) {
@@ -406,9 +433,22 @@
 					} else {
 						$this->addCol($_table,'OF_Language','VARCHAR(5) DEFAULT NULL',' AFTER OF_WebUserID ');
 					}
+					//add indices to all objects
+					$this->updateUnindexedCols($_table,'object_%');
+
+					if(!$this->hasIndex($_table, 'OF_WebUserID')){
+						$this->addIndex($_table,'OF_WebUserID','OF_WebUserID');
+					}
+					if(!$this->hasIndex($_table, 'published')){
+						$this->addIndex($_table,'published','OF_ID,OF_Published,OF_IsSearchable');
+					}
+					if(!$this->hasIndex($_table, 'OF_IsSearchable')){
+						$this->addIndex($_table,'OF_IsSearchable','OF_IsSearchable');
+					}
 				}
 			}
 		}
+		return true;
 	}
 
 	function doUpdate(){
@@ -421,4 +461,3 @@
 	}
 
 }
-?>

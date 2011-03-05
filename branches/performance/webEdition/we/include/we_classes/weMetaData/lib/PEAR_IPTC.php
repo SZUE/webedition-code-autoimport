@@ -434,4 +434,3 @@ class Image_IPTC
     }
 }
 
-?>

@@ -60,6 +60,11 @@ class we_browserDetect {
 					self::$br = 'lynx';
 					break;
 				case 'mozilla': {
+						$java = explode('/', trim($post));
+						if($java[0]=='Java'){
+							self::$br = 'java';
+							self::$v = $java[1];
+						}else
 						if (preg_match('/msie (.*)$/i', trim($brArr[1]), $regs) && (trim($post) == '' || preg_match('/\.net/i', $post))) { //if last condition matches this will produce a notice. $regs[1] won't be defined...
 							self::$br = 'ie';
 							self::$v = $regs[1];
@@ -91,7 +96,7 @@ class we_browserDetect {
 							if (preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)) {
 								self::$v = $regs[1];
 								self::$br = 'appleWebKit';
-							
+
 							if (stristr($post, 'chrome')) {
 								if (preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs)) {
 									self::$v = $regs[1];

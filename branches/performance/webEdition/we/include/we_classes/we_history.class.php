@@ -79,5 +79,3 @@ class we_history
 	}
 
 }
-
-?>

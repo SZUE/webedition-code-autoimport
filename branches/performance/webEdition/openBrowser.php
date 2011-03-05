@@ -25,8 +25,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 htmlTop();
 ?>
 </head>
-
-
 <frameset rows="*" framespacing="0" border="0" frameborder="NO" onLoad="self.focus()">
 <frame src="<?php print $_REQUEST["url"]; ?>" name="contBrowse" scrolling="auto">
 </frameset>

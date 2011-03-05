@@ -89,6 +89,3 @@ class delBackup extends taskFragment{
 		print "<html><head><title></title></head>";
 	}
 }
-
-
-?>

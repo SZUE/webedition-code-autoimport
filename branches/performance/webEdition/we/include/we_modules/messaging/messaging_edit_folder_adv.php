@@ -23,4 +23,3 @@
 print __FILE__;
 print "<br>MARKED TO delete<br>$sdafkusdflksdhg";
 exit;
-?>

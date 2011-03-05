@@ -49,4 +49,3 @@ if($id && is_numeric($id) && $did>0){
 	}
 	header("Location: $url");
 }
-?>

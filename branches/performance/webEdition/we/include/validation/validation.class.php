@@ -18,7 +18,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
     class validation{
 
         function validation(){
@@ -127,4 +126,3 @@
             return $_ret;
         }
     }
-?>

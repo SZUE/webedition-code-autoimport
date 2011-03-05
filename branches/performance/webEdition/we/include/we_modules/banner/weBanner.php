@@ -399,6 +399,3 @@ class weBanner extends weBannerBase{
 		}
 	}
 }
-
-
-?>

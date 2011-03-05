@@ -122,4 +122,3 @@ class rpcGetRssCmd extends rpcCmd {
 	}
 }
 
-?>

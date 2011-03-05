@@ -50,4 +50,3 @@ $validationService[] = new validationService(
                             'usermedium=all',
                             '.css',
                             1);
-?>

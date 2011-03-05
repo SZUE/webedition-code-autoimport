@@ -78,4 +78,6 @@
 		$tableKeys[strtolower(VALIDATION_SERVICES_TABLE)] = array('PK_tblvalidationservices');
 	}
 
-?>
+	if(defined('CUSTOMER_AUTOLOGIN_TABLE')){
+		$tableKeys[strtolower(CUSTOMER_AUTOLOGIN_TABLE)] = array('AutoLoginID','WebUserID');
+	}

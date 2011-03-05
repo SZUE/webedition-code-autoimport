@@ -487,11 +487,11 @@ class weGlossary extends weModelBase {
 	}
 
 	function escapeChars($Text) {
-		
+
 		$Text = quotemeta($Text); // escape . \ + * ? [ ^ ] ( $ )
-			
+
 		$escape = array('�','{','&','/','\'','"','�','%');
-		
+
 		foreach($escape as $k) {
 			$before = $k;
 			$after = "\\".$k;
@@ -516,7 +516,7 @@ class weGlossary extends weModelBase {
 			$value = unserialize($this->$Name);
 
 		} else {
-			
+
 			$value = $this->$Name;
 
 		}
@@ -602,7 +602,7 @@ class weGlossary extends weModelBase {
 		if(!is_dir($fileDir)) {
 			if(!createLocalFolder($fileDir)) {
 				return false;
-				
+
 			}
 
 		}
@@ -610,9 +610,9 @@ class weGlossary extends weModelBase {
 		return $fileDir . $language . '@'.$_SERVER['SERVER_NAME']. '.dict';;
 
 	}
-	
+
 	function checkFieldText($text) {
-		
+
 		$check = array("\\","$", "|");
 
 		foreach($check as $k) {
@@ -622,9 +622,7 @@ class weGlossary extends weModelBase {
 		}
 		return false;
 	}
-	
+
 
 
 }
-
-?>

@@ -81,7 +81,7 @@ if (we_hasPerm("ADMINISTRATOR")) {
 		case \"active_integrated_modules\":
 		case \"versions\":
 		case \"email\":";
-		
+
 }
 
 if (we_hasPerm("FORMMAIL")) {
@@ -131,13 +131,13 @@ self.focus();
 
 function closeOnEscape() {
 	return true;
-	
+
 }
 
 function saveOnKeyBoard() {
 	window.frames[2].we_save();
 	return true;
-	
+
 }
 
 //-->
@@ -147,7 +147,7 @@ function saveOnKeyBoard() {
  * RENDER FILE
  *****************************************************************************/
 
-print we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) . 
+print we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
 	  we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) . "</head>";
 
 $frameset = new we_htmlFrameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0",  "frameborder" => "no"), 0);
@@ -157,4 +157,3 @@ $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_pr
 
 print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
 
-?>

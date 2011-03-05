@@ -1553,4 +1553,3 @@ class doclistView {
 		return $oSelector->getHTMLCode ();
 	}
 }
-?>

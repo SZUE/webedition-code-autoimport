@@ -31,5 +31,3 @@ $weFrame->Controller->processVariables();
 $weFrame->Controller->processCommands();
 
 $weFrame->getHTML($what);
-
-?>

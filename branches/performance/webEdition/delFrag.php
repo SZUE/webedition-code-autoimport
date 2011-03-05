@@ -24,7 +24,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/delete
 $frame = isset($_REQUEST["frame"]) ? $_REQUEST["frame"] : "";
 
 switch($frame){
-	
+
 	case "main":
 		print deleteProgressDialog::main();
 		break;
@@ -34,6 +34,3 @@ switch($frame){
 	default:
 		print deleteProgressDialog::frameset();
 }
-
-
-?>

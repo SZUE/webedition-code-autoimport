@@ -148,5 +148,3 @@ function formWebuser($canChange,$width=388){
 	return $out;
 
 }
-
-?>

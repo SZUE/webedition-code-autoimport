@@ -33,11 +33,11 @@ while(list($name, $val) = each($_SESSION)){
 }
 
 if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
-	
+
 	$_SESSION["we_set_registered"] = true;
-	
+
 	$_POST["password"] = $_SESSION["webuser"]["Password"];
-		
+
 	//	Login
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
@@ -48,9 +48,9 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 		$_SESSION["SEEM"]["startId"] = $_POST["id"];
 		$_SESSION["SEEM"]["startType"] = $_POST["type"];
 		$_SESSION["SEEM"]["startPath"] = $_POST["path"];
-		
+
 		$_SESSION["SEEM"]["open_selected"]   = true;	//	This var is only temporary
-		
+
 		//	now start webEdition
 		print '
 <html>
@@ -63,17 +63,13 @@ document.forms[\'startSuperEasyEditMode\'].submit();
 </body>
 </html>
 		';
-	
+
 	} else {
-		
+
 		print "Ein Fehler trat auf. - 1";
 	}
-	
+
 } else {
-	
+
 	print "Es trat ein Fehler auf. - 2";
 }
-
-
-
-?>

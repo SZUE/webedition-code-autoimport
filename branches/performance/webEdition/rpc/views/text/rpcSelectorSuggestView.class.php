@@ -20,12 +20,12 @@
 
 
 class rpcSelectorSuggestView extends rpcView {
-	
-	
+
+
 	function getResponse($response) {
 
 		header('Content-type: text/plain');
-		$suggests = $response->getData("data");	
+		$suggests = $response->getData("data");
 		$html = "";
 		if (is_array($suggests)) {
 			foreach ($suggests as $sug) {
@@ -36,7 +36,3 @@ class rpcSelectorSuggestView extends rpcView {
 		return $html;
 	}
 }
-
-
-
-?>

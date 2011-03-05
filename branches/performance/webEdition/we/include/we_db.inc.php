@@ -138,7 +138,7 @@ class DB_WE extends DB_Sql {
 		if ($this->Query_ID)
 			$this->free();
 
-		if ($this->Debug) {
+		if (self::$Debug){
 			printf("Debug: query = %s<br>\n", $Query_String);
 		}
 		$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);
@@ -155,13 +155,9 @@ class DB_WE extends DB_Sql {
 		$this->Errno = mysql_errno();
 		$this->Error = mysql_error();
 		if (!$this->Query_ID) {
+			trigger_error('MYSQL-ERROR'."\n".'Fehler: ' . $this->Errno ."\n". 'Detail: ' . $this->Error ."\n". 'Query: ' . $Query_String . "\n", E_USER_WARNING);
 			if (defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1) {
-				error_log('
-MYSQL-ERROR
-Fehler: ' . $this->Errno . '
-Detail: ' . $this->Error . '
-Query: ' . $Query_String . '
-');
+				error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
 			}
 			$this->halt('Invalid SQL: ' . $Query_String);
 		}

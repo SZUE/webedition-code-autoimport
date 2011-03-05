@@ -114,4 +114,3 @@ class weMetaData_IPTC extends weMetaData {
 	}
 
 }
-?>

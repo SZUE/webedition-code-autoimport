@@ -61,5 +61,3 @@ onunload=function() {
 </div>
 ";
 }
-
-?>

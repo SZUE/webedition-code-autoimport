@@ -528,8 +528,4 @@ class weCustomerCSVImport extends CSVImport{
 			return FALSE;
 		}
 	}
-
 }
-
-
-?>

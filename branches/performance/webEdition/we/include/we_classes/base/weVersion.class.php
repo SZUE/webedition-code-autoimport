@@ -29,21 +29,21 @@
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."weFile.class.php");
 
 	class weVersion{
-		
+
 		var $db;
 		var $ClassName="weVersion";
 		var $Pseudo="weVersion";
-						
+
 		var $attribute_slots=array();
 		var $persistent_slots=array();
-		
+
 		var $ID=0;
 		var $Path="";
 		var $Data="";
 		var $SeqN=0;
-		
+
 		var $linkData=true;
-		
+
 		function weVersion($id=0){
 			$this->Pseudo="weVersion";
 			$this->persistent_slots=array("ID", "ClassName","Path","Data","SeqN");
@@ -53,7 +53,7 @@
 			$this->db=new DB_WE();
 			if($id) $this->load($id);
 		}
-		
+
 		function load($id,$loadData=true){
 			$this->ID=$id;
 			$this->db->query("SELECT binaryPath FROM ".VERSIONS_TABLE." WHERE ID='".abs($id)."';");
@@ -66,7 +66,7 @@
 			}
 			else return false;
 		}
-		
+
 		function loadFile($file){
 			$path=stri_replace($_SERVER["DOCUMENT_ROOT"],"",$file);
 			$path=stri_replace(SITE_DIR,"",$path);
@@ -76,9 +76,9 @@
 			else
 				return true;
 		}
-				
-		function save($force=true){		
-			if($this->ID){			
+
+		function save($force=true){
+			if($this->ID){
 				$path=$_SERVER["DOCUMENT_ROOT"].$this->Path;
 				if(file_exists($path) && !$force) return false;
 				if(!is_dir(dirname($path))) {
@@ -93,16 +93,15 @@
 					createLocalFolderByPath(dirname($path));
 				}
 				weFile::save($_SERVER["DOCUMENT_ROOT"].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
-			}			
+			}
 			return true;
 		}
-		
-		//alias 
+
+		//alias
 		function we_save(){
 			return $this->save();
 		}
-		
-	} 
-		
 
-?>
+	}
+
+

@@ -596,5 +596,3 @@ class weToolFrames extends weModuleFrames {
 
 
 }
-
-?>

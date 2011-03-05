@@ -39,4 +39,3 @@ $fs = new we_dirSelector(
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
 
-?>

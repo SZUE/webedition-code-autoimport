@@ -329,4 +329,3 @@ class weMetaData {
 		return $GLOBALS['WE_METADATA_DEFINED_FIELDS'];
 	}
 }
-?>

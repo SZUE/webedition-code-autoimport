@@ -242,6 +242,3 @@ function we_sort_banners_rate_desc($a,$b){
 	if($rate_a == $rate_b) return 0;
 	return ($rate_a > $rate_b) ? -1 : 1;
 }
-
-
-?>

@@ -19,7 +19,7 @@
  */
 
 class rpcGetDocElementView extends rpcView {
-	
+
 	function getResponse($response) {
 
 		$html = $_REQUEST['element'] . ':'  .
@@ -29,4 +29,3 @@ class rpcGetDocElementView extends rpcView {
 		return $html;
 	}
 }
-?>

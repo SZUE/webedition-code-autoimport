@@ -948,4 +948,3 @@ class weExportFrames extends weModuleFrames {
 		return $hiddens.htmlFormElementTable($cats->get(),g_l('export',"[categories]"), "left", "defaultfont");
 	}
 }
-?>

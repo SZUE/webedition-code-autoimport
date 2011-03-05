@@ -1747,9 +1747,6 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
-<<<<<<< .working
-
-=======
 
 			case '$_REQUEST["urlencode_objectseourls"]':
 
@@ -1759,7 +1756,6 @@ $_we_active_integrated_modules = array();
 				$_update_prefs = false;
 				break;
 
->>>>>>> .merge-rechts.r2553
 			case '$_REQUEST["seoinside_hideinwebedition"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -5147,6 +5143,7 @@ else {
 
 				array_push($_settings, array("headline" => g_l('prefs','[safari_wysiwyg]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
+
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "showinputs_default","class"=>"weSelect"));
 				for ($i = 0; $i < 2; $i++) {
@@ -5503,11 +5500,11 @@ else {
 				$_php_setting->selectOption(get_value("taglinks_objectseourls"));
 
 				array_push($_settings, array("headline" => g_l('prefs','[taglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
-				
+
 				$_php_setting = new we_htmlSelect(array("name" => "urlencode_objectseourls","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
-				$_php_setting->selectOption(get_value("urlencode_objectseourls"));			
+				$_php_setting->selectOption(get_value("urlencode_objectseourls"));
 
 				array_push($_settings, array("headline" => g_l('prefs','[urlencode_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 				array_push($_settings, array("headline" => g_l('prefs','[general_seoinside]'), "noline" => 1));

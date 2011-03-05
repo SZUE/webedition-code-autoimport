@@ -62,5 +62,3 @@ switch ($what) {
 		print $wizard->getWizCmd();
 		break;
 }
-
-?>

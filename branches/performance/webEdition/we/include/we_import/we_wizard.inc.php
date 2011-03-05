@@ -869,7 +869,7 @@ HTS;
 		else $ret = $def;
 		return $ret;
 	}
-	
+
 	function denyTMPaccess(){
 		if (file_exists($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbase.txt')) {
 			$htaccessdata=file_get_contents($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'we/include/htaccessbase.txt');
@@ -879,5 +879,3 @@ HTS;
 		}
 	}
 }
-
-?>

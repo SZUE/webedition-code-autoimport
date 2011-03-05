@@ -1216,5 +1216,3 @@ class weBannerView extends weBannerBase{
 
 }
 
-?>
-

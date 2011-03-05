@@ -51,7 +51,6 @@ class weNewsletterView {
 	var $treeFrame;
 	var $cmdFrame;
 
-
 	function weNewsletterView() {
 		$this->db = new DB_WE();
 		$this->newsletter = new weNewsletter();
@@ -2686,6 +2685,15 @@ class weNewsletterView {
 		while ($db->next_record()) {
 			$ret[$db->f("pref_name")]=$db->f("pref_value");
 		}
+		//make sure blacklist is correct
+		$tmp=explode(',',$ret['black_list']);
+		if(is_array($tmp)){
+			foreach($tmp as &$t){
+				$t=trim($t);
+			}
+		}
+		$ret['black_list']=implode(',',$tmp);
+
 		return $ret;
 	}
 
@@ -2904,5 +2912,3 @@ class weNewsletterView {
 
 
 }
-
-?>

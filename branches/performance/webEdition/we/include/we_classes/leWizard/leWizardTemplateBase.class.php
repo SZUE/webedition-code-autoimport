@@ -156,7 +156,7 @@ class leWizardTemplateBase {
 			$Output	=	"<script type=\"text/javascript\">"
 					.	$this->getButtonJs($CurrentStep)
 					.	$this->getProgressBarJs($CurrentStep);
-			
+
 			if(sizeof($this->_Javascripts) > 0) {
 				$this->_Javascripts = array_reverse($this->_Javascripts);
 				foreach ($this->_Javascripts as $Javascript) {
@@ -165,10 +165,10 @@ class leWizardTemplateBase {
 				}
 
 			}
-			
+
 			$Output	.=	"</script>"
 					.	$CurrentStep->liveUpdateHttpResponse->getOutput();
-					
+
 			return $Output;
 
 		}
@@ -262,5 +262,3 @@ EOF;
 	}
 
 }
-
-?>

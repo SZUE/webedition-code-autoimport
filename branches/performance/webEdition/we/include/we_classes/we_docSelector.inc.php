@@ -319,7 +319,7 @@ function writeBody(d){
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0"></td>');
 		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('fileselector',"[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('fileselector',"[new_folder_name]")?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('<td class="selector"><?php print g_l('contentTypes',"[folder]"); ?></td>');
-		d.writeln('<td class="selector"><?php print date(g_l(\'date\',\'[format][default]\'))?></td>');
+		d.writeln('<td class="selector"><?php print date(g_l('date','[format][default]'))?></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
@@ -1123,4 +1123,3 @@ function previewFolder(id) {
 
 }
 
-?>

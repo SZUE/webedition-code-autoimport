@@ -63,7 +63,7 @@ class we_listview_customer extends listviewBase {
 			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
 		}
 		$this->hidedirindex=$hidedirindex;
-		
+
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = '';
 		if (isset($_SESSION['last_webEdition_document'])) {
@@ -74,12 +74,12 @@ class we_listview_customer extends listviewBase {
 			$this->order .= " DESC";
 		}
 
- 		if ($this->order != '') { 
-			$orderstring = " ORDER BY ".$this->order." "; 
-		} else { 
-			$orderstring = ''; 
+ 		if ($this->order != '') {
+			$orderstring = " ORDER BY ".$this->order." ";
+		} else {
+			$orderstring = '';
 		}
-		
+
 		$where = $this->condition ? (' where ' . $this->condition) : '';
 
 		$q = 'SELECT * FROM ' . CUSTOMER_TABLE . $where;
@@ -90,7 +90,7 @@ class we_listview_customer extends listviewBase {
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
-		
+
 		$this->adjustRows();
 	}
 
@@ -121,6 +121,3 @@ class we_listview_customer extends listviewBase {
 	}
 
 }
-
-
-?>
