@@ -70,7 +70,7 @@ class weXMLFileReader {
 						$_isweend = eregi('</webEdition>',$_end);
 						$_isxml = eregi('<\?xml',$_first);
 
-						$_isend = eregi('<!-- webackup -->',$_end) || empty($_buffer);
+						$_isend = preg_match("|<!-- *webackup *-->|",$_buffer) || empty($_buffer);
 
    						if($_isend) {
 
