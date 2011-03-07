@@ -47,7 +47,7 @@ function we_tag_list($attribs, $content){
 			$listRef = $listarray[$i];
 			$foo = $content;
 
-			$foo = eregi_replace('<we_:_ref>', $listRef, $foo);
+			$foo = str_replace('<we_:_ref>', $listRef, $foo);
 			$tp->parseTags($tags, $foo, $listRef);
 
 			$buts = "";

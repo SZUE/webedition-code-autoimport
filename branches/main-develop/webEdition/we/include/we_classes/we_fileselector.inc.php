@@ -789,7 +789,7 @@ top.parentID = "'.$this->values["ParentID"].'";
 	function printCmdAddEntriesHTML(){
 		$this->query();
 		while($this->next_record()){
-			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.ereg_replace("[\n\r]","",$this->f("Text")).'",'.$this->f("IsFolder").',"'.ereg_replace("[\n\r]","",$this->f("Path")).'");'."\n";
+			print 'top.addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.str_replace("\n","",str_replace("\r","",$this->f("Text"))).'",'.$this->f("IsFolder").',"'.str_replace("\n","",str_replace("\r","",$this->f("Path"))).'");'."\n";
 		}
 	}
 	function printCMDWriteAndFillSelectorHTML(){

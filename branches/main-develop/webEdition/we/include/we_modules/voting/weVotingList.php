@@ -152,7 +152,7 @@ class weVotingList{
 				array_push($usedKeys,$key);
 				$queryString .= $key."=".rawurlencode($val)."&";
 			}
-			$queryString = ereg_replace('(.*)&$','\1',$queryString);
+			$queryString = rtrim($queryString,'&');
 		}
 		$url_tail = "";
 		if(isset($_GET)) {
@@ -186,11 +186,8 @@ class weVotingList{
 			}
 		}
 		$url_tail .= $queryString;
-		$url_tail = ereg_replace('(.*)&$','\1',$url_tail);
+		$url_tail = rtrim($url_tail,'&');
 		return $url_tail;
 	}
 
 }
-
-
-?>

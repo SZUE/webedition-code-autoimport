@@ -101,7 +101,7 @@ class rpcGetRssCmd extends rpcCmd {
 		if ($bTbLabel) $aTb[] = g_l('cockpit','[rss_feed]');
 		if ($bTbTitel) $aTb[] = (isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4] != "")? $_REQUEST["we_cmd"][4] :
 			((isset($oRssParser->channel["title"]))? $oRssParser->channel["title"] : "");
-		if ($bTbDesc) $aTb[] = (isset($oRssParser->channel["description"]))? ereg_replace("(\r\n|\n|\r)","",$oRssParser->channel["description"]) : "";
+		if ($bTbDesc) $aTb[] = (isset($oRssParser->channel["description"]))? ereg_replace("(\n|\r)","",$oRssParser->channel["description"]) : "";
 		if ($bTbLink) $aTb[] = (isset($oRssParser->channel["link"]))? $oRssParser->channel["link"] : "";
 		if ($bTbPubDate) $aTb[] = (isset($oRssParser->channel["pubdate"]))? (date(g_l('date','[format][default]'), strtotime($oRssParser->channel["pubdate"]))) : "";
 		if ($bTbCopyright) $aTb[] = (isset($oRssParser->channel["copyright"]))? $oRssParser->channel["copyright"] : "";

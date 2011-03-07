@@ -43,7 +43,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save"){
 	$we_fileData=stripslashes($_REQUEST["editFile"]);
 }else if(isset($_REQUEST["id"])){
 
-	$_REQUEST["id"]=ereg_replace("//","/",$_REQUEST["id"]);
+	$_REQUEST["id"]=str_replace("//","/",$_REQUEST["id"]);
 	$fh = fopen($_REQUEST["id"],"rb");
 	if($fh){
 		while(!feof($fh)) $we_fileData .= fread($fh,10000);

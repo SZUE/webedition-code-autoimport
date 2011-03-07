@@ -477,7 +477,7 @@ class we_template extends we_document
 					}
 
 
-					$attributes = eregi_replace("<we:$tagname",'',$tag);
+					$attributes = str_ireplace("<we:$tagname",'',$tag);
 
 					$foo = array();
 					$attribs = '';

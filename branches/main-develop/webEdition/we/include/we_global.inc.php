@@ -824,10 +824,7 @@ function checkAndPrepareImage($formname, $key = "we_document") {
 								$_SESSION[$_imgDataId]["id"] = $imgId;
 							}
 
-							$_SESSION[$_imgDataId]["fileName"] = eregi_replace(
-															'^(.+)\..+$',
-															"\\1",
-															$tmp_Filename);
+							$_SESSION[$_imgDataId]["fileName"] = eregi_replace('^(.+)\..+$',"\\1",$tmp_Filename);
 							$_SESSION[$_imgDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
 															'^.+(\..+)$',
 															"\\1",
@@ -926,10 +923,7 @@ function checkAndPrepareBinary($formname, $key = "we_document") {
 								$_SESSION[$_binaryDataId]["id"] = $binaryId;
 							}
 
-							$_SESSION[$_binaryDataId]["fileName"] = eregi_replace(
-															'^(.+)\..+$',
-															"\\1",
-															$tmp_Filename);
+							$_SESSION[$_binaryDataId]["fileName"] = eregi_replace('^(.+)\..+$',"\\1",$tmp_Filename);
 							$_SESSION[$_binaryDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
 															'^.+(\..+)$',
 															"\\1",
@@ -1672,10 +1666,10 @@ function std_numberformat($content) {
 		// Englische Schreibweise
 		$pos = strrpos($content, ".");
 		$vor = substr($content, 0, $pos);
-		$vor = ereg_replace('[,\.]', '', $vor);
+		$vor = str_replace(",","",str_replace(".",'', $vor));
 		$content = $vor . substr($content, $pos, strlen($content) - $pos);
 	} else
-		$content = ereg_replace('[,\.]', '', $content);
+		$content = str_replace(",","",str_replace(".","",$content);
 	return $content;
 }
 
@@ -2798,9 +2792,9 @@ function removeHTML($val) {
 	$val = eregi_replace('<\?', '###?###', $val);
 	$val = eregi_replace('\?>', '###/?###', $val);
 	$val = eregi_replace('<[^><]+>', '', $val);
-	$val = eregi_replace('###BR###', '<br>', $val);
-	$val = eregi_replace('###\?###', '<?', $val);
-	$val = eregi_replace('###/\?###', '?>', $val);
+	$val = str_replace('###BR###', '<br>', $val);
+	$val = str_replace('###?###', '<?', $val);
+	$val = str_replace('###/?###', '?>', $val);
 	return $val;
 }
 

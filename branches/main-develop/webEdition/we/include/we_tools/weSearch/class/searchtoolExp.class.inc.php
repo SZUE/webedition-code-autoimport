@@ -179,7 +179,7 @@ class searchtoolExp extends we_search
 	function replaceSpecChars($string)
 	{
 		$string = trim($string);
-		$string = eregi_replace('\*', '%', $string);
+		$string = str_replace('*', '%', $string);
 		$string = trim($string, '"');
 		$string = trim($string, "'");
 		return $string;

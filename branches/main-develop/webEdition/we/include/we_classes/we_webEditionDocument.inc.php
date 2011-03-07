@@ -717,7 +717,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		foreach($GLOBALS as $k=>$v){
 			if((!ereg('^[0-9]',$k)) && (!eregi('[^a-z0-9_]',$k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE") $glob .= '$'.$k.",";
 		}
-		$glob = ereg_replace('(.*),$','\1',$glob);
+		$glob = rtrim($glob,',');
 		eval('global '.$glob.';');  // globalen Namensraum herstellen.
 		$editpageSave = $this->EditPageNr;
 		$inWebEditonSave = $this->InWebEdition;

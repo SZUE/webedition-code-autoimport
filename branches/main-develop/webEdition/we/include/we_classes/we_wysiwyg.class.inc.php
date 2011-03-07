@@ -1049,7 +1049,7 @@ class we_wysiwyg{
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",",";",$fn).",";
 		}
-		$fns = ereg_replace('(.+),$','\1',$fns);
+		$fns = rtrim($fns,',');
 		return $we_button->create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '".$this->name."', '".max(220,$this->width)."', '".$this->height."','".$GLOBALS["we_transaction"]."','".$this->propstring."','".$this->className."','".$fns."','".$this->outsideWE."','".$tbwidth."','".$tbheight."','".$this->xml."','".$this->removeFirstParagraph."','".$this->bgcol."','".$this->baseHref."','".$this->charset."','".$this->cssClasses."','".$this->Language."');",true,25);
 	}
 

@@ -326,7 +326,7 @@ class we_tagParser{
 		$foo = $regs[2] . '/';
 		eregi("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
-		$attr = trim(ereg_replace("(.*)/$", "\\1", $regs[2]));
+		$attr = trim(rtrim($regs[2],'/'));
 
 		if (eregi('name="([^"]*)"', $attr, $regs)) {
 			if (!$regs[1]) {
@@ -344,7 +344,7 @@ class we_tagParser{
 		}
 
 		if (!$endTag) {
-			$arrstr = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+			$arrstr = "array(" . rtrim($attribs,',') . ")";
 
 			@eval('$arr = ' . ereg_replace('"\$([^"]+)"', '"$GLOBALS[\1]"', $arrstr) . ';');
 			if (!isset($arr)) {
@@ -476,7 +476,7 @@ class we_tagParser{
 
 					default :
 
-						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+						$attribs = "array(" . rtrim($attribs,',') . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
 														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/

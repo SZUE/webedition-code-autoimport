@@ -113,10 +113,7 @@ class we_util{
 	* @param mixed number
 	*/
 	function br2nl($string){
-		$string = str_replace("\r\n","",$string);
-		$string = str_replace("\n\r","",$string);
-		$string = str_replace("\n","",$string);
-		$string = str_replace("\r","",$string);
+		$string = str_replace("\n","",str_replace("\r","",$string));
 		return eregi_replace("<br ?/?>","\n",$string);
 	}
 

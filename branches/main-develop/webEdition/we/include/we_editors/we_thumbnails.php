@@ -340,7 +340,7 @@ function build_dialog($selected_setting = "ui") {
 				$_thumbnail_names .= "'" . str_replace("'", "\'", $DB_WE->f("Name")) . "',";
 			}
 
-			$_thumbnail_names = ereg_replace('(.),$', '\1', $_thumbnail_names);
+			$_thumbnail_names = rtrim($_thumbnail_names,',');
 
 			$_needed_JavaScript_Source .= "
 						var thumbnail_names = new Array(" . $_thumbnail_names . ");

@@ -2253,14 +2253,14 @@ class weNewsletterView {
 									$content .=  $block->Source;
 								}else{
 									$newplain="";
-									$newplain=eregi_replace("<br>","\n",$block->Html);
+									$newplain=str_ireplace("<br>","\n",$block->Html);
 									$newplain=trim(strip_tags($newplain));
 									$newplain=eregi_replace("&nbsp;(&nbsp;)+","\t",$newplain);
-									$newplain=eregi_replace("&nbsp;"," ",$newplain);
-									$newplain=eregi_replace("&lt;","<",$newplain);
-									$newplain=eregi_replace("&gt;",">",$newplain);
-									$newplain=eregi_replace("&quot;","\"",$newplain);
-									$newplain=eregi_replace("&amp;","&",$newplain);
+									$newplain=str_ireplace('&nbsp;',' ',$newplain);
+									$newplain=str_ireplace("&lt;","<",$newplain);
+									$newplain=str_ireplace("&gt;",">",$newplain);
+									$newplain=str_ireplace("&quot;",'"',$newplain);
+									$newplain=str_ireplace("&amp;","&",$newplain);
 									$content .=  $newplain;
 								}
 							}
@@ -2338,17 +2338,17 @@ class weNewsletterView {
 
 				}
 			} else {
-				$newplain = eregi_replace("<br>","\n",$content);
+				$newplain = str_ireplace("<br>","\n",$content);
 				$newplain = eregi_replace("<title>(.)*</title>","\n",$newplain);
 				if ($block->Type!=WENBLOCK_TEXT) {
 					$newplain = strip_tags($newplain);
 				}
 				$newplain = eregi_replace("&nbsp;(&nbsp;)+","\t",$newplain);
-				$newplain = eregi_replace("&nbsp;"," ",$newplain);
-				$newplain = eregi_replace("&lt;","<",$newplain);
-				$newplain = eregi_replace("&gt;",">",$newplain);
-				$newplain = eregi_replace("&quot;","\"",$newplain);
-				$newplain = eregi_replace("&amp;","&",$newplain);
+				$newplain = str_ireplace("&nbsp;"," ",$newplain);
+				$newplain = str_ireplace("&lt;","<",$newplain);
+				$newplain = str_ireplace("&gt;",">",$newplain);
+				$newplain = str_ireplace("&quot;","\"",$newplain);
+				$newplain = str_ireplace("&amp;","&",$newplain);
 				$content = $newplain;
 			}
 		}

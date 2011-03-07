@@ -530,7 +530,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 	if($isUnsubscribe){
 		$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_SUCCESS;
 		$unsubscribe_mail=trim($_REQUEST["we_unsubscribe_email__"]);
-		$unsubscribe_mail = ereg_replace("[\r\n,]","",$unsubscribe_mail);
+		$unsubscribe_mail = str_replace("\n","",str_replace("\r","",$unsubscribe_mail));
 		$GLOBALS["WE_NEWSLETTER_EMAIL"] = $unsubscribe_mail;
 		if(!we_check_email($unsubscribe_mail)){
 			$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_INVALID; // E-Mail ungueltig
@@ -631,7 +631,7 @@ function getNewsletterFields($request,$confirmid,&$errorcode,$mail=""){
 			$errorcode=2;
 			return array();
 		}
-		$subscribe_mail = ereg_replace("[\r\n,]","",$subscribe_mail);
+		$subscribe_mail = str_replace("\n","",str_replace("\r","",$subscribe_mail));
 
 		if(!we_check_email($subscribe_mail)){
 			$errorcode=2; // E-Mail ungueltig
@@ -645,28 +645,28 @@ function getNewsletterFields($request,$confirmid,&$errorcode,$mail=""){
 
 		if(isset($request["we_subscribe_salutation__"])){
 			$subscribe_salutation=$request["we_subscribe_salutation__"];
-			$subscribe_salutation = ereg_replace("[\r\n,]","",$subscribe_salutation);
+			$subscribe_salutation = str_replace("\n","",str_replace("\r","",$subscribe_salutation));
 		}else{
 			$subscribe_salutation="";
 		}
 
 		if(isset($request["we_subscribe_title__"])){
 			$subscribe_title=$request["we_subscribe_title__"];
-			$subscribe_title = ereg_replace("[\r\n,]","",$subscribe_title);
+			$subscribe_title = str_replace("\n","",str_replace("\r","",$subscribe_title));
 		}else{
 			$subscribe_title="";
 		}
 
 		if(isset($request["we_subscribe_firstname__"])){
 			$subscribe_firstname=$request["we_subscribe_firstname__"];
-			$subscribe_firstname = ereg_replace("[\r\n,]","",$subscribe_firstname);
+			$subscribe_firstname = str_replace("\n","",str_replace("\r","",$subscribe_firstname));
 		}else{
 			$subscribe_firstname="";
 		}
 
 		if(isset($request["we_subscribe_lastname__"])){
 			$subscribe_lastname=$request["we_subscribe_lastname__"];
-			$subscribe_lastname = ereg_replace("[\r\n,]","",$subscribe_lastname);
+			$subscribe_lastname = str_replace("\n","",str_replace("\r","",$subscribe_lastname));
 		}else{
 			$subscribe_lastname="";
 		}

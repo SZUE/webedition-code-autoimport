@@ -41,7 +41,7 @@ function we_tag_href($attribs, $content){
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
 	} else {
 		if (strlen($rootdir) > 1) {
-			$rootdir = ereg_replace("/$", "", $rootdir);
+			$rootdir = rtrim($rootdir,'/');
 		}
 		$rootdirid = path_to_id($rootdir, FILE_TABLE);
 	}

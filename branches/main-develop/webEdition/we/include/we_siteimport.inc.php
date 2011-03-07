@@ -1216,9 +1216,7 @@ class weSiteImport
 		if ($this->step == 1) {
 			$this->_fillFiles();
 			if (count($this->_files) == 0) {
-				$importDirectory = ereg_replace(
-						"^(.*)/$",
-						'\1',
+				$importDirectory = ereg_replace("^(.*)/$",'\1',
 						ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"]) . $this->from);
 				if (count(scandir($importDirectory)) <= 2) {
 					return '<script type="text/javascript>alert(\'' . addslashes(
