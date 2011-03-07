@@ -551,7 +551,7 @@
 
 			$path=$tmppath;
 			$marker="<!-- webackup -->";
-			$marker2="<!--webackup -->";//Backup 5089
+			$marker2="<!--webackup -->";//Bug 5089
 			$pattern=basename($filename)."_%s";
 			if(weFile::isCompressed($filename)){
 				$compress="gzip";

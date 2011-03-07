@@ -143,7 +143,8 @@ class we_backup {
 			if($this->backup_db->f("Variable_name")=="max_allowed_packet") $this->mysql_max_packet=$this->backup_db->f("Value");
 		}
 
-		$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE,"tbllock"=>LOCK_TABLE));
+		//$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE,"tbllock"=>LOCK_TABLE)); //Wahrscheinlich Ursache, dass tbllock ins Backup aufgenommen wird Bug 5096
+		$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE));
 
 		if(defined("SCHEDULE_TABLE")) $this->table_map=array_merge($this->table_map,array("tblschedule"=>SCHEDULE_TABLE));
 

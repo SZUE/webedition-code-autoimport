@@ -93,7 +93,6 @@ class weBackup extends we_backup{
 
 	function splitFile2() {
 		global $_language;
-
 		if($this->filename=="") return -1;
 		if($this->mode=="sql") return we_backup::splitFile($this->filename);
 
