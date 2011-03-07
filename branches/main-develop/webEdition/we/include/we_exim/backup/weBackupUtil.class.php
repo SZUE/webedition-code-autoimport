@@ -25,7 +25,7 @@
 
 			$table = strtolower($table);
 
-			if(ereg("tblobject_([0-9]*)$",$table,$match)){
+			if(preg_match("|tblobject_([0-9]*)$|",$table,$match)){
 
 				if(isset($_SESSION['weBackupVars']['tables']['tblobject_'])){
 					return $_SESSION['weBackupVars']['tables']['tblobject_'] . $match[1];

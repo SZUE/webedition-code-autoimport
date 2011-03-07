@@ -1791,7 +1791,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 				}
 
 
-				if(ereg("\.\.",$filepath)){
+				if(strpos($filepath,'..')!==false){
 					print we_htmlElement::jsElement(
 						we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[path_not_valid]'), WE_MESSAGE_ERROR )
 					);
@@ -2134,7 +2134,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		$csv_file = isset($_REQUEST["csv_file"]) ? $_REQUEST["csv_file"] : "";
 		$emails=array();
 		$emailkey=array();
-		if(!ereg("\.\.",$csv_file)){
+		if(strpos($csv_file,'..')===false){
 			if($csv_file) $emails=weNewsletter::getEmailsFromExtern2($csv_file,null,null,null,(isset($_REQUEST['weEmailStatus'])?$_REQUEST['weEmailStatus']:0),$emailkey);
 		}
 		else{

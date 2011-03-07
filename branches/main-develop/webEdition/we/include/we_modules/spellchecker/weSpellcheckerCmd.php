@@ -96,7 +96,7 @@ if(isset($_REQUEST['cmd'][0])) {
 		break;
 
 		case 'removeDictFile':
-			if(!ereg("..",$_REQUEST['cmd'][1])) {
+			if(strpos($_REQUEST['cmd'][1],'..')===false) {
 
 				@unlink(WE_SPELLCHECKER_MODULE_DIR.'dict/'.$_REQUEST['cmd'][1]);
 			}
@@ -128,7 +128,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			$_default = $_REQUEST['default'];
 			$_active = array();
 			foreach ($_REQUEST as $_key=>$_value) {
-				if(ereg('^enable_',$_key) && $_value==1) {
+				if(strpos($_key,'enable_')===0 && $_value==1) {
 					$_active[] = str_replace('enable_','',$_key);
 				}
 
@@ -212,7 +212,7 @@ if(isset($_REQUEST['cmd'][0])) {
 
 			$_i = 0;
 			while (false !== ($entry = $_dir->read())) {
-				if($entry != '.' && $entry != '..' && ereg('.zip',$entry)){
+				if($entry != '.' && $entry != '..' && strpos($entry,'.zip')!==false){
 					$_i++;
 					$table->addRow();
 

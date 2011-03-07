@@ -239,7 +239,7 @@ foreach ($final as $key => $entry) {
 
 	$indb = $DB_WE->next_record() ? true : false;
 	if($entry=="webEdition") $indb = true;
-	if((ereg('^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/',$dir) || ereg('^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition$',$dir)) && (!ereg('^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/we_backup',$dir) || $entry=="download" || $entry=="tmp")) $indb = true;
+	if((preg_match('|^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/|',$dir) || preg_match('|^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition$|',$dir)) && (!preg_match('|^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/we_backup|',$dir) || $entry=="download" || $entry=="tmp")) $indb = true;
 	if($supportDebugging) $indb = false;
 	$show = ($entry!=".") && ($entry!="..") && (($_REQUEST["fil"]==g_l('contentTypes','[all_Types]'))||($type==g_l('contentTypes','[folder]'))||($type==$_REQUEST["fil"] || $_REQUEST["fil"]==""));
 	$bgcol = ($_REQUEST["curID"] == ($dir."/".$entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"))) ? "#DFE9F5" : "white";

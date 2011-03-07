@@ -511,7 +511,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			case "block":
 				return "block";
 			case "input":
-				if(ereg('type="date"',$tag)) {
+				if(strpos($tag,'type="date"')!==false) {
 					return "date";
 				}
 				else {

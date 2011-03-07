@@ -36,7 +36,7 @@ if(isset($_SESSION['_we_import_files'])){
 
 $_counter = 0;
 foreach($_FILES as $_index=>$_file) {
-	if(ereg('uploadedFiles'.$_counter,$_index)) {
+	if(strpos($_index,'uploadedFiles'.$_counter)!==false) {
 		$_FILES['we_File'] = $_file;
 
 		$error = $import_files->importFile();

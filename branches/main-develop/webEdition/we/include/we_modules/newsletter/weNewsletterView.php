@@ -1824,7 +1824,7 @@ class weNewsletterView {
 							$lastnamecol--;
 						}
 
-						if(ereg("\.\.",$filepath)){
+						if(strpos($filepath,'..')!==false){
 							print we_htmlElement::jsElement(
 								we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[path_not_valid]'), WE_MESSAGE_ERROR)
 							);
@@ -2392,7 +2392,7 @@ class weNewsletterView {
 		}
 		else{
 			foreach ($this->newsletter->blocks as $kblock=>$block){
-				if (ereg(",".$group.",",$block->Groups)) {
+				if (strpos($block->Groups,",".$group.",")!==false) {
 					$content[]=$kblock;
 				}
 			}

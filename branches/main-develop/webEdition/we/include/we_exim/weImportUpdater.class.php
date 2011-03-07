@@ -180,7 +180,7 @@
 						debug("Updating object element " . $k . " \n");
 					}
 
-					if(ereg('intID',$k) || ereg('LinkID',$k) || ereg('RollOverID',$k)){
+					if(strpos($k,'intID')!==false || strpos($k,'LinkID')!==false || strpos($k,'RollOverID')!==false){
 							if(isset($object->elements[$k]['dat'])){
 								$ref=$this->RefTable->getRef(
 									array(

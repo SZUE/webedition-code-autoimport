@@ -206,7 +206,7 @@ class weNewsletterBase{
 		$arr=makeArrayFromCSV($files);
 		if(count($arr)){
 			foreach($arr as $file){
-				if(!ereg("\.\.",$file)){
+				if(strpos($file,'..')===false){
 					$data = weFile::load($_SERVER["DOCUMENT_ROOT"].$file);
 					$data = str_replace("\r\n","\n",$data);
 					$dataArr = explode("\n",$data);
@@ -251,7 +251,7 @@ class weNewsletterBase{
 		$arr=makeArrayFromCSV($files);
 		if(count($arr)){
 			foreach($arr as $file){
-				if(!ereg("\.\.",$file)){
+				if(strpos($file,'..')===false){
 					$data = weFile::load($_SERVER["DOCUMENT_ROOT"].$file);
 					$data = str_replace("\r\n","\n",$data);
 					$dataArr = explode("\n",$data);

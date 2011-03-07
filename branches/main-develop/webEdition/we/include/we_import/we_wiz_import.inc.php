@@ -803,7 +803,7 @@ class we_wizard_import extends we_wizard {
 				return array($functions, $content);
 			}
 
-			$show_owner_opt = ereg('<we:info>',$header);
+			$show_owner_opt = strpos($header,'<we:info>')!==false;
 
 			if($show_owner_opt){
 				$tbl_extra = new we_htmlTable(array("cellpadding" => 2, "cellspacing" => 0, "border" => 0), 2, 1);

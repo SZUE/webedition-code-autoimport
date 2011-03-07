@@ -40,7 +40,7 @@
 			@set_time_limit(0);
 			$doc=weContentProvider::getInstance($ct,$id,$table);
 			// add binary data separately to stay compatible with the new binary feature in v5.1
-			if(isset($doc->ContentType) && (ereg("^image/",$doc->ContentType) || ereg("^application/",$doc->ContentType) || ereg("^video/",$doc->ContentType))) {
+			if(isset($doc->ContentType) && (strpos($doc->ContentType,"image/")===0 || strpos($doc->ContentType,"application/")===0 || strpos($doc->ContentType,"video/")===0)) {
 				$doc->setElement("data",weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 			}
 

@@ -356,7 +356,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 
 				}
 				<?php
-					if(ereg("image/",$we_doc->ContentType) || ereg("application/",$we_doc->ContentType)) {
+					if(strpos($we_doc->ContentType,"image/")!==false || strpos($we_doc->ContentType,"application/")!==false) {
 						$we_doc->EditPageNr = 1;
 					}
 				?>

@@ -335,7 +335,7 @@ class listviewBase{
 		$url_tail = "";
 		if(isset($_GET)) {
 			foreach($_GET as $key => $val){
-				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (!ereg("^we_ui_",$key))) {
+				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (strpos($key,"we_ui_")!==0)) {
 					if (is_array($val)) {
 						foreach($val as $ikey => $ival){
 							$url_tail .= "$key"."[".$ikey."]=". rawurlencode($ival) ."&";
@@ -348,7 +348,7 @@ class listviewBase{
 		}
 		if(isset($_POST)) {
 			foreach($_POST as $key => $val){
-				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (!ereg("^we_ui_",$key))) {
+				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (strpos($key,"we_ui_")!==0)) {
 					if (is_array($val)) {
 						foreach($val as $ikey => $ival){
 							$url_tail .= "$key"."[".$ikey."]=". rawurlencode($ival) ."&";

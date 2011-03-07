@@ -147,13 +147,13 @@ class we_template extends we_document
 		$start=0;
 		$end=0;
 		for($i=0;$i<sizeof($tags);$i++){
-			if(!ereg("ifNoJavaScript",$tags[$i])){
+			if(strpos($tags[$i],"ifNoJavaScript")===false){
 				if($eq){
 					if(ereg('<we:'.$tagname.'[> ]',$tags[$i])) $start ++;
 					if(ereg('</we:'.$tagname.'[> ]',$tags[$i])) $end ++;
 				}else{
-					if(ereg('<we:'.$tagname,$tags[$i])) $start ++;
-					if(ereg('</we:'.$tagname,$tags[$i])) $end ++;
+					if(strpos($tags[$i],'<we:'.$tagname)!==false) $start ++;
+					if(strpos($tags[$i],'</we:'.$tagname)!==false) $end ++;
 				}
 			}
 		}
@@ -215,7 +215,7 @@ class we_template extends we_document
 
 	function checkElsetags($tags){
 		for($i=0;$i<sizeof($tags);$i++){
-			if(ereg('<we:else',$tags[$i])){
+			if(strpos($tags[$i],'<we:else')!==false){
 				$ifStart = $this->findIfStart($tags,$i);
 				if($ifStart == -1) return parseError(g_l('parser','[else_start]'));
 				if($this->findIfEnd($tags,$i) == -1 ) return parseError(g_l('parser','[else_end]'));

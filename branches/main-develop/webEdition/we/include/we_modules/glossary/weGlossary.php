@@ -476,14 +476,7 @@ class weGlossary extends weModelBase {
 	 */
 	function isSelf() {
 		$Text = weGlossary::escapeChars($this->Text);
-		if(ereg('/'.$Text.'/',htmlentities(clearPath(dirname($this->Path)) . '/'))) {
-			return true;
-
-		} else {
-			return false;
-
-		}
-
+		return strpos(htmlentities(clearPath(dirname($this->Path)) . '/'),'/'.$Text.'/')!==false;
 	}
 
 	function escapeChars($Text) {

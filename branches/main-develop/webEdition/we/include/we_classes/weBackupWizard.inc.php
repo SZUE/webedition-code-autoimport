@@ -474,7 +474,7 @@ class weBackupWizard{
 						$filename=$dstr.$entry;
 						$filesize=round(filesize($filename)/1024,2);
 						$filedate=date("d.m.Y H:i:s.",filemtime($filename));
-						if(ereg('^weBackup_',$entry)) {
+						if(strpos($entry,'weBackup_')===0) {
 							$ts=ereg_replace('^weBackup_','',$entry);
 							$ts=str_replace('.php','',$ts);
 							$ts=str_replace('.xml','',$ts);
@@ -1626,7 +1626,7 @@ class weBackupWizard{
 					break;
 					case "deletebackup":
 						$bfile = $_REQUEST["bfile"];
-						if(ereg('\.\.',$bfile)) {
+						if(strpos($bfile,'..')===0) {
 							print we_htmlElement::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('backup','[name_notok]'), WE_MESSAGE_ERROR)
 							);

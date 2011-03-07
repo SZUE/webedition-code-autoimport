@@ -135,7 +135,7 @@ class we_search extends DB_WE{
 
 	function sqlwhere($we_SearchField,$searchlocation,$concat){
 			$concat = (isset($concat))?$concat:"AND";
-			if(ereg(',',$we_SearchField)){
+			if(strpos($we_SearchField,',')!==false){
 						$foo = makeArrayFromCSV($we_SearchField);
 						$q = "";
 						foreach($foo as $f){
