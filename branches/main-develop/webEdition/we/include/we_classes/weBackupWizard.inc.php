@@ -632,8 +632,8 @@ class weBackupWizard{
 
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[tools_import_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
 		foreach ($_tools as $_tool) {
-			include(weToolLookup::getLanguageInclude($_tool));
-			if(isset(${'l_' . $_tool}["import_tool_" . $_tool . "_data"])) {
+			$text=g_l('tools_'.$tool,'[import_tool_' . $_tool . '_data]');
+/*			if(isset(${'l_' . $_tool}["import_tool_" . $_tool . "_data"])) {
 				$text = ${'l_' . $_tool}["import_tool_" . $_tool . "_data"];
 			}
 			else {
@@ -642,7 +642,7 @@ class weBackupWizard{
 				$translate = we_core_Local::addTranslation('apps.xml');
 				we_core_Local::addTranslation('default.xml', $_tool);
 				$text = $translate->_('Restore '. $_tool .' data');
-			}
+			}*/
 			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"),"space"=>70,"noline"=>1));
 		}
 
@@ -930,7 +930,8 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[tools_export_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
 		$k = 700;
 		foreach ($_tools as $_tool) {
-			include(weToolLookup::getLanguageInclude($_tool));
+			$text=g_l('tools_'.$tool,'[import_tool_' . $_tool . '_data]');
+/*			include(weToolLookup::getLanguageInclude($_tool));
 			if(isset(${'l_' . $_tool}["export_tool_" . $_tool . "_data"])) {
 				$text = ${'l_' . $_tool}["export_tool_" . $_tool . "_data"];
 
@@ -941,7 +942,7 @@ class weBackupWizard{
 				$translate = we_core_Local::addTranslation('apps.xml');
 				we_core_Local::addTranslation('default.xml', $_tool);
 				$text = $translate->_('Save '. $_tool .' data');
-			}
+			}*/
 			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"),"space"=>70,"noline"=>1));
 			$k++;
 		}

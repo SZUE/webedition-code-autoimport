@@ -408,23 +408,6 @@
 			return $_inc;
 		}
 
-		//FIXME: remove this function!
-		function getLanguageInclude($name) {
-			if($name=='weSearch') {
-			}
-			elseif($name=='navigation') {
-			}
-			else {
-				if(!defined('WE_TOOLS_DIR')) {
-					$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
-				}
-				else {
-					$toolFolder = WE_TOOLS_DIR;
-				}
-				return $toolFolder . $name . '/conf/meta.conf.php';
-			}
-
-		}
 
 		function getToolsForBackup($includeDisabled=false) {
 			$_inc = array();

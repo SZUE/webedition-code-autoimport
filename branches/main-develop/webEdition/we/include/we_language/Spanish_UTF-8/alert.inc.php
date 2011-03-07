@@ -24,17 +24,52 @@
  * Language: English
  */
 $l_alert = array(
+		FILE_TABLE => array(
+				'in_wf_warning' => "El documento debe ser salvado antes de poder ser colocado en el flujo de trabajo!\\Desea UD salvar el documento ahora?",
+				'not_im_ws' => "El archivo no está situado dentro de su área de trabajo!",
+		),
+		TEMPLATES_TABLE => array(
+				'in_wf_warning' => "La plantilla debe ser salvada antes de poder ser colocada en el flujo de trabajo!\\Desea UD salvar la plantilla ahora?",
+				'not_im_ws' => "La plantilla no está situado dentro de su área de trabajo!",
+		),
+		'folder' => array(
+				'not_im_ws' => "La carpeta no está situado dentro de su área de trabajo!",
+		),
+		'nonew' => array(
+				'objectFile' => "Ud no puede crear nuevos objetos!<br>O Ud no tiene permiso o no hay una clase donde una de sus áreas de trabajo sea válida!",
+		),
+		'wrong_file' => array(
+				'image/*' => "El archivo no pudo ser guardado. Este archivo no es una imagen o su espacio web está agotado!",
+				'application/x-shockwave-flash' => "El archivo no pudo ser guardado. Este archivo no es una película Flash o no hay espacio suficiente en su disco duro!",
+				'video/quicktime' => "El archivo no pudo ser guardado. Este archivo no es una película Quicktime o no hay espacio suficiente en su disco duro!",
+				'text/css' => "The file could not be stored. Either it is not a CSS file or your disk space is exhausted!", // TRANSLATE
+		),
+		'no_views' => array(
+				'headline' => '¡Atención!',
+				'description' => 'No hay vista disponible para este documento.',
+		),
+		'naviagtion' => array(
+				'last_document' => 'Ud edita el último documento.',
+				'first_document' => 'Ud edita el primer documento.',
+				'doc_not_found' => 'No se puede encontrar documento concordante.',
+				'no_entry' => 'Ninguna entrada se encontro en la historia.',
+				'no_open_document' => 'There is no open document.', // TRANSLATE
+		),
+		'delete_single' => array(
+				'confirm_delete' => 'Borrar este documento?',
+				'no_delete' => 'Este documento no puede ser borrado.',
+				'return_to_start' => 'El documento fue borrado. \\nAtras al documento de inicio de seeMode.',
+		),
+		'move_single' => array(
+				'return_to_start' => 'The document was moved. \\nBack to seeMode startdocument.', // TRANSLATE
+				'no_delete' => 'This document could not be moved', // TRANSLATE
+		),
 		'notice' => "Notice",
 		'warning' => "Warning", // TRANSLATE
 		'error' => "Error", // TRANSLATE
 
 		'noRightsToDelete' => "\\'%s\\' cannot be deleted! You do not have permission to perform this action!", // TRANSLATE
 		'noRightsToMove' => "\\'%s\\' cannot be moved! You do not have permission to perform this action!", // TRANSLATE
-		'in_wf_warning' => "El documento debe ser salvado antes de poder ser colocado en el flujo de trabajo!\\Desea UD salvar el documento ahora?",
-		'in_wf_warning' => "La plantilla debe ser salvada antes de poder ser colocada en el flujo de trabajo!\\Desea UD salvar la plantilla ahora?",
-		'not_im_ws' => "El archivo no está situado dentro de su área de trabajo!",
-		'not_im_ws' => "La carpeta no está situado dentro de su área de trabajo!",
-		'not_im_ws' => "La plantilla no está situado dentro de su área de trabajo!",
 		'delete_recipient' => "UD realmente desea borrar la dirección de E-mail seleccionada?",
 		'recipient_exists' => "Esa dirección de E-mail ya existe!",
 		'input_name' => "Entre una nueva dirección de E-mail!",
@@ -42,7 +77,6 @@ $l_alert = array(
 		'max_name_recipient' => "La dirección de E-mail solo debe tener hasta 255 caracteres!",
 		'not_entered_recipient' => "Ninguna dirección de E-mail ha sido entrada!",
 		'recipient_new_name' => "Cambiar dirección de E-mail!",
-		'objectFile' => "Ud no puede crear nuevos objetos!<br>O Ud no tiene permiso o no hay una clase donde una de sus áreas de trabajo sea válida!",
 		'required_field_alert' => "El campo '%s' es requerido y tiene que ser llenado!",
 		'phpError' => "webEdition no se puede iniciar!",
 		'3timesLoginError' => "Conexión al sistema fallida '%s' veces! Por favor, espere '%s' minutos e intentelo nuevamente!",
@@ -122,26 +156,10 @@ $l_alert = array(
 		'name_nok' => "Los nombres no deben contener carácteres como '<' o '>'!",
 		'found_in_workflow' => "Una o más entradas seleccionadas están en el proceso del flujo de trabajo! Desea Ud removerlas del proceso del flujo de trabajo?",
 		'import_we_dirs' => "Ud está tratando de importar desde un directorio webEdition!\\\\n Esos directorios son usados y protejidos por webEdition y por lo tanto no pueden ser usados para importar!",
-		'image/*' => "El archivo no pudo ser guardado. Este archivo no es una imagen o su espacio web está agotado!",
-		'application/x-shockwave-flash' => "El archivo no pudo ser guardado. Este archivo no es una película Flash o no hay espacio suficiente en su disco duro!",
-		'video/quicktime' => "El archivo no pudo ser guardado. Este archivo no es una película Quicktime o no hay espacio suficiente en su disco duro!",
-		'text/css' => "The file could not be stored. Either it is not a CSS file or your disk space is exhausted!", // TRANSLATE
 		'no_file_selected' => "Ningún archivo ha sido selecionado para cargar!",
 		'browser_crashed' => "La ventana no pudo ser abierta por un error con su navegador!  Por favor, salve su trabajo y reinicie el navegador.",
 		'copy_folders_no_id' => "Por favor, salve el directorio actual primero!",
 		'copy_folder_not_valid' => "El mismo directorio o uno de los directorios primarios no puede ser copiado!",
-		'headline' => '¡Atención!',
-		'description' => 'No hay vista disponible para este documento.',
-		'last_document' => 'Ud edita el último documento.',
-		'first_document' => 'Ud edita el primer documento.',
-		'doc_not_found' => 'No se puede encontrar documento concordante.',
-		'no_entry' => 'Ninguna entrada se encontro en la historia.',
-		'no_open_document' => 'There is no open document.', // TRANSLATE
-		'confirm_delete' => 'Borrar este documento?',
-		'no_delete' => 'Este documento no puede ser borrado.',
-		'return_to_start' => 'El documento fue borrado. \\nAtras al documento de inicio de seeMode.',
-		'return_to_start' => 'The document was moved. \\nBack to seeMode startdocument.', // TRANSLATE
-		'no_delete' => 'This document could not be moved', // TRANSLATE
 		'cockpit_not_activated' => 'The action could not be performed because the cockpit is not activated.', // TRANSLATE
 		'cockpit_reset_settings' => 'Are you sure to delete the current Cockpit settings and reset the default settings?', // TRANSLATE
 		'save_error_fields_value_not_valid' => 'The highlighted fields contain invalid data.\\nPlease enter valid data.', // TRANSLATE

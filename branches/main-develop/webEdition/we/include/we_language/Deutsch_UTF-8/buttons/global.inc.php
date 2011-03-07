@@ -524,6 +524,7 @@ $l_button["btn_function_view"]["alt"] = "Ansehen";
 
 $l_button["btn_select_image"]["alt"] = "Grafik auswählen";
 $l_button["btn_help"]["alt"] = "Hilfe";
-$l_button["btn_date_picker"]["alt"] = "Datum auswählen";
 
 $l_button["btn_open_sidebar"]["alt"] = "Sidebar öffnen";
+$l_button["date_picker"]["alt"] = "Datum auswählen";
+$l_button['btn_add_note']['alt']='Notiz hinzufügen';

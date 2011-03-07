@@ -391,3 +391,5 @@ $l_button["btn_task_reject"]["alt"] = "Отклонить задачу";
 $l_button["btn_task_status"]["alt"] = "Обновить статус";
 $l_button["btn_task_trash"]["alt"] = "Удалить задачу";
 $l_button["btn_task_update"]["alt"] = "Новые задачи";
+$l_button["date_picker"]["alt"] = "Select date"; //TRANSLATE
+$l_button['btn_add_note']['alt']='add note'; //TRANSLATE

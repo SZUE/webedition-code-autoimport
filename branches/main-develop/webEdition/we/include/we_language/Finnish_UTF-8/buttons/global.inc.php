@@ -522,3 +522,5 @@ $l_button["btn_select_image"]["alt"] = "Valitse kuva";
 $l_button["btn_help"]["alt"] = "Ohje";
 
 $l_button["btn_open_sidebar"]["alt"] = "Avaa sivupalkki";
+$l_button["date_picker"]["alt"] = "Select date";//TRANSLATE
+$l_button['btn_add_note']['alt']='add note';//TRANSLATE

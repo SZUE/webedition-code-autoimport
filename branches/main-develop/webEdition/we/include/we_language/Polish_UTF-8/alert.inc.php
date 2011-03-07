@@ -24,17 +24,27 @@
  * Language: English
  */
 $l_alert = array(
+		FILE_TABLE => array(
+				'in_wf_warning' => "Przed dołączeniem dokumentu do Workflow, należy go zapisać!\\nCzy zapisać dokument?",
+				'not_im_ws' => "Plik nie znajduje się w twoim obszarze roboczym!",
+		),
+		TEMPLATES_TABLE => array(
+				'in_wf_warning' => "Przed dołączeniem szablonu do Workflow, należy go zapisać!\\nCzy zapisać teraz szablon?",
+				'not_im_ws' => "Szablon nie znajduje się w twoim obszarze roboczym!",
+		),
+		'folder' => array(
+				'not_im_ws' => "Ten katalog nie znajduje się w twoim obszarze roboczym!",
+		),
+		'nonew'=>array(
+		'objectFile' => "Nie możesz stworzyć obiektów, gdyż albo brakuje ci uprawnień<br>albo nie istnieje klasa, w której ważny jest jeden z Twoich obszarów pracy!",
+
+		),
 		'notice' => "Notice",
 		'warning' => "Warning", // TRANSLATE
 		'error' => "Error", // TRANSLATE
 
 		'noRightsToDelete' => "\\'%s\\' cannot be deleted! You do not have permission to perform this action!", // TRANSLATE
 		'noRightsToMove' => "\\'%s\\' cannot be moved! You do not have permission to perform this action!", // TRANSLATE
-		'in_wf_warning' => "Przed dołączeniem dokumentu do Workflow, należy go zapisać!\\nCzy zapisać dokument?",
-		'in_wf_warning' => "Przed dołączeniem szablonu do Workflow, należy go zapisać!\\nCzy zapisać teraz szablon?",
-		'not_im_ws' => "Plik nie znajduje się w twoim obszarze roboczym!",
-		'not_im_ws' => "Ten katalog nie znajduje się w twoim obszarze roboczym!",
-		'not_im_ws' => "Szablon nie znajduje się w twoim obszarze roboczym!",
 		'delete_recipient' => "Czy naprawdę chcesz usunąć wybrany adres e-mail?",
 		'recipient_exists' => "Adres e-mail już istnieje!",
 		'input_name' => "Wprowadź nowy adres e-mail!",
@@ -42,7 +52,6 @@ $l_alert = array(
 		'max_name_recipient' => "Adres e-mail może składać się najwyżej z 255 znaków!",
 		'not_entered_recipient' => "Nie wprowadzono adresu e-mail!",
 		'recipient_new_name' => "Zmiana adresu e-mail!",
-		'objectFile' => "Nie możesz stworzyć obiektów, gdyż albo brakuje ci uprawnień<br>albo nie istnieje klasa, w której ważny jest jeden z Twoich obszarów pracy!",
 		'required_field_alert' => "Pole '%s' jest polem obowiązkowym i należy je wypełnić!",
 		'phpError' => "Nie można uruchomić webEdition",
 		'3timesLoginError' => "Logowanie %sx nie powiodło się! Odczekaj %s minut i spróbuj ponownie!",

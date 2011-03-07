@@ -24,17 +24,52 @@
  * Language: English
  */
 $l_alert = array(
+		FILE_TABLE => array(
+				'in_wf_warning' => "Перед передачей данного документа в поток, его нужно сохранить!\\nСохранить документ?",
+				'not_im_ws' => "Данный файл не из Вашего рабочего пространства!",
+		),
+		TEMPLATES_TABLE => array(
+				'in_wf_warning' => "Перед передачей данного шаблона в поток его нужно сохранить!\\nСохранить шаблон?",
+				'not_im_ws' => "Данный шаблон не из Вашего рабочего пространства!",
+		),
+		'folder' => array(
+				'not_im_ws' => "Данная директория не из Вашего рабочего пространства!",
+		),
+		'nonew' => array(
+				'objectFile' => "Вы не уполномочены создавать новые объекты!<br>У Вас либо нет соответствующего  полномочия,  либо отсутствует класс, в котором действительны Ваши рабочие пространства!",
+		),
+		'wrong_file' => array(
+				'image/*' => "Невозможно сохранить файл. Он либо не относится к графическим файлам, либо недостаточно пространства в сети!",
+				'application/x-shockwave-flash' => "Невозможно сохранить файл.  Он либо не относится к Flash фильмам, либо недостаточно места на диске!",
+				'video/quicktime' => "Невозможно сохранить файл. Он либо не относится к фильмам Quicktime, либо не хватает места на диске!",
+				'text/css' => "The file could not be stored. Either it is not a CSS file or your disk space is exhausted!", // TRANSLATE
+		),
+		'no_views' => array(
+				'headline' => 'Attention', // TRANSLATE
+				'description' => 'Нельзя просмотреть данный документ в режиме "вид".',
+		),
+		'naviagtion' => array(
+				'last_document' => 'You edit the last document.', // TRANSLATE
+				'first_document' => 'Вы редактируете первый документ.',
+				'doc_not_found' => 'Could not find matching document.', // TRANSLATE
+				'no_entry' => 'No entry found in history.', // TRANSLATE
+				'no_open_document' => 'There is no open document.', // TRANSLATE
+		),
+		'delete_single' => array(
+				'confirm_delete' => 'Удалить данный документ?',
+				'no_delete' => 'This document could not be deleted.', // TRANSLATE
+				'return_to_start' => 'Документ успешно удален.\\nНазад к главному документу режима супер (seeMode).',
+		),
+		'move_single' => array(
+				'return_to_start' => 'The document was moved. \\nBack to seeMode startdocument.', // TRANSLATE
+				'no_delete' => 'This document could not be moved', // TRANSLATE
+		),
 		'notice' => "Notice",
 		'warning' => "Warning", // TRANSLATE
 		'error' => "Error", // TRANSLATE
 
 		'noRightsToDelete' => "\\'%s\\' cannot be deleted! You do not have permission to perform this action!", // TRANSLATE
 		'noRightsToMove' => "\\'%s\\' cannot be moved! You do not have permission to perform this action!", // TRANSLATE
-		'in_wf_warning' => "Перед передачей данного документа в поток, его нужно сохранить!\\nСохранить документ?",
-		'in_wf_warning' => "Перед передачей данного шаблона в поток его нужно сохранить!\\nСохранить шаблон?",
-		'not_im_ws' => "Данный файл не из Вашего рабочего пространства!",
-		'not_im_ws' => "Данная директория не из Вашего рабочего пространства!",
-		'not_im_ws' => "Данный шаблон не из Вашего рабочего пространства!",
 		'delete_recipient' => "Вы уверены, что хотите удалить выбранный электронный адрес?",
 		'recipient_exists' => "Электронный адрес уже существует!",
 		'input_name' => "Введите новый электронный адрес!",
@@ -42,7 +77,6 @@ $l_alert = array(
 		'max_name_recipient' => "Электронный адрес должен содержать не более 255 символов!",
 		'not_entered_recipient' => "Не введен электронный адрес!",
 		'recipient_new_name' => "Изменить электронный адрес!",
-		'objectFile' => "Вы не уполномочены создавать новые объекты!<br>У Вас либо нет соответствующего  полномочия,  либо отсутствует класс, в котором действительны Ваши рабочие пространства!",
 		'required_field_alert' => "Данное поле '%s' обязательно к заполнению!",
 		'phpError' => "Невозможно запустить систему webEdition",
 		'3timesLoginError' => "LogIn был введен %s раз неверно! Пожалуйста, подождите %s минут(ы) и попробуйте вновь!",
@@ -122,26 +156,10 @@ $l_alert = array(
 		'name_nok' => "Имена не должны содержать символов '<' и '>'!",
 		'found_in_workflow' => "Выбранные к удалению данные находятся в потоке! Удалить их из потока?",
 		'import_we_dirs' => "Попытка импортировать данные одной из системных директорий webEdition!\\n Эти директории защищены для использования системой webEdition, поэтому они не могут быть импортированы!",
-		'image/*' => "Невозможно сохранить файл. Он либо не относится к графическим файлам, либо недостаточно пространства в сети!",
-		'application/x-shockwave-flash' => "Невозможно сохранить файл.  Он либо не относится к Flash фильмам, либо недостаточно места на диске!",
-		'video/quicktime' => "Невозможно сохранить файл. Он либо не относится к фильмам Quicktime, либо не хватает места на диске!",
-		'text/css' => "The file could not be stored. Either it is not a CSS file or your disk space is exhausted!", // TRANSLATE
 		'no_file_selected' => "Не выбраны файлы к загрузке!",
 		'browser_crashed' => "Невозможно открыть окно: ошибка, вызванная браузером! Сохраните, пожалуйста, Ваши документы/страницы и перезапустите браузер",
 		'copy_folders_no_id' => "Вначале сохраните, пожалуйста, текущую директорию!",
 		'copy_folder_not_valid' => "Нельзя копировать одну и ту же директорию или родительскую директорию!",
-		'headline' => 'Attention', // TRANSLATE
-		'description' => 'Нельзя просмотреть данный документ в режиме "вид".',
-		'last_document' => 'You edit the last document.', // TRANSLATE
-		'first_document' => 'Вы редактируете первый документ.',
-		'doc_not_found' => 'Could not find matching document.', // TRANSLATE
-		'no_entry' => 'No entry found in history.', // TRANSLATE
-		'no_open_document' => 'There is no open document.', // TRANSLATE
-		'confirm_delete' => 'Удалить данный документ?',
-		'no_delete' => 'This document could not be deleted.', // TRANSLATE
-		'return_to_start' => 'Документ успешно удален.\\nНазад к главному документу режима супер (seeMode).',
-		'return_to_start' => 'The document was moved. \\nBack to seeMode startdocument.', // TRANSLATE
-		'no_delete' => 'This document could not be moved', // TRANSLATE
 		'cockpit_not_activated' => 'The action could not be performed because the cockpit is not activated.', // TRANSLATE
 		'cockpit_reset_settings' => 'Are you sure to delete the current Cockpit settings and reset the default settings?', // TRANSLATE
 		'save_error_fields_value_not_valid' => 'The highlighted fields contain invalid data.\\nPlease enter valid data.', // TRANSLATE

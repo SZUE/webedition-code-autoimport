@@ -3866,12 +3866,12 @@ function g_l($name, $specific) {
 	if (file_exists($file)) {
 		include($file);
 		$tmp = (isset(${"l_$name"})?getVarArray(${"l_$name"}, $specific):false);
-		//get local variable - otherwise try global again
-		if(!($tmp === false)){
+		//get local variable
+		if($tmp !== false){
 			$cache["l_$name"]=${"l_$name"};
 			return $tmp;
 		}else{
-				trigger_error('Requested lang entry '."l_$name$specific".' not found!',E_USER_WARNING);
+				trigger_error('Requested lang entry '."l_$name$specific".' not found in '.$file.'!',E_USER_WARNING);
 			return false;
 		}
 	}

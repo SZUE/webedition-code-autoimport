@@ -24,17 +24,52 @@
  * Language: English
  */
 $l_alert = array(
+		FILE_TABLE => array(
+				'in_wf_warning' => "Avant que le document puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer le document maintenant?",
+				'not_im_ws' => "Le fichier n'est pas dans votre éspace de travail!",
+		),
+		TEMPLATES_TABLE => array(
+				'in_wf_warning' => "Avant que le modèle puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer le modèle maintenant?",
+				'not_im_ws' => "Le modèle n'est pas dans votre éspace de travail!",
+		),
+		'folder' => array(
+				'not_im_ws' => "Le répertoire n'est pas dans votre éspace de travail!",
+		),
+		'nonew' => array(
+				'objectFile' => "Vous ne pouvez pas créer des nouveaux objects, parce que ou vous n'avez pas les droits nécessaires<br>ou parce qu'il n'y a aucune classe qui est valide dans un de votre éspaces de travail!",
+		),
+		'wrong_file' => array(
+				'image/*' => "Le fichier ne pouvait pas être créé. Ou ce n\\'est pas une graphique ou votre espace web est plein !",
+				'application/x-shockwave-flash' => "Le fichier ne pouvait pas être créé. Ou ce n\\'est pas un vidéo flash ou votre espace web est plein!",
+				'video/quicktime' => "Le fichier ne pouvait pas être créé. Ou ce n\\'est pas un film quicktime ou votre espace web est plein",
+				'text/css' => "The file could not be stored. Either it is not a CSS file or your disk space is exhausted!", // TRANSLATE
+		),
+		'no_views' => array(
+				'headline' => 'Attention', // TRANSLATE
+				'description' => 'Ce document n\'a pas de vue.',
+		),
+		'naviagtion' => array(
+				'last_document' => 'You edit the last document.', // TRANSLATE
+				'first_document' => 'Vous êtes sur le premier document.',
+				'doc_not_found' => 'Could not find matching document.', // TRANSLATE
+				'no_entry' => 'No entry found in history.', // TRANSLATE
+				'no_open_document' => 'There is no open document.', // TRANSLATE
+		),
+		'delete_single' => array(
+				'confirm_delete' => 'Delete this document?', // TRANSLATE
+				'no_delete' => 'This document could not be deleted.', // TRANSLATE
+				'return_to_start' => 'Le fichier a été supprimé avec succès.\\n De retour à la page d\'accueil du seeMode.',
+		),
+		'move_single' => array(
+				'return_to_start' => 'The document was moved. \\nBack to seeMode startdocument.', // TRANSLATE
+				'no_delete' => 'This document could not be moved', // TRANSLATE
+		),
 		'notice' => "Notice",
 		'warning' => "Warning", // TRANSLATE
 		'error' => "Error", // TRANSLATE
 
 		'noRightsToDelete' => "\\'%s\\' cannot be deleted! You do not have permission to perform this action!", // TRANSLATE
 		'noRightsToMove' => "\\'%s\\' cannot be moved! You do not have permission to perform this action!", // TRANSLATE
-		'in_wf_warning' => "Avant que le document puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer le document maintenant?",
-		'in_wf_warning' => "Avant que le modèle puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer le modèle maintenant?",
-		'not_im_ws' => "Le fichier n'est pas dans votre éspace de travail!",
-		'not_im_ws' => "Le répertoire n'est pas dans votre éspace de travail!",
-		'not_im_ws' => "Le modèle n'est pas dans votre éspace de travail!",
 		'delete_recipient' => "Voulez-vous vraiment supprimer l'adresse E-Mail sélectionné?",
 		'recipient_exists' => "Cette adresse E-Mail existe déjà!",
 		'input_name' => "S'il vous plaît saisissez une nouvelle adresse E-Mail!",
@@ -42,7 +77,6 @@ $l_alert = array(
 		'max_name_recipient' => "L'adresse E-Mail doit avoir une longeur maximale de 32 signe!!",
 		'not_entered_recipient' => "Vous n'avez pas encore saisi une adresse E-Mail!",
 		'recipient_new_name' => "Changer l'adresse E-Mail!",
-		'objectFile' => "Vous ne pouvez pas créer des nouveaux objects, parce que ou vous n'avez pas les droits nécessaires<br>ou parce qu'il n'y a aucune classe qui est valide dans un de votre éspaces de travail!",
 		'required_field_alert' => "Le champ '%s' est obligatoire et doit être rempli!",
 		'phpError' => "webEdition ne peut pas être démarré",
 		'3timesLoginError' => "L'authentification a échouée %sx ! S'il vous plaît attendez %s minutes et l'essayez de nouveau!",
@@ -122,26 +156,10 @@ $l_alert = array(
 		'name_nok' => "Des nome ne doivent pas contenir les signe '<' et '>'!",
 		'found_in_workflow' => "Une ou plusieurs  entrées à supprimer se trouve dans le Gestion de Flux en ce moment! Voulez-vous enlever ces entrées du Gestion de Flux?",
 		'import_we_dirs' => "Vous essayez d'importer d'un répertoire de webEdition!\\nCes répertoires sont protectés et c'est pourquoi un import n'est pas possible!",
-		'image/*' => "Le fichier ne pouvait pas être créé. Ou ce n\\'est pas une graphique ou votre espace web est plein !",
-		'application/x-shockwave-flash' => "Le fichier ne pouvait pas être créé. Ou ce n\\'est pas un vidéo flash ou votre espace web est plein!",
-		'video/quicktime' => "Le fichier ne pouvait pas être créé. Ou ce n\\'est pas un film quicktime ou votre espace web est plein",
-		'text/css' => "The file could not be stored. Either it is not a CSS file or your disk space is exhausted!", // TRANSLATE
 		'no_file_selected' => "Vous n\\'avez choisi aucun fichier à télécharger!",
 		'browser_crashed' => "La fenêtre ne pouvait pas être ouvert, pace que votre navigateur a causé une erreur! S'il vous plaît enregistrez votre travail et redémarrez le navigateur.",
 		'copy_folders_no_id' => "La fenêtre actuelle doit être enregistré d'abord!",
 		'copy_folder_not_valid' => "Le répertoire même ou un des répertoire parental ne peut pas être copier!",
-		'headline' => 'Attention', // TRANSLATE
-		'description' => 'Ce document n\'a pas de vue.',
-		'last_document' => 'You edit the last document.', // TRANSLATE
-		'first_document' => 'Vous êtes sur le premier document.',
-		'doc_not_found' => 'Could not find matching document.', // TRANSLATE
-		'no_entry' => 'No entry found in history.', // TRANSLATE
-		'no_open_document' => 'There is no open document.', // TRANSLATE
-		'confirm_delete' => 'Delete this document?', // TRANSLATE
-		'no_delete' => 'This document could not be deleted.', // TRANSLATE
-		'return_to_start' => 'Le fichier a été supprimé avec succès.\\n De retour à la page d\'accueil du seeMode.',
-		'return_to_start' => 'The document was moved. \\nBack to seeMode startdocument.', // TRANSLATE
-		'no_delete' => 'This document could not be moved', // TRANSLATE
 		'cockpit_not_activated' => 'The action could not be performed because the cockpit is not activated.', // TRANSLATE
 		'cockpit_reset_settings' => 'Are you sure to delete the current Cockpit settings and reset the default settings?', // TRANSLATE
 		'save_error_fields_value_not_valid' => 'The highlighted fields contain invalid data.\\nPlease enter valid data.', // TRANSLATE

@@ -522,3 +522,5 @@ $l_button["btn_select_image"]["alt"] = "Choisir une Graphique";
 $l_button["btn_help"]["alt"] = "Aide";
 
 $l_button["btn_open_sidebar"]["alt"] = "Open sidebar"; // TRANSLATE
+$l_button["date_picker"]["alt"] = "Choisir le date";
+$l_button['btn_add_note']['alt']='Ajouter une note';
