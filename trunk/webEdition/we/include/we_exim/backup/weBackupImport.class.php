@@ -63,7 +63,7 @@
 			} else {
 				$parser->parse($data);
 			}
-			if($parser===false){p_r($parser->parseError);sleep(5);}
+			if($parser===false){p_r($parser->parseError);}
 
 			// free some memory
 			unset($parser->Indexes);
