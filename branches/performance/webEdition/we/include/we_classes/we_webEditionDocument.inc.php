@@ -496,7 +496,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			case "block":
 				return "block";
 			case "input":
-				if(ereg('type="date"',$tag)) {
+				if(strpos($tag,'type="date"')!==false) {
 					return "date";
 				}
 				else {
@@ -542,9 +542,9 @@ class we_webEditionDocument extends we_textContentDocument {
 		$fieldTypes = array();
 		//$xmlInputs = array();
 		foreach($tags as $tag) {
-			if (eregi('<we:([^> /]+)',$tag,$regs)) { // starttag found
+			if (preg_match('|<we:([^> /]+)|i',$tag,$regs)) { // starttag found
 				$tagname = $regs[1];
-				if (eregi('name="([^"]+)"',$tag,$regs) && ($tagname != "var") && ($tagname != "field")) { // name found
+				if (preg_match('|name="([^"]+)"|i',$tag,$regs) && ($tagname != "var") && ($tagname != "field")) { // name found
 					$name = $regs[1];
 					$size = sizeof($blocks);
 					if($size) {
@@ -581,7 +581,7 @@ class we_webEditionDocument extends we_textContentDocument {
 							break;
 					}
 				}
-			} else if(eregi('</we:([^> ]+)',$tag,$regs)) { // endtag found
+			} else if(preg_match('|</we:([^> ]+)|i',$tag,$regs)) { // endtag found
 				$tagname = $regs[1];
 				switch($tagname) {
 						case "block":

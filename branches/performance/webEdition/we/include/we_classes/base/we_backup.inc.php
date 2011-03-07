@@ -1221,7 +1221,7 @@ class we_backup {
 	function getDefaultTableName($tabname){
 
 		$tabname=strtolower($tabname);
-		if(defined("OBJECT_X_TABLE") &&  eregi(OBJECT_X_TABLE,$tabname)) {
+		if(defined("OBJECT_X_TABLE") &&  stripos($tabname,OBJECT_X_TABLE)!==false) {
 			return eregi_replace(OBJECT_X_TABLE,"tblobject_",$tabname);
 		}
 
@@ -1243,10 +1243,9 @@ class we_backup {
 		if(in_array(strtolower($tabname),array_keys($this->table_map))) return true;
 		if(defined("OBJECT_X_TABLE")){
 
-			if(defined("TBL_PREFIX") && TBL_PREFIX!="") $object_x_table=eregi_replace(TBL_PREFIX,"",OBJECT_X_TABLE);
-			else $object_x_table=OBJECT_X_TABLE;
+		$object_x_table=(defined("TBL_PREFIX") && TBL_PREFIX!="") ? eregi_replace(TBL_PREFIX,"",OBJECT_X_TABLE):OBJECT_X_TABLE;
 
-		 	if(eregi($object_x_table,$tabname)) return true;
+	 	return stripos($tabname,$object_x_table)!==false;
 		}
 		return false;
 	}

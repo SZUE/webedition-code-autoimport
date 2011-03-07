@@ -50,6 +50,7 @@ class weNavigationRuleControl
 					$this->NavigationRule->NavigationName = trim($this->NavigationRule->NavigationName);
 
 					// 1st check if name is allowed
+					//FIXME: is this correct on UTF-8??
 					if (!eregi(
 							'^[������a-z0-9_-]+$',
 							$this->NavigationRule->NavigationName)) {

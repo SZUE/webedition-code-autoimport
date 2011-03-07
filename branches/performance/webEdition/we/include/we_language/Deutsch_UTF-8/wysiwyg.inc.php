@@ -18,163 +18,143 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: wysiwyg.inc.php
  * Provides language strings.
  * Language: Deutsch
  */
-include_once(dirname(__FILE__)."/wysiwyg_js.inc.php");
+include_once(dirname(__FILE__) . "/wysiwyg_js.inc.php");
 
-/*****************************************************************************
+/* * ***************************************************************************
  * CONTEXT MENUS
- *****************************************************************************/
+ * *************************************************************************** */
+$l_wysiwyg = array_merge($l_wysiwyg, array(
+		'cut' => "Ausschneiden",
+		'copy' => "Kopieren",
+		'paste' => "Einfügen",
+		'insert_row' => "Zeile einfügen",
+		'delete_rows' => "Zeilen löschen",
+		'insert_colmn' => "Spalte einfügen",
+		'delete_colmns' => "Spalten löschen",
+		'insert_cell' => "Zelle einfügen",
+		'delete_cells' => "Zellen löschen",
+		'merge_cells' => "Zellen verbinden",
+		'split_cell' => "Zellen teilen",
+		/*		 * ***************************************************************************
+		 * ALT-TEXTS FOR BUTTONS
+		 * *************************************************************************** */
 
-$l_wysiwyg["cut"] = "Ausschneiden";
-$l_wysiwyg["copy"] = "Kopieren";
-$l_wysiwyg["paste"] = "Einfügen";
-$l_wysiwyg["insert_row"] = "Zeile einfügen";
-$l_wysiwyg["delete_rows"] = "Zeilen löschen";
-$l_wysiwyg["insert_colmn"] = "Spalte einfügen";
-$l_wysiwyg["delete_colmns"] = "Spalten löschen";
-$l_wysiwyg["insert_cell"] = "Zelle einfügen";
-$l_wysiwyg["delete_cells"] = "Zellen löschen";
-$l_wysiwyg["merge_cells"] = "Zellen verbinden";
-$l_wysiwyg["split_cell"] = "Zellen teilen";
+		'subscript' => "Tiefgestellt",
+		'superscript' => "Hochgestellt",
+		'justify_full' => "Blocksatz",
+		'strikethrought' => "Durchgestrichen",
+		'removeformat' => "Formatierung löschen",
+		'removetags' => "Tags, Styles und Kommentare löschen",
+		'inserttable' => "Tabelle einfügen",
+		'editcell' => "Tabellenzelle bearbeiten",
+		'edittable' => "Tabelle bearbeiten",
+		'insert_row2' => "Zeile einfügen",
+		'delete_rows2' => "Zeilen löschen",
+		'insert_colmn2' => "Spalte einfügen",
+		'delete_colmns2' => "Spalten löschen",
+		'insert_cell2' => "Zelle einfügen",
+		'delete_cells2' => "Zellen löschen",
+		'merge_cells2' => "Zellen verbinden",
+		'split_cell2' => "Zellen teilen",
+		'insert_edit_table' => "Tabelle einfügen/bearbeiten",
+		'insert_edit_image' => "Grafik einfügen/bearbeiten",
+		'edit_style_class' => "Klasse bearbeiten (Style)",
+		'insert_br' => "Zeilenumbruch einfügen (SHIFT + RETURN)",
+		'insert_p' => "Absatz einfügen",
+		'edit_sourcecode' => "Quellcode bearbeiten",
+		'show_details' => "Zeige Details",
+		'rtf_import' => "RTF importieren",
+		'unlink' => "Hyperlink entfernen",
+		'hyperlink' => "Hyperlink einfügen/bearbeiten",
+		'back_color' => "Hintergrundfarbe",
+		'fore_color' => "Vordergrundfarbe",
+		'outdent' => "Ausrücken",
+		'indent' => "Einrücken",
+		'unordered_list' => "Ungeordnete Liste",
+		'ordered_list' => "Geordnete Liste",
+		'justify_right' => "Rechts ausrichten",
+		'justify_center' => "Zentrieren",
+		'justify_left' => "Links ausrichten",
+		'underline' => "Unterstrichen",
+		'italic' => "Kursiv",
+		'bold' => "Fett",
+		'fullscreen' => "Editor im Fullscreen-Modus öffnen",
+		'edit_source' => "Quellcode bearbeiten",
+		'fullscreen_editor' => "Fullscreen Editor",
+		'table_props' => "Tabelle bearbeiten",
+		'edit_stylesheet' => "Stylesheet Klassen bearbeiten",
+		/*		 * ***************************************************************************
+		 * THE REST
+		 * *************************************************************************** */
 
-/*****************************************************************************
- * ALT-TEXTS FOR BUTTONS
- *****************************************************************************/
-
-$l_wysiwyg["subscript"] = "Tiefgestellt";
-$l_wysiwyg["superscript"] = "Hochgestellt";
-$l_wysiwyg["justify_full"] = "Blocksatz";
-$l_wysiwyg["strikethrought"] = "Durchgestrichen";
-$l_wysiwyg["removeformat"] = "Formatierung löschen";
-$l_wysiwyg["removetags"] = "Tags, Styles und Kommentare löschen";
-$l_wysiwyg["inserttable"] = "Tabelle einfügen";
-$l_wysiwyg["editcell"] = "Tabellenzelle bearbeiten";
-$l_wysiwyg["edittable"] = "Tabelle bearbeiten";
-$l_wysiwyg["insert_row2"] = "Zeile einfügen";
-$l_wysiwyg["delete_rows2"] = "Zeilen löschen";
-$l_wysiwyg["insert_colmn2"] = "Spalte einfügen";
-$l_wysiwyg["delete_colmns2"] = "Spalten löschen";
-$l_wysiwyg["insert_cell2"] = "Zelle einfügen";
-$l_wysiwyg["delete_cells2"] = "Zellen löschen";
-$l_wysiwyg["merge_cells2"] = "Zellen verbinden";
-$l_wysiwyg["split_cell2"] = "Zellen teilen";
-$l_wysiwyg["insert_edit_table"] = "Tabelle einfügen/bearbeiten";
-$l_wysiwyg["insert_edit_image"] = "Grafik einfügen/bearbeiten";
-$l_wysiwyg["edit_style_class"] = "Klasse bearbeiten (Style)";
-$l_wysiwyg["insert_br"] = "Zeilenumbruch einfügen (SHIFT + RETURN)";
-$l_wysiwyg["insert_p"] = "Absatz einfügen";
-$l_wysiwyg["edit_sourcecode"] = "Quellcode bearbeiten";
-$l_wysiwyg["show_details"] = "Zeige Details";
-$l_wysiwyg["rtf_import"] = "RTF importieren";
-$l_wysiwyg["unlink"] = "Hyperlink entfernen";
-$l_wysiwyg["hyperlink"] = "Hyperlink einfügen/bearbeiten";
-$l_wysiwyg["back_color"] = "Hintergrundfarbe";
-$l_wysiwyg["fore_color"] = "Vordergrundfarbe";
-$l_wysiwyg["outdent"] = "Ausrücken";
-$l_wysiwyg["indent"] = "Einrücken";
-$l_wysiwyg["unordered_list"] = "Ungeordnete Liste";
-$l_wysiwyg["ordered_list"] = "Geordnete Liste";
-$l_wysiwyg["justify_right"] = "Rechts ausrichten";
-$l_wysiwyg["justify_center"] = "Zentrieren";
-$l_wysiwyg["justify_left"] = "Links ausrichten";
-$l_wysiwyg["underline"] = "Unterstrichen";
-$l_wysiwyg["italic"] = "Kursiv";
-$l_wysiwyg["bold"] = "Fett";
-$l_wysiwyg["fullscreen"] = "Editor im Fullscreen-Modus öffnen";
-$l_wysiwyg["edit_source"] = "Quellcode bearbeiten";
-$l_wysiwyg["fullscreen_editor"] = "Fullscreen Editor";
-$l_wysiwyg["table_props"] = "Tabelle bearbeiten";
-$l_wysiwyg["edit_stylesheet"] = "Stylesheet Klassen bearbeiten";
-
-/*****************************************************************************
- * THE REST
- *****************************************************************************/
-
-$l_wysiwyg["url"] = "URL";
-$l_wysiwyg["image_url"] = "Bild URL";
-$l_wysiwyg["width"] = "Breite";
-$l_wysiwyg["height"] = "Höhe";
-$l_wysiwyg["hspace"] = "Horizontaler Abstand";
-$l_wysiwyg["vspace"] = "Vertikaler Abstand";
-$l_wysiwyg["border"] = "Rand";
-$l_wysiwyg["altText"] = "Alternativer Text";
-$l_wysiwyg["alignment"] = "Ausrichtung";
-
-$l_wysiwyg["external_image"] = "webEdition-externe Grafik";
-$l_wysiwyg["internal_image"] = "webEdition-interne Grafik";
-
-$l_wysiwyg["bgcolor"] = "Hintergrundfarbe";
-$l_wysiwyg["cellspacing"] = "Zellenabstand";
-$l_wysiwyg["cellpadding"] = "Innenabstand";
-$l_wysiwyg["rows"] = "Zeilen";
-$l_wysiwyg["cols"] = "Spalten";
-$l_wysiwyg["colspan"] = "Spannweite";
-$l_wysiwyg["halignment"] = "horiz. Ausrichtung";
-$l_wysiwyg["valignment"] = "vert. Ausrichtung";
-$l_wysiwyg["color"] = "Farbe";
-$l_wysiwyg["choosecolor"] = "Farbe auswählen";
-$l_wysiwyg["parent_class"] = "Eltern-Bereich";
-$l_wysiwyg["region_class"] = "Nur Auswahl";
-$l_wysiwyg["edit_classname"] = "Stylesheet Klasse bearbeiten";
-$l_wysiwyg["emaillink"] = "E-Mail";
-$l_wysiwyg["clean_word"] = "MS Word Code säubern";
-$l_wysiwyg["addcaption"] = "Beschriftung hinzufügen";
-$l_wysiwyg["removecaption"] = "Beschriftung entfernen";
-$l_wysiwyg["anchor"] = "Anker";
-
-$l_wysiwyg["edit_hr"] = "Horizontale Linie";
-$l_wysiwyg["color"] = "Farbe";
-$l_wysiwyg["noshade"] = "Ohne Schattierung";
-$l_wysiwyg["strikethrough"] = "Durchstreichen";
-
-$l_wysiwyg["nothumb"] = "keine Miniaturansicht";
-$l_wysiwyg["thumbnail"] = "Miniaturansicht";
-
-$l_wysiwyg["acronym"] = "Akronym";
-$l_wysiwyg["acronym_title"] = "Akronym bearbeiten";
-$l_wysiwyg["abbr"] = "Abkürzung";
-$l_wysiwyg["abbr_title"] = "Abkürzung bearbeiten";
-$l_wysiwyg["title"] = "Titel";
-$l_wysiwyg["language"] = "Sprache";
-$l_wysiwyg["language_title"] = "Sprache bearbeiten";
-$l_wysiwyg["link_lang"] = "Link";
-$l_wysiwyg["href_lang"] = "Verlinkte Seite ";
-$l_wysiwyg["paragraph"] = "Absatz";
-
-$l_wysiwyg["summary"] = "Zusammenfassung";
-$l_wysiwyg["isheader"] = "Ist Überschrift";
-
-$l_wysiwyg["keyboard"] = "Tastatur";
-
-$l_wysiwyg["relation"] = "Beziehung";
-
-$l_wysiwyg["fontsize"] = "Schriftgröße";
-
-
-
-$l_wysiwyg["window_title"] = "Feld '%s' bearbeiten";
-
-$l_wysiwyg["format"] = "Schriftstil";
-$l_wysiwyg["fontsize"] = "Schriftgröße";
-$l_wysiwyg["fontname"] = "Schriftname";
-$l_wysiwyg["css_style"] = "CSS Style";
-
-$l_wysiwyg["normal"] = "Normal (ohne)";
-$l_wysiwyg["h1"] = "Überschrift 1";
-$l_wysiwyg["h2"] = "Überschrift 2";
-$l_wysiwyg["h3"] = "Überschrift 3";
-$l_wysiwyg["h4"] = "Überschrift 4";
-$l_wysiwyg["h5"] = "Überschrift 5";
-$l_wysiwyg["h6"] = "Überschrift 6";
-$l_wysiwyg["pre"] = "Formatiert";
-$l_wysiwyg["address"] = "Adresse";
-
-$GLOBALS['l_wysiwyg']['spellcheck'] = 'Rechtschreibprüfung';
-
-?>
+		'url' => "URL",
+		'image_url' => "Bild URL",
+		'width' => "Breite",
+		'height' => "Höhe",
+		'hspace' => "Horizontaler Abstand",
+		'vspace' => "Vertikaler Abstand",
+		'border' => "Rand",
+		'altText' => "Alternativer Text",
+		'alignment' => "Ausrichtung",
+		'external_image' => "webEdition-externe Grafik",
+		'internal_image' => "webEdition-interne Grafik",
+		'bgcolor' => "Hintergrundfarbe",
+		'cellspacing' => "Zellenabstand",
+		'cellpadding' => "Innenabstand",
+		'rows' => "Zeilen",
+		'cols' => "Spalten",
+		'colspan' => "Spannweite",
+		'halignment' => "horiz. Ausrichtung",
+		'valignment' => "vert. Ausrichtung",
+		'color' => "Farbe",
+		'choosecolor' => "Farbe auswählen",
+		'parent_class' => "Eltern-Bereich",
+		'region_class' => "Nur Auswahl",
+		'edit_classname' => "Stylesheet Klasse bearbeiten",
+		'emaillink' => "E-Mail",
+		'clean_word' => "MS Word Code säubern",
+		'addcaption' => "Beschriftung hinzufügen",
+		'removecaption' => "Beschriftung entfernen",
+		'anchor' => "Anker",
+		'edit_hr' => "Horizontale Linie",
+		'color' => "Farbe",
+		'noshade' => "Ohne Schattierung",
+		'strikethrough' => "Durchstreichen",
+		'nothumb' => "keine Miniaturansicht",
+		'thumbnail' => "Miniaturansicht",
+		'acronym' => "Akronym",
+		'acronym_title' => "Akronym bearbeiten",
+		'abbr' => "Abkürzung",
+		'abbr_title' => "Abkürzung bearbeiten",
+		'title' => "Titel",
+		'language' => "Sprache",
+		'language_title' => "Sprache bearbeiten",
+		'link_lang' => "Link",
+		'href_lang' => "Verlinkte Seite ",
+		'paragraph' => "Absatz",
+		'summary' => "Zusammenfassung",
+		'isheader' => "Ist Überschrift",
+		'keyboard' => "Tastatur",
+		'relation' => "Beziehung",
+		'fontsize' => "Schriftgröße",
+		'window_title' => "Feld '%s' bearbeiten",
+		'format' => "Schriftstil",
+		'fontsize' => "Schriftgröße",
+		'fontname' => "Schriftname",
+		'css_style' => "CSS Style",
+		'normal' => "Normal (ohne)",
+		'h1' => "Überschrift 1",
+		'h2' => "Überschrift 2",
+		'h3' => "Überschrift 3",
+		'h4' => "Überschrift 4",
+		'h5' => "Überschrift 5",
+		'h6' => "Überschrift 6",
+		'pre' => "Formatiert",
+		'address' => "Adresse",
+		'spellcheck' => 'Rechtschreibprüfung',
+				));

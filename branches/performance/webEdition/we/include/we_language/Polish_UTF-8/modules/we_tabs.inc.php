@@ -18,43 +18,37 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-/**************************************************************************
+/* * ************************************************************************
  * For Module Workflow
- *************************************************************************/
-$l_tabs["module"]["overview"] = "Overview"; // TRANSLATE
-$l_tabs["module"]["properties"] = "Właściwości";
+ * *********************************************************************** */
+$l_tabs['module'] = array(
+		'overview' => "Overview", // TRANSLATE
+		'properties' => "Właściwości",
+		/*		 * ************************************************************************
+		 * For Module User
+		 * *********************************************************************** */
+		'data' => "Data", // TRANSLATE
+		'permissions' => "Uprawnienia",
+		'workspace' => "Workspace", // TRANSLATE
+		'preferences' => "Preferences", // TRANSLATE
 
-/**************************************************************************
- * For Module User
- *************************************************************************/
-$l_tabs["module"]["data"] = "Data"; // TRANSLATE
-$l_tabs["module"]["permissions"] = "Uprawnienia";
-$l_tabs["module"]["workspace"] = "Workspace"; // TRANSLATE
-$l_tabs["module"]["preferences"] = "Preferences"; // TRANSLATE
-
-/**************************************************************************
- * For Banner User
- *************************************************************************/
-$l_tabs["module"]["placement"] = "Placement"; // TRANSLATE
-$l_tabs["module"]["statistics"] = "Statystyki";
-
-/**************************************************************************
- * For Shop Module
- *************************************************************************/
-$l_tabs["module"]["orderlist"] = "All customer's orders"; // TRANSLATE
-$l_tabs["module"]["orderdata"] = "Order and customer data"; // TRANSLATE
-$l_tabs["module"]["overview"] = "Overview"; // TRANSLATE
-$l_tabs["module"]["artList"]  = "Zestawienie wszystkich artykułów: %s";
-
-$l_tabs["module"]["revenueTotal"]  = "Obrót w roku %s";
-$l_tabs["module"]["PayMethodEdit"]  = "Edytuj rodzaje płatności";
-$l_tabs["module"]["ArtAttribEdit"]  = "Edytuj właściwości produktu";
-
-$l_tabs["module"]["admin_1"]  = "Artykuł-Dokumenty";
-$l_tabs["module"]["admin_2"]  = "Artykuł-Obiekty";
-$l_tabs["module"]["admin_3"]  = "Przegląd obrotu";
-
-$l_tabs["module"]["admin_6"]  = "Rodzaje płatności";
-?>
+		/*		 * ************************************************************************
+		 * For Banner User
+		 * *********************************************************************** */
+		'placement' => "Placement", // TRANSLATE
+		'statistics' => "Statystyki",
+		/*		 * ************************************************************************
+		 * For Shop Module
+		 * *********************************************************************** */
+		'orderlist' => "All customer's orders", // TRANSLATE
+		'orderdata' => "Order and customer data", // TRANSLATE
+		'overview' => "Overview", // TRANSLATE
+		'artList' => "Zestawienie wszystkich artykułów: %s",
+		'revenueTotal' => "Obrót w roku %s",
+		'PayMethodEdit' => "Edytuj rodzaje płatności",
+		'ArtAttribEdit' => "Edytuj właściwości produktu",
+		'admin_1' => "Artykuł-Dokumenty",
+		'admin_2' => "Artykuł-Obiekty",
+		'admin_3' => "Przegląd obrotu",
+		'admin_6' => "Rodzaje płatności",
+);

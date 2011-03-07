@@ -106,7 +106,7 @@
 
 
 					if(	($_def_table == 'tblfile' && $export_binarys) &&
-						($_object->ContentType=="image/*" || eregi("application/",$_object->ContentType))
+						($_object->ContentType=="image/*" || stripos($_object->ContentType,"application/")!==false)
 					){
 						if($log){
 							weBackupUtil::addLog(sprintf('Exporting binary data for item %s:%s',$_table,$_object->ID));
@@ -119,7 +119,7 @@
 					}
 
 					if(	($_def_table == 'tblversions' && $export_version_binarys)
-						//&& ($_object->ContentType=="image/*" || eregi("application/",$_object->ContentType))
+						//&& ($_object->ContentType=="image/*" || stripos($_object->ContentType,"application/")!==false)
 					){
 						if($log){
 							weBackupUtil::addLog(sprintf('Exporting version data for item %s:%s',$_table,$_object->ID));

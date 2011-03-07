@@ -41,7 +41,7 @@
 			foreach($this->PatternSearch->doc_patterns["id"] as $pattern){
 				if(preg_match_all($pattern,$text,$match)){
 					foreach($match[2] as $_i=>$include){
-						if(!eregi('type="template"',$match[0][$_i])) {
+						if(stripos($match[0][$_i],'type="template"')===false) {
 							$this->addToDepArray($level,$include);
 						}
 					}
@@ -191,7 +191,7 @@
 					foreach($patterns as $pattern){
 						if(preg_match_all($pattern,$text,$match)){
 							foreach($match[2] as $k=>$include){
-								if(ereg("object:",$match[1][$k]))
+								if(strpos($match[1][$k],"object:")!==false)
 									$this->addToDepArray($level,$include,'objectFile');
 								else
 									$this->addToDepArray($level,$include);
@@ -204,7 +204,7 @@
 		}
 
 		function isPathLocal($path){
-			if(eregi(SERVER_NAME,$path)){
+			if(stripos($path,SERVER_NAME)!==false){
 				$path=eregi_replace("[http]?s?[://]?".SERVER_NAME.(defined("SERVER_PORT") ? "[:".SERVER_PORT."]?":""),"",$path);
 			}
 			if(is_readable($_SERVER["DOCUMENT_ROOT"].$path)) return $path;
@@ -265,11 +265,11 @@
 
 								if($this->options["handle_document_linked"]) {
 
-									if(ereg('LinkID',$ek) || ereg('RollOverID',$ek) || ereg('longdescid',$ek)){
+									if(strpos($ek,'LinkID')!==false || strpos($ek,'RollOverID')!==false || strpos($ek,'longdescid')!==false){
 										if(isset($ev['dat'])){
 											$this->addToDepArray($level,$ev['dat']);
 										}
-									}else if(ereg('ObjID',$ek)){
+									}else if(strpos($ek,'ObjID')!==false){
 										if(isset($ev['dat'])){
 											$this->addToDepArray($level,$ev['dat'],'objectFile');
 										}
@@ -285,7 +285,7 @@
 								}
 
 								if($this->options["handle_document_includes"]) {
-									if(ereg('intID',$ek)){
+									if(strpos($ek,'intID')!==false){
 										if(isset($ev['dat'])){
 											$this->addToDepArray($level,$ev['dat']);
 										}

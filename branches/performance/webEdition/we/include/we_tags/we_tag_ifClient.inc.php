@@ -54,7 +54,7 @@ function we_tag_ifClient($attribs, $content){
 	$ver = str_replace('down', '<', $ver);
 	$ver = str_replace('eq', '==', $ver);
 
-	if (ereg('==', $ver)) {
+	if (strpos($ver,'==')!==false) {
 		eval('$foo_v = (floor($brv)' . $ver . ');');
 	} else {
 		eval('$foo_v = ($brv' . $ver . ');');

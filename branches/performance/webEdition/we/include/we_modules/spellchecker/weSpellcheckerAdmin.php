@@ -109,7 +109,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 	$_i = 0;
 	while (false !== ($entry = $_dir->read())) {
-		if($entry != '.' && $entry != '..' && ereg('.zip',$entry)){
+		if($entry != '.' && $entry != '..' && strpos($entry,'.zip')!==false){
 			$_i++;
 			$table->addRow();
 

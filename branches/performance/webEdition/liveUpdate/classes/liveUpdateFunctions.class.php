@@ -629,7 +629,7 @@ class liveUpdateFunctions {
 
 		// second, we need to check if there is a collation
 		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
-			if(eregi("^CREATE TABLE ", $query)) {
+			if(stripos($query,"CREATE TABLE ")===0) {
 				$Charset = DB_CHARSET;
 				$Collation = DB_COLLATION;
 				if($Charset == 'UTF-8'){//#4661
@@ -698,7 +698,7 @@ class liveUpdateFunctions {
 						}
 
 						// determine new keys
-						// moved down after change and addfields 
+						// moved down after change and addfields
 
 						// get all queries to add/change fields, keys
 						$alterQueries = array();

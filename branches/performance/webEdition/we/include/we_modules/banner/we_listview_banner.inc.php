@@ -70,7 +70,7 @@ class we_listview_banner extends listviewBase {
 		$tempArray = array();;
 		$tempArray2 = array();;
 
-			$ord = eregi("^views",$this->order) ? "ORDER BY ".$this->order : "";
+			$ord = stripos($this->order,"views")===0 ? "ORDER BY ".$this->order : "";
 			$this->DB_WE->query("
 
 SELECT DID, COUNT( ID )  AS views
@@ -133,26 +133,26 @@ GROUP  BY Page
 			}
 
 
-			if(eregi("^path",$this->order)){
-				if(eregi("^path +desc",$this->order)){
+			if(stripos("path",$this->order)===0){
+				if(preg_match("|^path +desc|i",$this->order)){
 					usort($this->docs,"we_sort_banners_path_desc");
 				}else{
 					usort($this->docs,"we_sort_banners_path");
 				}
-			}else if(eregi("^clicks",$this->order)){
-				if(eregi("^clicks +desc",$this->order)){
+			}else if(stripos("clicks",$this->order)===0){
+				if(preg_match("|^clicks +desc|i",$this->order)){
 					usort($this->docs,"we_sort_banners_clicks_desc");
 				}else{
 					usort($this->docs,"we_sort_banners_clicks");
 				}
-			}else if(eregi("^views",$this->order)){
-				if(eregi("^views +desc",$this->order)){
+			}else if(stripos("views",$this->order)===0){
+				if(preg_match("|^views +desc|i",$this->order)){
 					usort($this->docs,"we_sort_banners_views_desc");
 				}else{
 					usort($this->docs,"we_sort_banners_views");
 				}
-			}else if(eregi("^rate",$this->order)){
-				if(eregi("^rate +desc",$this->order)){
+			}else if(stripos("rate",$this->order)===0){
+				if(preg_match("|^rate +desc|i",$this->order)){
 					usort($this->docs,"we_sort_banners_rate_desc");
 				}else{
 					usort($this->docs,"we_sort_banners_rate");

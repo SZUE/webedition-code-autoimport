@@ -18,43 +18,40 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: exchange.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_exchange["export_wizard"]["export_data"] = "Экспортировать данные";
-$l_exchange["export_wizard"]["export_to"] = "Экспортировать в";
-$l_exchange["export_wizard"]["ftp_transfer"] = "Экспортировать посредством FTP";
-
-$l_exchange["import_wizard"]["import_data"] = "Импортировать данные";
-$l_exchange["import_wizard"]["import_from"] = "Импортировать из";
-$l_exchange["import_wizard"]["ftp_transfer"] = "Импортировать посредством FTP";
-$l_exchange["import_wizard"]["save_to_folder"] = "Размещение";
-
-$l_exchange["host"] = "Хост / URL";
-$l_exchange["username"] = "Имя пользователя";
-$l_exchange["password"] = "Пароль";
-$l_exchange["path"] = "Путь";
-$l_exchange["file_type"] = "Тип файла";
-$l_exchange["local"] = "Локальный";
-
-$l_exchange["wizard"] = "Мастер импорта";
-$l_exchange["step"] = "шаг";
-$l_exchange["step_of"] = " из ";
-
-$l_exchange["select_data_set"] = "Выбрать набор записей";
-$l_exchange["text_select_data_set"] = "Выберите, пожалуйста, записи для импорта";
-$l_exchange["option_select"] = "Выбрать..";
-$l_exchange["num_data_sets"] = "записи:";
-
-$l_exchange["assign_record_fields"] = 'Назначить поля записи';
-$l_exchange["we_fields"] = "Поля webEdition";
-$l_exchange["record_fields"] = "Поля записи";
-$l_exchange["attributes"] = "Атрибуты";
-
-$l_exchange["documents"] = "Документы";
-$l_exchange["objects"] = "Объекты";
-?>
+$l_exchange = array(
+		'export_wizard' => array(
+				'export_data' => "Экспортировать данные",
+				'export_to' => "Экспортировать в",
+				'ftp_transfer' => "Экспортировать посредством FTP",
+		),
+		'import_wizard' => array(
+				'import_data' => "Импортировать данные",
+				'import_from' => "Импортировать из",
+				'ftp_transfer' => "Импортировать посредством FTP",
+				'save_to_folder' => "Размещение",
+		),
+		'host' => "Хост / URL",
+		'username' => "Имя пользователя",
+		'password' => "Пароль",
+		'path' => "Путь",
+		'file_type' => "Тип файла",
+		'local' => "Локальный",
+		'wizard' => "Мастер импорта",
+		'step' => "шаг",
+		'step_of' => " из ",
+		'select_data_set' => "Выбрать набор записей",
+		'text_select_data_set' => "Выберите, пожалуйста, записи для импорта",
+		'option_select' => "Выбрать..",
+		'num_data_sets' => "записи:",
+		'assign_record_fields' => 'Назначить поля записи',
+		'we_fields' => "Поля webEdition",
+		'record_fields' => "Поля записи",
+		'attributes' => "Атрибуты",
+		'documents' => "Документы",
+		'objects' => "Объекты",
+);

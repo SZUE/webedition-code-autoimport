@@ -1,8 +1,8 @@
 CREATE TABLE tblcustomerfilter (
   `id` bigint(20) NOT NULL auto_increment,
   `modelId` bigint(20) NOT NULL,
-  `modelType` varchar(32) NOT NULL,
-  `modelTable` varchar(64) NOT NULL,
+  `modelType` ENUM('folder','objectFile','text/webedition')  NOT NULL,
+  `modelTable` ENUM('tblFile','tblObjectFiles') NOT NULL,
   `accessControlOnTemplate` tinyint(1) NOT NULL default '0',
   `errorDocNoLogin` bigint(20) NOT NULL default '0',
   `errorDocNoAccess` bigint(20) NOT NULL default '0',
@@ -12,7 +12,8 @@ CREATE TABLE tblcustomerfilter (
   `whiteList` text NOT NULL,
   `blackList` text NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `mode` (`mode`,`specificCustomers`(330)),
+  KEY `mode` (`mode`),
   KEY `modelId` (`modelId`,`modelType`,`modelTable`),
+  KEY modelType (modelType),
   KEY `accessControlOnTemplate` (`accessControlOnTemplate`)
 ) ENGINE=MyISAM;

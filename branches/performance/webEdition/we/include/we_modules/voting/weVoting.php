@@ -260,8 +260,7 @@ class weVoting extends weModelBase{
 	}
 
 	function isSelf(){
-		if(ereg('/'.$this->Text.'/',clearPath(dirname($this->Path) . '/'))) return true;
-		else return false;
+		return (strpos(clearPath(dirname($this->Path) . '/'),'/'.$this->Text.'/')!==false);
 	}
 
 	function evalPath($id=0) {

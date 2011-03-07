@@ -235,8 +235,7 @@
 
 		function isCompressed($file){
 			$part=weFile::loadPart($file,0,512);
-			if(eregi("<?xml version=",$part)) return false;
-			else return true;
+			return (stripos($part,"<?xml version=")===false);
 		}
 
 	 	function getIDs($selIDs,$table,$with_dirs=false){

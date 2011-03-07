@@ -441,7 +441,7 @@ top.clearEntries();
 			}else{
 				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
 			}
-		}else if(ereg(",",$txt)){
+		}else if(strpos($txt,',')!==false){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), WE_MESSAGE_ERROR);
 		}else{
 			$txt = trim($txt);
@@ -527,7 +527,7 @@ top.clearEntries();
 			}else{
 				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
 			}
-		}else if(ereg(",",$txt)){
+		}else if(strpos($txt,',')!==false){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), WE_MESSAGE_ERROR);
 		}else{
 			$parentPath = (!abs($this->dir)) ? "" : f("SELECT Path FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($this->dir),"Path",$this->db);

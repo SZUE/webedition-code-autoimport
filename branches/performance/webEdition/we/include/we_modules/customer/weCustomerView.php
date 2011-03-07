@@ -1165,7 +1165,7 @@ function processCommands() {
 	function saveBranch($old_branch,$new_branch){
 		$h=$this->customer->getFieldsDbProperties();
 		foreach($h as $k=>$v){
-			if(ereg($old_branch,$k)){
+			if(strpos($k,$old_branch)!==false){
 				$banche='';
 				$fieldname=$this->customer->transFieldName($k,$banche);
 				if($banche==$old_branch && $fieldname!='')

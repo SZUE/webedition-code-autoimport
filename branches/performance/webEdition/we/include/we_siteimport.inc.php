@@ -258,9 +258,9 @@ class weSiteImport
 		$tags = $tp->getAllTags($templateCode);
 		$records = array();
 		foreach ($tags as $tag) {
-			if (eregi('<we:([^> /]+)', $tag, $regs)) {
+			if (preg_match('|<we:([^> /]+)|i', $tag, $regs)) {
 				$tagname = $regs[1];
-				if (eregi('name="([^"]+)"', $tag, $regs) && ($tagname != "var") && ($tagname != "field")) {
+				if (preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")) {
 					$name = $regs[1];
 					switch ($tagname) {
 						// tags with text content, images, links and hrefs

@@ -2668,7 +2668,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = "") {
 	if (f("
 		SELECT IsDynamic
 		FROM " . FILE_TABLE . "
-		WHERE Path=" . mysql_real_escape_string($path) . "'", "IsDynamic", $DB_WE)) {
+		WHERE Path='" . mysql_real_escape_string($path) . "'", "IsDynamic", $DB_WE)) {
 		return $path;
 	}
 	$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
@@ -2855,7 +2855,7 @@ function we_mail($recipient, $subject, $txt, $from = "") {
 }
 
 function runAtWin() {
-	return eregi("win", PHP_OS) && (!eregi("darwin", PHP_OS));
+	return stripos(PHP_OS,"win")!==false && (stripos(PHP_OS,"darwin")===false);
 }
 
 function debug2($variable) {
@@ -3863,12 +3863,12 @@ function g_l($name, $specific) {
 	if (file_exists($file)) {
 		include($file);
 		$tmp = (isset(${"l_$name"})?getVarArray(${"l_$name"}, $specific):false);
-		//get local variable - otherwise try global again
-		if(!($tmp === false)){
+		//get local variable
+		if($tmp !== false){
 			$cache["l_$name"]=${"l_$name"};
 			return $tmp;
 		}else{
-				trigger_error('Requested lang entry '."l_$name$specific".' not found!',E_USER_WARNING);
+				trigger_error('Requested lang entry '."l_$name$specific".' not found in '.$file.'!',E_USER_WARNING);
 			return false;
 		}
 	}

@@ -32,9 +32,6 @@ $name = array();
 
 $_menuItems = weToolLookup::getAllTools(true, true);
 
-include(weToolLookup::getLanguageInclude('toolfactory'));
-include(weToolLookup::getLanguageInclude('navigation'));
-
 
 foreach ($_menuItems as $_menuItem) {
 	$text = $_menuItem["text"];

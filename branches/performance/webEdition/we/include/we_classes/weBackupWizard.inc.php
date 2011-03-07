@@ -474,7 +474,7 @@ class weBackupWizard{
 						$filename=$dstr.$entry;
 						$filesize=round(filesize($filename)/1024,2);
 						$filedate=date("d.m.Y H:i:s.",filemtime($filename));
-						if(ereg('^weBackup_',$entry)) {
+						if(strpos($entry,'weBackup_')===0) {
 							$ts=ereg_replace('^weBackup_','',$entry);
 							$ts=str_replace('.php','',$ts);
 							$ts=str_replace('.xml','',$ts);
@@ -632,8 +632,8 @@ class weBackupWizard{
 
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[tools_import_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
 		foreach ($_tools as $_tool) {
-			include(weToolLookup::getLanguageInclude($_tool));
-			if(isset(${'l_' . $_tool}["import_tool_" . $_tool . "_data"])) {
+			$text=g_l('tools_'.$tool,'[import_tool_' . $_tool . '_data]');
+/*			if(isset(${'l_' . $_tool}["import_tool_" . $_tool . "_data"])) {
 				$text = ${'l_' . $_tool}["import_tool_" . $_tool . "_data"];
 			}
 			else {
@@ -642,7 +642,7 @@ class weBackupWizard{
 				$translate = we_core_Local::addTranslation('apps.xml');
 				we_core_Local::addTranslation('default.xml', $_tool);
 				$text = $translate->_('Restore '. $_tool .' data');
-			}
+			}*/
 			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"),"space"=>70,"noline"=>1));
 		}
 
@@ -930,7 +930,8 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[tools_export_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
 		$k = 700;
 		foreach ($_tools as $_tool) {
-			include(weToolLookup::getLanguageInclude($_tool));
+			$text=g_l('tools_'.$tool,'[import_tool_' . $_tool . '_data]');
+/*			include(weToolLookup::getLanguageInclude($_tool));
 			if(isset(${'l_' . $_tool}["export_tool_" . $_tool . "_data"])) {
 				$text = ${'l_' . $_tool}["export_tool_" . $_tool . "_data"];
 
@@ -941,7 +942,7 @@ class weBackupWizard{
 				$translate = we_core_Local::addTranslation('apps.xml');
 				we_core_Local::addTranslation('default.xml', $_tool);
 				$text = $translate->_('Save '. $_tool .' data');
-			}
+			}*/
 			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"),"space"=>70,"noline"=>1));
 			$k++;
 		}
@@ -1005,9 +1006,6 @@ class weBackupWizard{
 			if(is_file($_SESSION['weBackupVars']['backup_file'])) {
 
 				$_php_version = phpversion();
-
-				// automatic file download does not work for IE, also problems on strato account
-				//if( 1 || ini_get('safe_mode') || eregi('4.2.4-dev',$_php_version) || eregi('4.1.1',$_php_version) || eregi('5.0.1',$_php_version) || eregi('5.0.4',$_php_version) ) {
 
 					include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
@@ -1078,7 +1076,7 @@ class weBackupWizard{
 		if (isset($_GET["backupfile"])) {
 			$_filename = urldecode($_GET["backupfile"]);
 
-			if (file_exists($_filename) && eregi($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR,$_filename)){				// Does file exist and does it saved in backup dir?
+			if (file_exists($_filename) && stripos($_filename,$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR)!==false){				// Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
 				if (we_isHttps()) {																		// Additional headers to make downloads work using IE in HTTPS mode.
@@ -1629,7 +1627,7 @@ class weBackupWizard{
 					break;
 					case "deletebackup":
 						$bfile = $_REQUEST["bfile"];
-						if(ereg('\.\.',$bfile)) {
+						if(strpos($bfile,'..')===0) {
 							print we_htmlElement::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('backup','[name_notok]'), WE_MESSAGE_ERROR)
 							);

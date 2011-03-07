@@ -241,7 +241,7 @@ if(!isset($we_doc->IsClassFolder)) {
 
 	//update already offline users
 	$DB_WE2 = new DB_WE;
-	$DB_WE2->query('UPDATE '.USER_TABLE.' SET Ping=0 WHERE Ping+'.(PING_TIME+PING_TOLERANZ).'<UNIX_TIMESTAMP(NOW())');
+	$DB_WE2->query('UPDATE '.USER_TABLE.' SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-'.(PING_TIME+PING_TOLERANZ).')');
 
 	$_filelocked = ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]);
 
@@ -356,7 +356,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 
 				}
 				<?php
-					if(ereg("image/",$we_doc->ContentType) || ereg("application/",$we_doc->ContentType)) {
+					if(strpos($we_doc->ContentType,"image/")!==false || strpos($we_doc->ContentType,"application/")!==false) {
 						$we_doc->EditPageNr = 1;
 					}
 				?>

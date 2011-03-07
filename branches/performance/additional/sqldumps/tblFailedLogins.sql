@@ -4,5 +4,5 @@ CREATE TABLE tblFailedLogins (
   IP varchar(40) NOT NULL default '',
   LoginDate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
-  KEY IP (IP,LoginDate)
+  KEY IP (LoginDate,IP)
 ) ENGINE=MyISAM;

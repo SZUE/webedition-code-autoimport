@@ -42,7 +42,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 			break;
 		}
 		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
-		if (ereg("'",$we_doc->DocType) || ereg(",",$we_doc->DocType) || ereg("\"",$we_doc->DocType)) {
+		if (preg_match('|[\'",]|',$we_doc->DocType)) {
 			$we_responseText = g_l('alert',"[doctype_hochkomma]");
 			$we_response_type = WE_MESSAGE_ERROR;
 			$we_JavaScript = "";

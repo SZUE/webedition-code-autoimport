@@ -571,9 +571,9 @@ class exportFunctions {
 			$_records = array();
 
 			foreach ($_tags as $_tag) {
-				if (eregi('<we:([^> /]+)', $_tag, $_regs)) {
+				if (preg_match('|<we:([^> /]+)|i', $_tag, $_regs)) {
 					$_tag_name = $_regs[1];
-					if (eregi('name="([^"]+)"', $_tag, $_regs) && ($_tag_name != "var")) {
+					if (preg_match('|name="([^"]+)"|i', $_tag, $_regs) && ($_tag_name != "var")) {
 						$_name = $_regs[1];
 						switch ($_tag_name) {
 							// tags with text content, links and hrefs

@@ -406,7 +406,7 @@ class we_class_folder extends we_folder{
 				$_REQUEST['Order'] = 'OF_PATH';
 			}
 		} else {
-			if(eregi("^ModDate", $_REQUEST['Order']) || eregi("^OF_Published", $_REQUEST['Order'])) {
+			if(stripos($_REQUEST['Order'],"ModDate")===0 || stripos($_REQUEST['Order'], "OF_Published")===0) {
 				$_REQUEST['Order'] = 'OF_PATH';
 			}
 			$this->searchclass->Order = $_REQUEST["Order"];

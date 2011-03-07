@@ -114,7 +114,7 @@ class weCodeWizard {
 				// ignore these
 				// get the snippets by file if extension is xml
 			} else
-			if (!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && eregi(".xml$", $_entry)) {
+			if (!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && substr_compare($_entry,".xml",-4,4,true)==0) {
 				// get the snippet
 				$_snippet = weCodeWizardSnippet::initByXmlFile(
 												$this->SnippetPath . $SnippetDir . "/" . $_entry);

@@ -66,11 +66,11 @@ class weXMLFileReader {
    						$_end = substr($_buffer,-20,20);
 
    						// chek if line is complite
-						$_iswestart = eregi('<webEdition',$_first);
-						$_isweend = eregi('</webEdition>',$_end);
-						$_isxml = eregi('<\?xml',$_first);
+						$_iswestart = stripos($_first,'<webEdition')!==false;
+						$_isweend = stripos($_end,'</webEdition>')!==false;
+						$_isxml = preg_match('|<\?xml|i',$_first);
 
-						$_isend = eregi('<!-- webackup -->',$_end) || empty($_buffer);
+						$_isend = stripos($_end,'<!-- webackup -->')!==false || empty($_buffer);
 
    						if($_isend) {
 

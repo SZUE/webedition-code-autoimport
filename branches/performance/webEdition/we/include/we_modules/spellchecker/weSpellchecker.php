@@ -505,7 +505,7 @@ print STYLESHEET;
 	$_dir = dir(WE_SPELLCHECKER_MODULE_DIR . 'dict');
 	$_i = 0;
 	while (false !== ($entry = $_dir->read())) {
-		if($entry != '.' && $entry != '..' && ereg('.zip',$entry)){
+		if($entry != '.' && $entry != '..' && strpos($entry,'.zip')!==false){
 			$_name = str_replace('.zip','',$entry);
 			if(in_array($_name,$spellcheckerConf['active'])) {
 				$_selectCode .= '<option value="'.$_name.'" '.((isset($_SESSION['dictLang']) && $_SESSION['dictLang']==$_name) ? 'selected' : '').'>'.$_name.'</option>';

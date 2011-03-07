@@ -18,43 +18,36 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-/**************************************************************************
+/* * ************************************************************************
  * For Module Workflow
- *************************************************************************/
-$l_tabs["module"]["overview"] = "Overzicht";
-$l_tabs["module"]["properties"] = "Eigenschappen";
-
-/**************************************************************************
- * For Module User
- *************************************************************************/
-$l_tabs["module"]["data"] = "Data"; // TRANSLATE
-$l_tabs["module"]["permissions"] = "Rechten";
-$l_tabs["module"]["workspace"] = "Werkgebied";
-$l_tabs["module"]["preferences"] = "Voorkeuren";
-
-/**************************************************************************
- * For Banner User
- *************************************************************************/
-$l_tabs["module"]["placement"] = "Plaatsing";
-$l_tabs["module"]["statistics"] = "Statistieken";
-
-/**************************************************************************
- * For Shop Module
- *************************************************************************/
-$l_tabs["module"]["orderlist"] = "Alle bestellingen klanten";
-$l_tabs["module"]["orderdata"] = "Bestel- en Gebruikersdetails";
-$l_tabs["module"]["overview"] = "Overzicht";
-$l_tabs["module"]["artList"]  = "Lijst van alle artikelen: %s";
-
-$l_tabs["module"]["revenueTotal"]  = "Inkomsten in het jaar %s";
-$l_tabs["module"]["PayMethodEdit"]  = "Wijzig betalingmogelijkheden";
-$l_tabs["module"]["ArtAttribEdit"]  = "Wijzig artikel";
-
-$l_tabs["module"]["admin_1"]  = "Artikel documenten";
-$l_tabs["module"]["admin_2"]  = "Artikel objecten";
-$l_tabs["module"]["admin_3"]  = "Inkomsten overzicht";
-
-$l_tabs["module"]["admin_6"]  = "Betalingsmogelijkheden";
-?>
+ * *********************************************************************** */
+$l_tabs['module'] = array(
+		'overview' => "Overzicht",
+		'properties' => "Eigenschappen",
+		/*		 * ************************************************************************
+		 * For Module User
+		 * *********************************************************************** */
+		'data' => "Data", // TRANSLATE
+		'permissions' => "Rechten",
+		'workspace' => "Werkgebied",
+		'preferences' => "Voorkeuren",
+		/*		 * ************************************************************************
+		 * For Banner User
+		 * *********************************************************************** */
+		'placement' => "Plaatsing",
+		'statistics' => "Statistieken",
+		/*		 * ************************************************************************
+		 * For Shop Module
+		 * *********************************************************************** */
+		'orderlist' => "Alle bestellingen klanten",
+		'orderdata' => "Bestel- en Gebruikersdetails",
+		'overview' => "Overzicht",
+		'artList' => "Lijst van alle artikelen: %s",
+		'revenueTotal' => "Inkomsten in het jaar %s",
+		'PayMethodEdit' => "Wijzig betalingmogelijkheden",
+		'ArtAttribEdit' => "Wijzig artikel",
+		'admin_1' => "Artikel documenten",
+		'admin_2' => "Artikel objecten",
+		'admin_3' => "Inkomsten overzicht",
+		'admin_6' => "Betalingsmogelijkheden",
+);

@@ -18,43 +18,40 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Language file: exchange.inc.php
  * Provides language strings.
  * Language: English
  */
-$l_exchange["export_wizard"]["export_data"] = "Export data"; // TRANSLATE
-$l_exchange["export_wizard"]["export_to"] = "Eksportuj do";
-$l_exchange["export_wizard"]["ftp_transfer"] = "Transfer przez FTP";
-
-$l_exchange["import_wizard"]["import_data"] = "Importuj pliki";
-$l_exchange["import_wizard"]["import_from"] = "Importuj z";
-$l_exchange["import_wizard"]["ftp_transfer"] = "Import przez FTP";
-$l_exchange["import_wizard"]["save_to_folder"] = "Zapisz w";
-
-$l_exchange["host"] = "Host / URL"; // TRANSLATE
-$l_exchange["username"] = "Nazwa użytkownika";
-$l_exchange["password"] = "Hasło";
-$l_exchange["path"] = "Ścieżka";
-$l_exchange["file_type"] = "Typ pliku";
-$l_exchange["local"] = "Lokalny";
-
-$l_exchange["wizard"] = "Importwizard";
-$l_exchange["step"] = "Krok ";
-$l_exchange["step_of"] = " z ";
-
-$l_exchange["select_data_set"] = "Wybierz rekord";
-$l_exchange["text_select_data_set"] = "Proszę wybrać rekordy przeznaczone do zaimportowania.";
-$l_exchange["option_select"] = "Wybór...";
-$l_exchange["num_data_sets"] = "Rekordy:";
-
-$l_exchange["assign_record_fields"] = "Przyporządkuj";
-$l_exchange["we_fields"] = "Pola webEdition";
-$l_exchange["record_fields"] = "Pola rekordów";
-$l_exchange["attributes"] = "Atrybuty";
-
-$l_exchange["documents"] = "Dokumenty";
-$l_exchange["objects"] = "Obiekty";
-?>
+$l_exchange = array(
+		'export_wizard' => array(
+				'export_data' => "Export data", // TRANSLATE
+				'export_to' => "Eksportuj do",
+				'ftp_transfer' => "Transfer przez FTP",
+		),
+		'import_wizard' => array(
+				'import_data' => "Importuj pliki",
+				'import_from' => "Importuj z",
+				'ftp_transfer' => "Import przez FTP",
+				'save_to_folder' => "Zapisz w",
+		),
+		'host' => "Host / URL", // TRANSLATE
+		'username' => "Nazwa użytkownika",
+		'password' => "Hasło",
+		'path' => "Ścieżka",
+		'file_type' => "Typ pliku",
+		'local' => "Lokalny",
+		'wizard' => "Importwizard",
+		'step' => "Krok ",
+		'step_of' => " z ",
+		'select_data_set' => "Wybierz rekord",
+		'text_select_data_set' => "Proszę wybrać rekordy przeznaczone do zaimportowania.",
+		'option_select' => "Wybór...",
+		'num_data_sets' => "Rekordy:",
+		'assign_record_fields' => "Przyporządkuj",
+		'we_fields' => "Pola webEdition",
+		'record_fields' => "Pola rekordów",
+		'attributes' => "Atrybuty",
+		'documents' => "Dokumenty",
+		'objects' => "Obiekty",
+);

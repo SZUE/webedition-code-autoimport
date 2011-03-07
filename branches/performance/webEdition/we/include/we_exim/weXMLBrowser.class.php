@@ -174,7 +174,7 @@ class weXMLBrowser extends XML_Parser{
 			$write = false;
 			while(!feof($file)){
 				$data = fread($file,8192);
-				if(ereg("<?xml",$data)){
+				if(strpos($data,"<?xml")!==false){
 					$pos = strpos($data,"<?xml");
 					if($pos !== false) {
 						$data = substr($data,$pos);

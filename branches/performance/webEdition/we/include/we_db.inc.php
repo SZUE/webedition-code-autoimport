@@ -32,6 +32,8 @@ class DB_WE extends DB_Sql {
 	//var $Password = DB_PASSWORD;
 	var $Auto_Free = 0;
 	var $Halt_On_Error = 'no';
+	//true, if first query failed due to some server conditions
+	private $retry=false;
 
 	/* public: connection management */
 
@@ -151,15 +153,31 @@ class DB_WE extends DB_Sql {
 			// delete getHash DB Cache
 			getHash('',$this);
 		}
+		$this->Errno=0;
+		$this->Error='';
 		$this->Row = 0;
-		$this->Errno = mysql_errno();
-		$this->Error = mysql_error();
 		if (!$this->Query_ID) {
-			trigger_error('MYSQL-ERROR'."\n".'Fehler: ' . $this->Errno ."\n". 'Detail: ' . $this->Error ."\n". 'Query: ' . $Query_String . "\n", E_USER_WARNING);
-			if (defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1) {
-				error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
+			$this->Errno = mysql_errno();
+			$this->Error = mysql_error();
+
+			switch($this->Errno){
+				case 2006://SERVER_GONE_ERROR
+				case 2013://SERVER_LOST
+					if(!$this->retry){
+						$this->retry=true;
+						$this->Link_ID=0;
+						$tmp=$this->query($Query_String, $allowUnion);
+						$this->retry=false;
+						return $tmp;
+					}
+				default:
+					trigger_error('MYSQL-ERROR'."\n".'Fehler: ' . $this->Errno ."\n". 'Detail: ' . $this->Error ."\n". 'Query: ' . $Query_String . "\n", E_USER_WARNING);
+					if (defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1) {
+						error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
+					}
+					$this->halt('Invalid SQL: ' . $Query_String);
 			}
-			$this->halt('Invalid SQL: ' . $Query_String);
+
 		}
 
 		# Will return nada if it fails. That's fine.

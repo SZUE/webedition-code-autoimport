@@ -239,7 +239,7 @@
 			$handle_options['tools'] = array();
 
 			foreach($_REQUEST as $_k=>$_val) {
-				if(eregi("^handle_tool_",$_k)) {
+				if(stripos($_k,"handle_tool_")===0) {
 					$_tool = str_replace("handle_tool_",'',$_k);
 					if(weToolLookup::isTool($_tool)) {
 						$handle_options['tools'][] = $_tool;

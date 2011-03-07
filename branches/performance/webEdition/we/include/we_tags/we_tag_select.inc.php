@@ -31,7 +31,7 @@ function we_tag_select($attribs, $content){
 		$attr = we_make_attribs($attribs, "name,value,onchange");
 		if ($val) {
 			$content = eregi_replace("<(option[^>]*) selected>", "<\\1>", $content);
-			if (eregi("<option>", $content))
+			if (stripos($content,"<option>")!==false)
 				$content = eregi_replace(
 						'<option>' . quotemeta($val) . "( ?[<\n\r\t])",
 						'<option selected>' . $val . '\1',

@@ -431,7 +431,7 @@ class XML_Parser {
 	 */
 	function removeChild($absoluteXPath) {
 		// Check if the node is an attribute node.
-		if (ereg("/attribute::", $node)) {
+		if (strpos($node,"/attribute::")!==false) {
 			// Get the location path to the attribute nodes' parent.
 			$parent = $this->prestr($node, '/attribute::');
 
@@ -544,7 +544,7 @@ class XML_Parser {
 	 */
 	function appendData($absoluteXPath, $value) {
 		// Check if it is an attribute node.
-		if (ereg("/attribute::", $absoluteXPath)) {
+		if (strpos($absoluteXPath,"/attribute::")!==false) {
 			// Get the path to the attribute node's parent.
 			$parent = $this->prestr($absoluteXPath, '/attribute::');
 
@@ -574,7 +574,7 @@ class XML_Parser {
 	 */
 	function replaceData($absoluteXPath, $value) {
 		// Check if it is an attribute node.
-		if (ereg("/attribute::", $absoluteXPath)) {
+		if (strpos($absoluteXPath,"/attribute::")!==false) {
 			// Get the path to the attribute node's parent.
 			$parent = $this->prestr($absoluteXPath, '/attribute::');
 
@@ -602,7 +602,7 @@ class XML_Parser {
 	 */
 	function getData($absoluteXPath) {
 		// Check if the given absolute XPath is an attribute node.
-		if (ereg("/attribute::", $absoluteXPath)) {
+		if (strpos($absoluteXPath,"/attribute::")!==false) {
 			// Retrieve the absolute XPath to the attributes' parent node.
 			$absoluteXPathParent = $this->prestr($absoluteXPath, '/attribute::');
 
@@ -848,7 +848,7 @@ class XML_Parser {
 		);
 
 		// Check if there are predicates.
-		if (ereg("\[", $step)) {
+		if (strpos($step,'[')!==false) {
 			// Get the predicates.
 			$predicates = substr($step, strpos($step, '['));
 
@@ -888,7 +888,7 @@ class XML_Parser {
 				$axis['axis']      = 'child';
 				$axis['node-test'] = '*';
 			}
-			else if (ereg("\(", $step)) {
+			else if (strpos($step,'(')!==false) {
 				// Check if it is a method.
 				if ($this->isMethod($this->prestr($step, '('))) {
 					// Get the position of the first bracket.
@@ -916,12 +916,12 @@ class XML_Parser {
 					$axis['node-test'] = $step;
 				}
 			}
-			else if (eregi('^@', $step)) {
+			else if (strpos($step,'@')===0) {
 				// Use the attribute axis and select the attribute.
 				$axis['axis']      = 'attribute';
 				$axis['node-test'] = substr($step, 1);
 			}
-			else if (eregi('\]$', $step)) {
+			else if (substr($step,-1)==']') {
 				// Use the child axis and select a position.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = substr($step, strpos($step, '['));
@@ -1185,7 +1185,7 @@ class XML_Parser {
 			// Check if it is not a method containing a '-' sign.
 			foreach ($this->XPathFunctions as $function) {
 				// Check if there is a - sign in the function name.
-				if (ereg("-", $function)) {
+				if (strpos($function,'-')!==false) {
 					// Get the position of the - in the function name.
 					$sign = strpos($function, '-');
 
@@ -1294,7 +1294,7 @@ class XML_Parser {
 		}
 
 		// Check if the predicate is a function.
-		if (ereg("\(", $predicate)) {
+		if (strpos($predicate,'(')!==false) {
 			// Get the position of the first bracket.
 			$start = strpos($predicate, '(');
 			$end   = strpos($predicate, ')', $start);
@@ -1424,7 +1424,7 @@ class XML_Parser {
 	 */
 	function checkNodeTest($context, $nodeTest) {
 		// Check if it is a method.
-		if (ereg("\(", $nodeTest)) {
+		if (strpos($nodeTest,'(')!==false) {
 			// Get the type of method to use.
 			$method = $this->prestr($nodeTest, '(');
 
@@ -2498,9 +2498,8 @@ class XML_Parser {
 				// Check if there is a language definition.
 				if (!empty($this->nodes[$node]['attributes']['xml:lang'])) {
 					// Check if it is the requested language.
-					if (eregi("^".$args, $this->nodes[$node]
-						['attributes']['xml:lang'])) return TRUE;
-					else return FALSE;
+					return (stripos($this->nodes[$node]
+						['attributes']['xml:lang'],$args)===0);
 				}
 			}
 
@@ -2508,9 +2507,8 @@ class XML_Parser {
 		}
 		else {
 			// Check if it is the requested language.
-			if (eregi("^".$args, $this->nodes[$node]['attributes']
-				['xml:lang'])) return TRUE;
-			else return FALSE;
+			return (stripos($this->nodes[$node]['attributes']
+				['xml:lang'],$args)===0);
 		}
 	}
 

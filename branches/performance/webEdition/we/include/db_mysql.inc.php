@@ -290,6 +290,15 @@ class DB_Sql {
 		return $nextid;
 	}
 
+	function fieldNames(){
+		$count=$this->num_fields();
+		$res=array();
+		for ($i = 0; $i < $count; $i++) {
+			$res[$i] = mysql_field_name($id, $i);
+		}
+		return $res;
+	}
+
 	/* public: return table metadata */
 
 	function metadata($table = '', $full = false) {

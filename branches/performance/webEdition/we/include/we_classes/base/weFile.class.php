@@ -307,7 +307,11 @@ class weFile{
 	function getCompression($filename){
 		$compressions=array("gzip","zip","bzip");
 		foreach($compressions as $val){
-   			if(eregi(".".weFile::getZExtension($val),basename($filename))) return $val;
+			$ext='.'.weFile::getZExtension($val);
+			$extlen=strlen($ext);
+			if(substr_compare(basename($filename),$ext,-1*$extlen,$extlen,true)){
+				return $val;
+			}
 		}
 		return "none";
 

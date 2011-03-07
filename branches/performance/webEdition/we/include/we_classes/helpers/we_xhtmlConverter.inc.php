@@ -130,7 +130,7 @@ class we_xhtmlConverter {
 		$tagname = trim(strtolower($tagname));
 
 		if($tagname == "img"){
-			if(!ereg('alt="',$attr)){
+			if(strpos($attr,'alt="')===false){
 				$attr .= ' alt=""';
 			}
 		}

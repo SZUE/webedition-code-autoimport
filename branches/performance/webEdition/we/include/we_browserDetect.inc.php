@@ -184,30 +184,6 @@ class we_browserDetect {
 		if (preg_match('/^lynx([^a-z]+)[a-z].*/i', $ua, $regs)) {
 			self::$br = 'lynx';
 			self::$v = str_replace('/', '', $regs[1]);
-			/* }else if(eregi('wget/([0-9\.]+)',self::$ua,$regs)){
-			  self::$br='wget';
-			  self::$v=$regs[1];
-			  }else if(eregi('gulliver/([0-9\.]+)',self::$ua,$regs)){
-			  self::$br='gulliver';
-			  self::$v=$regs[1];
-			  }else if(eregi('w3m/([0-9\.]+)',self::$ua,$regs)){
-			  self::$br='w3m';
-			  self::$v=$regs[1];
-			  }else if(eregi('fireball/([0-9\.]+)',self::$ua,$regs)){
-			  self::$br='fireball';
-			  self::$v=$regs[1];
-			  }else if(eregi('scooter-w([0-9\.-]+)',self::$ua,$regs)){
-			  self::$br='scooter';
-			  self::$v=$regs[1];
-			  }else if(eregi('scooter[/-]([0-9\.]+)',self::$ua,$regs)){
-			  self::$br='scooter';
-			  self::$v=$regs[1];
-			  }else if(eregi('scooter_trk2-([0-9\.]+)',self::$ua,$regs)){
-			  self::$br='scooter';
-			  self::$v=$regs[1];
-			  }else if(eregi('java([0-9\.]+)',self::$ua,$regs)){
-			  self::$br='java';
-			  self::$v=$regs[1]; */
 		} else {
 			self::$br = 'unknown';
 		}

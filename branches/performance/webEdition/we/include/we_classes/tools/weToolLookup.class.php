@@ -139,7 +139,7 @@
 			if(isset($_REQUEST['we_cmd'][0])) {
 				$_tools = weToolLookup::getAllTools(true,true);
 				foreach($_tools as $_tool){
-					if(eregi('^tool_' . $_tool['name'] . '_',$_REQUEST['we_cmd'][0])){
+					if(stripos($_REQUEST['we_cmd'][0],'tool_' . $_tool['name'] . '_')===0){
 						$_REQUEST['tool'] = $_tool['name'];
 						if($_REQUEST['tool']=='weSearch' || $_REQUEST['tool']=='navigation') {
 							$_inc='we_tools/'.$_tool['name'].'/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
@@ -301,7 +301,7 @@
 			if(weToolLookup::isTool($toolname,$includeDisabled) && is_dir($_tooldir)) {
 				$_d = opendir($_tooldir);
 				while( $_entry = readdir($_d) ){
-					if(!is_dir($_tooldir . '/' . $_entry) && eregi($filematch,$_entry)){
+					if(!is_dir($_tooldir . '/' . $_entry) && stripos($_entry,$filematch)!==false){
 						$_tagname = str_replace($rem_before,'',$_entry);
 						$_tagname = str_replace($rem_after,'',$_tagname);
 						$_founds[$_tagname] = $_tooldir . '/' . $_entry;
@@ -408,23 +408,6 @@
 			return $_inc;
 		}
 
-		//FIXME: remove this function!
-		function getLanguageInclude($name) {
-			if($name=='weSearch') {
-			}
-			elseif($name=='navigation') {
-			}
-			else {
-				if(!defined('WE_TOOLS_DIR')) {
-					$toolFolder = $GLOBALS['__WE_APP_PATH__'].'/';
-				}
-				else {
-					$toolFolder = WE_TOOLS_DIR;
-				}
-				return $toolFolder . $name . '/conf/meta.conf.php';
-			}
-
-		}
 
 		function getToolsForBackup($includeDisabled=false) {
 			$_inc = array();

@@ -199,11 +199,11 @@ class searchtoolExp extends we_search
 						'operand2' => trim($this->replaceSpecChars(stripslashes($_arr[1])))
 				);
 
-				if ($_expr['operator'] == '=' && ereg('%', $_expr['operand2'])) {
+				if ($_expr['operator'] == '=' && strpos($_expr['operand2'],'%')!==false) {
 					$_expr['operator'] = 'LIKE';
 				}
 
-				if (($_expr['operator'] == '!=' || $_expr['operator'] == '<>') && ereg('%', $_expr['operand2'])) {
+				if (($_expr['operator'] == '!=' || $_expr['operator'] == '<>') && strpos($_expr['operand2'],'%')!==false) {
 					$_expr['operator'] = 'NOT LIKE';
 				}
 
@@ -231,7 +231,7 @@ class searchtoolExp extends we_search
 	{
 
 		if (($_expr['operand1'] == 'DocType')) {
-			if (ereg('\*', $_expr['operand2'])) {
+			if (strpos($_expr['operand2'],'\*')!==false) {
 				$_expr['operand2'] = f(
 						'SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . str_replace(
 								"*",
@@ -268,7 +268,7 @@ class searchtoolExp extends we_search
 			}
 		}
 
-		if (ereg('\*', $_expr['operand2'])) {
+		if (strpos($_expr['operand2'],'\*')!==false) {
 			$_expr['operator'] = 'LIKE';
 			$_expr['operand2'] = str_replace("*", "%", $_expr['operand2']);
 		}

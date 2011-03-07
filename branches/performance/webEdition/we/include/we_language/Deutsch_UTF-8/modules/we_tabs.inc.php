@@ -18,43 +18,35 @@
  * @package    webEdition_language
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-/**************************************************************************
+/* * ************************************************************************
  * For Module Workflow
- **************************************************************************/
-$l_tabs["module"]["overview"]   = "Übersicht";
-$l_tabs["module"]["properties"] = "Eigenschaften";
-
-/**************************************************************************
- * For Module User
- **************************************************************************/
-$l_tabs["module"]["data"]        = "Daten";
-$l_tabs["module"]["permissions"] = "Rechte";
-$l_tabs["module"]["workspace"]   = "Arbeitsbereich";
-$l_tabs["module"]["preferences"] = "Einstellungen";
-
-/**************************************************************************
- * For Banner User
- **************************************************************************/
-$l_tabs["module"]["placement"]  = "Platzierung";
-$l_tabs["module"]["statistics"] = "Statistik";
-
-/**************************************************************************
- * For Shop Module
- **************************************************************************/
-$l_tabs["module"]["orderlist"]  = "Alle Bestellungen des Kunden";
-$l_tabs["module"]["orderdata"]  = "Bestell- und Kundendaten";
-$l_tabs["module"]["revenueTotal"]  = "Umsatz im Jahr %s";
-$l_tabs["module"]["artList"]  = "Auflistung aller Artikel: %s"; 
-
-$l_tabs["module"]["PayMethodEdit"]  = "Zahlungsarten bearbeiten";
-$l_tabs["module"]["ArtAttribEdit"]  = "Artikel-Eigenschaften bearbeiten";
-
-$l_tabs["module"]["admin_1"]  = "Artikel-Dokumente";
-$l_tabs["module"]["admin_2"]  = "Artikel-Objekte";
-$l_tabs["module"]["admin_3"]  = "Umsatzübersicht";
-
-
-$l_tabs["module"]["admin_6"]  = "Zahlungsarten";
-?>
+ * ************************************************************************ */
+$l_tabs['module'] = array(
+		'overview' => "Übersicht",
+		'properties' => "Eigenschaften",
+		/*		 * ************************************************************************
+		 * For Module User
+		 * ************************************************************************ */
+		'data' => "Daten",
+		'permissions' => "Rechte",
+		'workspace' => "Arbeitsbereich",
+		'preferences' => "Einstellungen",
+		/*		 * ************************************************************************
+		 * For Banner User
+		 * ************************************************************************ */
+		'placement' => "Platzierung",
+		'statistics' => "Statistik",
+		/*		 * ************************************************************************
+		 * For Shop Module
+		 * ************************************************************************ */
+		'orderlist' => "Alle Bestellungen des Kunden",
+		'orderdata' => "Bestell- und Kundendaten",
+		'revenueTotal' => "Umsatz im Jahr %s",
+		'artList' => "Auflistung aller Artikel: %s",
+		'PayMethodEdit' => "Zahlungsarten bearbeiten",
+		'ArtAttribEdit' => "Artikel-Eigenschaften bearbeiten",
+		'admin_1' => "Artikel-Dokumente",
+		'admin_2' => "Artikel-Objekte",
+		'admin_3' => "Umsatzübersicht",
+		'admin_6' => "Zahlungsarten",
+);

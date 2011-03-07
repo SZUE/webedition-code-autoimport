@@ -1299,27 +1299,27 @@ onclick="'.$this->editor->ref.'Obj.click(\''.$this->cmd.'\');" /></div>';
 			case "decreasecolspan":
 			case "caption":
 			case "removecaption":
-				return eregi(",table,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",table,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			case "cut":
 			case "copy":
 			case "paste":
-				return eregi(",copypaste,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",copypaste,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			case "forecolor":
 			case "backcolor":
-				return eregi(",color,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",color,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			case "createlink":
 			case "unlink":
-				return eregi(",link,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",link,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			case "insertunorderedlist":
 			case "insertorderedlist":
 			case "indent":
 			case "outdent":
-				return eregi(",list,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",list,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			case "justifyleft":
 			case "justifycenter":
 			case "justifyright":
 			case "justifyfull":
-				return eregi(",justify,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",justify,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			case "bold":
 			case "italic":
 			case "underline":
@@ -1328,9 +1328,9 @@ onclick="'.$this->editor->ref.'Obj.click(\''.$this->cmd.'\');" /></div>';
 			case "strikethrough":
 			case "removetags":
 			case "removeformat":
-				return eregi(",prop,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",prop,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			default:
-				return eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 		}
 	}
 }
@@ -1352,9 +1352,9 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 			case "fontname":
 			case "fontsize":
 			case "formatblock":
-				return eregi(",font,",$this->editor->propstring) || eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",font,")!==false || stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 			default:
-				return eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+				return stripos($this->editor->propstring,",".$this->cmd.",")!==false || ($this->editor->propstring=="");
 		}
 	}
 

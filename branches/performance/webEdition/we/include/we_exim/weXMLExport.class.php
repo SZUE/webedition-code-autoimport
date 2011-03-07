@@ -40,7 +40,7 @@
 			@set_time_limit(0);
 			$doc=weContentProvider::getInstance($ct,$id,$table);
 			// add binary data separately to stay compatible with the new binary feature in v5.1
-			if(isset($doc->ContentType) && (ereg("^image/",$doc->ContentType) || ereg("^application/",$doc->ContentType) || ereg("^video/",$doc->ContentType))) {
+			if(isset($doc->ContentType) && (strpos($doc->ContentType,"image/")===0 || strpos($doc->ContentType,"application/")===0 || strpos($doc->ContentType,"video/")===0)) {
 				$doc->setElement("data",weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 			}
 
@@ -88,7 +88,7 @@
 
 			if($classname=="weTableItem" && $export_binary){
 				if(strtolower($doc->table)==strtolower(FILE_TABLE)){
-					if($doc->ContentType=="image/*" || eregi("application/",$doc->ContentType)){
+					if($doc->ContentType=="image/*" || stripos($doc->ContentType,"application/")!==false){
 						$bin=weContentProvider::getInstance("weBinary",$doc->ID);
 						if(isset($bin->attribute_slots)) $attribute=$bin->attribute_slots;
 						else $attribute=array();
