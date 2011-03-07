@@ -70,7 +70,7 @@ class weXMLFileReader {
 						$_isweend = stripos($_end,'</webEdition>')!==false;
 						$_isxml = preg_match('|<\?xml|i',$_first);
 
-						$_isend = stripos($_end,'<!-- webackup -->')!==false || empty($_buffer);
+						$_isend = preg_match("|<!-- *webackup *-->|",$_buffer) || empty($_buffer);
 
    						if($_isend) {
 

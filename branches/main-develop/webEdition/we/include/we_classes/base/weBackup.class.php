@@ -93,7 +93,6 @@ class weBackup extends we_backup{
 
 	function splitFile2() {
 		global $_language;
-
 		if($this->filename=="") return -1;
 		if($this->mode=="sql") return we_backup::splitFile($this->filename);
 
@@ -103,6 +102,7 @@ class weBackup extends we_backup{
 
 		$path=$this->backup_dir_tmp;
 		$marker="<!-- webackup -->";
+		$marker2="<!--webackup -->";//Backup 5089
 		$pattern=basename($this->filename)."_%s";
 
 
@@ -129,6 +129,7 @@ class weBackup extends we_backup{
 		$elnum=0;
 
 		$marker_size=strlen($marker);
+		$marker2_size=strlen($marker2);//Backup 5089
 
 		if($fh) {
 			while (!@feof ($fh)) {
@@ -163,7 +164,7 @@ class weBackup extends we_backup{
 						$buff.=$line;
 						$write=false;
 						if($marker_size){
-							if((substr($buff,(0-($marker_size+1)))==$marker."\n") || (substr($buff,(0-($marker_size+2)))==$marker."\r\n")) $write=true;
+							if((substr($buff,(0-($marker_size+1)))==$marker."\n") || (substr($buff,(0-($marker_size+2)))==$marker."\r\n" ) || (substr($buff,(0-($marker2_size+1)))==$marker2."\n") || (substr($buff,(0-($marker2_size+2)))==$marker2."\r\n" )) $write=true;
 							else  $write=false;
 						}
 						else	$write=true;

@@ -202,10 +202,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			if ($DB_WE->query($query)) {
 				return true;
 			} else {
-				p_r($query);
-				sleep(10);
+				//p_r($query);		
 				return false;
-
 			}
 		}
 
