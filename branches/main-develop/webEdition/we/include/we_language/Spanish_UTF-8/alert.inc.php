@@ -48,7 +48,7 @@ $l_alert = array(
 				'headline' => '¡Atención!',
 				'description' => 'No hay vista disponible para este documento.',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'Ud edita el último documento.',
 				'first_document' => 'Ud edita el primer documento.',
 				'doc_not_found' => 'No se puede encontrar documento concordante.',

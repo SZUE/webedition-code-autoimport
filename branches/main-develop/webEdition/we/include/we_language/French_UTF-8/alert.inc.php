@@ -48,7 +48,7 @@ $l_alert = array(
 				'headline' => 'Attention', // TRANSLATE
 				'description' => 'Ce document n\'a pas de vue.',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'You edit the last document.', // TRANSLATE
 				'first_document' => 'Vous êtes sur le premier document.',
 				'doc_not_found' => 'Could not find matching document.', // TRANSLATE

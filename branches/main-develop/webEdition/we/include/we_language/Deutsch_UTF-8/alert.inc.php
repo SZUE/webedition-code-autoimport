@@ -50,7 +50,7 @@ $l_alert = array(
 				'headline' => 'Achtung',
 				'description' => 'Für dieses Dokument ist keine Ansicht verfügbar.',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'Sie befinden sich auf dem letzten Dokument.',
 				'first_document' => 'Sie befinden sich auf dem ersten Dokument.',
 				'doc_not_found' => 'Could not find matching document.',

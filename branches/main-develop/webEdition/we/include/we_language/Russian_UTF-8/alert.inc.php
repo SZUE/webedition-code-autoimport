@@ -48,7 +48,7 @@ $l_alert = array(
 				'headline' => 'Attention', // TRANSLATE
 				'description' => 'Нельзя просмотреть данный документ в режиме "вид".',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'You edit the last document.', // TRANSLATE
 				'first_document' => 'Вы редактируете первый документ.',
 				'doc_not_found' => 'Could not find matching document.', // TRANSLATE

@@ -48,7 +48,7 @@ $l_alert = array(
 				'headline' => 'Attentie',
 				'description' => 'Er is geen weergave beschikbaar voor dit document.',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'U wijzigt het laatste document.',
 				'first_document' => 'U wijzigt het eerste document.',
 				'doc_not_found' => 'Kon geen bijpassend document vinden.',
