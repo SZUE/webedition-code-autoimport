@@ -574,14 +574,13 @@ class weBackup extends we_backup{
 
 	function isOldVersion($file){
 		$part=weFile::loadPart($file,0,512);
-		if(eregi("# webEdition version:",$part) && eregi("DROP TABLE",$part) && eregi("CREATE TABLE",$part)) return true;
+		if(stripos($part,"# webEdition version:")!==false && stripos($part,"DROP TABLE")!==false && stripos($part,"CREATE TABLE")!==false) return true;
 		else return false;
 	}
 
 	function isCompressed($file){
 		$part=weFile::loadPart($file,0,512);
-		if(eregi("<?xml version=",$part)) return false;
-		else return true;
+		return stripos($part,"<?xml version=")===false;
 	}
 
 	function getDownloadFile() {
@@ -599,12 +598,12 @@ class weBackup extends we_backup{
 
 	function isFixed($tab) {
 		if(defined("OBJECT_X_TABLE")){
-			if(eregi(strtolower(OBJECT_X_TABLE),strtolower($tab))){
+			if(stripos($tab,OBJECT_X_TABLE)!==false){
 				if(isset($this->handle_options["object"]) && $this->handle_options["object"]) return false;
 				else return true;
 			}
 		}
-		else if(eregi("tblobject",strtolower($tab))){
+		else if(stripos($tab,"tblobject")!==false){
 			return true;
 		}
 		return we_backup::isFixed($tab) || !$this->isWeTable($tab);

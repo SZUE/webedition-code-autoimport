@@ -131,7 +131,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	$ReplBody = "";
 	$Before = " ";
 	foreach($Pieces as $Piece) {
-		if (!ereg("^<", $Piece) && !eregi("<script", $Before)) {
+		if (strpos($Piece,'<')!==0 && stripos($Before,'<script')===false) {
 			$ReplBody .= $Piece . " ";
 		}
 		$Before = $Piece;

@@ -43,13 +43,13 @@ class leWizardContent {
 	function getCSS() {
 
 
-		if(eregi("X11",$_SERVER["HTTP_USER_AGENT"])) {
+		if(stripos($_SERVER["HTTP_USER_AGENT"],"X11")!==false) {
 
 			$System = "X11";
-		} else if(eregi("Win",$_SERVER["HTTP_USER_AGENT"])) {
+		} else if(stripos($_SERVER["HTTP_USER_AGENT"],"Win")!==false) {
 			$System = "WIN";
 
-		} else if(eregi("Mac",$_SERVER["HTTP_USER_AGENT"])) {
+		} else if(stripos($_SERVER["HTTP_USER_AGENT"],"Mac")!==false) {
 			$System = "MAC";
 
 		} else {

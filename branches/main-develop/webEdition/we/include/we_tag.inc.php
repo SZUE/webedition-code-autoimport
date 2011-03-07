@@ -153,7 +153,7 @@ function we_tag($name, $attribs=array(), $content = ''){
 
 				// Tag is not cacheable
 				} else {
-					if (eregi('^we_tag_if', $fn)) {
+					if (stripos($fn,'we_tag_if')===0) {
 						if (isset($GLOBALS['weTagListviewCacheActive']) && $GLOBALS['weTagListviewCacheActive'] == true) {
 							$foo = $fn($attribs, $content);
 
@@ -300,9 +300,7 @@ function makeEmptyTable($in){
 	for ($i = 0; $i < sizeof($result); $i++) {
 		$tag = $result[$i][0];
 
-		if (eregi('< ?td', $tag) || eregi('< ?/ ?td', $tag) || eregi('< ?tr', $tag) || eregi('< ?/ ?tr', $tag) || eregi(
-				'< ?table',
-				$tag) || eregi('< ?/ ?table', $tag) || eregi('< ?tbody', $tag) || eregi('< ?/ ?tbody', $tag)) {
+		if(preg_match('-< ?/? ?(td|tr|table|tbody)-i', $tag)) {
 			$out .= $tag;
 		}
 

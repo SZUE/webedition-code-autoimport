@@ -429,7 +429,7 @@ if(inWorkflow($we_doc)) {
 
 			$_normalTable->addCol(2);
 
-			if(eregi('text/',$we_doc->ContentType)) {
+			if(stripos($we_doc->ContentType,'text/')!==false) {
 				$_normalTable->setColContent(0, $_pos++, $we_button->create_button("startEditor", "javascript:editSource();"));
 			} else {
 				$_normalTable->setColContent(0, $_pos++, $we_button->create_button("startEditor", "javascript:editFile();"));

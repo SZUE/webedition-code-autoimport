@@ -42,7 +42,7 @@ protect();
 
 			$link = "%s";
 			if(isset($text['link']) && $text['link'] != "") {
-				if(eregi("^javascript:", $text['link'])) {
+				if(stripos($text['link'],'javascript:')===0) {
 					$link = "<a href=\"" . $text['link'] . "\">%s</a>";
 
 				} else {

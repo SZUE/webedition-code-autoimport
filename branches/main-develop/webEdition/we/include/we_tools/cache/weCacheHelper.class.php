@@ -22,7 +22,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_live_t
 
 /**
  * this class implements some helper functions for caching
- * like deleting cache, 
+ * like deleting cache,
  *
  * @category   webEdition
  * @package    webEdition_base
@@ -39,27 +39,27 @@ class weCacheHelper
 	 */
 	function getCacheDir()
 	{
-		
+
 		if (defined("CACHING_INSIDE_WEBEDITION")) {
 			$WE_CACHE_DIR = TMP_DIR . "/cache/";
-		
+
 		} else {
 			$WE_CACHE_DIR = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/cache/";
-		
+
 		}
 		$dirname = $WE_CACHE_DIR;
-		
+
 		if (!file_exists($dirname)) {
 			createLocalFolder($dirname);
-		
+
 		}
-		
-		if (!eregi("/$", $dirname)) {
+
+		if (substr($dirname,-1)!='/') {
 			$dirname .= DIRECTORY_SEPARATOR;
 		}
-		
+
 		return $dirname;
-	
+
 	}
 
 	/**
@@ -73,18 +73,18 @@ class weCacheHelper
 	 */
 	function getDocumentCacheDir($id = 0)
 	{
-		
+
 		$dirname = weCacheHelper::getCacheDir();
-		
+
 		$dirname .= "document" . DIRECTORY_SEPARATOR;
-		
+
 		if ($id == 0) {
 			return $dirname;
-		
+
 		} else {
 			return $dirname . $id . DIRECTORY_SEPARATOR;
 		}
-	
+
 	}
 
 	/**
@@ -98,18 +98,18 @@ class weCacheHelper
 	 */
 	function getObjectCacheDir($id = 0)
 	{
-		
+
 		$dirname = weCacheHelper::getCacheDir();
-		
+
 		$dirname .= "object" . DIRECTORY_SEPARATOR;
-		
+
 		if ($id == 0) {
 			return $dirname;
-		
+
 		} else {
 			return $dirname . $id . DIRECTORY_SEPARATOR;
 		}
-	
+
 	}
 
 	/**
@@ -122,33 +122,33 @@ class weCacheHelper
 	 */
 	function getCacheSize($dir = "")
 	{
-		
+
 		if ($dir == "") {
 			$dir = weCacheHelper::getCacheDir();
-		
+
 		}
-		
+
 		$size = 0;
-		
-		$dir .= !eregi("/$", $dir) ? DIRECTORY_SEPARATOR : "";
-		
+
+		$dir .= substr($dir,-1)!='/' ? DIRECTORY_SEPARATOR : '';
+
 		$d = dir($dir);
 		while (false !== ($entry = $d->read())) {
 			if ($entry != '.' && $entry != '..') {
 				if (is_dir($dir . $entry)) {
 					$size += weCacheHelper::getSize($dir . $entry . '/');
-				
+
 				} else {
 					$size += filesize($dir . $entry);
-				
+
 				}
-			
+
 			}
 		}
-		
+
 		$d->close();
 		return $size;
-	
+
 	}
 
 	/**
@@ -161,13 +161,13 @@ class weCacheHelper
 	 */
 	function clearCache($dir = "")
 	{
-		
+
 		if ($dir == "") {
 			$dir = weCacheHelper::getCacheDir();
-		
+
 		}
-		
-		$dir .= !eregi("/$", $dir) ? DIRECTORY_SEPARATOR : "";
+
+		$dir .= substr($dir,-1)!='/' ? DIRECTORY_SEPARATOR : '';
 		if (!file_exists($dir) || !is_dir($dir)) {
 			return true;
 		}
@@ -177,30 +177,30 @@ class weCacheHelper
 				if (is_dir($dir . $entry)) {
 					if (!weCacheHelper::clearCache($dir . $entry . '/')) {
 						return false;
-					
+
 					}
-				
+
 				} else {
 					if (!unlink($dir . $entry)) {
 						return false;
-					
+
 					}
-				
+
 				}
-			
+
 			}
-		
+
 		}
-		
+
 		$d->close();
-		
+
 		if (rmdir($dir)) {return true;} else {return false;}
-	
+
 	}
 
 	/**
 	 * static function
-	 * optimize the cache dir, deletes old cache files 
+	 * optimize the cache dir, deletes old cache files
 	 *
 	 * @param string $dir
 	 * @param string $maxCacheSize
@@ -210,32 +210,32 @@ class weCacheHelper
 	 */
 	function optimizeCache($dir = "", $maxCacheSize = "1mb")
 	{
-		
+
 		if ($dir == "") {
 			$dir = weCacheHelper::getCacheDir();
-		
+
 		}
-		
+
 		preg_match_all("/(.*[0-9])+(.*[b|kb|mb|gb])/", $maxCacheSize, $matches);
-		
+
 		if ($matches[2][0] == "kb") {
 			$maxCacheSize = $matches[1][0] * 1024;
-		
-		} else 
+
+		} else
 			if ($matches[2][0] == "mb") {
 				$maxCacheSize = $matches[1][0] * 1024 * 1024;
-			
-			} else 
+
+			} else
 				if ($matches[2][0] == "gb") {
 					$maxCacheSize = $matches[1][0] * 1024 * 1024 * 1024;
-				
+
 				} else {
 					$maxCacheSize = $matches[1][0];
-				
+
 				}
-		
+
 		$size = weCacheHelper::getCacheSize($dir);
-	
+
 	}
 
 }

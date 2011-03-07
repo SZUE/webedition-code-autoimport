@@ -136,18 +136,18 @@
 			$replBody = "";
 			$before = "";
 			foreach($pieces as $piece) {
-				if (!ereg("^<", $piece) && !eregi("<script", $before)) {
+				if (strpos($piece,"<")!==0 && stripos($before,"<script")===false) {
 					$piece = str_replace('&quot;', '"', $piece);
-					if(!eregi("<a ", $before)) {
+					if(stripos($before,"<a ")===false) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $link);
 					}
-					if(!eregi("<abbr ", $before)) {
+					if(stripos($before,"<abbr ")===false) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $abbreviation);
 					}
-					if(!eregi("<acronym ", $before)) {
+					if(stripos($before,"<acronym ")===false) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $acronym);
 					}
-					if(!eregi("<span ", $before)) {
+					if(stripos($before,"<span ")===false) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $foreignword);
 					}
 				}

@@ -315,10 +315,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$we_recipientCC = array();
 				for ($l=0;$l < sizeof($toCC);$l++) {
 
-					if (!eregi("@",$toCC[$l])) {
-						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && eregi("@",$_SESSION["webuser"][$toCC[$l]])) { //wenn man registrierten Usern was senden moechte
+					if (strpos($toCC[$l],'@')==false) {
+						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]],'@')!==false) { //wenn man registrierten Usern was senden moechte
 							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
-						} else if(isset($_REQUEST[$toCC[$l]]) && eregi("@",$_REQUEST[$toCC[$l]])) {	//email to friend test
+						} else if(isset($_REQUEST[$toCC[$l]]) && strpos($_REQUEST[$toCC[$l]],'@')!==false) {	//email to friend test
 							$we_recipientCC[] = $_REQUEST[$toCC[$l]];
 						}
 					} else {
@@ -329,10 +329,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$we_recipientBCC = array();
 				for ($l=0;$l < sizeof($toBCC);$l++) {
 
-					if (!eregi("@",$toBCC[$l])) {
-						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && eregi("@",$_SESSION["webuser"][$toBCC[$l]])) { //wenn man registrierte Usern was senden moechte
+					if (strpos("@",$toBCC[$l])==false) {
+						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && strpos("@",$_SESSION["webuser"][$toBCC[$l]])!==false) { //wenn man registrierte Usern was senden moechte
 							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
-						} else if(isset($_REQUEST[$toBCC[$l]]) && eregi("@",$_REQUEST[$toBCC[$l]])) {	//email to friend test
+						} else if(isset($_REQUEST[$toBCC[$l]]) && strpos("@",$_REQUEST[$toBCC[$l]])!==false) {	//email to friend test
 							$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
 						}
 					} else {

@@ -89,7 +89,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 
 			foreach($this->elements as $element){
 
-					$_defalut_for_type = eregi('int',$element["Type"]) ||  eregi('double',$element["Type"]) || eregi('float',$element["Type"]) ? 0 : "''";
+					$_defalut_for_type = stripos($element["Type"],'int')!==false ||  stripos($element["Type"],'double')!==false || stripos($element["Type"],'float')!==false ? 0 : "''";
 
 					$_default_value = ("DEFAULT " .((isset($element["Default"]) && $element["Default"]!="")  ? ("'".$element["Default"]."'") : ((isset($element["Null"]) && $element["Null"]=="YES") ? "NULL" : $_defalut_for_type)));
 

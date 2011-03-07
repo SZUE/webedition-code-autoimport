@@ -134,14 +134,14 @@ body {
 		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
 		define("WE_SIDEBAR", true);
 
-		if(eregi("^http://", $file) || eregi("^https://", $file)) {
+		if(stripos($file,"http://")===0 || stripos($file,"https://")===0) {
 			//not implemented
 			//header("Location: " . $file);
 			exit();
 
 		}
 
-		if(!eregi("^/", $file)) {
+		if(strpos($file,'/')!==0) {
 			$file = id_to_path($file, FILE_TABLE);
 
 		}
@@ -150,7 +150,7 @@ body {
 			if(defined("SIDEBAR_DEFAULT_DOCUMENT")) {
 				$file = id_to_path(SIDEBAR_DEFAULT_DOCUMENT, FILE_TABLE);
 			}
-			if($file == "" || eregi("/$", $file) || $file == "default") {
+			if($file == "" || substr($file,-1)=='/' || $file == "default") {
 				$file = WEBEDITION_DIR . "sidebar/default.php";
 
 			}

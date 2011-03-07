@@ -47,7 +47,7 @@
 		function getDefaultTableName($table) {
 
 			$match = array();
-			if(defined('OBJECT_X_TABLE') && eregi("^".OBJECT_X_TABLE . "([0-9]*)$",$table,$match)){
+			if(defined('OBJECT_X_TABLE') && preg_match("|^".OBJECT_X_TABLE . "([0-9]*)$|i",$table,$match)){
 				if(isset($_SESSION['weBackupVars']['tables']['tblobject_'])){
 					$_max = f('SELECT MAX(TableID) AS MaxTableID FROM ' . OBJECT_FILES_TABLE,'MaxTableID',new DB_WE());
 					if($match[1]<=$_max){
@@ -320,9 +320,9 @@
 
 			$_part = weFile::loadPart($file,0,512,$iscompr);
 
-			if(eregi('<\?xml ',$_part)){
+			if(preg_match('|<\?xml |i',$_part)){
 				return 'xml';
-			} else if(eregi('create table',$_part)){
+			} else if(stripos($_part,'create table')!==false){
 				return 'sql';
 			}
 
@@ -345,18 +345,18 @@
 
 			$_part = weFile::loadPart($file,0,$_part_len,$iscompr);
 
-			if(eregi('<webEdition',$_part)){
+			if(stripos($_part,'<webEdition')!==false){
 
 				$_hasbinary = false;
 				while($_found=='unknown' && $_try<$_count) {
 
-					if(eregi('<we:document',$_part) || eregi('<we:template',$_part) || eregi('<we:class',$_part) || eregi('<we:object',$_part) || eregi('<we:info',$_part) || eregi('<we:navigation',$_part)){
+					if(preg_match($_part,'-<we:(document|template|class|object|info|navigation)-i')){
 						$_found = 'weimport';
-					} else if(eregi('<we:table',$_part)){
+					} else if(stripos($_part,'<we:table')!==false){
 						$_found = 'backup';
-					} else if(eregi('<we:binary',$_part)){
+					} else if(stripos($_part,'<we:binary')!==false){
 						$_hasbinary = true;
-					} else if(eregi('<customer',$_part)){
+					} else if(stripos($_part,'<customer')!==false){
 						$_found = 'customer';
 					}
 

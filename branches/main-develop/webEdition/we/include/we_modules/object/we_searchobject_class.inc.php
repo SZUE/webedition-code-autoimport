@@ -59,7 +59,7 @@ class objectsearch extends we_search {
 		$tableInfo =  $GLOBALS["DB_WE"]->metadata(OBJECT_X_TABLE.$objID);
 		$all = "";
 		for($i=0;$i<sizeof($tableInfo);$i++) {
-			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && !eregi("^multiobject", $tableInfo[$i]["name"]) && !eregi("^object", $tableInfo[$i]["name"])) {
+			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && stripos($tableInfo[$i]["name"],"multiobject")!==0 && stripos($tableInfo[$i]["name"],"object")!==0) {
 				$regs=explode('_',$tableInfo[$i]["name"],2);
 				if(count($regs)==2) {//if(ereg('^(.*)_(.*)$',$tableInfo[$i]["name"],$regs)) {
 					$opts .= '<option value="'.$tableInfo[$i]["name"].'" '

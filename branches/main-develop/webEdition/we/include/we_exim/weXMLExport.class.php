@@ -88,7 +88,7 @@
 
 			if($classname=="weTableItem" && $export_binary){
 				if(strtolower($doc->table)==strtolower(FILE_TABLE)){
-					if($doc->ContentType=="image/*" || eregi("application/",$doc->ContentType)){
+					if($doc->ContentType=="image/*" || stripos($doc->ContentType,"application/")!==false){
 						$bin=weContentProvider::getInstance("weBinary",$doc->ID);
 						if(isset($bin->attribute_slots)) $attribute=$bin->attribute_slots;
 						else $attribute=array();

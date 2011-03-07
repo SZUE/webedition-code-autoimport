@@ -426,12 +426,10 @@ class weNavigation extends weModelBase
 	function filenameNotValid($text)
 	{
 		$_tmp = str_replace("]", "", str_replace("[", "", $text));
-		//return eregi('[^a-z0-9\(\)\._\@\ \-]',$_tmp);
-		if (stristr($text, "/") !== false) {
+		if (strpos($text, "/") !== false) {
 			return true;
 		}
 		return false;
-		//return eregi('[^a-z0-9äöü\._\@\ \-]',$text);
 	}
 
 	function alnumNotValid($text)

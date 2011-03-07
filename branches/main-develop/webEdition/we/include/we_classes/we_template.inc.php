@@ -453,9 +453,9 @@ class we_template extends we_document
 		$out = array();
 
 		foreach($tags as $tag) {
-			if (eregi('<we:([^> /]+)',$tag,$regs)) { // starttag found
+			if (preg_match('|<we:([^> /]+)|i',$tag,$regs)) { // starttag found
 				$tagname = $regs[1];
-				if (eregi('name="([^"]+)"',$tag,$regs) && ($tagname != "var") && ($tagname != "field")) { // name found
+				if (preg_match('|name="([^"]+)"|i',$tag,$regs) && ($tagname != "var") && ($tagname != "field")) { // name found
 					$name = $regs[1];
 
 					$size = sizeof($blocks);

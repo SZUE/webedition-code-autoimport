@@ -391,6 +391,3 @@ class weNewsletter extends weNewsletterBase{
 	}
 
 }
-
-
-?>

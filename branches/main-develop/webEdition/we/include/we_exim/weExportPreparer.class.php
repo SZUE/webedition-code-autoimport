@@ -41,7 +41,7 @@
 			foreach($this->PatternSearch->doc_patterns["id"] as $pattern){
 				if(preg_match_all($pattern,$text,$match)){
 					foreach($match[2] as $_i=>$include){
-						if(!eregi('type="template"',$match[0][$_i])) {
+						if(stripos($match[0][$_i],'type="template"')===false) {
 							$this->addToDepArray($level,$include);
 						}
 					}
@@ -204,7 +204,7 @@
 		}
 
 		function isPathLocal($path){
-			if(eregi(SERVER_NAME,$path)){
+			if(stripos($path,SERVER_NAME)!==false){
 				$path=eregi_replace("[http]?s?[://]?".SERVER_NAME.(defined("SERVER_PORT") ? "[:".SERVER_PORT."]?":""),"",$path);
 			}
 			if(is_readable($_SERVER["DOCUMENT_ROOT"].$path)) return $path;

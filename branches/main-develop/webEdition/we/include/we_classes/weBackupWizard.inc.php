@@ -1006,9 +1006,6 @@ class weBackupWizard{
 
 				$_php_version = phpversion();
 
-				// automatic file download does not work for IE, also problems on strato account
-				//if( 1 || ini_get('safe_mode') || eregi('4.2.4-dev',$_php_version) || eregi('4.1.1',$_php_version) || eregi('5.0.1',$_php_version) || eregi('5.0.4',$_php_version) ) {
-
 					include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
 					$_link = weBackupUtil::getHttpLink(
@@ -1078,7 +1075,7 @@ class weBackupWizard{
 		if (isset($_GET["backupfile"])) {
 			$_filename = urldecode($_GET["backupfile"]);
 
-			if (file_exists($_filename) && eregi($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR,$_filename)){				// Does file exist and does it saved in backup dir?
+			if (file_exists($_filename) && stripos($_filename,$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR)!==false){				// Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
 				if (we_isHttps()) {																		// Additional headers to make downloads work using IE in HTTPS mode.

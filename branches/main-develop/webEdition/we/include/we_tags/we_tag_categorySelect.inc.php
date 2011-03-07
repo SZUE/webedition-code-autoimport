@@ -109,7 +109,7 @@ function we_tag_categorySelect($attribs, $content){
 		}
 	} else {
 		foreach ($valuesArray as $catPaths) {
-			if (eregi("<option>", $content)) {
+			if (stripos($content,"<option>")!==false) {
 				$content = eregi_replace(
 						'<option>' . quotemeta($catPaths) . '( ?[<\n\r\t])',
 						'<option selected="selected">' . $catPaths . '\1',

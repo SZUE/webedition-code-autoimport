@@ -166,12 +166,13 @@ class weExport extends weModelBase{
 	}
 
 	function filenameNotValid($text){
+		//FIXME: check on utf-8 systems!! this string is not readable!
 			return eregi('[^a-z0-9���\._\@\ \-]',$text);
 	}
 
 	function exportToFilenameValid($filename) {
 
-		return (eregi("p?html?", $filename) || eregi("inc", $filename) || eregi("php3?", $filename));
+		return (eregi("p?html?", $filename) || stripos($filename,"inc")!==false || eregi("php3?", $filename));
 	}
 
 	function setDefaults() {

@@ -81,7 +81,7 @@ function we_tag_list($attribs, $content){
 				}
 			}
 
-			if (eregi('^< ?td', $foo) || eregi('^< ?tr', $foo)) {
+			if (preg_match('-^< ?(td|tr)-i', $foo)) {
 				$foo = eregi_replace('(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)', '\1' . $buts . '\2\3', $foo);
 			} else {
 				$foo = $buts . $foo;
@@ -95,7 +95,7 @@ function we_tag_list($attribs, $content){
 				"image:btn_add_listelement",
 				"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name')");
 
-		if (eregi('^< ?td', $content) || eregi('^< ?tr', $content)) {
+		if (preg_match('-^< ?(td|tr)-i', $content)) {
 			$foo = makeEmptyTable($content);
 			$plusbut = eregi_replace('(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)', '\1\2' . $plusbut . '\3', $foo);
 		} else {

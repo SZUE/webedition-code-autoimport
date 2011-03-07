@@ -2857,7 +2857,7 @@ function we_mail($recipient, $subject, $txt, $from = "") {
 }
 
 function runAtWin() {
-	return eregi("win", PHP_OS) && (!eregi("darwin", PHP_OS));
+	return stripos(PHP_OS,"win")!==false && (stripos(PHP_OS,"darwin")===false);
 }
 
 function debug2($variable) {

@@ -916,12 +916,12 @@ class XML_Parser {
 					$axis['node-test'] = $step;
 				}
 			}
-			else if (eregi('^@', $step)) {
+			else if (strpos($step,'@')===0) {
 				// Use the attribute axis and select the attribute.
 				$axis['axis']      = 'attribute';
 				$axis['node-test'] = substr($step, 1);
 			}
-			else if (eregi('\]$', $step)) {
+			else if (substr($step,-1)==']') {
 				// Use the child axis and select a position.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = substr($step, strpos($step, '['));
@@ -2498,9 +2498,8 @@ class XML_Parser {
 				// Check if there is a language definition.
 				if (!empty($this->nodes[$node]['attributes']['xml:lang'])) {
 					// Check if it is the requested language.
-					if (eregi("^".$args, $this->nodes[$node]
-						['attributes']['xml:lang'])) return TRUE;
-					else return FALSE;
+					return (stripos($this->nodes[$node]
+						['attributes']['xml:lang'],$args)===0);
 				}
 			}
 
@@ -2508,9 +2507,8 @@ class XML_Parser {
 		}
 		else {
 			// Check if it is the requested language.
-			if (eregi("^".$args, $this->nodes[$node]['attributes']
-				['xml:lang'])) return TRUE;
-			else return FALSE;
+			return (stripos($this->nodes[$node]['attributes']
+				['xml:lang'],$args)===0);
 		}
 	}
 

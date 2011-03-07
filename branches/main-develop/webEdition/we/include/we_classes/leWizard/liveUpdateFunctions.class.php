@@ -183,7 +183,7 @@ class liveUpdateFunctions {
 				fclose($fh);
 				if(!chmod($filePath, 0755)) {
 					return false;
-					
+
 				}
 				return true;
 
@@ -212,7 +212,7 @@ class liveUpdateFunctions {
 		$le_installer_path = $_SERVER["DOCUMENT_ROOT"]."/webEdition/";
 		$le_installer_path = str_replace("///", "/", $le_installer_path);
 		$le_installer_path = str_replace("//", "/", $le_installer_path);
-		
+
 		if (strpos($dirPath, $le_installer_path) === 0) {
 			$preDir = $le_installer_path;
 			$dir = substr($dirPath, strlen($le_installer_path));
@@ -234,7 +234,7 @@ class liveUpdateFunctions {
 			}
 			$path .= "/";
 		}
-		
+
 		if(!is_writable($dirPath)) {
 		if(!chmod($dirPath, $mod)) {
 			return false;
@@ -618,20 +618,20 @@ class liveUpdateFunctions {
 
 			// second, we need to check if there is a collation
 			if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
-				if(eregi("^CREATE TABLE ", $query)) {
+				if(stripos($query,"CREATE TABLE ")===0) {
 					$Charset = DB_CHARSET;
 					$Collation = DB_COLLATION;
-					if($Charset == 'UTF-8'){//#4661 
+					if($Charset == 'UTF-8'){//#4661
 						$Charset='utf8';
 					}
-					if($Collation == 'UTF-8'){//#4661 
+					if($Collation == 'UTF-8'){//#4661
 						$Collation='utf8_general_ci';
 					}
 					$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
 				}
-	
+
 			}
-		
+
 		if ($db->query($query) ) {
 			return true;
 		} else {
