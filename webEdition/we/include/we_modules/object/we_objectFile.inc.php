@@ -2165,6 +2165,7 @@ class we_objectFile extends we_document
 			$text=str_replace(" ", "-", $text);
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 				$text= urlencode ($text);
+				$text= str_replace('%2F','/',$text); 
 			} else {
 				$text=correctUml($text);
 				$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
