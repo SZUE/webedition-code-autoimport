@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,7 +144,8 @@ class we_backup {
 			if($this->backup_db->f("Variable_name")=="max_allowed_packet") $this->mysql_max_packet=$this->backup_db->f("Value");
 		}
 
-		$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE,"tbllock"=>LOCK_TABLE));
+		//$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE,"tbllock"=>LOCK_TABLE)); //Wahrscheinlich Ursache, dass tbllock ins Backup aufgenommen wird Bug 5096
+		$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE));
 
 		if(defined("SCHEDULE_TABLE")) $this->table_map=array_merge($this->table_map,array("tblschedule"=>SCHEDULE_TABLE));
 
@@ -675,7 +680,7 @@ class we_backup {
 							}
 							$insert=str_replace("\n","\\n",$insert);
 							$insert=str_replace("\r","\\r",$insert);
-							$insert = ereg_replace(",$", "", $insert);
+							$insert = rtrim($insert,',');
 							if(!$this->offset)
 								$insert .= ");$nl";
 							@fwrite($fh,$insert);
@@ -1202,7 +1207,7 @@ class we_backup {
 		$tabname=strtolower($tabname);
 
 		if(substr($tabname,0,10)=="tblobject_" && defined("OBJECT_X_TABLE")) {
-			return eregi_replace("tblobject_",OBJECT_X_TABLE,$tabname);
+			return str_ireplace("tblobject_",OBJECT_X_TABLE,$tabname);
 		}
 
 		foreach($this->table_map as $k=>$v) {
@@ -1222,7 +1227,7 @@ class we_backup {
 
 		$tabname=strtolower($tabname);
 		if(defined("OBJECT_X_TABLE") &&  stripos($tabname,OBJECT_X_TABLE)!==false) {
-			return eregi_replace(OBJECT_X_TABLE,"tblobject_",$tabname);
+			return str_ireplace(OBJECT_X_TABLE,"tblobject_",$tabname);
 		}
 
 		foreach($this->table_map as $k=>$v) {
@@ -1243,7 +1248,7 @@ class we_backup {
 		if(in_array(strtolower($tabname),array_keys($this->table_map))) return true;
 		if(defined("OBJECT_X_TABLE")){
 
-		$object_x_table=(defined("TBL_PREFIX") && TBL_PREFIX!="") ? eregi_replace(TBL_PREFIX,"",OBJECT_X_TABLE):OBJECT_X_TABLE;
+		$object_x_table=(defined("TBL_PREFIX") && TBL_PREFIX!="") ? str_ireplace(TBL_PREFIX,"",OBJECT_X_TABLE):OBJECT_X_TABLE;
 
 	 	return stripos($tabname,$object_x_table)!==false;
 		}

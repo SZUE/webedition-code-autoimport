@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,7 +151,7 @@ class we_wizard_import extends we_wizard {
 		for($i=0; $i<sizeof($foo); $i++) {
 			$attribs .= '"'.trim($foo[$i][1]).'"=>'.trim($foo[$i][2]).',';
 		}
-		$arrstr = "array(".ereg_replace('(.+),$',"\\1",$attribs).")";
+		$arrstr = "array(".rtrim($attribs,',').")";
 		eval('$arr = '.$arrstr.';');
 
 		return $arr;

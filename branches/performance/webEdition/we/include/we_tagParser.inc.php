@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -314,7 +318,7 @@ class we_tagParser{
 		$foo = $regs[2] . '/';
 		eregi("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
-		$attr = trim(ereg_replace("(.*)/$", "\\1", $regs[2]));
+		$attr = trim(rtrim($regs[2],'/'));
 
 		if (eregi('name="([^"]*)"', $attr, $regs)) {
 			if (!$regs[1]) {
@@ -332,7 +336,7 @@ class we_tagParser{
 		}
 
 		if (!$endTag) {
-			$arrstr = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+			$arrstr = "array(" . rtrim($attribs,',') . ")";
 
 			@eval('$arr = ' . ereg_replace('"\$([^"]+)"', '"$GLOBALS[\1]"', $arrstr) . ';');
 			if (!isset($arr)) {
@@ -465,7 +469,7 @@ class we_tagParser{
 
 					default :
 
-						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
+						$attribs = "array(" . rtrim($attribs,',') . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
 														$code = str_replace($tag,'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>',$code);
@@ -1009,12 +1013,11 @@ $GLOBALS["lv"] = new we_listview_banner("' . $name . '", $we_rows, "' . $order .
 				if (defined("SHOP_TABLE")) {
 					$defaultname = we_getTagAttributeTagParser("defaultname", $arr, '');
 					$docId = we_getTagAttributeTagParser("documentid", $arr, '');
-					$objId = we_getTagAttributeTagParser("objectid", $arr, '');
+					$objectId = we_getTagAttributeTagParser("objectid", $arr, '');
 					if (strpos($docId,'$')===false ){$php.='$docId="'.$docId.'";';} else {$php.='$docId = isset('.$docId.') ? "'.$docId.'" : $GLOBALS["'.str_replace('$','', $docId). '"];'; }
 					if (strpos($objectId,'$')===false ){$php.='$objectId="'.$objectId.'";';} else {$php.='$objectId = isset('.$objectId.') ? "'.$objectId.'" : $GLOBALS["'.str_replace('$','', $objectId). '"];'; }
 					$php .= '
-//$docId = "' . $docId . '";
-//$objectId = "' . $objId . '";
+
 if($objectId ==""){
 if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_objecttag"){
 $objectId = $GLOBALS["lv"]->object->DB_WE->f("OF_ID");

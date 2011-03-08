@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -340,7 +344,7 @@ function build_dialog($selected_setting = "ui") {
 				$_thumbnail_names .= "'" . str_replace("'", "\'", $DB_WE->f("Name")) . "',";
 			}
 
-			$_thumbnail_names = ereg_replace('(.),$', '\1', $_thumbnail_names);
+			$_thumbnail_names = rtrim($_thumbnail_names,',');
 
 			$_needed_JavaScript_Source .= "
 						var thumbnail_names = new Array(" . $_thumbnail_names . ");

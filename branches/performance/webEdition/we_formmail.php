@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -353,7 +357,7 @@ $subject = (isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
 $subject = strip_tags($subject);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
-			ereg_replace("[\r\n]",'',$_REQUEST['charset']) :
+			str_replace("\n","",str_replace("\r","",$_REQUEST['charset'])) :
 			g_l('charset','[charset]');
 $recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
 			$_REQUEST['recipient'] :

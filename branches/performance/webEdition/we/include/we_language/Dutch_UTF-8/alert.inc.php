@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +52,7 @@ $l_alert = array(
 				'headline' => 'Attentie',
 				'description' => 'Er is geen weergave beschikbaar voor dit document.',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'U wijzigt het laatste document.',
 				'first_document' => 'U wijzigt het eerste document.',
 				'doc_not_found' => 'Kon geen bijpassend document vinden.',

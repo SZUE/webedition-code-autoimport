@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,10 +144,8 @@ class we_import_files
 					}
 				}";
 
-		$js .= 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . ereg_replace(
-				"[\n\r]",
-				" ",
-				$this->_getHiddens("buttons", $this->step + 1)) . $fileinput . '</form>\';
+		$js .= 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace("\n"," ",str_replace("\r"," ",
+				$this->_getHiddens("buttons", $this->step + 1))) . $fileinput . '</form>\';
 				function checkFileinput(){
 					var prefix =  "trash_";
 					var imgs = document.getElementsByTagName("IMG");
@@ -536,7 +538,7 @@ class we_import_files
 						"id" => "trash_WEFORMNUM",
 						"onclick" => "wedelRow(WEFORMNUM + 1,this)"
 				));
-		$but = ereg_replace("[\n\r]", " ", $but);
+		$but = str_replace("\n"," ",str_replace("\r"," ",$but));
 
 		$parts = array();
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS["DB_WE"]);
@@ -912,10 +914,10 @@ class we_import_files
 			// setting Filename, Path ...
 			$_fn = importFunctions::correctFilename($_FILES['we_File']["name"]);
 
-			$we_doc->Filename = eregi_replace('^(.+)\..+$', "\\1", $_fn);
+			$we_doc->Filename = ereg_replace('^(.+)\..+$', "\\1", $_fn);
 			if (stristr($_fn, ".")) {
-				//$we_doc->Extension = eregi_replace('^.+(\..+)$', "\\1", $_fn);
-				$we_doc->Extension = strtolower(eregi_replace('^.+(\..+)$', "\\1", $_fn));// Feature 3764
+				//$we_doc->Extension = ereg_replace('^.+(\..+)$', "\\1", $_fn);
+				$we_doc->Extension = strtolower(ereg_replace('^.+(\..+)$', "\\1", $_fn));// Feature 3764
 			} else {
 				$we_doc->Extension = "";
 			}

@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +52,7 @@ $l_alert = array(
 				'headline' => 'Huomio',
 				'description' => 'Tälle dokumentille ei ole näkymää.',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'Muokkaat viimeisintä dokumenttia.',
 				'first_document' => 'Muokkaat ensimmäistä dokumenttia.',
 				'doc_not_found' => 'Sopivaa dokumenttia ei löytynyt.',

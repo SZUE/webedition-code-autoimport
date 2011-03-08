@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -202,10 +206,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			if ($DB_WE->query($query)) {
 				return true;
 			} else {
-				p_r($query);
-				sleep(10);
+				//p_r($query);		
 				return false;
-
 			}
 		}
 

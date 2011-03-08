@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,10 +117,7 @@ class we_util{
 	* @param mixed number
 	*/
 	function br2nl($string){
-		$string = str_replace("\r\n","",$string);
-		$string = str_replace("\n\r","",$string);
-		$string = str_replace("\n","",$string);
-		$string = str_replace("\r","",$string);
+		$string = str_replace("\n","",str_replace("\r","",$string));
 		return eregi_replace("<br ?/?>","\n",$string);
 	}
 

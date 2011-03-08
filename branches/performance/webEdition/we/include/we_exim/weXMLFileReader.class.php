@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +74,7 @@ class weXMLFileReader {
 						$_isweend = stripos($_end,'</webEdition>')!==false;
 						$_isxml = preg_match('|<\?xml|i',$_first);
 
-						$_isend = stripos($_end,'<!-- webackup -->')!==false || empty($_buffer);
+						$_isend = preg_match("|<!-- *webackup *-->|",$_buffer) || empty($_buffer);
 
    						if($_isend) {
 

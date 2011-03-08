@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +52,7 @@ $l_alert = array(
 				'headline' => 'Attention',
 				'description' => 'There is no view for this document available.',
 		),
-		'naviagtion' => array(
+		'navigation' => array(
 				'last_document' => 'You edit the last document.',
 				'first_document' => 'You edit the first document.',
 				'doc_not_found' => 'Could not find matching document.',

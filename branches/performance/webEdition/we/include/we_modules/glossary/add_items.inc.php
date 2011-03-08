@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -905,8 +909,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 						$RegExp = "/((<[^>]*)|([^[:alnum:]]){$Key}([^[:alnum:]]))/e";
 						$Replacement = "\3" . $Entry . "\4";
 						$temp = preg_replace("/((<[^>]*)|([^[:alnum:]]){$Key}([^[:alnum:]]))/e", '"\2"=="\1"?"\1":"\3'.$Entry['title'].'\4"', $temp);
-						$temp = ereg_replace("^ ", "", $temp);
-						$temp = ereg_replace(" $", "", $temp);
+						$temp = trim($temp);
 						$we_doc->elements[$idx]['dat'] = $temp;
 
 					}

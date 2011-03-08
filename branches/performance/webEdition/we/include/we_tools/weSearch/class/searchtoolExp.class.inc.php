@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -179,7 +183,7 @@ class searchtoolExp extends we_search
 	function replaceSpecChars($string)
 	{
 		$string = trim($string);
-		$string = eregi_replace('\*', '%', $string);
+		$string = str_replace('*', '%', $string);
 		$string = trim($string, '"');
 		$string = trim($string, "'");
 		return $string;

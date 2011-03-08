@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -551,6 +555,7 @@
 
 			$path=$tmppath;
 			$marker="<!-- webackup -->";
+			$marker2="<!--webackup -->";//Bug 5089
 			$pattern=basename($filename)."_%s";
 			if(weFile::isCompressed($filename)){
 				$compress="gzip";
@@ -586,6 +591,7 @@
 			$elnum=0;
 
 			$marker_size=strlen($marker);
+			$marker2_size=strlen($marker2);//Backup 5089
 
 			if($fh) {
 				while (!@feof ($fh)) {
@@ -620,9 +626,8 @@
 							$buff.=$line;
 							$write=false;
 							if($marker_size){
-								if((substr($buff,(0-($marker_size+1)))==$marker."\n") || (substr($buff,(0-($marker_size+2)))==$marker."\r\n")) $write=true;
+								if((substr($buff,(0-($marker_size+1)))==$marker."\n") || (substr($buff,(0-($marker_size+2)))==$marker."\r\n") || (substr($buff,(0-($marker2_size+1)))==$marker2."\n") || (substr($buff,(0-($marker2_size+2)))==$marker2."\r\n" ) ) $write=true;
 								else  $write=false;
-								$write=true; //Bug 5041
 							}
 							else	$write=true;
 

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +38,7 @@ $lang["Template"]["autocontinue"] = "Sie werden automatisch in %s Sekunden weite
 //
 
 $lang["Buttons"]["next"] = "weiter"; // TRANSLATE
-$lang["Buttons"]["back"] = "zurück";
+$lang["Buttons"]["back"] = "zurï¿½ck";
 
 
 //
@@ -68,7 +72,7 @@ $lang["Step"]["ChangeImages"]["description"] = " Ut enim ad minim veniam, quis n
 
 // AddPages
 $lang["Step"]["AddPages"]["title"] = "4"; // TRANSLATE
-$lang["Step"]["AddPages"]["headline"] = "Einfügen der Seiten";
+$lang["Step"]["AddPages"]["headline"] = "Einfï¿½gen der Seiten";
 $lang["Step"]["AddPages"]["content"] = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."; // TRANSLATE
 $lang["Step"]["AddPages"]["description"] = " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."; // TRANSLATE
 
@@ -80,7 +84,7 @@ $lang["Step"]["PageProperties"]["description"] = " Ut enim ad minim veniam, quis
 
 // ChooseHomepage
 $lang["Step"]["ChooseHomepage"]["title"] = "6"; // TRANSLATE
-$lang["Step"]["ChooseHomepage"]["headline"] = "Bestimmung Menüs und Startseite";
+$lang["Step"]["ChooseHomepage"]["headline"] = "Bestimmung Menï¿½s und Startseite";
 $lang["Step"]["ChooseHomepage"]["content"] = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."; // TRANSLATE
 $lang["Step"]["ChooseHomepage"]["description"] = " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."; // TRANSLATE
 

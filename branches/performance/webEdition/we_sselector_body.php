@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -230,7 +234,7 @@ if( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"){ ?>
 <?php }
 
 foreach ($final as $key => $entry) {
-	$name=ereg_replace('//','/',$org.'/'.$entry);
+	$name=str_replace('//','/',$org.'/'.$entry);
 	$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".mysql_real_escape_string($name)."'");
 
 	$isfolder = is_dir($dir."/".$entry) ? true : false;

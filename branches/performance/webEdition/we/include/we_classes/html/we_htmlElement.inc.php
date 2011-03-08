@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -278,7 +282,7 @@ class we_htmlElement {
 	* @return		string
 	*/
 	function htmlComment($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('!--'. $content.' --',false));
+		return we_baseElement::getHtmlCode(new we_baseElement('!-- '. $content.' --',false));
 	}
 
 	/**

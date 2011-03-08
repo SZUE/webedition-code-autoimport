@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +51,7 @@ function we_tag_list($attribs, $content){
 			$listRef = $listarray[$i];
 			$foo = $content;
 
-			$foo = eregi_replace('<we_:_ref>', $listRef, $foo);
+			$foo = str_replace('<we_:_ref>', $listRef, $foo);
 			$tp->parseTags($tags, $foo, $listRef);
 
 			$buts = "";

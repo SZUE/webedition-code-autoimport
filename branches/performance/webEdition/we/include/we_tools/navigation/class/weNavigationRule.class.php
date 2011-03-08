@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,7 +112,7 @@ class weNavigationRule extends weModelBase
 		parent::save($this->ID ? false : true);
 	}
 	
-	// beide folgenden für Bug #4142
+	// beide folgenden fï¿½r Bug #4142
 	function deleteDB()
 	{
 		unset($this->db);

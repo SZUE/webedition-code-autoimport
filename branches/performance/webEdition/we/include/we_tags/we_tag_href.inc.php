@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +45,7 @@ function we_tag_href($attribs, $content){
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
 	} else {
 		if (strlen($rootdir) > 1) {
-			$rootdir = ereg_replace("/$", "", $rootdir);
+			$rootdir = rtrim($rootdir,'/');
 		}
 		$rootdirid = path_to_id($rootdir, FILE_TABLE);
 	}
