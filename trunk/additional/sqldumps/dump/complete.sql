@@ -1,4 +1,4 @@
-CREATE TABLE tblAnzeigePrefs (
+﻿CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -1253,6 +1253,7 @@ CREATE TABLE tblversions (
   `ExtraWorkspacesSelected` varchar(255) NOT NULL,
   `Templates` varchar(255) NOT NULL,
   `ExtraTemplates` varchar(255) NOT NULL,
+  `MasterTemplateID` bigint(20) NOT NULL default '0',
   `TableID` bigint(20) NOT NULL,
   `ObjectID` bigint(20) NOT NULL,
   `IsClassFolder` tinyint(1) NOT NULL,

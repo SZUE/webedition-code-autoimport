@@ -67,6 +67,7 @@ class weVersions {
 	protected $ExtraWorkspacesSelected;
 	protected $Templates;
 	protected $ExtraTemplates;
+	protected $MasterTemplateID;
 	protected $TableID;
 	protected $ObjectID;
 	protected $IsClassFolder;
@@ -197,7 +198,14 @@ class weVersions {
 	 * @return unknown
 	 */
 	public function getExtraTemplates() {
-		return $this->extraTemplates;
+		return $this->ExtraTemplates;
+	}
+	
+	/**
+	 * @return unknown
+	 */
+	public function getMasterTemplateID() {
+		return $this->MasterTemplateID;
 	}
 	
 	/**
@@ -526,10 +534,16 @@ class weVersions {
 	/**
 	 * @param unknown_type $ExtraTemplates
 	 */
-	public function setExtraTemplates($extraTemplates) {
-		$this->extraTemplates = $extraTemplates;
+	public function setExtraTemplates($ExtraTemplates) {
+		$this->ExtraTemplates = $ExtraTemplates;
 	}
 	
+	/**
+	 * @param unknown_type $MasterTemplateID
+	 */
+	public function setMasterTemplateID($MasterTemplateID) {
+		$this->MasterTemplateID = $MasterTemplateID;
+	} 
 	/**
 	 * @param unknown_type $ExtraWorkspaces
 	 */
