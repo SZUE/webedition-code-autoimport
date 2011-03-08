@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,7 +125,7 @@ class we_listview_shopVariants extends listviewBase {
 					// there is a difference between objects and webEdition Documents
 					$ret[$name] = isset($value['bdid']) ? $value['bdid'] : $value['dat'];
 				} else {
-					/* dies führt dazu, dass nur im Default (und nicht in den varianten) die nicht-varianten-Felder auftauchen
+					/* dies fï¿½hrt dazu, dass nur im Default (und nicht in den varianten) die nicht-varianten-Felder auftauchen
 					if ($key == $this->DefaultName) {
 						$ret[$name] = $this->Model->getElement($name);
 					} else {

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -136,9 +140,9 @@ $l_we_tag['ifLastCol']['description'] = "Werden die Tabellenfunktionen einer &lt
 $l_we_tag['ifLastCol']['defaultvalue'] = "";
 $l_we_tag['ifLoginFailed']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn ein Login-Versuch gescheitert ist.";
 $l_we_tag['ifLoginFailed']['defaultvalue'] = "";
-$l_we_tag['ifLogin']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn ein Login auf der Seite durchgeführt wurde und ermöglicht damit Initialisierungen.";
+$l_we_tag['ifLogin']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn ein Login auf der Seite durchgefï¿½hrt wurde und ermï¿½glicht damit Initialisierungen.";
 $l_we_tag['ifLogin']['defaultvalue'] = "";
-$l_we_tag['ifLogout']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn ein Logout auf der Seite durchgeführt wurde und ermöglicht damit Aufräumarbeiten.";
+$l_we_tag['ifLogout']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn ein Logout auf der Seite durchgefï¿½hrt wurde und ermï¿½glicht damit Aufrï¿½umarbeiten.";
 $l_we_tag['ifLogout']['defaultvalue'] = "";
 $l_we_tag['ifTdEmpty']['description'] = "Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn eine Tabellenzelle in einer Listview leer ist (keine Inhalte vorhanden sind).";
 $l_we_tag['ifTdEmpty']['defaultvalue'] = "";

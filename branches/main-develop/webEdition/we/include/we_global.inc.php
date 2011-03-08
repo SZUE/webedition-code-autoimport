@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1669,7 +1673,7 @@ function std_numberformat($content) {
 		$vor = str_replace(",","",str_replace(".",'', $vor));
 		$content = $vor . substr($content, $pos, strlen($content) - $pos);
 	} else
-		$content = str_replace(",","",str_replace(".","",$content);
+		$content = str_replace(",","",str_replace(".","",$content));
 	return $content;
 }
 
@@ -3630,6 +3634,10 @@ function we_writeLanguageConfig($default, $available = array()) {
 
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
