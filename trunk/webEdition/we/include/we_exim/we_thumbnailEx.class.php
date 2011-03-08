@@ -21,16 +21,16 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModelBase.php');
 
 
-	class we_thumbnail extends weModelBase  {
+	class we_thumbnailEx extends weModelBase  {
 
 		var $table = THUMBNAILS_TABLE;
-		var $ClassName = 'we_thumbnail';
+		var $ClassName = 'we_thumbnailEx';
 		var $Table = THUMBNAILS_TABLE;
 		var $ContentType = 'weThumbnail';
 
 
 
-		function we_thumbnail() {
+		function we_thumbnailEx() {
 			parent::weModelBase(THUMBNAILS_TABLE);
 		}
 

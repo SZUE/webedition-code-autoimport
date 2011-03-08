@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/"."we_object.inc.php");
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_object.inc.php");
 
 	class we_objectEx extends we_object{
 
@@ -145,7 +145,7 @@
 					}
 
 				}
-				
+
 				if (isset($tableInfo['meta'])) {
 
 					foreach($tableInfo['meta'] as $key=>$value) {
@@ -235,4 +235,3 @@
 			return '';
 		}
 	}
-?>
