@@ -66,6 +66,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			if($displayid){
 				if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 					$searchforInternal=urlencode ($searchfor);
+					$searchforInternal=str_replace('%2F','/',$searchforInternal);
 				} else {
 					$searchforInternal=$searchfor;
 				}
@@ -94,6 +95,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			if($displayid){
 				if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 					$searchforInternal=urlencode ($searchfor);
+					$searchforInternal=str_replace('%2F','/',$searchforInternal);
 				} else {
 					$searchforInternal=$searchfor;
 				}
