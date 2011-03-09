@@ -89,7 +89,7 @@
   		if(!$this->isColExist(PREFS_TABLE,"xhtml_show_wrong_error_log")) $this->addCol(PREFS_TABLE,"xhtml_show_wrong_error_log","TINYINT(2) DEFAULT '0' NOT NULL");
   		if(!$this->isColExist(PREFS_TABLE,"default_tree_count")) $this->addCol(PREFS_TABLE,"default_tree_count","INT(11) DEFAULT '0' NOT NULL");
 		
-		if(!$this->isColExist(VERSIONS_TABLE,"MasterTemplateID")) $this->addCol(VERSIONS_TABLE,"MasterTemplateID","bigint(20) NOT NULL default '0'", " AFTER ExtraTemplates ");
+		if(!$this->isColExist(VERSIONS_TABLE,"MasterTemplateID")) $this->addCol(VERSIONS_TABLE,"MasterTemplateID","bigint(20) NOT NULL default '0'","AFTER ExtraTemplates");
 
 
 
