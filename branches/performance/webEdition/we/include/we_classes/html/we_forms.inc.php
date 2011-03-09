@@ -165,7 +165,7 @@ class we_forms {
 		$dhtmledit = we_getTagAttribute("dhtmledit",$attribs,"",true); //4614
 		$wysiwyg = we_getTagAttribute("wysiwyg",$attribs,"",true);
 
-		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['BROWSER']=="IE" || $GLOBALS['BROWSER'] == 'NN6' || $GLOBALS['BROWSER']=="OPERA" || ($SAFARI_WYSIWYG && (defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
+		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['BROWSER']=="IE" || $GLOBALS['BROWSER'] == 'NN6' || $GLOBALS['BROWSER']=="OPERA" || ((defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
 		$cols = we_getTagAttribute("cols",$attribs);
 		$rows = we_getTagAttribute("rows",$attribs);
 		$width = we_getTagAttribute("width",$attribs);

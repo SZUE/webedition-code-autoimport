@@ -469,6 +469,14 @@ function we_tag_ifNotHasCurrentEntry($attribs = array(), $content = ''){
 	return !we_tag('ifHasCurrentEntry',$attribs,$content);
 }
 
+function we_tag_ifNotRegisteredUser($attribs,$content) {
+	return !we_tag('ifRegisteredUser',$attribs,$content);
+}
+
+function we_tag_ifNotNewsletterSalutation($attribs,$content) {
+	return  !we_tag('ifNewsletterSalutation',$attribs, "");
+}
+
 function we_tag_ifNotNew($attribs, $content){
 	$type = we_getTagAttribute('type', $attribs,$content);
 	return (isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
