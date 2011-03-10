@@ -153,7 +153,8 @@ $global_config[] = array('define("TAGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if d
 $global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of navigation' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", false);');
 $global_config[] = array('define("WYSIWYGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of wysiwyg editior' . "\n" . 'define("WYSIWYGLINKS_OBJECTSEOURLS", false);');
 $global_config[] = array('define("TAGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("TAGLINKS_OBJECTSEOURLS", false);');
-$global_config[] = array('define("URLENCODE_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("URLENCODE_OBJECTSEOURLS", false);');
+$global_config[] = array('define("URLENCODE_OBJECTSEOURLS",', '// Flag if seo-urls should be urlencoded' . "\n" . 'define("URLENCODE_OBJECTSEOURLS", false);');
+$global_config[] = array('define("SUPPRESS404CODE",', '// Flag if 404 not found should be suppressd' . "\n" . 'define("SUPPRESS404CODE", false);');
 $global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if should be displayed in webEdition ' . "\n" . 'define("SEOINSIDE_HIDEINWEBEDITION", false);');
 $global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", false);');
 
@@ -576,6 +577,9 @@ function get_value($settingvalue) {
 			break;
 		case "urlencode_objectseourls":
 			return defined("URLENCODE_OBJECTSEOURLS") ? URLENCODE_OBJECTSEOURLS : false;
+			break;
+		case "suppress404code":
+			return defined("SUPPRESS404CODE") ? SUPPRESS404CODE : false;
 			break;
 		case "seoinside_hideinwebedition":
 			return defined("SEOINSIDE_HIDEINWEBEDITION") ? SEOINSIDE_HIDEINWEBEDITION : false;
@@ -1760,6 +1764,13 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+			case '$_REQUEST["suppress404code"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "SUPPRESS404CODE", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 
 			case '$_REQUEST["seoinside_hideinwebedition"]':
 
@@ -2828,6 +2839,8 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_objectseourls"]) ? $_REQUEST["wysiwyglinks_objectseourls"] : null, '$_REQUEST["wysiwyglinks_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["taglinks_objectseourls"]) ? $_REQUEST["taglinks_objectseourls"] : null, '$_REQUEST["taglinks_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["urlencode_objectseourls"]) ? $_REQUEST["urlencode_objectseourls"] : null, '$_REQUEST["urlencode_objectseourls"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["suppress404code"]) ? $_REQUEST["suppress404code"] : null, '$_REQUEST["suppress404code"]') || $_update_prefs;
+
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
 
@@ -5524,7 +5537,31 @@ else {
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
-				array_push($_settings, array("headline" => $l_prefs["seoinside_hideinwebedition"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => $l_prefs["seoinside_hideinwebedition"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
+
+				
+				  
+				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
+				  $_acButton2 = $we_button->create_button('image:function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
+  
+				  $yuiSuggest->setAcId("doc2");
+				  $yuiSuggest->setContentType("folder,text/webEdition,text/html");
+				  $yuiSuggest->setInput('error_document_no_objectfile_text', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : '' ));
+				  $yuiSuggest->setMaxResults(20);
+				  $yuiSuggest->setMayBeEmpty(true);
+				  $yuiSuggest->setResult('error_document_no_objectfile', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? ERROR_DOCUMENT_NO_OBJECTFILE : 0 ));
+				  $yuiSuggest->setSelector("Docselector");
+				  $yuiSuggest->setWidth(300);
+				  $yuiSuggest->setSelectButton($_acButton1,10);
+				  $yuiSuggest->setTrashButton($_acButton2,4);
+  
+				  array_push($_settings, array('headline' => $l_prefs['error_no_object_found'], 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "suppress404code","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("suppress404code"));
+				array_push($_settings, array("headline" => $l_prefs["suppress404code"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 0));
 
 				$_dialog = create_dialog("", $l_prefs["tab_seolinks"], $_settings, -1, "", "", null, $_needed_JavaScript);
 
@@ -5612,24 +5649,7 @@ $_needed_JavaScript .= "
 			 */
 			$_foldAt = 4;
 
-			if (defined('OBJECT_TABLE') && we_hasPerm('ADMINISTRATOR')) {
-				$_foldAt++;
-				$_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
-				$_acButton2 = $we_button->create_button('image:function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
-
-				$yuiSuggest->setAcId("doc2");
-				$yuiSuggest->setContentType("folder,text/webEdition,text/html");
-				$yuiSuggest->setInput('error_document_no_objectfile_text', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : '' ));
-				$yuiSuggest->setMaxResults(20);
-				$yuiSuggest->setMayBeEmpty(true);
-				$yuiSuggest->setResult('error_document_no_objectfile', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? ERROR_DOCUMENT_NO_OBJECTFILE : 0 ));
-				$yuiSuggest->setSelector("Docselector");
-				$yuiSuggest->setWidth(300);
-				$yuiSuggest->setSelectButton($_acButton1,10);
-				$yuiSuggest->setTrashButton($_acButton2,4);
-
-				array_push($_settings, array('headline' => $l_prefs['error_no_object_found'], 'html' => $yuiSuggest->getHTML(), 'space' => 0));
-			}
+			
 
 			// Create checkboxes
 			$_disable_template_tag_check = we_forms::checkbox(1, get_value("disable_template_tag_check"), "disable_template_tag_check", $l_prefs["disable_template_tag_check"]);
