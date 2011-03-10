@@ -314,6 +314,7 @@ $l_prefs = array(
 		'taglinks_directoryindex_hide' => "Voreinstellung für Tags",
 		'taglinks_objectseourls' => "Voreinstellung für Tags",
 		'urlencode_objectseourls' => "URLencode die SEO-Links",
+		'suppress404code' => "unterdrücke 404 not found",
 		'general_seoinside' => "Darstellung innerhalb von webEdition ",
 		'general_seoinside_description' => "Werden DirectoryIndex-Dateinamen und Objekt SEO-Urls innerhalb von webEdition dargestellt, so kann webEdition diese nicht mehr als interne Links erkennen und ein Klick auf den Link öffnet nicht mehr das Bearbeitungsfenster. Mit den folgenden Optionen können beide (bis auf die Navigation) im Editmode und der Vorschau daher unterdrückt werden.",
 		'seoinside_hideinwebedition' => "In der Vorschau verstecken",
