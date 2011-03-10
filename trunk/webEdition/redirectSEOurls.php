@@ -50,7 +50,7 @@ if (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL']!=''){
 	$path_parts = pathinfo($_SERVER['REDIRECT_URL']);
 }
 
-if(!$GLOBALS['we_editmode']){
+if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	$db = new DB_WE();
 	$displayid=0;
 	$objectid=0;
