@@ -180,8 +180,10 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			if( !(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) ){
 				$_SESSION['weBackupVars']['tablekeys']=array();
 			}
-			$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
-			weDBUtil::delTable($this->table);
+			if(weDBUtil::isTabExist($this->table)){
+				$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
+				weDBUtil::delTable($this->table);
+			}
 			$myarray=$this->elements['create'];
 			array_shift($myarray);//get rid of 'create'
 			array_shift($myarray);//get rid of old create Statement'
