@@ -24,11 +24,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 
 
-		
+
 htmlTop();
 if($_SESSION["user"]["ID"]){
 	$DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
-	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET `lock`=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID="'.abs($_SESSION["user"]["ID"]).'" AND sessionID="'.session_id().'"');
+	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID="'.abs($_SESSION["user"]["ID"]).'" AND sessionID="'.session_id().'"');
 }
 
 ?>
@@ -63,13 +63,13 @@ var ajaxCallback = {
 				if (top.header.header_msg.update) {
 					var newmsg_count = result.DataArray.newmsg_count;
 					var newtodo_count = result.DataArray.newtodo_count;
-				
+
 					top.header.header_msg.update(newmsg_count, newtodo_count);
 				}
-				
+
 			<?php } ?>
 				setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
-			
+
 			}
 		}
 	},

@@ -59,14 +59,14 @@
 			$DB_WE->query("DROP TABLE tblOwner");
 		}
 		//$DB_WE->query("ALTER TABLE " . INDEX_TABLE . " DROP PRIMARY KEY");
-		
+
 		if(!$this->isColExist(INDEX_TABLE,'Language')) $this->addCol(INDEX_TABLE,'Language',"varchar(5) default NULL");
-		
-		
+
+
 		if(!$this->isColExist(FILE_TABLE,"Owners")) $this->addCol(FILE_TABLE,"Owners","VARCHAR(255)  DEFAULT ''");
 		if(!$this->isColExist(FILE_TABLE,"RestrictOwners")) $this->addCol(FILE_TABLE,"RestrictOwners","TINYINT(1)  DEFAULT ''");
 		if(!$this->isColExist(FILE_TABLE,"OwnersReadOnly")) $this->addCol(FILE_TABLE,"OwnersReadOnly","TEXT DEFAULT ''");
-		
+
 		if($this->isColExist(FILE_TABLE,"IsFolder")) $this->changeColTyp(FILE_TABLE,"IsFolder","tinyint(1) NOT NULL default '0'");
 		if($this->isColExist(FILE_TABLE,"IsDynamic")) $this->changeColTyp(FILE_TABLE,"IsDynamic","tinyint(1) NOT NULL default '0'");
 		if($this->isColExist(FILE_TABLE,"DocType")) $this->changeColTyp(FILE_TABLE,"IsFolder","varchar(64) NOT NULL default ''");
@@ -98,8 +98,8 @@
   		if(!$this->isColExist(PREFS_TABLE,"xhtml_show_wrong_js")) $this->addCol(PREFS_TABLE,"xhtml_show_wrong_js","TINYINT(2) DEFAULT '0' NOT NULL");
   		if(!$this->isColExist(PREFS_TABLE,"xhtml_show_wrong_error_log")) $this->addCol(PREFS_TABLE,"xhtml_show_wrong_error_log","TINYINT(2) DEFAULT '0' NOT NULL");
   		if(!$this->isColExist(PREFS_TABLE,"default_tree_count")) $this->addCol(PREFS_TABLE,"default_tree_count","INT(11) DEFAULT '0' NOT NULL");
-		
-		
+
+
 		if(!$this->isColExist(PREFS_TABLE,"editorMode")) $this->addCol(PREFS_TABLE,"editorMode","  varchar(64) NOT NULL DEFAULT 'textarea'",' AFTER  specify_jeditor_colors ');
 		if(!$this->isColExist(PREFS_TABLE,"editorLinenumbers")) $this->addCol(PREFS_TABLE,"editorLinenumbers"," tinyint(1) NOT NULL default '1'",' AFTER editorMode ');
 		if(!$this->isColExist(PREFS_TABLE,"editorCodecompletion")) $this->addCol(PREFS_TABLE,"editorCodecompletion"," tinyint(1) NOT NULL default '0'",' AFTER editorLinenumbers ');
@@ -108,9 +108,9 @@
 		if(!$this->isColExist(PREFS_TABLE,"editorTooltipFontname")) $this->addCol(PREFS_TABLE,"editorTooltipFontname","  varchar(255) NOT NULL default 'none'",' AFTER editorTooltipFont ');
 		if(!$this->isColExist(PREFS_TABLE,"editorTooltipFontsize")) $this->addCol(PREFS_TABLE,"editorTooltipFontsize"," int(2) NOT NULL default '-1'",' AFTER editorTooltipFontname ');
 		if(!$this->isColExist(PREFS_TABLE,"editorDocuintegration")) $this->addCol(PREFS_TABLE,"editorDocuintegration"," tinyint(1) NOT NULL default '1'",' AFTER editorTooltipFontsize ');
-		
+
 		if($this->isColExist(DOC_TYPES_TABLE,"DocType")) $this->changeColTyp(DOC_TYPES_TABLE,"DocType"," varchar(64) NOT NULL default '' ");
-		
+
 		if($this->isColExist(ERROR_LOG_TABLE,"ID")) $this->changeColTyp(ERROR_LOG_TABLE,"ID","int(11) NOT NULL auto_increment");
 		if(!$this->isColExist(ERROR_LOG_TABLE,"Type")) $this->addCol(ERROR_LOG_TABLE,"Type"," enum('Error','Warning','Parse error','Notice','Core error','Core warning','Compile error','Compile warning','User error','User warning','User notice','Deprecated notice','User deprecated notice','unknown Error') NOT NULL ",' AFTER ID ');
 		if(!$this->isColExist(ERROR_LOG_TABLE,"Function")) $this->addCol(ERROR_LOG_TABLE,"Function"," varchar(255) NOT NULL default ''",' AFTER Type ');
@@ -122,7 +122,7 @@
 		if($this->isColExist(FAILED_LOGINS_TABLE,"ID")) $this->changeColTyp(FAILED_LOGINS_TABLE,"ID","bigint(20) NOT NULL AUTO_INCREMENT");
 		if($this->isColExist(FAILED_LOGINS_TABLE,"IP")) $this->changeColTyp(FAILED_LOGINS_TABLE,"IP"," varchar(40) NOT NULL");
 		if($this->isColExist(FAILED_LOGINS_TABLE,"LoginDate")) $this->changeColTyp(FAILED_LOGINS_TABLE,"LoginDate"," timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
-		
+
 
 		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
 
@@ -390,12 +390,12 @@
 
 			if(!$this->isColExist(CUSTOMER_TABLE,"LastAccess")) $this->addCol(CUSTOMER_TABLE,"LastAccess","int(10) NOT NULL default 0",' AFTER LastLogin ');
 			else $this->changeColTyp(CUSTOMER_TABLE,"LastAccess","int(10) NOT NULL default 0");
-			
+
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLoginDenied")) $this->addCol(CUSTOMER_TABLE,"AutoLoginDenied","tinyint(1) NOT NULL default '0'", " AFTER LastAccess ");
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLogin")) $this->addCol(CUSTOMER_TABLE,"AutoLogin","tinyint(1) NOT NULL default '0'", " AFTER AutoLoginDenied ");
-			
+
 			if($this->isColExist(CUSTOMER_TABLE,"Anrede_Anrede")) $this->changeColTyp(CUSTOMER_TABLE,"Anrede_Anrede","enum('','Herr','Frau') NOT NULL");
-			
+
 			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_Ok")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_Ok","enum('','ja') NOT NULL");
 			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter","enum('','ja') NOT NULL");
 
@@ -426,15 +426,15 @@
 		if(defined("SHOP_TABLE")){
 			if($this->isColExist(SHOP_TABLE,"Price")) $this->changeColTyp(SHOP_TABLE,"Price","VARCHAR(20)");
 			if($this->isColExist(SHOP_TABLE,"IntQuantity")) $this->changeColTyp(SHOP_TABLE,"IntQuantity"," float ");
-			
+
 			if(!$this->isColExist(SHOP_TABLE,'DateConfirmation')) $this->addCol(SHOP_TABLE,'DateConfirmation','datetime default NULL',' AFTER DateOrder ');
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomA')) $this->addCol(SHOP_TABLE,'DateCustomA','datetime default NULL',' AFTER DateOrder ');
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomB')) $this->addCol(SHOP_TABLE,'DateCustomB','datetime default NULL',' AFTER DateCustomA ');
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomC')) $this->addCol(SHOP_TABLE,'DateCustomC','datetime default NULL',' AFTER DateCustomB ');
-			
+
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomD')) $this->addCol(SHOP_TABLE,'DateCustomD','datetime default NULL',' AFTER DateShipping ');
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomE')) $this->addCol(SHOP_TABLE,'DateCustomE','datetime default NULL',' AFTER DateCustomD ');
-			
+
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomF')) $this->addCol(SHOP_TABLE,'DateCustomF','datetime default NULL',' AFTER DatePayment ');
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomG')) $this->addCol(SHOP_TABLE,'DateCustomG','datetime default NULL',' AFTER DateCustomF ');
 			if(!$this->isColExist(SHOP_TABLE,'DateCancellation')) $this->addCol(SHOP_TABLE,'DateCancellation','datetime default NULL',' AFTER DateCustomG ');
@@ -442,7 +442,7 @@
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomI')) $this->addCol(SHOP_TABLE,'DateCustomI','datetime default NULL',' AFTER DateCustomH ');
 			if(!$this->isColExist(SHOP_TABLE,'DateCustomJ')) $this->addCol(SHOP_TABLE,'DateCustomJ','datetime default NULL',' AFTER DateCustomI ');
 			if(!$this->isColExist(SHOP_TABLE,'DateFinished')) $this->addCol(SHOP_TABLE,'DateFinished','datetime default NULL',' AFTER DateCustomJ ');
-			
+
 			if(!$this->isColExist(SHOP_TABLE,'MailOrder')) $this->addCol(SHOP_TABLE,'MailOrder','datetime default NULL',' AFTER DateFinished ');
 			if(!$this->isColExist(SHOP_TABLE,'MailConfirmation')) $this->addCol(SHOP_TABLE,'MailConfirmation','datetime default NULL',' AFTER MailOrder ');
 			if(!$this->isColExist(SHOP_TABLE,'MailCustomA')) $this->addCol(SHOP_TABLE,'MailCustomA','datetime default NULL',' AFTER MailConfirmation ');
@@ -459,9 +459,9 @@
 			if(!$this->isColExist(SHOP_TABLE,'MailCustomI')) $this->addCol(SHOP_TABLE,'MailCustomI','datetime default NULL',' AFTER MailCustomH ');
 			if(!$this->isColExist(SHOP_TABLE,'MailCustomJ')) $this->addCol(SHOP_TABLE,'MailCustomJ','datetime default NULL',' AFTER MailCustomI ');
 			if(!$this->isColExist(SHOP_TABLE,'MailFinished')) $this->addCol(SHOP_TABLE,'MailFinished','datetime default NULL',' AFTER MailCustomJ ');
-			
-			
-			
+
+
+
 		}
 	}
 
@@ -481,7 +481,7 @@
 			if(!$this->isColExist(OBJECT_FILES_TABLE,'TriggerID')) $this->addCol(OBJECT_FILES_TABLE,'TriggerID',"bigint NOT NULL default '0'", ' AFTER Url ');
 		}
 	}
-	
+
 	function updateObjectFilesX() {
 		if(defined('OBJECT_X_TABLE')){
 			$_db = new DB_WE();
@@ -594,7 +594,7 @@
 		if(!$this->isColExist(NAVIGATION_TABLE,"CustomerFilter")){
 			$this->addCol(NAVIGATION_TABLE,'`CustomerFilter`','text NOT NULL');
 		}
-		
+
 		if(!$this->isColExist(NAVIGATION_TABLE,"Published")){
 			$this->addCol(NAVIGATION_TABLE,'Published','int(11) NOT NULL DEFAULT "1"',' AFTER Path ');
 		}
@@ -607,7 +607,7 @@
 		if(!$this->isColExist(NAVIGATION_TABLE,"CurrentOnAnker")){
 			$this->addCol(NAVIGATION_TABLE,'CurrentOnAnker','tinyint(1) NOT NULL DEFAULT 0',' AFTER CurrentOnUrlPar ');
 		}
-		
+
 
 	}
 
@@ -640,7 +640,7 @@
 			if(!$this->isColExist(VOTING_TABLE,'FallbackUserID')){
 				$this->addCol(VOTING_TABLE,'FallbackUserID','tinyint(1) NOT NULL DEFAULT 0',' AFTER UserAgent ');
 			}
-			
+
 			if(!$this->isColExist(VOTING_LOG_TABLE,'votingsession')){
 				$this->addCol(VOTING_LOG_TABLE,'votingsession','tinyint(1) NOT NULL DEFAULT 0',' AFTER id ');
 			}
@@ -661,7 +661,7 @@
 			}
 		}
 	}
-	
+
 	function updateVersions(){
 		if(defined("VERSIONS_TABLE")){
 			if($this->isColExist(VERSIONS_TABLE,'DocType')) $this->changeColTyp(VERSIONS_TABLE,'DocType','varchar(64) NOT NULL');
@@ -684,7 +684,7 @@
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
 		if(!$this->isColExist(LOCK_TABLE,'lock'))  $this->addCol(LOCK_TABLE,'lock',"datetime NOT NULL",' AFTER sessionID ');
 	}
-	
+
 	function updateTableKeys(){
 		if (isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) {
 			$myarray= $_SESSION['weBackupVars']['tablekeys'];
@@ -696,10 +696,10 @@
 						}
 					}
 				}
-			}					
-		}	
+			}
+		}
 	}
-	
+
 	function doUpdate(){
 		$this->updateTables();
 		$this->updateUsers();
