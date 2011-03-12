@@ -128,6 +128,10 @@ define("WE_NEW_FOLDER_MOD", 755);
 define("WE_TRACKER_DIR", "/pageLogger");
 
 
+// define used wysiwyg editor
+define("WYSIWYG_TYPE", "default");
+
+
 // Flag if beta wysiwyg for safari should be used
 define("SAFARI_WYSIWYG", 1);
 
@@ -250,37 +254,37 @@ define("DB_SET_CHARSET","utf8");
 
 
 
-//Versioning status for ContentType image/* 
+//Versioning status for ContentType image/*
 define("VERSIONING_IMAGE", 0);
 
-//Versioning status for ContentType text/html 
+//Versioning status for ContentType text/html
 define("VERSIONING_TEXT_HTML", 0);
 
-//Versioning status for ContentType text/webedition 
+//Versioning status for ContentType text/webedition
 define("VERSIONING_TEXT_WEBEDITION", 0);
 
-//Versioning status for ContentType text/js 
+//Versioning status for ContentType text/js
 define("VERSIONING_TEXT_JS", 0);
 
-//Versioning status for ContentType text/css 
+//Versioning status for ContentType text/css
 define("VERSIONING_TEXT_CSS", 0);
 
-//Versioning status for ContentType text/plain 
+//Versioning status for ContentType text/plain
 define("VERSIONING_TEXT_PLAIN", 0);
 
-//Versioning status for ContentType application/x-shockwave-flash 
+//Versioning status for ContentType application/x-shockwave-flash
 define("VERSIONING_FLASH", 0);
 
-//Versioning status for ContentType video/quicktime 
+//Versioning status for ContentType video/quicktime
 define("VERSIONING_QUICKTIME", 0);
 
-//Versioning status for ContentType application/* 
+//Versioning status for ContentType application/*
 define("VERSIONING_SONSTIGE", 0);
 
-//Versioning status for ContentType text/xml 
+//Versioning status for ContentType text/xml
 define("VERSIONING_TEXT_XML", 0);
 
-//Versioning status for ContentType objectFile 
+//Versioning status for ContentType objectFile
 define("VERSIONING_OBJECT", 0);
 
 //Versioning Number of Days

@@ -321,6 +321,8 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Użyj edytora Wysiwyg<br>Safari (wersja beta)",
+		'wysiwyg_type' => "Select editor for textareas", //TRANSLATE
+
 		/**
 		 * SHOWINPUTS
 		 */

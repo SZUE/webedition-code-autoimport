@@ -613,7 +613,7 @@ function we_wysiwyg_sendToEditor(html){
 
 function we_wysiwyg_finalize(){
 	this.eDocument.body.innerHTML = this.sendToEditor(this.editHTML);
-	if (!isGecko) { // IE Workarround Mantis Bug # 1257
+	if (!(isGecko||isOpera)) { // IE Workarround Mantis Bug # 1257
 		var merk = this.showBorders;
 		this.showBorders = true;
 		this.toggleBorders();
@@ -1273,7 +1273,7 @@ function weWysiwyg_getHTML(){
 		this.eDocument.body.innerHTML = this.cleanCode(this.eDocument.body.innerHTML); //.replace(/\&nbsp;/gi,"<!-- ###WE_NBSP### -->");
 		out =  this.getHTMLCode(this.eDocument.body,false);
 		//out = out.replace(/<\!-- ###WE_NBSP### -->/gi, "&nbsp;");
-		if(!isGecko){
+		if(!(isGecko||isOpera)){
 			out = out.replace(/<\!><\/\!>/gi, "&nbsp;");  // IE 55 Fix
 			out = this.cleanCode(out);
 		}
@@ -1416,7 +1416,7 @@ function weWysiwyg_getHTMLCode(rootNode, outputRootNode){
 	    			this.nodeDone = null;
 	    			break;
 	    		}
-	    		if(!isGecko){
+	    		if(!(isGecko||isOpera)){
 	    			this.nodeDone = rootNode;
 	    		}
 	    		if(rootNode.nodeValue == "\n"){
@@ -1861,7 +1861,7 @@ function weWysiwyg_editrule(width,height,color,align,noshade){
 	if(noshade==1) rule.setAttribute("noShade",1);
 	else rule.removeAttribute("noShade");
 
-	if(isNew && (!isGecko)){
+	if(isNew && (!(isGecko||isOpera))){
 		this.range.pasteHTML(rule.outerHTML);
 		this.range.select();
 	}else if(isGecko||isOpera){
@@ -2655,7 +2655,7 @@ function weWysiwyg_execCommand(cmd){
 			break;
 
 		case "insertbreak":
-			if(!isGecko){
+			if(!(isGecko||isOpera)){
 				this.range.pasteHTML("<br>");
 				this.range.select();
 			}
@@ -2904,7 +2904,7 @@ function weWysiwyg_execCommand(cmd){
 		case "createlink":
 			var image = this.getImage();
 			var link = this.getNodeUnderInsertionPoint("A",true,false);
-			if(!isGecko && link != null){
+			if(!(isGecko||isOpera) && link != null){
 				if(link.tabIndex != null && link.tabIndex){ // IE Fix
 					link.tabindex = link.tabIndex;
 				}
@@ -3119,7 +3119,7 @@ function weWysiwygPopupMenu_enable(){
 
 		p.style.cursor =  "pointer";
 
-		if (!isGecko) {
+		if (!(isGecko||isOpera)) {
 			inp.style.color="black";
 			inp.style.cursor = "pointer";
 		}
@@ -3139,7 +3139,7 @@ function weWysiwygPopupMenu_disable(){
 		img[0].src = "/webEdition/images/wysiwyg/menudown_dis.gif";
 		p.style.cursor = "default";
 
-		if (!isGecko) {
+		if (!(isGecko||isOpera)) {
 			inp.style.color="silver";
 			inp.style.cursor = "default";
 		}
@@ -3517,7 +3517,7 @@ function we_addContextItem(text,state){
 	}
 	var e = (isGecko||isOpera) ? we_oPopup.document.createElement("div") : we_oPopup.document.createElement("<div>");
 	e.style.cursor = 'default';
-	if(!isGecko) e.style.width = '100%';
+	if(!(isGecko||isOpera)) e.style.width = '100%';
 	e.style.align = 'center';
 	e.style.height = '17px';
 	e.unselectable="on";
@@ -3696,7 +3696,7 @@ function weGetOuterHTML(elem){
 }
 
 function we_on_key_down(obj){
-		if(!isGecko){
+		if(!(isGecko||isOpera)){
 			if (obj.eFrame.event.keyCode == 9) { // TAB
 				obj.getSelection();
 				obj.range.pasteHTML(" &nbsp;&nbsp;&nbsp; ");
@@ -3714,7 +3714,7 @@ function we_on_key_up(obj){
 	if((isGecko||isOpera) && (!obj.hasFocus)){
 		obj.doSetFocus();
 	}
-	if(!isGecko){
+	if(!(isGecko||isOpera)){
 		obj.setButtonsState();
 	}
 	return true;
@@ -3939,7 +3939,7 @@ function wePopUpFrame(fr){
 	this._iframe.style.border='0px';
 	if(fr == null) document.body.appendChild(this._iframe);
 	this.document = (isGecko||isOpera) ? this._iframe.contentDocument : this._iframe.contentWindow.document;
-	if(!isGecko){
+	if(!(isGecko||isOpera)){
 		this.document.open();
 		this.document.write('<html><head><style type="text/css">'+we_styleString+'</style></head><body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" unselectable="on"></body></html>');
 		this.document.close();

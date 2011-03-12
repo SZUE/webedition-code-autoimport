@@ -293,6 +293,7 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Safari Wysiwyg Editor<br>(Betaversion) benutzen",
+		'wysiwyg_type' => "Editor für textareas wählen",
 		/**
 		 * SHOWINPUTS
 		 */

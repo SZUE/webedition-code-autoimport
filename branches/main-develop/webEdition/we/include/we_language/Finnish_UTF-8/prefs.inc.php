@@ -299,6 +299,8 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Käytä Safari Wysiwyg<br>editoria (beta versio)",
+		'wysiwyg_type' => "Select editor for textareas", //TRANSLATE
+
 		/**
 		 * SHOWINPUTS
 		 */

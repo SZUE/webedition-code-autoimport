@@ -60,15 +60,14 @@ class weFullscreenEditDialog extends weDialog{
 	}
 
 	function getJs() {
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
+		$_BROWSER=new we_browserDetect();
+
 		$js = '
 			<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
 			<script language="JavaScript" type="text/javascript"><!--
-				var isGecko = false;
+				var isGecko = '.$_BROWSER->isGecko()?'true':'false' .';
 				var textareaFocus = false;
-
-				if (navigator.product == \'Gecko\') {
-					isGecko = true;
-				}
 
 				if (isGecko) {
 					document.addEventListener("keyup",doKeyDown,true);

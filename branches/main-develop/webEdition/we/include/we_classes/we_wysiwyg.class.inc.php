@@ -130,8 +130,19 @@ class we_wysiwyg{
 	}
 
 	function getHeaderHTML(){
-		if(!defined("WE_WYSIWG_HEADER")){
+		if(defined("WE_WYSIWG_HEADER")){
+			return '';
+		}
+
 			define("WE_WYSIWG_HEADER",1);
+			if(!defined('WYSIWYG_TYPE'))define('WYSIWYG_TYPE','default');
+			switch(WYSIWYG_TYPE){
+				case 'tinyMCE':
+					return '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>';
+				case 'default':
+					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
+					$_BROWSER=new we_browserDetect();
+
 			return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
 				<style type="text/css">
 					.tbButton {
@@ -233,7 +244,7 @@ class we_wysiwyg{
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
 					//FIXME: recognize in browser_check an set according
-					var isGecko = false;
+					var isGecko = '.$_BROWSER->isGecko()?'true':'false' .';
 					var isOpera = '.($GLOBALS['BROWSER']=='OPERA'?'true':'false').';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
@@ -266,10 +277,6 @@ class we_wysiwyg{
 					function weNothing() {
 						return true;
 					}
-
-					var ua = navigator.userAgent.toLowerCase();
-
-					isGecko     = (ua.indexOf(\'gecko\') != -1 && ua.indexOf(\'safari\') == -1);
 
 
 					function weWysiwygInitializeIt() {
@@ -306,8 +313,6 @@ class we_wysiwyg{
 						? '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
 						  '<script language="JavaScript" type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
 						  : '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
-		} else {
-			return "";
 		}
 	}
 
@@ -1143,7 +1148,37 @@ class we_wysiwyg{
 			}
 		}
 
-		//parseInternalLinks($editValue,0);
+		switch(WYSIWYG_TYPE){
+			case 'tinyMCE':
+				return '<script language="JavaScript" type="text/javascript">
+					tinyMCE.init({
+				language : "de",
+        mode : "exact",
+				elements : "'.$this->ref.'edit_src",
+        theme : "advanced",
+				//file_browser_callback : "",
+        plugins : "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+        // Theme options
+        theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+        theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+        theme_advanced_toolbar_location : "top",
+        theme_advanced_toolbar_align : "left",
+        theme_advanced_statusbar_location : "bottom",
+        theme_advanced_resizing : true,
+
+        // Skin options
+        skin : "o2k7",
+        skin_variant : "silver",
+				});
+					</script>
+
+<textarea wrap="off" style="color:black;  width:'.$this->width.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea>';
+			case 'default':
+
+//parseInternalLinks($editValue,0);
 
 		$min_w = 0;
 		$row_w = 0;
@@ -1207,7 +1242,7 @@ function '.$this->ref.'editonblur(){
 ';
 		return $out;
 	}
-
+	}
 
 }
 

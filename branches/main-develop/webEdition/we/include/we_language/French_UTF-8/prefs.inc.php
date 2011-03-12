@@ -322,6 +322,8 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Emploi l´editeur WYSIWYG (vérsion beta)",
+		'wysiwyg_type' => "Préférences standard pour l'editeur de <em>textarea</em>",
+
 		/**
 		 * SHOWINPUTS
 		 */

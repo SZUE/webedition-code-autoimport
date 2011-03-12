@@ -119,6 +119,7 @@ $global_config[] = array('define("WE_TRACKER_DIR",', '// Directory in which page
 $global_config[] = array('define("DB_SET_CHARSET",', '// connection charset to db' . "\n" . 'define("DB_SET_CHARSET", "");');
 
 
+$global_config[] = array('define("WYSIWYG_TYPE",', '// define used wysiwyg editor' . "\n" . 'define("WYSIWYG_TYPE", "default");');
 $global_config[] = array('define("SAFARI_WYSIWYG",', '// Flag if beta wysiwyg for safari should be used' . "\n" . 'define("SAFARI_WYSIWYG", false);');
 
 //formmail stuff
@@ -607,6 +608,10 @@ function get_value($settingvalue) {
 
 		case "safari_wysiwyg":
 			return defined("SAFARI_WYSIWYG") ? SAFARI_WYSIWYG : true;
+			break;
+
+		case 'wysiwyg_type':
+			return defined("WYSIWYG_TYPE") ? WYSIWYG_TYPE : 'default';
 			break;
 
 		/*********************************************************************
@@ -1801,6 +1806,14 @@ $_we_active_integrated_modules = array();
 				$_update_prefs = false;
 				break;
 
+			case '$_REQUEST["wysiwyg_type"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WYSIWYG_TYPE", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+
 			/*****************************************************************
 			 * SHOWINPUTS
 			 *****************************************************************/
@@ -2830,6 +2843,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
 
+		$_update_prefs = remember_value(isset($_REQUEST["wysiwyg_type"]) ? $_REQUEST["wysiwyg_type"] : null, '$_REQUEST["wysiwyg_type"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
@@ -4209,10 +4223,21 @@ function setColorChooserDisabled(id, disabled) {
 	document.getElementById("label_"+id).style.color=disabled ? "gray" : "";
 }
 
+function setStatus(divs,show){
+	for each (var no in divs){
+			document.getElementById("settings_editor_predefined_div_"+no).style.display=show; //JavaScript-Editor-Notice
+			document.getElementById("settings_editor_predefined_div_"+no).previousSibling.style.display=show;
+	}
+}
+
 function displayEditorOptions(editor) {
 	switch(editor) {
 		case "java":
-			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
+			var enable=new Array(4);
+			var disable=new Array(2,3,5,6,7,8);
+			setStatus(enable,"block");
+			setStatus(disable,"none");
+			/*document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
 
 			document.getElementById("settings_editor_predefined_div_3").style.display="none"; //Font
@@ -4232,11 +4257,16 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
-
+			*/
 			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
 
 			break;
 		case "codemirror":
+			var enable=new Array(2,3,5,6,7,8);
+			var disable=new Array(4);
+			setStatus(enable,"block");
+			setStatus(disable,"none");
+			/*
 			document.getElementById("settings_editor_predefined_div_2").style.display="block"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
 
@@ -4257,12 +4287,18 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="block"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="block";
-
+*/
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
 		case "textarea":
 		default:
+			var enable=new Array(3);
+			var disable=new Array(2,4,5,6,7,8);
+			setStatus(enable,"block");
+			setStatus(disable,"none");
+			/*
+
 			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
 
@@ -4283,7 +4319,7 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
-
+*/
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
@@ -4472,16 +4508,11 @@ else {
 
 			$_template_editor_tooltip_font_select_box = new we_htmlSelect(array('class' => 'weSelect', 'name' => 'editorTooltipFontname',  'size' => '1', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
 
-			for ($i = 0; $i < (count($_template_fonts) - 1); $i++) {
-				$_template_editor_tooltip_font_select_box->addOption($_template_fonts[$i], $_template_fonts[$i]);
-				if (!$_template_editor_tooltip_font_specify) {
-					if ($_template_fonts[$i] == 'Tahmoa') {
-						$_template_editor_tooltip_font_select_box->selectOption($_template_fonts[$i]);
-					}
-				} else {
-					if ($_template_fonts[$i] == get_value('editor_tooltip_font_name')) {
-						$_template_editor_tooltip_font_select_box->selectOption($_template_fonts[$i]);
-					}
+			foreach($_template_fonts AS $font){
+				$_template_editor_tooltip_font_select_box->addOption($font, $font);
+				if (($_template_editor_tooltip_font_specify && $font == get_value('editor_tooltip_font_name')) ||
+								(!$_template_editor_tooltip_font_specify && $font=='Tahoma')) {
+						$_template_editor_tooltip_font_select_box->selectOption($font);
 				}
 			}
 
@@ -5131,6 +5162,19 @@ else {
 				array_push($_settings, array("headline" => g_l('prefs','[removefirstparagraph_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 
+				// Build select box
+				$_php_setting = new we_htmlSelect(array("name" => "wysiwyg_type","class"=>"weSelect"));
+				$_options=array('default'=>'webEdition Editor','tinyMCE'=>'tinyMCE (beta)');
+				foreach($_options as $key=>$val){
+					$_php_setting->addOption($key,$val);
+
+					// Set selected setting
+					if ($key == get_value("wysiwyg_type")) {
+						$_php_setting->selectOption($key);
+					}
+				}
+
+				array_push($_settings, array("headline" => g_l('prefs','[wysiwyg_type]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "safari_wysiwyg","class"=>"weSelect"));
