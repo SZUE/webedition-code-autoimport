@@ -2157,6 +2157,16 @@ class we_objectFile extends we_document
 					$text = str_replace('%Parent%',$fooo["Text"],$text);
 				}
 			}
+			if(strpos($text,'%PathIncC%')!==false){
+				$zwtext= ltrim(str_replace($this->Text,'',$this->Path),'/');
+				$text = str_replace('%PathIncC%',$zwtext,$text);
+			}
+			if(strpos($text,'%PathNoC%')!==false){
+				$zwtext= str_replace($this->Text,'',$this->Path);
+				$classN = f("SELECT Path FROM ".OBJECT_TABLE." WHERE ID='".$this->TableID."';",'Path',$this->DB_WE);
+				$zwtext= ltrim(str_replace($classN,'',$zwtext),'/');
+				$text = str_replace('%PathNoC%',$zwtext,$text);
+			}
 			if(strpos($text,'%locale%')!==false){$text = str_replace('%locale%',$this->Language,$text);}
 			if(strpos($text,'%language%')!==false){$text = str_replace('%language%',substr($this->Language,0,2),$text);}
 			if(strpos($text,'%country%')!==false){$text = str_replace('%country%',substr($this->Language,4,2),$text);}
