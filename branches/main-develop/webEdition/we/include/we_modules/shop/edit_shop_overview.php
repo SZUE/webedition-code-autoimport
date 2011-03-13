@@ -80,16 +80,16 @@ $f = 0;
 
 
 function numfom($result){
-global $numberformat;
-     if($numberformat=="german"){
-			$result=number_format($result,2,",",".");
-		}else if($numberformat=="french"){
-			$result=number_format($result,2,","," ");
-		}else if($numberformat=="swiss"){
-			$result=number_format($result,2,".","'");
-		}else if($numberformat=="english"){
-			$result=number_format($result,2,".","");
-		}
+	switch($GLOBALS['numberformat']){
+		case 'german':
+			return number_format($result,2,",",".");
+		case 'french':
+			return number_format($result,2,","," ");
+		case 'swiss':
+			return number_format($result,2,".","'");
+		case 'english':
+			return number_format($result,2,".","");
+	}
 		return $result;
 }
 

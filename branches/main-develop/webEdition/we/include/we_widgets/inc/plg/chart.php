@@ -25,7 +25,6 @@
 
 function getPLogChart($vals)
 {
-	global $_pLogUrl;
 	$_chart = new we_htmlTable(
 			array(
 
@@ -61,15 +60,13 @@ function getPLogChart($vals)
 		), ":");
 		$_chart->setCol($i, 2, array(
 			"width" => "45%", "height" => 19, "class" => "resbg"
-		), showme($vals[$i - 1], $_pLogUrl));
+		), showme($vals[$i - 1], $GLOBALS['_pLogUrl']));
 	}
 	return $_chart;
 }
 
-function getPLogGraph($gf)
-{
+function getPLogGraph($gf){
 
-	global $_pLogUrl, $_url;
 	$_graph = new we_htmlTable(
 			array(
 
@@ -81,7 +78,7 @@ function getPLogGraph($gf)
 			),
 			1,
 			1);
-	$_gfDat = showme($gf, $_pLogUrl);
+	$_gfDat = showme($gf, $GLOBALS['_pLogUrl']);
 	$_graph->setCol(
 			0,
 			0,
@@ -91,8 +88,8 @@ function getPLogGraph($gf)
 			we_htmlElement::htmlImg(
 					array(
 
-							"src" => $_url . "vertical-bar-graph.php?data=" . $_url . "data.php%3Fdta=" . urlencode(
-									serialize($_gfDat)) . "&config=" . $_url . "config_" . $gf . ".php%3Fgfh=" . base64_encode(
+							"src" => $GLOBALS['_url'] . "vertical-bar-graph.php?data=" . $GLOBALS['_url'] . "data.php%3Fdta=" . urlencode(
+									serialize($_gfDat)) . "&config=" . $GLOBALS['_url'] . "config_" . $gf . ".php%3Fgfh=" . base64_encode(
 									g_l('cockpit','['.$gf.']'))
 					)));
 	return $_graph;

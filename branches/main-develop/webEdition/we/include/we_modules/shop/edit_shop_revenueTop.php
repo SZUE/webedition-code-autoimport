@@ -55,18 +55,16 @@ function orderBy($a, $b) {
 
 function getTitleLink($text, $orderKey) {
 
-	global $selectedYear, $selectedMonth, $actPage, $orderBy;
-
 	$_href =	$_SERVER['PHP_SELF'] .
-				'?ViewYear=' . $selectedYear .
-				'&ViewMonth=' . $selectedMonth .
+				'?ViewYear=' . $GLOBALS['selectedYear'] .
+				'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 				'&orderBy=' . $orderKey .
-				'&actPage=' . $actPage .
-				( ($orderBy == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+				'&actPage=' . $GLOBALS['actPage'] .
+				( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	$arrow = '';
 
-	if ($orderBy == $orderKey) {
+	if ($GLOBALS['orderBy'] == $orderKey) {
 
 		if (isset($_REQUEST['orderDesc'])) {
 			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
@@ -81,27 +79,23 @@ function getTitleLink($text, $orderKey) {
 }
 
 function getPagerLink() {
-
-	global $selectedMonth, $selectedYear, $actPage, $orderBy;
-
 	return 	$_SERVER['PHP_SELF'] .
-			'?ViewYear=' . $selectedYear .
-			'&ViewMonth=' . $selectedMonth .
-			'&orderBy=' . $orderBy .
+			'?ViewYear=' . $GLOBALS['selectedYear'] .
+			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
+			'&orderBy=' . $GLOBALS['orderBy'] .
 			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
-
-function numfom($result){ //number format
-  global $numberformat;
-     if($numberformat=="german"){
-			$result=number_format($result,2,",",".");
-		}else if($numberformat=="french"){
-			$result=number_format($result,2,","," ");
-		}else if($numberformat=="swiss"){
-			$result=number_format($result,2,".","'");
-		}else if($numberformat=="english"){
-			$result=number_format($result,2,".","");
-		}
+function numfom($result){
+	switch($GLOBALS['numberformat']){
+		case 'german':
+			return number_format($result,2,",",".");
+		case 'french':
+			return number_format($result,2,","," ");
+		case 'swiss':
+			return number_format($result,2,".","'");
+		case 'english':
+			return number_format($result,2,".","");
+	}
 		return $result;
 }
 

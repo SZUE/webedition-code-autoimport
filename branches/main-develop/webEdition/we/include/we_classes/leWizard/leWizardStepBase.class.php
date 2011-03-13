@@ -277,12 +277,9 @@ class leWizardStepBase {
 	 * @return liveUpdateResponse
 	 */
 	function getLiveUpdateHttpResponse() {
-
-		global $LU_IgnoreRequestParameters, $LU_ParameterNames;
-
 		$parameters = array();
 
-		foreach ($LU_ParameterNames as $parameterName) {
+		foreach ($GLOBALS['LU_ParameterNames'] as $parameterName) {
 
 			if (isset($_REQUEST[$parameterName])) {
 				$parameters[$parameterName] = $_REQUEST[$parameterName];
@@ -298,7 +295,7 @@ class leWizardStepBase {
 		// add all other request parameters to the request
 		$reqVars = array();
 		foreach ($_REQUEST as $key => $value) {
-			if (!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters)) {
+			if (!isset($parameters[$key]) && !in_array($key, $GLOBALS['LU_IgnoreRequestParameters'])) {
 				$reqVars[$key] = $value;
 			}
 		}

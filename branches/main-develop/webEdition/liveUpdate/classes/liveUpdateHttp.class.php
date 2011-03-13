@@ -51,9 +51,6 @@ class liveUpdateHttp {
 	}
 
 	function connectProxy($server, $url, $parameters) {
-
-		global $error;
-
 		$proxyhost = defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
 		$proxyport = (defined("WE_PROXYPORT") && WE_PROXYPORT) ? WE_PROXYPORT : "80";
 		$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";

@@ -69,8 +69,6 @@ function getFieldFromShoparticle($array, $name, $length=0) {
 
 function getOrderCustomerData($orderId, $orderData=false, $customerId=false, $strFelder=array()) {
 
-	global $DB_WE;
-
 	if (!$customerId) {
 
 		// get customerID from order
@@ -80,11 +78,11 @@ function getOrderCustomerData($orderId, $orderData=false, $customerId=false, $st
 			WHERE IntOrderID=' . abs($orderId)
 		;
 
-		$DB_WE->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		if ($DB_WE->next_record()) {
-			$customerId = $DB_WE->f('IntCustomerID');
-			$strSerialOrder = $DB_WE->f('strSerialOrder');
+		if ($GLOBALS['DB_WE']->next_record()) {
+			$customerId = $GLOBALS['DB_WE']->f('IntCustomerID');
+			$strSerialOrder = $GLOBALS['DB_WE']->f('strSerialOrder');
 			$orderData = @unserialize($strSerialOrder);
 		}
 	}
@@ -96,10 +94,10 @@ function getOrderCustomerData($orderId, $orderData=false, $customerId=false, $st
 		WHERE ID=' . addslashes($customerId);
 
 	$customerDb = array();
-	$DB_WE->query($query);
+	$GLOBALS['DB_WE']->query($query);
 
-	if ($DB_WE->next_record()) {
-		$customerDb = $DB_WE->Record;
+	if ($GLOBALS['DB_WE']->next_record()) {
+		$customerDb = $GLOBALS['DB_WE']->Record;
 	}
 
 	$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : array());
@@ -130,19 +128,16 @@ function getOrderCustomerData($orderId, $orderData=false, $customerId=false, $st
 }
 
 function getFieldFromOrder($bid,$field) {
-
-	global $DB_WE;
-
 	$query = "
 		SELECT ".mysql_real_escape_string($field)."
 		FROM " . SHOP_TABLE . "
 		WHERE IntOrderID=" . abs($_REQUEST['bid']);
 
-	$DB_WE->query($query);
+	$GLOBALS['DB_WE']->query($query);
 
 	if ($GLOBALS['DB_WE']->next_record()) {
 
-		return $DB_WE->f($field);
+		return $GLOBALS['DB_WE']->f($field);
 	} else {
 		return '';
 	}
@@ -150,18 +145,12 @@ function getFieldFromOrder($bid,$field) {
 
 function updateFieldFromOrder($orderId, $fieldname, $value) {
 
-	global $DB_WE;
-
 	$upQuery = '
 		UPDATE ' . SHOP_TABLE . '
 		SET ' . mysql_real_escape_string($fieldname) . '="' . mysql_real_escape_string($value) . '"
 		WHERE IntOrderID=' . abs($_REQUEST['bid']);
 
-	if ($DB_WE->query($upQuery)) {
-		return true;
-	} else {
-		return false;
-	}
+	return ($GLOBALS['DB_WE']->query($upQuery)?true:false);
 }
 
 // config
@@ -185,32 +174,22 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 
 // determine the number format
 function numfom($result){
-	global $numberformat;
-	$result = we_util::std_numberformat($result);
-	if($numberformat=="german"){
-		$result=number_format($result,2,",",".");
-	}else if($numberformat=="french"){
-		$result=number_format($result,2,",","&nbsp;");
-	}else if($numberformat=="english"){
-		$result=number_format($result,2,".","");
-	}else if($numberformat=="swiss"){
-	    $result=number_format($result,2,".","'");
-	}
-	return $result;
+		$result = we_util::std_numberformat($result);
+		switch($GLOBALS['numberformat']){
+			case 'german':
+				return number_format($result,2,",",".");
+			case 'french':
+				return number_format($result,2,",","&nbsp;");
+			case 'english':
+				return number_format($result,2,".","");
+			case 'swiss':
+				return number_format($result,2,",","'");
+		}
+		return $result;
 }
+
 function numfom2($result){
-	global $numberformat;
-	$result = we_util::std_numberformat($result);
-	if($numberformat=="german"){
-		$result=number_format($result,2,",",".");
-	}else if($numberformat=="french"){
-		$result=number_format($result,2,",","&nbsp;");
-	}else if($numberformat=="english"){
-		$result=number_format($result,2,".","");
-	}else if($numberformat=="swiss"){
-	    $result=number_format($result,2,".","'");
-	}
-	$result = rtrim($result,'.00');
+	$result = rtrim($numfom($result),'.00');
 	$result = rtrim($result,',00');
 	return $result;
 }

@@ -51,9 +51,6 @@ class liveUpdateHttp {
 	}
 
 	function connectProxy($server, $url, $parameters) {
-
-		global $error;
-
 		if(isset($_SESSION['le_proxy_use']) && $_SESSION['le_proxy_use']) {
 			$proxyhost = $_SESSION['le_proxy_host'];
 			$proxyport = (isset($_SESSION['le_proxy_port']) && $_SESSION['le_proxy_port']) ? $_SESSION['le_proxy_port'] : "80";

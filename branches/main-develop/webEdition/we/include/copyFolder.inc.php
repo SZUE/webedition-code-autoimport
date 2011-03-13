@@ -200,45 +200,44 @@ class copyFolderFrag extends taskFragment
 	}
 	function copyObjects()
 	{
-		global $we_doc;
-		$we_doc = $this->getObjectFile();
+		$GLOBALS['we_doc'] = $this->getObjectFile();
 		$this->copyToPath = id_to_path($this->data["CopyToId"], OBJECT_FILES_TABLE);
 		$path = ereg_replace('^' . $this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $this->data["Path"]);
 		if ($this->data["IsFolder"]) {
-			$we_doc->initByPath($path,OBJECT_FILES_TABLE,1,0);
-			if (!$we_doc->we_save()) {
+			$GLOBALS['we_doc']->initByPath($path,OBJECT_FILES_TABLE,1,0);
+			if (!$GLOBALS['we_doc']->we_save()) {
 				return false;
 			}
 		} else {
-			$we_doc->copyDoc($this->data["ID"]);
-			$we_doc->Text = $this->data["Text"];
-			$we_doc->Path = $path;
-			$we_doc->OldPath = "";
+			$GLOBALS['we_doc']->copyDoc($this->data["ID"]);
+			$GLOBALS['we_doc']->Text = $this->data["Text"];
+			$GLOBALS['we_doc']->Path = $path;
+			$GLOBALS['we_doc']->OldPath = "";
 			$pid = $this->getObjectPid($path, $GLOBALS["DB_WE"]);
-			$we_doc->setParentID($pid);
-			$ObjectExists = $this->CheckForSameObjectName($we_doc->Path, $GLOBALS["DB_WE"]);
+			$GLOBALS['we_doc']->setParentID($pid);
+			$ObjectExists = $this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS["DB_WE"]);
 
 
 			if ($ObjectExists && $this->data["OverwriteObjects"]=='nothing'){
 				return true;
 			}
 			if ($ObjectExists && $this->data["OverwriteObjects"]=='rename'){
-				$we_doc->Text = $we_doc->Text."_copy";
-				$we_doc->Path = $we_doc->Path."_copy";
-				while ( $this->CheckForSameObjectName($we_doc->Path, $GLOBALS["DB_WE"]) ){
-					$we_doc->Text = $we_doc->Text."_copy";
-					$we_doc->Path = $we_doc->Path."_copy";
+				$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text."_copy";
+				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path."_copy";
+				while ( $this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS["DB_WE"]) ){
+					$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text."_copy";
+					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path."_copy";
 				}
 
 			}
 			if ($ObjectExists && $this->data["OverwriteObjects"]=='overwrite'){
-				$we_doc->ID = $ObjectExists;
+				$GLOBALS['we_doc']->ID = $ObjectExists;
 
 			}
-			if (!$we_doc->we_save()) {
+			if (!$GLOBALS['we_doc']->we_save()) {
 				return false;
 			}
-			if ($this->data["Published"]) {$we_doc->we_publish();}
+			if ($this->data["Published"]) {$GLOBALS['we_doc']->we_publish();}
 		}
 		return true;
 	}
@@ -271,33 +270,32 @@ class copyFolderFrag extends taskFragment
 	}
 	function copyFile()
 	{
-		global $we_doc;
 
-		$we_doc = $this->getDocument();
+		$GLOBALS['we_doc'] = $this->getDocument();
 		$this->copyToPath = id_to_path($this->data["CopyToId"]);
 		$path = ereg_replace('^' . $this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $this->data["Path"]);
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/" . $this->data["ClassName"] . ".inc.php");
-		$we_doc = new $this->data["ClassName"]();
+		$GLOBALS['we_doc'] = new $this->data["ClassName"]();
 		if ($this->data["IsFolder"]) {
-			$we_doc->initByPath($path);
-			if (!$we_doc->we_save()) {
+			$GLOBALS['we_doc']->initByPath($path);
+			if (!$GLOBALS['we_doc']->we_save()) {
 				return false;
 			}
 		} else {
-			$we_doc->initByID($this->data["ID"]);
+			$GLOBALS['we_doc']->initByID($this->data["ID"]);
 			// if file  exists the file will overwritten, if not a new one (with no id) will be created
-			$we_doc->ID = f(
+			$GLOBALS['we_doc']->ID = f(
 					"SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . mysql_real_escape_string($path) . "'",
 					"ID",
 					$GLOBALS["DB_WE"]);
-			$we_doc->Path = $path;
-			$we_doc->OldPath = "";
+			$GLOBALS['we_doc']->Path = $path;
+			$GLOBALS['we_doc']->OldPath = "";
 			$pid = $this->getPid($path, $GLOBALS["DB_WE"]);
-			$we_doc->setParentID($pid);
-			switch ($we_doc->ContentType) {
+			$GLOBALS['we_doc']->setParentID($pid);
+			switch ($GLOBALS['we_doc']->ContentType) {
 				case "text/webedition" :
-					$oldTemplateID = $we_doc->TemplateID;
-					$this->parseWeDocument($we_doc);
+					$oldTemplateID = $GLOBALS['we_doc']->TemplateID;
+					$this->parseWeDocument($GLOBALS['we_doc']);
 
 					// check if we need to create a template
 					if ($this->data["CreateTemplate"]) {
@@ -306,39 +304,39 @@ class copyFolderFrag extends taskFragment
 						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_template.inc.php");
 						// check if a template was created from prior doc
 						if (!(isset($_SESSION["WE_CREATE_TEMPLATE"]) && isset(
-								$_SESSION["WE_CREATE_TEMPLATE"][$we_doc->TemplateID]))) {
+								$_SESSION["WE_CREATE_TEMPLATE"][$GLOBALS['we_doc']->TemplateID]))) {
 
 							$createdTemplate = $this->copyTemplate(
-									$we_doc->TemplateID,
+									$GLOBALS['we_doc']->TemplateID,
 									$this->data["CreateTemplateInFolderID"],
 									$CreateMasterTemplate,
 									$CreateIncludedTemplate);
 
 						}
 
-						$we_doc->setTemplateID($_SESSION["WE_CREATE_TEMPLATE"][$we_doc->TemplateID]);
+						$GLOBALS['we_doc']->setTemplateID($_SESSION["WE_CREATE_TEMPLATE"][$GLOBALS['we_doc']->TemplateID]);
 
 					}
 
 					if ($this->data['OverwriteCategories']) {
-						$we_doc->Category = $this->data['newCategories'];
+						$GLOBALS['we_doc']->Category = $this->data['newCategories'];
 					} else {
 						// remove duplicates
-						$old = explode(",", $we_doc->Category);
+						$old = explode(",", $GLOBALS['we_doc']->Category);
 						$tmp = explode(",", $this->data['newCategories']);
 						$new = array_unique(array_merge($old, $tmp));
-						$we_doc->Category = implode(",", $new);
+						$GLOBALS['we_doc']->Category = implode(",", $new);
 					}
 
-					if ($we_doc->DocType && $this->data["CreateDoctypes"]) {
+					if ($GLOBALS['we_doc']->DocType && $this->data["CreateDoctypes"]) {
 						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_docTypes.inc.php");
 						// check if a doctype was created from prior doc
 						if (!(isset($_SESSION["WE_CREATE_DOCTYPE"]) && isset(
-								$_SESSION["WE_CREATE_DOCTYPE"][$we_doc->DocType]))) {
+								$_SESSION["WE_CREATE_DOCTYPE"][$GLOBALS['we_doc']->DocType]))) {
 
 							$dt = new we_docTypes();
 							;
-							$dt->initByID($we_doc->DocType, DOC_TYPES_TABLE);
+							$dt->initByID($GLOBALS['we_doc']->DocType, DOC_TYPES_TABLE);
 							$dt->ID = 0;
 							$dt->DocType = $dt->DocType . "_copy";
 							// if file exists we need  to create a new one!
@@ -370,13 +368,13 @@ class copyFolderFrag extends taskFragment
 								$newTemplateIDs = array();
 								foreach ($templArray as $id) {
 									if ($id == $oldTemplateID) {
-										array_push($newTemplateIDs, $we_doc->TemplateID);
+										array_push($newTemplateIDs, $GLOBALS['we_doc']->TemplateID);
 									} else {
 										array_push($newTemplateIDs, $id);
 									}
 								}
 								$dt->Templates = makeCSVFromArray($newTemplateIDs);
-								$dt->TemplateID = $we_doc->TemplateID;
+								$dt->TemplateID = $GLOBALS['we_doc']->TemplateID;
 							}
 
 							$dt->we_save();
@@ -385,32 +383,32 @@ class copyFolderFrag extends taskFragment
 							if (!isset($_SESSION["WE_CREATE_DOCTYPE"])) {
 								$_SESSION["WE_CREATE_DOCTYPE"] = array();
 							}
-							$_SESSION["WE_CREATE_DOCTYPE"][$we_doc->DocType] = $newID;
+							$_SESSION["WE_CREATE_DOCTYPE"][$GLOBALS['we_doc']->DocType] = $newID;
 
 						}
 
-						$we_doc->DocType = $_SESSION["WE_CREATE_DOCTYPE"][$we_doc->DocType];
+						$GLOBALS['we_doc']->DocType = $_SESSION["WE_CREATE_DOCTYPE"][$GLOBALS['we_doc']->DocType];
 
 					}
 
 					// bugfix 0001582
-					$we_doc->OldPath = $we_doc->Path;
+					$GLOBALS['we_doc']->OldPath = $GLOBALS['we_doc']->Path;
 					break;
 				case "text/html" :
 				case "text/plain" :
 				case "text/css" :
 				case "text/htaccess" :
 				case "text/js" :
-					$this->parseTextDocument($we_doc);
+					$this->parseTextDocument($GLOBALS['we_doc']);
 					break;
 			}
 
-			if (!$we_doc->we_save()) {
+			if (!$GLOBALS['we_doc']->we_save()) {
 				return false;
 			}
 
-			if ($we_doc->Published) {
-				if (!$we_doc->we_publish()) {
+			if ($GLOBALS['we_doc']->Published) {
+				if (!$GLOBALS['we_doc']->we_publish()) {
 					return false;
 				}
 			}
