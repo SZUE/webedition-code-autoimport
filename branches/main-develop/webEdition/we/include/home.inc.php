@@ -1143,7 +1143,7 @@ function getUser(){
 			display: block;
 			border: 1px solid #999;
 			margin: auto;
-			padding: auto;
+			padding: 1px;
 		}
 		');
 
