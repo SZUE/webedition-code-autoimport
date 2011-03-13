@@ -60,7 +60,9 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 
 </script>
 </head>
-<?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{ ?>
+<?php switch($GLOBALS["BROWSER"]){
+	case "NN6":
+	case "OPERA":?>
 <frameset cols="*" framespacing="0" border="0" frameborder="NO">
 
 	<frameset <?php
@@ -75,7 +77,8 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 
 </frameset>
 
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
+<?php break;
+case "SAFARI": ?>
 <frameset cols="1,*,1" framespacing="0" border="0" frameborder="NO">
 	<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize>
 
@@ -87,7 +90,8 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 	<frame src="<?php print HTML_DIR ?>whiteWithLeftLine.html" name="bm_resize" scrolling="no" noresize>
 
 </frameset>
-<?php } else { ?>
+<?php break;
+default:?>
 <frameset cols="2,*,2" framespacing="0" border="0" frameborder="NO">
 	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
 	<frameset onload="startMultiEditor();" rows="22,*,0" border="1" id="multiEditorContainer" noresize>
@@ -97,5 +101,6 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 	</frameset>
 	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
 </frameset>
-<?php } ?>
+<?php break;
+} ?>
 </html>

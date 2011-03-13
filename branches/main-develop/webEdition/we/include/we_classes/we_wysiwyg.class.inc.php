@@ -138,7 +138,15 @@ class we_wysiwyg{
 			if(!defined('WYSIWYG_TYPE'))define('WYSIWYG_TYPE','default');
 			switch(WYSIWYG_TYPE){
 				case 'tinyMCE':
-					return '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>';
+					//FIXME: remove onchange - bad practise
+					return '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"/>
+<script language="JavaScript" type="text/javascript">
+function tinyMCEchanged(inst){
+	if(inst.isDirty()){
+		_EditorFrame.setEditorIsHot(true);
+	}
+}
+</script>';
 				case 'default':
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 					$_BROWSER=new we_browserDetect();
@@ -1154,10 +1162,13 @@ class we_wysiwyg{
 					tinyMCE.init({
 				//language : "de",
         mode : "exact",
-				elements : "'.$this->ref.'edit_src",
+				elements : "'.$this->name.'",
         theme : "advanced",
+
+				//CallBacks
 				//file_browser_callback : "",
-        plugins : "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+				onchange_callback : "tinyMCEchanged",
+				plugins : "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
         // Theme options
         theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
@@ -1175,7 +1186,7 @@ class we_wysiwyg{
 				});
 					</script>
 
-<textarea wrap="off" style="color:black;  width:'.$this->width.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea>';
+<textarea wrap="off" style="color:black;  width:'.$this->width.'px; height:'.$this->height.'px;" id="'.$this->name.'" name="'.$this->name.'">'.$this->value.'</textarea>';
 			case 'default':
 
 //parseInternalLinks($editValue,0);
