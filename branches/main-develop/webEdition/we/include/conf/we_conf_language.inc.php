@@ -25,7 +25,7 @@
 
 
 $GLOBALS["weFrontendLanguages"] = array(
-	'de_DE' => $g_l('languages','[de]') . " (" . g_l('countries','[DE]') . ") de_DE",
+	'de_DE' => g_l('languages','[de]') . " (" . g_l('countries','[DE]') . ") de_DE",
 
 );
 
