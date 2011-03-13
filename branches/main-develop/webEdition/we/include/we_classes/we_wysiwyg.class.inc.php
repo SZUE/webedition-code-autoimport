@@ -1182,7 +1182,7 @@ tinyMCE.init({
 	theme_advanced_resizing : true,
 	theme_advanced_source_editor_height : "300",
 	theme_advanced_source_editor_width : "500",
-	plugin_preview_height : "300"
+	plugin_preview_height : "300",
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
 	// Skin options
