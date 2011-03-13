@@ -1157,10 +1157,11 @@ function tinyMCEchanged(inst){
 		}
 
 		switch(WYSIWYG_TYPE){
+			//TODO: set lang of tinymce accordingly
 			case 'tinyMCE':
 				return '<script language="JavaScript" type="text/javascript">
 					tinyMCE.init({
-				//language : "de",
+				language : "de",
         mode : "exact",
 				elements : "'.$this->name.'",
         theme : "advanced",
