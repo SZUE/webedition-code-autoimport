@@ -1135,7 +1135,6 @@ function tinyMCEchanged(inst){
 	}
 
 	function getInlineHTML(){
-
 		$rows = $this->getToolbarRows();
 		$editValue = $this->value;
 
@@ -1157,38 +1156,38 @@ function tinyMCEchanged(inst){
 		}
 
 		switch(WYSIWYG_TYPE){
-			//TODO: set lang of tinymce accordingly
 			case 'tinyMCE':
+				list($lang,$code)=explode('_',$GLOBALS["weDefaultFrontendLanguage"]);
 				return '<script language="JavaScript" type="text/javascript">
-					tinyMCE.init({
-				language : "de",
-        mode : "exact",
-				elements : "'.$this->name.'",
-        theme : "advanced",
+tinyMCE.init({
+	language : "'.$lang.'",
+	mode : "exact",
+	elements : "'.$this->name.'",
+	theme : "advanced",
 
-				//CallBacks
-				//file_browser_callback : "",
-				onchange_callback : "tinyMCEchanged",
-				plugins : "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+	//CallBacks
+	//file_browser_callback : "",
+	onchange_callback : "tinyMCEchanged",
+	plugins : "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-        // Theme options
-        theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-        theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true,
+	// Theme options
+	theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+	theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+	theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+	theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+	theme_advanced_toolbar_location : "top",
+	theme_advanced_toolbar_align : "left",
+	theme_advanced_statusbar_location : "bottom",
+	theme_advanced_resizing : true,
 
-        // Skin options
-        skin : "o2k7",
-        skin_variant : "silver",
-				});
-					</script>
-
+	// Skin options
+	skin : "o2k7",
+	skin_variant : "silver",
+});
+</script>
 <textarea wrap="off" style="color:black;  width:'.$this->width.'px; height:'.$this->height.'px;" id="'.$this->name.'" name="'.$this->name.'">'.$this->value.'</textarea>';
-			case 'default':
+
+							case 'default':
 
 //parseInternalLinks($editValue,0);
 
@@ -1196,36 +1195,27 @@ function tinyMCEchanged(inst){
 		$row_w = 0;
 		$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" unselectable="on" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground"><img src="/webEdition/images/pixel.gif" width="'.$this->width.'" height="2"  unselectable="on" /></td></tr>';
 		$linerow = '<tr><td unselectable="on"><div class="tbButtonsHR" unselectable="on" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
-		$out = '<script language="JavaScript" type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">
-';
+		$out = '<script language="JavaScript" type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
 		for($r=0;$r<sizeof($rows);$r++){
-			$out .= '<table border="0" cellpadding="0" cellspacing="0" unselectable="on" class="tbButtonWysiwygDefaultStyle">
-	<tr>
-';
+			$out .= '<table border="0" cellpadding="0" cellspacing="0" unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr>';
 			for($s=0;$s<sizeof($rows[$r]);$s++){
-				$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle">'.$rows[$r][$s]->getHTML().'</td>
-';
+				$out .= '<td unselectable="on" class="tbButtonWysiwygDefaultStyle">'.$rows[$r][$s]->getHTML().'</td>';
 				$row_w += $rows[$r][$s]->width;
 			}
 			$min_w = max($min_w,$row_w);
 			$row_w = 0;
-			$out .= '	</tr>
-</table></td></tr>'.(($r < sizeof($rows)-1) ? $linerow : $pixelrow).'<tr><td unselectable="on"'.(($r<(sizeof($rows)-1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '').' class="tbButtonWysiwygDefaultStyle'.(($r<(sizeof($rows)-1)) ? ' tbButtonWysiwygBackground' : '').'">
-';
+			$out .= '</tr></table></td></tr>'.(($r < sizeof($rows)-1) ? $linerow : $pixelrow).'<tr><td unselectable="on"'.(($r<(sizeof($rows)-1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '').' class="tbButtonWysiwygDefaultStyle'.(($r<(sizeof($rows)-1)) ? ' tbButtonWysiwygBackground' : '').'">';
 		}
 
 		$realWidth = max($min_w,$this->width);
-		$out .= '<table border="0" cellpadding="0" cellspacing="0"  unselectable="on" class="tbButtonWysiwygDefaultStyle">
-	<tr>
-';
+		$out .= '<table border="0" cellpadding="0" cellspacing="0"  unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true" ';
 if (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"]) {
-	$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe src="/webEdition/editors/content/wysiwyg/empty.html" style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;" contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true"></iframe></td>
-';
+$out.='style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"';
 } else {
-	$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe style="display: block;color: black;border: 1px solid #A5ACB2;" contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true"></iframe></td>
-';
+	$out.='style="display: block;color: black;border: 1px solid #A5ACB2;"';
+
 }
-$out .='	</tr>
+$out .='></iframe></td></tr>
 </table></td></tr></table><input type="hidden" id="'.$this->name.'" name="'.$this->name.'" value="'.htmlspecialchars($this->hiddenValue).'" /><div id="'.$this->ref.'edit_buffer" style="display: none;"></div>
 <script language="JavaScript" type="text/javascript">
 var '.$this->ref.'Obj = null;
@@ -1253,9 +1243,8 @@ function '.$this->ref.'editonblur(){
 </script>
 ';
 		return $out;
+		}
 	}
-	}
-
 }
 
 
