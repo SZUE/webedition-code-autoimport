@@ -2703,7 +2703,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = "") {
 }
 
 function parseInternalLinks(&$text, $pid, $path = "") {
-	global $we_editmode, $WE_MAIN_EDITMODE;
+	global $we_editmode;
 	$DB_WE = new DB_WE();
 
 	if (preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
@@ -3808,9 +3808,8 @@ function convertCharsetString($fromC, $toC, $string) {
 }
 
 function CheckAndConvertISOfrontend($utf8data) {
-	global $CHARSET;
-	if (isset($CHARSET) && $CHARSET != '' && $CHARSET != 'UTF-8') {
-		return iconv("UTF-8", $CHARSET . "//TRANSLIT", $utf8data);
+	if (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] != '' && $GLOBALS['CHARSET'] != 'UTF-8') {
+		return iconv("UTF-8", $GLOBALS['CHARSET'] . "//TRANSLATE", $utf8data);
 	} else {
 		return $utf8data;
 	}

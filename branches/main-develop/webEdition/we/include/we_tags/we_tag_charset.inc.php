@@ -25,8 +25,6 @@
 
 function we_tag_charset($attribs,$content) {
 
-	global $CHARSET;
-
 	$defined = we_getTagAttribute("defined",$attribs);
 	$xml     = we_getTagAttribute("xml",$attribs, true, true);
 
@@ -35,11 +33,10 @@ function we_tag_charset($attribs,$content) {
 		return '<?php	$GLOBALS["meta"]["Charset"]["default"] = "' . $content . '";
 						$GLOBALS["meta"]["Charset"]["defined"] = "' . $defined . '";	?>';
 	} else {
-
-		if($CHARSET != ""){		//	take from template determined charset
-
-			$content = $CHARSET;
+		if($GLOBALS['CHARSET'] != ""){		//	take from template determined charset
+			$content = $GLOBALS['CHARSET'];
 		}
+
 		if($content != ""){		//	set charset
 
 			$attribs["http-equiv"] = "Content-Type";
