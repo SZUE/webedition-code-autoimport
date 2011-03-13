@@ -12,7 +12,7 @@ var StopIteration = {toString: function() {return "StopIteration"}};
 function forEach(iter, f) {
   if (iter.next) {
     try {while (true) f(iter.next());}
-    catch (e) {if (e != StopIteration) throw e;}
+    catch (e) {if (e != "StopIteration") throw e;}
   }
   else {
     for (var i = 0; i < iter.length; i++)

@@ -28,7 +28,7 @@ var indentUnit = 2;
     return {
       next: function() {
         if (pos < parts.length) return parts[pos++];
-        else throw StopIteration;
+        else throw "StopIteration";
       }
     };
   }
@@ -61,7 +61,7 @@ var indentUnit = 2;
       }
     }
     catch (e) {
-      if (e != StopIteration) throw e;
+      if (e != "StopIteration") throw e;
     }
     if (line.length) callback(line);
   }

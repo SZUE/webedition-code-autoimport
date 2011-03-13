@@ -99,7 +99,7 @@ var ajaxCallback = {
 				eval( o.responseText );
 				if ( weResponse ) {
 					if (weResponse["data"] == "true") {
-						_question = "<?php print ($we_doc->IsFolder ? g_l('alert','[confim][applyWeDocumentCustomerFiltersFolder]') : g_l('alert','[confim][applyWeDocumentCustomerFiltersDocument]')) ?>";
+						_question = "<?php print ($we_doc->IsFolder ? g_l('alert','[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert','[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
 						if ( confirm(_question) ) {
 							top.we_cmd("applyWeDocumentCustomerFilterFromFolder");
 

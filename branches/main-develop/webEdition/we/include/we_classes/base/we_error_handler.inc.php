@@ -184,7 +184,7 @@ function getBacktrace($skip=0){
 			$_caller=$arr['function'];
 			$_file=(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'');
 			$_line=(isset($arr['line'])?$arr['line']:'');
-			if($_caller=='error_handler'&&$_line==''){
+			if($_caller=='error_handler'&&($_line==''||$_line==0)){
 				++$no;
 				continue;
 			}

@@ -85,7 +85,7 @@ if (!isset($weShopVat)) {
 $_BROWSER=new we_browserDetect();
 $jsFunction = '
 
-		var isGecko = '.$_BROWSER->isGecko()?'true':'false' .';
+		var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 
 		if (isGecko) {
 			document.addEventListener("keyup",doKeyDown,true);

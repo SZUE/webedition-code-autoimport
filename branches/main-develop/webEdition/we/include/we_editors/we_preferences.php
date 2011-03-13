@@ -4223,21 +4223,10 @@ function setColorChooserDisabled(id, disabled) {
 	document.getElementById("label_"+id).style.color=disabled ? "gray" : "";
 }
 
-function setStatus(divs,show){
-	for each (var no in divs){
-			document.getElementById("settings_editor_predefined_div_"+no).style.display=show; //JavaScript-Editor-Notice
-			document.getElementById("settings_editor_predefined_div_"+no).previousSibling.style.display=show;
-	}
-}
-
 function displayEditorOptions(editor) {
 	switch(editor) {
 		case "java":
-			var enable=new Array(4);
-			var disable=new Array(2,3,5,6,7,8);
-			setStatus(enable,"block");
-			setStatus(disable,"none");
-			/*document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
+			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
 
 			document.getElementById("settings_editor_predefined_div_3").style.display="none"; //Font
@@ -4257,16 +4246,11 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
-			*/
+
 			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
 
 			break;
 		case "codemirror":
-			var enable=new Array(2,3,5,6,7,8);
-			var disable=new Array(4);
-			setStatus(enable,"block");
-			setStatus(disable,"none");
-			/*
 			document.getElementById("settings_editor_predefined_div_2").style.display="block"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
 
@@ -4287,17 +4271,11 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="block"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="block";
-*/
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
 		case "textarea":
 		default:
-			var enable=new Array(3);
-			var disable=new Array(2,4,5,6,7,8);
-			setStatus(enable,"block");
-			setStatus(disable,"none");
-			/*
 
 			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
@@ -4319,7 +4297,6 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
-*/
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;

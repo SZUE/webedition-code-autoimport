@@ -70,7 +70,7 @@ if (isset($_REQUEST['we_cmd'])) {
 $_BROWSER=new we_browserDetect();
 $jsFunction = '
 
-		var isGecko = '.$_BROWSER->isGecko()?'true':'false' .';
+		var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 
 		if (isGecko) {
 			document.addEventListener("keyup",doKeyDown,true);

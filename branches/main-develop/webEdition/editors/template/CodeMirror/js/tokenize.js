@@ -36,14 +36,14 @@ function tokenizer(source, state) {
     },
 
     next: function () {
-      if (!source.more()) throw StopIteration;
+      if (!source.more()) throw "StopIteration";
 
       var type;
       if (source.equals("\n")) {
         source.next();
         return this.take("whitespace");
       }
-      
+
       if (source.applies(isWhiteSpace))
         type = "whitespace";
       else

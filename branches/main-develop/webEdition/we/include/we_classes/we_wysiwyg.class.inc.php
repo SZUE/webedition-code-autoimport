@@ -244,7 +244,7 @@ class we_wysiwyg{
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
 					//FIXME: recognize in browser_check an set according
-					var isGecko = '.$_BROWSER->isGecko()?'true':'false' .';
+					var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 					var isOpera = '.($GLOBALS['BROWSER']=='OPERA'?'true':'false').';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
@@ -1152,7 +1152,7 @@ class we_wysiwyg{
 			case 'tinyMCE':
 				return '<script language="JavaScript" type="text/javascript">
 					tinyMCE.init({
-				language : "de",
+				//language : "de",
         mode : "exact",
 				elements : "'.$this->ref.'edit_src",
         theme : "advanced",

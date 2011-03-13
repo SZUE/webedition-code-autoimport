@@ -66,7 +66,7 @@ class weFullscreenEditDialog extends weDialog{
 		$js = '
 			<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
 			<script language="JavaScript" type="text/javascript"><!--
-				var isGecko = '.$_BROWSER->isGecko()?'true':'false' .';
+				var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 				var textareaFocus = false;
 
 				if (isGecko) {
