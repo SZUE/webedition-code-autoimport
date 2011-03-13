@@ -1,4 +1,4 @@
-﻿CREATE TABLE tblAnzeigePrefs (
+CREATE TABLE tblAnzeigePrefs (
   ID int(15) NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
@@ -173,11 +173,11 @@ CREATE TABLE tblLock (
   ID bigint(20) NOT NULL default '0',
   UserID bigint(20) NOT NULL default '0',
   sessionID varchar(64) NOT NULL default '',
-  `lock` datetime NOT NULL,
+  lockTime datetime NOT NULL,
   tbl varchar(32) NOT NULL default '',
   PRIMARY KEY (ID,tbl),
   KEY UserID (UserID,sessionID),
-  KEY `lock` (`lock`)
+  KEY lockTime (lockTime)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblMessages (
@@ -1348,4 +1348,5 @@ CREATE TABLE tblwidgetnotepad (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');/* query separator */
+INSERT INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');
+/* query separator */

@@ -250,7 +250,11 @@
 			   global $DB_WE;
 			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
 	}
-
+	
+	function changeColName($tab,$oldcol,$newcol){
+			   global $DB_WE;
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$oldcol." ".$newcol.";");
+	}
 	function getColTyp($tab,$col){
 			   global $DB_WE;
 			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".$col."';");
