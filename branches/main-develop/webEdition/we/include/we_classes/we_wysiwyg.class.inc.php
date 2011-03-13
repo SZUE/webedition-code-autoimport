@@ -1158,6 +1158,7 @@ function tinyMCEchanged(inst){
 		switch(WYSIWYG_TYPE){
 			case 'tinyMCE':
 				list($lang,$code)=explode('_',$GLOBALS["weDefaultFrontendLanguage"]);
+				//deactivated: template,save,layer
 				return '<script language="JavaScript" type="text/javascript">
 tinyMCE.init({
 	language : "'.$lang.'",
@@ -1168,13 +1169,13 @@ tinyMCE.init({
 	//CallBacks
 	//file_browser_callback : "",
 	onchange_callback : "tinyMCEchanged",
-	plugins : "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+	plugins : "spellchecker,style,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
 
 	// Theme options
-	theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-	theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-	theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-	theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+	theme_advanced_buttons1 : "bold,italic,underline,sub,sup,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+	theme_advanced_buttons2 : "pastetext,pasteword,cleanup,|,search,replace,|,bullist,numlist,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+	theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+	theme_advanced_buttons4 : "styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,|,insertfile,insertimage",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "bottom",
@@ -1185,7 +1186,7 @@ tinyMCE.init({
 	skin_variant : "silver",
 });
 </script>
-<textarea wrap="off" style="color:black;  width:'.$this->width.'px; height:'.$this->height.'px;" id="'.$this->name.'" name="'.$this->name.'">'.$this->value.'</textarea>';
+<textarea wrap="off" style="color:black;  width:'.$this->width.'px; height:'.$this->height.'px;" id="'.$this->name.'" name="'.$this->name.'">'.str_replace('\n','',$this->value).'</textarea>';
 
 							case 'default':
 
