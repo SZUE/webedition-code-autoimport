@@ -56,27 +56,25 @@ if (!defined('E_SQL')) {
  *************************************************************************/
 
 function we_error_handler($in_webEdition = true) {
-	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
-
 	// Get error types to be handled
-	$_error_notice = defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false;
-	$_error_deprecated = defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false;
-	$_error_warning = defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false;
-	$_error_error = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
+	$GLOBALS['_error_notice'] = defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false;
+	$GLOBALS['_error_deprecated'] = defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false;
+	$GLOBALS['_error_warning'] = defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false;
+	$GLOBALS['_error_error'] = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
 
 	// Get way of how to show errors
 	if ($in_webEdition) {
-		$_display_error = false;
+		$GLOBALS['_display_error'] = false;
 		if (!defined('WE_ERROR_HANDLER_SET')){
 			define('WE_ERROR_HANDLER_SET',1);
 		}
 	} else {
-		$_display_error = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
+		$GLOBALS['_display_error'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
-	$_log_error = defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true;
+	$GLOBALS['_log_error'] = defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true;
 
-	$_send_error = (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false;
-	$_send_address = (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? WE_ERROR_MAIL_ADDRESS : '';
+	$GLOBALS['_send_error'] = (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false;
+	$GLOBALS['_send_address'] = (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? WE_ERROR_MAIL_ADDRESS : '';
 
 	// Check PHP version
 	if (version_compare(PHP_VERSION, '5.2.4') < 0) {
@@ -86,12 +84,12 @@ function we_error_handler($in_webEdition = true) {
 
 	if (defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)) {
 		$_error_level = 0 +
-			($_error_deprecated && defined('E_DEPRECATED') ? E_DEPRECATED|E_USER_DEPRECATED|E_STRICT : 0) +
-			($_error_notice ? E_NOTICE|E_USER_NOTICE : 0) +
-			($_error_warning ? E_WARNING|E_CORE_WARNING|E_COMPILE_WARNING|E_USER_WARNING : 0) +
-			($_error_error ? E_ERROR|E_PARSE|E_CORE_ERROR|E_COMPILE_ERROR|E_USER_ERROR|E_RECOVERABLE_ERROR : 0);
+			($GLOBALS['_error_deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED|E_USER_DEPRECATED|E_STRICT : 0) +
+			($GLOBALS['_error_notice'] ? E_NOTICE|E_USER_NOTICE : 0) +
+			($GLOBALS['_error_warning'] ? E_WARNING|E_CORE_WARNING|E_COMPILE_WARNING|E_USER_WARNING : 0) +
+			($GLOBALS['_error_error'] ? E_ERROR|E_PARSE|E_CORE_ERROR|E_COMPILE_ERROR|E_USER_ERROR|E_RECOVERABLE_ERROR : 0);
 		error_reporting($_error_level);
-		ini_set('display_errors', $_display_error);
+		ini_set('display_errors', $GLOBALS['_display_error']);
 		set_error_handler('error_handler',$_error_level);
 	} else {
 		//disable strict & deprecated errors
@@ -107,7 +105,6 @@ function we_error_handler($in_webEdition = true) {
 
 //Note: Errors can only have ONE type - in case of changed typenames, rename DB's enum
 function translate_error_type($type) {
-	global $_error_notice, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 	if (!defined('E_STRICT')) {
 		define('E_STRICT', 2048);
 	}
@@ -203,7 +200,6 @@ function getBacktrace($skip=0){
  */
 
 function display_error_message($type, $message, $file, $line) {
-	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 	if(strpos($message,'MYSQL-ERROR')===0){
 		$type=E_SQL;
 	}
@@ -258,7 +254,6 @@ function display_error_message($type, $message, $file, $line) {
 }
 
 function log_error_message($type, $message, $file, $_line) {
-	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 
 	if(strpos($message,'MYSQL-ERROR')===0){
 		$type=E_SQL;
@@ -302,7 +297,6 @@ function log_error_message($type, $message, $file, $_line) {
 }
 
 function mail_error_message($type, $message, $file, $line) {
-	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
 	if(strpos($message,'MYSQL-ERROR')===0){
 		$type=E_SQL;
 	}
@@ -343,8 +337,6 @@ function mail_error_message($type, $message, $file, $line) {
 }
 
 function error_handler($type, $message, $file, $line, $context) {
-	global $_error_notice, $_error_deprecated, $_error_warning, $_error_error, $_display_error, $_log_error, $_send_error, $_send_address;
-
 	// Don't respond to the error if it was suppressed with a '@'
 	if (error_reporting() == 0) {
 		return;
@@ -360,19 +352,19 @@ function error_handler($type, $message, $file, $line, $context) {
 	switch($type) {
 		case E_NOTICE:
 		case E_USER_NOTICE:
-			if ($_error_notice) {
+			if ($GLOBALS['_error_notice']) {
 				// Display error?
-				if ($_display_error) {
+				if ($GLOBALS['_display_error']) {
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if ($_log_error) {
+				if ($GLOBALS['_log_error']) {
 					log_error_message($type, $message, $file, $line);
 				}
 
 				// Mail error?
-				if (isset($_send_error) && $_send_error) {
+				if (isset($GLOBALS['_send_error']) && $GLOBALS['_send_error']) {
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
@@ -382,19 +374,19 @@ function error_handler($type, $message, $file, $line, $context) {
 		case E_CORE_WARNING:
 		case E_COMPILE_WARNING:
 		case E_USER_WARNING:
-			if ($_error_warning) {
+			if ($GLOBALS['_error_warning']) {
 				// Display error?
-				if ($_display_error) {
+				if ($GLOBALS['_display_error']) {
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if ($_log_error) {
+				if ($GLOBALS['_log_error']) {
 					log_error_message($type, $message, $file, $line);
 				}
 
 				// Mail error?
-				if (isset($_send_error) && $_send_error) {
+				if (isset($GLOBALS['_send_error']) && $GLOBALS['_send_error']) {
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
@@ -407,19 +399,19 @@ function error_handler($type, $message, $file, $line, $context) {
 		case E_COMPILE_ERROR:
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
-			if ($_error_error) {
+			if ($GLOBALS['_error_error']) {
 				// Display error?
-				if ($_display_error) {
+				if ($GLOBALS['_display_error']) {
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if ($_log_error) {
+				if ($GLOBALS['_log_error']) {
 					log_error_message($type, $message, $file, $line);
 				}
 
 				// Mail error?
-				if (isset($_send_error) && $_send_error) {
+				if (isset($GLOBALS['_send_error']) && $GLOBALS['_send_error']) {
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
@@ -429,19 +421,19 @@ function error_handler($type, $message, $file, $line, $context) {
 			break;
 		case E_DEPRECATED:
 		case E_USER_DEPRECATED:
-				if ($_error_deprecated) {
+				if ($GLOBALS['_error_deprecated']) {
 					// Display error?
-					if ($_display_error) {
+					if ($GLOBALS['_display_error']) {
 						display_error_message($type, $message, $file, $line);
 					}
 
 					// Log error?
-					if ($_log_error) {
+					if ($GLOBALS['_log_error']) {
 						log_error_message($type, $message, $file, $line);
 					}
 
 					// Mail error?
-					if (isset($_send_error) && $_send_error) {
+					if (isset($GLOBALS['_send_error']) && $GLOBALS['_send_error']) {
 						mail_error_message($type, $message, $file, $line);
 					}
 				}

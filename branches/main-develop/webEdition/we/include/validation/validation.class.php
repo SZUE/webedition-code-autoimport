@@ -39,9 +39,6 @@
         }
 
         function saveService($validationService){
-
-            global $DB_WE;
-
             // before saving check if another validationservice has this name
 			$checkNameQuery = '
 				SELECT *
@@ -50,8 +47,8 @@
 					AND PK_tblvalidationservices != ' . abs($validationService->id) . '
 				';
 
-			$DB_WE->query($checkNameQuery);
-			if ($DB_WE->num_rows()) {
+			$GLOBALS['DB_WE']->query($checkNameQuery);
+			if ($GLOBALS['DB_WE']->num_rows()) {
 
 				$GLOBALS['errorMessage'] = g_l('validation','[edit_service][servicename_already_exists]');
 				return false;
@@ -72,9 +69,9 @@
                 ';
             }
 
-            if($DB_WE->query($query)){
+            if($GLOBALS['DB_WE']->query($query)){
                 if($validationService->id == 0){
-                    $id = f("SELECT LAST_INSERT_ID() as LastID FROM " . VALIDATION_SERVICES_TABLE,"LastID",$DB_WE);
+                    $id = f("SELECT LAST_INSERT_ID() as LastID FROM " . VALIDATION_SERVICES_TABLE,"LastID",$GLOBALS['DB_WE']);
                     $validationService->id = $id;
                 }
                 return $validationService;
@@ -84,15 +81,12 @@
         }
 
         function deleteService($validationService){
-
-            global $DB_WE;
-
             if($validationService->id != 0){
                 $query = '
                     DELETE FROM ' . VALIDATION_SERVICES_TABLE . '
                         WHERE PK_tblvalidationservices = ' . abs($validationService->id);
 
-                if($DB_WE->query($query)){
+                if($GLOBALS['DB_WE']->query($query)){
                     return true;
                 }
             } else {
@@ -103,9 +97,6 @@
         }
 
         function getValidationServices($mode='edit'){
-
-            global $DB_WE,$we_doc;
-
             $_ret = array();
 
             switch($mode){
@@ -119,13 +110,13 @@
                     $query = '
                         SELECT *
                         FROM ' . VALIDATION_SERVICES_TABLE . '
-                        WHERE fileEndings LIKE "%' . mysql_real_escape_string($we_doc->Extension) . '%" AND active=1';
+                        WHERE fileEndings LIKE "%' . mysql_real_escape_string($GLOBALS['we_doc']->Extension) . '%" AND active=1';
                     break;
             }
 
-            $DB_WE->query($query);
-            while($DB_WE->next_record()){
-                $_ret[] = new validationService($DB_WE->f('PK_tblvalidationservices'),'custom',$DB_WE->f('category'),$DB_WE->f('name'),$DB_WE->f('host'),$DB_WE->f('path'),$DB_WE->f('method'),$DB_WE->f('varname'),$DB_WE->f('checkvia'),$DB_WE->f('ctype'),$DB_WE->f('additionalVars'),$DB_WE->f('fileEndings'),$DB_WE->f('active'));
+            $GLOBALS['DB_WE']->query($query);
+            while($GLOBALS['DB_WE']->next_record()){
+                $_ret[] = new validationService($GLOBALS['DB_WE']->f('PK_tblvalidationservices'),'custom',$GLOBALS['DB_WE']->f('category'),$GLOBALS['DB_WE']->f('name'),$GLOBALS['DB_WE']->f('host'),$GLOBALS['DB_WE']->f('path'),$GLOBALS['DB_WE']->f('method'),$GLOBALS['DB_WE']->f('varname'),$GLOBALS['DB_WE']->f('checkvia'),$GLOBALS['DB_WE']->f('ctype'),$GLOBALS['DB_WE']->f('additionalVars'),$GLOBALS['DB_WE']->f('fileEndings'),$GLOBALS['DB_WE']->f('active'));
             }
             return $_ret;
         }

@@ -29,16 +29,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 htmlTop();
 protect();
 
-function print_fc_html($blank = true) {
-	global $messaging;
-?>
+function print_fc_html($blank = true) {?>
 	<script language="JavaScript" type="text/javascript">
 	<!--
 		top.content.update_msg_quick_view();
-		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array(<?php echo $messaging->get_ids_selected()?>);
-		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH.'messaging_fv_headers.php') . '?si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();?>&viewclass=" + top.content.viewclass;
+		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array(<?php echo $GLOBALS['messaging']->get_ids_selected()?>);
+		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_PATH.'messaging_fv_headers.php') . '?si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder();?>&viewclass=" + top.content.viewclass;
 		if (top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview) {
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH. 'messaging_show_folder_content.php');?>";
+			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_PATH. 'messaging_show_folder_content.php');?>";
 		}
 
 
@@ -53,26 +51,22 @@ function print_fc_html($blank = true) {
 }
 
 function refresh_work($blank = false) {
-	global $messaging;
-
 	if (isset($_REQUEST["entrsel"]) && $_REQUEST["entrsel"] != '')
 
-	    $messaging->set_ids_selected($_REQUEST["entrsel"]);
+	    $GLOBALS['messaging']->set_ids_selected($_REQUEST["entrsel"]);
 
-	$messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
+	$GLOBALS['messaging']->get_fc_data($GLOBALS['messaging']->Folder_ID, '', '', 0);
 	print_fc_html($blank);
 	update_treeview();
 }
 
 function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $usecache = 1) {
 
-	global $messaging;
-
 	if ($entrsel != '')
-		$messaging->set_ids_selected($entrsel);
+		$GLOBALS['messaging']->set_ids_selected($entrsel);
 
-	if ($id != $messaging->Folder_ID) {
-		$messaging->reset_ids_selected();
+	if ($id != $GLOBALS['messaging']->Folder_ID) {
+		$GLOBALS['messaging']->reset_ids_selected();
 ?>
 	<script language="JavaScript" type="text/javascript">
 	<!--
@@ -81,19 +75,18 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 	</script>
 <?php
 	}
-	$messaging->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
+	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
 
-	$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 }
 
 function update_treeview() {
-	global $messaging;
 	echo '<script language="JavaScript" type="text/javascript">
 	<!--' . "\n";
 
-	foreach ($messaging->available_folders as $f) {
+	foreach ($GLOBALS['messaging']->available_folders as $f) {
 
-	echo 'top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $messaging->get_message_count($f['ID'], '') . ')", -1, 1);' . "\n";
+	echo 'top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $GLOBALS['messaging']->get_message_count($f['ID'], '') . ')", -1, 1);' . "\n";
 	}
 	echo "top.content.drawEintraege();\n//--></script>";
 }
@@ -102,11 +95,11 @@ if(!isset($_REQUEST["we_transaction"])){
     $_REQUEST["we_transaction"] = $we_transaction;
 }
 
-$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$GLOBALS['messaging'] = new we_messaging($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
+$GLOBALS['messaging']->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 
-$messaging->init($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
+$GLOBALS['messaging']->init($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
 
 if(!isset($_REQUEST["mcmd"])){
     $_REQUEST["mcmd"] = "goToDefaultCase";

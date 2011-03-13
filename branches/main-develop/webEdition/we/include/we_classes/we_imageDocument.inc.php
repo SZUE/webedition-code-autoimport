@@ -433,8 +433,6 @@ class we_imageDocument extends we_binaryDocument {
 	* @param string $inc_href
 	*/
 	function getHtml($dyn = false, $inc_href = true) {
-
-		global $we_transaction;
 		$_data = $this->getElement("data");
 		if ($this->ID || ($_data && !is_dir($_data) && is_readable($_data))) {
 			if ($this->getElement("LinkType") == "int") {
@@ -504,7 +502,7 @@ class we_imageDocument extends we_binaryDocument {
             $src = $dyn ?
                             WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
                             $this->ContentType . '&we_cmd[2]=' .
-                            $we_transaction . "&rand=" . $randval
+                            $GLOBALS['we_transaction'] . "&rand=" . $randval
                         :
             				$img_path;
 
@@ -818,7 +816,6 @@ class we_imageDocument extends we_binaryDocument {
 	}
 
 	function importMetaData($fieldsToImport=null, $importOnlyEmptyFields=false) {
-		global $DB_WE;
 		$this->getMetaData();
 
 
@@ -827,11 +824,11 @@ class we_imageDocument extends we_binaryDocument {
 
 			// first we fetch all defined metadata fields from tblMetadata:
 			$_defined_fields = array();
-			$DB_WE->query("SELECT * FROM " . METADATA_TABLE );
-			while ($DB_WE->next_record()) {
-				$_fieldName = $DB_WE->f("tag");
-				$_fieldType = $DB_WE->f("type") ? $DB_WE->f("type") : "textfield";
-				$_importFrom = $DB_WE->f("importFrom");
+			$GLOBALS['DB_WE']->query("SELECT * FROM " . METADATA_TABLE );
+			while ($GLOBALS['DB_WE']->next_record()) {
+				$_fieldName = $GLOBALS['DB_WE']->f("tag");
+				$_fieldType = $GLOBALS['DB_WE']->f("type") ? $GLOBALS['DB_WE']->f("type") : "textfield";
+				$_importFrom = $GLOBALS['DB_WE']->f("importFrom");
 
 				$_parts = explode(",", $_importFrom);
 				foreach($_parts as $_part) {

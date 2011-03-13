@@ -164,8 +164,7 @@ class PEAR
         while ($classname && strcasecmp($classname, "pear")) {
             $destructor = "_$classname";
             if (method_exists($this, $destructor)) {
-                global $_PEAR_destructor_object_list;
-                $_PEAR_destructor_object_list[] = &$this;
+                $GLOBALS['_PEAR_destructor_object_list'][] = &$this;
                 if (!isset($GLOBALS['_PEAR_SHUTDOWN_REGISTERED'])) {
                     register_shutdown_function("_PEAR_call_destructors");
                     $GLOBALS['_PEAR_SHUTDOWN_REGISTERED'] = true;
@@ -770,11 +769,10 @@ if (PEAR_ZE2) {
 
 function _PEAR_call_destructors()
 {
-    global $_PEAR_destructor_object_list;
-    if (is_array($_PEAR_destructor_object_list) &&
-        sizeof($_PEAR_destructor_object_list))
+    if (is_array($GLOBALS['PEAR_destructor_object_list']) &&
+        sizeof($GLOBALS['PEAR_destructor_object_list']))
     {
-        reset($_PEAR_destructor_object_list);
+        reset($GLOBALS['PEAR_destructor_object_list']);
         if (PEAR_ZE2) {
             $destructLifoExists = PEAR5::getStaticProperty('PEAR', 'destructlifo');
         } else {
@@ -782,10 +780,10 @@ function _PEAR_call_destructors()
         }
 
         if ($destructLifoExists) {
-            $_PEAR_destructor_object_list = array_reverse($_PEAR_destructor_object_list);
+            $GLOBALS['PEAR_destructor_object_list'] = array_reverse($GLOBALS['PEAR_destructor_object_list']);
         }
 
-        while (list($k, $objref) = each($_PEAR_destructor_object_list)) {
+        while (list($k, $objref) = each($GLOBALS['PEAR_destructor_object_list'])) {
             $classname = get_class($objref);
             while ($classname) {
                 $destructor = "_$classname";
@@ -799,7 +797,7 @@ function _PEAR_call_destructors()
         }
         // Empty the object list to ensure that destructors are
         // not called more than once.
-        $_PEAR_destructor_object_list = array();
+        $GLOBALS['PEAR_destructor_object_list'] = array();
     }
 
     // Now call the shutdown functions

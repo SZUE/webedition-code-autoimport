@@ -26,8 +26,6 @@
 
 function getCustomersOrderList($customerId, $sameModul=true) {
 
-	global $DB_WE;
-
 	require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 	$weShopStatusMails = weShopStatusMails::getShopStatusMails();
 
@@ -48,9 +46,9 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 		ORDER BY IntID DESC
 	';
 
- 	$DB_WE->query($query);
+ 	$GLOBALS['DB_WE']->query($query);
 
-	if ($DB_WE->num_rows()) {
+	if ($GLOBALS['DB_WE']->num_rows()) {
 
 		$orderStr .='
 		<tr>
@@ -115,60 +113,60 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 		if (we_hasPerm("EDIT_SHOP_ORDER")){
 			$orderStr .=
 			($sameModul ?
-					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $DB_WE->f('IntOrderID') . '\';' ) . '</td>') :
-					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULE_PATH . 'show_frameset.php?mod=shop&bid=' . $DB_WE->f('IntOrderID') . '\';' ) . '</td>')
+					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>') :
+					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULE_PATH . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>')
               	);
 		} else {
 			$orderStr .='<td></td>';
 		}
-			$orderStr .= '<td>' . $DB_WE->f('IntOrderID') . '. ' . g_l('modules_shop','[orderList][order]') . '</td>';
+			$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('IntOrderID') . '. ' . g_l('modules_shop','[orderList][order]') . '</td>';
 			if(!$weShopStatusMails->FieldsHidden['DateOrder']){
-				$orderStr .='<td>' . ( $DB_WE->f('DateOrder') > 0 ? $DB_WE->f('formatDateOrder') : '-'  ) . '</td>';
+				$orderStr .='<td>' . ( $GLOBALS['DB_WE']->f('DateOrder') > 0 ? $GLOBALS['DB_WE']->f('formatDateOrder') : '-'  ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateConfirmation']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateConfirmation') > 0  ? $DB_WE->f('formatDateConfirmation') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateConfirmation') > 0  ? $GLOBALS['DB_WE']->f('formatDateConfirmation') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomA']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomA') > 0  ? $DB_WE->f('formatDateCustomA') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomA') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomA') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomB']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomB') > 0  ? $DB_WE->f('formatDateCustomB') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomB') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomB') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomC']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomC') > 0  ? $DB_WE->f('formatDateCustomC') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomC') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomC') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateShipping']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateShipping') > 0  ? $DB_WE->f('formatDateShipping') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateShipping') > 0  ? $GLOBALS['DB_WE']->f('formatDateShipping') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomD']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomD') > 0  ? $DB_WE->f('formatDateCustomE') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomD') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomE') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomE']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomE') > 0  ? $DB_WE->f('formatDateCustomF') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomE') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomF') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DatePayment']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DatePayment') > 0  ? $DB_WE->f('formatDatePayment') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DatePayment') > 0  ? $GLOBALS['DB_WE']->f('formatDatePayment') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomF']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomF') > 0  ? $DB_WE->f('formatDateCustomF') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomF') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomF') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomG']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomG') > 0  ? $DB_WE->f('formatDateCustomG') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomG') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomG') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCancellation']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCancellation') > 0  ? $DB_WE->f('formatDateCancellation') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCancellation') > 0  ? $GLOBALS['DB_WE']->f('formatDateCancellation') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomH']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomH') > 0  ? $DB_WE->f('formatDateCustomH') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomH') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomH') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomI']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomI') > 0  ? $DB_WE->f('formatDateCustomI') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomI') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomI') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateCustomJ']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateCustomJ') > 0  ? $DB_WE->f('formatDateCustomJ') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateCustomJ') > 0  ? $GLOBALS['DB_WE']->f('formatDateCustomJ') : '-' ) . '</td>';
 			}
 			if(!$weShopStatusMails->FieldsHidden['DateFinished']){
-				$orderStr .= '<td>' . ( $DB_WE->f('DateFinished') > 0  ? $DB_WE->f('formaFinished') : '-' ) . '</td>';
+				$orderStr .= '<td>' . ( $GLOBALS['DB_WE']->f('DateFinished') > 0  ? $GLOBALS['DB_WE']->f('formaFinished') : '-' ) . '</td>';
 			}
 
 			$orderStr .=  '

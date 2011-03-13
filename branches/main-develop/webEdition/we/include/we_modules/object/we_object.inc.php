@@ -866,8 +866,6 @@ class we_object extends we_document
 	}
 
 	function getFieldHTML($name,$identifier){
-		global $we_transaction;
-
 		$we_button = new we_button();
 
 		$listlen = ($this->getElement("Sortgesamt")+1);

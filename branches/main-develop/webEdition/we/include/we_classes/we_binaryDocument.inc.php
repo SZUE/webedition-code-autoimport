@@ -68,7 +68,6 @@ class we_binaryDocument extends we_document
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor(){
-		global $we_responseText,$we_JavaScript;
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
 			return "we_templates/we_editor_properties.inc.php";
@@ -190,8 +189,6 @@ class we_binaryDocument extends we_document
 		 * 3. render form fields with metadata from db
 		 * 4. show button to copy metadata from image into the form fields
 		 */
-		global $DB_WE;
-
 		// first we fetch all defined metadata fields from tblMetadata:
 		$_defined_fields = weMetaData::getDefinedMetaDataFields();
 

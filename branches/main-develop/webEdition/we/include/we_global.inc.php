@@ -33,13 +33,11 @@ if (!isset($GLOBALS["WE_IS_DYN"])) {
 include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/lib/we/core/autoload.php');
 
 function we_getModuleNameByContentType($ctype) {
-	global $_we_active_modules;
-
 	$_moduleDir = "";
-	for ($i = 0; $i < sizeof($_we_active_modules); $i++) {
+	for ($i = 0; $i < sizeof($GLOBALS['_we_active_modules']); $i++) {
 
-		if (strstr($ctype, $_we_active_modules[$i])) {
-			$_moduleDir = $_we_active_modules[$i];
+		if (strstr($ctype, $GLOBALS['_we_active_modules'][$i])) {
+			$_moduleDir = $GLOBALS['_we_active_modules'][$i];
 		}
 	}
 	return $_moduleDir;
@@ -1714,35 +1712,34 @@ function deleteContentFromDB($id, $table) {
 }
 
 function cleanTempFiles($cleanSessFiles = 0) {
-	global $DB_WE;
 	$db2 = new DB_WE();
-	$sess = $DB_WE->query("
+	$sess = $GLOBALS['DB_WE']->query("
 		SELECT Date,Path
 		FROM " . CLEAN_UP_TABLE . "
 		WHERE Date <= " . (time() - 300));
-	if ($DB_WE->num_rows())
-		while ($DB_WE->next_record()) {
-			$p = $DB_WE->f("Path");
+	if ($GLOBALS['DB_WE']->num_rows())
+		while ($GLOBALS['DB_WE']->next_record()) {
+			$p = $GLOBALS['DB_WE']->f("Path");
 			if (file_exists($p))
-				deleteLocalFile($DB_WE->f("Path"));
+				deleteLocalFile($GLOBALS['DB_WE']->f("Path"));
 			$db2->query(
 							"
 				DELETE
 				FROM " . CLEAN_UP_TABLE . "
-				WHERE DATE=" . $DB_WE->f("Date") . " AND Path='" . $DB_WE->f(
+				WHERE DATE=" . $GLOBALS['DB_WE']->f("Date") . " AND Path='" . $GLOBALS['DB_WE']->f(
 											"Path") . "'");
 		}
 	if ($cleanSessFiles) {
 		$seesID = session_id();
-		$DB_WE->query("
+		$GLOBALS['DB_WE']->query("
 			SELECT Date,Path
 			FROM " . CLEAN_UP_TABLE . "
 			WHERE Path like '%" . mysql_real_escape_string($seesID) . "%'");
-		if ($DB_WE->num_rows())
-			while ($DB_WE->next_record()) {
-				$p = $DB_WE->f("Path");
+		if ($GLOBALS['DB_WE']->num_rows())
+			while ($GLOBALS['DB_WE']->next_record()) {
+				$p = $GLOBALS['DB_WE']->f("Path");
 				if (file_exists($p))
-					deleteLocalFile($DB_WE->f("Path"));
+					deleteLocalFile($GLOBALS['DB_WE']->f("Path"));
 				$db2->query("
 					DELETE
 					FROM " . CLEAN_UP_TABLE . "
@@ -1797,10 +1794,9 @@ function cleanTempFiles($cleanSessFiles = 0) {
 }
 
 function getUsedTemplatesOfTemplate($id, &$arr) {
-	global $DB_WE;
 	$_hash = getHash(
 									"SELECT IncludedTemplates, MasterTemplateID FROM " . TEMPLATES_TABLE . " WHERE ID=" . abs($id),
-									$DB_WE);
+									$GLOBALS['DB_WE']);
 	$_tmplCSV = isset($_hash['IncludedTemplates']) ? $_hash['IncludedTemplates'] : "";
 	$_masterTemplateID = isset($_hash['MasterTemplateID']) ? $_hash['MasterTemplateID'] : 0;
 
@@ -1830,12 +1826,11 @@ function getUsedTemplatesOfTemplate($id, &$arr) {
 }
 
 function getTemplatesOfTemplate($id, &$arr) {
-	global $DB_WE;
-	$DB_WE->query(
+	$GLOBALS['DB_WE']->query(
 					"SELECT ID FROM " . TEMPLATES_TABLE . " WHERE MasterTemplateID=" . abs($id) . " OR IncludedTemplates LIKE '%," . abs(
 									$id) . ",%'");
-	while ($DB_WE->next_record()) {
-		array_push($arr, $DB_WE->f("ID"));
+	while ($GLOBALS['DB_WE']->next_record()) {
+		array_push($arr, $GLOBALS['DB_WE']->f("ID"));
 	}
 	$foo = $arr;
 
@@ -1851,7 +1846,6 @@ function getTemplatesOfTemplate($id, &$arr) {
 }
 
 function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false) {
-	global $DB_WE;
 	if (!$id)
 		return 0;
 
@@ -1862,9 +1856,9 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 	getTemplatesOfTemplate($id, $returnIDs["templateIDs"]);
 
 	// first we need to check if template is included within other templates
-	//$DB_WE->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".abs($id)." OR IncludedTemplates LIKE '%,".abs($id).",%'");
-	//while ($DB_WE->next_record()) {
-	//	array_push($returnIDs["templateIDs"], $DB_WE->f("ID"));
+	//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".abs($id)." OR IncludedTemplates LIKE '%,".abs($id).",%'");
+	//while ($GLOBALS['DB_WE']->next_record()) {
+	//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
 	//}
 
 	$id = abs($id);
@@ -1895,26 +1889,25 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 		$where .= " AND Published>0";
 	}
 
-	$DB_WE->query("
+	$GLOBALS['DB_WE']->query("
 		SELECT ID
 		FROM " . FILE_TABLE . "
 		WHERE $where");
 
-	while ($DB_WE->next_record()) {
-		array_push($returnIDs["documentIDs"], $DB_WE->f("ID"));
+	while ($GLOBALS['DB_WE']->next_record()) {
+		array_push($returnIDs["documentIDs"], $GLOBALS['DB_WE']->f("ID"));
 	}
 	return $returnIDs;
 }
 
 function ObjectUsedByObjectFile($id) {
-	global $DB_WE;
 	if (!$id)
 		return 0;
-	$DB_WE->query("
+	$GLOBALS['DB_WE']->query("
 		SELECT ID
 		FROM " . OBJECT_FILES_TABLE . "
 		WHERE TableID=" . abs($id));
-	return $DB_WE->num_rows();
+	return $GLOBALS['DB_WE']->num_rows();
 }
 
 function deleteLocalFile($filename) {
@@ -1990,14 +1983,13 @@ function we_hasPerm($perm) {
 }
 
 function we_userCanEditModule($modName) {
-	global $_we_available_modules;
 	$one = false;
 	$set = array();
 	$enable = 1;
 	if ($_SESSION["perms"]["ADMINISTRATOR"]) {
 		return true;
 	}
-	foreach ($_we_available_modules as $m)
+	foreach ($GLOBALS['_we_available_modules'] as $m)
 		if ($m["name"] == $modName) {
 
 			$p = isset($m["perm"]) ? $m["perm"] : "";
@@ -2703,7 +2695,6 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = "") {
 }
 
 function parseInternalLinks(&$text, $pid, $path = "") {
-	global $we_editmode;
 	$DB_WE = new DB_WE();
 
 	if (preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {

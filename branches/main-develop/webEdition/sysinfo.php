@@ -89,10 +89,8 @@
 		}
 
 		function parseValue($name,$value) {
-			global $_types;
-
-			if(in_array($name,array_keys($_types))) {
-				if($_types[$name]=='bytes' && $value) {
+			if(in_array($name,array_keys($GLOBALS['_types']))) {
+				if($GLOBALS['_types'][$name]=='bytes' && $value) {
 					$value = we_convertIniSizes($value);
 					return convertToMb($value) . ' (' . $value . ' Bytes)';
 				}

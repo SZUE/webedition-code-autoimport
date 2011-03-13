@@ -385,8 +385,6 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 function deleteEntry($id, $table, $delR = true,$skipHook=0)
 {
 
-	global $deletedItems;
-
 	$DB_WE = new DB_WE();
 	if (defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
@@ -423,6 +421,6 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 				deleteFile($id, $table, $row["Path"], $row["ContentType"]);
 			}
 		}
-		$deletedItems[] = $id;
+		$GLOBALS['deletedItems'][] = $id;
 	}
 }

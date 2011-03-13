@@ -1491,8 +1491,6 @@ class we_backup {
 	}
 
 	function clearOldTmp(){
-		global $DB_WE;
-
 		if(!is_writable($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp")){
 			$this->setError(sprintf(g_l('backup',"[cannot_save_tmpfile]"),BACKUP_DIR));
 			return -1;

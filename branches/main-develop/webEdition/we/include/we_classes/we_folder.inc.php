@@ -458,8 +458,6 @@ class we_folder extends we_root
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor(){
-		global $we_responseText,$we_JavaScript;
-
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
                 return "we_templates/we_editor_properties.inc.php";

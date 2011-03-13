@@ -41,14 +41,11 @@ $we_dt = $_SESSION["we_data"][$we_transaction];
 include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 function getControlElement($type, $name){
+	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement) ){
 
-	global $we_doc;
+		if(isset($GLOBALS['we_doc']->controlElement[$type][$name])){
 
-	if(isset($we_doc->controlElement) && is_array($we_doc->controlElement) ){
-
-		if(isset($we_doc->controlElement[$type][$name])){
-
-			return $we_doc->controlElement[$type][$name];
+			return $GLOBALS['we_doc']->controlElement[$type][$name];
 
 		} else {
 			return false;
@@ -373,14 +370,17 @@ if(inWorkflow($we_doc)) {
 		$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
 
 		if($we_doc->ID) {
-			if($we_doc->ContentType == "text/weTmpl") {
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, $we_button->create_button("make_new_document", "javascript:top.we_cmd('new','".FILE_TABLE."','','text/webedition','','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
-			} elseif($we_doc->ContentType == "object") {
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, $we_button->create_button("make_new_object", "javascript:top.we_cmd('new','".OBJECT_FILES_TABLE."','','objectFile','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+			switch($we_doc->ContentType){
+				case "text/weTmpl":
+					$_normalTable->addCol(2);
+					$_normalTable->setColContent(0, $_pos++, $we_button->create_button("make_new_document", "javascript:top.we_cmd('new','".FILE_TABLE."','','text/webedition','','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
+					$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+					break;
+				case "object":
+					$_normalTable->addCol(2);
+					$_normalTable->setColContent(0, $_pos++, $we_button->create_button("make_new_object", "javascript:top.we_cmd('new','".OBJECT_FILES_TABLE."','','objectFile','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
+					$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+					break;
 			}
 		}
 
