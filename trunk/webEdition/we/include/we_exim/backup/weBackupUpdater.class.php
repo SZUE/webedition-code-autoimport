@@ -125,6 +125,8 @@
 
 
 		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
+		
+		if(!$this->isColExist(VERSIONS_TABLE,"MasterTemplateID")) $this->addCol(VERSIONS_TABLE,"MasterTemplateID","bigint(20) NOT NULL default '0'","AFTER ExtraTemplates");
 
 	}
 
@@ -255,6 +257,11 @@
 	function changeColTyp($tab,$col,$newtyp){
 			   global $DB_WE;
 			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE $col $col $newtyp;");
+	}
+	
+	function changeColName($tab,$oldcol,$newcol){
+			   global $DB_WE;
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE $oldcol $newcol;");
 	}
 
 	function getColTyp($tab,$col){
@@ -682,7 +689,8 @@
 
 	function updateLock(){
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
-		if(!$this->isColExist(LOCK_TABLE,'lock'))  $this->addCol(LOCK_TABLE,'lock',"datetime NOT NULL",' AFTER sessionID ');
+		if($this->isColExist(LOCK_TABLE,'lockTime')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
+		if(!$this->isColExist(LOCK_TABLE,'lockTime'))  $this->addCol(LOCK_TABLE,'lockTime',"datetime NOT NULL",' AFTER sessionID ');
 	}
 
 	function updateTableKeys(){

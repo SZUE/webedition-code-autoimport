@@ -129,7 +129,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 										'Type'=>'BIGINT',
 										'Null'=>'NO',
 										'Key'=>'PRI',
-										'Default'=>'NULL',
+										'Default'=>'',
 										'Extra'=>'auto_increment'
 					);
 				}
@@ -142,7 +142,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 										'Type'=>'BIGINT',
 										'Null'=>'NO',
 										'Key'=>'PRI',
-										'Default'=>'NULL',
+										'Default'=>'',
 										'Extra'=>'auto_increment'
 					);
 				}
@@ -172,7 +172,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 					$this->elements[$this->db->f("Table")]['line'.$k]=$v;
 				}
 			}
-			$this->fetchNewColumns();
+			//$this->fetchNewColumns();
 		}
 
 		function save(){
@@ -185,7 +185,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 				weDBUtil::delTable($this->table);
 			}
 			$myarray=$this->elements['create'];
-			array_shift($myarray);//get rid of 'create'
+			array_shift($myarray);//get rid of 'create' - type of operation
 			array_shift($myarray);//get rid of old create Statement'
 			array_unshift($myarray,'CREATE TABLE '.$this->table.' (' );
 
