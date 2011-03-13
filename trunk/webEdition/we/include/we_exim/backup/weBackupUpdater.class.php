@@ -50,8 +50,8 @@
 						$Owners = ($DB_WE->f("OwnerID") && ($DB_WE->f("OwnerID") != $DB_WE->f("CreatorID"))) ? (",".$DB_WE->f("OwnerID").",") : "";
 						$CreatorID = $DB_WE->f("CreatorID") ? $DB_WE->f("CreatorID") : $_SESSION["user"]["ID"];
 						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
-						$db2->query("UPDATE $table SET CreatorID='$CreatorID' , ModifierID='$ModifierID' , Owners='$Owners' WHERE ID='$id'");
-						$db2->query("DELETE FROM tblOwner WHERE fileID='$id'");
+						$db2->query("UPDATE ".mysql_real_escape_string($table)." SET CreatorID='".abs($CreatorID)."' , ModifierID='".abs($ModifierID)."' , Owners='".mysql_real_escape_string($Owners)."' WHERE ID='".abs($id)."'");
+						$db2->query("DELETE FROM tblOwner WHERE fileID='".abs($id)."'");
 						@set_time_limit(30);
 					}
 				}
@@ -79,9 +79,9 @@
 		$DB_WE->query("SELECT * FROM " . CATEGORY_TABLE);
 		while($DB_WE->next_record()){
 			if(($DB_WE->f("Text")==""))
-				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Text='".$DB_WE->f("Category")."' WHERE ID='".$DB_WE->f("ID")."'");
+				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Text='".mysql_real_escape_string($DB_WE->f("Category"))."' WHERE ID='".abs($DB_WE->f("ID"))."'");
 			if(($DB_WE->f("Path")==""))
-				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Path='/".$DB_WE->f("Category")."' WHERE ID='".$DB_WE->f("ID")."'");
+				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Path='/".mysql_real_escape_string($DB_WE->f("Category"))."' WHERE ID='".abs($DB_WE->f("ID"))."'");
 		}
 
 		if(!$this->isColExist(PREFS_TABLE,"seem_start_file")) $this->addCol(PREFS_TABLE,"seem_start_file","INT");
@@ -125,7 +125,7 @@
 
 
 		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
-		
+
 		if(!$this->isColExist(VERSIONS_TABLE,"MasterTemplateID")) $this->addCol(VERSIONS_TABLE,"MasterTemplateID","bigint(20) NOT NULL default '0'","AFTER ExtraTemplates");
 
 	}
@@ -141,7 +141,6 @@
 			while($DB_WE->next_record()){
 			  $perms_slot=array();
 			  $pstr=$DB_WE->f("Permissions");
-			  $len=strlen($pstr);
 			  $perms_slot["ADMINISTRATOR"]=$pstr["0"];
 			  $perms_slot["PUBLISH"]=$pstr["1"];
 			  if(count($perms_slot)>0){
@@ -190,9 +189,16 @@
 				while($db->next_record()){
 					@set_time_limit(30);
 					$id = $db->f("ID");
-			if($db->f("Type")==2) $icon="user_alias.gif";
-			else if($db->f("Type")==1) $icon="usergroup.gif";
-			else $icon="user.gif";
+			switch($db->f("Type")) {
+			case 2:
+				$icon="user_alias.gif";
+				break;
+			case 1:
+				$icon="usergroup.gif";
+				break;
+			default:
+				$icon="user.gif";
+			}
 					$db2->query("UPDATE " . USER_TABLE . " SET Icon='".mysql_real_escape_string($icon)."' WHERE ID='".abs($id)."'");
 				}
 	}
@@ -228,6 +234,25 @@
 			if($DB_WE->next_record()) return true; else return false;
 	}
 
+	function hasIndex($tab,$index){
+		$GLOBALS['DB_WE']->query('SHOW INDEX FROM '.mysql_real_escape_string($tab).' WHERE Key_name = "'.$index.'"');
+		return $GLOBALS['DB_WE']->next_record();
+	}
+
+	function updateUnindexedCols($tab,$col){
+			global $DB_WE;
+			$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
+			$query=array();
+			while($DB_WE->next_record()) {
+				if($DB_WE->f('Key')==''){
+					$query[]='ADD INDEX ('.$DB_WE->f('Field').')';
+				}
+			}
+			if(count($query)>0){
+				$DB_WE->query('ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query));
+			}
+	}
+
 	function isTabExist($tab){
 			global $DB_WE;
 			$DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
@@ -251,28 +276,32 @@
 
 	function addCol($tab,$col,$typ,$pos=""){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD $col $typ".(($pos!="") ? " ".$pos : "").";");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
+	}
+
+	function addIndex($tab,$name,$def){
+		$GLOBALS['DB_WE']->query('ALTER TABLE '.mysql_real_escape_string($tab).' ADD INDEX '.$name.' ('.$def.')');
 	}
 
 	function changeColTyp($tab,$col,$newtyp){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE $col $col $newtyp;");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
 	}
-	
+
 	function changeColName($tab,$oldcol,$newcol){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE $oldcol $newcol;");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$oldcol." ".$newcol.";");
 	}
 
 	function getColTyp($tab,$col){
 			   global $DB_WE;
-			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '$col';");
+			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".$col."';");
 			   if($DB_WE->next_record()) return $DB_WE->f("Type"); else return "";
 	}
 
 	function delCol($tab,$col){
 			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP $col;");
+			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP ".$col.";");
 	}
 
 	function updateUsers(){
@@ -291,6 +320,8 @@
 		if($this->isColExist(USER_TABLE,"Second")) $this->changeColTyp(USER_TABLE,"Second","VARCHAR(255)");
 		if($this->isColExist(USER_TABLE,"username")) $this->changeColTyp(USER_TABLE,"username","VARCHAR(255) NOT NULL");
 		if($this->isColExist(USER_TABLE,"workSpace")) $this->changeColTyp(USER_TABLE,"workSpace","VARCHAR(255)");
+
+
 		$this->fix_path();
 		$this->fix_text();
 		$this->fix_icon_small();
@@ -338,7 +369,7 @@
 		}
 		$this->fix_icon();
 
-
+		return true;
 	}
 
 	function updateCustomers(){
@@ -362,7 +393,8 @@
 						$settings=new weCustomerSettings();
 						$settings->customer=new weCustomer();
 						$fields=$settings->customer->getFieldsDbProperties();
-						foreach($fields as $name=>$props){
+						$_keys = array_keys($fields);
+						foreach($_keys as $name){
 							if(!$settings->customer->isProtected($name) && !$settings->customer->isProperty($name)){
 								$settings->FieldAdds[$name]["type"]="input";
 								$settings->FieldAdds[$name]["default"]="";
@@ -407,6 +439,7 @@
 			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter","enum('','ja') NOT NULL");
 
 		}
+		return true;
 	}
 
 	function updateScheduler(){
@@ -418,6 +451,7 @@
 			check_and_convert_to_sched_pro();
 
 		}
+		return true;
 	}
 
 	function updateNewsletter(){
@@ -427,6 +461,7 @@
 		if(defined("NEWSLETTER_BLOCK_TABLE")){
 				if(!$this->isColExist(NEWSLETTER_BLOCK_TABLE,"Pack")) $this->addCol(NEWSLETTER_BLOCK_TABLE,"Pack","TINYINT(1) DEFAULT '0'");
 		}
+		return true;
 	}
 
 	function updateShop(){
@@ -470,6 +505,7 @@
 
 
 		}
+	return true;
 	}
 
 	function updateObject(){
@@ -525,7 +561,7 @@
 				$this->addCol($_table,'WebUserID','BIGINT(20) NOT NULL',' AFTER Language ');
 			}
 
-			$_maxid = f('SELECT MAX(TableID) as MaxTID FROM ' . OBJECT_FILES_TABLE . ';','MaxTID',$_db);
+			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE . ';','MaxTID',$_db);
 			$_maxid++;
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
@@ -560,11 +596,25 @@
 					} else {
 						$this->addCol($_table,'OF_Language','VARCHAR(5) DEFAULT NULL',' AFTER OF_WebUserID ');
 					}
+					//add indices to all objects
+					$this->updateUnindexedCols($_table,'object_%');
+
+					if(!$this->hasIndex($_table, 'OF_WebUserID')){
+						$this->addIndex($_table,'OF_WebUserID','OF_WebUserID');
+				}
+					if(!$this->hasIndex($_table, 'published')){
+						$this->addIndex($_table,'published','OF_ID,OF_Published,OF_IsSearchable');
+			}
+					if(!$this->hasIndex($_table, 'OF_IsSearchable')){
+						$this->addIndex($_table,'OF_IsSearchable','OF_IsSearchable');
+					}
 				}
 			}
-
 		}
+		return true;
 	}
+
+
 
 	function updateNavigation(){
 		if(!$this->isColExist(NAVIGATION_TABLE,"Charset")){
@@ -706,6 +756,7 @@
 				}
 			}
 		}
+		return true;
 	}
 
 	function doUpdate(){
