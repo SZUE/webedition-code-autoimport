@@ -133,7 +133,7 @@ public class Editor extends JApplet{
 		if(php_ext==null) php_ext=".php";
 
 		if (SERVER_NAME.length() > 0) {
-			url = codeBase.toString()+"getAllTags" + php_ext;
+			url = codeBase.toString()+"/getAllTags" + php_ext;
 		} else {
 			url = "http://localhost/getAllTags.php";
 		}
@@ -197,7 +197,7 @@ public class Editor extends JApplet{
 		if (!attribs.containsKey(tagName)) {
 			String url;
 			if (SERVER_NAME.length() > 0) {
-				url = codeBase.toString()+"getAttribsForTag" + php_ext + "?tagName="+tagName;
+				url = codeBase.toString()+"/getAttribsForTag" + php_ext + "?tagName="+tagName;
 			} else {
 				url = "http://localhost/getAttribsForTag.php?tagName="+tagName;
 			}
