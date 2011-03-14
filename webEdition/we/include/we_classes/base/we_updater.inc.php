@@ -99,7 +99,6 @@
   		if(!$this->isColExist(PREFS_TABLE,"xhtml_show_wrong_error_log")) $this->addCol(PREFS_TABLE,"xhtml_show_wrong_error_log","TINYINT(2) DEFAULT '0' NOT NULL");
   		if(!$this->isColExist(PREFS_TABLE,"default_tree_count")) $this->addCol(PREFS_TABLE,"default_tree_count","INT(11) DEFAULT '0' NOT NULL");
 
-
 		if(!$this->isColExist(PREFS_TABLE,"editorMode")) $this->addCol(PREFS_TABLE,"editorMode","  varchar(64) NOT NULL DEFAULT 'textarea'",' AFTER  specify_jeditor_colors ');
 		if(!$this->isColExist(PREFS_TABLE,"editorLinenumbers")) $this->addCol(PREFS_TABLE,"editorLinenumbers"," tinyint(1) NOT NULL default '1'",' AFTER editorMode ');
 		if(!$this->isColExist(PREFS_TABLE,"editorCodecompletion")) $this->addCol(PREFS_TABLE,"editorCodecompletion"," tinyint(1) NOT NULL default '0'",' AFTER editorLinenumbers ');
@@ -123,30 +122,26 @@
 		if($this->isColExist(FAILED_LOGINS_TABLE,"IP")) $this->changeColTyp(FAILED_LOGINS_TABLE,"IP"," varchar(40) NOT NULL");
 		if($this->isColExist(FAILED_LOGINS_TABLE,"LoginDate")) $this->changeColTyp(FAILED_LOGINS_TABLE,"LoginDate"," timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
-
 		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
-
-		if(!$this->isColExist(VERSIONS_TABLE,"MasterTemplateID")) $this->addCol(VERSIONS_TABLE,"MasterTemplateID","bigint(20) NOT NULL default '0'","AFTER ExtraTemplates");
-
 	}
 
 
 
 	function convertPerms(){
-			global $DB_WE;
-			if($this->isColExist(USER_TABLE,"Permissions") && $this->getColTyp(USER_TABLE,"Permissions")!="text") $this->changeColTyp(USER_TABLE,"Permissions","TEXT");
-			else return;
-			$db_tmp=new DB_WE();
-			$DB_WE->query("SELECT ID,username,Permissions from " . USER_TABLE);
-			while($DB_WE->next_record()){
-			  $perms_slot=array();
-			  $pstr=$DB_WE->f("Permissions");
-			  $perms_slot["ADMINISTRATOR"]=$pstr["0"];
-			  $perms_slot["PUBLISH"]=$pstr["1"];
-			  if(count($perms_slot)>0){
-				 $db_tmp->query("UPDATE " . USER_TABLE . " SET Permissions='".mysql_real_escape_string(serialize($perms_slot))."' WHERE ID=".abs($DB_WE->f("ID")));
-			  }
-			}
+	  global $DB_WE;
+	  if($this->isColExist(USER_TABLE,"Permissions") && $this->getColTyp(USER_TABLE,"Permissions")!="text") $this->changeColTyp(USER_TABLE,"Permissions","TEXT");
+	  else return;
+	  $db_tmp=new DB_WE();
+	  $DB_WE->query("SELECT ID,username,Permissions from " . USER_TABLE);
+	  while($DB_WE->next_record()){
+		$perms_slot=array();
+		$pstr=$DB_WE->f("Permissions");
+		$perms_slot["ADMINISTRATOR"]=$pstr["0"];
+		$perms_slot["PUBLISH"]=$pstr["1"];
+		if(count($perms_slot)>0){
+		   $db_tmp->query("UPDATE " . USER_TABLE . " SET Permissions='".mysql_real_escape_string(serialize($perms_slot))."' WHERE ID=".abs($DB_WE->f("ID")));
+		}
+	  }
 	}
 
 	function fix_path(){
@@ -155,30 +150,28 @@
 		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
 			$db->query("SELECT ID,username,ParentID FROM " . USER_TABLE);
 			while($db->next_record()){
-						@set_time_limit(30);
-						$id = $db->f("ID");
-						$pid = $db->f("ParentID");
-						$path = "/".$db->f("username");
-						while($pid > 0){
-					$db2->query("SELECT username,ParentID FROM " . USER_TABLE . " WHERE ID='".abs($pid)."'");
-					if($db2->next_record()){
-									$path = "/".$db2->f("username").$path;
-									$pid = $db2->f("ParentID");
-					}
-					else $pid=0;
-						}
-						$db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
+			  @set_time_limit(30);
+			  $id = $db->f("ID");
+			  $pid = $db->f("ParentID");
+			  $path = "/".$db->f("username");
+			  while($pid > 0){
+				$db2->query("SELECT username,ParentID FROM " . USER_TABLE . " WHERE ID='".abs($pid)."'");
+				if($db2->next_record()){
+				  $path = "/".$db2->f("username").$path;
+				  $pid = $db2->f("ParentID");
+				}
+				else $pid=0;
+				}
+				  $db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
 			}
-		}
-		else{
+		} else {
 			$db->query("SELECT ID,username FROM " . USER_TABLE);
 			while($db->next_record()){
-						@set_time_limit(30);
-						$id = $db->f("ID");
-						$path = "/".$db->f("username");
-						$db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
+			  @set_time_limit(30);
+			  $id = $db->f("ID");
+			  $path = "/".$db->f("username");
+			  $db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
 			}
-
 		}
 	}
 
@@ -204,16 +197,16 @@
 	}
 
 	function fix_icon_small(){
-				$db = new DB_WE();
-				$db2 = new DB_WE();
-				$db->query("SELECT ID,IsFolder FROM " . USER_TABLE);
-				while($db->next_record()){
+		$db = new DB_WE();
+		$db2 = new DB_WE();
+		$db->query("SELECT ID,IsFolder FROM " . USER_TABLE);
+		while($db->next_record()){
 					@set_time_limit(30);
-					$id = $db->f("ID");
+			$id = $db->f("ID");
 			if($db->f("IsFolder")==1) $icon="usergroup.gif";
 			else $icon="user.gif";
 					$db2->query("UPDATE " . USER_TABLE . " SET Icon='".mysql_real_escape_string($icon)."' WHERE ID='".abs($id)."'");
-				}
+		}
 	}
 
 	function fix_text(){
@@ -240,43 +233,43 @@
 	}
 
 	function updateUnindexedCols($tab,$col){
-			global $DB_WE;
-			$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
-			$query=array();
-			while($DB_WE->next_record()) {
-				if($DB_WE->f('Key')==''){
-					$query[]='ADD INDEX ('.$DB_WE->f('Field').')';
-				}
-			}
-			if(count($query)>0){
-				$DB_WE->query('ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query));
-			}
+	  global $DB_WE;
+	  $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
+	  $query=array();
+	  while($DB_WE->next_record()) {
+		  if($DB_WE->f('Key')==''){
+			  $query[]='ADD INDEX ('.$DB_WE->f('Field').')';
+		  }
+	  }
+	  if(count($query)>0){
+		  $DB_WE->query('ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query));
+	  }
 	}
 
 	function isTabExist($tab){
-			global $DB_WE;
-			$DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
-			if($DB_WE->next_record()) return true; else return false;
+	  global $DB_WE;
+	  $DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
+	  if($DB_WE->next_record()) return true; else return false;
 	}
 
 	function addTable($tab,$cols){
-			   global $DB_WE;
+	   global $DB_WE;
 
-			   if(!is_array($cols)) return;
-			   if(!count($cols)) return;
-			   $cols_sql=array();
-			   $key_sql=array();
-			   foreach($cols as $name=>$type){
-			   		$cols_sql[]=$name." ".$type;
-			   }
-			   $sql_array=array_merge($cols_sql,$key_sql);
+	   if(!is_array($cols)) return;
+	   if(!count($cols)) return;
+	   $cols_sql=array();
+	   $key_sql=array();
+	   foreach($cols as $name=>$type){
+			$cols_sql[]=$name." ".$type;
+	   }
+	   $sql_array=array_merge($cols_sql,$key_sql);
 
-			   $DB_WE->query("CREATE TABLE ".mysql_real_escape_string($tab)." (".implode(",",$sql_array).")");
+	   $DB_WE->query("CREATE TABLE ".mysql_real_escape_string($tab)." (".implode(",",$sql_array).")");
 	}
 
 	function addCol($tab,$col,$typ,$pos=""){
-			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
+	   global $DB_WE;
+	   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
 	}
 
 	function addIndex($tab,$name,$def){
@@ -284,24 +277,24 @@
 	}
 
 	function changeColTyp($tab,$col,$newtyp){
-			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
+		global $DB_WE;
+		$DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
 	}
 
 	function changeColName($tab,$oldcol,$newcol){
-			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$oldcol." ".$newcol.";");
+		global $DB_WE;
+		$DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$oldcol." ".$newcol.";");
 	}
 
 	function getColTyp($tab,$col){
-			   global $DB_WE;
-			   $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".$col."';");
-			   if($DB_WE->next_record()) return $DB_WE->f("Type"); else return "";
+		global $DB_WE;
+		$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".$col."';");
+		if($DB_WE->next_record()) return $DB_WE->f("Type"); else return "";
 	}
 
 	function delCol($tab,$col){
-			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP ".$col.";");
+		global $DB_WE;
+		$DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP ".$col.";");
 	}
 
 	function updateUsers(){
@@ -377,30 +370,30 @@
 		if(defined("CUSTOMER_TABLE")){
 			if(weModuleInfo::isModuleInstalled("customer")){
 				if(!$this->isTabExist(CUSTOMER_ADMIN_TABLE)){
-						$cols=array(
-							"Name"=>"VARCHAR(255) NOT NULL",
-							"Value"=>"TEXT NOT NULL"
-						);
-
-						$this->addTable(CUSTOMER_ADMIN_TABLE,$cols);
-
-						$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('FieldAdds','');");
-						$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('SortView','');");
-						$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('Prefs','');");
-
-						include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/"."weCustomerSettings.php");
-						$settings=new weCustomerSettings();
-						$settings->customer=new weCustomer();
-						$fields=$settings->customer->getFieldsDbProperties();
-						$_keys = array_keys($fields);
-						foreach($_keys as $name){
-							if(!$settings->customer->isProtected($name) && !$settings->customer->isProperty($name)){
-								$settings->FieldAdds[$name]["type"]="input";
-								$settings->FieldAdds[$name]["default"]="";
-							}
-						}
-						$settings->save();
-				}
+					$cols=array(
+					  "Name"=>"VARCHAR(255) NOT NULL",
+					  "Value"=>"TEXT NOT NULL"
+				  );
+  
+				  $this->addTable(CUSTOMER_ADMIN_TABLE,$cols);
+  
+				  $DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('FieldAdds','');");
+				  $DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('SortView','');");
+				  $DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('Prefs','');");
+  
+				  include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/"."weCustomerSettings.php");
+				  $settings=new weCustomerSettings();
+				  $settings->customer=new weCustomer();
+				  $fields=$settings->customer->getFieldsDbProperties();
+				  $_keys = array_keys($fields);
+				  foreach($_keys as $name){
+					  if(!$settings->customer->isProtected($name) && !$settings->customer->isProperty($name)){
+						  $settings->FieldAdds[$name]["type"]="input";
+						  $settings->FieldAdds[$name]["default"]="";
+					  }
+				  }
+				  $settings->save();
+			  }
 
 			}
 
@@ -448,7 +441,6 @@
 			if(!$this->isColExist(SCHEDULE_TABLE,"Active")) $this->addCol(SCHEDULE_TABLE,"Active","TINYINT(1) DEFAULT '1'");
 
 			check_and_convert_to_sched_pro();
-
 		}
 		return true;
 	}
@@ -500,9 +492,6 @@
 			if(!$this->isColExist(SHOP_TABLE,'MailCustomI')) $this->addCol(SHOP_TABLE,'MailCustomI','datetime default NULL',' AFTER MailCustomH ');
 			if(!$this->isColExist(SHOP_TABLE,'MailCustomJ')) $this->addCol(SHOP_TABLE,'MailCustomJ','datetime default NULL',' AFTER MailCustomI ');
 			if(!$this->isColExist(SHOP_TABLE,'MailFinished')) $this->addCol(SHOP_TABLE,'MailFinished','datetime default NULL',' AFTER MailCustomJ ');
-
-
-
 		}
 		return true;
 	}
@@ -738,7 +727,7 @@
 
 	function updateLock(){
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
-		if($this->isColExist(LOCK_TABLE,'lockTime')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
+		if($this->isColExist(LOCK_TABLE,'lock')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
 		if(!$this->isColExist(LOCK_TABLE,'lockTime'))  $this->addCol(LOCK_TABLE,'lockTime',"datetime NOT NULL",' AFTER sessionID ');
 	}
 
