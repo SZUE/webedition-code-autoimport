@@ -44,7 +44,7 @@ print STYLESHEET;
 
 $we_button = new we_button();
 ?>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 	<!--
 		<?php
 		if (isset($_REQUEST['save']) && $_REQUEST['save'] == 1) {
@@ -98,4 +98,4 @@ $we_button = new we_button();
 </body>
 </html>
 
-<?php } 
+<?php }

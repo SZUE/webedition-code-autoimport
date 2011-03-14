@@ -46,7 +46,7 @@ class weFullscreenEditDialog extends weDialog{
 ##################################################################################################
 
 	function getDialogContentHTML(){
-		$js = '<script language="JavaScript" type="text/javascript">isFullScreen = true;</script>';
+		$js = '<script  type="text/javascript">isFullScreen = true;</script>';
 		$e = new we_wysiwyg("we_dialog_args[src]",$this->args["screenWidth"]-90,$this->args["screenHeight"]-200,'',$this->args["propString"],$this->args["bgcolor"],$this->args["editname"],$this->args["className"],"",$this->args["outsideWE"],$this->args["xml"],$this->args["removeFirstParagraph"],true,$this->args["baseHref"],$this->args["charset"],$this->args["cssClasses"],$this->args['language']);
 		return we_wysiwyg::getHeaderHTML().$js.$e->getHTML();
 	}
@@ -64,8 +64,8 @@ class weFullscreenEditDialog extends weDialog{
 		$_BROWSER=new we_browserDetect();
 
 		$js = '
-			<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>
+			<script  type="text/javascript"><!--
 				var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 				var textareaFocus = false;
 

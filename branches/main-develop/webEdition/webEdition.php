@@ -76,17 +76,17 @@ $online_help=true;
 
 ?>
 <link rel="SHORTCUT ICON" href="/webEdition/images/webedition.ico" />
-<script src="<?php print JS_DIR; ?>windows.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?php print JS_DIR; ?>windows.js"  type="text/javascript"></script>
 <script type="text/javascript" src="<?php print JS_DIR . "weJsStrings.php"; ?>"></script>
-<script src="<?php print JS_DIR; ?>md5.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?php print JS_DIR; ?>md5.js"  type="text/javascript"></script>
 <script src="<?php print JS_DIR; ?>weNavigationHistory.php" type="text/javascript"></script>
 <script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
 <script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
 <script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>keyListener.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>messageConsole.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>keyListener.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>messageConsole.js"></script>
 
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 
 self.focus();
 

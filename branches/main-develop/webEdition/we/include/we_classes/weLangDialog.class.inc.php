@@ -57,7 +57,7 @@ class weLangDialog extends weDialog{
 
 		if(defined("GLOSSARY_TABLE")) {
 			$js .= '
-			<script language="JavaScript" type="text/javascript">
+			<script  type="text/javascript">
 			<!--
 					function weSaveToGlossaryFn() {
 						eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);

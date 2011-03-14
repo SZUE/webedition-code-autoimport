@@ -742,7 +742,7 @@ class we_linklist
 		if ($editmode) {
 
 			if (isset($GLOBALS["we_list_inserted"]) && isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $attribs["name"])) {
-				$out .= '<script language="JavaScript" type="text/javascript">we_cmd(\'edit_linklist\',\'' . $attribs["name"] . '\',\'' . ((isset(
+				$out .= '<script  type="text/javascript">we_cmd(\'edit_linklist\',\'' . $attribs["name"] . '\',\'' . ((isset(
 						$GLOBALS["we_list_insertedNr"]) && ($GLOBALS["we_list_insertedNr"] != "")) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');</script>';
 			}
 			$clearContent = eregi_replace('^[^<]+', '', $content);

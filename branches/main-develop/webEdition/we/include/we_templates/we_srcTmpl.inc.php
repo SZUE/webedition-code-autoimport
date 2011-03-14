@@ -37,7 +37,7 @@ if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be
 if ($we_editmode) {
 	htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
 	?>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+	<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	<?php
 	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
@@ -46,7 +46,7 @@ if ($we_editmode) {
 
 	$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java' && !$_SESSION['weShowAltMenu']);
 	?>
-	<script language="JavaScript" type="text/javascript">
+	<script  type="text/javascript">
 
 		var weIsTextEditor = true;
 		var wizardHeight={
@@ -928,4 +928,4 @@ if ($we_editmode) {
 	}
 	?>
 	</html>
-<?php } 
+<?php }

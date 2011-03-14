@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -27,7 +27,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Class to build a HTML page
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
@@ -57,8 +57,8 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 
 	/*
 	 * Holds the HTML for a frameset
-	 * 
-	 * @var string 
+	 *
+	 * @var string
 	 */
 	protected $_framesetHTML = '';
 
@@ -119,7 +119,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	{
 		$charset = we_core_Local::getComputedUICharset();
 		$this->setCharset($charset);
-		
+
 		$controller = Zend_Controller_Front::getInstance();
 		if ($controller->getResponse()) {
 			$controller->getResponse()->setHeader('Content-Type', 'text/html; charset=' . $charset, true);
@@ -132,12 +132,12 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 
 	/*
 	 * gets a singleton instance.
-	 * 
+	 *
 	 * @return we_ui_layout_HTMLPage
 	 */
 	public static function getInstance()
 	{
-		
+
 		if (self::$__instance === NULL) {
 			self::$__instance = new self();
 		}
@@ -166,7 +166,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	}
 
 	/**
-	 * adds CSS code to the page 
+	 * adds CSS code to the page
 	 * Will be inserted into the header section of the page
 	 * using the <style> tag
 	 *
@@ -181,7 +181,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	}
 
 	/**
-	 * adds JavaScript code to the page 
+	 * adds JavaScript code to the page
 	 * Will be inserted into the header section of the page
 	 * using the <script> tag
 	 *
@@ -196,7 +196,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	}
 
 	/**
-	 * adds body attribute 
+	 * adds body attribute
 	 *
 	 * @param string $name  name of attribute
 	 * @param string $value value of attribute
@@ -215,9 +215,9 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	 */
 	protected function _renderHTML()
 	{
-		
+
 		$this->addJSFile('/webEdition/js/attachKeyListener.js');
-		
+
 		$js = '';
 		// write in all frames except in top frame
 		if (!$this->_isTopFrame) {
@@ -236,9 +236,9 @@ function weCC() {
 		return weGetTop().we_core_CmdController.getInstance();
 	} else if (opener){
 		if (typeof(opener.we_core_CmdController) != "undefined") {
-			return opener.we_core_CmdController.getInstance(); 
+			return opener.we_core_CmdController.getInstance();
 		} else if (typeof(opener.weCC) != "undefined"){
-			return opener.weCC(); 
+			return opener.weCC();
 		}
 	}
 	return null;
@@ -250,9 +250,9 @@ function weEC() {
 		return topFrame.weEventController;
 	} else if (opener){
 		if (typeof(opener.weEventController) != "undefined") {
-			return opener.weEventController; 
+			return opener.weEventController;
 		} else if (typeof(opener.weEC) != "undefined"){
-			return opener.weEC(); 
+			return opener.weEC();
 		}
 	}
 	return null;
@@ -262,51 +262,51 @@ var weCmdController = weCC();
 var weEventController = weEC();
 
 EOS;
-		
+
 		} else {
 			$this->addJSFile('/webEdition/lib/we/core/CmdController.js');
 			$this->addJSFile('/webEdition/lib/we/core/EventController.js');
-			
+
 			$js = <<<EOS
 
 var weCmdController = we_core_CmdController.getInstance();
 var weEventController = new we_core_EventController();
 EOS;
-		
+
 		}
 		$html = '';
-		
+
 		// add d octype tag if not empty
 		if ($this->getDoctype() !== '') {
 			$html .= $this->getDoctype() . "\n";
 		}
-		
+
 		// add <html> tag
 		if ($this->getLang() !== '') {
 			$html .= '<html lang="' . $this->getLang() . '">';
 		} else {
 			$html .= '<html>';
 		}
-		
+
 		// add <header> tag
 		$html .= "\n";
 		$html .= "<head>\n";
-		
+
 		// add meta tag for charset if not empty
 		if ($this->getCharset() !== '') {
 			$html .= "\t" . '<meta http-equiv="content-type" content="text/html; charset=' . $this->getCharset() . '">' . "\n";
 		}
-		
+
 		// add title tag if not empty
 		if ($this->getTitle() !== '') {
 			$html .= "\t" . '<title>' . $this->getTitle() . '</title>' . "\n";
 		}
-		
+
 		// add link tags for external CSS files
 		foreach ($this->_CSSFiles as $file) {
 			$html .= "\t" . '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />' . "\n";
 		}
-		
+
 		// add inline CSS
 		if (count($this->_inlineCSS) > 0) {
 			$html .= "\t<style>\n";
@@ -315,12 +315,12 @@ EOS;
 			}
 			$html .= "\t</style>\n";
 		}
-		
+
 		// add javascript tags for external JavaScript files
 		foreach ($this->_JSFiles as $file) {
-			$html .= "\t" . '<script type="text/javascript" language="JavaScript" src="' . $file . '"></script>' . "\n";
+			$html .= "\t" . '<script type="text/javascript" src="' . $file . '"></script>' . "\n";
 		}
-		
+
 		$html .= "\t<script type=\"text/javascript\" language=\"JavaScript\">\n";
 		$html .= $js . "\n";
 		// add inline JavaScript
@@ -328,7 +328,7 @@ EOS;
 			$html .= $code . "\n";
 		}
 		$html .= "\t</script>\n";
-		
+
 		// add head end tag
 		$html .= "</head>\n";
 		if ($this->_framesetHTML !== '') {
@@ -342,7 +342,7 @@ EOS;
 
 	/**
 	 * called before _renderHTML() is called
-	 * for HTMLDocuments we don't need to do anything here, 
+	 * for HTMLDocuments we don't need to do anything here,
 	 * so we overwrite it with an empty function
 	 *
 	 * @return void
@@ -353,7 +353,7 @@ EOS;
 
 	/**
 	 * Retrieve body attributes as an associative array
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getBodyAttributes()
@@ -403,7 +403,7 @@ EOS;
 
 	/**
 	 * set body attributes
-	 * 
+	 *
 	 * @param array $bodyAttributes
 	 * @return void
 	 */

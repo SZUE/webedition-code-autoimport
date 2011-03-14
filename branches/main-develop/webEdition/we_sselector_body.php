@@ -52,7 +52,7 @@ function _cutText($text,$l){
 }
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 var clickCount=0;
 var wasdblclick=0;
 var tout=null;
@@ -189,7 +189,7 @@ function getDataType($dat){
 		$dir_obj->close();
  }
  else{
-	print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"),WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.g_l('alert',"[access_denied]").' --</div>';
+	print '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"),WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.g_l('alert',"[access_denied]").' --</div>';
  }
 
  switch($_REQUEST["ord"]){
@@ -212,7 +212,7 @@ foreach ($ordFile as $key => $value) {
 	array_push($final,$arFile[$key]);
 }
 
-print '<script language="JavaScript">
+print '<script type="text/javascript">
 top.allentries = new Array();
 var i = 0;
 ';
@@ -330,7 +330,7 @@ foreach ($final as $key => $entry) {
 </form>
 
 <?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"))&&($set_rename))):?>
-    <script language="JavaScript" type="text/javascript">
+    <script  type="text/javascript">
      document.forms["we_form"].elements["txt"].focus();
      document.forms["we_form"].elements["txt"].select();
      <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"):?>

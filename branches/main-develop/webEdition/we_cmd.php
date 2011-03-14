@@ -405,7 +405,7 @@ if($INCLUDE){
 
     if ( $_REQUEST["we_cmd"][0] == "edit_document" || $_REQUEST["we_cmd"][0] == "switch_edit_page"  || $_REQUEST["we_cmd"][0] == "load_editor" ) {
 
-    	print '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>';
+    	print '<script  type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>';
 
     }
 

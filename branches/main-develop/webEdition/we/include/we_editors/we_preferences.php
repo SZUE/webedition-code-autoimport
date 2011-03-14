@@ -3449,7 +3449,7 @@ function build_dialog($selected_setting = "ui") {
 					$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
 					$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode());
 					$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser);
-					array_push($_settings, array("headline" => g_l('prefs','[seem_startdocument]'), "html" => $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>', "space" => 200));
+					array_push($_settings, array("headline" => g_l('prefs','[seem_startdocument]'), "html" => $_seem_html->getHtmlCode().'<script  type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>', "space" => 200));
 				}
 
 				// Build dialog if user has permission
@@ -4193,7 +4193,7 @@ EOF;
 			 *********************************************************************/
 
 
-			$_needed_JavaScript = '<script language="JavaScript" type="text/javascript">
+			$_needed_JavaScript = '<script  type="text/javascript">
 
 function setJavaEditorDisabled(disabled) {
 	document.getElementById("_specify_jeditor_colors").disabled = disabled;
@@ -6575,7 +6575,7 @@ function setColorField(name) {
 
 ' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert','[field_in_tab_notvalid_pre]')."\\n\\n".$acErrorMsg."\\n".g_l('alert','[field_in_tab_notvalid_post]'), WE_MESSAGE_ERROR) : ""));
 
-	$_we_win_js = '<script src="'.JS_DIR.'windows.js" language="JavaScript" type="text/javascript"></script>';
+	$_we_win_js = '<script src="'.JS_DIR.'windows.js"  type="text/javascript"></script>';
 
 
 

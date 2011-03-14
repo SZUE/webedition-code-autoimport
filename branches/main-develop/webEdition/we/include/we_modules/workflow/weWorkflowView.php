@@ -563,7 +563,7 @@ class weWorkflowView extends weWorkflowBase{
 			}
 		}
 		?>
-		<script language="JavaScript" type="text/javascript">
+		<script  type="text/javascript">
 
 			function doUnload() {
 				if (!!jsWindow_count) {
@@ -654,7 +654,7 @@ class weWorkflowView extends weWorkflowBase{
 
 	function getCmdJS(){
 	?>
-		<script language="JavaScript" type="text/javascript">
+		<script  type="text/javascript">
 				function submitForm(){
 					var f = self.document.we_form;
 					f.target = "cmd";
@@ -667,8 +667,8 @@ class weWorkflowView extends weWorkflowBase{
 
 	function getPropertyJS(){
 	?>
-		<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-		<script language="JavaScript" type="text/javascript">
+		<script  type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+		<script  type="text/javascript">
 			var loaded;
 
 			function doUnload() {
@@ -907,7 +907,7 @@ class weWorkflowView extends weWorkflowBase{
 			case "new_workflow":
 				$this->workflowDef=new weWorkflow();
 				$this->page = 0;
-				print '<script language="JavaScript" type="text/javascript">
+				print '<script  type="text/javascript">
 					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edheader";
 					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edfooter";
 					</script>';
@@ -1033,7 +1033,7 @@ class weWorkflowView extends weWorkflowBase{
 				$this->workflowDef->Objects="";
 			break;
 			case "reload":
-					print '<script language="JavaScript" type="text/javascript">
+					print '<script  type="text/javascript">
 					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edheader&page='.$this->page.'&txt='.$this->workflowDef->Text.'";
 					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edfooter";
 					</script>';
@@ -1068,20 +1068,20 @@ class weWorkflowView extends weWorkflowBase{
 					}
 
                if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")){
-						print '<script language="JavaScript" type="text/javascript">';
+						print '<script  type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}
 					else if($newone && !we_hasPerm("NEW_WORKFLOW")){
-						print '<script language="JavaScript" type="text/javascript">';
+						print '<script  type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}
 					else{
 						if($double){
-							print '<script language="JavaScript" type="text/javascript">';
+							print '<script  type="text/javascript">';
 							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[double_name]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
@@ -1095,7 +1095,7 @@ class weWorkflowView extends weWorkflowBase{
 						}
 
 						$this->workflowDef->save();
-						print '<script language="JavaScript" type="text/javascript">';
+						print '<script  type="text/javascript">';
 						if($newone) print 'top.content.makeNewEntry("workflow_folder",'.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'",true,"folder","weWorkflowDef","'.$this->workflowDef->Status.'");';
 						else print 'top.content.updateEntry('.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'","'.$this->workflowDef->Status.'");';
 						print $childs;
@@ -1110,7 +1110,7 @@ class weWorkflowView extends weWorkflowBase{
 					$this->show=1;
 					$this->page=0;
 					$this->documentDef->load($_REQUEST["wid"]);
-					print '<script language="JavaScript" type="text/javascript">
+					print '<script  type="text/javascript">
 					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt='.$this->documentDef->document->Text.'";
 					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edfooter&art=1";
 					</script>';
@@ -1120,7 +1120,7 @@ class weWorkflowView extends weWorkflowBase{
 			case "delete_workflow":
 				if(isset($_REQUEST["wid"])){
 					if(!we_hasPerm("DELETE_WORKFLOW")){
-						print '<script language="JavaScript" type="text/javascript">';
+						print '<script  type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
@@ -1130,12 +1130,12 @@ class weWorkflowView extends weWorkflowBase{
 						$this->workflowDef = new weWorkflow($_REQUEST["wid"]);
 						if($this->workflowDef->delete()){
 							$this->workflowDef = new weWorkflow();
-							print '<script language="JavaScript" type="text/javascript">
+							print '<script  type="text/javascript">
 							top.content.deleteEntry('.$_REQUEST["wid"].',"folder");
 							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow','[delete_ok]'), WE_MESSAGE_NOTICE) . '
 							</script>';
 						}else{
-							print '<script language="JavaScript" type="text/javascript">
+							print '<script  type="text/javascript">
 							' . we_message_reporting::getShowMessageCall(g_l('modules_workflow','[delete_nok]'), WE_MESSAGE_ERROR) . '
 							</script>';
 						}
@@ -1152,7 +1152,7 @@ class weWorkflowView extends weWorkflowBase{
 					$stamp=mktime($t[3],$t[4],0,$t[1],$t[0],$t[2]);
 				}
 				$this->Log->clearLog($stamp);
-				print '<script language="JavaScript" type="text/javascript">
+				print '<script  type="text/javascript">
 					' . we_message_reporting::getShowMessageCall(g_l('modules_workflow','[empty_log_ok]'), WE_MESSAGE_NOTICE) . '
 					</script>';
 			break;
@@ -1253,8 +1253,8 @@ class weWorkflowView extends weWorkflowBase{
 		$_space = 100;
 		$_parts = array();
 
-		$out = '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'tooltip.js"></script>';
-		$out .= '<script language="JavaScript" type="text/javascript">function openToEdit(tab,id,contentType){
+		$out = '<script  type="text/javascript" src="'.JS_DIR.'tooltip.js"></script>';
+		$out .= '<script  type="text/javascript">function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
@@ -1445,8 +1445,8 @@ class weWorkflowView extends weWorkflowBase{
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-		$out  = '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
-		<script language="JavaScript" type="text/javascript">function openToEdit(tab,id,contentType){
+		$out  = '<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>
+		<script  type="text/javascript">function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
@@ -1687,7 +1687,7 @@ class weWorkflowView extends weWorkflowBase{
 	function getLogQuestion(){
 		$we_button = new we_button();
 
-		$js='<script language="JavaScript" type="text/javascript">
+		$js='<script  type="text/javascript">
 
 			function clear(){
 				opener.top.content.cmd.document.we_form.wcmd.value="empty_log";

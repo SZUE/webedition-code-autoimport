@@ -350,7 +350,7 @@ function selectFile(id){
 		$startPathQuery->query("SELECT Path FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($this->dir)."'");
 		$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : "/";
 
-		return '<script language="JavaScript" type="text/javascript">
+		return '<script  type="text/javascript">
 	var currentID="'.$this->id.'";
 	var currentDir="'.$this->dir.'";
 	var currentPath="'.$this->path.'";
@@ -600,7 +600,7 @@ function clearEntries(){
 		print STYLESHEET;
 		$this->setDirAndID();
 		$this->printHeaderJSIncluddes();
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script  type="text/javascript">
 ';
 		$this->printHeaderJSDef();
 		$this->printHeaderJS();
@@ -756,7 +756,7 @@ function enableRootDirButs(){
 	}
 
 	function printHeaderJSIncluddes(){
-		print '<script language="JavaScript" type="text/javascript" src="'.WEBEDITION_DIR.'js/images.js"></script>
+		print '<script  type="text/javascript" src="'.WEBEDITION_DIR.'js/images.js"></script>
 ';
 	}
 
@@ -833,7 +833,7 @@ top.fsheader.selectIt();
 		print STYLESHEET;
 
 		$this->printFooterJSIncluddes();
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script  type="text/javascript">
 ';
 		$this->printFooterJSDef();
 		$this->printFooterJS();

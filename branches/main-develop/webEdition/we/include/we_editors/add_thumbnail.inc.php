@@ -49,7 +49,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	$we_button = new we_button();
 
 	htmlTop();
-	print '<script language="JavaScript" type="text/javascript">
+	print '<script type="text/javascript">
 
 	function select_thumbnails(sel){
 
@@ -111,7 +111,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 '.$we_button->create_state_changer();
 
 	print '
-<script src="'.JS_DIR.'windows.js" language="JavaScript" type="text/javascript"></script>
+<script src="'.JS_DIR.'windows.js" type="text/javascript"/>
 ';
 
 

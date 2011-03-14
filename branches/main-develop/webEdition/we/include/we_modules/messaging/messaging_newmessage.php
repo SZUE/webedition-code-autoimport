@@ -45,8 +45,8 @@ print STYLESHEET;
 $we_button = new we_button();
 ?>
 
-<script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+<script type="text/javascript"><!--
 	rcpt_sel = new Array();
 
 	function update_rcpts() {

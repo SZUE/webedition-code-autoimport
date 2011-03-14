@@ -59,7 +59,7 @@ class weWorkflowFrames extends weModuleFrames{
 		$out=weModuleFrames::getJSTreeCode();
 
 		$out.='
-		 <script language="JavaScript" type="text/javascript">
+		 <script  type="text/javascript">
 		function loadData(){
 			menuDaten.clear();';
 
@@ -128,7 +128,7 @@ class weWorkflowFrames extends weModuleFrames{
 		 $textPost = "/".$text;
 
 		$out='
-   <script language="JavaScript" type="text/javascript">
+   <script  type="text/javascript">
 	<!--
     function setTab(tab){
         	switch(tab){
@@ -169,7 +169,7 @@ class weWorkflowFrames extends weModuleFrames{
 		$we_button = new we_button();
 ?>
 
-		<script language="JavaScript" type="text/javascript">
+		<script  type="text/javascript">
 			 function setStatusCheck(){
 			 	var a=document.we_form._status_workflow;
 				var b;

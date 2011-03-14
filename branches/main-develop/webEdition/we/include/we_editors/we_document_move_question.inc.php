@@ -35,8 +35,8 @@ $cancelCmd = "self.close();opener.top.toggleBusy(0);";
 $alerttext = g_l('alert',"[document_move_warning]");
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR; ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript" src="<?php echo JS_DIR; ?>windows.js"></script>
+<script  type="text/javascript">
 <!--
 self.focus();
 //-->

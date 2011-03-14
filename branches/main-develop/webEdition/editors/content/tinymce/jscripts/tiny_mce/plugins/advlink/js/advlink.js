@@ -10,7 +10,7 @@ function preinit() {
 	var url;
 
 	if (url = tinyMCEPopup.getParam("external_link_list_url"))
-		document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+		document.write('<script type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"/>');
 }
 
 function changeClass() {
@@ -52,7 +52,7 @@ function init() {
 	if (elm != null && elm.nodeName == "A")
 		action = "update";
 
-	formObj.insert.value = tinyMCEPopup.getLang(action, 'Insert', true); 
+	formObj.insert.value = tinyMCEPopup.getLang(action, 'Insert', true);
 
 	setPopupControlsDisabled(true);
 

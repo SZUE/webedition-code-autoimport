@@ -47,7 +47,7 @@ class weColorDialog extends weDialog{
 	function getDialogContentHTML(){
 
 $colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 var z=0;
 for ( col in we_color2 ){
 	if(z == 0){
@@ -98,8 +98,8 @@ if(z != 0){
 ##################################################################################################
 
 	function getJs(){
-		return weDialog::getJs(). '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'we_colors2.js"></script>
-<script language="JavaScript" type="text/javascript">
+		return weDialog::getJs(). '<script  type="text/javascript" src="'.JS_DIR.'we_colors2.js"></script>
+<script  type="text/javascript">
 
 function selectColor(c){
 	document.we_form.elements["we_dialog_args[color]"].value = c;

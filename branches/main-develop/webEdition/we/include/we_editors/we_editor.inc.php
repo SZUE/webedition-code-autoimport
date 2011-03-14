@@ -788,7 +788,7 @@ else {
                     deleteLocalFile($we_file_to_delete_after_include);
 				}
                 if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS) {
-                    print '<script language="JavaScript" type="text/javascript">setTimeout("doScrollTo();",100);</script>';
+                    print '<script  type="text/javascript">setTimeout("doScrollTo();",100);</script>';
                 }
 			}
 			else {

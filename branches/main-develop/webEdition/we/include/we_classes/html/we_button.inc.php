@@ -122,7 +122,7 @@ class we_button {
 	function create_state_changer($standalone = true) {
 		// Define start of JavaScript
 		$_JavaScript_start = '
-			<script language="JavaScript" type="text/javascript">
+			<script  type="text/javascript">
 			<!--';
 
 		// Define end of JavaScript

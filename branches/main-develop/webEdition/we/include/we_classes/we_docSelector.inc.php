@@ -458,7 +458,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 	}
 
 	function printFramesetJavaScriptIncludes() {
-		print '<script language="JavaScript" type="text/javascript" src="'.WEBEDITION_DIR.'js/windows.js"></script>';
+		print '<script  type="text/javascript" src="'.WEBEDITION_DIR.'js/windows.js"></script>';
 	}
 
 	function printHeaderHeadlines() {
@@ -477,7 +477,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
 			print '<td width="10">'.getPixel(10,10).'</td><td width="40">';
 			$newFileState = $this->userCanMakeNewFile ? 1 : 0;
-			print '<script language="JavaScript" type="text/javascript">newFileState='.$newFileState.';</script>';
+			print '<script  type="text/javascript">newFileState='.$newFileState.';</script>';
 			if($this->filter=="image/*" ||  $this->filter=="video/quicktime" ||  $this->filter=="application/x-shockwave-flash") {
 				print $we_button->create_button("image:".$this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
 			}else{
@@ -562,7 +562,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 	function printSetDirHTML() {
 		print '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				top.clearEntries();';
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();

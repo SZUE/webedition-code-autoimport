@@ -36,8 +36,8 @@ print STYLESHEET;
 
 $we_button = new we_button();
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
+<script  type="text/javascript"><!--
    function addOption(txt,id){
       var a=document.forms["we_form"].elements["filter"];
       a.options[a.options.length]=new Option(txt,id);

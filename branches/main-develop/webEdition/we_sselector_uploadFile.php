@@ -100,7 +100,7 @@ $content = htmlDialogLayout($content,g_l('newFile',"[import_File_from_hd_title]"
 
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 self.focus();
 <?php if(isset($_FILES['we_uploadFile']) && (!$we_alerttext)):?>
  opener.top.fscmd.selectFile('<?php print $_FILES['we_uploadFile']["name"]; ?>');

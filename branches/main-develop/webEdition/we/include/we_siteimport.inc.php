@@ -431,7 +431,7 @@ class weSiteImport
 						$_SESSION["user"]["ID"]));
 		// update session
 		$_SESSION["prefs"]["siteImportPrefs"] = $serializedData;
-		$js = '<script type="text/javascript" language="JavaScript">parent.close();</script>';
+		$js = '<script type="text/javascript" >parent.close();</script>';
 		return $this->_getHtmlPage("", $js);
 	}
 
@@ -608,7 +608,7 @@ class weSiteImport
 				g_l('siteimport',"[importSettingsWePages]"));
 		$bodyhtml .= '</form></body>';
 
-		$js = '<script type="text/javascript" language="JavaScript">
+		$js = '<script type="text/javascript" >
 
 	function checkForm(){
 		var f = document.forms[0];
@@ -2464,7 +2464,7 @@ class siteimportFrag extends taskFragment
 		$progress = (int)((100 / count($this->alldata)) * $this->currentTask);
 		$progressText = shortenPath($path, 30);
 
-		$code = '<script type="text/javascript" language="JavaScript">
+		$code = '<script type="text/javascript" >
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
 top.siteimportbuttons.weButton.disable("back");
 top.siteimportbuttons.weButton.disable("next");

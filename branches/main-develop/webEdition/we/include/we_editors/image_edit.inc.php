@@ -49,7 +49,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	htmlTop();
 
 	print '<script type="text/javascript" src="/webEdition/js/we_showMessage.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 
 document.onkeyup = function(e) {
 	var e = (typeof(event) != "undefined") ? event : e;

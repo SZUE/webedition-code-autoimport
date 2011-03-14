@@ -36,7 +36,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 <html>
   <head>
     <title><?php echo g_l('modules_messaging','[folder_settings]')?></title>
-      <script language="JavaScript" type="text/javascript">
+      <script type="text/javascript">
 
 <?php
 

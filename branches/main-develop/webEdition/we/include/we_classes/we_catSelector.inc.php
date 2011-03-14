@@ -124,7 +124,7 @@ class we_catSelector extends we_multiSelector{
 		$we_button = new we_button();
 		$editCatState = $this->userCanEditCat() ? 1 : 0;
 		$changeCatState = $this->userCanChangeCat() ? 1 : 0;
-       	print '<script language="JavaScript" type="text/javascript">editCatState='.$editCatState.';</script>';
+       	print '<script  type="text/javascript">editCatState='.$editCatState.';</script>';
 
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 ';
@@ -1152,7 +1152,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		protect();
 		print '
 <script type="text/javascript" src="' . JS_DIR . 'we_textarea.js"></script>
-<script src="' . JS_DIR . 'windows.js" language="JavaScript" type="text/javascript"></script>
+<script src="' . JS_DIR . 'windows.js"  type="text/javascript"></script>
 <script type="text/javascript">
 function we_cmd(){
 	var args = "";

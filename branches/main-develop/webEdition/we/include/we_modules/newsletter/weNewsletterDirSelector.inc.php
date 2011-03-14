@@ -329,7 +329,7 @@ function writeBody(d){
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){
-		d.writeln('<scr'+'ipt language="JavaScript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
+		d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
 	}
 	d.writeln('</body>');
 	d.close();

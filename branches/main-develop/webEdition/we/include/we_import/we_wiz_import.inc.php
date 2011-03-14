@@ -546,7 +546,7 @@ class we_wizard_import extends we_wizard {
 
 			$maxsize = getUploadMaxFilesize();
 			$_return[1] = '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							' . $functions . '
 							' . we_message_reporting::getShowMessageCall( sprintf(g_l('import','[upload_failed]'),round($maxsize / (1024*1024),3) . "MB"), WE_MESSAGE_ERROR ) . '
 							handle_event("previous");
@@ -559,7 +559,7 @@ class we_wizard_import extends we_wizard {
 		$_import_file = $_SERVER['DOCUMENT_ROOT'] . $v['import_from'];
 		if(weBackupUtil::getFormat($_import_file)!='xml') {
 			$_return[1] = '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							' . $functions . '
 							' . we_message_reporting::getShowMessageCall(g_l('import','[format_unknown]'), WE_MESSAGE_ERROR) . '
 							handle_event("previous");
@@ -573,7 +573,7 @@ class we_wizard_import extends we_wizard {
 
 				if(we_hasPerm('IMPORT')) {
 					$_return[1] = '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							' . $functions . '
 							if(confirm("' . g_l('import','[backup_file_found]'). ' \n\n' . g_l('import','[backup_file_found_question]') . '")){
 								top.opener.top.we_cmd("recover_backup");
@@ -585,7 +585,7 @@ class we_wizard_import extends we_wizard {
 					';
 				} else {
 					$_return[1] = '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							' . $functions . '
 							' . we_message_reporting::getShowMessageCall(g_l('import','[backup_file_found]'), WE_MESSAGE_ERROR) . '
 							handle_event("previous");
@@ -596,7 +596,7 @@ class we_wizard_import extends we_wizard {
 				return $_return;
 			} else if ($_xml_type == 'customer'){
 					$_return[1] = '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							' . $functions . '
 							' . we_message_reporting::getShowMessageCall(g_l('import','[customer_import_file_found]'), WE_MESSAGE_ERROR) . '
 							handle_event("previous");
@@ -606,7 +606,7 @@ class we_wizard_import extends we_wizard {
 
 			} else if($_xml_type == 'unknown') {
 				$_return[1] = '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							' . $functions . '
 							' . we_message_reporting::getShowMessageCall(g_l('import','[format_unknown]'), WE_MESSAGE_ERROR) . '
 							handle_event("previous");

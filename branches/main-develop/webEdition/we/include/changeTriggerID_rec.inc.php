@@ -37,7 +37,7 @@ if ($_SESSION["perms"]["ADMINISTRATOR"]) {
 
 htmlTop();
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 	<?php
 
 	if ($ok) {

@@ -1015,7 +1015,7 @@ class we_class_folder extends we_folder{
 		$modulepath = WE_OBJECT_MODULE_PATH;
 
 		$ret = <<<EOF
-		<script language="JavaScript" type="text/javascript">
+		<script  type="text/javascript">
 		function sub(){
 
 			// not needed anymore since version 5?! (Bug Fix #989)

@@ -123,7 +123,7 @@
 
     //  js-functions for the select-men�
     ?>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 
 
         function we_submitForm(target,url){

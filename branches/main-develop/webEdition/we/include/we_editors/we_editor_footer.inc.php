@@ -410,7 +410,7 @@ if(inWorkflow($we_doc)) {
 
 		if($we_doc->ContentType != "text/webedition" && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile" && $we_doc->ContentType != "folder" && $we_doc->ContentType != "class_folder") {
 
-			$_edit_source = '<script language="JavaScript" type="text/javascript">
+			$_edit_source = '<script  type="text/javascript">
 					function editSource(){
 						if(top.plugin.editSource){
 							top.plugin.editSource("'.$we_doc->Path.'","'.$we_doc->ContentType.'");
@@ -669,7 +669,7 @@ if(inWorkflow($we_doc)) {
 						$showPubl_makeSamNew .= '<div style="display: hidden;">';
 					}
 
-					$showPubl_makeSamNew .= '<script language="JavaScript" type="text/javascript">
+					$showPubl_makeSamNew .= '<script  type="text/javascript">
 								<!--
 								if(!top.opener || !top.opener.win){
 									document.writeln("<!--");
@@ -678,7 +678,7 @@ if(inWorkflow($we_doc)) {
 							</script>' .
 							we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", g_l('global','[we_make_same]['.$we_doc->ContentType.']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ))
 							.
-						'<script language="JavaScript" type="text/javascript">
+						'<script  type="text/javascript">
 								<!--
 								if(!top.opener || !top.opener.win){
 									document.writeln(\'-\' + \'-\' + \'>\');

@@ -30,11 +30,11 @@ include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 protect();
 htmlTop('Messaging System');
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>images.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>windows.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>we_showMessage.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>messaging_std.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>messaging_hl.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>images.js"/>
+<script type="text/javascript" src="<?php print JS_DIR?>windows.js"/>
+<script type="text/javascript" src="<?php print JS_DIR?>we_showMessage.js"/>
+<script type="text/javascript" src="<?php print JS_DIR?>messaging_std.js"/>
+<script type="text/javascript" src="<?php print JS_DIR?>messaging_hl.js"/>
 <?php
 $cmd_params = '';
 
@@ -45,7 +45,7 @@ if (!$messaging->check_folders()) {
 	include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
 	if (!msg_create_folders($_SESSION["user"]["ID"])) {
 ?>
-		<script language="JavaScript" type="text/javascript"><!--
+		<script type="text/javascript"><!--
 			<?php print we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), WE_MESSAGE_ERROR); ?>
 		//-->
 		</script>
@@ -74,7 +74,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 
 ?>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 	var loaded = 0;
 	var hot = 0;
@@ -392,7 +392,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 		fr = top.content.messaging_main.messaging_tree.window.document;
 		fr.open();
 		fr.writeln('<html><head>');
-		fr.writeln('<script language="JavaScript" type="text/javascript">');
+		fr.writeln('<script type="text/javascript">');
 
 		fr.writeln("clickCount=0;");
 		fr.writeln("wasdblclick=0;");

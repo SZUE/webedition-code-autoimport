@@ -36,7 +36,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 
 	$we_button = new we_button();
 ?>
-	<script language="JavaScript" type="text/javascript"><!--
+	<script  type="text/javascript"><!--
 		function add() {
 			var p=document.forms[0].elements["we_category"];
 		}
@@ -112,7 +112,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 	$newpasswd = isset($_REQUEST["newpasswd"]) ? $_REQUEST["newpasswd"] : "";
 	$newpasswd2 = isset($_REQUEST["newpasswd2"]) ? $_REQUEST["newpasswd2"] : "";
 ?>
-	<script language="JavaScript" type="text/javascript"><!--
+	<script  type="text/javascript"><!--
 	<?php
 		if (isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ok")) {
    			$passwd = f("SELECT passwd FROM " . USER_TABLE . " WHERE username='" . mysql_real_escape_string($_SESSION["user"]["Username"] ). "'", "passwd", $DB_WE);

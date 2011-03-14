@@ -78,8 +78,8 @@ print STYLESHEET;
 //
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script  type="text/javascript">
 <!--
 function we_checkObjFieldname(i){
 	if(i.value.search(/^([a-zA-Z0-9_])*$/)){

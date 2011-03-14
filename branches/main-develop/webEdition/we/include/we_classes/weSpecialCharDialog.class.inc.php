@@ -190,7 +190,7 @@ class weSpecialCharDialog extends weDialog{
 		$table .= '</table>
 ';
 
-		$script = '<script language="JavaScript" type="text/javascript">
+		$script = '<script  type="text/javascript">
 	function fillField(ch){
 		var table = document.getElementById("wechartb");
 		var tds = table.getElementsByTagName("TD");

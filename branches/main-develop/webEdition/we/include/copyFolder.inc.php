@@ -844,19 +844,19 @@ class copyFolderFrag extends taskFragment
 							$pbText) . '");</script>';
 			flush();
 			print
-					'<script language="JavaScript">setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);</script>';
+					'<script type="text/javascript">setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);</script>';
 			#unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		} else {
 			if (defined('OBJECT_FILES_TABLE')) {$checkTable = OBJECT_FILES_TABLE;} else {$checkTable="1";}
 				if (!isset($_SESSION["WE_COPY_OBJECTS"])) {
 					print
-					'<script language="JavaScript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
+					'<script type="text/javascript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
 							g_l('copyFolder',"[copy_success]"),
 							WE_MESSAGE_NOTICE) . 'top.close();</script>';
 				} else {
 					unset($_SESSION["WE_COPY_OBJECTS"]);
 					print
-					'<script language="JavaScript">top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
+					'<script type="text/javascript">top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
 							g_l('copyFolder',"[copy_success]"),
 							WE_MESSAGE_NOTICE) . 'top.close();</script>';
 
@@ -1078,7 +1078,7 @@ class copyFolderFinishFrag extends copyFolderFrag
 			unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		}
 		print
-				'<script language="JavaScript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
+				'<script type="text/javascript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
 						g_l('copyFolder',"[copy_success]"),
 						WE_MESSAGE_NOTICE) . 'top.close();</script>';
 

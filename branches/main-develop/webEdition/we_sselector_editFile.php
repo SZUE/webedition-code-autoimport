@@ -66,7 +66,7 @@ $buttons = $we_button->position_yes_no_cancel(
 $content='<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">'.htmlspecialchars($we_fileData).'</textarea>';
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 	function setSize(){
 		var ta = document.getElementById("editFile");
 		ta.style.width=document.body.offsetWidth-60;

@@ -37,8 +37,8 @@ print STYLESHEET;
 $we_button = new we_button();
 ?>
 
-<script language="JavaScript" type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
+<script  type="text/javascript"><!--
   var name_ord=0;
   var type_ord=0;
   var date_ord=0;

@@ -145,7 +145,7 @@ function startSEEMMode(){
 }
 ?>
 
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 function we_cmd(){
 	var args = "";
 	for(var i = 0; i < arguments.length; i++){

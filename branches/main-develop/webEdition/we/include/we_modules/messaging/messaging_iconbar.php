@@ -36,8 +36,8 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 print STYLESHEET;
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+<script type="text/javascript"><!--
 
 	function new_message(mode) {
 	    if (mode == 're' && (top.content.messaging_main.messaging_right.msg_work.last_entry_selected == -1)) {

@@ -41,7 +41,7 @@ if ($nrTemplatesUsedByThisTemplate) {
 }
 ?>
 <script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 
 // functions for keyBoard Listener
 	function applyOnEnter() {

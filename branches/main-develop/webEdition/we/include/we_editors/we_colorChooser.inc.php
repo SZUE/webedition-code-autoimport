@@ -34,8 +34,8 @@ print STYLESHEET;
 
 $we_button = new we_button();
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>we_colors2.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript" src="<?php print JS_DIR; ?>we_colors2.js"></script>
+<script  type="text/javascript">
 
 function selectColor(c){
 	document.we_form.colorvalue.value = c;
@@ -76,7 +76,7 @@ function init(){
 <form name="we_form" onSubmit="<?php if(!$_REQUEST["we_cmd"][0]): ?>setColor();<?php endif ?>return false">
 		<?php
 $colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 var z=0;
 for ( col in we_color2 ){
 	if(z == 0){

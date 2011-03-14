@@ -59,7 +59,7 @@ if (!$wfchk) {
 				break;
 			}
 		}
-		$wfchk_html .= '<script language="JavaScript" type="text/javascript">
+		$wfchk_html .= '<script  type="text/javascript">
                      function confirmDel(){' . "\n";
 		if ($found)
 			$wfchk_html .= 'if(confirm("' . g_l('alert',"[found_in_workflow]") . '"))' . "\n";
@@ -493,8 +493,8 @@ if (!$wfchk) {
 					g_l('alert',"[nothing_to_delete]"),
 					WE_MESSAGE_WARNING) . "\n";
 		}
-		print '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
-		print '<script language="JavaScript" type="text/javascript"><!--
+		print '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
+		print '<script  type="text/javascript"><!--
 ' . $script . '
 //-->
 </script>
@@ -524,7 +524,7 @@ htmlTop();
 print STYLESHEET;
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 //top.deleteMode=1;
 <?php
 

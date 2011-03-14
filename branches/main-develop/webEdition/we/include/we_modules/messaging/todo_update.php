@@ -61,7 +61,7 @@ $messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	<head>
 		<title><?php echo $heading?></title>
 		<?php print STYLESHEET; ?>
-		<script language="JavaScript" type="text/javascript">
+		<script type="text/javascript">
 		if (opener && opener.top && opener.top.content) {
 			top.opener.top.content.update_messaging();
 			top.opener.top.content.update_msg_quick_view();

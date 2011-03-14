@@ -90,7 +90,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	));
 
 	?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 	if(top.opener && top.opener.top.weEditorFrameController.getVisibleEditorFrame()){
 		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_<?php
 	print $_REQUEST["we_cmd"][1];
@@ -123,9 +123,9 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	?>
 <script src="<?php
 	print JS_DIR;
-	?>windows.js" language="JavaScript"
+	?>windows.js"
 	type="text/javascript"></script>
-<script language="JavaScript" type="text/javascript">top.focus();</script>
+<script  type="text/javascript">top.focus();</script>
 </head>
 <body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"
 	background="<?php

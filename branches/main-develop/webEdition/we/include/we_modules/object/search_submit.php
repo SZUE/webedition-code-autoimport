@@ -39,9 +39,9 @@ $we_doc->searchclass->objsearchField = isset($_REQUEST["objsearchField"]) ? $_RE
 $we_doc->searchclass->objlocation = isset($_REQUEST["objlocation"]) ? $_REQUEST["objlocation"] : 0;
 
 if($_REQUEST["todo"] == "add"){
-	
+
 		$we_doc->searchclass->height++;
-		
+
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;
 		$we_doc->searchclass->searchfield = $we_doc->searchclass->objsearchField;
 		$we_doc->searchclass->searchlocation = $we_doc->searchclass->objlocation;
@@ -51,12 +51,12 @@ if($_REQUEST["todo"] == "add"){
 
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 	top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");
 </script>';
-		
+
 } else if($_REQUEST["todo"] == "delete") {
-		
+
 		if($we_doc->searchclass->height == 0) {
 			$we_doc->searchclass->objsearch = "";
 			$we_doc->searchclass->objsearchField = "";
@@ -64,22 +64,22 @@ if($_REQUEST["todo"] == "add"){
 		} else {
 			$we_doc->searchclass->removeFilter($_REQUEST['position']);
 		}
-		
+
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;
 		$we_doc->searchclass->searchfield = $we_doc->searchclass->objsearchField;
 		$we_doc->searchclass->searchlocation = $we_doc->searchclass->objlocation;
-		
+
 		$we_doc->searchclass->start = 0;
 		$we_doc->searchclass->searchstart = 0;
 		$we_doc->searchclass->setLimit();
-	
+
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 						top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");
 				</script>
 				';
-		
+
 }else if($_REQUEST["todo"] == "search"){
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;
 		$we_doc->searchclass->searchfield = $we_doc->searchclass->objsearchField;
@@ -90,25 +90,25 @@ if($_REQUEST["todo"] == "add"){
 
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 						top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");
 				</script>
 				';
 }else if($_REQUEST["todo"]=="changemeta"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 						top.we_cmd("reload_editpage");
 				</script>
 				';
 }else if($_REQUEST["todo"]=="changedate"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 						top.we_cmd("reload_editpage");
 				</script>
 				';
 }else if($_REQUEST["todo"]=="changecheckbox"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 						top.we_cmd("reload_editpage");
 				</script>
 				';
@@ -116,7 +116,7 @@ if($_REQUEST["todo"] == "add"){
 }else if($_REQUEST["todo"]=="quickchangemeta"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 					top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");
 				</script>
 				';
@@ -124,7 +124,7 @@ if($_REQUEST["todo"] == "add"){
 }else if($_REQUEST["todo"]=="quickchangedate"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 					top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");
 				</script>
 				';
@@ -132,7 +132,7 @@ if($_REQUEST["todo"] == "add"){
 }else if($_REQUEST["todo"]=="quickcheckbox"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script type="text/javascript">
 						top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");
 				</script>
 				';
@@ -149,14 +149,14 @@ if($_REQUEST["todo"] == "add"){
 	$we_doc->searchclass->start = 0;
 	$we_doc->searchclass->searchstart = 0;
 	$we_doc->searchclass->setLimit();
-	
+
 	$we_doc->searchclass->objsearch = array(0=>$_REQUEST["obj_search"]);
 	$we_doc->searchclass->objsearchField = array(0=>$_REQUEST["obj_searchField"]);
 	$we_doc->searchclass->objlocation = ((!empty($objlocation))?array(0=>$objlocation):array(0=>"CONTAIN"));
 
 	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-	print '<script language="JavaScript" type="text/javascript">
+	print '<script type="text/javascript">
 					if (top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["1"].document.we_form && top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["1"].document.we_form.elements[\'SearchStart\']) {
 						top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["1"].document.we_form.elements[\'SearchStart\'].value = 0;
 					}
@@ -164,4 +164,3 @@ if($_REQUEST["todo"] == "add"){
 			</script>
 			';
 }
-?>

@@ -115,7 +115,7 @@ class we_exportDirSelector extends we_dirSelector{
 		print '                <td width="10">'.getPixel(10,10).'</td><td width="40">
 ';
         $makefolderState = we_hasPerm("NEW_EXPORT");
-       	print '<script language="JavaScript">makefolderState='.$makefolderState.';</script>';
+       	print '<script type="text/javascript">makefolderState='.$makefolderState.';</script>';
  		$we_button = new we_button();
 		print $we_button->create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}",true,-1,22,"","",$makefolderState ? false : true);
  		print '               </td>
@@ -233,7 +233,7 @@ function writeBody(d){
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){
-		d.writeln('<scr'+'ipt language="JavaScript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
+		d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
 	}
 	d.writeln('</body>');
 	d.close();

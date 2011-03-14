@@ -1515,7 +1515,7 @@ function mapPermissions() {
 
 		$out="";
 		$js='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				preload("auswaehlen","'.IMAGE_DIR.'buttons/auswaehlen_'.$GLOBALS["WE_LANGUAGE"].'.gif");
 				preload("auswaehlen_d","'.IMAGE_DIR.'buttons/auswaehlen_d_'.$GLOBALS["WE_LANGUAGE"].'.gif");
 
@@ -1942,7 +1942,7 @@ function mapPermissions() {
 
 
 		$javascript ='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 
 				function rebuildCheckboxClicked() {
 					toggleRebuildPerm(false);
@@ -2075,7 +2075,7 @@ function mapPermissions() {
 		$we_button = new we_button();
 		$parts = array();
 		$content ='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				function addElement(elvalues) {
 					if(elvalues.value=="") {
 						elvalues.value="0";
@@ -2599,7 +2599,7 @@ function mapPermissions() {
 			array_push($_settings,
 					array(
 						"headline" => g_l('prefs','[seem_startdocument]'),
-						"html" => $js . $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>',
+						"html" => $js . $_seem_html->getHtmlCode().'<script  type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>',
 						"space" => 200
 					)
 				);
@@ -2974,7 +2974,7 @@ function mapPermissions() {
 		$tab_body = $we_tabs->getJS();
 
 		$out ='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				var activeTab = 0;
 				function setTab(tab) {
 					switch(tab) {

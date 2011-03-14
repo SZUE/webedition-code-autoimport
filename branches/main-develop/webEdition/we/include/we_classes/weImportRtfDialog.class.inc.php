@@ -57,7 +57,7 @@ class weImportRtfDialog extends weDialog{
 
 	function getJs(){
 		return weDialog::getJs().'
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 
 function checkTheBox(box){
 	b = document.we_form.elements[box];

@@ -29,7 +29,7 @@ htmlTop();
 
 ?>
 
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+	<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 
 <?php
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");

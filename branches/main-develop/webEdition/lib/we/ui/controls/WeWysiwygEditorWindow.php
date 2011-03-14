@@ -45,7 +45,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	$_SESSION['WEAPP_' . $_REQUEST["we_cmd"][0] .'_'.$_REQUEST["we_cmd"][1]] = $newHTML;
 
 	?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 
 	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_Daten')){
 		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_Daten').innerHTML = "<?php
@@ -81,9 +81,9 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	?>
 <script src="<?php
 	print JS_DIR;
-	?>windows.js" language="JavaScript"
+	?>windows.js"
 	type="text/javascript"></script>
-<script language="JavaScript" type="text/javascript">top.focus();</script>
+<script  type="text/javascript">top.focus();</script>
 </head>
 <body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"
 	background="<?php

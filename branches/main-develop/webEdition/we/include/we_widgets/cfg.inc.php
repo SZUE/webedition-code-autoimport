@@ -175,7 +175,7 @@ $aCfgProps = array(
 
 				array(
 					"pad", "blue", 1, base64_encode(g_l('cockpit','[notepad_defaultTitle_DO_NOT_TOUCH]')) . ',30020'
-				), 
+				),
 				array(
 
 						"mfd",
@@ -208,7 +208,7 @@ array_push($aCfgProps, $aTopRssFeeds);
 
 $jsPrefs = "
 function weConf(){
-	this.js_load_=['windows','utils/dimension','utils/prototypes','utils/cockpit'];
+//	this.js_load_=['windows','utils/dimension','utils/prototypes','utils/cockpit'];
 	this.color_scheme_={'white':'#FFFFFF','lightCyan':'#F1F5FF','blue':'#CCE4FC','green':'#E2FDC7','orange':'#FBF2C9','red':'#FDE4CB','yellow':'#FDFDBA'};
 	this.label_={'font-family':'Arial,Helvetica,sans-serif','font-size':15,'color':'#FFFFFF','font-weight':'bold'};
 	this.general_={'cls_collapse':" . ($small + 23) . ",'cls_expand':" . ($large + 22) . ",'w_collapse':" . $small . ",'w_expand':" . $large . ",'wh_edge':11,'w_icon_bar':40,'iDlgWidth':" . $iDlgWidth . "};
@@ -222,5 +222,3 @@ $jsPrefs .= "\tthis.blend_={'fadeIn':1,'fadeOut':1,'v':400};
 var _noResizeTypes=['pad'];
 var oCfg=new weConf();
 ";
-
-?>

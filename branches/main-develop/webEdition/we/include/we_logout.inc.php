@@ -38,7 +38,7 @@ $DB_WE->query("
 	WHERE ID='" . abs($_SESSION["user"]["ID"]) . "'");
 
 ?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 <!--
 <?php
 
@@ -50,12 +50,12 @@ if (isset($_SESSION["prefs"]["userID"])) { //	bugfix 2585, only update prefs, wh
 
 //	getJSCommand
 if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with tag:linkToSuperEasyEditMode
-	
+
 
 	$_path = $_SESSION["SEEM"]["startPath"];
-	
+
 	$jsCommand = "top.location.replace('" . $_path . "');";
-	
+
 	while (list($name, $val) = each($_SESSION)) {
 		if ($name != "webuser") {
 			unset($_SESSION[$name]);
@@ -63,7 +63,7 @@ if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with
 	}
 
 } else { //	normal logout from webEdition.
-	
+
 
 	$jsCommand = "top.close();\n";
 

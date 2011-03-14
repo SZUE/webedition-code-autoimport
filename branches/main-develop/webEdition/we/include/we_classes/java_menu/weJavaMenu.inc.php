@@ -81,7 +81,7 @@ class weJavaMenu {
 		) ? "" : ":".$this->port;
 		return '
 			<script type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				function menuaction(cmd) {
 					'.$this->lcmdFrame.'.location.replace("'.$this->protocol.'://'.$this->SERVER_NAME.$portVar.'/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
 				}

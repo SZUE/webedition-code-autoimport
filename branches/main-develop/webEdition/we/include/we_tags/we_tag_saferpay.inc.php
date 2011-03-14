@@ -305,7 +305,7 @@ $payinit_url = str_replace("\r","",$payinit_url);
 if($payinit_url){
 	print $processOK;
 
- 	echo '<script language="JavaScript">
+ 	echo '<script type="text/javascript">
 	<!--
 	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');
 	//-->

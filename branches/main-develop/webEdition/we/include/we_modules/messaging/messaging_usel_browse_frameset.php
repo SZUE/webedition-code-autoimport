@@ -38,11 +38,11 @@ print STYLESHEET;
 $browser = new we_browserDetect();
 
 ?>
- <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
- <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
- <script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>messaging_hl.js"></script>
- <script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>messaging_std.js"></script>
- <script language="JavaScript" type="text/javascript">
+ <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+ <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+ <script type="text/javascript" src="<?php echo JS_DIR?>messaging_hl.js"></script>
+ <script type="text/javascript" src="<?php echo JS_DIR?>messaging_std.js"></script>
+ <script type="text/javascript">
 
  var loaded=0;
  var hot=0;

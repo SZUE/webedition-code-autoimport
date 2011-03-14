@@ -42,7 +42,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 		$DB_WE->query("INSERT INTO ".BANNER_PREFS_TABLE." (pref_name,pref_value) VALUES('DefaultBannerID','".mysql_real_escape_string($DefaultBannerID)."')");
 	}
 
-	print '<script language="JavaScript">
+	print '<script type="text/javascript">
 
 top.close();
 
@@ -73,9 +73,9 @@ top.close();
 		return $yuiSuggest->getHTML();
 	}
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 
-		<script language="JavaScript">
+		<script type="text/javascript">
 			var loaded;
 			function doUnload() {
 				if (!!jsWindow_count) {

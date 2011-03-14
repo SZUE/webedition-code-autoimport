@@ -25,12 +25,12 @@
 
   include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
   include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-  
+
   protect();
 
   htmlTop();
 ?>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 	do_mark_messages = 0;
 	last_entry_selected = -1;
 	entries_selected = new Array();

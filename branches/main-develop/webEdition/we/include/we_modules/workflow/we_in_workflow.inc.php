@@ -25,7 +25,7 @@
 
 protect();
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 	top.opener.top.toggleBusy(0);
 //-->
 
@@ -68,7 +68,7 @@ if($cmd == "ok"){
 		}
 		}
 		print '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				'.$script.'
 				' . we_message_reporting::getShowMessageCall($msg, $msgType) . '
 				self.close();
@@ -153,7 +153,7 @@ if($cmd == "ok"){
 					?>
 				</form>
 			<?php else: ?>
-				<script language="JavaScript" type="text/javascript"><!--
+				<script  type="text/javascript"><!--
 					<?php print we_message_reporting::getShowMessageCall( (($we_doc->Table==FILE_TABLE) ? g_l('modules_workflow','[no_wf_defined]') : g_l('modules_workflow','[no_wf_defined_object]') ), WE_MESSAGE_ERROR); ?>
 					top.close();
 				//-->

@@ -61,7 +61,7 @@ switch($_REQUEST["we_cmd"][0]) {
 		$of->initByID($ofID,OBJECT_FILES_TABLE);
 		$of->insertAtIndex();
 		print '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				top.we_cmd("reload_editpage");
 			//-->
 			</script>';
@@ -73,7 +73,7 @@ switch($_REQUEST["we_cmd"][0]) {
 		$_SESSION["EditPageNr"] = WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 		print '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				top.we_cmd("switch_edit_page",'.WE_EDITPAGE_WORKSPACE.',"'.$_REQUEST["we_cmd"][1].'");
 			//-->
 			</script>';

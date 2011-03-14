@@ -58,7 +58,7 @@ $parts = array();
 	.quote_lvl_2 {color:#00ff00}
 	.quote_lvl_3 {color:#0000ff}
     </style>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 	function todo_markdone() {
 	    top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction']?>';
 	}

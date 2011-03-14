@@ -35,7 +35,7 @@ print STYLESHEET;
 $content = "<p class=\"defaultfont\">".(isset($we_message) ? $we_message : sprintf(g_l('alert',"[no_perms]"),f("SELECT Username FROM ".USER_TABLE." WHERE ID='".$we_doc->CreatorID."'","Username",$DB_WE)))."</p>";
 
 ?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 top.toggleBusy(0);
 var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.setEditorIsLoading(false);

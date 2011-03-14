@@ -40,7 +40,7 @@ if($_SESSION["user"]["ID"]){
 <script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
 <script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>
 
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 
 
 

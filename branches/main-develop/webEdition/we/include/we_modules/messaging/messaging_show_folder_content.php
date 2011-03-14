@@ -34,9 +34,9 @@ print STYLESHEET;
 
 $browser = new we_browserDetect();
 ?>
- <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
- <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
- <script language="JavaScript" type="text/javascript">
+ <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+ <script type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
+ <script type="text/javascript">
     NN4 = <?php echo $browser->getBrowser() == 'nn' && $browser->getBrowserVersion() < 5 ? 'true' : 'false'?>;
     check0_img = new Image();
     check1_img = new Image();
@@ -204,7 +204,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	?></table><?php
 
 ?>
-  <script language="JavaScript" type="text/javascript">
+  <script type="text/javascript"">
     var k;
 
     if (NN4 == false) {

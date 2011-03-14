@@ -287,7 +287,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 <html>
 	<head>
 		<title></title>
-		<script language="JavaScript" type="text/javascript">
+		<script  type="text/javascript">
 		<!--
 			var unlock = false;
 			var scrollToVal = 0;
@@ -371,7 +371,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 			}
 		//-->
 		</script>
-	<script language="JavaScript" type="text/javascript">
+	<script  type="text/javascript">
 	<!--
 	//	SEEM
 	//	With this var we can see, if the document is opened via webEdition

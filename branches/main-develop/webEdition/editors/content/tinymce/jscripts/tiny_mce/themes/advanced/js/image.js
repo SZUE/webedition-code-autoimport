@@ -5,7 +5,7 @@ var ImageDialog = {
 		tinyMCEPopup.requireLangPack();
 
 		if (url = tinyMCEPopup.getParam("external_image_list_url"))
-			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+			document.write('<script type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 	},
 
 	init : function() {
@@ -220,7 +220,7 @@ var ImageDialog = {
 	resetImageData : function() {
 		var f = document.forms[0];
 
-		f.width.value = f.height.value = "";	
+		f.width.value = f.height.value = "";
 	},
 
 	updateImageData : function() {

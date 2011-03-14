@@ -42,8 +42,8 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 print STYLESHEET;
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+<script type="text/javascript">
 
 	function new_todo() {
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);

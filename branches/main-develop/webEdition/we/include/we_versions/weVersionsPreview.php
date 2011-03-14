@@ -642,7 +642,7 @@ function previewVersion(ID, newID) {
 }
 
 </script>
-<script src="<?php print JS_DIR; ?>windows.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?php print JS_DIR; ?>windows.js"  type="text/javascript"></script>
 <?php print $js;?>
 <style type="text/css" media="screen">
 body {margin: 0;padding: 0;}

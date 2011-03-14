@@ -34,20 +34,19 @@ $dialog->registerCmdFn("weDoImgCmd");
 print $dialog->getHTML();
 
 function weDoImgCmd($args){
-	
+
 	if($args["thumbnail"] && $args["fileID"]){
 		$thumbObj = new we_thumbnail();
 		$thumbObj->initByImageIDAndThumbID($args["fileID"],$args["thumbnail"]);
 		if(!file_exists($thumbObj->getOutputPath(true))){
-			$thumbObj->createThumb();	
+			$thumbObj->createThumb();
 		}
 	}
-	
-	return '<script language="JavaScript" type="text/javascript">
+
+	return '<script type="text/javascript">
 
 top.opener.weWysiwygObject_'.$args["editname"].'.insertImage("'.$args["src"].'","'.$args["width"].'","'.$args["height"].'","'.$args["hspace"].'","'.$args["vspace"].'","'.$args["border"].'","'.addslashes($args["alt"]).'","'.$args["align"].'","'.$args["name"].'","'.$args["class"].'","'.addslashes($args["title"]).'","'.$args["longdesc"].'");
 top.close();
 </script>
 ';
 }
-?>

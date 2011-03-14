@@ -78,9 +78,9 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 }
 
 ?>
-		<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-		<script src="<?php print JS_DIR; ?>weSidebar.php" language="JavaScript" type="text/javascript"></script>
-		<script language="JavaScript" type="text/javascript">
+		<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+		<script src="<?php print JS_DIR; ?>weSidebar.php" type="text/javascript"></script>
+		<script type="text/javascript">
 			// initialize siebar in webedition.php
 			top.weSidebar = weSidebar;
 

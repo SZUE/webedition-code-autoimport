@@ -105,7 +105,7 @@ class weCellDialog extends weDialog{
 						</select>';
 		$valign = htmlFormElementTable($foo,g_l('wysiwyg',"[valignment]"));
 
-		$foo = '<script language="JavaScript" type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "").'","");</script>';
+		$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "").'","");</script>';
 		$classSelect = htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
 
 		$_isheader = we_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", g_l('wysiwyg',"[isheader]"));

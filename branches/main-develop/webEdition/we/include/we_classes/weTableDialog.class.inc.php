@@ -120,7 +120,7 @@ class weTableDialog extends weDialog{
 						</select>';
 		$align = htmlFormElementTable($foo,g_l('wysiwyg',"[alignment]"));
 
-		$foo = '<script language="JavaScript" type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "") .'","");</script>';
+		$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "") .'","");</script>';
 		$classSelect = htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
 
 	$table = '<table border="0" cellpadding="0" cellspacing="0">

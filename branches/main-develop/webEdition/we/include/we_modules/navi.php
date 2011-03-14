@@ -64,7 +64,7 @@ print $tab_header;
 ?>
 
 </head>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 var current = "<?php echo $_REQUEST["mod"];?>";
 function openModule(module) {
 	if(top.content.hot =="1") {

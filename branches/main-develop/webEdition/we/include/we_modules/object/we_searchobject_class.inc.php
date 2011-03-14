@@ -101,7 +101,7 @@ class objectsearch extends we_search {
 
 	function getJSinWEworkspace($name) {
 		return '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				function setWs(path,id) {
 					document.we_form.elements[\'we_'.$name.'_WorkspacePath\'].value=path;
 					document.we_form.elements[\'we_'.$name.'_WorkspaceID\'].value=id;
@@ -113,7 +113,7 @@ class objectsearch extends we_search {
 
 	function getJSinWEshowVisible($name) {
 		return '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				function toggleShowVisible(c) {
 					c.value=(c.checked ? 1 : 0);
 					document.we_form.elements[\'SearchStart\'].value = 0;

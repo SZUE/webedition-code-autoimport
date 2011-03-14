@@ -979,7 +979,7 @@ if(isset($_REQUEST["deletethisorder"])){
 
 	$DB_WE->query("DELETE FROM ".SHOP_TABLE." WHERE IntOrderID = ".$_REQUEST["bid"]);
 	echo '
-	<script language="JavaScript" type="text/javascript">top.content.deleteEntry('.$_REQUEST["bid"].')</script>
+	<script type="text/javascript">top.content.deleteEntry('.$_REQUEST["bid"].')</script>
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
@@ -1276,7 +1276,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	if ( !isset( $ArticleId ) ) {
 
 		echo '
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript">
 		parent.parent.frames.shop_header_icons.location.reload();
 	</script>
 	</head>
@@ -2121,14 +2121,14 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	// "Html output for order with articles"
 	//
 ?>
-	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar.js"; ?>"></script>
-	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar-setup.js"; ?>"></script>
-	<script type="text/javascript" src="<?php print WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js"; ?>"></script>
+	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar.js"; ?>"/>
+	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar-setup.js"; ?>"/>
+	<script type="text/javascript" src="<?php print WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js"; ?>"/>
 	<link type="text/css" rel="stylesheet" href="<?php print JS_DIR."jscalendar/skins/aqua/theme.css"; ?>" title="Aqua" />
 
-    <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-    <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-	<script language="JavaScript" type="text/javascript">
+    <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"/>
+    <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"/>
+	<script type="text/javascript">
 
 	function SendMail(was){
 		document.location = "<?php print $_SERVER["PHP_SELF"] . "?bid=".$_REQUEST["bid"]; ?>&SendMail=" + was ;
@@ -2233,7 +2233,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 
 } else { // This order has no more entries
 ?>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript">
 		top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
 		top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
 	</script>

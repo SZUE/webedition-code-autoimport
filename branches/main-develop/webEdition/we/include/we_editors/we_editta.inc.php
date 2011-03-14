@@ -55,13 +55,13 @@ if(isset($_REQUEST["ok"])){
 }
 
 if(isset($_REQUEST["ok"])){
-	$js =		'<script language="JavaScript" type="text/javascript">'
+	$js =		'<script  type="text/javascript">'
 			.	'opener._EditorFrame.setEditorIsHot(true);'
 			.	'opener.we_cmd("reload_entry_at_class","'.$we_transaction.'", "'.$nr.'");'
 			.	'top.close();'
 			.	'</script>';
 }else{
-	$js = 		'<script language="JavaScript" type="text/javascript">'
+	$js = 		'<script  type="text/javascript">'
 			.	'function okFn(){'
 			.	'document.forms[0].submit();'
 			.	'}'

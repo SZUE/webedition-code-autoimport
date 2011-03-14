@@ -34,7 +34,7 @@ print STYLESHEET;
 $content = "<p class=\"defaultfont\">" . g_l('alert',"[noResource]") . "</p>";
 
 ?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 top.toggleBusy(0);
 var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.setEditorIsLoading(false);

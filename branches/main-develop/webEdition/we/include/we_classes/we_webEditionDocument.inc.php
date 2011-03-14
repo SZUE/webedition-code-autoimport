@@ -158,7 +158,7 @@ class we_webEditionDocument extends we_textContentDocument {
 					$out.='}'."\n";
 			}
 			$out.="}\n";
-			$out="\n".'<script language="JavaScript" type="text/javascript">'.$out.'</script>'."\n";
+			$out="\n".'<script  type="text/javascript">'.$out.'</script>'."\n";
 			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass',"[IsDynamic]"),false,"defaultfont","_EditorFrame.setEditorIsHot(true);switchExt();").$out;
 		} else {
 			$v = $this->IsDynamic;

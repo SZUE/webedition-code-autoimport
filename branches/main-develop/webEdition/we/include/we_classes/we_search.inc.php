@@ -248,8 +248,8 @@ class we_search extends DB_WE{
 
 	function getJSinWEforwardbackward($name){
 
-			return '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'tooltip.js"></script>
-				<script language="JavaScript" type="text/javascript"><!--
+			return '<script  type="text/javascript" src="'.JS_DIR.'tooltip.js"></script>
+				<script  type="text/javascript"><!--
 				_EditorFrame.setEditorIsHot(false);
 
 			function next(){
@@ -268,7 +268,7 @@ class we_search extends DB_WE{
 
     function getJSinWEorder($name){
 
-		return '<script language="JavaScript" type="text/javascript"><!--
+		return '<script  type="text/javascript"><!--
 			function setOrder(order){
 
 				foo = document.we_form.elements[\'Order\'].value;

@@ -38,7 +38,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 }
 ?>
 <?php if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]!="save_last")):?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 
 	function drawNewFolder() {
 		for(var i=0; i<top.allentries.length;i++){

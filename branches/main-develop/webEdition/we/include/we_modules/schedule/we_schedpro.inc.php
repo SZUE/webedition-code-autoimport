@@ -345,7 +345,7 @@ $this->getSpacerRowHTML().
 				break;
 		}
 		$table .= '</table>'."\n";
-		return '<script language="JavaScript" type="text/javascript">var we_hasExtraRow_'.$this->nr.'='.($extracont ? 'true' : 'false').'</script>'.$table;
+		return '<script  type="text/javascript">var we_hasExtraRow_'.$this->nr.'='.($extracont ? 'true' : 'false').'</script>'.$table;
 	}
 
 	function processSchedule($id,$schedFile,$now,$DB_WE){

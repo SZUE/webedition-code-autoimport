@@ -200,7 +200,7 @@ if($we_ContentType == "image/*"){
 
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 <?php if($we_alerttext):
 	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
 endif ?>

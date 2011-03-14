@@ -44,10 +44,10 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 }
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>md5.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"/>
+<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"/>
+<script type="text/javascript" src="<?php print JS_DIR; ?>md5.js"/>
+<script type="text/javascript">
 	var loaded=0;
 	var hot=0;
 	var hloaded=0;

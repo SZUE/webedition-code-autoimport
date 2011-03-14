@@ -76,13 +76,13 @@ if($GLOBALS['we_doc']->i_filenameEmpty()){
 	$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][response_path_exists]'),$GLOBALS['we_doc']->Path);
 }
 if(isset($we_responseText)){
-	echo '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR) . '</script>
+	echo '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR) . '</script>
 ';
 	include_once(WE_OBJECT_MODULE_DIR."we_object_createTemplate.inc.php");
 }else{
 	if($GLOBALS['we_doc']->we_save()){
 		$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][response_save_ok]'),$GLOBALS['we_doc']->Path);
-		echo '<script language="JavaScript" type="text/javascript">
+		echo '<script  type="text/javascript">
 		' . we_message_reporting::getShowMessageCall( $we_responseText, WE_MESSAGE_NOTICE,false,true) . '
 opener.we_cmd("changeTempl_ob",'.$nr.','.$GLOBALS['we_doc']->ID.');
 self.close();
@@ -90,7 +90,7 @@ self.close();
 ';
 	}else{
 		$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][response_save_notok]'),$GLOBALS['we_doc']->Path);
-	echo '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall( $we_responseText, WE_MESSAGE_ERROR) . '</script>
+	echo '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall( $we_responseText, WE_MESSAGE_ERROR) . '</script>
 ';
 		include_once(WE_OBJECT_MODULE_DIR."we_object_createTemplate.inc.php");
 	}

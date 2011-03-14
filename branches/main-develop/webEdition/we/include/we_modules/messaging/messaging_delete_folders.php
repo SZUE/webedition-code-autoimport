@@ -43,7 +43,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 	function we_submitForm(target,url) {
 		var f = self.document.we_form;
 		var sel = "";

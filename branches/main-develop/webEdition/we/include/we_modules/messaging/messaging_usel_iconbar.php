@@ -30,8 +30,8 @@ protect();
 print STYLESHEET;
 $we_button = new we_button();
 ?>
-    <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+    <script type="text/javascript">
 	function get_selection() {
 		parent.do_selupdate();
 	}

@@ -139,8 +139,8 @@ class we_wysiwyg{
 			switch(WYSIWYG_TYPE){
 				case 'tinyMCE':
 					//FIXME: remove onchange - bad practise
-					return '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"/>
-<script language="JavaScript" type="text/javascript">
+					return '<script  type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"/>
+<script  type="text/javascript">
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
 		_EditorFrame.setEditorIsHot(true);
@@ -242,7 +242,7 @@ function tinyMCEchanged(inst){
 
 				</style>
 
-				<script language="JavaScript" type="text/javascript"><!--
+				<script  type="text/javascript"><!--
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
 					//FIXME: recognize in browser_check an set according
@@ -309,12 +309,12 @@ function tinyMCEchanged(inst){
 
 				-->
 				</script>' .
-				'<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>'
+				'<script  type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>'
 				.
 					($GLOBALS["SAFARI_WYSIWYG"]
-						? '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
-						  '<script language="JavaScript" type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
-						  : '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
+						? '<script  type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
+						  '<script  type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
+						  : '<script  type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
 		}
 	}
 
@@ -1153,7 +1153,7 @@ function tinyMCEchanged(inst){
 			case 'tinyMCE':
 				list($lang,$code)=explode('_',$GLOBALS["weDefaultFrontendLanguage"]);
 				//deactivated: template,save,layer
-				return '<script language="JavaScript" type="text/javascript">
+				return '<script  type="text/javascript">
 tinyMCE.init({
 	language : "'.$lang.'",
 	mode : "exact",
@@ -1194,7 +1194,7 @@ tinyMCE.init({
 		$row_w = 0;
 		$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" unselectable="on" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground"><img src="/webEdition/images/pixel.gif" width="'.$this->width.'" height="2"  unselectable="on" /></td></tr>';
 		$linerow = '<tr><td unselectable="on"><div class="tbButtonsHR" unselectable="on" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
-		$out = '<script language="JavaScript" type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
+		$out = '<script  type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
 		for($r=0;$r<sizeof($rows);$r++){
 			$out .= '<table border="0" cellpadding="0" cellspacing="0" unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr>';
 			for($s=0;$s<sizeof($rows[$r]);$s++){
@@ -1216,7 +1216,7 @@ $out.='style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-
 }
 $out .='></iframe></td></tr>
 </table></td></tr></table><input type="hidden" id="'.$this->name.'" name="'.$this->name.'" value="'.htmlspecialchars($this->hiddenValue).'" /><div id="'.$this->ref.'edit_buffer" style="display: none;"></div>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 var '.$this->ref.'Obj = null;
 '.$this->ref.'Obj = new weWysiwyg("'.$this->ref.'edit","'.$this->name.'","'.str_replace("\"","\\\"",$this->value).'","'.str_replace("\"","\\\"",$editValue).'",\''.$this->fullscreen.'\',\''.$this->className.'\',\''.$this->propstring.'\',\''.$this->bgcol.'\','.($this->outsideWE ? "true" : "false").',"'.$this->baseHref.'","'.$this->xml.'","'.$this->removeFirstParagraph.'","'.$this->charset.'","'.$this->cssClasses.'","'.$this->Language.'", "'.($this->isFrontendEdit ? 1 : 0).'");
 we_wysiwygs[we_wysiwygs.length] = '.$this->ref.'Obj;
@@ -1415,7 +1415,7 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="'.IMAGE_DIR.'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
 </table><iframe src="/webEdition/html/blank.html" unselectable="on" width="280" height="160" id="'.$this->editor->ref.'edit_'.$this->cmd.'" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
-			$out .= '<script language="JavaScript" type="text/javascript">wePopupMenuArray[wefoo]["'.$this->cmd.'"] = new Array();';
+			$out .= '<script  type="text/javascript">wePopupMenuArray[wefoo]["'.$this->cmd.'"] = new Array();';
  			foreach($this->vals as $val=>$txt){
 				$out .= 'wePopupMenuArray[wefoo]["'.$this->cmd.'"]["'.$val.'"]="'.$txt.'";	'."\n";
 			}
