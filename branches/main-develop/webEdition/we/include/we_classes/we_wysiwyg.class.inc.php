@@ -160,7 +160,6 @@ function tinyMCEchanged(inst){
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 
 					.tbButtonMouseOverUp {
@@ -174,7 +173,6 @@ function tinyMCEchanged(inst){
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonMouseOverDown {
     					border-bottom: 1px solid #CCCCCC;
@@ -187,7 +185,6 @@ function tinyMCEchanged(inst){
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonDown {
     					background-image: url(' . IMAGE_DIR . 'java_menu/background_dark.gif);
@@ -200,7 +197,6 @@ function tinyMCEchanged(inst){
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonsHR {
     					border-top:  #000000 solid 1px;
@@ -210,7 +206,6 @@ function tinyMCEchanged(inst){
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonWysiwygBorder
 					{
@@ -239,7 +234,6 @@ function tinyMCEchanged(inst){
 						padding:0px;
 						text-align: left;
 						text-decoration: none;
-						-moz-user-select: text;
 						left: auto ! important;
 						right: auto ! important;
 						width: auto ! important;
@@ -1417,7 +1411,7 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		} else {
 			$out = '<table id="'.$this->editor->ref.'_sel_'.$this->cmd.'" unselectable="on" onclick="if('.$this->editor->ref.'Obj.menus[\''.$this->cmd.'\'].disabled==false){'.$this->editor->ref.'Obj.showPopupmenu(\''.$this->cmd.'\');}" class="tbButtonWysiwygDefaultStyle" width="'.$this->width.'" height="'.$this->height.'" cellpadding="0" cellspacing="0" border="0" title="'.($this->title).'" style="cursor:pointer;position: relative;">
 	<tr>
-		<td width="'.($this->width-20).'" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);" unselectable="on" class="tbButtonWysiwygDefaultStyle"><input value="'.htmlspecialchars($this->title).'" type="text" name="'.$this->editor->ref.'_seli_'.$this->cmd.'" id="'.$this->editor->ref.'_seli_'.$this->cmd.'" readonly="readonly" style="-moz-user-select:none;cursor:pointer;height:16px;width:'.($this->width-30).'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" unselectable="on" /></td>
+		<td width="'.($this->width-20).'" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);" unselectable="on" class="tbButtonWysiwygDefaultStyle"><input value="'.htmlspecialchars($this->title).'" type="text" name="'.$this->editor->ref.'_seli_'.$this->cmd.'" id="'.$this->editor->ref.'_seli_'.$this->cmd.'" readonly="readonly" style="cursor:pointer;height:16px;width:'.($this->width-30).'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" unselectable="on" /></td>
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="'.IMAGE_DIR.'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
 </table><iframe src="/webEdition/html/blank.html" unselectable="on" width="280" height="160" id="'.$this->editor->ref.'edit_'.$this->cmd.'" style=" z-index: 100000;position: absolute; display:none;"></iframe>';

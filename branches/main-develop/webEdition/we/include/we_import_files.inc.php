@@ -534,7 +534,7 @@ class we_import_files
 						"onMouseUp" => "we_trashButUp(this)",
 						"onMouseOut" => "we_trashButUp(this)",
 						"unselectable" => "on",
-						"style" => "-moz-user-select: none;display: none;cursor:pointer;",
+						"style" => "display: none;cursor:pointer;",
 						"id" => "trash_WEFORMNUM",
 						"onclick" => "wedelRow(WEFORMNUM + 1,this)"
 				));
@@ -1175,7 +1175,7 @@ class we_import_files
 
 								'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
 								'onclick' => 'javascript:#####placeHolder#####;',
-								'style' => 'cursor: pointer; width: 27px;-moz-user-select: none;'
+								'style' => 'cursor: pointer; width: 27px;'
 						)));
 
 		$js = we_htmlElement::jsElement('', array(

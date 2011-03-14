@@ -439,7 +439,7 @@ function we_cmd(){
 
 								'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
 								'onclick' => 'javascript:#####placeHolder#####;',
-								'style' => 'cursor: pointer; width: 27px;-moz-user-select: none;'
+								'style' => 'cursor: pointer; width: 27px;'
 						)));
 
 		$js = we_htmlElement::jsElement('', array(

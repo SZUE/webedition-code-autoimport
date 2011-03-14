@@ -19,7 +19,6 @@
 
 .weBtn, .weBtnLeft, .weBtnMiddle, .weBtnRight, .weBtnClicked, .weBtnLeftClicked, .weBtnMiddleClicked, .weBtnRightClicked, .weBtnDisabled, .weBtnLeftDisabled, .weBtnMiddleDisabled, .weBtnRightDisabled {
 	height:22px ! important;
-	-moz-user-select: none ! important;
 }
 
 .weBtn,.weBtnDisabled,.weBtnClicked{

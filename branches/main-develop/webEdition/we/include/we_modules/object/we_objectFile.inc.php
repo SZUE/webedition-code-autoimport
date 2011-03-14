@@ -949,7 +949,7 @@ class we_objectFile extends we_document
 			$content .= $we_button->create_button_table(
 										array(
 											$but,
-												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object','[not_published]') .'</span>')
+												'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object','[not_published]') .'</span>')
 											)
 										);
 
@@ -1111,7 +1111,7 @@ class we_objectFile extends we_document
 						$content .= $we_button->create_button_table(
 													array(
 														$but,
-															'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'
+															'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'
 														)
 
 													);
@@ -2149,7 +2149,7 @@ class we_objectFile extends we_document
 			if(strpos($text,'%language%')!==false){$text = str_replace('%language%',substr($this->Language,0,2),$text);}
 			if(strpos($text,'%country%')!==false){$text = str_replace('%country%',substr($this->Language,4,2),$text);}
 
-			
+
 			$text=str_replace(" ", "-", $text);
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 				$text= urlencode ($text);

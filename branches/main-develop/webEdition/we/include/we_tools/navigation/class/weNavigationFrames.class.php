@@ -412,7 +412,7 @@ class weNavigationFrames extends weToolFrames
 								"weToggleBox('$uniqname','" . addslashes(g_l('navigation','[icon_properties_out]')) . "','" . addslashes(
 										g_l('navigation','[icon_properties]')) . "')",
 								$wepos,
-								g_l('global',"[openCloseBox]")) . '</td><td><span style="cursor: pointer;-moz-user-select: none;" class="defaultfont" id="text_' . $uniqname . '" onClick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
+								g_l('global',"[openCloseBox]")) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 								g_l('navigation','[icon_properties_out]')) . '\',\'' . addslashes(
 								g_l('navigation','[icon_properties]')) . '\');" unselectable="on">' . ($wepos == 'down' ? g_l('navigation','[icon_properties_out]') : g_l('navigation','[icon_properties]')) . '</span></td></tr></table>',
 
@@ -1609,7 +1609,7 @@ function onFolderSelectionChangeJS(elem) {
 
 								'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
 								'onclick' => 'javascript:#####placeHolder#####;' . $this->topFrame . '.mark();',
-								'style' => 'cursor: pointer; width: 27px;-moz-user-select: none;'
+								'style' => 'cursor: pointer; width: 27px;'
 						)));
 
 		$variant_js = '
