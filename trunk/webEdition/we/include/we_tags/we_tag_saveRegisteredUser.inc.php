@@ -38,17 +38,17 @@ function we_tag_saveRegisteredUser($attribs,$content){
 		if(isset($_REQUEST["s"]["Password2"])) {
 			unset($_REQUEST["s"]["Password2"]);
 		}
-		
-		$dates = array();//type date 
+
+		$dates = array();//type date
 		foreach ($_REQUEST["s"] as $n => $v) {
 			if (preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)) {
 				$dates[$regs[1]][$regs[2]] = $v;
 				unset($_REQUEST["s"][$n]);
-			} 
+			}
 		}
 		foreach ($dates as $k => $vv) {
 			$_REQUEST["s"][$k] = mktime($vv['hour'],$vv['minute'],0,$vv['month'],$vv['day'],$vv['year']);
-		}	
+		}
 
                                            // new user ...                    || existing user
 		if(isset($_REQUEST["s"]["ID"]) && (!isset($_SESSION["webuser"]["ID"]) || $_REQUEST["s"]["ID"] == $_SESSION["webuser"]["ID"])){
@@ -108,7 +108,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 								$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE ID='".abs($uID)."'",$GLOBALS["DB_WE"]);
 								$_SESSION["webuser"]=$u;
 								$_SESSION["webuser"]["registered"] = true;
-								
+
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastAccess='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
 								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastLogin='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
@@ -202,8 +202,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							}
 
 						}
-						if(isset($_REQUEST["s"]["Password"]) && $_REQUEST["s"]["Password"] != $_SESSION["webuser"]["Password"]){//bei Passwordänderungen müssen die Autologins des Users gelöscht werden
-							$GLOBALS["DB_WE"]->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE UserID='".abs($_REQUEST["s"]["ID"])."'");
+						if(isset($_REQUEST["s"]["Password"]) && $_REQUEST["s"]["Password"] != $_SESSION["webuser"]["Password"]){//bei Passwordï¿½nderungen mï¿½ssen die Autologins des Users gelï¿½scht werden
+							$GLOBALS["DB_WE"]->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE WebUserID='".abs($_REQUEST["s"]["ID"])."'");
 						}
 						if(sizeof($set_a)){
 							$set=implode(",",$set_a);
