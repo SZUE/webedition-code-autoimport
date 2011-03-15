@@ -48,5 +48,3 @@ $GLOBALS['weTagWizard']['attribute']['id778_checkboxtext'] = new weTagData_textA
 $GLOBALS['weTagWizard']['attribute']['id855_doc'] = new weTagData_selectAttribute('855', 'doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id876_minyear'] = new weTagData_textAttribute('876', 'minyear', false, '');
 $GLOBALS['weTagWizard']['attribute']['id877_maxyear'] = new weTagData_textAttribute('877', 'maxyear', false, '');
-
-?>

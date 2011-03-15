@@ -22,5 +22,3 @@ $GLOBALS['weTagWizard']['attribute']['id807_fieldGroup'] = new weTagData_textAtt
 $GLOBALS['weTagWizard']['attribute']['id825_recipientCC'] = new weTagData_textAttribute('825', 'recipientCC', false, '');
 $GLOBALS['weTagWizard']['attribute']['id826_recipientBCC'] = new weTagData_textAttribute('826', 'recipientBCC', false, '');
 $GLOBALS['weTagWizard']['attribute']['id814_includeimages'] = new weTagData_selectAttribute('814', 'includeimages', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-
-?>

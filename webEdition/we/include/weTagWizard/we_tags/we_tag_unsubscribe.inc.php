@@ -11,4 +11,3 @@ $GLOBALS['weTagWizard']['attribute']['id549_class'] = new weTagData_textAttribut
 $GLOBALS['weTagWizard']['attribute']['id550_style'] = new weTagData_textAttribute('550', 'style', false, '');
 $GLOBALS['weTagWizard']['attribute']['id551_onchange'] = new weTagData_textAttribute('551', 'onchange', false, '');
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-?>

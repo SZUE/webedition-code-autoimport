@@ -12,4 +12,3 @@ $GLOBALS['weTagWizard']['attribute']['id414_link'] = new weTagData_selectAttribu
 $GLOBALS['weTagWizard']['attribute']['id415_doc'] = new weTagData_selectAttribute('415', 'doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, '');
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id416_triggerid'] = new weTagData_selectorAttribute('416', 'triggerid',FILE_TABLE, 'text/webedition', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

@@ -17,4 +17,3 @@ $GLOBALS['weTagWizard']['attribute']['id814_includeimages'] = new weTagData_sele
 $GLOBALS['weTagWizard']['attribute']['id827_usebasehref'] = new weTagData_selectAttribute('827', 'usebasehref', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id828_useformmaillog'] = new weTagData_selectAttribute('828', 'useformmaillog', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id829_useformmailblock'] = new weTagData_selectAttribute('829', 'useformmailblock', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-?>

@@ -7,4 +7,3 @@ $GLOBALS['weTagWizard']['attribute']['id622_name'] = new weTagData_textAttribute
 $GLOBALS['weTagWizard']['attribute']['id623_url'] = new weTagData_textAttribute('623', 'url', true, '');
 $GLOBALS['weTagWizard']['attribute']['id624_refresh'] = new weTagData_textAttribute('624', 'refresh', false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

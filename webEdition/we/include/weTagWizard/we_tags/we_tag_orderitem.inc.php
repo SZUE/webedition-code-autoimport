@@ -8,4 +8,3 @@ $GLOBALS['weTagWizard']['attribute']['id750_id'] = new weTagData_textAttribute('
 
 $GLOBALS['weTagWizard']['attribute']['id872_orderid'] = new weTagData_textAttribute('751', 'orderid', false, '');
 $GLOBALS['weTagWizard']['attribute']['id752_condition'] = new weTagData_textAttribute('752', 'condition', false, '');
-?>
