@@ -1,6 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_choiceAttribute.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
 
 $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
@@ -9,6 +10,3 @@ $GLOBALS['weTagWizard']['attribute']['id489_num_format'] = new weTagData_choiceA
 $GLOBALS['weTagWizard']['attribute']['id490_type'] = new weTagData_choiceAttribute('490', 'type', array(new weTagDataOption('net', false, ''), new weTagDataOption('gros', false, ''), new weTagDataOption('vat', false, '')), false,false, '');
 $GLOBALS['weTagWizard']['attribute']['id478_to'] = new weTagData_selectAttribute('478', 'to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id479_nameto'] = new weTagData_textAttribute('479', 'nameto', false, '');
-
-
-?>
