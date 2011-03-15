@@ -12,4 +12,3 @@ $GLOBALS['weTagWizard']['attribute']['id402_field'] = new weTagData_textAttribut
 $GLOBALS['weTagWizard']['attribute']['id403_dirfield'] = new weTagData_textAttribute('403', 'dirfield', false, '');
 $GLOBALS['weTagWizard']['attribute']['id404_doc'] = new weTagData_selectAttribute('404', 'doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

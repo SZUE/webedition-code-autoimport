@@ -5,4 +5,3 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
 
 $GLOBALS['weTagWizard']['attribute']['id274_match'] = new weTagData_textAttribute('274', 'match', true, '');
 $GLOBALS['weTagWizard']['attribute']['id275_formname'] = new weTagData_textAttribute('275', 'formname', false, '');
-?>

@@ -9,5 +9,3 @@ $GLOBALS['weTagWizard']['attribute']['id246_match'] = new weTagData_textAttribut
 $GLOBALS['weTagWizard']['attribute']['id247_type'] = new weTagData_selectAttribute('247', 'type', array(new weTagDataOption('global', false, ''), new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('document', false, ''), new weTagDataOption('property', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id248_doc'] = new weTagData_selectAttribute('248', 'doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id870_operator'] = new weTagData_selectAttribute('870', 'operator', array(new weTagDataOption('equal', false, ''), new weTagDataOption('less', false, ''), new weTagDataOption('less|equal', false, ''), new weTagDataOption('greater', false, ''), new weTagDataOption('greater|equal', false, ''), new weTagDataOption('contains', false, '')), false, '');
-
-?>

@@ -10,4 +10,3 @@ $GLOBALS['weTagWizard']['attribute']['id722_suffix'] = new weTagData_textAttribu
 $GLOBALS['weTagWizard']['attribute']['id723_delimiter'] = new weTagData_textAttribute('723', 'delimiter', false, '');
 
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

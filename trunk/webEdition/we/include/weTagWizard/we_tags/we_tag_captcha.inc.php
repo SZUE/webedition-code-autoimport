@@ -26,4 +26,3 @@ $GLOBALS['weTagWizard']['attribute']['id663_case'] = new weTagData_selectAttribu
 $GLOBALS['weTagWizard']['attribute']['id680_type'] = new weTagData_selectAttribute('680', 'type', array(new weTagDataOption('gif', false, ''), new weTagDataOption('jpg', false, ''), new weTagDataOption('png', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id669_stylenumber'] = new weTagData_textAttribute('669', 'stylenumber', false, '');
 $GLOBALS['weTagWizard']['attribute']['id819_alt'] = new weTagData_textAttribute('819', 'alt', false, '');
-?>

@@ -19,4 +19,3 @@ $GLOBALS['weTagWizard']['attribute']['id110_mail'] = new weTagData_textAttribute
 $GLOBALS['weTagWizard']['attribute']['id111_mailfrom'] = new weTagData_textAttribute('111', 'mailfrom', false, '');
 $GLOBALS['weTagWizard']['attribute']['id112_charset'] = new weTagData_textAttribute('112', 'charset', false, '');
 $GLOBALS['weTagWizard']['attribute']['id107_userid'] = new weTagData_textAttribute('107', 'userid', false, '');
-?>

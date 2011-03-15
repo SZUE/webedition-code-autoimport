@@ -6,4 +6,3 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
 $GLOBALS['weTagWizard']['attribute']['id645_doc'] = new weTagData_selectAttribute('645', 'doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

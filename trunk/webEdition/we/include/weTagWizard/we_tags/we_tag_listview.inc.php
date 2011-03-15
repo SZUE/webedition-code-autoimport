@@ -71,5 +71,3 @@ $GLOBALS['weTagWizard']['attribute']['id10039_lastaccesslimit'] = new weTagData_
 $GLOBALS['weTagWizard']['attribute']['id10040_lastloginlimit'] = new weTagData_textAttribute('10040', 'lastloginlimit', false, '');
 $GLOBALS['weTagWizard']['attribute']['id10041_objectseourls'] = new weTagData_selectAttribute('10041', 'objectseourls', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id10042_hidedirindex'] = new weTagData_selectAttribute('10042', 'hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-
-?>

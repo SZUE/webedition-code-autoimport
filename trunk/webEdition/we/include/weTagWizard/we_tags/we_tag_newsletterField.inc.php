@@ -4,4 +4,3 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cla
 $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
 $GLOBALS['weTagWizard']['attribute']['id809_fieldName'] = new weTagData_textAttribute('809', 'fieldName', true, '');
-?>
