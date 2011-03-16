@@ -272,7 +272,7 @@ class weCustomer extends weModelBase {
 	}
 
 	function filenameNotValid() {
-		return preg_match('/[^a-z0-9öäüßÄÜÖ\._\@\ \-]/i', $this->Username);
+		return preg_match('|[/]|i', $this->Username);
 	}
 
 }

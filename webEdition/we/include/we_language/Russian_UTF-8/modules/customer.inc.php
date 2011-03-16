@@ -213,7 +213,7 @@ $l_customer["manual_selection"] = "Manuel selection"; // TRANSLATE
 $l_customer["sortname_empty"] = "Sort name is empty!"; // TRANSLATE
 $l_customer["fieldname_exists"] = "The field name already exists!"; // TRANSLATE
 $l_customer["treetext_format"] = "Menu text format"; // TRANSLATE
-$l_customer["we_filename_notValid"] = "Введенное имя пользователя недействительно!\\nДопустимыми являются буквы от a до z (большие и малые), цифры, нижняя черта (_), тире (-), точка (.) и пробел ( ).";
+$l_customer["we_filename_notValid"] = "Invalid user name!\\n The / ist forbidden";// TRANSLATE
 
 $l_customer["windows"] = "Windows format"; // TRANSLATE
 $l_customer["unix"] = "UNIX format"; // TRANSLATE

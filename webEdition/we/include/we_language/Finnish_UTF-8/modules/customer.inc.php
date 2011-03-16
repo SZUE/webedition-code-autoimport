@@ -211,7 +211,7 @@ $l_customer["manual_selection"] = "Manuaalinen valinta";
 $l_customer["sortname_empty"] = "Lajittelun nimi on tyhjä!";
 $l_customer["fieldname_exists"] = "Annettu kenttänimi on jo käytössä!";
 $l_customer["treetext_format"] = "Puun tekstin muotoilu";
-$l_customer["we_filename_notValid"] = "Käyttäjänimi ei ole sallittu!\\n Sallitut merkit ovat alfa-numeerisia, isot -ja pienet kirjaimet, ala -ja tavuviiva, piste ja välilyönti (a-z, A-Z, 0-9, _, -, ., )";
+$l_customer["we_filename_notValid"] = "Invalid user name!\\n The / ist forbidden";// TRANSLATE
 
 $l_customer["windows"] = "Windows muoto";
 $l_customer["unix"] = "UNIX muoto";

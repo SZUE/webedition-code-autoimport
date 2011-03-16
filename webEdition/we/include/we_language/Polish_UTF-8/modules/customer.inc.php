@@ -215,7 +215,7 @@ $l_customer["manual_selection"] = "Manuel selection"; // TRANSLATE
 $l_customer["sortname_empty"] = "Sort name is empty!"; // TRANSLATE
 $l_customer["fieldname_exists"] = "The field name already exists!"; // TRANSLATE
 $l_customer["treetext_format"] = "Menu text format"; // TRANSLATE
-$l_customer["we_filename_notValid"] = "Podana nazwa klienta jest nieprawidłowa!\\nDozwolone znaki to litery od a do z (wielkie i małe) , cyfry, znak podkreślenia (_), minus (-), kropka (.) oraz spacja ( ).";
+$l_customer["we_filename_notValid"] = "Invalid user name!\\n The / ist forbidden";// TRANSLATE
 
 $l_customer["windows"] = "Windows format"; // TRANSLATE
 $l_customer["unix"] = "UNIX format"; // TRANSLATE
