@@ -211,7 +211,7 @@ $l_customer["manual_selection"] = "Handmatige selectie";
 $l_customer["sortname_empty"] = "Sorteer naam is leeg!";
 $l_customer["fieldname_exists"] = "De veld naam bestaat al!";
 $l_customer["treetext_format"] = "Menu tekst formaat";
-$l_customer["we_filename_notValid"] = "Ongeldige gebruikersnaam!\\nGeldige karakters zijn alfa-numeriek, onder- en bovenkast, eveneens als de underscore, koppelteken, punt en witruimte (a-z, A-Z, 0-9, _, -, ., )";
+$l_customer["we_filename_notValid"] = "Ongeldige gebruikersnaam!\\n The / ist forbidden";// TRANSLATE
 
 $l_customer["windows"] = "Windows formaat";
 $l_customer["unix"] = "UNIX formaat";

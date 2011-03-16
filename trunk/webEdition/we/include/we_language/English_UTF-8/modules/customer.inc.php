@@ -211,7 +211,7 @@ $l_customer["manual_selection"] = "Manuel selection";
 $l_customer["sortname_empty"] = "Sort name is empty!";
 $l_customer["fieldname_exists"] = "The field name already exists!";
 $l_customer["treetext_format"] = "Menu text format";
-$l_customer["we_filename_notValid"] = "Invalid user name!\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen, dot and whitespace (a-z, A-Z, 0-9, _, -, ., )";
+$l_customer["we_filename_notValid"] = "Invalid user name!\\n The / ist forbidden";
 
 $l_customer["windows"] = "Windows format";
 $l_customer["unix"] = "UNIX format";

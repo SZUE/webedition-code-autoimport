@@ -217,7 +217,7 @@ $l_customer["manual_selection"] = "Selección manual";
 $l_customer["sortname_empty"] = "El nombre de clasificación está vacío!";
 $l_customer["fieldname_exists"] = "El nombre de campo ya existe!";
 $l_customer["treetext_format"] = "Formato de texto del menú";
-$l_customer["we_filename_notValid"] = "El nombre de usuario no es válido!\\nLos carácteres permitidos son alpha-númericos, mayúsculas y minúsculas, subrayado (_), guión (-), punto (.) y espacios () (a-z, A-Z, 0-9, _, -, ., )";
+$l_customer["we_filename_notValid"] = "Invalid user name!\\n The / ist forbidden";// TRANSLATE
 
 $l_customer["windows"] = "Formato Windows";
 $l_customer["unix"] = "Formato UNIX";
