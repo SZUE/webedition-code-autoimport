@@ -166,8 +166,10 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function formDocTypeTempl() {
 		global $l_we_class;
-
-		$disable = (($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published);
+		if (we_hasPerm('EDIT_DOCEXTENSION')){
+			$disable = (($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published);
+		} else $disable = true;
+		
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
