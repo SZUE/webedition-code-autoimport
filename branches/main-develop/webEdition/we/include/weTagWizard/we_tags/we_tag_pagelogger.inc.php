@@ -13,4 +13,3 @@ $GLOBALS['weTagWizard']['attribute']['id396_order'] = new weTagData_selectAttrib
 $GLOBALS['weTagWizard']['attribute']['id397_desc'] = new weTagData_selectAttribute('397', 'desc', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id398_rows'] = new weTagData_textAttribute('398', 'rows', false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

@@ -29,4 +29,3 @@ $GLOBALS['weTagWizard']['attribute']['id536_win2iso'] = new weTagData_selectAttr
 $GLOBALS['weTagWizard']['attribute']['id537_classes'] = new weTagData_textAttribute('537', 'classes', false, '');
 $GLOBALS['weTagWizard']['attribute']['id732_spellcheck'] = new weTagData_selectAttribute('732', 'spellcheck', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'spellchecker');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

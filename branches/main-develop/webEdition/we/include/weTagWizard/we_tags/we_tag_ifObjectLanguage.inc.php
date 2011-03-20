@@ -11,6 +11,3 @@ while ($arr = current($GLOBALS["weFrontendLanguages"])) {
     next($GLOBALS["weFrontendLanguages"]);
 }
 $GLOBALS['weTagWizard']['attribute']['id116_match'] = new weTagData_choiceAttribute('116', 'match',$locales, false,true, '');
-
-
-?>

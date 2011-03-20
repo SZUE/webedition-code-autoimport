@@ -117,17 +117,7 @@
 
 
 			}
-
-			if(defined('BANNER_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
-				if(!weBackupUpdater::isColExist(BANNER_VIEWS_TABLE,'viewid')) {
-					$db->query('ALTER TABLE ' . BANNER_VIEWS_TABLE . ' ADD viewid BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST');
-				}
-				if(!weBackupUpdater::isColExist(BANNER_CLICKS_TABLE,'clickid')) {
-					$db->query('ALTER TABLE ' . BANNER_CLICKS_TABLE . ' ADD clickid BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST');
-				}
-			}
-
+			
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
 			if($_SESSION['weBackupVars']['protect'] && !$_SESSION['weBackupVars']['options']['compress']) {
 				weFile::save($_SESSION['weBackupVars']['backup_file'],$GLOBALS['weXmlExImProtectCode'].$GLOBALS['weXmlExImHeader']);

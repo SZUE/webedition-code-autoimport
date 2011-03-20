@@ -249,6 +249,7 @@ class weShopStatusMails {
 			$phpmail = new we_util_Mailer();
 
 			$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
+			if ($subject==''){$subject='no subject given';}
 			if ($recipientOK  && $subject!='' && $this->EMailData['address']!='' && we_check_email($this->EMailData['address']) ){
 				$phpmail->setSubject($subject);
 				$phpmail->setIsEmbedImages(true);

@@ -29,4 +29,3 @@ $GLOBALS['weTagWizard']['attribute']['id852_onduplicate'] = new weTagData_select
 $GLOBALS['weTagWizard']['attribute']['id867_onpredefinedname'] = new weTagData_selectAttribute('867', 'onpredefinedname', array(new weTagDataOption('appendto', false, ''), new weTagDataOption('infrontof', false, ''), new weTagDataOption('overwrite', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id863_workflowname'] = new weTagData_textAttribute('863', 'workflowname', false, '');
 $GLOBALS['weTagWizard']['attribute']['id864_workflowuserid'] = new weTagData_textAttribute('864', 'workflowuserid', false, '');
-?>

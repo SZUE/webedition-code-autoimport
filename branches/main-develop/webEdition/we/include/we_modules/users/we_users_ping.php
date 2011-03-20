@@ -31,7 +31,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 htmlTop();
 if($_SESSION["user"]["ID"]){
 	$DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
-	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET `lock`=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID="'.abs($_SESSION["user"]["ID"]).'" AND sessionID="'.session_id().'"');
+	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID="'.abs($_SESSION["user"]["ID"]).'" AND sessionID="'.session_id().'"');
 }
 
 ?>

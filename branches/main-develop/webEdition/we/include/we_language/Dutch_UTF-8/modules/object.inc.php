@@ -112,6 +112,8 @@ $l_modules_object = array(
 				'%h%' => "Uren",
 				'%ID%' => "ID", // TRANSLATE
 				'Text' => "Tekst",
+				'%PathIncC%' => "Path with Class", // TRANSLATE
+				'%PathNoC%' => "Path without Class", // TRANSLATE
 				'%Parent%' => "Parent folder", // TRANSLATE
 				'%DirSep%' => "Directory separator", // TRANSLATE
 				'%urlfield1%' => "URL field 1", // TRANSLATE
@@ -120,14 +122,5 @@ $l_modules_object = array(
 				'%locale%' => "Locale", // TRANSLATE
 				'%language%' => "Language", // TRANSLATE
 				'%country%' => "Country", // TRANSLATE
-//'%firstcatN%' => "Name first cat.",// TRANSLATE
-//'%firstcatT%' => "Title first cat.",// TRANSLATE
-//'%firstcatD%' => "Desc. first Kat.",// TRANSLATE
-//'%secondcatN%' => "Name second cat.",// TRANSLATE
-//'%secondcatT%' => "Title second cat.",// TRANSLATE
-//'%secondcatD%' => "Desc. second cat.",// TRANSLATE
-//'%thirdcatN%' => "Name third cat.",// TRANSLATE
-//'%thirdcatT%' => "Title third cat.",// TRANSLATE
-//'%thirdcatD%' => "Desc. third cat.",// TRANSLATE
 		),
 );

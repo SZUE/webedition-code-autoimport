@@ -317,6 +317,7 @@ $l_prefs = array(
 		'general_directoryindex_hide' => "Hide DirectoryIndex- file names", // TRANSLATE
 		'general_directoryindex_hide_description' => "For the tags <we:link>, <we:linklist>, <we:listview> you can use the attribute 'hidedirindex'", // TRANSLATE
 		'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
+		'suppress404code' => "suppress 404 not found",// TRANSLATE
 		'navigation_directoryindex_hide' => "in the navigation output", // TRANSLATE
 		'wysiwyglinks_directoryindex_hide' => "in links from the WYSIWYG editor", // TRANSLATE
 		'objectlinks_directoryindex_hide' => "in links to objects", // TRANSLATE

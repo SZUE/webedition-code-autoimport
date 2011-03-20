@@ -16,6 +16,3 @@ if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id713_imageid'
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
 $GLOBALS['weTagWizard']['attribute']['id884_hidedirindex'] = new weTagData_selectAttribute('884', 'hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id885_objectseourls'] = new weTagData_selectAttribute('885', 'objectseourls', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-
-
-?>

@@ -2730,7 +2730,13 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$title=isset($emails[$j][3]) ? str_replace("\r","",str_replace("\n","",$emails[$j][3])) : "";
 			$firstname=isset($emails[$j][4]) ? str_replace("\r","",str_replace("\n","",$emails[$j][4])) : "";
 			$lastname=isset($emails[$j][5]) ? str_replace("\r","",str_replace("\n","",$emails[$j][5])) : "";
-
+			$customerid=isset($emails[$j][8]) ? str_replace("\r","",str_replace("\n","",$emails[$j][8])) : "";
+			if (isset($emails[$j][9]) && $emails[$j][9]=='customer'){
+				$iscustomer='C';
+			} else {
+				$iscustomer='';
+			}
+			
 			$contentDefault="";
 			$content_plainDefault="";
 			$contentF="";
@@ -2761,29 +2767,29 @@ function getDateSelector($_label, $_name, $_btn, $value)
 				$html_block=$this->View->getFromCache($blockcache."_h_".$user_block);
 				$plain_block=$this->View->getFromCache($blockcache."_p_".$user_block);
 
-				$contentDefault.=$html_block["default"];
-				$content_plainDefault.=$plain_block["default"];
+				$contentDefault.=$html_block["default".$iscustomer];
+				$content_plainDefault.=$plain_block["default".$iscustomer];
 
-				$contentF.=$html_block["female"];
-				$contentF_plain.=$plain_block["female"];
+				$contentF.=$html_block["female".$iscustomer];
+				$contentF_plain.=$plain_block["female".$iscustomer];
 
-				$contentM.=$html_block["male"];
-				$contentM_plain.=$plain_block["male"];
+				$contentM.=$html_block["male".$iscustomer];
+				$contentM_plain.=$plain_block["male".$iscustomer];
 
-				$contentTFL.=$html_block["title_firstname_lastname"];
-				$contentTFL_plain.=$plain_block["title_firstname_lastname"];
+				$contentTFL.=$html_block["title_firstname_lastname".$iscustomer];
+				$contentTFL_plain.=$plain_block["title_firstname_lastname".$iscustomer];
 
-				$contentTL.=$html_block["title_lastname"];
-				$contentTL_plain.=$plain_block["title_lastname"];
+				$contentTL.=$html_block["title_lastname".$iscustomer];
+				$contentTL_plain.=$plain_block["title_lastname".$iscustomer];
 
-				$contentFL.=$html_block["firstname_lastname"];
-				$contentFL_plain.=$plain_block["firstname_lastname"];
+				$contentFL.=$html_block["firstname_lastname".$iscustomer];
+				$contentFL_plain.=$plain_block["firstname_lastname".$iscustomer];
 
-				$contentLN.=$html_block["lastname"];
-				$contentLN_plain.=$plain_block["lastname"];
+				$contentLN.=$html_block["lastname".$iscustomer];
+				$contentLN_plain.=$plain_block["lastname".$iscustomer];
 
-				$contentFN.=$html_block["firstname"];
-				$contentFN_plain.=$plain_block["firstname"];
+				$contentFN.=$html_block["firstname".$iscustomer];
+				$contentFN_plain.=$plain_block["firstname".$iscustomer];
 
 				foreach($html_block["inlines"] as $k=>$v)
 				if(!in_array($k,array_keys($inlines))) $inlines[$k]=$v;
@@ -2793,12 +2799,14 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 				$content = str_replace('###FIRSTNAME###',$firstname,$contentF);
 				$content = str_replace('###LASTNAME###',$lastname,$content);
+				$content = str_replace('###CUSTOMERID###',$customerid,$content);
 				if($title){
 				$content = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content);
 				}
 				$content = str_replace('###TITLE###',$title,$content);
 				$content_plain = str_replace('###FIRSTNAME###',$firstname,$contentF_plain);
 				$content_plain = str_replace('###LASTNAME###',$lastname,$content_plain);
+				$content_plain = str_replace('###CUSTOMERID###',$customerid,$content_plain);
 				if($title){
 				$content_plain = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content_plain);
 				}
@@ -2807,12 +2815,14 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 				$content = str_replace('###FIRSTNAME###',$firstname,$contentM);
 				$content = str_replace('###LASTNAME###',$lastname,$content);
+				$content = str_replace('###CUSTOMERID###',$customerid,$content);
 				if($title){
 					$content = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content);
 				}
 				$content = str_replace('###TITLE###',$title,$content);
 				$content_plain = str_replace('###FIRSTNAME###',$firstname,$contentM_plain);
 				$content_plain = str_replace('###LASTNAME###',$lastname,$content_plain);
+				$content_plain = str_replace('###CUSTOMERID###',$customerid,$content_plain);
 				if($title){
 					$content_plain = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content_plain);
 				}
@@ -2822,10 +2832,12 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 				$content = str_replace('###FIRSTNAME###',$firstname,$contentTFL);
 				$content = str_replace('###LASTNAME###',$lastname,$content);
+				$content = str_replace('###CUSTOMERID###',$customerid,$content);
 				$content = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content);
 				$content = str_replace('###TITLE###',$title,$content);
 				$content_plain = str_replace('###FIRSTNAME###',$firstname,$contentTFL_plain);
 				$content_plain = str_replace('###LASTNAME###',$lastname,$content_plain);
+				$content_plain = str_replace('###CUSTOMERID###',$customerid,$content_plain);
 				$content_plain = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content_plain);
 				$content_plain = str_replace('###TITLE###',$title,$content_plain);
 
@@ -2833,10 +2845,12 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 				$content = str_replace('###FIRSTNAME###',$firstname,$contentTL);
 				$content = str_replace('###LASTNAME###',$lastname,$content);
+				$content = str_replace('###CUSTOMERID###',$customerid,$content);
 				$content = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content);
 				$content = str_replace('###TITLE###',$title,$content);
 				$content_plain = str_replace('###FIRSTNAME###',$firstname,$contentTL_plain);
 				$content_plain = str_replace('###LASTNAME###',$lastname,$content_plain);
+				$content_plain = str_replace('###CUSTOMERID###',$customerid,$content_plain);
 				$content_plain = eregi_replace('([^ ])###TITLE###','\1 '.$title,$content_plain);
 				$content_plain = str_replace('###TITLE###',$title,$content_plain);
 
@@ -2844,18 +2858,24 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 				$content = str_replace('###FIRSTNAME###',$firstname,$contentFL);
 				$content = str_replace('###LASTNAME###',$lastname,$content);
+				$content = str_replace('###CUSTOMERID###',$customerid,$content);
 				$content_plain = str_replace('###FIRSTNAME###',$firstname,$contentFL_plain);
 				$content_plain = str_replace('###LASTNAME###',$lastname,$content_plain);
+				$content_plain = str_replace('###CUSTOMERID###',$customerid,$content_plain);
 
 			}else if($firstname){
 
 				$content = str_replace('###FIRSTNAME###',$firstname,$contentFN);
+				$content = str_replace('###CUSTOMERID###',$customerid,$content);
 				$content_plain = str_replace('###FIRSTNAME###',$firstname,$contentFN_plain);
+				$content_plain = str_replace('###CUSTOMERID###',$customerid,$content_plain);
 
 			}else if($lastname){
 
 				$content = str_replace('###LASTNAME###',$lastname,$contentLN);
+				$content = str_replace('###CUSTOMERID###',$customerid,$content);
 				$content_plain = str_replace('###LASTNAME###',$lastname,$contentLN_plain);
+				$content_plain = str_replace('###CUSTOMERID###',$customerid,$content_plain);
 
 			}else{
 

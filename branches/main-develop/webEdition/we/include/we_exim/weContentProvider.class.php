@@ -34,86 +34,94 @@
 		function weContentProvider(){
 		}
 
-		function getInstance($we_ContentType,$ID="",$table=""){
-			$we_doc="";
+		function getInstance($we_ContentType, $ID="", $table="") {
+		$we_doc = "";
 
-			$DB_WE=new DB_WE();
+		$DB_WE = new DB_WE();
 
-			if($ID!="") $we_ID=$ID;
-			if($we_ContentType=="doctype"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_docTypes.inc.php");
-				$we_doc=new we_docTypes();
-				if($ID!=""){
-					$we_doc->initByID($ID,$we_doc->Table);
+		if ($ID != "")
+			$we_ID = $ID;
+		switch ($we_ContentType) {
+			case "doctype":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "we_docTypes.inc.php");
+				$we_doc = new we_docTypes();
+				if ($ID != "") {
+					$we_doc->initByID($ID, $we_doc->Table);
 				}
-			}
-			else if($we_ContentType=="category"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_category.inc.php");
-				$we_doc=new we_category();
+				break;
+			case "category":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "we_category.inc.php");
+				$we_doc = new we_category();
 				$we_doc->load($ID);
-			}
-			else if($we_ContentType=="weNavigation"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php");
-				$we_doc=new weNavigation();
+				break;
+			case "weNavigation":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php");
+				$we_doc = new weNavigation();
 				$we_doc->we_load($ID);
-			}
-			else if($we_ContentType=="weNavigationRule"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php");
-				$we_doc=new weNavigationRule();
+				break;
+			case "weNavigationRule":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php");
+				$we_doc = new weNavigationRule();
 				$we_doc->we_load($ID);
-			}
-			else if($we_ContentType=="weThumbnail"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/we_thumbnail.class.php");
-				$we_doc=new we_thumbnail();
+				break;
+			case "weThumbnail":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_exim/we_thumbnailEx.class.php");
+				$we_doc = new we_thumbnailEx();
 				$we_doc->we_load($ID);
-			}
-			else if($we_ContentType=="weTable"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."base/weTable.class.php");
-				$we_doc=new weTable($table);
-			}
-			else if($we_ContentType=="weTableItem"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."base/weTableItem.class.php");
+				break;
+			case "weTable":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weTable.class.php");
+				$we_doc = new weTable($table);
+				break;
+			case "weTableItem":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weTableItem.class.php");
 
-				$we_doc=new weTableItem($table);
-				if(!empty($ID)) $we_doc->load($ID);
-			}
+				$we_doc = new weTableItem($table);
+				if (!empty($ID))
+					$we_doc->load($ID);
+				break;
 
-			else if($we_ContentType=="weBinary"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."base/weBinary.class.php");
-				$we_doc=new weBinary();
-				$we_doc->load($ID,false);
-			}
-			else if($we_ContentType=="weVersion"){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."base/weVersion.class.php");
-				$we_doc=new weVersion();
-				$we_doc->load($ID,false);
-			}
+			case "weBinary":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weBinary.class.php");
+				$we_doc = new weBinary();
+				$we_doc->load($ID, false);
+				break;
+			case "weVersion":
+				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weVersion.class.php");
+				$we_doc = new weVersion();
+				$we_doc->load($ID, false);
+				break;
 			// fix for classes
-			else if($we_ContentType=="object" && defined("OBJECT_TABLE")){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/"."we_objectEx.inc.php");
-				$we_doc=new we_objectEx();
-				$we_doc->initByID($ID,OBJECT_TABLE);
-			}
-			// fix ends ------------------------------------------------
-			else{
-				if($we_ContentType=="folder" && !empty($table)) {
-					$we_Table=$table;
+			case "object":
+				if (defined("OBJECT_TABLE")) {
+					include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_objectEx.inc.php");
+					$we_doc = new we_objectEx();
+					$we_doc->initByID($ID, OBJECT_TABLE);
 				}
-				else if($we_ContentType=="text/weTmpl") $we_Table=TEMPLATES_TABLE;
-				else if($we_ContentType=="object" && defined("OBJECT_TABLE")) $we_Table=OBJECT_TABLE;
-				else if($we_ContentType=="objectFile" && defined("OBJECT_FILES_TABLE")) $we_Table=OBJECT_FILES_TABLE;
-				else $we_Table=FILE_TABLE;
+				break;
+			// fix ends ------------------------------------------------
+			default:
+				if ($we_ContentType == "folder" && !empty($table)) {
+					$we_Table = $table;
+				} else if ($we_ContentType == "text/weTmpl")
+					$we_Table = TEMPLATES_TABLE;
+				else if ($we_ContentType == "object" && defined("OBJECT_TABLE"))
+					$we_Table = OBJECT_TABLE;
+				else if ($we_ContentType == "objectFile" && defined("OBJECT_FILES_TABLE"))
+					$we_Table = OBJECT_FILES_TABLE;
+				else
+					$we_Table=FILE_TABLE;
 
-				if(($we_ContentType=="object" && !defined("OBJECT_TABLE")) || ($we_ContentType=="objectFile" && !defined("OBJECT_FILES_TABLE"))) return $we_doc;
+				if (($we_ContentType == "object" && !defined("OBJECT_TABLE")) || ($we_ContentType == "objectFile" && !defined("OBJECT_FILES_TABLE")))
+					return $we_doc;
 
 				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
-
-			}
-
-			return $we_doc;
 		}
 
-		function populateInstance(&$object,$content){
+		return $we_doc;
+	}
+
+	function populateInstance(&$object,$content){
 			if(!isset($object)) return;
 			foreach($content as $k=>$v){
 					$object->$k=$v;

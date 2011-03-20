@@ -16,4 +16,3 @@ $GLOBALS['weTagWizard']['attribute']['id1861_kind'] = new weTagData_selectAttrib
 $GLOBALS['weTagWizard']['attribute']['id632_name'] = new weTagData_textAttribute('632', 'name', false, '');
 if(defined("TEMPLATES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id704_id'] = new weTagData_selectorAttribute('704', 'id',TEMPLATES_TABLE, 'text/weTmpl', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id668_rootdir'] = new weTagData_textAttribute('668', 'rootdir', false, '');
-?>

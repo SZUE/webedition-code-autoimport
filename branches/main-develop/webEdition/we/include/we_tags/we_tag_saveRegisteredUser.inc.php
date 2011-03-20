@@ -2,10 +2,6 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
- *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +32,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 	$protected = makeArrayFromCSV(we_getTagAttribute("protected",$attribs));
 
 	if(defined("CUSTOMER_TABLE") && isset ($_REQUEST["s"])){
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/weCustomer.php");
 
 		if(isset($_REQUEST["s"]["Password2"])) {
@@ -126,7 +123,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					} elseif($_REQUEST["s"]["ID"] == $_SESSION["webuser"]["ID"]) { // Username existiert schon!
 
 						if(!$userexists){
-							$userexists = g_l('modules_customer','[username_exists]');
+							$userexists = $l_customer["username_exists"];
 						}
 
 						// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
@@ -150,14 +147,14 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 
 						if(!$userempty){
-							$userempty = g_l('modules_customer','[username_empty]');
+							$userempty = $l_customer["username_empty"];
 						}
                         print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($userempty, WE_MESSAGE_FRONTEND));
 
 					}else if(strlen($_REQUEST["s"]["Password"]) == 0){
 
 						if(!$passempty){
-							$passempty = g_l('modules_customer','[password_empty]');
+							$passempty = $l_customer["password_empty"];
 						}
 						if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 							echo '<a name="emos_name" title="register" rel="noUser" rev="1" ></a>';
@@ -206,7 +203,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 						}
 						if(isset($_REQUEST["s"]["Password"]) && $_REQUEST["s"]["Password"] != $_SESSION["webuser"]["Password"]){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
-							$GLOBALS["DB_WE"]->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE UserID='".abs($_REQUEST["s"]["ID"])."'");
+							$GLOBALS["DB_WE"]->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE WebUserID='".abs($_REQUEST["s"]["ID"])."'");
 						}
 						if(sizeof($set_a)){
 							$set=implode(",",$set_a);
@@ -216,7 +213,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					}else{
 
 						if(!$userexists){
-							$userexists = g_l('modules_customer','[username_exists]');
+							$userexists = $l_customer["username_exists"];
 						}
 
 						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST["s"]["Username"]), WE_MESSAGE_FRONTEND) );

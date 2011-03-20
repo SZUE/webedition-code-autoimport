@@ -14,4 +14,3 @@ $GLOBALS['weTagWizard']['attribute']['id190_reload'] = new weTagData_selectAttri
 $GLOBALS['weTagWizard']['attribute']['id634_user'] = new weTagData_textAttribute('634', 'user', false, 'users');
 $GLOBALS['weTagWizard']['attribute']['id650_rootdir'] = new weTagData_textAttribute('650', 'rootdir', false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

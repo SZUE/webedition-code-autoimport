@@ -42,7 +42,7 @@
 		function isTabExist($tab){
 			global $DB_WE;
 			$DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
-			if($DB_WE->next_record()) return true; else return false;
+			if($DB_WE->num_rows()) return true; else return false;
 		}
 	
 		function addTable($tab,$cols,$keys=array()){

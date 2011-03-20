@@ -10,4 +10,3 @@ $GLOBALS['weTagWizard']['attribute']['id292_doc'] = new weTagData_selectAttribut
 $GLOBALS['weTagWizard']['attribute']['id293_property'] = new weTagData_selectAttribute('293', 'property', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id294_formname'] = new weTagData_textAttribute('294', 'formname', false, '');
 $GLOBALS['weTagWizard']['attribute']['id295_shopname'] = new weTagData_textAttribute('295', 'shopname', false, 'shop');
-?>

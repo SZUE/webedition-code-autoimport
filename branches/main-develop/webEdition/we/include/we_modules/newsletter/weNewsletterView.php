@@ -2187,7 +2187,7 @@ class weNewsletterView {
 		}
 	}
 
-	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = "", $title = "", $firstname = "", $lastname = "") {
+	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = "", $title = "", $firstname = "", $lastname = "",$customerid=0) {
 
 		$content = "";
 		$GLOBALS["we_doc"]="";
@@ -2198,6 +2198,7 @@ class weNewsletterView {
 		$GLOBALS["WE_SALUTATION"]=$salutation;
 		$GLOBALS["WE_FIRSTNAME"]=$firstname;
 		$GLOBALS["WE_LASTNAME"]=$lastname;
+		$GLOBALS["WE_CUSTOMERID"]=$customerid;
 
 		if(isset($this->newsletter->blocks[$pblk])){
 				$block=$this->newsletter->blocks[$pblk];
@@ -2365,23 +2366,41 @@ class weNewsletterView {
 		foreach ($this->newsletter->blocks as $kblock=>$block) {
 				$blockid=$kblock+1;
 
-				$out["plain"]["default"]=$this->getContent($blockid);
-				$out["plain"]["female"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-				$out["plain"]["male"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-				$out["plain"]["title_firstname_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","###FIRSTNAME###","###LASTNAME###");
-				$out["plain"]["title_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","","###LASTNAME###");
-				$out["plain"]["firstname_lastname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###");
-				$out["plain"]["firstname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","");
-				$out["plain"]["lastname"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###");
+				$out["plain"]["defaultC"]=$this->getContent($blockid,0,0,"","","","","###CUSTOMERID###");
+				$out["plain"]["femaleC"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["plain"]["maleC"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["plain"]["title_firstname_lastnameC"]=$this->getContent($blockid,0,0,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["plain"]["title_lastnameC"]=$this->getContent($blockid,0,0,"","###TITLE###","","###LASTNAME###","###CUSTOMERID###");
+				$out["plain"]["firstname_lastnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["plain"]["firstnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","","###CUSTOMERID###");
+				$out["plain"]["lastnameC"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###","###CUSTOMERID###");
+				
+				$out["plain"]["default"]=$this->getContent($blockid,0,0,"","","","","");
+				$out["plain"]["female"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+				$out["plain"]["male"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+				$out["plain"]["title_firstname_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+				$out["plain"]["title_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","","###LASTNAME###","");
+				$out["plain"]["firstname_lastname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###","");
+				$out["plain"]["firstname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","","");
+				$out["plain"]["lastname"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###","");
 
-				$out["html"]["default"]=$this->getContent($blockid,0,1);
-				$out["html"]["female"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-				$out["html"]["male"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-				$out["html"]["title_firstname_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","","###LASTNAME###");
-				$out["html"]["title_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","###FIRSTNAME###","###LASTNAME###");
-				$out["html"]["firstname_lastname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###");
-				$out["html"]["firstname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","");
-				$out["html"]["lastname"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###");
+				$out["html"]["defaultC"]=$this->getContent($blockid,0,1,"","","","","###CUSTOMERID###");
+				$out["html"]["femaleC"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["html"]["maleC"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["html"]["title_firstname_lastnameC"]=$this->getContent($blockid,0,1,"","###TITLE###","","###LASTNAME###","###CUSTOMERID###");
+				$out["html"]["title_lastnameC"]=$this->getContent($blockid,0,1,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["html"]["firstname_lastnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+				$out["html"]["firstnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","","###CUSTOMERID###");
+				$out["html"]["lastnameC"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###","###CUSTOMERID###");
+				
+				$out["html"]["default"]=$this->getContent($blockid,0,1,"","","","","");
+				$out["html"]["female"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+				$out["html"]["male"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+				$out["html"]["title_firstname_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","","###LASTNAME###","");
+				$out["html"]["title_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+				$out["html"]["firstname_lastname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###","");
+				$out["html"]["firstname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","","");
+				$out["html"]["lastname"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###","");
 
 				$content[]=$out;
 		}
@@ -2819,26 +2838,44 @@ class weNewsletterView {
 		for($blockid=0;$blockid<$blockcount;$blockid++){
 
 					$buffer=array();
-					$buffer["default"]=$this->getContent($blockid);
-					$buffer["female"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-					$buffer["male"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-					$buffer["title_firstname_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","###FIRSTNAME###","###LASTNAME###");
-					$buffer["title_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","","###LASTNAME###");
-					$buffer["firstname_lastname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###");
-					$buffer["firstname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","");
-					$buffer["lastname"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###");
+					$buffer["defaultC"]=$this->getContent($blockid,0,0,"","","","","###CUSTOMERID###");
+					$buffer["femaleC"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["maleC"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["title_firstname_lastnameC"]=$this->getContent($blockid,0,0,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["title_lastnameC"]=$this->getContent($blockid,0,0,"","###TITLE###","","###LASTNAME###","###CUSTOMERID###");
+					$buffer["firstname_lastnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["firstnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","","###CUSTOMERID###");
+					$buffer["lastnameC"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###","###CUSTOMERID###");
+					
+					$buffer["default"]=$this->getContent($blockid,0,0,"","","","","");
+					$buffer["female"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["male"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["title_firstname_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["title_lastname"]=$this->getContent($blockid,0,0,"","###TITLE###","","###LASTNAME###","");
+					$buffer["firstname_lastname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["firstname"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","","");
+					$buffer["lastname"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###","");
 
 					$this->saveToCache(serialize($buffer),$blockcache."_p_".$blockid);
 
 					$buffer=array();
-					$buffer["default"]=$this->getContent($blockid,0,1);
-					$buffer["female"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-					$buffer["male"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###");
-					$buffer["title_firstname_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","###FIRSTNAME###","###LASTNAME###");
-					$buffer["title_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","","###LASTNAME###");
-					$buffer["firstname_lastname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###");
-					$buffer["firstname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","");
-					$buffer["lastname"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###");
+					$buffer["defaultC"]=$this->getContent($blockid,0,1,"","","","","###CUSTOMERID###");
+					$buffer["femaleC"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["maleC"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["title_firstname_lastnameC"]=$this->getContent($blockid,0,1,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["title_lastnameC"]=$this->getContent($blockid,0,1,"","###TITLE###","","###LASTNAME###","###CUSTOMERID###");
+					$buffer["firstname_lastnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
+					$buffer["firstnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","","###CUSTOMERID###");
+					$buffer["lastnameC"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###","###CUSTOMERID###");
+					
+					$buffer["default"]=$this->getContent($blockid,0,1,"","","","","");
+					$buffer["female"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["male"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["title_firstname_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["title_lastname"]=$this->getContent($blockid,0,1,"","###TITLE###","","###LASTNAME###","");
+					$buffer["firstname_lastname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###","");
+					$buffer["firstname"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","","");
+					$buffer["lastname"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###","");
 
 					if($this->newsletter->blocks[$blockid]->Pack) $buffer["inlines"]=$this->cacheInlines($buffer);
 					else $buffer["inlines"]=array();

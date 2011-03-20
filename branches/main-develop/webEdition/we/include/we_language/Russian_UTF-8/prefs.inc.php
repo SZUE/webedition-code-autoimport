@@ -537,6 +537,7 @@ $l_prefs = array(
 		'smtp_encryption_tls' => "TLS", // TRANSLATE
 
 	 'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
+	 'suppress404code' => "suppress 404 not found",// TRANSLATE
 
 		/*		 * ***************************************************************************
 		 * Versions settings

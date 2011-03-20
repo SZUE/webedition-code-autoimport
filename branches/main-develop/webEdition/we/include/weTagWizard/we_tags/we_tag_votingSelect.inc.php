@@ -7,4 +7,3 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 $GLOBALS['weTagWizard']['attribute']['id602_firstentry'] = new weTagData_textAttribute('602', 'firstentry', false, '');
 $GLOBALS['weTagWizard']['attribute']['id603_submitonchange'] = new weTagData_selectAttribute('603', 'submitonchange', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id846_reload'] = new weTagData_selectAttribute('846', 'reload', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
-?>

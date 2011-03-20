@@ -12,4 +12,3 @@ $GLOBALS['weTagWizard']['attribute']['id73_password'] = new weTagData_textAttrib
 $GLOBALS['weTagWizard']['attribute']['id74_onError'] = new weTagData_textAttribute('74', 'onError', false, '');
 $GLOBALS['weTagWizard']['attribute']['id75_jsIncludePath'] = new weTagData_textAttribute('75', 'jsIncludePath', false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

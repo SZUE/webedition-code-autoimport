@@ -38,6 +38,7 @@ CREATE TABLE tblversions (
   `ExtraWorkspacesSelected` varchar(255) NOT NULL,
   `Templates` varchar(255) NOT NULL,
   `ExtraTemplates` varchar(255) NOT NULL,
+  `MasterTemplateID` bigint(20) NOT NULL default '0',
   `TableID` bigint(20) NOT NULL,
   `ObjectID` bigint(20) NOT NULL,
   `IsClassFolder` tinyint(1) NOT NULL,

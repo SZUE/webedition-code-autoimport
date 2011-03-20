@@ -66,7 +66,7 @@ if(strstr($sn, '@')) {
 
 //	unlock everything old, when a new window is opened.
 if(!isset($_REQUEST["we_cmd"][0]) || $_REQUEST["we_cmd"][0] != "edit_include_document"){
-	$DB_WE->query('DELETE FROM '.LOCK_TABLE.'	WHERE `lock`<NOW()');
+	$DB_WE->query('DELETE FROM '.LOCK_TABLE.'	WHERE lockTime<NOW()');
 }
 $DB_WE->query('UPDATE '.USER_TABLE.'	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-'.(PING_TIME + PING_TOLERANZ).')');
 

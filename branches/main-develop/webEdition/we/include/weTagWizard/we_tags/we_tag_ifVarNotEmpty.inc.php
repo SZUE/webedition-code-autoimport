@@ -9,4 +9,3 @@ $GLOBALS['weTagWizard']['attribute']['id286_doc'] = new weTagData_selectAttribut
 $GLOBALS['weTagWizard']['attribute']['id287_type'] = new weTagData_selectAttribute('287', 'type', array(new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('sessionfield', false, ''), new weTagDataOption('href', false, ''), new weTagDataOption('multiobject', false, 'object')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id288_property'] = new weTagData_selectAttribute('288', 'property', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id289_formname'] = new weTagData_textAttribute('289', 'formname', false, '');
-?>
