@@ -446,7 +446,7 @@ class liveUpdateFrames {
 
 
 	function getValidTab($showTab='') {
-		if (in_array($showTab, $updatecmds)) {
+		if (in_array($showTab, $GLOBALS['updatecmds']['updatecmds'])) {
 			return $showTab;
 		}
 		return $GLOBALS['updatecmds'][0];

@@ -528,3 +528,4 @@ $l_button["btn_help"]["alt"] = "Help";
 $l_button["btn_open_sidebar"]["alt"] = "Open sidebar";
 $l_button["date_picker"]["alt"] = "Select date";
 $l_button['btn_add_note']['alt']='add note';
+$l_button['btn_function_reload']['alt']='Reload';
