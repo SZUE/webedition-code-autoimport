@@ -284,6 +284,9 @@ $l_shop['statusmails']['AbsenderAdresse'] = 'Absender E-Mail Adresse';
 $l_shop['statusmails']['AbsenderName'] = 'Absender Name';
 $l_shop['statusmails']['EMailFeld'] = 'KV E-Mail Feld';
 $l_shop['statusmails']['DocumentSubjectField'] = 'Feldname im Dokument für E-Mail Betreff';
+$l_shop['statusmails']['DocumentAttachmentFieldA'] = 'Feldname (we:href) im Dok. Anhang A';
+$l_shop['statusmails']['DocumentAttachmentFieldB'] = 'Feldname (we:href) im Dok. Anhang B';
+
 $l_shop['statusmails']['Spracheinstellungen'] = 'Sprachen';
 $l_shop['statusmails']['useLanguages'] = 'Nutze verschiedene <br/>Mail-Dokumente je <br/>Sprache (statt den Standard)';
 $l_shop['statusmails']['SprachenFeld'] = 'KV Sprachen Feld';

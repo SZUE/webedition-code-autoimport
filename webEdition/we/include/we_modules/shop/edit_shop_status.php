@@ -141,13 +141,15 @@ array_push($parts, array(
 		)
 	);
 
-$tabEMail = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 3, $cols_num = 6);
+$tabEMail = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 4, $cols_num = 6);
 $tabEMail->setCol(0, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 220),  $l_shop['statusmails']['AbsenderAdresse'].'<br/>'.we_class::htmlTextInput("EMailData[address]",30,$weShopStatusMails->EMailData['address']) );
 $tabEMail->setCol(1, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 220),  $l_shop['statusmails']['AbsenderName'].'<br/>'.we_class::htmlTextInput("EMailData[name]",30,$weShopStatusMails->EMailData['name']) );
 $tabEMail->setCol(2, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 220),  $l_shop['statusmails']['bcc'].'<br/>'.we_class::htmlTextInput("EMailData[bcc]",30,$weShopStatusMails->EMailData['bcc']) );
 $tabEMail->setCol(0, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['EMailFeld'].'<br/>'.we_class::htmlSelect('EMailData[emailField]', $selectFields, 1, $weShopStatusMails->EMailData['emailField']) );
 $tabEMail->setCol(1, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['TitelFeld'].'<br/>'.we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']) );
 $tabEMail->setCol(2, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentSubjectField'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentSubjectField]",30,$weShopStatusMails->EMailData['DocumentSubjectField']));
+$tabEMail->setCol(3, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentAttachmentFieldA'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
+$tabEMail->setCol(3, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentAttachmentFieldB'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
 
 
 array_push($parts, array(
