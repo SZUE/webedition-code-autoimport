@@ -19,8 +19,6 @@
  */
 
 function we_tag_a($attribs, $content){
-	global $we_editmode;
-
 	// check for id attribute
 	$foo = attributFehltError($attribs, "id", "a");
 	if ($foo)
@@ -67,14 +65,15 @@ function we_tag_a($attribs, $content){
 	$tp->parseTags($tags, $content);
 
 	if ((!$url) && ($GLOBALS["WE_MAIN_DOC"]->ClassName != "we_template")) {
-		if ($we_editmode) {
+		if ($GLOBALS['we_editmode']) {
 			return parseError("in we:a attribute id not exists!");
 		} else {
 			return "";
 		}
 	}
 
-	if ($edit == "shop") {
+	switch($edit){
+	case "shop":
 
 		$amount = we_getTagAttribute("amount", $attribs, 1);
 
@@ -83,7 +82,7 @@ function we_tag_a($attribs, $content){
 		} else {
 			$foo = -1;
 		}
-		 
+
 
 		// get ID of element
 		$customReq = '';
@@ -96,7 +95,7 @@ function we_tag_a($attribs, $content){
 		} else {
 			//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
 			if ( (isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_listview_shopVariants' && isset($GLOBALS["lv"]->Model) && $GLOBALS["lv"]->Model->ClassName == 'we_objectFile') || isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_objecttag' ) {
-				$type="o"; 
+				$type="o";
 				if (get_class($GLOBALS["lv"]) == 'we_listview_shopVariants') {
 					$idd = $GLOBALS["lv"]->Id;
 				} else {
@@ -172,7 +171,6 @@ function we_tag_a($attribs, $content){
 		} else
 			if ($delshop) { // emptyshop
 
-
 				$foo = attributFehltError($attribs, "shopname", "a");
 				if ($foo)
 					return $foo;
@@ -183,9 +181,9 @@ function we_tag_a($attribs, $content){
 
 				$urladd = ($urladd ? $urladd . "&" : '?') . 'shop_artikelid=' . $idd . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? $customReq : '') . $ifShopname;
 			}
+		break;
 
-	} else
-		if ($edit == "object") {
+		case "object":
 			if ($listview) {
 				$oid = (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->f("WE_ID")) ? $GLOBALS["lv"]->f("WE_ID") : 0;
 			} else {
@@ -196,33 +194,24 @@ function we_tag_a($attribs, $content){
 					$urladd = ($urladd ? $urladd . "&" : '?') . "we_delObject_ID=" . $oid;
 				}
 			} else {
-				if ($oid) {
-					$urladd = ($urladd ? $urladd . "&" : '?') . "we_editObject_ID=" . $oid;
-				} else {
-					$urladd = ($urladd ? $urladd . "&" : '?') . "edit_object=1";
-				}
+				$urladd = ($urladd ? $urladd . "&" : '?') . ($oid?"we_editObject_ID=" . $oid:"edit_object=1");
 			}
-		} else
-			if ($edit == "document") {
-
-				if ($listview) {
-					$did = (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->f("WE_ID")) ? $GLOBALS["lv"]->f("WE_ID") : 0;
-				} else {
-					$did = (isset($GLOBALS["we_doc"]) && isset($GLOBALS["we_doc"]->ID) && $editself) ? $GLOBALS["we_doc"]->ID : 0;
-				}
-				if ($delete) {
-					if ($did) {
-						$urladd = ($urladd ? $urladd . "&" : '?') . "we_delDocument_ID=" . $did;
-					}
-				} else {
-
-					if ($did) {
-						$urladd = ($urladd ? $urladd . "&" : '?') . "we_editDocument_ID=" . $did;
-					} else {
-						$urladd = ($urladd ? $urladd . "&" : '?') . "edit_document=1";
-					}
-				}
+			break;
+		case "document":
+			if ($listview) {
+				$did = (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->f("WE_ID")) ? $GLOBALS["lv"]->f("WE_ID") : 0;
+			} else {
+				$did = (isset($GLOBALS["we_doc"]) && isset($GLOBALS["we_doc"]->ID) && $editself) ? $GLOBALS["we_doc"]->ID : 0;
 			}
+			if ($delete) {
+				if ($did) {
+					$urladd = ($urladd ? $urladd . "&" : '?') . "we_delDocument_ID=" . $did;
+				}
+			} else {
+				$urladd = ($urladd ? $urladd . "&" : '?') . ($did?"we_editDocument_ID=" . $did:"edit_document=1");
+			}
+			break;
+		}
 
 	if ($return) {
 		$urladd = ($urladd ? $urladd . "&" : '?') . "we_returnpage=" . rawurlencode(
@@ -270,21 +259,17 @@ function we_tag_a($attribs, $content){
 		if ($confirm) {
 			$confirm = str_replace("'", "\\'", $confirm);
 			$attribs["onclick"] = "if(confirm('$confirm')){" . $attribs["onclick"] . "}";
-			return getHtmlTag("input", $attribs);
-		} else {
-			return getHtmlTag("input", $attribs);
 		}
+		return getHtmlTag("input", $attribs);
 	} else { //	show normal link
-
 
 		$attribs["href"] = $url . ($urladd ? htmlspecialchars($urladd) : '');
 
 		if ($confirm) {
-
 			$attribs["onclick"] = "if(confirm('$confirm')){return true;}else{return false;}";
-			return getHtmlTag("a", $attribs, $content, true);
-		} else {
-			return getHtmlTag("a", $attribs, $content, true);
 		}
+
+		return getHtmlTag("a", $attribs, $content, true);
+
 	}
 }

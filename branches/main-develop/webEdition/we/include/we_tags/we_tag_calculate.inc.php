@@ -67,18 +67,20 @@ function we_tag_calculate($attribs, $content){
 		}
 		$GLOBALS["summe"][$sum] += $result;
 	}
-	if ($num_format == "german") {
-		$result = number_format($result, 2, ",", ".");
-	} else
-		if ($num_format == "french") {
+	switch($num_format){
+		case "german":
+			$result = number_format($result, 2, ",", ".");
+			break;
+		case  "french":
 			$result = number_format($result, 2, ",", " ");
-		} else
-			if ($num_format == "english") {
-				$result = number_format($result, 2, ".", "");
-			} else
-				if ($num_format == "swiss") {
-					$result = number_format($result, 2, ".", "'");
-				}
+			break;
+		case "english":
+			$result = number_format($result, 2, ".", "");
+			break;
+		case "swiss":
+			$result = number_format($result, 2, ".", "'");
+			break;
+	}
 	if ($print) {
 		return $result;
 	} else {
