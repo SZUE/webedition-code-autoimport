@@ -318,7 +318,6 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toCC = explode(",",$recipientCC);
 				$we_recipientCC = array();
 				for ($l=0;$l < sizeof($toCC);$l++) {
-
 					if (strpos($toCC[$l],'@')==false) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]],'@')!==false) { //wenn man registrierten Usern was senden moechte
 							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
@@ -332,7 +331,6 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toBCC = explode(",",$recipientBCC);
 				$we_recipientBCC = array();
 				for ($l=0;$l < sizeof($toBCC);$l++) {
-
 					if (strpos("@",$toBCC[$l])==false) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && strpos("@",$_SESSION["webuser"][$toBCC[$l]])!==false) { //wenn man registrierte Usern was senden moechte
 							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
@@ -381,27 +379,21 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				if(!$__db->num_rows()) {
 					$GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"] = substr(md5(time()),4,8);
 					$GLOBALS["WE_NEWSUBSCRIBER_USERNAME"] = $f["subscribe_mail"];
-					$fields = "(`Username`, `Password`, `" .
-								$_customerFieldPrefs['customer_salutation_field'] . "`, `" .
-								$_customerFieldPrefs['customer_title_field'] . "`, `" .
-								$_customerFieldPrefs['customer_firstname_field'] . "`, `" .
-								$_customerFieldPrefs['customer_lastname_field'] . "`, `" .
-								$_customerFieldPrefs['customer_email_field'] . "`, `" .
-								$_customerFieldPrefs['customer_html_field'] . "`, " .
-								" `MemberSince`, `IsFolder`, `Icon`)";
+					$fields = array(
+							'`Username`' => '"'.mysql_real_escape_string($f["subscribe_mail"]).'"',
+							'`Password`'=> '"'.mysql_real_escape_string($GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"]).'"',
+							'`MemberSince`'=>time(),
+							'`IsFolder`'=>0,
+							'`Icon`'=> '\'customer.gif\'',
+							'`'.$_customerFieldPrefs['customer_salutation_field'].'`'=>'"'.mysql_real_escape_string($f["subscribe_salutation"]).'"',
+							'`'.$_customerFieldPrefs['customer_title_field'].'`'=>'"'.mysql_real_escape_string($f["subscribe_title"]).'"',
+							'`'.$_customerFieldPrefs['customer_firstname_field'].'`'=>'"'.mysql_real_escape_string($f["subscribe_firstname"]).'"',
+							'`'.$_customerFieldPrefs['customer_lastname_field'].'`'=>'"'.mysql_real_escape_string($f["subscribe_lastname"]).'"',
+							'`'.$_customerFieldPrefs['customer_email_field'].'`'=>'"'.mysql_real_escape_string($f["subscribe_mail"]) .'"',
+							'`'.$_customerFieldPrefs['customer_html_field'].'`'=>'"'.mysql_real_escape_string($f["subscribe_html"]).'"',
+							);
 
-					$values = "'" . mysql_real_escape_string($f["subscribe_mail"]) . "'";
-					$values.= ", '" . mysql_real_escape_string($GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"]) . "'";
-					$values.= ", '" . mysql_real_escape_string($f["subscribe_salutation"]) . "'";
-					$values.= ", '" . mysql_real_escape_string($f["subscribe_title"]) . "'";
-					$values.= ", '" . mysql_real_escape_string($f["subscribe_firstname"]) . "'";
-					$values.= ", '" . mysql_real_escape_string($f["subscribe_lastname"]) . "'";
-					$values.= ", '" . mysql_real_escape_string($f["subscribe_mail"]) . "'";
-					$values.= ", '" . mysql_real_escape_string($f["subscribe_html"]) . "'";
-					$values.= ", '" . time() . "'";
-					$values.= ", 0";
-					$values.= ", 'customer.gif'";
-					$__db->query("INSERT INTO " . CUSTOMER_TABLE . " $fields VALUES($values)");
+					$__db->query("INSERT INTO " . CUSTOMER_TABLE . ' ('.implode(',',array_keys($fields)).') VALUES('.implode(',',$fields).')');
 
 				}
 
@@ -532,13 +524,28 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 	/***                         NEWSLETTER UNSUBSCTIPTION                          ***/
 	/**********************************************************************************/
 	if($isUnsubscribe){
+		if(!we_unsubscribeNL($db,$customer,$_customerFieldPrefs,$abos,$paths)){
+			return;
+		}
+	}
+
+	unset($_REQUEST["we_unsubscribe_email__"]);
+	unset($_REQUEST["we_subscribe_email__"]);
+	unset($_REQUEST["we_subscribe_html__"]);
+	unset($_REQUEST["we_subscribe_title__"]);
+	unset($_REQUEST["we_subscribe_salutation__"]);
+	unset($_REQUEST["we_subscribe_firstname__"]);
+	unset($_REQUEST["we_subscribe_lastname__"]);
+	unset($_REQUEST["we_subscribe_list__"]);
+}
+
+function we_unsubscribeNL($db,$customer,$_customerFieldPrefs,$abos,$paths){
 		$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_SUCCESS;
-		$unsubscribe_mail=trim($_REQUEST["we_unsubscribe_email__"]);
-		$unsubscribe_mail = str_replace("\n","",str_replace("\r","",$unsubscribe_mail));
+		$unsubscribe_mail = preg_replace("|[\r\n,]|","",trim($_REQUEST["we_unsubscribe_email__"]));
 		$GLOBALS["WE_NEWSLETTER_EMAIL"] = $unsubscribe_mail;
 		if(!we_check_email($unsubscribe_mail)){
 			$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_INVALID; // E-Mail ungueltig
-			return;
+			return false;
 		}
 
 		$emailExists = false;
@@ -577,7 +584,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				if(!@file_exists(dirname($path))){
 					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR
 					$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
-					return;
+					return false;
 				}
 
 				// #4158
@@ -605,19 +612,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 
 		if(!$emailExists){
 			$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_EXISTS;
-			return;
+			return false;
 		}
-
-	}
-
-	unset($_REQUEST["we_unsubscribe_email__"]);
-	unset($_REQUEST["we_subscribe_email__"]);
-	unset($_REQUEST["we_subscribe_html__"]);
-	unset($_REQUEST["we_subscribe_title__"]);
-	unset($_REQUEST["we_subscribe_salutation__"]);
-	unset($_REQUEST["we_subscribe_firstname__"]);
-	unset($_REQUEST["we_subscribe_lastname__"]);
-	unset($_REQUEST["we_subscribe_list__"]);
+		return true;
 }
 
 function getNewsletterFields($request,$confirmid,&$errorcode,$mail=""){
@@ -630,50 +627,26 @@ function getNewsletterFields($request,$confirmid,&$errorcode,$mail=""){
 		}
 		return $_h;
 	}else{
-		$subscribe_mail=trim($request["we_subscribe_email__"]);
+		$subscribe_mail=preg_replace("|[\r\n,]|","",trim($request["we_subscribe_email__"]));
 		if(strlen($subscribe_mail) == 0){
 			$errorcode=2;
 			return array();
 		}
-		$subscribe_mail = str_replace("\n","",str_replace("\r","",$subscribe_mail));
 
 		if(!we_check_email($subscribe_mail)){
 			$errorcode=2; // E-Mail ungueltig
 			return array();
 		}
-		if(isset($request["we_subscribe_html__"])){
-			$subscribe_html=$request["we_subscribe_html__"];
-		}else{
-			$subscribe_html = 0;
-		}
 
-		if(isset($request["we_subscribe_salutation__"])){
-			$subscribe_salutation=$request["we_subscribe_salutation__"];
-			$subscribe_salutation = str_replace("\n","",str_replace("\r","",$subscribe_salutation));
-		}else{
-			$subscribe_salutation="";
-		}
+		$subscribe_html=(isset($request["we_subscribe_html__"])?$request["we_subscribe_html__"]:0);
 
-		if(isset($request["we_subscribe_title__"])){
-			$subscribe_title=$request["we_subscribe_title__"];
-			$subscribe_title = str_replace("\n","",str_replace("\r","",$subscribe_title));
-		}else{
-			$subscribe_title="";
-		}
+		$subscribe_salutation=(isset($request["we_subscribe_salutation__"])?preg_replace("|[\r\n,]|","",$request["we_subscribe_salutation__"]):'');
 
-		if(isset($request["we_subscribe_firstname__"])){
-			$subscribe_firstname=$request["we_subscribe_firstname__"];
-			$subscribe_firstname = str_replace("\n","",str_replace("\r","",$subscribe_firstname));
-		}else{
-			$subscribe_firstname="";
-		}
+		$subscribe_title=(isset($request["we_subscribe_title__"])?preg_replace("|[\r\n,]|","",$request["we_subscribe_title__"]):'');
 
-		if(isset($request["we_subscribe_lastname__"])){
-			$subscribe_lastname=$request["we_subscribe_lastname__"];
-			$subscribe_lastname = str_replace("\n","",str_replace("\r","",$subscribe_lastname));
-		}else{
-			$subscribe_lastname="";
-		}
+		$subscribe_firstname=(isset($request["we_subscribe_firstname__"])?preg_replace("|[\r\n,]|","",$request["we_subscribe_firstname__"]):'');
+
+		$subscribe_lastname=(isset($request["we_subscribe_lastname__"])?preg_replace("|[\r\n,]|","",$request["we_subscribe_lastname__"]):'');
 	}
 
 	return array(	"subscribe_mail"=>trim($subscribe_mail),
