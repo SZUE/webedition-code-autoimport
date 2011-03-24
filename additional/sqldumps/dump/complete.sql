@@ -294,7 +294,8 @@ CREATE TABLE tblNewsletterBlock (
   Source longtext NOT NULL,
   Html longtext NOT NULL,
   Pack tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY NewsletterID (NewsletterID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterConfirm (
@@ -319,7 +320,8 @@ CREATE TABLE tblNewsletterGroup (
   SendAll tinyint(1) NOT NULL default '0',
   Filter blob NOT NULL,
   Extern longtext,
-  PRIMARY KEY  (ID)
+  PRIMARY KEY (ID),
+  KEY NewsletterID (NewsletterID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterLog (
@@ -328,7 +330,8 @@ CREATE TABLE tblNewsletterLog (
   LogTime bigint(20) NOT NULL default '0',
   Log varchar(255) NOT NULL default '',
   Param varchar(255) NOT NULL default '',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY NewsletterID (NewsletterID)
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterPrefs (
