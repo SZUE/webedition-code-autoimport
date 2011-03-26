@@ -26,9 +26,9 @@ if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']
 
 // get attributes
 if (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE){
-	$error404doc = ERROR_DOCUMENT_NO_OBJECTFILE;	
+	$error404doc = ERROR_DOCUMENT_NO_OBJECTFILE;
 } else {
-	$error404doc = 0;		
+	$error404doc = 0;
 }
 
 if (defined('SUPPRESS404CODE') && SUPPRESS404CODE){
@@ -57,7 +57,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	$searchfor ='';
 	$notfound=true;
 	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
-	
+
 		$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 		$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
 		if ($searchfor){
@@ -77,7 +77,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			} else {
 				$searchforInternal=$searchfor;
 			}
-	
+
 			$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchforInternal) . "' LIMIT 1", "ID", $db));
 			if ($objectid){
 				$notfound=false;
@@ -89,7 +89,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		}
 	}
 	if($notfound && isset($path_parts['dirname']) && $path_parts['dirname']=='/' && $hiddendirindex){
-	
+
 		if ($searchfor){
 			$searchfor = $path_parts['basename'].'/'.$searchfor;
 		} else $searchfor = $path_parts['basename'];
@@ -114,11 +114,11 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		$_REQUEST=array_merge($_REQUEST,$myRequest);
 		$_REQUEST['we_objectID']=$objectid;
 		$_REQUEST['we_oid']=$objectid;
-		
+
 		header("HTTP/1.0 200 OK", true,200);
 		header("Status: 200 OK", true,200);
 		include($_SERVER["DOCUMENT_ROOT"] . $display);
-		
+
 		exit;
 	} elseif($error404doc) {
 		if(suppresserrorcode){
@@ -128,12 +128,8 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			header("HTTP/1.0 404 Not Found", true,404);
 			header("Status: 404 Not Found", true,404);
 		}
-		include(id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
-		
+		include($_SERVER["DOCUMENT_ROOT"] .id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
+
 		exit;
 	}
 }
-
-?>
-
-
