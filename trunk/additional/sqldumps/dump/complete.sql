@@ -309,7 +309,7 @@ CREATE TABLE tblNewsletterConfirm (
   lists text NOT NULL,
   expires bigint(20) NOT NULL default '0',
   KEY expires (expires),
-  KEY subscribe (subscribe_mail,confirmID)
+  KEY subscribe (subscribe_mail(50),confirmID(30))
 ) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblNewsletterGroup (
