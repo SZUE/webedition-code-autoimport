@@ -475,7 +475,6 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-
 					default :
 
 						$attribs = "array(" . ereg_replace('(.+),$', "\\1", $attribs) . ")";
@@ -1256,7 +1255,7 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 				if (strpos($name, " ") !== false) {
 					return parseError(sprintf($GLOBALS["l_parser"]["name_with_space"], "object"));
 				}
-				
+
 				$php .= '
 		$we_doc = $GLOBALS["we_doc"];
 		';
@@ -1398,7 +1397,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 					$php.='$we_cid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset('.$we_cid.') ? "'.$we_cid.'" : $GLOBALS["'.str_replace('$','', $we_cid). '"];';
 				}
 			$php .='
-		
+
 		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
 		$path = f("SELECT Path FROM ".CUSTOMER_TABLE." WHERE ID=".abs($we_cid),"Path",$GLOBALS["DB_WE"]);
 		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
@@ -1428,7 +1427,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 				} else {
 					$php.='$we_cid =  isset('.$we_cid.') ? "'.$we_cid.'" : $GLOBALS["'.str_replace('$','', $we_cid). '"];';
 				}
-			
+
 
 $php .='$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
 ';
@@ -1513,7 +1512,7 @@ if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($
 
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_orderid = we_getTagAttributeTagParser("id", $arr, 0);
-			
+
 			$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
@@ -1547,7 +1546,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 					$php.='$we_orderid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset('.$we_orderid.') ? "'.$we_orderid.'" : $GLOBALS["'.str_replace('$','', $we_orderid). '"];';
 				}
 				$php .= '
-		
+
 		$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
 		$path = "/".$we_orderid;
 		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
@@ -1606,9 +1605,9 @@ function parseOrderItemTag($tag, $code, $attribs = "", $postName = "")
 			$we_button = new we_button();
 
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
-			$we_orderitemid = we_getTagAttributeTagParser("id", $arr, 0);			
+			$we_orderitemid = we_getTagAttributeTagParser("id", $arr, 0);
 			$we_orderid = we_getTagAttributeTagParser("orderid", $arr, 0);
-			
+
 			//$name = we_getTagAttributeTagParser("name", $arr) . $postName;
 			//$_showName = we_getTagAttributeTagParser("name", $arr);
 			//$size = we_getTagAttributeTagParser("size", $arr, 30);
