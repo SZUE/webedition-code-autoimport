@@ -118,7 +118,7 @@ if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
 }
 
 $GLOBALS['BIG_USER_MODULE'] = defined('BIG_USER_MODULE') ? BIG_USER_MODULE : '';
-	
+
 // refresh pageExt array
 $PAGE_EXT = array(
 	'.html', '.php'
@@ -202,29 +202,36 @@ define(
 		'WE_WYSIWYG_COMMANDS',
 		'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
 
+if(!defined('WE_SERVER_URL')){
+	/* Determine the protocol used for the request */
+	define('WE_SERVER_URL',(isset($_SERVER["SSL_PROTOCOL"]) ? "https://" : "http://").
+		$_SERVER["HTTP_HOST"].
+		':'.$_SERVER["SERVER_PORT"]);
+}
+
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS
  */
 if (!isset($_SERVER['REQUEST_URI'])) {
 	if (isset($_SERVER['HTTP_REQUEST_URI'])) {
 		define('WE_SERVER_REQUEST_URI', $_SERVER['HTTP_REQUEST_URI']);
-	
+
 	} else {
-		
+
 		if (isset($_SERVER['SCRIPT_NAME'])) {
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-		
+
 		} else {
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['PHP_SELF'];
-		
+
 		}
-		
+
 		if (isset($_SERVER['QUERY_STRING'])) {
 			$_SERVER['HTTP_REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
-		
+
 		}
 		define('WE_SERVER_REQUEST_URI', $_SERVER['HTTP_REQUEST_URI']);
-	
+
 	}
 
 } else {
@@ -244,7 +251,7 @@ define('WINDOW_DELSELECTOR_WIDTH', '900');
 define('WINDOW_DELSELECTOR_HEIGHT', '600');
 
 $GLOBALS['WE_LANGS'] = array(
-	
+
 		'de' => 'Deutsch',
 		'en' => 'English',
 		'nl' => 'Dutch',
@@ -255,7 +262,7 @@ $GLOBALS['WE_LANGS'] = array(
 		'fr' => 'French'
 );
 $GLOBALS['WE_LANGS_COUNTRIES'] = array(
-	
+
 		'DE' => 'de',
 		'GB' => 'en',
 		'NL' => 'nl',

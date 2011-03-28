@@ -132,7 +132,6 @@
 		function getJSTreeFunctions(){
 
 			$out=weTree::getJSTreeFunctions();
-
 			$out.='
 			function doClick(id){
 				var node='.$this->topFrame.'.get(id);
@@ -140,7 +139,7 @@
 				var table=node.table;
 				setScrollY();
 				if('.$this->topFrame.'.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\'' . (defined("OBJECT_TABLE") ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
-					top.openBrowser(\''.WEBEDITION_DIR.'we_redirect.php?id=\'+id);
+					top.openBrowser(\''.WE_SERVER_URL.WEBEDITION_DIR.'we_redirect.php?id=\'+id);
 					setTimeout(\'wasdblclick=0;\',400);
 				} else {
 					top.weEditorFrameController.openDocument(table,id,ct);

@@ -19,14 +19,14 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 
 htmlTop();
 ?>
 </head>
 <frameset rows="*" framespacing="0" border="0" frameborder="NO" onLoad="self.focus()">
-<frame src="<?php print $_REQUEST["url"]; ?>" name="contBrowse" scrolling="auto">
+<frame src="<?php print filter_var($_REQUEST["url"], FILTER_VALIDATE_URL); ?>" name="contBrowse" scrolling="auto">
 </frameset>
 <body bgcolor="white">
 </body>
