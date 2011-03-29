@@ -35,6 +35,9 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 $mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : '';
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 print STYLESHEET;
 
@@ -52,7 +55,7 @@ print STYLESHEET;
 	function selectRecipient() {
 
 	    var rs = escape(document.compose_form.mn_recipients.value);
-	    
+
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&maxsel=1&rs=" + rs,"messaging_usel",-1,-1,530,420,true,false,true,false);
 	}
 
@@ -96,7 +99,7 @@ print STYLESHEET;
             echo hidden('we_transaction', $_REQUEST['we_transaction']);
 	        echo hidden('rcpts_string', '');
 	        echo hidden('mode', $mode);
-	        
+
 			if ($mode == 'reject') {
 				$tbl =  '
 					<table cellpadding="6">

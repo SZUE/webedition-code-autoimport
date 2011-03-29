@@ -30,6 +30,9 @@ protect();
 
 htmlTop('Messaging System - ' . $l_messaging['new_message']);
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
@@ -75,7 +78,7 @@ $we_button = new we_button();
 	function doUnload() {
 		if(jsWindow_count) {
 			for(i=0;i<jsWindow_count;i++) {
-				eval("jsWindow"+i+"Object.close()");	
+				eval("jsWindow"+i+"Object.close()");
 			}
 		}
 	}
@@ -110,14 +113,14 @@ $tbl = '<table align="center" cellpadding="6" width="100%">
       <tr><td class="defaultgray">' . $l_messaging['subject'] . ':</td><td>' . htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td></tr>
       <tr><td colspan="2"><textarea cols="68" rows="15" name="mn_body" style="width:605px">' . $compose->get_msg_text() . '</textarea></td></tr>
     </table>';
-	
+
 	$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("ok", "javascript:do_send()"),
 	    											"",
 	    											$we_button->create_button("cancel", "javascript:window.close()")
 	    										);
-	
+
     echo htmlDialogLayout($tbl, "<div style='padding:6px'>".$heading."</div>", $_buttons,"100%","24","","hidden");
-    
+
 		?>
 	</form>
 </body>

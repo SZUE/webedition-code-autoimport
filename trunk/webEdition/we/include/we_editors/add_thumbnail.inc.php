@@ -32,12 +32,13 @@ protect();
 
 $uniqid = md5(uniqid(time()));
 
+$we_transaction =(eregi("^([a-f0-9]){32}$",$_REQUEST['we_cmd'][1])?$_REQUEST["we_cmd"][1]:0);
 
-$we_transaction = $_REQUEST["we_cmd"][1];
+
 
 // init document
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_doc.inc.php");
+include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 $_thumbs = array();
 
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){

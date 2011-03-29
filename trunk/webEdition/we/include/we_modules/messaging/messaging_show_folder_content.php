@@ -30,6 +30,10 @@ htmlTop();
 print STYLESHEET;
 
 $browser = new we_browserDetect();
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
+
 ?>
  <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
  <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
@@ -55,20 +59,20 @@ $browser = new we_browserDetect();
 
     function check(elem, groupSel) {
 		var i, j;
-	
+
 		var id = parseInt(elem.match(/\d+/));
-	
+
 		if (top.content.multi_select == false) {
-			
+
 		    //de-select all selected entries
 		    for (j = 0; j < parent.parent.entries_selected.length; j++) {
 			    highlight_TR(parent.parent.entries_selected[j], default_color, default_text_color);
 		    }
-	
+
 		    parent.parent.entries_selected = new Array();
 		    doSelectMessage(id);
 		} else {
-			
+
 		    if (array_search(id, parent.parent.entries_selected) != -1) {
 				unSelectMessage(id);
 		    } else {
@@ -81,21 +85,21 @@ $browser = new we_browserDetect();
 		var i = 0;
 		var highlight_color = sel_color;
 		var highlight_text_color = sel_text_color;
-	
+
 		if (id == -1)
 		    return;
-	
+
 		showContent(id);
-	
+
 		//IE Mac 5.01 doesnt support Array.push()
 		if (parent.parent.entries_selected.length > 0) {
 		    parent.parent.entries_selected = parent.parent.entries_selected.concat(new Array(String(id)));
 		} else {
 		    parent.parent.entries_selected = new Array(String(id));
 		}
-	
+
 		parent.parent.last_entry_selected = id;
-	
+
 		if (typeof(document.images["read_" + id]) != "undefined") {
 		    document.images["read_" + id].src = read_img.src;
 		}
@@ -104,7 +108,7 @@ $browser = new we_browserDetect();
 
     function highlight_TR(id, color, text_color) {
 		var i;
-	
+
 		for (i = 0; i <= 3; i++) {
 		    if (i == 0 || i == 2) {
 			    if(document.getElementById("td_" + id + "_link_" + i)){
@@ -130,13 +134,13 @@ $browser = new we_browserDetect();
 		var index = -1;
 		var arr1, arr2;
 		var location;
-	
+
 		if (NN4 == false)
 		    highlight_TR(id, default_color, default_text_color);
-	
+
 		parent.parent.entries_selected = array_rm_elem(parent.parent.entries_selected, id, -1);
 		//document.images["img_" + id].src = check0_img.src;
-	
+
 		if (parent.parent.entries_selected.length == 0) {
 		    top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location = "<?php echo HTML_DIR?>white.html";
 		} else {
@@ -147,7 +151,7 @@ $browser = new we_browserDetect();
 	function newMessage(username){
 		new jsWindow('<?php echo WE_MESSAGING_MODULE_PATH; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION["we_data"][$_REQUEST['we_transaction']]; ?>&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);
 	}
-    
+
  </script>
 
 </head>
@@ -164,10 +168,10 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
     		    $_db = new DB_WE();
     		    $_db->query('SELECT headerTo FROM '.MESSAGES_TABLE.' WHERE ID=' . $val['int_hdrs']['_ID']);
    				$_db->next_record();
-				$_toUserId = $_db->f('headerTo');					
+				$_toUserId = $_db->f('headerTo');
 	    		$_showUser = '<a id="td_' .  $val['ID'] . '_link_2" href="javascript:newMessage(\'' . $_toUserId . '\')">' . $_toUserId . '</a>';
    	} else {
-   		
+
    	}
 */
    	foreach($messaging->selected_set as $key => $val) {
@@ -181,7 +185,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 			} else {
 			    $dl_passed = 0;
 			}
-	
+
 			echo '<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . $val['hdrs']['Subject'] . '</td>
 			<td id="td_' . $val['ID'] . '_1" width="170" align="left" class="' . ($dl_passed == 0 ? 'defaultfont' : 'defaultfontred') . '">' . date($GLOBALS['l_global']['date_format'], $val['hdrs']['Deadline']) . '</td>
 			<td id="td_' . $val['ID'] . '_2" width="140" align="left" class="defaultfont"><a id="td_' .  $val['ID'] . '_link_2" href="javascript:check(\'' . $val['ID'] . '\')">' . $val['hdrs']['Priority'] . '</a></td>
