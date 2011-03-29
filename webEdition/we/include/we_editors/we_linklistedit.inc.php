@@ -437,8 +437,11 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			}
 		}
 	<?php
+		$_REQUEST["we_transaction"]=(eregi('^([a-f0-9]){32}$',$_REQUEST["we_transaction"])?$_REQUEST["we_transaction"]:0);
+
 		 if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST["we_cmd"][0] == "edit_link_at_class") {
 			$_SESSION["WE_LINK"] = $link;
+			//FIXME: we_field XSS
 	?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link_at_class", "<?php print $_REQUEST["we_transaction"]; ?>", "<?php print $_REQUEST["we_field"]; ?>", "<?php print $_REQUEST["name"]; ?>");

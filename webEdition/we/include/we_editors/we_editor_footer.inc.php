@@ -33,6 +33,7 @@ if(defined("WORKFLOW_TABLE")) {
 protect();
 
 $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : $we_transaction;
+$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:0);
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
@@ -131,13 +132,13 @@ $_js_we_save_document = "
 			var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
 			if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
 				return;
-	
+
 			}
 		}
 		catch(e) {
 			// Nothing
 		}
-		
+
 		if (  _EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
 			we_cmd('check_glossary', '', '".$we_transaction."');
 
@@ -176,13 +177,13 @@ if($we_doc->userCanSave()){
 	$_js_we_save_document .= "
 			var addCmd = arguments[0] ? arguments[0] : '';
 		";
-	
+
 	// publish for templates to save in version
 	$pass_publish = $showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
 	if ( $we_doc->ContentType == "text/weTmpl" && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
 	}
-	
+
 	$_js_we_save_document .= "
 		we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);
 	" . ($reloadPage ? "self.location='" . $we_doc->url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';" : "");
@@ -469,13 +470,13 @@ if(inWorkflow($we_doc)) {
 			if (defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, $we_button->create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));			
+				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
 			}
-			
+
 			$_normalTable->addCol(2);
 			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", $l_global["we_rebuild_at_save"], false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
 			$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
-			
+
 
 		} else if($showPubl) {
 
@@ -719,7 +720,7 @@ if(inWorkflow($we_doc)) {
 		<?php
 		$_SESSION['seemForOpenDelSelector']['ID'] = $we_doc->ID;
 		$_SESSION['seemForOpenDelSelector']['Table'] = $we_doc->Table;
-		
+
 				if($we_doc->userCanSave()){
 
 					if($_SESSION["we_mode"] == "normal"){		// open footer for NormalMode

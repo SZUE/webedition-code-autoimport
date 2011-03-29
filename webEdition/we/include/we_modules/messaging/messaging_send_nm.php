@@ -24,15 +24,16 @@ include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 protect();
+$_REQUEST['we_transaction'] = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 if(is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
 
 	$messaging = new we_messaging($_SESSION["user"]["ID"]);
 	$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	$messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
-	
+
 	$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body']);
-	
+
 	$res = $messaging->send($arr);
 } else {
 	include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
@@ -50,7 +51,7 @@ if(is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
 			$we_button = new we_button();
 		?>
 		<?php
-		
+
 		    if(!empty($res['ok'])){
 		    if(substr($_REQUEST["mode"],0,2) != 'u_') {
 		    echo "
@@ -60,16 +61,16 @@ if(is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
 			    opener.top.content.update_msg_quick_view();
         	}
 		    </script>
-		    ";		    
+		    ";
 		    } else {
           echo "
           <script language=\"javascript\">
           	if (opener && opener.top && opener.top.content) {
 		    	  opener.top.content.update_msg_quick_view();
-          	}	  
+          	}
 		    </script>
 		      ";
-		    }  
+		    }
 		    }
 		?>
 	</head>
