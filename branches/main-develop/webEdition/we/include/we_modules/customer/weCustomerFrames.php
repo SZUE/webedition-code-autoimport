@@ -133,7 +133,7 @@ class weCustomerFrames extends weModuleFrames {
 
 	function getHTMLFieldControl($field, $value=null) {
 		$props = $this->View->getFieldProperties($field);
-		if ($props['type'] != 'select' && $props['type'] != 'multiselect' && !$this->View->customer->ID && $value == null) {
+		if (!($props['type'] == 'select' || $props['type'] == 'multiselect') && !$this->View->customer->ID && $value == null) {
 			$value = $props['default'];
 		}
 		switch ($props['type']) {

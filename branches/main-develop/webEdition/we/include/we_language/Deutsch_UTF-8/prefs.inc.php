@@ -533,6 +533,7 @@ $l_prefs = array(
 		'editor_plaintext' => 'Unformatierte Textarea',
 		'editor_java' => 'Java-Editor',
 		'editor_javascript' => 'JavaScript-Editor (beta)',
+		'editor_javascript2' => 'CodeMirror2 (alpha)',
 		'editor_javascript_information' => 'Der JavaScript-Editor befindet sich derzeit im Beta-Stadium. Je nach aktivierten Funktionen kann es noch zu Fehlern kommen. Die Codevervollständigung funktioniert derzeit nicht im Internet Explorer. Für eine komplette Liste von bekannten Problemen schauen Sie bitte in den <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition Bugtracker</a>.',
 		'juplod_not_installed' => 'JUpload ist nicht installiert!',
 );

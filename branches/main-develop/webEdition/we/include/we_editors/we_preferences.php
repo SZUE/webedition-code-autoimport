@@ -4263,6 +4263,7 @@ function displayEditorOptions(editor) {
 			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
 
 			break;
+		case "codemirror2":
 		case "codemirror":
 			document.getElementById("settings_editor_predefined_div_2").style.display="block"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
@@ -4350,6 +4351,7 @@ else {
 			$_template_editor_mode = new we_htmlSelect(array("class" => "weSelect", "name" => "editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 			$_template_editor_mode->addOption('textarea', g_l('prefs','[editor_plaintext]'));
 			$_template_editor_mode->addOption('codemirror', g_l('prefs','[editor_javascript]'));
+			$_template_editor_mode->addOption('codemirror2', g_l('prefs','[editor_javascript2]'));
 			$_template_editor_mode->addOption('java', g_l('prefs','[editor_java]'));
 			$_template_editor_mode->selectOption(get_value("editor_mode"));
 			array_push($_settings, array("headline" => g_l('prefs','[editor_mode]'), "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
@@ -5558,10 +5560,10 @@ else {
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
 				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
-				  
+
 				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
 				  $_acButton2 = $we_button->create_button('image:function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
-  
+
 				  $yuiSuggest->setAcId("doc2");
 				  $yuiSuggest->setContentType("folder,text/webEdition,text/html");
 				  $yuiSuggest->setInput('error_document_no_objectfile_text', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : '' ));
@@ -5572,9 +5574,9 @@ else {
 				  $yuiSuggest->setWidth(300);
 				  $yuiSuggest->setSelectButton($_acButton1,10);
 				  $yuiSuggest->setTrashButton($_acButton2,4);
-  
+
 				  array_push($_settings, array('headline' => $l_prefs['error_no_object_found'], 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
-				
+
 				$_php_setting = new we_htmlSelect(array("name" => "suppress404code","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
