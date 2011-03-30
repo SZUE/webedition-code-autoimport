@@ -130,12 +130,7 @@ class weCustomer extends weModelBase {
 		$fixed["ID"] = $this->ID; // Bug Fix #8413 + #8520
 		if (isset($this->persistent_slots)) {
 			$orderedarray = $this->persistent_slots;
-			//$sortarray = array_map('strtolower', $orderedarray);
-			if ($mysort != '') {
-				$sortarray = makeArrayFromCSV($mysort);
-			} else {
-				$sortarray = range(0, count($orderedarray) - 1);
-			}
+			$sortarray = ($mysort != '' ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
 
 			if (count($sortarray) != count($orderedarray)) {
 
@@ -149,13 +144,12 @@ class weCustomer extends weModelBase {
 			ksort($orderedarray);
 
 			foreach ($orderedarray as $per) {
-				$var_value = '';
-				eval('if(isset($this->' . $per . ')) $var_value=$this->' . $per . ';');
+				$var_value = ((!$this->isnew && isset($this->$per)) ? $var_value=$this->$per : null);
 
-				$filed = $this->transFieldName($per, $branche);
+				$field = $this->transFieldName($per, $branche);
 
-				if ($filed != $per) {
-					$banches[$branche][$filed] = $var_value;
+				if ($field != $per) {
+					$banches[$branche][$field] = $var_value;
 				} else if (in_array($per, $this->properties)) {
 					$fixed[$per] = $var_value;
 				} else if (!in_array($per, $this->protected)) {
