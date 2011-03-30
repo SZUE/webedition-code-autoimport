@@ -656,34 +656,20 @@ function we_getCodeMirror2Code($code,$version) {
 			$mode='text/javascript';
 			break;
 		case 'text/weTmpl':
-			$parser_js[] = 'parsexml.js';
-			$parser_js[] = 'parsecss.js';
-			$parser_js[] = 'tokenizejavascript.js';
-			$parser_js[] = 'parsejavascript.js';
-			$parser_js[] = '../contrib/php/js/tokenizephp.js';
-			$parser_js[] = '../contrib/php/js/parsephp.js';
-			$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/php/css/phpcolors.css';
+		case 'text/html':
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.js';
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.js';
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.js';
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/htmlmixed/htmlmixed.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.css';
 			$mode='text/html';
 			break;
-		case 'text/html':
-			$parser_js[] = 'parsexml.js';
-			$parser_js[] = 'parsecss.js';
-			$parser_js[] = 'tokenizejavascript.js';
-			$parser_js[] = 'parsejavascript.js';
-			$parser_js[] = '../contrib/php/js/tokenizephp.js';
-			$parser_js[] = '../contrib/php/js/parsephp.js';
-			$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-			break;
 		case 'text/xml':
-			$parser_js[] = 'parsexml.js';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.css';
+			$mode='application/xml';
 			break;
 		default:
 			//don't use CodeMirror
@@ -693,6 +679,12 @@ function we_getCodeMirror2Code($code,$version) {
 	if (count($parser_js) > 0) { // CodeMirror will be used
 		$maineditor=we_get_CM_css().'<script src="/webEdition/editors/template/CodeMirror2/lib/codemirror.js" type="text/javascript"></script>
 			<link rel="stylesheet" href="/webEdition/editors/template/CodeMirror2/lib/codemirror.css">';
+		foreach($parser_js as $js){
+			$maineditor.='<script src="'.$js.'" type="text/javascript"></script>';
+		}
+		foreach($parser_css as $css){
+			$maineditor.='<link rel="stylesheet" href="'.$css.'">';
+		}
 		$maineditor.='
 						<script type="text/javascript">
 							var getDescriptionDiv=function() {
@@ -729,16 +721,17 @@ function we_getCodeMirror2Code($code,$version) {
 								return computedStyle[s];
 							};
 							var CMoptions = { //these are the CodeMirror options
-								tabMode: "spaces",
+								mode: "'.$mode.'",
+								tabMode: "classic",
+								enterMode: "indent",
+								electricChars: false,
+								lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
+								gutter: false,
+								matchBrackets: true,
+								workTime: 300,
+								workDelay: 800,
 								height: "' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . '",
 								textWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
-								parserfile: ["' . (implode('", "', $parser_js)) . '"],
-								stylesheet: ["' . (implode('", "', $parser_css)) . '"],
-								path: "/webEdition/editors/template/CodeMirror/js/",
-								autoMatchParens: false,
-								' . ($useCSCC && $we_doc->ContentType == 'text/weTmpl' && $_SESSION['prefs']['editorCodecompletion'] ? 'cursorActivity: cscc.cursorActivity,' : '') . '
-								undoDelay: 200,
-								lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
 								initCallback: function() {
 									window.setTimeout(function(){ //without timeout this will raise an exception in firefox
 										if (document.addEventListener) {

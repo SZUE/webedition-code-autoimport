@@ -2742,6 +2742,7 @@ function mapPermissions() {
 			$_template_editor_mode->addOption('textarea', 'Textarea');
 			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
 			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
+			$_template_editor_mode->addOption('codemirror2', 'CodeMirror2');
 			$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
 			array_push($_settings, array("headline" => g_l('prefs','[editor_mode]'), "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
 
