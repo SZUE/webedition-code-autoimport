@@ -3847,7 +3847,7 @@ function g_l($name, $specific) {
 		//get local variable
 		if($tmp !== false){
 			$cache["l_$name"]=${"l_$name"};
-			return $tmp;
+			return mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8");
 		}else{
 				trigger_error('Requested lang entry '."l_$name$specific".' not found in '.$file.'!',E_USER_WARNING);
 			return false;
