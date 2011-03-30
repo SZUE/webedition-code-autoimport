@@ -32,6 +32,7 @@ protect();
 
 $_REQUEST["we_cmd"] = isset($_REQUEST["we_cmd"]) ? $_REQUEST["we_cmd"] : "";
 $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : (isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : "");
+$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:'');
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];

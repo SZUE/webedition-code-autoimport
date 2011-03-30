@@ -4,5 +4,6 @@ CREATE TABLE tblNewsletterLog (
   LogTime bigint(20) NOT NULL default '0',
   Log varchar(255) NOT NULL default '',
   Param varchar(255) NOT NULL default '',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY NewsletterID (NewsletterID)
 ) ENGINE=MyISAM;

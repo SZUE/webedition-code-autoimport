@@ -207,7 +207,7 @@ class weVersions {
 	public function getMasterTemplateID() {
 		return $this->MasterTemplateID;
 	}
-	
+
 	/**
 	 * @return unknown
 	 */
@@ -543,7 +543,7 @@ class weVersions {
 	 */
 	public function setMasterTemplateID($MasterTemplateID) {
 		$this->MasterTemplateID = $MasterTemplateID;
-	} 
+	}
 	/**
 	 * @param unknown_type $ExtraWorkspaces
 	 */
@@ -1820,7 +1820,7 @@ class weVersions {
 			$tableInfo = $db->metadata(VERSIONS_TABLE);
 
 			if(isset($_REQUEST["we_transaction"])) {
-				$we_transaction = $_REQUEST["we_transaction"];
+				$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 			}
 			else {
 				$we_transaction = $GLOBALS["we_transaction"];

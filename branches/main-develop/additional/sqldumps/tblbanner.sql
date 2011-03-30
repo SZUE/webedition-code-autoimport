@@ -24,7 +24,7 @@ CREATE TABLE tblbanner (
   EndDate bigint(20) NOT NULL default '0',
   FileIDs varchar(255) NOT NULL default '',
   FolderIDs varchar(255) NOT NULL default '',
-  CategoryIDs varchar(255) NOT NULL default '',
+  CategoryIDs text NOT NULL,
   DoctypeIDs varchar(255) NOT NULL default '',
   IsActive tinyint(1) NOT NULL default '0',
   clicks bigint(20) NOT NULL default '0',

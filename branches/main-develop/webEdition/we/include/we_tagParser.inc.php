@@ -477,7 +477,6 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-
 					default :
 
 						$attribs = "array(" . rtrim($attribs,',') . ")";

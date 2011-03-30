@@ -27,7 +27,7 @@ CREATE TABLE tblversions (
   `IsSearchable` tinyint(1) NOT NULL,
   `ClassName` varchar(64) NOT NULL,
   `DocType` varchar(64) NOT NULL,
-  `Category` varchar(255) NOT NULL,
+  `Category` text NOT NULL,
   `RestrictOwners` tinyint(1) NOT NULL,
   `Owners` varchar(255) NOT NULL,
   `OwnersReadOnly` text NOT NULL,

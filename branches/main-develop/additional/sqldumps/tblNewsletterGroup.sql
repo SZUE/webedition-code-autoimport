@@ -6,5 +6,6 @@ CREATE TABLE tblNewsletterGroup (
   SendAll tinyint(1) NOT NULL default '0',
   Filter blob NOT NULL,
   Extern longtext,
-  PRIMARY KEY  (ID)
+  PRIMARY KEY (ID),
+  KEY NewsletterID (NewsletterID)
 ) ENGINE=MyISAM;

@@ -76,6 +76,7 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 <?php
 	}
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
+	$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
 	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 }
@@ -91,8 +92,10 @@ function update_treeview() {
 	echo "top.content.drawEintraege();\n//--></script>";
 }
 
-if(!isset($_REQUEST["we_transaction"])){
-    $_REQUEST["we_transaction"] = $we_transaction;
+if(!isset($_REQUEST['we_transaction'])){
+    $_REQUEST['we_transaction'] = $we_transaction;
+}else{
+	$_REQUEST['we_transaction']=(eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 }
 
 $GLOBALS['messaging'] = new we_messaging($_SESSION["we_data"][$_REQUEST["we_transaction"]]);

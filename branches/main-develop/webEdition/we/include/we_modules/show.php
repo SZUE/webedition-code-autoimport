@@ -23,5 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/".$_REQUEST["mod"]."/edit_".$_REQUEST["mod"]."_frameset.php");
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/'.'we_active_integrated_modules.inc.php');
+if (in_array($_REQUEST["mod"],$_we_active_integrated_modules)){
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/".$_REQUEST["mod"]."/edit_".$_REQUEST["mod"]."_frameset.php");
+}
 ?>

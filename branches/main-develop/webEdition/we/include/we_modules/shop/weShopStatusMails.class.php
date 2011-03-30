@@ -1,7 +1,6 @@
 <?php
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_global.inc.php");
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . 'we_global.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 class weShopStatusMails {
 
 
@@ -152,6 +151,8 @@ class weShopStatusMails {
 					'name' => '',
 					'bcc' => '',
 					'DocumentSubjectField' =>'Title',
+					'DocumentAttachmentFieldA' =>'',
+					'DocumentAttachmentFieldB' =>'',
 					'emailField' => '',
 					'titleField' => ''
 				),
@@ -209,7 +210,7 @@ class weShopStatusMails {
 			return $zw;
 		}
 	}
-	function sendEMail($was,$order,$cdata){
+	function sendEMail($was,$order,$cdata,$pagelang=''){
 	global $DB_WE;
 		if (isset($this->EMailData['emailField']) && $this->EMailData['emailField'] !='' && isset($cdata[$this->EMailData['emailField']]) &&  we_check_email($cdata[$this->EMailData['emailField']]) ){
 			$recipientOK = true;
@@ -217,10 +218,14 @@ class weShopStatusMails {
 		$docID=0;
 		$UserLang='';
 		if (isset($this->LanguageData['useLanguages']) && $this->LanguageData['useLanguages'] && isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']]!='' ){
-			if (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date'.$was]) ){
-				$docID= $this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date'.$was];
+			if ($pagelang!='' && isset($this->FieldsDocuments[$pagelang]) && isset($this->FieldsDocuments[$pagelang]['Date'.$was]) ){
+				$docID= $this->FieldsDocuments[$pagelang]['Date'.$was];
 			} else {
-				$docID = $this->FieldsDocuments['default']['Date'.$was];
+				if (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date'.$was]) ){
+					$docID= $this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date'.$was];
+				} else {
+					$docID = $this->FieldsDocuments['default']['Date'.$was];
+				}
 			}
 			if (isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']]!=''){
 				$UserLang= $cdata[$this->LanguageData['languageField']];
@@ -240,6 +245,12 @@ class weShopStatusMails {
 			$codes = we_getDocumentByID($docID);
 			$maildoc= new we_webEditionDocument();
 			$maildoc->initByID($docID);
+			
+			if (isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA']!=''){
+					$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
+					$codes = $codes.$attachmentA;
+					
+				}
 			unset($_REQUEST['we_orderid']);
 			unset($_SESSION['WE_SendMail']);
 		} else $docID=0;
@@ -249,6 +260,7 @@ class weShopStatusMails {
 			$phpmail = new we_util_Mailer();
 
 			$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
+			
 			if ($subject==''){$subject='no subject given';}
 			if ($recipientOK  && $subject!='' && $this->EMailData['address']!='' && we_check_email($this->EMailData['address']) ){
 				$phpmail->setSubject($subject);
@@ -257,8 +269,28 @@ class weShopStatusMails {
 				$phpmail->addHTMLPart($codes);
 				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
 				$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField']!='' && isset( $cdata[$this->EMailData['titleField']]) &&  $cdata[$this->EMailData['titleField']] !='' ) ? $cdata[$this->EMailData['titleField']].' ': '').  $cdata['Forename'].' '.$cdata['Surname'] );
-				if (isset($this->EMailData['bcc']) && we_check_email($this->EMailData['bcc'])){
-					$phpmail->setBCC($this->EMailData['bcc']);
+				if (isset($this->EMailData['bcc']) && $this->EMailData['bcc']!=''){
+					$bccArray = explode(',',$this->EMailData['bcc']);
+					$phpmail->setBCC($bccArray);
+				}
+				if (isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA']!=''){
+					$attachmentAinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'].'_we_jkhdsf_int');
+					if($attachmentAinternal){
+						$attachmentA= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'].'_we_jkhdsf_intPath');
+					} else {
+						$attachmentA= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
+					}
+					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentA);
+					
+				}
+				if (isset($this->EMailData['DocumentAttachmentFieldB']) && $this->EMailData['DocumentAttachmentFieldB']!=''){
+					$attachmentBinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'].'_we_jkhdsf_int');
+					if($attachmentBinternal){
+						$attachmentB= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'].'_we_jkhdsf_intPath');
+					} else {
+						$attachmentB= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB']);
+					}
+					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentB);		
 				}
 				$phpmail->buildMessage();
 				if ($phpmail->Send()){

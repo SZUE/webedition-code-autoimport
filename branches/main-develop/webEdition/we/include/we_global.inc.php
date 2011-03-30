@@ -78,26 +78,12 @@ function decodetmlSpecialChars($in) {
 }
 
 function we_getTagAttributeTagParser($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false, $removeblk=false) {
-	$out = "";
-	if ($isFlag) {
-		if ($checkForFalse) {
-			$out = (isset($attribs[$name]) && ($attribs[$name] == "false" || $attribs[$name] == "off" || $attribs[$name] == "0")) ? false : true;
-		} else {
-			$out = (isset($attribs[$name]) && ($attribs[$name] == "true" || $attribs[$name] == "on" || $attribs[$name] == $name || $attribs[$name] == "1")) ? true : false;
-		}
-	} else {
-		$out = isset($attribs[$name]) ? $attribs[$name] : $default;
-	}
-	if ($removeblk) {
-		$outA = explode("blk_", $out);
-		$out = $outA[0];
-	}
-	return decodetmlSpecialChars($out);
+	return we_getTagAttribute($name, $attribs, $default, $isFlag, $checkForFalse, $removeblk, false);
 }
 
-function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false, $removeblk=false) {
+function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false, $removeblk=false, $useGlobal=true) {
 	$value = isset($attribs[$name]) ? $attribs[$name] : "";
-	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
+	if ($useGlobal && preg_match('|^\\\\?\$(.+)$|', $value, $regs)) {
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : "";
 	}
 	$out = "";
@@ -3846,7 +3832,7 @@ function g_l($name, $specific) {
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 		if (!($tmp === false)) {
-			return $tmp;
+			return mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8");
 		}
 	}else{
 		//FIXME: decide if in we - then turn off, else turn on

@@ -30,8 +30,8 @@ class rpcGetSearchResultCmd extends rpcCmd {
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
 
-
-		$we_transaction = $_REQUEST['we_cmd']['we_transaction'];
+		//FIXME: not needed??
+		//$we_transaction = $_REQUEST['we_cmd']['we_transaction'];
 
 		$mode = $_REQUEST['we_cmd']['mode'];
 		$order = $_REQUEST['we_cmd']['order'];

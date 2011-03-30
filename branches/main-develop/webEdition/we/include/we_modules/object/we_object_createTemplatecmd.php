@@ -32,8 +32,9 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_
 protect();
 
 $we_transaction=$_REQUEST["we_cmd"][3];
+$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:'');
 
-$nr = $_REQUEST["we_cmd"][2];
+$nr = abs($_REQUEST["we_cmd"][2]);
 
 $GLOBALS['we_doc'] = new we_template();
 $GLOBALS['we_doc']->Table = TEMPLATES_TABLE;

@@ -5,7 +5,7 @@ CREATE TABLE tblnavigationrules (
   SelectionType varchar(16) NOT NULL default '',
   FolderID int(11) NOT NULL default '0',
   DoctypeID int(11) NOT NULL default '0',
-  Categories varchar(255) NOT NULL default '',
+  Categories text NOT NULL,
   ClassID int(11) NOT NULL default '0',
   WorkspaceID int(11) NOT NULL default '0',
   PRIMARY KEY  (ID)

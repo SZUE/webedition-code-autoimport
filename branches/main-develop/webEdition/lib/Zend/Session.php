@@ -15,9 +15,9 @@
  *
  * @category   Zend
  * @package    Zend_Session
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Session.php 23484 2010-12-10 03:57:59Z mjh_ca $
+ * @version    $Id: Session.php 23775 2011-03-01 17:25:24Z ralph $
  * @since      Preview Release 0.2
  */
 
@@ -43,7 +43,7 @@ require_once 'Zend/Session/SaveHandler/Interface.php';
  *
  * @category   Zend
  * @package    Zend_Session
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Session extends Zend_Session_Abstract
@@ -335,7 +335,7 @@ class Zend_Session extends Zend_Session_Abstract
      * seconds is specified, then this defaults to self::$_rememberMeSeconds.  Due to clock errors on end users' systems,
      * large values are recommended to avoid undesirable expiration of session cookies.
      *
-     * @param $seconds integer - OPTIONAL specifies TTL for cookie in seconds from present time
+     * @param int $seconds OPTIONAL specifies TTL for cookie in seconds from present time
      * @return void
      */
     public static function rememberMe($seconds = null)
@@ -477,11 +477,10 @@ class Zend_Session extends Zend_Session_Abstract
                 set_error_handler(array('Zend_Session_Exception', 'handleSessionStartError'), $errorLevel);
             }
 
-            $startedCleanly = session_start();				
-			if (!$startedCleanly){$startedCleanly = session_start();} //ZEND_Patch
-			if (!$startedCleanly){$startedCleanly = session_start();}
-			if (!$startedCleanly){$startedCleanly = session_start();}
-
+            $startedCleanly = session_start();
+			if(!$startedCleanly){$startedCleanly = session_start();} //WE-Patch
+			if(!$startedCleanly){usleep ( 10000 ); $startedCleanly = session_start();}
+			if(!$startedCleanly){usleep ( 100000 ); $startedCleanly = session_start();}
             if (self::$_throwStartupExceptions) {
                 restore_error_handler();
             }

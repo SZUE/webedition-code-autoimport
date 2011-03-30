@@ -141,7 +141,7 @@
 			case "setBinary":
 
 				if(isset($_FILES['uploadfile']) && isset($_REQUEST['we_transaction'])){
-					$_we_transaction = $_REQUEST['we_transaction'];
+					$_we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
 					$we_ContentType = $_REQUEST['contenttype'];
 

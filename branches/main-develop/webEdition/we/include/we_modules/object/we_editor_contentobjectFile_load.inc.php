@@ -42,6 +42,8 @@ protect();
 
 $cmd	 		= isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : "";
 $we_transaction	= isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
+$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:0);
+
 $identifier		= isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : false;
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");

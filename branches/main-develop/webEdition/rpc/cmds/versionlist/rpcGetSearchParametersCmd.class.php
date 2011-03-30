@@ -33,7 +33,8 @@ class rpcGetSearchParametersCmd extends rpcCmd {
 		$pos = $_REQUEST['position'];
 
 		$foundItems = (isset($_SESSION['Versions']['foundItems'])) ? $_SESSION['Versions']['foundItems'] : 0;
-		$we_transaction = $_REQUEST['we_cmd']['we_transaction'];
+		//FIXME: not needed??
+		//$we_transaction = $_REQUEST['we_cmd']['we_transaction'];
 
 		$mode = $_REQUEST['we_cmd']['mode'];
 		$order = $_REQUEST['we_cmd']['order'];

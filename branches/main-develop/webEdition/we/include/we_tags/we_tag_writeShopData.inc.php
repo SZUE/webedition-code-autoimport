@@ -207,10 +207,11 @@ emosBillingPageArray [2]='".rawurlencode($_SESSION["webuser"]["Contact_Country"]
 emosBillingPageArray [3]='".$totPrice."';
 			";
 		}
-
+		$doc = we_getDocForTag('top');
+		$lang=substr($doc->Language,0,2);
 		require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
-		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer);
+		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer,$lang);
 	}
 
 	return;

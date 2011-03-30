@@ -38,6 +38,9 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 $mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : '';
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 print STYLESHEET;
 

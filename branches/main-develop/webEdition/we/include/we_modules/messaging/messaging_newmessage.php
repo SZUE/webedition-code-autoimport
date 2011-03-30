@@ -33,6 +33,9 @@ protect();
 
 htmlTop('Messaging System - ' . g_l('modules_messaging','[new_message]'));
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);

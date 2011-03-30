@@ -33,6 +33,10 @@ htmlTop();
 print STYLESHEET;
 
 $browser = new we_browserDetect();
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
+
 ?>
  <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
  <script type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>

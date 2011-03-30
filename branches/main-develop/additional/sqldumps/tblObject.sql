@@ -17,7 +17,7 @@ CREATE TABLE tblObject (
   RestrictUsers tinyint(1) NOT NULL default '0',
   Users varchar(255) NOT NULL default '',
   UsersReadOnly text NOT NULL,
-  DefaultCategory varchar(255) NOT NULL default '',
+  DefaultCategory text NOT NULL,
   DefaultParentID bigint(20) NOT NULL default '0',
   DefaultText varchar(255) NOT NULL default '',
   DefaultValues longtext NOT NULL,
