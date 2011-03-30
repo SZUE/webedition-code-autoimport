@@ -43,7 +43,7 @@ function we_tag_charset($attribs,$content) {
 
 			$attribs = removeAttribs($attribs, array("defined"));
 
-			return getHtmlTag("meta", $attribs);
+			return getHtmlTag("meta", $attribs). "\n";
 
 		} else {
 
