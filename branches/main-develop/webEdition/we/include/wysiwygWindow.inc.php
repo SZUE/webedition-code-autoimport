@@ -121,10 +121,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 
 	print STYLESHEET;
 	?>
-<script src="<?php
-	print JS_DIR;
-	?>windows.js"
-	type="text/javascript"></script>
+<script src="<?php print JS_DIR;?>windows.js"	type="text/javascript"></script>
 <script  type="text/javascript">top.focus();</script>
 </head>
 <body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"

@@ -174,7 +174,7 @@ echo $yuiSuggest->getYuiJsFiles();
 
 print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 ?>
-<script type="text/javascript" src="<?php print JS_DIR ?>windows.js"/>
+<script type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script type="text/javascript"><!--
 	<?php if($we_show_response): ?>
 		<?php print $we_JavaScript ?>;

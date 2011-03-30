@@ -172,7 +172,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	}
 
 ?>
-	<script type="text/javascript" src="<?php print JS_DIR . "keyListener.js"; ?>"/>
+	<script type="text/javascript" src="<?php print JS_DIR . "keyListener.js"; ?>"></script>
 	<script type="text/javascript">
 
 	function applyOnEnter() {
@@ -432,7 +432,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 			padding-right: 5px;
 		}
 	</style>
-	<script type="text/javascript" src="<?php echo JS_DIR; ?>weCombobox.js" />
+	<script type="text/javascript" src="<?php echo JS_DIR; ?>weCombobox.js" ></script>
 	<script type="text/javascript">
 
 	var table;

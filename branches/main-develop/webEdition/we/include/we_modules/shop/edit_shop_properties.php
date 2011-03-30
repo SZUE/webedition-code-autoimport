@@ -2121,13 +2121,13 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	// "Html output for order with articles"
 	//
 ?>
-	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar.js"; ?>"/>
-	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar-setup.js"; ?>"/>
-	<script type="text/javascript" src="<?php print WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js"; ?>"/>
+	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar.js"; ?>"></script>
+	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar-setup.js"; ?>"></script>
+	<script type="text/javascript" src="<?php print WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js"; ?>"></script>
 	<link type="text/css" rel="stylesheet" href="<?php print JS_DIR."jscalendar/skins/aqua/theme.css"; ?>" title="Aqua" />
 
-    <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"/>
-    <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"/>
+    <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+    <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
 	<script type="text/javascript">
 
 	function SendMail(was){

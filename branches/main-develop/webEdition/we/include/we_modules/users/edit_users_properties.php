@@ -45,9 +45,9 @@ if(isset($_SESSION["user_session_data"]) ){
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
 ?>
-	<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"/>
-	<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"/>
-	<script type="text/javascript" src="<?php print JS_DIR; ?>md5.js"/>
+	<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+	<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+	<script type="text/javascript" src="<?php print JS_DIR; ?>md5.js"></script>
 	<script type="text/javascript">
 
 	var loaded = 0;

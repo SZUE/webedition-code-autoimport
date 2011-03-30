@@ -29,7 +29,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 htmlTop();
 ?>
-<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"/>
+<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
 <script type="text/javascript"><!--
 
 //-->

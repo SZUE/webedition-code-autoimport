@@ -80,8 +80,8 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
 ?>
 
 
- <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"/>
- <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"/>
+ <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+ <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
  <script type="text/javascript">
 
  var hot = 0;

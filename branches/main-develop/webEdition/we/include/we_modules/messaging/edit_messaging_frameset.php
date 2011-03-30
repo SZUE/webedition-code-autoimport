@@ -30,11 +30,11 @@ include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 protect();
 htmlTop('Messaging System');
 ?>
-<script type="text/javascript" src="<?php print JS_DIR?>images.js"/>
-<script type="text/javascript" src="<?php print JS_DIR?>windows.js"/>
-<script type="text/javascript" src="<?php print JS_DIR?>we_showMessage.js"/>
-<script type="text/javascript" src="<?php print JS_DIR?>messaging_std.js"/>
-<script type="text/javascript" src="<?php print JS_DIR?>messaging_hl.js"/>
+<script type="text/javascript" src="<?php print JS_DIR?>images.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>windows.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>we_showMessage.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>messaging_std.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>messaging_hl.js"></script>
 <?php
 $cmd_params = '';
 

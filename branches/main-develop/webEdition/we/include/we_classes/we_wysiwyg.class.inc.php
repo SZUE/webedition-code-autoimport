@@ -139,7 +139,7 @@ class we_wysiwyg{
 			switch(WYSIWYG_TYPE){
 				case 'tinyMCE':
 					//FIXME: remove onchange - bad practise
-					return '<script  type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"/>
+					return '<script  type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script  type="text/javascript">
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){

@@ -40,7 +40,7 @@ print STYLESHEET;
     $jmenu = new weJavaMenu($we_menu_banner,SERVER_NAME,"top.opener.top.load",$protocol,$port,350,30);
 
 ?>
-	<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"/>
+	<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
 	<script type="text/javascript">
         function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);

@@ -35,7 +35,7 @@ htmlTop();
 
 $js_load=array('windows','utils/dimension','utils/prototypes','utils/cockpit');
 foreach($js_load as $js){
-	print'<script src="'.JS_DIR.$js.'.js" type="text/javascript"/>';
+	print'<script src="'.JS_DIR.$js.'.js" type="text/javascript"></script>';
 }
 unset($js_load);
 
