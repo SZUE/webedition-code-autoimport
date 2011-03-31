@@ -21,7 +21,12 @@
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 $myRequest=array();
-if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']!=''){parse_str($_SERVER['REDIRECT_QUERY_STRING'],$myRequest);}
+if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']!=''){
+	parse_str($_SERVER['REDIRECT_QUERY_STRING'],$myRequest);
+} elseif(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']!='' && strpos($_SERVER['REQUEST_URI'],'?')!==false ) {
+	$zw= explode('?',$_SERVER['REQUEST_URI']);
+	parse_str($zw[1],$myRequest);
+}
 
 
 // get attributes
