@@ -431,7 +431,7 @@ class we_document extends we_root {
 	function addNavi($id,$text,$parentid,$ordn) {
 		$text = urldecode($text); //Bug #3769
 		if($this->ID) {
-			require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
+			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 			$navis = makeArrayFromCSV($this->NavigationItems);
 
@@ -511,7 +511,7 @@ class we_document extends we_root {
 
 	function delNavi($path) {
 		$path = urldecode($path); //Bug #3816
-		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		if(in_array($path,$navis)){
 			$pos = getArrayKey($path,$navis);
@@ -528,7 +528,7 @@ class we_document extends we_root {
 	}
 
 	function delAllNavi() {
-		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		foreach($navis as $_path) {
 			$_id = path_to_id($_path,NAVIGATION_TABLE);
