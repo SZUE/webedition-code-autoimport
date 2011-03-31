@@ -202,20 +202,21 @@ class weCustomerFrames extends weModuleFrames {
 
 				break;
 			case 'language':
-				$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
-				foreach ($frontendL as $lc => &$lcvalue) {
-					$lccode = explode('_', $lcvalue);
-					$lcvalue = $lccode[0];
-				}
-				$languageselect = new we_htmlSelect(array("name" => $field, "size" => "1", "style" => "{width:240;}", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
-				foreach ($GLOBALS['l_languages'] as $languagekey => $languagevalue) {
-					if (in_array($languagekey, $frontendL)) {
-						$languageselect->addOption($languagekey, $languagevalue);
-					}
-				}
-				$languageselect->selectOption($value);
-				return $languageselect->getHtmlCode();
-
+				if(isset($GLOBALS["weFrontendLanguages"]) && is_array($GLOBALS["weFrontendLanguages"]) ){
+				  $frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+				  foreach ($frontendL as $lc => &$lcvalue) {
+					  $lccode = explode('_', $lcvalue);
+					  $lcvalue = $lccode[0];
+				  }
+				  $languageselect = new we_htmlSelect(array("name" => $field, "size" => "1", "style" => "{width:240;}", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+				  foreach ($GLOBALS['l_languages'] as $languagekey => $languagevalue) {
+					  if (in_array($languagekey, $frontendL)) {
+						  $languageselect->addOption($languagekey, $languagevalue);
+					  }
+				  }
+				  $languageselect->selectOption($value);
+				  return $languageselect->getHtmlCode();
+				} else {return 'no FrontendLanguages defined';}
 				break;
 			case 'select':
 
