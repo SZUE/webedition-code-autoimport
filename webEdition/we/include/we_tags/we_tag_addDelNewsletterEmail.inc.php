@@ -315,7 +315,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toCC = explode(",",$recipientCC);
 				$we_recipientCC = array();
 				for ($l=0;$l < sizeof($toCC);$l++) {
-	
+
 					if (!eregi("@",$toCC[$l])) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && eregi("@",$_SESSION["webuser"][$toCC[$l]])) { //wenn man registrierten Usern was senden moechte
 							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
@@ -329,7 +329,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$toBCC = explode(",",$recipientBCC);
 				$we_recipientBCC = array();
 				for ($l=0;$l < sizeof($toBCC);$l++) {
-	
+
 					if (!eregi("@",$toBCC[$l])) {
 						if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && eregi("@",$_SESSION["webuser"][$toBCC[$l]])) { //wenn man registrierte Usern was senden moechte
 							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
@@ -348,7 +348,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				}
 				if(!empty($we_recipientCC)){$phpmail->setCC($we_recipientCC);}
 				if(!empty($we_recipientBCC)){$phpmail->setBCC($we_recipientBCC);}
-				
+
 				$phpmail->setCharSet($charset);
 
 
@@ -368,7 +368,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				return;
 			}
 
-		} else { //confirmID wurde übermittelt, eine Bestätigung liegt also vor
+		} else { //confirmID wurde ï¿½bermittelt, eine Bestï¿½tigung liegt also vor
 			$emailwritten = 0;
 			if($customer) {
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php");
@@ -437,15 +437,15 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 						$__customerFields[$abo] = $fieldDefault;
 						$updateCustomerFields = true;
 					}
-					$__set .=  "$abo='". $__setVal . "', ";
+					$__set .=  "$abo='". mysql_real_escape_string($__setVal) . "', ";
 				}
 
 				if ($updateCustomerFields) {
 					$__db->query("UPDATE " . CUSTOMER_ADMIN_TABLE . " SET Value='" . mysql_real_escape_string(serialize($__customerFields)) . "' WHERE Name='FieldAdds'");
 				}
 
-				$__set .= $_customerFieldPrefs['customer_html_field']."=" . $f["subscribe_html"];
-				$__db->query("UPDATE " . CUSTOMER_TABLE . " SET ".mysql_real_escape_string($__set)." WHERE " . $_customerFieldPrefs['customer_email_field'] . "='".mysql_real_escape_string($f["subscribe_mail"])."'");
+				$__set .= $_customerFieldPrefs['customer_html_field'].'= \'' . mysql_real_escape_string($f["subscribe_html"]).'\'';
+				$__db->query("UPDATE " . CUSTOMER_TABLE . " SET ".$__set." WHERE " . $_customerFieldPrefs['customer_email_field'] . "='".mysql_real_escape_string($f["subscribe_mail"])."'");
 				$__db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='".mysql_real_escape_string($f["subscribe_mail"])."'");
 			} else {
 				if(!$emailonly){ //in die Liste eintragen
