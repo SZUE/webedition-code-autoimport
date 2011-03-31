@@ -38,7 +38,7 @@ function we_tag_css($attribs, $content){
 		$attribs["rel"] = $rel;
 		$attribs["type"] = "text/css";
 		$attribs["href"] = $url;
-		$attribs["linebreak"] = true;
+		
 
 		return getHtmlTag("link", $attribs). "\n";
 	}
