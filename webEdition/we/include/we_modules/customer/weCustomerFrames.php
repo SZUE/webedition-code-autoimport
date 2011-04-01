@@ -159,7 +159,6 @@ class weCustomerFrames extends weModuleFrames {
 
 				return we_htmlElement::htmlDiv(array('style'=>'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'),$out);//we_htmlElement::htmlB('not yet implemented');
 			case 'country':
-				//p_r($GLOBALS['l_countries']);
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
