@@ -493,9 +493,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				}
 
 				$sizeVariantData = sizeof($variantData);
-				
+				reset($variantData);
 				if ($sizeVariantData > 1) {
 					for ( $i=0; $i<$sizeVariantData; $i++ ) {
+						reset($variantData[$i]);
 						list($key, $varData) = each($variantData[$i]); 
 						if ($key != '-') {
 							$variantOptions[$key] = $key;
