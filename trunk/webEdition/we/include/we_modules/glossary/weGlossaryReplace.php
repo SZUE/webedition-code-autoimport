@@ -116,7 +116,7 @@
 			$link = $cache->get('link');
 			unset($cache);
 			// first check if there is a body tag inside the sourcecode
-			preg_match("/<body.*>(.*)<\/body>/siU", $src, $matches);
+			preg_match("/<body.*>(.*)<\/body>/si", $src, $matches);
 
 			if(isset($matches[1])) {
 				// take the code between the body-tags
@@ -126,7 +126,7 @@
 				// take the whole code
 				$srcBody = $replBody = $src;
 
-			}
+			}//p_r($srcBody);
 			/*
 			This is the fastest variant
 			*/
@@ -164,7 +164,7 @@
 			*/
 
 			$replBody = str_replace("@@@we@@@", "'", $replBody);
-			if(isset($matches[0])) {
+			if(isset($matches[1])) {
 				return str_replace($srcBody, $replBody, $src);
 
 			} else {
