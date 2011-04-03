@@ -1,3 +1,4 @@
+
 /**
  * webEdition CMS
  *
@@ -13,8 +14,6 @@
  *
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -53,60 +52,54 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-public class EditorPanel extends JPanel
-{
-/**
-	 * 
+public class EditorPanel extends JPanel {
+
+	/**
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	// for this simple experiment, we keep the pane + scrollpane as members.
-	
 	JTextPane pane;
 	JScrollPane scrollPane;
 	Font NrPanelFont;
 	EditorPanel panel;
 	LineNumberPanel lineNumbers;
-	
 	Editor applet;
-	
 	DefaultListModel suggestedTags;
 	DefaultListModel attribsForTag;
-	
 	TagSuggestor tSuggestor;
 	AttribSuggestor aSuggestor;
-	
 	String tagName = null;
 	String attribName = null;
-	
 	Action defaultDownAction = null;
-	
 	SuggestorController suggestorController = null;
-	
 	private Parameter parameter;
-	
+
 	public EditorPanel(final Editor applet) {
 		super();
-		
+
 		setLayout(new BorderLayout());
 		this.applet = applet;
-		
+
 		suggestedTags = new DefaultListModel();
 		attribsForTag = new DefaultListModel();
-		
-		
+
+
 		panel = this;
-		
+
 
 		StyleContext sc = new StyleContext();
 		DefaultStyledDocument doc = new DefaultStyledDocument(sc);
 
 		// we need to override paint so that the line numbers stay in sync
-		pane = new JTextPane(doc) {		
+		pane = new JTextPane(doc) {
+
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void paint(Graphics g) {
 				super.paint(g);
 				if (tSuggestor.isVisible()) {
@@ -115,62 +108,64 @@ public class EditorPanel extends JPanel
 					aSuggestor.repaint();
 				}
 			}
-			
 		};
-		
+
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(pane);
-		
+
 		scrollPane = new JScrollPane(p);
 		Parameter parameter = Parameter.getInstance();
-		
-		scrollPane.getVerticalScrollBar().setUnitIncrement(parameter.getFontSize()+1);
+
+		scrollPane.getVerticalScrollBar().setUnitIncrement(parameter.getFontSize() + 1);
 
 		lineNumbers = new LineNumberPanel(pane);
-		
+
 		suggestorController = new SuggestorController(pane, applet, lineNumbers);
-		
+
 		tSuggestor = suggestorController.getTagSuggestor();
 		aSuggestor = suggestorController.getAttribSuggestor();
-		
-		
+
+
 		EditorKit editorKit = new StyledEditorKit() {
+
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
-			public Document createDefaultDocument()
-			{
+			@Override
+			public Document createDefaultDocument() {
 				return new SyntaxDocument(applet, panel);
 			}
 		};
 
 		parameter = Parameter.getInstance();
 		String contentType = parameter.getContentType();
-		
+
 		if (contentType.equals("text/weTmpl")) {
 			pane.setEditorKitForContentType(contentType, editorKit);
 			pane.setContentType(contentType);
 		}
-		
+
 		ActionMap am = pane.getActionMap();
 		am.put(DefaultEditorKit.insertBreakAction, new IndentBreakAction());
-		
+
 		defaultDownAction = am.get(DefaultEditorKit.downAction);
-		
-		
-		
-		
-		
+
+
+
+
+
 		add(lineNumbers, BorderLayout.WEST);
-				
+
 		class MyAdjustmentListener implements AdjustmentListener {
-	        public void adjustmentValueChanged(AdjustmentEvent evt) {
-	        	tSuggestor.hideSuggestor();
-	        	aSuggestor.hideSuggestor();
-	        }
-	    }
+
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent evt) {
+				tSuggestor.hideSuggestor();
+				aSuggestor.hideSuggestor();
+			}
+		}
 		AdjustmentListener listener = new MyAdjustmentListener();
 		scrollPane.getVerticalScrollBar().addAdjustmentListener(listener);
 		scrollPane.getHorizontalScrollBar().addAdjustmentListener(listener);
@@ -178,132 +173,145 @@ public class EditorPanel extends JPanel
 		add(tSuggestor);
 		add(aSuggestor);
 		add(scrollPane);
-		
-		
+
+
 		pane.setFont(new Font(parameter.getFontName(), Font.PLAIN, parameter.getFontSize()));
 		setTabs(pane, 4);
 
 		pane.addKeyListener(new KeyAdapter() {
-			
+
 			boolean ctrlPressed = false;
-			
-            public void keyReleased(KeyEvent e) {
-            	if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-            		ctrlPressed = false;
-            	}
-            }
-            public void keyTyped(KeyEvent e) {
-            }
- 
-            public void keyPressed(KeyEvent e) {
-            	if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-            		ctrlPressed = true;
-            	}
-               	if (ctrlPressed && e.getKeyCode() == KeyEvent.VK_S) {
-               		applet.sendCtrlS();
-               	}
-           }
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					ctrlPressed = false;
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					ctrlPressed = true;
+				}
+				if (ctrlPressed) {
+					switch (e.getKeyCode()) {
+						case KeyEvent.VK_S:
+							applet.sendCtrlS();
+							break;
+						case KeyEvent.VK_F:
+						case KeyEvent.VK_H:
+							applet.searchAndReplaceVisible(true);
+							break;
+					}
+				}
+			}
 		});
-		
-        pane.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-            }
 
-            public void mousePressed(MouseEvent e) {
-            	if (tSuggestor.isVisible()) {
-            		tSuggestor.hideSuggestor();
-            	}
-            	if (aSuggestor.isVisible()) {
-            		aSuggestor.hideSuggestor();
-            	}
-            }
+		pane.addMouseListener(new MouseAdapter() {
 
-            public void mouseReleased(MouseEvent e) {
-            }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
 
-            public void mouseEntered(MouseEvent e) {
-            }
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (tSuggestor.isVisible()) {
+					tSuggestor.hideSuggestor();
+				}
+				if (aSuggestor.isVisible()) {
+					aSuggestor.hideSuggestor();
+				}
+			}
 
-            public void mouseExited(MouseEvent e) {
-            }
-        });
-        
-        
-        
-        
-   		
-	
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+		});
+
+
+
+
+
+
 	}
-	
-	
-	
+
 	// The Undo action
-	  public class UndoAction extends AbstractAction {
-	    /**
-		 * 
+	public class UndoAction extends AbstractAction {
+
+		/**
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		public UndoAction(UndoManager manager, LineNumberPanel ln) {
-	      this.manager = manager;
-	      this.lineNumbers = ln;
-	    }
+			this.manager = manager;
+			this.lineNumbers = ln;
+		}
 
-	    public void actionPerformed(ActionEvent evt) {
-		  try {
-		    manager.undo();
-		    lineNumbers.repaint();
-		  } catch (CannotUndoException e) {
-		    Toolkit.getDefaultToolkit().beep();
-		  }
-	    }
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			try {
+				manager.undo();
+				lineNumbers.repaint();
+			} catch (CannotUndoException e) {
+				Toolkit.getDefaultToolkit().beep();
+			}
+		}
+		private UndoManager manager;
+		private LineNumberPanel lineNumbers;
+	}
 
-	    private UndoManager manager;
-	    private LineNumberPanel lineNumbers;
+	// The Redo action
+	public class RedoAction extends AbstractAction {
 
-	  }
-
-	  // The Redo action
-	  public class RedoAction extends AbstractAction {
-	    /**
-		 * 
+		/**
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		public RedoAction(UndoManager manager, LineNumberPanel ln) {
-	      this.manager = manager;
-	      this.lineNumbers = ln;
-	    }
-
-	    public void actionPerformed(ActionEvent evt) {
-	      try {
-	        manager.redo();
-		    lineNumbers.repaint();
-	      } catch (CannotRedoException e) {
-	        Toolkit.getDefaultToolkit().beep();
-	      }
-	    }
-
-	    private LineNumberPanel lineNumbers;
-	    private UndoManager manager;
-	  }
-	   
-    
-
- 	public void setTabs( JTextPane textPane, int charactersPerTab)
-	{
-		FontMetrics fm = textPane.getFontMetrics( textPane.getFont() );
-		int charWidth = fm.charWidth( 'w' );
-		int tabWidth = charWidth * charactersPerTab;
- 
-		TabStop[] tabs = new TabStop[10];
- 
-		for (int j = 0; j < tabs.length; j++)
-		{
-			int tab = j + 1;
-			tabs[j] = new TabStop( tab * tabWidth );
+			this.manager = manager;
+			this.lineNumbers = ln;
 		}
- 
+
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			try {
+				manager.redo();
+				lineNumbers.repaint();
+			} catch (CannotRedoException e) {
+				Toolkit.getDefaultToolkit().beep();
+			}
+		}
+		private LineNumberPanel lineNumbers;
+		private UndoManager manager;
+	}
+
+	public void setTabs(JTextPane textPane, int charactersPerTab) {
+		FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
+		int charWidth = fm.charWidth('w');
+		int tabWidth = charWidth * charactersPerTab;
+
+		TabStop[] tabs = new TabStop[10];
+
+		for (int j = 0; j < tabs.length; j++) {
+			int tab = j + 1;
+			tabs[j] = new TabStop(tab * tabWidth);
+		}
+
 		TabSet tabSet = new TabSet(tabs);
 		SimpleAttributeSet attributes = new SimpleAttributeSet();
 		StyleConstants.setTabSet(attributes, tabSet);
@@ -311,38 +319,35 @@ public class EditorPanel extends JPanel
 		textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, false);
 	}
 
-    public void paint(Graphics g) {
-    	super.paint(g);
-    	tSuggestor.repaint();
-    }
-    
-    public void initUndoManager() {
-		UndoManager manager = new CompoundUndoManager( pane );
-	    //pane.getDocument().addUndoableEditListener(manager);
-	    Action undoAction = new UndoAction(manager, lineNumbers);
-	    Action redoAction = new RedoAction(manager, lineNumbers);
-	    
-	    pane.registerKeyboardAction(undoAction, KeyStroke.getKeyStroke("meta pressed Z"), JComponent.WHEN_FOCUSED);
-	    pane.registerKeyboardAction(undoAction, KeyStroke.getKeyStroke("ctrl pressed Z"), JComponent.WHEN_FOCUSED);
-	    pane.registerKeyboardAction(redoAction, KeyStroke.getKeyStroke("meta shift pressed Z"), JComponent.WHEN_FOCUSED);
-	    pane.registerKeyboardAction(redoAction, KeyStroke.getKeyStroke("ctrl shift pressed Z"), JComponent.WHEN_FOCUSED);
-	    pane.registerKeyboardAction(redoAction, KeyStroke.getKeyStroke("ctrl pressed Y"), JComponent.WHEN_FOCUSED);
-   	
-    }
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		tSuggestor.repaint();
+	}
+
+	public void initUndoManager() {
+		UndoManager manager = new CompoundUndoManager(pane);
+		//pane.getDocument().addUndoableEditListener(manager);
+		Action undoAction = new UndoAction(manager, lineNumbers);
+		Action redoAction = new RedoAction(manager, lineNumbers);
+
+		pane.registerKeyboardAction(undoAction, KeyStroke.getKeyStroke("meta pressed Z"), JComponent.WHEN_FOCUSED);
+		pane.registerKeyboardAction(undoAction, KeyStroke.getKeyStroke("ctrl pressed Z"), JComponent.WHEN_FOCUSED);
+		pane.registerKeyboardAction(redoAction, KeyStroke.getKeyStroke("meta shift pressed Z"), JComponent.WHEN_FOCUSED);
+		pane.registerKeyboardAction(redoAction, KeyStroke.getKeyStroke("ctrl shift pressed Z"), JComponent.WHEN_FOCUSED);
+		pane.registerKeyboardAction(redoAction, KeyStroke.getKeyStroke("ctrl pressed Y"), JComponent.WHEN_FOCUSED);
+
+	}
 
 	public void setCode(String code) {
 		pane.setText(code);
 	}
-	
+
 	public String getCode() {
 		return pane.getText();
 	}
-	
-	public TagSuggestor getSuggestor(){
+
+	public TagSuggestor getSuggestor() {
 		return tSuggestor;
 	}
-	
-	
 }
-
-

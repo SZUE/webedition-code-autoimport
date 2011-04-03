@@ -25,6 +25,7 @@ import javax.swing.JTextPane;
 		super(anApplet, aPane, lineNumbers);
 	}
 
+	@Override
 	protected void updatePane(String word) {
 		pane.replaceSelection(word.substring(suggestedValue.length()) + "=\"\"");
 		int selStart = pane.getSelectionStart() - 1;
