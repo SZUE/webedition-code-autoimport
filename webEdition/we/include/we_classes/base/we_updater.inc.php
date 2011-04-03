@@ -374,13 +374,13 @@
 					  "Name"=>"VARCHAR(255) NOT NULL",
 					  "Value"=>"TEXT NOT NULL"
 				  );
-  
+
 				  $this->addTable(CUSTOMER_ADMIN_TABLE,$cols);
-  
+
 				  $DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('FieldAdds','');");
 				  $DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('SortView','');");
 				  $DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('Prefs','');");
-  
+
 				  include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/"."weCustomerSettings.php");
 				  $settings=new weCustomerSettings();
 				  $settings->customer=new weCustomer();
@@ -427,8 +427,8 @@
 
 			if($this->isColExist(CUSTOMER_TABLE,"Anrede_Anrede")) $this->changeColTyp(CUSTOMER_TABLE,"Anrede_Anrede","enum('','Herr','Frau') NOT NULL");
 
-			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_Ok")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_Ok","enum('','ja') NOT NULL");
-			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter","enum('','ja') NOT NULL");
+			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_Ok")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_Ok","enum('','ja','0','1','2') NOT NULL");
+			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_HTMLNewsletter","enum('','ja','0','1','2') NOT NULL");
 
 		}
 		return true;
