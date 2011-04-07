@@ -529,7 +529,7 @@ class we_class
 					if($fieldName != "ID") $updt .= $fieldName."='".addslashes($val)."',";
 				}
 			}
-			$updt = ereg_replace('(.+),$','\1',$updt);
+			$updt = substr($updt,0,-1);
 			if($updt){
 				$q = "UPDATE ".mysql_real_escape_string($this->Table)." SET ".$updt." WHERE ID='".abs($this->ID)."'";
 				if($this->DB_WE->query($q)){
