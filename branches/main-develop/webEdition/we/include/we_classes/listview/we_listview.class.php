@@ -121,27 +121,33 @@ class we_listview extends listviewBase {
 		$this->hidedirindex=$hidedirindex;
 		$this->order = trim($this->order);
 
-		if(	$this->order == "we_id" ||  $this->order == "we_creationdate" || $this->order == "we_filename" || $this->order == "we_moddate" || $this->order == "we_published"){
-
-				$ord = str_replace("we_id",FILE_TABLE . ".ID",$this->order);
-				$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord);
-				$ord = str_replace("we_moddate",FILE_TABLE . ".ModDate",$ord);
-				$ord = str_replace("we_filename",FILE_TABLE . ".Text",$ord);
-				$ord = str_replace("we_published",FILE_TABLE . ".Published",$ord);
-
-				$orderstring = " ORDER BY $ord ".($this->desc ? " DESC" : "");
-
-		}else{
+		switch($this->order){
+			case 'we_id':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.ID '.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_creationdate':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.CreationDate'.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_filename':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.Text'.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_moddate':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.ModDate'.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_published':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.Published'.($this->desc ? 'DESC' : '');
+				break;
+			default:
 				if($this->search){
 					$orderstring = $this->order ?
 									(" AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($this->order)."' ORDER BY ranking," . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
-									" ORDER BY ranking";
+									' ORDER BY ranking';
 				}else{
 					$orderstring = $this->order ?
-									(" AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($this->order)."' ORDER BY " . ($this->numorder ? "0+" : "") . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
-									"";
+									(' AND ' . LINK_TABLE . ".Name='".mysql_real_escape_string($this->order)."' ORDER BY " . ($this->numorder ? "0+" : "") . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
+									'';
 				}
-
+				break;
 		}
 
 

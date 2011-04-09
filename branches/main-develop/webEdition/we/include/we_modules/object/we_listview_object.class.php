@@ -276,7 +276,7 @@ class we_listview_object extends listviewBase {
 	}
 
 	function makeSQLParts($matrix,$classID,$order,$cond){
-
+		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
 		$out = array();
 		$from = array();
 		$orderArr = array();
@@ -289,33 +289,33 @@ class we_listview_object extends listviewBase {
 		$cond = " ".preg_replace("/'([^']*)'/e","\$this->encodeEregString('\\1')",$cond)." ";
 
 
-		if($order && ($order != "random()")){
+		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
 			foreach($foo as $f){
 				$g = explode(" ",trim($f));
 				array_push($orderArr,$g[0]);
-				if(isset($g[1]) && strtolower(trim($g[1])) == "desc"){
-					array_push($descArr,1);
-				}else{
-					array_push($descArr,0);
-				}
+				array_push($descArr,(isset($g[1]) && strtolower(trim($g[1])) == 'desc'?1:0));
 			}
 		}
 
 		//get Metadata for class (default title, etc.)
 		//BugFix #4629
-		$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID='".$classID."'",$this->DB_WE);
+		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' .OBJECT_TABLE . ' WHERE ID="'.$classID.'"',$this->DB_WE);
 		$_selFields = "";
 		foreach($_fieldnames as $_key => $_val) {
 			if(empty($_val) || $_val=='_') // bug #4657
 				continue;
-			if (!is_numeric($_key)) {
-				if ($_val && $_key == "DefaultDesc") {
+			if (!is_numeric($_key)&&$_val) {
+				switch($_key){
+					case "DefaultDesc":
 					$_selFields .= OBJECT_X_TABLE . $classID .'.'. $_val . " as we_Description,";
-				} else if ($_key == "DefaultTitle") {
+						break;
+					case "DefaultTitle":
 					$_selFields .= OBJECT_X_TABLE . $classID .'.'. $_val . " as we_Title,";
-				} else if ($_val && $_key == "DefaultKeywords") {
+						break;
+					case "DefaultKeywords":
 					$_selFields .= OBJECT_X_TABLE . $classID .'.'. $_val . " as we_Keywords,";
+						break;
 				}
 			}
 		}
@@ -370,11 +370,7 @@ class we_listview_object extends listviewBase {
 		$out["order"] = $order;
 		$out["tables"] = makeCSVFromArray($tb);
 
-		if (count($tb) > 1) {
-			$out["groupBy"] = " GROUP BY " . OBJECT_X_TABLE . $classID . ".ID ";
-		} else {
-			$out["groupBy"] = "";
-		}
+		$out["groupBy"] = (count($tb) > 1?" GROUP BY " . OBJECT_X_TABLE . $classID . ".ID ":'');
 
 		$out["publ_cond"] = "";
 		foreach($tb as $t){

@@ -676,35 +676,21 @@ class weTree{
 			out+=draw(treeData.startloc,"");
 			out+="</nobr>\n</td></tr></table>\n";
 			'.$this->treeFrame.'.document.getElementById("treetable").innerHTML=out;
-
-			/*nurl="treeMain.php";
-			win=window.open(nurl);
-			win.document.open();
-			win.document.write(top.treeHTML.innerHTML);
-			win.document.close();*/
-
-
    		}
 
  		'.$this->getJSDraw();
 	}
 
 	function getJSDraw(){
-
 		$custom_draw=array();
 		$draw_code="";
 		$custom_draw=$this->getJSCustomDraw();
-		foreach($custom_draw as $ck=>$cv)
-			if($draw_code=="")
-				$draw_code='
-										if(nf[ai].typ == "'.$ck.'"){
-											'.$cv.'
-										}';
-			else
-				$draw_code.='else if(nf[ai].typ == "'.$ck.'"){
-											'.$cv.'
-										}';
-
+		foreach($custom_draw as $ck=>$cv){
+			if($draw_code!=''){
+				$draw_code.=' else ';
+			}
+			$draw_code.=' if(nf[ai].typ == "'.$ck.'"){'.$cv.'}';
+		}
 
 		return'
  		function draw(startEntry,zweigEintrag){
@@ -738,7 +724,7 @@ class weTree{
 	function getJSCustomDraw($click_handler=""){
 		$out=array();
 
-		if($click_handler=="")
+		if($click_handler=='')
 			$click_handler='
 
 				if(treeData.selection_table==treeData.table && nf[ai].id==treeData.selection) nf[ai].selected=1;
@@ -768,8 +754,7 @@ class weTree{
 
 					} else {
 
-						if (nf[ai].checked==1) ci=treeData.tree_image_dir+"check1.gif";
-						else ci=treeData.tree_image_dir+"check0.gif";
+						ci="'.$this->tree_image_dir.'"+(nf[ai].checked==1?"check1.gif":"check0.gif");
 						row+="<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+ci+"\" width=16 height=18 align=absmiddle border=0 alt=\"\" name=\"img_"+nf[ai].id+"\"></a>";
 						row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onClick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
 
@@ -785,8 +770,7 @@ class weTree{
 
 					} else {
 
-						if (nf[ai].checked==1) ci=treeData.tree_image_dir+"check1.gif";
-						else ci=treeData.tree_image_dir+"check0.gif";
+						ci="'.$this->tree_image_dir.'"+(nf[ai].checked==1?"check1.gif":"check0.gif");
 						row+="<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+ci+"\" width=16 height=18 align=absmiddle border=0 alt=\"\" name=\"img_"+nf[ai].id+"\"></a>";
 						row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onClick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
 
@@ -795,11 +779,9 @@ class weTree{
 				}
 				else if(treeData.state==treeData.tree_states["select"] && (nf[ai].disabled!=1)) {
 					var ci;
-					if (nf[ai].checked==1) ci=treeData.tree_image_dir+"check1.gif";
-					else ci=treeData.tree_image_dir+"check0.gif";
+					ci="'.$this->tree_image_dir.'"+(nf[ai].checked==1?"check1.gif":"check0.gif");
 
 					row+="<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+ci+"\" width=16 height=18 align=absmiddle border=0 alt=\"\" name=\"img_"+nf[ai].id+"\"></a>";
-
 					row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onClick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
 
 				}
@@ -815,9 +797,7 @@ class weTree{
 		';
 
 		$out["item"]='
-					if(ai == nf.len) row+="&nbsp;&nbsp;<img src="+treeData.tree_image_dir+"kreuzungend.gif width=19 height=18 align=absmiddle border=0>";
-					else
-						row+="&nbsp;&nbsp;<img src="+treeData.tree_image_dir+"kreuzung.gif width=19 height=18 align=absmiddle border=0>";
+					row+="&nbsp;&nbsp;<img src='.$this->tree_image_dir.'"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";
 
 					'.$click_handler.'
 
@@ -831,8 +811,7 @@ class weTree{
 					var oc_img;
 					var oc_js;
 
-					if (nf[ai].open == 0) oc_img=treeData.tree_image_dir+"auf"+zusatz+".gif";
-					else oc_img=treeData.tree_image_dir+"zu"+zusatz+".gif";
+					oc_img="'.$this->tree_image_dir.'"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
 
 					if(nf[ai].disabled!=1) oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 					else oc_js="//";
@@ -849,20 +828,15 @@ class weTree{
 					'.$click_handler.'
 
 					if (nf[ai].open==1){
-						if(ai == nf.len) newAst = newAst + "<img src="+treeData.tree_image_dir+"leer.gif width=19 height=18 align=absmiddle border=0>";
-						else newAst = newAst + "<img src="+treeData.tree_image_dir+"strich2.gif width=19 height=18 align=absmiddle border=0>";
+						newAst = newAst + "<img src='.$this->tree_image_dir.'"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 						row+=draw(nf[ai].id,newAst);
 					}
 		';
 
 		$out["threedots"]='
-					if(ai == nf.len)
-						row+="&nbsp;&nbsp;<img src="+treeData.tree_image_dir+"kreuzungend.gif width=19 height=18 align=absmiddle border=0>";
-					else
-						row+="&nbsp;&nbsp;<img src="+treeData.tree_image_dir+"kreuzung.gif width=19 height=18 align=absmiddle border=0>";
-
+					row+="&nbsp;&nbsp;<img src='.$this->tree_image_dir.'"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";
 						row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onClick=\"'.$this->topFrame.'.setSegment(\'"+nf[ai].id+"\');return true;\">";
-						row+="<img src="+treeData.tree_image_dir+"/"+nf[ai].icon+" width=100 height=7 align=absmiddle border=0 alt=\"\">";
+					row+="<img src='.$this->tree_image_dir.'/"+nf[ai].icon+" width=100 height=7 align=absmiddle border=0 alt=\"\">";
 						row+="</a>";
 						row+="&nbsp;&nbsp;<br>\n";
 		';
@@ -872,18 +846,15 @@ class weTree{
 	}
 
 	function getJSLoadTree($treeItems){
-			$js="";
-			$out="";
+			$js='';
+			$out='';
 			$js="var attribs=new Array();\n";
 			foreach($treeItems as $item){
 				$js.="		if(".$this->topFrame.".indexOfEntry('".$item["id"]."')<0){ \n";
 				foreach($item as $k=>$v)
-				$js.='
-							attribs["'.strtolower($k).'"]=\''.addslashes($v).'\';';
-				$js.='
+				$js.='attribs["'.strtolower($k).'"]=\''.addslashes($v).'\';
 					'.$this->topFrame.'.treeData.addSort(new '.$this->topFrame.'.node(attribs));
-				}
-				';
+				}'."\n";
 			}
 			$js.=$this->topFrame.'.drawTree();';
 
