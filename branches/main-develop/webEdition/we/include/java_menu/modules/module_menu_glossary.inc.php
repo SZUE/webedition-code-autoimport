@@ -50,25 +50,25 @@ foreach ($GLOBALS['weFrontendLanguages'] as $key => $language) {
 
 	$we_menu_glossary["00".$nr."1"]["text"] = g_l('modules_glossary',"[abbreviation]");
 	$we_menu_glossary["00".$nr."1"]["parent"] = $parent;
-	$we_menu_glossary["00".$nr."1"]["cmd"] = "Glossary:new_glossary_abbreviation:$key";
+	$we_menu_glossary["00".$nr."1"]["cmd"] = "GlossaryXYZnew_glossary_abbreviationXYZ$key";
 	$we_menu_glossary["00".$nr."1"]["perm"] = "NEW_GLOSSARY || ADMINISTRATOR";
 	$we_menu_glossary["00".$nr."1"]["enabled"] = "1";
 
 	$we_menu_glossary["00".$nr."2"]["text"] = g_l('modules_glossary',"[acronym]");
 	$we_menu_glossary["00".$nr."2"]["parent"] = $parent;
-	$we_menu_glossary["00".$nr."2"]["cmd"] = "Glossary:new_glossary_acronym:$key";
+	$we_menu_glossary["00" . $nr . "2"]["cmd"] = "GlossaryXYZnew_glossary_acronymXYZ$key";
 	$we_menu_glossary["00".$nr."2"]["perm"] = "NEW_GLOSSARY || ADMINISTRATOR";
 	$we_menu_glossary["00".$nr."2"]["enabled"] = "1";
 
 	$we_menu_glossary["00".$nr."3"]["text"] = g_l('modules_glossary',"[foreignword]");
 	$we_menu_glossary["00".$nr."3"]["parent"] = $parent;
-	$we_menu_glossary["00".$nr."3"]["cmd"] = "Glossary:new_glossary_foreignword:$key";
+	$we_menu_glossary["00" . $nr . "3"]["cmd"] = "GlossaryXYZnew_glossary_foreignwordXYZ$key";
 	$we_menu_glossary["00".$nr."3"]["perm"] = "NEW_GLOSSARY || ADMINISTRATOR";
 	$we_menu_glossary["00".$nr."3"]["enabled"] = "1";
 
 	$we_menu_glossary["00".$nr."4"]["text"] = g_l('modules_glossary',"[link]");
 	$we_menu_glossary["00".$nr."4"]["parent"] = $parent;
-	$we_menu_glossary["00".$nr."4"]["cmd"] = "Glossary:new_glossary_link:$key";
+	$we_menu_glossary["00" . $nr . "4"]["cmd"] = "GlossaryXYZnew_glossary_linkXYZ$key";
 	$we_menu_glossary["00".$nr."4"]["perm"] = "NEW_GLOSSARY || ADMINISTRATOR";
 	$we_menu_glossary["00".$nr."4"]["enabled"] = "1";
 

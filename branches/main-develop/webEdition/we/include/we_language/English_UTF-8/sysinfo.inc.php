@@ -49,7 +49,7 @@ $l_sysinfo = array(
 		'pcre warning' => 'Versions before 7.0 can lead to severe problems',
 		'pcre_unkown' => 'Not detectable',
 		'exif warning' => 'EXIF-Metadata for images are not available',
-		'sdk_db warning' => 'SDK Operations and WE-APPS with database access are not available',
+		'sdk_db warning' => 'SDK Operations and WE-APPS with database access are not available (required: PDO &amp; PDO_mysql)',
 		'phpext warning' => 'not available: ',
 		'phpext warning2' => 'Most likely, webEdition will not work properly!',
 		'detectable warning' => 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start ', // TRANSLATE
@@ -63,4 +63,4 @@ $l_sysinfo = array(
 		'pcre' => 'PCRE-Extension',
 		'sdk_db' => 'SDK/Apps DB support',
 		'phpext' => 'Required PHP extensions',
-);
+	);

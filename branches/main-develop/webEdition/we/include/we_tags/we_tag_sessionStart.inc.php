@@ -36,7 +36,7 @@ function we_tag_sessionStart($attribs, $content)
 			if (!isset($_SESSION))
 				@session_start();
 
-			if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["ID"] && ( (isset($_REQUEST["s"]["AutoLogin"]) && !$_REQUEST["s"]["AutoLogin"]) || (isset($_SESSION["webuser"]["AutoLogin"]) && !$_SESSION["webuser"]["AutoLogin"])) ){
+			if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["ID"] && ( (isset($_REQUEST["s"]["AutoLogin"]) && !$_REQUEST["s"]["AutoLogin"]) || (isset($_SESSION["webuser"]["AutoLogin"]) && !$_SESSION["webuser"]["AutoLogin"])) &&  isset($_SESSION["webuser"]["AutoLoginID"])){
 				$GLOBALS["DB_WE"]->query("DELETE FROM " . CUSTOMER_AUTOLOGIN_TABLE . " WHERE AutoLoginID='" . mysql_real_escape_string($_SESSION["webuser"]["AutoLoginID"]) . "'");
 				setcookie("_we_autologin", '',($currenttime-3600),'/');;
 			}

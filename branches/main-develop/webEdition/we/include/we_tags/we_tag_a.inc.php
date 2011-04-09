@@ -56,6 +56,10 @@ function we_tag_a($attribs, $content){
 	$db = new DB_WE();
 	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", $db);
 	$url = (isset($row["Path"]) ? $row["Path"] : "") . ((isset($row["IsFolder"]) && $row["IsFolder"]) ? "/" : "");
+	$path_parts = pathinfo($url);
+	if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE  && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+		$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
+	} 
 
 	$urladd = "";
 

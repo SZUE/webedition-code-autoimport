@@ -528,10 +528,10 @@ class we_class {
 						$updt .= $fieldName . "='" . addslashes($val) . "',";
 				}
 			}
-			$updt = ereg_replace('(.+),$', '\1', $updt);
-			if ($updt) {
-				$q = "UPDATE " . mysql_real_escape_string($this->Table) . " SET " . $updt . " WHERE ID='" . abs($this->ID) . "'";
-				if ($this->DB_WE->query($q)) {
+			$updt = substr($updt,0,-1);
+			if($updt){
+				$q = "UPDATE ".mysql_real_escape_string($this->Table)." SET ".$updt." WHERE ID='".abs($this->ID)."'";
+				if($this->DB_WE->query($q)){
 					return true;
 				} else {
 					return false;

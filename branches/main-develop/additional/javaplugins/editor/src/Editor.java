@@ -62,6 +62,9 @@ public class Editor extends JApplet{
 	private Map<String, Vector<String>> attribs = new HashMap<String, Vector<String>>();
 //	private static String webPath="/webEdition/editor/"; // new: /editors/template/editor/
 
+	private SearchAndReplace searchAndReplace;
+
+	@Override
 	public void init() {
 
 		codeBase = getCodeBase();
@@ -141,6 +144,7 @@ public class Editor extends JApplet{
 
 		editor = new EditorPanel(this);
 		getContentPane().add(editor, BorderLayout.CENTER);
+		searchAndReplace = new SearchAndReplace(new javax.swing.JFrame(), false, this);
 	}
 
 	private Vector<String> getFromServer(String urlString, String nodeName) {
@@ -221,6 +225,7 @@ public class Editor extends JApplet{
 		return editor.getCode();
 	}
 
+	@Override
 	public void setSize(int width, int height) {
 	   super.setSize(width,height);
 	   validate();
@@ -274,4 +279,78 @@ public class Editor extends JApplet{
 		editor.pane.replaceSelection(txt);
 	}
 
+	public void searchAndReplaceVisible(boolean show){
+		searchAndReplace.setVisible(show);
+	}
+
+	public int search(String search, boolean caseSens, boolean wholeWords){
+		return search(search, caseSens, wholeWords,-1);
+	}
+
+	public int search(String search, boolean caseSens, boolean wholeWords,int startAt){
+		if(search==null){
+			return -1;
+		}
+		int start=startAt;
+		if(startAt==-1){
+			if(editor.pane.getSelectedText()!=null){
+				start=editor.pane.getSelectionEnd();
+			}else{
+				start=editor.pane.getCaretPosition();
+			}
+		}
+
+		String text=editor.pane.getText();
+		if(!caseSens){
+			text.toLowerCase();
+			search.toLowerCase();
+		}
+		int found=-1;
+		if(wholeWords){
+			int tmp=start;
+			/*do{
+				found=text.indexOf(search, start);
+
+			}while(true);
+			 */
+		}else{
+			found=text.indexOf(search, start);
+		}
+		if(found==-1){
+			found=text.indexOf(search, 0);
+		}
+		if(found>-1){
+			editor.pane.select(found,search.length()+found);
+			return found;
+		}
+		return -1;
+	}
+
+	public void replace(String search, String replace, boolean caseSens, boolean wholeWords){
+		String selText=editor.pane.getSelectedText();
+		if((selText!=null && caseSens && selText.equals(search))||(selText!=null && !caseSens && selText.equalsIgnoreCase(search))){
+			editor.pane.replaceSelection(replace);
+			setHot(true);
+		}else{
+			search(search, caseSens, wholeWords);
+			if(editor.pane.getSelectedText()!=null){
+				editor.pane.replaceSelection(replace);
+				setHot(true);
+			}
+		}
+		search(search, caseSens, wholeWords);
+	}
+
+	public void replaceAll(String search, String replace, boolean caseSens, boolean wholeWords){
+		int start=0;
+		boolean hot=false;
+		while((start=search(search, caseSens, wholeWords,start))>-1){
+			hot=true;
+			editor.pane.replaceSelection(replace);
+			++start;
+		}
+		if(hot){
+			setHot(true);
+		}
+	}
 }
