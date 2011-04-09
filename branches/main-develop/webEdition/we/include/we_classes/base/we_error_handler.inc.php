@@ -170,7 +170,7 @@ function translate_error_type($type) {
 
 function getBacktrace($skip=0){
 	++$skip;//don't count ourself
-	$_detailedError=$_caller='';
+	$_detailedError=$_caller=$_file=$_line='';
 
 	$_backtrace=debug_backtrace();
 
@@ -277,6 +277,10 @@ function log_error_message($type, $message, $file, $_line) {
 			or die('Cannot log error! Could not connect: ' . mysql_error());
 
 		mysql_select_db(DB_DATABASE) or die('Cannot log error! Could not select database.');
+		$_env='REQUEST:'."\n".print_r($_REQUEST)."\n------------------------\n".
+					'SESSION:'."\n".print_r($_SESSION)."\n------------------------\n".
+					'GLOBALS:'."\n".print_r($_GLOBALS);
+
 		//make sure we have a table name!
 		$tbl=defined(ERROR_LOG_TABLE)?ERROR_LOG_TABLE:TBL_PREFIX . 'tblErrorLog';
 		$_query = 'INSERT INTO ' . $tbl . ' SET Type=\''.mysql_real_escape_string($_type).'\',
@@ -284,7 +288,8 @@ function log_error_message($type, $message, $file, $_line) {
 			File=\'' . mysql_real_escape_string($_file) . '\',
 			Line=\'' . abs($_line) . '\',
 			Text=\'' . mysql_real_escape_string($_text) . '\',
-			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\';';
+			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\',
+			Environment=\'' . mysql_real_escape_string($_env) . '\';';
 
 		mysql_query($_query);
 
