@@ -277,20 +277,17 @@ function log_error_message($type, $message, $file, $_line) {
 			or die('Cannot log error! Could not connect: ' . mysql_error());
 
 		mysql_select_db(DB_DATABASE) or die('Cannot log error! Could not select database.');
-		$_env='REQUEST:'."\n".print_r($_REQUEST)."\n------------------------\n".
-					'SESSION:'."\n".print_r($_SESSION)."\n------------------------\n".
-					'GLOBALS:'."\n".print_r($_GLOBALS);
-
-		//make sure we have a table name!
 		$tbl=defined(ERROR_LOG_TABLE)?ERROR_LOG_TABLE:TBL_PREFIX . 'tblErrorLog';
 		$_query = 'INSERT INTO ' . $tbl . ' SET Type=\''.mysql_real_escape_string($_type).'\',
 			`Function`=\''.mysql_real_escape_string($_caller).'\',
 			File=\'' . mysql_real_escape_string($_file) . '\',
 			Line=\'' . abs($_line) . '\',
 			Text=\'' . mysql_real_escape_string($_text) . '\',
-			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\',
-			Environment=\'' . mysql_real_escape_string($_env) . '\';';
-
+			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\','.
+			Request=\''.mysql_real_escape_string(print_r($_REQUEST,true)).'\','.
+			Session=\''.mysql_real_escape_string(print_r($_SESSION,true)).'\','.
+			Global=\''.mysql_real_escape_string(print_r($_GLOBAL,true)).'\','.
+			Server=\''.mysql_real_escape_string(print_r($_SERVER,true)).'\';';
 		mysql_query($_query);
 
 		if (mysql_affected_rows() != 1) {
