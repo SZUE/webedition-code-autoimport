@@ -6,6 +6,10 @@ CREATE TABLE tblErrorLog (
   `Line` int(11) NOT NULL,
   `Text` text NOT NULL,
   `Backtrace` text NOT NULL,
+  `Request` text NOT NULL,
+  `Session` text NOT NULL,
+  `Global` text NOT NULL,
+  `Server` text NOT NULL,
   `Date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ID),
   KEY `Date` (`Date`)
