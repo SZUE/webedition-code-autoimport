@@ -1282,7 +1282,7 @@ class doclistView {
 					$_tagName = $_defined_fields [$i] ["tag"];
 
 					if (weContentProvider::IsBinary ( $_result [$f] ["docID"] )) {
-						$DB_WE->query ( "SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result [$f] ["docID"]) . "' AND b.Name='" . mysql_real_escape_string($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'" );
+						$DB_WE->query ( "SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result [$f] ["docID"]) . "' AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'" );
 						$metafields [$_tagName] = "";
 						while ( $DB_WE->next_record () ) {
 							$metafields [$_tagName] = shortenPath ( $DB_WE->f ( 'Dat' ), 45 );

@@ -354,7 +354,7 @@ class we_class
 	function formSelect2($elementtype,$width,$name,$table,$val,$txt,$text,$sqlTail="",$size=1,$selectedIndex="",$multiple=false,$onChange="",$attribs="",$textalign="left",$textclass="defaultfont",$precode="",$postcode="",$firstEntry="",$gap=20){
 		$vals = array();
 		if($firstEntry) $vals[$firstEntry[0]] = $firstEntry[1];
-		$this->DB_WE->query("SELECT * FROM ".mysql_real_escape_string($table)." $sqlTail");
+		$this->DB_WE->query("SELECT * FROM ".$this->DB_WE->escape($table)." $sqlTail");
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
@@ -386,7 +386,7 @@ class we_class
     function formSelect4($elementtype,$width,$name,$table,$val,$txt,$text,$sqlTail="",$size=1,$selectedIndex="",$multiple=false,$onChange="",$attribs="",$textalign="left",$textclass="defaultfont",$precode="",$postcode="",$firstEntry=""){
 		$vals = array();
 		if($firstEntry) $vals[$firstEntry[0]] = $firstEntry[1];
-		$this->DB_WE->query("SELECT * FROM ".mysql_real_escape_string($table)." $sqlTail");
+		$this->DB_WE->query("SELECT * FROM ".$this->DB_WE->escape($table)." $sqlTail");
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
@@ -465,7 +465,7 @@ class we_class
 	}
 
 	function we_delete(){
-		return $this->DB_WE->query("DELETE FROM ".mysql_real_escape_string($this->Table)." WHERE ID='".abs($this->ID)."'");
+		return $this->DB_WE->query("DELETE FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");
 	}
 
 # private ###################
@@ -490,7 +490,7 @@ class we_class
 	}
 
 	function i_getPersistentSlotsFromDB($felder="*"){
-		$this->DB_WE->query("SELECT ".$felder." FROM ".mysql_real_escape_string($this->Table)." WHERE ID='".abs($this->ID)."'");
+		$this->DB_WE->query("SELECT ".$felder." FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");
 		if($this->DB_WE->next_record()){
 			foreach($this->DB_WE->Record as $k=>$v){
 				if($k && in_array($k,$this->persistent_slots)){
@@ -531,12 +531,8 @@ class we_class
 			}
 			$updt = substr($updt,0,-1);
 			if($updt){
-				$q = "UPDATE ".mysql_real_escape_string($this->Table)." SET ".$updt." WHERE ID='".abs($this->ID)."'";
-				if($this->DB_WE->query($q)){
-					return true;
-				}else{
-					return false;
-				}
+				$q = "UPDATE ".$this->DB_WE->escape($this->Table)." SET ".$updt." WHERE ID='".abs($this->ID)."'";
+				return ($this->DB_WE->query($q)?true:false);
 			}else{
 				return false;
 			}
@@ -559,9 +555,9 @@ class we_class
 			if($keys){
 				$keys = "(".substr($keys,0,strlen($keys)-1).")";
 				$vals = "VALUES(".substr($vals,0,strlen($vals)-1).")";
-				$q = "INSERT INTO ".mysql_real_escape_string($this->Table)." $keys $vals";
+				$q = "INSERT INTO ".$this->DB_WE->escape($this->Table)." $keys $vals";
 				if($this->DB_WE->query($q)){
-    				$this->ID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".mysql_real_escape_string($this->Table),"LastID",$this->DB_WE);
+    				$this->ID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->DB_WE->escape($this->Table),"LastID",$this->DB_WE);
 					return true;
 				}
 				return false;

@@ -36,7 +36,7 @@ if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 	$_now = time();
 
 	// insert into log
-	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("'.mysql_real_escape_string($_ip).'", ' . abs($_now) . ')' );
+	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("'.$GLOBALS['DB_WE']->escape($_ip).'", ' . abs($_now) . ')' );
 	if (defined('FORMMAIL_EMPTYLOG') && (FORMMAIL_EMPTYLOG > -1)) {
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime < ' . abs($_now - FORMMAIL_EMPTYLOG));
 	}
@@ -51,21 +51,21 @@ if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < ' . abs($_now));
 
 		// check if ip is allready blocked
-		if (f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . mysql_real_escape_string($_ip) . '"','id',$GLOBALS['DB_WE'])) {
+		if (f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"','id',$GLOBALS['DB_WE'])) {
 			$_blocked = true;
 		} else {
 
 			// ip is not blocked, so see if we need to block it
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime > ' . abs($_now - FORMMAIL_SPAN) . ' AND ip="'. mysql_real_escape_string($_ip) . '"');
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime > ' . abs($_now - FORMMAIL_SPAN) . ' AND ip="'. $GLOBALS['DB_WE']->escape($_ip) . '"');
 			if ($GLOBALS['DB_WE']->next_record()) {
 				$_num = $GLOBALS['DB_WE']->num_rows();
 				if ($_num > $_trials) {
 					$_blocked = true;
 					// cleanup
-					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . mysql_real_escape_string($_ip) . '"' );
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"' );
 					// insert in block table
 					$blockedUntil = ($_blocktime == -1) ? -1 : abs($_now + $_blocktime);
-					$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".mysql_real_escape_string($_ip)."', " . $blockedUntil . ")" );
+					$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".$GLOBALS['DB_WE']->escape($_ip)."', " . $blockedUntil . ")" );
 				}
 			}
 		}
@@ -81,7 +81,7 @@ if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC){
 if ($_blocked) {
 	print_error('Email dispatch blocked / Email Versand blockiert!');
 }
-	
+
 
 
 function is_valid_email($email) {
@@ -187,7 +187,7 @@ function ok_page($_subject=''){
 			redirect($ok_page, $_subject);
 		} else {
 			redirect($ok_page);
-		}		
+		}
 	}else{
 		print 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
 		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT) {
@@ -208,11 +208,7 @@ function redirect($url,$_emosScontact=''){
 
 
 function check_recipient($email){
-	if(f('SELECT ID FROM '.RECIPIENTS_TABLE." WHERE Email='".mysql_real_escape_string($email)."'",'ID',$GLOBALS['DB_WE'])){
-	   return true;
-	}else{
-		return false;
-	}
+	return (f('SELECT ID FROM '.RECIPIENTS_TABLE." WHERE Email='".escape_sql_query($email)."'",'ID',$GLOBALS['DB_WE'])?true:false);
 }
 
 function check_captcha(){
@@ -226,7 +222,7 @@ function check_captcha(){
 		return Captcha::check($_REQUEST[$name]);
 	} else {
 		return false;
-	}	
+	}
 }
 
 $_req = isset($_REQUEST['required']) ? $_REQUEST['required'] : '';
@@ -350,7 +346,7 @@ $subject = (isset($_REQUEST['subject']) && $_REQUEST['subject']) ?
 			$_REQUEST['subject'] :
 			WE_DEFAULT_SUBJECT;
 
-$subject = strip_tags($subject);			
+$subject = strip_tags($subject);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
 			ereg_replace("[\r\n]",'',$_REQUEST['charset']) :
@@ -377,7 +373,7 @@ if($recipient){
 	$fromMail = preg_replace("/(\\n+|\\r+)/","",$fromMail);
 	$email = preg_replace("/(\\n+|\\r+)/","",$email);
 	$from = preg_replace("/(\\n+|\\r+)/","",$from);
-	
+
 	contains_bad_str($email);
 	contains_bad_str($from);
 	contains_bad_str($fromMail);
@@ -396,14 +392,14 @@ if($recipient){
 	} else{
 		$sender = $fromMail;
 	}
-	
+
 	$phpmail = new we_util_Mailer('',$subject,$sender);
 	$phpmail->setCharSet($charset);
 
 	$recipientsList = array();
-	
+
 	foreach($recipients as $recipientID){
-		
+
 		if (is_numeric($recipientID)) {
 			$recipient = f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . abs($recipientID), 'Email', $GLOBALS['DB_WE']);
 		} else {
@@ -425,7 +421,7 @@ if($recipient){
 			print_error($GLOBALS['l_global']['email_recipient_invalid']);
 		}
 	}
-	
+
 	if (count($recipientsList)>0) {
 		if(sizeof($_FILES)){
 			foreach($_FILES as $name => $file){
@@ -435,7 +431,7 @@ if($recipient){
 					$phpmail->doaddAttachment($tempName);
 				}
 			}
-		} 	
+		}
 		$phpmail->addAddressList($recipientsList);
 		if($mimetype == 'text/html'){
 			$phpmail->addHTMLPart($we_html);
@@ -445,12 +441,12 @@ if($recipient){
 		$phpmail->buildMessage();
 		if ($phpmail->Send()) {
 			$wasSent = true;
-		}	
-		
+		}
+
 	}
-	
-	
-	
+
+
+
 	if ((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && (!defined('FORMMAIL_CONFIRM') || FORMMAIL_CONFIRM)) {
 		if($wasSent){
 			// validation

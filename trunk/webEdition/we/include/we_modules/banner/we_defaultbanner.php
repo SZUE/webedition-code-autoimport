@@ -34,9 +34,9 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 	$DefaultBannerID = isset($_REQUEST["DefaultBannerID"]) ? $_REQUEST["DefaultBannerID"] : 0;
 	$DB_WE->query("SELECT * FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'");
 	if($DB_WE->num_rows()){
-		$DB_WE->query("UPDATE ".BANNER_PREFS_TABLE." SET pref_value='".mysql_real_escape_string($DefaultBannerID)."' WHERE pref_name='DefaultBannerID'");
+		$DB_WE->query("UPDATE ".BANNER_PREFS_TABLE." SET pref_value='".$DB_WE->escape($DefaultBannerID)."' WHERE pref_name='DefaultBannerID'");
 	}else{
-		$DB_WE->query("INSERT INTO ".BANNER_PREFS_TABLE." (pref_name,pref_value) VALUES('DefaultBannerID','".mysql_real_escape_string($DefaultBannerID)."')");
+		$DB_WE->query("INSERT INTO ".BANNER_PREFS_TABLE." (pref_name,pref_value) VALUES('DefaultBannerID','".$DB_WE->escape($DefaultBannerID)."')");
 	}
 
 	print '<script language="JavaScript">
@@ -66,7 +66,7 @@ top.close();
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-		
+
 		return $yuiSuggest->getHTML();
 	}
 ?>
@@ -110,7 +110,7 @@ top.close();
 					} else {
 						<?php echo we_message_reporting::getShowMessageCall($GLOBALS['l_alert']['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR); ?>
 					}
-				}				
+				}
 			}
 
 			self.focus();

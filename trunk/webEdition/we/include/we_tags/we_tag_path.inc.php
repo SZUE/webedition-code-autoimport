@@ -65,7 +65,7 @@ function we_tag_path($attribs, $content){
 		$filePath = $db->f("Path");
 		if ($fileID) {
 			$show = f(
-					"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($fileID)."' AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($dirfield)." ' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",
+					"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($fileID)."' AND " . LINK_TABLE . ".Name='".escape_sql_query($dirfield)." ' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",
 					"Dat",
 					$db);
 			if (!$show)
@@ -98,7 +98,7 @@ function we_tag_path($attribs, $content){
 	$filePath = $db->f("Path");
 	if ($fileID) {
 		$show = f(
-				"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($fileID)."' AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($field)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",
+				"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($fileID)."' AND " . LINK_TABLE . ".Name='".escape_sql_query($field)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",
 				"Dat",
 				$db);
 		if (!$show) {

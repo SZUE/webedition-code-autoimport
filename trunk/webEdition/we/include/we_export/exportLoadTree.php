@@ -27,10 +27,7 @@ if(isset($_REQUEST["we_cmd"][5])){
     $_SESSION["prefs"]["FileFilter"] = $_REQUEST["we_cmd"][5];
 }
 
-if(isset($_REQUEST["we_cmd"][4])){
-	$topFrame=$_REQUEST["we_cmd"][4];
-}
-else $topFrame = "top";
+$topFrame=(isset($_REQUEST["we_cmd"][4])?$_REQUEST["we_cmd"][4]:"top");
 
 $table = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
 
@@ -66,7 +63,7 @@ if($ws = get_ws($table)) {
 	$ac = getAllowedClasses($DB_WE);
 	foreach($ac as $cid){
 		$path = id_to_path($cid,OBJECT_TABLE);
-		$wsQuery .= " Path like '".mysql_real_escape_string($path)."/%' OR Path='".mysql_real_escape_string($path)."' OR ";
+		$wsQuery .= " Path like '".$DB_WE->escape($path)."/%' OR Path='".$DB_WE->escape($path)."' OR ";
 	}
 }
 
@@ -90,11 +87,7 @@ function getQueryParents($path){
 		$out .= "Path='$path' OR ";
 		$path = dirname($path);
 	}
-	if($out){
-		return substr($out,0,strlen($out)-3);
-	}else{
-		return "";
-	}
+	return $out?substr($out,0,strlen($out)-3):'';
 }
 
 function getItems($ParentID) {
@@ -126,7 +119,7 @@ function getItems($ParentID) {
 		$elem .= ",ContentType";
 	}
 
-	$DB_WE->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".mysql_real_escape_string($table)." $where ORDER BY isNr DESC,Nr,Text");
+	$DB_WE->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".$DB_WE->escape($table)." $where ORDER BY isNr DESC,Nr,Text");
 
 	while($DB_WE->next_record()) {
 

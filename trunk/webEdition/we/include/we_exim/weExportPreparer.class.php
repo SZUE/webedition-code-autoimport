@@ -123,7 +123,7 @@
 							$this->addToDepArray($level,$value,'weNavigation',NAVIGATION_TABLE);
 							$this->getNavigationRule($value,$level);
 
-							$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . mysql_real_escape_string($_path) . '/%"');
+							$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '/%"');
 							while ($_db->next_record()) {
 								$this->addToDepArray($level,$_db->f('ID'),'weNavigation',NAVIGATION_TABLE);
 								$this->getNavigationRule($_db->f('ID'),$level);
@@ -152,7 +152,7 @@
 					$_db = new DB_WE();
 					foreach($match[2] as $key=>$value){
 
-						$_id = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . mysql_real_escape_string($value) . '";','ID',$_db);
+						$_id = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $_db->escape($value) . '";','ID',$_db);
 
 						if($_id) {
 							$this->addToDepArray($level,$_id,'weThumbnail',THUMBNAILS_TABLE);
@@ -215,7 +215,7 @@
 		function addToDepArray($level,$id,$ct="",$table=""){
 				if($ct==""){
 					if($table=="") $table = FILE_TABLE;
-					$ct=f('SELECT ContentType FROM '.mysql_real_escape_string($table).' WHERE ID="'.abs($id).'";','ContentType',new DB_WE());
+					$ct=f('SELECT ContentType FROM '.escape_sql_query($table).' WHERE ID="'.abs($id).'";','ContentType',new DB_WE());
 				}
 				if($ct!=""){
 					$new=array(

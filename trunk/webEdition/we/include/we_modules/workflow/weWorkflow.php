@@ -178,7 +178,7 @@ class weWorkflow extends weWorkflowBase{
 	*
 	*/
 	function getAllWorkflowsInfo($status=WE_WORKFLOW_STATE_ACTIVE,$type=WE_WORKFLOW_DOCTYPE_CATEGORY){
-		
+
 		$db=new DB_WE();
 
 		$db->query('SELECT ID,Text FROM ' . WORKFLOW_TABLE . ' WHERE Status IN ('.$status.') AND Type IN ('.$type.') ORDER BY Text');
@@ -219,7 +219,7 @@ class weWorkflow extends weWorkflowBase{
 			$deletequery = 'DELETE FROM '.WORKFLOW_STEP_TABLE.' WHERE workflowID=' . abs($this->ID) . ' AND ID NOT IN (' . join(',',$stepsList) . ')';
 			$afectedRows = $this->db->query($deletequery);
 		}
-		
+
 		//remove all documents from workflow
 		foreach($this->documents as $k=>$val){
 			$this->documentDef=new weWorkflowDocument($val['ID']);
@@ -260,7 +260,7 @@ class weWorkflow extends weWorkflowBase{
 		//$this->ID = -2; # status deleted
 	}
 
-	
+
 	function isDocInWorkflow($docID,$type){
 		$db = new DB_WE;
 		$db->query('SELECT ID FROM '.WORKFLOW_DOC_TABLE.' WHERE documentID=' . abs($docID) . ' AND Type IN(0,1) AND Status=0');
@@ -307,9 +307,9 @@ class weWorkflow extends weWorkflowBase{
 			$cats=makeArrayFromCSV($categories);
 			foreach($cats as $k=>$v){
 				if ($doctype!='')
-					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE DocType IN ('.$doctype.') AND Categories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
+					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE DocType IN ('.$doctype.') AND Categories LIKE \'%,'.$db->escape($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				else
-					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Categories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
+					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Categories LIKE \'%,'.$db->escape($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				while ($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
 						$wfIDs[$db->f('ID')]++;
@@ -339,8 +339,8 @@ class weWorkflow extends weWorkflowBase{
 
 		return false;
 	}
-	
-	
+
+
 	function findWfIdForFolder($folderID){
 		$db = new DB_WE();
 		$wfID = f('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Folders LIKE \'%,'.abs($folderID).',%\' AND Type='.WE_WORKFLOW_FOLDER.' AND Status='.WE_WORKFLOW_STATE_ACTIVE,'ID',$db);
@@ -358,17 +358,17 @@ class weWorkflow extends weWorkflowBase{
 	function getObjectWorkflow($object,$categories='',$folderID=0){
 		$db = new DB_WE;
 		$workflowID = 0;
-		
+
 		$wfIDs = array();
 
 		$tail = '';
-		
+
 		if ($folderID != 0)
 		{
 			$tail = ' AND ObjectFileFolders LIKE \'%,'.abs($folderID).',%\'';
 		}
 
-		$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.mysql_real_escape_string($object).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE.$tail);
+		$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.$db->escape($object).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE.$tail);
 		while ($db->next_record()){
 			if(isset($wfIDs[$db->f('ID')])){
 				$wfIDs[$db->f('ID')]++;
@@ -384,7 +384,7 @@ class weWorkflow extends weWorkflowBase{
 		{
 			$cats=makeArrayFromCSV($categories);
 			foreach($cats as $k=>$v){
-				$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.mysql_real_escape_string($object).',%\' AND ObjCategories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
+				$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.$db->escape($object).',%\' AND ObjCategories LIKE \'%,'.$db->escape($v).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				while ($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
 						$wfIDs[$db->f('ID')]++;
@@ -394,7 +394,7 @@ class weWorkflow extends weWorkflowBase{
 				}
 			}
 		}
-		
+
 		$max = 0;
 		foreach($wfIDs as $wfID=>$anz){
 			if($anz > $max){

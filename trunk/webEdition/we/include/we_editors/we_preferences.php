@@ -1277,11 +1277,11 @@ function remember_value($settingvalue, $settingname) {
 
 							if (isset($_single_recipient[0]) && ($_single_recipient[0] == "#")) {
 								if (isset($_single_recipient[1]) && $_single_recipient[1]) {
-									$DB_WE->query("INSERT INTO " . RECIPIENTS_TABLE . " (Email) VALUES('" . mysql_real_escape_string($_single_recipient[1]) . "')");
+									$DB_WE->query("INSERT INTO " . RECIPIENTS_TABLE . " (Email) VALUES('" . $DB_WE->escape($_single_recipient[1]) . "')");
 								}
 							} else {
 								if (isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]) {
-									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . mysql_real_escape_string($_single_recipient[1]) . "' WHERE ID=" . abs($_single_recipient[0]));
+									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . $DB_WE->escape($_single_recipient[1]) . "' WHERE ID=" . abs($_single_recipient[0]));
 								}
 							}
 						}
@@ -5539,11 +5539,11 @@ else {
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
 				array_push($_settings, array("headline" => $l_prefs["seoinside_hideinwebedition"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
-				
-				  
+
+
 				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
 				  $_acButton2 = $we_button->create_button('image:function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
-  
+
 				  $yuiSuggest->setAcId("doc2");
 				  $yuiSuggest->setContentType("folder,text/webEdition,text/html");
 				  $yuiSuggest->setInput('error_document_no_objectfile_text', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : '' ));
@@ -5554,9 +5554,9 @@ else {
 				  $yuiSuggest->setWidth(300);
 				  $yuiSuggest->setSelectButton($_acButton1,10);
 				  $yuiSuggest->setTrashButton($_acButton2,4);
-  
+
 				  array_push($_settings, array('headline' => $l_prefs['error_no_object_found'], 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
-				
+
 				$_php_setting = new we_htmlSelect(array("name" => "suppress404code","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
@@ -5649,7 +5649,7 @@ $_needed_JavaScript .= "
 			 */
 			$_foldAt = 4;
 
-			
+
 
 			// Create checkboxes
 			$_disable_template_tag_check = we_forms::checkbox(1, get_value("disable_template_tag_check"), "disable_template_tag_check", $l_prefs["disable_template_tag_check"]);

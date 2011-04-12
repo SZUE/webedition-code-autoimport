@@ -149,7 +149,7 @@ class we_binaryDocument extends we_document
 						}
 					}
 			}
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path) VALUES('".abs($this->ID)."','".mysql_real_escape_string($text)."','".mysql_real_escape_string($text)."','".mysql_real_escape_string($this->ParentPath)."','".abs($this->ParentID)."','".mysql_real_escape_string($this->Category)."','','".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Path)."')");
+			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path) VALUES('".abs($this->ID)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."','".abs($this->ParentID)."','".$this->DB_WE->escape($this->Category)."','','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."')");
 		}
 		return true;
 

@@ -90,7 +90,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							}
 							if($name != "Text" && $name != "Path" && $name != "Icon"){
 								$names.=$name.",";
-								$values.="'".mysql_real_escape_string($val)."',";
+								$values.="'".escape_sql_query($val)."',";
 							}
 						}
 
@@ -102,7 +102,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							$GLOBALS["DB_WE"]->query("INSERT INTO ".CUSTOMER_TABLE."(".$names.") VALUES(".$values.")");
 
 							// User in session speichern
-							$GLOBALS["DB_WE"]->query("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".mysql_real_escape_string($_REQUEST["s"]["Username"])."'");
+							$GLOBALS["DB_WE"]->query("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($_REQUEST["s"]["Username"])."'");
 							if($GLOBALS["DB_WE"]->next_record()){
 								$uID=$GLOBALS["DB_WE"]->f("ID");
 								$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE ID='".abs($uID)."'",$GLOBALS["DB_WE"]);
@@ -167,7 +167,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 					$Username = isset($_REQUEST["s"]["Username"]) ?  $_REQUEST["s"]["Username"] : "";
 
-					$GLOBALS["DB_WE"]->query("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".mysql_real_escape_string($Username)."' AND ID<> '".abs($_REQUEST["s"]["ID"])."'");
+					$GLOBALS["DB_WE"]->query("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($Username)."' AND ID<> '".abs($_REQUEST["s"]["ID"])."'");
 					if(!$GLOBALS["DB_WE"]->next_record()){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 						$set_a=array();
 						if(isset($_REQUEST["s"])){

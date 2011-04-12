@@ -247,7 +247,7 @@ if (isset($daten)){
         $menu .="<select name=\"".$select_name."\" onChange=\"document.location.href='".$_SERVER['PHP_SELF']."?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
 
         foreach($fe as $key => $val) {
-			if ($val!="") {			
+			if ($val!="") {
 	            $menu .= "  <option value=\"". $val."\"";
 	            $menu .= (isset($_REQUEST[$select_name])  && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "";
 	            $sql_merge = "SELECT ".OBJECT_TABLE.".Text as ClassIDName, ".OBJECT_TABLE.".ID as SerID FROM ".OBJECT_TABLE." WHERE ".OBJECT_TABLE.".ID = ".abs($val);
@@ -269,7 +269,7 @@ if (isset($daten)){
     /* ********* START PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
 
     if ($_REQUEST['typ'] == "object"){ //start output object
-      	$orderBy = isset($_REQUEST['orderBy']) ? mysql_real_escape_string($_REQUEST['orderBy']) : 'obTitle';
+      	$orderBy = isset($_REQUEST['orderBy']) ? $DB_WE->escape($_REQUEST['orderBy']) : 'obTitle';
         $entries = 0;
         $count_expression = "";
         $from_expression = "";
@@ -437,7 +437,7 @@ if (isset($daten)){
 
     }elseif($_REQUEST['typ'] == "document"){  //start output doc
         $orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'sql';
-        $DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".mysql_real_escape_string($dbTitlename)."'");
+        $DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".$DB_WE->escape($dbTitlename)."'");
         while($DB_WE->next_record()){				          // Pager: determine the number of records;
             $entries = $DB_WE->f("Anzahl");
         }

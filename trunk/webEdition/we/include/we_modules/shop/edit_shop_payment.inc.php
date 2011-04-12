@@ -35,13 +35,13 @@ if(defined("SHOP_TABLE")){
 }
 
 function prepareFieldname($str){
-	
+
 	if(strpos($str, '_')){
 		return substr_replace($str, "/", strpos($str, '_'),1);
 	} else {
 		return $str;
 	}
-	
+
 }
 
 protect();
@@ -52,19 +52,17 @@ print STYLESHEET;
 
 $we_button = new we_button();
 
-if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays .. 
+if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays ..
 
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="payment_details"';
-	
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="payment_details"';
+
 	$DB_WE->query($q);
-	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["fieldForname"]). "|" . mysql_real_escape_string($_REQUEST["fieldSurname"]). "|" . mysql_real_escape_string($_REQUEST["fieldStreet"]). "|" . mysql_real_escape_string($_REQUEST["fieldZip"]) . "|" . mysql_real_escape_string($_REQUEST["fieldCity"]) . "|". mysql_real_escape_string($_REQUEST["lc"]) . "|" . mysql_real_escape_string($_REQUEST["ppB"]) . "|" . mysql_real_escape_string($_REQUEST["psb"]) . "|" . mysql_real_escape_string($_REQUEST["lcS"]) . "|" . mysql_real_escape_string($_REQUEST["spAID"]). "|" . mysql_real_escape_string($_REQUEST["spB"]). "|" . mysql_real_escape_string($_REQUEST["spC"]). "|" . mysql_real_escape_string($_REQUEST["spD"]) . "|" . mysql_real_escape_string($_REQUEST["spCo"]) . "|" . mysql_real_escape_string($_REQUEST["spPS"]) . "|" . mysql_real_escape_string($_REQUEST["spcmdP"]) . "|" . mysql_real_escape_string($_REQUEST["spconfP"]) . "|" . mysql_real_escape_string($_REQUEST["spdesc"]) .  "|" . mysql_real_escape_string($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
-	} else {
-		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (ID,strDateiname,strFelder) VALUES('','payment_details','strFelder')");	
+	if ( $DB_WE->num_rows() == 0) {
+		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (ID,strDateiname,strFelder) VALUES('','payment_details','strFelder')");
 	}
-	
-	$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["fieldForname"]) . "|" . mysql_real_escape_string($_REQUEST["fieldSurname"]) . "|" . mysql_real_escape_string($_REQUEST["fieldStreet"]) . "|" . mysql_real_escape_string($_REQUEST["fieldZip"]). "|" . mysql_real_escape_string($_REQUEST["fieldCity"]) . "|". mysql_real_escape_string($_REQUEST["lc"]) . "|" . mysql_real_escape_string($_REQUEST["ppB"]) . "|" . mysql_real_escape_string($_REQUEST["psb"]) . "|" . mysql_real_escape_string($_REQUEST["lcS"]) . "|" . mysql_real_escape_string($_REQUEST["spAID"]) . "|" . mysql_real_escape_string($_REQUEST["spB"]) . "|" . mysql_real_escape_string($_REQUEST["spC"]) . "|" . mysql_real_escape_string($_REQUEST["spD"]) . "|" . mysql_real_escape_string($_REQUEST["spCo"]) . "|" . mysql_real_escape_string($_REQUEST["spPS"]) . "|" . mysql_real_escape_string($_REQUEST["spcmdP"]) . "|" . mysql_real_escape_string($_REQUEST["spconfP"]) . "|" . mysql_real_escape_string($_REQUEST["spdesc"]) .  "|" . mysql_real_escape_string($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
-	                                                                                                                                                                                                                                                                                                                                                                                                                                           
+	$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . $DB_WE->escape($_REQUEST["fieldForname"]). "|" . $DB_WE->escape($_REQUEST["fieldSurname"]). "|" . $DB_WE->escape($_REQUEST["fieldStreet"]). "|" . $DB_WE->escape($_REQUEST["fieldZip"]) . "|" . $DB_WE->escape($_REQUEST["fieldCity"]) . "|". $DB_WE->escape($_REQUEST["lc"]) . "|" . $DB_WE->escape($_REQUEST["ppB"]) . "|" . $DB_WE->escape($_REQUEST["psb"]) . "|" . $DB_WE->escape($_REQUEST["lcS"]) . "|" . $DB_WE->escape($_REQUEST["spAID"]). "|" . $DB_WE->escape($_REQUEST["spB"]). "|" . $DB_WE->escape($_REQUEST["spC"]). "|" . $DB_WE->escape($_REQUEST["spD"]) . "|" . $DB_WE->escape($_REQUEST["spCo"]) . "|" . $DB_WE->escape($_REQUEST["spPS"]) . "|" . $DB_WE->escape($_REQUEST["spcmdP"]) . "|" . $DB_WE->escape($_REQUEST["spconfP"]) . "|" . $DB_WE->escape($_REQUEST["spdesc"]) .  "|" . $DB_WE->escape($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
+
+
 	//	Close window when finished
 	echo '<script type="text/javascript">self.close();</script>';
 	exit;
@@ -93,7 +91,7 @@ if (defined("CUSTOMER_TABLE")) {
 	3);
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4, 'class'=>'defaultfont'),$l_shop["FormFieldsTxt"]);
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
-	
+
 	$custfields=array();
 
 
@@ -101,38 +99,38 @@ if (defined("CUSTOMER_TABLE")) {
 	while ($DB_WE->next_record()) {
 		$custfields[$DB_WE->f("Field")]=$DB_WE->f("Field");
 	}
-	
+
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldForname"]);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldForname',$custfields, 1, $feldnamen[0]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
+
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldSurname"]);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldSurname',$custfields, 1, $feldnamen[1]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
+
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldStreet"]);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldStreet',$custfields, 1, $feldnamen[2]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
+
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldZip"]);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldZip',$custfields, 1, $feldnamen[3]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
+
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldCity"]);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldCity',$custfields, 1, $feldnamen[4]) );
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
-	
-	
+
+
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["fieldEmail"]);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, htmlSelect('fieldEmail', array_merge(array(""), $custfields), 1, $feldnamen[18]) );
 
-	array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode())); 
+	array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode()));
 
 }
 
@@ -167,7 +165,7 @@ $_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), $l_shop["paypalSB"]
 $_htmlTable->setColContent($_row, 1, getPixel(10,5) );
 $_htmlTable->setColContent($_row++, 2, htmlSelect('psb', $paypalPV, 1, $feldnamen[7]). '<span class="small">&nbsp'. $l_shop["paypalSBTxt"].' </span>' );
 
-array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode())); 
+array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode()));
 
 // saferpay
 $_htmlTable = new we_htmlTable(	array(	'border'      => 0,
@@ -236,7 +234,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,4));
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
 
-array_push($Parts, array("html" => $_htmlTable->getHtmlCode())); 
+array_push($Parts, array("html" => $_htmlTable->getHtmlCode()));
 
 $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:document.we_form.submit();"),
 "",
@@ -248,7 +246,7 @@ $frame = we_multiIconBox::getHTML('','100%',$Parts,'30',$_buttons,-1,'','',false
 
 echo '<script type="text/javascript">self.focus();</script>
 </head>
-<body class="weDialogBody"> 
+<body class="weDialogBody">
 
 
 <form name="we_form" method="post" style="margin-top:16px;">

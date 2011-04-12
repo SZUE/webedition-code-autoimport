@@ -65,39 +65,38 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$_REQUEST['classID'] = isset($_REQUEST['classID']) ? trim($_REQUEST['classID']) : '';
 
 	// check if field exists
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["waehr"]) . "|" . mysql_real_escape_string($_REQUEST["mwst"]) . "|" . mysql_real_escape_string($_REQUEST["format"]) . "|" . mysql_real_escape_string($_REQUEST["classID"]) . "|" . mysql_real_escape_string($_REQUEST["pag"]) . "' WHERE strDateiname = 'shop_pref'");
+		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . $DB_WE->escape($_REQUEST["waehr"]) . "|" . $DB_WE->escape($_REQUEST["mwst"]) . "|" . $DB_WE->escape($_REQUEST["format"]) . "|" . $DB_WE->escape($_REQUEST["classID"]) . "|" . $DB_WE->escape($_REQUEST["pag"]) . "' WHERE strDateiname = 'shop_pref'");
 	} else {
-		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (strFelder, strDateiname) VALUES ('" . mysql_real_escape_string($_REQUEST["waehr"]) . "|" . mysql_real_escape_string($_REQUEST["mwst"]) . "|" . mysql_real_escape_string($_REQUEST["format"]) . "|" . mysql_real_escape_string($_REQUEST["classID"]) . "|" . mysql_real_escape_string($_REQUEST["pag"]) . "','shop_pref')" );
-
+		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (strFelder, strDateiname) VALUES ('" . $DB_WE->escape($_REQUEST["waehr"]) . "|" . $DB_WE->escape($_REQUEST["mwst"]) . "|" . $DB_WE->escape($_REQUEST["format"]) . "|" . $DB_WE->escape($_REQUEST["classID"]) . "|" . $DB_WE->escape($_REQUEST["pag"]) . "','shop_pref')" );
 	}
 
 	$fields['customerFields']      = isset($_REQUEST['orderfields']) ? $_REQUEST['orderfields'] : array();
 	$fields['orderCustomerFields'] = isset($_REQUEST['ordercustomerfields']) ? $_REQUEST['ordercustomerfields'] : array();
 
 	// check if field exists
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . mysql_real_escape_string(serialize($fields)) . "' WHERE strDateiname ='edit_shop_properties'");
+		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($fields)) . "' WHERE strDateiname ='edit_shop_properties'");
 	} else {
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . mysql_real_escape_string(serialize($fields)) . "','edit_shop_properties')") ;
+		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . $DB_WE->escape(serialize($fields)) . "','edit_shop_properties')") ;
 	}
-	
+
 	$CLFields['stateField'] = isset($_REQUEST['stateField']) ? $_REQUEST['stateField'] : '-';
 	$CLFields['stateFieldIsISO'] = isset($_REQUEST['stateFieldIsISO']) ? $_REQUEST['stateFieldIsISO'] : 0;
 	$CLFields['languageField'] = isset($_REQUEST['languageField']) ? $_REQUEST['languageField'] : '-';
 	$CLFields['languageFieldIsISO'] = isset($_REQUEST['languageFieldIsISO']) ? $_REQUEST['languageFieldIsISO'] : 0;
-	
+
 	// check if field exists
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . mysql_real_escape_string(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
+		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
 	} else {
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . mysql_real_escape_string(serialize($CLFields)) . "','shop_CountryLangauge')") ;
+		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . $DB_WE->escape(serialize($CLFields)) . "','shop_CountryLangauge')") ;
 	}
 	// Update Country Field in weShopVatRule
 	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
@@ -111,12 +110,12 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$weShopStatusMails->LanguageData['languageField'] = $CLFields['languageField'];
 	$weShopStatusMails->LanguageData['languageFieldIsISO'] = $CLFields['languageFieldIsISO'];
 	$weShopStatusMails->save();
-	
+
 	//	Close window when finished
 	echo '<script type="text/javascript">self.close();</script>';
 	exit;
 } else {
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
 		$DB_WE->next_record();
@@ -127,7 +126,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 		$CLFields['languageField'] =  '-';
 		$CLFields['languageFieldIsISO'] =  0;
 	}
-	
+
 }
 
 	//	generate html-output table
@@ -201,7 +200,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	// look for all available fields in tblCustomer
 	$DB_WE->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 	$_availFields = array();
-	
+
 	while ($DB_WE->next_record()) {
 
 		if (!in_array($DB_WE->f('Field'), $ignoreFields)) {
@@ -261,20 +260,20 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), $l_shop['preferences']['CountryField']);
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	
+
 	$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
 	$countrySelectISO = we_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', $l_shop['preferences']['ISO-Kodiert'],false,"defaultfont");
 	$_htmlTable->setColContent($_row++, 2, $countrySelect.'<br/>'.$countrySelectISO  );
-	
+
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), $l_shop['preferences']['LanguageField']);
 	$languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
 	$languageSelectISO = we_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', $l_shop['preferences']['ISO-Kodiert'],false,"defaultfont");
 	$_htmlTable->setColContent($_row++, 2, $languageSelect.'<br/>'.$languageSelectISO  );
 	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	
+
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,25));
-	
+
 
 
 	$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:document.we_form.submit();"),

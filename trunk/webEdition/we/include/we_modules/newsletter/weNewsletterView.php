@@ -234,7 +234,7 @@ class weNewsletterView {
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "", $open_doc="",$acObject=null,$contentType="") {
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID=" . abs($IDValue), "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue), "Path", $this->db);
 		}
 
 		$we_button = new we_button();
@@ -265,7 +265,7 @@ class weNewsletterView {
 	}
 
 	function formWeDocChooser($table=FILE_TABLE,$width="",$rootDirID=0,$IDName="ID",$IDValue="0",$Pathname="Path",$Pathvalue="/",$cmd="",$filter="text/webedition",$acObject=null){
-      if($Pathvalue=="") $Pathvalue=f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID=".abs($IDValue),"Path",$this->db);
+      if($Pathvalue=="") $Pathvalue=f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=".abs($IDValue),"Path",$this->db);
 
 	  $we_button = new we_button();
 	  $button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
@@ -297,7 +297,7 @@ class weNewsletterView {
 	function formNewsletterDirChooser( $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "", $acObject=null) {
 		$table = NEWSLETTER_TABLE;
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID=" . abs($IDValue), "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue), "Path", $this->db);
 		}
 
 		$we_button = new we_button();
@@ -330,7 +330,7 @@ class weNewsletterView {
 	}
 
 	function getFields($id, $table) {
-		$ClassName = f("SELECT ClassName FROM ".mysql_real_escape_string($table)." WHERE ID=" . abs($id), "ClassName", $this->db);
+		$ClassName = f("SELECT ClassName FROM ".$this->db->escape($table)." WHERE ID=" . abs($id), "ClassName", $this->db);
 		$include_path = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/";
 
 		if ($table == OBJECT_FILES_TABLE) {
@@ -1551,9 +1551,9 @@ class weNewsletterView {
 						$double = 0;
 
 						if ($newone) {
-							$this->db->query("SELECT COUNT(*) AS Count FROM ".NEWSLETTER_TABLE." WHERE Path='".mysql_real_escape_string($this->newsletter->Path)."'");
+							$this->db->query("SELECT COUNT(*) AS Count FROM ".NEWSLETTER_TABLE." WHERE Path='".$this->db->escape($this->newsletter->Path)."'");
 						} else {
-							$this->db->query("SELECT COUNT(*) AS Count FROM ".NEWSLETTER_TABLE." WHERE Path='".mysql_real_escape_string($this->newsletter->Path)."' AND ID<>".$this->newsletter->ID."");
+							$this->db->query("SELECT COUNT(*) AS Count FROM ".NEWSLETTER_TABLE." WHERE Path='".$this->db->escape($this->newsletter->Path)."' AND ID<>".$this->newsletter->ID."");
 						}
 
 						if ($this->db->next_record()) {
@@ -2383,7 +2383,7 @@ class weNewsletterView {
 				$out["plain"]["firstname_lastnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
 				$out["plain"]["firstnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","","###CUSTOMERID###");
 				$out["plain"]["lastnameC"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###","###CUSTOMERID###");
-				
+
 				$out["plain"]["default"]=$this->getContent($blockid,0,0,"","","","","");
 				$out["plain"]["female"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
 				$out["plain"]["male"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
@@ -2401,7 +2401,7 @@ class weNewsletterView {
 				$out["html"]["firstname_lastnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
 				$out["html"]["firstnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","","###CUSTOMERID###");
 				$out["html"]["lastnameC"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###","###CUSTOMERID###");
-				
+
 				$out["html"]["default"]=$this->getContent($blockid,0,1,"","","","","");
 				$out["html"]["female"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
 				$out["html"]["male"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
@@ -2452,7 +2452,7 @@ class weNewsletterView {
 		$atts=array();
 		$dbtmp=new DB_WE();
 		if($group)
-			$this->db->query("SELECT LinkID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".$this->newsletter->ID." AND Type=".WENBLOCK_ATTACHMENT." AND Groups LIKE '%,".mysql_real_escape_string($group).",%'");
+			$this->db->query("SELECT LinkID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".$this->newsletter->ID." AND Type=".WENBLOCK_ATTACHMENT." AND Groups LIKE '%,".$this->db->escape($group).",%'");
 		else
 			$this->db->query("SELECT LinkID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".$this->newsletter->ID." AND Type=".WENBLOCK_ATTACHMENT.";");
 
@@ -2731,9 +2731,9 @@ class weNewsletterView {
 	}
 
 	function putSetting($name,$value) {
-		$name=mysql_real_escape_string($name);
-		$value=mysql_real_escape_string($value);
 		$db=new DB_WE();
+		$name=$db->escape($name);
+		$value=$db->escape($value);
 		$db->query("SELECT pref_value FROM ".NEWSLETTER_PREFS_TABLE." WHERE pref_name='$name';");
 		if(!$db->next_record())
 			$db->query("INSERT INTO ".NEWSLETTER_PREFS_TABLE."(pref_name,pref_value) VALUES('$name','$value');");
@@ -2745,17 +2745,17 @@ class weNewsletterView {
 		foreach ($this->settings as $key=>$value) {
 			$db->query("SELECT pref_value FROM ".NEWSLETTER_PREFS_TABLE." WHERE pref_name='$key';");
 			if(!$db->next_record()) {
-				$db->query("INSERT INTO ".NEWSLETTER_PREFS_TABLE."(pref_name,pref_value) VALUES('$key','".mysql_real_escape_string($value)."');");
+				$db->query("INSERT INTO ".NEWSLETTER_PREFS_TABLE."(pref_name,pref_value) VALUES('$key','".$db->escape($value)."');");
 			} else {
-				$db->query("UPDATE ".NEWSLETTER_PREFS_TABLE." SET pref_value='".mysql_real_escape_string($value)."' WHERE pref_name='$key' AND pref_name<>'black_list';");
+				$db->query("UPDATE ".NEWSLETTER_PREFS_TABLE." SET pref_value='".$db->escape($value)."' WHERE pref_name='$key' AND pref_name<>'black_list';");
 			}
 		}
 	}
 
 	function saveSetting($name,$value) {
 		$db=new DB_WE();
-		$name = mysql_real_escape_string($name);
-		$value = mysql_real_escape_string($value);
+		$name = $db->escape($name);
+		$value = $db->escape($value);
 		$db->query("UPDATE ".NEWSLETTER_PREFS_TABLE." SET pref_value='$value' WHERE pref_name='$name';");
 		if(!$db->affected_rows()){
 			$db->query("INSERT INTO ".NEWSLETTER_PREFS_TABLE." SET pref_name='$name', pref_value='$value';");
@@ -2856,7 +2856,7 @@ class weNewsletterView {
 					$buffer["firstname_lastnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
 					$buffer["firstnameC"]=$this->getContent($blockid,0,0,"","","###FIRSTNAME###","","###CUSTOMERID###");
 					$buffer["lastnameC"]=$this->getContent($blockid,0,0,"","","","###LASTNAME###","###CUSTOMERID###");
-					
+
 					$buffer["default"]=$this->getContent($blockid,0,0,"","","","","");
 					$buffer["female"]=$this->getContent($blockid,0,0,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
 					$buffer["male"]=$this->getContent($blockid,0,0,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
@@ -2877,7 +2877,7 @@ class weNewsletterView {
 					$buffer["firstname_lastnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","###LASTNAME###","###CUSTOMERID###");
 					$buffer["firstnameC"]=$this->getContent($blockid,0,1,"","","###FIRSTNAME###","","###CUSTOMERID###");
 					$buffer["lastnameC"]=$this->getContent($blockid,0,1,"","","","###LASTNAME###","###CUSTOMERID###");
-					
+
 					$buffer["default"]=$this->getContent($blockid,0,1,"","","","","");
 					$buffer["female"]=$this->getContent($blockid,0,1,$this->settings["female_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");
 					$buffer["male"]=$this->getContent($blockid,0,1,$this->settings["male_salutation"],"###TITLE###","###FIRSTNAME###","###LASTNAME###","");

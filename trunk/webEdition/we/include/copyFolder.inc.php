@@ -69,7 +69,7 @@ class copyFolderFrag extends taskFragment
 
 			// make it twice to be sure that all linked IDs are correct
 			$db->query(
-					"SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path like'".mysql_real_escape_string($fromPath)."/%') AND ContentType != 'text/webedition' ORDER BY IsFolder DESC,Path");
+					"SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path like'".$db->escape($fromPath)."/%') AND ContentType != 'text/webedition' ORDER BY IsFolder DESC,Path");
 			while ($db->next_record()) {
 				$db->Record["CopyToId"] = $toID;
 				$db->Record["CopyFromId"] = $fromID;
@@ -85,7 +85,7 @@ class copyFolderFrag extends taskFragment
 
 			for ($num = 0; $num < 2; $num++) {
 				$db->query(
-						"SELECT ID,ParentID,Text,TemplateID,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path like'".mysql_real_escape_string($fromPath)."/%') AND ContentType = 'text/webedition' ORDER BY IsFolder DESC,Path");
+						"SELECT ID,ParentID,Text,TemplateID,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path like'".$db->escape($fromPath)."/%') AND ContentType = 'text/webedition' ORDER BY IsFolder DESC,Path");
 				while ($db->next_record()) {
 
 					// check if the template exists
@@ -122,7 +122,7 @@ class copyFolderFrag extends taskFragment
 
 				$db = new DB_WE();
 				$this->alldata = array();
-				$q = "SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE ".$qfolders." (Path like'".mysql_real_escape_string($fromPath)."/%') ORDER BY IsFolder DESC,Path";
+				$q = "SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE ".$qfolders." (Path like'".$db->escape($fromPath)."/%') ORDER BY IsFolder DESC,Path";
 
 				$db->query($q);
 				while ($db->next_record()) {
@@ -192,7 +192,7 @@ class copyFolderFrag extends taskFragment
 		if ($path == "/") {
 			return 0;
 		}
-		return f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $db);
+		return f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".escape_sql_query($path)."'", "ID", $db);
 	}
 	function copyObjects()
 	{
@@ -238,9 +238,8 @@ class copyFolderFrag extends taskFragment
 		}
 		return true;
 	}
-	function CheckForSameObjectName($path, $db)
-	{
-		return f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $db);
+	function CheckForSameObjectName($path, $db){
+		return f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".escape_sql_query($path)."'", "ID", $db);
 	}
 	function copyObjectFolder()
 	{
@@ -283,7 +282,7 @@ class copyFolderFrag extends taskFragment
 			$we_doc->initByID($this->data["ID"]);
 			// if file  exists the file will overwritten, if not a new one (with no id) will be created
 			$we_doc->ID = f(
-					"SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . mysql_real_escape_string($path) . "'",
+					"SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . escape_sql_query($path) . "'",
 					"ID",
 					$GLOBALS["DB_WE"]);
 			$we_doc->Path = $path;
@@ -339,13 +338,13 @@ class copyFolderFrag extends taskFragment
 							$dt->DocType = $dt->DocType . "_copy";
 							// if file exists we need  to create a new one!
 							if ($file_id = f(
-									"SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . mysql_real_escape_string($dt->DocType) . "'",
+									"SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($dt->DocType) . "'",
 									"ID",
 									$GLOBALS["DB_WE"])) {
 								$z = 0;
 								$footext = $dt->DocType . "_" . $z;
 								while (f(
-										"SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='".mysql_real_escape_string($footext)."'",
+										"SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='".escape_sql_query($footext)."'",
 										"ID",
 										$GLOBALS["DB_WE"])) {
 									$z++;
@@ -431,13 +430,13 @@ class copyFolderFrag extends taskFragment
 			$templ->Path = $templ->getParentPath() . (($templ->getParentPath() != "/") ? "/" : "") . $templ->Text;
 			// if file exists we need  to create a new one!
 			if ($file_id = f(
-					"SELECT ID FROM " . TEMPLATES_TABLE . " WHERE Path='" . mysql_real_escape_string($templ->Path) . "'",
+					"SELECT ID FROM " . TEMPLATES_TABLE . " WHERE Path='" . escape_sql_query($templ->Path) . "'",
 					"ID",
 					$GLOBALS["DB_WE"])) {
 				$z = 0;
 				$footext = $templ->Filename . "_" . $z . $templ->Extension;
 				while (f(
-						"SELECT ID FROM " . TEMPLATES_TABLE . " WHERE Text='".mysql_real_escape_string($footext)."' AND ParentID='" . abs($templ->ParentID) . "'",
+						"SELECT ID FROM " . TEMPLATES_TABLE . " WHERE Text='".escape_sql_query($footext)."' AND ParentID='" . abs($templ->ParentID) . "'",
 						"ID",
 						$GLOBALS["DB_WE"])) {
 					$z++;
@@ -805,7 +804,7 @@ class copyFolderFrag extends taskFragment
 
 	function getID($path, $db)
 	{
-		return f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $db);
+		return f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='".escape_sql_query($path)."'", "ID", $db);
 	}
 
 	function getPid($path, $db)
@@ -814,7 +813,7 @@ class copyFolderFrag extends taskFragment
 		if ($path == "/") {
 			return 0;
 		}
-		return f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $db);
+		return f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='".escape_sql_query($path)."'", "ID", $db);
 	}
 
 	function getDocument()

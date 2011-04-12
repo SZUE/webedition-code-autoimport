@@ -215,9 +215,9 @@ class weGlossary extends weModelBase {
 	function getEntries($Language, $Mode = 'all', $Type = 'all') {
 
 		$Query = 	"SELECT Type, Text, Title, Attributes FROM " . GLOSSARY_TABLE
-				.	" WHERE Language = '" . mysql_real_escape_string($Language) . "' ";
+				.	" WHERE Language = '" . escape_sql_query($Language) . "' ";
 		if($Type != 'all') {
-			$Query .= "AND Type = '" . mysql_real_escape_string($Type) . "' ";
+			$Query .= "AND Type = '" . escape_sql_query($Type) . "' ";
 		}
 		if($Mode == 'published') {
 			$Query .= "AND Published > 0 ";
@@ -256,8 +256,8 @@ class weGlossary extends weModelBase {
 
 		$Query = 	"UPDATE " . GLOSSARY_TABLE
 				.	" SET Published = " . time()
-				.	" WHERE Language = '" . mysql_real_escape_string($Language) . "' "
-				.	" AND Text = '" . mysql_real_escape_string($Text) . "' ";
+				.	" WHERE Language = '" . $GLOBALS['DB_WE']->escape($Language) . "' "
+				.	" AND Text = '" . $GLOBALS['DB_WE']->escape($Text) . "' ";
 
 		return $GLOBALS['DB_WE']->query($Query);
 
@@ -371,7 +371,7 @@ class weGlossary extends weModelBase {
 	 */
 	function _deleteChilds() {
 
-		$query = "DELETE FROM ". mysql_real_escape_string($this->table) . " WHERE Path LIKE = '" . mysql_real_escape_string($this->Path) . "/%'";
+		$query = "DELETE FROM ". $this->db->escape($this->table) . " WHERE Path LIKE = '" . $this->db->escape($this->Path) . "/%'";
 		return $this->db->query($query);
 
 	}
@@ -429,8 +429,8 @@ class weGlossary extends weModelBase {
 	 * @return boolean
 	 */
 	function pathExists($Path) {
-		$this->table = mysql_real_escape_string($this->table);
-		$Path = mysql_real_escape_string($Path);
+		$this->table = $this->db->escape($this->table);
+		$Path = $this->db->escape($Path);
 		if($this->ID==0) {
 			$query = "SELECT * FROM " . $this->table . " WHERE Path Like Binary '" . $Path . "'";
 
@@ -452,8 +452,8 @@ class weGlossary extends weModelBase {
 
 
 	function getIDByPath($Path) {
-		$this->table = mysql_real_escape_string($this->table);
-		$Path = mysql_real_escape_string($Path);
+		$this->table = $this->db->escape($this->table);
+		$Path = $this->db->escape($Path);
 		$query = "SELECT ID FROM " . $this->table . " WHERE Path = '" . $Path . "'";
 
 		$this->db->query($query);
@@ -510,8 +510,8 @@ class weGlossary extends weModelBase {
 	 * @return boolean
 	 */
 	function saveField($Name) {
-		$this->table = mysql_real_escape_string($this->table);
-		$Name = mysql_real_escape_string($Name);
+		$this->table = $this->db->escape($this->table);
+		$Name = $this->db->escape($Name);
 		if(in_array($Name, $this->_Serialized)) {
 			$value = unserialize($this->$Name);
 

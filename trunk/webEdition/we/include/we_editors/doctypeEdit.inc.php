@@ -89,7 +89,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 		$del=false;
 		if ($DB_WE->next_record()) {
 			$name=$DB_WE->f("DocType");
-			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".abs($_REQUEST["we_cmd"][1])." OR temp_doc_type=".mysql_real_escape_string($_REQUEST["we_cmd"][1]));
+			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".abs($_REQUEST["we_cmd"][1])." OR temp_doc_type=".$DB_WE->escape($_REQUEST["we_cmd"][1]));
 			if (!$DB_WE->next_record()) {
 				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));
 				$we_responseText = $l_we_class["doctype_delete_ok"];

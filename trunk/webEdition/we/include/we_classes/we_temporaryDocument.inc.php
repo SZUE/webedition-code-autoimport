@@ -88,9 +88,9 @@ class we_temporaryDocument
 		$db = $db ? $db : new DB_WE();
 
 		$docSer = addslashes(serialize($document));
-		$db->query("DELETE FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND ACTIVE=0 AND  DocTable='".mysql_real_escape_string($table)."'");
-		$db->query("UPDATE " . TEMPORARY_DOC_TABLE . " SET Active=0 WHERE DocumentID='".abs($documentID)."' AND ACTIVE=1 AND  DocTable='".mysql_real_escape_string($table)."'");
-		return $db->query("INSERT INTO " . TEMPORARY_DOC_TABLE . " (DocumentID,DocumentObject,Active,UnixTimestamp,DocTable) VALUES('".abs($documentID)."','".$docSer."',1,".time().",'".mysql_real_escape_string($table)."')");
+		$db->query("DELETE FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND ACTIVE=0 AND  DocTable='".$db->escape($table)."'");
+		$db->query("UPDATE " . TEMPORARY_DOC_TABLE . " SET Active=0 WHERE DocumentID='".abs($documentID)."' AND ACTIVE=1 AND  DocTable='".$db->escape($table)."'");
+		return $db->query("INSERT INTO " . TEMPORARY_DOC_TABLE . " (DocumentID,DocumentObject,Active,UnixTimestamp,DocTable) VALUES('".abs($documentID)."','".$docSer."',1,".time().",'".$db->escape($table)."')");
 	}
 
 
@@ -102,7 +102,7 @@ class we_temporaryDocument
 
 		$db = $db ? $db : new DB_WE();
 		$docSer = addslashes(serialize($document));
-		return $db->query("UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$docSer."',UnixTimestamp=".time()." WHERE DocumentID='".abs($documentID)."' AND ACTIVE=1 AND  DocTable='".mysql_real_escape_string($table)."'");
+		return $db->query("UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$docSer."',UnixTimestamp=".time()." WHERE DocumentID='".abs($documentID)."' AND ACTIVE=1 AND  DocTable='".$db->escape($table)."'");
 	}
 
 
@@ -123,7 +123,7 @@ class we_temporaryDocument
 
 		$db = $db ? $db : new DB_WE();
 
-		$db->query("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND Active=1 AND  DocTable='".mysql_real_escape_string($table)."'");
+		$db->query("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND Active=1 AND  DocTable='".$db->escape($table)."'");
 
 		if ($db->next_record())
 		{
@@ -148,7 +148,7 @@ class we_temporaryDocument
 	    }
 
 		$db = $db ? $db : new DB_WE();
-		return $db->query("DELETE FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND  DocTable='".mysql_real_escape_string($table)."'");
+		return $db->query("DELETE FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND  DocTable='".$db->escape($table)."'");
 	}
 
 	/**
@@ -167,13 +167,13 @@ class we_temporaryDocument
 
 		$db = $db ? $db : new DB_WE();
 
-		$db->query("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND  DocTable='".mysql_real_escape_string($table)."' AND Active=0");
+		$db->query("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND  DocTable='".$db->escape($table)."' AND Active=0");
 
 		if ($db->next_record())
 		{
 			$foo = unserialize($db->f("DocumentObject"));
-			$db->query("DELETE FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND Active=1 AND  DocTable='".mysql_real_escape_string($table)."'");
-			$db->query("UPDATE " . TEMPORARY_DOC_TABLE . " SET Active=1 WHERE DocumentID='".abs($documentID)."' AND ACTIVE=0 AND  DocTable='".mysql_real_escape_string($table)."'");
+			$db->query("DELETE FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($documentID)."' AND Active=1 AND  DocTable='".$db->escape($table)."'");
+			$db->query("UPDATE " . TEMPORARY_DOC_TABLE . " SET Active=1 WHERE DocumentID='".abs($documentID)."' AND ACTIVE=0 AND  DocTable='".$db->escape($table)."'");
 			return $foo;
 		}
 		return false;
@@ -186,7 +186,7 @@ class we_temporaryDocument
 
 		if (isset($id)) {
 			$db = $db ? $db : new DB_WE();
-			$db->query("SELECT DocumentID FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($id)."' AND Active=1 AND  DocTable='".mysql_real_escape_string($table)."'");
+			$db->query("SELECT DocumentID FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='".abs($id)."' AND Active=1 AND  DocTable='".$db->escape($table)."'");
 			return $db->num_rows();
 		} else {
 			return 0;

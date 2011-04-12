@@ -85,7 +85,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . mysql_real_escape_string($parameters->dt) . "'","ID",$db));
+			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 		return $parameters;
@@ -107,7 +107,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . mysql_real_escape_string($parameters->dt) . "'","ID",$db));
+			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 
@@ -130,7 +130,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . mysql_real_escape_string($parameters->dt) . "'","ID",$db));
+			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 
@@ -153,7 +153,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . mysql_real_escape_string($parameters->dt) . "'","ID",$db));
+			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 
@@ -162,4 +162,3 @@ class weSidebarDocumentParser {
 	}
 
 }
-	

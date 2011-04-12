@@ -41,31 +41,31 @@ switch ($iDate) {
 	case 2 :
 		$iTime = time() - (7 * 24 * 60 * 60);
 		$timestamp = mktime(
-				date('H', $iTime), 
-				date('i', $iTime), 
-				date('s', $iTime), 
-				date('m', $iTime), 
-				date('d', $iTime), 
+				date('H', $iTime),
+				date('i', $iTime),
+				date('s', $iTime),
+				date('m', $iTime),
+				date('d', $iTime),
 				date('Y', $iTime));
 		break;
 	case 3 :
 		$iTime = time() - (30 * 24 * 60 * 60);
 		$timestamp = mktime(
-				date('H', $iTime), 
-				date('i', $iTime), 
-				date('s', $iTime), 
-				date('m', $iTime), 
-				date('d', $iTime), 
+				date('H', $iTime),
+				date('i', $iTime),
+				date('s', $iTime),
+				date('m', $iTime),
+				date('d', $iTime),
 				date('Y', $iTime));
 		break;
 	case 4 :
 		$iTime = time() - (365 * 24 * 60 * 60);
 		$timestamp = mktime(
-				date('H', $iTime), 
-				date('i', $iTime), 
-				date('s', $iTime), 
-				date('m', $iTime), 
-				date('d', $iTime), 
+				date('H', $iTime),
+				date('i', $iTime),
+				date('s', $iTime),
+				date('m', $iTime),
+				date('d', $iTime),
 				date('Y', $iTime));
 		break;
 }
@@ -127,7 +127,7 @@ $_count = 10;
 $i = $j = $k = 0;
 while ($j < $iMaxItems) {
 	$_query = "SELECT * FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(
-			',', 
+			',',
 			$_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >' . abs($timestamp) : '') . $_whereSeem . ' ORDER BY ModDate DESC LIMIT ' . ($k * $_count) . " , " . $_count . ";";
 	$k++;
 	$DB_WE->query($_query);
@@ -144,18 +144,18 @@ while ($j < $iMaxItems) {
 			if (isset($_ws[$_table])) {
 				$_wsa = makeArrayFromCSV($_ws[$_table]);
 				foreach ($_wsa as $_id) {
-					$_paths[] = 'Path LIKE ("' . mysql_real_escape_string(id_to_path($_id, $_table)) . '%")';
+					$_paths[] = 'Path LIKE ("' . $DB_WE->escape(id_to_path($_id, $_table)) . '%")';
 				}
 			}
 		}
 		$_hash = getHash(
-				"SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . mysql_real_escape_string($_table) . " WHERE ID = '" . abs($DB_WE->f(
-						"DID")) . "'" . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ";", 
+				"SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . $DB_WE->escape($_table) . " WHERE ID = '" . abs($DB_WE->f(
+						"DID")) . "'" . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ";",
 				$_db);
 		if (!empty($_hash)) {
 			$_show = true;
 			$_bool_oft = (defined("OBJECT_FILES_TABLE")) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;
-			
+
 			if ($_table == FILE_TABLE || $_bool_oft) {
 				$_show = we_history::userHasPerms($_hash['CreatorID'], $_hash['Owners'], $_hash['RestrictOwners']);
 			}
@@ -165,7 +165,7 @@ while ($j < $iMaxItems) {
 					$j++;
 					$lastModified .= '<tr>';
 					$lastModified .= '<td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . getpixel(
-							4, 
+							4,
 							1) . '</td>';
 					$lastModified .= '<td valign="middle" class="middlefont">';
 					$lastModified .= '<a href="' . 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\')"' . ' title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
@@ -174,7 +174,7 @@ while ($j < $iMaxItems) {
 								"UserName") . (($bDateLastMfd) ? ',' : '') . '</td>';
 					if ($bDateLastMfd)
 						$lastModified .= '<td>' . getpixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(
-								$GLOBALS["l_global"]["date_format"], 
+								$GLOBALS["l_global"]["date_format"],
 								$_hash['ModDate']) . '</td>';
 					$lastModified .= "</tr>\n";
 				} else {

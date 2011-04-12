@@ -121,7 +121,7 @@ top.parentID = "'.$this->values["ParentID"].'";
 		$wsQuery = getWsQueryForSelector($this->table);
 
 		$_query = "	SELECT ".$this->fields."
-					FROM ".mysql_real_escape_string($this->table)."
+					FROM ".escape_sql_query($this->table)."
 					WHERE IsFolder=1 AND ParentID='".abs($this->dir)."'".makeOwnersSql().
 					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
 
@@ -514,7 +514,7 @@ function enableNewFolderBut(){
 		$c=0;
 		while( $pid != 0 ) {
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
 			if( $this->db->next_record() ) {
 				$out = 'top.fsheader.addOption("' . $this->db->f( "Text" ) . '",' . $this->db->f( "ID" ) . ');' . $out;
 			}
@@ -580,7 +580,7 @@ function enableNewFolderBut(){
 		$z = 0;
 		while( $pid != 0 ) {
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
 			if( $this->db->next_record() ) {
 				$out='<option value="'.$this->db->f("ID").'"'.(($z==0) ? ' selected' : '').'>'.$this->db->f("Text").'</options>'."\n".$out;
 				$z++;
@@ -922,7 +922,7 @@ top.clearEntries();
 			$folder->Published=time();
 			$folder->Path=$folder->getPath();
 			$folder->ModifierID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID,Text FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
+			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
@@ -931,7 +931,7 @@ top.clearEntries();
 					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else if(in_workspace($this->we_editDirID,get_ws($this->table),$this->table,$this->db)){
-					if(f("SELECT Text FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
@@ -964,7 +964,7 @@ top.selectFile(top.currentID);
 
 	function printPreviewHTML() {
 		if( $this->id) {
-			$query = $this->db->query("SELECT * FROM " . mysql_real_escape_string($this->table) . " WHERE ID='".abs($this->id)."'");
+			$query = $this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($this->id)."'");
 			while ($this->db->next_record()) {
 				$result['Text'] = $this->db->f('Text');
 				$result['Path'] = $this->db->f('Path');
@@ -979,7 +979,7 @@ top.selectFile(top.currentID);
 				$result['ClassName'] = $this->db->f('ClassName');
 				$result['Templates'] = $this->db->f('Templates');
 			}
-			$path = f("SELECT Text, Path FROM " . mysql_real_escape_string($this->table) . " WHERE ID='".abs($this->id)."'","Path",$this->db);
+			$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($this->id)."'","Path",$this->db);
 			$out = '<html>
 <head>
 ' . STYLESHEET . '
@@ -1052,7 +1052,7 @@ top.selectFile(top.currentID);
 						$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
 					}
 				} elseif ($this->table == FILE_TABLE && $result['ContentType'] = "folder") {
-					$query = $this->db->query("SELECT ID, Text, IsFolder FROM " . mysql_real_escape_string($this->table) . " WHERE ParentID=".abs($this->id));
+					$query = $this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=".abs($this->id));
 					$folderFolders = array();
 					$folderFiles = array();
 					while ($this->db->next_record()) {
@@ -1156,7 +1156,7 @@ top.selectFile(top.currentID);
 					case "text/weTmpl":
 						$out .= $previewDefauts;
 						if (isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])) {
-							$mastertemppath = f("SELECT Text, Path FROM " . mysql_real_escape_string($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
+							$mastertemppath = f("SELECT Text, Path FROM " . escape_sql_query($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
 							$out .= "<tr><td colspan='2' class='headline'>".$GLOBALS['l_we_class']["master_template"]."</td></tr>";
 							$nextrowclass = "odd";
 							$out .= "<tr class='$nextrowclass'><td>ID:</td><td>".$result['MasterTemplateID']."</td></tr>";
