@@ -150,7 +150,7 @@ class weGlossaryCache {
 
 		$DB_WE = new DB_WE();
 
-		$query = "SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM " . GLOSSARY_TABLE . " WHERE Language = '" . mysql_real_escape_string($this->language) . "' AND Published > 0 ORDER BY Length DESC";
+		$query = "SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM " . GLOSSARY_TABLE . " WHERE Language = '" . $DB_WE->escape($this->language) . "' AND Published > 0 ORDER BY Length DESC";
 
 		$DB_WE->query($query);
 		$Items = array();

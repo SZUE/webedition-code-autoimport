@@ -25,7 +25,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/'
 class we_navigationDirSelector extends we_dirSelector{
 
 	var $fields = 'ID,ParentID,Text,Path,IsFolder,Icon,Charset';
-	
+
 	function we_navigationDirSelector($id,
 								$JSIDName='',
 								$JSTextName='',
@@ -33,7 +33,7 @@ class we_navigationDirSelector extends we_dirSelector{
 								$order='',
 								$we_editDirID='',
 								$FolderText=''){
-		
+
 		$JSIDName = stripslashes($JSIDName);
 		$JSTextName = stripslashes($JSTextName);
 
@@ -53,16 +53,16 @@ class we_navigationDirSelector extends we_dirSelector{
 
 
   	function printHeaderHeadlines(){
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">         
+		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>             
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS['l_navigation']['name'].'</a></b></td> 
+					<td>'.getPixel(25,14).'</td>
+					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS['l_navigation']['name'].'</a></b></td>
 				</tr>
-				<tr>  
-					<td width="25">'.getPixel(25,1).'</td>								
-					<td width="200">'.getPixel(200,1).'</td>								
+				<tr>
+					<td width="25">'.getPixel(25,1).'</td>
+					<td width="200">'.getPixel(200,1).'</td>
 					<td width="300">'.getPixel(300,1).'</td>
-				</tr>  
+				</tr>
 			</table>
 ';
 
@@ -113,7 +113,7 @@ class we_navigationDirSelector extends we_dirSelector{
 
 	function printHeaderTableExtraCols(){
 		print '                <td width="10">'.getPixel(10,10).'</td><td width="40">
-';                  
+';
         $makefolderState = we_hasPerm("EDIT_NAVIGATION");
        	print '<script language="JavaScript">makefolderState='.$makefolderState.';</script>';
  		$we_button = new we_button();
@@ -135,9 +135,9 @@ function writeBody(d){
 	d.writeln('<?php print STYLESHEET_SCRIPT;?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
-	
+
 	<?php print $this->getJS_attachKeyListener(); ?>
-	
+
 	//from we_showMessage.js
 	d.writeln('var WE_MESSAGE_INFO = -1;');
 	d.writeln('var WE_MESSAGE_FRONTEND = -2;');
@@ -232,7 +232,7 @@ function writeBody(d){
 	}
 	d.writeln('<tr>');
 	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td><?php print getPixel(200,2)?></td>');								
+	d.writeln('<td><?php print getPixel(200,2)?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){
@@ -245,7 +245,7 @@ function writeBody(d){
 <?php
 
 	}
-	
+
 	function printFramesetJSFunctionQueryString(){
 ?>
 
@@ -286,11 +286,11 @@ function addEntry(ID,icon,text,isFolder,path){
 	}
 
 	function printFramesetJSFunctionAddEntries(){
-		while($this->next_record()){			
+		while($this->next_record()){
 			$_text = $this->f('Text');
 			$_charset = $this->f('Charset');
 			if(function_exists('mb_convert_encoding') && !empty($_charset)) {
-				$_text = mb_convert_encoding($this->f('Text'), 'HTML-ENTITIES', $_charset);				
+				$_text = mb_convert_encoding($this->f('Text'), 'HTML-ENTITIES', $_charset);
 			}
 			print 'addEntry('.$this->f('ID').',"'.$this->f('Icon').'","'.$_text.'",'.$this->f('IsFolder').',"'.$this->f('Path').'");'."\n";
 		}
@@ -302,15 +302,15 @@ function addEntry(ID,icon,text,isFolder,path){
 			$_text = $this->f('Text');
 			$_charset = $this->f('Charset');
 			if(function_exists('mb_convert_encoding') && !empty($_charset)) {
-				$_text = mb_convert_encoding($this->f('Text'), 'HTML-ENTITIES', $_charset);				
+				$_text = mb_convert_encoding($this->f('Text'), 'HTML-ENTITIES', $_charset);
 			}
 			print 'top.addEntry('.$this->f('ID').',"'.$this->f('Icon').'","'.$_text.'",'.$this->f('IsFolder').',"'.$this->f('Path').'");'."\n";
 		}
   	}
-  	
+
 	function printCreateFolderHTML(){
-		htmlTop();		
-protect();								
+		htmlTop();
+protect();
 
 		print '<script>
 top.clearEntries();
@@ -340,8 +340,8 @@ top.clearEntries();
 					print we_message_reporting::getShowMessageCall($GLOBALS['l_navigation']['wrongtext'], WE_MESSAGE_ERROR);
 		         }else{
 					$folder->we_save();
-		         	print 'var ref;		         	
-if(top.opener.top.makeNewEntry){		   
+		         	print 'var ref;
+if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
 	ref.makeNewEntry("folder.gif",'.$folder->ID.',"'.$folder->ParentID.'","'.$txt.'",1,"folder","'.$this->table.'",0,0);
 }
@@ -352,10 +352,10 @@ top.currentID = "'.$folder->ID.'";
 top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 ';
 }
-				}                    
+				}
 
 			}
-		}           
+		}
 
 
 		$this->printCmdAddEntriesHTML();
@@ -372,13 +372,13 @@ top.selectFile(top.currentID);
 		$ws_query = getWsQueryForSelector(NAVIGATION_TABLE);
 		$this->db->query("SELECT ".$this->fields.", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr FROM ".
 		$this->table.
-		" WHERE IsFolder=1 AND ParentID='".abs($this->dir)."' ". 
+		" WHERE IsFolder=1 AND ParentID='".abs($this->dir)."' ".
 		$ws_query .
 		" ORDER BY Ordn, isNr DESC,Nr,Text;");
 	}
 
 	function printDoRenameFolderHTML(){
-		htmlTop();		
+		htmlTop();
 		protect();
 
 		print '<script>
@@ -395,7 +395,7 @@ top.clearEntries();
 			$folder->Text=$txt;
 			$folder->Filename=$txt;
 			$folder->Path=$folder->getPath();
-			$this->db->query("SELECT ID,Text FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
+			$this->db->query("SELECT ID,Text FROM ".$this->DB->escape($this->table)." WHERE Path='".$this->DB->escape($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf($GLOBALS["l_navigation"]["folder_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
@@ -404,7 +404,7 @@ top.clearEntries();
 					$we_responseText = $GLOBALS["l_navigation"]["wrongtext"];
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
-					if(f("SELECT Text FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->DB->escape($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.updateEntry){
@@ -420,22 +420,22 @@ top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 						}
 					}
 				}
-				
+
 			}
 		}
-		
-		
+
+
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
-		
+
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
 		print '</head><body></body></html>';
 	}
-	
-	
+
+
 
 	function printFramesetSelectFileHTML(){
 ?>
@@ -447,16 +447,16 @@ function selectFile(id){
 			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
 			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
 			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-			
+
 			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
 																(top.fsfooter.document.we_form.fname.value + "," + e.text) :
 																e.text;
-																
+
 			var show = top.fsfooter.document.getElementById("showDiv");
 			if(show){
 				show.innerHTML = top.fsfooter.document.we_form.fname.value;
 			}
-																
+
 		}
 		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
 		currentPath = e.path;
@@ -471,9 +471,9 @@ function selectFile(id){
 }
 
 <?php
-	}	
-	
-	
+	}
+
+
 }
 
 

@@ -38,8 +38,8 @@ if (we_hasPerm("NEW_WEBEDITIONSITE")) {
 				$DB_WE->query("SELECT ID,Path FROM " . FILE_TABLE . " WHERE ID='" . abs($v) . "'");
 				while ($DB_WE->next_record())
 					array_push(
-							$paths, 
-							"(ParentPath = '" . mysql_real_escape_string($DB_WE->f("Path")) . "' || ParentPath like '" . mysql_real_escape_string($DB_WE->f("Path")) . "/%')");
+							$paths,
+							"(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath like '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')");
 			}
 		}
 		if (is_array($paths) && count($paths) > 0) {
@@ -200,8 +200,8 @@ function sortSelect(obj){
 		o[o.length]=new Option(obj.options[i].text,obj.options[i].value,obj.options[i].defaultSelected,obj.options[i].selected);
 	}
 	if(o.length==0){ return; }
-	o=o.sort( 
-		function(a,b){ 
+	o=o.sort(
+		function(a,b){
 			if((a.text+'')<(b.text+'')){ return -1; }
 			if((a.text+'')>(b.text+'')){ return 1; }
 			return 0;
@@ -341,22 +341,22 @@ function removeSelectedOptions(from){
 	if(from.type=='select-one'){
 		from.options[from.selectedIndex]=null;
 	}else{
-		for(var i=(from.options.length-1);i>=0;i--){ 
+		for(var i=(from.options.length-1);i>=0;i--){
 			var o=from.options[i];
-			if(o.selected){ 
-				from.options[i]=null; 
+			if(o.selected){
+				from.options[i]=null;
 			}
 		}
 	}
-	from.selectedIndex=-1; 
+	from.selectedIndex=-1;
 }
 
-function removeAllOptions(from){ 
+function removeAllOptions(from){
 	if(!hasOptions(from)){ return; }
-	for(var i=(from.options.length-1);i>=0;i--){ 
+	for(var i=(from.options.length-1);i>=0;i--){
 		from.options[i]=null;
 	}
-	from.selectedIndex=-1; 
+	from.selectedIndex=-1;
 }
 
 function addOption(obj,text,value,selected){
@@ -407,7 +407,7 @@ function save(){
 		opener.rpc(sCsv,'','','','',_sObjId,_sSctInc);
 	}
 	" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['prefs_saved_successfully'], 
+		$l_cockpit['prefs_saved_successfully'],
 		WE_MESSAGE_NOTICE) . "
 	self.close();
 }
@@ -431,10 +431,10 @@ $aPopulate = array_merge($shortcuts[0], $shortcuts[1]);
 
 $oSctPool = new we_htmlSelect(
 		array(
-			
-				"name" => "sct_pool", 
-				"size" => "1", 
-				"class" => "defaultfont", 
+
+				"name" => "sct_pool",
+				"size" => "1",
+				"class" => "defaultfont",
 				"onChange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 		));
 $oSctPool->insertOption(0, " ", "");
@@ -446,35 +446,35 @@ foreach ($aPopulate as $key => $value) {
 
 $oSctList11 = new we_htmlSelect(
 		array(
-			
-				"multiple" => "multiple", 
-				"name" => "list11", 
-				"size" => "10", 
-				"style" => "width:200px;", 
-				"class" => "defaultfont", 
+
+				"multiple" => "multiple",
+				"name" => "list11",
+				"size" => "10",
+				"style" => "width:200px;",
+				"class" => "defaultfont",
 				"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
 		));
 $oSctList21 = new we_htmlSelect(
 		array(
-			
-				"multiple" => "multiple", 
-				"name" => "list21", 
-				"size" => "10", 
-				"style" => "width:200px;", 
-				"class" => "defaultfont", 
+
+				"multiple" => "multiple",
+				"name" => "list21",
+				"size" => "10",
+				"style" => "width:200px;",
+				"class" => "defaultfont",
 				"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
 		));
 
 $we_button = new we_button();
 $oBtnDelete = $we_button->create_button(
-		"delete", 
-		"javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", 
-		false, 
-		-1, 
-		-1, 
-		"", 
-		"", 
-		false, 
+		"delete",
+		"javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);",
+		false,
+		-1,
+		-1,
+		"",
+		"",
+		false,
 		false);
 $oShortcutsRem = htmlAlertAttentionBox($l_cockpit['sct_rem'], 2, 420);
 
@@ -483,41 +483,41 @@ $oPool = new we_htmlTable(array(
 ), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTMLCode());
 $oPool->setCol(
-		0, 
-		1, 
+		0,
+		1,
 		array(
 			"align" => "center", "valign" => "middle"
-		), 
+		),
 		we_htmlElement::htmlA(
 				array(
-					
-						"href" => "#", 
+
+						"href" => "#",
 						"onClick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
-				), 
+				),
 				we_htmlElement::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_up.gif", "border" => 0
 				))) . we_htmlElement::htmlBr() . we_htmlElement::htmlBr() . we_htmlElement::htmlA(
 				array(
-					
-						"href" => "#", 
+
+						"href" => "#",
 						"onClick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
-				), 
+				),
 				we_htmlElement::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
 				))) . we_htmlElement::htmlBr() . we_htmlElement::htmlBr() . we_htmlElement::htmlA(
 				array(
-					
-						"href" => "#", 
+
+						"href" => "#",
 						"onClick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
-				), 
+				),
 				we_htmlElement::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
 				))) . we_htmlElement::htmlBr() . we_htmlElement::htmlBr() . we_htmlElement::htmlA(
 				array(
-					
-						"href" => "#", 
+
+						"href" => "#",
 						"onClick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
-				), 
+				),
 				we_htmlElement::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_down.gif", "border" => 0
 				))));
@@ -528,9 +528,9 @@ $oPool->setCol(2, 0, array(
 ), $oBtnDelete);
 
 $content = $oShortcutsRem . getPixel(1, 5) . we_htmlElement::htmlBr() . htmlFormElementTable(
-		$oSctPool->getHTMLCode(), 
-		$l_cockpit['select_buttons'], 
-		"left", 
+		$oSctPool->getHTMLCode(),
+		$l_cockpit['select_buttons'],
+		"left",
 		"defaultfont") . getPixel(1, 5) . we_htmlElement::htmlBr() . $oPool->getHTMLCode();
 
 $we_button = new we_button();
@@ -547,30 +547,30 @@ $cancel_button = $we_button->create_button("close", "javascript:exit_close();");
 $buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
-		"sctProps", 
-		"100%", 
-		$parts, 
-		30, 
-		$buttons, 
-		-1, 
-		"", 
-		"", 
-		"", 
+		"sctProps",
+		"100%",
+		$parts,
+		30,
+		$buttons,
+		-1,
+		"",
+		"",
+		"",
 		$l_cockpit['shortcuts']);
 
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
 						we_htmlElement::htmlTitle($l_cockpit['shortcuts']) . STYLESHEET . we_htmlElement::cssElement(
 								"select,textarea{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
-								"", 
+								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement(
 								$jsPrefs . $jsCode . $we_button->create_state_changer(false))) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
-						), 
+						),
 						we_htmlElement::htmlForm("", $sTblWidget)));
 
 ?>

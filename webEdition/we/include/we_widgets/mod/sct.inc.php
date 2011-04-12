@@ -38,8 +38,8 @@ if (we_hasPerm("NEW_WEBEDITIONSITE")) {
 				$DB_WE->query("SELECT ID,Path FROM " . FILE_TABLE . " WHERE ID='" . abs($v) . "'");
 				while ($DB_WE->next_record())
 					array_push(
-							$paths, 
-							"(ParentPath = '" . mysql_real_escape_string($DB_WE->f("Path")) . "' || ParentPath like '" . mysql_real_escape_string($DB_WE->f("Path")) . "/%')");
+							$paths,
+							"(ParentPath = '" .$DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath like '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')");
 			}
 		}
 		if (is_array($paths) && count($paths) > 0) {
@@ -111,23 +111,23 @@ foreach ($shortcuts as $sctCol) {
 			$sSctOut .= '<tr><td width="34" height="34">' . we_htmlElement::htmlA(
 					array(
 						"href" => "javascript:" . $js[$_label]
-					), 
+					),
 					we_htmlElement::htmlImg(
 							array(
-								
-									"src" => IMAGE_DIR . 'pd/sct/' . $_label . '.gif', 
-									"width" => 34, 
-									"height" => 34, 
+
+									"src" => IMAGE_DIR . 'pd/sct/' . $_label . '.gif',
+									"width" => 34,
+									"height" => 34,
 									"border" => 0
 							))) . '</td>';
 			$sSctOut .= '<td width="5">' . getpixel(5, 1) . '</td>';
 			$sSctOut .= '<td valign="middle">' . we_htmlElement::htmlA(
 					array(
-						
-							"href" => "javascript:" . $js[$_label], 
-							"class" => "middlefont", 
+
+							"href" => "javascript:" . $js[$_label],
+							"class" => "middlefont",
 							"style" => "font-weight:bold;text-decoration:none;"
-					), 
+					),
 					$l_button[$_label]["value"]) . '</td></tr>';
 			$sSctOut .= '<tr><td height="3">' . getpixel(1, 3) . '</td></tr>';
 		}
@@ -146,7 +146,7 @@ $sc->setCol(0, 0, array(
 
 if (!isset($aProps)) {
 	protect();
-	
+
 	$sJsCode = "
 	var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
 	var _sType='sct';
@@ -155,20 +155,20 @@ if (!isset($aProps)) {
 		parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 	}
 	";
-	
-	print 
+
+	print
 			we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead(
 							we_htmlElement::htmlTitle($l_cockpit['shortcuts']) . STYLESHEET . we_htmlElement::jsElement(
 									$sJsCode)) . we_htmlElement::htmlBody(
 							array(
-								
-									"marginwidth" => "15", 
-									"marginheight" => "10", 
-									"leftmargin" => "15", 
-									"topmargin" => "10", 
+
+									"marginwidth" => "15",
+									"marginheight" => "10",
+									"leftmargin" => "15",
+									"topmargin" => "10",
 									"onload" => "if(parent!=self)init();"
-							), 
+							),
 							we_htmlElement::htmlDiv(array(
 								"id" => "sct"
 							), $sc->getHtmlCode())));

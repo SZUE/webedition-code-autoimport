@@ -100,7 +100,7 @@ class we_fileselector{
 		if($id != ""){
 			// get default Directory
 			$this->db->query("SELECT ".$this->fields. "
-								FROM ".mysql_real_escape_string($this->table)."
+								FROM ".$this->db->escape($this->table)."
 								WHERE ID='".abs($id)."'");
 
 			// getValues of selected Dir
@@ -122,12 +122,12 @@ class we_fileselector{
 		}
 
 	}
-	
+
 	function setDefaultDirAndID($setLastDir){
-		
+
 		$this->dir = $setLastDir ? ( isset($_SESSION["we_fs_lastDir"][$this->table]) ? abs($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
 		$this->id = $this->dir;
-		
+
 		$this->path = "";
 
 		$this->values = array(
@@ -137,11 +137,11 @@ class we_fileselector{
 			"IsFolder"=>1
 		);
 	}
-	
+
 	function isIDInFolder($ID,$folderID,$db=""){
 		if($folderID==$ID) return true;
 		if(!$db) $db = new DB_WE();
-		$pid = f("SELECT ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($ID)."'","ParentID",$db);
+		$pid = f("SELECT ParentID FROM ".escape_sql_query($this->table)." WHERE ID='".abs($ID)."'","ParentID",$db);
 		if($pid == $folderID){
 			return true;
 		}else if($pid != 0){
@@ -154,9 +154,9 @@ class we_fileselector{
 	function query(){
 		$this->db->query(
 			"SELECT ".$this->fields."
-			FROM ". mysql_real_escape_string($this->table) ."
+			FROM ". $this->db->escape($this->table) ."
 			WHERE ParentID='".abs($this->dir)."' " .
-			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '".mysql_real_escape_string($this->filter)."' " : "AND ContentType = '".mysql_real_escape_string($this->filter)."' ") : '' ) ).
+			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '".$this->db->escape($this->filter)."' " : "AND ContentType = '".$this->db->escape($this->filter)."' ") : '' ) ).
 			($this->order ? (' ORDER BY '.$this->order) : ''));
 		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
 	}
@@ -214,34 +214,34 @@ class we_fileselector{
 	}
 ';
 	}
-	
+
 	function getJS_keyListenerFunctions() {
-		
+
 		return "
 		function applyOnEnter(evt) {
-			
+
 			_elemName = \"target\";
 			if ( typeof(evt[\"srcElement\"]) != \"undefined\" ) { // IE
 				_elemName = \"srcElement\";
 			}
-			
+
 			if (	!( evt[_elemName].tagName == \"SELECT\" ||
 					 ( evt[_elemName].tagName == \"INPUT\" && evt[_elemName].name != \"fname\" )
 				) ) {
 				top.fsfooter.press_ok_button();
 				return true;
 			}
-			
+
 		}
-		
+
 		function closeOnEscape() {
 			top.exit_close();
-			
+
 		}
 		";
-		
+
 	}
-	
+
 
 	function printFramesetHTML(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
@@ -344,7 +344,7 @@ function selectFile(id){
 
 	function getFramesetJavaScriptDef(){
 		$startPathQuery = new DB_WE();
-		$startPathQuery->query("SELECT Path FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($this->dir)."'");
+		$startPathQuery->query("SELECT Path FROM ".$startPathQuery->escape($this->table)." WHERE ID='".abs($this->dir)."'");
 		$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : "/";
 
 		return '<script language="JavaScript" type="text/javascript">
@@ -353,9 +353,9 @@ function selectFile(id){
 	var currentPath="'.$this->path.'";
 	var currentText="'.$this->values["Text"].'";
 	var currentType="'.(isset($this->filter) ? $this->filter : "").'";
-	
+
 	var startPath="'.$startPath.'";
-	
+
 	var parentID="'.
 	($this->dir ?
 	    f("SELECT ParentID FROM $this->table WHERE ID='".$this->dir."'","ParentID",$this->db) :
@@ -399,18 +399,18 @@ function selectFile(id){
 							if(currentType!="")	{
 								switch(currentType){
 									case "noalias":
-										setTabsCurPath = "@"+currentText;									
+										setTabsCurPath = "@"+currentText;
 										break;
 									default:
-										setTabsCurPath = currentPath;								
+										setTabsCurPath = currentPath;
 								}
 								if(getEntry(currentID).isFolder) opener.parent.frames[0].setPathGroup(setTabsCurPath);
 								else opener.parent.frames[0].setPathName(setTabsCurPath);
 								opener.parent.frames[0].setTitlePath();
 							}
 					}
-					if(!!opener.'.$frameRef.'YAHOO && !!opener.'.$frameRef.'YAHOO.autocoml) {  opener.'.$frameRef.'YAHOO.autocoml.selectorSetValid(opener.'.str_replace('.value','.id',$this->JSTextName).'); } 
-					';			
+					if(!!opener.'.$frameRef.'YAHOO && !!opener.'.$frameRef.'YAHOO.autocoml) {  opener.'.$frameRef.'YAHOO.autocoml.selectorSetValid(opener.'.str_replace('.value','.id',$this->JSTextName).'); }
+					';
 		}
 		if($this->JSCommand){
 			$out .= '	'.str_replace('WE_PLUS','+',$this->JSCommand).';
@@ -574,9 +574,9 @@ function clearEntries(){
 		print '<html><head></head>'."\n";
 		print '<body bgcolor="white" onLoad="top.writeBody(self.document);"></body></html>'."\n";
 	}
-	
+
 	function getJS_attachKeyListener() {
-		
+
 		// attach the keylistener
 		$_attachKeyListener = file($_SERVER['DOCUMENT_ROOT'] . "/webEdition/js/attachKeyListener.js");
 		$_addJs = "";
@@ -658,7 +658,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 		$z = 0;
 		while($pid!=0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
 			if($this->db->next_record()){
 				$out='<option value="'.$this->db->f("ID").'"'.(($z==0) ? ' selected' : '').'>'.$this->db->f("Text").'</options>'."\n".$out;
 				$z++;
@@ -803,7 +803,7 @@ top.fsheader.clearOptions();
 		$c=0;
 		while($pid!=0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
 
 			if($this->db->next_record()){
 				$out = 'top.fsheader.addOption("'.$this->db->f("Text").'",'.$this->db->f("ID").');
@@ -908,9 +908,9 @@ top.fsheader.selectIt();
 			</table>';
 	}
 	function setTableLayoutInfos() {
-		
+
 		$objectTable = defined("OBJECT_TABLE") ? OBJECT_TABLE : TEMPLATES_TABLE;
-		
+
 		switch ($this->table) {
 			case $objectTable:
 			case TEMPLATES_TABLE:
@@ -932,6 +932,6 @@ top.fsheader.selectIt();
 					<td class='selector'><b>".$GLOBALS['l_fileselector']['title']."</b></td>
 					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, ModDate\");'>".$GLOBALS['l_fileselector']['modified']."</a></b></td>
 				";
-		}	
+		}
 	}
 }

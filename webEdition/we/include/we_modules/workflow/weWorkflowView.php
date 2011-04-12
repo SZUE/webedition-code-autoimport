@@ -151,7 +151,7 @@ class weWorkflowView extends weWorkflowBase{
 		}else{
 			//$out=$this->getPropertyJS(); this is bullshit since getPropertyJS writes directly to screen
 			$this->getPropertyJS();
-			
+
 			$out ='</head><body class="weEditorBody" onload="loaded=1;" onunload="doUnload()"><form name="we_form" onsubmit="return false">'."\r\n";
 			$out.=$this->getHiddens();
 			if($this->show){
@@ -174,7 +174,7 @@ class weWorkflowView extends weWorkflowBase{
 												"html"     => $_type));
 					$myout= "<br/>";
 					$myout .= we_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid.'_EmailPath', $GLOBALS["l_workflow"]["EmailPath"], false, "defaultfont", "", false );
-					
+
 					$myout .= we_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid.'_LastStepAutoPublish', $GLOBALS["l_workflow"]["LastStepAutoPublish"], false, "defaultfont", "", false );
 					array_push($parts, array(	"headline" => $GLOBALS["l_workflow"]["specials"],
 												"space"    => $_space-25,
@@ -362,7 +362,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$counter=0;
 		$counter1=0;
-		
+
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 		$yuiSuggest =& weSuggest::getInstance();
 
@@ -376,7 +376,7 @@ class weWorkflowView extends weWorkflowBase{
 				$_spacer_1_height = 7;
 				$_spacer_2_height = 5;
 		}
-		
+
 		/***** WORKFLOWSTEPS *****/
 		foreach($this->workflowDef->steps as $sk=>$sv){
 			$ids.=$this->htmlHidden($this->uid."_step".$counter."_sid",$sv->ID);
@@ -406,9 +406,9 @@ class weWorkflowView extends weWorkflowBase{
 				$headline[$counter1+3]["dat"]=$l_workflow["user"].(string )($counter1+1);
 
 				$foo=f("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($tv->userID),"Path",$this->db);
-				
+
 				$button = $we_button->create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_usertext.value','',document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value);");
-				
+
 				$yuiSuggest->setAcId("User_".$counter."_".$counter1);
 				$yuiSuggest->setContentType("0,1");
 				$yuiSuggest->setInput($this->uid."_task_".$counter."_".$counter1."_usertext",$foo,array("onChange"=>"top.content.setHot();"));
@@ -420,7 +420,7 @@ class weWorkflowView extends weWorkflowBase{
 				$yuiSuggest->setWidth(200);
 				$yuiSuggest->setContainerWidth(305);
 				$yuiSuggest->setSelectButton($button,6);
-		
+
 				$out="";
 				$out.='<table cellpadding="0" cellspacing="0">';
 				$out.='<tr valign="middle"><td colspan="4">'.getPixel(5,$_spacer_2_height).'</td><tr>';
@@ -446,14 +446,14 @@ class weWorkflowView extends weWorkflowBase{
 
 			$counter++;
 		}
-		$out  = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")); 
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/dom-min.js")); 
+		$out  = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js"));
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/dom-min.js"));
 		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/datasource-min.js"));  
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")); 
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/datasource-min.js"));
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js"));
 		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/animation-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js"));		 
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/autocomplete-min.js")); 
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js"));
+		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/autocomplete-min.js"));
 		$out .= $yuiSuggest->getYuiFiles();
 
 		$out .='	<table style="margin-right:30px;">
@@ -562,7 +562,7 @@ class weWorkflowView extends weWorkflowBase{
 
 	function getJSTopCode(){
 		global $l_workflow;
-	
+
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
@@ -581,7 +581,7 @@ class weWorkflowView extends weWorkflowBase{
 					}
 				}
 			}
-			
+
 			parent.document.title = "<?php print $title; ?>";
 
 			function we_cmd(){
@@ -629,7 +629,7 @@ class weWorkflowView extends weWorkflowBase{
 							chk=top.content.resize.right.editor.edbody.checkData();
 							if(!chk) return;
 							num=top.content.resize.right.editor.edbody.getNumOfDocs();
-							if(num>0) 
+							if(num>0)
 								if(!confirm("<?php print $l_workflow["save_question"]?>")) return;
 						}
 						else { <?php print we_message_reporting::getShowMessageCall($l_workflow["nothing_to_save"], WE_MESSAGE_ERROR); ?> }
@@ -1070,9 +1070,9 @@ class weWorkflowView extends weWorkflowBase{
 					$exist=false;
 					$double = 0;
 					if($newone)
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".mysql_real_escape_string($this->workflowDef->Text)."'");
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".$this->db->escape($this->workflowDef->Text)."'");
 					else
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".mysql_real_escape_string($this->workflowDef->Text)."' AND ID<>".abs($this->workflowDef->ID)."");
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".$this->db->escape($this->workflowDef->Text)."' AND ID<>".abs($this->workflowDef->ID)."");
 
 					if($this->db->next_record()){
 						$double = $this->db->f("Count");
@@ -1103,8 +1103,8 @@ class weWorkflowView extends weWorkflowBase{
 							$childs.="top.content.deleteEntry(".$v["ID"].",'file');\n";
 						if (is_array($_REQUEST[$this->uid.'_MYDocType']) && !empty($_REQUEST[$this->uid.'_MYDocType']))	{
 							$this->workflowDef->DocType=makeCSVFromArray($_REQUEST[$this->uid.'_MYDocType'],true);
-						}  
-						  	
+						}
+
 						$this->workflowDef->save();
 						print '<script language="JavaScript" type="text/javascript">';
 						if($newone) print 'top.content.makeNewEntry("workflow_folder",'.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'",true,"folder","weWorkflowDef","'.$this->workflowDef->Status.'");';
@@ -1176,7 +1176,7 @@ class weWorkflowView extends weWorkflowBase{
 		foreach($this->workflowDef->persistents as $key=>$val){
 			$varname=$this->uid."_".$val;
 			if(isset($_REQUEST[$varname])){
-				$_REQUEST[$varname] = mysql_real_escape_string($_REQUEST[$varname]);
+				$_REQUEST[$varname] = escape_sql_query($_REQUEST[$varname]);
 				eval('$this->workflowDef->'.$val.'=\''.$_REQUEST[$varname].'\';');
 			}
 		}
@@ -1270,9 +1270,9 @@ class weWorkflowView extends weWorkflowBase{
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		}
 	} </script>';
 
@@ -1368,9 +1368,9 @@ class weWorkflowView extends weWorkflowBase{
 										"space"    => $_space
 									)
 						);
-						
-		} 
-			
+
+		}
+
 
 
 		//	Logbook
@@ -1413,7 +1413,7 @@ class weWorkflowView extends weWorkflowBase{
 									"noline"   => 1
 									)
 					);
-		
+
 		$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->CreatorID);
 			if($this->db->next_record())
 				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["created_by"],
@@ -1422,14 +1422,14 @@ class weWorkflowView extends weWorkflowBase{
 											"noline"   => 1
 										)
 						);
-		
+
 		array_push($_parts, array(	"headline" => $l_we_editor_info["changed_date"],
 									"html"     => date($l_we_editor_info["date_format"], $this->documentDef->document->ModDate),
 									"space"    => $_space,
 									"noline"   => 1
 									)
 					);
-		
+
 		$this->db->query("SELECT First,Second,username FROM ".USER_TABLE." WHERE ID=".$this->documentDef->document->ModifierID);
 			if($this->db->next_record())
 				array_push(	$_parts, array(	"headline" => $GLOBALS["l_users"]["changed_by"],
@@ -1438,13 +1438,13 @@ class weWorkflowView extends weWorkflowBase{
 											"noline"   => 1
 										)
 						);
-		
+
 		array_push($_parts, array(	"headline" => $l_we_editor_info["lastLive"],
 									"html"     => ($this->documentDef->document->Published ? date($l_we_editor_info["date_format"],$this->documentDef->document->Published) : "-"),
 									"space"    => $_space,
 									)
 					);
-					
+
 		array_push(	$_parts, array(	"headline" => '',
 										"html"     => '<a href="#" onclick="openToEdit(\''.$this->documentDef->document->Table.'\',\''.$this->documentDef->document->ID.'\',\''.$this->documentDef->document->ContentType.'\')" >'.$l_we_editor_info["openDocument"].'</a>',
 										"space"    => $_space
@@ -1456,7 +1456,7 @@ class weWorkflowView extends weWorkflowBase{
 									"space"    => 0,
 									)
 					);
-		
+
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php");
 
@@ -1465,12 +1465,12 @@ class weWorkflowView extends weWorkflowBase{
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);				
+			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		}
 	} </script>
-		
+
 		</head>
 		<body class="weEditorBody" onunload="doUnload()">
 				<form name="we_form">'.$this->documentDef->document->hiddenTrans().'<table cellpadding="6" cellspacing="0" border="0">';

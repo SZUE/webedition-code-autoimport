@@ -46,8 +46,8 @@ if ($_binary{0} && !empty($_csv)) {
 	foreach ($_paths as $_path) {
 		$_where[] = 'Path LIKE "' . $_path . '%" ';
 	}
-	$_query = "SELECT ID,Path,Icon,Text,ContentType FROM " . mysql_real_escape_string($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ? ' AND ContentType<>"image/*"' : '') . ';';
-} else 
+	$_query = "SELECT ID,Path,Icon,Text,ContentType FROM " . escape_sql_query($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ? ' AND ContentType<>"image/*"' : '') . ';';
+} else
 	if (!$_binary{0} && $_binary{0} != "") {
 		list($dir, $dt_tid, $cats) = explode(";", $_csv);
 		list($folderID, $folderPath) = explode(",", $dir);
@@ -58,13 +58,13 @@ if ($_binary{0} && !empty($_csv)) {
 			$_categories = array();
 			foreach ($_cats as $_myCat) {
 				$_id = f(
-						'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . mysql_real_escape_string(base64_decode($_myCat)) . '";', 
-						'ID', 
+						'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . escape_sql_query(base64_decode($_myCat)) . '";',
+						'ID',
 						$DB_WE);
 				$_categories[] = 'Category LIKE ",' . abs($_id) . ',"';
 			}
 		}
-		$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . mysql_real_escape_string($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
+		$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . escape_sql_query($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
 				$_categories)) ? ' AND (' . implode(' OR ', $_categories) . ')' : '') . ' AND IsFolder=0;';
 	}
 if (isset($_query) && $DB_WE->query($_query) && !empty($_csv)) {
@@ -75,30 +75,30 @@ if (isset($_query) && $DB_WE->query($_query) && !empty($_csv)) {
 					"src" => ICON_DIR . $DB_WE->f("Icon")
 				)) . getpixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_htmlElement::htmlA(
 				array(
-					
+
 						"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f(
-								"ID") . '\',\'' . $DB_WE->f("ContentType") . '\');', 
-						"title" => $DB_WE->f("Path"), 
+								"ID") . '\',\'' . $DB_WE->f("ContentType") . '\');',
+						"title" => $DB_WE->f("Path"),
 						"style" => "color:#000000;text-decoration:none;"
-				), 
+				),
 				$DB_WE->f("Path")) . '</td></tr>';
 	}
 	$mdc .= '</table>';
 }
 
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
 						we_htmlElement::htmlTitle($l_cockpit['my_documents']) . STYLESHEET . we_htmlElement::jsElement(
 								$js)) . we_htmlElement::htmlBody(
 						array(
-							
-								"marginwidth" => "15", 
-								"marginheight" => "10", 
-								"leftmargin" => "15", 
-								"topmargin" => "10", 
+
+								"marginwidth" => "15",
+								"marginheight" => "10",
+								"leftmargin" => "15",
+								"topmargin" => "10",
 								"onload" => "if(parent!=self)init();"
-						), 
+						),
 						we_htmlElement::htmlDiv(array(
 							"id" => "mdc"
 						), $mdc)));

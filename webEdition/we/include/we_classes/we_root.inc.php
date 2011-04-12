@@ -173,7 +173,7 @@ class we_root extends we_class
 		if($Path != $this->Path){
 
 			### check if Path exists in db
-			if(f("SELECT Path FROM ".mysql_real_escape_string($this->Table)." WHERE Path='".mysql_real_escape_string($Path)."'","Path",$this->DB_WE)){
+			if(f("SELECT Path FROM ".escape_sql_query($this->Table)." WHERE Path='".escape_sql_query($Path)."'","Path",$this->DB_WE)){
 				$GLOBALS["we_responseText"] = sprintf($GLOBALS["l_we_class"]["response_path_exists"],$Path);
 				return false;
 			}
@@ -575,7 +575,7 @@ function formTriggerDocument($isclass=false){
 			$idname = 'we_'.$this->Name.'_TriggerID';
 			$myid = $this->TriggerID ? $this->TriggerID : "";
 		}
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)");
 		$yuiSuggest->setAcId("TriggerID");
 		$yuiSuggest->setContentType("folder,text/webedition");
@@ -662,7 +662,7 @@ function formTriggerDocument($isclass=false){
 
 	/* get the Path of the Parent-Object */
 	function getParentPath(){
-		return (!$this->ParentID) ? "/" : f("SELECT Path FROM ".mysql_real_escape_string($this->Table)." WHERE ID=".abs($this->ParentID),"Path",$this->DB_WE);
+		return (!$this->ParentID) ? "/" : f("SELECT Path FROM ".$this->DB_WE->escape($this->Table)." WHERE ID=".abs($this->ParentID),"Path",$this->DB_WE);
 	}
 
 	function constructPath(){
@@ -671,7 +671,7 @@ function formTriggerDocument($isclass=false){
 			$p = "/".$this->Text;
 			$z=0;
 			while($pid && $z < 50){
-				$h = getHash("SELECT ParentID,Text FROM ".mysql_real_escape_string($this->Table)." WHERE ID='".abs($pid)."'",$this->DB_WE);
+				$h = getHash("SELECT ParentID,Text FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($pid)."'",$this->DB_WE);
 				$p = "/".$h["Text"].$p;
 				$pid = $h["ParentID"];
 				$z++;
@@ -785,7 +785,7 @@ function formTriggerDocument($isclass=false){
 	}
 
 	function i_getDefaultFilename(){
-	 	return f("SELECT MAX(ID) as ID FROM ".mysql_real_escape_string($this->Table),"ID",$this->DB_WE)+1;
+	 	return f("SELECT MAX(ID) as ID FROM ".$this->DB_WE->escape($this->Table),"ID",$this->DB_WE)+1;
 	}
 
 	function we_initSessDat($sessDat){
@@ -927,7 +927,7 @@ function formTriggerDocument($isclass=false){
 	function i_getContentData($loadBinary=0){
 
 		$this->DB_WE->query("SELECT * FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($this->ID).
-				"' AND " . LINK_TABLE . ".DocumentTable='".mysql_real_escape_string(substr($this->Table, strlen(TBL_PREFIX))).
+				"' AND " . LINK_TABLE . ".DocumentTable='".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX))).
 				"' AND " . CONTENT_TABLE . ".ID=" . LINK_TABLE . ".CID ".
 				($loadBinary ? "" : " AND " . CONTENT_TABLE . ".IsBinary=0"));
 		$filter = array("Name","DID","Ord");
@@ -995,7 +995,7 @@ function formTriggerDocument($isclass=false){
 							else $this->DB_WE->query($q);
 							$cid = f("SELECT max(ID) as ID FROM " . CONTENT_TABLE, "ID", $this->DB_WE);
 							$this->elements[$k]["id"]=$cid; // update Object itself
-							$q = "INSERT INTO " . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".abs($cid).",'".mysql_real_escape_string($k)."','".mysql_real_escape_string($v["type"])."','".mysql_real_escape_string(substr($this->Table, strlen(TBL_PREFIX)))."')";
+							$q = "INSERT INTO " . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".abs($cid).",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
 							if(!$this->DB_WE->query($q)) return false;
 						}
 					}
@@ -1111,10 +1111,10 @@ function formTriggerDocument($isclass=false){
 
 	function  i_correctDoublePath(){
 		if($this->Filename){
-				if(f("SELECT ID  FROM  " . mysql_real_escape_string($this->Table) . "  WHERE ID!='".abs($this->ID)."' AND Text='".mysql_real_escape_string($this->Filename.(isset($this->Extension)  ?  $this->Extension  : ""))."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
+				if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($this->Filename.(isset($this->Extension)  ?  $this->Extension  : ""))."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
 					$z=0;
 					$footext = $this->Filename."_".$z.(isset($this->Extension)  ?  $this->Extension  : "");
-					while(f("SELECT ID FROM ".mysql_real_escape_string($this->Table)." WHERE ID!='".abs($this->ID)."' AND Text='".mysql_real_escape_string($footext)."' AND ParentID='".mysql_real_escape_string($this->ParentID)."'","ID",$this->DB_WE)){
+					while(f("SELECT ID FROM ".$this->DB_WE->escape($this->Table)." WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($footext)."' AND ParentID='".$this->DB_WE->escape($this->ParentID)."'","ID",$this->DB_WE)){
 						$z++;
 						$footext = $this->Filename."_".$z.(isset($this->Extension)  ?  $this->Extension  : "");
 					}
@@ -1124,10 +1124,10 @@ function formTriggerDocument($isclass=false){
 
 				}
 		}else{
-				if(f("SELECT ID  FROM  " . mysql_real_escape_string($this->Table) . "  WHERE ID!='".abs($this->ID)."' AND Text='".mysql_real_escape_string($this->Text)."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
+				if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($this->Text)."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
 					$z=0;
 					$footext = $this->Text."_".$z;
-					while(f("SELECT ID FROM ".mysql_real_escape_string($this->Table)." WHERE ID!='".abs($this->ID)."' AND Text='".mysql_real_escape_string($footext)."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
+					while(f("SELECT ID FROM ".$this->DB_WE->escape($this->Table)." WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($footext)."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
 						$z++;
 						$footext = $this->Text."_".$z;
 					}
@@ -1221,7 +1221,7 @@ function formTriggerDocument($isclass=false){
 
 		$DB_WE = new DB_WE();
 		//select only own ID if not in same session
-		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.mysql_real_escape_string($this->Table).'" AND sessionID!="'.session_id().'" AND lockTime>NOW()');
+		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.$DB_WE->query($this->Table).'" AND sessionID!="'.session_id().'" AND lockTime>NOW()');
 		$_userId = 0;
 		while($DB_WE->next_record()) {
 			$_userId = $DB_WE->f("UserID");
@@ -1235,7 +1235,7 @@ function formTriggerDocument($isclass=false){
 
 			$DB_WE = new DB_WE();
 			//if lock is used by other user and time is up, update table
-			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.mysql_real_escape_string($this->Table).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
+			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.$DB_WE->query($this->Table).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
 				ON DUPLICATE KEY UPDATE UserID="'.abs($_SESSION["user"]["ID"]).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)');
 		}
 	}
@@ -1259,7 +1259,7 @@ function formTriggerDocument($isclass=false){
 	function getNavigationFoldersForDoc() {
 		if($this->Table==FILE_TABLE) {
 			if(isset($this->DocType)) {
-				$where = '((Selection="dynamic") AND (DocTypeID="'.mysql_real_escape_string($this->DocType).'" OR FolderID="'.abs($this->ParentID).'")) OR ';
+				$where = '((Selection="dynamic") AND (DocTypeID="'.$this->DB_WE->escape($this->DocType).'" OR FolderID="'.abs($this->ParentID).'")) OR ';
 				$where .= '(((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID="'.abs($this->ID).'");';
 				$query = 'SELECT ParentID FROM '.NAVIGATION_TABLE.' WHERE '.$where;
 				$this->DB_WE->query($query);

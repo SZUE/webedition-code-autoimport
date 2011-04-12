@@ -70,7 +70,7 @@ function checkDeleteEntry($id, $table)
 {
 	if ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 		return true;
-	$row = getHash("SELECT IsFolder FROM " . mysql_real_escape_string($table) . " WHERE  ID=" . abs($id), $GLOBALS["DB_WE"]);
+	$row = getHash("SELECT IsFolder FROM " . escape_sql_query($table) . " WHERE  ID=" . abs($id), $GLOBALS["DB_WE"]);
 	if (isset($row["IsFolder"]) && $row["IsFolder"]) {
 		return checkDeleteFolder($id, $table);
 	} else {
@@ -80,10 +80,10 @@ function checkDeleteEntry($id, $table)
 
 function checkDeleteFolder($id, $table)
 {
-	
+
 	if ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 		return true;
-	
+
 	$DB_WE = new DB_WE();
 	$DB_WE->query("SELECT * FROM $table WHERE ParentID=".abs($id)."");
 	while ($DB_WE->next_record()) {
@@ -98,12 +98,12 @@ function checkDeleteFile($id, $table, $path = "")
 {
 	if ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 		return true;
-	
+
 	if (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) {
 		if (ObjectUsedByObjectFile($id, false)) {
 			return false;
 		}
-	} else 
+	} else
 		if ($table == TEMPLATES_TABLE) {
 			$arr = getTemplAndDocIDsOfTemplate($id, false, false, true);
 			if (count($arr["documentIDs"]) > 0) {
@@ -125,29 +125,29 @@ function makeAlertDelFolderNotEmpty($folders)
 
 function deleteFolder($id, $table, $path = "", $delR = true)
 {
-	
+
 	$isTemplateFolder = ($table == TEMPLATES_TABLE);
-	
+
 	$DB_WE = new DB_WE();
 	$path = $path ? $path : f("SELECT Path FROM $table WHERE ID=".abs($id)."", "Path", $DB_WE);
-	
+
 	if ($delR) { // recursive delete
 		$DB_WE->query("SELECT * FROM $table WHERE ParentID=".abs($id)."");
 		while ($DB_WE->next_record()) {
 			deleteEntry($DB_WE->f("ID"), $table);
 		}
 	}
-	
+
 	// do not delete class folder if class still exists!!!
 	if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) {
 		if (f("SELECT IsClassFolder FROM $table WHERE ID=$id", "IsClassFolder", $DB_WE)) { // it is a class folder
-			if (f("SELECT Path FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "Path", $DB_WE)) { // class still exists
+			if (f("SELECT Path FROM " . OBJECT_TABLE . " WHERE Path='".escape_sql_query($path)."'", "Path", $DB_WE)) { // class still exists
 				return;
 			}
 		}
 	}
 	$DB_WE->query("DELETE FROM $table WHERE ID=".abs($id)."");
-	
+
 	deleteContentFromDB($id, $table);
 	if (substr($path, 0, 3) == "/..") {
 		return;
@@ -165,10 +165,10 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 		deleteLocalFolder($file, 1);
 	}
 	if (defined("OBJECT_TABLE") && defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE) {
-		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $DB_WE);
+		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".escape_sql_query($path)."'", "ID", $DB_WE);
 		if ($ofID) {
 			deleteEntry($ofID, OBJECT_FILES_TABLE);
-		
+
 		}
 	}
 
@@ -181,43 +181,43 @@ function isColExistForDelete($tab,$col){
 function deleteFile($id, $table, $path = "", $contentType = "")
 {
 	$DB_WE = new DB_WE();
-	
+
 	$isTemplateFile = ($table == TEMPLATES_TABLE);
-	
+
 	$path = $path ? $path : f("SELECT Path FROM $table WHERE ID=".abs($id)."", "Path", $DB_WE);
 	deleteContentFromDB($id, $table);
-	
+
 	$file = ((!$isTemplateFile) ? $_SERVER["DOCUMENT_ROOT"] : TEMPLATE_DIR) . $path;
-	
+
 	if ($table == TEMPLATES_TABLE) {
 		$file = preg_replace('/\.tmpl$/i', '.php', $file);
 	}
-	
+
 	if ($table == TEMPLATES_TABLE || $table == FILE_TABLE)
 		deleteLocalFile($file);
 	if ($table == FILE_TABLE) {
 		$file = $_SERVER["DOCUMENT_ROOT"] . SITE_DIR . substr($path, 1);
 		deleteLocalFile($file);
-	
+
 	}
 	we_temporaryDocument::delete($id, $table, $DB_WE);
-	
+
 	if ($table == FILE_TABLE) {
 		$DB_WE->query("UPDATE " . CONTENT_TABLE . " SET BDID=0 WHERE BDID=".abs($id)."");
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($id)."");
-		
+
 		if (in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
 			$DB_WE->query(
 					'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID="' . abs($id) . ' " AND ClassName !="we_objectFile"');
 		}
 		$DB_WE->query(
 				'DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID="' . abs($id) . '";');
-		
+
 		// Clear cache for this document
 		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
 		weCacheHelper::clearCache($cacheDir);
 	}
-	
+
 	if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) {
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".abs($id)."");
 		$tableID = f("SELECT TableID FROM " . OBJECT_FILES_TABLE . " WHERE ID='".abs($id)."'", "TableID", $DB_WE);
@@ -229,7 +229,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 			$foo = $DB_WE->getAll();
 			foreach ($foo as $testclass) {
 				if(isColExistForDelete(OBJECT_X_TABLE.$testclass['ID'],"object_".$tableID)){
-								
+
 					//das l�schen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
 					$qtest = "SELECT OF_ID FROM " .OBJECT_X_TABLE.$testclass['ID']. " WHERE object_".$tableID."= '".abs($id)."'";
 					$DB_WE->query($qtest);
@@ -237,19 +237,19 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 					foreach ($foos as $affectedobjects){
 						$obj = new we_objectFile();
 					 	$obj->initByID($affectedobjects['OF_ID'], OBJECT_FILES_TABLE);
-						
+
                      	$obj->getContentDataFromTemporaryDocs($affectedobjects['OF_ID']);
-						$oldModDate =$obj->ModDate; 
+						$oldModDate =$obj->ModDate;
 						$obj->setElement("we_object_".$tableID,"0");
 						$obj->we_save(0,1);
 						if ($obj->Published !=0 && $obj->Published == $oldModDate){
                     		$obj->we_publish(0,1,1);
-                    	}						
+                    	}
 					}
-					
+
 					$q = "UPDATE " .OBJECT_X_TABLE.$testclass['ID']. " SET object_".$tableID."='0' WHERE object_".$tableID."= '".abs($id)."'";
 					$DB_WE->query($q);
-				}			
+				}
 			}
 		}
 		if (in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
@@ -262,10 +262,10 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 	}
 	$DB_WE->query("DELETE FROM $table WHERE ID=$id");
 	if (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) {
-		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "ID", $DB_WE);
+		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".$DB_WE->escape($path)."'", "ID", $DB_WE);
 		if ($ofID) {
 			deleteEntry($ofID, OBJECT_FILES_TABLE);
-		
+
 		}
 		$DB_WE->query("DROP TABLE IF EXISTS " . OBJECT_X_TABLE . $id);
 	}
@@ -291,8 +291,8 @@ function deleteThumbsByImageID($id)
 	if ($dir_obj) {
 		while (false !== ($entry = $dir_obj->read())) {
 			if ($entry != '.' && $entry != '..' && (substr($entry, 0, strlen($id) + 1) == $id . "_" || substr(
-					$entry, 
-					0, 
+					$entry,
+					0,
 					strlen($id) + 1) == $id . ".")) {
 				array_push($filestodelete, $previewDir . "/" . $entry);
 			}
@@ -322,20 +322,20 @@ function deleteThumbsByThumbID($id)
 
 function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 {
-	
+
 	$DB_WE = new DB_WE();
-	$row = getHash("SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ".mysql_real_escape_string($table)." WHERE ID=".abs($id)."", $DB_WE);
+	$row = getHash("SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ".$DB_WE->escape($table)." WHERE ID=".abs($id)."", $DB_WE);
 	if ((isset($row["CreatorID"]) && $_SESSION["user"]["ID"] == $row["CreatorID"]) || $_SESSION["perms"]["ADMINISTRATOR"]) { //	Owner or admin
 		return true;
 	}
-	
+
 	if ($row["RestrictOwners"]) { //	check which user - group has permission
-		
+
 
 		$userArray = makeArrayFromCSV($row["Owners"]);
-		
+
 		$_allowedGroup = false;
-		
+
 		//	check if usergroup is allowed
 		foreach ($_SESSION['user']['groups'] as $nr => $_userGroup) {
 			if (in_array($_userGroup, $userArray)) {
@@ -344,19 +344,19 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 			}
 		}
 		if (!in_array($_SESSION["user"]["ID"], $userArray) && !$_allowedGroup) { //	user is no allowed user.
-			
+
 
 			return false;
 		}
-		
+
 		//	user belongs to owners of document, check if he has only read access !!!
-		
+
 
 		if ($row["OwnersReadOnly"]) {
-			
+
 			$arr = unserialize($row["OwnersReadOnly"]);
 			if (is_array($arr)) {
-				
+
 				if (isset($arr[$_SESSION["user"]["ID"]]) && $arr[$_SESSION["user"]["ID"]]) { //	if user is readonly user -> no delete
 					return false;
 				} else { //	user NOT readonly and in restricted -> delete allowed
@@ -382,9 +382,9 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 
 function deleteEntry($id, $table, $delR = true,$skipHook=0)
 {
-	
+
 	global $deletedItems;
-	
+
 	$DB_WE = new DB_WE();
 	if (defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
@@ -392,8 +392,8 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 			weWorkflowUtility::removeDocFromWorkflow($id, $table, $_SESSION["user"]["ID"], $l_workflow["doc_deleted"]);
 	}
 	if ($id) {
-		$row = getHash("SELECT Path,IsFolder,ContentType FROM ".mysql_real_escape_string($table)." WHERE ID=".abs($id)."", $DB_WE);
-		
+		$row = getHash("SELECT Path,IsFolder,ContentType FROM ".$DB_WE->escape($table)." WHERE ID=".abs($id)."", $DB_WE);
+
 		$version = new weVersions();
 		$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
 		if (in_array($row['ContentType'], $version->contentTypes)) {
@@ -401,7 +401,7 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 			if (empty($version_exists)) {
 				$version->saveVersion($object);
 			}
-			
+
 			$version->setVersionOnDelete($id, $table,$row['ContentType']);
 		}
 		/* hook */
@@ -409,9 +409,9 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 			$hook = new weHook('delete', '', array($object));
 			$hook->executeHook();
 		}
-		
+
 		we_temporaryDocument::delete($id, $table, $DB_WE);
-		
+
 		@set_time_limit(30);
 		if (sizeof($row)) {
 			if ($row["IsFolder"]) {

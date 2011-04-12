@@ -49,9 +49,9 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 	var loaded=0;
 	var hot=0;
 	var hloaded=0;
-	
+
 	parent.document.title = "<?php print $title; ?>";
-	
+
 	<?php
 		if($_SESSION["user"]["ID"] && isset($GLOBALS["BIG_USER_MODULE"]) && $GLOBALS["BIG_USER_MODULE"] && in_array("busers",$GLOBALS["_pro_modules"])) {
 			$DB_WE->query("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".$_SESSION["user"]["ID"]);
@@ -508,7 +508,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 
 					print "startloc=".$startloc.";\n";
 
-					$DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE Path LIKE '".mysql_real_escape_string($parent_path)."%' ORDER BY Text ASC");
+					$DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE Path LIKE '".$DB_WE->escape($parent_path)."%' ORDER BY Text ASC");
 
 					while($DB_WE->next_record()) {
 						if($DB_WE->f("Type")==1) {

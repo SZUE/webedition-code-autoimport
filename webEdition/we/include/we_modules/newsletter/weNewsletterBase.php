@@ -41,7 +41,7 @@ class weNewsletterBase{
 		$this->persistents=array();
 	}
 
-	
+
 	/**
 	 * Load entry from database
 	 *
@@ -53,7 +53,7 @@ class weNewsletterBase{
 		if($id) $this->ID=abs($id);
 		if ($this->ID){
 			$tableInfo = $this->db->metadata($this->table);
-			$this->db->query("SELECT * FROM ".mysql_real_escape_string($this->table)." WHERE ID='".$this->ID."'");
+			$this->db->query("SELECT * FROM ".$this->db->escape($this->table)." WHERE ID='".$this->ID."'");
 			if($this->db->next_record())
 			for($i=0;$i<sizeof($tableInfo);$i++){
 				$fieldName = $tableInfo[$i]["name"];
@@ -91,7 +91,7 @@ class weNewsletterBase{
 									$month = $date[1];
 									$year = $date[2];
 									$hour = $value[$c]['hours'];
-									$minute = $value[$c]['minutes']; 
+									$minute = $value[$c]['minutes'];
 									$timestamp = mktime($hour, $minute, 0, $month, $day, $year);
 								}
 								else {
@@ -105,15 +105,15 @@ class weNewsletterBase{
 				}
 			}
 
-			$sets[]=$val."='".($this->table == NEWSLETTER_BLOCK_TABLE ? $this->$val : mysql_real_escape_string($this->$val))."'";
-			
+			$sets[]=$val."='".($this->table == NEWSLETTER_BLOCK_TABLE ? $this->$val : $this->db->escape($this->$val))."'";
+
 		}
 		$where=implode(",",$wheres);
 		$set=implode(",",$sets);
 
 	  if ($this->ID==0){
 
-			$query = 'INSERT INTO '.mysql_real_escape_string($this->table).' SET '.$set;
+			$query = 'INSERT INTO '.$this->db->escape($this->table).' SET '.$set;
 			$this->db->query($query);
 			# get ID #
 			$this->db->query("SELECT LAST_INSERT_ID()");
@@ -137,7 +137,7 @@ class weNewsletterBase{
 		{
 			return false;
 		}
-	  $this->db->query('DELETE FROM '.mysql_real_escape_string($this->table).' WHERE ID="' . $this->ID . '"');
+	  $this->db->query('DELETE FROM '.$this->db->escape($this->table).' WHERE ID="' . $this->ID . '"');
 		return true;
 	}
 
@@ -153,12 +153,12 @@ class weNewsletterBase{
 	*/
 	function check_domain($email,&$domain){
 		$mxhosts="";
-		
+
 		//$exp="/[[:space:]\<_\.0-9A-Za-z-]+@([0-9a-zA-Z][0-9a-zA-Z-\.]+)(\>)?/";
 		//if(preg_match_all($exp,$email,$out,PREG_PATTERN_ORDER)){
 			$domain=weNewsletterBase::get_domain($email);
 			if($domain){
-				if(eregi("IIS",$_SERVER["SERVER_SOFTWARE"]) || eregi("Microsoft",$_SERVER["SERVER_SOFTWARE"]) || eregi("Windows",$_SERVER["SERVER_SOFTWARE"]) || eregi("Win32",$_SERVER["SERVER_SOFTWARE"])){	
+				if(eregi("IIS",$_SERVER["SERVER_SOFTWARE"]) || eregi("Microsoft",$_SERVER["SERVER_SOFTWARE"]) || eregi("Windows",$_SERVER["SERVER_SOFTWARE"]) || eregi("Win32",$_SERVER["SERVER_SOFTWARE"])){
 					if(gethostbyname(trim($domain))==$domain) return false;
 					else return true;
 				}
@@ -171,11 +171,11 @@ class weNewsletterBase{
 
 		return false;
 	}
-	
+
 	function get_domain($email){
 		$exp="/[[:space:]\<_\.0-9A-Za-z-]+@([0-9a-zA-Z][0-9a-zA-Z-\.]+)(\>)?/";
 		if(preg_match_all($exp,$email,$out,PREG_PATTERN_ORDER)) return $out[1][0];
-		
+
 		return false;
 	}
 
@@ -198,7 +198,7 @@ class weNewsletterBase{
 
 		return $ret;
 	}
-	
+
 	function getEmailsFromExtern($files,$emails_only=0,$group=0,$blocks=array()){
 		$ret=array();
 		$arr=array();
@@ -210,7 +210,7 @@ class weNewsletterBase{
 					$data = weFile::load($_SERVER["DOCUMENT_ROOT"].$file);
 					$data = str_replace("\r\n","\n",$data);
 					$dataArr = explode("\n",$data);
-					if(!empty($dataArr)){ 
+					if(!empty($dataArr)){
 						foreach($dataArr as $value){
 							$dat=makeArrayFromCSV($value);
 							$_alldat = implode("",$dat);
@@ -220,17 +220,17 @@ class weNewsletterBase{
 							if($emails_only==1){
 								$ret[]=$dat[0];
 							} else if($emails_only==2) {
-								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");						
+								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");
 							} else{
 								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
 							}
-						}			
+						}
 					}
 				}
-			}						
+			}
 		}
 		return $ret;
-	}	
+	}
 
 
 	/**
@@ -256,7 +256,7 @@ class weNewsletterBase{
 					$data = str_replace("\r\n","\n",$data);
 					$dataArr = explode("\n",$data);
 					if(!empty($dataArr)){
-						foreach($dataArr as $value){							
+						foreach($dataArr as $value){
 							$dat=makeArrayFromCSV($value);
 							$_alldat = implode("",$dat);
 							if (str_replace(" ", "", $_alldat)=="") {
@@ -267,24 +267,24 @@ class weNewsletterBase{
 								continue;
 							} elseif ($status==2 && !we_check_email($dat[0])) {
 								continue;
-							} 
+							}
 							$emailkey[]=$countEMails-1;
 							if($emails_only==1){
 								$ret[]=$dat[0];
 							} else if($emails_only==2) {
-								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");						
+								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");
 							} else{
 								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
 							}
 						}
-									
+
 					}
 				}
-			}						
+			}
 		}
 		return $ret;
-	}	
-	
+	}
+
 	function htmlSelectEmailList($name,$values,$size=1,$selectedIndex="",$multiple=false,$attribs="",$compare="value",$width="",$cls="defaultfont"){
 		reset($values);
 		$ret = '<select class="'.$cls.'" name="'.trim($name).'" size="'.abs($size).'"'.($multiple ? " multiple" : "").($attribs ? " $attribs" : "").($width ? ' style="width: '.$width.'px"' : '').'>'."\n";

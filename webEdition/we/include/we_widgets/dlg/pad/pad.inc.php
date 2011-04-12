@@ -84,7 +84,7 @@ if ($bDisplay == 0) {
 	// alle Notizen
 	$out_bDisplay = 'alle Notizen';
 	$q_display = '';
-} else 
+} else
 	if ($bDisplay == 1) {
 		// nur g�ltige
 		$out_bDisplay = 'nur g�ltige';
@@ -167,7 +167,7 @@ $_get_prio = 'high';
 $_table = TBL_PREFIX . 'tblwidgetnotepad';
 
 $_sql = "INSERT INTO
-	" . mysql_real_escape_string($_table) . " 
+	" . escape_sql_query($_table) . "
 (
 	WidgetName,
 	UserID,
@@ -179,15 +179,15 @@ $_sql = "INSERT INTO
 	ValidFrom,
 	ValidUntil
 ) VALUES (
-	'" . mysql_real_escape_string($_title) . "',
+	'" . escape_sql_query($_title) . "',
 	" . abs($_SESSION['user']['ID']) . ",
 	DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
-	'" . mysql_real_escape_string($_get_title) . "',
-	'" . mysql_real_escape_string($_get_text) . "',
-	'" . mysql_real_escape_string($_get_prio) . "',
-	'" . mysql_real_escape_string($_get_valid) . "',
-	'" . mysql_real_escape_string($_get_valid_from) . "',
-	'" . mysql_real_escape_string($_get_valid_until) . "'
+	'" . escape_sql_query($_get_title) . "',
+	'" . escape_sql_query($_get_text) . "',
+	'" . escape_sql_query($_get_prio) . "',
+	'" . escape_sql_query($_get_valid) . "',
+	'" . escape_sql_query($_get_valid_from) . "',
+	'" . escape_sql_query($_get_valid_until) . "'
 )
 ";
 $DB_WE = new DB_WE();
@@ -195,13 +195,13 @@ $DB_WE = new DB_WE();
 
 
 if ($bDisplay) {
-	$_sql = "SELECT * FROM " . mysql_real_escape_string($_table) . " WHERE 
-	WidgetName = '" . mysql_real_escape_string($_title) . "' AND 
-	UserID = " . abs($_SESSION['user']['ID']) . " 
+	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
+	WidgetName = '" . escape_sql_query($_title) . "' AND
+	UserID = " . abs($_SESSION['user']['ID']) . "
 	ORDER BY " . $q_sort;
 } else {
-	$_sql = "SELECT * FROM " . mysql_real_escape_string($_table) . " WHERE 
-	WidgetName = '" . mysql_real_escape_string($_title) . "' AND 
+	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
+	WidgetName = '" . escape_sql_query($_title) . "' AND
 	UserID = " . abs($_SESSION['user']['ID']) . " AND
 	(
 		Valid = 'always' OR
@@ -228,7 +228,7 @@ while ($DB_WE->next_record()) {
 	$pad .= '<td valign="middle" class="middlefont">' . we_htmlElement::htmlA(
 			array(
 				"href" => "javascript:void(0)", "title" => "", "style" => "color:#000000;text-decoration:none;"
-			), 
+			),
 			$DB_WE->f("Title")) . '</td>';
 	$pad .= '</tr>';
 	// $DB_WE->f("Text")
@@ -239,7 +239,7 @@ $pad .= '</table>';
 
 print "hello";
 //$ifr = "<iframe allowtransparency=\"true\" src=\"".WEBEDITION_DIR."we/include/we_widgets/mod/pad1.inc.php\"\" id=\"\" style=\"width:430px;height:100px\" scrolling=\"auto\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\"></iframe>\n";
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
 						we_htmlElement::htmlTitle($l_cockpit['notepad']) . STYLESHEET . //'<link rel="stylesheet" type="text/css" media="all" href="'.JS_DIR.'jscalendar/calendar-win2k-cold-1.css" title="win2k-cold-1" />'.
@@ -250,13 +250,13 @@ print
 						we_htmlElement::jsElement(
 								$js)) . we_htmlElement::htmlBody(
 						array(
-							
-								"marginwidth" => "15", 
-								"marginheight" => "10", 
-								"leftmargin" => "15", 
-								"topmargin" => "10", 
+
+								"marginwidth" => "15",
+								"marginheight" => "10",
+								"leftmargin" => "15",
+								"topmargin" => "10",
 								"onload" => "if(parent!=self)init();"
-						), 
+						),
 						we_htmlElement::htmlDiv(array(
 							"id" => "pad"
 						), $pad)));

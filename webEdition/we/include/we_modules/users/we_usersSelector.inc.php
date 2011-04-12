@@ -27,10 +27,10 @@ define("FS_SETDIR",5);
 
 
 class we_usersSelector extends we_multiSelector{
-	
+
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 	var $filter="";
-	
+
 	function we_usersSelector($id,
 	$table=FILE_TABLE,
 	$JSIDName="",
@@ -41,7 +41,7 @@ class we_usersSelector extends we_multiSelector{
 	$rootDirID=0,
 	$filter="",
 	$multiple=true){
-		
+
 		$this->we_multiSelector($id,
 		$table,
 		$JSIDName,
@@ -51,14 +51,14 @@ class we_usersSelector extends we_multiSelector{
 		$sessionID,
 		$rootDirID,
 		$multiple);
-				
+
 		$this->filter=$filter;
 		$GLOBALS["l_fileselector"]["filename"] = ($this->filter == "group") ? $GLOBALS["l_fileselector"]["groupname"] : $GLOBALS["l_fileselector"]["username"];
 	}
-	
+
 	function setDefaultDirAndID($setLastDir){
 		$this->dir = $setLastDir ? (isset($_SESSION["we_fs_lastDir"][$this->table]) ? abs($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
-		$foo = getHash("SELECT IsFolder,Text,Path FROM ".mysql_real_escape_string($this->table)." WHERE ID='".$this->dir."'",$this->db);
+		$foo = getHash("SELECT IsFolder,Text,Path FROM ".$this->db->escape($this->table)." WHERE ID='".$this->dir."'",$this->db);
 		if(isset($foo["IsFolder"]) && $foo["IsFolder"] && $this->dir){
 			$this->values = array("ParentID"=>$this->dir,
 			"Text"=>$foo["Text"],
@@ -76,7 +76,7 @@ class we_usersSelector extends we_multiSelector{
 			$this->id = 0;
 		}
 	}
-	
+
 	function printHTML($what=FS_FRAMESET){
 		switch($what){
 			case FS_HEADER:
@@ -99,12 +99,12 @@ class we_usersSelector extends we_multiSelector{
 			$this->printFramesetHTML();
 		}
 	}
-	
-	
+
+
 	function getFsQueryString($what){
 		return $_SERVER["PHP_SELF"]."?what=$what&table=".$this->table."&id=".$this->id."&order=".$this->order."&filter=".$this->filter;
 	}
-	
+
 	function query(){
 		switch($this->filter){
 			case "group":
@@ -112,7 +112,7 @@ class we_usersSelector extends we_multiSelector{
 			break;
 			case "noalias":
 				$q = " AND Alias='0' ";
-			break;			
+			break;
 			default:
 			$q="";
 		}
@@ -123,14 +123,14 @@ class we_usersSelector extends we_multiSelector{
 		//}else{
 		$upath = "";
 		//}
-		$this->db->query("SELECT ".mysql_real_escape_string($this->fields)." FROM ".
-		mysql_real_escape_string($this->table).
+		$this->db->query("SELECT ".$this->db->escape($this->fields)." FROM ".
+		$this->db->escape($this->table).
 		" WHERE ParentID='".$this->dir."'".
 		($upath ? " AND Path LIKE '".$upath."%' " : "").
 		$q.($this->order ? (' ORDER BY '.$this->order) : ''));
-		
+
 	}
-	
+
 	function printFramesetJSFunctionQueryString(){
 ?>
 
@@ -141,9 +141,9 @@ function queryString(what,id,o){
 
 <?php
 	}
-	
+
 	function printFramesetJSsetDir(){
-		
+
 		if($this->filter=="user"){
 ?>
 function setDir(id){
@@ -153,7 +153,7 @@ function setDir(id){
 <?php
 
 		}else{
-			
+
 		?>
 
 	function setDir(id){
@@ -163,14 +163,14 @@ function setDir(id){
 <?php
 		}
 	}
-	
+
 	function printSetDirHTML(){
 		print '<script>
 top.clearEntries();
 ';
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
-		
+
 		if(abs($this->dir)==abs($this->rootDirID)){
 			print 'top.fsheader.disableRootDirButs();
 ';
@@ -178,7 +178,7 @@ top.clearEntries();
 			print 'top.fsheader.enableRootDirButs();
 ';
 		}
-		
+
 		if($_SESSION["perms"]["ADMINISTRATOR"]) $go=true;
 		else{
 			$rootID=f("SELECT ParentID FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'","ParentID",$this->db);
@@ -199,9 +199,9 @@ top.parentID = "'.$this->values["ParentID"].'";
 ';
 		print '</script>';
 	}
-	
+
 	function printFramesetSelectFileHTML(){
-?>	
+?>
 
 function selectFile(id){
 	if(id){
@@ -209,16 +209,16 @@ function selectFile(id){
 <?php if($this->filter=="user"): ?>
 
 		if(!e.isFolder){
-		
+
 <?php endif ?>
-			
-		
-		
+
+
+
 		if( top.fsfooter.document.we_form.fname.value != e.text &&
-			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 && 
+			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
 			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
 			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-		
+
 				top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
 																(top.fsfooter.document.we_form.fname.value + "," + e.text) :
 																e.text;
@@ -253,7 +253,7 @@ function selectFile(id){
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>
 				</tr>';
-		$cancel_button = $we_button->create_button("cancel", "javascript:top.exit_close();");		
+		$cancel_button = $we_button->create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = $we_button->create_button("ok", "javascript:press_ok_button();");
 		$buttons = $we_button->position_yes_no_cancel(
 												$yes_button,
@@ -296,6 +296,6 @@ function selectFile(id){
 		}
 		";
 	}
-	
+
 }
 ?>

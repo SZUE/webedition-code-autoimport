@@ -156,7 +156,7 @@ class we_folder extends we_root
 				}
 
 			} else {
-				$Query = "SELECT Language, ParentID FROM " . mysql_real_escape_string($this->Table) . " WHERE ID = " . abs($ParentID);
+				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . abs($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
@@ -174,7 +174,7 @@ class we_folder extends we_root
 
 	function initByPath($path,$tblName=FILE_TABLE,$IsClassFolder=0,$IsNotEditable=0){
 		if (substr($path,-1)=='/'){$path=substr($path,0,strlen($path)-1); }
-		$id = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='".mysql_real_escape_string($path)."' AND IsFolder=1","ID",$this->DB_WE);
+		$id = f("SELECT ID FROM ".escape_sql_query($tblName)." WHERE Path='".escape_sql_query($path)."' AND IsFolder=1","ID",$this->DB_WE);
 		if($id != ""){
 			$this->initByID($id, $tblName);
 			if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE) {
@@ -192,7 +192,7 @@ class we_folder extends we_root
 				array_push($p,array_shift($spl));
 				$pa = implode("/",$p);
 				if($pa){
-					$pid = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='".mysql_real_escape_string($pa)."'","ID",new DB_WE());
+					$pid = f("SELECT ID FROM ".escape_sql_query($tblName)." WHERE Path='".escape_sql_query($pa)."'","ID",new DB_WE());
 					if(!$pid){
 						if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE) {
 							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
@@ -305,13 +305,13 @@ class we_folder extends we_root
 		$language = $this->Language;
 
 		// Change language of published documents first
-		$query = "UPDATE " . mysql_real_escape_string($this->Table) . " SET Language = '" . mysql_real_escape_string($this->Language) . "' WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		$query = "UPDATE " . $DB_WE->escape($this->Table) . " SET Language = '" . $DB_WE->escape($this->Language) . "' WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
 
 		if(!$DB_WE->query($query)) {
 			return false;
 		}
 		// Change Language of unpublished documents
-		$query = "SELECT ID FROM " . mysql_real_escape_string($this->Table) . " WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
+		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
 
 		if(!$DB_WE->query($query)) {
 			return false;
@@ -326,7 +326,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
 				if(!$DB_WE2->query($query)) {
 					return false;
 
@@ -340,7 +340,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
 				if(!$DB_WE2->query($query)) {
 					return false;
 				}
@@ -356,7 +356,7 @@ class we_folder extends we_root
 			$cid = $pid = f($q, "ID",$DB_WE);
 			$_obxTable = OBJECT_X_TABLE.$cid;
 
-			$query = "UPDATE " . mysql_real_escape_string($_obxTable) . " SET OF_Language = '" . mysql_real_escape_string($this->Language) . "' WHERE OF_Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' ";
+			$query = "UPDATE " . $DB_WE->escape($_obxTable) . " SET OF_Language = '" . $DB_WE->escape($this->Language) . "' WHERE OF_Path LIKE '" . $DB_WE->escape($this->Path) . "/%' ";
 
 			if(!$DB_WE->query($query)) {
 				return false;
@@ -376,13 +376,13 @@ class we_folder extends we_root
 		$language = $this->TriggerID;
 
 		// Change TriggerID of published documents first
-		$query = "UPDATE " . mysql_real_escape_string($this->Table) . " SET TriggerID = '" . mysql_real_escape_string($this->TriggerID) . "' WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		$query = "UPDATE " . $DB_WE->escape($this->Table) . " SET TriggerID = '" . $DB_WE->escape($this->TriggerID) . "' WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
 
 		if(!$DB_WE->query($query)) {
 			return false;
 		}
 		// Change Language of unpublished documents
-		$query = "SELECT ID FROM " . mysql_real_escape_string($this->Table) . " WHERE Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
+		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
 
 		if(!$DB_WE->query($query)) {
 			return false;
@@ -397,7 +397,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
 				if(!$DB_WE2->query($query)) {
 					return false;
 
@@ -411,7 +411,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".mysql_real_escape_string($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
 				if(!$DB_WE2->query($query)) {
 					return false;
 				}
@@ -427,7 +427,7 @@ class we_folder extends we_root
 			$cid = $pid = f($q, "ID",$DB_WE);
 			$_obxTable = OBJECT_X_TABLE.$cid;
 
-			$query = "UPDATE " . mysql_real_escape_string($_obxTable) . " SET OF_TriggerID = '" . mysql_real_escape_string($this->TriggerID) . "' WHERE OF_Path LIKE '" . mysql_real_escape_string($this->Path) . "/%' ";
+			$query = "UPDATE " . $DB_WE->escape($_obxTable) . " SET OF_TriggerID = '" . $DB_WE->escape($this->TriggerID) . "' WHERE OF_Path LIKE '" . $DB_WE->escape($this->Path) . "/%' ";
 
 			if(!$DB_WE->query($query)) {
 				return false;
@@ -443,7 +443,7 @@ class we_folder extends we_root
 		$this->Text = ($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".mysql_real_escape_string($this->Table)." WHERE Path='".mysql_real_escape_string($this->Path)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".escape_sql_query($this->Table)." WHERE Path='".escape_sql_query($this->Path)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
 	}
 	function i_filenameEmpty(){
 		$fn = ($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? $this->Filename : $this->Text;
@@ -631,7 +631,7 @@ $content .='
 
 	function modifyIndexPath(){
 		$DB_WE = new DB_WE;
-		$DB_WE->query("UPDATE " . INDEX_TABLE . " SET Workspace='".mysql_real_escape_string($this->Path.substr($DB_WE->f("Workspace"),strlen($this->OldPath)))."' WHERE Workspace like '".mysql_real_escape_string($this->OldPath)."%'");
+		$DB_WE->query("UPDATE " . INDEX_TABLE . " SET Workspace='".$DB_WE->escape($this->Path.substr($DB_WE->f("Workspace"),strlen($this->OldPath)))."' WHERE Workspace like '".$DB_WE->escape($this->OldPath)."%'");
 		/*$DB_WE2 = new DB_WE;
 		$DB_WE->query("SELECT ID,Workspace FROM " . INDEX_TABLE . " WHERE Workspace like '".$this->OldPath."%'");
 		while($DB_WE->next_record()){
@@ -647,8 +647,8 @@ $content .='
 		@ignore_user_abort(true);
 		$DB_WE = new DB_WE;
 		// Update Paths also in Doctype Table
-		$DB_WE->query("UPDATE " . DOC_TYPES_TABLE . " SET ParentPath='".mysql_real_escape_string($this->Path)."' WHERE ParentID='".abs($this->ID)."'");
-		$DB_WE->query("SELECT * FROM ".mysql_real_escape_string($this->Table)." WHERE ParentID='".abs($this->ID)."'");
+		$DB_WE->query("UPDATE " . DOC_TYPES_TABLE . " SET ParentPath='".$DB_WE->escape($this->Path)."' WHERE ParentID='".abs($this->ID)."'");
+		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($this->Table)." WHERE ParentID='".abs($this->ID)."'");
 		while($DB_WE->next_record()){
 			@set_time_limit(30);
 			if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$DB_WE->f("ClassName").".inc.php")){

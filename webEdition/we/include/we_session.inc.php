@@ -34,7 +34,7 @@ if (!isset($_SESSION["user"])) {
 if (isset($_POST["username"]) && isset($_POST["password"])) {
 
 
-	$DB_WE->query("SELECT UseSalt FROM " . USER_TABLE . " WHERE username='" . mysql_real_escape_string(
+	$DB_WE->query("SELECT UseSalt FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape(
 					$_POST["username"])."'");
 
 	// only if username exists !!
@@ -45,8 +45,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 		$passwd = $useSalt ? $salted : md5($_POST["password"]);
 
 
-		$DB_WE->query("SELECT passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . mysql_real_escape_string(
-						$_POST["username"]) . "' AND passwd='".mysql_real_escape_string($passwd)."'");
+		$DB_WE->query("SELECT passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape(
+						$_POST["username"]) . "' AND passwd='".$DB_WE->escape($passwd)."'");
 
 
 		if ($DB_WE->next_record()) {
@@ -62,8 +62,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
 				if (!$useSalt) {
 					// UPDATE Password with SALT
-					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='".$salted."',UseSalt=1 WHERE username='" . mysql_real_escape_string(
-							$_POST["username"]) . "' AND passwd='".mysql_real_escape_string($passwd)."'");
+					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='".$salted."',UseSalt=1 WHERE username='" . $DB_WE->escape(
+							$_POST["username"]) . "' AND passwd='".$DB_WE->escape($passwd)."'");
 				}
 
 				if (!(isset($_SESSION["user"]) && is_array($_SESSION["user"]))) {

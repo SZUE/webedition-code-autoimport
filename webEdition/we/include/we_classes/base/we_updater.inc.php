@@ -50,7 +50,7 @@
 						$Owners = ($DB_WE->f("OwnerID") && ($DB_WE->f("OwnerID") != $DB_WE->f("CreatorID"))) ? (",".$DB_WE->f("OwnerID").",") : "";
 						$CreatorID = $DB_WE->f("CreatorID") ? $DB_WE->f("CreatorID") : $_SESSION["user"]["ID"];
 						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
-						$db2->query("UPDATE ".mysql_real_escape_string($table)." SET CreatorID='".abs($CreatorID)."' , ModifierID='".abs($ModifierID)."' , Owners='".mysql_real_escape_string($Owners)."' WHERE ID='".abs($id)."'");
+						$db2->query("UPDATE ".$db2->escape($table)." SET CreatorID='".abs($CreatorID)."' , ModifierID='".abs($ModifierID)."' , Owners='".$db2->escape($Owners)."' WHERE ID='".abs($id)."'");
 						$db2->query("DELETE FROM tblOwner WHERE fileID='".abs($id)."'");
 						@set_time_limit(30);
 					}
@@ -79,9 +79,9 @@
 		$DB_WE->query("SELECT * FROM " . CATEGORY_TABLE);
 		while($DB_WE->next_record()){
 			if(($DB_WE->f("Text")==""))
-				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Text='".mysql_real_escape_string($DB_WE->f("Category"))."' WHERE ID='".abs($DB_WE->f("ID"))."'");
+				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Text='".$db2->escape($DB_WE->f("Category"))."' WHERE ID='".abs($DB_WE->f("ID"))."'");
 			if(($DB_WE->f("Path")==""))
-				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Path='/".mysql_real_escape_string($DB_WE->f("Category"))."' WHERE ID='".abs($DB_WE->f("ID"))."'");
+				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Path='/".$db2->escape($DB_WE->f("Category"))."' WHERE ID='".abs($DB_WE->f("ID"))."'");
 		}
 
 		if(!$this->isColExist(PREFS_TABLE,"seem_start_file")) $this->addCol(PREFS_TABLE,"seem_start_file","INT");
@@ -139,7 +139,7 @@
 		$perms_slot["ADMINISTRATOR"]=$pstr["0"];
 		$perms_slot["PUBLISH"]=$pstr["1"];
 		if(count($perms_slot)>0){
-		   $db_tmp->query("UPDATE " . USER_TABLE . " SET Permissions='".mysql_real_escape_string(serialize($perms_slot))."' WHERE ID=".abs($DB_WE->f("ID")));
+		   $db_tmp->query("UPDATE " . USER_TABLE . " SET Permissions='".$db_tmp->escape(serialize($perms_slot))."' WHERE ID=".abs($DB_WE->f("ID")));
 		}
 	  }
 	}
@@ -162,7 +162,7 @@
 				}
 				else $pid=0;
 				}
-				  $db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
+				  $db2->query("UPDATE " . USER_TABLE . " SET Path='".$db2->escape($path)."' WHERE ID='".abs($id)."'");
 			}
 		} else {
 			$db->query("SELECT ID,username FROM " . USER_TABLE);
@@ -170,7 +170,7 @@
 			  @set_time_limit(30);
 			  $id = $db->f("ID");
 			  $path = "/".$db->f("username");
-			  $db2->query("UPDATE " . USER_TABLE . " SET Path='".mysql_real_escape_string($path)."' WHERE ID='".abs($id)."'");
+			  $db2->query("UPDATE " . USER_TABLE . " SET Path='".$db2->escape($path)."' WHERE ID='".abs($id)."'");
 			}
 		}
 	}
@@ -192,7 +192,7 @@
 			default:
 				$icon="user.gif";
 			}
-			$db2->query("UPDATE " . USER_TABLE . " SET Icon='".mysql_real_escape_string($icon)."' WHERE ID='".abs($id)."'");
+			$db2->query("UPDATE " . USER_TABLE . " SET Icon='".$db2->escape($icon)."' WHERE ID='".abs($id)."'");
 		}
 	}
 
@@ -205,7 +205,7 @@
 			$id = $db->f("ID");
 			if($db->f("IsFolder")==1) $icon="usergroup.gif";
 			else $icon="user.gif";
-					$db2->query("UPDATE " . USER_TABLE . " SET Icon='".mysql_real_escape_string($icon)."' WHERE ID='".abs($id)."'");
+					$db2->query("UPDATE " . USER_TABLE . " SET Icon='".$db2->escape($icon)."' WHERE ID='".abs($id)."'");
 		}
 	}
 
@@ -217,24 +217,24 @@
 			@set_time_limit(30);
 			$id = $db->f("ID");
 			$text = $db->f("username");
-			$db2->query("UPDATE " . USER_TABLE . " SET Text='".mysql_real_escape_string($text)."' WHERE ID='".abs($id)."'");
+			$db2->query("UPDATE " . USER_TABLE . " SET Text='".$db2->escape($text)."' WHERE ID='".abs($id)."'");
 		}
 	}
 
 	function isColExist($tab,$col){
 			global $DB_WE;
-			$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
+			$DB_WE->query("SHOW COLUMNS FROM ".$DB_WE->escape($tab)." LIKE '".$DB_WE->escape($col)."';");
 			if($DB_WE->next_record()) return true; else return false;
 	}
 
 	function hasIndex($tab,$index){
-		$GLOBALS['DB_WE']->query('SHOW INDEX FROM '.mysql_real_escape_string($tab).' WHERE Key_name = "'.$index.'"');
+		$GLOBALS['DB_WE']->query('SHOW INDEX FROM '.$GLOBALS['DB_WE']->escape($tab).' WHERE Key_name = "'.$index.'"');
 		return $GLOBALS['DB_WE']->next_record();
 	}
 
 	function updateUnindexedCols($tab,$col){
 	  global $DB_WE;
-	  $DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".mysql_real_escape_string($col)."';");
+	  $DB_WE->query("SHOW COLUMNS FROM ".$DB_WE->escape($tab)." LIKE '".$DB_WE->escape($col)."';");
 	  $query=array();
 	  while($DB_WE->next_record()) {
 		  if($DB_WE->f('Key')==''){
@@ -242,13 +242,13 @@
 		  }
 	  }
 	  if(count($query)>0){
-		  $DB_WE->query('ALTER TABLE '.mysql_real_escape_string($tab).' '.implode(', ',$query));
+		  $DB_WE->query('ALTER TABLE '.$DB_WE->escape($tab).' '.implode(', ',$query));
 	  }
 	}
 
 	function isTabExist($tab){
 	  global $DB_WE;
-	  $DB_WE->query("SHOW TABLES LIKE '".mysql_real_escape_string($tab)."';");
+	  $DB_WE->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
 	  if($DB_WE->next_record()) return true; else return false;
 	}
 
@@ -264,37 +264,37 @@
 	   }
 	   $sql_array=array_merge($cols_sql,$key_sql);
 
-	   $DB_WE->query("CREATE TABLE ".mysql_real_escape_string($tab)." (".implode(",",$sql_array).")");
+	   $DB_WE->query("CREATE TABLE ".$DB_WE->escape($tab)." (".implode(",",$sql_array).")");
 	}
 
 	function addCol($tab,$col,$typ,$pos=""){
 	   global $DB_WE;
-	   $DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
+	   $DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." ADD ".$col." ".$typ." ".(($pos!="") ? " ".$pos : "").";");
 	}
 
 	function addIndex($tab,$name,$def){
-		$GLOBALS['DB_WE']->query('ALTER TABLE '.mysql_real_escape_string($tab).' ADD INDEX '.$name.' ('.$def.')');
+		$GLOBALS['DB_WE']->query('ALTER TABLE '.$GLOBALS['DB_WE']->escape($tab).' ADD INDEX '.$name.' ('.$def.')');
 	}
 
 	function changeColTyp($tab,$col,$newtyp){
 		global $DB_WE;
-		$DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
+		$DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." CHANGE ".$col." ".$col." ".$newtyp.";");
 	}
 
 	function changeColName($tab,$oldcol,$newcol){
 		global $DB_WE;
-		$DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." CHANGE ".$oldcol." ".$newcol.";");
+		$DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." CHANGE ".$oldcol." ".$newcol.";");
 	}
 
 	function getColTyp($tab,$col){
 		global $DB_WE;
-		$DB_WE->query("SHOW COLUMNS FROM ".mysql_real_escape_string($tab)." LIKE '".$col."';");
+		$DB_WE->query("SHOW COLUMNS FROM ".$DB_WE->escape($tab)." LIKE '".$col."';");
 		if($DB_WE->next_record()) return $DB_WE->f("Type"); else return "";
 	}
 
 	function delCol($tab,$col){
 		global $DB_WE;
-		$DB_WE->query("ALTER TABLE ".mysql_real_escape_string($tab)." DROP ".$col.";");
+		$DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." DROP ".$col.";");
 	}
 
 	function updateUsers(){

@@ -1141,7 +1141,7 @@ $GLOBALS["lv"] = new we_listview_multiobject("' . $name . '", $we_rows, $we_offs
 					$filterdatestart = we_getTagAttributeTagParser("filterdatestart", $arr, "-1");
 					$filterdateend = we_getTagAttributeTagParser("filterdateend", $arr, "-1");
 					$php .= '$customer=' . ($customer ? "true" : "false") . ';
-$bannerid = f("SELECT ID FROM ".BANNER_TABLE." WHERE PATH=\'' . mysql_real_escape_string($path) . '\'","ID",new DB_WE());
+$bannerid = f("SELECT ID FROM ".BANNER_TABLE." WHERE PATH=\'' . escape_sql_query($path) . '\'","ID",new DB_WE());
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/weBanner.php");
 if($customer && defined("CUSTOMER_TABLE") && (!weBanner::customerOwnsBanner($_SESSION["webuser"]["ID"],$bannerid))){
 $bannerid=0;

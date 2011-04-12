@@ -22,19 +22,19 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
 
 class weNewsletterDirSelector extends we_dirSelector{
-	
+
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
 	function weNewsletterDirSelector( $id, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $we_editDirID="", $FolderText="", $rootDirID=0, $multiple=0) {
 	    $table = NEWSLETTER_TABLE;
 	    $this->we_dirSelector( $id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple);
 	}
-	
+
 	function printCreateFolderHTML(){
-		htmlTop();		
+		htmlTop();
 		protect();
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
-		
+
 		print '<script>
 top.clearEntries();
 ';
@@ -56,7 +56,7 @@ top.clearEntries();
 			$folder->Path=$folder->getPath();
 			$folder->CreatorID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
 			$folder->ModifierID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."'");
+			$this->db->query("SELECT ID FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
@@ -78,26 +78,26 @@ top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 ';
 					}
 				}
-				
+
 			}
 		}
-		
-		
+
+
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
-		
+
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
 		print '</head><body></body></html>';
-	}	
-	
+	}
+
 	function printDoRenameFolderHTML(){
-		htmlTop();		
+		htmlTop();
 		protect();
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_language/".$GLOBALS["WE_LANGUAGE"]."/we_editor.inc.php");
-		
+
 		print '<script>
 top.clearEntries();
 ';
@@ -115,7 +115,7 @@ top.clearEntries();
 			$folder->Published=time();
 			$folder->Path=$folder->getPath();
 			$folder->ModifierID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID,Text FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."' AND ID != ".abs($this->we_editDirID));
+			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".abs($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["response_path_exists"],$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
@@ -124,7 +124,7 @@ top.clearEntries();
 					$we_responseText = sprintf($GLOBALS["l_we_editor"]["folder"]["we_filename_notValid"],$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
-					if(f("SELECT Text FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
@@ -140,36 +140,36 @@ top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 						}
 					}
 				}
-				
+
 			}
 		}
-		
-		
+
+
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
-		
+
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
 		print '</head><body></body></html>';
-	}	
+	}
 
 
 	function query(){
 
 		$ws_query = getWsQueryForSelector(NEWSLETTER_TABLE);
-		
-		$_query = "	SELECT ".mysql_real_escape_string($this->fields)."
-					FROM ".mysql_real_escape_string($this->table)."
+
+		$_query = "	SELECT ".$this->db->escape($this->fields)."
+					FROM ".$this->db->escape($this->table)."
 					WHERE IsFolder=1 AND ParentID=".abs($this->dir).
 					$ws_query .
 					($this->order ? (' ORDER BY '.$this->order) : '');
-		
+
 		$this->db->query($_query);
-		
-	}	
-	
+
+	}
+
 	function printFramesetJSFunctionAddEntries(){
 		while($this->next_record()){
 			print 'addEntry('.$this->f("ID").',"'.$this->f("Icon").'","'.$this->f("Text").'",'.$this->f("IsFolder").',"'.$this->f("Path").'");'."\n";
@@ -214,7 +214,7 @@ function addEntry(ID,icon,text,isFolder,path){
 ';
 
   	}
-	
+
 	function printFramesetJSFunctioWriteBody(){
 		global $BROWSER;
 		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
@@ -228,9 +228,9 @@ function writeBody(d){
 	d.writeln('<?php print STYLESHEET_SCRIPT;?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
-	
+
 	<?php print $this->getJS_attachKeyListener(); ?>
-	
+
 	//from we_showMessage.js
 	d.writeln('var WE_MESSAGE_INFO = -1;');
 	d.writeln('var WE_MESSAGE_FRONTEND = -2;');
@@ -336,29 +336,29 @@ function writeBody(d){
 
 <?php
 
-	}	
+	}
 
 	function userCanSeeDir($showAll=false){
 		return true;
 	}
-	
+
 	function userCanRenameFolder(){
 		return we_hasPerm('EDIT_NEWSLETTER');
 	}
-	
+
 	function userCanMakeNewDir(){
 		return we_hasPerm('NEW_NEWSLETTER');
-	}	
+	}
 
 	function userHasRenameFolderPerms() {
 		return we_hasPerm('EDIT_NEWSLETTER');
 	}
-	
+
 	function userHasFolderPerms(){
 		return we_hasPerm('NEW_NEWSLETTER');
 	}
-		
-	
+
+
 
 }
 

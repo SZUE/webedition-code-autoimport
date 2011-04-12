@@ -114,13 +114,13 @@ class weWorkflowDocument extends weWorkflowBase{
 		}
 		return $ret;
 	}
-	
+
 	function autopublish($uID,$desc,$force=false){
 		global $l_workflow;
 		$i=$this->findLastActiveStep();
 		if($i<0 && !$force){
 			return false;
-		} 
+		}
 		$ret=$this->steps[$i]->approve($uID,$desc,$force);
 		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_APPROVED){
 			$this->finishWorkflow(1,$uID);
@@ -262,8 +262,8 @@ class weWorkflowDocument extends weWorkflowBase{
 
 	function find($documentID,$type="0,1",$status=WORKFLOWDOC_STATUS_UNKNOWN){
 
-		$db = new DB_WE();		
-		$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".documentID=".abs($documentID)." AND ".WORKFLOW_DOC_TABLE.".Status IN (".mysql_real_escape_string($status).")".($type!="" ? " AND ".WORKFLOW_TABLE.".Type IN (".mysql_real_escape_string($type).")" : "")." ORDER BY ".WORKFLOW_DOC_TABLE.".ID DESC");
+		$db = new DB_WE();
+		$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".documentID=".abs($documentID)." AND ".WORKFLOW_DOC_TABLE.".Status IN (".$db->escape($status).")".($type!="" ? " AND ".WORKFLOW_TABLE.".Type IN (".$db->escape($type).")" : "")." ORDER BY ".WORKFLOW_DOC_TABLE.".ID DESC");
 		if ($db->next_record())
 		{
 			return new weWorkflowDocument($db->f("ID"));

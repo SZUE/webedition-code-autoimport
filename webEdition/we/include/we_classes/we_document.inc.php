@@ -66,7 +66,7 @@ class we_document extends we_root {
 	var $Category='';
 
 	var $IsSearchable = '';
-	
+
 	var $InGlossar = 0;
 
 	var $NavigationItems='';
@@ -148,7 +148,7 @@ class we_document extends we_root {
 					$this->Language = 'de_DE';
 				}
 			} else {
-				$Query = 'SELECT Language, ParentID FROM ' . mysql_real_escape_string($this->Table) . ' WHERE ID = ' . abs($ParentID);
+				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . abs($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
@@ -235,11 +235,11 @@ class we_document extends we_root {
 		return $content;
 
 	}
-	
+
 	function formInGlossar($leftwidth=100){
 		global $l_we_class;
 		$n = 'we_'.$this->Name.'_InGlossar';
-		
+
 		$glossarActivated = we_getModuleNameByContentType('glossary');
 
 		if($glossarActivated=='glossary') {
@@ -247,7 +247,7 @@ class we_document extends we_root {
 			return we_forms::checkboxWithHidden($v ? true : false, $n, $l_we_class['InGlossar'],false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 		}
 		else {
-			return''; 
+			return'';
 		}
 	}
 
@@ -385,13 +385,13 @@ class we_document extends we_root {
 			$_id = path_to_id($_path,NAVIGATION_TABLE);
 			$_naviItem = new weNavigation($_id);
 			if (!$_naviItem->hasAnyChilds()){
-				
+
 				if(in_array($_path,$NoDelNavis)){
 					$pos = getArrayKey($_path,$NoDelNavis);
 					array_splice($NoDelNavis,$pos,1);
 				}
 			}
-			
+
 		}
 
 		$navis->diabledDelItems = makeCSVFromArray($NoDelNavis);
@@ -486,7 +486,7 @@ class we_document extends we_root {
 						}
 					}
 				}
- 
+
 			} else {
 				$_naviItem->Selection = 'static';
 				$_naviItem->SelectionType = 'docLink';
@@ -540,7 +540,7 @@ class we_document extends we_root {
 					array_splice($navis,$pos,1);
 				}
 			}
-			
+
 		}
 
 		$this->NavigationItems=makeCSVFromArray($navis,true);
@@ -565,7 +565,7 @@ class we_document extends we_root {
 		}
 		else {
 			$listarray = array();
-		} 
+		}
 		if(!is_array($listarray)){$listarray = array();} //bug #4079
 		for($f=0;$f<$number;$f++){
 			$content = $this->getElement($name,'content');
@@ -659,7 +659,7 @@ class we_document extends we_root {
 				unset($this->elements[$namesArray[$i].($isBlock ? ('blk_'.$name.'_') : '').$listarray[$nr]]);
 			}
 		} else {$listarray=array();}
-		
+
 		if (is_array($listarray)) {// Bug #4079
 			array_splice($listarray,$nr,1);
 		}
@@ -757,7 +757,7 @@ class we_document extends we_root {
 
 		/* version */
 		$version = new weVersions();
-		
+
 		$this->i_setText();
 
 		if(!we_root::we_save($resave))
@@ -769,15 +769,15 @@ class we_document extends we_root {
 			$this->resaveWeDocumentCustomerFilter();
 
 		}
-		
-		
+
+
 		if($this->ContentType=='application/x-shockwave-flash' || $this->ContentType=='image/*' || $this->ContentType=='text/weTmpl' //#4120 hinzugef�gt
 			|| $this->ContentType=='video/quicktime' || $this->ContentType=='text/js' || $this->ContentType=='text/css'
 			|| $this->ContentType=='text/plain' || $this->ContentType=='text/xml'  || $this->ContentType=='application/*') {
 
 				$version->save($this);
 		}
-		
+
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));
@@ -949,7 +949,7 @@ class we_document extends we_root {
 	}
 
 	function i_filenameDouble() {
-		return f('SELECT ID FROM '.mysql_real_escape_string($this->Table)." WHERE ParentID='".abs($this->ParentID)."' AND Filename='".mysql_real_escape_string($this->Filename)."' AND Extension='".mysql_real_escape_string($this->Extension)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
+		return f('SELECT ID FROM '.escape_sql_query($this->Table)." WHERE ParentID='".abs($this->ParentID)."' AND Filename='".escape_sql_query($this->Filename)."' AND Extension='".escape_sql_query($this->Extension)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
 	}
 
 	function getFieldByVal(
@@ -1066,13 +1066,13 @@ class we_document extends we_root {
 				$link = $val ? unserialize($val) : array();
 
 				$only = we_getTagAttribute('only',$attribs,'');
-				
+
 				if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
 					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true);
 				} else {
 					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
-				}		
-				
+				}
+
 				if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
 					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true);
 				} else {
@@ -1198,7 +1198,7 @@ class we_document extends we_root {
 					    else if($attribs['num_format']=='english') {
     						$retval =we_util::std_numberformat($retval);
 						    $retval=number_format($retval,$precision,'.','');
-					    } 
+					    }
 						else if($attribs['num_format']=='swiss'){
 							$retval =we_util::std_numberformat($retval);
 						    $retval=number_format($retval,$precision,'.', '\'');
@@ -1703,7 +1703,7 @@ class we_document extends we_root {
 
 	function loadSchedule() {
 		if(defined('SCHEDULE_TABLE')) {
-			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".mysql_real_escape_string($this->ClassName)."'");
+			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();
 			}

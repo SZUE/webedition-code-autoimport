@@ -56,13 +56,13 @@ class objectsearch extends we_search {
 	function getFields($name="obj_searchField",$size=1,$select="",$Path,$multi="") {
 		global $l_object;
 
-		$objID = f("SELECT ID FROM ".OBJECT_TABLE." WHERE Path='".mysql_real_escape_string($Path)."'","ID",$GLOBALS["DB_WE"]);
+		$objID = f("SELECT ID FROM ".OBJECT_TABLE." WHERE Path='".escape_sql_query($Path)."'","ID",$GLOBALS["DB_WE"]);
 		$opts = '';
 		$tableInfo =  $GLOBALS["DB_WE"]->metadata(OBJECT_X_TABLE.$objID);
 		$all = "";
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && !eregi("^multiobject", $tableInfo[$i]["name"]) && !eregi("^object", $tableInfo[$i]["name"])) {
-				$regs=explode('_',$tableInfo[$i]["name"],2); 
+				$regs=explode('_',$tableInfo[$i]["name"],2);
 				if(count($regs)==2) {//if(ereg('^(.*)_(.*)$',$tableInfo[$i]["name"],$regs)) {
 					$opts .= '<option value="'.$tableInfo[$i]["name"].'" '
 					      .(($select==$tableInfo[$i]["name"])?"selected":"").'>'
@@ -187,10 +187,10 @@ class objectsearch extends we_search {
 		}
 		return $out;
 	}
-	
-	
+
+
 	function removeFilter($position) {
-		
+
 		foreach ($this->objsearch as $idx => $value) {
 			if($idx == $position) {
 				unset($this->objsearch[$position]);
@@ -202,7 +202,7 @@ class objectsearch extends we_search {
 				unset($this->objsearch[$idx]);
 			}
 		}
-		
+
 		foreach ($this->objsearchField as $idx => $value) {
 			if($idx == $position) {
 				unset($this->objsearchField[$position]);
@@ -214,7 +214,7 @@ class objectsearch extends we_search {
 				unset($this->objsearchField[$idx]);
 			}
 		}
-		
+
 		foreach ($this->objlocation as $idx => $value) {
 			if($idx == $position) {
 				unset($this->objlocation[$position]);
@@ -226,7 +226,7 @@ class objectsearch extends we_search {
 				unset($this->objlocation[$idx]);
 			}
 		}
-		
+
 		$this->height--;
 	}
 }

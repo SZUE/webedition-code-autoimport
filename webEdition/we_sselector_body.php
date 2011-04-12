@@ -112,7 +112,7 @@ function setScrollTo(){
 
 function keypressed(e) {
 	if (e.keyCode == 13) { // RETURN KEY => valid for all Browsers
-		setTimeout('document.we_form.txt.blur()',30);  
+		setTimeout('document.we_form.txt.blur()',30);
 		//document.we_form
 	}
 }
@@ -235,7 +235,7 @@ if( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"){ ?>
 
 foreach ($final as $key => $entry) {
 	$name=ereg_replace('//','/',$org.'/'.$entry);
-	$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".mysql_real_escape_string($name)."'");
+	$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($name)."'");
 
 	$isfolder = is_dir($dir."/".$entry) ? true : false;
 
