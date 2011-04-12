@@ -218,7 +218,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$query = "
 			SELECT *
 			FROM " . CUSTOMER_FILTER_TABLE . "
-			WHERE modelTable='" . mysql_real_escape_string($table) . "'
+			WHERE modelTable='" . $db->escape($table) . "'
 				AND modelId = '" . abs($id) . "'
 		";
 		$db->query($query);

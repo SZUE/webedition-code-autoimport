@@ -57,7 +57,7 @@ class weNewsletterBase{
 		if($id) $this->ID=abs($id);
 		if ($this->ID){
 			$tableInfo = $this->db->metadata($this->table);
-			$this->db->query("SELECT * FROM ".mysql_real_escape_string($this->table)." WHERE ID='".$this->ID."'");
+			$this->db->query("SELECT * FROM ".$this->db->escape($this->table)." WHERE ID='".$this->ID."'");
 			if($this->db->next_record())
 			for($i=0;$i<sizeof($tableInfo);$i++){
 				$fieldName = $tableInfo[$i]["name"];
@@ -109,7 +109,7 @@ class weNewsletterBase{
 				}
 			}
 
-			$sets[]=$val."='".($this->table == NEWSLETTER_BLOCK_TABLE ? $this->$val : mysql_real_escape_string($this->$val))."'";
+			$sets[]=$val."='".($this->table == NEWSLETTER_BLOCK_TABLE ? $this->$val : $this->db->escape($this->$val))."'";
 
 		}
 		$where=implode(",",$wheres);
@@ -117,7 +117,7 @@ class weNewsletterBase{
 
 	  if ($this->ID==0){
 
-			$query = 'INSERT INTO '.mysql_real_escape_string($this->table).' SET '.$set;
+			$query = 'INSERT INTO '.$this->db->escape($this->table).' SET '.$set;
 			$this->db->query($query);
 			# get ID #
 			$this->db->query("SELECT LAST_INSERT_ID()");
@@ -141,7 +141,7 @@ class weNewsletterBase{
 		{
 			return false;
 		}
-	  $this->db->query('DELETE FROM '.mysql_real_escape_string($this->table).' WHERE ID="' . $this->ID . '"');
+	  $this->db->query('DELETE FROM '.$this->db->escape($this->table).' WHERE ID="' . $this->ID . '"');
 		return true;
 	}
 

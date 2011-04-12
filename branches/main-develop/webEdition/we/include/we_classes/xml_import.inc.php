@@ -160,7 +160,7 @@ class XML_Import extends XML_Parser {
 		global $DB_WE;
 		$path = $this->getData($absoluteXPath."/attrib[9]");
 		$parent = $this->nodeName($absoluteXPath);
-		$this->db->query("SELECT ID FROM ".(($parent=="document")? FILE_TABLE : TEMPLATES_TABLE)." WHERE Path='".mysql_real_escape_string($path)."'");
+		$this->db->query("SELECT ID FROM ".(($parent=="document")? FILE_TABLE : TEMPLATES_TABLE)." WHERE Path='".$this->db->escape($path)."'");
 		return ($this->db->num_rows());
 	}
 
@@ -217,7 +217,7 @@ class XML_Import extends XML_Parser {
                         $new_path = f("SELECT Path FROM $key WHERE ID=".abs($store),"Path",$this->db);
                         $text = f("SELECT Text FROM $key WHERE ID=".abs($v),"Text",$this->db);
 
-                        $this->db->query("UPDATE $key SET Path='".mysql_real_escape_string(($new_path!="" ? $new_path : "/").$text)."' WHERE ID=".abs($v).";");
+                        $this->db->query("UPDATE $key SET Path='".$this->db->escape(($new_path!="" ? $new_path : "/").$text)."' WHERE ID=".abs($v).";");
 					}
 				}
 

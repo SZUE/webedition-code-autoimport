@@ -94,6 +94,15 @@ class DB_WE extends DB_Sql {
 		}
 	}
 
+	/**
+	 *This function is a replacement for mysql_real_escape_string, which sends the string to mysql to escape it
+	 * @param array/string $inp value to escape for sql-query
+	 * @return array/string
+	 */
+	function escape($inp){
+		return escape_sql_query($inp);
+	}
+
 	function query($Query_String, $allowUnion=false) {
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if ($Query_String == '')

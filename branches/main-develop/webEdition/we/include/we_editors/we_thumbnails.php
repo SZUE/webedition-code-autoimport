@@ -48,11 +48,11 @@ protect();
 // Check if we need to create a new thumbnail
 if (isset($_GET["newthumbnail"]) && $_GET["newthumbnail"] != "") {
 	if (we_hasPerm("ADMINISTRATOR")) {
-		$DB_WE->query("INSERT INTO " . THUMBNAILS_TABLE . " (Name) VALUES ('" . mysql_real_escape_string($_GET["newthumbnail"]) . "')");
+		$DB_WE->query("INSERT INTO " . THUMBNAILS_TABLE . " (Name) VALUES ('" . $DB_WE->escape($_GET["newthumbnail"]) . "')");
 		$prot = getServerProtocol();
 		$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://".$_SERVER["HTTP_HOST"] : "";
 
-		header("Location: $preurl/webEdition/we/include/we_editors/we_thumbnails.php?id=" . f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name = '" . mysql_real_escape_string($_GET["newthumbnail"]) . "'", "ID", $DB_WE));
+		header("Location: $preurl/webEdition/we/include/we_editors/we_thumbnails.php?id=" . f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name = '" . $DB_WE->escape($_GET["newthumbnail"]) . "'", "ID", $DB_WE));
 		exit();
 	}
 }
@@ -138,7 +138,7 @@ function remember_value($settingvalue, $settingname) {
 		switch ($settingname) {
 
 			case '$_REQUEST["thumbnail_name"]':
-				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Name = '" . mysql_real_escape_string($settingvalue) . "' WHERE ID = '" . $_REQUEST["edited_id"] . "'");
+				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Name = '" . $DB_WE->escape($settingvalue) . "' WHERE ID = '" . $_REQUEST["edited_id"] . "'");
 
 				break;
 
@@ -173,7 +173,7 @@ function remember_value($settingvalue, $settingname) {
 				break;
 
 			case '$_REQUEST["Format"]':
-				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Format = '" . (($settingvalue == "none") ? "" : mysql_real_escape_string($settingvalue)) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
+				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Format = '" . (($settingvalue == "none") ? "" : $DB_WE->escape($settingvalue)) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
 				break;
 

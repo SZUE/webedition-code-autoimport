@@ -29,41 +29,41 @@ class weDynList
 	function getDocuments($doctypeid, $dirid, $categories, &$sort, $count, $field)
 	{
 		$_select = array(
-			
-				FILE_TABLE . '.ID as ID', 
-				FILE_TABLE . '.Text as Text', 
-				LINK_TABLE . '.Name as FieldName', 
+
+				FILE_TABLE . '.ID as ID',
+				FILE_TABLE . '.Text as Text',
+				LINK_TABLE . '.Name as FieldName',
 				CONTENT_TABLE . '.Dat as FieldData'
 		);
-		
+
 		$_fieldset = weDynList::getDocData($_select, $doctypeid, id_to_path($dirid), $categories, 'AND', array(), array(), 0);
 		$_docs = array();
 		$_txt = array();
 		$_fields = array();
 		$_ids = array();
-		
+
 		while ($_fieldset->next_record()) {
 			if (!isset($_docs[$_fieldset->Record['ID']])) {
 				$_docs[$_fieldset->Record['ID']] = array();
 			}
 			$_docs[$_fieldset->Record['ID']][$_fieldset->Record['FieldName']] = $_fieldset->Record['FieldData'];
-			
+
 			$_txt[$_fieldset->Record['ID']] = $_fieldset->Record['Text'];
-			
+
 			if ($_fieldset->Record['FieldName'] == $field) {
 				$_fields[$_fieldset->Record['ID']] = $_fieldset->Record['FieldData'];
-			} else 
+			} else
 				if (!isset($_fields[$_fieldset->Record['ID']])) {
 					$_fields[$_fieldset->Record['ID']] = $_fieldset->Record['Text'];
 				}
-		
+
 		}
-		
+
 		unset($_fieldset);
-		
+
 		$_arr = array();
 		$sort = is_array($sort) ? $sort : array();
-		
+
 		foreach ($sort as $_k => $_sort) {
 			$_arr[$_k] = array();
 			foreach ($_docs as $_id => $_doc) {
@@ -79,19 +79,19 @@ class weDynList
 				natcasesort ($_arr[$_k]);
 			}
 		}
-		
+
 		if (!empty($_arr)) {
 			$_ids_tmp = array_keys($_arr[0]);
-			
+
 			$_ids = array();
-			
+
 			for ($_i = 0; $_i < $count; $_i++) {
 				if (isset($_ids_tmp[$_i])) {
 					$_id = str_replace('id_', '', $_ids_tmp[$_i]);
 					$_ids[$_i] = array(
-						
-							'id' => str_replace('id_', '', $_id), 
-							'text' => $_txt[$_id], 
+
+							'id' => str_replace('id_', '', $_id),
+							'text' => $_txt[$_id],
 							'field' => weNavigation::encodeSpecChars(isset($_fields[$_id]) ? $_fields[$_id] : '')
 					);
 				} else {
@@ -103,27 +103,27 @@ class weDynList
 			foreach ($_docs as $_id => $_doc) {
 				if ($_counter < $count) {
 					$_ids[] = array(
-						
-							'id' => $_id, 
-							'field' => weNavigation::encodeSpecChars(isset($_fields[$_id]) ? $_fields[$_id] : ''), 
+
+							'id' => $_id,
+							'field' => weNavigation::encodeSpecChars(isset($_fields[$_id]) ? $_fields[$_id] : ''),
 							'text' => $_txt[$_id]
 					);
 					$_counter++;
 				} else {
 					break;
 				}
-			
+
 			}
-		
+
 		}
-		
+
 		return $_ids;
-	
+
 	}
 
 	function getDocData($select = array(), $doctype, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999)
 	{
-		
+
 		$_db = new DB_WE();
 		$_cats = array();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
@@ -131,79 +131,79 @@ class weDynList
 			if (!is_numeric($cat)) {
 				$cat = path_to_id($cat, CATEGORY_TABLE);
 			}
-			$_cats[] = '(Category LIKE "%,' . mysql_real_escape_string($cat) . ',%")';
+			$_cats[] = '(Category LIKE "%,' . $_db->escape($cat) . ',%")';
 		}
-		
+
 		$dirpath = clearPath($dirpath . '/');
-		
-		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ',' . LINK_TABLE . ', ' . CONTENT_TABLE . ' WHERE (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID) ' . ' AND (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . mysql_real_escape_string($doctype) : '') . (count(
-				$_cats) ? (' AND ' . implode(" $catlogic ", $_cats)) : '') . ($dirpath != '/' ? (' AND Path LIKE "' . mysql_real_escape_string($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
-				' AND ', 
+
+		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ',' . LINK_TABLE . ', ' . CONTENT_TABLE . ' WHERE (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID) ' . ' AND (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
+				$_cats) ? (' AND ' . implode(" $catlogic ", $_cats)) : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
+				' AND ',
 				$condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . ' ' . ' LIMIT ' . $offset . ',' . $count . ';';
-		
+
 		$_db->query($_query);
-		
+
 		return $_db;
-	
+
 	}
 
 	function getObjects($classid, $dirid, $categories, &$sort, $count, $field)
 	{
-		
+
 		$_select = array(
 			'OF_ID', 'OF_Text'
 		);
-		
+
 		if (!empty($field)) {
 			$_select[] = $field;
 		}
-		
+
 		$sort = is_array($sort) ? $sort : array();
-		
+
 		$_order = array();
 		foreach ($sort as $_k => $_sort) {
 			$_order[] = $_sort['field'] . ' ' . $_sort['order'];
 		}
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$_fieldset = weDynList::getObjData(
-				$_select, 
-				$classid, 
-				id_to_path($dirid, OBJECT_FILES_TABLE), 
-				$categories, 
-				'AND', 
-				array(), 
-				$_order, 
-				0, 
+				$_select,
+				$classid,
+				id_to_path($dirid, OBJECT_FILES_TABLE),
+				$categories,
+				'AND',
+				array(),
+				$_order,
+				0,
 				$count);
 		$_ids = array();
-		
+
 		while ($_fieldset->next_record()) {
-			
+
 			$_ids[] = array(
-				
-					'id' => $_fieldset->Record['OF_ID'], 
-					'text' => $_fieldset->Record['OF_Text'], 
+
+					'id' => $_fieldset->Record['OF_ID'],
+					'text' => $_fieldset->Record['OF_Text'],
 					'field' => weNavigation::encodeSpecChars(
 							!empty($_fieldset->Record[$field]) ? $_fieldset->Record[$field] : '')
 			);
-		
+
 		}
-		
+
 		return $_ids;
 	}
 
 	function getObjData($select = array(), $classid, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999)
 	{
-		
+
 		$_db = new DB_WE();
 		$categories = is_array($categories) ? $categories : array();
 		$_cats = array();
 		foreach ($categories as $cat) {
-			$_cats[] = '(OF_Category LIKE "%,' . mysql_real_escape_string(path_to_id($cat, CATEGORY_TABLE)) . ',%")';
+			$_cats[] = '(OF_Category LIKE "%,' . $_db->escape(path_to_id($cat, CATEGORY_TABLE)) . ',%")';
 		}
-		
+
 		$_where = array();
-		
+
 		if (count($_cats)) {
 			$_where[] = implode(" $catlogic ", $_cats);
 		}
@@ -211,53 +211,53 @@ class weDynList
 			$_where[] = implode(' AND ', $condition);
 		}
 		if ($dirpath != '/') {
-			$_where[] = 'OF_Path LIKE "' . mysql_real_escape_string($dirpath) . '%"';
+			$_where[] = 'OF_Path LIKE "' . $_db->escape($dirpath) . '%"';
 		}
-		$_where[] = 'OF_Published > 0'; // Bug #4797 
-		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . ' 
+		$_where[] = 'OF_Published > 0'; // Bug #4797
+		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . '
 						WHERE OF_ID<>0 ' . (!empty($_where) ? ('AND ' . implode(
-				' AND ', 
+				' AND ',
 				$_where)) : '') . ($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' ' . ' LIMIT ' . $offset . ',' . $count . ';';
-		
+
 		$_db->query($_query);
-		
+
 		return $_db;
-	
+
 	}
 
 	function getCatgories($dirid, $count)
 	{
-		
+
 		$_ids = array();
 		$_query = 'SELECT * FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . abs($dirid) . ' AND IsFolder=0 ' . ' LIMIT 0,' . $count . ';';
 		$_fieldset = new DB_WE();
 		$_fieldset->query($_query);
-		
+
 		while ($_fieldset->next_record()) {
 			$_catfields = @unserialize($_fieldset->f('Catfields'));
 			$_ids[] = array(
-				
-					'id' => $_fieldset->Record['ID'], 
-					'text' => $_fieldset->Record['Text'], 
+
+					'id' => $_fieldset->Record['ID'],
+					'text' => $_fieldset->Record['Text'],
 					'field' => weNavigation::encodeSpecChars(
 							isset($_catfields['default']['Title']) ? $_catfields['default']['Title'] : '')
 			);
-		
+
 		}
-		
+
 		return $_ids;
-	
+
 	}
 
 	function getWorkspacesForObject($id)
 	{
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_objectFile.inc.php');
-		
+
 		$_obj = new we_objectFile();
 		$_obj->initByID($id, OBJECT_FILES_TABLE);
-		
+
 		$_values = array_merge(makeArrayFromCSV($_obj->Workspaces), makeArrayFromCSV($_obj->ExtraWorkspaces));
-		
+
 		$_all = makeArrayFromCSV($_obj->getPossibleWorkspaces(false));
 		$_ret = array();
 		foreach ($_values as $_k => $_id) {
@@ -273,12 +273,12 @@ class weDynList
 	function getWorkspacesForClass($id)
 	{
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
-		
+
 		$_obj = new we_object();
 		$_obj->initByID($id, OBJECT_TABLE);
-		
+
 		$_values = makeArrayFromCSV($_obj->Workspaces);
-		
+
 		$_ret = array();
 		foreach ($_values as $_k => $_id) {
 			if (!weFileExists($_id)) {
@@ -303,14 +303,14 @@ class weDynList
 	{
 		$_db = new DB_WE();
 		$_id = f(
-				'SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . abs($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published<>0;', 
-				'ID', 
+				'SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . abs($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published<>0;',
+				'ID',
 				$_db);
 		if (!$_id) {
 			$_path = id_to_path($id);
 			$_id = f(
-					'SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . mysql_real_escape_string($_path) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published<>0;', 
-					'ID', 
+					'SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published<>0;',
+					'ID',
 					$_db);
 		}
 		return $_id;
@@ -322,7 +322,7 @@ class weDynList
 		$_clsid = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($id) . ';', 'TableID', new DB_WE());
 		$_cls = new we_object();
 		$_cls->initByID($_clsid, OBJECT_TABLE);
-		
+
 		return $_cls->WorkspaceFlag;
 	}
 

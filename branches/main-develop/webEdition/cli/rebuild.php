@@ -329,7 +329,7 @@ switch ($_REQUEST['type']) {
 		$_thumbNames = makeArrayFromCSV($_REQUEST['thumbnails']);
 		$_thumbIds = array();
 		foreach ($_thumbNames as $_thumbName) {
-			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='".mysql_real_escape_string($_thumbName)."'", "ID", new DB_WE());
+			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='".escape_sql_query($_thumbName)."'", "ID", new DB_WE());
 		}
 		$_thumbIds = makeCSVFromArray($_thumbIds);
 		$data = we_rebuild::getThumbnails($_thumbIds);
@@ -346,5 +346,3 @@ foreach($data as $d) {
 	we_rebuild::rebuild($d, $_REQUEST['verbose']);
 }
 
-
-?>

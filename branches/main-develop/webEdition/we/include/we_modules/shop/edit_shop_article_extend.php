@@ -258,7 +258,7 @@ if (isset($daten)){
     /* ********* START PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
 
     if ($_REQUEST['typ'] == "object"){ //start output object
-      	$orderBy = isset($_REQUEST['orderBy']) ? mysql_real_escape_string($_REQUEST['orderBy']) : 'obTitle';
+      	$orderBy = isset($_REQUEST['orderBy']) ? $DB_WE->escape($_REQUEST['orderBy']) : 'obTitle';
         $entries = 0;
         $count_expression = "";
         $from_expression = "";
@@ -426,7 +426,7 @@ if (isset($daten)){
 
     }elseif($_REQUEST['typ'] == "document"){  //start output doc
         $orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'sql';
-        $DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".mysql_real_escape_string($dbTitlename)."'");
+        $DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".$DB_WE->escape($dbTitlename)."'");
         while($DB_WE->next_record()){				          // Pager: determine the number of records;
             $entries = $DB_WE->f("Anzahl");
         }

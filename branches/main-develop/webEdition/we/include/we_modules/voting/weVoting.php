@@ -183,7 +183,7 @@ class weVoting extends weModelBase{
 		$this->ParentID = !empty($this->ParentID) ? $this->ParentID : 0;
 		if(isset($_SESSION["user"]["ID"]) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION["user"]["ID"],$this->Owners))) $this->Owners[] = $_SESSION["user"]["ID"];
 
-		$_old_QASet = f("SELECT QASet FROM " . VOTING_TABLE . " WHERE Text='" . mysql_real_escape_string($this->Text) . "'","QASet",$GLOBALS["DB_WE"]);
+		$_old_QASet = f("SELECT QASet FROM " . VOTING_TABLE . " WHERE Text='" . $GLOBALS["DB_WE"]->escape($this->Text) . "'","QASet",$GLOBALS["DB_WE"]);
 		$_new_QASet = $this->QASet;
 
 		$this->QASet = serialize($this->QASet);
@@ -233,7 +233,7 @@ class weVoting extends weModelBase{
 		if($serialize) $field = serialize($this->$name);
 		else $field = $this->$name;
 
-		$this->db->query('UPDATE ' . $this->table . ' SET ' . mysql_real_escape_string($name) . '="' . mysql_real_escape_string($field) . '" WHERE ID=' . abs($this->ID) . ';');
+		$this->db->query('UPDATE ' . $this->table . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape($field) . '" WHERE ID=' . abs($this->ID) . ';');
 		return $this->db->affected_rows();
 	}
 
@@ -258,7 +258,7 @@ class weVoting extends weModelBase{
 	}
 
 	function pathExists($path){
-		$this->db->query('SELECT * FROM '.mysql_real_escape_string($this->table).' WHERE Path = \''.mysql_real_escape_string($path).'\' AND ID <> '.abs($this->ID).';');
+		$this->db->query('SELECT * FROM '.$this->db->escape($this->table).' WHERE Path = \''.$this->db->escape($path).'\' AND ID <> '.abs($this->ID).';');
 		if($this->db->next_record()) return true;
 		else return false;
 	}
@@ -290,7 +290,7 @@ class weVoting extends weModelBase{
 	}
 
 	function initByName($name){
-		$id = f('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Text=\'' . mysql_real_escape_string($name) . '\';','ID',$this->db);
+		$id = f('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Text=\'' . $this->db->escape($name) . '\';','ID',$this->db);
 		return $this->load($id);
 	}
 

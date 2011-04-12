@@ -553,7 +553,6 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getJSTopCode(){
-
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 		$title = '';
 		foreach($GLOBALS["_we_available_modules"] as $modData){
@@ -1059,9 +1058,9 @@ class weWorkflowView extends weWorkflowBase{
 					$exist=false;
 					$double = 0;
 					if($newone)
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".mysql_real_escape_string($this->workflowDef->Text)."'");
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".$this->db->escape($this->workflowDef->Text)."'");
 					else
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".mysql_real_escape_string($this->workflowDef->Text)."' AND ID<>".abs($this->workflowDef->ID)."");
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".$this->db->escape($this->workflowDef->Text)."' AND ID<>".abs($this->workflowDef->ID)."");
 
 					if($this->db->next_record()){
 						$double = $this->db->f("Count");
@@ -1165,7 +1164,7 @@ class weWorkflowView extends weWorkflowBase{
 		foreach($this->workflowDef->persistents as $key=>$val){
 			$varname=$this->uid."_".$val;
 			if(isset($_REQUEST[$varname])){
-				$_REQUEST[$varname] = mysql_real_escape_string($_REQUEST[$varname]);
+				$_REQUEST[$varname] = escape_sql_query($_REQUEST[$varname]);
 				eval('$this->workflowDef->'.$val.'=\''.$_REQUEST[$varname].'\';');
 			}
 		}

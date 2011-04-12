@@ -1114,7 +1114,7 @@ HTS;
 			$ueberschrift=g_l('import',"[template]");
 		}
 		$myid = (isset($v["we_TemplateID"]))? $v["we_TemplateID"] : 0;
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$DB_WE);
+		$path = f("SELECT Path FROM ".$DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$DB_WE);
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
 		/***********************************************************************/
 		$yuiSuggest =& weSuggest::getInstance();
@@ -2018,7 +2018,7 @@ HTS;
 			$ueberschrift=g_l('import',"[template]");
 		}
 		$myid = (isset($v["we_TemplateID"]))? $v["we_TemplateID"] : 0;
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$DB_WE);
+		$path = f("SELECT Path FROM ".$DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$DB_WE);
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
 
 		$yuiSuggest =& weSuggest::getInstance();
@@ -2465,7 +2465,7 @@ HTS;
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "") {
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='" . abs($IDValue)."';", "Path", new DB_WE());
+			$Pathvalue = f("SELECT Path FROM ".escape_sql_query($table)." WHERE ID='" . abs($IDValue)."';", "Path", new DB_WE());
 		}
 
       $we_button = new we_button();

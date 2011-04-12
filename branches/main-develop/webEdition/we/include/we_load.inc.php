@@ -204,7 +204,7 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	if ($ws = get_ws($table)) {
 		$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
 		foreach ($wsPathArray as $path) {
-			$wsQuery .= " Path like '".mysql_real_escape_string($path)."/%' OR " . getQueryParents($path) . " OR ";
+			$wsQuery .= " Path like '".escape_sql_query($path)."/%' OR " . getQueryParents($path) . " OR ";
 			while ($path != "/" && $path != "\\" && $path) {
 				array_push($parentpaths, $path);
 				$path = dirname($path);
@@ -216,7 +216,7 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 			$ac = getAllowedClasses($DB_WE);
 			foreach ($ac as $cid) {
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery .= " Path like '".mysql_real_escape_string($path)."/%' OR Path='".mysql_real_escape_string($path)."' OR ";
+				$wsQuery .= " Path like '".escape_sql_query($path)."/%' OR Path='".escape_sql_query($path)."' OR ";
 			}
 		}
 

@@ -171,7 +171,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		if (we_hasPerm('EDIT_DOCEXTENSION')){
 			$disable = (($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published);
 		} else $disable = true;
-		
+
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -240,7 +240,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			$styleTemplateLabelLink = "display:none";
 		}
 		$myid = $this->TemplateID ? $this->TemplateID : "";
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);;opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
 		$yuiSuggest->setAcId("Template");
 		$yuiSuggest->setContentType("folder,text/weTmpl");
@@ -705,7 +705,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	function we_load($from=LOAD_MAID_DB) {
 		switch($from) {
 			case LOAD_SCHEDULE_DB:
-				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".abs($this->ID)."' AND ClassName='".mysql_real_escape_string($this->ClassName)."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
+				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 				if($sessDat) {
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners");
@@ -792,7 +792,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function i_publInScheduleTable() {
 		if(defined("SCHEDULE_TABLE")) {
-			$this->DB_WE->query("DELETE FROM ".SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".mysql_real_escape_string($this->ClassName)."'");
+			$this->DB_WE->query("DELETE FROM ".SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
 			$ok = true;
 			$makeSched = false;
 			foreach($this->schedArr as $s){
@@ -808,7 +808,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
 						" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES('".abs($this->ID)."','".abs($Wann)."','".abs($s["task"])."','".mysql_real_escape_string($this->ClassName)."','".mysql_real_escape_string(serialize($serializedDoc))."','".mysql_real_escape_string(serialize($s))."','".abs($s["type"])."','".abs($s["active"])."')")) return false;
+						VALUES('".abs($this->ID)."','".abs($Wann)."','".abs($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape(serialize($serializedDoc))."','".$this->DB_WE->escape(serialize($s))."','".abs($s["type"])."','".abs($s["active"])."')")) return false;
 			}
 			return $makeSched;
 		}

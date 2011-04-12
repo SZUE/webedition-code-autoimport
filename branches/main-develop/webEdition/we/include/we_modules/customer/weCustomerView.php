@@ -617,7 +617,7 @@ function processCommands() {
 							$newone=false;
 						}
 
-						$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.mysql_real_escape_string($this->customer->Username).'\''.($newone?'':' AND ID!='.$this->customer->ID),'ID',$this->db);
+						$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.escape_sql_query($this->customer->Username).'\''.($newone?'':' AND ID!='.$this->customer->ID),'ID',$this->db);
 						if($exists){
 							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[username_exists]'),$this->customer->Username), WE_MESSAGE_ERROR);
 							print we_htmlElement::jsElement($js);
@@ -1253,7 +1253,7 @@ function processCommands() {
 		if($condition!=''){
 			$condition=' WHERE '.$condition.' ORDER BY Text';
 		}
-		$this->db->query('SELECT * FROM '.mysql_real_escape_string($this->customer->table).$condition." LIMIT 0,$res_num");
+		$this->db->query('SELECT * FROM '.$this->db->escape($this->customer->table).$condition." LIMIT 0,$res_num");
 
 		$result=array();
 		while($this->db->next_record()){

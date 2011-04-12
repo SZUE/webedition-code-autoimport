@@ -142,7 +142,7 @@ class weGlossaryTreeLoader{
 
 		$Items = array();
 
-		$Where = " WHERE Language = '".mysql_real_escape_string($Language)."' AND Type = '".mysql_real_escape_string($Type)."'";
+		$Where = " WHERE Language = '".$Db->escape($Language)."' AND Type = '".$Db->escape($Type)."'";
 
 		$PrevOffset = $Offset-$Segment;
 		$PrevOffset = ($PrevOffset<0) ? 0 : $PrevOffset;
@@ -230,7 +230,7 @@ class weGlossaryTreeLoader{
 		 	array_push($Items, $Item);
 		}
 
-		$Total = f("SELECT COUNT(*) as total FROM ".mysql_real_escape_string($Table)." $Where","total",$Db);
+		$Total = f("SELECT COUNT(*) as total FROM ".$Db->escape($Table)." $Where","total",$Db);
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){

@@ -1281,11 +1281,11 @@ function remember_value($settingvalue, $settingname) {
 
 							if (isset($_single_recipient[0]) && ($_single_recipient[0] == "#")) {
 								if (isset($_single_recipient[1]) && $_single_recipient[1]) {
-									$DB_WE->query("INSERT INTO " . RECIPIENTS_TABLE . " (Email) VALUES('" . mysql_real_escape_string($_single_recipient[1]) . "')");
+									$DB_WE->query("INSERT INTO " . RECIPIENTS_TABLE . " (Email) VALUES('" . $DB_WE->escape($_single_recipient[1]) . "')");
 								}
 							} else {
 								if (isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]) {
-									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . mysql_real_escape_string($_single_recipient[1]) . "' WHERE ID=" . abs($_single_recipient[0]));
+									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . $DB_WE->escape($_single_recipient[1]) . "' WHERE ID=" . abs($_single_recipient[0]));
 								}
 							}
 						}
@@ -5560,7 +5560,6 @@ else {
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
 				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
-
 				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
 				  $_acButton2 = $we_button->create_button('image:function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
 
@@ -5668,6 +5667,7 @@ $_needed_JavaScript .= "
 			 * Error handler
 			 */
 			$_foldAt = 4;
+
 
 
 			// Create checkboxes

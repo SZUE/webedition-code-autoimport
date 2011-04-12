@@ -338,7 +338,7 @@ class weNewsletter extends weNewsletterBase{
 	 * @param string $param
 	 */
 	function addLog($log,$param=""){
-		$this->db->query("INSERT INTO ".NEWSLETTER_LOG_TABLE."(NewsletterID,LogTime,Log,Param) VALUES('".abs($this->ID)."','".time()."','".mysql_real_escape_string($log)."','".mysql_real_escape_string($param)."');");
+		$this->db->query("INSERT INTO ".NEWSLETTER_LOG_TABLE."(NewsletterID,LogTime,Log,Param) VALUES('".abs($this->ID)."','".time()."','".$this->db->escape($log)."','".$this->db->escape($param)."');");
 	}
 
 	/**

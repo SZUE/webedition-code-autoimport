@@ -411,7 +411,7 @@ class weCustomerAdd{
 					$keywords["field_".$i]=str_replace(g_l('modules_customer','[common]')."_","",$keywords["field_".$i]);
 					$select.=",".$keywords["field_".$i];
 				}
-				if(isset($keywords["field_".$i]) && isset($keywords["operator_".$i]) && isset($keywords["value_".$i])) $where.=(isset($keywords["logic_".$i]) ? " ".$keywords["logic_".$i]." " : "").$keywords["field_".$i]." ".$operators[$keywords["operator_".$i]]." '".(is_numeric($keywords["value_".$i])?$keywords["value_".$i]:mysql_real_escape_string($keywords["value_".$i]))."'";
+				if(isset($keywords["field_".$i]) && isset($keywords["operator_".$i]) && isset($keywords["value_".$i])) $where.=(isset($keywords["logic_".$i]) ? " ".$keywords["logic_".$i]." " : "").$keywords["field_".$i]." ".$operators[$keywords["operator_".$i]]." '".(is_numeric($keywords["value_".$i])?$keywords["value_".$i]:$this->db->escape($keywords["value_".$i]))."'";
 		}
 
 		if($where=="") $where=0;

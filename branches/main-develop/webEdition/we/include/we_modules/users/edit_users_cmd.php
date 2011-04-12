@@ -246,7 +246,7 @@ protect();
 	                			//	Speichere seem_start_file aus SESSION
 	                			$seem_start_file = $_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]];
 	                		}
-	                		$tmp->query("UPDATE ".PREFS_TABLE." SET seem_start_file='" . mysql_real_escape_string($seem_start_file) . "' WHERE userID=". abs($_REQUEST["uid"]));
+	                		$tmp->query("UPDATE ".PREFS_TABLE." SET seem_start_file='" . $tmp->escape($seem_start_file) . "' WHERE userID=". abs($_REQUEST["uid"]));
 	   						unset($tmp);
 	   						unset($seem_start_file);
 	   						if (isset($_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]])) {

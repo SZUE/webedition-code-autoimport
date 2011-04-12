@@ -734,8 +734,8 @@
             $db = new DB_WE();
             $query = "
                 SELECT ID
-                FROM " . mysql_real_escape_string($tbl) . "
-                WHERE Path='" . mysql_real_escape_string($docPath) . "'
+                FROM " . $db->escape($tbl) . "
+                WHERE Path='" . $db->escape($docPath) . "'
             ";
             $db->query($query);
 

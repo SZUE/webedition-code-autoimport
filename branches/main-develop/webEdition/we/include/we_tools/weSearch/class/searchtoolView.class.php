@@ -2513,25 +2513,21 @@ class searchtoolView extends weToolView
 						$whereQuery = "1 " . $where . "";
 
 						//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
-						$restrictUserQuery = " AND ((" . mysql_real_escape_string($_table) . ".RestrictOwners='0' OR " . mysql_real_escape_string($_table) . ".RestrictOwners= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . mysql_real_escape_string($_table) . ".Owners LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%'))";
+						$restrictUserQuery = " AND ((" . escape_sql_query($_table) . ".RestrictOwners='0' OR " . escape_sql_query($_table) . ".RestrictOwners= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . escape_sql_query($_table) . ".Owners LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%'))";
 
-						if ($_table == FILE_TABLE) {
-							$whereQuery .= $restrictUserQuery;
-						}
-
-						if (defined("OBJECT_FILES_TABLE")) {
-							if ($_table == OBJECT_FILES_TABLE) {
+						switch($_table){
+							case FILE_TABLE:
 								$whereQuery .= $restrictUserQuery;
-							}
-						}
+								break;
 
-						if (defined("OBJECT_TABLE")) {
-							if ($_table == OBJECT_TABLE) {
-								$whereQuery .= "AND ((" . mysql_real_escape_string($_table) . ".RestrictUsers='0' OR " . mysql_real_escape_string($_table) . ".RestrictUsers= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . mysql_real_escape_string($_table) . ".Users LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%')) ";
-							}
-						}
+							case (defined("OBJECT_FILES_TABLE")?OBJECT_FILES_TABLE:-1):
+								$whereQuery .= $restrictUserQuery;
+								break;
 
-						if ($_table == VERSIONS_TABLE) {
+							case (defined("OBJECT_TABLE")?OBJECT_TABLE:-2):
+								$whereQuery .= "AND ((" . escape_sql_query($_table) . ".RestrictUsers='0' OR " . escape_sql_query($_table) . ".RestrictUsers= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . escape_sql_query($_table) . ".Users LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%')) ";
+								break;
+						case VERSIONS_TABLE:
 							if (isset($_REQUEST["we_cmd"]['obj'])) {
 								$isCheckedFileTable = $_REQUEST["we_cmd"]['search_tables_advSearch[' . FILE_TABLE . ''];
 								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $_REQUEST["we_cmd"]['search_tables_advSearch[' . OBJECT_FILES_TABLE . ''] : 1;
@@ -2557,14 +2553,15 @@ class searchtoolView extends weToolView
 
 							if (!$isCheckedFileTable && $isCheckedObjFileTable) {
 								$_SESSION['weSearch']['onlyDocs'] = false;
-								$whereQuery .= " AND " . mysql_real_escape_string($_table) . ".documentTable='" . OBJECT_FILES_TABLE . "' ";
+								$whereQuery .= " AND " . escape_sql_query($_table) . ".documentTable='" . OBJECT_FILES_TABLE . "' ";
 								$_SESSION['weSearch']['ObjectsAndDocs'] = false;
 							}
 							if ($isCheckedFileTable && !$isCheckedObjFileTable) {
 								$_SESSION['weSearch']['onlyObjects'] = false;
-								$whereQuery .= " AND " . mysql_real_escape_string($_table) . ".documentTable='" . FILE_TABLE . "' ";
+								$whereQuery .= " AND " . escape_sql_query($_table) . ".documentTable='" . FILE_TABLE . "' ";
 								$_SESSION['weSearch']['ObjectsAndDocs'] = false;
 							}
+							break;
 						}
 
 						$thisObj->searchclass->setwhere($whereQuery);
@@ -2746,7 +2743,7 @@ class searchtoolView extends weToolView
 								"javascript:previewVersion('" . $ID . "');");
 
 						$fileExists = f(
-								"SELECT ID FROM " . mysql_real_escape_string($_result[$f]["docTable"]) . " WHERE ID= '" . abs($_result[$f]["docID"]) . "' ",
+								"SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID= '" . abs($_result[$f]["docID"]) . "' ",
 								"ID",
 								$DB_WE);
 
@@ -2795,7 +2792,7 @@ class searchtoolView extends weToolView
 					}
 				}
 				$docExists = f(
-						"SELECT ID FROM " . mysql_real_escape_string($_result[$f]["docTable"]) . " WHERE ID= '" . abs($_result[$f]["docID"]) . "' ",
+						"SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID= '" . abs($_result[$f]["docID"]) . "' ",
 						"ID",
 						$DB_WE);
 
@@ -2909,7 +2906,7 @@ class searchtoolView extends weToolView
 
 					if (weContentProvider::IsBinary($_result[$f]["docID"])) {
 						$DB_WE->query(
-								"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result[$f]["docID"]) . "' AND b.Name='" . mysql_real_escape_string($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
+								"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result[$f]["docID"]) . "' AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields[$_tagName] = "";
 						while ($DB_WE->next_record()) {
 							$metafields[$_tagName] = shortenPath($DB_WE->f('Dat'), 45);

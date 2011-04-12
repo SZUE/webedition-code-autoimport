@@ -693,7 +693,7 @@ class weExportFrames extends weModuleFrames {
 
 						if(!empty($ref->ID) && !empty($ref->ContentType)){
 
-							$table = mysql_real_escape_string($ref->Table);
+							$table = $this->db->escape($ref->Table);
 
 							$exists = f('SELECT ID FROM ' . $table . ' WHERE ID=' . abs($ref->ID),'ID',$this->db) || ($ref->ContentType == "weBinary");
 
@@ -880,7 +880,7 @@ class weExportFrames extends weModuleFrames {
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "") {
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID=" . abs($IDValue).";", "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue).";", "Path", $this->db);
 		}
 
 		$we_button = new we_button();

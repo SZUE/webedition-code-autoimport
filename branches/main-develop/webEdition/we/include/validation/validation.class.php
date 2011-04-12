@@ -43,7 +43,7 @@
 			$checkNameQuery = '
 				SELECT *
 				FROM ' . VALIDATION_SERVICES_TABLE . '
-				WHERE name="' . mysql_real_escape_string($validationService->name) . '"
+				WHERE name="' . $DB_WE->escape($validationService->name) . '"
 					AND PK_tblvalidationservices != ' . abs($validationService->id) . '
 				';
 
@@ -58,14 +58,14 @@
             if($validationService->id != 0){
                 $query = '
                     UPDATE ' . VALIDATION_SERVICES_TABLE . '
-                        SET category="' . mysql_real_escape_string($validationService->category). '",name="' . mysql_real_escape_string($validationService->name) . '",host="' . mysql_real_escape_string($validationService->host) . '",path="' . mysql_real_escape_string($validationService->path) . '",method="' . mysql_real_escape_string($validationService->method) . '",varname="' . mysql_real_escape_string($validationService->varname) . '",checkvia="' . mysql_real_escape_string($validationService->checkvia) . '",additionalVars="' . mysql_real_escape_string($validationService->additionalVars) . '",ctype="' . mysql_real_escape_string($validationService->ctype) . '",fileEndings="' . mysql_real_escape_string($validationService->fileEndings) . '",active="' . mysql_real_escape_string($validationService->active) . '"
+                        SET category="' . $DB_WE->escape($validationService->category). '",name="' . $DB_WE->escape($validationService->name) . '",host="' . $DB_WE->escape($validationService->host) . '",path="' . $DB_WE->escape($validationService->path) . '",method="' . $DB_WE->escape($validationService->method) . '",varname="' . $DB_WE->escape($validationService->varname) . '",checkvia="' . $DB_WE->escape($validationService->checkvia) . '",additionalVars="' . $DB_WE->escape($validationService->additionalVars) . '",ctype="' . $DB_WE->escape($validationService->ctype) . '",fileEndings="' . $DB_WE->escape($validationService->fileEndings) . '",active="' . $DB_WE->escape($validationService->active) . '"
                         WHERE PK_tblvalidationservices = ' . abs($validationService->id);
             } else {
 
                 $query = '
                     INSERT INTO ' . VALIDATION_SERVICES_TABLE . '
                         (category, name, host, path, method, varname, checkvia, additionalVars, ctype, fileEndings, active)
-                        VALUES("' . mysql_real_escape_string($validationService->category) . '", "' . mysql_real_escape_string($validationService->name) . '", "' . mysql_real_escape_string($validationService->host) . '", "' . mysql_real_escape_string($validationService->path) . '", "' . mysql_real_escape_string($validationService->method) . '", "' . mysql_real_escape_string($validationService->varname) . '", "' . mysql_real_escape_string($validationService->checkvia) . '", "' . mysql_real_escape_string($validationService->additionalVars) . '", "' . mysql_real_escape_string($validationService->ctype) . '", "' . mysql_real_escape_string($validationService->fileEndings) . '", "' . mysql_real_escape_string($validationService->active) . '");
+                        VALUES("' . $DB_WE->escape($validationService->category) . '", "' . $DB_WE->escape($validationService->name) . '", "' . $DB_WE->escape($validationService->host) . '", "' . $DB_WE->escape($validationService->path) . '", "' . $DB_WE->escape($validationService->method) . '", "' . $DB_WE->escape($validationService->varname) . '", "' . $DB_WE->escape($validationService->checkvia) . '", "' . $DB_WE->escape($validationService->additionalVars) . '", "' . $DB_WE->escape($validationService->ctype) . '", "' . $DB_WE->escape($validationService->fileEndings) . '", "' . $DB_WE->escape($validationService->active) . '");
                 ';
             }
 
@@ -110,7 +110,7 @@
                     $query = '
                         SELECT *
                         FROM ' . VALIDATION_SERVICES_TABLE . '
-                        WHERE fileEndings LIKE "%' . mysql_real_escape_string($GLOBALS['we_doc']->Extension) . '%" AND active=1';
+                        WHERE fileEndings LIKE "%' . $DB_WE->escape($GLOBALS['$we_doc->Extension']) . '%" AND active=1';
                     break;
             }
 

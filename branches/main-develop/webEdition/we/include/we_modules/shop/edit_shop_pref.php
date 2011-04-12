@@ -65,25 +65,24 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$_REQUEST['classID'] = isset($_REQUEST['classID']) ? trim($_REQUEST['classID']) : '';
 
 	// check if field exists
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["waehr"]) . "|" . mysql_real_escape_string($_REQUEST["mwst"]) . "|" . mysql_real_escape_string($_REQUEST["format"]) . "|" . mysql_real_escape_string($_REQUEST["classID"]) . "|" . mysql_real_escape_string($_REQUEST["pag"]) . "' WHERE strDateiname = 'shop_pref'");
+		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . $DB_WE->escape($_REQUEST["waehr"]) . "|" . $DB_WE->escape($_REQUEST["mwst"]) . "|" . $DB_WE->escape($_REQUEST["format"]) . "|" . $DB_WE->escape($_REQUEST["classID"]) . "|" . $DB_WE->escape($_REQUEST["pag"]) . "' WHERE strDateiname = 'shop_pref'");
 	} else {
-		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (strFelder, strDateiname) VALUES ('" . mysql_real_escape_string($_REQUEST["waehr"]) . "|" . mysql_real_escape_string($_REQUEST["mwst"]) . "|" . mysql_real_escape_string($_REQUEST["format"]) . "|" . mysql_real_escape_string($_REQUEST["classID"]) . "|" . mysql_real_escape_string($_REQUEST["pag"]) . "','shop_pref')" );
-
+		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (strFelder, strDateiname) VALUES ('" . $DB_WE->escape($_REQUEST["waehr"]) . "|" . $DB_WE->escape($_REQUEST["mwst"]) . "|" . $DB_WE->escape($_REQUEST["format"]) . "|" . $DB_WE->escape($_REQUEST["classID"]) . "|" . $DB_WE->escape($_REQUEST["pag"]) . "','shop_pref')" );
 	}
 
 	$fields['customerFields']      = isset($_REQUEST['orderfields']) ? $_REQUEST['orderfields'] : array();
 	$fields['orderCustomerFields'] = isset($_REQUEST['ordercustomerfields']) ? $_REQUEST['ordercustomerfields'] : array();
 
 	// check if field exists
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . mysql_real_escape_string(serialize($fields)) . "' WHERE strDateiname ='edit_shop_properties'");
+		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($fields)) . "' WHERE strDateiname ='edit_shop_properties'");
 	} else {
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . mysql_real_escape_string(serialize($fields)) . "','edit_shop_properties')") ;
+		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . $DB_WE->escape(serialize($fields)) . "','edit_shop_properties')") ;
 	}
 
 	$CLFields['stateField'] = isset($_REQUEST['stateField']) ? $_REQUEST['stateField'] : '-';
@@ -92,12 +91,12 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$CLFields['languageFieldIsISO'] = isset($_REQUEST['languageFieldIsISO']) ? $_REQUEST['languageFieldIsISO'] : 0;
 
 	// check if field exists
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . mysql_real_escape_string(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
+		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
 	} else {
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . mysql_real_escape_string(serialize($CLFields)) . "','shop_CountryLangauge')") ;
+		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . $DB_WE->escape(serialize($CLFields)) . "','shop_CountryLangauge')") ;
 	}
 	// Update Country Field in weShopVatRule
 	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
@@ -116,7 +115,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	echo '<script type="text/javascript">self.close();</script>';
 	exit;
 } else {
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
 	$DB_WE->query($q);
 	if ( $DB_WE->num_rows() > 0) {
 		$DB_WE->next_record();

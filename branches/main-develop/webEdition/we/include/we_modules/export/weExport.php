@@ -106,7 +106,7 @@ class weExport extends weModelBase{
 		$idsarr = makeArrayFromCSV($ids);
 		$new = array();
 		foreach($idsarr as $id){
-			if(f('SELECT '.mysql_real_escape_string($idfield).' FROM '.mysql_real_escape_string($table).' WHERE '.mysql_real_escape_string($idfield).'=\''.(is_numeric($id)?$id:mysql_real_escape_string($id)).'\';',$idfield,new DB_WE())) $new[] = $id;
+			if(f('SELECT '.escape_sql_query($idfield).' FROM '.escape_sql_query($table).' WHERE '.escape_sql_query($idfield).'=\''.(is_numeric($id)?$id:escape_sql_query($id)).'\';',$idfield,new DB_WE())) $new[] = $id;
 		}
 		return makeCSVFromArray($new);
 	}
@@ -117,12 +117,12 @@ class weExport extends weModelBase{
 		$wheres=array();
 		foreach($this->persistent_slots as $key=>$val){
 			//if(!in_array($val,$this->keys))
-			eval('if(isset($this->'.$val.')) $sets[]="'.$val.'=\'".mysql_real_escape_string($this->'.$val.')."\'";');
+			eval('if(isset($this->'.$val.')) $sets[]="'.$val.'=\'".escape_sql_query($this->'.$val.')."\'";');
 		}
 		$where=$this->getKeyWhere();
 		$set=implode(",",$sets);
 
-		$this->table = mysql_real_escape_string($this->table);
+		$this->table = $this->db->escape($this->table);
 	  if (!$this->ID || $force_new){
 
 			$this->db->query('SELECT * FROM '.$this->table.' WHERE '.$where.';');

@@ -150,7 +150,7 @@ class we_document extends we_root {
 					$this->Language = 'de_DE';
 				}
 			} else {
-				$Query = 'SELECT Language, ParentID FROM ' . mysql_real_escape_string($this->Table) . ' WHERE ID = ' . abs($ParentID);
+				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . abs($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
@@ -941,7 +941,7 @@ class we_document extends we_root {
 	}
 
 	function i_filenameDouble() {
-		return f('SELECT ID FROM '.mysql_real_escape_string($this->Table)." WHERE ParentID='".abs($this->ParentID)."' AND Filename='".mysql_real_escape_string($this->Filename)."' AND Extension='".mysql_real_escape_string($this->Extension)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
+		return f('SELECT ID FROM '.escape_sql_query($this->Table)." WHERE ParentID='".abs($this->ParentID)."' AND Filename='".escape_sql_query($this->Filename)."' AND Extension='".escape_sql_query($this->Extension)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
 	}
 
 	function getFieldByVal(
@@ -1695,7 +1695,7 @@ class we_document extends we_root {
 
 	function loadSchedule() {
 		if(defined('SCHEDULE_TABLE')) {
-			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".mysql_real_escape_string($this->ClassName)."'");
+			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();
 			}

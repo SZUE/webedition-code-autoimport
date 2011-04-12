@@ -245,11 +245,11 @@ class weShopStatusMails {
 			$codes = we_getDocumentByID($docID);
 			$maildoc= new we_webEditionDocument();
 			$maildoc->initByID($docID);
-			
+
 			if (isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA']!=''){
 					$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
 					$codes = $codes.$attachmentA;
-					
+
 				}
 			unset($_REQUEST['we_orderid']);
 			unset($_SESSION['WE_SendMail']);
@@ -260,7 +260,7 @@ class weShopStatusMails {
 			$phpmail = new we_util_Mailer();
 
 			$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
-			
+
 			if ($subject==''){$subject='no subject given';}
 			if ($recipientOK  && $subject!='' && $this->EMailData['address']!='' && we_check_email($this->EMailData['address']) ){
 				$phpmail->setSubject($subject);
@@ -281,7 +281,7 @@ class weShopStatusMails {
 						$attachmentA= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
 					}
 					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentA);
-					
+
 				}
 				if (isset($this->EMailData['DocumentAttachmentFieldB']) && $this->EMailData['DocumentAttachmentFieldB']!=''){
 					$attachmentBinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'].'_we_jkhdsf_int');
@@ -290,12 +290,12 @@ class weShopStatusMails {
 					} else {
 						$attachmentB= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB']);
 					}
-					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentB);		
+					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentB);
 				}
 				$phpmail->buildMessage();
 				if ($phpmail->Send()){
 					$dasDatum = date('Y-m-d H:i:s');
-					$DB_WE->query("UPDATE ".SHOP_TABLE." SET Mail".mysql_real_escape_string($was)."='". mysql_real_escape_string($dasDatum) . "' WHERE IntOrderID = ".abs($order));
+					$DB_WE->query("UPDATE ".SHOP_TABLE." SET Mail".$DB_WE->escape($was)."='". $DB_WE->escape($dasDatum) . "' WHERE IntOrderID = ".abs($order));
 
 					return true;
 				}
@@ -345,16 +345,16 @@ class weShopStatusMails {
 
 		global $DB_WE;
 		// check if already inserted
-		$query = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"';
+		$query = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"';
 
 		$DB_WE->query($query);
 
 		if ($DB_WE->num_rows() > 0) {
 
-			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . mysql_real_escape_string(serialize($this)) . '" WHERE strDateiname="weShopStatusMails"';
+			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '" WHERE strDateiname="weShopStatusMails"';
 
 		} else {
-			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShopStatusMails", "' . mysql_real_escape_string(serialize($this)) . '")';
+			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShopStatusMails", "' . $DB_WE->escape(serialize($this)) . '")';
 		}
 
 		if ($DB_WE->query($query)) {
@@ -365,7 +365,7 @@ class weShopStatusMails {
 				$CLFields = unserialize($DB_WE->f("strFelder"));
 				$CLFields['languageField'] =  $this->LanguageData['languageField'];
 				$CLFields['languageFieldIsISO'] =  $this->LanguageData['languageFieldIsISO'];
-				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . mysql_real_escape_string(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
+				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
 			}
 			return true;
 		} else {

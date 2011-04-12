@@ -401,7 +401,7 @@ class we_messaging extends we_class {
 
             //  Check if there are already saved settings for this user in the DB
             if( $this->DB->num_rows($this->DB->query("SELECT * FROM ".MSG_SETTINGS_TABLE." WHERE strKey=\"check_step\" AND UserID=\"" . $this->userid . "\"" ) ) > 0  ){
-                $this->DB->query('UPDATE '.MSG_SETTINGS_TABLE.' SET strVal="' . mysql_real_escape_string($settings['check_step']) . '" WHERE strKey="check_step" AND UserID=' . abs($this->userid) . ' LIMIT 1');
+                $this->DB->query('UPDATE '.MSG_SETTINGS_TABLE.' SET strVal="' . $this->DB->escape($settings['check_step']) . '" WHERE strKey="check_step" AND UserID=' . abs($this->userid) . ' LIMIT 1');
             } else {
                 $this->DB->query("INSERT INTO ".MSG_SETTINGS_TABLE." (UserID, strKey, strVal) VALUES('" . abs($this->userid) . "', 'check_step', '" . $settings['check_step'] . "')");
             }
@@ -503,7 +503,7 @@ class we_messaging extends we_class {
 	$this->DB->query('DELETE FROM '.MSG_ADDRBOOK_TABLE.' WHERE UserID=' . abs($this->userid));
 	foreach ($addressbook as $elem) {
 	    if (!empty($elem))
-		$this->DB->query('INSERT INTO '.MSG_ADDRBOOK_TABLE.' (ID, UserID, strMsgType, strID, strAlias, strFirstname, strSurname) VALUES (NULL, ' . abs($this->userid) . ',"' . mysql_real_escape_string($elem[0]) . '","' . mysql_real_escape_string($elem[1]) .  '","' . mysql_real_escape_string($elem[2]) . '", "", "")');
+		$this->DB->query('INSERT INTO '.MSG_ADDRBOOK_TABLE.' (ID, UserID, strMsgType, strID, strAlias, strFirstname, strSurname) VALUES (NULL, ' . abs($this->userid) . ',"' . $this->DB->escape($elem[0]) . '","' . $this->DB->escape($elem[1]) .  '","' . $this->DB->escape($elem[2]) . '", "", "")');
 	}
 
 	return true;
@@ -655,7 +655,7 @@ class we_messaging extends we_class {
 
     function get_userid($username) {
 	$username = trim($username);
-	$this->DB->query('SELECT ID FROM '.USER_TABLE.' WHERE username="' . mysql_real_escape_string($username) . '"');
+	$this->DB->query('SELECT ID FROM '.USER_TABLE.' WHERE username="' . $this->DB->escape($username) . '"');
 	if ($this->DB->next_record())
 	    return $this->DB->f('ID');
 

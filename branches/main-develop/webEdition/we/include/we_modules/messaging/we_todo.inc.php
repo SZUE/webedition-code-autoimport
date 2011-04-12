@@ -158,7 +158,7 @@ class we_todo extends we_msg_proto {
 
     function username_to_userid($username) {
 	$db2 = new DB_WE();
-	$db2->query('SELECT ID FROM '.USER_TABLE.' WHERE username="' . mysql_real_escape_string($username) . '"');
+	$db2->query('SELECT ID FROM '.USER_TABLE.' WHERE username="' . $db2->escape($username) . '"');
 	if ($db2->next_record())
 	    return $db2->f('ID');
 
@@ -177,7 +177,7 @@ class we_todo extends we_msg_proto {
     }
 
     function get_count($folder_id) {
-	$this->DB->query('SELECT COUNT(ID) AS c FROM ' . mysql_real_escape_string($this->table) . ' WHERE ParentID=' . abs($folder_id) . ' AND obj_type=' . MSG_TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . abs($this->userid));
+	$this->DB->query('SELECT COUNT(ID) AS c FROM ' . $this->DB->escape($this->table) . ' WHERE ParentID=' . abs($folder_id) . ' AND obj_type=' . MSG_TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . abs($this->userid));
 	if ($this->DB->next_record())
 	    return $this->DB->f('c');
 
@@ -188,7 +188,7 @@ class we_todo extends we_msg_proto {
 	$ret_ids = array();
 
 	$db2 = new DB_WE();
-	$db2->query('SELECT ID FROM '.USER_TABLE.' WHERE username LIKE "%' . mysql_real_escape_string($nick) . '%" OR First LIKE "%' . mysql_real_escape_string($nick) . '%" OR Second LIKE "%' . mysql_real_escape_string($nick) . '%"');
+	$db2->query('SELECT ID FROM '.USER_TABLE.' WHERE username LIKE "%' . $db2->escape($nick) . '%" OR First LIKE "%' . $db2->escape($nick) . '%" OR Second LIKE "%' . $db2->escape($nick) . '%"');
 	while ($db2->next_record())
 	    $ret_ids[] = $db2->f('ID');
 
@@ -236,13 +236,13 @@ class we_todo extends we_msg_proto {
 
 	$cond = substr($cond, 0, -4);
 
-	$this->DB->query('DELETE FROM ' . mysql_real_escape_string($this->table) . ' WHERE (' . mysql_real_escape_string($cond) . ') AND obj_type=' . MSG_TODO_NR . " AND UserID=" . $this->userid);
+	$this->DB->query('DELETE FROM ' . $this->DB->escape($this->table) . ' WHERE (' . $this->DB->escape($cond) . ') AND obj_type=' . MSG_TODO_NR . " AND UserID=" . $this->userid);
 
 	return 1;
     }
 
     function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL') {
-	$this->DB->query('INSERT INTO '.MSG_TODOHISTORY_TABLE.' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . abs($id) . ', ' . abs($userid) . ', ' . mysql_real_escape_string($fromuserid) . ', ' . '"' . mysql_real_escape_string($comment) . '", UNIX_TIMESTAMP(NOW()), ' . mysql_real_escape_string($action) . ', ' . mysql_real_escape_string($status) . ')');
+	$this->DB->query('INSERT INTO '.MSG_TODOHISTORY_TABLE.' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . abs($id) . ', ' . abs($userid) . ', ' . $this->DB->escape($fromuserid) . ', ' . '"' . $this->DB->escape($comment) . '", UNIX_TIMESTAMP(NOW()), ' . $this->DB->escape($action) . ', ' . $this->DB->escape($status) . ')');
 
 	return 1;
     }
@@ -312,7 +312,7 @@ class we_todo extends we_msg_proto {
 	    $set_query[] = 'Priority=' . addslashes($data['todo_priority']);
 	}
 
-	$this->DB->query('UPDATE ' . mysql_real_escape_string($this->table) . ' SET ' . join(', ', $set_query) . ' WHERE ID=' . abs($msg['_ID']));
+	$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET ' . join(', ', $set_query) . ' WHERE ID=' . abs($msg['_ID']));
 	$ret['msg'] = g_l('modules_messaging','[update_successful]');
 	$ret['changed'] = 1;
 	$ret['err'] = 0;
@@ -336,7 +336,7 @@ class we_todo extends we_msg_proto {
 	    return $results;
 	}
 
-	$this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->table) . ' WHERE Properties=' . MSG_TODO_PROP_IMMOVABLE . ' AND ID=' . abs($msg['int_hdrs']['_ID']));
+	$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->table) . ' WHERE Properties=' . MSG_TODO_PROP_IMMOVABLE . ' AND ID=' . abs($msg['int_hdrs']['_ID']));
 	$this->DB->next_record();
 	if ($this->DB->f('ID') == $msg['int_hdrs']['_ID']) {
 	    $results['err'][] = g_l('modules_messaging','[todo_no_forward]');
@@ -380,7 +380,7 @@ class we_todo extends we_msg_proto {
 		    return $results;
 		}
 
-		$this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->table) . ' WHERE Properties=' . MSG_TODO_PROP_IMMOVABLE . ' AND ID=' . abs($msg['int_hdrs']['_ID']));
+		$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->table) . ' WHERE Properties=' . MSG_TODO_PROP_IMMOVABLE . ' AND ID=' . abs($msg['int_hdrs']['_ID']));
 		$this->DB->next_record();
 		if ($this->DB->f('ID') == $msg['int_hdrs']['_ID']) {
 		    $results['err'][] = g_l('modules_messaging','[todo_no_reject]');
@@ -388,7 +388,7 @@ class we_todo extends we_msg_proto {
 		    return $results;
 		}
 
-		$this->DB->query('UPDATE ' . mysql_real_escape_string($this->table) . ' SET UserID=' . abs($msg['int_hdrs']['_from_userid']) . ', ParentID=' . abs($rej_folder) . ' WHERE ID=' . abs($msg['int_hdrs']['_ID']));
+		$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET UserID=' . abs($msg['int_hdrs']['_from_userid']) . ', ParentID=' . abs($rej_folder) . ' WHERE ID=' . abs($msg['int_hdrs']['_ID']));
 		$this->history_update($msg['int_hdrs']['_ID'], $msg['int_hdrs']['_from_userid'], $this->userid, $data['body'], MSG_ACTION_REJECT);
 
 		$results['err'][] = '';
@@ -403,7 +403,7 @@ class we_todo extends we_msg_proto {
 	}
 
 	$id_str = 'ID=' . join(', ID=', $items);
-	$this->DB->query('UPDATE ' . mysql_real_escape_string($this->table) . ' SET ParentID=' . abs($target_fid) . ' WHERE (' . mysql_real_escape_string($id_str) . ') AND UserID=' . abs($this->userid));
+	$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET ParentID=' . abs($target_fid) . ' WHERE (' . $this->DB->escape($id_str) . ') AND UserID=' . abs($this->userid));
 
 	return 1;
     }
@@ -414,10 +414,10 @@ class we_todo extends we_msg_proto {
 	if (empty($items))
 	    return;
 
-	$target_fid = mysql_real_escape_string($target_fid);
+	$target_fid = escape_sql_query($target_fid);
 	foreach ($items as $item) {
 	    $tmp = array();
-	    $query = 'SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, Content_Type, MessageText, seenStatus, tag FROM ' . mysql_real_escape_string($this->table) . " WHERE ID=".abs($item)." AND UserID=" . abs($this->userid);
+	    $query = 'SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, Content_Type, MessageText, seenStatus, tag FROM ' . $this->DB->escape($this->table) . " WHERE ID=".abs($item)." AND UserID=" . abs($this->userid);
 	    $this->DB->query($query);
 	    while($this->DB->next_record()) {
 		$tmp['ParentID'] = isset($this->DB->Record['ParentID']) ? $this->DB->Record['ParentID'] : 'NULL';
@@ -436,20 +436,20 @@ class we_todo extends we_msg_proto {
 		$tmp['tag'] = $this->DB->f('tag');
 	    }
 
-	    $query = 'INSERT INTO ' . mysql_real_escape_string($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, MessageText, Content_Type, seenStatus, tag) VALUES (' .
+	    $query = 'INSERT INTO ' . escape_sql_query($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, MessageText, Content_Type, seenStatus, tag) VALUES (' .
 		$target_fid . ',' .
 		$this->userid . ',' .
 		$tmp['msg_type'] . ',' .
 		$tmp['obj_type'] . ',' .
 		($tmp['headerDate']==""?'NULL':$tmp['headerDate']) . ',' .
-		'"' . mysql_real_escape_string($tmp['headerSubject']) . '",' .
+		'"' . escape_sql_query($tmp['headerSubject']) . '",' .
 		($tmp['headerCreator']==""?'NULL':$tmp['headerCreator']) . ',' .
 		($tmp['headerAssigner']==""?'NULL':$tmp['headerAssigner']) . ',' .
 		($tmp['headerStatus']==""?'NULL':$tmp['headerStatus']) . ',' .
 		($tmp['headerDeadline']==""?'NULL':$tmp['headerDeadline']) . ',' .
 		($tmp['Priority']==""?'NULL':$tmp['Priority']) . ',' .
-		'"' . mysql_real_escape_string($tmp['MessageText']) . '",' .
-		'"' . mysql_real_escape_string($tmp['Content_Type']) . '",' .
+		'"' . escape_sql_query($tmp['MessageText']) . '",' .
+		'"' . escape_sql_query($tmp['Content_Type']) . '",' .
 		($tmp['seenStatus']==""?'NULL':$tmp['seenStatus']) . ',' .
 		($tmp['tag']==""?'NULL':$tmp['tag']) . ')';
 	    $this->DB->query($query);
@@ -495,7 +495,7 @@ class we_todo extends we_msg_proto {
 		}
 	    }
 
-	    $this->DB->query('INSERT INTO ' . $this->table . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerStatus, headerDeadline' . (!empty($data['priority']) ? ', Priority' : '') . ', ' . (empty($data['Content_Type']) ? '' : 'Content_Type, ') . " Properties, MessageText,seenStatus) VALUES ($in_folder, " . $userid . ', ' . $this->sql_class_nr . ',' . MSG_TODO_NR .  ', UNIX_TIMESTAMP(NOW()), "' . mysql_real_escape_string($data['subject']) . '", ' . $this->userid . ', 0, ' . mysql_real_escape_string($data['deadline']) . (!empty($data['priority']) ? ', ' . mysql_real_escape_string($data['priority']) : '') . ', ' . (empty($data['Content_Type']) ? '' : '"' . mysql_real_escape_string($data['Content_Type']) . '", ') . MSG_TODO_PROP_NONE . ',"' . mysql_real_escape_string($data['body']) . '",0)');
+	    $this->DB->query('INSERT INTO ' . $this->table . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerStatus, headerDeadline' . (!empty($data['priority']) ? ', Priority' : '') . ', ' . (empty($data['Content_Type']) ? '' : 'Content_Type, ') . " Properties, MessageText,seenStatus) VALUES ($in_folder, " . $userid . ', ' . $this->sql_class_nr . ',' . MSG_TODO_NR .  ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape($data['subject']) . '", ' . $this->userid . ', 0, ' . $this->DB->escape($data['deadline']) . (!empty($data['priority']) ? ', ' . $this->DB->escape($data['priority']) : '') . ', ' . (empty($data['Content_Type']) ? '' : '"' . $this->DB->escape($data['Content_Type']) . '", ') . MSG_TODO_PROP_NONE . ',"' . $this->DB->escape($data['body']) . '",0)');
 	    $this->DB->query('SELECT LAST_INSERT_ID() as lid');
 	    $this->DB->next_record();
 	    $results['id'] = $this->DB->f('lid');
@@ -514,15 +514,15 @@ class we_todo extends we_msg_proto {
 	    $sf_uoff = arr_offset_arraysearch($arr, $criteria['search_fields']);
 
 	    if ($sf_uoff > -1) {
-		$sfield_cond .= 'u.username LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR
-				u.First LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR
-				u.Second LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR ';
+		$sfield_cond .= 'u.username LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
+				u.First LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
+				u.Second LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
 
 		array_splice($criteria['search_fields'], $sf_uoff, 1);
 	    }
 
 	    foreach ($criteria['search_fields'] as $sf) {
-		$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . mysql_real_escape_string($criteria['searchterm']) . '%" OR ';
+		$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
 	    }
 
 	    $sfield_cond = substr($sfield_cond, 0, -4);
@@ -574,7 +574,7 @@ class we_todo extends we_msg_proto {
 
 	/* mark selected_set messages as seen */
 	if (!empty($seen_ids)) {
-	    $query = 'UPDATE ' . mysql_real_escape_string($this->table) . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_SEEN . ') WHERE (ID=' . join(' OR ID=', $seen_ids) . ') AND UserID=' . abs($this->userid);
+	    $query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_SEEN . ') WHERE (ID=' . join(' OR ID=', $seen_ids) . ') AND UserID=' . abs($this->userid);
 	    $this->DB->query($query);
 	}
 
@@ -637,7 +637,7 @@ class we_todo extends we_msg_proto {
 	}
 
 	if (!empty($read_ids)) {
-	    $query = 'UPDATE ' . mysql_real_escape_string($this->table) . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_READ . ') WHERE (ID=' . join(' OR ID=', $read_ids) . ') AND UserID=' . $this->userid;
+	    $query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_READ . ') WHERE (ID=' . join(' OR ID=', $read_ids) . ') AND UserID=' . $this->userid;
 	    $this->DB->query($query);
 	}
 

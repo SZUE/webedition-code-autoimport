@@ -89,7 +89,7 @@ function we_tag_categorySelect($attribs, $content){
 		}
 		$db = new DB_WE();
 		$dbfield = $showpath ? "Path" : "Category";
-		$db->query("SELECT Path,Category FROM " . CATEGORY_TABLE . " WHERE Path like '".mysql_real_escape_string($rootdir)."%' ORDER BY $dbfield");
+		$db->query("SELECT Path,Category FROM " . CATEGORY_TABLE . " WHERE Path like '".$db->escape($rootdir)."%' ORDER BY $dbfield");
 		while ($db->next_record()) {
 			$deep = sizeof(explode("/", $db->f('Path'))) - 2;
 			$field = $db->f($dbfield);

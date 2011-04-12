@@ -64,14 +64,14 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
 
 		$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
-		$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+		$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
 		if ($searchfor){
 			$searchfor = $path_parts['basename'].'/'.$searchfor;
 		} else $searchfor = $path_parts['basename'];
 		if(!$displayid && $hiddendirindex){
 			foreach($dirindexarray as $dirindex){
 				$display=$path_parts['dirname'].'/'.$dirindex;
-				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
 				if($displayidtest)$displayid = $displayidtest;
 			}
 		}
@@ -83,7 +83,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 				$searchforInternal=$searchfor;
 			}
 
-			$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchforInternal) . "' LIMIT 1", "ID", $db));
+			$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . escape_sql_query($searchforInternal) . "' LIMIT 1", "ID", $db));
 			if ($objectid){
 				$notfound=false;
 			} else {
@@ -101,7 +101,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 
 		foreach($dirindexarray as $dirindex){
 			$display=$path_parts['dirname'].$dirindex;
-			$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+			$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
 			if($displayidtest)$displayid = $displayidtest;
 		}
 		if($displayid){
@@ -111,7 +111,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			} else {
 				$searchforInternal=$searchfor;
 			}
-			$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchforInternal) . "' LIMIT 1", "ID", $db));
+			$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . escape_sql_query($searchforInternal) . "' LIMIT 1", "ID", $db));
 			if ($objectid){$notfound=false;}
 		}
 	}

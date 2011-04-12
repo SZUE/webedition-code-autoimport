@@ -41,14 +41,14 @@ class weVotingTreeLoader{
 	function getItemsFromDB($ParentID=0,$offset=0,$segment=500,$elem="ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid",$addWhere="",$addOrderBy=""){
 		$db=new DB_WE();
 		$table=VOTING_TABLE;
-		
+
 		$items=array();
-		
+
 		$owners_sql = weVoting::getOwnersSql();
-		
+
 		$prevoffset=$offset-$segment;
 		$prevoffset=($prevoffset<0) ? 0 : $prevoffset;
-		if($offset && $segment){	
+		if($offset && $segment){
 				$items[]=array(
 										"icon"=>"arrowup.gif",
 										"id"=>"prev_".$ParentID,
@@ -62,17 +62,17 @@ class weVotingTreeLoader{
 										"disabled"=>0,
 										"tooltip"=>"",
 										"offset"=>$prevoffset
-				);	
-		}		
-		
+				);
+		}
 
 
-		
-		$where=" WHERE ParentID=".abs($ParentID) . " " .$addWhere .$owners_sql;		
-		
-		$db->query("SELECT ".mysql_real_escape_string($elem).", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".mysql_real_escape_string($table)." $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT ".abs($offset).",".abs($segment).";" : ";" ));
+
+
+		$where=" WHERE ParentID=".abs($ParentID) . " " .$addWhere .$owners_sql;
+
+		$db->query("SELECT ".$db->escape($elem).", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".$db->escape($table)." $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT ".abs($offset).",".abs($segment).";" : ";" ));
 		$now = time();
-		
+
 		while($db->next_record()){
 
 			if($db->f('IsFolder')==1) $typ=array('typ'=>'group');
@@ -82,21 +82,21 @@ class weVotingTreeLoader{
 			$typ['disabled']=0;
 			$typ['tooltip']=$db->f('ID');
 			$typ['offset']=$offset;
-			
+
 			if($db->f('IsFolder')==0) $typ['published']=($db->f('Active') && ($db->f('ActiveTime')==0 || ($now<$db->f('Valid')))) ? 1 : 0;
-			
+
 			$fileds=array();
- 
+
  			foreach($db->Record as $k=>$v){
  				if(!is_numeric($k)) $fileds[strtolower($k)]=$v;
  			}
- 
- 			$items[]=array_merge($fileds,$typ);			
-		
-			
+
+ 			$items[]=array_merge($fileds,$typ);
+
+
 		}
-		
-		$total=f("SELECT COUNT(*) as total FROM ".mysql_real_escape_string($table)." $where;","total",$db);
+
+		$total=f("SELECT COUNT(*) as total FROM ".$db->escape($table)." $where;","total",$db);
 		$nextoffset=$offset+$segment;
 		if($segment && ($total>$nextoffset)){
 			$items[]=array(
@@ -111,9 +111,9 @@ class weVotingTreeLoader{
 									"disabled"=>0,
 									"tooltip"=>"",
 									"offset"=>$nextoffset
-			);		
-		}		
-		
+			);
+		}
+
 		return $items;
 
 	}

@@ -131,7 +131,7 @@ class XML_Export {
 		$content_format = "<content Name='%s' Type='%s' DocumentTable='%s'>\n";
 		$out = array("");
 
-		$DB_WE->query("SELECT * FROM ".LINK_TABLE." WHERE ".LINK_TABLE.".DocumentTable='".mysql_real_escape_string($table)."' AND ".LINK_TABLE.".DID=".abs($id));
+		$DB_WE->query("SELECT * FROM ".LINK_TABLE." WHERE ".LINK_TABLE.".DocumentTable='".$DB_WE->escape($table)."' AND ".LINK_TABLE.".DID=".abs($id));
 		$metadata = $DB_WE->metadata(CONTENT_TABLE);
 
 		while ($DB_WE->next_record()) {
@@ -174,7 +174,7 @@ class XML_Export {
 		$out = "";
 
 		$metadata = $DB_WE->metadata($table);
-		$DB_WE->query("SELECT * FROM ".mysql_real_escape_string($table)." WHERE ID=".abs($id));
+		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($table)." WHERE ID=".abs($id));
 
 		while ($DB_WE->next_record()) {
 			foreach ($metadata as $field) {

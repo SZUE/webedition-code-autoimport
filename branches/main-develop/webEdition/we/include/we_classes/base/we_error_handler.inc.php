@@ -284,10 +284,10 @@ function log_error_message($type, $message, $file, $_line) {
 			Line=\'' . abs($_line) . '\',
 			Text=\'' . mysql_real_escape_string($_text) . '\',
 			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\','.
-			Request=\''.mysql_real_escape_string(print_r($_REQUEST,true)).'\','.
-			Session=\''.mysql_real_escape_string(print_r($_SESSION,true)).'\','.
-			Global=\''.mysql_real_escape_string(print_r($_GLOBAL,true)).'\','.
-			Server=\''.mysql_real_escape_string(print_r($_SERVER,true)).'\';';
+			'Request=\''.mysql_real_escape_string(print_r($_REQUEST,true)).'\','.
+			'Session=\''.mysql_real_escape_string(print_r($_SESSION,true)).'\','.
+			'Global=\''.mysql_real_escape_string(print_r($_GLOBAL,true)).'\','.
+			'Server=\''.mysql_real_escape_string(print_r($_SERVER,true)).'\';';
 		mysql_query($_query);
 
 		if (mysql_affected_rows() != 1) {

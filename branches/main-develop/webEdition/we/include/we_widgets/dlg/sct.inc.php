@@ -42,7 +42,7 @@ if (we_hasPerm("NEW_WEBEDITIONSITE")) {
 				while ($DB_WE->next_record())
 					array_push(
 							$paths,
-							"(ParentPath = '" . mysql_real_escape_string($DB_WE->f("Path")) . "' || ParentPath like '" . mysql_real_escape_string($DB_WE->f("Path")) . "/%')");
+							"(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath like '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')");
 			}
 		}
 		if (is_array($paths) && count($paths) > 0) {

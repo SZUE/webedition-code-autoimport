@@ -76,10 +76,10 @@
 
 				$_keys=weTableItem::getTableKey($_table);
 				$_keys_str = implode(',',$_keys);
-
-				$_query =  'SELECT ' . mysql_real_escape_string($_keys_str) . " FROM  ".mysql_real_escape_string($_table)." ORDER BY $_keys_str LIMIT ".abs($offset)." ,".abs($lines).";" ;
-
 				$_db = new DB_WE();
+
+				$_query =  'SELECT ' . $_db->escape($_keys_str) . " FROM  ".$_db->escape($_table)." ORDER BY $_keys_str LIMIT ".abs($offset)." ,".abs($lines).";" ;
+
 				$_db->query($_query);
 
 				$_def_table = weBackupUtil::getDefaultTableName($_table);
@@ -140,7 +140,7 @@
 
 				}
 
-				$_table_end = f("SELECT COUNT(*) AS Count FROM ".mysql_real_escape_string($_table)."",'Count',$_db);
+				$_table_end = f("SELECT COUNT(*) AS Count FROM ".$_db->escape($_table)."",'Count',$_db);
 				if($offset>=$_table_end) {
 					$offset = 0;
 				}

@@ -67,8 +67,8 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute {
 		$items = array();
 
 		$DB_WE->query(
-						"SELECT " . mysql_real_escape_string($this->ValueName) . "," . mysql_real_escape_string($this->TextName) . "
-			 FROM " . mysql_real_escape_string($this->Table) . "
+						"SELECT " . $DB_WE->escape($this->ValueName) . "," . $DB_WE->escape($this->TextName) . "
+			 FROM " . $DB_WE->escape($this->Table) . "
 			 " . ($order ? "ORDER BY $order" : ''));
 
 		while ($DB_WE->next_record()) {

@@ -102,28 +102,28 @@ class we_search extends DB_WE{
 
 					switch ($searchlocation[$i]){
 						case "END":
-							$searching = " LIKE '%".mysql_real_escape_string($searchname[$i])."' ";
+							$searching = " LIKE '%".$this->escape($searchname[$i])."' ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							break;
 						case "START":
-							$searching = " LIKE '".mysql_real_escape_string($searchname[$i])."%' ";
+							$searching = " LIKE '".$this->escape($searchname[$i])."%' ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							//$sql .= " �".$val["field"]."� LIKE �".$val["search"]."%� ";
 							break;
 
 						case "IS":
-							$searching = " = '".mysql_real_escape_string($searchname[$i])."' ";
+							$searching = " = '".$this->escape($searchname[$i])."' ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							break;
 						case "<":
 						case "<=":
 						case ">":
 						case ">=":
-							$searching = " ".$searchlocation[$i]." '".mysql_real_escape_string($searchname[$i])."' ";
+							$searching = " ".$searchlocation[$i]." '".$this->escape($searchname[$i])."' ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							break;
 						default :
-							$searching = " LIKE '%".mysql_real_escape_string($searchname[$i])."%' ";
+							$searching = " LIKE '%".$this->escape($searchname[$i])."%' ";
 							$sql .= $this->sqlwhere($searchfield[$i],$searching, null);
 							break;
 
@@ -162,7 +162,7 @@ class we_search extends DB_WE{
 			if(!empty($this->table)){
 				$this->where = (empty($where))?((empty($this->where))?"1":$this->where):$where;
 
-				$this->query("SELECT count(*) as c FROM ".mysql_real_escape_string($this->table)." WHERE ".$this->where);
+				$this->query("SELECT count(*) as c FROM ".$this->escape($this->table)." WHERE ".$this->where);
 				$this->next_record();
 
 				return $this->f("c");
@@ -187,7 +187,7 @@ class we_search extends DB_WE{
 				$this->limit = (empty($limit))?((empty($this->limit))?"":" LIMIT ".($this->limit)):" LIMIT ".($limit);
 
 				//echo "SELECT ".$this->get." FROM ".$this->table." ".$this->where." ".$order." ".$this->limit;
-				$this->query("SELECT ".ereg_replace('^(.+),$','\1',$this->get)." FROM ".mysql_real_escape_string($this->table)." ".$this->where." ".$order." ".$this->limit);
+				$this->query("SELECT ".ereg_replace('^(.+),$','\1',$this->get)." FROM ".$this->escape($this->table)." ".$this->where." ".$order." ".$this->limit);
 			}else{
 				return -1;
 			}

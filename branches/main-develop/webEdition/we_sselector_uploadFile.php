@@ -40,7 +40,7 @@ $cpat=str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"]);
 
 function weFile($f){
     global $DB_WE;
-    $DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".mysql_real_escape_string($f)."'");
+    $DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($f)."'");
     if($DB_WE->next_record()) return true;
     return false;
 }

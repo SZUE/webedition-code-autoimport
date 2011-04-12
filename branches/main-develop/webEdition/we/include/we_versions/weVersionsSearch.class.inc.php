@@ -117,12 +117,12 @@ class weVersionsSearch {
 					if(isset($_REQUEST['searchFields'][$k])) {
 						if($v=="modifierID") {
 							if(isset($_REQUEST['search'][$k])) {
-								$where .= " AND ".$v." = '".mysql_real_escape_string($_REQUEST['search'][$k])."'";
+								$where .= " AND ".$v." = '".escape_sql_query($_REQUEST['search'][$k])."'";
 							}
 						}
 						if($v=="status") {
 							if(isset($_REQUEST['search'][$k])) {
-								$where .= " AND ".$v." = '".mysql_real_escape_string($_REQUEST['search'][$k])."'";
+								$where .= " AND ".$v." = '".escape_sql_query($_REQUEST['search'][$k])."'";
 							}
 						}
 						if($v=="timestamp") {
