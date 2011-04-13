@@ -44,6 +44,7 @@ class we_langlink_listview extends listviewBase {
 	var $numorder = false; // #3846
 	var $objectseourls = false;
 	var $hidedirindex = false;
+	var $ownlanguage ='';
 	/**
 	 * we_listview()
 	 * constructor of class
@@ -59,7 +60,7 @@ class we_langlink_listview extends listviewBase {
 	 * @param   searchable 	  boolean - if false then show also documents which are not marked as searchable
 	 * @return we_listview
 	 */
-	function we_langlink_listview($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $linkType='file', $cols="", $seeMode=true,$searchable=true, $customerFilterType='off',  $id="", $hidedirindex = false,$objectseourls=false){
+	function we_langlink_listview($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $linkType='file', $cols="", $seeMode=true,$searchable=true, $customerFilterType='off',  $id="", $ownlanguage="",$hidedirindex = false,$objectseourls=false){
 		
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, '', false, '', $cols, '', '', '', '', '', 'off', $id);
 		
@@ -67,6 +68,7 @@ class we_langlink_listview extends listviewBase {
 		$this->objectseourls=$objectseourls;
 		$this->hidedirindex=$hidedirindex;
 		$this->id=$id;
+		$this->ownlanguage=$ownlanguage;
 		if ($linkType=='file'){ 
 			$this->linkType='tblFile';
 		} else {
@@ -114,6 +116,7 @@ class we_langlink_listview extends listviewBase {
 	function next_record(){
 		if($this->DB_WE->next_record()){
 			$count=$this->count;
+			$this->Record["WE_LANG"] = $this->ownlanguage;
 			$this->Record["WE_ID"] = $this->DB_WE->Record["LDID"];
 			$this->Record["WE_LOCALE"] = $this->DB_WE->Record["Locale"];
 			if ($this->linkType == 'tblFile'){
