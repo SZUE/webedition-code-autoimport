@@ -223,6 +223,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["language_already_exists"] = "This language already exists";
 	$l_prefs["language_country_missing"] = "Please select also a country";
 	$l_prefs["add_dictionary_question"] = "Would you like to upload the dictionary for this language?";
+	$l_prefs["langlink_support"] = "automatic language links";
 
 /*****************************************************************************
  * EDITOR

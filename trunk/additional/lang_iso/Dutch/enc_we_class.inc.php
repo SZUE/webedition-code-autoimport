@@ -30,6 +30,7 @@ $l_we_class['upload_will_replace'] = 'Door gebruik van de "upload" knop kunt u h
 $l_we_class['upload_single_files'] = 'ATTENTIE: Let er op dat u met deze functie alleen losse bestanden kunt uploaden. Gebruik om meerdere bestanden tegelijk te uploaden de import functie, welke bereikbaar is via het menu Bestand.';
 $l_we_class['none'] = '--Geen--';
 $l_we_class['nodoctype'] = '--geen--';
+$l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
 $l_we_class['doctype'] = 'Document type'; // TRANSLATE
 $l_we_class['standard_workspace'] = 'Standaard werkgebied';
 $l_we_class['standard_template'] = 'Sjabloon';

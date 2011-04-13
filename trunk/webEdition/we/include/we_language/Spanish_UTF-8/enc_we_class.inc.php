@@ -30,6 +30,7 @@ $l_we_class['upload_will_replace'] = 'Ud puede ahora reemplazar el archivo actua
 $l_we_class['upload_single_files'] = 'ATENCIÓN: Por favor, note que solamente puede cargar archivos únicos usando esta función. Para cargar múltiples archivos de una vez use la función de importación, a la cual puede acceder usando el menú de archivo.';
 $l_we_class['none'] = '--Ninguno--';
 $l_we_class['nodoctype'] = '--ninguno--';
+$l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
 $l_we_class['doctype'] = 'Tipo de documento';
 $l_we_class['standard_workspace'] = 'Default Workspace'; // TRANSLATE
 $l_we_class['standard_template'] = 'Plantilla';

@@ -30,6 +30,7 @@ $l_we_class['upload_will_replace'] = 'Käyttämällä "Lataa" -painiketta voit korva
 $l_we_class['upload_single_files'] = 'HUOMIOITAVAA: Huomioi että voi ladata vain yksittäisiä tiedostoja tämän toiminnon kautta. Jos haluat ladata useita tiedostoja kerrallaan, käytä tuo toimintoa, Tiedosto -valikosta.';
 $l_we_class['none'] = '--ei mitään--';
 $l_we_class['nodoctype'] = '--ei mitään--';
+$l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
 $l_we_class['doctype'] = 'Dokumenttityyppi';
 $l_we_class['standard_workspace'] = 'Oletustyötila';
 $l_we_class['standard_template'] = 'Sivupohja';

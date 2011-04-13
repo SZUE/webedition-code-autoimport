@@ -668,7 +668,8 @@ class we_webEditionDocument extends we_textContentDocument {
 
 		// Last step is to save the webEdition document
 		$out = we_textContentDocument::we_save($resave);
-
+		$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile');
+		
 		if($resave == 0){
 			$hy = unserialize(getPref("History"));
 			$hy['doc'][$this->ID] = array("Table"=>$this->Table,"ModDate"=>$this->ModDate);
