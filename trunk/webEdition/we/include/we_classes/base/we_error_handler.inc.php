@@ -204,7 +204,7 @@ function display_error_message($type, $message, $file, $line) {
 		$type=E_SQL;
 	}
 
-	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:1));
+	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:2));
 
 	// Build the error table
 	$_detailedError  = '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>';
@@ -259,7 +259,7 @@ function log_error_message($type, $message, $file, $_line) {
 	if(strpos($message,'MYSQL-ERROR')===0){
 		$type=E_SQL;
 	}
-	list($_detailedError,$_caller,$file,$_line)=getBacktrace(($type==E_SQL?3:1));
+	list($_detailedError,$_caller,$file,$_line)=getBacktrace(($type==E_SQL?3:2));
 
 	// Error type
 	$_type=translate_error_type($type);
@@ -304,7 +304,7 @@ function mail_error_message($type, $message, $file, $line) {
 	if(strpos($message,'MYSQL-ERROR')===0){
 		$type=E_SQL;
 	}
-	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:1));
+	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:2));
 
 	// Build the error table
 	$_detailedError  = "An error occurred while executing a script in webEdition.\n\n\n";
