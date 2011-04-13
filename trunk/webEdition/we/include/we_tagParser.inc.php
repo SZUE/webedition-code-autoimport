@@ -36,7 +36,7 @@ class we_tagParser{
 
 	var $ipos = 0;
 
-	var $ListviewItemsTags = array('object', 'customer', 'onlinemonitor', 'order', 'orderitem', 'metadata');
+	var $ListviewItemsTags = array('object', 'customer', 'onlinemonitor', 'order', 'orderitem', 'metadata','languagelink');
 
 	var $AppListviewItemsTags = array();
 
@@ -973,6 +973,7 @@ if(isset($weTagListviewCache)) {
         $orderid = we_getTagAttributeTagParser("orderid", $arr, "0");
 
         $languages = we_getTagAttributeTagParser("languages", $arr,'');
+		$ownlanguage = we_getTagAttributeTagParser("ownlanguage", $arr,'');
 
 		$triggerid = we_getTagAttributeTagParser("triggerid", $arr, "0");
 		$docid = we_getTagAttributeTagParser("docid", $arr, "0");
@@ -1010,6 +1011,7 @@ if(isset($weTagListviewCache)) {
 		} else {
 			$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", false);
 		}
+		$docAttr = we_getTagAttribute("doc", $attribs, "self");
 
 		$php = '<?php
 
@@ -1029,10 +1031,37 @@ $we_lv_categoryids = isset($_REQUEST["we_lv_categoryids_' . $name . '"]) ? $_REQ
 $we_lv_subfolders = isset($_REQUEST["we_lv_subfolders_' . $name . '"]) ? $_REQUEST["we_lv_subfolders_' . $name . '"] : "' . $subfolders . '";
 if($we_lv_subfolders == "false"){$we_lv_subfolders = false;}
 $we_lv_languages = isset($_REQUEST["we_lv_languages_' . $name . '"]) ? $_REQUEST["we_lv_languages_' . $name . '"] : "' . $languages . '";
-
+$we_lv_ownlanguage = isset($_REQUEST["we_lv_ownlanguage_' . $name . '"]) ? $_REQUEST["we_lv_ownlanguage_' . $name . '"] : "' . $ownlanguage . '";
 if($we_lv_languages == "self" || $we_lv_languages == "top"){
 	$we_lv_langguagesdoc= we_getDocForTag($we_lv_languages);
 	$we_lv_languages = $we_lv_langguagesdoc->Language;
+	unset($we_lv_langguagesdoc);
+}
+if($we_lv_ownlanguage == "self" || $we_lv_ownlanguage == "top"){
+	$we_lv_langguagesdoc= we_getDocForTag($we_lv_languages);
+	if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID ){
+		$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
+		$we_lv_ownID = $we_lv_langguagesdoc->OF_ID;
+		$we_lv_linktype="objectfile";
+	} else {
+		$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
+		$we_lv_ownID = $we_lv_langguagesdoc->ID;
+		$we_lv_linktype="file";
+	}
+	unset($we_lv_langguagesdoc);
+} else {
+	$we_lv_DocAttr='.$docAttr.';
+	$we_lv_langguagesdoc= we_getDocForTag($we_lv_DocAttr);
+	if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID ){
+		$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
+		$we_lv_ownID = $we_lv_langguagesdoc->OF_ID;
+		$we_lv_linktype="objectfile";
+	} else {
+		$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
+		$we_lv_ownID = $we_lv_langguagesdoc->ID;
+		$we_lv_linktype="file";
+	}
+	unset($we_lv_langguagesdoc);
 }
 $we_lv_calendar = isset($_REQUEST["we_lv_calendar_' . $name . '"]) ? $_REQUEST["we_lv_calendar_' . $name . '"] : "' . $calendar . '";
 $we_lv_datefield = isset($_REQUEST["we_lv_datefield_' . $name . '"]) ? $_REQUEST["we_lv_datefield_' . $name . '"] : "' . $datefield . '";
@@ -1087,6 +1116,15 @@ $GLOBALS["weEconda"]["HTML"] .= \'<a name="emos_name" title="search" rel="\'.$GL
 $GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,"' . $class . '", $we_lv_cats, $we_lv_catOr, "' . $cond . '", ' . $triggerid . ', "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se,$we_lv_calendar,$we_lv_datefield,$we_lv_date,$we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, "' . $cfilter . '", "' . $docid . '", "' . $customers . '", "' . $id . '", $we_predefinedSQL, $we_lv_languages,'.$hidedirindex.','.$objectseourls.');
 ';
 				} else { return str_replace($tag, modulFehltError('Object/DB','listview type="object"'), $code); }
+				break;
+			case "languagelink":
+				
+					//$foo = attributFehltError($arr, "classid", "listview");
+					
+					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_langlink_listview.class.php");
+$GLOBALS["lv"] = new we_langlink_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,$we_lv_linktype, "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se, "' . $cfilter . '", $we_lv_ownID, '.$hidedirindex.','.$objectseourls.');
+';
+				
 				break;
 			case "customer":
 				if (defined("CUSTOMER_TABLE")) {
