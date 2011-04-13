@@ -30,6 +30,7 @@ $l_we_class['upload_will_replace'] = 'Par le boutton "télécharger" vous pouvez
 $l_we_class['upload_single_files'] = 'ATTENTION: Considerez, avec cette fonction vous pouvez télécharger seulement un fichier à la fois. Pour télécharger plusieurs utiliser la fonction import s\'il vous plaît, que vous trouvez dans le menu Fichier->Import/Expor.';
 $l_we_class['none'] = '--Aucun--';
 $l_we_class['nodoctype'] = '--Sans--';
+$l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
 $l_we_class['doctype'] = 'Type de Document';
 $l_we_class['standard_workspace'] = 'Default Workspace'; // TRANSLATE
 $l_we_class['standard_template'] = 'Modèle';

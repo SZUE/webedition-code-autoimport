@@ -30,6 +30,7 @@ $l_we_class['upload_will_replace'] = 'By using the "upload" button you can now r
 $l_we_class['upload_single_files'] = 'ATTENTION: Please note that you can upload only single files using this function. To upload multiple files at once please use the import function, which can be acessed using the file menu.';
 $l_we_class['none'] = '--None--';
 $l_we_class['nodoctype'] = '--none--';
+$l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
 $l_we_class['doctype'] = 'Document type';
 $l_we_class['standard_workspace'] = 'Default Workspace';
 $l_we_class['standard_template'] = 'Template';

@@ -30,6 +30,7 @@ $l_we_class['upload_will_replace'] = 'При нажатии на кнопку «
 $l_we_class['upload_single_files'] = 'ВНИМАНИЕ: возможна загрузка одного файла. Для одновременной загрузки нескольких файлов нужно воспользоваться командой импорта.';
 $l_we_class['none'] = '--None--'; // TRANSLATE
 $l_we_class['nodoctype'] = '--none--'; // TRANSLATE
+$l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
 $l_we_class['doctype'] = 'Document type'; // TRANSLATE
 $l_we_class['standard_workspace'] = 'Default Workspace'; // TRANSLATE
 $l_we_class['standard_template'] = 'Шаблон';

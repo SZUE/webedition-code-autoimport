@@ -222,6 +222,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["language_already_exists"] = "Deze taal bestaat al";
 	$l_prefs["language_country_missing"] = "Please select also a country"; // TRANSLATE
 	$l_prefs["add_dictionary_question"] = "Wilt u het woordenboek voor deze taal uploaden?";
+	$l_prefs["langlink_support"] = "automatic language links";
 
 /*****************************************************************************
  * EDITOR
