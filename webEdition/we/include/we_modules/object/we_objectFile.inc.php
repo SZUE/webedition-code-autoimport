@@ -209,7 +209,6 @@ class we_objectFile extends we_document
 					<td>
 						'.getPixel(2,4).'</td>
 				</tr>
-				'. $_headline . '
 				<tr>
 					<td>
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
