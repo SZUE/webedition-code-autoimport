@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -27,7 +27,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
 
 /**
  * Class to display a Label
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -62,27 +62,27 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
 	public function __construct($properties = null)
 	{
 		parent::__construct($properties);
-		
+
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		
+
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-	
+
 	}
 
 	/**
 	 * Retrieve for attribute
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function getFor()
@@ -92,7 +92,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set for attribute
-	 * 
+	 *
 	 * @param boolean $_for
 	 */
 	public function setFor($_for)
@@ -102,7 +102,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve text for label
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function getText()
@@ -112,7 +112,7 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set text for label
-	 * 
+	 *
 	 * @param boolean $_text
 	 */
 	public function setText($_text)
@@ -132,14 +132,12 @@ class we_ui_controls_Label extends we_ui_abstract_AbstractFormElement
 		} else {
 			$class = self::kLabelClass;
 		}
-		
+
 		if ($this->getHidden()) {
 			$this->_style .= "display:none;";
 		}
-		
+
 		return '<label' . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($class) . $this->_getNonBooleanAttribs('id,for,title') . '>' . $this->getText() . '</label>';
 	}
 
 }
-
-?>

@@ -20,4 +20,3 @@
  */
 
 echo "the new command controller is not programmed jet.";
-?>

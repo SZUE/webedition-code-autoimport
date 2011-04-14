@@ -23,14 +23,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/charset/charset.inc.php");
 header("Content-Type: text/html; charset=" . $_language["charset"]);
 
-?>
-
-<html>
+?><html>
 
 <head>
 
 <meta http-equiv="content-type" content="text/html; charset=<?php echo $_language["charset"]; ?>">
-
 <?php
 
 print '<script type="text/javascript">
@@ -80,9 +77,7 @@ print '<script type="text/javascript">
 					parent.we_wysiwyg_lng["removeformat_warning"] = "'.$GLOBALS["l_wysiwyg"]["removeformat_warning"].'";
 					parent.we_wysiwyg_lng["removetags_warning"] = "'.$GLOBALS["l_wysiwyg"]["removetags_warning"].'";
 				</script>';
-?>
-
-</head>
+?></head>
 <body></body>
 
 </html>

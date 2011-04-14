@@ -20,8 +20,8 @@
 
 /**
  * ECONDA implementation
- * 
- * In /webEdition/we/include/weClasses/we_template.inc.php is checked if ECONDA is activated and if the ECONDA-JS file is integrated. 
+ *
+ * In /webEdition/we/include/weClasses/we_template.inc.php is checked if ECONDA is activated and if the ECONDA-JS file is integrated.
  * If it is done the code to include this file in each template before the body-tag will be executed.
  */
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weTracking/econda/weEmos.class.inc.php");
@@ -31,29 +31,29 @@ $emosJsCode = "";
 if ( isset($_REQUEST["we_oid"]) ||  (!isset($GLOBALS["WE_MAIN_DOC"]) && isset($_REQUEST["we_objectID"])) || (isset($_REQUEST["type"]) && $_REQUEST["type"] == "o") ) {
 	// object
 	$emosType = "obj";
-	
+
 } else {
 	// document
 	$emosType = "doc";
 }
 
 switch (true){
-	
-	case isset($GLOBALS["we_".$emosType]->elements["price"]) : 
+
+	case isset($GLOBALS["we_".$emosType]->elements["price"]) :
 		// view article
 		$emos->weViewArticle($emosType);
 		break;
-	
-	case isset($_REQUEST["shop_artikelid"]) : 
-		// add/remove article quanitity to/from shopping cart	
-		$emos->weAddRemoveArticle($emosType);                
+
+	case isset($_REQUEST["shop_artikelid"]) :
+		// add/remove article quanitity to/from shopping cart
+		$emos->weAddRemoveArticle($emosType);
 		break;
-	
+
 	case isset($_REQUEST["del_shop_artikelid"]) :
 		// remove complete article from shopping cart
 		$emos->weAddRemoveArticle($emosType, true);
 		break;
-		
+
 	case isset($_SESSION['webuser']) && isset($_SESSION['webuser']['MemberSince']) && $_SESSION['webuser']['MemberSince']<1 :
 		// user registration
 		//$emos->emosRegister();
@@ -67,22 +67,21 @@ switch (true){
 		// shoping basket
 		$emos->emosShopingBasket();
 		break;
-		
+
 
 	/**
 	 * @todo billing
 	 */
 }
 
-?>
-<?php 
-echo $emos->getEmosHTMLFooter(); 
+
+echo $emos->getEmosHTMLFooter();
 ?>
 <script type="text/javascript">
 //<!--
 var emosPageId = "<?php echo $GLOBALS["WE_DOC_ID"]; ?>";
-<?php 
-echo $emos->getEmosJsFooter(); 
+<?php
+echo $emos->getEmosJsFooter();
 ?>
 //-->
 </script>

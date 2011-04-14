@@ -122,12 +122,12 @@ function save(){
 			refresh(false);
 		}
 		" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['prefs_saved_successfully'], 
+		$l_cockpit['prefs_saved_successfully'],
 		WE_MESSAGE_NOTICE) . "
 		self.close();
 	} else {
 		" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['no_type_selected'], 
+		$l_cockpit['no_type_selected'],
 		WE_MESSAGE_ERROR) . "
 	}
 }
@@ -146,7 +146,7 @@ function preview(){
 		refresh(true);
 	} else {
 		" . we_message_reporting::getShowMessageCall(
-		$l_cockpit['no_type_selected'], 
+		$l_cockpit['no_type_selected'],
 		WE_MESSAGE_ERROR) . "
 	}
 }
@@ -168,16 +168,16 @@ $idname = 'UserIDTmp';
 $users = makeArrayFromCSV($sUsers);
 
 $delallbut = $we_button->create_button(
-		"delete_all", 
-		"javascript:delUser(-1)", 
-		true, 
-		-1, 
-		-1, 
-		"", 
-		"", 
+		"delete_all",
+		"javascript:delUser(-1)",
+		true,
+		-1,
+		-1,
+		"",
+		"",
 		(count($users)) ? false : true);
 $addbut = $we_button->create_button(
-		"add", 
+		"add",
 		"javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].addUserToField()','','',1);");
 
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">';
@@ -188,7 +188,7 @@ if (sizeof($users)) {
 	for ($i = 0; $i < sizeof($users); $i++) {
 		$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='" . abs($users[$i]) . "'", $db);
 		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td>' . '<td>' . $we_button->create_button(
-				"image:btn_function_trash", 
+				"image:btn_function_trash",
 				"javascript:delUser('" . $users[$i] . "');") . '</td></tr>' . "\n";
 	}
 } else {
@@ -199,7 +199,7 @@ $content .= '<tr><td>' . getPixel(20, 2) . '</td><td>' . getPixel(254, 2) . '</t
 $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_htmlElement::htmlDiv(
 		array(
 			"class" => "multichooser"
-		), 
+		),
 		$content) . we_htmlElement::htmlHidden(array(
 	"name" => "UserNameTmp", "value" => ""
 )) . we_htmlElement::htmlHidden(array(
@@ -220,64 +220,64 @@ if ($sType{0} == "0" && $sType{1} == "0" && $sType{2} == "0" && $sType{3} == "0"
 }
 if (we_hasPerm('CAN_SEE_DOCUMENTS')) {
 	$oChbxDocs = we_forms::checkbox(
-			$value = 0, 
-			$checked = $sType{0}, 
-			$name = "chbx_type", 
-			$text = $l_cockpit['documents'], 
-			$uniqid = true, 
-			$class = "defaultfont", 
-			$onClick = "", 
-			$disabled = !(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")), 
-			$description = "", 
-			$type = 0, 
+			$value = 0,
+			$checked = $sType{0},
+			$name = "chbx_type",
+			$text = $l_cockpit['documents'],
+			$uniqid = true,
+			$class = "defaultfont",
+			$onClick = "",
+			$disabled = !(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")),
+			$description = "",
+			$type = 0,
 			$width = 0);
 } else {
 	$oChbxDocs = "";
 }
 if (we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION["we_mode"] != "seem") {
 	$oChbxTmpl = we_forms::checkbox(
-			$value = 0, 
-			$checked = $sType{1}, 
-			$name = "chbx_type", 
-			$text = $l_cockpit['templates'], 
-			$uniqid = true, 
-			$class = "defaultfont", 
-			$onClick = "", 
-			$disabled = !(defined("TEMPLATES_TABLE") && we_hasPerm('CAN_SEE_TEMPLATES')), 
-			$description = "", 
-			$type = 0, 
+			$value = 0,
+			$checked = $sType{1},
+			$name = "chbx_type",
+			$text = $l_cockpit['templates'],
+			$uniqid = true,
+			$class = "defaultfont",
+			$onClick = "",
+			$disabled = !(defined("TEMPLATES_TABLE") && we_hasPerm('CAN_SEE_TEMPLATES')),
+			$description = "",
+			$type = 0,
 			$width = 0);
 } else {
 	$oChbxTmpl = "";
 }
 if (we_hasPerm('CAN_SEE_OBJECTS')) {
 	$oChbxObjs = we_forms::checkbox(
-			$value = 0, 
-			$checked = $sType{2}, 
-			$name = "chbx_type", 
-			$text = $l_cockpit['objects'], 
-			$uniqid = true, 
-			$class = "defaultfont", 
-			$onClick = "", 
-			$disabled = !(defined("OBJECT_FILES_TABLE") && we_hasPerm('CAN_SEE_OBJECTFILES')), 
-			$description = "", 
-			$type = 0, 
+			$value = 0,
+			$checked = $sType{2},
+			$name = "chbx_type",
+			$text = $l_cockpit['objects'],
+			$uniqid = true,
+			$class = "defaultfont",
+			$onClick = "",
+			$disabled = !(defined("OBJECT_FILES_TABLE") && we_hasPerm('CAN_SEE_OBJECTFILES')),
+			$description = "",
+			$type = 0,
 			$width = 0);
 } else {
 	$oChbxObjs = "";
 }
 if (we_hasPerm('CAN_SEE_CLASSES') && $_SESSION["we_mode"] != "seem") {
 	$oChbxCls = we_forms::checkbox(
-			$value = 0, 
-			$checked = $sType{3}, 
-			$name = "chbx_type", 
-			$text = $l_cockpit['classes'], 
-			$uniqid = true, 
-			$class = "defaultfont", 
-			$onClick = "", 
-			$disabled = !(defined("OBJECT_TABLE") && we_hasPerm('CAN_SEE_OBJECTS')), 
-			$description = "", 
-			$type = 0, 
+			$value = 0,
+			$checked = $sType{3},
+			$name = "chbx_type",
+			$text = $l_cockpit['classes'],
+			$uniqid = true,
+			$class = "defaultfont",
+			$onClick = "",
+			$disabled = !(defined("OBJECT_TABLE") && we_hasPerm('CAN_SEE_OBJECTS')),
+			$description = "",
+			$type = 0,
 			$width = 0);
 } else {
 	$oChbxCls = "";
@@ -294,11 +294,11 @@ $oSctDate = new we_htmlSelect(array(
 	"name" => "sct_date", "size" => "1", "class" => "defaultfont", "onChange" => ""
 ));
 $aLangDate = array(
-	
-		$l_cockpit['all'], 
-		$l_cockpit['today'], 
-		$l_cockpit['last_week'], 
-		$l_cockpit['last_month'], 
+
+		$l_cockpit['all'],
+		$l_cockpit['today'],
+		$l_cockpit['last_week'],
+		$l_cockpit['last_month'],
 		$l_cockpit['last_year']
 );
 foreach ($aLangDate as $k => $v) {
@@ -307,28 +307,28 @@ foreach ($aLangDate as $k => $v) {
 $oSctDate->selectOption($iDate);
 
 $oChbxShowMfdBy = we_forms::checkbox(
-		$value = 0, 
-		$checked = $sDisplayOpt{0}, 
-		$name = "chbx_display_opt", 
-		$text = $l_cockpit['modified_by'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = $sDisplayOpt{0},
+		$name = "chbx_display_opt",
+		$text = $l_cockpit['modified_by'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $oChbxShowDate = we_forms::checkbox(
-		$value = 0, 
-		$checked = $sDisplayOpt{1}, 
-		$name = "chbx_display_opt", 
-		$text = $l_cockpit['date_last_modification'], 
-		$uniqid = true, 
-		$class = "defaultfont", 
-		$onClick = "", 
-		$disabled = false, 
-		$description = "", 
-		$type = 0, 
+		$value = 0,
+		$checked = $sDisplayOpt{1},
+		$name = "chbx_display_opt",
+		$text = $l_cockpit['date_last_modification'],
+		$uniqid = true,
+		$class = "defaultfont",
+		$onClick = "",
+		$disabled = false,
+		$description = "",
+		$type = 0,
 		$width = 0);
 $oSctNumEntries = new we_htmlSelect(array(
 	"name" => "sct_amount_entries", "size" => "1", "class" => "defaultfont"
@@ -374,32 +374,31 @@ $cancel_button = $we_button->create_button("close", "javascript:exit_close();");
 $buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getHTML(
-		"mfdProps", 
-		"100%", 
-		$parts, 
-		30, 
-		$buttons, 
-		-1, 
-		"", 
-		"", 
-		"", 
-		$l_cockpit['last_modified'], 
-		"", 
+		"mfdProps",
+		"100%",
+		$parts,
+		30,
+		$buttons,
+		-1,
+		"",
+		"",
+		"",
+		$l_cockpit['last_modified'],
+		"",
 		390);
 
-print 
+print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
 						we_htmlElement::htmlTitle($l_cockpit['last_modified']) . STYLESHEET . we_htmlElement::cssElement(
 								"select{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
-								"", 
+								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement(
 								$jsPrefs . $jsCode . $we_button->create_state_changer(false))) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
-						), 
+						),
 						we_htmlElement::htmlForm("", $sTblWidget)));
 
-?>
