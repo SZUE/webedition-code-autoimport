@@ -190,5 +190,3 @@ while ($j < $iMaxItems) {
 }
 
 $lastModified .= "</table>\n";
-
-?>

@@ -285,7 +285,9 @@ function log_error_message($type, $message, $file, $_line) {
 			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\','.
 			'Request=\''.(isset($_REQUEST)?mysql_real_escape_string(print_r($_REQUEST,true)):' - ').'\','.
 			'Session=\''.(isset($_SESSION)?mysql_real_escape_string(print_r($_SESSION,true)):' - ').'\','.
+/*string too long - disabled
 			'Global=\''.mysql_real_escape_string(print_r($GLOBALS,true)).'\','.
+ */
 			'Server=\''.mysql_real_escape_string(print_r($_SERVER,true)).'\';';
 		mysql_query($_query);
 

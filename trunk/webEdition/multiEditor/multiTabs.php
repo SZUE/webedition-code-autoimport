@@ -87,7 +87,7 @@ switch ($BROWSER) {
 			$tabBorder = "border:0px;";
 		} else {
 			if (isset($FF) && $FF < 3) {
-				
+
 			} else {
 				$tabContainerMargin = "-1px";
 			}
@@ -104,8 +104,6 @@ switch ($BROWSER) {
 print $_contentTypes;
 
 ?>
-
-
 function _getIcon(contentType, extension) {
 	if (contentType == "application/*") {
 		switch(extension){

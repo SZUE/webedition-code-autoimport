@@ -73,5 +73,3 @@ if (!empty($_csv) && $DB_WE->query($_query)) {
 	}
 	$mdc .= '</table>';
 }
-
-?>
