@@ -31,6 +31,7 @@ $l_we_class['upload_single_files'] = 'ATTENTIE: Let er op dat u met deze functie
 $l_we_class['none'] = '--Geen--';
 $l_we_class['nodoctype'] = '--geen--';
 $l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
+$l_we_class['languageLinks'] = 'Link to the corresponding documents/objects in other languages';// TRANSLATE
 $l_we_class['doctype'] = 'Document type'; // TRANSLATE
 $l_we_class['standard_workspace'] = 'Standaard werkgebied';
 $l_we_class['standard_template'] = 'Sjabloon';

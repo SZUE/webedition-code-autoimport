@@ -31,6 +31,7 @@ $l_we_class['upload_single_files'] = 'ATENCIÓN: Por favor, note que solamente p
 $l_we_class['none'] = '--Ninguno--';
 $l_we_class['nodoctype'] = '--ninguno--';
 $l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
+$l_we_class['languageLinks'] = 'Link to the corresponding documents/objects in other languages';// TRANSLATE
 $l_we_class['doctype'] = 'Tipo de documento';
 $l_we_class['standard_workspace'] = 'Default Workspace'; // TRANSLATE
 $l_we_class['standard_template'] = 'Plantilla';

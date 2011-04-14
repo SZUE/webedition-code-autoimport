@@ -199,7 +199,7 @@ class we_document extends we_root {
 
 
 	function formLanguage($withHeadline = true) {
-
+		global $l_we_class;
 		we_loadLanguageConfig();
 
 		$_defLang = we_document::getDefaultLanguage();
@@ -241,6 +241,14 @@ class we_document extends we_root {
 				<tr>
 					<td>
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='".implode(',',$langkeys)."';showhideLangLink('we_".$this->Name."_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
+				</tr>
+				<tr>
+					<td>
+						'.getPixel(2,20).'</td>
+				</tr>
+				<tr>
+					<td class="defaultfont" align="left">
+						'.$l_we_class["languageLinks"].'</td>
 				</tr>
 			</table>';
 			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
