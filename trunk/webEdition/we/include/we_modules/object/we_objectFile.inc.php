@@ -2407,8 +2407,9 @@ class we_objectFile extends we_document
 			$version->save($this);
 
 		}
-		$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblObjectFile');
-		
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblObjectFile');
+		}
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));

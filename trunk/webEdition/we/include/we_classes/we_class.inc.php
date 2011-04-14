@@ -588,18 +588,16 @@ class we_class
 
 	}
 	
-	function setLanguageLink($LangLinkArray=array(),$type){
-		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
-			foreach ($LangLinkArray as $locale => $LDID){
-				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".$this->ID."' AND Locale='".$locale."'",'ID',$this->DB_WE)){
-					$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
-					$this->DB_WE->query($q);
-				} else {
-					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
-					$this->DB_WE->query($q);
-				} 	
-			}
-		}
+	function setLanguageLink($LangLinkArray=array(),$type){		
+	  foreach ($LangLinkArray as $locale => $LDID){
+		if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".$this->ID."' AND Locale='".$locale."'",'ID',$this->DB_WE)){
+			$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
+			$this->DB_WE->query($q);
+		} else {
+			$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
+			$this->DB_WE->query($q);
+		} 	
+	  }
 	}
 
 }
