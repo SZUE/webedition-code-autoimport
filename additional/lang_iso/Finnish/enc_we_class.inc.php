@@ -31,6 +31,7 @@ $l_we_class['upload_single_files'] = 'HUOMIOITAVAA: Huomioi että voi ladata vain
 $l_we_class['none'] = '--ei mitään--';
 $l_we_class['nodoctype'] = '--ei mitään--';
 $l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
+$l_we_class['languageLinks'] = 'Link to the corresponding documents/objects in other languages';// TRANSLATE
 $l_we_class['doctype'] = 'Dokumenttityyppi';
 $l_we_class['standard_workspace'] = 'Oletustyötila';
 $l_we_class['standard_template'] = 'Sivupohja';

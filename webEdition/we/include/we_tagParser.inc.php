@@ -1011,7 +1011,7 @@ if(isset($weTagListviewCache)) {
 		} else {
 			$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", false);
 		}
-		$docAttr = we_getTagAttribute("doc", $attribs, "self");
+		$docAttr = we_getTagAttributeTagParser("doc", $arr, "self");
 
 		$php = '<?php
 
@@ -1038,7 +1038,7 @@ if($we_lv_languages == "self" || $we_lv_languages == "top"){
 	unset($we_lv_langguagesdoc);
 }
 if($we_lv_pagelanguage == "self" || $we_lv_pagelanguage == "top"){
-	$we_lv_langguagesdoc= we_getDocForTag($we_lv_languages);
+	$we_lv_langguagesdoc= we_getDocForTag($we_lv_pagelanguage);
 	if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID ){
 		$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 		$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
@@ -1050,7 +1050,7 @@ if($we_lv_pagelanguage == "self" || $we_lv_pagelanguage == "top"){
 	}
 	unset($we_lv_langguagesdoc);
 } else {
-	$we_lv_DocAttr='.$docAttr.';
+	$we_lv_DocAttr="'.$docAttr.'";
 	$we_lv_langguagesdoc= we_getDocForTag($we_lv_DocAttr);
 	if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID ){
 		$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
