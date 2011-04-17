@@ -162,7 +162,7 @@ class DB_WE extends DB_Sql {
 			@mysql_query('FLUSH TABLES', $this->Link_ID);
 			$this->Query_ID = @mysql_query($Query_String, $this->Link_ID);
 		} else
-		if (preg_match('/insert |update /i', $Query_String)) {
+		if (preg_match('/insert |update|replace /i', $Query_String)) {
 			// delete getHash DB Cache
 			getHash('',$this);
 		}

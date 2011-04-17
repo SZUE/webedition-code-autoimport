@@ -196,6 +196,7 @@ $l_prefs = array(
 		'language_already_exists' => "Diese Sprache wurde bereits angelegt.",
 		'language_country_missing' => "Bitte wählen Sie auch ein Land aus",
 		'add_dictionary_question' => "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?",
+		'langlink_support' => "Automatische Sprachverlinkung",
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

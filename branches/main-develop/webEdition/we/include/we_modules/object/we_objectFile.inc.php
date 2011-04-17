@@ -160,7 +160,7 @@ class we_objectFile extends we_document
 	}
 
 	function formLanguage() {
-
+		global $l_we_class;
 		we_loadLanguageConfig();
 
 		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
@@ -168,18 +168,60 @@ class we_objectFile extends we_document
 		$inputName = "we_".$this->Name."_Language";
 
 		$_languages = $GLOBALS['weFrontendLanguages'];
+		$this->setRootDirID(true);
 
-		$content = '
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+			$htmlzw='';
+			foreach ($_languages as $langkey => $lang){
+			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblObjectFile' AND DID='".$this->ID."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
+			  	if(!$LDID){$LDID=0;}
+				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
+				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID,$this->Table, $this->rootDirID).'</div>';
+				$langkeys[]=$langkey;  
+			}
+			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");	
+			
+			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						'.getPixel(2,4).'</td>
+				</tr>
+				<tr>
+					<td>
+						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='".implode(',',$langkeys)."';showhideLangLink('we_".$this->Name."_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
+				</tr>
+				<tr>
+					<td>
+						'.getPixel(2,20).'</td>
+				</tr>
+				<tr>
+					<td class="defaultfont" align="left">
+						'.$l_we_class["languageLinks"].'</td>
+				</tr>
+			</table>';
+			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+			
+		} else {
+			$content = '
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						'.getPixel(2,4).'</td>
+				</tr>
 				<tr>
 					<td>
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
 				</tr>
 			</table>';
+			
+		}
+
+		
 		return $content;
 
 	}
-
+	
 	function copyDoc($id){
 		if($id){
 			$doc = new we_objectFile();
@@ -2359,7 +2401,9 @@ class we_objectFile extends we_document
 			$version->save($this);
 
 		}
-
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) ){
+			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblObjectFile');
+		}
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));

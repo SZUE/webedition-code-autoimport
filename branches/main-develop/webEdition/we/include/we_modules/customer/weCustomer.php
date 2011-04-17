@@ -222,7 +222,7 @@ class weCustomer extends weModelBase {
 
 	function getFieldsDbProperties() {
 		$ret = array();
-		$this->db->query("SHOW COLUMNS FROM " . $DB_WE->escape($this->table));
+		$this->db->query("SHOW COLUMNS FROM " . $this->db->escape($this->table));
 		while ($this->db->next_record()) {
 			$ret[$this->db->f("Field")] = $this->db->Record;
 		}

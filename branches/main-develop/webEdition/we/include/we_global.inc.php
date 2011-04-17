@@ -3933,7 +3933,7 @@ function we_templatePost(){
 function show_SeoLinks(){
 	if (defined('SEOINSIDE_HIDEINWEBEDITION') && SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		return false;
-	} else if (defined('SEOINSIDE_HIDEINEDITMODE') && SEOINSIDE_HIDEINEDITMODE && ($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE'])){
+	} else if (defined('SEOINSIDE_HIDEINEDITMODE') && SEOINSIDE_HIDEINEDITMODE && (isset($GLOBALS['we_editmode']) && ($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE']))){
 		return false;
 	}
 	return true;

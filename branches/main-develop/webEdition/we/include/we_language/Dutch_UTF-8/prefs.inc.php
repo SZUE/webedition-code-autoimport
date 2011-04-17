@@ -202,6 +202,7 @@ $l_prefs = array(
 		'language_already_exists' => "Deze taal bestaat al",
 		'language_country_missing' => "Please select also a country", // TRANSLATE
 		'add_dictionary_question' => "Wilt u het woordenboek voor deze taal uploaden?",
+		'langlink_support' => "Automatic language links",// TRANSLATE
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

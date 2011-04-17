@@ -148,6 +148,7 @@ define('FAILED_LOGINS_TABLE', TBL_PREFIX . 'tblFailedLogins');
 define('FILE_TABLE', TBL_PREFIX . 'tblFile');
 define('INDEX_TABLE', TBL_PREFIX . 'tblIndex');
 define('LINK_TABLE', TBL_PREFIX . 'tblLink');
+define('LANGLINK_TABLE', TBL_PREFIX . 'tblLangLink');
 define('PASSWD_TABLE', TBL_PREFIX . 'tblPasswd');
 define('PREFS_TABLE', TBL_PREFIX . 'tblPrefs');
 define('RECIPIENTS_TABLE', TBL_PREFIX . 'tblRecipients');

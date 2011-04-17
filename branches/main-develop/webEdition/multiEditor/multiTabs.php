@@ -108,8 +108,6 @@ switch ($GLOBALS['BROWSER']) {
 print $_contentTypes;
 
 ?>
-
-
 function _getIcon(contentType, extension) {
 	if (contentType == "application/*") {
 		switch(extension){

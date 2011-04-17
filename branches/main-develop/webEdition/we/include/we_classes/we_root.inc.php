@@ -576,6 +576,44 @@ function formTriggerDocument($isclass=false){
 		return $yuiSuggest->getHTML();
 
 	}
+	function formLanguageDocument($headline, $langkey,$LDID=0,$table = FILE_TABLE,$rootDir=0){
+		global $l_we_class, $BROWSER;
+		$yuiSuggest =& weSuggest::getInstance();
+		$we_button = new we_button();
+		
+		$textname = 'we_'.$this->Name.'_LanguageDocName['.$langkey.']';
+		$idname = 'we_'.$this->Name.'_LanguageDocID['.$langkey.']';
+		//$myid = $this->TriggerID ? $this->TriggerID : "";
+		$myid =$LDID;
+		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$yuiSuggest->setAcId($idname,$rootDir);
+		if ($table == FILE_TABLE){
+			$yuiSuggest->setContentType("folder,text/webedition");
+			$ctype='text/webedition';
+		} else {
+			$yuiSuggest->setContentType("folder,objectFile");
+			$ctype='objectFile';
+		}
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $rootDir . "','".$ctype."',1)");
+		//$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) . "opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';}','".session_id()."','','text/weTmpl',1)");
+		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$idname."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+
+		$yuiSuggest->setInput($textname,$path,"",true);
+		$yuiSuggest->setLabel($headline);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(1);
+		$yuiSuggest->setResult($idname,$myid);
+		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setTable($table);
+		$yuiSuggest->setWidth(288);
+		$yuiSuggest->setSelectButton($button);
+		$yuiSuggest->setTrashButton($trashButton);
+		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
+		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
+
+		return $yuiSuggest->getHTML();
+
+	}
 
 	#################### Function for getting and setting the $elements Array #########################################################################
 
@@ -1204,7 +1242,7 @@ function formTriggerDocument($isclass=false){
 
 		$DB_WE = new DB_WE();
 		//select only own ID if not in same session
-		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.$DB_WE->query($this->Table).'" AND sessionID!="'.session_id().'" AND lockTime>NOW()');
+		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.$DB_WE->escape($this->Table).'" AND sessionID!="'.session_id().'" AND lockTime>NOW()');
 		$_userId = 0;
 		while($DB_WE->next_record()) {
 			$_userId = $DB_WE->f("UserID");
@@ -1218,7 +1256,7 @@ function formTriggerDocument($isclass=false){
 
 			$DB_WE = new DB_WE();
 			//if lock is used by other user and time is up, update table
-			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.$DB_WE->query($this->Table).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
+			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.$DB_WE->escape($this->Table).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
 				ON DUPLICATE KEY UPDATE UserID="'.abs($_SESSION["user"]["ID"]).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)');
 		}
 	}

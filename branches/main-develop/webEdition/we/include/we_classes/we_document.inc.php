@@ -222,6 +222,39 @@ class we_document extends we_root {
 				</tr>
 			';
 		}
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+			$htmlzw='';
+			foreach ($_languages as $langkey => $lang){
+			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND DID='".$this->ID."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
+			  	if(!$LDID){$LDID=0;}
+				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
+				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';
+				$langkeys[]=$langkey;
+			}
+
+			$content = '
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						'.getPixel(2,4).'</td>
+				</tr>
+				'. $_headline . '
+				<tr>
+					<td>
+						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='".implode(',',$langkeys)."';showhideLangLink('we_".$this->Name."_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
+				</tr>
+				<tr>
+					<td>
+						'.getPixel(2,20).'</td>
+				</tr>
+				<tr>
+					<td class="defaultfont" align="left">
+						'.$g_l('weClass','languageLinks').'</td>
+				</tr>
+			</table>';
+			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+
+		} else {
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -234,6 +267,9 @@ class we_document extends we_root {
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
 				</tr>
 			</table>';
+
+		}
+
 		return $content;
 
 	}

@@ -157,6 +157,7 @@ $global_config[] = array('define("URLENCODE_OBJECTSEOURLS",', '// Flag if seo-ur
 $global_config[] = array('define("SUPPRESS404CODE",', '// Flag if 404 not found should be suppressd' . "\n" . 'define("SUPPRESS404CODE", false);');
 $global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if should be displayed in webEdition ' . "\n" . 'define("SEOINSIDE_HIDEINWEBEDITION", false);');
 $global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", false);');
+$global_config[] = array('define("LANGLINK_SUPPORT",', '// Flag if automatic LanguageLinks should be supported ' . "\n" . 'define("LANGLINK_SUPPORT", true);');
 
 
 //default charset
@@ -586,6 +587,10 @@ function get_value($settingvalue) {
 			break;
 		case "seoinside_hideineditmode":
 			return defined("SEOINSIDE_HIDEINEDITMODE") ? SEOINSIDE_HIDEINEDITMODE : false;
+			break;
+		
+		case "langlink_support":
+			return defined("LANGLINK_SUPPORT") ? LANGLINK_SUPPORT : true;
 			break;
 
 
@@ -1791,6 +1796,14 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+			
+			case '$_REQUEST["langlink_support"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 
 			/*****************************************************************
 			 * DEFAULT CHARSET
@@ -2855,6 +2868,8 @@ function save_all_values() {
 
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
+		
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, '$_REQUEST["langlink_support"]') || $_update_prefs;
 
 		$_update_prefs = remember_value(isset($_REQUEST["wysiwyg_type"]) ? $_REQUEST["wysiwyg_type"] : null, '$_REQUEST["wysiwyg_type"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
@@ -4082,6 +4097,12 @@ EOF;
 				array_push($_settings, array("headline" => g_l('prefs','[locale_add]'), "html" => $_add_html, "space" => 200));
 
 
+
+				$_php_setting = new we_htmlSelect(array("name" => "langlink_support","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("langlink_support"));
+				array_push($_settings, array("headline" => $l_prefs["langlink_support"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
 				/*****************************************************************
 				 * Dialog

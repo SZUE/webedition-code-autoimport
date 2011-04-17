@@ -556,4 +556,3 @@ if ($showAC) {
 	print $yuiSuggest->getYuiJs();
 }
 
-?>

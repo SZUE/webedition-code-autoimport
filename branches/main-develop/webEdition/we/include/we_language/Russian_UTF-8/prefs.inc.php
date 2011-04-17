@@ -212,7 +212,8 @@ $l_prefs = array(
 		'cannot_delete_default_language' => "The default language cannot be deleted.", // TRANSLATE
 		'language_already_exists' => "This language already exists", // TRANSLATE
 		'language_country_missing' => "Please select also a country", // TRANSLATE
-		'add_dictionary_question' => "Would you like to upload the dictionary for this language?", // TRANSLATE
+		'add_dictionary_question' => "Would you like to upload the dictionary for this language?",// TRANSLATE
+		'langlink_support' => "Automatic language links",// TRANSLATE
 
 		/*		 * ***************************************************************************
 		 * EDITOR

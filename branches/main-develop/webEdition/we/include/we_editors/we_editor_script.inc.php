@@ -170,6 +170,21 @@ function pathOfDocumentChanged() {
 
 <?php } ?>
 
+function showhideLangLink(allnames,allvalues,deselect){
+		var arr = allvalues.split(",");
+
+		for(var v in arr){
+			w=allnames+'['+arr[v]+']';
+			e = document.getElementById(w);
+			e.style.display='block';
+		}
+		w=allnames+'['+deselect+']';
+		e = document.getElementById(w);
+		e.style.display='none';
+		
+		
+	}
+
 function weDelCookie(name,path,domain){
 	if (getCookie(name)) {
 		document.cookie = name + "=" +

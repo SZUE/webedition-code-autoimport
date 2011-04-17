@@ -298,10 +298,13 @@ class DB_Sql {
 	}
 
 	function fieldNames(){
-		$count=$this->num_fields();
 		$res=array();
+		if(!$this->Query_ID){
+			return $res;
+		}
+		$count=$this->num_fields();
 		for ($i = 0; $i < $count; $i++) {
-			$res[$i] = mysql_field_name($id, $i);
+			$res[$i] = mysql_field_name($this->Query_ID, $i);
 		}
 		return $res;
 	}

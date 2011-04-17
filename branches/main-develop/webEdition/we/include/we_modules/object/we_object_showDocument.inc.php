@@ -22,10 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-//define("NO_SESS",1);
-if (!defined("NO_SESS")) {
-		define("NO_SESS", 1);
-	}
+define("NO_SESS",1);
+
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_objectFile.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
@@ -206,10 +204,6 @@ if ( isset($GLOBALS["we_obj"]) && $GLOBALS["we_obj"]->documentCustomerFilter && 
 		}
 	}
 }
-if(!isset($DB_WE)){
-	$DB_WE = new DB_WE;
-	$DB_WE->connect();
-}
 
 if (!isset($pid) || !($pid) ) {
 	$pid = f("SELECT ParentID FROM " .FILE_TABLE. " WHERE Path='".$_SERVER["PHP_SELF"]."'","ParentID",$DB_WE);
@@ -248,9 +242,6 @@ if((!defined("WE_CONTENT_TYPE_SET")) && isset($GLOBALS["we_doc"]->Charset) && $G
 	@header("Content-Type: text/html; charset=" . $GLOBALS["we_doc"]->Charset);
 }
 
-if(!isset($we_doc)){
-	$we_doc = $GLOBALS["we_doc"];
-}
 // Caching
 
 $h = getHash("Select CacheType, CacheLifeTime FROM ".OBJECT_TABLE." WHERE ID='".$we_doc->TableID."'",$DB_WE);

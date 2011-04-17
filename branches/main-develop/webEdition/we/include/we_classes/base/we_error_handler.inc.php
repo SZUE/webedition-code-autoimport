@@ -168,25 +168,23 @@ function translate_error_type($type) {
 	}
 }
 
-function getBacktrace($skip=0){
-	++$skip;//don't count ourself
+function getBacktrace($skip){
 	$_detailedError=$_caller=$_file=$_line='';
 
 	$_backtrace=debug_backtrace();
+	$found=false;
+	$cnt=0;
 
 	foreach($_backtrace AS $no=>$arr){
-		if($no<$skip){
+		if(in_array($arr['function'],$skip)){
 			continue;
-		}else if($no==$skip){ //this is the caller
+		}else if(!$found){ //this is the caller
 			$_caller=$arr['function'];
 			$_file=(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'');
 			$_line=(isset($arr['line'])?$arr['line']:'');
-			if($_caller=='error_handler'&&($_line==''||$_line==0)){
-				++$no;
-				continue;
-			}
+			$found=true;
 		}
-		$_detailedError .='#'.($no-$skip).' '.$arr['function'].' called at ['.(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'').':'.(isset($arr['line'])?$arr['line']:'')."]\n";
+		$_detailedError .='#'.($cnt++).' '.$arr['function'].' called at ['.(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'').':'.(isset($arr['line'])?$arr['line']:'')."]\n";
 	}
 	return array($_detailedError,$_caller,$_file,$_line);
 }
@@ -204,7 +202,7 @@ function display_error_message($type, $message, $file, $line) {
 		$type=E_SQL;
 	}
 
-	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:1));
+	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?array('trigger_error','error_handler','getBacktrace',__FUNCTION__):array('error_handler','getBacktrace',__FUNCTION__)));
 
 	// Build the error table
 	$_detailedError  = '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>';
@@ -258,7 +256,7 @@ function log_error_message($type, $message, $file, $_line) {
 	if(strpos($message,'MYSQL-ERROR')===0){
 		$type=E_SQL;
 	}
-	list($_detailedError,$_caller,$file,$_line)=getBacktrace(($type==E_SQL?3:1));
+	list($_detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?array('trigger_error','error_handler','getBacktrace',__FUNCTION__):array('error_handler','getBacktrace',__FUNCTION__)));
 
 	// Error type
 	$_type=translate_error_type($type);
@@ -284,9 +282,11 @@ function log_error_message($type, $message, $file, $_line) {
 			Line=\'' . abs($_line) . '\',
 			Text=\'' . mysql_real_escape_string($_text) . '\',
 			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\','.
-			'Request=\''.mysql_real_escape_string(print_r($_REQUEST,true)).'\','.
-			'Session=\''.mysql_real_escape_string(print_r($_SESSION,true)).'\','.
-			'Global=\''.mysql_real_escape_string(print_r($_GLOBAL,true)).'\','.
+			'Request=\''.(isset($_REQUEST)?mysql_real_escape_string(print_r($_REQUEST,true)):' - ').'\','.
+			'Session=\''.(isset($_SESSION)?mysql_real_escape_string(print_r($_SESSION,true)):' - ').'\','.
+/*string too long - disabled
+			'Global=\''.mysql_real_escape_string(print_r($GLOBALS,true)).'\','.
+ */
 			'Server=\''.mysql_real_escape_string(print_r($_SERVER,true)).'\';';
 		mysql_query($_query);
 
@@ -302,7 +302,7 @@ function mail_error_message($type, $message, $file, $line) {
 	if(strpos($message,'MYSQL-ERROR')===0){
 		$type=E_SQL;
 	}
-	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?3:1));
+	list($detailedError,$_caller,$file,$line)=getBacktrace(($type==E_SQL?array('trigger_error','error_handler','getBacktrace',__FUNCTION__):array('error_handler','getBacktrace',__FUNCTION__)));
 
 	// Build the error table
 	$_detailedError  = "An error occurred while executing a script in webEdition.\n\n\n";

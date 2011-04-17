@@ -327,6 +327,21 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 	function updateEntry(id,text,pid,tab) {
 		opener.top.updateEntry(id,text,pid,tab);
 	}
+	
+	function disableLangDefault(allnames,allvalues,deselect){
+		var arr = allvalues.split(",");
+
+		for(var v in arr){
+			w=allnames+'['+arr[v]+']';
+			e = document.getElementById(w);
+			e.disabled=false;
+		}
+		w=allnames+'['+deselect+']';
+		e = document.getElementById(w);
+		e.disabled=true;
+		
+		
+	}
 //-->
 </script>
 <?php

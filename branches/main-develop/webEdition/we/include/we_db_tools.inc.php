@@ -47,7 +47,7 @@ function getHash($query, $DB_WE){
 
 function f($query, $field, $DB_WE) {
 	$h = getHash($query, $DB_WE);
-	return isset($h[$field]) ? $h[$field] : "";
+	return isset($h[$field]) ? $h[$field] : '';
 }
 
 function doUpdateQuery($DB_WE, $table, $hash, $where) {

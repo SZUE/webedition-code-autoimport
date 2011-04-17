@@ -199,6 +199,7 @@ $l_prefs = array(
 		'language_already_exists' => "Tämä kieli on jo olemassa",
 		'language_country_missing' => "Please select also a country", // TRANSLATE
 		'add_dictionary_question' => "Haluatko päivittää sanaston tälle kielelle?",
+		'langlink_support' => "Automatic language links",// TRANSLATE,
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

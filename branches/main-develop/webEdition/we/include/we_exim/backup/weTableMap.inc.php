@@ -27,6 +27,7 @@
 	$tableMap['core']=array(
 			'tblfile'				=>	FILE_TABLE,
 			'tbllink'				=>	LINK_TABLE,
+			'tbllanglink'			=>	LANGLINK_TABLE,
 			'tbltemplates'			=>	TEMPLATES_TABLE,
 			'tblindex'				=>	INDEX_TABLE,
 			'tblcontent'			=>	CONTENT_TABLE,

@@ -51,5 +51,3 @@ if (defined("MESSAGING_SYSTEM")){
 	$msg_button = we_htmlElement::htmlA(array("href"=>$msg_cmd),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/message.gif',"width"=>34,"height"=>34,"border"=>0)));
 	$todo_button = we_htmlElement::htmlA(array("href"=>$todo_cmd),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/todo.gif',"width"=>34,"height"=>34,"border"=>0)));
 }
-
-?>
