@@ -5,5 +5,5 @@ CREATE TABLE tblLangLink (
   Locale varchar(5) NOT NULL default '',
   DocumentTable enum('tblFile','tblObjectFile','tblDocTypes') NOT NULL,
   PRIMARY KEY (ID),
-  KEY DID (DID,Locale)
+  KEY DID (DID,Locale(5))
 ) ENGINE=MyISAM;
