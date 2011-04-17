@@ -31,7 +31,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 	*/
 	function pWebEdition_Tree(){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weMainTree.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMainTree.inc.php");
 		$Tree = new weMainTree("webEdition.php","top","self.Tree","top.load");
 		print $Tree->getJSTreeCode();
 	}
@@ -40,8 +40,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 	* @return void
 	* @desc prints JavaScript functions only needed in normal mode
 	*/
-	function pWebEdition_JSFunctions(){
-		?>
+	function pWebEdition_JSFunctions(){?>
 function toggleBusy(w) {
 	if(w == busy || firstLoad==false)
 		return;
@@ -111,8 +110,7 @@ var widthBeforeDeleteModeSidebar = 0;
 	* @return void
 	* @desc prints the different cases for the function we_cmd
 	*/
-	function pWebEdition_JSwe_cmds(){
-		?>
+	function pWebEdition_JSwe_cmds(){?>
 		case "new":
 			treeData.unselectnode();
 			if(typeof(arguments[5])!="undefined") {
@@ -210,8 +208,7 @@ var widthBeforeDeleteModeSidebar = 0;
 	* @return void
 	* @desc the frameset for the SeeMode
 	*/
-	function pWebEdition_Frameset(){
-		?>
+	function pWebEdition_Frameset(){?>
 <frameset rows="32,*,<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="no" onUnload="doUnload()">
 	<frame src="header.php" name="header" scrolling="no" noresize>
 	<frame src="resizeframe.php" name="rframe" scrolling="no" noresize>

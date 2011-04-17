@@ -60,47 +60,16 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 
 </script>
 </head>
-<?php switch($GLOBALS["BROWSER"]){
-	case "NN6":
-	case "OPERA":?>
-<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-
-	<frameset <?php
-		if ($GLOBALS["BROWSER"] != "OPERA") echo 'onload="startMultiEditor();"';
-			?> rows="22,*,0" id="multiEditorContainer">
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" />
-		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
-		<frame <?php
-		if ($GLOBALS["BROWSER"] == "OPERA") echo 'onload="startMultiEditor();"';
-			?>name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
-	</frameset>
-
-</frameset>
-
-<?php break;
-case "SAFARI": ?>
-<frameset cols="1,*,1" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize>
-
-	<frameset rows="22,*,0" id="multiEditorContainer"  border="0" frameborder="NO">
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" />
-		<frame onload="doSafariLoad();" name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
-		<frame onload="startMultiEditor();" name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" />
-	</frameset>
-	<frame src="<?php print HTML_DIR ?>whiteWithLeftLine.html" name="bm_resize" scrolling="no" noresize>
-
-</frameset>
-<?php break;
-default:?>
-<frameset cols="2,*,2" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
-	<frameset onload="startMultiEditor();" rows="22,*,0" border="1" id="multiEditorContainer" noresize>
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" noresize />
-		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
-		<frame name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
-	</frameset>
-	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
-</frameset>
-<?php break;
-} ?>
+<?php //switch($GLOBALS["BROWSER"]){ ?>
+		<div style="position:fixed;width:100%;height:100%;top:0;left:0;border: 1px solid black;">
+       <div style="height:22px;width:100%;">
+				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" style="border:0;width: 100%;height:100%;" name="multiEditorDocumentTabsFrame" scrolling="no"></iframe>
+			</div>
+			<div style="width: 100%;height:100%;">
+				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" name="multiEditorEditorFramesets" style="border:0;width:100%;height:100%;" scrolling="no"></iframe>
+       </div>
+       <div style="height:0">
+				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" name="multiEditorDocumentControllerFrame" style="border:0;" scrolling="no" onload="startMultiEditor();"></iframe>
+			</div>
+     </div>
 </html>

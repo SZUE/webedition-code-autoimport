@@ -3814,6 +3814,13 @@ function getVarArray($arr, $string) {
 	return $return;
 }
 
+/**internal function - do not call */
+function g_l_encodeArray($tmp){
+	return (is_array($tmp)?
+					g_l_encodeArray($tmp):
+					mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8"));
+}
+
 /**
  * getLanguage property
  *  Note: underscores in name are used as directories - modules_workflow is searched in subdir modules
@@ -3821,15 +3828,21 @@ function getVarArray($arr, $string) {
  *
  * @param $name name of the variable, without 'l_', this name is also used for inclusion
  * @param $specific the array element to access
+ * @param $useEntities if set, return the string as html-entities
  */
-function g_l($name, $specific) {
+function g_l($name, $specific, $useEntities=true) {
 	//cache last accessed lang var
 	static $cache;
 	//echo $name.$specific;
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 		if (!($tmp === false)) {
-			return mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8");
+			return ($useEntities?
+								(is_array($tmp)?
+									array_map('g_l_encodeArray',$tmp):
+									mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8")
+								):
+							$tmp);
 		}
 	}else{
 		//FIXME: decide if in we - then turn off, else turn on
@@ -3844,7 +3857,12 @@ function g_l($name, $specific) {
 		//get local variable
 		if($tmp !== false){
 			$cache["l_$name"]=${"l_$name"};
-			return mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8");
+			return ($useEntities?
+								(is_array($tmp)?
+									array_map('g_l_encodeArray',$tmp):
+									mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8")
+									):
+								$tmp);
 		}else{
 				trigger_error('Requested lang entry '."l_$name$specific".' not found in '.$file.'!',E_USER_WARNING);
 			return false;

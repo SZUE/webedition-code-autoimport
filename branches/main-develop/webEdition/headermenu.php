@@ -127,7 +127,7 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 		</script>
 	</head>
 <body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0"<?php if($GLOBALS["SYSTEM"]=="WIN"): ?> onLoad="if(top.makefocus != null){top.focusise();}"<?php endif ?>>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr>
 <?php
 if ($jmenu) {

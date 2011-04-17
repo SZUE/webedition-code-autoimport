@@ -61,28 +61,22 @@ function startNormalMode() {
 
 	}
 
-	//FIXME: do we really want to load sidebar-frame - even if it is deactivated?
-	if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
 ?>
-	<frameset cols="<?php print $_treewidth; ?>,*,<?php print $_sidebarwidth; ?>" border="1" id="resizeframeid">
-		<frame src="baumFrame.php" name="bframe" scrolling="no">
-		<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-		<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-	</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-	<frameset cols="<?php print $_treewidth; ?>,*,<?php print $_sidebarwidth; ?>" border="0" frameborder="0" id="resizeframeid">
-		<frame src="baumFrame.php" name="bframe" scrolling="no">
-		<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-		<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-	</frameset>
-<?php } else { //IE ?>
-	<frameset cols="<?php print $_treewidth; ?>,*,<?php print $_sidebarwidth; ?>" border="0" frameborder="0" id="resizeframeid">
-		<frame src="baumFrame.php" name="bframe" scrolling="no" frameborder="0">
-		<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-		<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-	</frameset>
+		<div style="position:fixed;width:100%;height:100%;top:0;left:0;border: 1px solid black;">
+       <div style="position:absolute;left:0;height:100%;">
+				<iframe src="baumFrame.php" style="border:0;width:<?php print $_treewidth;?>px;height:100%;" name="bframe" scrolling="no"></iframe>
+			</div>
+
+			<div style="margin-left:<?php print $_treewidth;?>px;width:100%;float:left;height:100%; border-left:1px solid black;">
+				<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;" scrolling="no"></iframe>
+       </div>
+			<?php if(isset($_sidebarwidth)){ ?>
+       <div style="position:absolute;right:0;height:100%;">
+				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:<?php print $_sidebarwidth; ?>px;height:100%;" scrolling="no"></iframe>
+			</div>
+			<?php } ?>
+     </div>
 <?php
-	}
 }
 
 

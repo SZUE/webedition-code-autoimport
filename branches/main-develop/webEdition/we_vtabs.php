@@ -161,8 +161,10 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 
 	}
 
+//FIXME: resize of left frame not possible
 	function treeOut() {
-
+	}
+/*
 
 		var resizeframe = parent.parent.document.getElementById("resizeframeid");
 		var cols = resizeframe.cols;
@@ -181,7 +183,7 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 
 		}
 
-
+*/
 
 
 	}
