@@ -1717,7 +1717,7 @@ function cleanTempFiles($cleanSessFiles = 0) {
 		$GLOBALS['DB_WE']->query("
 			SELECT Date,Path
 			FROM " . CLEAN_UP_TABLE . "
-			WHERE Path like '%" . $DB_WE->escape($seesID) . "%'");
+			WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		if ($GLOBALS['DB_WE']->num_rows())
 			while ($GLOBALS['DB_WE']->next_record()) {
 				$p = $GLOBALS['DB_WE']->f("Path");
