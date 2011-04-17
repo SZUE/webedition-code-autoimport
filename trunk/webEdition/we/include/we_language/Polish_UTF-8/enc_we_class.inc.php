@@ -32,6 +32,7 @@ $l_we_class['none'] = '--Żadne--';
 $l_we_class['nodoctype'] = '--bez--';
 $l_we_class['languageLinksDefaults'] = 'Default value for the document type in corresponding documents in the other front end languages'; // TRANSLATE
 $l_we_class['languageLinks'] = 'Link to the corresponding documents/objects in other languages';// TRANSLATE
+$l_we_class['languageLinksDir'] = 'Default link to the corresponding documents in other languages';// TRANSLATE
 $l_we_class['doctype'] = 'Typ dokumentu';
 $l_we_class['standard_workspace'] = 'Default Workspace'; // TRANSLATE
 $l_we_class['standard_template'] = 'Szablon';

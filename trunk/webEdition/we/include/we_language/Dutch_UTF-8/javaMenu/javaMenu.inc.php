@@ -281,5 +281,6 @@ $l_javaMenu["search"] = "Zoeken";
 
 $l_javaMenu["common"] = "Gebruikelijk";
 $l_javaMenu["sysinfo"] = "Systeem informatie";
+$l_javaMenu["showerrorlog"] = "Errorlog";// TRANSLATE
 
 ?>

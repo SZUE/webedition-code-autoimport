@@ -196,6 +196,7 @@ $l_prefs = array(
 		'language_country_missing' => "Please select also a country", // TRANSLATE
 		'add_dictionary_question' => "Haluatko päivittää sanaston tälle kielelle?",
 		'langlink_support' => "Automatic language links",// TRANSLATE,
+		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

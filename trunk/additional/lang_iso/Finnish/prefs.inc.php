@@ -223,6 +223,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["language_country_missing"] = "Please select also a country"; // TRANSLATE
 	$l_prefs["add_dictionary_question"] = "Haluatko p‰ivitt‰‰ sanaston t‰lle kielelle?";
 	$l_prefs["langlink_support"] = "automatic language links";// TRANSLATE
+	$l_prefs["langlink_support_backlinks"] = "Generate back links automatically";// TRANSLATE
 
 /*****************************************************************************
  * EDITOR

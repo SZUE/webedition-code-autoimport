@@ -281,5 +281,6 @@ $l_javaMenu["search"] = "Search"; // TRANSLATE
 
 $l_javaMenu["common"] = "Common"; // TRANSLATE
 $l_javaMenu["sysinfo"] = "System information"; // TRANSLATE
+$l_javaMenu["showerrorlog"] = "Errorlog";// TRANSLATE
 
 ?>

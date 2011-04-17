@@ -465,7 +465,16 @@ class we_class
 	}
 
 	function we_delete(){
-		return $this->DB_WE->query("DELETE FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
+			$deltype='';
+			if ($this->ClassName=='we_objectFile') $deltype='tblObjectFile';
+			if ($this->ClassName=='we_webEditionDocument') $deltype='tblFile';
+			if ($this->ClassName=='we_docTypes') $deltype='tblDocTypes';
+			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID='".abs($this->ID)."'");
+			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID='".abs($this->ID)."'");
+		}
+		return $this->DB_WE->query("DELETE FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");	
+		
 	}
 
 # private ###################
@@ -588,16 +597,24 @@ class we_class
 
 	}
 	
-	function setLanguageLink($LangLinkArray,$type){
-		if(is_array($LangLinkArray) ){		
-		  foreach ($LangLinkArray as $locale => $LDID){
-			if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".$this->ID."' AND Locale='".$locale."'",'ID',$this->DB_WE)){
-				$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
-				$this->DB_WE->query($q);
-			} else {
-				$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
-				$this->DB_WE->query($q);
-			} 	
+	function setLanguageLink($LangLinkArray,$type,$isfolder=false,$isobject=false){
+		if(is_array($LangLinkArray) ){
+			$q = "DELETE FROM ".mysql_real_escape_string(LANGLINK_TABLE)." WHERE LDID='".abs($this->ID)."' AND DID !='".abs($LDID)."' AND Locale='".$this->Language."' AND  DocumentTable='".$type."';";	
+			$this->DB_WE->query($q);		
+			foreach ($LangLinkArray as $locale => $LDID){
+			  
+				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+					$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
+					$this->DB_WE->query($q);
+				} else {
+					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
+					$this->DB_WE->query($q);
+				}
+				if(defined('LANGLINK_SUPPORT_BACKLINKS') && LANGLINK_SUPPORT_BACKLINKS && !$isfolder and $LDID){
+					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
+					$this->DB_WE->query($q);
+				}
+			  
 		  }
 		}
 	}
