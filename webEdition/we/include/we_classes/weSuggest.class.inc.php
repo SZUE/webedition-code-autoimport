@@ -92,6 +92,10 @@ class weSuggest {
 	var $selector             = "Dir";
 	var $trashButton          = "";
 	var $trashButtonSpace     = "";
+	var $openButton           = "";
+	var $openButtonSpace      = "";
+	var $createButton         = "";
+	var $createButtonSpace    = "";
 	var $table                = FILE_TABLE;
 	var $width                = 280;
 	/****************************************/
@@ -1011,7 +1015,9 @@ function doDebugResizeH(){
 					"defaultfont",
 					array("text"=>"<div style=''>".$this->selectButton."</div>", "valign"=>"top"),
 					getPixel($this->trashButtonSpace,4),
-					(empty($this->trashButton) ? "" : array("text"=>"<div style=''>".$this->trashButton."</div>", "valign"=>"top"))
+					(empty($this->trashButton) ? "" : array("text"=>"<div style=''>".$this->trashButton."</div>", "valign"=>"top")),
+					getPixel($this->openButtonSpace,4),
+					(empty($this->openButton) ? "" : array("text"=>"<div style=''>".$this->openButton."</div>", "valign"=>"top"))
 				);
 
 		$this->acId                 = "";
@@ -1029,6 +1035,10 @@ function doDebugResizeH(){
 		$this->selector             = "Dir";
 		$this->trashButton          = "";
 		$this->trashButtonSpace     = "";
+		$this->openButton           = "";
+		$this->openButtonSpace      = "";
+		$this->createButton         = "";
+		$this->createButtonSpace    = "";
 		$this->table                = FILE_TABLE;
 		$this->width                = 280;
 		$this->doOnItemSelect       = "";
@@ -1219,6 +1229,14 @@ function doDebugResizeH(){
 	function setTrashButton($val,$space=10) {
 		$this->trashButton = $val;
 		$this->trashButtonSpace = $space;
+	}
+	function setOpenButton($val,$space=10) {
+		$this->openButton = $val;
+		$this->openButtonSpace = $space;
+	}
+	function setCreateButton($val,$space=10) {
+		$this->createButton = $val;
+		$this->createButtonSpace = $space;
 	}
 	function setWidth($var) {
 		$this->width = $var;

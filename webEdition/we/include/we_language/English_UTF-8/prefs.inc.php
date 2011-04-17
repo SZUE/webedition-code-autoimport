@@ -194,6 +194,7 @@ $l_prefs = array(
 		'language_country_missing' => "Please select also a country",
 		'add_dictionary_question' => "Would you like to upload the dictionary for this language?",
 		'langlink_support' => "Automatic language links",
+		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

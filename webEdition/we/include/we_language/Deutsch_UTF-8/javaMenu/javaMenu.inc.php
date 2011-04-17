@@ -287,5 +287,6 @@ $l_javaMenu["search"] = "Suche";
 
 $l_javaMenu["common"] = "Allgemein";
 $l_javaMenu["sysinfo"] = "Systeminformationen";
+$l_javaMenu["showerrorlog"] = "Fehlerlog";
 
 ?>

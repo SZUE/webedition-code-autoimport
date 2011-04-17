@@ -281,5 +281,6 @@ $l_javaMenu["search"] = "Etsi";
 
 $l_javaMenu["common"] = "Yleiset";
 $l_javaMenu["sysinfo"] = "Järjestelmätiedot";
+$l_javaMenu["showerrorlog"] = "Errorlog";// TRANSLATE
 
 ?>

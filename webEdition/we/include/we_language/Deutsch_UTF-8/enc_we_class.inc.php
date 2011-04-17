@@ -38,6 +38,7 @@ $l_we_class["none"] = "--Keine--";
 $l_we_class["nodoctype"] = "--Ohne--";
 $l_we_class['languageLinksDefaults'] = 'Voreinstellung Dokument Typ in korrespondierenden Dokumenten der anderen Frontendsprachen';
 $l_we_class['languageLinks'] = 'Verknüpfung zu den korrespondierenden Dokumenten/Objekten in anderen Sprachen';
+$l_we_class['languageLinksDir'] = 'Default-Verknüpfung zu den korrespondierenden Dokumenten in anderen Sprachen';
 $l_we_class["doctype"] = "Dokument Typ";
 $l_we_class["standard_workspace"] = "Standardarbeitsbereich";
 $l_we_class["standard_template"] = "Vorlage";

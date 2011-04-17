@@ -226,6 +226,7 @@ $l_prefs["tab_versions"] = 'Versionierung';
 	$l_prefs["language_country_missing"] = "Bitte wählen Sie auch ein Land aus";
 	$l_prefs["add_dictionary_question"] = "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?";
 	$l_prefs["langlink_support"] = "Automatische Sprachverlinkung";
+	$l_prefs["langlink_support_backlinks"] = "Erzeuge automatisch die Backlinks";
 
 /*****************************************************************************
  * EDITOR
