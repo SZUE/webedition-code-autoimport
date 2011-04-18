@@ -637,7 +637,7 @@ class weBannerView extends weBannerBase{
 					if($newone)
 						$this->db->query("SELECT COUNT(*) AS Count FROM ".BANNER_TABLE." WHERE Text='".$this->db->escape($this->banner->Text)."' AND ParentID=".abs($this->banner->ParentID));
 					else
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".BANNER_TABLE." WHERE Text='".$DB_WE->escape($this->banner->Text)."' AND ParentID=".abs($this->banner->ParentID)." AND ID<>".abs($this->banner->ID));
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".BANNER_TABLE." WHERE Text='".$this->db->escape($this->banner->Text)."' AND ParentID=".abs($this->banner->ParentID)." AND ID<>".abs($this->banner->ID));
 
 					if($this->db->next_record()){
 						$double = $this->db->f("Count");
