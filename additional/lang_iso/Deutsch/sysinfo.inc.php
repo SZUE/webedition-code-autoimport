@@ -49,7 +49,7 @@ $_sysinfo["exif warning"] = 'EXIF-Metadaten für Bilder sind nicht verfügbar';
 $_sysinfo['sdk_db warning'] = 'SDK Operationen und WE-APPS mit Datenbanknutzung sind nicht verfügbar (benötigt: PDO &amp; PDO_mysql)';
 $_sysinfo['phpext warning'] = 'nicht verfügbar: ';
 $_sysinfo['phpext warning2'] = 'Die Funktion von webEdition kann nicht garantiert werden!';
-$_sysinfo['detectable warning'] = 'Einige Softwarevoraussetzungen konnten nicht überprüft werden (Suhosin?). Bitte prüfen Sie die Systemvoraussetzungen unter http://documentation.webedition.org/wiki/de/webedition/system-requirements/start';
+$_sysinfo['detectable warning'] = 'Einige Softwarevoraussetzungen konnten nicht überprüft werden (Suhosin?). Bitte prüfen Sie die Systemvoraussetzungen unter http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php';
 
 $_sysinfo['connection_types'] = 'Update-Verbindungstypen';
 $_sysinfo['gdlib'] = 'GDlib Unterstützung';
