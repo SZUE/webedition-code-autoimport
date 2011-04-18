@@ -255,7 +255,7 @@ define("VERSIONING_IMAGE", 0);
 define("VERSIONING_TEXT_HTML", 0);
 
 //Versioning status for ContentType text/webedition 
-define("VERSIONING_TEXT_WEBEDITION", 0);
+define("VERSIONING_TEXT_WEBEDITION", 1);
 
 //Versioning status for ContentType text/htaccess 
 define("VERSIONING_TEXT_HTACCESS", 0);
@@ -315,7 +315,7 @@ define("VERSIONS_TIME_WEEKS_TMPL", -1);
 define("VERSIONS_TIME_YEARS_TMPL", -1);
 
 //Versioning Number of Versions
-define("VERSIONS_ANZAHL_TMPL", "");
+define("VERSIONS_ANZAHL_TMPL", "5");
 
 // Flag if automatic LanguageLinks should be supported 
 define("LANGLINK_SUPPORT", 1);
