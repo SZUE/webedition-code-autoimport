@@ -58,6 +58,8 @@ define("WE_ERROR_NOTICES", 0);
 // Handle warnings
 define("WE_ERROR_WARNINGS", 0);
 
+// Handle deprecated warnings
+define("WE_ERROR_DEPRECATED", 0);
 
 // Handle errors
 define("WE_ERROR_ERRORS", 0);
@@ -91,6 +93,17 @@ define("WE_THUMBNAIL_DIRECTORY", "/__we_thumbs__");
 // Default setting for inlineedit attribute
 define("INLINEEDIT_DEFAULT", 1);
 
+// Default setting for removeparagraph attribute
+define("REMOVEFIRSTPARAGRAPH_DEFAULT", 0);
+
+// Default setting for hide name attribute in weimg output
+define("HIDENAMEATTRIBINWEIMG_DEFAULT", 0);
+
+// Default setting for hide name attribute in weform output
+define("HIDENAMEATTRIBINWEFORM_DEFAULT", 0);
+
+// Default setting for tag inclusion
+define("INCLUDE_ALL_WE_TAGS", 0);
 
 // Default setting for xml attribute
 define("XHTML_DEFAULT", 0);
@@ -99,54 +112,41 @@ define("XHTML_DEFAULT", 0);
 // Enable XHTML debug
 define("XHTML_DEBUG", 0);
 
-
 // Remove wrong xhtml attributes from we:tags
 define("XHTML_REMOVE_WRONG", 0);
-
 
 //
 define("WE_MAX_UPLOAD_SIZE", 0);
 
-
 //
 define("WE_DOCTYPE_WORKSPACE_BEHAVIOR", 0);
-
 
 // Default setting for showinputs attribute
 define("SHOWINPUTS_DEFAULT", 1);
 
-
 // File permissions when creating a new directory
 define("WE_NEW_FOLDER_MOD", 755);
-
 
 // Directory in which pageLogger is installed
 define("WE_TRACKER_DIR", "/pageLogger");
 
-
 // Flag if beta wysiwyg for safari should be used
 define("SAFARI_WYSIWYG", 1);
-
 
 // Document to open when trying to open non-existing object
 define("ERROR_DOCUMENT_NO_OBJECTFILE", 0);
 
-
 //Cache Type
 define("WE_CACHE_TYPE", "none");
-
 
 //Cache Life Time
 define("WE_CACHE_LIFETIME", 0);
 
-
 // Disable the check for missing close tags in templates
 define("DISABLE_TEMPLATE_TAG_CHECK", 0);
 
-
 // Flag if formmail calls should be logged
 define("FORMMAIL_LOG", 1);
-
 
 // Time in seconds
 define("FORMMAIL_SPAN", 60);
@@ -203,6 +203,8 @@ define("SMTP_USERNAME", "");
 //SMTP password
 define("SMTP_PASSWORD", "");
 
+//SMTP encryption
+define("SMTP_ENCRYPTION", 0);
 
 // Sidebar is disabled
 define("SIDEBAR_DISABLED", 0);
@@ -255,6 +257,12 @@ define("VERSIONING_TEXT_HTML", 0);
 //Versioning status for ContentType text/webedition 
 define("VERSIONING_TEXT_WEBEDITION", 0);
 
+//Versioning status for ContentType text/htaccess 
+define("VERSIONING_TEXT_HTACCESS", 0);
+
+//Versioning status for ContentType text/weTmpl 
+define("VERSIONING_TEXT_WETMPL", 0);
+
 //Versioning status for ContentType text/js 
 define("VERSIONING_TEXT_JS", 0);
 
@@ -293,5 +301,69 @@ define("VERSIONS_ANZAHL", "");
 
 //Versioning Save version only if publishing
 define("VERSIONS_CREATE", 0);
+
+//Versioning Save template version only on special request
+define("VERSIONS_CREATE_TMPL", 1);
+
+//Versioning Number of Days
+define("VERSIONS_TIME_DAYS_TMPL", -1);
+
+//Versioning Number of Weeks
+define("VERSIONS_TIME_WEEKS_TMPL", -1);
+
+//Versioning Number of Years
+define("VERSIONS_TIME_YEARS_TMPL", -1);
+
+//Versioning Number of Versions
+define("VERSIONS_ANZAHL_TMPL", "");
+
+// Flag if automatic LanguageLinks should be supported 
+define("LANGLINK_SUPPORT", 1);
+
+// Flag if automatic backlinks should be generated 
+define("LANGLINK_SUPPORT_BACKLINKS", 1);
+
+
+// top countries
+define("WE_COUNTRIES_TOP", "DE,AT,CH");
+
+// other shown countries
+define("WE_COUNTRIES_SHOWN", "BE,DK,EE,FI,FR,GR,IE,IT,LT,LU,MT,NL,PL,PT,SE,SK,SI,ES,CZ,HU,GB,CY");
+
+// Flag if NAV- rules should be evaluated even after a first match
+define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH", 0);
+
+// Flag if directoy-index files should be hidden in Nav-output
+define("NAVIGATION_DIRECTORYINDEX_HIDE", 1);
+
+// Comma seperated list such as index.php,index.html
+define("NAVIGATION_DIRECTORYINDEX_NAMES", "index.php");
+
+// Flag if directoy-index files should be hidden in Wysiwyg-editor output
+define("WYSIWYGLINKS_DIRECTORYINDEX_HIDE", 1);
+
+// Flag if directoy-index files should be hidden in tag output
+define("TAGLINKS_DIRECTORYINDEX_HIDE", 1);
+
+// Flag if we_objectID should be hidden from output of navigation
+define("NAVIGATION_OBJECTSEOURLS", 1);
+
+// Flag if we_objectID should be hidden from output of wysiwyg editior
+define("WYSIWYGLINKS_OBJECTSEOURLS", 1);
+
+// Flag if we_objectID should be hidden from output of tags
+define("TAGLINKS_OBJECTSEOURLS", 1);
+
+// Flag if seo-urls should be urlencoded
+define("URLENCODE_OBJECTSEOURLS", 0);
+
+// Flag if 404 not found should be suppressd
+define("SUPPRESS404CODE", 1);
+
+// Flag if should be displayed in webEdition 
+define("SEOINSIDE_HIDEINWEBEDITION", 0);
+
+// Flag if should be displayed in Editmode 
+define("SEOINSIDE_HIDEINEDITMODE", 1);
 
 ?>
