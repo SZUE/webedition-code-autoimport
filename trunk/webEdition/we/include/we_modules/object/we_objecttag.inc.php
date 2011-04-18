@@ -40,6 +40,9 @@ class we_objecttag{
 	function we_objecttag($class="", $id=0, $triggerID=0, $searchable=true, $condition="",$hidedirindex=false,$objectseourls=false){
 		$this->DB_WE = new DB_WE;
 		$this->id = $id;
+		if(!$this->id && isset($_REQUEST['we_objectID']) && $_REQUEST['we_objectID']){
+			!$this->id=$_REQUEST['we_objectID'];
+		}
 		$this->class = $class;
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;

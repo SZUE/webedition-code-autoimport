@@ -141,7 +141,7 @@ class we_langlink_listview extends listviewBase {
 		}
 	}
 	function next_record(){
-		if($this->count <= $this->anz_all){
+		if($this->count < $this->anz_all){
 			$count=$this->count;
 			$this->Record["WE_LANG"] = $this->ownlanguage;
 			$this->Record["WE_ID"] = $this->foundlinks[$count]["LDID"];
