@@ -172,6 +172,7 @@ CREATE TABLE tblLangLink (
   PRIMARY KEY (ID),
   KEY DID (DID,Locale(5))
 ) ENGINE=MyISAM;
+
 /* query separator */
 CREATE TABLE tblLink (
   DID int(11) NOT NULL default '0',
@@ -324,6 +325,7 @@ CREATE TABLE tblNewsletterConfirm (
   subscribe_lastname varchar(255) NOT NULL default '',
   lists text NOT NULL,
   expires bigint(20) NOT NULL default '0',
+  PRIMARY confirmID(confirmID(30)),
   KEY expires (expires),
   KEY subscribe (subscribe_mail(50),confirmID(30))
 ) ENGINE=MyISAM;
@@ -350,9 +352,29 @@ CREATE TABLE tblNewsletterLog (
   KEY NewsletterID (NewsletterID)
 ) ENGINE=MyISAM;
 /* query separator */
+CREATE TEMPORARY TABLE IF NOT EXISTS _newNewsPref(
+  pref_name varchar(30) NOT NULL default '',
+  pref_value longtext NOT NULL,
+	PRIMARY KEY name (pref_name(30))
+)ENGINE = MYISAM;
+/* query separator */
+
+INSERT INTO _newNewsPref SELECT DISTINCT * FROM tblNewsletterPrefs GROUP BY pref_name;
+/* query separator */
+
+TRUNCATE tblNewsletterPrefs;
+/* query separator */
+
+INSERT INTO tblNewsletterPrefs SELECT * FROM _newNewsPref;
+/* query separator */
+
+DROP TEMPORARY TABLE IF EXISTS _newNewsPref;
+/* query separator */
+
 CREATE TABLE tblNewsletterPrefs (
-  pref_name varchar(255) NOT NULL default '',
-  pref_value longtext NOT NULL
+  pref_name varchar(30) NOT NULL default '',
+  pref_value longtext NOT NULL,
+  PRIMARY KEY pref_name (pref_name(30))
 ) ENGINE=MyISAM;
 /* query separator */
 INSERT INTO tblNewsletterPrefs VALUES ('black_list','');
@@ -393,7 +415,8 @@ INSERT INTO tblNewsletterPrefs VALUES ('send_wait','0');
 /* query separator */
 INSERT INTO tblNewsletterPrefs VALUES ('test_account','test@meineDomain.de');
 /* query separator */
-INSERT INTO tblNewsletterPrefs VALUES ('title_or_salutation','0');/* query separator */
+INSERT INTO tblNewsletterPrefs VALUES ('title_or_salutation','0');
+/* query separator */
 CREATE TABLE tblObject (
   ID int(11) NOT NULL auto_increment,
   ParentID int(11) NOT NULL default '0',
@@ -1133,8 +1156,8 @@ DELETE FROM tblsearchtool WHERE ID IN (SELECT ID FROM _delKeys);
 /* query separator */
 
 DROP TEMPORARY TABLE IF EXISTS _delKeys;
-
 /* query separator */
+
 CREATE TABLE tblsearchtool (
   `ID` bigint(20) NOT NULL auto_increment,
   `ParentID` bigint(20) NOT NULL default '0',

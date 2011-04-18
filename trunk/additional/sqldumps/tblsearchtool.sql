@@ -10,8 +10,8 @@ DELETE FROM tblsearchtool WHERE ID IN (SELECT ID FROM _delKeys);
 /* query separator */
 
 DROP TEMPORARY TABLE IF EXISTS _delKeys;
-
 /* query separator */
+
 CREATE TABLE tblsearchtool (
   `ID` bigint(20) NOT NULL auto_increment,
   `ParentID` bigint(20) NOT NULL default '0',
