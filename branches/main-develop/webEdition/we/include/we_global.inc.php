@@ -3817,7 +3817,7 @@ function getVarArray($arr, $string) {
 /**internal function - do not call */
 function g_l_encodeArray($tmp){
 	return (is_array($tmp)?
-					g_l_encodeArray($tmp):
+					array_map('g_l_encodeArray',$tmp):
 					mb_convert_encoding($tmp, 'HTML-ENTITIES', "UTF-8"));
 }
 

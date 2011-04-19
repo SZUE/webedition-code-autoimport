@@ -2733,12 +2733,7 @@ class weNewsletterView {
 		$db=new DB_WE();
 		// WORKARROUND BUG NR 7450
 		foreach ($this->settings as $key=>$value) {
-			$db->query("SELECT pref_value FROM ".NEWSLETTER_PREFS_TABLE." WHERE pref_name='$key';");
-			if(!$db->next_record()) {
-				$db->query("INSERT INTO ".NEWSLETTER_PREFS_TABLE."(pref_name,pref_value) VALUES('$key','".$db->escape($value)."');");
-			} else {
-				$db->query("UPDATE ".NEWSLETTER_PREFS_TABLE." SET pref_value='".$db->escape($value)."' WHERE pref_name='$key' AND pref_name<>'black_list';");
-			}
+			$db->query("REPLACE ".NEWSLETTER_PREFS_TABLE." SET pref_value='".$db->escape($value)."' WHERE pref_name='$key' AND pref_name<>'black_list';");
 		}
 	}
 
@@ -2746,10 +2741,7 @@ class weNewsletterView {
 		$db=new DB_WE();
 		$name = $db->escape($name);
 		$value = $db->escape($value);
-		$db->query("UPDATE ".NEWSLETTER_PREFS_TABLE." SET pref_value='$value' WHERE pref_name='$name';");
-		if(!$db->affected_rows()){
-			$db->query("INSERT INTO ".NEWSLETTER_PREFS_TABLE." SET pref_name='$name', pref_value='$value';");
-		}
+		$db->query("REPLACE ".NEWSLETTER_PREFS_TABLE." SET pref_value='$value' WHERE pref_name='$name';");
 	}
 
 	function getBlackList() {

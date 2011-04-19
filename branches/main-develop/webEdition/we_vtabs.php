@@ -134,15 +134,13 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 	var oldWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
 
 	function toggleTree() {
-
-
-		var resizeframe = parent.parent.document.getElementById("resizeframeid");
-		var cols = resizeframe.cols;
-		var pairs = cols.split(",");
 		var w = top.getTreeWidth();
 
 		if (w <= 22) {
 			var newWidth = parseInt(oldWidth);
+			if(newWidth<=22){
+				newWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
+			}
 			top.setTreeWidth(newWidth);
 			top.setTreeArrow("left");
 			top.storeTreeWidth(newWidth);
@@ -152,40 +150,12 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 			top.setTreeArrow("right");
 			top.storeTreeWidth(22);
 		}
-
-
-
-		<?php if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-		parent.parent.bm_content_frame.bm_resize.calculateStartWidth();
-		<?php } ?>
-
 	}
 
-//FIXME: resize of left frame not possible
 	function treeOut() {
-	}
-/*
-
-		var resizeframe = parent.parent.document.getElementById("resizeframeid");
-		var cols = resizeframe.cols;
-		var pairs = cols.split(",");
-		var w = top.getTreeWidth();
-
-		if (w <= 22) {
-			var newWidth = parseInt(oldWidth);
-			top.setTreeWidth(newWidth);
-			top.setTreeArrow("left");
-			top.storeTreeWidth(newWidth);
-
-			<?php if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-			parent.parent.bm_content_frame.bm_resize.calculateStartWidth();
-			<?php } ?>
-
+		if (top.getTreeWidth() <= 22) {
+			toggleTree();
 		}
-
-*/
-
-
 	}
 
 </script>

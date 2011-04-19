@@ -110,7 +110,7 @@
                     $query = '
                         SELECT *
                         FROM ' . VALIDATION_SERVICES_TABLE . '
-                        WHERE fileEndings LIKE "%' . $DB_WE->escape($GLOBALS['$we_doc->Extension']) . '%" AND active=1';
+                        WHERE fileEndings LIKE "%' . $GLOBALS['DB_WE']->escape($GLOBALS['$we_doc->Extension']) . '%" AND active=1';
                     break;
             }
 

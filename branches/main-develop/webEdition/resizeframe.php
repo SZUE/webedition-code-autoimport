@@ -63,16 +63,16 @@ function startNormalMode() {
 
 ?>
 		<div style="position:fixed;width:100%;height:100%;top:0;left:0;border: 1px solid black;">
-       <div style="position:absolute;left:0;height:100%;">
-				<iframe src="baumFrame.php" style="border:0;width:<?php print $_treewidth;?>px;height:100%;" name="bframe" scrolling="no"></iframe>
+       <div style="position:absolute;left:0;height:100%;width:<?php print $_treewidth;?>px;float:left;" id="bframeDiv">
+				<iframe src="baumFrame.php" style="border:0;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
 			</div>
 
-			<div style="margin-left:<?php print $_treewidth;?>px;width:100%;float:left;height:100%; border-left:1px solid black;">
-				<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;" scrolling="no"></iframe>
+			<div style="margin-left:<?php print $_treewidth;?>px;width:100%;height:100%; border-left:1px solid black;" id="bm_content_frameDiv">
+				<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
        </div>
 			<?php if(isset($_sidebarwidth)){ ?>
-       <div style="position:absolute;right:0;height:100%;">
-				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:<?php print $_sidebarwidth; ?>px;height:100%;" scrolling="no"></iframe>
+       <div style="position:absolute;right:0;height:100%;" id="sidebarDiv">
+				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:<?php print $_sidebarwidth; ?>px;height:100%;overflow: hidden;"></iframe>
 			</div>
 			<?php } ?>
      </div>

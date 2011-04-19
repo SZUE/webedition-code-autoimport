@@ -241,7 +241,7 @@ $pad .= '</table>';
 
 
 print "hello";
-//$ifr = "<iframe allowtransparency=\"true\" src=\"".WEBEDITION_DIR."we/include/we_widgets/mod/pad1.inc.php\"\" id=\"\" style=\"width:430px;height:100px\" scrolling=\"auto\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\"></iframe>\n";
+//$ifr = "<iframe allowtransparency=\"true\" src=\"".WEBEDITION_DIR."we/include/we_widgets/mod/pad1.inc.php\"\" id=\"\" style=\"width:430px;height:100px;overflow: auto;\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\"></iframe>\n";
 print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(

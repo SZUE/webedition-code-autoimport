@@ -303,32 +303,29 @@ function setTreeArrow(direction) {
 }
 
 function getTreeWidth() {
-	<?php if($GLOBALS['BROWSER']=='IE'){
-		echo 'return self.rframe.bframe.document.body.offsetWidth-4;';
-	}else{
-		echo '
-	var frameobj = self.rframe.document.getElementById("resizeframeid");
-	var cols = frameobj.cols;
-	var pairs = cols.split(",");
-	return pairs[0];
-	';
-	}?>
+	var w = self.rframe.document.getElementById("bframeDiv").style.width;
+	return w.substr(0,w.length-2);
 }
 
 function getSidebarWidth() {
-
-	var frameobj = self.rframe.document.getElementById("resizeframeid");
-	var cols = frameobj.cols;
-	var pairs = cols.split(",");
-	return pairs[2];
+	var obj=self.rframe.document.getElementById("sidebarDiv");
+	if(obj==undefined){
+		return 0;
+	}
+	var w = obj.style.width;
+	return w.substr(0,w.length-2);
 }
 
+function setSidebarWidth() {
+	var obj=self.rframe.document.getElementById("sidebarDiv");
+	if(obj!=undefined){
+		obj.style.width = w+"px";
+	}
+}
 
 function setTreeWidth(w) {
-	var frameobj = self.rframe.document.getElementById("resizeframeid");
-	var split = new Array;
-	split = frameobj.cols.split(',');
-	frameobj.cols = w + ",*" + (split.length>2?","+split[2]:"");
+	self.rframe.document.getElementById("bframeDiv").style.width=w+"px";
+	self.rframe.document.getElementById("bm_content_frameDiv").style.marginLeft=w+"px";
 }
 
 function storeTreeWidth(w) {

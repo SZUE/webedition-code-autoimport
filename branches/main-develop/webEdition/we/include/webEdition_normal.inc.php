@@ -141,11 +141,9 @@ var widthBeforeDeleteModeSidebar = 0;
 			treeData.setstate(treeData.tree_states["edit"]);
 			drawTree();
 
-			self.rframe.bframe.document.getElementById("treeHeadFrame").rows = "1,*,40";
-			var frameobj = self.rframe.document.getElementById("resizeframeid");
-			if (frameobj != null) {
-				frameobj.cols = widthBeforeDeleteMode + ",*, "+ widthBeforeDeleteModeSidebar;
-			}
+			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "1px";
+			top.setTreeWidth(widthBeforeDeleteMode);
+			top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			break;
 		case "delete":
 			if(top.deleteMode != arguments[1]){
@@ -155,7 +153,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				treeData.setstate(treeData.tree_states["edit"]);
 				drawTree();
 			}
-			self.rframe.bframe.document.getElementById("treeHeadFrame").rows = "150,*,40";
+			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "150px";
 
 			var width = top.getTreeWidth();
 
@@ -180,7 +178,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				treeData.setstate(treeData.tree_states["edit"]);
 				drawTree();
 			}
-			self.rframe.bframe.document.getElementById("treeHeadFrame").rows = "160,*,40";
+			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "160px";
 
 			var width = top.getTreeWidth();
 

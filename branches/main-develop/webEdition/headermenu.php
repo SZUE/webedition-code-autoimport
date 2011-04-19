@@ -94,36 +94,6 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 				}
 			}
 
-			var appletTrys = 0;
-
-			function checkApplet() {
-				<?php
-
-				if((!(isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]))) { ?>
-
-				try {
-					if(document.applets["weJavaMenuApplet"]==undefined || !document.applets["weJavaMenuApplet"].isActive() /*|| document.weJavaMenuApplet == undefined || document.weJavaMenuApplet.getBgImage()==""*/) {
-						checkAndLoadAltMenu();
-					}
-				} catch (e) {
-					checkAndLoadAltMenu();
-				}
-
-				appletTrys += 1;
-
-				<?php } ?>
-			}
-
-			function checkAndLoadAltMenu() {
-				if (appletTrys < 20) {
-					setTimeout("checkApplet()",1000);
-				} else {
-					document.location = "headermenu.php?showAltMenu=true";
-				}
-			}
-
-			checkApplet();
-
 		</script>
 	</head>
 <body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0"<?php if($GLOBALS["SYSTEM"]=="WIN"): ?> onLoad="if(top.makefocus != null){top.focusise();}"<?php endif ?>>

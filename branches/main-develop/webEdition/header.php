@@ -29,18 +29,17 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permis
 
 
 if(defined("MESSAGING_SYSTEM") && (!isset($_REQUEST["SEEM_edit_include"]) || !$_REQUEST["SEEM_edit_include"] )) { ?>
-    <html>
-    <head>
+    <!DOCTYPE html>
+		<html>
+    <head></head><body>
 		<div style="position:fixed;width:100%;height:100%;top:0;left:0;">
 			<div style="width:100%;float:left;">
-				<iframe src="/webEdition/headermenu.php" style="border:0;width:100%;" name="header_menu" scrolling="no"></iframe>
+				<iframe src="/webEdition/headermenu.php" style="border:0;width:100%;overflow: hidden;" name="header_menu"></iframe>
        </div>
        <div style="position:absolute;right:0;">
-				<iframe src="<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php" style="border:0;width:60px;" name="header_msg" scrolling="no"></iframe>
+				<iframe src="<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php" style="border:0;width:60px;overflow: hidden;" name="header_msg"></iframe>
 			</div>
      </div>
-    </head>
-    <body>
     </body>
     </html>
 <?php

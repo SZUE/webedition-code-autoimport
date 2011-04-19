@@ -57,8 +57,8 @@ echo '
 #anzahl {display: inline;margin-right:10px;  }
 #eintraege {display: none; }
 #print {display: inline;}
-#zurueck {display: ;}
-#weiter {display: ;}
+#zurueck {display: block;}
+#weiter {display: block;}
 #pageselect {display: inline;}
 #bottom{display: inline;}
 #beschreibung_print {display: none; }
