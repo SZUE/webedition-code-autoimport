@@ -135,12 +135,12 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 
 	function toggleTree() {
 		var w = top.getTreeWidth();
-
+/*
 		if (w <= 22) {
 			var newWidth = parseInt(oldWidth);
 			if(newWidth<=22){
 				newWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
-			}
+	}
 			top.setTreeWidth(newWidth);
 			top.setTreeArrow("left");
 			top.storeTreeWidth(newWidth);
@@ -149,7 +149,8 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 			top.setTreeWidth(22);
 			top.setTreeArrow("right");
 			top.storeTreeWidth(22);
-		}
+		}*/
+										top.toggleTree();
 	}
 
 	function treeOut() {

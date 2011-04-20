@@ -37,10 +37,8 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 	$_cmd_string .= ",'SEEM_edit_include'";
 }
 
+htmlTop();
 ?>
-<!DOCTYPE HTML>
- <html>
-<head>
 <script type="text/javascript">
 	function we_cmd(){
 		var args = "";
@@ -63,16 +61,16 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 </script>
 </head>
 <body>
-<div style="position:fixed;width:100%;height:100%;top:0;left:0;border: 1px solid black;">
-       <div style="position:fixed;top:0;height:22px;width:100%;" id="multiEditorDocumentTabsFrameDiv">
+<div style="position:absolute;top:0;bottom:0;right:0;left:0;overflow: hidden;background-color: white;">
+       <div style="position:absolute;top:0;height:22px;width:100%;" id="multiEditorDocumentTabsFrameDiv">
 				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" style="border:0;width: 100%;height:100%;overflow: hidden;" name="multiEditorDocumentTabsFrame"></iframe>
 			</div>
-			<div style="width: 100%;height:100%;">
+       <div style="position: absolute;height:0;bottom: 0;left:0;right:0;">
+				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" name="multiEditorDocumentControllerFrame" style="border:0;overflow: hidden;width:100%;height:100%;" onload="startMultiEditor();"></iframe>
+			</div>
+			<div style="position:absolute;top:22px;bottom:0;left:0;right:0;overflow: auto;">
 				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" name="multiEditorEditorFramesets" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
        </div>
-       <div style="height:0">
-				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" name="multiEditorDocumentControllerFrame" style="border:0;overflow: hidden;" onload="startMultiEditor();"></iframe>
-			</div>
      </div>
 </body>
 </html>

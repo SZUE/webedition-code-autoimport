@@ -298,6 +298,27 @@ function treeResized() {
 	}
 }
 
+var oldTreeWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
+function toggleTree(){
+	var tfd= self.rframe.bframe.document.getElementById("treeFrameDiv");
+	var w = top.getTreeWidth();
+
+	if(tfd.style.display=="none"){
+		oldTreeWidth=(oldTreeWidth<100?<?php print WE_TREE_DEFAULT_WIDTH;?>:oldTreeWidth);
+		setTreeWidth(oldTreeWidth);
+		tfd.style.display="block";
+		setTreeArrow("left");
+		storeTreeWidth(oldTreeWidth);
+	}else{
+		tfd.style.display="none";
+		oldTreeWidth = w;
+		setTreeWidth(24);
+		storeTreeWidth(24);
+		setTreeArrow("right");
+	}
+	var x=xfd.bla;
+}
+
 function setTreeArrow(direction) {
 	self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
 }
@@ -312,20 +333,20 @@ function getSidebarWidth() {
 	if(obj==undefined){
 		return 0;
 	}
-	var w = obj.style.width;
+	var w = obj.style.left;
 	return w.substr(0,w.length-2);
 }
 
 function setSidebarWidth() {
 	var obj=self.rframe.document.getElementById("sidebarDiv");
 	if(obj!=undefined){
-		obj.style.width = w+"px";
+		obj.style.left = w+"px";
 	}
 }
 
 function setTreeWidth(w) {
 	self.rframe.document.getElementById("bframeDiv").style.width=w+"px";
-	self.rframe.document.getElementById("bm_content_frameDiv").style.marginLeft=w+"px";
+	self.rframe.document.getElementById("bm_content_frameDiv").style.left=w+"px";
 }
 
 function storeTreeWidth(w) {
@@ -1407,10 +1428,10 @@ var cockpitFrame;
 	pWebEdition_Tree();
 ?>
 </head>
+<body bgcolor="gray">
 <?php
 //	get the frameset for the actual mode.
 pWebEdition_Frameset();
 ?>
-<body bgcolor="gray">
 </body>
 </html>

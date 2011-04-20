@@ -62,17 +62,16 @@ function startNormalMode() {
 	}
 
 ?>
-		<div style="position:fixed;width:100%;height:100%;top:0;left:0;border: 1px solid black;">
-       <div style="position:absolute;left:0;height:100%;width:<?php print $_treewidth;?>px;float:left;" id="bframeDiv">
-				<iframe src="baumFrame.php" style="border:0;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
+		<div style="position:absolute;top:0;bottom:0;left:0;right:0;border: 0;">
+       <div style="position:absolute;top:0;bottom:0;left:0;width:<?php print $_treewidth;?>px;border-right:1px solid black;" id="bframeDiv">
+				<iframe src="<?php print WEBEDITION_DIR; ?>baumFrame.php" style="border:0;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
 			</div>
-
-			<div style="margin-left:<?php print $_treewidth;?>px;width:100%;height:100%; border-left:1px solid black;" id="bm_content_frameDiv">
+			<div style="position:absolute;top:0;bottom:0;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_treewidth;?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
 				<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
        </div>
-			<?php if(isset($_sidebarwidth)){ ?>
-       <div style="position:absolute;right:0;height:100%;" id="sidebarDiv">
-				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:<?php print $_sidebarwidth; ?>px;height:100%;overflow: hidden;"></iframe>
+			<?php if($_sidebarwidth>0){ ?>
+       <div style="position:absolute;top:0;bottom:0;right:0;left:<?php echo $_sidebarwidth; ?>;" id="sidebarDiv">
+				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
 			</div>
 			<?php } ?>
      </div>
@@ -167,11 +166,9 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 
 //  Open webEdition normally
 } else {
+	echo '<body style="margin:0;">';
 	startNormalMode();
+	echo '</body>';
 }
 ?>
-<noframes>
-		<body>
-		</body>
-	</noframes>
 </html>
