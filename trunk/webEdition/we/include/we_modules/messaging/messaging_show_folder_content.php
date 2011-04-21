@@ -186,14 +186,14 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 			    $dl_passed = 0;
 			}
 
-			echo '<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . $val['hdrs']['Subject'] . '</td>
+			echo '<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . htmlspecialchars($val['hdrs']['Subject']) . '</td>
 			<td id="td_' . $val['ID'] . '_1" width="170" align="left" class="' . ($dl_passed == 0 ? 'defaultfont' : 'defaultfontred') . '">' . date($GLOBALS['l_global']['date_format'], $val['hdrs']['Deadline']) . '</td>
 			<td id="td_' . $val['ID'] . '_2" width="140" align="left" class="defaultfont"><a id="td_' .  $val['ID'] . '_link_2" href="javascript:check(\'' . $val['ID'] . '\')">' . $val['hdrs']['Priority'] . '</a></td>
 			<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont">' . $val['hdrs']['status'] . '%</td>
 			</tr>';
 	    } else {
 			echo '
-				<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . $val['hdrs']['Subject'] . '</td>
+				<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . htmlspecialchars($val['hdrs']['Subject']) . '</td>
 				<td id="td_' . $val['ID'] . '_1" width="170" align="left" class="defaultfont">' . date($GLOBALS['l_global']['date_format'], $val['hdrs']['Date']) . '</td>
 				<td id="td_' . $val['ID'] . '_2" width="140" align="left" class="defaultfont">' . $val['hdrs']['From'] . '</td>
 				<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont"><img src="' . IMAGE_DIR . 'msg_' . ($val['hdrs']['seenStatus'] & MSG_STATUS_READ ? '' : 'un') . 'read.gif" border="0" width="16" height="18" name="read_' . $val['ID'] . '" /></td>
