@@ -201,7 +201,7 @@ class weWorkflowView extends weWorkflowBase{
 	function getWorkflowHeaderMultiboxParts($space){
 
 		return array(	"headline" => $GLOBALS["l_workflow"]["name"],
-						"html"     => htmlTextInput($this->uid."_Text",37,$this->workflowDef->Text,"",' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"',"text",498),
+						"html"     => htmlTextInput($this->uid."_Text",37, stripslashes($this->workflowDef->Text),"",' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"',"text",498),
 						"space"    => $space
 					);
 	}
