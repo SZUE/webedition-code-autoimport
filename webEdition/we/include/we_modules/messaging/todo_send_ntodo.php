@@ -86,6 +86,12 @@ if ($_REQUEST["mode"] == 'forward') {
 
     <body class="weDialogBody">
     <?php
+    
+    $res['ok'] = array_map('htmlspecialchars', $res['ok']);
+    $res['failed'] = array_map('htmlspecialchars', $res['failed']);
+    $res['err'] = array_map('htmlspecialchars', $res['err']);
+    
+    
     $tbl = '<table align="center" cellpadding="7" cellspacing="3">
 		    <tr>
 		      <td class="defaultfont" valign="top">' . $s_action . ':</td>

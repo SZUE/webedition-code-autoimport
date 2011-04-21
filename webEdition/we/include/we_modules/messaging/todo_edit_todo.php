@@ -119,7 +119,7 @@ print STYLESHEET;
 							<td class="defaultgray">
 								' . $l_messaging['subject'] . ':</td>
 							<td class="defaultfont">
-								' . $compose->get_subject() . '</td>
+								' . htmlspecialchars($compose->get_subject()) . '</td>
 						</tr>
 					</table>
 					<table cellpadding="6">';
