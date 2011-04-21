@@ -271,13 +271,13 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		if($ClassesStr!=''){$outClass= 'class=\"'.$ClassesStr.'\"';} else $outClass = '';
 	
 		$out = 'var myobj = { ';
-				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">'.$text.'</span>"';
+				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">' . addslashes(htmlspecialchars($text)) . '</span>"';
 				//$out .= ',';
 				//$out .= 'href: "javascript:'.$doOnClick.'"';
 				$out .= ',';
 				$out .= 'id: "'.$id.'"';
 				$out .= ',';
-				$out .= 'text: "'.$text.'"';
+				$out .= 'text: "'.addslashes(htmlspecialchars($text)).'"';
 				$out .= ',';
 				$out .= 'title: "'.$id.'"';
 		$out .= '}; ';
@@ -298,13 +298,13 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		if($Classes != ''){$outClass= 'class=\"'.$Classes.'\"';} else $outClass = '';
 	
 		$out = 'var myobj = { ';
-				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">'.$text.'</span>"';
+				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">' . addslashes(htmlspecialchars($text)) . '</span>"';
 				//$out .= ',';
 				//$out .= 'href: "javascript:'.$doOnClick.'"';
 				$out .= ',';
 				$out .= 'id: "'.$id.'"';
 				$out .= ',';
-				$out .= 'text: "'.$text.'"';
+				$out .= 'text: "'.addslashes(htmlspecialchars($text)).'"';
 				$out .= ',';
 				$out .= 'title: "'.$id.'"';
 		$out .= '}; ';
