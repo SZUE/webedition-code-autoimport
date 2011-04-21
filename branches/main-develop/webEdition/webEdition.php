@@ -1386,7 +1386,7 @@ function openWindow(url,ref,x,y,w,h,scrollbars,menues) {
 }
 
 function start() {
-	self.Header = self.header.header_menu ? self.header.header_menu : self.header;
+	//self.Header = self.header.header_menu ? self.header.header_menu : self.header;
 	self.Tree = self.rframe.bframe.bm_main;
 	self.Vtabs = self.rframe.bframe.bm_vtabs;
 	self.TreeInfo = self.rframe.bframe.infoFrame;

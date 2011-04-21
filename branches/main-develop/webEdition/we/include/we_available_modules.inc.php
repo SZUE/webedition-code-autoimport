@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($GLOBALS['__WE_BASE_PATH__']."/we/include/we_global.inc.php");
-
 $_we_available_modules = array();
 
 

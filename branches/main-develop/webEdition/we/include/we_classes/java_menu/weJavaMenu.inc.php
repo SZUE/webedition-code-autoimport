@@ -59,18 +59,7 @@ class weJavaMenu {
 	}
 
 	function getCode() {
-		$ffJavaMenu = false;
-		if (preg_match('@gecko/([^ ]+)@i',$_SERVER["HTTP_USER_AGENT"],$regs)) {
-			if (abs($regs[1]) > 20070309) {
-				$ffJavaMenu = true;
-			}
-		}
-
-		return $this->getJS() . ( (!$ffJavaMenu && $GLOBALS["BROWSER"] == "NN6") ? $this->getMozillaMenuHTML() : $this->getHTML() );
-	}
-
-	function getMozillaMenuHTML(){
-		return '<iframe src="'.WEBEDITION_DIR.'mozillamenu.php?wecharset='.rawurlencode(g_l('charset',"[charset]")).($this->prename != "" ? "&pre=".$this->prename : "").'" frameborder="0" style="position:absolute;left:0px;top:5px; width:' . $this->width . '"px"></iframe>';
+		return $this->getJS() .$this->getHTML();
 	}
 
 	function getJS() {
@@ -89,16 +78,13 @@ class weJavaMenu {
 			</script>';
 	}
 
-	function getXUL($charset="iso-8859-1"){
-		$out = '<?xml version="1.0" encoding="'.$charset.'"?>
 
-<?xml-stylesheet href="/webEdition/css/mozillamenu.php" type="text/css"?>
+	function getHTML() {
+		$showAltMenu = 'JS';//(isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
+		$_SESSION['weShowAltMenu'] = $showAltMenu;
+		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
 
-<window xmlns:html="http://www.w3.org/1999/xhtml"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-<hbox align="top">
-    <toolbar id="a-toolbar" grippyhidden="true">
- ';
+		$out = '<ul id="nav">';
 		$menus = array();
 
 		$i=0;
@@ -112,31 +98,121 @@ class weJavaMenu {
 					$mtext = ($e["text"] ? $e["text"] : "");
 				}
 				$menus[$i]["id"] = $id;
-				$menus[$i]["code"] = '<toolbarseparator /><toolbarbutton label="'.$mtext.'" type="menu"><menupopup>'."\n";
+				$menus[$i]["code"] = '<li class="top"><a href="#void" class="top_link"><span class="down">'.$mtext.'</span></a><ul class="sub">'."\n";
 				$i++;
 			}
 		}
 
 		for ($i=0;$i<sizeof($menus);$i++) {
 			$foo = $menus[$i]["code"];
-			$this->h_pXUL($this->entries,$foo,$menus[$i]["id"],"");
-			$foo .= "</menupopup></toolbarbutton>\n";
+			$this->h_pCODE($this->entries,$foo,$menus[$i]["id"],"");
+			$foo .= "</ul></li>\n";
 			$out .= $foo;
 		}
 
-  $out .=    '</toolbar>
+  $out .=    '</ul>';
+		return $out;
 
-</hbox>
 
-</window>
-';
-  		return $out;
-	}
 
-	function getHTML() {
-		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
-		$_SESSION['weShowAltMenu'] = $showAltMenu;
-		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
+
+		return '<ul id="nav">
+	<li class="top"><a href="#nogo1" class="top_link"><span>Home</span></a></li>
+	<li class="top"><a href="#nogo2" id="products" class="top_link"><span class="down">Products</span></a>
+		<ul class="sub">
+			<li><a href="#nogo3" class="fly">Cameras</a>
+					<ul>
+						<li><a href="#nogo4" onclick="menuaction(\'new_text_xml\');">Nikon</a></li>
+						<li><a href="#nogo5">Minolta</a></li>
+						<li><a href="#nogo6">Pentax</a></li>
+					</ul>
+			</li>
+			<li class="mid"><a href="#nogo7" class="fly">Lenses</a>
+					<ul>
+						<li><a href="#nogo8">Wide Angle</a></li>
+						<li><a href="#nogo9">Standard</a></li>
+						<li><a href="#nogo10">Telephoto</a></li>
+						<li><a href="#nogo11" class="fly">Zoom</a>
+							<ul>
+								<li><a href="#nogo12">35mm to 125mm</a></li>
+								<li><a href="#nogo13">50mm to 250mm</a></li>
+								<li><a href="#nogo14">125mm to 500mm</a></li>
+							</ul>
+						</li>
+						<li><a href="#nogo15">Mirror</a></li>
+						<li><a href="#nogo16" class="fly">Non standard</a>
+							<ul>
+								<li><a href="#nogo17">Bayonet mount</a></li>
+								<li><a href="#nogo18">Screw mount</a></li>
+							</ul>
+						</li>
+					</ul>
+			</li>
+			<li><a href="#nogo19">Flash Guns</a></li>
+			<li><a href="#nogo20">Tripods</a></li>
+			<li><a href="#nogo21">Filters</a></li>
+		</ul>
+	</li>
+	<li class="top"><a href="#nogo22" id="services" class="top_link"><span class="down">Services</span></a>
+		<ul class="sub">
+			<li><a href="#nogo23">Printing</a></li>
+			<li><a href="#nogo24">Photo Framing</a></li>
+			<li><a href="#nogo25">Retouching</a></li>
+			<li><a href="#nogo26">Archiving</a></li>
+		</ul>
+	</li>
+	<li class="top"><a href="#nogo27" id="contacts" class="top_link"><span class="down">Contacts</span></a>
+		<ul class="sub">
+			<li><a href="#nogo28">Support</a></li>
+			<li><a href="#nogo29" class="fly">Sales</a>
+				<ul>
+					<li><a href="#nogo30">USA</a></li>
+					<li><a href="#nogo31">Canadian</a></li>
+					<li><a href="#nogo32">South American</a></li>
+					<li><a href="#nogo33" class="fly">European</a>
+						<ul>
+							<li><a href="#nogo34" class="fly">British</a>
+								<ul>
+									<li><a href="#nogo35">London</a></li>
+									<li><a href="#nogo36">Liverpool</a></li>
+									<li><a href="#nogo37">Glasgow</a></li>
+									<li><a href="#nogo38" class="fly">Bristol</a>
+										<ul>
+											<li><a href="#nogo39">Redland</a></li>
+											<li><a href="#nogo40">Hanham</a></li>
+											<li><a href="#nogo41">Eastville</a></li>
+										</ul>
+									</li>
+									<li><a href="#nogo42">Cardiff</a></li>
+									<li><a href="#nogo43">Belfast</a></li>
+								</ul>
+							</li>
+							<li><a href="#nogo44">French</a></li>
+							<li><a href="#nogo45">German</a></li>
+							<li><a href="#nogo46">Spanish</a></li>
+						</ul>
+					</li>
+					<li><a href="#nogo47">Australian</a></li>
+					<li><a href="#nogo48">Asian</a></li>
+				</ul>
+			</li>
+			<li><a href="#nogo49">Buying</a></li>
+			<li><a href="#nogo50">Photographers</a></li>
+			<li><a href="#nogo51">Stockist</a></li>
+			<li><a href="#nogo52">General</a></li>
+		</ul>
+	</li>
+	<li class="top"><a href="#nogo53" id="shop" class="top_link"><span class="down">Shop</span></a>
+		<ul class="sub">
+			<li><a href="#nogo54">Online</a></li>
+			<li><a href="#nogo55">Catalogue</a></li>
+			<li><a href="#nogo56">Mail Order</a></li>
+		</ul>
+	</li>
+	<li class="top"><a href="#nogo57" id="privacy" class="top_link"><span>Privacy Policy</span></a></li>
+</ul>
+
+	';
 
 		$out = '';
 		if(!$showAltMenu) {
@@ -297,13 +373,15 @@ class weJavaMenu {
 			}
 		}
 	}
-	function h_pXUL($men,&$opt,$p,$zweig) {
+
+
+		function h_pCODE($men,&$opt,$p,$zweig) {
 		$nf = $this->h_search($men,$p);
 		if(sizeof($nf)) {
 			foreach($nf as $id=>$e) {
 				$newAst = $zweig;
-				//$e["enabled"]=1;
-				if(isset($e["perm"]) && $e["perm"]) {
+				$e["enabled"]=1;
+				if(isset($e["perm"])) {
 					$set=array();
 					$or=explode("||",$e["perm"]);
 					foreach($or as $k=>$v) {
@@ -330,17 +408,18 @@ class weJavaMenu {
 					$mtext = ( isset($e["text"]) ? $e["text"] : "");
 				}
 				if((!isset($e["cmd"])) && $mtext) {
-					$opt .= '<menu label="'.htmlspecialchars($mtext).'"><menupopup>'."\n";
-					$this->h_pXUL($men,$opt,$id,$newAst);
-					$opt .= '</menupopup></menu>'."\n";
+					$opt .= '<li><a class="fly" href="#void">'.$mtext.'</a><ul>'."\n";
+					$this->h_pCODE($men,$opt,$id,$newAst);
+					$opt .= '</ul></li>'."\n";
 				}
 				else if($mtext) {
-					$opt .= '<menuitem label="'.htmlspecialchars($mtext).'" oncommand="parent.menuaction(\''.$e["cmd"].'\')"'.((isset($e["enabled"]) && $e["enabled"]==0) ? ' disabled="true"' : '').' />';
+					$opt .= '<li'.((isset($e["enabled"]) && $e["enabled"]==0) ? ' class="disabled" disabled="true"' : '').'><a href="#void" onclick="parent.menuaction(\''.$e["cmd"].'\')">'.$mtext.'</a></li>';
 				}
 				else {
-					$opt .=  '<menuseparator />';
+					$opt .=  '<li class="disabled">----------------</li>';
 				}
 			}
 		}
 	}
+
 }

@@ -63,11 +63,11 @@ var ajaxCallback = {
 					}
 				}
 			<?php if (defined("MESSAGING_SYSTEM")) { ?>
-				if (top.header.header_msg.update) {
+				if (top.header_msg.update) {
 					var newmsg_count = result.DataArray.newmsg_count;
 					var newtodo_count = result.DataArray.newtodo_count;
 
-					top.header.header_msg.update(newmsg_count, newtodo_count);
+					top.header_msg.update(newmsg_count, newtodo_count);
 				}
 
 			<?php } ?>

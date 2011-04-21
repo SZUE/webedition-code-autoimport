@@ -49,7 +49,7 @@ onunload=function() {
 }
 
 </script>
-<div>
+<div style=\"position:relative;float:left;\">
 	<table>
 	<tr>
 		<td valign=\"middle\">

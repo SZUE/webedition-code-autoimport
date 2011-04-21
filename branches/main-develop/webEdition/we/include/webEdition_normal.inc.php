@@ -208,8 +208,8 @@ var widthBeforeDeleteModeSidebar = 0;
 	*/
 	function pWebEdition_Frameset(){?>
 	<div style="position:fixed;top:0;left:0;right:0;bottom:0;border:0;">
-		<div style="position:absolute;top:0;left:0;right:0;height:32px;border-bottom: 1px solid black;overflow: hidden;">
-			<iframe src="<?php print WEBEDITION_DIR; ?>header.php" style="border:0;width:100%;height:100%;overflow: hidden;" name="header"></iframe>
+		<div style="position:absolute;top:0;left:0;right:0;height:32px;border-bottom: 1px solid black;">
+			<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/header.php");?>
 		</div>
 		<div style="position:absolute;top:32px;left:0;right:0;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
 			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>

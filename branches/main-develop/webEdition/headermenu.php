@@ -27,10 +27,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/java_menu/weJavaMenu.inc.php");
 
-protect();
-htmlTop();
-
-print STYLESHEET;
+?>
+<link rel="stylesheet" type="text/css" href="<?php print WEBEDITION_DIR; ?>css/menu/pro_drop_1.css" />
+<!-- IE 6 -->
+<?php $_BROWSER = new we_browserDetect();
+if($_BROWSER->getBrowser()== 'ie' && $_BROWSER->getBrowserVersion()<7){?>
+<script src="<?php print WEBEDITION_DIR; ?>css/menu/stuHover.js" type="text/javascript"></script>
+<?php }?>
+<?php
 
 //	width of java-/XUL-Menu
 $_menu_width = 360;
@@ -96,67 +100,39 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 
 		</script>
 	</head>
-<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0"<?php if($GLOBALS["SYSTEM"]=="WIN"): ?> onLoad="if(top.makefocus != null){top.focusise();}"<?php endif ?>>
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-<tr>
+	<body>
+		<div style="position:absolute;top:0;left:0;right:0;bottom:0;border:0;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
+			<div style="position:relative;border:0;float:left;" >
 <?php
 if ($jmenu) {
-	print "
-	<td align=\"left\" valign=\"top\" width=\"$_menu_width\">
-		" . $jmenu->getCode() . "
-	</td>
-";
-}
+	print $jmenu->getCode();
+}?>
+			</div>
+			<div style="position:relative;bottom:0;border:0;padding-left: 10px;float:left;" >
+<?php
 
 $amount = sizeof($navigationButtons);
 if($amount) {
 
-	print '
-	<td>
-		<table border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>' . getPixel(1, 1) . '</td>
-		</tr>
-		<tr>
-			<td>' . getPixel(2, 1) . '</td>';
-
 	for ($i=0; $i<$amount; $i++) {
 		print "
-		<td>
-			<div class=\"navigation_normal\" onclick=\"{$navigationButtons[$i]["onclick"]}\" onmouseover=\"this.className='navigation_hover'\" onmouseout=\"this.className='navigation_normal'\"><img border=\"0\" hspace=\"2\" src=\"" . IMAGE_DIR . "{$navigationButtons[$i]["imagepath"]}\" width=\"17\" height=\"18\" alt=\"{$navigationButtons[$i]["text"]}\" title=\"{$navigationButtons[$i]["text"]}\"></div>
-		</td>";
+			<div style=\"float:left;margin-top:5px;\" class=\"navigation_normal\" onclick=\"{$navigationButtons[$i]["onclick"]}\" onmouseover=\"this.className='navigation_hover'\" onmouseout=\"this.className='navigation_normal'\"><img border=\"0\" hspace=\"2\" src=\"" . IMAGE_DIR . "{$navigationButtons[$i]["imagepath"]}\" width=\"17\" height=\"18\" alt=\"{$navigationButtons[$i]["text"]}\" title=\"{$navigationButtons[$i]["text"]}\"></div>
+		";
 	}
-	print "
-		</tr>
-		</table>
-	</td>";
 }
-?>
-	<td align="right" valign="middle">
-		<table border="0" cellpadding="0" cellspacing="0">
-		<tr valign="middle">
-			<td>
+?></div>
+<div style="position:absolute;top:0;bottom:0;right:10px;border:0;" >
+
+
 				<?php
 					include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 					print createMessageConsole("mainWindow");
 				?>
-			</td>
-			<td valign="middle">
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
-			</td>
-			<td>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" width="10" height="19">
-			</td>
-			<td valign="bottom">
 				<img src="<?php print IMAGE_DIR ?>webedition.gif" alt="" width="78" height="25">
-			</td>
-			<td>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" width="5" height="19">
-			</td>
-		</tr>
-	</table>
-	</td>
-</tr>
-</table>
+			</div>
+		</div>
 </body>
 </html>
