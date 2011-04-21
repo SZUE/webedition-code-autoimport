@@ -573,7 +573,7 @@ class we_template extends we_document
 		if ($this->ID == 0) {
 			return $paths;
 		}
-		$this->DB_WE->query("SELECT ID, Path FROM ".FILE_TABLE." WHERE temp_template_id='".abs($this->ID)."' OR ((temp_template_id = '' OR temp_template_id = 0) AND TemplateID = '".abs($this->ID)."') ORDER BY Path");
+		$this->DB_WE->query("SELECT ID, Path FROM ".FILE_TABLE." WHERE temp_template_id=".abs($this->ID)." OR (temp_template_id = 0 AND TemplateID = ".abs($this->ID).") ORDER BY Path");
 		while($this->DB_WE->next_record()) {
 			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path');
 
@@ -790,7 +790,7 @@ class we_template extends we_document
 			$OldCacheType = $this->DB_WE->f('CacheType');
 		}
 		if($OldCacheType != "" && $OldCacheType != "none" && $OldCacheType != $this->CacheType) {
-			$this->DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE temp_template_id='".abs($this->ID)."' OR ((temp_template_id = '' OR temp_template_id = 0) AND TemplateID = '".abs($this->ID)."')");
+			$this->DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE temp_template_id=".abs($this->ID)." OR (temp_template_id = 0 AND TemplateID = ".abs($this->ID).")");
 			while($this->DB_WE->next_record()) {
 				$cacheDir = weCacheHelper::getDocumentCacheDir($this->DB_WE->f('ID'));
 				weCacheHelper::clearCache($cacheDir);

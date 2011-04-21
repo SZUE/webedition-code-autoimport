@@ -1848,16 +1848,16 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 
 	// Bug Fix 6615
 	if ($PublishedAndTemp) {
-		$where = " temp_template_id='" . $id . "' OR ";
-		$where .= " TemplateID='" . $id . "' OR ";
+		$where = " temp_template_id=" . $id . " OR ";
+		$where .= " TemplateID=" . $id . " OR ";
 		foreach ($returnIDs["templateIDs"] as $tid) {
-			$where .= " temp_template_id='" . $tid . "' OR ";
-			$where .= " TemplateID='" . $tid . "' OR ";
+			$where .= " temp_template_id=" . $tid . " OR ";
+			$where .= " TemplateID=" . $tid . " OR ";
 		}
 	} else {
-		$where = " TemplateID='" . $id . "' OR ";
+		$where = " TemplateID=" . $id . " OR ";
 		foreach ($returnIDs["templateIDs"] as $tid) {
-			$where .= " TemplateID='" . $tid . "' OR ";
+			$where .= " TemplateID=" . $tid . " OR ";
 		}
 	}
 	// remove last OR
