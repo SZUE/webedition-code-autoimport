@@ -357,10 +357,10 @@ $contentDiff .= '</td></tr>';
 				$renderer = new Text_Diff_Renderer_inline(array('ins_prefix' => '###INS_START###','ins_suffix' => '###INS_END###',
                                             'del_prefix' => '###DEL_START###','del_suffix' => '###DEL_END###',));
 
-				$text=str_replace('###INS_START###','<span style="color:blue;font-weight:bold;">+',
-					str_replace('###INS_END###','+</span>',
-					str_replace('###DEL_END###','-</span>',
-					str_replace('###DEL_START###','<span style="color:red;font-style:italic;">-',$renderer->render($diff)))));
+				$text=str_replace('###INS_START###','<span style="color:blue;">+<span style="font-weight:bold;text-decoration:underline;">',
+					str_replace('###INS_END###','</span>+</span>',
+					str_replace('###DEL_END###','</span>-</span>',
+					str_replace('###DEL_START###','<span style="color:red;">-<span style="font-weight:bold;text-decoration: line-through;">-',$renderer->render($diff)))));
 
 				$contentDiff .= '<td colspan="2" style="'.$mark.'">'.$pre.$text.'</pre></td>';
 				
