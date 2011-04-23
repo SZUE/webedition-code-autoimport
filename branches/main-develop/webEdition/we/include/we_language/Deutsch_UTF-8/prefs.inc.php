@@ -197,6 +197,7 @@ $l_prefs = array(
 		'language_country_missing' => "Bitte wählen Sie auch ein Land aus",
 		'add_dictionary_question' => "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?",
 		'langlink_support' => "Automatische Sprachverlinkung",
+		'langlink_support_backlinks' => "Erzeuge automatisch die Backlinks",
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

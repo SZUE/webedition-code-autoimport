@@ -664,7 +664,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		// Last step is to save the webEdition document
 		$out = we_textContentDocument::we_save($resave);
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) ){
-			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile');
+			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false);
 		}
 		
 		if($resave == 0){

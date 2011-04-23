@@ -240,4 +240,5 @@ $l_javaMenu_global = array(
 		'search' => "Zoeken",
 		'common' => "Gebruikelijk",
 		'sysinfo' => "Systeem informatie",
+		'showerrorlog' => "Errorlog",// TRANSLATE
 );

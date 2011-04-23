@@ -233,4 +233,5 @@ $l_weClass = array(
 		'version' => 'Versions', // TRANSLATE
 		'languageLinksDefaults' => 'Default value for the document type in corresponding documents in the other front end languages', // TRANSLATE
 		'languageLinks' => 'Link to the corresponding documents/objects in other languages',// TRANSLATE
+		'languageLinksDir' => 'Default link to the corresponding documents in other languages',// TRANSLATE
 );

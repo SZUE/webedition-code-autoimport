@@ -231,4 +231,5 @@ $l_weClass = array(
 		'availableAfterSave' => "Die Funktion steht erst nach dem Speichern des Eintrags zur Verfügung.",
 		'languageLinksDefaults' => 'Voreinstellung Dokument Typ in korrespondierenden Dokumenten der anderen Frontendsprachen',
 		'languageLinks' => 'Verknüpfung zu den korrespondierenden Dokumenten/Objekten in anderen Sprachen',
+		'languageLinksDir' => 'Default-Verknüpfung zu den korrespondierenden Dokumenten in anderen Sprachen',
 );

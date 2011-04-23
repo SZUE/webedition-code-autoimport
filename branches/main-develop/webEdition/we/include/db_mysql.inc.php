@@ -31,7 +31,6 @@ class DB_Sql {
 	var $Auto_Free = 0; ## Set to 1 for automatic mysql_free_result()
 	static $Debug = 0; ## Set to 1 for debugging messages.
 	var $Halt_On_Error = "yes"; ## "yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)
-	var $Seq_Table = "db_sequence";
 
 	/* public: result array and current row number */
 	var $Record = array();
@@ -41,10 +40,6 @@ class DB_Sql {
 	/* public: current error number and error text */
 	var $Errno = 0;
 	var $Error = "";
-
-	/* public: this is an api revision, not a CVS revision. */
-	var $type = "mysql";
-	var $revision = "1.2";
 
 	/* private: link and query handles */
 	var $Link_ID = 0;
@@ -265,36 +260,6 @@ class DB_Sql {
 
 	function p($Name) {
 		print $this->Record[$Name];
-	}
-
-	/* public: sequence numbers */
-
-	function nextid($seq_name) {
-		$this->connect();
-
-		if ($this->lock($this->Seq_Table)) {
-			/* get sequence number (locked) and increment */
-			$q = sprintf("select nextid from %s where seq_name = '%s'", $this->Seq_Table, $seq_name);
-			$id = @mysql_query($q, $this->Link_ID);
-			$res = @mysql_fetch_array($id);
-
-			/* No current value, make one */
-			if (!is_array($res)) {
-				$currentid = 0;
-				$q = sprintf("insert into %s values('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
-				$id = @mysql_query($q, $this->Link_ID);
-			} else {
-				$currentid = $res["nextid"];
-			}
-			$nextid = $currentid + 1;
-			$q = sprintf("update %s set nextid = '%s' where seq_name = '%s'", $this->Seq_Table, $nextid, $seq_name);
-			$id = @mysql_query($q, $this->Link_ID);
-			$this->unlock();
-		} else {
-			$this->halt("cannot lock " . $this->Seq_Table . " - has it been created?");
-			return 0;
-		}
-		return $nextid;
 	}
 
 	function fieldNames(){

@@ -924,6 +924,12 @@ $we_menu["5000000"]["enabled"] = "1";
     $we_menu["5090000"]["perm"] = "ADMINISTRATOR";
 	$we_menu["5090000"]["enabled"] = "1";
 
+$we_menu["5095000"]["text"] = g_l('javaMenu_global',"[showerrorlog]") . "...";
+$we_menu["5095000"]["parent"] = "5000000";
+$we_menu["5095000"]["cmd"] = "showerrorlog";
+$we_menu["5095000"]["perm"] = "ADMINISTRATOR";
+$we_menu["5095000"]["enabled"] = "1";
+
 	$we_menu["5100000"]["text"] = g_l('javaMenu_global',"[info]") . "...";
 	$we_menu["5100000"]["parent"] = "5000000";
 	$we_menu["5100000"]["cmd"] = "info";

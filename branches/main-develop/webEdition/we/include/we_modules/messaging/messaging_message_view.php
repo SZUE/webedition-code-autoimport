@@ -74,7 +74,7 @@ $parts = array();
 if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo') {	//	TODO
 
 	array_push($parts,array(	"headline" => g_l('modules_messaging','[subject]'),
-								"html"     => "<b>" . $format->get_subject() . "</b>",
+								"html"     => "<b>" . htmlspecialchars($format->get_subject()) . "</b>",
 								"noline"   => 1,
 								"space"    => 140
 							)
@@ -141,7 +141,7 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 } else {	//	Message
 
 	array_push($parts,array(	"headline" => g_l('modules_messaging','[subject]'),
-								"html"     => "<b>" . $format->get_subject() . "</b>",
+								"html"     => "<b>" . htmlspecialchars($format->get_subject()) . "</b>",
 								"noline"   => 1,
 								"space"    => 80
 							)
@@ -161,7 +161,7 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 				);
 	if(!empty($messaging->selected_message['hdrs']['To'])){
 		array_push($parts,array("headline" => g_l('modules_messaging','[recipients]'),
-								"html"     => $messaging->selected_message['hdrs']['To'],
+								"html"     => htmlspecialchars($messaging->selected_message['hdrs']['To']),
 								"space"    => 80
 								)
 				);

@@ -237,4 +237,5 @@ $l_javaMenu_global = array(
 		'search' => "Etsi",
 		'common' => "Yleiset",
 		'sysinfo' => "Järjestelmätiedot",
+		'showerrorlog' => "Errorlog",// TRANSLATE
 );

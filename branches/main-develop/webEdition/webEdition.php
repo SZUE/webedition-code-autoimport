@@ -1287,6 +1287,9 @@ function we_cmd() {
 		case "sysinfo":
 			new jsWindow("<?php print WEBEDITION_DIR; ?>sysinfo.php","we_sysinfo",-1,-1,720,660,true,false,true);
 			break;
+		case "showerrorlog":
+			new jsWindow("<?php print WEBEDITION_DIR; ?>errorlog.php","we_errorlog",-1,-1,720,660,true,false,true);
+			break;
 		case "view_backuplog":
 			new jsWindow("<?php print WEBEDITION_DIR; ?>backuplog.php","we_backuplog",-1,-1,720,660,true,false,true);
 			break;

@@ -48,7 +48,7 @@ class DB_WE extends DB_Sql {
 			if (defined('DB_CONNECT') && DB_CONNECT == 'connect') {
 				$this->Link_ID = @mysql_connect($Host, $User, $Password);
 				if (!$this->Link_ID) {
-					$this->halt("pconnect/connect($Host, $User, \$Password) failed.");
+					$this->halt("connect($Host, $User) failed.");
 					return 0;
 				}
 			} else {
@@ -56,12 +56,11 @@ class DB_WE extends DB_Sql {
 				if (!$this->Link_ID) {
 					$this->Link_ID = @mysql_connect($Host, $User, $Password);
 					if (!$this->Link_ID) {
-						$this->halt("pconnect/connect($Host, $User, \$Password) failed.");
+						$this->halt("pconnect/connect($Host, $User) failed.");
 						return 0;
 					}
 				}
 			}
-			//$this->storeLinkID();
 			if (!@mysql_select_db($Database, $this->Link_ID))
 				if (!@mysql_select_db($Database, $this->Link_ID))
 					if (!@mysql_select_db($Database, $this->Link_ID))
@@ -85,14 +84,6 @@ class DB_WE extends DB_Sql {
 		}
 	}
 
-	function storeLinkID() {
-		if ($this->Link_ID) {
-			if (!isset($GLOBALS['WE_LINK_IDS']))
-				$GLOBALS['WE_LINK_IDS'] = array();
-			if (!in_array($this->Link_ID, $GLOBALS['WE_LINK_IDS']))
-				array_push($GLOBALS['WE_LINK_IDS'], $this->Link_ID);
-		}
-	}
 
 	/**
 	 *This function is a replacement for mysql_real_escape_string, which sends the string to mysql to escape it
@@ -199,14 +190,9 @@ class DB_WE extends DB_Sql {
 
 }
 
-function we_closeConnections() {
-	if (isset($GLOBALS['WE_LINK_IDS']) && is_array($GLOBALS['WE_LINK_IDS']))
-		foreach ($GLOBALS['WE_LINK_IDS'] as $linkID)
-			@mysql_close($linkID);
-}
-
 ### Instanz der DB-Klasse erzeugen und in der globalen Variablen $DB_WE speichern
 
-
-$DB_WE = new DB_WE();
-$DB_WE->connect();
+if(!isset($GLOBALS['DB_WE'])){
+	$GLOBALS['DB_WE'] = new DB_WE();
+	$GLOBALS['DB_WE']->connect();
+}

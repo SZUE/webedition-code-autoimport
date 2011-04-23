@@ -12,4 +12,4 @@ CREATE TABLE tblwidgetnotepad (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');
+INSERT IGNORE INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');

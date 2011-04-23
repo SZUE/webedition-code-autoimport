@@ -291,7 +291,13 @@ class we_folder extends we_root
 		if($resave==0) {
 			$this->rewriteNavigation();
 		}
-
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) ){
+			if ($this->ClassName=='we_class_folder'){
+				$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',true,true);
+			} else {
+				$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',true,false);
+			}
+		}
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));
@@ -537,7 +543,7 @@ $content .='
 
 
 	function formLanguage() {
-
+		global $l_we_class;
 		we_loadLanguageConfig();
 
 		$value = ($this->Language!=""?$this->Language:$GLOBALS['weDefaultFrontendLanguage']);
@@ -545,6 +551,44 @@ $content .='
 		$inputName = "we_".$this->Name."_Language";
 
 		$_languages = $GLOBALS['weFrontendLanguages'];
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+			$htmlzw='';
+			if ($this->Table== OBJECT_FILES_TABLE){
+				$isobject=1;
+			} else {
+				$isobject=0;
+			}
+			foreach ($_languages as $langkey => $lang){
+			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND IsObject='".abs($isobject)."' AND DID='".abs($this->ID)."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
+			  	if(!$LDID){$LDID=0;}
+				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
+				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';
+				$langkeys[]=$langkey;  
+			}
+			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");	
+			
+			$content = '
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						'.getPixel(2,4).'</td>
+				</tr>
+				<tr>
+					<td>
+						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='".implode(',',$langkeys)."';showhideLangLink('we_".$this->Name."_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
+				</tr>
+				<tr>
+					<td>
+						'.getPixel(2,20).'</td>
+				</tr>
+				<tr>
+					<td class="defaultfont" align="left">
+						'.$l_we_class["languageLinksDir"].'</td>
+				</tr>
+			</table>';
+			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+			
+		} else {
 
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
@@ -553,6 +597,7 @@ $content .='
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 388) . '</td>
 				</tr>
 			</table>';
+		}
 		return $content;
 
 	}

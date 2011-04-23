@@ -52,8 +52,7 @@ $l_sysinfo = array(
 		'sdk_db warning' => 'SDK Operations and WE-APPS with database access are not available (required: PDO &amp; PDO_mysql)',//TRANSLATE
 		'phpext warning' => 'not available: ', // TRANSLATE
 		'phpext warning2' => 'Most likely, webEdition will not work properly!', // TRANSLATE
-		'detectable warning' => 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start ', // TRANSLATE
-
+		'detectable warning' => 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ', // TRANSLATE
 		'connection_types' => 'Päivitä yhteystyypit',
 		'gdlib' => 'GDlib tuki',
 		'mbstring' => 'Multibyte String funktiot',

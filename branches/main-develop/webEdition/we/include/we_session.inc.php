@@ -200,7 +200,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				} else {
 					$table = PREFS_TABLE;
 					$_SESSION["prefs"]["userID"] = $_userdata["ID"];
-					doInsetQuery($DB_WE, $table, $_SESSION["prefs"]);
+					doInsertQuery($DB_WE, $table, $_SESSION["prefs"]);
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
@@ -230,7 +230,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				} else {
 					$table = PREFS_TABLE;
 					$_SESSION["prefs"]["userID"] = $_userdata["ID"];
-					doInsetQuery($DB_WE, $table, $_SESSION["prefs"]);
+					doInsertQuery($DB_WE, $table, $_SESSION["prefs"]);
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {

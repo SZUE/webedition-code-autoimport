@@ -170,6 +170,7 @@ if(  ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]) || (isset($_REQUEST[
 	$GLOBALS["we_doc"]->ObjectID=$GLOBALS["we_obj"]->ObjectID;
 	$GLOBALS["we_doc"]->OF_ID=$GLOBALS["we_obj"]->ID;
 	$GLOBALS["we_doc"]->Charset=$GLOBALS["we_obj"]->Charset;
+	$GLOBALS["we_doc"]->Language=$GLOBALS["we_obj"]->Language;
 	$GLOBALS["we_doc"]->elements['Charset']['dat'] = $GLOBALS["we_obj"]->Charset; // for charset-tag
 	$GLOBALS["TITLE"] = $GLOBALS["we_doc"]->getElement("Title");
 	$GLOBALS["KEYWORDS"] = $GLOBALS["we_doc"]->getElement("Keywords");
