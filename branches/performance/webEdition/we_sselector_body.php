@@ -52,7 +52,7 @@ function _cutText($text,$l){
 }
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 var clickCount=0;
 var wasdblclick=0;
 var tout=null;
@@ -189,7 +189,7 @@ function getDataType($dat){
 		$dir_obj->close();
  }
  else{
-	print '<script language="JavaScript" type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"),WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.g_l('alert',"[access_denied]").' --</div>';
+	print '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"),WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- '.g_l('alert',"[access_denied]").' --</div>';
  }
 
  switch($_REQUEST["ord"]){
@@ -212,7 +212,7 @@ foreach ($ordFile as $key => $value) {
 	array_push($final,$arFile[$key]);
 }
 
-print '<script language="JavaScript">
+print '<script type="text/javascript">
 top.allentries = new Array();
 var i = 0;
 ';
@@ -235,7 +235,7 @@ if( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"){ ?>
 
 foreach ($final as $key => $entry) {
 	$name=str_replace('//','/',$org.'/'.$entry);
-	$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".mysql_real_escape_string($name)."'");
+	$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($name)."'");
 
 	$isfolder = is_dir($dir."/".$entry) ? true : false;
 
@@ -298,7 +298,7 @@ foreach ($final as $key => $entry) {
 	}
 
 	if($show){
-		print '<tr id="'.htmlspecialchars($entry).'"'.$ondblclick.$onclick.' style="background-color:'.$bgcol.';'.$_cursor.($set_rename ? "" : "-moz-user-select: none;").'"'.($set_rename ? '' : 'unselectable="on"').'>
+		print '<tr id="'.htmlspecialchars($entry).'"'.$ondblclick.$onclick.' style="background-color:'.$bgcol.';'.$_cursor.($set_rename ? "" : "").'"'.($set_rename ? '' : 'unselectable="on"').'>
 	<td class="selector" align="center" width="25"><img src="'.ICON_DIR.$icon.'" width="16" height="18" border="0"></td>
 	<td class="selector" width="200">'.$_text_to_show.'</td>
 	<td class="selector" width="150">'.$_type.'</td>
@@ -330,7 +330,7 @@ foreach ($final as $key => $entry) {
 </form>
 
 <?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"))&&($set_rename))):?>
-    <script language="JavaScript" type="text/javascript">
+    <script  type="text/javascript">
      document.forms["we_form"].elements["txt"].focus();
      document.forms["we_form"].elements["txt"].select();
      <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"):?>

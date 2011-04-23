@@ -108,7 +108,7 @@ $tab_body = '<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id=
 			$we_tabs->getHTML() .
 			'</div>';
 ?>
-   <script language="JavaScript">
+   <script type="text/javascript">
 	<!--
     function setTab(tab){
         	switch(tab){

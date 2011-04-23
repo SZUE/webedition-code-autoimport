@@ -377,7 +377,7 @@ function htmlClipElement($smalltext, $text, $content)
 
 							"id" => $unique,
 							"class" => "defaultfont",
-							"style" => "cursor:pointer;-moz-user-select:none;",
+							"style" => "cursor:pointer;",
 							"onClick" => "clip_" . $unique . "();"
 					),
 					addslashes($smalltext)));

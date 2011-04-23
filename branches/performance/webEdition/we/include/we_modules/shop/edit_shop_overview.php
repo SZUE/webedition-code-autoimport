@@ -80,16 +80,16 @@ $f = 0;
 
 
 function numfom($result){
-global $numberformat;
-     if($numberformat=="german"){
-			$result=number_format($result,2,",",".");
-		}else if($numberformat=="french"){
-			$result=number_format($result,2,","," ");
-		}else if($numberformat=="swiss"){
-			$result=number_format($result,2,".","'");
-		}else if($numberformat=="english"){
-			$result=number_format($result,2,".","");
-		}
+	switch($GLOBALS['numberformat']){
+		case 'german':
+			return number_format($result,2,",",".");
+		case 'french':
+			return number_format($result,2,","," ");
+		case 'swiss':
+			return number_format($result,2,".","'");
+		case 'english':
+			return number_format($result,2,".","");
+	}
 		return $result;
 }
 
@@ -97,8 +97,8 @@ $mwst = (!empty($mwst))?$mwst:1;
 $info = g_l('modules_shop','[anzahl]').": <b>".($f+$r)."</b><br>".g_l('modules_shop','[unbearb]').": ".(($f)?$f:"0");
 $stat = g_l('modules_shop','[umsatzgesamt]').": <b>".numfom(($bezahlt+$unbezahlt)*$mwst)." $waehr </b><br><br>".g_l('modules_shop','[schonbezahlt]').": ".numfom($bezahlt*$mwst)." $waehr <br>".g_l('modules_shop','[unbezahlt]').": ".numfom($unbezahlt*$mwst)." $waehr";
 ?>
-    <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-    <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+    <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+    <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
 	</head>
 
 <body class="weEditorBody" onUnload="doUnload()"><?php

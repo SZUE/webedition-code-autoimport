@@ -149,7 +149,7 @@
 							$percent = weBackupUtil::getExportPercent();
 
 							print '
-							<script language="JavaScript" type="text/javascript">
+							<script type="text/javascript">
 
 								function run() {
 
@@ -223,7 +223,7 @@
 								if($_SESSION['weBackupVars']['backup_file']===false) {
 									weBackupUtil::addLog('Fatal error: compression failed!');
 									print '
-									<script language="JavaScript" type="text/javascript">
+									<script type="text/javascript">
 										if(top.busy.setProgressText) top.busy.setProgressText("current_description","'.g_l('backup',"[error]").'");
 										if(top.busy.setProgress) top.busy.setProgress(100);
 										top.checker.location = "/webEdition/html/blank.html";
@@ -262,7 +262,7 @@
 							}
 
 							print '
-								<script language="JavaScript" type="text/javascript">
+								<script type="text/javascript">
 
 								if(top.busy.setProgressText) top.busy.setProgressText("current_description","'.g_l('backup',"[finished]").'");
 								if(top.busy.setProgress) top.busy.setProgress(100);
@@ -366,7 +366,7 @@
 
 
 							print '
-							<script language="JavaScript" type="text/javascript">
+							<script type="text/javascript">
 
 								function run() {
 
@@ -410,7 +410,7 @@
 
 
 							print '
-								<script language="JavaScript" type="text/javascript">
+								<script type="text/javascript">
 									top.checker.location = "/webEdition/html/blank.html";
 									var op = top.opener.top.makeFoldersOpenString();
 									top.opener.top.we_cmd("load",top.opener.top.treeData.table);

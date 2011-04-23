@@ -26,7 +26,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 ?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 // bugfix WE-356
 self.focus();
 <?php

@@ -91,10 +91,10 @@ function createLocalFolderByPath($completeDirPath)
 function insertIntoCleanUp($path, $date)
 {
 	$DB_WE = new DB_WE();
-	if (f("SELECT Date FROM " . CLEAN_UP_TABLE . " WHERE Path='".mysql_real_escape_string($path)."'", "Date", $DB_WE)) {
-		$DB_WE->query("UPDATE " . CLEAN_UP_TABLE . " SET DATE='".mysql_real_escape_string($date)."' WHERE  Path='".mysql_real_escape_string($path)."'");
+	if (f("SELECT Date FROM " . CLEAN_UP_TABLE . " WHERE Path='".$DB_WE->escape($path)."'", "Date", $DB_WE)) {
+		$DB_WE->query("UPDATE " . CLEAN_UP_TABLE . " SET DATE='".$DB_WE->escape($date)."' WHERE  Path='".$DB_WE->escape($path)."'");
 	} else {
-		$DB_WE->query("INSERT INTO " . CLEAN_UP_TABLE . " (Path,Date) VALUES ('".mysql_real_escape_string($path)."','".mysql_real_escape_string($date)."')");
+		$DB_WE->query("INSERT INTO " . CLEAN_UP_TABLE . " (Path,Date) VALUES ('".$DB_WE->escape($path)."','".$DB_WE->escape($date)."')");
 	}
 }
 
@@ -134,7 +134,7 @@ function checkAndMakeFolder($path)
 
 function insertIntoErrorLog($text){
 	$DB_WE = new DB_WE();
-	$DB_WE->query('INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES(\'' . mysql_real_escape_string($text) . '\')');
+	$DB_WE->query('INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES(\'' . $this->DB_WE->escape($text) . '\')');
 
 }
 
@@ -142,7 +142,7 @@ function getContentDirectFromDB($id, $name, $db = "")
 {
 	$db = $db ? $db : new DB_WE();
 	return f(
-			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=".abs($id)." AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($name)."'",
+			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=".abs($id)." AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='".$db->escape($name)."'",
 			"Dat",
 			$db);
 }

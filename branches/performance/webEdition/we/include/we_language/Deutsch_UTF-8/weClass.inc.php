@@ -46,7 +46,7 @@ $l_weClass = array(
 		'no_template' => "Ohne Vorlage",
 		'IsDynamic' => "Seite dynamisch generieren",
 		'IsSearchable' => "durchsuchbar",
-		'InGlossar' => "Von Glossarersetzung nicht berücksichtigen",
+		'InGlossar' => "Bei Glossarersetzung nicht berücksichtigen",
 		'metainfo' => "Meta-Infos",
 		'Title' => "Titel",
 		'Keywords' => "Schlüsselwörter",
@@ -229,4 +229,7 @@ $l_weClass = array(
 		'image_edit_null_not_allowed' => "Im Feld Breite und Höhe sind nur Zahlen größer als 0 erlaubt!",
 		'doctype_changed_question' => "Sollen die Standardeinstellungen des Dokument-Typs für das Dokument übernommen werden?",
 		'availableAfterSave' => "Die Funktion steht erst nach dem Speichern des Eintrags zur Verfügung.",
+		'languageLinksDefaults' => 'Voreinstellung Dokument Typ in korrespondierenden Dokumenten der anderen Frontendsprachen',
+		'languageLinks' => 'Verknüpfung zu den korrespondierenden Dokumenten/Objekten in anderen Sprachen',
+		'languageLinksDir' => 'Default-Verknüpfung zu den korrespondierenden Dokumenten in anderen Sprachen',
 );

@@ -26,20 +26,16 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
-
-
-if(defined("MESSAGING_SYSTEM") && (!isset($_REQUEST["SEEM_edit_include"]) || !$_REQUEST["SEEM_edit_include"] )) { ?>
-    <html>
-    <head>
-    <frameset cols="*,<?php if($GLOBALS['BROWSER'] == "NN"){ print "60"; } else { print "50"; } ?>" framespacing="0" border="0" frameborder="NO">
-        <frame src="/webEdition/headermenu.php" name="header_menu" scrolling="no" noresize>
-        <frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php" name="header_msg" scrolling="no" noresize>
-    </frameset>
-    </head>
-    <body>
-    </body>
-    </html>
+?>
+		<div style="position:absolute;top:0;left:0;right:0;bottom:0;border:0;">
+			<div style="position:absolute;top:0;bottom:0;left:0;right:60px;"><?php
+				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/headermenu.php");?>
+       </div>
+			<iframe src="/webEdition/headermenu.php" style="border:0;width:100%;overflow: hidden;" name="header_menu"></iframe>
 <?php
-} else {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/headermenu.php");
-}
+if(defined("MESSAGING_SYSTEM") && (!isset($_REQUEST["SEEM_edit_include"]) || !$_REQUEST["SEEM_edit_include"] )) { ?>
+       <div style="position:absolute;top:0;bottom:0;right:0;width:60px;">
+				<iframe src="<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php" style="border:0;width:100%;overflow: hidden;" name="header_msg"></iframe>
+			</div>
+<?php } ?>
+     </div>

@@ -37,7 +37,7 @@ htmlTop(g_l('versions','[versions_log]'));
 
 print STYLESHEET;
 
-echo '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
+echo '<script type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';

@@ -17,4 +17,3 @@ $GLOBALS['weTagWizard']['attribute']['id41_getscript'] = new weTagData_textAttri
 $GLOBALS['weTagWizard']['attribute']['id42_page'] = new weTagData_textAttribute('42', 'page', false, '');
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

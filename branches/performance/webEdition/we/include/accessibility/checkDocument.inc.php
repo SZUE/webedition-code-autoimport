@@ -28,6 +28,9 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/http/HttpResponse.class.php');
 
     if(isset($_REQUEST['we_transaction'])){ //  initialise Document
+				if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
+					exit();
+				}
 
         $we_transaction = $_REQUEST['we_transaction'];
 

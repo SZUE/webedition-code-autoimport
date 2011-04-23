@@ -66,7 +66,7 @@ class we_forms {
 						<input type="checkbox" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer; outline: 0;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
 					<td>
 						'.getPixel(4,2).'</td>
-					<td class="'.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'-moz-user-select: none;outline: 0;" hidefocus="hidefocus" unselectable="on">'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").($html ? $html : "").'</td>
+					<td class="'.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'outline: 0;" hidefocus="hidefocus" unselectable="on">'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").($html ? $html : "").'</td>
 				</tr>
 			</table>';
 
@@ -127,7 +127,7 @@ class we_forms {
 						<input type="radio" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer;outline: 0;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
 					<td class="weEditmodeStyle">
 						'.getPixel(4,2).'</td>
-					<td class="weEditmodeStyle '.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'-moz-user-select: none;outline: 0;" hidefocus="hidefocus" unselectable="on"'.($onMouseUp ? " onmouseup=\"".str_replace("this.","document.getElementById('".$_id."').",$onMouseUp)."\"" : "").'>'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").
+					<td class="weEditmodeStyle '.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'outline: 0;" hidefocus="hidefocus" unselectable="on"'.($onMouseUp ? " onmouseup=\"".str_replace("this.","document.getElementById('".$_id."').",$onMouseUp)."\"" : "").'>'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").
 				($extra_content ? ("<br>".getPixel(1,3)."<br>". $extra_content) : "").'</td>
 				</tr>
 			</table>';
@@ -154,7 +154,6 @@ class we_forms {
 	*
 	*/
 	function weTextarea($name,$value,$attribs,$autobr,$autobrName,$showAutobr=true,$path="",$hidestylemenu=false,$forceinwebedition=false,$xml=false,$removeFirstParagraph=true,$charset="",$showSpell=true, $isFrontendEdit=false){
-		global $SAFARI_WYSIWYG;
 		if($charset == ""){
 			if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->getElement("Charset")){
 				$charset = $GLOBALS["we_doc"]->getElement("Charset");
@@ -292,7 +291,7 @@ class we_forms {
 				$value = str_replace("\n","\\n",$value);
 				$value = str_replace("\r","\\r",$value);
 				$value = str_replace('"',"\\\"",$value);
-				$out .= '<script language="JavaScript" type="text/javascript">
+				$out .= '<script  type="text/javascript">
 	new we_textarea("'.$name.'","'.$value.'","'.$cols.'","'.$rows.'","'.$width.'","'.$height.'","'.$autobr.'","'.$autobrName.'",'.($showAutobr ? ($hideautobr ? "false" : "true") : "false").','.($importrtf ? "true" : "false").',"'.$GLOBALS["WE_LANGUAGE"].'","'.$class.'","'.$style.'","'.$wrap.'","'.(($GLOBALS["BROWSER"]=="SAFARI") ? "onkeydown" : "onchange").'","'.($xml ? "true" : "false").'","'.$id.'",'.((defined('SPELLCHECKER') && $showSpell) ? "true" : "false").');</script>'.
 	'<noscript><textarea name="'.$name.'"'.($tabindex ? ' tabindex="'.$tabindex.'"' : '').($cols ? ' cols="'.$cols.'"' : '').($rows ? ' rows="'.$rows.'"' : '').($style ? ' style="'.$style.'"' : '').($class ? ' class="'.$class.'"' : '').($id ? ' id="' . $id . '"' : '').'>'.htmlspecialchars($clearval).'</textarea></noscript>';
 			}else{

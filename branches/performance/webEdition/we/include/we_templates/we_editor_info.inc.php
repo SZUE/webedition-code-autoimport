@@ -37,7 +37,7 @@ $we_button = new we_button();
 
 ?>
 <?php print STYLESHEET; ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script type="text/javascript">
 	function revertToPublished() {
 		if (confirm("<?php print addslashes(g_l('weEditorInfo',"[revert_publish_question]")); ?>")) {

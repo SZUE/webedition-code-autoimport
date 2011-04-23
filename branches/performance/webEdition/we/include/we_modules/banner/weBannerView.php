@@ -230,7 +230,7 @@ class weBannerView extends weBannerBase{
 
 	function getJSTopCode(){
 ?>
-	<script language="JavaScript">
+	<script type="text/javascript">
 
 			var hot = 0;
 
@@ -342,7 +342,7 @@ class weBannerView extends weBannerBase{
 
 	function getJSFooterCode(){
 	?>
-	<script language="JavaScript">
+	<script type="text/javascript">
 
 			function doUnload() {
 				if (!!jsWindow_count) {
@@ -371,7 +371,7 @@ class weBannerView extends weBannerBase{
 
 	function getJSCmd(){
 	?>
-		<script language="JavaScript">
+		<script type="text/javascript">
 				function submitForm(){
 					var f = self.document.we_form;
 					f.target = "cmd";
@@ -384,8 +384,8 @@ class weBannerView extends weBannerBase{
 
 	function getJSProperty(){
 	?>
-		<script language="JavaScript" src="<?php print JS_DIR; ?>windows.js"></script>
-		<script language="JavaScript">
+		<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+		<script type="text/javascript">
 			var loaded;
 
 			function doUnload() {
@@ -484,7 +484,7 @@ class weBannerView extends weBannerBase{
 			case "new_banner":
 				$this->page = 0;
 				$this->banner=new weBanner();
-				print '<script language="JavaScript">
+				print '<script type="text/javascript">
 					top.content.resize.right.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page='.$this->page.'&txt='.$this->banner->Path.'&isFolder='.$this->banner->IsFolder.'";
 					top.content.resize.right.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
 					</script>';
@@ -492,13 +492,13 @@ class weBannerView extends weBannerBase{
 			case "new_bannergroup":
 				$this->page = 0;
 				$this->banner=new weBanner(0,1);
-				print '<script language="JavaScript">
+				print '<script type="text/javascript">
 					top.content.resize.right.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page='.$this->page.'&txt='.$this->banner->Path.'&isFolder='.$this->banner->IsFolder.'";
 					top.content.resize.right.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
 					</script>';
 				break;
 			case "reload":
-					print '<script language="JavaScript">
+					print '<script type="text/javascript">
 					top.content.resize.right.editor.edheader.location="edit_banner_frameset.php?pnt=edheader&page='.$this->page.'&txt='.$this->banner->Path.'&isFolder='.$this->banner->IsFolder.'";
 					top.content.resize.right.editor.edfooter.location="edit_banner_frameset.php?pnt=edfooter";
 					</script>
@@ -631,9 +631,9 @@ class weBannerView extends weBannerBase{
 					$exist=false;
 					$double = 0;
 					if($newone)
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".BANNER_TABLE." WHERE Text='".mysql_real_escape_string($this->banner->Text)."' AND ParentID=".abs($this->banner->ParentID));
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".BANNER_TABLE." WHERE Text='".$this->db->escape($this->banner->Text)."' AND ParentID=".abs($this->banner->ParentID));
 					else
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".BANNER_TABLE." WHERE Text='".mysql_real_escape_string($this->banner->Text)."' AND ParentID=".abs($this->banner->ParentID)." AND ID<>".abs($this->banner->ID));
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".BANNER_TABLE." WHERE Text='".$this->db->escape($this->banner->Text)."' AND ParentID=".abs($this->banner->ParentID)." AND ID<>".abs($this->banner->ID));
 
 					if($this->db->next_record()){
 						$double = $this->db->f("Count");
@@ -641,38 +641,38 @@ class weBannerView extends weBannerBase{
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 					$acQuery = new  weSelectorQuery();
 					if(!we_hasPerm("EDIT_BANNER") && !we_hasPerm("NEW_BANNER")){
-						print '<script language="JavaScript">';
+						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($newone && !we_hasPerm("NEW_BANNER")){
-						print '<script language="JavaScript">';
+						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($this->banner->Text==""){
-						print '<script language="JavaScript">';
+						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_text]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif(ereg('[%/\\\"\']',$this->banner->Text)){
-						print '<script language="JavaScript">';
+						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[wrongtext]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif(!$this->banner->bannerID && !$this->banner->IsFolder){
-						print '<script language="JavaScript">';
+						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_bannerid]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($this->banner->ID && ($this->banner->ID == $this->banner->ParentID)){
-						print '<script language="JavaScript">';
+						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_group_in_group]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}elseif($double){
 						if($double){
-							print '<script language="JavaScript">';
+							print '<script type="text/javascript">';
 							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[double_name]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
@@ -682,7 +682,7 @@ class weBannerView extends weBannerBase{
 					if($this->banner->ParentID>0){
 						$acResult = $acQuery->getItemById($this->banner->ParentID, BANNER_TABLE, "IsFolder");
 						if(!$acResult || (isset($acResult[0]['IsFolder']) && $acResult[0]['IsFolder']==0)) {
-							print '<script language="JavaScript">';
+							print '<script type="text/javascript">';
 							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_ac_field]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
@@ -691,7 +691,7 @@ class weBannerView extends weBannerBase{
 					if($this->banner->IntHref){
 						$acResult = $acQuery->getItemById($this->banner->bannerIntID, FILE_TABLE, array("IsFolder"));
 						if(!$acResult || $acResult[0]['IsFolder']==1) {
-							print '<script language="JavaScript">';
+							print '<script type="text/javascript">';
 							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_ac_field]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
@@ -700,7 +700,7 @@ class weBannerView extends weBannerBase{
 					if($this->banner->bannerID>0){
 						$acResult = $acQuery->getItemById($this->banner->bannerID, FILE_TABLE, array("ContentType"));
 						if(!$acResult || $acResult[0]['ContentType']!='image/*') {
-							print '<script language="JavaScript">';
+							print '<script type="text/javascript">';
 							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_ac_field]'), WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
@@ -711,7 +711,7 @@ class weBannerView extends weBannerBase{
 					$childs="";
 					$message="";
 					$this->banner->save($message);
-					print '<script language="JavaScript">';
+					print '<script type="text/javascript">';
 						if($newone) print 'top.content.makeNewEntry("'.$this->banner->Icon.'",'.$this->banner->ID.','.$this->banner->ParentID.',"'.$this->banner->Text.'",true,"'.($this->banner->IsFolder ? 'folder' : 'file').'","weBanner",1);';
 						else print 'top.content.updateEntry('.$this->banner->ID.','.$this->banner->ParentID.',"'.$this->banner->Text.'",1);';
 						print $childs;
@@ -723,7 +723,7 @@ class weBannerView extends weBannerBase{
 			case "delete_banner":
 				if(isset($_REQUEST["bid"])){
 					if(!we_hasPerm("DELETE_BANNER")){
-						print '<script language="JavaScript">';
+						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
@@ -733,13 +733,13 @@ class weBannerView extends weBannerBase{
 						$this->banner = new weBanner($_REQUEST["bid"]);
 						if($this->banner->delete()){
 							$this->banner = new weBanner(0,$this->banner->IsFolder);
-							print '<script language="JavaScript">
+							print '<script type="text/javascript">
 							top.content.deleteEntry('.$_REQUEST["bid"].',"'.($this->banner->IsFolder ? 'folder' : 'file').'");
 							' . we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? g_l('modules_banner','[delete_group_ok]') : g_l('modules_banner','[delete_ok]')), WE_MESSAGE_NOTICE ) . '
 							top.content.we_cmd("new_banner");
 							</script>';
 						}else{
-							print '<script language="JavaScript">
+							print '<script type="text/javascript">
 							' . we_message_reporting::getShowMessageCall( ($this->banner->IsFolder ? g_l('modules_banner','[delete_group_nok]'): g_l('modules_banner','[delete_nok]')), WE_MESSAGE_ERROR ) . '
 							</script>';
 						}

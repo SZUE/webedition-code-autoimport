@@ -61,28 +61,21 @@ function startNormalMode() {
 
 	}
 
-	//FIXME: do we really want to load sidebar-frame - even if it is deactivated?
-	if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
 ?>
-	<frameset cols="<?php print $_treewidth; ?>,*,<?php print $_sidebarwidth; ?>" border="1" id="resizeframeid">
-		<frame src="baumFrame.php" name="bframe" scrolling="no">
-		<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-		<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-	</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-	<frameset cols="<?php print $_treewidth; ?>,*,<?php print $_sidebarwidth; ?>" border="0" frameborder="0" id="resizeframeid">
-		<frame src="baumFrame.php" name="bframe" scrolling="no">
-		<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-		<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-	</frameset>
-<?php } else { //IE ?>
-	<frameset cols="<?php print $_treewidth; ?>,*,<?php print $_sidebarwidth; ?>" border="0" frameborder="0" id="resizeframeid">
-		<frame src="baumFrame.php" name="bframe" scrolling="no" frameborder="0">
-		<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-		<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-	</frameset>
+		<div style="position:absolute;top:0;bottom:0;left:0;right:0;border: 0;">
+       <div style="position:absolute;top:0;bottom:0;left:0;width:<?php print $_treewidth;?>px;border-right:1px solid black;" id="bframeDiv">
+				<iframe src="<?php print WEBEDITION_DIR; ?>baumFrame.php" style="border:0;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_treewidth;?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
+				<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+       </div>
+			<?php if($_sidebarwidth>0){ ?>
+       <div style="position:absolute;top:0;bottom:0;right:0;left:<?php echo $_sidebarwidth; ?>;" id="sidebarDiv">
+				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+			</div>
+			<?php } ?>
+     </div>
 <?php
-	}
 }
 
 
@@ -145,7 +138,7 @@ function startSEEMMode(){
 }
 ?>
 
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 function we_cmd(){
 	var args = "";
 	for(var i = 0; i < arguments.length; i++){
@@ -173,11 +166,9 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 
 //  Open webEdition normally
 } else {
+	echo '<body style="margin:0;">';
 	startNormalMode();
+	echo '</body>';
 }
 ?>
-<noframes>
-		<body>
-		</body>
-	</noframes>
 </html>

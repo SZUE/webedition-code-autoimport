@@ -62,7 +62,7 @@
 				switch($_REQUEST['do']) {
 
 					case 'delete':
-						$query = "DELETE FROM " . GLOSSARY_TABLE . " WHERE ID IN (" . mysql_real_escape_string(implode(",", $_REQUEST['ID'])) .")";
+						$query = "DELETE FROM " . GLOSSARY_TABLE . " WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) .")";
 						if($GLOBALS['DB_WE']->query($query)) {
 							foreach($_REQUEST['ID'] as $_id) {
 								$_js .= $weGlossaryFrames->View->TopFrame.'.deleteEntry('.$_id.');';
@@ -74,7 +74,7 @@
 						break;
 
 					case 'publish':
-						$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = '" . time() . "' WHERE ID IN (" . mysql_real_escape_string(implode(",", $_REQUEST['ID'])) .")";
+						$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = '" . time() . "' WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) .")";
 						if($GLOBALS['DB_WE']->query($query)) {
 							$_js .= '';
 						} else {
@@ -84,7 +84,7 @@
 						break;
 
 					case 'unpublish':
-						$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = '0' WHERE ID IN (" . mysql_real_escape_string(implode(",", $_REQUEST['ID'])) .")";
+						$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = '0' WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) .")";
 						if($GLOBALS['DB_WE']->query($query)) {
 							$_js .= '';
 						} else {

@@ -181,8 +181,10 @@ $l_alert = array(
 		'discard_changed_data' => 'Tallentamattomat muutokset menetetään, haluatko jatkaa ?',
 		'login_denied_for_user' => "Kirjautuminen epäonnistui. Käyttäjäkirjautuminen ei ole käytössä",
 		'no_perm_to_delete_single_document' => "Sinulla ei ole tarvittavia oikeuksia dokumentin poistoon.",
-		'applyWeDocumentCustomerFiltersDocument' => "Tiedosto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä dokumentissa?",
-		'applyWeDocumentCustomerFiltersFolder' => "Hakemisto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä hakemistossa ja kaikissa sen alihakemistoissa? ",
+		'confirm' => array(
+				'applyWeDocumentCustomerFiltersDocument' => "Tiedosto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä dokumentissa?",
+				'applyWeDocumentCustomerFiltersFolder' => "Hakemisto on siirretty hakemistoon, jossa on poikkeavat käyttäjäoikeudet. Otetaanko hakemiston asetukset käyttöön tässä hakemistossa ja kaikissa sen alihakemistoissa? ",
+		),
 		'field_in_tab_notvalid_pre' => "Asetuksia ei voitu tallentaa, koska seuraavat kentät sisältävät virheellisiä arvoja:",
 		'field_in_tab_notvalid' => ' - kenttä %s välilehdellä %s',
 		'field_in_tab_notvalid_post' => 'Korjaa kentät ennen asetusten tallennusta.',

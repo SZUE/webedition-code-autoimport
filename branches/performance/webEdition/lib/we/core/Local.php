@@ -26,8 +26,10 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_Local
-{
+
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_global.inc.php");
+
+class we_core_Local {
 
 	/**
 	 * cache attribute

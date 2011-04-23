@@ -143,7 +143,7 @@ array_push($parts, array(
 		)
 	);
 
-$tabEMail = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 3, $cols_num = 6);
+$tabEMail = new we_htmlTable(array("border"=>"0", "cellpadding"=>"2", "cellspacing"=>"4"), $rows_num = 4, $cols_num = 6);
 $tabEMail->setCol(0, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 220),  g_l('modules_shop','[statusmails][AbsenderAdresse]')
 				.'<br/>'.we_class::htmlTextInput("EMailData[address]",30,$weShopStatusMails->EMailData['address']) );
 $tabEMail->setCol(1, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 220),  g_l('modules_shop','[statusmails][AbsenderName]')
@@ -156,6 +156,8 @@ $tabEMail->setCol(1, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=
 				.'<br/>'.we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']) );
 $tabEMail->setCol(2, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  g_l('modules_shop','[statusmails][DocumentSubjectField]')
 				.'<br/>'.we_class::htmlTextInput("EMailData[DocumentSubjectField]",30,$weShopStatusMails->EMailData['DocumentSubjectField']));
+$tabEMail->setCol(3, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentAttachmentFieldA'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
+$tabEMail->setCol(3, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentAttachmentFieldB'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
 
 
 array_push($parts, array(

@@ -12,4 +12,3 @@ if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id342_id'] = n
 if(defined("OBJECT_FILES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id343_oid'] = new weTagData_selectorAttribute('343', 'oid',OBJECT_FILES_TABLE, 'objectFile', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id345_permission'] = new weTagData_sqlColAttribute('345', 'permission', CUSTOMER_TABLE, false, array(), '');
-?>

@@ -45,8 +45,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules
 ?>
 
 
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+	<script type="text/javascript">
         function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
 	    }

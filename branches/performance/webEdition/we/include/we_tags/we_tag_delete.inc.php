@@ -45,7 +45,7 @@ function we_tag_delete($attribs, $content){
 		$doc->initByID($docID);
 		$table = FILE_TABLE;
 		if ($doctype) {
-			$doctypeID = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".mysql_real_escape_string($doctype)."'", "ID", new DB_WE());
+			$doctypeID = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".escape_sql_query($doctype)."'", "ID", new DB_WE());
 			if ($doc->DocType != $doctypeID) {
 				$GLOBALS["we_" . $type . "_delete_ok"] = false;
 				return "";

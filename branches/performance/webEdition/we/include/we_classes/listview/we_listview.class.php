@@ -121,33 +121,39 @@ class we_listview extends listviewBase {
 		$this->hidedirindex=$hidedirindex;
 		$this->order = trim($this->order);
 
-		if(	$this->order == "we_id" ||  $this->order == "we_creationdate" || $this->order == "we_filename" || $this->order == "we_moddate" || $this->order == "we_published"){
-
-				$ord = str_replace("we_id",FILE_TABLE . ".ID",$this->order);
-				$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord);
-				$ord = str_replace("we_moddate",FILE_TABLE . ".ModDate",$ord);
-				$ord = str_replace("we_filename",FILE_TABLE . ".Text",$ord);
-				$ord = str_replace("we_published",FILE_TABLE . ".Published",$ord);
-
-				$orderstring = " ORDER BY $ord ".($this->desc ? " DESC" : "");
-
-		}else{
+		switch($this->order){
+			case 'we_id':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.ID '.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_creationdate':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.CreationDate'.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_filename':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.Text'.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_moddate':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.ModDate'.($this->desc ? 'DESC' : '');
+				break;
+			case 'we_published':
+				$orderstring = ' ORDER BY '.FILE_TABLE . '.Published'.($this->desc ? 'DESC' : '');
+				break;
+			default:
 				if($this->search){
 					$orderstring = $this->order ?
-									(" AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($this->order)."' ORDER BY ranking," . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
-									" ORDER BY ranking";
+									(" AND " . LINK_TABLE . ".Name='".escape_sql_query($this->order)."' ORDER BY ranking," . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
+									' ORDER BY ranking';
 				}else{
 					$orderstring = $this->order ?
-									(" AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($this->order)."' ORDER BY " . ($this->numorder ? "0+" : "") . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
+									(" AND " . LINK_TABLE . ".Name='".escape_sql_query($this->order)."' ORDER BY " . ($this->numorder ? "0+" : "") . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
 									"";
 				}
-
+				break;
 		}
 
 
 		$sql_tail = getCatSQLTail($this->cats, FILE_TABLE, $this->catOr,$this->DB_WE, 'Category', true, $this->categoryids);
 
-		$dt = ($this->docType) ? f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".mysql_real_escape_string($this->docType)."'","ID",$this->DB_WE) : "#NODOCTYPE#";
+		$dt = ($this->docType) ? f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".escape_sql_query($this->docType)."'","ID",$this->DB_WE) : "#NODOCTYPE#";
 
 		$ws_where = "";
 
@@ -157,7 +163,7 @@ class we_listview extends listviewBase {
 			$this->contentTypes = str_replace("binary","application/*",$this->contentTypes);
 			$CtArr = makeArrayFromCSV($this->contentTypes);
 			foreach($CtArr as $ct){
-				$sql_tail .= ' AND '.FILE_TABLE.'.ContentType = \''.mysql_real_escape_string($ct).'\'';
+				$sql_tail .= ' AND '.FILE_TABLE.'.ContentType = \''.escape_sql_query($ct).'\'';
 			}
 		}
 
@@ -189,7 +195,7 @@ class we_listview extends listviewBase {
 				$cond = array();
 				foreach($workspaces as $id) {
 					$workspace=id_to_path($id, FILE_TABLE, $this->DB_WE);
-					array_push($cond, "(" . INDEX_TABLE . ".Workspace like '$workspace/%' OR " . INDEX_TABLE . ".Workspace='".mysql_real_escape_string($workspace)."')");
+					array_push($cond, "(" . INDEX_TABLE . ".Workspace like '$workspace/%' OR " . INDEX_TABLE . ".Workspace='".escape_sql_query($workspace)."')");
 				}
 				$ws_where = " AND (".implode(" OR ", $cond).")";
 			}
@@ -256,7 +262,7 @@ class we_listview extends listviewBase {
 				} else { // beneath the workspaceids
 					foreach($workspaces as $id) {
 						$workspace=id_to_path($id, FILE_TABLE, $this->DB_WE);
-						array_push($cond, "(" . FILE_TABLE . ".Path like '".mysql_real_escape_string($workspace)."/%' OR " . FILE_TABLE . ".Path='".mysql_real_escape_string($workspace)."')");
+						array_push($cond, "(" . FILE_TABLE . ".Path like '".escape_sql_query($workspace)."/%' OR " . FILE_TABLE . ".Path='".escape_sql_query($workspace)."')");
 
 					}
 					$ws_where = " AND (".implode(" OR ", $cond).")";
@@ -439,7 +445,7 @@ class we_listview extends listviewBase {
 
 			$sqlarr=array();
 			foreach ($exparr as $exp){
-				$sqlarr[]="(".LINK_TABLE.".Name='".mysql_real_escape_string($exp["variable"])."' AND ".CONTENT_TABLE.".Dat".$exp["operator"].$exp["argument"].")";
+				$sqlarr[]="(".LINK_TABLE.".Name='".escape_sql_query($exp["variable"])."' AND ".CONTENT_TABLE.".Dat".$exp["operator"].$exp["argument"].")";
 			}
 
 			return implode(" AND ",$sqlarr);
@@ -447,7 +453,7 @@ class we_listview extends listviewBase {
 	}
 
 	function makeFieldCondition($name,$operation,$value){
-		return "(".LINK_TABLE.".Name='".mysql_real_escape_string($name)."' AND ".CONTENT_TABLE.".Dat ".$operation." ".$value.")";
+		return "(".LINK_TABLE.".Name='".escape_sql_query($name)."' AND ".CONTENT_TABLE.".Dat ".$operation." ".$value.")";
 	}
 
 

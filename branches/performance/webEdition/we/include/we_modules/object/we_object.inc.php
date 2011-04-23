@@ -104,7 +104,7 @@ class we_object extends we_document
 		$db = new DB_WE();
 
 		if($this->OldPath && ($this->OldPath != $this->Path)){
-			$fID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".mysql_real_escape_string($this->OldPath)."'","ID",$this->DB_WE);
+			$fID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".$db->escape($this->OldPath)."'","ID",$this->DB_WE);
 			$pID = abs(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".str_replace("\\","/",dirname($this->Path))."'","ID",$this->DB_WE));
 			$cf = new we_class_folder();
 			$cf->initByID($fID,OBJECT_FILES_TABLE);
@@ -280,7 +280,7 @@ class we_object extends we_document
 			$this->DefaultCategory = $this->Category;
 			$this->i_savePersistentSlotsToDB();
 
-			$this->ID = (f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".mysql_real_escape_string($this->Table),"LastID",$this->DB_WE));
+			$this->ID = (f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".escape_sql_query($this->Table),"LastID",$this->DB_WE));
 			$ctable = OBJECT_X_TABLE.($this->ID);
 
 			// Charset and Collation
@@ -866,8 +866,6 @@ class we_object extends we_document
 	}
 
 	function getFieldHTML($name,$identifier){
-		global $we_transaction;
-
 		$we_button = new we_button();
 
 		$listlen = ($this->getElement("Sortgesamt")+1);
@@ -2404,7 +2402,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".mysql_real_escape_string($this->Text)."' AND ID != '".$this->ID."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".escape_sql_query($this->Text)."' AND ID != '".$this->ID."'","ID",new DB_WE());
 	}
 
 	function i_checkPathDiffAndCreate(){

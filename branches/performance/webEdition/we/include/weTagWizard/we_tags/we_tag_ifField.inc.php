@@ -9,5 +9,3 @@ $GLOBALS['weTagWizard']['attribute']['id689_type'] = new weTagData_selectAttribu
 $GLOBALS['weTagWizard']['attribute']['id691_match'] = new weTagData_textAttribute('691', 'match', false, '');
 $GLOBALS['weTagWizard']['attribute']['id711_striphtml'] = new weTagData_selectAttribute('711', 'striphtml', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id870_operator'] = new weTagData_selectAttribute('870', 'operator', array(new weTagDataOption('equal', false, ''), new weTagDataOption('less', false, ''), new weTagDataOption('less|equal', false, ''), new weTagDataOption('greater', false, ''), new weTagDataOption('greater|equal', false, ''), new weTagDataOption('contains', false, '')), false, '');
-
-?>

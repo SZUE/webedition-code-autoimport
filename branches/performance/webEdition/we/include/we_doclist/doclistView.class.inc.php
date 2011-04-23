@@ -48,7 +48,7 @@ class doclistView {
                 scrollheight = scrollheight + 26;
               }';
 		}
-
+		//FIXME: use we_browserDetect-class!!!
 		$IE6 = false;
 		//workaround for z-index ans selects in ie6
 		if (($GLOBALS ['BROWSER'] == "IE")) {
@@ -88,6 +88,7 @@ class doclistView {
 			$showHideSelects = '';
 			$showSelects = '';
 		}
+		$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
 		$_js = we_htmlElement::jsElement ( '
 
@@ -159,7 +160,7 @@ class doclistView {
         }
         var scroll = document.getElementById("scrollContent_doclist");
         scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
-        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $_REQUEST ['we_transaction'] . '"+args+"");
+        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function makeAjaxRequestParametersTop() {
@@ -169,7 +170,7 @@ class doclistView {
           newString = document.we_form.elements[i].name;
           args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
         }
-          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $_REQUEST ['we_transaction'] . '"+args+"");
+          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function makeAjaxRequestParametersBottom() {
@@ -179,7 +180,7 @@ class doclistView {
           newString = document.we_form.elements[i].name;
           args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
         }
-          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $_REQUEST ['we_transaction'] . '"+args+"");
+          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function getMouseOverDivs() {
@@ -189,7 +190,7 @@ class doclistView {
           newString = document.we_form.elements[i].name;
           args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
         }
-        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $_REQUEST ['we_transaction'] . '"+args+"");
+        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function switchSearch(mode) {
@@ -1284,7 +1285,7 @@ class doclistView {
 					$_tagName = $_defined_fields [$i] ["tag"];
 
 					if (weContentProvider::IsBinary ( $_result [$f] ["docID"] )) {
-						$DB_WE->query ( "SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result [$f] ["docID"]) . "' AND b.Name='" . mysql_real_escape_string($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'" );
+						$DB_WE->query ( "SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result [$f] ["docID"]) . "' AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'" );
 						$metafields [$_tagName] = "";
 						while ( $DB_WE->next_record () ) {
 							$metafields [$_tagName] = shortenPath ( $DB_WE->f ( 'Dat' ), 45 );
@@ -1359,7 +1360,7 @@ class doclistView {
 			$id = $GLOBALS ['we_doc']->ID;
 		}
 		if (isset ( $_REQUEST ['we_cmd'] ['we_transaction'] )) {
-			$we_transaction = $_REQUEST ['we_cmd'] ['we_transaction'];
+			$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST ['we_cmd'] ['we_transaction'])?$_REQUEST ['we_cmd'] ['we_transaction']:0);
 		} else {
 			$we_transaction = $GLOBALS ['we_transaction'];
 		}

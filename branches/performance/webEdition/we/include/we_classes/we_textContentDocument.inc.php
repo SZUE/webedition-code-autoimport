@@ -140,7 +140,7 @@ class we_textContentDocument extends we_textDocument{
 
 		$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($this->ID));
 		if($this->IsSearchable && $this->Published){
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES('".abs($this->ID)."','".mysql_real_escape_string($text)."','".mysql_real_escape_string($text)."','".mysql_real_escape_string($this->ParentPath)."','".abs($this->ParentID)."','".mysql_real_escape_string($this->Category)."','".mysql_real_escape_string($this->DocType)."','".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Path)."','".mysql_real_escape_string($this->Language)."')");
+			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES('".abs($this->ID)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."','".abs($this->ParentID)."','".$this->DB_WE->escape($this->Category)."','".$this->DB_WE->escape($this->DocType)."','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."','".$this->DB_WE->escape($this->Language)."')");
 		}
 		return true;
 
@@ -370,7 +370,7 @@ class we_textContentDocument extends we_textDocument{
 		}
 
 		if($DoNotMark==false){
-			if(!$this->DB_WE->query("UPDATE ".mysql_real_escape_string($this->Table)." SET Published='".abs($this->Published)."' WHERE ID='".abs($this->ID)."'")) return false; // mark the document as published;
+			if(!$this->DB_WE->query("UPDATE ".$this->DB_WE->escape($this->Table)." SET Published='".abs($this->Published)."' WHERE ID='".abs($this->ID)."'")) return false; // mark the document as published;
 		}
 
 		if($saveinMainDB) {
@@ -400,7 +400,7 @@ class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		if(!$this->DB_WE->query("UPDATE ".mysql_real_escape_string($this->Table)." SET Published='0' WHERE ID='".abs($this->ID)."'")) {
+		if(!$this->DB_WE->query("UPDATE ".$this->DB_WE->escape($this->Table)." SET Published='0' WHERE ID='".abs($this->ID)."'")) {
 			return false;
 		}
 		$this->Published=0;

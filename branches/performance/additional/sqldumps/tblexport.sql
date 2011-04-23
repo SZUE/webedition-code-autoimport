@@ -13,7 +13,7 @@ CREATE TABLE tblexport (
   DocType varchar(255) NOT NULL default '',
   Folder bigint(20) NOT NULL default '0',
   ClassName varchar(255) NOT NULL default '',
-  Categorys varchar(255) NOT NULL default '',
+  Categorys text NOT NULL,
   selDocs text NOT NULL,
   selTempl text NOT NULL,
   selObjs text NOT NULL,
@@ -32,4 +32,3 @@ CREATE TABLE tblexport (
   HandleThumbnails tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
-

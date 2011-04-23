@@ -56,8 +56,7 @@
 					var oc_img;
 					var oc_js;
 
-					if (nf[ai].open == 0) oc_img=treeData.tree_image_dir+"auf"+zusatz+".gif";
-					else oc_img=treeData.tree_image_dir+"zu"+zusatz+".gif";
+					oc_img="'.$this->tree_image_dir.'"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
 
 					oc_js=treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 
@@ -66,7 +65,7 @@
 
 
 					row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\" border=0>";
-					row+="<img src="+treeData.tree_image_dir+"icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
+					row+="<img src='.$this->tree_image_dir.'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
 					row+="</a>";
 
 					row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\">";
@@ -76,8 +75,7 @@
 					row+="&nbsp;&nbsp;<br>\n";
 
 					if (nf[ai].open){
-						if(ai == nf.laenge) newAst = newAst + "<img src="+treeData.tree_image_dir+"leer.gif width=19 height=18 align=absmiddle border=0>";
-						else newAst = newAst + "<img src="+treeData.tree_image_dir+"strich2.gif width=19 height=18 align=absmiddle border=0>";
+						newAst = newAst + "<img src='.$this->tree_image_dir.'"+(ai == nf.laenge?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 						row+=draw(nf[ai].id,newAst);
 					}
 			';
@@ -89,8 +87,7 @@
 					var oc_img;
 					var oc_js;
 
-					if (nf[ai].open == 1) oc_img=treeData.tree_image_dir+"zu"+zusatz+".gif";
-					else oc_img=treeData.tree_image_dir+"auf"+zusatz+".gif";
+					oc_img="'.$this->tree_image_dir.'"+(nf[ai].open == 1?"zu":"auf")+zusatz+".gif";
 
 					if(nf[ai].disabled!=1) oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 					else oc_js="//";
@@ -106,7 +103,7 @@
 
 					if(nf[ai].disabled!=1) row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
 
-					row+="<img src="+treeData.tree_image_dir+"icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
+					row+="<img src='.$this->tree_image_dir.'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
 
 					if(nf[ai].disabled!=1) row+="</a>";
 
@@ -120,8 +117,7 @@
 					row+="&nbsp;&nbsp;<br>\n";
 
 					if (nf[ai].open==1){
-						if(ai == nf.len) newAst = newAst + "<img src="+treeData.tree_image_dir+"leer.gif width=19 height=18 align=absmiddle border=0>";
-						else newAst = newAst + "<img src="+treeData.tree_image_dir+"strich2.gif width=19 height=18 align=absmiddle border=0 >";
+						newAst = newAst + "<img src='.$this->tree_image_dir.'"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 						row+=draw(nf[ai].id,newAst);
 					}
 

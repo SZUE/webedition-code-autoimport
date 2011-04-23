@@ -54,16 +54,14 @@ $we_button = new we_button();
 
 if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays ..
 
-	$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="payment_details"';
+	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="payment_details"';
 
 	$DB_WE->query($q);
-	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["fieldForname"]). "|" . mysql_real_escape_string($_REQUEST["fieldSurname"]). "|" . mysql_real_escape_string($_REQUEST["fieldStreet"]). "|" . mysql_real_escape_string($_REQUEST["fieldZip"]) . "|" . mysql_real_escape_string($_REQUEST["fieldCity"]) . "|". mysql_real_escape_string($_REQUEST["lc"]) . "|" . mysql_real_escape_string($_REQUEST["ppB"]) . "|" . mysql_real_escape_string($_REQUEST["psb"]) . "|" . mysql_real_escape_string($_REQUEST["lcS"]) . "|" . mysql_real_escape_string($_REQUEST["spAID"]). "|" . mysql_real_escape_string($_REQUEST["spB"]). "|" . mysql_real_escape_string($_REQUEST["spC"]). "|" . mysql_real_escape_string($_REQUEST["spD"]) . "|" . mysql_real_escape_string($_REQUEST["spCo"]) . "|" . mysql_real_escape_string($_REQUEST["spPS"]) . "|" . mysql_real_escape_string($_REQUEST["spcmdP"]) . "|" . mysql_real_escape_string($_REQUEST["spconfP"]) . "|" . mysql_real_escape_string($_REQUEST["spdesc"]) .  "|" . mysql_real_escape_string($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
-	} else {
+	if ( $DB_WE->num_rows() == 0) {
 		$DB_WE->query("INSERT INTO ".ANZEIGE_PREFS_TABLE." (ID,strDateiname,strFelder) VALUES('','payment_details','strFelder')");
 	}
+	$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . $DB_WE->escape($_REQUEST["fieldForname"]). "|" . $DB_WE->escape($_REQUEST["fieldSurname"]). "|" . $DB_WE->escape($_REQUEST["fieldStreet"]). "|" . $DB_WE->escape($_REQUEST["fieldZip"]) . "|" . $DB_WE->escape($_REQUEST["fieldCity"]) . "|". $DB_WE->escape($_REQUEST["lc"]) . "|" . $DB_WE->escape($_REQUEST["ppB"]) . "|" . $DB_WE->escape($_REQUEST["psb"]) . "|" . $DB_WE->escape($_REQUEST["lcS"]) . "|" . $DB_WE->escape($_REQUEST["spAID"]). "|" . $DB_WE->escape($_REQUEST["spB"]). "|" . $DB_WE->escape($_REQUEST["spC"]). "|" . $DB_WE->escape($_REQUEST["spD"]) . "|" . $DB_WE->escape($_REQUEST["spCo"]) . "|" . $DB_WE->escape($_REQUEST["spPS"]) . "|" . $DB_WE->escape($_REQUEST["spcmdP"]) . "|" . $DB_WE->escape($_REQUEST["spconfP"]) . "|" . $DB_WE->escape($_REQUEST["spdesc"]) .  "|" . $DB_WE->escape($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
 
-	$DB_WE->query("UPDATE ".ANZEIGE_PREFS_TABLE." SET strFelder= '" . mysql_real_escape_string($_REQUEST["fieldForname"]) . "|" . mysql_real_escape_string($_REQUEST["fieldSurname"]) . "|" . mysql_real_escape_string($_REQUEST["fieldStreet"]) . "|" . mysql_real_escape_string($_REQUEST["fieldZip"]). "|" . mysql_real_escape_string($_REQUEST["fieldCity"]) . "|". mysql_real_escape_string($_REQUEST["lc"]) . "|" . mysql_real_escape_string($_REQUEST["ppB"]) . "|" . mysql_real_escape_string($_REQUEST["psb"]) . "|" . mysql_real_escape_string($_REQUEST["lcS"]) . "|" . mysql_real_escape_string($_REQUEST["spAID"]) . "|" . mysql_real_escape_string($_REQUEST["spB"]) . "|" . mysql_real_escape_string($_REQUEST["spC"]) . "|" . mysql_real_escape_string($_REQUEST["spD"]) . "|" . mysql_real_escape_string($_REQUEST["spCo"]) . "|" . mysql_real_escape_string($_REQUEST["spPS"]) . "|" . mysql_real_escape_string($_REQUEST["spcmdP"]) . "|" . mysql_real_escape_string($_REQUEST["spconfP"]) . "|" . mysql_real_escape_string($_REQUEST["spdesc"]) .  "|" . mysql_real_escape_string($_REQUEST["fieldEmail"]) . "' WHERE strDateiname = 'payment_details'");
 
 	//	Close window when finished
 	echo '<script type="text/javascript">self.close();</script>';

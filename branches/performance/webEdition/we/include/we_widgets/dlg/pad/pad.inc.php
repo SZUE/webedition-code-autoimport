@@ -170,7 +170,7 @@ $_get_prio = 'high';
 $_table = TBL_PREFIX . 'tblwidgetnotepad';
 
 $_sql = "INSERT INTO
-	" . mysql_real_escape_string($_table) . "
+	" . escape_sql_query($_table) . "
 (
 	WidgetName,
 	UserID,
@@ -182,15 +182,15 @@ $_sql = "INSERT INTO
 	ValidFrom,
 	ValidUntil
 ) VALUES (
-	'" . mysql_real_escape_string($_title) . "',
+	'" . escape_sql_query($_title) . "',
 	" . abs($_SESSION['user']['ID']) . ",
 	DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
-	'" . mysql_real_escape_string($_get_title) . "',
-	'" . mysql_real_escape_string($_get_text) . "',
-	'" . mysql_real_escape_string($_get_prio) . "',
-	'" . mysql_real_escape_string($_get_valid) . "',
-	'" . mysql_real_escape_string($_get_valid_from) . "',
-	'" . mysql_real_escape_string($_get_valid_until) . "'
+	'" . escape_sql_query($_get_title) . "',
+	'" . escape_sql_query($_get_text) . "',
+	'" . escape_sql_query($_get_prio) . "',
+	'" . escape_sql_query($_get_valid) . "',
+	'" . escape_sql_query($_get_valid_from) . "',
+	'" . escape_sql_query($_get_valid_until) . "'
 )
 ";
 $DB_WE = new DB_WE();
@@ -198,13 +198,13 @@ $DB_WE = new DB_WE();
 
 
 if ($bDisplay) {
-	$_sql = "SELECT * FROM " . mysql_real_escape_string($_table) . " WHERE
-	WidgetName = '" . mysql_real_escape_string($_title) . "' AND
+	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
+	WidgetName = '" . escape_sql_query($_title) . "' AND
 	UserID = " . abs($_SESSION['user']['ID']) . "
 	ORDER BY " . $q_sort;
 } else {
-	$_sql = "SELECT * FROM " . mysql_real_escape_string($_table) . " WHERE
-	WidgetName = '" . mysql_real_escape_string($_title) . "' AND
+	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
+	WidgetName = '" . escape_sql_query($_title) . "' AND
 	UserID = " . abs($_SESSION['user']['ID']) . " AND
 	(
 		Valid = 'always' OR
@@ -241,7 +241,7 @@ $pad .= '</table>';
 
 
 print "hello";
-//$ifr = "<iframe allowtransparency=\"true\" src=\"".WEBEDITION_DIR."we/include/we_widgets/mod/pad1.inc.php\"\" id=\"\" style=\"width:430px;height:100px\" scrolling=\"auto\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\"></iframe>\n";
+//$ifr = "<iframe allowtransparency=\"true\" src=\"".WEBEDITION_DIR."we/include/we_widgets/mod/pad1.inc.php\"\" id=\"\" style=\"width:430px;height:100px;overflow: auto;\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\"></iframe>\n";
 print
 		we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(

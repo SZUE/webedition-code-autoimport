@@ -197,6 +197,8 @@ $l_prefs = array(
 		'language_already_exists' => "This language already exists",
 		'language_country_missing' => "Please select also a country",
 		'add_dictionary_question' => "Would you like to upload the dictionary for this language?",
+		'langlink_support' => "Automatic language links",
+		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */
@@ -296,6 +298,7 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Use Safari Wysiwyg<br>editor (beta version)",
+		'wysiwyg_type' => "Select editor for textareas",
 		/**
 		 * SHOWINPUTS
 		 */
@@ -316,6 +319,7 @@ $l_prefs = array(
 		'navigation_directoryindex_names' => "DirectoryIndex file names (comma separated, incl. file extensions, i.e. 'index.php,index.html'", // TRANSLATE
 		'general_objectseourls' => "Generate object SEO urls ", // TRANSLATE
 		'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
+		'suppress404code' => "suppress 404 not found",// TRANSLATE
 		'navigation_objectseourls' => "in the navigation output", // TRANSLATE
 		'wysiwyglinks_objectseourls' => "in links from the WYSIWYG editor", // TRANSLATE
 		'general_objectseourls_description' => "For the tags <we:link>, <we:linklist>, <we:listview>, <we:object> you can use the attribute 'objectseourls'", // TRANSLATE
@@ -535,6 +539,7 @@ $l_prefs = array(
 		'editor_plaintext' => 'Plain textarea',
 		'editor_java' => 'Java editor',
 		'editor_javascript' => 'JavaScript editor (beta)',
+		'editor_javascript2' => 'CodeMirror2 (alpha)',
 		'editor_javascript_information' => 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.',
 		'juplod_not_installed' => 'JUpload is not installed!',
 );

@@ -298,7 +298,7 @@ class searchtoolsearch extends we_search
 		$titles = array();
 		$_db2 = new DB_WE();
 		//first check published documents
-		$query = "SELECT a.Name, b.Dat, a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . mysql_real_escape_string(
+		$query = "SELECT a.Name, b.Dat, a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(
 				trim($keyword)) . "%' AND NOT a.DocumentTable='" . TEMPLATES_TABLE . "'";
 		$_db2->query($query);
 		while ($_db2->next_record()) {
@@ -333,28 +333,27 @@ class searchtoolsearch extends we_search
 			$userIDs = array();
 			$_db = new DB_WE();
 			$_db2 = new DB_WE();
-			if ($table == FILE_TABLE) {
+			switch($table){
+			case FILE_TABLE:
 				$field = "temp_category";
 				$field2 = "Category";
-			} elseif ($table == VERSIONS_TABLE) {
+				$query = "SELECT ID, " . $field . ", " . $field2 . "  FROM " . $table . " WHERE ((" . $field2 . " != NULL OR " . $field2 . " != '') AND Published >= ModDate AND Published !=0) OR (Published < ModDate AND (" . $field . " != NULL OR " . $field . " != '')) ";
+				break;
+			case VERSIONS_TABLE:
 				$field = "Category";
-			} elseif (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) {
+				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
+				break;
+			case (defined("OBJECT_TABLE")?OBJECT_TABLE:-1):
 				$field = "DefaultCategory";
-			} elseif (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) {
+				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
+				break;
+			case (defined("OBJECT_FILES_TABLE")?OBJECT_FILES_TABLE:-2):
 				$field = "Category";
+				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' AND Published >= ModDate AND Published !=0";
+				break;
 			}
 			$res = array();
 			$res2 = array();
-
-			if ($table == FILE_TABLE) {
-				$query = "SELECT ID, " . $field . ", " . $field2 . "  FROM " . $table . " WHERE ((" . $field2 . " != NULL OR " . $field2 . " != '') AND Published >= ModDate AND Published !=0) OR (Published < ModDate AND (" . $field . " != NULL OR " . $field . " != '')) ";
-			} elseif ($table == VERSIONS_TABLE) {
-				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
-			} elseif (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) {
-				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
-			} else {
-				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' AND Published >= ModDate AND Published !=0";
-			}
 
 			$_db->query($query);
 
@@ -407,7 +406,7 @@ class searchtoolsearch extends we_search
 							} else {
 								$where .= " AND (";
 							}
-							$where .= " " . mysql_real_escape_string($table) . ".ID = " . abs($k) . "";
+							$where .= " " . $_db->escape($table) . ".ID = " . abs($k) . "";
 							$i++;
 						}
 					}
@@ -439,27 +438,27 @@ class searchtoolsearch extends we_search
 			$fieldFileTable = "WebUserID";
 		}
 
-		$query = "SELECT ID FROM " . mysql_real_escape_string($_table) . " WHERE " . $field . " ";
+		$query = "SELECT ID FROM " . $_db->escape($_table) . " WHERE " . $field . " ";
 
 		if (isset($searchlocation)) {
 			switch ($searchlocation) {
 				case "END" :
-					$searching = " LIKE '%" . mysql_real_escape_string($keyword) . "' ";
+					$searching = " LIKE '%" . $_db->escape($keyword) . "' ";
 					break;
 				case "START" :
-					$searching = " LIKE '" . mysql_real_escape_string($keyword) . "%' ";
+					$searching = " LIKE '" . $_db->escape($keyword) . "%' ";
 					break;
 				case "IS" :
-					$searching = " = '" . mysql_real_escape_string($keyword) . "' ";
+					$searching = " = '" . $_db->escape($keyword) . "' ";
 					break;
 				case "<" :
 				case "<=" :
 				case ">" :
 				case ">=" :
-					$searching = " " . $searchlocation . " '" . mysql_real_escape_string($keyword) . "' ";
+					$searching = " " . $searchlocation . " '" . $_db->escape($keyword) . "' ";
 					break;
 				default :
-					$searching = " LIKE '%" . mysql_real_escape_string($keyword) . "%' ";
+					$searching = " LIKE '%" . $_db->escape($keyword) . "%' ";
 					break;
 			}
 		}
@@ -501,57 +500,57 @@ class searchtoolsearch extends we_search
 
 		switch ($status) {
 			case "jeder" :
-				$where .= "AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition' OR " . mysql_real_escape_string($table) . ".ContentType='text/html' OR " . mysql_real_escape_string($table) . ".ContentType='objectFile')";
+				$where .= "AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile')";
 				break;
 
 			case "geparkt" :
 				if ($table == VERSIONS_TABLE) {
-					$where .= "AND " . mysql_real_escape_string($table) . ".status='unpublished'";
+					$where .= "AND " . escape_sql_query($table) . ".status='unpublished'";
 				} else {
-					$where .= "AND ((" . mysql_real_escape_string($table) . ".Published=0) AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition' OR " . mysql_real_escape_string($table) . ".ContentType='text/html' OR " . mysql_real_escape_string($table) . ".ContentType='objectFile'))";
+					$where .= "AND ((" . escape_sql_query($table) . ".Published=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
 				}
 				break;
 
 			case "veroeffentlicht" :
 				if ($table == VERSIONS_TABLE) {
-					$where .= "AND " . mysql_real_escape_string($table) . ".status='published'";
+					$where .= "AND " . escape_sql_query($table) . ".status='published'";
 				} else {
-					$where .= "AND ((" . mysql_real_escape_string($table) . ".Published >= " . mysql_real_escape_string($table) . ".ModDate AND " . mysql_real_escape_string($table) . ".Published !=0) AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition' OR " . mysql_real_escape_string($table) . ".ContentType='text/html' OR " . mysql_real_escape_string($table) . ".ContentType='objectFile'))";
+					$where .= "AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
 				}
 				break;
 			case "geaendert" :
 				if ($table == VERSIONS_TABLE) {
-					$where .= "AND " . mysql_real_escape_string($table) . ".status='saved'";
+					$where .= "AND " . escape_sql_query($table) . ".status='saved'";
 				} else {
-					$where .= "AND ((" . mysql_real_escape_string($table) . ".Published < " . mysql_real_escape_string($table) . ".ModDate AND " . mysql_real_escape_string($table) . ".Published !=0) AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition' OR " . mysql_real_escape_string($table) . ".ContentType='text/html' OR " . mysql_real_escape_string($table) . ".ContentType='objectFile'))";
+					$where .= "AND ((" . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
 				}
 				break;
 			case "veroeff_geaendert" :
-				$where .= "AND ((" . mysql_real_escape_string($table) . ".Published >= " . mysql_real_escape_string($table) . ".ModDate OR " . mysql_real_escape_string($table) . ".Published < " . mysql_real_escape_string($table) . ".ModDate AND " . mysql_real_escape_string($table) . ".Published !=0) AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition' OR " . mysql_real_escape_string($table) . ".ContentType='text/html' OR " . mysql_real_escape_string($table) . ".ContentType='objectFile'))";
+				$where .= "AND ((" . escape_sql_query($table) . ".Published >= " . escape_sql_query($table) . ".ModDate OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate AND " . escape_sql_query($table) . ".Published !=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
 				break;
 
 			case "geparkt_geaendert" :
 				if ($table == VERSIONS_TABLE) {
-					$where .= "AND " . mysql_real_escape_string($table) . ".status!='published'";
+					$where .= "AND " . escape_sql_query($table) . ".status!='published'";
 				} else {
-					$where .= "AND ((" . mysql_real_escape_string($table) . ".Published=0 OR " . mysql_real_escape_string($table) . ".Published < " . mysql_real_escape_string($table) . ".ModDate) AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition' OR " . mysql_real_escape_string($table) . ".ContentType='text/html' OR " . mysql_real_escape_string($table) . ".ContentType='objectFile'))";
+					$where .= "AND ((" . escape_sql_query($table) . ".Published=0 OR " . escape_sql_query($table) . ".Published < " . escape_sql_query($table) . ".ModDate) AND (" . escape_sql_query($table) . ".ContentType='text/webedition' OR " . escape_sql_query($table) . ".ContentType='text/html' OR " . escape_sql_query($table) . ".ContentType='objectFile'))";
 				}
 				break;
 			case "dynamisch" :
 				if ($table != FILE_TABLE && $table != VERSIONS_TABLE) {
 					return;
 				}
-				$where .= "AND ((" . mysql_real_escape_string($table) . ".IsDynamic=1) AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition'))";
+				$where .= "AND ((" . escape_sql_query($table) . ".IsDynamic=1) AND (" . escape_sql_query($table) . ".ContentType='text/webedition'))";
 				break;
 			case "statisch" :
 				if ($table != FILE_TABLE && $table != VERSIONS_TABLE) {
 					return;
 				}
-				$where .= "AND ((" . mysql_real_escape_string($table) . ".IsDynamic=0) AND (" . mysql_real_escape_string($table) . ".ContentType='text/webedition'))";
+				$where .= "AND ((" . escape_sql_query($table) . ".IsDynamic=0) AND (" . escape_sql_query($table) . ".ContentType='text/webedition'))";
 				break;
 			case "deleted" :
 				if ($table == VERSIONS_TABLE) {
-					$where .= "AND " . mysql_real_escape_string($table) . ".status='deleted' ";
+					$where .= "AND " . escape_sql_query($table) . ".status='deleted' ";
 				}
 				break;
 
@@ -566,7 +565,7 @@ class searchtoolsearch extends we_search
 
 		$where = "";
 		if ($text != "") {
-			$where .= " AND " . mysql_real_escape_string($table) . ".modifierID = '" . abs($text) . "'";
+			$where .= " AND " . escape_sql_query($table) . ".modifierID = '" . abs($text) . "'";
 		}
 		return $where;
 	}
@@ -651,16 +650,16 @@ class searchtoolsearch extends we_search
 
 		if ($table == FILE_TABLE || $table == TEMPLATES_TABLE) {
 
-			$query = "SELECT a.Name, b.Dat, a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . mysql_real_escape_string(
-					trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . mysql_real_escape_string($this->getTblName($table)) . "'";
+			$query = "SELECT a.Name, b.Dat, a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
+					trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . escape_sql_query($this->getTblName($table)) . "'";
 			$_db2->query($query);
 			while ($_db2->next_record()) {
 				$contents[] = $_db2->f('DID');
 			}
 
 			if ($table == FILE_TABLE) {
-				$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . mysql_real_escape_string(
-						trim($keyword)) . "%' AND DocTable = '" . mysql_real_escape_string($this->getTblName($table)) . "' AND Active = '1'";
+				$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
+						trim($keyword)) . "%' AND DocTable = '" . escape_sql_query($this->getTblName($table)) . "' AND Active = '1'";
 				$_db2->query($query2);
 				while ($_db2->next_record()) {
 					$contents[] = $_db2->f('DocumentID');
@@ -736,17 +735,17 @@ class searchtoolsearch extends we_search
 					if ($k != 0) {
 						$where .= " OR ";
 					}
-					$where .= $v . " LIKE '%" . mysql_real_escape_string(trim($keyword)) . "%' ";
+					$where .= $v . " LIKE '%" . escape_sql_query(trim($keyword)) . "%' ";
 				}
 
-				$_db->query("SELECT " . mysql_real_escape_string($_obj_table) . ".OF_ID FROM " . mysql_real_escape_string($_obj_table) . " WHERE " . $where . "");
+				$_db->query("SELECT " . escape_sql_query($_obj_table) . ".OF_ID FROM " . escape_sql_query($_obj_table) . " WHERE " . $where . "");
 				while ($_db->next_record()) {
 					$Ids[] = $_db->f('OF_ID');
 				}
 
 			}
 			//unpublished objects
-			$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . mysql_real_escape_string(
+			$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
 					trim($keyword)) . "%' AND DocTable = '" . OBJECT_FILES_TABLE . "' AND Active = '1'";
 			$_db2->query($query2);
 			while ($_db2->next_record()) {
@@ -873,7 +872,7 @@ class searchtoolsearch extends we_search
 				if (is_array($titles) && !empty($titles)) {
 					foreach ($titles as $k => $v) {
 						if ($v != "") {
-							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . mysql_real_escape_string($v) . "' WHERE docID = '" . abs($k) . "' AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
+							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . escape_sql_query($v) . "' WHERE docID = '" . abs($k) . "' AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
 							$DB_WE->query($query3);
 						}
 					}
@@ -1141,7 +1140,7 @@ class searchtoolsearch extends we_search
 	{
 		$DB_WE = new DB_WE();
 
-		$query = "SELECT ID FROM `" . mysql_real_escape_string($table) . "` WHERE ParentID='" . abs($folderID) . "' AND IsFolder='1' ";
+		$query = "SELECT ID FROM `" . escape_sql_query($table) . "` WHERE ParentID='" . abs($folderID) . "' AND IsFolder='1' ";
 		$DB_WE->query($query);
 		while ($DB_WE->next_record()) {
 			$_SESSION["weSearch"]["countChilds"][] = $DB_WE->f("ID");

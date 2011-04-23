@@ -397,3 +397,4 @@ $l_button["btn_task_trash"]["alt"] = "Удалить задачу";
 $l_button["btn_task_update"]["alt"] = "Новые задачи";
 $l_button["date_picker"]["alt"] = "Select date"; //TRANSLATE
 $l_button['btn_add_note']['alt']='add note'; //TRANSLATE
+$l_button['btn_function_reload']['alt']='Reload';//TRANSLATE

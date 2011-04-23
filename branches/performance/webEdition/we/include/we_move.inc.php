@@ -141,8 +141,8 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 				g_l('alert',"[nothing_to_move]"),
 				WE_MESSAGE_ERROR) . "\n";
 	}
-	print '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
-	print '<script language="JavaScript" type="text/javascript"><!--
+	print '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
+	print '<script  type="text/javascript"><!--
 ' . $script . '
 //-->
 </script>
@@ -173,7 +173,7 @@ print STYLESHEET;
 
 print $yuiSuggest->getYuiJsFiles();
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 top.treeData.setstate(top.treeData.tree_states["selectitem"]);
 if(top.treeData.table != "<?php
 print $table;

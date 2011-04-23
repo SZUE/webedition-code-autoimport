@@ -90,8 +90,6 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
  */
 
 function save_all_values() {
-	global $DB_WE, $SYSTEM;
-
 	/*************************************************************************
 	 * SAVE METADATA FIELDS TO DB
 	 *************************************************************************/
@@ -111,20 +109,18 @@ function save_all_values() {
 		$truncateQuery = "truncate table ".METADATA_TABLE.";";
 		$_insertQuery = array();
 		foreach($_definedFields as $key => $value) {
-			$_insertQuery[] = "insert into ".METADATA_TABLE." 	values('','".mysql_real_escape_string($value['tag'])."','".mysql_real_escape_string($value['type'])."','".mysql_real_escape_string($value['importFrom'])."');";
+			$_insertQuery[] = "insert into ".METADATA_TABLE." 	values('','".$DB_WE->escape($value['tag'])."','".$DB_WE->escape($value['type'])."','".$DB_WE->escape($value['importFrom'])."');";
 		}
 
-		$DB_WE->query($truncateQuery);
+		$GLOBALS['DB_WE']->query($truncateQuery);
 		foreach($_insertQuery as $value) {
-			$DB_WE->query($value);
+			$GLOBALS['DB_WE']->query($value);
 		}
 	}
 
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $DB_WE, $SYSTEM;
-
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$we_button = new we_button();
 
@@ -146,20 +142,19 @@ function build_dialog($selected_setting = "ui") {
 
 		// THUMBNAILS
 		case "dialog":
-			global $DB_WE;
 			$_headline = we_htmlElement::htmlDiv(array("class" => "weDialogHeadline", "style" => "padding:10 25 5 25;"),g_l('metadata',"[headline]"));
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 			$we_button = new we_button();
 
 			// read already defined metadata fields from db:
 			$_defined_fields = array();
-			$DB_WE->query("SELECT * FROM " . METADATA_TABLE);
-			while ($DB_WE->next_record()) {
+			$GLOBALS['DB_WE']->query("SELECT * FROM " . METADATA_TABLE);
+			while ($GLOBALS['DB_WE']->next_record()) {
 				$_defined_fields[] = array(
-					"id" => $DB_WE->f("id"),
-					"tag" => $DB_WE->f("tag"),
-					"type" => $DB_WE->f("type"),
-					"importFrom" => $DB_WE->f("importFrom")
+					"id" => $GLOBALS['DB_WE']->f("id"),
+					"tag" => $GLOBALS['DB_WE']->f("tag"),
+					"type" => $GLOBALS['DB_WE']->f("type"),
+					"importFrom" => $GLOBALS['DB_WE']->f("importFrom")
 				);
 			}
 			//error_log(print_r($_defined_fields,true));

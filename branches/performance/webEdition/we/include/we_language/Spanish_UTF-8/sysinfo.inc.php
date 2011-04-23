@@ -49,10 +49,10 @@ $l_sysinfo = array(
 		'pcre warning' => 'Versions before 7.0 can lead to severe problems', // TRANSLATE
 		'pcre_unkown' => 'Not detectable', // TRANSLATE
 		'exif warning' => 'EXIF-Metadata for images are not available', // TRANSLATE
-		'sdk_db warning' => 'SDK Operations and WE-APPS with database access are not available', // TRANSLATE
+		'sdk_db warning' => 'SDK Operations and WE-APPS with database access are not available (required: PDO &amp; PDO_mysql)',//TRANSLATE
 		'phpext warning' => 'not available: ', // TRANSLATE
 		'phpext warning2' => 'Most likely, webEdition will not work properly!', // TRANSLATE
-		'detectable warning' => 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at http://documentation.webedition.org/wiki/de/webedition/system-requirements/start ', // TRANSLATE
+		'detectable warning' => 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at  http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ', // TRANSLATE
 
 		'connection_types' => 'Update connection types', // TRANSLATE
 		'gdlib' => 'GDlib Support', // TRANSLATE
@@ -63,4 +63,4 @@ $l_sysinfo = array(
 		'pcre' => 'PCRE-Extension', // TRANSLATE
 		'sdk_db' => 'SDK/Apps DB support', // TRANSLATE
 		'phpext' => 'Required PHP extensions', // TRANSLATE
-);
+	);

@@ -22,10 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-//define("NO_SESS",1);
-if (!defined("NO_SESS")) {
-		define("NO_SESS", 1);
-	}
+define("NO_SESS",1);
+
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_objectFile.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
@@ -172,6 +170,7 @@ if(  ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]) || (isset($_REQUEST[
 	$GLOBALS["we_doc"]->ObjectID=$GLOBALS["we_obj"]->ObjectID;
 	$GLOBALS["we_doc"]->OF_ID=$GLOBALS["we_obj"]->ID;
 	$GLOBALS["we_doc"]->Charset=$GLOBALS["we_obj"]->Charset;
+	$GLOBALS["we_doc"]->Language=$GLOBALS["we_obj"]->Language;
 	$GLOBALS["we_doc"]->elements['Charset']['dat'] = $GLOBALS["we_obj"]->Charset; // for charset-tag
 	$GLOBALS["TITLE"] = $GLOBALS["we_doc"]->getElement("Title");
 	$GLOBALS["KEYWORDS"] = $GLOBALS["we_doc"]->getElement("Keywords");
@@ -205,10 +204,6 @@ if ( isset($GLOBALS["we_obj"]) && $GLOBALS["we_obj"]->documentCustomerFilter && 
 			}
 		}
 	}
-}
-if(!isset($DB_WE)){
-	$DB_WE = new DB_WE;
-	$DB_WE->connect();
 }
 
 if (!isset($pid) || !($pid) ) {

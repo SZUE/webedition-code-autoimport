@@ -114,8 +114,6 @@ class we_flashDocument extends we_binaryDocument
 
 	/* gets the HTML for including in HTML-Docs */
 	function getHtml($dyn=false){
-		global $we_transaction;
-
 		$_data = $this->getElement("data");
 		if ($this->ID || ($_data && !is_dir($_data) && is_readable($_data))) {
 
@@ -130,7 +128,7 @@ class we_flashDocument extends we_binaryDocument
 			srand ((double)microtime()*1000000);
 			$randval = rand();
 			$src = $dyn ?
-					WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]='.$this->ContentType.'&we_cmd[2]='.$we_transaction."&rand=".$randval :
+					WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]='.$this->ContentType.'&we_cmd[2]='.$GLOBALS['we_transaction']."&rand=".$randval :
 					$this->Path;
 			$attribs = array();
 			$params  = array();

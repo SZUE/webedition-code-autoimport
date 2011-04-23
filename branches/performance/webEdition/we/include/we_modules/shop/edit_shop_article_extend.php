@@ -84,29 +84,25 @@ function getTitleLinkObj($text, $orderKey) {
 
 function getPagerLinkObj() {
 
-	global $typeObj, $actPage, $classid, $orderBy;
-
 	return 	$_SERVER['PHP_SELF'] .
-			'?typ=' . $typeObj .
-			'&orderBy=' . $orderBy .
-			'&ViewClass=' . $classid .
-			'&actPage=' . $actPage .
+			'?typ=' . $GLOBALS['typeObj'] .
+			'&orderBy=' . $GLOBALS['orderBy'] .
+			'&ViewClass=' . $GLOBALS['classid'] .
+			'&actPage=' . $GLOBALS['actPage'] .
 			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 
 function getTitleLinkDoc($text, $orderKey) {
 
-	global $typeDoc, $actPage, $orderBy;
-
 	$_href =	$_SERVER['PHP_SELF'] .
-				'?typ=' . $typeDoc .
+				'?typ=' . $GLOBALS['typeDoc'] .
 				'&orderBy=' . $orderKey .
-				'&actPage=' . $actPage .
-				( ($orderBy == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+				'&actPage=' . $GLOBALS['actPage'] .
+				( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	$arrow = '';
 
-	if ($orderBy == $orderKey) {
+	if ($GLOBALS['orderBy'] == $orderKey) {
 
 		if (isset($_REQUEST['orderDesc'])) {
 			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
@@ -122,12 +118,10 @@ function getTitleLinkDoc($text, $orderKey) {
 
 function getPagerLinkDoc() {
 
-	global $typeDoc, $actPage, $orderBy;
-
 	return 	$_SERVER['PHP_SELF'] .
-			'?typ=' . $typeDoc .
-			'&orderBy=' . $orderBy .
-			'&actPage=' . $actPage .
+			'?typ=' . $GLOBALS['typeDoc'] .
+			'&orderBy=' . $GLOBALS['orderBy'] .
+			'&actPage=' . $GLOBALS['actPage'] .
 			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 
@@ -215,29 +209,26 @@ if (isset($daten)){
 
     /* ************* number format ************** */
     function numfom($result){
-        global $numberformat;
         $result = we_util::std_numberformat($result);
-        if($numberformat=="german"){
-            $result=number_format($result,2,",",".");
-        }else if($numberformat=="french"){
-            $result=number_format($result,2,",","&nbsp;");
-        }else if($numberformat=="english"){
-            $result=number_format($result,2,".","");
-        }else if($numberformat=="swiss"){
-            $result=number_format($result,2,",","'");
-        }
-        return $result;
+				switch($GLOBALS['numberformat']){
+					case 'german':
+						return number_format($result,2,",",".");
+					case 'french':
+						return number_format($result,2,",","&nbsp;");
+					case 'english':
+						return number_format($result,2,".","");
+					case 'swiss':
+						return number_format($result,2,",","'");
+				}
+				return $result;
     }
     /* ************* number format ************** */
 
 
     /* ************* selectbox function ************** */
     function array_select($arr_value, $select_name, $label) {  // function for a selectbox for the purpose of selecting a class..
-        global $DB_WE;
-        global $feldnamen;
-        global $classid;
-        if (isset($feldnamen[3])) {
-            $fe = explode(",",$feldnamen[3]); //determine more than just one class-ID
+        if (isset($GLOBALS['feldnamen'][3])) {
+            $fe = explode(",",$GLOBALS['feldnamen'][3]); //determine more than just one class-ID
         } else {
             $fe = array(0);
         }
@@ -249,9 +240,9 @@ if (isset($daten)){
 	            $menu .= "  <option value=\"". $val."\"";
 	            $menu .= (isset($_REQUEST[$select_name])  && $val == $_REQUEST[$select_name]) ? " selected=\"selected\"" : "";
 	            $sql_merge = "SELECT ".OBJECT_TABLE.".Text as ClassIDName, ".OBJECT_TABLE.".ID as SerID FROM ".OBJECT_TABLE." WHERE ".OBJECT_TABLE.".ID = ".abs($val);
-	            $DB_WE->query($sql_merge);
-	            $DB_WE->next_record();
-	            $menu .= ">" .$DB_WE->f("ClassIDName").  "\n";
+	            $GLOBALS['DB_WE']->query($sql_merge);
+	            $GLOBALS['DB_WE']->next_record();
+	            $menu .= ">" .$GLOBALS['DB_WE']->f("ClassIDName").  "\n";
 			}
         }
         $menu .= "</select>\n";
@@ -267,7 +258,7 @@ if (isset($daten)){
     /* ********* START PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
 
     if ($_REQUEST['typ'] == "object"){ //start output object
-      	$orderBy = isset($_REQUEST['orderBy']) ? mysql_real_escape_string($_REQUEST['orderBy']) : 'obTitle';
+      	$orderBy = isset($_REQUEST['orderBy']) ? $DB_WE->escape($_REQUEST['orderBy']) : 'obTitle';
         $entries = 0;
         $count_expression = "";
         $from_expression = "";
@@ -435,7 +426,7 @@ if (isset($daten)){
 
     }elseif($_REQUEST['typ'] == "document"){  //start output doc
         $orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'sql';
-        $DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".mysql_real_escape_string($dbTitlename)."'");
+        $DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".$DB_WE->escape($dbTitlename)."'");
         while($DB_WE->next_record()){				          // Pager: determine the number of records;
             $entries = $DB_WE->f("Anzahl");
         }

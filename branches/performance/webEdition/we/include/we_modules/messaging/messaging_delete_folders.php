@@ -36,6 +36,10 @@ htmlTop();
 
 print STYLESHEET;
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
+
 $we_button = new we_button();
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
@@ -43,7 +47,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 	function we_submitForm(target,url) {
 		var f = self.document.we_form;
 		var sel = "";

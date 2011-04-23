@@ -53,7 +53,7 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 
 
 		// wether the resultset ist empty?
-	$DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".mysql_real_escape_string($dbTitlename)."'");
+	$DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='".$DB_WE->escape($dbTitlename)."'");
 	$DB_WE->next_record();
 	$resultD = $DB_WE->f("Anzahl");
 

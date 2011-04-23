@@ -123,7 +123,7 @@
 
     //  js-functions for the select-men�
     ?>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 
 
         function we_submitForm(target,url){
@@ -224,7 +224,7 @@
 
     $body = '
         <form name="we_form">'
-        . hidden('we_transaction',$_REQUEST['we_transaction'])
+        . hidden('we_transaction',(eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0))
         . we_multiIconBox::getHTML('weDocValidation',"100%",$parts,20,'',-1,'','',false) .
         '</form>'
         ;

@@ -137,14 +137,14 @@ class we_search_listview extends listviewBase {
 
 		$cat_tail = getCatSQLTail($this->cats,INDEX_TABLE,$this->catOr,$this->DB_WE);
 
-		$dt = ($this->docType) ? f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".mysql_real_escape_string($this->docType)."'","ID",$this->DB_WE) : "";
+		$dt = ($this->docType) ? f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".$this->DB_WE->escape($this->docType)."'","ID",$this->DB_WE) : "";
 
 		$cl = $this->class;
 
 		if($dt && $cl){
-			$dtcl_query = " AND (" . INDEX_TABLE . ".Doctype='".mysql_real_escape_string($dt)."' OR " . INDEX_TABLE . ".ClassID='".abs($cl)."') ";
+			$dtcl_query = " AND (" . INDEX_TABLE . ".Doctype='".escape_sql_query($dt)."' OR " . INDEX_TABLE . ".ClassID='".abs($cl)."') ";
 		}else if($dt){
-			$dtcl_query = " AND " . INDEX_TABLE . ".Doctype='".mysql_real_escape_string($dt)."' ";
+			$dtcl_query = " AND " . INDEX_TABLE . ".Doctype='".escape_sql_query($dt)."' ";
 		}else if($cl){
 			$dtcl_query = " AND " . INDEX_TABLE . ".ClassID='".abs($cl)."' ";
 		}else{
@@ -202,7 +202,7 @@ class we_search_listview extends listviewBase {
 			$cond = array();
 			foreach($workspaces as $id) {
 				$workspace=id_to_path($id, FILE_TABLE, $this->DB_WE);
-				array_push($cond, "(" . INDEX_TABLE . ".Workspace like '".mysql_real_escape_string($workspace)."/%' OR " . INDEX_TABLE . ".Workspace='".mysql_real_escape_string($workspace)."')");
+				array_push($cond, "(" . INDEX_TABLE . ".Workspace like '".$this->DB_WE->escape($workspace)."/%' OR " . INDEX_TABLE . ".Workspace='".$this->DB_WE->escape($workspace)."')");
 			}
 			$ws_where = " AND (".implode(" OR ", $cond).")";
 		}else{

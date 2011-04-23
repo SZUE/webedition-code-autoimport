@@ -12,4 +12,3 @@ $GLOBALS['weTagWizard']['attribute']['id598_offset'] = new weTagData_textAttribu
 $GLOBALS['weTagWizard']['attribute']['id599_desc'] = new weTagData_selectAttribute('599', 'desc', array(new weTagDataOption('true', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id600_order'] = new weTagData_textAttribute('600', 'order', false, '');
 $GLOBALS['weTagWizard']['attribute']['id601_subgroup'] = new weTagData_selectAttribute('601', 'subgroup', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-?>

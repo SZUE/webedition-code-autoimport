@@ -15,4 +15,3 @@ $GLOBALS['weTagWizard']['attribute']['id485_propertyfrom'] = new weTagData_selec
 $GLOBALS['weTagWizard']['attribute']['id486_formnameto'] = new weTagData_textAttribute('486', 'formnameto', false, '');
 $GLOBALS['weTagWizard']['attribute']['id487_formnamefrom'] = new weTagData_textAttribute('487', 'formnamefrom', false, '');
 $GLOBALS['weTagWizard']['attribute']['id843_striptags'] = new weTagData_selectAttribute('843', 'striptags', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-?>

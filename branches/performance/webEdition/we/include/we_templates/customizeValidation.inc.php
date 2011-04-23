@@ -36,7 +36,7 @@
     print STYLESHEET;
 
     ?>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 
         function we_cmd(){
 

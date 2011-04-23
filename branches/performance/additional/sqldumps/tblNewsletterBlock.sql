@@ -8,5 +8,6 @@ CREATE TABLE tblNewsletterBlock (
   Source longtext NOT NULL,
   Html longtext NOT NULL,
   Pack tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (ID)
+  PRIMARY KEY  (ID),
+  KEY NewsletterID (NewsletterID)
 ) ENGINE=MyISAM;

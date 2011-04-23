@@ -36,8 +36,7 @@ protect();
 
 $uniqid = md5(uniqid(time()));
 
-
-$we_transaction = $_REQUEST["we_cmd"][1];
+$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST["we_cmd"][1])?$_REQUEST["we_cmd"][1]:0);
 
 // init document
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
@@ -49,7 +48,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	htmlTop();
 
 	print '<script type="text/javascript" src="/webEdition/js/we_showMessage.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 
 document.onkeyup = function(e) {
 	var e = (typeof(event) != "undefined") ? event : e;

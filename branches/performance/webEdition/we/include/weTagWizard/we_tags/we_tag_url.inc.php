@@ -6,4 +6,3 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id553_id'] = new weTagData_selectorAttribute('553', 'id',FILE_TABLE, 'text/webedition,image/*,text/css,text/js,application/*', true, ''); }
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

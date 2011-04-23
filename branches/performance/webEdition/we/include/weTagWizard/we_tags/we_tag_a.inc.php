@@ -23,4 +23,3 @@ $GLOBALS['weTagWizard']['attribute']['id15_editself'] = new weTagData_selectAttr
 $GLOBALS['weTagWizard']['attribute']['id16_delete'] = new weTagData_selectAttribute('16', 'delete', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

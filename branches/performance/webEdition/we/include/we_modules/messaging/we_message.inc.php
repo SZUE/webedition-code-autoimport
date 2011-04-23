@@ -132,7 +132,7 @@ class we_message extends we_msg_proto {
 
     function username_to_userid($username) {
 		$db2 = new DB_WE();
-		$db2->query('SELECT ID FROM '.USER_TABLE.' WHERE username="' . mysql_real_escape_string($username) . '"');
+		$db2->query('SELECT ID FROM '.USER_TABLE.' WHERE username="' . $db2->escape($username) . '"');
 		if ($db2->next_record())
 		    return $db2->f('ID');
 
@@ -161,7 +161,7 @@ class we_message extends we_msg_proto {
 		$ret_ids = array();
 
 		$DB2 = new DB_WE();
-		$DB2->query('SELECT ID FROM '.USER_TABLE.' WHERE username LIKE "%' . mysql_real_escape_string($nick) . '%" OR First LIKE "%' . mysql_real_escape_string($nick) . '%" OR Second LIKE "%' . mysql_real_escape_string($nick) . '%"');
+		$DB2->query('SELECT ID FROM '.USER_TABLE.' WHERE username LIKE "%' . $DB2->escape($nick) . '%" OR First LIKE "%' . $DB2->escape($nick) . '%" OR Second LIKE "%' . $DB2->escape($nick) . '%"');
 		while ($DB2->next_record())
 	    	$ret_ids[] = $DB2->f('ID');
 
@@ -227,7 +227,7 @@ class we_message extends we_msg_proto {
 				$tmp['tag'] = $this->DB->f('tag');
 		    }
 
-		    $query = 'INSERT INTO ' . mysql_real_escape_string($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag) VALUES (' .
+		    $query = 'INSERT INTO ' . escape_sql_query($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag) VALUES (' .
 			$target_fid . ',' .
 			$this->userid . ',' .
 			$tmp['msg_type'] . ',' .
@@ -267,14 +267,14 @@ class we_message extends we_msg_proto {
 		    }
 
 		    /* XXX: replace this by default_folders[inbox] or something */
-		    $this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE obj_type=' . MSG_FOLDER_INBOX . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND UserID=' . abs($userid));
+		    $this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type=' . MSG_FOLDER_INBOX . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND UserID=' . abs($userid));
 		    $this->DB->next_record();
 		    $in_folder = $this->DB->f('ID');
 		    if (!isset($in_folder) || $in_folder == '') {
 				/* Create default Folders for target user */
 				include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
 				if (msg_create_folders($userid) == 1) {
-				    $this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE obj_type=' . MSG_FOLDER_INBOX . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND UserID=' . abs($userid));
+				    $this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type=' . MSG_FOLDER_INBOX . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND UserID=' . abs($userid));
 				    $this->DB->next_record();
 				    $in_folder = $this->DB->f('ID');
 				    if (!isset($in_folder) || $in_folder == '') {
@@ -289,17 +289,17 @@ class we_message extends we_msg_proto {
 				}
 		    }
 
-		    $this->DB->query('INSERT INTO ' . mysql_real_escape_string($this->table) . " (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, Priority, MessageText,seenStatus) VALUES (".abs($in_folder).", " . abs($userid) . ',' . $this->sql_class_nr . ',' . MSG_MESSAGE_NR .  ', UNIX_TIMESTAMP(NOW()), "' . mysql_real_escape_string(($data['subject'])) . '", ' . abs($this->userid) . ', 0, "' . mysql_real_escape_string($data['body']) . '",0)');
+		    $this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . " (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, Priority, MessageText,seenStatus) VALUES (".abs($in_folder).", " . abs($userid) . ',' . $this->sql_class_nr . ',' . MSG_MESSAGE_NR .  ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape(($data['subject'])) . '", ' . abs($this->userid) . ', 0, "' . $this->DB->escape($data['body']) . '",0)');
 		    $results['ok'][] = $rcpt;
 		}
 		/* Copy sent message into 'Sent' Folder of the sender */
 		if (!isset($this->default_folders[MSG_FOLDER_SENT]) || $this->default_folders[MSG_FOLDER_SENT] < 0) {
-		    $this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE obj_type=' . MSG_FOLDER_SENT . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . abs($_SESSION["user"]["ID"]));
+		    $this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type=' . MSG_FOLDER_SENT . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . abs($_SESSION["user"]["ID"]));
 		    $this->DB->next_record();
 		    $this->default_folders[MSG_FOLDER_SENT] = $this->DB->f('ID');
 		}
 		$to_str = join(',', $rcpts);
-		$this->DB->query('INSERT INTO ' . mysql_real_escape_string($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText,seenStatus) VALUES (' . $this->default_folders[MSG_FOLDER_SENT] . ', ' . abs($this->userid) . ',' . $this->sql_class_nr . ',' . MSG_MESSAGE_NR .  ', UNIX_TIMESTAMP(NOW()), "' . mysql_real_escape_string($data['subject']) . '", ' . abs($this->userid) . ', "' . mysql_real_escape_string(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . mysql_real_escape_string($data['body']) . '",0)');
+		$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText,seenStatus) VALUES (' . $this->default_folders[MSG_FOLDER_SENT] . ', ' . abs($this->userid) . ',' . $this->sql_class_nr . ',' . MSG_MESSAGE_NR .  ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape($data['subject']) . '", ' . abs($this->userid) . ', "' . $this->DB->escape(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . $this->DB->escape($data['body']) . '",0)');
 
 		return $results;
     }
@@ -343,7 +343,7 @@ class we_message extends we_msg_proto {
 
 	$this->selected_set = array();
 	$query = 'SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
-		FROM ' . mysql_real_escape_string($this->table) . ' as m, '.USER_TABLE.' as u
+		FROM ' . escape_sql_query($this->table) . ' as m, '.USER_TABLE.' as u
 		WHERE ((m.msg_type=' . $this->sql_class_nr . ' AND m.obj_type=' . MSG_MESSAGE_NR . ') ' . ($sfield_cond == '' ?  '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") .  ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder];
 
@@ -374,7 +374,7 @@ class we_message extends we_msg_proto {
 
 	/* mark selected_set messages as seen */
 	if (!empty($seen_ids)) {
-	    $query = 'UPDATE ' . mysql_real_escape_string($this->table) . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_SEEN . ') WHERE (ID=' . join(' OR ID=', $seen_ids) . ') AND UserID=' . $this->userid;
+	    $query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_SEEN . ') WHERE (ID=' . join(' OR ID=', $seen_ids) . ') AND UserID=' . $this->userid;
 	    $this->DB->query($query);
 	}
 
@@ -393,7 +393,7 @@ class we_message extends we_msg_proto {
 	    $id_str .= 'm.ID=' . addslashes($ih['_ID']);
 	}
 
-	$this->DB->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerUserID, m.headerTo, m.MessageText, m.seenStatus, u.username, u.First, u.Second FROM ' . mysql_real_escape_string($this->table) . " as m, ".USER_TABLE." as u WHERE ($id_str) AND u.ID=m.headerUserID AND m.UserID=" . abs($this->userid));
+	$this->DB->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerUserID, m.headerTo, m.MessageText, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->DB->escape($this->table) . " as m, ".USER_TABLE." as u WHERE ($id_str) AND u.ID=m.headerUserID AND m.UserID=" . abs($this->userid));
 
 	$read_ids = array();
 

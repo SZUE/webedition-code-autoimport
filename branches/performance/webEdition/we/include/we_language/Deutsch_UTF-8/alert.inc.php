@@ -180,8 +180,10 @@ $l_alert = array(
 		'we_filename_notValid' => "Der Dateiname der hochzuladenden Datei ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).",
 		'login_denied_for_user' => "Der Benutzer kann sich nicht anmelden. Sein Zugang wurde gesperrt",
 		'no_perm_to_delete_single_document' => "Sie verfügen nicht über die benötigten Rechte, um das aktive Dokument zu löschen",
-		'applyWeDocumentCustomerFiltersDocument' => "Das Dokument wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen des Ordners auf dieses Dokument übertragen werden?",
-		'applyWeDocumentCustomerFiltersFolder' => "Das Verzeichnis wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen für dieses Verzeichnis und alle Unterelemente übertragen werden? ",
+		'confirm' => array(
+				'applyWeDocumentCustomerFiltersDocument' => "Das Dokument wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen des Ordners auf dieses Dokument übertragen werden?",
+				'applyWeDocumentCustomerFiltersFolder' => "Das Verzeichnis wurde in einen Ordner mit abweichenden Zugriffsrechten für Kunden verschoben. Sollen die Einstellungen für dieses Verzeichnis und alle Unterelemente übertragen werden? ",
+		),
 		'error_fields_value_not_valid' => 'Eingabe-Felder enthalten ungültige Werte!',
 		'field_in_tab_notvalid_pre' => "Die Einstellungen konnten nicht gespeichert werden, da folgende Felder ungültige Werte enthalten:",
 		'field_in_tab_notvalid' => ' - Feld %s im Tab %s',

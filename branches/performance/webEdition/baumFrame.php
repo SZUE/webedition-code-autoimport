@@ -31,7 +31,7 @@ htmlTop();
 
 $table = isset($table) ? $table : FILE_TABLE;
 ?>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 function we_cmd(){
 	var args = "";
 	for(var i = 0; i < arguments.length; i++){
@@ -42,19 +42,22 @@ function we_cmd(){
 
 </script>
 </head>
-
-<frameset cols="24,*" framespacing="0" border="0" frameborder="NO" onload="top.start()">
-	<frame src="<?php print WEBEDITION_DIR ?>we_vtabs.php" name="bm_vtabs"  scrolling="no" noresize>
-	<frameset id="treeHeadFrame" rows="1,*,40" framespacing="0" border="0" frameborder="NO">
-		<frame src="<?php print HTML_DIR ?>frameheader.html" name="treeheader" scrolling="NO" noresize>
-		<frame src="treeMain.php" name="bm_main"">
-		<frame src="treeInfo.php" name="infoFrame" scrolling="NO">
-	</frameset>
-</frameset>
-
-<noframes>
-	<body>
-	</body>
-</noframes>
-
+<body>
+<div style="position:absolute;top:0;bottom:0;left:0;right:0;">
+  <div style="position:absolute;top:0;bottom:0;left:0;width:24px;">
+		<iframe src="<?php print WEBEDITION_DIR ?>we_vtabs.php" style="border:0;width:100%;height:100%;overflow: hidden;" name="bm_vtabs"></iframe>
+	</div>
+	<div style="position:absolute;top:0;bottom:0;left:24px;right:0;border:0;" id="treeFrameDiv">
+		<div style="position:absolute;top:0;height:1px;left:0;right:0;" id="bm_vtabsDiv">
+			<iframe src="<?php print HTML_DIR ?>frameheader.html" name="bm_vtabs" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+		</div>
+		<div style="position:absolute;bottom:0;height:40px;left:0;right:0;">
+			<iframe src="treeInfo.php" name="infoFrame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+		</div>
+		<div style="position:absolute;top:1px;bottom:40px;left:0;right:0;overflow: auto;">
+			<iframe src="treeMain.php" name="bm_main" onload="top.start()" style="border:0;width:100%;height:100%;"></iframe>
+		</div>
+	</div>
+</div>
+</body>
 </html>

@@ -136,8 +136,8 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 		<meta http-equiv="expires" content="0">
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="content-type" content="text/html; charset=' . g_l('charset',"[charset]") . '">
-		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>
-		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
+		<script type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>
+		<script type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
 ');
 
 	if (isset($_REQUEST['we_cmd'][0]) && (//	header when not in preview mode of documents

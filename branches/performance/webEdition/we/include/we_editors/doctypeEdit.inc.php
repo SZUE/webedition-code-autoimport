@@ -92,7 +92,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 		$del=false;
 		if ($DB_WE->next_record()) {
 			$name=$DB_WE->f("DocType");
-			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".abs($_REQUEST["we_cmd"][1])." OR temp_doc_type=".mysql_real_escape_string($_REQUEST["we_cmd"][1]));
+			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".abs($_REQUEST["we_cmd"][1])." OR temp_doc_type=".$DB_WE->escape($_REQUEST["we_cmd"][1]));
 			if (!$DB_WE->next_record()) {
 				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));
 				$we_responseText = g_l('weClass',"[doctype_delete_ok]");
@@ -174,8 +174,8 @@ echo $yuiSuggest->getYuiJsFiles();
 
 print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script type="text/javascript"><!--
 	<?php if($we_show_response): ?>
 		<?php print $we_JavaScript ?>;
 		<?php if($we_responseText): ?>
@@ -326,6 +326,21 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 
 	function updateEntry(id,text,pid,tab) {
 		opener.top.updateEntry(id,text,pid,tab);
+	}
+	
+	function disableLangDefault(allnames,allvalues,deselect){
+		var arr = allvalues.split(",");
+
+		for(var v in arr){
+			w=allnames+'['+arr[v]+']';
+			e = document.getElementById(w);
+			e.disabled=false;
+		}
+		w=allnames+'['+deselect+']';
+		e = document.getElementById(w);
+		e.disabled=true;
+		
+		
 	}
 //-->
 </script>

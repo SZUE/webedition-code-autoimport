@@ -22,6 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
@@ -44,7 +47,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 print STYLESHEET;
 
 ?>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 	function do_confirm() {
 	    document.update_todo_form.submit();
 	}

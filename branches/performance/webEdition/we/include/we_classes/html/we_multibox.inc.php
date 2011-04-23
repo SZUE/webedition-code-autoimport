@@ -63,7 +63,7 @@ class we_multiIconBox{
 				$out .= $we_button->create_button_table(
 												array(
 													$but,
-														'<span style="cursor: pointer;-moz-user-select: none;" class="defaultfont" id="text_'.$uniqname.'" onClick="'.($delegate ? $delegate : "" ).';weToggleBox(\''.$uniqname.'\',\''.addslashes($foldDown).'\',\''.addslashes($foldRight).'\');" unselectable="on">'.($displayAtStartup ? $foldDown : $foldRight).'</span>'
+														'<span style="cursor: pointer;" class="defaultfont" id="text_'.$uniqname.'" onClick="'.($delegate ? $delegate : "" ).';weToggleBox(\''.$uniqname.'\',\''.addslashes($foldDown).'\',\''.addslashes($foldRight).'\');" unselectable="on">'.($displayAtStartup ? $foldDown : $foldRight).'</span>'
 													), 10, array('style'=>'margin-left:'.$marginLeft.'px;')
 
 														);
@@ -133,7 +133,7 @@ class we_multiIconBox{
 	function getJS(){
 		return '
 
-		<script language="JavaScript" type="text/javascript"><!--
+		<script  type="text/javascript"><!--
 
 			function weToggleBox(name,textDown,textRight){
 				var t = document.getElementById(\'table_\'+name);
@@ -217,7 +217,7 @@ class we_multiIconBox{
 	}
 
 	function getDynJS($uniqname="", $marginLeft="0"){
-		return '<script language="JavaScript" type="text/javascript"><!--
+		return '<script  type="text/javascript"><!--
 			if(navigator.product == "Gecko"){
 				var CELLPADDING = "cellpadding";
 				var CELLSPACING = "cellspacing";
@@ -347,7 +347,7 @@ function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $ov
 	}
 
 	function _getButton($name, $cmd, $state="right", $title=""){
-		return '<script language="JavaScript" type="text/javascript">weSetCookieVariable("but_'.$name.'","'.$state.'");var btn_direction_'.$name.'_mouse_event = false;</script><table cellpadding="0" cellspacing="0" border="0" style="cursor: pointer; width: 21px;" id="btn_direction_'.$name.'_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_'.$name.'_middle\').style.background = \'url('.BUTTONS_DIR.'btn_direction_\'+weGetCookieVariable(\'but_'.$name.'\')+\'.gif)\';btn_direction_'.$name.'_mouse_event = false;'.$cmd.';"><tr title="'.$title.'" style="height: 22px;"><td align="center" id="btn_direction_'.$name.'_middle" style="background-image:url('.BUTTONS_DIR.'/btn_direction_'.$state.'.gif);width: 21px;" nowrap="nowrap">'.getPixel(21,22).'</td></tr></table>';
+		return '<script  type="text/javascript">weSetCookieVariable("but_'.$name.'","'.$state.'");var btn_direction_'.$name.'_mouse_event = false;</script><table cellpadding="0" cellspacing="0" border="0" style="cursor: pointer; width: 21px;" id="btn_direction_'.$name.'_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_'.$name.'_middle\').style.background = \'url('.BUTTONS_DIR.'btn_direction_\'+weGetCookieVariable(\'but_'.$name.'\')+\'.gif)\';btn_direction_'.$name.'_mouse_event = false;'.$cmd.';"><tr title="'.$title.'" style="height: 22px;"><td align="center" id="btn_direction_'.$name.'_middle" style="background-image:url('.BUTTONS_DIR.'/btn_direction_'.$state.'.gif);width: 21px;" nowrap="nowrap">'.getPixel(21,22).'</td></tr></table>';
 	}
 
 

@@ -38,7 +38,7 @@ if (!isset($_SESSION["user"])) {
 if (isset($_POST["username"]) && isset($_POST["password"])) {
 
 
-	$DB_WE->query("SELECT UseSalt FROM " . USER_TABLE . " WHERE username='" . mysql_real_escape_string(
+	$DB_WE->query("SELECT UseSalt FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape(
 					$_POST["username"])."'");
 
 	// only if username exists !!
@@ -49,8 +49,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 		$passwd = $useSalt ? $salted : md5($_POST["password"]);
 
 
-		$DB_WE->query("SELECT passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . mysql_real_escape_string(
-						$_POST["username"]) . "' AND passwd='".mysql_real_escape_string($passwd)."'");
+		$DB_WE->query("SELECT passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape(
+						$_POST["username"]) . "' AND passwd='".$DB_WE->escape($passwd)."'");
 
 
 		if ($DB_WE->next_record()) {
@@ -66,8 +66,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
 				if (!$useSalt) {
 					// UPDATE Password with SALT
-					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='".$salted."',UseSalt=1 WHERE username='" . mysql_real_escape_string(
-							$_POST["username"]) . "' AND passwd='".mysql_real_escape_string($passwd)."'");
+					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='".$salted."',UseSalt=1 WHERE username='" . $DB_WE->escape(
+							$_POST["username"]) . "' AND passwd='".$DB_WE->escape($passwd)."'");
 				}
 
 				if (!(isset($_SESSION["user"]) && is_array($_SESSION["user"]))) {
@@ -200,7 +200,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				} else {
 					$table = PREFS_TABLE;
 					$_SESSION["prefs"]["userID"] = $_userdata["ID"];
-					doInsetQuery($DB_WE, $table, $_SESSION["prefs"]);
+					doInsertQuery($DB_WE, $table, $_SESSION["prefs"]);
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
@@ -230,7 +230,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				} else {
 					$table = PREFS_TABLE;
 					$_SESSION["prefs"]["userID"] = $_userdata["ID"];
-					doInsetQuery($DB_WE, $table, $_SESSION["prefs"]);
+					doInsertQuery($DB_WE, $table, $_SESSION["prefs"]);
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
@@ -257,6 +257,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 		}
 }
 $we_transaction = isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : md5(uniqID(rand()));
+$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:md5(uniqID(rand())));
 
 if (!isset($_SESSION["we_data"])) {
 	$_SESSION["we_data"] = array(

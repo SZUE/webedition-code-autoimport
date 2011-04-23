@@ -8,5 +8,3 @@ $GLOBALS['weTagWizard']['attribute']['id339_name'] = new weTagData_textAttribute
 $GLOBALS['weTagWizard']['attribute']['id649_limit'] = new weTagData_textAttribute('649', 'limit', false, '');
 $GLOBALS['weTagWizard']['attribute']['id884_hidedirindex'] = new weTagData_selectAttribute('884', 'hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id885_objectseourls'] = new weTagData_selectAttribute('885', 'objectseourls', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-
-?>

@@ -31,7 +31,7 @@ htmlTop ();
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_doclist/doclistView.class.inc.php");
 
-echo '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>';
+echo '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';

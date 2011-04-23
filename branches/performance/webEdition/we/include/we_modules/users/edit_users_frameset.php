@@ -44,10 +44,10 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 }
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>md5.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR; ?>md5.js"></script>
+<script type="text/javascript">
 	var loaded=0;
 	var hot=0;
 	var hloaded=0;
@@ -479,15 +479,13 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 		menuDaten.clear();
 		<?php
 			function readChilds($pid) {
-				global $entries;
-
 				$db_temp=new DB_WE();
 				$db_temp->query("SELECT ID,username,ParentID,Type,Permissions FROM ".USER_TABLE." WHERE Type=1 AND ParentID=".abs($pid)." ORDER BY username ASC");
 				while($db_temp->next_record()) {
-					$entries[$db_temp->f("ID")]["username"]=$db_temp->f("username");
-					$entries[$db_temp->f("ID")]["ParentID"]=$db_temp->f("ParentID");
-					$entries[$db_temp->f("ID")]["Type"]=$db_temp->f("Type");
-					$entries[$db_temp->f("ID")]["Permissions"]=substr($db_temp->f("Permissions"),0,1);
+					$GLOBALS['entries'][$db_temp->f("ID")]["username"]=$db_temp->f("username");
+					$GLOBALS['entries'][$db_temp->f("ID")]["ParentID"]=$db_temp->f("ParentID");
+					$GLOBALS['entries'][$db_temp->f("ID")]["Type"]=$db_temp->f("Type");
+					$GLOBALS['entries'][$db_temp->f("ID")]["Permissions"]=substr($db_temp->f("Permissions"),0,1);
 					if($db_temp->f("Type")=="1") {
 						readChilds($db_temp->f("ID"));
 					}
@@ -506,7 +504,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 
 					print "startloc=".$startloc.";\n";
 
-					$DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE Path LIKE '".mysql_real_escape_string($parent_path)."%' ORDER BY Text ASC");
+					$DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE Path LIKE '".$DB_WE->escape($parent_path)."%' ORDER BY Text ASC");
 
 					while($DB_WE->next_record()) {
 						if($DB_WE->f("Type")==1) {

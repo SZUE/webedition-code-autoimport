@@ -208,7 +208,7 @@ class weGlossarySearch {
 
 		}
 
-		$stmt .= "FROM " . mysql_real_escape_string($this->Table) . " ";
+		$stmt .= "FROM " . escape_sql_query($this->Table) . " ";
 
 		$stmt .= "WHERE " . ($this->Where == "" ? "1" : $this->Where) . " ";
 

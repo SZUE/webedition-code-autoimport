@@ -70,7 +70,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 
 		$out = '';
 
-		$out = '<script language="JavaScript" type="text/javascript"><!--
+		$out = '<script type="text/javascript"><!--
 				function menuaction(cmd) {
 					weCmdController.fire({cmdName: cmd})
 				}

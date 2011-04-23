@@ -61,7 +61,7 @@ class we_htmlDocument extends we_textContentDocument{
 	}
 	function i_publInScheduleTable(){
 		if(defined("SCHEDULE_TABLE")){
-			$this->DB_WE->query("DELETE FROM ".SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".mysql_real_escape_string($this->ClassName)."'");
+			$this->DB_WE->query("DELETE FROM ".SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
 			$ok = true;
 			$makeSched = false;
 			foreach($this->schedArr as $s){
@@ -76,7 +76,8 @@ class we_htmlDocument extends we_textContentDocument{
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
 						" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES('".abs($this->ID)."','".mysql_real_escape_string($Wann)."','".mysql_real_escape_string($s["task"])."','".mysql_real_escape_string($this->ClassName)."','".mysql_real_escape_string(serialize($serializedDoc))."','".mysql_real_escape_string(serialize($s))."','".mysql_real_escape_string($s["type"])."','".mysql_real_escape_string($s["active"])."')")) return false;
+						VALUES('".abs($this->ID)."','".$this->DB_WE->escape($Wann)."','".$this->DB_WE->escape($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape(serialize($serializedDoc))."','".$this->DB_WE->escape(serialize($s))."','".$this->DB_WE->escape($s["type"])."','".$this->DB_WE->escape($s["active"])."')"))
+								return false;
 			}
 			return $makeSched;
 		}

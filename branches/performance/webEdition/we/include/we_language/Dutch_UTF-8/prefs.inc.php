@@ -202,6 +202,8 @@ $l_prefs = array(
 		'language_already_exists' => "Deze taal bestaat al",
 		'language_country_missing' => "Please select also a country", // TRANSLATE
 		'add_dictionary_question' => "Wilt u het woordenboek voor deze taal uploaden?",
+		'langlink_support' => "Automatic language links",// TRANSLATE
+		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */
@@ -302,6 +304,7 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Gebruik Safari Wysiwyg<br>editor (beta versie)",
+		'wysiwyg_type' => "Select editor for textareas", //translate
 		/**
 		 * SHOWINPUTS
 		 */
@@ -316,6 +319,7 @@ $l_prefs = array(
 		'general_directoryindex_hide' => "Hide DirectoryIndex- file names", // TRANSLATE
 		'general_directoryindex_hide_description' => "For the tags <we:link>, <we:linklist>, <we:listview> you can use the attribute 'hidedirindex'", // TRANSLATE
 		'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
+		'suppress404code' => "suppress 404 not found",// TRANSLATE
 		'navigation_directoryindex_hide' => "in the navigation output", // TRANSLATE
 		'wysiwyglinks_directoryindex_hide' => "in links from the WYSIWYG editor", // TRANSLATE
 		'objectlinks_directoryindex_hide' => "in links to objects", // TRANSLATE
@@ -551,6 +555,7 @@ $l_prefs = array(
 		'editor_plaintext' => 'Plain textarea', // TRANSLATE
 		'editor_java' => 'Java editor', // TRANSLATE
 		'editor_javascript' => 'JavaScript editor (beta)', // TRANSLATE
+		'editor_javascript2' => 'CodeMirror2 (alpha)',
 		'editor_javascript_information' => 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.', // TRANSLATE
 
 

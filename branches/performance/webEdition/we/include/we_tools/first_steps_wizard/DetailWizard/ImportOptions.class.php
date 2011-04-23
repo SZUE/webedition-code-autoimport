@@ -152,7 +152,7 @@ class ImportOptions extends leWizardStepBase
 							new DB_WE()));
 			$_condition = array();
 			foreach ($_wrkNavi as $_key => $_value) {
-				$_condition[] = 'Path LIKE "' . mysql_real_escape_string(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
+				$_condition[] = 'Path LIKE "' . escape_sql_query(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
 			}
 			$_dirs = array();
 		}

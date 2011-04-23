@@ -178,8 +178,10 @@ $l_alert = array(
 		'we_filename_notValid' => "Invalid file name\\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)",
 		'login_denied_for_user' => "The user cannot login. The user access is disabled.",
 		'no_perm_to_delete_single_document' => "You have not the needed permissions to delete the active document.",
-		'applyWeDocumentCustomerFiltersDocument' => "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?",
-		'applyWeDocumentCustomerFiltersFolder' => "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ",
+		'confirm' => array(
+				'applyWeDocumentCustomerFiltersDocument' => "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?",
+				'applyWeDocumentCustomerFiltersFolder' => "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ",
+		),
 		'field_in_tab_notvalid_pre' => "The settings could not be saved, because the following fields contain invalid values:",
 		'field_in_tab_notvalid' => ' - field %s on tab %s',
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.',

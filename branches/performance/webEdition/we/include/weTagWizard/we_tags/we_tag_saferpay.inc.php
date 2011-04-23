@@ -18,4 +18,3 @@ $GLOBALS['weTagWizard']['attribute']['id839_shippingvatrate'] = new weTagData_te
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id434_onsuccess'] = new weTagData_selectorAttribute('434', 'onsuccess',FILE_TABLE, 'text/webedition', false, ''); }
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id435_onfailure'] = new weTagData_selectorAttribute('435', 'onfailure',FILE_TABLE, 'text/webedition', false, ''); }
 if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id436_onabortion'] = new weTagData_selectorAttribute('436', 'onabortion',FILE_TABLE, 'text/webedition', false, ''); }
-?>

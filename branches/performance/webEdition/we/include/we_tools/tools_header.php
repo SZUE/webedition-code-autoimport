@@ -77,7 +77,7 @@ $tab_js = $we_tabs->getJS();
 
 print $tab_header;
 ?>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 var current = "<?php echo $_REQUEST["tool"];?>";
 function openTool(tool) {
 	if(top.content.hot =="1") {

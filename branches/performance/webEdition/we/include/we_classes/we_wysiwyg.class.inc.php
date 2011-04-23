@@ -130,8 +130,27 @@ class we_wysiwyg{
 	}
 
 	function getHeaderHTML(){
-		if(!defined("WE_WYSIWG_HEADER")){
+		if(defined("WE_WYSIWG_HEADER")){
+			return '';
+		}
+
 			define("WE_WYSIWG_HEADER",1);
+			if(!defined('WYSIWYG_TYPE'))define('WYSIWYG_TYPE','default');
+			switch(WYSIWYG_TYPE){
+				case 'tinyMCE':
+					//FIXME: remove onchange - bad practise
+					return '<script  type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script  type="text/javascript">
+function tinyMCEchanged(inst){
+	if(inst.isDirty()){
+		_EditorFrame.setEditorIsHot(true);
+	}
+}
+</script>';
+				case 'default':
+					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
+					$_BROWSER=new we_browserDetect();
+
 			return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
 				<style type="text/css">
 					.tbButton {
@@ -141,7 +160,6 @@ class we_wysiwyg{
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 
 					.tbButtonMouseOverUp {
@@ -155,7 +173,6 @@ class we_wysiwyg{
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonMouseOverDown {
     					border-bottom: 1px solid #CCCCCC;
@@ -168,7 +185,6 @@ class we_wysiwyg{
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonDown {
     					background-image: url(' . IMAGE_DIR . 'java_menu/background_dark.gif);
@@ -181,7 +197,6 @@ class we_wysiwyg{
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonsHR {
     					border-top:  #000000 solid 1px;
@@ -191,7 +206,6 @@ class we_wysiwyg{
 						text-align: left;
 						text-decoration: none;
 						position: relative;
-						-moz-user-select: none;
 					}
 					.tbButtonWysiwygBorder
 					{
@@ -220,7 +234,6 @@ class we_wysiwyg{
 						padding:0px;
 						text-align: left;
 						text-decoration: none;
-						-moz-user-select: text;
 						left: auto ! important;
 						right: auto ! important;
 						width: auto ! important;
@@ -229,11 +242,11 @@ class we_wysiwyg{
 
 				</style>
 
-				<script language="JavaScript" type="text/javascript"><!--
+				<script  type="text/javascript"><!--
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
 					//FIXME: recognize in browser_check an set according
-					var isGecko = false;
+					var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 					var isOpera = '.($GLOBALS['BROWSER']=='OPERA'?'true':'false').';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
@@ -267,10 +280,6 @@ class we_wysiwyg{
 						return true;
 					}
 
-					var ua = navigator.userAgent.toLowerCase();
-
-					isGecko     = (ua.indexOf(\'gecko\') != -1 && ua.indexOf(\'safari\') == -1);
-
 
 					function weWysiwygInitializeIt() {
 						for (var i=0;i<we_wysiwygs.length;i++) {
@@ -300,14 +309,12 @@ class we_wysiwyg{
 
 				-->
 				</script>' .
-				'<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>'
+				'<script  type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>'
 				.
 					($GLOBALS["SAFARI_WYSIWYG"]
-						? '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
-						  '<script language="JavaScript" type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
-						  : '<script language="JavaScript" type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
-		} else {
-			return "";
+						? '<script  type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
+						  '<script  type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
+						  : '<script  type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
 		}
 	}
 
@@ -1122,7 +1129,6 @@ class we_wysiwyg{
 	}
 
 	function getInlineHTML(){
-
 		$rows = $this->getToolbarRows();
 		$editValue = $this->value;
 
@@ -1143,44 +1149,74 @@ class we_wysiwyg{
 			}
 		}
 
-		//parseInternalLinks($editValue,0);
+		switch(WYSIWYG_TYPE){
+			case 'tinyMCE':
+				list($lang,$code)=explode('_',$GLOBALS["weDefaultFrontendLanguage"]);
+				//deactivated: template,save,layer
+				return '<script  type="text/javascript">
+tinyMCE.init({
+	language : "'.$lang.'",
+	mode : "exact",
+	elements : "'.$this->name.'",
+	theme : "advanced",
+
+	//CallBacks
+	//file_browser_callback : "",
+	onchange_callback : "tinyMCEchanged",
+	plugins : "spellchecker,style,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
+
+	// Theme options
+	theme_advanced_buttons1 : "bold,italic,underline,sub,sup,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+	theme_advanced_buttons2 : "insertdate,inserttime,pastetext,pasteword,removeformat,cleanup,|,search,replace,|,bullist,numlist,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,help,code,|,forecolor,backcolor",
+	theme_advanced_buttons3 : "tablecontrols,|,hr,visualaid,|,charmap,emotions,iespell,media,advhr,|,ltr,rtl,|,fullscreen,preview,print",
+	theme_advanced_buttons4 : "styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,blockquote",
+	theme_advanced_toolbar_location : "top",
+	theme_advanced_toolbar_align : "left",
+	theme_advanced_statusbar_location : "bottom",
+	theme_advanced_resizing : true,
+	theme_advanced_source_editor_height : "300",
+	theme_advanced_source_editor_width : "500",
+	plugin_preview_height : "300",
+	plugin_preview_width : "500",
+	theme_advanced_disable : "",
+	// Skin options
+	skin : "o2k7",
+	skin_variant : "silver",
+});
+</script>
+<textarea wrap="off" style="color:black;  width:'.$this->width.'px; height:'.$this->height.'px;" id="'.$this->name.'" name="'.$this->name.'">'.str_replace('\n','',$this->value).'</textarea>';
+
+							case 'default':
+
+//parseInternalLinks($editValue,0);
 
 		$min_w = 0;
 		$row_w = 0;
 		$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" unselectable="on" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground"><img src="/webEdition/images/pixel.gif" width="'.$this->width.'" height="2"  unselectable="on" /></td></tr>';
 		$linerow = '<tr><td unselectable="on"><div class="tbButtonsHR" unselectable="on" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
-		$out = '<script language="JavaScript" type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">
-';
+		$out = '<script  type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
 		for($r=0;$r<sizeof($rows);$r++){
-			$out .= '<table border="0" cellpadding="0" cellspacing="0" unselectable="on" class="tbButtonWysiwygDefaultStyle">
-	<tr>
-';
+			$out .= '<table border="0" cellpadding="0" cellspacing="0" unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr>';
 			for($s=0;$s<sizeof($rows[$r]);$s++){
-				$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle">'.$rows[$r][$s]->getHTML().'</td>
-';
+				$out .= '<td unselectable="on" class="tbButtonWysiwygDefaultStyle">'.$rows[$r][$s]->getHTML().'</td>';
 				$row_w += $rows[$r][$s]->width;
 			}
 			$min_w = max($min_w,$row_w);
 			$row_w = 0;
-			$out .= '	</tr>
-</table></td></tr>'.(($r < sizeof($rows)-1) ? $linerow : $pixelrow).'<tr><td unselectable="on"'.(($r<(sizeof($rows)-1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '').' class="tbButtonWysiwygDefaultStyle'.(($r<(sizeof($rows)-1)) ? ' tbButtonWysiwygBackground' : '').'">
-';
+			$out .= '</tr></table></td></tr>'.(($r < sizeof($rows)-1) ? $linerow : $pixelrow).'<tr><td unselectable="on"'.(($r<(sizeof($rows)-1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '').' class="tbButtonWysiwygDefaultStyle'.(($r<(sizeof($rows)-1)) ? ' tbButtonWysiwygBackground' : '').'">';
 		}
 
 		$realWidth = max($min_w,$this->width);
-		$out .= '<table border="0" cellpadding="0" cellspacing="0"  unselectable="on" class="tbButtonWysiwygDefaultStyle">
-	<tr>
-';
+		$out .= '<table border="0" cellpadding="0" cellspacing="0"  unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true" ';
 if (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"]) {
-	$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe src="/webEdition/editors/content/wysiwyg/empty.html" style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;" contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true"></iframe></td>
-';
+$out.='style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"';
 } else {
-	$out .= '		<td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe style="display: block;color: black;border: 1px solid #A5ACB2;" contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true"></iframe></td>
-';
+	$out.='style="display: block;color: black;border: 1px solid #A5ACB2;"';
+
 }
-$out .='	</tr>
+$out .='></iframe></td></tr>
 </table></td></tr></table><input type="hidden" id="'.$this->name.'" name="'.$this->name.'" value="'.htmlspecialchars($this->hiddenValue).'" /><div id="'.$this->ref.'edit_buffer" style="display: none;"></div>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 var '.$this->ref.'Obj = null;
 '.$this->ref.'Obj = new weWysiwyg("'.$this->ref.'edit","'.$this->name.'","'.str_replace("\"","\\\"",$this->value).'","'.str_replace("\"","\\\"",$editValue).'",\''.$this->fullscreen.'\',\''.$this->className.'\',\''.$this->propstring.'\',\''.$this->bgcol.'\','.($this->outsideWE ? "true" : "false").',"'.$this->baseHref.'","'.$this->xml.'","'.$this->removeFirstParagraph.'","'.$this->charset.'","'.$this->cssClasses.'","'.$this->Language.'", "'.($this->isFrontendEdit ? 1 : 0).'");
 we_wysiwygs[we_wysiwygs.length] = '.$this->ref.'Obj;
@@ -1206,9 +1242,8 @@ function '.$this->ref.'editonblur(){
 </script>
 ';
 		return $out;
+		}
 	}
-
-
 }
 
 
@@ -1376,11 +1411,11 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		} else {
 			$out = '<table id="'.$this->editor->ref.'_sel_'.$this->cmd.'" unselectable="on" onclick="if('.$this->editor->ref.'Obj.menus[\''.$this->cmd.'\'].disabled==false){'.$this->editor->ref.'Obj.showPopupmenu(\''.$this->cmd.'\');}" class="tbButtonWysiwygDefaultStyle" width="'.$this->width.'" height="'.$this->height.'" cellpadding="0" cellspacing="0" border="0" title="'.($this->title).'" style="cursor:pointer;position: relative;">
 	<tr>
-		<td width="'.($this->width-20).'" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);" unselectable="on" class="tbButtonWysiwygDefaultStyle"><input value="'.htmlspecialchars($this->title).'" type="text" name="'.$this->editor->ref.'_seli_'.$this->cmd.'" id="'.$this->editor->ref.'_seli_'.$this->cmd.'" readonly="readonly" style="-moz-user-select:none;cursor:pointer;height:16px;width:'.($this->width-30).'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" unselectable="on" /></td>
+		<td width="'.($this->width-20).'" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);" unselectable="on" class="tbButtonWysiwygDefaultStyle"><input value="'.htmlspecialchars($this->title).'" type="text" name="'.$this->editor->ref.'_seli_'.$this->cmd.'" id="'.$this->editor->ref.'_seli_'.$this->cmd.'" readonly="readonly" style="cursor:pointer;height:16px;width:'.($this->width-30).'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" unselectable="on" /></td>
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="'.IMAGE_DIR.'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
 </table><iframe src="/webEdition/html/blank.html" unselectable="on" width="280" height="160" id="'.$this->editor->ref.'edit_'.$this->cmd.'" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
-			$out .= '<script language="JavaScript" type="text/javascript">wePopupMenuArray[wefoo]["'.$this->cmd.'"] = new Array();';
+			$out .= '<script  type="text/javascript">wePopupMenuArray[wefoo]["'.$this->cmd.'"] = new Array();';
  			foreach($this->vals as $val=>$txt){
 				$out .= 'wePopupMenuArray[wefoo]["'.$this->cmd.'"]["'.$val.'"]="'.$txt.'";	'."\n";
 			}

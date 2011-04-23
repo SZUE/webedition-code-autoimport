@@ -39,7 +39,7 @@ if(isset($_REQUEST["we_cmd"][2])) {
 	$oldDoc = weVersions::loadVersion(" WHERE ID='".abs($compareID)."' ");
 }
 else {
-	$oldDoc = weVersions::loadVersion(" WHERE version < '".abs($newDoc['version'])."' AND documentTable='".mysql_real_escape_string($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."' ORDER BY version DESC limit 1 ");
+	$oldDoc = weVersions::loadVersion(" WHERE version < '".abs($newDoc['version'])."' AND documentTable='".escape_sql_query($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."' ORDER BY version DESC limit 1 ");
 }
 
 $isObj = false;
@@ -54,13 +54,13 @@ if(! ($isObj OR $isTempl) ) {
 	//get path of preview-file
 	$binaryPathNew = $newDoc['binaryPath'];
 	if($binaryPathNew == "") {
-		$binaryPathNew = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($newDoc['version'])."' AND documentTable='".mysql_real_escape_string($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
+		$binaryPathNew = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($newDoc['version'])."' AND documentTable='".$_db->escape($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
 	}
 
 	if(!empty($oldDoc)) {
 		$binaryPathOld = $oldDoc['binaryPath'];
 		if($binaryPathOld == "") {
-			$binaryPathOld = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($oldDoc['version'])."' AND documentTable='".mysql_real_escape_string($oldDoc['documentTable'])."' AND documentID='".abs($oldDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
+			$binaryPathOld = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($oldDoc['version'])."' AND documentTable='".$_db->escape($oldDoc['documentTable'])."' AND documentID='".abs($oldDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
 		}
 	}
 
@@ -194,7 +194,7 @@ if(!empty($oldDoc)) {
 	$versionOld = " AND version!='".abs($oldDoc['version'])."'";
 }
 $versions = array();
-$query = "SELECT ID,version, timestamp FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($newDoc['documentID'])."' AND documentTable='".mysql_real_escape_string($newDoc['documentTable'])."' AND version!='".abs($newDoc['version'])."' ".$versionOld."  ORDER BY version ASC";
+$query = "SELECT ID,version, timestamp FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($newDoc['documentID'])."' AND documentTable='".$_db->escape($newDoc['documentTable'])."' AND version!='".abs($newDoc['version'])."' ".$versionOld."  ORDER BY version ASC";
 $_db->query($query);
 while($_db->next_record()){
 	$versions[$_db->f("ID")]['version'] = $_db->f("version");
@@ -642,7 +642,7 @@ function previewVersion(ID, newID) {
 }
 
 </script>
-<script src="<?php print JS_DIR; ?>windows.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?php print JS_DIR; ?>windows.js"  type="text/javascript"></script>
 <?php print $js;?>
 <style type="text/css" media="screen">
 body {margin: 0;padding: 0;}

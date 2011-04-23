@@ -119,6 +119,7 @@ $global_config[] = array('define("WE_TRACKER_DIR",', '// Directory in which page
 $global_config[] = array('define("DB_SET_CHARSET",', '// connection charset to db' . "\n" . 'define("DB_SET_CHARSET", "");');
 
 
+$global_config[] = array('define("WYSIWYG_TYPE",', '// define used wysiwyg editor' . "\n" . 'define("WYSIWYG_TYPE", "default");');
 $global_config[] = array('define("SAFARI_WYSIWYG",', '// Flag if beta wysiwyg for safari should be used' . "\n" . 'define("SAFARI_WYSIWYG", false);');
 
 //formmail stuff
@@ -152,9 +153,12 @@ $global_config[] = array('define("TAGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if d
 $global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of navigation' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", false);');
 $global_config[] = array('define("WYSIWYGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of wysiwyg editior' . "\n" . 'define("WYSIWYGLINKS_OBJECTSEOURLS", false);');
 $global_config[] = array('define("TAGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("TAGLINKS_OBJECTSEOURLS", false);');
-$global_config[] = array('define("URLENCODE_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("URLENCODE_OBJECTSEOURLS", false);');
+$global_config[] = array('define("URLENCODE_OBJECTSEOURLS",', '// Flag if seo-urls should be urlencoded' . "\n" . 'define("URLENCODE_OBJECTSEOURLS", false);');
+$global_config[] = array('define("SUPPRESS404CODE",', '// Flag if 404 not found should be suppressd' . "\n" . 'define("SUPPRESS404CODE", false);');
 $global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if should be displayed in webEdition ' . "\n" . 'define("SEOINSIDE_HIDEINWEBEDITION", false);');
 $global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", false);');
+$global_config[] = array('define("LANGLINK_SUPPORT",', '// Flag if automatic LanguageLinks should be supported ' . "\n" . 'define("LANGLINK_SUPPORT", true);');
+$global_config[] = array('define("LANGLINK_SUPPORT_BACKLINKS",', '// Flag if automatic backlinks should be generated ' . "\n" . 'define("LANGLINK_SUPPORT_BACKLINKS", true);');
 
 
 //default charset
@@ -576,13 +580,22 @@ function get_value($settingvalue) {
 		case "urlencode_objectseourls":
 			return defined("URLENCODE_OBJECTSEOURLS") ? URLENCODE_OBJECTSEOURLS : false;
 			break;
+		case "suppress404code":
+			return defined("SUPPRESS404CODE") ? SUPPRESS404CODE : false;
+			break;
 		case "seoinside_hideinwebedition":
 			return defined("SEOINSIDE_HIDEINWEBEDITION") ? SEOINSIDE_HIDEINWEBEDITION : false;
 			break;
 		case "seoinside_hideineditmode":
 			return defined("SEOINSIDE_HIDEINEDITMODE") ? SEOINSIDE_HIDEINEDITMODE : false;
 			break;
-
+		
+		case "langlink_support":
+			return defined("LANGLINK_SUPPORT") ? LANGLINK_SUPPORT : true;
+			break;
+		case "langlink_support_backlinks":
+			return defined("LANGLINK_SUPPORT_BACKLINKS") ? LANGLINK_SUPPORT_BACKLINKS : true;
+			break;
 
 		/*********************************************************************
 		 * DEFAULT CHARSET
@@ -607,6 +620,10 @@ function get_value($settingvalue) {
 
 		case "safari_wysiwyg":
 			return defined("SAFARI_WYSIWYG") ? SAFARI_WYSIWYG : true;
+			break;
+
+		case 'wysiwyg_type':
+			return defined("WYSIWYG_TYPE") ? WYSIWYG_TYPE : 'default';
 			break;
 
 		/*********************************************************************
@@ -1272,11 +1289,11 @@ function remember_value($settingvalue, $settingname) {
 
 							if (isset($_single_recipient[0]) && ($_single_recipient[0] == "#")) {
 								if (isset($_single_recipient[1]) && $_single_recipient[1]) {
-									$DB_WE->query("INSERT INTO " . RECIPIENTS_TABLE . " (Email) VALUES('" . mysql_real_escape_string($_single_recipient[1]) . "')");
+									$DB_WE->query("INSERT INTO " . RECIPIENTS_TABLE . " (Email) VALUES('" . $DB_WE->escape($_single_recipient[1]) . "')");
 								}
 							} else {
 								if (isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]) {
-									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . mysql_real_escape_string($_single_recipient[1]) . "' WHERE ID=" . abs($_single_recipient[0]));
+									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . $DB_WE->escape($_single_recipient[1]) . "' WHERE ID=" . abs($_single_recipient[0]));
 								}
 							}
 						}
@@ -1759,6 +1776,13 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
+			case '$_REQUEST["suppress404code"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "SUPPRESS404CODE", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 
 			case '$_REQUEST["seoinside_hideinwebedition"]':
 
@@ -1774,6 +1798,26 @@ $_we_active_integrated_modules = array();
 				$_file = weConfParser::changeSourceCode("define", $_file, "SEOINSIDE_HIDEINEDITMODE", $settingvalue);
 
 				$_update_prefs = false;
+				break;
+			
+			case '$_REQUEST["langlink_support"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+				
+			case '$_REQUEST["langlink_support_backlinks"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT_BACKLINKS", $settingvalue);
+
+				$_update_prefs = false;
+
+				$_update_prefs = false;
+
+				
 				break;
 
 			/*****************************************************************
@@ -1797,6 +1841,14 @@ $_we_active_integrated_modules = array();
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, "SAFARI_WYSIWYG", $settingvalue);
+
+				$_update_prefs = false;
+				break;
+
+			case '$_REQUEST["wysiwyg_type"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WYSIWYG_TYPE", $settingvalue);
 
 				$_update_prefs = false;
 				break;
@@ -2827,9 +2879,15 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_objectseourls"]) ? $_REQUEST["wysiwyglinks_objectseourls"] : null, '$_REQUEST["wysiwyglinks_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["taglinks_objectseourls"]) ? $_REQUEST["taglinks_objectseourls"] : null, '$_REQUEST["taglinks_objectseourls"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["urlencode_objectseourls"]) ? $_REQUEST["urlencode_objectseourls"] : null, '$_REQUEST["urlencode_objectseourls"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["suppress404code"]) ? $_REQUEST["suppress404code"] : null, '$_REQUEST["suppress404code"]') || $_update_prefs;
+
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
+		
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, '$_REQUEST["langlink_support"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_backlinks"]) ? $_REQUEST["langlink_support_backlinks"] : null, '$_REQUEST["langlink_support_backlinks"]') || $_update_prefs;
 
+		$_update_prefs = remember_value(isset($_REQUEST["wysiwyg_type"]) ? $_REQUEST["wysiwyg_type"] : null, '$_REQUEST["wysiwyg_type"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
@@ -3435,7 +3493,7 @@ function build_dialog($selected_setting = "ui") {
 					$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
 					$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode());
 					$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser);
-					array_push($_settings, array("headline" => g_l('prefs','[seem_startdocument]'), "html" => $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>', "space" => 200));
+					array_push($_settings, array("headline" => g_l('prefs','[seem_startdocument]'), "html" => $_seem_html->getHtmlCode().'<script  type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>', "space" => 200));
 				}
 
 				// Build dialog if user has permission
@@ -4056,6 +4114,18 @@ EOF;
 
 
 
+				$_php_setting = new we_htmlSelect(array("name" => "langlink_support","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("langlink_support"));
+				array_push($_settings, array("headline" => $l_prefs["langlink_support"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+
+				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_backlinks","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
+				array_push($_settings, array("headline" => $l_prefs["langlink_support_backlinks"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+
 				/*****************************************************************
 				 * Dialog
 				 *****************************************************************/
@@ -4179,7 +4249,7 @@ EOF;
 			 *********************************************************************/
 
 
-			$_needed_JavaScript = '<script language="JavaScript" type="text/javascript">
+			$_needed_JavaScript = '<script  type="text/javascript">
 
 function setJavaEditorDisabled(disabled) {
 	document.getElementById("_specify_jeditor_colors").disabled = disabled;
@@ -4236,6 +4306,7 @@ function displayEditorOptions(editor) {
 			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
 
 			break;
+		case "codemirror2":
 		case "codemirror":
 			document.getElementById("settings_editor_predefined_div_2").style.display="block"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
@@ -4257,12 +4328,12 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="block"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="block";
-
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
 		case "textarea":
 		default:
+
 			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
 			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
 
@@ -4283,7 +4354,6 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
 			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
-
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
@@ -4324,6 +4394,7 @@ else {
 			$_template_editor_mode = new we_htmlSelect(array("class" => "weSelect", "name" => "editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 			$_template_editor_mode->addOption('textarea', g_l('prefs','[editor_plaintext]'));
 			$_template_editor_mode->addOption('codemirror', g_l('prefs','[editor_javascript]'));
+			$_template_editor_mode->addOption('codemirror2', g_l('prefs','[editor_javascript2]'));
 			$_template_editor_mode->addOption('java', g_l('prefs','[editor_java]'));
 			$_template_editor_mode->selectOption(get_value("editor_mode"));
 			array_push($_settings, array("headline" => g_l('prefs','[editor_mode]'), "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
@@ -4472,16 +4543,11 @@ else {
 
 			$_template_editor_tooltip_font_select_box = new we_htmlSelect(array('class' => 'weSelect', 'name' => 'editorTooltipFontname',  'size' => '1', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
 
-			for ($i = 0; $i < (count($_template_fonts) - 1); $i++) {
-				$_template_editor_tooltip_font_select_box->addOption($_template_fonts[$i], $_template_fonts[$i]);
-				if (!$_template_editor_tooltip_font_specify) {
-					if ($_template_fonts[$i] == 'Tahmoa') {
-						$_template_editor_tooltip_font_select_box->selectOption($_template_fonts[$i]);
-					}
-				} else {
-					if ($_template_fonts[$i] == get_value('editor_tooltip_font_name')) {
-						$_template_editor_tooltip_font_select_box->selectOption($_template_fonts[$i]);
-					}
+			foreach($_template_fonts AS $font){
+				$_template_editor_tooltip_font_select_box->addOption($font, $font);
+				if (($_template_editor_tooltip_font_specify && $font == get_value('editor_tooltip_font_name')) ||
+								(!$_template_editor_tooltip_font_specify && $font=='Tahoma')) {
+						$_template_editor_tooltip_font_select_box->selectOption($font);
 				}
 			}
 
@@ -5131,6 +5197,19 @@ else {
 				array_push($_settings, array("headline" => g_l('prefs','[removefirstparagraph_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 
+				// Build select box
+				$_php_setting = new we_htmlSelect(array("name" => "wysiwyg_type","class"=>"weSelect"));
+				$_options=array('default'=>'webEdition Editor','tinyMCE'=>'tinyMCE (beta)');
+				foreach($_options as $key=>$val){
+					$_php_setting->addOption($key,$val);
+
+					// Set selected setting
+					if ($key == get_value("wysiwyg_type")) {
+						$_php_setting->selectOption($key);
+					}
+				}
+
+				array_push($_settings, array("headline" => g_l('prefs','[wysiwyg_type]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				// Build select box
 				$_php_setting = new we_htmlSelect(array("name" => "safari_wysiwyg","class"=>"weSelect"));
@@ -5522,7 +5601,29 @@ else {
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
-				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
+
+				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
+				  $_acButton2 = $we_button->create_button('image:function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
+
+				  $yuiSuggest->setAcId("doc2");
+				  $yuiSuggest->setContentType("folder,text/webEdition,text/html");
+				  $yuiSuggest->setInput('error_document_no_objectfile_text', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : '' ));
+				  $yuiSuggest->setMaxResults(20);
+				  $yuiSuggest->setMayBeEmpty(true);
+				  $yuiSuggest->setResult('error_document_no_objectfile', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? ERROR_DOCUMENT_NO_OBJECTFILE : 0 ));
+				  $yuiSuggest->setSelector("Docselector");
+				  $yuiSuggest->setWidth(300);
+				  $yuiSuggest->setSelectButton($_acButton1,10);
+				  $yuiSuggest->setTrashButton($_acButton2,4);
+
+				  array_push($_settings, array('headline' => $l_prefs['error_no_object_found'], 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
+
+				$_php_setting = new we_htmlSelect(array("name" => "suppress404code","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("suppress404code"));
+				array_push($_settings, array("headline" => $l_prefs["suppress404code"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 0));
 
 				$_dialog = create_dialog("", g_l('prefs','[tab_seolinks]'), $_settings, -1, "", "", null, $_needed_JavaScript);
 
@@ -5610,24 +5711,7 @@ $_needed_JavaScript .= "
 			 */
 			$_foldAt = 4;
 
-			if (defined('OBJECT_TABLE') && we_hasPerm('ADMINISTRATOR')) {
-				$_foldAt++;
-				$_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
-				$_acButton2 = $we_button->create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
 
-				$yuiSuggest->setAcId("doc2");
-				$yuiSuggest->setContentType("folder,text/webEdition,text/html");
-				$yuiSuggest->setInput('error_document_no_objectfile_text', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : '' ));
-				$yuiSuggest->setMaxResults(20);
-				$yuiSuggest->setMayBeEmpty(true);
-				$yuiSuggest->setResult('error_document_no_objectfile', ( (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? ERROR_DOCUMENT_NO_OBJECTFILE : 0 ));
-				$yuiSuggest->setSelector("Docselector");
-				$yuiSuggest->setWidth(300);
-				$yuiSuggest->setSelectButton($_acButton1,10);
-				$yuiSuggest->setTrashButton($_acButton2,4);
-
-				array_push($_settings, array('headline' => g_l('prefs','[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 0));
-			}
 
 			// Create checkboxes
 			$_disable_template_tag_check = we_forms::checkbox(1, get_value("disable_template_tag_check"), "disable_template_tag_check", g_l('prefs','[disable_template_tag_check]'));
@@ -6554,7 +6638,7 @@ function setColorField(name) {
 
 ' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert','[field_in_tab_notvalid_pre]')."\\n\\n".$acErrorMsg."\\n".g_l('alert','[field_in_tab_notvalid_post]'), WE_MESSAGE_ERROR) : ""));
 
-	$_we_win_js = '<script src="'.JS_DIR.'windows.js" language="JavaScript" type="text/javascript"></script>';
+	$_we_win_js = '<script src="'.JS_DIR.'windows.js"  type="text/javascript"></script>';
 
 
 

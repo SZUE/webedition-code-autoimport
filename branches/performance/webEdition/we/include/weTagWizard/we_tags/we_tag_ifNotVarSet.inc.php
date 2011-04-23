@@ -9,4 +9,3 @@ $GLOBALS['weTagWizard']['attribute']['id250_type'] = new weTagData_selectAttribu
 $GLOBALS['weTagWizard']['attribute']['id251_doc'] = new weTagData_selectAttribute('251', 'doc', array(new weTagDataOption('object', false, ''), new weTagDataOption('document', false, ''), new weTagDataOption('top', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id252_property'] = new weTagData_selectAttribute('252', 'property', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id253_formname'] = new weTagData_textAttribute('253', 'formname', false, '');
-?>

@@ -36,7 +36,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			$hiddendirindex = false;
 		}
 	}
-	
+
 	if (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL']!=''){
 		$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
 	} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']!=''){
@@ -50,27 +50,28 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 		$searchfor ='';
 		$notfound=true;
 		while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
-		
+
 			$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
-			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+			$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . $db->escape($display) . "' LIMIT 1", "ID", $db));
 			if ($searchfor){
 				$searchfor = $path_parts['basename'].'/'.$searchfor;
 			} else $searchfor = $path_parts['basename'];
 			if(!$displayid && $hiddendirindex){
 				foreach($dirindexarray as $dirindex){
 					$display=$path_parts['dirname'].'/'.$dirindex;
-					$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+					$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . $db->escape($display) . "' LIMIT 1", "ID", $db));
 					if($displayidtest)$displayid = $displayidtest;
 				}
 			}
 			if($displayid){
 				if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 					$searchforInternal=urlencode ($searchfor);
+					$searchforInternal=str_replace('%2F','/',$searchforInternal);
 				} else {
 					$searchforInternal=$searchfor;
 				}
-		
-				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchforInternal) . "' LIMIT 1", "ID", $db));
+
+				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . escape_sql_query($searchforInternal) . "' LIMIT 1", "ID", $db));
 				if ($objectid){
 					$notfound=false;
 				} else {
@@ -81,23 +82,24 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			}
 		}
 		if($notfound && isset($path_parts['dirname']) && $path_parts['dirname']=='/' && $hiddendirindex){
-		
+
 			if ($searchfor){
 				$searchfor = $path_parts['basename'].'/'.$searchfor;
 			} else $searchfor = $path_parts['basename'];
 
 			foreach($dirindexarray as $dirindex){
 				$display=$path_parts['dirname'].$dirindex;
-				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . mysql_real_escape_string($display) . "' LIMIT 1", "ID", $db));
+				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
 				if($displayidtest)$displayid = $displayidtest;
 			}
 			if($displayid){
 				if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 					$searchforInternal=urlencode ($searchfor);
+					$searchforInternal=str_replace('%2F','/',$searchforInternal);
 				} else {
 					$searchforInternal=$searchfor;
 				}
-				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . mysql_real_escape_string($searchforInternal) . "' LIMIT 1", "ID", $db));
+				$objectid=abs(f("SELECT DISTINCT ID FROM ".OBJECT_FILES_TABLE." WHERE Url='" . escape_sql_query($searchforInternal) . "' LIMIT 1", "ID", $db));
 				if ($objectid){$notfound=false;}
 			}
 		}

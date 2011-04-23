@@ -34,9 +34,11 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 function we_tag($name, $attribs=array(), $content = ''){
-	$fn = "we_tag_$name";
+	$fn = 'we_tag_'.$name;
+	//make sure comment attribute is never shown
 	$attribs = removeAttribs($attribs, array(
-		'cachelifetime'
+		'cachelifetime',
+		'comment',
 	));
 
 	if ($content) {
@@ -49,7 +51,7 @@ function we_tag($name, $attribs=array(), $content = ''){
 			$uAr = makeArrayFromCSV($attribs['user']);
 			$userIds = array();
 			foreach ($uAr as $u) {
-				$i = f("SELECT ID FROM " . USER_TABLE . " WHERE Username='" . mysql_real_escape_string($u) . "'", "ID", $GLOBALS["DB_WE"]);
+				$i = f("SELECT ID FROM " . USER_TABLE . " WHERE Username='" . $GLOBALS['DB_WE']->escape($u) . "'", "ID", $GLOBALS["DB_WE"]);
 				if ($i) {
 					array_push($userIds, $i);
 				}

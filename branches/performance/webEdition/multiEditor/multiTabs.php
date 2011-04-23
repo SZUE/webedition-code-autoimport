@@ -108,8 +108,6 @@ switch ($GLOBALS['BROWSER']) {
 print $_contentTypes;
 
 ?>
-
-
 function _getIcon(contentType, extension) {
 	if (contentType == "application/*") {
 		switch(extension){
@@ -142,7 +140,7 @@ function _getIcon(contentType, extension) {
 function setFrameSize() {
 	tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight <?php echo $heightPlus; ?>) : (document.body.clientHeight <?php echo $heightPlus; ?> ) );
  	tabsHeight = tabsHeight < <?php echo $frameDefaultHeight; ?> ? <?php echo $frameDefaultHeight; ?> : tabsHeight;
-	parent.document.getElementById('multiEditorContainer').rows = (tabsHeight+',*,0');
+	parent.document.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight+"px";
 }
 
 /**

@@ -297,7 +297,7 @@ class we_thumbnail {
 	*/
 	function initByThumbName($thumbName,$imageID,$imageFileName,$imagePath,$imageExtension,$imageWidth,$imageHeight,$imageData=""){
 
-		$_foo = getHash("SELECT * FROM ".THUMBNAILS_TABLE." WHERE Name='".mysql_real_escape_string($thumbName)."'",$this->db);
+		$_foo = getHash("SELECT * FROM ".THUMBNAILS_TABLE." WHERE Name='".escape_sql_query($thumbName)."'",$this->db);
 
 		$this->init(	isset($_foo["ID"]) ? $_foo["ID"] : 0,
 						isset($_foo["Width"]) ? $_foo["Width"] : "",
@@ -588,7 +588,7 @@ class we_thumbnail {
 	*/
 	function _useOriginalSize(){
 		$outvar = ($this->thumbMaxsize == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth==0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight==0);
-		if ($this->generateSmaller){$outvar=false;} 
+		if ($this->generateSmaller){$outvar=false;}
 		return $outvar;
 	}
 

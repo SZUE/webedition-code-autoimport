@@ -27,6 +27,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
@@ -81,14 +82,10 @@ if (!isset($weShopVat)) {
 		0
 	);
 }
-
+$_BROWSER=new we_browserDetect();
 $jsFunction = '
 
-		var isGecko = false;
-
-		if (navigator.product == "Gecko") {
-			isGecko = true;
-		}
+		var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 
 		if (isGecko) {
 			document.addEventListener("keyup",doKeyDown,true);

@@ -115,16 +115,16 @@ class weShippingControl {
 
 		global $DB_WE;
 		// check if already inserted
-		$query = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"';
+		$query = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"';
 
 		$DB_WE->query($query);
 
 		if ($DB_WE->num_rows() > 0) {
 
-			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . mysql_real_escape_string(serialize($this)) . '" WHERE strDateiname="weShippingControl"';
+			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '" WHERE strDateiname="weShippingControl"';
 
 		} else {
-			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShippingControl", "' . mysql_real_escape_string(serialize($this)) . '")
+			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShippingControl", "' . $DB_WE->escape(serialize($this)) . '")
 			';
 		}
 

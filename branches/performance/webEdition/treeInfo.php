@@ -47,8 +47,7 @@ if(($SYSTEM == "MAC" && $GLOBALS['BROWSER'] == "IE") || $GLOBALS['BROWSER']="NN"
 						htmlTextInput('keyword',10,(isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : ''),'','','text','120px'),
 						$we_button->create_button('image:btn_function_search', "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);",true,40)
 					)
-			);
-			?>
+			);?>
 		</div>
 	</form>
 </BODY>

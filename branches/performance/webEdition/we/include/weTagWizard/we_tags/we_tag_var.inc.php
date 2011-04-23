@@ -11,4 +11,3 @@ $GLOBALS['weTagWizard']['attribute']['id583_doc'] = new weTagData_selectAttribut
 $GLOBALS['weTagWizard']['attribute']['id584_win2iso'] = new weTagData_selectAttribute('584', 'win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id720_htmlspecialchars'] = new weTagData_selectAttribute('720', 'htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

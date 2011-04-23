@@ -45,7 +45,7 @@ class versionFragment extends taskFragment
 	{
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		print
-				'<script language="JavaScript" type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
+				'<script type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
 						shortenPath(
 								$this->data["path"] . " - " . g_l('versions','[version]') . " " . $this->data["version"],
 								33)) . '" : "' . "test" . addslashes(
@@ -71,7 +71,7 @@ class versionFragment extends taskFragment
 			$responseText = g_l('versions','[resetAllVersionsOK]');
 		}
 		print
-				'<script language="JavaScript" type="text/javascript">
+				'<script type="text/javascript">
 			' . we_message_reporting::getShowMessageCall(
 						addslashes($responseText ? $responseText : ""),
 						WE_MESSAGE_NOTICE) . '

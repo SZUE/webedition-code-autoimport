@@ -254,7 +254,7 @@ if(isset($_REQUEST['cmd'][0])) {
 }
 
 ?>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript" >
 
 	function dispatch(cmd) {
 		document.dispatcherForm.elements["cmd[0]"].value = cmd;

@@ -405,4 +405,3 @@ print
 						),
 						we_htmlElement::htmlForm("", $sTblWidget)));
 
-?>

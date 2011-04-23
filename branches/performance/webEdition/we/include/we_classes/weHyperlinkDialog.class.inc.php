@@ -400,7 +400,7 @@ class weHyperlinkDialog extends weDialog{
 			}
 		}
 
-		$_anchorSel = '<script language="JavaScript" type="text/javascript">showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")</script>';
+		$_anchorSel = '<script  type="text/javascript">showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")</script>';
 		$_anchorInput = htmlTextInput("we_dialog_args[anchor]",30,$this->args["anchor"],"","","text",300);
 
 		$_anchor = htmlFormElementTable($_anchorInput, "", "left", "defaultfont", getPixel(10, 1), $_anchorSel, "", "", "", 0);
@@ -409,7 +409,7 @@ class weHyperlinkDialog extends weDialog{
 
 		// CSS STYLE
 		$classSelect = '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");
 			//-->
 			</script>';
@@ -602,7 +602,7 @@ class weHyperlinkDialog extends weDialog{
 
 	function getJs(){
 		$js = weDialog::getJs() . '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				var weAcCheckLoop = 0;
 				var weFocusedField;
 				function setFocusedField(elem){

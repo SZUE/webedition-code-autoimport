@@ -30,11 +30,11 @@ include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 protect();
 htmlTop('Messaging System');
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>images.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>windows.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>we_showMessage.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>messaging_std.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR?>messaging_hl.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>images.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>windows.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>we_showMessage.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>messaging_std.js"></script>
+<script type="text/javascript" src="<?php print JS_DIR?>messaging_hl.js"></script>
 <?php
 $cmd_params = '';
 
@@ -45,7 +45,7 @@ if (!$messaging->check_folders()) {
 	include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
 	if (!msg_create_folders($_SESSION["user"]["ID"])) {
 ?>
-		<script language="JavaScript" type="text/javascript"><!--
+		<script type="text/javascript"><!--
 			<?php print we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), WE_MESSAGE_ERROR); ?>
 		//-->
 		</script>
@@ -74,7 +74,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 
 ?>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 	var loaded = 0;
 	var hot = 0;
@@ -321,50 +321,50 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 			case "folder_new":
 				break;
 			case "messaging_new_message":
-				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=new_message&mode=new";
+				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=new_message&mode=new";
 				break;
 			case "messaging_new_todo":
-				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=new_todo";
+				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=new_todo";
 				break;
 			case "messaging_start_view":
 				deleteMode = false;
 				mode = "show_folder_content";
 				entries_selected = new Array();
 				drawEintraege();
-				top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_work.php?we_transaction=" + we_transaction;
+				top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_work.php?we_transaction=<?php echo $we_transaction?>";
 				top.content.usetHot();
 				break;
 			case "messaging_new_folder":
 				mode = "folder_new";
-				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=new";
+				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=edit_folder&mode=new";
 				break;
 			case "messaging_delete_mode_on":
 				deleteMode = true;
 				drawEintraege();
-				top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_delete_folders.php?we_transaction=" + we_transaction;
+				top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_delete_folders.php?we_transaction=<?php echo $we_transaction?>";
 				break;
 			case "messaging_delete_folders":
-				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(',');
+				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=delete_folders&folders=" + entries_selected.join(',');
 				break;
 			case "messaging_edit_folder":
 				mode = "edit_folder";
-				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + open_folder;
+				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=edit_folder&mode=edit&fid=" + open_folder;
 				break;
 			case "messaging_settings":
-				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=edit_settings&mode=new";
+				messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=edit_settings&mode=new";
 				break;
 			case "messaging_copy":
 				if (messaging_main && messaging_main.messaging_right && messaging_main.messaging_right.msg_work && messaging_main.messaging_right.msg_work.entries_selected && messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-					messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=copy_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
+					messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=copy_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
 				}
 				break;
 			case "messaging_cut":
 				if (messaging_main && messaging_main.messaging_right && messaging_main.messaging_right.msg_work && messaging_main.messaging_right.msg_work.entries_selected && messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-					messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=cut_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
+					messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=cut_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
 				}
 				break;
 			case "messaging_paste":
-				top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=" + we_transaction + "&mcmd=paste_msg";
+				top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction?>&mcmd=paste_msg";
 				break;
 			default:
 				for(var i = 0; i < arguments.length; i++) {
@@ -392,7 +392,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 		fr = top.content.messaging_main.messaging_tree.window.document;
 		fr.open();
 		fr.writeln('<html><head>');
-		fr.writeln('<script language="JavaScript" type="text/javascript">');
+		fr.writeln('<script type="text/javascript">');
 
 		fr.writeln("clickCount=0;");
 		fr.writeln("wasdblclick=0;");

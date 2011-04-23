@@ -39,9 +39,8 @@ $l_alert = array(
 		'folder' => array(
 				'not_im_ws' => "Ten katalog nie znajduje się w twoim obszarze roboczym!",
 		),
-		'nonew'=>array(
-		'objectFile' => "Nie możesz stworzyć obiektów, gdyż albo brakuje ci uprawnień<br>albo nie istnieje klasa, w której ważny jest jeden z Twoich obszarów pracy!",
-
+		'nonew' => array(
+				'objectFile' => "Nie możesz stworzyć obiektów, gdyż albo brakuje ci uprawnień<br>albo nie istnieje klasa, w której ważny jest jeden z Twoich obszarów pracy!",
 		),
 		'notice' => "Notice",
 		'warning' => "Warning", // TRANSLATE
@@ -177,9 +176,10 @@ $l_alert = array(
 		'login_denied_for_user' => "The user cannot login. The user access is disabled.", // TRANSLATE
 		'no_perm_to_delete_single_document' => "You have not the needed permissions to delete the active document.", // TRANSLATE
 
-		'applyWeDocumentCustomerFiltersDocument' => "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?", // TRANSLATE
-		'applyWeDocumentCustomerFiltersFolder' => "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ", // TRANSLATE
-
+		'confirm' => array(
+				'applyWeDocumentCustomerFiltersDocument' => "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?", // TRANSLATE
+				'applyWeDocumentCustomerFiltersFolder' => "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ", // TRANSLATE
+		),
 		'field_in_tab_notvalid_pre' => "The settings could not be saved, because the following fields contain invalid values:", // TRANSLATE
 		'field_in_tab_notvalid' => ' - field %s on tab %s', // TRANSLATE
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.', // TRANSLATE

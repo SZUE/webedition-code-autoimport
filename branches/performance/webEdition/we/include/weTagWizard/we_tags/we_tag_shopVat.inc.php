@@ -6,4 +6,3 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
 $GLOBALS['weTagWizard']['attribute']['id500_id'] = new weTagData_sqlRowAttribute('500', 'id',WE_SHOP_VAT_TABLE, false, 'id', 'text', 'text', '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

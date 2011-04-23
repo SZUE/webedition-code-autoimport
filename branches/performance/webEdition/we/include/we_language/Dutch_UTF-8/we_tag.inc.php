@@ -49,6 +49,7 @@ $l_we_tag['charset']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['checkForm']['description'] = "De we:checkForm tag valideert de invoer van een formulier mbv. JavaScript. <br/> De combinatie van de parameters 'match' en 'type' bepalen de 'name' of het 'id' van het te conroleren formulier. <br/> 'mandatory' en 'email' bevatten een komma gescheiden lijst van verplichte velden of e-mailvelden. In 'password' is het mogelijk om 2 veldnamen en een minimum lengte van ingevoerde wachtwoorden te bepalen.<br/> Met 'onError' kunt u de naam van een individuele JavaScript functie kiezen, die wordt aangeroepen in het geval van een fout. Deze functie geeft een opsomming en een markering van de ontbrekende verplichte velden en e-mailvelden, indien het wachtwoord juist is. Als 'onError' niet is gedefinieerd of de functie bestaat niet dan wordt de standaard waarde weergegeven in een dialoog venster.";
 $l_we_tag['checkForm']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['colorChooser']['description'] = "De we:colorChooser tag maakt een invoerveld aan, waarmee een kleur gekzoen kan worden.";
+$l_we_tag['comment']['description'] = 'The comment Tag is used to generate explicit comments in the specified language, or, to add comments to the template which are not delivered to the user browser.';//TRANSLATE
 $l_we_tag['condition']['description'] = "Deze tag wordt gebruikt in combinatie met &lt;we:conditionAdd&gt; om in een &lt;we:listview type='object'&gt; dynamisch een voorwaarde toe te voegen aan het attribuut 'condition' . Voorwaarden kunnen ingenesteld worden.";
 $l_we_tag['condition']['defaultvalue'] = "&lt;we:conditionAdd field=\"Type\" var=\"type\" compare=\"=\"/&gt;"; // TRANSLATE
 $l_we_tag['conditionAdd']['description'] = "Deze tag wordt gebruikt om een nieuwe regel of conditie aan te maken binnen een &lt;we:condition&gt; block.";
@@ -154,8 +155,6 @@ $l_we_tag['ifMale']['description'] = "Content omsloten door deze tag wordt allee
 $l_we_tag['ifMale']['defaultvalue'] = ""; // TRANSLATE
 $l_we_tag['ifNew']['description'] = "omsloten door deze tag wordt alleen getoond in een nieuw webEdition document of object.";
 $l_we_tag['ifNew']['defaultvalue'] = ""; // TRANSLATE
-$l_we_tag['ifNewsletterSalutation']['description'] = "Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is equal to match.";// TRANSLATE
-$l_we_tag['ifNewsletterSalutation']['defaultvalue'] = "";
 $l_we_tag['ifNewsletterSalutationEmpty']['description'] = "Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is empty.";// TRANSLATE
 $l_we_tag['ifNewsletterSalutationEmpty']['defaultvalue'] = "";
 $l_we_tag['ifNewsletterSalutationNotEmpty']['description'] = "Content enclosed by this tag is only displayed within a newsletter, if the salutation field defined in type is not empty.";// TRANSLATE

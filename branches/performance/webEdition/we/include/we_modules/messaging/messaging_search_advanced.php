@@ -29,6 +29,9 @@ include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
+if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
@@ -44,7 +47,7 @@ print STYLESHEET;
 
 $we_button = new we_button();
 ?>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 	<!--
 		<?php
 		if (isset($_REQUEST['save']) && $_REQUEST['save'] == 1) {
@@ -98,4 +101,4 @@ $we_button = new we_button();
 </body>
 </html>
 
-<?php } 
+<?php }

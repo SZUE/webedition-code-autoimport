@@ -456,8 +456,6 @@ class searchtoolFrames extends weToolFrames
 
 	function getHTMLGeneral()
 	{
-		global $l_weSearch;
-
 		$parts = array();
 
 		$disabled = true;
@@ -491,8 +489,6 @@ class searchtoolFrames extends weToolFrames
 
 	function getHTMLTabDocuments()
 	{
-		global $l_weSearch;
-
 		//parameter: search of the tab (load only search dependent model data in the view)
 		$innerSearch = "DocSearch";
 
@@ -567,8 +563,6 @@ class searchtoolFrames extends weToolFrames
 
 	function getHTMLTabTemplates()
 	{
-		global $l_weSearch;
-
 		$innerSearch = "TmplSearch";
 
 		$parts = array();
@@ -642,8 +636,6 @@ class searchtoolFrames extends weToolFrames
 
 	function getHTMLTabAdvanced()
 	{
-		global $l_weSearch;
-
 		$innerSearch = "AdvSearch";
 
 		$parts = array();
@@ -739,4 +731,3 @@ class searchtoolFrames extends weToolFrames
 		return $boxHTML;
 	}
 }
-?>

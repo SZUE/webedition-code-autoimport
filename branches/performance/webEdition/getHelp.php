@@ -27,10 +27,10 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 htmlTop();
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script type="text/javascript"><!--
 url="http://help.webedition.org/index.php?language=<?php print $GLOBALS["WE_LANGUAGE"] ?>";
-self.location=url;              
+self.location=url;
 //-->
 </script>
 </head>

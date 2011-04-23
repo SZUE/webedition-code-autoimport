@@ -454,7 +454,7 @@ class weNavigation extends weModelBase
 	function pathExists($path)
 	{
 		$path = addslashes($path);
-		$this->db->query('SELECT * FROM ' . mysql_real_escape_string($this->table) . ' WHERE Path = \'' . mysql_real_escape_string($path) . '\' AND ID <> \'' . abs($this->ID) . '\';');
+		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID <> \'' . abs($this->ID) . '\';');
 		if ($this->db->next_record())
 			return true;
 		else
@@ -522,7 +522,7 @@ class weNavigation extends weModelBase
 			$field = $this->$name;
 
 		$this->db->query(
-				'UPDATE ' . mysql_real_escape_string($this->table) . ' SET ' . $name . '="' . mysql_real_escape_string($field) . '" WHERE ID=\'' . abs($this->ID) . '\';');
+				'UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape($field) . '" WHERE ID=\'' . abs($this->ID) . '\';');
 		return $this->db->affected_rows();
 	}
 
@@ -1050,9 +1050,7 @@ class weNavigation extends weModelBase
 	function getNavCondition($id, $table)
 	{
 		$_linkType = ($table == OBJECT_FILES_TABLE) ? 'objLink' : 'docLink';
-		return ' ((IsFolder=1 AND FolderSelection="' . mysql_real_escape_string($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . mysql_real_escape_string($_linkType) . '")) AND LinkID=' . abs(
+		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($_linkType) . '")) AND LinkID=' . abs(
 				$id) . ' ';
 	}
 }
-
-?>

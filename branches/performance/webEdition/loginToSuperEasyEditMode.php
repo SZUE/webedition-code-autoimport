@@ -61,7 +61,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 <body>
 <form name="startSuperEasyEditMode" method="post" action="/webEdition/webEdition.php">
 </form>
-<script language="javascript">
+<script type="text/javascript">
 document.forms[\'startSuperEasyEditMode\'].submit();
 </script>
 </body>

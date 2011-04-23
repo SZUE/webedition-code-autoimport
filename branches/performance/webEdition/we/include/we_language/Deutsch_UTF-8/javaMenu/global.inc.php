@@ -243,4 +243,5 @@ $l_javaMenu_global = array(
 		'search' => "Suche",
 		'common' => "Allgemein",
 		'sysinfo' => "Systeminformationen",
+		'showerrorlog' => "Fehlerlog",
 );

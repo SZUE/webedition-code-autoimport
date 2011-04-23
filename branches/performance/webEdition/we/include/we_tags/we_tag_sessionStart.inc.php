@@ -27,26 +27,26 @@ function we_tag_sessionStart($attribs, $content)
 	$GLOBALS["WE_SESSION_START"] = true;
 	$persistentlogins = we_getTagAttribute("persistentlogins",$attribs,false,true);
 	$onlinemonitor = we_getTagAttribute("onlinemonitor",$attribs,false,true);
-	
+
 	if (defined("CUSTOMER_TABLE")) {
 		$currenttime=time();
 		$SessionAutologin=0;
 		if (isset($_REQUEST["we_webUser_logout"]) && $_REQUEST["we_webUser_logout"]) {
-			
-			if (!isset($_SESSION)) 
+
+			if (!isset($_SESSION))
 				@session_start();
-						
-			if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["ID"] && ( (isset($_REQUEST["s"]["AutoLogin"]) && !$_REQUEST["s"]["AutoLogin"]) || (isset($_SESSION["webuser"]["AutoLogin"]) && !$_SESSION["webuser"]["AutoLogin"])) ){
-				$GLOBALS["DB_WE"]->query("DELETE FROM " . CUSTOMER_AUTOLOGIN_TABLE . " WHERE AutoLoginID='" . mysql_real_escape_string($_SESSION["webuser"]["AutoLoginID"]) . "'");
+
+			if (isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["ID"] && ( (isset($_REQUEST["s"]["AutoLogin"]) && !$_REQUEST["s"]["AutoLogin"]) || (isset($_SESSION["webuser"]["AutoLogin"]) && !$_SESSION["webuser"]["AutoLogin"])) &&  isset($_SESSION["webuser"]["AutoLoginID"])){
+				$GLOBALS["DB_WE"]->query("DELETE FROM " . CUSTOMER_AUTOLOGIN_TABLE . " WHERE AutoLoginID='" . $GLOBALS["DB_WE"]->escape($_SESSION["webuser"]["AutoLoginID"]) . "'");
 				setcookie("_we_autologin", '',($currenttime-3600),'/');;
-			}	
+			}
 			unset($_SESSION["webuser"]);
 			unset($_SESSION["s"]);
 			unset($_REQUEST["s"]);
 			$_SESSION["webuser"] = array("registered" => false);
-			
+
 			$GLOBALS["WE_LOGOUT"] = true;
-		
+
 		} else {
 			if (!isset($_SESSION))
 				@session_start();
@@ -61,16 +61,16 @@ function we_tag_sessionStart($attribs, $content)
 				}
 				if (isset($_REQUEST["s"]["Username"]) && isset($_REQUEST["s"]["Password"]) && !(isset($_REQUEST["s"]["ID"]))) {
 					if($_REQUEST["s"]["Username"] != ''){
-						$u = getHash('SELECT * from ' . CUSTOMER_TABLE . ' WHERE Username="' . mysql_real_escape_string($_REQUEST['s']["Username"]) . '"',$GLOBALS["DB_WE"]);
+						$u = getHash('SELECT * from ' . CUSTOMER_TABLE . ' WHERE Username="' . escape_sql_query($_REQUEST['s']["Username"]) . '"',$GLOBALS["DB_WE"]);
 						if (isset($u["Password"]) && $u["LoginDenied"] != 1) {
 							if ($_REQUEST['s']["Username"] == $u["Username"] && $_REQUEST['s']["Password"] == $u["Password"]) {
 								$_SESSION["webuser"] = $u;
 								$_SESSION["webuser"]["registered"] = true;
 								$GLOBALS["DB_WE"]->query("UPDATE " . CUSTOMER_TABLE . " SET LastLogin='" . $currenttime . "' WHERE ID='" . abs($_SESSION["webuser"]["ID"]) . "'");
-								
+
 								if ($persistentlogins && isset($_REQUEST["s"]["AutoLogin"]) && $_REQUEST["s"]["AutoLogin"] && $_SESSION["webuser"]["AutoLoginDenied"] !=1 ){
 									$_SESSION["webuser"]["AutoLoginID"] = uniqid(hexdec(substr(session_id(), 0, 8)),true);
-									$q= "INSERT INTO " . CUSTOMER_AUTOLOGIN_TABLE . " (AutoLoginID,WebUserID,LastIp,LastLogin) VALUES('".mysql_real_escape_string(sha1($_SESSION["webuser"]["AutoLoginID"]))."','".abs($_SESSION["webuser"]["ID"])."','".htmlspecialchars((string) $_SERVER['REMOTE_ADDR'])."',NOW())";
+									$q= "INSERT INTO " . CUSTOMER_AUTOLOGIN_TABLE . " SET AutoLoginID='".escape_sql_query(sha1($_SESSION["webuser"]["AutoLoginID"]))."', WebUserID='".abs($_SESSION["webuser"]["ID"])."',LastIp='".htmlspecialchars((string) $_SERVER['REMOTE_ADDR'])."',LastLogin=NOW()";
 									$GLOBALS["DB_WE"]->query($q);
 									setcookie("_we_autologin", $_SESSION["webuser"]["AutoLoginID"],($currenttime+CUSTOMER_AUTOLOGIN_LIFETIME),'/');
 									$GLOBALS["DB_WE"]->query("UPDATE " . CUSTOMER_TABLE . " SET AutoLogin='1' WHERE ID='" . abs($_SESSION["webuser"]["ID"]) . "'");
@@ -83,7 +83,7 @@ function we_tag_sessionStart($attribs, $content)
 									"registered" => false, "loginfailed" => true
 								);
 							}
-						
+
 						} else {
 							$_SESSION["webuser"] = array(
 								"registered" => false, "loginfailed" => true
@@ -92,20 +92,20 @@ function we_tag_sessionStart($attribs, $content)
 					} else {
 						$_SESSION["webuser"] = array(
 							"registered" => false, "loginfailed" => true
-						);					
+						);
 					}
 				}
 				if ($persistentlogins && ((isset($_SESSION["webuser"]["registered"]) && !$_SESSION["webuser"]["registered"]) || !isset($_SESSION["webuser"]["registered"]) ) && isset($_COOKIE['_we_autologin']) ){
 					$autologinSeek = $_COOKIE['_we_autologin'];
 					if ($autologinSeek!=''){
-						$a = getHash('SELECT * from ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . mysql_real_escape_string(sha1($autologinSeek)) . '"',$GLOBALS["DB_WE"]);
+						$a = getHash('SELECT * from ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . escape_sql_query(sha1($autologinSeek)) . '"',$GLOBALS["DB_WE"]);
 						if (isset($a["WebUserID"]) && $a["WebUserID"]){
-							$u = getHash('SELECT * from ' . CUSTOMER_TABLE . ' WHERE ID="' . mysql_real_escape_string($a["WebUserID"]) . '"',$GLOBALS["DB_WE"]);
+							$u = getHash('SELECT * from ' . CUSTOMER_TABLE . ' WHERE ID="' . escape_sql_query($a["WebUserID"]) . '"',$GLOBALS["DB_WE"]);
 							if(isset($u["Password"]) && $u["LoginDenied"] != 1 && $u["AutoLoginDenied"] != 1){
 								$_SESSION["webuser"] = $u;
 								$_SESSION["webuser"]["registered"] = true;
 								$_SESSION["webuser"]["AutoLoginID"] = uniqid(hexdec(substr(session_id(), 0, 8)),true);
-								$q = "UPDATE ".CUSTOMER_AUTOLOGIN_TABLE." SET AutoLoginID=".mysql_real_escape_string(sha1($_SESSION["webuser"]["AutoLoginID"])).",LastIp=".htmlspecialchars((string) $_SERVER['REMOTE_ADDR']).",LastLogin=NOW() WHERE WebUserID=".abs($_SESSION["webuser"]["ID"])." AND AutoLoginID=".mysql_real_escape_string(sha1($autologinSeek));
+								$q = "UPDATE ".CUSTOMER_AUTOLOGIN_TABLE." SET AutoLoginID=".escape_sql_query(sha1($_SESSION["webuser"]["AutoLoginID"])).",LastIp=".htmlspecialchars((string) $_SERVER['REMOTE_ADDR']).",LastLogin=NOW() WHERE WebUserID=".abs($_SESSION["webuser"]["ID"])." AND AutoLoginID=".escape_sql_query(sha1($autologinSeek));
 								$GLOBALS["DB_WE"]->query($q);
 								setcookie("_we_autologin", $_SESSION["webuser"]["AutoLoginID"],($currenttime+CUSTOMER_AUTOLOGIN_LIFETIME),'/');
 								$GLOBALS["WE_LOGIN"] = true;
@@ -114,14 +114,14 @@ function we_tag_sessionStart($attribs, $content)
 							}
 						} else {
 							$_SESSION["webuser"] = array("registered" => false);
-						}			
+						}
 					} else {
 						$_SESSION["webuser"] = array("registered" => false);
 					}
-					
-				} 
+
+				}
 				if (isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && isset($_SESSION["webuser"]["Username"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"] && $_SESSION["webuser"]["Username"]!='') {
-					$GLOBALS["DB_WE"]->query("UPDATE " . CUSTOMER_TABLE . " SET LastAccess='" . $currenttime . "' WHERE ID='" . mysql_real_escape_string($_SESSION["webuser"]["ID"]) . "'");
+					$GLOBALS["DB_WE"]->query("UPDATE " . CUSTOMER_TABLE . " SET LastAccess='" . $currenttime . "' WHERE ID='" . escape_sql_query($_SESSION["webuser"]["ID"]) . "'");
 				}
 			}
 		}
@@ -135,7 +135,7 @@ function we_tag_sessionStart($attribs, $content)
 			$ObjectID = 0;
 			$SessionID=session_id();
 			$SessionIp = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars((string) $_SERVER['REMOTE_ADDR']) : '';
-			
+
 			$Browser = (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
 			$Referrer = (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
 			if ($_SESSION["webuser"]["registered"]){
@@ -148,15 +148,15 @@ function we_tag_sessionStart($attribs, $content)
 				$WebUserDescription = '';
 			}
 			$q = "UPDATE ".CUSTOMER_SESSION_TABLE." SET PageID='".$PageID."',LastAccess=NOW(),WebUserID='".$WebUserID."',WebUserGroup='".$WebUserGroup."',WebUserDescription='".$WebUserDescription."'  WHERE SessionID='".$SessionID."'";
-			
+
 			$GLOBALS["DB_WE"]->query($q);
-			if ($GLOBALS["DB_WE"]->affected_rows()==0){			
+			if ($GLOBALS["DB_WE"]->affected_rows()==0){
 				$q = "INSERT INTO ".CUSTOMER_SESSION_TABLE." (SessionID,SessionIp,WebUserID,WebUserGroup,WebUserDescription,Browser,Referrer,LastLogin,LastAccess,PageID,ObjectID,SessionAutologin) VALUES('$SessionID','$SessionIp','$WebUserID','$WebUserGroup','$WebUserDescription','$Browser','$Referrer',NOW(),NOW(),'$PageID','$ObjectID','$SessionAutologin')";
 				$GLOBALS["DB_WE"]->query($q);
 			}
 		}
 		return "";
-	
+
 	} else {
 		if (!isset($_SESSION))
 			@session_start();

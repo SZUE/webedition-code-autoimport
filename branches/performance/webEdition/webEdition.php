@@ -66,7 +66,7 @@ if(strstr($sn, '@')) {
 
 //	unlock everything old, when a new window is opened.
 if(!isset($_REQUEST["we_cmd"][0]) || $_REQUEST["we_cmd"][0] != "edit_include_document"){
-	$DB_WE->query('DELETE FROM '.LOCK_TABLE.'	WHERE `lock`<NOW()');
+	$DB_WE->query('DELETE FROM '.LOCK_TABLE.'	WHERE lockTime<NOW()');
 }
 $DB_WE->query('UPDATE '.USER_TABLE.'	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-'.(PING_TIME + PING_TOLERANZ).')');
 
@@ -76,17 +76,17 @@ $online_help=true;
 
 ?>
 <link rel="SHORTCUT ICON" href="/webEdition/images/webedition.ico" />
-<script src="<?php print JS_DIR; ?>windows.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?php print JS_DIR; ?>windows.js"  type="text/javascript"></script>
 <script type="text/javascript" src="<?php print JS_DIR . "weJsStrings.php"; ?>"></script>
-<script src="<?php print JS_DIR; ?>md5.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?php print JS_DIR; ?>md5.js"  type="text/javascript"></script>
 <script src="<?php print JS_DIR; ?>weNavigationHistory.php" type="text/javascript"></script>
 <script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
 <script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
 <script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>keyListener.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>messageConsole.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>keyListener.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>messageConsole.js"></script>
 
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 
 self.focus();
 
@@ -298,37 +298,55 @@ function treeResized() {
 	}
 }
 
+var oldTreeWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
+function toggleTree(){
+	var tfd= self.rframe.bframe.document.getElementById("treeFrameDiv");
+	var w = top.getTreeWidth();
+
+	if(tfd.style.display=="none"){
+		oldTreeWidth=(oldTreeWidth<100?<?php print WE_TREE_DEFAULT_WIDTH;?>:oldTreeWidth);
+		setTreeWidth(oldTreeWidth);
+		tfd.style.display="block";
+		setTreeArrow("left");
+		storeTreeWidth(oldTreeWidth);
+	}else{
+		tfd.style.display="none";
+		oldTreeWidth = w;
+		setTreeWidth(24);
+		storeTreeWidth(24);
+		setTreeArrow("right");
+	}
+	var x=xfd.bla;
+}
+
 function setTreeArrow(direction) {
 	self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
 }
 
 function getTreeWidth() {
-	<?php if($GLOBALS['BROWSER']=='IE'){
-		echo 'return self.rframe.bframe.document.body.offsetWidth-4;';
-	}else{
-		echo '
-	var frameobj = self.rframe.document.getElementById("resizeframeid");
-	var cols = frameobj.cols;
-	var pairs = cols.split(",");
-	return pairs[0];
-	';
-	}?>
+	var w = self.rframe.document.getElementById("bframeDiv").style.width;
+	return w.substr(0,w.length-2);
 }
 
 function getSidebarWidth() {
-
-	var frameobj = self.rframe.document.getElementById("resizeframeid");
-	var cols = frameobj.cols;
-	var pairs = cols.split(",");
-	return pairs[2];
+	var obj=self.rframe.document.getElementById("sidebarDiv");
+	if(obj==undefined){
+		return 0;
+	}
+	var w = obj.style.left;
+	return w.substr(0,w.length-2);
 }
 
+function setSidebarWidth() {
+	var obj=self.rframe.document.getElementById("sidebarDiv");
+	if(obj!=undefined){
+		obj.style.left = w+"px";
+	}
+}
 
 function setTreeWidth(w) {
-	var frameobj = self.rframe.document.getElementById("resizeframeid");
-	var split = new Array;
-	split = frameobj.cols.split(',');
-	frameobj.cols = w + ",*" + (split.length>2?","+split[2]:"");
+	self.rframe.document.getElementById("bframeDiv").style.width=w+"px";
+	self.rframe.document.getElementById("bm_content_frameDiv").style.left=w+"px";
 }
 
 function storeTreeWidth(w) {
@@ -1269,6 +1287,9 @@ function we_cmd() {
 		case "sysinfo":
 			new jsWindow("<?php print WEBEDITION_DIR; ?>sysinfo.php","we_sysinfo",-1,-1,720,660,true,false,true);
 			break;
+		case "showerrorlog":
+			new jsWindow("<?php print WEBEDITION_DIR; ?>errorlog.php","we_errorlog",-1,-1,720,660,true,false,true);
+			break;
 		case "view_backuplog":
 			new jsWindow("<?php print WEBEDITION_DIR; ?>backuplog.php","we_backuplog",-1,-1,720,660,true,false,true);
 			break;
@@ -1368,7 +1389,7 @@ function openWindow(url,ref,x,y,w,h,scrollbars,menues) {
 }
 
 function start() {
-	self.Header = self.header.header_menu ? self.header.header_menu : self.header;
+	//self.Header = self.header.header_menu ? self.header.header_menu : self.header;
 	self.Tree = self.rframe.bframe.bm_main;
 	self.Vtabs = self.rframe.bframe.bm_vtabs;
 	self.TreeInfo = self.rframe.bframe.infoFrame;
@@ -1410,10 +1431,10 @@ var cockpitFrame;
 	pWebEdition_Tree();
 ?>
 </head>
+<body bgcolor="gray">
 <?php
 //	get the frameset for the actual mode.
 pWebEdition_Frameset();
 ?>
-<body bgcolor="gray">
 </body>
 </html>

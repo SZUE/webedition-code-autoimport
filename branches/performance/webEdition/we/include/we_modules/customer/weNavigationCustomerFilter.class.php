@@ -228,7 +228,7 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 					', ApplyFilter='.$_applyFilter.
 					', AllCustomers='.$_allCustomers.
 					', Customers="'.$_customers.
-					'", CustomerFilter="'.mysql_real_escape_string($_filter).
+					'", CustomerFilter="'.$this->DB_WE->escape($_filter).
 					'", BlackList="'.$_blackList.
 					'", WhiteList="'.$_whiteList.
 					'"  WHERE UseDocumentFilter=1 AND ' . weNavigation::getNavCondition($id, $table));

@@ -319,13 +319,13 @@ class we_user {
 						$val = '-1';
 					}
 					if ($fieldName !== 'passwd' || $val !== '') {
-						$updt .= $fieldName.'="'.mysql_real_escape_string($val).'",';
+						$updt .= $fieldName.'="'.$this->DB_WE->escape($val).'",';
 					}
 				}
 			}
 			//remove last ,
 			$updt = substr($updt, 0, -1);
-			$q = 'UPDATE '.mysql_real_escape_string($this->Table)." SET $updt WHERE ID=".abs($this->ID);
+			$q = "UPDATE ".$this->DB_WE->escape($this->Table)." SET $updt WHERE ID=".abs($this->ID);
 			$this->DB_WE->query($q);
 		}
 		else {
@@ -337,16 +337,16 @@ class we_user {
 				if($fieldName != 'ID') {
 					if ($fieldName !== 'passwd' || $val !== '') {
 						$keys .= $fieldName.',';
-						$vals .= "'".mysql_real_escape_string($val)."',";
+						$vals .= "'".$this->DB_WE->escape($val)."',";
 					}
 				}
 			}
 			if($keys) {
 				$keys = '('.substr($keys,0,strlen($keys)-1).')';
 				$vals = 'VALUES('.substr($vals,0,strlen($vals)-1).')';
-				$q = 'INSERT INTO '.mysql_real_escape_string($this->Table)." $keys $vals";
+				$q = 'INSERT INTO '.$this->DB_WE->escape($this->Table)." $keys $vals";
 				$this->DB_WE->query($q);
-				$this->ID = f('SELECT max(ID) as ID from '.mysql_real_escape_string($this->Table),'ID',$this->DB_WE);
+				$this->ID = f("SELECT max(ID) as ID from ".$this->DB_WE->escape($this->Table),"ID",$this->DB_WE);
 			}
 		}
 	}
@@ -406,7 +406,7 @@ class we_user {
 			$try_name='@'.$foo['username'];
 			$try_text=$foo['username'];
 			while($search) {
-				$this->DB_WE->query('SELECT username FROM '.USER_TABLE.' WHERE ID<>'.abs($this->ID).' AND ID<>'.abs($uorginal).' AND username="'.mysql_real_escape_string($try_name).'"');
+				$this->DB_WE->query("SELECT username FROM ".USER_TABLE." WHERE ID<>".abs($this->ID)."' AND ID<>".abs($uorginal)." AND username='".$this->DB_WE->escape($try_name)."'");
 				if(!$this->DB_WE->next_record()) {
 					$search=false;
 				}
@@ -441,7 +441,7 @@ class we_user {
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
 		if($oldpath!='' && $oldpath!='/') {
-			$this->DB_WE->query("SELECT ID,username FROM ".USER_TABLE." WHERE Path LIKE '".mysql_real_escape_string($oldpath)."%'");
+			$this->DB_WE->query("SELECT ID,username FROM ".USER_TABLE." WHERE Path LIKE '".$this->DB_WE->escape($oldpath)."%'");
 			while($this->DB_WE->next_record()) {
 				$db_tmp->query('UPDATE '.USER_TABLE." SET Path='".$this->getPath($this->DB_WE->f('ID'))."' WHERE ID='".$this->DB_WE->f('ID')."'");
 			}
@@ -735,7 +735,7 @@ function mapPermissions() {
 					} elseif($fieldName == 'editorFontname' && $this->Preferences['editorFont'] != '1') {
 						$this->Preferences[$fieldName] = 'none';
 					}
-					$updt .= $fieldName."='".mysql_real_escape_string($this->Preferences[$fieldName])."',";
+					$updt .= $fieldName."='".$this->DB_WE->escape($this->Preferences[$fieldName])."',";
 				}
 			}
 			//remove last ,
@@ -1335,7 +1335,7 @@ function mapPermissions() {
 		$path = '';
 		if($id==0) {
 			$id=abs($this->ParentID);
-			$path=mysql_real_escape_string($this->username);
+			$path=$db_tmp->escape($this->username);
 		}
 		$foo=getHash("SELECT username,ParentID FROM ".USER_TABLE." WHERE ID='".$id."';",$db_tmp);
 		$path="/". (isset($foo["username"]) ? $foo["username"] : "") .$path;
@@ -1514,7 +1514,7 @@ function mapPermissions() {
 
 		$out="";
 		$js='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				preload("auswaehlen","'.IMAGE_DIR.'buttons/auswaehlen_'.$GLOBALS["WE_LANGUAGE"].'.gif");
 				preload("auswaehlen_d","'.IMAGE_DIR.'buttons/auswaehlen_d_'.$GLOBALS["WE_LANGUAGE"].'.gif");
 
@@ -1942,7 +1942,7 @@ function mapPermissions() {
 
 
 		$javascript ='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 
 				function rebuildCheckboxClicked() {
 					toggleRebuildPerm(false);
@@ -2075,7 +2075,7 @@ function mapPermissions() {
 		$we_button = new we_button();
 		$parts = array();
 		$content ='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				function addElement(elvalues) {
 					if(elvalues.value=="") {
 						elvalues.value="0";
@@ -2600,7 +2600,7 @@ function mapPermissions() {
 			array_push($_settings,
 					array(
 						"headline" => g_l('prefs','[seem_startdocument]'),
-						"html" => $js . $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>',
+						"html" => $js . $_seem_html->getHtmlCode().'<script  type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>',
 						"space" => 200
 					)
 				);
@@ -2743,6 +2743,7 @@ function mapPermissions() {
 			$_template_editor_mode->addOption('textarea', 'Textarea');
 			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
 			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
+			$_template_editor_mode->addOption('codemirror2', 'CodeMirror2');
 			$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
 			array_push($_settings, array("headline" => g_l('prefs','[editor_mode]'), "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
 
@@ -2975,7 +2976,7 @@ function mapPermissions() {
 		$tab_body = $we_tabs->getJS();
 
 		$out ='
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				var activeTab = 0;
 				function setTab(tab) {
 					switch(tab) {

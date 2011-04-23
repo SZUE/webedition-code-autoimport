@@ -1727,14 +1727,14 @@ class we_versions_wizard
 			"src" => JS_DIR . "jscalendar/calendar-setup.js"
 		));
 
-		$headCal .= '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>
+		$headCal .= '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>
 					<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
 					<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
 					<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
 
 		return we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						$headCal . STYLESHEET . "\n" . '<script src="' . JS_DIR . 'windows.js" language="JavaScript" type="text/javascript"></script>' . "\n" . ($contents[0] ? we_htmlElement::jsElement(
+						$headCal . STYLESHEET . "\n" . '<script src="' . JS_DIR . 'windows.js"  type="text/javascript"></script>' . "\n" . ($contents[0] ? we_htmlElement::jsElement(
 								"<!--\n" . $contents[0] . "\n//-->") : "")) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody"

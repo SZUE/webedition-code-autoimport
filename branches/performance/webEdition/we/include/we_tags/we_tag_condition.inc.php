@@ -68,6 +68,7 @@ function we_tag_conditionAdd($attribs, $content){
 	switch (strtolower($type)) {
 		case "now" :
 			$value = time();
+			break;
 		case "sessionfield" :
 			if ($var && isset($_SESSION["webuser"][$var])) {
 				$value = $_SESSION["webuser"][$var];

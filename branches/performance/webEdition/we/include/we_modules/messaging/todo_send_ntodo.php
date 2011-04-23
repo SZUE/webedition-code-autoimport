@@ -22,6 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
@@ -66,7 +69,7 @@ if ($_REQUEST["mode"] == 'forward') {
     <head>
         <title><?php echo $heading ?></title>
         <?php print STYLESHEET; ?>
-        <script language="JavaScript" type="text/javascript">
+        <script type="text/javascript">
         <!--
         top.opener.top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction']?>";
         //-->
@@ -87,6 +90,12 @@ if ($_REQUEST["mode"] == 'forward') {
 
     <body class="weDialogBody">
     <?php
+    
+    $res['ok'] = array_map('htmlspecialchars', $res['ok']);
+    $res['failed'] = array_map('htmlspecialchars', $res['failed']);
+    $res['err'] = array_map('htmlspecialchars', $res['err']);
+    
+    
     $tbl = '<table align="center" cellpadding="7" cellspacing="3">
 		    <tr>
 		      <td class="defaultfont" valign="top">' . $s_action . ':</td>

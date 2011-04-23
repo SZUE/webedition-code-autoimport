@@ -92,21 +92,20 @@ class listviewBase{
 			trigger_schedule();
 		}
 		$this->name = $name;
-		$this->search = ((!isset($_REQUEST["we_lv_search_".$this->name])) && (isset($_REQUEST["we_from_search_".$this->name]))) ?  "���������" : isset($_REQUEST["we_lv_search_".$this->name]) ? $_REQUEST["we_lv_search_".$this->name] : "";
-		$this->search = str_replace("\"","",str_replace("\\\"","",trim($this->search)));
+		$this->search = ((!isset($_REQUEST['we_lv_search_'.$this->name])) && (isset($_REQUEST['we_from_search_'.$this->name]))) ?  '���������' : isset($_REQUEST['we_lv_search_'.$this->name]) ? $_REQUEST['we_lv_search_'.$this->name] : '';
+		$this->search = str_replace('"','',str_replace('\\"','',trim($this->search)));
 		$this->DB_WE = new DB_WE;
 		$this->rows = $cols ? ($rows * $cols) : $rows;
-		if(($calendar=="month" || $calendar=="month_table") && $cols=="") $this->cols="7";
-		else $this->cols = $cols;
+		$this->cols=(($cols=='' && ($calendar=='month' || $calendar=='month_table'))?7:$cols);
 		$this->offset = abs($offset);
-		$this->start = (isset($_REQUEST["we_lv_start_".$this->name]) && $_REQUEST["we_lv_start_".$this->name]) ? abs($_REQUEST["we_lv_start_".$this->name]) : 0;
+		$this->start = (isset($_REQUEST['we_lv_start_'.$this->name]) && $_REQUEST['we_lv_start_'.$this->name]) ? abs($_REQUEST['we_lv_start_'.$this->name]) : 0;
 		if($this->start == 0) $this->start += $this->offset;
 		$this->order = $order;
 		$this->desc = $desc;
 		$this->cats = trim($cats);
 		$this->categoryids = trim($categoryids);
 		$this->catOr = $catOr;
-		$this->workspaceID = $workspaceID ? $workspaceID : "";
+		$this->workspaceID = $workspaceID ? $workspaceID : '';
 		$this->customerFilterType = $customerFilterType;
 		$this->id = $id;
 
@@ -125,8 +124,7 @@ class listviewBase{
 		);
 		if($calendar!=''){
 			$this->calendar_struct['datefield']=$datefield!='' ? $datefield : '###Published###';
-			if($date=='') $this->calendar_struct['defaultDate']=time();
-			else $this->calendar_struct['defaultDate']=strtotime($date);
+			$this->calendar_struct['defaultDate']=($date==''?time():strtotime($date));
 			if($weekstart!=''){
 				$wdays=array('sunday','monday','tuesday','wednesday','thursday','friday','saturday');
 				$match=array_search($weekstart,$wdays);
@@ -153,23 +151,23 @@ class listviewBase{
 	 */
 	function next_record(){
 		// overwrite
-		if($this->calendar_struct["calendar"]!=""){
-			$this->calendar_struct["calendarCount"]++;
-			$this->calendar_struct["count"]=$this->count;
-			$this->calendar_struct["forceFetch"]=false;
-			$calendarCount=$this->calendar_struct["calendarCount"];
-			if(($calendarCount>0 || ($this->calendar_struct["calendar"]=="day" && $calendarCount>=0)) && $calendarCount <= $this->calendar_struct["numofentries"]){
-				if($this->calendar_struct["date"]<0) $this->calendar_struct["date"]=$this->calendar_struct["defaultDate"];
-				$date=$this->calendar_struct["date"];
-				$month=date("m",$date);
-				$year=date("Y",$date);
-				$day=date("j",$date);
-				if($this->calendar_struct["calendar"]=="year"){
+		if($this->calendar_struct['calendar']!=''){
+			$this->calendar_struct['calendarCount']++;
+			$this->calendar_struct['count']=$this->count;
+			$this->calendar_struct['forceFetch']=false;
+			$calendarCount=$this->calendar_struct['calendarCount'];
+			if(($calendarCount>0 || ($this->calendar_struct['calendar']=='day' && $calendarCount>=0)) && $calendarCount <= $this->calendar_struct['numofentries']){
+				if($this->calendar_struct['date']<0) $this->calendar_struct['date']=$this->calendar_struct['defaultDate'];
+				$date=$this->calendar_struct['date'];
+				$month=date('m',$date);
+				$year=date('Y',$date);
+				$day=date('j',$date);
+				if($this->calendar_struct['calendar']=='year'){
 					$date=mktime(0,0,0,$calendarCount,$day,$year);
 					$start_date=mktime(0,0,0,$calendarCount,$day,$year);
 					$end_date=mktime(23,59,59,$calendarCount,getNumberOfDays($calendarCount,$year),$year);
 				}
-				else if($this->calendar_struct["calendar"]=="day"){
+				else if($this->calendar_struct['calendar']=='day'){
 					$date=mktime($calendarCount,0,0,$month,$day,$year);
 					$start_date=mktime($calendarCount,0,0,$month,$day,$year);
 					$end_date=mktime($calendarCount,59,59,$month,$day,$year);
@@ -179,31 +177,31 @@ class listviewBase{
 					$start_date=mktime(0,0,0,$month,$calendarCount,$year);
 					$end_date=mktime(23,59,59,$month,$calendarCount,$year);
 				}
-				$month=date("m",$date);
-				$day=date("j",$date);
+				$month=date('m',$date);
+				$day=date('j',$date);
 
-				$this->calendar_struct["date"]=$date;
-				$this->calendar_struct["date_human"]=date("Y-m-d",$date);
-				$this->calendar_struct["day_human"]=$day;
-				$this->calendar_struct["month_human"]=$month;
-				$this->calendar_struct["year_human"]=$year;
-				$this->calendar_struct["start_date"]=$start_date;
-				$this->calendar_struct["end_date"]=$end_date;
+				$this->calendar_struct['date']=$date;
+				$this->calendar_struct['date_human']=date('Y-m-d',$date);
+				$this->calendar_struct['day_human']=$day;
+				$this->calendar_struct['month_human']=$month;
+				$this->calendar_struct['year_human']=$year;
+				$this->calendar_struct['start_date']=$start_date;
+				$this->calendar_struct['end_date']=$end_date;
 
-				foreach ($this->calendar_struct["storage"] as $k=>$v){
+				foreach ($this->calendar_struct['storage'] as $k=>$v){
 					if($v>=$start_date && $v<=$end_date){
 						$found=array_search($k,$this->IDs);
 						if($found!==false){
-							$this->calendar_struct["forceFetch"]=true;
-							$this->calendar_struct["count"]=$found;
+							$this->calendar_struct['forceFetch']=true;
+							$this->calendar_struct['count']=$found;
 						}
 					}
 				}
 			}
-			if($calendarCount > $this->calendar_struct["numofentries"]){
-				$this->calendar_struct["date"]=0;
+			if($calendarCount > $this->calendar_struct['numofentries']){
+				$this->calendar_struct['date']=0;
 			}
-			if(!$this->calendar_struct["forceFetch"]) $this->count++;
+			if(!$this->calendar_struct['forceFetch']) $this->count++;
 			$this->Record = array();
 		}
 	}
@@ -227,9 +225,9 @@ class listviewBase{
 	 *
 	 */
 	function hasNextPage($parentEnd=false){
-		if(isset($this->calendar_struct["calendar"]) && $this->calendar_struct["calendar"]!="") return true;
-		if($parentEnd && isset($_REQUEST["we_lv_pend_".$this->name])){
-			return (($this->start + $this->anz) < $_REQUEST["we_lv_pend_".$this->name]);
+		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar']!='') return true;
+		if($parentEnd && isset($_REQUEST['we_lv_pend_'.$this->name])){
+			return (($this->start + $this->anz) < $_REQUEST['we_lv_pend_'.$this->name]);
 		}
 		return (($this->start + $this->anz) < $this->anz_all);
 	}
@@ -242,9 +240,9 @@ class listviewBase{
 	 *
 	 */
 	function hasPrevPage($parentStart=false){
-		if(isset($this->calendar_struct["calendar"]) && $this->calendar_struct["calendar"]!="") return true;
-		if($parentStart && isset($_REQUEST["we_lv_pstart_".$this->name])){
-			return (abs($this->start) != $_REQUEST["we_lv_pstart_".$this->name]);
+		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar']!='') return true;
+		if($parentStart && isset($_REQUEST['we_lv_pstart_'.$this->name])){
+			return (abs($this->start) != $_REQUEST['we_lv_pstart_'.$this->name]);
 		}
 		return (abs($this->start) != abs($this->offset));
 	}
@@ -258,27 +256,27 @@ class listviewBase{
 	 */
 	function getBackLink($attribs){
 
-	    $only = we_getTagAttribute("only", $attribs, "");
-			$urlID = we_getTagAttribute("id", $attribs, "");
-		if(isset($this->calendar_struct["calendar"]) && $this->calendar_struct["calendar"]!=""){
+	    $only = we_getTagAttribute('only', $attribs, '');
+			$urlID = we_getTagAttribute('id', $attribs, '');
+		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar']!=''){
 
-			$month=$this->calendar_struct["month_human"];
-			$day=$this->calendar_struct["day_human"];
-			$year=$this->calendar_struct["year_human"];
-			$newdate=$year."-".$month."-".$day;
-			if($this->calendar_struct["calendar"]=="month" || $this->calendar_struct["calendar"]=="month_table"){
+			$month=$this->calendar_struct['month_human'];
+			$day=$this->calendar_struct['day_human'];
+			$year=$this->calendar_struct['year_human'];
+			$newdate=$year.'-'.$month.'-'.$day;
+			if($this->calendar_struct['calendar']=='month' || $this->calendar_struct['calendar']=='month_table'){
 				if($month<=1){
 					$month=12;
 					$year--;
 				}
 				else $month--;
-				$newdate=$year."-".$month."-1";
+				$newdate=$year.'-'.$month.'-1';
 			}
-			else if($this->calendar_struct["calendar"]=="year"){
+			else if($this->calendar_struct['calendar']=='year'){
 				$year--;
-				$newdate=$year."-".$month."-".$day;
+				$newdate=$year.'-'.$month.'-'.$day;
 			}
-			else if($this->calendar_struct["calendar"]=="day"){
+			else if($this->calendar_struct['calendar']=='day'){
 				$day--;
 				if($day<1){
 					$month--;
@@ -288,29 +286,29 @@ class listviewBase{
 					}
 					$day = getNumberOfDays($month,$year);
 				}
-				$newdate=$year."-".$month."-".$day;
+				$newdate=$year.'-'.$month.'-'.$day;
 			}
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_".$this->name."=".$this->calendar_struct["calendar"]."&we_lv_datefield_".$this->name."=".$this->calendar_struct["datefield"]."&we_lv_date_".$this->name."=$newdate"));
+			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_'.$this->name.'='.$this->calendar_struct['calendar'].'&we_lv_datefield_'.$this->name.'='.$this->calendar_struct['datefield'].'&we_lv_date_'.$this->name.'='.$newdate));
 			if($only){
 			    $this->close_a = false;
-			    return (isset($attribs[$only]) ? $attribs[$only] : "");
+			    return (isset($attribs[$only]) ? $attribs[$only] : '');
 			} else {
-                return getHtmlTag("a", $attribs, "", false, true);
+                return getHtmlTag('a', $attribs, '', false, true);
 			}
 		}
 		else if($this->hasPrevPage()){
 
 			$foo = $this->start - $this->rows;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_".$this->name."=$foo"));
+			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_'.$this->name.'='.$foo));
 
 			if($only){
 			    $this->close_a = false;
-			    return (isset($attribs[$only]) ? $attribs[$only] : "");
+			    return (isset($attribs[$only]) ? $attribs[$only] : '');
 			} else {
-                return getHtmlTag("a", $attribs, "", false, true);
+                return getHtmlTag('a', $attribs, '', false, true);
 			}
 		}else{
-			return "";
+			return '';
 		}
 	}
 
@@ -327,16 +325,16 @@ class listviewBase{
 		array_push($filterArr,'we_editDocument_ID');
 		array_push($filterArr,'we_transaction');
 		if($queryString) {
-			$foo = explode("&",$queryString);
-			$queryString = "";
+			$foo = explode('&',$queryString);
+			$queryString = '';
 			for($i=0;$i<sizeof($foo);$i++) {
-				list($key,$val) = explode("=",$foo[$i]);
+				list($key,$val) = explode('=',$foo[$i]);
 				array_push($usedKeys,$key);
-				$queryString .= $key."=".rawurlencode($val)."&";
+				$queryString .= $key.'='.rawurlencode($val).'&';
 			}
 			$queryString = rtrim($queryString,'&');
 		}
-		$url_tail = "";
+		$url_tail = '';
 		if(isset($_GET)) {
 			foreach($_GET as $key => $val){
 				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (strpos($key,"we_ui_")!==0)) {
@@ -410,7 +408,7 @@ class listviewBase{
 				}
 				$newdate=$year."-".$month."-".$day;
 			}
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_".$this->name."=".$this->calendar_struct["calendar"]."&we_lv_datefield_".$this->name."=".$this->calendar_struct["datefield"]."&we_lv_date_".$this->name."=$newdate"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_".$this->name."=".$this->calendar_struct["calendar"]."&we_lv_datefield_".$this->name."=".$this->calendar_struct["datefield"]."&we_lv_date_".$this->name."=$newdate"));
 			if($only){
 			    $this->close_a = false;
 			    return (isset($attribs[$only]) ? $attribs[$only] : "");
@@ -421,7 +419,7 @@ class listviewBase{
 		else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->rows;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_".$this->name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'))).'?'. htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_".$this->name."=$foo"));
 			if($only){
 			    $this->close_a = false;
 			    return (isset($attribs[$only]) ? $attribs[$only] : "");
@@ -506,18 +504,18 @@ class listviewBase{
 	}
 
 	function getCalendarFieldValue($calendar,$name){
-		$out="";
+		$out='';
 
 		switch($name){
-			case "day":
-				if($calendar["date"]>0) return date("j",$calendar["date"]);
-				else  return date("j",$calendar["defaultDate"]);
+			case 'day':
+				if($calendar['date']>0) return date('j',$calendar['date']);
+				else  return date('j',$calendar['defaultDate']);
 			break;
-			case "month":
-				return date("m",$calendar["date"]);
+			case 'month':
+				return date('m',$calendar['date']);
 			break;
-			case "year":
-				return date("Y",$calendar["date"]);
+			case 'year':
+				return date('Y',$calendar['date']);
 			break;
 			case "dayname":
 			case "dayname_long":
@@ -533,41 +531,41 @@ class listviewBase{
 			case "monthname_short":
 				return g_l('date','[month][short]['.(date("n",$calendar["date"])-1).']');
 			break;
-			case "hour":
-				return date("H:i",$calendar["date"]);
+			case 'hour':
+				return date('H:i',$calendar['date']);
 			break;
-			case "start_date":
-				return $calendar["start_date"];
+			case 'start_date':
+				return $calendar['start_date'];
 			break;
-			case "end_date":
-				return $calendar["end_date"];
+			case 'end_date':
+				return $calendar['end_date'];
 			break;
-			case "timestamp":
-				return $calendar["date"];
+			case 'timestamp':
+				return $calendar['date'];
 			break;
 			default:
-				if($calendar["date"]>0) return date("j",$calendar["date"]);
+				if($calendar['date']>0) return date('j',$calendar['date']);
 		}
-		return "";
+		return '';
 	}
 
 	function isCalendarField($type){
-		return in_array($type,array("day","dayname","dayname_long","dayname_short","month","monthname","monthname_long","monthname_short","year","hour"));
+		return in_array($type,array('day','dayname','dayname_long','dayname_short','month','monthname','monthname_long','monthname_short','year','hour'));
 	}
 
 	function fetchCalendar(&$condition,&$calendar_select,&$calendar_where,$matrix=array()){
-		if($this->calendar_struct["calendar"]!=""){
-			$calendar=$this->calendar_struct["calendar"];
-			$day=date("j",$this->calendar_struct["defaultDate"]);
-			$month=date("m",$this->calendar_struct["defaultDate"]);
-			$year=date("Y",$this->calendar_struct["defaultDate"]);
+		if($this->calendar_struct['calendar']!=''){
+			$calendar=$this->calendar_struct['calendar'];
+			$day=date('j',$this->calendar_struct['defaultDate']);
+			$month=date('m',$this->calendar_struct['defaultDate']);
+			$year=date('Y',$this->calendar_struct['defaultDate']);
 
-			if($calendar=="year"){
+			if($calendar=='year'){
 				$start_date=mktime(0,0,0,1,$day,$year);
  				$end_date=mktime(23,59,59,12,$day,$year);
  				$numofentries=12;
 			}
-			else if($calendar=="day"){
+			else if($calendar=='day'){
 				$start_date=mktime(0,0,0,$month,$day,$year);
  				$end_date=mktime(23,59,59,$month,$day,$year);
  				$numofentries=24;
@@ -578,63 +576,66 @@ class listviewBase{
 				$end_date=mktime(23,59,59,$month,$numofentries,$year);
 			}
 
-			$this->calendar_struct["date_human"]=date("Y-m-d",$this->calendar_struct["defaultDate"]);
-			$this->calendar_struct["day_human"]=$day;
-			$this->calendar_struct["month_human"]=$month;
-			$this->calendar_struct["year_human"]=$year;
-			$this->calendar_struct["numofentries"]=$numofentries;
-			$this->calendar_struct["start_date"]=$start_date;
-			$this->calendar_struct["end_date"]=$end_date;
+			$this->calendar_struct['date_human']=date('Y-m-d',$this->calendar_struct['defaultDate']);
+			$this->calendar_struct['day_human']=$day;
+			$this->calendar_struct['month_human']=$month;
+			$this->calendar_struct['year_human']=$year;
+			$this->calendar_struct['numofentries']=$numofentries;
+			$this->calendar_struct['start_date']=$start_date;
+			$this->calendar_struct['end_date']=$end_date;
 
 
-			if($this->calendar_struct["datefield"]=="" || $this->calendar_struct["datefield"]=="###Published###"){
-				$this->calendar_struct["datefield"]="###Published###";
-				$calendar_select=",".FILE_TABLE.".Published AS Calendar ";
-				$calendar_where=" AND (".FILE_TABLE.".Published>=$start_date AND ".FILE_TABLE.".Published<=$end_date) ";
+			if($this->calendar_struct['datefield']=='' || $this->calendar_struct['datefield']=='###Published###'){
+				$this->calendar_struct['datefield']='###Published###';
+				$calendar_select=','.FILE_TABLE.'.Published AS Calendar ';
+				$calendar_where=' AND ('.FILE_TABLE.".Published>=$start_date AND ".FILE_TABLE.".Published<=$end_date) ";
 			}else{
-				if(count($matrix) && in_array($this->calendar_struct["datefield"],array_keys($matrix))){
-					$field=$matrix[$this->calendar_struct["datefield"]]["table"].".".$matrix[$this->calendar_struct["datefield"]]["type"]."_".$this->calendar_struct["datefield"];
+				if(count($matrix) && in_array($this->calendar_struct['datefield'],array_keys($matrix))){
+					$field=$matrix[$this->calendar_struct['datefield']]['table'].'.'.$matrix[$this->calendar_struct['datefield']]['type'].'_'.$this->calendar_struct['datefield'];
 				}
 				else{
-					$field=CONTENT_TABLE.".Dat";
+					$field=CONTENT_TABLE.'.Dat';
 				}
 
-				$calendar_select=",".$field." AS Calendar ";
-				if($condition=="") $condition=$this->calendar_struct["datefield"].">=$start_date AND ".$this->calendar_struct["datefield"]."<=$end_date";
-				else $condition.=" AND ".$this->calendar_struct["datefield"].">=$start_date AND ".$this->calendar_struct["datefield"]."<=$end_date";
+				$calendar_select=','.$field.' AS Calendar ';
+				if($condition=='') $condition=$this->calendar_struct['datefield'].">=$start_date AND ".$this->calendar_struct['datefield']."<=$end_date";
+				else $condition.=' AND '.$this->calendar_struct['datefield'].">=$start_date AND ".$this->calendar_struct['datefield']."<=$end_date";
 			}
 
 		}
 	}
 
 	function postFetchCalendar(){
-		if($this->calendar_struct["calendar"]!=""){
+		if($this->calendar_struct['calendar']!=''){
 			$start=0;
-			if($this->calendar_struct["calendar"]=="month_table"){
-				$start=(int)date("w",strtotime(date("Y",$this->calendar_struct["defaultDate"])."-".date("m",$this->calendar_struct["defaultDate"])."-1"));
-				if($this->calendar_struct["weekstart"]!=""){
-					$start=$start-$this->calendar_struct["weekstart"];
+			if($this->calendar_struct['calendar']=='month_table'){
+				$start=(int)date('w',strtotime(date('Y',$this->calendar_struct['defaultDate']).'-'.date('m',$this->calendar_struct['defaultDate']).'-1'));
+				if($this->calendar_struct['weekstart']!=''){
+					$start=$start-$this->calendar_struct['weekstart'];
 					if($start<0) $start=7+$start;
 				}
 			}
-			$this->anz = $this->calendar_struct["numofentries"]+$start;
-			$this->anz_all=$this->calendar_struct["numofentries"]+$start;
+			$this->anz = $this->calendar_struct['numofentries']+$start;
+			$this->anz_all = $this->anz;
 
-			if($this->calendar_struct["calendar"]=="day") $this->calendar_struct["calendarCount"]=-1;
-			else if($this->calendar_struct["calendar"]=="month_table"){
-				$this->calendar_struct["calendarCount"]=0-$start;
-			}
-			else $this->calendar_struct["calendarCount"]=0;
-
-			if($this->calendar_struct["calendar"]=="month_table"){
-				$rest=$this->cols - ($this->anz % $this->cols);
-				if($rest<$this->cols){
+			switch ($this->calendar_struct['calendar']) {
+				case 'day':
+					$this->calendar_struct['calendarCount'] = -1;
+					break;
+				case 'month_table':
+					$this->calendar_struct['calendarCount'] = 0 - $start;
+					$rest = $this->cols - ($this->anz % $this->cols);
+					if ($rest < $this->cols) {
 						$this->anz+=$rest;
 						$this->anz_all+=$rest;
-				}
+					}
+					break;
+				default:
+					$this->calendar_struct['calendarCount'] = 0;
 			}
 
-			$this->calendar_struct["date"]=-1;
+
+			$this->calendar_struct['date']=-1;
 		}
 	}
 

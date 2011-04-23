@@ -78,8 +78,8 @@ print STYLESHEET;
 //
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script  type="text/javascript">
 <!--
 function we_checkObjFieldname(i){
 	if(i.value.search(/^([a-zA-Z0-9_])*$/)){
@@ -125,7 +125,7 @@ $count = $we_doc->getElement("Sortgesamt");
 $uniquename = md5(uniqid(rand(), true));
 $width = 800;
 
-$we_transaction = $_REQUEST['we_transaction'];
+$we_transaction = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
 echo we_multiIconBox::_getBoxStart("100%", $uniquename);
 

@@ -82,7 +82,7 @@ class weSelectorQuery {
 		}
 
 		$userExtraSQL = $this->getUserExtraQuery($table);
-		$where = "WHERE Path = '".mysql_real_escape_string($search)."'";
+		$where = "WHERE Path = '".escape_sql_query($search)."'";
 		$isFolder = 1;
 		$addCT = 0;
 
@@ -93,7 +93,7 @@ class weSelectorQuery {
 					if ($types[$i]=="folder") {
 						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i<1 ? " AND (" : " OR ") . "IsFolder=1";
 					} elseif(isset($typeField) && $typeField != "") {
-						$where .= empty($where) ? "WHERE ($typeField='".mysql_real_escape_string($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".mysql_real_escape_string($types[$i])."'";
+						$where .= empty($where) ? "WHERE ($typeField='".escape_sql_query($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".escape_sql_query($types[$i])."'";
 						$isFolder = 0;
 						$addCT = 1;
 					}
@@ -116,7 +116,7 @@ class weSelectorQuery {
 
 		$order = "ORDER BY " . ($isFolder ? "Path" : "isFolder  ASC, Path") . " ASC ";
 		$fields = implode(", ", $this->fields);
-		$query = "SELECT $fields FROM ".mysql_real_escape_string($table)." $where $order" . ($limit ? " LIMIT $limit" : "");
+		$query = "SELECT $fields FROM ".$this->db->escape($table)." $where $order" . ($limit ? " LIMIT $limit" : "");
 		$this->db->query($query);
 	}
 
@@ -148,7 +148,7 @@ class weSelectorQuery {
 		}
 
 		$userExtraSQL = $this->getUserExtraQuery($table);
-		$where = "WHERE Path REGEXP '^".preg_quote(preg_quote($search))."[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '".mysql_real_escape_string($rootDir)."' OR Path LIKE '".mysql_real_escape_string($rootDir)."%')" : "") ;
+		$where = "WHERE Path REGEXP '^".preg_quote(preg_quote($search))."[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '".escape_sql_query($rootDir)."' OR Path LIKE '".escape_sql_query($rootDir)."%')" : "") ;
 		$isFolder = 1;
 		$addCT = 0;
 
@@ -160,7 +160,7 @@ class weSelectorQuery {
 					if ($types[$i]=="folder") {
 						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i<1 ? " AND (" : " OR ") . "IsFolder=1";
 					} elseif(isset($typeField) && $typeField != "") {
-						$where .= empty($where) ? "WHERE ($typeField='".mysql_real_escape_string($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".mysql_real_escape_string($types[$i])."'";
+						$where .= empty($where) ? "WHERE ($typeField='".escape_sql_query($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".escape_sql_query($types[$i])."'";
 						$isFolder = 0;
 						$addCT = 1;
 					}
@@ -177,13 +177,13 @@ class weSelectorQuery {
 
 		if (count($this->condition)>0) {
 			foreach ($this->condition as $val){
-				$where .= (empty($where) ? "WHERE " : " " . $val['queryOperator']) . " " .$val['field'] . $val['conditionOperator'] . "'" . mysql_real_escape_string($val['value']) . "'";
+				$where .= (empty($where) ? "WHERE " : " " . $val['queryOperator']) . " " .$val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
 			}
 		}
 
 		$order = "ORDER BY " . ($isFolder ? "Path" : "isFolder  ASC, Path") . " ASC ";
 		$fields = implode(", ", $this->fields);
-		$query = "SELECT $fields FROM ".mysql_real_escape_string($table)." $where $order" . ($limit ? " LIMIT $limit" : "");
+		$query = "SELECT $fields FROM ".$this->db->escape($table)." $where $order" . ($limit ? " LIMIT $limit" : "");
 		$this->db->query($query);
 	}
 
@@ -220,7 +220,7 @@ class weSelectorQuery {
 
 		$query = "
 			SELECT " . implode(", ", $this->fields) . "
-			FROM ".mysql_real_escape_string($table)."
+			FROM ".$this->db->escape($table)."
 			WHERE
 				ParentID = ".abs($id)."
 				AND ( IsFolder = 1
@@ -260,7 +260,7 @@ class weSelectorQuery {
 		}
 		$query = "
 			SELECT " . implode(", ", $this->fields) . "
-			FROM ".mysql_real_escape_string($table)."
+			FROM ".$this->db->escape($table)."
 			WHERE
 				ID = ".abs($id)."
 				" .	(empty($userExtraSQL) ? "" : " " . $userExtraSQL);
@@ -286,9 +286,9 @@ class weSelectorQuery {
 		}
 		$query = "
 			SELECT " . implode(", ", $this->fields) . "
-			FROM ".mysql_real_escape_string($table)."
+			FROM ".$this->db->escape($table)."
 			WHERE
-				Path = '".mysql_real_escape_string($path)."'
+				Path = '".$this->db->escape($path)."'
 				" .	(empty($userExtraSQL) ? "" : " " . $userExtraSQL);
 		$this->db->query($query);
 		return $this->getResult();
@@ -365,7 +365,7 @@ class weSelectorQuery {
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid,OBJECT_TABLE);
-				$wsQuery .= " Path like '".mysql_real_escape_string($path)."/%' OR Path='".mysql_real_escape_string($path)."' OR ";
+				$wsQuery .= " Path like '".escape_sql_query($path)."/%' OR Path='".escape_sql_query($path)."' OR ";
 			}
 			if($wsQuery){
 				$wsQuery = substr($wsQuery,0,strlen($wsQuery)-3);

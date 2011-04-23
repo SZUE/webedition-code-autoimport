@@ -153,7 +153,7 @@ while ($j < $iMaxItems) {
 			}
 		}
 		$_hash = getHash(
-				"SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . mysql_real_escape_string($_table) . " WHERE ID = '" . abs($DB_WE->f(
+				"SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . $DB_WE->escape($_table) . " WHERE ID = '" . abs($DB_WE->f(
 						"DID")) . "'" . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ";",
 				$_db);
 		if (!empty($_hash)) {
@@ -212,4 +212,3 @@ print
 							"id" => "mfd"
 						), $lastModified)));
 
-?>

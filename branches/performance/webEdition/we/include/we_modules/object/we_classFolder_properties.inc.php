@@ -65,12 +65,12 @@ protect();
 // Ausgabe beginnen
 htmlTop();
 
-echo '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
+echo '<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
 
 echo $we_doc->getSearchJS();
 
 if($javascript != '') {
-	echo '<script language="JavaScript" type="text/javascript">'.$javascript.'</script>';
+	echo '<script  type="text/javascript">'.$javascript.'</script>';
 }
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");

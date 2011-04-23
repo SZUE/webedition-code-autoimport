@@ -45,10 +45,10 @@ if(isset($_SESSION["user_session_data"]) ){
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
 ?>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>md5.js"></script>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+	<script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+	<script type="text/javascript" src="<?php print JS_DIR; ?>md5.js"></script>
+	<script type="text/javascript">
 
 	var loaded = 0;
 	function we_submitForm(target,url){

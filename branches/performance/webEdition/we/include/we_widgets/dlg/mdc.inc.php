@@ -178,7 +178,7 @@ function getHTMLCategory()
 
 							'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
 							'onclick' => 'javascript:#####placeHolder#####;top.mark();',
-							'style' => 'cursor: pointer; width: 27px;-moz-user-select: none;'
+							'style' => 'cursor: pointer; width: 27px;'
 					)));
 
 	$js = we_htmlElement::jsElement('', array(
@@ -556,4 +556,3 @@ if ($showAC) {
 	print $yuiSuggest->getYuiJs();
 }
 
-?>

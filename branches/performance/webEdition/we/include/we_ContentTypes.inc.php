@@ -35,15 +35,15 @@ $GLOBALS["WE_CONTENT_TYPES"] = array(
 		'text/html' => array(
 				"Extension" => ".html,.htm,.shtm,.shtml,.stm,.php,.jsp,.asp,.pl,.cgi,.xml,.xsl",
 				"Permission" => 'NEW_HTML',
-				"DefaultCode" =>'<html>
-        <head>
-                <title></title>
-                <meta http-equiv="Content-Type" content="text/html; ' . (
-								g_l('charset',"[charset]")!==false ? g_l('charset',"[charset]") : "UTF-8") . '">
-        </head>
-        <body>
-        </body>
-</html>',
+				"DefaultCode" => '<html>' . "\n\t" .
+				'<head>' . "\n\t\t" .
+				'<title></title>' . "\n\t\t" .
+				'<meta http-equiv="Content-Type" content="text/html; ' . (
+				g_l('charset', "[charset]") !== false ? g_l('charset', "[charset]") : "UTF-8") . '">' . "\n\t" .
+				'</head>' . "\n\t" .
+				'<body>' . "\n\t" .
+				'</body>' . "\n" .
+				'</html>',
 				"IsWebEditionFile" => "1",
 				"IsRealFile" => "1",
 				"Icon" => "html.gif",
@@ -62,33 +62,27 @@ $GLOBALS["WE_CONTENT_TYPES"] = array(
 				"DefaultCode" => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <we:title></we:title>
-  <we:description/>
-  <we:keywords/>
-  <we:charset defined="UTF-8">UTF-8</we:charset>
+	<we:title></we:title>
+	<we:description/>
+	<we:keywords/>
+	<we:charset defined="UTF-8">UTF-8</we:charset>
 </head>
 <body>
-  <table cellpadding="0" cellspacing="0" border="0" width="400">
-    <tr>
-      <td>
-        <p>
-          <font face="verdana" size="2"><b><we:input type="date" name="Date" format="d.m.Y"/></b></font>
-        </p>
-        <p>
-          <font face="verdana" size="2"><b><we:input type="text" name="Headline" size="60"/></b></font>
-        </p>
-        <p>
-          <we:ifNotEmpty match="Image">
-            <we:img name="Image"/>
-            <we:ifEditmode>
-              <br><br>
-            </we:ifEditmode>
-          </we:ifNotEmpty>
-          <we:textarea name="Content" width="250" height="100" autobr="true" wysiwyg="true"/>
-        </p>
-      </td>
-    </tr>
-  </table>
+	<table cellpadding="0" cellspacing="0" border="0" width="400">
+		<tr><td>
+				<p><font face="verdana" size="2"><b><we:input type="date" name="Date" format="d.m.Y"/></b></font></p>
+				<p><font face="verdana" size="2"><b><we:input type="text" name="Headline" size="60"/></b></font></p>
+				<p>
+					<we:ifNotEmpty match="Image">
+						<we:img name="Image"/>
+						<we:ifEditmode>
+							<br/><br/>
+						</we:ifEditmode>
+					</we:ifNotEmpty>
+					<we:textarea name="Content" width="250" height="100" autobr="true" wysiwyg="true"/>
+				</p>
+		</td></tr>
+	</table>
 </body>
 </html>',
 				"IsRealFile" => "0",
@@ -170,7 +164,7 @@ $GLOBALS["WE_CONTENT_TYPES"] = array(
 				"Extension" => ".xml",
 				"Permission" => 'NEW_TEXT',
 				"DefaultCode" => '<?xml version="1.0" encoding="' . (
-								g_l('charset',"[charset]")!==false ? g_l('charset',"[charset]") : "UTF-8") . '" ?>',
+				g_l('charset', "[charset]") !== false ? g_l('charset', "[charset]") : "UTF-8") . '" ?>',
 				"IsRealFile" => "1",
 				"IsWebEditionFile" => "1",
 				"Icon" => "link.gif",

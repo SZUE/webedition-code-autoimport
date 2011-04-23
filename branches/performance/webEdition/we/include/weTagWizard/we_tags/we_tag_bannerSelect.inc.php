@@ -11,4 +11,3 @@ $GLOBALS['weTagWizard']['attribute']['id47_firstentry'] = new weTagData_textAttr
 $GLOBALS['weTagWizard']['attribute']['id48_submitonchange'] = new weTagData_selectAttribute('48', 'submitonchange', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id49_customer'] = new weTagData_selectAttribute('49', 'customer', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'customer');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

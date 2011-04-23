@@ -6,4 +6,3 @@ $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
 
 $GLOBALS['weTagWizard']['attribute']['id25_percent'] = new weTagData_textAttribute('25', 'percent', true, '');
 $GLOBALS['weTagWizard']['attribute']['id26_num_format'] = new weTagData_choiceAttribute('26', 'num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('swiss', false, '')), false,false, '');
-?>

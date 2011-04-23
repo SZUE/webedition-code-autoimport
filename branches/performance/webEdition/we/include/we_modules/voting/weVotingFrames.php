@@ -226,13 +226,13 @@ class weVotingFrames extends weModuleFrames {
 		$prefix='';
 		$we_button = new we_button();
 
-		$del_but = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();#####placeHolder#####','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
-		$del_but1 = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
+		$del_but = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();#####placeHolder#####','style'=>'cursor: pointer; width: 27px;')));
+		$del_but1 = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();','style'=>'cursor: pointer; width: 27px;')));
 
 			$_Imagecmd = addslashes("we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," . (we_hasPerm(
 				"CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
-		$sel_but = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();','style'=>'cursor: pointer; width: 27px;-moz-user-select: none;')));
+		$sel_but = addslashes(we_htmlElement::htmlImg(array('src'=>IMAGE_DIR.'button/btn_function_trash.gif','onclick'=>'javascript:top.content.setHot();','style'=>'cursor: pointer; width: 27px;')));
 
 		$js = we_htmlElement::jsElement('',array('src'=>JS_DIR.'utils/multi_edit.js?'.time()));
 		$js .= we_htmlElement::jsElement('',array('src'=>JS_DIR.'utils/multi_editMulti.js?'.time()));
@@ -777,7 +777,7 @@ class weVotingFrames extends weModuleFrames {
 
 		$table = new we_htmlTable(array('cellpadding' => 3,'cellspacing' => 0,'border'=>0,'class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'),1,5);
 		if (isset($this->View->voting->QASet[$version])){
-			$table->setCol(0,0,array('colspan'=>5,'class'=>'defaultfont'),we_htmlElement::htmlB(we_htmlElement::htmlSpan(array('id'=>'question_score'),stripslashes($this->View->voting->QASet[$version]['question']))));
+			$table->setCol(0,0,array('colspan'=>5,'class'=>'defaultfont'),we_htmlElement::htmlB(we_htmlElement::htmlSpan(array('id'=>'question_score'), htmlspecialchars(stripslashes($this->View->voting->QASet[$version]['question'])))));
 		}
 		$i = 1;
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
@@ -794,7 +794,7 @@ class weVotingFrames extends weModuleFrames {
 
 				$table->addRow();
 				$table->setRow($key+1,array("id"=>"row_scores_$key"));
-				$table->setCol($i,0,array('style'=>'width: '.($this->_width_size-150).'px'),we_htmlElement::htmlSpan(array('id'=>'answers_score_' . $key),stripslashes($value)));
+				$table->setCol($i,0,array('style'=>'width: '.($this->_width_size-150).'px'),we_htmlElement::htmlSpan(array('id'=>'answers_score_' . $key), htmlspecialchars(stripslashes($value))));
 				$table->setColContent($i,1,$pb->getJS().$pb->getHTML());
 				$table->setColContent($i,2,'&nbsp;');
 				$table->setColContent($i,3,htmlTextInput('scores_'.$key,4,$this->View->voting->Scores[$key],'','id="scores_'.$key.'" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value='.$this->View->voting->Scores[$key].'; else{ this.value=r;document.we_form.scores_changed.value=1;}refreshTotal();"'));

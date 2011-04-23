@@ -149,7 +149,7 @@ class we_document extends we_root {
 					$this->Language = 'de_DE';
 				}
 			} else {
-				$Query = 'SELECT Language, ParentID FROM ' . mysql_real_escape_string($this->Table) . ' WHERE ID = ' . abs($ParentID);
+				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . abs($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
@@ -221,6 +221,39 @@ class we_document extends we_root {
 				</tr>
 			';
 		}
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+			$htmlzw='';
+			foreach ($_languages as $langkey => $lang){
+			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND DID='".$this->ID."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
+			  	if(!$LDID){$LDID=0;}
+				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
+				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';
+				$langkeys[]=$langkey;
+			}
+
+			$content = '
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						'.getPixel(2,4).'</td>
+				</tr>
+				'. $_headline . '
+				<tr>
+					<td>
+						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='".implode(',',$langkeys)."';showhideLangLink('we_".$this->Name."_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
+				</tr>
+				<tr>
+					<td>
+						'.getPixel(2,20).'</td>
+				</tr>
+				<tr>
+					<td class="defaultfont" align="left">
+						'.g_l('weClass','languageLinks').'</td>
+				</tr>
+			</table>';
+			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+
+		} else {
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -233,6 +266,9 @@ class we_document extends we_root {
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
 				</tr>
 			</table>';
+
+		}
+
 		return $content;
 
 	}
@@ -941,7 +977,7 @@ class we_document extends we_root {
 	}
 
 	function i_filenameDouble() {
-		return f('SELECT ID FROM '.mysql_real_escape_string($this->Table)." WHERE ParentID='".abs($this->ParentID)."' AND Filename='".mysql_real_escape_string($this->Filename)."' AND Extension='".mysql_real_escape_string($this->Extension)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
+		return f('SELECT ID FROM '.escape_sql_query($this->Table)." WHERE ParentID='".abs($this->ParentID)."' AND Filename='".escape_sql_query($this->Filename)."' AND Extension='".escape_sql_query($this->Extension)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
 	}
 
 	function getFieldByVal(
@@ -1695,7 +1731,7 @@ class we_document extends we_root {
 
 	function loadSchedule() {
 		if(defined('SCHEDULE_TABLE')) {
-			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".mysql_real_escape_string($this->ClassName)."'");
+			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();
 			}

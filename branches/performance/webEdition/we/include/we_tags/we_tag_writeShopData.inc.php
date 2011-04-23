@@ -133,7 +133,7 @@ function we_tag_writeShopData($attribs,$content) {
 			}
 
 			$sql = "INSERT INTO " . SHOP_TABLE . " (intOrderID, IntArticleID, IntQuantity, Price, IntCustomerID, DateOrder, DateShipping, DatePayment, strSerial) ";
-			$sql .= "VALUES (" . abs($maxOrderID + 1) . ", " . abs($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '".mysql_real_escape_string($preis)."' , " . abs($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . mysql_real_escape_string(serialize($shoppingItem['serial'])) . "')";
+			$sql .= "VALUES (" . abs($maxOrderID + 1) . ", " . abs($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '".$DB_WE->escape($preis)."' , " . abs($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . $DB_WE->escape(serialize($shoppingItem['serial'])) . "')";
 
 			$DB_WE->connect();
 			if (!$DB_WE->query($sql)) {
@@ -189,7 +189,7 @@ emosBasketPageArray[$articleCount][7]='NULL';
 
 			$cartSql = '
 				UPDATE ' . SHOP_TABLE . '
-				set strSerialOrder=\'' . mysql_real_escape_string(serialize($cartField)) . '\'
+				set strSerialOrder=\'' . $DB_WE->escape(serialize($cartField)) . '\'
 				WHERE intOrderID="' . ($maxOrderID + 1) . '"
 			';
 
@@ -207,10 +207,11 @@ emosBillingPageArray [2]='".rawurlencode($_SESSION["webuser"]["Contact_Country"]
 emosBillingPageArray [3]='".$totPrice."';
 			";
 		}
-
+		$doc = we_getDocForTag('top');
+		$lang=substr($doc->Language,0,2);
 		require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
-		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer);
+		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer,$lang);
 	}
 
 	return;

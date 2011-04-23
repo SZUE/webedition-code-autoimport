@@ -24,33 +24,32 @@
 
 function we_tag_search($attribs, $content){
 
-	$name = we_getTagAttribute("name", $attribs, "0");
-	$type = we_getTagAttribute("type", $attribs);
-	$xml = we_getTagAttribute("xml", $attribs, "");
-	$value = we_getTagAttribute("value", $attribs, "");
+	$name = we_getTagAttribute('name', $attribs, '0');
+	$type = we_getTagAttribute('type', $attribs);
+	$xml = we_getTagAttribute('xml', $attribs, '');
+	$value = we_getTagAttribute('value', $attribs, '');
 
 	$searchValue = htmlspecialchars(
 			str_replace(
-					"\"",
-					"",
+					'"',
+					'',
 					str_replace(
-							"\\\"",
-							"",
-							(isset($_REQUEST["we_lv_search_" . $name]) ? trim($_REQUEST["we_lv_search_" . $name]) : $value))));
-	if ($type == "print") {
-		return $searchValue;
-	} else {
-
+							'\\"',
+							'',
+							(isset($_REQUEST['we_lv_search_' . $name]) ? trim($_REQUEST['we_lv_search_' . $name]) : $value))));
 		$attsHidden = array(
 
 				'type' => 'hidden',
 				'xml' => $xml,
 				'name' => 'we_from_search_' . $name,
-				'value' => (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] ? 0 : 1)
+				'value' => (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] ? 0 : 1)
 		);
 
-		$hidden = getHtmlTag('input', $attsHidden);
-		if ($type == "textinput") {
+
+		switch($type){
+		case 'print':
+			return $searchValue;
+		case 'textinput':
 
 			$atts = removeAttribs($attribs, array(
 				'type', 'onchange', 'name', 'cols', 'rows'
@@ -59,12 +58,11 @@ function we_tag_search($attribs, $content){
 					$atts,
 					array(
 
-					'name' => "we_lv_search_$name", 'type' => 'text', 'value' => $searchValue, 'xml' => $xml
+					'name' => 'we_lv_search_'.$name, 'type' => 'text', 'value' => $searchValue, 'xml' => $xml
 					));
-			return getHtmlTag('input', $atts) . $hidden;
+			return getHtmlTag('input', $atts) . getHtmlTag('input', $attsHidden);
 
-		} else
-			if ($type == "textarea") {
+		case 'textarea':
 
 				$atts = removeAttribs(
 						$attribs,
@@ -74,10 +72,9 @@ function we_tag_search($attribs, $content){
 				$atts = array_merge(
 						$atts,
 						array(
-							'class' => 'defaultfont', 'name' => "we_lv_search_$name", 'xml' => $xml
+							'class' => 'defaultfont', 'name' => 'we_lv_search_'.$name, 'xml' => $xml
 						));
 
-				return getHtmlTag('textarea', $atts, $searchValue, true) . $hidden;
-			}
+				return getHtmlTag('textarea', $atts, $searchValue, true) . getHtmlTag('input', $attsHidden);
 	}
 }

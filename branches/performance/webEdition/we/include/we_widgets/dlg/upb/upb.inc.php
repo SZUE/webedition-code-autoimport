@@ -106,7 +106,7 @@ foreach ($tbls as $table) {
 
 	$q = "
 			SELECT " . ($wfDocsCSV ? "(ID IN($wfDocsCSV)) AS wforder," : "") . " " . ($myWfDocsCSV ? "(ID IN($myWfDocsCSV)) AS mywforder," : "") . " ContentType,ID,Text,ParentID,Path,Published,ModDate,CreationDate,ModifierID,CreatorID,Icon
-			FROM ".mysql_real_escape_string($table)."
+			FROM ".$DB_WE->escape($table)."
 			WHERE (((Published=0 OR Published < ModDate) AND (ContentType='text/webedition' OR ContentType='text/html' OR ContentType='objectFile'))" . ($myWfDocsCSV ? " OR (ID IN($myWfDocsCSV)) " : "") . ") $wsQuery
 			ORDER BY " . ($myWfDocsCSV ? "mywforder DESC," : "") . " $order";
 

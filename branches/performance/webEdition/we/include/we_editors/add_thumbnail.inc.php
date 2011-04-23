@@ -36,8 +36,9 @@ protect();
 
 $uniqid = md5(uniqid(time()));
 
+$we_transaction =(eregi("^([a-f0-9]){32}$",$_REQUEST['we_cmd'][1])?$_REQUEST["we_cmd"][1]:0);
 
-$we_transaction = $_REQUEST["we_cmd"][1];
+
 
 // init document
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
@@ -49,7 +50,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	$we_button = new we_button();
 
 	htmlTop();
-	print '<script language="JavaScript" type="text/javascript">
+	print '<script type="text/javascript">
 
 	function select_thumbnails(sel){
 
@@ -111,7 +112,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 '.$we_button->create_state_changer();
 
 	print '
-<script src="'.JS_DIR.'windows.js" language="JavaScript" type="text/javascript"></script>
+<script src="'.JS_DIR.'windows.js" type="text/javascript"></script>
 ';
 
 

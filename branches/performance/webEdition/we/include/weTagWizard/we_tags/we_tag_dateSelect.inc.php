@@ -11,4 +11,3 @@ $GLOBALS['weTagWizard']['attribute']['id102_submitonchange'] = new weTagData_sel
 $GLOBALS['weTagWizard']['attribute']['id709_start'] = new weTagData_textAttribute('709', 'start', false, '');
 $GLOBALS['weTagWizard']['attribute']['id710_end'] = new weTagData_textAttribute('710', 'end', false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

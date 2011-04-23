@@ -57,7 +57,7 @@ class weWorkflowBase{
 
 	function load(){
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query("SELECT * FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($this->ID));
+		$this->db->query("SELECT * FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->ID));
 		if($this->db->next_record())
 		for($i=0;$i<sizeof($tableInfo);$i++){
 				$fieldName = $tableInfo[$i]["name"];
@@ -80,7 +80,7 @@ class weWorkflowBase{
 
 		if ($this->ID==0){
 
-			$query = 'INSERT INTO '.mysql_real_escape_string($this->table).' SET '.$set;
+			$query = 'INSERT INTO '.$this->db->escape($this->table).' SET '.$set;
 			$this->db->query($query);
 			# get ID #
 			$this->db->query("SELECT LAST_INSERT_ID()");
@@ -88,7 +88,7 @@ class weWorkflowBase{
 			$this->ID = $this->db->f(0);
 		}
 		else{
-			$query = 'UPDATE '.mysql_real_escape_string($this->table).' SET '.$set.' WHERE '.$where;
+			$query = 'UPDATE '.$this->db->escape($this->table).' SET '.$set.' WHERE '.$where;
 			$this->db->query($query);
 
 		}
@@ -97,7 +97,7 @@ class weWorkflowBase{
 
 	function delete(){
 		if ($this->ID){
-			$this->db->query('DELETE FROM '.mysql_real_escape_string($this->table).' WHERE ID=' . abs($this->ID));
+			$this->db->query('DELETE FROM '.$this->db->escape($this->table).' WHERE ID=' . abs($this->ID));
 			return true;
 		}
 		else return false;

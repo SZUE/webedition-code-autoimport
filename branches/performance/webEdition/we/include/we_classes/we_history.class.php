@@ -47,18 +47,18 @@ class we_history
 
 
 	function insertIntoHistory(&$object){
+		$_db = new DB_WE();
 		//print $object->Table;
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
 		$_query = "SELECT * FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".DID='".abs($object->ID).
-							"' AND " . HISTORY_TABLE . ".DocumentTable='".mysql_real_escape_string(str_replace(TBL_PREFIX,'',$object->Table))."';";
+							"' AND " . HISTORY_TABLE . ".DocumentTable='".$_db->escape(str_replace(TBL_PREFIX,'',$object->Table))."';";
 		$object->DB_WE->query($_query);
-		$_db = new DB_WE();
 		while($object->DB_WE->next_record()){
-			$_row = "DELETE FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".ID = '" . mysql_real_escape_string($object->DB_WE->f("ID")) . "';";
+			$_row = "DELETE FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".ID = '" . $_db->escape($object->DB_WE->f("ID")) . "';";
 			$_db->query($_row);
 		}
 
-		$_query = 'INSERT INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,Act,UserName) VALUES("'.abs($object->ID).'","'.mysql_real_escape_string(str_replace(TBL_PREFIX,'',$object->Table)).'","'.mysql_real_escape_string($object->ContentType).'","'.mysql_real_escape_string($object->ModDate).'","save","'.mysql_real_escape_string($_username).'");';
+		$_query = 'INSERT INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,Act,UserName) VALUES("'.abs($object->ID).'","'.$_db->escape(str_replace(TBL_PREFIX,'',$object->Table)).'","'.$_db->escape($object->ContentType).'","'.$_db->escape($object->ModDate).'","save","'.$_db->escape($_username).'");';
 		$object->DB_WE->query($_query);
 
 	}

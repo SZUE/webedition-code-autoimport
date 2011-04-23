@@ -58,7 +58,7 @@ if (!$wfchk) {
 				break;
 			}
 		}
-		$wfchk_html .= '<script language="JavaScript" type="text/javascript">
+		$wfchk_html .= '<script  type="text/javascript">
                      function confirmDel(){' . "\n";
 		if ($found)
 			$wfchk_html .= 'if(confirm("' . g_l('alert',"[found_in_workflow]") . '"))' . "\n";
@@ -85,10 +85,10 @@ if (!$wfchk) {
 				'IsFolder' => 0, 'Path' => '', 'hasFiles' => 0
 			);
 			if (sizeof($selectedItems) > 0 && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)) {
-				$idInfos = getHash("SELECT IsFolder, Path FROM ".mysql_real_escape_string($table)." WHERE ID=" . abs($selectedItems[0]), $DB_WE);
+				$idInfos = getHash("SELECT IsFolder, Path FROM ".escape_sql_query($table)." WHERE ID=" . abs($selectedItems[0]), $DB_WE);
 				if ($idInfos['IsFolder']) {
 					$idInfos['hasFiles'] = f(
-							"SELECT ID FROM ".mysql_real_escape_string($table)." WHERE ParentID=" . abs($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . mysql_real_escape_string($idInfos['Path']) . "%'",
+							"SELECT ID FROM ".escape_sql_query($table)." WHERE ParentID=" . abs($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . escape_sql_query($idInfos['Path']) . "%'",
 							"ID",
 							$DB_WE) > 0 ? 1 : 0;
 				}
@@ -467,8 +467,8 @@ if (!$wfchk) {
 					g_l('alert',"[nothing_to_delete]"),
 					WE_MESSAGE_WARNING) . "\n";
 		}
-		print '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
-		print '<script language="JavaScript" type="text/javascript"><!--
+		print '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
+		print '<script  type="text/javascript"><!--
 ' . $script . '
 //-->
 </script>
@@ -498,7 +498,7 @@ htmlTop();
 print STYLESHEET;
 
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 //top.deleteMode=1;
 <?php
 

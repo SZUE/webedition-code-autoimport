@@ -213,7 +213,9 @@ $l_prefs = array(
 		'cannot_delete_default_language' => "The default language cannot be deleted.", // TRANSLATE
 		'language_already_exists' => "This language already exists", // TRANSLATE
 		'language_country_missing' => "Please select also a country", // TRANSLATE
-		'add_dictionary_question' => "Would you like to upload the dictionary for this language?", // TRANSLATE
+		'add_dictionary_question' => "Would you like to upload the dictionary for this language?",// TRANSLATE
+		'langlink_support' => "Automatic language links",// TRANSLATE
+		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
 
 		/*		 * ***************************************************************************
 		 * EDITOR
@@ -322,6 +324,8 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Emploi l´editeur WYSIWYG (vérsion beta)",
+		'wysiwyg_type' => "Préférences standard pour l'editeur de <em>textarea</em>",
+
 		/**
 		 * SHOWINPUTS
 		 */
@@ -535,6 +539,7 @@ $l_prefs = array(
 		'smtp_encryption_ssl' => "SSL", // TRANSLATE
 		'smtp_encryption_tls' => "TLS", // TRANSLATE
  	  'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
+	 'suppress404code' => "suppress 404 not found",// TRANSLATE
 
 
 		/*		 * ***************************************************************************
@@ -578,6 +583,7 @@ $l_prefs = array(
 		'editor_plaintext' => 'Plain textarea', // TRANSLATE
 		'editor_java' => 'Java editor', // TRANSLATE
 		'editor_javascript' => 'JavaScript editor (beta)', // TRANSLATE
+		'editor_javascript2' => 'CodeMirror2 (alpha)',
 		'editor_javascript_information' => 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.', // TRANSLATE
 
 

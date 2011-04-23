@@ -22,10 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_block($attribs, $content){
-	global $we_editmode;
+/*function we_block_controls(){
 
-	if ($we_editmode) {
+}*/
+
+function we_tag_block($attribs, $content){
+	if ($GLOBALS['we_editmode']) {
 		$we_button = new we_button();
 	}
 
@@ -104,7 +106,7 @@ function we_tag_block($attribs, $content){
 
 		if ($listlen != 0) {
 
-			if (!$we_editmode) {
+			if (!$GLOBALS['we_editmode']) {
 				if ($limit > 0 && $listlen > $limit) {
 					$listlen = $limit;
 				}
@@ -127,7 +129,7 @@ function we_tag_block($attribs, $content){
 				}
 
 				$noButCode .= $foo;
-				if ($we_editmode) {
+				if ($GLOBALS['we_editmode']) {
 
 					$show = 10;
 					if ($limit && $limit > 0) {
@@ -138,11 +140,6 @@ function we_tag_block($attribs, $content){
 							$show = 0;
 						}
 					}
-					$selectb = '<select name="' . $tmpname . '_' . $i . '">';
-					for ($j = 0; $j < $show; $j++) {
-						$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
-					}
-					$selectb .= '</select>';
 
 					$upbut = $we_button->create_button('image:btn_direction_up',
 							"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','$name','$i')");
@@ -152,6 +149,11 @@ function we_tag_block($attribs, $content){
 					$downbutDis = $we_button->create_button('image:btn_direction_down',
 							'',true,21,22,'','',true);
 					if ($showselect && $show > 0) {
+						$selectb = '<select name="' . $tmpname . '_' . $i . '">';
+						for ($j = 0; $j < $show; $j++) {
+							$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
+						}
+						$selectb .= '</select>';
 						$plusbut = $we_button->create_button('image:btn_add_listelement',
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','$name','$i',document.we_form.elements['" . $tmpname . "_" . $i . "'].options[document.we_form.elements['" . $tmpname . "_" . $i . "'].selectedIndex].text)",
 								true,100,22,'','',($show > 0 ? false : true));
@@ -166,7 +168,7 @@ function we_tag_block($attribs, $content){
 
 					if (!$isInListview) {
 
-						if ($showselect) {
+						if ($showselect && $show > 0) {
 
 							$buts = $we_button->create_button_table(
 									array(
@@ -190,7 +192,7 @@ function we_tag_block($attribs, $content){
 									5);
 						}
 					}
-					if (preg_match('/^< ?td/i', trim($foo)) || preg_match('/^< ?tr/i', trim($foo))) {
+					if (preg_match('/^< ?(tr|td)/i', trim($foo))) {
 						$foo = str_replace('=>', '#####PHPCALSSARROW####', $foo);
 						$foo = str_replace('?>', '#####PHPENDBRACKET####', $foo);
 						$foo = preg_replace('|(< ?td[^>]*>)(.*)(< ?/ ?td[^>]*>)|i', '$1' . $buts . '$2$3', $foo,1);
@@ -204,7 +206,7 @@ function we_tag_block($attribs, $content){
 			}
 		}
 	}
-	if ($we_editmode) {
+	if ($GLOBALS['we_editmode']) {
 
 		$show = 10;
 		if ($limit && $limit > 0) {
@@ -217,13 +219,12 @@ function we_tag_block($attribs, $content){
 		}
 
 		if ($show > 0) {
-			$selectb = '<select name="' . $tmpname . '_00">';
-			for ($j = 0; $j < $show; $j++) {
-				$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
-			}
-			$selectb .= '</select>';
-
 			if ($showselect) {
+				$selectb = '<select name="' . $tmpname . '_00">';
+				for ($j = 0; $j < $show; $j++) {
+					$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
+				}
+				$selectb .= '</select>';
 				$plusbut = $we_button->create_button('image:btn_add_listelement',
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name',document.we_form.elements['" . $tmpname . "_00'].options[document.we_form.elements['" . $tmpname . "_00'].selectedIndex].text)",
 						true,100,22,'','',($show > 0 ? false : true));

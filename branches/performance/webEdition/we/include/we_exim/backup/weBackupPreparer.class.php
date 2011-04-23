@@ -118,16 +118,6 @@
 
 			}
 
-			if(defined('BANNER_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
-				if(!weBackupUpdater::isColExist(BANNER_VIEWS_TABLE,'viewid')) {
-					$db->query('ALTER TABLE ' . BANNER_VIEWS_TABLE . ' ADD viewid BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST');
-				}
-				if(!weBackupUpdater::isColExist(BANNER_CLICKS_TABLE,'clickid')) {
-					$db->query('ALTER TABLE ' . BANNER_CLICKS_TABLE . ' ADD clickid BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST');
-				}
-			}
-
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
 			if($_SESSION['weBackupVars']['protect'] && !$_SESSION['weBackupVars']['options']['compress']) {
 				weFile::save($_SESSION['weBackupVars']['backup_file'],$GLOBALS['weXmlExImProtectCode'].$GLOBALS['weXmlExImHeader']);
@@ -366,7 +356,7 @@
 			$out = array();
 			weBackupPreparer::getFileList($list,$_SERVER['DOCUMENT_ROOT'].'/webEdition/site',true,false);
 			foreach ($list as $file) {
-				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . mysql_real_escape_string(str_replace($_SERVER['DOCUMENT_ROOT'].'/webEdition/site' , '' , $file)) . '";','ContentType',$DB_WE);
+				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape(str_replace($_SERVER['DOCUMENT_ROOT'].'/webEdition/site' , '' , $file)) . '";','ContentType',$DB_WE);
 				if($ct) {
 					if($ct != 'image/*' && $ct != 'application/*' && $ct != 'application/x-shockwave-flash') {
 						$out[]=$file;
@@ -407,8 +397,8 @@
 			global $DB_WE;
 
 			$tmp_db = new DB_WE;
-			$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".mysql_real_escape_string($path)."'");
-			$tmp_db->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE Path='".mysql_real_escape_string($path)."'");
+			$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($path)."'");
+			$tmp_db->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE Path='".$DB_WE->escape($path)."'");
 			if(($DB_WE->next_record())||($tmp_db->next_record()))
 				return true;
 			else
@@ -459,7 +449,7 @@
 
 				if(we_hasPerm('WXML_IMPORT')) {
 					return '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							if(confirm("' . g_l('backup','[import_file_found]') . ' \n\n' . g_l('backup','[import_file_found_question]') . '")){
 								top.opener.top.we_cmd("import");
 								top.close();
@@ -471,7 +461,7 @@
 					';
 				} else {
 					return '
-						<script language="JavaScript" type="text/javascript">
+						<script  type="text/javascript">
 							' . we_message_reporting::getShowMessageCall(g_l('backup','[import_file_found]'), WE_MESSAGE_WARNING) . '
 							top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 						</script>
@@ -482,7 +472,7 @@
 			} else if($format == 'customer'){
 
 				return '
-					<script language="JavaScript" type="text/javascript">
+					<script  type="text/javascript">
 						' . we_message_reporting::getShowMessageCall(g_l('backup','[customer_import_file_found]'), WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 					</script>
@@ -491,7 +481,7 @@
 			} else {
 
 				return '
-					<script language="JavaScript" type="text/javascript">
+					<script  type="text/javascript">
 						' . we_message_reporting::getShowMessageCall(g_l('backup','[format_unknown]'), WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 					</script>
@@ -550,7 +540,7 @@
 			}
 
 			return '
-				<script language="JavaScript" type="text/javascript">
+				<script  type="text/javascript">
 					' . we_message_reporting::getShowMessageCall($_mess, WE_MESSAGE_ERROR) . '
 					top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 				</script>

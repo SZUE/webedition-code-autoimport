@@ -37,8 +37,8 @@ $messaging->init($_SESSION["we_data"]['we_messagin_setting']);
 <html>
 <head>
     <title><?php echo g_l('modules_messaging','[settings]') ?></title>
-    <script language="JavaScript" type="text/javascript" src="/webEdition/js/we_showMessage.js"></script>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript" src="/webEdition/js/we_showMessage.js"></script>
+    <script type="text/javascript">
     <!--
 <?php
 
@@ -75,6 +75,7 @@ if( isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_
 <form name="settings" action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_settings.php" method="post">
 <?php
 if ( isset( $_REQUEST['we_transaction'] ) ) {
+	$_REQUEST['we_transaction'] = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 	echo hidden('we_transaction', $_REQUEST['we_transaction']);
 }
 echo hidden('mcmd', 'save_settings');

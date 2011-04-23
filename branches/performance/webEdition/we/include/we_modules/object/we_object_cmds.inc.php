@@ -27,6 +27,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 
 $we_transaction = $_REQUEST["we_cmd"][1] ? $_REQUEST["we_cmd"][1] : $we_transaction;
+$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:'');
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
@@ -55,13 +56,13 @@ switch($_REQUEST["we_cmd"][0]) {
 			$ews = ($foo ? $foo : ",").$wsid.",";
 			$check = 1;
 		}
-		$DB_WE->query("UPDATE " . OBJECT_X_TABLE .abs($tableID)." SET OF_ExtraWorkspacesSelected='".mysql_real_escape_string($ews)."' WHERE ID=".abs($oid));
-		$DB_WE->query("UPDATE " .OBJECT_FILES_TABLE. " SET ExtraWorkspacesSelected='".mysql_real_escape_string($ews)."' WHERE ID=".abs($ofID));
+		$DB_WE->query("UPDATE " . OBJECT_X_TABLE .abs($tableID)." SET OF_ExtraWorkspacesSelected='".$DB_WE->escape($ews)."' WHERE ID=".abs($oid));
+		$DB_WE->query("UPDATE " .OBJECT_FILES_TABLE. " SET ExtraWorkspacesSelected='".$DB_WE->escape($ews)."' WHERE ID=".abs($ofID));
 		$of = new we_objectFile();
 		$of->initByID($ofID,OBJECT_FILES_TABLE);
 		$of->insertAtIndex();
 		print '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				top.we_cmd("reload_editpage");
 			//-->
 			</script>';
@@ -73,7 +74,7 @@ switch($_REQUEST["we_cmd"][0]) {
 		$_SESSION["EditPageNr"] = WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 		print '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				top.we_cmd("switch_edit_page",'.WE_EDITPAGE_WORKSPACE.',"'.$_REQUEST["we_cmd"][1].'");
 			//-->
 			</script>';

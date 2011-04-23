@@ -22,7 +22,7 @@ CREATE TABLE tblObjectFiles (
   ExtraTemplates varchar(255) NOT NULL default '',
   TableID bigint(20) NOT NULL default '0',
   ObjectID bigint(20) NOT NULL default '0',
-  Category varchar(255) NOT NULL default '',
+  Category text NOT NULL,
   ClassName varchar(64) NOT NULL default '',
   IsClassFolder tinyint(1) NOT NULL default '0',
   IsNotEditable tinyint(1) NOT NULL default '0',

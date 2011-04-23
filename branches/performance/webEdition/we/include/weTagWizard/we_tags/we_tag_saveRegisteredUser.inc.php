@@ -9,4 +9,3 @@ $GLOBALS['weTagWizard']['attribute']['id439_userempty'] = new weTagData_textAttr
 $GLOBALS['weTagWizard']['attribute']['id440_passempty'] = new weTagData_textAttribute('440', 'passempty', false, '');
 $GLOBALS['weTagWizard']['attribute']['id437_register'] = new weTagData_selectAttribute('437', 'register', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id651_protected'] = new weTagData_textAttribute('651', 'protected', false, '');
-?>

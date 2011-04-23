@@ -32,6 +32,13 @@ include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.
 
 protect();
 htmlTop();
+
+$js_load=array('windows','utils/dimension','utils/prototypes','utils/cockpit');
+foreach($js_load as $js){
+	print'<script src="'.JS_DIR.$js.'.js" type="text/javascript"></script>';
+}
+unset($js_load);
+
 print STYLESHEET;
 
 print
@@ -103,7 +110,7 @@ if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 		return false;
 	}
 	?>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 top.cockpitFrame=top.cockpitFrame=top.weEditorFrameController.getActiveDocumentReference();
 var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.initEditorFrameData(
@@ -133,11 +140,11 @@ function gel(id_){
 	return document.getElementById ? document.getElementById(id_) : null;
 }
 
-for(var _file_ in oCfg.js_load_){
+/*for(var _file_ in oCfg.js_load_){
 	document.write('<scr'+'ipt src="<?php
 	echo JS_DIR;
-	?>'+oCfg.js_load_[_file_]+'.js"></scri'+'pt>');
-}
+	?>'+oCfg.js_load_[_file_]+'.js"/>');
+}*/
 
 jsCss='<style type="text/css">';
 for(var _cls_ in oCfg.color_scheme_){
@@ -1143,7 +1150,7 @@ function getUser(){
 			display: block;
 			border: 1px solid #999;
 			margin: auto;
-			padding: auto;
+			padding: 1px;
 		}
 		');
 

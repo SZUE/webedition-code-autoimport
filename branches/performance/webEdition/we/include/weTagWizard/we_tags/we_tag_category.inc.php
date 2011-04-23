@@ -14,5 +14,3 @@ $GLOBALS['weTagWizard']['attribute']['id815_onlyindir'] = new weTagData_textAttr
 if(defined("CATEGORY_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id61_id'] = new weTagData_selectorAttribute('61', 'id',CATEGORY_TABLE, '', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id688_separator'] = new weTagData_textAttribute('688', 'separator', false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-
-?>

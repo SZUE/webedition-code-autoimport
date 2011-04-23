@@ -265,10 +265,10 @@ function setDir(id){
 	function renameChildrenPath($id){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		$db->query("SELECT ID,IsFolder,Text FROM ".mysql_real_escape_string($this->table)." WHERE ParentID='".abs($id)."'");
+		$db->query("SELECT ID,IsFolder,Text FROM ".$db->escape($this->table)." WHERE ParentID='".abs($id)."'");
 		while($db->next_record()){
-			$newPath = f("SELECT Path FROM ".mysql_real_escape_string($this->table). " WHERE ID='".abs($id)."'","Path",$db2)."/".$db->f("Text");
-			$db2->query("UPDATE ".mysql_real_escape_string($this->table)." SET Path='".mysql_real_escape_string($newPath)."' WHERE ID='".abs($db->f("ID"))."'");
+			$newPath = f("SELECT Path FROM ".$db->escape($this->table). " WHERE ID='".abs($id)."'","Path",$db2)."/".$db->f("Text");
+			$db2->query("UPDATE ".$db->escape($this->table)." SET Path='".$db->escape($newPath)."' WHERE ID='".abs($db->f("ID"))."'");
 			if($db->f("IsFolder")){
 				$this->renameChildrenPath($db->f("ID"));
 			}
@@ -285,8 +285,8 @@ function setDir(id){
 
 		if (isset($_REQUEST["todel"])) {
 			$_SESSION["todel"] = $_REQUEST["todel"];
-			print '<script src="'.JS_DIR.'windows.js" language="JavaScript" type="text/javascript"></script>
-<script language="JavaScript" type="text/javascript">
+			print '<script src="'.JS_DIR.'windows.js"  type="text/javascript"></script>
+<script  type="text/javascript">
 	top.opener.top.we_cmd("del_frag", "' . $_REQUEST["todel"] . '");
 	top.close();
 </script>';
@@ -349,7 +349,7 @@ function setDir(id){
 		$wsQuery = getWsQueryForSelector($this->table, false);
 
 		$_query = "	SELECT ".$this->fields."
-					FROM ".mysql_real_escape_string($this->table)."
+					FROM ".escape_sql_query($this->table)."
 					WHERE ParentID='".abs($this->dir)."'".makeOwnersSql().
 					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
 

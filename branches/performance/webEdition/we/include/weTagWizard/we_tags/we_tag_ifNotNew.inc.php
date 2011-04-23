@@ -4,4 +4,3 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cla
 $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
 
 $GLOBALS['weTagWizard']['attribute']['id235_type'] = new weTagData_selectAttribute('235', 'type', array(new weTagDataOption('document', false, ''), new weTagDataOption('object', false, '')), false, '');
-?>

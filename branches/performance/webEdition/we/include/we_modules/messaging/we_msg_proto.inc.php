@@ -163,7 +163,7 @@ class we_msg_proto extends we_class {
     }
 
     function get_subfolder_count($id) {
-	$this->DB->query('SELECT count(ID) as c FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE ParentID=' . abs($id) . ' AND UserID=' . abs($this->userid));
+	$this->DB->query('SELECT count(ID) as c FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ParentID=' . abs($id) . ' AND UserID=' . abs($this->userid));
 
 	if ($this->DB->next_record() && $this->DB->f('c') > 0)
 	    return $this->DB->f('c');
@@ -224,7 +224,7 @@ class we_msg_proto extends we_class {
     function get_available_folders() {
 	$this->available_folders = array();
 
-	$this->DB->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE msg_type=' . abs($this->sql_class_nr)  . ' AND UserID=' . abs($this->userid));
+	$this->DB->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->DB->escape($this->folder_tbl) . ' WHERE msg_type=' . abs($this->sql_class_nr)  . ' AND UserID=' . abs($this->userid));
 	//$this->DB->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->folder_tbl . ' WHERE msg_type=' . $this->sql_class_nr  . ' AND UserID=' . $this->userid);
 	while ($this->DB->next_record()) {
 	    $this->available_folders[] = array('ID' => $this->DB->f('ID'),
@@ -240,7 +240,7 @@ class we_msg_proto extends we_class {
     }
 
     function create_folder($name, $parent) {
-		$this->DB->query('INSERT INTO ' . mysql_real_escape_string($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . abs($parent) . ', ' . abs($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . MSG_FOLDER_NR . ', "' . mysql_real_escape_string($name) . '")');
+		$this->DB->query('INSERT INTO ' . $this->DB->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . abs($parent) . ', ' . abs($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . MSG_FOLDER_NR . ', "' . $this->DB->escape($name) . '")');
 		$this->DB->query('SELECT LAST_INSERT_ID() as l');
 		$this->DB->next_record();
 
@@ -252,7 +252,7 @@ class we_msg_proto extends we_class {
 		    return -1;
 		}
 
-		$query = 'UPDATE ' . mysql_real_escape_string($this->folder_tbl) . ' SET Name="' . mysql_real_escape_string($folder_name) . '", ParentID=' . abs($parent_folder) . ' WHERE ID=' . abs($fid) . ' AND UserID=' . abs($this->userid);
+		$query = 'UPDATE ' . $this->DB->escape($this->folder_tbl) . ' SET Name="' . $this->DB->escape($folder_name) . '", ParentID=' . abs($parent_folder) . ' WHERE ID=' . abs($fid) . ' AND UserID=' . abs($this->userid);
 		$this->DB->query($query);
 		return 1;
     }
@@ -261,7 +261,7 @@ class we_msg_proto extends we_class {
     function &get_f_children($id) {
 	$fids = array();
 
-	$this->DB->query('SELECT ID FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE ParentID=' . addslashes($id) . ' AND UserID=' . abs($this->userid));
+	$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ParentID=' . addslashes($id) . ' AND UserID=' . abs($this->userid));
 	while ($this->DB->next_record())
 	    $fids[] = $this->DB->f('ID');
 
@@ -296,7 +296,7 @@ class we_msg_proto extends we_class {
 	}
 	$cond = substr($cond, 0, -4);
 
-	$query = 'SELECT ID, Name, (Properties & ' . MSG_FOLDER_NR . ') as norm FROM ' . mysql_real_escape_string($this->folder_tbl) . " WHERE ($cond) AND UserID=" . abs($this->userid);
+	$query = 'SELECT ID, Name, (Properties & ' . MSG_FOLDER_NR . ') as norm FROM ' . $this->DB->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . abs($this->userid);
 	$this->DB->query($query);
 	while($this->DB->next_record()) {
 	    if ($this->DB->f('norm') == 1) {
@@ -309,7 +309,7 @@ class we_msg_proto extends we_class {
 	if (empty($rm_folders)) {
 	    return $ret;
 	} else {
-	    $query = 'DELETE FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE (ID=' . join(' OR ID=', $rm_folders) . ') AND UserID=' . abs($this->userid);
+	    $query = 'DELETE FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE (ID=' . join(' OR ID=', $rm_folders) . ') AND UserID=' . abs($this->userid);
 	    $this->DB->query($query);
 	}
 
@@ -353,11 +353,11 @@ class we_msg_proto extends we_class {
 	else
 	    $sortorder = 'asc';
 
-	$this->DB->query('UPDATE ' . mysql_real_escape_string($this->folder_tbl) . ' SET sortItem="' . mysql_real_escape_string($sortfield) . '", sortOrder="' . mysql_real_escape_string($sortorder) . '" WHERE ID=' . abs($id) . ' AND UserID=' . abs($this->userid));
+	$this->DB->query('UPDATE ' . $this->DB->escape($this->folder_tbl) . ' SET sortItem="' . $this->DB->escape($sortfield) . '", sortOrder="' . $this->DB->escape($sortorder) . '" WHERE ID=' . abs($id) . ' AND UserID=' . abs($this->userid));
     }
 
     function init_sortstuff($id) {
-		$this->DB->query('SELECT sortItem, sortOrder FROM ' . mysql_real_escape_string($this->folder_tbl) . ' WHERE ID=' . abs($id) . ' AND UserID=' . abs($this->userid));
+		$this->DB->query('SELECT sortItem, sortOrder FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ID=' . abs($id) . ' AND UserID=' . abs($this->userid));
 		$this->DB->next_record();
 
 		if (($this->DB->f('sortItem'))) {
@@ -376,4 +376,3 @@ class we_msg_proto extends we_class {
 	//	$this->got_sortstuff_from_db = 1;
     }
 }
-    

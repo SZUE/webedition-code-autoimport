@@ -47,7 +47,7 @@ $clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : $pro
 if($ok){
 
 	if($type=="js"){
-		$code = '<script language="JavaScript" type="text/javascript">
+		$code = '<script type="text/javascript">
 <!--
 r = Math.random();
 document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" src=\"'.$getscript.'?r="+r+"&amp;bannername='.rawurlencode($tagname).'&amp;paths='.rawurlencode($paths).'&amp;type=js&amp;target='.rawurlencode($target).'&amp;bannerclick='.rawurlencode($clickscript).'&amp;height='.rawurlencode($height).'&amp;width='.rawurlencode($width).'&amp;page='.rawurlencode($page).'"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
@@ -74,7 +74,7 @@ document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" s
 
 ?>
 
-		<script language="JavaScript">
+		<script type="text/javascript">
 
 			self.focus();
 

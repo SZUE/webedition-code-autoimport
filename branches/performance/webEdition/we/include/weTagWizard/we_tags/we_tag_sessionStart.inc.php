@@ -10,4 +10,3 @@ $GLOBALS['weTagWizard']['attribute']['id875_monitorgroupfield'] = new weTagData_
 $GLOBALS['weTagWizard']['attribute']['id583_monitordoc'] = new weTagData_selectAttribute('583', 'monitordoc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 
 }
-?>

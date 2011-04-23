@@ -854,12 +854,10 @@ class liveUpdateFunctions {
 	 */
 	function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
 
-		global $liveUpdateError;
-
-		$liveUpdateError["errorNr"] = $errno;
-		$liveUpdateError["errorString"] = $errstr;
-		$liveUpdateError["errorFile"] = $errfile;
-		$liveUpdateError["errorLine"] = $errline;
+		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
+		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
+		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
+		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
 
 //		ob_start('error_log');
 //		var_dump($liveUpdateError);

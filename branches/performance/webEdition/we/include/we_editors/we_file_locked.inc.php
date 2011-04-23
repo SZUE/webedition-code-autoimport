@@ -27,7 +27,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 protect();
 $foo = getHash("SELECT * FROM " . USER_TABLE . " WHERE ID=".abs($we_user_locked)."",$DB_WE);
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script  type="text/javascript"><!--
 <?php print we_message_reporting::getShowMessageCall(sprintf( g_l('alert',"[file_locked]"), $foo["Vorname"], $foo["Nachname"] ), WE_MESSAGE_NOTICE); ?>
 //-->
 </script>

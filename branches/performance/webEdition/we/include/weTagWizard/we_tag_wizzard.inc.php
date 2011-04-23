@@ -128,10 +128,10 @@ print htmlTop();
 print STYLESHEET;
 print '
 <link href="'.CSS_DIR.'tagWizard.css" rel="styleSheet" type="text/css">
-<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>
-<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'tagWizard.js"></script>
-<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'keyListener.js"></script>
-<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
+<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>
+<script  type="text/javascript" src="' . JS_DIR . 'tagWizard.js"></script>
+<script  type="text/javascript" src="' . JS_DIR . 'keyListener.js"></script>
+<script  type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
 <script type="text/javascript">
 
 function closeOnEscape() {

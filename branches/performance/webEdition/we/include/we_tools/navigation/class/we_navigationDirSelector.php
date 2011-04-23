@@ -118,7 +118,7 @@ class we_navigationDirSelector extends we_dirSelector{
 		print '                <td width="10">'.getPixel(10,10).'</td><td width="40">
 ';
         $makefolderState = we_hasPerm("EDIT_NAVIGATION");
-       	print '<script language="JavaScript">makefolderState='.$makefolderState.';</script>';
+       	print '<script type="text/javascript">makefolderState='.$makefolderState.';</script>';
  		$we_button = new we_button();
 		print $we_button->create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}",true,-1,22,"","",$makefolderState ? false : true);
  		print '               </td>
@@ -217,7 +217,7 @@ function writeBody(d){
 	for(i=0;i < entries.length; i++){
 		var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"]=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
+		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
 		d.writeln('<td class="selector" width="25" align="center">');
 		d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 		d.writeln('</td>');
@@ -225,7 +225,7 @@ function writeBody(d){
 			d.writeln('<td class="selector">');
 			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
 		}else{
-			d.writeln('<td class="selector" style="-moz-user-select: none;" unselectable="on">');
+			d.writeln('<td class="selector" style="" unselectable="on">');
 			//d.writeln(cutText(entries[i].text,24));
 			d.writeln(entries[i].text);
 		}
@@ -238,7 +238,7 @@ function writeBody(d){
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){
-		d.writeln('<scr'+'ipt language="JavaScript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
+		d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
 	}
 	d.writeln('</body>');
 	d.close();
@@ -397,7 +397,7 @@ top.clearEntries();
 			$folder->Text=$txt;
 			$folder->Filename=$txt;
 			$folder->Path=$folder->getPath();
-			$this->db->query("SELECT ID,Text FROM ".mysql_real_escape_string($this->table)." WHERE Path='".mysql_real_escape_string($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
+			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('navigation',"[folder_exists]"),$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
@@ -406,7 +406,7 @@ top.clearEntries();
 					$we_responseText = g_l('navigation',"[wrongtext]");
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 				}else{
-					if(f("SELECT Text FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.updateEntry){

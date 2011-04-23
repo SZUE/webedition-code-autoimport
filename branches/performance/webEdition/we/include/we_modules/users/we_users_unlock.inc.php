@@ -37,7 +37,7 @@ $queries = array();
 if ($_transaction) { // clean session
 	if(isset($_SESSION["we_data"][$_transaction])){
 		unset($_SESSION["we_data"][$_transaction]); // we_transaction is resetted here
-		
+
 	}
 }
 
@@ -49,6 +49,6 @@ for ($i=0;$i<sizeof($_ids); $i++) {
 
 foreach ($queries as $table => $ids) {
 	//don't clean all locks! - is this really a needed statement???
-	$DB_WE->query('DELETE FROM '.LOCK_TABLE.' WHERE  tbl ="' . mysql_real_escape_string($table) . '" AND ID in ('. implode(', ', $ids) . ') AND sessionID="'.session_id().'" AND UserID='.abs($_REQUEST["we_cmd"][2]));
+	$DB_WE->query('DELETE FROM '.LOCK_TABLE.' WHERE  tbl ="' . $DB_WE->escape($table) . '" AND ID in ('. implode(', ', $ids) . ') AND sessionID="'.session_id().'" AND UserID='.abs($_REQUEST["we_cmd"][2]));
 }
 ?>UNLOCKED

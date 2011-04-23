@@ -126,7 +126,7 @@ $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("uploa
 ?>
 
 
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 	<?php if($we_alerttext): ?>
 	<?php print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR); ?>
 		<?php if($error): ?>

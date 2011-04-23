@@ -29,7 +29,7 @@ protect();
 ?>
 <html>
   <head>
-    <script language="JavaScript" type="text/javascript"><!--
+    <script type="text/javascript"><!--
 		function doSort(sortitem) {
 		    entrstr = "";
 

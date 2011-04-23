@@ -62,7 +62,7 @@ if($cmd == "ok"){
 			$script = '';
 		}
 	}
-	print '<script language="JavaScript" type="text/javascript"><!--
+	print '<script  type="text/javascript"><!--
 '.$script.'
 ' . we_message_reporting::getShowMessageCall($msg,  $msgType) . ';
 top.close();

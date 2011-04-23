@@ -36,60 +36,54 @@ function getHash($query, $DB_WE){
 		return $cache[$query];
 	} else {
 		$DB_WE->query($query);
-		if ($DB_WE->next_record()) {
-			$cache[$query] = $DB_WE->Record;
-		} else {
-			$cache[$query] = array();
-		}
+		$cache[$query]=($DB_WE->next_record()?$DB_WE->Record:array());
 	}
 	return $cache[$query];
 }
 
 function f($query, $field, $DB_WE) {
 	$h = getHash($query, $DB_WE);
-	return isset($h[$field]) ? $h[$field] : "";
+	return isset($h[$field]) ? $h[$field] : '';
 }
 
 function doUpdateQuery($DB_WE, $table, $hash, $where) {
 	$tableInfo = $DB_WE->metadata($table);
-	$sql = "UPDATE $table SET ";
+	$sql = 'UPDATE `'.$table.'` SET ';
 for ($i = 0; $i < sizeof($tableInfo); $i++) {
 		$fieldName = $tableInfo[$i]["name"];
 		if ($fieldName != "ID") {
-			$sql .= $fieldName . "='" . (isset($hash[$fieldName]) ? mysql_real_escape_string($hash[$fieldName]) : "") . "',";
+			$sql .= '`'.$fieldName . '`=\'' . (isset($hash[$fieldName]) ? $DB_WE->escape($hash[$fieldName]) : '') . '\',';
 		}
 	}
 	$sql = rtrim($sql, ',') . ' ' . $where;
 	return $DB_WE->query($sql);
 }
 
-function doUpdateQuery2($DB_WE, $table, $hash, $where) {
-	$tableInfo = $DB_WE->metadata($table);
-	$sql = "UPDATE $table SET ";
-	for ($i = 0; $i < sizeof($tableInfo); $i++) {
-		$fieldName = $tableInfo[$i]["name"];
-		if ($fieldName != "ID" && isset($hash[$fieldName])) {
-			$sql .= $fieldName . "='" . mysql_real_escape_string($hash[$fieldName]) . "',";
-		}
-	}
-	$sql = rtrim($sql, ',') . ' ' . $where;
+function escape_sql_query($inp){
+    if(is_array($inp))
+         return array_map(__METHOD__, $inp);
 
-	return $DB_WE->query($sql);
+     if(!empty($inp) && is_string($inp)) {
+         return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
+     }
+
+     return $inp;
+
 }
 
-function doInsetQuery($DB_WE, $table, $hash) {
+function doInsertQuery($DB_WE, $table, $hash) {
 
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
-	$values = "";
+	$values = '';
 	for ($i = 0; $i < sizeof($tableInfo); $i++) {
 		$fieldName = $tableInfo[$i]["name"];
 		array_push($fn, $fieldName);
-		$values .= "'" . mysql_real_escape_string(isset($hash[$fieldName . "_autobr"]) ? nl2br($hash[$fieldName]) : $hash[$fieldName]) . "',";
+		$values .= '"' . escape_sql_query(isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName]) . '",';
 	}
-	$ti_s = implode(",", $fn);
+	$ti_s = implode(',', $fn);
 	$values = rtrim($values, ',');
-	$sql = "INSERT INTO $table ($ti_s) VALUES ($values)";
+	$sql = 'INSERT INTO `'.$table.'` ('.$ti_s.') VALUES ('.$values.')';
 
 	return $DB_WE->query($sql);
 }

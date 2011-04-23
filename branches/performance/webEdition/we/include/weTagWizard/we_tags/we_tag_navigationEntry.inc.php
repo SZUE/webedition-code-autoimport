@@ -10,4 +10,3 @@ $GLOBALS['weTagWizard']['attribute']['id698_type'] = new weTagData_selectAttribu
 $GLOBALS['weTagWizard']['attribute']['id699_level'] = new weTagData_textAttribute('699', 'level', false, '');
 $GLOBALS['weTagWizard']['attribute']['id700_current'] = new weTagData_selectAttribute('700', 'current', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id701_position'] = new weTagData_choiceAttribute('701', 'position', array(new weTagDataOption('first', false, ''), new weTagDataOption('odd', false, ''), new weTagDataOption('even', false, ''), new weTagDataOption('last', false, '')), false,false, '');
-?>

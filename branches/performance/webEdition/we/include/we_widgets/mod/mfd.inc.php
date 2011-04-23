@@ -146,12 +146,12 @@ while ($j < $iMaxItems) {
 			if (isset($_ws[$_table])) {
 				$_wsa = makeArrayFromCSV($_ws[$_table]);
 				foreach ($_wsa as $_id) {
-					$_paths[] = 'Path LIKE ("' . mysql_real_escape_string(id_to_path($_id, $_table)) . '%")';
+					$_paths[] = 'Path LIKE ("' . $DB_WE->escape(id_to_path($_id, $_table)) . '%")';
 				}
 			}
 		}
 		$_hash = getHash(
-				"SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . mysql_real_escape_string($_table) . " WHERE ID = '" . abs($DB_WE->f(
+				"SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . $DB_WE->escape($_table) . " WHERE ID = '" . abs($DB_WE->f(
 						"DID")) . "'" . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ";",
 				$_db);
 		if (!empty($_hash)) {
@@ -192,5 +192,3 @@ while ($j < $iMaxItems) {
 }
 
 $lastModified .= "</table>\n";
-
-?>

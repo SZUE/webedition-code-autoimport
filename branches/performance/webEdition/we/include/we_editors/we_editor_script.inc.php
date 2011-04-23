@@ -58,12 +58,12 @@ if (isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview") {
 }
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>we_textarea.js?<?php print WE_VERSION ?>"></script>
-<?php if (isset($we_doc)) { ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>seeMode.php?EditPage=<?php print $we_doc->EditPageNr; ?>&ContentType=<?php print $we_doc->ContentType; ?>"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>we_textarea.js?<?php print WE_VERSION ?>"></script>
+<?php if (isset($GLOBALS["we_doc"])) { ?>
+<script  type="text/javascript" src="<?php print JS_DIR ?>seeMode.php?EditPage=<?php print $GLOBALS["we_doc"]->EditPageNr; ?>&ContentType=<?php print $GLOBALS["we_doc"]->ContentType; ?>"></script>
 
 <?php } ?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 
 var _controller = (opener && opener.top.weEditorFrameController) ? opener.top.weEditorFrameController : top.weEditorFrameController;
 
@@ -73,7 +73,8 @@ if (!_EditorFrame) {
 
 	<?php
 	if (isset($_REQUEST["we_transaction"])) {
-		print "_EditorFrame = _controller.getEditorFrameByTransaction('" . $_REQUEST["we_transaction"] . "');";
+		$_we_transaction = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+		print "_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');";
 	} else {
 		print "_EditorFrame = _controller.getEditorFrame();";
 	}
@@ -82,11 +83,9 @@ if (!_EditorFrame) {
 }
 
 
-<?php if (isset($we_doc)) { ?>
-<?php
-
-if (isset($we_doc->ApplyWeDocumentCustomerFiltersToChilds) && $we_doc->ApplyWeDocumentCustomerFiltersToChilds) {
-	print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $we_doc->ID . "', '" . $we_doc->Table . "', '" . $we_doc->ParentID . "');";
+<?php if (isset($GLOBALS["we_doc"])) {
+if (isset($GLOBALS["we_doc"]->ApplyWeDocumentCustomerFiltersToChilds) && $GLOBALS["we_doc"]->ApplyWeDocumentCustomerFiltersToChilds) {
+	print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS["we_doc"]->ID . "', '" . $GLOBALS["we_doc"]->Table . "', '" . $GLOBALS["we_doc"]->ParentID . "');";
 }
 
 ?>
@@ -99,7 +98,7 @@ var ajaxCallback = {
 				eval( o.responseText );
 				if ( weResponse ) {
 					if (weResponse["data"] == "true") {
-						_question = "<?php print ($we_doc->IsFolder ? g_l('alert','[confim][applyWeDocumentCustomerFiltersFolder]') : g_l('alert','[confim][applyWeDocumentCustomerFiltersDocument]')) ?>";
+						_question = "<?php print ($GLOBALS["we_doc"]->IsFolder ? g_l('alert','[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert','[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
 						if ( confirm(_question) ) {
 							top.we_cmd("applyWeDocumentCustomerFilterFromFolder");
 
@@ -114,12 +113,12 @@ var ajaxCallback = {
 	}
 }
 
-var _oldparentid = <?php print $we_doc->ParentID; ?>;
+var _oldparentid = <?php print $GLOBALS["we_doc"]->ParentID; ?>;
 function updateCustomerFilterIfNeeded() {
-	if (_elem = document.we_form["we_<?php print $we_doc->Name; ?>_ParentID"]) {
+	if (_elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_ParentID"]) {
 		_parentid = _elem.value;
 		if ( _parentid != _oldparentid ) {
-			top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php if(isset($_REQUEST["we_transaction"])) print $_REQUEST["we_transaction"]; ?>&table=<?php print $we_doc->Table; ?>&classname=<?php print $we_doc->ClassName; ?>', ajaxCallback );
+			top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php if(isset($_REQUEST["we_transaction"])) print $_REQUEST["we_transaction"]; ?>&table=<?php print $GLOBALS["we_doc"]->Table; ?>&classname=<?php print $GLOBALS["we_doc"]->ClassName; ?>', ajaxCallback );
 			_oldparentid = _parentid;
 		}
 	}
@@ -134,9 +133,9 @@ function pathOfDocumentChanged() {
 	var _filepath = '';
 	var elem = false;
 
-	elem = document.we_form["we_<?php print $we_doc->Name; ?>_Filename"]; // documents
+	elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Filename"]; // documents
 	if (!elem) { // object
-		elem = document.we_form["we_<?php print $we_doc->Name; ?>_Text"]
+		elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Text"]
 	}
 
 	if (elem) {
@@ -144,12 +143,12 @@ function pathOfDocumentChanged() {
 		// text
 		_filetext = elem.value;
 		// Extension if there
-		if (document.we_form["we_<?php print $we_doc->Name; ?>_Extension"]) {
-			_filetext += document.we_form["we_<?php print $we_doc->Name; ?>_Extension"].value;
+		if (document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Extension"]) {
+			_filetext += document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Extension"].value;
 		}
 
 		// path
-		if (_elem = document.we_form["we_<?php print $we_doc->Name; ?>_ParentPath"]) {
+		if (_elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_ParentPath"]) {
 			_filepath = _elem.value;
 		}
 		if (_filepath != "/") {
@@ -159,7 +158,7 @@ function pathOfDocumentChanged() {
 		_filepath += _filetext;
 		parent.frames[0].we_setPath(_filepath, _filetext);
 		<?php
-			if ( defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && isset($we_doc->documentCustomerFilter) ) {
+			if ( defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS["we_doc"]->EditPageNrs) && isset($GLOBALS["we_doc"]->documentCustomerFilter) ) {
 				// only use this when customer filters are possible
 		?>
 		updateCustomerFilterIfNeeded();
@@ -170,6 +169,21 @@ function pathOfDocumentChanged() {
 }
 
 <?php } ?>
+
+function showhideLangLink(allnames,allvalues,deselect){
+		var arr = allvalues.split(",");
+
+		for(var v in arr){
+			w=allnames+'['+arr[v]+']';
+			e = document.getElementById(w);
+			e.style.display='block';
+		}
+		w=allnames+'['+deselect+']';
+		e = document.getElementById(w);
+		e.style.display='none';
+		
+		
+	}
 
 function weDelCookie(name,path,domain){
 	if (getCookie(name)) {
@@ -188,7 +202,7 @@ function doScrollTo(){
 }
 
 function setScrollTo(){
-   parent.scrollToVal=<?php if($GLOBALS["BROWSER"] == "IE"): ?>document.body.scrollTop<?php else: ?>pageYOffset<?php endif ?>;
+   parent.scrollToVal=<?php print ($GLOBALS["BROWSER"] == "IE")?'document.body.scrollTop':'pageYOffset';?>;
 }
 
 function goTemplate(tid){
@@ -303,25 +317,25 @@ function we_cmd(){
 			break;
 
 
-<?php if(isset($we_doc) && ($we_doc->ContentType == "text/webedition" || $we_doc->ContentType == "objectFile") && defined("GLOSSARY_TABLE")): ?>
+<?php if(isset($we_doc) && ($we_doc->ContentType == "text/webedition" || $we_doc->ContentType == "objectFile") && defined("GLOSSARY_TABLE")){ ?>
 		case "check_glossary":
 			new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
 			break;
-<?php endif ?>
+<?php }
 
-<?php if(isset($we_doc) && $we_doc->ContentType == "image/*"): ?>
+	if(isset($we_doc) && $we_doc->ContentType == "image/*"){ ?>
 
 		case "add_thumbnail":
 			new jsWindow(url,"we_add_thumbnail",-1,-1,400,410,true,true,true);
 			break;
 		case "image_resize":
 			if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
-<?php if($we_doc->gd_support()): ?>
+<?php if($we_doc->gd_support()){ ?>
 			new jsWindow(url,"we_image_resize",-1,-1,260,<?php print ($we_doc->getGDType()=="jpg") ? 250 : 190; ?>,true,false,true);
-<?php else:
+<?php }else{
 	print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
 
-	endif ?>
+			} ?>
 
 			break;
 		case "image_convertJPEG":
@@ -329,29 +343,32 @@ function we_cmd(){
 			new jsWindow(url,"we_convert_jpg",-1,-1,260,160,true,false,true);
 			break;
 		case "image_rotate":
-			if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
-<?php if(function_exists("ImageRotate")): ?>
+			if (typeof CropTool == 'object' && CropTool.triggered){
+				CropTool.drop();
+			}
+<?php
+	if(function_exists("ImageRotate")){
 
-	<?php if($we_doc->gd_support()): ?>
-			new jsWindow(url,"we_rotate",-1,-1,300,<?php print ($we_doc->getGDType()=="jpg") ? 230 : 170; ?>,true,false,true);
-	<?php else:
-		print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
-	endif ?>
+		if($we_doc->gd_support()){ ?>
+				new jsWindow(url,"we_rotate",-1,-1,300,<?php print ($we_doc->getGDType()=="jpg") ? 230 : 170; ?>,true,false,true);
+		<?php
+		}else{
+			print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
+		}
+	}else{
 
-<?php else:
+		print we_message_reporting::getShowMessageCall(g_l('weClass',"[rotate_hint]"), WE_MESSAGE_ERROR);
 
-	print we_message_reporting::getShowMessageCall(g_l('weClass',"[rotate_hint]"), WE_MESSAGE_ERROR);
+	} ?>
+	break;
 
-	endif ?>
-			break;
-
-<?php endif ?>
+<?php } ?>
 		case "image_crop":
-<?php if(defined("WE_EDIT_IMAGE") && $we_doc->gd_support()) { ?>
+<?php if(defined("WE_EDIT_IMAGE") && $GLOBALS["we_doc"]->gd_support()) { ?>
 			CropTool.crop();
 <?php } else if(defined("WE_EDIT_IMAGE")) {
 
-			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$GLOBALS["we_doc"]->getGDType().']')), WE_MESSAGE_ERROR);
 	  } ?>
 		break;
 		case "crop_cancel":

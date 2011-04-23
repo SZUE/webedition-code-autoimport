@@ -68,4 +68,3 @@ editorObj.editLang(lang);
 top.close();
 ';
 }
-?>

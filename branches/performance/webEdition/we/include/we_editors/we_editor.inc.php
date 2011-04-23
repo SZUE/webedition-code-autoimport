@@ -319,6 +319,7 @@ if((($_REQUEST["we_cmd"][0] != "save_document" && $_REQUEST["we_cmd"][0] != "pub
 	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 */
 	$we_ext = ($we_doc->Extension == ".js" || $we_doc->Extension == ".css" || $we_doc->Extension == ".wml" || $we_doc->Extension == ".xml") ? ".html" : $we_doc->Extension;
+	//FIXME: php temporary file?
 	$tempName = dirname($we_doc->getSitePath())."/".session_id().$we_ext;
 	$tempName = str_replace("\\","/",$tempName);
 	insertIntoCleanUp($tempName,time());
@@ -775,7 +776,7 @@ else {
                     deleteLocalFile($we_file_to_delete_after_include);
 				}
                 if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS) {
-                    print '<script language="JavaScript" type="text/javascript">setTimeout("doScrollTo();",100);</script>';
+                    print '<script  type="text/javascript">setTimeout("doScrollTo();",100);</script>';
                 }
 			}
 			else {

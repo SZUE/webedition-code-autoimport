@@ -60,7 +60,7 @@ class weBannerFrames extends weModuleFrames{
 		$out=weModuleFrames::getJSTreeCode();
 
 		$out.='
-		 <script language="JavaScript">
+		 <script type="text/javascript">
 		function loadData(){
 			menuDaten.clear();';
 
@@ -136,7 +136,7 @@ class weBannerFrames extends weModuleFrames{
 		$out=
 			$tab_head .
 		'
-   <script language="JavaScript">
+   <script type="text/javascript">
 	<!--
 	function setTab(tab){
 		switch(tab){
@@ -171,7 +171,7 @@ $we_tabs->getHTML() .
 		$this->View->getJSFooterCode();
 		$we_button = new we_button();
 ?>
-		<script language="JavaScript">
+		<script type="text/javascript">
 			function sprintf(){
 				if (!arguments || arguments.length < 1) return;
 

@@ -25,7 +25,7 @@ protect();
 $ok = false;
 
 if ($_SESSION["perms"]["ADMINISTRATOR"]) {
-	$we_transaction = $_REQUEST["we_cmd"][1];
+	$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST["we_cmd"][1])?$_REQUEST["we_cmd"][1]:0);
 	// init document
 	$we_dt = $_SESSION["we_data"][$we_transaction];
 
@@ -37,7 +37,7 @@ if ($_SESSION["perms"]["ADMINISTRATOR"]) {
 
 htmlTop();
 ?>
-<script language="JavaScript" type="text/javascript"><!--
+<script type="text/javascript"><!--
 	<?php
 
 	if ($ok) {

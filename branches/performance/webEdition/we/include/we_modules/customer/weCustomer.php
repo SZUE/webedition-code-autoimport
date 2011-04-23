@@ -134,12 +134,7 @@ class weCustomer extends weModelBase {
 		$fixed["ID"] = $this->ID; // Bug Fix #8413 + #8520
 		if (isset($this->persistent_slots)) {
 			$orderedarray = $this->persistent_slots;
-			//$sortarray = array_map('strtolower', $orderedarray);
-			if ($mysort != '') {
-				$sortarray = makeArrayFromCSV($mysort);
-			} else {
-				$sortarray = range(0, count($orderedarray) - 1);
-			}
+			$sortarray = ($mysort != '' ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
 
 			if (count($sortarray) != count($orderedarray)) {
 
@@ -153,13 +148,12 @@ class weCustomer extends weModelBase {
 			ksort($orderedarray);
 
 			foreach ($orderedarray as $per) {
-				$var_value = '';
-				eval('if(isset($this->' . $per . ')) $var_value=$this->' . $per . ';');
+				$var_value = ((!$this->isnew && isset($this->$per)) ? $var_value=$this->$per : null);
 
-				$filed = $this->transFieldName($per, $branche);
+				$field = $this->transFieldName($per, $branche);
 
-				if ($filed != $per) {
-					$banches[$branche][$filed] = $var_value;
+				if ($field != $per) {
+					$banches[$branche][$field] = $var_value;
 				} else if (in_array($per, $this->properties)) {
 					$fixed[$per] = $var_value;
 				} else if (!in_array($per, $this->protected)) {
@@ -229,7 +223,7 @@ class weCustomer extends weModelBase {
 
 	function getFieldsDbProperties() {
 		$ret = array();
-		$this->db->query("SHOW COLUMNS FROM " . mysql_real_escape_string($this->table));
+		$this->db->query("SHOW COLUMNS FROM " . $this->db->escape($this->table));
 		while ($this->db->next_record()) {
 			$ret[$this->db->f("Field")] = $this->db->Record;
 		}
@@ -256,7 +250,7 @@ class weCustomer extends weModelBase {
 
 	function customerNameExist($name) {
 		$db = new DB_WE();
-		return f("SELECT ID FROM " . CUSTOMER_TABLE . " WHERE Username='" . mysql_real_escape_string($name) . "';", "ID", $db);
+		return f("SELECT ID FROM " . CUSTOMER_TABLE . " WHERE Username='" . escape_sql_query($name) . "';", "ID", $db);
 	}
 
 	function fieldExist($field) {
@@ -274,7 +268,7 @@ class weCustomer extends weModelBase {
 	}
 
 	function filenameNotValid() {
-		return preg_match('/[^a-z0-9öäüßÄÜÖ\._\@\ \-]/i', $this->Username);
+		return preg_match('|[/]|i', $this->Username);
 	}
 
 }

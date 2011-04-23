@@ -26,10 +26,10 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
 
 protect();
-  
+
 htmlTop();
 
-echo '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
+echo '<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
@@ -40,7 +40,7 @@ $headCal = we_htmlElement::linkElement(array("rel"=>"stylesheet","type"=>"text/c
 		   we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/calendar.js")).
 		   we_htmlElement::jsElement("",array("src"=>WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js")).
 		   we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/calendar-setup.js"));
-	
+
 echo $headCal;
 
 $_view = new weVersionsView();
@@ -50,15 +50,15 @@ echo $_view->getJS();
 print STYLESHEET;
 
 echo '
-<style type="text/css" media="screen"> 
+<style type="text/css" media="screen">
 #scrollContent {overflow: auto; }
 #searchTable {display: block; }
 #eintraege_pro_seite {display: inline;margin-right:10px; }
 #anzahl {display: inline;margin-right:10px;  }
 #eintraege {display: none; }
 #print {display: inline;}
-#zurueck {display: ;}
-#weiter {display: ;}
+#zurueck {display: block;}
+#weiter {display: block;}
 #pageselect {display: inline;}
 #bottom{display: inline;}
 #beschreibung_print {display: none; }
@@ -69,7 +69,7 @@ echo '
 #deleteButton{display: block; }
 </style>
 
-<style type="text/css" media="print"> 
+<style type="text/css" media="print">
 #scrollContent {overflow: visible; }
 #searchTable {display: none; }
 #eintraege_pro_seite {display: none; }

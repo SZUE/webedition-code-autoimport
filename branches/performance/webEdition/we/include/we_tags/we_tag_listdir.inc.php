@@ -62,7 +62,7 @@ function we_tag_listdir($attribs, $content){
 				if ($sort) {
 					$db3->query(
 							"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db2->f(
-									"ID")) . "' AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
+									"ID")) . "' AND " . LINK_TABLE . ".Name='".$db3->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
 					if ($db3->next_record()) {
 						$sortfield = $db3->f("Dat");
 					} else {
@@ -74,7 +74,7 @@ function we_tag_listdir($attribs, $content){
 				if ($dirfield) {
 					$db3->query(
 							"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db2->f(
-									"ID")) . "' AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($dirfield)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
+									"ID")) . "' AND " . LINK_TABLE . ".Name='".$db3->escape($dirfield)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
 					if ($db3->next_record()) {
 						$namefield = $db3->f("Dat");
 					} else {
@@ -94,7 +94,7 @@ function we_tag_listdir($attribs, $content){
 			if ($sort) {
 				$db2->query(
 						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
-								"ID")) . "' AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
+								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
 				if ($db2->next_record()) {
 					$sortfield = $db2->f("Dat");
 				} else {
@@ -106,7 +106,7 @@ function we_tag_listdir($attribs, $content){
 			if ($name) {
 				$db2->query(
 						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
-								"ID")) . "' AND " . LINK_TABLE . ".Name='".mysql_real_escape_string($name)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
+								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($name)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
 				if ($db2->next_record()) {
 					$namefield = $db2->f("Dat");
 				} else {

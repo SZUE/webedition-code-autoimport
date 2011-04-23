@@ -1144,7 +1144,7 @@ class weNavigationItems
 
 		$_ids = array();
 
-		$query = 'SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . mysql_real_escape_string($_path) . '" ' . ($id != 0 ? ' OR ID="' . abs($id) . '"' : '') . ' ORDER BY Ordn;';
+		$query = 'SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id != 0 ? ' OR ID="' . abs($id) . '"' : '') . ' ORDER BY Ordn;';
 
 		$_db->query($query);
 		while ($_db->next_record()) {

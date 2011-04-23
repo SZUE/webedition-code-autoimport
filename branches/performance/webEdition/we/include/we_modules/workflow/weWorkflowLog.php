@@ -41,22 +41,21 @@ class weWorkflowLog{
 
 	function logDocumentEvent($workflowDocID,$userID,$type,$description){
 		$db = new DB_WE();
-		$db->query("INSERT INTO ".WORKFLOW_LOG_TABLE." (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', ".abs($workflowDocID).", '".WORKFLOW_TABLE."', ".abs($userID).", '".time()."', ".abs($type).", '".mysql_real_escape_string($description)."');");
+		$db->query("INSERT INTO ".WORKFLOW_LOG_TABLE." (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', ".abs($workflowDocID).", '".WORKFLOW_TABLE."', ".abs($userID).", '".time()."', ".abs($type).", '".$db->escape($description)."');");
 	}
 
 	function logWorkflowEvent($workflowID,$userID,$type,$description){
 		$db = new DB_WE();
-		$db->query("INSERT INTO ".WORKFLOW_LOG_TABLE." (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', ".abs($workflowDocID).", '".WORKFLOW_TABLE."', ".abs($userID).", '".time()."', ".abs($type).", '".mysql_real_escape_string($description)."');");
+		$db->query("INSERT INTO ".WORKFLOW_LOG_TABLE." (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', ".abs($workflowDocID).", '".WORKFLOW_TABLE."', ".abs($userID).", '".time()."', ".abs($type).", '".$db->escape($description)."');");
 	}
 
 	function getLogForDocument($docID,$order="DESC",$wfType=0){
 
 		$offset = isset($_REQUEST["offset"]) ? abs($_REQUEST["offset"]) : 0;
-
-		$q = "SELECT ".WORKFLOW_LOG_TABLE.".* FROM ".WORKFLOW_LOG_TABLE.",".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_TABLE.".Type IN(".$wfType.") AND ".WORKFLOW_LOG_TABLE.".RefID=".WORKFLOW_DOC_TABLE.".ID AND  ".WORKFLOW_DOC_TABLE.".documentID=".abs($docID)." ORDER BY ".WORKFLOW_LOG_TABLE.".logDate ".mysql_real_escape_string($order).",ID DESC";
-
-
 		$db = new DB_WE();
+		$q = "SELECT ".WORKFLOW_LOG_TABLE.".* FROM ".WORKFLOW_LOG_TABLE.",".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_TABLE.".Type IN(".$wfType.") AND ".WORKFLOW_LOG_TABLE.".RefID=".WORKFLOW_DOC_TABLE.".ID AND  ".WORKFLOW_DOC_TABLE.".documentID=".abs($docID)." ORDER BY ".WORKFLOW_LOG_TABLE.".logDate ".$db->escape($order).",ID DESC";
+
+
 		$db->query($q);
 
 		$GLOBALS["ANZ_LOGS"] = $db->num_rows();

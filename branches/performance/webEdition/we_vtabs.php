@@ -42,9 +42,9 @@ if(defined("OBJECT_TABLE")){
 $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : WE_TREE_DEFAULT_WIDTH;
 
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>we_tabs.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR; ?>we_tabs.js"></script>
+<script  type="text/javascript">
 
 
 
@@ -134,15 +134,13 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 	var oldWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
 
 	function toggleTree() {
-
-
-		var resizeframe = parent.parent.document.getElementById("resizeframeid");
-		var cols = resizeframe.cols;
-		var pairs = cols.split(",");
 		var w = top.getTreeWidth();
-
+/*
 		if (w <= 22) {
 			var newWidth = parseInt(oldWidth);
+			if(newWidth<=22){
+				newWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
+	}
 			top.setTreeWidth(newWidth);
 			top.setTreeArrow("left");
 			top.storeTreeWidth(newWidth);
@@ -151,46 +149,21 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 			top.setTreeWidth(22);
 			top.setTreeArrow("right");
 			top.storeTreeWidth(22);
-		}
-
-
-
-		<?php if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-		parent.parent.bm_content_frame.bm_resize.calculateStartWidth();
-		<?php } ?>
-
+		}*/
+										top.toggleTree();
 	}
 
 	function treeOut() {
-
-
-		var resizeframe = parent.parent.document.getElementById("resizeframeid");
-		var cols = resizeframe.cols;
-		var pairs = cols.split(",");
-		var w = top.getTreeWidth();
-
-		if (w <= 22) {
-			var newWidth = parseInt(oldWidth);
-			top.setTreeWidth(newWidth);
-			top.setTreeArrow("left");
-			top.storeTreeWidth(newWidth);
-
-			<?php if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-			parent.parent.bm_content_frame.bm_resize.calculateStartWidth();
-			<?php } ?>
-
+		if (top.getTreeWidth() <= 22) {
+			toggleTree();
 		}
-
-
-
-
 	}
 
 </script>
 	</head>
 	<body bgcolor="#ffffff" style="background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">
 		<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;">
-					<script language="JavaScript" type="text/javascript"><!--
+					<script  type="text/javascript"><!--
 						for (var i=0; i<we_tabs.length;i++) {
 							we_tabs[i].write();
 							document.writeln('<br>');

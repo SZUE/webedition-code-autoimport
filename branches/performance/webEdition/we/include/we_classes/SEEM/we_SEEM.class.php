@@ -392,7 +392,7 @@
         	} else{
         		$mode = "preview";
         	}
-
+						$_REQUEST['we_transaction'] = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
             for($i = 0; $i < sizeof($SEEM_LinkArray[0]); $i++){
 
             	if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_CONTENT){	//	in Super-Easy-Edit-Mode only in Editmode !!!
@@ -734,8 +734,8 @@
             $db = new DB_WE();
             $query = "
                 SELECT ID
-                FROM " . mysql_real_escape_string($tbl) . "
-                WHERE Path='" . mysql_real_escape_string($docPath) . "'
+                FROM " . $db->escape($tbl) . "
+                WHERE Path='" . $db->escape($docPath) . "'
             ";
             $db->query($query);
 

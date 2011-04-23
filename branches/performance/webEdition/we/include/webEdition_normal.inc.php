@@ -31,7 +31,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 	*/
 	function pWebEdition_Tree(){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weMainTree.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMainTree.inc.php");
 		$Tree = new weMainTree("webEdition.php","top","self.Tree","top.load");
 		print $Tree->getJSTreeCode();
 	}
@@ -40,8 +40,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 	* @return void
 	* @desc prints JavaScript functions only needed in normal mode
 	*/
-	function pWebEdition_JSFunctions(){
-		?>
+	function pWebEdition_JSFunctions(){?>
 function toggleBusy(w) {
 	if(w == busy || firstLoad==false)
 		return;
@@ -111,8 +110,7 @@ var widthBeforeDeleteModeSidebar = 0;
 	* @return void
 	* @desc prints the different cases for the function we_cmd
 	*/
-	function pWebEdition_JSwe_cmds(){
-		?>
+	function pWebEdition_JSwe_cmds(){?>
 		case "new":
 			treeData.unselectnode();
 			if(typeof(arguments[5])!="undefined") {
@@ -143,11 +141,9 @@ var widthBeforeDeleteModeSidebar = 0;
 			treeData.setstate(treeData.tree_states["edit"]);
 			drawTree();
 
-			self.rframe.bframe.document.getElementById("treeHeadFrame").rows = "1,*,40";
-			var frameobj = self.rframe.document.getElementById("resizeframeid");
-			if (frameobj != null) {
-				frameobj.cols = widthBeforeDeleteMode + ",*, "+ widthBeforeDeleteModeSidebar;
-			}
+			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "1px";
+			top.setTreeWidth(widthBeforeDeleteMode);
+			top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			break;
 		case "delete":
 			if(top.deleteMode != arguments[1]){
@@ -157,7 +153,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				treeData.setstate(treeData.tree_states["edit"]);
 				drawTree();
 			}
-			self.rframe.bframe.document.getElementById("treeHeadFrame").rows = "150,*,40";
+			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "150px";
 
 			var width = top.getTreeWidth();
 
@@ -182,7 +178,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				treeData.setstate(treeData.tree_states["edit"]);
 				drawTree();
 			}
-			self.rframe.bframe.document.getElementById("treeHeadFrame").rows = "160,*,40";
+			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "160px";
 
 			var width = top.getTreeWidth();
 
@@ -210,20 +206,35 @@ var widthBeforeDeleteModeSidebar = 0;
 	* @return void
 	* @desc the frameset for the SeeMode
 	*/
-	function pWebEdition_Frameset(){
-		?>
-<frameset rows="32,*,<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="no" onUnload="doUnload()">
-	<frame src="header.php" name="header" scrolling="no" noresize>
-	<frame src="resizeframe.php" name="rframe" scrolling="no" noresize>
-	<frameset cols="25%,25%,10%,10%,10%,*" framespacing="0" border="0" frameborder="no">
-		<frame src="<?php print HTML_DIR ?>white.html" name="load" scrolling="no" noresize>
-		<frame src="<?php print HTML_DIR ?>white.html" name="load2" scrolling="no" noresize>
+	function pWebEdition_Frameset(){?>
+	<div style="position:fixed;top:0;left:0;right:0;bottom:0;border:0;">
+		<div style="position:absolute;top:0;left:0;right:0;height:32px;border-bottom: 1px solid black;">
+			<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/header.php");?>
+		</div>
+		<div style="position:absolute;top:32px;left:0;right:0;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
+			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+		</div>
+		<div style="position:absolute;left:0;right:0;bottom:0;height:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 1px solid;">
+			<div style="position:absolute;top:0;bottom:0;width:25%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:25%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
+			</div>
 			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
-		<frame src="<?php print HTML_DIR ?>white.html" name="ad" scrolling="no" noresize>
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>we_users_ping.php" name="ping" scrolling="no" noresize>
-        <frame src="<?php print HTML_DIR ?>white.html" name="postframe" scrolling="no" noresize>
-        <frame src="<?php print HTML_DIR ?>white.html" name="plugin" scrolling="no" noresize>
-	</frameset>
-</frameset>
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print WE_USERS_MODULE_PATH; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+			</div>
+		</div>
+	</div>
 	<?php
 	}

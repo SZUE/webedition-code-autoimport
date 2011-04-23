@@ -116,7 +116,7 @@ function we_tag_sendMail($attribs, $content){
 				$_now = time();
 
 				// insert into log
-				$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_LOG_TABLE . " (ip, unixTime) VALUES('".mysql_real_escape_string($_ip)."', " . abs($_now) . ")" );
+				$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_LOG_TABLE . " (ip, unixTime) VALUES('".$GLOBALS["DB_WE"]->escape($_ip)."', " . abs($_now) . ")" );
 				if (defined("FORMMAIL_EMPTYLOG") && (FORMMAIL_EMPTYLOG > -1)) {
 					$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime < " . abs($_now - FORMMAIL_EMPTYLOG));
 				}
@@ -131,21 +131,21 @@ function we_tag_sendMail($attribs, $content){
 					$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE blockedUntil != -1 AND blockedUntil < " . abs($_now));
 
 					// check if ip is allready blocked
-					if (f("SELECT id FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . mysql_real_escape_string($_ip) . "'","id",$GLOBALS["DB_WE"])) {
+					if (f("SELECT id FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS["DB_WE"]->escape($_ip) . "'","id",$GLOBALS["DB_WE"])) {
 						$_blocked = true;
 					} else {
 
 						// ip is not blocked, so see if we need to block it
-						$GLOBALS["DB_WE"]->query("SELECT * FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime > " . abs($_now - FORMMAIL_SPAN) . " AND ip='". mysql_real_escape_string($_ip) . "'");
+						$GLOBALS["DB_WE"]->query("SELECT * FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime > " . abs($_now - FORMMAIL_SPAN) . " AND ip='". $GLOBALS["DB_WE"]->escape($_ip) . "'");
 						if ($GLOBALS["DB_WE"]->next_record()) {
 							$_num = $GLOBALS["DB_WE"]->num_rows();
 							if ($_num > $_trials) {
 								$_blocked = true;
 								// cleanup
-								$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . mysql_real_escape_string($_ip) . "'" );
+								$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS["DB_WE"]->escape($_ip) . "'" );
 								// insert in block table
 								$blockedUntil = ($_blocktime == -1) ? -1 : abs($_now + $_blocktime);
-								$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".mysql_real_escape_string($_ip)."', " . $blockedUntil . ")" );
+								$GLOBALS["DB_WE"]->query("INSERT INTO " . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".$GLOBALS["DB_WE"]->escape($_ip)."', " . $blockedUntil . ")" );
 							}
 						}
 					}

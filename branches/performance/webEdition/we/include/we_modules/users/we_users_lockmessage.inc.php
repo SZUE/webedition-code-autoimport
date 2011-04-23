@@ -38,7 +38,7 @@ $foo = f("SELECT username FROM ".USER_TABLE." WHERE ID=$_userID","username",$DB_
 $content = "<p class='defaultfont'>" . sprintf(g_l('alert',"[temporaere_no_access_text]"), $we_doc->Text, $foo) . "</p>";
 
 ?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 <!--
 top.toggleBusy(0);
 //-->

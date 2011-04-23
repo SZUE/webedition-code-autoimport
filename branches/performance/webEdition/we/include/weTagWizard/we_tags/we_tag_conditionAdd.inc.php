@@ -13,5 +13,3 @@ $GLOBALS['weTagWizard']['attribute']['id84_type'] = new weTagData_selectAttribut
 $GLOBALS['weTagWizard']['attribute']['id85_property'] = new weTagData_selectAttribute('85', 'property', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id86_doc'] = new weTagData_selectAttribute('86', 'doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id878_exactmatch'] = new weTagData_selectAttribute('878', 'exactmatch', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
-
-?>

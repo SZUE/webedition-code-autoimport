@@ -57,7 +57,7 @@ $currentDir = str_replace("\\","/",$currentDir);
 $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_REQUEST["we_cmd"][5] : "");
 
 ?>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
      var rootDir="<?php print $rootDir; ?>";
      var currentID="<?php print $currentID; ?>";
      var currentDir="<?php print str_replace($rootDir, "", $currentDir); ?>";

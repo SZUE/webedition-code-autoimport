@@ -435,7 +435,7 @@ class weImageDialog extends weDialog{
 	</table>
 ';
 
-	$foo = '<script language="JavaScript" type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "") .'","");</script>';
+	$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "") .'","");</script>';
 	$classSelect = htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
 
 	$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
@@ -478,7 +478,7 @@ class weImageDialog extends weDialog{
 
 	function getJs(){
 		$yuiSuggest =& weSuggest::getInstance();
-		$js = weDialog::getJs(). '	<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>
+		$js = weDialog::getJs(). '	<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>
 	<script language=javascript>
 function we_cmd(){
 	var args = "";

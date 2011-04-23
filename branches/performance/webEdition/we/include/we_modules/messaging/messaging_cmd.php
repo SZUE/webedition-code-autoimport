@@ -29,16 +29,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 htmlTop();
 protect();
 
-function print_fc_html($blank = true) {
-	global $messaging;
-?>
-	<script language="JavaScript" type="text/javascript">
+function print_fc_html($blank = true) {?>
+	<script type="text/javascript">
 	<!--
 		top.content.update_msg_quick_view();
-		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array(<?php echo $messaging->get_ids_selected()?>);
-		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH.'messaging_fv_headers.php') . '?si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();?>&viewclass=" + top.content.viewclass;
+		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array(<?php echo $GLOBALS['messaging']->get_ids_selected()?>);
+		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_PATH.'messaging_fv_headers.php') . '?si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder();?>&viewclass=" + top.content.viewclass;
 		if (top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview) {
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH. 'messaging_show_folder_content.php');?>";
+			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_PATH. 'messaging_show_folder_content.php');?>";
 		}
 
 
@@ -53,60 +51,58 @@ function print_fc_html($blank = true) {
 }
 
 function refresh_work($blank = false) {
-	global $messaging;
-
 	if (isset($_REQUEST["entrsel"]) && $_REQUEST["entrsel"] != '')
 
-	    $messaging->set_ids_selected($_REQUEST["entrsel"]);
+	    $GLOBALS['messaging']->set_ids_selected($_REQUEST["entrsel"]);
 
-	$messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
+	$GLOBALS['messaging']->get_fc_data($GLOBALS['messaging']->Folder_ID, '', '', 0);
 	print_fc_html($blank);
 	update_treeview();
 }
 
 function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $usecache = 1) {
 
-	global $messaging;
-
 	if ($entrsel != '')
-		$messaging->set_ids_selected($entrsel);
+		$GLOBALS['messaging']->set_ids_selected($entrsel);
 
-	if ($id != $messaging->Folder_ID) {
-		$messaging->reset_ids_selected();
+	if ($id != $GLOBALS['messaging']->Folder_ID) {
+		$GLOBALS['messaging']->reset_ids_selected();
 ?>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript">
 	<!--
 		top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;
 	//-->
 	</script>
 <?php
 	}
-	$messaging->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
+	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
+	$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
-	$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 }
 
 function update_treeview() {
-	global $messaging;
-	echo '<script language="JavaScript" type="text/javascript">
+	echo '<script type="text/javascript">
 	<!--' . "\n";
 
-	foreach ($messaging->available_folders as $f) {
+	foreach ($GLOBALS['messaging']->available_folders as $f) {
 
-	echo 'top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $messaging->get_message_count($f['ID'], '') . ')", -1, 1);' . "\n";
+	echo 'top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $GLOBALS['messaging']->get_message_count($f['ID'], '') . ')", -1, 1);' . "\n";
 	}
 	echo "top.content.drawEintraege();\n//--></script>";
 }
 
-if(!isset($_REQUEST["we_transaction"])){
-    $_REQUEST["we_transaction"] = $we_transaction;
+if(!isset($_REQUEST['we_transaction'])){
+    $_REQUEST['we_transaction'] = $we_transaction;
+}else{
+	$_REQUEST['we_transaction']=(eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 }
 
-$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$GLOBALS['messaging'] = new we_messaging($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
+$GLOBALS['messaging']->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 
-$messaging->init($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
+$GLOBALS['messaging']->init($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
 
 if(!isset($_REQUEST["mcmd"])){
     $_REQUEST["mcmd"] = "goToDefaultCase";
@@ -132,7 +128,7 @@ switch($_REQUEST["mcmd"]) {
 	get_folder_content($f['ID'], '', '', '', 0);
 	print_fc_html();
 	update_treeview();
-	?><script language="JavaScript" type="text/javascript">
+	?><script type="text/javascript">
 	  <!--
 		if (top.content.viewclass != '<?php echo $_REQUEST['mode']?>') {
 		    top.content.set_frames('<?php echo $_REQUEST['mode']?>');
@@ -147,7 +143,7 @@ switch($_REQUEST["mcmd"]) {
     case 'show_message':
 	if (isset($id)) {
 	    ?>
-		<script language="JavaScript" type="text/javascript">
+		<script type="text/javascript">
 		<!--
 		    top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_PATH . "messaging_message_view.php?we_transaction=" . $_REQUEST['we_transaction'] . "&id=$id"?>";
 		//-->
@@ -159,8 +155,8 @@ switch($_REQUEST["mcmd"]) {
     case 'new_message':
 	?>
 
-	<script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+	<script type="text/javascript">
 	<!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_newmessage.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=<?php echo $_REQUEST['mode']?>", "messaging_new_message",-1,-1,670,530,true,false,true,false);
     //-->
@@ -169,8 +165,8 @@ switch($_REQUEST["mcmd"]) {
 		break;
 	case 'new_todo':
 ?>
-	<script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+	<script type="text/javascript">
 	<!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
     //-->
@@ -179,8 +175,8 @@ switch($_REQUEST["mcmd"]) {
 		break;
 	case 'forward_todo':
 ?>
-	<script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+	<script type="text/javascript">
 	<!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
     //-->
@@ -189,9 +185,9 @@ switch($_REQUEST["mcmd"]) {
 		break;
 	case 'rej_todo':
 ?>
-	<script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
 
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript">
 	<!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
     //-->
@@ -200,7 +196,7 @@ switch($_REQUEST["mcmd"]) {
 		break;
 	case 'reset_right_view':
 ?>
-	<script language="JavaScript" type="text/javascript">
+	<script type="text/javascript">
 	<!--
 		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
 		top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH . 'messaging_show_folder_content.php');?>";
@@ -212,8 +208,8 @@ switch($_REQUEST["mcmd"]) {
     case 'update_todo':
 	if (!empty($messaging->selected_message)) {
 	    ?>
-	    <script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
-	    <script language="JavaScript" type="text/javascript">
+	    <script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+	    <script type="text/javascript">
 	    <!--
 		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_update_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 		//-->
@@ -243,7 +239,7 @@ switch($_REQUEST["mcmd"]) {
 
     	$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	?>
-	    <script language="JavaScript" type="text/javascript">
+	    <script type="text/javascript">
 
 		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
 		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH.'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();?>&viewclass=" + top.content.viewclass;
@@ -273,7 +269,7 @@ switch($_REQUEST["mcmd"]) {
 
     	$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	?>
-	    <script language="JavaScript" type="text/javascript">
+	    <script type="text/javascript">
 	<!--
 		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
 		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH.'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();?>&viewclass" + top.content.viewclass;
@@ -310,7 +306,7 @@ switch($_REQUEST["mcmd"]) {
     case 'edit_folder':
 	    if ($_REQUEST['mode'] == 'new' || ($_REQUEST['mode'] == 'edit')) {
     	    ?>
-	        <script language="JavaScript" type="text/javascript">
+	        <script type="text/javascript">
 	        <!--
 		top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_edit_folder.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=<?php echo $_REQUEST['mode']?>&fid=<?php echo (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) ?>";
 		//-->
@@ -323,7 +319,7 @@ switch($_REQUEST["mcmd"]) {
 	    $mcount = $_REQUEST['mode'] == 'new' ? 0 : $messaging->get_message_count($_REQUEST['id'], '');
 	    if ($_REQUEST["mode"] == 'new') {
 		?>
-		<script language="JavaScript" type="text/javascript">
+		<script type="text/javascript">
 		<!--
 		    top.content.folder_added(<?php echo $_REQUEST['parent_id']?>);
 		    top.content.menuDaten.add(new top.content.urlEntry('<?php echo ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder')?>.gif', '<?php echo $_REQUEST['id']?>', '<?php echo $_REQUEST['parent_id']?>', '<?php echo $_REQUEST['name'] . ' - (0)'?>', 'leaf_Folder', '<?php print MESSAGES_TABLE; ?>', '<?php echo ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder')?>'));
@@ -334,7 +330,7 @@ switch($_REQUEST["mcmd"]) {
 		<?php
 	    } else {
 		?>
-		<script language="JavaScript" type="text/javascript">
+		<script type="text/javascript">
 		<!--
 
 		top.content.menuDaten.clear();
@@ -365,7 +361,7 @@ switch($_REQUEST["mcmd"]) {
 	        $folders = explode(',', $_REQUEST['folders']);
 
     	    ?>
-	        <script language="JavaScript" type="text/javascript">
+	        <script type="text/javascript">
 	        <!--
 
 		    top.content.delete_menu_entries(new Array(String(<?php echo join('), String(', $folders)?>)));
@@ -378,8 +374,8 @@ switch($_REQUEST["mcmd"]) {
 	    break;
     case 'edit_settings':
         ?>
-   	    <script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
-        <script language="JavaScript" type="text/javascript">
+   	    <script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+        <script type="text/javascript">
         <!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_settings.php?we_transaction=<?php echo    $_REQUEST['we_transaction']?>&mode=<?php echo $_REQUEST['mode']?>", "messaging_settings",-1,-   1,280,200,true,false,true,false);
 	    //-->
@@ -390,8 +386,8 @@ switch($_REQUEST["mcmd"]) {
     	if ($ui) {
 	        if ($messaging->save_settings(array('update_interval' => $ui))) {
 		    ?>
-		    <script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>messaging_std.js"></script>
-		    <script language="JavaScript" type="text/javascript">
+		    <script type="text/javascript" src="<?php echo JS_DIR?>messaging_std.js"></script>
+		    <script type="text/javascript">
     		<!--
     			<?php print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[saved]'), WE_MESSAGE_NOTICE ); ?>
 		        close_win("messaging_settings");
@@ -403,7 +399,7 @@ switch($_REQUEST["mcmd"]) {
 	    break;
     case 'messaging_close':
 	    ?>
-	    <script language="JavaScript" type="text/javascript">
+	    <script type="text/javascript">
 	    <!--
     	    top.close();
     	//-->

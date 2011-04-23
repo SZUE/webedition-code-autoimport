@@ -33,5 +33,3 @@ define("NEWSLETTER_PREFS_TABLE", TBL_PREFIX . "tblNewsletterPrefs");
 define("WE_NEWSLETTER_MODULE_DIR", $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/newsletter/");
 define("WE_NEWSLETTER_MODULE_PATH", "/webEdition/we/include/we_modules/newsletter/");
 define("WE_NEWSLETTER_CACHE_DIR", WE_NEWSLETTER_MODULE_DIR . "/cache/");
-
-?>

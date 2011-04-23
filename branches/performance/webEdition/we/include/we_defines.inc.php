@@ -148,6 +148,7 @@ define('FAILED_LOGINS_TABLE', TBL_PREFIX . 'tblFailedLogins');
 define('FILE_TABLE', TBL_PREFIX . 'tblFile');
 define('INDEX_TABLE', TBL_PREFIX . 'tblIndex');
 define('LINK_TABLE', TBL_PREFIX . 'tblLink');
+define('LANGLINK_TABLE', TBL_PREFIX . 'tblLangLink');
 define('PASSWD_TABLE', TBL_PREFIX . 'tblPasswd');
 define('PREFS_TABLE', TBL_PREFIX . 'tblPrefs');
 define('RECIPIENTS_TABLE', TBL_PREFIX . 'tblRecipients');
@@ -192,6 +193,13 @@ define('ERROR_LOG_HOLDTIME', 30); // in days
 
 define(
 				'WE_WYSIWYG_COMMANDS', 'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
+
+if(!defined('WE_SERVER_URL')){
+	/* Determine the protocol used for the request */
+	define('WE_SERVER_URL',(isset($_SERVER["SSL_PROTOCOL"]) ? "https://" : "http://").
+		$_SERVER["HTTP_HOST"].
+		':'.$_SERVER["SERVER_PORT"]);
+}
 
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS

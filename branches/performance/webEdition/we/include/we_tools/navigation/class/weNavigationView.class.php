@@ -92,7 +92,6 @@ class weNavigationView {
 	}
 
 	function getJSTop(){
-
 		$js='
 			var activ_tab = "1";
 			var hot = 0;
@@ -852,9 +851,9 @@ function processCommands() {
 
 					if($this->Model->IsFolder && $oldpath!='' && $oldpath!='/' && $oldpath!=$this->Model->Path) {
 						$db_tmp = new DB_WE();
-						$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE \'' . mysql_real_escape_string($oldpath) . '%\' AND ID<>\''.abs($this->Model->ID).'\';');
+						$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE \'' . $this->db->escape($oldpath) . '%\' AND ID<>\''.abs($this->Model->ID).'\';');
 						while($this->db->next_record()) {
-							$db_tmp->query('UPDATE ' . NAVIGATION_TABLE . ' SET Path=\'' . mysql_real_escape_string($this->Model->evalPath($this->db->f("ID"))) . '\' WHERE ID=\'' . abs($this->db->f("ID")) . '\';');
+							$db_tmp->query('UPDATE ' . NAVIGATION_TABLE . ' SET Path=\'' . $this->db->escape($this->Model->evalPath($this->db->f("ID"))) . '\' WHERE ID=\'' . abs($this->db->f("ID")) . '\';');
 						}
 					}
 					if ($newone) {

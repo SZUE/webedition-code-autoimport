@@ -58,8 +58,6 @@ class weTagData_selectorAttribute extends weTagDataAttribute
 	function getCodeForTagWizard()
 	{
 
-		global $we_button;
-
 		$weCmd = 'openDocselector';
 
 		if ($this->Selectable == 'folder') {
@@ -83,7 +81,7 @@ class weTagData_selectorAttribute extends weTagDataAttribute
 						'id' => $this->getIdName(),
 						'class' => 'wetextinput'
 				));
-		$button = $we_button->create_button(
+		$button = $GLOBALS['we_button']->create_button(
 				"select",
 				"javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "', 'document.getElementById(\\'" . $this->getIdName() . "\\').value', '', '', '" . session_id() . "', '', '" . $this->Selectable . "')");
 

@@ -25,13 +25,10 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 header("Content-Type: text/html; charset=" . g_l('charset',"[charset]"));
 
-?>
-<html>
-
+?><html>
 <head>
 
 <meta http-equiv="content-type" content="text/html; charset=<?php echo g_l('charset',"[charset]"); ?>">
-
 <?php
 
 print '<script type="text/javascript">
@@ -81,9 +78,7 @@ print '<script type="text/javascript">
 					parent.we_wysiwyg_lng["removeformat_warning"] = "'.g_l('wysiwyg',"[removeformat_warning]").'";
 					parent.we_wysiwyg_lng["removetags_warning"] = "'.g_l('wysiwyg',"[removetags_warning]").'";
 				</script>';
-?>
-
-</head>
+?></head>
 <body></body>
 
 </html>

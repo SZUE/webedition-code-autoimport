@@ -30,6 +30,10 @@ include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
+
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
@@ -58,7 +62,7 @@ $parts = array();
 	.quote_lvl_2 {color:#00ff00}
 	.quote_lvl_3 {color:#0000ff}
     </style>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 	function todo_markdone() {
 	    top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction']?>';
 	}
@@ -70,7 +74,7 @@ $parts = array();
 if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo') {	//	TODO
 
 	array_push($parts,array(	"headline" => g_l('modules_messaging','[subject]'),
-								"html"     => "<b>" . $format->get_subject() . "</b>",
+								"html"     => "<b>" . htmlspecialchars($format->get_subject()) . "</b>",
 								"noline"   => 1,
 								"space"    => 140
 							)
@@ -137,7 +141,7 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 } else {	//	Message
 
 	array_push($parts,array(	"headline" => g_l('modules_messaging','[subject]'),
-								"html"     => "<b>" . $format->get_subject() . "</b>",
+								"html"     => "<b>" . htmlspecialchars($format->get_subject()) . "</b>",
 								"noline"   => 1,
 								"space"    => 80
 							)
@@ -157,7 +161,7 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 				);
 	if(!empty($messaging->selected_message['hdrs']['To'])){
 		array_push($parts,array("headline" => g_l('modules_messaging','[recipients]'),
-								"html"     => $messaging->selected_message['hdrs']['To'],
+								"html"     => htmlspecialchars($messaging->selected_message['hdrs']['To']),
 								"space"    => 80
 								)
 				);

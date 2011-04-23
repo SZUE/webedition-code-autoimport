@@ -196,6 +196,8 @@ $l_prefs = array(
 		'language_already_exists' => "Diese Sprache wurde bereits angelegt.",
 		'language_country_missing' => "Bitte wählen Sie auch ein Land aus",
 		'add_dictionary_question' => "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?",
+		'langlink_support' => "Automatische Sprachverlinkung",
+		'langlink_support_backlinks' => "Erzeuge automatisch die Backlinks",
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */
@@ -293,6 +295,7 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Safari Wysiwyg Editor<br>(Betaversion) benutzen",
+		'wysiwyg_type' => "Editor für textareas wählen",
 		/**
 		 * SHOWINPUTS
 		 */
@@ -318,6 +321,7 @@ $l_prefs = array(
 		'taglinks_directoryindex_hide' => "Voreinstellung für Tags",
 		'taglinks_objectseourls' => "Voreinstellung für Tags",
 		'urlencode_objectseourls' => "URLencode die SEO-Links",
+		'suppress404code' => "unterdrücke 404 not found",
 		'general_seoinside' => "Darstellung innerhalb von webEdition ",
 		'general_seoinside_description' => "Werden DirectoryIndex-Dateinamen und Objekt SEO-Urls innerhalb von webEdition dargestellt, so kann webEdition diese nicht mehr als interne Links erkennen und ein Klick auf den Link öffnet nicht mehr das Bearbeitungsfenster. Mit den folgenden Optionen können beide (bis auf die Navigation) im Editmode und der Vorschau daher unterdrückt werden.",
 		'seoinside_hideinwebedition' => "In der Vorschau verstecken",
@@ -531,6 +535,7 @@ $l_prefs = array(
 		'editor_plaintext' => 'Unformatierte Textarea',
 		'editor_java' => 'Java-Editor',
 		'editor_javascript' => 'JavaScript-Editor (beta)',
+		'editor_javascript2' => 'CodeMirror2 (alpha)',
 		'editor_javascript_information' => 'Der JavaScript-Editor befindet sich derzeit im Beta-Stadium. Je nach aktivierten Funktionen kann es noch zu Fehlern kommen. Die Codevervollständigung funktioniert derzeit nicht im Internet Explorer. Für eine komplette Liste von bekannten Problemen schauen Sie bitte in den <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition Bugtracker</a>.',
 		'juplod_not_installed' => 'JUpload ist nicht installiert!',
 );

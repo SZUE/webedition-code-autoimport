@@ -69,8 +69,8 @@ class we_class_folder extends we_folder{
 		$DB_WE = new DB_WE();
 		$sp = explode('/',$this->Path);
 		$this->ClassPath='/'.$sp[1];
-		$this->ClassID = f('SELECT ID FROM ' . OBJECT_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
-		$this->RootfolderID = f("SELECT ID FROM " . OBJECT_FILES_TABLE ." WHERE Path='".mysql_real_escape_string($this->ClassPath)."'","ID",$DB_WE);
+		$this->ClassID = f('SELECT ID FROM ' . OBJECT_TABLE ." WHERE Path='".escape_sql_query($this->ClassPath)."'","ID",$DB_WE);
+		$this->RootfolderID = f("SELECT ID FROM " . OBJECT_FILES_TABLE ." WHERE Path='".escape_sql_query($this->ClassPath)."'","ID",$DB_WE);
 	}
 	function we_rewrite(){
 		$this->ClassName='we_class_folder';
@@ -126,9 +126,9 @@ class we_class_folder extends we_folder{
 			$last_pid = 0;
 			for($i=0;$i<$anz;$i++){
 				array_push($p,array_shift($spl));
-				$pa = mysql_real_escape_string(implode('/',$p));
+				$pa = escape_sql_query(implode('/',$p));
 				if($pa){
-					$pid = f("SELECT ID FROM ".mysql_real_escape_string($tblName)." WHERE Path='$pa'","ID",new DB_WE());
+					$pid = f("SELECT ID FROM ".escape_sql_query($tblName)." WHERE Path='$pa'","ID",new DB_WE());
 					if(!$pid){
 						// $folder = new we_folder(); 4076 orig
 						$folder = new we_class_folder();
@@ -299,8 +299,8 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 
 		// get Class
-		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'",$DB_WE);#4076 orig
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->ClassPath)."'",$DB_WE);
+		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mxysql_real_escape_string($this->Path)."'",$DB_WE);#4076 orig
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$DB_WE->escape($this->ClassPath)."'",$DB_WE);
 
 
 		$userDefaultWsPath = $this->getUserDefaultWsPath();
@@ -435,8 +435,8 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 
 		// get Class
-		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'",$DB_WE); #4076 orig
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->ClassPath)."'",$DB_WE);
+		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mxysql_real_escape_string($this->Path)."'",$DB_WE); #4076 orig
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$DB_WE->escape($this->ClassPath)."'",$DB_WE);
 
 		if(isset($_REQUEST["do"]) && $_REQUEST["do"]=="delete"){
 			foreach(array_keys($_REQUEST) as $f){
@@ -1015,7 +1015,7 @@ class we_class_folder extends we_folder{
 		$modulepath = WE_OBJECT_MODULE_PATH;
 
 		$ret = <<<EOF
-		<script language="JavaScript" type="text/javascript">
+		<script  type="text/javascript">
 		function sub(){
 
 			// not needed anymore since version 5?! (Bug Fix #989)
@@ -1048,7 +1048,7 @@ class we_class_folder extends we_folder{
 		function changeit(f){
 EOF;
 
-			$objID = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->Path)."'","ID",$DB_WE);
+			$objID = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE Path='".$DB_WE->escape($this->Path)."'","ID",$DB_WE);
 			$tableInfo =  $DB_WE->metadata(OBJECT_X_TABLE.$objID);
 
 			for($i=0;$i<sizeof($tableInfo);$i++){
@@ -1145,7 +1145,7 @@ EOF;
 		$deletedItems = array();
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mysql_real_escape_string($this->ClassPath)."'",$DB_WE);
+		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".$DB_WE->escape($this->ClassPath)."'",$DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f,0,3)=="weg"){
 				//$this->query("");

@@ -54,7 +54,7 @@ $_sObjId = $_REQUEST["we_cmd"][5];
 
 switch ($_REQUEST["we_cmd"][2]) {
 	case 'delete' :
-		$_sql = "DELETE FROM " . mysql_real_escape_string($_table) . " WHERE ID = " . abs($q_Csv);
+		$_sql = "DELETE FROM " . escape_sql_query($_table) . " WHERE ID = " . abs($q_Csv);
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
@@ -67,13 +67,13 @@ switch ($_REQUEST["we_cmd"][2]) {
 		$entText = base64_decode($q_Text);
 		$entText = str_replace("'", '&#039;', $entText);
 		$entText = str_replace('"', '&quot;', $entText);
-		$_sql = "UPDATE " . mysql_real_escape_string($_table) . " SET
-			Title = '" . mysql_real_escape_string($_REQUEST['we_cmd'][7]) . "',
-			Text = '" . mysql_real_escape_string($_REQUEST['we_cmd'][8]) . "',
-			Priority = '" . mysql_real_escape_string($q_Priority) . "',
-			Valid = '" . mysql_real_escape_string($q_Valid) . "',
-			ValidFrom = '" . mysql_real_escape_string($q_ValidFrom) . "',
-			ValidUntil = '" . mysql_real_escape_string($q_ValidUntil) . "'
+		$_sql = "UPDATE " . escape_sql_query($_table) . " SET
+			Title = '" . escape_sql_query($_REQUEST['we_cmd'][7]) . "',
+			Text = '" . escape_sql_query($_REQUEST['we_cmd'][8]) . "',
+			Priority = '" . escape_sql_query($q_Priority) . "',
+			Valid = '" . escape_sql_query($q_Valid) . "',
+			ValidFrom = '" . escape_sql_query($q_ValidFrom) . "',
+			ValidUntil = '" . escape_sql_query($q_ValidUntil) . "'
 			WHERE ID = " . abs($q_ID);
 		break;
 	case 'insert' :
@@ -91,7 +91,7 @@ switch ($_REQUEST["we_cmd"][2]) {
 		$entText = base64_decode($q_Text);
 		$entText = str_replace("'", '&#039;', $entText);
 		$entText = str_replace('"', '&quot;', $entText);
-		$_sql = "INSERT INTO " . mysql_real_escape_string($_table) . " (
+		$_sql = "INSERT INTO " . escape_sql_query($_table) . " (
 			WidgetName,
 			UserID,
 			CreationDate,
@@ -105,12 +105,12 @@ switch ($_REQUEST["we_cmd"][2]) {
 			'" . ($_title) . "',
 			" . abs($_SESSION['user']['ID']) . ",
 			DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
-			'" . mysql_real_escape_string($_REQUEST['we_cmd'][7]) . "',
-			'" . mysql_real_escape_string($_REQUEST['we_cmd'][8]) . "',
-			'" . mysql_real_escape_string($q_Priority) . "',
-			'" . mysql_real_escape_string($q_Valid) . "',
-			'" . mysql_real_escape_string($q_ValidFrom) . "',
-			'" . mysql_real_escape_string($q_ValidUntil) . "'
+			'" . escape_sql_query($_REQUEST['we_cmd'][7]) . "',
+			'" . escape_sql_query($_REQUEST['we_cmd'][8]) . "',
+			'" . escape_sql_query($q_Priority) . "',
+			'" . escape_sql_query($q_Valid) . "',
+			'" . escape_sql_query($q_ValidFrom) . "',
+			'" . escape_sql_query($q_ValidUntil) . "'
 		)";
 		break;
 }
@@ -137,13 +137,13 @@ switch ($bSort) {
 }
 
 if (!$bDisplay) {
-	$_sql = "SELECT * FROM " . mysql_real_escape_string($_table) . " WHERE
-		WidgetName = '" . mysql_real_escape_string($_title) . "' AND
+	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
+		WidgetName = '" . escape_sql_query($_title) . "' AND
 		UserID = " . abs($_SESSION['user']['ID']) . "
 		ORDER BY " . $q_sort;
 } else {
-	$_sql = "SELECT * FROM " . mysql_real_escape_string($_table) . " WHERE
-		WidgetName = '" . mysql_real_escape_string($_title) . "' AND
+	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
+		WidgetName = '" . escape_sql_query($_title) . "' AND
 		UserID = " . abs($_SESSION['user']['ID']) . " AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")

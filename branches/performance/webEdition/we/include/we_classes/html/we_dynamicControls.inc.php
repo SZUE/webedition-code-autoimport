@@ -82,7 +82,7 @@ class we_dynamicControls {
 	function js_fold_checkbox_groups($groups, $filter, $use_with_user_module) {
 		// Define start of JavaScript
 		$_JavaScript_start = '
-			<script language="JavaScript" type="text/javascript">
+			<script  type="text/javascript">
 			<!--';
 
 		// Define end of JavaScript

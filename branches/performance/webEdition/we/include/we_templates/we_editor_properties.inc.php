@@ -35,13 +35,13 @@ if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["d
 
 htmlTop();
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 <?php print STYLESHEET; ?>
 	</head>
 	<body class="weEditorBody" onUnload="doUnload()">
 		<form name="we_form" method="post" onSubmit="return false;"><?php $we_doc->pHiddenTrans(); ?>
-		<!-- <table cellpadding="6" cellspacing="0" border="0"><tr><td> -->	
+		<!-- <table cellpadding="6" cellspacing="0" border="0"><tr><td> -->
 <?php
 	$implementYuiAC = false;
 	switch($we_doc->ContentType){

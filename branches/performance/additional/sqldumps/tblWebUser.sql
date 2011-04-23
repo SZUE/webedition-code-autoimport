@@ -17,8 +17,8 @@ CREATE TABLE tblWebUser (
   IsFolder tinyint(1) default NULL,
   Icon varchar(255) default NULL,
   `Text` varchar(255) default NULL,
- `Newsletter_Ok` enum('','ja') NOT NULL,
- `Newsletter_HTMLNewsletter` enum('','ja') NOT NULL,
+  `Newsletter_Ok` enum('','ja','0','1','2') NOT NULL,
+  `Newsletter_HTMLNewsletter` enum('','ja','0','1','2') NOT NULL,
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`)
 ) ENGINE=MyISAM;

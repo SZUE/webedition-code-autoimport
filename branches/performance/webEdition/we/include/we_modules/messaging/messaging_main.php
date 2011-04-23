@@ -27,19 +27,24 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 protect();
 htmlTop();
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 ?>
 	</head>
 
-<?php if ($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php switch($GLOBALS["BROWSER"]){
+	case 'NN6': ?>
 	<frameset cols="180,*" border="1" frameborder="1" id="resizeframeid">
 		<frameset rows="0,*" framespacing="0" border="1" frameborder="1">
 			<frame src="<?php print HTML_DIR?>whiteWithTopLine.html" scrolling="no">
 			<frame src="<?php print HTML_DIR?>white.html" name="messaging_tree"  scrolling="aoto">
 		</frameset>
 		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="messaging_right">
-	</frameset>SAFARI
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
+	</frameset>
+<?php break;
+		case 'SAFARI': ?>
 	<frameset cols="180,*" border="0" frameborder="0" id="resizeframeid">
 		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
 			<frame src="<?php print HTML_DIR?>whiteWithTopLine.html" scrolling="no" noresize>
@@ -47,7 +52,8 @@ htmlTop();
 		</frameset>
 		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="messaging_right">
 	</frameset>
-<?php } else { //IE ?>
+<?php break;
+		default://IE ?>
 	<frameset cols="180,*" border="0" frameborder="0" id="resizeframeid">
 		<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
 			<frame src="<?php print HTML_DIR?>whiteWithTopLine.html" scrolling="no">

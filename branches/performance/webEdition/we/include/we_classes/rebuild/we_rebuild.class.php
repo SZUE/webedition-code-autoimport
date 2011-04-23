@@ -346,7 +346,7 @@ class we_rebuild {
 			if($doctypes){
 				$_foo = makeArrayFromCSV($doctypes);
 				foreach($_foo as $doctypeID){
-					$_doctype_query .= " Doctype = '".mysql_real_escape_string($doctypeID)."' OR ";
+					$_doctype_query .= " Doctype = '".escape_sql_query($doctypeID)."' OR ";
 				}
 				$_doctype_query = ereg_replace('^(.+)OR $','\1',$_doctype_query);
 				$_doctype_query = "(".$_doctype_query.")";

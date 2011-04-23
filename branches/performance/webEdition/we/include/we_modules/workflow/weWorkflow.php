@@ -309,9 +309,9 @@ class weWorkflow extends weWorkflowBase{
 			$cats=makeArrayFromCSV($categories);
 			foreach($cats as $k=>$v){
 				if ($doctype!='')
-					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE DocType IN ('.$doctype.') AND Categories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
+					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE DocType IN ('.$doctype.') AND Categories LIKE \'%,'.$db->escape($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				else
-					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Categories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
+					$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Categories LIKE \'%,'.$db->escape($v).',%\' AND Type='.WE_WORKFLOW_DOCTYPE_CATEGORY.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				while ($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
 						$wfIDs[$db->f('ID')]++;
@@ -370,7 +370,7 @@ class weWorkflow extends weWorkflowBase{
 			$tail = ' AND ObjectFileFolders LIKE \'%,'.abs($folderID).',%\'';
 		}
 
-		$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.mysql_real_escape_string($object).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE.$tail);
+		$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.$db->escape($object).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE.$tail);
 		while ($db->next_record()){
 			if(isset($wfIDs[$db->f('ID')])){
 				$wfIDs[$db->f('ID')]++;
@@ -386,7 +386,7 @@ class weWorkflow extends weWorkflowBase{
 		{
 			$cats=makeArrayFromCSV($categories);
 			foreach($cats as $k=>$v){
-				$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.mysql_real_escape_string($object).',%\' AND ObjCategories LIKE \'%,'.mysql_real_escape_string($v).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
+				$db->query('SELECT ID FROM '.WORKFLOW_TABLE.' WHERE Objects LIKE \'%,'.$db->escape($object).',%\' AND ObjCategories LIKE \'%,'.$db->escape($v).',%\' AND Type='.WE_WORKFLOW_OBJECT.' AND Status='.WE_WORKFLOW_STATE_ACTIVE);
 				while ($db->next_record()){
 					if(isset($wfIDs[$db->f('ID')])){
 						$wfIDs[$db->f('ID')]++;

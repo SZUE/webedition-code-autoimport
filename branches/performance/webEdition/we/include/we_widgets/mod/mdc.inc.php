@@ -39,8 +39,8 @@ if ($_binary{0} && !empty($_csv)) {
 	foreach ($_paths as $_path) {
 		$_where[] = 'Path LIKE "' . $_path . '%" ';
 	}
-	$_query = "SELECT ID,Path,Icon,Text,ContentType FROM " . mysql_real_escape_string($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ? ' AND ContentType<>"image/*"' : '') . ';';
-} else 
+	$_query = "SELECT ID,Path,Icon,Text,ContentType FROM " . escape_sql_query($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ? ' AND ContentType<>"image/*"' : '') . ';';
+} else
 	if (!$_binary{0} && !empty($_csv)) {
 		list($folderID, $folderPath) = explode(",", $_csv);
 		$q_path = 'Path LIKE "' . $folderPath . '%"';
@@ -50,13 +50,13 @@ if ($_binary{0} && !empty($_csv)) {
 			$_categories = array();
 			foreach ($_cats as $_myCat) {
 				$_id = f(
-						'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . mysql_real_escape_string(base64_decode($_myCat)) . '";', 
-						'ID', 
+						'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . escape_sql_query(base64_decode($_myCat)) . '";',
+						'ID',
 						$DB_WE);
-				$_categories[] = 'Category LIKE ",' . mysql_real_escape_string($_id) . ',"';
+				$_categories[] = 'Category LIKE ",' . escape_sql_query($_id) . ',"';
 			}
 		}
-		$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . mysql_real_escape_string($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
+		$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . escape_sql_query($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
 				$_categories)) ? ' AND (' . implode(' OR ', $_categories) . ')' : '') . ' AND IsFolder=0;';
 	}
 if (!empty($_csv) && $DB_WE->query($_query)) {
@@ -67,15 +67,13 @@ if (!empty($_csv) && $DB_WE->query($_query)) {
 					"src" => ICON_DIR . $DB_WE->f("Icon")
 				)) . getpixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_htmlElement::htmlA(
 				array(
-					
+
 						"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f(
-								"ID") . '\',\'' . $DB_WE->f("ContentType") . '\')"', 
-						"title" => $DB_WE->f("Path"), 
+								"ID") . '\',\'' . $DB_WE->f("ContentType") . '\')"',
+						"title" => $DB_WE->f("Path"),
 						"style" => "color:#000000;text-decoration:none;"
-				), 
+				),
 				$DB_WE->f("Path")) . '</td></tr>';
 	}
 	$mdc .= '</table>';
 }
-
-?>

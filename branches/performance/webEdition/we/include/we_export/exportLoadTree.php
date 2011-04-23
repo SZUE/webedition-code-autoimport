@@ -31,10 +31,7 @@ if(isset($_REQUEST["we_cmd"][5])){
     $_SESSION["prefs"]["FileFilter"] = $_REQUEST["we_cmd"][5];
 }
 
-if(isset($_REQUEST["we_cmd"][4])){
-	$topFrame=$_REQUEST["we_cmd"][4];
-}
-else $topFrame = "top";
+$topFrame=(isset($_REQUEST["we_cmd"][4])?$_REQUEST["we_cmd"][4]:"top");
 
 $table = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
 
@@ -70,7 +67,7 @@ if($ws = get_ws($table)) {
 	$ac = getAllowedClasses($DB_WE);
 	foreach($ac as $cid){
 		$path = id_to_path($cid,OBJECT_TABLE);
-		$wsQuery .= " Path like '".mysql_real_escape_string($path)."/%' OR Path='".mysql_real_escape_string($path)."' OR ";
+		$wsQuery .= " Path like '".$DB_WE->escape($path)."/%' OR Path='".$DB_WE->escape($path)."' OR ";
 	}
 }
 
@@ -94,43 +91,51 @@ function getQueryParents($path){
 		$out .= "Path='$path' OR ";
 		$path = dirname($path);
 	}
-	if($out){
-		return substr($out,0,strlen($out)-3);
-	}else{
-		return "";
-	}
+	return $out?substr($out,0,strlen($out)-3):'';
 }
 
 function getItems($ParentID) {
-	global $prefs,$table,$openFolders,$parentpaths,$wsQuery,$treeItems,$Tree;
-
-	if($table == ""){
-		$table = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
+	if($GLOBALS['table'] == ""){
+		$GLOBALS['table'] = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
 	}
 
-	if($table==FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))
-	return 0;
-	if($table==TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES"))
-	return 0;
-	if(defined('OBJECT_FILES_TABLE') && $table==OBJECT_FILES_TABLE && !we_hasPerm("CAN_SEE_OBJECTFILES"))
-	return 0;
-	if(defined('OBJECT_TABLE') && $table==OBJECT_TABLE && !we_hasPerm("CAN_SEE_OBJECTS"))
-	return 0;
+	switch($GLOBALS['table']){
+		case FILE_TABLE:
+			if(!we_hasPerm("CAN_SEE_DOCUMENTS")){
+				return 0;
+			}
+			break;
+		case TEMPLATES_TABLE:
+			if(!we_hasPerm("CAN_SEE_TEMPLATES")){
+				return 0;
+			}
+			break;
+		case (defined('OBJECT_FILES_TABLE')?OBJECT_FILES_TABLE:-1):
+			if(!we_hasPerm("CAN_SEE_OBJECTFILES")){
+				return 0;
+			}
+			break;
+		case (defined('OBJECT_TABLE')?OBJECT_TABLE:-2):
+			if(!we_hasPerm("CAN_SEE_OBJECTS")){
+				return 0;
+			}
+			break;
+	}
 
 	$DB_WE = new DB_WE;
 	$where = " WHERE ";
 
 	$where .= " ParentID=$ParentID ";
 	$where .= makeOwnersSql();
-	$where .= $wsQuery;
-	//if($table==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
-	$elem = "ID,ParentID,Path,Text,Icon,IsFolder,ModDate".(($table==FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE)) ? ",Published" : "").((defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
+	$where .= $GLOBALS['wsQuery'];
+	//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
+	$elem = "ID,ParentID,Path,Text,Icon,IsFolder,ModDate".(($GLOBALS['table']==FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $GLOBALS['table']==OBJECT_FILES_TABLE)) ? ",Published" : "").((defined("OBJECT_FILES_TABLE") && $GLOBALS['table']==OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
 
-	if($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined("OBJECT_TABLE") && $table==OBJECT_TABLE) || (defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE)){
+	if($GLOBALS['table'] == FILE_TABLE || $GLOBALS['table'] == TEMPLATES_TABLE || (defined("OBJECT_TABLE") && $GLOBALS['table']==OBJECT_TABLE) || (defined("OBJECT_FILES_TABLE") && $GLOBALS['table']==OBJECT_FILES_TABLE)){
 		$elem .= ",ContentType";
 	}
 
-	$DB_WE->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".mysql_real_escape_string($table)." $where ORDER BY isNr DESC,Nr,Text");
+	$DB_WE->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".$DB_WE->escape($GLOBALS['table'])." $where ORDER BY isNr DESC,Nr,Text");
 
 	while($DB_WE->next_record()) {
 
@@ -141,24 +146,24 @@ function getItems($ParentID) {
 		$IsFolder = $DB_WE->f("IsFolder");
 		$ContentType = $DB_WE->f("ContentType");
 		$Icon = $DB_WE->f("Icon");
-		$published = ($table==FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE)) ? ((($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published")) : 1;
+		$published = ($GLOBALS['table']==FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $GLOBALS['table']==OBJECT_FILES_TABLE)) ? ((($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published")) : 1;
 		$IsClassFolder = $DB_WE->f("IsClassFolder");
 		$IsNotEditable = $DB_WE->f("IsNotEditable");
 
 		$checked=0;
-		if($table==FILE_TABLE && isset($_SESSION["exportVars"]["selDocs"])){
+		if($GLOBALS['table']==FILE_TABLE && isset($_SESSION["exportVars"]["selDocs"])){
 			if(in_array($ID,makeArrayFromCSV($_SESSION["exportVars"]["selDocs"]))) $checked=1;
 		}
-		else if(defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE && isset($_SESSION["exportVars"]["selObjs"])){
+		else if(defined("OBJECT_FILES_TABLE") && $GLOBALS['table']==OBJECT_FILES_TABLE && isset($_SESSION["exportVars"]["selObjs"])){
 			if(in_array($ID,makeArrayFromCSV($_SESSION["exportVars"]["selObjs"]))) $checked=1;
 		}
 
-		if(in_array($ID,$openFolders)) $OpenCloseStatus=1; else $OpenCloseStatus=0;
-		$disabled = in_array($Path,$parentpaths) ? 1 : 0;
+		if(in_array($ID,$GLOBALS['openFolders'])) $OpenCloseStatus=1; else $OpenCloseStatus=0;
+		$disabled = in_array($Path,$GLOBALS['parentpaths']) ? 1 : 0;
 
 		$typ= $IsFolder ? "group" : "item";
 
-		$treeItems[]=array(
+		$GLOBALS['treeItems'][]=array(
 										"icon"=>"$Icon",
 										"id"=>"$ID",
 										"parentid"=>$ParentID,
@@ -166,7 +171,7 @@ function getItems($ParentID) {
 										"contenttype"=>$ContentType,
 										"isclassfolder"=>$IsClassFolder,
 										"isnoteditable"=>$IsNotEditable,
-										"table"=>$table,
+										"table"=>$GLOBALS['table'],
 										"checked"=>$checked,
 										"typ"=>$typ,
 										"open"=>$OpenCloseStatus,

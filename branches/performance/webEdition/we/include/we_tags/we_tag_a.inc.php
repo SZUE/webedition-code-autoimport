@@ -1,11 +1,6 @@
 <?php
-
 /**
  * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,9 +17,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_a($attribs, $content) {
-	global $we_editmode;
 
+function we_tag_a($attribs, $content){
 	// check for id attribute
 	$foo = attributFehltError($attribs, "id", "a");
 	if ($foo)
@@ -35,6 +29,11 @@ function we_tag_a($attribs, $content) {
 	if ($id == "self") {
 		$id = $GLOBALS["WE_MAIN_DOC"]->ID;
 	}
+	$confirm = we_getTagAttribute("confirm", $attribs);
+	$button = we_getTagAttribute("button", $attribs, "", true);
+	$hrefonly = we_getTagAttribute("hrefonly", $attribs, "", true);
+	$return = we_getTagAttribute("return", $attribs, "", true);
+	$target = we_getTagAttribute("target", $attribs, "");
 
 	$shop = we_getTagAttribute("shop", $attribs, "", true);
 	$amount = we_getTagAttribute("amount", $attribs, 1);
@@ -55,50 +54,89 @@ function we_tag_a($attribs, $content) {
 
 	// init variables
 	$db = new DB_WE();
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "", $db);
+	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", $db);
 	$url = (isset($row["Path"]) ? $row["Path"] : "") . ((isset($row["IsFolder"]) && $row["IsFolder"]) ? "/" : "");
+	$path_parts = pathinfo($url);
+	if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE  && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+		$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
+	} 
 
 	$urladd = "";
 
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tagParser.inc.php");
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_tagParser.inc.php");
 	$tp = new we_tagParser();
 	$tags = $tp->getAllTags($content);
 	$tp->parseTags($tags, $content);
 
 	if ((!$url) && ($GLOBALS["WE_MAIN_DOC"]->ClassName != "we_template")) {
-		return ($we_editmode ? attributFehltError($attribs, 'id', 'we:a') : '');
+		if ($GLOBALS['we_editmode']) {
+			return parseError("in we:a attribute id not exists!");
+		} else {
+			return "";
+		}
 	}
 
-	switch ($edit) {
-		case 'shop':
-			$amount = we_getTagAttribute("amount", $attribs, 1);
+	switch($edit){
+	case "shop":
 
-			if (isset($GLOBALS["lv"])) {
-				$foo = $GLOBALS["lv"]->count - 1;
-			} else {
-				$foo = -1;
-			}
+		$amount = we_getTagAttribute("amount", $attribs, 1);
 
-			// get ID of element
-			$customReq = '';
-			if (isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'shop') {
-				$idd = $GLOBALS["lv"]->ActItem['id'];
-				$type = $GLOBALS["lv"]->ActItem['type'];
-				$customReq = $GLOBALS["lv"]->getCustomFieldsAsRequest();
-			} else {
-				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
-				if ((isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_listview_shopVariants' && isset($GLOBALS["lv"]->Model) && $GLOBALS["lv"]->Model->ClassName == 'we_objectFile') || isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_objecttag') {
-					$type = "o";
-					$idd = (get_class($GLOBALS["lv"]) == 'we_listview_shopVariants' ? $GLOBALS["lv"]->Id : $GLOBALS["lv"]->id);
+		if (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->ClassName !='we_listview_multiobject' ) {
+			$foo = $GLOBALS["lv"]->count - 1;
+		} else {
+			$foo = -1;
+		}
+
+
+		// get ID of element
+		$customReq = '';
+		if (isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'shop') {
+
+			$idd = $GLOBALS["lv"]->ActItem['id'];
+			$type = $GLOBALS["lv"]->ActItem['type'];
+			$customReq = $GLOBALS["lv"]->getCustomFieldsAsRequest();
+
+		} else {
+			//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
+			if ( (isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_listview_shopVariants' && isset($GLOBALS["lv"]->Model) && $GLOBALS["lv"]->Model->ClassName == 'we_objectFile') || isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_objecttag' ) {
+				$type="o";
+				if (get_class($GLOBALS["lv"]) == 'we_listview_shopVariants') {
+					$idd = $GLOBALS["lv"]->Id;
 				} else {
-					$idd = ((isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->IDs[$foo])) && $GLOBALS["lv"]->IDs[$foo] != "") ? $GLOBALS["lv"]->IDs[$foo] : ((isset(
-													$GLOBALS["lv"]->classID)) ? $GLOBALS["lv"]->DB_WE->Record["OF_ID"] : ((isset(
-																	$GLOBALS["we_obj"]->ID)) ? $GLOBALS["we_obj"]->ID : $GLOBALS["WE_MAIN_DOC"]->ID));
-					$type = (isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->IDs[$foo]) && $GLOBALS["lv"]->IDs[$foo] != "") ? ((isset(
-													$GLOBALS["lv"]->classID) || isset($GLOBALS["lv"]->Record["OF_ID"])) ? "o" : "w") : ((isset(
-													$GLOBALS["lv"]->classID)) ? "o" : ((isset($GLOBALS["we_obj"]->ID)) ? "o" : "w"));
+					$idd = $GLOBALS["lv"]->id;
 				}
+			} else {
+
+				$idd = ((isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->IDs[$foo])) && $GLOBALS["lv"]->IDs[$foo] != "") ? $GLOBALS["lv"]->IDs[$foo] : ((isset(
+					$GLOBALS["lv"]->classID)) ? $GLOBALS["lv"]->DB_WE->Record["OF_ID"] : ((isset(
+					$GLOBALS["we_obj"]->ID)) ? $GLOBALS["we_obj"]->ID : $GLOBALS["WE_MAIN_DOC"]->ID));
+				$type = (isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->IDs[$foo]) && $GLOBALS["lv"]->IDs[$foo] != "") ? ((isset(
+					$GLOBALS["lv"]->classID) || isset($GLOBALS["lv"]->Record["OF_ID"])) ? "o" : "w") : ((isset(
+					$GLOBALS["lv"]->classID)) ? "o" : ((isset($GLOBALS["we_obj"]->ID)) ? "o" : "w"));
 			}
+		}
+
+		// is it a shopVariant ????
+		$variant = '';
+		// normal variant on document
+		if (isset($GLOBALS['we_doc']->Variant)) { // normal listView or document
+			$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant;
+		}
+		// variant inside shoplistview!
+		if (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->f('WE_VARIANT')) {
+			$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS["lv"]->f('WE_VARIANT');
+		}
+
+		//	preview mode in seem
+		if (isset($_REQUEST["we_transaction"]) && isset(
+				$_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"]) && $_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"] == "we_objectFile") {
+			$type = "o";
+		}
+
+		$shopname = we_getTagAttribute("shopname", $attribs, "");
+		$ifShopname = $shopname == "" ? "" : "&shopname=" . $shopname;
+		if ($delarticle) { // delarticle
+
 
 			// is it a shopVariant ????
 			$variant = '';
@@ -111,59 +149,45 @@ function we_tag_a($attribs, $content) {
 				$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS["lv"]->f('WE_VARIANT');
 			}
 
+			$foo = $GLOBALS["lv"]->count - 1;
+
+			$customReq = '';
+			if (isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'shop') {
+
+				$idd = $GLOBALS["lv"]->ActItem['id'];
+				$type = $GLOBALS["lv"]->ActItem['type'];
+				$customReq = $GLOBALS["lv"]->getCustomFieldsAsRequest();
+			} else {
+				$idd = (isset($GLOBALS["lv"]->IDs[$foo]) && $GLOBALS["lv"]->IDs[$foo] != "") ? $GLOBALS["lv"]->IDs[$foo] : ((isset(
+						$GLOBALS["lv"]->classID)) ? $GLOBALS["lv"]->DB_WE->Record["OF_ID"] : ((isset(
+						$GLOBALS["we_obj"]->ID)) ? $GLOBALS["we_obj"]->ID : $GLOBALS["WE_MAIN_DOC"]->ID));
+				$type = (isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->IDs[$foo]) && $GLOBALS["lv"]->IDs[$foo] != "") ? ((isset(
+						$GLOBALS["lv"]->classID) || isset($GLOBALS["lv"]->Record["OF_ID"])) ? "o" : "w") : ((isset(
+						$GLOBALS["lv"]->classID)) ? "o" : ((isset($GLOBALS["we_obj"]->ID)) ? "o" : "w"));
+			}
 			//	preview mode in seem
 			if (isset($_REQUEST["we_transaction"]) && isset(
-											$_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"]) && $_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"] == "we_objectFile") {
+					$_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"]) && $_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"] == "we_objectFile") {
 				$type = "o";
 			}
+			$urladd = ($urladd ? $urladd . "&" : '?') . 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;
 
-			$shopname = we_getTagAttribute("shopname", $attribs, "");
-			$ifShopname = $shopname == "" ? "" : "&shopname=" . $shopname;
-			if ($delarticle) { // delarticle
-				// is it a shopVariant ????
-				$variant = '';
-				// normal variant on document
-				if (isset($GLOBALS['we_doc']->Variant)) { // normal listView or document
-					$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant;
-				}
-				// variant inside shoplistview!
-				if (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->f('WE_VARIANT')) {
-					$variant = '&' . WE_SHOP_VARIANT_REQUEST . '=' . $GLOBALS["lv"]->f('WE_VARIANT');
-				}
-
-				$foo = $GLOBALS["lv"]->count - 1;
-
-				$customReq = '';
-				if (isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'shop') {
-
-					$idd = $GLOBALS["lv"]->ActItem['id'];
-					$type = $GLOBALS["lv"]->ActItem['type'];
-					$customReq = $GLOBALS["lv"]->getCustomFieldsAsRequest();
-				} else {
-					$idd = (isset($GLOBALS["lv"]->IDs[$foo]) && $GLOBALS["lv"]->IDs[$foo] != "") ? $GLOBALS["lv"]->IDs[$foo] : ((isset(
-													$GLOBALS["lv"]->classID)) ? $GLOBALS["lv"]->DB_WE->Record["OF_ID"] : ((isset(
-																	$GLOBALS["we_obj"]->ID)) ? $GLOBALS["we_obj"]->ID : $GLOBALS["WE_MAIN_DOC"]->ID));
-					$type = (isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->IDs[$foo]) && $GLOBALS["lv"]->IDs[$foo] != "") ? ((isset(
-													$GLOBALS["lv"]->classID) || isset($GLOBALS["lv"]->Record["OF_ID"])) ? "o" : "w") : ((isset(
-													$GLOBALS["lv"]->classID)) ? "o" : ((isset($GLOBALS["we_obj"]->ID)) ? "o" : "w"));
-				}
-				//	preview mode in seem
-				if (isset($_REQUEST["we_transaction"]) && isset(
-												$_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"]) && $_SESSION["we_data"][$_REQUEST["we_transaction"]]["0"]["ClassName"] == "we_objectFile") {
-					$type = "o";
-				}
-				$urladd = ($urladd ? $urladd . "&" : '?') . 'del_shop_artikelid=' . $idd . '&type=' . $type . '&t=' . time() . $variant . $customReq . $ifShopname;
-			} else
+		} else
 			if ($delshop) { // emptyshop
+
 				$foo = attributFehltError($attribs, "shopname", "a");
 				if ($foo)
 					return $foo;
 				$urladd = ($urladd ? $urladd . "&" : '?') . 'deleteshop=1' . $ifShopname . '&t=' . time();
+
 			} else { // increase/decrease amount of articles
+
+
 				$urladd = ($urladd ? $urladd . "&" : '?') . 'shop_artikelid=' . $idd . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? $customReq : '') . $ifShopname;
 			}
-			break;
-		case 'object':
+		break;
+
+		case "object":
 			if ($listview) {
 				$oid = (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->f("WE_ID")) ? $GLOBALS["lv"]->f("WE_ID") : 0;
 			} else {
@@ -174,10 +198,10 @@ function we_tag_a($attribs, $content) {
 					$urladd = ($urladd ? $urladd . "&" : '?') . "we_delObject_ID=" . $oid;
 				}
 			} else {
-				$urladd = ($urladd ? $urladd . "&" : '?') . ($oid ? "we_editObject_ID=" . $oid : "edit_object=1");
+				$urladd = ($urladd ? $urladd . "&" : '?') . ($oid?"we_editObject_ID=" . $oid:"edit_object=1");
 			}
 			break;
-		case 'document':
+		case "document":
 			if ($listview) {
 				$did = (isset($GLOBALS["lv"]) && $GLOBALS["lv"]->f("WE_ID")) ? $GLOBALS["lv"]->f("WE_ID") : 0;
 			} else {
@@ -188,36 +212,53 @@ function we_tag_a($attribs, $content) {
 					$urladd = ($urladd ? $urladd . "&" : '?') . "we_delDocument_ID=" . $did;
 				}
 			} else {
-				$urladd = ($urladd ? $urladd . "&" : '?') . ($did ? "we_editDocument_ID=" . $did : "edit_document=1");
+				$urladd = ($urladd ? $urladd . "&" : '?') . ($did?"we_editDocument_ID=" . $did:"edit_document=1");
 			}
 			break;
-	}
+		}
 
-	if (we_getTagAttribute("return", $attribs, "", true)) {
+	if ($return) {
 		$urladd = ($urladd ? $urladd . "&" : '?') . "we_returnpage=" . rawurlencode(
-										$_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"]);
+				$_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"]);
 	}
 
-	if (we_getTagAttribute("hrefonly", $attribs, "", true)) {
+	if ($hrefonly) {
 		return $url . $urladd;
 	}
 
-	$confirm = we_getTagAttribute("confirm", $attribs);
-	$button = we_getTagAttribute("button", $attribs, "", true);
+	//	remove unneeded attributes from array
+	$attribs = removeAttribs(
+			$attribs,
+			array(
 
-//	remove unneeded attributes from array
-	$attribs = removeAttribs($attribs, array("id", "shop", "amount", "delshop", "delarticle",
-			"shopname", "return", "edit", "type", "button", "hrefonly", "confirm", "editself", "delete"));
+					"id",
+					"shop",
+					"amount",
+					"delshop",
+					"delarticle",
+					"shopname",
+					"return",
+					"edit",
+					"type",
+					"button",
+					"hrefonly",
+					"confirm",
+					"editself",
+					"delete"
+			));
 
 	if ($button) { //	show button
-		$target = we_getTagAttribute("target", $attribs, "");
+
 
 		$attribs["type"] = "button";
 		$attribs["value"] = htmlspecialchars($content);
 		$attribs["onclick"] = ($target ? ("var wind=window.open('','$target');wind") : "self") . ".document.location='$url" . htmlspecialchars(
-										$urladd) . "';";
+				$urladd) . "';";
 
-		$attribs = removeAttribs($attribs, array("target")); //	not html - valid
+		$attribs = removeAttribs($attribs, array(
+			"target"
+		)); //	not html - valid
+
 
 		if ($confirm) {
 			$confirm = str_replace("'", "\\'", $confirm);
@@ -225,11 +266,14 @@ function we_tag_a($attribs, $content) {
 		}
 		return getHtmlTag("input", $attribs);
 	} else { //	show normal link
+
 		$attribs["href"] = $url . ($urladd ? htmlspecialchars($urladd) : '');
 
 		if ($confirm) {
 			$attribs["onclick"] = "if(confirm('$confirm')){return true;}else{return false;}";
 		}
+
 		return getHtmlTag("a", $attribs, $content, true);
+
 	}
 }

@@ -1753,7 +1753,7 @@ top.close();
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "") {
 		$yuiSuggest =& weSuggest::getInstance();
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='" . abs($IDValue)."';", "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID='" . abs($IDValue)."';", "Path", $this->db);
 		}
 
 		$we_button = new we_button();

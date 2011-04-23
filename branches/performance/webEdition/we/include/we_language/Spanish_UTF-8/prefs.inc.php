@@ -213,6 +213,8 @@ $l_prefs = array(
 		'language_already_exists' => "This language already exists", // TRANSLATE
 		'language_country_missing' => "Please select also a country", // TRANSLATE
 		'add_dictionary_question' => "Would you like to upload the dictionary for this language?", // TRANSLATE
+		'langlink_support' => "Automatic language links",// TRANSLATE
+		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
 
 		/*		 * ***************************************************************************
 		 * EDITOR
@@ -325,6 +327,7 @@ $l_prefs = array(
 		 * SAFARI WYSIWYG
 		 */
 		'safari_wysiwyg' => "Use el Wysiwyg editor<br>de Safari (versión beta)",
+		'wysiwyg_type' => "Select editor for textareas", //TRANSLATE
 		/**
 		 * SHOWINPUTS
 		 */
@@ -391,7 +394,8 @@ $l_prefs = array(
 		'backwardcompatibility' => "Backward compatibility", //TRANSLATE
 		'backwardcompatibility_tagloading' => "Load all 'old' we_tag functions", //TRANSLATE
 		'backwardcompatibility_tagloading_message' => "Only necessary if in custom_tags or in PHP code inside templates we_tags are called in the form we_tag_tagname().<br/> Recommended call: we_tag<br/>('tagname',&#36;attribs,&#36;content)", //TRANSLATE
-	  'urlencode_objectseourls' => "URLencode the SEO-urls",// TRANSLATE
+		'urlencode_objectseourls' => "URLencode the SEO-urls", // TRANSLATE
+	 'suppress404code' => "suppress 404 not found",// TRANSLATE
 
 		/*		 * ***************************************************************************
 		 * ERROR HANDLING
@@ -583,6 +587,7 @@ $l_prefs = array(
 		'editor_plaintext' => 'Plain textarea', // TRANSLATE
 		'editor_java' => 'Java editor', // TRANSLATE
 		'editor_javascript' => 'JavaScript editor (beta)', // TRANSLATE
+		'editor_javascript2' => 'CodeMirror2 (alpha)',
 		'editor_javascript_information' => 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.', // TRANSLATE
 
 

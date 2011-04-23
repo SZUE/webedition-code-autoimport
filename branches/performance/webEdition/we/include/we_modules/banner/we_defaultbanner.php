@@ -37,12 +37,12 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 	$DefaultBannerID = isset($_REQUEST["DefaultBannerID"]) ? $_REQUEST["DefaultBannerID"] : 0;
 	$DB_WE->query("SELECT * FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'");
 	if($DB_WE->num_rows()){
-		$DB_WE->query("UPDATE ".BANNER_PREFS_TABLE." SET pref_value='".mysql_real_escape_string($DefaultBannerID)."' WHERE pref_name='DefaultBannerID'");
+		$DB_WE->query("UPDATE ".BANNER_PREFS_TABLE." SET pref_value='".$DB_WE->escape($DefaultBannerID)."' WHERE pref_name='DefaultBannerID'");
 	}else{
-		$DB_WE->query("INSERT INTO ".BANNER_PREFS_TABLE." (pref_name,pref_value) VALUES('DefaultBannerID','".mysql_real_escape_string($DefaultBannerID)."')");
+		$DB_WE->query("INSERT INTO ".BANNER_PREFS_TABLE." (pref_name,pref_value) VALUES('DefaultBannerID','".$DB_WE->escape($DefaultBannerID)."')");
 	}
 
-	print '<script language="JavaScript">
+	print '<script type="text/javascript">
 
 top.close();
 
@@ -73,9 +73,9 @@ top.close();
 		return $yuiSuggest->getHTML();
 	}
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 
-		<script language="JavaScript">
+		<script type="text/javascript">
 			var loaded;
 			function doUnload() {
 				if (!!jsWindow_count) {

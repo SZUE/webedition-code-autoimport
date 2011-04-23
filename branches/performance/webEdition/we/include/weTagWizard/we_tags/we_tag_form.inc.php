@@ -43,5 +43,3 @@ if(defined("OBJECT_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id177_classi
 if(defined("OBJECT_FILES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id639_parentid'] = new weTagData_selectorAttribute('639', 'parentid',OBJECT_FILES_TABLE, 'folder', false, ''); }
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id830_enctype'] = new weTagData_selectAttribute('830', 'enctype', array(new weTagDataOption('application/x-www-form-urlencoded', false, ''), new weTagDataOption('multipart/form-data', false, '')), false, '');
-
-?>

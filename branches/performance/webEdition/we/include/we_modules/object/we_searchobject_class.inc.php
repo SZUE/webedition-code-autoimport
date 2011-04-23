@@ -58,7 +58,7 @@ class objectsearch extends we_search {
 
 	function getFields($name="obj_searchField",$size=1,$select="",$Path,$multi="") {
 
-		$objID = f("SELECT ID FROM ".OBJECT_TABLE." WHERE Path='".mysql_real_escape_string($Path)."'","ID",$GLOBALS["DB_WE"]);
+		$objID = f("SELECT ID FROM ".OBJECT_TABLE." WHERE Path='".escape_sql_query($Path)."'","ID",$GLOBALS["DB_WE"]);
 		$opts = '';
 		$tableInfo =  $GLOBALS["DB_WE"]->metadata(OBJECT_X_TABLE.$objID);
 		$all = "";
@@ -101,7 +101,7 @@ class objectsearch extends we_search {
 
 	function getJSinWEworkspace($name) {
 		return '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				function setWs(path,id) {
 					document.we_form.elements[\'we_'.$name.'_WorkspacePath\'].value=path;
 					document.we_form.elements[\'we_'.$name.'_WorkspaceID\'].value=id;
@@ -113,7 +113,7 @@ class objectsearch extends we_search {
 
 	function getJSinWEshowVisible($name) {
 		return '
-			<script language="JavaScript" type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 				function toggleShowVisible(c) {
 					c.value=(c.checked ? 1 : 0);
 					document.we_form.elements[\'SearchStart\'].value = 0;

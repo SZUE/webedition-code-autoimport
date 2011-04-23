@@ -37,7 +37,7 @@ if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be
 if ($we_editmode) {
 	htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
 	?>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+	<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	<?php
 	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
@@ -46,7 +46,7 @@ if ($we_editmode) {
 
 	$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java' && !$_SESSION['weShowAltMenu']);
 	?>
-	<script language="JavaScript" type="text/javascript">
+	<script  type="text/javascript">
 
 		var weIsTextEditor = true;
 		var wizardHeight={
@@ -299,135 +299,124 @@ if ($we_editmode) {
 	$we_doc->pHiddenTrans();
 }
 
-if ($we_editmode) {
-	if (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) {
-		$wrap = "virtual";
-	} else {
-		$wrap = "off";
-	}
-
-	$code = $we_doc->getElement("data");
-	if ($we_doc->ClassName == "we_htmlDocument") {
-		$code = $we_doc->getDocumentCode();
-	}
-
-	$maineditor = '<table border="0" cellpadding="0" cellspacing="0">
-        <tr>
-            <td>
-            	';
-
-	if ($_useJavaEditor) {
-
-		$maineditor .= '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
+function we_getJavaEditorCode($code) {
+	$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
             <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="http://' . $SERVER_NAME . ((isset($SERVER_PORT) && $SERVER_PORT != 80) ? ":" . $SERVER_PORT : "") . '/webEdition/editors/template/editor">
             	<param name="phpext" value=".php">';
 
-		if ($_SESSION["prefs"]["editorFont"] == 1) {
-			// translate html font names into java font names
-			if ($_SESSION["prefs"]["editorFontname"] == "mono") {
+	if ($_SESSION["prefs"]["editorFont"] == 1) {
+		// translate html font names into java font names
+		switch ($_SESSION["prefs"]["editorFontname"]) {
+			case "mono":
 				$fontname = "monospaced";
-			} else if ($_SESSION["prefs"]["editorFontname"] == "sans-serif") {
+				break;
+			case "sans-serif":
 				$fontname = "sansserif";
-			} else {
+				break;
+			default:
 				$fontname = $_SESSION["prefs"]["editorFontname"];
-			}
-			$maineditor .= '<param name="fontName" value="' . $fontname . '">';
-			$maineditor .= '<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '">';
+				break;
 		}
+		$maineditor .= '<param name="fontName" value="' . $fontname . '">';
+		$maineditor .= '<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '">';
+	}
 
-		if ($_SESSION["prefs"]["specify_jeditor_colors"] == 1) {
-			$maineditor .= '<param name="normalColor" value="' . $_SESSION["prefs"]["editorFontcolor"] . '">';
-			$maineditor .= '<param name="weTagColor" value="' . $_SESSION["prefs"]["editorWeTagFontcolor"] . '">';
-			$maineditor .= '<param name="weAttributeColor" value="' . $_SESSION["prefs"]["editorWeAttributeFontcolor"] . '">';
-			$maineditor .= '<param name="HTMLTagColor" value="' . $_SESSION["prefs"]["editorHTMLTagFontcolor"] . '">';
-			$maineditor .= '<param name="HTMLAttributeColor" value="' . $_SESSION["prefs"]["editorHTMLAttributeFontcolor"] . '">';
-			$maineditor .= '<param name="piColor" value="' . $_SESSION["prefs"]["editorPiTagFontcolor"] . '">';
-			$maineditor .= '<param name="commentColor" value="' . $_SESSION["prefs"]["editorCommentFontcolor"] . '">';
+	if ($_SESSION["prefs"]["specify_jeditor_colors"] == 1) {
+		$maineditor .= '<param name="normalColor" value="' . $_SESSION["prefs"]["editorFontcolor"] . '">';
+		$maineditor .= '<param name="weTagColor" value="' . $_SESSION["prefs"]["editorWeTagFontcolor"] . '">';
+		$maineditor .= '<param name="weAttributeColor" value="' . $_SESSION["prefs"]["editorWeAttributeFontcolor"] . '">';
+		$maineditor .= '<param name="HTMLTagColor" value="' . $_SESSION["prefs"]["editorHTMLTagFontcolor"] . '">';
+		$maineditor .= '<param name="HTMLAttributeColor" value="' . $_SESSION["prefs"]["editorHTMLAttributeFontcolor"] . '">';
+		$maineditor .= '<param name="piColor" value="' . $_SESSION["prefs"]["editorPiTagFontcolor"] . '">';
+		$maineditor .= '<param name="commentColor" value="' . $_SESSION["prefs"]["editorCommentFontcolor"] . '">';
+	}
+
+	$maineditor .= '</applet>';
+	return $maineditor;
+}
+
+function we_get_CM_css(){
+	return
+	'<style type="text/css">
+		.CodeMirror-line-numbers {
+			padding-top: 6px;
+			padding-right: 5px;
+			text-align: right;
 		}
+		#tagDescriptionDiv {
+			color: black;
+			background: white;
+			position: absolute;
+			width: 400px;
+			padding: 5px 8px;
+			z-index: 1000;
+			font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'Tahoma') . ';
+			font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
+			border: outset 1px;
+			box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			border-radius: 3px;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+		}
+	</style>';
+}
 
-		$maineditor .= '
-	            	</applet>
-	            	';
-	} else {
-		$maineditor .= '<textarea id="editarea" style="width: ' . (($_SESSION["prefs"]["editorWidth"] != 0) ? $_SESSION["prefs"]["editorWidth"] : "700") . 'px; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
-						. htmlspecialchars($code) . '</textarea>';
-		if ($_SESSION['prefs']['editorMode'] == 'codemirror') { //Syntax-Highlighting
-			$parser_js = array();
-			$parser_css = array();
-			$useCSCC = false;
-			switch ($we_doc->ContentType) { // Depending on content type we use different parsers and css files
-				case 'text/css':
-					$parser_js[] = 'parsecss.js';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-					break;
-				case 'text/js':
-					$parser_js[] = 'tokenizejavascript.js';
-					$parser_js[] = 'parsejavascript.js';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-					break;
-				case 'text/weTmpl':
-					$useCSCC = $GLOBALS['BROWSER'] == 'IE' ? false : true; //tag completion doesn't work in IE yet
-					$parser_js[] = 'parsexml.js';
-					$parser_js[] = 'parsecss.js';
-					$parser_js[] = 'tokenizejavascript.js';
-					$parser_js[] = 'parsejavascript.js';
-					$parser_js[] = '../contrib/php/js/tokenizephp.js';
-					$parser_js[] = '../contrib/php/js/parsephp.js';
-//						$parser_js[]  = '../contrib/cscc/js/parsequplo.js';
-					$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/php/css/phpcolors.css';
-					break;
-				case 'text/html':
-					$parser_js[] = 'parsexml.js';
-					$parser_js[] = 'parsecss.js';
-					$parser_js[] = 'tokenizejavascript.js';
-					$parser_js[] = 'parsejavascript.js';
-					$parser_js[] = '../contrib/php/js/tokenizephp.js';
-					$parser_js[] = '../contrib/php/js/parsephp.js';
-					$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-					break;
-				case 'text/xml':
-					$parser_js[] = 'parsexml.js';
-					$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-					break;
-			}
-			$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/webEdition/css/webEdition.css';
-			if (count($parser_js) > 0) { // CodeMirror will be used
-				$maineditor.='
-						<style type="text/css">
-							.CodeMirror-line-numbers {
-								padding-top: 6px;
-								padding-right: 5px;
-								text-align: right;
-							}
-							#tagDescriptionDiv {
-								color: black;
-								background: white;
-								position: absolute;
-								width: 400px;
-								padding: 5px 8px;
-								z-index: 1000;
-								font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'Tahoma') . ';
-								font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
-								border: outset 1px;
-								box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-								-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-								-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-								border-radius: 3px;
-								-moz-border-radius: 3px;
-								-webkit-border-radius: 3px;
-							}
-						</style>
-						<script src="/webEdition/editors/template/CodeMirror/js/codemirror.js" type="text/javascript"></script>
-					';
-				if ($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //if we use tag completion we need additional files
-					$maineditor.='
+function we_getCodeMirrorCode($code,$version) {
+	$maineditor = '';
+	$parser_js = array();
+	$parser_css = array();
+	$useCSCC = false;
+	switch ($we_doc->ContentType) { // Depending on content type we use different parsers and css files
+		case 'text/css':
+			$parser_js[] = 'parsecss.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
+			break;
+		case 'text/js':
+			$parser_js[] = 'tokenizejavascript.js';
+			$parser_js[] = 'parsejavascript.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
+			break;
+		case 'text/weTmpl':
+			$useCSCC = $GLOBALS['BROWSER'] == 'IE' ? false : true; //tag completion doesn't work in IE yet
+			$parser_js[] = 'parsexml.js';
+			$parser_js[] = 'parsecss.js';
+			$parser_js[] = 'tokenizejavascript.js';
+			$parser_js[] = 'parsejavascript.js';
+			$parser_js[] = '../contrib/php/js/tokenizephp.js';
+			$parser_js[] = '../contrib/php/js/parsephp.js';
+			$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/php/css/phpcolors.css';
+			break;
+		case 'text/html':
+			$parser_js[] = 'parsexml.js';
+			$parser_js[] = 'parsecss.js';
+			$parser_js[] = 'tokenizejavascript.js';
+			$parser_js[] = 'parsejavascript.js';
+			$parser_js[] = '../contrib/php/js/tokenizephp.js';
+			$parser_js[] = '../contrib/php/js/parsephp.js';
+			$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
+			break;
+		case 'text/xml':
+			$parser_js[] = 'parsexml.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
+			break;
+		default:
+			//don't use CodeMirror
+			return '';
+	}
+	$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/webEdition/css/webEdition.css';
+	if (count($parser_js) > 0) { // CodeMirror will be used
+		$maineditor=we_get_CM_css().'<script src="/webEdition/editors/template/CodeMirror/js/codemirror.js" type="text/javascript"></script>';
+		if ($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //if we use tag completion we need additional files
+			$maineditor.='
 							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js" type="text/javascript"></script>
 							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js" type="text/javascript"></script>
 							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js" type="text/javascript"></script>
@@ -438,8 +427,8 @@ if ($we_editmode) {
 								};
 							</script>
 						';
-				}
-				$maineditor.='
+		}
+		$maineditor.='
 						<script type="text/javascript">
 							var getDescriptionDiv=function() {
 								var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
@@ -551,8 +540,8 @@ if ($we_editmode) {
 											}
 										}
 					';
-				if ($useCSCC && $we_doc->ContentType == 'text/weTmpl') {
-					$maineditor.='
+		if ($useCSCC && $we_doc->ContentType == 'text/weTmpl') {
+			$maineditor.='
 										if(window.addEventListener) {
 											editor.frame.contentWindow.document.addEventListener("mousemove", showDescription, false);
 											editor.frame.contentWindow.document.addEventListener("click", hideCscc, false);
@@ -562,16 +551,16 @@ if ($we_editmode) {
 											editor.frame.contentWindow.document.attachEvent("onclick", hideCscc);
 										}
 									';
-				}
-				$maineditor.='
+		}
+		$maineditor.='
 									},500);
 								},
 								onChange: function(){
 									updateEditor();
 								}
 								';
-				if ($useCSCC) {
-					$maineditor.='
+		if ($useCSCC) {
+			$maineditor.='
 							,activeTokens: function(span, token) {
 								if(token.style == "xml-tagname" && !span.className.match(/we-tagname/) && token.content.substring(0,3)=="we:" ) { //this is our hook to colorize we:tags
 									span.className += " we-tagname";
@@ -621,8 +610,8 @@ if ($we_editmode) {
 								}catch(e){};
 							}
 						';
-				}
-				$maineditor.='
+		}
+		$maineditor.='
 							};
 							var updateEditor=function(){ //this wil save content from CoeMirror to our original <textarea>.
 								var currentTemplateCode=editor.getCode();
@@ -635,21 +624,223 @@ if ($we_editmode) {
 							window.orignalTemplateContent=document.getElementById("editarea").value; //this is our reference of the original content to compare with current content
 						</script>
 					';
-				if ($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //initiation depends on the use of code completion
-					$maineditor.='
-							<script type="text/JavaScript">
-								cscc.init("editarea");
-								var editor=cscc.editor;
-							</script>
-						';
-				} else {
-					$maineditor.='
-							<script type="text/JavaScript">
-								var editor = CodeMirror.fromTextArea("editarea", CMoptions);
-							</script>
-						';
-				}
-			}
+		if ($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //initiation depends on the use of code completion
+			$maineditor.=
+			'<script type="text/JavaScript">
+				cscc.init("editarea");
+				var editor=cscc.editor;
+			</script>';
+		} else {
+			$maineditor.=
+			'<script type="text/JavaScript">
+				var editor = CodeMirror.fromTextArea("editarea", CMoptions);
+			</script>';
+		}
+	}
+	return $maineditor;
+}
+
+function we_getCodeMirror2Code($code,$version) {
+	$maineditor = '';
+	$parser_js = array();
+	$parser_css = array();
+	switch ($we_doc->ContentType) { // Depending on content type we use different parsers and css files
+		case 'text/css':
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.css';
+			$mode='text/css';
+			break;
+		case 'text/js':
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.css';
+			$mode='text/javascript';
+			break;
+		case 'text/weTmpl':
+		case 'text/html':
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.js';
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.js';
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.js';
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/htmlmixed/htmlmixed.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.css';
+			$mode='text/html';
+			break;
+		case 'text/xml':
+			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.css';
+			$mode='application/xml';
+			break;
+		default:
+			//don't use CodeMirror
+			return '';
+	}
+	$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/webEdition/css/webEdition.css';
+	if (count($parser_js) > 0) { // CodeMirror will be used
+		$maineditor=we_get_CM_css().'<script src="/webEdition/editors/template/CodeMirror2/lib/codemirror.js" type="text/javascript"></script>
+			<link rel="stylesheet" href="/webEdition/editors/template/CodeMirror2/lib/codemirror.css">';
+		foreach($parser_js as $js){
+			$maineditor.='<script src="'.$js.'" type="text/javascript"></script>';
+		}
+		foreach($parser_css as $css){
+			$maineditor.='<link rel="stylesheet" href="'.$css.'">';
+		}
+		$maineditor.='
+						<script type="text/javascript">
+							var getDescriptionDiv=function() {
+								var ed=window.editor;
+								var wrap = ed.wrapping;
+								var doc = wrap.ownerDocument;
+								var tagDescriptionDiv = doc.getElementById("tagDescriptionDiv");
+								if(!tagDescriptionDiv) { //if our div is not yet in the DOM, we create it
+									var tagDescriptionDiv = doc.createElement("div");
+									tagDescriptionDiv.setAttribute("id", "tagDescriptionDiv");
+									if(tagDescriptionDiv.addEventListener) {
+										tagDescriptionDiv.addEventListener("mouseover", hideDescription, false);
+									} else {
+										tagDescriptionDiv.attachEvent("onmouseover", hideDescription);
+									}
+									wrap.appendChild(tagDescriptionDiv);
+								}
+								return tagDescriptionDiv;
+							};
+							var hideDescription=function(){
+								var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
+								var wrap = ed.wrapping;
+								var doc = wrap.ownerDocument;
+								var tagDescriptionDiv = getDescriptionDiv();
+								tagDescriptionDiv.style.display="none";
+							};
+							var XgetComputedStyle = function(el, s) { // cross browser getComputedStyle()
+								var computedStyle;
+								if(typeof el.currentStyle!="undefined") {
+									computedStyle = el.currentStyle;
+								}else {
+									computedStyle = document.defaultView.getComputedStyle(el, null);
+								}
+								return computedStyle[s];
+							};
+							var CMoptions = { //these are the CodeMirror options
+								mode: "'.$mode.'",
+								tabMode: "classic",
+								enterMode: "indent",
+								electricChars: false,
+								lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
+								gutter: false,
+								matchBrackets: true,
+								workTime: 300,
+								workDelay: 800,
+								height: "' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . '",
+								textWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
+								initCallback: function() {
+									window.setTimeout(function(){ //without timeout this will raise an exception in firefox
+										if (document.addEventListener) {
+											editor.frame.contentWindow.document.addEventListener( "keydown", top.dealWithKeyboardShortCut, true );
+										} else if(document.attachEvent) {
+											editor.frame.contentWindow.document.attachEvent( "onkeydown", top.dealWithKeyboardShortCut );
+										}
+										editor.focus();
+										editor.frame.style.border="1px solid gray";
+
+										var editorFrame=editor.frame.contentWindow.document.getElementsByTagName("body")[0];
+										var originalTextArea=document.getElementById("editarea");
+										var lineNumbers=editor.frame.nextSibling
+
+										//we adapt font styles from original <textarea> to CodeMirror
+										editorFrame.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
+										editorFrame.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
+										editorFrame.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
+										editorFrame.style.marginTop="5px";
+
+										//we adapt font styles from orignal <textarea> to the line numbers of CodeMirror.
+										if(lineNumbers!=undefined) { //line numbers might be disabled
+											lineNumbers.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
+											lineNumbers.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
+											lineNumbers.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
+										}
+
+										sizeEditor();
+										var showDescription=function(e) { //this function will display a tooltip with the tags description. will be called by onmousemove
+											var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
+											if(typeof ed=="undefined" || !ed)
+												return
+											var wrap = ed.wrapping;
+											var doc = wrap.ownerDocument;
+											var tagDescriptionDiv = getDescriptionDiv();
+											if(top.currentHoveredTag===undefined) { //no tag is currently hoverd -> hide description
+												hideDescription();
+												return;
+											}
+											var tag=top.currentHoveredTag.innerHTML.replace(/\s/,"").replace(/&nbsp;/,"");
+											if((top.we_tags === undefined) || (top.we_tags[tag]===undefined)) { //unkown tag -> hide description
+												hideDescription();
+												return;
+											}
+											//at this point we have a a description for our currently hovered tag. so we calculate of the mouse and display it
+											tagDescriptionDiv.innerHTML=top.we_tags[tag].desc;
+											x = (e.pageX ? e.pageX : window.event.x) + tagDescriptionDiv.scrollLeft - editor.frame.contentWindow.document.body.scrollLeft;
+											y = (e.pageY ? e.pageY : window.event.y) + tagDescriptionDiv.scrollTop - editor.frame.contentWindow.document.body.scrollTop;
+											if(x>0 && y>0) {
+												if(window.innerWidth-x<468) {
+													x+=(window.innerWidth-(e.pageX ? e.pageX : window.event.x)-468);
+												}
+												tagDescriptionDiv.style.left = (x + 25) + "px";
+												tagDescriptionDiv.style.top   = (y + 15) + "px";
+											}
+											tagDescriptionDiv.style.display="block";
+										};
+
+										if(typeof(cscc) != "undefined" && typeof(cscc) != "false") { //tag completion is beeing used
+											var hideCscc=function() {
+												cscc.hide();
+											}
+										}
+					';
+		$maineditor.='
+									},500);
+								},
+								onChange: function(){
+									updateEditor();
+								}';
+		$maineditor.=
+		'};
+							var updateEditor=function(){ //this wil save content from CoeMirror to our original <textarea>.
+								var currentTemplateCode=editor.getCode();
+								if(window.orignalTemplateContent!=currentTemplateCode) {
+									window.orignalTemplateContent=currentTemplateCode;
+									document.getElementById("editarea").value=currentTemplateCode;
+									_EditorFrame.setEditorIsHot(true);
+								}
+							}
+							window.orignalTemplateContent=document.getElementById("editarea").value; //this is our reference of the original content to compare with current content
+						</script>
+					';
+		$maineditor.=
+		'<script type="text/JavaScript">
+			var editor = CodeMirror.fromTextArea("editarea", CMoptions);
+		</script>';
+	}
+	return $maineditor;
+}
+
+if ($we_editmode) {
+	$wrap = (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? "virtual" : "off";
+
+	$code = $we_doc->getElement("data");
+	if ($we_doc->ClassName == "we_htmlDocument") {
+		$code = $we_doc->getDocumentCode();
+	}
+
+	$maineditor = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>';
+
+	if ($_useJavaEditor) {
+		$maineditor .= we_getJavaEditorCode($code);
+	} else {
+		$maineditor .= '<textarea id="editarea" style="width: ' . (($_SESSION["prefs"]["editorWidth"] != 0) ? $_SESSION["prefs"]["editorWidth"] : "700") . 'px; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
+						. htmlspecialchars($code) . '</textarea>';
+		if ($_SESSION['prefs']['editorMode'] == 'codemirror'||$_SESSION['prefs']['editorMode'] == 'codemirror2') { //Syntax-Highlighting
+			$vers=($_SESSION['prefs']['editorMode'] == 'codemirror'?1:2);
+			$maineditor .= ($vers==1?we_getCodeMirrorCode($code):we_getCodeMirror2Code($code));
 		}
 	}
 	$maineditor .= '</td>
@@ -928,4 +1119,4 @@ if ($we_editmode) {
 	}
 	?>
 	</html>
-<?php } 
+<?php }

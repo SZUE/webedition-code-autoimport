@@ -23,7 +23,7 @@ function We_TabCtrl() {
 		this.tabs[i] = arguments[i];
 	}
 
-	this.addTab = new Function("we_tab","this.tabs.push(we_tab)"); 
+	this.addTab = new Function("we_tab","this.tabs.push(we_tab)");
 
 	this.getTabCtrls = function() {
 		var tabRowWidth = 0;
@@ -161,7 +161,7 @@ function CSSClassElement_createClassStyle() {
 	return this.className ? ' class="' + this.className + '"' : '';
 }
 
-CSSClassElement.prototype.createClassStyle = 
+CSSClassElement.prototype.createClassStyle =
 	CSSClassElement_createClassStyle;
 
 function CSSClassElement_setStyleClass(className) {
@@ -175,7 +175,7 @@ function CSSClassElement_setStyleClass(className) {
 		this.layer.document.write(html);
 		this.layer.document.close();
 	}
-	else { 
+	else {
 		if (!this.layer)
 			this.layer = document.all ? document.all[this.elementID] :
 				document.getElementById(this.elementID);
@@ -220,7 +220,7 @@ we_tabInit = function() {
 		var layerPosY = 0;
 
 		tabContent = "";
-		tabContent = '<table id="tabs_table" width="'+winWidth+'" border="0" cellpadding="0" cellspacing="0" style="-moz-user-select: none;"><tr>';
+		tabContent = '<table id="tabs_table" width="'+winWidth+'" border="0" cellpadding="0" cellspacing="0" style=""><tr>';
  		for (var y=0; y<tabCtrls[i].length; y++) {
 			if (tabCtrls[i][y].id == tabCtrl.getActiveTab()) {
 				activeCtrl = true;
@@ -228,7 +228,7 @@ we_tabInit = function() {
 			tab[tabCtrls[i][y].id] = addTab(tabCtrls[i][y]);
 			rowWidth += tabCtrls[i][y].width+20;
 		}
-		
+
   		tabContent += '<td width="'+(winWidth-rowWidth)+'">'
 			+ '<img src="'+img_tabline+'" width="'+(winWidth-rowWidth)+'" height="18"></td>';
 		tabContent += '</tr></table>';

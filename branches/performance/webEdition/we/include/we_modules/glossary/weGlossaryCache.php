@@ -154,7 +154,7 @@ class weGlossaryCache {
 
 		$DB_WE = new DB_WE();
 
-		$query = 'SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM ' . GLOSSARY_TABLE . ' WHERE Language = "' . mysql_real_escape_string($this->language) . '" AND Published > 0 ORDER BY Length DESC';
+		$query = "SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM " . GLOSSARY_TABLE . " WHERE Language = '" . $DB_WE->escape($this->language) . "' AND Published > 0 ORDER BY Length DESC";
 
 		$DB_WE->query($query);
 		$Items = array();
@@ -195,8 +195,11 @@ class weGlossaryCache {
 
 				$urladd = '';
 
+				if(isset($Attributes['mode'])){
+					$Attributes['mode']=trim($Attributes['mode']);
+					switch($Attributes['mode']){
 				// External Link
-				if(isset($Attributes['mode']) && trim($Attributes['mode']) == 'extern') {
+				case 'extern':
 
 					// Href
 					$temp['href'] = '';
@@ -208,9 +211,9 @@ class weGlossaryCache {
 					if(isset($Attributes['ExternParameter']) && trim($Attributes['ExternParameter']) != '') {
 						$urladd .= ($urladd ? $urladd . '&' : '?') . trim($Attributes['ExternParameter']);
 					}
-
+					break;
 				// Internal Link
-				} else if(isset($Attributes['mode']) && trim($Attributes['mode']) == 'intern') {
+				case 'intern':
 
 					// LinkID
 					$temp['href'] = '';
@@ -222,9 +225,9 @@ class weGlossaryCache {
 					if(isset($Attributes['InternParameter']) && trim($Attributes['InternParameter']) != '') {
 						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['InternParameter']);
 					}
-
+					break;
 				// Object Link
-				} else if(isset($Attributes['mode']) && trim($Attributes['mode']) == 'object') {
+				case 'object':
 
 					// LinkID
 					$temp['href'] = '';
@@ -240,9 +243,9 @@ class weGlossaryCache {
 					if(isset($Attributes['ObjectParameter']) && trim($Attributes['ObjectParameter']) != '') {
 						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['ObjectParameter']);
 					}
-
+					break;
 				// Category Link
-				} else if(isset($Attributes['mode']) && trim($Attributes['mode']) == 'category') {
+				case 'category':
 
 					$temp['href'] = '';
 					if(isset($Attributes['modeCategory']) && trim($Attributes['modeCategory']) == 'intern') {
@@ -272,7 +275,8 @@ class weGlossaryCache {
 					if(isset($Attributes['CategoryParameter']) && trim($Attributes['CategoryParameter']) != '') {
 						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['CategoryParameter']);
 					}
-
+					break;
+				}
 				}
 
 				// Attribute
@@ -374,46 +378,22 @@ class weGlossaryCache {
 					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'height=" . $height ."';";
 
 					// popup_status
-					if(isset($Attributes['popup_status']) && $Attributes['popup_status'] == 1) {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'status=yes';";
-					} else {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'stytus=no';";
-					}
+					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'status=".(isset($Attributes['popup_status']) && $Attributes['popup_status'] == 1?'yes':'no')."';";
 
 					// popup_scrollbars
-					if(isset($Attributes['popup_scrollbars']) && $Attributes['popup_scrollbars'] == 1) {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=yes';";
-					} else {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=no';";
-					}
+					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=".(isset($Attributes['popup_scrollbars']) && $Attributes['popup_scrollbars'] == 1?'yes':'no')."';";
 
 					// popup_menubar
-					if(isset($Attributes['popup_menubar']) && $Attributes['popup_menubar'] == 1) {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'menubar=yes';";
-					} else {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'menubar=no';";
-					}
+					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'menubar=".(isset($Attributes['popup_menubar']) && $Attributes['popup_menubar'] == 1?'yes':'no')."';";
 
 					// popup_resizable
-					if(isset($Attributes['popup_resizable']) && $Attributes['popup_resizable'] == 1) {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'resizable=yes';";
-					} else {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'resizable=no';";
-					}
+					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'resizable=".(isset($Attributes['popup_resizable']) && $Attributes['popup_resizable'] == 1?'yes':'no')."';";
 
 					// popup_location
-					if(isset($Attributes['popup_location']) && $Attributes['popup_location'] == 1) {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'location=yes';";
-					} else {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'location=no';";
-					}
+					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'location=".(isset($Attributes['popup_location']) && $Attributes['popup_location'] == 1?'yes':'no')."';";
 
 					// popup_toolbar
-					if(isset($Attributes['popup_toolbar']) && $Attributes['popup_toolbar'] == 1) {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'toolbar=yes';";
-					} else {
-						$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'toolbar=no';";
-					}
+					$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'toolbar=".(isset($Attributes['popup_toolbar']) && $Attributes['popup_toolbar'] == 1?'yes':'no')."';";
 
 					$temp['onclick'] .= "var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);";
 
@@ -473,14 +453,7 @@ class weGlossaryCache {
 
 				$prefix .= '<' . $Tag;
 				foreach($AttributeList as $Attribute => $Val) {
-					if($Attribute == 'attribute') {
-						$prefix .= $Val;
-
-					} else {
-						$prefix .= ' ' . $Attribute . '=\"' . $Val . '\"';
-
-					}
-
+					$prefix .= ($Attribute == 'attribute'?$Val:' ' . $Attribute . '=\"' . $Val . '\"');
 				}
 				$prefix .= '>';
 				$postfix = '</' . $Tag . '>' . $postfix;
@@ -491,17 +464,13 @@ class weGlossaryCache {
 
 		}
 
-		$Link	.=		");\n"
-					.	'';
+		$Link	.=		");\n";
 
-		$Acronym	.=		");\n"
-						.	'';
+		$Acronym	.=		");\n";
 
-		$Abbreviation	.=		");\n"
-							.	'';
+		$Abbreviation	.=		");\n";
 
-		$ForeignWord	.=		");\n"
-							.	'';
+		$ForeignWord	.=		");\n";
 
 		$cacheFilename = weGlossaryCache::cacheIdToFilename($this->_cacheId);
 

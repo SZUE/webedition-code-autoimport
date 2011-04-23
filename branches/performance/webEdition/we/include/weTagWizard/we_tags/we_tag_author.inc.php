@@ -8,4 +8,3 @@ $GLOBALS['weTagWizard']['attribute']['id27_type'] = new weTagData_selectAttribut
 $GLOBALS['weTagWizard']['attribute']['id28_doc'] = new weTagData_selectAttribute('28', 'doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id29_creator'] = new weTagData_selectAttribute('29', 'creator', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>

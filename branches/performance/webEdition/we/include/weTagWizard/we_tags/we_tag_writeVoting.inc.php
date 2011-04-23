@@ -8,5 +8,3 @@ $GLOBALS['weTagWizard']['attribute']['id844_allowredirect'] = new weTagData_sele
 $GLOBALS['weTagWizard']['attribute']['id866_writeto'] = new weTagData_selectAttribute('866', 'writeto', array(new weTagDataOption('voting', false, ''), new weTagDataOption('session', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id846_deletesessiondata'] = new weTagData_selectAttribute('846', 'deletesessiondata', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id845_additionalfields'] = new weTagData_textAttribute('845', 'additionalfields', false, '');
-
-?>

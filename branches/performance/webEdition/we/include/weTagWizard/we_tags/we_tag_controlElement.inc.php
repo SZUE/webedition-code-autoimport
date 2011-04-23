@@ -8,4 +8,3 @@ $GLOBALS['weTagWizard']['attribute']['id88_name'] = new weTagData_choiceAttribut
 $GLOBALS['weTagWizard']['attribute']['id89_hide'] = new weTagData_choiceAttribute('89', 'hide', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false,false, '');
 $GLOBALS['weTagWizard']['attribute']['id90_readonly'] = new weTagData_choiceAttribute('90', 'readonly', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false,false, '');
 $GLOBALS['weTagWizard']['attribute']['id91_checked'] = new weTagData_choiceAttribute('91', 'checked', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false,false, '');
-?>

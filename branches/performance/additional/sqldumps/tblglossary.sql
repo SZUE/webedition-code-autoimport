@@ -15,5 +15,6 @@ CREATE TABLE tblglossary (
   `Published` int(11) NOT NULL default '0',
   `CreatorID` bigint(20) NOT NULL default '0',
   `ModifierID` bigint(20) NOT NULL default '0',
-  PRIMARY KEY  (`ID`)
+  PRIMARY KEY  (`ID`),
+  KEY valid (Language(5),Published)
 ) ENGINE=MyISAM;

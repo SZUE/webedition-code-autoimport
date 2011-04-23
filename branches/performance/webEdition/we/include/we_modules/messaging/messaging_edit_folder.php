@@ -27,6 +27,9 @@ include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
@@ -36,7 +39,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 <html>
   <head>
     <title><?php echo g_l('modules_messaging','[folder_settings]')?></title>
-      <script language="JavaScript" type="text/javascript">
+      <script type="text/javascript">
 
 <?php
 

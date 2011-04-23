@@ -61,7 +61,7 @@ class weModelBase {
 	function load($id="0") {
 		$ids = explode(",", $id);
 		foreach ($ids as $k => $v) {
-			eval('$this->' . $this->keys[$k] . '="' . mysql_real_escape_string($v) . '";');
+			eval('$this->' . $this->keys[$k] . '="' . escape_sql_query($v) . '";');
 		}
 
 		if ($this->isKeyDefined()) {
@@ -94,16 +94,16 @@ class weModelBase {
 			$this->isnew = true;
 		foreach ($this->persistent_slots as $key => $val) {
 			//if(!in_array($val,$this->keys))
-			eval('if(isset($this->' . $val . ')) $sets[]="' . $val . '=\'".mysql_real_escape_string($this->' . $val . ')."\'";');
+			eval('if(isset($this->' . $val . ')) $sets[]="' . $val . '=\'".escape_sql_query($this->' . $val . ')."\'";');
 		}
 		$where = $this->getKeyWhere();
 		$set = implode(",", $sets);
 
 		if ($this->isKeyDefined() && $this->isnew) {
-			$this->db->query('SELECT * FROM ' . mysql_real_escape_string($this->table) . ' WHERE ' . $where . ';');
+			$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ' . $where . ';');
 			if ($this->db->next_record())
-				$this->db->query('DELETE FROM ' . mysql_real_escape_string($this->table) . ' WHERE ' . $where . ';');
-			$query = 'INSERT INTO ' . mysql_real_escape_string($this->table) . ' SET ' . $set;
+				$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $where . ';');
+			$query = 'INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
 
 			$this->db->query($query);
 			# get ID #
@@ -114,7 +114,7 @@ class weModelBase {
 			return true;
 		}
 		else if ($this->isKeyDefined()) {
-			$query = 'UPDATE ' . mysql_real_escape_string($this->table) . ' SET ' . $set . ' WHERE ' . $where;
+			$query = 'UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where;
 			$this->db->query($query);
 			return true;
 		}
@@ -129,14 +129,14 @@ class weModelBase {
 		if (!$this->isKeyDefined()) {
 			return false;
 		}
-		$this->db->query('DELETE FROM ' . mysql_real_escape_string($this->table) . ' WHERE ' . $this->getKeyWhere() . ';');
+		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere() . ';');
 		return true;
 	}
 
 	function getKeyWhere() {
 		$wheres = array();
 		foreach ($this->keys as $f) {
-			eval('$wheres[]="' . $f . '=\'".mysql_real_escape_string($this->' . $f . ')."\'";');
+			eval('$wheres[]="' . $f . '=\'".escape_sql_query($this->' . $f . ')."\'";');
 		}
 		return implode(" AND ", $wheres);
 	}

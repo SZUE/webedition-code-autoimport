@@ -230,4 +230,7 @@ $l_weClass = array(
 		'webUser' => 'Asiakas',
 		'docList' => 'Sisältö',
 		'version' => 'Versiot',
+		'languageLinksDefaults' => 'Default value for the document type in corresponding documents in the other front end languages', // TRANSLATE
+		'languageLinks' => 'Link to the corresponding documents/objects in other languages',// TRANSLATE
+		'languageLinksDir' => 'Default link to the corresponding documents in other languages',// TRANSLATE
 );

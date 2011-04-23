@@ -25,18 +25,17 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 function we_browser_check() {
-	global $SAFARI_WYSIWYG, $SYSTEM, $FF, $SAFARI_3;
-	$SAFARI_WYSIWYG = false;
+	$GLOBALS['SAFARI_WYSIWYG'] = false;
 
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
 									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
 
 	$_BROWSER = new we_browserDetect();
 
-	$SYSTEM = strtoupper($_BROWSER->getSystem());
+	$GLOBALS['SYSTEM'] = strtoupper($_BROWSER->getSystem());
 	//renaming
-	if($SYSTEM=='UNIX'){
-		$SYSTEM='X11';
+	if($GLOBALS['SYSTEM']=='UNIX'){
+		$GLOBALS['SYSTEM']='X11';
 	}
 
 	switch($_BROWSER->getBrowser()){
@@ -50,8 +49,8 @@ function we_browser_check() {
 		case 'safari':
 			$GLOBALS['BROWSER'] = "SAFARI";
 			$wkV=$_BROWSER->getWebKitVersion();
-			$SAFARI_WYSIWYG = (($wkV > 311 && $wkV < 400) || ($wkV > 411));
-      $SAFARI_3 = ($wkV > 522);
+			$GLOBALS['SAFARI_WYSIWYG'] = (($wkV > 311 && $wkV < 400) || ($wkV > 411));
+      $GLOBALS['SAFARI_3'] = ($wkV > 522);
 			break;
 		case 'mozilla':
 		case 'firefox':
@@ -66,14 +65,13 @@ function we_browser_check() {
 
 #### Erkennung fuer Netscape >= 6.0
 
-	$FF = ($_BROWSER->getBrowser()=='firefox'?abs($_BROWSER->getBrowserVersion()):'');
+	$GLOBALS['FF'] = ($_BROWSER->getBrowser()=='firefox'?abs($_BROWSER->getBrowserVersion()):'');
 }
 
 function checkSupportedBrowser() {
-	global $SYSTEM;
 	we_browser_check();
 
-	switch ($SYSTEM) {
+	switch ($GLOBALS['SYSTEM']) {
 		case 'WIN' :
 			switch ($GLOBALS['BROWSER']) {
 				case 'IE':

@@ -179,9 +179,10 @@ $l_alert = array(
 		'login_denied_for_user' => "The user cannot login. The user access is disabled.", // TRANSLATE
 		'no_perm_to_delete_single_document' => "You have not the needed permissions to delete the active document.", // TRANSLATE
 
-		'applyWeDocumentCustomerFiltersDocument' => "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?", // TRANSLATE
-		'applyWeDocumentCustomerFiltersFolder' => "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ", // TRANSLATE
-
+		'confirm' => array(
+				'applyWeDocumentCustomerFiltersDocument' => "The document has been moved to a folder with divergent customer account policies. Should the settings of the folder be transmitted to this document?", // TRANSLATE
+				'applyWeDocumentCustomerFiltersFolder' => "The directory has been moved to a folder with divergent customers account policies. Should the settings be adopted for this directory and all subelements? ", // TRANSLATE
+		),
 		'field_in_tab_notvalid_pre' => "The settings could not be saved, because the following fields contain invalid values:", // TRANSLATE
 		'field_in_tab_notvalid' => ' - field %s on tab %s', // TRANSLATE
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.', // TRANSLATE

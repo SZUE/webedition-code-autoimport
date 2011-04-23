@@ -156,7 +156,7 @@ class we_objectFile extends we_document{
 	}
 
 	function formLanguage() {
-
+		global $l_we_class;
 		we_loadLanguageConfig();
 
 		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
@@ -164,18 +164,60 @@ class we_objectFile extends we_document{
 		$inputName = "we_".$this->Name."_Language";
 
 		$_languages = $GLOBALS['weFrontendLanguages'];
+		$this->setRootDirID(true);
 
-		$content = '
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+			$htmlzw='';
+			foreach ($_languages as $langkey => $lang){
+			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblObjectFile' AND DID='".$this->ID."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
+			  	if(!$LDID){$LDID=0;}
+				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
+				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID,$this->Table, $this->rootDirID).'</div>';
+				$langkeys[]=$langkey;  
+			}
+			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");	
+			
+			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						'.getPixel(2,4).'</td>
+				</tr>
+				<tr>
+					<td>
+						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='".implode(',',$langkeys)."';showhideLangLink('we_".$this->Name."_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
+				</tr>
+				<tr>
+					<td>
+						'.getPixel(2,20).'</td>
+				</tr>
+				<tr>
+					<td class="defaultfont" align="left">
+						'.$l_we_class["languageLinks"].'</td>
+				</tr>
+			</table>';
+			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+			
+		} else {
+			$content = '
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						'.getPixel(2,4).'</td>
+				</tr>
 				<tr>
 					<td>
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
 				</tr>
 			</table>';
+			
+		}
+
+		
 		return $content;
 
 	}
-
+	
 	function copyDoc($id){
 		if($id){
 			$doc = new we_objectFile();
@@ -946,7 +988,7 @@ class we_objectFile extends we_document{
 			$content .= $we_button->create_button_table(
 										array(
 											$but,
-												'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object','[not_published]') .'</span>')
+												'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object','[not_published]') .'</span>')
 											)
 										);
 
@@ -1108,7 +1150,7 @@ class we_objectFile extends we_document{
 						$content .= $we_button->create_button_table(
 													array(
 														$but,
-															'<span style="cursor: pointer;-moz-user-select: none;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'
+															'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'
 														)
 
 													);
@@ -1710,7 +1752,7 @@ class we_objectFile extends we_document{
 				$where = '';
 				foreach($paths as $path){
 					if($path!="/"){
-						$where .= "Path like '".mysql_real_escape_string($path)."/%' OR Path = '".mysql_real_escape_string($path)."' OR ";
+						$where .= "Path like '".escape_sql_query($path)."/%' OR Path = '".escape_sql_query($path)."' OR ";
 					}
 				}
 				$where = ereg_replace("(.*) OR $",'\1',$where);
@@ -2143,14 +2185,25 @@ class we_objectFile extends we_document{
 					$text = str_replace('%Parent%',$fooo["Text"],$text);
 				}
 			}
+			if(strpos($text,'%PathIncC%')!==false){
+				$zwtext= ltrim(str_replace($this->Text,'',$this->Path),'/');
+				$text = str_replace('%PathIncC%',$zwtext,$text);
+			}
+			if(strpos($text,'%PathNoC%')!==false){
+				$zwtext= str_replace($this->Text,'',$this->Path);
+				$classN = f("SELECT Path FROM ".OBJECT_TABLE." WHERE ID='".$this->TableID."';",'Path',$this->DB_WE);
+				$zwtext= ltrim(str_replace($classN,'',$zwtext),'/');
+				$text = str_replace('%PathNoC%',$zwtext,$text);
+			}
 			if(strpos($text,'%locale%')!==false){$text = str_replace('%locale%',$this->Language,$text);}
 			if(strpos($text,'%language%')!==false){$text = str_replace('%language%',substr($this->Language,0,2),$text);}
 			if(strpos($text,'%country%')!==false){$text = str_replace('%country%',substr($this->Language,4,2),$text);}
 
-			
+
 			$text=str_replace(" ", "-", $text);
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 				$text= urlencode ($text);
+				$text= str_replace('%2F','/',$text);
 			} else {
 				$text=correctUml($text);
 				$text= preg_replace("~[^0-9a-zA-Z/._-]~","",$text);
@@ -2169,7 +2222,7 @@ class we_objectFile extends we_document{
 		while(list($k,$v) = $this->nextElement('')){
 			if(isset($v["dat"])){ $text .= " ".$v["dat"]; }
 		}
-		$text = mysql_real_escape_string(trim(strip_tags($text)));
+		$text = escape_sql_query(trim(strip_tags($text)));
 		if(!$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".$this->ID)) return false;
 		if(!$this->IsSearchable) {
 			return true;
@@ -2182,7 +2235,7 @@ class we_objectFile extends we_document{
 		$ws = array_unique($ws);
 		$wsPath = '';
 		$w = '';
-		$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".mysql_real_escape_string($this->Category)."',".$this->TableID.",'".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Text)."','".mysql_real_escape_string($this->Language)."')";
+		$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".escape_sql_query($this->Category)."',".$this->TableID.",'".escape_sql_query($this->getElement("Title"))."','".escape_sql_query($this->getElement("Description"))."','".escape_sql_query($this->Text)."','".escape_sql_query($this->Language)."')";
 
 		if (empty($ws)) {
 			if($this->DB_WE->query($q)) return true;
@@ -2194,7 +2247,7 @@ class we_objectFile extends we_document{
 				if($w == "0"){
 					$wsPath = "/";
 				}
-				$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".mysql_real_escape_string($this->Category)."',".$this->TableID.",'".mysql_real_escape_string($this->getElement("Title"))."','".mysql_real_escape_string($this->getElement("Description"))."','".mysql_real_escape_string($this->Text)."','".mysql_real_escape_string($this->Language)."')";
+				$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".escape_sql_query($this->Category)."',".$this->TableID.",'".escape_sql_query($this->getElement("Title"))."','".escape_sql_query($this->getElement("Description"))."','".escape_sql_query($this->Text)."','".escape_sql_query($this->Language)."')";
 				if(!$this->DB_WE->query($q)) return false;
 			}
 		}
@@ -2346,7 +2399,9 @@ class we_objectFile extends we_document{
 			$version->save($this);
 
 		}
-
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) ){
+			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblObjectFile',false,true);
+		}
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this));
@@ -2708,12 +2763,12 @@ class we_objectFile extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".$this->Table." WHERE ParentID=".$this->ParentID." AND Text='".mysql_real_escape_string($this->Text)."' AND ID!='".$this->ID."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".$this->Table." WHERE ParentID=".$this->ParentID." AND Text='".escape_sql_query($this->Text)."' AND ID!='".$this->ID."'","ID",new DB_WE());
 	}
 	function i_urlDouble(){
 		$this->setUrl();
 		if ($this->Url !=''){
-			return f("SELECT ID FROM ".$this->Table." WHERE Url='".mysql_real_escape_string($this->Url)."' AND ID!='".$this->ID."'","ID",new DB_WE());
+			return f("SELECT ID FROM ".$this->Table." WHERE Url='".escape_sql_query($this->Url)."' AND ID!='".$this->ID."'","ID",new DB_WE());
 		} else return false;
 	}
 
@@ -2748,7 +2803,7 @@ class we_objectFile extends we_document{
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
 				" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES('".$this->ID."','".$Wann."','".$s["task"]."','".$this->ClassName."','".mysql_real_escape_string(serialize($serializedDoc))."','".mysql_real_escape_string(serialize($s))."','".$s["type"]."','".$s["active"]."')")) return false;
+						VALUES('".$this->ID."','".$Wann."','".$s["task"]."','".$this->ClassName."','".$this->DB_WE->escape(serialize($serializedDoc))."','".$this->DB_WE->escape(serialize($s))."','".$s["type"]."','".$s["active"]."')")) return false;
 			}
 			return $makeSched;
 		}

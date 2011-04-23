@@ -38,13 +38,16 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 $mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : '';
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 print STYLESHEET;
 
 ?>
 
-<script language="JavaScript" type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+<script type="text/javascript">
 	rcpt_sel = new Array();
 
 	function update_rcpts() {
@@ -119,7 +122,7 @@ print STYLESHEET;
 							<td class="defaultgray">
 								' . g_l('modules_messaging','[subject]') . ':</td>
 							<td class="defaultfont">
-								' . $compose->get_subject() . '</td>
+								' . htmlspecialchars($compose->get_subject()) . '</td>
 						</tr>
 					</table>
 					<table cellpadding="6">';

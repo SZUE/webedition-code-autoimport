@@ -159,7 +159,7 @@ emosECPageArray['var3']		= 'NULL';
 		$this->emosJsFooter .= "
 if(typeof emosECPageArray == 'undefined') var emosECPageArray = new Array();
 emosECPageArray['event'] 	= '" . $emosEvent . "';
-emosECPageArray['id']		= 'd_" . $_REQUEST["shop_artikelid"] . "';
+emosECPageArray['id']		= 'd_" . abs($_REQUEST["shop_artikelid"]) . "';
 emosECPageArray['name']		= '" . rawurlencode($emosName) . "';
 emosECPageArray['preis']	= '" . $emosPreis . "';
 emosECPageArray['group']	= '" . rawurlencode(isset($_REQUEST['catId']) ? id_to_path($_REQUEST['catId'],CATEGORY_TABLE) :  $article->ParentPath ) . "';

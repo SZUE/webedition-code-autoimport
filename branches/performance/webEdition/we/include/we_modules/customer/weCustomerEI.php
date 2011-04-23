@@ -394,7 +394,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 						if(isset($fields[$node_name])) eval('$customer->'.$fields[$node_name].'=\''.addslashes($node_value).'\';');
 					}
 
-					$existid=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".mysql_real_escape_string($customer->Username)."' AND ID<>".abs($customer->ID),"ID",$db);
+					$existid=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".$db->escape($customer->Username)."' AND ID<>".abs($customer->ID),"ID",$db);
 					if($existid){
 						if($same=="rename"){
 							$exists=true;
@@ -403,7 +403,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 							while($exists){
 								$count++;
 								$new_name=$customer->Username.$count;
-								$exists=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".mysql_real_escape_string($new_name)."' AND ID<>".abs($customer->ID),"ID",$db);
+								$exists=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".$db->escape($new_name)."' AND ID<>".abs($customer->ID),"ID",$db);
 							}
 							$customer->Username=$new_name;
 							$customer->save();

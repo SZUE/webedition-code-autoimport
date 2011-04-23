@@ -81,7 +81,7 @@ class weToolTreeDataSource {
 		if($ws = get_ws($table)) {
 			$wsPathArray = id_to_path($ws,$table,$db,false,true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = " Path like '".mysql_real_escape_string($path)."/%' OR ".weToolTreeDataSource::getQueryParents($path);
+				$_aWsQuery[] = " Path like '".$db->escape($path)."/%' OR ".weToolTreeDataSource::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					array_push($parentpaths,$path);
 					$path = dirname($path);
@@ -111,7 +111,7 @@ class weToolTreeDataSource {
 
 		$where=" WHERE $wsQuery ParentID=".abs($ParentID)." ".$addWhere;
 
-		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".mysql_real_escape_string($table)." $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT ".abs($offset).",".abs($segment).";" : ";" ));
+		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".$db->escape($table)." $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT ".abs($offset).",".abs($segment).";" : ";" ));
 		$now = time();
 
 		while($db->next_record()){
@@ -138,7 +138,7 @@ class weToolTreeDataSource {
 
 		}
 
-		$total=f("SELECT COUNT(*) as total FROM ".mysql_real_escape_string($table)." $where;",'total',$db);
+		$total=f("SELECT COUNT(*) as total FROM ".$db->escape($table)." $where;",'total',$db);
 		$nextoffset=$offset+$segment;
 		if($segment && ($total>$nextoffset)){
 			$items[]=array(

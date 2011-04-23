@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 if (!isset($GLOBALS['WE_IS_DYN'])) {
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 }
@@ -356,7 +357,7 @@ class we_class {
 		$vals = array();
 		if ($firstEntry)
 			$vals[$firstEntry[0]] = $firstEntry[1];
-		$this->DB_WE->query("SELECT * FROM " . mysql_real_escape_string($table) . " $sqlTail");
+		$this->DB_WE->query("SELECT * FROM ".$this->DB_WE->escape($table)." $sqlTail");
 		while ($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
@@ -391,7 +392,7 @@ class we_class {
 		$vals = array();
 		if ($firstEntry)
 			$vals[$firstEntry[0]] = $firstEntry[1];
-		$this->DB_WE->query("SELECT * FROM " . mysql_real_escape_string($table) . " $sqlTail");
+		$this->DB_WE->query("SELECT * FROM ".$this->DB_WE->escape($table)." $sqlTail");
 		while ($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
@@ -463,7 +464,16 @@ class we_class {
 	}
 
 	function we_delete() {
-		return $this->DB_WE->query("DELETE FROM " . mysql_real_escape_string($this->Table) . " WHERE ID='" . abs($this->ID) . "'");
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
+			$deltype='';
+			if ($this->ClassName=='we_objectFile') $deltype='tblObjectFile';
+			if ($this->ClassName=='we_webEditionDocument') $deltype='tblFile';
+			if ($this->ClassName=='we_docTypes') $deltype='tblDocTypes';
+			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID='".abs($this->ID)."'");
+			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID='".abs($this->ID)."'");
+		}
+		return $this->DB_WE->query("DELETE FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");	
+		
 	}
 
 # private ###################
@@ -486,12 +496,12 @@ class we_class {
 		}
 	}
 
-	function i_getPersistentSlotsFromDB($felder="*") {
-		$this->DB_WE->query("SELECT " . $felder . " FROM " . mysql_real_escape_string($this->Table) . " WHERE ID='" . abs($this->ID) . "'");
-		if ($this->DB_WE->next_record()) {
-			foreach ($this->DB_WE->Record as $k => $v) {
-				if ($k && in_array($k, $this->persistent_slots)) {
-					eval('$this->' . $k . '=$v;');
+	function i_getPersistentSlotsFromDB($felder="*"){
+		$this->DB_WE->query("SELECT ".$felder." FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");
+		if($this->DB_WE->next_record()){
+			foreach($this->DB_WE->Record as $k=>$v){
+				if($k && in_array($k,$this->persistent_slots)){
+					eval('$this->'.$k.'=$v;');
 				}
 			}
 		} else {
@@ -527,14 +537,10 @@ class we_class {
 						$updt .= $fieldName . "='" . addslashes($val) . "',";
 				}
 			}
-			$updt = ereg_replace('(.+),$', '\1', $updt);
-			if ($updt) {
-				$q = "UPDATE " . mysql_real_escape_string($this->Table) . " SET " . $updt . " WHERE ID='" . abs($this->ID) . "'";
-				if ($this->DB_WE->query($q)) {
-					return true;
-				} else {
-					return false;
-				}
+			$updt = substr($updt,0,-1);
+			if($updt){
+				$q = "UPDATE ".$this->DB_WE->escape($this->Table)." SET ".$updt." WHERE ID='".abs($this->ID)."'";
+				return ($this->DB_WE->query($q)?true:false);
 			} else {
 				return false;
 			}
@@ -554,12 +560,12 @@ class we_class {
 					}
 				}
 			}
-			if ($keys) {
-				$keys = "(" . substr($keys, 0, strlen($keys) - 1) . ")";
-				$vals = "VALUES(" . substr($vals, 0, strlen($vals) - 1) . ")";
-				$q = "INSERT INTO " . mysql_real_escape_string($this->Table) . " $keys $vals";
-				if ($this->DB_WE->query($q)) {
-					$this->ID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM " . mysql_real_escape_string($this->Table), "LastID", $this->DB_WE);
+			if($keys){
+				$keys = "(".substr($keys,0,strlen($keys)-1).")";
+				$vals = "VALUES(".substr($vals,0,strlen($vals)-1).")";
+				$q = "INSERT INTO ".$this->DB_WE->escape($this->Table)." $keys $vals";
+				if($this->DB_WE->query($q)){
+    				$this->ID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->DB_WE->escape($this->Table),"LastID",$this->DB_WE);
 					return true;
 				}
 				return false;
@@ -585,6 +591,28 @@ class we_class {
 			return in_array($editPageNr, $this->EditPageNrs);
 		}
 		return false;
+	}
+	
+	function setLanguageLink($LangLinkArray,$type,$isfolder=false,$isobject=false){
+		if(is_array($LangLinkArray) ){
+			$q = "DELETE FROM ".mysql_real_escape_string(LANGLINK_TABLE)." WHERE LDID='".abs($this->ID)."' AND DID !='".abs($LDID)."' AND Locale='".$this->Language."' AND  DocumentTable='".$type."';";	
+			$this->DB_WE->query($q);		
+			foreach ($LangLinkArray as $locale => $LDID){
+			  
+				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+					$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
+					$this->DB_WE->query($q);
+				} else {
+					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
+					$this->DB_WE->query($q);
+				}
+				if(defined('LANGLINK_SUPPORT_BACKLINKS') && LANGLINK_SUPPORT_BACKLINKS && !$isfolder and $LDID){
+					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
+					$this->DB_WE->query($q);
+				}
+			  
+		  }
+		}
 	}
 
 	}

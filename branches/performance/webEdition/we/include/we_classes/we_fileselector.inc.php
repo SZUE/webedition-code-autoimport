@@ -103,7 +103,7 @@ class we_fileselector{
 		if($id != ""){
 			// get default Directory
 			$this->db->query("SELECT ".$this->fields. "
-								FROM ".mysql_real_escape_string($this->table)."
+								FROM ".$this->db->escape($this->table)."
 								WHERE ID='".abs($id)."'");
 
 			// getValues of selected Dir
@@ -144,7 +144,7 @@ class we_fileselector{
 	function isIDInFolder($ID,$folderID,$db=""){
 		if($folderID==$ID) return true;
 		if(!$db) $db = new DB_WE();
-		$pid = f("SELECT ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($ID)."'","ParentID",$db);
+		$pid = f("SELECT ParentID FROM ".escape_sql_query($this->table)." WHERE ID='".abs($ID)."'","ParentID",$db);
 		if($pid == $folderID){
 			return true;
 		}else if($pid != 0){
@@ -157,9 +157,9 @@ class we_fileselector{
 	function query(){
 		$this->db->query(
 			"SELECT ".$this->fields."
-			FROM ". mysql_real_escape_string($this->table) ."
+			FROM ". $this->db->escape($this->table) ."
 			WHERE ParentID='".abs($this->dir)."' " .
-			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '".mysql_real_escape_string($this->filter)."' " : "AND ContentType = '".mysql_real_escape_string($this->filter)."' ") : '' ) ).
+			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '".$this->db->escape($this->filter)."' " : "AND ContentType = '".$this->db->escape($this->filter)."' ") : '' ) ).
 			($this->order ? (' ORDER BY '.$this->order) : ''));
 		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
 	}
@@ -347,10 +347,10 @@ function selectFile(id){
 
 	function getFramesetJavaScriptDef(){
 		$startPathQuery = new DB_WE();
-		$startPathQuery->query("SELECT Path FROM ".mysql_real_escape_string($this->table)." WHERE ID='".abs($this->dir)."'");
+		$startPathQuery->query("SELECT Path FROM ".$startPathQuery->escape($this->table)." WHERE ID='".abs($this->dir)."'");
 		$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : "/";
 
-		return '<script language="JavaScript" type="text/javascript">
+		return '<script  type="text/javascript">
 	var currentID="'.$this->id.'";
 	var currentDir="'.$this->dir.'";
 	var currentPath="'.$this->path.'";
@@ -600,7 +600,7 @@ function clearEntries(){
 		print STYLESHEET;
 		$this->setDirAndID();
 		$this->printHeaderJSIncluddes();
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script  type="text/javascript">
 ';
 		$this->printHeaderJSDef();
 		$this->printHeaderJS();
@@ -660,7 +660,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 		$z = 0;
 		while($pid!=0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
 			if($this->db->next_record()){
 				$out='<option value="'.$this->db->f("ID").'"'.(($z==0) ? ' selected' : '').'>'.$this->db->f("Text").'</options>'."\n".$out;
 				$z++;
@@ -756,7 +756,7 @@ function enableRootDirButs(){
 	}
 
 	function printHeaderJSIncluddes(){
-		print '<script language="JavaScript" type="text/javascript" src="'.WEBEDITION_DIR.'js/images.js"></script>
+		print '<script  type="text/javascript" src="'.WEBEDITION_DIR.'js/images.js"></script>
 ';
 	}
 
@@ -805,7 +805,7 @@ top.fsheader.clearOptions();
 		$c=0;
 		while($pid!=0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".mysql_real_escape_string($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
 
 			if($this->db->next_record()){
 				$out = 'top.fsheader.addOption("'.$this->db->f("Text").'",'.$this->db->f("ID").');
@@ -833,7 +833,7 @@ top.fsheader.selectIt();
 		print STYLESHEET;
 
 		$this->printFooterJSIncluddes();
-		print '<script language="JavaScript" type="text/javascript">
+		print '<script  type="text/javascript">
 ';
 		$this->printFooterJSDef();
 		$this->printFooterJS();

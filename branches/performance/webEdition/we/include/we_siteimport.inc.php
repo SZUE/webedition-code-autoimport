@@ -427,11 +427,11 @@ class weSiteImport
 		$serializedData = serialize($data);
 		// update DB
 		$GLOBALS['DB_WE']->query(
-				"UPDATE " . PREFS_TABLE . " SET siteImportPrefs='" . mysql_real_escape_string($serializedData) . "' WHERE userID=" . abs(
+				"UPDATE " . PREFS_TABLE . " SET siteImportPrefs='" . $GLOBALS['DB_WE']->escape($serializedData) . "' WHERE userID=" . abs(
 						$_SESSION["user"]["ID"]));
 		// update session
 		$_SESSION["prefs"]["siteImportPrefs"] = $serializedData;
-		$js = '<script type="text/javascript" language="JavaScript">parent.close();</script>';
+		$js = '<script type="text/javascript" >parent.close();</script>';
 		return $this->_getHtmlPage("", $js);
 	}
 
@@ -608,7 +608,7 @@ class weSiteImport
 				g_l('siteimport',"[importSettingsWePages]"));
 		$bodyhtml .= '</form></body>';
 
-		$js = '<script type="text/javascript" language="JavaScript">
+		$js = '<script type="text/javascript" >
 
 	function checkForm(){
 		var f = document.forms[0];
@@ -729,7 +729,7 @@ class weSiteImport
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDummy';
 		$idname = 'templateID';
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($tid)."'", "Path", $GLOBALS['DB_WE']);
+		$path = f("SELECT Path FROM ".$GLOBALS['DB_WE']->escape($table)." WHERE ID='".abs($tid)."'", "Path", $GLOBALS['DB_WE']);
 		$button = $we_button->create_button(
 				"select",
 				"javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.displayTable();','" . session_id() . "','','text/weTmpl',1)");
@@ -1661,7 +1661,7 @@ class weSiteImport
 
 
 		$newTemplateID = f(
-				"SELECT " . LINK_TABLE . ".DID AS DID FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat='" . mysql_real_escape_string(
+				"SELECT " . LINK_TABLE . ".DID AS DID FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat='" . $GLOBALS['DB_WE']->escape(
 						$templateCode) . "' AND " . LINK_TABLE . ".DocumentTable='" . substr(
 						TEMPLATES_TABLE,
 						strlen(TBL_PREFIX)) . "'",
@@ -1674,7 +1674,7 @@ class weSiteImport
 
 			$newTemplateFilename = $templateFilename;
 			$GLOBALS['DB_WE']->query(
-					"SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename like '" . mysql_real_escape_string(
+					"SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename like '" . $GLOBALS['DB_WE']->escape(
 							$templateFilename) . "%'");
 			$result = array();
 			if ($GLOBALS['DB_WE']->num_rows()) {
@@ -2079,7 +2079,7 @@ class weSiteImport
 					$z = 0;
 					$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
 					while (f(
-							"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".mysql_real_escape_string($footext)."' AND ParentID='" . abs($parentID) . "'",
+							"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".$GLOBALS['DB_WE']->escape($footext)."' AND ParentID='" . abs($parentID) . "'",
 							"ID",
 							$GLOBALS["DB_WE"])) {
 						$z++;
@@ -2464,7 +2464,7 @@ class siteimportFrag extends taskFragment
 		$progress = (int)((100 / count($this->alldata)) * $this->currentTask);
 		$progressText = shortenPath($path, 30);
 
-		$code = '<script type="text/javascript" language="JavaScript">
+		$code = '<script type="text/javascript" >
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
 top.siteimportbuttons.weButton.disable("back");
 top.siteimportbuttons.weButton.disable("next");

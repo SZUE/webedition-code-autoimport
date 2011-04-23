@@ -242,4 +242,5 @@ $l_javaMenu_global = array(
 
 		'common' => "Common", // TRANSLATE
 		'sysinfo' => "System information", // TRANSLATE
+		'showerrorlog' => "Errorlog",// TRANSLATE
 );

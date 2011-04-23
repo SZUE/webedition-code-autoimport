@@ -159,7 +159,7 @@ class weCustomerSettings {
 	function load($tryFromSession=true) {
 		$modified=false;
 
-		$this->db->query('SELECT * FROM ' . mysql_real_escape_string($this->table) . ';');
+		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ';');
 		while ($this->db->next_record()) {
 			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
 		}
@@ -369,6 +369,16 @@ class weCustomerSettings {
 	function getDate($date, $format=DATE_FORMAT) {
 		$order = array();
 
+		$date_format = array(
+				'd' => 'day',
+				'm' => 'month',
+				'n' => 'month',
+				'y' => 'year',
+				'Y' => 'year',
+				'H' => 'hour',
+				'i' => 'minute',
+				's' => 'second'
+		);
 		$date_format_table = array(
 				'm' => '([0-9]{2})',
 				'n' => '([0-9]{1,2})',
@@ -409,23 +419,10 @@ class weCustomerSettings {
 					'minute' => '0',
 					'second' => '0'
 			);
-			if (isset($order['d']))
-				$ret['day'] = $regex[$order['d']];
-			if (isset($order['m']))
-				$ret['month'] = $regex[$order['m']];
-			if (isset($order['n']))
-				$ret['month'] = $regex[$order['n']];
-			if (isset($order['y']))
-				$ret['year'] = $regex[$order['y']];
-			if (isset($order['Y']))
-				$ret['year'] = $regex[$order['Y']];
-
-			if (isset($order['H']))
-				$ret['hours'] = $regex[$order['H']];
-			if (isset($order['i']))
-				$ret['minutes'] = $regex[$order['i']];
-			if (isset($order['s']))
-				$ret['seconds'] = $regex[$order['s']];
+			foreach($date_format as $key => $val){
+				if (isset($order[$key]))
+					$ret[$val] = $regex[$order[$key]];
+			}
 
 			return $ret;
 		}

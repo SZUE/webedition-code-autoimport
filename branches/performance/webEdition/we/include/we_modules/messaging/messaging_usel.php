@@ -22,6 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+	exit();
+}
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
@@ -41,10 +44,10 @@ if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
 <html>
   <head>
     <title><?php print g_l('modules_messaging','[sel_rcpts]'); ?></title>
-  <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-  <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
-  <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>we_showMessage.js"></script>
-  <script language="JavaScript" type="text/javascript">
+  <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+  <script type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
+  <script type="text/javascript" src="<?php print JS_DIR; ?>we_showMessage.js"></script>
+  <script type="text/javascript">
 	<?php
 	if (!empty($_REQUEST['mode']) && ($_REQUEST['mode'] == 'save_addrbook')) {
 	    $addrbook = array();
@@ -314,7 +317,7 @@ if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
 	      echo hidden('addrbook_arr', '');
 	?>
     </form>
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
 	init();
     </script>
   </body>

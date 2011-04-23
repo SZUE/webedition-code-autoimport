@@ -629,11 +629,11 @@ HTS;
 									if($ref->ContentType == 'weBinary' || $ref->ContentType == 'category' || $ref->ContentType == 'objectFile') {
 										$_path_info = $ref->Path;
 									} else if($ref->ContentType == 'doctype') {
-										$_path_info = f('SELECT DocType FROM ' . mysql_real_escape_string($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'DocType',new DB_WE());
+										$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'DocType',new DB_WE());
 									} else if($ref->ContentType == 'weNavigationRule') {
-										$_path_info = f('SELECT NavigationName FROM ' . mysql_real_escape_string($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'NavigationName',new DB_WE());
+										$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'NavigationName',new DB_WE());
 									} else if($ref->ContentType == 'weThumbnail') {
-										$_path_info = f('SELECT Name FROM ' . mysql_real_escape_string($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'Name',new DB_WE());
+										$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'Name',new DB_WE());
 									} else {
 										$_path_info = id_to_path($ref->ID,$ref->Table);
 									}

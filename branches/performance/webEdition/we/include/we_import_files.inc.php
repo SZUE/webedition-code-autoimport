@@ -534,7 +534,7 @@ class we_import_files
 						"onMouseUp" => "we_trashButUp(this)",
 						"onMouseOut" => "we_trashButUp(this)",
 						"unselectable" => "on",
-						"style" => "-moz-user-select: none;display: none;cursor:pointer;",
+						"style" => "display: none;cursor:pointer;",
 						"id" => "trash_WEFORMNUM",
 						"onclick" => "wedelRow(WEFORMNUM + 1,this)"
 				));
@@ -927,7 +927,7 @@ class we_import_files
 
 			// if file exists we have to see if we should create a new one or overwrite it!
 			if ($file_id = f(
-					"SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . mysql_real_escape_string($we_doc->Path) . "'",
+					"SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . escape_sql_query($we_doc->Path) . "'",
 					"ID",
 					$GLOBALS["DB_WE"])) {
 				if ($this->sameName == "overwrite") {
@@ -938,7 +938,7 @@ class we_import_files
 						$z = 0;
 						$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 						while (f(
-								"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".mysql_real_escape_string($footext)."' AND ParentID='" . abs($this->importToID) . "'",
+								"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".escape_sql_query($footext)."' AND ParentID='" . abs($this->importToID) . "'",
 								"ID",
 								$GLOBALS["DB_WE"])) {
 							$z++;
@@ -1175,7 +1175,7 @@ class we_import_files
 
 								'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
 								'onclick' => 'javascript:#####placeHolder#####;',
-								'style' => 'cursor: pointer; width: 27px;-moz-user-select: none;'
+								'style' => 'cursor: pointer; width: 27px;'
 						)));
 
 		$js = we_htmlElement::jsElement('', array(

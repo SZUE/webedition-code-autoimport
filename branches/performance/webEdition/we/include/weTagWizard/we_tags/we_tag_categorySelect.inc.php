@@ -12,4 +12,3 @@ $GLOBALS['weTagWizard']['attribute']['id66_firstentry'] = new weTagData_textAttr
 $GLOBALS['weTagWizard']['attribute']['id641_multiple'] = new weTagData_selectAttribute('641', 'multiple', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id708_indent'] = new weTagData_textAttribute('708', 'indent', false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
-?>
