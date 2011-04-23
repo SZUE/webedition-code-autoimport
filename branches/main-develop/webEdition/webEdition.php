@@ -316,7 +316,6 @@ function toggleTree(){
 		storeTreeWidth(24);
 		setTreeArrow("right");
 	}
-	var x=xfd.bla;
 }
 
 function setTreeArrow(direction) {
