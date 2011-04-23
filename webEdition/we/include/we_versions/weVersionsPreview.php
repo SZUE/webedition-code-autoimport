@@ -334,6 +334,9 @@ $contentDiff .= '</td></tr>';
 				$oldVal = shortenPathSpace($oldVal, $pathLength);
 			}
 			*/
+			//make sure none of them is an array
+			if(is_array($newVal) ) {$newVal = implode('',$newVal);}
+			if(is_array($oldVal) ) {$oldVal = implode('',$oldVal);}
 
 			//if one of them contains newlines, format it as pre-block
 			if($isTempl){
@@ -366,14 +369,12 @@ $contentDiff .= '</td></tr>';
 				
 			}else{
 				if($newVal!=getPixel(1,1)  && $k!='weInternVariantElement') {
-					if(is_array($newVal) ) {$newVal = implode('',$newVal);}
 					$newVal = htmlspecialchars($newVal);
 				}
 
 				$contentDiff .= '<td width="33%" style="'.$mark.'">'.$div.$pre.$newVal.($pre==''?'':'</pre>').($div==''?'':'</div>').'</td>';
 				if($oldVersion) {
 					if($oldVal!=getPixel(1,1) && $k!='weInternVariantElement') {
-						if(is_array($oldVal) ) {$oldVal = implode('',$oldVal);}
 						$oldVal = htmlspecialchars($oldVal);
 					}
 					$contentDiff .= '<td width="33%" style="'.$mark.'border-left:1px solid #B8B8B7;">'.$div.$pre.$oldVal.($pre==''?'':'</pre>').($div==''?'':'</div>').'</td>';
