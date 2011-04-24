@@ -142,6 +142,7 @@ var widthBeforeDeleteModeSidebar = 0;
 			drawTree();
 
 			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "1px";
+			self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "1px";
 			top.setTreeWidth(widthBeforeDeleteMode);
 			top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			break;
@@ -154,6 +155,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				drawTree();
 			}
 			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "150px";
+			self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "150px";
 
 			var width = top.getTreeWidth();
 
@@ -179,6 +181,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				drawTree();
 			}
 			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "160px";
+			self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "160px";
 
 			var width = top.getTreeWidth();
 
