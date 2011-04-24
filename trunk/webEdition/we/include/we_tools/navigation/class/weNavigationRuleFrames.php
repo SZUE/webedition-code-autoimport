@@ -201,7 +201,7 @@ class weNavigationRuleFrames
 				10);
 		$yuiSuggest->setTrashButton(
 				$we_button->create_button(
-						"image:function_trash", 
+						"image:btn_function_trash", 
 						"javascript:document.we_form.elements['FolderID'].value = '';document.we_form.elements['FolderIDPath'].value = '';"), 
 				10);
 		
