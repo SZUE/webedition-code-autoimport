@@ -210,7 +210,7 @@ class we_tagParser{
 
 	}
 
-	function checkOpenCloseTags($TagsInTemplate = array(), &$code)
+	function checkOpenCloseTags($TagsInTemplate, &$code)
 	{
 
 		$CloseTags = array(
@@ -354,6 +354,41 @@ class we_tagParser{
 			if (!isset($arr)) {
 				$arr = array();
 			}
+					
+			$parseFn = 'we_parse_tag_'.$tagname;
+			if((we_include_tag_file($tagname)===true) && function_exists($parseFn)){
+				$pre = $post = $content = '';
+				$tagPos = strpos($code, $tag, $this->lastpos);
+				$endeStartTag = $tagPos + strlen($tag);
+				$endTagPos = $this->searchEndtag($code, $tagPos);
+
+				if ($endTagPos > -1) {
+					$endeEndTagPos = strpos(
+							$code,
+							">",
+							$endTagPos) + 1;
+					if ($endTagPos > $endeStartTag) {
+						$content = substr(
+								$code,
+								$endeStartTag,
+								($endTagPos - $endeStartTag));
+					}}
+					$attribs = str_replace('=>"\$', '=>"$', 'array(' . rtrim($attribs,',') . ')'); // workarround Bug Nr 6318
+				
+				/*call specific function for parsing this tag
+				 * $attribs is the attribs string, $content is content of this tag
+				 * return value is parsed again and inserted
+				 */
+				$content=$parseFn($attribs,$content);
+				$tp = new we_tagParser();
+				$tags = $tp->getAllTags($content);
+				$tp->parseTags($tags, $content);
+				$code = substr($code,0,$tagPos) . 
+								$content.
+								substr($code,$endeEndTagPos);
+				return;
+			}
+			
 			if (in_array($tagname,$this->AppListviewItemsTags) ){// for App-Tags of type listviewitems
 				$code = $this->parseAppListviewItemsTags($tagname, $tag, $code, $attribs, $postName);
 				$this->ipos++;
@@ -686,7 +721,7 @@ class we_tagParser{
 							else
 								$code = str_replace(
 										$tag,
-										'<?php if($GLOBALS["lv"]->hasNextPage() && $GLOBALS["lv"]->close_a() ): ?></a><?php endif ?>',
+										'<?php if($GLOBALS["lv"]->hasNextPage() && $GLOBALS["lv"]->close_a() )echo \'</a>\';',
 										$code);
 						} else
 							if ($tagname == "back") {
@@ -698,7 +733,7 @@ class we_tagParser{
 								else
 									$code = str_replace(
 											$tag,
-											'<?php if($GLOBALS["lv"]->hasPrevPage()  && $GLOBALS["lv"]->close_a() ): ?></a><?php endif ?>',
+											'<?php if($GLOBALS["lv"]->hasPrevPage()  && $GLOBALS["lv"]->close_a() )echo \'</a>\'; ?>',
 											$code);
 							} else
 								if ($tagname == "form") {

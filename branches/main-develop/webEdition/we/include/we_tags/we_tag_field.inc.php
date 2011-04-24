@@ -23,13 +23,13 @@
  */
 
 function we_tag_field($attribs, $content){
-	$name = we_getTagAttribute("name", $attribs);
+	$name = we_getTagAttribute('_name_orig', $attribs);
 
 	// quickfix 4192
-	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
+/*	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
 		$nameA = explode("blk_",$name);
 		$name = $nameA[0];
-	}
+	}*/
 	// quickfix 4192
 	$href = we_getTagAttribute("href", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
@@ -64,11 +64,12 @@ function we_tag_field($attribs, $content){
 
 	if ($alt == "we_path")
 		$alt = "WE_PATH";
-	if ($alt == "we_text")
+	else if ($alt == "we_text")
 		$alt = "WE_TEXT";
+	
 	if ($name == "we_path")
 		$name = "WE_PATH";
-	if ($name == "we_text")
+	else if ($name == "we_text")
 		$name = "WE_TEXT";
 
 	if (isset($attribs["winprops"])) {

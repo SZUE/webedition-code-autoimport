@@ -465,7 +465,7 @@ function pExtensionPopup($name, $selected, $extensions)
 
 function getPixel($w, $h, $border = 0)
 {
-	return "<img src=\"" . IMAGE_DIR . "pixel.gif\" width=\"$w\" height=\"$h\" border=\"$border\">";
+	return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="'.$w.'" height="'.$h.'" border="'.$border.'">';
 }
 
 function pPixel($w, $h)
@@ -973,11 +973,11 @@ function htmlAlertAttentionBox($text, $type = 0, $width = 0, $useHtmlSpecialChar
 
 					if(state_' . $unique . '==0){
 						text.innerHTML = text_' . $unique . ';
-						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_down.gif\' border=\'0\'></a>";
+						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_down.gif\' alt=\'down\' border=\'0\'></a>";
 						state_' . $unique . '=1;
 					}else {
 						text.innerHTML = textsmall_' . $unique . ';
-						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_right.gif\' border=\'0\'></a>";
+						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_right.gif\' alt=\'right\' border=\'0\'></a>";
 						state_' . $unique . '=0;
 					}
 			}
@@ -995,5 +995,5 @@ function htmlAlertAttentionBox($text, $type = 0, $width = 0, $useHtmlSpecialChar
 		}
 	}
 
-	return $js . '<div style="background-color:#dddddd;padding:5px;' . ($width ? ' width:' . $width . 'px;' : '') . '"><table border="0" cellpadding="2" width="100%">' . '<tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . IMAGE_DIR . 'button/btn_direction_right.gif" border="0" /></a><td>' : '') . '</tr></table></div>';
+	return $js . '<div style="background-color:#dddddd;padding:5px;' . ($width ? ' width:' . $width . 'px;' : '') . '"><table border="0" cellpadding="2" width="100%">' . '<tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . IMAGE_DIR . 'button/btn_direction_right.gif" alt="right" border="0" /></a><td>' : '') . '</tr></table></div>';
 }
