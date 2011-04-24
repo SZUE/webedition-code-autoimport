@@ -30,7 +30,7 @@
  * Language: Deutsch
  */
 $l_modules_schedule = array(
-		'headline' => "Automatisch<br>Ver&ouml;ffentlichen",
+		'headline' => "Automatisch<br>Veröffentlichen",
 		'from' => "Von",
 		'to' => "Bis",
 		'toBeforeNow' => "Das eingetragene Bis-Datum liegt in der Vergangenheit!\\nDas Dokument wurde NICHT gespeichert!\\nBitte deaktivieren Sie die Bis-Funktion oder ändern Sie das Bis-Datum!",

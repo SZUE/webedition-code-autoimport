@@ -147,8 +147,8 @@ $l_alert = array(
 		'we_name_not_allowed' => "Die Namen 'we' und 'webEdition' werden von webEdition selbst benutzt und dürfen deshalb nicht verwendet werden!",
 		'we_filename_empty' => "Sie haben noch keinen Dateinamen für dieses Dokument bzw. Verzeichnis eingegeben!",
 		'exit_multi_doc_question' => "Einige geöffnete Dokumente enthalten noch ungespeicherte Änderungen. Wenn Sie fortfahren, werden diese Änderungen verworfen. Wollen Sie fortfahren und alle ungespeicherten Änderungen verwerfen?",
-		'exit_doc_question_' . FILE_TABLE => "Es scheint, als ob Sie das Dokument verändert haben.<br>Möchten Sie Ihre &Auml;nderungen speichern?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "Es scheint, als ob Sie die Vorlage verändert haben.<br>Möchten Sie Ihre &Auml;nderungen speichern?",
+		'exit_doc_question_' . FILE_TABLE => "Es scheint, als ob Sie das Dokument verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
+		'exit_doc_question_' . TEMPLATES_TABLE => "Es scheint, als ob Sie die Vorlage verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 		'deleteTempl_notok_used' => "Die Aktion konnte nicht ausgeführt werden, da eine oder mehrere zu löschende Vorlagen schon benutzt werden!",
 		'deleteClass_notok_used' => "Die Aktion konnte nicht ausgeführt werden, da eine oder mehrere zu löschende Klassen schon benutzt werden!",
 		'delete_notok' => "Es gab einen Fehler beim Löschen!",
@@ -196,7 +196,7 @@ if (defined("OBJECT_FILES_TABLE")) {
 	$l_alert = array_merge($l_alert, array(
 			'in_wf_warning' => "Bevor das Objekt in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Dokument jetzt gespeichert werden?",
 			'in_wf_warning' => "Bevor die Klasse in den Workflow gegeben werden kann, muß sie gespeichert werden!\\nSoll die Klasse jetzt gespeichert werden?",
-			'exit_doc_question_' . OBJECT_TABLE => "Es scheint, als ob Sie die Klasse verändert haben.<br>Möchten Sie Ihre &Auml;nderungen speichern?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "Es scheint, als ob Sie das Objekt verändert haben.<br>Möchten Sie Ihre &Auml;nderungen speichern?",
+			'exit_doc_question_' . OBJECT_TABLE => "Es scheint, als ob Sie die Klasse verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
+			'exit_doc_question_' . OBJECT_FILES_TABLE => "Es scheint, als ob Sie das Objekt verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 					));
 }

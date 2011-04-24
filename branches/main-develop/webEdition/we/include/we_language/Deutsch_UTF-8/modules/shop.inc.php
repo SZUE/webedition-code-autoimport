@@ -35,7 +35,7 @@ $l_modules_shop["user_saved_ok"] = "Der Benutzer '%s' wurde erfolgreich gespeich
 $l_modules_shop["user_saved_nok"] = "Der Benutzer '%s' kann nicht gespeichert werden!";
 $l_modules_shop["nothing_to_save"] = "Es gibt nichts zu speichern!";
 $l_modules_shop["username_exists"] = "Der Benutzername '%s' existiert schon!";
-$l_modules_shop["username_empty"] = "Der Benutzername ist nicht ausgef&uuml;llt!";
+$l_modules_shop["username_empty"] = "Der Benutzername ist nicht ausgefüllt!";
 $l_modules_shop["user_deleted"] = "Der Benutzer '%s' wurde erfolgreich gelöscht!";
 $l_modules_shop["nothing_to_delete"] = "Zum dauerhaften Entfernen einer Bestellung öffnen Sie zunächst eine existierende!";
 $l_modules_shop["delete_last_user"] = "Zur Verwaltung wird mindestens ein Administrator benötigt.\\nSie können den  Administrator nicht löschen.";
@@ -60,7 +60,7 @@ $l_modules_shop["created_by"] = "Erstellt von";
 $l_modules_shop["changed_by"] = "Geändert von";
 
 $l_modules_shop["no_perms"] = "Sie haben keine Berechtigung, diese Option zu benutzen!";
-$l_modules_shop["ue_data"] = "&Uuml;bersicht f&uuml;r ";
+$l_modules_shop["ue_data"] = "Übersicht für ";
 
 $l_modules_shop["stat"] = "Statistische Auswertung";
 $l_modules_shop["del_shop"] = "Sind Sie sicher, dass Sie diese Bestellung löschen wollen?";
@@ -68,10 +68,10 @@ $l_modules_shop["order_liste"] = "Alle Bestellungen des Kunden:";
 
 $l_modules_shop["noRecordAlert"] = "In der Datenbank konnte zu der von Ihnen eingegebenen <strong>Klassen-ID</strong> kein Datensatz ermittelt werden.<br />";
 $l_modules_shop["noRecordAlert"] .="Bitte wechseln Sie zu den Shop Einstellungen und korrigieren Sie Ihre Eingabe!";
-$l_modules_shop["einfueg"] = "Artikel hinzuf&uuml;gen";
+$l_modules_shop["einfueg"] = "Artikel hinzufügen";
 $l_modules_shop["pref"] = "Grundeinstellungen";
 $l_modules_shop["paymentP"] = "Payment Provider";
-$l_modules_shop["waehrung"] = "W&auml;hrung";
+$l_modules_shop["waehrung"] = "Währung";
 $l_modules_shop["mwst"] = "Mehrwertsteuer";
 $l_modules_shop["mwst_expl"] = "Seit Version 3.5 haben sie die Möglichkeit mehrere Steuersätze zu verwenden, die mit dem Artikel innerhalb der Bestellung gespeichert werden. Der hier eingesetzte Wert gilt dann nur noch für alle ehemaligen Bestellungen. Änderungen die sie hier machen, wirken sich auf alle Bestellungen aus, die ohne Standard-Mehrwertsteuersatz, bzw. direkt beim Artikel eingestellten Mehrwertsteuersatz durchgeführt werden.";
 $l_modules_shop["format"] = "Nummernformat";
@@ -87,9 +87,9 @@ $l_modules_shop["ArtID"] = "ID";
 $l_modules_shop["docType"] = "Typ";
 $l_modules_shop["artCreate"] = "Erstellt am";
 $l_modules_shop["artCreateAlt"] = "Nach Erstellungsdatum sortieren";
-$l_modules_shop["artMod"] = "Letzte &Auml;nderung";
+$l_modules_shop["artMod"] = "Letzte Änderung";
 $l_modules_shop["artPub"] = "Veröffentlicht am";
-$l_modules_shop["artModAlt"] = "Nach &Auml;nderungsdatum sortieren";
+$l_modules_shop["artModAlt"] = "Nach Änderungsdatum sortieren";
 $l_modules_shop["artHas"] = "Varianten";
 $l_modules_shop["artHasAlt"] = "Nach Variante vorhanden/nicht vorhanden sortieren";
 
@@ -172,7 +172,7 @@ $l_modules_shop["treeYear"] = "Jahr";
 
 
 $l_modules_shop["bestellungvom"] = "Bestellung vom";
-$l_modules_shop["keinedaten"] = "Kein Parameter &uuml;bergeben";
+$l_modules_shop["keinedaten"] = "Kein Parameter übergeben";
 $l_modules_shop["datum"] = "Datum";
 $l_modules_shop["anzahl"] = "Bestellungen";
 $l_modules_shop["umsatzgesamt"] = "Umsatz gesamt";
@@ -186,8 +186,8 @@ $l_modules_shop["Beschreibung"] = "Beschreibung";
 $l_modules_shop["Gesamt"] = "Gesamt";
 $l_modules_shop["jsanzahl"] = "Bitte geben Sie die Anzahl des Artikels an";
 
-$l_modules_shop["geloscht"] = "Der Datensatz wurde erfolgreich gel&ouml;scht.";
-$l_modules_shop["loscht"] = "Datensatz gel&ouml;scht";
+$l_modules_shop["geloscht"] = "Der Datensatz wurde erfolgreich gelöscht.";
+$l_modules_shop["loscht"] = "Datensatz gelöscht";
 $l_modules_shop["orderDoesNotExist"] = "Diese Bestellung existiert nicht mehr.";
 
 

@@ -34,7 +34,7 @@
 
 $l_modules_shopMonth[1] = "Januar";
 $l_modules_shopMonth[2] = "Februar";
-$l_modules_shopMonth[3] = "M&auml;rz";
+$l_modules_shopMonth[3] = "März";
 $l_modules_shopMonth[4] = "April";
 $l_modules_shopMonth[5] = "Mai";
 $l_modules_shopMonth[6] = "Juni";

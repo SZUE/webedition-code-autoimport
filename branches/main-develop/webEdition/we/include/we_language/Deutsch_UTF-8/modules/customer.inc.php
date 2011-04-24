@@ -61,7 +61,7 @@ $l_modules_customer = array(
 		'field_not_empty' => "Der Feldname muss ausgefüllt sein.",
 		'delete_field' => "Sind Sie sicher, dass Sie dieses Feld loeschen wollen? Dieser Vorgang ist nicht umkehrbar.",
 		'display' => "Anzeige",
-		'insert_field' => "Feld hinzuf&uuml;gen:",
+		'insert_field' => "Feld hinzufügen:",
 //---- new things
 
 		'customer' => "Kunde",

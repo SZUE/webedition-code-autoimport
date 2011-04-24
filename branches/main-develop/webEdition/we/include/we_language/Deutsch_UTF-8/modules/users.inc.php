@@ -70,7 +70,7 @@ $l_modules_users = array(
 				FILE_TABLE => "Die Datei '%s' wird gerade von Benutzer '%s' bearbeitet!",
 				TEMPLATES_TABLE => "Die Vorlage '%s' wird gerade von Benutzer '%s' bearbeitet!",
 		),
-		'acces_temp_denied' => "Zugriff zur Zeit nicht m&ouml;glich",
+		'acces_temp_denied' => "Zugriff zur Zeit nicht möglich",
 		'description' => "Beschreibung",
 		'group_data' => "Gruppendaten",
 		'group_name' => "Gruppenname",
