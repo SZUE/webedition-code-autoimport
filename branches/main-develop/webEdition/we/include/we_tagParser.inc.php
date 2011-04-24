@@ -66,22 +66,22 @@ class we_tagParser{
 						array_push($names, $regs[1]);
 				}
 			}
-			if (preg_match('|< ?we:linklist|i', $tags[$i])) {
+			if (preg_match('|< ?we:linklis t|i', $tags[$i])) {
 				$ll++;
 			} else
-				if (preg_match('|< ?we:list|i', $tags[$i])) {
+				if (preg_match('|< ?we:list |i', $tags[$i])) {
 					$l++;
 				} else
-					if (preg_match('|< ?we:block|i', $tags[$i])) {
+					if (preg_match('|< ?we:block |i', $tags[$i])) {
 						$b++;
 					} else
-						if (preg_match('|< ?/ ?we:linklist|i', $tags[$i])) {
+						if (preg_match('|< ?/ ?we:linklist |i', $tags[$i])) {
 							$ll--;
 						} else
-							if (preg_match('|< ?/ ?we:list|i', $tags[$i])) {
+							if (preg_match('|< ?/ ?we:list |i', $tags[$i])) {
 								$l--;
 							} else
-								if (preg_match('|< ?/ ?we:block|i', $tags[$i])) {
+								if (preg_match('|< ?/ ?we:block |i', $tags[$i])) {
 									$b--;
 								}
 		}

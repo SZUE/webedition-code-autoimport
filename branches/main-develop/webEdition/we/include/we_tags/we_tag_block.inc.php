@@ -61,9 +61,9 @@ function we_parse_tag_block($attribs,$content){
 //	}
 	return '<?php if(($block_'.$name.'=we_tag(\'block\','.$attribs.'))!==false){'."\n\t".
 		'while(we_condition_tag_block($block_'.$name.')){?>'.$content.'<?php }}else{?>'.
-		$ctlPre.'array(\'name\'=>\''.$name.'\'.(isset($GLOBALS[\'postTagName\'])?$GLOBALS[\'postTagName\']:\'\'),\'pos\'=>0,\'listSize\'=>0,
-		\'ctlShowSelect\'=>'.(we_getTagAttributeTagParser('showselect', $arr, '',true, true)?'true':'false').',
-		\'ctlShow\'=>'.(int)we_getTagAttributeTagParser('limit', $arr, 10).')'.$ctlPost.
+		$ctlPre.'array(\'name\'=>\''.$name.'\'.(isset($GLOBALS[\'postTagName\'])?$GLOBALS[\'postTagName\']:\'\'),\'pos\'=>0,\'listSize\'=>0,'.
+		'\'ctlShowSelect\'=>'.(we_getTagAttributeTagParser('showselect', $arr, '',true, true)?'true':'false').','.
+		'\'ctlShow\'=>'.(int)we_getTagAttributeTagParser('limit', $arr, 10).')'.$ctlPost.
 		'<?php }?>';
 }
 
