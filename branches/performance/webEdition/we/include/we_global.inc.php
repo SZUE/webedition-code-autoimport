@@ -42,6 +42,7 @@ function we_getModuleNameByContentType($ctype) {
 	}
 	return '';
 }
+}
 
 function we_getGlobalPath() {
 	if (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)) {

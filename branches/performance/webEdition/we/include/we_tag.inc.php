@@ -41,6 +41,12 @@ function we_tag($name, $attribs=array(), $content = ''){
 		'comment',
 	));
 
+	//make a copy of the name - this copy is never touched even not inside blocks/listviews etc.
+	if(isset($attribs['name'])){
+		$attribs['_name_orig'] = $attribs['name'];
+	}
+
+	//FIXME: after changing block etc. this is obsolete
 	if ($content) {
 		$content = str_replace('we_:_', 'we:', $content);
 	}
@@ -68,7 +74,7 @@ function we_tag($name, $attribs=array(), $content = ''){
 	} else {
 		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_$name.inc.php")) {
 			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_$name.inc.php");
-		
+
 		} else{
 				if (file_exists(
 						$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . "we_tag_$name.inc.php")) {
