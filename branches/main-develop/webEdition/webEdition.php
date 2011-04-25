@@ -320,6 +320,13 @@ function toggleTree(){
 
 function setTreeArrow(direction) {
 	self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
+	if(direction=="right"){
+		self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
+		self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
+	}else{
+		self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
+		self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
+	}
 }
 
 function getTreeWidth() {
