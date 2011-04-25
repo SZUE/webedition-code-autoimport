@@ -1442,7 +1442,7 @@ class we_document extends we_root {
 			if (getXmlAttributeValueAsBoolean($xml) ) {
 				// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 				// as html_entity_decode is only available php > 4.3 we use a custom function
-				return htmlspecialchars( unhtmlentities($link['text']) );
+				return htmlspecialchars( html_entity_decode($link['text']) );
 			} else {
 				return $htmlspecialchars ? htmlspecialchars($link['text']) : $link['text'];
 			}

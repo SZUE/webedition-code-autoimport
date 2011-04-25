@@ -381,8 +381,8 @@
 			$_language = "";
 
 			if($weGlossaryFrames->View->Glossary->Type == "abbreviation") {
-				$_text = unhtmlentities($weGlossaryFrames->View->Glossary->Text);
-				$_title = unhtmlentities($weGlossaryFrames->View->Glossary->Title);
+				$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
+				$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
 				$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
 
 			}
@@ -436,8 +436,8 @@
 			$_language = "";
 
 			if($weGlossaryFrames->View->Glossary->Type == "acronym") {
-				$_text = unhtmlentities($weGlossaryFrames->View->Glossary->Text);
-				$_title = unhtmlentities($weGlossaryFrames->View->Glossary->Title);
+				$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
+				$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
 				$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
 
 			}
@@ -488,7 +488,7 @@
 			$_language = "";
 
 			if($weGlossaryFrames->View->Glossary->Type == "foreignword") {
-				$_text = unhtmlentities($weGlossaryFrames->View->Glossary->Text);
+				$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 				$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
 
 			}
@@ -527,7 +527,7 @@
 			$_mode = "";
 
 			if($weGlossaryFrames->View->Glossary->Type == "link") {
-				$_text = unhtmlentities($weGlossaryFrames->View->Glossary->Text);
+				$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 				$_mode = $weGlossaryFrames->View->Glossary->getAttribute('mode');
 
 			}

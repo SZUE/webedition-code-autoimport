@@ -68,15 +68,6 @@ function rmPhp($in) {
 	return $out;
 }
 
-function decodetmlSpecialChars($in) {
-	$out = str_replace('&lt;', '<', $in);
-	$out = str_replace('&gt;', '>', $out);
-	$out = str_replace('&quot;', '"', $out);
-	$out = str_replace('&#039;', '\'', $out);
-	$out = str_replace('&amp;', '&', $out);
-	return $out;
-}
-
 function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false) {
 	return we_getTagAttribute($name, $attribs, $default, $isFlag, $checkForFalse, $removeblk, false);
 }
@@ -100,7 +91,7 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 		$outA = explode('blk_', $out);
 		$out = $outA[0];
 	}
-	return decodetmlSpecialChars($out);
+	return htmlspecialchars_decode($out);
 }
 
 // Entwickelt für #Bug 3386, wobei nicht die id, sondern die anderen Attribute dynamisiert wurden
@@ -119,7 +110,7 @@ function we_getTagAttributeForParsingLater($name, $attribs, $default = '', $isFl
 	} else {
 		$out = strlen($value) ? $value : $default;
 	}
-	return decodetmlSpecialChars($out);
+	return htmlspecialchars_decode($out);
 }
 
 function we_getIndexFileIDs($db) {
@@ -3523,19 +3514,6 @@ function getDoctypeQuery($db = '') {
 	}
 
 	return '';
-}
-
-function unhtmlentities($string) {
-
-	// replace numeric entities
-	$string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
-	$string = preg_replace('~&#([0-9]+);~e', 'chr(\\1)', $string);
-
-	// replace literal entities
-	$trans_tbl = get_html_translation_table(HTML_ENTITIES);
-	$trans_tbl = array_flip($trans_tbl);
-
-	return strtr($string, $trans_tbl);
 }
 
 /**

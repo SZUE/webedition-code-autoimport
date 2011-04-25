@@ -76,7 +76,7 @@ function we_tag_href($attribs, $content){
 
 	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 	// as html_entity_decode is only available php > 4.3 we use a custom function
-	$extPath = !empty($extPath) ? htmlspecialchars(unhtmlentities($extPath)) : $extPath;
+	$extPath = !empty($extPath) ? htmlspecialchars(html_entity_decode($extPath)) : $extPath;
 
 	if ($we_editmode) {
 		// Init we_button class
