@@ -28,7 +28,8 @@ function we_tag_title($attribs, $content){
 	if ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition) { //	normally meta tags are edited on property page
 		return '<?php	$GLOBALS["meta"]["Title"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
 	} else {
-		$title = ($prefix!=''?$prefix.$delimiter:'').($GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : $content).($suffix!=''?$delimiter.$suffix:'');
+		$title = ($GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : $content);
+		$title = ($prefix!=''?$prefix.($title!=''?$delimiter:''):'').$title.($suffix!=''?($title!=''?$delimiter:($prefix!=''?$delimter:'')).$suffix:'');
 		return getHtmlTag('title',$attribs,$htmlspecialchars ? htmlspecialchars(strip_tags($title)) : strip_tags($title),true) . "\n";
 	}
 }
