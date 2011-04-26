@@ -1084,7 +1084,7 @@ CREATE TABLE tblnavigation (
   KEY ParentID (ParentID),
   KEY LinkID (LinkID),
   KEY Path (Path)
-) Type=MyISAM;
+) ENGINE=MyISAM;
 /* query separator */
 CREATE TABLE tblnavigationrules (
   ID int(11) NOT NULL auto_increment,
