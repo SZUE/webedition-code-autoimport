@@ -47,4 +47,4 @@ CREATE TABLE tblnavigation (
   KEY ParentID (ParentID),
   KEY LinkID (LinkID),
   KEY Path (Path)
-) Type=MyISAM;
+) ENGINE=MyISAM;
