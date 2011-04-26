@@ -58,7 +58,6 @@
 			'tblprefs'				=>	PREFS_TABLE,
 			'tblrecipients'			=>	RECIPIENTS_TABLE,
 			'tblvalidationservices'	=>	VALIDATION_SERVICES_TABLE,
-			'tblpasswd'				=>	PASSWD_TABLE
 	);
 
 	$tableMap['user']=array(

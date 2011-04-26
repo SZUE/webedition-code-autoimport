@@ -92,7 +92,6 @@ class we_backup {
 			"tbltemplates"=>TEMPLATES_TABLE,
 			"tbltemporarydoc"=>TEMPORARY_DOC_TABLE,
 			"tblindex"=>INDEX_TABLE,
-			"tblpasswd"=>PASSWD_TABLE,
 			"tblprefs"=>PREFS_TABLE,
 			"tblrecipients"=>RECIPIENTS_TABLE,
 			"tblupdatelog"=>UPDATE_LOG_TABLE,
@@ -215,7 +214,7 @@ class we_backup {
 		$this->tables["configuration"]=array();
 
 		$this->tables["users"]=array(
-				"tblpasswd","tbluser"
+				"tbluser"
 		);
 		$this->tables["customers"]=array("tblwebuser","tblwebadmin");
 		$this->tables["shop"]=array("tblanzeigeprefs","tblorders");
