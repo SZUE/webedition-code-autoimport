@@ -82,7 +82,7 @@ $global_config[] = array('define("WE_ERROR_ERRORS",', '// Handle errors' . "\n" 
 $global_config[] = array('define("WE_ERROR_SHOW",', '// Show errors' . "\n" . 'define("WE_ERROR_SHOW", 0);');
 $global_config[] = array('define("WE_ERROR_LOG",', '// Log errors' . "\n" . 'define("WE_ERROR_LOG", 0);');
 $global_config[] = array('define("WE_ERROR_MAIL",', '// Mail errors' . "\n" . 'define("WE_ERROR_MAIL", 0);');
-$global_config[] = array('define("WE_ERROR_MAIL_ADDRESS",', '// E-Mail address to which to mail errors' . "\n" . 'define("WE_ERROR_MAIL_ADDRESS", "mail@example.com");');
+$global_config[] = array('define("WE_ERROR_MAIL_ADDRESS",', '// E-Mail address to which to mail errors' . "\n" . 'define("WE_ERROR_MAIL_ADDRESS", "mail@www.example");');
 $global_config[] = array('define("ERROR_DOCUMENT_NO_OBJECTFILE",', '// Document to open when trying to open non-existing object' . "\n" . 'define("ERROR_DOCUMENT_NO_OBJECTFILE", 0);');
 $global_config[] = array('define("DISABLE_TEMPLATE_TAG_CHECK",', '// Disable the check for missing close tags in templates' . "\n" . 'define("DISABLE_TEMPLATE_TAG_CHECK", 0);');
 
@@ -1569,7 +1569,7 @@ $_we_active_integrated_modules = array();
 				if ($settingvalue == 0) {
 					if (WE_ERROR_MAIL == 1) {
 						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 					}
 				} else if ($settingvalue == 1) {
 					if (WE_ERROR_MAIL == 0) {
@@ -1591,19 +1591,19 @@ $_we_active_integrated_modules = array();
 								$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue);
 							}
 						} else {
-							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
 
 							$email_saved = false;
 						}
 					} else {
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
 
 						$email_saved = false;
 					}
 				} else {
-					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 				}
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -2632,7 +2632,7 @@ $_we_active_integrated_modules = array();
 			case '$_REQUEST["error_mail_address"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 
 				$_update_prefs = true;
 				break;
