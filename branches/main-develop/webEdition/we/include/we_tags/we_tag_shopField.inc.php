@@ -24,9 +24,9 @@
 
 
 function we_tag_shopField($attribs,$content) {
-	$foo = attributFehltError($attribs, "name", "shopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "reference", "shopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "shopname", "shopField");if($foo) return $foo;
+	if(($foo = attributFehltError($attribs, "name", "shopField")));return $foo;
+	if(($foo = attributFehltError($attribs, "reference", "shopField")));return $foo;
+	if(($foo = attributFehltError($attribs, "shopname", "shopField")));return $foo;
 
 
 	$name      = we_getTagAttribute("name", $attribs);
@@ -49,11 +49,7 @@ function we_tag_shopField($attribs,$content) {
 
 		$fieldname = WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]";
 
-		if (!$shopname) {
-			$savedVal = isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) ? $_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name] : '';
-		} else {
-			$savedVal = '';
-		}
+		$savedVal = (!$shopname) && isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) ? $_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name] : '';
 
 
 		// does not exist here - we are only in article - custom fields are not stored on documents

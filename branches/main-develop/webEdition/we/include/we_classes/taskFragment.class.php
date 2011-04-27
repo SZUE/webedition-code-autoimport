@@ -23,7 +23,6 @@
  */
 
 
-define("FRAGMENT_LOCATION",$_SERVER["DOCUMENT_ROOT"]."/webEdition/fragments/");
 
 /**
 * Class taskFragment()
@@ -93,7 +92,7 @@ class  taskFragment{
 		if($initdata){
 			$this->initdata = $initdata;
 		}
-		$filename = FRAGMENT_LOCATION.$this->name;
+		$filename = WE_FRAGMENT_DIR.'/'.$this->name;
 		$this->currentTask = isset($_GET["fr_".$this->name."_ct"]) ? $_GET["fr_".$this->name."_ct"] : 0;
 		if(file_exists($filename) && $this->currentTask){
 			$fp = fopen($filename,"rb");

@@ -378,7 +378,7 @@ class we_rebuild_wizard{
 
 		$taskname = md5(session_id()."_rebuild");
 		$currentTask = isset($_GET["fr_".$taskname."_ct"]) ? $_GET["fr_".$taskname."_ct"] : 0;
-		$taskFilename = FRAGMENT_LOCATION.$taskname;
+		$taskFilename = WE_FRAGMENT_DIR.'/'.$taskname;
 
 
 		$js = 'function set_button_state() {'."\n" .
@@ -807,7 +807,7 @@ class we_rebuild_wizard{
 
 
 		$taskname = md5(session_id()."_rebuild");
-		$taskFilename = FRAGMENT_LOCATION.$taskname;
+		$taskFilename = WE_FRAGMENT_DIR.'/'.$taskname;
 		if(file_exists($taskFilename)){
 			@unlink($taskFilename);
 		}

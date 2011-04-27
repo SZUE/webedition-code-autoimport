@@ -123,19 +123,13 @@ define('SUB_DIR_YEAR_MONTH', 2);
 define('SUB_DIR_YEAR_MONTH_DAY', 3);
 
 // Initialize imageType array
-$IMAGE_TYPE = array(
-		'', 'image/gif', 'image/jpeg', 'image/png'
-);
+$IMAGE_TYPE = array('', 'image/gif', 'image/jpeg', 'image/png');
 
 // Refresh imageExt array
-$IMAGE_EXT = array(
-		'', '.gif', '.jpg', '.png'
-);
+$IMAGE_EXT = array('', '.gif', '.jpg', '.png');
 
 // Initialize gdImageType arrays
-$GDIMAGE_TYPE = array(
-		'.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png'
-);
+$GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
 
 define('IMAGE_CONTENT_TYPES', 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png');
 
@@ -167,24 +161,19 @@ define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
-define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/fragments'); // important noot to add a slash at the end!
+define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/fragments'); // important not to add a slash at the end!
 define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/');
 define('WE_MODULE_PATH', '/webEdition/we/include/we_modules/');
 
 define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/');
 define('WE_TOOLS_PATH', '/webEdition/apps/');
 
-if (!defined('LOGIN_FAILED_TIME')) {
-	define('LOGIN_FAILED_TIME', 2); // in minutes
-}
+(!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
 
-if (!defined('LOGIN_FAILED_NR')) {
-	define('LOGIN_FAILED_NR', 3);
-}
+(!defined('LOGIN_FAILED_NR')) && define('LOGIN_FAILED_NR', 3);
 
-if (!defined('LOGIN_FAILED_HOLDTIME')) {
-	define('LOGIN_FAILED_HOLDTIME', 30); // in days
-}
+(!defined('LOGIN_FAILED_HOLDTIME')) && define('LOGIN_FAILED_HOLDTIME', 30); // in days
+
 
 //define how long Errors hold in DB
 define('ERROR_LOG_HOLDTIME', 30); // in days

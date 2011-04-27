@@ -1605,23 +1605,16 @@ function deleteContentFromDB($id, $table) {
 	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"');
 }
 
-function cleanTempFiles($cleanSessFiles = 0) {
+function cleanTempFiles($cleanSessFiles = false) {
 	$db2 = new DB_WE();
-	$sess = $GLOBALS['DB_WE']->query('
-		SELECT Date,Path
-		FROM ' . CLEAN_UP_TABLE . '
-		WHERE Date <= ' . (time() - 300));
+	$sess = $GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
 	if ($GLOBALS['DB_WE']->num_rows())
 		while ($GLOBALS['DB_WE']->next_record()) {
 			$p = $GLOBALS['DB_WE']->f('Path');
-			if (file_exists($p))
+			if (file_exists($p)){
 				deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
-			$db2->query(
-							'
-				DELETE
-				FROM ' . CLEAN_UP_TABLE . '
-				WHERE DATE=' . $GLOBALS['DB_WE']->f('Date') . ' AND Path="' . $GLOBALS['DB_WE']->f(
-											'Path') . '"');
+			}
+			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . $GLOBALS['DB_WE']->f('Date') . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
 		}
 	if ($cleanSessFiles) {
 		$seesID = session_id();
@@ -1632,7 +1625,7 @@ function cleanTempFiles($cleanSessFiles = 0) {
 				if (file_exists($p)){
 					deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 				}
-				$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+				$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 			}
 	}
 	$d = dir(TMP_DIR);
