@@ -39,7 +39,7 @@ if (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE){
 if (defined('SUPPRESS404CODE') && SUPPRESS404CODE){
 	$suppresserrorcode = true;
 } else {
-	$suppresserrorcode = true;
+	$suppresserrorcode = false;
 }
 if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && ( (defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE ) || (defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE ) || (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ))  ){
 	$dirindexarray = explode(',',NAVIGATION_DIRECTORYINDEX_NAMES);
@@ -61,7 +61,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	$objectid=0;
 	$searchfor ='';
 	$notfound=true;
-	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
+	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/' && $path_parts['dirname']!='\\'){
 
 		$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 		$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
