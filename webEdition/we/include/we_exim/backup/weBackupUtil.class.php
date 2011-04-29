@@ -49,7 +49,7 @@
 			$match = array();
 			if(defined('OBJECT_X_TABLE') && eregi("^".OBJECT_X_TABLE . "([0-9]*)$",$table,$match)){
 				if(isset($_SESSION['weBackupVars']['tables']['tblobject_'])){
-					$_max = f('SELECT MAX(TableID) AS MaxTableID FROM ' . OBJECT_FILES_TABLE,'MaxTableID',new DB_WE());
+					$_max = f('SELECT MAX(ID) AS MaxTableID FROM ' . OBJECT_TABLE,'MaxTableID',new DB_WE());
 					if($match[1]<=$_max){
 						return 'tblobject_' . $match[1];
 					}
