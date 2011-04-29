@@ -283,7 +283,7 @@ class weShopStatusMails {
 					} else {
 						$attachmentA= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
 					}
-					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentA);
+					if ($attachmentA) {$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentA);}
 
 				}
 				if (isset($this->EMailData['DocumentAttachmentFieldB']) && $this->EMailData['DocumentAttachmentFieldB']!=''){
@@ -293,7 +293,7 @@ class weShopStatusMails {
 					} else {
 						$attachmentB= $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB']);
 					}
-					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentB);
+					if ($attachmentB) {$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT']. $attachmentB);}
 				}
 				$phpmail->buildMessage();
 				if ($phpmail->Send()){
