@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_deleteShop($attribs, $content) {
+	if (($foo = attributFehltError($attribs, "shopname", "deleteShop")))
+		return $foo;
+	if (!defined("SHOP_TABLE")) {
+		return modulFehltError('Shop', '"deleteShop"');
+	}
+	$shopname = we_getTagAttribute("shopname", $attribs);
 
-
-function we_tag_deleteShop($attribs,$content){
-		$foo = attributFehltError($attribs,"shopname","deleteShop");if($foo) return $foo;
+	unset($_SESSION[$shopname . '_save']);
 }

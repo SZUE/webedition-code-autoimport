@@ -318,15 +318,3 @@ function we_tag_listview($attribs, $content) {
 	if (is_array($GLOBALS['we_lv_array']))
 		array_push($GLOBALS['we_lv_array'], clone($GLOBALS['lv']));
 }
-
-function we_post_tag_listview() {
-	if (isset($GLOBALS['we_lv_array'])) {
-		array_pop($GLOBALS['we_lv_array']);
-		if (count($GLOBALS['we_lv_array'])) {
-			$GLOBALS['lv'] = clone($GLOBALS['we_lv_array'][count($GLOBALS['we_lv_array']) - 1]);
-		} else {
-			unset($GLOBALS['lv']);
-			unset($GLOBALS['we_lv_array']);
-		}
-	}
-}

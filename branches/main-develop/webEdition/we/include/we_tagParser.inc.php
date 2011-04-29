@@ -186,8 +186,7 @@ class we_tagParser{
 		return $_rettags;
 	}
 
-	function parseTags($tags, &$code, $postName = '', $ignore = array())
-	{
+	function parseTags($tags, &$code, $postName = '', $ignore = array()){
 
 		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
 			if (!$this->checkOpenCloseTags($tags, $code)) {
@@ -211,8 +210,7 @@ class we_tagParser{
 		$code=preg_replace("|;? *\?>\n?<\?php ?|si",";\n",$code);
 	}
 
-	function checkOpenCloseTags($TagsInTemplate, &$code)
-	{
+	function checkOpenCloseTags($TagsInTemplate, &$code){
 
 		$CloseTags = array(
 			'listview', 'listdir', 'block'
@@ -409,7 +407,7 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "listview" :
+					case "listview" ://FIXME: obsolete
 						$code = $this->parseListviewTag($tag, $code, $attribs);
 						$this->ipos++;
 						$this->lastpos = 0;
@@ -419,7 +417,7 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "metadata" :
+					case "metadata" ://FIXME: obsolete
 						$code = $this->parseMetadataTag($tag, $code, $attribs, $postName);
 						$this->ipos++;
 						$this->lastpos = 0;
@@ -449,7 +447,7 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "createShop" :
+					case "createShop" ://FIXME: obsolete
 						$code = $this->parsecreateShop($tag, $code, $attribs);
 						$this->ipos++;
 						$this->lastpos = 0;
@@ -459,16 +457,7 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "deleteShop" :
-						$code = $this->parsedeleteShop($tag, $code, $attribs);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
 					case "controlElement" :
-						$code = $this->parseRemoveTags($tag, $code);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
 					case "hidePages" :
 						$code = $this->parseRemoveTags($tag, $code);
 						$this->ipos++;
@@ -499,7 +488,7 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "captcha" :
+					case "captcha" ://FIXME:obsolete
 						$code = $this->parseCaptchaTag($tag, $code, $attribs);
 						$this->ipos++;
 						$this->lastpos = 0;
@@ -551,7 +540,7 @@ class we_tagParser{
 																		$tp->parseTags($tags, $content);
 																	}
 
-																	if ($tagname == "block") {
+																	if ($tagname == "block") {//FIXME: obsolete
 																		$content = str_replace(
 																				"\n",
 																				"\\n",
@@ -648,7 +637,7 @@ class we_tagParser{
 																	}
 															$this->lastpos = 0;
 														}
-						if ($postName) {
+						if ($postName) { //FIXME: will be obsolete
 
 							$code = preg_replace(
 									'/("name"=>")(' . (isset($arr["name"]) ? $arr["name"] : "") . ')(")/i',
@@ -980,6 +969,7 @@ if(isset($weTagListviewCache)) {
 
 	##########################################################################################
 	##########################################################################################
+	//FIXME: obsolete
 	function parseListviewTag($tag, $code, $attribs = "")
 	{
 		eval('$arr = array(' . $attribs . ');');
@@ -1390,6 +1380,7 @@ if($GLOBALS["lv"]->avail): ?>';
 		} else { return str_replace($tag, modulFehltError('Object/DB','object'), $code); }
 	}
 
+	//FIXME: obsolete
 	function parseMetadataTag($tag, $code, $attribs = "", $postName = "")
 	{
 
@@ -1793,24 +1784,8 @@ if($GLOBALS["lv"]->avail): ?>';
 
 	##########################################################################################
 	##########################################################################################
-	function parsedeleteShop($tag, $code, $attribs = "")
-	{
-		if (defined("SHOP_TABLE")) {
-			eval('$arr = array(' . $attribs . ');');
-			$shopname = we_getTagAttributeTagParser("shopname", $arr);
 
-			$php = '<?php
-				unset($_SESSION["' . $shopname . '_save"]);
-			?>';
-
-			return $this->replaceTag($tag, $code, $php);
-		} else { return str_replace($tag, modulFehltError('Shop','"deleteShop"'), $code); }
-	}
-
-	##########################################################################################
-	##########################################################################################
-
-
+//FIXME: obsolete
 	function parsecreateShop($tag, $code, $attribs = "")
 	{
 		if (defined("SHOP_TABLE")) {
@@ -2629,7 +2604,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 	##########################################################################################
 	##########################################################################################
-	function parseCaptchaTag($tag, $code, $attribs = "")
+	function parseCaptchaTag($tag, $code, $attribs = "")//FIXME: obsolete
 	{
 		eval('$attribs = array(' . $attribs . ');');
 

@@ -647,6 +647,19 @@ function we_tag_ifvotingexists($attribs, $content) {
 	return defined("VOTING_TABLE");
 }
 
+//this function is used by all tags adding elements to we_lv_array
+function we_post_tag_listview() {
+	if (isset($GLOBALS['we_lv_array'])) {
+		array_pop($GLOBALS['we_lv_array']);
+		if (count($GLOBALS['we_lv_array'])) {
+			$GLOBALS['lv'] = clone($GLOBALS['we_lv_array'][count($GLOBALS['we_lv_array']) - 1]);
+		} else {
+			unset($GLOBALS['lv']);
+			unset($GLOBALS['we_lv_array']);
+		}
+	}
+}
+
 //FIXME: remove in next Versions
 function include_all_we_tags(){
 	if(defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS){
