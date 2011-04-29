@@ -833,16 +833,6 @@ function formTriggerDocument($isclass=false){
 			}
 		}
 		$this->i_setElementsFromHTTP();
-/* TODO: WECF  Brauchen wir das noch ?
-		// weDocumentCustomerFilter
-		if ( isset( $_REQUEST["we_edit_weDocumentCustomerFilter"] ) ) {
-			$this->documentCustomerFilter = weDocumentCustomerFilter::getCustomerFilterFromRequest($this);
-
-		} else if (isset($sessDat[3])) { // init webUser from session
-			$this->documentCustomerFilter = unserialize($sessDat[3]);
-
-		}
-*/
 	}
 
 	function i_initSerializedDat($sessDat){

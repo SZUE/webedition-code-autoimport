@@ -213,9 +213,7 @@ class listviewBase{
 	 * @param   key  string - name of field to return
 	 *
 	 */
-	function f($key){
-		// overwrite
-	}
+	abstract function f($key);
 
 	/**
 	 * hasNextPage()

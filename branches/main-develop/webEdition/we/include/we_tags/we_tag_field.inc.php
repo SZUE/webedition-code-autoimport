@@ -131,13 +131,8 @@ function we_tag_field($attribs, $content){
 			}
 
 
-		case "date" :
 		case "img" :
-		case "int" :
-		case "float" :
-		case "checkbox" :
-
-			if ($src && $type == "img") {
+			if ($src) {
 
 				$_imgAtts['alt'] = ''; //  alt must be set
 				$_imgAtts['src'] = $src; //  src
@@ -156,7 +151,12 @@ function we_tag_field($attribs, $content){
 
 				$out = getHtmlTag('img', $_imgAtts);
 
-			} else {
+			}		
+			break;
+		case "int" :
+		case "date" :
+		case "float" :
+		case "checkbox" :
 				$idd = ($isImageDoc && $type == "img" ) ? $GLOBALS["lv"]->Record["wedoc_ID"] : $GLOBALS["lv"]->f($name);
 				if ($idd ==0) {
 					$out = '';
@@ -172,7 +172,6 @@ function we_tag_field($attribs, $content){
 						$classid,
 						'$GLOBALS["lv"]->f');
 				}
-			}
 			break;
 		case "day" :
 		case "dayname" :

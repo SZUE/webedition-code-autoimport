@@ -25,26 +25,19 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tagParser.inc.php");
 
 function we_tag_sessionLogout($attribs,$content){
-	$foo = attributFehltError($attribs,"id","sessionLogout");
-	if($foo) return $foo;
+	if(($foo = attributFehltError($attribs,"id","sessionLogout"))) return $foo;
 
-	$id = we_getTagAttribute("id",$attribs);
-
-	$id = ($id == "self") ? $GLOBALS["WE_MAIN_DOC"]->ID : $id;
+	$id = ($id == "self") ? $GLOBALS["WE_MAIN_DOC"]->ID : we_getTagAttribute("id",$attribs);
 	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."",new DB_WE);
 
-	if(!empty($row)) {
-		$url = $row["Path"].($row["IsFolder"] ? "/" : "");
-	} else  {
-		$url = "";
-	}
+	$url = (!empty($row))?$row["Path"].($row["IsFolder"] ? '/' : '') : '';
 
-	$attr = we_make_attribs($attribs,"id");
+	$attr = we_make_attribs($attribs,'id');
 
 	//  then lets parse the content
     $tp = new we_tagParser();
     $tags = $tp->getAllTags($content);
     $tp->parseTags($tags,$content);
 
-	return '<a href="'.$url.'?we_webUser_logout=1" '.($attr ? $attr : '').'>'.$content."</a>";
+	return '<a href="'.$url.'?we_webUser_logout=1" '.($attr ? $attr : '').'>'.$content.'</a>';
 }
