@@ -834,6 +834,18 @@ function step_installation() {
 		$output .= tpl_ok("Changed the default user's language to ".$_SESSION["we_language"]);
 	}
 	@mysql_close($conn);
+	
+	//move .default files to their "new" location.
+	if(is_writable('./webEdition/we/include/conf/')){
+		$dir='./webEdition/we/include/conf/';
+		$files = scandir($dir);
+		foreach($files as $file){
+			if(substr($file,-8)=='.default'){
+				$new=$dir.substr($file,0,-8);
+				rename($dir.$file, $new);
+			}
+		}
+	}
 	// write database connection data to we_conf.inc.php
 	if(!is_writable('./webEdition/we/include/conf/we_conf.inc.php') || !is_writable('./webEdition/we/include/conf/we_conf_global.inc.php')) {
 		tpl_error("Could not open webEdition configuration files for writing.");
