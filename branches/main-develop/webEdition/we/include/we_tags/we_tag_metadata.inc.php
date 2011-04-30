@@ -31,8 +31,6 @@ function we_parse_tag_metadata($attribs, $content) {
 
 function we_tag_metadata($attribs, $content) {
 	$name = we_getTagAttribute("name", $attribs);
-	if (($foo = attributFehltError($attribs, 'name', 'metadata')))
-		return $foo;
 
 	if (!isset($GLOBALS["we_lv_array"])) {
 		$GLOBALS["we_lv_array"] = array();

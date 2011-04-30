@@ -832,9 +832,9 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	##########################################################################################
 
 
-	function getStartCacheCode($tag, $attribs)
+	function getStartCacheCode($tag, $attribs) //FIXME: remove
 	{
-
+		return '';
 		if (!isset($GLOBALS['weListviewCacheStarted'])) {
 			$GLOBALS['weListviewCacheStarted'] = array();
 		}
@@ -898,8 +898,9 @@ if(!$weTagListviewCache->isCacheable() || ($weTagListviewCache->isCacheable() &&
 	##########################################################################################
 
 
-	function getEndCacheCode($tag)
+	function getEndCacheCode($tag)// FIXME: remove
 	{
+		return '';
 		$temp = isset($GLOBALS['weListviewCacheStarted']) && is_array($GLOBALS['weListviewCacheStarted']) ? array_pop(
 				$GLOBALS['weListviewCacheStarted']) : false;
 		$code = "";
