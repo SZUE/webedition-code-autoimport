@@ -543,7 +543,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 				$we_menu[$menNr]["perm"] = isset($m["perm"]) ? $m["perm"] : "";
 				$we_menu[$menNr]["enabled"] = "1";
 				$z++;
-			} else if(in_array($m["name"],$$GLOBALS['_we_active_modules'])) {
+			} else if(in_array($m["name"],$GLOBALS['_we_active_modules'])) {
 				$moduleList .= $m["name"] . "|" ;
 			}
 			if (!weModuleInfo::isModuleInstalled($m["name"])) {
