@@ -2701,7 +2701,7 @@ function save_all_values() {
 
 	// we_active_integrated_modules.inc.php
 	$GLOBALS['config_files']['active_integrated_modules'] = array();
-	$GLOBALS['config_files']['active_integrated_modules']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_active_integrated_modules.inc.php";
+	$GLOBALS['config_files']['active_integrated_modules']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_active_integrated_modules.inc.php";
 	$GLOBALS['config_files']['active_integrated_modules']['content'] = weFile::load($GLOBALS['config_files']['active_integrated_modules']['filename']);
 
 

@@ -109,7 +109,7 @@ class we_util_Sys_Webedition extends we_util_Sys
 		// integrated modules (free of charge, can be deactivated in webEdition preferences):
 		// users, schedule, editor, banner, export, voting, spellchecker, glossary
 		try {
-			include_once $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_active_integrated_modules.inc.php";
+			include_once $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_active_integrated_modules.inc.php";
 		} catch (Exception $e) {
 			throw new we_util_sys_Exception('could not read module information from we_active_integrated_modules.inc.php.');
 			return -1;
