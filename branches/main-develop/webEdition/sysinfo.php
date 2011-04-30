@@ -209,7 +209,8 @@
 
 			'MySql' => array (
 				g_l('sysinfo','[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf(g_l('sysinfo',"[dbversion warning]"),getMysqlVer(false)),getMysqlVer(false) ) :  getMysqlVer(false),
-				'max_allowed_packet' => getMaxAllowedPacket()
+				'max_allowed_packet' => getMaxAllowedPacket(),
+					'Info'=>$GLOBALS['DB_WE']->getInfo(),
 			),
 
 			'System' => array (

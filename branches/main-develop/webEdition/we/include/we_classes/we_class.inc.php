@@ -595,19 +595,19 @@ class we_class {
 	
 	function setLanguageLink($LangLinkArray,$type,$isfolder=false,$isobject=false){
 		if(is_array($LangLinkArray) ){
-			$q = "DELETE FROM ".mysql_real_escape_string(LANGLINK_TABLE)." WHERE LDID='".abs($this->ID)."' AND DID !='".abs($LDID)."' AND Locale='".$this->Language."' AND  DocumentTable='".$type."';";	
+			$q = "DELETE FROM ".escape_sql_query(LANGLINK_TABLE)." WHERE LDID='".abs($this->ID)."' AND DID !='".abs($LDID)."' AND Locale='".$this->Language."' AND  DocumentTable='".$type."';";	
 			$this->DB_WE->query($q);		
 			foreach ($LangLinkArray as $locale => $LDID){
 			  
 				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
-					$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
+					$q = "UPDATE ".escape_sql_query(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
 					$this->DB_WE->query($q);
 				} else {
-					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
+					$q = "INSERT INTO ".escape_sql_query(LANGLINK_TABLE)." SET DID='".abs($this->ID)."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
 					$this->DB_WE->query($q);
 				}
 				if(defined('LANGLINK_SUPPORT_BACKLINKS') && LANGLINK_SUPPORT_BACKLINKS && !$isfolder and $LDID){
-					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
+					$q = "INSERT INTO ".escape_sql_query(LANGLINK_TABLE)." SET DID='".abs($LDID)."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
 					$this->DB_WE->query($q);
 				}
 			  

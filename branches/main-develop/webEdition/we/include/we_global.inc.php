@@ -1614,7 +1614,7 @@ function cleanTempFiles($cleanSessFiles = false) {
 			if (file_exists($p)){
 				deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
-			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . $GLOBALS['DB_WE']->f('Date') . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
 		}
 	if ($cleanSessFiles) {
 		$seesID = session_id();
@@ -2588,14 +2588,14 @@ function removePHP($val) {
 
 function getMysqlVer($nodots = true) {
 	$DB_WE = new DB_WE();
-	$DB_WE->query('SELECT VERSION() AS Version');
+	$res=f('SELECT VERSION() AS Version','Version',$DB_WE);
 
-	if ($DB_WE->next_record()) {
-		$res = explode('-', $DB_WE->f('Version'));
+	if ($res) {
+		$res = explode('-', $res);
 	} else {
-		$DB_WE->query('SHOW VARIABLES LIKE "version"');
-		if ($DB_WE->next_record()) {
-			$res = explode('-', $DB_WE->f('Value'));
+		$res=f('SHOW VARIABLES LIKE "version"','Value',$DB_WE);
+		if ($res) {
+			$res = explode('-', $res);
 		}
 	}
 	if (isset($res)) {
@@ -2787,14 +2787,7 @@ function getMaxAllowedPacket($db = '') {
 	if (!$db) {
 		$db = new DB_WE();
 	}
-	$db->query('SHOW VARIABLES');
-	$max_allowed_packet = 0;
-
-	while ($db->next_record()) {
-		if ($db->f('Variable_name') == 'max_allowed_packet') {
-			return $db->f('Value');
-		}
-	}
+	return f('SHOW VARIABLES LIKE "max_allowed_packet"','Value',$db);
 }
 
 function we_convertIniSizes($in) {

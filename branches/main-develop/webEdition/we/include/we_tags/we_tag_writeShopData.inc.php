@@ -85,7 +85,6 @@ function we_tag_writeShopData($attribs,$content) {
 		$DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
 
 		$sql = "SELECT MAX(IntOrderID) AS max FROM " . SHOP_TABLE;
-		$DB_WE->connect();
 
 		if (!$DB_WE->query($sql)) {
 			echo "Data Insert Failed";
@@ -135,7 +134,6 @@ function we_tag_writeShopData($attribs,$content) {
 			$sql = "INSERT INTO " . SHOP_TABLE . " (intOrderID, IntArticleID, IntQuantity, Price, IntCustomerID, DateOrder, DateShipping, DatePayment, strSerial) ";
 			$sql .= "VALUES (" . abs($maxOrderID + 1) . ", " . abs($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '".$DB_WE->escape($preis)."' , " . abs($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . $DB_WE->escape(serialize($shoppingItem['serial'])) . "')";
 
-			$DB_WE->connect();
 			if (!$DB_WE->query($sql)) {
 				echo "Data Insert Failed";
 				return;

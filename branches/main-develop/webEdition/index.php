@@ -286,7 +286,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
-} else if(!$DB_WE->connect() || $DB_WE->Error=='No database selected') {
+} else if(!$DB_WE->isConnected() || $DB_WE->Error=='No database selected') {
 	$_error = we_htmlElement::htmlB(g_l('start','[no_db_connection]'));
 
 	$_error_count = 0;
@@ -545,10 +545,10 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 		case 3:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_failed_security]"), WE_MESSAGE_ERROR) . "document.location = '/webEdition/index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? "true" : "false")) : "") . "';";
 			break;
-		default: //make sure nobody gets accidential access
 		case 4:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_denied_for_user]"), WE_MESSAGE_ERROR);
 			break;
+		default: 
 	}
 
 

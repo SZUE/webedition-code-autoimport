@@ -1379,15 +1379,7 @@ $_we_active_integrated_modules = array();
 
 				$_file = &$GLOBALS['config_files']['conf']['content'];
 
-				if ($settingvalue == 0) {
-					if (DB_CONNECT == "pconnect") {
-						$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', 'connect');
-					}
-				} else if ($settingvalue == 1) {
-					if (DB_CONNECT == "connect") {
-						$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', 'pconnect');
-					}
-				}
+				$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', $settingvalue);
 
 				$_update_prefs = true;
 				break;
@@ -4118,13 +4110,13 @@ EOF;
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support"));
-				array_push($_settings, array("headline" => $l_prefs["langlink_support"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[langlink_support]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_backlinks","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
-				array_push($_settings, array("headline" => $l_prefs["langlink_support_backlinks"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[langlink_support_backlinks]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
 				/*****************************************************************
 				 * Dialog
@@ -5330,16 +5322,13 @@ else {
 
 				// Build db select box
 				$_db_connect = new we_htmlSelect(array("name" => "db_connect", "class" => "weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_db_connect->addOption($i, $i == 0 ? "connect" : "pconnect");
-
-					// Set selected setting
-					if ($i == 0 && DB_CONNECT == "connect") {
-						$_db_connect->selectOption($i);
-					} else if ($i == 1 && DB_CONNECT == "pconnect") {
-						$_db_connect->selectOption($i);
-					}
-				}
+					$_db_connect->addOption('connect', "connect");
+					$_db_connect->addOption('pconnect', "pconnect");
+					$_db_connect->addOption('mysqli_connect', "mysqli_connect");
+					$_db_connect->addOption('mysqli_pconnect', "mysqli_pconnect");
+					/*$_db_connect->addOption(4, "pdo_connect");
+					$_db_connect->addOption(5, "pdo_pconnect");*/
+					$_db_connect->selectOption(DB_CONNECT);
 				array_push($_settings, array("headline" => g_l('prefs','[db_connect]'), "html" => $_db_connect->getHtmlCode(), "space" => 200, "noline" => 1));
 
 				// Build db charset select box
@@ -5617,13 +5606,13 @@ else {
 				  $yuiSuggest->setSelectButton($_acButton1,10);
 				  $yuiSuggest->setTrashButton($_acButton2,4);
 
-				  array_push($_settings, array('headline' => $l_prefs['error_no_object_found'], 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
+				  array_push($_settings, array('headline' => g_l('prefs','[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
 
 				$_php_setting = new we_htmlSelect(array("name" => "suppress404code","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("suppress404code"));
-				array_push($_settings, array("headline" => $l_prefs["suppress404code"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 0));
+				array_push($_settings, array("headline" => g_l('prefs','[suppress404code]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 0));
 
 				$_dialog = create_dialog("", g_l('prefs','[tab_seolinks]'), $_settings, -1, "", "", null, $_needed_JavaScript);
 

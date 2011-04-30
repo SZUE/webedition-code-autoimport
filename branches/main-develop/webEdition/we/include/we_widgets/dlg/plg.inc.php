@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+//FIXME: is this file still used??!
+
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
@@ -114,7 +116,6 @@ $_userName = $_SESSION['user']['Username'];
 include_once ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/includes/global.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/includes/db.inc.php");
 $pl_db = new stat_db();
-$pl_conn = $pl_db->connect();
 $pl_tables = new stat_tables();
 $pl_tables->build_tables();
 @$result = mysql_query("SELECT websites FROM " . mysql_real_escape_string(preg_replace("/\s/","",$pl_tables->accounttable)). " WHERE account_username = '" . mysql_real_escape_string($_userName) . "'");
@@ -302,5 +303,3 @@ print
 							"class" => "weDialogBody", "onload" => "init();"
 						),
 						we_htmlElement::htmlForm("", $_pLogProps->getHTMLCode())));
-
-?>

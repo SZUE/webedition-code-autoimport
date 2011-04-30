@@ -592,7 +592,7 @@ function formTriggerDocument($isclass=false){
 		//$idname = 'we_'.$this->Name.'_LanguageDocID-'.$langkey;
 		//$myid = $this->TriggerID ? $this->TriggerID : "";
 		$myid = $LDID ? $LDID:'';
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".escape_sql_query($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		$yuiSuggest->setAcId($ackeyshort,$rootDir);
 		if ($table == FILE_TABLE){
 			$yuiSuggest->setContentType("folder,text/webedition");

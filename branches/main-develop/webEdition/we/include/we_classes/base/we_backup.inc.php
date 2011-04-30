@@ -138,6 +138,7 @@ class we_backup {
 
 		$this->handle_options=$handle_options;
 
+		//FIXME: this should be handled in DB class
 		$this->backup_db->query("SHOW VARIABLES");
 		while($this->backup_db->next_record()){
 			if($this->backup_db->f("Variable_name")=="max_allowed_packet") $this->mysql_max_packet=$this->backup_db->f("Value");
@@ -852,6 +853,7 @@ class we_backup {
 	 * Description: This function initializes the import of a backup.
 	 */
 
+	//FIXME: this will not work in future
 	function restoreFiles() {
 		$exist=false;
 		$tab=@mysql_list_tables($this->backup_db->Database);

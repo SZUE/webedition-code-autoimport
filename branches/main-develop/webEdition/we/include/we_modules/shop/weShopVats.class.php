@@ -112,7 +112,7 @@ class weShopVats {
 			';
 
 			if ($GLOBALS['DB_WE']->query($query)) {
-				return mysql_insert_id();
+				return $GLOBALS['DB_WE']->getInsertId();
 			}
 
 		} else { // update existing vat
