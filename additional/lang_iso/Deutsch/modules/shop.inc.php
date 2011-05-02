@@ -268,7 +268,7 @@ $l_shop['statusmails']['box_headline'] = 'Statusanzeigen und Verhalten beim E-Ma
 $l_shop['statusmails']['AnzeigeDaten'] = 'Anzeige Daten';
 $l_shop['statusmails']['fieldname'] = 'Feld-ID';
 $l_shop['statusmails']['hidefield'] = 'Feld Anzeige';
-$l_shop['statusmails']['hidefieldCOV'] = 'Kundenübersicht';// TRANSLATE
+$l_shop['statusmails']['hidefieldCOV'] = 'Kundenübersicht';
 $l_shop['statusmails']['hidefieldNein'] = 'anzeigen';
 $l_shop['statusmails']['hidefieldJa'] = 'nicht anzeigen';
 $l_shop['statusmails']['fieldtext'] = 'Feldbezeichnung';
@@ -286,9 +286,10 @@ $l_shop['statusmails']['EMailFeld'] = 'KV E-Mail Feld';
 $l_shop['statusmails']['DocumentSubjectField'] = 'Feldname im Dokument für E-Mail Betreff';
 $l_shop['statusmails']['DocumentAttachmentFieldA'] = 'Feldname (we:href) im Dok. Anhang A';
 $l_shop['statusmails']['DocumentAttachmentFieldB'] = 'Feldname (we:href) im Dok. Anhang B';
+
 $l_shop['statusmails']['Spracheinstellungen'] = 'Sprachen';
 $l_shop['statusmails']['useLanguages'] = 'Nutze verschiedene <br/>Mail-Dokumente je <br/>Sprache (statt den Standard)';
-$l_shop['statusmails']['SprachenFeld'] = 'SprachenFeld';
+$l_shop['statusmails']['SprachenFeld'] = 'KV Sprachen Feld';
 $l_shop['statusmails']['hintISO'] = 'Nur bei Nutzung eines ISO kodierten Sprachfeldes ist eine Sprachzuordnung der Mails möglich.';
 $l_shop['statusmails']['Dokumente'] = 'Dokumente';
 $l_shop['statusmails']['defaultDocs'] = 'Standard <br/> (ohne Sp.<br/> Zuordnung)';
@@ -311,6 +312,9 @@ $l_shop['shipping']['shipping_costs'] = 'Versandkosten';
 
 $l_shop['preferences']['customerFields'] = "Kundenfelder<br />(Kundenverwaltung)";
 $l_shop['preferences']['orderCustomerFields'] = 'Kundenfelder<br />(Bestellung)';
+$l_shop['preferences']['CountryField'] = 'Feld Land';
+$l_shop['preferences']['LanguageField'] = 'Feld Sprache';
+$l_shop['preferences']['ISO-Kodiert'] = 'Feld ist ISO kodiert';
 
 $l_shop['preferences']['customerdata'] = 'Kundendaten';
 $l_shop['preferences']['explanation_customer_odercustomer'] = 'Erklärung: Diese Daten werden nur innerhalb dieser Bestellung gespeichert, die Daten der Kundenverwaltung bleiben erhalten.';

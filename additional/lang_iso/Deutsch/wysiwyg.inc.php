@@ -35,7 +35,7 @@ $GLOBALS["l_wysiwyg"]["fontsize"] = "Schriftgröße";
 $GLOBALS["l_wysiwyg"]["fontname"] = "Schriftname";
 $GLOBALS["l_wysiwyg"]["css_style"] = "CSS Style";
 
-$GLOBALS["l_wysiwyg"]["normal"] = "Normal";
+$GLOBALS["l_wysiwyg"]["normal"] = "Normal (ohne)";
 $GLOBALS["l_wysiwyg"]["h1"] = "Überschrift 1";
 $GLOBALS["l_wysiwyg"]["h2"] = "Überschrift 2";
 $GLOBALS["l_wysiwyg"]["h3"] = "Überschrift 3";

@@ -60,8 +60,8 @@ $l_javaMenu["new"] = "Neu";
 		$l_javaMenu["text_plain"] = "Text-Datei";
 		$l_javaMenu["text_xml"] = "XML-Datei";
 		$l_javaMenu["javascript"] = "Javascript-Datei";
-		$l_javaMenu["css_stylesheet"] = "CSS-Datei";
 		$l_javaMenu["htaccess"] = ".htaccess-Datei";
+		$l_javaMenu["css_stylesheet"] = "CSS-Datei";
 		$l_javaMenu["other_files"] = "Sonstige Datei";
 
 
@@ -288,6 +288,5 @@ $l_javaMenu["search"] = "Suche";
 $l_javaMenu["common"] = "Allgemein";
 $l_javaMenu["sysinfo"] = "Systeminformationen";
 $l_javaMenu["showerrorlog"] = "Fehlerlog";
-
 
 ?>

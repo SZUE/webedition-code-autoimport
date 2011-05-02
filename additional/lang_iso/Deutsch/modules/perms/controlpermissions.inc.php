@@ -29,7 +29,7 @@ $l_perm["controlpermissions"]["SAVE_USER"] = "Der Benutzer darf Benutzer ändern"
 $l_perm["controlpermissions"]["DELETE_GROUP"] = "Der Benutzer darf Gruppen löschen";
 $l_perm["controlpermissions"]["DELETE_USER"] = "Der Benutzer darf Benutzer löschen";
 $l_perm["controlpermissions"]["PUBLISH"] = "Der Benutzer darf veröffentlichen";
-$l_perm["controlpermissions"]["EDIT_SETTINGS_DEF_EXT"] = "Der Benutzer darf die Standard-Erweiterungen im Einstellungsdialog ändern";
+$l_perm["controlpermissions"]["EDIT_SETTINGS_DEF_EXT"] = "Der Benutzer darf die Standard-Erweiterungen ändern";
 $l_perm["controlpermissions"]["EDIT_SETTINGS"] = "Der Benutzer darf die webEdition-Einstellungen ändern";
 $l_perm["controlpermissions"]["EDIT_PASSWD"] = "Der Benutzer darf das Kennwort ändern";
 

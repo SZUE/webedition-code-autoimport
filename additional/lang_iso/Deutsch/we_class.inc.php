@@ -36,8 +36,8 @@ $l_we_class["copytext/css"] = "CSS-Datei kopieren";
 $l_we_class["copytext/js"] = "Javascript-Datei kopieren";
 $l_we_class["copytext/html"] = "HTML-Datei kopieren";
 $l_we_class["copytext/plain"] = "Text-Datei kopieren";
-$l_we_class["copytext/htaccess"] = ".htaccess-Datei kopieren";
 $l_we_class["copytext/xml"] = "XML-Datei kopieren";
+$l_we_class["copytext/htaccess"] = ".htaccess-Datei kopieren";
 $l_we_class["copyTemplate"] = "Vorlage kopieren";
 $l_we_class["copyFolder"] = "Verzeichnis kopieren";
 $l_we_class["copy_owners_expl"] = "Wählen Sie  hier ein Verzeichnis aus, dessen Inhalt in das aktuelle Verzeichnis kopiert werden soll.";
@@ -171,14 +171,14 @@ $l_we_class["grant_language"] = "Sprache übertragen";
 $l_we_class["grant_language_expl"] = "Übertragen Sie die oben eingestellte Sprache auf alle Dateien und Verzeichnisse, welche sich in diesem Verzeichnis befinden.";
 $l_we_class["grant_language_ok"] = "Die Sprache wurden erfolgreich übertragen!";
 $l_we_class["grant_language_notok"] = "Es gab einen Fehler beim Übertragen der Sprache!";
-$l_we_class["notValidFolder"] = "Das angegebene Verzeichnis ist ungültig!";
-$l_we_class["saveFirstMessage"] = "Um diese Aktion auszuführen müssen Sie zuerst Ihre Änderungen speichern!";
 
 $l_we_class["grant_tid"] = "Dokument für die Darstellung übertragen";
 $l_we_class["grant_tid_expl"] = "Übertragen Sie das oben eingestellte Dokument für die Darstellung auf Objekte und Verzeichnisse, welche sich in diesem Verzeichnis befinden.";
 $l_we_class["grant_tid_ok"] = "Das Darstellungsdokument wurde wurden erfolgreich übertragen!";
 $l_we_class["grant_tid_notok"] = "Es gab einen Fehler beim Übertragen des Darstellungsdokumentes!";
 
+$l_we_class["notValidFolder"] = "Das angegebene Verzeichnis ist ungültig!";
+$l_we_class["saveFirstMessage"] = "Um diese Aktion auszuführen müssen Sie zuerst Ihre Änderungen speichern!";
 
 $l_we_class["image_edit_null_not_allowed"] = "Im Feld Breite und Höhe sind nur Zahlen größer als 0 erlaubt!";
 $l_we_class['doctype_changed_question'] = "Sollen die Standardeinstellungen des Dokument-Typs für das Dokument übernommen werden?";

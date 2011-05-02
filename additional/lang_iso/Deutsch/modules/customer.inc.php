@@ -53,9 +53,10 @@ $l_customer["login_denied"] = "Zugang gesperrt";
 $l_customer["autologin"] = "Auto-Login";
 $l_customer["autologin_request"] = "gewünscht";
 
+
 $l_customer["permissions"] = "Rechte";
 
-$l_customer["password_alert"] = "Das Kennwort muss midestens 4 Zeichen lang sein";
+$l_customer["password_alert"] = "Das Kennwort muss mindestens 4 Zeichen lang sein";
 $l_customer["delete_alert"] = "Die ausgewählten Kunden-Daten werden gelöscht?\\nSind Sie sicher?";
 
 $l_customer["created_by"] = "Erstellt von";
@@ -206,7 +207,7 @@ $l_customer["manual_selection"]="Manuell Auswahl";
 $l_customer["sortname_empty"]="Sortierungsname ist leer!";
 $l_customer["fieldname_exists"]="Der Feldname existiert schon!";
 $l_customer["treetext_format"]="Menütext-Format";
-$l_customer["we_filename_notValid"] = "Der eingegebene Kundenname ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-), Punkt (.) und Leerzeichen ( ).";
+$l_customer["we_filename_notValid"] = "Der eingegebene Kundenname ist nicht gültig!\\n Das Zeichen / ist verboten.";
 
 $l_customer["windows"]="Windows Format";
 $l_customer["unix"]="UNIX Format";

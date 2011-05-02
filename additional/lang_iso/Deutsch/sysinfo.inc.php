@@ -60,4 +60,5 @@ $_sysinfo['exif'] = 'EXIF Unterstützung';
 $_sysinfo['pcre'] = 'PCRE-Extension';
 $_sysinfo['sdk_db'] = 'SDK/Apps DB Unterstützung';
 $_sysinfo['phpext'] = 'Minimal notwendige PHP-Extensions';
+
 ?>
