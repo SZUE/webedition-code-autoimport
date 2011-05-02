@@ -34,7 +34,7 @@ $xml = '<?xml version="1.0" encoding="utf-8"?'.'>' . "\n";
 $xml .= "<attributes>\n";
 
 if ($tagName) {
-	$GLOBALS['TagRefURLName'] = strtolower($tag);
+	
 	$tagData = weTagData::getTagData($tagName);
 	foreach($tagData->getAllAttributes() as $attr){
 		$xml .= "\t". '<attribute name="' . $attr . '" />'."\n";
