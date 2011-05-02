@@ -55,6 +55,7 @@ $l_we_tag['controlElement']['description'] = "Mit dem Tag we:controlElement k&ou
 $l_we_tag['cookie']['description'] = "Dieser Tag wird vom Voting Modul ben&ouml;tigt und setzt einen Cookie, der Mehrfachabstimmungen eines Besuchers verhindert. Der Tag muss ganz am Anfang der Vorlage stehen, es d&uuml;rfen sich keine Zeichen (inkl. Leerzeichen und Zeilenumbruch) vor diesem Tag befinden.";
 $l_we_tag['createShop']['description'] = "Das we:createShop-Tag wird auf jeder Seite ben&ouml;tigt, die Shop-Daten enthalten soll.";
 $l_we_tag['css']['description'] = "Das we:css-Tag erzeugt ein HTML-Tag, das auf ein webEdition-internes CSS Stylesheet mit der unten angegebenen ID verweist. Dadurch k&ouml;nnen Sie Stylesheets in einer separaten Datei definieren.";
+$l_we_tag['comment']['description'] = 'Das comment Tag kann benutzt werden, um explizit Kommentare in der angegebenen Sprache zu generieren, oder einfach nur zur Sturkturierung des Template Kodes, wobei der Kommentar vorher gefiltert wird.';
 $l_we_tag['customer']['description'] = "Mit Hilfe dieses Tags kann man einen Kunden auf einer webEdition darstellen. Die Kundenfelder werden wie bei einer Listview und beim &lt;we:object&gt; Tag mit dem Tag &lt;we:field&gt; dargestellt.<br /><br />Durch Kombination der Attribute kann das Tag 3 verschiedene Funktionen erf&uuml;llen:<br />Wenn name gesetzt ist, dann kann der Redakteur einen Kunden per Customer-Selector ausw&auml;hlen. Dieser Kunde wird dann im Dokument unter dem in nam angegeben Feld gespeichert.<br />Wenn name nicht gesetzt ist, daf&uuml;r aber id, wird der Kunde mit dieser ID angezeigt<br />Wenn weder name noch id gesetzt ist, erwartet das Tag, dass die id des Kunden per Request Parameter &uuml;bermittelt wird. Dies tut zB. die Customer-Listview wenn das Attribut hyperlink=\"true\" im &lt;we:field&gt; Tag gesetzt ist. Der Name des Request Parameters lautet we_cid";
 $l_we_tag['customer']['defaultvalue'] = "";
 $l_we_tag['date']['description'] = "Das we:date-Tag zeigt, entsprechend dem Formatstring, das aktuelle Datum auf der Seite an. Wenn das Dokument statisch gespeichert wird, sollte der Typ auf &quot;js&quot; gesetzt werden, damit das Datum mit Javascript erzeugt wird.";
@@ -356,6 +357,7 @@ $l_we_tag['ifShopFieldNotEmpty']['description'] = "Pr&uuml;ft, ob ein shopField 
 $l_we_tag['ifShopField']['description'] = "Das Tag bewirkt, da&szlig; alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn das shopField mit dem Namen \"name\" gleich dem Wert ist, welcher in \"match\" eingetragen ist. Ist dies der Fall, wird alles zwischen Start- und Endtag angezeigt.";
 $l_we_tag['ifNotShopField']['description'] = "Das Tag bewirkt, da&szlig; alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn das shopField mit dem Namen \"name\" ungleich dem Wert ist, welcher in \"match\" eingetragen ist. Ist dies der Fall, wird alles zwischen Start- und Endtag angezeigt.";
 
+
 $l_we_tag['shopVat']['description'] = "Mit we:shopVat ist es m&ouml;glich einen Mehrwertsteuersatz f&uuml;r einen Artikel festzulegen. Mehrwertsteuers&auml;tze k&ouml;nnen direkt im Shop Modul gepflegt werden. Ist Id gesetzt, wird der Mehrwertsteuersatz mit der angegebenen Id ausgegeben.";
 $l_we_tag['showShopItemNumber']['description'] = "Das we:showShopItemNumber-Tag zeigt die im Warenkorb vorhandene Anzahl der Artikel eines Typs an. ";
 $l_we_tag['sidebar']['description'] = "Dieses Tag dient dazu einen Button im Bearbeitenmodus eines Dokumentes zum &ouml;ffnen einer Webseite in der Sidebar zu &ouml;ffnen einzubinden.";
@@ -438,6 +440,5 @@ $l_we_tag['ifVotingFieldNotEmpty']['description'] = "&Uuml;berpr&uuml;ft ob ein 
 $l_we_tag['ifVotingIsRequired']['description'] = "Gibt des umschlossenen Inhalt nur aus, wenn das Voting-Feld ein Pflichtfeld ist";
 $l_we_tag['ifNotVotingIsRequired']['description'] = "Gibt des umschlossenen Inhalt nur aus, wenn das Voting-Feld kein Pflichtfeld ist";
 $l_we_tag['votingSession']['description'] = "Generiert einen eindeutigen Identifier, der mit ins Voting-Log aufgenommen wird und so erlaubt, die Antworten zu verschienenen Fragen einer Befragung einander zuzuordnen";
-
 
 ?>

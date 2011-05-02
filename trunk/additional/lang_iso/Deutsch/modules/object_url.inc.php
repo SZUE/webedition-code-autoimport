@@ -57,4 +57,7 @@ $l_object_url["%DirSep%"] = "Verzeichnisseparator";
 $l_object_url["%urlfield1%"] = "URL-Feld 1";
 $l_object_url["%urlfield2%"] = "URL-Feld 2";
 $l_object_url["%urlfield3%"] = "URL-Feld 3";
-
+$l_object_url["%locale%"] = "Locale";
+$l_object_url["%language%"] = "Sprache";
+$l_object_url["%country%"] = "Land";
+?>

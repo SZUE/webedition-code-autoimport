@@ -27,7 +27,7 @@
  */
 
 //	This is for the charset of webEdition itself.
-$_language["charset"] = "ISO-8859-1";
+$_language["charset"] = "UTF-8";
 
 $_charset["error"]["no_charset_tag"] = "Kein we:charset-Tag in der Vorlage";
 $_charset["error"]["no_charset_available"] = "--Ohne--";
