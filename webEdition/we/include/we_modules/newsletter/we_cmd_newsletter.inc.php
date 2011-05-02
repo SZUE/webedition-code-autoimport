@@ -26,5 +26,3 @@ switch ($_REQUEST["we_cmd"][0]) {
 		$INCLUDE = "we_modules/show_frameset.php";
 		break;
 }
-
-?>
