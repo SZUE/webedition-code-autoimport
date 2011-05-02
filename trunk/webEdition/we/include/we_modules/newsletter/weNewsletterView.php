@@ -2963,5 +2963,3 @@ class weNewsletterView {
 
 
 }
-
-?>

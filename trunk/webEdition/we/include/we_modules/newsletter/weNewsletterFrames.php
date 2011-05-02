@@ -3197,5 +3197,3 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	}
 
 }
-
-?>

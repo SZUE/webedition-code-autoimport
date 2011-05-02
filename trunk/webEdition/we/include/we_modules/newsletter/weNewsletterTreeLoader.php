@@ -136,6 +136,3 @@ class weNewsletterTreeLoader{
 	}
 
 }
-
-
-?>
