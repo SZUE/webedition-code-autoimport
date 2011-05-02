@@ -43,7 +43,7 @@ $GLOBALS['we_listviews_array'] = array();
 *
 */
 
-class listviewBase{
+abstract class listviewBase{
 
 	var $DB_WE;            /* Main DB Object */
 	var $name;             /* name of listview */

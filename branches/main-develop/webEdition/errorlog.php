@@ -22,12 +22,9 @@
 
 		protect();
 		
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sysinfo.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/we/core/autoload.php");
 		include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/charset/charset.inc.php");
 $_charset=$GLOBALS['_language']["charset"];
@@ -110,15 +107,12 @@ $_charset=$GLOBALS['_language']["charset"];
 		
 		$db=  new DB_WE();
 		if (isset($_REQUEST['delete'])){
-			$q="TRUNCATE TABLE `".ERROR_LOG_TABLE."`";
-			$db->query($q);
+			$db->query('TRUNCATE TABLE `'.ERROR_LOG_TABLE.'`');
 		}
-		$q="SELECT * FROM ".ERROR_LOG_TABLE." ORDER BY ID DESC ";
-		$db->query($q);
+		$size = f('SELECT COUNT(1) as cnt FROM `'.ERROR_LOG_TABLE.'`','cnt',$db);
 		$count = 1;
 	
 		$nextprev = "";
-		$size = $db->num_rows();
 		if ($size>0){
 			
 			$start = (isset($_REQUEST['start']) ? abs($_REQUEST['start']) : 0);
@@ -143,7 +137,7 @@ $_charset=$GLOBALS['_language']["charset"];
 
 			//$nextprev .= "&nbsp;-&nbsp".($size-$start+$count);
 
-			$nextprev .= "&nbsp;".$GLOBALS["l_global"]["from"]." ".($size)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global','[from]')." ".($size)."</b></td><td>".getPixel(23,1);
 
 			if($next < $size){
 				$nextprev .= $we_button->create_button("back",'/webEdition/errorlog.php' . "?start=".$next); //bt_next
@@ -156,8 +150,7 @@ $_charset=$GLOBALS['_language']["charset"];
 					  'html'=> $nextprev,
 					  'space'=>$_space_size
 				  );
-			$q="SELECT * FROM ".ERROR_LOG_TABLE." ORDER By ID DESC LIMIT ".$start.",".$count;
-			$db->query($q);
+			$db->query('SELECT * FROM `'.ERROR_LOG_TABLE.'` ORDER By Date DESC LIMIT '.$start.','.$count);
 		  
 			while ($db->next_record()){
 				$_parts[] = array(	  

@@ -798,7 +798,7 @@ if(we_hasPerm("ADMINISTRATOR")) {
 
 	$userHasAllModules = true;
 
-	if (sizeof($_we_active_modules) > 0) {
+	if (sizeof($GLOBALS['_we_active_modules']) > 0) {
 
 		foreach ($buyableModules as $m) {
 
@@ -937,9 +937,9 @@ $we_menu["5095000"]["enabled"] = "1";
 	$we_menu["5100000"]["enabled"] = "1";
 
 	reset($GLOBALS['_we_available_modules']);
-	while(list($key, $val) = each($GLOBALS['$_we_available_modules'])){
+	while(list($key, $val) = each($GLOBALS['_we_available_modules'])){
 
-		if (!isset($val["integrated"]) || ( in_array($val["name"], $_we_active_modules) )) {
+		if (!isset($val["integrated"]) || ( in_array($val["name"], $GLOBALS['_we_active_modules']) )) {
 
 			if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules/we_menu_" . $val["name"] . ".inc.php")){
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/modules/we_menu_" . $val["name"] . ".inc.php");
