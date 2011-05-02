@@ -340,6 +340,7 @@ class we_util_Mailer extends Zend_Mail
 	public function doaddAttachmentInline($attachmentpath)
 	{
 		if($attachmentpath!=''){
+			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/weFile.class.php');
 			$binarydata = weFile::load($attachmentpath);
 			$at = new Zend_Mime_Part($binarydata);
 			$at->disposition = Zend_Mime::DISPOSITION_INLINE;
@@ -369,6 +370,7 @@ class we_util_Mailer extends Zend_Mail
 	public function doaddAttachment($attachmentpath)
 	{
 		if($attachmentpath!=''){
+			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/weFile.class.php');
 			$binarydata = weFile::load($attachmentpath);
 			$at = new Zend_Mime_Part($binarydata);
 			$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
@@ -626,4 +628,3 @@ class we_util_Mailer extends Zend_Mail
 
 
 }
-?>
