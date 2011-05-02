@@ -55,10 +55,12 @@ abstract class DB_WE_abstract {
 	 * 
 	 */
 	abstract protected function connect($Database, $Host, $User, $Password);
-	/**internal query
+	/** internal query
+	 * @param $Query_String string the sql statement
+	 * @param $unbuffered bool if this query is executed buffered or unbuffered
 	 * @return int a query_id
 	 */
-	abstract protected function _query($Query_String);
+	abstract protected function _query($Query_String,$unbuffered);
 	/** internal free function*/
 	abstract protected function _free();
 	/** internal get last error
@@ -173,7 +175,7 @@ abstract class DB_WE_abstract {
 	 * @param bool $allowUnion this parameter is deprecated; it determines if the query is allowed to have unions
 	 * @return bool true, if the query was successfull 
 	 */
-	function query($Query_String, $allowUnion=false) {
+	function query($Query_String, $allowUnion=false, $unbuffered=false) {
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if ($Query_String == ''){
 		/* The empty query string is passed on from the constructor,

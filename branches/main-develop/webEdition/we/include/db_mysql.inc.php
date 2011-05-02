@@ -73,8 +73,10 @@ protected function ping(){
 		@mysql_free_result($this->Query_ID);
 	}
 
-	protected function _query($Query_String) {
-		return @mysql_query($Query_String, $this->Link_ID);
+	protected function _query($Query_String, $unbuffered=false) {
+		return ($unbuffered?
+			@mysql_unbuffered_query($Query_String, $this->Link_ID):
+			@mysql_query($Query_String, $this->Link_ID));
 	}
 
 	public function close() {

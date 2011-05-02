@@ -35,9 +35,9 @@ class DB_WE extends DB_WE_abstract {
 		$this->Query_ID = 0;
 	}
 
-	protected function _query($Query_String) {
+	protected function _query($Query_String, $unbuffered=false) {
 		$this->_free();
-		$tmp=@$this->Link_ID->query($Query_String);
+		$tmp=@$this->Link_ID->query($Query_String, ($unbuffered? MYSQLI_USE_RESULT:MYSQLI_STORE_RESULT));
 		if($tmp===false){
 			return 0;
 		}else if($tmp===true){

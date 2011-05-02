@@ -138,11 +138,7 @@ class we_backup {
 
 		$this->handle_options=$handle_options;
 
-		//FIXME: this should be handled in DB class
-		$this->backup_db->query("SHOW VARIABLES");
-		while($this->backup_db->next_record()){
-			if($this->backup_db->f("Variable_name")=="max_allowed_packet") $this->mysql_max_packet=$this->backup_db->f("Value");
-		}
+		$this->mysql_max_packet=f('SHOW VARIABLES LIKE "max_allowed_packet"','Value',$this->backup_db);
 
 		//$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE,"tbllock"=>LOCK_TABLE)); //Wahrscheinlich Ursache, dass tbllock ins Backup aufgenommen wird Bug 5096
 		$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE));
@@ -853,20 +849,22 @@ class we_backup {
 	 * Description: This function initializes the import of a backup.
 	 */
 
-	//FIXME: this will not work in future
 	function restoreFiles() {
 		$exist=false;
-		$tab=@mysql_list_tables($this->backup_db->Database);
-		while (list($tname)=@mysql_fetch_array($tab)) {
+		$tab=$this->backup_db->table_names(BACKUP_TABLE);
+		$exist = count($tab)>0;
+		/*while (list($tname)=@mysql_fetch_array($tab)) {
 			if(strtolower($tname)==strtolower(BACKUP_TABLE))
 				$exist=true;
-		}
+		}*/
 		if($exist) {
 			/*$link = mysql_connect($this->backup_db->Host, $this->backup_db->User, $this->backup_db->Password);
 			mysql_select_db($this->backup_db->Database);*/
-			$query = "SELECT * FROM ".BACKUP_TABLE." ORDER BY IsFolder DESC, Path ASC";
-			$result = mysql_unbuffered_query($query);
-			while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			$mydb=new DB_WE();
+			$mydb->query("SELECT * FROM ".BACKUP_TABLE." ORDER BY IsFolder DESC, Path ASC",false,true);
+			
+			while ($mydb->next_record(MYSQL_ASSOC)) {
+				$line=$mydb->Record;
 				@set_time_limit(80);
 				if($line["IsFolder"]) {
 					$dir=$_SERVER["DOCUMENT_ROOT"].$line["Path"];
@@ -895,8 +893,7 @@ class we_backup {
 					}
 				}
 			}
-			mysql_free_result($result);
-			//mysql_close($link);
+			$mydb->free();
 		}
 		return true;
 	}
