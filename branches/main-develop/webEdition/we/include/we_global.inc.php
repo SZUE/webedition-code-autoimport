@@ -1711,7 +1711,7 @@ function getTemplatesOfTemplate($id, &$arr) {
 									$id) . ",%'",'IDS',$GLOBALS['DB_WE']));
 	
 	$arr=array_merge($arr,$foo);
-	if (in_array($id, $foo)) {
+	if (in_array($id, $arr)) {
 		return;
 	}
 
