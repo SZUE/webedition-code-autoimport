@@ -78,16 +78,16 @@
     $we_menu["1010800"]["enabled"] = "0";
 
     // object from which class
-    $ac = makeCSVFromArray(getAllowedClasses($DB_WE));
+    $ac = makeCSVFromArray(getAllowedClasses($GLOBALS['DB_WE']));
     if($ac){
     	protect();
-		$DB_WE->query("SELECT ID,Text FROM " . OBJECT_TABLE . " ".($ac ? " WHERE ID IN($ac) " : "")."ORDER BY Text");
+		$GLOBALS['DB_WE']->query("SELECT ID,Text FROM " . OBJECT_TABLE . " ".($ac ? " WHERE ID IN($ac) " : "")."ORDER BY Text");
 		$nr = 801;
-		while($DB_WE->next_record()){
+		while($GLOBALS['DB_WE']->next_record()){
 
 			$we_menu["1010800"]["enabled"] = "1";
 
-			$foo = $DB_WE->f("Text");
+			$foo = $GLOBALS['DB_WE']->f("Text");
 			$foo = str_replace('"',"",$foo);
 			$foo = str_replace("'","",$foo);
 
@@ -95,7 +95,7 @@
 			$we_menu["1010" . $nr]["text"] = $foo;
 
 			$we_menu["1010" . $nr]["parent"] = "1010800";
-			$we_menu["1010" . $nr]["cmd"] = "new_ClObjectFile".$DB_WE->f("ID");
+			$we_menu["1010" . $nr]["cmd"] = "new_ClObjectFile".$GLOBALS['DB_WE']->f("ID");
 			$we_menu["1010" . $nr]["perm"] = "NEW_OBJECTFILE || ADMINISTRATOR";
 			$we_menu["1010" . $nr]["enabled"] = "1";
 			$nr++;

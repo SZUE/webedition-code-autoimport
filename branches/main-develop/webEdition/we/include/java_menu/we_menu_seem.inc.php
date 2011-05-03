@@ -24,6 +24,7 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModuleInfo.class.php");
+include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we.inc.php');
 
 $we_menu = array();
 
@@ -51,16 +52,16 @@ $we_menu["1000000"]["enabled"] = "1";
             $we_menu["1010101"]["perm"] = "NEW_WEBEDITIONSITE || ADMINISTRATOR";
 		}
 
-		$q=getDoctypeQuery($DB_WE);
-		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
-		if($DB_WE->num_rows() && we_hasPerm("NO_DOCTYPE")){
+		$q=getDoctypeQuery($GLOBALS['DB_WE']);
+		$GLOBALS['DB_WE']->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		if($GLOBALS['DB_WE']->num_rows() && we_hasPerm("NO_DOCTYPE")){
 			$we_menu["1010102"]["parent"] = "1010100"; // separator
 		}
 		// File > New > webEdition Document > Doctypes*
 		$nr = 103;
-		while($DB_WE->next_record()){
+		while($GLOBALS['DB_WE']->next_record()){
 
-			$foo = $DB_WE->f("DocType");
+			$foo = $GLOBALS['DB_WE']->f("DocType");
 			$foo = str_replace('"',"",$foo);
 			$foo = str_replace("'","",$foo);
 			$foo = str_replace(','," ",$foo);
@@ -68,7 +69,7 @@ $we_menu["1000000"]["enabled"] = "1";
 			$we_menu["1010" . $nr]["text"] = $foo;
 
 			$we_menu["1010" . $nr]["parent"] = "1010100";
-			$we_menu["1010" . $nr]["cmd"] = "new_dtPage".$DB_WE->f("ID");
+			$we_menu["1010" . $nr]["cmd"] = "new_dtPage".$GLOBALS['DB_WE']->f("ID");
 			$we_menu["1010" . $nr]["perm"] = "NEW_WEBEDITIONSITE || ADMINISTRATOR";
 			$we_menu["1010" . $nr]["enabled"] = "1";
 			$nr++;
