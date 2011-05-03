@@ -416,7 +416,7 @@ class weJavaMenu {
 					$opt .= '<li'.((isset($e["enabled"]) && $e["enabled"]==0) ? ' class="disabled" disabled="true"' : '').'><a href="#void" onclick="parent.menuaction(\''.$e["cmd"].'\')">'.$mtext.'</a></li>';
 				}
 				else {
-					$opt .=  '<li class="disabled">------------------------------</li>';
+					$opt .=  '<li class="disabled"></li>';
 				}
 			}
 		}
