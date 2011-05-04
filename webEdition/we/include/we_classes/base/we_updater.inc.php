@@ -251,8 +251,8 @@
 	  $DB_WE->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
 	  if($DB_WE->next_record()) return true; else return false;
 	}
-
-	function addTable($tab,$cols){
+	 
+	function addTable($tab,$cols,$keys=array()){
 	   global $DB_WE;
 
 	   if(!is_array($cols)) return;
@@ -261,6 +261,9 @@
 	   $key_sql=array();
 	   foreach($cols as $name=>$type){
 			$cols_sql[]=$name." ".$type;
+	   }
+	   foreach($keys as $name=>$type){
+			$key_sql[]=$name." ".$type;
 	   }
 	   $sql_array=array_merge($cols_sql,$key_sql);
 
@@ -726,6 +729,20 @@
 	}
 
 	function updateLock(){
+		if(!$this->isTabExist(LOCK_TABLE)){
+			$cols=array(
+				"ID"=>"bigint(20) NOT NULL default '0'",
+				"sessionID"=>"varchar(64) NOT NULL default ''",
+				"lockTime"=>"datetime NOT NULL",
+				"tbl"=>"varchar(32) NOT NULL default ''"
+				);
+			$keys=array(
+				"PRIMARY KEY"=>"(ID,tbl)",
+				"KEY UserID"=>"(ID,tbl)",
+				"KEY lockTime"=>"(lockTime)"
+				);
+			$this->addTable(LOCK_TABLE,$cols,$keys);	
+		}
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
 		if($this->isColExist(LOCK_TABLE,'lock')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
 		if(!$this->isColExist(LOCK_TABLE,'lockTime'))  $this->addCol(LOCK_TABLE,'lockTime',"datetime NOT NULL",' AFTER sessionID ');
