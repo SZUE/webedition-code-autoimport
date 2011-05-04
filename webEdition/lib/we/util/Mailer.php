@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -23,7 +23,7 @@ include_once $GLOBALS['__WE_LIB_PATH__'] . '/Zend/Mail.php';
 
 /**
  * PHP email transport class
- * 
+ *
  */
 class we_util_Mailer extends Zend_Mail {
 
@@ -113,7 +113,7 @@ class we_util_Mailer extends Zend_Mail {
 							$smtp_config['port'] = SMTP_PORT;
 						}
 						if (defined('SMTP_AUTH') && SMTP_AUTH) {
-							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterst�tzte Version - Zend kann auch plain und crammd5
+							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterstützte Version - Zend kann auch plain und crammd5
 							if (defined('SMTP_USERNAME')) {
 								$smtp_config['username'] = SMTP_USERNAME;
 							}
@@ -121,9 +121,9 @@ class we_util_Mailer extends Zend_Mail {
 								$smtp_config['password'] = SMTP_PASSWORD;
 							}
 						}
-						if (defined('SMTP_TIMEOUT') && SMTP_TIMEOUT != '') {//sitzt wohl auf 5 Minuten fest, keine M�glichkeit gefunden das zu �ndern, aber auch nicht lange gesucht
+						if (defined('SMTP_TIMEOUT') && SMTP_TIMEOUT != '') {//sitzt wohl auf 5 Minuten fest, keine Möglichkeit gefunden das zu ändern, aber auch nicht lange gesucht
 						}
-						if (defined('SMTP_HALO')) {//keine M�glichkeit gefunden das zu �ndern, aber auch nicht lange gesucht, scheint den Host zu �bergeben
+						if (defined('SMTP_HALO')) {//keine Möglichkeit gefunden das zu ändern, aber auch nicht lange gesucht, scheint den Host zu übergeben
 						}
 						if (defined('SMTP_ENCRYPTION')) {
 							if ((SMTP_ENCRYPTION != 0 ) || SMTP_ENCRYPTION != '') {
@@ -136,7 +136,14 @@ class we_util_Mailer extends Zend_Mail {
 					break;
 				default :
 					//this should set return-path
-					$tr = new Zend_Mail_Transport_Sendmail('-f'.$sender);
+					if($reply != ''){
+						$_reply = $this->parseEmailUser($reply);
+						$tr = new Zend_Mail_Transport_Sendmail('-f'.$_reply['email']);
+					}
+					else {
+						$_sender = $this->parseEmailUser($sender);
+						$tr = new Zend_Mail_Transport_Sendmail('-f'.$_sender['email']);
+					}
 					Zend_Mail::setDefaultTransport($tr);
 					break;
 			}
@@ -234,7 +241,7 @@ class we_util_Mailer extends Zend_Mail {
 		if ($this->Body != '') {
 			if ($this->isEmbedImages) {
 				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
-				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinf�gungen #3725
+				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
 				foreach ($images[2] as $i => $url) {
 					// only images that from the own server will be embeded
 					if (preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['HTTP_HOST'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)) {
@@ -279,23 +286,23 @@ class we_util_Mailer extends Zend_Mail {
 				}
 			}
 
-			if ($this->AltBody == "") { // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter h�ufig der Fall
+			if ($this->AltBody == "") { // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter häufig der Fall
 				//	$this->parseHtml2TextPart($this->Body);
 			}
 		}
 		/**
-		 * Problem ist mit Zend Mail eine E-Mail Nachricht hinzubekommen, die den Regeln entspricht 
+		 * Problem ist mit Zend Mail eine E-Mail Nachricht hinzubekommen, die den Regeln entspricht
 		 * Erledigt: Reine Textnachricht (text/plain)
 		 * Erledigt: Reine HTML-Nachricht (text/html)
 		 * Erledigt: Text und HTML ohne Inline-Bilder (multipart/alternative)
 		 * Erledigt: Reine HTML-Nachricht mit Inline-Bildern (multipart/related), jedoch ohne Text-Part
 		 * Problem: HTML mit Inline-Bildern und Textpart, also multipart/mixed, darin multipart/alternative mit a) text/plain und b) multipart/related mit darin b1) text/html und b2) image/*
-		 * F�r das notwendige Konstruct siehe http://www.phpeveryday.com/articles/PHP-Email-Using-Embedded-Images-in-HTML-Email-P113.html
+		 * Für das notwendige Konstruct siehe http://www.phpeveryday.com/articles/PHP-Email-Using-Embedded-Images-in-HTML-Email-P113.html
 		 * Das was Zend Mail da produziert entspricht nicht ganz diesen Vorgaben, scheint aber zu funktionieren
 		 */
-		if ($this->Body != '') { // es gibt einen HTML-Part			
-			if (!empty($this->inlineAtt)) { // es gibt Inline-Bilder 
-				$this->setType(Zend_Mime::MULTIPART_RELATED);	// dann brauchen wir diesen Typ 				
+		if ($this->Body != '') { // es gibt einen HTML-Part
+			if (!empty($this->inlineAtt)) { // es gibt Inline-Bilder
+				$this->setType(Zend_Mime::MULTIPART_RELATED);	// dann brauchen wir diesen Typ
 				foreach ($this->inlineAtt as $at) {
 					$this->addAttachment($at);
 				}
@@ -372,7 +379,7 @@ class we_util_Mailer extends Zend_Mail {
 	 * @return mime type of ext
 	 * Replacement for mime_content_type (deprecated in PHP 5.3, and not available on some older systems
 	 * Replacement for  finfo_file, available only for >= PHP 5.3
-	 * Da Zend Mail keinen name="yxz" �bergibt, kann man den hier einfach anh�ngen
+	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
 	public function get_mime_type($ext = '', $name='') {
 		$mimetypes = array(
@@ -547,7 +554,7 @@ class we_util_Mailer extends Zend_Mail {
 	/**
 	  public function setBodyHtml
 	  Quelle: http://www.zfsnippets.com/snippets/view/id/64/zendmail-inline-picture-attachments
-	  Ersatz / Erweiterung mit interessantem Ansatz f�r inline Bilder, funktioniert mit webEdition exterenen Bildern aus fremden Domains (sonst entfernt eine textarea den URL-Teil)
+	  Ersatz / Erweiterung mit interessantem Ansatz für inline Bilder, funktioniert mit webEdition exterenen Bildern aus fremden Domains (sonst entfernt eine textarea den URL-Teil)
 	 */
 	public function setBodyHtml2($html, $charset = null, $encoding = Zend_Mime::ENCODING_QUOTEDPRINTABLE, $preload_images = true) {
 		if ($preload_images) {
