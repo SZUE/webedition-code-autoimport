@@ -738,7 +738,7 @@
 				);
 			$keys=array(
 				"PRIMARY KEY"=>"(ID,tbl)",
-				"KEY UserID"=>"(ID,tbl)",
+				"KEY UserID"=>"(UserID,sessionID)",
 				"KEY lockTime"=>"(lockTime)"
 				);
 			$this->addTable(LOCK_TABLE,$cols,$keys);	
