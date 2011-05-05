@@ -27,6 +27,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.p
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 
 $parts = array();
 
@@ -697,6 +699,23 @@ function we_getCodeMirrorCode($code,$version) {
 	return $maineditor;
 }
 
+function we_getCodeMirror2Tags(){
+	$ret='';
+	$allWeTags = weTagWizard::getExistingWeTags();
+	foreach($allWeTags as $tagName) {
+		$GLOBALS['TagRefURLName'] = strtolower($tagName);
+		//unset($GLOBALS['weTagWizard']['attribute']); //yes, webedition saves this in a global, which is absolutley unhandy in this situation
+		if(isset($weTag)){
+			unset($weTag);
+		}
+		$weTag = weTagData::getTagData($tagName);
+		$ret.='.weTag_'.$tagName.':hover:after {
+                                content: "todo: description of '.$tagName.'";
+                        }'."\n";
+	}
+	return $ret;
+}
+
 function we_getCodeMirror2Code($code,$version) {
 	global $we_doc;
 	$maineditor = '';
@@ -750,8 +769,9 @@ function we_getCodeMirror2Code($code,$version) {
 		foreach($parser_js as $js){
 			$maineditor.='<script src="'.WEBEDITION_DIR.'editors/template/CodeMirror2/'.$js.'" type="text/javascript"></script>';
 		}
+		
 		$maineditor.='
-		<style type="text/css">
+		<style type="text/css">'.we_getCodeMirror2Tags().'
 			.searched {background: yellow;}
 			.activeline {background: #f0fcff !important;}
 			.CodeMirror{ 
