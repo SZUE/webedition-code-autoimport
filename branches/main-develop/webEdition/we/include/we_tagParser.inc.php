@@ -448,11 +448,6 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "answers" :
-						$code = $this->parseAnswersTag($tag, $code, $attribs);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
 					case "voting" :
 						$code = $this->parseVotingTag($tag, $code, $attribs);
 						$this->ipos++;
@@ -460,11 +455,6 @@ class we_tagParser{
 						break;
 					case "votingList" :
 						$code = $this->parseVotingListTag($tag, $code, $attribs);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
-					case "formmail" :
-						$code = $this->parseFormmailTag($tag, $code, $attribs);
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
@@ -731,12 +721,6 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 																					'<?php unset($GLOBALS[\'_we_voting_list\']); ?>',
 																					$code);
 																		} else
-																			if ($tagname == "answers") {
-																				$code = str_replace(
-																						$tag,
-																						'<?php } if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->resetSets();?>',
-																						$code);
-																			} else
 																				if ($tagname == "content") {
 																					$code = str_replace(
 																							$tag,
@@ -748,28 +732,15 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 		}
 	}
 
-	/* ############### parse individual Tags ########## */
-
-	##########################################################################################
-	##########################################################################################
-
-
 	function getStartCacheCode($tag, $attribs) //FIXME: remove
 	{
 		return '';
 	}
 
-	##########################################################################################
-	##########################################################################################
-
-
 	function getEndCacheCode($tag)// FIXME: remove
 	{
 		return '';
 	}
-
-	##########################################################################################
-	##########################################################################################
 
 
 	function replaceTag($tag, $code, $str)
@@ -998,8 +969,6 @@ if($GLOBALS["lv"]->avail): ?>';
 
 			eval('$arr = array(' . $attribs . ');');
 
-			$we_button = new we_button();
-
 			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
 			$we_omid = we_getTagAttributeTagParser("id", $arr, 0);
 
@@ -1010,7 +979,6 @@ if (!isset($GLOBALS["we_lv_array"])) {
 }
 
 include_once(WE_CUSTOMER_MODULE_DIR . "we_onlinemonitortag.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 ';
 
 
@@ -1026,7 +994,6 @@ $php .='$we_omid = $we_omid ? $we_omid : (isset($_REQUEST["we_omid"]) ? $_REQUES
 
 
 			$php .= '$GLOBALS["lv"] = new we_onlinemonitortag($we_omid,"' . $condition . '");
-$lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 if($GLOBALS["lv"]->avail): ?>';
 
@@ -1034,15 +1001,10 @@ if($GLOBALS["lv"]->avail): ?>';
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
 
-			$pre = $this->getStartCacheCode($tag, $attribs);
-
 			return $this->replaceTag($tag, $code, $pre . $php);
 		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
 	}
 
-
-	##########################################################################################
-	##########################################################################################
 
 	function parseOrderTag($tag, $code, $attribs = "", $postName = "")
 	{
@@ -1237,10 +1199,6 @@ if($GLOBALS["lv"]->avail): ?>';
 		} else { return str_replace($tag, modulFehltError('Shop','"orderitem"'), $code); }
 	}
 
-	##########################################################################################
-	##########################################################################################
-
-
 	function parserepeatShopitem($tag, $code, $attribs = "")
 	{
 		if (defined("SHOP_TABLE")) {
@@ -1339,25 +1297,6 @@ if($GLOBALS["lv"]->avail): ?>';
 			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Shop','"adddelShopitem"'), $code); }
 	}
-	##########################################################################################
-	##########################################################################################
-
-
-	function parseFormmailTag($tag, $code, $attribs = "")
-	{
-
-		eval('$arr = array(' . $attribs . ');');
-		$filename = (WEBEDITION_DIR . "we_formmail.php");
-		$php = '<?php
-		include($_SERVER["DOCUMENT_ROOT"] . "' . $filename . '");
-	?>';
-		return $this->replaceTag($tag, $code, $php);
-
-	}
-
-	##########################################################################################
-	##########################################################################################
-
 
 	function parseFormTag($tag, $code, $attribs = "")
 	{
@@ -1589,7 +1528,6 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 				$formAttribs['name'] = $formname;
 				$formAttribs['onsubmit'] = $onsubmit;
-				/*				$formAttribs['action'] = '<?php print WEBEDITION_DIR ?>we_formmail.php';  */
 				$formAttribs['action'] = '<?php print WEBEDITION_DIR ?>we_formmail.php';
 				if ($id) {
 					if ($id != "self") {
@@ -1600,14 +1538,6 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 					}
 				}
 
-
-
-
-				/*
-				if($id && ($id != "self")){
-					$php = '<?php $action = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\''.$id.'\'","Path",$GLOBALS["DB_WE"]); ?>';
-				}
-*/
 
 				//  now prepare all needed hidden-fields:
 				$php = '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?>
@@ -2015,19 +1945,6 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 		} else { return str_replace($tag, modulFehltError('Voting','"VotingList"'), $code); }
 	}
 
-	function parseAnswersTag($tag, $code, $attribs)
-	{
-		if (defined("VOTING_TABLE")) {
-			$php = '<?php
-				while(isset($GLOBALS["_we_voting"]) && $GLOBALS["_we_voting"]->getNext()){
-
-			?>';
-
-			return $this->replaceTag($tag, $code, $php);
-		} else { return str_replace($tag, modulFehltError('Voting','"Answer"'), $code); }
-	}
-
-
 	function parseCacheIfTag($content)
 	{
 
@@ -2038,28 +1955,6 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 			return "<?php echo '" . $content . "'; ?>";
 
 		// caching disabled
-		} else {
-			return $content;
-
-		}
-
-	}
-
-	function parseNoCacheTag($content)
-	{
-
-		if ($GLOBALS['we_doc']->CacheType == "document" && $GLOBALS['we_doc']->CacheLifeTime > 0) {
-			$content = str_replace("\$", "\\\$", $content);
-
-			return "<?php
-\$temp = <<<NOCACHE
-$content
-NOCACHE;
-
-we_tag(\"noCache\", array(), \$temp);
-
-?>
-";
 		} else {
 			return $content;
 

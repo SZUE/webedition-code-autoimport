@@ -23,12 +23,8 @@
  */
 
 function we_tag_setVar($attribs, $content){
-	$foo = attributFehltError($attribs, "nameto", "setVar");
-	if ($foo)
-		return $foo;
-	$foo = attributFehltError($attribs, "to", "setVar");
-	if ($foo)
-		return $foo;
+	if (($foo = attributFehltError($attribs, "nameto", "setVar")))return $foo;
+	if (($foo = attributFehltError($attribs, "to", "setVar")))	return $foo;
 
 	$nameFrom = we_getTagAttribute("namefrom", $attribs);
 	$nameTo = we_getTagAttribute("nameto", $attribs);
@@ -130,7 +126,7 @@ function we_tag_setVar($attribs, $content){
 				), "");
 				break;
 			case "block" :
-
+				$nameFrom.=$GLOBALS['postTagName'];
 				if ($typeFrom == "href") {
 
 					if ($GLOBALS["we_doc"]->elements[$nameFrom . "_we_jkhdsf_int"]["dat"]) {
@@ -175,6 +171,7 @@ function we_tag_setVar($attribs, $content){
 			}
 			break;
 		case "block" :
+			$nameTo.=$GLOBALS['postTagName'];
 		case "self" :
 			if ($propertyTo) {
 				eval('$GLOBALS["we_doc"]->' . $nameTo . ' = $valueFrom;');
@@ -196,5 +193,4 @@ function we_tag_setVar($attribs, $content){
 			if (isset($_SESSION["webuser"][$nameTo]))
 				$_SESSION["webuser"][$nameTo] = $valueFrom;
 	}
-
 }

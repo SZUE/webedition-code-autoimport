@@ -86,7 +86,7 @@ function we_tag_listview($attribs, $content) {
 	$id = we_getTagAttribute('id', $attribs);
 	$cond = we_getTagAttribute('condition', $attribs);
 	$type = we_getTagAttribute('type', $attribs, 'document');
-	$desc = we_getTagAttribute('desc', $attribs, '',true);
+	$desc = we_getTagAttribute('desc', $attribs, '', true);
 	$we_lv_desc = (isset($_REQUEST['we_lv_desc_' . $name]) ? $_REQUEST['we_lv_desc_' . $name] : $desc ) ? true : false;
 
 	$predefinedSQL = we_getTagAttribute('predefinedSQL', $attribs, '');
@@ -213,92 +213,84 @@ function we_tag_listview($attribs, $content) {
 			$GLOBALS['weEconda']['HTML'] .= '<a name="emos_name" title="search" rel="' . $GLOBALS["lv"]->search . '" rev="' . $GLOBALS["lv"]->anz_all . '" >';
 			break;
 		case 'object':
-			if (defined('OBJECT_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_object.class.php');
-				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $we_predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
-			} else {
+			if (!defined('OBJECT_TABLE')) {
 				return modulFehltError('Object/DB', 'listview type="object"');
 			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_object.class.php');
+			$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $we_predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			break;
 		case 'languagelink':
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/listview/we_langlink_listview.class.php');
 			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $seeMode, $we_lv_se, $cfilter, $we_lv_pageID, $we_lv_pagelanguage, $hidedirindex, $objectseourls);
 			break;
 		case 'customer':
-			if (defined('CUSTOMER_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/we_listview_customer.class.php');
-				$GLOBALS['lv'] = new we_listview_customer($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
-			} else {
+			if (!defined('CUSTOMER_TABLE')) {
 				return modulFehltError('Customer', 'listview type="customer"');
 			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/we_listview_customer.class.php');
+			$GLOBALS['lv'] = new we_listview_customer($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'onlinemonitor':
-			if (defined('CUSTOMER_SESSION_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/we_listview_onlinemonitor.class.php');
-				$GLOBALS['lv'] = new we_listview_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
-			} else {
+			if (!defined('CUSTOMER_SESSION_TABLE')) {
 				return modulFehltError('Customer', 'listview type="onlinemonitor"');
 			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/we_listview_onlinemonitor.class.php');
+			$GLOBALS['lv'] = new we_listview_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
 			break;
 		case 'order':
-			if (defined('SHOP_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_listview_order.class.php');
-				$GLOBALS['lv'] = new we_listview_order($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
-			} else {
+			if (!defined('SHOP_TABLE')) {
 				return modulFehltError('Shop', 'listview type="order"');
 			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_listview_order.class.php');
+			$GLOBALS['lv'] = new we_listview_order($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'orderitem':
-			if (defined('SHOP_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php');
-				$GLOBALS['lv'] = new we_listview_orderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
-			} else {
+			if (!defined('SHOP_TABLE')) {
 				return modulFehltError('Shop', 'listview type="orderitem"');
 			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_listview_orderitem.class.php');
+			$GLOBALS['lv'] = new we_listview_orderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
 			break;
 		case 'multiobject':
-			if (defined('OBJECT_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php');
-				$GLOBALS['lv'] = new we_listview_multiobject($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $docid, $we_lv_languages, $hidedirindex, $objectseourls);
-			} else {
+			if (!defined('OBJECT_TABLE')) {
 				return modulFehltError('Object/DB', 'listview type="multiobject"');
 			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php');
+			$GLOBALS['lv'] = new we_listview_multiobject($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $docid, $we_lv_languages, $hidedirindex, $objectseourls);
 			break;
 		case 'banner':
-			if (defined('BANNER_TABLE')) {
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php');
-				$usefilter = we_getTagAttribute('usefilter', $attribs);
-				$path = we_getTagAttribute('path', $attribs);
-				$filterdatestart = we_getTagAttribute('filterdatestart', $attribs, '-1');
-				$filterdateend = we_getTagAttribute('filterdateend', $attribs, '-1');
-				$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', new DB_WE());
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/banner/weBanner.php');
-				if ($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid))) {
-					$bannerid = 0;
-				}
-				$GLOBALS['lv'] = new we_listview_banner($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
-			} else {
+			if (!defined('BANNER_TABLE')) {
 				return modulFehltError('Banner', 'listview type="banner"');
 			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php');
+			$usefilter = we_getTagAttribute('usefilter', $attribs);
+			$path = we_getTagAttribute('path', $attribs);
+			$filterdatestart = we_getTagAttribute('filterdatestart', $attribs, '-1');
+			$filterdateend = we_getTagAttribute('filterdateend', $attribs, '-1');
+			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', new DB_WE());
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/banner/weBanner.php');
+			if ($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid))) {
+				$bannerid = 0;
+			}
+			$GLOBALS['lv'] = new we_listview_banner($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
 			break;
 		case 'shopVariant':
-			if (defined('SHOP_TABLE')) {
-				$defaultname = we_getTagAttribute('defaultname', $attribs, '');
-				$docId = we_getTagAttribute('documentid', $attribs, '');
-				$objectId = we_getTagAttribute('objectid', $attribs, '');
-				if ($objectId == '') {
-					if (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_objecttag') {
-						$objectId = $GLOBALS['lv']->object->DB_WE->f('OF_ID');
-					}
-					if (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object') {
-						$objectId = $GLOBALS['lv']->DB_WE->f('OF_ID');
-					}
-				}
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_listview_shopVariants.class.php');
-				$GLOBALS['lv'] = new we_listview_shopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls);
-			} else {
+			if (!defined('SHOP_TABLE')) {
 				return modulFehltError('Shop', 'listview type="shopVariant"');
 			}
+			$defaultname = we_getTagAttribute('defaultname', $attribs, '');
+			$docId = we_getTagAttribute('documentid', $attribs, '');
+			$objectId = we_getTagAttribute('objectid', $attribs, '');
+			if ($objectId == '') {
+				if (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_objecttag') {
+					$objectId = $GLOBALS['lv']->object->DB_WE->f('OF_ID');
+				}
+				if (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object') {
+					$objectId = $GLOBALS['lv']->DB_WE->f('OF_ID');
+				}
+			}
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_listview_shopVariants.class.php');
+			$GLOBALS['lv'] = new we_listview_shopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls);
 			break;
 		case 'category':
 			$parentid = we_getTagAttribute('parentid', $attribs, 0);
@@ -310,11 +302,10 @@ function we_tag_listview($attribs, $content) {
 			break;
 		default:
 	}
-	//prevent error if $GLOBALS["we_lv_array"] is no array
+//prevent error if $GLOBALS["we_lv_array"] is no array
 	if (!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])) {
 		$GLOBALS['we_lv_array'] = array();
 	}
 
-	if (is_array($GLOBALS['we_lv_array']))
-		array_push($GLOBALS['we_lv_array'], clone($GLOBALS['lv']));
+	array_push($GLOBALS['we_lv_array'], clone($GLOBALS['lv']));
 }

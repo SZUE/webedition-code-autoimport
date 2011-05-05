@@ -23,9 +23,7 @@
  */
 
 function we_tag_printVersion($attribs, $content){
-	$foo = attributFehltError($attribs, "tid", "printVersion");
-	if ($foo)
-		return $foo;
+	if (($foo = attributFehltError($attribs, "tid", "printVersion")))	return $foo;
 
 	$tid = we_getTagAttribute("tid", $attribs);
 	$triggerID = we_getTagAttribute("triggerID", $attribs); // :ATTENTION: difference between tag wizzard and program

@@ -52,10 +52,10 @@ function we_tag_field($attribs, $content){
 	$triggerid = we_getTagAttribute("triggerid", $attribs);
 	$nameTo = we_getTagAttribute("nameto", $attribs);
 	$to = we_getTagAttribute("to", $attribs,'screen');
+	$seeMode = we_getTagAttribute("seeMode", $attribs, true, true, true);
 
 	$out = "";
 
-	$seeMode = we_getTagAttribute("seeMode", $attribs, true, true, true);
 
 	if (!isset($GLOBALS["lv"])) {
 		return parseError(g_l('parser','[field_not_in_lv]'));
