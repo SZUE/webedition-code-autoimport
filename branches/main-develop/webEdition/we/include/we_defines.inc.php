@@ -64,16 +64,16 @@ define('LOAD_REVERT_DB', 2);
 define('LOAD_SCHEDULE_DB', 3);
 
 define('WE_TREE_DEFAULT_WIDTH', 300);
+define('WEBEDITION_DIR', '/webEdition/');
 
 // Activate the webEdition error handler
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_error_handler.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'we/include/we_classes/base/we_error_handler.inc.php');
 if (!defined('WE_ERROR_HANDLER_SET')) {
 	we_error_handler();
 }
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_version.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'we/include/we_version.php');
 
-define('WEBEDITION_DIR', '/webEdition/');
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
@@ -161,12 +161,12 @@ define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
-define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/fragments'); // important not to add a slash at the end!
-define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/');
-define('WE_MODULE_PATH', '/webEdition/we/include/we_modules/');
+define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important not to add a slash at the end!
+define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR .'we/include/we_modules/');
+define('WE_MODULE_PATH', WEBEDITION_DIR.'we/include/we_modules/');
 
-define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/');
-define('WE_TOOLS_PATH', '/webEdition/apps/');
+define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'apps/');
+define('WE_TOOLS_PATH', WEBEDITION_DIR.'apps/');
 
 (!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
 

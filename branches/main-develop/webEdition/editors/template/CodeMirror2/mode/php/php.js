@@ -8,7 +8,10 @@
     keywords("abstract and array as break case catch cfunction class clone const continue declare " +
              "default do else elseif enddeclare endfor endforeach endif endswitch endwhile extends " +
              "final for foreach function global goto if implements interface instanceof namespace " +
-             "new or private protected public static switch throw try use var while xor");
+             "new or private protected public static switch throw try use var while xor "+
+	     "__CLASS__ __DIR__ __FILE__ __FUNCTION__ __METHOD__ __NAMESPACE__ "+
+	     "die echo empty exit eval include include_once isset list require require_once return print unset"
+	     );
 
   CodeMirror.defineMode("php", function(config, parserConfig) {
     var htmlMode = CodeMirror.getMode(config, "text/html");

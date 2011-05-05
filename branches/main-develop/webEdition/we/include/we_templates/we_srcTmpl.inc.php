@@ -58,7 +58,7 @@ if ($we_editmode) {
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,350);
-			var editorWidth = w - 37;
+			var editorWidth = w - <?php echo ($_SESSION['prefs']['editorMode'] == 'codemirror2'?60:37);?>;
 
 			var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "right";
 
@@ -139,8 +139,19 @@ if ($we_editmode) {
 			window.scroll(0,0);
 
 		}
-
+		var editor=null;
+		
 		function initEditor() {
+			<?php if ($_SESSION['prefs']['editorMode'] == 'codemirror2'){
+				echo '
+				
+			document.getElementById("bodydiv").style.display="block";
+			editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
+			sizeEditor();
+					
+					return;';
+			}?>
+
 			if (document.weEditorApplet) {
 				if (top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
 					document.getElementById("weEditorApplet").style.left="0";
@@ -291,7 +302,51 @@ if ($we_editmode) {
 			else
 				editor.reindent();
 		}
+		
+		function reindent2() { // reindents code of CodeMirror2
+			if(editor.somethingSelected()){
+				start=editor.getCursor(true).line;
+				end=editor.getCursor(false).line;
+			}else{
+				start=0;
+				end=editor.lineCount();
+			}
+			for(i=start;i<end;++i){
+				editor.indentLine(i);
+			}
+		}
+var lastPos = null, lastQuery = null, marked = [];		
+		function unmark() {
+			for (var i = 0; i < marked.length; ++i) marked[i]();
+			marked.length = 0;
+		}
+function search(text) {
+  unmark();                     
+  if (!text) return;
+  for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
+    marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
 
+  if (lastQuery != text) lastPos = null;
+  var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
+  if (!cursor.findNext()) {
+    cursor = editor.getSearchCursor(text);
+    if (!cursor.findNext()) return;
+  }
+  editor.setSelection(cursor.from(), cursor.to());
+  lastQuery = text; lastPos = cursor.to();
+}		
+
+function myReplace(text, replaceby) {
+	if(!text|| !replaceby) return;
+	if(editor.getSelection()!=text){
+		search(text);
+	}
+	if(editor.getSelection()!=text){
+		return;
+	}
+	editor.replaceSelection(replaceby);
+	search(text);
+}
 	</script>
 	</head>
 	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'       ?>
@@ -364,6 +419,7 @@ function we_get_CM_css(){
 }
 
 function we_getCodeMirrorCode($code,$version) {
+	global $we_doc;
 	$maineditor = '';
 	$parser_js = array();
 	$parser_css = array();
@@ -634,6 +690,7 @@ function we_getCodeMirrorCode($code,$version) {
 			$maineditor.=
 			'<script type="text/JavaScript">
 				var editor = CodeMirror.fromTextArea("editarea", CMoptions);
+				editor.value("hallO");
 			</script>';
 		}
 	}
@@ -641,184 +698,205 @@ function we_getCodeMirrorCode($code,$version) {
 }
 
 function we_getCodeMirror2Code($code,$version) {
+	global $we_doc;
 	$maineditor = '';
 	$parser_js = array();
 	$parser_css = array();
 	switch ($we_doc->ContentType) { // Depending on content type we use different parsers and css files
 		case 'text/css':
-			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.js';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.css';
+			$parser_js[] = 'mode/css/css.js';
+			$parser_css[] = 'mode/css/css.css';
 			$mode='text/css';
 			break;
 		case 'text/js':
-			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.js';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.css';
+			$parser_js[] = 'mode/javascript/javascript.js';
+			$parser_css[] = 'mode/javascript/javascript.css';
 			$mode='text/javascript';
 			break;
 		case 'text/weTmpl':
+			$parser_js[] = 'lib/overlay.js';
+			$parser_js[] = 'mode/webEdition/webEdition.js';
+			$parser_css[] = 'mode/webEdition/webEdition.css';
+			$mode='text/weTmpl';
 		case 'text/html':
-			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.js';
-			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.js';
-			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.js';
-			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/htmlmixed/htmlmixed.js';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.css';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/javascript/javascript.css';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/css/css.css';
-			$mode='text/html';
+			$parser_js[] = 'mode/xml/xml.js';
+			$parser_js[] = 'mode/javascript/javascript.js';
+			$parser_js[] = 'mode/css/css.js';
+			$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
+			$parser_js[] = 'mode/clike/clike.js';
+			$parser_js[] = 'mode/php/php.js';
+			$parser_css[] = 'mode/xml/xml.css';
+			$parser_css[] = 'mode/javascript/javascript.css';
+			$parser_css[] = 'mode/css/css.css';
+			$parser_css[] = 'mode/clike/clike.css';
+			$mode=(isset($mode)?$mode:'application/x-httpd-php');
 			break;
 		case 'text/xml':
-			$parser_js[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.js';
-			$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/xml/xml.css';
+			$parser_js[] = 'mode/xml/xml.js';
+			$parser_css[] = 'mode/xml/xml.css';
 			$mode='application/xml';
 			break;
 		default:
 			//don't use CodeMirror
 			return '';
 	}
-	$parser_css[] = '/webEdition/editors/template/CodeMirror2/mode/webEdition/css/webEdition.css';
+	$parser_css[] = WEBEDITION_DIR.'editors/template/CodeMirror2/mode/webEdition/css/webEdition.css';
 	if (count($parser_js) > 0) { // CodeMirror will be used
-		$maineditor=we_get_CM_css().'<script src="/webEdition/editors/template/CodeMirror2/lib/codemirror.js" type="text/javascript"></script>
-			<link rel="stylesheet" href="/webEdition/editors/template/CodeMirror2/lib/codemirror.css">';
-		foreach($parser_js as $js){
-			$maineditor.='<script src="'.$js.'" type="text/javascript"></script>';
-		}
+		$maineditor='<link rel="stylesheet" href="'.WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.css">
+			<script src="'.WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.js" type="text/javascript"></script>';
 		foreach($parser_css as $css){
-			$maineditor.='<link rel="stylesheet" href="'.$css.'">';
+			$maineditor.='<link rel="stylesheet" href="'.WEBEDITION_DIR.'editors/template/CodeMirror2/'.$css.'">';
+		}
+		foreach($parser_js as $js){
+			$maineditor.='<script src="'.WEBEDITION_DIR.'editors/template/CodeMirror2/'.$js.'" type="text/javascript"></script>';
 		}
 		$maineditor.='
-						<script type="text/javascript">
-							var getDescriptionDiv=function() {
-								var ed=window.editor;
-								var wrap = ed.wrapping;
-								var doc = wrap.ownerDocument;
-								var tagDescriptionDiv = doc.getElementById("tagDescriptionDiv");
-								if(!tagDescriptionDiv) { //if our div is not yet in the DOM, we create it
-									var tagDescriptionDiv = doc.createElement("div");
-									tagDescriptionDiv.setAttribute("id", "tagDescriptionDiv");
-									if(tagDescriptionDiv.addEventListener) {
-										tagDescriptionDiv.addEventListener("mouseover", hideDescription, false);
-									} else {
-										tagDescriptionDiv.attachEvent("onmouseover", hideDescription);
-									}
-									wrap.appendChild(tagDescriptionDiv);
-								}
-								return tagDescriptionDiv;
-							};
-							var hideDescription=function(){
-								var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
-								var wrap = ed.wrapping;
-								var doc = wrap.ownerDocument;
-								var tagDescriptionDiv = getDescriptionDiv();
-								tagDescriptionDiv.style.display="none";
-							};
-							var XgetComputedStyle = function(el, s) { // cross browser getComputedStyle()
-								var computedStyle;
-								if(typeof el.currentStyle!="undefined") {
-									computedStyle = el.currentStyle;
-								}else {
-									computedStyle = document.defaultView.getComputedStyle(el, null);
-								}
-								return computedStyle[s];
-							};
-							var CMoptions = { //these are the CodeMirror options
-								mode: "'.$mode.'",
-								tabMode: "classic",
-								enterMode: "indent",
-								electricChars: false,
-								lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
-								gutter: false,
-								matchBrackets: true,
-								workTime: 300,
-								workDelay: 800,
-								height: "' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . '",
-								textWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
-								initCallback: function() {
-									window.setTimeout(function(){ //without timeout this will raise an exception in firefox
-										if (document.addEventListener) {
-											editor.frame.contentWindow.document.addEventListener( "keydown", top.dealWithKeyboardShortCut, true );
-										} else if(document.attachEvent) {
-											editor.frame.contentWindow.document.attachEvent( "onkeydown", top.dealWithKeyboardShortCut );
-										}
-										editor.focus();
-										editor.frame.style.border="1px solid gray";
+		<style type="text/css">
+			.searched {background: yellow;}
+			.activeline {background: #f0fcff !important;}
+			.CodeMirror{ 
+			color: black;
+			background: white;
+			padding: 5px 8px;
+			z-index: 1000;
+			font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'Tahoma') . ';
+			font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
+			border: outset 1px;
+			box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			border-radius: 3px;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+}
+span.c-like-keyword { 
+color: #000;
+font-weight: bold;
+ }
 
-										var editorFrame=editor.frame.contentWindow.document.getElementsByTagName("body")[0];
-										var originalTextArea=document.getElementById("editarea");
-										var lineNumbers=editor.frame.nextSibling
+</style>
+		<script type="text/javascript">
+			var getDescriptionDiv=function() {
+				var ed=window.editor;
+				var wrap = ed.wrapping;
+				var doc = wrap.ownerDocument;
+				var tagDescriptionDiv = doc.getElementById("tagDescriptionDiv");
+				if(!tagDescriptionDiv) { //if our div is not yet in the DOM, we create it
+					var tagDescriptionDiv = doc.createElement("div");
+					tagDescriptionDiv.setAttribute("id", "tagDescriptionDiv");
+					if(tagDescriptionDiv.addEventListener) {
+						tagDescriptionDiv.addEventListener("mouseover", hideDescription, false);
+					} else {
+						tagDescriptionDiv.attachEvent("onmouseover", hideDescription);
+					}
+					wrap.appendChild(tagDescriptionDiv);
+				}
+				return tagDescriptionDiv;
+			};
+			var hideDescription=function(){
+				var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
+				var wrap = ed.wrapping;
+				var doc = wrap.ownerDocument;
+				var tagDescriptionDiv = getDescriptionDiv();
+				tagDescriptionDiv.style.display="none";
+			};
+			var XgetComputedStyle = function(el, s) { // cross browser getComputedStyle()
+				var computedStyle;
+				if(typeof el.currentStyle!="undefined") {
+					computedStyle = el.currentStyle;
+				}else {
+					computedStyle = document.defaultView.getComputedStyle(el, null);
+				}
+				return computedStyle[s];
+			};
 
-										//we adapt font styles from original <textarea> to CodeMirror
-										editorFrame.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
-										editorFrame.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
-										editorFrame.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
-										editorFrame.style.marginTop="5px";
+			var CMoptions = { //these are the CodeMirror options
+				mode: "'.$mode.'",
+				tabMode: "classic",
+				enterMode: "indent",
+				electricChars: true,
+				lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
+				gutter: false,
+				matchBrackets: true,
+				workTime: 300,
+				workDelay: 800,
+				height: "' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . '",
+				textWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
+				 initCallback: function() {
+					window.setTimeout(function(){ //without timeout this will raise an exception in firefox
+						if (document.addEventListener) {
+							editor.frame.contentWindow.document.addEventListener( "keydown", top.dealWithKeyboardShortCut, true );
+						} else if(document.attachEvent) {
+							editor.frame.contentWindow.document.attachEvent( "onkeydown", top.dealWithKeyboardShortCut );
+						}
+						editor.focus();
+						editor.frame.style.border="1px solid gray";
 
-										//we adapt font styles from orignal <textarea> to the line numbers of CodeMirror.
-										if(lineNumbers!=undefined) { //line numbers might be disabled
-											lineNumbers.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
-											lineNumbers.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
-											lineNumbers.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
-										}
+						var editorFrame=editor.frame.contentWindow.document.getElementsByTagName("body")[0];
+						var originalTextArea=document.getElementById("editarea");
+						var lineNumbers=editor.frame.nextSibling
 
-										sizeEditor();
-										var showDescription=function(e) { //this function will display a tooltip with the tags description. will be called by onmousemove
-											var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
-											if(typeof ed=="undefined" || !ed)
-												return
-											var wrap = ed.wrapping;
-											var doc = wrap.ownerDocument;
-											var tagDescriptionDiv = getDescriptionDiv();
-											if(top.currentHoveredTag===undefined) { //no tag is currently hoverd -> hide description
-												hideDescription();
-												return;
-											}
-											var tag=top.currentHoveredTag.innerHTML.replace(/\s/,"").replace(/&nbsp;/,"");
-											if((top.we_tags === undefined) || (top.we_tags[tag]===undefined)) { //unkown tag -> hide description
-												hideDescription();
-												return;
-											}
-											//at this point we have a a description for our currently hovered tag. so we calculate of the mouse and display it
-											tagDescriptionDiv.innerHTML=top.we_tags[tag].desc;
-											x = (e.pageX ? e.pageX : window.event.x) + tagDescriptionDiv.scrollLeft - editor.frame.contentWindow.document.body.scrollLeft;
-											y = (e.pageY ? e.pageY : window.event.y) + tagDescriptionDiv.scrollTop - editor.frame.contentWindow.document.body.scrollTop;
-											if(x>0 && y>0) {
-												if(window.innerWidth-x<468) {
-													x+=(window.innerWidth-(e.pageX ? e.pageX : window.event.x)-468);
-												}
-												tagDescriptionDiv.style.left = (x + 25) + "px";
-												tagDescriptionDiv.style.top   = (y + 15) + "px";
-											}
-											tagDescriptionDiv.style.display="block";
-										};
+						//we adapt font styles from original <textarea> to CodeMirror
+						editorFrame.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
+						editorFrame.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
+						editorFrame.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
+						editorFrame.style.marginTop="5px";
 
-										if(typeof(cscc) != "undefined" && typeof(cscc) != "false") { //tag completion is beeing used
-											var hideCscc=function() {
-												cscc.hide();
-											}
-										}
-					';
-		$maineditor.='
-									},500);
-								},
-								onChange: function(){
-									updateEditor();
-								}';
-		$maineditor.=
-		'};
-							var updateEditor=function(){ //this wil save content from CoeMirror to our original <textarea>.
-								var currentTemplateCode=editor.getCode();
-								if(window.orignalTemplateContent!=currentTemplateCode) {
-									window.orignalTemplateContent=currentTemplateCode;
-									document.getElementById("editarea").value=currentTemplateCode;
-									_EditorFrame.setEditorIsHot(true);
-								}
+						//we adapt font styles from orignal <textarea> to the line numbers of CodeMirror.
+						if(lineNumbers!=undefined) { //line numbers might be disabled
+							lineNumbers.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
+							lineNumbers.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
+							lineNumbers.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
+						}
+
+						sizeEditor();
+						var showDescription=function(e) { //this function will display a tooltip with the tags description. will be called by onmousemove
+							var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
+							if(typeof ed=="undefined" || !ed)
+								return
+							var wrap = ed.wrapping;
+							var doc = wrap.ownerDocument;
+							var tagDescriptionDiv = getDescriptionDiv();
+							if(top.currentHoveredTag===undefined) { //no tag is currently hoverd -> hide description
+								hideDescription();
+								return;
 							}
-							window.orignalTemplateContent=document.getElementById("editarea").value; //this is our reference of the original content to compare with current content
-						</script>
-					';
-		$maineditor.=
-		'<script type="text/JavaScript">
-			var editor = CodeMirror.fromTextArea("editarea", CMoptions);
-		</script>';
+							var tag=top.currentHoveredTag.innerHTML.replace(/\s/,"").replace(/&nbsp;/,"");
+							if((top.we_tags === undefined) || (top.we_tags[tag]===undefined)) { //unkown tag -> hide description
+								hideDescription();
+								return;
+							}
+							//at this point we have a a description for our currently hovered tag. so we calculate of the mouse and display it
+							tagDescriptionDiv.innerHTML=top.we_tags[tag].desc;
+							x = (e.pageX ? e.pageX : window.event.x) + tagDescriptionDiv.scrollLeft - editor.frame.contentWindow.document.body.scrollLeft;
+							y = (e.pageY ? e.pageY : window.event.y) + tagDescriptionDiv.scrollTop - editor.frame.contentWindow.document.body.scrollTop;
+							if(x>0 && y>0) {
+								if(window.innerWidth-x<468) {
+									x+=(window.innerWidth-(e.pageX ? e.pageX : window.event.x)-468);
+								}
+								tagDescriptionDiv.style.left = (x + 25) + "px";
+								tagDescriptionDiv.style.top   = (y + 15) + "px";
+							}
+							tagDescriptionDiv.style.display="block";
+						};
+
+
+					},500);
+				},
+				onChange: function(){
+					updateEditor();
+				}
+};
+			var updateEditor=function(){ //this wil save content from CodeMirror2 to our original <textarea>.
+				var currentTemplateCode=editor.getValue();
+				if(window.orignalTemplateContent!=currentTemplateCode) {
+					window.orignalTemplateContent=currentTemplateCode;
+					document.getElementById("editarea").value=currentTemplateCode;
+					_EditorFrame.setEditorIsHot(true);
+				}
+			}
+			window.orignalTemplateContent=document.getElementById("editarea").value; //this is our reference of the original content to compare with current content
+</script>';
 	}
 	return $maineditor;
 }
@@ -839,8 +917,8 @@ if ($we_editmode) {
 		$maineditor .= '<textarea id="editarea" style="width: ' . (($_SESSION["prefs"]["editorWidth"] != 0) ? $_SESSION["prefs"]["editorWidth"] : "700") . 'px; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
 						. htmlspecialchars($code) . '</textarea>';
 		if ($_SESSION['prefs']['editorMode'] == 'codemirror'||$_SESSION['prefs']['editorMode'] == 'codemirror2') { //Syntax-Highlighting
-			$vers=($_SESSION['prefs']['editorMode'] == 'codemirror'?1:2);
-			$maineditor .= ($vers==1?we_getCodeMirrorCode($code):we_getCodeMirror2Code($code));
+			$vers=($_SESSION['prefs']['editorMode'] == 'codemirror'?'':2);
+			$maineditor .= ($vers==2?we_getCodeMirror2Code($code):we_getCodeMirrorCode($code));
 		}
 	}
 	$maineditor .= '</td>
@@ -850,8 +928,17 @@ if ($we_editmode) {
 	$maineditor .= getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
 	    <tr>';
 
-	$maineditor .= '<td align="right" class="defaultfont">' .
-					($_SESSION['prefs']['editorMode'] == 'codemirror' ? '<div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . $we_button->create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
+	$maineditor .= ($vers==2?'
+<td align="left" class="defaultfont">
+<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . $we_button->create_button("search", 'javascript:search(document.getElementById("query").value);').'</div>
+<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . $we_button->create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value);').'</div>'.
+'</td>':'').
+'<td align="right" class="defaultfont">' .
+					(substr($_SESSION['prefs']['editorMode'],0,10) == 'codemirror' ? '
+						
+
+
+<div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . $we_button->create_button("reindent", 'javascript:reindent'.$vers.'();') . '</div>' : '') .
 					($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", g_l('global','[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
         </table></td></tr></table>
 ';

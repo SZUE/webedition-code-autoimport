@@ -1,0 +1,44 @@
+/**
+ * webEdition CMS
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+ .weTag{ font-weight:bold;color:#ff8a00;}
+			.weTagAttribute{color:grey;}
+			.weSelfClose:hover:after, .weOpenTag:hover:after, .weTagAttribute:hover:after{
+				cursor: pointer;
+				position: absolute;
+				z-index: 1000;
+				white-space: nowrap;
+				background: rgba(0, 0, 0, 0.85);
+				padding: 3px 7px;
+				color: #FFF;
+				border-radius: 3px;
+				-moz-border-radius: 3px;
+				-webkit-border-radius: 3px;
+				margin-left: 7px;
+				margin-top: -3px;
+			}
+			.weTag_blubber:hover:after {
+				content: "hallo";
+			}
+			.weTag_test:hover:after {
+				content: "mal was anderes";
+			}
+			.weTag_test_name:hover:after {
+				content: "Attribute Name ist ein Attribut";
+			}
