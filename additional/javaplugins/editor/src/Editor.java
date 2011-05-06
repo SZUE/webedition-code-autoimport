@@ -137,11 +137,10 @@ public class Editor extends JApplet{
 
 		if (SERVER_NAME.length() > 0) {
 			url = codeBase.toString()+"/getAllTags" + php_ext;
+			tags = getFromServer(url, "tag");
 		} else {
-			url = "http://localhost/getAllTags.php";
+			url = "";
 		}
-		tags = getFromServer(url, "tag");
-
 		editor = new EditorPanel(this);
 		getContentPane().add(editor, BorderLayout.CENTER);
 		searchAndReplace = new SearchAndReplace(new javax.swing.JFrame(), false, this);
@@ -302,8 +301,8 @@ public class Editor extends JApplet{
 
 		String text=editor.pane.getText();
 		if(!caseSens){
-			text.toLowerCase();
-			search.toLowerCase();
+			text=text.toLowerCase();
+			search=search.toLowerCase();
 		}
 		int found=-1;
 		if(wholeWords){
