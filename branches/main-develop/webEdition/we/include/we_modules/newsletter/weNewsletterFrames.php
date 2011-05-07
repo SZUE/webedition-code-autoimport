@@ -3138,5 +3138,4 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			$content_plain = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$this->View->db->f($phf),$content_plain);
 		}
 	}
-
 }

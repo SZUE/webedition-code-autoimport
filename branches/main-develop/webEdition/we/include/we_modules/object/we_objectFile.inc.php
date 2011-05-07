@@ -386,6 +386,9 @@ class we_objectFile extends we_document
 				if(strpos($text,'%d%')!==false){
 					$text = str_replace('%d%',date("d"),$text);
 				}
+				if(strpos($text,'%j%')!==false){
+					$text = str_replace('%j%',date("j"),$text);
+				}
 				if(strpos($text,'%m%')!==false){
 					$text = str_replace('%m%',date("m"),$text);
 				}
@@ -400,6 +403,15 @@ class we_objectFile extends we_document
 				}
 				if(strpos($text,'%h%')!==false){
 					$text = str_replace('%h%',date("h"),$text);
+				}
+				if(strpos($text,'%H%')!==false){
+					$text = str_replace('%H%',date("H"),$text);
+				}
+				if(strpos($text,'%g%')!==false){
+					$text = str_replace('%g%',date("g"),$text);
+				}
+				if(strpos($text,'%G%')!==false){
+					$text = str_replace('%G%',date("G"),$text);
 				}
 				$this->Text=$text;
 			}
@@ -2102,7 +2114,8 @@ class we_objectFile extends we_document
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield0"],$regs);
 				if ( isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '') {
 					$urlfield0 = $this->geFieldValue($regs[2], $regs[1]);
-				}
+					if ($urlfield0==''){$urlfield0=time();}
+				} else {$urlfield0=time();}
 			}
 			if (isset($foo["DefaultUrlfield1"]) && $foo["DefaultUrlfield1"]) {
 				preg_match('/(.+?)_(.*)/',$foo["DefaultUrlfield1"],$regs);
@@ -2162,23 +2175,35 @@ class we_objectFile extends we_document
 				$text = str_replace('%ID%',"".$this->ID,$text);
 			}
 			if(strpos($text,'%d%')!==false){$text = str_replace('%d%',date("d",$this->CreationDate),$text);}
+			if(strpos($text,'%j%')!==false){$text = str_replace('j%',date("j",$this->CreationDate),$text);}
 			if(strpos($text,'%m%')!==false){$text = str_replace('%m%',date("m",$this->CreationDate),$text);}
 			if(strpos($text,'%y%')!==false){$text = str_replace('%y%',date("y",$this->CreationDate),$text);}
 			if(strpos($text,'%Y%')!==false){$text = str_replace('%Y%',date("Y",$this->CreationDate),$text);}
 			if(strpos($text,'%n%')!==false){$text = str_replace('%n%',date("n",$this->CreationDate),$text);}
+			if(strpos($text,'%g%')!==false){$text = str_replace('%g%',date("g",$this->CreationDate),$text);}
+			if(strpos($text,'%G%')!==false){$text = str_replace('%G%',date("G",$this->CreationDate),$text);}
 			if(strpos($text,'%h%')!==false){$text = str_replace('%h%',date("h",$this->CreationDate),$text);}
+			if(strpos($text,'%H%')!==false){$text = str_replace('%H%',date("H",$this->CreationDate),$text);}
 			if(strpos($text,'%Md%')!==false){$text = str_replace('%Md%',date("d",$this->ModDate),$text);}
+			if(strpos($text,'%Mj%')!==false){$text = str_replace('%Mj%',date("j",$this->ModDate),$text);}
 			if(strpos($text,'%Mm%')!==false){$text = str_replace('%Mm%',date("m",$this->ModDate),$text);}
 			if(strpos($text,'%My%')!==false){$text = str_replace('%My%',date("y",$this->ModDate),$text);}
 			if(strpos($text,'%MY%')!==false){$text = str_replace('%MY%',date("Y",$this->ModDate),$text);}
 			if(strpos($text,'%Mn%')!==false){$text = str_replace('%Mn%',date("n",$this->ModDate),$text);}
+			if(strpos($text,'%Mg%')!==false){$text = str_replace('%Mg%',date("g",$this->ModDate),$text);}
+			if(strpos($text,'%MG%')!==false){$text = str_replace('%MG%',date("G",$this->ModDate),$text);}
 			if(strpos($text,'%Mh%')!==false){$text = str_replace('%Mh%',date("h",$this->ModDate),$text);}
+			if(strpos($text,'%MH%')!==false){$text = str_replace('%MH%',date("H",$this->ModDate),$text);}
 			if(strpos($text,'%Fd%')!==false){$text = str_replace('%Fd%',date("d",$urlfield0),$text);}
+			if(strpos($text,'%Fj%')!==false){$text = str_replace('%Fj%',date("j",$urlfield0),$text);}
 			if(strpos($text,'%Fm%')!==false){$text = str_replace('%Fm%',date("m",$urlfield0),$text);}
 			if(strpos($text,'%Fy%')!==false){$text = str_replace('%Fy%',date("y",$urlfield0),$text);}
 			if(strpos($text,'%FY%')!==false){$text = str_replace('%FY%',date("Y",$urlfield0),$text);}
 			if(strpos($text,'%Fn%')!==false){$text = str_replace('%Fn%',date("n",$urlfield0),$text);}
+			if(strpos($text,'%Fg%')!==false){$text = str_replace('%Fg%',date("g",$urlfield0),$text);}
+			if(strpos($text,'%FG%')!==false){$text = str_replace('%FG%',date("G",$urlfield0),$text);}
 			if(strpos($text,'%Fh%')!==false){$text = str_replace('%Fh%',date("h",$urlfield0),$text);}
+			if(strpos($text,'%FH%')!==false){$text = str_replace('%FH%',date("H",$urlfield0),$text);}
 
 			if(strpos($text,'%DirSep%')!==false){$text = str_replace('%DirSep%','/',$text);}
 			if(strpos($text,'%Parent%')!==false){

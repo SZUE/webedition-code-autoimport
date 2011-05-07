@@ -303,6 +303,3 @@ class weNewsletterBase{
 
 
 }
-
-
-?>

@@ -2942,6 +2942,4 @@ class weNewsletterView {
 		$filename = WE_NEWSLETTER_CACHE_DIR . basename($filename);
 		return weFile::save($filename,$content);
 	}
-
-
 }

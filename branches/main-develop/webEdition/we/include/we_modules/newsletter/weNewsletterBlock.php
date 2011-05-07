@@ -138,6 +138,3 @@ class weNewsletterBlock extends weNewsletterBase{
 
 
 }
-
-
-?>
