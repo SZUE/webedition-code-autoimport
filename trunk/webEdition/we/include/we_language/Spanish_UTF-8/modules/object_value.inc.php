@@ -28,12 +28,16 @@
 
 $l_object_value[""] = "----"; // TRANSLATE
 $l_object_value["%unique%"] = "Único";
-$l_object_value["%d%"] = "Rótulo";
+$l_object_value["%d%"] = "Rótulo (01-31)";
+$l_object_value["%j%"] = "Rótulo (1-31)";
 $l_object_value["%m%"] = "Mes (01-12)";
 $l_object_value["%n%"] = "Mes (1-12)";
 $l_object_value["%y%"] = "Año (11)";
 $l_object_value["%Y%"] = "Año (2011)";
-$l_object_value["%h%"] = "Hora";
+$l_object_value["%h%"] = "Hora (01-12)";
+$l_object_value["%H%"] = "Hora (01-24)";
+$l_object_value["%g%"] = "Hora (1-12)";
+$l_object_value["%G%"] = "Hora (1-24)";
 $l_object_value["%ID%"] = "ID"; // TRANSLATE
 $l_object_value["Text"] = "Texto";
 ?>
