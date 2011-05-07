@@ -325,6 +325,9 @@ $l_button["search"]["value"] = "Suche";
 $l_button["search"]["alt"]   = "";
 $l_button["search"]["width"] = 100;
 
+$l_button["replace"]["value"] = "Ersetzen";
+$l_button["replace"]["alt"]   = "";
+$l_button["replace"]["width"] = 100;
 /*****************************************************************************
  * Backup
  *****************************************************************************/

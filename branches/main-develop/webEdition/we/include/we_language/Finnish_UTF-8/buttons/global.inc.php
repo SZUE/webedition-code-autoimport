@@ -323,6 +323,10 @@ $l_button["search"]["value"] = "Hae";
 $l_button["search"]["alt"]   = "Hae";
 $l_button["search"]["width"] = 100;
 
+$l_button["replace"]["value"] = "Replace"; //Translate
+$l_button["replace"]["alt"]   = "";
+$l_button["replace"]["width"] = 100;
+
 /*****************************************************************************
  * Backup
  *****************************************************************************/

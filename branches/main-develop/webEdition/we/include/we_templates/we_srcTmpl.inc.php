@@ -709,9 +709,7 @@ function we_getCodeMirror2Tags(){
 			unset($weTag);
 		}
 		$weTag = weTagData::getTagData($tagName);
-		$ret.='.weTag_'.$tagName.':hover:after {
-                                content: "todo: description of '.$tagName.'";
-                        }'."\n";
+		$ret.='.weTag_'.$tagName.':hover:after {content: "'.str_replace('"', '\'', $weTag->getDescription()).'";}'."\n";
 	}
 	return $ret;
 }
