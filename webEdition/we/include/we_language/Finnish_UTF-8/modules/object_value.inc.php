@@ -28,12 +28,16 @@
 
 $l_object_value[""] = "----";
 $l_object_value["%unique%"] = "Uniikki";
-$l_object_value["%d%"] = "Päivä";
+$l_object_value["%d%"] = "Päivä (01-31)";
+$l_object_value["%j%"] = "Päivä (1-31)";
 $l_object_value["%m%"] = "Kuukausi (01-12)";
 $l_object_value["%n%"] = "Kuukausi (1-12)";
 $l_object_value["%y%"] = "Vuosi (11)";
 $l_object_value["%Y%"] = "Vuosi (2011)";
-$l_object_value["%h%"] = "Tunnit";
+$l_object_value["%h%"] = "Tunnit (01-12)";
+$l_object_value["%H%"] = "Tunnit (01-24)";
+$l_object_value["%g%"] = "Tunnit (1-12)";
+$l_object_value["%G%"] = "Tunnit (1-24)";
 $l_object_value["%ID%"] = "ID";
 $l_object_value["Text"] = "Teksti";
 ?>

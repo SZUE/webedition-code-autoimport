@@ -30,12 +30,16 @@
 
 $l_object_value[""] = "----";
 $l_object_value["%unique%"] = "unique";
-$l_object_value["%d%"] = "Tag";
+$l_object_value["%d%"] = "Tag (01-31)";
+$l_object_value["%j%"] = "Tag (1-31)";
 $l_object_value["%m%"] = "Monat (01-12)";
 $l_object_value["%n%"] = "Monat (1-12)";
 $l_object_value["%y%"] = "Jahr (11)";
 $l_object_value["%Y%"] = "Jahr (2011)";
-$l_object_value["%h%"] = "Stunden";
+$l_object_value["%h%"] = "Stunden (01-12)";
+$l_object_value["%H%"] = "Stunden (01-24)";
+$l_object_value["%g%"] = "Stunden (1-12)";
+$l_object_value["%G%"] = "Stunden (1-24)";
 $l_object_value["%ID%"] = "ID";
 $l_object_value["Text"] = "Text";
 

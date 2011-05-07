@@ -28,12 +28,16 @@
 
 $l_object_value[""] = "----"; // TRANSLATE
 $l_object_value["%unique%"] = "Uniek";
-$l_object_value["%d%"] = "Dag";
+$l_object_value["%d%"] = "Dag (01-31)";
+$l_object_value["%j%"] = "Dag (1-31)";
 $l_object_value["%m%"] = "Maand (01-12)";
 $l_object_value["%n%"] = "Maand (1-12)";
 $l_object_value["%y%"] = "Jaar (11)";
 $l_object_value["%Y%"] = "Jaar (2011)";
-$l_object_value["%h%"] = "Uren";
+$l_object_value["%h%"] = "Uren (01-12)";
+$l_object_value["%H%"] = "Uren (01-24)";
+$l_object_value["%g%"] = "Uren (1-12)";
+$l_object_value["%G%"] = "Uren (1-24)";
 $l_object_value["%ID%"] = "ID"; // TRANSLATE
 $l_object_value["Text"] = "Tekst";
 

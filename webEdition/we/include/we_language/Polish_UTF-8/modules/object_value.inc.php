@@ -28,12 +28,16 @@
 
 $l_object_value[""] = "----"; // TRANSLATE
 $l_object_value["%unique%"] = "unique";
-$l_object_value["%d%"] = "Dzień";
+$l_object_value["%d%"] = "Dzień (01-31)";
+$l_object_value["%j%"] = "Dzień (1-31)";
 $l_object_value["%m%"] = "Miesiąc (01-12)";
 $l_object_value["%n%"] = "Miesiąc (1-12)";
 $l_object_value["%y%"] = "Rok (11)";
 $l_object_value["%Y%"] = "Rok (2011)";
-$l_object_value["%h%"] = "Godziny";
+$l_object_value["%h%"] = "Godziny (01-12)";
+$l_object_value["%H%"] = "Godziny (01-24)";
+$l_object_value["%g%"] = "Godziny (1-12)";
+$l_object_value["%G%"] = "Godziny (1-24)";
 $l_object_value["%ID%"] = "ID"; // TRANSLATE
 $l_object_value["Text"] = "Tekst";
 ?>

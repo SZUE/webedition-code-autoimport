@@ -28,12 +28,16 @@
 
 $l_object_value[""] = "----";
 $l_object_value["%unique%"] = "Unique";
-$l_object_value["%d%"] = "Day";
+$l_object_value["%d%"] = "Day (01-31)";
+$l_object_value["%j%"] = "Day (1-31)";
 $l_object_value["%m%"] = "Month (01-12)";
 $l_object_value["%n%"] = "Month (1-12)";
 $l_object_value["%y%"] = "Year (11)";
 $l_object_value["%Y%"] = "Year (2011)";
-$l_object_value["%h%"] = "Hours";
+$l_object_value["%h%"] = "Hours (01-12)";
+$l_object_value["%H%"] = "Hours (01-24)";
+$l_object_value["%g%"] = "Hours (1-12)";
+$l_object_value["%G%"] = "Hours (1-24)";
 $l_object_value["%ID%"] = "ID";
 $l_object_value["Text"] = "Text";
 
