@@ -201,6 +201,8 @@
 		'clientUpdateUrl' => str_replace("\\", "/", _getServerProtocol() . $_SERVER['HTTP_HOST']) . $_SERVER['PHP_SELF'], // REQUEST_URI is not always available so we use PHP_SELF 
 		'clientContent' => (isset($_SESSION["le_install_demo"]) ? $_SESSION["le_install_demo"] : true),
 		'clientEncoding' => (isset($_SESSION["le_Encoding"]) ? $_SESSION["le_Encoding"] : "none"),
+		'clientSessionName' => session_name(),
+		'clientSessionID' => session_id()
 	);
 	unset($_tmp);
 
