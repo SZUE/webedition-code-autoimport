@@ -47,11 +47,9 @@ require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 $weShopStatusMails = weShopStatusMails::getShopStatusMails();
 
 // Get Country and Lanfield Data
-$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
-$DB_WE->query($q);
-if ( $DB_WE->num_rows() > 0) {
-	$DB_WE->next_record();
-	$CLFields = unserialize($DB_WE->f("strFelder"));
+	$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"','strFelder',$DB_WE);
+if ( $strFelder!=='') {
+	$CLFields = unserialize($strFelder);
 } else {
 	$CLFields['stateField'] =  '-';
 	$CLFields['stateFieldIsISO'] =  0;
