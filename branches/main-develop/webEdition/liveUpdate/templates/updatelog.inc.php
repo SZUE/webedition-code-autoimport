@@ -164,5 +164,3 @@ $jsHead = '
 
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['updatelog']['headline'], $content, $jsHead, $buttons);
-
-?>

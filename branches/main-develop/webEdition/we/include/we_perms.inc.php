@@ -22,22 +22,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_html_tools.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 
 ###### protect #################################################################
 ### protect()
 ### protects a page. Guests can not see this page
 
 function protect() {
-	if ($_SESSION["user"]["Username"] == "") {
+	if ($_SESSION['user']['Username'] == '') {
 
 		print htmlTop();
 		print
 						we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-														g_l('alert',"[perms_no_permissions]"), WE_MESSAGE_ERROR) . "top.close();");
-		print "</body></html>";
+														g_l('alert','[perms_no_permissions]'), WE_MESSAGE_ERROR) . 'top.close();');
+		print '</body></html>';
 		exit();
 	}
 }
@@ -47,13 +47,13 @@ function protect() {
 ### the same as protect but with an othe error message. It is used after the login
 
 function login() {
-	if ($_SESSION["user"]["Username"] == "") {
+	if ($_SESSION['user']['Username'] == '') {
 
 		print htmlTop();
 		print
 						we_htmlElement::jsElement(
-										we_message_reporting::getShowMessageCall(g_l('alert',"[login_failed]"), WE_MESSAGE_ERROR) . "history.back();");
-		print "</body></html>";
+										we_message_reporting::getShowMessageCall(g_l('alert','[login_failed]'), WE_MESSAGE_ERROR) . 'history.back();');
+		print '</body></html>';
 		exit();
 	}
 }

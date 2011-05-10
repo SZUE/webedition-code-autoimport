@@ -71,5 +71,3 @@ $content = '
 ';
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['modules']['headline'], $content);
-
-?>

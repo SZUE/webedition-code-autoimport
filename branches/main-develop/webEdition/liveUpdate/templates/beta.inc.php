@@ -63,5 +63,3 @@ $content = '
 ';
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['beta']['headline'], $content);
-
-?>

@@ -105,7 +105,7 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 			<div style="position:relative;border:0;float:left;" >
 <?php
 if ($jmenu) {
-	print $jmenu->getCode();
+	print $jmenu->getCode(false);
 }?>
 			</div>
 			<div style="position:relative;bottom:0;border:0;padding-left: 10px;float:left;" >

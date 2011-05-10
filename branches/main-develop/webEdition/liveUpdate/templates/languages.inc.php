@@ -95,5 +95,3 @@ $content = '
 ';
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['languages']['headline'], $content);
-
-?>

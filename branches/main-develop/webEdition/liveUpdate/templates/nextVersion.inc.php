@@ -33,7 +33,7 @@
 <body>
 <table>
 <tr>
-	<td>Upgrade auf h�here Version ?</td>
+	<td>Upgrade auf höhere Version ?</td>
 </tr>
 </table>
 </body>

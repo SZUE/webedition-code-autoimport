@@ -48,5 +48,3 @@ if ($errorMessage) { // servers response is error string
 }
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['connect']['headline'], $content);
-
-?>

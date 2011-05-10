@@ -40,5 +40,3 @@ $content = '
 ';
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['register']['headline'], $content);
-
-?>

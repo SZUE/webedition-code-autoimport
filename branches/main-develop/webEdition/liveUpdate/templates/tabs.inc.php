@@ -55,5 +55,3 @@ $_body = we_htmlElement::htmlBody(	array(	"bgcolor"    => "#ffffff",
 									$bodyContent);
 									
 print we_htmlElement::htmlHtml(we_htmlElement::htmlHead($_tabHead) . "\n" . $_body);
-
-?>
