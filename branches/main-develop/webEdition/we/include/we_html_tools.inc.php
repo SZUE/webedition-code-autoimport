@@ -959,7 +959,7 @@ function htmlAlertAttentionBox($text, $type = 0, $width = 0, $useHtmlSpecialChar
 			$icon = "";
 	}
 
-	$text = ($useHtmlSpecialChars) ? htmlspecialchars($text) : $text;
+	$text = ($useHtmlSpecialChars) ? htmlspecialchars($text,ENT_COMPAT,'ISO-8859-1',false) : $text;
 	$js = '';
 
 	if ($clip > 0) {

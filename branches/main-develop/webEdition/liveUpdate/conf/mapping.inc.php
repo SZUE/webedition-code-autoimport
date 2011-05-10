@@ -55,7 +55,9 @@ $LU_Variables = array(
 	'clientInstalledAppTOC' => we_app_Common::readAppTOCasString(),
 	'clientUpdateUrl' => liveUpdateHttp::getServerProtocol() . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : "" ) . $_SERVER["PHP_SELF"],
 	'clientContent' => false,
-	'clientEncoding' => 'none'
+	'clientEncoding' => 'none',
+	'clientSessionName' => session_name(),
+	'clientSessionID' => session_id()
 );
 
 

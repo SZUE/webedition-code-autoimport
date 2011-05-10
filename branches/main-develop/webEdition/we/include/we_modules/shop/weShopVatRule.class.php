@@ -147,28 +147,16 @@ class weShopVatRule {
 	function save() {
 
 		global $DB_WE;
-		// check if already inserted
-		$query = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"';
-
-		$DB_WE->query($query);
-
-		if ($DB_WE->num_rows() > 0) {
-
-			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '" WHERE strDateiname="weShopVatRule"';
-
-		} else {
-			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShopVatRule", "' . $DB_WE->escape(serialize($this)) . '")';
-		}
+		$query = 'REPLACE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '", strDateiname="weShopVatRule"';
 
 		if ($DB_WE->query($query)) {
-			$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
-			$DB_WE->query($q);
-			if ( $DB_WE->num_rows() > 0) {
+				$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"','strFelder',$DB_WE);
+			if ( $strFelder!=='') {
 				$DB_WE->next_record();
-				$CLFields = unserialize($DB_WE->f("strFelder"));
+				$CLFields = unserialize($strFelder);
 				$CLFields['stateField'] =  $this->stateField;
 				$CLFields['stateFieldIsISO'] =  $this->stateFieldIsISO;
-				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
+				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLanguage'");
 			}
 
 			return true;
@@ -178,4 +166,3 @@ class weShopVatRule {
 	}
 
 }
-?>

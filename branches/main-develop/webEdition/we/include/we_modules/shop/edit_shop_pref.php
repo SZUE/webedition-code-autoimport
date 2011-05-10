@@ -91,13 +91,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$CLFields['languageFieldIsISO'] = isset($_REQUEST['languageFieldIsISO']) ? $_REQUEST['languageFieldIsISO'] : 0;
 
 	// check if field exists
-	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
-	$DB_WE->query($q);
-	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
-	} else {
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . $DB_WE->escape(serialize($CLFields)) . "','shop_CountryLangauge')") ;
-	}
+	$DB_WE->query("REPLACE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "',strDateiname ='shop_CountryLanguage'");
 	// Update Country Field in weShopVatRule
 	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 	$weShopVatRule = weShopVatRule::getShopVatRule();
@@ -115,11 +109,9 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	echo '<script type="text/javascript">self.close();</script>';
 	exit;
 } else {
-	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
-	$DB_WE->query($q);
-	if ( $DB_WE->num_rows() > 0) {
-		$DB_WE->next_record();
-		$CLFields = unserialize($DB_WE->f("strFelder"));
+	$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"','strFelder',$DB_WE);
+	if ( $strFelder!=='') {
+		$CLFields = unserialize($strFelder);
 	} else {
 		$CLFields['stateField'] =  '-';
 		$CLFields['stateFieldIsISO'] =  0;
@@ -292,6 +284,3 @@ echo '<script type="text/javascript">self.focus();</script>
 
 
  	</body></html>';
-
-
-?>

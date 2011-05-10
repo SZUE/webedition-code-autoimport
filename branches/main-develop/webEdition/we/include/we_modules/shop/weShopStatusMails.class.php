@@ -344,28 +344,16 @@ class weShopStatusMails {
 	function save() {
 
 		global $DB_WE;
-		// check if already inserted
-		$query = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"';
 
-		$DB_WE->query($query);
-
-		if ($DB_WE->num_rows() > 0) {
-
-			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '" WHERE strDateiname="weShopStatusMails"';
-
-		} else {
-			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShopStatusMails", "' . $DB_WE->escape(serialize($this)) . '")';
-		}
+		$query = 'REPLACE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '",strDateiname="weShopStatusMails"';
 
 		if ($DB_WE->query($query)) {
-			$q = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLangauge"';
-			$DB_WE->query($q);
-			if ( $DB_WE->num_rows() > 0) {
-				$DB_WE->next_record();
-				$CLFields = unserialize($DB_WE->f("strFelder"));
+	$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"','strFelder',$DB_WE);
+	if ( $strFelder!=='') {
+				$CLFields = unserialize($strFelder);
 				$CLFields['languageField'] =  $this->LanguageData['languageField'];
 				$CLFields['languageFieldIsISO'] =  $this->LanguageData['languageFieldIsISO'];
-				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLangauge'");
+				$DB_WE->query("REPLACE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "', strDateiname ='shop_CountryLanguage'");
 			}
 			return true;
 		} else {
@@ -374,4 +362,3 @@ class weShopStatusMails {
 	}
 
 }
-?>
