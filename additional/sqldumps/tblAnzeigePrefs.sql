@@ -3,7 +3,7 @@ CREATE TABLE tblAnzeigePrefs (
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
   PRIMARY KEY  (ID),
-  KEY `strDateiname` (`strDateiname`)
+  UNIQUE KEY `strDateiname` (`strDateiname`)
 ) ENGINE=MyISAM;
 /* query separator */
 INSERT IGNORE INTO tblAnzeigePrefs VALUES (1,'edit_shop_properties','a:2:{s:14:"customerFields";a:0:{}s:19:"orderCustomerFields";a:0:{}}');
