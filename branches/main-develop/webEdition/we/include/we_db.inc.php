@@ -263,7 +263,6 @@ abstract class DB_WE_abstract {
 					}
 					$this->halt('Invalid SQL: ' . $Query_String);
 			}
-
 		}
 
 		# Will return nada if it fails. That's fine.
