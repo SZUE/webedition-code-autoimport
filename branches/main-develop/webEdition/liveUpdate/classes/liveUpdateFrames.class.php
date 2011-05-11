@@ -144,21 +144,21 @@ class liveUpdateFrames {
 			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
 			$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 
-			if (strpos($conf,'$'."_REQUEST['testUpdate']")!==false){
+			if (strpos($conf,'$_REQUEST[\'testUpdate\']')!==false){
 				if ($_REQUEST['setTestUpdate']==1){
-					if (strpos($conf,'$'."_REQUEST['testUpdate'] = 0;")!==false){
-						$conf=str_replace('$'."_REQUEST['testUpdate'] = 0;",'$'."_REQUEST['testUpdate'] = 1;",$conf);
+					if (strpos($conf,'$_REQUEST[\'testUpdate\'] = 0;')!==false){
+						$conf=str_replace('$_REQUEST[\'testUpdate\'] = 0;','$_REQUEST[\'testUpdate\'] = 1;',$conf);
 						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
 					}
 				}
 				if ($_REQUEST['setTestUpdate']==0){
-					if (strpos($conf,'$'."_REQUEST['testUpdate'] = 1;")!==false){
-						$conf=str_replace('$'."_REQUEST['testUpdate'] = 1;",'$'."_REQUEST['testUpdate'] = 0;",$conf);
+					if (strpos($conf,'$_REQUEST[\'testUpdate\'] = 1;')!==false){
+						$conf=str_replace('$_REQUEST[\'testUpdate\'] = 1;','$_REQUEST[\'testUpdate\'] = 0;',$conf);
 						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
 					}
 				}
 			} else {
-				$conf=str_replace("?>",'$'."_REQUEST['testUpdate'] = ".$_REQUEST['setTestUpdate'].";\n ?>",$conf);
+				$conf.='$_REQUEST[\'testUpdate\'] = '.$_REQUEST['setTestUpdate'].';';
 				weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
 			}
 			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
@@ -446,7 +446,7 @@ class liveUpdateFrames {
 
 
 	function getValidTab($showTab='') {
-		if (in_array($showTab, $GLOBALS['updatecmds']['updatecmds'])) {
+		if (in_array($showTab, $GLOBALS['updatecmds'])) {
 			return $showTab;
 		}
 		return $GLOBALS['updatecmds'][0];
