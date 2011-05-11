@@ -256,7 +256,7 @@ class Zend_Markup_Parser_Bbcode implements Zend_Markup_Parser_ParserInterface
                     break;
                 case self::STATE_SCANATTRS:
                     $matches = array();
-                    $regex   = '#\G((?P<end>\s*\])|\s+(?<Pattribute>[' . self::NAME_CHARSET . ']+)(?P<eq>=?))#';
+                    $regex   = '#\G((?P<end>\s*\])|\s+(?P<attribute>[' . self::NAME_CHARSET . ']+)(?P<eq>=?))#';
                     if (!preg_match($regex, $this->_value, $matches, null, $this->_pointer)) {
                         break 2;
                     }
