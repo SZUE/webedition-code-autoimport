@@ -255,7 +255,11 @@ class weWorkflowView extends weWorkflowBase{
 
 
 		$delallbut = $we_button->create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_folders');");
-		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_folder\\',top.allIDs);','','','',true)");
+		//javascript:top.content.setHot();we_cmd('openDirselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_folder\\',top.allIDs);','','','',true)
+		$wecmdenc1= '';
+		$wecmdenc2= '';
+		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
+		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','".FILE_TABLE."','','','".$wecmdenc3."','','','',true)");
 
 
 		$dirs = new MultiDirChooser(495,$this->workflowDef->Folders,"del_folder",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",FILE_TABLE,"defaultfont","","top.content.setHot();");
@@ -313,7 +317,9 @@ class weWorkflowView extends weWorkflowBase{
 
 
 		$delallbut = $we_button->create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_objects')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
-		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openObjselector','','".OBJECT_TABLE."','','','opener.we_cmd(\\'add_object\\',top.currentID);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
+		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.we_cmd('add_object',top.currentID);");
+		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openObjselector','','".OBJECT_TABLE."','','','".$wecmdenc3."')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(495,$this->workflowDef->Objects,"del_object", $we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",OBJECT_TABLE,"defaultfont","","top.content.setHot();");
 
@@ -332,7 +338,11 @@ class weWorkflowView extends weWorkflowBase{
 
 
 		$delallbut = $we_button->create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_object_file_folders');");
-		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs);','','','',true)");
+		//avascript:top.content.setHot();we_cmd('openDirselector','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs);','','','',true)
+		$wecmdenc1= '';
+		$wecmdenc2= '';
+		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_object_file_folder',top.allIDs);");
+		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','".OBJECT_FILES_TABLE."','','','".$wecmdenc3."','','','',true)");
 
 		$dirs = new MultiDirChooser(495,$this->workflowDef->ObjectFileFolders,"del_object_file_folder",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",OBJECT_FILES_TABLE,"defaultfont","","top.content.setHot();");
 
@@ -406,8 +416,11 @@ class weWorkflowView extends weWorkflowBase{
 				$headline[$counter1+3]["dat"]=$l_workflow["user"].(string )($counter1+1);
 
 				$foo=f("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($tv->userID),"Path",$this->db);
-
-				$button = $we_button->create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_usertext.value','',document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value);");
+				//javascript:top.content.setHot();we_cmd('browse_users','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_usertext.value','',document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value);
+				$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value");
+				$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_usertext.value");
+				$wecmdenc5= 'WECMDENC_'.base64_encode("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value");
+				$button = $we_button->create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','',".$wecmdenc5.");");
 
 				$yuiSuggest->setAcId("User_".$counter."_".$counter1);
 				$yuiSuggest->setContentType("0,1");
@@ -549,8 +562,12 @@ class weWorkflowView extends weWorkflowBase{
 		$table = FILE_TABLE;
 
 		$we_button = new we_button();
+		//javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
 
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'onChange="top.content.setHot();" readonly',"text",$width,0),
 			"",
 			"left",

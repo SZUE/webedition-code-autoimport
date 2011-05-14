@@ -419,7 +419,7 @@ class we_listview_object extends listviewBase {
 					}
 				} else {
 					if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-						$this->DB_WE->Record["we_WE_PATH"] = $this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?$paramName=".$this->DB_WE->Record["OF_ID"];
+						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					}

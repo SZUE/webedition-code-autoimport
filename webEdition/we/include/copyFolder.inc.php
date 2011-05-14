@@ -901,10 +901,14 @@ HTS;
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(370);
+		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.document.we_form.CreateTemplate.checked=true;')"
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.document.we_form.CreateTemplate.checked=true;");
 		$yuiSuggest->setSelectButton(
 				$we_button->create_button(
 						"select",
-						"javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.document.we_form.CreateTemplate.checked=true;')",
+						"javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."')",
 						true,
 						100,
 						22,

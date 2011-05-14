@@ -225,6 +225,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["add_dictionary_question"] = "Would you like to upload the dictionary for this language?";
 	$l_prefs["langlink_support"] = "automatic language links";
 	$l_prefs["langlink_support_backlinks"] = "Generate back links automatically";// TRANSLATE
+	$l_prefs["langlink_support_recursive"] = "Generate language links recursive";// TRANSLATE
 
 /*****************************************************************************
  * EDITOR

@@ -30,6 +30,8 @@ htmltop();
 
 $docroot = $_SERVER["DOCUMENT_ROOT"];
 $docroot = str_replace("\\","/",(substr($docroot,-1) == "/") ? substr($docroot,0,strlen($docroot)-1) : $docroot);
+if (isset($_REQUEST["we_cmd"][4]) && strpos($_REQUEST["we_cmd"][4],'WECMDENC_')!==false){$_REQUEST["we_cmd"][4]=base64_decode( substr($_REQUEST["we_cmd"][4],9));}
+if (isset($_REQUEST["we_cmd"][1]) && strpos($_REQUEST["we_cmd"][1],'WECMDENC_')!==false){$_REQUEST["we_cmd"][1]=base64_decode( substr($_REQUEST["we_cmd"][1],9));}
 
 $filter = (isset($_REQUEST["we_cmd"][2]) && $_REQUEST["we_cmd"][2] != "") ? $_REQUEST["we_cmd"][2] : "all_Types";
 $currentDir = (  isset($_REQUEST["we_cmd"][3]) ? ($_REQUEST["we_cmd"][3] == "/") ? "" : ( is_dir($docroot.$_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : str_replace("\\","/",dirname($_REQUEST["we_cmd"][3])))  :  "");
@@ -83,7 +85,7 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
       if(!!opener.postSelectorSelect) {
       	opener.postSelectorSelect('selectFile');
       }
-      
+
 <?php endif?>
 <?php if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") :?>
 	<?php print $_REQUEST["we_cmd"][4].";\n"; ?>
@@ -92,12 +94,12 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
      }
 
      self.focus();
-     
+
      function closeOnEscape() {
      	return true;
-     	
+
      }
-     
+
 </script>
 <script type="text/javascript" src="<?php print JS_DIR . "keyListener.js"; ?>"></script>
 </head>

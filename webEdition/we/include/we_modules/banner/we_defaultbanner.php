@@ -54,7 +54,11 @@ top.close();
 		$path=id_to_path($idvalue,$table);
 		$textname = md5(uniqid(rand()));
 		$we_button = new we_button();
-		$button = $we_button->create_button("select","javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','".$cmd."')");
+		//javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','".$cmd."')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$button = $we_button->create_button("select","javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'".$wecmdenc1."',".$wecmdenc2."','".$wecmdenc3."')");
 
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");

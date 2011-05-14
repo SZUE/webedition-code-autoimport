@@ -352,15 +352,19 @@ class weHyperlinkDialog extends weDialog{
 </select>';
 
 			// EXTERNAL LINK
-
-			$_external_select_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.we_form.elements[\\'we_dialog_args[extHref]\\'].value', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
+			//javascript:we_cmd('browse_server', 'document.we_form.elements[\\'we_dialog_args[extHref]\\'].value', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')
+			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[extHref]'].value");
+			$_external_select_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
 			$_external_link = "<div style='margin-top:1px'>".htmlFormElementTable(htmlTextInput("we_dialog_args[extHref]",30,$extHref ? $extHref : "http://","",'onchange="if(this.value==\'\'){this.value=\'http://\'}"',"text",300), "", "left", "defaultfont", getPixel(10, 1), $_external_select_button, "", "", "", 0)."</div>";
 
 
 			// INTERNAL LINK
-
-			$_internal_select_button = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[fileID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[fileHref]\\'].value', '', '', 0, '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			//javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[fileID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[fileHref]\\'].value', '', '', 0, '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[fileID]'].value");
+			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[fileHref]'].value");
+			$wecmdenc3= '';
+			$_internal_select_button = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','',0, '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType("folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime");
@@ -379,8 +383,11 @@ class weHyperlinkDialog extends weDialog{
 
 			// OBJECT LINK
 			if(defined("OBJECT_TABLE") && ($_SESSION["we_mode"] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))){
-
-				$_object_select_button = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[objID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[objHref]\\'].value', '', '', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");", false, 100, 22, "", "", !we_hasPerm("CAN_SEE_OBJECTFILES"));
+				//javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[objID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[objHref]\\'].value', '', '', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");", false, 100, 22, "", "", !we_hasPerm("CAN_SEE_OBJECTFILES")
+				$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[objID]'].value");
+				$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[objHref]'].value");
+				$wecmdenc3= 'WECMDENC_'.base64_encode("top.opener._EditorFrame.setEditorIsHot(true);");
+				$_object_select_button = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."', '', '', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");", false, 100, 22, "", "", !we_hasPerm("CAN_SEE_OBJECTFILES"));
 
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder,objectFile");

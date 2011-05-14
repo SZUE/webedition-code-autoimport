@@ -194,6 +194,7 @@ $l_prefs = array(
 		'add_dictionary_question' => "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?",
 		'langlink_support' => "Automatische Sprachverlinkung",
 		'langlink_support_backlinks' => "Erzeuge automatisch die Backlinks",
+		'langlink_support_recursive' => "Erzeuge die Sprachenlinks rekursiv",
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

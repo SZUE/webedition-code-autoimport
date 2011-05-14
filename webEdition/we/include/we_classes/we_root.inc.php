@@ -283,8 +283,11 @@ class we_root extends we_class
 		} else {
 			$width=0;
 		}
-
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .$cmd."','".session_id()."','$rootDirID')");
+		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .$cmd."','".session_id()."','$rootDirID')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .str_replace('\\','',$cmd)."");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 
 		$yuiSuggest->setAcId("Path",id_to_path(array($rootDirID),$table));
 		$yuiSuggest->setContentType("folder");
@@ -349,8 +352,11 @@ class we_root extends we_class
 
 			$inputFeld=$this->htmlTextInput($textname,24,$creator,"",$attribs,"",$width);
 			$idfield = $this->htmlHidden($idname,$this->CreatorID);
-
-			$button = $we_button->create_button("edit", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);')");
+			//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);')
+			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
+			$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
+			$wecmdenc5= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);");
+			$button = $we_button->create_button("edit", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','user',document.forms[0].elements['$idname'].value,'".$wecmdenc5."')");
 
 			$out = $this->htmlFormElementTable($inputFeld,
 			$l_we_class["maincreator"],
@@ -407,8 +413,12 @@ class we_root extends we_class
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
 		$delallbut = $we_button->create_button("delete_all","javascript:we_cmd('del_all_owners','')",true,-1,-1,"","",$this->Owners ? false : true);
+		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd(\\'add_owner\\',top.allIDs)','','',1);
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc5= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");		
 		$addbut = $canChange ?
-				$this->htmlHidden($idname,"").$this->htmlHidden($textname,"").$we_button->create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd(\\'add_owner\\',top.allIDs)','','',1);")
+				$this->htmlHidden($idname,"").$this->htmlHidden($textname,"").$we_button->create_button("add", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','',document.forms[0].elements['$idname'].value,'".$wecmdenc5."','','',1);")
 				: "";
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500">
@@ -520,7 +530,11 @@ class we_root extends we_class
 	function formCopyDocument(){
 		$idname = 'we_'.$this->Name.'_CopyID';
 		$we_button = new we_button();
-		$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd(\\'copyDocument\\', currentID);', '" . session_id() . "', '0', '" . $this->ContentType . "',1);");
+		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['".$idname."'].value");
+		$wecmdenc2= '';
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', currentID);");
+		$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['".$idname."'].value, '" . $this->Table . "','".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "', '0', '" . $this->ContentType . "',1);");
 
 		$content = $this->htmlHidden($idname,$this->CopyID).$but;
 		return $content;
@@ -547,7 +561,10 @@ class we_root extends we_class
 			$username = f("SELECT username FROM " . USER_TABLE . " WHERE ID='".abs($userid)."'","username",$this->DB_WE);
 		}
 
-
+		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc5= '';
 		return we_root::htmlFormElementTable
 		(
 			we_root::htmlTextInput($textname,30,$username,"",' readonly',"text",$width,0),
@@ -556,7 +573,7 @@ class we_root extends we_class
 			"defaultfont",
 			we_root::htmlHidden($idname,$userid),
 			getPixel(20,4),
-			$we_button->create_button("select", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')")
+			$we_button->create_button("select", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','user')")
 		);
 
 
@@ -577,7 +594,11 @@ function formTriggerDocument($isclass=false){
 			$myid = $this->TriggerID ? $this->TriggerID : "";
 		}
 		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)");
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)"
+		$wecmdenc1= '';
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
 		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		
 		$yuiSuggest->setAcId("TriggerID");
@@ -621,8 +642,13 @@ function formTriggerDocument($isclass=false){
 			$ctype='objectFile';
 			$etype=OBJECT_FILES_TABLE;
 		}
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $rootDir . "','".$ctype."',1)");
-		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$ackeyshort."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $rootDir . "','".$ctype."',1)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);");
+
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','" . $rootDir . "','".$ctype."',1)");
+		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$ackeyshort."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = $we_button->create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'".$ctype."','".$etype."'); }");
 		
 		$yuiSuggest->setInput($textname,$path,"",true);

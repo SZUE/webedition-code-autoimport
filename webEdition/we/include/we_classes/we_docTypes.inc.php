@@ -250,7 +250,12 @@ class we_docTypes extends we_class {
 		global $l_global;
 
 		$we_button = new we_button();
-		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)");
+		//javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)
+		$wecmdenc1= '';
+		$wecmdenc2= '';
+		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
+
+		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','".$wecmdenc3."', '', '', 'text/weTmpl', 1,1)");
 
 		$templ = new MultiDirChooser(521,$this->Templates,"delete_dt_template",$addbut,"","Icon,Path", TEMPLATES_TABLE);
 		return $templ->get();
@@ -373,7 +378,11 @@ class we_docTypes extends we_class {
 		$idname = 'we_'.$this->Name.'_ParentID';
 
 		$we_button = new we_button();
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')");
+		//javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $textname  . "'].value");
+		$wecmdenc3= '';
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '".$wecmdenc1."', '".$wecmdenc2."', '', '" . session_id() . "')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname,$this->ParentPath);

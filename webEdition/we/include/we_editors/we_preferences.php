@@ -159,6 +159,7 @@ $global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if sho
 $global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", false);');
 $global_config[] = array('define("LANGLINK_SUPPORT",', '// Flag if automatic LanguageLinks should be supported ' . "\n" . 'define("LANGLINK_SUPPORT", true);');
 $global_config[] = array('define("LANGLINK_SUPPORT_BACKLINKS",', '// Flag if automatic backlinks should be generated ' . "\n" . 'define("LANGLINK_SUPPORT_BACKLINKS", true);');
+$global_config[] = array('define("LANGLINK_SUPPORT_RECURSIVE",', '// Flag if backlinks should be generated recursive ' . "\n" . 'define("LANGLINK_SUPPORT_RECURSIVE", true);');
 
 
 //default charset
@@ -595,6 +596,9 @@ function get_value($settingvalue) {
 			break;
 		case "langlink_support_backlinks":
 			return defined("LANGLINK_SUPPORT_BACKLINKS") ? LANGLINK_SUPPORT_BACKLINKS : true;
+			break;
+		case "langlink_support_recursive":
+			return defined("LANGLINK_SUPPORT_RECURSIVE") ? LANGLINK_SUPPORT_RECURSIVE : true;
 			break;
 
 		/*********************************************************************
@@ -1815,6 +1819,17 @@ $_we_active_integrated_modules = array();
 
 				
 				break;
+			case '$_REQUEST["langlink_support_recursive"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT_RECURSIVE", $settingvalue);
+
+				$_update_prefs = false;
+
+				$_update_prefs = false;
+
+				
+				break;
 
 			/*****************************************************************
 			 * DEFAULT CHARSET
@@ -2874,6 +2889,7 @@ function save_all_values() {
 		
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, '$_REQUEST["langlink_support"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_backlinks"]) ? $_REQUEST["langlink_support_backlinks"] : null, '$_REQUEST["langlink_support_backlinks"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_recursive"]) ? $_REQUEST["langlink_support_recursive"] : null, '$_REQUEST["langlink_support_recursive"]') || $_update_prefs;
 
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
@@ -3283,6 +3299,7 @@ function build_dialog($selected_setting = "ui") {
 			 ***************************************************/
 
 			if (we_hasPerm("CHANGE_START_DOCUMENT")) {
+
 				// Generate needed JS
 				$_needed_JavaScript .= "
 						<script language=\"JavaScript\" type=\"text/javascript\"><!--
@@ -3322,7 +3339,6 @@ function build_dialog($selected_setting = "ui") {
 								if(document.getElementById('seem_start_type').value == 'object') {
 								";
 				if(defined("OBJECT_FILES_TABLE")) {
-					//$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");";
 					$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);";
 				}
 				$_needed_JavaScript .= "
@@ -4111,6 +4127,12 @@ EOF;
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
+				array_push($_settings, array("headline" => $l_prefs["langlink_support_backlinks"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				
+				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_recursive","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("langlink_support_recursive"));
 				array_push($_settings, array("headline" => $l_prefs["langlink_support_backlinks"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
 				/*****************************************************************
@@ -5393,8 +5415,10 @@ else {
 			    include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_classes/base/we_image_edit.class.php');
 
 			    if( we_image_edit::gd_version() > 0 ){   //  gd lib ist installiert
-
-			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
+					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
+					$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['thumbnail_dir'].value");
+					$wecmdenc4= '';
+			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
 				    $_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
                     $_thumbnail_dir = $we_button->create_button_table(array($_inp,$_but));
 
@@ -5411,7 +5435,10 @@ else {
 			    /**
 			     * set pageLogger dir
 			     */
-			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'we_tracker_dir\\'].value', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
+				//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'we_tracker_dir\\'].value', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')
+				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['we_tracker_dir'].value");
+				$wecmdenc4= '';
+			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
 				$_inp = htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
                 $_we_tracker_dir = $we_button->create_button_table(array($_inp,$_but));
 			    array_push($_settings, array("headline" => $l_prefs["pagelogger_dir"], "html" => $_we_tracker_dir, "space" => 200));
@@ -5583,8 +5610,11 @@ else {
 				array_push($_settings, array("headline" => $l_prefs["seoinside_hideinwebedition"], "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 
-
-				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
+				//javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)
+				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['error_document_no_objectfile'].value");
+				$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms[0].elements['error_document_no_objectfile_text'].value");
+				$wecmdenc3= '';
+				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','', 'text/webEdition', 1)");
 				  $_acButton2 = $we_button->create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
 
 				  $yuiSuggest->setAcId("doc2");
