@@ -763,6 +763,26 @@
 		}
 		return true;
 	}
+	function updateLangLink(){
+		if(!$this->isTabExist(LANGLINK_TABLE)){
+			$cols=array(
+				"ID"=>"int(11) NOT NULL AUTO_INCREMENT",
+				"DID"=>"DID int(11) NOT NULL default '0'",
+				"DLocale"=>"varchar(5) NOT NULL default ''",
+				"IsFolder"=>"tinyint(1) NOT NULL default '0'",
+				"IsObject"=>"tinyint(1) NOT NULL default '0'",
+				"LDID"=>"int(11) NOT NULL default '0'",
+				"Locale"=>" varchar(5) NOT NULL default ''",
+				"DocumentTable"=>"enum('tblFile','tblObjectFile','tblDocTypes') NOT NUL"
+				);
+			$keys=array(
+				"PRIMARY KEY"=>"(ID)",
+				"KEY DID"=>"(DID,Locale(5))"
+				);
+			$this->addTable(LOCK_TABLE,$cols,$keys);				
+		}
+		if(!$this->isColExist(LANGLINK_TABLE,'DLocale'))  $this->addCol(LANGLINK_TABLE,'DLocale',"varchar(5) NOT NULL default ''",' AFTER DID ');
+	}
 
 	function doUpdate(){
 		$this->updateTables();
@@ -776,6 +796,7 @@
 		$this->updateVersions();
 		$this->updateWorkflow();
 		$this->updateLock();
+		$this->updateLangLink();
 		$this->updateTableKeys();
 	}
 

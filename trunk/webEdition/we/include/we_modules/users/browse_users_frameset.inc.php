@@ -22,6 +22,10 @@
 
 $id = $_REQUEST["we_cmd"][4];
 $table = USER_TABLE;
+if (isset($_REQUEST["we_cmd"][1]) && strpos($_REQUEST["we_cmd"][1],'WECMDENC_')!==false){$_REQUEST["we_cmd"][1]=base64_decode( substr($_REQUEST["we_cmd"][1],9));}
+if (isset($_REQUEST["we_cmd"][2]) && strpos($_REQUEST["we_cmd"][2],'WECMDENC_')!==false){$_REQUEST["we_cmd"][2]=base64_decode( substr($_REQUEST["we_cmd"][2],9));}
+if (isset($_REQUEST["we_cmd"][5]) && strpos($_REQUEST["we_cmd"][5],'WECMDENC_')!==false){$_REQUEST["we_cmd"][5]=base64_decode( substr($_REQUEST["we_cmd"][5],9));}
+
 $JSIDName = $_REQUEST["we_cmd"][1];
 $JSTextName = $_REQUEST["we_cmd"][2];
 $JSCommand = isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "";

@@ -64,7 +64,11 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		$selectorNoLoginId = "wecf_noLoginId";
 		$selectorNoLoginText = "wecf_InputNoLoginText";
 		$selectorNoLoginError = "wecf_ErrorMarkNoLoginText";
-		$selectorNoLoginButton = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoLoginId'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$selectorNoLoginId\\'].value','document.we_form.elements[\\'$selectorNoLoginText\\'].value','opener." . $this->getHotScript() . ";','".session_id()."','','text/webedition',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoLoginId'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$selectorNoLoginId\\'].value','document.we_form.elements[\\'$selectorNoLoginText\\'].value','opener." . $this->getHotScript() . ";','".session_id()."','','text/webedition',1)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$selectorNoLoginId'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$selectorNoLoginText'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener." . $this->getHotScript() . ";");
+		$selectorNoLoginButton = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoLoginId'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder,text/webedition");
@@ -89,7 +93,11 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		$selectorNoAccessId = "wecf_noAccessId";
 		$selectorNoAccessText = "wecf_InputNoAccessText";
 		$selectorNoAccessError = "wecf_ErrorMarkNoAccessText";
-		$selectorNoAccessButton = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoAccessId'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$selectorNoAccessId\\'].value','document.we_form.elements[\\'$selectorNoAccessText\\'].value','opener.". $this->getHotScript() ."','".session_id()."','','text/webedition',1)");
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoAccessId'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$selectorNoAccessId\\'].value','document.we_form.elements[\\'$selectorNoAccessText\\'].value','opener.". $this->getHotScript() ."','".session_id()."','','text/webedition',1)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$selectorNoAccessId'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$selectorNoAccessText'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.". $this->getHotScript() ."");
+		$selectorNoAccessButton = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoAccessId'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
 
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder,text/webedition");

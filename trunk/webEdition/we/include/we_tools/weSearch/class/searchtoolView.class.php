@@ -3307,7 +3307,11 @@ class searchtoolView extends weToolView
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','')";
+					//javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','')
+					$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
+					$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
+					$wecmdenc3= '';
+					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','$_rootDirID','','')";
 					$_button = $we_button->create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = htmlFormElementTable(
 							htmlTextInput(
@@ -3335,7 +3339,11 @@ class searchtoolView extends weToolView
 					$_linkPath = $this->Model->searchAdvSearch[$i];
 
 					$_rootDirID = 0;
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','text/weTmpl')";
+					//javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','text/weTmpl')
+					$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
+					$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
+					$wecmdenc3= '';
+					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','$_rootDirID','','text/weTmpl')";
 					$_button = $we_button->create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = htmlFormElementTable(
 							htmlTextInput(
@@ -3813,10 +3821,14 @@ class searchtoolView extends weToolView
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(380);
+		//javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','document.we_form.elements[\\'$folderID\\'].value','document.we_form.elements[\\'$folderPath\\'].value')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$folderID'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$folderPath'].value");
+		$wecmdenc3= '';
 		$yuiSuggest->setSelectButton(
 				$we_button->create_button(
 						"select",
-						"javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','document.we_form.elements[\\'$folderID\\'].value','document.we_form.elements[\\'$folderPath\\'].value')"));
+						"javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','".$wecmdenc1."','".$wecmdenc2."')"));
 
 		$weAutoCompleter = $yuiSuggest->getYuiFiles();
 		$weAutoCompleter .= $yuiSuggest->getHTML();

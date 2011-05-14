@@ -466,7 +466,13 @@ class weExportFrames extends weModuleFrames {
 
 		$we_button = new we_button();
 		$path = id_to_path($this->View->export->ParentID,EXPORT_TABLE);
-		$button = $we_button->create_button('select', "javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'document.we_form.elements[\'ParentID\'].value','document.we_form.elements[\'ParentPath\'].value','top.hot=1;')");
+
+		//javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'document.we_form.elements[\'ParentID\'].value','document.we_form.elements[\'ParentPath\'].value','top.hot=1;')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['ParentID'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['ParentPath'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("top.hot=1;");
+
+		$button = $we_button->create_button('select', "javascript:top.content.setHot();we_cmd('openExportDirselector',document.we_form.elements['ParentID'].value,'".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."')");
 
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
@@ -875,7 +881,10 @@ class weExportFrames extends weModuleFrames {
 		');
 
 		$we_button = new we_button();
-	  	$button =  $we_button->create_button("select","javascript:top.content.setHot();formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);");
+		//javascript:top.content.setHot();formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
+		$wecmdenc4= '';
+	  	$button =  $we_button->create_button("select","javascript:top.content.setHot();formFileChooser('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
 		return $js.htmlFormElementTable(htmlTextInput($IDName,42,$IDValue,"",' readonly onChange="'.$this->topFrame.'.hot=1;"',"text",$width,0),
 			"",
@@ -892,7 +901,11 @@ class weExportFrames extends weModuleFrames {
 		}
 
 		$we_button = new we_button();
-		$button =  $we_button->create_button("select","javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");
+		//javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID'))
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$button =  $we_button->create_button("select","javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("SelPath");
 		$yuiSuggest->setContentType("folder");

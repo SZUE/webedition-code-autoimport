@@ -974,7 +974,7 @@ if(isset($weTagListviewCache)) {
 
         $languages = we_getTagAttributeTagParser("languages", $arr,'');
 		$pagelanguage = we_getTagAttributeTagParser("pagelanguage", $arr,'');
-
+		$showself=  we_getTagAttributeTagParser("showself", $arr,'',true, true);
 		$triggerid = we_getTagAttributeTagParser("triggerid", $arr, "0");
 		$docid = we_getTagAttributeTagParser("docid", $arr, "0");
 		$customers = we_getTagAttributeTagParser("customers", $arr); // csv value of Ids
@@ -1022,6 +1022,7 @@ if (!isset($GLOBALS["we_lv_array"])) {
 $we_lv_catOr = (isset($_REQUEST["we_lv_catOr_' . $name . '"]) ? $_REQUEST["we_lv_catOr_' . $name . '"] : "' . $catOr . '") ? true : false;
 $we_lv_desc = (isset($_REQUEST["we_lv_desc_' . $name . '"]) ? $_REQUEST["we_lv_desc_' . $name . '"] : "' . $desc . '") ? true : false;
 $we_lv_se = (isset($_REQUEST["we_lv_se_' . $name . '"]) ? $_REQUEST["we_lv_se_' . $name . '"] : "' . $searchable . '") ? true : false;
+$we_lv_showself = (isset($_REQUEST["we_lv_showself_' . $name . '"]) ? $_REQUEST["we_lv_showself_' . $name . '"] : "' . $showself . '") ? true : false;
 $we_lv_ct = isset($_REQUEST["we_lv_ct_' . $name . '"]) ? $_REQUEST["we_lv_ct_' . $name . '"] : "' . $contentTypes . '";
 $we_lv_order = isset($_REQUEST["we_lv_order_' . $name . '"]) ? $_REQUEST["we_lv_order_' . $name . '"] : "' . $order . '";
 $we_lv_numorder = (isset($_REQUEST["we_lv_numorder_' . $name . '"]) ? $_REQUEST["we_lv_numorder_' . $name . '"] : "' . $numorder . '") ? true : false;
@@ -1053,13 +1054,13 @@ if($we_lv_pagelanguage == "self" || $we_lv_pagelanguage == "top"){
 	$we_lv_DocAttr="'.$docAttr.'";
 	$we_lv_langguagesdoc= we_getDocForTag($we_lv_DocAttr);
 	if(isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID ){
-		$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
+		//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 		$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
-		$we_lv_linktype="objectfile";
+		$we_lv_linktype="tblObjectFile";
 	} else {
-		$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
+		//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 		$we_lv_pageID = $we_lv_langguagesdoc->ID;
-		$we_lv_linktype="file";
+		$we_lv_linktype="tblFile";
 	}
 	unset($we_lv_langguagesdoc);
 }
@@ -1119,7 +1120,7 @@ $GLOBALS["lv"] = new we_listview_object("' . $name . '", $we_rows, $we_offset, $
 				break;
 			case "languagelink":					
 					$php .= 'include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_langlink_listview.class.php");
-$GLOBALS["lv"] = new we_langlink_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,$we_lv_linktype, "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se, "' . $cfilter . '", $we_lv_pageID, $we_lv_pagelanguage, '.$hidedirindex.','.$objectseourls.');
+$GLOBALS["lv"] = new we_langlink_listview("' . $name . '", $we_rows, $we_offset, $we_lv_order, $we_lv_desc,$we_lv_linktype, "' . $cols . '", ' . ($seeMode ? "true" : "false") . ',$we_lv_se, "' . $cfilter . '",$we_lv_showself, $we_lv_pageID, $we_lv_pagelanguage, '.$hidedirindex.','.$objectseourls.');
 ';
 				
 				break;
@@ -1306,8 +1307,13 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 		$idname = \'we_\'.$we_doc->Name.\'_txt[' . $name . ']\';
 		$table = OBJECT_FILES_TABLE;
 		$we_button = new we_button();
+		//javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');
+		$wecmdenc1= "WECMDENC_".base64_encode("document.forms[\'we_form\'].elements[\'$idname\'].value");
+		$wecmdenc2= "WECMDENC_".base64_encode("document.forms[\'we_form\'].elements[\'$textname\'].value");
+		$wecmdenc3= "WECMDENC_".base64_encode("opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);");
+
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
-		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openDocselector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',\'$rootDirID\',\'objectFile\',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
+		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openDocselector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'.$wecmdenc1.\',\'.$wecmdenc2.\',\'.$wecmdenc3.\',\'".session_id()."\',\'$rootDirID\',\'objectFile\',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
 ?><?php if($GLOBALS["we_editmode"]): ?>
 <table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">

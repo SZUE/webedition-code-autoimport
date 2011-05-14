@@ -224,6 +224,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["add_dictionary_question"] = "Wilt u het woordenboek voor deze taal uploaden?";
 	$l_prefs["langlink_support"] = "automatic language links";
 	$l_prefs["langlink_support_backlinks"] = "Generate back links automatically";// TRANSLATE
+	$l_prefs["langlink_support_recursive"] = "Generate language links recursive";// TRANSLATE
 
 /*****************************************************************************
  * EDITOR

@@ -27,8 +27,11 @@ switch ($_REQUEST["we_cmd"][0]) {
 	case "openDelSelector" :
 		$id = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
 		$table = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
+		if (isset($_REQUEST["we_cmd"][3]) && strpos($_REQUEST["we_cmd"][3],'WECMDENC_')!==false){$_REQUEST["we_cmd"][3]=base64_decode( substr($_REQUEST["we_cmd"][3],9));}
 		$JSIDName = isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : "";
+		if (isset($_REQUEST["we_cmd"][4]) && strpos($_REQUEST["we_cmd"][4],'WECMDENC_')!==false){$_REQUEST["we_cmd"][4]=base64_decode( substr($_REQUEST["we_cmd"][4],9));}
 		$JSTextName = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : "";
+		if (isset($_REQUEST["we_cmd"][5]) && strpos($_REQUEST["we_cmd"][5],'WECMDENC_')!==false){$_REQUEST["we_cmd"][5]=base64_decode( substr($_REQUEST["we_cmd"][5],9));}
 		$JSCommand = isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "";
 		$sessionID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "";
 		$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
@@ -39,8 +42,11 @@ switch ($_REQUEST["we_cmd"][0]) {
 	case "openDocselector" :
 		$id = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
 		$table = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
+		if (isset($_REQUEST["we_cmd"][3]) && strpos($_REQUEST["we_cmd"][3],'WECMDENC_')!==false){$_REQUEST["we_cmd"][3]=base64_decode( substr($_REQUEST["we_cmd"][3],9));}
 		$JSIDName = isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : "";
+		if (isset($_REQUEST["we_cmd"][4]) && strpos($_REQUEST["we_cmd"][4],'WECMDENC_')!==false){$_REQUEST["we_cmd"][4]=base64_decode( substr($_REQUEST["we_cmd"][4],9));}
 		$JSTextName = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : "";
+		if (isset($_REQUEST["we_cmd"][5]) && strpos($_REQUEST["we_cmd"][5],'WECMDENC_')!==false){$_REQUEST["we_cmd"][5]=base64_decode( substr($_REQUEST["we_cmd"][5],9));}
 		$JSCommand = isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "";
 		$sessionID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "";
 		$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";

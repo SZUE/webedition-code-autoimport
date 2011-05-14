@@ -733,9 +733,14 @@ class weSiteImport
 		$textname = 'templateDummy';
 		$idname = 'templateID';
 		$path = f("SELECT Path FROM ".$GLOBALS['DB_WE']->escape($table)." WHERE ID='".abs($tid)."'", "Path", $GLOBALS['DB_WE']);
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.displayTable();','" . session_id() . "','','text/weTmpl',1)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.displayTable();");
+
 		$button = $we_button->create_button(
 				"select",
-				"javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.displayTable();','" . session_id() . "','','text/weTmpl',1)");
+				"javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "','','text/weTmpl',1)");
 
 		$foo = htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
 		return htmlFormElementTable(
@@ -763,9 +768,11 @@ class weSiteImport
 		$we_button = new we_button();
 
 		// Suorce Directory
+		//javascript:we_cmd('browse_server', 'document.we_form.elements[\\'from\\'].value', 'folder', document.we_form.elements['from'].value)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['from'].value");
 		$_from_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button(
 				"select",
-				"javascript:we_cmd('browse_server', 'document.we_form.elements[\\'from\\'].value', 'folder', document.we_form.elements['from'].value)") : "";
+				"javascript:we_cmd('browse_server', '".$wecmdenc1."','folder',document.we_form.elements['from'].value)") : "";
 
 		$_input = htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 
@@ -782,9 +789,13 @@ class weSiteImport
 				0);
 
 		// Destination Directory
+		//javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'to\\'].value','document.we_form.elements[\\'toPath\\'].value','','','0')"
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['to'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['toPath'].value");
+		$wecmdenc3= '';
 		$_to_button = $we_button->create_button(
 				"select",
-				"javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'to\\'].value','document.we_form.elements[\\'toPath\\'].value','','','0')");
+				"javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','0')");
 
 		//$_hidden = hidden("to",$this->to);
 		//$_input = htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
@@ -1375,10 +1386,13 @@ class weSiteImport
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDirName';
 		$idname = 'templateParentID';
-
+		//javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','" . session_id() . "')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc3= '';
 		$button = $we_button->create_button(
 				"select",
-				"javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','" . session_id() . "')");
+				"javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");

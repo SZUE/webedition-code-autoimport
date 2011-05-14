@@ -200,6 +200,7 @@ $l_prefs = array(
 		'add_dictionary_question' => "Wilt u het woordenboek voor deze taal uploaden?",
 		'langlink_support' => "Automatic language links",// TRANSLATE
 		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
+		'langlink_support_recursive' => "Generate language links recursive",// TRANSLATE
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */
