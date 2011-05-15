@@ -651,7 +651,10 @@ class we_class
 					if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
 						if ($LDID>0){
 							$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
-						} 
+						}
+						if ($LDID<0){
+							$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='0',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
+						}  
 					} else {
 						if ($LDID>0){
 							$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
