@@ -1015,9 +1015,9 @@ function doDebugResizeH(){
 					"defaultfont",
 					array("text"=>"<div style=''>".$this->selectButton."</div>", "valign"=>"top"),
 					getPixel($this->trashButtonSpace,4),
-					(empty($this->trashButton) ? "" : array("text"=>"<div style=''>".$this->trashButton."</div>", "valign"=>"top")),
-					getPixel($this->openButtonSpace,4),
-					(empty($this->openButton) ? "" : array("text"=>"<div style=''>".$this->openButton."</div>", "valign"=>"top"))
+					(empty($this->trashButton) ? "" : array("text"=>"<div style='margin-right:".$this->trashButtonSpace."px'>".$this->trashButton."</div>", "valign"=>"top")),
+					(empty($this->openButton) ? "" : array("text"=>"<div style='margin-right:".$this->openButtonSpace."px'>".$this->openButton."</div>", "valign"=>"top")),
+					(empty($this->createButton) ? "" : array("text"=>"<div style='margin-right:".$this->createButtonSpace."px'>".$this->createButton."</div>", "valign"=>"top"))
 				);
 
 		$this->acId                 = "";

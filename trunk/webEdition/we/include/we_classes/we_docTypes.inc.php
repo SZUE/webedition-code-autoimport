@@ -85,11 +85,13 @@ class we_docTypes extends we_class {
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
-		/*
+		
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
-			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LangDocType"],'tblDocTypes');
+			if(isset($_REQUEST["we_".$this->Name."_LangDocType"])){
+				$this->setLanguageLink($_REQUEST["we_".$this->Name."_LangDocType"],'tblDocTypes');
+			}
 		}
-		*/
+		
 		return we_class::we_save($resave);
 	}
 
@@ -161,8 +163,8 @@ class we_docTypes extends we_class {
 		$inputName = "we_".$this->Name."_Language";
 
 		$_languages = $GLOBALS['weFrontendLanguages'];
-		$showme=false; //zum temporären abschalten, bis die Create-Funktion  aktiviert wird
-		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && $showme){
+		
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 			
 			$htmlzw='';
 			foreach ($_languages as $langkey => $lang){
