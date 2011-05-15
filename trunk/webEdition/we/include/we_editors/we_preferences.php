@@ -4116,24 +4116,28 @@ EOF;
 				array_push($_settings, array("headline" => $l_prefs["locale_add"], "html" => $_add_html, "space" => 200));
 
 
-
+				$_information = htmlAlertAttentionBox($l_prefs["langlink_information"], 2, 450, false);
+				array_push($_settings, array("headline" => $l_prefs["langlink_headline"], "html" =>  $_information, "space" => 0,"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support"));
 				array_push($_settings, array("headline" => $l_prefs["langlink_support"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
+				$_information = htmlAlertAttentionBox($l_prefs["langlink_support_backlinks_information"], 2, 250, false,40);
+				array_push($_settings, array( "html" =>  $_information, "space" => 200,"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_backlinks","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
 				array_push($_settings, array("headline" => $l_prefs["langlink_support_backlinks"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
-				
+				$_information = htmlAlertAttentionBox($l_prefs["langlink_support_recursive_information"], 2, 250, false,40);
+				array_push($_settings, array( "html" =>  $_information, "space" => 200,"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_recursive","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support_recursive"));
-				array_push($_settings, array("headline" => $l_prefs["langlink_support_backlinks"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => $l_prefs["langlink_support_recursive"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
 				/*****************************************************************
 				 * Dialog

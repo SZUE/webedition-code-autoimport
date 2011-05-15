@@ -210,9 +210,13 @@ $l_prefs = array(
 		'language_already_exists' => "This language already exists", // TRANSLATE
 		'language_country_missing' => "Please select also a country", // TRANSLATE
 		'add_dictionary_question' => "Would you like to upload the dictionary for this language?",// TRANSLATE
-		'langlink_support' => "Automatic language links",// TRANSLATE
+		'langlink_headline' => "Support for setting links between different languages",
+		'langlink_information' => "With this option, you can set the links to corresponding language versions of documents/objects in the backend and open/create etc. these documents/oobjects.<br/>For the frontend you can display these links in a listview type=languagelink.<br/><br/>For folders, you can define a <b>document</b> in each language, which is used if for a document within the folder no corresponding document in the other language is set.",
+		'langlink_support' => "active",
 		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
+		'langlink_support_backlinks_information' => "Back links can be generated automatically for documents/objects (not folders). The other document should not be open in an editor tab!",
 		'langlink_support_recursive' => "Generate language links recursive",// TRANSLATE
+		'langlink_support_recursive_information' => "Setting of langauge links can be done recursively for documents/objects (but not folders). This sets all possible links and tries to establish the language-circle as fast as possible. The other documents should not be open in an editor tab!",
 
 		/*		 * ***************************************************************************
 		 * EDITOR
