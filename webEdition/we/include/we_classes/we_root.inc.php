@@ -650,7 +650,13 @@ function formTriggerDocument($isclass=false){
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','" . $rootDir . "','".$ctype."',1)");
 		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$ackeyshort."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = $we_button->create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'".$ctype."','".$etype."'); }");
-		
+		if(isset($this->DocType) && $this->DocType && we_hasPerm("NEW_WEBEDITIONSITE")){			
+			$LDcoType = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND DID='".$this->DocType."' AND Locale='".$langkey."'",'LDID',new DB_WE());
+			if($LDcoType){
+				$createbutton = $we_button->create_button("image:add_doc", "javascript:top.we_cmd('new','".FILE_TABLE."','','text/webedition','".$LDcoType."');");
+				$yuiSuggest->setCreateButton($createbutton);
+			}
+		}
 		$yuiSuggest->setInput($textname,$path,"",true);
 		//$yuiSuggest->setInput($textname);
 		$yuiSuggest->setLabel($headline);
