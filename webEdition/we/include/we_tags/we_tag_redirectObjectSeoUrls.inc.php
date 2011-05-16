@@ -116,7 +116,7 @@ function we_tag_redirectObjectSeoUrls($attribs, $content){
 			//we_tag('include', array('type'=>'document', 'id'=>$displayid,'gethttp'=>'0'));
 			exit;
 		} elseif($error404doc) {
-			if(suppresserrorcode){
+			if($suppresserrorcode){
 				header("HTTP/1.0 200 OK", true,200);
 				header("Status: 200 OK", true,200);
 			} else {

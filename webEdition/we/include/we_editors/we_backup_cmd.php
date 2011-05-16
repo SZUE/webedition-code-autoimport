@@ -263,8 +263,10 @@
 
 								if(top.busy.setProgressText) top.busy.setProgressText("current_description","'.$l_backup["finished"].'");
 								if(top.busy.setProgress) top.busy.setProgress(100);
-								top.body.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&step=2";
-								top.checker.location = "/webEdition/html/blank.html";
+								//top.body.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&amp;step=2";
+								top.body.setLocation("/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&amp;step=2");
+								//top.checker.location = "/webEdition/html/blank.html";
+								top.checker.setLocation("/webEdition/html/blank.html");
 							</script>
 							';
 
@@ -373,7 +375,9 @@
 											}
 
 											top.cmd.location="/webEdition/we/include/we_editors/we_backup_cmd.php?cmd=import";
-											top.checker.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=checker";
+											//top.cmd.setLocation("/webEdition/we/include/we_editors/we_backup_cmd.php?cmd=import");
+											//top.checker.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=checker";
+											top.checker.setLocation("/webEdition/we/include/we_editors/we_recover_backup.php?pnt=checker");
 
 								}
 
