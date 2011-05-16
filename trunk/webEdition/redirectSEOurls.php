@@ -126,7 +126,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 
 		exit;
 	} elseif($error404doc) {
-		if(suppresserrorcode){
+		if($suppresserrorcode){
 			header("HTTP/1.0 200 OK", true,200);
 			header("Status: 200 OK", true,200);
 		} else {
