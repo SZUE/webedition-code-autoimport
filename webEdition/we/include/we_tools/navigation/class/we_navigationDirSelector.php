@@ -475,7 +475,3 @@ function selectFile(id){
 
 
 }
-
-
-
-?>
