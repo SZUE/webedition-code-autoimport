@@ -211,8 +211,10 @@ function numfom2($result){
 	}else if($numberformat=="swiss"){
 	    $result=number_format($result,2,".","'");
 	}
-	$result = rtrim($result,'.00');
-	$result = rtrim($result,',00');
+  $tmp=substr($result,-3);
+  if($tmp==',00'||$tmp=='.00'){
+    $result=substr($result,0,-3);
+  }
 	return $result;
 }
 if (isset($_REQUEST['we_cmd'][0])) {
