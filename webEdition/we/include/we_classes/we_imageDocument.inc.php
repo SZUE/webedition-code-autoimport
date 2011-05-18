@@ -556,7 +556,7 @@ class we_imageDocument extends we_binaryDocument {
 
 			$filter = array('filesize','type','id','showcontrol','thumbnail','href','longdescid','showimage', 'showinputs','listviewname','parentid','startid');   //  dont use these array-entries
 
-			if (defined(HIDENAMEATTRIBINWEIMG_DEFAULT) && HIDENAMEATTRIBINWEIMG_DEFAULT){
+			if (defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';
 			}
 
