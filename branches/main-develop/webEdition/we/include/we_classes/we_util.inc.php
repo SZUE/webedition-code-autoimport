@@ -100,10 +100,7 @@ class we_util{
 	* @param mixed number
 	*/
 	function cleanNewLine($string){
-		$string = str_replace("\r\n","\n",$string);
-		$string = str_replace("\n\r","\n",$string);
-		$string = str_replace("\r","\n",$string);
-		return $string;
+		return str_replace("\r","\n",str_replace("\r\n","\n",str_replace("\n\r","\n",$string)));
 	}
 
 

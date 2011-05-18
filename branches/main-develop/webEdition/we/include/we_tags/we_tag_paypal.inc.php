@@ -317,7 +317,7 @@ switch ($_GET['action']) {
 		 					print " null ";
 						 }
 							 */
-		$p->add_field('shipping_1', $shippingFee);
+		$p->add_field('shipping_1', round($shippingFee,2));
 		$p->add_field('upload', 1);
 
 

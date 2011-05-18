@@ -54,13 +54,13 @@ abstract class DB_WE_abstract {
 	/** Connects to the database, which this is done by the constructor
 	 * 
 	 */
-	abstract protected function connect($Database, $Host, $User, $Password);
+	abstract protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD);
 	/** internal query
 	 * @param $Query_String string the sql statement
 	 * @param $unbuffered bool if this query is executed buffered or unbuffered
 	 * @return int a query_id
 	 */
-	abstract protected function _query($Query_String,$unbuffered);
+	abstract protected function _query($Query_String,$unbuffered = false);
 	/** internal free function*/
 	abstract protected function _free();
 	/** internal get last error
@@ -74,7 +74,7 @@ abstract class DB_WE_abstract {
 	/** internal seek to a specific position in result-set
 	 * @return bool if seek was successfull
 	 */
-	abstract protected function _seek($pos);
+	abstract protected function _seek($pos=0);
 	/** internal fetch the data from DB
 	 * @param $resultType int (MYSQL_BOTH,MYSQL_ASSOC,MYSQL_NUM)
 	 * @return array depending on resulttype

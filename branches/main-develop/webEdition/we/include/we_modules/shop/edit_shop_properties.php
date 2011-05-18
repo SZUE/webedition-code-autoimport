@@ -126,35 +126,18 @@ function getOrderCustomerData($orderId, $orderData=false, $customerId=false, $st
 }
 
 function getFieldFromOrder($bid,$field) {
-	$query = "
-		SELECT ".$DB_WE->escape($field)."
-		FROM " . SHOP_TABLE . "
-		WHERE IntOrderID=" . abs($_REQUEST['bid']);
-
-	$GLOBALS['DB_WE']->query($query);
-
-	if ($GLOBALS['DB_WE']->next_record()) {
-
-		return $GLOBALS['DB_WE']->f($field);
-	} else {
-		return '';
-	}
+	return f('SELECT '.$DB_WE->escape($field).' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . abs($_REQUEST['bid']),$field,$GLOBALS['DB_WE']);
 }
 
 function updateFieldFromOrder($orderId, $fieldname, $value) {
 
-	$upQuery = '
-		UPDATE ' . SHOP_TABLE . '
-		SET ' . $DB_WE->escape($fieldname) . '="' . $DB_WE->escape($value) . '"
-		WHERE IntOrderID=' . abs($_REQUEST['bid']);
+	$upQuery = 'UPDATE ' . SHOP_TABLE . ' SET ' . $DB_WE->escape($fieldname) . '="' . $DB_WE->escape($value) . '"WHERE IntOrderID=' . abs($_REQUEST['bid']);
 
 	return ($GLOBALS['DB_WE']->query($upQuery)?true:false);
 }
 
 // config
-$DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'");
-	$DB_WE->next_record();
-	$feldnamen = explode("|",$DB_WE->f("strFelder"));
+	$feldnamen = explode("|",f("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname = 'shop_pref'","strFelder",$DB_WE));
 
 		$waehr="&nbsp;".htmlspecialchars($feldnamen[0]);
 		$dbTitlename="shoptitle";
@@ -258,8 +241,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				$DB_WE->query("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($_REQUEST["bid"]));
 				$DB_WE->next_record();
 
-				$sql="
-					INSERT INTO ".SHOP_TABLE."
+				$sql='INSERT INTO '.SHOP_TABLE."
 						(IntArticleID,IntQuantity,Price,IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type,strSerial,strSerialOrder)
 					VALUES
 						(\"$id\", \"" . $_REQUEST["anzahl"] . "\",\"" . $preis . "\", \"" . $DB_WE->f("IntOrderID") . "\", \"".$DB_WE->f("IntCustomerID")."\",\"".$DB_WE->f("DateOrder")."\",\"".$DB_WE->f("DateShipping")."\",\"".$DB_WE->f("Datepayment")."\",\"".$DB_WE->f("IntPayment_Type")."\",'" . addslashes(serialize($serialDoc)) . "', '$_strSerialOrder')";
@@ -283,18 +265,15 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			$searchBut = $we_button->create_button('search', "javascript:searchArticles();");
 
 			// first get all shop documents
-			$query = '
-				SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId
-				FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE . '
-				WHERE ' . FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID
+			$query = 'SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE . 
+				' WHERE ' . FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID
 					AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
 					AND ' . LINK_TABLE . '.Name = "shoptitle"
 					AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates"
 			';
 
 			if ( isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ) {
-				$query .= '
-					AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $DB_WE->escape($_REQUEST['searchArticle']) . '%"';
+				$query .= ' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $DB_WE->escape($_REQUEST['searchArticle']) . '%"';
 			}
 
 			$DB_WE->query($query);
@@ -362,8 +341,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			// determine which articles should be shown >>>
 
 
-			print '
-	<script type="text/javascript">
+			print '<script type="text/javascript">
 		self.focus();
 
 		function selectArticle(articleInfo) {
