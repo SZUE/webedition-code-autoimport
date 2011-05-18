@@ -587,7 +587,11 @@ class we_imageDocument extends we_binaryDocument {
 			/********************************************************/
 
 			if (isset($attribs['only'])) {
-				$this->html = $attribs[$attribs['only']];
+				if (array_key_exists($attribs['only'], $attribs)) {
+					$this->html = $attribs[$attribs['only']];
+				} else {
+					$this->html = '';
+				}
 				return $this->html;
 			} else if (isset($attribs['pathonly']) && $attribs['pathonly']) {
 				$this->html = $attribs['src'];
