@@ -142,7 +142,11 @@ class we_util_Mailer extends Zend_Mail {
 					}
 					else {
 						$_sender = $this->parseEmailUser($sender);
-						$tr = new Zend_Mail_Transport_Sendmail('-f'.$_sender['email']);
+						if (isset($_sender['email']) && $_sender['email']!=''){
+							$tr = new Zend_Mail_Transport_Sendmail('-f'.$_sender['email']);
+						} else {
+							$tr = new Zend_Mail_Transport_Sendmail();
+						}
 					}
 					Zend_Mail::setDefaultTransport($tr);
 					break;
