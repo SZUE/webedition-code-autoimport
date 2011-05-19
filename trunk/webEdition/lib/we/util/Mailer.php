@@ -209,12 +209,21 @@ class we_util_Mailer extends Zend_Mail {
 	}
 
 	public function parseEmailUser($user) {
-		if (preg_match("/<(.)*>/", $user, $_user)) {
-			$email = substr($_user[0], 1, strpos($_user[0], ">") - 1);
-			$name = substr($user, 0, strpos($user, "<"));
+		if(is_array($user) && isset($user['email'])){
+			$email = trim($user['email']);
+			if (isset($user['name'])){
+				$name = $user['name'];
+			} else {
+				$name = "";
+			}
 		} else {
-			$email = $user;
-			$name = "";
+			if (preg_match("/<(.)*>/", $user, $_user)) {
+				$email = substr($_user[0], 1, strpos($_user[0], ">") - 1);
+				$name = substr($user, 0, strpos($user, "<"));
+			} else {
+				$email = $user;
+				$name = "";
+			}
 		}
 		return array("email" => trim($email), "name" => trim($name));
 	}
