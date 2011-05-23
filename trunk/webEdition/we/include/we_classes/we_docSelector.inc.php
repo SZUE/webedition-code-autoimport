@@ -118,7 +118,7 @@ class we_docSelector extends we_dirSelector {
 			$_db = new DB_WE();
 			$_cid = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE PATH='".escape_sql_query($_path)."'", "ID", $_db);
 			$this->titleName = f("SELECT DefaultTitle FROM " .OBJECT_TABLE . " WHERE ID='".abs($_cid)."'","DefaultTitle", $_db);
-			if($this->titleName) {
+			if($this->titleName && strpos($this->titleName, '_')) {
 				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".abs($this->dir));
 				while ($_db->next_record()) {
 					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
