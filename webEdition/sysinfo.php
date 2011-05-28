@@ -173,7 +173,7 @@
 				if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 			}
 			
-			if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
+			if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//spï¿½ter ODER mysqli
 				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
 			} else { $phpextensionsSDK_DB= getWarning($_sysinfo["sdk_db warning"],'-');	}
 		} else {
