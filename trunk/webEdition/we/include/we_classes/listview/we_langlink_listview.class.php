@@ -76,8 +76,11 @@ class we_langlink_listview extends listviewBase {
 		
 
 		$_languages = $GLOBALS['weFrontendLanguages'];
-		if(!$this->showself){
-			unset($_languages[$this->ownlanguage]);	
+		
+		if(isset($_languages[$this->ownlanguage])){ unset($_languages[$this->ownlanguage]);	}
+		
+		if($this->showself && !isset($_languages[$this->ownlanguage]) ){
+			
 		}
 		if(stripos($this->order," desc") !== false){//was #3849
 			$this->order = str_ireplace(" desc","",$this->order);
@@ -91,7 +94,7 @@ class we_langlink_listview extends listviewBase {
 			if ($this->desc){krsort($_languages);}else{ksort($_languages);}
 		}
 		
-		if($this->id){
+		if($this->id && ($this->linkType=='tblFile' || $this->linkType=='tblObjectFile') ){
 			foreach ($_languages as $langkey => $lang){
 				if ($this->linkType=='tblFile'){ 
 					$q= "SELECT ".LANGLINK_TABLE.".DID as DID, ".LANGLINK_TABLE.".DLocale as DLocale, ".LANGLINK_TABLE.".LDID as LDID, ".LANGLINK_TABLE.".Locale as Locale, ".LANGLINK_TABLE.".IsFolder as IsFolder, ".LANGLINK_TABLE.".IsObject as IsObject, ".LANGLINK_TABLE.".DocumentTable as DocumentTable, ".FILE_TABLE.".Path as Path, ".FILE_TABLE.".ParentID as ParentID  FROM ". LANGLINK_TABLE . "," . FILE_TABLE ." WHERE ".LANGLINK_TABLE.".Locale='".$langkey."' AND ".LANGLINK_TABLE.".LDID = ".FILE_TABLE.".ID AND ".FILE_TABLE.".Published >0 AND ".LANGLINK_TABLE.".DocumentTable='".$this->linkType."' AND ".LANGLINK_TABLE.".DID='".$this->id."'";
@@ -109,8 +112,20 @@ class we_langlink_listview extends listviewBase {
 				} else {
 					$this->getParentData($this->id,$langkey);
 				}
+				
 			}
-			
+			if($this->showself && !isset($_languages[$this->ownlanguage]) ){
+				$dt = array('DID'=>$this->id,'DLocale'=> $this->ownlanguage,'LDID'=>$this->id,'Locale'=> $this->ownlanguage,'DocumentTable'=> (($this->linkType=='tblFile')?'tblFile':'tblObjectFile'), 'IsObject'=>(($this->linkType=='tblFile')?'0':'1'),'IsFolder'=>0);
+				if($this->linkType=='tblFile'){
+					$dt['Path']= id_to_path($this->id,FILE_TABLE);
+				} else {
+					$dt['Path']= id_to_path($this->id,OBJECT_FILES_TABLE);
+					$row=getHash("SELECT Url, TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->id)."'",$this->DB_WE);
+					$dt['Url']= $row['Url'];
+					$dt['TriggerID']= $row['TriggerID'];
+				}
+				$this->foundlinks[]=$dt;
+			}
 			if($this->order == "random()"){
 				shuffle($this->foundlinks);
 			}
