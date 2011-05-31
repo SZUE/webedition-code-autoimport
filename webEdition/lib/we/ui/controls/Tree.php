@@ -501,6 +501,12 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 				YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init); 
 
 			})();
+			function tree_' . $this->_id . '_Init() { 
+					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("'.$this->_id.'");								
+					'.$this->getNodesJS().'
+							
+					tree_' . $this->_id . '.draw(); 
+				}
 		';
 		
 		$page = we_ui_layout_HTMLPage::getInstance();
