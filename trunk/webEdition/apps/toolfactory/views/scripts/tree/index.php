@@ -48,6 +48,7 @@ $js = '
 	//var weTree = new we_ui_controls_Tree("' . $tree->getId() . '"); YUI 2.5
 	var weTree; // YUI 2.8
 	YAHOO.util.Event.addListener(window, "load", function() {
+		tree_' . $tree->getId() . '_Init();
 		tree_' . $tree->getId() . '.subscribe("labelClick", function(node) { 
 			weTree.unmarkAllNodes();
 			weTree.markNode(node.data.id, true);
