@@ -59,13 +59,14 @@ function we_tag_include($attribs, $content) {
 		if (!(($id && ($GLOBALS['we_doc']->ContentType != 'text/webedition' || $GLOBALS['WE_MAIN_DOC']->ID != $id )) || $path != '' )) {
 			return '';
 		}
+		$db = new DB_WE();
 		if ($id) {
 			$__id__ = ($id == '' ? '' : $id);
-			$GLOBALS['DB_WE']->query('SELECT Path,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id)).' AND Published>0';
-			if($GLOBALS['DB_WE']->next_record()===false){
+			$db->query('SELECT Path,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id)).' AND Published>0';
+			if($db->next_record()===false){
 				return '';
 			}
-			$realPath = $GLOBALS['DB_WE']->f('Path');
+			$realPath = $db->f('Path');
 		} else {
 			$realPath = $path;
 		}
