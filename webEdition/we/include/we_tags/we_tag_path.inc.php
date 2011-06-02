@@ -24,7 +24,7 @@ function we_tag_path($attribs, $content){
 	$dirfield = we_getTagAttribute("dirfield", $attribs, $field);
 	$index = we_getTagAttribute("index", $attribs);
 	$htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true);
-
+	$fieldforfolder =we_getTagAttribute("fieldforfolder", $attribs,'',true);
 	$docAttr = we_getTagAttribute("doc", $attribs);
 	$doc = we_getDocForTag($docAttr, true);
 
@@ -66,6 +66,11 @@ function we_tag_path($attribs, $content){
 		if ($fileID) {
 			$show = f(
 					"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($fileID)."' AND " . LINK_TABLE . ".Name='".escape_sql_query($dirfield)." ' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",
+					"Dat",
+					$db);
+			if (!$show && $fieldforfolder)
+				$show = f(
+					"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($fileID)."' AND " . LINK_TABLE . ".Name='".escape_sql_query($field)." ' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",
 					"Dat",
 					$db);
 			if (!$show)
