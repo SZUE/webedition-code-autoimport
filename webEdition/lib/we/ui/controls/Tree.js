@@ -50,10 +50,15 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * adds a node
 	 *
-	 * @param integer id 
-	 * @param string text
-	 * @param string contentType
-	 * @return integer ParentId
+	 * @param id integer
+	 * @param text string
+	 * @param contentType string
+	 * @param parentId 
+	 * @param published 
+	 * @param status 
+	 * 
+	 * @return parentId integer
+	 * 
 	 */
 	 
 	this.addNode = function(id, text, contentType, parentId, published, status) {
@@ -96,8 +101,8 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * moves a node
 	 *
-	 * @param integer id 
-	 * @param integer newParentId
+	 * @param id integer
+	 * @param newParentId integer
 	 */
 	this.moveNode = function(id, newParentId) {
 
@@ -122,8 +127,8 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * marks a node
 	 *
-	 * @param integer id 
-	 * @param boolean mark
+	 * @param id integer
+	 * @param mark boolean
 	 */
 	this.markNode = function(id, mark) {
 
@@ -146,8 +151,8 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * marks a node as published/unpublished
 	 *
-	 * @param integer id 
-	 * @param boolean mark
+	 * @param id integer
+	 * @param status boolean
 	 */
 	this.markNodeStatus = function(id, status) {
 		var mNodeSpan = document.getElementById('spanText_'+this.id+'_'+id+'');
@@ -170,8 +175,8 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * marks a node as published/unpublished
 	 *
-	 * @param integer id 
-	 * @param boolean mark
+	 * @param id integer
+	 * @param mark boolean
 	 */
 	this.markNodeP = function(id, mark) {
 		var mNodeSpan = document.getElementById('spanText_'+this.id+'_'+id+'');
@@ -204,8 +209,8 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * renames a node
 	 *
-	 * @param integer id 
-	 * @param string text
+	 * @param id integer
+	 * @param text string
 	 */
 	this.renameNode = function(id, text) {
 		
@@ -222,7 +227,7 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * removes a node
 	 *
-	 * @param integer id 
+	 * @param id integer
 	 */
 	this.removeNode = function(id) {
 
@@ -237,7 +242,7 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * return the parentId of a node
 	 *
-	 * @param integer id 
+	 * @param id integer
 	 */
 	this.getParentId = function(id) {
 
@@ -258,7 +263,7 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * return the label of a node
 	 *
-	 * @param integer id 
+	 * @param id integer
 	 */
 	this.getLabel = function(id) {
 
@@ -271,7 +276,7 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * return the status of a node
 	 *
-	 * @param integer id 
+	 * @param id integer
 	 */
 	this.getStatus = function(id) {
 
@@ -284,7 +289,7 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * return the published status of a node
 	 *
-	 * @param integer id 
+	 * @param id integer
 	 */
 	this.getPublished = function(id) {
 
@@ -297,7 +302,7 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * check if id exists in tree
 	 *
-	 * @param integer id 
+	 * @param id integer
 	 * return boolean
 	 */
 	this.idExists = function(id) {
@@ -314,7 +319,7 @@ function we_ui_controls_Tree(treeId)
 	/**
 	 * check if label exists in tree
 	 *
-	 * @param integer id 
+	 * @param label 
 	 * return boolean
 	 */
 	this.labelExists = function(label) {
