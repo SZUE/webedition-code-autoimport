@@ -151,4 +151,3 @@ class weShopVat {
 		$this->standard = $standard;
 	}
 }
-?>

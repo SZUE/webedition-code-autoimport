@@ -23,8 +23,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weV
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/versions.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/customerFilter.inc.php');
-include_once('Text/Diff.php');
-include_once('Text/Diff/Renderer/inline.php');
+@include_once('Text/Diff.php');
+@include_once('Text/Diff/Renderer/inline.php');
 
 protect();
 
