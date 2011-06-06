@@ -371,14 +371,13 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 		} else { //confirmID wurde �bermittelt, eine Best�tigung liegt also vor
 			$emailwritten = 0;
 			if($customer) {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php");
+				include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
 				$__db = new DB_WE();
-				$__query = "SELECT ID FROM " . CUSTOMER_TABLE . " WHERE " . $_customerFieldPrefs['customer_email_field'] . "='" . $__db->escape($f["subscribe_mail"]) . "'";
-				$__db->query($__query);
-				if(!$__db->num_rows()) {
+				$__id=f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"','ID',$__db);
+				if($__id=='') {
 					$GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"] = substr(md5(time()),4,8);
 					$GLOBALS["WE_NEWSUBSCRIBER_USERNAME"] = $f["subscribe_mail"];
-					$fields = "(`Username`, `Password`, `" .
+					$fields = "(`Username`, `Text`,`Password`, `" .
 								$_customerFieldPrefs['customer_salutation_field'] . "`, `" .
 								$_customerFieldPrefs['customer_title_field'] . "`, `" .
 								$_customerFieldPrefs['customer_firstname_field'] . "`, `" .
@@ -388,6 +387,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 								" `MemberSince`, `IsFolder`, `Icon`)";
 
 					$values = "'" . $__db->escape($f["subscribe_mail"]) . "'";
+					$values.= ", '" . $__db->escape($f["subscribe_mail"]) . "'";
 					$values.= ", '" . $__db->escape($GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"]) . "'";
 					$values.= ", '" . $__db->escape($f["subscribe_salutation"]) . "'";
 					$values.= ", '" . $__db->escape($f["subscribe_title"]) . "'";
@@ -398,13 +398,13 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					$values.= ", '" . time() . "'";
 					$values.= ", 0";
 					$values.= ", 'customer.gif'";
-					$__db->query("INSERT INTO " . CUSTOMER_TABLE . " $fields VALUES($values)");
+					$__db->query('INSERT INTO ' . CUSTOMER_TABLE . " $fields VALUES($values)");
 
 				}
 
 				$__set = "";
-				$__db->query("SELECT Value FROM " . CUSTOMER_ADMIN_TABLE . " WHERE Name='FieldAdds'");
-				$__customerFields = $__db->next_record() ? unserialize($__db->f('Value')) : "";
+				$__customerFields=f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"','Value',$__db);
+				$__customerFields = $__customerFields ? unserialize($__customerFields) : '';
 				$updateCustomerFields = false;
 				foreach ($abos as $abo) {
 					if (isset($__customerFields[$abo]["default"]) && !empty($__customerFields[$abo]["default"])) {
