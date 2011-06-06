@@ -23,6 +23,10 @@
  */
 
 	$id = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
+	if (isset($_REQUEST["we_cmd"][2]) && strpos($_REQUEST["we_cmd"][2],'WECMDENC_')!==false){$_REQUEST["we_cmd"][2]=base64_decode( substr($_REQUEST["we_cmd"][2],9));}
+	if (isset($_REQUEST["we_cmd"][3]) && strpos($_REQUEST["we_cmd"][3],'WECMDENC_')!==false){$_REQUEST["we_cmd"][3]=base64_decode( substr($_REQUEST["we_cmd"][3],9));}
+	if (isset($_REQUEST["we_cmd"][4]) && strpos($_REQUEST["we_cmd"][4],'WECMDENC_')!==false){$_REQUEST["we_cmd"][4]=base64_decode( substr($_REQUEST["we_cmd"][4],9));}
+
 	$JSIDName = stripslashes(isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "");
 	$JSTextName = stripslashes(isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : "");
 	$JSCommand = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : "";

@@ -257,15 +257,21 @@ class weShopStatusMails {
 
 
 		if ($docID){
-			$phpmail = new we_util_Mailer();
+			
 
 			$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
 
 			if ($subject==''){$subject='no subject given';}
 			if ($recipientOK  && $subject!='' && $this->EMailData['address']!='' && we_check_email($this->EMailData['address']) ){
-				$phpmail->setSubject($subject);
+				if (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $email) {
+           			$from=$this->EMailData['address'];
+				} else {
+					$from['email']=$this->EMailData['address'];
+					$from['name']=$this->EMailData['name'];
+				}
+				$phpmail = new we_util_Mailer('',$subject,$from);
 				$phpmail->setIsEmbedImages(true);
-				$phpmail->setFrom($this->EMailData['address'],$this->EMailData['name']);
+				
 				$phpmail->addHTMLPart($codes);
 				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
 				$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField']!='' && isset( $cdata[$this->EMailData['titleField']]) &&  $cdata[$this->EMailData['titleField']] !='' ) ? $cdata[$this->EMailData['titleField']].' ': '').  $cdata['Forename'].' '.$cdata['Surname'] );

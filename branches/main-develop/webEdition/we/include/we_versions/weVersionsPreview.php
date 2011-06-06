@@ -24,8 +24,8 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersions.class.inc.php');
-include_once('Text/Diff.php');
-include_once('Text/Diff/Renderer/inline.php');
+@include_once('Text/Diff.php');
+@include_once('Text/Diff/Renderer/inline.php');
 
 protect();
 

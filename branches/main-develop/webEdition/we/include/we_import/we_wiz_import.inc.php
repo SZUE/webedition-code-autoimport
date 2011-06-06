@@ -395,7 +395,10 @@ class we_wizard_import extends we_wizard {
 			"	}\n" .
 			"}\n";
 
-		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
+		//javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)"
+		$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[fserver]'].value");
+		$wecmdenc4= '';
+		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
 		$inputLServer = htmlTextInput("v[fserver]", 30, (isset($v["fserver"])? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = htmlFormElementTable($inputLServer, "", "left", "defaultfont", getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -625,10 +628,14 @@ class we_wizard_import extends we_wizard {
 			$tbl_extra->setCol(0, 0,null, we_forms::checkboxWithHidden((isset($v["import_docs"]) && $v["import_docs"])? true : false, "v[import_docs]", g_l('import',"[import_docs]"),false,"defaultfont","toggle('doc_table')"));
 
 			$rootDirID = get_def_ws();
+			//javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'".FILE_TABLE."','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[doc_dir_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[doc_dir]\'].value','','','$rootDirID')
+			$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[doc_dir_id]'].value");
+			$wecmdenc2= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[doc_dir]'].value");
+			$wecmdenc3= '';
 
 			$btnDocDir = $we_button->create_button(
 				"select",
-				"javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'".FILE_TABLE."','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[doc_dir_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[doc_dir]\'].value','','','$rootDirID')"
+				"javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','','$rootDirID')"
 			);
 			$yuiSuggest =& weSuggest::getInstance();
 			$yuiSuggest->setAcId("DocPath");
@@ -661,9 +668,13 @@ class we_wizard_import extends we_wizard {
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
 			$tbl_extra->setCol(2, 0, array("colspan"=>"2"), we_forms::checkboxWithHidden((isset($v["import_templ"]) && $v["import_templ"]) ? true : false, "v[import_templ]", g_l('import',"[import_templ]"),false,"defaultfont","toggle('tpl_table')"));
+			//javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'".TEMPLATES_TABLE."','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[tpl_dir_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[tpl_dir]\'].value','','','$rootDirID')
+			$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[tpl_dir_id]'].value");
+			$wecmdenc2= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[tpl_dir]'].value");
+			$wecmdenc3= '';
 			$btnDocDir = $we_button->create_button(
 				"select",
-				"javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'".TEMPLATES_TABLE."','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[tpl_dir_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[tpl_dir]\'].value','','','$rootDirID')"
+				"javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'".TEMPLATES_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','','$rootDirID')"
 			);
 
 			$yuiSuggest->setAcId("TemplPath");
@@ -1058,8 +1069,9 @@ function _executeAjaxRequest(aMethod, aUrl, aCallback, aData){
 HTS;
 
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
-
-		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value);"):"";
+		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
+		$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[fserver]'].value");
+		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value);"):"";
 		$inputLServer = htmlTextInput("v[fserver]", 30, (isset($v["fserver"])? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = htmlFormElementTable($inputLServer, "", "left", "defaultfont", getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -1115,7 +1127,12 @@ HTS;
 		}
 		$myid = (isset($v["we_TemplateID"]))? $v["we_TemplateID"] : 0;
 		$path = f("SELECT Path FROM ".$DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$DB_WE);
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
+
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_editpage');");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
 		/***********************************************************************/
 		$yuiSuggest =& weSuggest::getInstance();
 
@@ -1172,10 +1189,13 @@ HTS;
 		$docCats->setCol(0, 1, array(), $docCategories);
 		$docCats->setCol(1, 0, array(), getPixel(130, 1));
 		$docCats->setCol(1, 1, array(), getPixel(150, 1));
-
+		//javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_path]\'].value','','','0')
+		$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_id]'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_path]'].value");
+		$wecmdenc3= '';
 		$storeToButton = $we_button->create_button(
 			"select",
-			"javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_path]\'].value','','','0')"
+			"javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','0')"
 		);
 
 		$yuiSuggest->setAcId("DirPath");
@@ -1723,7 +1743,10 @@ HTS;
 
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
 		/******************************************************************************************************************/
-		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript:we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
+		//javascript:we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[fserver]'].value");
+		$wecmdenc4= '';
+		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
 		$inputLServer = htmlTextInput("v[fserver]", 30, (isset($v["fserver"])? $v["fserver"] : "/"), 255, "readonly onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = htmlFormElementTable($inputLServer, "", "left", "defaultfont", getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -1979,10 +2002,13 @@ function _executeAjaxRequest(aMethod, aUrl, aCallback, aData){
 
 HTS;
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
+		$wecmdenc1= "WECMDENC_".base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_id]'].value");
+		$wecmdenc2= "WECMDENC_".base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_path]'].value");
+		$wecmdenc3= "";
 
 		$storeToButton = $we_button->create_button(
 			"select",
-			"javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'".FILE_TABLE."','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_path]\'].value','','','0')"
+			"javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','','0')"
 		);
 
 		$DB_WE->query("SELECT ID,DocType FROM ".DOC_TYPES_TABLE." Order By DocType");
@@ -2019,7 +2045,11 @@ HTS;
 		}
 		$myid = (isset($v["we_TemplateID"]))? $v["we_TemplateID"] : 0;
 		$path = f("SELECT Path FROM ".$DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$DB_WE);
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)
+		$wecmdenc1= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("self.frames['wizbody'].document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_editpage');");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
 
 		$yuiSuggest =& weSuggest::getInstance();
 

@@ -188,7 +188,7 @@ $l_prefs = array(
 		/**
 		 * Languages
 		 */
-		'locale_information' => "Fügen Sie hier alle Sprachen hinzu, für welche Sie eine Webseite mit webEdition erstellen möchten.<br /><br />Diese Einstellung wird für das Glossar und die Rechtschreibprüfung einzelner Dokumente verwendet.",
+		'locale_information' => "Fügen Sie hier alle Sprachen (Locales) hinzu, für welche Sie eine Webseite mit webEdition erstellen möchten.<br />Sie können dann das Locale den einzelnen Dokumenten/Objekten und Verzeichnissen zuweisen.<br />Diese Einstellung wird für das Glossar und die Rechtschreibprüfung einzelner Dokumente verwendet, steht aber auch z.B. für listviews als Selektionskriterium zur Verfügung",
 		'locale_languages' => "Sprache",
 		'locale_countries' => "Land",
 		'locale_add' => "Sprache hinzufügen",
@@ -196,8 +196,14 @@ $l_prefs = array(
 		'language_already_exists' => "Diese Sprache wurde bereits angelegt.",
 		'language_country_missing' => "Bitte wählen Sie auch ein Land aus",
 		'add_dictionary_question' => "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?",
-		'langlink_support' => "Automatische Sprachverlinkung",
-		'langlink_support_backlinks' => "Erzeuge automatisch die Backlinks",
+		'langlink_headline' => "Unterstützung für die Verlinkung zwischen verschiedenen Sprachen",
+		'langlink_information' => "Mit dieser Option können Sie im Backend die verschiedenen korrespondierenden Sprachversionen eines Dokumentes/Objektes verwalten und diese Dokumente zuweisen, aufrufen usw.<br/>Eine Ausgabe im Frontend erfolgt dann über eine listview type=languagelink.<br/><br/>Für Verzeichnisse kann dann ein <b>Dokument</b> in der jeweiligen Sprache gewählt werden, auf das zurückgegriffen wird, wenn einzelnen Dokumenten im Verzeichnis selbst kein korrespondierendes Sprachdokument zugewiesen wurde.",
+		'langlink_support' => "Aktiviert",
+		'langlink_support_backlinks' => "Erzeuge automatisch die Rücklinks",
+		'langlink_support_backlinks_information' => "Rücklinks können für Dokumente (nicht Verzeichnisse!) automatisch generiert werden. Dabei sollte das verlinkte Dokument nicht in einem Editor-Tab geöffnet sein!",
+		'langlink_support_recursive' => "Erzeuge die Sprachenlinks rekursiv",
+		'langlink_support_recursive_information' => "Recursives Setzen der Sprachlinks generiert für Dokumente (nicht Verzeichnisse!) alle verfügbaren Links und versucht den Sprachenkreis schnellstmöglich zu schließen. Dabei sollten die verlinkten Dokument nicht in einem Editor-Tab geöffnet sein!",
+
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */

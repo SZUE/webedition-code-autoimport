@@ -324,7 +324,7 @@ class weBackupWizard{
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=body","name"=>"body","scrolling"=>"auto","noresize"=>null));
 		$frameset->addFrame(array("src"=>$this->frameset,"name"=>"busy","scrolling"=>"no"));
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=cmd","name"=>"cmd","scrolling"=>"no","noresize"=>null));
-		$frameset->addFrame(array("src/webEdition/html/blank.html","name"=>"checker","scrolling"=>"no","noresize"=>null));
+		$frameset->addFrame(array("src"=>"/webEdition/html/blank.html","name"=>"checker","scrolling"=>"no","noresize"=>null));
 
 		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET ."\n";
 		$body=$frameset->getHtmlCode()."\n".we_baseElement::getHtmlCode($noframeset);
@@ -360,6 +360,9 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>g_l('backup',"[save_question]"),"space"=>0,"noline"=>1));
 
 		$js=we_htmlElement::jsElement('
+			function setLocation(loc){
+				location.href=loc;
+			}
 			function startStep(){
 				self.focus();
 				top.busy.location="'.$this->frameset.'?pnt=busy&step=1";
@@ -388,6 +391,9 @@ class weBackupWizard{
 		$parts=array();
 
 		$js=we_htmlElement::jsElement('
+			function setLocation(loc){
+				location.href=loc;
+			}
 			function we_submitForm(target,url) {
 				var f = self.document.we_form;
 				f.target = target;
@@ -456,7 +462,11 @@ class weBackupWizard{
 		}
 		else {
 
-			$js='extra_files=new Array();
+			$js='
+				function setLocation(loc){
+					location.href=loc;
+				}
+				extra_files=new Array();
 				extra_files_desc=new Array();
 			';
 			$select=new we_htmlSelect(array("name"=>"backup_select","size"=>"7","style"=>"width: 600px;"));
@@ -791,6 +801,9 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[finished_success]"),2,600),"space"=>0,"noline"=>1));
 
 		$js=we_htmlElement::jsElement('
+			function setLocation(loc){
+				location.href=loc;
+			}
 			function stopBusy() {
 				top.busy.location="'.$this->frameset.'?pnt=busy&step=5";
 				if(top.opener.top.header)
@@ -963,9 +976,15 @@ class weBackupWizard{
 		$js=we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
 		$js.=weBackupWizard::getJSDep("export",$docheck,$doclick);
 		$js.=we_htmlElement::jsElement('
+			function setLocation(loc){
+				location.href=loc;
+			}
 			function startStep(){
 				self.focus();
 				top.busy.location="'.$this->frameset.'?pnt=busy&step=1";
+			}
+			function setLocation(loc){
+				location.href=loc;
 			}
 		');
 
@@ -1051,6 +1070,9 @@ class weBackupWizard{
 
 		$do_import_after_backup = (isset($_SESSION['weBackupVars']['options']['do_import_after_backup']) && $_SESSION['weBackupVars']['options']['do_import_after_backup']) ? 1 : 0;
 		$js=we_htmlElement::jsElement('
+			function setLocation(loc){
+				location.href=loc;
+			}
 			function startStep(){
 				self.focus();
 				top.busy.location="'.$this->frameset.'?pnt=busy&do_import_after_backup='.$do_import_after_backup.'&step=3";
@@ -1232,6 +1254,9 @@ class weBackupWizard{
 				switch($step){
 					case 1:
 						$head.=we_htmlElement::jsElement('
+								function setLocation(loc){
+									location.href=loc;
+								}
 								function doExport() {
 									if((!top.body.document.we_form.export_send.checked) && (!top.body.document.we_form.export_server.checked)) {
 										' . we_message_reporting::getShowMessageCall(g_l('backup',"[save_not_checked]"), WE_MESSAGE_WARNING) . '
@@ -1273,7 +1298,9 @@ class weBackupWizard{
 					case 1:
 						$head .= "
 						<script type=\"text/javascript\">
-
+						function setLocation(loc){
+							location.href=loc;
+						}
 						function press_yes() {
 
 							var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
@@ -1365,6 +1392,9 @@ class weBackupWizard{
 					case "backup":
 						if(!is_writable($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp")){
 							print we_htmlElement::jsElement('
+												function setLocation(loc){
+													location.href=loc;
+												}
 												top.busy.location="'.$this->frameset.'?pnt=busy";
 												' . we_message_reporting::getShowMessageCall( sprintf(g_l('backup',"[cannot_save_tmpfile]"),BACKUP_DIR), WE_MESSAGE_ERROR) . '
 
@@ -1457,6 +1487,9 @@ class weBackupWizard{
 					break;
 					case "rebuild":
 						print we_htmlElement::jsElement('
+							function setLocation(loc){
+								location.href=loc;
+							}
 							top.opener.top.openWindow("'.WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText='.g_l('backup',"[finished_success]").'","rebuildwin",-1,-1,600,130,0,true);
 							setTimeout("top.close();",300);
 						');
@@ -1464,6 +1497,9 @@ class weBackupWizard{
 					case "import":
 						if(!is_writable($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp")){
 							print we_htmlElement::jsElement('
+												function setLocation(loc){
+													location.href=loc;
+												}
 												top.busy.location="'.$this->frameset.'?pnt=busy";
 												' . we_message_reporting::getShowMessageCall( sprintf(g_l('backup',"[cannot_save_tmpfile]"),BACKUP_DIR), WE_MESSAGE_ERROR ) . '
 
@@ -1787,6 +1823,9 @@ class weBackupWizard{
  		$_retry = 5;
 
  		return we_htmlElement::jsElement('
+			function setLocation(loc){
+				location.href=loc;
+			}
  			var reload = 0;
  			function reloadFrame(){
  				top.cmd.location="/webEdition/we/include/we_editors/we_backup_cmd.php?cmd='.$cmd.'&reload=1";

@@ -28,12 +28,12 @@ function we_tag_linklist($attribs, $content){
 	$content = str_replace("we:link", "we_:_link", $content);
 	$foo = attributFehltError($attribs, "name", "linklist");
 	if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true);
+		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true,true);
 	} else {
 		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
 	}
 	if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true);
+		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true,true);
 	} else {
 		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
 	}

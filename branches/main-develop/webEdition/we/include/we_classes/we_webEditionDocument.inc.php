@@ -240,7 +240,12 @@ class we_webEditionDocument extends we_textContentDocument {
 		}
 		$myid = $this->TemplateID ? $this->TemplateID : "";
 		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);;opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);;opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
+
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
 		$yuiSuggest->setAcId("Template");
 		$yuiSuggest->setContentType("folder,text/weTmpl");
 		$yuiSuggest->setInput($textname,$path);
@@ -662,7 +667,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 		// Last step is to save the webEdition document
 		$out = we_textContentDocument::we_save($resave);
-		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) ){
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0){
 			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false);
 		}
 		

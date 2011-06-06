@@ -37,5 +37,3 @@ $this->defaultPreviewCode = '<we:navigation navigationname="default" parentid="@
 <ul>
 <we:navigationWrite navigationname="default" />
 </ul>';
-
-?>

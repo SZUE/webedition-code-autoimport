@@ -27,21 +27,101 @@ function we_tag_url($attribs, $content){
 	if ($foo)
 		return $foo;
 	static $urls = array();
+	static $objurls = array();
+	$type=we_getTagAttribute("type", $attribs,'document');
 	$id = we_getTagAttribute("id", $attribs);
-	if (isset($urls[$id])) { // do only work you have never done before
-		return $urls[$id];
+	$triggerid = we_getTagAttribute("triggerid", $attribs,'0');
+	if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
+		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true,true);
+	} else {
+		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
+	}
+	if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
+		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true,true);
+	} else {
+		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
+	}
+	if ($type=='document'){
+		if (isset($urls[$id])) { // do only work you have never done before
+			return $urls[$id];
+		}
+	} else {
+		if (isset($objurls[$id])) { // do only work you have never done before
+			return $objurls[$id];
+		}
 	}
 	if ($id == '0') {
 		$url = "/";
 	} else {
-	    if ($id=='self' || $id=='top'){
+		$urlNotSet=true;
+	    if ( ($id=='self' || $id=='top') && $type=='document'){
 			$doc = we_getDocForTag($id, true); // check if we should use the top document or the  included document
 			$testid = $doc->ID;
-		} else {$testid = $id;}
-		$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($testid)."", new DB_WE());
-		$url = isset($row["Path"]) ? ($row["Path"] . ($row["IsFolder"] ? "/" : "")) : "";
+			if ($id=='top'){//check for object
+			
+				if(isset($GLOBALS['WE_MAIN_DOC']->TableID)){//ein object
+					if (!$triggerid){
+							$triggerid=$GLOBALS['WE_MAIN_DOC']->ID;
+					}
+					$path_parts = pathinfo(id_to_path($triggerid));
+					if ($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url!='' && show_SeoLinks() ){
+						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$GLOBALS['WE_MAIN_DOC']->Url;
+						} else {
+							$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$GLOBALS['WE_MAIN_DOC']->Url;
+						}
+					} else {
+						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+							$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?we_objectID=".$GLOBALS['WE_MAIN_DOC']->OF_ID;
+						} else {
+							$url = $GLOBALS['WE_MAIN_DOC']->Path."?we_objectID=".$GLOBALS['WE_MAIN_DOC']->OF_ID;
+						}
+					}
+					$urlNotSet=false;
+				}
+			}
+		} else {
+			$testid = $id;
+		}
+		if($urlNotSet){
+			if ($type=='document'){
+				$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($testid)."", new DB_WE());
+				$url = isset($row["Path"]) ? ($row["Path"] . ($row["IsFolder"] ? "/" : "")) : "";
+				$path_parts = pathinfo($url);
+				if (show_SeoLinks() && $hidedirindex && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE  && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+					$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
+				} 
+			} else {
+				$row = getHash("SELECT ID,Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=".abs($testid)."", new DB_WE());
+				if (!$triggerid){
+					if ($row['TriggerID']){
+						$triggerid=$row['TriggerID'];
+					} else {
+						$triggerid=$GLOBALS['WE_MAIN_DOC']->ID;
+					}	 
+				}
+				$path_parts = pathinfo(id_to_path($triggerid));
+				if ($objectseourls && $row['Url']!='' && show_SeoLinks() ){
+					if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'. $row['Url'];
+					} else {
+						$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$row['Url'];
+					}
+				} else {
+					if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
+						$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?we_objectID=".$row['ID'];
+					} else {
+						$url = id_to_path($triggerid)."?we_objectID=".$row['ID'];
+					}
+				}
+			}
+		}
 	}
-	$urls[$id] = $url;
+	if ($type=='document'){
+		$urls[$id] = $url;
+	} else {
+		$objurls[$id] = $url;
+	}
 	return $url;
 
 }

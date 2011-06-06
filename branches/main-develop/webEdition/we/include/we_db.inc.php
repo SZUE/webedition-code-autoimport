@@ -497,7 +497,7 @@ abstract class DB_WE_abstract {
 
 // Database wrapper class of webEdition
 if (!defined('DB_CONNECT')){
-	define('DB_CONNECT','-1');
+	define('DB_CONNECT','undefined in we_conf');
 }
 switch(DB_CONNECT){
 	case 'connect':

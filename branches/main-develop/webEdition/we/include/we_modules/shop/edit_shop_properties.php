@@ -170,9 +170,7 @@ function numfom($result){
 }
 
 function numfom2($result){
-	$result = rtrim($numfom($result),'.00');
-	$result = rtrim($result,',00');
-	return $result;
+	return rtrim(rtrim($numfom($result),'.00'),',00');
 }
 if (isset($_REQUEST['we_cmd'][0])) {
 

@@ -112,9 +112,7 @@ function we_tag_paypal($attribs,$content) {
 	  $DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
 
 	//	NumberFormat - currency and taxes
-	$DB_WE->query('SELECT strFelder FROM '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "shop_pref"');
-	$DB_WE->next_record();
-	$feldnamen = explode('|',$DB_WE->f('strFelder'));
+	$feldnamen = explode('|',f('SELECT strFelder FROM '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "shop_pref"','strFelder',$DB_WE));
 	if( isset($feldnamen[0])){  // determine the currency
 		if($feldnamen[0]=='$' || $feldnamen[0]=='USD'){
 			$currency = 'USD';
@@ -131,9 +129,7 @@ function we_tag_paypal($attribs,$content) {
 		$currency = 'EUR';
 	}
 
-	$DB_WE->query('SELECT strFelder FROM '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "payment_details"');
-	$DB_WE->next_record();
-	$formField = explode('|',$DB_WE->f('strFelder'));
+	$formField = explode('|',f('SELECT strFelder FROM '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "payment_details"','strFelder',$DB_WE));
 	if( isset($formField[0])){  // determine the Forename
 		$sendForename = $_SESSION['webuser'][$formField[0]];
 	}

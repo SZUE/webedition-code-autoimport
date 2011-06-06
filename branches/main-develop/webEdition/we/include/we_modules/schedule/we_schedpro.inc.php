@@ -207,8 +207,11 @@ class we_schedpro{
 			} else {
 				$_rootDirID = 0;
 			}
-
-			$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $_rootDirID . "')");
+			//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $_rootDirID . "')
+			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+			$wecmdenc3= 'WECMDENC_'.base64_encode("top.opener._EditorFrame.setEditorIsHot(true);");
+			$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','".$wecmdenc1."','".$wecmdenc2."','".wecmdenc3."','".session_id()."','" . $_rootDirID . "')");
 
 			$yuiSuggest =& weSuggest::getInstance();
 			$yuiSuggest->setAcId("WsDir");

@@ -548,7 +548,12 @@ class we_template extends we_document
 		$myid = $this->MasterTemplateID ? $this->MasterTemplateID : '';
 		$path = f("SELECT Path FROM ".escape_sql_query($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		$alerttext=str_replace("'","\\\\\\'",g_l('weClass',"[same_master_template]"));
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) . "opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';}','".session_id()."','','text/weTmpl',1)");
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) . "opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';}','".session_id()."','','text/weTmpl',1)"
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
+		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
+
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
 		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId("MasterTemplate");

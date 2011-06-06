@@ -875,7 +875,12 @@ class doclistView {
 					$_linkPath = $GLOBALS ['we_doc']->searchclassFolder->search [$i];
 
 					$_rootDirID = 0;
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id () . "','$_rootDirID','','text/weTmpl')";
+
+					//javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id () . "','$_rootDirID','','text/weTmpl')
+					$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['searchParentID[" . $i . "]'].value");
+					$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['search[" . $i . "]'].value");
+					$wecmdenc3= '';
+					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id () . "','$_rootDirID','','text/weTmpl')";
 					$_button = $we_button->create_button ( 'select', $_cmd, true, 70, 22, '', '', false );
 					$selector = htmlFormElementTable ( htmlTextInput ( 'search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0 ), '', 'left', 'defaultfont', we_htmlElement::htmlHidden ( array ('name' => 'searchParentID[' . $i . ']', "value" => "" ) ), getPixel ( 5, 4 ), $_button );
 

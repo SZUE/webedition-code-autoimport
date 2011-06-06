@@ -10,5 +10,7 @@ $GLOBALS['weTagWizard']['attribute']['id401_home'] = new weTagData_textAttribute
 $GLOBALS['weTagWizard']['attribute']['id643_hidehome'] = new weTagData_selectAttribute('643', 'hidehome', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id402_field'] = new weTagData_textAttribute('402', 'field', false, '');
 $GLOBALS['weTagWizard']['attribute']['id403_dirfield'] = new weTagData_textAttribute('403', 'dirfield', false, '');
+$GLOBALS['weTagWizard']['attribute']['id889_fieldforfolder'] = new weTagData_selectAttribute('889', 'fieldforfolder', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+
 $GLOBALS['weTagWizard']['attribute']['id404_doc'] = new weTagData_selectAttribute('404', 'doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');

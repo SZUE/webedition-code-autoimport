@@ -269,10 +269,13 @@ class we_import_files
 		$store_id = $this->importToID ? $this->importToID : $ws;
 
 		$path = id_to_path($store_id);
-
+		//javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','document.we_startform.importToID.value','document.we_startform.egal.value','','','0')"
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_startform.importToID.value");
+		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_startform.egal.value");
+		$wecmdenc3= '';
 		$button = $we_button->create_button(
 				"select",
-				"javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','document.we_startform.importToID.value','document.we_startform.egal.value','','','0')");
+				"javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','0')");
 		$content = hidden('we_cmd[0]', 'import_files') . hidden('cmd', 'content') . hidden('step', '2'); // fix for categories require reload!
 		$content .= we_htmlElement::htmlHidden(array(
 			'name' => 'categories', 'value' => ''

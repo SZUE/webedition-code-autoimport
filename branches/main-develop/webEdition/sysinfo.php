@@ -172,9 +172,9 @@
 			foreach ($phpextensionsMin as $exten){
 				if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 			}
-
+			
 			if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//sp�ter ODER mysqli
-				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
+				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
 			} else { $phpextensionsSDK_DB= getWarning(g_l('sysinfo',"[sdk_db warning]"),'-');	}
 		} else {
 			$phpExtensionsDetectable = false;

@@ -162,13 +162,13 @@ function we_tag_listview($attribs, $content) {
 		$we_lv_DocAttr = $docAttr;
 		$we_lv_langguagesdoc = we_getDocForTag($we_lv_DocAttr);
 		if (isset($we_lv_langguagesdoc->TableID) && $we_lv_langguagesdoc->TableID) {
-			$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
+			//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 			$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
-			$we_lv_linktype = 'objectfile';
+			$we_lv_linktype = 'tblObjectFile';
 		} else {
-			$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
+			//$we_lv_pagelanguage = $we_lv_langguagesdoc->Language;
 			$we_lv_pageID = $we_lv_langguagesdoc->ID;
-			$we_lv_linktype = 'file';
+			$we_lv_linktype = 'tblFile';
 		}
 		unset($we_lv_langguagesdoc);
 	}

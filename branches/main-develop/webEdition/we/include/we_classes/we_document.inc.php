@@ -1096,13 +1096,13 @@ class we_document extends we_root {
 				$only = we_getTagAttribute('only',$attribs,'');
 
 				if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true);
+					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true, true);
 				} else {
 					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
 				}
 
 				if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true);
+					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true, true);
 				} else {
 					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
 				}

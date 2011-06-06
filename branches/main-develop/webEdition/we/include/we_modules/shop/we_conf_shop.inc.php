@@ -472,4 +472,3 @@ class Basket {
 		return false;
 	}
 }
-?>

@@ -38,5 +38,3 @@ $fs = new we_navigationDirSelector(
 		isset($we_FolderText) ? $we_FolderText : (isset($_REQUEST['we_FolderText']) ? $_REQUEST['we_FolderText'] : ''));
 
 $fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : FS_FRAMESET);
-
-?>

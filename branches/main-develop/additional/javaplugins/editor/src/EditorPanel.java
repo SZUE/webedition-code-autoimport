@@ -180,13 +180,8 @@ public class EditorPanel extends JPanel {
 
 		pane.addKeyListener(new KeyAdapter() {
 
-			boolean ctrlPressed = false;
-
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-					ctrlPressed = false;
-				}
 			}
 
 			@Override
@@ -195,10 +190,7 @@ public class EditorPanel extends JPanel {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-					ctrlPressed = true;
-				}
-				if (ctrlPressed) {
+				if ((e.getModifiersEx()&KeyEvent.CTRL_DOWN_MASK)>0) {
 					switch (e.getKeyCode()) {
 						case KeyEvent.VK_S:
 							applet.sendCtrlS();
