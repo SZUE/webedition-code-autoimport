@@ -100,5 +100,37 @@ foreach($files as $entry) {
 }
 echo '</div>';
 ?>
+<h3>Achtung!</h3>
+Kode zur Übername "alter" Werte für das Liveupdate muss manuell aus der Datei entfernt werden.
+Dies sind aktuelle die folgenden Zeilen:
+<ul><li><pre>
+CREATE TEMPORARY TABLE IF NOT EXISTS _newNewsPref(
+  pref_name varchar(30) NOT NULL default '',
+  pref_value longtext NOT NULL,
+  PRIMARY KEY name (pref_name(30))
+)ENGINE = MYISAM;
+/* query separator */
+INSERT IGNORE INTO _newNewsPref SELECT DISTINCT * FROM tblNewsletterPrefs GROUP BY pref_name;
+/* query separator */
+TRUNCATE tblNewsletterPrefs;
+/* query separator */
+INSERT INTO tblNewsletterPrefs SELECT * FROM _newNewsPref;
+/* query separator */
+DROP TEMPORARY TABLE IF EXISTS _newNewsPref;
+/* query separator */
+</pre></li>
+<li><pre>
+CREATE TEMPORARY TABLE IF NOT EXISTS _delKeys(
+  ID bigint
+)ENGINE = MEMORY;
+/* query separator */
+INSERT INTO _delKeys SELECT s.ID FROM tblsearchtool s, tblsearchtool t WHERE s.Path=t.Path AND s.ID>t.ID;
+/* query separator */
+DELETE FROM tblsearchtool WHERE ID IN (SELECT ID FROM _delKeys);
+/* query separator */
+DROP TEMPORARY TABLE IF EXISTS _delKeys;
+/* query separator */
+</pre></li>
+</ul>
 </body>
 </html>
