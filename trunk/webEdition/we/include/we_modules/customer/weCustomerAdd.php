@@ -407,14 +407,14 @@ class weCustomerAdd{
 									"6"=>"LIKE"
 		);
 
-		$select=" ID,Text";
+		$select=' ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user';
 		$where="";
 		$condition="";
 
 		for($i=0;$i<$count;$i++){
 				if(isset($keywords["field_".$i])){
 					$keywords["field_".$i]=str_replace($l_customer["common"]."_","",$keywords["field_".$i]);
-					$select.=",".$keywords["field_".$i];
+					//$select.=",".$keywords["field_".$i];
 				}
 				if(isset($keywords["field_".$i]) && isset($keywords["operator_".$i]) && isset($keywords["value_".$i])) $where.=(isset($keywords["logic_".$i]) ? " ".$keywords["logic_".$i]." " : "").$keywords["field_".$i]." ".$operators[$keywords["operator_".$i]]." '".(is_numeric($keywords["value_".$i])?$keywords["value_".$i]:$this->db->escape($keywords["value_".$i]))."'";
 		}
@@ -425,7 +425,7 @@ class weCustomerAdd{
 
 		$result=array();
 		while($this->db->next_record()){
-			$result[$this->db->f("ID")]=$this->db->f("Text");
+			$result[$this->db->f("ID")]=$this->db->f("user");
 		}
 
  		return $result;
