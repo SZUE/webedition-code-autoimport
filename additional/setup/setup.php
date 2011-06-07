@@ -370,7 +370,7 @@ function step_filesystem() {
 
 	$output .= "</ul>";
 	if($errors === true) {
-		$output .= tpl_errorbox("There were some errors regarding file access privileges. Please fix these issues (i.e. via ftp) and try again.");
+		$output .= tpl_errorbox("There were some errors regarding file access privileges. Please fix these issues (i.e. via ftp) and try again.<br/> We do not recommend to try to make these files and directories writeble on an individual base because there are additional files and directories which ahve to be writeble and which are not testet here.<br/> You should use your ftp programm to set the rights to 755 to the /webEdition and all included directories and files recursively (good ftp programms allow to set the rights in a singel step)");
 	} else {
 		$output .= "All these directories seem to be writable by the webserver.<br /><br />";
 	}
