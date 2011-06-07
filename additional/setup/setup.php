@@ -321,7 +321,7 @@ function step_filesystem() {
 		$output .= tpl_error("The directory webEdition/site could not be created or is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("/webEdition/site");
+		$output .= tpl_ok("./webEdition/site");
 	}
 
         // check if directory exists
@@ -332,20 +332,20 @@ function step_filesystem() {
 		$output .= tpl_error("The directory webEdition/we/templates could not be created or is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("/webEdition/we/templates");
+		$output .= tpl_ok("./webEdition/we/templates");
 	}
 
 	if(!is_writable('./webEdition/we/include/conf')) {
 		$output .= tpl_error("The webEdition configuration directory webEdition/we/include/conf is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("/webEdition/we/include/conf");
+		$output .= tpl_ok("./webEdition/we/include/conf");
 	}
 	if(!is_writable('./webEdition/we/include/conf/we_conf.inc.php')) {
 		$output .= tpl_error("The webEdition configuration file webEdition/we/include/conf/we_conf.inc.php is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("/webEdition/we/include/conf/we_conf.inc.php");
+		$output .= tpl_ok("./webEdition/we/include/conf/we_conf.inc.php");
 	}
 
 	// check if directory exists
@@ -356,7 +356,7 @@ function step_filesystem() {
 		$output .= tpl_error("The webEdition temporary directory webEdition/we/tmp could not be created or is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("/webEdition/we/tmp");
+		$output .= tpl_ok("./webEdition/we/tmp");
 	}
        if (!is_dir('./webEdition/liveUpdate/tmp')) {
            mkdir('./webEdition/liveUpdate/tmp');
@@ -365,7 +365,7 @@ function step_filesystem() {
 	if(!is_writable('./webEdition/liveUpdate/tmp')) {
 		$output .= tpl_warning("The webEdition liveUpdate temporary directory webEdition/liveUpdate/tmp could not be created or is not writable! You will not be able to use this feature.");
 	} else {
-		$output .= tpl_ok("/webEdition/liveUpdate/tmp");
+		$output .= tpl_ok("./webEdition/liveUpdate/tmp");
 	}
 
 	$output .= "</ul>";
