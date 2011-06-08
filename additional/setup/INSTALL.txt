@@ -1,10 +1,14 @@
-webEdition Version 6.1.0.3
+webEdition Version 6.2.1.0
 
 SYSTEM REQUIREMENTS
 
 PHP 5.2.4 or newer
-MySQL Server Version 4.1 or newer
+MySQL Server Version 5.0 or newer
 Please set "session.auto_start" to false in your PHP configuration
+
+We recommend to use the latest OnlineInstaller instead of this tarball setup, because the OnlineInstaller has much more features and is much faster.
+The OnlineInstaller is available at http://download.webedition.org/releases/
+or at https://sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/
 
 INSTALLATION
 
