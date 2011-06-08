@@ -1,4 +1,4 @@
-CREATE TABLE tblvotinglog (
+CREATE TABLE ###TBLPREFIX###tblvotinglog (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `votingsession` varchar(255) NOT NULL,
   `voting` bigint(20) NOT NULL,

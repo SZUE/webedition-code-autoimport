@@ -1,4 +1,4 @@
-CREATE TABLE tblWorkflowStep (
+CREATE TABLE ###TBLPREFIX###tblWorkflowStep (
   ID int(11) NOT NULL auto_increment,
   `Worktime` float NOT NULL default '0',
   timeAction tinyint(1) NOT NULL default '0',

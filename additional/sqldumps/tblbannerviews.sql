@@ -1,4 +1,4 @@
-CREATE TABLE tblbannerviews (
+CREATE TABLE ###TBLPREFIX###tblbannerviews (
   viewid bigint(20) NOT NULL AUTO_INCREMENT,
   ID bigint(20) NOT NULL default '0',
   `Timestamp` bigint(20) default NULL,

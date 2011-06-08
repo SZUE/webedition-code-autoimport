@@ -591,8 +591,9 @@ class liveUpdateFunctions {
 		$success = true;
 		foreach ($queries as $query) {
 			if (isset($_SESSION['le_db_prefix'])) {
-				$query = preg_replace("/^DROP TABLE IF EXISTS /", "DROP TABLE IF EXISTS " . $_SESSION['le_db_prefix'], $query, 1);
-
+					$query=str_replace('###TBLPREFIX###', $_SESSION['le_db_prefix'], $query);
+			}else{
+					$query=str_replace('###TBLPREFIX###', '', $query);
 			}
 
 			if (!$leDB->query($query)) {
@@ -655,16 +656,9 @@ class liveUpdateFunctions {
 
 				// first of all we need to check if there is a tblPrefix
 				if (isset($_SESSION['le_db_prefix'])) {
-					$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . $_SESSION['le_db_prefix'], $query, 1);
-					$query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . $_SESSION['le_db_prefix'], $query, 1);
-					$query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . $_SESSION['le_db_prefix'], $query, 1);
-					$query = preg_replace("/^DELETE FROM /", "DELETE FROM " . $_SESSION['le_db_prefix'], $query, 1);
-					$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . $_SESSION['le_db_prefix'], $query, 1);
-					$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . $_SESSION['le_db_prefix'], $query, 1);
-					$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . $_SESSION['le_db_prefix'], $query, 1);
-
-				$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
-
+					$query=str_replace('###TBLPREFIX###', $_SESSION['le_db_prefix'], $query);
+				}else{
+					$query=str_replace('###TBLPREFIX###', '', $query);
 				}
 				$query = str_replace("\n","",$query);
 				$query = str_replace("\r","",$query);

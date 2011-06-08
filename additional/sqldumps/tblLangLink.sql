@@ -1,4 +1,4 @@
-CREATE TABLE tblLangLink (
+CREATE TABLE ###TBLPREFIX###tblLangLink (
   ID int(11) NOT NULL AUTO_INCREMENT,
   DID int(11) NOT NULL default '0',
   DLocale varchar(5) NOT NULL default '',
@@ -10,4 +10,3 @@ CREATE TABLE tblLangLink (
   PRIMARY KEY (ID),
   KEY DID (DID,Locale(5))
 ) ENGINE=MyISAM;
-

@@ -1,4 +1,4 @@
-CREATE TABLE tblNewsletter (
+CREATE TABLE ###TBLPREFIX###tblNewsletter (
   ID bigint(20) NOT NULL auto_increment,
   ParentID bigint(20) NOT NULL default '0',
   IsFolder tinyint(1) NOT NULL default '0',

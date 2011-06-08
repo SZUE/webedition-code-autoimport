@@ -1,4 +1,4 @@
-CREATE TABLE tblFile (
+CREATE TABLE ###TBLPREFIX###tblFile (
   ID int(11) NOT NULL auto_increment,
   ParentID int(11) NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',

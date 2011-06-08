@@ -1,4 +1,4 @@
-CREATE TABLE tblWebUserSessions (
+CREATE TABLE ###TBLPREFIX###tblWebUserSessions (
   SessionID varchar(32) NOT NULL default '',
   SessionIp varchar(40)NOT NULL DEFAULT '',
   WebUserID bigint(20) NOT NULL default '0',

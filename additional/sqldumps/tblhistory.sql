@@ -1,4 +1,4 @@
-CREATE TABLE tblhistory (
+CREATE TABLE ###TBLPREFIX###tblhistory (
   ID bigint(20) NOT NULL auto_increment,
   DID bigint(20) NOT NULL default '0',
   DocumentTable varchar(64) NOT NULL default '',

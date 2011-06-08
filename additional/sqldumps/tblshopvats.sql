@@ -1,4 +1,4 @@
-CREATE TABLE tblshopvats (
+CREATE TABLE ###TBLPREFIX###tblshopvats (
   id int(11) NOT NULL auto_increment,
   `text` varchar(255) NOT NULL default '',
   vat varchar(16) NOT NULL default '',

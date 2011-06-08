@@ -1,4 +1,4 @@
-CREATE TABLE tblbanner (
+CREATE TABLE ###TBLPREFIX###tblbanner (
   ID bigint(20) NOT NULL auto_increment,
   ParentID bigint(20) NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',

@@ -152,7 +152,7 @@ function step_welcome() {
 We recommend to use the latest OnlineInstaller instead of this <br/>tarball setup, because the OnlineInstaller has much more features<br/> and is much faster.<br/>
 
 The OnlineInstaller is available at <a href="http://download.webedition.org/releases/" target="_blank">download.webedition.org/releases/</a>
-or at <a href="https://sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/" target="_blank">sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/</a><br/><br/><br/> 
+or at <a href="https://sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/" target="_blank">sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/</a><br/><br/><br/>
 This webEdition tarball setup script will guide you through the initial configuration steps:
 <ul>
 		<li>System requirements and recommendations</li>
@@ -787,7 +787,6 @@ function step_installation() {
 		echo $table[0]." dropped.<br />";
 	}
 	// insert table prefix and install all tables from sql dump:
-	$queryTypes = array("CREATE TABLE","INSERT INTO","ALTER TABLE","UPDATE");
 	$queryErrors = false;
 
 	$charset_collation = "";
@@ -802,9 +801,9 @@ function step_installation() {
 	@mysql_query(" SET NAMES '" . $_SESSION["we_db_charset"] . "' ",$conn );
 	foreach($dbqueries as $dbquery) {
 		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])) {
-			foreach($queryTypes as $queryType) {
-				$dbquery = str_replace($queryType." tbl",$queryType." ".$_SESSION["db_tableprefix"]."tbl",$dbquery);
-			}
+			$dbquery=str_replace('###TBLPREFIX###', $_SESSION["db_tableprefix"], $dbquery);
+		}else{
+			$dbquery=str_replace('###TBLPREFIX###', '', $dbquery);
 		}
 
 		$dbquery = str_replace("ENGINE=MyISAM",$charset_collation,$dbquery);
