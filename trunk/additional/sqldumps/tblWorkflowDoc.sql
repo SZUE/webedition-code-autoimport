@@ -1,4 +1,4 @@
-CREATE TABLE tblWorkflowDoc (
+CREATE TABLE ###TBLPREFIX###tblWorkflowDoc (
   ID int(11) NOT NULL auto_increment,
   workflowID int(11) NOT NULL default '0',
   documentID int(11) NOT NULL default '0',

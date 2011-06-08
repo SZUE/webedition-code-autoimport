@@ -1,4 +1,4 @@
-CREATE TABLE tblcustomerfilter (
+CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `id` bigint(20) NOT NULL auto_increment,
   `modelId` bigint(20) NOT NULL,
   `modelType` varchar(32) NOT NULL,

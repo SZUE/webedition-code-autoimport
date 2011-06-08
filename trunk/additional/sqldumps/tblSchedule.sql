@@ -1,4 +1,4 @@
-CREATE TABLE tblSchedule (
+CREATE TABLE ###TBLPREFIX###tblSchedule (
   DID bigint(20) NOT NULL default '0',
   Wann int(11) NOT NULL default '0',
   Was int(11) NOT NULL default '0',

@@ -1,4 +1,4 @@
-CREATE TABLE tblthumbnails (
+CREATE TABLE ###TBLPREFIX###tblthumbnails (
   ID bigint(20) NOT NULL auto_increment,
   Name varchar(255) NOT NULL default '',
   `Date` int(11) unsigned NOT NULL default '0',

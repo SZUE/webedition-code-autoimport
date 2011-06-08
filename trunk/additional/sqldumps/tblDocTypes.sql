@@ -1,4 +1,4 @@
-CREATE TABLE tblDocTypes (
+CREATE TABLE ###TBLPREFIX###tblDocTypes (
   ID int(11) NOT NULL auto_increment,
   DocType varchar(64) NOT NULL default '',
   Extension varchar(10) NOT NULL default '',

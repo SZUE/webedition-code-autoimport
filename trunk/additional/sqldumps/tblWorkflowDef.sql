@@ -1,4 +1,4 @@
-CREATE TABLE tblWorkflowDef (
+CREATE TABLE ###TBLPREFIX###tblWorkflowDef (
   ID int(11) NOT NULL auto_increment,
   `Text` varchar(255) NOT NULL default '',
   `Type` bigint(20) NOT NULL default '0',

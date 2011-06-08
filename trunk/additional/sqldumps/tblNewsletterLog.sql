@@ -1,4 +1,4 @@
-CREATE TABLE tblNewsletterLog (
+CREATE TABLE ###TBLPREFIX###tblNewsletterLog (
   ID bigint(20) NOT NULL auto_increment,
   NewsletterID bigint(20) NOT NULL default '0',
   LogTime bigint(20) NOT NULL default '0',

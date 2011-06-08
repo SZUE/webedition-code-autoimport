@@ -1,4 +1,4 @@
-CREATE TABLE tblvalidationservices (
+CREATE TABLE ###TBLPREFIX###tblvalidationservices (
   PK_tblvalidationservices int(11) NOT NULL auto_increment,
   category varchar(20) NOT NULL default '',
   name varchar(255) NOT NULL default '',

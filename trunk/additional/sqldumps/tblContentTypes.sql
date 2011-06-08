@@ -1,4 +1,4 @@
-CREATE TABLE tblContentTypes (
+CREATE TABLE ###TBLPREFIX###tblContentTypes (
   OrderNr int(11) NOT NULL default '0',
   ContentType varchar(32) NOT NULL default '',
   Extension varchar(128) NOT NULL default '',

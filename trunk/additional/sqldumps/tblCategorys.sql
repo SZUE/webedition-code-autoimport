@@ -1,4 +1,4 @@
-CREATE TABLE tblCategorys (
+CREATE TABLE ###TBLPREFIX###tblCategorys (
   ID int(11) NOT NULL auto_increment,
   Category varchar(64) NOT NULL default '',
   `Text` varchar(64) default NULL,

@@ -1,4 +1,4 @@
-CREATE TABLE tblWorkflowLog (
+CREATE TABLE ###TBLPREFIX###tblWorkflowLog (
   ID bigint(20) NOT NULL auto_increment,
   RefID bigint(20) NOT NULL default '0',
   docTable varchar(255) NOT NULL default '',

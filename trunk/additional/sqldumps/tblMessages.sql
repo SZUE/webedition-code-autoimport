@@ -1,4 +1,4 @@
-CREATE TABLE tblMessages (
+CREATE TABLE ###TBLPREFIX###tblMessages (
   ID int(11) NOT NULL auto_increment,
   ParentID int(11) default NULL,
   UserID int(11) default NULL,

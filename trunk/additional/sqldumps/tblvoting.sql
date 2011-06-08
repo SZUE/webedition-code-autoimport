@@ -1,4 +1,4 @@
-CREATE TABLE tblvoting (
+CREATE TABLE ###TBLPREFIX###tblvoting (
   ID bigint(20) NOT NULL auto_increment,
   ParentID bigint(20) NOT NULL default '0',
   Path varchar(255) default NULL,

@@ -1,4 +1,4 @@
-CREATE TABLE tblTemporaryDoc (
+CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
   ID bigint(20) NOT NULL auto_increment,
   DocumentID bigint(20) NOT NULL default '0',
   DocumentObject longtext NOT NULL,

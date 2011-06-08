@@ -1,4 +1,4 @@
-CREATE TABLE tblglossary (
+CREATE TABLE ###TBLPREFIX###tblglossary (
   `ID` int(10) NOT NULL auto_increment,
   `Path` varchar(255) default NULL,
   `IsFolder` tinyint(1) default NULL,
