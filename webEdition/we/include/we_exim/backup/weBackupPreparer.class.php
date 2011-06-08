@@ -330,6 +330,8 @@
 							else{
 								weBackupPreparer::addToFileList($list,$file,$rem_doc_root);
 							}
+						}  elseif(is_dir($file)) {
+							weBackupPreparer::getFileList($list,$file,$with_dirs,$rem_doc_root);
 						}
 					}
 				}
@@ -394,7 +396,7 @@
 
 			$tmp_db = new DB_WE;
 			$DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($path)."'");
-			$tmp_db->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE Path='".$DB_WE->escape($path)."'");
+			$tmp_db->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE Path='".$tmp_db->escape($path)."'");
 			if(($DB_WE->next_record())||($tmp_db->next_record()))
 				return true;
 			else
