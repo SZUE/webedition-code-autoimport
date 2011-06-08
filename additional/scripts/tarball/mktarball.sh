@@ -7,6 +7,7 @@ ADDITIONAL=`pwd`"/../.."
 WEBASE=${ADDITIONAL}"/.."
 TAR_FILE="${DIST}/webEdition_${VERSION}.tar"
 TAR="tar --exclude=.svn -f ${TAR_FILE} "
+QSEP="/* query separator */"
 
 echo "Creating tar-ball for WE ${VERSION}"
 rm -rf ${TMPFOLDER}
@@ -20,7 +21,8 @@ cp -R ${ADDITIONAL}/lang_iso/* ${TMPFOLDER}/webEdition/we/include/we_language/
 
 # Create sql-queries
 echo "Creating sqldumps"
-php dump_sql.php ${ADDITIONAL}/sqldumps/ ${TMPFOLDER}/
+find ${ADDITIONAL}/sqldumps/ -name *.sql -exec cat {} \; -exec echo "${QSEP}" \; >${TMPFOLDER}/database.sql
+#old: php dump_sql.php ${ADDITIONAL}/sqldumps/ ${TMPFOLDER}/
 cd ${TMPFOLDER}
 ${TAR} -c *
 
