@@ -1,15 +1,26 @@
 <?php
 /**
- * reads all sql files of the current directory and writes them into one single file
+ * reads all sql files of the given directory and writes them into one single file
  * for easier import into a database server
- * 
- * (c) 2008 by Living-E AG
+ *
  */
 
-if(!defined("BASEPATH")) define("BASEPATH",dirname(__FILE__));
-if(!defined("OUTDIR")) define("OUTDIR",'dump');
-if(!defined("OUTFILE")) define("OUTFILE",'complete.sql');
-if(!defined("OUTPATH")) define("OUTPATH",dirname(__FILE__).'/'.OUTDIR);
+if(!defined("BASEPATH")) {
+	if(count($GLOBALS['argv'])>1){
+		define("BASEPATH",$GLOBALS['argv'][1]);
+	}else{
+		define("BASEPATH",dirname(__FILE__));
+	}
+}
+if(!defined("OUTDIR"))define("OUTDIR",'src');
+if(!defined("OUTFILE")) define("OUTFILE",'database.sql');
+if(!defined("OUTPATH")){
+	if(count($GLOBALS['argv'])>2){
+	define("OUTPATH",$GLOBALS['argv'][2]);
+	}else{
+	 define("OUTPATH",dirname(__FILE__).'/'.OUTDIR);
+	}
+}
 
 function getfiles() {
 	$dir = scandir(BASEPATH);
