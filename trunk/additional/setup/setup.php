@@ -149,7 +149,11 @@ function ini_get_bool($val) {
 // function for executing steps:
 function step_welcome() {
 	$output = '<b>Welcome to webEdition 6!</b><br />
-This webEdition setup script will guide you through the initial configuration steps:
+We recommend to use the latest OnlineInstaller instead of this <br/>tarball setup, because the OnlineInstaller has much more features<br/> and is much faster.<br/>
+
+The OnlineInstaller is available at <a href="http://download.webedition.org/releases/" target="_blank">download.webedition.org/releases/</a>
+or at <a href="https://sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/" target="_blank">sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/</a><br/><br/><br/> 
+This webEdition tarball setup script will guide you through the initial configuration steps:
 <ul>
 		<li>System requirements and recommendations</li>
 		<li>Filesystem checks (write permissions etc.)</li>
