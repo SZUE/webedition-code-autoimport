@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev: 2788 $
+ * $Author: mokraemer $
+ * $Date: 2011-04-21 02:20:09 +0200 (Do, 21. Apr 2011) $
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_condition($attribs, $content){
-
-	$name = we_getTagAttribute("name", $attribs, "we_lv_condition");
-
-	$GLOBALS["we_lv_conditionCount"] = isset($GLOBALS["we_lv_conditionCount"]) ? abs($GLOBALS["we_lv_conditionCount"]) : 0;
-
-	if ($GLOBALS["we_lv_conditionCount"] == 0) {
-		$GLOBALS["we_lv_conditionName"] = $name;
-		$GLOBALS[$GLOBALS["we_lv_conditionName"]] = "(";
-	} else {
-		$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= "(";
+function we_tag_conditionAND($attribs, $content){
+	if (isset($GLOBALS["we_lv_conditionName"]) && isset($GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
+		$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= " AND ";
 	}
-	$GLOBALS["we_lv_conditionCount"]++;
 	return "";
 }
