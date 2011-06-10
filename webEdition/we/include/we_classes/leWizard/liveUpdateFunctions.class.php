@@ -540,6 +540,7 @@ class liveUpdateFunctions {
 		foreach ($queries as $query) {
 
 		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
+		$query=str_replace('###UPDATEONLY###', '', $query);
 
 			if (!$leDB->query($query)) {
 
@@ -598,9 +599,14 @@ class liveUpdateFunctions {
 		// change fields when needed.
 
 		$query = trim($query);
+		
+		if (strpos($query,'###INSTALLONLY###')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+			return true;
+		}
 
 		// first of all we need to check if there is a tblPrefix
 		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
+		$query=str_replace('###UPDATEONLY###', '', $query);
 
 			// second, we need to check if there is a collation
 			if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {

@@ -609,12 +609,12 @@ class liveUpdateFunctions {
 
 		$query = trim($query);
 
-		if (strpos($query,'tblUser')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+		if (strpos($query,'###INSTALLONLY###')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
 			return true;
 		}
 
 		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
-		
+		$query=str_replace('###UPDATEONLY###', '', $query);
 
 		// second, we need to check if there is a collation
 		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {

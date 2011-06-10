@@ -805,9 +805,12 @@ function step_installation() {
 		}else{
 			$dbquery=str_replace('###TBLPREFIX###', '', $dbquery);
 		}
-
+		$dbquery=str_replace('###INSTALLONLY###', '', $dbquery);
+		
 		$dbquery = str_replace("ENGINE=MyISAM",$charset_collation,$dbquery);
-
+		if(strpos($dbquery,'###UPDATEONLY###')!==false){
+			$dbquery='';
+		}
 		if(!empty($dbquery)) {
 			if(!@mysql_query($dbquery,$conn)) {
 				if(mysql_errno() != "1065") {
