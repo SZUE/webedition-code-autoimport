@@ -2445,7 +2445,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 			if ($db_temp1->next_record())
 				if ($db_temp1->f($match) == $matchvalue) {
 					array_push($parentlist, $db_temp->f("ParentID"));
-					we_readParents($db_temp->f("ParentID"), $parentlist, $tab);
+					we_readParents($db_temp->f("ParentID"), $parentlist, $tab, $match, $matchvalue);
 				}
 		}
 }
