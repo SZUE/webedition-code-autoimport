@@ -9,10 +9,9 @@ if(!defined("BASEPATH")) {
 	if(count($GLOBALS['argv'])>1){
 		define("BASEPATH",$GLOBALS['argv'][1]);
 	}else{
-		define("BASEPATH",$_SERVER['DOCUMENT_ROOT'].'/additional/sqldumps');
+		define("BASEPATH",dirname(__FILE__));
 	}
 }
-echo BASEPATH;
 if(!defined("OUTDIR"))define("OUTDIR",'src');
 if(!defined("OUTFILE")) define("OUTFILE",'database.sql');
 if(!defined("OUTPATH")){
@@ -94,12 +93,6 @@ if(is_file($outfile) && !is_writable($outfile)) {
 
 if(file_exists($outfile) && $_REQUEST["verified"] == "yes") {
 	@unlink($outfile);
-	file_put_contents($outfile,'');
-}
-
-if(!is_dir(OUTPATH) ) {
-	@mkdir(OUTPATH);
-	file_put_contents($outfile,'');
 }
 
 echo '<div class="list">';
@@ -118,5 +111,37 @@ foreach($files as $entry) {
 }
 echo '</div>';
 ?>
+<h3>Achtung!</h3>
+Kode zur Übername "alter" Werte für das Liveupdate muss manuell aus der Datei entfernt werden.
+Dies sind aktuelle die folgenden Zeilen:
+<ul><li><pre>
+CREATE TEMPORARY TABLE IF NOT EXISTS _newNewsPref(
+  pref_name varchar(30) NOT NULL default '',
+  pref_value longtext NOT NULL,
+  PRIMARY KEY name (pref_name(30))
+)ENGINE = MYISAM;
+/* query separator */
+INSERT IGNORE INTO _newNewsPref SELECT DISTINCT * FROM tblNewsletterPrefs GROUP BY pref_name;
+/* query separator */
+TRUNCATE tblNewsletterPrefs;
+/* query separator */
+INSERT INTO tblNewsletterPrefs SELECT * FROM _newNewsPref;
+/* query separator */
+DROP TEMPORARY TABLE IF EXISTS _newNewsPref;
+/* query separator */
+</pre></li>
+<li><pre>
+CREATE TEMPORARY TABLE IF NOT EXISTS _delKeys(
+  ID bigint
+)ENGINE = MEMORY;
+/* query separator */
+INSERT INTO _delKeys SELECT s.ID FROM tblsearchtool s, tblsearchtool t WHERE s.Path=t.Path AND s.ID>t.ID;
+/* query separator */
+DELETE FROM tblsearchtool WHERE ID IN (SELECT ID FROM _delKeys);
+/* query separator */
+DROP TEMPORARY TABLE IF EXISTS _delKeys;
+/* query separator */
+</pre></li>
+</ul>
 </body>
 </html>
