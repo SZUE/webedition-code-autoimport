@@ -1,4 +1,4 @@
-CREATE TABLE tblUpdateLog (
+CREATE TABLE ###TBLPREFIX###tblUpdateLog (
   ID int(255) NOT NULL auto_increment,
   dortigeID int(255) NOT NULL default '0',
   datum datetime default NULL,

@@ -1,4 +1,4 @@
-CREATE TABLE tblLink (
+CREATE TABLE ###TBLPREFIX###tblLink (
   DID int(11) NOT NULL default '0',
   CID int(11) NOT NULL default '0',
   `Type` varchar(16) NOT NULL default '',

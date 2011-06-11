@@ -1251,13 +1251,15 @@ function processCommands() {
 		}
 
 		if($condition!=''){
-			$condition=' WHERE '.$condition.' ORDER BY Text';
+			$condition=' WHERE '.$condition;
 		}
-		$this->db->query('SELECT * FROM '.$this->db->escape($this->customer->table).$condition." LIMIT 0,$res_num");
+		$condition.=' ORDER BY Username';
+
+		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM '.$this->db->escape($this->customer->table).$condition." LIMIT 0,$res_num");
 
 		$result=array();
 		while($this->db->next_record()){
-			$result[$this->db->f('ID')]= htmlspecialchars($this->db->f('Username') . ' (' . $this->db->f('Forename') . ' ' . $this->db->f('Surname') . ')') ;
+			$result[$this->db->f('ID')]= htmlspecialchars($this->db->f('user')) ;
 		}
 
  		return $result;

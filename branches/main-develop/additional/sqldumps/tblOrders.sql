@@ -1,4 +1,4 @@
-CREATE TABLE tblOrders (
+CREATE TABLE ###TBLPREFIX###tblOrders (
   IntID int(11) NOT NULL auto_increment,
   IntOrderID int(11) default NULL,
   IntCustomerID int(11) default NULL,

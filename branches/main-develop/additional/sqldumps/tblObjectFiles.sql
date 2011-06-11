@@ -1,4 +1,4 @@
-CREATE TABLE tblObjectFiles (
+CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   ID int(11) NOT NULL auto_increment,
   ParentID int(11) NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',

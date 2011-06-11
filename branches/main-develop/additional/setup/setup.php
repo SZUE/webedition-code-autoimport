@@ -149,7 +149,11 @@ function ini_get_bool($val) {
 // function for executing steps:
 function step_welcome() {
 	$output = '<b>Welcome to webEdition 6!</b><br />
-This webEdition setup script will guide you through the initial configuration steps:
+We recommend to use the latest OnlineInstaller instead of this <br/>tarball setup, because the OnlineInstaller has much more features<br/> and is much faster.<br/>
+
+The OnlineInstaller is available at <a href="http://download.webedition.org/releases/" target="_blank">download.webedition.org/releases/</a>
+or at <a href="https://sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/" target="_blank">sourceforge.net/projects/webedition/files/webEdition%20OnlineInstaller/</a><br/><br/><br/>
+This webEdition tarball setup script will guide you through the initial configuration steps:
 <ul>
 		<li>System requirements and recommendations</li>
 		<li>Filesystem checks (write permissions etc.)</li>
@@ -318,10 +322,10 @@ function step_filesystem() {
             mkdir('./webEdition/site');
         }
 	if(!is_writable('./webEdition/site')) {
-		$output .= tpl_error("The directory webEdition/site is not writable!");
+		$output .= tpl_error("The directory webEdition/site could not be created or is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("webEdition/site");
+		$output .= tpl_ok("./webEdition/site");
 	}
 
         // check if directory exists
@@ -329,23 +333,23 @@ function step_filesystem() {
             mkdir('./webEdition/we/templates');
         }
 	if(!is_writable('./webEdition/we/templates')) {
-		$output .= tpl_error("The directory webEdition/we/templates is not writable!");
+		$output .= tpl_error("The directory webEdition/we/templates could not be created or is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("webEdition/we/templates");
+		$output .= tpl_ok("./webEdition/we/templates");
 	}
 
 	if(!is_writable('./webEdition/we/include/conf')) {
 		$output .= tpl_error("The webEdition configuration directory webEdition/we/include/conf is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("webEdition/we/include/conf");
+		$output .= tpl_ok("./webEdition/we/include/conf");
 	}
 	if(!is_writable('./webEdition/we/include/conf/we_conf.inc.php')) {
 		$output .= tpl_error("The webEdition configuration file webEdition/we/include/conf/we_conf.inc.php is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("webEdition/we/include/conf/we_conf.inc.php");
+		$output .= tpl_ok("./webEdition/we/include/conf/we_conf.inc.php");
 	}
 
 	// check if directory exists
@@ -353,20 +357,24 @@ function step_filesystem() {
             mkdir('./webEdition/we/tmp');
         }
 	if(!is_writable('./webEdition/we/tmp')) {
-		$output .= tpl_error("The webEdition temporary directory webEdition/we/tmp is not writable!");
+		$output .= tpl_error("The webEdition temporary directory webEdition/we/tmp could not be created or is not writable!");
 		$errors = true;
 	} else {
-		$output .= tpl_ok("webEdition/we/tmp");
+		$output .= tpl_ok("./webEdition/we/tmp");
 	}
+       if (!is_dir('./webEdition/liveUpdate/tmp')) {
+           mkdir('./webEdition/liveUpdate/tmp');
+       }
+
 	if(!is_writable('./webEdition/liveUpdate/tmp')) {
-		$output .= tpl_warning("The webEdition liveUpdate temporary directory webEdition/liveUpdate/tmp is not writable! You will not be able to use this feature.");
+		$output .= tpl_warning("The webEdition liveUpdate temporary directory webEdition/liveUpdate/tmp could not be created or is not writable! You will not be able to use this feature.");
 	} else {
-		$output .= tpl_ok("webEdition/liveUpdate/tmp");
+		$output .= tpl_ok("./webEdition/liveUpdate/tmp");
 	}
 
 	$output .= "</ul>";
 	if($errors === true) {
-		$output .= tpl_errorbox("There were some errors regarding file access privileges. Please fix these issues (i.e. via ftp) and try again.");
+		$output .= tpl_errorbox("There were some errors regarding file access privileges. Please fix these issues (i.e. via ftp) and try again.<br/> We do not recommend to try to make these files and directories writeble on an individual base because there are additional files and directories which ahve to be writeble and which are not testet here.<br/> You should use your ftp programm to set the rights to 755 to the /webEdition and all included directories and files recursively (good ftp programms allow to set the rights in a singel step)");
 	} else {
 		$output .= "All these directories seem to be writable by the webserver.<br /><br />";
 	}
@@ -640,7 +648,7 @@ function step_language() {
 	$output .= '</select></div>';
 	// additional information box for iso encoded languages:
 	if($isoLanguages === true) {
-		$output .= "<b>Important:</b> We strongly recommend using UTF-8 for new projects. webEdition still contains a couple of ISO-8859-1 (ISO Latin-1) encoded translations for backwards compatibility, but all new translations are and will be UTF-8 encoded. In addition, for the upcoming Version 7, we do do not guarantee full support for ISO languages, so you might need to convert your site to UTF-8. <br /><br />";
+		$output .= "<b>Important:</b> We strongly recommend using UTF-8 for new projects. webEdition still contains a couple of ISO-8859-1 (ISO Latin-1) encoded translations for backwards compatibility, but all new translations are and will be UTF-8 encoded. In addition, for the upcoming Version 7, we do not guarantee full support for ISO languages, so you might need to convert your site to UTF-8. <br /><br />";
 	}
 	$output .= "If your language is missing in this list, feel free to contribute a new translation to the webEdition community. You can find more informations about contributing code and translations on the <a href=\"http://www.webedition.org\" target=\"_blank\">webEdition website</a>.";
 
@@ -779,7 +787,6 @@ function step_installation() {
 		echo $table[0]." dropped.<br />";
 	}
 	// insert table prefix and install all tables from sql dump:
-	$queryTypes = array("CREATE TABLE","INSERT INTO","ALTER TABLE","UPDATE");
 	$queryErrors = false;
 
 	$charset_collation = "";
@@ -794,13 +801,16 @@ function step_installation() {
 	@mysql_query(" SET NAMES '" . $_SESSION["we_db_charset"] . "' ",$conn );
 	foreach($dbqueries as $dbquery) {
 		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])) {
-			foreach($queryTypes as $queryType) {
-				$dbquery = str_replace($queryType." tbl",$queryType." ".$_SESSION["db_tableprefix"]."tbl",$dbquery);
-			}
+			$dbquery=str_replace('###TBLPREFIX###', $_SESSION["db_tableprefix"], $dbquery);
+		}else{
+			$dbquery=str_replace('###TBLPREFIX###', '', $dbquery);
 		}
-
+		$dbquery=str_replace('###INSTALLONLY###', '', $dbquery);
+		
 		$dbquery = str_replace("ENGINE=MyISAM",$charset_collation,$dbquery);
-
+		if(strpos($dbquery,'###UPDATEONLY###')!==false){
+			$dbquery='';
+		}
 		if(!empty($dbquery)) {
 			if(!@mysql_query($dbquery,$conn)) {
 				if(mysql_errno() != "1065") {
@@ -908,7 +918,7 @@ function step_finish() {
 	$output .= "Please don't forget to remove this setup script in order to prevent damage to your website by misuse. The next and final step of this installation script will take care of that.<br /><br />";
 	$output .= "The first thing you should do is to change the default password and username to less obvious ones, by default it is:
 	<p style=\"margin-left:20px;\"><b>Username:</b> admin<br /><b>Password:</b> admin</p>
-	You can do that using the webEdition user management module (located at the top of the \"Extras\" menu).";
+	You can do that using the webEdition user management module (located at the top of the \"Modules\" menu).";
 	//return "<br />Live long and prosper!<br /><br /><br /><br /><br /><br />";
 	return $output;
 }

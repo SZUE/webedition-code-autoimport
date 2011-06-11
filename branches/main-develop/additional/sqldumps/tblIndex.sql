@@ -1,4 +1,4 @@
-CREATE TABLE tblIndex (
+CREATE TABLE ###TBLPREFIX###tblIndex (
   DID int(11) NOT NULL default '0',
   `Text` text NOT NULL,
   ID bigint(20) NOT NULL default '0',

@@ -633,6 +633,8 @@ class weBackup extends we_backup{
 					else{
 						$this->addToFileList($file,$rem_doc_root);
 					}
+				} elseif(is_dir($file)) {
+					$this->getFileList($file,$with_dirs,$rem_doc_root);
 				}
 			}
 		}

@@ -12,22 +12,23 @@
 	     "__CLASS__ __DIR__ __FILE__ __FUNCTION__ __METHOD__ __NAMESPACE__ "+
 	     "die echo empty exit eval include include_once isset list require require_once return print unset"
 	     );
+  var phpConfig = {name: "clike", keywords: phpKeywords, multiLineStrings: true, $vars: true};
 
   CodeMirror.defineMode("php", function(config, parserConfig) {
     var htmlMode = CodeMirror.getMode(config, "text/html");
     var jsMode = CodeMirror.getMode(config, "text/javascript");
     var cssMode = CodeMirror.getMode(config, "text/css");
-    var phpMode = CodeMirror.getMode(config, {name: "clike", keywords: phpKeywords, multiLineStrings: true, $vars: true});
+    var phpMode = CodeMirror.getMode(config, phpConfig);
 
     function dispatch(stream, state) { // TODO open PHP inside text/css
       if (state.curMode == htmlMode) {
         var style = htmlMode.token(stream, state.curState);
-        if (style == "xml-processing" && /^<\?/.test(stream.current())) {
+        if (style == "meta" && /^<\?/.test(stream.current())) {
           state.curMode = phpMode;
           state.curState = state.php;
           state.curClose = /^\?>/;
         }
-        else if (style == "xml-tag" && stream.current() == ">" && state.curState.context) {
+        else if (style == "tag" && stream.current() == ">" && state.curState.context) {
           if (/^script$/i.test(state.curState.context.tagName)) {
             state.curMode = jsMode;
             state.curState = jsMode.startState(htmlMode.indent(state.curState, ""));
@@ -81,6 +82,6 @@
       electricChars: "/{}:"
     }
   });
+  CodeMirror.defineMIME("application/x-httpd-php", "php");
+  CodeMirror.defineMIME("text/x-php", phpConfig);
 })();
-
-CodeMirror.defineMIME("application/x-httpd-php", "php");

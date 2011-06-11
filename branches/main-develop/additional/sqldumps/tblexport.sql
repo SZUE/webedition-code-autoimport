@@ -1,4 +1,4 @@
-CREATE TABLE tblexport (
+CREATE TABLE ###TBLPREFIX###tblexport (
   ID bigint(20) NOT NULL auto_increment,
   ParentID bigint(20) NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',

@@ -1,4 +1,4 @@
-CREATE TABLE tblversionslog (
+CREATE TABLE ###TBLPREFIX###tblversionslog (
   `ID` bigint(20) NOT NULL auto_increment,
   `timestamp` int(11) NOT NULL,
   `action` int(11) NOT NULL,

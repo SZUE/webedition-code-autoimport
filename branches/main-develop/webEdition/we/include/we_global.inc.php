@@ -1556,7 +1556,8 @@ function modulFehltError($modul, $tag) {
 }
 
 function parseError($text) {
-	return '<b>' . g_l('parser','[error_in_template]') . ":</b> $text<br>\n";
+	trigger_error($text,E_USER_WARNING);
+	return "<b>" . g_l('parser','[error_in_template]') . ":</b> $text<br>\n".'<?php trigger_error(\''.$text.'\',E_USER_WARNING);?>';
 }
 
 function std_numberformat($content) {
@@ -2259,7 +2260,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 			if ($db_temp1->next_record())
 				if ($db_temp1->f($match) == $matchvalue) {
 					array_push($parentlist, $db_temp->f('ParentID'));
-					we_readParents($db_temp->f('ParentID'), $parentlist, $tab);
+					we_readParents($db_temp->f('ParentID'), $parentlist, $tab, $match, $matchvalue);
 				}
 		}
 }

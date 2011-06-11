@@ -1,4 +1,4 @@
-CREATE TABLE tblNewsletterConfirm (
+CREATE TABLE ###TBLPREFIX###tblNewsletterConfirm (
   confirmID varchar(96) NOT NULL default '',
   subscribe_mail varchar(255) NOT NULL default '',
   subscribe_html tinyint(1) NOT NULL default '0',

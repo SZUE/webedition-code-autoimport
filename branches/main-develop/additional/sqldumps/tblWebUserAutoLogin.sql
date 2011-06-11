@@ -1,4 +1,4 @@
-CREATE TABLE tblWebUserAutoLogin (
+CREATE TABLE ###TBLPREFIX###tblWebUserAutoLogin (
   AutoLoginID varchar(64) NOT NULL default '',
   WebUserID bigint(20) NOT NULL default '0',
   LastIp varchar(40)NOT NULL DEFAULT '',

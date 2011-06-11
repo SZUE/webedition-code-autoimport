@@ -1,4 +1,4 @@
-CREATE TABLE tblwidgetnotepad (
+CREATE TABLE ###TBLPREFIX###tblwidgetnotepad (
   `ID` bigint(20) NOT NULL auto_increment,
   `WidgetName` varchar(100) NOT NULL default '',
   `UserID` bigint(20) NOT NULL default '0',
@@ -12,4 +12,4 @@ CREATE TABLE tblwidgetnotepad (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM;
 /* query separator */
-INSERT IGNORE INTO tblwidgetnotepad VALUES (1, 'webEdition', 1, '2008-11-03', 'Welcome to webEdition!', '', 'low', 'always', '2008-11-03', '2008-11-03');
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblwidgetnotepad VALUES (1, 'webEdition', 1, NOW(), 'Welcome to webEdition!', '', 'low', 'always', NOW(), NOW());
