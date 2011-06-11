@@ -1,17 +1,17 @@
-CREATE TEMPORARY TABLE IF NOT EXISTS _tblWebAdmin(
+###UPDATEONLY###CREATE TEMPORARY TABLE IF NOT EXISTS _tblWebAdmin(
   Name varchar(255) NOT NULL default '',
   `Value` text NOT NULL,
   PRIMARY KEY (Name)
 )ENGINE = MYISAM;
 /* query separator */
-INSERT IGNORE INTO _tblWebAdmin SELECT DISTINCT * FROM ###TBLPREFIX###tblWebAdmin GROUP BY Name;
+###UPDATEONLY###INSERT IGNORE INTO _tblWebAdmin SELECT DISTINCT * FROM ###TBLPREFIX###tblWebAdmin GROUP BY Name;
 /* query separator */
-TRUNCATE ###TBLPREFIX###tblWebAdmin;
+###UPDATEONLY###TRUNCATE ###TBLPREFIX###tblWebAdmin;
 /* query separator */
-INSERT INTO ###TBLPREFIX###tblWebAdmin SELECT * FROM _tblWebAdmin;
+I###UPDATEONLY###NSERT INTO ###TBLPREFIX###tblWebAdmin SELECT * FROM _tblWebAdmin;
 /* query separator */
 
-DROP TEMPORARY TABLE IF EXISTS _tblWebAdmin;
+###UPDATEONLY###DROP TEMPORARY TABLE IF EXISTS _tblWebAdmin;
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblWebAdmin (
