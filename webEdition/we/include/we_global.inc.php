@@ -1654,7 +1654,8 @@ function modulFehltError($modul, $tag) {
 }
 
 function parseError($text) {
-	return "<b>" . $GLOBALS["l_parser"]["error_in_template"] . ":</b> $text<br>\n";
+	trigger_error($text,E_USER_WARNING);
+	return "<b>" . $GLOBALS["l_parser"]["error_in_template"] . ":</b> $text<br>\n".'<?php trigger_error(\''.$text.'\',E_USER_ERROR);?>';
 }
 
 function std_numberformat($content) {
