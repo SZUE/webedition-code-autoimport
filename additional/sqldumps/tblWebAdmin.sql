@@ -8,7 +8,7 @@
 /* query separator */
 ###UPDATEONLY###TRUNCATE ###TBLPREFIX###tblWebAdmin;
 /* query separator */
-I###UPDATEONLY###NSERT INTO ###TBLPREFIX###tblWebAdmin SELECT * FROM _tblWebAdmin;
+###UPDATEONLY###INSERT INTO ###TBLPREFIX###tblWebAdmin SELECT * FROM _tblWebAdmin;
 /* query separator */
 
 ###UPDATEONLY###DROP TEMPORARY TABLE IF EXISTS _tblWebAdmin;
