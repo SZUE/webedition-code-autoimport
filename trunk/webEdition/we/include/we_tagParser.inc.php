@@ -208,7 +208,7 @@ class we_tagParser{
 
 	}
 
-	function checkOpenCloseTags($TagsInTemplate = array(), &$code)
+	function checkOpenCloseTags($TagsInTemplate, &$code)
 	{
 
 		$CloseTags = array(

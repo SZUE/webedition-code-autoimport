@@ -159,7 +159,7 @@ class we_template extends we_document
 			}
 		}
 		if($start != $end){
-			return parseError(sprintf($GLOBALS["l_parser"]["start_endtag_missing"],$tagname.((!$eq) ? "..." : "")));
+			return parseError(sprintf($this->Text.': '.$GLOBALS["l_parser"]["start_endtag_missing"],$tagname.((!$eq) ? "..." : "")));
 		}
 		return "";
 	}
