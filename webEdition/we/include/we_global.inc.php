@@ -2626,7 +2626,7 @@ function t_e($type='warning'){
 			continue;
 		}
 		if(is_array($value)){
-			$data[]=print_r($value);
+			$data[]=print_r($value,true);
 		}else{
 			$data[]=$value;
 		}
