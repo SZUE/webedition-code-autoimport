@@ -1509,11 +1509,7 @@ function getHttpOption() {
 	if (ini_get('allow_url_fopen') != 1) {
 		@ini_set('allow_url_fopen', '1');
 		if (ini_get('allow_url_fopen') != 1) {
-			if (function_exists('curl_init')) {
-				return 'curl';
-			} else {
-				return 'none';
-			}
+			return (function_exists('curl_init') ? 'curl':'none');
 		}
 	}
 	return 'fopen';
