@@ -2602,7 +2602,7 @@ function p_r($val) {
 function t_e($type='warning'){
 	$inc=false;
 	$data=array();
-	switch($type){
+	switch(strtolower($type)){
 		case 'error':
 			$inc=true;
 			$type=E_USER_ERROR;
