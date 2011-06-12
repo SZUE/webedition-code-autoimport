@@ -1117,7 +1117,7 @@ class we_document extends we_root {
 				} else {
 					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
 				}
-p_r($link);
+
 				if($pathOnly || $only == 'href'){
 
 					$return = we_document::getLinkHref($link,$parentID,$path,$db,$hidedirindex,$objectseourls);
