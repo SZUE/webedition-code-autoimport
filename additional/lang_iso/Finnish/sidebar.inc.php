@@ -23,7 +23,7 @@
 /**
  * Language file: sidebar.inc.php
  * Provides language strings for the sidebar.
- * Language: English
+ * Language: Finnish
  */
 
 $l_sidebar["headline"] = "Sivupalkki";
@@ -34,7 +34,7 @@ $l_sidebar["default"] = array();
 
 $l_sidebar["default"][0] = array();
 $l_sidebar["default"][0]["headline"] = 'Tervetuloa!';
-$l_sidebar["default"][0]["text"] = 'webEdition on nyt asennettu mutta toistaiseksi se on viel?lman sis??;
+$l_sidebar["default"][0]["text"] = 'webEdition on nyt asennettu mutta toistaiseksi se on viel?lman sis??';
 
 $l_sidebar["default"][1] = array();
 $l_sidebar["default"][1]["headline"] = 'Manuaalit';
@@ -43,8 +43,8 @@ $l_sidebar["default"][1]["link"] = 'http://documentation.webedition.org/wiki/en/
 $l_sidebar["default"][1]["icon"] = 'documentation.gif';
 
 $l_sidebar["default"][2] = array();
-$l_sidebar["default"][2]["headline"] = 'Muita tiedonl?eit?
-$l_sidebar["default"][2]["text"] = 'Katsaus muista tiedonl?eist?
+$l_sidebar["default"][2]["headline"] = 'Muita tiedonl?eit?';
+$l_sidebar["default"][2]["text"] = 'Katsaus muista tiedonl?eist?';
 $l_sidebar["default"][2]["link"] = 'javascript:top.we_cmd(\'help\');';
 $l_sidebar["default"][2]["icon"] = 'help.gif';
 
@@ -71,7 +71,5 @@ $l_sidebar["admin"] = array();
 
 $l_sidebar["admin"][0] = array();
 $l_sidebar["admin"][0]["headline"] = 'Sivupalkin asetukset';
-$l_sidebar["admin"][0]["text"] = 'L?t sivupalkin asetukset, kuten yksil?sen aloitussivun ja mitta-asetukset valikosta extrat> asetukset > yleiset ... "K?t?ttym?v?lehdelt?
+$l_sidebar["admin"][0]["text"] = 'L?t sivupalkin asetukset, kuten yksil?sen aloitussivun ja mitta-asetukset valikosta extrat> asetukset > yleiset ... "K?t?ttym?v?lehdelt?';
 $l_sidebar["admin"][0]["link"] = 'javascript:top.we_cmd(\'openPreferences\');';
-
-?>
