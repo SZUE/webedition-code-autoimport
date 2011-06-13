@@ -56,7 +56,9 @@ function we_tag_xmlfeed($attribs, $content){
 
 	if (!is_file($cache) || $do_refresh) {
 		$GLOBALS['xmlfeeds'][$name]->getFile($url);
-		$GLOBALS['xmlfeeds'][$name]->saveCache($cache, $refresh);
+		if($refresh>0){
+			$GLOBALS['xmlfeeds'][$name]->saveCache($cache, $refresh);
+		}
 	} else {
 		$GLOBALS['xmlfeeds'][$name]->loadCache($cache);
 	}

@@ -49,10 +49,15 @@ class weXMLBrowser extends XML_Parser{
 		$this->cache=$location;
 	}
 
-	function saveCache($cache="",$expire=0){
-		if(empty($cache)) $cache=$this->cache;
-		else $this->cache=$cache;
-		if($expire==0) $expire=time()+1800;
+	function saveCache($cache='',$expire=0){
+		if(empty($cache)){
+			$cache=$this->cache;
+		}else{
+			$this->cache=$cache;
+		}
+		if($expire==0){
+			$expire=time()+1800;
+		}
 
 		if (defined("WE_NEW_FOLDER_MOD")){
 			eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) .';');
@@ -63,12 +68,17 @@ class weXMLBrowser extends XML_Parser{
 		if(!is_dir(dirname($cache))) {
 			createLocalFolder(dirname($cache));
 		}
-		if(weFile::save($cache,serialize($this->nodes))) insertIntoCleanUp($cache,$expire);
+		if(weFile::save($cache,serialize($this->nodes))){
+			insertIntoCleanUp($cache,$expire);
+		}
 	}
 
-	function loadCache($cache=""){
-		if(empty($cache)) $cache=$this->cache;
-		else $this->cache=$cache;
+	function loadCache($cache=''){
+		if(empty($cache)){
+			$cache=$this->cache;
+		}else{
+			$this->cache=$cache;
+		}
 		$this->nodes=unserialize(weFile::load($cache));
 	}
 

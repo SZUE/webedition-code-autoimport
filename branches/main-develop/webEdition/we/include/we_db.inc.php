@@ -146,7 +146,7 @@ abstract class DB_WE_abstract {
 	 */
 	public function __construct(){
 		if($this->connect()){
-			// deactivate MySQL strict mode #185
+			// deactivate MySQL strict mode; don't use query function (error logging)
 			$this->_query('SET SESSION sql_mode=""');
 			if (defined('DB_SET_CHARSET') && DB_SET_CHARSET != '') {
 				$this->_setCharset(DB_SET_CHARSET);
