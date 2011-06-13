@@ -67,6 +67,10 @@ protected function ping(){
 		}
 		return ($this->Link_ID > 0);
 	}
+        protected function _setCharset($charset){
+                @ mysql_set_charset($charset);
+        }
+ 
 
 	/* public: discard the query result */
 	protected function _free() {

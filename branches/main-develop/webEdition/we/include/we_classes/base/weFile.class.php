@@ -176,15 +176,13 @@ class weFile{
 
 
 	function hasURL($filename){
-		if((strtolower(substr($filename,0,4))=="http") || (strtolower(substr($filename,0,4))=="ftp")) return true;
-		else return false;
+		return ((strtolower(substr($filename,0,4))=='http') || (strtolower(substr($filename,0,3))=='ftp'));
 	}
 
 	function getUniqueId($md5=true) {
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
-		if($md5) return md5(uniqid(microtime()));
-		else return uniqid(microtime());
+		return ($md5 ? md5(uniqid(microtime())): uniqid(microtime()));
 	}
 
 

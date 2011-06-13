@@ -1423,11 +1423,7 @@ function getHttpOption() {
 	if (ini_get('allow_url_fopen') != 1) {
 		@ini_set('allow_url_fopen', '1');
 		if (ini_get('allow_url_fopen') != 1) {
-			if (function_exists('curl_init')) {
-				return 'curl';
-			} else {
-				return 'none';
-			}
+			return (function_exists('curl_init') ? 'curl':'none');
 		}
 	}
 	return 'fopen';
@@ -2381,11 +2377,59 @@ function getArrayKey($needle, $haystack) {
 	return '';
 }
 
+/**
+ * This function is equivalent to print_r, except that it adds addtional "pre"-headers
+ * @param * $val the variable to print
+ */
 function p_r($val) {
 	print '<pre>';
 	print_r($val);
 	print '</pre>';
 }
+
+/**
+ * This function triggers an error, which is logged to systemlog, and if enabled to we-log. This function can take any number of variables!
+ * @param string $type (optional) define the type of the log; possible values are: warning (default), error, notice, deprecated
+ * Note: type error causes we to stop execution, cause this is considered a major bug; but value is still logged.
+ */
+function t_e($type='warning'){
+	$inc=false;
+	$data=array();
+	switch(strtolower($type)){
+		case 'error':
+			$inc=true;
+			$type=E_USER_ERROR;
+			break;
+		case 'notice':
+			$inc=true;
+			$type=E_USER_NOTICE;
+			break;
+		case 'deprecated':
+			$inc=true;
+			$type=E_USER_DEPRECATED;
+			break;
+		case 'warning':
+			$inc=true;
+		default:
+			$type=E_USER_WARNING;
+	}
+	foreach (func_get_args() as $value){
+		if($inc){
+			$inc=false;
+			continue;
+		}
+		if(is_array($value)){
+			$data[]=print_r($value,true);
+		}else{
+			$data[]=$value;
+		}
+	}
+
+	if(count($data)>0){
+		trigger_error(implode("\n---------------------------------------------------\n",$data),$type);
+	}
+}
+
 
 function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false,$objectseourls=false) {
 

@@ -61,6 +61,9 @@ abstract class DB_WE_abstract {
 	 * @return int a query_id
 	 */
 	abstract protected function _query($Query_String,$unbuffered = false);
+	/** set charset for the session
+	 */
+	abstract protected function _setCharset($charset);
 	/** internal free function*/
 	abstract protected function _free();
 	/** internal get last error
@@ -144,9 +147,9 @@ abstract class DB_WE_abstract {
 	public function __construct(){
 		if($this->connect()){
 			// deactivate MySQL strict mode #185
-			$this->query('SET SESSION sql_mode=""');
+			$this->_query('SET SESSION sql_mode=""');
 			if (defined('DB_SET_CHARSET') && DB_SET_CHARSET != '') {
-				$this->query('SET NAMES "' . DB_SET_CHARSET . '"');
+				$this->_setCharset(DB_SET_CHARSET);
 			}
 		}
 	}

@@ -111,43 +111,41 @@ class weXMLBrowser extends XML_Parser{
 		}
 
 		if(weFile::hasURL($file)) {
-
-				$_opt = getHttpOption();
-
-				if($_opt=='fopen') {
+			switch(getHttpOption()){
+				case 'fopen':
 					if (defined("WE_PROXYHOST")) {
-
 						$proxyhost = defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
 						$proxyport = (defined("WE_PROXYPORT") && WE_PROXYPORT) ? WE_PROXYPORT : "80";
 						$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
 						$proxy_pass = defined("WE_PROXYPASSWORD") ? WE_PROXYPASSWORD : "";
 
 						$newfile = $this->getFileThroughProxy($file,$proxyhost,$proxyport,$proxy_user,$proxy_pass);
-						if(!empty($newfile)) $file = $newfile;
-						else return false;
-					}
-				}else if($_opt=='curl') {
-					$_m = array();
-					$_pattern = '/^(((ht|f)tp(s?):\/\/)|(www\.))+(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(\/[a-zA-Z0-9\&amp;%_\.\/-~-]*)?/i';
-					if(preg_match($_pattern,$file,$_m)) {
-						$_content = getCurlHttp(str_replace($_m[9],'',$file),$_m[9]);
-						if($_content['status']===0) {
-							$_fn = weFile::saveTemp($_content['data']);
-							$file = $_fn;
-						} else {
+						if(!empty($newfile)){
+							$file = $newfile;
+						}else{
 							return false;
 						}
+					}
+					break;
+				case 'curl':
+					$_m = array();
+					$_pattern = '/^(((ht|f)tp(s?):\/\/)|(www\.))+(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(\/[a-zA-Z0-9\&amp;%_\.\/-~-]*)?/i';
+					if(!preg_match($_pattern,$file,$_m)) {
+						return false;
+					}
+					$_content = getCurlHttp(str_replace($_m[9],'',$file),$_m[9]);
+					if($_content['status']===0) {
+						$_fn = weFile::saveTemp($_content['data']);
+						$file = $_fn;
 					} else {
 						return false;
 					}
-
-				} else if($_opt=='none') {
+					break;
+				case 'none':
+				default:
 					// has to be implemented
 					return false;
-				}
-
-
-
+			}
 		}
 		return XML_Parser::getFile($file);
 	}

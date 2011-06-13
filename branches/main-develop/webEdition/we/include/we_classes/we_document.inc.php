@@ -1351,15 +1351,12 @@ class we_document extends we_root {
 				return '';
 			}else{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Path',$db);
-
 				if (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition) {
-
 					return $path;
 				} else {
-
 					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Published',$db);
 					if ($published) {
-						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
+						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							$path_parts = pathinfo($path);
 							$path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 						}

@@ -161,7 +161,7 @@ function we_tag_input($attribs, $content) {
 								$sel) ? $sel : '');
 			case 'select':
 				//NOTE: this tag is for objects only
-				return we_redirect_tagoutput($GLOBALS['we_doc']->getField($attribs, 'select'), $nameTo, $to);
+				return $GLOBALS['we_doc']->getField($attribs, 'select');
 			case 'text':
 			default:
 				$we_button = new we_button();
@@ -178,7 +178,7 @@ function we_tag_input($attribs, $content) {
 	</tr>
 </table>';
 				} else {
-					return we_redirect_tagoutput('<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />', $nameTo, $to);
+					return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				}
 		}
 	} else {

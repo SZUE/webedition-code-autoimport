@@ -986,7 +986,22 @@ class we_object extends we_document
 			}
 			$content .= $this->htmlSelect("we_".$this->Name."_multiobject[".$name."class]",$vals,1,$this->getElement($name.'class',"dat"),"",'onChange="if(this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\']){this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.$identifier.'\',\''.$name.'\')"',"value",388);
 			$content .= '</td></tr>';
-		break;
+			$content .= 	'<tr valign="top">'
+						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["max_objects"].'</td>'
+						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.$GLOBALS["l_object"]["no_maximum"].')</nobr></td>'
+						. 	'</tr>';
+
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<td width="170" class="defaultfont"><table border="0">';
+			if(!isset($this->elements[$name."count"]["dat"])){
+			    $this->elements[$name."count"]["dat"] = 0;
+			}
+			for($f=0; $f <= $this->elements[$name."count"]["dat"]; $f++) {
+				$content .= $this->getMultiObjectFieldHTML($name, $identifier, $f);
+			}
+
+			$content .=	'</tr></table></td></tr>';
+			break;
 
 		case 'href':
 			$typeVal = $this->getElement($name."hreftype","dat");
@@ -1013,8 +1028,12 @@ class we_object extends we_document
 			$content .= $fileSelect.getPixel(30,2)."directory".getPixel(8,2);
 			$content .= $dirSelect;
 			$content .= '</td></tr>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<td width="170" class="defaultfont">';
+			$content .= $this->htmlHref($name);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
+			$content .= '</td></tr>';
+			break;
 
-		break;
 
 		// default
 		/*
@@ -1030,7 +1049,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'img':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1047,7 +1065,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'flashmovie':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1064,7 +1081,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'quicktime':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1081,7 +1097,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'binary':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1097,13 +1112,13 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'date':
-			/*
+			
 			$d = abs($this->getElement($name."default","dat"));
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= getDateInput2("we_".$this->Name."_date[".$name."default]",($d ? $d : time()),true);
 			$content .= '</td></tr>';
-			*/
+			
 			break;
 		case 'text':
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[default]').'</td>';
@@ -1114,16 +1129,12 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'object':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
-
 			$content .= $this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "");
-
 			$content .= '</td></tr>';
-
+			break;
 		case 'meta':
-
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"><table border="0"><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
 			if(!isset($this->elements[$name."count"]["dat"])){
@@ -1161,24 +1172,6 @@ class we_object extends we_document
 			}
 			$content .= '</table></td></tr>';
 			break;
-		case 'multiobject':
-
-			$content .= 	'<tr valign="top">'
-						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[max_objects]').'</td>'
-						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.g_l('modules_object','[no_maximum]').')</nobr></td>'
-						. 	'</tr>';
-
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
-			$content .= '<td width="170" class="defaultfont"><table border="0">';
-			if(!isset($this->elements[$name."count"]["dat"])){
-			    $this->elements[$name."count"]["dat"] = 0;
-			}
-			for($f=0; $f <= $this->elements[$name."count"]["dat"]; $f++) {
-				$content .= $this->getMultiObjectFieldHTML($name, $identifier, $f);
-			}
-
-			$content .=	'</tr></table></td></tr>';
-			break;
 		case 'country':
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
@@ -1195,12 +1188,6 @@ class we_object extends we_document
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlLinkInput($name, $identifier);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
-			$content .= '</td></tr>';
-			break;
-		case 'href':
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
-			$content .= '<td width="170" class="defaultfont">';
-			$content .= $this->htmlHref($name);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
 			$content .= '</td></tr>';
 			break;
 		case 'shopVat':

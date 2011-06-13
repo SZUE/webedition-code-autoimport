@@ -46,6 +46,9 @@ class DB_WE extends DB_WE_abstract {
 		return $tmp;
 	}
 
+	protected function _setCharset($charset){
+		@$this->Link_ID->set_charset($charset);
+	}
 	protected function _seek($pos=0) {
 		return @$this->Query_ID->data_seek($pos);
 	}

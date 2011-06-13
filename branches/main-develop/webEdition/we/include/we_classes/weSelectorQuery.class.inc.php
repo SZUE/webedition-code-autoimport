@@ -355,7 +355,11 @@ class weSelectorQuery {
 	 * @return string
 	 */
 	function getUserExtraQuery($table, $useCreatorID=true){
-		$userExtraSQL = makeOwnersSql(false) . " ";
+		if ($table != NAVIGATION_TABLE) {
+			$userExtraSQL = makeOwnersSql(false) . " ";
+		} else {
+			$userExtraSQL = " ";
+		}
 
 		if(get_ws($table)) {
 			$userExtraSQL .= getWsQueryForSelector($table);
