@@ -74,10 +74,10 @@ class DB_WE extends DB_Sql {
 							$this->halt('cannot use database ' . $this->Database);
 							return 0;
 						}
-			// deactivate MySQL strict mode #185
-			$this->query(" SET SESSION sql_mode='' ");
+			// deactivate MySQL strict mode; don't use query function (error logging)
+			@mysql_query(" SET SESSION sql_mode='' ");
 			if (defined('DB_SET_CHARSET') && DB_SET_CHARSET != '') {
-				$this->query(" SET NAMES '" . DB_SET_CHARSET . "' ");
+				@mysql_set_charset (DB_SET_CHARSET);
 			}
 		}
 		return $this->Link_ID;
