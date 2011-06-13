@@ -478,10 +478,6 @@ class Zend_Session extends Zend_Session_Abstract
             }
 
             $startedCleanly = session_start();
-			if(!$startedCleanly){$startedCleanly = session_start();} //WE-Patch
-			if(!$startedCleanly){usleep ( 10000 ); $startedCleanly = session_start();}
-			if(!$startedCleanly){usleep ( 100000 ); $startedCleanly = session_start();}
-
 
             if (self::$_throwStartupExceptions) {
                 restore_error_handler();
