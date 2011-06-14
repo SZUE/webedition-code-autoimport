@@ -45,6 +45,7 @@ $_sysinfo["suhosin warning"] = 'Wegen der vielfältigen Konfigurationsmöglichkeit
 $_sysinfo["dbversion warning"] = 'Der verwendete DB-Server meldet die Version %s, webEdition benötigt jedoch mindestens die MySQL-Server Version 5.0. webEdition mag mit der genutzten Version funktionieren, dies kann jedoch nicht für neue webEdition Versionen (z.B. nach Updates) garantiert werden.  Spätestens ab webEdition Version 7 wird MySQL Version 5 benötigt. Außerdem: die auf dem Server installierte MySQL Version ist veraltet. Für diese Version gibt es keine Updates mehr, dies kann die Sicherheit des gesamten Systems beeinträchtigen.';
 $_sysinfo["pcre warning"] = 'Versionen vor 7.0 können zu ernsten Problemen führen';
 $_sysinfo["pcre_unkown"] = 'Nicht detektierbar';
+$_sysinfo["not_active"] = 'Nicht aktiv';
 $_sysinfo["exif warning"] = 'EXIF-Metadaten für Bilder sind nicht verfügbar';
 $_sysinfo['sdk_db warning'] = 'SDK Operationen und WE-APPS mit Datenbanknutzung sind nicht verfügbar (benötigt: PDO &amp; PDO_mysql)';
 $_sysinfo['phpext warning'] = 'nicht verfügbar: ';
