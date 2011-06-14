@@ -23,7 +23,7 @@
  * webEdition must be installed
  */
 
-include_once("cliConfig.php");
+require_once("cliConfig.php");
 
 // CONFIGURATION BEGINS ---------------------------------------------------------
 
