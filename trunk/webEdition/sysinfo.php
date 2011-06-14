@@ -85,6 +85,25 @@
 		    }
 		    return false;
 		}
+		function ini_get_message($val) {
+		    $bool = ini_get($val);
+			if($val == "1") {
+				return 'on';
+			}
+			if($val == "0") {
+				return 'off';
+			}
+			switch (strtolower($bool)) {
+		    	case '1':
+		    	case 'on':
+				case 'yes':
+				case 'true':
+					return 'on';
+		    	default:
+		    		return 'off';
+		    }
+		    return 'off';
+		}
 		
 		function parseValue($name,$value) {
 			global $_types;
@@ -130,6 +149,9 @@
 		}
 		function getInfo($message, $value) {
 			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+		}
+		function getOK($message, $value) {
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:0px; background:url('.IMAGE_DIR . 'valid.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
 		}
 		
 		$_install_dir = $_SERVER['DOCUMENT_ROOT']. WEBEDITION_DIR;
@@ -193,22 +215,22 @@
 			'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 				$_sysinfo['php_version'] => phpversion(),
 				$_sysinfo['zendframework_version'] => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning($_sysinfo["zend_framework warning"],Zend_Version::VERSION) : Zend_Version::VERSION,
-				'register_globals' => (ini_get_bool('register_globals')) ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : ini_get('register_globals'),
+				'register_globals' => (ini_get_bool('register_globals')) ? getWarning($_sysinfo["register_globals warning"],ini_get('register_globals')) : getOK('',ini_get_message('register_globals')),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),
-				'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning($_sysinfo["short_open_tag warning"],ini_get('short_open_tag')) : ini_get('short_open_tag'),
+				'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning($_sysinfo["short_open_tag warning"],ini_get('short_open_tag')) : getOK('',ini_get_message('short_open_tag')),
 				'allow_url_fopen' => ini_get('allow_url_fopen'),
 				'open_basedir' => ini_get('open_basedir'),
-				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo($_sysinfo["safe_mode warning"],ini_get('safe_mode')) : ini_get('safe_mode'),
+				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo($_sysinfo["safe_mode warning"],ini_get('safe_mode')) : getOK('',ini_get_message('safe_mode')),
 				'safe_mode_exec_dir' => ini_get('safe_mode_exec_dir'),
 				'safe_mode_gid' => ini_get('safe_mode_gid'),
 				'safe_mode_include_dir' => ini_get('safe_mode_include_dir'),
 				'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
-				'Suhosin' => (in_array('suhosin',get_loaded_extensions()) ) ? getWarning($_sysinfo["suhosin warning"],in_array('suhosin',get_loaded_extensions())) : ''
+				'Suhosin' => (in_array('suhosin',get_loaded_extensions()) ) ? getWarning($_sysinfo["suhosin warning"],in_array('suhosin',get_loaded_extensions())) : getOK('',$_sysinfo['not_active'])
 			),
 
 			'MySql' => array (
-				$_sysinfo['mysql_version'] => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf($_sysinfo["dbversion warning"],getMysqlVer(false)),getMysqlVer(false) ) :  getMysqlVer(false),
+				$_sysinfo['mysql_version'] => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf($_sysinfo["dbversion warning"],getMysqlVer(false)),getMysqlVer(false) ) :  getOK('',getMysqlVer(false)),
 				'max_allowed_packet' => getMaxAllowedPacket()
 			),
 			
