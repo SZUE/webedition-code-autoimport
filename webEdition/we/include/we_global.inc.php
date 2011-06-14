@@ -2621,7 +2621,7 @@ function t_e($type='warning'){
 			$inc=false;
 			continue;
 		}
-		if(is_array($value)){
+		if(is_array($value)||  is_object($value)){
 			$data[]=print_r($value,true);
 		}else{
 			$data[]=$value;
