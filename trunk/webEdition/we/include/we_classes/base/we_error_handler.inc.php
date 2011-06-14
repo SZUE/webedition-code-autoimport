@@ -171,17 +171,15 @@ function getBacktrace($skip){
 	$_detailedError=$_caller=$_file=$_line='';
 
 	$_backtrace=debug_backtrace();
-	$found=false;
 	$cnt=0;
 
 	foreach($_backtrace AS $no=>$arr){
 		if(in_array($arr['function'],$skip)){
 			continue;
-		}else if(!$found){ //this is the caller
+		} else if ($cnt == 0) { //this is the caller
 			$_caller=$arr['function'];
 			$_file=(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'');
 			$_line=(isset($arr['line'])?$arr['line']:'');
-			$found=true;
 		}
 		$_detailedError .='#'.($cnt++).' '.$arr['function'].' called at ['.(isset($arr['file'])?str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $arr['file']):'').':'.(isset($arr['line'])?$arr['line']:'')."]\n";
 	}
