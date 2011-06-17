@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
 include_once(WE_GLOSSARY_MODULE_DIR."weGlossary.php");
 
 /**
@@ -32,14 +32,14 @@ class weGlossaryCache {
 	 *
 	 * @var string
 	 */
-	var $language = "";
+	var $language = '';
 
 	/**
 	 * internal id of the cache
 	 *
 	 * @var string
 	 */
-	var $_cacheId = "";
+	var $_cacheId = '';
 
 
 	/**
@@ -48,7 +48,6 @@ class weGlossaryCache {
 	 * @param string $language
 	 */
 	function __construct($language) {
-
 		$this->weGlossaryCache($language);
 
 	}
@@ -61,11 +60,8 @@ class weGlossaryCache {
 	 * @return GlossaryCache
 	 */
 	function weGlossaryCache($language) {
-
 		$this->language = $language;
-
 		$this->_createCacheId();
-
 	}
 
 
@@ -75,9 +71,7 @@ class weGlossaryCache {
 	 * @access private
 	 */
 	function _createCacheId() {
-
 		$this->_cacheId = $this->language;
-
 	}
 
 
@@ -90,9 +84,7 @@ class weGlossaryCache {
 	 * @abstract
 	 */
 	function cacheIdToFilename($id) {
-
 		return WE_GLOSSARY_MODULE_DIR . "cache/cache_" . $id . ".php";
-
 	}
 
 
@@ -105,9 +97,7 @@ class weGlossaryCache {
 	 * @abstract
 	 */
 	function filenameToCacheId($filename) {
-
 		return ereg_replace("^" . WE_GLOSSARY_MODULE_DIR . "data/cache_", ereg_replace(".php$", $filename));
-
 	}
 
 
@@ -117,11 +107,9 @@ class weGlossaryCache {
 	 * @return boolean
 	 */
 	function isValid() {
-
 		$cacheFilename = weGlossaryCache::cacheIdToFilename($this->_cacheId);
 
 		return file_exists($cacheFilename) && is_file($cacheFilename);
-
 	}
 
 
@@ -131,13 +119,10 @@ class weGlossaryCache {
 	 * @return boolean
 	 */
 	function clear() {
-
 		if($this->isValid()) {
 			return unlink(weGlossaryCache::cacheIdToFilename($this->_cacheId));
-
 		}
 		return true;
-
 	}
 
 
@@ -147,10 +132,9 @@ class weGlossaryCache {
 	 * @return boolean
 	 */
 	function write() {
-
 		$DB_WE = new DB_WE();
 
-		$query = "SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM " . GLOSSARY_TABLE . " WHERE Language = '" . $DB_WE->escape($this->language) . "' AND Published > 0 ORDER BY Length DESC";
+		$query = 'SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length FROM ' . GLOSSARY_TABLE . ' WHERE Language = "' . $DB_WE->escape($this->language) . '" AND Published > 0 ORDER BY Length DESC';
 
 		$DB_WE->query($query);
 		$Items = array();
@@ -188,7 +172,6 @@ class weGlossaryCache {
 
 			// Language
 			if($Type == 'link') {
-
 				$urladd = "";
 
 				// External Link
@@ -425,17 +408,13 @@ class weGlossaryCache {
 
 		}
 
-		$Link = 	"\n"
-				.	"\$link = array(\n";
+		$Link = 	'$link = array(';
 
-		$Acronym = 		"\n"
-					.	"\$acronym = array(\n";
+		$Acronym = 		'$acronym = array(';
 
-		$Abbreviation =		"\n"
-						.	"\$abbreviation = array(\n";
+		$Abbreviation =		'$abbreviation = array(';
 
-		$ForeignWord =  	"\n"
-						.	"\$foreignword = array(\n";
+		$ForeignWord =  	'$foreignword = array(';
 
 		foreach($Items as $Text => $Value) {
 
@@ -444,7 +423,6 @@ class weGlossaryCache {
 			foreach($Value as $Type => $AttributeList) {
 
 				switch($Type) {
-
 					case 'link':
 						$Tag = 'a';
 						$PushTo = 'Link';
@@ -469,35 +447,19 @@ class weGlossaryCache {
 
 				$prefix .= "<" . $Tag;
 				foreach($AttributeList as $Attribute => $Val) {
-					if($Attribute == 'attribute') {
-						$prefix .= $Val;
-
-					} else {
-						$prefix .= ' ' . $Attribute . '=\"' . $Val . '\"';
-
-					}
-
+					$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '=\"' . $Val . '\"');
 				}
 				$prefix .= '>';
 				$postfix = '</' . $Tag . '>' . $postfix;
-
-
 			}
 			$$PushTo	.=	'"/((<[^>]*)|([^[:alnum:]])('.$Text.')([^[:alnum:]]))/e" => \'"\2"=="\1"?"\1":"\3' . $prefix . '\4' . $postfix . '\5"\'' . ",\n";
 
 		}
 
-		$Link	.=		");\n"
-					.	"";
-
-		$Acronym	.=		");\n"
-						.	"";
-
-		$Abbreviation	.=		");\n"
-							.	"";
-
-		$ForeignWord	.=		");\n"
-							.	"";
+		$Link	.=		');';
+		$Acronym	.=		');';
+		$Abbreviation	.=		');';
+		$ForeignWord	.=		');';
 
 		$cacheFilename = weGlossaryCache::cacheIdToFilename($this->_cacheId);
 
@@ -510,20 +472,7 @@ class weGlossaryCache {
 
 		}
 
-		$fh = fopen($cacheFilename, "w+");
-		if(!$fh) {
-			return false;
-		}
-
-		if(!fputs($fh, "<?php\n" . $Link . "\n" . $Acronym . "\n" . $Abbreviation . "\n" . $ForeignWord . "\n?>")) {
-			return false;
-
-		}
-
-		fclose($fh);
-
-		return true;
-
+		return (file_put_contents($cacheFilename,"<?php\n" . $Link . "\n" . $Acronym . "\n" . $Abbreviation . "\n" . $ForeignWord) !==FALSE);
 	}
 
 
@@ -547,8 +496,6 @@ class weGlossaryCache {
 
 		}
 		return array();
-
 	}
-
 
 }

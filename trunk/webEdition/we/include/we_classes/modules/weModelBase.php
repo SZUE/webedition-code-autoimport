@@ -103,9 +103,7 @@ class weModelBase {
 
 			$this->db->query($query);
 			# get ID #
-			$this->db->query("SELECT LAST_INSERT_ID()");
-			$this->db->next_record();
-			$this->ID = $this->db->f(0);
+			$this->ID = $this->db->getInsertId();
 			$this->isnew = false;
 			return true;
 		}
