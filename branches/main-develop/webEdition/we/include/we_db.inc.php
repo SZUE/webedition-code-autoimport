@@ -125,8 +125,6 @@ abstract class DB_WE_abstract {
 	 * @return int field flags as int
 	 */
 	abstract public function field_flags($no);
-	//abstract function lock($table, $mode = 'write');
-	//abstract function unlock();
 	/** close the DB connection
 	 * 
 	 */
@@ -469,6 +467,42 @@ abstract class DB_WE_abstract {
 		$this->free();
 		return $res;
 	}
+
+	/**
+	 * @param $table string,array specify the tables to lock; use numeric array to lock all tables with mode; use named array with [table]=mode to lock specific modes
+	 * @param $mode string name the locking mode
+	 * @return bool true, on success
+	 */ 
+	function lock($table, $mode = 'write'){
+		if (!$this->connect()){
+			return false;
+		}
+		$query='';
+		if (is_array($table)) {
+			foreach($table $key=>$value){
+				if(is_numeric($key)){
+					$query.= $value.' '.$mode.',';
+				}else{
+					$query.= $key.' '.$value.',';
+				}
+			}
+			$query = substr($query, 0, -1);
+		}else{
+			$query = $table.' '.$mode;
+		}
+		return $this->_query('lock tables '.$query);
+	}
+	
+	/** Unlock all locked tables
+	 * @return bool true, on success
+	 */
+	function unlock(){
+		if (!$this->connect())
+			return false;
+		}
+		return $this->_query('unlock tables');
+	}
+
 
 	/** eventually print the message and stop further execution, depending on "Halt_On_Error"
 	 * @param string $msg message to be printed
