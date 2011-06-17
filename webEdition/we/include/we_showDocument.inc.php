@@ -184,41 +184,19 @@ if ($we_include = $we_doc->editor($baseHref)) {
 
 		// do not cache the document
 		} else {
+			// --> Glossary Replacement
 
-			//
-			// --> Start Glossary Replacement
-			//
-
-
-			if (defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) {
-				if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
+			if ((defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) && 
+				(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) ){
 					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryCache.php");
 					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryReplace.php");
 
 					weGlossaryReplace::start();
-				}
-
-			}
-
-			//
-			// --> Include Content
-			//
-
-
-			include ($we_include);
-
-			//
-			// --> Finish Glossary Replacement
-			//
-
-
-			if (defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) {
-				if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
+					include ($we_include);
 					weGlossaryReplace::end($GLOBALS["we_doc"]->Language);
-				}
-
+			}else{
+					include ($we_include);
 			}
-
 		}
 
 	} else {

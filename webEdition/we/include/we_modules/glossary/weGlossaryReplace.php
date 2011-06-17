@@ -20,25 +20,21 @@
 
 	class weGlossaryReplace {
 
-
 		/**
 		 * defines the start of the content which have to be replaced
 		 *
 		 */
 		function start() {
-
 			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
 			if(!file_exists($configFile) || !is_file($configFile)) {
 				include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossarySettingControl.class.php");
 				weGlossarySettingControl::saveSettings(true);
 			}
-			include($configFile);
+			include_once($configFile);
 
 			if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']) {
 				ob_start();
-
 			}
-
 		}
 
 
@@ -48,19 +44,13 @@
 		 * @param unknown_type $language
 		 */
 		function end($language) {
-
 			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
-			if(!file_exists($configFile) || !is_file($configFile)) {
-				include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossarySettingControl.class.php");
-				weGlossarySettingControl::saveSettings(true);
-			}
-			include($configFile);
+			include_once($configFile);
 
 			if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']) {
 				$content = ob_get_contents();
 				ob_end_clean();
 				echo weGlossaryReplace::doReplace($content, $language);
-
 			}
 
 		}
@@ -73,22 +63,17 @@
 		 * @param unknown_type $language
 		 */
 		function replace($content, $language) {
-
 			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
 			if(!file_exists($configFile) || !is_file($configFile)) {
 				include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossarySettingControl.class.php");
 				weGlossarySettingControl::saveSettings(true);
 			}
 			include($configFile);
+			
 			if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']) {
 				return weGlossaryReplace::doReplace($content, $language);
-
-			} else {
-				return $content;
-
 			}
-
-
+			return $content;
 		}
 
 
@@ -101,53 +86,44 @@
 		 * @return string
 		 */
 		function doReplace($src, $language) {
-
-			if($language == "") {
+			if($language == '') {
 				we_loadLanguageConfig();
 				$language = $GLOBALS['weDefaultFrontendLanguage'];
 			}
 
 			// get the words to replace
 			$cache = new weGlossaryCache($language);
-			$cache->write();
 			$foreignword = $cache->get('foreignword');
 			$abbreviation = $cache->get('abbreviation');
 			$acronym = $cache->get('acronym');
 			$link = $cache->get('link');
 			unset($cache);
 			// first check if there is a body tag inside the sourcecode
-			preg_match("/<body.*>(.*)<\/body>/si", $src, $matches);
+			preg_match('|<body.*>(.*)</body>|sUi', $src, $matches);
 
-			if(isset($matches[1])) {
-				// take the code between the body-tags
-				$srcBody = $replBody = $matches[1];
-
-			} else {
-				// take the whole code
-				$srcBody = $replBody = $src;
-
-			}//p_r($srcBody);
+			$srcBody = $replBody = (isset($matches[1]) ? $matches[1] : $src);
+			
 			/*
 			This is the fastest variant
 			*/
 			// split the source into tag and non-tag pieces
-			$pieces = preg_split('!(<[^>]*>)!', $replBody, -1, PREG_SPLIT_DELIM_CAPTURE);
+			$pieces = preg_split('|(<[^>]*>)|', $replBody, -1, PREG_SPLIT_DELIM_CAPTURE);
 			// replace words in non-tag pieces
-			$replBody = "";
-			$before = "";
+			$replBody = '';
+			$before = '';
 			foreach($pieces as $piece) {
-				if (!ereg("^<", $piece) && !eregi("<script", $before)) {
+				if (strpos($piece,'<')===FALSE && stripos($before,'<script')===FALSE) {
 					$piece = str_replace('&quot;', '"', $piece);
-					if(!eregi("<a ", $before)) {
+					if(stripos($before,'<a ')===FALSE) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $link);
 					}
-					if(!eregi("<abbr ", $before)) {
+					if(stripos($before,'<abbr ')===FALSE) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $abbreviation);
 					}
-					if(!eregi("<acronym ", $before)) {
+					if(stripos($before,'<acronym ')===FALSE) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $acronym);
 					}
-					if(!eregi("<span ", $before)) {
+					if(stripos($before,'<span ')===FALSE) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $foreignword);
 					}
 				}
@@ -163,13 +139,11 @@
 			$replBody = GlossaryReplace::doReplaceWords($replBody, $foreign);
 			*/
 
-			$replBody = str_replace("@@@we@@@", "'", $replBody);
+			$replBody = str_replace('@@@we@@@', '\'', $replBody);
 			if(isset($matches[1])) {
 				return str_replace($srcBody, $replBody, $src);
-
 			} else {
 				return $replBody;
-
 			}
 
 		}
@@ -183,52 +157,39 @@
 		 * @return string
 		 */
 		function doReplaceWords($src, $replacements = array()) {
-			if ($src === "") {
-				return "";
-			}
-			@set_time_limit(0);
-			if(sizeof($replacements)>0) {
-				foreach($replacements as $k => $rep) {
-					//forbid self-reference links
-					if(stristr($rep,'"\2"=="\1"?"\1":"\3<a href=\"'.$GLOBALS["we_doc"]->Path.'')) {
-						unset($replacements[$k]);
-					}
-				}
-				$src2 = preg_replace(array_keys($replacements), $replacements, " $src ");
-
-				if(trim($src)!=trim($src2) && trim($src2)!='') {
-
-					$len = strlen($src);
-					$spaceStr = "";
-					for($i=$len-1; $i>=0; $i--) {
-						if($src{$i}==" ") {
-							$spaceStr .=" ";
-						}
-						else {
-							break;
-						}
-					}
-
-					// add spaces before and after and replace the words
-					$src = preg_replace(array_keys($replacements), $replacements, " $src ");
-					// remove added spaces
-					$return = preg_replace("/^ (.+) $/", "$1", $src);
-
-					$return = rtrim($return);
-					$return = $return.$spaceStr;
-
-					// remove added slashes
-					return stripslashes($return);
-				}
-				else {
-					return $src;
-				}
-			} else {
+			if ($src === '' || sizeof($replacements)==0) {
 				return $src;
 			}
+			@set_time_limit(0);
+			foreach($replacements as $k => $rep) {
+				//forbid self-reference links
+				if(stripos($rep,'"\2"=="\1"?"\1":"\3<a href=\"'.$GLOBALS["we_doc"]->Path)!==FALSE) {
+					unset($replacements[$k]);
+				}
+			}
+			$src2 = preg_replace(array_keys($replacements), $replacements, " $src ");
 
+			if(trim($src,' ')!=trim($src2,' ') && trim($src2,' ')!='') {
+				$len = strlen($src);
+				$spaceStr = '';
+				for($i=$len-1; $i>=0; $i--) {
+					if($src{$i}==' ') {
+						$spaceStr .=' ';
+					} else {
+						break;
+					}
+				}
+
+				// add spaces before and after and replace the words
+				$src = preg_replace(array_keys($replacements), $replacements, " $src ");
+				// remove added spaces
+				$return = trim(preg_replace('/^ (.+) $/U', '$1', $src),' ');
+
+				// remove added slashes
+				return stripslashes($return.$spaceStr);
+			}
+
+			return $src;
 		}
 
-
 	}
-
