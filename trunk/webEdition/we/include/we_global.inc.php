@@ -3779,6 +3779,7 @@ function we_filenameNotValid($filename) {
 }
 
 function we_getIcon($contentType, $extension) {
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 	if ($contentType == "application/*") {
 		switch ($extension) {
 			case ".pdf" :
