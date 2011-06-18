@@ -1107,15 +1107,15 @@ class we_document extends we_root {
 				$only = we_getTagAttribute('only',$attribs,'');
 
 				if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true,true);
+					$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, '', true, true);
 				} else {
-					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
+					$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, '', true, false);
 				}
 
 				if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true,true);
+					$objectseourls = we_getTagAttribute('objectseourls', $attribs, '', true, true);
 				} else {
-					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
+					$objectseourls = we_getTagAttribute('objectseourls', $attribs, '', true, false);
 				}
 
 				if($pathOnly || $only == 'href'){
@@ -1152,9 +1152,9 @@ class we_document extends we_root {
 					    }
 					} else {
 
-    					if($content = we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars,$hidedirindex,$objectseourls)) {
+    					if(($content = we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars,$hidedirindex,$objectseourls))) {
 
-    						if( $startTag = we_document::getLinkStartTag($link,$attribs,$parentID,$path,$db,$img,$_useName,$hidedirindex,$objectseourls)) {
+    						if(($startTag = we_document::getLinkStartTag($link,$attribs,$parentID,$path,$db,$img,$_useName,$hidedirindex,$objectseourls))) {
     							return $startTag.$content.'</a>';
     						}
     						else {
