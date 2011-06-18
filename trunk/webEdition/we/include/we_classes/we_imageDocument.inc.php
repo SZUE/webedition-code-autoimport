@@ -554,7 +554,7 @@ class we_imageDocument extends we_binaryDocument {
 			//   attribs for the image tag
 			$attribs['src'] = $src;
 
-			$filter = array('filesize','type','id','showcontrol','thumbnail','href','longdescid','showimage', 'showinputs','listviewname','parentid','startid');   //  dont use these array-entries
+			$filter = array('filesize','type','id','showcontrol','showthumbcontrol','thumbnail','href','longdescid','showimage', 'showinputs','listviewname','parentid','startid');   //  dont use these array-entries
 
 			if (defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';

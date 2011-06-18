@@ -99,7 +99,7 @@
 			$link = $cache->get('link');
 			unset($cache);
 			// first check if there is a body tag inside the sourcecode
-			preg_match('|<body.*>(.*)</body>|si', $src, $matches);
+			preg_match('|<body[^>]*>(.*)</body>|si', $src, $matches);
 
 			$srcBody = $replBody = (isset($matches[1]) ? $matches[1] : $src);
 			
