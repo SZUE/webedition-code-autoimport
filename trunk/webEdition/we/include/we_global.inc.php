@@ -100,7 +100,7 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 	}
 	$out = "";
 	if ($isFlag) {
-		$val = strtolower(trim($val));
+		$val = strtolower(trim($value));
 		if ($checkForFalse) {
 			return !($val == 'false' || $val == 'off' || $val == '0');
 		} else {
