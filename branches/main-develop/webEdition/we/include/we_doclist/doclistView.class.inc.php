@@ -29,6 +29,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
+include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 
 class doclistView {

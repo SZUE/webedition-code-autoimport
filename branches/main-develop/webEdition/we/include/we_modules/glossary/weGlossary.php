@@ -206,7 +206,6 @@ class weGlossary extends weModelBase {
 
 				if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
 					$this->Language = substr($_REQUEST['cmdid'], 0, 5);
-
 				}
 
 			}
@@ -217,7 +216,6 @@ class weGlossary extends weModelBase {
 
 
 	function getEntries($Language, $Mode = 'all', $Type = 'all') {
-
 		$Query = 	"SELECT Type, Text, Title, Attributes FROM " . GLOSSARY_TABLE
 				.	" WHERE Language = '" . escape_sql_query($Language) . "' ";
 		if($Type != 'all') {
@@ -257,7 +255,6 @@ class weGlossary extends weModelBase {
 
 
 	function publishItem($Language, $Text) {
-
 		$Query = 	"UPDATE " . GLOSSARY_TABLE
 				.	" SET Published = " . time()
 				.	" WHERE Language = '" . $GLOBALS['DB_WE']->escape($Language) . "' "
@@ -274,16 +271,12 @@ class weGlossary extends weModelBase {
 	 * @param integer $id
 	 */
 	function load($id = 0) {
-
 		parent::load(strval($id));
 
 		// serialize all needed attributes
 		foreach ($this->_Serialized as $Attribute) {
 			$this->$Attribute = unserialize($this->$Attribute);
-
 		}
-
-
 	}
 
 
@@ -292,16 +285,7 @@ class weGlossary extends weModelBase {
 	 *
 	 */
 	function save() {
-
-		$retVal = false;
-
-		if($this->IsFolder == 1) {
-			$this->Icon == 'folder.gif';
-
-		} else {
-			$this->Icon = 'prog.gif';
-
-		}
+		$this->Icon == ($this->IsFolder == 1 ? 'folder.gif': 'prog.gif');
 
 		$this->setPath();
 
@@ -320,16 +304,10 @@ class weGlossary extends weModelBase {
 		$this->ModDate = time();
 
 
-		if(parent::save()) {
-			$retVal = true;
-
-		}
+		$retVal = (parent::save());
 
 		if(!$this->ID) {
-			$this->db->query("SELECT LAST_INSERT_ID()");
-			$this->db->next_record();
-			$this->ID = $this->db->f(0);
-
+			$this->ID = $this->db->getInsertId();
 		}
 
 		// unserialize all needed attributes
@@ -339,7 +317,6 @@ class weGlossary extends weModelBase {
 		}
 
 		return $retVal;
-
 	}
 
 
@@ -349,22 +326,11 @@ class weGlossary extends weModelBase {
 	 * @return boolean
 	 */
 	function delete() {
-
-		if(!$this->ID) {
-			return false;
-
-		}
-
-		if($this->IsFolder) {
-			if(!$this->_deleteChilds()) {
+		if((!$this->ID)||($this->IsFolder && !$this->_deleteChilds())) {
 				return false;
-
-			}
-
 		}
 
 		return parent::delete();
-
 	}
 
 
@@ -374,10 +340,8 @@ class weGlossary extends weModelBase {
 	 * @return boolean
 	 */
 	function _deleteChilds() {
-
-		$query = "DELETE FROM ". $this->db->escape($this->table) . " WHERE Path LIKE = '" . $this->db->escape($this->Path) . "/%'";
+		$query = 'DELETE FROM '. $this->db->escape($this->table) . ' WHERE Path LIKE = "' . $this->db->escape($this->Path) . '/%"';
 		return $this->db->query($query);
-
 	}
 
 
@@ -386,9 +350,7 @@ class weGlossary extends weModelBase {
 	 *
 	 */
 	function setPath() {
-
 		$this->Path = "/" . $this->Language . "/" . $this->Type . "/" . $this->Text;
-
 	}
 
 
@@ -399,13 +361,7 @@ class weGlossary extends weModelBase {
 	 * @param string $Value
 	 */
 	function setAttribute($Name, $Value) {
-
-		if(!array_key_exists($Name, $this->Attributes)) {
-			$this->Attributes[$Name] = "";
-
-		}
 		$this->Attributes[$Name] = $Value;
-
 	}
 
 
@@ -416,13 +372,11 @@ class weGlossary extends weModelBase {
 	 * @return mixed
 	 */
 	function getAttribute($Name) {
-
 		if(!is_array($this->Attributes) || !array_key_exists($Name, $this->Attributes)) {
 			return null;
-
 		}
-		return $this->Attributes[$Name];
 
+		return $this->Attributes[$Name];
 	}
 
 
@@ -433,43 +387,21 @@ class weGlossary extends weModelBase {
 	 * @return boolean
 	 */
 	function pathExists($Path) {
-		$this->table = $this->db->escape($this->table);
+		$table = $this->db->escape($this->table);
 		$Path = $this->db->escape($Path);
-		if($this->ID==0) {
-			$query = "SELECT * FROM " . $this->table . " WHERE Path Like Binary '" . $Path . "'";
-
-		} else {
-			$query = "SELECT * FROM " . $this->table . " WHERE Path Like Binary '" . $Path . "' AND ID <> '" . $this->ID . "'";
-
+		$query = "SELECT 1 AS a FROM " . $table . " WHERE Path Like Binary '" . $Path . "'";
+		if($this->ID!=0) {
+			$query .= " AND ID != '" . $this->ID . "'";
 		}
-		$this->db->query($query);
+		$query.=' LIMIT 0,1';
 
-		if($this->db->next_record()) {
-			return true;
-
-		} else {
-			return false;
-
-		}
-
+		return (f($query,'a',$this->db)==1);
 	}
 
 
 	function getIDByPath($Path) {
-		$this->table = $this->db->escape($this->table);
-		$Path = $this->db->escape($Path);
-		$query = "SELECT ID FROM " . $this->table . " WHERE Path = '" . $Path . "'";
-
-		$this->db->query($query);
-
-		if($this->db->next_record()) {
-			return $this->db->f('ID');
-
-		} else {
-			return 0;
-
-		}
-
+		$query = 'SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($Path) . '"';
+		return intval(f($query,'ID',$this->db));
 	}
 
 
@@ -507,22 +439,18 @@ class weGlossary extends weModelBase {
 	 * @return boolean
 	 */
 	function saveField($Name) {
-		$this->table = $this->db->escape($this->table);
+		$table = $this->db->escape($this->table);
 		$Name = $this->db->escape($Name);
 		if(in_array($Name, $this->_Serialized)) {
 			$value = unserialize($this->$Name);
-
 		} else {
-
 			$value = $this->$Name;
-
 		}
 
-		$query = "UPDATE " . $this->table . " SET " . $Name . " = '" . addslashes($field) . "' WHERE ID='" . $this->ID . "'";
+		$query = "UPDATE " . $table . " SET " . $Name . " = '" . addslashes($field) . "' WHERE ID='" . $this->ID . "'";
 		$this->db->query($query);
 
 		return $this->db->affected_rows();
-
 	}
 
 
@@ -531,18 +459,14 @@ class weGlossary extends weModelBase {
 	 *
 	 */
 	function clearSessionVars() {
-
 		if(isset($_SESSION["weGlossarySession"])) {
 			unset($_SESSION["weGlossarySession"]);
-
 		}
-
 	}
 
 
 	function addToException($language, $entry = "") {
-
-		if(trim($entry)=="") {
+		if(trim($entry)=='') {
 			return true;
 		}
 
@@ -551,65 +475,48 @@ class weGlossary extends weModelBase {
 		$items = implode("\n", $items);
 
 		return weGlossary::editException($language, $items);
-
 	}
 
 
 	function editException($language, $entries) {
-
 		$fileName = weGlossary::getExceptionFilename($language);
 
-		$content = "";
+		$content = '';
 		$items = array();
 		$items = explode("\n", $entries);
 		sort($items);
 		foreach ($items as $item) {
-			if(trim($item)!="") {
-				$content .= trim($item)."\n";
+			$item=trim($item);
+			if($item!='') {
+				$content .= $item."\n";
 			}
 		}
 
-		$fh = fopen($fileName, "w+");
-		if(!$fh) {
-			return false;
-		}
-		fputs($fh, $content);
-		return fclose($fh);
-
+		return (file_put_contents($fileName,$content) !== FALSE);
 	}
 
 
 	function getException($language) {
-
 		$fileName = weGlossary::getExceptionFilename($language);
 
 		if(file_exists($fileName) && is_file($fileName)) {
 			return file($fileName);
-
 		}
 
 		return array();
-
 	}
 
 
 	function getExceptionFilename($language) {
-
 		$fileDir = WE_GLOSSARY_MODULE_DIR . 'dict/';
-		if(!is_dir($fileDir)) {
-			if(!createLocalFolder($fileDir)) {
+		if(!is_dir($fileDir) && !createLocalFolder($fileDir)) {
 				return false;
-
-			}
-
 		}
 
 		return $fileDir . $language . '@'.$_SERVER['SERVER_NAME']. '.dict';;
-
 	}
 
 	function checkFieldText($text) {
-
 		$check = array("\\","$", "|");
 
 		foreach($check as $k) {
@@ -619,7 +526,5 @@ class weGlossary extends weModelBase {
 		}
 		return false;
 	}
-
-
 
 }

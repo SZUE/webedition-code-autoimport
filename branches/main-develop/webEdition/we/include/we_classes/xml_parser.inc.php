@@ -170,18 +170,22 @@ class XML_Parser {
 				return FALSE;
 		}
 
+		$encoding=$this->setEncoding($force_encoding, $data);
+
+		return $this->parseXML($data,$encoding);
+	}
+
+	function setEncoding($force_encoding,$data=''){
 		if(empty($force_encoding)) {
-			$head = substr($data,0,250);
-			$encoding = $this->getEncoding('',$head);
+			$encoding = $this->getEncoding('',$data);
 		} else {
 			$encoding = $force_encoding;
 		}
 
 		$this->mainXmlEncoding = $encoding;
-
-		return $this->parseXML($data,$encoding);
+		return $encoding;
 	}
-
+	
 	/**
 	 * This method tries to parse the content of the given string and on success
 	 * stores the information retrieved into an array.
@@ -2558,6 +2562,8 @@ class XML_Parser {
 
 			if(empty($data)) {
 				return false;
+			}else{
+				$data=substr($data, 0,256);
 			}
 
 			$match = array();

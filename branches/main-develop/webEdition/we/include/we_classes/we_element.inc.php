@@ -76,7 +76,9 @@
 
 		function fetchOptions($options=array()){
 			foreach($options as $k=>$v){
-				eval('$this->'.$k.'=$options["'.$k.'"];');
+				if(!is_numeric($k) && property_exists($this,$k)){
+					$this->$k=$options[$k];
+				}
 			}
 		}
 

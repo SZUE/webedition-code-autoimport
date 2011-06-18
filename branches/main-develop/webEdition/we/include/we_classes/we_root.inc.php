@@ -577,14 +577,14 @@ function formTriggerDocument($isclass=false){
 		}
 		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)"
-		$wecmdenc1= '';
+		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
 		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
 		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);");
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
 		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		
-		$yuiSuggest->setAcId("TriggerID");
-		$yuiSuggest->setContentType("text/webedition");
+		$yuiSuggest->setAcId("TriggerID");	
+		$yuiSuggest->setContentType("folder,text/webedition");
 		$yuiSuggest->setInput($textname,$path);
 		$yuiSuggest->setLabel(g_l('modules_object','[seourltrigger]'));
 		$yuiSuggest->setMaxResults(10);

@@ -79,10 +79,11 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 	}
 	$out = '';
 	if ($isFlag) {
+		$val = strtolower(trim($val));
 		if ($checkForFalse) {
-			$out = ($value == 'false' || $value == 'off' || $value == '0') ? false : true;
+			return !($val == 'false' || $val == 'off' || $val == '0');
 		} else {
-			$out = ($value == 'true' || $value == 'on' || $value == $name || $value == '1') ? true : false;
+			return ($val == 'true' || $val == 'on' || $val == '1' || $value == $name);
 		}
 	} else {
 		$out = strlen($value) ? $value : $default;
@@ -2418,7 +2419,7 @@ function t_e($type='warning'){
 			$inc=false;
 			continue;
 		}
-		if(is_array($value)){
+		if(is_array($value)||is_object($value)){
 			$data[]=print_r($value,true);
 		}else{
 			$data[]=$value;
@@ -3482,6 +3483,7 @@ function we_filenameNotValid($filename) {
 }
 
 function we_getIcon($contentType, $extension) {
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 	if ($contentType == 'application/*') {
 		switch ($extension) {
 			case '.pdf' :

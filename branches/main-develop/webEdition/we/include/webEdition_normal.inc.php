@@ -42,7 +42,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 	*/
 	function pWebEdition_JSFunctions(){?>
 function toggleBusy(w) {
-	if(w == busy || firstLoad==false)
+	if(w == busy || firstLoad==false)	
 		return;
 	if(self.header) {
 		if(self.header.toggleBusy) {

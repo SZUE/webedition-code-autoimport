@@ -133,9 +133,7 @@ class weGlossarySearch {
 	 * @param string $where
 	 */
 	function setWhere($where = "") {
-
 		$this->Where = $where;
-
 	}
 
 
@@ -145,9 +143,7 @@ class weGlossarySearch {
 	 * @param string $groupBy
 	 */
 	function setGroupBy($groupBy = "") {
-
 		$this->GroupBy = $groupBy;
-
 	}
 
 
@@ -157,9 +153,7 @@ class weGlossarySearch {
 	 * @param string $where
 	 */
 	function setHaving($having = "") {
-
 		$this->Having = $having;
-
 	}
 
 
@@ -169,10 +163,8 @@ class weGlossarySearch {
 	 * @param string $order
 	 */
 	function setOrder($order = "", $sort = "ASC") {
-
 		$this->Order = $order;
 		$this->Sort = $sort;
-
 	}
 
 
@@ -183,10 +175,8 @@ class weGlossarySearch {
 	 * @param integer $count
 	 */
 	function setLimit($offset = 0, $rows = 10) {
-
 		$this->Offset = $offset;
 		$this->Rows = $rows;
-
 	}
 
 
@@ -197,43 +187,22 @@ class weGlossarySearch {
 	 * @return string
 	 */
 	function _getStatement($countStmt = false) {
-
-		$stmt = "SELECT ";
-
-		if($countStmt) {
-			$stmt .= "COUNT(*) ";
-
-		} else {
-			$stmt .= implode(", ", $this->Fields). " ";
-
-		}
-
-		$stmt .= "FROM " . escape_sql_query($this->Table) . " ";
-
-		$stmt .= "WHERE " . ($this->Where == "" ? "1" : $this->Where) . " ";
-
-		if($this->GroupBy != "") {
-			$stmt .= "GROUP BY " . $this->GroupBy . " ";
-
-		}
-
-		if($this->Having != "") {
-			$stmt .= "HAVING " . $this->Having . " ";
-
-		}
-
+		$stmt = "SELECT ".
+		($countStmt? "COUNT(*)":implode(', ', $this->Fields)).
+		" FROM " . escape_sql_query($this->Table) . " ".
+		"WHERE " . ($this->Where == "" ? "1" : $this->Where).
+		($this->GroupBy != ''?" GROUP BY " . $this->GroupBy:'').
+		($this->Having != '' ? " HAVING " . $this->Having : '');
+		
 		if(!$countStmt) {
-			if($this->Order != "") {
-				$stmt .= "ORDER BY " . $this->Order . " " . $this->Sort . " ";
-
+			if($this->Order != '') {
+				$stmt .= " ORDER BY " . $this->Order . " " . $this->Sort;
 			}
 
-			$stmt .= "LIMIT " . $this->Offset . ", " . $this->Rows;
-
+			$stmt .= " LIMIT " . $this->Offset . ", " . $this->Rows;
 		}
 
 		return trim($stmt);
-
 	}
 
 
@@ -243,13 +212,7 @@ class weGlossarySearch {
 	 * @return integer
 	 */
 	function countItems() {
-
-		$this->DatabaseObject->query($this->_getStatement(true));
-
-		$this->DatabaseObject->next_record();
-
-		return $this->DatabaseObject->f("COUNT(*)");
-
+		return f($this->_getStatement(true),"COUNT(*)",$this->DatabaseObject);
 	}
 
 
@@ -258,9 +221,7 @@ class weGlossarySearch {
 	 *
 	 */
 	function execute() {
-
 		$this->DatabaseObject->query($this->_getStatement());
-
 	}
 
 
@@ -270,9 +231,7 @@ class weGlossarySearch {
 	 * @return mixed
 	 */
 	function next() {
-
 		return $this->DatabaseObject->next_record();
-
 	}
 
 
@@ -283,9 +242,7 @@ class weGlossarySearch {
 	 * @return mixed
 	 */
 	function getField($field) {
-
 		return $this->DatabaseObject->f($field);
-
 	}
 
 
@@ -295,19 +252,15 @@ class weGlossarySearch {
 	 * @return array
 	 */
 	function getPages() {
-
 		$_count = $this->countItems();
-
 		$_pages = ceil($_count / $this->Rows);
 
 		$pages = array();
 		for($i = 1; $i <= $_pages; $i++) {
 			$pages[($i-1)*$this->Rows] = $i;
-
 		}
 
 		return $pages;
-
 	}
 
 
@@ -317,9 +270,7 @@ class weGlossarySearch {
 	 * @return integer
 	 */
 	function getActivePage() {
-
 		return ceil(($this->Offset-1) / $this->Rows);
-
 	}
 
 }

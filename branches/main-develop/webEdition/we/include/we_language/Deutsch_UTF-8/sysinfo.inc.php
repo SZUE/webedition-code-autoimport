@@ -63,4 +63,7 @@ $l_sysinfo = array(
 		'pcre' => 'PCRE-Extension',
 		'sdk_db' => 'SDK/Apps DB Unterstützung',
 		'phpext' => 'Minimal notwendige PHP-Extensions',
+		'not_set' => 'nicht gesetzt (off)',
+		'suhosin simulation'=>'Simulations Modus',
+
 	);

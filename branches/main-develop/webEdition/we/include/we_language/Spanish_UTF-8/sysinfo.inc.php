@@ -53,7 +53,6 @@ $l_sysinfo = array(
 		'phpext warning' => 'not available: ', // TRANSLATE
 		'phpext warning2' => 'Most likely, webEdition will not work properly!', // TRANSLATE
 		'detectable warning' => 'Some of the software requirements can not be checked (Suhosin?). Please check the system requirements at  http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ', // TRANSLATE
-
 		'connection_types' => 'Update connection types', // TRANSLATE
 		'gdlib' => 'GDlib Support', // TRANSLATE
 		'mbstring' => 'Multibyte String Functions', // TRANSLATE
@@ -63,4 +62,6 @@ $l_sysinfo = array(
 		'pcre' => 'PCRE-Extension', // TRANSLATE
 		'sdk_db' => 'SDK/Apps DB support', // TRANSLATE
 		'phpext' => 'Required PHP extensions', // TRANSLATE
+		'not_set' => 'not set (off)',// TRANSLATE
+		'suhosin simulation'=>'Simulation Mode',// TRANSLATE
 	);

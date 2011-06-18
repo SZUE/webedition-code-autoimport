@@ -57,7 +57,7 @@
 					if($_i == 3 && ini_get_bool('register_globals')) {
 						$_table->setColAttributes(2,1,array("style" => "border:1px solid red;"));
 					}
-					if($_i == 6 && ini_get_bool('register_globals')) {
+					if($_i == 6 && ini_get_bool('short_open_tag')) {
 						$_table->setColAttributes(5,1,array("style" => "border:1px solid red;"));
 					}
 					if($_i == 9 && ini_get_bool('safe_mode'))
@@ -87,7 +87,34 @@
 		    }
 		    return false;
 		}
-
+		function ini_get_message($val) {
+			global $_sysinfo;
+		    $bool = ini_get($val);
+			if($val == "1") {
+				return 'on';
+			}
+			if($val == "0") {
+				return 'off';
+			}
+			switch (strtolower($bool)) {
+		    	case '1':
+		    	case 'on':
+				case 'yes':
+				case 'true':
+					return 'on';
+				case '0':
+		    	case 'off':
+				case 'no':
+				case 'false':
+					return 'off';
+				case '':
+					return g_l('sysinfo','[not_set]');
+		    	default:
+		    		return $bool;
+		    }
+		    return 'off';
+		}
+		
 		function parseValue($name,$value) {
 			if(in_array($name,array_keys($GLOBALS['_types']))) {
 				if($GLOBALS['_types'][$name]=='bytes' && $value) {
@@ -132,6 +159,10 @@
 			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>';
 		}
 
+		function getOK($message, $value) {
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:0px; background:url('.IMAGE_DIR . 'valid.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+		}
+		
 		$_install_dir = $_SERVER['DOCUMENT_ROOT']. WEBEDITION_DIR;
 
 		if(strlen($_install_dir)>35){
@@ -180,6 +211,19 @@
 			$phpExtensionsDetectable = false;
 			$phpextensionsSDK_DB = 'unkown';
 		}
+		if (in_array('suhosin',get_loaded_extensions())){
+			if (ini_get_bool('suhosin.simulation')){
+				$SuhosinText=getOK('',g_l('sysinfo','[suhosin simulation]'));
+			} else {
+				if (ini_get_bool('suhosin.cookie.encrypt')){
+					$SuhosinText=getWarning(g_l('sysinfo','[suhosin warning]'),'on'.' (suhosin.cookie.encrypt=on)');
+				} else {
+					$SuhosinText=getWarning(g_l('sysinfo','[suhosin warning]'),'on');
+				}
+			}
+		} else {
+			$SuhosinText=getOK('',$_sysinfo['not_active']);
+		}
 		$_info = array(
 			'webEdition' => array (
 				g_l('sysinfo','[we_version]') => $weVersion,
@@ -193,22 +237,22 @@
 			'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 				g_l('sysinfo','[php_version]') => phpversion(),
 				g_l('sysinfo','[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ?getWarning(g_l('sysinfo',"[zend_framework warning]"),Zend_Version::VERSION) : Zend_Version::VERSION,
-				'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo',"[register_globals warning]"),ini_get('register_globals')) : ini_get('register_globals'),
+				'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo',"[register_globals warning]"),ini_get('register_globals')) : getOK('',ini_get_message('register_globals')),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),
-				'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning(g_l('sysinfo',"[short_open_tag warning]"),ini_get('short_open_tag')) : ini_get('short_open_tag'),
-				'allow_url_fopen' => ini_get('allow_url_fopen'),
-				'open_basedir' => ini_get('open_basedir'),
-				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo(g_l('sysinfo',"[safe_mode warning]"),ini_get('safe_mode')) : ini_get('safe_mode'),
-				'safe_mode_exec_dir' => ini_get('safe_mode_exec_dir'),
-				'safe_mode_gid' => ini_get('safe_mode_gid'),
-				'safe_mode_include_dir' => ini_get('safe_mode_include_dir'),
+				'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning(g_l('sysinfo',"[short_open_tag warning]"),ini_get('short_open_tag')) : ini_get_message('short_open_tag'),
+				'allow_url_fopen' => ini_get_message('allow_url_fopen'),
+				'open_basedir' => ini_get_message('open_basedir'),
+				'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo(g_l('sysinfo',"[safe_mode warning]"),ini_get('safe_mode')) : getOK('',ini_get_message('safe_mode')),
+				'safe_mode_exec_dir' => ini_get_message('safe_mode_exec_dir'),
+				'safe_mode_gid' => ini_get_message('safe_mode_gid'),
+				'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
 				'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
-				'Suhosin' => (in_array('suhosin',get_loaded_extensions()) ) ? getWarning(g_l('sysinfo',"[suhosin warning]"),in_array('suhosin',get_loaded_extensions())) : ''
+				'Suhosin' => $SuhosinText
 			),
 
 			'MySql' => array (
-				g_l('sysinfo','[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf(g_l('sysinfo',"[dbversion warning]"),getMysqlVer(false)),getMysqlVer(false) ) :  getMysqlVer(false),
+				g_l('sysinfo','[mysql_version]') => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf(g_l('sysinfo',"[dbversion warning]"),getMysqlVer(false)),getMysqlVer(false) ) :  getOK('',getMysqlVer(false)),
 				'max_allowed_packet' => getMaxAllowedPacket(),
 					'Info'=>$GLOBALS['DB_WE']->getInfo(),
 			),
