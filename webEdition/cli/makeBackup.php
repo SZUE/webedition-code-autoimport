@@ -152,8 +152,8 @@ if(!defined('WE_ERROR_SHOW')){
 	define('WE_ERROR_SHOW',1);
 }
 if(!defined('WE_ERROR_LOG')){
-        define('WE_ERROR_LOG',1);
-}       
+	define('WE_ERROR_LOG',1);
+}
 
 we_error_handler(false);
 
