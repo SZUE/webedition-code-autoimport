@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /**
  * webEdition CMS
@@ -141,6 +142,17 @@ $_REQUEST['verbose'] = true;
 // we want to see errors
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
+
+//use we-error handler; ignore if logging is disabled!
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+if(!defined('WE_ERROR_SHOW')){
+	define('WE_ERROR_SHOW',1);
+}
+if(!defined('WE_ERROR_LOG')){
+	define('WE_ERROR_LOG',1);
+}
+
+we_error_handler(false);
 
 // knock out time limit if possible
 @set_time_limit(0);
