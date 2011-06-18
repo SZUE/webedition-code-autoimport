@@ -93,17 +93,18 @@ function we_getTagAttributeTagParser($name, $attribs, $default = "", $isFlag = f
 	return decodetmlSpecialChars($out);
 }
 
-function we_getTagAttribute($name, $attribs, $default = "", $isFlag = false, $checkForFalse = false, $removeblk=false) {
+function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false) {
 	$value = isset($attribs[$name]) ? $attribs[$name] : "";
 	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : "";
 	}
 	$out = "";
 	if ($isFlag) {
+		$val = strtolower(trim($val));
 		if ($checkForFalse) {
-			$out = ($value == "false" || $value == "off" || $value == "0") ? false : true;
+			return !($val == 'false' || $val == 'off' || $val == '0');
 		} else {
-			$out = ($value == "true" || $value == "on" || $value == $name || $value == "1") ? true : false;
+			return ($val == 'true' || $val == 'on' || $val == '1' || $value == $name);
 		}
 	} else {
 		$out = strlen($value) ? $value : $default;
