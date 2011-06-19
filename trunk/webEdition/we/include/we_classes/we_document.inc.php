@@ -1367,8 +1367,8 @@ class we_document extends we_root {
 				} else {
 					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Published',$db);
 					if ($published) {
-						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-							$path_parts = pathinfo($path);
+						$path_parts = pathinfo($path);
+						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){	
 							$path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 						}
 						return $path;
