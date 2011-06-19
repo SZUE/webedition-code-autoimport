@@ -479,7 +479,7 @@ abstract class DB_WE_abstract {
 		}
 		$query='';
 		if (is_array($table)) {
-			foreach($table $key=>$value){
+			foreach($table as $key=>$value){
 				if(is_numeric($key)){
 					$query.= $value.' '.$mode.',';
 				}else{
@@ -497,7 +497,7 @@ abstract class DB_WE_abstract {
 	 * @return bool true, on success
 	 */
 	function unlock(){
-		if (!$this->connect())
+		if (!$this->connect()){
 			return false;
 		}
 		return $this->_query('unlock tables');

@@ -324,11 +324,11 @@ class we_tagParser{
 			$endTag = true;
 		}
 		$foo = $regs[2] . '/';
-		eregi("([^ >/]+) ?(.*)", $foo, $regs);
+		ereg("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
 		$attr = trim(rtrim($regs[2],'/'));
 
-		if (eregi('name="([^"]*)"', $attr, $regs)) {
+		if (preg_match('|name="([^"]*)"|i', $attr, $regs)) {
 			if (!$regs[1]) {
 				print parseError(sprintf(g_l('parser','[name_empty]'), $tagname));
 			} else

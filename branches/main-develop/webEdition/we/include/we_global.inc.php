@@ -1719,8 +1719,9 @@ function getTemplatesOfTemplate($id, &$arr) {
 }
 
 function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false) {
-	if (!$id)
+	if (!$id){
 		return 0;
+	}
 
 	$returnIDs = array();
 	$returnIDs['templateIDs'] = array();
