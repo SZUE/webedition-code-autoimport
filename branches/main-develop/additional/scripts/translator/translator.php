@@ -39,11 +39,15 @@ function getVar($file){
 		foreach($vars as $name=>$v){
 			return $vars[$name];
 		}
+		return false;
 }
 
 function getVars($dir,&$langs,$file){
 	foreach($langs as $mylang=>&$val){
-		$val[$file]=getVar($dir.$mylang.'_'.ENC.$file);
+		$var=getVar($dir.$mylang.'_'.ENC.$file);
+		if($var!==false){
+			$val[$file]=$var;
+		}
 	}
 }
 
