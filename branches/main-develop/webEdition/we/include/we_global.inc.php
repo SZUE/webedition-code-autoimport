@@ -1705,9 +1705,13 @@ function getUsedTemplatesOfTemplate($id, &$arr) {
 }
 
 function getTemplatesOfTemplate($id, &$arr) {
-	$foo=explode(',',f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . abs($id) . " OR IncludedTemplates LIKE '%," . abs(
-									$id) . ",%'",'IDS',$GLOBALS['DB_WE']));
+	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . abs($id) . " OR IncludedTemplates LIKE '%," . abs($id) . ",%'",'IDS',$GLOBALS['DB_WE']);
 	
+	if(!$foo){
+		return;
+	}
+
+	$foo=explode(',',$foo);
 	$arr=array_merge($arr,$foo);
 	if (in_array($id, $arr)) {
 		return;
