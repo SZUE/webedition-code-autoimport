@@ -52,6 +52,7 @@ function getVars($dir,&$langs,$file){
 }
 
 function showDiff($langs){
+	$notTrans=$all=array();
 	foreach($langs as $lang=>&$val){
 		if($lang==MASTERLANG){ //this is the reference lang
 			continue;
@@ -60,31 +61,37 @@ function showDiff($langs){
 			if(!is_array($langs[MASTERLANG][$file])){
 				continue;
 			}
+			//TODO: make this recursive
 			foreach($langs[MASTERLANG][$file] as $key=>$v){
-				if(!array_key_exists($key,$vars)){
-					$all[$lang][$file][$key]='type:'.gettype($v);
-				}else if(is_array($v)){
-					foreach($v as $k=>$j){
-						if(!array_key_exists($k,$vars[$key])){
-							$all[$lang][$file][$key][$k]='type:'.gettype($j);
+				if(array_key_exists($key,$vars)){//variable present
+					if(is_array($v)){
+						foreach($v as $k=>$j){
+							if(array_key_exists($k,$vars[$key])){//variable is array
+								if(!is_numeric($j) && $j!='' && ($j==$vars[$key][$k])){
+									$notTrans[$lang][$file][$key][$k]=$j;
+								}
+							}else{//variable is array, subkey is missing
+								$all[$lang][$file][$key][$k]='type:'.gettype($j);
+							}
 						}
+					}else{
+					if(!is_numeric($v) && $v!='' && ($v==$vars[$key])){
+						$notTrans[$lang][$file][$key]=$v;
 					}
+					}
+				}else{//variable missing
+					$all[$lang][$file][$key]='type:'.gettype($v);
 				}
 			}
 		}
 	}
-	if(count($all)==0){
-		echo "no missing vars in files:\n";
-		foreach($langs[MASTERLANG] as $file=>$f){
-			echo $file."\n";
-		}
-	}else{
-		echo "Missing vars:\n";
-		print_r($all);
-	}
+	echo "Missing vars:\n";
+	print_r($all);
+	echo "Untranslated vars:\n";
+	print_r($notTrans);
 }
 
-function searchFiles($searchDir,&$langs){
+function searchFiles($searchDir,&$langs,&$fileCnt){
 	$mydir=DIR.MASTERLANG.'_'.ENC.$searchDir;
 	$files=scandir($mydir);
 	if(defined('TESTMODE')){
@@ -95,15 +102,18 @@ function searchFiles($searchDir,&$langs){
 			if(!defined('RECURSE')||$file=='.'||$file=='..'||$file=='.svn'){
 				continue;
 			}
-			searchFiles($searchDir.'/'.$file,$langs);
+			searchFiles($searchDir.'/'.$file,$langs,$fileCnt);
 		}
 		if(!is_file($mydir.'/'.$file)||substr($file,-3)!='php'){
 			continue;
 		}
-		echo "include $searchDir/$file\n";
+		if(defined('TESTMODE')){
+			echo "include $searchDir/$file\n";
+		}
+		$fileCnt++;
 		getVars(DIR,$langs,$searchDir.'/'.$file);
 		//temporary:
-		showDiff($langs);
+//		showDiff($langs);
 	}
 }
 
@@ -111,7 +121,7 @@ $langs=array();
 foreach(explode(',',LANGS) as $lang){
 	$langs[$lang]=array();
 }
-
-searchFiles('',$langs);
-//temporary disabled
-//showDiff($langs);
+$fileCnt=0;
+searchFiles('',$langs,$fileCnt);
+echo "Included $fileCnt Files each Language (".count($langs)."):\n";
+showDiff($langs);
