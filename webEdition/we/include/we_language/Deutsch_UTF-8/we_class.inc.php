@@ -163,7 +163,7 @@ $l_we_class["type_not_supported_hint"] = "Die auf dem Server installierte Versio
 $l_we_class["CSS"] = "CSS";
 $l_we_class['we_del_workspace_error'] = "Der Arbeitsbereich konnte nicht gelöscht werden, da er von Objekten der Klasse benutzt wird!";
 $l_we_class["master_template"] = "Hauptvorlage";
-$l_we_class["same_master_template"] = "Die ausgewählte Hauptvorlage darf nicht identisch mit der aktuellen Vorlage sein!";
+$l_we_class["same_master_template"] = "Die ausgewaehlte Hauptvorlage darf nicht identisch mit der aktuellen Vorlage sein!";
 $l_we_class["documents"] = "Dokumente";
 $l_we_class["no_documents"] = "Auf dieser Vorlage basieren bisher keine Dokumente.";
 
