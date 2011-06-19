@@ -1,0 +1,11 @@
+<?php
+$g=array('hh'=>'dd',
+	'123'=>'def',
+	'4665'=>'hij',
+	'abc'=>array(
+		'dd'=>'neu',
+	),
+	'neu'=>array(
+		'gar'=>'',
+	),
+);
