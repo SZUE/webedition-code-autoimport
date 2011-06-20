@@ -314,15 +314,15 @@ class we_tagParser{
 
 	function parseTag(&$code, $postName = '')	{
 		$tag = $this->tags[$this->ipos];
-		if (!$tag)
+		if (!$tag){
 			return;
+		}
 		$tagPos = -1;
 
-		$endTag = false;
-		eregi("<(/?)we:(.+)>?", $tag, $regs);
-		if ($regs[1]) { ### its an end-tag
-			$endTag = true;
-		}
+		//$endTag = false;
+		preg_match("|<(/?)we:(.+)(/?)>?|i", $tag, $regs);
+		$endTag=(bool)($regs[1]);
+		$selfclose = (bool)($regs[3]);
 		$foo = $regs[2] . '/';
 		ereg("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
@@ -354,21 +354,23 @@ class we_tagParser{
 			$parseFn = 'we_parse_tag_'.$tagname;
 			if((we_include_tag_file($tagname)===true) && function_exists($parseFn)){
 				$pre = $post = $content = '';
-				$tagPos = strpos($code, $tag, $this->lastpos);
-				$endeStartTag = $tagPos + strlen($tag);
-				$endTagPos = $this->searchEndtag($code, $tagPos);
+				if(!$selfclose){
+					$tagPos = strpos($code, $tag, $this->lastpos);
+					$endeStartTag = $tagPos + strlen($tag);
+					$endTagPos = $this->searchEndtag($code, $tagPos);
 
-				if ($endTagPos > -1) {
-					$endeEndTagPos = strpos(
-							$code,
-							">",
-							$endTagPos) + 1;
-					if ($endTagPos > $endeStartTag) {
-						$content = substr(
+					if ($endTagPos > -1) {
+						$endeEndTagPos = strpos(
 								$code,
-								$endeStartTag,
-								($endTagPos - $endeStartTag));
-					}}
+								">",
+								$endTagPos) + 1;
+						if ($endTagPos > $endeStartTag) {
+							$content = substr(
+									$code,
+									$endeStartTag,
+									($endTagPos - $endeStartTag));
+						}}
+				}
 					$attribs = str_replace('=>"\$', '=>"$', 'array(' . rtrim($attribs,',') . ')'); // workarround Bug Nr 6318
 				/*call specific function for parsing this tag
 				 * $attribs is the attribs string, $content is content of this tag
