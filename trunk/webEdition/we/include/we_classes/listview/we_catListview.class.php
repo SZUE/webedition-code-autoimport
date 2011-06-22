@@ -90,9 +90,9 @@ class we_catListview extends listviewBase {
 		$this->anz_all = $this->DB_WE->num_rows();
 
 		if($this->order == "random()"){
-			$q = "SELECT *, RAND() as RANDOM FROM " . CATEGORY_TABLE ." WHERE $tail ORDER BY RANDOM". (($this->rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+			$q = "SELECT *, RAND() as RANDOM FROM " . CATEGORY_TABLE ." WHERE $tail ORDER BY RANDOM". (($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
 		}else{
-			$q = "SELECT * FROM " . CATEGORY_TABLE ." WHERE $tail $orderstring". (($this->rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+			$q = "SELECT * FROM " . CATEGORY_TABLE ." WHERE $tail $orderstring". (($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
 		}
 
 		$this->DB_WE->query($q);

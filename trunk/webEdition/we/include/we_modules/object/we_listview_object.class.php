@@ -152,7 +152,7 @@ class we_listview_object extends listviewBase {
 					$q = $we_predefinedSQL;
 					$this->DB_WE->query($q);
 					$this->anz_all = $this->DB_WE->num_rows();
-					$q = $we_predefinedSQL.(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+					$q = $we_predefinedSQL.(($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
 
 				}
 				else {
@@ -180,7 +180,7 @@ class we_listview_object extends listviewBase {
 							}
 						}
 					}
-					$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE ".($this->searchable ? " ". $_obxTable . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . $_obxTable.".OF_ID != 0 ".$where_lang.($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$ws_tail.$weDocumentCustomerFilter_tail.$webUserID_tail.$_idTail.$sqlParts['groupBy'].$sqlParts["order"].(($rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+					$q = "SELECT ".$sqlParts["fields"].$calendar_select." FROM ".$sqlParts["tables"]." WHERE ".($this->searchable ? " ". $_obxTable . ".OF_IsSearchable=1 AND" : "")." ".$pid_tail." AND " . $_obxTable.".OF_ID != 0 ".$where_lang.($join ? " AND ($join) " : "").$cat_tail." ".($sqlParts["publ_cond"] ? (" AND ".$sqlParts["publ_cond"]) : "")." ".($sqlParts["cond"] ? (" AND (".$sqlParts["cond"].") ") : "").$calendar_where.$ws_tail.$weDocumentCustomerFilter_tail.$webUserID_tail.$_idTail.$sqlParts['groupBy'].$sqlParts["order"].(($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
 				}
 				$this->DB_WE->query($q);
 				$this->anz = $this->DB_WE->num_rows();
