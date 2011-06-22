@@ -161,13 +161,16 @@ class we_listview_orderitem extends listviewBase {
 			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?we_orderid=".$this->DB_WE->Record["OrderID"]."&we_orderitemid=".$this->DB_WE->Record["ID"];
 			$this->count++;
 			return true;
-		}else if($this->cols && ($this->count < $this->rows)){
-			$this->DB_WE->Record = array();
-			$this->DB_WE->Record["WE_PATH"] = "";
-			$this->DB_WE->Record["WE_TEXT"] = "";
-			$this->DB_WE->Record["WE_ID"] = "";
-			$this->count++;
-			return true;
+		}else {
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->DB_WE->Record = array();
+				$this->DB_WE->Record["WE_PATH"] = "";
+				$this->DB_WE->Record["WE_TEXT"] = "";
+				$this->DB_WE->Record["WE_ID"] = "";
+				$this->count++;
+				return true;
+			}
 		}
 
 		return false;
